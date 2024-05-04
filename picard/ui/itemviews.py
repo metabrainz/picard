@@ -478,83 +478,104 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         plugin_actions = None
         can_view_info = self.window.actions[MainAction.VIEW_INFO].isEnabled()
         menu = QtWidgets.QMenu(self)
+        prev_was_sep = False
+
+        def add_actions(*args):
+            nonlocal prev_was_sep
+            for arg in args:
+                if arg == '-' and not prev_was_sep:
+                    menu.addSeparator()
+                    prev_was_sep = True
+                elif isinstance(arg, QtWidgets.QMenu):
+                    menu.addMenu(arg)
+                    prev_was_sep = False
+                elif isinstance(arg, MainAction):
+                    menu.addAction(self.window.actions[arg])
+                    prev_was_sep = False
+                elif isinstance(arg, QtWidgets.QWidgetAction):
+                    menu.addAction(arg)
+                    prev_was_sep = False
 
         if isinstance(obj, Track):
             if can_view_info:
-                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
+                add_actions(MainAction.VIEW_INFO)
             plugin_actions = list(_track_actions)
             if obj.num_linked_files == 1:
-                menu.addAction(self.window.actions[MainAction.PLAY_FILE])
-                menu.addAction(self.window.actions[MainAction.OPEN_FOLDER])
-                menu.addAction(self.window.actions[MainAction.TRACK_SEARCH])
+                add_actions(
+                    MainAction.PLAY_FILE,
+                    MainAction.OPEN_FOLDER,
+                    MainAction.TRACK_SEARCH,
+                )
                 plugin_actions.extend(_file_actions)
-            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
-            if obj.num_linked_files > 0:
-                menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
-            menu.addSeparator()
-            if isinstance(obj, NonAlbumTrack):
-                menu.addAction(self.window.actions[MainAction.REFRESH])
+            add_actions(
+                MainAction.BROWSER_LOOKUP,
+                MainAction.GENERATE_FINGERPRINTS if obj.num_linked_files > 0 else None,
+                '-',
+                MainAction.REFRESH if isinstance(obj, NonAlbumTrack) else None,
+            )
         elif isinstance(obj, Cluster):
-            if can_view_info:
-                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
-            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
-            if self.window.actions[MainAction.SUBMIT_CLUSTER]:
-                menu.addAction(self.window.actions[MainAction.SUBMIT_CLUSTER])
-            menu.addSeparator()
-            menu.addAction(self.window.actions[MainAction.AUTOTAG])
-            menu.addAction(self.window.actions[MainAction.ANALYZE])
-            if isinstance(obj, UnclusteredFiles):
-                menu.addAction(self.window.actions[MainAction.CLUSTER])
-            else:
-                menu.addAction(self.window.actions[MainAction.ALBUM_SEARCH])
-            menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
+            submit_cluster = self.window.actions[MainAction.SUBMIT_CLUSTER]
+            add_actions(
+                MainAction.VIEW_INFO if can_view_info else None,
+                MainAction.BROWSER_LOOKUP,
+                MainAction.SUBMIT_CLUSTER if submit_cluster else None,
+                '-',
+                MainAction.AUTOTAG,
+                MainAction.ANALYZE,
+                MainAction.CLUSTER if isinstance(obj, UnclusteredFiles) else MainAction.ALBUM_SEARCH,
+                MainAction.GENERATE_FINGERPRINTS,
+            )
             plugin_actions = list(_cluster_actions)
         elif isinstance(obj, ClusterList):
-            menu.addAction(self.window.actions[MainAction.AUTOTAG])
-            menu.addAction(self.window.actions[MainAction.ANALYZE])
-            menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
+            add_actions(
+                MainAction.AUTOTAG,
+                MainAction.ANALYZE,
+                MainAction.GENERATE_FINGERPRINTS,
+            )
             plugin_actions = list(_clusterlist_actions)
         elif isinstance(obj, File):
-            if can_view_info:
-                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
-            menu.addAction(self.window.actions[MainAction.PLAY_FILE])
-            menu.addAction(self.window.actions[MainAction.OPEN_FOLDER])
-            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
-            if self.window.actions[MainAction.SUBMIT_FILE_AS_RECORDING]:
-                menu.addAction(self.window.actions[MainAction.SUBMIT_FILE_AS_RECORDING])
-            if self.window.actions[MainAction.SUBMIT_FILE_AS_RELEASE]:
-                menu.addAction(self.window.actions[MainAction.SUBMIT_FILE_AS_RELEASE])
-            menu.addSeparator()
-            menu.addAction(self.window.actions[MainAction.AUTOTAG])
-            menu.addAction(self.window.actions[MainAction.ANALYZE])
-            menu.addAction(self.window.actions[MainAction.TRACK_SEARCH])
-            menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
+            submit_file_as_recording = self.window.actions[MainAction.SUBMIT_FILE_AS_RECORDING]
+            submit_file_as_release = self.window.actions[MainAction.SUBMIT_FILE_AS_RELEASE]
+            add_actions(
+                MainAction.VIEW_INFO if can_view_info else None,
+                MainAction.PLAY_FILE,
+                MainAction.OPEN_FOLDER,
+                MainAction.BROWSER_LOOKUP,
+                MainAction.SUBMIT_FILE_AS_RECORDING if submit_file_as_recording else None,
+                MainAction.SUBMIT_FILE_AS_RELEASE if submit_file_as_release else None,
+                '-',
+                MainAction.AUTOTAG,
+                MainAction.ANALYZE,
+                MainAction.TRACK_SEARCH,
+                MainAction.GENERATE_FINGERPRINTS,
+            )
             plugin_actions = list(_file_actions)
         elif isinstance(obj, Album):
-            if can_view_info:
-                menu.addAction(self.window.actions[MainAction.VIEW_INFO])
-            menu.addAction(self.window.actions[MainAction.BROWSER_LOOKUP])
-            if obj.get_num_total_files() > 0:
-                menu.addAction(self.window.actions[MainAction.GENERATE_FINGERPRINTS])
-            menu.addSeparator()
-            menu.addAction(self.window.actions[MainAction.REFRESH])
+            add_actions(
+                MainAction.VIEW_INFO if can_view_info else None,
+                MainAction.BROWSER_LOOKUP,
+                MainAction.GENERATE_FINGERPRINTS if obj.get_num_total_files() > 0 else None,
+                '-',
+                MainAction.REFRESH,
+            )
             plugin_actions = list(_album_actions)
 
-        menu.addAction(self.window.actions[MainAction.SAVE])
-        menu.addAction(self.window.actions[MainAction.REMOVE])
-
-        bottom_separator = False
+        add_actions(
+            MainAction.SAVE,
+            MainAction.REMOVE,
+        )
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
             releases_menu.setToolTipsVisible(True)
-            menu.addSeparator()
-            menu.addMenu(releases_menu)
+            add_actions(
+                '-',
+                releases_menu,
+            )
             loading = releases_menu.addAction(_("Loading…"))
             loading.setDisabled(True)
             action_more = releases_menu.addAction(_("Show &more details…"))
             action_more.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
-            bottom_separator = True
 
             if len(self.selectedItems()) == 1 and obj.release_group:
                 def _add_other_versions():
@@ -621,29 +642,31 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if config.setting['enable_ratings'] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
-            menu.addSeparator()
             action = QtWidgets.QWidgetAction(menu)
             action.setDefaultWidget(RatingWidget(menu, obj))
-            menu.addAction(action)
-            menu.addSeparator()
+            add_actions(
+                '-',
+                action,
+            )
 
         # Using type here is intentional. isinstance will return true for the
         # NatAlbum instance, which can't be part of a collection.
         selected_albums = [a for a in self.window.selected_objects if type(a) == Album]  # pylint: disable=C0123 # noqa: E721
         if selected_albums:
-            if not bottom_separator:
-                menu.addSeparator()
-            menu.addMenu(CollectionMenu(selected_albums, _("Collections"), menu))
+            add_actions(
+                '-',
+                CollectionMenu(selected_albums, _("Collections"), menu),
+            )
 
         scripts = config.setting['list_of_scripts']
-
-        if plugin_actions or scripts:
-            menu.addSeparator()
 
         if plugin_actions:
             plugin_menu = QtWidgets.QMenu(_("P&lugins"), menu)
             plugin_menu.setIcon(self.panel.icon_plugins)
-            menu.addMenu(plugin_menu)
+            add_actions(
+                '-',
+                plugin_menu,
+            )
 
             plugin_menus = {}
             for action in plugin_actions:
@@ -659,14 +682,19 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if scripts:
             scripts_menu = ScriptsMenu(scripts, _("&Run scripts"), menu)
             scripts_menu.setIcon(self.panel.icon_plugins)
-            menu.addMenu(scripts_menu)
+            add_actions(
+                '-',
+                scripts_menu,
+            )
 
         if isinstance(obj, Cluster) or isinstance(obj, ClusterList) or isinstance(obj, Album):
-            menu.addSeparator()
-            menu.addAction(self.expand_all_action)
-            menu.addAction(self.collapse_all_action)
+            add_actions(
+                '-',
+                self.expand_all_action,
+                self.collapse_all_action,
+            )
 
-        menu.addAction(self.select_all_action)
+        add_actions(self.select_all_action)
         menu.exec(event.globalPos())
         event.accept()
 
