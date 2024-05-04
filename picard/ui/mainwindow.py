@@ -474,8 +474,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._create_cd_lookup_menu()
 
         webservice_manager = self.tagger.webservice.manager
-        webservice_manager.authenticationRequired.connect(self.show_password_dialog)
-        webservice_manager.proxyAuthenticationRequired.connect(self.show_proxy_dialog)
+        webservice_manager.authenticationRequired.connect(self._show_password_dialog)
+        webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
 
     def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(_("Lookup &CD…"))
@@ -1284,7 +1284,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             self.file_browser.hide()
 
-    def show_password_dialog(self, reply, authenticator):
+    def _show_password_dialog(self, reply, authenticator):
         config = get_config()
         if reply.url().host() == config.setting['server_host']:
             ret = QtWidgets.QMessageBox.question(self,
@@ -1307,7 +1307,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 _("Authentication failed"),
                 _("Login failed: %s") % error_msg)
 
-    def show_proxy_dialog(self, proxy, authenticator):
+    def _show_proxy_dialog(self, proxy, authenticator):
         dialog = ProxyDialog(authenticator, proxy, parent=self)
         dialog.exec()
 
