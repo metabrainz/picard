@@ -540,12 +540,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def toggle_rename_files(self, checked):
         config = get_config()
         config.setting['rename_files'] = checked
-        self.update_script_editor_examples()
+        self._update_script_editor_examples()
 
     def toggle_move_files(self, checked):
         config = get_config()
         config.setting['move_files'] = checked
-        self.update_script_editor_examples()
+        self._update_script_editor_examples()
 
     def toggle_tag_saving(self, checked):
         config = get_config()
@@ -1492,9 +1492,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """
         if self.examples:
             self.examples.update_sample_example_files()
-            self.update_script_editor_examples()
+            self._update_script_editor_examples()
 
-    def update_script_editor_examples(self):
+    def _update_script_editor_examples(self):
         """Update the examples for the file naming script editor, using current settings.
         """
         if self.examples:
