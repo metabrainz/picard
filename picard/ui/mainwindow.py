@@ -521,9 +521,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _update_cd_lookup_default_action(self, action):
         if action:
-            reconnect(self.actions['cd_lookup_action'].triggered, action.trigger)
+            target = action.trigger
         else:
-            reconnect(self.actions['cd_lookup_action'].triggered, self.tagger.lookup_cd)
+            target = self.tagger.lookup_cd
+        reconnect(self.actions['cd_lookup_action'].triggered, target)
 
     def _update_cd_lookup_button(self):
         button = self.toolbar.widgetForAction(self.actions['cd_lookup_action'])
