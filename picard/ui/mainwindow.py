@@ -787,7 +787,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _toggle_search(self):
         """Enable/disable the 'Search' action."""
-        self.action_enabled('search_action', bool(self.search_edit.text()))
+        self.action_enabled('search_action', self.search_edit.text())
 
     def _trigger_search_action(self):
         if self.actions['search_action'].isEnabled():
@@ -1162,8 +1162,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_enabled('submit_cluster_action', can_submit)
         self.action_enabled('submit_file_as_recording_action', have_files)
         self.action_enabled('submit_file_as_release_action', have_files)
-        files = self.get_selected_or_unmatched_files()
-        self.action_enabled('tags_from_filenames_action', bool(files))
+        self.action_enabled('tags_from_filenames_action', self.get_selected_or_unmatched_files())
         self.action_enabled('similar_items_search_action', is_file or is_cluster)
         self.action_enabled('track_search_action', is_file)
         self.action_enabled('album_search_action', is_cluster)
@@ -1171,7 +1170,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def action_enabled(self, action_name, enabled):
         if self.actions[action_name]:
-            self.actions[action_name].setEnabled(enabled)
+            self.actions[action_name].setEnabled(bool(enabled))
 
     def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:
@@ -1325,7 +1324,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def cut(self):
         self.copy_files(self.selected_objects)
-        self.action_enabled('paste_action', bool(self.selected_objects))
+        self.action_enabled('paste_action', self.selected_objects)
 
     def paste(self):
         selected_objects = self.selected_objects
