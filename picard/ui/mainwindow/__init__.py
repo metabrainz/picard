@@ -571,13 +571,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _create_menus(self):
         def add_menu(menu_title, *args):
             menu = self.menuBar().addMenu(menu_title)
+            prev_was_sep = False
             for arg in args:
-                if arg == '-':
+                if arg == '-' and not prev_was_sep:
                     menu.addSeparator()
+                    prev_was_sep = True
                 elif isinstance(arg, QtWidgets.QMenu):
                     menu.addMenu(arg)
+                    prev_was_sep = False
                 elif isinstance(arg, MainAction):
                     menu.addAction(self.actions[arg])
+                    prev_was_sep = False
 
         add_menu(
             _("&File"),
@@ -660,7 +664,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.VIEW_HISTORY,
             '-',
             MainAction.CHECK_UPDATE if self.tagger.autoupdate_enabled else None,
-            '-' if self.tagger.autoupdate_enabled else None,
+            '-',
             MainAction.SUPPORT_FORUM,
             MainAction.REPORT_BUG,
             MainAction.VIEW_LOG,
