@@ -49,6 +49,7 @@ from picard.i18n import N_
 from picard.util import system_supports_long_paths
 from picard.util.cdrom import get_default_cdrom_drives
 
+from picard.ui.enums import MainAction
 from picard.ui.theme import UiTheme
 
 
@@ -101,24 +102,24 @@ DEFAULT_STARTING_DIR = QStandardPaths.writableLocation(QStandardPaths.StandardLo
 
 DEFAULT_THEME_NAME = str(UiTheme.DEFAULT)
 
-DEFAULT_TOOLBAR_LAYOUT = [
-    'add_directory_action',
-    'add_files_action',
-    'separator',
-    'cluster_action',
-    'separator',
-    'autotag_action',
-    'analyze_action',
-    'browser_lookup_action',
-    'separator',
-    'save_action',
-    'view_info_action',
-    'remove_action',
-    'separator',
-    'cd_lookup_action',
-    'separator',
-    'submit_acoustid_action',
-]
+DEFAULT_TOOLBAR_LAYOUT = (
+    MainAction.ADD_DIRECTORY,
+    MainAction.ADD_FILES,
+    '-',
+    MainAction.CLUSTER,
+    '-',
+    MainAction.AUTOTAG,
+    MainAction.ANALYZE,
+    MainAction.BROWSER_LOOKUP,
+    '-',
+    MainAction.SAVE,
+    MainAction.VIEW_INFO,
+    MainAction.REMOVE,
+    '-',
+    MainAction.CD_LOOKUP,
+    '-',
+    MainAction.SUBMIT_ACOUSTID,
+)
 
 DEFAULT_TOP_TAGS = [
     'title',

@@ -32,6 +32,8 @@ from picard import log
 from picard.i18n import N_
 from picard.util import load_json
 
+from picard.ui.enums import MainAction
+
 
 # Maximum difference between file duration and MB recording length.
 # If the match is above this threshold the MBID will not get submitted.
@@ -151,7 +153,7 @@ class AcoustIDManager(QtCore.QObject):
 
     def _check_unsubmitted(self):
         enabled = next(self._unsubmitted(), None) is not None
-        self.tagger.window.enable_submit(enabled)
+        self.tagger.window.enable_action(MainAction.SUBMIT_ACOUSTID, enabled)
 
     def submit(self):
         self.max_batch_size = self.MAX_PAYLOAD

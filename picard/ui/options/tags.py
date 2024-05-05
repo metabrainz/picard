@@ -31,6 +31,7 @@
 from picard.config import get_config
 from picard.i18n import N_
 
+from picard.ui.enums import MainAction
 from picard.ui.options import (
     OptionsPage,
     register_options_page,
@@ -86,7 +87,7 @@ class TagsOptionsPage(OptionsPage):
         config.setting['remove_id3_from_flac'] = self.ui.remove_id3_from_flac.isChecked()
         config.setting['fix_missing_seekpoints_flac'] = self.ui.fix_missing_seekpoints_flac.isChecked()
         config.setting['preserved_tags'] = list(self.ui.preserved_tags.tags)
-        self.tagger.window.enable_tag_saving_action.setChecked(not config.setting['dont_write_tags'])
+        self.tagger.window.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not config.setting['dont_write_tags'])
 
 
 register_options_page(TagsOptionsPage)
