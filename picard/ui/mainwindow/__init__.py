@@ -145,6 +145,7 @@ from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.util import (
     MultiDirsSelectDialog,
     find_starting_directory,
+    menu_builder,
 )
 
 
@@ -572,13 +573,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def add_menu(menu_title, *args):
             menu = self.menuBar().addMenu(menu_title)
             menu.setSeparatorsCollapsible(True)
-            for arg in args:
-                if arg == '-':
-                    menu.addSeparator()
-                elif isinstance(arg, QtWidgets.QMenu):
-                    menu.addMenu(arg)
-                elif isinstance(arg, MainAction) and self.actions[arg]:
-                    menu.addAction(self.actions[arg])
+            menu_builder(menu, self.actions, *args)
 
         add_menu(
             _("&File"),

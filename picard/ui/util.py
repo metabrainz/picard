@@ -140,3 +140,18 @@ def changes_require_restart_warning(parent, warnings=None, notes=None):
         _("Changes only applied on restart"),
         text
     )
+
+
+def menu_builder(menu, main_actions, *args):
+    """Adds each argument to menu, depending on their type"""
+    from picard.ui.mainwindow.actions import MainAction
+
+    for arg in args:
+        if arg == '-':
+            menu.addSeparator()
+        elif isinstance(arg, QtWidgets.QMenu):
+            menu.addMenu(arg)
+        elif isinstance(arg, MainAction) and main_actions[arg]:
+            menu.addAction(main_actions[arg])
+        elif isinstance(arg, QtWidgets.QWidgetAction):
+            menu.addAction(arg)

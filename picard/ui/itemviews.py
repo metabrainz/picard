@@ -95,6 +95,7 @@ from picard.ui.colors import interface_colors
 from picard.ui.mainwindow.actions import MainAction
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
+from picard.ui.util import menu_builder
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
@@ -481,15 +482,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         menu.setSeparatorsCollapsible(True)
 
         def add_actions(*args):
-            for arg in args:
-                if arg == '-':
-                    menu.addSeparator()
-                elif isinstance(arg, QtWidgets.QMenu):
-                    menu.addMenu(arg)
-                elif isinstance(arg, MainAction) and self.window.actions[arg]:
-                    menu.addAction(self.window.actions[arg])
-                elif isinstance(arg, QtWidgets.QWidgetAction):
-                    menu.addAction(arg)
+            menu_builder(menu, self.window.actions, *args)
 
         if isinstance(obj, Track):
             if can_view_info:
