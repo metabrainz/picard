@@ -702,7 +702,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         config = get_config()
         for action_name in config.setting['toolbar_layout']:
-            if action_name == 'separator':
+            if action_name in {'-', 'separator'}:
                 toolbar.addSeparator()
             else:
                 try:
@@ -782,7 +782,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # Setting toolbar widget tab-orders for accessibility
         config = get_config()
         for action_name in config.setting['toolbar_layout']:
-            if action_name != 'separator':
+            if action_name not in {'-', 'separator'}:
                 try:
                     action_id = MainAction(action_name)
                     action = self.actions[action_id]

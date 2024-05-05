@@ -179,7 +179,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             list_item.setData(QtCore.Qt.ItemDataRole.UserRole, action_id)
         else:
             list_item.setText(self.SEPARATOR)
-            list_item.setData(QtCore.Qt.ItemDataRole.UserRole, 'separator')
+            list_item.setData(QtCore.Qt.ItemDataRole.UserRole, '-')
         if index is not None:
             self.ui.toolbar_layout_list.insertItem(index, list_item)
         else:
@@ -197,8 +197,8 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         self.ui.toolbar_layout_list.clear()
         config = get_config()
         for name in config.setting['toolbar_layout']:
-            if name == 'separator':
-                self._insert_item(name)
+            if name in {'-', 'separator'}:
+                self._insert_item('-')
             else:
                 try:
                     action_id = MainAction(name)
@@ -221,7 +221,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
 
     def insert_separator(self):
         insert_index = self.ui.toolbar_layout_list.currentRow() + 1
-        self._insert_item('separator', index=insert_index)
+        self._insert_item('-', index=insert_index)
 
     def remove_action(self):
         item = self.ui.toolbar_layout_list.takeItem(self.ui.toolbar_layout_list.currentRow())
