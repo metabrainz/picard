@@ -485,7 +485,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cd_lookup_menu = menu
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
-            self.action_enabled(MainAction.CD_LOOKUP, False)
+            self.enable_action(MainAction.CD_LOOKUP, False)
             self.cd_lookup_menu.setEnabled(False)
         else:
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
@@ -498,7 +498,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def update_cd_lookup_drives(self, drives):
         self.cd_lookup_menu.clear()
-        self.action_enabled(MainAction.CD_LOOKUP, discid is not None)
+        self.enable_action(MainAction.CD_LOOKUP, discid is not None)
         if not drives:
             log.warning(DISCID_NOT_LOADED_MESSAGE)
         else:
@@ -809,7 +809,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _toggle_search(self):
         """Enable/disable the 'Search' action."""
-        self.action_enabled(MainAction.SEARCH, self.search_edit.text())
+        self.enable_action(MainAction.SEARCH, self.search_edit.text())
 
     def _trigger_search_action(self):
         action = self.actions[MainAction.SEARCH]
@@ -909,7 +909,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
         else:
-            self.action_enabled(MainAction.SHOW_SCRIPT_EDITOR, True)
+            self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, True)
         self._make_profile_selector_menu()
         self.make_script_selector_menu()
 
@@ -1171,27 +1171,27 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 ):
                     break
 
-        self.action_enabled(MainAction.REMOVE, can_remove)
-        self.action_enabled(MainAction.SAVE, can_save)
-        self.action_enabled(MainAction.VIEW_INFO, can_view_info)
-        self.action_enabled(MainAction.ANALYZE, can_analyze)
-        self.action_enabled(MainAction.GENERATE_FINGERPRINTS, have_files)
-        self.action_enabled(MainAction.REFRESH, can_refresh)
-        self.action_enabled(MainAction.AUTOTAG, can_autotag)
-        self.action_enabled(MainAction.BROWSER_LOOKUP, can_browser_lookup)
-        self.action_enabled(MainAction.PLAY_FILE, have_files)
-        self.action_enabled(MainAction.OPEN_FOLDER, have_files)
-        self.action_enabled(MainAction.CUT, have_objects)
-        self.action_enabled(MainAction.SUBMIT_CLUSTER, can_submit)
-        self.action_enabled(MainAction.SUBMIT_FILE_AS_RECORDING, have_files)
-        self.action_enabled(MainAction.SUBMIT_FILE_AS_RELEASE, have_files)
-        self.action_enabled(MainAction.TAGS_FROM_FILENAMES, self._get_selected_or_unmatched_files())
-        self.action_enabled(MainAction.SIMILAR_ITEMS_SEARCH, is_file or is_cluster)
-        self.action_enabled(MainAction.TRACK_SEARCH, is_file)
-        self.action_enabled(MainAction.ALBUM_SEARCH, is_cluster)
-        self.action_enabled(MainAction.ALBUM_OTHER_VERSIONS, is_album)
+        self.enable_action(MainAction.REMOVE, can_remove)
+        self.enable_action(MainAction.SAVE, can_save)
+        self.enable_action(MainAction.VIEW_INFO, can_view_info)
+        self.enable_action(MainAction.ANALYZE, can_analyze)
+        self.enable_action(MainAction.GENERATE_FINGERPRINTS, have_files)
+        self.enable_action(MainAction.REFRESH, can_refresh)
+        self.enable_action(MainAction.AUTOTAG, can_autotag)
+        self.enable_action(MainAction.BROWSER_LOOKUP, can_browser_lookup)
+        self.enable_action(MainAction.PLAY_FILE, have_files)
+        self.enable_action(MainAction.OPEN_FOLDER, have_files)
+        self.enable_action(MainAction.CUT, have_objects)
+        self.enable_action(MainAction.SUBMIT_CLUSTER, can_submit)
+        self.enable_action(MainAction.SUBMIT_FILE_AS_RECORDING, have_files)
+        self.enable_action(MainAction.SUBMIT_FILE_AS_RELEASE, have_files)
+        self.enable_action(MainAction.TAGS_FROM_FILENAMES, self._get_selected_or_unmatched_files())
+        self.enable_action(MainAction.SIMILAR_ITEMS_SEARCH, is_file or is_cluster)
+        self.enable_action(MainAction.TRACK_SEARCH, is_file)
+        self.enable_action(MainAction.ALBUM_SEARCH, is_cluster)
+        self.enable_action(MainAction.ALBUM_OTHER_VERSIONS, is_album)
 
-    def action_enabled(self, action_id, enabled):
+    def enable_action(self, action_id, enabled):
         if self.actions[action_id]:
             self.actions[action_id].setEnabled(bool(enabled))
 
@@ -1276,7 +1276,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Show/hide the metadata view (including the cover art box)."""
         show = self.action_is_checked(MainAction.SHOW_METADATA_VIEW)
         self.metadata_view.setVisible(show)
-        self.action_enabled(MainAction.SHOW_COVER_ART, show)
+        self.enable_action(MainAction.SHOW_COVER_ART, show)
         if show:
             self.update_selection()
 
@@ -1347,7 +1347,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def cut(self):
         self.copy_files(self.selected_objects)
-        self.action_enabled(MainAction.PASTE, self.selected_objects)
+        self.enable_action(MainAction.PASTE, self.selected_objects)
 
     def paste(self):
         selected_objects = self.selected_objects
@@ -1356,7 +1356,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             target = selected_objects[0]
         self.paste_files(target)
-        self.action_enabled(MainAction.PASTE, False)
+        self.enable_action(MainAction.PASTE, False)
 
     def do_update_check(self):
         self._check_for_update(True)
@@ -1494,7 +1494,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_editor_dialog.signal_selection_changed,
             self.script_editor_dialog.signal_index_changed,
         ]
-        self.action_enabled(MainAction.SHOW_SCRIPT_EDITOR, False)
+        self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, False)
 
     def _script_editor_save(self):
         """Process "signal_save" signal from the script editor.
@@ -1504,7 +1504,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _script_editor_closed(self):
         """Process "finished" signal from the script editor.
         """
-        self.action_enabled(MainAction.SHOW_SCRIPT_EDITOR, True)
+        self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, True)
         self.script_editor_dialog = None
         self.make_script_selector_menu()
 
