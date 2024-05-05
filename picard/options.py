@@ -236,7 +236,18 @@ Option('setting', 'interface_colors_dark', InterfaceColors(dark_theme=True).get_
 
 # picard/ui/options/interface_toolbar.py
 # Action Toolbar
-ListOption('setting', 'toolbar_layout', DEFAULT_TOOLBAR_LAYOUT, title=N_("Layout of the tool bar"))
+
+
+def make_default_toolbar_layout():
+    for e in DEFAULT_TOOLBAR_LAYOUT:
+        if e == '-':
+            yield e
+        else:
+            # we want the string matching the MainAction
+            yield e.value
+
+
+ListOption('setting', 'toolbar_layout', list(make_default_toolbar_layout()), title=N_("Layout of the tool bar"))
 
 # picard/ui/options/interface_top_tags.py
 # Top Tags
