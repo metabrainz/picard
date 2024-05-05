@@ -357,7 +357,7 @@ class Tagger(QtWidgets.QApplication):
                 self.pluginmanager.load_plugins_from_directory(plugin_dir)
 
         self.browser_integration = BrowserIntegration()
-        self.browser_integration.listen_port_changed.connect(self.listen_port_changed)
+        self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
 
         self._pending_files_count = 0
         self.files = {}
@@ -638,6 +638,10 @@ class Tagger(QtWidgets.QApplication):
         self._debug = level == logging.DEBUG
         log.set_level(level)
 
+    def on_listen_port_changed(self, port):
+        self.webservice.oauth_manager.redirect_uri = self._mb_login_redirect_uri()
+        self.listen_port_changed.emit(port)
+
     def _mb_login_dialog(self, parent):
         if not parent:
             parent = self.window
@@ -651,18 +655,28 @@ class Tagger(QtWidgets.QApplication):
         else:
             return None
 
+    def _mb_login_redirect_uri(self):
+        if self.browser_integration and self.browser_integration.is_running:
+            return f'http://localhost:{self.browser_integration.port}/auth'
+        else:
+            # If browser integration is disabled or not running on the standard
+            # port use out-of-band flow (with manual copying of the token).
+            return None
+
     def mb_login(self, callback, parent=None):
+        oauth_manager = self.webservice.oauth_manager
         scopes = 'profile tag rating collection submit_isrc submit_barcode'
-        authorization_url = self.webservice.oauth_manager.get_authorization_url(
+        authorization_url = oauth_manager.get_authorization_url(
             scopes, partial(self.on_mb_authorization_finished, callback))
         webbrowser2.open(authorization_url)
-        # authorization_code = self._mb_login_dialog(parent)
-        # if authorization_code is not None:
-        #     self.webservice.oauth_manager.exchange_authorization_code(
-        #         authorization_code, scopes,
-        #         partial(self.on_mb_authorization_finished, callback))
-        # else:
-        #     callback(False, None)
+        if oauth_manager.is_oob:
+            authorization_code = self._mb_login_dialog(parent)
+            if authorization_code is not None:
+                self.webservice.oauth_manager.exchange_authorization_code(
+                    authorization_code, scopes,
+                    partial(self.on_mb_authorization_finished, callback))
+            else:
+                callback(False, None)
 
     def on_mb_authorization_finished(self, callback, successful=False, error_msg=None):
         if successful:

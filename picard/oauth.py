@@ -44,6 +44,9 @@ from picard.util import (
 )
 
 
+OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
+
+
 class OAuthInvalidStateError(Exception):
     pass
 
@@ -54,11 +57,22 @@ class OAuthManager(object):
         self.webservice = webservice
         # Associates state tokens with callbacks
         self.__states = {}
+        self._redirect_uri = OOB_URI
 
     @property
     def redirect_uri(self):
-        # return "urn:ietf:wg:oauth:2.0:oob"
-        return "http://localhost:8000/auth"
+        return self._redirect_uri
+
+    @redirect_uri.setter
+    def redirect_uri(self, redirect_uri):
+        if not redirect_uri:
+            self._redirect_uri = OOB_URI
+        else:
+            self._redirect_uri = redirect_uri
+
+    @property
+    def is_oob(self):
+        return self.redirect_uri == OOB_URI
 
     @property
     def setting(self):
@@ -204,9 +218,10 @@ class OAuthManager(object):
             'code_challenge_method': 'S256',
             'code_challenge': self._create_code_challenge(),
             'scope': scopes,
-            'state': self._create_auth_state(callback),
             'access_type': 'offline',
         }
+        if not self.is_oob:
+            params['state'] = self._create_auth_state(callback)
         return bytes(self.url(path="/oauth2/authorize", params=params).toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
