@@ -45,7 +45,7 @@ from picard.i18n import (
 )
 from picard.script import ScriptParser
 
-from picard.ui.mainwindow.actions import MainAction
+from picard.ui.enums import MainAction
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,

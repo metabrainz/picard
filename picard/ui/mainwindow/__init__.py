@@ -107,6 +107,7 @@ from picard.util.cdrom import (
 from picard.ui import PreserveGeometry
 from picard.ui.aboutdialog import AboutDialog
 from picard.ui.coverartbox import CoverArtBox
+from picard.ui.enums import MainAction
 from picard.ui.filebrowser import FileBrowser
 from picard.ui.infodialog import (
     AlbumInfoDialog,
@@ -123,8 +124,7 @@ from picard.ui.logview import (
     HistoryView,
     LogView,
 )
-from picard.ui.mainwindow.actions import MainAction
-from picard.ui.mainwindow.create import create_actions
+from picard.ui.mainwindow.actions import create_actions
 from picard.ui.metadatabox import MetadataBox
 from picard.ui.newuserdialog import NewUserDialog
 from picard.ui.options.dialog import OptionsDialog

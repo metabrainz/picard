@@ -92,7 +92,7 @@ from picard.util import (
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
-from picard.ui.mainwindow.actions import MainAction
+from picard.ui.enums import MainAction
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder

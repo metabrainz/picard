@@ -32,7 +32,7 @@ from picard import log
 from picard.i18n import N_
 from picard.util import load_json
 
-from picard.ui.mainwindow.actions import MainAction
+from picard.ui.enums import MainAction
 
 
 # Maximum difference between file duration and MB recording length.

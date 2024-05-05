@@ -44,6 +44,8 @@ from picard.i18n import (
 )
 from picard.util import find_existing_path
 
+from picard.ui.enums import MainAction
+
 
 class StandardButton(QtWidgets.QPushButton):
 
@@ -144,8 +146,6 @@ def changes_require_restart_warning(parent, warnings=None, notes=None):
 
 def menu_builder(menu, main_actions, *args):
     """Adds each argument to menu, depending on their type"""
-    from picard.ui.mainwindow.actions import MainAction
-
     for arg in args:
         if arg == '-':
             menu.addSeparator()
