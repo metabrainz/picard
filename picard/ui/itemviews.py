@@ -188,8 +188,6 @@ class MainPanel(QtWidgets.QSplitter):
         MainPanelColumn(N_("Cover"), 'covercount'),
     ]
 
-    _column_indexes = {column.key: i for i, column in enumerate(columns)}
-
     NAT_SORT_COLUMNS = [
         'title',
         'album',
@@ -201,7 +199,15 @@ class MainPanel(QtWidgets.QSplitter):
 
     @classmethod
     def get_column_index(cls, key):
-        return cls._column_indexes[key]
+        for i, column in cls.iterate_columns():
+            if column.key == key:
+                return i
+        raise ValueError('No such column key: %s' % key)
+
+    @classmethod
+    def iterate_columns(cls):
+        for i, c in enumerate(cls.columns):
+            yield i, c
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
@@ -387,14 +393,14 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             self._visible_columns.remove(column)
 
     def update_visible_columns(self, columns):
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in MainPanel.iterate_columns():
             self.show_column(i, i in columns)
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
 
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in MainPanel.iterate_columns():
             if i == 0:
                 continue
             action = QtGui.QAction(_(column.title), parent)
@@ -453,7 +459,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
         self.setHeaderLabels([_(c.title) if c.key != '~fingerprint' else ''
-                              for c in MainPanel.columns])
+                              for i, c in MainPanel.iterate_columns()])
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -917,7 +923,7 @@ class AlbumTreeView(BaseTreeView):
         else:
             item = AlbumItem(album, True, self)
         item.setIcon(MainPanel.get_column_index('title'), AlbumItem.icon_cd)
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in MainPanel.iterate_columns():
             font = item.font(i)
             font.setBold(True)
             item.setFont(i, font)
@@ -974,7 +980,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         return sortkey
 
     def update_colums_text(self, color=None, bgcolor=None):
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in MainPanel.iterate_columns():
             self.setText(i, self.obj.column(column.key))
             if color is not None:
                 self.setForeground(i, color)
