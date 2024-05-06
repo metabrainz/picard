@@ -84,7 +84,7 @@ class EditableListView(QtWidgets.QListView):
 
     def add_empty_row(self):
         # Setting the focus causes any open editor to getting closed
-        self.setFocus(True)
+        self.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
         index = self.add_item()
         self.setCurrentIndex(index)
         self.edit(index)
