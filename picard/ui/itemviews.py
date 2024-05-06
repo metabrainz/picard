@@ -478,10 +478,6 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         elif column in self._visible_columns:
             self._visible_columns.remove(column)
 
-    def update_visible_columns(self, columns):
-        for i, column in self.panel.columns.iterate():
-            self.show_column(i, i in columns)
-
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
