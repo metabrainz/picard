@@ -33,7 +33,6 @@
 
 import os
 
-from PyQt6 import QtCore
 from PyQt6.QtCore import QStandardPaths
 
 from picard.const import (
@@ -130,7 +129,7 @@ DEFAULT_TOP_TAGS = [
     'date',
 ]
 
-DEFAULT_AUTOBACKUP_DIRECTORY = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+DEFAULT_AUTOBACKUP_DIRECTORY = os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
 
 DEFAULT_CACHE_SIZE_IN_BYTES = 100*CACHE_SIZE_DISPLAY_UNIT
 
