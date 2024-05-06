@@ -172,6 +172,9 @@ class ColumnSortType(IntEnum):
     SORTKEY = 3  # special case, use sortkey property
 
 
+DEFAULT_SECTION_SIZE = 100
+
+
 class Column:
     def __init__(self, title, key, size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.DEFAULT, sortkey=None):
         self.title = title
@@ -190,6 +193,10 @@ class Column:
 
     def __str__(self):
         return repr(self)
+
+
+class DefaultColumn(Column):
+    pass
 
 
 class Columns(MutableSequence):
@@ -252,9 +259,9 @@ def _sortkey_filesize(obj):
 
 
 DEFAULT_COLUMNS = Columns([
-    Column(N_("Title"), 'title', sort_type=ColumnSortType.NAT),
-    Column(N_("Length"), '~length', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_length),
-    Column(N_("Artist"), 'artist'),
+    DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, size=250),
+    DefaultColumn(N_("Length"), '~length', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_length, size=50),
+    DefaultColumn(N_("Artist"), 'artist', size=200),
     Column(N_("Album Artist"), 'albumartist'),
     Column(N_("Composer"), 'composer'),
     Column(N_("Album"), 'album', sort_type=ColumnSortType.NAT),
@@ -449,7 +456,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
         #     internal model that QTreeWidget uses doesn't support it
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
-        self.setDefaultSectionSize(100)
+        self.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
     def show_column(self, column, show):
         if column == 0:  # The first column is fixed
@@ -791,9 +798,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             for i in range(0, self.columnCount()):
                 header.show_column(i, not self.isColumnHidden(i))
         else:
-            header.update_visible_columns([0, 1, 2])
-            for i, size in enumerate([250, 50, 100]):
-                header.resizeSection(i, size)
+            for i, c in self.panel.columns.iterate():
+                header.show_column(i, isinstance(c, DefaultColumn))
+                header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
             self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def supportedDropActions(self):
