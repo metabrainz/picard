@@ -169,15 +169,17 @@ class ColumnSortType(IntEnum):
     NONE = 0
     NAT = 1
     DEFAULT = 2
+    SORTKEY = 3  # special case, use sortkey property
 
 
 class Column:
-    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.DEFAULT):
+    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.DEFAULT, sortkey=None):
         self.title = title
         self.key = key
         self.size = size
         self.align = align
         self.sort_type = sort_type
+        self.sortkey = sortkey
 
     def __repr__(self):
         def parms():
@@ -238,9 +240,20 @@ class Columns(MutableSequence):
         return repr(self)
 
 
+def _sortkey_length(obj):
+    return obj.metadata.length or 0
+
+
+def _sortkey_filesize(obj):
+    try:
+        return int(obj.metadata['~filesize'] or obj.orig_metadata['~filesize'])
+    except ValueError:
+        return 0
+
+
 DEFAULT_COLUMNS = Columns([
     Column(N_("Title"), 'title', sort_type=ColumnSortType.NAT),
-    Column(N_("Length"), '~length', align=ColumnAlign.RIGHT),
+    Column(N_("Length"), '~length', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_length),
     Column(N_("Artist"), 'artist'),
     Column(N_("Album Artist"), 'albumartist'),
     Column(N_("Composer"), 'composer'),
@@ -251,7 +264,7 @@ DEFAULT_COLUMNS = Columns([
     Column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT),
     Column(N_("Barcode"), 'barcode'),
     Column(N_("Media"), 'media'),
-    Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT),
+    Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_filesize),
     Column(N_("Genre"), 'genre'),
     Column(N_("Fingerprint status"), '~fingerprint'),
     Column(N_("Date"), 'date'),
@@ -1031,13 +1044,8 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 
         this_column = self.panel.columns[column]
 
-        if column == self.panel.columns.pos('~length'):
-            sortkey = self.obj.metadata.length or 0
-        elif column == self.panel.columns.pos('~filesize'):
-            try:
-                sortkey = int(self.obj.metadata['~filesize'] or self.obj.orig_metadata['~filesize'])
-            except ValueError:
-                sortkey = 0
+        if this_column.sort_type == ColumnSortType.SORTKEY:
+            sortkey = this_column.sortkey(self.obj)
         elif this_column.sort_type == ColumnSortType.NAT:
             sortkey = natsort.natkey(self.text(column))
         else:
