@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-05-04 12:42+0000\n"
+"PO-Revision-Date: 2024-05-06 09:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -2831,12 +2831,14 @@ msgstr ""
 #: picard/ui/itemviews.py:1123
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
-"Apdorojimo klaida (-os): žiūrėk dialogo lango Takelio informacija kortelę "
+"Apdorojimo klaida (-os): žiūrėk dialogo lango Takelio informacija skirtuke "
 "Klaidos."
 
 #: picard/ui/itemviews.py:1151
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
+"Apdorojimo klaida (-os): žiūrėk dialogo lango Falio informacija skirtuke "
+"Klaidos."
 
 #: picard/ui/itemviews.py:1184
 msgid "Track saved"
@@ -2862,11 +2864,11 @@ msgstr ""
 
 #: picard/ui/logview.py:169
 msgid "Log"
-msgstr ""
+msgstr "Žurnalas"
 
 #: picard/ui/logview.py:180 picard/ui/logview.py:332
 msgid "Verbosity"
-msgstr ""
+msgstr "Reikšmingumas"
 
 #: picard/ui/logview.py:190
 msgid "String to highlight"
@@ -4437,11 +4439,11 @@ msgstr "Išsaugoti atsarginę kopiją"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
-msgstr ""
+msgstr "Pašalinti pasirinktus parinkčius"
 
 #: picard/ui/ui_options_maintenance.py:91
 msgid "Select all"
-msgstr ""
+msgstr "Pasirinkti viską"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -5320,7 +5322,7 @@ msgstr "Konfigūracijos failai"
 
 #: picard/ui/options/maintenance.py:184 picard/ui/options/maintenance.py:201
 msgid "Backup Configuration File"
-msgstr ""
+msgstr "Atsarginė konfigūracijos failo kopija"
 
 #: picard/ui/options/maintenance.py:188
 msgid ""
