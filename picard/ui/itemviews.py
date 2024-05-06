@@ -264,19 +264,6 @@ class MainPanel(QtWidgets.QSplitter):
         self.setChildrenCollapsible(False)
         self.window = window
         self.create_icons()
-        self._views = [FileTreeView(window, self), AlbumTreeView(window, self)]
-        self._selected_view = self._views[0]
-        self._ignore_selection_changes = False
-
-        def _view_update_selection(view):
-            if not self._ignore_selection_changes:
-                self._ignore_selection_changes = True
-                self._update_selection(view)
-                self._ignore_selection_changes = False
-
-        for view in self._views:
-            view.init_headers()
-            view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
         TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
@@ -295,6 +282,23 @@ class MainPanel(QtWidgets.QSplitter):
             File.PENDING: interface_colors.get_qcolor('entity_pending'),
             File.ERROR: interface_colors.get_qcolor('entity_error'),
         })
+
+    def init_views(self):
+        self._views = [FileTreeView(self.window, self), AlbumTreeView(self.window, self)]
+        self._selected_view = None
+        self._ignore_selection_changes = False
+
+        def _view_update_selection(view):
+            if not self._ignore_selection_changes:
+                self._ignore_selection_changes = True
+                self._update_selection(view)
+                self._ignore_selection_changes = False
+
+        for view in self._views:
+            if self._selected_view is None:
+                self._selected_view = view
+            view.init_headers()
+            view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
     def set_processing(self, processing=True):
         self._ignore_selection_changes = processing
