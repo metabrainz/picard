@@ -525,9 +525,6 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def lock(self, is_locked):
         super().lock(is_locked)
-        column_index = self.panel.columns.pos('~fingerprint')
-        if not self.is_locked and self.count() > column_index:
-            self.setSectionResizeMode(column_index, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
