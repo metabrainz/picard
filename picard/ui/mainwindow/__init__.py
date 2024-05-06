@@ -274,7 +274,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 self.remove()
         elif event.matches(QtGui.QKeySequence.StandardKey.Find):
-            self.search_edit.setFocus(True)
+            self.search_edit.setFocus(QtCore.Qt.FocusReason.ShortcutFocusReason)
         else:
             super().keyPressEvent(event)
 
