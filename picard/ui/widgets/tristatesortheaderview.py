@@ -56,7 +56,7 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
             tooltip = _(
                 "The table is locked. To enable sorting and column resizing\n"
                 "unlock the table in the table header's context menu.")
-            QtWidgets.QToolTip.showText(event.globalPos(), tooltip, self)
+            QtWidgets.QToolTip.showText(event.globalPosition().toPoint(), tooltip, self)
             return
 
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
