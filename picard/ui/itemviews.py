@@ -45,6 +45,7 @@
 
 from collections import defaultdict
 from collections.abc import MutableSequence
+from enum import IntEnum
 from functools import partial
 from heapq import (
     heappop,
@@ -159,8 +160,13 @@ def get_match_color(similarity, basecolor):
         int(c2[2] + (c1[2] - c2[2]) * similarity))
 
 
+class ColumnAlign(IntEnum):
+    LEFT = 0
+    RIGHT = 1
+
+
 class Column:
-    def __init__(self, title, key, size=None, align=None):
+    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT):
         self.title = title
         self.key = key
         self.size = size
@@ -227,18 +233,18 @@ class Columns(MutableSequence):
 
 DEFAULT_COLUMNS = Columns([
     Column(N_("Title"), 'title'),
-    Column(N_("Length"), '~length'),
+    Column(N_("Length"), '~length', align=ColumnAlign.RIGHT),
     Column(N_("Artist"), 'artist'),
     Column(N_("Album Artist"), 'albumartist'),
     Column(N_("Composer"), 'composer'),
     Column(N_("Album"), 'album'),
     Column(N_("Disc Subtitle"), 'discsubtitle'),
-    Column(N_("Track No."), 'tracknumber'),
-    Column(N_("Disc No."), 'discnumber'),
+    Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT),
+    Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT),
     Column(N_("Catalog No."), 'catalognumber'),
     Column(N_("Barcode"), 'barcode'),
     Column(N_("Media"), 'media'),
-    Column(N_("Size"), '~filesize'),
+    Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT),
     Column(N_("Genre"), 'genre'),
     Column(N_("Fingerprint status"), '~fingerprint'),
     Column(N_("Date"), 'date'),
@@ -1004,9 +1010,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             obj.item = self
         self.sortable = sortable
         self._sortkeys = {}
-        for column_key in ('~length', '~filesize', 'tracknumber', 'discnumber'):
-            column = self.panel.columns.pos(column_key)
-            self.setTextAlignment(column, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        for i, column in self.panel.columns.iterate():
+            if column.align == ColumnAlign.RIGHT:
+                self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.setSizeHint(self.panel.columns.pos('~fingerprint'), ICON_SIZE)
 
     def setText(self, column, text):
