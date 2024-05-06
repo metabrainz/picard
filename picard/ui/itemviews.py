@@ -165,12 +165,19 @@ class ColumnAlign(IntEnum):
     RIGHT = 1
 
 
+class ColumnSortType(IntEnum):
+    NONE = 0
+    NAT = 1
+    DEFAULT = 2
+
+
 class Column:
-    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT):
+    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.DEFAULT):
         self.title = title
         self.key = key
         self.size = size
         self.align = align
+        self.sort_type = sort_type
 
     def __repr__(self):
         def parms():
@@ -232,16 +239,16 @@ class Columns(MutableSequence):
 
 
 DEFAULT_COLUMNS = Columns([
-    Column(N_("Title"), 'title'),
+    Column(N_("Title"), 'title', sort_type=ColumnSortType.NAT),
     Column(N_("Length"), '~length', align=ColumnAlign.RIGHT),
     Column(N_("Artist"), 'artist'),
     Column(N_("Album Artist"), 'albumartist'),
     Column(N_("Composer"), 'composer'),
-    Column(N_("Album"), 'album'),
-    Column(N_("Disc Subtitle"), 'discsubtitle'),
-    Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT),
-    Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT),
-    Column(N_("Catalog No."), 'catalognumber'),
+    Column(N_("Album"), 'album', sort_type=ColumnSortType.NAT),
+    Column(N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT),
+    Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
+    Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
+    Column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT),
     Column(N_("Barcode"), 'barcode'),
     Column(N_("Media"), 'media'),
     Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT),
@@ -252,15 +259,6 @@ DEFAULT_COLUMNS = Columns([
     Column(N_("Release Date"), 'releasedate'),
     Column(N_("Cover"), 'covercount'),
 ])
-
-NAT_SORT_COLUMNS = [
-    'title',
-    'album',
-    'discsubtitle',
-    'tracknumber',
-    'discnumber',
-    'catalognumber',
-]
 
 
 class MainPanel(QtWidgets.QSplitter):
@@ -1031,6 +1029,8 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if sortkey is not None:
             return sortkey
 
+        this_column = self.panel.columns[column]
+
         if column == self.panel.columns.pos('~length'):
             sortkey = self.obj.metadata.length or 0
         elif column == self.panel.columns.pos('~filesize'):
@@ -1038,7 +1038,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                 sortkey = int(self.obj.metadata['~filesize'] or self.obj.orig_metadata['~filesize'])
             except ValueError:
                 sortkey = 0
-        elif column in set(self.panel.columns.pos(key) for key in NAT_SORT_COLUMNS):
+        elif this_column.sort_type == ColumnSortType.NAT:
             sortkey = natsort.natkey(self.text(column))
         else:
             sortkey = strxfrm(self.text(column))
