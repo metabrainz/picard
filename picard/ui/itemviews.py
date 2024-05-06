@@ -43,10 +43,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import (
-    defaultdict,
-    namedtuple,
-)
+from collections import defaultdict
+from collections.abc import MutableSequence
 from functools import partial
 from heapq import (
     heappop,
@@ -161,32 +159,95 @@ def get_match_color(similarity, basecolor):
         int(c2[2] + (c1[2] - c2[2]) * similarity))
 
 
-MainPanelColumn = namedtuple('MainPanelColumn', ('title', 'key'))
+class Column:
+    def __init__(self, title, key, size=None, align=None):
+        self.title = title
+        self.key = key
+        self.size = size
+        self.align = align
+
+    def __repr__(self):
+        def parms():
+            yield from (repr(getattr(self, a)) for a in ('title', 'key'))
+            yield from (a + '=' + repr(getattr(self, a)) for a in ('size', 'align'))
+
+        return 'Column(' + ', '.join(parms()) + ')'
+
+    def __str__(self):
+        return repr(self)
+
+
+class Columns(MutableSequence):
+    def __init__(self, iterable=None):
+        self._list = list()
+        self._index = dict()
+        self._index_dirty = True
+        if iterable is not None:
+            for e in iterable:
+                self.append(e)
+
+    def __len__(self):
+        return len(self._list)
+
+    def __delitem__(self, index):
+        self._index_dirty = True
+        self._list.__delitem__(index)
+
+    def insert(self, index, column):
+        if not isinstance(column, Column):
+            raise TypeError("Not an instance of Column")
+        self._list.insert(index, column)
+        self._index_dirty = True
+
+    def __setitem__(self, index, column):
+        if not isinstance(column, Column):
+            raise TypeError("Not an instance of Column")
+        self._list.__setitem__(index, column)
+        self._index_dirty = True
+
+    def __getitem__(self, index):
+        return self._list.__getitem__(index)
+
+    def pos(self, key):
+        if self._index_dirty:
+            self._index = {c.key: i for i, c in enumerate(self._list)}
+            self._index_dirty = False
+        return self._index[key]
+
+    def iterate(self):
+        for pos, column in enumerate(self._list):
+            yield pos, column
+
+    def __repr__(self):
+        return 'Columns(' + repr(self._list) + ')'
+
+    def __str__(self):
+        return repr(self)
 
 
 class MainPanel(QtWidgets.QSplitter):
 
-    columns = [
-        MainPanelColumn(N_("Title"), 'title'),
-        MainPanelColumn(N_("Length"), '~length'),
-        MainPanelColumn(N_("Artist"), 'artist'),
-        MainPanelColumn(N_("Album Artist"), 'albumartist'),
-        MainPanelColumn(N_("Composer"), 'composer'),
-        MainPanelColumn(N_("Album"), 'album'),
-        MainPanelColumn(N_("Disc Subtitle"), 'discsubtitle'),
-        MainPanelColumn(N_("Track No."), 'tracknumber'),
-        MainPanelColumn(N_("Disc No."), 'discnumber'),
-        MainPanelColumn(N_("Catalog No."), 'catalognumber'),
-        MainPanelColumn(N_("Barcode"), 'barcode'),
-        MainPanelColumn(N_("Media"), 'media'),
-        MainPanelColumn(N_("Size"), '~filesize'),
-        MainPanelColumn(N_("Genre"), 'genre'),
-        MainPanelColumn(N_("Fingerprint status"), '~fingerprint'),
-        MainPanelColumn(N_("Date"), 'date'),
-        MainPanelColumn(N_("Original Release Date"), 'originaldate'),
-        MainPanelColumn(N_("Release Date"), 'releasedate'),
-        MainPanelColumn(N_("Cover"), 'covercount'),
-    ]
+    columns = Columns([
+        Column(N_("Title"), 'title'),
+        Column(N_("Length"), '~length'),
+        Column(N_("Artist"), 'artist'),
+        Column(N_("Album Artist"), 'albumartist'),
+        Column(N_("Composer"), 'composer'),
+        Column(N_("Album"), 'album'),
+        Column(N_("Disc Subtitle"), 'discsubtitle'),
+        Column(N_("Track No."), 'tracknumber'),
+        Column(N_("Disc No."), 'discnumber'),
+        Column(N_("Catalog No."), 'catalognumber'),
+        Column(N_("Barcode"), 'barcode'),
+        Column(N_("Media"), 'media'),
+        Column(N_("Size"), '~filesize'),
+        Column(N_("Genre"), 'genre'),
+        Column(N_("Fingerprint status"), '~fingerprint'),
+        Column(N_("Date"), 'date'),
+        Column(N_("Original Release Date"), 'originaldate'),
+        Column(N_("Release Date"), 'releasedate'),
+        Column(N_("Cover"), 'covercount'),
+    ])
 
     NAT_SORT_COLUMNS = [
         'title',
@@ -196,18 +257,6 @@ class MainPanel(QtWidgets.QSplitter):
         'discnumber',
         'catalognumber',
     ]
-
-    @classmethod
-    def get_column_index(cls, key):
-        for i, column in cls.iterate_columns():
-            if column.key == key:
-                return i
-        raise ValueError('No such column key: %s' % key)
-
-    @classmethod
-    def iterate_columns(cls):
-        for i, c in enumerate(cls.columns):
-            yield i, c
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
@@ -384,7 +433,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             if self.sectionSize(column) == 0:
                 self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
-            if column == MainPanel.get_column_index('~fingerprint'):
+            if column == MainPanel.columns.pos('~fingerprint'):
                 self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Fixed)
                 self.resizeSection(column, COLUMN_ICON_SIZE)
             else:
@@ -393,14 +442,14 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             self._visible_columns.remove(column)
 
     def update_visible_columns(self, columns):
-        for i, column in MainPanel.iterate_columns():
+        for i, column in MainPanel.columns.iterate():
             self.show_column(i, i in columns)
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
 
-        for i, column in MainPanel.iterate_columns():
+        for i, column in MainPanel.columns.iterate():
             if i == 0:
                 continue
             action = QtGui.QAction(_(column.title), parent)
@@ -429,7 +478,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.parent().restore_default_columns()
 
     def paintSection(self, painter, rect, index):
-        if index == MainPanel.get_column_index('~fingerprint'):
+        if index == MainPanel.columns.pos('~fingerprint'):
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
@@ -438,12 +487,12 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if index == MainPanel.get_column_index('~fingerprint'):
+        if index == MainPanel.columns.pos('~fingerprint'):
             self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
         super().lock(is_locked)
-        column_index = MainPanel.get_column_index('~fingerprint')
+        column_index = MainPanel.columns.pos('~fingerprint')
         if not self.is_locked and self.count() > column_index:
             self.setSectionResizeMode(column_index, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
@@ -459,7 +508,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
         self.setHeaderLabels([_(c.title) if c.key != '~fingerprint' else ''
-                              for i, c in MainPanel.iterate_columns()])
+                              for c in MainPanel.columns])
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -901,7 +950,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(MainPanel.get_column_index('title'), "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(MainPanel.columns.pos('title'), "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
 
 
 class AlbumTreeView(BaseTreeView):
@@ -922,8 +971,8 @@ class AlbumTreeView(BaseTreeView):
             self.insertTopLevelItem(0, item)
         else:
             item = AlbumItem(album, True, self)
-        item.setIcon(MainPanel.get_column_index('title'), AlbumItem.icon_cd)
-        for i, column in MainPanel.iterate_columns():
+        item.setIcon(MainPanel.columns.pos('title'), AlbumItem.icon_cd)
+        for i, column in MainPanel.columns.iterate():
             font = item.font(i)
             font.setBold(True)
             item.setFont(i, font)
@@ -945,9 +994,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self.sortable = sortable
         self._sortkeys = {}
         for column_key in ('~length', '~filesize', 'tracknumber', 'discnumber'):
-            column = MainPanel.get_column_index(column_key)
+            column = MainPanel.columns.pos(column_key)
             self.setTextAlignment(column, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.setSizeHint(MainPanel.get_column_index('~fingerprint'), ICON_SIZE)
+        self.setSizeHint(MainPanel.columns.pos('~fingerprint'), ICON_SIZE)
 
     def setText(self, column, text):
         self._sortkeys[column] = None
@@ -965,14 +1014,14 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if sortkey is not None:
             return sortkey
 
-        if column == MainPanel.get_column_index('~length'):
+        if column == MainPanel.columns.pos('~length'):
             sortkey = self.obj.metadata.length or 0
-        elif column == MainPanel.get_column_index('~filesize'):
+        elif column == MainPanel.columns.pos('~filesize'):
             try:
                 sortkey = int(self.obj.metadata['~filesize'] or self.obj.orig_metadata['~filesize'])
             except ValueError:
                 sortkey = 0
-        elif column in set(MainPanel.get_column_index(key) for key in MainPanel.NAT_SORT_COLUMNS):
+        elif column in set(MainPanel.columns.pos(key) for key in MainPanel.NAT_SORT_COLUMNS):
             sortkey = natsort.natkey(self.text(column))
         else:
             sortkey = strxfrm(self.text(column))
@@ -980,7 +1029,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         return sortkey
 
     def update_colums_text(self, color=None, bgcolor=None):
-        for i, column in MainPanel.iterate_columns():
+        for i, column in MainPanel.columns.iterate():
             self.setText(i, self.obj.column(column.key))
             if color is not None:
                 self.setForeground(i, color)
@@ -992,7 +1041,7 @@ class ClusterItem(TreeItem):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.setIcon(MainPanel.get_column_index('title'), ClusterItem.icon_dir)
+        self.setIcon(MainPanel.columns.pos('title'), ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
         self.update_colums_text()
@@ -1066,22 +1115,22 @@ class AlbumItem(TreeItem):
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         if album.errors:
-            self.setIcon(MainPanel.get_column_index('title'), AlbumItem.icon_error)
-            self.setToolTip(MainPanel.get_column_index('title'), _("Processing error(s): See the Errors tab in the Album Info dialog"))
+            self.setIcon(MainPanel.columns.pos('title'), AlbumItem.icon_error)
+            self.setToolTip(MainPanel.columns.pos('title'), _("Processing error(s): See the Errors tab in the Album Info dialog"))
         elif album.is_complete():
             if album.is_modified():
-                self.setIcon(MainPanel.get_column_index('title'), AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(MainPanel.get_column_index('title'), _("Album modified and complete"))
+                self.setIcon(MainPanel.columns.pos('title'), AlbumItem.icon_cd_saved_modified)
+                self.setToolTip(MainPanel.columns.pos('title'), _("Album modified and complete"))
             else:
-                self.setIcon(MainPanel.get_column_index('title'), AlbumItem.icon_cd_saved)
-                self.setToolTip(MainPanel.get_column_index('title'), _("Album unchanged and complete"))
+                self.setIcon(MainPanel.columns.pos('title'), AlbumItem.icon_cd_saved)
+                self.setToolTip(MainPanel.columns.pos('title'), _("Album unchanged and complete"))
         else:
             if album.is_modified():
-                self.setIcon(MainPanel.get_column_index('title'), AlbumItem.icon_cd_modified)
-                self.setToolTip(MainPanel.get_column_index('title'), _("Album modified"))
+                self.setIcon(MainPanel.columns.pos('title'), AlbumItem.icon_cd_modified)
+                self.setToolTip(MainPanel.columns.pos('title'), _("Album modified"))
             else:
-                self.setIcon(MainPanel.get_column_index('title'), AlbumItem.icon_cd)
-                self.setToolTip(MainPanel.get_column_index('title'), _("Album unchanged"))
+                self.setIcon(MainPanel.columns.pos('title'), AlbumItem.icon_cd)
+                self.setToolTip(MainPanel.columns.pos('title'), _("Album unchanged"))
         self.update_colums_text()
         if selection_changed and update_selection:
             TreeItem.window.update_selection(new_selection=False)
@@ -1120,16 +1169,16 @@ class TrackItem(TreeItem):
             self.takeChildren()
             self.setExpanded(False)
             fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
-            self.setToolTip(MainPanel.get_column_index('~fingerprint'), fingerprint_tooltip)
-            self.setIcon(MainPanel.get_column_index('~fingerprint'), fingerprint_icon)
+            self.setToolTip(MainPanel.columns.pos('~fingerprint'), fingerprint_tooltip)
+            self.setIcon(MainPanel.columns.pos('~fingerprint'), fingerprint_icon)
         else:
             if num_linked_files == 0:
                 icon_tooltip = _("There are no files matched to this track")
             else:
                 icon_tooltip = ngettext('%i matched file', '%i matched files',
                     num_linked_files) % num_linked_files
-            self.setToolTip(MainPanel.get_column_index('~fingerprint'), "")
-            self.setIcon(MainPanel.get_column_index('~fingerprint'), QtGui.QIcon())
+            self.setToolTip(MainPanel.columns.pos('~fingerprint'), "")
+            self.setIcon(MainPanel.columns.pos('~fingerprint'), QtGui.QIcon())
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
@@ -1163,11 +1212,11 @@ class TrackItem(TreeItem):
                     self.addChildren(items)
             self.setExpanded(True)
         if track.errors:
-            self.setIcon(MainPanel.get_column_index('title'), TrackItem.icon_error)
-            self.setToolTip(MainPanel.get_column_index('title'), _("Processing error(s): See the Errors tab in the Track Info dialog"))
+            self.setIcon(MainPanel.columns.pos('title'), TrackItem.icon_error)
+            self.setToolTip(MainPanel.columns.pos('title'), _("Processing error(s): See the Errors tab in the Track Info dialog"))
         else:
-            self.setIcon(MainPanel.get_column_index('title'), icon)
-            self.setToolTip(MainPanel.get_column_index('title'), icon_tooltip)
+            self.setIcon(MainPanel.columns.pos('title'), icon)
+            self.setToolTip(MainPanel.columns.pos('title'), icon_tooltip)
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
@@ -1180,11 +1229,11 @@ class FileItem(TreeItem):
     def update(self, update_track=True, update_selection=True):
         file = self.obj
         icon, icon_tooltip = FileItem.decide_file_icon_info(file)
-        self.setIcon(MainPanel.get_column_index('title'), icon)
-        self.setToolTip(MainPanel.get_column_index('title'), icon_tooltip)
+        self.setIcon(MainPanel.columns.pos('title'), icon)
+        self.setToolTip(MainPanel.columns.pos('title'), icon_tooltip)
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
-        self.setToolTip(MainPanel.get_column_index('~fingerprint'), fingerprint_tooltip)
-        self.setIcon(MainPanel.get_column_index('~fingerprint'), fingerprint_icon)
+        self.setToolTip(MainPanel.columns.pos('~fingerprint'), fingerprint_tooltip)
+        self.setIcon(MainPanel.columns.pos('~fingerprint'), fingerprint_icon)
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         self.update_colums_text(color=color, bgcolor=bgcolor)
