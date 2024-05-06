@@ -199,6 +199,10 @@ class DefaultColumn(Column):
     pass
 
 
+class IconColumn(Column):
+    pass
+
+
 class Columns(MutableSequence):
     def __init__(self, iterable=None):
         self._list = list()
@@ -273,7 +277,7 @@ DEFAULT_COLUMNS = Columns([
     Column(N_("Media"), 'media'),
     Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_filesize),
     Column(N_("Genre"), 'genre'),
-    Column(N_("Fingerprint status"), '~fingerprint'),
+    IconColumn(N_("Fingerprint status"), '~fingerprint'),
     Column(N_("Date"), 'date'),
     Column(N_("Original Release Date"), 'originaldate'),
     Column(N_("Release Date"), 'releasedate'),
@@ -466,7 +470,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             if self.sectionSize(column) == 0:
                 self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
-            if column == self.panel.columns.pos('~fingerprint'):
+            if isinstance(self.panel.columns[column], IconColumn):
                 self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Fixed)
                 self.resizeSection(column, COLUMN_ICON_SIZE)
             else:
@@ -511,16 +515,16 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.parent().restore_default_columns()
 
     def paintSection(self, painter, rect, index):
-        if index == self.panel.columns.pos('~fingerprint'):
+        if isinstance(self.panel.columns[index], IconColumn):
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            paint_column_icon(painter, rect, FileItem.icon_fingerprint_gray)
+            paint_column_icon(painter, rect, FileItem.icon_fingerprint_gray)  # FIXME: make configurable
         else:
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if index == self.panel.columns.pos('~fingerprint'):
+        if isinstance(self.panel.columns[index], IconColumn):
             self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
@@ -556,7 +560,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def init_headers(self):
         self.setHeader(ConfigurableColumnsHeader(self))
-        self.setHeaderLabels([_(c.title) if c.key != '~fingerprint' else ''
+        self.setHeaderLabels([_(c.title) if not isinstance(c, IconColumn) else ''
                               for c in self.panel.columns])
         self.restore_state()
 
@@ -1026,9 +1030,11 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self.sortable = sortable
         self._sortkeys = {}
         for i, column in self.panel.columns.iterate():
+            if isinstance(column, IconColumn):
+                self.setSizeHint(i, ICON_SIZE)
+                continue
             if column.align == ColumnAlign.RIGHT:
                 self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.setSizeHint(self.panel.columns.pos('~fingerprint'), ICON_SIZE)
 
     def setText(self, column, text):
         self._sortkeys[column] = None
