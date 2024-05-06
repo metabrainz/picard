@@ -938,12 +938,8 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             obj.item = self
         self.sortable = sortable
         self._sortkeys = {}
-        for column in (
-            MainPanel.get_column_index('~length'),
-            MainPanel.get_column_index('~filesize'),
-            MainPanel.get_column_index('tracknumber'),
-            MainPanel.get_column_index('discnumber'),
-        ):
+        for column_key in ('~length', '~filesize', 'tracknumber', 'discnumber'):
+            column = MainPanel.get_column_index(column_key)
             self.setTextAlignment(column, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.setSizeHint(MainPanel.get_column_index('~fingerprint'), ICON_SIZE)
 
