@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-04-07 12:28+0000\n"
+"PO-Revision-Date: 2024-05-06 08:42+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:155
@@ -447,10 +447,8 @@ msgid "Tags to show at the top"
 msgstr "Oben anzuzeigende Tags"
 
 #: picard/options.py:258
-#, fuzzy
-#| msgid "Destination directory"
 msgid "Automatic backup destination directory"
-msgstr "Zielverzeichnis"
+msgstr "Zielverzeichnis für automatische Backups"
 
 #: picard/options.py:262
 msgid "Minimal similarity for cluster lookups"
@@ -545,8 +543,6 @@ msgid "Proxy server port"
 msgstr "Proxy-Server-Port"
 
 #: picard/options.py:291
-#, fuzzy
-#| msgid "type of proxy server"
 msgid "Type of proxy server"
 msgstr "Art des Proxyservers"
 
@@ -2966,10 +2962,8 @@ msgid "Show more details"
 msgstr "Mehr Details anzeigen"
 
 #: picard/ui/coverartbox.py:397
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox.py:434
 msgid "New Cover Art"
@@ -3364,12 +3358,11 @@ msgid "There are no files matched to this track"
 msgstr ""
 
 #: picard/ui/itemviews.py:1118
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "Nicht zugeordnete Dateien"
-msgstr[1] "Nicht zugeordnete Dateien"
+msgstr[0] "%i zugeordnete Datei"
+msgstr[1] "%i zugeordnete Dateien"
 
 #: picard/ui/itemviews.py:1156
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -3420,10 +3413,8 @@ msgid "Verbosity"
 msgstr "Ausführlichkeit"
 
 #: picard/ui/logview.py:199 picard/ui/logview.py:200
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "Einstellungen"
+msgstr "Debug-Einstellungen"
 
 #: picard/ui/logview.py:210
 msgid "String to highlight"
@@ -4449,32 +4440,24 @@ msgstr ""
 "Zeige die folgenden Tags vor allen anderen Tags in der Metadatenansicht an"
 
 #: picard/ui/ui_options_maintenance.py:143
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Configuration file:"
-msgstr "Konfigurationsdateien"
+msgstr "Konfigurationsdatei:"
 
 #: picard/ui/ui_options_maintenance.py:144
-#, fuzzy
-#| msgid "Open folder"
 msgid "Open folder…"
-msgstr "Ordner öffnen"
+msgstr "Ordner öffnen…"
 
 #: picard/ui/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:147
-#, fuzzy
-#| msgid "Load Backup"
 msgid "Load backup…"
-msgstr "Backup laden"
+msgstr "Backup laden…"
 
 #: picard/ui/ui_options_maintenance.py:148
-#, fuzzy
-#| msgid "Save Backup"
 msgid "Save backup…"
-msgstr "Backup speichern"
+msgstr "Backup speichern…"
 
 #: picard/ui/ui_options_maintenance.py:149
 msgid "Select all"
@@ -4559,10 +4542,8 @@ msgid "Password:"
 msgstr "Passwort:"
 
 #: picard/ui/ui_options_network.py:169
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "Netzwerk"
+msgstr "Netzwerkeinstellungen"
 
 #: picard/ui/ui_options_network.py:170
 msgid "Request timeout in seconds:"
@@ -5047,14 +5028,8 @@ msgid "Clos&e"
 msgstr "Schließ&en"
 
 #: picard/ui/util.py:139
-#, fuzzy
-#| msgid ""
-#| "You have changed the application theme. You have to restart Picard in "
-#| "order for the change to take effect."
 msgid "You have to restart Picard for the changes to take effect."
-msgstr ""
-"Das Theme der Anwendung wurde geändert. Damit diese Änderung wirksam wird, "
-"muss Picard neu gestartet werden."
+msgstr "Picard muss neu gestartet werden, um die Änderungen anzuwenden."
 
 #: picard/ui/util.py:142
 msgid "Changes only applied on restart"
@@ -5630,10 +5605,9 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/dialog.py:157
-#, fuzzy, python-format
-#| msgid "%s (Copy)"
+#, python-format
 msgid "%s (error)"
-msgstr "%s (Kopie)"
+msgstr "%s (Fehler)"
 
 #: picard/ui/options/dialog.py:183
 msgid "&Restore all Defaults"
@@ -5726,10 +5700,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Angemeldet als <b>%s</b>."
 
 #: picard/ui/options/general.py:174
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "CD-Abfrage-Fehler"
+msgstr "Fehler bei der Abmeldung"
 
 #: picard/ui/options/general.py:175
 #, python-format
@@ -5885,10 +5857,8 @@ msgstr ""
 "Picard zu verwenden."
 
 #: picard/ui/options/interface.py:193
-#, fuzzy
-#| msgid "User interface language"
 msgid "You have changed the interface language."
-msgstr "Sprache der Benutzeroberfläche"
+msgstr "Die Sprache der Benutzeroberfläche wurde geändert."
 
 #: picard/ui/options/interface.py:213
 msgid "Option Setting Warning"
@@ -5965,10 +5935,8 @@ msgid "Drag and Drop to re-order"
 msgstr "Per Drag & Drop umordnen"
 
 #: picard/ui/options/interface_toolbar.py:265
-#, fuzzy
-#| msgid "Select all"
 msgid "Select an action"
-msgstr "Alle auswählen"
+msgstr "Aktion auswählen"
 
 #: picard/ui/options/interface_top_tags.py:38
 msgid "Top Tags"
@@ -6320,8 +6288,6 @@ msgid "Settings to include in profile"
 msgstr "Einstellungen, die im Profile enthalten sind"
 
 #: picard/ui/options/profiles.py:214
-#, fuzzy
-#| msgid "Title"
 msgid "title"
 msgstr "Titel"
 
@@ -6330,28 +6296,20 @@ msgid "Unknown script"
 msgstr "Unbekannte Schrift"
 
 #: picard/ui/options/profiles.py:256
-#, fuzzy
-#| msgid "Rename script"
 msgid "No enabled scripts"
-msgstr "Skript umbenennen"
+msgstr "Keine aktivierten Skripte"
 
 #: picard/ui/options/profiles.py:257
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
-msgstr "Taggerskripte aktivieren"
+msgstr "Aktivierte Skripte:"
 
 #: picard/ui/options/profiles.py:262
-#, fuzzy
-#| msgid "Cover art providers"
 msgid "No enabled providers"
-msgstr "Cover-Art-Anbieter"
+msgstr "Keine aktivierten Anbieter"
 
 #: picard/ui/options/profiles.py:263
-#, fuzzy
-#| msgid "Enabled providers of %i listed:"
 msgid "Enabled providers:"
-msgstr "Aktivierte Anbieter von %i aufgelisteten:"
+msgstr "Aktivierte Anbieter:"
 
 #: picard/ui/options/profiles.py:280
 #, python-format
