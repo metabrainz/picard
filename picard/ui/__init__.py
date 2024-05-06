@@ -67,8 +67,6 @@ class PreserveGeometry:
     def __init__(self, *args, **kwargs):
         Option.add_if_missing('persist', self.opt_name(), QtCore.QByteArray())
         Option.add_if_missing('persist', self.splitters_name(), {})
-        if getattr(self, 'finished', None):
-            self.finished.connect(self.save_geometry)
 
     def opt_name(self):
         return 'geometry_' + self.__class__.__name__
@@ -186,6 +184,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         self.tagger = QtCore.QCoreApplication.instance()
         self.__shown = False
         self.ready_for_display.connect(self.restore_geometry)
+        self.finished.connect(self.save_geometry)
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Close):
