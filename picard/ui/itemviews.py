@@ -225,38 +225,39 @@ class Columns(MutableSequence):
         return repr(self)
 
 
+DEFAULT_COLUMNS = Columns([
+    Column(N_("Title"), 'title'),
+    Column(N_("Length"), '~length'),
+    Column(N_("Artist"), 'artist'),
+    Column(N_("Album Artist"), 'albumartist'),
+    Column(N_("Composer"), 'composer'),
+    Column(N_("Album"), 'album'),
+    Column(N_("Disc Subtitle"), 'discsubtitle'),
+    Column(N_("Track No."), 'tracknumber'),
+    Column(N_("Disc No."), 'discnumber'),
+    Column(N_("Catalog No."), 'catalognumber'),
+    Column(N_("Barcode"), 'barcode'),
+    Column(N_("Media"), 'media'),
+    Column(N_("Size"), '~filesize'),
+    Column(N_("Genre"), 'genre'),
+    Column(N_("Fingerprint status"), '~fingerprint'),
+    Column(N_("Date"), 'date'),
+    Column(N_("Original Release Date"), 'originaldate'),
+    Column(N_("Release Date"), 'releasedate'),
+    Column(N_("Cover"), 'covercount'),
+])
+
+NAT_SORT_COLUMNS = [
+    'title',
+    'album',
+    'discsubtitle',
+    'tracknumber',
+    'discnumber',
+    'catalognumber',
+]
+
+
 class MainPanel(QtWidgets.QSplitter):
-
-    columns = Columns([
-        Column(N_("Title"), 'title'),
-        Column(N_("Length"), '~length'),
-        Column(N_("Artist"), 'artist'),
-        Column(N_("Album Artist"), 'albumartist'),
-        Column(N_("Composer"), 'composer'),
-        Column(N_("Album"), 'album'),
-        Column(N_("Disc Subtitle"), 'discsubtitle'),
-        Column(N_("Track No."), 'tracknumber'),
-        Column(N_("Disc No."), 'discnumber'),
-        Column(N_("Catalog No."), 'catalognumber'),
-        Column(N_("Barcode"), 'barcode'),
-        Column(N_("Media"), 'media'),
-        Column(N_("Size"), '~filesize'),
-        Column(N_("Genre"), 'genre'),
-        Column(N_("Fingerprint status"), '~fingerprint'),
-        Column(N_("Date"), 'date'),
-        Column(N_("Original Release Date"), 'originaldate'),
-        Column(N_("Release Date"), 'releasedate'),
-        Column(N_("Cover"), 'covercount'),
-    ])
-
-    NAT_SORT_COLUMNS = [
-        'title',
-        'album',
-        'discsubtitle',
-        'tracknumber',
-        'discnumber',
-        'catalognumber',
-    ]
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
@@ -285,6 +286,7 @@ class MainPanel(QtWidgets.QSplitter):
         })
 
     def init_views(self):
+        self.columns = Columns(DEFAULT_COLUMNS)
         self._views = [FileTreeView(self.window, self), AlbumTreeView(self.window, self)]
         self._selected_view = None
         self._ignore_selection_changes = False
@@ -1030,7 +1032,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                 sortkey = int(self.obj.metadata['~filesize'] or self.obj.orig_metadata['~filesize'])
             except ValueError:
                 sortkey = 0
-        elif column in set(self.panel.columns.pos(key) for key in self.panel.NAT_SORT_COLUMNS):
+        elif column in set(self.panel.columns.pos(key) for key in NAT_SORT_COLUMNS):
             sortkey = natsort.natkey(self.text(column))
         else:
             sortkey = strxfrm(self.text(column))
