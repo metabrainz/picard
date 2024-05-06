@@ -275,6 +275,7 @@ class MainPanel(QtWidgets.QSplitter):
                 self._ignore_selection_changes = False
 
         for view in self._views:
+            view.init_headers()
             view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
         TreeItem.window = window
@@ -502,14 +503,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def __init__(self, window, parent=None):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
-        self.setHeader(ConfigurableColumnsHeader(self))
         self.window = window
         self.panel = parent
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
-        self.setHeaderLabels([_(c.title) if c.key != '~fingerprint' else ''
-                              for c in MainPanel.columns])
-        self.restore_state()
 
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
@@ -527,6 +524,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
         self.setUniformRowHeights(True)
+
+    def init_headers(self):
+        self.setHeader(ConfigurableColumnsHeader(self))
+        self.setHeaderLabels([_(c.title) if c.key != '~fingerprint' else ''
+                              for c in MainPanel.columns])
+        self.restore_state()
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
