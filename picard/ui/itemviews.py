@@ -43,7 +43,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 from functools import partial
 from heapq import (
     heappop,
@@ -158,31 +161,34 @@ def get_match_color(similarity, basecolor):
         int(c2[2] + (c1[2] - c2[2]) * similarity))
 
 
+MainPanelColumn = namedtuple('MainPanelColumn', ('title', 'key'))
+
+
 class MainPanel(QtWidgets.QSplitter):
 
     columns = [
-        (N_("Title"), 'title'),
-        (N_("Length"), '~length'),
-        (N_("Artist"), 'artist'),
-        (N_("Album Artist"), 'albumartist'),
-        (N_("Composer"), 'composer'),
-        (N_("Album"), 'album'),
-        (N_("Disc Subtitle"), 'discsubtitle'),
-        (N_("Track No."), 'tracknumber'),
-        (N_("Disc No."), 'discnumber'),
-        (N_("Catalog No."), 'catalognumber'),
-        (N_("Barcode"), 'barcode'),
-        (N_("Media"), 'media'),
-        (N_("Size"), '~filesize'),
-        (N_("Genre"), 'genre'),
-        (N_("Fingerprint status"), '~fingerprint'),
-        (N_("Date"), 'date'),
-        (N_("Original Release Date"), 'originaldate'),
-        (N_("Release Date"), 'releasedate'),
-        (N_("Cover"), 'covercount'),
+        MainPanelColumn(N_("Title"), 'title'),
+        MainPanelColumn(N_("Length"), '~length'),
+        MainPanelColumn(N_("Artist"), 'artist'),
+        MainPanelColumn(N_("Album Artist"), 'albumartist'),
+        MainPanelColumn(N_("Composer"), 'composer'),
+        MainPanelColumn(N_("Album"), 'album'),
+        MainPanelColumn(N_("Disc Subtitle"), 'discsubtitle'),
+        MainPanelColumn(N_("Track No."), 'tracknumber'),
+        MainPanelColumn(N_("Disc No."), 'discnumber'),
+        MainPanelColumn(N_("Catalog No."), 'catalognumber'),
+        MainPanelColumn(N_("Barcode"), 'barcode'),
+        MainPanelColumn(N_("Media"), 'media'),
+        MainPanelColumn(N_("Size"), '~filesize'),
+        MainPanelColumn(N_("Genre"), 'genre'),
+        MainPanelColumn(N_("Fingerprint status"), '~fingerprint'),
+        MainPanelColumn(N_("Date"), 'date'),
+        MainPanelColumn(N_("Original Release Date"), 'originaldate'),
+        MainPanelColumn(N_("Release Date"), 'releasedate'),
+        MainPanelColumn(N_("Cover"), 'covercount'),
     ]
 
-    _column_indexes = {column[1]: i for i, column in enumerate(columns)}
+    _column_indexes = {column.key: i for i, column in enumerate(columns)}
 
     TITLE_COLUMN = _column_indexes['title']
     TRACKNUMBER_COLUMN = _column_indexes['tracknumber']
@@ -394,7 +400,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         for i, column in enumerate(MainPanel.columns):
             if i == 0:
                 continue
-            action = QtGui.QAction(_(column[0]), parent)
+            action = QtGui.QAction(_(column.title), parent)
             action.setCheckable(True)
             action.setChecked(i in self._visible_columns)
             action.setEnabled(not self.is_locked)
@@ -449,8 +455,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.panel = parent
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
-        self.setHeaderLabels([_(h) if n != '~fingerprint' else ''
-                              for h, n in MainPanel.columns])
+        self.setHeaderLabels([_(c.title) if c.key != '~fingerprint' else ''
+                              for c in MainPanel.columns])
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -918,7 +924,7 @@ class AlbumTreeView(BaseTreeView):
             font = item.font(i)
             font.setBold(True)
             item.setFont(i, font)
-            item.setText(i, album.column(column[1]))
+            item.setText(i, album.column(column.key))
         self.add_cluster(album.unmatched_files, item)
 
     def remove_album(self, album):
@@ -983,7 +989,7 @@ class ClusterItem(TreeItem):
 
     def update(self, update_selection=True):
         for i, column in enumerate(MainPanel.columns):
-            self.setText(i, self.obj.column(column[1]))
+            self.setText(i, self.obj.column(column.key))
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
@@ -1071,7 +1077,7 @@ class AlbumItem(TreeItem):
                 self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
                 self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
-            self.setText(i, album.column(column[1]))
+            self.setText(i, album.column(column.key))
         if selection_changed and update_selection:
             TreeItem.window.update_selection(new_selection=False)
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
@@ -1158,7 +1164,7 @@ class TrackItem(TreeItem):
             self.setIcon(MainPanel.TITLE_COLUMN, icon)
             self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
         for i, column in enumerate(MainPanel.columns):
-            self.setText(i, track.column(column[1]))
+            self.setText(i, track.column(column.key))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
         if update_selection and self.isSelected():
@@ -1180,7 +1186,7 @@ class FileItem(TreeItem):
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         for i, column in enumerate(MainPanel.columns):
-            self.setText(i, file.column(column[1]))
+            self.setText(i, file.column(column.key))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
         if update_selection and self.isSelected():
