@@ -101,12 +101,6 @@ from picard.ui.util import menu_builder
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
 
 
-COLUMN_ICON_SIZE = 16
-COLUMN_ICON_BORDER = 2
-ICON_SIZE = QtCore.QSize(COLUMN_ICON_SIZE+COLUMN_ICON_BORDER,
-                         COLUMN_ICON_SIZE+COLUMN_ICON_BORDER)
-
-
 class BaseAction(QtGui.QAction):
     NAME = "Unknown"
     MENU = []
@@ -200,7 +194,25 @@ class DefaultColumn(Column):
 
 
 class IconColumn(Column):
-    pass
+    _icon = None
+    icon_func = None
+    icon_size = QtCore.QSize(0, 0)
+    icon_border = 0
+    icon_size_with_border = QtCore.QSize(0, 0)
+
+    @property
+    def icon(self):
+        # icon cannot be set before QApplication is created
+        # so create it during runtime and cache it
+        # Avoid error: QPixmap: Must construct a QGuiApplication before a QPixmap
+        if self._icon is None:
+            self._icon = self.icon_func()
+        return self._icon
+
+    def set_icon_size(self, width, height, border):
+        self.icon_size = QtCore.QSize(width, height)
+        self.icon_border = border
+        self.icon_size_with_border = QtCore.QSize(width + 2*border, height + 2*border)
 
 
 class Columns(MutableSequence):
@@ -262,6 +274,11 @@ def _sortkey_filesize(obj):
         return 0
 
 
+fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')
+fingerprint_column.icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
+fingerprint_column.set_icon_size(16, 16, 1)
+
+
 DEFAULT_COLUMNS = Columns([
     DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, size=250),
     DefaultColumn(N_("Length"), '~length', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_length, size=50),
@@ -277,7 +294,7 @@ DEFAULT_COLUMNS = Columns([
     Column(N_("Media"), 'media'),
     Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_filesize),
     Column(N_("Genre"), 'genre'),
-    IconColumn(N_("Fingerprint status"), '~fingerprint'),
+    fingerprint_column,
     Column(N_("Date"), 'date'),
     Column(N_("Original Release Date"), 'originaldate'),
     Column(N_("Release Date"), 'releasedate'),
@@ -431,14 +448,19 @@ class MainPanel(QtWidgets.QSplitter):
                 break
 
 
-def paint_column_icon(painter, rect, icon):
+def paint_column_icon(painter, rect, column):
+    icon = column.icon
     if not icon:
         return
-    size = COLUMN_ICON_SIZE
-    padding_h = COLUMN_ICON_BORDER
-    padding_v = (rect.height() - size) // 2
-    target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
-    painter.drawPixmap(target_rect, icon.pixmap(size, size))
+    h = column.icon_size.height()
+    w = column.icon_size.width()
+    border = column.icon_border
+    padding_v = (rect.height() - h) // 2
+    target_rect = QtCore.QRect(
+        rect.x() + border, rect.y() + padding_v,
+        w, h
+    )
+    painter.drawPixmap(target_rect, icon.pixmap(column.icon_size))
 
 
 class ConfigurableColumnsHeader(TristateSortHeaderView):
@@ -492,11 +514,12 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.parent().set_header_defaults()
 
     def paintSection(self, painter, rect, index):
-        if isinstance(self.panel.columns[index], IconColumn):
+        column = self.panel.columns[index]
+        if isinstance(column, IconColumn):
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            paint_column_icon(painter, rect, FileItem.icon_fingerprint_gray)  # FIXME: make configurable
+            paint_column_icon(painter, rect, column)
         else:
             super().paintSection(painter, rect, index)
 
@@ -562,11 +585,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for i, c in self.panel.columns.iterate():
             header.show_column(i, isinstance(c, DefaultColumn))
             if isinstance(c, IconColumn):
+                header.resizeSection(i, c.icon_size_with_border.width())
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
-                header.resizeSection(i, COLUMN_ICON_SIZE)
             else:
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
                 header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def contextMenuEvent(self, event):
@@ -1035,7 +1058,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self._sortkeys = {}
         for i, column in self.panel.columns.iterate():
             if isinstance(column, IconColumn):
-                self.setSizeHint(i, ICON_SIZE)
+                self.setSizeHint(i, column.icon_size_with_border)
                 continue
             if column.align == ColumnAlign.RIGHT:
                 self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
