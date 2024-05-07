@@ -328,7 +328,7 @@ class MainPanel(QtWidgets.QSplitter):
         for view in self._views:
             if self._selected_view is None:
                 self._selected_view = view
-            view.init_headers()
+            view.init_header()
             view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
     def set_processing(self, processing=True):
@@ -448,33 +448,14 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
         self._visible_columns = set([0])
 
-        # The following are settings applied to default headers
-        # of QTreeView and QTreeWidget.
-        self.setSectionsMovable(True)
-        self.setStretchLastSection(True)
-        self.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.setSectionsClickable(False)
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
-
-        # enable sorting, but don't actually use it by default
-        # XXX it would be nice to be able to go to the 'no sort' mode, but the
-        #     internal model that QTreeWidget uses doesn't support it
-        self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
-        self.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
     def show_column(self, column, show):
         if column == 0:  # The first column is fixed
             return
         self.parent().setColumnHidden(column, not show)
         if show:
-            if self.sectionSize(column) == 0:
-                self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
-            if isinstance(self.panel.columns[column], IconColumn):
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Fixed)
-                self.resizeSection(column, COLUMN_ICON_SIZE)
-            else:
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Interactive)
         elif column in self._visible_columns:
             self._visible_columns.remove(column)
 
@@ -508,7 +489,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         event.accept()
 
     def restore_defaults(self):
-        self.parent().restore_default_columns()
+        self.parent().set_header_defaults()
 
     def paintSection(self, painter, rect, index):
         if isinstance(self.panel.columns[index], IconColumn):
@@ -554,11 +535,39 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.doubleClicked.connect(self.activate_item)
         self.setUniformRowHeights(True)
 
-    def init_headers(self):
+    def init_header(self):
         self.setHeader(ConfigurableColumnsHeader(self))
         self.setHeaderLabels([_(c.title) if not isinstance(c, IconColumn) else ''
                               for c in self.panel.columns])
+        self.set_header_defaults()
         self.restore_state()
+
+    def set_header_defaults(self):
+        header = self.header()
+        log.debug("Set defaults for %r" % header)
+
+        # The following are settings applied to default headers
+        # of QTreeView and QTreeWidget.
+        header.setSectionsMovable(True)
+        header.setStretchLastSection(True)
+        header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        header.setSectionsClickable(False)
+
+        # enable sorting, but don't actually use it by default
+        # XXX it would be nice to be able to go to the 'no sort' mode, but the
+        #     internal model that QTreeWidget uses doesn't support it
+        header.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
+        header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
+
+        for i, c in self.panel.columns.iterate():
+            header.show_column(i, isinstance(c, DefaultColumn))
+            if isinstance(c, IconColumn):
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
+                header.resizeSection(i, COLUMN_ICON_SIZE)
+            else:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
+                header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
+        self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
@@ -777,34 +786,27 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @restore_method
     def restore_state(self):
         config = get_config()
-        self._restore_state(config.persist[self.header_state])
+        header_state = config.persist[self.header_state]
+        header = self.header()
+        if header_state and header.restoreState(header_state):
+            log.debug("Restore state of %r" % header)
+            for i in range(0, self.columnCount()):
+                header.show_column(i, not self.isColumnHidden(i))
+        else:
+            self.set_header_defaults()
         # be sure to lock after the state was restored
         self.header().lock(config.persist[self.header_locked])
 
     def save_state(self):
         config = get_config()
         header = self.header()
+        log.debug("Save state of %r" % header)
         if header.is_locked and header.prelock_state is not None:
             # if the header is locked, we don't save the current state but the prelock one
             config.persist[self.header_state] = header.prelock_state
         else:
             config.persist[self.header_state] = header.saveState()
         config.persist[self.header_locked] = header.is_locked
-
-    def restore_default_columns(self):
-        self._restore_state(None)
-
-    def _restore_state(self, header_state):
-        header = self.header()
-        if header_state:
-            header.restoreState(header_state)
-            for i in range(0, self.columnCount()):
-                header.show_column(i, not self.isColumnHidden(i))
-        else:
-            for i, c in self.panel.columns.iterate():
-                header.show_column(i, isinstance(c, DefaultColumn))
-                header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
-            self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def supportedDropActions(self):
         return QtCore.Qt.DropAction.CopyAction | QtCore.Qt.DropAction.MoveAction
