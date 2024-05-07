@@ -1285,9 +1285,10 @@ class TrackItem(TreeItem):
                     items = []
                     for i in range(newnum - 1, oldnum - 1, -1):
                         item = FileItem(track.files[i], False)
-                        item.update(update_track=False, update_selection=update_selection)
                         items.append(item)
                     self.addChildren(items)
+                    for item in items:
+                        item.update(update_track=False, update_selection=update_selection)
             self.setExpanded(True)
         if track.errors:
             self.setIcon(ITEM_ICON_COLUMN, TrackItem.icon_error)
