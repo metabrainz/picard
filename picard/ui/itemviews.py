@@ -1059,7 +1059,11 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
     @property
     def can_update(self):
         if not self.treeWidget():
-            log.warning("Called too soon: %r", self)
+            import traceback
+            log.warning(
+                "Called too soon: %r\n%s", self,
+                ''.join(traceback.format_stack(limit=10)[:-1])
+            )
             return False
         return True
 
