@@ -742,28 +742,35 @@ class File(QtCore.QObject, Item):
             log.debug("Updating file %r", self)
             self.update_item()
 
+    @property
     def can_save(self):
         """Return if this object can be saved."""
         return True
 
+    @property
     def can_remove(self):
         """Return if this object can be removed."""
         return True
 
+    @property
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
         return True
 
+    @property
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
         return True
 
+    @property
     def can_autotag(self):
         return True
 
+    @property
     def can_refresh(self):
         return False
 
+    @property
     def can_view_info(self):
         return True
 

@@ -424,7 +424,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         # We want to show the 2 coverarts only if they are different
         # and orig_cover_art data is set and not the default cd shadow
         if self.orig_cover_art.data is None or self.cover_art == self.orig_cover_art:
-            self.show_details_button.setVisible(bool(self.item and self.item.can_view_info()))
+            self.show_details_button.setVisible(bool(self.item and self.item.can_view_info))
             self.orig_cover_art.setVisible(False)
             self.cover_art_label.setText('')
             self.orig_cover_art_label.setText('')

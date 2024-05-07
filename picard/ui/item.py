@@ -32,33 +32,41 @@ from picard.util.imagelist import update_metadata_images
 
 class Item(object):
 
+    @property
     def can_save(self):
         """Return if this object can be saved."""
         return False
 
+    @property
     def can_remove(self):
         """Return if this object can be removed."""
         return False
 
+    @property
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
         return False
 
+    @property
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
         return False
 
+    @property
     def can_autotag(self):
         """Return if this object can be autotagged."""
         return False
 
+    @property
     def can_refresh(self):
         """Return if this object can be refreshed."""
         return False
 
+    @property
     def can_view_info(self):
         return False
 
+    @property
     def can_submit(self):
         """Return True if this object can be submitted to MusicBrainz.org."""
         return False
@@ -66,11 +74,13 @@ class Item(object):
     @property
     def can_show_coverart(self):
         """Return if this object supports cover art."""
-        return self.can_edit_tags()
+        return self.can_edit_tags
 
+    @property
     def can_browser_lookup(self):
         return True
 
+    @property
     def is_album_like(self):
         return False
 

@@ -56,5 +56,6 @@ class MIDIFile(File):
     def supports_tag(cls, name):
         return False
 
+    @property
     def can_analyze(self):
         return False
