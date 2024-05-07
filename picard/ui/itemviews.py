@@ -293,7 +293,7 @@ fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gray
 fingerprint_column.set_header_icon_size(16, 16, 1)
 
 
-DEFAULT_COLUMNS = Columns([
+DEFAULT_COLUMNS = (
     DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, size=250),
     DefaultColumn(N_("Length"), '~length', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_length, size=50),
     DefaultColumn(N_("Artist"), 'artist', size=200),
@@ -313,7 +313,7 @@ DEFAULT_COLUMNS = Columns([
     Column(N_("Original Release Date"), 'originaldate'),
     Column(N_("Release Date"), 'releasedate'),
     Column(N_("Cover"), 'covercount'),
-])
+)
 
 
 class MainPanel(QtWidgets.QSplitter):
@@ -342,12 +342,8 @@ class MainPanel(QtWidgets.QSplitter):
         })
 
     def init_views(self):
-        filetreeview_columns = Columns(DEFAULT_COLUMNS)
-        albumtreeview_columns = Columns(DEFAULT_COLUMNS)
-        self._views = [
-            FileTreeView(filetreeview_columns, self),
-            AlbumTreeView(albumtreeview_columns, self),
-        ]
+        columns = Columns(DEFAULT_COLUMNS)
+        self._views = [view(columns, self) for view in (FileTreeView, AlbumTreeView)]
         self._selected_view = None
         self._ignore_selection_changes = False
 
