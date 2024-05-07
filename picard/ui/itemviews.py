@@ -214,6 +214,20 @@ class IconColumn(Column):
         self.icon_border = border
         self.icon_size_with_border = QtCore.QSize(width + 2*border, height + 2*border)
 
+    def paint_icon(self, painter, rect):
+        icon = self.icon
+        if not icon:
+            return
+        h = self.icon_size.height()
+        w = self.icon_size.width()
+        border = self.icon_border
+        padding_v = (rect.height() - h) // 2
+        target_rect = QtCore.QRect(
+            rect.x() + border, rect.y() + padding_v,
+            w, h
+        )
+        painter.drawPixmap(target_rect, icon.pixmap(self.icon_size))
+
 
 class Columns(MutableSequence):
     def __init__(self, iterable=None):
@@ -449,21 +463,6 @@ class MainPanel(QtWidgets.QSplitter):
                 break
 
 
-def paint_column_icon(painter, rect, column):
-    icon = column.icon
-    if not icon:
-        return
-    h = column.icon_size.height()
-    w = column.icon_size.width()
-    border = column.icon_border
-    padding_v = (rect.height() - h) // 2
-    target_rect = QtCore.QRect(
-        rect.x() + border, rect.y() + padding_v,
-        w, h
-    )
-    painter.drawPixmap(target_rect, icon.pixmap(column.icon_size))
-
-
 class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent):
@@ -520,7 +519,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            paint_column_icon(painter, rect, column)
+            column.paint_icon(painter, rect)
         else:
             super().paintSection(painter, rect, index)
 
