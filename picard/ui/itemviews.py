@@ -194,39 +194,39 @@ class DefaultColumn(Column):
 
 
 class IconColumn(Column):
-    _icon = None
-    icon_func = None
-    icon_size = QtCore.QSize(0, 0)
-    icon_border = 0
-    icon_size_with_border = QtCore.QSize(0, 0)
+    _header_icon = None
+    header_icon_func = None
+    header_icon_size = QtCore.QSize(0, 0)
+    header_icon_border = 0
+    header_icon_size_with_border = QtCore.QSize(0, 0)
 
     @property
-    def icon(self):
+    def header_icon(self):
         # icon cannot be set before QApplication is created
         # so create it during runtime and cache it
         # Avoid error: QPixmap: Must construct a QGuiApplication before a QPixmap
-        if self._icon is None:
-            self._icon = self.icon_func()
-        return self._icon
+        if self._header_icon is None:
+            self._header_icon = self.header_icon_func()
+        return self._header_icon
 
-    def set_icon_size(self, width, height, border):
-        self.icon_size = QtCore.QSize(width, height)
-        self.icon_border = border
-        self.icon_size_with_border = QtCore.QSize(width + 2*border, height + 2*border)
+    def set_header_icon_size(self, width, height, border):
+        self.header_icon_size = QtCore.QSize(width, height)
+        self.header_icon_border = border
+        self.header_icon_size_with_border = QtCore.QSize(width + 2*border, height + 2*border)
 
     def paint_icon(self, painter, rect):
-        icon = self.icon
+        icon = self.header_icon
         if not icon:
             return
-        h = self.icon_size.height()
-        w = self.icon_size.width()
-        border = self.icon_border
+        h = self.header_icon_size.height()
+        w = self.header_icon_size.width()
+        border = self.header_icon_border
         padding_v = (rect.height() - h) // 2
         target_rect = QtCore.QRect(
             rect.x() + border, rect.y() + padding_v,
             w, h
         )
-        painter.drawPixmap(target_rect, icon.pixmap(self.icon_size))
+        painter.drawPixmap(target_rect, icon.pixmap(self.header_icon_size))
 
 
 class Columns(MutableSequence):
@@ -289,8 +289,8 @@ def _sortkey_filesize(obj):
 
 
 fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')
-fingerprint_column.icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
-fingerprint_column.set_icon_size(16, 16, 1)
+fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
+fingerprint_column.set_header_icon_size(16, 16, 1)
 
 
 DEFAULT_COLUMNS = Columns([
@@ -584,7 +584,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for i, c in self.columns.iterate():
             header.show_column(i, isinstance(c, DefaultColumn))
             if isinstance(c, IconColumn):
-                header.resizeSection(i, c.icon_size_with_border.width())
+                header.resizeSection(i, c.header_icon_size_with_border.width())
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
             else:
                 header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
@@ -1098,7 +1098,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             if bgcolor is not None:
                 self.setBackground(i, bgcolor)
             if isinstance(column, IconColumn):
-                self.setSizeHint(i, column.icon_size_with_border)
+                self.setSizeHint(i, column.header_icon_size_with_border)
             else:
                 if column.align == ColumnAlign.RIGHT:
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
