@@ -61,7 +61,6 @@ from picard.const.defaults import DEFAULT_CACHE_SIZE_IN_BYTES
 from picard.debug_opts import DebugOpt
 from picard.oauth import OAuthManager
 from picard.util import (
-    build_qurl,
     bytes2human,
     encoded_queryargs,
     parse_json,
@@ -579,83 +578,6 @@ class WebService(QtCore.QObject):
         finally:
             reply.close()
             reply.deleteLater()
-
-    def get(self, host, port, path, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
-            priority=False, important=False, mblogin=False, cacheloadcontrol=None, refresh=False,
-            queryargs=None):
-        log.warning("This method is deprecated, use WebService.get_url() instead")
-        request = WSRequest(
-            method='GET',
-            url=build_qurl(host, port, path=path, queryargs=queryargs),
-            handler=handler,
-            parse_response_type=parse_response_type,
-            priority=priority,
-            important=important,
-            mblogin=mblogin,
-            cacheloadcontrol=cacheloadcontrol,
-            refresh=refresh,
-        )
-        return self.add_request(request)
-
-    def post(self, host, port, path, data, handler, parse_response_type=DEFAULT_RESPONSE_PARSER_TYPE,
-             priority=False, important=False, mblogin=True, queryargs=None, request_mimetype=None):
-        log.warning("This method is deprecated, use WebService.post_url() instead")
-        request = WSRequest(
-            method='POST',
-            url=build_qurl(host, port, path=path, queryargs=queryargs),
-            handler=handler,
-            parse_response_type=parse_response_type,
-            priority=priority,
-            important=important,
-            mblogin=mblogin,
-            data=data,
-            request_mimetype=request_mimetype,
-        )
-        log.debug("POST-DATA %r", data)
-        return self.add_request(request)
-
-    def put(self, host, port, path, data, handler, priority=True, important=False, mblogin=True,
-            queryargs=None, request_mimetype=None):
-        log.warning("This method is deprecated, use WebService.put_url() instead")
-        request = WSRequest(
-            method='PUT',
-            url=build_qurl(host, port, path=path, queryargs=queryargs),
-            handler=handler,
-            priority=priority,
-            important=important,
-            mblogin=mblogin,
-            data=data,
-            request_mimetype=request_mimetype,
-        )
-        return self.add_request(request)
-
-    def delete(self, host, port, path, handler, priority=True, important=False, mblogin=True,
-               queryargs=None):
-        log.warning("This method is deprecated, use WebService.delete_url() instead")
-        request = WSRequest(
-            method='DELETE',
-            url=build_qurl(host, port, path=path, queryargs=queryargs),
-            handler=handler,
-            priority=priority,
-            important=important,
-            mblogin=mblogin,
-        )
-        return self.add_request(request)
-
-    def download(self, host, port, path, handler, priority=False,
-                 important=False, cacheloadcontrol=None, refresh=False,
-                 queryargs=None):
-        log.warning("This method is deprecated, use WebService.download_url() instead")
-        request = WSRequest(
-            method='GET',
-            url=build_qurl(host, port, path=path, queryargs=queryargs),
-            handler=handler,
-            priority=priority,
-            important=important,
-            cacheloadcontrol=cacheloadcontrol,
-            refresh=refresh,
-        )
-        return self.add_request(request)
 
     def get_url(self, **kwargs):
         kwargs['method'] = 'GET'

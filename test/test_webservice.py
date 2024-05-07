@@ -82,32 +82,6 @@ class WebServiceTest(PicardTestCase):
         self.ws = WebService()
 
     @patch.object(WebService, 'add_task')
-    def test_webservice_method_calls(self, mock_add_task):
-        host = "abc.xyz"
-        port = 80
-        path = ""
-        handler = dummy_handler
-        data = None
-
-        def get_wsreq(mock_add_task):
-            return mock_add_task.call_args[0][1]
-
-        self.ws.get(host, port, path, handler)
-        self.assertEqual(1, mock_add_task.call_count)
-        self.assertEqual(host, get_wsreq(mock_add_task).host)
-        self.assertEqual(port, get_wsreq(mock_add_task).port)
-        self.assertIn("GET", get_wsreq(mock_add_task).method)
-        self.ws.post(host, port, path, data, handler)
-        self.assertIn("POST", get_wsreq(mock_add_task).method)
-        self.ws.put(host, port, path, data, handler)
-        self.assertIn("PUT", get_wsreq(mock_add_task).method)
-        self.ws.delete(host, port, path, handler)
-        self.assertIn("DELETE", get_wsreq(mock_add_task).method)
-        self.ws.download(host, port, path, handler)
-        self.assertIn("GET", get_wsreq(mock_add_task).method)
-        self.assertEqual(5, mock_add_task.call_count)
-
-    @patch.object(WebService, 'add_task')
     def test_webservice_url_method_calls(self, mock_add_task):
         url = "http://abc.xyz"
         handler = dummy_handler
