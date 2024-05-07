@@ -304,14 +304,12 @@ DEFAULT_COLUMNS = Columns([
 
 class MainPanel(QtWidgets.QSplitter):
 
-    def __init__(self, window, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.setChildrenCollapsible(False)
-        self.window = window
         self.create_icons()
 
-        TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TreeItem.text_color_secondary = self.palette() \
@@ -333,8 +331,8 @@ class MainPanel(QtWidgets.QSplitter):
         filetreeview_columns = Columns(DEFAULT_COLUMNS)
         albumtreeview_columns = Columns(DEFAULT_COLUMNS)
         self._views = [
-            FileTreeView(filetreeview_columns, self.window, self),
-            AlbumTreeView(albumtreeview_columns, self.window, self),
+            FileTreeView(filetreeview_columns, self),
+            AlbumTreeView(albumtreeview_columns, self),
         ]
         self._selected_view = None
         self._ignore_selection_changes = False
@@ -420,7 +418,7 @@ class MainPanel(QtWidgets.QSplitter):
                 view.clearSelection()
             else:
                 self._selected_view = view
-                self.window.update_selection([item.obj for item in view.selectedItems()])
+                self.window().update_selection([item.obj for item in view.selectedItems()])
 
     def update_current_view(self):
         self._update_selection(self._selected_view)
@@ -536,10 +534,9 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
 class BaseTreeView(QtWidgets.QTreeWidget):
 
-    def __init__(self, columns, window, parent=None):
+    def __init__(self, columns, parent=None):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
-        self.window = window
         self.columns = columns
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
@@ -602,12 +599,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config = get_config()
         obj = item.obj
         plugin_actions = None
-        can_view_info = self.window.actions[MainAction.VIEW_INFO].isEnabled()
+        can_view_info = self.window().actions[MainAction.VIEW_INFO].isEnabled()
         menu = QtWidgets.QMenu(self)
         menu.setSeparatorsCollapsible(True)
 
         def add_actions(*args):
-            menu_builder(menu, self.window.actions, *args)
+            menu_builder(menu, self.window().actions, *args)
 
         if isinstance(obj, Track):
             if can_view_info:
@@ -686,7 +683,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             loading = releases_menu.addAction(_("Loading…"))
             loading.setDisabled(True)
             action_more = releases_menu.addAction(_("Show &more details…"))
-            action_more.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
+            action_more.triggered.connect(self.window().actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
             if len(self.selectedItems()) == 1 and obj.release_group:
                 def _add_other_versions():
@@ -752,7 +749,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 releases_menu.setEnabled(False)
 
         if config.setting['enable_ratings'] and \
-           len(self.window.selected_objects) == 1 and isinstance(obj, Track):
+           len(self.window().selected_objects) == 1 and isinstance(obj, Track):
             action = QtWidgets.QWidgetAction(menu)
             action.setDefaultWidget(RatingWidget(menu, obj))
             add_actions(
@@ -762,7 +759,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         # Using type here is intentional. isinstance will return true for the
         # NatAlbum instance, which can't be part of a collection.
-        selected_albums = [a for a in self.window.selected_objects if type(a) == Album]  # pylint: disable=C0123 # noqa: E721
+        selected_albums = [a for a in self.window().selected_objects if type(a) == Album]  # pylint: disable=C0123 # noqa: E721
         if selected_albums:
             add_actions(
                 '-',
@@ -968,7 +965,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # Double-clicking albums or clusters should expand them. The album info can be
         # viewed by using the toolbar button.
         if not isinstance(obj, (Album, Cluster)) and obj.can_view_info:
-            self.window.view_info()
+            self.window().view_info()
 
     def add_cluster(self, cluster, parent_item=None):
         if parent_item is None:
@@ -993,8 +990,8 @@ class FileTreeView(BaseTreeView):
     header_state = 'file_view_header_state'
     header_locked = 'file_view_header_locked'
 
-    def __init__(self, columns, window, parent=None):
-        super().__init__(columns, window, parent)
+    def __init__(self, columns, parent=None):
+        super().__init__(columns, parent)
         self.setAccessibleName(_("file view"))
         self.setAccessibleDescription(_("Contains unmatched files and clusters"))
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
@@ -1024,8 +1021,8 @@ class AlbumTreeView(BaseTreeView):
     header_state = 'album_view_header_state'
     header_locked = 'album_view_header_locked'
 
-    def __init__(self, columns, window, parent=None):
-        super().__init__(columns, window, parent)
+    def __init__(self, columns, parent=None):
+        super().__init__(columns, parent)
         self.setAccessibleName(_("album view"))
         self.setAccessibleDescription(_("Contains albums and matched files"))
         self.tagger.album_added.connect(self.add_album)
@@ -1123,7 +1120,7 @@ class ClusterItem(TreeItem):
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
         if update_selection and self.isSelected():
-            TreeItem.window.update_selection(new_selection=False)
+            self.treeWidget().window().update_selection(new_selection=False)
 
     def add_file(self, file):
         self.add_files([file])
@@ -1210,7 +1207,7 @@ class AlbumItem(TreeItem):
                 self.setToolTip(columns.pos('title'), _("Album unchanged"))
         self.update_colums_text()
         if selection_changed and update_selection:
-            TreeItem.window.update_selection(new_selection=False)
+            self.treeWidget().window().update_selection(new_selection=False)
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
         # is briefly missing on Windows
         self.emitDataChanged()
@@ -1299,7 +1296,7 @@ class TrackItem(TreeItem):
             self.setToolTip(columns.pos('title'), icon_tooltip)
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
-            TreeItem.window.update_selection(new_selection=False)
+            self.treeWidget().window().update_selection(new_selection=False)
         if update_album:
             self.parent().update(update_tracks=False, update_selection=update_selection)
 
@@ -1321,7 +1318,7 @@ class FileItem(TreeItem):
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
-            TreeItem.window.update_selection(new_selection=False)
+            self.treeWidget().window().update_selection(new_selection=False)
         parent = self.parent()
         if isinstance(parent, TrackItem) and update_track:
             parent.update(update_files=False, update_selection=update_selection)

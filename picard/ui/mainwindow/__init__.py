@@ -223,7 +223,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         main_layout.setChildrenCollapsible(False)
         main_layout.setContentsMargins(0, 0, 0, 0)
 
-        self.panel = MainPanel(self, main_layout)
+        self.panel = MainPanel(main_layout)
         self.panel.setObjectName('main_panel_splitter')
         self.panel.init_views()
         self.file_browser = FileBrowser(self.panel)
