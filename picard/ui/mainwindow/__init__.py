@@ -1129,8 +1129,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         can_autotag = False
         can_submit = False
         single = self.selected_objects[0] if len(self.selected_objects) == 1 else None
-        can_view_info = bool(single and single.can_view_info())
-        can_browser_lookup = bool(single and single.can_browser_lookup())
+        can_view_info = bool(single and single.can_view_info)
+        can_browser_lookup = bool(single and single.can_browser_lookup)
         is_file = bool(single and isinstance(single, (File, Track)))
         is_album = bool(single and isinstance(single, Album))
         is_cluster = bool(single and isinstance(single, Cluster) and not single.special)
@@ -1149,12 +1149,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     continue
                 # using x = x or obj.x() form prevents calling function
                 # if x is already True
-                can_analyze = can_analyze or obj.can_analyze()
-                can_autotag = can_autotag or obj.can_autotag()
-                can_refresh = can_refresh or obj.can_refresh()
-                can_remove = can_remove or obj.can_remove()
-                can_save = can_save or obj.can_save()
-                can_submit = can_submit or obj.can_submit()
+                can_analyze = can_analyze or obj.can_analyze
+                can_autotag = can_autotag or obj.can_autotag
+                can_refresh = can_refresh or obj.can_refresh
+                can_remove = can_remove or obj.can_remove
+                can_save = can_save or obj.can_save
+                can_submit = can_submit or obj.can_submit
                 # Skip further loops if all values now True.
                 if (
                     can_analyze

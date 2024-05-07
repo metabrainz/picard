@@ -739,27 +739,35 @@ class Album(DataObject, Item):
                 for file in list(files):
                     file.move(self.unmatched_files)
 
+    @property
     def can_save(self):
         return self._files_count > 0
 
+    @property
     def can_remove(self):
         return True
 
+    @property
     def can_edit_tags(self):
         return True
 
+    @property
     def can_analyze(self):
         return False
 
+    @property
     def can_autotag(self):
         return False
 
+    @property
     def can_refresh(self):
         return True
 
+    @property
     def can_view_info(self):
         return self.loaded or bool(self.errors)
 
+    @property
     def is_album_like(self):
         return True
 
@@ -888,12 +896,15 @@ class NatAlbum(Album):
     def _finalize_loading(self, error):
         self.update()
 
+    @property
     def can_refresh(self):
         return False
 
+    @property
     def can_browser_lookup(self):
         return False
 
+    @property
     def can_view_info(self):
         return False
 

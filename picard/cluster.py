@@ -191,37 +191,47 @@ class Cluster(FileList):
     def get_num_files(self):
         return len(self.files)
 
+    @property
     def can_save(self):
         """Return if this object can be saved."""
         return bool(self.files)
 
+    @property
     def can_remove(self):
         """Return if this object can be removed."""
         return not self.special
 
+    @property
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
         return True
 
+    @property
     def can_analyze(self):
         """Return if this object can be fingerprinted."""
-        return any(_file.can_analyze() for _file in self.files)
+        return any(_file.can_analyze for _file in self.files)
 
+    @property
     def can_autotag(self):
         return True
 
+    @property
     def can_refresh(self):
         return False
 
+    @property
     def can_browser_lookup(self):
         return not self.special
 
+    @property
     def can_view_info(self):
         return bool(self.files)
 
+    @property
     def can_submit(self):
         return not self.special and bool(self.files)
 
+    @property
     def is_album_like(self):
         return True
 
@@ -347,15 +357,19 @@ class UnclusteredFiles(Cluster):
     def lookup_metadata(self):
         self.tagger.autotag(self.files)
 
+    @property
     def can_edit_tags(self):
         return False
 
+    @property
     def can_autotag(self):
         return bool(self.files)
 
+    @property
     def can_view_info(self):
         return False
 
+    @property
     def can_remove(self):
         return bool(self.files)
 
@@ -383,18 +397,23 @@ class ClusterList(list, Item):
         for cluster in self:
             yield from cluster.iterfiles(save)
 
+    @property
     def can_save(self):
         return len(self) > 0
 
+    @property
     def can_analyze(self):
-        return any(cluster.can_analyze() for cluster in self)
+        return any(cluster.can_analyze for cluster in self)
 
+    @property
     def can_autotag(self):
         return len(self) > 0
 
+    @property
     def can_browser_lookup(self):
         return False
 
+    @property
     def lookup_metadata(self):
         for cluster in self:
             cluster.lookup_metadata()

@@ -848,7 +848,7 @@ class Tagger(QtWidgets.QApplication):
             unmatched_files.append(file)
 
         # fallback on analyze if nothing else worked
-        if not file_moved and config.setting['analyze_new_files'] and file.can_analyze():
+        if not file_moved and config.setting['analyze_new_files'] and file.can_analyze:
             log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
@@ -1030,11 +1030,11 @@ class Tagger(QtWidgets.QApplication):
                 lookup.album_lookup(itemid)
         else:
             lookup.tag_lookup(
-                metadata['albumartist'] if item.is_album_like() else metadata['artist'],
+                metadata['albumartist'] if item.is_album_like else metadata['artist'],
                 metadata['album'],
                 metadata['title'],
                 metadata['tracknumber'],
-                '' if item.is_album_like() else str(metadata.length),
+                '' if item.is_album_like else str(metadata.length),
                 item.filename if isinstance(item, File) else '')
 
     def get_files_from_objects(self, objects, save=False):
@@ -1249,7 +1249,7 @@ class Tagger(QtWidgets.QApplication):
         if not self.use_acoustid:
             return
         for file in iter_files_from_objects(objs):
-            if file.can_analyze():
+            if file.can_analyze:
                 file.set_pending()
                 self._acoustid.analyze(file, partial(file._lookup_finished, File.LOOKUP_ACOUSTID))
 
@@ -1271,7 +1271,7 @@ class Tagger(QtWidgets.QApplication):
 
     def autotag(self, objects):
         for obj in objects:
-            if obj.can_autotag():
+            if obj.can_autotag:
                 obj.lookup_metadata()
 
     # =======================================================================
@@ -1334,7 +1334,7 @@ class Tagger(QtWidgets.QApplication):
 
     def refresh(self, objs):
         for obj in objs:
-            if obj.can_refresh():
+            if obj.can_refresh:
                 obj.load(priority=True, refresh=True)
 
     def bring_tagger_front(self):

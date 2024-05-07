@@ -225,18 +225,22 @@ class Track(DataObject, FileListItem):
     def is_linked(self):
         return self.num_linked_files > 0
 
+    @property
     def can_save(self):
         """Return if this object can be saved."""
-        return any(file.can_save() for file in self.files)
+        return any(file.can_save for file in self.files)
 
+    @property
     def can_remove(self):
         """Return if this object can be removed."""
-        return any(file.can_remove() for file in self.files)
+        return any(file.can_remove for file in self.files)
 
+    @property
     def can_edit_tags(self):
         """Return if this object supports tag editing."""
         return True
 
+    @property
     def can_view_info(self):
         return self.num_linked_files == 1 or bool(self.metadata.images)
 
@@ -376,6 +380,7 @@ class NonAlbumTrack(Track):
         self.loaded = False
         self.status = None
 
+    @property
     def can_refresh(self):
         return True
 
@@ -423,6 +428,7 @@ class NonAlbumTrack(Track):
             refresh=refresh
         )
 
+    @property
     def can_remove(self):
         return True
 

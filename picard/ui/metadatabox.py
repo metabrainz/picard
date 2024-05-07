@@ -515,7 +515,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             elif isinstance(obj, Track):
                 tracks.add(obj)
                 files.update(obj.files)
-            elif isinstance(obj, Cluster) and obj.can_edit_tags():
+            elif isinstance(obj, Cluster) and obj.can_edit_tags:
                 objects.add(obj)
                 files.update(obj.files)
             elif isinstance(obj, Album):
