@@ -484,9 +484,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
-        columns = parent.columns
 
-        for i, column in columns.iterate():
+        for i, column in parent.columns.iterate():
             if i == ITEM_ICON_COLUMN:
                 continue
             action = QtGui.QAction(_(column.title), parent)
@@ -1092,8 +1091,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         return sortkey
 
     def update_colums_text(self, color=None, bgcolor=None):
-        columns = self.treeWidget().columns
-        for i, column in columns.iterate():
+        for i, column in self.treeWidget().columns.iterate():
             if color is not None:
                 self.setForeground(i, color)
             if bgcolor is not None:
