@@ -272,7 +272,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if self.metadata_box.hasFocus():
                 self.metadata_box.remove_selected_tags()
             else:
-                self.remove()
+                self.remove_selected_objects()
         elif event.matches(QtGui.QKeySequence.StandardKey.Find):
             self.search_edit.setFocus(QtCore.Qt.FocusReason.ShortcutFocusReason)
         else:
