@@ -151,11 +151,6 @@ class Track(DataObject, FileListItem):
     def __repr__(self):
         return '<Track %s %r>' % (self.id, self.metadata["title"])
 
-    @property
-    def linked_files(self):
-        """For backward compatibility with old code in plugins"""
-        return self.files
-
     def add_file(self, file, new_album=True):
         track_will_expand = False
         if file not in self.files:
