@@ -545,6 +545,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.mainwindow = mainwindow
+
+        self.setAccessibleName(_(self.NAME))
+        self.setAccessibleDescription(_(self.DESCRIPTION))
+
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
 
@@ -994,13 +998,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
+    NAME = N_("file view")
+    DESCRIPTION = N_("Contains unmatched files and clusters")
+
     header_state = 'file_view_header_state'
     header_locked = 'file_view_header_locked'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setAccessibleName(_("file view"))
-        self.setAccessibleDescription(_("Contains unmatched files and clusters"))
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
@@ -1025,13 +1030,14 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
+    NAME = N_("album view")
+    DESCRIPTION = N_("Contains albums and matched files")
+
     header_state = 'album_view_header_state'
     header_locked = 'album_view_header_locked'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setAccessibleName(_("album view"))
-        self.setAccessibleDescription(_("Contains albums and matched files"))
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
