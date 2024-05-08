@@ -536,7 +536,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         super().lock(is_locked)
 
     def __str__(self):
-        return "%s's header" % str(self.parent().__class__.__name__)
+        name = getattr(self.parent(), 'NAME', str(self.parent().__class__.__name__))
+        return f"{name}'s header"
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
