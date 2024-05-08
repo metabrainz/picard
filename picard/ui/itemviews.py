@@ -1007,12 +1007,15 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
+
         self.clusters = ClusterItem(self.tagger.clusters, False, self)
         self.set_clusters_text()
         self.clusters.setExpanded(True)
+
         self.tagger.cluster_added.connect(self.add_file_cluster)
         self.tagger.cluster_removed.connect(self.remove_file_cluster)
 
@@ -1039,6 +1042,7 @@ class AlbumTreeView(BaseTreeView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
