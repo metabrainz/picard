@@ -95,6 +95,7 @@ from picard.ui.colors import interface_colors
 from picard.ui.enums import MainAction
 from picard.ui.itemviews.columns import (
     DEFAULT_COLUMNS,
+    ITEM_ICON_COLUMN,
     ColumnAlign,
     ColumnSortType,
 )
@@ -158,7 +159,6 @@ def get_match_color(similarity, basecolor):
 
 
 DEFAULT_SECTION_SIZE = 100
-ITEM_ICON_COLUMN = DEFAULT_COLUMNS.pos('title')
 
 
 class MainPanel(QtWidgets.QSplitter):

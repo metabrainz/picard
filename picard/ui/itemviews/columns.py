@@ -213,3 +213,6 @@ DEFAULT_COLUMNS = Columns((
     Column(N_("Release Date"), 'releasedate'),
     Column(N_("Cover"), 'covercount'),
 ))
+
+
+ITEM_ICON_COLUMN = DEFAULT_COLUMNS.pos('title')
