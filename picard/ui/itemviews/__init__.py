@@ -192,7 +192,6 @@ class MainPanel(QtWidgets.QSplitter):
             QtGui.QIcon(":/images/match-pending-90.png"),
             QtGui.QIcon(":/images/match-pending-100.png"),
         ]
-        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def _update_selection(self, selected_view):
         for view in self._views:

@@ -80,6 +80,7 @@ from picard.track import (
     Track,
 )
 from picard.util import (
+    icontheme,
     iter_files_from_objects,
     normpath,
     restore_method,
@@ -204,6 +205,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setUniformRowHeights(True)
 
         self._init_header()
+
+        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def _init_header(self):
         self.setHeader(ConfigurableColumnsHeader(self))
@@ -348,7 +351,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtWidgets.QMenu(_("P&lugins"), menu)
-            plugin_menu.setIcon(self.panel.icon_plugins)
+            plugin_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',
                 plugin_menu,
@@ -367,7 +370,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if scripts:
             scripts_menu = ScriptsMenu(scripts, _("&Run scripts"), menu)
-            scripts_menu.setIcon(self.panel.icon_plugins)
+            scripts_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',
                 scripts_menu,
