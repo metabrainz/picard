@@ -753,8 +753,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def _make_releases_menu(self, menu, obj):
         releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
         releases_menu.setToolTipsVisible(True)
-        action_more = releases_menu.addAction(_("Show &more details…"))
-        action_more.triggered.connect(self.mainwindow.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
         if len(self.selectedItems()) == 1 and obj.release_group:
             loading = releases_menu.addAction(_("Loading…"))
@@ -763,7 +761,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             def _add_other_versions():
                 config = get_config()
                 releases_menu.removeAction(loading)
-                releases_menu.removeAction(action_more)
                 heading = releases_menu.addAction(obj.release_group.version_headings)
                 heading.setDisabled(True)
                 font = heading.font()
@@ -814,6 +811,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
 
                 releases_menu.addSeparator()
+
+                action_more = releases_menu.addAction(_("Show &more details…"))
+                action_more.triggered.connect(self.mainwindow.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
                 action = releases_menu.addAction(action_more)
             if obj.release_group.loaded:
                 _add_other_versions()
