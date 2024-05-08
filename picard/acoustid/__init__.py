@@ -201,8 +201,7 @@ class AcoustIDClient(QtCore.QObject):
             params['recordingid'] = recordingid
         self._acoustid_api.query_acoustid(partial(self._on_lookup_finished, task), **params)
 
-    def _on_fpcalc_finished(self, task, exit_code, exit_status):
-        process = self.sender()
+    def _on_fpcalc_finished(self, task, process, exit_code, exit_status):
         finished = process.property('picard_finished')
         if finished:
             return
@@ -242,8 +241,7 @@ class AcoustIDClient(QtCore.QObject):
                     task.file.set_acoustid_fingerprint(fingerprint, length)
             task.next_func(result)
 
-    def _on_fpcalc_error(self, task, error):
-        process = self.sender()
+    def _on_fpcalc_error(self, task, process, error):
         finished = process.property('picard_finished')
         if finished:
             return
@@ -269,8 +267,8 @@ class AcoustIDClient(QtCore.QObject):
         self._running += 1
         process = QtCore.QProcess(self)
         process.setProperty('picard_finished', False)
-        process.finished.connect(partial(self._on_fpcalc_finished, task))
-        process.errorOccurred.connect(partial(self._on_fpcalc_error, task))
+        process.finished.connect(partial(self._on_fpcalc_finished, task, process))
+        process.errorOccurred.connect(partial(self._on_fpcalc_error, task, process))
         file_path = task.file.filename
         # On Windows fpcalc.exe does not handle long paths, even if system wide
         # long path support is enabled. Ensure the path is properly prefixed.
