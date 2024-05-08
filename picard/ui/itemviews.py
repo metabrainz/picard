@@ -364,7 +364,6 @@ class MainPanel(QtWidgets.QSplitter):
         for view in self._views:
             if self._selected_view is None:
                 self._selected_view = view
-            view.init_header()
             view.itemSelectionChanged.connect(partial(_view_update_selection, view))
 
     def set_processing(self, processing=True):
@@ -570,7 +569,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.doubleClicked.connect(self.activate_item)
         self.setUniformRowHeights(True)
 
-    def init_header(self):
+        self._init_header()
+
+    def _init_header(self):
         self.setHeader(ConfigurableColumnsHeader(self))
         self.setHeaderLabels([_(c.title) if not c.is_icon else ''
                               for c in DEFAULT_COLUMNS])
