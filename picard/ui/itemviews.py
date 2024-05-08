@@ -326,8 +326,9 @@ class MainPanel(QtWidgets.QSplitter):
         self.tagger = QtCore.QCoreApplication.instance()
         self.setChildrenCollapsible(False)
         self.create_icons()
+        self._create_views(mainwindow)
 
-        TreeItem.mainwindow = self.mainwindow = mainwindow
+        TreeItem.mainwindow = mainwindow
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
         TreeItem.text_color_secondary = self.palette() \
@@ -345,8 +346,8 @@ class MainPanel(QtWidgets.QSplitter):
             File.ERROR: interface_colors.get_qcolor('entity_error'),
         })
 
-    def init_views(self):
-        self._views = [view(self.mainwindow, parent=self) for view in (FileTreeView, AlbumTreeView)]
+    def _create_views(self, mainwindow):
+        self._views = [view(mainwindow, parent=self) for view in (FileTreeView, AlbumTreeView)]
         self._selected_view = None
         self._ignore_selection_changes = False
 
@@ -431,7 +432,7 @@ class MainPanel(QtWidgets.QSplitter):
                 view.clearSelection()
             else:
                 self._selected_view = view
-                self.mainwindow.update_selection([item.obj for item in view.selectedItems()])
+                view.mainwindow.update_selection([item.obj for item in view.selectedItems()])
 
     def update_current_view(self):
         self._update_selection(self._selected_view)
