@@ -535,6 +535,9 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
     def lock(self, is_locked):
         super().lock(is_locked)
 
+    def __str__(self):
+        return "%s's header" % str(self.parent().__class__.__name__)
+
 
 class BaseTreeView(QtWidgets.QTreeWidget):
 
@@ -571,7 +574,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def set_header_defaults(self):
         header = self.header()
-        log.debug("Set defaults for %r" % header)
+        log.debug("Set defaults for %s" % header)
 
         # The following are settings applied to default headers
         # of QTreeView and QTreeWidget.
@@ -816,7 +819,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         header_state = config.persist[self.header_state]
         header = self.header()
         if header_state and header.restoreState(header_state):
-            log.debug("Restore state of %r" % header)
+            log.debug("Restore state of %s" % header)
             for i in range(0, self.columnCount()):
                 header.show_column(i, not self.isColumnHidden(i))
         else:
@@ -827,7 +830,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def save_state(self):
         config = get_config()
         header = self.header()
-        log.debug("Save state of %r" % header)
+        log.debug("Save state of %s" % header)
         if header.is_locked and header.prelock_state is not None:
             # if the header is locked, we don't save the current state but the prelock one
             config.persist[self.header_state] = header.prelock_state
