@@ -288,9 +288,9 @@ def _sortkey_filesize(obj):
         return 0
 
 
-fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')
-fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
-fingerprint_column.set_header_icon_size(16, 16, 1)
+_fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')
+_fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
+_fingerprint_column.set_header_icon_size(16, 16, 1)
 
 
 DEFAULT_COLUMNS = Columns((
@@ -308,7 +308,7 @@ DEFAULT_COLUMNS = Columns((
     Column(N_("Media"), 'media'),
     Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_filesize),
     Column(N_("Genre"), 'genre'),
-    fingerprint_column,
+    _fingerprint_column,
     Column(N_("Date"), 'date'),
     Column(N_("Original Release Date"), 'originaldate'),
     Column(N_("Release Date"), 'releasedate'),
