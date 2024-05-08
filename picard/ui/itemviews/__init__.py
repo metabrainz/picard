@@ -67,6 +67,13 @@ from picard.cluster import (
     UnclusteredFiles,
 )
 from picard.config import get_config
+from picard.extension_points.item_actions import (
+    ext_point_album_actions,
+    ext_point_cluster_actions,
+    ext_point_clusterlist_actions,
+    ext_point_file_actions,
+    ext_point_track_actions,
+)
 from picard.file import (
     File,
     FileErrorType,
@@ -76,7 +83,6 @@ from picard.i18n import (
     gettext as _,
     ngettext,
 )
-from picard.plugin import ExtensionPoint
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -103,50 +109,6 @@ from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
-
-
-class BaseAction(QtGui.QAction):
-    NAME = "Unknown"
-    MENU = []
-
-    def __init__(self):
-        super().__init__(self.NAME, None)
-        self.tagger = QtCore.QCoreApplication.instance()
-        self.triggered.connect(self.__callback)
-
-    def __callback(self):
-        objs = self.tagger.window.selected_objects
-        self.callback(objs)
-
-    def callback(self, objs):
-        raise NotImplementedError
-
-
-ext_point_album_actions = ExtensionPoint(label='album_actions')
-ext_point_cluster_actions = ExtensionPoint(label='cluster_actions')
-ext_point_clusterlist_actions = ExtensionPoint(label='clusterlist_actions')
-ext_point_track_actions = ExtensionPoint(label='track_actions')
-ext_point_file_actions = ExtensionPoint(label='file_actions')
-
-
-def register_album_action(action):
-    ext_point_album_actions.register(action.__module__, action)
-
-
-def register_cluster_action(action):
-    ext_point_cluster_actions.register(action.__module__, action)
-
-
-def register_clusterlist_action(action):
-    ext_point_clusterlist_actions.register(action.__module__, action)
-
-
-def register_track_action(action):
-    ext_point_track_actions.register(action.__module__, action)
-
-
-def register_file_action(action):
-    ext_point_file_actions.register(action.__module__, action)
 
 
 def get_match_color(similarity, basecolor):
