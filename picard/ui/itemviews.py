@@ -687,79 +687,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         )
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
-            releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
-            releases_menu.setToolTipsVisible(True)
             add_actions(
                 '-',
-                releases_menu,
+                self._make_releases_menu(menu, obj),
             )
-            loading = releases_menu.addAction(_("Loading…"))
-            loading.setDisabled(True)
-            action_more = releases_menu.addAction(_("Show &more details…"))
-            action_more.triggered.connect(self.mainwindow.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
-
-            if len(self.selectedItems()) == 1 and obj.release_group:
-                def _add_other_versions():
-                    releases_menu.removeAction(loading)
-                    releases_menu.removeAction(action_more)
-                    heading = releases_menu.addAction(obj.release_group.version_headings)
-                    heading.setDisabled(True)
-                    font = heading.font()
-                    font.setBold(True)
-                    heading.setFont(font)
-
-                    versions = obj.release_group.versions
-
-                    album_tracks_count = obj.get_num_total_files() or len(obj.tracks)
-                    preferred_countries = set(config.setting['preferred_release_countries'])
-                    preferred_formats = set(config.setting['preferred_release_formats'])
-                    ORDER_BEFORE, ORDER_AFTER = 0, 1
-
-                    alternatives = []
-                    for version in versions:
-                        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
-                        if version['totaltracks'] != album_tracks_count:
-                            trackmatch = ORDER_AFTER
-                        if preferred_countries:
-                            countries = set(version['countries'])
-                            if not countries or not countries.intersection(preferred_countries):
-                                countrymatch = ORDER_AFTER
-                        if preferred_formats:
-                            formats = set(version['formats'])
-                            if not formats or not formats.intersection(preferred_formats):
-                                formatmatch = ORDER_AFTER
-                        group = (trackmatch, countrymatch, formatmatch)
-                        # order by group, name, and id on push
-                        heappush(alternatives, (group, version['name'], version['id'], version['extra']))
-
-                    prev_group = None
-                    while alternatives:
-                        group, action_text, release_id, extra = heappop(alternatives)
-                        if group != prev_group:
-                            if prev_group is not None:
-                                releases_menu.addSeparator()
-                            prev_group = group
-                        action = releases_menu.addAction(action_text)
-                        action.setCheckable(True)
-                        if extra:
-                            action.setToolTip(extra)
-                        if obj.id == release_id:
-                            action.setChecked(True)
-                        action.triggered.connect(partial(obj.switch_release_version, release_id))
-
-                    versions_count = len(versions)
-                    if versions_count > 1:
-                        releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
-
-                    releases_menu.addSeparator()
-                    action = releases_menu.addAction(action_more)
-                if obj.release_group.loaded:
-                    _add_other_versions()
-                else:
-                    obj.release_group.load_versions(_add_other_versions)
-                releases_menu.setEnabled(True)
-            else:
-                releases_menu.setEnabled(False)
 
         if config.setting['enable_ratings'] and \
            len(self.mainwindow.selected_objects) == 1 and isinstance(obj, Track):
@@ -818,6 +749,80 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         add_actions(self.select_all_action)
         menu.exec(event.globalPos())
         event.accept()
+
+    def _make_releases_menu(self, menu, obj):
+        releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
+        releases_menu.setToolTipsVisible(True)
+        loading = releases_menu.addAction(_("Loading…"))
+        loading.setDisabled(True)
+        action_more = releases_menu.addAction(_("Show &more details…"))
+        action_more.triggered.connect(self.mainwindow.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
+
+        if len(self.selectedItems()) == 1 and obj.release_group:
+            def _add_other_versions():
+                config = get_config()
+                releases_menu.removeAction(loading)
+                releases_menu.removeAction(action_more)
+                heading = releases_menu.addAction(obj.release_group.version_headings)
+                heading.setDisabled(True)
+                font = heading.font()
+                font.setBold(True)
+                heading.setFont(font)
+
+                versions = obj.release_group.versions
+
+                album_tracks_count = obj.get_num_total_files() or len(obj.tracks)
+                preferred_countries = set(config.setting['preferred_release_countries'])
+                preferred_formats = set(config.setting['preferred_release_formats'])
+                ORDER_BEFORE, ORDER_AFTER = 0, 1
+
+                alternatives = []
+                for version in versions:
+                    trackmatch = countrymatch = formatmatch = ORDER_BEFORE
+                    if version['totaltracks'] != album_tracks_count:
+                        trackmatch = ORDER_AFTER
+                    if preferred_countries:
+                        countries = set(version['countries'])
+                        if not countries or not countries.intersection(preferred_countries):
+                            countrymatch = ORDER_AFTER
+                    if preferred_formats:
+                        formats = set(version['formats'])
+                        if not formats or not formats.intersection(preferred_formats):
+                            formatmatch = ORDER_AFTER
+                    group = (trackmatch, countrymatch, formatmatch)
+                    # order by group, name, and id on push
+                    heappush(alternatives, (group, version['name'], version['id'], version['extra']))
+
+                prev_group = None
+                while alternatives:
+                    group, action_text, release_id, extra = heappop(alternatives)
+                    if group != prev_group:
+                        if prev_group is not None:
+                            releases_menu.addSeparator()
+                        prev_group = group
+                    action = releases_menu.addAction(action_text)
+                    action.setCheckable(True)
+                    if extra:
+                        action.setToolTip(extra)
+                    if obj.id == release_id:
+                        action.setChecked(True)
+                    action.triggered.connect(partial(obj.switch_release_version, release_id))
+
+                versions_count = len(versions)
+                if versions_count > 1:
+                    releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
+
+                releases_menu.addSeparator()
+                action = releases_menu.addAction(action_more)
+            if obj.release_group.loaded:
+                _add_other_versions()
+            else:
+                obj.release_group.load_versions(_add_other_versions)
+            releases_menu.setEnabled(True)
+        else:
+            releases_menu.setEnabled(False)
+
+        return releases_menu
 
     @restore_method
     def restore_state(self):
