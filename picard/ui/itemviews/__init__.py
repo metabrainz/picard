@@ -758,8 +758,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 item = parent.child(index)
             if item is not None:
                 target = item.obj
-        if isinstance(self, FileTreeView) and target is None:
-            target = self.tagger.unclustered_files
+        if target is None:
+            target = self.default_drop_target
         log.debug("Drop target = %r", target)
         handled = False
         # text/uri-list
@@ -805,6 +805,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 self.setCurrentItem(item)
         return QtWidgets.QTreeWidget.moveCursor(self, action, modifiers)
 
+    @property
+    def default_drop_target(self):
+        return None
+
 
 class FileTreeView(BaseTreeView):
 
@@ -839,6 +843,10 @@ class FileTreeView(BaseTreeView):
 
     def set_clusters_text(self):
         self.clusters.setText(ITEM_ICON_COLUMN, "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
+
+    @property
+    def default_drop_target(self):
+        return self.tagger.unclustered_files
 
 
 class AlbumTreeView(BaseTreeView):
