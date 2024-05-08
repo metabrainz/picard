@@ -170,6 +170,9 @@ DEFAULT_SECTION_SIZE = 100
 
 
 class Column:
+    is_icon = False
+    is_default = False
+
     def __init__(self, title, key, size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.DEFAULT, sortkey=None):
         self.title = title
         self.key = key
@@ -190,10 +193,11 @@ class Column:
 
 
 class DefaultColumn(Column):
-    pass
+    is_default = True
 
 
 class IconColumn(Column):
+    is_icon = True
     _header_icon = None
     header_icon_func = None
     header_icon_size = QtCore.QSize(0, 0)
@@ -516,7 +520,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def paintSection(self, painter, rect, index):
         column = DEFAULT_COLUMNS[index]
-        if isinstance(column, IconColumn):
+        if column.is_icon:
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
@@ -525,7 +529,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if isinstance(DEFAULT_COLUMNS[index], IconColumn):
+        if DEFAULT_COLUMNS[index].is_icon:
             self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
@@ -560,7 +564,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def init_header(self):
         self.setHeader(ConfigurableColumnsHeader(self))
-        self.setHeaderLabels([_(c.title) if not isinstance(c, IconColumn) else ''
+        self.setHeaderLabels([_(c.title) if not c.is_icon else ''
                               for c in DEFAULT_COLUMNS])
         self.set_header_defaults()
         self.restore_state()
@@ -583,8 +587,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
         for i, c in DEFAULT_COLUMNS.iterate():
-            header.show_column(i, isinstance(c, DefaultColumn))
-            if isinstance(c, IconColumn):
+            header.show_column(i, c.is_default)
+            if c.is_icon:
                 header.resizeSection(i, c.header_icon_size_with_border.width())
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
             else:
@@ -1090,7 +1094,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                 self.setForeground(i, color)
             if bgcolor is not None:
                 self.setBackground(i, bgcolor)
-            if isinstance(column, IconColumn):
+            if column.is_icon:
                 self.setSizeHint(i, column.header_icon_size_with_border)
             else:
                 if column.align == ColumnAlign.RIGHT:
