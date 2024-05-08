@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 Will
-# Copyright (C) 2010-2011, 2014, 2018-2022 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2024 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012 Wieland Hoffmann
@@ -50,6 +50,7 @@ from picard.metadata import (
     Metadata,
     SimMatchRelease,
 )
+from picard.track import Track
 from picard.util import (
     album_artist_from_path,
     find_best_match,
@@ -308,8 +309,15 @@ class Cluster(FileList):
 
         cluster_list = defaultdict(FileCluster)
         for file in files:
-            artist = file.metadata['albumartist'] or file.metadata['artist']
-            album = file.metadata['album']
+            # If the file is attached to a track we should use the original
+            # metadata for clustering. This is often used by users when moving
+            # mismatched files back from the right pane to the left.
+            if isinstance(file.parent, Track):
+                metadata = file.orig_metadata
+            else:
+                metadata = file.metadata
+            artist = metadata['albumartist'] or metadata['artist']
+            album = metadata['album']
 
             # Improve clustering from directory structure if no existing tags
             # Only used for grouping and to provide cluster title / artist - not added to file tags.
