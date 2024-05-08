@@ -750,37 +750,37 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         menu.exec(event.globalPos())
         event.accept()
 
-    def _make_releases_menu(self, menu, obj):
+    def _make_releases_menu(self, menu, album):
         releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
         releases_menu.setToolTipsVisible(True)
 
-        if len(self.selectedItems()) == 1 and obj.release_group:
+        if len(self.selectedItems()) == 1 and album.release_group:
             releases_menu.setEnabled(True)
-            if obj.release_group.loaded:
-                self._make_versions_submenu(releases_menu, obj)
+            if album.release_group.loaded:
+                self._make_versions_submenu(releases_menu, album)
             else:
                 loading = releases_menu.addAction(_("Loading…"))
                 loading.setDisabled(True)
-                callback = partial(self._make_versions_submenu, releases_menu, obj, loading=loading)
-                obj.release_group.load_versions(callback)
+                callback = partial(self._make_versions_submenu, releases_menu, album, loading=loading)
+                album.release_group.load_versions(callback)
         else:
             releases_menu.setEnabled(False)
 
         return releases_menu
 
-    def _make_versions_submenu(self, releases_menu, obj, loading=None):
+    def _make_versions_submenu(self, releases_menu, album, loading=None):
         config = get_config()
         if loading:
             releases_menu.removeAction(loading)
-        heading = releases_menu.addAction(obj.release_group.version_headings)
+        heading = releases_menu.addAction(album.release_group.version_headings)
         heading.setDisabled(True)
         font = heading.font()
         font.setBold(True)
         heading.setFont(font)
 
-        versions = obj.release_group.versions
+        versions = album.release_group.versions
 
-        album_tracks_count = obj.get_num_total_files() or len(obj.tracks)
+        album_tracks_count = album.get_num_total_files() or len(album.tracks)
         preferred_countries = set(config.setting['preferred_release_countries'])
         preferred_formats = set(config.setting['preferred_release_formats'])
         ORDER_BEFORE, ORDER_AFTER = 0, 1
@@ -813,9 +813,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             action.setCheckable(True)
             if extra:
                 action.setToolTip(extra)
-            if obj.id == release_id:
+            if album.id == release_id:
                 action.setChecked(True)
-            action.triggered.connect(partial(obj.switch_release_version, release_id))
+            action.triggered.connect(partial(album.switch_release_version, release_id))
 
         versions_count = len(versions)
         if versions_count > 1:
