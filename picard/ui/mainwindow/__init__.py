@@ -1526,12 +1526,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _script_editor_index_changed(self):
         """Process "signal_index_changed" signal from the script editor.
         """
-        self.script_editor_save()
+        self._script_editor_save()
 
     def _update_selector_from_script_editor(self):
         """Process "signal_selection_changed" signal from the script editor.
         """
-        self.script_editor_save()
+        self._script_editor_save()
 
     def _make_profile_selector_menu(self):
         """Update the sub-menu of available option profiles.
