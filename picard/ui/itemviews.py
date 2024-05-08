@@ -325,7 +325,7 @@ class MainPanel(QtWidgets.QSplitter):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.setChildrenCollapsible(False)
-        self.create_icons()
+        self._create_icons()
         self._create_views(mainwindow)
 
         TreeItem.mainwindow = mainwindow
@@ -377,7 +377,7 @@ class MainPanel(QtWidgets.QSplitter):
         for view in self._views:
             view.save_state()
 
-    def create_icons(self):
+    def _create_icons(self):
         if hasattr(QtWidgets.QStyle, 'SP_DirIcon'):
             ClusterItem.icon_dir = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirIcon)
         else:
