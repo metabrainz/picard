@@ -1056,17 +1056,6 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self.sortable = sortable
         self._sortkeys = {}
 
-    @property
-    def can_update(self):
-        if not self.treeWidget():
-            import traceback
-            log.warning(
-                "Called too soon: %r\n%s", self,
-                ''.join(traceback.format_stack(limit=10)[:-1])
-            )
-            return False
-        return True
-
     def setText(self, column, text):
         self._sortkeys[column] = None
         return super().setText(column, text)
@@ -1115,8 +1104,6 @@ class ClusterItem(TreeItem):
         self.setIcon(ITEM_ICON_COLUMN, ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
-        if not self.can_update:
-            return
         self.update_colums_text()
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
@@ -1150,8 +1137,6 @@ class ClusterItem(TreeItem):
 class AlbumItem(TreeItem):
 
     def update(self, update_tracks=True, update_selection=True):
-        if not self.can_update:
-            return
         album = self.obj
         selection_changed = self.isSelected()
         if update_tracks:
@@ -1233,8 +1218,6 @@ class NatAlbumItem(AlbumItem):
 class TrackItem(TreeItem):
 
     def update(self, update_album=True, update_files=True, update_selection=True):
-        if not self.can_update:
-            return
         track = self.obj
         fingerprint_column = DEFAULT_COLUMNS.pos('~fingerprint')
         num_linked_files = track.num_linked_files
@@ -1306,8 +1289,6 @@ class TrackItem(TreeItem):
 class FileItem(TreeItem):
 
     def update(self, update_track=True, update_selection=True):
-        if not self.can_update:
-            return
         file = self.obj
         fingerprint_column = DEFAULT_COLUMNS.pos('~fingerprint')
         icon, icon_tooltip = FileItem.decide_file_icon_info(file)
