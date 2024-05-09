@@ -30,19 +30,19 @@ from picard import log
 from picard.plugin import ExtensionPoint
 
 
-_formats = ExtensionPoint(label='formats')
+ext_point_formats = ExtensionPoint(label='formats')
 _extensions = {}
 
 
 def register_format(file_format):
-    _formats.register(file_format.__module__, file_format)
+    ext_point_formats.register(file_format.__module__, file_format)
     for ext in file_format.EXTENSIONS:
         _extensions[ext[1:]] = file_format
 
 
 def supported_formats():
     """Returns list of supported formats."""
-    return [(file_format.EXTENSIONS, file_format.NAME) for file_format in _formats]
+    return [(file_format.EXTENSIONS, file_format.NAME) for file_format in ext_point_formats]
 
 
 def supported_extensions():
@@ -54,8 +54,10 @@ def ext_to_format(ext):
     return _extensions.get(ext, None)
 
 
-def guess_format(filename, options=_formats):
+def guess_format(filename, options=None):
     """Select the best matching file type amongst supported formats."""
+    if options is None:
+        options = ext_point_formats
     results = []
     # Since we are reading only 128 bytes and then immediately closing the file,
     # use unbuffered mode.
