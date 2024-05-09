@@ -122,31 +122,31 @@ class BaseAction(QtGui.QAction):
         raise NotImplementedError
 
 
-_album_actions = ExtensionPoint(label='album_actions')
-_cluster_actions = ExtensionPoint(label='cluster_actions')
-_clusterlist_actions = ExtensionPoint(label='clusterlist_actions')
-_track_actions = ExtensionPoint(label='track_actions')
-_file_actions = ExtensionPoint(label='file_actions')
+ext_point_album_actions = ExtensionPoint(label='album_actions')
+ext_point_cluster_actions = ExtensionPoint(label='cluster_actions')
+ext_point_clusterlist_actions = ExtensionPoint(label='clusterlist_actions')
+ext_point_track_actions = ExtensionPoint(label='track_actions')
+ext_point_file_actions = ExtensionPoint(label='file_actions')
 
 
 def register_album_action(action):
-    _album_actions.register(action.__module__, action)
+    ext_point_album_actions.register(action.__module__, action)
 
 
 def register_cluster_action(action):
-    _cluster_actions.register(action.__module__, action)
+    ext_point_cluster_actions.register(action.__module__, action)
 
 
 def register_clusterlist_action(action):
-    _clusterlist_actions.register(action.__module__, action)
+    ext_point_clusterlist_actions.register(action.__module__, action)
 
 
 def register_track_action(action):
-    _track_actions.register(action.__module__, action)
+    ext_point_track_actions.register(action.__module__, action)
 
 
 def register_file_action(action):
-    _file_actions.register(action.__module__, action)
+    ext_point_file_actions.register(action.__module__, action)
 
 
 def get_match_color(similarity, basecolor):
@@ -487,14 +487,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if isinstance(obj, Track):
             if can_view_info:
                 add_actions(MainAction.VIEW_INFO)
-            plugin_actions = list(_track_actions)
+            plugin_actions = list(ext_point_track_actions)
             if obj.num_linked_files == 1:
                 add_actions(
                     MainAction.PLAY_FILE,
                     MainAction.OPEN_FOLDER,
                     MainAction.TRACK_SEARCH,
                 )
-                plugin_actions.extend(_file_actions)
+                plugin_actions.extend(ext_point_file_actions)
             add_actions(
                 MainAction.BROWSER_LOOKUP,
                 MainAction.GENERATE_FINGERPRINTS if obj.num_linked_files > 0 else None,
@@ -512,14 +512,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.CLUSTER if isinstance(obj, UnclusteredFiles) else MainAction.ALBUM_SEARCH,
                 MainAction.GENERATE_FINGERPRINTS,
             )
-            plugin_actions = list(_cluster_actions)
+            plugin_actions = list(ext_point_cluster_actions)
         elif isinstance(obj, ClusterList):
             add_actions(
                 MainAction.AUTOTAG,
                 MainAction.ANALYZE,
                 MainAction.GENERATE_FINGERPRINTS,
             )
-            plugin_actions = list(_clusterlist_actions)
+            plugin_actions = list(ext_point_clusterlist_actions)
         elif isinstance(obj, File):
             add_actions(
                 MainAction.VIEW_INFO if can_view_info else None,
@@ -534,7 +534,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.TRACK_SEARCH,
                 MainAction.GENERATE_FINGERPRINTS,
             )
-            plugin_actions = list(_file_actions)
+            plugin_actions = list(ext_point_file_actions)
         elif isinstance(obj, Album):
             add_actions(
                 MainAction.VIEW_INFO if can_view_info else None,
@@ -543,7 +543,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 '-',
                 MainAction.REFRESH,
             )
-            plugin_actions = list(_album_actions)
+            plugin_actions = list(ext_point_album_actions)
 
         add_actions(
             '-',
