@@ -30,12 +30,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import copy
 import datetime
 import re
 import unittest
 from unittest import mock
-from unittest.mock import MagicMock
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -116,10 +118,6 @@ class ScriptParserTest(PicardTestCase):
 
         # ensure we start on clean registry
         ScriptParser._cache = {}
-        self._backup_registry = copy.deepcopy(ScriptParser._function_registry)
-
-    def tearDown(self):
-        ScriptParser._function_registry = copy.deepcopy(self._backup_registry)
 
     def assertScriptResultEquals(self, script, expected, context=None, file=None):
         """Asserts that evaluating `script` returns `expected`.
@@ -174,58 +172,75 @@ class ScriptParserTest(PicardTestCase):
 
     def test_script_function_decorator_default(self):
         # test default decorator and default prefix
-        @script_function()
-        def func_somefunc(parser):
-            return "x"
-        self.assertScriptResultEquals("$somefunc()", "x")
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            @script_function()
+            def func_somefunc(parser):
+                return "x"
+            self.assertScriptResultEquals("$somefunc()", "x")
 
     def test_script_function_decorator_no_prefix(self):
         # function without prefix
-        @script_function()
-        def somefunc(parser):
-            return "x"
-        self.assertScriptResultEquals("$somefunc()", "x")
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            @script_function()
+            def somefunc(parser):
+                return "x"
+            self.assertScriptResultEquals("$somefunc()", "x")
 
     def test_script_function_decorator_arg(self):
         # function with argument
-        @script_function()
-        def somefunc(parser, arg):
-            return arg
-        self.assertScriptResultEquals("$somefunc($title(x))", "X")
-        areg = r"^\d+:\d+:\$somefunc: Wrong number of arguments for \$somefunc: Expected exactly 1"
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$somefunc()")
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            @script_function()
+            def somefunc(parser, arg):
+                return arg
+
+            @script_function()
+            def title(parser, arg):
+                return arg.upper()
+
+            self.assertScriptResultEquals("$somefunc($title(x))", "X")
+            areg = r"^\d+:\d+:\$somefunc: Wrong number of arguments for \$somefunc: Expected exactly 1"
+            with self.assertRaisesRegex(ScriptError, areg):
+                self.parser.eval("$somefunc()")
 
     def test_script_function_decorator_argcount(self):
         # ignore argument count
-        @script_function(check_argcount=False)
-        def somefunc(parser, *arg):
-            return str(len(arg))
-        self.assertScriptResultEquals("$somefunc(a,b,c)", "3")
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            @script_function(check_argcount=False)
+            def somefunc(parser, *arg):
+                return str(len(arg))
+            self.assertScriptResultEquals("$somefunc(a,b,c)", "3")
 
     def test_script_function_decorator_altname(self):
         # alternative name
-        @script_function(name="otherfunc")
-        def somefunc4(parser):
-            return "x"
-        self.assertScriptResultEquals("$otherfunc()", "x")
-        areg = r"^\d+:\d+:\$somefunc: Unknown function '\$somefunc'"
-        with self.assertRaisesRegex(ScriptError, areg):
-            self.parser.eval("$somefunc()")
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            @script_function(name="otherfunc")
+            def somefunc4(parser):
+                return "x"
+            self.assertScriptResultEquals("$otherfunc()", "x")
+            areg = r"^\d+:\d+:\$somefunc: Unknown function '\$somefunc'"
+            with self.assertRaisesRegex(ScriptError, areg):
+                self.parser.eval("$somefunc()")
 
     def test_script_function_decorator_altprefix(self):
         # alternative prefix
-        @script_function(prefix='theprefix_')
-        def theprefix_somefunc(parser):
-            return "x"
-        self.assertScriptResultEquals("$somefunc()", "x")
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            @script_function(prefix='theprefix_')
+            def theprefix_somefunc(parser):
+                return "x"
+            self.assertScriptResultEquals("$somefunc()", "x")
 
     def test_script_function_decorator_eval_args(self):
         # disable argument evaluation
-        @script_function(eval_args=False)
-        def somefunc(parser, arg):
-            return arg.eval(parser)
-        self.assertScriptResultEquals("$somefunc($title(x))", "X")
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            @script_function(eval_args=False)
+            def somefunc(parser, arg):
+                return arg.eval(parser)
+
+            @script_function()
+            def title(parser, arg):
+                return arg.upper()
+
+            self.assertScriptResultEquals("$somefunc($title(x))", "X")
 
     @staticmethod
     def assertStartswith(text, expect):
@@ -237,106 +252,98 @@ class ScriptParserTest(PicardTestCase):
         if not text.endswith(expect):
             raise AssertionError("do not end with %r but with %r" % (expect, text[-len(expect):]))
 
-    @staticmethod
-    def reset_registry():
-        # use a clean registry, to ensure we have only one registered function
-        ScriptParser._function_registry = ExtensionPoint()
-
     def test_script_function_documentation_nodoc(self):
         """test script_function_documentation() with a function without documentation"""
-        self.reset_registry()
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
 
-        @script_function()
-        def func_nodocfunc(parser):
-            return ""
+            @script_function()
+            def func_nodocfunc(parser):
+                return ""
 
-        doc = script_function_documentation('nodocfunc', 'markdown')
-        self.assertEqual(doc, '')
-        doc = script_function_documentation('nodocfunc', 'html')
-        self.assertEqual(doc, '')
+            doc = script_function_documentation('nodocfunc', 'markdown')
+            self.assertEqual(doc, '')
+            doc = script_function_documentation('nodocfunc', 'html')
+            self.assertEqual(doc, '')
 
     def test_script_function_documentation(self):
         """test script_function_documentation() with a function with documentation"""
-        self.reset_registry()
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            # the documentation used to test includes backquotes
+            testdoc = '`$somefunc()`'
 
-        # the documentation used to test includes backquotes
-        testdoc = '`$somefunc()`'
+            @script_function(documentation=testdoc)
+            def func_somefunc(parser):
+                return "x"
 
-        @script_function(documentation=testdoc)
-        def func_somefunc(parser):
-            return "x"
-
-        doc = script_function_documentation('somefunc', 'markdown')
-        self.assertEqual(doc, testdoc)
-        areg = r"^no such documentation format: unknownformat"
-        with self.assertRaisesRegex(ScriptFunctionDocError, areg):
-            script_function_documentation('somefunc', 'unknownformat')
+            doc = script_function_documentation('somefunc', 'markdown')
+            self.assertEqual(doc, testdoc)
+            areg = r"^no such documentation format: unknownformat"
+            with self.assertRaisesRegex(ScriptFunctionDocError, areg):
+                script_function_documentation('somefunc', 'unknownformat')
 
     @unittest.skipUnless(markdown, "markdown module missing")
     def test_script_function_documentation_html(self):
         """test script_function_documentation() with a function with documentation"""
-        self.reset_registry()
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            # get html code as generated by markdown
+            pre, post = markdown('`XXX`').split('XXX')
 
-        # get html code as generated by markdown
-        pre, post = markdown('`XXX`').split('XXX')
+            # the documentation used to test includes backquotes
+            testdoc = '`$somefunc()`'
 
-        # the documentation used to test includes backquotes
-        testdoc = '`$somefunc()`'
+            @script_function(documentation=testdoc)
+            def func_somefunc(parser):
+                return "x"
 
-        @script_function(documentation=testdoc)
-        def func_somefunc(parser):
-            return "x"
-
-        doc = script_function_documentation('somefunc', 'html')
-        self.assertEqual(doc, pre + '$somefunc()' + post)
+            doc = script_function_documentation('somefunc', 'html')
+            self.assertEqual(doc, pre + '$somefunc()' + post)
 
     def test_script_function_documentation_unknown_function(self):
         """test script_function_documentation() with an unknown function"""
-        self.reset_registry()
-
-        areg = r"^no such function: unknownfunc"
-        with self.assertRaisesRegex(ScriptFunctionDocError, areg):
-            script_function_documentation('unknownfunc', 'html')
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
+            areg = r"^no such function: unknownfunc"
+            with self.assertRaisesRegex(ScriptFunctionDocError, areg):
+                script_function_documentation('unknownfunc', 'html')
 
     def test_script_function_documentation_all(self):
         """test script_function_documentation_all() with markdown format"""
-        self.reset_registry()
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
 
-        @script_function(documentation='somedoc2')
-        def func_somefunc2(parser):
-            return "x"
+            @script_function(documentation='somedoc2')
+            def func_somefunc2(parser):
+                return "x"
 
-        @script_function(documentation='somedoc1')
-        def func_somefunc1(parser):
-            return "x"
+            @script_function(documentation='somedoc1')
+            def func_somefunc1(parser):
+                return "x"
 
-        docall = script_function_documentation_all()
-        self.assertEqual(docall, 'somedoc1\nsomedoc2')
+            docall = script_function_documentation_all()
+            self.assertEqual(docall, 'somedoc1\nsomedoc2')
 
     @unittest.skipUnless(markdown, "markdown module missing")
     def test_script_function_documentation_all_html(self):
         """test script_function_documentation_all() with html format"""
-        self.reset_registry()
+        with patch.object(ScriptParser, '_function_registry', ExtensionPoint()):
 
-        # get html code as generated by markdown
-        pre, post = markdown('XXX').split('XXX')
+            # get html code as generated by markdown
+            pre, post = markdown('XXX').split('XXX')
 
-        @script_function(documentation='somedoc')
-        def func_somefunc(parser):
-            return "x"
+            @script_function(documentation='somedoc')
+            def func_somefunc(parser):
+                return "x"
 
-        def postprocessor(data, function):
-            return 'w' + data + function.name + 'y'
+            def postprocessor(data, function):
+                return 'w' + data + function.name + 'y'
 
-        docall = script_function_documentation_all(
-            fmt='html',
-            pre='<div id="test">',
-            post="</div>\n",
-            postprocessor=postprocessor,
-        )
+            docall = script_function_documentation_all(
+                fmt='html',
+                pre='<div id="test">',
+                post="</div>\n",
+                postprocessor=postprocessor,
+            )
 
-        self.assertStartswith(docall, '<div id="test">w' + pre)
-        self.assertEndswith(docall, post + 'somefuncy</div>\n')
+            self.assertStartswith(docall, '<div id="test">w' + pre)
+            self.assertEndswith(docall, post + 'somefuncy</div>\n')
 
     def test_unknown_function(self):
         areg = r"^\d+:\d+:\$unknownfunction: Unknown function '\$unknownfunction'"
