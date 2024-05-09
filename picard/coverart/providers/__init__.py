@@ -40,22 +40,10 @@ from picard.coverart.providers.provider import (  # noqa: F401 # pylint: disable
     ProviderOptions,
 )
 from picard.coverart.providers.urlrels import CoverArtProviderUrlRelationships
-from picard.plugin import ExtensionPoint
-
-from picard.ui.options import register_options_page
-
-
-ext_point_cover_art_providers = ExtensionPoint(label='cover_art_providers')
-
-
-def register_cover_art_provider(provider):
-    ext_point_cover_art_providers.register(provider.__module__, provider)
-    if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
-        if not hasattr(provider.OPTIONS, 'NAME'):
-            provider.OPTIONS.NAME = provider.name.lower().replace(' ', '_')
-        if not hasattr(provider.OPTIONS, 'TITLE'):
-            provider.OPTIONS.TITLE = provider.title
-        register_options_page(provider.OPTIONS)
+from picard.extension_points.cover_art_providers import (
+    ext_point_cover_art_providers,
+    register_cover_art_provider,
+)
 
 
 # named tuples used by cover_art_providers()
