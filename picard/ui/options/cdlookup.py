@@ -25,16 +25,14 @@
 
 
 from picard.config import get_config
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 from picard.util.cdrom import (
     AUTO_DETECT_DRIVES,
     get_cdrom_drives,
 )
 
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 
 
 if AUTO_DETECT_DRIVES:

@@ -29,16 +29,14 @@ from PyQt6 import (
 )
 
 from picard.const.sys import IS_MACOS
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
 )
 
 from picard.ui.colors import interface_colors
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_interface_colors import Ui_InterfaceColorsOptionsPage
 from picard.ui.util import changes_require_restart_warning
 

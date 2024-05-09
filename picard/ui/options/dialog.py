@@ -45,6 +45,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import PICARD_URLS
+from picard.extension_points.options_pages import ext_point_options_pages
 from picard.i18n import (
     N_,
     gettext as _,
@@ -66,7 +67,6 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     advanced,
     cdlookup,
     cover,
-    ext_point_options_pages,
     fingerprinting,
     general,
     genres,

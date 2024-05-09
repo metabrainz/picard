@@ -35,6 +35,7 @@ from PyQt6 import QtCore
 from picard import log
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -53,7 +54,6 @@ from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
-    register_options_page,
 )
 from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
 from picard.ui.ui_scripting_documentation_dialog import (

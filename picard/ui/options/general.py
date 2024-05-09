@@ -39,6 +39,7 @@ from picard.const import (
     PROGRAM_UPDATE_LEVELS,
 )
 from picard.const.defaults import DEFAULT_PROGRAM_UPDATE_LEVEL
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -46,10 +47,7 @@ from picard.i18n import (
 )
 from picard.util.mbserver import is_official_server
 
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 
 

@@ -31,6 +31,7 @@ from picard.config import (
     get_config,
 )
 from picard.coverart.providers import cover_art_providers
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -38,10 +39,7 @@ from picard.i18n import (
 
 from picard.ui.checkbox_list_item import CheckboxListItem
 from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.util import qlistwidget_items
 
