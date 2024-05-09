@@ -149,11 +149,11 @@ from picard.ui.util import (
 )
 
 
-ui_init = ExtensionPoint(label='ui_init')
+ext_point_ui_init = ExtensionPoint(label='ui_init')
 
 
 def register_ui_init(function):
-    ui_init.register(function.__module__, function)
+    ext_point_ui_init.register(function.__module__, function)
 
 
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
@@ -253,7 +253,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # accessibility
         self.set_tab_order()
 
-        for function in ui_init:
+        for function in ext_point_ui_init:
             function(self)
 
     def set_processing(self, processing=True):
