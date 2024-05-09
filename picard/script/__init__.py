@@ -41,14 +41,13 @@ from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_NAMING_PRESET_ID,
 )
+from picard.extension_points import script_functions
 from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.script.functions import (  # noqa: F401 # pylint: disable=unused-import
-    register_script_function,
-    script_function,
-)
+# Those imports are required to actually parse the code and interpret decorators
+import picard.script.functions  # noqa: F401 # pylint: disable=unused-import
 from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
     MultiValue,
     ScriptEndOfFile,
@@ -73,7 +72,7 @@ class ScriptFunctionDocError(Exception):
 
 def script_function_documentation(name, fmt, functions=None, postprocessor=None):
     if functions is None:
-        functions = dict(ScriptParser._function_registry)
+        functions = dict(script_functions.ext_point_script_functions)
     if name not in functions:
         raise ScriptFunctionDocError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
 
@@ -87,13 +86,13 @@ def script_function_documentation(name, fmt, functions=None, postprocessor=None)
 
 def script_function_names(functions=None):
     if functions is None:
-        functions = dict(ScriptParser._function_registry)
+        functions = dict(script_functions.ext_point_script_functions)
     yield from sorted(functions)
 
 
 def script_function_documentation_all(fmt='markdown', pre='',
                                       post='', postprocessor=None):
-    functions = dict(ScriptParser._function_registry)
+    functions = dict(script_functions.ext_point_script_functions)
     doc_elements = []
     for name in script_function_names(functions):
         doc_element = script_function_documentation(name, fmt,

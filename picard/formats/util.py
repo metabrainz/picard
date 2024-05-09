@@ -29,7 +29,7 @@
 from picard import log
 from picard.extension_points.formats import (
     ext_point_formats,
-    formats_extensions,
+    ext_to_format,
 )
 
 
@@ -41,10 +41,6 @@ def supported_formats():
 def supported_extensions():
     """Returns list of supported extensions."""
     return [ext for exts, name in supported_formats() for ext in exts]
-
-
-def ext_to_format(ext):
-    return formats_extensions.get(ext, None)
 
 
 def guess_format(filename, options=None):
@@ -79,7 +75,10 @@ def open_(filename):
         i = filename.rfind(".")
         if i >= 0:
             ext = filename[i+1:].lower()
-            audio_file = formats_extensions[ext](filename)
+            file_format = ext_to_format(ext)
+            if file_format is None:
+                return None
+            audio_file = file_format(filename)
         else:
             # If there is no extension, try to guess the format based on file headers
             audio_file = guess_format(filename)

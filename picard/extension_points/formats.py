@@ -30,10 +30,14 @@ from picard.plugin import ExtensionPoint
 
 
 ext_point_formats = ExtensionPoint(label='formats')
-formats_extensions = {}
+_formats_extensions = {}
 
 
 def register_format(file_format):
     ext_point_formats.register(file_format.__module__, file_format)
     for ext in file_format.EXTENSIONS:
-        formats_extensions[ext[1:]] = file_format
+        _formats_extensions[ext[1:]] = file_format
+
+
+def ext_to_format(ext):
+    return _formats_extensions.get(ext, None)
