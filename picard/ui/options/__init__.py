@@ -143,8 +143,8 @@ class OptionsPage(QtWidgets.QWidget):
             profile_groups_add_setting(self.NAME, name, tuple(highlights), title=self.TITLE)
 
 
-_pages = ExtensionPoint(label='pages')
+ext_point_options_pages = ExtensionPoint(label='options_pages')
 
 
 def register_options_page(page_class):
-    _pages.register(page_class.__module__, page_class)
+    ext_point_options_pages.register(page_class.__module__, page_class)

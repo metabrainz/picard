@@ -63,10 +63,10 @@ from picard.ui import (
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
     OptionsPage,
-    _pages as page_classes,
     advanced,
     cdlookup,
     cover,
+    ext_point_options_pages,
     fingerprinting,
     general,
     genres,
@@ -207,7 +207,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         config = get_config()
 
         self.pages = []
-        for Page in page_classes:
+        for Page in ext_point_options_pages:
             try:
                 page = Page()
                 page.set_dialog(self)
