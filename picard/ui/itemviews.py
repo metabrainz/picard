@@ -415,7 +415,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self._move_to_multi_tracks = True
 
         self._init_header()
-        self.restore_state()
 
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
@@ -651,8 +650,15 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @restore_method
     def restore_state(self):
         config = get_config()
-        self._restore_state(config.persist[self.header_state])
-        self.header().lock(config.persist[self.header_locked])
+        self.restore_default_columns()
+
+        header_state = config.persist[self.header_state]
+        header = self.header()
+        if header_state and header.restoreState(header_state):
+            for i in range(0, self.columnCount()):
+                header.show_column(i, not self.isColumnHidden(i))
+
+        header.lock(config.persist[self.header_locked])
 
     def save_state(self):
         config = get_config()
@@ -665,25 +671,19 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
-        self._restore_state(None)
-
-    def _restore_state(self, header_state):
-        header = self.header()
-        if header_state and header.restoreState(header_state):
-            for i in range(0, self.columnCount()):
-                header.show_column(i, not self.isColumnHidden(i))
-        else:
-            self._init_header()
-
-    def _init_header(self):
-        header = ConfigurableColumnsHeader(self)
-        self.setHeader(header)
         labels = [_(h) if n != '~fingerprint' else '' for h, n in MainPanel.columns]
         self.setHeaderLabels(labels)
+
+        header = self.header()
         header.update_visible_columns([0, 1, 2])
         for i, size in enumerate([250, 50, 100]):
             header.resizeSection(i, size)
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
+
+    def _init_header(self):
+        header = ConfigurableColumnsHeader(self)
+        self.setHeader(header)
+        self.restore_state()
 
     def supportedDropActions(self):
         return QtCore.Qt.DropAction.CopyAction | QtCore.Qt.DropAction.MoveAction
