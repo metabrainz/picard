@@ -23,12 +23,10 @@
 
 
 from picard.config import get_config
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_advanced import Ui_AdvancedOptionsPage
 
 

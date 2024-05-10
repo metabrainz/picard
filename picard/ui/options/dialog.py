@@ -45,6 +45,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import PICARD_URLS
+from picard.extension_points.options_pages import ext_point_options_pages
 from picard.i18n import (
     N_,
     gettext as _,
@@ -63,7 +64,6 @@ from picard.ui import (
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
     OptionsPage,
-    _pages as page_classes,
     advanced,
     cdlookup,
     cover,
@@ -207,7 +207,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         config = get_config()
 
         self.pages = []
-        for Page in page_classes:
+        for Page in ext_point_options_pages:
             try:
                 page = Page()
                 page.set_dialog(self)

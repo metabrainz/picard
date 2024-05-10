@@ -38,6 +38,7 @@ from PyQt6 import (
 
 from picard.config import get_config
 from picard.const.languages import UI_LANGUAGES
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -45,10 +46,7 @@ from picard.i18n import (
 )
 from picard.util import strxfrm
 
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,

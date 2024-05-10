@@ -50,6 +50,7 @@ from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
 )
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -61,10 +62,7 @@ from picard.util import (
 )
 
 from picard.ui import HashableTreeWidgetItem
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.theme import theme
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 

@@ -38,16 +38,14 @@ from picard.config import (
 )
 from picard.config_upgrade import upgrade_config
 from picard.const.defaults import DEFAULT_AUTOBACKUP_DIRECTORY
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
 )
 from picard.util import open_local_path
 
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_maintenance import Ui_MaintenanceOptionsPage
 
 

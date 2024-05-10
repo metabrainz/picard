@@ -26,9 +26,9 @@ from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.const.sys import IS_WIN
+from picard.extension_points.script_functions import register_script_function
 from picard.file import File
 from picard.metadata import Metadata
-from picard.script import register_script_function
 from picard.util.scripttofilename import (
     script_to_filename,
     script_to_filename_with_metadata,

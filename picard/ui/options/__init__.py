@@ -35,7 +35,6 @@ from picard.config import (
     get_config,
 )
 from picard.i18n import gettext as _
-from picard.plugin import ExtensionPoint
 from picard.profile import profile_groups_add_setting
 
 
@@ -141,10 +140,3 @@ class OptionsPage(QtWidgets.QWidget):
         self._registered_settings.append(option)
         if highlights is not None:
             profile_groups_add_setting(self.NAME, name, tuple(highlights), title=self.TITLE)
-
-
-_pages = ExtensionPoint(label='pages')
-
-
-def register_options_page(page_class):
-    _pages.register(page_class.__module__, page_class)

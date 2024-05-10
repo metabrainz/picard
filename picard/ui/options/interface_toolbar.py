@@ -39,6 +39,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import get_config
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -48,10 +49,7 @@ from picard.util import icontheme
 from picard.ui import PicardDialog
 from picard.ui.enums import MainAction
 from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_interface_toolbar import (
     Ui_InterfaceToolbarOptionsPage,
 )

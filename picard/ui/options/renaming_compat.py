@@ -44,6 +44,7 @@ from PyQt6 import (
 from picard.config import get_config
 from picard.const.defaults import DEFAULT_REPLACEMENT
 from picard.const.sys import IS_WIN
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -51,10 +52,7 @@ from picard.i18n import (
 from picard.util import system_supports_long_paths
 
 from picard.ui import PicardDialog
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_renaming_compat import Ui_RenamingCompatOptionsPage
 from picard.ui.ui_win_compat_dialog import Ui_WinCompatDialog
 

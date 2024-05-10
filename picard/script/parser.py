@@ -38,11 +38,11 @@
 from collections.abc import MutableSequence
 from queue import LifoQueue
 
+from picard.extension_points import script_functions
 from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
 )
-from picard.plugin import ExtensionPoint
 
 
 class ScriptError(Exception):
@@ -216,7 +216,6 @@ Grammar:
   argument    ::= (variable | function | argtext)*
 """
 
-    _function_registry = ExtensionPoint(label='function_registry')
     _cache = {}
 
     def __init__(self):
@@ -362,9 +361,7 @@ Grammar:
         return (tokens, ch)
 
     def load_functions(self):
-        self.functions = {}
-        for name, item in ScriptParser._function_registry:
-            self.functions[name] = item
+        self.functions = dict(script_functions.ext_point_script_functions)
 
     def parse(self, script, functions=False):
         """Parse the script."""

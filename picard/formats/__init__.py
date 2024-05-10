@@ -27,6 +27,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard.extension_points.formats import register_format
 from picard.formats.ac3 import AC3File
 from picard.formats.apev2 import (
     AACFile,
@@ -50,7 +51,6 @@ from picard.formats.util import (  # noqa: F401 # pylint: disable=unused-import
     ext_to_format,
     guess_format,
     open_,
-    register_format,
     supported_extensions,
     supported_formats,
 )

@@ -39,6 +39,7 @@ from PyQt6 import QtWidgets
 from PyQt6.QtGui import QPalette
 
 from picard.config import get_config
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -49,7 +50,6 @@ from picard.ui.enums import MainAction
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
-    register_options_page,
 )
 from picard.ui.options.scripting import (
     ScriptCheckError,

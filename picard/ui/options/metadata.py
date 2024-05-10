@@ -41,6 +41,7 @@ from picard.const.scripts import (
     SCRIPTS,
     scripts_sorted_by_localized_name,
 )
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -49,10 +50,7 @@ from picard.i18n import (
 
 from picard.ui import PicardDialog
 from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_exception_script_selector import Ui_ExceptionScriptSelector
 from picard.ui.ui_multi_locale_selector import Ui_MultiLocaleSelector
 from picard.ui.ui_options_metadata import Ui_MetadataOptionsPage

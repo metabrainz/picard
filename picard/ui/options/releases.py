@@ -41,6 +41,7 @@ from picard.const import (
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.const.defaults import DEFAULT_RELEASE_SCORE
 from picard.const.sys import IS_WIN
+from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
@@ -49,10 +50,7 @@ from picard.i18n import (
 )
 from picard.util import strxfrm
 
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
-)
+from picard.ui.options import OptionsPage
 from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets import ClickableSlider

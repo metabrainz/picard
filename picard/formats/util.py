@@ -27,22 +27,15 @@
 
 
 from picard import log
-from picard.plugin import ExtensionPoint
-
-
-_formats = ExtensionPoint(label='formats')
-_extensions = {}
-
-
-def register_format(file_format):
-    _formats.register(file_format.__module__, file_format)
-    for ext in file_format.EXTENSIONS:
-        _extensions[ext[1:]] = file_format
+from picard.extension_points.formats import (
+    ext_point_formats,
+    ext_to_format,
+)
 
 
 def supported_formats():
     """Returns list of supported formats."""
-    return [(file_format.EXTENSIONS, file_format.NAME) for file_format in _formats]
+    return [(file_format.EXTENSIONS, file_format.NAME) for file_format in ext_point_formats]
 
 
 def supported_extensions():
@@ -50,12 +43,10 @@ def supported_extensions():
     return [ext for exts, name in supported_formats() for ext in exts]
 
 
-def ext_to_format(ext):
-    return _extensions.get(ext, None)
-
-
-def guess_format(filename, options=_formats):
+def guess_format(filename, options=None):
     """Select the best matching file type amongst supported formats."""
+    if options is None:
+        options = ext_point_formats
     results = []
     # Since we are reading only 128 bytes and then immediately closing the file,
     # use unbuffered mode.
@@ -84,7 +75,10 @@ def open_(filename):
         i = filename.rfind(".")
         if i >= 0:
             ext = filename[i+1:].lower()
-            audio_file = _extensions[ext](filename)
+            file_format = ext_to_format(ext)
+            if file_format is None:
+                return None
+            audio_file = file_format(filename)
         else:
             # If there is no extension, try to guess the format based on file headers
             audio_file = guess_format(filename)
