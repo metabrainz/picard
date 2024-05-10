@@ -110,6 +110,8 @@ COLUMN_ICON_BORDER = 2
 ICON_SIZE = QtCore.QSize(COLUMN_ICON_SIZE+COLUMN_ICON_BORDER,
                          COLUMN_ICON_SIZE+COLUMN_ICON_BORDER)
 
+DEFAULT_SECTION_SIZE = 100
+
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -327,7 +329,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
         #     internal model that QTreeWidget uses doesn't support it
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
-        self.setDefaultSectionSize(100)
+        self.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
     def show_column(self, column, show):
         if column == 0:  # The first column is fixed
