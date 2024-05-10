@@ -674,10 +674,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             for i in range(0, self.columnCount()):
                 header.show_column(i, not self.isColumnHidden(i))
         else:
-            header.update_visible_columns([0, 1, 2])
-            for i, size in enumerate([250, 50, 100]):
-                header.resizeSection(i, size)
-            self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
+            self._init_header()
+
+    def _init_header(self):
+        header = self.header()
+        header.update_visible_columns([0, 1, 2])
+        for i, size in enumerate([250, 50, 100]):
+            header.resizeSection(i, size)
+        self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def supportedDropActions(self):
         return QtCore.Qt.DropAction.CopyAction | QtCore.Qt.DropAction.MoveAction
