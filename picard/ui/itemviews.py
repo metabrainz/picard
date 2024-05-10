@@ -657,8 +657,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def save_state(self):
         config = get_config()
-        config.persist[self.header_state] = self.header().saveState()
-        config.persist[self.header_locked] = self.header().is_locked
+        header = self.header()
+        if header.prelock_state is not None:
+            state = header.prelock_state
+        else:
+            state = header.saveState()
+        config.persist[self.header_state] = state
+        config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
         self._restore_state(None)
