@@ -71,8 +71,9 @@ class ExtensionPoint(object):
     def __init__(self, label=None):
         if label is None:
             import uuid
-            label = uuid.uuid4()
-        self.label = label
+            self.label = uuid.uuid4()
+        else:
+            self.label = label
         self.__dict = defaultdict(list)
         _extension_points.append(self)
 
@@ -106,6 +107,9 @@ class ExtensionPoint(object):
         for name in self.__dict:
             if name is None or name in enabled_plugins:
                 yield from self.__dict[name]
+
+    def __repr__(self):
+        return f"ExtensionPoint(label='{self.label}')"
 
 
 class PluginShared(object):
