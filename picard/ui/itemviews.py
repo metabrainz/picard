@@ -405,6 +405,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
+        self.setAccessibleName(_(self.NAME))
+        self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
         self.setHeader(ConfigurableColumnsHeader(self))
         self.window = window
@@ -832,13 +834,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
+    NAME = N_("file view")
+    DESCRIPTION = N_("Contains unmatched files and clusters")
+
     header_state = 'file_view_header_state'
     header_locked = 'file_view_header_locked'
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
-        self.setAccessibleName(_("file view"))
-        self.setAccessibleDescription(_("Contains unmatched files and clusters"))
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
@@ -867,13 +870,14 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
+    NAME = N_("album view")
+    DESCRIPTION = N_("Contains albums and matched files")
+
     header_state = 'album_view_header_state'
     header_locked = 'album_view_header_locked'
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
-        self.setAccessibleName(_("album view"))
-        self.setAccessibleDescription(_("Contains albums and matched files"))
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
