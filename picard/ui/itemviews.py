@@ -409,13 +409,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setAccessibleName(_(self.NAME))
         self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
-        self.setHeader(ConfigurableColumnsHeader(self))
         self.window = window
         self.panel = parent
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
-        self.setHeaderLabels([_(h) if n != '~fingerprint' else ''
-                              for h, n in MainPanel.columns])
+
+        self._init_header()
         self.restore_state()
 
         self.setAcceptDrops(True)
@@ -677,7 +676,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             self._init_header()
 
     def _init_header(self):
-        header = self.header()
+        header = ConfigurableColumnsHeader(self)
+        self.setHeader(header)
+        labels = [_(h) if n != '~fingerprint' else '' for h, n in MainPanel.columns]
+        self.setHeaderLabels(labels)
         header.update_visible_columns([0, 1, 2])
         for i, size in enumerate([250, 50, 100]):
             header.resizeSection(i, size)
