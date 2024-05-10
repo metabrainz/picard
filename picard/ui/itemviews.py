@@ -670,8 +670,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def _restore_state(self, header_state):
         header = self.header()
-        if header_state:
-            header.restoreState(header_state)
+        if header_state and header.restoreState(header_state):
             for i in range(0, self.columnCount()):
                 header.show_column(i, not self.isColumnHidden(i))
         else:
