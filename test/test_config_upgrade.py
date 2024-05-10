@@ -65,6 +65,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_7_0dev5,
     upgrade_to_v2_8_0dev2,
     upgrade_to_v3_0_0dev3,
+    upgrade_to_v3_0_0dev4,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -519,3 +520,24 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v3_0_0dev3(self.config)
         self.assertNotIn('toolbar_multiselect', self.config.setting)
         self.assertTrue(self.config.setting['allow_multi_dirs_selection'])
+
+    def test_upgrade_to_v3_0_0dev4(self):
+        Option('persist', 'album_view_header_state', QByteArray())
+        Option('persist', 'file_view_header_state', QByteArray())
+        BoolOption('persist', 'album_view_header_locked', False)
+        BoolOption('persist', 'file_view_header_locked', False)
+
+        self.config.persist['album_view_header_state'] = b'foo'
+        self.config.persist['file_view_header_state'] = b'bar'
+
+        # test not locked, states shouldn't be modified
+        upgrade_to_v3_0_0dev4(self.config)
+        self.assertEqual(b'foo', self.config.persist['album_view_header_state'])
+        self.assertEqual(b'bar', self.config.persist['file_view_header_state'])
+
+        # test locked, states should be removed
+        self.config.persist['album_view_header_locked'] = True
+        self.config.persist['file_view_header_locked'] = True
+        upgrade_to_v3_0_0dev4(self.config)
+        self.assertEqual(b'', self.config.persist['album_view_header_state'])
+        self.assertEqual(b'', self.config.persist['file_view_header_state'])
