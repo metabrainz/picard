@@ -657,6 +657,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         header_state = config.persist[self.header_state]
         header = self.header()
         if header_state and header.restoreState(header_state):
+            log.debug("Restoring state of %s" % header)
             for i in range(0, self.columnCount()):
                 header.show_column(i, not self.isColumnHidden(i))
 
@@ -669,6 +670,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             state = header.prelock_state
         else:
             state = header.saveState()
+        log.debug("Saving state of %s" % header)
         config.persist[self.header_state] = state
         config.persist[self.header_locked] = header.is_locked
 
