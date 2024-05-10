@@ -396,9 +396,6 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def lock(self, is_locked):
         super().lock(is_locked)
-        column_index = MainPanel.FINGERPRINT_COLUMN
-        if not self.is_locked and self.count() > column_index:
-            self.setSectionResizeMode(column_index, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
     def __str__(self):
         name = getattr(self.parent(), 'NAME', str(self.parent().__class__.__name__))
