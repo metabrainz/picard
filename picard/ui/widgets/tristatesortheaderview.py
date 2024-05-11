@@ -40,6 +40,7 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
 
     def __init__(self, orientation, parent=None):
         super().__init__(orientation, parent)
+        self.prelock_state = None
 
         # Remember if resize / move event just happened
         self._section_moved_or_resized = False
@@ -83,10 +84,12 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
 
     def lock(self, is_locked):
         self.is_locked = is_locked
+        if is_locked:
+            self.prelock_state = self.saveState()
+            self.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
+        else:
+            if self.prelock_state is not None:
+                self.restoreState(self.prelock_state)
+                self.prelock_state = None
         self.setSectionsClickable(not is_locked)
         self.setSectionsMovable(not is_locked)
-        if is_locked:
-            resize_mode = QtWidgets.QHeaderView.ResizeMode.Fixed
-        else:
-            resize_mode = QtWidgets.QHeaderView.ResizeMode.Interactive
-        self.setSectionResizeMode(resize_mode)

@@ -110,6 +110,8 @@ COLUMN_ICON_BORDER = 2
 ICON_SIZE = QtCore.QSize(COLUMN_ICON_SIZE+COLUMN_ICON_BORDER,
                          COLUMN_ICON_SIZE+COLUMN_ICON_BORDER)
 
+DEFAULT_SECTION_SIZE = 100
+
 
 def get_match_color(similarity, basecolor):
     c1 = (basecolor.red(), basecolor.green(), basecolor.blue())
@@ -327,7 +329,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
         #     internal model that QTreeWidget uses doesn't support it
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
-        self.setDefaultSectionSize(100)
+        self.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
     def show_column(self, column, show):
         if column == 0:  # The first column is fixed
@@ -396,24 +398,25 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def lock(self, is_locked):
         super().lock(is_locked)
-        column_index = MainPanel.FINGERPRINT_COLUMN
-        if not self.is_locked and self.count() > column_index:
-            self.setSectionResizeMode(column_index, QtWidgets.QHeaderView.ResizeMode.Fixed)
+
+    def __str__(self):
+        name = getattr(self.parent(), 'NAME', str(self.parent().__class__.__name__))
+        return f"{name}'s header"
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
+        self.setAccessibleName(_(self.NAME))
+        self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
-        self.setHeader(ConfigurableColumnsHeader(self))
         self.window = window
         self.panel = parent
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
-        self.setHeaderLabels([_(h) if n != '~fingerprint' else ''
-                              for h, n in MainPanel.columns])
-        self.restore_state()
+
+        self._init_header()
 
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
@@ -649,28 +652,42 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @restore_method
     def restore_state(self):
         config = get_config()
-        self._restore_state(config.persist[self.header_state])
-        self.header().lock(config.persist[self.header_locked])
+        self.restore_default_columns()
+
+        header_state = config.persist[self.header_state]
+        header = self.header()
+        if header_state and header.restoreState(header_state):
+            log.debug("Restoring state of %s" % header)
+            for i in range(0, self.columnCount()):
+                header.show_column(i, not self.isColumnHidden(i))
+
+        header.lock(config.persist[self.header_locked])
 
     def save_state(self):
         config = get_config()
-        config.persist[self.header_state] = self.header().saveState()
-        config.persist[self.header_locked] = self.header().is_locked
+        header = self.header()
+        if header.prelock_state is not None:
+            state = header.prelock_state
+        else:
+            state = header.saveState()
+        log.debug("Saving state of %s" % header)
+        config.persist[self.header_state] = state
+        config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
-        self._restore_state(None)
+        labels = [_(h) if n != '~fingerprint' else '' for h, n in MainPanel.columns]
+        self.setHeaderLabels(labels)
 
-    def _restore_state(self, header_state):
         header = self.header()
-        if header_state:
-            header.restoreState(header_state)
-            for i in range(0, self.columnCount()):
-                header.show_column(i, not self.isColumnHidden(i))
-        else:
-            header.update_visible_columns([0, 1, 2])
-            for i, size in enumerate([250, 50, 100]):
-                header.resizeSection(i, size)
-            self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
+        header.update_visible_columns([0, 1, 2])
+        for i, size in enumerate([250, 50, 100]):
+            header.resizeSection(i, size)
+        self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
+
+    def _init_header(self):
+        header = ConfigurableColumnsHeader(self)
+        self.setHeader(header)
+        self.restore_state()
 
     def supportedDropActions(self):
         return QtCore.Qt.DropAction.CopyAction | QtCore.Qt.DropAction.MoveAction
@@ -832,13 +849,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
 class FileTreeView(BaseTreeView):
 
+    NAME = N_("file view")
+    DESCRIPTION = N_("Contains unmatched files and clusters")
+
     header_state = 'file_view_header_state'
     header_locked = 'file_view_header_locked'
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
-        self.setAccessibleName(_("file view"))
-        self.setAccessibleDescription(_("Contains unmatched files and clusters"))
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
@@ -867,13 +885,14 @@ class FileTreeView(BaseTreeView):
 
 class AlbumTreeView(BaseTreeView):
 
+    NAME = N_("album view")
+    DESCRIPTION = N_("Contains albums and matched files")
+
     header_state = 'album_view_header_state'
     header_locked = 'album_view_header_locked'
 
     def __init__(self, window, parent=None):
         super().__init__(window, parent)
-        self.setAccessibleName(_("album view"))
-        self.setAccessibleDescription(_("Contains albums and matched files"))
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 

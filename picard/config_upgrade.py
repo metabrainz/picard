@@ -542,6 +542,14 @@ def upgrade_to_v3_0_0dev3(config):
     rename_option(config, old_opt, new_opt, BoolOption, False)
 
 
+def upgrade_to_v3_0_0dev4(config):
+    """Reset "file/album_view_header_state" if there were saved while locked."""
+    if config.persist['album_view_header_locked']:
+        config.persist.remove('album_view_header_state')
+    if config.persist['file_view_header_locked']:
+        config.persist.remove('file_view_header_state')
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
