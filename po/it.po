@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-03-31 10:28+0000\n"
+"PO-Revision-Date: 2024-05-11 10:42+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4244,8 +4244,8 @@ msgid ""
 "Failed to submit rating for track '%(track_title)s' due to server error "
 "%(error)d"
 msgstr ""
-"Non è stato possibile inviare la valutazione per la traccia "
-"'%(track_title)s' a causa dell' errore del server %(error)d"
+"Non è stato possibile inviare la valutazione per la traccia '%(track_title)"
+"s' a causa dell'errore del server %(error)d"
 
 #: picard/ui/savewarningdialog.py:38
 msgid "overwrite existing metadata (tags) within the file"
@@ -5894,10 +5894,10 @@ msgstr ""
 "elencate per la rimozione.\n"
 "\n"
 "Per rimuovere una o più impostazioni, per prima cosa abilita la rimozione "
-"dando la spunta alla casella \"Rimuovi opzioni selezionate\". Potrai poi "
-"selezionare le impostazioni da rimuovere dando la spunta alla casella a "
-"fianco di ogni impostazione. Quando clicchi su \"Applica\" per salvare le "
-"tue impostazioni di opzione, gli elementi selezionati saranno rimossi."
+"spuntando la casella \"Rimuovi opzioni selezionate\". Potrai poi selezionare "
+"le impostazioni da rimuovere spuntando la casella a fianco di ogni "
+"impostazione. Quando clicchi su \"Applica\" per salvare le tue impostazioni "
+"di opzione, gli elementi selezionati saranno rimossi."
 
 #: picard/ui/options/maintenance.py:93
 msgid "Value"
@@ -5926,7 +5926,7 @@ msgid ""
 "for more details."
 msgstr ""
 "Si è verificato un problema durante il salvataggio del file di "
-"configurazione. Controlla il registro per più dettagli."
+"configurazione. Consulta il registro per più dettagli."
 
 #: picard/ui/options/maintenance.py:216
 #, python-format
@@ -5961,7 +5961,7 @@ msgid ""
 "for more details."
 msgstr ""
 "Si è verificato un problema durante il ripristino del file di "
-"configurazione. Controlla il registro per più dettagli."
+"configurazione. Consulta il registro per più dettagli."
 
 #: picard/ui/options/maintenance.py:295
 #: picard/ui/widgets/profilelistwidget.py:84
