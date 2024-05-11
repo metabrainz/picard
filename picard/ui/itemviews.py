@@ -459,6 +459,19 @@ def _build_other_versions_actions(releases_menu, album, alternative_versions):
         yield action
 
 
+def _add_other_versions(releases_menu, album, action_loading):
+
+    alt_versions = list(_alternative_versions(album))
+
+    alt_versions_count = len(alt_versions)
+    if alt_versions_count > 1:
+        releases_menu.setTitle(_("&Other versions (%d)") % alt_versions_count)
+
+    actions = _build_other_versions_actions(releases_menu, album, alt_versions)
+    releases_menu.insertActions(action_loading, actions)
+    releases_menu.removeAction(action_loading)
+
+
 class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
@@ -576,38 +589,28 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
             releases_menu.setToolTipsVisible(True)
+            releases_menu.setEnabled(False)
             add_actions(
                 '-',
                 releases_menu,
             )
-            action_loading = releases_menu.addAction(_("Loading…"))
-            action_loading.setDisabled(True)
-            releases_menu.addSeparator()
             action_more_details = releases_menu.addAction(_("Show &more details…"))
             action_more_details.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
-            if len(self.selectedItems()) == 1 and obj.release_group:
+            album = obj
+            if len(self.selectedItems()) == 1 and album.release_group:
+                action_loading = QtGui.QAction(_("Loading…"), parent=releases_menu)
+                action_loading.setDisabled(True)
+                action_other_versions_separator = QtGui.QAction(parent=releases_menu)
+                action_other_versions_separator.setSeparator(True)
+                releases_menu.insertActions(action_more_details, [action_loading, action_other_versions_separator])
 
-                def _add_other_versions():
-                    album = obj
-
-                    alt_versions = list(_alternative_versions(album))
-
-                    alt_versions_count = len(alt_versions)
-                    if alt_versions_count > 1:
-                        releases_menu.setTitle(_("&Other versions (%d)") % alt_versions_count)
-
-                    actions = _build_other_versions_actions(releases_menu, album, alt_versions)
-                    releases_menu.insertActions(action_loading, actions)
-                    releases_menu.removeAction(action_loading)
-
-                if obj.release_group.loaded:
-                    _add_other_versions()
+                if album.release_group.loaded:
+                    _add_other_versions(releases_menu, album, action_loading)
                 else:
-                    obj.release_group.load_versions(_add_other_versions)
+                    callback = partial(_add_other_versions, releases_menu, album, action_loading)
+                    album.release_group.load_versions(callback)
                 releases_menu.setEnabled(True)
-            else:
-                releases_menu.setEnabled(False)
 
         if config.setting['enable_ratings'] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
