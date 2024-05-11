@@ -403,6 +403,62 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         return f"{name}'s header"
 
 
+def _alternative_versions(album):
+    config = get_config()
+    versions = album.release_group.versions
+
+    album_tracks_count = album.get_num_total_files() or len(album.tracks)
+    preferred_countries = set(config.setting['preferred_release_countries'])
+    preferred_formats = set(config.setting['preferred_release_formats'])
+    ORDER_BEFORE, ORDER_AFTER = 0, 1
+
+    alternatives = []
+    for version in versions:
+        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
+        if version['totaltracks'] != album_tracks_count:
+            trackmatch = ORDER_AFTER
+        if preferred_countries:
+            countries = set(version['countries'])
+            if not countries or not countries.intersection(preferred_countries):
+                countrymatch = ORDER_AFTER
+        if preferred_formats:
+            formats = set(version['formats'])
+            if not formats or not formats.intersection(preferred_formats):
+                formatmatch = ORDER_AFTER
+        group = (trackmatch, countrymatch, formatmatch)
+        # order by group, name, and id on push
+        heappush(alternatives, (group, version['name'], version['id'], version['extra']))
+
+    while alternatives:
+        yield heappop(alternatives)
+
+
+def _build_other_versions_actions(releases_menu, album, alternative_versions):
+    heading = QtGui.QAction(album.release_group.version_headings, parent=releases_menu)
+    heading.setDisabled(True)
+    font = heading.font()
+    font.setBold(True)
+    heading.setFont(font)
+    yield heading
+
+    prev_group = None
+    for group, action_text, release_id, extra in alternative_versions:
+        if group != prev_group:
+            if prev_group is not None:
+                sep = QtGui.QAction(parent=releases_menu)
+                sep.setSeparator(True)
+                yield sep
+            prev_group = group
+        action = QtGui.QAction(action_text, parent=releases_menu)
+        action.setCheckable(True)
+        if extra:
+            action.setToolTip(extra)
+        if album.id == release_id:
+            action.setChecked(True)
+        action.triggered.connect(partial(album.switch_release_version, release_id))
+        yield action
+
+
 class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
@@ -531,58 +587,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             action_more_details.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
             if len(self.selectedItems()) == 1 and obj.release_group:
-                def _alternative_versions(album):
-                    versions = album.release_group.versions
-
-                    album_tracks_count = album.get_num_total_files() or len(album.tracks)
-                    preferred_countries = set(config.setting['preferred_release_countries'])
-                    preferred_formats = set(config.setting['preferred_release_formats'])
-                    ORDER_BEFORE, ORDER_AFTER = 0, 1
-
-                    alternatives = []
-                    for version in versions:
-                        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
-                        if version['totaltracks'] != album_tracks_count:
-                            trackmatch = ORDER_AFTER
-                        if preferred_countries:
-                            countries = set(version['countries'])
-                            if not countries or not countries.intersection(preferred_countries):
-                                countrymatch = ORDER_AFTER
-                        if preferred_formats:
-                            formats = set(version['formats'])
-                            if not formats or not formats.intersection(preferred_formats):
-                                formatmatch = ORDER_AFTER
-                        group = (trackmatch, countrymatch, formatmatch)
-                        # order by group, name, and id on push
-                        heappush(alternatives, (group, version['name'], version['id'], version['extra']))
-
-                    while alternatives:
-                        yield heappop(alternatives)
-
-                def _build_other_versions_actions(album, alternative_versions):
-                    heading = QtGui.QAction(album.release_group.version_headings, parent=releases_menu)
-                    heading.setDisabled(True)
-                    font = heading.font()
-                    font.setBold(True)
-                    heading.setFont(font)
-                    yield heading
-
-                    prev_group = None
-                    for group, action_text, release_id, extra in alternative_versions:
-                        if group != prev_group:
-                            if prev_group is not None:
-                                sep = QtGui.QAction(parent=releases_menu)
-                                sep.setSeparator(True)
-                                yield sep
-                            prev_group = group
-                        action = QtGui.QAction(action_text, parent=releases_menu)
-                        action.setCheckable(True)
-                        if extra:
-                            action.setToolTip(extra)
-                        if album.id == release_id:
-                            action.setChecked(True)
-                        action.triggered.connect(partial(album.switch_release_version, release_id))
-                        yield action
 
                 def _add_other_versions():
                     album = obj
@@ -593,7 +597,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     if alt_versions_count > 1:
                         releases_menu.setTitle(_("&Other versions (%d)") % alt_versions_count)
 
-                    releases_menu.insertActions(action_loading, _build_other_versions_actions(album, alt_versions))
+                    actions = _build_other_versions_actions(releases_menu, album, alt_versions)
+                    releases_menu.insertActions(action_loading, actions)
                     releases_menu.removeAction(action_loading)
 
                 if obj.release_group.loaded:
