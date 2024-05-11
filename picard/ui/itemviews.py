@@ -533,11 +533,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 def _add_other_versions():
                     releases_menu.removeAction(action_loading)
                     releases_menu.removeAction(action_more_details)
-                    heading = releases_menu.addAction(obj.release_group.version_headings)
+
+                    heading = QtGui.QAction(obj.release_group.version_headings, parent=releases_menu)
                     heading.setDisabled(True)
                     font = heading.font()
                     font.setBold(True)
                     heading.setFont(font)
+                    releases_menu.addAction(heading)
 
                     versions = obj.release_group.versions
 
@@ -568,15 +570,18 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                         group, action_text, release_id, extra = heappop(alternatives)
                         if group != prev_group:
                             if prev_group is not None:
-                                releases_menu.addSeparator()
+                                sep = QtGui.QAction(parent=releases_menu)
+                                sep.setSeparator(True)
+                                releases_menu.addAction(sep)
                             prev_group = group
-                        action = releases_menu.addAction(action_text)
+                        action = QtGui.QAction(action_text, parent=releases_menu)
                         action.setCheckable(True)
                         if extra:
                             action.setToolTip(extra)
                         if obj.id == release_id:
                             action.setChecked(True)
                         action.triggered.connect(partial(obj.switch_release_version, release_id))
+                        releases_menu.addAction(action)
 
                     versions_count = len(versions)
                     if versions_count > 1:
