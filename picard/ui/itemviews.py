@@ -526,20 +526,19 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             )
             action_loading = releases_menu.addAction(_("Loading…"))
             action_loading.setDisabled(True)
+            releases_menu.addSeparator()
             action_more_details = releases_menu.addAction(_("Show &more details…"))
             action_more_details.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
             if len(self.selectedItems()) == 1 and obj.release_group:
                 def _add_other_versions():
-                    releases_menu.removeAction(action_loading)
-                    releases_menu.removeAction(action_more_details)
 
                     heading = QtGui.QAction(obj.release_group.version_headings, parent=releases_menu)
                     heading.setDisabled(True)
                     font = heading.font()
                     font.setBold(True)
                     heading.setFont(font)
-                    releases_menu.addAction(heading)
+                    releases_menu.insertAction(action_loading, heading)
 
                     versions = obj.release_group.versions
 
@@ -572,7 +571,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                             if prev_group is not None:
                                 sep = QtGui.QAction(parent=releases_menu)
                                 sep.setSeparator(True)
-                                releases_menu.addAction(sep)
+                                releases_menu.insertAction(action_loading, sep)
                             prev_group = group
                         action = QtGui.QAction(action_text, parent=releases_menu)
                         action.setCheckable(True)
@@ -581,14 +580,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                         if obj.id == release_id:
                             action.setChecked(True)
                         action.triggered.connect(partial(obj.switch_release_version, release_id))
-                        releases_menu.addAction(action)
+                        releases_menu.insertAction(action_loading, action)
 
                     versions_count = len(versions)
                     if versions_count > 1:
                         releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
 
-                    releases_menu.addSeparator()
-                    action = releases_menu.addAction(action_more_details)
+                    releases_menu.removeAction(action_loading)
 
                 if obj.release_group.loaded:
                     _add_other_versions()
