@@ -531,18 +531,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             action_more_details.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
             if len(self.selectedItems()) == 1 and obj.release_group:
-                def _add_other_versions():
+                def _alternative_versions(album):
+                    versions = album.release_group.versions
 
-                    heading = QtGui.QAction(obj.release_group.version_headings, parent=releases_menu)
-                    heading.setDisabled(True)
-                    font = heading.font()
-                    font.setBold(True)
-                    heading.setFont(font)
-                    releases_menu.insertAction(action_loading, heading)
-
-                    versions = obj.release_group.versions
-
-                    album_tracks_count = obj.get_num_total_files() or len(obj.tracks)
+                    album_tracks_count = album.get_num_total_files() or len(album.tracks)
                     preferred_countries = set(config.setting['preferred_release_countries'])
                     preferred_formats = set(config.setting['preferred_release_formats'])
                     ORDER_BEFORE, ORDER_AFTER = 0, 1
@@ -564,28 +556,44 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                         # order by group, name, and id on push
                         heappush(alternatives, (group, version['name'], version['id'], version['extra']))
 
-                    prev_group = None
                     while alternatives:
-                        group, action_text, release_id, extra = heappop(alternatives)
+                        yield heappop(alternatives)
+
+                def _build_other_versions_actions(album, alternative_versions):
+                    heading = QtGui.QAction(album.release_group.version_headings, parent=releases_menu)
+                    heading.setDisabled(True)
+                    font = heading.font()
+                    font.setBold(True)
+                    heading.setFont(font)
+                    yield heading
+
+                    prev_group = None
+                    for group, action_text, release_id, extra in alternative_versions:
                         if group != prev_group:
                             if prev_group is not None:
                                 sep = QtGui.QAction(parent=releases_menu)
                                 sep.setSeparator(True)
-                                releases_menu.insertAction(action_loading, sep)
+                                yield sep
                             prev_group = group
                         action = QtGui.QAction(action_text, parent=releases_menu)
                         action.setCheckable(True)
                         if extra:
                             action.setToolTip(extra)
-                        if obj.id == release_id:
+                        if album.id == release_id:
                             action.setChecked(True)
-                        action.triggered.connect(partial(obj.switch_release_version, release_id))
-                        releases_menu.insertAction(action_loading, action)
+                        action.triggered.connect(partial(album.switch_release_version, release_id))
+                        yield action
 
-                    versions_count = len(versions)
-                    if versions_count > 1:
-                        releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
+                def _add_other_versions():
+                    album = obj
 
+                    alt_versions = list(_alternative_versions(album))
+
+                    alt_versions_count = len(alt_versions)
+                    if alt_versions_count > 1:
+                        releases_menu.setTitle(_("&Other versions (%d)") % alt_versions_count)
+
+                    releases_menu.insertActions(action_loading, _build_other_versions_actions(album, alt_versions))
                     releases_menu.removeAction(action_loading)
 
                 if obj.release_group.loaded:
