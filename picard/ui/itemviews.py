@@ -450,8 +450,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu_builder(menu, self.window.actions, *args)
 
         if isinstance(obj, Track):
-            if can_view_info:
-                add_actions(MainAction.VIEW_INFO)
+            add_actions(
+                MainAction.VIEW_INFO if can_view_info else None,
+            )
             plugin_actions = list(ext_point_track_actions)
             if obj.num_linked_files == 1:
                 add_actions(
