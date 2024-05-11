@@ -13,18 +13,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-04-28 11:42+0000\n"
+"PO-Revision-Date: 2024-05-11 10:42+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
-"Language-Team: Italian <https://translations.metabrainz.org/projects/"
-"picard/3/app/it/>\n"
+"Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
+"3/app/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.5.2\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.5.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:155
@@ -205,10 +205,8 @@ msgid "Debug"
 msgstr "Debug"
 
 #: picard/oauth.py:197
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Errore inatteso nell'autenticazione"
+msgstr "Errore inatteso nella revoca del token"
 
 #: picard/oauth.py:348 picard/oauth.py:375
 msgid "Unexpected authentication error"
@@ -433,10 +431,8 @@ msgid "Tags to show at the top"
 msgstr "Etichette da mostrare in cima alla lista"
 
 #: picard/options.py:258
-#, fuzzy
-#| msgid "Destination directory"
 msgid "Automatic backup destination directory"
-msgstr "Cartella di destinazione"
+msgstr "Cartella di destinazione del backup automatico"
 
 #: picard/options.py:262
 msgid "Minimal similarity for cluster lookups"
@@ -3366,16 +3362,15 @@ msgstr "Album non modificato"
 
 #: picard/ui/itemviews.py:1116
 msgid "There are no files matched to this track"
-msgstr ""
+msgstr "Non ci sono file corrispondenti a questa traccia"
 
 #: picard/ui/itemviews.py:1118
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "File non riconosciuti"
-msgstr[1] "File non riconosciuti"
-msgstr[2] "File non riconosciuti"
+msgstr[0] "%i file riconosciuto"
+msgstr[1] "%i di file riconosciuti"
+msgstr[2] "%i file riconosciuti"
 
 #: picard/ui/itemviews.py:1156
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -3385,11 +3380,11 @@ msgstr ""
 
 #: picard/ui/itemviews.py:1198
 msgid "File not found"
-msgstr ""
+msgstr "File non trovato"
 
 #: picard/ui/itemviews.py:1201
 msgid "File permission error"
-msgstr ""
+msgstr "Errore nei permessi del file"
 
 #: picard/ui/itemviews.py:1204
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
@@ -3714,8 +3709,8 @@ msgid ""
 "Failed to submit rating for track '%(track_title)s' due to server error "
 "%(error)d"
 msgstr ""
-"Non è stato possibile inviare la valutazione per la traccia "
-"'%(track_title)s' a causa dell' errore del server %(error)d"
+"Non è stato possibile inviare la valutazione per la traccia '%(track_title)"
+"s' a causa dell'errore del server %(error)d"
 
 #: picard/ui/savewarningdialog.py:44
 msgid "overwrite existing metadata (tags) within the file"
@@ -4465,32 +4460,24 @@ msgstr ""
 "metadati"
 
 #: picard/ui/ui_options_maintenance.py:143
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Configuration file:"
-msgstr "File di configurazione"
+msgstr "File di configurazione:"
 
 #: picard/ui/ui_options_maintenance.py:144
-#, fuzzy
-#| msgid "Open folder"
 msgid "Open folder…"
-msgstr "Apri cartella"
+msgstr "Apri cartella…"
 
 #: picard/ui/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
-msgstr ""
+msgstr "Cartella dei backup automatici della configurazione:"
 
 #: picard/ui/ui_options_maintenance.py:147
-#, fuzzy
-#| msgid "Load Backup"
 msgid "Load backup…"
-msgstr "Carica backup"
+msgstr "Carica backup…"
 
 #: picard/ui/ui_options_maintenance.py:148
-#, fuzzy
-#| msgid "Save Backup"
 msgid "Save backup…"
-msgstr "Salva backup"
+msgstr "Salva backup…"
 
 #: picard/ui/ui_options_maintenance.py:149
 msgid "Select all"
@@ -5622,12 +5609,12 @@ msgstr "Copertine"
 
 #: picard/ui/options/dialog.py:111
 msgid "This page failed to initialize"
-msgstr ""
+msgstr "Non è stato possibile avviare la pagina"
 
 #: picard/ui/options/dialog.py:114
 #, python-format
 msgid "Error while initializing option page '%s':"
-msgstr ""
+msgstr "Errore nell'avvio della pagina di opzioni '%s':"
 
 #: picard/ui/options/dialog.py:131
 #, python-format
@@ -5635,12 +5622,13 @@ msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
 "report a bug."
 msgstr ""
+"Consulta la <a href=\"%s\">documentazione sulla risoluzione problemi</a> e, "
+"eventualmente, segnala un bug."
 
 #: picard/ui/options/dialog.py:157
-#, fuzzy, python-format
-#| msgid "%s (Copy)"
+#, python-format
 msgid "%s (error)"
-msgstr "%s (Copia)"
+msgstr "%s (errore)"
 
 #: picard/ui/options/dialog.py:183
 msgid "&Restore all Defaults"
@@ -5732,10 +5720,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Accesso effettuato come <b>%s</b>."
 
 #: picard/ui/options/general.py:174
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Errore di ricerca del CD"
+msgstr "Errore nella disconnessione"
 
 #: picard/ui/options/general.py:175
 #, python-format
@@ -5744,6 +5730,10 @@ msgid ""
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Si è verificato un errore del server durante la revoca dell'accesso al "
+"server di MusicBrainz: %s\n"
+"\n"
+"Vuoi comunque rimuovere le credenziali memorizzate in locale?"
 
 #: picard/ui/options/genres.py:45
 msgid ""
@@ -5968,10 +5958,8 @@ msgid "Drag and Drop to re-order"
 msgstr "Trascina per riordinare"
 
 #: picard/ui/options/interface_toolbar.py:265
-#, fuzzy
-#| msgid "Select all"
 msgid "Select an action"
-msgstr "Seleziona tutto"
+msgstr "Seleziona un'azione"
 
 #: picard/ui/options/interface_top_tags.py:38
 msgid "Top Tags"
@@ -5982,26 +5970,6 @@ msgid "Maintenance"
 msgstr "Manutenzione"
 
 #: picard/ui/options/maintenance.py:87
-#, fuzzy
-#| msgid ""
-#| "This allows you to remove unused option settings from the configuration "
-#| "INI file.\n"
-#| "\n"
-#| "Settings that are found in the configuration file that do not appear on "
-#| "any option settings page will be listed below. If your configuration file "
-#| "does not contain any unused option settings, then the list will be empty "
-#| "and the removal checkbox will be disabled.\n"
-#| "\n"
-#| "Note that unused option settings could come from plugins that have been "
-#| "uninstalled, so please be careful to not remove settings that you may "
-#| "want to use later when the plugin is reinstalled. Options belonging to "
-#| "plugins that are installed but currently disabled will not be listed for "
-#| "possible removal.\n"
-#| "\n"
-#| "To remove one or more settings, first enable the removal by checking the "
-#| "\"Remove selected options\" box. You can then select the settings to "
-#| "remove by checking the box next to the setting. When you choose \"Make It "
-#| "So!\" to save your option settings, the selected items will be removed."
 msgid ""
 "Settings that are found in the configuration file that do not appear on any "
 "option settings page are listed below. If your configuration file does not "
@@ -6019,9 +5987,6 @@ msgid ""
 "the \"Remove selected options\" box. When you choose \"Make It So!\" to save "
 "your option settings, the selected items will be removed."
 msgstr ""
-"Quest'opzione ti permette di rimuovere le impostazioni di opzioni "
-"inutilizzate dal file INI di configurazione.\n"
-"\n"
 "Le impostazioni trovate nel file di configurazione che non compaiono in "
 "nessuna pagina di impostazioni di opzione sono elencate qui sotto. Se il tuo "
 "file di configurazione non contiene nessuna impostazione di opzione "
@@ -6031,24 +5996,22 @@ msgstr ""
 "Le impostazioni di opzione inutilizzate potrebbero provenire da plugin che "
 "sono stati disinstallati, perciò fai attenzione a non rimuovere impostazioni "
 "che potresti voler usare in futuro reinstallando il plugin. Le opzioni "
-"appartenenti a plugin installati ma attualmente disabilitati non saranno "
-"elencate per la rimozione.\n"
+"appartenenti a plugin installati ma attualmente disabilitati non sono "
+"elencate per la possibile rimozione.\n"
 "\n"
-"Per rimuovere una o più impostazioni, per prima cosa abilita la rimozione "
-"dando la spunta alla casella \"Rimuovi opzioni selezionate\". Potrai poi "
-"selezionare le impostazioni da rimuovere dando la spunta alla casella a "
-"fianco di ogni impostazione. Quando clicchi su \"Applica\" per salvare le "
-"tue impostazioni di opzione, gli elementi selezionati saranno rimossi."
+"Per rimuovere una o più impostazioni, seleziona quelle che vuoi rimuovere "
+"spuntando la casella di fianco all'impostazione e abilita la rimozione "
+"spuntando la casella \"Rimuovi opzioni selezionate\". Quando clicchi su "
+"\"Applica\" per salvare le tue impostazioni di opzione, gli elementi "
+"selezionati saranno rimossi."
 
 #: picard/ui/options/maintenance.py:101
 msgid "Value"
 msgstr "Valore"
 
 #: picard/ui/options/maintenance.py:137
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration File Backup Directory Error"
-msgstr "Configurazione richiesta"
+msgstr "Errore nella cartella di backup del file di configurazione"
 
 #: picard/ui/options/maintenance.py:138
 #, python-format
@@ -6056,54 +6019,51 @@ msgid ""
 "The path provided isn't a valid directory, reverting to:\n"
 "%s\n"
 msgstr ""
+"Il percorso fornito non è una cartella valida, ritorno al seguente:\n"
+"%s\n"
 
 #: picard/ui/options/maintenance.py:172
-#, fuzzy, python-format
-#| msgid ""
-#| "The configuration file currently contains %(totalcount)d option settings, "
-#| "%(unusedcount)d which are unused."
+#, python-format
 msgid ""
 "The configuration file currently contains %(totalcount)d option settings "
 "(%(unusedcount)d unused)."
 msgstr ""
 "Il file di configurazione contiene attualmente %(totalcount)d impostazioni "
-"di opzione, di cui %(unusedcount)d inutilizzate."
+"di opzione (%(unusedcount)d inutilizzate)."
 
 #: picard/ui/options/maintenance.py:210
 msgid "Configuration files"
 msgstr "File di configurazione"
 
 #: picard/ui/options/maintenance.py:228
-#, fuzzy
-#| msgid "Backup Configuration File"
 msgid "Backup Configuration File Save Error"
-msgstr "File di configurazione di backup"
+msgstr "Errore nel salvataggio del file di configurazione di backup"
 
 #: picard/ui/options/maintenance.py:229
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "Failed to save the configuration file to:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
 msgstr ""
-"Si è verificato un problema durante il ripristino del file di "
-"configurazione. Controlla il registro per più dettagli."
+"Non è stato possibile salvare il file di configurazione in:\n"
+"%s\n"
+"\n"
+"Consulta il registro per più dettagli."
 
 #: picard/ui/options/maintenance.py:241 picard/ui/options/maintenance.py:250
 msgid "Backup Configuration File"
 msgstr "File di configurazione di backup"
 
 #: picard/ui/options/maintenance.py:251
-#, fuzzy, python-format
-#| msgid "Configuration successfully backed up to %s"
+#, python-format
 msgid ""
 "Configuration successfully backed up to:\n"
 "%s"
-msgstr "Configurazione salvata con successo in %s"
+msgstr ""
+"Configurazione salvata con successo in:\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:281 picard/ui/options/maintenance.py:296
 #: picard/ui/options/maintenance.py:307
@@ -6111,13 +6071,7 @@ msgid "Load Backup Configuration File"
 msgstr "Carica file di configurazione di backup"
 
 #: picard/ui/options/maintenance.py:282
-#, fuzzy, python-format
-#| msgid ""
-#| "Loading a backup configuration file will replace the current "
-#| "configuration settings. A backup copy of the current file will be saved "
-#| "automatically.\n"
-#| "\n"
-#| "Do you want to continue?"
+#, python-format
 msgid ""
 "Loading a backup configuration file will replace the current configuration "
 "settings.\n"
@@ -6128,38 +6082,39 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 "Caricare un file di configurazione di backup sostituirà le impostazioni di "
-"configurazione attuali. Una copia di backup del file attuale sarà salvata "
-"automaticamente.\n"
+"configurazione attuali.\n"
+"Prima di qualsiasi modifica, la configurazione attuale sarà salvata "
+"automaticamente in:\n"
+"%s\n"
 "\n"
 "Vuoi continuare?"
 
 #: picard/ui/options/maintenance.py:297
-#, fuzzy, python-format
-#| msgid "Configuration successfully loaded from %s"
+#, python-format
 msgid ""
 "Configuration successfully loaded from:\n"
 "%s"
-msgstr "Configurazione caricata con successo da %s"
+msgstr ""
+"Configurazione caricata con successo da:\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:308
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "There was a problem restoring the configuration file from:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
 msgstr ""
-"Si è verificato un problema durante il ripristino del file di "
-"configurazione. Controlla il registro per più dettagli."
+"Si è verificato un problema durante il ripristino del file di configurazione "
+"da:\n"
+"%s\n"
+"\n"
+"Consulta il registro per più dettagli."
 
 #: picard/ui/options/maintenance.py:320
-#, fuzzy
-#| msgid "Configuration File:"
 msgid "Select Configuration File to Load"
-msgstr "File di configurazione:"
+msgstr "Seleziona il file di configurazione da caricare"
 
 #: picard/ui/options/maintenance.py:369
 #: picard/ui/widgets/profilelistwidget.py:88
@@ -6326,10 +6281,8 @@ msgid "Settings to include in profile"
 msgstr "Impostazioni da includere nel profilo"
 
 #: picard/ui/options/profiles.py:214
-#, fuzzy
-#| msgid "Title"
 msgid "title"
-msgstr "Titolo"
+msgstr "titolo"
 
 #: picard/ui/options/profiles.py:251
 msgid "Unknown script"
