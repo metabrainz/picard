@@ -262,7 +262,6 @@ class MainPanel(QtWidgets.QSplitter):
             QtGui.QIcon(":/images/match-pending-90.png"),
             QtGui.QIcon(":/images/match-pending-100.png"),
         ]
-        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def _update_selection(self, selected_view):
         for view in self._views:
@@ -412,7 +411,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
         self.window = window
-        self.panel = parent
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
 
@@ -434,6 +432,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.select_all_action.setShortcut(QtGui.QKeySequence(_("Ctrl+A")))
         self.doubleClicked.connect(self.activate_item)
         self.setUniformRowHeights(True)
+
+        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
@@ -613,7 +613,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtWidgets.QMenu(_("P&lugins"), menu)
-            plugin_menu.setIcon(self.panel.icon_plugins)
+            plugin_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',
                 plugin_menu,
@@ -632,7 +632,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if scripts:
             scripts_menu = ScriptsMenu(scripts, _("&Run scripts"), menu)
-            scripts_menu.setIcon(self.panel.icon_plugins)
+            scripts_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',
                 scripts_menu,
