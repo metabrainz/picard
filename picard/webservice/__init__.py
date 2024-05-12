@@ -5,7 +5,7 @@
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2018-2022, 2024 Philipp Wolfer
 # Copyright (C) 2018-2023 Laurent Monin
 # Copyright (C) 2021 Tche333
 #
@@ -218,8 +218,9 @@ class WSRequest(QNetworkRequest):
         return self.mblogin and self.access_token
 
     def _update_authorization_header(self):
-        auth = 'Bearer ' + self.access_token if self.has_auth else ''
-        self.setRawHeader(b'Authorization', auth.encode('utf-8'))
+        if self.has_auth:
+            auth = 'Bearer ' + self.access_token
+            self.setRawHeader(b'Authorization', auth.encode('utf-8'))
 
     @property
     def host(self):
