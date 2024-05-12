@@ -103,6 +103,7 @@ from picard.ui.itemviews.columns import (
     DEFAULT_COLUMNS,
     ITEM_ICON_COLUMN,
     ColumnAlign,
+    ColumnSortType,
 )
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
@@ -956,14 +957,11 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if sortkey is not None:
             return sortkey
 
-        if column == MainPanel.LENGTH_COLUMN:
-            sortkey = self.obj.metadata.length or 0
-        elif column == MainPanel.FILESIZE_COLUMN:
-            try:
-                sortkey = int(self.obj.metadata['~filesize'] or self.obj.orig_metadata['~filesize'])
-            except ValueError:
-                sortkey = 0
-        elif column in MainPanel.NAT_SORT_COLUMNS:
+        this_column = DEFAULT_COLUMNS[column]
+
+        if this_column.sort_type == ColumnSortType.SORTKEY:
+            sortkey = this_column.sortkey(self.obj)
+        elif this_column.sort_type == ColumnSortType.NAT:
             sortkey = natsort.natkey(self.text(column))
         else:
             sortkey = strxfrm(self.text(column))
