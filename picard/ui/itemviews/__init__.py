@@ -102,6 +102,7 @@ from picard.ui.enums import MainAction
 from picard.ui.itemviews.columns import (
     DEFAULT_COLUMNS,
     ITEM_ICON_COLUMN,
+    ColumnAlign,
 )
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
@@ -938,14 +939,6 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             obj.item = self
         self.sortable = sortable
         self._sortkeys = {}
-        for column in (
-            MainPanel.LENGTH_COLUMN,
-            MainPanel.FILESIZE_COLUMN,
-            MainPanel.TRACKNUMBER_COLUMN,
-            MainPanel.DISCNUMBER_COLUMN,
-        ):
-            self.setTextAlignment(column, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.setSizeHint(MainPanel.FINGERPRINT_COLUMN, ICON_SIZE)
 
     def setText(self, column, text):
         self._sortkeys[column] = None
@@ -979,11 +972,16 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 
     def update_colums_text(self, color=None, bgcolor=None):
         for i, column in enumerate(DEFAULT_COLUMNS):
-            self.setText(i, self.obj.column(column.key))
             if color is not None:
                 self.setForeground(i, color)
             if bgcolor is not None:
                 self.setBackground(i, bgcolor)
+            if column.is_icon:
+                self.setSizeHint(i, column.header_icon_size_with_border)
+            else:
+                if column.align == ColumnAlign.RIGHT:
+                    self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                self.setText(i, self.obj.column(column.key))
 
 
 class ClusterItem(TreeItem):
