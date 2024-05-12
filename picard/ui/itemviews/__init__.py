@@ -700,7 +700,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
-        labels = [_(h) if n != '~fingerprint' else '' for h, n in MainPanel.columns]
+        labels = [_(c.title) if not c.is_icon else '' for c in DEFAULT_COLUMNS]
         self.setHeaderLabels(labels)
 
         header = self.header()
