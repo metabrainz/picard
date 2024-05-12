@@ -323,8 +323,6 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         # The following are settings applied to default headers
         # of QTreeView and QTreeWidget.
         self.setSectionsMovable(True)
-        self.setStretchLastSection(True)
-        self.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.setSectionsClickable(False)
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
@@ -332,7 +330,6 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
         #     internal model that QTreeWidget uses doesn't support it
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
-        self.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
     def show_column(self, column, show):
         if column == ITEM_ICON_COLUMN:  # The first column is fixed
@@ -704,6 +701,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setHeaderLabels(labels)
 
         header = self.header()
+        header.setStretchLastSection(True)
+        header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
+
         header.update_visible_columns([0, 1, 2])
         for i, size in enumerate([250, 50, 100]):
             header.resizeSection(i, size)
