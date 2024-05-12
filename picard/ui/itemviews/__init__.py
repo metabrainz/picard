@@ -99,7 +99,10 @@ from picard.util import (
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
 from picard.ui.enums import MainAction
-from picard.ui.itemviews.columns import ITEM_ICON_COLUMN
+from picard.ui.itemviews.columns import (
+    DEFAULT_COLUMNS,
+    ITEM_ICON_COLUMN,
+)
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -348,17 +351,17 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             self._visible_columns.remove(column)
 
     def update_visible_columns(self, columns):
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(DEFAULT_COLUMNS):
             self.show_column(i, i in columns)
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
 
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(DEFAULT_COLUMNS):
             if i == ITEM_ICON_COLUMN:
                 continue
-            action = QtGui.QAction(_(column[0]), parent)
+            action = QtGui.QAction(_(column.title), parent)
             action.setCheckable(True)
             action.setChecked(i in self._visible_columns)
             action.setEnabled(not self.is_locked)
@@ -925,11 +928,11 @@ class AlbumTreeView(BaseTreeView):
         else:
             item = AlbumItem(album, True, self)
         item.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
-        for i, column in enumerate(MainPanel.columns):
+        for i, column in enumerate(DEFAULT_COLUMNS):
             font = item.font(i)
             font.setBold(True)
             item.setFont(i, font)
-            item.setText(i, album.column(column[1]))
+            item.setText(i, album.column(column.key))
         self.add_cluster(album.unmatched_files, item)
 
     def remove_album(self, album):
@@ -993,8 +996,8 @@ class ClusterItem(TreeItem):
         self.setIcon(ITEM_ICON_COLUMN, ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, self.obj.column(column[1]))
+        for i, column in enumerate(DEFAULT_COLUMNS):
+            self.setText(i, self.obj.column(column.key))
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
@@ -1081,8 +1084,8 @@ class AlbumItem(TreeItem):
             else:
                 self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
                 self.setToolTip(ITEM_ICON_COLUMN, _("Album unchanged"))
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, album.column(column[1]))
+        for i, column in enumerate(DEFAULT_COLUMNS):
+            self.setText(i, album.column(column.key))
         if selection_changed and update_selection:
             TreeItem.window.update_selection(new_selection=False)
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
@@ -1168,8 +1171,8 @@ class TrackItem(TreeItem):
         else:
             self.setIcon(ITEM_ICON_COLUMN, icon)
             self.setToolTip(ITEM_ICON_COLUMN, icon_tooltip)
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, track.column(column[1]))
+        for i, column in enumerate(DEFAULT_COLUMNS):
+            self.setText(i, track.column(column.key))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
         if update_selection and self.isSelected():
@@ -1190,8 +1193,8 @@ class FileItem(TreeItem):
         self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, file.column(column[1]))
+        for i, column in enumerate(DEFAULT_COLUMNS):
+            self.setText(i, file.column(column.key))
             self.setForeground(i, color)
             self.setBackground(i, bgcolor)
         if update_selection and self.isSelected():
