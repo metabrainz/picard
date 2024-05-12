@@ -988,6 +988,14 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self._sortkeys[column] = sortkey
         return sortkey
 
+    def update_colums_text(self, color=None, bgcolor=None):
+        for i, column in enumerate(DEFAULT_COLUMNS):
+            self.setText(i, self.obj.column(column.key))
+            if color is not None:
+                self.setForeground(i, color)
+            if bgcolor is not None:
+                self.setBackground(i, bgcolor)
+
 
 class ClusterItem(TreeItem):
 
@@ -996,8 +1004,7 @@ class ClusterItem(TreeItem):
         self.setIcon(ITEM_ICON_COLUMN, ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
-        for i, column in enumerate(DEFAULT_COLUMNS):
-            self.setText(i, self.obj.column(column.key))
+        self.update_colums_text()
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
@@ -1084,8 +1091,7 @@ class AlbumItem(TreeItem):
             else:
                 self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
                 self.setToolTip(ITEM_ICON_COLUMN, _("Album unchanged"))
-        for i, column in enumerate(DEFAULT_COLUMNS):
-            self.setText(i, album.column(column.key))
+        self.update_colums_text()
         if selection_changed and update_selection:
             TreeItem.window.update_selection(new_selection=False)
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
@@ -1171,10 +1177,7 @@ class TrackItem(TreeItem):
         else:
             self.setIcon(ITEM_ICON_COLUMN, icon)
             self.setToolTip(ITEM_ICON_COLUMN, icon_tooltip)
-        for i, column in enumerate(DEFAULT_COLUMNS):
-            self.setText(i, track.column(column.key))
-            self.setForeground(i, color)
-            self.setBackground(i, bgcolor)
+        self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         if update_album:
@@ -1193,10 +1196,7 @@ class FileItem(TreeItem):
         self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
-        for i, column in enumerate(DEFAULT_COLUMNS):
-            self.setText(i, file.column(column.key))
-            self.setForeground(i, color)
-            self.setBackground(i, bgcolor)
+        self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         parent = self.parent()
