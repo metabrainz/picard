@@ -304,16 +304,6 @@ class MainPanel(QtWidgets.QSplitter):
                 break
 
 
-def paint_column_icon(painter, rect, icon):
-    if not icon:
-        return
-    size = COLUMN_ICON_SIZE
-    padding_h = COLUMN_ICON_BORDER
-    padding_v = (rect.height() - size) // 2
-    target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
-    painter.drawPixmap(target_rect, icon.pixmap(size, size))
-
-
 class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent=None):
@@ -375,11 +365,12 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.parent().restore_default_columns()
 
     def paintSection(self, painter, rect, index):
-        if index == MainPanel.FINGERPRINT_COLUMN:
+        column = DEFAULT_COLUMNS[index]
+        if column.is_icon:
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            paint_column_icon(painter, rect, FileItem.icon_fingerprint_gray)
+            column.paint_icon(painter, rect)
         else:
             super().paintSection(painter, rect, index)
 
