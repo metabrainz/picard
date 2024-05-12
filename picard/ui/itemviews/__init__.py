@@ -1120,6 +1120,7 @@ class TrackItem(TreeItem):
     def update(self, update_album=True, update_files=True, update_selection=True):
         track = self.obj
         num_linked_files = track.num_linked_files
+        fingerprint_column = DEFAULT_COLUMNS.pos('~fingerprint')
         if num_linked_files == 1:
             file = track.files[0]
             file.item = self
@@ -1129,16 +1130,16 @@ class TrackItem(TreeItem):
             self.takeChildren()
             self.setExpanded(False)
             fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
-            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
-            self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
+            self.setToolTip(fingerprint_column, fingerprint_tooltip)
+            self.setIcon(fingerprint_column, fingerprint_icon)
         else:
             if num_linked_files == 0:
                 icon_tooltip = _("There are no files matched to this track")
             else:
                 icon_tooltip = ngettext('%i matched file', '%i matched files',
                     num_linked_files) % num_linked_files
-            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, "")
-            self.setIcon(MainPanel.FINGERPRINT_COLUMN, QtGui.QIcon())
+            self.setToolTip(fingerprint_column, "")
+            self.setIcon(fingerprint_column, QtGui.QIcon())
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
@@ -1191,9 +1192,12 @@ class FileItem(TreeItem):
         icon, icon_tooltip = FileItem.decide_file_icon_info(file)
         self.setIcon(ITEM_ICON_COLUMN, icon)
         self.setToolTip(ITEM_ICON_COLUMN, icon_tooltip)
+
+        fingerprint_column = DEFAULT_COLUMNS.pos('~fingerprint')
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
-        self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
-        self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
+        self.setToolTip(fingerprint_column, fingerprint_tooltip)
+        self.setIcon(fingerprint_column, fingerprint_icon)
+
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         self.update_colums_text(color=color, bgcolor=bgcolor)
