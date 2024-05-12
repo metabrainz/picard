@@ -375,7 +375,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if index == MainPanel.FINGERPRINT_COLUMN:
+        if DEFAULT_COLUMNS[index].is_icon:
             self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
