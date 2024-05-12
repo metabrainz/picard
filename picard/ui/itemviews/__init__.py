@@ -99,6 +99,7 @@ from picard.util import (
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
 from picard.ui.enums import MainAction
+from picard.ui.itemviews.columns import ITEM_ICON_COLUMN
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -314,7 +315,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent=None):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
-        self._visible_columns = set([0])
+        self._visible_columns = set([ITEM_ICON_COLUMN])
 
         # The following are settings applied to default headers
         # of QTreeView and QTreeWidget.
@@ -331,7 +332,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
     def show_column(self, column, show):
-        if column == 0:  # The first column is fixed
+        if column == ITEM_ICON_COLUMN:  # The first column is fixed
             return
         self.parent().setColumnHidden(column, not show)
         if show:
@@ -355,7 +356,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         parent = self.parent()
 
         for i, column in enumerate(MainPanel.columns):
-            if i == 0:
+            if i == ITEM_ICON_COLUMN:
                 continue
             action = QtGui.QAction(_(column[0]), parent)
             action.setCheckable(True)
@@ -897,7 +898,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(MainPanel.TITLE_COLUMN, "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(ITEM_ICON_COLUMN, "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
 
     @property
     def default_drop_target(self):
@@ -923,7 +924,7 @@ class AlbumTreeView(BaseTreeView):
             self.insertTopLevelItem(0, item)
         else:
             item = AlbumItem(album, True, self)
-        item.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
+        item.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
         for i, column in enumerate(MainPanel.columns):
             font = item.font(i)
             font.setBold(True)
@@ -989,7 +990,7 @@ class ClusterItem(TreeItem):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.setIcon(MainPanel.TITLE_COLUMN, ClusterItem.icon_dir)
+        self.setIcon(ITEM_ICON_COLUMN, ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
         for i, column in enumerate(MainPanel.columns):
@@ -1064,22 +1065,22 @@ class AlbumItem(TreeItem):
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         if album.errors:
-            self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_error)
-            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the Album Info dialog"))
+            self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_error)
+            self.setToolTip(ITEM_ICON_COLUMN, _("Processing error(s): See the Errors tab in the Album Info dialog"))
         elif album.is_complete():
             if album.is_modified():
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified and complete"))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd_saved_modified)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album modified and complete"))
             else:
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged and complete"))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd_saved)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album unchanged and complete"))
         else:
             if album.is_modified():
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_modified)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified"))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd_modified)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album modified"))
             else:
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album unchanged"))
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, album.column(column[1]))
         if selection_changed and update_selection:
@@ -1162,11 +1163,11 @@ class TrackItem(TreeItem):
                     self.addChildren(items)
             self.setExpanded(True)
         if track.errors:
-            self.setIcon(MainPanel.TITLE_COLUMN, TrackItem.icon_error)
-            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the Track Info dialog"))
+            self.setIcon(ITEM_ICON_COLUMN, TrackItem.icon_error)
+            self.setToolTip(ITEM_ICON_COLUMN, _("Processing error(s): See the Errors tab in the Track Info dialog"))
         else:
-            self.setIcon(MainPanel.TITLE_COLUMN, icon)
-            self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
+            self.setIcon(ITEM_ICON_COLUMN, icon)
+            self.setToolTip(ITEM_ICON_COLUMN, icon_tooltip)
         for i, column in enumerate(MainPanel.columns):
             self.setText(i, track.column(column[1]))
             self.setForeground(i, color)
@@ -1182,8 +1183,8 @@ class FileItem(TreeItem):
     def update(self, update_track=True, update_selection=True):
         file = self.obj
         icon, icon_tooltip = FileItem.decide_file_icon_info(file)
-        self.setIcon(MainPanel.TITLE_COLUMN, icon)
-        self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
+        self.setIcon(ITEM_ICON_COLUMN, icon)
+        self.setToolTip(ITEM_ICON_COLUMN, icon_tooltip)
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
         self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
         self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
