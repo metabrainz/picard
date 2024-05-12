@@ -262,7 +262,6 @@ class MainPanel(QtWidgets.QSplitter):
             QtGui.QIcon(":/images/match-pending-90.png"),
             QtGui.QIcon(":/images/match-pending-100.png"),
         ]
-        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
 
     def _update_selection(self, selected_view):
         for view in self._views:
@@ -404,6 +403,75 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         return f"{name}'s header"
 
 
+def _alternative_versions(album):
+    config = get_config()
+    versions = album.release_group.versions
+
+    album_tracks_count = album.get_num_total_files() or len(album.tracks)
+    preferred_countries = set(config.setting['preferred_release_countries'])
+    preferred_formats = set(config.setting['preferred_release_formats'])
+    ORDER_BEFORE, ORDER_AFTER = 0, 1
+
+    alternatives = []
+    for version in versions:
+        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
+        if version['totaltracks'] != album_tracks_count:
+            trackmatch = ORDER_AFTER
+        if preferred_countries:
+            countries = set(version['countries'])
+            if not countries or not countries.intersection(preferred_countries):
+                countrymatch = ORDER_AFTER
+        if preferred_formats:
+            formats = set(version['formats'])
+            if not formats or not formats.intersection(preferred_formats):
+                formatmatch = ORDER_AFTER
+        group = (trackmatch, countrymatch, formatmatch)
+        # order by group, name, and id on push
+        heappush(alternatives, (group, version['name'], version['id'], version['extra']))
+
+    while alternatives:
+        yield heappop(alternatives)
+
+
+def _build_other_versions_actions(releases_menu, album, alternative_versions):
+    heading = QtGui.QAction(album.release_group.version_headings, parent=releases_menu)
+    heading.setDisabled(True)
+    font = heading.font()
+    font.setBold(True)
+    heading.setFont(font)
+    yield heading
+
+    prev_group = None
+    for group, action_text, release_id, extra in alternative_versions:
+        if group != prev_group:
+            if prev_group is not None:
+                sep = QtGui.QAction(parent=releases_menu)
+                sep.setSeparator(True)
+                yield sep
+            prev_group = group
+        action = QtGui.QAction(action_text, parent=releases_menu)
+        action.setCheckable(True)
+        if extra:
+            action.setToolTip(extra)
+        if album.id == release_id:
+            action.setChecked(True)
+        action.triggered.connect(partial(album.switch_release_version, release_id))
+        yield action
+
+
+def _add_other_versions(releases_menu, album, action_loading):
+
+    alt_versions = list(_alternative_versions(album))
+
+    alt_versions_count = len(alt_versions)
+    if alt_versions_count > 1:
+        releases_menu.setTitle(_("&Other versions (%d)") % alt_versions_count)
+
+    actions = _build_other_versions_actions(releases_menu, album, alt_versions)
+    releases_menu.insertActions(action_loading, actions)
+    releases_menu.removeAction(action_loading)
+
+
 class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
@@ -412,7 +480,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
         self.window = window
-        self.panel = parent
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
 
@@ -435,6 +502,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.doubleClicked.connect(self.activate_item)
         self.setUniformRowHeights(True)
 
+        self.icon_plugins = icontheme.lookup('applications-system', icontheme.ICON_SIZE_MENU)
+
     def contextMenuEvent(self, event):
         item = self.itemAt(event.pos())
         if not item:
@@ -450,8 +519,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             menu_builder(menu, self.window.actions, *args)
 
         if isinstance(obj, Track):
-            if can_view_info:
-                add_actions(MainAction.VIEW_INFO)
+            add_actions(
+                MainAction.VIEW_INFO if can_view_info else None,
+            )
             plugin_actions = list(ext_point_track_actions)
             if obj.num_linked_files == 1:
                 add_actions(
@@ -519,77 +589,28 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
             releases_menu = QtWidgets.QMenu(_("&Other versions"), menu)
             releases_menu.setToolTipsVisible(True)
+            releases_menu.setEnabled(False)
             add_actions(
                 '-',
                 releases_menu,
             )
-            loading = releases_menu.addAction(_("Loading…"))
-            loading.setDisabled(True)
-            action_more = releases_menu.addAction(_("Show &more details…"))
-            action_more.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
+            action_more_details = releases_menu.addAction(_("Show &more details…"))
+            action_more_details.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
-            if len(self.selectedItems()) == 1 and obj.release_group:
-                def _add_other_versions():
-                    releases_menu.removeAction(loading)
-                    releases_menu.removeAction(action_more)
-                    heading = releases_menu.addAction(obj.release_group.version_headings)
-                    heading.setDisabled(True)
-                    font = heading.font()
-                    font.setBold(True)
-                    heading.setFont(font)
+            album = obj
+            if len(self.selectedItems()) == 1 and album.release_group:
+                action_loading = QtGui.QAction(_("Loading…"), parent=releases_menu)
+                action_loading.setDisabled(True)
+                action_other_versions_separator = QtGui.QAction(parent=releases_menu)
+                action_other_versions_separator.setSeparator(True)
+                releases_menu.insertActions(action_more_details, [action_loading, action_other_versions_separator])
 
-                    versions = obj.release_group.versions
-
-                    album_tracks_count = obj.get_num_total_files() or len(obj.tracks)
-                    preferred_countries = set(config.setting['preferred_release_countries'])
-                    preferred_formats = set(config.setting['preferred_release_formats'])
-                    ORDER_BEFORE, ORDER_AFTER = 0, 1
-
-                    alternatives = []
-                    for version in versions:
-                        trackmatch = countrymatch = formatmatch = ORDER_BEFORE
-                        if version['totaltracks'] != album_tracks_count:
-                            trackmatch = ORDER_AFTER
-                        if preferred_countries:
-                            countries = set(version['countries'])
-                            if not countries or not countries.intersection(preferred_countries):
-                                countrymatch = ORDER_AFTER
-                        if preferred_formats:
-                            formats = set(version['formats'])
-                            if not formats or not formats.intersection(preferred_formats):
-                                formatmatch = ORDER_AFTER
-                        group = (trackmatch, countrymatch, formatmatch)
-                        # order by group, name, and id on push
-                        heappush(alternatives, (group, version['name'], version['id'], version['extra']))
-
-                    prev_group = None
-                    while alternatives:
-                        group, action_text, release_id, extra = heappop(alternatives)
-                        if group != prev_group:
-                            if prev_group is not None:
-                                releases_menu.addSeparator()
-                            prev_group = group
-                        action = releases_menu.addAction(action_text)
-                        action.setCheckable(True)
-                        if extra:
-                            action.setToolTip(extra)
-                        if obj.id == release_id:
-                            action.setChecked(True)
-                        action.triggered.connect(partial(obj.switch_release_version, release_id))
-
-                    versions_count = len(versions)
-                    if versions_count > 1:
-                        releases_menu.setTitle(_("&Other versions (%d)") % versions_count)
-
-                    releases_menu.addSeparator()
-                    action = releases_menu.addAction(action_more)
-                if obj.release_group.loaded:
-                    _add_other_versions()
+                if album.release_group.loaded:
+                    _add_other_versions(releases_menu, album, action_loading)
                 else:
-                    obj.release_group.load_versions(_add_other_versions)
+                    callback = partial(_add_other_versions, releases_menu, album, action_loading)
+                    album.release_group.load_versions(callback)
                 releases_menu.setEnabled(True)
-            else:
-                releases_menu.setEnabled(False)
 
         if config.setting['enable_ratings'] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
@@ -613,7 +634,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if plugin_actions:
             plugin_menu = QtWidgets.QMenu(_("P&lugins"), menu)
-            plugin_menu.setIcon(self.panel.icon_plugins)
+            plugin_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',
                 plugin_menu,
@@ -632,7 +653,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         if scripts:
             scripts_menu = ScriptsMenu(scripts, _("&Run scripts"), menu)
-            scripts_menu.setIcon(self.panel.icon_plugins)
+            scripts_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',
                 scripts_menu,
@@ -855,8 +876,8 @@ class FileTreeView(BaseTreeView):
     header_state = 'file_view_header_state'
     header_locked = 'file_view_header_locked'
 
-    def __init__(self, window, parent=None):
-        super().__init__(window, parent)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
@@ -891,8 +912,8 @@ class AlbumTreeView(BaseTreeView):
     header_state = 'album_view_header_state'
     header_locked = 'album_view_header_locked'
 
-    def __init__(self, window, parent=None):
-        super().__init__(window, parent)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
