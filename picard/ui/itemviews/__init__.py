@@ -336,20 +336,9 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             return
         self.parent().setColumnHidden(column, not show)
         if show:
-            if self.sectionSize(column) == 0:
-                self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
-            if column == MainPanel.FINGERPRINT_COLUMN:
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Fixed)
-                self.resizeSection(column, COLUMN_ICON_SIZE)
-            else:
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Interactive)
         elif column in self._visible_columns:
             self._visible_columns.remove(column)
-
-    def update_visible_columns(self, columns):
-        for i, column in enumerate(DEFAULT_COLUMNS):
-            self.show_column(i, i in columns)
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
@@ -705,9 +694,15 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
-        header.update_visible_columns([0, 1, 2])
-        for i, size in enumerate([250, 50, 100]):
-            header.resizeSection(i, size)
+        for i, c in enumerate(DEFAULT_COLUMNS):
+            header.show_column(i, c.is_default)
+            if c.is_icon:
+                header.resizeSection(i, c.header_icon_size_with_border.width())
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
+            else:
+                header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
+
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def _init_header(self):
