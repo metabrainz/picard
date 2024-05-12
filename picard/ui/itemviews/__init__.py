@@ -130,46 +130,6 @@ def get_match_color(similarity, basecolor):
 
 class MainPanel(QtWidgets.QSplitter):
 
-    columns = [
-        (N_("Title"), 'title'),
-        (N_("Length"), '~length'),
-        (N_("Artist"), 'artist'),
-        (N_("Album Artist"), 'albumartist'),
-        (N_("Composer"), 'composer'),
-        (N_("Album"), 'album'),
-        (N_("Disc Subtitle"), 'discsubtitle'),
-        (N_("Track No."), 'tracknumber'),
-        (N_("Disc No."), 'discnumber'),
-        (N_("Catalog No."), 'catalognumber'),
-        (N_("Barcode"), 'barcode'),
-        (N_("Media"), 'media'),
-        (N_("Size"), '~filesize'),
-        (N_("Genre"), 'genre'),
-        (N_("Fingerprint status"), '~fingerprint'),
-        (N_("Date"), 'date'),
-        (N_("Original Release Date"), 'originaldate'),
-        (N_("Release Date"), 'releasedate'),
-        (N_("Cover"), 'covercount'),
-    ]
-
-    _column_indexes = {column[1]: i for i, column in enumerate(columns)}
-
-    TITLE_COLUMN = _column_indexes['title']
-    TRACKNUMBER_COLUMN = _column_indexes['tracknumber']
-    DISCNUMBER_COLUMN = _column_indexes['discnumber']
-    LENGTH_COLUMN = _column_indexes['~length']
-    FILESIZE_COLUMN = _column_indexes['~filesize']
-    FINGERPRINT_COLUMN = _column_indexes['~fingerprint']
-
-    NAT_SORT_COLUMNS = [
-        _column_indexes['title'],
-        _column_indexes['album'],
-        _column_indexes['discsubtitle'],
-        _column_indexes['tracknumber'],
-        _column_indexes['discnumber'],
-        _column_indexes['catalognumber'],
-    ]
-
     def __init__(self, window, parent=None):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
