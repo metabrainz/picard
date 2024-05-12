@@ -332,8 +332,10 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def show_column(self, column, show):
-        if column == ITEM_ICON_COLUMN:  # The first column is fixed
-            return
+        if column == ITEM_ICON_COLUMN:
+            # The first column always visible
+            # Still execute following to ensure it is shown
+            show = True
         self.parent().setColumnHidden(column, not show)
         if show:
             self._visible_columns.add(column)
