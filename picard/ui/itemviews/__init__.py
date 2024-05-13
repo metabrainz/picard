@@ -402,13 +402,10 @@ def _build_other_versions_actions(releases_menu, album, alternative_versions):
 
 def _add_other_versions(releases_menu, album, action_loading):
 
-    alt_versions = list(_alternative_versions(album))
+    if album.release_group.versions_count is not None:
+        releases_menu.setTitle(_("&Other versions (%d)") % album.release_group.versions_count)
 
-    alt_versions_count = len(alt_versions)
-    if alt_versions_count > 1:
-        releases_menu.setTitle(_("&Other versions (%d)") % alt_versions_count)
-
-    actions = _build_other_versions_actions(releases_menu, album, alt_versions)
+    actions = _build_other_versions_actions(releases_menu, album, _alternative_versions(album))
     releases_menu.insertActions(action_loading, actions)
     releases_menu.removeAction(action_loading)
 

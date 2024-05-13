@@ -117,6 +117,7 @@ class ReleaseGroup(DataObject):
         self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)
         self.loaded_albums = set()
         self.refcount = 0
+        self.versions_count = None
 
     def load_versions(self, callback):
         kwargs = {'release-group': self.id, 'limit': 100}
@@ -130,6 +131,8 @@ class ReleaseGroup(DataObject):
             releases = document['releases']
         except (TypeError, KeyError):
             return
+
+        self.versions_count = document.get('release-count', None)
 
         versions = defaultdict(list)
 
