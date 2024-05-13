@@ -589,7 +589,8 @@ class WebService(QtCore.QObject):
         kwargs['method'] = 'POST'
         kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
         kwargs['mblogin'] = kwargs.get('mblogin', True)
-        log.debug("POST-DATA %r", kwargs['data'])
+        if DebugOpt.WS_POST.enabled:
+            log.debug("POST-DATA %r", kwargs['data'])
         return self.add_request(WSRequest(**kwargs))
 
     def put_url(self, **kwargs):
