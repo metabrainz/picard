@@ -439,6 +439,10 @@ class OggAudioVideoFileTest(PicardTestCase):
             open_format,
             self._copy_file_tmp('test.ogg', '.oga'),
             vorbis.OggVorbisFile)
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.ogg', '.ogx'),
+            vorbis.OggVorbisFile)
 
     def test_ogg_opus(self):
         self._test_file_is_type(
