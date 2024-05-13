@@ -483,6 +483,6 @@ def OggContainerFile(filename):
     return guess_format(filename, options)
 
 
-OggContainerFile.EXTENSIONS = [".ogg"]
+OggContainerFile.EXTENSIONS = [".ogg", ".ogx"]
 OggContainerFile.NAME = "Ogg"
 OggContainerFile.supports_tag = VCommentFile.supports_tag
