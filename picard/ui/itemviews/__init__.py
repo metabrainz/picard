@@ -272,10 +272,6 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
         self._visible_columns = set([ITEM_ICON_COLUMN])
 
-        # The following are settings applied to default headers
-        # of QTreeView and QTreeWidget.
-        self.setSectionsMovable(True)
-        self.setSectionsClickable(False)
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
         # enable sorting, but don't actually use it by default
