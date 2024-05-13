@@ -77,8 +77,9 @@ def open_(filename):
             ext = filename[i+1:].lower()
             file_format = ext_to_format(ext)
             if file_format is None:
-                return None
-            audio_file = file_format(filename)
+                audio_file = guess_format(filename)
+            else:
+                audio_file = file_format(filename)
         else:
             # If there is no extension, try to guess the format based on file headers
             audio_file = guess_format(filename)
