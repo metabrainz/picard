@@ -99,6 +99,12 @@ from picard.util import (
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.colors import interface_colors
 from picard.ui.enums import MainAction
+from picard.ui.itemviews.columns import (
+    DEFAULT_COLUMNS,
+    ITEM_ICON_COLUMN,
+    ColumnAlign,
+    ColumnSortType,
+)
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -123,46 +129,6 @@ def get_match_color(similarity, basecolor):
 
 
 class MainPanel(QtWidgets.QSplitter):
-
-    columns = [
-        (N_("Title"), 'title'),
-        (N_("Length"), '~length'),
-        (N_("Artist"), 'artist'),
-        (N_("Album Artist"), 'albumartist'),
-        (N_("Composer"), 'composer'),
-        (N_("Album"), 'album'),
-        (N_("Disc Subtitle"), 'discsubtitle'),
-        (N_("Track No."), 'tracknumber'),
-        (N_("Disc No."), 'discnumber'),
-        (N_("Catalog No."), 'catalognumber'),
-        (N_("Barcode"), 'barcode'),
-        (N_("Media"), 'media'),
-        (N_("Size"), '~filesize'),
-        (N_("Genre"), 'genre'),
-        (N_("Fingerprint status"), '~fingerprint'),
-        (N_("Date"), 'date'),
-        (N_("Original Release Date"), 'originaldate'),
-        (N_("Release Date"), 'releasedate'),
-        (N_("Cover"), 'covercount'),
-    ]
-
-    _column_indexes = {column[1]: i for i, column in enumerate(columns)}
-
-    TITLE_COLUMN = _column_indexes['title']
-    TRACKNUMBER_COLUMN = _column_indexes['tracknumber']
-    DISCNUMBER_COLUMN = _column_indexes['discnumber']
-    LENGTH_COLUMN = _column_indexes['~length']
-    FILESIZE_COLUMN = _column_indexes['~filesize']
-    FINGERPRINT_COLUMN = _column_indexes['~fingerprint']
-
-    NAT_SORT_COLUMNS = [
-        _column_indexes['title'],
-        _column_indexes['album'],
-        _column_indexes['discsubtitle'],
-        _column_indexes['tracknumber'],
-        _column_indexes['discnumber'],
-        _column_indexes['catalognumber'],
-    ]
 
     def __init__(self, window, parent=None):
         super().__init__(parent)
@@ -300,64 +266,38 @@ class MainPanel(QtWidgets.QSplitter):
                 break
 
 
-def paint_column_icon(painter, rect, icon):
-    if not icon:
-        return
-    size = COLUMN_ICON_SIZE
-    padding_h = COLUMN_ICON_BORDER
-    padding_v = (rect.height() - size) // 2
-    target_rect = QtCore.QRect(rect.x() + padding_h, rect.y() + padding_v, size, size)
-    painter.drawPixmap(target_rect, icon.pixmap(size, size))
-
-
 class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent=None):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
-        self._visible_columns = set([0])
+        self._visible_columns = set([ITEM_ICON_COLUMN])
 
-        # The following are settings applied to default headers
-        # of QTreeView and QTreeWidget.
-        self.setSectionsMovable(True)
-        self.setStretchLastSection(True)
-        self.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.setSectionsClickable(False)
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
         # enable sorting, but don't actually use it by default
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
         #     internal model that QTreeWidget uses doesn't support it
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
-        self.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
     def show_column(self, column, show):
-        if column == 0:  # The first column is fixed
-            return
+        if column == ITEM_ICON_COLUMN:
+            # The first column always visible
+            # Still execute following to ensure it is shown
+            show = True
         self.parent().setColumnHidden(column, not show)
         if show:
-            if self.sectionSize(column) == 0:
-                self.resizeSection(column, self.defaultSectionSize())
             self._visible_columns.add(column)
-            if column == MainPanel.FINGERPRINT_COLUMN:
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Fixed)
-                self.resizeSection(column, COLUMN_ICON_SIZE)
-            else:
-                self.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Interactive)
-        elif column in self._visible_columns:
-            self._visible_columns.remove(column)
-
-    def update_visible_columns(self, columns):
-        for i, column in enumerate(MainPanel.columns):
-            self.show_column(i, i in columns)
+        else:
+            self._visible_columns.discard(column)
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
 
-        for i, column in enumerate(MainPanel.columns):
-            if i == 0:
+        for i, column in enumerate(DEFAULT_COLUMNS):
+            if i == ITEM_ICON_COLUMN:
                 continue
-            action = QtGui.QAction(_(column[0]), parent)
+            action = QtGui.QAction(_(column.title), parent)
             action.setCheckable(True)
             action.setChecked(i in self._visible_columns)
             action.setEnabled(not self.is_locked)
@@ -383,16 +323,17 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.parent().restore_default_columns()
 
     def paintSection(self, painter, rect, index):
-        if index == MainPanel.FINGERPRINT_COLUMN:
+        column = DEFAULT_COLUMNS[index]
+        if column.is_icon:
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            paint_column_icon(painter, rect, FileItem.icon_fingerprint_gray)
+            column.paint_icon(painter, rect)
         else:
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if index == MainPanel.FINGERPRINT_COLUMN:
+        if DEFAULT_COLUMNS[index].is_icon:
             self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
@@ -696,13 +637,23 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
-        labels = [_(h) if n != '~fingerprint' else '' for h, n in MainPanel.columns]
+        labels = [_(c.title) if not c.is_icon else '' for c in DEFAULT_COLUMNS]
         self.setHeaderLabels(labels)
 
         header = self.header()
-        header.update_visible_columns([0, 1, 2])
-        for i, size in enumerate([250, 50, 100]):
-            header.resizeSection(i, size)
+        header.setStretchLastSection(True)
+        header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
+
+        for i, c in enumerate(DEFAULT_COLUMNS):
+            header.show_column(i, c.is_default)
+            if c.is_icon:
+                header.resizeSection(i, c.header_icon_size_with_border.width())
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
+            else:
+                header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
+
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def _init_header(self):
@@ -897,7 +848,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(MainPanel.TITLE_COLUMN, "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(ITEM_ICON_COLUMN, "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
 
     @property
     def default_drop_target(self):
@@ -923,12 +874,12 @@ class AlbumTreeView(BaseTreeView):
             self.insertTopLevelItem(0, item)
         else:
             item = AlbumItem(album, True, self)
-        item.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
-        for i, column in enumerate(MainPanel.columns):
+        item.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
+        for i, column in enumerate(DEFAULT_COLUMNS):
             font = item.font(i)
             font.setBold(True)
             item.setFont(i, font)
-            item.setText(i, album.column(column[1]))
+            item.setText(i, album.column(column.key))
         self.add_cluster(album.unmatched_files, item)
 
     def remove_album(self, album):
@@ -945,14 +896,6 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             obj.item = self
         self.sortable = sortable
         self._sortkeys = {}
-        for column in (
-            MainPanel.LENGTH_COLUMN,
-            MainPanel.FILESIZE_COLUMN,
-            MainPanel.TRACKNUMBER_COLUMN,
-            MainPanel.DISCNUMBER_COLUMN,
-        ):
-            self.setTextAlignment(column, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.setSizeHint(MainPanel.FINGERPRINT_COLUMN, ICON_SIZE)
 
     def setText(self, column, text):
         self._sortkeys[column] = None
@@ -970,30 +913,39 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if sortkey is not None:
             return sortkey
 
-        if column == MainPanel.LENGTH_COLUMN:
-            sortkey = self.obj.metadata.length or 0
-        elif column == MainPanel.FILESIZE_COLUMN:
-            try:
-                sortkey = int(self.obj.metadata['~filesize'] or self.obj.orig_metadata['~filesize'])
-            except ValueError:
-                sortkey = 0
-        elif column in MainPanel.NAT_SORT_COLUMNS:
+        this_column = DEFAULT_COLUMNS[column]
+
+        if this_column.sort_type == ColumnSortType.SORTKEY:
+            sortkey = this_column.sortkey(self.obj)
+        elif this_column.sort_type == ColumnSortType.NAT:
             sortkey = natsort.natkey(self.text(column))
         else:
             sortkey = strxfrm(self.text(column))
         self._sortkeys[column] = sortkey
         return sortkey
 
+    def update_colums_text(self, color=None, bgcolor=None):
+        for i, column in enumerate(DEFAULT_COLUMNS):
+            if color is not None:
+                self.setForeground(i, color)
+            if bgcolor is not None:
+                self.setBackground(i, bgcolor)
+            if column.is_icon:
+                self.setSizeHint(i, column.header_icon_size_with_border)
+            else:
+                if column.align == ColumnAlign.RIGHT:
+                    self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
+                self.setText(i, self.obj.column(column.key))
+
 
 class ClusterItem(TreeItem):
 
     def __init__(self, *args):
         super().__init__(*args)
-        self.setIcon(MainPanel.TITLE_COLUMN, ClusterItem.icon_dir)
+        self.setIcon(ITEM_ICON_COLUMN, ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, self.obj.column(column[1]))
+        self.update_colums_text()
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
             album.item.update(update_tracks=False)
@@ -1064,24 +1016,23 @@ class AlbumItem(TreeItem):
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         if album.errors:
-            self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_error)
-            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the Album Info dialog"))
+            self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_error)
+            self.setToolTip(ITEM_ICON_COLUMN, _("Processing error(s): See the Errors tab in the Album Info dialog"))
         elif album.is_complete():
             if album.is_modified():
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified and complete"))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd_saved_modified)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album modified and complete"))
             else:
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_saved)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged and complete"))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd_saved)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album unchanged and complete"))
         else:
             if album.is_modified():
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd_modified)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album modified"))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd_modified)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album modified"))
             else:
-                self.setIcon(MainPanel.TITLE_COLUMN, AlbumItem.icon_cd)
-                self.setToolTip(MainPanel.TITLE_COLUMN, _("Album unchanged"))
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, album.column(column[1]))
+                self.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
+                self.setToolTip(ITEM_ICON_COLUMN, _("Album unchanged"))
+        self.update_colums_text()
         if selection_changed and update_selection:
             TreeItem.window.update_selection(new_selection=False)
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
@@ -1110,6 +1061,7 @@ class TrackItem(TreeItem):
     def update(self, update_album=True, update_files=True, update_selection=True):
         track = self.obj
         num_linked_files = track.num_linked_files
+        fingerprint_column = DEFAULT_COLUMNS.pos('~fingerprint')
         if num_linked_files == 1:
             file = track.files[0]
             file.item = self
@@ -1119,16 +1071,16 @@ class TrackItem(TreeItem):
             self.takeChildren()
             self.setExpanded(False)
             fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
-            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
-            self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
+            self.setToolTip(fingerprint_column, fingerprint_tooltip)
+            self.setIcon(fingerprint_column, fingerprint_icon)
         else:
             if num_linked_files == 0:
                 icon_tooltip = _("There are no files matched to this track")
             else:
                 icon_tooltip = ngettext('%i matched file', '%i matched files',
                     num_linked_files) % num_linked_files
-            self.setToolTip(MainPanel.FINGERPRINT_COLUMN, "")
-            self.setIcon(MainPanel.FINGERPRINT_COLUMN, QtGui.QIcon())
+            self.setToolTip(fingerprint_column, "")
+            self.setIcon(fingerprint_column, QtGui.QIcon())
             if track.ignored_for_completeness():
                 color = TreeItem.text_color_secondary
             else:
@@ -1162,15 +1114,12 @@ class TrackItem(TreeItem):
                     self.addChildren(items)
             self.setExpanded(True)
         if track.errors:
-            self.setIcon(MainPanel.TITLE_COLUMN, TrackItem.icon_error)
-            self.setToolTip(MainPanel.TITLE_COLUMN, _("Processing error(s): See the Errors tab in the Track Info dialog"))
+            self.setIcon(ITEM_ICON_COLUMN, TrackItem.icon_error)
+            self.setToolTip(ITEM_ICON_COLUMN, _("Processing error(s): See the Errors tab in the Track Info dialog"))
         else:
-            self.setIcon(MainPanel.TITLE_COLUMN, icon)
-            self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, track.column(column[1]))
-            self.setForeground(i, color)
-            self.setBackground(i, bgcolor)
+            self.setIcon(ITEM_ICON_COLUMN, icon)
+            self.setToolTip(ITEM_ICON_COLUMN, icon_tooltip)
+        self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         if update_album:
@@ -1182,17 +1131,17 @@ class FileItem(TreeItem):
     def update(self, update_track=True, update_selection=True):
         file = self.obj
         icon, icon_tooltip = FileItem.decide_file_icon_info(file)
-        self.setIcon(MainPanel.TITLE_COLUMN, icon)
-        self.setToolTip(MainPanel.TITLE_COLUMN, icon_tooltip)
+        self.setIcon(ITEM_ICON_COLUMN, icon)
+        self.setToolTip(ITEM_ICON_COLUMN, icon_tooltip)
+
+        fingerprint_column = DEFAULT_COLUMNS.pos('~fingerprint')
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
-        self.setToolTip(MainPanel.FINGERPRINT_COLUMN, fingerprint_tooltip)
-        self.setIcon(MainPanel.FINGERPRINT_COLUMN, fingerprint_icon)
+        self.setToolTip(fingerprint_column, fingerprint_tooltip)
+        self.setIcon(fingerprint_column, fingerprint_icon)
+
         color = FileItem.file_colors[file.state]
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
-        for i, column in enumerate(MainPanel.columns):
-            self.setText(i, file.column(column[1]))
-            self.setForeground(i, color)
-            self.setBackground(i, bgcolor)
+        self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
         parent = self.parent()
