@@ -287,8 +287,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.parent().setColumnHidden(column, not show)
         if show:
             self._visible_columns.add(column)
-        elif column in self._visible_columns:
-            self._visible_columns.remove(column)
+        else:
+            self._visible_columns.discard(column)
 
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
