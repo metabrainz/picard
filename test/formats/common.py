@@ -216,7 +216,7 @@ class CommonTests:
                 self.testfile_path = os.path.join('test', 'data', self.testfile)
                 self.testfile_ext = os.path.splitext(self.testfile)[1]
                 self.filename = self.copy_of_original_testfile()
-                self.format = ext_to_format(self.testfile_ext[1:])
+                self.format = ext_to_format(self.testfile_ext)
 
         def copy_of_original_testfile(self):
             return self.copy_file_tmp(self.testfile_path, self.testfile_ext)

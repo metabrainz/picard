@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Will
-# Copyright (C) 2010, 2014, 2018-2020, 2023 Philipp Wolfer
+# Copyright (C) 2010, 2014, 2018-2020, 2023-2024 Philipp Wolfer
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2013, 2017-2024 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
@@ -36,8 +36,8 @@ _formats_extensions = {}
 def register_format(file_format):
     ext_point_formats.register(file_format.__module__, file_format)
     for ext in file_format.EXTENSIONS:
-        _formats_extensions[ext[1:]] = file_format
+        _formats_extensions[ext.lower()] = file_format
 
 
 def ext_to_format(ext):
-    return _formats_extensions.get(ext, None)
+    return _formats_extensions.get(ext.lower(), None)
