@@ -325,7 +325,7 @@ class CAATypesSelectorDialog(PicardDialog):
     def excluded(self):
         return list(self.list_exclude.all_items_data()) or ['none']
 
-    def clear_focus(self, lists):
+    def clear_focus(self, lists, *args):
         for temp_list in lists:
             temp_list.clearSelection()
         self.set_buttons_enabled_state()
