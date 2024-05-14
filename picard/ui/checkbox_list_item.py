@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2018 Sambhav Kothari
 # Copyright (C) 2018, 2020-2024 Laurent Monin
-# Copyright (C) 2022 Philipp Wolfer
+# Copyright (C) 2022, 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,12 +27,10 @@ from PyQt6.QtWidgets import QListWidgetItem
 
 class CheckboxListItem(QListWidgetItem):
 
-    def __init__(self, text='', checked=False, data=None):
-        super().__init__()
-        self.setText(text)
+    def __init__(self, text='', checked=False):
+        super().__init__(text)
         self.setFlags(self.flags() | Qt.ItemFlag.ItemIsUserCheckable)
         self.setCheckState(Qt.CheckState.Checked if checked else Qt.CheckState.Unchecked)
-        self.data = data
 
     @property
     def checked(self):
