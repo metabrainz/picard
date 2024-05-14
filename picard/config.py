@@ -442,7 +442,7 @@ class ListOption(Option):
         if value is None:
             return []
         elif isinstance(value, str):
-            raise ValueError('Expected list or list like object, got "%r"' % value)
+            return [value]
         return list(value)
 
 
