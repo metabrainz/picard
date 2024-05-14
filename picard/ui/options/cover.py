@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018-2021 Philipp Wolfer
+# Copyright (C) 2010, 2018-2021, 2024 Philipp Wolfer
 # Copyright (C) 2012, 2014 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2015, 2018-2021, 2023-2024 Laurent Monin
@@ -25,6 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt6.QtCore import Qt
 
 from picard.config import (
     Option,
@@ -83,7 +84,8 @@ class CoverOptionsPage(OptionsPage):
         """
         self.ui.ca_providers_list.clear()
         for p in cover_art_providers():
-            item = CheckboxListItem(_(p.title), checked=p.enabled, data=p.name)
+            item = CheckboxListItem(_(p.title), checked=p.enabled)
+            item.setData(Qt.ItemDataRole.UserRole, p.name)
             self.ui.ca_providers_list.addItem(item)
 
     def load(self):
@@ -101,7 +103,7 @@ class CoverOptionsPage(OptionsPage):
 
     def _ca_providers(self):
         for item in qlistwidget_items(self.ui.ca_providers_list):
-            yield (item.data, item.checked)
+            yield (item.data(Qt.ItemDataRole.UserRole), item.checked)
 
     def save(self):
         config = get_config()
