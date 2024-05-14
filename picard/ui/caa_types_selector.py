@@ -89,9 +89,8 @@ class ArrowsColumn(QtWidgets.QWidget):
         self.selection_list = selection_list
         self.ignore_list = ignore_list
         self.callback = callback
-        spacer_item = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         arrows_layout = QtWidgets.QVBoxLayout()
-        arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
+        arrows_layout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding))
         self.button_add = ArrowButton('go-next' if reverse else 'go-previous', self.move_from_ignore)
         arrows_layout.addWidget(self.button_add)
         self.button_add_all = ArrowButton('move-all-right' if reverse else 'move-all-left', self.move_all_from_ignore)
@@ -100,7 +99,7 @@ class ArrowsColumn(QtWidgets.QWidget):
         arrows_layout.addWidget(self.button_remove)
         self.button_remove_all = ArrowButton('move-all-left' if reverse else 'move-all-right', self.move_all_to_ignore)
         arrows_layout.addWidget(self.button_remove_all)
-        arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
+        arrows_layout.addItem(QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding))
         self.setLayout(arrows_layout)
 
     def move_from_ignore(self):
