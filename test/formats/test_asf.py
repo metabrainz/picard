@@ -49,7 +49,7 @@ class CommonAsfTests:
     class AsfTestCase(CommonTests.TagFormatsTestCase):
 
         def test_supports_tag(self):
-            fmt = ext_to_format(self.testfile_ext[1:])
+            fmt = ext_to_format(self.testfile_ext)
             self.assertTrue(fmt.supports_tag('copyright'))
             self.assertTrue(fmt.supports_tag('compilation'))
             self.assertTrue(fmt.supports_tag('bpm'))

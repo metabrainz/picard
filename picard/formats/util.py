@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Will
-# Copyright (C) 2010, 2014, 2018-2020, 2023 Philipp Wolfer
+# Copyright (C) 2010, 2014, 2018-2020, 2023-2024 Philipp Wolfer
 # Copyright (C) 2013 Michael Wiencek
 # Copyright (C) 2013, 2017-2019, 2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
@@ -25,6 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os.path
 
 from picard import log
 from picard.extension_points.formats import (
@@ -72,23 +73,12 @@ def open_(filename):
     """Open the specified file and return a File instance with the appropriate format handler, or None."""
     try:
         # Use extension based opening as default
-        i = filename.rfind(".")
-        if i >= 0:
-            ext = filename[i+1:].lower()
-            file_format = ext_to_format(ext)
-            if file_format is None:
-                audio_file = guess_format(filename)
-            else:
-                audio_file = file_format(filename)
-        else:
-            # If there is no extension, try to guess the format based on file headers
-            audio_file = guess_format(filename)
-        if not audio_file:
-            return None
-        return audio_file
-    except KeyError:
-        # None is returned if both the methods fail
-        return None
+        _name, ext = os.path.splitext(filename)
+        if ext:
+            if file_format := ext_to_format(ext):
+                return file_format(filename)
+        # If detection by extension failed, try to guess the format based on file headers
+        return guess_format(filename)
     except Exception as error:
         log.error("Error occurred:\n%s", error)
         return None
