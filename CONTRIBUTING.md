@@ -25,11 +25,10 @@ and make it executable:
 ```bash
 #!/usr/bin/env bash
 
-PYFILES=$(git diff --cached --name-only | grep "\\.py$" | grep --invert-match \
+PYFILES=$(git diff --cached --name-only --diff-filter=ACM| grep "\\.py$" | grep --invert-match \
   -e "^tagger\\.py$" \
   -e "^picard/resources\\.py$" \
-  -e "^picard/\(coverart/providers\|formats\)/__init__\\.py$" \
-  -e "^picard/const/\(__init__\|attributes\|countries\)\\.py$" \
+  -e "^picard/const/\(attributes\|countries\)\\.py$" \
   -e "^picard/ui/ui_.*\\.py$" \
   -e "^scripts/picard\\.in$")
 
