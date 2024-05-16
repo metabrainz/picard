@@ -4,7 +4,7 @@ mutagen~=1.37
 PyJWT~=2.0
 pyobjc-core>=6.2, <11; sys_platform == 'darwin'
 pyobjc-framework-Cocoa>=6.2, <11; sys_platform == 'darwin'
-PySide6>=6.7.0
+PySide6>=6.6.3, !=6.7.0
 python-dateutil~=2.7
 pywin32; sys_platform == 'win32'
 PyYAML>=5.1, <7

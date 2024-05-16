@@ -4,7 +4,7 @@ mutagen==1.47.0
 PyJWT==2.8.0
 pyobjc-core==10.1
 pyobjc-framework-Cocoa==10.1
-PySide6==6.7.0
+PySide6==6.6.3.1
 python-dateutil==2.8.2
 PyYAML==6.0.1
 charset-normalizer==3.3.2
