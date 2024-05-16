@@ -191,7 +191,7 @@ class TestPicardConfigTextOption(TestPicardConfigCommon):
 
         # store invalid value in config file directly
         self.config.setValue('setting/text_option', object)
-        self.assertEqual(self.config.setting["text_option"], 'abc')
+        self.assertEqual(self.config.setting["text_option"], '')
 
 
 class TestPicardConfigBoolOption(TestPicardConfigCommon):
@@ -279,21 +279,21 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
 
         # set option to invalid value
         self.config.setting["int_option"] = 'invalid'
-        self.assertEqual(self.config.setting["int_option"], 666)
+        self.assertEqual(self.config.setting["int_option"], 0)
 
     def test_int_opt_set_none(self):
         IntOption("setting", "int_option", 666)
 
         # set option to None
         self.config.setting["int_option"] = None
-        self.assertEqual(self.config.setting["int_option"], 666)
+        self.assertEqual(self.config.setting["int_option"], 0)
 
     def test_int_opt_direct_invalid(self):
         IntOption("setting", "int_option", 666)
 
         # store invalid int value in config file directly
         self.config.setValue('setting/int_option', 'x333')
-        self.assertEqual(self.config.setting["int_option"], 666)
+        self.assertEqual(self.config.setting["int_option"], 0)
 
     def test_int_opt_direct_validstr(self):
         IntOption("setting", "int_option", 666)
@@ -378,9 +378,9 @@ class TestPicardConfigListOption(TestPicardConfigCommon):
     def test_list_opt_not_list(self):
         ListOption("setting", "list_option", ["a", "b"])
 
-        # set option to invalid value
-        self.config.setting["list_option"] = 'invalid'
-        self.assertEqual(self.config.setting["list_option"], ["a", "b"])
+        # set option to single value
+        self.config.setting["list_option"] = 'single'
+        self.assertEqual(self.config.setting["list_option"], ['single'])
 
     def test_list_opt_set_none(self):
         ListOption("setting", "list_option", ["a", "b"])
@@ -399,9 +399,9 @@ class TestPicardConfigListOption(TestPicardConfigCommon):
     def test_list_opt_direct_invalid(self):
         ListOption("setting", "list_option", ["a", "b"])
 
-        # store invalid list value in config file directly
-        self.config.setValue('setting/list_option', 'efg')
-        self.assertEqual(self.config.setting["list_option"], ["a", "b"])
+        # store single list value in config file directly
+        self.config.setValue('setting/list_option', 'single')
+        self.assertEqual(self.config.setting["list_option"], ['single'])
 
 
 class TestPicardConfigVarOption(TestPicardConfigCommon):

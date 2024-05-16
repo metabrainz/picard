@@ -171,7 +171,7 @@ def upgrade_to_v1_3_0dev3(config):
     for (opt, sep) in option_separators.items():
         if opt in _s:
             try:
-                _s[opt] = _s.raw_value(opt, qtype='QString').split(sep)
+                _s[opt] = _s.raw_value(opt, qtype=str).split(sep)
             except AttributeError:
                 pass
 
@@ -195,7 +195,7 @@ def upgrade_to_v1_3_0dev4(config):
     opt = 'release_type_scores'
     if opt in _s:
         try:
-            _s[opt] = load_release_type_scores(_s.raw_value(opt, qtype='QString'))
+            _s[opt] = load_release_type_scores(_s.raw_value(opt, qtype=str))
         except AttributeError:
             pass
 
@@ -341,8 +341,8 @@ def upgrade_to_v2_4_0beta3(config):
     """Convert preserved tags to list"""
     _s = config.setting
     opt = 'preserved_tags'
-    value = _s.raw_value(opt, qtype='QString')
-    if not isinstance(value, list):
+    value = _s.raw_value(opt, qtype=str)
+    if not isinstance(value, list) and value != '':
         _s[opt] = [t.strip() for t in value.split(',')]
 
 
