@@ -27,8 +27,8 @@ from picard.const import CACHE_SIZE_DISPLAY_UNIT
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
+from picard.ui.forms.ui_options_network import Ui_NetworkOptionsPage
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_network import Ui_NetworkOptionsPage
 
 
 class NetworkOptionsPage(OptionsPage):

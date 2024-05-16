@@ -47,8 +47,8 @@ from picard.i18n import (
 )
 from picard.util.mbserver import is_official_server
 
+from picard.ui.forms.ui_options_general import Ui_GeneralOptionsPage
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_general import Ui_GeneralOptionsPage
 
 
 class GeneralOptionsPage(OptionsPage):

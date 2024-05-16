@@ -76,13 +76,13 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
+from picard.ui.forms.ui_scripteditor import Ui_ScriptEditor
+from picard.ui.forms.ui_scripteditor_details import Ui_ScriptDetails
 from picard.ui.options import OptionsPage
 from picard.ui.options.scripting import (
     OptionsCheckError,
     ScriptCheckError,
 )
-from picard.ui.ui_scripteditor import Ui_ScriptEditor
-from picard.ui.ui_scripteditor_details import Ui_ScriptDetails
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 
 

@@ -45,8 +45,8 @@ from picard.i18n import (
 )
 from picard.util import open_local_path
 
+from picard.ui.forms.ui_options_maintenance import Ui_MaintenanceOptionsPage
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_maintenance import Ui_MaintenanceOptionsPage
 
 
 OPTIONS_NOT_IN_PAGES = {

@@ -50,8 +50,8 @@ from picard.i18n import (
 )
 from picard.util import strxfrm
 
+from picard.ui.forms.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets import ClickableSlider
 

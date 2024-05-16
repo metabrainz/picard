@@ -61,6 +61,9 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
+from picard.ui.forms.ui_options_attached_profiles import (
+    Ui_AttachedProfilesDialog,
+)
 from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     OptionsCheckError,
     OptionsPage,
@@ -91,7 +94,6 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
-from picard.ui.ui_options_attached_profiles import Ui_AttachedProfilesDialog
 from picard.ui.util import StandardButton
 
 
@@ -176,7 +178,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
-        from picard.ui.ui_options import Ui_Dialog
+        from picard.ui.forms.ui_options import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 

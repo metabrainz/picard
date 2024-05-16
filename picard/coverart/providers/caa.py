@@ -66,7 +66,7 @@ from picard.i18n import (
 from picard.webservice import ratecontrol
 
 from picard.ui.caa_types_selector import display_caa_types_selector
-from picard.ui.ui_provider_options_caa import Ui_CaaOptions
+from picard.ui.forms.ui_provider_options_caa import Ui_CaaOptions
 
 
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])

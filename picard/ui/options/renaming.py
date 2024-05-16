@@ -47,6 +47,7 @@ from picard.i18n import (
 from picard.script import ScriptParser
 
 from picard.ui.enums import MainAction
+from picard.ui.forms.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
@@ -61,7 +62,6 @@ from picard.ui.scripteditor import (
     populate_script_selection_combo_box,
     synchronize_vertical_scrollbars,
 )
-from picard.ui.ui_options_renaming import Ui_RenamingOptionsPage
 
 
 class RenamingOptionsPage(OptionsPage):

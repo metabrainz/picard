@@ -36,9 +36,11 @@ from picard.ui.options import OptionsPage
 
 
 if AUTO_DETECT_DRIVES:
-    from picard.ui.ui_options_cdlookup_select import Ui_CDLookupOptionsPage
+    from picard.ui.forms.ui_options_cdlookup_select import (
+        Ui_CDLookupOptionsPage,
+    )
 else:
-    from picard.ui.ui_options_cdlookup import Ui_CDLookupOptionsPage
+    from picard.ui.forms.ui_options_cdlookup import Ui_CDLookupOptionsPage
 
 
 class CDLookupOptionsPage(OptionsPage):

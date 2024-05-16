@@ -38,7 +38,7 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
-from picard.ui.ui_aboutdialog import Ui_AboutDialog
+from picard.ui.forms.ui_aboutdialog import Ui_AboutDialog
 
 
 class AboutDialog(PicardDialog, SingletonDialog):

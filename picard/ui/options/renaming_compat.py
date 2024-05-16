@@ -52,9 +52,11 @@ from picard.i18n import (
 from picard.util import system_supports_long_paths
 
 from picard.ui import PicardDialog
+from picard.ui.forms.ui_options_renaming_compat import (
+    Ui_RenamingCompatOptionsPage,
+)
+from picard.ui.forms.ui_win_compat_dialog import Ui_WinCompatDialog
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_renaming_compat import Ui_RenamingCompatOptionsPage
-from picard.ui.ui_win_compat_dialog import Ui_WinCompatDialog
 
 
 class RenamingCompatOptionsPage(OptionsPage):

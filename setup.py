@@ -325,7 +325,7 @@ def py_from_ui(uifile):
 
 
 def py_from_ui_with_defaultdir(uifile):
-    return os.path.join("picard", "ui", py_from_ui(uifile))
+    return os.path.join('picard', 'ui', 'forms', py_from_ui(uifile))
 
 
 def ui_files():

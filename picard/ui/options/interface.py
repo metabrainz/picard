@@ -46,13 +46,13 @@ from picard.i18n import (
 )
 from picard.util import strxfrm
 
+from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.options import OptionsPage
 from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
     UiTheme,
 )
-from picard.ui.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.util import changes_require_restart_warning
 
 
