@@ -1,6 +1,6 @@
 exclude_paths:
   - 'picard/resources.py'
-  - 'picard/ui/ui_*.py'
+  - 'picard/ui/forms/ui_*.py'
 engines:
   coverage:
     exclude_paths:
