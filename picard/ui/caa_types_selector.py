@@ -190,9 +190,9 @@ class CAATypesSelectorDialog(PicardDialog):
         self.fill_lists(types_include, types_exclude)
 
         # Set triggers when the lists receive the current focus
-        self.list_include.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_exclude]))
-        self.list_exclude.clicked.connect(partial(self.clear_focus, [self.list_ignore, self.list_include]))
-        self.list_ignore.clicked.connect(partial(self.clear_focus, [self.list_include, self.list_exclude]))
+        self.list_include.clicked.connect(partial(self._on_list_clicked, (self.list_ignore, self.list_exclude)))
+        self.list_exclude.clicked.connect(partial(self._on_list_clicked, (self.list_ignore, self.list_include)))
+        self.list_ignore.clicked.connect(partial(self._on_list_clicked, (self.list_include, self.list_exclude)))
 
         # Add instructions to the dialog box
         instructions = QtWidgets.QLabel()
@@ -325,7 +325,7 @@ class CAATypesSelectorDialog(PicardDialog):
     def excluded(self):
         return list(self.list_exclude.all_items_data()) or ['none']
 
-    def clear_focus(self, lists):
+    def _on_list_clicked(self, lists, index):
         for temp_list in lists:
             temp_list.clearSelection()
         self.set_buttons_enabled_state()
