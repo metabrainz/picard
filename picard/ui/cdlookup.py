@@ -46,7 +46,7 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.ui_cdlookup import Ui_Dialog
+from picard.ui.forms.ui_cdlookup import Ui_Dialog
 
 
 class CDLookupDialog(PicardDialog):

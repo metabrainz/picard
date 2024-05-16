@@ -27,10 +27,10 @@ from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
-from picard.ui.options import OptionsPage
-from picard.ui.ui_options_tags_compatibility_id3 import (
+from picard.ui.forms.ui_options_tags_compatibility_id3 import (
     Ui_TagsCompatibilityOptionsPage,
 )
+from picard.ui.options import OptionsPage
 
 
 class TagsCompatibilityID3OptionsPage(OptionsPage):

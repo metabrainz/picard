@@ -36,8 +36,10 @@ from picard.i18n import (
 )
 
 from picard.ui.colors import interface_colors
+from picard.ui.forms.ui_options_interface_colors import (
+    Ui_InterfaceColorsOptionsPage,
+)
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_interface_colors import Ui_InterfaceColorsOptionsPage
 from picard.ui.util import changes_require_restart_warning
 
 

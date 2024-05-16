@@ -61,7 +61,7 @@ from picard.util import (
 
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
-from picard.ui.ui_infodialog import Ui_InfoDialog
+from picard.ui.forms.ui_infodialog import Ui_InfoDialog
 from picard.ui.util import StandardButton
 
 

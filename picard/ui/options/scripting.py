@@ -50,14 +50,14 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
+from picard.ui.forms.ui_options_script import Ui_ScriptingOptionsPage
+from picard.ui.forms.ui_scripting_documentation_dialog import (
+    Ui_ScriptingDocumentationDialog,
+)
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
-)
-from picard.ui.ui_options_script import Ui_ScriptingOptionsPage
-from picard.ui.ui_scripting_documentation_dialog import (
-    Ui_ScriptingDocumentationDialog,
 )
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget

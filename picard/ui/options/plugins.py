@@ -62,9 +62,9 @@ from picard.util import (
 )
 
 from picard.ui import HashableTreeWidgetItem
+from picard.ui.forms.ui_options_plugins import Ui_PluginsOptionsPage
 from picard.ui.options import OptionsPage
 from picard.ui.theme import theme
-from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)

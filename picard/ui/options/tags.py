@@ -33,8 +33,8 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.enums import MainAction
+from picard.ui.forms.ui_options_tags import Ui_TagsOptionsPage
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_tags import Ui_TagsOptionsPage
 
 
 class TagsOptionsPage(OptionsPage):

@@ -41,11 +41,13 @@ from picard.i18n import (
 )
 from picard.util import webbrowser2
 
+from picard.ui.forms.ui_options_fingerprinting import (
+    Ui_FingerprintingOptionsPage,
+)
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
 )
-from picard.ui.ui_options_fingerprinting import Ui_FingerprintingOptionsPage
 
 
 class ApiKeyValidator(QtGui.QValidator):

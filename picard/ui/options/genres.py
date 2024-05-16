@@ -36,8 +36,8 @@ from picard.i18n import (
 )
 from picard.track import TagGenreFilter
 
+from picard.ui.forms.ui_options_genres import Ui_GenresOptionsPage
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_genres import Ui_GenresOptionsPage
 
 
 TOOLTIP_GENRES_FILTER = N_("""<html><head/><body>

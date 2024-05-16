@@ -43,7 +43,7 @@ from picard.i18n import gettext as _
 from picard.util.tags import TAG_NAMES
 
 from picard.ui import PicardDialog
-from picard.ui.ui_edittagdialog import Ui_EditTagDialog
+from picard.ui.forms.ui_edittagdialog import Ui_EditTagDialog
 
 
 AUTOCOMPLETE_RELEASE_TYPES = [s.lower() for s

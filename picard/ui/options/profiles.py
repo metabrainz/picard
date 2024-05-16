@@ -47,9 +47,9 @@ from picard.profile import profile_groups_values
 from picard.script import get_file_naming_script_presets
 from picard.util import get_base_title
 
+from picard.ui.forms.ui_options_profiles import Ui_ProfileEditorDialog
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_profiles import Ui_ProfileEditorDialog
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 

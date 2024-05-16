@@ -24,7 +24,7 @@ from PyQt6 import QtWidgets
 
 from picard.util.tags import TAG_NAMES
 
-from picard.ui.ui_widget_taglisteditor import Ui_TagListEditor
+from picard.ui.forms.ui_widget_taglisteditor import Ui_TagListEditor
 from picard.ui.widgets.editablelistview import (
     AutocompleteItemDelegate,
     EditableListModel,

@@ -48,11 +48,11 @@ from picard.util import icontheme
 
 from picard.ui import PicardDialog
 from picard.ui.enums import MainAction
-from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import OptionsPage
-from picard.ui.ui_options_interface_toolbar import (
+from picard.ui.forms.ui_options_interface_toolbar import (
     Ui_InterfaceToolbarOptionsPage,
 )
+from picard.ui.moveable_list_view import MoveableListView
+from picard.ui.options import OptionsPage
 from picard.ui.util import qlistwidget_items
 
 

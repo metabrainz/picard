@@ -52,4 +52,3 @@ ext_point_ui_init = ExtensionPoint(label='ui_init')
 
 def register_ui_init(function):
     ext_point_ui_init.register(function.__module__, function)
-

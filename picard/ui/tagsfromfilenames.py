@@ -38,7 +38,7 @@ from picard.script.parser import normalize_tagname
 from picard.util.tags import display_tag_name
 
 from picard.ui import PicardDialog
-from picard.ui.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
+from picard.ui.forms.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
 from picard.ui.util import StandardButton
 
 

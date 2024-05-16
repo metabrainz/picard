@@ -39,9 +39,9 @@ from picard.i18n import (
 )
 
 from picard.ui.checkbox_list_item import CheckboxListItem
+from picard.ui.forms.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
-from picard.ui.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.util import qlistwidget_items
 
 
