@@ -234,6 +234,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.files = set()
         self.tracks = set()
         self.objects = set()
+        self.tag_diff = None
         self.selection_mutex = QtCore.QMutex()
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
@@ -460,7 +461,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
     def edit_tag(self, tag):
-        EditTagDialog(self.parent, tag).exec_()
+        if self.tag_diff is not None:
+            EditTagDialog(self.parent, tag).exec_()
 
     def edit_selected_tag(self):
         tags = self.selected_tags(filter_func=self.tag_is_editable)
