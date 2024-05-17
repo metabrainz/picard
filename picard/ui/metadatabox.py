@@ -254,7 +254,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.ignore_updates = IgnoreUpdatesContext(onexit=self.update)
         self.tagger.clipboard().dataChanged.connect(self.update_clipboard)
 
-    def get_file_lookup(self):
+    def _get_file_lookup(self):
         """Return a FileLookup object."""
         config = get_config()
         return FileLookup(self, config.setting['server_host'],
@@ -262,7 +262,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                           self.tagger.browser_integration.port)
 
     def _lookup_tags(self):
-        lookup = self.get_file_lookup()
+        lookup = self._get_file_lookup()
         LOOKUP_TAGS = {
             'musicbrainz_recordingid': lookup.recording_lookup,
             'musicbrainz_trackid': lookup.track_lookup,
