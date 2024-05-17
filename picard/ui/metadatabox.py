@@ -206,6 +206,21 @@ class MetadataBox(QtWidgets.QTableWidget):
     COLUMN_ORIG = 1
     COLUMN_NEW = 2
 
+    # keys are tags
+    # values are FileLookup methods (as string)
+    # to use to look up for the matching tag
+    LOOKUP_TAGS = {
+        'acoustid_id': 'acoust_lookup',
+        'musicbrainz_albumartistid': 'artist_lookup',
+        'musicbrainz_albumid': 'album_lookup',
+        'musicbrainz_artistid': 'artist_lookup',
+        'musicbrainz_discid': 'discid_lookup',
+        'musicbrainz_recordingid': 'recording_lookup',
+        'musicbrainz_releasegroupid': 'release_group_lookup',
+        'musicbrainz_trackid': 'track_lookup',
+        'musicbrainz_workid': 'work_lookup',
+    }
+
     def __init__(self, parent):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
@@ -261,24 +276,12 @@ class MetadataBox(QtWidgets.QTableWidget):
                           config.setting['server_port'],
                           self.tagger.browser_integration.port)
 
-    def _lookup_tags(self):
+    def _lookup_tag(self, tag):
         lookup = self._get_file_lookup()
-        LOOKUP_TAGS = {
-            'musicbrainz_recordingid': lookup.recording_lookup,
-            'musicbrainz_trackid': lookup.track_lookup,
-            'musicbrainz_albumid': lookup.album_lookup,
-            'musicbrainz_workid': lookup.work_lookup,
-            'musicbrainz_artistid': lookup.artist_lookup,
-            'musicbrainz_albumartistid': lookup.artist_lookup,
-            'musicbrainz_releasegroupid': lookup.release_group_lookup,
-            'musicbrainz_discid': lookup.discid_lookup,
-            'acoustid_id': lookup.acoust_lookup
-        }
-        return LOOKUP_TAGS
+        return getattr(lookup, self.LOOKUP_TAGS[tag])
 
     def _open_link(self, values, tag):
-        lookup = self._lookup_tags()
-        lookup_func = lookup[tag]
+        lookup_func = self._lookup_tag(tag)
         for v in values:
             lookup_func(v)
 
@@ -388,7 +391,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if item:
                 column = item.column()
                 for tag in tags:
-                    if tag in self._lookup_tags().keys():
+                    if tag in self.LOOKUP_TAGS:
                         if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
                             if column == self.COLUMN_ORIG:
                                 values = self.tag_diff.orig[tag]
