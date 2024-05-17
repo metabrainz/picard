@@ -669,7 +669,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         orig_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
         new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
 
-        for i, name in enumerate(self.tag_diff.tag_names):
+        for i, tag in enumerate(self.tag_diff.tag_names):
             tag_item = self.item(i, self.COLUMN_TAG)
             orig_item = self.item(i, self.COLUMN_ORIG)
             new_item = self.item(i, self.COLUMN_NEW)
@@ -687,20 +687,20 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
                 self.setItem(i, self.COLUMN_NEW, new_item)
-            tag_item.setText(display_tag_name(name))
-            self._set_item_value(orig_item, self.tag_diff.orig, name)
-            if name == '~length':
+            tag_item.setText(display_tag_name(tag))
+            self._set_item_value(orig_item, self.tag_diff.orig, tag)
+            if tag == '~length':
                 new_item.setFlags(orig_flags)
             else:
                 new_item.setFlags(new_flags)
-            self._set_item_value(new_item, self.tag_diff.new, name)
+            self._set_item_value(new_item, self.tag_diff.new, tag)
 
             font = new_item.font()
-            strikeout = self.tag_diff.tag_status(name) == TagStatus.REMOVED
+            strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
             font.setStrikeOut(strikeout)
             new_item.setFont(font)
 
-            color = self.colors.get(self.tag_diff.tag_status(name),
+            color = self.colors.get(self.tag_diff.tag_status(tag),
                                     self.colors[TagStatus.NOCHANGE])
             orig_item.setForeground(color)
             new_item.setForeground(color)
@@ -713,9 +713,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             # Adjust row height to content size
             self.setRowHeight(i, self.sizeHintForRow(i))
 
-    def _set_item_value(self, item, tags, name):
-        text, italic = tags.display_value(name)
-        item.setData(QtCore.Qt.ItemDataRole.UserRole, name)
+    def _set_item_value(self, item, tags, tag):
+        text, italic = tags.display_value(tag)
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
         item.setText(text)
         font = item.font()
         font.setItalic(italic)
