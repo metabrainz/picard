@@ -252,7 +252,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._single_file_album = False
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(onexit=self.update)
-        self.tagger.clipboard().dataChanged.connect(self.update_clipboard)
+        self.tagger.clipboard().dataChanged.connect(self._update_clipboard)
 
     def _get_file_lookup(self):
         """Return a FileLookup object."""
@@ -334,7 +334,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 self.set_tag_values(tag, self.clipboard)
                 self.update()
 
-    def update_clipboard(self):
+    def _update_clipboard(self):
         clipboard = self.tagger.clipboard().text().split(MULTI_VALUED_JOINER)
         if clipboard:
             self.clipboard = clipboard
