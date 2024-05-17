@@ -34,6 +34,7 @@
 from collections import (
     Counter,
     defaultdict,
+    namedtuple,
 )
 from functools import partial
 
@@ -83,6 +84,9 @@ class TagStatus:
     READONLY = 32
 
 
+TagCounterDisplayValue = namedtuple('TagCounterDisplayValue', ('text', 'is_grouped'))
+
+
 class TagCounter(dict):
 
     __slots__ = ('parent', 'counts', 'different')
@@ -109,7 +113,8 @@ class TagCounter(dict):
         missing = self.parent.objects - count
 
         if tag in self.different:
-            return (ngettext("(different across %d item)", "(different across %d items)", count) % count, True)
+            text = ngettext("(different across %d item)", "(different across %d items)", count) % count
+            is_grouped = True
         else:
             if tag == '~length':
                 msg = format_time(self.get(tag, 0))
@@ -117,9 +122,13 @@ class TagCounter(dict):
                 msg = MULTI_VALUED_JOINER.join(self[tag])
 
             if count > 0 and missing > 0:
-                return (msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
+                text = msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing)
+                is_grouped = True
             else:
-                return (msg, False)
+                text = msg
+                is_grouped = False
+
+        return TagCounterDisplayValue(text, is_grouped)
 
 
 class TagDiff(object):
@@ -714,11 +723,11 @@ class MetadataBox(QtWidgets.QTableWidget):
             self.setRowHeight(i, self.sizeHintForRow(i))
 
     def _set_item_value(self, item, tags, tag):
-        text, italic = tags.display_value(tag)
+        display_value = tags.display_value(tag)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
-        item.setText(text)
+        item.setText(display_value.text)
         font = item.font()
-        font.setItalic(italic)
+        font.setItalic(display_value.is_grouped)
         item.setFont(font)
 
     @restore_method

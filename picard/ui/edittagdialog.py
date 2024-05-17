@@ -240,9 +240,17 @@ class EditTagDialog(PicardDialog):
         values = self.modified_tags.get(self.tag, None)
         if values is None:
             new_tags = self.metadata_box.tag_diff.new
-            display_value, self.different = new_tags.display_value(self.tag)
-            values = [display_value] if self.different else new_tags[self.tag]
-            self.ui.add_value.setEnabled(not self.different)
+            display_value = new_tags.display_value(self.tag)
+            if display_value.is_grouped:
+                # grouped values have a special text, which isn't a valid tag value
+                self.different = True
+                values = [display_value.text]
+                self.ui.add_value.setEnabled(False)
+            else:
+                # normal tag values
+                self.different = False
+                values = new_tags[self.tag]
+                self.ui.add_value.setEnabled(True)
 
         self.value_list.model().rowsInserted.disconnect(self.on_rows_inserted)
         self._add_value_items(values)
