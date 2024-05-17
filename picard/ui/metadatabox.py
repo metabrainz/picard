@@ -240,7 +240,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.changes_first_action = QtGui.QAction(_("Show Changes First"), self)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist['show_changes_first'])
-        self.changes_first_action.toggled.connect(self.toggle_changes_first)
+        self.changes_first_action.toggled.connect(self._toggle_changes_first)
         # TR: Keyboard shortcut for "Add New Tag…"
         self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self._edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
@@ -465,7 +465,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if len(tags) == 1:
             self._edit_tag(tags[0])
 
-    def toggle_changes_first(self, checked):
+    def _toggle_changes_first(self, checked):
         config = get_config()
         config.persist['show_changes_first'] = checked
         self.update()
