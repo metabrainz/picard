@@ -276,7 +276,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         }
         return LOOKUP_TAGS
 
-    def open_link(self, values, tag):
+    def _open_link(self, values, tag):
         lookup = self._lookup_tags()
         lookup_func = lookup[tag]
         for v in values:
@@ -395,7 +395,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                             else:
                                 values = self.tag_diff.new[tag]
                             lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
-                            lookup_action.triggered.connect(partial(self.open_link, values, tag))
+                            lookup_action.triggered.connect(partial(self._open_link, values, tag))
                             menu.addAction(lookup_action)
                     if self.tag_is_removable(tag):
                         removals.append(partial(self.remove_tag, tag))
