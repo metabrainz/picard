@@ -398,7 +398,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                             lookup_action.triggered.connect(partial(self._open_link, values, tag))
                             menu.addAction(lookup_action)
                     if self.tag_is_removable(tag):
-                        removals.append(partial(self.remove_tag, tag))
+                        removals.append(partial(self._remove_tag, tag))
                     status = self.tag_diff.status[tag] & TagStatus.CHANGED
                     if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
                         file_tracks = []
@@ -485,13 +485,13 @@ class MetadataBox(QtWidgets.QTableWidget):
                     obj.metadata[tag] = values
                     obj.update()
 
-    def remove_tag(self, tag):
+    def _remove_tag(self, tag):
         self._set_tag_values(tag, [])
 
     def remove_selected_tags(self):
         for tag in self.selected_tags(filter_func=self.tag_is_removable):
             if self.tag_is_removable(tag):
-                self.remove_tag(tag)
+                self._remove_tag(tag)
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
     def tag_is_removable(self, tag):
