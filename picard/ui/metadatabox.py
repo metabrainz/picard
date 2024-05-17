@@ -331,7 +331,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
             if column == self.COLUMN_NEW and self.tag_is_editable(tag):
-                self.set_tag_values(tag, self.clipboard)
+                self._set_tag_values(tag, self.clipboard)
                 self.update()
 
     def _update_clipboard(self):
@@ -347,7 +347,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if old == new:
             self.editing.setText(old[0])
         else:
-            self.set_tag_values(tag, new)
+            self._set_tag_values(tag, new)
         self.editing = None
         self.update(drop_album_caches=tag == 'album')
 
@@ -410,16 +410,16 @@ class MetadataBox(QtWidgets.QTableWidget):
                                 file_tracks.append(file.parent)
                                 track_albums.add(file.parent.album)
                             orig_values = list(file.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
                         for track in set(self.tracks)-set(file_tracks):
                             objects = [track]
                             orig_values = list(track.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
                             track_albums.add(track.album)
                         for album in track_albums:
                             objects = [album]
                             orig_values = list(album.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
                 remove_tag_action = QtGui.QAction(_("Remove"), self)
                 remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
@@ -470,7 +470,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         config.persist['show_changes_first'] = checked
         self.update()
 
-    def set_tag_values(self, tag, values, objects=None):
+    def _set_tag_values(self, tag, values, objects=None):
         if objects is None:
             objects = self.objects
         with self.parent.ignore_selection_changes:
@@ -486,7 +486,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     obj.update()
 
     def remove_tag(self, tag):
-        self.set_tag_values(tag, [])
+        self._set_tag_values(tag, [])
 
     def remove_selected_tags(self):
         for tag in self.selected_tags(filter_func=self.tag_is_removable):
