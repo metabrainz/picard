@@ -680,12 +680,12 @@ class MetadataBox(QtWidgets.QTableWidget):
                 new_item = QtWidgets.QTableWidgetItem()
                 self.setItem(i, 2, new_item)
             tag_item.setText(display_tag_name(name))
-            self.set_item_value(orig_item, self.tag_diff.orig, name)
+            self._set_item_value(orig_item, self.tag_diff.orig, name)
             if name == '~length':
                 new_item.setFlags(orig_flags)
             else:
                 new_item.setFlags(new_flags)
-            self.set_item_value(new_item, self.tag_diff.new, name)
+            self._set_item_value(new_item, self.tag_diff.new, name)
 
             font = new_item.font()
             if result.tag_status(name) == TagStatus.REMOVED:
@@ -708,7 +708,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             # Adjust row height to content size
             self.setRowHeight(i, self.sizeHintForRow(i))
 
-    def set_item_value(self, item, tags, name):
+    def _set_item_value(self, item, tags, name):
         text, italic = tags.display_value(name)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, name)
         item.setText(text)
