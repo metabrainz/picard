@@ -330,7 +330,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if item:
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
-            if column == self.COLUMN_NEW and self.tag_is_editable(tag):
+            if column == self.COLUMN_NEW and self._tag_is_editable(tag):
                 self._set_tag_values(tag, self.clipboard)
                 self.update()
 
@@ -366,7 +366,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             single_tag = len(tags) == 1
             if single_tag:
                 selected_tag = tags[0]
-                editable = self.tag_is_editable(selected_tag)
+                editable = self._tag_is_editable(selected_tag)
                 edit_tag_action = QtGui.QAction(_("Edit…"), self)
                 edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
@@ -397,7 +397,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                             lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
                             lookup_action.triggered.connect(partial(self._open_link, values, tag))
                             menu.addAction(lookup_action)
-                    if self.tag_is_removable(tag):
+                    if self._tag_is_removable(tag):
                         removals.append(partial(self._remove_tag, tag))
                     status = self.tag_diff.status[tag] & TagStatus.CHANGED
                     if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
@@ -461,7 +461,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             EditTagDialog(self.parent, tag).exec()
 
     def _edit_selected_tag(self):
-        tags = self.selected_tags(filter_func=self.tag_is_editable)
+        tags = self.selected_tags(filter_func=self._tag_is_editable)
         if len(tags) == 1:
             self._edit_tag(tags[0])
 
@@ -476,7 +476,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         with self.parent.ignore_selection_changes:
             if values == [""]:
                 values = []
-            if not values and self.tag_is_removable(tag):
+            if not values and self._tag_is_removable(tag):
                 for obj in objects:
                     del obj.metadata[tag]
                     obj.update()
@@ -489,15 +489,15 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._set_tag_values(tag, [])
 
     def remove_selected_tags(self):
-        for tag in self.selected_tags(filter_func=self.tag_is_removable):
-            if self.tag_is_removable(tag):
+        for tag in self.selected_tags(filter_func=self._tag_is_removable):
+            if self._tag_is_removable(tag):
                 self._remove_tag(tag)
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
-    def tag_is_removable(self, tag):
+    def _tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
 
-    def tag_is_editable(self, tag):
+    def _tag_is_editable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.READONLY == 0
 
     def selected_tags(self, filter_func=None):
