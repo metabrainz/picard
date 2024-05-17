@@ -592,8 +592,6 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         config = get_config()
         tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
-        orig_tags = tag_diff.orig
-        new_tags = tag_diff.new
         tag_diff.objects = len(files)
 
         clear_existing_tags = config.setting['clear_existing_tags']
@@ -639,7 +637,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
                 tag_diff.objects += 1
 
-        all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
+        all_tags = set(list(tag_diff.orig) + list(tag_diff.new))
         common_tags = [tag for tag in top_tags if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
