@@ -261,7 +261,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                           config.setting['server_port'],
                           self.tagger.browser_integration.port)
 
-    def lookup_tags(self):
+    def _lookup_tags(self):
         lookup = self.get_file_lookup()
         LOOKUP_TAGS = {
             'musicbrainz_recordingid': lookup.recording_lookup,
@@ -277,7 +277,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         return LOOKUP_TAGS
 
     def open_link(self, values, tag):
-        lookup = self.lookup_tags()
+        lookup = self._lookup_tags()
         lookup_func = lookup[tag]
         for v in values:
             lookup_func(v)
@@ -388,7 +388,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if item:
                 column = item.column()
                 for tag in tags:
-                    if tag in self.lookup_tags().keys():
+                    if tag in self._lookup_tags().keys():
                         if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
                             if column == self.COLUMN_ORIG:
                                 values = self.tag_diff.orig[tag]
