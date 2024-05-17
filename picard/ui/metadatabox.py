@@ -203,6 +203,7 @@ class TableTagEditorDelegate(TagEditorDelegate):
 
 class MetadataBox(QtWidgets.QTableWidget):
 
+    COLUMN_TAG = 0
     COLUMN_ORIG = 1
     COLUMN_NEW = 2
 
@@ -665,23 +666,23 @@ class MetadataBox(QtWidgets.QTableWidget):
         new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
 
         for i, name in enumerate(result.tag_names):
-            tag_item = self.item(i, 0)
-            orig_item = self.item(i, 1)
-            new_item = self.item(i, 2)
+            tag_item = self.item(i, self.COLUMN_TAG)
+            orig_item = self.item(i, self.COLUMN_ORIG)
+            new_item = self.item(i, self.COLUMN_NEW)
             if not tag_item:
                 tag_item = QtWidgets.QTableWidgetItem()
                 tag_item.setFlags(orig_flags)
                 font = tag_item.font()
                 font.setBold(True)
                 tag_item.setFont(font)
-                self.setItem(i, 0, tag_item)
+                self.setItem(i, self.COLUMN_TAG, tag_item)
             if not orig_item:
                 orig_item = QtWidgets.QTableWidgetItem()
                 orig_item.setFlags(orig_flags)
-                self.setItem(i, 1, orig_item)
+                self.setItem(i, self.COLUMN_ORIG, orig_item)
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
-                self.setItem(i, 2, new_item)
+                self.setItem(i, self.COLUMN_NEW, new_item)
             tag_item.setText(display_tag_name(name))
             self._set_item_value(orig_item, self.tag_diff.orig, name)
             if name == '~length':
