@@ -236,13 +236,13 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.editing = None  # the QTableWidgetItem being edited
         self.clipboard = [""]
         self.add_tag_action = QtGui.QAction(_("Add New Tag…"), self)
-        self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
+        self.add_tag_action.triggered.connect(partial(self._edit_tag, ""))
         self.changes_first_action = QtGui.QAction(_("Show Changes First"), self)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist['show_changes_first'])
         self.changes_first_action.toggled.connect(self.toggle_changes_first)
         # TR: Keyboard shortcut for "Add New Tag…"
-        self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
+        self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self._edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
         # TR: Keyboard shortcut for "Edit…" (tag)
         self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
@@ -293,7 +293,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag = self.tag_diff.tag_names[item.row()]
             values = self.tag_diff.new[tag]
             if len(values) > 1:
-                self.edit_tag(tag)
+                self._edit_tag(tag)
                 return False
             else:
                 self.editing = item
@@ -368,7 +368,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 selected_tag = tags[0]
                 editable = self.tag_is_editable(selected_tag)
                 edit_tag_action = QtGui.QAction(_("Edit…"), self)
-                edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
+                edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 edit_tag_action.setEnabled(editable)
                 menu.addAction(edit_tag_action)
@@ -456,14 +456,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                 f()
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
-    def edit_tag(self, tag):
+    def _edit_tag(self, tag):
         if self.tag_diff is not None:
             EditTagDialog(self.parent, tag).exec()
 
     def edit_selected_tag(self):
         tags = self.selected_tags(filter_func=self.tag_is_editable)
         if len(tags) == 1:
-            self.edit_tag(tags[0])
+            self._edit_tag(tags[0])
 
     def toggle_changes_first(self, checked):
         config = get_config()
