@@ -660,16 +660,16 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         self.tag_diff = result
 
-        if result is None:
+        if self.tag_diff is None:
             self.setRowCount(0)
             return
 
-        self.setRowCount(len(result.tag_names))
+        self.setRowCount(len(self.tag_diff.tag_names))
 
         orig_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
         new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
 
-        for i, name in enumerate(result.tag_names):
+        for i, name in enumerate(self.tag_diff.tag_names):
             tag_item = self.item(i, self.COLUMN_TAG)
             orig_item = self.item(i, self.COLUMN_ORIG)
             new_item = self.item(i, self.COLUMN_NEW)
@@ -696,14 +696,14 @@ class MetadataBox(QtWidgets.QTableWidget):
             self._set_item_value(new_item, self.tag_diff.new, name)
 
             font = new_item.font()
-            if result.tag_status(name) == TagStatus.REMOVED:
+            if self.tag_diff.tag_status(name) == TagStatus.REMOVED:
                 font.setStrikeOut(True)
             else:
                 font.setStrikeOut(False)
 
             new_item.setFont(font)
 
-            color = self.colors.get(result.tag_status(name),
+            color = self.colors.get(self.tag_diff.tag_status(name),
                                     self.colors[TagStatus.NOCHANGE])
             orig_item.setForeground(color)
             new_item.setForeground(color)
