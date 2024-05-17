@@ -245,7 +245,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self._edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
         # TR: Keyboard shortcut for "Edit…" (tag)
-        self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
+        self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self._edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
         self.remove_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
         self.preserved_tags = PreservedTags()
@@ -460,7 +460,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if self.tag_diff is not None:
             EditTagDialog(self.parent, tag).exec()
 
-    def edit_selected_tag(self):
+    def _edit_selected_tag(self):
         tags = self.selected_tags(filter_func=self.tag_is_editable)
         if len(tags) == 1:
             self._edit_tag(tags[0])
