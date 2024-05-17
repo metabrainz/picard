@@ -490,8 +490,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def remove_selected_tags(self):
         for tag in self.selected_tags(filter_func=self._tag_is_removable):
-            if self._tag_is_removable(tag):
-                self._remove_tag(tag)
+            self._remove_tag(tag)
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
     def _tag_is_removable(self, tag):
