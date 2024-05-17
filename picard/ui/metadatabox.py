@@ -668,47 +668,47 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         orig_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
         new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
+        alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
 
         for i, tag in enumerate(self.tag_diff.tag_names):
+            color = self.colors.get(self.tag_diff.tag_status(tag),
+                                    self.colors[TagStatus.NOCHANGE])
+
             tag_item = self.item(i, self.COLUMN_TAG)
-            orig_item = self.item(i, self.COLUMN_ORIG)
-            new_item = self.item(i, self.COLUMN_NEW)
             if not tag_item:
                 tag_item = QtWidgets.QTableWidgetItem()
                 tag_item.setFlags(orig_flags)
                 font = tag_item.font()
                 font.setBold(True)
                 tag_item.setFont(font)
+                tag_item.setTextAlignment(alignment)
                 self.setItem(i, self.COLUMN_TAG, tag_item)
+            tag_item.setText(display_tag_name(tag))
+
+            orig_item = self.item(i, self.COLUMN_ORIG)
             if not orig_item:
                 orig_item = QtWidgets.QTableWidgetItem()
                 orig_item.setFlags(orig_flags)
+                orig_item.setTextAlignment(alignment)
                 self.setItem(i, self.COLUMN_ORIG, orig_item)
+            self._set_item_value(orig_item, self.tag_diff.orig, tag)
+            orig_item.setForeground(color)
+
+            new_item = self.item(i, self.COLUMN_NEW)
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
+                new_item.setTextAlignment(alignment)
+                if tag == '~length':
+                    new_item.setFlags(orig_flags)
+                else:
+                    new_item.setFlags(new_flags)
                 self.setItem(i, self.COLUMN_NEW, new_item)
-            tag_item.setText(display_tag_name(tag))
-            self._set_item_value(orig_item, self.tag_diff.orig, tag)
-            if tag == '~length':
-                new_item.setFlags(orig_flags)
-            else:
-                new_item.setFlags(new_flags)
             self._set_item_value(new_item, self.tag_diff.new, tag)
-
             font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
             font.setStrikeOut(strikeout)
             new_item.setFont(font)
-
-            color = self.colors.get(self.tag_diff.tag_status(tag),
-                                    self.colors[TagStatus.NOCHANGE])
-            orig_item.setForeground(color)
             new_item.setForeground(color)
-
-            alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
-            tag_item.setTextAlignment(alignment)
-            orig_item.setTextAlignment(alignment)
-            new_item.setTextAlignment(alignment)
 
             # Adjust row height to content size
             self.setRowHeight(i, self.sizeHintForRow(i))
