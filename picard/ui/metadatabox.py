@@ -362,7 +362,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
-            tags = self.selected_tags()
+            tags = self._selected_tags()
             single_tag = len(tags) == 1
             if single_tag:
                 selected_tag = tags[0]
@@ -461,7 +461,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             EditTagDialog(self.parent, tag).exec()
 
     def _edit_selected_tag(self):
-        tags = self.selected_tags(filter_func=self._tag_is_editable)
+        tags = self._selected_tags(filter_func=self._tag_is_editable)
         if len(tags) == 1:
             self._edit_tag(tags[0])
 
@@ -489,7 +489,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._set_tag_values(tag, [])
 
     def remove_selected_tags(self):
-        for tag in self.selected_tags(filter_func=self._tag_is_removable):
+        for tag in self._selected_tags(filter_func=self._tag_is_removable):
             self._remove_tag(tag)
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
@@ -499,7 +499,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def _tag_is_editable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.READONLY == 0
 
-    def selected_tags(self, filter_func=None):
+    def _selected_tags(self, filter_func=None):
         tags = set(self.tag_diff.tag_names[item.row()]
                    for item in self.selectedItems())
         if filter_func:
