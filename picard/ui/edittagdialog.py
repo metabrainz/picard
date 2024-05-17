@@ -162,12 +162,15 @@ class EditTagDialog(PicardDialog):
         else:
             self.add_value()
 
+    def _group(self, is_grouped):
+        self.is_grouped = is_grouped
+        self.ui.add_value.setEnabled(not is_grouped)
+
     def remove_value(self):
         value_list = self.value_list
         row = value_list.currentRow()
         if row == 0 and self.is_grouped:
-            self.is_grouped = False
-            self.ui.add_value.setEnabled(True)
+            self._group(False)
         value_list.takeItem(row)
 
     def on_rows_inserted(self, parent, first, last):
@@ -241,15 +244,14 @@ class EditTagDialog(PicardDialog):
         if values is None:
             new_tags = self.metadata_box.tag_diff.new
             display_value = new_tags.display_value(self.tag)
-            self.is_grouped = display_value.is_grouped
-            if self.is_grouped:
+            if display_value.is_grouped:
                 # grouped values have a special text, which isn't a valid tag value
                 values = [display_value.text]
-                self.ui.add_value.setEnabled(False)
+                self._group(True)
             else:
                 # normal tag values
                 values = new_tags[self.tag]
-                self.ui.add_value.setEnabled(True)
+                self._group(False)
 
         self.value_list.model().rowsInserted.disconnect(self.on_rows_inserted)
         self._add_value_items(values)
@@ -257,14 +259,17 @@ class EditTagDialog(PicardDialog):
         self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
         tag_names.editTextChanged.connect(self.tag_changed)
 
+    def _set_item_style(self, item):
+        font = item.font()
+        font.setItalic(self.is_grouped)
+        item.setFont(font)
+
     def _add_value_items(self, values):
         values = [v for v in values if v] or [""]
         for value in values:
             item = QtWidgets.QListWidgetItem(value)
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
-            font = item.font()
-            font.setItalic(self.is_grouped)
-            item.setFont(font)
+            self._set_item_style(item)
             self.value_list.addItem(item)
 
     def value_edited(self, item):
@@ -272,11 +277,8 @@ class EditTagDialog(PicardDialog):
         value = item.text()
         if row == 0 and self.is_grouped:
             self.modified_tags[self.tag] = [value]
-            self.is_grouped = False
-            font = item.font()
-            font.setItalic(False)
-            item.setFont(font)
-            self.ui.add_value.setEnabled(True)
+            self._group(False)
+            self._set_item_style(item)
         else:
             self._modified_tag()[row] = value
             # add tags to the completer model once they get values
