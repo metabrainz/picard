@@ -104,7 +104,7 @@ class EditTagDialog(PicardDialog):
         self.metadata_box = window.metadata_box
         self.tag = tag
         self.modified_tags = {}
-        self.different = False
+        self.is_grouped = False
         self.default_tags = sorted(
             set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
         if len(self.metadata_box.files) == 1:
@@ -165,8 +165,8 @@ class EditTagDialog(PicardDialog):
     def remove_value(self):
         value_list = self.value_list
         row = value_list.currentRow()
-        if row == 0 and self.different:
-            self.different = False
+        if row == 0 and self.is_grouped:
+            self.is_grouped = False
             self.ui.add_value.setEnabled(True)
         value_list.takeItem(row)
 
@@ -241,14 +241,13 @@ class EditTagDialog(PicardDialog):
         if values is None:
             new_tags = self.metadata_box.tag_diff.new
             display_value = new_tags.display_value(self.tag)
-            if display_value.is_grouped:
+            self.is_grouped = display_value.is_grouped
+            if self.is_grouped:
                 # grouped values have a special text, which isn't a valid tag value
-                self.different = True
                 values = [display_value.text]
                 self.ui.add_value.setEnabled(False)
             else:
                 # normal tag values
-                self.different = False
                 values = new_tags[self.tag]
                 self.ui.add_value.setEnabled(True)
 
@@ -264,16 +263,16 @@ class EditTagDialog(PicardDialog):
             item = QtWidgets.QListWidgetItem(value)
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
             font = item.font()
-            font.setItalic(self.different)
+            font.setItalic(self.is_grouped)
             item.setFont(font)
             self.value_list.addItem(item)
 
     def value_edited(self, item):
         row = self.value_list.row(item)
         value = item.text()
-        if row == 0 and self.different:
+        if row == 0 and self.is_grouped:
             self.modified_tags[self.tag] = [value]
-            self.different = False
+            self.is_grouped = False
             font = item.font()
             font.setItalic(False)
             item.setFont(font)
