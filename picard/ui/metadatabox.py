@@ -696,11 +696,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             self._set_item_value(new_item, self.tag_diff.new, name)
 
             font = new_item.font()
-            if self.tag_diff.tag_status(name) == TagStatus.REMOVED:
-                font.setStrikeOut(True)
-            else:
-                font.setStrikeOut(False)
-
+            strikeout = self.tag_diff.tag_status(name) == TagStatus.REMOVED
+            font.setStrikeOut(strikeout)
             new_item.setFont(font)
 
             color = self.colors.get(self.tag_diff.tag_status(name),
