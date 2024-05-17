@@ -303,13 +303,13 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Copy):
-            self.copy_value()
+            self._copy_value()
         elif event.matches(QtGui.QKeySequence.StandardKey.Paste):
-            self.paste_value()
+            self._paste_value()
         else:
             super().keyPressEvent(event)
 
-    def copy_value(self):
+    def _copy_value(self):
         item = self.currentItem()
         if item:
             column = item.column()
@@ -325,7 +325,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
                 self.clipboard = value
 
-    def paste_value(self):
+    def _paste_value(self):
         item = self.currentItem()
         if item:
             column = item.column()
@@ -434,11 +434,11 @@ class MetadataBox(QtWidgets.QTableWidget):
                 if single_tag:
                     menu.addSeparator()
                     copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
-                    copy_action.triggered.connect(self.copy_value)
+                    copy_action.triggered.connect(self._copy_value)
                     copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
                     menu.addAction(copy_action)
                     paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-                    paste_action.triggered.connect(self.paste_value)
+                    paste_action.triggered.connect(self._paste_value)
                     paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
                     paste_action.setEnabled(editable)
                     menu.addAction(paste_action)
