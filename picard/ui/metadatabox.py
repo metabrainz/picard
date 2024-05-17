@@ -598,28 +598,28 @@ class MetadataBox(QtWidgets.QTableWidget):
             orig_metadata = file.orig_metadata
             tags = set(new_metadata) | set(orig_metadata)
 
-            for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
-                new_values = file.format_specific_metadata(new_metadata, name, settings)
-                orig_values = file.format_specific_metadata(orig_metadata, name, settings)
+            for tag in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
+                new_values = file.format_specific_metadata(new_metadata, tag, settings)
+                orig_values = file.format_specific_metadata(orig_metadata, tag, settings)
 
                 if not clear_existing_tags and not new_values:
                     new_values = list(orig_values or [""])
 
-                removed = name in new_metadata.deleted_tags
-                tag_diff.add(name, orig_values, new_values, True, removed, top_tags=top_tags_set)
+                removed = tag in new_metadata.deleted_tags
+                tag_diff.add(tag, orig_values, new_values, True, removed, top_tags=top_tags_set)
 
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
 
         for track in tracks:
             if track.num_linked_files == 0:
-                for name, new_values in track.metadata.rawitems():
-                    if not name.startswith("~"):
-                        if name in track.orig_metadata:
-                            orig_values = track.orig_metadata.getall(name)
+                for tag, new_values in track.metadata.rawitems():
+                    if not tag.startswith("~"):
+                        if tag in track.orig_metadata:
+                            orig_values = track.orig_metadata.getall(tag)
                         else:
                             orig_values = new_values
-                        tag_diff.add(name, orig_values, new_values, True)
+                        tag_diff.add(tag, orig_values, new_values, True)
 
                 length = str(track.metadata.length)
                 tag_diff.add('~length', length, length, removable=False, readonly=True)
