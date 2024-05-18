@@ -692,11 +692,11 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_item.setToolTip(tag)
                 self.setItem(i, self.COLUMN_TAG, tag_item)
             text = display_tag_name(tag)
-            preserved = tag in self.preserved_tags
+            is_preserved = tag in self.preserved_tags
             font = tag_item.font()
-            font.setBold(not preserved)
+            font.setBold(not is_preserved)
             tag_item.setFont(font)
-            if preserved:
+            if is_preserved:
                 preserved_indicator_fmt = _('%s [P]')
                 tag_item.setText(preserved_indicator_fmt % text)
             else:
