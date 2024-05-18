@@ -93,8 +93,11 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
 
 
 class ArtworkTable(QtWidgets.QTableWidget):
-    def __init__(self, display_existing_art):
-        super().__init__(0, 2)
+    NUM_ROWS = 0
+    NUM_COLS = 2
+
+    def __init__(self, display_existing_art, parent=None):
+        super().__init__(self.NUM_ROWS, self.NUM_COLS, parent=parent)
         self.display_existing_art = display_existing_art
         h_header = self.horizontalHeader()
         v_header = self.verticalHeader()
@@ -148,7 +151,7 @@ class InfoDialog(PicardDialog):
         self.ui.buttonBox.accepted.connect(self.accept)
 
         # Add the ArtworkTable to the ui
-        self.ui.artwork_table = ArtworkTable(self.display_existing_artwork)
+        self.ui.artwork_table = ArtworkTable(self.display_existing_artwork, parent=self)
         self.ui.artwork_table.setObjectName('artwork_table')
         self.ui.artwork_tab.layout().addWidget(self.ui.artwork_table)
         self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
