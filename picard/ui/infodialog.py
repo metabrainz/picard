@@ -107,6 +107,8 @@ class ArtworkTable(QtWidgets.QTableWidget):
 
         h_header = self.horizontalHeader()
         h_header.setDefaultSectionSize(self.H_SIZE)
+        h_header.setStretchLastSection(True)
+
         v_header = self.verticalHeader()
         v_header.setDefaultSectionSize(self.V_SIZE)
 
