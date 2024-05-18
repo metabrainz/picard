@@ -692,6 +692,14 @@ class MetadataBox(QtWidgets.QTableWidget):
         alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
 
         for i, tag in enumerate(self.tag_diff.tag_names):
+            is_preserved = tag in self.preserved_tags
+            if tag == '~length' or is_preserved:
+                self.tag_diff.set_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
+                new_item_flags = orig_flags
+            elif tag != '~length':
+                self.tag_diff.unset_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
+                new_item_flags = new_flags
+
             color = self.colors.get(self.tag_diff.tag_status(tag),
                                     self.colors[TagStatus.NOCHANGE])
 
@@ -726,18 +734,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                 new_item = QtWidgets.QTableWidgetItem()
                 new_item.setTextAlignment(alignment)
                 self.setItem(i, self.COLUMN_NEW, new_item)
-            if is_preserved or tag == '~length':
-                self.tag_diff.set_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
-                new_item.setFlags(orig_flags)
-            else:
-                if tag != '~length':
-                    self.tag_diff.unset_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
-                new_item.setFlags(new_flags)
-            self._set_item_value(new_item, self.tag_diff.new, tag)
+            new_item.setFlags(new_item_flags)
+
             font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
             font.setStrikeOut(strikeout)
             new_item.setFont(font)
+
+            self._set_item_value(new_item, self.tag_diff.new, tag)
             new_item.setForeground(color)
 
             # Adjust row height to content size
