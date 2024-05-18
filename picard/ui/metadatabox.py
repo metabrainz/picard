@@ -689,6 +689,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_item = QtWidgets.QTableWidgetItem()
                 tag_item.setFlags(orig_flags)
                 tag_item.setTextAlignment(alignment)
+                tag_item.setToolTip(tag)
                 self.setItem(i, self.COLUMN_TAG, tag_item)
             text = display_tag_name(tag)
             preserved = tag in self.preserved_tags
