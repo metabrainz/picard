@@ -117,13 +117,14 @@ class ArtworkTable(QtWidgets.QTableWidget):
             self._type_col = 1
             self._new_cover_col = 2
             self.insertColumn(2)
-            self.setHorizontalHeaderLabels([_("Existing Cover"), _("Type"),
-                                            _("New Cover")])
+            labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
         else:
             self._type_col = 0
             self._new_cover_col = 1
-            self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
             self.setColumnWidth(self._type_col, self.TYPE_COLUMN_SIZE)
+            labels = (_("Type"), _("Cover"),)
+
+        self.setHorizontalHeaderLabels(labels)
 
 
 class InfoDialog(PicardDialog):
