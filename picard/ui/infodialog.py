@@ -96,14 +96,14 @@ class ArtworkTable(QtWidgets.QTableWidget):
     H_SIZE = 200
     V_SIZE = 230
 
-    TYPE_COLUMN_SIZE = 140
-
     NUM_ROWS = 0
     NUM_COLS = 2
 
-    def __init__(self, display_existing_art, parent=None):
+    _columns = {}
+    _labels = ()
+
+    def __init__(self, parent=None):
         super().__init__(self.NUM_ROWS, self.NUM_COLS, parent=parent)
-        self.display_existing_art = display_existing_art
 
         h_header = self.horizontalHeader()
         h_header.setDefaultSectionSize(self.H_SIZE)
@@ -112,26 +112,37 @@ class ArtworkTable(QtWidgets.QTableWidget):
         v_header = self.verticalHeader()
         v_header.setDefaultSectionSize(self.V_SIZE)
 
-        if self.display_existing_art:
-            self._columns = {
-                'existing_cover': 0,
-                'type': 1,
-                'new_cover': 2,
-            }
-            self.insertColumn(self.NUM_COLS)
-            labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
-        else:
-            self._columns = {
-                'type': 0,
-                'new_cover': 1,
-            }
-            self.setColumnWidth(self._columns['type'], self.TYPE_COLUMN_SIZE)
-            labels = (_("Type"), _("Cover"),)
-
-        self.setHorizontalHeaderLabels(labels)
+        self.setHorizontalHeaderLabels(self._labels)
 
     def get_column_index(self, name):
         return self._columns[name]
+
+
+class ArtworkTableSimple(ArtworkTable):
+    TYPE_COLUMN_SIZE = 140
+
+    _columns = {
+        'type': 0,
+        'new_cover': 1,
+    }
+
+    _labels = (_("Type"), _("Cover"),)
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.setColumnWidth(self.get_column_index('type'), self.TYPE_COLUMN_SIZE)
+
+
+class ArtworkTableExisting(ArtworkTable):
+    NUM_COLS = 3
+
+    _columns = {
+        'existing_cover': 0,
+        'type': 1,
+        'new_cover': 2,
+    }
+
+    _labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
 
 
 class InfoDialog(PicardDialog):
@@ -142,7 +153,7 @@ class InfoDialog(PicardDialog):
         self.images = []
         self.existing_images = []
         self.ui = Ui_InfoDialog()
-        self.display_existing_artwork = False
+        artworktable_class = ArtworkTableSimple
 
         if (isinstance(obj, File)
                 and isinstance(obj.parent, Track)
@@ -153,7 +164,7 @@ class InfoDialog(PicardDialog):
             if (getattr(obj, 'orig_metadata', None) is not None
                     and obj.orig_metadata.images
                     and obj.orig_metadata.images != obj.metadata.images):
-                self.display_existing_artwork = True
+                artworktable_class = ArtworkTableExisting
                 self.existing_images = obj.orig_metadata.images
 
         if obj.metadata.images:
@@ -161,14 +172,14 @@ class InfoDialog(PicardDialog):
         if not self.images and self.existing_images:
             self.images = self.existing_images
             self.existing_images = []
-            self.display_existing_artwork = False
+            artworktable_class = ArtworkTableSimple
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
             StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.ui.buttonBox.accepted.connect(self.accept)
 
         # Add the ArtworkTable to the ui
-        self.ui.artwork_table = ArtworkTable(self.display_existing_artwork, parent=self)
+        self.ui.artwork_table = artworktable_class(parent=self)
         self.ui.artwork_table.setObjectName('artwork_table')
         self.ui.artwork_tab.layout().addWidget(self.ui.artwork_table)
         self.setTabOrder(self.ui.tabWidget, self.ui.artwork_table)
@@ -266,7 +277,7 @@ class InfoDialog(PicardDialog):
         If both existing covers and new covers are to be displayed, take union of both cover types list.
         """
         types = [image.types_as_string() for image in self.images]
-        if self.display_existing_artwork:
+        if isinstance(self.artwork_table, ArtworkTableExisting):
             existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
