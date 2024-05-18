@@ -116,7 +116,7 @@ class ArtworkTable(QtWidgets.QTableWidget):
             self._existing_cover_col = 0
             self._type_col = 1
             self._new_cover_col = 2
-            self.insertColumn(2)
+            self.insertColumn(self.NUM_COLS)
             labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
         else:
             self._type_col = 0
