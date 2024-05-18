@@ -113,18 +113,25 @@ class ArtworkTable(QtWidgets.QTableWidget):
         v_header.setDefaultSectionSize(self.V_SIZE)
 
         if self.display_existing_art:
-            self._existing_cover_col = 0
-            self._type_col = 1
-            self._new_cover_col = 2
+            self._columns = {
+                'existing_cover': 0,
+                'type': 1,
+                'new_cover': 2,
+            }
             self.insertColumn(self.NUM_COLS)
             labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
         else:
-            self._type_col = 0
-            self._new_cover_col = 1
-            self.setColumnWidth(self._type_col, self.TYPE_COLUMN_SIZE)
+            self._columns = {
+                'type': 0,
+                'new_cover': 1,
+            }
+            self.setColumnWidth(self._columns['type'], self.TYPE_COLUMN_SIZE)
             labels = (_("Type"), _("Cover"),)
 
         self.setHorizontalHeaderLabels(labels)
+
+    def get_column_index(self, name):
+        return self._columns[name]
 
 
 class InfoDialog(PicardDialog):
@@ -189,19 +196,21 @@ class InfoDialog(PicardDialog):
                 lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
             self.ui.error.setText(text + '<hr />')
 
-    def _display_artwork(self, images, col):
+    def _display_artwork(self, images, cover_art_column_name):
         """Draw artwork in corresponding cell if image type matches type in Type column.
 
         Arguments:
         images -- The images to be drawn.
-        col -- Column in which images are to be drawn. Can be _new_cover_col or _existing_cover_col.
+        cover_art_column_name -- Column in which images are to be drawn. Can be 'new_cover' or 'existing_cover'.
         """
+        artwork_col = self.artwork_table.get_column_index(cover_art_column_name)
+        type_col = self.artwork_table.get_column_index('type')
         row = 0
         row_count = self.artwork_table.rowCount()
         missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
         for image in images:
             while row != row_count:
-                image_type = self.artwork_table.item(row, self.artwork_table._type_col)
+                image_type = self.artwork_table.item(row, type_col)
                 if image_type and image_type.data(QtCore.Qt.ItemDataRole.UserRole) == image.types_as_string():
                     break
                 row += 1
@@ -248,8 +257,8 @@ class InfoDialog(PicardDialog):
             infos.append(image.mimetype)
 
             img_wgt = ArtworkCoverWidget(pixmap=pixmap, text="\n".join(infos))
-            self.artwork_table.setCellWidget(row, col, img_wgt)
-            self.artwork_table.setItem(row, col, item)
+            self.artwork_table.setCellWidget(row, artwork_col, img_wgt)
+            self.artwork_table.setItem(row, artwork_col, item)
             row += 1
 
     def _display_artwork_type(self):
@@ -264,21 +273,22 @@ class InfoDialog(PicardDialog):
             pixmap_arrow = QtGui.QPixmap(":/images/arrow.png")
         else:
             pixmap_arrow = None
+        type_col = self.artwork_table.get_column_index('type')
         for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.ItemDataRole.UserRole, artwork_type)
             type_wgt = ArtworkCoverWidget(pixmap=pixmap_arrow, text=artwork_type)
-            self.artwork_table.setCellWidget(row, self.artwork_table._type_col, type_wgt)
-            self.artwork_table.setItem(row, self.artwork_table._type_col, item)
+            self.artwork_table.setCellWidget(row, type_col, type_wgt)
+            self.artwork_table.setItem(row, type_col, item)
 
     def _display_artwork_tab(self):
         if not self.images:
             self.tab_hide(self.ui.artwork_tab)
         self._display_artwork_type()
-        self._display_artwork(self.images, self.artwork_table._new_cover_col)
+        self._display_artwork(self.images, 'new_cover')
         if self.existing_images:
-            self._display_artwork(self.existing_images, self.artwork_table._existing_cover_col)
+            self._display_artwork(self.existing_images, 'existing_cover')
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
         self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
