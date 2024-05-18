@@ -698,9 +698,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_item.setFont(font)
             if is_preserved:
                 preserved_indicator_fmt = _('%s [P]')
-                tag_item.setText(preserved_indicator_fmt % text)
-            else:
-                tag_item.setText(text)
+                text = preserved_indicator_fmt % text
+            tag_item.setText(text)
 
             orig_item = self.item(i, self.COLUMN_ORIG)
             if not orig_item:
