@@ -93,16 +93,23 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
 
 
 class ArtworkTable(QtWidgets.QTableWidget):
+    H_SIZE = 200
+    V_SIZE = 230
+
+    TYPE_COLUMN_SIZE = 140
+
     NUM_ROWS = 0
     NUM_COLS = 2
 
     def __init__(self, display_existing_art, parent=None):
         super().__init__(self.NUM_ROWS, self.NUM_COLS, parent=parent)
         self.display_existing_art = display_existing_art
+
         h_header = self.horizontalHeader()
+        h_header.setDefaultSectionSize(self.H_SIZE)
         v_header = self.verticalHeader()
-        h_header.setDefaultSectionSize(200)
-        v_header.setDefaultSectionSize(230)
+        v_header.setDefaultSectionSize(self.V_SIZE)
+
         if self.display_existing_art:
             self._existing_cover_col = 0
             self._type_col = 1
@@ -114,7 +121,7 @@ class ArtworkTable(QtWidgets.QTableWidget):
             self._type_col = 0
             self._new_cover_col = 1
             self.setHorizontalHeaderLabels([_("Type"), _("Cover")])
-            self.setColumnWidth(self._type_col, 140)
+            self.setColumnWidth(self._type_col, self.TYPE_COLUMN_SIZE)
 
 
 class InfoDialog(PicardDialog):
