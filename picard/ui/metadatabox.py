@@ -73,6 +73,11 @@ from picard.ui.edittagdialog import (
 )
 
 
+def bit_not(num):
+    """Bitwise not, unsigned"""
+    return num ^ ((1 << num.bit_length()) - 1)
+
+
 class TagStatus:
     NONE = 0
     NOCHANGE = 1
@@ -184,6 +189,12 @@ class TagDiff(object):
             if status & s == s:
                 return s
         return TagStatus.NOCHANGE
+
+    def set_bits(self, tag, bits):
+        self.status[tag] |= bits
+
+    def unset_bits(self, tag, bits):
+        self.status[tag] &= bit_not(bits)
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
@@ -474,7 +485,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             self._edit_tag(tags[0])
 
     def _toggle_preserved(self):
-        for tag in self._selected_tags(filter_func=self._tag_is_editable):
+        for tag in self._selected_tags(filter_func=lambda t: t != '~length'):
             if tag in self.preserved_tags:
                 self.preserved_tags.discard(tag)
             else:
@@ -714,11 +725,14 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
                 new_item.setTextAlignment(alignment)
-                if tag == '~length':
-                    new_item.setFlags(orig_flags)
-                else:
-                    new_item.setFlags(new_flags)
                 self.setItem(i, self.COLUMN_NEW, new_item)
+            if is_preserved or tag == '~length':
+                self.tag_diff.set_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
+                new_item.setFlags(orig_flags)
+            else:
+                if tag != '~length':
+                    self.tag_diff.unset_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
+                new_item.setFlags(new_flags)
             self._set_item_value(new_item, self.tag_diff.new, tag)
             font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
