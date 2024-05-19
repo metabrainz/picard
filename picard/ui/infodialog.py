@@ -153,6 +153,11 @@ class InfoDialog(PicardDialog):
         self.images = []
         self.existing_images = []
         self.ui = Ui_InfoDialog()
+        self._pixmaps = {
+            'missing': QtGui.QPixmap(":/images/image-missing.png"),
+            'arrow': QtGui.QPixmap(":/images/arrow.png"),
+        }
+
         artworktable_class = ArtworkTableSimple
 
         if (isinstance(obj, File)
@@ -224,8 +229,6 @@ class InfoDialog(PicardDialog):
         cover_art_column_name -- Column in which images are to be drawn. Can be 'new_cover' or 'existing_cover'.
         """
         artwork_col = self.artwork_table.get_column_index(cover_art_column_name)
-        missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
-
         type_col = self.artwork_table.get_column_index('type')
         types_to_rows = self._types_to_rows(type_col)
         for image in images:
@@ -237,9 +240,9 @@ class InfoDialog(PicardDialog):
                 continue
 
             data = None
+            pixmap = None
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
-            pixmap = QtGui.QPixmap()
             try:
                 if image.thumbnail:
                     try:
@@ -249,6 +252,7 @@ class InfoDialog(PicardDialog):
                 else:
                     data = image.data
                 if data:
+                    pixmap = QtGui.QPixmap()
                     pixmap.loadFromData(data)
                     item.setToolTip(
                         _("Double-click to open in external viewer\n"
@@ -259,7 +263,7 @@ class InfoDialog(PicardDialog):
                         })
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
-                pixmap = missing_pixmap
+                pixmap = self._pixmaps['missing']
                 item.setToolTip(
                     _("Missing temporary file: %(tempfile)s\n"
                     "Source: %(sourcefile)s") % {
@@ -289,15 +293,15 @@ class InfoDialog(PicardDialog):
             existing_types = [image.types_as_string() for image in self.existing_images]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
-            pixmap_arrow = QtGui.QPixmap(":/images/arrow.png")
+            pixmap = self._pixmaps['arrow']
         else:
-            pixmap_arrow = None
+            pixmap = None
         type_col = self.artwork_table.get_column_index('type')
         for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.ItemDataRole.UserRole, artwork_type)
-            type_wgt = ArtworkCoverWidget(pixmap=pixmap_arrow, text=artwork_type)
+            type_wgt = ArtworkCoverWidget(pixmap=pixmap, text=artwork_type)
             self.artwork_table.setCellWidget(row, type_col, type_wgt)
             self.artwork_table.setItem(row, type_col, item)
 
