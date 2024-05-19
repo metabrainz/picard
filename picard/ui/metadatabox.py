@@ -34,6 +34,7 @@
 from collections import (
     Counter,
     defaultdict,
+    namedtuple,
 )
 from functools import partial
 
@@ -83,6 +84,9 @@ class TagStatus:
     READONLY = 32
 
 
+TagCounterDisplayValue = namedtuple('TagCounterDisplayValue', ('text', 'is_grouped'))
+
+
 class TagCounter(dict):
 
     __slots__ = ('parent', 'counts', 'different')
@@ -109,7 +113,8 @@ class TagCounter(dict):
         missing = self.parent.objects - count
 
         if tag in self.different:
-            return (ngettext("(different across %d item)", "(different across %d items)", count) % count, True)
+            text = ngettext("(different across %d item)", "(different across %d items)", count) % count
+            is_grouped = True
         else:
             if tag == '~length':
                 msg = format_time(self.get(tag, 0))
@@ -117,9 +122,13 @@ class TagCounter(dict):
                 msg = MULTI_VALUED_JOINER.join(self[tag])
 
             if count > 0 and missing > 0:
-                return (msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing), True)
+                text = msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing)
+                is_grouped = True
             else:
-                return (msg, False)
+                text = msg
+                is_grouped = False
+
+        return TagCounterDisplayValue(text, is_grouped)
 
 
 class TagDiff(object):
@@ -203,8 +212,24 @@ class TableTagEditorDelegate(TagEditorDelegate):
 
 class MetadataBox(QtWidgets.QTableWidget):
 
+    COLUMN_TAG = 0
     COLUMN_ORIG = 1
     COLUMN_NEW = 2
+
+    # keys are tags
+    # values are FileLookup methods (as string)
+    # to use to look up for the matching tag
+    LOOKUP_TAGS = {
+        'acoustid_id': 'acoust_lookup',
+        'musicbrainz_albumartistid': 'artist_lookup',
+        'musicbrainz_albumid': 'album_lookup',
+        'musicbrainz_artistid': 'artist_lookup',
+        'musicbrainz_discid': 'discid_lookup',
+        'musicbrainz_recordingid': 'recording_lookup',
+        'musicbrainz_releasegroupid': 'release_group_lookup',
+        'musicbrainz_trackid': 'track_lookup',
+        'musicbrainz_workid': 'work_lookup',
+    }
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -235,50 +260,38 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
         self.clipboard = [""]
-        self.add_tag_action = QtGui.QAction(_("Add New Tag…"), parent)
-        self.add_tag_action.triggered.connect(partial(self.edit_tag, ""))
-        self.changes_first_action = QtGui.QAction(_("Show Changes First"), parent)
+        self.add_tag_action = QtGui.QAction(_("Add New Tag…"), self)
+        self.add_tag_action.triggered.connect(partial(self._edit_tag, ""))
+        self.changes_first_action = QtGui.QAction(_("Show Changes First"), self)
         self.changes_first_action.setCheckable(True)
         self.changes_first_action.setChecked(config.persist['show_changes_first'])
-        self.changes_first_action.toggled.connect(self.toggle_changes_first)
+        self.changes_first_action.toggled.connect(self._toggle_changes_first)
         # TR: Keyboard shortcut for "Add New Tag…"
-        self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self.edit_tag, ""))
+        self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self._edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
         # TR: Keyboard shortcut for "Edit…" (tag)
-        self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self.edit_selected_tag))
+        self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self._edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
         self.remove_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
         self.preserved_tags = PreservedTags()
         self._single_file_album = False
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(onexit=self.update)
-        self.tagger.clipboard().dataChanged.connect(self.update_clipboard)
+        self.tagger.clipboard().dataChanged.connect(self._update_clipboard)
 
-    def get_file_lookup(self):
+    def _get_file_lookup(self):
         """Return a FileLookup object."""
         config = get_config()
         return FileLookup(self, config.setting['server_host'],
                           config.setting['server_port'],
                           self.tagger.browser_integration.port)
 
-    def lookup_tags(self):
-        lookup = self.get_file_lookup()
-        LOOKUP_TAGS = {
-            'musicbrainz_recordingid': lookup.recording_lookup,
-            'musicbrainz_trackid': lookup.track_lookup,
-            'musicbrainz_albumid': lookup.album_lookup,
-            'musicbrainz_workid': lookup.work_lookup,
-            'musicbrainz_artistid': lookup.artist_lookup,
-            'musicbrainz_albumartistid': lookup.artist_lookup,
-            'musicbrainz_releasegroupid': lookup.release_group_lookup,
-            'musicbrainz_discid': lookup.discid_lookup,
-            'acoustid_id': lookup.acoust_lookup
-        }
-        return LOOKUP_TAGS
+    def _lookup_tag(self, tag):
+        lookup = self._get_file_lookup()
+        return getattr(lookup, self.LOOKUP_TAGS[tag])
 
-    def open_link(self, values, tag):
-        lookup = self.lookup_tags()
-        lookup_func = lookup[tag]
+    def _open_link(self, values, tag):
+        lookup_func = self._lookup_tag(tag)
         for v in values:
             lookup_func(v)
 
@@ -293,7 +306,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag = self.tag_diff.tag_names[item.row()]
             values = self.tag_diff.new[tag]
             if len(values) > 1:
-                self.edit_tag(tag)
+                self._edit_tag(tag)
                 return False
             else:
                 self.editing = item
@@ -303,13 +316,13 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Copy):
-            self.copy_value()
+            self._copy_value()
         elif event.matches(QtGui.QKeySequence.StandardKey.Paste):
-            self.paste_value()
+            self._paste_value()
         else:
             super().keyPressEvent(event)
 
-    def copy_value(self):
+    def _copy_value(self):
         item = self.currentItem()
         if item:
             column = item.column()
@@ -325,16 +338,16 @@ class MetadataBox(QtWidgets.QTableWidget):
                 self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
                 self.clipboard = value
 
-    def paste_value(self):
+    def _paste_value(self):
         item = self.currentItem()
         if item:
             column = item.column()
             tag = self.tag_diff.tag_names[item.row()]
-            if column == self.COLUMN_NEW and self.tag_is_editable(tag):
-                self.set_tag_values(tag, self.clipboard)
+            if column == self.COLUMN_NEW and self._tag_is_editable(tag):
+                self._set_tag_values(tag, self.clipboard)
                 self.update()
 
-    def update_clipboard(self):
+    def _update_clipboard(self):
         clipboard = self.tagger.clipboard().text().split(MULTI_VALUED_JOINER)
         if clipboard:
             self.clipboard = clipboard
@@ -347,7 +360,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         if old == new:
             self.editing.setText(old[0])
         else:
-            self.set_tag_values(tag, new)
+            self._set_tag_values(tag, new)
         self.editing = None
         self.update(drop_album_caches=tag == 'album')
 
@@ -362,23 +375,23 @@ class MetadataBox(QtWidgets.QTableWidget):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
-            tags = self.selected_tags()
+            tags = list(self._selected_tags())
             single_tag = len(tags) == 1
             if single_tag:
                 selected_tag = tags[0]
-                editable = self.tag_is_editable(selected_tag)
-                edit_tag_action = QtGui.QAction(_("Edit…"), self.parent)
-                edit_tag_action.triggered.connect(partial(self.edit_tag, selected_tag))
+                editable = self._tag_is_editable(selected_tag)
+                edit_tag_action = QtGui.QAction(_("Edit…"), self)
+                edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 edit_tag_action.setEnabled(editable)
                 menu.addAction(edit_tag_action)
                 if selected_tag not in self.preserved_tags:
-                    add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self.parent)
+                    add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self)
                     add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
                     add_to_preserved_tags_action.setEnabled(editable)
                     menu.addAction(add_to_preserved_tags_action)
                 else:
-                    remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self.parent)
+                    remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self)
                     remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
                     remove_from_preserved_tags_action.setEnabled(editable)
                     menu.addAction(remove_from_preserved_tags_action)
@@ -388,17 +401,17 @@ class MetadataBox(QtWidgets.QTableWidget):
             if item:
                 column = item.column()
                 for tag in tags:
-                    if tag in self.lookup_tags().keys():
+                    if tag in self.LOOKUP_TAGS:
                         if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
                             if column == self.COLUMN_ORIG:
                                 values = self.tag_diff.orig[tag]
                             else:
                                 values = self.tag_diff.new[tag]
-                            lookup_action = QtGui.QAction(_("Lookup in &Browser"), self.parent)
-                            lookup_action.triggered.connect(partial(self.open_link, values, tag))
+                            lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
+                            lookup_action.triggered.connect(partial(self._open_link, values, tag))
                             menu.addAction(lookup_action)
-                    if self.tag_is_removable(tag):
-                        removals.append(partial(self.remove_tag, tag))
+                    if self._tag_is_removable(tag):
+                        removals.append(partial(self._remove_tag, tag))
                     status = self.tag_diff.status[tag] & TagStatus.CHANGED
                     if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
                         file_tracks = []
@@ -410,35 +423,35 @@ class MetadataBox(QtWidgets.QTableWidget):
                                 file_tracks.append(file.parent)
                                 track_albums.add(file.parent.album)
                             orig_values = list(file.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
                         for track in set(self.tracks)-set(file_tracks):
                             objects = [track]
                             orig_values = list(track.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
+                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
                             track_albums.add(track.album)
                         for album in track_albums:
                             objects = [album]
                             orig_values = list(album.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self.set_tag_values, tag, orig_values, objects))
-                remove_tag_action = QtGui.QAction(_("Remove"), self.parent)
+                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
+                remove_tag_action = QtGui.QAction(_("Remove"), self)
                 remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                 remove_tag_action.setEnabled(bool(removals))
                 menu.addAction(remove_tag_action)
                 if useorigs:
                     name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
-                    use_orig_value_action = QtGui.QAction(name, self.parent)
+                    use_orig_value_action = QtGui.QAction(name, self)
                     use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
                     menu.addAction(use_orig_value_action)
                     menu.addSeparator()
                 if single_tag:
                     menu.addSeparator()
                     copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
-                    copy_action.triggered.connect(self.copy_value)
+                    copy_action.triggered.connect(self._copy_value)
                     copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
                     menu.addAction(copy_action)
                     paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-                    paste_action.triggered.connect(self.paste_value)
+                    paste_action.triggered.connect(self._paste_value)
                     paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
                     paste_action.setEnabled(editable)
                     menu.addAction(paste_action)
@@ -456,27 +469,27 @@ class MetadataBox(QtWidgets.QTableWidget):
                 f()
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
-    def edit_tag(self, tag):
+    def _edit_tag(self, tag):
         if self.tag_diff is not None:
             EditTagDialog(self.parent, tag).exec()
 
-    def edit_selected_tag(self):
-        tags = self.selected_tags(filter_func=self.tag_is_editable)
+    def _edit_selected_tag(self):
+        tags = list(self._selected_tags(filter_func=self._tag_is_editable))
         if len(tags) == 1:
-            self.edit_tag(tags[0])
+            self._edit_tag(tags[0])
 
-    def toggle_changes_first(self, checked):
+    def _toggle_changes_first(self, checked):
         config = get_config()
         config.persist['show_changes_first'] = checked
         self.update()
 
-    def set_tag_values(self, tag, values, objects=None):
+    def _set_tag_values(self, tag, values, objects=None):
         if objects is None:
             objects = self.objects
         with self.parent.ignore_selection_changes:
             if values == [""]:
                 values = []
-            if not values and self.tag_is_removable(tag):
+            if not values and self._tag_is_removable(tag):
                 for obj in objects:
                     del obj.metadata[tag]
                     obj.update()
@@ -485,27 +498,25 @@ class MetadataBox(QtWidgets.QTableWidget):
                     obj.metadata[tag] = values
                     obj.update()
 
-    def remove_tag(self, tag):
-        self.set_tag_values(tag, [])
+    def _remove_tag(self, tag):
+        self._set_tag_values(tag, [])
 
     def remove_selected_tags(self):
-        for tag in self.selected_tags(filter_func=self.tag_is_removable):
-            if self.tag_is_removable(tag):
-                self.remove_tag(tag)
+        for tag in self._selected_tags(filter_func=self._tag_is_removable):
+            self._remove_tag(tag)
         self.parent.update_selection(new_selection=False, drop_album_caches=True)
 
-    def tag_is_removable(self, tag):
+    def _tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
 
-    def tag_is_editable(self, tag):
+    def _tag_is_editable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.READONLY == 0
 
-    def selected_tags(self, filter_func=None):
-        tags = set(self.tag_diff.tag_names[item.row()]
-                   for item in self.selectedItems())
-        if filter_func:
-            tags = filter(filter_func, tags)
-        return list(tags)
+    def _selected_tags(self, filter_func=None):
+        for tag in set(self.tag_diff.tag_names[item.row()]
+                       for item in self.selectedItems()):
+            if filter_func is None or filter_func(tag):
+                yield tag
 
     def _update_selection(self):
         files = set()
@@ -581,8 +592,6 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         config = get_config()
         tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
-        orig_tags = tag_diff.orig
-        new_tags = tag_diff.new
         tag_diff.objects = len(files)
 
         clear_existing_tags = config.setting['clear_existing_tags']
@@ -596,35 +605,39 @@ class MetadataBox(QtWidgets.QTableWidget):
             orig_metadata = file.orig_metadata
             tags = set(new_metadata) | set(orig_metadata)
 
-            for name in filter(lambda x: not x.startswith("~") and file.supports_tag(x), tags):
-                new_values = file.format_specific_metadata(new_metadata, name, settings)
-                orig_values = file.format_specific_metadata(orig_metadata, name, settings)
+            for tag in tags:
+                if tag.startswith("~"):
+                    continue
+                if not file.supports_tag(tag):
+                    continue
+                new_values = file.format_specific_metadata(new_metadata, tag, settings)
+                orig_values = file.format_specific_metadata(orig_metadata, tag, settings)
 
                 if not clear_existing_tags and not new_values:
                     new_values = list(orig_values or [""])
 
-                removed = name in new_metadata.deleted_tags
-                tag_diff.add(name, orig_values, new_values, True, removed, top_tags=top_tags_set)
+                removed = tag in new_metadata.deleted_tags
+                tag_diff.add(tag, orig_values, new_values, True, removed, top_tags=top_tags_set)
 
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
 
         for track in tracks:
             if track.num_linked_files == 0:
-                for name, new_values in track.metadata.rawitems():
-                    if not name.startswith("~"):
-                        if name in track.orig_metadata:
-                            orig_values = track.orig_metadata.getall(name)
+                for tag, new_values in track.metadata.rawitems():
+                    if not tag.startswith("~"):
+                        if tag in track.orig_metadata:
+                            orig_values = track.orig_metadata.getall(tag)
                         else:
                             orig_values = new_values
-                        tag_diff.add(name, orig_values, new_values, True)
+                        tag_diff.add(tag, orig_values, new_values, True)
 
                 length = str(track.metadata.length)
                 tag_diff.add('~length', length, length, removable=False, readonly=True)
 
                 tag_diff.objects += 1
 
-        all_tags = set(list(orig_tags.keys()) + list(new_tags.keys()))
+        all_tags = set(list(tag_diff.orig) + list(tag_diff.new))
         common_tags = [tag for tag in top_tags if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
@@ -654,68 +667,65 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         self.tag_diff = result
 
-        if result is None:
+        if self.tag_diff is None:
             self.setRowCount(0)
             return
 
-        self.setRowCount(len(result.tag_names))
+        self.setRowCount(len(self.tag_diff.tag_names))
 
         orig_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
         new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
+        alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
 
-        for i, name in enumerate(result.tag_names):
-            tag_item = self.item(i, 0)
-            orig_item = self.item(i, 1)
-            new_item = self.item(i, 2)
+        for i, tag in enumerate(self.tag_diff.tag_names):
+            color = self.colors.get(self.tag_diff.tag_status(tag),
+                                    self.colors[TagStatus.NOCHANGE])
+
+            tag_item = self.item(i, self.COLUMN_TAG)
             if not tag_item:
                 tag_item = QtWidgets.QTableWidgetItem()
                 tag_item.setFlags(orig_flags)
                 font = tag_item.font()
                 font.setBold(True)
                 tag_item.setFont(font)
-                self.setItem(i, 0, tag_item)
+                tag_item.setTextAlignment(alignment)
+                self.setItem(i, self.COLUMN_TAG, tag_item)
+            tag_item.setText(display_tag_name(tag))
+
+            orig_item = self.item(i, self.COLUMN_ORIG)
             if not orig_item:
                 orig_item = QtWidgets.QTableWidgetItem()
                 orig_item.setFlags(orig_flags)
-                self.setItem(i, 1, orig_item)
+                orig_item.setTextAlignment(alignment)
+                self.setItem(i, self.COLUMN_ORIG, orig_item)
+            self._set_item_value(orig_item, self.tag_diff.orig, tag)
+            orig_item.setForeground(color)
+
+            new_item = self.item(i, self.COLUMN_NEW)
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
-                self.setItem(i, 2, new_item)
-            tag_item.setText(display_tag_name(name))
-            self.set_item_value(orig_item, self.tag_diff.orig, name)
-            if name == '~length':
-                new_item.setFlags(orig_flags)
-            else:
-                new_item.setFlags(new_flags)
-            self.set_item_value(new_item, self.tag_diff.new, name)
-
+                new_item.setTextAlignment(alignment)
+                if tag == '~length':
+                    new_item.setFlags(orig_flags)
+                else:
+                    new_item.setFlags(new_flags)
+                self.setItem(i, self.COLUMN_NEW, new_item)
+            self._set_item_value(new_item, self.tag_diff.new, tag)
             font = new_item.font()
-            if result.tag_status(name) == TagStatus.REMOVED:
-                font.setStrikeOut(True)
-            else:
-                font.setStrikeOut(False)
-
+            strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
+            font.setStrikeOut(strikeout)
             new_item.setFont(font)
-
-            color = self.colors.get(result.tag_status(name),
-                                    self.colors[TagStatus.NOCHANGE])
-            orig_item.setForeground(color)
             new_item.setForeground(color)
-
-            alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
-            tag_item.setTextAlignment(alignment)
-            orig_item.setTextAlignment(alignment)
-            new_item.setTextAlignment(alignment)
 
             # Adjust row height to content size
             self.setRowHeight(i, self.sizeHintForRow(i))
 
-    def set_item_value(self, item, tags, name):
-        text, italic = tags.display_value(name)
-        item.setData(QtCore.Qt.ItemDataRole.UserRole, name)
-        item.setText(text)
+    def _set_item_value(self, item, tags, tag):
+        display_value = tags.display_value(tag)
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
+        item.setText(display_value.text)
         font = item.font()
-        font.setItalic(italic)
+        font.setItalic(display_value.is_grouped)
         item.setFont(font)
 
     @restore_method
