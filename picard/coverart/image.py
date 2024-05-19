@@ -96,6 +96,9 @@ class DataHash:
     def __eq__(self, other):
         return self._hash == other._hash
 
+    def __lt__(self, other):
+        return self._hash < other._hash
+
     def hash(self):
         return self._hash
 
