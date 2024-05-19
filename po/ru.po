@@ -34,9 +34,9 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-04-28 11:42+0000\n"
-"Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>"
-"\n"
+"PO-Revision-Date: 2024-05-19 17:42+0000\n"
+"Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz"
+".org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "2/app/ru/>\n"
 "Language: ru\n"
@@ -46,7 +46,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
 "n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.5.2\n"
+"X-Generator: Weblate 5.5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -616,9 +616,8 @@ msgid "Show icons in menus"
 msgstr ""
 
 #: picard/profile.py:188
-#, fuzzy
 msgid "User interface language"
-msgstr "Язык интерфейса:"
+msgstr "Язык интерфейса"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
@@ -633,9 +632,8 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "Использовать встроенный поиск вместо поиска в браузере"
 
 #: picard/profile.py:192
-#, fuzzy
 msgid "Use advanced search syntax"
-msgstr "Использовать расширенный синтаксис запросов"
+msgstr "Использовать расширенный синтаксис поиска"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -765,14 +763,12 @@ msgid "Listen only on localhost"
 msgstr "Слушать только на localhost"
 
 #: picard/profile.py:252
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Минимальное сходство при опознавании файлов:"
+msgstr "Минимальное сходство при опознавании файлов"
 
 #: picard/profile.py:253
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Минимальное сходство при опознавании кластеров:"
+msgstr "Минимальное сходство при опознавании кластеров"
 
 #: picard/profile.py:254
 #, fuzzy
