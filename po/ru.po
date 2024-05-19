@@ -34,19 +34,19 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-04-28 11:42+0000\n"
-"Last-Translator: Dimlbur <Dimlbur@users.noreply.translations.metabrainz."
-"org>\n"
-"Language-Team: Russian <https://translations.metabrainz.org/projects/"
-"picard/3/app/ru/>\n"
+"PO-Revision-Date: 2024-05-19 17:42+0000\n"
+"Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz"
+".org>\n"
+"Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
+"3/app/ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.5.2\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:155
@@ -425,18 +425,16 @@ msgid "Show text labels under icons"
 msgstr "Показывать подписи под значками"
 
 #: picard/options.py:228
-#, fuzzy
 msgid "User interface language"
-msgstr "Язык интерфейса:"
+msgstr "Язык интерфейса"
 
 #: picard/options.py:229
 msgid "User interface color theme"
 msgstr ""
 
 #: picard/options.py:230
-#, fuzzy
 msgid "Use advanced search syntax"
-msgstr "Использовать расширенный синтаксис запросов"
+msgstr "Использовать расширенный синтаксис поиска"
 
 #: picard/options.py:234
 msgid "Colors to use for light theme"
@@ -461,14 +459,12 @@ msgid "Automatic backup destination directory"
 msgstr "Каталог назначения"
 
 #: picard/options.py:262
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Минимальное сходство при опознавании кластеров:"
+msgstr "Минимальное сходство при опознавании кластеров"
 
 #: picard/options.py:263
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Минимальное сходство при опознавании файлов:"
+msgstr "Минимальное сходство при опознавании файлов"
 
 #: picard/options.py:264
 #, fuzzy
