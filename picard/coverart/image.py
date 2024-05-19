@@ -414,8 +414,12 @@ class CoverArtImage:
         return self.datahash.filename
 
     def normalized_types(self):
-        if self.types:
-            types = sorted(set(self.types))
+        if self.types and self.support_types:
+            # ensure front type is first, if any
+            # the rest is sorted
+            types_front = ['front'] if 'front' in self.types else []
+            types_without_front = sorted(set(t for t in self.types if t != 'front'))
+            types = types_front + types_without_front
         elif self.is_front_image():
             types = ['front']
         else:
