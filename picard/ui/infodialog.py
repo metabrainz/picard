@@ -70,13 +70,15 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
 
     SIZE = 170
 
-    def __init__(self, pixmap=None, text=None, parent=None):
+    def __init__(self, pixmap=None, text=None, size=None, parent=None):
         super().__init__(parent=parent)
         layout = QtWidgets.QVBoxLayout()
 
         if pixmap is not None:
+            if size is None:
+                size = self.SIZE
             image_label = QtWidgets.QLabel()
-            image_label.setPixmap(pixmap.scaled(self.SIZE, self.SIZE,
+            image_label.setPixmap(pixmap.scaled(size, size,
                                                 QtCore.Qt.AspectRatioMode.KeepAspectRatio,
                                                 QtCore.Qt.TransformationMode.SmoothTransformation))
             image_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -294,14 +296,16 @@ class InfoDialog(PicardDialog):
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
             pixmap = self._pixmaps['arrow']
+            size = ArtworkCoverWidget.SIZE // 2
         else:
             pixmap = None
+            size = None
         type_col = self.artwork_table.get_column_index('type')
         for row, artwork_type in enumerate(types):
             self.artwork_table.insertRow(row)
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.ItemDataRole.UserRole, artwork_type)
-            type_wgt = ArtworkCoverWidget(pixmap=pixmap, text=artwork_type)
+            type_wgt = ArtworkCoverWidget(pixmap=pixmap, size=size, text=artwork_type)
             self.artwork_table.setCellWidget(row, type_col, type_wgt)
             self.artwork_table.setItem(row, type_col, item)
 
