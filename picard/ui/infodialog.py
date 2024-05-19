@@ -46,6 +46,7 @@ from PyQt6 import (
 from picard import log
 from picard.album import Album
 from picard.coverart.image import CoverArtImageIOError
+from picard.coverart.utils import translated_types_as_string
 from picard.file import File
 from picard.i18n import (
     gettext as _,
@@ -230,7 +231,7 @@ class InfoDialog(PicardDialog):
         for image in images:
             try:
                 # find first row matching the image types, if any
-                row = types_to_rows[image.types_as_string()].pop(0)
+                row = types_to_rows[image.normalized_types()].pop(0)
             except IndexError:
                 # no row found
                 continue
@@ -284,9 +285,9 @@ class InfoDialog(PicardDialog):
         """Display image type in Type column.
         If both existing covers and new covers are to be displayed, take union of both cover types list.
         """
-        types = [image.types_as_string() for image in self.images]
-        if isinstance(self.artwork_table, ArtworkTableExisting):
-            existing_types = [image.types_as_string() for image in self.existing_images]
+        types = [image.normalized_types() for image in sorted(self.images)]
+        if self.existing_images:
+            existing_types = [image.normalized_types() for image in sorted(self.existing_images)]
             # Merge both types and existing types list in sorted order.
             types = union_sorted_lists(types, existing_types)
             pixmap = self._pixmaps['arrow']
@@ -299,7 +300,11 @@ class InfoDialog(PicardDialog):
             self.artwork_table.insertRow(row)
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.ItemDataRole.UserRole, artwork_type)
-            type_wgt = ArtworkCoverWidget(pixmap=pixmap, size=size, text=artwork_type)
+            type_wgt = ArtworkCoverWidget(
+                pixmap=pixmap,
+                size=size,
+                text=translated_types_as_string(artwork_type),
+            )
             self.artwork_table.setCellWidget(row, type_col, type_wgt)
             self.artwork_table.setItem(row, type_col, item)
 
