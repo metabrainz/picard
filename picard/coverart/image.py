@@ -262,6 +262,30 @@ class CoverArtImage:
                 return self.datahash == other.datahash
         return not self and not other
 
+    def __lt__(self, other):
+        """Try to provide constant ordering"""
+        stypes = self.normalized_types()
+        otypes = other.normalized_types()
+        if stypes != otypes:
+            sfront = self.is_front_image()
+            ofront = other.is_front_image()
+            if sfront != ofront:
+                # front image first
+                ret = sfront
+            else:
+                # lower number of types first
+                # '-' == unknown type always last
+                ret = stypes < otypes or '-' in otypes
+        elif self.comment != other.comment:
+            # shortest comment first, alphabetical
+            scomment = self.comment or ''
+            ocomment = other.comment or ''
+            ret = scomment < ocomment
+        else:
+            # arbitrary order based on data, but should be constant
+            ret = self.datahash < other.datahash
+        return ret
+
     def __hash__(self):
         if self.datahash is None:
             return 0
