@@ -152,34 +152,28 @@ class InfoDialog(PicardDialog):
     def __init__(self, obj, parent=None):
         super().__init__(parent)
         self.obj = obj
-        self.images = []
-        self.existing_images = []
         self.ui = Ui_InfoDialog()
         self._pixmaps = {
             'missing': QtGui.QPixmap(":/images/image-missing.png"),
             'arrow': QtGui.QPixmap(":/images/arrow.png"),
         }
 
+        self.images = obj.metadata.images or []
+        self.existing_images = []
         artworktable_class = ArtworkTableSimple
 
-        if (isinstance(obj, File)
-                and isinstance(obj.parent, Track)
-                or isinstance(obj, Track)
-                or (isinstance(obj, Album) and obj.get_num_total_files() > 0)):
-            # Display existing artwork only if selected object is track object
-            # or linked to a track object or it's an album with files
-            if (getattr(obj, 'orig_metadata', None) is not None
-                    and obj.orig_metadata.images
-                    and obj.orig_metadata.images != obj.metadata.images):
-                artworktable_class = ArtworkTableExisting
-                self.existing_images = obj.orig_metadata.images
+        has_orig_images = getattr(obj, 'orig_metadata', None) is not None and obj.orig_metadata.images
+        if has_orig_images and obj.orig_metadata.images != obj.metadata.images:
+            is_track = isinstance(obj, Track)
+            is_linked_file = isinstance(obj, File) and isinstance(obj.parent, Track)
+            is_album_with_files = isinstance(obj, Album) and obj.get_num_total_files() > 0
+            if is_track or is_linked_file or is_album_with_files:
+                if self.images:
+                    self.existing_images = obj.orig_metadata.images
+                    artworktable_class = ArtworkTableExisting
+                else:
+                    self.images = obj.orig_metadata.images
 
-        if obj.metadata.images:
-            self.images = obj.metadata.images
-        if not self.images and self.existing_images:
-            self.images = self.existing_images
-            self.existing_images = []
-            artworktable_class = ArtworkTableSimple
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
             StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
