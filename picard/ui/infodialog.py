@@ -304,10 +304,12 @@ class InfoDialog(PicardDialog):
             self.artwork_table.setItem(row, type_col, item)
 
     def _display_artwork_tab(self):
-        if not self.images:
+        if not self.images and not self.existing_images:
             self.tab_hide(self.ui.artwork_tab)
+            return
         self._display_artwork_type()
-        self._display_artwork(self.images, 'new_cover')
+        if self.images:
+            self._display_artwork(self.images, 'new_cover')
         if self.existing_images:
             self._display_artwork(self.existing_images, 'existing_cover')
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
