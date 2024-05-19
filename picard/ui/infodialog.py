@@ -207,6 +207,15 @@ class InfoDialog(PicardDialog):
                 lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
             self.ui.error.setText(text + '<hr />')
 
+    def _types_to_rows(self, type_col):
+        """Build a dict of lists to match types to rows"""
+        types_to_rows = defaultdict(list)
+        for row in range(0, self.artwork_table.rowCount()):
+            type_item = self.artwork_table.item(row, type_col)
+            types = type_item.data(QtCore.Qt.ItemDataRole.UserRole)
+            types_to_rows[types].append(row)
+        return types_to_rows
+
     def _display_artwork(self, images, cover_art_column_name):
         """Draw artwork in corresponding cell if image type matches type in Type column.
 
@@ -215,18 +224,18 @@ class InfoDialog(PicardDialog):
         cover_art_column_name -- Column in which images are to be drawn. Can be 'new_cover' or 'existing_cover'.
         """
         artwork_col = self.artwork_table.get_column_index(cover_art_column_name)
-        type_col = self.artwork_table.get_column_index('type')
-        row = 0
-        row_count = self.artwork_table.rowCount()
         missing_pixmap = QtGui.QPixmap(":/images/image-missing.png")
+
+        type_col = self.artwork_table.get_column_index('type')
+        types_to_rows = self._types_to_rows(type_col)
         for image in images:
-            while row != row_count:
-                image_type = self.artwork_table.item(row, type_col)
-                if image_type and image_type.data(QtCore.Qt.ItemDataRole.UserRole) == image.types_as_string():
-                    break
-                row += 1
-            if row == row_count:
+            try:
+                # find first row matching the image types, if any
+                row = types_to_rows[image.types_as_string()].pop(0)
+            except IndexError:
+                # no row found
                 continue
+
             data = None
             item = QtWidgets.QTableWidgetItem()
             item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
@@ -270,7 +279,6 @@ class InfoDialog(PicardDialog):
             img_wgt = ArtworkCoverWidget(pixmap=pixmap, text="\n".join(infos))
             self.artwork_table.setCellWidget(row, artwork_col, img_wgt)
             self.artwork_table.setItem(row, artwork_col, item)
-            row += 1
 
     def _display_artwork_type(self):
         """Display image type in Type column.
