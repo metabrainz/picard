@@ -428,7 +428,7 @@ class CoverArtImage:
             types = ['front']
         else:
             types = ['-']
-        return types
+        return tuple(types)
 
     def types_as_string(self, translate=True, separator=TYPES_SEPARATOR):
         types = self.normalized_types()

@@ -125,12 +125,12 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual("front", create_image(b'a', types=["back", "medium"], support_types=False).maintype)
 
     def test_normalized_types(self):
-        self.assertEqual(["front"], create_image(b'a').normalized_types())
-        self.assertEqual(["-"], create_image(b'a', support_types=True).normalized_types())
-        self.assertEqual(["front"], create_image(b'a', types=["front"], support_types=True).normalized_types())
-        self.assertEqual(["front", "back"], create_image(b'a', types=["back", "front"], support_types=True).normalized_types())
-        self.assertEqual(["back", "medium"], create_image(b'a', types=["medium", "back"], support_types=True).normalized_types())
-        self.assertEqual(["front"], create_image(b'a', types=["back", "medium"], support_types=False).normalized_types())
+        self.assertEqual(("front",), create_image(b'a').normalized_types())
+        self.assertEqual(("-",), create_image(b'a', support_types=True).normalized_types())
+        self.assertEqual(("front",), create_image(b'a', types=["front"], support_types=True).normalized_types())
+        self.assertEqual(("front", "back",), create_image(b'a', types=["back", "front"], support_types=True).normalized_types())
+        self.assertEqual(("back", "medium",), create_image(b'a', types=["medium", "back"], support_types=True).normalized_types())
+        self.assertEqual(("front",), create_image(b'a', types=["back", "medium"], support_types=False).normalized_types())
 
     def test_id3_type_derived(self):
         self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a').id3_type)
