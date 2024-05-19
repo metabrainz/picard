@@ -47,9 +47,10 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.coverart.utils import (
+    TYPES_SEPARATOR,
     Id3ImageType,
     image_type_as_id3_num,
-    translate_caa_type,
+    translated_types_as_string,
 )
 from picard.metadata import Metadata
 from picard.util import (
@@ -426,11 +427,12 @@ class CoverArtImage:
             types = ['-']
         return types
 
-    def types_as_string(self, translate=True, separator=', '):
+    def types_as_string(self, translate=True, separator=TYPES_SEPARATOR):
         types = self.normalized_types()
         if translate:
-            types = [translate_caa_type(type) for type in types]
-        return separator.join(types)
+            return translated_types_as_string(types, separator)
+        else:
+            return separator.join(types)
 
 
 class CaaCoverArtImage(CoverArtImage):
