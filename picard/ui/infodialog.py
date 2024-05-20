@@ -57,7 +57,6 @@ from picard.util import (
     bytes2human,
     format_time,
     open_local_path,
-    union_sorted_lists,
 )
 
 from picard.ui import PicardDialog
@@ -126,7 +125,7 @@ class ArtworkTableSimple(ArtworkTable):
 
     _columns = {
         'type': 0,
-        'new_cover': 1,
+        'new': 1,
     }
 
     _labels = (_("Type"), _("Cover"),)
@@ -140,9 +139,9 @@ class ArtworkTableExisting(ArtworkTable):
     NUM_COLS = 3
 
     _columns = {
-        'existing_cover': 0,
+        'orig': 0,
         'type': 1,
-        'new_cover': 2,
+        'new': 2,
     }
 
     _labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
@@ -159,8 +158,8 @@ class InfoDialog(PicardDialog):
             'arrow': QtGui.QPixmap(":/images/arrow.png"),
         }
 
-        self.images = obj.metadata.images or []
-        self.existing_images = []
+        self.new_images = sorted(obj.metadata.images) or []
+        self.orig_images = []
         artworktable_class = ArtworkTableSimple
 
         has_orig_images = getattr(obj, 'orig_metadata', None) is not None and obj.orig_metadata.images
@@ -169,11 +168,8 @@ class InfoDialog(PicardDialog):
             is_linked_file = isinstance(obj, File) and isinstance(obj.parent, Track)
             is_album_with_files = isinstance(obj, Album) and obj.get_num_total_files() > 0
             if is_track or is_linked_file or is_album_with_files:
-                if self.images:
-                    self.existing_images = obj.orig_metadata.images
-                    artworktable_class = ArtworkTableExisting
-                else:
-                    self.images = obj.orig_metadata.images
+                self.orig_images = sorted(obj.orig_metadata.images)
+                artworktable_class = ArtworkTableExisting
 
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
@@ -209,114 +205,121 @@ class InfoDialog(PicardDialog):
                 lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
             self.ui.error.setText(text + '<hr />')
 
-    def _types_to_rows(self, type_col):
-        """Build a dict of lists to match types to rows"""
-        types_to_rows = defaultdict(list)
-        for row in range(0, self.artwork_table.rowCount()):
-            type_item = self.artwork_table.item(row, type_col)
-            types = type_item.data(QtCore.Qt.ItemDataRole.UserRole)
-            types_to_rows[types].append(row)
-        return types_to_rows
+    def _display_artwork_image_cell(self, row_index, source):
+        """Display artwork image, depending on source (new/orig), in the proper column"""
+        image = self.artwork_rows[row_index][source]
+        if image is None:
+            return
 
-    def _display_artwork(self, images, cover_art_column_name):
-        """Draw artwork in corresponding cell if image type matches type in Type column.
+        col_index = self.artwork_table.get_column_index(source)
 
-        Arguments:
-        images -- The images to be drawn.
-        cover_art_column_name -- Column in which images are to be drawn. Can be 'new_cover' or 'existing_cover'.
-        """
-        artwork_col = self.artwork_table.get_column_index(cover_art_column_name)
-        type_col = self.artwork_table.get_column_index('type')
-        types_to_rows = self._types_to_rows(type_col)
-        for image in images:
-            try:
-                # find first row matching the image types, if any
-                row = types_to_rows[image.normalized_types()].pop(0)
-            except IndexError:
-                # no row found
-                continue
-
-            data = None
-            pixmap = None
-            item = QtWidgets.QTableWidgetItem()
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
-            try:
-                if image.thumbnail:
-                    try:
-                        data = image.thumbnail.data
-                    except CoverArtImageIOError as e:
-                        log.warning(e)
-                else:
-                    data = image.data
-                if data:
-                    pixmap = QtGui.QPixmap()
-                    pixmap.loadFromData(data)
-                    item.setToolTip(
-                        _("Double-click to open in external viewer\n"
-                        "Temporary file: %(tempfile)s\n"
-                        "Source: %(sourcefile)s") % {
-                            'tempfile': image.tempfile_filename,
-                            'sourcefile': image.source,
-                        })
-            except CoverArtImageIOError:
-                log.error(traceback.format_exc())
-                pixmap = self._pixmaps['missing']
+        data = None
+        pixmap = None
+        item = QtWidgets.QTableWidgetItem()
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
+        try:
+            if image.thumbnail:
+                try:
+                    data = image.thumbnail.data
+                except CoverArtImageIOError as e:
+                    log.warning(e)
+            else:
+                data = image.data
+            if data:
+                pixmap = QtGui.QPixmap()
+                pixmap.loadFromData(data)
                 item.setToolTip(
-                    _("Missing temporary file: %(tempfile)s\n"
+                    _("Double-click to open in external viewer\n"
+                    "Temporary file: %(tempfile)s\n"
                     "Source: %(sourcefile)s") % {
                         'tempfile': image.tempfile_filename,
                         'sourcefile': image.source,
                     })
-            infos = []
-            if image.comment:
-                infos.append(image.comment)
-            infos.append("%s (%s)" %
-                         (bytes2human.decimal(image.datalength),
-                          bytes2human.binary(image.datalength)))
-            if image.width and image.height:
-                infos.append("%d x %d" % (image.width, image.height))
-            infos.append(image.mimetype)
+        except CoverArtImageIOError:
+            log.error(traceback.format_exc())
+            pixmap = self._pixmaps['missing']
+            item.setToolTip(
+                _("Missing temporary file: %(tempfile)s\n"
+                "Source: %(sourcefile)s") % {
+                    'tempfile': image.tempfile_filename,
+                    'sourcefile': image.source,
+                })
+        infos = []
+        if image.comment:
+            infos.append(image.comment)
+        infos.append("%s (%s)" %
+                     (bytes2human.decimal(image.datalength),
+                      bytes2human.binary(image.datalength)))
+        if image.width and image.height:
+            infos.append("%d x %d" % (image.width, image.height))
+        infos.append(image.mimetype)
 
-            img_wgt = ArtworkCoverWidget(pixmap=pixmap, text="\n".join(infos))
-            self.artwork_table.setCellWidget(row, artwork_col, img_wgt)
-            self.artwork_table.setItem(row, artwork_col, item)
+        img_wgt = ArtworkCoverWidget(pixmap=pixmap, text="\n".join(infos))
+        self.artwork_table.setCellWidget(row_index, col_index, img_wgt)
+        self.artwork_table.setItem(row_index, col_index, item)
 
-    def _display_artwork_type(self):
-        """Display image type in Type column.
-        If both existing covers and new covers are to be displayed, take union of both cover types list.
-        """
-        types = [image.normalized_types() for image in sorted(self.images)]
-        if self.existing_images:
-            existing_types = [image.normalized_types() for image in sorted(self.existing_images)]
-            # Merge both types and existing types list in sorted order.
-            types = union_sorted_lists(types, existing_types)
-            pixmap = self._pixmaps['arrow']
-            size = ArtworkCoverWidget.SIZE // 2
+    def _display_artwork_type_cell(self, row_index):
+        """Display type cell, with arrow if this row has both new & orig images"""
+        if self.artwork_rows[row_index]['new'] and self.artwork_rows[row_index]['orig']:
+            type_pixmap = self._pixmaps['arrow']
+            type_size = ArtworkCoverWidget.SIZE // 2
         else:
-            pixmap = None
-            size = None
-        type_col = self.artwork_table.get_column_index('type')
-        for row, artwork_type in enumerate(types):
-            self.artwork_table.insertRow(row)
-            item = QtWidgets.QTableWidgetItem()
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, artwork_type)
-            type_wgt = ArtworkCoverWidget(
-                pixmap=pixmap,
-                size=size,
-                text=translated_types_as_string(artwork_type),
-            )
-            self.artwork_table.setCellWidget(row, type_col, type_wgt)
-            self.artwork_table.setItem(row, type_col, item)
+            type_pixmap = None
+            type_size = None
+
+        col_index = self.artwork_table.get_column_index('type')
+        type_item = QtWidgets.QTableWidgetItem()
+        type_wgt = ArtworkCoverWidget(
+            pixmap=type_pixmap,
+            size=type_size,
+            text=translated_types_as_string(self.artwork_rows[row_index]['types']),
+        )
+        self.artwork_table.setCellWidget(row_index, col_index, type_wgt)
+        self.artwork_table.setItem(row_index, col_index, type_item)
+
+    def _build_artwork_rows(self):
+        """Build artwork rows, trying to match orig/new image types"""
+        self.artwork_rows = {}
+        row = 0
+        # we work on a copy, since will pop matched images
+        new_images = self.new_images[:]
+        if self.orig_images:
+            for orig_image in self.orig_images:
+                self.artwork_rows[row] = {
+                    'orig': orig_image,
+                    'new': None,
+                    'types': orig_image.normalized_types(),
+                }
+                # let check if we can find a new image exactly matching this type
+                for i, new_image in enumerate(new_images):
+                    if new_image.normalized_types() == self.artwork_rows[row]['types']:
+                        # we found one, pop it from new_images, we don't want to match it again
+                        self.artwork_rows[row]['new'] = new_images.pop(i)
+                        break
+                row += 1
+        # now, remaining images that weren't matched to orig images
+        for new_image in new_images:
+            self.artwork_rows[row] = {
+                'orig': None,
+                'new': new_image,
+                'types': new_image.normalized_types(),
+            }
+            row += 1
+
+    def _display_artwork_rows(self):
+        """Display rows of images and types in artwork tab"""
+        for row_index in self.artwork_rows:
+            self.artwork_table.insertRow(row_index)
+            self._display_artwork_type_cell(row_index)
+            for source in ('new', 'orig'):
+                self._display_artwork_image_cell(row_index, source)
 
     def _display_artwork_tab(self):
-        if not self.images and not self.existing_images:
+        if not self.new_images and not self.orig_images:
             self.tab_hide(self.ui.artwork_tab)
             return
-        self._display_artwork_type()
-        if self.images:
-            self._display_artwork(self.images, 'new_cover')
-        if self.existing_images:
-            self._display_artwork(self.existing_images, 'existing_cover')
+        self._build_artwork_rows()
+        self._display_artwork_rows()
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
         self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
