@@ -103,6 +103,7 @@ class ArtworkTable(QtWidgets.QTableWidget):
 
     _columns = {}
     _labels = ()
+    artwork_columns = ()
 
     def __init__(self, parent=None):
         super().__init__(self.NUM_ROWS, self.NUM_COLS, parent=parent)
@@ -129,6 +130,7 @@ class ArtworkTableSimple(ArtworkTable):
     }
 
     _labels = (_("Type"), _("Cover"),)
+    artwork_columns = ('new',)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -145,6 +147,7 @@ class ArtworkTableExisting(ArtworkTable):
     }
 
     _labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
+    artwork_columns = ('orig', 'new',)
 
 
 class InfoDialog(PicardDialog):
@@ -227,15 +230,12 @@ class InfoDialog(PicardDialog):
             'sourcefile': escape(image.source),
         }
 
-    def _display_artwork_image_cell(self, row_index, source):
+    def _display_artwork_image_cell(self, row_index, colname):
         """Display artwork image, depending on source (new/orig), in the proper column"""
-        try:
-            col_index = self.artwork_table.get_column_index(source)
-        except KeyError:
-            return
+        col_index = self.artwork_table.get_column_index(colname)
         pixmap = None
         infos = None
-        image = self.artwork_rows[row_index][source]
+        image = self.artwork_rows[row_index][colname]
         item = QtWidgets.QTableWidgetItem()
 
         if image:
@@ -316,8 +316,8 @@ class InfoDialog(PicardDialog):
         for row_index in self.artwork_rows:
             self.artwork_table.insertRow(row_index)
             self._display_artwork_type_cell(row_index)
-            for source in ('new', 'orig'):
-                self._display_artwork_image_cell(row_index, source)
+            for colname in self.artwork_table.artwork_columns:
+                self._display_artwork_image_cell(row_index, colname)
 
     def _display_artwork_tab(self):
         if not self.new_images and not self.orig_images:
