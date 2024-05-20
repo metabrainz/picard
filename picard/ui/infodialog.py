@@ -283,9 +283,7 @@ class InfoDialog(PicardDialog):
         self.artwork_table.setItem(row_index, col_index, type_item)
 
     def _build_artwork_rows(self):
-        """Build artwork rows, trying to match orig/new image types"""
-        self.artwork_rows = {}
-        row = 0
+        """Generate artwork rows, trying to match orig/new image types"""
         # we work on a copy, since will pop matched images
         new_images = self.new_images[:]
         if self.orig_images:
@@ -298,24 +296,22 @@ class InfoDialog(PicardDialog):
                         # we found one, pop it from new_images, we don't want to match it again
                         found_new_image = new_images.pop(i)
                         break
-                self.artwork_rows[row] = {
+                yield {
                     'orig': orig_image,
                     'new': found_new_image,
                     'types': types,
                 }
-                row += 1
         # now, remaining images that weren't matched to orig images
         for new_image in new_images:
-            self.artwork_rows[row] = {
+            yield {
                 'orig': None,
                 'new': new_image,
                 'types': new_image.normalized_types(),
             }
-            row += 1
 
     def _display_artwork_rows(self):
         """Display rows of images and types in artwork tab"""
-        self._build_artwork_rows()
+        self.artwork_rows = dict(enumerate(self._build_artwork_rows()))
         for row_index in self.artwork_rows:
             self.artwork_table.insertRow(row_index)
             self._display_artwork_type_cell(row_index)
