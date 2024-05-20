@@ -313,6 +313,7 @@ class InfoDialog(PicardDialog):
 
     def _display_artwork_rows(self):
         """Display rows of images and types in artwork tab"""
+        self._build_artwork_rows()
         for row_index in self.artwork_rows:
             self.artwork_table.insertRow(row_index)
             self._display_artwork_type_cell(row_index)
@@ -323,7 +324,6 @@ class InfoDialog(PicardDialog):
         if not self.new_images and not self.orig_images:
             self.tab_hide(self.ui.artwork_tab)
             return
-        self._build_artwork_rows()
         self._display_artwork_rows()
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
         self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
