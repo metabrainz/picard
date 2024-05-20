@@ -247,7 +247,6 @@ class InfoDialog(PicardDialog):
         item = QtWidgets.QTableWidgetItem()
 
         if image:
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
             try:
                 data = None
                 if image.thumbnail:
@@ -261,6 +260,7 @@ class InfoDialog(PicardDialog):
                     pixmap = QtGui.QPixmap()
                     pixmap.loadFromData(data)
                     item.setToolTip(self._artwork_tooltip(_("Double-click to open in external viewer"), image))
+                    item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
             except CoverArtImageIOError:
                 log.error(traceback.format_exc())
                 pixmap = self._pixmaps['missing']
