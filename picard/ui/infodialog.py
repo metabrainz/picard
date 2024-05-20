@@ -216,6 +216,17 @@ class InfoDialog(PicardDialog):
             yield f"{image.width} x {image.height}"
         yield image.mimetype
 
+    def _artwork_tooltip(self, message, image):
+        """Format rich-text tooltip text"""
+        fmt = _("<strong>%(message)s</strong><br />"
+                "Temporary file: <em>%(tempfile)s</em><br />"
+                "Source: <em>%(sourcefile)s</em>")
+        return fmt % {
+            'message': message,
+            'tempfile': escape(image.tempfile_filename),
+            'sourcefile': escape(image.source),
+        }
+
     def _display_artwork_image_cell(self, row_index, source):
         """Display artwork image, depending on source (new/orig), in the proper column"""
         image = self.artwork_rows[row_index][source]
@@ -239,22 +250,11 @@ class InfoDialog(PicardDialog):
             if data:
                 pixmap = QtGui.QPixmap()
                 pixmap.loadFromData(data)
-                item.setToolTip(
-                    _("Double-click to open in external viewer\n"
-                    "Temporary file: %(tempfile)s\n"
-                    "Source: %(sourcefile)s") % {
-                        'tempfile': image.tempfile_filename,
-                        'sourcefile': image.source,
-                    })
+                item.setToolTip(self._artwork_tooltip(_("Double-click to open in external viewer"), image))
         except CoverArtImageIOError:
             log.error(traceback.format_exc())
             pixmap = self._pixmaps['missing']
-            item.setToolTip(
-                _("Missing temporary file: %(tempfile)s\n"
-                "Source: %(sourcefile)s") % {
-                    'tempfile': image.tempfile_filename,
-                    'sourcefile': image.source,
-                })
+            item.setToolTip(self._artwork_tooltip(_("Missing temporary file"), image))
         infos = "<br />".join(escape(t) for t in self._artwork_infos(image))
         img_wgt = ArtworkCoverWidget(pixmap=pixmap, text=infos)
         self.artwork_table.setCellWidget(row_index, col_index, img_wgt)
