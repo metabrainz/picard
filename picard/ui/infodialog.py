@@ -150,6 +150,13 @@ class ArtworkTableExisting(ArtworkTable):
     artwork_columns = ('orig', 'new',)
 
 
+class ArtworkRow:
+    def __init__(self, orig_image=None, new_image=None, types=None):
+        self.orig_image = orig_image
+        self.new_image = new_image
+        self.types = types
+
+
 class InfoDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
@@ -235,7 +242,8 @@ class InfoDialog(PicardDialog):
         col_index = self.artwork_table.get_column_index(colname)
         pixmap = None
         infos = None
-        image = self.artwork_rows[row_index][colname]
+        source = 'new_image' if colname == 'new' else 'orig_image'
+        image = getattr(self.artwork_rows[row_index], source)
         item = QtWidgets.QTableWidgetItem()
 
         if image:
@@ -265,7 +273,8 @@ class InfoDialog(PicardDialog):
 
     def _display_artwork_type_cell(self, row_index):
         """Display type cell, with arrow if this row has both new & orig images"""
-        if self.artwork_rows[row_index]['new'] and self.artwork_rows[row_index]['orig']:
+        artwork_row = self.artwork_rows[row_index]
+        if artwork_row.new_image and artwork_row.orig_image:
             type_pixmap = self._pixmaps['arrow']
             type_size = ArtworkCoverWidget.SIZE // 2
         else:
@@ -277,7 +286,7 @@ class InfoDialog(PicardDialog):
         type_wgt = ArtworkCoverWidget(
             pixmap=type_pixmap,
             size=type_size,
-            text=translated_types_as_string(self.artwork_rows[row_index]['types']),
+            text=translated_types_as_string(artwork_row.types),
         )
         self.artwork_table.setCellWidget(row_index, col_index, type_wgt)
         self.artwork_table.setItem(row_index, col_index, type_item)
@@ -296,18 +305,10 @@ class InfoDialog(PicardDialog):
                         # we found one, pop it from new_images, we don't want to match it again
                         found_new_image = new_images.pop(i)
                         break
-                yield {
-                    'orig': orig_image,
-                    'new': found_new_image,
-                    'types': types,
-                }
+                yield ArtworkRow(orig_image=orig_image, new_image=found_new_image, types=types)
         # now, remaining images that weren't matched to orig images
         for new_image in new_images:
-            yield {
-                'orig': None,
-                'new': new_image,
-                'types': new_image.normalized_types(),
-            }
+            yield ArtworkRow(new_image=new_image, types=new_image.normalized_types())
 
     def _display_artwork_rows(self):
         """Display rows of images and types in artwork tab"""
