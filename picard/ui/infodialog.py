@@ -333,7 +333,7 @@ class InfoDialog(PicardDialog):
     def show_item(self, item):
         data = item.data(QtCore.Qt.ItemDataRole.UserRole)
         # Check if this function isn't triggered by cell in Type column
-        if isinstance(data, str):
+        if not data:
             return
         filename = data.tempfile_filename
         if filename:
