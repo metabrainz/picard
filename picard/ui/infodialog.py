@@ -172,7 +172,7 @@ class InfoDialog(PicardDialog):
         self.orig_images = []
         artworktable_class = ArtworkTableSimple
 
-        has_orig_images = getattr(obj, 'orig_metadata', None) is not None and obj.orig_metadata.images
+        has_orig_images = hasattr(obj, 'orig_metadata') and obj.orig_metadata.images
         if has_orig_images and obj.orig_metadata.images != obj.metadata.images:
             is_track = isinstance(obj, Track)
             is_linked_file = isinstance(obj, File) and isinstance(obj.parent, Track)
