@@ -290,17 +290,19 @@ class InfoDialog(PicardDialog):
         new_images = self.new_images[:]
         if self.orig_images:
             for orig_image in self.orig_images:
+                types = orig_image.normalized_types()
+                # let check if we can find a new image exactly matching this type
+                found_new_image = None
+                for i, new_image in enumerate(new_images):
+                    if new_image.normalized_types() == types:
+                        # we found one, pop it from new_images, we don't want to match it again
+                        found_new_image = new_images.pop(i)
+                        break
                 self.artwork_rows[row] = {
                     'orig': orig_image,
-                    'new': None,
-                    'types': orig_image.normalized_types(),
+                    'new': found_new_image,
+                    'types': types,
                 }
-                # let check if we can find a new image exactly matching this type
-                for i, new_image in enumerate(new_images):
-                    if new_image.normalized_types() == self.artwork_rows[row]['types']:
-                        # we found one, pop it from new_images, we don't want to match it again
-                        self.artwork_rows[row]['new'] = new_images.pop(i)
-                        break
                 row += 1
         # now, remaining images that weren't matched to orig images
         for new_image in new_images:
