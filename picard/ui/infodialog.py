@@ -229,33 +229,36 @@ class InfoDialog(PicardDialog):
 
     def _display_artwork_image_cell(self, row_index, source):
         """Display artwork image, depending on source (new/orig), in the proper column"""
-        image = self.artwork_rows[row_index][source]
-        if image is None:
-            return
-
-        col_index = self.artwork_table.get_column_index(source)
-
-        data = None
-        pixmap = None
-        item = QtWidgets.QTableWidgetItem()
-        item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
         try:
-            if image.thumbnail:
-                try:
-                    data = image.thumbnail.data
-                except CoverArtImageIOError as e:
-                    log.warning(e)
-            else:
-                data = image.data
-            if data:
-                pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(data)
-                item.setToolTip(self._artwork_tooltip(_("Double-click to open in external viewer"), image))
-        except CoverArtImageIOError:
-            log.error(traceback.format_exc())
-            pixmap = self._pixmaps['missing']
-            item.setToolTip(self._artwork_tooltip(_("Missing temporary file"), image))
-        infos = "<br />".join(escape(t) for t in self._artwork_infos(image))
+            col_index = self.artwork_table.get_column_index(source)
+        except KeyError:
+            return
+        pixmap = None
+        infos = None
+        image = self.artwork_rows[row_index][source]
+        item = QtWidgets.QTableWidgetItem()
+
+        if image:
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, image)
+            try:
+                data = None
+                if image.thumbnail:
+                    try:
+                        data = image.thumbnail.data
+                    except CoverArtImageIOError as e:
+                        log.warning(e)
+                else:
+                    data = image.data
+                if data:
+                    pixmap = QtGui.QPixmap()
+                    pixmap.loadFromData(data)
+                    item.setToolTip(self._artwork_tooltip(_("Double-click to open in external viewer"), image))
+            except CoverArtImageIOError:
+                log.error(traceback.format_exc())
+                pixmap = self._pixmaps['missing']
+                item.setToolTip(self._artwork_tooltip(_("Missing temporary file"), image))
+            infos = "<br />".join(escape(t) for t in self._artwork_infos(image))
+
         img_wgt = ArtworkCoverWidget(pixmap=pixmap, text=infos)
         self.artwork_table.setCellWidget(row_index, col_index, img_wgt)
         self.artwork_table.setItem(row_index, col_index, item)
