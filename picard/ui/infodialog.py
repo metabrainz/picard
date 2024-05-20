@@ -205,6 +205,17 @@ class InfoDialog(PicardDialog):
                 lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
             self.ui.error.setText(text + '<hr />')
 
+    def _artwork_infos(self, image):
+        """Information about image, as list of strings"""
+        if image.comment:
+            yield image.comment
+        bytes_size_decimal = bytes2human.decimal(image.datalength)
+        bytes_size_binary = bytes2human.binary(image.datalength)
+        yield f"{bytes_size_decimal} ({bytes_size_binary})"
+        if image.width and image.height:
+            yield f"{image.width} x {image.height}"
+        yield image.mimetype
+
     def _display_artwork_image_cell(self, row_index, source):
         """Display artwork image, depending on source (new/orig), in the proper column"""
         image = self.artwork_rows[row_index][source]
@@ -244,17 +255,8 @@ class InfoDialog(PicardDialog):
                     'tempfile': image.tempfile_filename,
                     'sourcefile': image.source,
                 })
-        infos = []
-        if image.comment:
-            infos.append(image.comment)
-        infos.append("%s (%s)" %
-                     (bytes2human.decimal(image.datalength),
-                      bytes2human.binary(image.datalength)))
-        if image.width and image.height:
-            infos.append("%d x %d" % (image.width, image.height))
-        infos.append(image.mimetype)
-
-        img_wgt = ArtworkCoverWidget(pixmap=pixmap, text="\n".join(infos))
+        infos = "<br />".join(escape(t) for t in self._artwork_infos(image))
+        img_wgt = ArtworkCoverWidget(pixmap=pixmap, text=infos)
         self.artwork_table.setCellWidget(row_index, col_index, img_wgt)
         self.artwork_table.setItem(row_index, col_index, item)
 
