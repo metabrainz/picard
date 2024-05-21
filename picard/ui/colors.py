@@ -41,6 +41,7 @@ _COLOR_DESCRIPTIONS = {
     'entity_error': N_("Errored entity"),
     'entity_pending': N_("Pending entity"),
     'entity_saved': N_("Saved entity"),
+    'first_cover_hl': N_("First cover art"),
     'log_debug': N_('Log view text (debug)'),
     'log_error': N_('Log view text (error)'),
     'log_info': N_('Log view text (info)'),
@@ -93,6 +94,8 @@ register_color(_DARK, 'profile_hl_bg', '#000080')
 register_color(_LIGHT, 'profile_hl_bg', '#F9F906')
 register_color(_LIGHT, 'row_highlight', '#FFFFE0')
 register_color(_DARK, 'row_highlight', '#90907E')
+register_color(_LIGHT, 'first_cover_hl', 'darkgoldenrod')
+register_color(_DARK, 'first_cover_hl', 'orange')
 
 
 class InterfaceColors:
