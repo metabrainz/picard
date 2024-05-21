@@ -47,6 +47,7 @@ _COLOR_DESCRIPTIONS = {
     'log_warning': N_('Log view text (warning)'),
     'profile_hl_bg': N_("Profile highlight background"),
     'profile_hl_fg': N_("Profile highlight foreground"),
+    'row_highlight': N_("Row Highlight"),
     'tagstatus_added': N_("Tag added"),
     'tagstatus_changed': N_("Tag changed"),
     'tagstatus_removed': N_("Tag removed"),
@@ -90,6 +91,8 @@ register_color(_DARK, 'profile_hl_fg', '#FFFFFF')
 register_color(_LIGHT, 'profile_hl_fg', '#000000')
 register_color(_DARK, 'profile_hl_bg', '#000080')
 register_color(_LIGHT, 'profile_hl_bg', '#F9F906')
+register_color(_LIGHT, 'row_highlight', '#FFFFE0')
+register_color(_DARK, 'row_highlight', '#90907E')
 
 
 class InterfaceColors:
