@@ -52,9 +52,8 @@ class CollectionMenu(QtWidgets.QMenu):
         self._ignore_update = True
         self.clear()
         self.actions = []
-        for id_, collection in sorted(user_collections.items(),
-                                      key=lambda k_v:
-                                      (strxfrm(str(k_v[1])), k_v[0])):
+        for collection in sorted(user_collections.values(),
+                                 key=lambda c: (strxfrm(c.name), c.id)):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
