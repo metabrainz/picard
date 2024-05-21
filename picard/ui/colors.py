@@ -128,8 +128,11 @@ class InterfaceColors:
     def set_default_colors(self):
         self._colors = dict()
         for color_key in self.default_colors:
-            color_value = self.default_colors[color_key].value
-            self.set_color(color_key, color_value)
+            self.set_default_color(color_key)
+
+    def set_default_color(self, color_key):
+        color_value = self.default_colors[color_key].value
+        self.set_color(color_key, color_value)
 
     def set_colors(self, colors_dict):
         for color_key in self.default_colors:

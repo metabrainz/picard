@@ -34,6 +34,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.util import icontheme
 
 from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_options_interface_colors import (
@@ -60,7 +61,9 @@ class ColorButton(QtWidgets.QPushButton):
         self.clicked.connect(self.open_color_dialog)
         self.update_color()
 
-    def update_color(self):
+    def update_color(self, qcolor=None):
+        if qcolor is not None:
+            self.color = qcolor
         self.setStyleSheet("QPushButton { background-color: %s; }" % self.color.name())
 
     def open_color_dialog(self):
@@ -114,6 +117,10 @@ class InterfaceColorsOptionsPage(OptionsPage):
         def color_changed(color_key, color_value):
             interface_colors.set_color(color_key, color_value)
 
+        def restore_default_color(color_key, color_button):
+            interface_colors.set_default_color(color_key)
+            color_button.update_color(interface_colors.get_qcolor(color_key))
+
         for color_key, color_value in interface_colors.get_colors().items():
             widget = QtWidgets.QWidget()
 
@@ -124,9 +131,14 @@ class InterfaceColorsOptionsPage(OptionsPage):
             label.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
             hlayout.addWidget(label)
 
-            button = ColorButton(color_value)
-            button.color_changed.connect(partial(color_changed, color_key))
-            hlayout.addWidget(button, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+            color_button = ColorButton(color_value)
+            color_button.color_changed.connect(partial(color_changed, color_key))
+            hlayout.addWidget(color_button, 0, QtCore.Qt.AlignmentFlag.AlignRight)
+
+            refresh_button = QtWidgets.QPushButton(icontheme.lookup('view-refresh'), "")
+            refresh_button.setToolTip(_("Restore default color"))
+            refresh_button.clicked.connect(partial(restore_default_color, color_key, color_button))
+            hlayout.addWidget(refresh_button, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             widget.setLayout(hlayout)
             self.colors_list.addWidget(widget)
