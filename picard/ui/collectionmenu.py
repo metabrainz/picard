@@ -162,13 +162,13 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
             return
         diff = releases - self.collection.releases
         if diff:
-            self.collection.add_releases(diff, self.updateText)
+            self.collection.add_releases(diff, self._update_text)
             self.setCheckState(QtCore.Qt.CheckState.Checked)
         else:
-            self.collection.remove_releases(releases & self.collection.releases, self.updateText)
+            self.collection.remove_releases(releases & self.collection.releases, self._update_text)
             self.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
-    def updateText(self):
+    def _update_text(self):
         self.setText(self._label())
 
     def _label(self):
