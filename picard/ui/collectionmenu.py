@@ -93,8 +93,8 @@ class CollectionMenu(QtWidgets.QMenu):
 
 class CollectionMenuItem(QtWidgets.QWidget):
 
-    def __init__(self, menu, collection):
-        super().__init__()
+    def __init__(self, menu, collection, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.menu = menu
         self.active = False
         self._setup_layout(menu, collection)
@@ -108,7 +108,7 @@ class CollectionMenuItem(QtWidgets.QWidget):
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutRightMargin),
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin))
-        self.checkbox = CollectionCheckBox(self, menu, collection)
+        self.checkbox = CollectionCheckBox(menu, collection, parent=self)
         layout.addWidget(self.checkbox)
 
     def _setup_colors(self):
@@ -143,10 +143,10 @@ class CollectionMenuItem(QtWidgets.QWidget):
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
 
-    def __init__(self, parent, menu, collection):
+    def __init__(self, menu, collection, *args, **kwargs):
         self.menu = menu
         self.collection = collection
-        super().__init__(self.label(), parent)
+        super().__init__(self.label(), *args, **kwargs)
 
         releases = collection.releases & menu.releases
         if len(releases) == len(menu.releases):
