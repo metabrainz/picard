@@ -92,6 +92,9 @@ class Player(QtCore.QObject):
         self._toolbar = None
         self._selected_objects = []
         self._media_queue = deque()
+        self.is_playing = False
+        self.is_stopped = False
+        self.is_paused = False
         if qt_multimedia_available:
             log.debug("Internal player: QtMultimedia available, initializing QMediaPlayer")
             player = QtMultimedia.QMediaPlayer(parent)
@@ -149,7 +152,10 @@ class Player(QtCore.QObject):
             self._player.stop()
 
     def _on_playback_state_changed(self, state):
-        if state == QtMultimedia.QMediaPlayer.PlaybackState.StoppedState:
+        self.is_stopped = state == QtMultimedia.QMediaPlayer.PlaybackState.StoppedState
+        self.is_playing = state == QtMultimedia.QMediaPlayer.PlaybackState.PlayingState
+        self.is_paused = state == QtMultimedia.QMediaPlayer.PlaybackState.PausedState
+        if self.is_stopped:
             self._play_next()
 
     def pause(self, is_paused):
@@ -211,6 +217,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
             | QtCore.Qt.ToolBarArea.NoToolBarArea)
 
         self.player = player
+        self.player.state_changed.connect(self.playback_state_changed)
 
         self.play_action = QtGui.QAction(icontheme.lookup('play'), _("Play"), self)
         play_tip = _("Play selected files")
@@ -226,8 +233,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.pause_action.setCheckable(True)
         self.pause_action.setChecked(False)
         self.pause_action.setEnabled(False)
-        self.pause_action.triggered.connect(self.player.pause)
-        self.player.state_changed.connect(self.playback_state_changed)
+        self.pause_action.toggled.connect(self.pause)
 
         self._add_toolbar_action(self.play_action)
         self._add_toolbar_action(self.pause_action)
@@ -251,14 +257,17 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.addWidget(self.playback_rate_button)
 
     def playback_state_changed(self, state):
-        playing = state == QtMultimedia.QMediaPlayer.PlaybackState.PlayingState
-        self.pause_action.setEnabled(playing)
+        self.pause_action.setEnabled(self.player.is_playing or self.player.is_paused)
 
     def _add_toolbar_action(self, action):
         self.addAction(action)
         widget = self.widgetForAction(action)
         widget.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
         widget.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
+
+    def pause(self, checked):
+        if self.player.is_playing or self.player.is_paused:
+            self.player.pause(checked)
 
     def play(self):
         self.player.play()
