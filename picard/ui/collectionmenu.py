@@ -61,7 +61,7 @@ class CollectionMenu(QtWidgets.QMenu):
         self._ignore_update = False
         self.addSeparator()
         self.refresh_action = self.addAction(_("Refresh List"))
-        self.hovered.connect(self.update_highlight)
+        self.hovered.connect(self._on_hovered)
 
     def _refresh_list(self):
         self.refresh_action.setEnabled(False)
@@ -72,7 +72,7 @@ class CollectionMenu(QtWidgets.QMenu):
         if self.actionAt(event.pos()) == self.refresh_action and self.refresh_action.isEnabled():
             self._refresh_list()
 
-    def update_highlight(self, action):
+    def _on_hovered(self, action):
         if self._ignore_update:
             return
         for a in self.actions:
