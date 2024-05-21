@@ -146,7 +146,7 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
     def __init__(self, menu, collection, *args, **kwargs):
         self.menu = menu
         self.collection = collection
-        super().__init__(self.label(), *args, **kwargs)
+        super().__init__(self._label(), *args, **kwargs)
 
         releases = collection.releases & menu.releases
         if len(releases) == len(menu.releases):
@@ -169,9 +169,9 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
             self.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
     def updateText(self):
-        self.setText(self.label())
+        self.setText(self._label())
 
-    def label(self):
+    def _label(self):
         c = self.collection
         return ngettext("%(name)s (%(count)i release)", "%(name)s (%(count)i releases)", c.size) % {
             'name': c.name,
