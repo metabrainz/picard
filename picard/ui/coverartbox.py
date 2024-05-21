@@ -63,6 +63,7 @@ from picard.util import (
 )
 from picard.util.lrucache import LRUCache
 
+from picard.ui.colors import interface_colors
 from picard.ui.item import FileListItem
 from picard.ui.widgets import ActiveLabel
 
@@ -293,9 +294,9 @@ class CoverArtThumbnail(ActiveLabel):
             cx -= displacements
             cy += displacements
         if not has_common_images:
-            # Draw a golden highlight around the first cover to indicate that
+            # Draw a highlight around the first cover to indicate that
             # images are not common to all selected items
-            color = QtGui.QColor('darkgoldenrod')
+            color = interface_colors.get_qcolor('first_cover_hl')
             border_length = 10
             for k in range(border_length):
                 color.setAlpha(255 - k * 255 // border_length)

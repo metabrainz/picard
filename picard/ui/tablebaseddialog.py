@@ -45,7 +45,7 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.theme import theme
+from picard.ui.colors import interface_colors
 
 
 class ResultTable(QtWidgets.QTableWidget):
@@ -183,13 +183,7 @@ class TableBasedDialog(PicardDialog):
 
     def highlight_row(self, row):
         model = self.table.model()
-        highlight_color = QtGui.QColor('LightYellow')
-        if theme.is_dark_theme:
-            highlight_color.setHsv(
-                highlight_color.hue(),
-                highlight_color.saturation(),
-                int(highlight_color.lightness() * .6),
-                highlight_color.alpha())
+        highlight_color = interface_colors.get_qcolor('row_highlight')
         highlight_brush = QtGui.QBrush(highlight_color)
         for column in range(0, model.columnCount()):
             index = model.index(row, column)
