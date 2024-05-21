@@ -46,9 +46,9 @@ class CollectionMenu(QtWidgets.QMenu):
         super().__init__(*args, **kwargs)
         self.releases = set(a.id for a in albums)
         self._ignore_update = False
-        self.update_collections()
+        self._update_collections()
 
-    def update_collections(self):
+    def _update_collections(self):
         self._ignore_update = True
         self.clear()
         self.actions = []
@@ -65,7 +65,7 @@ class CollectionMenu(QtWidgets.QMenu):
 
     def refresh_list(self):
         self.refresh_action.setEnabled(False)
-        load_user_collections(self.update_collections)
+        load_user_collections(self._update_collections)
 
     def mouseReleaseEvent(self, event):
         # Not using self.refresh_action.triggered because it closes the menu
