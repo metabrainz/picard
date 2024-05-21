@@ -47,9 +47,10 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.coverart.utils import (
+    TYPES_SEPARATOR,
     Id3ImageType,
     image_type_as_id3_num,
-    translate_caa_type,
+    translated_types_as_string,
 )
 from picard.metadata import Metadata
 from picard.util import (
@@ -94,6 +95,9 @@ class DataHash:
 
     def __eq__(self, other):
         return self._hash == other._hash
+
+    def __lt__(self, other):
+        return self._hash < other._hash
 
     def hash(self):
         return self._hash
@@ -257,6 +261,30 @@ class CoverArtImage:
             else:
                 return self.datahash == other.datahash
         return not self and not other
+
+    def __lt__(self, other):
+        """Try to provide constant ordering"""
+        stypes = self.normalized_types()
+        otypes = other.normalized_types()
+        if stypes != otypes:
+            sfront = self.is_front_image()
+            ofront = other.is_front_image()
+            if sfront != ofront:
+                # front image first
+                ret = sfront
+            else:
+                # lower number of types first
+                # '-' == unknown type always last
+                ret = stypes < otypes or '-' in otypes
+        elif self.comment != other.comment:
+            # shortest comment first, alphabetical
+            scomment = self.comment or ''
+            ocomment = other.comment or ''
+            ret = scomment < ocomment
+        else:
+            # arbitrary order based on data, but should be constant
+            ret = self.datahash < other.datahash
+        return ret
 
     def __hash__(self):
         if self.datahash is None:
@@ -424,13 +452,14 @@ class CoverArtImage:
             types = ['front']
         else:
             types = ['-']
-        return types
+        return tuple(types)
 
-    def types_as_string(self, translate=True, separator=', '):
+    def types_as_string(self, translate=True, separator=TYPES_SEPARATOR):
         types = self.normalized_types()
         if translate:
-            types = [translate_caa_type(type) for type in types]
-        return separator.join(types)
+            return translated_types_as_string(types, separator)
+        else:
+            return separator.join(types)
 
 
 class CaaCoverArtImage(CoverArtImage):

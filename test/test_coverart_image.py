@@ -125,12 +125,12 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual("front", create_image(b'a', types=["back", "medium"], support_types=False).maintype)
 
     def test_normalized_types(self):
-        self.assertEqual(["front"], create_image(b'a').normalized_types())
-        self.assertEqual(["-"], create_image(b'a', support_types=True).normalized_types())
-        self.assertEqual(["front"], create_image(b'a', types=["front"], support_types=True).normalized_types())
-        self.assertEqual(["front", "back"], create_image(b'a', types=["back", "front"], support_types=True).normalized_types())
-        self.assertEqual(["back", "medium"], create_image(b'a', types=["medium", "back"], support_types=True).normalized_types())
-        self.assertEqual(["front"], create_image(b'a', types=["back", "medium"], support_types=False).normalized_types())
+        self.assertEqual(("front",), create_image(b'a').normalized_types())
+        self.assertEqual(("-",), create_image(b'a', support_types=True).normalized_types())
+        self.assertEqual(("front",), create_image(b'a', types=["front"], support_types=True).normalized_types())
+        self.assertEqual(("front", "back",), create_image(b'a', types=["back", "front"], support_types=True).normalized_types())
+        self.assertEqual(("back", "medium",), create_image(b'a', types=["medium", "back"], support_types=True).normalized_types())
+        self.assertEqual(("front",), create_image(b'a', types=["back", "medium"], support_types=False).normalized_types())
 
     def test_id3_type_derived(self):
         self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a').id3_type)
@@ -199,6 +199,51 @@ class CoverArtImageTest(PicardTestCase):
         self.assertNotEqual(image1, image2)
         self.assertEqual(image2, image3)
         self.assertNotEqual(image2, image4)
+
+    def test_lt_type1(self):
+        image1 = create_image(b'a', types=["front"], support_types=True, support_multi_types=True)
+        image2 = create_image(b'b', types=["booklet"], support_types=True, support_multi_types=True)
+        self.assertLess(image1, image2)
+
+    def test_lt_type2(self):
+        image1 = create_image(b'a', types=["front"], support_types=True, support_multi_types=True)
+        image2 = create_image(b'b', types=["booklet", "front"], support_types=True, support_multi_types=True)
+        self.assertLess(image1, image2)
+
+    def test_lt_type3(self):
+        image1 = create_image(b'a', types=["back"], support_types=True, support_multi_types=True)
+        image2 = create_image(b'b', types=["-"], support_types=True, support_multi_types=True)
+        self.assertLess(image1, image2)
+
+    def test_lt_comment1(self):
+        image1 = create_image(b'a', types=["front"], support_types=True, support_multi_types=True)
+        image2 = create_image(b'b', types=["front"], support_types=True, support_multi_types=True, comment='b')
+        self.assertLess(image1, image2)
+
+    def test_lt_comment2(self):
+        image1 = create_image(b'a', types=["front"], support_types=True, support_multi_types=True, comment='a')
+        image2 = create_image(b'b', types=["front"], support_types=True, support_multi_types=True, comment='b')
+        self.assertLess(image1, image2)
+
+    def test_lt_comment3(self):
+        image1 = create_image(b'b', types=["back"], support_types=False, comment='a')  # not supporting types = front
+        image2 = create_image(b'a', types=["front"], support_types=True, support_multi_types=True, comment='b')
+        self.assertLess(image1, image2)
+
+    def test_lt_datahash(self):
+        image1 = create_image(b'zz', types=["front"], support_types=True, support_multi_types=True, comment='a')
+        image2 = create_image(b'xx', types=["front"], support_types=True, support_multi_types=True, comment='a')
+        self.assertLess(image1, image2)
+
+    def test_sorted_images(self):
+        image1 = create_image(b'a', types=["front"], support_types=True, support_multi_types=True)
+        image2 = create_image(b'a', types=["booklet"], support_types=True, support_multi_types=True)
+        image3 = create_image(b'a', types=["front", "booklet"], support_types=True, support_multi_types=True, comment='a')
+        image4 = create_image(b'b', types=["front", "booklet"], support_types=True, support_multi_types=True, comment='b')
+
+        result = sorted([image4, image3, image2, image1])
+        self.maxDiff = None
+        self.assertEqual(result, [image1, image3, image4, image2])
 
     def test_set_data(self):
         imgdata = create_fake_png(b'a')

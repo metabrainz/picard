@@ -106,3 +106,10 @@ def image_type_as_id3_num(texttype):
 
 def types_from_id3(id3type):
     return [image_type_from_id3_num(id3type)]
+
+
+TYPES_SEPARATOR = ", "
+
+
+def translated_types_as_string(types, separator=TYPES_SEPARATOR):
+    return separator.join(translate_caa_type(t) for t in types)
