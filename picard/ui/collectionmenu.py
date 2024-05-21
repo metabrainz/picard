@@ -46,6 +46,7 @@ class CollectionMenu(QtWidgets.QMenu):
         super().__init__(*args, **kwargs)
         self.releases = set(a.id for a in albums)
         self._ignore_update = False
+        self._ignore_hover = False
         self._update_collections()
 
     def _update_collections(self):
@@ -73,7 +74,7 @@ class CollectionMenu(QtWidgets.QMenu):
             self._refresh_list()
 
     def _on_hovered(self, action):
-        if self._ignore_update:
+        if self._ignore_hover:
             return
         for a in self.actions:
             a.defaultWidget().set_active(a == action)
