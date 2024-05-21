@@ -178,8 +178,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
-        from picard.ui.forms.ui_options import Ui_Dialog
-        self.ui = Ui_Dialog()
+        from picard.ui.forms.ui_options import Ui_OptionsDialog
+        self.ui = Ui_OptionsDialog()
         self.ui.setupUi(self)
 
         self.ui.reset_all_button = QtWidgets.QPushButton(_("&Restore all Defaults"))

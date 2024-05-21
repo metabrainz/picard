@@ -14,15 +14,15 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(720, 320)
-        self.vboxlayout = QtWidgets.QVBoxLayout(Dialog)
+class Ui_CDLookupDialog(object):
+    def setupUi(self, CDLookupDialog):
+        CDLookupDialog.setObjectName("CDLookupDialog")
+        CDLookupDialog.resize(720, 320)
+        self.vboxlayout = QtWidgets.QVBoxLayout(CDLookupDialog)
         self.vboxlayout.setContentsMargins(9, 9, 9, 9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
-        self.results_view = QtWidgets.QStackedWidget(parent=Dialog)
+        self.results_view = QtWidgets.QStackedWidget(parent=CDLookupDialog)
         self.results_view.setObjectName("results_view")
         self.results_page = QtWidgets.QWidget()
         self.results_page.setObjectName("results_page")
@@ -65,30 +65,30 @@ class Ui_Dialog(object):
         self.hboxlayout.setObjectName("hboxlayout")
         spacerItem2 = QtWidgets.QSpacerItem(111, 31, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.hboxlayout.addItem(spacerItem2)
-        self.ok_button = QtWidgets.QPushButton(parent=Dialog)
+        self.ok_button = QtWidgets.QPushButton(parent=CDLookupDialog)
         self.ok_button.setEnabled(False)
         self.ok_button.setObjectName("ok_button")
         self.hboxlayout.addWidget(self.ok_button)
-        self.lookup_button = QtWidgets.QPushButton(parent=Dialog)
+        self.lookup_button = QtWidgets.QPushButton(parent=CDLookupDialog)
         self.lookup_button.setObjectName("lookup_button")
         self.hboxlayout.addWidget(self.lookup_button)
-        self.cancel_button = QtWidgets.QPushButton(parent=Dialog)
+        self.cancel_button = QtWidgets.QPushButton(parent=CDLookupDialog)
         self.cancel_button.setObjectName("cancel_button")
         self.hboxlayout.addWidget(self.cancel_button)
         self.vboxlayout.addLayout(self.hboxlayout)
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(CDLookupDialog)
         self.results_view.setCurrentIndex(0)
-        self.ok_button.clicked.connect(Dialog.accept) # type: ignore
-        self.cancel_button.clicked.connect(Dialog.reject) # type: ignore
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
-        Dialog.setTabOrder(self.release_list, self.submit_button)
-        Dialog.setTabOrder(self.submit_button, self.ok_button)
-        Dialog.setTabOrder(self.ok_button, self.lookup_button)
-        Dialog.setTabOrder(self.lookup_button, self.cancel_button)
+        self.ok_button.clicked.connect(CDLookupDialog.accept) # type: ignore
+        self.cancel_button.clicked.connect(CDLookupDialog.reject) # type: ignore
+        QtCore.QMetaObject.connectSlotsByName(CDLookupDialog)
+        CDLookupDialog.setTabOrder(self.release_list, self.submit_button)
+        CDLookupDialog.setTabOrder(self.submit_button, self.ok_button)
+        CDLookupDialog.setTabOrder(self.ok_button, self.lookup_button)
+        CDLookupDialog.setTabOrder(self.lookup_button, self.cancel_button)
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_("CD Lookup"))
+    def retranslateUi(self, CDLookupDialog):
+        CDLookupDialog.setWindowTitle(_("CD Lookup"))
         self.label.setText(_("The following releases on MusicBrainz match the CD:"))
         self.no_results_label.setText(_("No matching releases found for this disc."))
         self.submit_button.setText(_("Submit disc ID"))
