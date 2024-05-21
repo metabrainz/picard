@@ -46,7 +46,7 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.forms.ui_cdlookup import Ui_Dialog
+from picard.ui.forms.ui_cdlookup import Ui_CDLookupDialog
 
 
 class CDLookupDialog(PicardDialog):
@@ -57,7 +57,7 @@ class CDLookupDialog(PicardDialog):
         super().__init__(parent)
         self.releases = releases
         self.disc = disc
-        self.ui = Ui_Dialog()
+        self.ui = Ui_CDLookupDialog()
         self.ui.setupUi(self)
         release_list = self.ui.release_list
         release_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)

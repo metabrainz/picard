@@ -14,15 +14,15 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(800, 450)
-        self.vboxlayout = QtWidgets.QVBoxLayout(Dialog)
+class Ui_OptionsDialog(object):
+    def setupUi(self, OptionsDialog):
+        OptionsDialog.setObjectName("OptionsDialog")
+        OptionsDialog.resize(800, 450)
+        self.vboxlayout = QtWidgets.QVBoxLayout(OptionsDialog)
         self.vboxlayout.setContentsMargins(9, 9, 9, 9)
         self.vboxlayout.setSpacing(6)
         self.vboxlayout.setObjectName("vboxlayout")
-        self.dialog_splitter = QtWidgets.QSplitter(parent=Dialog)
+        self.dialog_splitter = QtWidgets.QSplitter(parent=OptionsDialog)
         self.dialog_splitter.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.dialog_splitter.setChildrenCollapsible(False)
         self.dialog_splitter.setObjectName("dialog_splitter")
@@ -43,14 +43,14 @@ class Ui_Dialog(object):
         self.pages_stack.setMinimumSize(QtCore.QSize(280, 0))
         self.pages_stack.setObjectName("pages_stack")
         self.vboxlayout.addWidget(self.dialog_splitter)
-        self.buttonbox = QtWidgets.QDialogButtonBox(parent=Dialog)
+        self.buttonbox = QtWidgets.QDialogButtonBox(parent=OptionsDialog)
         self.buttonbox.setMinimumSize(QtCore.QSize(0, 0))
         self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.buttonbox.setObjectName("buttonbox")
         self.vboxlayout.addWidget(self.buttonbox)
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(OptionsDialog)
+        QtCore.QMetaObject.connectSlotsByName(OptionsDialog)
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(_("Options"))
+    def retranslateUi(self, OptionsDialog):
+        OptionsDialog.setWindowTitle(_("Options"))

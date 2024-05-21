@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>CDLookupDialog</class>
+ <widget class="QDialog" name="CDLookupDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -200,7 +200,7 @@
   <connection>
    <sender>ok_button</sender>
    <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>CDLookupDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -216,7 +216,7 @@
   <connection>
    <sender>cancel_button</sender>
    <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>CDLookupDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
