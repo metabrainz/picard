@@ -63,14 +63,14 @@ class CollectionMenu(QtWidgets.QMenu):
         self.refresh_action = self.addAction(_("Refresh List"))
         self.hovered.connect(self.update_highlight)
 
-    def refresh_list(self):
+    def _refresh_list(self):
         self.refresh_action.setEnabled(False)
         load_user_collections(self._update_collections)
 
     def mouseReleaseEvent(self, event):
         # Not using self.refresh_action.triggered because it closes the menu
         if self.actionAt(event.pos()) == self.refresh_action and self.refresh_action.isEnabled():
-            self.refresh_list()
+            self._refresh_list()
 
     def update_highlight(self, action):
         if self._ignore_update:
