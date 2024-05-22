@@ -210,13 +210,10 @@ class MetadataItem(Item):
         Args:
             removed_sources: List of child objects (`Track` or `File`) which's metadata images should be removed from
         """
-        from picard.util.imagelist import (
-            _get_metadata_images,
-            _remove_images,
-        )
+        from picard.util.imagelist import _remove_images
 
         state = self._get_imagelist_state()
-        (removed_new_images, removed_orig_images) = _get_metadata_images(state, removed_sources)
+        (removed_new_images, removed_orig_images) = state.get_metadata_images(removed_sources)
 
         if state.update_new_metadata:
             sources = [s.metadata for s in state.sources]
@@ -232,12 +229,10 @@ class MetadataItem(Item):
         Args:
             added_sources: List of child objects (`Track` or `File`) which's metadata images should be added to current object
         """
-        from picard.util.imagelist import (
-            _add_images,
-            _get_metadata_images,
-        )
+        from picard.util.imagelist import _add_images
+
         state = self._get_imagelist_state()
-        (added_new_images, added_orig_images) = _get_metadata_images(state, added_sources)
+        (added_new_images, added_orig_images) = state.get_metadata_images(added_sources)
         changed = False
 
         if state.update_new_metadata:

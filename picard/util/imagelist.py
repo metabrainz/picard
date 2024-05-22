@@ -115,6 +115,16 @@ class ImageListState:
         self.update_new_metadata = False
         self.update_orig_metadata = False
 
+    def get_metadata_images(self, sources):
+        new_images = set()
+        orig_images = set()
+        for s in sources:
+            if self.update_new_metadata:
+                new_images = new_images.union(s.metadata.images)
+            if self.update_orig_metadata:
+                orig_images = orig_images.union(s.orig_metadata.images)
+        return (new_images, orig_images)
+
 
 def _process_images(state, src_obj, Track):
     # Check new images
@@ -138,17 +148,6 @@ def _process_images(state, src_obj, Track):
                 state.has_common_orig_images = False
         if state.first_orig_obj:
             state.first_orig_obj = False
-
-
-def _get_metadata_images(state, sources):
-    new_images = set()
-    orig_images = set()
-    for s in sources:
-        if state.update_new_metadata:
-            new_images = new_images.union(s.metadata.images)
-        if state.update_orig_metadata:
-            orig_images = orig_images.union(s.orig_metadata.images)
-    return (new_images, orig_images)
 
 
 def _add_images(metadata, added_images):
