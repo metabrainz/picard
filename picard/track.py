@@ -130,14 +130,10 @@ class TrackArtist(DataObject):
 
 class Track(DataObject, FileListItem):
 
-    metadata_images_changed = QtCore.pyqtSignal()
-
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
         FileListItem.__init__(self)
         self.tagger = QtCore.QCoreApplication.instance()
-        self.metadata = Metadata()
-        self.orig_metadata = Metadata()
         self.album = album
         self.scripted_metadata = Metadata()
         self._track_artists = []

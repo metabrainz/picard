@@ -75,7 +75,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.item import Item
+from picard.item import MetadataItem
 from picard.metadata import (
     Metadata,
     SimMatchTrack,
@@ -135,9 +135,7 @@ class FileErrorType(Enum):
     PARSER = auto()
 
 
-class File(QtCore.QObject, Item):
-
-    metadata_images_changed = QtCore.pyqtSignal()
+class File(QtCore.QObject, MetadataItem):
 
     NAME = None
 
@@ -171,9 +169,6 @@ class File(QtCore.QObject, Item):
         self._state = File.UNDEFINED
         self.state = File.PENDING
         self.error_type = FileErrorType.UNKNOWN
-
-        self.orig_metadata = Metadata()
-        self.metadata = Metadata()
 
         self.similarity = 1.0
         self.parent = None

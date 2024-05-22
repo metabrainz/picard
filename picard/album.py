@@ -63,7 +63,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.item import Item
+from picard.item import MetadataItem
 from picard.mbjson import (
     medium_to_metadata,
     release_group_to_metadata,
@@ -130,15 +130,11 @@ class ParseResult(IntEnum):
     MISSING_TRACK_RELS = 2
 
 
-class Album(DataObject, Item):
-
-    metadata_images_changed = QtCore.pyqtSignal()
+class Album(DataObject, MetadataItem):
 
     def __init__(self, album_id, discid=None):
         DataObject.__init__(self, album_id)
         self.tagger = QtCore.QCoreApplication.instance()
-        self.metadata = Metadata()
-        self.orig_metadata = Metadata()
         self.tracks = []
         self.loaded = False
         self.load_task = None
@@ -155,7 +151,6 @@ class Album(DataObject, Item):
         self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = AlbumStatus.NONE
         self._album_artists = []
-        self.update_metadata_images_enabled = True
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
@@ -168,9 +163,6 @@ class Album(DataObject, Item):
 
     def iter_correctly_matched_tracks(self):
         yield from (track for track in self.tracks if track.num_linked_files == 1)
-
-    def enable_update_metadata_images(self, enabled):
-        self.update_metadata_images_enabled = enabled
 
     def append_album_artist(self, album_artist_id):
         """Append artist id to the list of album artists

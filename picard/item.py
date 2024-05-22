@@ -25,8 +25,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt6 import QtCore
+
 from picard import log
 from picard.i18n import ngettext
+from picard.metadata import Metadata
 from picard.util.imagelist import update_metadata_images
 
 
@@ -155,15 +158,14 @@ class Item(object):
                             number_of_images) % number_of_images
 
 
-class FileListItem(Item):
+class MetadataItem(Item):
+    metadata_images_changed = QtCore.pyqtSignal()
 
-    def __init__(self, files=None):
+    def __init__(self):
         super().__init__()
-        self.files = files or []
+        self.metadata = Metadata()
+        self.orig_metadata = Metadata()
         self.update_metadata_images_enabled = True
-
-    def iterfiles(self, save=False):
-        yield from self.files
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
@@ -180,3 +182,12 @@ class FileListItem(Item):
                 file.keep_original_images()
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
+
+class FileListItem(MetadataItem):
+
+    def __init__(self, files=None):
+        super().__init__()
+        self.files = files or []
+
+    def iterfiles(self, save=False):
+        yield from self.files

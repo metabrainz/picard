@@ -54,10 +54,7 @@ from picard.item import (
     FileListItem,
     Item,
 )
-from picard.metadata import (
-    Metadata,
-    SimMatchRelease,
-)
+from picard.metadata import SimMatchRelease
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
@@ -87,13 +84,9 @@ CLUSTER_COMPARISON_WEIGHTS = {
 
 class FileList(QtCore.QObject, FileListItem):
 
-    metadata_images_changed = QtCore.pyqtSignal()
-
     def __init__(self, files=None):
         QtCore.QObject.__init__(self)
         FileListItem.__init__(self, files)
-        self.metadata = Metadata()
-        self.orig_metadata = Metadata()
         if self.files and self.can_show_coverart:
             for file in self.files:
                 file.metadata_images_changed.connect(self.update_metadata_images)
