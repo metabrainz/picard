@@ -75,6 +75,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.item import Item
 from picard.metadata import (
     Metadata,
     SimMatchTrack,
@@ -110,8 +111,6 @@ from picard.util.tags import (
     FILE_INFO_TAGS,
     PRESERVED_TAGS,
 )
-
-from picard.ui.item import Item
 
 
 FILE_COMPARISON_WEIGHTS = {

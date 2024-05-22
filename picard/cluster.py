@@ -50,6 +50,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.item import (
+    FileListItem,
+    Item,
+)
 from picard.metadata import (
     Metadata,
     SimMatchRelease,
@@ -67,10 +71,6 @@ from picard.util.imagelist import (
 )
 
 from picard.ui.enums import MainAction
-from picard.ui.item import (
-    FileListItem,
-    Item,
-)
 
 
 # Weights for different elements when comparing a cluster to a release

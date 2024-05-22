@@ -63,6 +63,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.item import Item
 from picard.mbjson import (
     medium_to_metadata,
     release_group_to_metadata,
@@ -95,8 +96,6 @@ from picard.util.imagelist import (
     update_metadata_images,
 )
 from picard.util.textencoding import asciipunct
-
-from picard.ui.item import Item
 
 
 RECORDING_QUERY_LIMIT = 100

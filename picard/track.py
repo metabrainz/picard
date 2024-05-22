@@ -61,6 +61,7 @@ from picard.file import (
     run_file_post_removal_from_track_processors,
 )
 from picard.i18n import gettext as _
+from picard.item import FileListItem
 from picard.mbjson import recording_to_metadata
 from picard.metadata import (
     Metadata,
@@ -79,8 +80,6 @@ from picard.util.imagelist import (
     remove_metadata_images,
 )
 from picard.util.textencoding import asciipunct
-
-from picard.ui.item import FileListItem
 
 
 class TagGenreFilter:
