@@ -80,6 +80,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.data = None
         self.has_common_images = None
         self.release = None
+        self.tagger = QtCore.QCoreApplication.instance()
         window_handle = self.window().windowHandle()
         if window_handle:
             self.pixel_ratio = window_handle.screen().devicePixelRatio()
@@ -381,6 +382,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.setSpacing(6)
         self.parent = parent
+        self.tagger = QtCore.QCoreApplication.instance()
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)
