@@ -389,7 +389,7 @@ class NonAlbumTrack(Track):
         self.status = _("[loading recording information]")
         self.clear_errors()
         self.loaded = False
-        self.album.update(True)
+        self.album.update(update_tracks=True)
         config = get_config()
         require_authentication = False
         inc = {
@@ -437,7 +437,7 @@ class NonAlbumTrack(Track):
     def _set_error(self, error):
         self.error_append(error)
         self.status = _("[could not load recording %s]") % self.id
-        self.album.update(True)
+        self.album.update(update_tracks=True)
 
     def _parse_recording(self, recording):
         m = self.metadata
@@ -451,7 +451,7 @@ class NonAlbumTrack(Track):
         if self.callback:
             self.callback()
             self.callback = None
-        self.album.update(True)
+        self.album.update(update_tracks=True)
 
     def _customize_metadata(self):
         super()._customize_metadata()

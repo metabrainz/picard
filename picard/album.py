@@ -846,7 +846,7 @@ class Album(DataObject, MetadataItem):
             return
 
         if self.metadataitem_update_metadata_images():
-            self.update(False)
+            self.update(update_tracks=False)
             self.metadata_images_changed.emit()
 
     def keep_original_images(self):
@@ -877,7 +877,7 @@ class NatAlbum(Album):
             for file in track.files:
                 track.update_file_metadata(file)
         self.enable_update_metadata_images(True)
-        super().update(update_tracks, update_selection)
+        super().update(update_tracks=update_tracks, update_selection=update_selection)
 
     def _finalize_loading(self, error):
         self.update()
