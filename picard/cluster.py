@@ -61,7 +61,6 @@ from picard.util import (
     find_best_match,
     format_time,
 )
-from picard.util.imagelist import update_metadata_images
 
 from picard.ui.enums import MainAction
 
@@ -86,7 +85,7 @@ class FileList(QtCore.QObject, FileListItem):
         if self.files and self.can_show_coverart:
             for file in self.files:
                 file.metadata_images_changed.connect(self.update_metadata_images)
-            update_metadata_images(self)
+            self.metadataitem_update_metadata_images()
 
     def iterfiles(self, save=False):
         yield from self.files

@@ -30,7 +30,6 @@ from PyQt6 import QtCore
 from picard import log
 from picard.i18n import ngettext
 from picard.metadata import Metadata
-from picard.util.imagelist import update_metadata_images
 
 
 class Item(object):
@@ -172,7 +171,7 @@ class MetadataItem(Item):
 
     def update_metadata_images(self):
         if self.update_metadata_images_enabled and self.can_show_coverart:
-            if update_metadata_images(self):
+            if self.metadataitem_update_metadata_images():
                 self.metadata_images_changed.emit()
 
     def keep_original_images(self):
@@ -227,6 +226,26 @@ class MetadataItem(Item):
             changed |= _add_images(self.orig_metadata, added_orig_images)
 
         return changed
+
+    def metadataitem_update_metadata_images(self):
+        """Update the metadata images of the current object based on its children.
+
+        Based on the type of the current object, this will update `self.metadata.images` to
+        represent the metadata images of all children (`Track` or `File` objects).
+
+        This method will iterate over all children and completely rebuild
+        `self.metadata.images`. Whenever possible the more specific functions
+        `add_metadata_images` or `remove_metadata_images` should be used.
+
+        Returns:
+            bool: True, if images where changed, False otherwise
+        """
+        from picard.util.imagelist import (
+            _get_state,
+            _update_state,
+        )
+
+        return _update_state(self, _get_state(self))
 
 
 class FileListItem(MetadataItem):

@@ -90,7 +90,6 @@ from picard.util import (
     format_time,
     mbid_validate,
 )
-from picard.util.imagelist import update_metadata_images
 from picard.util.textencoding import asciipunct
 
 
@@ -846,7 +845,7 @@ class Album(DataObject, MetadataItem):
         if not self.update_metadata_images_enabled:
             return
 
-        if update_metadata_images(self):
+        if self.metadataitem_update_metadata_images():
             self.update(False)
             self.metadata_images_changed.emit()
 

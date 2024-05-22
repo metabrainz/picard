@@ -195,24 +195,6 @@ def _get_metadata_images(state, sources):
     return (new_images, orig_images)
 
 
-def update_metadata_images(obj):
-    """Update the metadata images `obj` based on its children.
-
-    Based on the type of `obj` this will update `obj.metadata.images` to
-    represent the metadata images of all children (`Track` or `File` objects).
-
-    This method will iterate over all children and completely rebuild
-    `obj.metadata.images`. Whenever possible the more specific functions
-    `add_metadata_images` or `remove_metadata_images` should be used.
-
-    Args:
-        obj: A `Cluster`, `Album` or `Track` object with `metadata` property
-    Returns:
-        bool: True, if images where changed, False otherwise
-    """
-    return _update_state(obj, _get_state(obj))
-
-
 def _add_images(metadata, added_images):
     if not added_images:
         return False
