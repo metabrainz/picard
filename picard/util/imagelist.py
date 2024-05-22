@@ -140,28 +140,6 @@ def _process_images(state, src_obj, Track):
             state.first_orig_obj = False
 
 
-def _update_state(obj, state):
-    from picard.track import Track
-
-    changed = False
-    for src_obj in state.sources:
-        _process_images(state, src_obj, Track)
-
-    if state.update_new_metadata:
-        updated_images = ImageList(state.new_images.values())
-        changed |= updated_images.hash_dict().keys() != obj.metadata.images.hash_dict().keys()
-        obj.metadata.images = updated_images
-        obj.metadata.has_common_images = state.has_common_new_images
-
-    if state.update_orig_metadata:
-        updated_images = ImageList(state.orig_images.values())
-        changed |= updated_images.hash_dict().keys() != obj.orig_metadata.images.hash_dict().keys()
-        obj.orig_metadata.images = updated_images
-        obj.orig_metadata.has_common_images = state.has_common_orig_images
-
-    return changed
-
-
 # TODO: use functools.singledispatch when py3 is supported
 def _get_state(obj):
     from picard.album import Album
