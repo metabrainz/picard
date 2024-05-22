@@ -149,19 +149,6 @@ class ImageListState:
                 self.first_orig_obj = False
 
 
-def _add_images(metadata, added_images):
-    if not added_images:
-        return False
-
-    current_images = set(metadata.images)
-    if added_images.isdisjoint(current_images):
-        metadata.images = ImageList(current_images.union(added_images))
-        metadata.has_common_images = False
-        return True
-
-    return False
-
-
 def _remove_images(metadata, sources, removed_images):
     """Removes `removed_images` from metadata `images`, but only if they are not included in `sources`.
 

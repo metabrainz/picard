@@ -586,6 +586,18 @@ class Metadata(MutableMapping):
     def __str__(self):
         return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, [str(img) for img in self.images], self.length))
 
+    def add_images(self, added_images):
+        if not added_images:
+            return False
+
+        current_images = set(self.images)
+        if added_images.isdisjoint(current_images):
+            self.images = ImageList(current_images.union(added_images))
+            self.has_common_images = False
+            return True
+
+        return False
+
 
 class MultiMetadataProxy:
     """

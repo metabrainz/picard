@@ -229,16 +229,14 @@ class MetadataItem(Item):
         Args:
             added_sources: List of child objects (`Track` or `File`) which's metadata images should be added to current object
         """
-        from picard.util.imagelist import _add_images
-
         state = self._get_imagelist_state()
         (added_new_images, added_orig_images) = state.get_metadata_images(added_sources)
         changed = False
 
         if state.update_new_metadata:
-            changed |= _add_images(self.metadata, added_new_images)
+            changed |= self.metadata.add_images(added_new_images)
         if state.update_orig_metadata:
-            changed |= _add_images(self.orig_metadata, added_orig_images)
+            changed |= self.orig_metadata.add_images(added_orig_images)
 
         return changed
 
