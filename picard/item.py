@@ -184,9 +184,8 @@ class MetadataItem(Item):
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
-    # FIXME: find a better name
-    def get_imagelist_state(self, state):
-        """Meant to be defined in subclass if neeeded"""
+    def children_metadata_items(self):
+        """Yield MetadataItems that are children of the current object"""
 
     def _get_imagelist_state(self):
         from picard.util.imagelist import ImageListState
@@ -195,7 +194,7 @@ class MetadataItem(Item):
             update_new_metadata=self.update_new_metadata,
             update_orig_metadata=self.update_orig_metadata,
         )
-        self.get_imagelist_state(state)
+        state.sources = list(self.children_metadata_items())
         return state
 
     def remove_metadata_images(self, removed_sources):
@@ -280,5 +279,5 @@ class FileListItem(MetadataItem):
     def iterfiles(self, save=False):
         yield from self.files
 
-    def get_imagelist_state(self, state):
-        state.sources = self.files
+    def children_metadata_items(self):
+        yield from self.files

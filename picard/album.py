@@ -860,11 +860,11 @@ class Album(DataObject, MetadataItem):
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
-    def get_imagelist_state(self, state):
+    def children_metadata_items(self):
         for track in self.tracks:
-            state.sources.append(track)
-            state.sources += track.files
-        state.sources += self.unmatched_files.files
+            yield track
+            yield from track.files
+        yield from self.unmatched_files.files
 
 
 class NatAlbum(Album):
