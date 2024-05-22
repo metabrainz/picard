@@ -350,6 +350,11 @@ class CoverArtThumbnail(ActiveLabel):
         lookup.album_lookup(self.release)
 
 
+def image_delete(obj, image):
+    obj.metadata.images.strip_selected_image(image)
+    obj.metadata_images_changed.emit()
+
+
 def set_image_replace(obj, coverartimage):
     obj.metadata.images.strip_front_images()
     obj.metadata.images.append(coverartimage)
@@ -458,10 +463,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
             orig_metadata = self.item.orig_metadata
 
         if not metadata or not metadata.images:
-            self.cover_art.set_metadata(orig_metadata)
+            self.cover_art.set_metadata(None)
+            self.orig_cover_art.set_metadata(None)
         else:
             self.cover_art.set_metadata(metadata)
-        self.orig_cover_art.set_metadata(orig_metadata)
+            self.orig_cover_art.set_metadata(orig_metadata)
         self.update_display()
 
     def fetch_remote_image(self, url, fallback_data=None):
@@ -547,6 +553,71 @@ class CoverArtBox(QtWidgets.QGroupBox):
         except CoverArtImageError as e:
             log.warning("Can't load image: %s", e)
             return
+
+    def delete_cover_art(self):
+        if not self.item or not self.item.metadata.images:
+            if not self.item.orig_metadata.images:
+                return
+
+        cover_art_list = [image.source or _("Unnamed Cover Art") for image in self.item.metadata.images]
+
+        selected_item, ok_pressed = QtWidgets.QInputDialog.getItem(self, _("Delete Cover Art"),
+                                                                    _("Select the cover art image to delete:"),
+                                                                    cover_art_list, 0, False)
+        if ok_pressed:
+            selected_image_index = cover_art_list.index(selected_item)
+            selected_image = self.item.metadata.images[selected_image_index]
+            try:
+                self.delete_cover_art_for_item(self.item, selected_image)
+            except CoverArtImageError as e:
+                log.error("Can't delete image: %s", e)
+                return
+
+    def delete_cover_art_for_item(self, item, selected_image):
+        metadata = item.metadata
+        if not metadata or not metadata.images:
+            return
+
+        debug_info = "Deleted %r from %r"
+
+        if isinstance(item, Album):
+            item.enable_update_metadata_images(False)
+            for track in item.tracks:
+                track.enable_update_metadata_images(False)
+                image_delete(track, selected_image)
+            for file in item.iterfiles():
+                image_delete(file, selected_image)
+                file.update(signal=False)
+            for track in item.tracks:
+                track.enable_update_metadata_images(True)
+            item.enable_update_metadata_images(True)
+            item.update(update_tracks=False)
+        elif isinstance(item, FileListItem):
+            parents = set()
+            item.enable_update_metadata_images(False)
+            image_delete(item, selected_image)
+            for file in item.iterfiles():
+                for parent in iter_file_parents(file):
+                    parent.enable_update_metadata_images(False)
+                    parents.add(parent)
+                image_delete(file, selected_image)
+                file.update(signal=False)
+            for parent in parents:
+                image_delete(parent, selected_image)
+                parent.enable_update_metadata_images(True)
+                if isinstance(parent, Album):
+                    parent.update(update_tracks=False)
+                else:
+                    parent.update()
+            item.enable_update_metadata_images(True)
+            item.update()
+        elif isinstance(item, File):
+            image_delete(item, selected_image)
+            item.update()
+        else:
+            debug_info = "Unable to delete %r from %r"
+
+        log.debug(debug_info, selected_image, item)
 
     def _try_load_remote_image(self, url, data):
         coverartimage = CoverArtImage(
@@ -636,6 +707,13 @@ class CoverArtBox(QtWidgets.QGroupBox):
             show_more_details_action = QtGui.QAction(name, self.parent)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
+
+        delete_cover_art_action = QtGui.QAction(_("Delete cover art"), self.parent)
+        if self.item and self.item.can_show_coverart and self.item.metadata.images:
+            delete_cover_art_action.triggered.connect(self.delete_cover_art)
+        else:
+            delete_cover_art_action.setEnabled(False)
+        menu.addAction(delete_cover_art_action)
 
         if self.orig_cover_art.isVisible():
             name = _("Keep original cover art")

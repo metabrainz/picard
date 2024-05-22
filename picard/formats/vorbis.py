@@ -321,7 +321,7 @@ class VCommentFile(File):
                     base64.b64encode(picture.write()).decode('ascii'))
 
         file.tags.update(tags)
-
+        self._clear_cover_art(file)
         self._remove_deleted_tags(metadata, file.tags)
 
         kwargs = {}
@@ -357,6 +357,15 @@ class VCommentFile(File):
                         # both tag and real_name are to be deleted in this case
                         del tags[tag]
                     del tags[real_name]
+
+    def _clear_cover_art(self, file):
+        if self.metadata.images.deleted:
+            if self._File == mutagen.flac.FLAC:
+                file.clear_pictures()
+            else:
+                for tag in file:
+                    if tag.lower().startswith('metadata_block_picture'):
+                        del file.tags[tag]
 
     def _get_tag_name(self, name):
         if name == '~rating':
