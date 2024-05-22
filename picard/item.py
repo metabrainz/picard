@@ -182,6 +182,28 @@ class MetadataItem(Item):
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
+    def _get_imagelist_state(self):
+        from picard.album import Album
+        from picard.item import FileListItem
+        from picard.util.imagelist import ImageListState
+
+        state = ImageListState()
+
+        # TODO: move to classes Album/FileListItem
+        if isinstance(self, Album):
+            for track in self.tracks:
+                state.sources.append(track)
+                state.sources += track.files
+            state.sources += self.unmatched_files.files
+            state.update_new_metadata = True
+            state.update_orig_metadata = True
+        elif isinstance(self, FileListItem):
+            state.sources = self.files
+            state.update_new_metadata = True
+            state.update_orig_metadata = True
+
+        return state
+
     def remove_metadata_images(self, removed_sources):
         """Remove the images in the metadata of `removed_sources` from the metadata.
 
@@ -190,11 +212,10 @@ class MetadataItem(Item):
         """
         from picard.util.imagelist import (
             _get_metadata_images,
-            _get_state,
             _remove_images,
         )
 
-        state = _get_state(self)
+        state = self._get_imagelist_state()
         (removed_new_images, removed_orig_images) = _get_metadata_images(state, removed_sources)
 
         if state.update_new_metadata:
@@ -214,9 +235,8 @@ class MetadataItem(Item):
         from picard.util.imagelist import (
             _add_images,
             _get_metadata_images,
-            _get_state,
         )
-        state = _get_state(self)
+        state = self._get_imagelist_state()
         (added_new_images, added_orig_images) = _get_metadata_images(state, added_sources)
         changed = False
 
@@ -265,9 +285,7 @@ class MetadataItem(Item):
         Returns:
             bool: True, if images where changed, False otherwise
         """
-        from picard.util.imagelist import _get_state
-
-        return self._update_imagelist_state(_get_state(self))
+        return self._update_imagelist_state(self._get_imagelist_state())
 
 
 class FileListItem(MetadataItem):

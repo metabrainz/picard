@@ -140,28 +140,6 @@ def _process_images(state, src_obj, Track):
             state.first_orig_obj = False
 
 
-# TODO: use functools.singledispatch when py3 is supported
-def _get_state(obj):
-    from picard.album import Album
-    from picard.item import FileListItem
-
-    state = ImageListState()
-
-    if isinstance(obj, Album):
-        for track in obj.tracks:
-            state.sources.append(track)
-            state.sources += track.files
-        state.sources += obj.unmatched_files.files
-        state.update_new_metadata = True
-        state.update_orig_metadata = True
-    elif isinstance(obj, FileListItem):
-        state.sources = obj.files
-        state.update_new_metadata = True
-        state.update_orig_metadata = True
-
-    return state
-
-
 def _get_metadata_images(state, sources):
     new_images = set()
     orig_images = set()
