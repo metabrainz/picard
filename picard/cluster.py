@@ -63,7 +63,6 @@ from picard.util import (
 )
 from picard.util.imagelist import (
     add_metadata_images,
-    remove_metadata_images,
     update_metadata_images,
 )
 
@@ -137,7 +136,7 @@ class Cluster(FileList):
             if added_files:
                 add_metadata_images(self.related_album, added_files)
             if removed_files:
-                remove_metadata_images(self.related_album, removed_files)
+                self.related_album.remove_metadata_images(removed_files)
             self.related_album.update()
 
     def add_files(self, files, new_album=True):
@@ -170,7 +169,7 @@ class Cluster(FileList):
         self.item.remove_file(file)
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
-            remove_metadata_images(self, [file])
+            self.remove_metadata_images([file])
         if new_album:
             self._update_related_album(removed_files=[file])
         self.tagger.window.set_processing(False)

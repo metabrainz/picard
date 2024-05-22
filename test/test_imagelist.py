@@ -34,7 +34,6 @@ from picard.track import Track
 from picard.util.imagelist import (
     ImageList,
     add_metadata_images,
-    remove_metadata_images,
     update_metadata_images,
 )
 
@@ -148,7 +147,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         cluster.files = list(self.test_files)
         update_metadata_images(cluster)
         cluster.files.remove(self.test_files[0])
-        remove_metadata_images(cluster, [self.test_files[0]])
+        cluster.remove_metadata_images([self.test_files[0]])
         self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
         self.assertTrue(cluster.metadata.has_common_images)
 
@@ -157,7 +156,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         cluster.files = list(self.test_files[1:])
         update_metadata_images(cluster)
         cluster.files.remove(self.test_files[1])
-        remove_metadata_images(cluster, [self.test_files[1]])
+        cluster.remove_metadata_images([self.test_files[1]])
         self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
         self.assertTrue(cluster.metadata.has_common_images)
 
@@ -165,7 +164,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         cluster = Cluster('Test')
         cluster.files.append(File('test1.flac'))
         update_metadata_images(cluster)
-        remove_metadata_images(cluster, [cluster.files[0]])
+        cluster.remove_metadata_images([cluster.files[0]])
         self.assertEqual(set(), set(cluster.metadata.images))
         self.assertTrue(cluster.metadata.has_common_images)
 
@@ -174,7 +173,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         track.files = list(self.test_files)
         update_metadata_images(track)
         track.files.remove(self.test_files[0])
-        remove_metadata_images(track, [self.test_files[0]])
+        track.remove_metadata_images([self.test_files[0]])
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
@@ -183,7 +182,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         track.files = list(self.test_files[1:])
         update_metadata_images(track)
         track.files.remove(self.test_files[1])
-        remove_metadata_images(track, [self.test_files[1]])
+        track.remove_metadata_images([self.test_files[1]])
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
@@ -191,7 +190,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         track = Track('00000000-0000-0000-0000-000000000000')
         track.files.append(File('test1.flac'))
         update_metadata_images(track)
-        remove_metadata_images(track, [track.files[0]])
+        track.remove_metadata_images([track.files[0]])
         self.assertEqual(set(), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
 
@@ -200,7 +199,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         album.unmatched_files.files = list(self.test_files)
         update_metadata_images(album)
         album.unmatched_files.files.remove(self.test_files[0])
-        remove_metadata_images(album, [self.test_files[0]])
+        album.remove_metadata_images([self.test_files[0]])
         self.assertEqual(set(self.test_images[1:]), set(album.metadata.images))
         self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
         self.assertTrue(album.metadata.has_common_images)
@@ -211,7 +210,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         album.unmatched_files.files = list(self.test_files[1:])
         update_metadata_images(album)
         album.unmatched_files.files.remove(self.test_files[1])
-        remove_metadata_images(album, [self.test_files[1]])
+        album.remove_metadata_images([self.test_files[1]])
         self.assertEqual(set(self.test_images[1:]), set(album.metadata.images))
         self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
         self.assertTrue(album.metadata.has_common_images)
@@ -221,7 +220,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
         album = Album('00000000-0000-0000-0000-000000000000')
         album.unmatched_files.files.append(File('test1.flac'))
         update_metadata_images(album)
-        remove_metadata_images(album, [album.unmatched_files.files[0]])
+        album.remove_metadata_images([album.unmatched_files.files[0]])
         self.assertEqual(set(), set(album.metadata.images))
         self.assertEqual(set(), set(album.orig_metadata.images))
         self.assertTrue(album.metadata.has_common_images)

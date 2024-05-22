@@ -183,6 +183,30 @@ class MetadataItem(Item):
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
+    def remove_metadata_images(self, removed_sources):
+        """Remove the images in the metadata of `removed_sources` from the metadata.
+
+        Args:
+            removed_sources: List of child objects (`Track` or `File`) which's metadata images should be removed from
+        """
+        from picard.util.imagelist import (
+            _get_metadata_images,
+            _get_state,
+            _remove_images,
+        )
+
+        state = _get_state(self)
+        (removed_new_images, removed_orig_images) = _get_metadata_images(state, removed_sources)
+
+        if state.update_new_metadata:
+            sources = [s.metadata for s in state.sources]
+            _remove_images(self.metadata, sources, removed_new_images)
+        if state.update_orig_metadata:
+            from picard.track import Track
+            sources = [s.orig_metadata for s in state.sources if not isinstance(s, Track)]
+            _remove_images(self.orig_metadata, sources, removed_orig_images)
+
+
 class FileListItem(MetadataItem):
 
     def __init__(self, files=None):

@@ -283,23 +283,3 @@ def _remove_images(metadata, sources, removed_images):
 
     metadata.images = ImageList(current_images.difference(removed_images))
     metadata.has_common_images = common_images
-
-
-def remove_metadata_images(obj, removed_sources):
-    """Remove the images in the metadata of `removed_sources` from the metadata of `obj`.
-
-    Args:
-        obj: A `Cluster`, `Album` or `Track` object with `metadata` property
-        removed_sources: List of child objects (`Track` or `File`) which's metadata images should be removed from `obj`
-    """
-    from picard.track import Track
-
-    state = _get_state(obj)
-    (removed_new_images, removed_orig_images) = _get_metadata_images(state, removed_sources)
-
-    if state.update_new_metadata:
-        sources = [s.metadata for s in state.sources]
-        _remove_images(obj.metadata, sources, removed_new_images)
-    if state.update_orig_metadata:
-        sources = [s.orig_metadata for s in state.sources if not isinstance(s, Track)]
-        _remove_images(obj.orig_metadata, sources, removed_orig_images)

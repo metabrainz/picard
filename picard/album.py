@@ -92,7 +92,6 @@ from picard.util import (
 )
 from picard.util.imagelist import (
     add_metadata_images,
-    remove_metadata_images,
     update_metadata_images,
 )
 from picard.util.textencoding import asciipunct
@@ -653,7 +652,7 @@ class Album(DataObject, MetadataItem):
         self._files_count -= 1
         if new_album:
             self.update(update_tracks=False)
-            remove_metadata_images(self, [file])
+            self.remove_metadata_images([file])
 
     @staticmethod
     def _match_files(files, tracks, unmatched_files, threshold=0):

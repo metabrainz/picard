@@ -77,7 +77,6 @@ from picard.util import pattern_as_regex
 from picard.util.imagelist import (
     ImageList,
     add_metadata_images,
-    remove_metadata_images,
 )
 from picard.util.textencoding import asciipunct
 
@@ -193,7 +192,7 @@ class Track(DataObject, FileListItem):
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         self.album.remove_file(self, file, new_album=new_album)
-        remove_metadata_images(self, [file])
+        self.remove_metadata_images([file])
         if not self.files and self._orig_images:
             self.orig_metadata.images = self._orig_images
             self.metadata.images = self._orig_images.copy()
