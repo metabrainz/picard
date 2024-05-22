@@ -61,10 +61,7 @@ from picard.util import (
     find_best_match,
     format_time,
 )
-from picard.util.imagelist import (
-    add_metadata_images,
-    update_metadata_images,
-)
+from picard.util.imagelist import update_metadata_images
 
 from picard.ui.enums import MainAction
 
@@ -134,7 +131,7 @@ class Cluster(FileList):
     def _update_related_album(self, added_files=None, removed_files=None):
         if self.related_album:
             if added_files:
-                add_metadata_images(self.related_album, added_files)
+                self.related_album.add_metadata_images(added_files)
             if removed_files:
                 self.related_album.remove_metadata_images(removed_files)
             self.related_album.update()
@@ -153,7 +150,7 @@ class Cluster(FileList):
         self.files.extend(added_files)
         self.update(signal=False)
         if self.can_show_coverart:
-            add_metadata_images(self, added_files)
+            self.add_metadata_images(added_files)
         self.item.add_files(added_files)
         if new_album:
             self._update_related_album(added_files=added_files)

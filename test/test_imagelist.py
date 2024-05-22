@@ -33,7 +33,6 @@ from picard.file import File
 from picard.track import Track
 from picard.util.imagelist import (
     ImageList,
-    add_metadata_images,
     update_metadata_images,
 )
 
@@ -238,7 +237,7 @@ class AddMetadataImagesTest(PicardTestCase):
         cluster.files = [self.test_files[0]]
         update_metadata_images(cluster)
         cluster.files += self.test_files[1:]
-        added = add_metadata_images(cluster, self.test_files[1:])
+        added = cluster.add_metadata_images(self.test_files[1:])
         self.assertTrue(added)
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
@@ -247,7 +246,7 @@ class AddMetadataImagesTest(PicardTestCase):
         cluster = Cluster('Test')
         cluster.files = self.test_files
         update_metadata_images(cluster)
-        added = add_metadata_images(cluster, [self.test_files[1]])
+        added = cluster.add_metadata_images([self.test_files[1]])
         self.assertFalse(added)
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
 
@@ -255,7 +254,7 @@ class AddMetadataImagesTest(PicardTestCase):
         cluster = Cluster('Test')
         cluster.files = self.test_files
         update_metadata_images(cluster)
-        added = add_metadata_images(cluster, [])
+        added = cluster.add_metadata_images([])
         self.assertFalse(added)
 
 

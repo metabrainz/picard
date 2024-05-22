@@ -206,6 +206,28 @@ class MetadataItem(Item):
             sources = [s.orig_metadata for s in state.sources if not isinstance(s, Track)]
             _remove_images(self.orig_metadata, sources, removed_orig_images)
 
+    def add_metadata_images(self, added_sources):
+        """Add the images in the metadata of `added_sources` to the metadata.
+
+        Args:
+            added_sources: List of child objects (`Track` or `File`) which's metadata images should be added to current object
+        """
+        from picard.util.imagelist import (
+            _add_images,
+            _get_metadata_images,
+            _get_state,
+        )
+        state = _get_state(self)
+        (added_new_images, added_orig_images) = _get_metadata_images(state, added_sources)
+        changed = False
+
+        if state.update_new_metadata:
+            changed |= _add_images(self.metadata, added_new_images)
+        if state.update_orig_metadata:
+            changed |= _add_images(self.orig_metadata, added_orig_images)
+
+        return changed
+
 
 class FileListItem(MetadataItem):
 

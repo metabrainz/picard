@@ -74,10 +74,7 @@ from picard.script import (
     enabled_tagger_scripts_texts,
 )
 from picard.util import pattern_as_regex
-from picard.util.imagelist import (
-    ImageList,
-    add_metadata_images,
-)
+from picard.util.imagelist import ImageList
 from picard.util.textencoding import asciipunct
 
 
@@ -154,7 +151,7 @@ class Track(DataObject, FileListItem):
                 self.orig_metadata.images = ImageList()
             self.files.append(file)
         self.update_file_metadata(file)
-        add_metadata_images(self, [file])
+        self.add_metadata_images([file])
         self.album.add_file(self, file, new_album=new_album)
         file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)

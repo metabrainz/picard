@@ -226,25 +226,6 @@ def _add_images(metadata, added_images):
     return False
 
 
-def add_metadata_images(obj, added_sources):
-    """Add the images in the metadata of `added_sources` to the metadata of `obj`.
-
-    Args:
-        obj: A `Cluster`, `Album` or `Track` object with `metadata` property
-        added_sources: List of child objects (`Track` or `File`) which's metadata images should be added to `obj`
-    """
-    state = _get_state(obj)
-    (added_new_images, added_orig_images) = _get_metadata_images(state, added_sources)
-    changed = False
-
-    if state.update_new_metadata:
-        changed |= _add_images(obj.metadata, added_new_images)
-    if state.update_orig_metadata:
-        changed |= _add_images(obj.orig_metadata, added_orig_images)
-
-    return changed
-
-
 def _remove_images(metadata, sources, removed_images):
     """Removes `removed_images` from metadata `images`, but only if they are not included in `sources`.
 
