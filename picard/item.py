@@ -182,26 +182,15 @@ class MetadataItem(Item):
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
+    # FIXME: find a better name
+    def get_imagelist_state(self, state):
+        """Meant to be defined in subclass if neeeded"""
+
     def _get_imagelist_state(self):
-        from picard.album import Album
-        from picard.item import FileListItem
         from picard.util.imagelist import ImageListState
 
         state = ImageListState()
-
-        # TODO: move to classes Album/FileListItem
-        if isinstance(self, Album):
-            for track in self.tracks:
-                state.sources.append(track)
-                state.sources += track.files
-            state.sources += self.unmatched_files.files
-            state.update_new_metadata = True
-            state.update_orig_metadata = True
-        elif isinstance(self, FileListItem):
-            state.sources = self.files
-            state.update_new_metadata = True
-            state.update_orig_metadata = True
-
+        self.get_imagelist_state(state)
         return state
 
     def remove_metadata_images(self, removed_sources):
@@ -283,3 +272,8 @@ class FileListItem(MetadataItem):
 
     def iterfiles(self, save=False):
         yield from self.files
+
+    def get_imagelist_state(self, state):
+        state.sources = self.files
+        state.update_new_metadata = True
+        state.update_orig_metadata = True

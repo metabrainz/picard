@@ -858,6 +858,14 @@ class Album(DataObject, MetadataItem):
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
+    def get_imagelist_state(self, state):
+        for track in self.tracks:
+            state.sources.append(track)
+            state.sources += track.files
+        state.sources += self.unmatched_files.files
+        state.update_new_metadata = True
+        state.update_orig_metadata = True
+
 
 class NatAlbum(Album):
 
