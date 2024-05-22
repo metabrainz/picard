@@ -238,9 +238,23 @@ class MetadataItem(Item):
 
         return changed
 
-    def _update_imagelist_state(self, state):
+    def metadataitem_update_metadata_images(self):
+        """Update the metadata images of the current object based on its children.
+
+        Based on the type of the current object, this will update `self.metadata.images` to
+        represent the metadata images of all children (`Track` or `File` objects).
+
+        This method will iterate over all children and completely rebuild
+        `self.metadata.images`. Whenever possible the more specific functions
+        `add_metadata_images` or `remove_metadata_images` should be used.
+
+        Returns:
+            bool: True, if images where changed, False otherwise
+        """
         from picard.track import Track
         from picard.util.imagelist import ImageList
+
+        state = self._get_imagelist_state()
 
         changed = False
         for src_obj in state.sources:
@@ -259,21 +273,6 @@ class MetadataItem(Item):
             self.orig_metadata.has_common_images = state.has_common_orig_images
 
         return changed
-
-    def metadataitem_update_metadata_images(self):
-        """Update the metadata images of the current object based on its children.
-
-        Based on the type of the current object, this will update `self.metadata.images` to
-        represent the metadata images of all children (`Track` or `File` objects).
-
-        This method will iterate over all children and completely rebuild
-        `self.metadata.images`. Whenever possible the more specific functions
-        `add_metadata_images` or `remove_metadata_images` should be used.
-
-        Returns:
-            bool: True, if images where changed, False otherwise
-        """
-        return self._update_imagelist_state(self._get_imagelist_state())
 
 
 class FileListItem(MetadataItem):
