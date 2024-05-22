@@ -146,6 +146,8 @@ class Album(DataObject, MetadataItem):
         self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = AlbumStatus.NONE
         self._album_artists = []
+        self.update_new_metadata = True
+        self.update_orig_metadata = True
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
@@ -863,8 +865,6 @@ class Album(DataObject, MetadataItem):
             state.sources.append(track)
             state.sources += track.files
         state.sources += self.unmatched_files.files
-        state.update_new_metadata = True
-        state.update_orig_metadata = True
 
 
 class NatAlbum(Album):

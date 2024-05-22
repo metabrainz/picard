@@ -103,7 +103,7 @@ class ImageList(MutableSequence):
 
 
 class ImageListState:
-    def __init__(self):
+    def __init__(self, update_new_metadata=False, update_orig_metadata=False):
         self.new_images = {}
         self.orig_images = {}
         self.sources = []
@@ -112,8 +112,8 @@ class ImageListState:
         self.first_new_obj = True
         self.first_orig_obj = True
         # The next variables specify what will be updated
-        self.update_new_metadata = False
-        self.update_orig_metadata = False
+        self.update_new_metadata = update_new_metadata
+        self.update_orig_metadata = update_orig_metadata
 
     def get_metadata_images(self, sources):
         new_images = set()

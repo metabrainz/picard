@@ -165,6 +165,8 @@ class MetadataItem(Item):
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.update_metadata_images_enabled = True
+        self.update_new_metadata = False
+        self.update_orig_metadata = False
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
@@ -189,7 +191,10 @@ class MetadataItem(Item):
     def _get_imagelist_state(self):
         from picard.util.imagelist import ImageListState
 
-        state = ImageListState()
+        state = ImageListState(
+            update_new_metadata=self.update_new_metadata,
+            update_orig_metadata=self.update_orig_metadata,
+        )
         self.get_imagelist_state(state)
         return state
 
@@ -202,10 +207,10 @@ class MetadataItem(Item):
         state = self._get_imagelist_state()
         (removed_new_images, removed_orig_images) = state.get_metadata_images(removed_sources)
 
-        if state.update_new_metadata:
+        if self.update_new_metadata:
             sources = [s.metadata for s in state.sources]
             self.metadata.remove_images(sources, removed_new_images)
-        if state.update_orig_metadata:
+        if self.update_orig_metadata:
             from picard.track import Track
             sources = [s.orig_metadata for s in state.sources if not isinstance(s, Track)]
             self.orig_metadata.remove_images(sources, removed_orig_images)
@@ -220,9 +225,9 @@ class MetadataItem(Item):
         (added_new_images, added_orig_images) = state.get_metadata_images(added_sources)
         changed = False
 
-        if state.update_new_metadata:
+        if self.update_new_metadata:
             changed |= self.metadata.add_images(added_new_images)
-        if state.update_orig_metadata:
+        if self.update_orig_metadata:
             changed |= self.orig_metadata.add_images(added_orig_images)
 
         return changed
@@ -249,13 +254,13 @@ class MetadataItem(Item):
         for src_obj in state.sources:
             state.process_images(src_obj, Track)
 
-        if state.update_new_metadata:
+        if self.update_new_metadata:
             updated_images = ImageList(state.new_images.values())
             changed |= updated_images.hash_dict().keys() != self.metadata.images.hash_dict().keys()
             self.metadata.images = updated_images
             self.metadata.has_common_images = state.has_common_new_images
 
-        if state.update_orig_metadata:
+        if self.update_orig_metadata:
             updated_images = ImageList(state.orig_images.values())
             changed |= updated_images.hash_dict().keys() != self.orig_metadata.images.hash_dict().keys()
             self.orig_metadata.images = updated_images
@@ -269,11 +274,11 @@ class FileListItem(MetadataItem):
     def __init__(self, files=None):
         super().__init__()
         self.files = files or []
+        self.update_new_metadata = True
+        self.update_orig_metadata = True
 
     def iterfiles(self, save=False):
         yield from self.files
 
     def get_imagelist_state(self, state):
         state.sources = self.files
-        state.update_new_metadata = True
-        state.update_orig_metadata = True
