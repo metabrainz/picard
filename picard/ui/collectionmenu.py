@@ -42,19 +42,19 @@ from picard.util import strxfrm
 
 class CollectionMenu(QtWidgets.QMenu):
 
-    def __init__(self, albums, *args):
-        super().__init__(*args)
+    def __init__(self, albums, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.releases = set(a.id for a in albums)
         self._ignore_update = False
-        self.update_collections()
+        self._ignore_hover = False
+        self._update_collections()
 
-    def update_collections(self):
+    def _update_collections(self):
         self._ignore_update = True
         self.clear()
         self.actions = []
-        for id_, collection in sorted(user_collections.items(),
-                                      key=lambda k_v:
-                                      (strxfrm(str(k_v[1])), k_v[0])):
+        for collection in sorted(user_collections.values(),
+                                 key=lambda c: (strxfrm(c.name), c.id)):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
@@ -62,19 +62,19 @@ class CollectionMenu(QtWidgets.QMenu):
         self._ignore_update = False
         self.addSeparator()
         self.refresh_action = self.addAction(_("Refresh List"))
-        self.hovered.connect(self.update_highlight)
+        self.hovered.connect(self._on_hovered)
 
-    def refresh_list(self):
+    def _refresh_list(self):
         self.refresh_action.setEnabled(False)
-        load_user_collections(self.update_collections)
+        load_user_collections(self._update_collections)
 
     def mouseReleaseEvent(self, event):
         # Not using self.refresh_action.triggered because it closes the menu
         if self.actionAt(event.pos()) == self.refresh_action and self.refresh_action.isEnabled():
-            self.refresh_list()
+            self._refresh_list()
 
-    def update_highlight(self, action):
-        if self._ignore_update:
+    def _on_hovered(self, action):
+        if self._ignore_hover:
             return
         for a in self.actions:
             a.defaultWidget().set_active(a == action)
@@ -94,8 +94,8 @@ class CollectionMenu(QtWidgets.QMenu):
 
 class CollectionMenuItem(QtWidgets.QWidget):
 
-    def __init__(self, menu, collection):
-        super().__init__()
+    def __init__(self, menu, collection, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.menu = menu
         self.active = False
         self._setup_layout(menu, collection)
@@ -109,7 +109,7 @@ class CollectionMenuItem(QtWidgets.QWidget):
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutRightMargin),
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin))
-        self.checkbox = CollectionCheckBox(self, menu, collection)
+        self.checkbox = CollectionCheckBox(menu, collection, parent=self)
         layout.addWidget(self.checkbox)
 
     def _setup_colors(self):
@@ -144,10 +144,10 @@ class CollectionMenuItem(QtWidgets.QWidget):
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
 
-    def __init__(self, parent, menu, collection):
+    def __init__(self, menu, collection, *args, **kwargs):
         self.menu = menu
         self.collection = collection
-        super().__init__(self.label(), parent)
+        super().__init__(self._label(), *args, **kwargs)
 
         releases = collection.releases & menu.releases
         if len(releases) == len(menu.releases):
@@ -163,16 +163,16 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
             return
         diff = releases - self.collection.releases
         if diff:
-            self.collection.add_releases(diff, self.updateText)
+            self.collection.add_releases(diff, self._update_text)
             self.setCheckState(QtCore.Qt.CheckState.Checked)
         else:
-            self.collection.remove_releases(releases & self.collection.releases, self.updateText)
+            self.collection.remove_releases(releases & self.collection.releases, self._update_text)
             self.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
-    def updateText(self):
-        self.setText(self.label())
+    def _update_text(self):
+        self.setText(self._label())
 
-    def label(self):
+    def _label(self):
         c = self.collection
         return ngettext("%(name)s (%(count)i release)", "%(name)s (%(count)i releases)", c.size) % {
             'name': c.name,
