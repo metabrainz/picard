@@ -20,8 +20,6 @@
 
 
 from ctypes import windll
-import os
-import os.path
 import sys
 
 
@@ -32,10 +30,3 @@ import sys
 if windll.kernel32.AttachConsole(-1):
     sys.stdout = open('CON', 'w')
     sys.stderr = open('CON', 'w')
-
-# Ensure bundled DLLs are loaded
-os.environ['PATH'] = os.pathsep.join((
-    os.path.normpath(sys._MEIPASS),
-    os.path.normpath(os.path.join(sys._MEIPASS, 'PyQt6\\Qt6\\bin')),
-    os.environ['PATH'],
-))
