@@ -85,7 +85,7 @@ class FileList(QtCore.QObject, FileListItem):
         if self.files and self.can_show_coverart:
             for file in self.files:
                 file.metadata_images_changed.connect(self.update_metadata_images)
-            self.metadataitem_update_metadata_images()
+            self.update_metadata_images_from_children()
 
     def iterfiles(self, save=False):
         yield from self.files

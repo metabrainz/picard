@@ -847,7 +847,7 @@ class Album(DataObject, MetadataItem):
         if not self.update_metadata_images_enabled:
             return
 
-        if self.metadataitem_update_metadata_images():
+        if self.update_metadata_images_from_children():
             self.update(update_tracks=False)
             self.metadata_images_changed.emit()
 

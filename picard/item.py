@@ -173,7 +173,7 @@ class MetadataItem(Item):
 
     def update_metadata_images(self):
         if self.update_metadata_images_enabled and self.can_show_coverart:
-            if self.metadataitem_update_metadata_images():
+            if self.update_metadata_images_from_children():
                 self.metadata_images_changed.emit()
 
     def keep_original_images(self):
@@ -231,7 +231,7 @@ class MetadataItem(Item):
 
         return changed
 
-    def metadataitem_update_metadata_images(self):
+    def update_metadata_images_from_children(self):
         """Update the metadata images of the current object based on its children.
 
         Based on the type of the current object, this will update `self.metadata.images` to
