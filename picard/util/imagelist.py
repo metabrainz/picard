@@ -125,29 +125,28 @@ class ImageListState:
                 orig_images = orig_images.union(s.orig_metadata.images)
         return (new_images, orig_images)
 
+    def process_images(self, src_obj, Track):
+        # Check new images
+        if self.update_new_metadata:
+            src_dict = src_obj.metadata.images.hash_dict()
+            prev_len = len(self.new_images)
+            self.new_images.update(src_dict)
+            if len(self.new_images) != prev_len:
+                if not self.first_new_obj:
+                    self.has_common_new_images = False
+            if self.first_new_obj:
+                self.first_new_obj = False
 
-def _process_images(state, src_obj, Track):
-    # Check new images
-    if state.update_new_metadata:
-        src_dict = src_obj.metadata.images.hash_dict()
-        prev_len = len(state.new_images)
-        state.new_images.update(src_dict)
-        if len(state.new_images) != prev_len:
-            if not state.first_new_obj:
-                state.has_common_new_images = False
-        if state.first_new_obj:
-            state.first_new_obj = False
-
-    if state.update_orig_metadata and not isinstance(src_obj, Track):
-        # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
-        src_dict = src_obj.orig_metadata.images.hash_dict()
-        prev_len = len(state.orig_images)
-        state.orig_images.update(src_dict)
-        if len(state.orig_images) != prev_len:
-            if not state.first_orig_obj:
-                state.has_common_orig_images = False
-        if state.first_orig_obj:
-            state.first_orig_obj = False
+        if self.update_orig_metadata and not isinstance(src_obj, Track):
+            # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
+            src_dict = src_obj.orig_metadata.images.hash_dict()
+            prev_len = len(self.orig_images)
+            self.orig_images.update(src_dict)
+            if len(self.orig_images) != prev_len:
+                if not self.first_orig_obj:
+                    self.has_common_orig_images = False
+            if self.first_orig_obj:
+                self.first_orig_obj = False
 
 
 def _add_images(metadata, added_images):

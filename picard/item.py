@@ -244,14 +244,11 @@ class MetadataItem(Item):
 
     def _update_imagelist_state(self, state):
         from picard.track import Track
-        from picard.util.imagelist import (
-            ImageList,
-            _process_images,
-        )
+        from picard.util.imagelist import ImageList
 
         changed = False
         for src_obj in state.sources:
-            _process_images(state, src_obj, Track)
+            state.process_images(src_obj, Track)
 
         if state.update_new_metadata:
             updated_images = ImageList(state.new_images.values())
