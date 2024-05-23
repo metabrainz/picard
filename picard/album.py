@@ -146,8 +146,7 @@ class Album(DataObject, MetadataItem):
         self.unmatched_files.metadata_images_changed.connect(self.update_metadata_images)
         self.status = AlbumStatus.NONE
         self._album_artists = []
-        self.update_new_metadata = True
-        self.update_orig_metadata = True
+        self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])

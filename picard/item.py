@@ -165,8 +165,7 @@ class MetadataItem(Item):
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.update_metadata_images_enabled = True
-        self.update_new_metadata = False
-        self.update_orig_metadata = False
+        self.update_children_metadata_attrs = {}
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
@@ -183,6 +182,14 @@ class MetadataItem(Item):
                 file.keep_original_images()
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
+
+    @property
+    def update_new_metadata(self):
+        return 'metadata' in self.update_children_metadata_attrs
+
+    @property
+    def update_orig_metadata(self):
+        return 'orig_metadata' in self.update_children_metadata_attrs
 
     def children_metadata_items(self):
         """Yield MetadataItems that are children of the current object"""
@@ -273,8 +280,7 @@ class FileListItem(MetadataItem):
     def __init__(self, files=None):
         super().__init__()
         self.files = files or []
-        self.update_new_metadata = True
-        self.update_orig_metadata = True
+        self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}
 
     def iterfiles(self, save=False):
         yield from self.files
