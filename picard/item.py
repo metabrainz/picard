@@ -264,9 +264,9 @@ class MetadataItem(Item):
 
         changed = False
         for src_obj in sources:
-            state.process_images_new(src_obj)
+            state.process_images_new(src_obj.metadata)
             if not isinstance(src_obj, Track):
-                state.process_images_orig(src_obj)
+                state.process_images_orig(src_obj.orig_metadata)
 
         if self.update_new_metadata:
             updated_images = ImageList(state.new_images.values())

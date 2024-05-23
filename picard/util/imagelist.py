@@ -121,10 +121,10 @@ class ImageListState:
         self.update_new_metadata = update_new_metadata
         self.update_orig_metadata = update_orig_metadata
 
-    def process_images_new(self, src_obj):
+    def process_images_new(self, src_obj_metadata):
         # Check new images
         if self.update_new_metadata:
-            src_dict = src_obj.metadata.images.hash_dict()
+            src_dict = src_obj_metadata.images.hash_dict()
             prev_len = len(self.new_images)
             self.new_images.update(src_dict)
             if len(self.new_images) != prev_len:
@@ -133,10 +133,10 @@ class ImageListState:
             if self.first_new_obj:
                 self.first_new_obj = False
 
-    def process_images_orig(self, src_obj):
+    def process_images_orig(self, src_obj_metadata):
         if self.update_orig_metadata:
             # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
-            src_dict = src_obj.orig_metadata.images.hash_dict()
+            src_dict = src_obj_metadata.images.hash_dict()
             prev_len = len(self.orig_images)
             self.orig_images.update(src_dict)
             if len(self.orig_images) != prev_len:
