@@ -50,8 +50,8 @@ class ImageList(MutableSequence):
         self._dirty = True
 
     def insert(self, index, value):
+        self._images.insert(index, value)
         self._dirty = True
-        return self._images.insert(index, value)
 
     def __repr__(self):
         return '%s(%r)' % (self.__class__.__name__, self._images)
