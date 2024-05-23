@@ -211,14 +211,16 @@ class MetadataItem(Item):
         from picard.util.imagelist import get_sources_metadata_images
 
         if self.update_new_metadata:
-            removed_new_images = get_sources_metadata_images(s.metadata for s in removed_sources)
+            removed_images = get_sources_metadata_images(getattr(s, 'metadata') for s in removed_sources)
             sources_metadata = list(self.iter_children_items_metadata('metadata'))
-            self.metadata.remove_images(sources_metadata, removed_new_images)
+            metadata = getattr(self, 'metadata')
+            metadata.remove_images(sources_metadata, removed_images)
 
         if self.update_orig_metadata:
-            removed_orig_images = get_sources_metadata_images(s.orig_metadata for s in removed_sources)
+            removed_images = get_sources_metadata_images(getattr(s, 'orig_metadata') for s in removed_sources)
             sources_metadata = list(self.iter_children_items_metadata('orig_metadata'))
-            self.orig_metadata.remove_images(sources_metadata, removed_orig_images)
+            metadata = getattr(self, 'orig_metadata')
+            metadata.remove_images(sources_metadata, removed_images)
 
     def add_metadata_images(self, added_sources):
         """Add the images in the metadata of `added_sources` to the metadata.
@@ -231,12 +233,14 @@ class MetadataItem(Item):
         changed = False
 
         if self.update_new_metadata:
-            added_new_images = get_sources_metadata_images(s.metadata for s in added_sources)
-            changed |= self.metadata.add_images(added_new_images)
+            added_images = get_sources_metadata_images(getattr(s, 'metadata') for s in added_sources)
+            metadata = getattr(self, 'metadata')
+            changed |= metadata.add_images(added_images)
 
         if self.update_orig_metadata:
-            added_orig_images = get_sources_metadata_images(s.orig_metadata for s in added_sources)
-            changed |= self.orig_metadata.add_images(added_orig_images)
+            added_images = get_sources_metadata_images(getattr(s, 'orig_metadata') for s in added_sources)
+            metadata = getattr(self, 'orig_metadata')
+            changed |= metadata.add_images(added_images)
 
         return changed
 
@@ -274,24 +278,26 @@ class MetadataItem(Item):
         changed = False
 
         if self.update_new_metadata:
-            state_new = ImageListState()
+            state = ImageListState()
             for src_obj_metadata in self.iter_children_items_metadata('metadata'):
-                state_new.process_images(src_obj_metadata)
+                state.process_images(src_obj_metadata)
 
-            updated_images = ImageList(state_new.images.values())
-            changed |= updated_images.hash_dict().keys() != self.metadata.images.hash_dict().keys()
-            self.metadata.images = updated_images
-            self.metadata.has_common_images = state_new.has_common_images
+            updated_images = ImageList(state.images.values())
+            metadata = getattr(self, 'metadata')
+            changed |= updated_images.hash_dict().keys() != metadata.images.hash_dict().keys()
+            metadata.images = updated_images
+            metadata.has_common_images = state.has_common_images
 
         if self.update_orig_metadata:
-            state_orig = ImageListState()
+            state = ImageListState()
             for src_obj_metadata in self.iter_children_items_metadata('orig_metadata'):
-                state_orig.process_images(src_obj_metadata)
+                state.process_images(src_obj_metadata)
 
-            updated_images = ImageList(state_orig.images.values())
-            changed |= updated_images.hash_dict().keys() != self.orig_metadata.images.hash_dict().keys()
-            self.orig_metadata.images = updated_images
-            self.orig_metadata.has_common_images = state_orig.has_common_images
+            updated_images = ImageList(state.images.values())
+            metadata = getattr(self, 'orig_metadata')
+            changed |= updated_images.hash_dict().keys() != metadata.images.hash_dict().keys()
+            metadata.images = updated_images
+            metadata.has_common_images = state.has_common_images
 
         return changed
 
