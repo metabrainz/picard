@@ -604,19 +604,22 @@ class Metadata(MutableMapping):
         Args:
             sources: List of source `Metadata` objects
             removed_images: Set of `CoverArt` to removed
+
+        Returns:
+            True if self.images was modified, False else
         """
         if not self.images or not removed_images:
-            return
+            return False
 
         if not sources:
             self.images = ImageList()
             self.has_common_images = True
-            return
+            return True
 
         current_images = set(self.images)
 
         if self.has_common_images and current_images == removed_images:
-            return
+            return False
 
         common_images = True  # True, if all children share the same images
         previous_images = None
@@ -631,10 +634,12 @@ class Metadata(MutableMapping):
             previous_images = set(source_metadata.images)  # Remember for next iteration
             removed_images = removed_images.difference(source_images)
             if not removed_images and not common_images:
-                return  # No images left to remove, abort immediately
+                return False  # No images left to remove, abort immediately
 
-        self.images = ImageList(current_images.difference(removed_images))
+        new_images = current_images.difference(removed_images)
+        self.images = ImageList(new_images)
         self.has_common_images = common_images
+        return True
 
 
 class MultiMetadataProxy:

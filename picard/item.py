@@ -206,11 +206,15 @@ class MetadataItem(Item):
         Args:
             removed_sources: List of child objects (`Track` or `File`) which's metadata images should be removed from
         """
+        changed = False
+
         for metadata_attr in self.update_children_metadata_attrs:
             removed_images = self.get_sources_metadata_images(getattr(s, metadata_attr) for s in removed_sources)
             sources_metadata = list(self.iter_children_items_metadata(metadata_attr))
             metadata = getattr(self, metadata_attr)
-            metadata.remove_images(sources_metadata, removed_images)
+            changed |= metadata.remove_images(sources_metadata, removed_images)
+
+        return changed
 
     def add_metadata_images(self, added_sources):
         """Add the images in the metadata of `added_sources` to the metadata.
