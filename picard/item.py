@@ -210,16 +210,10 @@ class MetadataItem(Item):
         """
         from picard.util.imagelist import get_sources_metadata_images
 
-        if self.update_new_metadata:
-            removed_images = get_sources_metadata_images(getattr(s, 'metadata') for s in removed_sources)
-            sources_metadata = list(self.iter_children_items_metadata('metadata'))
-            metadata = getattr(self, 'metadata')
-            metadata.remove_images(sources_metadata, removed_images)
-
-        if self.update_orig_metadata:
-            removed_images = get_sources_metadata_images(getattr(s, 'orig_metadata') for s in removed_sources)
-            sources_metadata = list(self.iter_children_items_metadata('orig_metadata'))
-            metadata = getattr(self, 'orig_metadata')
+        for metadata_attr in self.update_children_metadata_attrs:
+            removed_images = get_sources_metadata_images(getattr(s, metadata_attr) for s in removed_sources)
+            sources_metadata = list(self.iter_children_items_metadata(metadata_attr))
+            metadata = getattr(self, metadata_attr)
             metadata.remove_images(sources_metadata, removed_images)
 
     def add_metadata_images(self, added_sources):
@@ -232,14 +226,9 @@ class MetadataItem(Item):
 
         changed = False
 
-        if self.update_new_metadata:
-            added_images = get_sources_metadata_images(getattr(s, 'metadata') for s in added_sources)
-            metadata = getattr(self, 'metadata')
-            changed |= metadata.add_images(added_images)
-
-        if self.update_orig_metadata:
-            added_images = get_sources_metadata_images(getattr(s, 'orig_metadata') for s in added_sources)
-            metadata = getattr(self, 'orig_metadata')
+        for metadata_attr in self.update_children_metadata_attrs:
+            added_images = get_sources_metadata_images(getattr(s, metadata_attr) for s in added_sources)
+            metadata = getattr(self, metadata_attr)
             changed |= metadata.add_images(added_images)
 
         return changed
@@ -277,24 +266,13 @@ class MetadataItem(Item):
 
         changed = False
 
-        if self.update_new_metadata:
+        for metadata_attr in self.update_children_metadata_attrs:
             state = ImageListState()
-            for src_obj_metadata in self.iter_children_items_metadata('metadata'):
+            for src_obj_metadata in self.iter_children_items_metadata(metadata_attr):
                 state.process_images(src_obj_metadata)
 
             updated_images = ImageList(state.images.values())
-            metadata = getattr(self, 'metadata')
-            changed |= updated_images.hash_dict().keys() != metadata.images.hash_dict().keys()
-            metadata.images = updated_images
-            metadata.has_common_images = state.has_common_images
-
-        if self.update_orig_metadata:
-            state = ImageListState()
-            for src_obj_metadata in self.iter_children_items_metadata('orig_metadata'):
-                state.process_images(src_obj_metadata)
-
-            updated_images = ImageList(state.images.values())
-            metadata = getattr(self, 'orig_metadata')
+            metadata = getattr(self, metadata_attr)
             changed |= updated_images.hash_dict().keys() != metadata.images.hash_dict().keys()
             metadata.images = updated_images
             metadata.has_common_images = state.has_common_images
