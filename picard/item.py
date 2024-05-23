@@ -194,6 +194,14 @@ class MetadataItem(Item):
     def children_metadata_items(self):
         """Yield MetadataItems that are children of the current object"""
 
+    def iter_children_items_metadata(self, metadata_attr):
+        from picard.track import Track
+
+        for s in self.children_metadata_items():
+            if metadata_attr == 'orig_metadata' and isinstance(s, Track):
+                continue
+            yield getattr(s, metadata_attr)
+
     def remove_metadata_images(self, removed_sources):
         """Remove the images in the metadata of `removed_sources` from the metadata.
 
@@ -202,16 +210,14 @@ class MetadataItem(Item):
         """
         from picard.util.imagelist import get_sources_metadata_images
 
-        sources = list(self.children_metadata_items())
         if self.update_new_metadata:
             removed_new_images = get_sources_metadata_images(s.metadata for s in removed_sources)
-            sources_metadata = [s.metadata for s in sources]
+            sources_metadata = list(self.iter_children_items_metadata('metadata'))
             self.metadata.remove_images(sources_metadata, removed_new_images)
 
         if self.update_orig_metadata:
             removed_orig_images = get_sources_metadata_images(s.orig_metadata for s in removed_sources)
-            from picard.track import Track
-            sources_metadata = [s.orig_metadata for s in sources if not isinstance(s, Track)]
+            sources_metadata = list(self.iter_children_items_metadata('orig_metadata'))
             self.orig_metadata.remove_images(sources_metadata, removed_orig_images)
 
     def add_metadata_images(self, added_sources):
@@ -247,7 +253,6 @@ class MetadataItem(Item):
         Returns:
             bool: True, if images where changed, False otherwise
         """
-        from picard.track import Track
         from picard.util.imagelist import ImageList
 
         class ImageListState:
@@ -266,14 +271,12 @@ class MetadataItem(Item):
                 if self.first_obj:
                     self.first_obj = False
 
-        sources = list(self.children_metadata_items())
-
         changed = False
 
         if self.update_new_metadata:
             state_new = ImageListState()
-            for src_obj in sources:
-                state_new.process_images(src_obj.metadata)
+            for src_obj_metadata in self.iter_children_items_metadata('metadata'):
+                state_new.process_images(src_obj_metadata)
 
             updated_images = ImageList(state_new.images.values())
             changed |= updated_images.hash_dict().keys() != self.metadata.images.hash_dict().keys()
@@ -282,9 +285,8 @@ class MetadataItem(Item):
 
         if self.update_orig_metadata:
             state_orig = ImageListState()
-            for src_obj in sources:
-                if not isinstance(src_obj, Track):
-                    state_orig.process_images(src_obj.orig_metadata)
+            for src_obj_metadata in self.iter_children_items_metadata('orig_metadata'):
+                state_orig.process_images(src_obj_metadata)
 
             updated_images = ImageList(state_orig.images.values())
             changed |= updated_images.hash_dict().keys() != self.orig_metadata.images.hash_dict().keys()
