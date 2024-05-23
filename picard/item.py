@@ -200,7 +200,7 @@ class MetadataItem(Item):
             images = images.union(s.images)
         return images
 
-    def remove_metadata_images(self, removed_sources):
+    def remove_metadata_images_from_children(self, removed_sources):
         """Remove the images in the metadata of `removed_sources` from the metadata.
 
         Args:
@@ -239,7 +239,7 @@ class MetadataItem(Item):
 
         This method will iterate over all children and completely rebuild
         `self.metadata.images`. Whenever possible the more specific functions
-        `add_metadata_images_from_children` or `remove_metadata_images` should be used.
+        `add_metadata_images_from_children` or `remove_metadata_images_from_children` should be used.
 
         Returns:
             bool: True, if images where changed, False otherwise

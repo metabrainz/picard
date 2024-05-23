@@ -649,7 +649,7 @@ class Album(DataObject, MetadataItem):
         self._files_count -= 1
         if new_album:
             self.update(update_tracks=False)
-            self.remove_metadata_images([file])
+            self.remove_metadata_images_from_children([file])
 
     @staticmethod
     def _match_files(files, tracks, unmatched_files, threshold=0):
