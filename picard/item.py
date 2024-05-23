@@ -271,7 +271,7 @@ class MetadataItem(Item):
 
             updated_images = ImageList(state.images.values())
             metadata = getattr(self, metadata_attr)
-            changed |= updated_images.hash_dict().keys() != metadata.images.hash_dict().keys()
+            changed |= set(updated_images.hash_dict()) != set(metadata.images.hash_dict())
             metadata.images = updated_images
             metadata.has_common_images = state.has_common_images
 
