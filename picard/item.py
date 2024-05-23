@@ -166,6 +166,7 @@ class MetadataItem(Item):
         self.orig_metadata = Metadata()
         self.update_metadata_images_enabled = True
         self.update_children_metadata_attrs = {}
+        self.iter_children_items_metadata_ignore_attrs = {}
 
     def enable_update_metadata_images(self, enabled):
         self.update_metadata_images_enabled = enabled
@@ -187,10 +188,8 @@ class MetadataItem(Item):
         """Yield MetadataItems that are children of the current object"""
 
     def iter_children_items_metadata(self, metadata_attr):
-        from picard.track import Track
-
         for s in self.children_metadata_items():
-            if metadata_attr == 'orig_metadata' and isinstance(s, Track):
+            if metadata_attr in s.iter_children_items_metadata_ignore_attrs:
                 continue
             yield getattr(s, metadata_attr)
 

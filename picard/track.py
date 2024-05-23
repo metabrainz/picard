@@ -134,6 +134,7 @@ class Track(DataObject, FileListItem):
         self.scripted_metadata = Metadata()
         self._track_artists = []
         self._orig_images = None
+        self.iter_children_items_metadata_ignore_attrs = {'orig_metadata'}
 
     @property
     def num_linked_files(self):
