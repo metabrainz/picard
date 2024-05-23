@@ -194,15 +194,6 @@ class MetadataItem(Item):
     def children_metadata_items(self):
         """Yield MetadataItems that are children of the current object"""
 
-    def _get_imagelist_state(self):
-        from picard.util.imagelist import ImageListState
-
-        state = ImageListState(
-            update_new_metadata=self.update_new_metadata,
-            update_orig_metadata=self.update_orig_metadata,
-        )
-        return state
-
     def remove_metadata_images(self, removed_sources):
         """Remove the images in the metadata of `removed_sources` from the metadata.
 
@@ -257,28 +248,35 @@ class MetadataItem(Item):
             bool: True, if images where changed, False otherwise
         """
         from picard.track import Track
-        from picard.util.imagelist import ImageList
+        from picard.util.imagelist import (
+            ImageList,
+            ImageListState,
+        )
 
-        state = self._get_imagelist_state()
         sources = list(self.children_metadata_items())
 
         changed = False
-        for src_obj in sources:
-            state.process_images_new(src_obj.metadata)
-            if not isinstance(src_obj, Track):
-                state.process_images_orig(src_obj.orig_metadata)
 
         if self.update_new_metadata:
-            updated_images = ImageList(state.new_images.values())
+            state_new = ImageListState()
+            for src_obj in sources:
+                state_new.process_images(src_obj.metadata)
+
+            updated_images = ImageList(state_new.images.values())
             changed |= updated_images.hash_dict().keys() != self.metadata.images.hash_dict().keys()
             self.metadata.images = updated_images
-            self.metadata.has_common_images = state.has_common_new_images
+            self.metadata.has_common_images = state_new.has_common_images
 
         if self.update_orig_metadata:
-            updated_images = ImageList(state.orig_images.values())
+            state_orig = ImageListState()
+            for src_obj in sources:
+                if not isinstance(src_obj, Track):
+                    state_orig.process_images(src_obj.orig_metadata)
+
+            updated_images = ImageList(state_orig.images.values())
             changed |= updated_images.hash_dict().keys() != self.orig_metadata.images.hash_dict().keys()
             self.orig_metadata.images = updated_images
-            self.orig_metadata.has_common_images = state.has_common_orig_images
+            self.orig_metadata.has_common_images = state_orig.has_common_images
 
         return changed
 

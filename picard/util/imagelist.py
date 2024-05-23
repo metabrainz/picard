@@ -110,37 +110,17 @@ def get_sources_metadata_images(sources_metadata):
 
 
 class ImageListState:
-    def __init__(self, update_new_metadata=False, update_orig_metadata=False):
-        self.new_images = {}
-        self.orig_images = {}
-        self.has_common_new_images = True
-        self.has_common_orig_images = True
-        self.first_new_obj = True
-        self.first_orig_obj = True
-        # The next variables specify what will be updated
-        self.update_new_metadata = update_new_metadata
-        self.update_orig_metadata = update_orig_metadata
+    def __init__(self):
+        self.images = {}
+        self.has_common_images = True
+        self.first_obj = True
 
-    def process_images_new(self, src_obj_metadata):
-        # Check new images
-        if self.update_new_metadata:
-            src_dict = src_obj_metadata.images.hash_dict()
-            prev_len = len(self.new_images)
-            self.new_images.update(src_dict)
-            if len(self.new_images) != prev_len:
-                if not self.first_new_obj:
-                    self.has_common_new_images = False
-            if self.first_new_obj:
-                self.first_new_obj = False
-
-    def process_images_orig(self, src_obj_metadata):
-        if self.update_orig_metadata:
-            # Check orig images, but not for Tracks (which don't have a useful orig_metadata)
-            src_dict = src_obj_metadata.images.hash_dict()
-            prev_len = len(self.orig_images)
-            self.orig_images.update(src_dict)
-            if len(self.orig_images) != prev_len:
-                if not self.first_orig_obj:
-                    self.has_common_orig_images = False
-            if self.first_orig_obj:
-                self.first_orig_obj = False
+    def process_images(self, src_obj_metadata):
+        src_dict = src_obj_metadata.images.hash_dict()
+        prev_len = len(self.images)
+        self.images.update(src_dict)
+        if len(self.images) != prev_len:
+            if not self.first_obj:
+                self.has_common_images = False
+        if self.first_obj:
+            self.first_obj = False
