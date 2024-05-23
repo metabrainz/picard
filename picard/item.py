@@ -216,7 +216,7 @@ class MetadataItem(Item):
 
         return changed
 
-    def add_metadata_images(self, added_sources):
+    def add_metadata_images_from_children(self, added_sources):
         """Add the images in the metadata of `added_sources` to the metadata.
 
         Args:
@@ -239,7 +239,7 @@ class MetadataItem(Item):
 
         This method will iterate over all children and completely rebuild
         `self.metadata.images`. Whenever possible the more specific functions
-        `add_metadata_images` or `remove_metadata_images` should be used.
+        `add_metadata_images_from_children` or `remove_metadata_images` should be used.
 
         Returns:
             bool: True, if images where changed, False otherwise

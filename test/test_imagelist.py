@@ -233,7 +233,7 @@ class AddMetadataImagesTest(PicardTestCase):
         cluster.files = [self.test_files[0]]
         self.assertTrue(cluster.update_metadata_images_from_children())
         cluster.files += self.test_files[1:]
-        self.assertTrue(cluster.add_metadata_images(self.test_files[1:]))
+        self.assertTrue(cluster.add_metadata_images_from_children(self.test_files[1:]))
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
 
@@ -241,14 +241,14 @@ class AddMetadataImagesTest(PicardTestCase):
         cluster = Cluster('Test')
         cluster.files = self.test_files
         self.assertTrue(cluster.update_metadata_images_from_children())
-        self.assertFalse(cluster.add_metadata_images([self.test_files[1]]))
+        self.assertFalse(cluster.add_metadata_images_from_children([self.test_files[1]]))
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
 
     def test_add_nothing(self):
         cluster = Cluster('Test')
         cluster.files = self.test_files
         self.assertTrue(cluster.update_metadata_images_from_children())
-        self.assertFalse(cluster.add_metadata_images([]))
+        self.assertFalse(cluster.add_metadata_images_from_children([]))
 
 
 class ImageListTest(PicardTestCase):

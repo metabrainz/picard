@@ -152,7 +152,7 @@ class Track(DataObject, FileListItem):
                 self.orig_metadata.images = ImageList()
             self.files.append(file)
         self.update_file_metadata(file)
-        self.add_metadata_images([file])
+        self.add_metadata_images_from_children([file])
         self.album.add_file(self, file, new_album=new_album)
         file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
