@@ -102,6 +102,13 @@ class ImageList(MutableSequence):
         return self._hash_dict
 
 
+def get_sources_metadata_images(sources_metadata):
+    images = set()
+    for s in sources_metadata:
+        images = images.union(s.images)
+    return images
+
+
 class ImageListState:
     def __init__(self, update_new_metadata=False, update_orig_metadata=False):
         self.new_images = {}
@@ -114,12 +121,6 @@ class ImageListState:
         # The next variables specify what will be updated
         self.update_new_metadata = update_new_metadata
         self.update_orig_metadata = update_orig_metadata
-
-    def get_sources_metadata_images(self, sources_metadata):
-        images = set()
-        for s in sources_metadata:
-            images = images.union(s.images)
-        return images
 
     def process_images(self, src_obj, Track):
         # Check new images
