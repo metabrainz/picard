@@ -217,12 +217,12 @@ class MetadataItem(Item):
 
         state = self._get_imagelist_state()
         if self.update_new_metadata:
-            sources = [s.metadata for s in state.sources]
-            self.metadata.remove_images(sources, removed_new_images)
+            sources_metadata = [s.metadata for s in state.sources]
+            self.metadata.remove_images(sources_metadata, removed_new_images)
         if self.update_orig_metadata:
             from picard.track import Track
-            sources = [s.orig_metadata for s in state.sources if not isinstance(s, Track)]
-            self.orig_metadata.remove_images(sources, removed_orig_images)
+            sources_metadata = [s.orig_metadata for s in state.sources if not isinstance(s, Track)]
+            self.orig_metadata.remove_images(sources_metadata, removed_orig_images)
 
     def add_metadata_images(self, added_sources):
         """Add the images in the metadata of `added_sources` to the metadata.
