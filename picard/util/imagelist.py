@@ -32,7 +32,7 @@ class ImageList(MutableSequence):
     def __init__(self, iterable=()):
         self._images = list(iterable)
         self._hash_dict = {}
-        self._changed = True
+        self._dirty = True
 
     def __len__(self):
         return len(self._images)
@@ -42,14 +42,14 @@ class ImageList(MutableSequence):
 
     def __setitem__(self, index, value):
         self._images[index] = value
-        self._changed = True
+        self._dirty = True
 
     def __delitem__(self, index):
         del self._images[index]
-        self._changed = True
+        self._dirty = True
 
     def insert(self, index, value):
-        self._changed = True
+        self._dirty = True
         return self._images.insert(index, value)
 
     def __repr__(self):
@@ -93,12 +93,12 @@ class ImageList(MutableSequence):
 
     def strip_front_images(self):
         self._images = [image for image in self._images if not image.is_front_image()]
-        self._changed = True
+        self._dirty = True
 
     def hash_dict(self):
-        if self._changed:
+        if self._dirty:
             self._hash_dict = {img.datahash.hash(): img for img in self._images}
-            self._changed = False
+            self._dirty = False
         return self._hash_dict
 
 
