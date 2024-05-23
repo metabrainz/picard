@@ -201,8 +201,8 @@ class MetadataItem(Item):
             update_new_metadata=self.update_new_metadata,
             update_orig_metadata=self.update_orig_metadata,
         )
-        state.sources = list(self.children_metadata_items())
-        return state
+        sources = list(self.children_metadata_items())
+        return state, sources
 
     def remove_metadata_images(self, removed_sources):
         """Remove the images in the metadata of `removed_sources` from the metadata.
@@ -215,13 +215,13 @@ class MetadataItem(Item):
         removed_new_images = get_sources_metadata_images(s.metadata for s in removed_sources)
         removed_orig_images = get_sources_metadata_images(s.orig_metadata for s in removed_sources)
 
-        state = self._get_imagelist_state()
+        state, sources = self._get_imagelist_state()
         if self.update_new_metadata:
-            sources_metadata = [s.metadata for s in state.sources]
+            sources_metadata = [s.metadata for s in sources]
             self.metadata.remove_images(sources_metadata, removed_new_images)
         if self.update_orig_metadata:
             from picard.track import Track
-            sources_metadata = [s.orig_metadata for s in state.sources if not isinstance(s, Track)]
+            sources_metadata = [s.orig_metadata for s in sources if not isinstance(s, Track)]
             self.orig_metadata.remove_images(sources_metadata, removed_orig_images)
 
     def add_metadata_images(self, added_sources):
@@ -260,10 +260,10 @@ class MetadataItem(Item):
         from picard.track import Track
         from picard.util.imagelist import ImageList
 
-        state = self._get_imagelist_state()
+        state, sources = self._get_imagelist_state()
 
         changed = False
-        for src_obj in state.sources:
+        for src_obj in sources:
             state.process_images(src_obj, Track)
 
         if self.update_new_metadata:

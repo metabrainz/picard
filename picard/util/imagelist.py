@@ -113,7 +113,6 @@ class ImageListState:
     def __init__(self, update_new_metadata=False, update_orig_metadata=False):
         self.new_images = {}
         self.orig_images = {}
-        self.sources = []
         self.has_common_new_images = True
         self.has_common_orig_images = True
         self.first_new_obj = True
