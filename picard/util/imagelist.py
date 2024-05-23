@@ -41,8 +41,9 @@ class ImageList(MutableSequence):
         return self._images[index]
 
     def __setitem__(self, index, value):
-        self._images[index] = value
-        self._dirty = True
+        if self._images[index] != value:
+            self._images[index] = value
+            self._dirty = True
 
     def __delitem__(self, index):
         del self._images[index]
