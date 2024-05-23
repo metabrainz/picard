@@ -101,10 +101,3 @@ class ImageList(MutableSequence):
             self._hash_dict = {img.datahash.hash(): img for img in self._images}
             self._dirty = False
         return self._hash_dict
-
-
-def get_sources_metadata_images(sources_metadata):
-    images = set()
-    for s in sources_metadata:
-        images = images.union(s.images)
-    return images

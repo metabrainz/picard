@@ -194,16 +194,21 @@ class MetadataItem(Item):
                 continue
             yield getattr(s, metadata_attr)
 
+    @staticmethod
+    def get_sources_metadata_images(sources_metadata):
+        images = set()
+        for s in sources_metadata:
+            images = images.union(s.images)
+        return images
+
     def remove_metadata_images(self, removed_sources):
         """Remove the images in the metadata of `removed_sources` from the metadata.
 
         Args:
             removed_sources: List of child objects (`Track` or `File`) which's metadata images should be removed from
         """
-        from picard.util.imagelist import get_sources_metadata_images
-
         for metadata_attr in self.update_children_metadata_attrs:
-            removed_images = get_sources_metadata_images(getattr(s, metadata_attr) for s in removed_sources)
+            removed_images = self.get_sources_metadata_images(getattr(s, metadata_attr) for s in removed_sources)
             sources_metadata = list(self.iter_children_items_metadata(metadata_attr))
             metadata = getattr(self, metadata_attr)
             metadata.remove_images(sources_metadata, removed_images)
@@ -214,12 +219,10 @@ class MetadataItem(Item):
         Args:
             added_sources: List of child objects (`Track` or `File`) which's metadata images should be added to current object
         """
-        from picard.util.imagelist import get_sources_metadata_images
-
         changed = False
 
         for metadata_attr in self.update_children_metadata_attrs:
-            added_images = get_sources_metadata_images(getattr(s, metadata_attr) for s in added_sources)
+            added_images = self.get_sources_metadata_images(getattr(s, metadata_attr) for s in added_sources)
             metadata = getattr(self, metadata_attr)
             changed |= metadata.add_images(added_images)
 
