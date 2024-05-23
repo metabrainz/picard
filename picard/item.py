@@ -202,14 +202,14 @@ class MetadataItem(Item):
         """
         from picard.util.imagelist import get_sources_metadata_images
 
-        removed_new_images = get_sources_metadata_images(s.metadata for s in removed_sources)
-        removed_orig_images = get_sources_metadata_images(s.orig_metadata for s in removed_sources)
-
         sources = list(self.children_metadata_items())
         if self.update_new_metadata:
+            removed_new_images = get_sources_metadata_images(s.metadata for s in removed_sources)
             sources_metadata = [s.metadata for s in sources]
             self.metadata.remove_images(sources_metadata, removed_new_images)
+
         if self.update_orig_metadata:
+            removed_orig_images = get_sources_metadata_images(s.orig_metadata for s in removed_sources)
             from picard.track import Track
             sources_metadata = [s.orig_metadata for s in sources if not isinstance(s, Track)]
             self.orig_metadata.remove_images(sources_metadata, removed_orig_images)
@@ -222,14 +222,14 @@ class MetadataItem(Item):
         """
         from picard.util.imagelist import get_sources_metadata_images
 
-        added_new_images = get_sources_metadata_images(s.metadata for s in added_sources)
-        added_orig_images = get_sources_metadata_images(s.orig_metadata for s in added_sources)
-
         changed = False
 
         if self.update_new_metadata:
+            added_new_images = get_sources_metadata_images(s.metadata for s in added_sources)
             changed |= self.metadata.add_images(added_new_images)
+
         if self.update_orig_metadata:
+            added_orig_images = get_sources_metadata_images(s.orig_metadata for s in added_sources)
             changed |= self.orig_metadata.add_images(added_orig_images)
 
         return changed
