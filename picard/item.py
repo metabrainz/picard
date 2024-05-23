@@ -211,7 +211,9 @@ class MetadataItem(Item):
             removed_sources: List of child objects (`Track` or `File`) which's metadata images should be removed from
         """
         state = self._get_imagelist_state()
-        (removed_new_images, removed_orig_images) = state.get_metadata_images(removed_sources)
+
+        removed_new_images = state.get_sources_metadata_images(s.metadata for s in removed_sources)
+        removed_orig_images = state.get_sources_metadata_images(s.orig_metadata for s in removed_sources)
 
         if self.update_new_metadata:
             sources = [s.metadata for s in state.sources]
@@ -228,7 +230,10 @@ class MetadataItem(Item):
             added_sources: List of child objects (`Track` or `File`) which's metadata images should be added to current object
         """
         state = self._get_imagelist_state()
-        (added_new_images, added_orig_images) = state.get_metadata_images(added_sources)
+
+        added_new_images = state.get_sources_metadata_images(s.metadata for s in added_sources)
+        added_orig_images = state.get_sources_metadata_images(s.orig_metadata for s in added_sources)
+
         changed = False
 
         if self.update_new_metadata:

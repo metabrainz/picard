@@ -121,12 +121,6 @@ class ImageListState:
             images = images.union(s.images)
         return images
 
-    def get_metadata_images(self, sources):
-        return (
-            self.get_sources_metadata_images(s.metadata for s in sources),
-            self.get_sources_metadata_images(s.orig_metadata for s in sources),
-        )
-
     def process_images(self, src_obj, Track):
         # Check new images
         if self.update_new_metadata:
