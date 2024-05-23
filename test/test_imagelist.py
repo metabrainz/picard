@@ -120,7 +120,6 @@ class UpdateMetadataImagesTest(PicardTestCase):
         self.assertEqual(set(self.test_images), set(album.orig_metadata.images))
         self.assertFalse(album.orig_metadata.has_common_images)
 
-        # album.unmatched_files.files.remove(self.test_files[2])
         album.tracks.remove(track1)
         self.assertTrue(album.update_metadata_images_from_children())
         self.assertEqual(set(self.test_images[1:]), set(album.orig_metadata.images))
@@ -141,7 +140,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_cluster(self):
         cluster = Cluster('Test')
         cluster.files = list(self.test_files)
-        cluster.update_metadata_images_from_children()
+        self.assertTrue(cluster.update_metadata_images_from_children())
         cluster.files.remove(self.test_files[0])
         self.assertTrue(cluster.remove_metadata_images([self.test_files[0]]))
         self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
@@ -150,7 +149,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_cluster_with_common_images(self):
         cluster = Cluster('Test')
         cluster.files = list(self.test_files[1:])
-        cluster.update_metadata_images_from_children()
+        self.assertTrue(cluster.update_metadata_images_from_children())
         cluster.files.remove(self.test_files[1])
         self.assertFalse(cluster.remove_metadata_images([self.test_files[1]]))
         self.assertEqual(set(self.test_images[1:]), set(cluster.metadata.images))
@@ -159,7 +158,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_empty_cluster(self):
         cluster = Cluster('Test')
         cluster.files.append(File('test1.flac'))
-        cluster.update_metadata_images_from_children()
+        self.assertFalse(cluster.update_metadata_images_from_children())
         self.assertFalse(cluster.remove_metadata_images([cluster.files[0]]))
         self.assertEqual(set(), set(cluster.metadata.images))
         self.assertTrue(cluster.metadata.has_common_images)
@@ -167,7 +166,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_track(self):
         track = Track('00000000-0000-0000-0000-000000000000')
         track.files = list(self.test_files)
-        track.update_metadata_images_from_children()
+        self.assertTrue(track.update_metadata_images_from_children())
         track.files.remove(self.test_files[0])
         self.assertTrue(track.remove_metadata_images([self.test_files[0]]))
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
@@ -176,7 +175,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_track_with_common_images(self):
         track = Track('00000000-0000-0000-0000-000000000000')
         track.files = list(self.test_files[1:])
-        track.update_metadata_images_from_children()
+        self.assertTrue(track.update_metadata_images_from_children())
         track.files.remove(self.test_files[1])
         self.assertFalse(track.remove_metadata_images([self.test_files[1]]))
         self.assertEqual(set(self.test_images[1:]), set(track.orig_metadata.images))
@@ -185,7 +184,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_empty_track(self):
         track = Track('00000000-0000-0000-0000-000000000000')
         track.files.append(File('test1.flac'))
-        track.update_metadata_images_from_children()
+        self.assertFalse(track.update_metadata_images_from_children())
         self.assertFalse(track.remove_metadata_images([track.files[0]]))
         self.assertEqual(set(), set(track.orig_metadata.images))
         self.assertTrue(track.orig_metadata.has_common_images)
@@ -193,7 +192,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_album(self):
         album = Album('00000000-0000-0000-0000-000000000000')
         album.unmatched_files.files = list(self.test_files)
-        album.update_metadata_images_from_children()
+        self.assertTrue(album.update_metadata_images_from_children())
         album.unmatched_files.files.remove(self.test_files[0])
         self.assertTrue(album.remove_metadata_images([self.test_files[0]]))
         self.assertEqual(set(self.test_images[1:]), set(album.metadata.images))
@@ -204,7 +203,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_album_with_common_images(self):
         album = Album('00000000-0000-0000-0000-000000000000')
         album.unmatched_files.files = list(self.test_files[1:])
-        album.update_metadata_images_from_children()
+        self.assertTrue(album.update_metadata_images_from_children())
         album.unmatched_files.files.remove(self.test_files[1])
         self.assertFalse(album.remove_metadata_images([self.test_files[1]]))
         self.assertEqual(set(self.test_images[1:]), set(album.metadata.images))
@@ -215,7 +214,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
     def test_remove_from_empty_album(self):
         album = Album('00000000-0000-0000-0000-000000000000')
         album.unmatched_files.files.append(File('test1.flac'))
-        album.update_metadata_images_from_children()
+        self.assertFalse(album.update_metadata_images_from_children())
         self.assertFalse(album.remove_metadata_images([album.unmatched_files.files[0]]))
         self.assertEqual(set(), set(album.metadata.images))
         self.assertEqual(set(), set(album.orig_metadata.images))
@@ -232,27 +231,24 @@ class AddMetadataImagesTest(PicardTestCase):
     def test_add_to_cluster(self):
         cluster = Cluster('Test')
         cluster.files = [self.test_files[0]]
-        cluster.update_metadata_images_from_children()
+        self.assertTrue(cluster.update_metadata_images_from_children())
         cluster.files += self.test_files[1:]
-        added = cluster.add_metadata_images(self.test_files[1:])
-        self.assertTrue(added)
+        self.assertTrue(cluster.add_metadata_images(self.test_files[1:]))
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
         self.assertFalse(cluster.metadata.has_common_images)
 
     def test_add_no_changes(self):
         cluster = Cluster('Test')
         cluster.files = self.test_files
-        cluster.update_metadata_images_from_children()
-        added = cluster.add_metadata_images([self.test_files[1]])
-        self.assertFalse(added)
+        self.assertTrue(cluster.update_metadata_images_from_children())
+        self.assertFalse(cluster.add_metadata_images([self.test_files[1]]))
         self.assertEqual(set(self.test_images), set(cluster.metadata.images))
 
     def test_add_nothing(self):
         cluster = Cluster('Test')
         cluster.files = self.test_files
-        cluster.update_metadata_images_from_children()
-        added = cluster.add_metadata_images([])
-        self.assertFalse(added)
+        self.assertTrue(cluster.update_metadata_images_from_children())
+        self.assertFalse(cluster.add_metadata_images([]))
 
 
 class ImageListTest(PicardTestCase):
