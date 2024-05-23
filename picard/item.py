@@ -183,14 +183,6 @@ class MetadataItem(Item):
         self.enable_update_metadata_images(True)
         self.update_metadata_images()
 
-    @property
-    def update_new_metadata(self):
-        return 'metadata' in self.update_children_metadata_attrs
-
-    @property
-    def update_orig_metadata(self):
-        return 'orig_metadata' in self.update_children_metadata_attrs
-
     def children_metadata_items(self):
         """Yield MetadataItems that are children of the current object"""
 
