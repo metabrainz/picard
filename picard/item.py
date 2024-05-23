@@ -248,10 +248,23 @@ class MetadataItem(Item):
             bool: True, if images where changed, False otherwise
         """
         from picard.track import Track
-        from picard.util.imagelist import (
-            ImageList,
-            ImageListState,
-        )
+        from picard.util.imagelist import ImageList
+
+        class ImageListState:
+            def __init__(self):
+                self.images = {}
+                self.has_common_images = True
+                self.first_obj = True
+
+            def process_images(self, src_obj_metadata):
+                src_dict = src_obj_metadata.images.hash_dict()
+                prev_len = len(self.images)
+                self.images.update(src_dict)
+                if len(self.images) != prev_len:
+                    if not self.first_obj:
+                        self.has_common_images = False
+                if self.first_obj:
+                    self.first_obj = False
 
         sources = list(self.children_metadata_items())
 

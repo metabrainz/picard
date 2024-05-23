@@ -107,20 +107,3 @@ def get_sources_metadata_images(sources_metadata):
     for s in sources_metadata:
         images = images.union(s.images)
     return images
-
-
-class ImageListState:
-    def __init__(self):
-        self.images = {}
-        self.has_common_images = True
-        self.first_obj = True
-
-    def process_images(self, src_obj_metadata):
-        src_dict = src_obj_metadata.images.hash_dict()
-        prev_len = len(self.images)
-        self.images.update(src_dict)
-        if len(self.images) != prev_len:
-            if not self.first_obj:
-                self.has_common_images = False
-        if self.first_obj:
-            self.first_obj = False
