@@ -297,7 +297,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.saveWindowState()
         # Confirm loss of unsaved changes in script editor.
         if self.script_editor_dialog:
-            if not self.script_editor_dialog.unsaved_changes_confirmation():
+            if not self.script_editor_dialog.unsaved_changes_in_profile_confirmation():
                 event.ignore()
                 return
             else:
