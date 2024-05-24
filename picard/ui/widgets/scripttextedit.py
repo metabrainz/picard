@@ -153,11 +153,14 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     def highlightBlock(self, text):
         self.setCurrentBlockState(0)
 
+        already_matched = set()
         for expr, fmt, a, b in self.rules:
-            for match in expr.finditer(text):
-                index = match.start()
-                length = match.end() - match.start()
-                self.setFormat(index + a, length + b, fmt)
+            for m in expr.finditer(text):
+                index = m.start() + a
+                length = m.end() - m.start() + b
+                if (index, length) not in already_matched:
+                    already_matched.add((index, length))
+                    self.setFormat(index, length, fmt)
 
         # Ignore everything if we're already in a noop function
         index = find_regex_index(self.noop_re, text) if self.previousBlockState() <= 0 else 0
