@@ -23,6 +23,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 import re
 import unicodedata
 
@@ -99,6 +100,9 @@ def find_regex_index(regex, text, start=0):
         return -1
 
 
+HighlightRule = namedtuple('HighlightRule', ('regex', 'textcharformat', 'start_offset', 'end_offset'))
+
+
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
@@ -140,30 +144,30 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
         self.rules = list(self.func_rules())
         self.rules.extend([
-            (self.unknown_func_re, self.unknown_func_fmt, 0, -1),
-            (self.var_re, self.var_fmt, 0, 0),
-            (self.unicode_re, self.unicode_fmt, 0, 0),
-            (self.escape_re, self.escape_fmt, 0, 0),
-            (self.special_re, self.special_fmt, 0, 0),
+            HighlightRule(self.unknown_func_re, self.unknown_func_fmt, 0, -1),
+            HighlightRule(self.var_re, self.var_fmt, 0, 0),
+            HighlightRule(self.unicode_re, self.unicode_fmt, 0, 0),
+            HighlightRule(self.escape_re, self.escape_fmt, 0, 0),
+            HighlightRule(self.special_re, self.special_fmt, 0, 0),
         ])
 
     def func_rules(self):
         for func_name in script_function_names():
             if func_name != 'noop':
                 pattern = re.escape("$" + func_name + "(")
-                yield (re.compile(pattern), self.func_fmt, 0, -1)
+                yield HighlightRule(re.compile(pattern), self.func_fmt, 0, -1)
 
     def highlightBlock(self, text):
         self.setCurrentBlockState(0)
 
         already_matched = set()
-        for expr, fmt, a, b in self.rules:
-            for m in expr.finditer(text):
-                index = m.start() + a
-                length = m.end() - m.start() + b
+        for rule in self.rules:
+            for m in rule.regex.finditer(text):
+                index = m.start() + rule.start_offset
+                length = m.end() - m.start() + rule.end_offset
                 if (index, length) not in already_matched:
                     already_matched.add((index, length))
-                    self.setFormat(index, length, fmt)
+                    self.setFormat(index, length, rule.textcharformat)
 
         # Ignore everything if we're already in a noop function
         index = find_regex_index(self.noop_re, text) if self.previousBlockState() <= 0 else 0
