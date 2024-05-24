@@ -23,7 +23,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
 import re
 import unicodedata
 
@@ -100,54 +99,57 @@ def find_regex_index(regex, text, start=0):
         return -1
 
 
-HighlightRule = namedtuple('HighlightRule', ('regex', 'textcharformat', 'start_offset', 'end_offset'))
+class HighlightRule:
+
+    def __init__(self, fmtname, regex, start_offset=0, end_offset=0):
+        self.fmtname = fmtname
+        self.regex = re.compile(regex)
+        self.start_offset = start_offset
+        self.end_offset = end_offset
+
+
+class HighlightFormat(QtGui.QTextCharFormat):
+
+    def __init__(self, fg_color=None, italic=False, bold=False):
+        super().__init__()
+        if fg_color is not None:
+            self.setForeground(fg_color)
+        if italic:
+            self.setFontItalic(True)
+        if bold:
+            self.setFontWeight(QtGui.QFont.Weight.Bold)
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
         super().__init__(document)
-        self.syntax_theme = theme.syntax_theme
+        syntax_theme = theme.syntax_theme
 
-        unknown_func_re = re.compile(r"\$(?!noop)[_a-zA-Z0-9]*\(")
-        unknown_func_fmt = QtGui.QTextCharFormat()
-        unknown_func_fmt.setFontItalic(True)
-        unknown_func_fmt.setForeground(self.syntax_theme.special)
-
-        var_re = re.compile(r"%[_a-zA-Z0-9:]*%")
-        var_fmt = QtGui.QTextCharFormat()
-        var_fmt.setForeground(self.syntax_theme.var)
-
-        unicode_re = re.compile(r"\\u[a-fA-F0-9]{4}")
-        unicode_fmt = QtGui.QTextCharFormat()
-        unicode_fmt.setForeground(self.syntax_theme.escape)
-
-        escape_re = re.compile(r"\\[^u]")
-        escape_fmt = QtGui.QTextCharFormat()
-        escape_fmt.setForeground(self.syntax_theme.escape)
-
-        special_re = re.compile(r"(?<!\\)[(),]")
-        special_fmt = QtGui.QTextCharFormat()
-        special_fmt.setForeground(self.syntax_theme.special)
+        self.textcharformats = {
+            'escape': HighlightFormat(fg_color=syntax_theme.escape),
+            'func': HighlightFormat(fg_color=syntax_theme.func, bold=True),
+            'noop': HighlightFormat(fg_color=syntax_theme.noop, bold=True, italic=True),
+            'special': HighlightFormat(fg_color=syntax_theme.special),
+            'unicode': HighlightFormat(fg_color=syntax_theme.escape, italic=True),
+            'unknown_func': HighlightFormat(fg_color=syntax_theme.special, italic=True),
+            'var': HighlightFormat(fg_color=syntax_theme.var),
+        }
 
         self.rules = list(self.func_rules())
-        self.rules.extend([
-            HighlightRule(unknown_func_re, unknown_func_fmt, 0, -1),
-            HighlightRule(var_re, var_fmt, 0, 0),
-            HighlightRule(unicode_re, unicode_fmt, 0, 0),
-            HighlightRule(escape_re, escape_fmt, 0, 0),
-            HighlightRule(special_re, special_fmt, 0, 0),
-        ])
+        self.rules.extend((
+            HighlightRule('unknown_func', r"\$(?!noop)[_a-zA-Z0-9]*\(", end_offset=-1),
+            HighlightRule('var', r"%[_a-zA-Z0-9:]*%"),
+            HighlightRule('unicode', r"\\u[a-fA-F0-9]{4}"),
+            HighlightRule('escape', r"\\[^u]"),
+            HighlightRule('special', r"(?<!\\)[(),]"),
+        ))
 
     def func_rules(self):
-        func_fmt = QtGui.QTextCharFormat()
-        func_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
-        func_fmt.setForeground(self.syntax_theme.func)
-
         for func_name in script_function_names():
             if func_name != 'noop':
                 pattern = re.escape("$" + func_name + "(")
-                yield HighlightRule(re.compile(pattern), func_fmt, 0, -1)
+                yield HighlightRule('func', pattern, end_offset=-1)
 
     def highlightBlock(self, text):
         self.setCurrentBlockState(0)
@@ -159,13 +161,11 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                 length = m.end() - m.start() + rule.end_offset
                 if (index, length) not in already_matched:
                     already_matched.add((index, length))
-                    self.setFormat(index, length, rule.textcharformat)
+                    fmt = self.textcharformats[rule.fmtname]
+                    self.setFormat(index, length, fmt)
 
         noop_re = re.compile(r"\$noop\(")
-        noop_fmt = QtGui.QTextCharFormat()
-        noop_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
-        noop_fmt.setFontItalic(True)
-        noop_fmt.setForeground(self.syntax_theme.noop)
+        noop_fmt = self.textcharformats['noop']
 
         # Ignore everything if we're already in a noop function
         index = find_regex_index(noop_re, text) if self.previousBlockState() <= 0 else 0
