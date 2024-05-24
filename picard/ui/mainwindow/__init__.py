@@ -164,6 +164,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._is_wayland = self.tagger.is_wayland
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreUpdatesContext(on_exit=self.update_selection)
+        self.suspend_sorting = IgnoreUpdatesContext(
+            on_first_enter=partial(self.set_sorting, sorting=False),
+            on_last_exit=partial(self.set_sorting, sorting=True),
+        )
         self.toolbar = None
         self.player = None
         self.status_indicators = []
