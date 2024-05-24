@@ -52,6 +52,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.album import NatAlbum
 from picard.file import (
     File,
@@ -99,6 +100,7 @@ class MainPanel(QtWidgets.QSplitter):
         self._views = [FileTreeView(window, self), AlbumTreeView(window, self)]
         self._selected_view = self._views[0]
         self._ignore_selection_changes = False
+        self._sort_enabled = None  # None at start, bool once set_sorting is called
 
         def _view_update_selection(view):
             if not self._ignore_selection_changes:
@@ -214,8 +216,11 @@ class MainPanel(QtWidgets.QSplitter):
             self.update_current_view()
 
     def set_sorting(self, sort=True):
-        for view in self._views:
-            view.setSortingEnabled(sort)
+        if sort != self._sort_enabled:
+            self._sort_enabled = sort
+            log.debug("MainPanel sort=%r", sort)
+            for view in self._views:
+                view.setSortingEnabled(sort)
 
     def select_object(self, obj):
         item = obj.item
