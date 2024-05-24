@@ -105,24 +105,31 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.func_fmt = QtGui.QTextCharFormat()
         self.func_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
         self.func_fmt.setForeground(syntax_theme.func)
+
         self.var_re = re.compile(r"%[_a-zA-Z0-9:]*%")
         self.var_fmt = QtGui.QTextCharFormat()
         self.var_fmt.setForeground(syntax_theme.var)
+
         self.unicode_re = re.compile(r"\\u[a-fA-F0-9]{4}")
         self.unicode_fmt = QtGui.QTextCharFormat()
         self.unicode_fmt.setForeground(syntax_theme.escape)
+
         self.escape_re = re.compile(r"\\[^u]")
         self.escape_fmt = QtGui.QTextCharFormat()
         self.escape_fmt.setForeground(syntax_theme.escape)
+
         self.special_re = re.compile(r"[^\\][(),]")
         self.special_fmt = QtGui.QTextCharFormat()
         self.special_fmt.setForeground(syntax_theme.special)
+
         self.bracket_re = re.compile(r"[()]")
+
         self.noop_re = re.compile(r"\$noop\(")
         self.noop_fmt = QtGui.QTextCharFormat()
         self.noop_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
         self.noop_fmt.setFontItalic(True)
         self.noop_fmt.setForeground(syntax_theme.noop)
+
         self.rules = [
             (self.func_re, self.func_fmt, 0, -1),
             (self.var_re, self.var_fmt, 0, 0),
