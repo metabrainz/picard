@@ -92,8 +92,11 @@ EXTRA_VARIABLES = (
 
 
 def find_regex_index(regex, text, start=0):
-    match = regex.search(text[start:])
-    return start + match.start() if match else -1
+    m = regex.search(text[start:])
+    if m:
+        return start + m.start()
+    else:
+        return -1
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
