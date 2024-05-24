@@ -939,6 +939,22 @@ class IgnoreUpdatesContextTest(PicardTestCase):
             self.assertEqual(len(on_exit.mock_calls), 1)
         self.assertEqual(len(on_exit.mock_calls), 2)
 
+    def test_run_on_last_exit(self):
+        on_last_exit = Mock()
+        context = IgnoreUpdatesContext(on_last_exit=on_last_exit)
+        with context:
+            on_last_exit.assert_not_called()
+        on_last_exit.assert_called_once_with()
+
+    def test_run_on_last_exit_nested(self):
+        on_last_exit = Mock()
+        context = IgnoreUpdatesContext(on_last_exit=on_last_exit)
+        with context:
+            with context:
+                on_last_exit.assert_not_called()
+            on_last_exit.assert_not_called()
+        on_last_exit.assert_called_once_with()
+
     def test_run_on_enter(self):
         on_enter = Mock()
         context = IgnoreUpdatesContext(on_enter=on_enter)
