@@ -930,6 +930,13 @@ class IgnoreUpdatesContextTest(PicardTestCase):
             on_exit.assert_not_called()
         on_exit.assert_called_once_with()
 
+    def test_run_on_enter(self):
+        on_enter = Mock()
+        context = IgnoreUpdatesContext(on_enter=on_enter)
+        with context:
+            on_enter.assert_called()
+        on_enter.assert_called_once_with()
+
     def test_nested_with(self):
         context = IgnoreUpdatesContext()
         with context:
