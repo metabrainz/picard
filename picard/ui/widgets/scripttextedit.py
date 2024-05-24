@@ -107,55 +107,47 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
         super().__init__(document)
-        syntax_theme = theme.syntax_theme
+        self.syntax_theme = theme.syntax_theme
 
-        self.unknown_func_re = re.compile(r"\$(?!noop)[_a-zA-Z0-9]*\(")
-        self.unknown_func_fmt = QtGui.QTextCharFormat()
-        self.unknown_func_fmt.setFontItalic(True)
-        self.unknown_func_fmt.setForeground(syntax_theme.special)
+        unknown_func_re = re.compile(r"\$(?!noop)[_a-zA-Z0-9]*\(")
+        unknown_func_fmt = QtGui.QTextCharFormat()
+        unknown_func_fmt.setFontItalic(True)
+        unknown_func_fmt.setForeground(self.syntax_theme.special)
 
-        self.func_fmt = QtGui.QTextCharFormat()
-        self.func_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
-        self.func_fmt.setForeground(syntax_theme.func)
+        var_re = re.compile(r"%[_a-zA-Z0-9:]*%")
+        var_fmt = QtGui.QTextCharFormat()
+        var_fmt.setForeground(self.syntax_theme.var)
 
-        self.var_re = re.compile(r"%[_a-zA-Z0-9:]*%")
-        self.var_fmt = QtGui.QTextCharFormat()
-        self.var_fmt.setForeground(syntax_theme.var)
+        unicode_re = re.compile(r"\\u[a-fA-F0-9]{4}")
+        unicode_fmt = QtGui.QTextCharFormat()
+        unicode_fmt.setForeground(self.syntax_theme.escape)
 
-        self.unicode_re = re.compile(r"\\u[a-fA-F0-9]{4}")
-        self.unicode_fmt = QtGui.QTextCharFormat()
-        self.unicode_fmt.setForeground(syntax_theme.escape)
+        escape_re = re.compile(r"\\[^u]")
+        escape_fmt = QtGui.QTextCharFormat()
+        escape_fmt.setForeground(self.syntax_theme.escape)
 
-        self.escape_re = re.compile(r"\\[^u]")
-        self.escape_fmt = QtGui.QTextCharFormat()
-        self.escape_fmt.setForeground(syntax_theme.escape)
-
-        self.special_re = re.compile(r"(?<!\\)[(),]")
-        self.special_fmt = QtGui.QTextCharFormat()
-        self.special_fmt.setForeground(syntax_theme.special)
-
-        self.bracket_re = re.compile(r"[()]")
-
-        self.noop_re = re.compile(r"\$noop\(")
-        self.noop_fmt = QtGui.QTextCharFormat()
-        self.noop_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
-        self.noop_fmt.setFontItalic(True)
-        self.noop_fmt.setForeground(syntax_theme.noop)
+        special_re = re.compile(r"(?<!\\)[(),]")
+        special_fmt = QtGui.QTextCharFormat()
+        special_fmt.setForeground(self.syntax_theme.special)
 
         self.rules = list(self.func_rules())
         self.rules.extend([
-            HighlightRule(self.unknown_func_re, self.unknown_func_fmt, 0, -1),
-            HighlightRule(self.var_re, self.var_fmt, 0, 0),
-            HighlightRule(self.unicode_re, self.unicode_fmt, 0, 0),
-            HighlightRule(self.escape_re, self.escape_fmt, 0, 0),
-            HighlightRule(self.special_re, self.special_fmt, 0, 0),
+            HighlightRule(unknown_func_re, unknown_func_fmt, 0, -1),
+            HighlightRule(var_re, var_fmt, 0, 0),
+            HighlightRule(unicode_re, unicode_fmt, 0, 0),
+            HighlightRule(escape_re, escape_fmt, 0, 0),
+            HighlightRule(special_re, special_fmt, 0, 0),
         ])
 
     def func_rules(self):
+        func_fmt = QtGui.QTextCharFormat()
+        func_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
+        func_fmt.setForeground(self.syntax_theme.func)
+
         for func_name in script_function_names():
             if func_name != 'noop':
                 pattern = re.escape("$" + func_name + "(")
-                yield HighlightRule(re.compile(pattern), self.func_fmt, 0, -1)
+                yield HighlightRule(re.compile(pattern), func_fmt, 0, -1)
 
     def highlightBlock(self, text):
         self.setCurrentBlockState(0)
@@ -169,12 +161,19 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                     already_matched.add((index, length))
                     self.setFormat(index, length, rule.textcharformat)
 
+        noop_re = re.compile(r"\$noop\(")
+        noop_fmt = QtGui.QTextCharFormat()
+        noop_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
+        noop_fmt.setFontItalic(True)
+        noop_fmt.setForeground(self.syntax_theme.noop)
+
         # Ignore everything if we're already in a noop function
-        index = find_regex_index(self.noop_re, text) if self.previousBlockState() <= 0 else 0
+        index = find_regex_index(noop_re, text) if self.previousBlockState() <= 0 else 0
         open_brackets = self.previousBlockState() if self.previousBlockState() > 0 else 0
         text_length = len(text)
+        bracket_re = re.compile(r"[()]")
         while index >= 0:
-            next_index = find_regex_index(self.bracket_re, text, index)
+            next_index = find_regex_index(bracket_re, text, index)
 
             # Skip escaped brackets
             if next_index > 0 and text[next_index - 1] == '\\':
@@ -182,7 +181,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
             # Reached end of text?
             if next_index >= text_length:
-                self.setFormat(index, text_length - index, self.noop_fmt)
+                self.setFormat(index, text_length - index, noop_fmt)
                 break
 
             if next_index > -1 and text[next_index] == '(':
@@ -191,13 +190,13 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
                 open_brackets -= 1
 
             if next_index > -1:
-                self.setFormat(index, next_index - index + 1, self.noop_fmt)
+                self.setFormat(index, next_index - index + 1, noop_fmt)
             elif next_index == -1 and open_brackets > 0:
-                self.setFormat(index, text_length - index, self.noop_fmt)
+                self.setFormat(index, text_length - index, noop_fmt)
 
             # Check for next noop operation, necessary for multiple noops in one line
             if open_brackets == 0:
-                next_index = find_regex_index(self.noop_re, text, next_index)
+                next_index = find_regex_index(noop_re, text, next_index)
 
             index = next_index + 1 if next_index > -1 and next_index < text_length else -1
 
