@@ -101,7 +101,12 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, document):
         super().__init__(document)
         syntax_theme = theme.syntax_theme
-        self.func_re = re.compile(r"\$(?!noop)[_a-zA-Z0-9]*\(")
+
+        self.unknown_func_re = re.compile(r"\$(?!noop)[_a-zA-Z0-9]*\(")
+        self.unknown_func_fmt = QtGui.QTextCharFormat()
+        self.unknown_func_fmt.setFontItalic(True)
+        self.unknown_func_fmt.setForeground(syntax_theme.special)
+
         self.func_fmt = QtGui.QTextCharFormat()
         self.func_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
         self.func_fmt.setForeground(syntax_theme.func)
@@ -130,13 +135,20 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.noop_fmt.setFontItalic(True)
         self.noop_fmt.setForeground(syntax_theme.noop)
 
-        self.rules = [
-            (self.func_re, self.func_fmt, 0, -1),
+        self.rules = list(self.func_rules())
+        self.rules.extend([
+            (self.unknown_func_re, self.unknown_func_fmt, 0, -1),
             (self.var_re, self.var_fmt, 0, 0),
             (self.unicode_re, self.unicode_fmt, 0, 0),
             (self.escape_re, self.escape_fmt, 0, 0),
             (self.special_re, self.special_fmt, 0, 0),
-        ]
+        ])
+
+    def func_rules(self):
+        for func_name in script_function_names():
+            if func_name != 'noop':
+                pattern = re.escape("$" + func_name + "(")
+                yield (re.compile(pattern), self.func_fmt, 0, -1)
 
     def highlightBlock(self, text):
         self.setCurrentBlockState(0)
