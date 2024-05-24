@@ -118,7 +118,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         self.escape_fmt = QtGui.QTextCharFormat()
         self.escape_fmt.setForeground(syntax_theme.escape)
 
-        self.special_re = re.compile(r"[^\\][(),]")
+        self.special_re = re.compile(r"(?<!\\)[(),]")
         self.special_fmt = QtGui.QTextCharFormat()
         self.special_fmt.setForeground(syntax_theme.special)
 
@@ -135,7 +135,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             (self.var_re, self.var_fmt, 0, 0),
             (self.unicode_re, self.unicode_fmt, 0, 0),
             (self.escape_re, self.escape_fmt, 0, 0),
-            (self.special_re, self.special_fmt, 1, -1),
+            (self.special_re, self.special_fmt, 0, 0),
         ]
 
     def highlightBlock(self, text):
