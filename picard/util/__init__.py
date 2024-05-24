@@ -561,17 +561,17 @@ class IgnoreUpdatesContext:
     updates if it is `False`.
     """
 
-    def __init__(self, onexit=None):
+    def __init__(self, on_exit=None):
         self._entered = 0
-        self._onexit = onexit
+        self._on_exit = on_exit
 
     def __enter__(self):
         self._entered += 1
 
     def __exit__(self, type, value, tb):
         self._entered -= 1
-        if self._onexit:
-            self._onexit()
+        if self._on_exit:
+            self._on_exit()
 
     def __bool__(self):
         return self._entered > 0
