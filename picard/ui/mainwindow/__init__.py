@@ -140,7 +140,10 @@ from picard.ui.scripteditor import (
 )
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
-from picard.ui.statusindicator import DesktopStatusIndicator
+from picard.ui.statusindicator import (
+    DesktopStatusIndicator,
+    ProgressStatus,
+)
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.util import (
     MultiDirsSelectDialog,
@@ -386,13 +389,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     @throttle(100)
     def _update_statusbar_stats(self):
         """Updates the status bar information."""
-        total_files = len(self.tagger.files)
-        total_albums = len(self.tagger.albums)
-        pending_files = File.num_pending_files
-        pending_requests = self.tagger.webservice.num_pending_web_requests
+        progress_status = ProgressStatus(
+            files=len(self.tagger.files),
+            albums=len(self.tagger.albums),
+            pending_files=File.num_pending_files,
+            pending_requests=self.tagger.webservice.num_pending_web_requests,
+            progress=self._progress(),
+        )
         for indicator in self.status_indicators:
-            indicator.update(files=total_files, albums=total_albums,
-                pending_files=pending_files, pending_requests=pending_requests, progress=self._progress())
+            indicator.update(progress_status)
 
     def _update_statusbar_listen_port(self, listen_port):
         if listen_port:
