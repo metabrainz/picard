@@ -534,9 +534,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
         # Try getting image out of HTML (e.g. for Google image search detail view)
         try:
             html = data.decode()
-            match = re.search(HTML_IMG_SRC_REGEX, html)
-            if match:
-                url = QtCore.QUrl(match.group(1))
+            match_ = re.search(HTML_IMG_SRC_REGEX, html)
+            if match_:
+                url = QtCore.QUrl(match_.group(1))
         except UnicodeDecodeError as e:
             log.warning("Unable to decode dropped data format: %s", e)
         else:

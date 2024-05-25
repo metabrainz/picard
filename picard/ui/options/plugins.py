@@ -634,11 +634,11 @@ class PluginsOptionsPage(OptionsPage):
         re_author = re.compile(r"(?P<author>.*?)\s*<(?P<email>.*?@.*?)>")
         for author in authors.split(','):
             author = author.strip()
-            match = re_author.fullmatch(author)
-            if match:
+            match_ = re_author.fullmatch(author)
+            if match_:
                 author_str = '<a href="mailto:{email}">{author}</a>'.format(
-                    email=escape(match['email']),
-                    author=escape(match['author']),
+                    email=escape(match_['email']),
+                    author=escape(match_['author']),
                 )
                 formatted_authors.append(author_str)
             else:

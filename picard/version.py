@@ -56,9 +56,9 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
 
     @classmethod
     def from_string(cls, version_str):
-        match = cls._version_re.search(version_str)
-        if match:
-            (major, minor, patch, identifier, revision) = match.groups()
+        match_ = cls._version_re.search(version_str)
+        if match_:
+            (major, minor, patch, identifier, revision) = match_.groups()
             major = int(major)
             if minor is None:
                 return Version(major)

@@ -200,9 +200,9 @@ def parse_comment_tag(name):  # noqa: E302
     if len(split) > 1:
         desc = split[1]
 
-    match = RE_COMMENT_LANG.match(desc)
-    if match:
-        lang = match.group(1)
+    match_ = RE_COMMENT_LANG.match(desc)
+    if match_:
+        lang = match_.group(1)
         desc = desc[4:]
         return lang, desc
 

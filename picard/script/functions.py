@@ -252,14 +252,14 @@ def func_rreplace(parser, text, old, new):
 ))
 def func_rsearch(parser, text, pattern):
     try:
-        match = re.search(pattern, text)
+        match_ = re.search(pattern, text)
     except re.error:
         return ''
-    if match:
+    if match_:
         try:
-            return match.group(1)
+            return match_.group(1)
         except IndexError:
-            return match.group(0)
+            return match_.group(0)
     return ''
 
 
@@ -887,9 +887,9 @@ def _delete_prefix(parser, text, *prefixes):
         prefixes = ('A', 'The')
     text = text.strip()
     rx = '(' + r'\s+)|('.join(map(re.escape, prefixes)) + r'\s+)'
-    match = re.match(rx, text)
-    if match:
-        pref = match.group()
+    match_ = re.match(rx, text)
+    if match_:
+        pref = match_.group()
         return text[len(pref):], pref.strip()
     return text, ''
 

@@ -135,11 +135,11 @@ def unescape_string(text):
 
 
 def parse_langstring(line):
-    match = RE_LANGSTRING_LINE.match(line)
-    if match:
+    match_ = RE_LANGSTRING_LINE.match(line)
+    if match_:
         return (
-            match.group('identifier'),
-            unescape_string(match.group('text'))
+            match_.group('identifier'),
+            unescape_string(match_.group('text'))
         )
     else:
         return None

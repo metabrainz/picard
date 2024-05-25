@@ -497,9 +497,9 @@ def parse_amazon_url(url):
     It returns a dict with host and asin keys on success, None else
     """
     r = re.compile(r'^https?://(?:www.)?(?P<host>.*?)(?:\:[0-9]+)?/.*/(?P<asin>[0-9B][0-9A-Z]{9})(?:[^0-9A-Z]|$)')
-    match = r.match(url)
-    if match is not None:
-        return match.groupdict()
+    match_ = r.match(url)
+    if match_ is not None:
+        return match_.groupdict()
     return None
 
 
@@ -611,9 +611,9 @@ def tracknum_from_filename(base_filename):
     """
     filename, _ext = os.path.splitext(base_filename)
     for pattern in _tracknum_regexps:
-        match = pattern.search(filename)
-        if match:
-            n = int(match.group('number'))
+        match_ = pattern.search(filename)
+        if match_:
+            n = int(match_.group('number'))
             # Numbers above 1900 are often years, track numbers should be much
             # smaller even for extensive collections
             if n > 0 and n < 1900:
