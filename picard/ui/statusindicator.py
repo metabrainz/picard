@@ -33,16 +33,26 @@ from picard.const.sys import (
 DesktopStatusIndicator = None
 
 
+class ProgressStatus:
+
+    def __init__(self, files=0, albums=0, pending_files=0, pending_requests=0, progress=0):
+        self.files = files
+        self.albums = albums
+        self.pending_files = pending_files
+        self.pending_requests = pending_requests
+        self.progress = progress
+
+
 class AbstractProgressStatusIndicator:
     def __init__(self):
         self._max_pending = 0
         self._last_pending = 0
 
-    def update(self, files=0, albums=0, pending_files=0, pending_requests=0, progress=0):
+    def update(self, progress_status):
         if not self.is_available:
             return
 
-        total_pending = pending_files + pending_requests
+        total_pending = progress_status.pending_files + progress_status.pending_requests
         if total_pending == self._last_pending:
             return  # No changes, avoid update
 
@@ -55,7 +65,7 @@ class AbstractProgressStatusIndicator:
             self.hide_progress()
             return
 
-        self.set_progress(progress)
+        self.set_progress(progress_status.progress)
 
     @property
     def is_available(self):
