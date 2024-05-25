@@ -66,6 +66,31 @@ from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
 from picard.script.serializer import FileNamingScript
 
 
+class TaggingScriptSetting:
+    def __init__(self, pos=0, name="", enabled=False, content=""):
+        self.pos = pos
+        self.name = name
+        self.enabled = enabled
+        self.content = content
+
+
+def iter_tagging_scripts_from_config(config=None):
+    if config is None:
+        config = get_config()
+    yield from iter_tagging_scripts_from_tuples(config.setting['list_of_scripts'])
+
+
+def iter_tagging_scripts_from_tuples(tuples):
+    for pos, name, enabled, content in tuples:
+        yield TaggingScriptSetting(pos=pos, name=name, enabled=enabled, content=content)
+
+
+def save_tagging_scripts_to_config(scripts, config=None):
+    if config is None:
+        config = get_config()
+    config.setting['list_of_scripts'] = [(s.pos, s.name, s.enabled, s.content) for s in scripts]
+
+
 class ScriptFunctionDocError(Exception):
     pass
 
