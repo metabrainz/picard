@@ -77,11 +77,11 @@ class TagMatchExpression:
         return list(OrderedDict.fromkeys(self._group_map.values()))
 
     def match_file(self, filename):
-        match = self._format_re.search(filename.replace('\\', '/'))
-        if match:
+        match_ = self._format_re.search(filename.replace('\\', '/'))
+        if match_:
             result = {}
             for group, tag in self._group_map.items():
-                value = match.group(group).strip()
+                value = match_.group(group).strip()
                 if tag in self._numeric_tags:
                     value = value.lstrip("0")
                 if self.replace_underscores:

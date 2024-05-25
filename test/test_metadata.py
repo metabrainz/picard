@@ -567,9 +567,9 @@ class CommonTests:
             release = load_test_json('release.json')
             metadata = Metadata()
             release_to_metadata(release, metadata)
-            match = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
-            self.assertEqual(1.0, match.similarity)
-            self.assertEqual(release, match.release)
+            match_ = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
+            self.assertEqual(1.0, match_.similarity)
+            self.assertEqual(release, match_.release)
 
         def test_compare_to_release_with_score(self):
             release = load_test_json('release.json')
@@ -577,8 +577,8 @@ class CommonTests:
             release_to_metadata(release, metadata)
             for score, sim in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
                 release['score'] = score
-                match = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
-                self.assertEqual(sim, match.similarity)
+                match_ = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
+                self.assertEqual(sim, match_.similarity)
 
         def test_compare_to_release_parts_totaltracks(self):
             release = load_test_json('release_multidisc.json')
@@ -667,9 +667,9 @@ class CommonTests:
             track_json = load_test_json('track.json')
             track = Track(track_json['id'])
             track_to_metadata(track_json, track)
-            match = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
-            self.assertEqual(1.0, match.similarity)
-            self.assertEqual(track_json, match.track)
+            match_ = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
+            self.assertEqual(1.0, match_.similarity)
+            self.assertEqual(track_json, match_.track)
 
         def test_compare_to_track_with_score(self):
             track_json = load_test_json('track.json')
@@ -677,20 +677,20 @@ class CommonTests:
             track_to_metadata(track_json, track)
             for score, sim in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
                 track_json['score'] = score
-                match = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
-                self.assertEqual(sim, match.similarity)
+                match_ = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
+                self.assertEqual(sim, match_.similarity)
 
         def test_compare_to_track_is_video(self):
             recording = load_test_json('recording_video_null.json')
             m = Metadata()
-            match = m.compare_to_track(recording, {'isvideo': 1})
-            self.assertEqual(1.0, match.similarity)
+            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            self.assertEqual(1.0, match_.similarity)
             m['~video'] = '1'
-            match = m.compare_to_track(recording, {'isvideo': 1})
-            self.assertEqual(0.0, match.similarity)
+            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            self.assertEqual(0.0, match_.similarity)
             recording['video'] = True
-            match = m.compare_to_track(recording, {'isvideo': 1})
-            self.assertEqual(1.0, match.similarity)
+            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            self.assertEqual(1.0, match_.similarity)
 
         def test_compare_to_track_full(self):
             recording = load_test_json('recording_video_null.json')
@@ -703,10 +703,10 @@ class CommonTests:
                 'albumartist': 'Tim Green',
                 'tracknumber': '4',
             })
-            match = m.compare_to_track(recording, FILE_COMPARISON_WEIGHTS)
-            self.assertGreaterEqual(match.similarity, 0.8)
-            self.assertEqual(recording, match.track)
-            self.assertEqual(recording['releases'][0], match.release)
+            match_ = m.compare_to_track(recording, FILE_COMPARISON_WEIGHTS)
+            self.assertGreaterEqual(match_.similarity, 0.8)
+            self.assertEqual(recording, match_.track)
+            self.assertEqual(recording['releases'][0], match_.release)
 
         def test_compare_to_track_without_releases(self):
             self.set_config_values({
