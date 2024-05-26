@@ -47,8 +47,8 @@ from picard.script import (
     save_tagging_scripts_to_config,
 )
 from picard.script.serializer import (
+    PicardScriptImportExportError,
     PicardTaggingScript,
-    ScriptImportExportError,
 )
 
 from picard.ui import (
@@ -151,12 +151,12 @@ class ScriptingOptionsPage(OptionsPage):
         error_message = _(fmt) % params
         self.display_error(ScriptFileError(_(title), error_message))
 
-    def output_file_error(self, error: ScriptImportExportError):
+    def output_file_error(self, error: PicardScriptImportExportError):
         """Log file error and display error message dialog.
 
         Args:
             fmt (str): Format for the error type being displayed
-            error (ScriptImportExportError): The error as a ScriptImportExportError instance
+            error (PicardScriptImportExportError): The error as a PicardScriptImportExportError instance
         """
         params = {
             'filename': error.filename,
@@ -170,7 +170,7 @@ class ScriptingOptionsPage(OptionsPage):
         """
         try:
             tagging_script = PicardTaggingScript().import_script(self)
-        except ScriptImportExportError as error:
+        except PicardScriptImportExportError as error:
             self.output_file_error(error)
             return
         if tagging_script:
@@ -196,7 +196,7 @@ class ScriptingOptionsPage(OptionsPage):
             tagging_script = PicardTaggingScript(title=title, script=content)
             try:
                 tagging_script.export_script(parent=self)
-            except ScriptImportExportError as error:
+            except PicardScriptImportExportError as error:
                 self.output_file_error(error)
 
     def enable_tagger_scripts_toggled(self, on):

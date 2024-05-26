@@ -57,7 +57,7 @@ class PicardScriptType(IntEnum):
     FILENAMING = 2
 
 
-class ScriptImportExportError(Exception):
+class PicardScriptImportExportError(Exception):
     def __init__(self, *args, format=None, filename=None, error_msg=None):
         self.format = format
         self.filename = filename
@@ -226,7 +226,7 @@ class PicardScript():
             with open(filename, 'w', encoding='utf-8') as o_file:
                 o_file.write(script_text)
         except OSError as error:
-            raise ScriptImportExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
+            raise PicardScriptImportExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Export Script"),
@@ -255,14 +255,14 @@ class PicardScript():
             with open(filename, 'r', encoding='utf-8') as i_file:
                 file_content = i_file.read()
         except OSError as error:
-            raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)
+            raise PicardScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)
         if not file_content.strip():
-            raise ScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty"))
+            raise PicardScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty"))
         if file_type == cls._file_types()['package']:
             try:
                 return cls().create_from_yaml(file_content)
             except PicardScriptFromFileError as error:
-                raise ScriptImportExportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error)
+                raise PicardScriptImportExportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error)
         else:
             return cls(
                 title=_("Imported from %s") % filename,

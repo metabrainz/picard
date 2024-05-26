@@ -61,7 +61,7 @@ from picard.script import (
 )
 from picard.script.serializer import (
     FileNamingScript,
-    ScriptImportExportError,
+    PicardScriptImportExportError,
 )
 from picard.util import (
     get_base_title,
@@ -1234,7 +1234,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """
         try:
             script_item = FileNamingScript().import_script(self)
-        except ScriptImportExportError as error:
+        except PicardScriptImportExportError as error:
             self.output_file_error(error.format, error.filename, error.error_msg)
             return
         if script_item:
@@ -1281,7 +1281,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script_item.title = get_base_title(script_item.title)
         try:
             script_item.export_script(parent=self)
-        except ScriptImportExportError as error:
+        except PicardScriptImportExportError as error:
             self.output_file_error(error.format, error.filename, error.error_msg)
 
     def check_formats(self):
