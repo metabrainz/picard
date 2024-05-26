@@ -204,11 +204,11 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.script_list.add_script()
 
     def script_selected(self):
-        items = self.ui.script_list.selectedItems()
-        if items:
-            item = items[0]
+        list_items = self.ui.script_list.selectedItems()
+        if list_items:
+            list_item = list_items[0]
             self.ui.tagger_script.setEnabled(True)
-            self.ui.tagger_script.setText(item.script.content)
+            self.ui.tagger_script.setText(list_item.script.content)
             self.ui.tagger_script.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
             self.ui.export_button.setEnabled(True)
         else:
@@ -217,21 +217,21 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.export_button.setEnabled(False)
 
     def live_update_and_check(self):
-        items = self.ui.script_list.selectedItems()
-        if not items:
+        list_items = self.ui.script_list.selectedItems()
+        if not list_items:
             return
-        script = items[0]
-        script.script.content = self.ui.tagger_script.toPlainText()
+        list_item = list_items[0]
+        list_item.script.content = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
             self.check()
         except OptionsCheckError as e:
-            script.has_error = True
+            list_item.has_error = True
             self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.script_error.setText(e.info)
             return
-        script.has_error = False
+        list_item.has_error = False
 
     def reset_selected_item(self):
         widget = self.ui.script_list
