@@ -169,13 +169,13 @@ class ScriptingOptionsPage(OptionsPage):
         a Picard script package.
         """
         try:
-            script_item = TaggingScript().import_script(self)
+            tagging_script = TaggingScript().import_script(self)
         except ScriptImportExportError as error:
             self.output_file_error(error)
             return
-        if script_item:
-            title = _("%s (imported)") % script_item['title']
-            script = TaggingScriptSetting(name=title, enabled=False, content=script_item['script'])
+        if tagging_script:
+            title = _("%s (imported)") % tagging_script['title']
+            script = TaggingScriptSetting(name=title, enabled=False, content=tagging_script['script'])
             list_item = ScriptListWidgetItem(script)
             self.ui.script_list.addItem(list_item)
             self.ui.script_list.setCurrentRow(self.ui.script_list.count() - 1)
