@@ -586,6 +586,61 @@ class Metadata(MutableMapping):
     def __str__(self):
         return ("store: %r\ndeleted: %r\nimages: %r\nlength: %r" % (self._store, self.deleted_tags, [str(img) for img in self.images], self.length))
 
+    def add_images(self, added_images):
+        if not added_images:
+            return False
+
+        current_images = set(self.images)
+        if added_images.isdisjoint(current_images):
+            self.images = ImageList(current_images.union(added_images))
+            self.has_common_images = False
+            return True
+
+        return False
+
+    def remove_images(self, sources, removed_images):
+        """Removes `removed_images` from `images`, but only if they are not included in `sources`.
+
+        Args:
+            sources: List of source `Metadata` objects
+            removed_images: Set of `CoverArt` to removed
+
+        Returns:
+            True if self.images was modified, False else
+        """
+        if not self.images or not removed_images:
+            return False
+
+        if not sources:
+            self.images = ImageList()
+            self.has_common_images = True
+            return True
+
+        current_images = set(self.images)
+
+        if self.has_common_images and current_images == removed_images:
+            return False
+
+        common_images = True  # True, if all children share the same images
+        previous_images = None
+
+        # Iterate over all sources and check whether the images proposed to be
+        # removed are used in any sources. Images used in existing sources
+        # must not be removed.
+        for source_metadata in sources:
+            source_images = set(source_metadata.images)
+            if previous_images and common_images and previous_images != source_images:
+                common_images = False
+            previous_images = set(source_metadata.images)  # Remember for next iteration
+            removed_images = removed_images.difference(source_images)
+            if not removed_images and not common_images:
+                return False  # No images left to remove, abort immediately
+
+        new_images = current_images.difference(removed_images)
+        self.images = ImageList(new_images)
+        self.has_common_images = common_images
+        return True
+
 
 class MultiMetadataProxy:
     """

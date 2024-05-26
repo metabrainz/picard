@@ -50,27 +50,19 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.metadata import (
-    Metadata,
-    SimMatchRelease,
+from picard.item import (
+    FileListItem,
+    Item,
 )
+from picard.metadata import SimMatchRelease
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
     find_best_match,
     format_time,
 )
-from picard.util.imagelist import (
-    add_metadata_images,
-    remove_metadata_images,
-    update_metadata_images,
-)
 
 from picard.ui.enums import MainAction
-from picard.ui.item import (
-    FileListItem,
-    Item,
-)
 
 
 # Weights for different elements when comparing a cluster to a release
@@ -87,17 +79,13 @@ CLUSTER_COMPARISON_WEIGHTS = {
 
 class FileList(QtCore.QObject, FileListItem):
 
-    metadata_images_changed = QtCore.pyqtSignal()
-
     def __init__(self, files=None):
         QtCore.QObject.__init__(self)
         FileListItem.__init__(self, files)
-        self.metadata = Metadata()
-        self.orig_metadata = Metadata()
         if self.files and self.can_show_coverart:
             for file in self.files:
                 file.metadata_images_changed.connect(self.update_metadata_images)
-            update_metadata_images(self)
+            self.update_metadata_images_from_children()
 
     def iterfiles(self, save=False):
         yield from self.files
@@ -142,9 +130,9 @@ class Cluster(FileList):
     def _update_related_album(self, added_files=None, removed_files=None):
         if self.related_album:
             if added_files:
-                add_metadata_images(self.related_album, added_files)
+                self.related_album.add_metadata_images_from_children(added_files)
             if removed_files:
-                remove_metadata_images(self.related_album, removed_files)
+                self.related_album.remove_metadata_images_from_children(removed_files)
             self.related_album.update()
 
     def add_files(self, files, new_album=True):
@@ -161,7 +149,7 @@ class Cluster(FileList):
         self.files.extend(added_files)
         self.update(signal=False)
         if self.can_show_coverart:
-            add_metadata_images(self, added_files)
+            self.add_metadata_images_from_children(added_files)
         self.item.add_files(added_files)
         if new_album:
             self._update_related_album(added_files=added_files)
@@ -177,7 +165,7 @@ class Cluster(FileList):
         self.item.remove_file(file)
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
-            remove_metadata_images(self, [file])
+            self.remove_metadata_images_from_children([file])
         if new_album:
             self._update_related_album(removed_files=[file])
         self.tagger.window.set_processing(False)

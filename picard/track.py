@@ -61,6 +61,7 @@ from picard.file import (
     run_file_post_removal_from_track_processors,
 )
 from picard.i18n import gettext as _
+from picard.item import FileListItem
 from picard.mbjson import recording_to_metadata
 from picard.metadata import (
     Metadata,
@@ -73,14 +74,8 @@ from picard.script import (
     enabled_tagger_scripts_texts,
 )
 from picard.util import pattern_as_regex
-from picard.util.imagelist import (
-    ImageList,
-    add_metadata_images,
-    remove_metadata_images,
-)
+from picard.util.imagelist import ImageList
 from picard.util.textencoding import asciipunct
-
-from picard.ui.item import FileListItem
 
 
 class TagGenreFilter:
@@ -131,18 +126,15 @@ class TrackArtist(DataObject):
 
 class Track(DataObject, FileListItem):
 
-    metadata_images_changed = QtCore.pyqtSignal()
-
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
         FileListItem.__init__(self)
         self.tagger = QtCore.QCoreApplication.instance()
-        self.metadata = Metadata()
-        self.orig_metadata = Metadata()
         self.album = album
         self.scripted_metadata = Metadata()
         self._track_artists = []
         self._orig_images = None
+        self.iter_children_items_metadata_ignore_attrs = {'orig_metadata'}
 
     @property
     def num_linked_files(self):
@@ -160,7 +152,7 @@ class Track(DataObject, FileListItem):
                 self.orig_metadata.images = ImageList()
             self.files.append(file)
         self.update_file_metadata(file)
-        add_metadata_images(self, [file])
+        self.add_metadata_images_from_children([file])
         self.album.add_file(self, file, new_album=new_album)
         file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
@@ -198,7 +190,7 @@ class Track(DataObject, FileListItem):
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
         self.album.remove_file(self, file, new_album=new_album)
-        remove_metadata_images(self, [file])
+        self.remove_metadata_images_from_children([file])
         if not self.files and self._orig_images:
             self.orig_metadata.images = self._orig_images
             self.metadata.images = self._orig_images.copy()
@@ -398,7 +390,7 @@ class NonAlbumTrack(Track):
         self.status = _("[loading recording information]")
         self.clear_errors()
         self.loaded = False
-        self.album.update(True)
+        self.album.update(update_tracks=True)
         config = get_config()
         require_authentication = False
         inc = {
@@ -446,7 +438,7 @@ class NonAlbumTrack(Track):
     def _set_error(self, error):
         self.error_append(error)
         self.status = _("[could not load recording %s]") % self.id
-        self.album.update(True)
+        self.album.update(update_tracks=True)
 
     def _parse_recording(self, recording):
         m = self.metadata
@@ -460,7 +452,7 @@ class NonAlbumTrack(Track):
         if self.callback:
             self.callback()
             self.callback = None
-        self.album.update(True)
+        self.album.update(update_tracks=True)
 
     def _customize_metadata(self):
         super()._customize_metadata()

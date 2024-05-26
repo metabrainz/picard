@@ -56,6 +56,7 @@ from picard.coverart.image import (
 )
 from picard.file import File
 from picard.i18n import gettext as _
+from picard.item import FileListItem
 from picard.track import Track
 from picard.util import (
     imageinfo,
@@ -64,7 +65,6 @@ from picard.util import (
 from picard.util.lrucache import LRUCache
 
 from picard.ui.colors import interface_colors
-from picard.ui.item import FileListItem
 from picard.ui.widgets import ActiveLabel
 
 
