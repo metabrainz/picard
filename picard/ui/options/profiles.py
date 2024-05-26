@@ -44,7 +44,10 @@ from picard.i18n import (
     gettext_constants,
 )
 from picard.profile import profile_groups_values
-from picard.script import get_file_naming_script_presets
+from picard.script import (
+    get_file_naming_script_presets,
+    iter_tagging_scripts_from_tuples,
+)
 from picard.util import get_base_title
 
 from picard.ui.forms.ui_options_profiles import Ui_ProfileEditorDialog
@@ -249,7 +252,7 @@ class ProfilesOptionsPage(OptionsPage):
         return _("Unknown script")
 
     def _get_scripts_list(self, scripts):
-        enabled_scripts = ['<li>%s</li>' % name for (pos, name, enabled, script) in scripts if enabled]
+        enabled_scripts = ['<li>%s</li>' % s.name for s in iter_tagging_scripts_from_tuples(scripts) if s.enabled]
         if not enabled_scripts:
             return _("No enabled scripts")
         return _("Enabled scripts:") + '<ul>' + "".join(enabled_scripts) + '</ul>'

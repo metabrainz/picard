@@ -57,6 +57,7 @@ from picard.script import (
     ScriptParser,
     get_file_naming_script,
     get_file_naming_script_presets,
+    iter_tagging_scripts_from_tuples,
 )
 from picard.script.serializer import (
     FileNamingScript,
@@ -162,10 +163,10 @@ class ScriptEditorExamples():
         try:
             # Only apply scripts if the original file metadata has not been changed.
             if self.settings['enable_tagger_scripts'] and not c_metadata.diff(file.orig_metadata):
-                for s_pos, s_name, s_enabled, s_text in self.settings['list_of_scripts']:
-                    if s_enabled and s_text:
+                for s in iter_tagging_scripts_from_tuples(self.settings['list_of_scripts']):
+                    if s.enabled and s.content:
                         parser = ScriptParser()
-                        parser.eval(s_text, c_metadata)
+                        parser.eval(s.content, c_metadata)
             filename_before = file.filename
             filename_after = file.make_filename(filename_before, c_metadata, self.settings, self.script_text)
             if not self.settings['move_files']:

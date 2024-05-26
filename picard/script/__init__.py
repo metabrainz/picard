@@ -142,7 +142,7 @@ def enabled_tagger_scripts_texts():
     config = get_config()
     if not config.setting['enable_tagger_scripts']:
         return []
-    return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting['list_of_scripts'] if s_enabled and s_text]
+    return [(s.name, s.content) for s in iter_tagging_scripts_from_config(config=config) if s.enabled and s.content]
 
 
 def get_file_naming_script(settings):
