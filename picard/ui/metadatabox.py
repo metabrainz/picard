@@ -276,7 +276,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.preserved_tags = PreservedTags()
         self._single_file_album = False
         self._single_track_album = False
-        self.ignore_updates = IgnoreUpdatesContext(onexit=self.update)
+        self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
         self.tagger.clipboard().dataChanged.connect(self._update_clipboard)
 
     def _get_file_lookup(self):

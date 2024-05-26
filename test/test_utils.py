@@ -923,12 +923,67 @@ class IgnoreUpdatesContextTest(PicardTestCase):
             self.assertTrue(context)
         self.assertFalse(context)
 
-    def test_run_onexit(self):
-        onexit = Mock()
-        context = IgnoreUpdatesContext(onexit=onexit)
+    def test_run_on_exit(self):
+        on_exit = Mock()
+        context = IgnoreUpdatesContext(on_exit=on_exit)
         with context:
-            onexit.assert_not_called()
-        onexit.assert_called_once_with()
+            on_exit.assert_not_called()
+        on_exit.assert_called_once_with()
+
+    def test_run_on_exit_nested(self):
+        on_exit = Mock()
+        context = IgnoreUpdatesContext(on_exit=on_exit)
+        with context:
+            with context:
+                on_exit.assert_not_called()
+            self.assertEqual(len(on_exit.mock_calls), 1)
+        self.assertEqual(len(on_exit.mock_calls), 2)
+
+    def test_run_on_last_exit(self):
+        on_last_exit = Mock()
+        context = IgnoreUpdatesContext(on_last_exit=on_last_exit)
+        with context:
+            on_last_exit.assert_not_called()
+        on_last_exit.assert_called_once_with()
+
+    def test_run_on_last_exit_nested(self):
+        on_last_exit = Mock()
+        context = IgnoreUpdatesContext(on_last_exit=on_last_exit)
+        with context:
+            with context:
+                on_last_exit.assert_not_called()
+            on_last_exit.assert_not_called()
+        on_last_exit.assert_called_once_with()
+
+    def test_run_on_enter(self):
+        on_enter = Mock()
+        context = IgnoreUpdatesContext(on_enter=on_enter)
+        with context:
+            on_enter.assert_called()
+        on_enter.assert_called_once_with()
+
+    def test_run_on_enter_nested(self):
+        on_enter = Mock()
+        context = IgnoreUpdatesContext(on_enter=on_enter)
+        with context:
+            self.assertEqual(len(on_enter.mock_calls), 1)
+            with context:
+                self.assertEqual(len(on_enter.mock_calls), 2)
+
+    def test_run_on_first_enter(self):
+        on_first_enter = Mock()
+        context = IgnoreUpdatesContext(on_first_enter=on_first_enter)
+        with context:
+            on_first_enter.assert_called()
+        on_first_enter.assert_called_once_with()
+
+    def test_run_on_first_enter_nested(self):
+        on_first_enter = Mock()
+        context = IgnoreUpdatesContext(on_first_enter=on_first_enter)
+        with context:
+            on_first_enter.assert_called_once_with()
+            with context:
+                on_first_enter.assert_called_once_with()
 
     def test_nested_with(self):
         context = IgnoreUpdatesContext()

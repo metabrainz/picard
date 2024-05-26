@@ -880,8 +880,7 @@ class Tagger(QtWidgets.QApplication):
         if target is None:
             log.debug("Aborting move since target is invalid")
             return
-        self.window.set_sorting(False)
-        with self.window.metadata_box.ignore_updates:
+        with self.window.suspend_sorting, self.window.metadata_box.ignore_updates:
             if isinstance(target, Cluster):
                 for file in process_events_iter(files):
                     file.move(target)
@@ -898,7 +897,6 @@ class Tagger(QtWidgets.QApplication):
                 self.move_files_to_album(files, album=target)
             elif isinstance(target, ClusterList):
                 self.cluster(files)
-        self.window.set_sorting(True)
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
@@ -1303,15 +1301,14 @@ class Tagger(QtWidgets.QApplication):
             log.error("Error while clustering: %r", error)
             return
 
-        self.window.set_sorting(False)
-        for file_cluster in process_events_iter(result):
-            files = set(file_cluster.files)
-            if len(files) > 1:
-                cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-            else:
-                cluster = self.unclustered_files
-            cluster.add_files(files)
-        self.window.set_sorting(True)
+        with self.window.suspend_sorting:
+            for file_cluster in process_events_iter(result):
+                files = set(file_cluster.files)
+                if len(files) > 1:
+                    cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
+                else:
+                    cluster = self.unclustered_files
+                cluster.add_files(files)
 
         if callback:
             callback()
