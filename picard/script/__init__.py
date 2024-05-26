@@ -136,13 +136,15 @@ def script_function_documentation_all(fmt='markdown', pre='',
     return "\n".join(doc_elements)
 
 
-def enabled_tagger_scripts_texts():
-    """Returns an iterator over the enabled tagger scripts.
-    For each script, you'll get a tuple consisting of the script name and text"""
-    config = get_config()
+def iter_active_tagging_scripts(config=None):
+    """Returns an iterator over the enabled and not empty tagging scripts."""
+    if config is None:
+        config = get_config()
     if not config.setting['enable_tagger_scripts']:
-        return []
-    return [(s.name, s.content) for s in iter_tagging_scripts_from_config(config=config) if s.enabled and s.content]
+        return
+    for script in iter_tagging_scripts_from_config(config=config):
+        if script.enabled and script.content:
+            yield script
 
 
 def get_file_naming_script(settings):

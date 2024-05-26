@@ -71,7 +71,7 @@ from picard.metadata import (
 from picard.script import (
     ScriptError,
     ScriptParser,
-    enabled_tagger_scripts_texts,
+    iter_active_tagging_scripts,
 )
 from picard.util import pattern_as_regex
 from picard.util.imagelist import ImageList
@@ -201,12 +201,12 @@ class Track(DataObject, FileListItem):
 
     @staticmethod
     def run_scripts(metadata, strip_whitespace=False):
-        for s_name, s_text in enabled_tagger_scripts_texts():
+        for script in iter_active_tagging_scripts():
             parser = ScriptParser()
             try:
-                parser.eval(s_text, metadata)
+                parser.eval(script.content, metadata)
             except ScriptError:
-                log.exception("Failed to run tagger script %s on track", s_name)
+                log.exception("Failed to run tagger script %s on track", script.name)
             if strip_whitespace:
                 metadata.strip_whitespace()
 
