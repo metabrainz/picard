@@ -40,7 +40,12 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.script import ScriptParser
+from picard.script import (
+    ScriptParser,
+    TaggingScriptSetting,
+    iter_tagging_scripts_from_config,
+    save_tagging_scripts_to_config,
+)
 from picard.script.serializer import (
     ScriptImportExportError,
     TaggingScript,
@@ -170,7 +175,8 @@ class ScriptingOptionsPage(OptionsPage):
             return
         if script_item:
             title = _("%s (imported)") % script_item['title']
-            list_item = ScriptListWidgetItem(title, False, script_item['script'])
+            script = TaggingScriptSetting(name=title, enabled=False, content=script_item['script'])
+            list_item = ScriptListWidgetItem(script)
             self.ui.script_list.addItem(list_item)
             self.ui.script_list.setCurrentRow(self.ui.script_list.count() - 1)
 
@@ -183,11 +189,10 @@ class ScriptingOptionsPage(OptionsPage):
             return
 
         item = items[0]
-        script_text = item.script
-        script_title = item.name if item.name.strip() else _("Unnamed Script")
+        script_title = item.script.name if item.script.name.strip() else _("Unnamed Script")
 
-        if script_text:
-            script_item = TaggingScript(title=script_title, script=script_text)
+        if item.script.content:
+            script_item = TaggingScript(title=script_title, script=item.script.content)
             try:
                 script_item.export_script(parent=self)
             except ScriptImportExportError as error:
@@ -202,7 +207,7 @@ class ScriptingOptionsPage(OptionsPage):
         if items:
             item = items[0]
             self.ui.tagger_script.setEnabled(True)
-            self.ui.tagger_script.setText(item.script)
+            self.ui.tagger_script.setText(item.script.content)
             self.ui.tagger_script.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
             self.ui.export_button.setEnabled(True)
         else:
@@ -215,7 +220,7 @@ class ScriptingOptionsPage(OptionsPage):
         if not items:
             return
         script = items[0]
-        script.script = self.ui.tagger_script.toPlainText()
+        script.script.content = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
@@ -248,8 +253,8 @@ class ScriptingOptionsPage(OptionsPage):
         config = get_config()
         self.ui.enable_tagger_scripts.setChecked(config.setting['enable_tagger_scripts'])
         self.ui.script_list.clear()
-        for pos, name, enabled, text in config.setting['list_of_scripts']:
-            list_item = ScriptListWidgetItem(name, enabled, text)
+        for script in iter_tagging_scripts_from_config(config=config):
+            list_item = ScriptListWidgetItem(script)
             self.ui.script_list.addItem(list_item)
 
         # Select the last selected script item
@@ -261,12 +266,12 @@ class ScriptingOptionsPage(OptionsPage):
 
     def _all_scripts(self):
         for item in qlistwidget_items(self.ui.script_list):
-            yield item.get_all()
+            yield item.get_script()
 
     def save(self):
         config = get_config()
         config.setting['enable_tagger_scripts'] = self.ui.enable_tagger_scripts.isChecked()
-        config.setting['list_of_scripts'] = list(self._all_scripts())
+        save_tagging_scripts_to_config(self._all_scripts())
         config.persist['last_selected_script_pos'] = self.ui.script_list.currentRow()
 
     def display_error(self, error):

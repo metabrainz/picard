@@ -35,6 +35,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.script import TaggingScriptSetting
 from picard.util import unique_numbered_title
 
 from picard.ui import HashableListWidgetItem
@@ -77,7 +78,7 @@ class ScriptListWidget(QtWidgets.QListWidget):
 
     def add_script(self):
         numbered_name = self.unique_script_name()
-        list_item = ScriptListWidgetItem(name=numbered_name)
+        list_item = ScriptListWidgetItem(TaggingScriptSetting(name=numbered_name, enabled=True))
         list_item.setCheckState(QtCore.Qt.CheckState.Checked)
         self.addItem(list_item)
         self.setCurrentItem(list_item, QtCore.QItemSelectionModel.SelectionFlag.Clear
@@ -114,14 +115,15 @@ class ScriptListWidget(QtWidgets.QListWidget):
 class ScriptListWidgetItem(HashableListWidgetItem):
     """Holds a script's list and text widget properties"""
 
-    def __init__(self, name=None, enabled=True, script=""):
-        super().__init__(name)
+    def __init__(self, script):
+        assert isinstance(script, TaggingScriptSetting)
+        super().__init__(script.name)
         self.setFlags(self.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsEditable)
-        if name is None:
-            name = gettext_constants(DEFAULT_SCRIPT_NAME)
-        self.setText(name)
-        self.setCheckState(QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
-        self.script = script
+        if not script.name:
+            script.name = gettext_constants(DEFAULT_SCRIPT_NAME)
+        self.setText(script.name)
+        self.setCheckState(QtCore.Qt.CheckState.Checked if script.enabled else QtCore.Qt.CheckState.Unchecked)
+        self._script = script
         self.has_error = False
 
     @property
@@ -136,6 +138,12 @@ class ScriptListWidgetItem(HashableListWidgetItem):
     def enabled(self):
         return self.checkState() == QtCore.Qt.CheckState.Checked
 
-    def get_all(self):
-        # tuples used to get pickle dump of settings to work
-        return (self.pos, self.name, self.enabled, self.script)
+    @property
+    def script(self):
+        return self._script
+
+    def get_script(self):
+        self._script.pos = self.pos
+        self._script.name = self.name
+        self._script.enabled = self.enabled
+        return self._script
