@@ -367,7 +367,7 @@ class PicardScript():
         ))
 
 
-class TaggingScript(PicardScript):
+class PicardTaggingScript(PicardScript):
     """Picard tagging script class
     """
     TYPE = PicardScriptType.TAGGER
