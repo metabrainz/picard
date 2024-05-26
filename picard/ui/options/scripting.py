@@ -184,17 +184,18 @@ class ScriptingOptionsPage(OptionsPage):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
-        items = self.ui.script_list.selectedItems()
-        if not items:
+        list_items = self.ui.script_list.selectedItems()
+        if not list_items:
             return
 
-        item = items[0]
-        script_title = item.script.name if item.script.name.strip() else _("Unnamed Script")
-
-        if item.script.content:
-            script_item = TaggingScript(title=script_title, script=item.script.content)
+        list_item = list_items[0]
+        content = list_item.script.content
+        if content:
+            name = list_item.script.name.strip()
+            title = name or _("Unnamed Script")
+            tagging_script = TaggingScript(title=title, script=content)
             try:
-                script_item.export_script(parent=self)
+                tagging_script.export_script(parent=self)
             except ScriptImportExportError as error:
                 self.output_file_error(error)
 
