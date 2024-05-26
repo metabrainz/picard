@@ -30,7 +30,7 @@ from test.picardtestcase import PicardTestCase
 from picard.script.serializer import (
     FileNamingScript,
     PicardScript,
-    ScriptImportError,
+    PicardScriptFromFileError,
 )
 
 
@@ -125,7 +125,7 @@ class PicardScriptTest(PicardTestCase):
 
     def test_script_object_9(self):
         # Test that an exception is raised when creating or updating using an invalid YAML string
-        with self.assertRaises(ScriptImportError):
+        with self.assertRaises(PicardScriptFromFileError):
             PicardScript().create_from_yaml('Not a YAML string')
         PicardScript(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
 

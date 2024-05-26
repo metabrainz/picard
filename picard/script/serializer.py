@@ -64,7 +64,7 @@ class ScriptImportExportError(Exception):
         self.error_msg = error_msg
 
 
-class ScriptImportError(Exception):
+class PicardScriptFromFileError(Exception):
     def __init__(self, *args):
         super().__init__(*args)
 
@@ -261,7 +261,7 @@ class PicardScript():
         if file_type == cls._file_types()['package']:
             try:
                 return cls().create_from_yaml(file_content)
-            except ScriptImportError as error:
+            except PicardScriptFromFileError as error:
                 raise ScriptImportExportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error)
         else:
             return cls(
@@ -283,9 +283,9 @@ class PicardScript():
         """
         new_object = cls()
         if not isinstance(script_dict, Mapping):
-            raise ScriptImportError(N_("Argument is not a dictionary"))
+            raise PicardScriptFromFileError(N_("Argument is not a dictionary"))
         if 'title' not in script_dict or 'script' not in script_dict:
-            raise ScriptImportError(N_("Invalid script package"))
+            raise PicardScriptFromFileError(N_("Invalid script package"))
         new_object.update_from_dict(script_dict)
         if create_new_id or not new_object['id']:
             new_object._set_new_id()
@@ -327,9 +327,9 @@ class PicardScript():
         new_object = cls()
         yaml_dict = yaml.safe_load(yaml_string)
         if not isinstance(yaml_dict, dict):
-            raise ScriptImportError(N_("File content not a dictionary"))
+            raise PicardScriptFromFileError(N_("File content not a dictionary"))
         if 'title' not in yaml_dict or 'script' not in yaml_dict:
-            raise ScriptImportError(N_("Invalid script package"))
+            raise PicardScriptFromFileError(N_("Invalid script package"))
         new_object.update_from_dict(yaml_dict)
         if create_new_id or not new_object['id']:
             new_object._set_new_id()
