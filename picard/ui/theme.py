@@ -87,7 +87,7 @@ dark_syntax_theme = SyntaxTheme(
     func=QtGui.QColor(255, 87, 160, 255),  # magenta
     var=QtGui.QColor(252, 187, 81, 255),  # orange
     escape=QtGui.QColor(75, 239, 31, 255),  # green
-    special=QtGui.QColor(255, 87, 160, 255),  # blue
+    special=QtGui.QColor(255, 87, 160, 255),  # magenta
     noop=QtGui.QColor(4, 231, 213, 255),  # cyan
 )
 
