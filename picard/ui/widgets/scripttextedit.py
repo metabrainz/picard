@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2014 m42i
-# Copyright (C) 2020-2023 Philipp Wolfer
+# Copyright (C) 2020-2024 Philipp Wolfer
 # Copyright (C) 2020-2024 Laurent Monin
 # Copyright (C) 2021-2022 Bob Swift
 #
@@ -48,6 +48,7 @@ from picard.const.sys import IS_MACOS
 from picard.i18n import gettext as _
 from picard.script import (
     ScriptFunctionDocError,
+    ScriptFunctionDocUnknownFunctionError,
     script_function_documentation,
     script_function_names,
 )
@@ -279,6 +280,12 @@ class FunctionScriptToken(DocumentedScriptToken):
         function = self._read_allowed_chars(position + 1)
         try:
             return script_function_documentation(function, 'html')
+        except ScriptFunctionDocUnknownFunctionError:
+            return _(
+                '<em>Function <code>$%s</code> does not exist.<br>'
+                '<br>'
+                'Are you missing a plugin?'
+                '</em>') % function
         except ScriptFunctionDocError:
             return None
 

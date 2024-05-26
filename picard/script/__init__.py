@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2009, 2012 Lukáš Lalinský
 # Copyright (C) 2007 Javier Kohen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2021, 2023 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2021, 2023-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Michael Wiencek
@@ -70,18 +70,26 @@ class ScriptFunctionDocError(Exception):
     pass
 
 
+class ScriptFunctionDocUnknownFunctionError(ScriptFunctionDocError):
+    pass
+
+
+class ScriptFunctionDocNoDocumentationError(ScriptFunctionDocError):
+    pass
+
+
 def script_function_documentation(name, fmt, functions=None, postprocessor=None):
     if functions is None:
         functions = dict(script_functions.ext_point_script_functions)
     if name not in functions:
-        raise ScriptFunctionDocError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
+        raise ScriptFunctionDocUnknownFunctionError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
 
     if fmt == 'html':
         return functions[name].htmldoc(postprocessor)
     elif fmt == 'markdown':
         return functions[name].markdowndoc(postprocessor)
     else:
-        raise ScriptFunctionDocError("no such documentation format: %s (known formats: html, markdown)" % fmt)
+        raise ScriptFunctionDocNoDocumentationError("no such documentation format: %s (known formats: html, markdown)" % fmt)
 
 
 def script_function_names(functions=None):
