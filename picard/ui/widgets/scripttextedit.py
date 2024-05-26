@@ -59,7 +59,7 @@ from picard.util.tags import (
 )
 
 from picard.ui import FONT_FAMILY_MONOSPACE
-from picard.ui.theme import theme
+from picard.ui.colors import interface_colors
 
 
 EXTRA_VARIABLES = (
@@ -114,7 +114,7 @@ class HighlightFormat(QtGui.QTextCharFormat):
     def __init__(self, fg_color=None, italic=False, bold=False):
         super().__init__()
         if fg_color is not None:
-            self.setForeground(fg_color)
+            self.setForeground(interface_colors.get_qcolor(fg_color))
         if italic:
             self.setFontItalic(True)
         if bold:
@@ -125,16 +125,15 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
     def __init__(self, document):
         super().__init__(document)
-        syntax_theme = theme.syntax_theme
 
         self.textcharformats = {
-            'escape': HighlightFormat(fg_color=syntax_theme.escape),
-            'func': HighlightFormat(fg_color=syntax_theme.func, bold=True),
-            'noop': HighlightFormat(fg_color=syntax_theme.noop, bold=True, italic=True),
-            'special': HighlightFormat(fg_color=syntax_theme.special),
-            'unicode': HighlightFormat(fg_color=syntax_theme.escape, italic=True),
-            'unknown_func': HighlightFormat(fg_color=syntax_theme.special, italic=True),
-            'var': HighlightFormat(fg_color=syntax_theme.var),
+            'escape': HighlightFormat(fg_color='syntax_hl_escape'),
+            'func': HighlightFormat(fg_color='syntax_hl_func', bold=True),
+            'noop': HighlightFormat(fg_color='syntax_hl_noop', bold=True, italic=True),
+            'special': HighlightFormat(fg_color='syntax_hl_special'),
+            'unicode': HighlightFormat(fg_color='syntax_hl_unicode', italic=True),
+            'unknown_func': HighlightFormat(fg_color='syntax_hl_error', italic=True),
+            'var': HighlightFormat(fg_color='syntax_hl_var'),
         }
 
         self.rules = list(self.func_rules())

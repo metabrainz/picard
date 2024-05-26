@@ -31,7 +31,7 @@ from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
 
 from picard.ui import FONT_FAMILY_MONOSPACE
-from picard.ui.theme import theme
+from picard.ui.colors import interface_colors
 
 
 DOCUMENTATION_HTML_TEMPLATE = '''
@@ -97,7 +97,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
 
         html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "<dl>%s</dl>" % funcdoc,
-            'script_function_fg': theme.syntax_theme.func.name(),
+            'script_function_fg': interface_colors.get_qcolor('syntax_hl_func').name(),
             'monospace_font': FONT_FAMILY_MONOSPACE,
             'dir': text_direction,
             'inline_start': 'right' if text_direction == 'rtl' else 'left'

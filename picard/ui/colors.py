@@ -52,6 +52,13 @@ _COLOR_DESCRIPTIONS = {
     'tagstatus_added': N_("Tag added"),
     'tagstatus_changed': N_("Tag changed"),
     'tagstatus_removed': N_("Tag removed"),
+    'syntax_hl_error': N_("Error syntax highlight"),
+    'syntax_hl_escape': N_("Escape syntax highlight"),
+    'syntax_hl_func': N_("Function syntax highlight"),
+    'syntax_hl_noop': N_("Noop syntax highlight"),
+    'syntax_hl_special': N_("Special syntax highlight"),
+    'syntax_hl_unicode': N_("Unicode syntax highlight"),
+    'syntax_hl_var': N_("Variable syntax highlight"),
 }
 
 
@@ -96,6 +103,22 @@ register_color(_LIGHT, 'row_highlight', '#FFFFE0')
 register_color(_DARK, 'row_highlight', '#90907E')
 register_color(_LIGHT, 'first_cover_hl', 'darkgoldenrod')
 register_color(_DARK, 'first_cover_hl', 'orange')
+
+# syntax highlighting colors
+register_color(_LIGHT, 'syntax_hl_error', 'blue')
+register_color(_LIGHT, 'syntax_hl_escape', 'darkRed')
+register_color(_LIGHT, 'syntax_hl_func', 'blue')
+register_color(_LIGHT, 'syntax_hl_noop', 'darkGray')
+register_color(_LIGHT, 'syntax_hl_special', 'blue')
+register_color(_LIGHT, 'syntax_hl_unicode', 'darkRed')
+register_color(_LIGHT, 'syntax_hl_var', 'darkCyan')
+register_color(_DARK, 'syntax_hl_error', '#FF57A0')
+register_color(_DARK, 'syntax_hl_escape', '#4BEF1F')
+register_color(_DARK, 'syntax_hl_func', '#FF57A0')
+register_color(_DARK, 'syntax_hl_noop', '#04E7D5')
+register_color(_DARK, 'syntax_hl_special', '#FF57A0')
+register_color(_DARK, 'syntax_hl_unicode', '#4BEF1F')
+register_color(_DARK, 'syntax_hl_var', '#FCBB51')
 
 
 class InterfaceColors:
