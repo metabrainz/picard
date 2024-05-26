@@ -57,16 +57,20 @@ class PicardScriptType(IntEnum):
     FILENAMING = 2
 
 
-class PicardScriptImportExportError(Exception):
+class PicardScriptError(Exception):
+    """Base exception class for PicardScript errors"""
+
+
+class PicardScriptImportExportError(PicardScriptError):
     def __init__(self, *args, format=None, filename=None, error_msg=None):
+        super().__init__(*args)
         self.format = format
         self.filename = filename
         self.error_msg = error_msg
 
 
-class PicardScriptFromFileError(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
+class PicardScriptFromFileError(PicardScriptError):
+    """Exception raised when converting a file to a PicardScript"""
 
 
 class MultilineLiteral(str):
