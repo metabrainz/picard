@@ -69,6 +69,14 @@ class PicardScriptImportExportError(PicardScriptError):
         self.error_msg = error_msg
 
 
+class PicardScriptImportError(PicardScriptImportExportError):
+    """Exception raised during script import"""
+
+
+class PicardScriptExportError(PicardScriptImportExportError):
+    """Exception raised during script export"""
+
+
 class PicardScriptFromFileError(PicardScriptError):
     """Exception raised when converting a file to a PicardScript"""
 
@@ -230,7 +238,7 @@ class PicardScript():
             with open(filename, 'w', encoding='utf-8') as o_file:
                 o_file.write(script_text)
         except OSError as error:
-            raise PicardScriptImportExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
+            raise PicardScriptExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Export Script"),
@@ -259,14 +267,14 @@ class PicardScript():
             with open(filename, 'r', encoding='utf-8') as i_file:
                 file_content = i_file.read()
         except OSError as error:
-            raise PicardScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)
+            raise PicardScriptImportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)
         if not file_content.strip():
-            raise PicardScriptImportExportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty"))
+            raise PicardScriptImportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty"))
         if file_type == cls._file_types()['package']:
             try:
                 return cls().create_from_yaml(file_content)
             except PicardScriptFromFileError as error:
-                raise PicardScriptImportExportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error)
+                raise PicardScriptImportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error)
         else:
             return cls(
                 title=_("Imported from %s") % filename,
