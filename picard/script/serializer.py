@@ -397,7 +397,7 @@ class PicardTaggingScript(PicardScript):
         super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_language_version=script_language_version)
 
 
-class FileNamingScript(PicardScript):
+class PicardFileNamingScript(PicardScript):
     """Picard file naming script class
     """
     TYPE = PicardScriptType.FILENAMING

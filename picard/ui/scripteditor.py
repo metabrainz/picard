@@ -60,7 +60,7 @@ from picard.script import (
     iter_tagging_scripts_from_tuples,
 )
 from picard.script.serializer import (
-    FileNamingScript,
+    PicardFileNamingScript,
     PicardScriptImportExportError,
 )
 from picard.util import (
@@ -386,7 +386,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
     """Populate the specified script selection combo box and identify the selected script.
 
     Args:
-        naming_scripts (dict): Dictionary of available user-defined naming scripts as script dictionaries as produced by FileNamingScript().to_dict()
+        naming_scripts (dict): Dictionary of available user-defined naming scripts as script dictionaries as produced by PicardFileNamingScript().to_dict()
         selected_script_id (str): ID code for the currently selected script
         combo_box (QComboBox): Combo box object to populate
 
@@ -936,7 +936,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Insert a new item into the script selection combo box and update the script list in the settings.
 
         Args:
-            script_item (dict): File naming script to insert as produced by FileNamingScript().to_dict()
+            script_item (dict): File naming script to insert as produced by PicardFileNamingScript().to_dict()
         """
         self.selected_script_id = script_item['id']
         self.naming_scripts[self.selected_script_id] = script_item
@@ -960,7 +960,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def new_script(self, script):
         """Add a new script to the script selection combo box and script list.
         """
-        script_item = FileNamingScript(script=script)
+        script_item = PicardFileNamingScript(script=script)
         script_item.title = self.new_script_name()
         self._insert_item(script_item.to_dict())
 
@@ -968,7 +968,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Add a copy of the script as a new editable script to the script selection combo box.
         """
         selected, script_item = self.get_selected_index_and_item()
-        new_item = FileNamingScript.create_from_dict(script_dict=script_item).copy()
+        new_item = PicardFileNamingScript.create_from_dict(script_dict=script_item).copy()
 
         base_title = "%s %s" % (get_base_title(script_item['title']), gettext_constants(DEFAULT_COPY_TEXT))
         new_item.title = self.new_script_name(base_title)
@@ -1009,7 +1009,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """Get the specified item from the script selection combo box.
 
         Returns:
-            dict: File naming script dictionary as produced by FileNamingScript().to_dict()
+            dict: File naming script dictionary as produced by PicardFileNamingScript().to_dict()
         """
         return self.get_script_item(self.ui.preset_naming_scripts.currentIndex())
 
@@ -1058,7 +1058,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
 
         Args:
             idx (int): Index of the item to update
-            script_item (dict): Updated file naming script information as produced by FileNamingScript().to_dict()
+            script_item (dict): Updated file naming script information as produced by PicardFileNamingScript().to_dict()
         """
         self.ui.preset_naming_scripts.setItemData(idx, script_item)
         title = script_item['title']
@@ -1233,7 +1233,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         a naming script package.
         """
         try:
-            script_item = FileNamingScript().import_script(self)
+            script_item = PicardFileNamingScript().import_script(self)
         except PicardScriptImportExportError as error:
             self.output_file_error(error.format, error.filename, error.error_msg)
             return
@@ -1277,7 +1277,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         script or a naming script package.
         """
         selected = self.get_selected_item()
-        script_item = FileNamingScript.create_from_dict(script_dict=selected, create_new_id=False)
+        script_item = PicardFileNamingScript.create_from_dict(script_dict=selected, create_new_id=False)
         script_item.title = get_base_title(script_item.title)
         try:
             script_item.export_script(parent=self)
@@ -1402,7 +1402,7 @@ class ScriptDetailsEditor(PicardDialog):
     def set_last_updated(self):
         """Set the last updated value to the current timestamp.
         """
-        self.ui.script_last_updated.setText(FileNamingScript.make_last_updated())
+        self.ui.script_last_updated.setText(PicardFileNamingScript.make_last_updated())
         self.ui.script_last_updated.setModified(True)
 
     def save_changes(self):
