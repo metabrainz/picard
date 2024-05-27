@@ -37,28 +37,34 @@ class UnknownColorException(Exception):
     pass
 
 
+class ColorDescription:
+    def __init__(self, title, group):
+        self.title = title
+        self.group = group
+
+
 _COLOR_DESCRIPTIONS = {
-    'entity_error': N_("Errored entity"),
-    'entity_pending': N_("Pending entity"),
-    'entity_saved': N_("Saved entity"),
-    'first_cover_hl': N_("First cover art"),
-    'log_debug': N_('Log view text (debug)'),
-    'log_error': N_('Log view text (error)'),
-    'log_info': N_('Log view text (info)'),
-    'log_warning': N_('Log view text (warning)'),
-    'profile_hl_bg': N_("Profile highlight background"),
-    'profile_hl_fg': N_("Profile highlight foreground"),
-    'row_highlight': N_("Row Highlight"),
-    'tagstatus_added': N_("Tag added"),
-    'tagstatus_changed': N_("Tag changed"),
-    'tagstatus_removed': N_("Tag removed"),
-    'syntax_hl_error': N_("Error syntax highlight"),
-    'syntax_hl_escape': N_("Escape syntax highlight"),
-    'syntax_hl_func': N_("Function syntax highlight"),
-    'syntax_hl_noop': N_("Noop syntax highlight"),
-    'syntax_hl_special': N_("Special syntax highlight"),
-    'syntax_hl_unicode': N_("Unicode syntax highlight"),
-    'syntax_hl_var': N_("Variable syntax highlight"),
+    'entity_error': ColorDescription(title=N_("Errored entity"), group=N_("Entities")),
+    'entity_pending': ColorDescription(title=N_("Pending entity"), group=N_("Entities")),
+    'entity_saved': ColorDescription(title=N_("Saved entity"), group=N_("Entities")),
+    'first_cover_hl': ColorDescription(title=N_("First cover art"), group=N_("Others")),
+    'log_debug': ColorDescription(title=N_('Log view text (debug)'), group=N_("Logging")),
+    'log_error': ColorDescription(title=N_('Log view text (error)'), group=N_("Logging")),
+    'log_info': ColorDescription(title=N_('Log view text (info)'), group=N_("Logging")),
+    'log_warning': ColorDescription(title=N_('Log view text (warning)'), group=N_("Logging")),
+    'profile_hl_bg': ColorDescription(title=N_("Profile highlight background"), group=N_("Profiles")),
+    'profile_hl_fg': ColorDescription(title=N_("Profile highlight foreground"), group=N_("Profiles")),
+    'row_highlight': ColorDescription(title=N_("Row Highlight"), group=N_("Others")),
+    'tagstatus_added': ColorDescription(title=N_("Tag added"), group=N_("Tags")),
+    'tagstatus_changed': ColorDescription(title=N_("Tag changed"), group=N_("Tags")),
+    'tagstatus_removed': ColorDescription(title=N_("Tag removed"), group=N_("Tags")),
+    'syntax_hl_error': ColorDescription(title=N_("Error syntax highlight"), group=N_("Syntax Highlighting")),
+    'syntax_hl_escape': ColorDescription(title=N_("Escape syntax highlight"), group=N_("Syntax Highlighting")),
+    'syntax_hl_func': ColorDescription(title=N_("Function syntax highlight"), group=N_("Syntax Highlighting")),
+    'syntax_hl_noop': ColorDescription(title=N_("Noop syntax highlight"), group=N_("Syntax Highlighting")),
+    'syntax_hl_special': ColorDescription(title=N_("Special syntax highlight"), group=N_("Syntax Highlighting")),
+    'syntax_hl_unicode': ColorDescription(title=N_("Unicode syntax highlight"), group=N_("Syntax Highlighting")),
+    'syntax_hl_var': ColorDescription(title=N_("Variable syntax highlight"), group=N_("Syntax Highlighting")),
 }
 
 
@@ -185,6 +191,12 @@ class InterfaceColors:
 
     def get_color_description(self, color_key):
         return _(self.default_colors[color_key].description)
+
+    def get_color_title(self, color_key):
+        return _(self.default_colors[color_key].description.title)
+
+    def get_color_group(self, color_key):
+        return _(self.default_colors[color_key].description.group)
 
     def set_color(self, color_key, color_value):
         if color_key in self.default_colors:

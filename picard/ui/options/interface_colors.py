@@ -34,7 +34,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.util import icontheme
+from picard.util import (
+    icontheme,
+    strxfrm,
+)
 
 from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_options_interface_colors import (
@@ -121,13 +124,27 @@ class InterfaceColorsOptionsPage(OptionsPage):
             interface_colors.set_default_color(color_key)
             color_button.update_color(interface_colors.get_qcolor(color_key))
 
-        for color_key, color_value in interface_colors.get_colors().items():
+        def colors():
+            for color_key, color_value in interface_colors.get_colors().items():
+                group = interface_colors.get_color_group(color_key)
+                title = interface_colors.get_color_title(color_key)
+                yield color_key, color_value, title, group
+
+        prev_group = None
+        for color_key, color_value, title, group in sorted(colors(), key=lambda c: (strxfrm(c[3]), strxfrm(c[2]))):
+            if prev_group != group:
+                groupbox = QtWidgets.QGroupBox(group)
+                self.colors_list.addWidget(groupbox)
+                groupbox_layout = QtWidgets.QVBoxLayout()
+                groupbox.setLayout(groupbox_layout)
+                prev_group = group
+
             widget = QtWidgets.QWidget()
 
             hlayout = QtWidgets.QHBoxLayout()
             hlayout.setContentsMargins(0, 0, 0, 0)
 
-            label = QtWidgets.QLabel(interface_colors.get_color_description(color_key))
+            label = QtWidgets.QLabel(title)
             label.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
             hlayout.addWidget(label)
 
@@ -141,7 +158,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
             hlayout.addWidget(refresh_button, 0, QtCore.Qt.AlignmentFlag.AlignRight)
 
             widget.setLayout(hlayout)
-            self.colors_list.addWidget(widget)
+            groupbox_layout.addWidget(widget)
 
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.colors_list.addItem(spacerItem1)
