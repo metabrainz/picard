@@ -21,7 +21,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
 from enum import Enum
 
 from PyQt6 import (
@@ -72,24 +71,6 @@ if IS_WIN or IS_MACOS:
     AVAILABLE_UI_THEMES.extend([UiTheme.LIGHT, UiTheme.DARK])
 elif not IS_HAIKU:
     AVAILABLE_UI_THEMES.extend([UiTheme.SYSTEM])
-
-SyntaxTheme = namedtuple('SyntaxTheme', 'func var escape special noop')
-
-light_syntax_theme = SyntaxTheme(
-    func=QtGui.QColor(QtCore.Qt.GlobalColor.blue),
-    var=QtGui.QColor(QtCore.Qt.GlobalColor.darkCyan),
-    escape=QtGui.QColor(QtCore.Qt.GlobalColor.darkRed),
-    special=QtGui.QColor(QtCore.Qt.GlobalColor.blue),
-    noop=QtGui.QColor(QtCore.Qt.GlobalColor.darkGray),
-)
-
-dark_syntax_theme = SyntaxTheme(
-    func=QtGui.QColor(255, 87, 160, 255),  # magenta
-    var=QtGui.QColor(252, 187, 81, 255),  # orange
-    escape=QtGui.QColor(75, 239, 31, 255),  # green
-    special=QtGui.QColor(255, 87, 160, 255),  # magenta
-    noop=QtGui.QColor(4, 231, 213, 255),  # cyan
-)
 
 
 class MacOverrideStyle(QtWidgets.QProxyStyle):
@@ -143,10 +124,6 @@ class BaseTheme:
     @property
     def accent_color(self):  # pylint: disable=no-self-use
         return None
-
-    @property
-    def syntax_theme(self):
-        return dark_syntax_theme if self.is_dark_theme else light_syntax_theme
 
     # pylint: disable=no-self-use
     def update_palette(self, palette, dark_theme, accent_color):
