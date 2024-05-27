@@ -63,7 +63,7 @@ from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
     ScriptUnknownFunction,
     ScriptVariable,
 )
-from picard.script.serializer import PicardFileNamingScript
+from picard.script.serializer import FileNamingScriptInfo
 
 
 class TaggingScriptSetting:
@@ -173,7 +173,7 @@ def get_file_naming_script_presets():
     """Generator of preset example file naming script objects.
 
     Yields:
-        PicardFileNamingScript: the next example PicardFileNamingScript object
+        FileNamingScriptInfo: the next example FileNamingScriptInfo object
     """
     AUTHOR = "MusicBrainz Picard Development Team"
     DESCRIPTION = _("This preset example file naming script does not require any special settings, tagging scripts or plugins.")
@@ -185,7 +185,7 @@ def get_file_naming_script_presets():
             'title': _(title),
         }
 
-    yield PicardFileNamingScript(
+    yield FileNamingScriptInfo(
         id=DEFAULT_NAMING_PRESET_ID,
         title=preset_title(1, N_("Default file naming script")),
         script=DEFAULT_FILE_NAMING_FORMAT,
@@ -197,7 +197,7 @@ def get_file_naming_script_presets():
         script_language_version="1.0",
     )
 
-    yield PicardFileNamingScript(
+    yield FileNamingScriptInfo(
         id="Preset 2",
         title=preset_title(2, N_("[album artist]/[album]/[track #]. [title]")),
         script="%albumartist%/\n"
@@ -211,7 +211,7 @@ def get_file_naming_script_presets():
         script_language_version="1.0",
     )
 
-    yield PicardFileNamingScript(
+    yield FileNamingScriptInfo(
         id="Preset 3",
         title=preset_title(3, N_("[album artist]/[album]/[disc and track #] [artist] - [title]")),
         script="$if2(%albumartist%,%artist%)/\n"

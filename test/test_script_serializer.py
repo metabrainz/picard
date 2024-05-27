@@ -28,7 +28,7 @@ import yaml
 from test.picardtestcase import PicardTestCase
 
 from picard.script.serializer import (
-    PicardFileNamingScript,
+    FileNamingScriptInfo,
     ScriptSerializer,
     ScriptSerializerFromFileError,
 )
@@ -131,7 +131,7 @@ class ScriptSerializerTest(PicardTestCase):
 
     def test_naming_script_object_1(self):
         # Check initial loaded values.
-        test_script = PicardFileNamingScript(
+        test_script = FileNamingScriptInfo(
             title='Script 1', script='Script text', id='12345', last_updated='2021-04-26',
             description='Script description', author='Script author', script_language_version='1.0'
         )

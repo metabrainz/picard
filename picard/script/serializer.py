@@ -397,7 +397,7 @@ class TaggingScriptInfo(ScriptSerializer):
         super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_language_version=script_language_version)
 
 
-class PicardFileNamingScript(ScriptSerializer):
+class FileNamingScriptInfo(ScriptSerializer):
     """Picard file naming script class
     """
     TYPE = ScriptSerializerType.FILENAMING
