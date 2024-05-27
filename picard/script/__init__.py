@@ -91,6 +91,17 @@ def save_tagging_scripts_to_config(scripts, config=None):
     config.setting['list_of_scripts'] = [(s.pos, s.name, s.enabled, s.content) for s in scripts]
 
 
+def iter_active_tagging_scripts(config=None):
+    """Returns an iterator over the enabled and not empty tagging scripts."""
+    if config is None:
+        config = get_config()
+    if not config.setting['enable_tagger_scripts']:
+        return
+    for script in iter_tagging_scripts_from_config(config=config):
+        if script.enabled and script.content:
+            yield script
+
+
 class ScriptFunctionDocError(Exception):
     pass
 
@@ -134,17 +145,6 @@ def script_function_documentation_all(fmt='markdown', pre='',
         if doc_element:
             doc_elements.append(pre + doc_element + post)
     return "\n".join(doc_elements)
-
-
-def iter_active_tagging_scripts(config=None):
-    """Returns an iterator over the enabled and not empty tagging scripts."""
-    if config is None:
-        config = get_config()
-    if not config.setting['enable_tagger_scripts']:
-        return
-    for script in iter_tagging_scripts_from_config(config=config):
-        if script.enabled and script.content:
-            yield script
 
 
 def get_file_naming_script(settings):
