@@ -63,7 +63,43 @@ from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
     ScriptUnknownFunction,
     ScriptVariable,
 )
-from picard.script.serializer import FileNamingScript
+from picard.script.serializer import FileNamingScriptInfo
+
+
+class TaggingScriptSetting:
+    def __init__(self, pos=0, name="", enabled=False, content=""):
+        self.pos = pos
+        self.name = name
+        self.enabled = enabled
+        self.content = content
+
+
+def iter_tagging_scripts_from_config(config=None):
+    if config is None:
+        config = get_config()
+    yield from iter_tagging_scripts_from_tuples(config.setting['list_of_scripts'])
+
+
+def iter_tagging_scripts_from_tuples(tuples):
+    for pos, name, enabled, content in tuples:
+        yield TaggingScriptSetting(pos=pos, name=name, enabled=enabled, content=content)
+
+
+def save_tagging_scripts_to_config(scripts, config=None):
+    if config is None:
+        config = get_config()
+    config.setting['list_of_scripts'] = [(s.pos, s.name, s.enabled, s.content) for s in scripts]
+
+
+def iter_active_tagging_scripts(config=None):
+    """Returns an iterator over the enabled and not empty tagging scripts."""
+    if config is None:
+        config = get_config()
+    if not config.setting['enable_tagger_scripts']:
+        return
+    for script in iter_tagging_scripts_from_config(config=config):
+        if script.enabled and script.content:
+            yield script
 
 
 class ScriptFunctionDocError(Exception):
@@ -111,15 +147,6 @@ def script_function_documentation_all(fmt='markdown', pre='',
     return "\n".join(doc_elements)
 
 
-def enabled_tagger_scripts_texts():
-    """Returns an iterator over the enabled tagger scripts.
-    For each script, you'll get a tuple consisting of the script name and text"""
-    config = get_config()
-    if not config.setting['enable_tagger_scripts']:
-        return []
-    return [(s_name, s_text) for _s_pos, s_name, s_enabled, s_text in config.setting['list_of_scripts'] if s_enabled and s_text]
-
-
 def get_file_naming_script(settings):
     """Retrieve the file naming script.
 
@@ -146,7 +173,7 @@ def get_file_naming_script_presets():
     """Generator of preset example file naming script objects.
 
     Yields:
-        FileNamingScript: the next example FileNamingScript object
+        FileNamingScriptInfo: the next example FileNamingScriptInfo object
     """
     AUTHOR = "MusicBrainz Picard Development Team"
     DESCRIPTION = _("This preset example file naming script does not require any special settings, tagging scripts or plugins.")
@@ -158,7 +185,7 @@ def get_file_naming_script_presets():
             'title': _(title),
         }
 
-    yield FileNamingScript(
+    yield FileNamingScriptInfo(
         id=DEFAULT_NAMING_PRESET_ID,
         title=preset_title(1, N_("Default file naming script")),
         script=DEFAULT_FILE_NAMING_FORMAT,
@@ -170,7 +197,7 @@ def get_file_naming_script_presets():
         script_language_version="1.0",
     )
 
-    yield FileNamingScript(
+    yield FileNamingScriptInfo(
         id="Preset 2",
         title=preset_title(2, N_("[album artist]/[album]/[track #]. [title]")),
         script="%albumartist%/\n"
@@ -184,7 +211,7 @@ def get_file_naming_script_presets():
         script_language_version="1.0",
     )
 
-    yield FileNamingScript(
+    yield FileNamingScriptInfo(
         id="Preset 3",
         title=preset_title(3, N_("[album artist]/[album]/[disc and track #] [artist] - [title]")),
         script="$if2(%albumartist%,%artist%)/\n"

@@ -40,10 +40,15 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.script import ScriptParser
+from picard.script import (
+    ScriptParser,
+    TaggingScriptSetting,
+    iter_tagging_scripts_from_config,
+    save_tagging_scripts_to_config,
+)
 from picard.script.serializer import (
-    ScriptImportExportError,
-    TaggingScript,
+    ScriptSerializerImportExportError,
+    TaggingScriptInfo,
 )
 
 from picard.ui import (
@@ -146,12 +151,12 @@ class ScriptingOptionsPage(OptionsPage):
         error_message = _(fmt) % params
         self.display_error(ScriptFileError(_(title), error_message))
 
-    def output_file_error(self, error: ScriptImportExportError):
+    def output_file_error(self, error: ScriptSerializerImportExportError):
         """Log file error and display error message dialog.
 
         Args:
             fmt (str): Format for the error type being displayed
-            error (ScriptImportExportError): The error as a ScriptImportExportError instance
+            error (ScriptSerializerImportExportError): The error as a ScriptSerializerImportExportError instance
         """
         params = {
             'filename': error.filename,
@@ -164,13 +169,14 @@ class ScriptingOptionsPage(OptionsPage):
         a Picard script package.
         """
         try:
-            script_item = TaggingScript().import_script(self)
-        except ScriptImportExportError as error:
+            tagging_script = TaggingScriptInfo().import_script(self)
+        except ScriptSerializerImportExportError as error:
             self.output_file_error(error)
             return
-        if script_item:
-            title = _("%s (imported)") % script_item['title']
-            list_item = ScriptListWidgetItem(title, False, script_item['script'])
+        if tagging_script:
+            title = _("%s (imported)") % tagging_script['title']
+            script = TaggingScriptSetting(name=title, enabled=False, content=tagging_script['script'])
+            list_item = ScriptListWidgetItem(script)
             self.ui.script_list.addItem(list_item)
             self.ui.script_list.setCurrentRow(self.ui.script_list.count() - 1)
 
@@ -178,19 +184,19 @@ class ScriptingOptionsPage(OptionsPage):
         """Export the current script to an external file. Export can be either as a plain text
         script or a naming script package.
         """
-        items = self.ui.script_list.selectedItems()
-        if not items:
+        list_items = self.ui.script_list.selectedItems()
+        if not list_items:
             return
 
-        item = items[0]
-        script_text = item.script
-        script_title = item.name if item.name.strip() else _("Unnamed Script")
-
-        if script_text:
-            script_item = TaggingScript(title=script_title, script=script_text)
+        list_item = list_items[0]
+        content = list_item.script.content
+        if content:
+            name = list_item.script.name.strip()
+            title = name or _("Unnamed Script")
+            tagging_script = TaggingScriptInfo(title=title, script=content)
             try:
-                script_item.export_script(parent=self)
-            except ScriptImportExportError as error:
+                tagging_script.export_script(parent=self)
+            except ScriptSerializerImportExportError as error:
                 self.output_file_error(error)
 
     def enable_tagger_scripts_toggled(self, on):
@@ -198,11 +204,11 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.script_list.add_script()
 
     def script_selected(self):
-        items = self.ui.script_list.selectedItems()
-        if items:
-            item = items[0]
+        list_items = self.ui.script_list.selectedItems()
+        if list_items:
+            list_item = list_items[0]
             self.ui.tagger_script.setEnabled(True)
-            self.ui.tagger_script.setText(item.script)
+            self.ui.tagger_script.setText(list_item.script.content)
             self.ui.tagger_script.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
             self.ui.export_button.setEnabled(True)
         else:
@@ -211,21 +217,21 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.export_button.setEnabled(False)
 
     def live_update_and_check(self):
-        items = self.ui.script_list.selectedItems()
-        if not items:
+        list_items = self.ui.script_list.selectedItems()
+        if not list_items:
             return
-        script = items[0]
-        script.script = self.ui.tagger_script.toPlainText()
+        list_item = list_items[0]
+        list_item.script.content = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
         try:
             self.check()
         except OptionsCheckError as e:
-            script.has_error = True
+            list_item.has_error = True
             self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.script_error.setText(e.info)
             return
-        script.has_error = False
+        list_item.has_error = False
 
     def reset_selected_item(self):
         widget = self.ui.script_list
@@ -248,8 +254,8 @@ class ScriptingOptionsPage(OptionsPage):
         config = get_config()
         self.ui.enable_tagger_scripts.setChecked(config.setting['enable_tagger_scripts'])
         self.ui.script_list.clear()
-        for pos, name, enabled, text in config.setting['list_of_scripts']:
-            list_item = ScriptListWidgetItem(name, enabled, text)
+        for script in iter_tagging_scripts_from_config(config=config):
+            list_item = ScriptListWidgetItem(script)
             self.ui.script_list.addItem(list_item)
 
         # Select the last selected script item
@@ -261,12 +267,12 @@ class ScriptingOptionsPage(OptionsPage):
 
     def _all_scripts(self):
         for item in qlistwidget_items(self.ui.script_list):
-            yield item.get_all()
+            yield item.get_script()
 
     def save(self):
         config = get_config()
         config.setting['enable_tagger_scripts'] = self.ui.enable_tagger_scripts.isChecked()
-        config.setting['list_of_scripts'] = list(self._all_scripts())
+        save_tagging_scripts_to_config(self._all_scripts())
         config.persist['last_selected_script_pos'] = self.ui.script_list.currentRow()
 
     def display_error(self, error):

@@ -75,6 +75,7 @@ from picard.extension_points.item_actions import (
 )
 from picard.file import File
 from picard.i18n import gettext as _
+from picard.script import iter_tagging_scripts_from_tuples
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -403,8 +404,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 CollectionMenu(selected_albums, _("Collections"), menu),
             )
 
-        scripts = config.setting['list_of_scripts']
-
         if plugin_actions:
             plugin_menu = QtWidgets.QMenu(_("P&lugins"), menu)
             plugin_menu.setIcon(self.icon_plugins)
@@ -424,8 +423,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                         action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
                 action_menu.addAction(action)
 
+        scripts = config.setting['list_of_scripts']
         if scripts:
-            scripts_menu = ScriptsMenu(scripts, _("&Run scripts"), menu)
+            scripts_menu = ScriptsMenu(iter_tagging_scripts_from_tuples(scripts), _("&Run scripts"), menu)
             scripts_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',

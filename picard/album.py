@@ -82,7 +82,7 @@ from picard.plugin import (
 from picard.script import (
     ScriptError,
     ScriptParser,
-    enabled_tagger_scripts_texts,
+    iter_active_tagging_scripts,
 )
 from picard.track import Track
 from picard.util import (
@@ -474,21 +474,21 @@ class Album(DataObject, MetadataItem):
             track.metadata_images_changed.connect(self.update_metadata_images)
 
         # Prepare parser for user's script
-        for s_name, s_text in enabled_tagger_scripts_texts():
+        for script in iter_active_tagging_scripts():
             parser = ScriptParser()
             for track in self._new_tracks:
                 # Run tagger script for each track
                 try:
-                    parser.eval(s_text, track.metadata)
+                    parser.eval(script.content, track.metadata)
                 except ScriptError:
-                    log.exception("Failed to run tagger script %s on track", s_name)
+                    log.exception("Failed to run tagger script %s on track", script.name)
                 track.metadata.strip_whitespace()
                 track.scripted_metadata.update(track.metadata)
             # Run tagger script for the album itself
             try:
-                parser.eval(s_text, self._new_metadata)
+                parser.eval(script.content, self._new_metadata)
             except ScriptError:
-                log.exception("Failed to run tagger script %s on album", s_name)
+                log.exception("Failed to run tagger script %s on album", script.name)
             self._new_metadata.strip_whitespace()
 
         unmatched_files = [file for track in self.tracks for file in track.files]

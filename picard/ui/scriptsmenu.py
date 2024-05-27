@@ -46,23 +46,21 @@ class ScriptsMenu(QtWidgets.QMenu):
         super().__init__(*args)
 
         for script in scripts:
-            action = self.addAction(script[1])
+            action = self.addAction(script.name)
             action.triggered.connect(partial(self._run_script, script))
 
     def _run_script(self, script):
-        s_name = script[1]
-        s_text = script[3]
         parser = ScriptParser()
 
         for obj in self._iter_unique_metadata_objects():
             try:
-                parser.eval(s_text, obj.metadata)
+                parser.eval(script.content, obj.metadata)
                 obj.update()
             except ScriptError as e:
-                log.exception('Error running tagger script "%s" on object %r', s_name, obj)
+                log.exception('Error running tagger script "%s" on object %r', script.name, obj)
                 msg = N_('Script error in "%(script)s": %(message)s')
                 mparms = {
-                    'script': s_name,
+                    'script': script.name,
                     'message': str(e),
                 }
                 self.tagger.window.set_statusbar_message(msg, mparms)
