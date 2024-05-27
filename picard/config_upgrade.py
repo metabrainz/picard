@@ -430,14 +430,14 @@ def upgrade_to_v2_7_0dev3(config):
     from picard.script import get_file_naming_script_presets
     from picard.script.serializer import (
         PicardFileNamingScript,
-        PicardScriptFromFileError,
+        ScriptSerializerFromFileError,
     )
     scripts = {}
     for item in config.setting.raw_value('file_naming_scripts') or []:
         try:
             script_item = PicardFileNamingScript().create_from_yaml(item, create_new_id=False)
             scripts[script_item['id']] = script_item.to_dict()
-        except PicardScriptFromFileError:
+        except ScriptSerializerFromFileError:
             log.error("Error converting file naming script")
     script_list = set(scripts.keys()) | set(map(lambda item: item['id'], get_file_naming_script_presets()))
     if config.setting['selected_file_naming_script_id'] not in script_list:
