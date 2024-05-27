@@ -131,7 +131,7 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
             'func': HighlightFormat(fg_color='syntax_hl_func', bold=True),
             'noop': HighlightFormat(fg_color='syntax_hl_noop', bold=True, italic=True),
             'special': HighlightFormat(fg_color='syntax_hl_special'),
-            'unicode': HighlightFormat(fg_color='syntax_hl_unicode', italic=True),
+            'unicode': HighlightFormat(fg_color='syntax_hl_unicode'),
             'unknown_func': HighlightFormat(fg_color='syntax_hl_error', italic=True),
             'var': HighlightFormat(fg_color='syntax_hl_var'),
         }
