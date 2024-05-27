@@ -47,8 +47,8 @@ from picard.script import (
     save_tagging_scripts_to_config,
 )
 from picard.script.serializer import (
-    PicardTaggingScript,
     ScriptSerializerImportExportError,
+    TaggingScriptInfo,
 )
 
 from picard.ui import (
@@ -169,7 +169,7 @@ class ScriptingOptionsPage(OptionsPage):
         a Picard script package.
         """
         try:
-            tagging_script = PicardTaggingScript().import_script(self)
+            tagging_script = TaggingScriptInfo().import_script(self)
         except ScriptSerializerImportExportError as error:
             self.output_file_error(error)
             return
@@ -193,7 +193,7 @@ class ScriptingOptionsPage(OptionsPage):
         if content:
             name = list_item.script.name.strip()
             title = name or _("Unnamed Script")
-            tagging_script = PicardTaggingScript(title=title, script=content)
+            tagging_script = TaggingScriptInfo(title=title, script=content)
             try:
                 tagging_script.export_script(parent=self)
             except ScriptSerializerImportExportError as error:

@@ -379,7 +379,7 @@ class ScriptSerializer():
         ))
 
 
-class PicardTaggingScript(ScriptSerializer):
+class TaggingScriptInfo(ScriptSerializer):
     """Picard tagging script class
     """
     TYPE = ScriptSerializerType.TAGGER
