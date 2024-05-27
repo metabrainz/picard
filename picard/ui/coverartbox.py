@@ -567,37 +567,35 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         if isinstance(self.item, Album):
             album = self.item
-            album.enable_update_metadata_images(False)
-            set_image(album, coverartimage)
-            for track in album.tracks:
-                track.enable_update_metadata_images(False)
-                set_image(track, coverartimage)
-            for file in album.iterfiles():
-                set_image(file, coverartimage)
-                file.update(signal=False)
-            for track in album.tracks:
-                track.enable_update_metadata_images(True)
-            album.enable_update_metadata_images(True)
+            with album.suspend_metadata_images_update:
+                set_image(album, coverartimage)
+                for track in album.tracks:
+                    track.suspend_metadata_images_update = True
+                    set_image(track, coverartimage)
+                for file in album.iterfiles():
+                    set_image(file, coverartimage)
+                    file.update(signal=False)
+                for track in album.tracks:
+                    track.suspend_metadata_images_update = False
             album.update(update_tracks=False)
         elif isinstance(self.item, FileListItem):
             parents = set()
             filelist = self.item
-            filelist.enable_update_metadata_images(False)
-            set_image(filelist, coverartimage)
-            for file in filelist.iterfiles():
-                for parent in iter_file_parents(file):
-                    parent.enable_update_metadata_images(False)
-                    parents.add(parent)
-                set_image(file, coverartimage)
-                file.update(signal=False)
-            for parent in parents:
-                set_image(parent, coverartimage)
-                parent.enable_update_metadata_images(True)
-                if isinstance(parent, Album):
-                    parent.update(update_tracks=False)
-                else:
-                    parent.update()
-            filelist.enable_update_metadata_images(True)
+            with filelist.suspend_metadata_images_update:
+                set_image(filelist, coverartimage)
+                for file in filelist.iterfiles():
+                    for parent in iter_file_parents(file):
+                        parent.suspend_metadata_images_update = True
+                        parents.add(parent)
+                    set_image(file, coverartimage)
+                    file.update(signal=False)
+                for parent in parents:
+                    set_image(parent, coverartimage)
+                    parent.suspend_metadata_images_update = False
+                    if isinstance(parent, Album):
+                        parent.update(update_tracks=False)
+                    else:
+                        parent.update()
             filelist.update()
         elif isinstance(self.item, File):
             file = self.item

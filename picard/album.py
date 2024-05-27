@@ -468,40 +468,39 @@ class Album(DataObject, MetadataItem):
         self._tracks_loaded = True
 
     def _finalize_loading_album(self):
-        self.enable_update_metadata_images(False)
-        for track in self._new_tracks:
-            track.orig_metadata.copy(track.metadata)
-            track.metadata_images_changed.connect(self.update_metadata_images)
-
-        # Prepare parser for user's script
-        for script in iter_active_tagging_scripts():
-            parser = ScriptParser()
+        with self.suspend_metadata_images_update:
             for track in self._new_tracks:
-                # Run tagger script for each track
-                try:
-                    parser.eval(script.content, track.metadata)
-                except ScriptError:
-                    log.exception("Failed to run tagger script %s on track", script.name)
-                track.metadata.strip_whitespace()
-                track.scripted_metadata.update(track.metadata)
-            # Run tagger script for the album itself
-            try:
-                parser.eval(script.content, self._new_metadata)
-            except ScriptError:
-                log.exception("Failed to run tagger script %s on album", script.name)
-            self._new_metadata.strip_whitespace()
+                track.orig_metadata.copy(track.metadata)
+                track.metadata_images_changed.connect(self.update_metadata_images)
 
-        unmatched_files = [file for track in self.tracks for file in track.files]
-        self.metadata = self._new_metadata
-        self.orig_metadata.copy(self.metadata)
-        self.orig_metadata.images.clear()
-        self.tracks = self._new_tracks
-        del self._new_metadata
-        del self._new_tracks
-        self.loaded = True
-        self.status = AlbumStatus.LOADED
-        self.match_files(unmatched_files + self.unmatched_files.files)
-        self.enable_update_metadata_images(True)
+            # Prepare parser for user's script
+            for script in iter_active_tagging_scripts():
+                parser = ScriptParser()
+                for track in self._new_tracks:
+                    # Run tagger script for each track
+                    try:
+                        parser.eval(script.content, track.metadata)
+                    except ScriptError:
+                        log.exception("Failed to run tagger script %s on track", script.name)
+                    track.metadata.strip_whitespace()
+                    track.scripted_metadata.update(track.metadata)
+                # Run tagger script for the album itself
+                try:
+                    parser.eval(script.content, self._new_metadata)
+                except ScriptError:
+                    log.exception("Failed to run tagger script %s on album", script.name)
+                self._new_metadata.strip_whitespace()
+
+            unmatched_files = [file for track in self.tracks for file in track.files]
+            self.metadata = self._new_metadata
+            self.orig_metadata.copy(self.metadata)
+            self.orig_metadata.images.clear()
+            self.tracks = self._new_tracks
+            del self._new_metadata
+            del self._new_tracks
+            self.loaded = True
+            self.status = AlbumStatus.LOADED
+            self.match_files(unmatched_files + self.unmatched_files.files)
         self.update_metadata_images()
         self.update()
         self.tagger.window.set_statusbar_message(
@@ -843,7 +842,7 @@ class Album(DataObject, MetadataItem):
             self.load(priority=True, refresh=True)
 
     def update_metadata_images(self):
-        if not self.update_metadata_images_enabled:
+        if self.suspend_metadata_images_update:
             return
 
         if self.update_metadata_images_from_children():
@@ -851,13 +850,11 @@ class Album(DataObject, MetadataItem):
             self.metadata_images_changed.emit()
 
     def keep_original_images(self):
-        self.enable_update_metadata_images(False)
-        for track in self.tracks:
-            track.keep_original_images()
-        for file in list(self.unmatched_files.files):
-            file.keep_original_images()
-        self.enable_update_metadata_images(True)
-        self.update_metadata_images()
+        with self.suspend_metadata_images_update:
+            for track in self.tracks:
+                track.keep_original_images()
+            for file in list(self.unmatched_files.files):
+                file.keep_original_images()
 
     def children_metadata_items(self):
         for track in self.tracks:
@@ -875,15 +872,14 @@ class NatAlbum(Album):
 
     def update(self, update_tracks=True, update_selection=True):
         config = get_config()
-        self.enable_update_metadata_images(False)
         old_album_title = self.metadata['album']
         self.metadata['album'] = config.setting['nat_name']
-        for track in self.tracks:
-            if old_album_title == track.metadata['album']:
-                track.metadata['album'] = self.metadata['album']
-            for file in track.files:
-                track.update_file_metadata(file)
-        self.enable_update_metadata_images(True)
+        with self.suspend_metadata_images_update:
+            for track in self.tracks:
+                if old_album_title == track.metadata['album']:
+                    track.metadata['album'] = self.metadata['album']
+                for file in track.files:
+                    track.update_file_metadata(file)
         super().update(update_tracks=update_tracks, update_selection=update_selection)
 
     def _finalize_loading(self, error):

@@ -30,6 +30,7 @@ from PyQt6 import QtCore
 from picard import log
 from picard.i18n import ngettext
 from picard.metadata import Metadata
+from picard.util import IgnoreUpdatesContext
 
 
 class Item(object):
@@ -164,24 +165,20 @@ class MetadataItem(Item):
         super().__init__()
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
-        self.update_metadata_images_enabled = True
         self.update_children_metadata_attrs = {}
         self.iter_children_items_metadata_ignore_attrs = {}
-
-    def enable_update_metadata_images(self, enabled):
-        self.update_metadata_images_enabled = enabled
+        self.suspend_metadata_images_update = IgnoreUpdatesContext()
 
     def update_metadata_images(self):
-        if self.update_metadata_images_enabled and self.can_show_coverart:
+        if not self.suspend_metadata_images_update and self.can_show_coverart:
             if self.update_metadata_images_from_children():
                 self.metadata_images_changed.emit()
 
     def keep_original_images(self):
-        self.enable_update_metadata_images(False)
-        for file in list(self.files):
-            if file.can_show_coverart:
-                file.keep_original_images()
-        self.enable_update_metadata_images(True)
+        with self.suspend_metadata_images_update:
+            for file in list(self.files):
+                if file.can_show_coverart:
+                    file.keep_original_images()
         self.update_metadata_images()
 
     def children_metadata_items(self):
