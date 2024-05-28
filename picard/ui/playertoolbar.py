@@ -238,7 +238,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self._add_toolbar_action(self.play_action)
         self._add_toolbar_action(self.pause_action)
 
-        self.progress_widget = PlaybackProgressSlider(self, self.player)
+        self.progress_widget = PlaybackProgressSlider(self.player, parent=self)
         self.addWidget(self.progress_widget)
 
         config = get_config()
@@ -299,8 +299,8 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
 
 class PlaybackProgressSlider(QtWidgets.QWidget):
-    def __init__(self, parent, player):
-        super().__init__(parent)
+    def __init__(self, player, parent=None):
+        super().__init__(parent=parent)
         self.player = player
         self._position_update = False
 
@@ -317,7 +317,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self.media_name_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.media_name_label.setFont(tool_font)
 
-        slider_container = QtWidgets.QWidget(self)
+        slider_container = QtWidgets.QWidget(parent=self)
         hbox = QtWidgets.QHBoxLayout(slider_container)
         hbox.setContentsMargins(0, 0, 0, 0)
         self.position_label = QtWidgets.QLabel("0:00", self)
