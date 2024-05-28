@@ -80,14 +80,13 @@ class ScriptFileError(OptionsCheckError):
 class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
     defaultsize = QtCore.QSize(570, 400)
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         # on macOS having this not a dialog causes the window to be placed
         # behind the options dialog.
         if not IS_MACOS:
             self.setWindowFlags(QtCore.Qt.WindowType.Window)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
-        self.parent = parent
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
         doc_widget = ScriptingDocumentationWidget(self)
