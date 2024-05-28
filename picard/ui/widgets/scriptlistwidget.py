@@ -45,8 +45,8 @@ class ScriptListWidget(QtWidgets.QListWidget):
 
     signal_reset_selected_item = QtCore.pyqtSignal()
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.itemChanged.connect(self.item_changed)
         self.currentItemChanged.connect(self.current_item_changed)
         self.old_row = -1

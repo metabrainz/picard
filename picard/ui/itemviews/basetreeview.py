@@ -249,7 +249,7 @@ def _add_other_versions(releases_menu, album, action_loading):
 class BaseTreeView(QtWidgets.QTreeWidget):
 
     def __init__(self, window, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.setAccessibleName(_(self.NAME))
         self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
@@ -401,7 +401,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if selected_albums:
             add_actions(
                 '-',
-                CollectionMenu(selected_albums, _("Collections"), menu),
+                CollectionMenu(selected_albums, _("Collections"), parent=menu),
             )
 
         if plugin_actions:
@@ -425,7 +425,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         scripts = config.setting['list_of_scripts']
         if scripts:
-            scripts_menu = ScriptsMenu(iter_tagging_scripts_from_tuples(scripts), _("&Run scripts"), menu)
+            scripts_menu = ScriptsMenu(iter_tagging_scripts_from_tuples(scripts), _("&Run scripts"), parent=menu)
             scripts_menu.setIcon(self.icon_plugins)
             add_actions(
                 '-',

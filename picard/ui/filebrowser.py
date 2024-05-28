@@ -50,8 +50,8 @@ from picard.util.macos import (
 
 class FileBrowser(QtWidgets.QTreeView):
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setDragEnabled(True)

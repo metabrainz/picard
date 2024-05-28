@@ -159,7 +159,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None, disable_player=False):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.actions = {}
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
@@ -225,7 +225,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.panel = MainPanel(self, main_layout)
         self.panel.setObjectName('main_panel_splitter')
-        self.file_browser = FileBrowser(self.panel)
+        self.file_browser = FileBrowser(parent=self.panel)
         if not self.action_is_checked(MainAction.SHOW_FILE_BROWSER):
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
@@ -864,7 +864,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if directory:
                 dir_list.append(directory)
         else:
-            file_dialog = MultiDirsSelectDialog(self, "", current_directory)
+            file_dialog = MultiDirsSelectDialog(parent=self, caption="", directory=current_directory)
             if file_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
                 dir_list = file_dialog.selectedFiles()
 

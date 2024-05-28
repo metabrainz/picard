@@ -128,7 +128,7 @@ class Player(QtCore.QObject):
         return self._player.playbackRate()
 
     def create_toolbar(self):
-        self._toolbar = PlayerToolbar(self.parent(), self)
+        self._toolbar = PlayerToolbar(self, parent=self.parent())
         return self._toolbar
 
     def set_objects(self, objects):
@@ -209,8 +209,8 @@ class Player(QtCore.QObject):
 
 
 class PlayerToolbar(QtWidgets.QToolBar):
-    def __init__(self, parent, player):
-        super().__init__(_("Player"), parent)
+    def __init__(self, player, parent=None):
+        super().__init__(_("Player"), parent=parent)
         self.setObjectName('player_toolbar')
         self.setAllowedAreas(QtCore.Qt.ToolBarArea.TopToolBarArea
             | QtCore.Qt.ToolBarArea.BottomToolBarArea
@@ -244,14 +244,14 @@ class PlayerToolbar(QtWidgets.QToolBar):
         config = get_config()
         volume = config.persist['mediaplayer_volume']
         self.player.set_volume(volume)
-        self.volume_button = VolumeControlButton(self, volume)
+        self.volume_button = VolumeControlButton(volume, parent=self)
         self.volume_button.volume_changed.connect(self.player.set_volume)
         self.volume_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.volume_button)
 
         playback_rate = config.persist['mediaplayer_playback_rate']
         self.player.set_playback_rate(playback_rate)
-        self.playback_rate_button = PlaybackRateButton(self, playback_rate)
+        self.playback_rate_button = PlaybackRateButton(playback_rate, parent=self)
         self.playback_rate_button.playback_rate_changed.connect(self.player.set_playback_rate)
         self.playback_rate_button.setToolButtonStyle(self.toolButtonStyle())
         self.addWidget(self.playback_rate_button)
@@ -368,8 +368,8 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
     multiplier = 10.0
 
-    def __init__(self, parent, playback_rate):
-        super().__init__(parent)
+    def __init__(self, playback_rate, parent=None):
+        super().__init__(parent=parent)
         self.popover_position = 'bottom'
         self.rate_fmt = N_("%1.1f ×")
         button_margin = self.style().pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
@@ -423,8 +423,8 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 class VolumeControlButton(QtWidgets.QToolButton):
     volume_changed = QtCore.pyqtSignal(int)
 
-    def __init__(self, parent, volume):
-        super().__init__(parent)
+    def __init__(self, volume, parent=None):
+        super().__init__(parent=parent)
         self.popover_position = 'bottom'
         self.step = 3
         self.volume_fmt = N_("%d%%")

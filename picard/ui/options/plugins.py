@@ -73,8 +73,8 @@ COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
 class PluginActionButton(QtWidgets.QToolButton):
 
     def __init__(self, icon=None, tooltip=None, retain_space=False,
-                 switch_method=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+                 switch_method=None, parent=None):
+        super().__init__(parent=parent)
         if tooltip is not None:
             self.setToolTip(tooltip)
 

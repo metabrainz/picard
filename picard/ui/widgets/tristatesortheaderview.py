@@ -39,7 +39,7 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
     STATE_SECTION_MOVED_OR_RESIZED = 1
 
     def __init__(self, orientation, parent=None):
-        super().__init__(orientation, parent)
+        super().__init__(orientation, parent=parent)
         self.prelock_state = None
 
         # Remember if resize / move event just happened

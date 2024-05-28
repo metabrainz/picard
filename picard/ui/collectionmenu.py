@@ -42,8 +42,8 @@ from picard.util import strxfrm
 
 class CollectionMenu(QtWidgets.QMenu):
 
-    def __init__(self, albums, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, albums, title, parent=None):
+        super().__init__(title, parent=parent)
         self.releases = set(a.id for a in albums)
         self._ignore_update = False
         self._ignore_hover = False
