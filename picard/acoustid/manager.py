@@ -101,7 +101,7 @@ class Submission:
         return args
 
 
-class AcoustIDManager(QtCore.QObject):
+class AcoustIDManager:
 
     # AcoustID has a post limit of around 1 MB.
     MAX_PAYLOAD = 1000000
@@ -112,7 +112,6 @@ class AcoustIDManager(QtCore.QObject):
     BATCH_SIZE_REDUCTION_FACTOR = 0.7
 
     def __init__(self, acoustid_api):
-        super().__init__()
         self.tagger = QtCore.QCoreApplication.instance()
         self._submissions = {}
         self._acoustid_api = acoustid_api
