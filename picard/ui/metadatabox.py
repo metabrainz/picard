@@ -470,7 +470,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _edit_tag(self, tag):
         if self.tag_diff is not None:
-            EditTagDialog(self.tagger.window, tag).exec()
+            EditTagDialog(self, tag).exec()
 
     def _edit_selected_tag(self):
         tags = list(self._selected_tags(filter_func=self._tag_is_editable))
