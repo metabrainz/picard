@@ -62,8 +62,8 @@ class ActiveLabel(QtWidgets.QLabel):
 
     clicked = QtCore.pyqtSignal()
 
-    def __init__(self, active=True, drops=False, *args):
-        super().__init__(*args)
+    def __init__(self, active=True, parent=None):
+        super().__init__(parent=parent)
         self.setActive(active)
 
     def setActive(self, active):
