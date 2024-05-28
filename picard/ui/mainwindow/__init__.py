@@ -233,7 +233,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.log_dialog = LogView(self)
         self.history_dialog = HistoryView(self)
 
-        self.metadata_box = MetadataBox(self)
+        self.metadata_box = MetadataBox(parent=self)
         self.cover_art_box = CoverArtBox(parent=self)
         metadata_view_layout = QtWidgets.QHBoxLayout()
         metadata_view_layout.setContentsMargins(0, 0, 0, 0)
