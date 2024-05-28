@@ -44,8 +44,8 @@ from picard.ui.util import StandardButton
 
 class SearchBox(QtWidgets.QWidget):
 
-    def __init__(self, parent, force_advanced_search=None):
-        super().__init__(parent)
+    def __init__(self, force_advanced_search=None, parent=None):
+        super().__init__(parent=parent)
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _("Search"), self)
         self.search_action.setEnabled(False)
         self.search_action.triggered.connect(self.search)
@@ -172,7 +172,7 @@ class SearchDialog(TableBasedDialog):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setObjectName('vertical_layout')
         if self.show_search:
-            self.search_box = SearchBox(self, force_advanced_search=self.force_advanced_search)
+            self.search_box = SearchBox(force_advanced_search=self.force_advanced_search, parent=self)
             self.search_box.setObjectName('search_box')
             self.verticalLayout.addWidget(self.search_box)
         self.center_widget = QtWidgets.QWidget(self)
