@@ -67,7 +67,7 @@ class FingerprintingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_fingerprinting.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self._fpcalc_valid = True
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)

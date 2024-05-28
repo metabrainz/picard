@@ -74,7 +74,7 @@ class RenamingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_filerenaming.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.script_text = ""
         self.compat_options = {}
         self.ui = Ui_RenamingOptionsPage()

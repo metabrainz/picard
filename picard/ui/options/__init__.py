@@ -57,8 +57,8 @@ class OptionsPage(QtWidgets.QWidget):
     initialized = False
     loaded = False
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.setStyleSheet(self.STYLESHEET)
 

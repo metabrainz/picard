@@ -134,7 +134,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     ACTION_IDS = set(TOOLBAR_BUTTONS)
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_InterfaceToolbarOptionsPage()
         self.ui.setupUi(self)
 

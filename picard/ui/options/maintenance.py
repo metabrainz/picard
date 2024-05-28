@@ -79,7 +79,7 @@ class MaintenanceOptionsPage(OptionsPage):
     signal_reload = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_MaintenanceOptionsPage()
         self.ui.setupUi(self)
         self.ui.description.setText(_(

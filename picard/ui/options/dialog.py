@@ -108,7 +108,7 @@ class ErrorOptionsPage(OptionsPage):
         self.ACTIVE = from_cls.ACTIVE
         self.HELP_URL = from_cls.HELP_URL
 
-        super().__init__(parent)
+        super().__init__(parent=parent)
 
         self.error = _("This page failed to initialize")
 

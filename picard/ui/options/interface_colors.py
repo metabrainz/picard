@@ -103,7 +103,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_colors.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_InterfaceColorsOptionsPage()
         self.ui.setupUi(self)
         self.new_colors = {}

@@ -71,7 +71,7 @@ class ProfilesOptionsPage(OptionsPage):
     signal_refresh = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_ProfileEditorDialog()
         self.ui.setupUi(self)
         self.make_buttons()

@@ -61,7 +61,7 @@ class GeneralOptionsPage(OptionsPage):
     HELP_URL = "/config/options_general.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_GeneralOptionsPage()
         self.ui.setupUi(self)
         self.ui.server_host.addItems(MUSICBRAINZ_SERVERS)

@@ -70,7 +70,7 @@ class RenamingCompatOptionsPage(OptionsPage):
     options_changed = QtCore.pyqtSignal(dict)
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         config = get_config()
         self.win_compat_replacements = config.setting['win_compat_replacements']
         self.ui = Ui_RenamingCompatOptionsPage()

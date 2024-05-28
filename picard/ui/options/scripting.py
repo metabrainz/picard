@@ -110,7 +110,7 @@ class ScriptingOptionsPage(OptionsPage):
     default_script_extension = "ptsp"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.ui.tagger_script.setEnabled(False)
