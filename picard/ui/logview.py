@@ -124,7 +124,7 @@ class LogViewCommon(LogViewDialog):
 
 
 class Highlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, string, parent=None):
+    def __init__(self, string, parent):
         super().__init__(parent)
 
         self.fmt = QtGui.QTextCharFormat()
@@ -259,7 +259,7 @@ class LogView(LogViewCommon):
                 self.hl.setDocument(None)
                 self.hl = None
             if self.hl_text:
-                self.hl = Highlighter(self.hl_text, parent=self.doc)
+                self.hl = Highlighter(self.hl_text, self.doc)
             self.clear_highlight_button.setEnabled(bool(self.hl))
 
     def _setup_formats(self):
