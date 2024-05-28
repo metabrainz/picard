@@ -389,7 +389,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if config.setting['enable_ratings'] and \
            len(self.window.selected_objects) == 1 and isinstance(obj, Track):
             action = QtWidgets.QWidgetAction(menu)
-            action.setDefaultWidget(RatingWidget(menu, obj))
+            action.setDefaultWidget(RatingWidget(obj, parent=menu))
             add_actions(
                 '-',
                 action,
