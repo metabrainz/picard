@@ -167,7 +167,7 @@ class CAATypesSelectorDialog(PicardDialog):
         self, parent=None, types_include=None, types_exclude=None,
         default_include=None, default_exclude=None, known_types=None
     ):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         if types_include is None:
             types_include = []
         if types_exclude is None:

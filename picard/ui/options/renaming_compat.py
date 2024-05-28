@@ -160,7 +160,7 @@ class WinCompatReplacementValidator(QtGui.QValidator):
 
 class WinCompatDialog(PicardDialog):
     def __init__(self, replacements, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.replacements = dict(replacements)
         self.ui = Ui_WinCompatDialog()
         self.ui.setupUi(self)

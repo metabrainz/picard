@@ -465,7 +465,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             parent (QMainWindow or OptionsPage, optional): Parent object. Defaults to None.
             examples (ScriptEditorExamples, required): Object containing examples to display. Defaults to None.
         """
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.examples = examples
 
         self.setWindowTitle(_(self.TITLE))

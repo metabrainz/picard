@@ -160,7 +160,7 @@ class ArtworkRow:
 class InfoDialog(PicardDialog):
 
     def __init__(self, obj, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.obj = obj
         self.ui = Ui_InfoDialog()
         self._pixmaps = {
@@ -423,7 +423,7 @@ def text_as_html(text):
 class FileInfoDialog(InfoDialog):
 
     def __init__(self, file_, parent=None):
-        super().__init__(file_, parent)
+        super().__init__(file_, parent=parent)
         self.setWindowTitle(_("Info") + " - " + file_.base_filename)
 
     def _display_info_tab(self):
@@ -435,7 +435,7 @@ class FileInfoDialog(InfoDialog):
 class AlbumInfoDialog(InfoDialog):
 
     def __init__(self, album, parent=None):
-        super().__init__(album, parent)
+        super().__init__(album, parent=parent)
         self.setWindowTitle(_("Album Info"))
 
     def _display_info_tab(self):
@@ -449,7 +449,7 @@ class AlbumInfoDialog(InfoDialog):
 class TrackInfoDialog(InfoDialog):
 
     def __init__(self, track, parent=None):
-        super().__init__(track, parent)
+        super().__init__(track, parent=parent)
         self.setWindowTitle(_("Track Info"))
 
     def _display_info_tab(self):
@@ -473,7 +473,7 @@ class TrackInfoDialog(InfoDialog):
 class ClusterInfoDialog(InfoDialog):
 
     def __init__(self, cluster, parent=None):
-        super().__init__(cluster, parent)
+        super().__init__(cluster, parent=parent)
         self.setWindowTitle(_("Cluster Info"))
 
     def _display_info_tab(self):

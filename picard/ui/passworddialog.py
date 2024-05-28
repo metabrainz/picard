@@ -36,7 +36,7 @@ from picard.ui.forms.ui_passworddialog import Ui_PasswordDialog
 class PasswordDialog(PicardDialog):
 
     def __init__(self, authenticator, reply, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self._authenticator = authenticator
         self.ui = Ui_PasswordDialog()
         self.ui.setupUi(self)
@@ -56,7 +56,7 @@ class PasswordDialog(PicardDialog):
 class ProxyDialog(PicardDialog):
 
     def __init__(self, authenticator, proxy, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self._authenticator = authenticator
         self._proxy = proxy
         self.ui = Ui_PasswordDialog()

@@ -103,7 +103,7 @@ class TableBasedDialog(PicardDialog):
     resized = pyqtSignal()
 
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.setupUi()
         self.columns = None  # self.columns has to be an ordered dict, with column name as keys, and matching label as values
         self.sorting_enabled = True

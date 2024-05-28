@@ -58,7 +58,7 @@ class LogViewDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
 
     def __init__(self, title, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Window)
         self.setWindowTitle(title)
         self.doc = QtGui.QTextDocument()
