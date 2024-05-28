@@ -41,7 +41,7 @@ from picard.ui.enums import MainAction
 FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS = 30000
 
 
-class Submission(object):
+class Submission:
 
     def __init__(self, fingerprint, duration, recordingid=None, metadata=None):
         self.fingerprint = fingerprint
