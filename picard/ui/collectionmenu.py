@@ -94,8 +94,8 @@ class CollectionMenu(QtWidgets.QMenu):
 
 class CollectionMenuItem(QtWidgets.QWidget):
 
-    def __init__(self, menu, collection, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, menu, collection, parent=None):
+        super().__init__(parent=parent)
         self.menu = menu
         self.active = False
         self._setup_layout(menu, collection)
