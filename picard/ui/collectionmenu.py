@@ -144,10 +144,10 @@ class CollectionMenuItem(QtWidgets.QWidget):
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
 
-    def __init__(self, menu, collection, *args, **kwargs):
+    def __init__(self, menu, collection, parent=None):
         self.menu = menu
         self.collection = collection
-        super().__init__(self._label(), *args, **kwargs)
+        super().__init__(self._label(), parent=parent)
 
         releases = collection.releases & menu.releases
         if len(releases) == len(menu.releases):
