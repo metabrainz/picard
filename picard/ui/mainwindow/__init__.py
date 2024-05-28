@@ -146,6 +146,7 @@ from picard.ui.statusindicator import (
 )
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.util import (
+    FileDialog,
     MultiDirsSelectDialog,
     find_starting_directory,
     menu_builder,
@@ -847,9 +848,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         extensions.sort()
         formats.insert(0, _("All supported formats") + " (%s)" % " ".join(extensions))
         formats.insert(1, _("All files") + " (*)")
-        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
+        files, _filter = FileDialog.getOpenFileNames(
             parent=self,
-            directory=current_directory,
+            dir=current_directory,
             filter=";;".join(formats),
         )
         if files:
@@ -864,15 +865,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dir_list = []
         config = get_config()
         if not config.setting['allow_multi_dirs_selection']:
-            directory = QtWidgets.QFileDialog.getExistingDirectory(
+            directory = FileDialog.getExistingDirectory(
                 parent=self,
-                directory=current_directory,
+                dir=current_directory,
             )
             if directory:
                 dir_list.append(directory)
         else:
             file_dialog = MultiDirsSelectDialog(
                 parent=self,
+                caption=_("Select one or more directories"),
                 directory=current_directory,
             )
             if file_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:

@@ -81,7 +81,63 @@ def find_starting_directory():
     return find_existing_path(path)
 
 
-class MultiDirsSelectDialog(QtWidgets.QFileDialog):
+def picardize_caption(caption):
+    return _("Picard - %s") % caption
+
+
+def convert_filedialog_params(kwargs, default_caption):
+    # We use PySide/Qt syntax in code, so convert to PyQt6
+    if 'dir' in kwargs:
+        # TODO: remove with PySide
+        # pyside & qt use `dir`, pyqt uses `directory`
+        kwargs['directory'] = kwargs['dir']
+        del kwargs['dir']
+
+    if 'selectedFilter' in kwargs:
+        # TODO: remove with PySide
+        # pyside & qt use `selectedFilter`, pyqt uses `initialFilter`
+        kwargs['initialFilter'] = kwargs['selectedFilter']
+        del kwargs['selectedFilter']
+
+    # Ensure we have a caption in those dialogs
+    if 'caption' not in kwargs or not kwargs['caption']:
+        kwargs['caption'] = default_caption
+
+    # Add app name to the caption, fancier in window managers
+    kwargs['caption'] = picardize_caption(kwargs['caption'])
+
+
+class FileDialog(QtWidgets.QFileDialog):
+    """Wrap QFileDialog & its static methods"""
+
+    def __init__(self, parent=None, caption="", directory="", filter=""):
+        if not caption:
+            caption = _("Select a file or a directory")
+        caption = picardize_caption(caption)
+        super().__init__(parent=parent, caption=caption, directory=directory, filter=filter)
+
+    @staticmethod
+    def getSaveFileName(**kwargs):
+        convert_filedialog_params(kwargs, _("Select a target file"))
+        return QtWidgets.QFileDialog.getSaveFileName(**kwargs)
+
+    @staticmethod
+    def getOpenFileName(**kwargs):
+        convert_filedialog_params(kwargs, _("Select a file"))
+        return QtWidgets.QFileDialog.getOpenFileName(**kwargs)
+
+    @staticmethod
+    def getOpenFileNames(**kwargs):
+        convert_filedialog_params(kwargs, _("Select one or more files"))
+        return QtWidgets.QFileDialog.getOpenFileNames(**kwargs)
+
+    @staticmethod
+    def getExistingDirectory(**kwargs):
+        convert_filedialog_params(kwargs, _("Select a directory"))
+        return QtWidgets.QFileDialog.getExistingDirectory(**kwargs)
+
+
+class MultiDirsSelectDialog(FileDialog):
 
     """Custom file selection dialog which allows the selection
     of multiple directories.

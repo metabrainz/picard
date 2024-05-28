@@ -47,6 +47,7 @@ from picard.util import open_local_path
 
 from picard.ui.forms.ui_options_maintenance import Ui_MaintenanceOptionsPage
 from picard.ui.options import OptionsPage
+from picard.ui.util import FileDialog
 
 
 OPTIONS_NOT_IN_PAGES = {
@@ -141,9 +142,9 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog.exec()
 
     def _dialog_autobackup_dir_browse(self):
-        path = QtWidgets.QFileDialog.getExistingDirectory(
+        path = FileDialog.getExistingDirectory(
             parent=self,
-            directory=self.get_current_autobackup_dir(),
+            dir=self.get_current_autobackup_dir(),
         )
         if path:
             self.set_current_autobackup_dir(path)
@@ -237,11 +238,11 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog.exec()
 
     def _dialog_ask_backup_filename(self, default_path, ext):
-        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(
-            self,
-            _("Backup Configuration File"),
-            default_path,
-            self._get_dialog_filetypes(ext),
+        filename, file_type = FileDialog.getSaveFileName(
+            parent=self,
+            caption=_("Backup Configuration File"),
+            dir=default_path,
+            filter=self._get_dialog_filetypes(ext),
         )
         return filename
 
@@ -316,11 +317,11 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog.exec()
 
     def _dialog_load_backup_select_filename(self, directory, ext):
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(
-            self,
-            _("Select Configuration File to Load"),
-            directory,
-            self._get_dialog_filetypes(ext),
+        filename, file_type = FileDialog.getOpenFileName(
+            parent=self,
+            caption=_("Select Configuration File to Load"),
+            dir=directory,
+            filter=self._get_dialog_filetypes(ext),
         )
         return filename
 

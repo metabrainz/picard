@@ -35,7 +35,6 @@
 
 import os.path
 
-from PyQt6 import QtWidgets
 from PyQt6.QtGui import QPalette
 
 from picard.config import get_config
@@ -62,6 +61,7 @@ from picard.ui.scripteditor import (
     populate_script_selection_combo_box,
     synchronize_vertical_scrollbars,
 )
+from picard.ui.util import FileDialog
 
 
 class RenamingOptionsPage(OptionsPage):
@@ -280,9 +280,9 @@ class RenamingOptionsPage(OptionsPage):
             super().display_error(error)
 
     def move_files_to_browse(self):
-        path = QtWidgets.QFileDialog.getExistingDirectory(
+        path = FileDialog.getExistingDirectory(
             parent=self,
-            directory=self.ui.move_files_to.text(),
+            dir=self.ui.move_files_to.text(),
         )
         if path:
             path = os.path.normpath(path)
