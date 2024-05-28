@@ -503,7 +503,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.ui.file_naming_format.setEnabled(True)
 
         # Add scripting documentation to parent frame.
-        doc_widget = ScriptingDocumentationWidget(self, include_link=False)
+        doc_widget = ScriptingDocumentationWidget(include_link=False, parent=self)
         self.ui.documentation_frame_layout.addWidget(doc_widget)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)

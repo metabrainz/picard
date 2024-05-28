@@ -89,7 +89,7 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
-        doc_widget = ScriptingDocumentationWidget(self)
+        doc_widget = ScriptingDocumentationWidget(parent=self)
         self.ui.documentation_layout.addWidget(doc_widget)
         self.ui.buttonBox.rejected.connect(self.close)
 
