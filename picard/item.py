@@ -33,7 +33,7 @@ from picard.metadata import Metadata
 from picard.util import IgnoreUpdatesContext
 
 
-class Item(object):
+class Item:
 
     @property
     def can_save(self):

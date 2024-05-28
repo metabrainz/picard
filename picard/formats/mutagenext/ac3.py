@@ -42,7 +42,7 @@ except ImportError:
     class AC3Error(MutagenError):
         pass
 
-    class AC3Info(object):
+    class AC3Info:
 
         """AC3 stream information.
 

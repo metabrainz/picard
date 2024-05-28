@@ -128,7 +128,7 @@ def normalize_tagname(name):
     return name
 
 
-class ScriptVariable(object):
+class ScriptVariable:
 
     def __init__(self, name):
         self.name = name
@@ -140,7 +140,7 @@ class ScriptVariable(object):
         return state.context.get(normalize_tagname(self.name), "")
 
 
-class ScriptFunction(object):
+class ScriptFunction:
 
     def __init__(self, name, args, parser, column=0, line=0):
         self.stackitem = StackItem(line, column, name)
@@ -201,7 +201,7 @@ def isidentif(ch):
     return ch.isalnum() or ch == '_'
 
 
-class ScriptParser(object):
+class ScriptParser:
 
     r"""Tagger script parser.
 

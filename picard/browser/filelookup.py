@@ -46,7 +46,7 @@ from picard.util import (
 from picard.ui.searchdialog.album import AlbumSearchDialog
 
 
-class FileLookup(object):
+class FileLookup:
 
     RE_MB_ENTITY = re.compile(r"""
         \b(?P<entity>area|artist|instrument|label|place|recording|release|release-group|series|track|url|work)?

@@ -31,7 +31,7 @@ from PyQt6.QtCore import QXmlStreamReader
 _node_name_re = re.compile('[^a-zA-Z0-9]')
 
 
-class XmlNode(object):
+class XmlNode:
 
     def __init__(self):
         self.text = ''

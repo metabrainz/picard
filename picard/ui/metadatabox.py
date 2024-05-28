@@ -131,7 +131,7 @@ class TagCounter(dict):
         return TagCounterDisplayValue(text, is_grouped)
 
 
-class TagDiff(object):
+class TagDiff:
 
     __slots__ = ('tag_names', 'new', 'orig', 'status', 'objects', 'max_length_delta_ms')
 

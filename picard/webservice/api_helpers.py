@@ -59,7 +59,7 @@ def _wrap_xml_metadata(data):
             % data)
 
 
-class APIHelper(object):
+class APIHelper:
     _base_url = None
 
     def __init__(self, webservice, base_url=None):
