@@ -50,10 +50,9 @@ except ImportError:
         discid = None
 
 
-class Disc(QtCore.QObject):
+class Disc:
 
     def __init__(self, id=None):
-        super().__init__()
         self.tagger = QtCore.QCoreApplication.instance()
         self.id = id
         self.mcn = None
