@@ -222,7 +222,12 @@ class ScriptSerializer():
 
         dialog_title = _("Export Script File")
         dialog_file_types = self._get_dialog_filetypes()
-        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(parent, dialog_title, default_path, dialog_file_types)
+        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(
+            parent=parent,
+            caption=dialog_title,
+            directory=default_path,
+            filter=dialog_file_types,
+        )
         if not filename:
             return False
         # Fix issue where Qt may set the extension twice
@@ -259,7 +264,12 @@ class ScriptSerializer():
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()
         default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(parent, dialog_title, default_script_directory, dialog_file_types)
+        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(
+            parent=parent,
+            caption=dialog_title,
+            directory=default_script_directory,
+            filter=dialog_file_types,
+        )
         if not filename:
             return None
         log.debug("Importing script file: %s", filename)

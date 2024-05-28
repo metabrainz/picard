@@ -120,7 +120,10 @@ class FingerprintingOptionsPage(OptionsPage):
         self._acoustid_fpcalc_check()
 
     def acoustid_fpcalc_browse(self):
-        path, _filter = QtWidgets.QFileDialog.getOpenFileName(self, "", self.ui.acoustid_fpcalc.text())
+        path, _filter = QtWidgets.QFileDialog.getOpenFileName(
+            parent=self,
+            directory=self.ui.acoustid_fpcalc.text(),
+        )
         if path:
             path = os.path.normpath(path)
             self.ui.acoustid_fpcalc.setText(path)

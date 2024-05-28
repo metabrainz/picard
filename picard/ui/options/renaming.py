@@ -280,7 +280,10 @@ class RenamingOptionsPage(OptionsPage):
             super().display_error(error)
 
     def move_files_to_browse(self):
-        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.ui.move_files_to.text())
+        path = QtWidgets.QFileDialog.getExistingDirectory(
+            parent=self,
+            directory=self.ui.move_files_to.text(),
+        )
         if path:
             path = os.path.normpath(path)
             self.ui.move_files_to.setText(path)

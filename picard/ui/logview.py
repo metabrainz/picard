@@ -276,9 +276,9 @@ class LogView(LogViewCommon):
 
     def _save_log_as_do(self):
         path, ok = QtWidgets.QFileDialog.getSaveFileName(
-            self,
+            parent=self,
             caption=_("Save Log View to File"),
-            options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite
+            options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite,
         )
         if ok and path:
             if os.path.isfile(path):

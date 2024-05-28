@@ -660,10 +660,9 @@ class PluginsOptionsPage(OptionsPage):
 
     def open_plugins(self):
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
-            self,
-            "",
-            QtCore.QDir.homePath(),
-            "Picard plugin (*.py *.pyc *.zip)"
+            parent=self,
+            directory=QtCore.QDir.homePath(),
+            filter="Picard plugin (*.py *.pyc *.zip)",
         )
         if files:
             for path in files:

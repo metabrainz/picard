@@ -162,7 +162,10 @@ class InterfaceToolbarOptionsPage(OptionsPage):
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
-        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", item.text())
+        path = QtWidgets.QFileDialog.getExistingDirectory(
+            parent=self,
+            directory=item.text(),
+        )
         if path:
             path = os.path.normpath(path)
             item.setText(path)
