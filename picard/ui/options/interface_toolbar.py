@@ -255,8 +255,8 @@ class InterfaceToolbarOptionsPage(OptionsPage):
 
 
 class AddActionDialog(PicardDialog):
-    def __init__(self, display_list, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, display_list, parent=None):
+        super().__init__(parent=parent)
         self.display_list = display_list
 
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -281,7 +281,7 @@ class AddActionDialog(PicardDialog):
 
     @staticmethod
     def get_selected_action(display_list, parent=None):
-        dialog = AddActionDialog(display_list, parent)
+        dialog = AddActionDialog(display_list, parent=parent)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             return dialog.selected_action()
         else:
