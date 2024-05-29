@@ -21,17 +21,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QListWidgetItem
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 
-class CheckboxListItem(QListWidgetItem):
+class CheckboxListItem(QtWidgets.QListWidgetItem):
 
-    def __init__(self, text='', checked=False):
-        super().__init__(text)
-        self.setFlags(self.flags() | Qt.ItemFlag.ItemIsUserCheckable)
-        self.setCheckState(Qt.CheckState.Checked if checked else Qt.CheckState.Unchecked)
+    def __init__(self, text='', checked=False, parent=None):
+        super().__init__(text, parent=parent)
+        self.setFlags(self.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+        self.setCheckState(QtCore.Qt.CheckState.Checked if checked else QtCore.Qt.CheckState.Unchecked)
 
     @property
     def checked(self):
-        return self.checkState() == Qt.CheckState.Checked
+        return self.checkState() == QtCore.Qt.CheckState.Checked
