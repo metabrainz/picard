@@ -147,7 +147,6 @@ from picard.ui.statusindicator import (
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.util import (
     FileDialog,
-    MultiDirsSelectDialog,
     find_starting_directory,
     menu_builder,
 )
@@ -872,13 +871,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if directory:
                 dir_list.append(directory)
         else:
-            file_dialog = MultiDirsSelectDialog(
+            dir_list = FileDialog.getMultipleDirectories(
                 parent=self,
-                caption=_("Select one or more directories"),
                 directory=current_directory,
             )
-            if file_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-                dir_list = file_dialog.selectedFiles()
 
         dir_count = len(dir_list)
         if dir_count:
