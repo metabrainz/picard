@@ -224,27 +224,9 @@ class HashableItem:
         return hash(str(self.id))
 
 
-class HashableTreeWidgetItem(QtWidgets.QTreeWidgetItem):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.id = uuid.uuid4()
-
-    def __eq__(self, other):
-        return self.id == other.id
-
-    def __hash__(self):
-        return hash(str(self.id))
+class HashableTreeWidgetItem(HashableItem, QtWidgets.QTreeWidgetItem):
+    pass
 
 
-class HashableListWidgetItem(QtWidgets.QListWidgetItem):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.id = uuid.uuid4()
-
-    def __eq__(self, other):
-        return self.id == other.id
-
-    def __hash__(self):
-        return hash(str(self.id))
+class HashableListWidgetItem(HashableItem, QtWidgets.QListWidgetItem):
+    pass
