@@ -36,7 +36,7 @@ except ImportError:
     astrcmp_c = None
 
 
-class AstrcmpBase(object):
+class AstrcmpBase:
     func = None
 
     def test_astrcmp(self):

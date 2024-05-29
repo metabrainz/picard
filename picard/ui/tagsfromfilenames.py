@@ -99,7 +99,7 @@ class TagsFromFileNamesDialog(PicardDialog):
     help_url = 'doc_tags_from_filenames'
 
     def __init__(self, files, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_TagsFromFileNamesDialog()
         self.ui.setupUi(self)
         items = [

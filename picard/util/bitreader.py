@@ -30,7 +30,7 @@ class BitReaderError(Exception):
     pass
 
 
-class _BitReader(object):
+class _BitReader:
 
     def __init__(self, fileobj):
         self._fileobj = fileobj

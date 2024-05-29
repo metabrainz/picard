@@ -73,8 +73,8 @@ COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
 class PluginActionButton(QtWidgets.QToolButton):
 
     def __init__(self, icon=None, tooltip=None, retain_space=False,
-                 switch_method=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+                 switch_method=None, parent=None):
+        super().__init__(parent=parent)
         if tooltip is not None:
             self.setToolTip(tooltip)
 
@@ -228,7 +228,7 @@ class PluginsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_plugins.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
         plugins = self.ui.plugins
@@ -660,10 +660,9 @@ class PluginsOptionsPage(OptionsPage):
 
     def open_plugins(self):
         files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
-            self,
-            "",
-            QtCore.QDir.homePath(),
-            "Picard plugin (*.py *.pyc *.zip)"
+            parent=self,
+            directory=QtCore.QDir.homePath(),
+            filter="Picard plugin (*.py *.pyc *.zip)",
         )
         if files:
             for path in files:

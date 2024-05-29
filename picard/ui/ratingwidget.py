@@ -36,8 +36,8 @@ from picard.i18n import N_
 
 class RatingWidget(QtWidgets.QWidget):
 
-    def __init__(self, parent, track):
-        super().__init__(parent)
+    def __init__(self, track, parent=None):
+        super().__init__(parent=parent)
         self._track = track
         config = get_config()
         self._maximum = config.setting['rating_steps'] - 1

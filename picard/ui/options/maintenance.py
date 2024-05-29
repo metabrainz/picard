@@ -79,7 +79,7 @@ class MaintenanceOptionsPage(OptionsPage):
     signal_reload = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_MaintenanceOptionsPage()
         self.ui.setupUi(self)
         self.ui.description.setText(_(
@@ -141,7 +141,10 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog.exec()
 
     def _dialog_autobackup_dir_browse(self):
-        path = QtWidgets.QFileDialog.getExistingDirectory(self, "", self.get_current_autobackup_dir())
+        path = QtWidgets.QFileDialog.getExistingDirectory(
+            parent=self,
+            directory=self.get_current_autobackup_dir(),
+        )
         if path:
             self.set_current_autobackup_dir(path)
 

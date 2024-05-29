@@ -131,7 +131,7 @@ class TagCounter(dict):
         return TagCounterDisplayValue(text, is_grouped)
 
 
-class TagDiff(object):
+class TagDiff:
 
     __slots__ = ('tag_names', 'new', 'orig', 'status', 'objects', 'max_length_delta_ms')
 
@@ -231,11 +231,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         'musicbrainz_workid': 'work_lookup',
     }
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         config = get_config()
-        self.parent = parent
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
@@ -464,14 +463,14 @@ class MetadataBox(QtWidgets.QTableWidget):
         event.accept()
 
     def _apply_update_funcs(self, funcs):
-        with self.parent.ignore_selection_changes:
+        with self.tagger.window.ignore_selection_changes:
             for f in funcs:
                 f()
-        self.parent.update_selection(new_selection=False, drop_album_caches=True)
+        self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
 
     def _edit_tag(self, tag):
         if self.tag_diff is not None:
-            EditTagDialog(self.parent, tag).exec()
+            EditTagDialog(self, tag).exec()
 
     def _edit_selected_tag(self):
         tags = list(self._selected_tags(filter_func=self._tag_is_editable))
@@ -486,7 +485,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def _set_tag_values(self, tag, values, objects=None):
         if objects is None:
             objects = self.objects
-        with self.parent.ignore_selection_changes:
+        with self.tagger.window.ignore_selection_changes:
             if values == [""]:
                 values = []
             if not values and self._tag_is_removable(tag):
@@ -504,7 +503,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def remove_selected_tags(self):
         for tag in self._selected_tags(filter_func=self._tag_is_removable):
             self._remove_tag(tag)
-        self.parent.update_selection(new_selection=False, drop_album_caches=True)
+        self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
 
     def _tag_is_removable(self, tag):
         return self.tag_diff.status[tag] & TagStatus.NOTREMOVABLE == 0
@@ -519,10 +518,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                 yield tag
 
     def _update_selection(self):
+        if not hasattr(self.tagger, 'window'):
+            # main window not yet available
+            # FIXME: early call strictly needed?
+            return
         files = set()
         tracks = set()
         objects = set()
-        for obj in self.parent.selected_objects:
+        for obj in self.tagger.window.selected_objects:
             if isinstance(obj, File):
                 files.add(obj)
             elif isinstance(obj, Track):

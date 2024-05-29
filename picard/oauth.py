@@ -52,7 +52,7 @@ class OAuthInvalidStateError(Exception):
     pass
 
 
-class OAuthManager(object):
+class OAuthManager:
 
     def __init__(self, webservice):
         self.webservice = webservice

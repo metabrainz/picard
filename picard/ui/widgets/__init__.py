@@ -33,7 +33,7 @@ class ElidedLabel(QtWidgets.QLabel):
 
     def __init__(self, parent=None):
         self._full_label = ""
-        super().__init__(parent)
+        super().__init__(parent=parent)
 
     def setText(self, text):
         self._full_label = text
@@ -62,8 +62,8 @@ class ActiveLabel(QtWidgets.QLabel):
 
     clicked = QtCore.pyqtSignal()
 
-    def __init__(self, active=True, drops=False, *args):
-        super().__init__(*args)
+    def __init__(self, active=True, parent=None):
+        super().__init__(parent=parent)
         self.setActive(active)
 
     def setActive(self, active):
@@ -100,8 +100,8 @@ class Popover(QtWidgets.QFrame):
     Subclass this widget and add child widgets for a custom popover.
     """
 
-    def __init__(self, parent, position='bottom'):
-        super().__init__(parent)
+    def __init__(self, position='bottom', parent=None):
+        super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Popup | QtCore.Qt.WindowType.FramelessWindowHint)
         self.position = position
         app = QtCore.QCoreApplication.instance()
@@ -156,7 +156,7 @@ class SliderPopover(Popover):
     value_changed = QtCore.pyqtSignal(int)
 
     def __init__(self, parent, position, label, value):
-        super().__init__(parent, position)
+        super().__init__(position=position, parent=parent)
         vbox = QtWidgets.QVBoxLayout(self)
         self.label = QtWidgets.QLabel(label, self)
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)

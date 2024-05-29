@@ -39,8 +39,8 @@ from picard.ui.forms.ui_infostatus import Ui_InfoStatus
 
 class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
 
-    def __init__(self, parent):
-        QtWidgets.QWidget.__init__(self, parent)
+    def __init__(self, parent=None):
+        QtWidgets.QWidget.__init__(self, parent=parent)
         Ui_InfoStatus.__init__(self)
         self.setupUi(self)
 

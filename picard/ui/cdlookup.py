@@ -54,7 +54,7 @@ class CDLookupDialog(PicardDialog):
     dialog_header_state = 'cdlookupdialog_header_state'
 
     def __init__(self, releases, disc, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.releases = releases
         self.disc = disc
         self.ui = Ui_CDLookupDialog()

@@ -92,7 +92,7 @@ def get_match_color(similarity, basecolor):
 class MainPanel(QtWidgets.QSplitter):
 
     def __init__(self, window, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.setChildrenCollapsible(False)
         self.window = window

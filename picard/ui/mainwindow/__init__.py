@@ -159,7 +159,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None, disable_player=False):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.actions = {}
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
@@ -225,7 +225,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.panel = MainPanel(self, main_layout)
         self.panel.setObjectName('main_panel_splitter')
-        self.file_browser = FileBrowser(self.panel)
+        self.file_browser = FileBrowser(parent=self.panel)
         if not self.action_is_checked(MainAction.SHOW_FILE_BROWSER):
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
@@ -233,8 +233,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.log_dialog = LogView(self)
         self.history_dialog = HistoryView(self)
 
-        self.metadata_box = MetadataBox(self)
-        self.cover_art_box = CoverArtBox(self)
+        self.metadata_box = MetadataBox(parent=self)
+        self.cover_art_box = CoverArtBox(parent=self)
         metadata_view_layout = QtWidgets.QHBoxLayout()
         metadata_view_layout.setContentsMargins(0, 0, 0, 0)
         metadata_view_layout.setSpacing(0)
@@ -847,7 +847,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         extensions.sort()
         formats.insert(0, _("All supported formats") + " (%s)" % " ".join(extensions))
         formats.insert(1, _("All files") + " (*)")
-        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(self, "", current_directory, ";;".join(formats))
+        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
+            parent=self,
+            directory=current_directory,
+            filter=";;".join(formats),
+        )
         if files:
             config = get_config()
             config.persist['current_directory'] = os.path.dirname(files[0])
@@ -860,11 +864,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         dir_list = []
         config = get_config()
         if not config.setting['allow_multi_dirs_selection']:
-            directory = QtWidgets.QFileDialog.getExistingDirectory(self, "", current_directory)
+            directory = QtWidgets.QFileDialog.getExistingDirectory(
+                parent=self,
+                directory=current_directory,
+            )
             if directory:
                 dir_list.append(directory)
         else:
-            file_dialog = MultiDirsSelectDialog(self, "", current_directory)
+            file_dialog = MultiDirsSelectDialog(
+                parent=self,
+                directory=current_directory,
+            )
             if file_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
                 dir_list = file_dialog.selectedFiles()
 

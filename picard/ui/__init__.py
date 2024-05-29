@@ -64,7 +64,7 @@ class PreserveGeometry:
 
     defaultsize = None
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         Option.add_if_missing('persist', self.opt_name(), QtCore.QByteArray())
         Option.add_if_missing('persist', self.splitters_name(), {})
         if getattr(self, 'finished', None):
@@ -183,7 +183,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     def __init__(self, parent=None):
         self.tagger = QtCore.QCoreApplication.instance()
-        super().__init__(parent, self.flags)
+        super().__init__(parent=parent, f=self.flags)
         self.__shown = False
         self.ready_for_display.connect(self.restore_geometry)
 

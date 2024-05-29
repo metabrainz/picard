@@ -41,7 +41,7 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags_compatibility_aac.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_TagsCompatibilityOptionsPage()
         self.ui.setupUi(self)
         self.ui.aac_no_tags.toggled.connect(self.ui.remove_ape_from_aac.setEnabled)

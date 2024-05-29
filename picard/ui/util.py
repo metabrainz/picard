@@ -88,8 +88,8 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
     Depending on the platform, dialog may fallback on non-native.
     """
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, parent=None, caption="", directory="", filter=""):
+        super().__init__(parent=parent, caption=caption, directory=directory, filter=filter)
         self.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
         self.setOption(QtWidgets.QFileDialog.Option.ShowDirsOnly)
         # The native dialog doesn't allow selecting >1 directory

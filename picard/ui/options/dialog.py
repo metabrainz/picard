@@ -108,7 +108,7 @@ class ErrorOptionsPage(OptionsPage):
         self.ACTIVE = from_cls.ACTIVE
         self.HELP_URL = from_cls.HELP_URL
 
-        super().__init__(parent)
+        super().__init__(parent=parent)
 
         self.error = _("This page failed to initialize")
 
@@ -174,7 +174,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.default_item = items[0]
 
     def __init__(self, default_page=None, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 

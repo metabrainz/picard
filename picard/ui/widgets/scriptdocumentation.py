@@ -62,14 +62,19 @@ code {
 class ScriptingDocumentationWidget(QtWidgets.QWidget):
     """Custom widget to display the scripting documentation.
     """
-    def __init__(self, parent, include_link=True, *args, **kwargs):
+    def __init__(self, include_link=True, parent=None):
         """Custom widget to display the scripting documentation.
 
         Args:
-            parent (QWidget): Parent screen to check layoutDirection()
             include_link (bool): Indicates whether the web link should be included
+            parent (QWidget): Parent screen to check layoutDirection()
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(parent=parent)
+
+        if self.layoutDirection() == QtCore.Qt.LayoutDirection.RightToLeft:
+            text_direction = 'rtl'
+        else:
+            text_direction = 'ltr'
 
         def process_html(html, function):
             if not html:
@@ -89,11 +94,6 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             fmt='html',
             postprocessor=process_html,
         )
-
-        if parent.layoutDirection() == QtCore.Qt.LayoutDirection.RightToLeft:
-            text_direction = 'rtl'
-        else:
-            text_direction = 'ltr'
 
         html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "<dl>%s</dl>" % funcdoc,

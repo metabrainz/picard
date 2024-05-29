@@ -75,8 +75,8 @@ COVERART_WIDTH = THUMBNAIL_WIDTH - 7
 class CoverArtThumbnail(ActiveLabel):
     image_dropped = QtCore.pyqtSignal(QtCore.QUrl, bytes)
 
-    def __init__(self, active=False, drops=False, pixmap_cache=None, *args, **kwargs):
-        super().__init__(active, drops, *args, **kwargs)
+    def __init__(self, active=False, drops=False, pixmap_cache=None, parent=None):
+        super().__init__(active=active, parent=parent)
         self.data = None
         self.has_common_images = None
         self.release = None
@@ -377,11 +377,10 @@ HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 class CoverArtBox(QtWidgets.QGroupBox):
 
-    def __init__(self, parent):
-        super().__init__("")
+    def __init__(self, parent=None):
+        super().__init__("", parent=parent)
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.setSpacing(6)
-        self.parent = parent
         self.tagger = QtCore.QCoreApplication.instance()
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
@@ -390,11 +389,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtWidgets.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
-        self.cover_art = CoverArtThumbnail(False, True, self.pixmap_cache, parent)
+        self.cover_art = CoverArtThumbnail(drops=True, pixmap_cache=self.pixmap_cache, parent=self)
         self.cover_art.image_dropped.connect(self.fetch_remote_image)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.orig_cover_art_label = QtWidgets.QLabel('')
-        self.orig_cover_art = CoverArtThumbnail(False, False, self.pixmap_cache, parent)
+        self.orig_cover_art = CoverArtThumbnail(drops=False, pixmap_cache=self.pixmap_cache, parent=self)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.show_details_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info)
@@ -410,7 +409,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.show_details_button.clicked.connect(self.show_cover_art_info)
 
     def show_cover_art_info(self):
-        self.parent.view_info(default_tab=1)
+        self.tagger.window.view_info(default_tab=1)
 
     def update_display(self, force=False):
         if self.isHidden():
@@ -608,7 +607,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         return coverartimage
 
     def choose_local_file(self):
-        file_chooser = QtWidgets.QFileDialog(self)
+        file_chooser = QtWidgets.QFileDialog(parent=self)
         extensions = ['*' + ext for ext in imageinfo.get_supported_extensions()]
         extensions.sort()
         file_chooser.setNameFilters([
@@ -633,39 +632,37 @@ class CoverArtBox(QtWidgets.QGroupBox):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
             name = _("Show more details…")
-            show_more_details_action = QtGui.QAction(name, self.parent)
+            show_more_details_action = QtGui.QAction(name, parent=menu)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
 
         if self.orig_cover_art.isVisible():
             name = _("Keep original cover art")
-            use_orig_value_action = QtGui.QAction(name, self.parent)
+            use_orig_value_action = QtGui.QAction(name, parent=menu)
             use_orig_value_action.triggered.connect(self.keep_original_images)
             menu.addAction(use_orig_value_action)
 
         if self.item and self.item.can_show_coverart:
             name = _("Choose local file…")
-            choose_local_file_action = QtGui.QAction(name, self.parent)
+            choose_local_file_action = QtGui.QAction(name, parent=menu)
             choose_local_file_action.triggered.connect(self.choose_local_file)
             menu.addAction(choose_local_file_action)
 
         if not menu.isEmpty():
             menu.addSeparator()
 
-        load_image_behavior_group = QtGui.QActionGroup(self.parent)
-        action = QtGui.QAction(_("Replace front cover art"), self.parent)
+        load_image_behavior_group = QtGui.QActionGroup(menu)
+        action = QtGui.QAction(_("Replace front cover art"), parent=load_image_behavior_group)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='replace'))
-        load_image_behavior_group.addAction(action)
         config = get_config()
         if config.setting['load_image_behavior'] == 'replace':
             action.setChecked(True)
         menu.addAction(action)
 
-        action = QtGui.QAction(_("Append front cover art"), self.parent)
+        action = QtGui.QAction(_("Append front cover art"), parent=load_image_behavior_group)
         action.setCheckable(True)
         action.triggered.connect(partial(self.set_load_image_behavior, behavior='append'))
-        load_image_behavior_group.addAction(action)
         if config.setting['load_image_behavior'] == 'append':
             action.setChecked(True)
         menu.addAction(action)

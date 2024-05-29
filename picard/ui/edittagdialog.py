@@ -95,13 +95,13 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
 
 class EditTagDialog(PicardDialog):
 
-    def __init__(self, window, tag):
-        super().__init__(window)
+    def __init__(self, metadata_box, tag):
+        super().__init__(parent=metadata_box)
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
-        self.window = window
         self.value_list = self.ui.value_list
-        self.metadata_box = window.metadata_box
+        self.tagger = QtCore.QCoreApplication.instance()
+        self.metadata_box = metadata_box
         self.tag = tag
         self.modified_tags = {}
         self.is_grouped = False
@@ -300,7 +300,7 @@ class EditTagDialog(PicardDialog):
                                              list(self.metadata_box.tag_diff.new[self.tag]) or [""])
 
     def accept(self):
-        with self.window.ignore_selection_changes:
+        with self.tagger.window.ignore_selection_changes:
             for tag, values in self.modified_tags.items():
                 self.modified_tags[tag] = [v for v in values if v]
             modified_tags = self.modified_tags.items()

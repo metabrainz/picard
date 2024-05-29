@@ -66,7 +66,7 @@ def _unregister_module_extensions(module):
         ep.unregister_module(module)
 
 
-class ExtensionPoint(object):
+class ExtensionPoint:
 
     def __init__(self, label=None):
         if label is None:
@@ -112,7 +112,7 @@ class ExtensionPoint(object):
         return f"ExtensionPoint(label='{self.label}')"
 
 
-class PluginShared(object):
+class PluginShared:
 
     def __init__(self):
         super().__init__()

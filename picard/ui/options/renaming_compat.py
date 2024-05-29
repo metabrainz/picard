@@ -70,7 +70,7 @@ class RenamingCompatOptionsPage(OptionsPage):
     options_changed = QtCore.pyqtSignal(dict)
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         config = get_config()
         self.win_compat_replacements = config.setting['win_compat_replacements']
         self.ui = Ui_RenamingCompatOptionsPage()
@@ -160,7 +160,7 @@ class WinCompatReplacementValidator(QtGui.QValidator):
 
 class WinCompatDialog(PicardDialog):
     def __init__(self, replacements, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.replacements = dict(replacements)
         self.ui = Ui_WinCompatDialog()
         self.ui.setupUi(self)

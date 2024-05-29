@@ -58,7 +58,7 @@ class LogViewDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
 
     def __init__(self, title, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Window)
         self.setWindowTitle(title)
         self.doc = QtGui.QTextDocument()
@@ -124,7 +124,7 @@ class LogViewCommon(LogViewDialog):
 
 
 class Highlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, string, parent=None):
+    def __init__(self, string, parent):
         super().__init__(parent)
 
         self.fmt = QtGui.QTextCharFormat()
@@ -259,7 +259,7 @@ class LogView(LogViewCommon):
                 self.hl.setDocument(None)
                 self.hl = None
             if self.hl_text:
-                self.hl = Highlighter(self.hl_text, parent=self.doc)
+                self.hl = Highlighter(self.hl_text, self.doc)
             self.clear_highlight_button.setEnabled(bool(self.hl))
 
     def _setup_formats(self):
@@ -276,9 +276,9 @@ class LogView(LogViewCommon):
 
     def _save_log_as_do(self):
         path, ok = QtWidgets.QFileDialog.getSaveFileName(
-            self,
+            parent=self,
             caption=_("Save Log View to File"),
-            options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite
+            options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite,
         )
         if ok and path:
             if os.path.isfile(path):

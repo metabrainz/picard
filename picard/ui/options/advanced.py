@@ -40,7 +40,7 @@ class AdvancedOptionsPage(OptionsPage):
     HELP_URL = "/config/options_advanced.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
         self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)

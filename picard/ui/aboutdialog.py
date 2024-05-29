@@ -44,7 +44,7 @@ from picard.ui.forms.ui_aboutdialog import Ui_AboutDialog
 class AboutDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
         self.ui = Ui_AboutDialog()
         self.ui.setupUi(self)

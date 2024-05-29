@@ -42,8 +42,8 @@ from picard.util import strxfrm
 
 class CollectionMenu(QtWidgets.QMenu):
 
-    def __init__(self, albums, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, albums, title, parent=None):
+        super().__init__(title, parent=parent)
         self.releases = set(a.id for a in albums)
         self._ignore_update = False
         self._ignore_hover = False
@@ -94,8 +94,8 @@ class CollectionMenu(QtWidgets.QMenu):
 
 class CollectionMenuItem(QtWidgets.QWidget):
 
-    def __init__(self, menu, collection, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, menu, collection, parent=None):
+        super().__init__(parent=parent)
         self.menu = menu
         self.active = False
         self._setup_layout(menu, collection)
@@ -144,10 +144,10 @@ class CollectionMenuItem(QtWidgets.QWidget):
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
 
-    def __init__(self, menu, collection, *args, **kwargs):
+    def __init__(self, menu, collection, parent=None):
         self.menu = menu
         self.collection = collection
-        super().__init__(self._label(), *args, **kwargs)
+        super().__init__(self._label(), parent=parent)
 
         releases = collection.releases & menu.releases
         if len(releases) == len(menu.releases):

@@ -86,7 +86,7 @@ class MetadataOptionsPage(OptionsPage):
     HELP_URL = "/config/options_metadata.html"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_MetadataOptionsPage()
         self.ui.setupUi(self)
         self.ui.va_name_default.clicked.connect(self.set_va_name_default)
@@ -191,7 +191,7 @@ class MetadataOptionsPage(OptionsPage):
 
 class MultiLocaleSelector(PicardDialog):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_MultiLocaleSelector()
         self.ui.setupUi(self)
         self.ui.button_box.accepted.connect(self.save_changes)
@@ -265,7 +265,7 @@ class MultiLocaleSelector(PicardDialog):
 
 class ScriptExceptionSelector(PicardDialog):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_ExceptionScriptSelector()
         self.ui.setupUi(self)
         self.ui.button_box.accepted.connect(self.save_changes)

@@ -41,7 +41,7 @@ from picard.ui.enums import MainAction
 FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS = 30000
 
 
-class Submission(object):
+class Submission:
 
     def __init__(self, fingerprint, duration, recordingid=None, metadata=None):
         self.fingerprint = fingerprint
@@ -101,7 +101,7 @@ class Submission(object):
         return args
 
 
-class AcoustIDManager(QtCore.QObject):
+class AcoustIDManager:
 
     # AcoustID has a post limit of around 1 MB.
     MAX_PAYLOAD = 1000000
@@ -112,7 +112,6 @@ class AcoustIDManager(QtCore.QObject):
     BATCH_SIZE_REDUCTION_FACTOR = 0.7
 
     def __init__(self, acoustid_api):
-        super().__init__()
         self.tagger = QtCore.QCoreApplication.instance()
         self._submissions = {}
         self._acoustid_api = acoustid_api

@@ -32,8 +32,8 @@ from picard.ui.widgets.editablelistview import (
 
 
 class TagListEditor(QtWidgets.QWidget):
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.ui = Ui_TagListEditor()
         self.ui.setupUi(self)
         list_view = self.ui.tag_list_view

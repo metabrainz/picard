@@ -54,8 +54,8 @@ class CoverWidget(QtWidgets.QWidget):
 
     shown = pyqtSignal()
 
-    def __init__(self, parent, width=100, height=100):
-        super().__init__(parent)
+    def __init__(self, width=100, height=100, parent=None):
+        super().__init__(parent=parent)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.destroyed.connect(self.invalidate)
         self.layout.setContentsMargins(0, 0, 0, 0)
@@ -104,7 +104,7 @@ class CoverCell:
         self.release = release
         self.fetched = False
         self.fetch_task = None
-        self.widget = widget = CoverWidget(table)
+        self.widget = widget = CoverWidget(parent=table)
         self.widget.destroyed.connect(self.invalidate)
         if on_show is not None:
             widget.shown.connect(partial(on_show, self))

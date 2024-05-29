@@ -42,8 +42,8 @@ from picard.util import iter_unique
 
 class ScriptsMenu(QtWidgets.QMenu):
 
-    def __init__(self, scripts, *args):
-        super().__init__(*args)
+    def __init__(self, scripts, title, parent=None):
+        super().__init__(title, parent=parent)
 
         for script in scripts:
             action = self.addAction(script.name)

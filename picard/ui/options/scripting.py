@@ -80,17 +80,16 @@ class ScriptFileError(OptionsCheckError):
 class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
     defaultsize = QtCore.QSize(570, 400)
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         # on macOS having this not a dialog causes the window to be placed
         # behind the options dialog.
         if not IS_MACOS:
             self.setWindowFlags(QtCore.Qt.WindowType.Window)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
-        self.parent = parent
         self.ui = Ui_ScriptingDocumentationDialog()
         self.ui.setupUi(self)
-        doc_widget = ScriptingDocumentationWidget(self)
+        doc_widget = ScriptingDocumentationWidget(parent=self)
         self.ui.documentation_layout.addWidget(doc_widget)
         self.ui.buttonBox.rejected.connect(self.close)
 
@@ -111,7 +110,7 @@ class ScriptingOptionsPage(OptionsPage):
     default_script_extension = "ptsp"
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.ui = Ui_ScriptingOptionsPage()
         self.ui.setupUi(self)
         self.ui.tagger_script.setEnabled(False)

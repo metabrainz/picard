@@ -40,7 +40,7 @@ from picard.webservice.api_helpers import MBAPIHelper
 user_collections = {}
 
 
-class Collection(QtCore.QObject):
+class Collection:
 
     def __init__(self, collection_id: str, mb_api: MBAPIHelper):
         self.tagger = QtCore.QCoreApplication.instance()

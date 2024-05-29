@@ -465,7 +465,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             parent (QMainWindow or OptionsPage, optional): Parent object. Defaults to None.
             examples (ScriptEditorExamples, required): Object containing examples to display. Defaults to None.
         """
-        super().__init__(parent)
+        super().__init__(parent=parent)
         self.examples = examples
 
         self.setWindowTitle(_(self.TITLE))
@@ -503,7 +503,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.ui.file_naming_format.setEnabled(True)
 
         # Add scripting documentation to parent frame.
-        doc_widget = ScriptingDocumentationWidget(self, include_link=False)
+        doc_widget = ScriptingDocumentationWidget(include_link=False, parent=self)
         self.ui.documentation_frame_layout.addWidget(doc_widget)
 
         self.ui.file_naming_format.textChanged.connect(self.check_formats)
@@ -901,7 +901,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         """View and edit the metadata associated with the script.
         """
         self.current_item_dict = self.get_selected_item()
-        details_page = ScriptDetailsEditor(self, self.current_item_dict)
+        details_page = ScriptDetailsEditor(self.current_item_dict, parent=self)
         details_page.signal_save.connect(self.update_from_details)
         details_page.show()
         details_page.raise_()
@@ -1343,12 +1343,12 @@ class ScriptDetailsEditor(PicardDialog):
 
     signal_save = QtCore.pyqtSignal()
 
-    def __init__(self, parent, script_item):
+    def __init__(self, script_item, parent=None):
         """Script metadata viewer / editor.
 
         Args:
-            parent (ScriptEditorDialog): The page used for editing the scripts
             script_item (dict): The script whose metadata is displayed
+            parent (optional): The parent object, passed to PicardDialog
         """
         super().__init__(parent=parent)
         self.script_item = script_item
