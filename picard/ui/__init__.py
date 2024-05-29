@@ -221,7 +221,7 @@ class HashableItem:
         return self.__id == other.__id
 
     def __hash__(self):
-        return hash(str(self.__id))
+        return hash(self.__id)
 
 
 class HashableTreeWidgetItem(HashableItem, QtWidgets.QTreeWidgetItem):
