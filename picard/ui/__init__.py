@@ -212,6 +212,18 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 # With py3, QObjects are no longer hashable unless they have
 # an explicit __hash__ implemented.
 # See: http://python.6.x6.nabble.com/QTreeWidgetItem-is-not-hashable-in-Py3-td5212216.html
+class HashableItem:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.id = uuid.uuid4()
+
+    def __eq__(self, other):
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(str(self.id))
+
+
 class HashableTreeWidgetItem(QtWidgets.QTreeWidgetItem):
 
     def __init__(self, *args, **kwargs):
