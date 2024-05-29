@@ -80,16 +80,16 @@ class DataHash:
         try:
             self._hash = blake2b(data).hexdigest()
             if self._hash not in _datafiles:
-                (fd, self._filename) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
+                # store tmp file path in  _datafiles[self._hash] ASAP
+                (fd, _datafiles[self._hash]) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
+                filepath = _datafiles[self._hash]
                 tagger = QCoreApplication.instance()
                 tagger.register_cleanup(self.delete_file)
+                periodictouch.register_file(filepath)
                 with os.fdopen(fd, 'wb') as imagefile:
                     imagefile.write(data)
-                _datafiles[self._hash] = self._filename
-                periodictouch.register_file(self._filename)
-                log.debug("Saving image data %s to %r", self._hash, self._filename)
-            else:
-                self._filename = _datafiles[self._hash]
+                log.debug("Saving image data %s to %r", self._hash[:16], filepath)
+            self._filename = _datafiles[self._hash]
         finally:
             _datafile_mutex.unlock()
 
@@ -103,20 +103,25 @@ class DataHash:
         return self._hash
 
     def delete_file(self):
-        if self._filename:
+        if not self._hash or self._hash not in _datafiles:
+            return
+
+        _datafile_mutex.lock()
+        try:
+            filepath = _datafiles[self._hash]
             try:
-                os.unlink(self._filename)
-                periodictouch.unregister_file(self._filename)
-            except BaseException:
-                pass
-            else:
-                _datafile_mutex.lock()
-                try:
-                    self._filename = None
-                    del _datafiles[self._hash]
-                    self._hash = None
-                finally:
-                    _datafile_mutex.unlock()
+                os.unlink(filepath)
+                periodictouch.unregister_file(filepath)
+            except BaseException as e:
+                log.debug("Failed to delete file %r: %s",  filepath, e)
+
+            del _datafiles[self._hash]
+        except KeyError:
+            log.error("Hash %s not found in cache for file: %r", self._hash[:16], self._filename)
+        finally:
+            self._hash = None
+            self._filename = None
+            _datafile_mutex.unlock()
 
     @property
     def data(self):
