@@ -215,13 +215,13 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 class HashableItem:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.id = uuid.uuid4()
+        self.__id = uuid.uuid4()
 
     def __eq__(self, other):
-        return self.id == other.id
+        return self.__id == other.__id
 
     def __hash__(self):
-        return hash(str(self.id))
+        return hash(str(self.__id))
 
 
 class HashableTreeWidgetItem(HashableItem, QtWidgets.QTreeWidgetItem):
