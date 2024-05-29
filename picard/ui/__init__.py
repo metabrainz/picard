@@ -216,12 +216,13 @@ class HashableItem:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.__id = uuid.uuid4()
+        self.__hash = hash(self.__id)
 
     def __eq__(self, other):
         return self.__id == other.__id
 
     def __hash__(self):
-        return hash(self.__id)
+        return self.__hash
 
 
 class HashableTreeWidgetItem(HashableItem, QtWidgets.QTreeWidgetItem):
