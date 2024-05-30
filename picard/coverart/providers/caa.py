@@ -55,10 +55,6 @@ from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
 )
-from picard.coverart.utils import (
-    CAA_TYPES,
-    translate_caa_type,
-)
 from picard.i18n import (
     N_,
     gettext as _,
@@ -167,14 +163,10 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.select_caa_types.setEnabled(enabled)
 
     def select_caa_types(self):
-        known_types = {t['name']: translate_caa_type(t['name']) for t in CAA_TYPES}
         (types, types_to_omit, ok) = CAATypesSelectorDialog.display(
-            parent=self,
             types_include=self.caa_image_types,
             types_exclude=self.caa_image_types_to_omit,
-            default_include=DEFAULT_CAA_IMAGE_TYPE_INCLUDE,
-            default_exclude=DEFAULT_CAA_IMAGE_TYPE_EXCLUDE,
-            known_types=known_types,
+            parent=self,
         )
         if ok:
             self.caa_image_types = types
