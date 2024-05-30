@@ -164,8 +164,13 @@ class CAATypesSelectorDialog(PicardDialog):
     help_url = 'doc_cover_art_types'
 
     def __init__(
-        self, parent=None, types_include=None, types_exclude=None,
-        default_include=None, default_exclude=None, known_types=None
+        self,
+        parent=None,
+        types_include=None,
+        types_exclude=None,
+        default_include=None,
+        default_exclude=None,
+        known_types=None,
     ):
         super().__init__(parent=parent)
         if types_include is None:
@@ -355,8 +360,23 @@ class CAATypesSelectorDialog(PicardDialog):
         self.arrows_exclude.button_remove.setEnabled(has_items_exclude and has_selected_exclude)
         self.arrows_exclude.button_remove_all.setEnabled(has_items_exclude)
 
-
-def display_caa_types_selector(**kwargs):
-    dialog = CAATypesSelectorDialog(**kwargs)
-    result = dialog.exec()
-    return (dialog.included, dialog.excluded, result == QtWidgets.QDialog.DialogCode.Accepted)
+    @classmethod
+    def display(
+        cls,
+        parent=None,
+        types_include=None,
+        types_exclude=None,
+        default_include=None,
+        default_exclude=None,
+        known_types=None,
+    ):
+        dialog = cls(
+            parent=parent,
+            types_include=types_include,
+            types_exclude=types_exclude,
+            default_include=default_include,
+            default_exclude=default_exclude,
+            known_types=known_types,
+        )
+        result = dialog.exec()
+        return (dialog.included, dialog.excluded, result == QtWidgets.QDialog.DialogCode.Accepted)
