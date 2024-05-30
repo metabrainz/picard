@@ -31,6 +31,7 @@ from picard import log
 from picard.i18n import ngettext
 from picard.metadata import Metadata
 from picard.util import IgnoreUpdatesContext
+from picard.util.imagelist import ImageList
 
 
 class Item:
@@ -158,6 +159,23 @@ class Item:
                             number_of_images) % number_of_images
 
 
+class ImageListState:
+    def __init__(self):
+        self.images = {}
+        self.has_common_images = True
+        self.first_obj = True
+
+    def process_images(self, src_obj_metadata):
+        src_dict = src_obj_metadata.images.hash_dict()
+        prev_len = len(self.images)
+        self.images.update(src_dict)
+        if len(self.images) != prev_len:
+            if not self.first_obj:
+                self.has_common_images = False
+        if self.first_obj:
+            self.first_obj = False
+
+
 class MetadataItem(Item):
     metadata_images_changed = QtCore.pyqtSignal()
 
@@ -254,24 +272,6 @@ class MetadataItem(Item):
         Returns:
             bool: True, if images where changed, False otherwise
         """
-        from picard.util.imagelist import ImageList
-
-        class ImageListState:
-            def __init__(self):
-                self.images = {}
-                self.has_common_images = True
-                self.first_obj = True
-
-            def process_images(self, src_obj_metadata):
-                src_dict = src_obj_metadata.images.hash_dict()
-                prev_len = len(self.images)
-                self.images.update(src_dict)
-                if len(self.images) != prev_len:
-                    if not self.first_obj:
-                        self.has_common_images = False
-                if self.first_obj:
-                    self.first_obj = False
-
         changed = False
 
         for metadata_attr in self.update_children_metadata_attrs:
