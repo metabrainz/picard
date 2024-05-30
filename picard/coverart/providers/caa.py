@@ -274,7 +274,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error("CAA JSON error: %s" % (http.errorString()))
         else:
             if self.restrict_types:
-                log.debug("CAA types: included: %s, excluded: %s", self.included_types, self.excluded_types)
+                log.debug("CAA types: included: %s, excluded: %s", list(self.included_types), list(self.excluded_types))
             try:
                 config = get_config()
                 for image in data['images']:

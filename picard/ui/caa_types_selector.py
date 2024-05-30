@@ -324,11 +324,11 @@ class CAATypesSelectorDialog(PicardDialog):
 
     @property
     def included(self):
-        return list(self.list_include.all_items_data()) or ['front']
+        return tuple(self.list_include.all_items_data()) or ('front', )
 
     @property
     def excluded(self):
-        return list(self.list_exclude.all_items_data()) or ['none']
+        return tuple(self.list_exclude.all_items_data())
 
     def _on_list_clicked(self, lists, index):
         for temp_list in lists:
