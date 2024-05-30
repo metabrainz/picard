@@ -169,6 +169,19 @@ class MetadataItem(Item):
         self.iter_children_items_metadata_ignore_attrs = {}
         self.suspend_metadata_images_update = IgnoreUpdatesContext()
 
+    @property
+    def tagger(self):
+        return QtCore.QCoreApplication.instance()
+
+    @tagger.setter
+    def tagger(self, value):
+        # We used to set tagger property in subclasses, but that's not needed anymore
+        assert value == QtCore.QCoreApplication.instance()
+        import inspect
+        stack = inspect.stack()
+        f = stack[1]
+        log.warning("MetadataItem.tagger property set at %s:%d in %s", f.filename, f.lineno, f.function)
+
     def update_metadata_images(self):
         if not self.suspend_metadata_images_update and self.can_show_coverart:
             if self.update_metadata_images_from_children():

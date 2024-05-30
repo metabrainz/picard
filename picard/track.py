@@ -129,7 +129,6 @@ class Track(DataObject, FileListItem):
     def __init__(self, track_id, album=None):
         DataObject.__init__(self, track_id)
         FileListItem.__init__(self)
-        self.tagger = QtCore.QCoreApplication.instance()
         self.album = album
         self.scripted_metadata = Metadata()
         self._track_artists = []

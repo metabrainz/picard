@@ -163,7 +163,6 @@ class File(QtCore.QObject, MetadataItem):
 
     def __init__(self, filename):
         super().__init__()
-        self.tagger = QtCore.QCoreApplication.instance()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
         self._state = File.UNDEFINED
