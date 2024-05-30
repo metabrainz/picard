@@ -162,7 +162,7 @@ class SliderPopover(Popover):
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         vbox.addWidget(self.label)
 
-        self.slider = ClickableSlider(self)
+        self.slider = ClickableSlider(parent=self)
         self.slider.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.slider.setValue(int(value))
         self.slider.valueChanged.connect(self.value_changed)

@@ -64,8 +64,8 @@ class TipSlider(ClickableSlider):
     _minimum = 0
     _maximum = 100
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
 
         self.style = QtWidgets.QApplication.style()
         self.opt = QtWidgets.QStyleOptionSlider()
@@ -117,7 +117,7 @@ class ReleaseTypeScore:
         self.label = QtWidgets.QLabel(self.group)
         self.label.setText(label)
         self.layout.addWidget(self.label, row, column, 1, 1)
-        self.slider = TipSlider(self.group)
+        self.slider = TipSlider(parent=self.group)
         self.layout.addWidget(self.slider, row, column + 1, 1, 1)
         self.reset()
 
