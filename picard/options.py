@@ -168,6 +168,12 @@ BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images
 BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed cover images into tags"))
 BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a single front image as separate file"))
 
+# picard/ui/options/cover_processing.py
+# Cover Art Image Processing
+BoolOption('setting', 'filter_cover_by_size', False)
+IntOption('setting', 'cover_width_threshold', 250)
+IntOption('setting', 'cover_height_threshold', 250)
+
 # picard/ui/options/dialog.py
 # Attached Profiles
 TextOption('persist', 'options_last_active_page', '')
