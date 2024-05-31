@@ -23,7 +23,6 @@
 
 from functools import partial
 
-from PyQt6 import QtCore
 from PyQt6.QtWidgets import QMessageBox
 
 from picard import (
@@ -47,12 +46,10 @@ from picard.version import (
 )
 
 
-class UpdateCheckManager(QtCore.QObject):
+class UpdateCheckManager:
 
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
-        self._parent = parent
+    def __init__(self, tagger):
+        self.tagger = tagger
         self._available_versions = {}
         self._show_always = False
         self._update_level = 0
@@ -107,7 +104,7 @@ class UpdateCheckManager(QtCore.QObject):
             log.error(_("Error loading Picard releases list: {error_message}").format(error_message=reply.errorString(),))
             if self._show_always:
                 QMessageBox.information(
-                    self._parent,
+                    self.tagger.window,
                     _("Picard Update"),
                     _("Unable to retrieve the latest version information from the website.\n({url})").format(
                         url=PLUGINS_API['urls']['releases'],
@@ -141,7 +138,7 @@ class UpdateCheckManager(QtCore.QObject):
                 high_version = test_version
         if key:
             if QMessageBox.information(
-                self._parent,
+                self.tagger.window,
                 _("Picard Update"),
                 _("A new version of Picard is available.\n\n"
                   "This version: {picard_old_version}\n"
@@ -161,7 +158,7 @@ class UpdateCheckManager(QtCore.QObject):
                 else:
                     update_level = N_("unknown")
                 QMessageBox.information(
-                    self._parent,
+                    self.tagger.window,
                     _("Picard Update"),
                     _("There is no update currently available for your subscribed update level: {update_level}\n\n"
                       "Your version: {picard_old_version}\n").format(

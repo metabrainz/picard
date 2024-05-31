@@ -381,7 +381,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Load release version information
         if self.autoupdate_enabled:
-            self.updatecheckmanager = UpdateCheckManager(parent=self.window)
+            self.updatecheckmanager = UpdateCheckManager(self)
 
     @property
     def is_wayland(self):
