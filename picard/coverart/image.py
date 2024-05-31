@@ -175,6 +175,7 @@ class CoverArtImage:
         self.can_be_saved_to_tags = True
         self.can_be_saved_to_disk = True
         self.can_be_saved_to_metadata = True
+        self.can_be_filtered = True
         if support_types is not None:
             self.support_types = support_types
         if support_multi_types is not None:
@@ -486,6 +487,7 @@ class CaaThumbnailCoverArtImage(CaaCoverArtImage):
         self.can_be_saved_to_disk = False
         self.can_be_saved_to_tags = False
         self.can_be_saved_to_metadata = False
+        self.can_be_filtered = False
 
 
 class TagCoverArtImage(CoverArtImage):

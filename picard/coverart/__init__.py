@@ -108,7 +108,9 @@ class CoverArt:
                 },
                 echo=None
             )
-            filters_result = run_image_filters(data)
+            filters_result = True
+            if coverartimage.can_be_filtered:
+                filters_result = run_image_filters(data)
             if filters_result:
                 try:
                     self._set_metadata(coverartimage, data)
