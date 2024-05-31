@@ -28,42 +28,33 @@ from picard.extension_points.cover_art_filters import (
 )
 
 
-def size_filter(data):
+def _check_threshold_size(width, height):
     config = get_config()
     if not config.setting['filter_cover_by_size']:
         return True
-    image = QImage.fromData(data)
-    width = config.setting['cover_width_threshold']
-    height = config.setting['cover_height_threshold']
-    if not (image.width() >= width and image.height() >= height):
+    min_width = config.setting['cover_width_threshold']
+    min_height = config.setting['cover_height_threshold']
+    if width < min_width or height < min_height:
         log.debug(
             "Discarding cover art due to size. Image size: %d x %d. Minimum: %d x %d",
-            image.width(),
-            image.height(),
             width,
-            height
+            height,
+            min_width,
+            min_height
         )
         return False
     return True
+
+
+def size_filter(data):
+    image = QImage.fromData(data)
+    return _check_threshold_size(image.width(), image.height())
 
 
 def size_metadata_filter(metadata):
-    config = get_config()
-    if (not config.setting['filter_cover_by_size']
-            or 'width' not in metadata or 'height' not in metadata):
+    if 'width' not in metadata or 'height' not in metadata:
         return True
-    width = config.setting['cover_width_threshold']
-    height = config.setting['cover_height_threshold']
-    if not (metadata['width'] >= width and metadata['height'] >= height):
-        log.debug(
-            "Avoiding download of cover art due to size. Image size: %d x %d. Minimum: %d x %d",
-            metadata['width'],
-            metadata['height'],
-            width,
-            height
-        )
-        return False
-    return True
+    return _check_threshold_size(metadata['width'], metadata['height'])
 
 
 register_cover_art_filter(size_filter)
