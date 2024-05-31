@@ -32,6 +32,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import PICARD_DISPLAY_NAME
 from picard.config import get_config
 from picard.const.sys import (
     IS_LINUX,
@@ -82,7 +83,7 @@ def find_starting_directory():
 
 
 def _picardize_caption(caption):
-    return _("Picard - %s") % caption
+    return _("%s - %s") % (caption, PICARD_DISPLAY_NAME)
 
 
 def _filedialog_caption(caption, default_caption=""):
