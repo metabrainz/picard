@@ -23,12 +23,20 @@ from picard.coverart.processing import (  # noqa: F401 # pylint: disable=unused-
 )
 from picard.extension_points.cover_art_filters import (
     ext_point_cover_art_filters,
+    ext_point_cover_art_metadata_filters,
 )
 
 
 def run_image_filters(data):
     for f in ext_point_cover_art_filters:
         if not f(data):
+            return False
+    return True
+
+
+def run_image_metadata_filters(metadata):
+    for f in ext_point_cover_art_metadata_filters:
+        if not f(metadata):
             return False
     return True
 

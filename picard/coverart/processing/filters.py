@@ -22,7 +22,10 @@ from PyQt6.QtGui import QImage
 
 from picard import log
 from picard.config import get_config
-from picard.extension_points.cover_art_filters import register_cover_art_filter
+from picard.extension_points.cover_art_filters import (
+    register_cover_art_filter,
+    register_cover_art_metadata_filter,
+)
 
 
 def size_filter(data):
@@ -44,4 +47,24 @@ def size_filter(data):
     return True
 
 
+def size_metadata_filter(metadata):
+    config = get_config()
+    if (not config.setting['filter_cover_by_size']
+            or 'width' not in metadata or 'height' not in metadata):
+        return True
+    width = config.setting['cover_width_threshold']
+    height = config.setting['cover_height_threshold']
+    if not (metadata['width'] >= width and metadata['height'] >= height):
+        log.debug(
+            "Avoiding download of cover art due to size. Image size: %d x %d. Minimum: %d x %d",
+            metadata['width'],
+            metadata['height'],
+            width,
+            height
+        )
+        return False
+    return True
+
+
 register_cover_art_filter(size_filter)
+register_cover_art_metadata_filter(size_metadata_filter)

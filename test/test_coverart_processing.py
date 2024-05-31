@@ -23,7 +23,10 @@ from PyQt6.QtGui import QImage
 
 from test.picardtestcase import PicardTestCase
 
-from picard.coverart.processing.filters import size_filter
+from picard.coverart.processing.filters import (
+    size_filter,
+    size_metadata_filter,
+)
 
 
 def create_fake_image(width, height, image_format):
@@ -48,6 +51,20 @@ class ImageFiltersTest(PicardTestCase):
         self.assertFalse(size_filter(image1))
         self.assertTrue(size_filter(image2))
         self.assertTrue(size_filter(image3))
+
+    def test_filter_by_size_metadata(self):
+        settings = {
+            'filter_cover_by_size': True,
+            'cover_width_threshold': 500,
+            'cover_height_threshold': 500
+        }
+        self.set_config_values(settings)
+        image_metadata1 = {'width': 400, 'height': 600}
+        image_metadata2 = {'width': 500, 'height': 500}
+        image_metadata3 = {'width': 600, 'height': 600}
+        self.assertFalse(size_metadata_filter(image_metadata1))
+        self.assertTrue(size_metadata_filter(image_metadata2))
+        self.assertTrue(size_metadata_filter(image_metadata3))
 
 
 # class ImageProcessorsTest(PicardTestCase):

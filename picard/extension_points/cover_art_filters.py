@@ -22,7 +22,12 @@ from picard.plugin import ExtensionPoint
 
 
 ext_point_cover_art_filters = ExtensionPoint(label='cover_art_filters')
+ext_point_cover_art_metadata_filters = ExtensionPoint(label='cover_art_metadata_filters')
 
 
 def register_cover_art_filter(cover_art_filter):
     ext_point_cover_art_filters.register(cover_art_filter.__module__, cover_art_filter)
+
+
+def register_cover_art_metadata_filter(cover_art_metadata_filter):
+    ext_point_cover_art_metadata_filters.register(cover_art_metadata_filter.__module__, cover_art_metadata_filter)
