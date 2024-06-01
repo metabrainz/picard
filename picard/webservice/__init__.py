@@ -558,12 +558,13 @@ class WebService(QtCore.QObject):
                             log.debug("Response received: %s", document)
                     except Exception as e:
                         log.error("Unable to parse the response for %s -> %s", display_reply_url, e)
-                        document = reply.readAll()
+                        document = bytes(reply.readAll())
                         error = e
                     finally:
                         handler(document, reply, error)
                 else:
-                    handler(reply.readAll(), reply, error)
+                    # readAll() returns QtCore.QByteArray, so convert to bytes
+                    handler(bytes(reply.readAll()), reply, error)
 
         ratecontrol.adjust(hostkey, slow_down)
 
