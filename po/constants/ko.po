@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-26 13:00+0000\n"
+"PO-Revision-Date: 2024-06-02 02:42+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Korean <https://translate.uploadedlobster.com/projects/picard/"
+"Language-Team: Korean <https://translations.metabrainz.org/projects/picard/3/"
 "constants/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.5.4\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -2113,7 +2113,7 @@ msgstr "인도네시아어(인도네시아)"
 
 #: picard/const/locales.py:520
 msgid "Igbo"
-msgstr ""
+msgstr "이보어"
 
 #: picard/const/locales.py:521
 msgid "Igbo (Nigeria)"
@@ -2129,7 +2129,7 @@ msgstr ""
 
 #: picard/const/locales.py:524
 msgid "Ido"
-msgstr ""
+msgstr "이도"
 
 #: picard/const/locales.py:525
 msgid "Ido (world)"
@@ -2201,7 +2201,7 @@ msgstr ""
 
 #: picard/const/locales.py:545
 msgid "Javanese"
-msgstr ""
+msgstr "자바어"
 
 #: picard/const/locales.py:546
 msgid "Javanese (Indonesia)"
