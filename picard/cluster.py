@@ -87,9 +87,6 @@ class FileList(QtCore.QObject, FileListItem):
                 file.metadata_images_changed.connect(self.update_metadata_images)
             self.update_metadata_images_from_children()
 
-    def iterfiles(self, save=False):
-        yield from self.files
-
     def update(self, signal=True):
         pass
 
