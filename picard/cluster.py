@@ -102,7 +102,6 @@ class Cluster(FileList):
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         super().__init__()
-        self.tagger = QtCore.QCoreApplication.instance()
         self.item = None
         self.metadata['album'] = name
         self.metadata['albumartist'] = artist

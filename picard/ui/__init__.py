@@ -182,8 +182,8 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
-        self.tagger = QtCore.QCoreApplication.instance()
         super().__init__(parent=parent, f=self.flags)
+        self.tagger = QtCore.QCoreApplication.instance()
         self.__shown = False
         self.ready_for_display.connect(self.restore_geometry)
 
@@ -212,27 +212,22 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 # With py3, QObjects are no longer hashable unless they have
 # an explicit __hash__ implemented.
 # See: http://python.6.x6.nabble.com/QTreeWidgetItem-is-not-hashable-in-Py3-td5212216.html
-class HashableTreeWidgetItem(QtWidgets.QTreeWidgetItem):
-
+class HashableItem:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.id = uuid.uuid4()
+        self.__id = uuid.uuid4()
+        self.__hash = hash(self.__id)
 
     def __eq__(self, other):
-        return self.id == other.id
+        return self.__id == other.__id
 
     def __hash__(self):
-        return hash(str(self.id))
+        return self.__hash
 
 
-class HashableListWidgetItem(QtWidgets.QListWidgetItem):
+class HashableTreeWidgetItem(HashableItem, QtWidgets.QTreeWidgetItem):
+    pass
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.id = uuid.uuid4()
 
-    def __eq__(self, other):
-        return self.id == other.id
-
-    def __hash__(self):
-        return hash(str(self.id))
+class HashableListWidgetItem(HashableItem, QtWidgets.QListWidgetItem):
+    pass

@@ -241,10 +241,10 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.unmatched_files = ClusterItem(self.tagger.unclustered_files, False, self)
+        self.unmatched_files = ClusterItem(self.tagger.unclustered_files, parent=self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
-        self.clusters = ClusterItem(self.tagger.clusters, False, self)
+        self.clusters = ClusterItem(self.tagger.clusters, parent=self)
         self.set_clusters_text()
         self.clusters.setExpanded(True)
         self.tagger.cluster_added.connect(self.add_file_cluster)
@@ -282,10 +282,10 @@ class AlbumTreeView(BaseTreeView):
 
     def add_album(self, album):
         if isinstance(album, NatAlbum):
-            item = NatAlbumItem(album, True)
+            item = NatAlbumItem(album, sortable=True)
             self.insertTopLevelItem(0, item)
         else:
-            item = AlbumItem(album, True, self)
+            item = AlbumItem(album, sortable=True, parent=self)
         item.setIcon(ITEM_ICON_COLUMN, AlbumItem.icon_cd)
         for i, column in enumerate(DEFAULT_COLUMNS):
             font = item.font(i)
@@ -301,13 +301,17 @@ class AlbumTreeView(BaseTreeView):
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
 
-    def __init__(self, obj, sortable, *args):
-        super().__init__(*args)
+    def __init__(self, obj, sortable=False, parent=None):
+        super().__init__(parent)
         self.obj = obj
         if obj is not None:
             obj.item = self
         self.sortable = sortable
         self._sortkeys = {}
+        self.post_init()
+
+    def post_init(self):
+        pass
 
     def setText(self, column, text):
         self._sortkeys[column] = None
@@ -352,8 +356,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 
 class ClusterItem(TreeItem):
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    def post_init(self):
         self.setIcon(ITEM_ICON_COLUMN, ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
@@ -375,7 +378,7 @@ class ClusterItem(TreeItem):
         # to be certain about item order in the cluster (addChildren adds in reverse order).
         # Benchmarked performance was not noticeably different.
         for file in files:
-            item = FileItem(file, True)
+            item = FileItem(file, sortable=True)
             self.addChild(item)
             item.update()
 
@@ -412,7 +415,7 @@ class AlbumItem(TreeItem):
             if newnum > oldnum:  # add new items
                 items = []
                 for i in range(oldnum, newnum):
-                    item = TrackItem(album.tracks[i], False)
+                    item = TrackItem(album.tracks[i])
                     item.setHidden(False)  # Workaround to make sure the parent state gets updated
                     items.append(item)
                 # insertChildren behaves differently if sorting is disabled / enabled, which results
@@ -520,7 +523,7 @@ class TrackItem(TreeItem):
                 if newnum > oldnum:  # add new items
                     items = []
                     for i in range(newnum - 1, oldnum - 1, -1):
-                        item = FileItem(track.files[i], False)
+                        item = FileItem(track.files[i])
                         item.update(update_track=False, update_selection=update_selection)
                         items.append(item)
                     self.addChildren(items)

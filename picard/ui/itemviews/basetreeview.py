@@ -633,7 +633,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if parent_item is None:
             parent_item = self.clusters
         from picard.ui.itemviews import ClusterItem
-        cluster_item = ClusterItem(cluster, not cluster.special, parent_item)
+        cluster_item = ClusterItem(cluster, sortable=not cluster.special, parent=parent_item)
         if cluster.hide_if_empty and not cluster.files:
             cluster_item.update()
             cluster_item.setHidden(True)

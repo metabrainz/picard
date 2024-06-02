@@ -54,8 +54,8 @@ class BaseAction(QtGui.QAction):
     NAME = "Unknown"
     MENU = []
 
-    def __init__(self):
-        super().__init__(self.NAME, None)
+    def __init__(self, parent=None):
+        super().__init__(self.NAME, parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.triggered.connect(self.__callback)
 

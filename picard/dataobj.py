@@ -28,11 +28,12 @@
 
 from collections import Counter
 
+from PyQt6 import QtCore
+
 from picard.config import get_config
-from picard.util import LockableObject
 
 
-class DataObject(LockableObject):
+class DataObject(QtCore.QObject):
 
     def __init__(self, obj_id):
         super().__init__()

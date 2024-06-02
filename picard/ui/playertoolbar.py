@@ -306,7 +306,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
 
         tool_font = QtWidgets.QApplication.font('QToolButton')
 
-        self.progress_slider = ClickableSlider(self)
+        self.progress_slider = ClickableSlider(parent=self)
         self.progress_slider.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self.progress_slider.setEnabled(False)
         self.progress_slider.setMinimumWidth(30)

@@ -126,28 +126,6 @@ class ReadWriteLockContext:
         return self._entered > 0
 
 
-class LockableObject(QtCore.QObject):
-    """Read/write lockable object."""
-
-    def __init__(self):
-        super().__init__()
-        self.__context = ReadWriteLockContext()
-
-    def lock_for_read(self):
-        """Lock the object for read operations."""
-        self.__context.lock_for_read()
-        return self.__context
-
-    def lock_for_write(self):
-        """Lock the object for write operations."""
-        self.__context.lock_for_write()
-        return self.__context
-
-    def unlock(self):
-        """Unlock the object."""
-        self.__context.unlock()
-
-
 def process_events_iter(iterable, interval=0.1):
     """
     Creates an iterator over iterable that calls QCoreApplication.processEvents()

@@ -72,8 +72,8 @@ class LogViewDialog(PicardDialog):
 
 class LogViewCommon(LogViewDialog):
 
-    def __init__(self, log_tail, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, log_tail, title, parent=None):
+        super().__init__(title, parent=parent)
         self.displaying = False
         self.log_tail = log_tail
         self._init_doc()

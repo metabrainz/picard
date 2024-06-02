@@ -55,17 +55,13 @@ from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
 )
-from picard.coverart.utils import (
-    CAA_TYPES,
-    translate_caa_type,
-)
 from picard.i18n import (
     N_,
     gettext as _,
 )
 from picard.webservice import ratecontrol
 
-from picard.ui.caa_types_selector import display_caa_types_selector
+from picard.ui.caa_types_selector import CAATypesSelectorDialog
 from picard.ui.forms.ui_provider_options_caa import Ui_CaaOptions
 
 
@@ -167,14 +163,10 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.select_caa_types.setEnabled(enabled)
 
     def select_caa_types(self):
-        known_types = {t['name']: translate_caa_type(t['name']) for t in CAA_TYPES}
-        (types, types_to_omit, ok) = display_caa_types_selector(
-            parent=self,
+        (types, types_to_omit, ok) = CAATypesSelectorDialog.display(
             types_include=self.caa_image_types,
             types_exclude=self.caa_image_types_to_omit,
-            default_include=DEFAULT_CAA_IMAGE_TYPE_INCLUDE,
-            default_exclude=DEFAULT_CAA_IMAGE_TYPE_EXCLUDE,
-            known_types=known_types,
+            parent=self,
         )
         if ok:
             self.caa_image_types = types
@@ -282,7 +274,7 @@ class CoverArtProviderCaa(CoverArtProvider):
                 self.error("CAA JSON error: %s" % (http.errorString()))
         else:
             if self.restrict_types:
-                log.debug("CAA types: included: %s, excluded: %s", self.included_types, self.excluded_types)
+                log.debug("CAA types: included: %s, excluded: %s", list(self.included_types), list(self.excluded_types))
             try:
                 config = get_config()
                 for image in data['images']:

@@ -47,10 +47,7 @@ from collections import (
 from enum import IntEnum
 import traceback
 
-from PyQt6 import (
-    QtCore,
-    QtNetwork,
-)
+from PyQt6 import QtNetwork
 
 from picard import log
 from picard.cluster import Cluster
@@ -129,7 +126,7 @@ class Album(DataObject, MetadataItem):
 
     def __init__(self, album_id, discid=None):
         DataObject.__init__(self, album_id)
-        self.tagger = QtCore.QCoreApplication.instance()
+        MetadataItem.__init__(self)
         self.tracks = []
         self.loaded = False
         self.load_task = None
