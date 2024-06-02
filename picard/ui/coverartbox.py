@@ -65,6 +65,7 @@ from picard.util import (
 from picard.util.lrucache import LRUCache
 
 from picard.ui.colors import interface_colors
+from picard.ui.util import FileDialog
 from picard.ui.widgets import ActiveLabel
 
 
@@ -607,7 +608,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         return coverartimage
 
     def choose_local_file(self):
-        file_chooser = QtWidgets.QFileDialog(parent=self)
+        file_chooser = FileDialog(parent=self)
         extensions = ['*' + ext for ext in imageinfo.get_supported_extensions()]
         extensions.sort()
         file_chooser.setNameFilters([

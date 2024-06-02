@@ -53,7 +53,10 @@ from picard.ui.forms.ui_options_interface_toolbar import (
 )
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
-from picard.ui.util import qlistwidget_items
+from picard.ui.util import (
+    FileDialog,
+    qlistwidget_items,
+)
 
 
 ToolbarButtonDesc = namedtuple('ToolbarButtonDesc', ('label', 'icon'))
@@ -162,9 +165,9 @@ class InterfaceToolbarOptionsPage(OptionsPage):
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
-        path = QtWidgets.QFileDialog.getExistingDirectory(
+        path = FileDialog.getExistingDirectory(
             parent=self,
-            directory=item.text(),
+            dir=item.text(),
         )
         if path:
             path = os.path.normpath(path)

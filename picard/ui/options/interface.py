@@ -53,7 +53,10 @@ from picard.ui.theme import (
     OS_SUPPORTS_THEMES,
     UiTheme,
 )
-from picard.ui.util import changes_require_restart_warning
+from picard.ui.util import (
+    FileDialog,
+    changes_require_restart_warning,
+)
 
 
 class InterfaceOptionsPage(OptionsPage):
@@ -197,9 +200,9 @@ class InterfaceOptionsPage(OptionsPage):
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path
-        path = QtWidgets.QFileDialog.getExistingDirectory(
+        path = FileDialog.getExistingDirectory(
             parent=self,
-            directory=item.text(),
+            dir=item.text(),
         )
         if path:
             path = os.path.normpath(path)

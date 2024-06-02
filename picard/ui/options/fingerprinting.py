@@ -29,7 +29,6 @@ import os
 from PyQt6 import (
     QtCore,
     QtGui,
-    QtWidgets,
 )
 
 from picard.acoustid import find_fpcalc
@@ -48,6 +47,7 @@ from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
 )
+from picard.ui.util import FileDialog
 
 
 class ApiKeyValidator(QtGui.QValidator):
@@ -120,9 +120,9 @@ class FingerprintingOptionsPage(OptionsPage):
         self._acoustid_fpcalc_check()
 
     def acoustid_fpcalc_browse(self):
-        path, _filter = QtWidgets.QFileDialog.getOpenFileName(
+        path, _filter = FileDialog.getOpenFileName(
             parent=self,
-            directory=self.ui.acoustid_fpcalc.text(),
+            dir=self.ui.acoustid_fpcalc.text(),
         )
         if path:
             path = os.path.normpath(path)

@@ -52,6 +52,7 @@ from picard.ui import (
     PicardDialog,
 )
 from picard.ui.colors import interface_colors
+from picard.ui.util import FileDialog
 
 
 class LogViewDialog(PicardDialog):
@@ -275,7 +276,7 @@ class LogView(LogViewCommon):
         return self.formats[level]
 
     def _save_log_as_do(self):
-        path, ok = QtWidgets.QFileDialog.getSaveFileName(
+        path, ok = FileDialog.getSaveFileName(
             parent=self,
             caption=_("Save Log View to File"),
             options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite,

@@ -32,6 +32,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import PICARD_DISPLAY_NAME
 from picard.config import get_config
 from picard.const.sys import (
     IS_LINUX,
@@ -81,25 +82,85 @@ def find_starting_directory():
     return find_existing_path(path)
 
 
-class MultiDirsSelectDialog(QtWidgets.QFileDialog):
+def _picardize_caption(caption):
+    return _("%s - %s") % (caption, PICARD_DISPLAY_NAME)
 
-    """Custom file selection dialog which allows the selection
-    of multiple directories.
-    Depending on the platform, dialog may fallback on non-native.
-    """
+
+def _filedialog_caption(caption, default_caption=""):
+    if not caption:
+        caption = default_caption
+    return _picardize_caption(caption)
+
+
+def _filedialog_options(options, default=None):
+    if options is None:
+        # returns default flags or empty enum flag
+        return default or QtWidgets.QFileDialog.Option(0)
+    else:
+        return options
+
+
+class FileDialog(QtWidgets.QFileDialog):
+    """Wrap QFileDialog & its static methods"""
 
     def __init__(self, parent=None, caption="", directory="", filter=""):
+        if not caption:
+            caption = _("Select a file or a directory")
+        caption = _picardize_caption(caption)
         super().__init__(parent=parent, caption=caption, directory=directory, filter=filter)
-        self.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
-        self.setOption(QtWidgets.QFileDialog.Option.ShowDirsOnly)
+
+    @staticmethod
+    def getSaveFileName(parent=None, caption="", dir="", filter="", selectedFilter="", options=None):
+        caption = _filedialog_caption(caption, _("Select a target file"))
+        options = _filedialog_options(options)
+        return QtWidgets.QFileDialog.getSaveFileName(
+            parent=parent, caption=caption, directory=dir,
+            filter=filter, initialFilter=selectedFilter, options=options
+        )
+
+    @staticmethod
+    def getOpenFileName(parent=None, caption="", dir="", filter="", selectedFilter="", options=None):
+        caption = _filedialog_caption(caption, _("Select a file"))
+        options = _filedialog_options(options)
+        return QtWidgets.QFileDialog.getOpenFileName(
+            parent=parent, caption=caption, directory=dir,
+            filter=filter, initialFilter=selectedFilter, options=options
+        )
+
+    @staticmethod
+    def getOpenFileNames(parent=None, caption="", dir="", filter="", selectedFilter="", options=None):
+        caption = _filedialog_caption(caption, _("Select one or more files"))
+        options = _filedialog_options(options)
+        return QtWidgets.QFileDialog.getOpenFileNames(
+            parent=parent, caption=caption, directory=dir,
+            filter=filter, initialFilter=selectedFilter, options=options
+        )
+
+    @staticmethod
+    def getExistingDirectory(parent=None, caption="", dir="", options=None):
+        caption = _filedialog_caption(caption, _("Select a directory"))
+        options = _filedialog_options(options, default=QtWidgets.QFileDialog.Option.ShowDirsOnly)
+        return QtWidgets.QFileDialog.getExistingDirectory(
+            parent=parent, caption=caption, directory=dir, options=options
+        )
+
+    @staticmethod
+    def getMultipleDirectories(parent=None, caption="", directory="", filter=""):
+        """Custom file selection dialog which allows the selection
+        of multiple directories.
+        Depending on the platform, dialog may fallback on non-native.
+        """
+        if not caption:
+            caption = _("Select one or more directories")
+        file_dialog = FileDialog(parent=parent, caption=caption, directory=directory, filter=filter)
+        file_dialog.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
+        file_dialog.setOption(QtWidgets.QFileDialog.Option.ShowDirsOnly)
         # The native dialog doesn't allow selecting >1 directory
-        self.setOption(QtWidgets.QFileDialog.Option.DontUseNativeDialog)
-        for view in self.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
+        file_dialog.setOption(QtWidgets.QFileDialog.Option.DontUseNativeDialog)
+        for view in file_dialog.findChildren((QtWidgets.QListView, QtWidgets.QTreeView)):
             if isinstance(view.model(), QtGui.QFileSystemModel):
                 view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.set_sidebar_locations()
 
-    def set_sidebar_locations(self):
         # Allow access to all mounted drives in the sidebar
         root_volume = "/"
         volume_paths = []
@@ -116,7 +177,11 @@ class MultiDirsSelectDialog(QtWidgets.QFileDialog):
             QtCore.QDir.homePath(),
             QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.MusicLocation),
         ]
-        self.setSidebarUrls(QtCore.QUrl.fromLocalFile(p) for p in paths + sorted(volume_paths) if p)
+        file_dialog.setSidebarUrls(QtCore.QUrl.fromLocalFile(p) for p in paths + sorted(volume_paths) if p)
+        dirs = ()
+        if file_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            dirs = file_dialog.selectedFiles()
+        return tuple(dirs)
 
 
 def qlistwidget_items(qlistwidget):

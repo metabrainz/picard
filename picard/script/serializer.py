@@ -47,6 +47,8 @@ from picard.i18n import (
 )
 from picard.util import make_filename_from_title
 
+from picard.ui.util import FileDialog
+
 
 @unique
 class ScriptSerializerType(IntEnum):
@@ -222,10 +224,10 @@ class ScriptSerializer():
 
         dialog_title = _("Export Script File")
         dialog_file_types = self._get_dialog_filetypes()
-        filename, file_type = QtWidgets.QFileDialog.getSaveFileName(
+        filename, file_type = FileDialog.getSaveFileName(
             parent=parent,
             caption=dialog_title,
-            directory=default_path,
+            dir=default_path,
             filter=dialog_file_types,
         )
         if not filename:
@@ -264,10 +266,10 @@ class ScriptSerializer():
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()
         default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
-        filename, file_type = QtWidgets.QFileDialog.getOpenFileName(
+        filename, file_type = FileDialog.getOpenFileName(
             parent=parent,
             caption=dialog_title,
-            directory=default_script_directory,
+            dir=default_script_directory,
             filter=dialog_file_types,
         )
         if not filename:

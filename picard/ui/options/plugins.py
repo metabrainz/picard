@@ -65,6 +65,7 @@ from picard.ui import HashableTreeWidgetItem
 from picard.ui.forms.ui_options_plugins import Ui_PluginsOptionsPage
 from picard.ui.options import OptionsPage
 from picard.ui.theme import theme
+from picard.ui.util import FileDialog
 
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
@@ -659,9 +660,9 @@ class PluginsOptionsPage(OptionsPage):
             self.refresh_details(item)
 
     def open_plugins(self):
-        files, _filter = QtWidgets.QFileDialog.getOpenFileNames(
+        files, _filter = FileDialog.getOpenFileNames(
             parent=self,
-            directory=QtCore.QDir.homePath(),
+            dir=QtCore.QDir.homePath(),
             filter="Picard plugin (*.py *.pyc *.zip)",
         )
         if files:
