@@ -419,7 +419,7 @@ configuration from JSON files.
 Which additional extension points should be supported?
 
 
-### Support for ZIP compressed plugins:
+### Support for ZIP compressed plugins
 
 As before plugins in a single ZIP archive could also be supported. The "Format"
 section above could be extended with following paragraph.
