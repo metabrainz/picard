@@ -196,7 +196,7 @@ class Track(FileListItem):
             self.metadata.images = self._orig_images.copy()
         run_file_post_removal_from_track_processors(self, file)
         self.update()
-        if self.item.isSelected():
+        if self.ui_item.isSelected():
             self.tagger.window.refresh_metadatabox()
 
     @staticmethod
@@ -211,8 +211,8 @@ class Track(FileListItem):
                 metadata.strip_whitespace()
 
     def update(self):
-        if self.item:
-            self.item.update()
+        if self.ui_item:
+            self.ui_item.update()
 
     def is_linked(self):
         return self.num_linked_files > 0

@@ -510,7 +510,7 @@ class Album(MetadataItem):
         for func, always in self._after_load_callbacks:
             func()
         self._after_load_callbacks = []
-        if self.item.isSelected():
+        if self.ui_item.isSelected():
             self.tagger.window.refresh_metadatabox()
             self.tagger.window.cover_art_box.update_metadata()
 
@@ -630,8 +630,8 @@ class Album(MetadataItem):
             self.load_task = None
 
     def update(self, update_tracks=True, update_selection=True):
-        if self.item:
-            self.item.update(update_tracks, update_selection=update_selection)
+        if self.ui_item:
+            self.ui_item.update(update_tracks, update_selection=update_selection)
 
     def add_file(self, track, file, new_album=True):
         self._files_count += 1

@@ -946,8 +946,8 @@ class File(MetadataItem):
                 self.update_item(update_selection=False)
 
     def update_item(self, update_selection=True):
-        if self.item:
-            self.item.update(update_selection=update_selection)
+        if self.ui_item:
+            self.ui_item.update(update_selection=update_selection)
 
     def iterfiles(self, save=False):
         yield self

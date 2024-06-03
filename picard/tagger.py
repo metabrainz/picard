@@ -726,7 +726,7 @@ class Tagger(QtWidgets.QApplication):
             self.nats = NatAlbum()
             self.albums['NATS'] = self.nats
             self.album_added.emit(self.nats)
-            self.nats.item.setExpanded(True)
+            self.nats.ui_item.setExpanded(True)
         return self.nats
 
     def move_file_to_nat(self, file, recordingid, node=None):

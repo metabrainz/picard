@@ -39,6 +39,9 @@ from picard.util.imagelist import ImageList
 
 class Item:
 
+    def __init__(self):
+        self.ui_item = None
+
     @property
     def can_save(self):
         """Return if this object can be saved."""
@@ -185,8 +188,6 @@ class MetadataItem(QtCore.QObject, Item):
     def __init__(self, obj_id=None):
         super().__init__()
         self.id = obj_id
-        # FIXME: Rename to ui_item
-        self.item = None
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.update_children_metadata_attrs = {}
