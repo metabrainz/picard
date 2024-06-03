@@ -44,7 +44,7 @@ from picard.util.tags import (
 )
 
 
-class DataObjectTest(PicardTestCase):
+class FileTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()

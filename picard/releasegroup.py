@@ -30,21 +30,18 @@ from functools import partial
 from itertools import combinations
 import traceback
 
-from PyQt6 import QtCore
-
 from picard import log
-from picard.dataobj import DataObject
 from picard.i18n import (
     N_,
     gettext as _,
     pgettext_attributes,
 )
+from picard.item import MetadataItem
 from picard.mbjson import (
     countries_from_node,
     label_info_from_node,
     media_formats_from_node,
 )
-from picard.metadata import Metadata
 from picard.util import (
     countries_shortlist,
     uniqify,
@@ -106,12 +103,10 @@ def prepare_releases_for_versions(releases):
         }
 
 
-class ReleaseGroup(DataObject):
+class ReleaseGroup(MetadataItem):
 
     def __init__(self, rg_id):
         super().__init__(rg_id)
-        self.tagger = QtCore.QCoreApplication.instance()
-        self.metadata = Metadata()
         self.loaded = False
         self.versions = []
         self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)

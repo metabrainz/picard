@@ -25,14 +25,14 @@ from unittest.mock import Mock
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-from picard.dataobj import DataObject
+from picard.item import MetadataItem
 
 
-class DataObjectTest(PicardTestCase):
+class MetadataItemTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self.obj = DataObject('id')
+        self.obj = MetadataItem('id')
 
     def test_set_genre_inc_params_no_genres(self):
         inc = set()

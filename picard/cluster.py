@@ -42,8 +42,6 @@ from collections import (
 from operator import attrgetter
 import re
 
-from PyQt6 import QtCore
-
 from picard.config import get_config
 from picard.file import File
 from picard.i18n import (
@@ -77,11 +75,10 @@ CLUSTER_COMPARISON_WEIGHTS = {
 }
 
 
-class FileList(QtCore.QObject, FileListItem):
+class FileList(FileListItem):
 
     def __init__(self, files=None):
-        QtCore.QObject.__init__(self)
-        FileListItem.__init__(self, files)
+        super().__init__(files=files)
         if self.files and self.can_show_coverart:
             for file in self.files:
                 file.metadata_images_changed.connect(self.update_metadata_images)
@@ -99,7 +96,6 @@ class Cluster(FileList):
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         super().__init__()
-        self.item = None
         self.metadata['album'] = name
         self.metadata['albumartist'] = artist
         self.metadata['totaltracks'] = 0

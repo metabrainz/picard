@@ -59,8 +59,6 @@ import time
 
 from mutagen._util import MutagenError
 
-from PyQt6 import QtCore
-
 from picard import (
     PICARD_APP_NAME,
     log,
@@ -135,7 +133,7 @@ class FileErrorType(Enum):
     PARSER = auto()
 
 
-class File(QtCore.QObject, MetadataItem):
+class File(MetadataItem):
 
     NAME = None
 
@@ -173,7 +171,6 @@ class File(QtCore.QObject, MetadataItem):
         self.parent = None
 
         self.lookup_task = None
-        self.item = None
 
         self.acoustid_fingerprint = None
         self.acoustid_length = 0

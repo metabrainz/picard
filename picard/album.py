@@ -54,7 +54,6 @@ from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
 from picard.config import get_config
 from picard.const import VARIOUS_ARTISTS_ID
-from picard.dataobj import DataObject
 from picard.file import File
 from picard.i18n import (
     N_,
@@ -104,7 +103,7 @@ def _copy_artist_nodes(source, target_node):
             credit['artist'] = artist_node
 
 
-class AlbumArtist(DataObject):
+class AlbumArtist(MetadataItem):
     def __init__(self, album_artist_id):
         super().__init__(album_artist_id)
 
@@ -122,11 +121,10 @@ class ParseResult(IntEnum):
     MISSING_TRACK_RELS = 2
 
 
-class Album(DataObject, MetadataItem):
+class Album(MetadataItem):
 
     def __init__(self, album_id, discid=None):
-        DataObject.__init__(self, album_id)
-        MetadataItem.__init__(self)
+        super().__init__(album_id)
         self.tracks = []
         self.loaded = False
         self.load_task = None
