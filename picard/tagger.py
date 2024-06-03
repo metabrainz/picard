@@ -100,7 +100,6 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
-from picard.dataobj import DataObject
 from picard.debug_opts import DebugOpt
 from picard.disc import (
     Disc,
@@ -115,6 +114,7 @@ from picard.i18n import (
     gettext as _,
     setup_gettext,
 )
+from picard.item import MetadataItem
 from picard.options import init_options
 from picard.pluginmanager import (
     PluginManager,
@@ -726,7 +726,7 @@ class Tagger(QtWidgets.QApplication):
             self.nats = NatAlbum()
             self.albums['NATS'] = self.nats
             self.album_added.emit(self.nats)
-            self.nats.item.setExpanded(True)
+            self.nats.ui_item.setExpanded(True)
         return self.nats
 
     def move_file_to_nat(self, file, recordingid, node=None):
@@ -865,11 +865,11 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(target, Album):
             self.move_files_to_album([file], album=target)
         else:
-            if isinstance(target, File) and target.parent:
-                target = target.parent
+            if isinstance(target, File) and target.parent_item:
+                target = target.parent_item
             if not file.move(target):
                 # Ensure a file always has a parent so it shows up in UI
-                if not file.parent:
+                if not file.parent_item:
                     target = self.unclustered_files
                     file.move(target)
                 # Unsupported target, do not move the file
@@ -893,7 +893,7 @@ class Tagger(QtWidgets.QApplication):
                         target = album.get_next_track(target) or album.unmatched_files
             elif isinstance(target, File):
                 for file in process_events_iter(files):
-                    file.move(target.parent)
+                    file.move(target.parent_item)
             elif isinstance(target, Album):
                 self.move_files_to_album(files, album=target)
             elif isinstance(target, ClusterList):
@@ -1020,8 +1020,8 @@ class Tagger(QtWidgets.QApplication):
         """Lookup the object's metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         metadata = item.metadata
-        # Only lookup via MB IDs if matched to a DataObject; otherwise ignore and use metadata details
-        if isinstance(item, DataObject):
+        # Only lookup via MB IDs if matched to a MetadataItem; otherwise ignore and use metadata details
+        if isinstance(item, MetadataItem):
             itemid = item.id
             if isinstance(item, Track):
                 lookup.recording_lookup(itemid)

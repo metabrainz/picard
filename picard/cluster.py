@@ -42,8 +42,6 @@ from collections import (
 from operator import attrgetter
 import re
 
-from PyQt6 import QtCore
-
 from picard.config import get_config
 from picard.file import File
 from picard.i18n import (
@@ -77,18 +75,14 @@ CLUSTER_COMPARISON_WEIGHTS = {
 }
 
 
-class FileList(QtCore.QObject, FileListItem):
+class FileList(FileListItem):
 
     def __init__(self, files=None):
-        QtCore.QObject.__init__(self)
-        FileListItem.__init__(self, files)
+        super().__init__(files=files)
         if self.files and self.can_show_coverart:
             for file in self.files:
                 file.metadata_images_changed.connect(self.update_metadata_images)
             self.update_metadata_images_from_children()
-
-    def iterfiles(self, save=False):
-        yield from self.files
 
     def update(self, signal=True):
         pass
@@ -102,7 +96,6 @@ class Cluster(FileList):
 
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         super().__init__()
-        self.item = None
         self.metadata['album'] = name
         self.metadata['albumartist'] = artist
         self.metadata['totaltracks'] = 0
@@ -149,7 +142,7 @@ class Cluster(FileList):
         self.update(signal=False)
         if self.can_show_coverart:
             self.add_metadata_images_from_children(added_files)
-        self.item.add_files(added_files)
+        self.ui_item.add_files(added_files)
         if new_album:
             self._update_related_album(added_files=added_files)
 
@@ -161,7 +154,7 @@ class Cluster(FileList):
         self.metadata.length -= file.metadata.length
         self.files.remove(file)
         self.update(signal=False)
-        self.item.remove_file(file)
+        self.ui_item.remove_file(file)
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
             self.remove_metadata_images_from_children([file])
@@ -173,8 +166,8 @@ class Cluster(FileList):
 
     def update(self, signal=True):
         self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)
-        if signal and self.item:
-            self.item.update()
+        if signal and self.ui_item:
+            self.ui_item.update()
 
     def get_num_files(self):
         return len(self.files)
@@ -316,7 +309,7 @@ class Cluster(FileList):
             # If the file is attached to a track we should use the original
             # metadata for clustering. This is often used by users when moving
             # mismatched files back from the right pane to the left.
-            if isinstance(file.parent, Track):
+            if isinstance(file.parent_item, Track):
                 metadata = file.orig_metadata
             else:
                 metadata = file.metadata

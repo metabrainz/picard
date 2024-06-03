@@ -720,8 +720,8 @@ _Since Picard 0.12_"""
 def func_matchedtracks(parser, *args):
     # only works in file naming scripts, always returns zero in tagging scripts
     file = parser.file
-    if file and file.parent and hasattr(file.parent, 'album') and file.parent.album:
-        return str(parser.file.parent.album.get_num_matched_tracks())
+    if file and file.parent_item and hasattr(file.parent_item, 'album') and file.parent_item.album:
+        return str(parser.file.parent_item.album.get_num_matched_tracks())
     return '0'
 
 
@@ -734,8 +734,8 @@ Returns true if every track in the album is matched to a single file.
 def func_is_complete(parser):
     # only works in file naming scripts, always returns zero in tagging scripts
     file = parser.file
-    if (file and file.parent and hasattr(file.parent, 'album') and file.parent.album
-            and file.parent.album.is_complete()):
+    if (file and file.parent_item and hasattr(file.parent_item, 'album') and file.parent_item.album
+            and file.parent_item.album.is_complete()):
         return '1'
     return ''
 

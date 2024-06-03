@@ -55,13 +55,15 @@ from picard.const import (
     SILENCE_TRACK_TITLE,
     VARIOUS_ARTISTS_ID,
 )
-from picard.dataobj import DataObject
 from picard.file import (
     run_file_post_addition_to_track_processors,
     run_file_post_removal_from_track_processors,
 )
 from picard.i18n import gettext as _
-from picard.item import FileListItem
+from picard.item import (
+    FileListItem,
+    MetadataItem,
+)
 from picard.mbjson import recording_to_metadata
 from picard.metadata import (
     Metadata,
@@ -119,16 +121,15 @@ class TagGenreFilter:
             yield fmt % {'lineno': lineno + 1, 'error': error}
 
 
-class TrackArtist(DataObject):
+class TrackArtist(MetadataItem):
     def __init__(self, ta_id):
         super().__init__(ta_id)
 
 
-class Track(DataObject, FileListItem):
+class Track(FileListItem):
 
     def __init__(self, track_id, album=None):
-        DataObject.__init__(self, track_id)
-        FileListItem.__init__(self)
+        super().__init__(track_id)
         self.album = album
         self.scripted_metadata = Metadata()
         self._track_artists = []
@@ -195,7 +196,7 @@ class Track(DataObject, FileListItem):
             self.metadata.images = self._orig_images.copy()
         run_file_post_removal_from_track_processors(self, file)
         self.update()
-        if self.item.isSelected():
+        if self.ui_item.isSelected():
             self.tagger.window.refresh_metadatabox()
 
     @staticmethod
@@ -210,8 +211,8 @@ class Track(DataObject, FileListItem):
                 metadata.strip_whitespace()
 
     def update(self):
-        if self.item:
-            self.item.update()
+        if self.ui_item:
+            self.ui_item.update()
 
     def is_linked(self):
         return self.num_linked_files > 0

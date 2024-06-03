@@ -417,10 +417,10 @@ class MetadataBox(QtWidgets.QTableWidget):
                         track_albums = set()
                         for file in self.files:
                             objects = [file]
-                            if file.parent in self.tracks and len(self.files & set(file.parent.files)) == 1:
-                                objects.append(file.parent)
-                                file_tracks.append(file.parent)
-                                track_albums.add(file.parent.album)
+                            if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
+                                objects.append(file.parent_item)
+                                file_tracks.append(file.parent_item)
+                                track_albums.add(file.parent_item.album)
                             orig_values = list(file.orig_metadata.getall(tag)) or [""]
                             useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
                         for track in set(self.tracks)-set(file_tracks):

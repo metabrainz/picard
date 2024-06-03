@@ -223,7 +223,7 @@ class MainPanel(QtWidgets.QSplitter):
                 view.setSortingEnabled(sort)
 
     def select_object(self, obj):
-        item = obj.item
+        item = obj.ui_item
         for view in self._views:
             if view.indexFromItem(item).isValid():
                 view.setCurrentItem(item)
@@ -255,8 +255,8 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def remove_file_cluster(self, cluster):
-        cluster.item.setSelected(False)
-        self.clusters.removeChild(cluster.item)
+        cluster.ui_item.setSelected(False)
+        self.clusters.removeChild(cluster.ui_item)
         self.set_clusters_text()
 
     def set_clusters_text(self):
@@ -295,20 +295,31 @@ class AlbumTreeView(BaseTreeView):
         self.add_cluster(album.unmatched_files, item)
 
     def remove_album(self, album):
-        album.item.setSelected(False)
-        self.takeTopLevelItem(self.indexOfTopLevelItem(album.item))
+        album.ui_item.setSelected(False)
+        self.takeTopLevelItem(self.indexOfTopLevelItem(album.ui_item))
 
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
 
     def __init__(self, obj, sortable=False, parent=None):
         super().__init__(parent)
+        self._obj = None
         self.obj = obj
-        if obj is not None:
-            obj.item = self
         self.sortable = sortable
         self._sortkeys = {}
         self.post_init()
+
+    @property
+    def obj(self):
+        return self._obj
+
+    @obj.setter
+    def obj(self, obj):
+        if self._obj:
+            self._obj.ui_item = None
+        self._obj = obj
+        if obj is not None:
+            obj.ui_item = self
 
     def post_init(self):
         pass
@@ -363,7 +374,7 @@ class ClusterItem(TreeItem):
         self.update_colums_text()
         album = self.obj.related_album
         if self.obj.special and album and album.loaded:
-            album.item.update(update_tracks=False)
+            album.ui_item.update(update_tracks=False)
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
 
@@ -383,8 +394,8 @@ class ClusterItem(TreeItem):
             item.update()
 
     def remove_file(self, file):
-        file.item.setSelected(False)
-        self.removeChild(file.item)
+        file.ui_item.setSelected(False)
+        self.removeChild(file.ui_item)
         self.update()
         if self.obj.hide_if_empty and not self.obj.files:
             self.setHidden(True)
@@ -410,7 +421,6 @@ class AlbumItem(TreeItem):
                 track = album.tracks[i]
                 selection_changed |= item.isSelected() and item.obj != track
                 item.obj = track
-                track.item = item
                 item.update(update_album=False)
             if newnum > oldnum:  # add new items
                 items = []
@@ -479,7 +489,7 @@ class TrackItem(TreeItem):
         fingerprint_column = DEFAULT_COLUMNS.pos('~fingerprint')
         if num_linked_files == 1:
             file = track.files[0]
-            file.item = self
+            file.ui_item = self
             color = TrackItem.track_colors[file.state]
             bgcolor = get_match_color(file.similarity, TreeItem.base_color)
             icon, icon_tooltip = FileItem.decide_file_icon_info(file)
@@ -512,13 +522,11 @@ class TrackItem(TreeItem):
                 newnum = track.num_linked_files
                 if oldnum > newnum:  # remove old items
                     for i in range(oldnum - newnum):
-                        self.takeChild(newnum - 1).obj.item = None
+                        self.takeChild(newnum - 1).obj = None
                     oldnum = newnum
                 for i in range(oldnum):  # update existing items
                     item = self.child(i)
-                    file = track.files[i]
-                    item.obj = file
-                    file.item = item
+                    item.obj = track.files[i]
                     item.update(update_track=False)
                 if newnum > oldnum:  # add new items
                     items = []
@@ -576,7 +584,7 @@ class FileItem(TreeItem):
             else:
                 icon = FileItem.icon_error
                 tooltip = _("Processing error(s): See the Errors tab in the File Info dialog")
-        elif isinstance(file.parent, Track):
+        elif isinstance(file.parent_item, Track):
             if file.state == File.NORMAL:
                 icon = FileItem.icon_saved
                 tooltip = _("Track saved")

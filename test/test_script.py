@@ -1350,7 +1350,7 @@ class ScriptParserTest(PicardTestCase):
 
     def test_cmd_matchedtracks(self):
         file = MagicMock()
-        file.parent.album.get_num_matched_tracks.return_value = 42
+        file.parent_item.album.get_num_matched_tracks.return_value = 42
         self.assertScriptResultEquals("$matchedtracks()", "42", file=file)
         self.assertScriptResultEquals("$matchedtracks()", "0")
         # The following only is possible for backward compatibility, arg is unused
@@ -1360,14 +1360,14 @@ class ScriptParserTest(PicardTestCase):
         file = MagicMock()
         cluster = Cluster(name="Test")
         cluster.files.append(file)
-        file.parent = cluster
+        file.parent_item = cluster
         self.assertScriptResultEquals("$matchedtracks()", "0", file=file)
 
     def test_cmd_is_complete(self):
         file = MagicMock()
-        file.parent.album.is_complete.return_value = True
+        file.parent_item.album.is_complete.return_value = True
         self.assertScriptResultEquals("$is_complete()", "1", file=file)
-        file.parent.album.is_complete.return_value = False
+        file.parent_item.album.is_complete.return_value = False
         self.assertScriptResultEquals("$is_complete()", "", file=file)
         self.assertScriptResultEquals("$is_complete()", "")
 
@@ -1375,7 +1375,7 @@ class ScriptParserTest(PicardTestCase):
         file = MagicMock()
         cluster = Cluster(name="Test")
         cluster.files.append(file)
-        file.parent = cluster
+        file.parent_item = cluster
         self.assertScriptResultEquals("$is_complete()", "", file=file)
 
     def test_cmd_is_video(self):

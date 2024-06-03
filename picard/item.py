@@ -25,9 +25,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import Counter
+
 from PyQt6 import QtCore
 
 from picard import log
+from picard.config import get_config
 from picard.i18n import ngettext
 from picard.metadata import Metadata
 from picard.util import IgnoreUpdatesContext
@@ -35,6 +38,9 @@ from picard.util.imagelist import ImageList
 
 
 class Item:
+
+    def __init__(self):
+        self.ui_item = None
 
     @property
     def can_save(self):
@@ -176,16 +182,18 @@ class ImageListState:
             self.first_obj = False
 
 
-class MetadataItem(Item):
+class MetadataItem(QtCore.QObject, Item):
     metadata_images_changed = QtCore.pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, obj_id=None):
         super().__init__()
+        self.id = obj_id
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.update_children_metadata_attrs = {}
         self.iter_children_items_metadata_ignore_attrs = {}
         self.suspend_metadata_images_update = IgnoreUpdatesContext()
+        self._genres = Counter()
 
     @property
     def tagger(self):
@@ -287,11 +295,32 @@ class MetadataItem(Item):
 
         return changed
 
+    @property
+    def genres(self):
+        return self._genres
+
+    def add_genre(self, name, count):
+        if name:
+            self._genres[name] += count
+
+    @staticmethod
+    def set_genre_inc_params(inc, config=None):
+        require_authentication = False
+        config = config or get_config()
+        if config.setting['use_genres']:
+            use_folksonomy = config.setting['folksonomy_tags']
+            if config.setting['only_my_genres']:
+                require_authentication = True
+                inc |= {'user-tags'} if use_folksonomy else {'user-genres'}
+            else:
+                inc |= {'tags'} if use_folksonomy else {'genres'}
+        return require_authentication
+
 
 class FileListItem(MetadataItem):
 
-    def __init__(self, files=None):
-        super().__init__()
+    def __init__(self, obj_id=None, files=None):
+        super().__init__(obj_id)
         self.files = files or []
         self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}
 

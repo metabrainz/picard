@@ -59,8 +59,6 @@ import time
 
 from mutagen._util import MutagenError
 
-from PyQt6 import QtCore
-
 from picard import (
     PICARD_APP_NAME,
     log,
@@ -135,7 +133,7 @@ class FileErrorType(Enum):
     PARSER = auto()
 
 
-class File(QtCore.QObject, MetadataItem):
+class File(MetadataItem):
 
     NAME = None
 
@@ -170,10 +168,9 @@ class File(QtCore.QObject, MetadataItem):
         self.error_type = FileErrorType.UNKNOWN
 
         self.similarity = 1.0
-        self.parent = None
+        self.parent_item = None
 
         self.lookup_task = None
-        self.item = None
 
         self.acoustid_fingerprint = None
         self.acoustid_length = 0
@@ -629,37 +626,37 @@ class File(QtCore.QObject, MetadataItem):
                 log.error("Failed to move %r to %r: %s", old_file_path,
                           new_file_path, why)
 
-    def remove(self, from_parent=True):
-        if from_parent and self.parent:
-            log.debug("Removing %r from %r", self, self.parent)
-            self.parent.remove_file(self)
+    def remove(self, from_parent_item=True):
+        if from_parent_item and self.parent_item:
+            log.debug("Removing %r from %r", self, self.parent_item)
+            self.parent_item.remove_file(self)
         self.tagger.acoustidmanager.remove(self)
         self.state = File.REMOVED
 
-    def move(self, parent):
+    def move(self, to_parent_item):
         # To be able to move a file the target must implement add_file(file)
-        if hasattr(parent, 'add_file') and parent != self.parent:
-            log.debug("Moving %r from %r to %r", self, self.parent, parent)
+        if hasattr(to_parent_item, 'add_file') and to_parent_item != self.parent_item:
+            log.debug("Moving %r from %r to %r", self, self.parent_item, to_parent_item)
             self.clear_lookup_task()
             self.tagger._acoustid.stop_analyze(self)
             new_album = True
-            if self.parent:
-                new_album = self.parent.album != parent.album
+            if self.parent_item:
+                new_album = self.parent_item.album != to_parent_item.album
                 self.clear_pending()
-                self.parent.remove_file(self, new_album=new_album)
-            self.parent = parent
-            self.parent.add_file(self, new_album=new_album)
+                self.parent_item.remove_file(self, new_album=new_album)
+            self.parent_item = to_parent_item
+            self.parent_item.add_file(self, new_album=new_album)
             self.acoustid_update()
             return True
         else:
             return False
 
-    def _move(self, parent):
-        if parent != self.parent:
-            log.debug("Moving %r from %r to %r", self, self.parent, parent)
-            if self.parent:
-                self.parent.remove_file(self)
-            self.parent = parent
+    def _move(self, to_parent_item):
+        if to_parent_item != self.parent_item:
+            log.debug("Moving %r from %r to %r", self, self.parent_item, to_parent_item)
+            if self.parent_item:
+                self.parent_item.remove_file(self)
+            self.parent_item = to_parent_item
             self.acoustid_update()
 
     def set_acoustid_fingerprint(self, fingerprint, length=None):
@@ -678,8 +675,8 @@ class File(QtCore.QObject, MetadataItem):
 
     def acoustid_update(self):
         recording_id = None
-        if self.parent and self.parent.can_link_fingerprint:
-            recording_id = self.parent.orig_metadata['musicbrainz_recordingid']
+        if self.parent_item and self.parent_item.can_link_fingerprint:
+            recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
             if not recording_id:
                 recording_id = self.metadata['musicbrainz_recordingid']
         self.tagger.acoustidmanager.update(self, recording_id)
@@ -949,8 +946,8 @@ class File(QtCore.QObject, MetadataItem):
                 self.update_item(update_selection=False)
 
     def update_item(self, update_selection=True):
-        if self.item:
-            self.item.update(update_selection=update_selection)
+        if self.ui_item:
+            self.ui_item.update(update_selection=update_selection)
 
     def iterfiles(self, save=False):
         yield self

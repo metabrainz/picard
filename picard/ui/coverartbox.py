@@ -364,7 +364,7 @@ def set_image_append(obj, coverartimage):
 
 
 def iter_file_parents(file):
-    parent = file.parent
+    parent = file.parent_item
     if parent:
         yield parent
         if isinstance(parent, Track) and parent.album:

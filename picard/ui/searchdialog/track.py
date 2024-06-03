@@ -180,9 +180,9 @@ class TrackSearchDialog(SearchDialog):
         self.tagger.get_release_group_by_id(releasegroup_id).loaded_albums.add(album_id)
         if file:
             # Search is performed for a file.
-            if isinstance(file.parent, Track):
+            if isinstance(file.parent_item, Track):
                 # Have to move that file from its existing album to the new one.
-                album = file.parent.album
+                album = file.parent_item.album
                 self.tagger.move_file_to_track(file, album_id, recording_id)
                 if album.get_num_total_files() == 0:
                     # Remove album if it has no more files associated
@@ -200,9 +200,9 @@ class TrackSearchDialog(SearchDialog):
 
         if file:
             # Search is performed for a file.
-            if getattr(file.parent, 'album', None):
+            if getattr(file.parent_item, 'album', None):
                 # Have to move that file from its existing album to NAT.
-                album = file.parent.album
+                album = file.parent_item.album
                 self.tagger.move_file_to_nat(file, recording_id, node)
                 if album.get_num_total_files() == 0:
                     self.tagger.remove_album(album)
