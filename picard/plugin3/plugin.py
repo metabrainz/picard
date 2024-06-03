@@ -34,6 +34,58 @@ class GitRemoteCallbacks(pygit2.RemoteCallbacks):
         print(f'{stats.indexed_objects}/{stats.total_objects}')
 
 
+class PluginSourceSyncError(Exception):
+    pass
+
+
+class PluginSource:
+    """Abstract class for plugin sources"""
+
+    def sync(self, target_directory: str):
+        raise NotImplementedError
+
+
+class PluginSourceGit(PluginSource):
+    """Plugin is stored in a git repository, local or remote"""
+
+    def __init__(self, url: str, ref: str = None):
+        super().__init__()
+        # Note: url can be a local directory
+        self.url = url
+        self.ref = ref or 'main'
+
+    def sync(self, target_directory: str):
+        if os.path.isdir(target_directory):
+            print(f'{target_directory} exists, fetch changes')
+            repo = pygit2.Repository(target_directory)
+            for remote in repo.remotes:
+                remote.fetch(callbacks=GitRemoteCallbacks())
+        else:
+            print(f'Cloning {self.url} to {target_directory}')
+            repo = pygit2.clone_repository(self.url, target_directory, callbacks=GitRemoteCallbacks())
+            print(list(repo.references))
+            print(list(repo.branches))
+            print(list(repo.remotes))
+
+        if self.ref:
+            commit = repo.revparse_single(self.ref)
+        else:
+            commit = repo.revparse_single('HEAD')
+
+        print(commit)
+        print(commit.message)
+        # hard reset to passed ref or HEAD
+        repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
+
+
+class PluginSourceLocal(PluginSource):
+    """Plugin is stored in a local directory, but is not a git repo"""
+
+    def sync(self, target_directory: str):
+        # TODO: copy tree to plugin directory (?)
+        pass
+
+
 class Plugin:
     local_path: str = None
     remote_url: str = None
@@ -51,34 +103,13 @@ class Plugin:
         self.module_name = f'picard.plugins.{self.name}'
         self.local_path = os.path.join(self.plugins_dir, self.name)
 
-    def sync(self, url: str = None, ref: str = None):
-        """Sync plugin source
-        Use remote url or local path, and sets the repository to ref
-        """
-        if url:
-            self.remote_url = url
-        if os.path.isdir(self.local_path):
-            print(f'{self.local_path} exists, fetch changes')
-            repo = pygit2.Repository(self.local_path)
-            for remote in repo.remotes:
-                remote.fetch(callbacks=GitRemoteCallbacks())
-        else:
-            print(f'Cloning {url} to {self.local_path}')
-            repo = pygit2.clone_repository(url, self.local_path, callbacks=GitRemoteCallbacks())
-
-            print(list(repo.references))
-            print(list(repo.branches))
-            print(list(repo.remotes))
-
-        if ref:
-            commit = repo.revparse_single(ref)
-        else:
-            commit = repo.revparse_single('HEAD')
-
-        print(commit)
-        print(commit.message)
-        # hard reset to passed ref or HEAD
-        repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
+    def sync(self, plugin_source: PluginSource = None):
+        """Sync plugin source"""
+        if plugin_source:
+            try:
+                plugin_source.sync(self.local_path)
+            except Exception as e:
+                raise PluginSourceSyncError(e) from e
 
     def read_manifest(self):
         """Reads metadata for the plugin from the plugin's MANIFEST.toml"""
