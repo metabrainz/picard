@@ -303,12 +303,23 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 
     def __init__(self, obj, sortable=False, parent=None):
         super().__init__(parent)
+        self._obj = None
         self.obj = obj
-        if obj is not None:
-            obj.ui_item = self
         self.sortable = sortable
         self._sortkeys = {}
         self.post_init()
+
+    @property
+    def obj(self):
+        return self._obj
+
+    @obj.setter
+    def obj(self, obj):
+        if self._obj:
+            self._obj.ui_item = None
+        self._obj = obj
+        if obj is not None:
+            obj.ui_item = self
 
     def post_init(self):
         pass
@@ -410,7 +421,6 @@ class AlbumItem(TreeItem):
                 track = album.tracks[i]
                 selection_changed |= item.isSelected() and item.obj != track
                 item.obj = track
-                track.ui_item = item
                 item.update(update_album=False)
             if newnum > oldnum:  # add new items
                 items = []
@@ -512,13 +522,11 @@ class TrackItem(TreeItem):
                 newnum = track.num_linked_files
                 if oldnum > newnum:  # remove old items
                     for i in range(oldnum - newnum):
-                        self.takeChild(newnum - 1).obj.ui_item = None
+                        self.takeChild(newnum - 1).obj = None
                     oldnum = newnum
                 for i in range(oldnum):  # update existing items
                     item = self.child(i)
-                    file = track.files[i]
-                    item.obj = file
-                    file.ui_item = item
+                    item.obj = track.files[i]
                     item.update(update_track=False)
                 if newnum > oldnum:  # add new items
                     items = []
