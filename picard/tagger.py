@@ -865,11 +865,11 @@ class Tagger(QtWidgets.QApplication):
         if isinstance(target, Album):
             self.move_files_to_album([file], album=target)
         else:
-            if isinstance(target, File) and target.parent:
-                target = target.parent
+            if isinstance(target, File) and target.parent_item:
+                target = target.parent_item
             if not file.move(target):
                 # Ensure a file always has a parent so it shows up in UI
-                if not file.parent:
+                if not file.parent_item:
                     target = self.unclustered_files
                     file.move(target)
                 # Unsupported target, do not move the file
@@ -893,7 +893,7 @@ class Tagger(QtWidgets.QApplication):
                         target = album.get_next_track(target) or album.unmatched_files
             elif isinstance(target, File):
                 for file in process_events_iter(files):
-                    file.move(target.parent)
+                    file.move(target.parent_item)
             elif isinstance(target, Album):
                 self.move_files_to_album(files, album=target)
             elif isinstance(target, ClusterList):

@@ -1071,7 +1071,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # unclustered files cluster all unclustered files.
         files = (
             f for f in iter_files_from_objects(self.selected_objects)
-            if f.parent == self.tagger.unclustered_files
+            if f.parent_item == self.tagger.unclustered_files
         )
         try:
             file = next(files)

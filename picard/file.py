@@ -168,7 +168,7 @@ class File(MetadataItem):
         self.error_type = FileErrorType.UNKNOWN
 
         self.similarity = 1.0
-        self.parent = None
+        self.parent_item = None
 
         self.lookup_task = None
 
@@ -627,36 +627,36 @@ class File(MetadataItem):
                           new_file_path, why)
 
     def remove(self, from_parent=True):
-        if from_parent and self.parent:
-            log.debug("Removing %r from %r", self, self.parent)
-            self.parent.remove_file(self)
+        if from_parent and self.parent_item:
+            log.debug("Removing %r from %r", self, self.parent_item)
+            self.parent_item.remove_file(self)
         self.tagger.acoustidmanager.remove(self)
         self.state = File.REMOVED
 
     def move(self, parent):
         # To be able to move a file the target must implement add_file(file)
-        if hasattr(parent, 'add_file') and parent != self.parent:
-            log.debug("Moving %r from %r to %r", self, self.parent, parent)
+        if hasattr(parent, 'add_file') and parent != self.parent_item:
+            log.debug("Moving %r from %r to %r", self, self.parent_item, parent)
             self.clear_lookup_task()
             self.tagger._acoustid.stop_analyze(self)
             new_album = True
-            if self.parent:
-                new_album = self.parent.album != parent.album
+            if self.parent_item:
+                new_album = self.parent_item.album != parent.album
                 self.clear_pending()
-                self.parent.remove_file(self, new_album=new_album)
-            self.parent = parent
-            self.parent.add_file(self, new_album=new_album)
+                self.parent_item.remove_file(self, new_album=new_album)
+            self.parent_item = parent
+            self.parent_item.add_file(self, new_album=new_album)
             self.acoustid_update()
             return True
         else:
             return False
 
     def _move(self, parent):
-        if parent != self.parent:
-            log.debug("Moving %r from %r to %r", self, self.parent, parent)
-            if self.parent:
-                self.parent.remove_file(self)
-            self.parent = parent
+        if parent != self.parent_item:
+            log.debug("Moving %r from %r to %r", self, self.parent_item, parent)
+            if self.parent_item:
+                self.parent_item.remove_file(self)
+            self.parent_item = parent
             self.acoustid_update()
 
     def set_acoustid_fingerprint(self, fingerprint, length=None):
@@ -675,8 +675,8 @@ class File(MetadataItem):
 
     def acoustid_update(self):
         recording_id = None
-        if self.parent and self.parent.can_link_fingerprint:
-            recording_id = self.parent.orig_metadata['musicbrainz_recordingid']
+        if self.parent_item and self.parent_item.can_link_fingerprint:
+            recording_id = self.parent_item.orig_metadata['musicbrainz_recordingid']
             if not recording_id:
                 recording_id = self.metadata['musicbrainz_recordingid']
         self.tagger.acoustidmanager.update(self, recording_id)

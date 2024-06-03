@@ -309,7 +309,7 @@ class Cluster(FileList):
             # If the file is attached to a track we should use the original
             # metadata for clustering. This is often used by users when moving
             # mismatched files back from the right pane to the left.
-            if isinstance(file.parent, Track):
+            if isinstance(file.parent_item, Track):
                 metadata = file.orig_metadata
             else:
                 metadata = file.metadata

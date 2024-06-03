@@ -175,7 +175,7 @@ class InfoDialog(PicardDialog):
         has_orig_images = hasattr(obj, 'orig_metadata') and obj.orig_metadata.images
         if has_orig_images and obj.orig_metadata.images != obj.metadata.images:
             is_track = isinstance(obj, Track)
-            is_linked_file = isinstance(obj, File) and isinstance(obj.parent, Track)
+            is_linked_file = isinstance(obj, File) and isinstance(obj.parent_item, Track)
             is_album_with_files = isinstance(obj, Album) and obj.get_num_total_files() > 0
             if is_track or is_linked_file or is_album_with_files:
                 self.orig_images = sorted(obj.orig_metadata.images)

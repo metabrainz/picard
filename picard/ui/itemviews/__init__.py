@@ -576,7 +576,7 @@ class FileItem(TreeItem):
             else:
                 icon = FileItem.icon_error
                 tooltip = _("Processing error(s): See the Errors tab in the File Info dialog")
-        elif isinstance(file.parent, Track):
+        elif isinstance(file.parent_item, Track):
             if file.state == File.NORMAL:
                 icon = FileItem.icon_saved
                 tooltip = _("Track saved")
