@@ -33,29 +33,12 @@ from picard.config import (
     ConfigSection,
     get_config,
 )
-from picard.coverart.providers import (
-    CoverArtProvider,
+from picard.coverart.providers import CoverArtProvider
+from picard.extension_points.cover_art_providers import (
     register_cover_art_provider,
 )
-from picard.file import (
-    File,
-    register_file_post_addition_to_track_processor,
-    register_file_post_load_processor,
-    register_file_post_removal_from_track_processor,
-    register_file_post_save_processor,
-)
-from picard.formats.util import register_format
-from picard.metadata import (
-    register_album_metadata_processor,
-    register_track_metadata_processor,
-)
-from picard.plugin3.manifest import PluginManifest
-from picard.plugin import PluginPriority
-from picard.script.functions import register_script_function
-from picard.webservice import WebService
-from picard.webservice.api_helpers import MBAPIHelper
-
-from picard.ui.itemviews import (
+from picard.extension_points.formats import register_format
+from picard.extension_points.item_actions import (
     BaseAction,
     register_album_action,
     register_cluster_action,
@@ -63,10 +46,25 @@ from picard.ui.itemviews import (
     register_file_action,
     register_track_action,
 )
-from picard.ui.options import (
-    OptionsPage,
-    register_options_page,
+from picard.extension_points.options_pages import register_options_page
+from picard.extension_points.script_functions import register_script_function
+from picard.file import (
+    File,
+    register_file_post_addition_to_track_processor,
+    register_file_post_load_processor,
+    register_file_post_removal_from_track_processor,
+    register_file_post_save_processor,
 )
+from picard.metadata import (
+    register_album_metadata_processor,
+    register_track_metadata_processor,
+)
+from picard.plugin3.manifest import PluginManifest
+from picard.plugin import PluginPriority
+from picard.webservice import WebService
+from picard.webservice.api_helpers import MBAPIHelper
+
+from picard.ui.options import OptionsPage
 
 
 class PluginApi:
