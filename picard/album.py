@@ -71,10 +71,7 @@ from picard.metadata import (
     run_album_metadata_processors,
     run_track_metadata_processors,
 )
-from picard.plugin import (
-    PluginFunctions,
-    PluginPriority,
-)
+from picard.plugin import PluginFunctions
 from picard.script import (
     ScriptError,
     ScriptParser,
@@ -893,19 +890,8 @@ class NatAlbum(Album):
         return False
 
 
-_album_post_removal_processors = PluginFunctions(label='album_post_removal_processors')
-
-
-def register_album_post_removal_processor(function, priority=PluginPriority.NORMAL):
-    """Registers an album-removed processor.
-    Args:
-        function: function to call after album removal, it will be passed the album object
-        priority: optional, PluginPriority.NORMAL by default
-    Returns:
-        None
-    """
-    _album_post_removal_processors.register(function.__module__, function, priority)
+album_post_removal_processors = PluginFunctions(label='album_post_removal_processors')
 
 
 def run_album_post_removal_processors(album_object):
-    _album_post_removal_processors.run(album_object)
+    album_post_removal_processors.run(album_object)
