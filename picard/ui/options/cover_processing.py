@@ -40,20 +40,20 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui = Ui_CoverProcessingOptionsPage()
         self.ui.setupUi(self)
         self.register_setting('filter_cover_by_size')
-        self.register_setting('cover_width_threshold')
-        self.register_setting('cover_height_threshold')
+        self.register_setting('cover_minimum_width')
+        self.register_setting('cover_minimum_height')
 
     def load(self):
         config = get_config()
         self.ui.filtering.setChecked(config.setting['filter_cover_by_size'])
-        self.ui.width_value.setValue(config.setting['cover_width_threshold'])
-        self.ui.height_value.setValue(config.setting['cover_height_threshold'])
+        self.ui.width_value.setValue(config.setting['cover_minimum_width'])
+        self.ui.height_value.setValue(config.setting['cover_minimum_height'])
 
     def save(self):
         config = get_config()
         config.setting['filter_cover_by_size'] = self.ui.filtering.isChecked()
-        config.setting['cover_width_threshold'] = self.ui.width_value.value()
-        config.setting['cover_height_threshold'] = self.ui.height_value.value()
+        config.setting['cover_minimum_width'] = self.ui.width_value.value()
+        config.setting['cover_minimum_height'] = self.ui.height_value.value()
 
 
 register_options_page(CoverProcessingOptionsPage)

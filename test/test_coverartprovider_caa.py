@@ -32,7 +32,7 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
             thumbnails = {size: "url %s" % size for size in sizes}
             msgfmt = "for size %s, with sizes %r, got %r, expected %r"
             for size, expect in expectations.items():
-                result, width = caa_url_fallback_list(size, thumbnails)
+                result = [thumbnail.url for thumbnail in caa_url_fallback_list(size, thumbnails)]
                 self.assertEqual(result, expect, msg=msgfmt % (size, sizes, result, expect))
 
         # For historical reasons, caa web service returns 2 identical urls,

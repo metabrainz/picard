@@ -41,8 +41,8 @@ class ImageFiltersTest(PicardTestCase):
     def test_filter_by_size(self):
         settings = {
             'filter_cover_by_size': True,
-            'cover_width_threshold': 500,
-            'cover_height_threshold': 500
+            'cover_minimum_width': 500,
+            'cover_minimum_height': 500
         }
         self.set_config_values(settings)
         image1 = create_fake_image(400, 600, "png")
@@ -55,8 +55,8 @@ class ImageFiltersTest(PicardTestCase):
     def test_filter_by_size_metadata(self):
         settings = {
             'filter_cover_by_size': True,
-            'cover_width_threshold': 500,
-            'cover_height_threshold': 500
+            'cover_minimum_width': 500,
+            'cover_minimum_height': 500
         }
         self.set_config_values(settings)
         image_metadata1 = {'width': 400, 'height': 600}

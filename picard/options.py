@@ -171,8 +171,8 @@ BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a 
 # picard/ui/options/cover_processing.py
 # Cover Art Image Processing
 BoolOption('setting', 'filter_cover_by_size', False)
-IntOption('setting', 'cover_width_threshold', 250)
-IntOption('setting', 'cover_height_threshold', 250)
+IntOption('setting', 'cover_minimum_width', 250)
+IntOption('setting', 'cover_minimum_height', 250)
 
 # picard/ui/options/dialog.py
 # Attached Profiles
