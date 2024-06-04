@@ -51,6 +51,7 @@ from picard.coverart.image import (
     CaaCoverArtImage,
     CaaThumbnailCoverArtImage,
 )
+from picard.coverart.processing import run_image_metadata_filters
 from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
@@ -94,11 +95,12 @@ def caa_url_fallback_list(desired_size, thumbnails):
     If user choice isn't matching an available thumbnail size, a fallback to
     smaller thumbnails is possible
     This function returns the list of possible urls, ordered from the biggest
-    matching the user choice to the smallest one.
+    matching the user choice to the smallest one, together with its thumbnail's size.
     Of course, if none are possible, the returned list may be empty.
     """
     reversed_map = OrderedDict(reversed(list(_CAA_THUMBNAIL_SIZE_MAP.items())))
     urls = []
+    widths = []
     for item_id, item in reversed_map.items():
         if item_id == -1 or item_id > desired_size:
             continue
@@ -109,7 +111,8 @@ def caa_url_fallback_list(desired_size, thumbnails):
                 url = thumbnails.get(size_alias, None)
         if url is not None:
             urls.append(url)
-    return urls
+            widths.append(item_id)
+    return urls, widths
 
 
 class ProviderOptionsCaa(ProviderOptions):
@@ -311,10 +314,14 @@ class CoverArtProviderCaa(CoverArtProvider):
                         accepted = True
 
                     if accepted:
-                        urls = caa_url_fallback_list(config.setting['caa_image_size'], image['thumbnails'])
+                        urls, widths = caa_url_fallback_list(config.setting['caa_image_size'], image['thumbnails'])
                         if not urls or is_pdf:
                             url = image['image']
                         else:
+                            image_data = {'width': widths[0], 'height': -1}
+                            filters_result = run_image_metadata_filters(image_data)
+                            if not filters_result:
+                                continue
                             # FIXME: try other urls in case of 404
                             url = urls[0]
                         coverartimage = self.coverartimage_class(

@@ -32,8 +32,9 @@ def _check_threshold_size(width, height):
     config = get_config()
     if not config.setting['filter_cover_by_size']:
         return True
-    min_width = config.setting['cover_width_threshold']
-    min_height = config.setting['cover_height_threshold']
+    # If the given width or height is -1, that dimension is not considered
+    min_width = config.setting['cover_width_threshold'] if width != -1 else -1
+    min_height = config.setting['cover_height_threshold'] if height != -1 else -1
     if width < min_width or height < min_height:
         log.debug(
             "Discarding cover art due to size. Image size: %d x %d. Minimum: %d x %d",

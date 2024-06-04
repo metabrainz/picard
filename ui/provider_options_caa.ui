@@ -65,7 +65,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Only use images of the following size:</string>
+        <string>Only use images of at most the following size:</string>
        </property>
       </widget>
      </item>
