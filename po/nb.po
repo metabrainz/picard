@@ -10,21 +10,23 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
 # CatQuest, The Endeavouring Cat, 2013
 # CatQuest, The Endeavouring Cat, 2014
+# "ApeKattQuest, MonkeyPython" <ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2023-08-27 13:05+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-06-05 18:43+0000\n"
+"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
+"<ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
-"projects/picard/app/nb_NO/>\n"
+"projects/picard/3/app/nb_NO/>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:155
@@ -120,7 +122,6 @@ msgid ""
 msgstr ""
 "Den separate navneordningen for album av diverse artister er fjernet i denne "
 "versjonen av Picard.\n"
-"\n"
 "Du har allerede en slik navneordning konfigurert, men den er ikke aktiv.\n"
 "Ønsker du å fjerne den eller slå det sammen med navneordningen for album av "
 "single artister?"
@@ -306,9 +307,8 @@ msgid "Ignore MBIDs when loading new files"
 msgstr "Ignorer MBID ved lasting av nye filer"
 
 #: picard/options.py:198
-#, fuzzy
 msgid "Server address"
-msgstr "Tjeneradresse:"
+msgstr "Tjeneradresse"
 
 #: picard/options.py:199
 msgid "Port"
@@ -424,24 +424,20 @@ msgid "Tags to show at the top"
 msgstr ""
 
 #: picard/options.py:258
-#, fuzzy
 msgid "Automatic backup destination directory"
-msgstr "Destinasjonsmappe:"
+msgstr "Destinasjonsmappe"
 
 #: picard/options.py:262
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Minste likhet for filklyngeoppsøk:"
+msgstr "Minste likhet for filklyngeoppsøk"
 
 #: picard/options.py:263
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Minste likhet for filoppsøk:"
+msgstr "Minste likhet for filoppsøk"
 
 #: picard/options.py:264
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Minste likhet for å samsvare filer med spor:"
+msgstr "Minste likhet for å samsvare filer med spor"
 
 #: picard/options.py:268
 msgid "Translation locales"
@@ -503,9 +499,8 @@ msgid "Listen only on localhost"
 msgstr "Lytt bare på lokalvert"
 
 #: picard/options.py:285
-#, fuzzy
 msgid "Default listening port"
-msgstr "Standard lytteport:"
+msgstr "Standard lytteport"
 
 #: picard/options.py:286
 msgid "Network cache size in bytes"
@@ -580,9 +575,8 @@ msgid "Move files"
 msgstr ""
 
 #: picard/options.py:326
-#, fuzzy
 msgid "Destination directory"
-msgstr "Destinasjonsmappe:"
+msgstr "Destinasjonsmappe"
 
 #: picard/options.py:327
 msgid "Rename files"
@@ -937,7 +931,7 @@ msgstr ""
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
 msgstr ""
-"Laster ned plateomslag av type \"%(type)s\" til %(albumid)s fra %(host)s"
+"Laster ned plateomslag av type \"%(type)s\" til %(albumid)s fra %(host)s …"
 
 #: picard/coverart/utils.py:43
 msgid "Unknown"
@@ -1992,10 +1986,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/serializer.py:204
-#, fuzzy, python-format
-#| msgid "Error loading collections: %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Feil ved henting av samlinger: %(error)s"
+msgstr "Feil ved henting av filen \"%(filename)s\": %(error)s."
 
 #: picard/script/serializer.py:211
 msgid "Export Script File"
@@ -2529,10 +2522,8 @@ msgid "Media"
 msgstr "Medier"
 
 #: picard/ui/itemviews.py:176
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Størrelse:"
+msgstr "Størrelse"
 
 #: picard/ui/itemviews.py:177 picard/util/tags.py:71
 msgid "Genre"
@@ -2673,12 +2664,11 @@ msgid "There are no files matched to this track"
 msgstr ""
 
 #: picard/ui/itemviews.py:1118
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "Ufiltrerte filer"
-msgstr[1] "Ufiltrerte filer"
+msgstr[0] "%i Ufiltrert fil"
+msgstr[1] "%i Ufiltrerte filer"
 
 #: picard/ui/itemviews.py:1156
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -3180,7 +3170,7 @@ msgstr "&Hjelp"
 
 #: picard/ui/mainwindow/actions.py:111 picard/ui/scripteditor.py:639
 msgid "&Help…"
-msgstr "&Hjelp"
+msgstr "&Hjelp…"
 
 #: picard/ui/scripteditor.py:644
 msgid "&Scripting documentation…"
@@ -3529,7 +3519,7 @@ msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:110
 msgid "Fingerprint calculator:"
-msgstr "Lydavtrykkskalkulator"
+msgstr "Lydavtrykkskalkulator:"
 
 #: picard/ui/ui_options_fingerprinting.py:111
 #: picard/ui/ui_options_interface.py:138
@@ -3641,7 +3631,7 @@ msgstr ""
 
 #: picard/ui/ui_options_interface.py:127
 msgid "User interface language:"
-msgstr "Brukergrensesnittsspråk"
+msgstr "Brukergrensesnittsspråk:"
 
 #: picard/ui/ui_options_interface.py:128
 msgid "User interface color theme:"
@@ -3697,16 +3687,12 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:143
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration file:"
-msgstr "Konfigurasjon nødvendig"
+msgstr "Konfigurasjon nødvendig:"
 
 #: picard/ui/ui_options_maintenance.py:144
-#, fuzzy
-#| msgid "Open plugin folder"
 msgid "Open folder…"
-msgstr "Åpne mappen med programtillegg"
+msgstr "Åpne mappe…"
 
 #: picard/ui/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
@@ -4128,7 +4114,7 @@ msgstr "Autorisering nødvendig"
 
 #: picard/ui/ui_provider_options_caa.py:75
 msgid "Download only cover art images matching selected types"
-msgstr "Last bare ned omslagsbilder valgte typer:"
+msgstr "Last bare ned omslagsbilder valgte typer"
 
 #: picard/ui/ui_provider_options_caa.py:76
 msgid "Select types…"
@@ -4201,9 +4187,8 @@ msgid "License under which the file naming script is available."
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:107
-#, fuzzy
 msgid "Description:"
-msgstr "Beskrivelse"
+msgstr "Beskrivelse:"
 
 #: picard/ui/ui_scripteditor_details.py:108
 msgid ""
@@ -4460,7 +4445,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/actions.py:77
 msgid "&Options…"
-msgstr "&Alternativer"
+msgstr "&Alternativer…"
 
 #: picard/ui/mainwindow/actions.py:85
 msgid "Open &file naming script editor…"
@@ -4492,7 +4477,7 @@ msgstr "&Forum for brukerstøtte…"
 
 #: picard/ui/mainwindow/actions.py:148
 msgid "&Add Files…"
-msgstr "&Legg til filer"
+msgstr "&Legg til filer…"
 
 #: picard/ui/mainwindow/actions.py:149
 msgid "Add files to the tagger"
@@ -5406,10 +5391,8 @@ msgid "No enabled scripts"
 msgstr "Gi nytt navn"
 
 #: picard/ui/options/profiles.py:257
-#, fuzzy
-#| msgid "Rename script"
 msgid "Enabled scripts:"
-msgstr "Gi nytt navn"
+msgstr "Aktiverte skript:"
 
 #: picard/ui/options/profiles.py:262
 msgid "No enabled providers"
