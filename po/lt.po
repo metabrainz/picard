@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-06-02 08:42+0000\n"
+"PO-Revision-Date: 2024-06-05 18:43+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -54,7 +54,7 @@ msgstr "[nepavyko pakrauti albumo %s]"
 #: picard/cluster.py:259
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "Identifikuotas klasteris %(album)s!"
+msgstr "Identifikuotas klasteris %(album)s."
 
 #: picard/cluster.py:262
 #, python-format
@@ -75,8 +75,8 @@ msgstr "Nesuklastruoti failai"
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "Pridėtas %(count)i leidinys į kolekciją „%(name)s“"
-msgstr[1] "Pridėta %(count)i leidiniai į kolekciją „%(name)s“"
-msgstr[2] "Pridėtas %(count)i leidinio į kolekciją „%(name)s“"
+msgstr[1] "Pridėti %(count)i leidiniai į kolekciją „%(name)s“"
+msgstr[2] "Pridėta %(count)i leidinio į kolekciją „%(name)s“"
 msgstr[3] "Pridėta %(count)i leidinių į kolekciją „%(name)s“"
 
 #: picard/collection.py:86
@@ -84,8 +84,8 @@ msgstr[3] "Pridėta %(count)i leidinių į kolekciją „%(name)s“"
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "Pašalintas %(count)i leidinys iš kolekcijos „%(name)s“"
-msgstr[1] "Pašalinta %(count)i leidiniai iš kolekcijos „%(name)s“"
-msgstr[2] "Pašalintas %(count)i leidinio iš kolekcijos „%(name)s“"
+msgstr[1] "Pašalinti %(count)i leidiniai iš kolekcijos „%(name)s“"
+msgstr[2] "Pašalinta %(count)i leidinio iš kolekcijos „%(name)s“"
 msgstr[3] "Pašalinta %(count)i leidinių iš kolekcijos „%(name)s“"
 
 #: picard/collection.py:97
@@ -160,7 +160,7 @@ msgstr "Nėra atitikmenų takelių, viršijančių ribą failui „%(filename)s�
 #: picard/file.py:855
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "Failas „%(filename)s“ identifikuotas!"
+msgstr "Failas „%(filename)s“ identifikuotas."
 
 #: picard/file.py:867
 #, python-format
@@ -367,7 +367,7 @@ msgstr "Minimalus žanro naudojimas"
 
 #: picard/profile.py:90
 msgid "Maximum number of genres"
-msgstr "Maksimalus žanrų skaičius"
+msgstr "Didžiausias žanrų skaičius"
 
 #: picard/profile.py:91
 msgid "Join multiple genres with"
@@ -504,12 +504,12 @@ msgstr "Išsaugoti tik vieną priekinį vaizdą kaip atskirą failą"
 #: picard/profile.py:147 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
-"Visada naudoti pagrindinį vaizdo tipą kaip failo pavadinimą ne priekyje "
+"Visada naudoti pirminis vaizdo tipą kaip failo pavadinimą ne priekyje "
 "esantiems vaizdams"
 
 #: picard/profile.py:148
 msgid "Cover art providers"
-msgstr "Viršelio apipavidalinimo paslaugų teikėjai"
+msgstr "Viršelio apipavidalinimų paslaugų teikėjai"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
@@ -666,7 +666,7 @@ msgstr "Ignoruoti paslėptus failus"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
-msgstr "Įtraukti subaplankus pridedant failus iš aplanko"
+msgstr "Įtraukti poaplankus, kai pridedant failus iš aplanko"
 
 #: picard/profile.py:221
 msgid "Ignore track duration difference under x seconds"
@@ -678,19 +678,19 @@ msgstr "Didžiausias grąžintinų subjektų skaičius per MusicBrainz užklaus�
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
-msgstr "Išbaigtumo patikros ignoruoti: Vaizdo kilpo takelius"
+msgstr "Išbaigtumo patikros ignoruoti: vaizdo kilpo takeliai"
 
 #: picard/profile.py:230
 msgid "Completeness check ignore: Pregap tracks"
-msgstr "Išbaigtumo patikros ignoruoti: Išankstiniai ribos takeliai"
+msgstr "Išbaigtumo patikros ignoruoti: prieštarpiniai takeliai"
 
 #: picard/profile.py:231
 msgid "Completeness check ignore: Data tracks"
-msgstr "Išbaigtumo patikros ignoruoti: Duomenų takeliai"
+msgstr "Išbaigtumo patikros ignoruoti: duomenų takeliai"
 
 #: picard/profile.py:232
 msgid "Completeness check ignore: Silent tracks"
-msgstr "Išbaigtumo patikros ignoruoti: Tylūs takeliai"
+msgstr "Išbaigtumo patikros ignoruoti: tylūs takeliai"
 
 #: picard/profile.py:233
 msgid "Tags to ignore for comparison"
