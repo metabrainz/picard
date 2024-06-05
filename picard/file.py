@@ -78,10 +78,7 @@ from picard.metadata import (
     Metadata,
     SimMatchTrack,
 )
-from picard.plugin import (
-    PluginFunctions,
-    PluginPriority,
-)
+from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
 from picard.util import (
     any_exception_isinstance,
@@ -953,71 +950,23 @@ class File(MetadataItem):
         yield self
 
 
-_file_post_load_processors = PluginFunctions(label='file_post_load_processors')
-_file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
-_file_post_removal_from_track_processors = PluginFunctions(label='file_post_removal_from_track_processors')
-_file_post_save_processors = PluginFunctions(label='file_post_save_processors')
-
-
-def register_file_post_load_processor(function, priority=PluginPriority.NORMAL):
-    """Registers a file-loaded processor.
-
-    Args:
-        function: function to call after file has been loaded, it will be passed the file object
-        priority: optional, PluginPriority.NORMAL by default
-    Returns:
-        None
-    """
-    _file_post_load_processors.register(function.__module__, function, priority)
-
-
-def register_file_post_addition_to_track_processor(function, priority=PluginPriority.NORMAL):
-    """Registers a file-added-to-track processor.
-
-    Args:
-        function: function to call after file addition, it will be passed the track and file objects
-        priority: optional, PluginPriority.NORMAL by default
-    Returns:
-        None
-    """
-    _file_post_addition_to_track_processors.register(function.__module__, function, priority)
-
-
-def register_file_post_removal_from_track_processor(function, priority=PluginPriority.NORMAL):
-    """Registers a file-removed-from-track processor.
-
-    Args:
-        function: function to call after file removal, it will be passed the track and file objects
-        priority: optional, PluginPriority.NORMAL by default
-    Returns:
-        None
-    """
-    _file_post_removal_from_track_processors.register(function.__module__, function, priority)
-
-
-def register_file_post_save_processor(function, priority=PluginPriority.NORMAL):
-    """Registers file saved processor.
-
-    Args:
-        function: function to call after save, it will be passed the file object
-        priority: optional, PluginPriority.NORMAL by default
-    Returns:
-        None
-    """
-    _file_post_save_processors.register(function.__module__, function, priority)
+file_post_load_processors = PluginFunctions(label='file_post_load_processors')
+file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
+file_post_removal_to_track_processors = PluginFunctions(label='file_post_removal_from_track_processors')
+file_post_save_processors = PluginFunctions(label='file_post_save_processors')
 
 
 def run_file_post_load_processors(file_object):
-    _file_post_load_processors.run(file_object)
+    file_post_load_processors.run(file_object)
 
 
 def run_file_post_addition_to_track_processors(track_object, file_object):
-    _file_post_addition_to_track_processors.run(track_object, file_object)
+    file_post_addition_to_track_processors.run(track_object, file_object)
 
 
 def run_file_post_removal_from_track_processors(track_object, file_object):
-    _file_post_removal_from_track_processors.run(track_object, file_object)
+    file_post_removal_to_track_processors.run(track_object, file_object)
 
 
 def run_file_post_save_processors(file_object):
-    _file_post_save_processors.run(file_object)
+    file_post_save_processors.run(file_object)

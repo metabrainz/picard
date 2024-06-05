@@ -40,8 +40,8 @@ from picard.coverart.providers import (
     CoverArtProvider,
     cover_art_providers,
 )
+from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
-from picard.metadata import register_album_metadata_processor
 
 
 class CoverArt:

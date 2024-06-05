@@ -50,10 +50,7 @@ from picard.mbjson import (
     artist_credit_from_node,
     get_score,
 )
-from picard.plugin import (
-    PluginFunctions,
-    PluginPriority,
-)
+from picard.plugin import PluginFunctions
 from picard.similarity import similarity2
 from picard.util import (
     ReadWriteLockContext,
@@ -731,23 +728,13 @@ def _get_total_release_weight(weights):
     return sum(weights[w] for w in release_weights if w in weights)
 
 
-_album_metadata_processors = PluginFunctions(label='album_metadata_processors')
-_track_metadata_processors = PluginFunctions(label='track_metadata_processors')
-
-
-def register_album_metadata_processor(function, priority=PluginPriority.NORMAL):
-    """Registers new album-level metadata processor."""
-    _album_metadata_processors.register(function.__module__, function, priority)
-
-
-def register_track_metadata_processor(function, priority=PluginPriority.NORMAL):
-    """Registers new track-level metadata processor."""
-    _track_metadata_processors.register(function.__module__, function, priority)
+album_metadata_processors = PluginFunctions(label='album_metadata_processors')
+track_metadata_processors = PluginFunctions(label='track_metadata_processors')
 
 
 def run_album_metadata_processors(album_object, metadata, release):
-    _album_metadata_processors.run(album_object, metadata, release)
+    album_metadata_processors.run(album_object, metadata, release)
 
 
 def run_track_metadata_processors(album_object, metadata, track, release=None):
-    _track_metadata_processors.run(album_object, metadata, track, release)
+    track_metadata_processors.run(album_object, metadata, track, release)
