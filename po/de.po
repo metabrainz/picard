@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-05-06 08:42+0000\n"
+"PO-Revision-Date: 2024-06-05 18:43+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.3\n"
+"X-Generator: Weblate 5.5.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:155
@@ -524,7 +524,7 @@ msgstr "Standard-Verbindungsport"
 
 #: picard/options.py:286
 msgid "Network cache size in bytes"
-msgstr ""
+msgstr "Größe des Netzwerkcaches in Bytes"
 
 #: picard/options.py:287
 msgid "Request timeout in seconds"
@@ -789,7 +789,7 @@ msgstr "Kat.-Nr."
 
 #: picard/releasegroup.py:66
 msgid "Packaging"
-msgstr ""
+msgstr "Verpackung"
 
 #: picard/releasegroup.py:67 picard/ui/cdlookup.py:67
 #: picard/ui/itemviews.py:174 picard/ui/searchdialog/album.py:154
@@ -3355,7 +3355,7 @@ msgstr "Album unverändert"
 
 #: picard/ui/itemviews.py:1116
 msgid "There are no files matched to this track"
-msgstr ""
+msgstr "Diesem Titel sind keine Dateien zugeordnet"
 
 #: picard/ui/itemviews.py:1118
 #, python-format
@@ -3370,11 +3370,11 @@ msgstr "Verarbeitungsfehler: Siehe den Reiter „Fehler“ im Titelinfodialog"
 
 #: picard/ui/itemviews.py:1198
 msgid "File not found"
-msgstr ""
+msgstr "Datei nicht gefunden"
 
 #: picard/ui/itemviews.py:1201
 msgid "File permission error"
-msgstr ""
+msgstr "Dateizugriffsfehler"
 
 #: picard/ui/itemviews.py:1204
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
@@ -4449,7 +4449,7 @@ msgstr "Ordner öffnen…"
 
 #: picard/ui/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
-msgstr ""
+msgstr "Verzeichnis für automatische Konfigurationssicherungen:"
 
 #: picard/ui/ui_options_maintenance.py:147
 msgid "Load backup…"
@@ -4551,7 +4551,7 @@ msgstr "Anfrage-Timeout in Sekunden:"
 
 #: picard/ui/ui_options_network.py:171
 msgid "Cache size (MB):"
-msgstr ""
+msgstr "Cache-Größe (MB):"
 
 #: picard/ui/ui_options_network.py:172
 msgid "Browser Integration"
@@ -5033,7 +5033,7 @@ msgstr "Picard muss neu gestartet werden, um die Änderungen anzuwenden."
 
 #: picard/ui/util.py:142
 msgid "Changes only applied on restart"
-msgstr ""
+msgstr "Nur nach Neustart angewendete Änderungen"
 
 #: picard/ui/mainwindow/__init__.py:330
 msgid "Unsaved Changes"
@@ -5590,12 +5590,12 @@ msgstr "Cover-Art"
 
 #: picard/ui/options/dialog.py:111
 msgid "This page failed to initialize"
-msgstr ""
+msgstr "Fehler beim initialisieren dieser Seite"
 
 #: picard/ui/options/dialog.py:114
 #, python-format
 msgid "Error while initializing option page '%s':"
-msgstr ""
+msgstr "Fehler beim Initialisieren der Einstellungsseite „%s“:"
 
 #: picard/ui/options/dialog.py:131
 #, python-format
@@ -5710,6 +5710,10 @@ msgid ""
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Beim Widerrufen der Anmeldung am MusicBrainz-Server ist ein Fehler "
+"aufgetreten: %s\n"
+"\n"
+"Lokal gespeicherte Zugangsdaten dennoch entfernen?"
 
 #: picard/ui/options/genres.py:45
 msgid ""
@@ -6020,6 +6024,7 @@ msgid ""
 "The path provided isn't a valid directory, reverting to:\n"
 "%s\n"
 msgstr ""
+"Der angegebene Pfad ist kein gültiges Verzeichnis. Setze auf %s zurück.\n"
 
 #: picard/ui/options/maintenance.py:172
 #, fuzzy, python-format
