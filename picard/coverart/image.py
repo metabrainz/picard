@@ -177,10 +177,12 @@ class CoverArtImage:
         self.datahash = None
         # thumbnail is used to link to another CoverArtImage, ie. for PDFs
         self.thumbnail = None
+        self.external_file_coverart = None
         self.can_be_saved_to_tags = True
         self.can_be_saved_to_disk = True
         self.can_be_saved_to_metadata = True
         self.can_be_filtered = True
+        self.can_be_processed = True
         if support_types is not None:
             self.support_types = support_types
         if support_multi_types is not None:
@@ -316,6 +318,9 @@ class CoverArtImage:
         except OSError as e:
             raise CoverArtImageIOError(e)
 
+    def set_external_file_data(self, data):
+        self.external_file_coverart = CoverArtImage(data=data)
+
     @property
     def maintype(self):
         """Returns one type only, even for images having more than one type set.
@@ -380,6 +385,9 @@ class CoverArtImage:
         :counters: A dictionary mapping filenames to the amount of how many
                     images with that filename were already saved in `dirname`.
         """
+        if self.external_file_coverart is not None:
+            self.external_file_coverart.save(dirname, metadata, counters)
+            return
         if not self.can_be_saved_to_disk:
             return
         config = get_config()
@@ -493,6 +501,7 @@ class CaaThumbnailCoverArtImage(CaaCoverArtImage):
         self.can_be_saved_to_tags = False
         self.can_be_saved_to_metadata = False
         self.can_be_filtered = False
+        self.can_be_processed = False
 
 
 class TagCoverArtImage(CoverArtImage):

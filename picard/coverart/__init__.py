@@ -36,7 +36,11 @@ from picard.coverart.image import (
     CoverArtImageIdentificationError,
     CoverArtImageIOError,
 )
-from picard.coverart.processing import run_image_filters
+from picard.coverart.processing import (
+    CoverArtProcessingError,
+    run_image_filters,
+    run_image_processors,
+)
 from picard.coverart.providers import (
     CoverArtProvider,
     cover_art_providers,
@@ -68,7 +72,10 @@ class CoverArt:
 
     def _set_metadata(self, coverartimage, data):
         try:
-            coverartimage.set_data(data)
+            if coverartimage.can_be_processed:
+                run_image_processors(data, coverartimage)
+            else:
+                coverartimage.set_data(data)
             if coverartimage.can_be_saved_to_metadata:
                 log.debug("Storing to metadata: %r [%s]",
                     coverartimage, coverartimage.imageinfo_as_string())
@@ -83,7 +90,7 @@ class CoverArt:
             else:
                 log.debug("Not storing to metadata: %r [%s]",
                     coverartimage, coverartimage.imageinfo_as_string())
-        except CoverArtImageIOError as e:
+        except (CoverArtImageIOError, CoverArtProcessingError) as e:
             self.album.error_append(e)
             self.album._finalize_loading(error=True)
             raise e

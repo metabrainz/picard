@@ -23,10 +23,19 @@ from PyQt6.QtGui import QImage
 
 from test.picardtestcase import PicardTestCase
 
+from picard.coverart.image import CoverArtImage
+from picard.coverart.processing import (
+    CoverArtProcessingError,
+    ImageInfo,
+    run_image_processors,
+)
 from picard.coverart.processing.filters import (
     size_filter,
     size_metadata_filter,
 )
+from picard.coverart.processing.processors import ResizeImage
+from picard.extension_points.cover_art_processors import ProcessingTarget
+from picard.util import imageinfo
 
 
 def create_fake_image(width, height, image_format):
@@ -67,5 +76,68 @@ class ImageFiltersTest(PicardTestCase):
         self.assertTrue(size_metadata_filter(image_metadata3))
 
 
-# class ImageProcessorsTest(PicardTestCase):
-#     pass
+class ImageProcessorsTest(PicardTestCase):
+    def test_resize(self):
+        processor = ResizeImage()
+        settings = {
+            'resize_images_saved_to_tags': True,
+            'cover_tags_maximum_width': 500,
+            'cover_tags_maximum_height': 500
+        }
+        self.set_config_values(settings)
+        sizes = [
+            (500, 500),
+            (1000, 500),
+            (600, 1000),
+            (1000, 1000),
+            (400, 400)
+        ]
+        expected_sizes = [
+            (500, 500),
+            (500, 250),
+            (300, 500),
+            (500, 500),
+            (400, 400)
+        ]
+        for size, expected_size in zip(sizes, expected_sizes):
+            image = create_fake_image(size[0], size[1], "jpg")
+            info = ImageInfo(*imageinfo.identify(image))
+            new_image = processor.run(image, info, ProcessingTarget.TAGS)
+            new_size = imageinfo.identify(new_image)[:2]
+            self.assertEqual(new_size, expected_size)
+
+    def test_image_processors(self):
+        settings = {
+            'enabled_plugins': [],
+            'resize_images_saved_to_tags': True,
+            'cover_tags_maximum_width': 500,
+            'cover_tags_maximum_height': 500,
+            'resize_images_saved_to_file': True,
+            'cover_file_maximum_width': 750,
+            'cover_file_maximum_height': 750
+        }
+        self.set_config_values(settings)
+        sizes = [
+            (1000, 1000),
+            (1000, 500),
+            (600, 600),
+        ]
+        expected_sizes = [
+            ((500, 500), (750, 750)),
+            ((500, 250), (750, 375)),
+            ((500, 500), (600, 600)),
+        ]
+        for size, expected_size in zip(sizes, expected_sizes):
+            coverartimage = CoverArtImage()
+            image = create_fake_image(size[0], size[1], "jpg")
+            run_image_processors(image, coverartimage)
+            tags_size = (coverartimage.width, coverartimage.height)
+            file_size = (coverartimage.external_file_coverart.width, coverartimage.external_file_coverart.height)
+            self.assertEqual(tags_size, expected_size[0])
+            self.assertEqual(file_size, expected_size[1])
+
+    def test_identification_error(self):
+        image = create_fake_image(0, 0, "jpg")
+        coverartimage = CoverArtImage()
+        with self.assertRaises(CoverArtProcessingError):
+            run_image_processors(image, coverartimage)

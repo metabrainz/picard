@@ -173,6 +173,12 @@ BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a 
 BoolOption('setting', 'filter_cover_by_size', False)
 IntOption('setting', 'cover_minimum_width', 250)
 IntOption('setting', 'cover_minimum_height', 250)
+BoolOption('setting', 'resize_images_saved_to_tags', False)
+IntOption('setting', 'cover_tags_maximum_width', 1000)
+IntOption('setting', 'cover_tags_maximum_height', 1000)
+BoolOption('setting', 'resize_images_saved_to_file', False)
+IntOption('setting', 'cover_file_maximum_width', 1000)
+IntOption('setting', 'cover_file_maximum_height', 1000)
 
 # picard/ui/options/dialog.py
 # Attached Profiles
