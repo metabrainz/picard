@@ -36,6 +36,7 @@ from picard.coverart.image import (
     CoverArtImageIdentificationError,
     CoverArtImageIOError,
 )
+from picard.coverart.processing import run_image_filters
 from picard.coverart.providers import (
     CoverArtProvider,
     cover_art_providers,
@@ -107,12 +108,16 @@ class CoverArt:
                 },
                 echo=None
             )
-            try:
-                self._set_metadata(coverartimage, data)
-            except CoverArtImageIOError:
-                # It doesn't make sense to store/download more images if we can't
-                # save them in the temporary folder, abort.
-                return
+            filters_result = True
+            if coverartimage.can_be_filtered:
+                filters_result = run_image_filters(data)
+            if filters_result:
+                try:
+                    self._set_metadata(coverartimage, data)
+                except CoverArtImageIOError:
+                    # It doesn't make sense to store/download more images if we can't
+                    # save them in the temporary folder, abort.
+                    return
 
         self.next_in_queue()
 

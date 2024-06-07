@@ -51,6 +51,7 @@ from picard.coverart.image import (
     CaaCoverArtImage,
     CaaThumbnailCoverArtImage,
 )
+from picard.coverart.processing import run_image_metadata_filters
 from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
@@ -66,6 +67,7 @@ from picard.ui.forms.ui_provider_options_caa import Ui_CaaOptions
 
 
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
+CaaThumbnailListItem = namedtuple('CAAThumbnailListItem', ['url', 'width'])
 
 _CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
     (250, CaaSizeItem('250', N_('250 px'))),
@@ -90,13 +92,13 @@ def caa_url_fallback_list(desired_size, thumbnails):
     If user choice isn't matching an available thumbnail size, a fallback to
     smaller thumbnails is possible
     This function returns the list of possible urls, ordered from the biggest
-    matching the user choice to the smallest one.
+    matching the user choice to the smallest one, together with its thumbnail's size.
     Of course, if none are possible, the returned list may be empty.
     """
     reversed_map = OrderedDict(reversed(list(_CAA_THUMBNAIL_SIZE_MAP.items())))
-    urls = []
-    for item_id, item in reversed_map.items():
-        if item_id == -1 or item_id > desired_size:
+    thumbnail_list = []
+    for thumbnail_width, item in reversed_map.items():
+        if thumbnail_width == -1 or thumbnail_width > desired_size:
             continue
         url = thumbnails.get(item.thumbnail, None)
         if url is None:
@@ -104,8 +106,8 @@ def caa_url_fallback_list(desired_size, thumbnails):
             if size_alias is not None:
                 url = thumbnails.get(size_alias, None)
         if url is not None:
-            urls.append(url)
-    return urls
+            thumbnail_list.append(CaaThumbnailListItem(url, thumbnail_width))
+    return thumbnail_list
 
 
 class ProviderOptionsCaa(ProviderOptions):
@@ -303,23 +305,27 @@ class CoverArtProviderCaa(CoverArtProvider):
                         accepted = True
 
                     if accepted:
-                        urls = caa_url_fallback_list(config.setting['caa_image_size'], image['thumbnails'])
-                        if not urls or is_pdf:
+                        thumbnail_list = caa_url_fallback_list(config.setting['caa_image_size'], image['thumbnails'])
+                        if not thumbnail_list or is_pdf:
                             url = image['image']
                         else:
+                            image_data = {'width': thumbnail_list[0].width, 'height': -1}
+                            filters_result = run_image_metadata_filters(image_data)
+                            if not filters_result:
+                                continue
                             # FIXME: try other urls in case of 404
-                            url = urls[0]
+                            url = thumbnail_list[0].url
                         coverartimage = self.coverartimage_class(
                             url,
                             types=image['types'],
                             is_front=image['front'],
                             comment=image['comment'],
                         )
-                        if urls and is_pdf:
+                        if thumbnail_list and is_pdf:
                             # thumbnail will be used to "display" PDF in info
                             # dialog
                             thumbnail = self.coverartimage_thumbnail_class(
-                                url=urls[0],
+                                url=thumbnail_list[0].url,
                                 types=image['types'],
                                 is_front=image['front'],
                                 comment=image['comment'],
