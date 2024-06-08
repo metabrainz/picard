@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-05 10:18+0200\n"
-"PO-Revision-Date: 2024-06-05 18:43+0000\n"
+"PO-Revision-Date: 2024-06-08 15:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -68,7 +68,7 @@ msgstr "Ieškoma metaduomenų klasteriui %(album)s…"
 
 #: picard/cluster.py:336 picard/cluster.py:337
 msgid "Unclustered Files"
-msgstr "Nesuklastruoti failai"
+msgstr "Nesuklasterizuoti failai"
 
 #: picard/collection.py:89
 #, python-format
@@ -356,7 +356,7 @@ msgstr "Didžiausias žanrų skaičius"
 
 #: picard/options.py:211
 msgid "Minimal genre usage"
-msgstr "Minimalus žanro naudojimas"
+msgstr "Mažiausias žanro naudojimas"
 
 #: picard/options.py:212 picard/ui/ui_options_genres.py:126
 msgid "Use only my genres"
@@ -404,7 +404,7 @@ msgstr "Katalogas, kuriame pradėti naršyti"
 
 #: picard/options.py:227 picard/ui/ui_options_interface.py:125
 msgid "Show text labels under icons"
-msgstr "Rodyti teksto antraštes po piktogramomis"
+msgstr "Rodyti teksto etiketes po piktogramomis"
 
 #: picard/options.py:228
 msgid "User interface language"
@@ -786,7 +786,7 @@ msgstr "Formatas"
 
 #: picard/releasegroup.py:61
 msgid "Label"
-msgstr "Įrašų kompanija"
+msgstr "Leidykla"
 
 #: picard/releasegroup.py:62
 msgid "Cat No"
@@ -2400,7 +2400,7 @@ msgstr "Data"
 
 #: picard/ui/cdlookup.py:67 picard/ui/searchdialog/album.py:152
 msgid "Labels"
-msgstr "Įrašų kompanijos"
+msgstr "Leidyklos"
 
 #: picard/ui/cdlookup.py:67 picard/ui/searchdialog/album.py:153
 msgid "Catalog #s"
@@ -2702,7 +2702,7 @@ msgstr[3] "%i vaizdų"
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] "%i vaizdas ne visuose takeliuose"
+msgstr[0] "%i skirtingas vaizdas tarp takelių"
 msgstr[1] "%i skirtingi vaizdai tarp takelių"
 msgstr[2] "%i skirtingo vaizdo tarp takelių"
 msgstr[3] "%i skirtingų vaizdų tarp takelių"
@@ -3589,19 +3589,19 @@ msgstr "Prisijungimas nepavyko: %s"
 #, python-format
 msgid "(different across %d item)"
 msgid_plural "(different across %d items)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "(skiriasi per %d elementą)"
+msgstr[1] "(skiriasi per %d elementus)"
+msgstr[2] "(skiriasi per %d elemento)"
+msgstr[3] "(skiriasi per %d elementų)"
 
 #: picard/ui/metadatabox.py:120
 #, python-format
 msgid "(missing from %d item)"
 msgid_plural "(missing from %d items)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "(trūksta iš %d elemento)"
+msgstr[1] "(trūksta iš %d elementų)"
+msgstr[2] "(trūksta iš %d elemento)"
+msgstr[3] "(trūksta iš %d elementų)"
 
 #: picard/ui/metadatabox.py:214
 msgid "metadata view"
@@ -3658,10 +3658,10 @@ msgstr "Pašalinti iš Išlaikyti žymes sąrašo"
 #: picard/ui/metadatabox.py:428
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
-msgstr[0] "Naudoti originalią vertę"
-msgstr[1] "Naudoti originalias vertes"
-msgstr[2] "Naudoti originalios vertės"
-msgstr[3] "Naudoti originalių verčių"
+msgstr[0] "Naudoti originalią reikšmę"
+msgstr[1] "Naudoti originalias reikšmes"
+msgstr[2] "Naudoti originalios reikšmės"
+msgstr[3] "Naudoti originalių reikšmių"
 
 #: picard/ui/metadatabox.py:435
 msgid "&Copy"
@@ -3781,26 +3781,26 @@ msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Yra šiuo metu tavo įdiegtų įskiepių naujinimas:"
+msgstr[1] "Yra šiuo metu tavo įdiegtų įskiepių naujinimai:"
+msgstr[2] "Yra šiuo metu tavo įdiegtų įskiepių naujinimo:"
+msgstr[3] "Yra šiuo metu tavo įdiegtų įskiepių naujinimų:"
 
 #: picard/ui/pluginupdatedialog.py:72
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Ar nori atnaujinti įskiepį dabar?"
+msgstr[1] "Ar nori atnaujinti įskiepius dabar?"
+msgstr[2] "Ar nori atnaujinti įskiepio dabar?"
+msgstr[3] "Ar nori atnaujinti įskiepių dabar?"
 
 #: picard/ui/pluginupdatedialog.py:80
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "ir {extra_file_count:,d} kitas įskiepis."
+msgstr[1] "ir {extra_file_count:,d} kiti įskiepiai."
+msgstr[2] "ir {extra_file_count:,d} kito įskiepio."
+msgstr[3] "ir {extra_file_count:,d} kitų įskiepių."
 
 #: picard/ui/ratingwidget.py:100
 #, python-format
@@ -3814,38 +3814,38 @@ msgstr ""
 #: picard/ui/savewarningdialog.py:44
 msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
-msgstr[0] "perrašymą esamą failo metaduomenis (žymes)"
-msgstr[1] "perrašymą esamus failus metaduomenis (žymes)"
-msgstr[2] "perrašymą esamo failų metaduomenis (žymes)"
-msgstr[3] "perrašymą esamų failų metaduomenis (žymes)"
+msgstr[0] "perrašys esamus failo metaduomenis (žymes)"
+msgstr[1] "perrašys esamus failų metaduomenis (žymes)"
+msgstr[2] "perrašys esamus failo metaduomenis (žymes)"
+msgstr[3] "perrašys esamus failų metaduomenis (žymes)"
 
 #: picard/ui/savewarningdialog.py:49
 msgid "rename the file"
 msgid_plural "rename the files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "pervadins failą"
+msgstr[1] "pervadins failus"
+msgstr[2] "pervadins failo"
+msgstr[3] "pervadins failų"
 
 #: picard/ui/savewarningdialog.py:54
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "perkels failą į kitą vietą"
+msgstr[1] "perkels failus į kitą vietą"
+msgstr[2] "perkels failo į kitą vietą"
+msgstr[3] "perkels failų į kitą vietą"
 
 #: picard/ui/savewarningdialog.py:60
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] "Ruošiamasi išsaugoti {file_count:,d} failą ir tai atliks:"
-msgstr[1] "Ruošiamasi išsaugoti {file_count:,d} failus ir tai atliks:"
-msgstr[2] "Ruošiamasi išsaugoti {file_count:,d} failo ir tai atliks:"
-msgstr[3] "Ruošiamasi išsaugoti {file_count:,d} failų ir tai atliks:"
+msgstr[0] "Ketini išsaugoti {file_count:,d} failą ir tai:"
+msgstr[1] "Ketini išsaugoti {file_count:,d} failus ir tai:"
+msgstr[2] "Ketini išsaugoti {file_count:,d} failo ir tai:"
+msgstr[3] "Ketini išsaugoti {file_count:,d} failų ir tai:"
 
 #: picard/ui/savewarningdialog.py:64
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
-msgstr ""
+msgstr "<strong>Šis veiksmas negali būti atšauktas.</strong> Ar nori tęsti?"
 
 #: picard/ui/savewarningdialog.py:67
 msgid "<li>{action}</li>"
@@ -3857,11 +3857,11 @@ msgstr "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
 
 #: picard/ui/savewarningdialog.py:70
 msgid "There are no actions selected. No changes will be saved."
-msgstr "Nėra pasirinktų veiksmų. Pakeitimai nebus išsaugoti."
+msgstr "Nėra pasirinktų veiksmų. Jokie pakeitimai nebus išsaugoti."
 
 #: picard/ui/savewarningdialog.py:72
 msgid "Don't show this warning again."
-msgstr ""
+msgstr "Daugiau nerodyti šio įspėjimo"
 
 #: picard/ui/savewarningdialog.py:78
 msgid "File Save Warning"
@@ -3869,7 +3869,7 @@ msgstr "Failo išsaugojimo įspėjimas"
 
 #: picard/ui/scripteditor.py:147
 msgid "Renaming options are disabled"
-msgstr ""
+msgstr "Pervadinimo parinktys yra išjungtos"
 
 #: picard/ui/scripteditor.py:220
 #, python-format
@@ -3879,12 +3879,18 @@ msgid ""
 "as file naming examples.  If you have not selected any files, then some "
 "default examples will be provided."
 msgstr ""
+"Jei prieš atidarant parinkčių ekraną pasirenki failus iš klasterio arba "
+"albumo skydelio, iš pasirinkimo atsitiktine tvarka bus parinkta iki %u failų "
+"kaip failų pavadinimų pavyzdžiai.  Jei nepasirinkai jokių failų, bus "
+"pateikti kai kurie numatytieji pavyzdžiai."
 
 #: picard/ui/scripteditor.py:232
 #, python-format
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main window"
 msgstr ""
+"Atsitiktine tvarka iš pagrindiniame lange pasirinktų failų perkrauti iki %u "
+"elementų"
 
 #: picard/ui/scripteditor.py:352 picard/ui/scripteditor.py:1247
 msgid "Confirm"
@@ -3892,7 +3898,7 @@ msgstr "Patvirtinti"
 
 #: picard/ui/scripteditor.py:426
 msgid "File naming script editor"
-msgstr ""
+msgstr "Failų pavadinimų skripto rengyklė"
 
 #: picard/ui/scripteditor.py:481
 msgid "Reset"
@@ -5177,7 +5183,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:499
 msgid "You are about to reset your options for this page."
-msgstr ""
+msgstr "Ketini iš naujo nustatyti šio puslapio parinktis."
 
 #: picard/ui/options/dialog.py:503
 msgid "Warning! This will reset all of your settings."
@@ -6099,7 +6105,7 @@ msgstr ""
 "Ši versija: {picard_old_version}\n"
 "Nauja versija: {picard_new_version}\n"
 "\n"
-"Ar nori atsisiųsti naująją versiją?"
+"Ar nori atsisiųsti naują versiją?"
 
 #: picard/util/checkupdate.py:166
 msgid ""
@@ -6202,7 +6208,7 @@ msgstr "Muzikos režisierius"
 
 #: picard/util/tags.py:70
 msgid "Gapless Playback"
-msgstr "Be tarpų leidimas"
+msgstr "Be tarpų įrašo peržiūra"
 
 #: picard/util/tags.py:72
 msgid "Grouping"
@@ -6214,7 +6220,7 @@ msgstr "ISRC"
 
 #: picard/util/tags.py:74
 msgid "Key"
-msgstr "Klavišas"
+msgstr "Tonacija"
 
 #: picard/util/tags.py:75
 msgid "Record Label"
@@ -6222,7 +6228,7 @@ msgstr "Įrašų kompanija"
 
 #: picard/util/tags.py:79
 msgid "Lyricist"
-msgstr "Dainos žodžių autorius"
+msgstr "Dainos žodžių kūrėjas"
 
 #: picard/util/tags.py:80
 msgid "Lyrics"
