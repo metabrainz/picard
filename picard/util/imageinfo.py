@@ -21,10 +21,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 from io import BytesIO
 import struct
 
 from picard.util.bitreader import LSBBitReader
+
+
+ImageInfo = namedtuple('ImageInfo', ['width', 'height', 'mime', 'extension', 'datalen'])
 
 
 class IdentificationError(Exception):
@@ -60,7 +64,7 @@ class IdentifyImageType:
         return self._result()
 
     def _result(self):
-        return (int(self.w), int(self.h), self.mime, self.extension, self.datalen)
+        return ImageInfo(int(self.w), int(self.h), self.mime, self.extension, self.datalen)
 
     def match(self):
         raise NotImplementedError

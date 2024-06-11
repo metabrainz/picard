@@ -188,7 +188,7 @@ class CoverArtImage:
         if support_multi_types is not None:
             self.support_multi_types = support_multi_types
         if data is not None:
-            self.set_data(data)
+            self.set_tags_data(data)
         try:
             self.id3_type = id3_type
         except ValueError:
@@ -299,7 +299,7 @@ class CoverArtImage:
             return 0
         return hash(self.datahash.hash())
 
-    def set_data(self, data):
+    def set_tags_data(self, data):
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
         """

@@ -26,7 +26,6 @@ from test.picardtestcase import PicardTestCase
 from picard.coverart.image import CoverArtImage
 from picard.coverart.processing import (
     CoverArtProcessingError,
-    ImageInfo,
     run_image_processors,
 )
 from picard.coverart.processing.filters import (
@@ -101,9 +100,9 @@ class ImageProcessorsTest(PicardTestCase):
         ]
         for size, expected_size in zip(sizes, expected_sizes):
             image = create_fake_image(size[0], size[1], "jpg")
-            info = ImageInfo(*imageinfo.identify(image))
-            new_image = processor.run(image, info, ProcessingTarget.TAGS)
-            new_size = imageinfo.identify(new_image)[:2]
+            info = imageinfo.identify(image)
+            new_image = QImage.fromData(processor.run(image, info, ProcessingTarget.TAGS))
+            new_size = (new_image.width(), new_image.height())
             self.assertEqual(new_size, expected_size)
 
     def test_image_processors(self):
@@ -133,8 +132,10 @@ class ImageProcessorsTest(PicardTestCase):
             run_image_processors(image, coverartimage)
             tags_size = (coverartimage.width, coverartimage.height)
             file_size = (coverartimage.external_file_coverart.width, coverartimage.external_file_coverart.height)
+            extension = coverartimage.extension[1:]
             self.assertEqual(tags_size, expected_size[0])
             self.assertEqual(file_size, expected_size[1])
+            self.assertEqual(extension, "jpg")
 
     def test_identification_error(self):
         image = create_fake_image(0, 0, "jpg")

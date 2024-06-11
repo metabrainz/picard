@@ -75,7 +75,7 @@ class CoverArt:
             if coverartimage.can_be_processed:
                 run_image_processors(data, coverartimage)
             else:
-                coverartimage.set_data(data)
+                coverartimage.set_tags_data(data)
             if coverartimage.can_be_saved_to_metadata:
                 log.debug("Storing to metadata: %r [%s]",
                     coverartimage, coverartimage.imageinfo_as_string())

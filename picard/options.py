@@ -40,6 +40,8 @@ from picard.const.defaults import (
     DEFAULT_CAA_IMAGE_TYPE_INCLUDE,
     DEFAULT_CACHE_SIZE_IN_BYTES,
     DEFAULT_COVER_IMAGE_FILENAME,
+    DEFAULT_COVER_MAX_SIZE,
+    DEFAULT_COVER_MIN_SIZE,
     DEFAULT_CURRENT_BROWSER_PATH,
     DEFAULT_DRIVES,
     DEFAULT_FPCALC_THREADS,
@@ -171,14 +173,14 @@ BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a 
 # picard/ui/options/cover_processing.py
 # Cover Art Image Processing
 BoolOption('setting', 'filter_cover_by_size', False)
-IntOption('setting', 'cover_minimum_width', 250)
-IntOption('setting', 'cover_minimum_height', 250)
+IntOption('setting', 'cover_minimum_width', DEFAULT_COVER_MIN_SIZE)
+IntOption('setting', 'cover_minimum_height', DEFAULT_COVER_MIN_SIZE)
 BoolOption('setting', 'resize_images_saved_to_tags', False)
-IntOption('setting', 'cover_tags_maximum_width', 1000)
-IntOption('setting', 'cover_tags_maximum_height', 1000)
+IntOption('setting', 'cover_tags_maximum_width', DEFAULT_COVER_MAX_SIZE)
+IntOption('setting', 'cover_tags_maximum_height', DEFAULT_COVER_MAX_SIZE)
 BoolOption('setting', 'resize_images_saved_to_file', False)
-IntOption('setting', 'cover_file_maximum_width', 1000)
-IntOption('setting', 'cover_file_maximum_height', 1000)
+IntOption('setting', 'cover_file_maximum_width', DEFAULT_COVER_MAX_SIZE)
+IntOption('setting', 'cover_file_maximum_height', DEFAULT_COVER_MAX_SIZE)
 
 # picard/ui/options/dialog.py
 # Attached Profiles

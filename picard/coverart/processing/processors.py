@@ -35,7 +35,7 @@ from picard.extension_points.cover_art_processors import (
 
 def _get_image_data(image, image_format):
     buffer = QBuffer()
-    image.save(buffer, image_format, quality=100)
+    image.save(buffer, image_format, quality=90)
     buffer.close()
     return buffer.data()
 
@@ -75,7 +75,25 @@ class ResizeImage(ImageProcessor):
             scaled_image.width(),
             scaled_image.height()
         )
-        return _get_image_data(scaled_image, info.extension[1:])
+        return _get_image_data(scaled_image, "bmp")
+
+
+class ConvertImage(ImageProcessor):
+
+    def save_to_file(self):
+        return True
+
+    def save_to_tags(self):
+        return True
+
+    def same_processing(self):
+        return False
+
+    def run(self, data, info, target):
+        image = QImage.fromData(data)
+        extension = info.extension[1:]
+        return _get_image_data(image, extension)
 
 
 register_cover_art_processor(ResizeImage)
+register_cover_art_processor(ConvertImage)

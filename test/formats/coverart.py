@@ -56,9 +56,9 @@ class DummyUnsupportedCoverArt(CoverArtImage):
         self.width = 100
         self.height = 100
         self.extension = '.cvr'
-        self.set_data(data)
+        self.set_tags_data(data)
 
-    def set_data(self, data):
+    def set_tags_data(self, data):
         self._data = data
         self.datalength = len(data)
 
