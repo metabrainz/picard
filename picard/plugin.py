@@ -40,6 +40,7 @@ import os.path
 from picard import log
 from picard.config import get_config
 from picard.const import USER_PLUGIN_DIR
+from picard.extension_points.enums import PluginPriority
 from picard.version import (
     Version,
     VersionError,
@@ -233,18 +234,6 @@ class PluginData(PluginShared):
     @property
     def files_list(self):
         return ", ".join(self.files.keys())
-
-
-class PluginPriority:
-
-    """
-    Define few priority values for plugin functions execution order
-    Those with higher values are executed first
-    Default priority is PluginPriority.NORMAL
-    """
-    HIGH = 100
-    NORMAL = 0
-    LOW = -100
 
 
 class PluginFunctions:

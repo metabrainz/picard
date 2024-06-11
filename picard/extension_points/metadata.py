@@ -36,11 +36,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard.extension_points.enums import PluginPriority
 from picard.metadata import (
     album_metadata_processors,
     track_metadata_processors,
 )
-from picard.plugin import PluginPriority
 
 
 def register_album_metadata_processor(function, priority=PluginPriority.NORMAL):

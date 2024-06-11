@@ -51,13 +51,13 @@
 
 
 from picard.album import album_post_removal_processors
+from picard.extension_points.enums import PluginPriority
 from picard.file import (
     file_post_addition_to_track_processors,
     file_post_load_processors,
     file_post_removal_to_track_processors,
     file_post_save_processors,
 )
-from picard.plugin import PluginPriority
 
 
 def register_album_post_removal_processor(function, priority=PluginPriority.NORMAL):
