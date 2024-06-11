@@ -40,14 +40,13 @@ from picard.metadata import (
     album_metadata_processors,
     track_metadata_processors,
 )
-from picard.plugin import PluginPriority
 
 
-def register_album_metadata_processor(function, priority=PluginPriority.NORMAL):
+def register_album_metadata_processor(function, priority=0):
     """Registers new album-level metadata processor."""
     album_metadata_processors.register(function.__module__, function, priority)
 
 
-def register_track_metadata_processor(function, priority=PluginPriority.NORMAL):
+def register_track_metadata_processor(function, priority=0):
     """Registers new track-level metadata processor."""
     track_metadata_processors.register(function.__module__, function, priority)

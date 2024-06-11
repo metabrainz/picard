@@ -235,18 +235,6 @@ class PluginData(PluginShared):
         return ", ".join(self.files.keys())
 
 
-class PluginPriority:
-
-    """
-    Define few priority values for plugin functions execution order
-    Those with higher values are executed first
-    Default priority is PluginPriority.NORMAL
-    """
-    HIGH = 100
-    NORMAL = 0
-    LOW = -100
-
-
 class PluginFunctions:
 
     """
@@ -257,13 +245,17 @@ class PluginFunctions:
     def __init__(self, label=None):
         self.functions = defaultdict(lambda: ExtensionPoint(label=label))
 
-    def register(self, module, item, priority=PluginPriority.NORMAL):
+    def register(self, module, item, priority=0):
         self.functions[priority].register(module, item)
 
-    def run(self, *args, **kwargs):
-        """Execute registered functions with passed parameters honouring priority"""
+    def _get_functions(self):
+        """Returns registered functions by order of priority (highest first) and registration"""
         for priority, functions in sorted(self.functions.items(),
                                           key=lambda i: i[0],
                                           reverse=True):
-            for function in functions:
-                function(*args, **kwargs)
+            yield from functions
+
+    def run(self, *args, **kwargs):
+        """Execute registered functions with passed parameters honouring priority"""
+        for function in self._get_functions():
+            function(*args, **kwargs)
