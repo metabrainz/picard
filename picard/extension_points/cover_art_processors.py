@@ -30,6 +30,7 @@ class ProcessingTarget(IntEnum):
     TAGS = 0
     FILE = 1
     BOTH = 2
+    SKIP = 3
 
 
 class ImageProcessor:

@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import time
+
 from PyQt6.QtCore import (
     QBuffer,
     Qt,
@@ -57,6 +59,7 @@ class ResizeImage(ImageProcessor):
         return self.save_to_tags and self.save_to_file and same_width and same_height
 
     def run(self, data, info, target):
+        start_time = time.time()
         config = get_config()
         if target == ProcessingTarget.TAGS:
             max_width = config.setting['cover_tags_maximum_width']
@@ -68,14 +71,16 @@ class ResizeImage(ImageProcessor):
             return data
         image = QImage.fromData(data)
         scaled_image = image.scaled(max_width, max_height, Qt.AspectRatioMode.KeepAspectRatio)
+        scaled_data = _get_image_data(scaled_image, "png")
         log.debug(
-            "Resizing cover art from %d x %d to %d x %d",
+            "Resized cover art from %d x %d to %d x %d in %d ms",
             info.width,
             info.height,
             scaled_image.width(),
-            scaled_image.height()
+            scaled_image.height(),
+            1000 * (time.time() - start_time)
         )
-        return _get_image_data(scaled_image, "bmp")
+        return scaled_data
 
 
 class ConvertImage(ImageProcessor):

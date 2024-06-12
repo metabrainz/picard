@@ -18,6 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import time
+
+from picard import log
 from picard.coverart.processing import (  # noqa: F401 # pylint: disable=unused-import
     filters,
     processors,
@@ -53,6 +56,7 @@ def run_image_metadata_filters(metadata):
 
 def run_image_processors(data, coverartimage):
     try:
+        start_time = time.time()
         info = imageinfo.identify(data)
         both, tags, file = get_cover_art_processors()
         for processor in both:
@@ -65,5 +69,10 @@ def run_image_processors(data, coverartimage):
             file_data = processor.run(file_data, info, ProcessingTarget.FILE)
         coverartimage.set_tags_data(tags_data)
         coverartimage.set_external_file_data(file_data)
+        log.debug(
+            "Image processing for %s finished in %d ms",
+            coverartimage,
+            1000 * (time.time() - start_time)
+        )
     except imageinfo.IdentificationError as e:
         raise CoverArtProcessingError(e)
