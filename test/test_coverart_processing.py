@@ -24,17 +24,17 @@ from PyQt6.QtGui import QImage
 from test.picardtestcase import PicardTestCase
 
 from picard.coverart.image import CoverArtImage
-from picard.coverart.processing import (
-    CoverArtProcessingError,
-    run_image_processors,
-)
+from picard.coverart.processing import run_image_processors
 from picard.coverart.processing.filters import (
     size_filter,
     size_metadata_filter,
 )
 from picard.coverart.processing.processors import ResizeImage
-from picard.extension_points.cover_art_processors import ProcessingTarget
-from picard.util import imageinfo
+from picard.extension_points.cover_art_processors import (
+    ProcessingImage,
+    ProcessingTarget,
+)
+from picard.util.imageinfo import IdentificationError
 
 
 def create_fake_image(width, height, image_format):
@@ -99,11 +99,13 @@ class ImageProcessorsTest(PicardTestCase):
             (400, 400)
         ]
         for size, expected_size in zip(sizes, expected_sizes):
-            image = create_fake_image(size[0], size[1], "jpg")
-            info = imageinfo.identify(image)
-            new_image = QImage.fromData(processor.run(image, info, ProcessingTarget.TAGS))
+            image = ProcessingImage(create_fake_image(size[0], size[1], "jpg"))
+            processor.run(image, ProcessingTarget.TAGS)
+            data = image.get_result("jpg")
+            new_image = QImage.fromData(data)
             new_size = (new_image.width(), new_image.height())
             self.assertEqual(new_size, expected_size)
+            self.assertEqual(new_size, (image.info.width, image.info.height))
 
     def test_image_processors(self):
         settings = {
@@ -140,5 +142,5 @@ class ImageProcessorsTest(PicardTestCase):
     def test_identification_error(self):
         image = create_fake_image(0, 0, "jpg")
         coverartimage = CoverArtImage()
-        with self.assertRaises(CoverArtProcessingError):
+        with self.assertRaises(IdentificationError):
             run_image_processors(image, coverartimage)

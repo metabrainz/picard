@@ -18,19 +18,61 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from copy import copy
 from enum import IntEnum
 
+from PyQt6.QtCore import QBuffer
+from PyQt6.QtGui import QImage
+
 from picard.plugin import ExtensionPoint
+from picard.util import imageinfo
 
 
 ext_point_cover_art_processors = ExtensionPoint(label='cover_art_processors')
+
+
+class CoverArtProcessingError(Exception):
+    pass
+
+
+class CoverArtEncodingError(CoverArtProcessingError):
+    pass
 
 
 class ProcessingTarget(IntEnum):
     TAGS = 0
     FILE = 1
     BOTH = 2
-    SKIP = 3
+
+
+class ProcessingImage:
+
+    def __init__(self, image, info=None):
+        self.set_result(image)
+        if info is None and not isinstance(image, QImage):
+            self.info = imageinfo.identify(image)
+        else:
+            self.info = info
+
+    def copy(self):
+        return ProcessingImage(self._qimage.copy(), copy(self.info))
+
+    def set_result(self, image):
+        if isinstance(image, QImage):
+            self._qimage = image
+        else:
+            self._qimage = QImage.fromData(image)
+
+    def get_result(self, image_format=None, default_format=False):
+        if image_format is None:
+            if not default_format:
+                return self._qimage
+            else:
+                image_format = self.info.format
+        buffer = QBuffer()
+        if not self._qimage.save(buffer, image_format, quality=90):
+            raise CoverArtEncodingError(f"Failed to encode into {image_format}")
+        return buffer.data()
 
 
 class ImageProcessor:
@@ -44,7 +86,7 @@ class ImageProcessor:
     def same_processing(self):
         return False
 
-    def run(self, data, info, target):
+    def run(self, data, target):
         pass
 
 

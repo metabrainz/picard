@@ -21,14 +21,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
+from dataclasses import dataclass
 from io import BytesIO
 import struct
 
 from picard.util.bitreader import LSBBitReader
 
 
-ImageInfo = namedtuple('ImageInfo', ['width', 'height', 'mime', 'extension', 'datalen'])
+@dataclass
+class ImageInfo:
+    width: int
+    height: int
+    mime: str
+    extension: str
+    datalen: int
+
+    @property
+    def format(self):
+        return self.extension[1:]
 
 
 class IdentificationError(Exception):

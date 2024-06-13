@@ -30,14 +30,11 @@ from picard.extension_points.cover_art_filters import (
     ext_point_cover_art_metadata_filters,
 )
 from picard.extension_points.cover_art_processors import (
+    CoverArtProcessingError,
+    ProcessingImage,
     ProcessingTarget,
     get_cover_art_processors,
 )
-from picard.util import imageinfo
-
-
-class CoverArtProcessingError(Exception):
-    pass
 
 
 def run_image_filters(data):
@@ -55,24 +52,30 @@ def run_image_metadata_filters(metadata):
 
 
 def run_image_processors(data, coverartimage):
+    tags_data = data
+    file_data = data
     try:
         start_time = time.time()
-        info = imageinfo.identify(data)
-        both, tags, file = get_cover_art_processors()
-        for processor in both:
-            data = processor.run(data, info, ProcessingTarget.BOTH)
-        tags_data = data
-        file_data = data
-        for processor in tags:
-            tags_data = processor.run(tags_data, info, ProcessingTarget.TAGS)
-        for processor in file:
-            file_data = processor.run(file_data, info, ProcessingTarget.FILE)
+        image = ProcessingImage(data)
+        both_queue, tags_queue, file_queue = get_cover_art_processors()
+        for processor in both_queue:
+            processor.run(image, ProcessingTarget.BOTH)
+        tags_image = image.copy()
+        for processor in tags_queue:
+            processor.run(tags_image, ProcessingTarget.TAGS)
+        tags_data = tags_image.get_result(default_format=True)
         coverartimage.set_tags_data(tags_data)
+        file_image = image.copy()
+        for processor in file_queue:
+            processor.run(file_image, ProcessingTarget.FILE)
+        file_data = file_image.get_result(default_format=True)
         coverartimage.set_external_file_data(file_data)
         log.debug(
             "Image processing for %s finished in %d ms",
             coverartimage,
             1000 * (time.time() - start_time)
         )
-    except imageinfo.IdentificationError as e:
-        raise CoverArtProcessingError(e)
+    except CoverArtProcessingError as e:
+        coverartimage.set_tags_data(tags_data)
+        coverartimage.set_external_file_data(file_data)
+        raise e

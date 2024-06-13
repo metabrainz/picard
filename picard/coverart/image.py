@@ -28,6 +28,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from dataclasses import astuple
 from hashlib import blake2b
 import os
 import shutil
@@ -309,7 +310,7 @@ class CoverArtImage:
 
         try:
             (self.width, self.height, self.mimetype, self.extension,
-             self.datalength) = imageinfo.identify(data)
+             self.datalength) = astuple(imageinfo.identify(data))
         except imageinfo.IdentificationError as e:
             raise CoverArtImageIdentificationError(e)
 

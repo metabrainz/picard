@@ -20,11 +20,7 @@
 
 import time
 
-from PyQt6.QtCore import (
-    QBuffer,
-    Qt,
-)
-from PyQt6.QtGui import QImage
+from PyQt6.QtCore import Qt
 
 from picard import log
 from picard.config import get_config
@@ -33,13 +29,6 @@ from picard.extension_points.cover_art_processors import (
     ProcessingTarget,
     register_cover_art_processor,
 )
-
-
-def _get_image_data(image, image_format):
-    buffer = QBuffer()
-    image.save(buffer, image_format, quality=90)
-    buffer.close()
-    return buffer.data()
 
 
 class ResizeImage(ImageProcessor):
@@ -58,7 +47,7 @@ class ResizeImage(ImageProcessor):
         same_height = config.setting['cover_tags_maximum_height'] == config.setting['cover_file_maximum_height']
         return self.save_to_tags and self.save_to_file and same_width and same_height
 
-    def run(self, data, info, target):
+    def run(self, image, target):
         start_time = time.time()
         config = get_config()
         if target == ProcessingTarget.TAGS:
@@ -67,38 +56,21 @@ class ResizeImage(ImageProcessor):
         else:
             max_width = config.setting['cover_file_maximum_width']
             max_height = config.setting['cover_file_maximum_height']
-        if info.width <= max_width and info.height <= max_height:
-            return data
-        image = QImage.fromData(data)
-        scaled_image = image.scaled(max_width, max_height, Qt.AspectRatioMode.KeepAspectRatio)
-        scaled_data = _get_image_data(scaled_image, "png")
+        if image.info.width <= max_width and image.info.height <= max_height:
+            return
+        qimage = image.get_result()
+        scaled_image = qimage.scaled(max_width, max_height, Qt.AspectRatioMode.KeepAspectRatio)
         log.debug(
-            "Resized cover art from %d x %d to %d x %d in %d ms",
-            info.width,
-            info.height,
+            "Resized cover art from %d x %d to %d x %d in %.2f ms",
+            image.info.width,
+            image.info.height,
             scaled_image.width(),
             scaled_image.height(),
             1000 * (time.time() - start_time)
         )
-        return scaled_data
-
-
-class ConvertImage(ImageProcessor):
-
-    def save_to_file(self):
-        return True
-
-    def save_to_tags(self):
-        return True
-
-    def same_processing(self):
-        return False
-
-    def run(self, data, info, target):
-        image = QImage.fromData(data)
-        extension = info.extension[1:]
-        return _get_image_data(image, extension)
+        image.info.width = scaled_image.width()
+        image.info.height = scaled_image.height()
+        image.set_result(scaled_image)
 
 
 register_cover_art_processor(ResizeImage)
-register_cover_art_processor(ConvertImage)

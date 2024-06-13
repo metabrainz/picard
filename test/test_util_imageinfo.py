@@ -36,7 +36,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/gif', '.gif', 5806)
+                imageinfo.ImageInfo(140, 96, 'image/gif', '.gif', 5806)
             )
 
     def test_png(self):
@@ -45,7 +45,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/png', '.png', 11137)
+                imageinfo.ImageInfo(140, 96, 'image/png', '.png', 11137)
             )
 
     def test_jpeg(self):
@@ -54,7 +54,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/jpeg', '.jpg', 8550)
+                imageinfo.ImageInfo(140, 96, 'image/jpeg', '.jpg', 8550)
             )
 
     def test_webp_vp8(self):
@@ -63,7 +63,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/webp', '.webp', 6178)
+                imageinfo.ImageInfo(140, 96, 'image/webp', '.webp', 6178)
             )
 
     def test_webp_vp8l(self):
@@ -72,7 +72,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/webp', '.webp', 9432)
+                imageinfo.ImageInfo(140, 96, 'image/webp', '.webp', 9432)
             )
 
     def test_webp_vp8x(self):
@@ -81,7 +81,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/webp', '.webp', 6858)
+                imageinfo.ImageInfo(140, 96, 'image/webp', '.webp', 6858)
             )
 
     def test_webp_insufficient_data(self):
@@ -94,7 +94,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (140, 96, 'image/tiff', '.tiff', 12509)
+                imageinfo.ImageInfo(140, 96, 'image/tiff', '.tiff', 12509)
             )
 
     def test_pdf(self):
@@ -103,7 +103,7 @@ class IdentifyTest(PicardTestCase):
         with open(file, 'rb') as f:
             self.assertEqual(
                 imageinfo.identify(f.read()),
-                (0, 0, 'application/pdf', '.pdf', 10362)
+                imageinfo.ImageInfo(0, 0, 'application/pdf', '.pdf', 10362)
             )
 
     def test_not_enough_data(self):
