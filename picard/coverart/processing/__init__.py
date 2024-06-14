@@ -35,6 +35,7 @@ from picard.extension_points.cover_art_processors import (
     ProcessingTarget,
     get_cover_art_processors,
 )
+from picard.util.imageinfo import IdentificationError
 
 
 def run_image_filters(data):
@@ -75,6 +76,8 @@ def run_image_processors(data, coverartimage):
             coverartimage,
             1000 * (time.time() - start_time)
         )
+    except IdentificationError as e:
+        raise CoverArtProcessingError(e)
     except CoverArtProcessingError as e:
         coverartimage.set_tags_data(tags_data)
         coverartimage.set_external_file_data(file_data)

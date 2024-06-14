@@ -70,6 +70,7 @@ class ResizeImage(ImageProcessor):
         )
         image.info.width = scaled_image.width()
         image.info.height = scaled_image.height()
+        image.info.datalen = scaled_image.sizeInBytes()
         image.set_result(scaled_image)
 
 

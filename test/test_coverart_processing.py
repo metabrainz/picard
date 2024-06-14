@@ -31,10 +31,10 @@ from picard.coverart.processing.filters import (
 )
 from picard.coverart.processing.processors import ResizeImage
 from picard.extension_points.cover_art_processors import (
+    CoverArtProcessingError,
     ProcessingImage,
     ProcessingTarget,
 )
-from picard.util.imageinfo import IdentificationError
 
 
 def create_fake_image(width, height, image_format):
@@ -142,5 +142,5 @@ class ImageProcessorsTest(PicardTestCase):
     def test_identification_error(self):
         image = create_fake_image(0, 0, "jpg")
         coverartimage = CoverArtImage()
-        with self.assertRaises(IdentificationError):
+        with self.assertRaises(CoverArtProcessingError):
             run_image_processors(image, coverartimage)

@@ -74,7 +74,13 @@ class IdentifyImageType:
         return self._result()
 
     def _result(self):
-        return ImageInfo(int(self.w), int(self.h), self.mime, self.extension, self.datalen)
+        return ImageInfo(
+            width=int(self.w),
+            height=int(self.h),
+            mime=self.mime,
+            extension=self.extension,
+            datalen=self.datalen,
+        )
 
     def match(self):
         raise NotImplementedError
