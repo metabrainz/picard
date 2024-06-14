@@ -24,12 +24,14 @@ import logging
 import os
 import sys
 import unittest
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
 import picard
 from picard.const import USER_PLUGIN_DIR
 from picard.plugin import (
+    PluginFunctions,
     PluginWrapper,
     _unregister_module_extensions,
 )
@@ -289,3 +291,31 @@ class TestPluginWrapper(PicardTestCase):
         self.assertTrue(user_plugin.is_user_installed)
         system_plugin = PluginWrapper({}, '/other/path/plugins', manifest_data=manifest)
         self.assertFalse(system_plugin.is_user_installed)
+
+
+class TestPluginFunctions(PicardTestCase):
+    def setUp(self):
+        self.set_config_values({
+            'enabled_plugins': [],
+        })
+
+    def test_register_order(self):
+        pfs = PluginFunctions(label="test")
+        self.assertEqual(pfs.functions, {})
+        pfs.register('m', 'f1', priority=0)
+        pfs.register('m', 'f2', priority=0)
+        self.assertEqual(list(pfs._get_functions()), ['f1', 'f2'])
+        pfs.register('m', 'f3', priority=1)
+        pfs.register('m', 'f4', priority=-1)
+        self.assertEqual(list(pfs._get_functions()), ['f3', 'f1', 'f2', 'f4'])
+
+    def test_run_args(self):
+        testfunc1 = Mock()
+        testfunc2 = Mock()
+
+        pfs = PluginFunctions(label="test")
+        pfs.register('m', testfunc1)
+        pfs.register('m', testfunc2)
+        pfs.run(1, k=2)
+        testfunc1.assert_called_with(1, k=2)
+        testfunc2.assert_called_with(1, k=2)
