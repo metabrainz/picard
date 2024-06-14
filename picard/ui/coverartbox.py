@@ -32,7 +32,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from contextlib import ExitStack
 from functools import partial
 import os
 import re
@@ -567,31 +567,30 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         if isinstance(self.item, Album):
             album = self.item
-            with album.suspend_metadata_images_update:
+            with ExitStack() as stack:
+                stack.enter_context(album.suspend_metadata_images_update)
                 set_image(album, coverartimage)
                 for track in album.tracks:
-                    track.suspend_metadata_images_update = True
+                    stack.enter_context(track.suspend_metadata_images_update)
                     set_image(track, coverartimage)
                 for file in album.iterfiles():
                     set_image(file, coverartimage)
                     file.update(signal=False)
-                for track in album.tracks:
-                    track.suspend_metadata_images_update = False
             album.update(update_tracks=False)
         elif isinstance(self.item, FileListItem):
             parents = set()
             filelist = self.item
-            with filelist.suspend_metadata_images_update:
+            with ExitStack() as stack:
+                stack.enter_context(filelist.suspend_metadata_images_update)
                 set_image(filelist, coverartimage)
                 for file in filelist.iterfiles():
                     for parent in iter_file_parents(file):
-                        parent.suspend_metadata_images_update = True
+                        stack.enter_context(parent.suspend_metadata_images_update)
                         parents.add(parent)
                     set_image(file, coverartimage)
                     file.update(signal=False)
                 for parent in parents:
                     set_image(parent, coverartimage)
-                    parent.suspend_metadata_images_update = False
                     if isinstance(parent, Album):
                         parent.update(update_tracks=False)
                     else:
