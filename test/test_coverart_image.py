@@ -257,7 +257,7 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual(coverartimage.data, imgdata2)
 
         # set data again, with another payload
-        coverartimage.set_data(imgdata)
+        coverartimage.set_tags_data(imgdata)
 
         tmp_file = coverartimage.tempfile_filename
         filesize = os.path.getsize(tmp_file)

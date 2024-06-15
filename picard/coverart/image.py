@@ -177,16 +177,18 @@ class CoverArtImage:
         self.datahash = None
         # thumbnail is used to link to another CoverArtImage, ie. for PDFs
         self.thumbnail = None
+        self.external_file_coverart = None
         self.can_be_saved_to_tags = True
         self.can_be_saved_to_disk = True
         self.can_be_saved_to_metadata = True
         self.can_be_filtered = True
+        self.can_be_processed = True
         if support_types is not None:
             self.support_types = support_types
         if support_multi_types is not None:
             self.support_multi_types = support_multi_types
         if data is not None:
-            self.set_data(data)
+            self.set_tags_data(data)
         try:
             self.id3_type = id3_type
         except ValueError:
@@ -297,7 +299,7 @@ class CoverArtImage:
             return 0
         return hash(self.datahash.hash())
 
-    def set_data(self, data):
+    def set_tags_data(self, data):
         """Store image data in a file, if data already exists in such file
            it will be re-used and no file write occurs
         """
@@ -306,8 +308,11 @@ class CoverArtImage:
             self.datahash = None
 
         try:
-            (self.width, self.height, self.mimetype, self.extension,
-             self.datalength) = imageinfo.identify(data)
+            info = imageinfo.identify(data)
+            self.width, self.height = info.width, info.height
+            self.mimetype = info.mime
+            self.extension = info.extension
+            self.datalength = info.datalen
         except imageinfo.IdentificationError as e:
             raise CoverArtImageIdentificationError(e)
 
@@ -315,6 +320,9 @@ class CoverArtImage:
             self.datahash = DataHash(data, suffix=self.extension)
         except OSError as e:
             raise CoverArtImageIOError(e)
+
+    def set_external_file_data(self, data):
+        self.external_file_coverart = CoverArtImage(data=data)
 
     @property
     def maintype(self):
@@ -380,6 +388,9 @@ class CoverArtImage:
         :counters: A dictionary mapping filenames to the amount of how many
                     images with that filename were already saved in `dirname`.
         """
+        if self.external_file_coverart is not None:
+            self.external_file_coverart.save(dirname, metadata, counters)
+            return
         if not self.can_be_saved_to_disk:
             return
         config = get_config()
@@ -493,6 +504,7 @@ class CaaThumbnailCoverArtImage(CaaCoverArtImage):
         self.can_be_saved_to_tags = False
         self.can_be_saved_to_metadata = False
         self.can_be_filtered = False
+        self.can_be_processed = False
 
 
 class TagCoverArtImage(CoverArtImage):

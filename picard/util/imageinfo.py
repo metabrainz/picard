@@ -21,10 +21,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from dataclasses import dataclass
 from io import BytesIO
 import struct
 
 from picard.util.bitreader import LSBBitReader
+
+
+@dataclass
+class ImageInfo:
+    width: int
+    height: int
+    mime: str
+    extension: str
+    datalen: int
+
+    @property
+    def format(self):
+        return self.extension[1:]
 
 
 class IdentificationError(Exception):
@@ -60,7 +74,13 @@ class IdentifyImageType:
         return self._result()
 
     def _result(self):
-        return (int(self.w), int(self.h), self.mime, self.extension, self.datalen)
+        return ImageInfo(
+            width=int(self.w),
+            height=int(self.h),
+            mime=self.mime,
+            extension=self.extension,
+            datalen=self.datalen,
+        )
 
     def match(self):
         raise NotImplementedError
