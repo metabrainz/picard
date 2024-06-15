@@ -322,7 +322,7 @@ class CoverArtImage:
             raise CoverArtImageIOError(e)
 
     def set_external_file_data(self, data):
-        self.external_file_coverart = CoverArtImage(data=data)
+        self.external_file_coverart = CoverArtImage(data=data, url=self.url)
 
     @property
     def maintype(self):

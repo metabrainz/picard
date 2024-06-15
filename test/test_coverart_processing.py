@@ -115,7 +115,9 @@ class ImageProcessorsTest(PicardTestCase):
             'cover_tags_maximum_height': 500,
             'resize_images_saved_to_file': True,
             'cover_file_maximum_width': 750,
-            'cover_file_maximum_height': 750
+            'cover_file_maximum_height': 750,
+            'save_images_to_tags': True,
+            'save_images_to_files': True,
         }
         self.set_config_values(settings)
         sizes = [

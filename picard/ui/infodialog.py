@@ -137,6 +137,19 @@ class ArtworkTableSimple(ArtworkTable):
         self.setColumnWidth(self.get_column_index('type'), self.TYPE_COLUMN_SIZE)
 
 
+class ArtworkTableSimpleExternal(ArtworkTableSimple):
+    NUM_COLS = 3
+
+    _columns = {
+        'type': 0,
+        'new': 1,
+        'external': 2,
+    }
+
+    _labels = (_("Type"), _("Cover"), _("External Cover"),)
+    artwork_columns = ('new', 'external',)
+
+
 class ArtworkTableExisting(ArtworkTable):
     NUM_COLS = 3
 
@@ -150,11 +163,28 @@ class ArtworkTableExisting(ArtworkTable):
     artwork_columns = ('orig', 'new',)
 
 
+class ArtworkTableExistingExternal(ArtworkTable):
+    NUM_COLS = 4
+
+    _columns = {
+        'orig': 0,
+        'type': 1,
+        'new': 2,
+        'external': 3,
+    }
+
+    _labels = (_("Existing Cover"), _("Type"), _("New Cover"), _("New External Cover"),)
+    artwork_columns = ('orig', 'new', 'external',)
+
+
 class ArtworkRow:
     def __init__(self, orig_image=None, new_image=None, types=None):
         self.orig_image = orig_image
         self.new_image = new_image
         self.types = types
+        self.new_external_image = None
+        if self.new_image:
+            self.new_external_image = self.new_image.external_file_coverart
 
 
 class InfoDialog(PicardDialog):
@@ -171,6 +201,9 @@ class InfoDialog(PicardDialog):
         self.new_images = sorted(obj.metadata.images) or []
         self.orig_images = []
         artworktable_class = ArtworkTableSimple
+        has_external_images = any(image.external_file_coverart for image in self.new_images)
+        if has_external_images:
+            artworktable_class = ArtworkTableSimpleExternal
 
         has_orig_images = hasattr(obj, 'orig_metadata') and obj.orig_metadata.images
         if has_orig_images and obj.orig_metadata.images != obj.metadata.images:
@@ -180,6 +213,8 @@ class InfoDialog(PicardDialog):
             if is_track or is_linked_file or is_album_with_files:
                 self.orig_images = sorted(obj.orig_metadata.images)
                 artworktable_class = ArtworkTableExisting
+                if has_external_images:
+                    artworktable_class = ArtworkTableExistingExternal
 
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
@@ -242,7 +277,11 @@ class InfoDialog(PicardDialog):
         col_index = self.artwork_table.get_column_index(colname)
         pixmap = None
         infos = None
-        source = 'new_image' if colname == 'new' else 'orig_image'
+        source = 'orig_image'
+        if colname == 'new':
+            source = 'new_image'
+        elif colname == 'external':
+            source = 'new_external_image'
         image = getattr(self.artwork_rows[row_index], source)
         item = QtWidgets.QTableWidgetItem()
 
