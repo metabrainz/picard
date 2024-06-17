@@ -45,6 +45,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.album import Album
+from picard.config import get_config
 from picard.coverart.image import CoverArtImageIOError
 from picard.coverart.utils import translated_types_as_string
 from picard.file import File
@@ -99,10 +100,11 @@ class ArtworkTable(QtWidgets.QTableWidget):
     V_SIZE = 230
 
     NUM_ROWS = 0
-    NUM_COLS = 2
+    NUM_COLS = 3
 
     _columns = {}
     _labels = ()
+    _tooltips = {}
     artwork_columns = ()
 
     def __init__(self, parent=None):
@@ -116,6 +118,8 @@ class ArtworkTable(QtWidgets.QTableWidget):
         v_header.setDefaultSectionSize(self.V_SIZE)
 
         self.setHorizontalHeaderLabels(self._labels)
+        for colname, index in self._columns.items():
+            self.horizontalHeaderItem(index).setToolTip(self._tooltips.get(colname, None))
 
     def get_column_index(self, name):
         return self._columns[name]
@@ -127,43 +131,22 @@ class ArtworkTableSimple(ArtworkTable):
     _columns = {
         'type': 0,
         'new': 1,
+        'external': 2,
     }
 
-    _labels = (_("Type"), _("Cover"),)
-    artwork_columns = ('new',)
+    _labels = (_("Type"), _("New Tags Cover"), _("New External Cover"),)
+    artwork_columns = ('new', 'external',)
+    _tooltips = {
+        'new': _("New cover art embedded into tags"),
+        'external': _("New cover art saved as a separate file"),
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setColumnWidth(self.get_column_index('type'), self.TYPE_COLUMN_SIZE)
 
 
-class ArtworkTableSimpleExternal(ArtworkTableSimple):
-    NUM_COLS = 3
-
-    _columns = {
-        'type': 0,
-        'new': 1,
-        'external': 2,
-    }
-
-    _labels = (_("Type"), _("Cover"), _("External Cover"),)
-    artwork_columns = ('new', 'external',)
-
-
 class ArtworkTableExisting(ArtworkTable):
-    NUM_COLS = 3
-
-    _columns = {
-        'orig': 0,
-        'type': 1,
-        'new': 2,
-    }
-
-    _labels = (_("Existing Cover"), _("Type"), _("New Cover"),)
-    artwork_columns = ('orig', 'new',)
-
-
-class ArtworkTableExistingExternal(ArtworkTable):
     NUM_COLS = 4
 
     _columns = {
@@ -173,8 +156,12 @@ class ArtworkTableExistingExternal(ArtworkTable):
         'external': 3,
     }
 
-    _labels = (_("Existing Cover"), _("Type"), _("New Cover"), _("New External Cover"),)
+    _labels = (_("Existing Cover"), _("Type"), _("New Tags Cover"), _("New External Cover"),)
     artwork_columns = ('orig', 'new', 'external',)
+    _tooltips = {
+        'new': _("New cover art embedded into tags"),
+        'external': _("New cover art saved as a separate file"),
+    }
 
 
 class ArtworkRow:
@@ -201,20 +188,17 @@ class InfoDialog(PicardDialog):
         self.new_images = sorted(obj.metadata.images) or []
         self.orig_images = []
         artworktable_class = ArtworkTableSimple
-        has_external_images = any(image.external_file_coverart for image in self.new_images)
-        if has_external_images:
-            artworktable_class = ArtworkTableSimpleExternal
 
+        has_new_external_images = any(image.external_file_coverart for image in self.new_images)
+        has_new_different_images = obj.orig_metadata.images != obj.metadata.images
         has_orig_images = hasattr(obj, 'orig_metadata') and obj.orig_metadata.images
-        if has_orig_images and obj.orig_metadata.images != obj.metadata.images:
+        if has_orig_images and (has_new_different_images or has_new_external_images):
             is_track = isinstance(obj, Track)
             is_linked_file = isinstance(obj, File) and isinstance(obj.parent_item, Track)
             is_album_with_files = isinstance(obj, Album) and obj.get_num_total_files() > 0
             if is_track or is_linked_file or is_album_with_files:
                 self.orig_images = sorted(obj.orig_metadata.images)
                 artworktable_class = ArtworkTableExisting
-                if has_external_images:
-                    artworktable_class = ArtworkTableExistingExternal
 
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
@@ -365,6 +349,13 @@ class InfoDialog(PicardDialog):
         self._display_artwork_rows()
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
         self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        config = get_config()
+        for colname in self.artwork_table.artwork_columns:
+            tags_image_not_used = colname == 'new' and not config.setting['save_images_to_tags']
+            file_image_not_used = colname == 'external' and not config.setting['save_images_to_files']
+            if tags_image_not_used or file_image_not_used:
+                col_index = self.artwork_table.get_column_index(colname)
+                self.artwork_table.setColumnHidden(col_index, True)
 
     def tab_hide(self, widget):
         tab = self.ui.tabWidget
