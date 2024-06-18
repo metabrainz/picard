@@ -21,6 +21,7 @@
 import time
 
 from picard import log
+from picard.config import get_config
 from picard.coverart.processing import (  # noqa: F401 # pylint: disable=unused-import
     filters,
     processors,
@@ -53,6 +54,7 @@ def run_image_metadata_filters(metadata):
 
 
 def run_image_processors(data, coverartimage):
+    config = get_config()
     tags_data = data
     file_data = data
     try:
@@ -61,16 +63,18 @@ def run_image_processors(data, coverartimage):
         both_queue, tags_queue, file_queue = get_cover_art_processors()
         for processor in both_queue:
             processor.run(image, ProcessingTarget.BOTH)
-        tags_image = image.copy()
-        for processor in tags_queue:
-            processor.run(tags_image, ProcessingTarget.TAGS)
-        tags_data = tags_image.get_result(default_format=True)
+        if config.setting['save_images_to_tags']:
+            tags_image = image.copy()
+            for processor in tags_queue:
+                processor.run(tags_image, ProcessingTarget.TAGS)
+            tags_data = tags_image.get_result(default_format=True)
         coverartimage.set_tags_data(tags_data)
-        file_image = image.copy()
-        for processor in file_queue:
-            processor.run(file_image, ProcessingTarget.FILE)
-        file_data = file_image.get_result(default_format=True)
-        coverartimage.set_external_file_data(file_data)
+        if config.setting['save_images_to_files']:
+            file_image = image.copy()
+            for processor in file_queue:
+                processor.run(file_image, ProcessingTarget.FILE)
+            file_data = file_image.get_result(default_format=True)
+            coverartimage.set_external_file_data(file_data)
         log.debug(
             "Image processing for %s finished in %d ms",
             coverartimage,
@@ -80,5 +84,6 @@ def run_image_processors(data, coverartimage):
         raise CoverArtProcessingError(e)
     except CoverArtProcessingError as e:
         coverartimage.set_tags_data(tags_data)
-        coverartimage.set_external_file_data(file_data)
+        if config.setting['save_images_to_files']:
+            coverartimage.set_external_file_data(file_data)
         raise e
