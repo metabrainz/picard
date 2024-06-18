@@ -128,22 +128,39 @@ class ArtworkTable(QtWidgets.QTableWidget):
 class ArtworkTableSimple(ArtworkTable):
     TYPE_COLUMN_SIZE = 140
 
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.setColumnWidth(self.get_column_index('type'), self.TYPE_COLUMN_SIZE)
+
+
+class ArtworkTableNew(ArtworkTableSimple):
     _columns = {
         'type': 0,
         'new': 1,
         'external': 2,
     }
 
-    _labels = (_("Type"), _("New Tags Cover"), _("New External Cover"),)
     artwork_columns = ('new', 'external',)
+    _labels = (_("Type"), _("New Embedded"), _("New Exported"),)
     _tooltips = {
         'new': _("New cover art embedded into tags"),
         'external': _("New cover art saved as a separate file"),
     }
 
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.setColumnWidth(self.get_column_index('type'), self.TYPE_COLUMN_SIZE)
+
+class ArtworkTableOriginal(ArtworkTableSimple):
+    NUM_COLS = 2
+
+    _columns = {
+        'type': 0,
+        'new': 1,
+    }
+
+    artwork_columns = ('new',)
+    _labels = (_("Type"), _("Existing Cover"))
+    _tooltips = {
+        'new': _("Existing cover art already embedded into tags"),
+    }
 
 
 class ArtworkTableExisting(ArtworkTable):
@@ -156,9 +173,10 @@ class ArtworkTableExisting(ArtworkTable):
         'external': 3,
     }
 
-    _labels = (_("Existing Cover"), _("Type"), _("New Tags Cover"), _("New External Cover"),)
     artwork_columns = ('orig', 'new', 'external',)
+    _labels = (_("Existing Cover"), _("Type"), _("New Embedded"), _("New Exported"),)
     _tooltips = {
+        'orig': _("Existing cover art already embedded into tags"),
         'new': _("New cover art embedded into tags"),
         'external': _("New cover art saved as a separate file"),
     }
@@ -187,18 +205,20 @@ class InfoDialog(PicardDialog):
 
         self.new_images = sorted(obj.metadata.images) or []
         self.orig_images = []
-        artworktable_class = ArtworkTableSimple
+        artworktable_class = ArtworkTableNew
 
-        has_new_external_images = any(image.external_file_coverart for image in self.new_images)
-        has_new_different_images = obj.orig_metadata.images != obj.metadata.images
+        self.has_new_external_images = any(image.external_file_coverart for image in self.new_images)
         has_orig_images = hasattr(obj, 'orig_metadata') and obj.orig_metadata.images
-        if has_orig_images and (has_new_different_images or has_new_external_images):
-            is_track = isinstance(obj, Track)
-            is_linked_file = isinstance(obj, File) and isinstance(obj.parent_item, Track)
-            is_album_with_files = isinstance(obj, Album) and obj.get_num_total_files() > 0
-            if is_track or is_linked_file or is_album_with_files:
-                self.orig_images = sorted(obj.orig_metadata.images)
-                artworktable_class = ArtworkTableExisting
+        if has_orig_images:
+            artworktable_class = ArtworkTableOriginal
+            has_new_different_images = obj.orig_metadata.images != obj.metadata.images
+            if has_new_different_images or self.has_new_external_images:
+                is_track = isinstance(obj, Track)
+                is_linked_file = isinstance(obj, File) and isinstance(obj.parent_item, Track)
+                is_album_with_files = isinstance(obj, Album) and obj.get_num_total_files() > 0
+                if is_track or is_linked_file or is_album_with_files:
+                    self.orig_images = sorted(obj.orig_metadata.images)
+                    artworktable_class = ArtworkTableExisting
 
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
@@ -349,10 +369,12 @@ class InfoDialog(PicardDialog):
         self._display_artwork_rows()
         self.artwork_table.itemDoubleClicked.connect(self.show_item)
         self.artwork_table.verticalHeader().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        if isinstance(self.artwork_table, ArtworkTableOriginal):
+            return
         config = get_config()
         for colname in self.artwork_table.artwork_columns:
             tags_image_not_used = colname == 'new' and not config.setting['save_images_to_tags']
-            file_image_not_used = colname == 'external' and not config.setting['save_images_to_files']
+            file_image_not_used = colname == 'external' and not self.has_new_external_images
             if tags_image_not_used or file_image_not_used:
                 col_index = self.artwork_table.get_column_index(colname)
                 self.artwork_table.setColumnHidden(col_index, True)
