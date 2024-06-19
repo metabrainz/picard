@@ -35,31 +35,48 @@ class ResizeImage(ImageProcessor):
 
     def save_to_file(self):
         config = get_config()
-        return config.setting['resize_images_saved_to_file']
+        return config.setting['cover_file_scale_down'] or config.setting['cover_file_scale_up']
 
     def save_to_tags(self):
         config = get_config()
-        return config.setting['resize_images_saved_to_tags']
+        return config.setting['cover_tags_scale_down'] or config.setting['cover_tags_scale_up']
 
     def same_processing(self):
-        config = get_config()
-        same_width = config.setting['cover_tags_maximum_width'] == config.setting['cover_file_maximum_width']
-        same_height = config.setting['cover_tags_maximum_height'] == config.setting['cover_file_maximum_height']
-        return self.save_to_tags and self.save_to_file and same_width and same_height
+        setting = get_config().setting
+        same_up = setting['cover_file_scale_up'] == setting['cover_tags_scale_up']
+        same_down = setting['cover_file_scale_down'] == setting['cover_tags_scale_down']
+        same_width = setting['cover_file_resize_use_width'] == setting['cover_tags_resize_use_width']
+        if setting['cover_file_resize_use_width'] and setting['cover_tags_resize_use_width']:
+            same_width = setting['cover_file_resize_target_width'] == setting['cover_tags_resize_target_width']
+        same_height = setting['cover_file_resize_use_height'] == setting['cover_tags_resize_use_height']
+        if setting['cover_file_resize_use_height'] and setting['cover_tags_resize_use_height']:
+            same_height = setting['cover_file_resize_target_height'] == setting['cover_tags_resize_target_height']
+        return same_up and same_down and same_width and same_height and self.save_to_file() and self.save_to_tags()
 
-    def run(self, image, target):
-        start_time = time.time()
+    def _find_target_size(self, image, target):
         config = get_config()
+        target_width = image.info.width
+        target_height = image.info.height
         if target == ProcessingTarget.TAGS:
-            max_width = config.setting['cover_tags_maximum_width']
-            max_height = config.setting['cover_tags_maximum_height']
+            if config.setting['cover_tags_resize_use_width']:
+                target_width = config.setting['cover_tags_resize_target_width']
+            if config.setting['cover_tags_resize_use_height']:
+                target_height = config.setting['cover_tags_resize_target_height']
+            scaling_up = config.setting['cover_tags_scale_up']
+            scaling_down = config.setting['cover_tags_scale_down']
         else:
-            max_width = config.setting['cover_file_maximum_width']
-            max_height = config.setting['cover_file_maximum_height']
-        if image.info.width <= max_width and image.info.height <= max_height:
-            return
+            if config.setting['cover_file_resize_use_width']:
+                target_width = config.setting['cover_file_resize_target_width']
+            if config.setting['cover_file_resize_use_height']:
+                target_height = config.setting['cover_file_resize_target_height']
+            scaling_up = config.setting['cover_file_scale_up']
+            scaling_down = config.setting['cover_file_scale_down']
+        return target_width, target_height, scaling_up, scaling_down
+
+    def _resize_image(self, image, target_width, target_height, aspect_ratio):
+        start_time = time.time()
         qimage = image.get_result()
-        scaled_image = qimage.scaled(max_width, max_height, Qt.AspectRatioMode.KeepAspectRatio)
+        scaled_image = qimage.scaled(target_width, target_height, aspect_ratio)
         log.debug(
             "Resized cover art from %d x %d to %d x %d in %.2f ms",
             image.info.width,
@@ -72,6 +89,17 @@ class ResizeImage(ImageProcessor):
         image.info.height = scaled_image.height()
         image.info.datalen = scaled_image.sizeInBytes()
         image.set_result(scaled_image)
+
+    def run(self, image, target):
+        target_width, target_height, scaling_up, scaling_down = self._find_target_size(image, target)
+        if scaling_down and (image.info.width > target_width or image.info.height > target_height):
+            aspect_ratio = Qt.AspectRatioMode.KeepAspectRatio
+        elif scaling_up and (image.info.width < target_width or image.info.height < target_height):
+            aspect_ratio = Qt.AspectRatioMode.KeepAspectRatioByExpanding
+        else:
+            # no resizing is needed
+            return
+        self._resize_image(image, target_width, target_height, aspect_ratio)
 
 
 register_cover_art_processor(ResizeImage)
