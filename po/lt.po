@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-05 10:18+0200\n"
-"PO-Revision-Date: 2024-06-10 11:42+0000\n"
+"PO-Revision-Date: 2024-06-20 15:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.5.4\n"
+"X-Generator: Weblate 5.6\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:155
@@ -35,21 +35,21 @@ msgstr "Neatitinkantys failai"
 #: picard/album.py:521
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr "Pakrautas albumas %(id)s: %(artist)s – %(album)s"
+msgstr "Įkeltas albumas %(id)s: %(artist)s – %(album)s"
 
 #: picard/album.py:578
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr "Kraunamas albumas %(id)s …"
+msgstr "Įkeliamas albumas %(id)s …"
 
 #: picard/album.py:795
 msgid "[loading album information]"
-msgstr "[kraunama albumo informacija]"
+msgstr "[įkeliama albumo informacija]"
 
 #: picard/album.py:797
 #, python-format
 msgid "[could not load album %s]"
-msgstr "[nepavyko pakrauti albumo %s]"
+msgstr "[nepavyko įkelti albumo %s]"
 
 #: picard/cluster.py:265 picard/cluster.py:266
 #, python-format
@@ -96,7 +96,7 @@ msgstr[3] "Pašalinta %(count)i leidinių iš kolekcijos „%(name)s“"
 #: picard/collection.py:137
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr "Klaida kraunant kolekcijas: %(error)s"
+msgstr "Klaida įkeliant kolekcijas: %(error)s"
 
 #: picard/config_upgrade.py:112 picard/config_upgrade.py:125
 msgid "Various Artists file naming scheme removal"
@@ -109,9 +109,9 @@ msgid ""
 "Your file naming scheme has automatically been merged with that of single "
 "artist albums."
 msgstr ""
-"Šioje Picard versijoje pašalinta atskira failų pavadinimų schema įvairių "
+"Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
-"Tavo failų pavadinimų schema automatiškai sujungiama su singlų atlikėjų "
+"Tavo failų pavadinimų schema automatiškai sujungiama su vieno atlikėjų "
 "albumų schema."
 
 #: picard/config_upgrade.py:126
@@ -123,11 +123,11 @@ msgid ""
 "Do you want to remove it or merge it with your file naming scheme for single "
 "artist albums?"
 msgstr ""
-"Šioje Picard versijoje pašalinta atskira failų pavadinimų schema įvairių "
+"Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
 "Šiuo metu šios parinkties nenaudoji, bet turi apibrėžtą atskirą failo "
 "pavadinimo schemą.\n"
-"Ar nori ją pašalinti, ar sujungti su vieno atlikėjo albumų failų pavadinimų "
+"Ar nori ją pašalinti, ar sujungti su vieno atlikėjų albumų failų pavadinimų "
 "schema?"
 
 #: picard/config_upgrade.py:133
@@ -166,7 +166,7 @@ msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
-"Failo nepavyko išanalizuoti, nes failas yra pažeistas arba jo formatas "
+"Nepavyko išanalizuoti failo, nes failas yra pažeistas arba jo formatas "
 "nepalaikomas."
 
 #: picard/file.py:869
@@ -234,7 +234,7 @@ msgstr "Išbaigtumo patikros ignoruoti: duomenų takeliai"
 
 #: picard/options.py:147
 msgid "Completeness check ignore: Pregap tracks"
-msgstr "Išbaigtumo patikros ignoruoti: prieštarpiniai takeliai"
+msgstr "Išbaigtumo patikros ignoruoti: prieštarpių takeliai"
 
 #: picard/options.py:148
 msgid "Completeness check ignore: Silent tracks"
@@ -242,7 +242,7 @@ msgstr "Išbaigtumo patikros ignoruoti: tylūs takeliai"
 
 #: picard/options.py:149
 msgid "Completeness check ignore: Video tracks"
-msgstr "Išbaigtumo patikros ignoruoti: vaizdo kilpo takeliai"
+msgstr "Išbaigtumo patikros ignoruoti: vaizdo įrašų takeliai"
 
 #: picard/options.py:150 picard/ui/ui_options_advanced.py:149
 msgid "Ignore hidden files"
@@ -250,7 +250,7 @@ msgstr "Ignoruoti paslėptus failus"
 
 #: picard/options.py:151
 msgid "Ignore file paths matching a regular expression"
-msgstr "Ignoruoti failo adresus, atitinkantį reguliariąją reiškinį"
+msgstr "Ignoruoti failų kelius, atitinkančius reguliariąją reiškinį"
 
 #: picard/options.py:152
 msgid "Ignore track duration difference under x seconds"
@@ -258,7 +258,7 @@ msgstr "Ignoruoti takelio trukmės skirtumą iki x sekundžių"
 
 #: picard/options.py:153 picard/ui/ui_options_advanced.py:146
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Didžiausias grąžintinų subjektų skaičius per MusicBrainz užklausą"
+msgstr "Didžiausias grąžintinų subjektų skaičius per „MusicBrainz“ užklausą"
 
 #: picard/options.py:154 picard/ui/ui_options_advanced.py:148
 msgid "Include sub-folders when adding files from folder"
@@ -279,7 +279,7 @@ msgstr "Įterpti tik vieną priekinį vaizdą"
 #: picard/options.py:165 picard/ui/ui_options_cover.py:107
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
-"Visada naudoti pirminis vaizdo tipą kaip failo pavadinimą ne priekyje "
+"Visada naudoti pirminį vaizdo tipą kaip failo pavadinimą ne priekyje "
 "esantiems vaizdams"
 
 #: picard/options.py:166
@@ -316,7 +316,7 @@ msgstr "Automatiškai klasterizuoti visus naujus failus"
 
 #: picard/options.py:197 picard/ui/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
-msgstr "Ignoruoti MBID, kai kraunami nauji failai"
+msgstr "Ignoruoti MBID, kai įkeliami nauji failai"
 
 #: picard/options.py:198
 msgid "Server address"
@@ -364,7 +364,7 @@ msgstr "Naudoti tik mano žanrus"
 
 #: picard/options.py:213 picard/ui/ui_options_genres.py:125
 msgid "Use genres from MusicBrainz"
-msgstr "Naudoti žanrus iš MusicBrainz"
+msgstr "Naudoti žanrus iš „MusicBrainz“"
 
 #: picard/options.py:217 picard/ui/ui_options_interface.py:130
 msgid "Allow selection of multiple directories"
@@ -380,11 +380,11 @@ msgstr "Automatiškai reguliuoti horizontalią poziciją failų naršyklėje"
 
 #: picard/options.py:220 picard/ui/ui_options_interface.py:135
 msgid "Show a confirmation dialog when saving files"
-msgstr "Rodyti patvirtinimo dialogo langą, kai išsaugomi failai"
+msgstr "Rodyti patvirtinimo dialogą, kai išsaugomi failai"
 
 #: picard/options.py:222 picard/ui/ui_options_interface.py:134
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "Rodyti neišsaugotų pakeitimų užbaigimo patvirtinimo dialogo langą"
+msgstr "Rodyti neišsaugotų pakeitimų užbaigimo patvirtinimo dialogą"
 
 #: picard/options.py:223 picard/ui/ui_options_interface.py:126
 msgid "Show icons in menus"
@@ -392,11 +392,11 @@ msgstr "Rodyti piktogramas meniu"
 
 #: picard/options.py:224
 msgid "Show a usage warning dialog when Picard starts"
-msgstr "Rodyti įspėjimą apie naudojimą dialogo langą, kai paleidžiamas Picard"
+msgstr "Rodyti įspėjimą apie naudojimą dialogą, kai paleidžiamas „Picard“"
 
 #: picard/options.py:225
 msgid "Begin browsing in a specific directory"
-msgstr "Pradėti naršyti tam tikrame kataloge"
+msgstr "Pradėti naršyti konkrečiame kataloge"
 
 #: picard/options.py:226
 msgid "Directory to begin browsing"
@@ -440,11 +440,11 @@ msgstr "Automatinis atsarginės kopijos paskirties katalogas"
 
 #: picard/options.py:251 picard/options.py:262
 msgid "Minimal similarity for cluster lookups"
-msgstr "Minimalus klasterių peržiūros panašumas"
+msgstr "Mažiausias klasterių paieškos skaičius panašumas"
 
 #: picard/options.py:252 picard/options.py:263
 msgid "Minimal similarity for file lookups"
-msgstr "Minimalus failų peržiūros panašumas"
+msgstr "Mažiausias failų paieškos skaičius panašumas"
 
 #: picard/options.py:253 picard/options.py:264
 msgid "Minimal similarity for matching files to tracks"
@@ -1128,8 +1128,8 @@ msgid ""
 msgstr ""
 "`$strip(tekstas)`\n"
 "\n"
-"Pakeičia visus baltuosius tarpus `tekstas` su vienu tarpu ir pašalina "
-"pradinius ir galinius tarpus.\n"
+"Pakeičia visus baltuosius tarpus funkcijoje `tekstas` su vienu tarpu ir "
+"pašalina pradinius ir galinius tarpus.\n"
 "Baltųjų tarpų simboliai įtraukia kelis iš eilės einančius tarpus ir įvairius "
 "kitus unikodo simbolius."
 
@@ -1645,6 +1645,10 @@ msgid ""
 "Returns true if every track in the album is matched to a single file.\n"
 "**Only works in File Naming scripts.**"
 msgstr ""
+"`$is_complete()`\n"
+"\n"
+"Grąžina tiesą, jei kiekvienas albumo takelis atitinka vieną failą.\n"
+"**Veikia tik failų pavadinimų skriptose.**"
 
 #: picard/script/functions.py:862
 msgid ""
