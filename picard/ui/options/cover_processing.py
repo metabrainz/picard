@@ -74,7 +74,7 @@ class CoverProcessingOptionsPage(OptionsPage):
         }
         for checkbox, spinbox in self._spinboxes.items():
             spinbox.setEnabled(checkbox.isChecked())
-            checkbox.clicked.connect(self._update_resize_spinboxes)
+            checkbox.stateChanged.connect(self._update_resize_spinboxes)
 
     def _update_resize_spinboxes(self):
         spinbox = self._spinboxes[self.sender()]
