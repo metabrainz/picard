@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
+
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
@@ -54,6 +56,34 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.register_setting('cover_file_resize_target_width')
         self.register_setting('cover_file_resize_use_height')
         self.register_setting('cover_file_resize_target_height')
+
+        tags_checkboxes = (self.ui.tags_resize_width_label, self.ui.tags_resize_height_label)
+        tags_at_least_one_checked = partial(self._ensure_at_least_one_checked, tags_checkboxes)
+        for checkbox in tags_checkboxes:
+            checkbox.clicked.connect(tags_at_least_one_checked)
+        file_checkboxes = (self.ui.file_resize_width_label, self.ui.file_resize_height_label)
+        file_at_least_one_checked = partial(self._ensure_at_least_one_checked, file_checkboxes)
+        for checkbox in file_checkboxes:
+            checkbox.clicked.connect(file_at_least_one_checked)
+
+        self._spinboxes = {
+            self.ui.tags_resize_width_label: self.ui.tags_resize_width_value,
+            self.ui.tags_resize_height_label: self.ui.tags_resize_height_value,
+            self.ui.file_resize_width_label: self.ui.file_resize_width_value,
+            self.ui.file_resize_height_label: self.ui.file_resize_height_value,
+        }
+        for checkbox, spinbox in self._spinboxes.items():
+            spinbox.setEnabled(checkbox.isChecked())
+            checkbox.clicked.connect(self._update_resize_spinboxes)
+
+    def _update_resize_spinboxes(self):
+        spinbox = self._spinboxes[self.sender()]
+        spinbox.setEnabled(self.sender().isChecked())
+
+    def _ensure_at_least_one_checked(self, checkboxes, clicked):
+        if not clicked and not any(checkbox.isChecked() for checkbox in checkboxes):
+            sender = self.sender()
+            sender.setChecked(True)
 
     def load(self):
         config = get_config()
