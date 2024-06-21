@@ -86,12 +86,16 @@ class ImageProcessorsTest(PicardTestCase):
             'cover_tags_resize_target_width': 500,
             'cover_tags_resize_use_height': True,
             'cover_tags_resize_target_height': 500,
+            'cover_tags_stretch': False,
+            'cover_tags_crop': False,
             'cover_file_scale_up': True,
             'cover_file_scale_down': True,
             'cover_file_resize_use_width': True,
             'cover_file_resize_target_width': 750,
             'cover_file_resize_use_height': True,
             'cover_file_resize_target_height': 750,
+            'cover_file_stretch': False,
+            'cover_file_crop': False,
             'save_images_to_tags': True,
             'save_images_to_files': True,
         }
@@ -182,8 +186,8 @@ class ImageProcessorsTest(PicardTestCase):
     def test_scale_up_both_dimensions(self):
         self.set_config_values(self.settings)
         self._check_resize_image((250, 250), (500, 500))
-        self._check_resize_image((400, 500), (500, 625))
-        self._check_resize_image((500, 250), (1000, 500))
+        self._check_resize_image((400, 500), (400, 500))
+        self._check_resize_image((250, 150), (500, 300))
 
     def test_scale_up_only_width(self):
         settings = copy(self.settings)
@@ -209,6 +213,64 @@ class ImageProcessorsTest(PicardTestCase):
         settings["cover_tags_resize_target_height"] = 1000
         self.set_config_values(settings)
         self._check_resize_image((750, 750), (500, 500))
+        self.set_config_values(self.settings)
+
+    def test_stretch_both_dimensions(self):
+        settings = copy(self.settings)
+        settings["cover_tags_stretch"] = True
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 500))
+        self._check_resize_image((200, 500), (500, 500))
+        self._check_resize_image((200, 2000), (500, 500))
+        self.set_config_values(self.settings)
+
+    def test_stretch_only_width(self):
+        settings = copy(self.settings)
+        settings["cover_tags_stretch"] = True
+        settings["cover_tags_resize_use_height"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 100))
+        self._check_resize_image((200, 500), (500, 500))
+        self._check_resize_image((200, 2000), (500, 2000))
+        self.set_config_values(self.settings)
+
+    def test_stretch_only_height(self):
+        settings = copy(self.settings)
+        settings["cover_tags_stretch"] = True
+        settings["cover_tags_resize_use_width"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (1000, 500))
+        self._check_resize_image((200, 500), (200, 500))
+        self._check_resize_image((200, 2000), (200, 500))
+        self.set_config_values(self.settings)
+
+    def test_crop_both_dimensions(self):
+        settings = copy(self.settings)
+        settings["cover_tags_crop"] = True
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 500))
+        self._check_resize_image((750, 1000), (500, 500))
+        self._check_resize_image((250, 1000), (500, 500))
+        self.set_config_values(self.settings)
+
+    def test_crop_only_width(self):
+        settings = copy(self.settings)
+        settings["cover_tags_crop"] = True
+        settings["cover_tags_resize_use_height"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 100))
+        self._check_resize_image((750, 1000), (500, 1000))
+        self._check_resize_image((250, 1000), (500, 1000))
+        self.set_config_values(self.settings)
+
+    def test_crop_only_height(self):
+        settings = copy(self.settings)
+        settings["cover_tags_crop"] = True
+        settings["cover_tags_resize_use_width"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (1000, 500))
+        self._check_resize_image((750, 1000), (750, 500))
+        self._check_resize_image((250, 1000), (250, 500))
         self.set_config_values(self.settings)
 
     def test_identification_error(self):

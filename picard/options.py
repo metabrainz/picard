@@ -181,12 +181,16 @@ BoolOption('setting', 'cover_tags_resize_use_width', True)
 IntOption('setting', 'cover_tags_resize_target_width', DEFAULT_COVER_MAX_SIZE)
 BoolOption('setting', 'cover_tags_resize_use_height', True)
 IntOption('setting', 'cover_tags_resize_target_height', DEFAULT_COVER_MAX_SIZE)
+BoolOption('setting', 'cover_tags_stretch', False)
+BoolOption('setting', 'cover_tags_crop', False)
 BoolOption('setting', 'cover_file_scale_up', False)
 BoolOption('setting', 'cover_file_scale_down', False)
 BoolOption('setting', 'cover_file_resize_use_width', True)
 IntOption('setting', 'cover_file_resize_target_width', DEFAULT_COVER_MAX_SIZE)
 BoolOption('setting', 'cover_file_resize_use_height', True)
 IntOption('setting', 'cover_file_resize_target_height', DEFAULT_COVER_MAX_SIZE)
+BoolOption('setting', 'cover_file_stretch', False)
+BoolOption('setting', 'cover_file_crop', False)
 
 # picard/ui/options/dialog.py
 # Attached Profiles
