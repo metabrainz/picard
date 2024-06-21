@@ -93,7 +93,7 @@ class ResizeImage(ImageProcessor):
             height_scale_factor = target_height / image.info.height
             height_resize = target_height
         if (width_scale_factor == 1 and height_scale_factor == 1
-                or ((width_scale_factor > 1 and height_scale_factor > 1) and not scale_up)
+                or ((width_scale_factor > 1 or height_scale_factor > 1) and not scale_up)
                 or ((width_scale_factor < 1 or height_scale_factor < 1) and not scale_down)):
             # no resizing needed
             return
