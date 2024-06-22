@@ -847,7 +847,7 @@ def reconnect(signal, newhandler=None, oldhandler=None):
                 signal.disconnect(oldhandler)
             else:
                 signal.disconnect()
-        except TypeError:
+        except RuntimeError:
             break
     if newhandler is not None:
         signal.connect(newhandler)
