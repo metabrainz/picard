@@ -30,7 +30,7 @@ from PySide6 import (
 class CheckboxListItem(QtWidgets.QListWidgetItem):
 
     def __init__(self, text='', checked=False, parent=None):
-        super().__init__(text, parent=parent)
+        super().__init__(text, parent)
         self.setFlags(self.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
         self.setCheckState(QtCore.Qt.CheckState.Checked if checked else QtCore.Qt.CheckState.Unchecked)
 
