@@ -82,16 +82,18 @@ class ResizeImage(ImageProcessor):
             stretch = config.setting["cover_file_stretch"]
             crop = config.setting["cover_file_crop"]
 
-        width_scale_factor = 1
-        width_resize = image.info.width
-        if use_width:
-            width_scale_factor = target_width / image.info.width
-            width_resize = target_width
-        height_scale_factor = 1
-        height_resize = image.info.height
-        if use_height:
-            height_scale_factor = target_height / image.info.height
-            height_resize = target_height
+        width_resize = target_width if use_width else image.info.width
+        height_resize = target_height if use_height else image.info.height
+        width_scale_factor = width_resize / image.info.width
+        height_scale_factor = height_resize / image.info.height
+        use_both_dimensions = use_height and use_width
+        if use_both_dimensions and not stretch:
+            if crop:
+                scale_factor = max(width_scale_factor, height_scale_factor)
+            else:
+                scale_factor = min(width_scale_factor, height_scale_factor)
+            width_scale_factor = scale_factor
+            height_scale_factor = scale_factor
         if (width_scale_factor == 1 and height_scale_factor == 1
                 or ((width_scale_factor > 1 or height_scale_factor > 1) and not scale_up)
                 or ((width_scale_factor < 1 or height_scale_factor < 1) and not scale_down)):
@@ -107,7 +109,7 @@ class ResizeImage(ImageProcessor):
             cutoff_height = (scaled_image.height() - height_resize) // 2
             scaled_image = scaled_image.copy(cutoff_width, cutoff_height, width_resize, height_resize)
         else:  # keep aspect ratio
-            if use_width and use_height:
+            if use_both_dimensions:
                 scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.KeepAspectRatio)
             elif use_width:
                 scaled_image = qimage.scaledToWidth(width_resize)

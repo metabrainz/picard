@@ -309,7 +309,7 @@
          </item>
          <item>
           <widget class="QWidget" name="tags_resize_mode" native="true">
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
             <property name="spacing">
              <number>2</number>
             </property>
@@ -327,11 +327,8 @@
             </property>
             <item>
              <widget class="QRadioButton" name="tags_keep">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep the original aspect ratio of the image.&lt;/p&gt;&lt;p&gt;For example, a 2000x1000 image resized to 1000x1000 would adjust to 1000x500.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
-               <string>Keep aspect ratio</string>
+               <string>Fit</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -340,21 +337,15 @@
             </item>
             <item>
              <widget class="QRadioButton" name="tags_crop">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resize the image while keeping aspect ratio, then center crop any excess. &lt;/p&gt;&lt;p&gt;For example, a 500x1000 image resized to 1000x1000 would first scale up to 1000x2000, then the excess height would be cropped to make it 1000x1000.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
-               <string>Crop scaled overflow</string>
+               <string>Fill</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QRadioButton" name="tags_stretch">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stretch the image to exactly fit the specified dimensions, modifying the aspect ratio if necessary.&lt;/p&gt;&lt;p&gt;For example, a 2000x1000 image resized to 1000x1000 would shrink to fit, altering the original proportions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
-               <string>Stretch/shrink to target</string>
+               <string>Stretch</string>
               </property>
              </widget>
             </item>
@@ -524,7 +515,7 @@
          </item>
          <item>
           <widget class="QWidget" name="file_resize_mode" native="true">
-           <layout class="QVBoxLayout" name="verticalLayout_6">
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
             <property name="spacing">
              <number>2</number>
             </property>
@@ -542,11 +533,8 @@
             </property>
             <item>
              <widget class="QRadioButton" name="file_keep">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep the original aspect ratio of the image.&lt;/p&gt;&lt;p&gt;For example, a 2000x1000 image resized to 1000x1000 would adjust to 1000x500.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
-               <string>Keep aspect ratio</string>
+               <string>Fit</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -555,21 +543,15 @@
             </item>
             <item>
              <widget class="QRadioButton" name="file_crop">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Resize the image while keeping aspect ratio, then center crop any excess. &lt;/p&gt;&lt;p&gt;For example, a 500x1000 image resized to 1000x1000 would first scale up to 1000x2000, then the excess height would be cropped to make it 1000x1000.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
-               <string>Crop scaled overflow</string>
+               <string>Fill</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QRadioButton" name="file_stretch">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stretch the image to exactly fit the specified dimensions, modifying the aspect ratio if necessary.&lt;/p&gt;&lt;p&gt;For example, a 2000x1000 image resized to 1000x1000 would shrink to fit, altering the original proportions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
               <property name="text">
-               <string>Stretch/shrink to target</string>
+               <string>Stretch</string>
               </property>
              </widget>
             </item>
