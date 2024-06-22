@@ -401,7 +401,6 @@ class ClusterList(list, Item):
     def can_browser_lookup(self):
         return False
 
-    @property
     def lookup_metadata(self):
         for cluster in self:
             cluster.lookup_metadata()
