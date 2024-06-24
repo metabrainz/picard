@@ -65,34 +65,45 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.register_setting('cover_file_crop')
 
         tooltip_keep = N_(
-            "Scale the source image so that it fits within the target dimensions. One "
-            "of the final image dimensions may be less than the target dimension if "
-            "the source image and target dimensions have different aspect ratios. "
+            "<p>"
+            "Scale the source image so that it fits within the target dimensions."
+            "</p><p>"
+            "One of the final image dimensions may be less than the target dimension if "
+            "the source image and target dimensions have different aspect ratios."
+            "</p><p>"
             "For example, a 2000x1000 image resized to target dimensions of "
             "1000x1000 would result in a final image size of 1000x500."
+            "</p>"
         )
-        self.ui.tags_keep.setToolTip(self._add_rich_text(_(tooltip_keep)))
-        self.ui.file_keep.setToolTip(self._add_rich_text(_(tooltip_keep)))
-        tooltip_crop = N_(
+        self.ui.tags_keep.setToolTip(_(tooltip_keep))
+        self.ui.file_keep.setToolTip(_(tooltip_keep))
+        tooltip_crop = (
+            "<p>"
             "Scale the source image so that it completely fills the target dimensions "
-            "in both directions. If the source image and target dimensions have "
-            "different aspect ratios, then there will be overflow in one direction which "
-            "will be (center) cropped. "
+            "in both directions."
+            "</p><p>"
+            "If the source image and target dimensions have different aspect ratios"
+            "then there will be overflow in one direction which will be (center) cropped."
+            "</p><p>"
             "For example, a 500x1000 image resized to target dimensions of "
             "1000x1000 would first scale up to 1000x2000, then the excess height "
             "would be center cropped resulting in the final image size of 1000x1000."
+            "</p>"
         )
-        self.ui.tags_crop.setToolTip(self._add_rich_text(_(tooltip_crop)))
-        self.ui.file_crop.setToolTip(self._add_rich_text(_(tooltip_crop)))
-        tooltip_stretch = N_(
+        self.ui.tags_crop.setToolTip(_(tooltip_crop))
+        self.ui.file_crop.setToolTip(_(tooltip_crop))
+        tooltip_stretch = (
+            "<p>"
             "Stretch the image to exactly fit the specified dimensions, "
-            "distorting it if necessary. "
+            "distorting it if necessary."
+            "</p><p>"
             "For example, a 500x1000 image with target dimension of 1000x1000 "
             "would be stretched horizontally resulting in the final image "
             "size of 1000x1000."
+            "</p>"
         )
-        self.ui.tags_stretch.setToolTip(self._add_rich_text(_(tooltip_stretch)))
-        self.ui.file_stretch.setToolTip(self._add_rich_text(_(tooltip_stretch)))
+        self.ui.tags_stretch.setToolTip(_(tooltip_stretch))
+        self.ui.file_stretch.setToolTip(_(tooltip_stretch))
 
         tags_checkboxes = (self.ui.tags_resize_width_label, self.ui.tags_resize_height_label)
         tags_at_least_one_checked = partial(self._ensure_at_least_one_checked, tags_checkboxes)
@@ -112,9 +123,6 @@ class CoverProcessingOptionsPage(OptionsPage):
         for checkbox, spinbox in self._spinboxes.items():
             spinbox.setEnabled(checkbox.isChecked())
             checkbox.stateChanged.connect(self._update_resize_spinboxes)
-
-    def _add_rich_text(self, text):
-        return "<FONT COLOR=black>" + text + "</FONT>"
 
     def _update_resize_spinboxes(self):
         spinbox = self._spinboxes[self.sender()]
