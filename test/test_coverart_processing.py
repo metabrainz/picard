@@ -50,6 +50,7 @@ def create_fake_image(width, height, image_format):
 
 class ImageFiltersTest(PicardTestCase):
     def setUp(self):
+        super().setUp()
         settings = {
             'filter_cover_by_size': True,
             'cover_minimum_width': 500,
@@ -76,6 +77,7 @@ class ImageFiltersTest(PicardTestCase):
 
 class ImageProcessorsTest(PicardTestCase):
     def setUp(self):
+        super().setUp()
         self.settings = {
             'enabled_plugins': [],
             'resize_images_saved_to_tags': True,
