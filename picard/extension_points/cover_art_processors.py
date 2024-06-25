@@ -86,7 +86,7 @@ class ImageProcessor:
     def same_processing(self):
         return False
 
-    def run(self, data, target):
+    def run(self, image, target):
         pass
 
 

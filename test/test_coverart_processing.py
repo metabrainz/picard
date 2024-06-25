@@ -19,13 +19,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from copy import copy
-import itertools
 
 from PyQt6.QtCore import QBuffer
 from PyQt6.QtGui import QImage
 
 from test.picardtestcase import PicardTestCase
 
+from picard import config
 from picard.coverart.image import CoverArtImage
 from picard.coverart.processing import run_image_processors
 from picard.coverart.processing.filters import (
@@ -80,74 +80,197 @@ class ImageProcessorsTest(PicardTestCase):
         super().setUp()
         self.settings = {
             'enabled_plugins': [],
-            'resize_images_saved_to_tags': True,
-            'cover_tags_maximum_width': 500,
-            'cover_tags_maximum_height': 500,
-            'resize_images_saved_to_file': True,
-            'cover_file_maximum_width': 750,
-            'cover_file_maximum_height': 750,
+            'cover_tags_scale_up': True,
+            'cover_tags_scale_down': True,
+            'cover_tags_resize_use_width': True,
+            'cover_tags_resize_target_width': 500,
+            'cover_tags_resize_use_height': True,
+            'cover_tags_resize_target_height': 500,
+            'cover_tags_stretch': False,
+            'cover_tags_crop': False,
+            'cover_file_scale_up': True,
+            'cover_file_scale_down': True,
+            'cover_file_resize_use_width': True,
+            'cover_file_resize_target_width': 750,
+            'cover_file_resize_use_height': True,
+            'cover_file_resize_target_height': 750,
+            'cover_file_stretch': False,
+            'cover_file_crop': False,
             'save_images_to_tags': True,
             'save_images_to_files': True,
         }
+
+    def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
+        coverartimage = CoverArtImage()
+        image = create_fake_image(size[0], size[1], "jpg")
+        run_image_processors(image, coverartimage)
+        tags_size = (coverartimage.width, coverartimage.height)
+        if config.setting['save_images_to_tags']:
+            self.assertEqual(tags_size, expected_tags_size)
+        else:
+            self.assertEqual(tags_size, size)
+        if config.setting['save_images_to_files']:
+            external_cover = coverartimage.external_file_coverart
+            file_size = (external_cover.width, external_cover.height)
+            self.assertEqual(file_size, expected_file_size)
+        else:
+            self.assertIsNone(coverartimage.external_file_coverart)
+        extension = coverartimage.extension[1:]
+        self.assertEqual(extension, "jpg")
+
+    def test_image_processors_save_to_both(self):
+        self.set_config_values(self.settings)
+        self._check_image_processors((1000, 1000), (500, 500), (750, 750))
+        self._check_image_processors((600, 600), (500, 500), (750, 750))
+        self._check_image_processors((400, 400), (500, 500), (750, 750))
+
+    def test_image_processors_save_to_tags(self):
+        settings = copy(self.settings)
+        settings['save_images_to_files'] = False
+        self.set_config_values(settings)
+        self._check_image_processors((1000, 1000), (500, 500))
+        self._check_image_processors((600, 600), (500, 500))
+        self._check_image_processors((400, 400), (500, 500))
         self.set_config_values(self.settings)
 
-    def test_resize(self):
-        sizes = [
-            (500, 500),
-            (1000, 500),
-            (600, 1000),
-            (1000, 1000),
-            (400, 400)
-        ]
-        expected_sizes = [
-            (500, 500),
-            (500, 250),
-            (300, 500),
-            (500, 500),
-            (400, 400)
-        ]
-        processor = ResizeImage()
-        for size, expected_size in zip(sizes, expected_sizes):
-            image = ProcessingImage(create_fake_image(size[0], size[1], "jpg"))
-            processor.run(image, ProcessingTarget.TAGS)
-            data = image.get_result("jpg")
-            new_image = QImage.fromData(data)
-            new_size = (new_image.width(), new_image.height())
-            self.assertEqual(new_size, expected_size)
-            self.assertEqual(new_size, (image.info.width, image.info.height))
-
-    def test_image_processors(self):
-        sizes = [
-            (1000, 1000),
-            (1000, 500),
-            (600, 600),
-        ]
-        expected_sizes = [
-            ((500, 500), (750, 750)),
-            ((500, 250), (750, 375)),
-            ((500, 500), (600, 600)),
-        ]
+    def test_image_processors_save_to_file(self):
         settings = copy(self.settings)
-        self.target_combinations = itertools.product([True, False], repeat=2)
-        for save_to_tags, save_to_file in self.target_combinations:
-            settings['save_images_to_tags'] = save_to_tags
-            settings['save_images_to_files'] = save_to_file
-            self.set_config_values(settings)
-            for size, expected_size in zip(sizes, expected_sizes):
-                coverartimage = CoverArtImage()
-                image = create_fake_image(size[0], size[1], "jpg")
-                run_image_processors(image, coverartimage)
-                tags_size = (coverartimage.width, coverartimage.height)
-                expected_size_tags = expected_size[0] if save_to_tags else size
-                self.assertEqual(tags_size, expected_size_tags)
-                if save_to_file:
-                    external_cover = coverartimage.external_file_coverart
-                    file_size = (external_cover.width, external_cover.height)
-                    self.assertEqual(file_size, expected_size[1])
-                else:
-                    self.assertIsNone(coverartimage.external_file_coverart)
-                extension = coverartimage.extension[1:]
-                self.assertEqual(extension, "jpg")
+        settings['save_images_to_tags'] = False
+        self.set_config_values(settings)
+        self._check_image_processors((1000, 1000), (1000, 1000), (750, 750))
+        self._check_image_processors((600, 600), (600, 600), (750, 750))
+        self._check_image_processors((400, 400), (400, 400), (750, 750))
+        self.set_config_values(self.settings)
+
+    def test_image_processors_save_to_none(self):
+        settings = copy(self.settings)
+        settings['save_images_to_tags'] = False
+        settings['save_images_to_files'] = False
+        self.set_config_values(settings)
+        self._check_image_processors((1000, 1000), (1000, 1000), (1000, 1000))
+        self.set_config_values(self.settings)
+
+    def _check_resize_image(self, size, expected_size):
+        image = ProcessingImage(create_fake_image(size[0], size[1], "jpg"))
+        processor = ResizeImage()
+        processor.run(image, ProcessingTarget.TAGS)
+        new_size = (image.get_result().width(), image.get_result().height())
+        new_info_size = (image.info.width, image.info.height)
+        self.assertEqual(new_size, expected_size)
+        self.assertEqual(new_info_size, expected_size)
+
+    def test_scale_down_both_dimensions(self):
+        self.set_config_values(self.settings)
+        self._check_resize_image((1000, 1000), (500, 500))
+        self._check_resize_image((1000, 500), (500, 250))
+        self._check_resize_image((600, 1200), (250, 500))
+
+    def test_scale_down_only_width(self):
+        settings = copy(self.settings)
+        settings["cover_tags_resize_use_height"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 1000), (500, 500))
+        self._check_resize_image((1000, 500), (500, 250))
+        self._check_resize_image((600, 1200), (500, 1000))
+        self.set_config_values(self.settings)
+
+    def test_scale_down_only_height(self):
+        settings = copy(self.settings)
+        settings["cover_tags_resize_use_width"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 1000), (500, 500))
+        self._check_resize_image((1000, 500), (1000, 500))
+        self._check_resize_image((600, 1200), (250, 500))
+        self.set_config_values(self.settings)
+
+    def test_scale_up_both_dimensions(self):
+        self.set_config_values(self.settings)
+        self._check_resize_image((250, 250), (500, 500))
+        self._check_resize_image((400, 500), (400, 500))
+        self._check_resize_image((250, 150), (500, 300))
+
+    def test_scale_up_only_width(self):
+        settings = copy(self.settings)
+        settings["cover_tags_resize_use_height"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((250, 250), (500, 500))
+        self._check_resize_image((400, 500), (500, 625))
+        self._check_resize_image((500, 250), (500, 250))
+        self.set_config_values(self.settings)
+
+    def test_scale_up_only_height(self):
+        settings = copy(self.settings)
+        settings["cover_tags_resize_use_width"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((250, 250), (500, 500))
+        self._check_resize_image((400, 500), (400, 500))
+        self._check_resize_image((500, 250), (1000, 500))
+        self.set_config_values(self.settings)
+
+    def test_scale_priority(self):
+        settings = copy(self.settings)
+        settings["cover_tags_resize_target_width"] = 500
+        settings["cover_tags_resize_target_height"] = 1000
+        self.set_config_values(settings)
+        self._check_resize_image((750, 750), (500, 500))
+        self.set_config_values(self.settings)
+
+    def test_stretch_both_dimensions(self):
+        settings = copy(self.settings)
+        settings["cover_tags_stretch"] = True
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 500))
+        self._check_resize_image((200, 500), (500, 500))
+        self._check_resize_image((200, 2000), (500, 500))
+        self.set_config_values(self.settings)
+
+    def test_stretch_only_width(self):
+        settings = copy(self.settings)
+        settings["cover_tags_stretch"] = True
+        settings["cover_tags_resize_use_height"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 100))
+        self._check_resize_image((200, 500), (500, 500))
+        self._check_resize_image((200, 2000), (500, 2000))
+        self.set_config_values(self.settings)
+
+    def test_stretch_only_height(self):
+        settings = copy(self.settings)
+        settings["cover_tags_stretch"] = True
+        settings["cover_tags_resize_use_width"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (1000, 500))
+        self._check_resize_image((200, 500), (200, 500))
+        self._check_resize_image((200, 2000), (200, 500))
+        self.set_config_values(self.settings)
+
+    def test_crop_both_dimensions(self):
+        settings = copy(self.settings)
+        settings["cover_tags_crop"] = True
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 500))
+        self._check_resize_image((750, 1000), (500, 500))
+        self._check_resize_image((250, 1000), (500, 500))
+        self.set_config_values(self.settings)
+
+    def test_crop_only_width(self):
+        settings = copy(self.settings)
+        settings["cover_tags_crop"] = True
+        settings["cover_tags_resize_use_height"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (500, 100))
+        self._check_resize_image((750, 1000), (500, 1000))
+        self._check_resize_image((250, 1000), (500, 1000))
+        self.set_config_values(self.settings)
+
+    def test_crop_only_height(self):
+        settings = copy(self.settings)
+        settings["cover_tags_crop"] = True
+        settings["cover_tags_resize_use_width"] = False
+        self.set_config_values(settings)
+        self._check_resize_image((1000, 100), (1000, 500))
+        self._check_resize_image((750, 1000), (750, 500))
+        self._check_resize_image((250, 1000), (250, 500))
         self.set_config_values(self.settings)
 
     def test_identification_error(self):
