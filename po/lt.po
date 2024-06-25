@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-06-20 15:42+0000\n"
+"PO-Revision-Date: 2024-06-25 13:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -203,12 +203,12 @@ msgstr "Netikėta užklausos klaida (HTTP kodas %s)."
 #: picard/pluginmanager.py:271
 #, python-format
 msgid "Unable to load plugin '%s'"
-msgstr "Nepavyksta pakrauti įskiepio „%s“."
+msgstr "Nepavyksta įkelti įskiepio „%s“."
 
 #: picard/pluginmanager.py:302
 #, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "Nepavyko pakrauti įskiepio „%(plugin)s“."
+msgstr "Nepavyko įkelti įskiepio „%(plugin)s“."
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -216,7 +216,7 @@ msgid ""
 "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this "
 "version of Picard."
 msgstr ""
-"Įskiepis „%(plugin)s“ iš „%(filename)s“ nepalaikomas su šia Picard versija."
+"Įskiepis „%(plugin)s“ iš „%(filename)s“ nepalaikomas su šia „Picard“ versija."
 
 #: picard/pluginmanager.py:354
 #, python-format
@@ -237,7 +237,7 @@ msgstr "Nepavyko pakrauti užpakalinio įskiepio „%(plugin)s“ iš „%(filen
 #: picard/pluginmanager.py:512
 #, python-format
 msgid "Error loading plugins list: %(error)s"
-msgstr "Klaida kraunant įskiepių sąrašą: %(error)s"
+msgstr "Klaida įkeliant įskiepių sąrašą: %(error)s"
 
 #: picard/profile.py:46 picard/ui/options/general.py:56
 #: picard/ui/ui_options_general.py:207
@@ -287,7 +287,7 @@ msgstr "Metaduomenys"
 
 #: picard/profile.py:64
 msgid "Translate artist names"
-msgstr "Versti atlikėjų vardus"
+msgstr "Versti atlikėjų pavadinimus"
 
 #: picard/profile.py:65
 msgid "Translation locales"
@@ -295,7 +295,7 @@ msgstr "Vertimo lokalės"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
-msgstr "Versti atlikėjų vardus išimtis"
+msgstr "Versti atlikėjų pavadinimus išimtis"
 
 #: picard/profile.py:67
 msgid "Translation script exceptions"
@@ -303,15 +303,15 @@ msgstr "Vertimo rašto išimtys"
 
 #: picard/profile.py:68 picard/ui/ui_options_metadata.py:134
 msgid "Use standardized artist names"
-msgstr "Naudoti standartizuotus atlikėjų vardus"
+msgstr "Naudoti tipinius atlikėjų pavadinimus"
 
 #: picard/profile.py:69 picard/ui/ui_options_metadata.py:135
 msgid "Use standardized instrument and vocal credits"
-msgstr "Naudoti standartizuotus instrumentų ir vokalo kūrėjus"
+msgstr "Naudoti tipinius instrumentų ir vokalo kūrėjus"
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:136
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "Konvertuoti Unicode skyrybos ženklus į ASCII"
+msgstr "Konvertuoti Unikodo skyrybos ženklus į ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
@@ -323,7 +323,8 @@ msgstr "Naudoti takelio ir leidinio santykius"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
-msgstr "Atspėti takelio numerį ir pavadinimą iš failo pavadinimo, jei tuščias"
+msgstr ""
+"Atspėti takelio numerį ir pavadinimą iš failo pavadinimo, jei yra tuščias"
 
 #: picard/profile.py:74
 msgid "Various Artists name"
@@ -387,7 +388,7 @@ msgstr "El. paštas, kurį naudoti išsaugant vertinimus"
 
 #: picard/profile.py:99 picard/ui/ui_options_ratings.py:50
 msgid "Submit ratings to MusicBrainz"
-msgstr "Siųsti vertinimus į MusicBrainz"
+msgstr "Siųsti vertinimus į „MusicBrainz“"
 
 #: picard/profile.py:104 picard/ui/options/tags.py:47
 msgid "Tags"
@@ -403,7 +404,7 @@ msgstr "Išlaikyti žymėtų failų laiko žymes"
 
 #: picard/profile.py:109 picard/ui/ui_options_tags.py:74
 msgid "Clear existing tags"
-msgstr "Išvalyti esamas žymes"
+msgstr "Valyti esamas žymes"
 
 #: picard/profile.py:110 picard/ui/ui_options_tags.py:75
 msgid "Keep embedded images when clearing tags"
@@ -439,7 +440,7 @@ msgstr "ID3v2.3 jungimo simbolis"
 
 #: picard/profile.py:120 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
-msgstr "Išsaugoti iTunes suderintą grupavimą ir kūrinį"
+msgstr "Išsaugoti „iTunes“ suderintą grupavimą ir kūrinį"
 
 #: picard/profile.py:121
 msgid "Write ID3v1 tags"
@@ -550,15 +551,15 @@ msgstr "Pakeisti ne ASCII simbolius"
 #: picard/profile.py:166 picard/ui/ui_options_renaming_compat.py:90
 #: picard/ui/ui_win_compat_dialog.py:191
 msgid "Windows compatibility"
-msgstr "Windows suderinamumas"
+msgstr "„Windows“ suderinamumas"
 
 #: picard/profile.py:167
 msgid "Replacement characters used for Windows compatibility"
-msgstr "Keičiamieji simboliai, naudojami Windows suderinamumui užtikrinti"
+msgstr "Keičiamieji simboliai, naudojami „Windows“ suderinamumui"
 
 #: picard/profile.py:168 picard/ui/options/renaming_compat.py:133
 msgid "Windows long path support"
-msgstr "Windows ilgo adreso palaikymas"
+msgstr "„Windows“ ilgo kelio palaikymas"
 
 #: picard/profile.py:169 picard/ui/ui_options_renaming_compat.py:93
 msgid "Replace spaces with underscores"
@@ -690,7 +691,7 @@ msgstr "Išbaigtumo patikros ignoruoti: duomenų takeliai"
 
 #: picard/profile.py:232
 msgid "Completeness check ignore: Silent tracks"
-msgstr "Išbaigtumo patikros ignoruoti: tylūs takeliai"
+msgstr "Išbaigtumo patikros ignoruoti: tyliųjų takeliai"
 
 #: picard/profile.py:233
 msgid "Tags to ignore for comparison"
@@ -746,7 +747,7 @@ msgstr "Mažiausias klasterių paieškos skaičius panašumas"
 
 #: picard/profile.py:254
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Minimalus panašumas failų atitikimui su takeliais"
+msgstr "Mažiausias failų atitikimo takeliams panašumas"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -783,7 +784,7 @@ msgstr "[nėra leidinio informacijos]"
 
 #: picard/tagger.py:646 picard/ui/ui_options_general.py:204
 msgid "MusicBrainz Account"
-msgstr "MusicBrainz paskyra"
+msgstr "„MusicBrainz“ paskyra"
 
 #: picard/tagger.py:647
 msgid "Authorization code:"
@@ -815,11 +816,11 @@ msgstr "Visi palaikomi žurnalo failai"
 
 #: picard/tagger.py:1185
 msgid "EAC / XLD / Whipper / fre:ac log files"
-msgstr "EAC / XLD / Whipper / fre:ac žurnalo failai"
+msgstr "EAC / XLD / „Whipper“ / „fre:ac“ žurnalo failai"
 
 #: picard/tagger.py:1186
 msgid "dBpoweramp log files"
-msgstr "dBpoweramp žurnalo failai"
+msgstr "„dBpoweramp“ žurnalo failai"
 
 #: picard/script/serializer.py:350 picard/tagger.py:1187
 #: picard/ui/coverartbox.py:613 picard/ui/mainwindow.py:1270
@@ -839,27 +840,27 @@ msgstr "Klaidos eilutė %(lineno)d: %(error)s"
 
 #: picard/track.py:390
 msgid "[loading recording information]"
-msgstr "[kraunama įrašo informacija]"
+msgstr "[įkeliama įrašo informacija]"
 
 #: picard/track.py:439
 #, python-format
 msgid "[could not load recording %s]"
-msgstr "[nepavyko pakrauti įrašo %s.]"
+msgstr "[nepavyko įkelti įrašo %s]"
 
 #: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "AcoustID paieškos tinklo klaida dėl „%(filename)s“."
+msgstr "„AcoustID“ paieškos tinklo klaida dėl „%(filename)s“."
 
 #: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "AcoustID paieška nepavyko dėl „%(filename)s“."
+msgstr "„AcoustID“ paieška nepavyko dėl „%(filename)s“."
 
 #: picard/acoustid/__init__.py:179
 #, python-format
 msgid "AcoustID lookup returned no result for file '%(filename)s'"
-msgstr "AcoustID paieška negrąžino jokio rezultato failui „%(filename)s“."
+msgstr "„AcoustID“ paieška negrąžino jokio rezultato failui „%(filename)s“."
 
 #: picard/acoustid/__init__.py:190
 #, python-format
@@ -869,32 +870,32 @@ msgstr "Ieškoma failo „%(filename)s“ atspaudų…"
 #: picard/acoustid/manager.py:184
 msgid ""
 "AcoustID submission finished, but not all fingerprints have been submitted"
-msgstr "AcoustID pateikimas baigtas, bet ne visi atspaudai buvo pateikti."
+msgstr "„AcoustID“ pateikimas baigtas, bet ne visi atspaudai buvo pateikti."
 
 #: picard/acoustid/manager.py:186
 msgid "AcoustID submission finished successfully"
-msgstr "AcoustID pateikimas sėkmingai baigtas"
+msgstr "„AcoustID“ pateikimas sėkmingai baigtas."
 
 #: picard/acoustid/manager.py:197
 msgid ""
 "AcoustID submission failed permanently, maximum batch size reduced to zero"
 msgstr ""
-"AcoustID pateikimas nepavyko visam laikui, maksimalus paketo dydis "
-"sumažintas iki nulio"
+"„AcoustID“ pateikimas nepavyko negrįžtamai. Didžiausias paketo dydis "
+"sumažintas iki nulio."
 
 #: picard/acoustid/manager.py:199
 msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr ""
-"AcoustID pateikimas nepavyko visam laikui, tikriausiai per daug bandymų"
+"„AcoustID“ pateikimas nepavyko negrįžtamai. Tikriausiai per daug bandymų."
 
 #: picard/acoustid/manager.py:209
 msgid "Submitting AcoustIDs …"
-msgstr "Teikimi AcoustID …"
+msgstr "Teikimi „AcoustID“…"
 
 #: picard/acoustid/manager.py:239
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
-msgstr "AcoustID pateikimas nepavyko su klaida „%(error)s“: %(message)s."
+msgstr "„AcoustID“ pateikimas nepavyko su klaida „%(error)s“: %(message)s."
 
 #: picard/browser/addrelease.py:144
 msgid "Add cluster as release"
