@@ -62,6 +62,12 @@ class TrackGenres2MetadataTest(PicardTestCase):
         ret = Track._genres_to_metadata(genres, limit=0)
         self.assertEqual(ret, [])
 
+    def test_limit_after_filter(self):
+        genres = Counter(rock=5, blues=7, pop=1, psychedelic=3)
+        filters = '-rock'
+        ret = Track._genres_to_metadata(genres, limit=3, filters=filters)
+        self.assertEqual(ret, ['Blues', 'Pop', 'Psychedelic'])
+
     def test_minusage(self):
         genres = Counter(pop=6, rock=7, blues=2)
         ret = Track._genres_to_metadata(genres, minusage=10)
