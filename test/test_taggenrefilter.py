@@ -20,6 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import Counter
 
 from test.picardtestcase import PicardTestCase
 
@@ -168,5 +169,12 @@ class TagGenreFilterTest(PicardTestCase):
 
     def test_filter_method(self):
         tag_filter = TagGenreFilter("-a*")
-        result = list(tag_filter.filter([("ax", 1), ("bx", 2), ("ay", 3), ("by", 4)]))
-        self.assertEqual([('bx', 2), ('by', 4)], result)
+        genres = Counter(ax=1, bx=2, ay=3, by=4)
+        result = tag_filter.filter(genres)
+        self.assertEqual([('bx', 2), ('by', 4)], list(result.items()))
+
+    def test_filter_method_minusage(self):
+        tag_filter = TagGenreFilter("-a*")
+        genres = Counter(ax=4, bx=5, ay=20, by=10, bz=4)
+        result = tag_filter.filter(genres, minusage=50)
+        self.assertEqual([('bx', 5), ('by', 10)], list(result.items()))

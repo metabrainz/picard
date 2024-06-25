@@ -112,10 +112,17 @@ class TagGenreFilter:
                 return True
         return False
 
-    def filter(self, counter):
-        for name, count in counter:
+    def filter(self, counter: Counter, minusage=0) -> Counter:
+        result = Counter()
+        for name, count in counter.items():
             if not self.skip(name):
-                yield (name, count)
+                result[name] = count
+        topcount = result.most_common(1)[0][1]
+        for name, count in counter.items():
+            percent = 100 * count // topcount
+            if percent < minusage:
+                del result[name]
+        return result
 
     def format_errors(self):
         fmt = _("Error line %(lineno)d: %(error)s")
@@ -321,18 +328,13 @@ class Track(DataObject, FileListItem):
         if not genres:
             return []
 
-        # Find most common genres
-        most_common_genres = genres.most_common(limit)
-        topcount = most_common_genres[0][1]
-
         # Filter by name and usage
         genres_filter = TagGenreFilter(filters)
-        genres_list = []
-        for name, count in genres_filter.filter(most_common_genres):
-            percent = 100 * count // topcount
-            if percent < minusage:
-                break
-            genres_list.append(name.title())
+        genres = genres_filter.filter(genres, minusage=minusage)
+
+        # Find most common genres
+        most_common_genres = genres.most_common(limit)
+        genres_list = [name.title() for name, _count in most_common_genres]
         genres_list.sort()
 
         # And generate the genre metadata tag
