@@ -55,6 +55,8 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.register_setting('cover_tags_resize_target_height')
         self.register_setting('cover_tags_stretch')
         self.register_setting('cover_tags_crop')
+        self.register_setting('cover_tags_convert_images')
+        self.register_setting('cover_tags_convert_to_format')
         self.register_setting('cover_file_scale_up')
         self.register_setting('cover_file_scale_down')
         self.register_setting('cover_file_resize_use_width')
@@ -63,6 +65,8 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.register_setting('cover_file_resize_target_height')
         self.register_setting('cover_file_stretch')
         self.register_setting('cover_file_crop')
+        self.register_setting('cover_file_convert_images')
+        self.register_setting('cover_file_convert_to_format')
 
         tooltip_keep = N_(
             "<p>"
@@ -146,6 +150,8 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.tags_resize_height_value.setValue(config.setting['cover_tags_resize_target_height'])
         self.ui.tags_stretch.setChecked(config.setting['cover_tags_stretch'])
         self.ui.tags_crop.setChecked(config.setting['cover_tags_crop'])
+        self.ui.convert_tags.setChecked(config.setting['cover_tags_convert_images'])
+        self.ui.convert_tags_format.setCurrentText(config.setting['cover_tags_convert_to_format'])
         self.ui.file_scale_up.setChecked(config.setting['cover_file_scale_up'])
         self.ui.file_scale_down.setChecked(config.setting['cover_file_scale_down'])
         self.ui.file_resize_width_label.setChecked(config.setting['cover_file_resize_use_width'])
@@ -154,6 +160,8 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.file_resize_height_value.setValue(config.setting['cover_file_resize_target_height'])
         self.ui.file_stretch.setChecked(config.setting['cover_file_stretch'])
         self.ui.file_crop.setChecked(config.setting['cover_file_crop'])
+        self.ui.convert_file.setChecked(config.setting['cover_file_convert_images'])
+        self.ui.convert_file_format.setCurrentText(config.setting['cover_file_convert_to_format'])
 
     def save(self):
         config = get_config()
@@ -168,6 +176,8 @@ class CoverProcessingOptionsPage(OptionsPage):
         config.setting['cover_tags_resize_target_height'] = self.ui.tags_resize_height_value.value()
         config.setting['cover_tags_stretch'] = self.ui.tags_stretch.isChecked()
         config.setting['cover_tags_crop'] = self.ui.tags_crop.isChecked()
+        config.setting['cover_tags_convert_images'] = self.ui.convert_tags.isChecked()
+        config.setting['cover_tags_convert_to_format'] = self.ui.convert_tags_format.currentText()
         config.setting['cover_file_scale_up'] = self.ui.file_scale_up.isChecked()
         config.setting['cover_file_scale_down'] = self.ui.file_scale_down.isChecked()
         config.setting['cover_file_resize_use_width'] = self.ui.file_resize_width_label.isChecked()
@@ -176,6 +186,8 @@ class CoverProcessingOptionsPage(OptionsPage):
         config.setting['cover_file_resize_target_height'] = self.ui.file_resize_height_value.value()
         config.setting['cover_file_stretch'] = self.ui.file_stretch.isChecked()
         config.setting['cover_file_crop'] = self.ui.file_crop.isChecked()
+        config.setting['cover_file_convert_images'] = self.ui.convert_file.isChecked()
+        config.setting['cover_file_convert_to_format'] = self.ui.convert_file_format.currentText()
 
 
 register_options_page(CoverProcessingOptionsPage)

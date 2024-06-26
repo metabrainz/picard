@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>478</width>
-    <height>423</height>
+    <width>529</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -556,6 +556,107 @@
              </widget>
             </item>
            </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="converting">
+     <property name="title">
+      <string>Convert images to the given format</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_12">
+      <item>
+       <widget class="QGroupBox" name="convert_tags">
+        <property name="title">
+         <string>Convert images saved to tags</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <item>
+          <widget class="QLabel" name="convert_tags_label">
+           <property name="text">
+            <string>New format:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="convert_tags_format">
+           <item>
+            <property name="text">
+             <string>JPEG</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>PNG</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>WebP</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>TIFF</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="convert_file">
+        <property name="title">
+         <string>Convert images saved to files</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <widget class="QLabel" name="convert_file_label">
+           <property name="text">
+            <string>New format:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="convert_file_format">
+           <item>
+            <property name="text">
+             <string>JPEG</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>PNG</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>WebP</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>TIFF</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
