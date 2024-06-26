@@ -72,7 +72,8 @@ class ProcessingImage:
         buffer = QBuffer()
         if not self._qimage.save(buffer, image_format, quality=quality):
             raise CoverArtEncodingError(f"Failed to encode into {image_format}")
-        return buffer.data()
+        qbytearray = buffer.data()
+        return qbytearray.data()
 
 
 class ImageProcessor:
