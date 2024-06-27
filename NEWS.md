@@ -1,3 +1,27 @@
+# Version 2.12 - 2024-06-27
+
+## Bugfixes
+- [PICARD-2468](https://tickets.metabrainz.org/browse/PICARD-2468) - Unexpected behavior of MP3 comment tags when language isn't set
+- [PICARD-2846](https://tickets.metabrainz.org/browse/PICARD-2846) - macOS package MusicBrainz-Picard-2.11-macOS-10.12.dmg is not compatible with macOS 10.12 and 10.13
+- [PICARD-2850](https://tickets.metabrainz.org/browse/PICARD-2850) - `%_filename%` tag displays as "_mp3" in preview
+- [PICARD-2866](https://tickets.metabrainz.org/browse/PICARD-2866) - Non-genre tag added as genre for standalone recording
+- [PICARD-2868](https://tickets.metabrainz.org/browse/PICARD-2868) - Picard crashes after selecting track search result
+- [PICARD-2880](https://tickets.metabrainz.org/browse/PICARD-2880) - Non-integer rate limit delay causes crashes
+- [PICARD-2883](https://tickets.metabrainz.org/browse/PICARD-2883) - Tooltip explaining match icon missing when there are multiple candidates
+- [PICARD-2885](https://tickets.metabrainz.org/browse/PICARD-2885) - Special file error icons for permission and not found errors are not being used
+- [PICARD-2891](https://tickets.metabrainz.org/browse/PICARD-2891) - Dragging matched files from right pane to clusters does not use original metadata
+- [PICARD-2895](https://tickets.metabrainz.org/browse/PICARD-2895) - Picard crashes on Windows with Deezer plugin enabled
+- [PICARD-2901](https://tickets.metabrainz.org/browse/PICARD-2901) - Pressing Shift+Alt+A (Add tag) raises an exception when there's nothing to edit
+- [PICARD-2910](https://tickets.metabrainz.org/browse/PICARD-2910) - AttributeError: 'ScriptEditorDialog' object has no attribute 'unsaved_changes_confirmation'.
+- [PICARD-2918](https://tickets.metabrainz.org/browse/PICARD-2918) - Crash when quitting Picard after saving large number of files
+- [PICARD-2919](https://tickets.metabrainz.org/browse/PICARD-2919) - "Unrecognized image data" error when fetching GIF Cover Art
+
+## Improvements
+- [PICARD-2716](https://tickets.metabrainz.org/browse/PICARD-2716) - Accept encodings other than UTF-8 when opening CD extraction logs
+- [PICARD-2896](https://tickets.metabrainz.org/browse/PICARD-2896) - Support .ogx extension for Ogg container
+- [PICARD-2935](https://tickets.metabrainz.org/browse/PICARD-2935) - Improve results of genre filter options
+
+
 # Version 2.11 - 2024-01-25
 
 ## Bugfixes
