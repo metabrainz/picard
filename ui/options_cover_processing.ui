@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>529</width>
+    <width>535</width>
     <height>467</height>
    </rect>
   </property>
@@ -140,7 +140,7 @@
    <item>
     <widget class="QGroupBox" name="resizing">
      <property name="title">
-      <string>Resize images if above the given size</string>
+      <string>Resize images to the given size</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
@@ -150,47 +150,34 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
-       <widget class="QGroupBox" name="save_to_tags">
+       <widget class="QGroupBox" name="tags_scale_down">
         <property name="title">
          <string>Resize images saved to tags </string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QWidget" name="tags_scale_widget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <property name="leftMargin">
-             <number>0</number>
+          <widget class="QComboBox" name="tags_resize_mode">
+           <item>
+            <property name="text">
+             <string>Maintain aspect ratio</string>
             </property>
-            <property name="topMargin">
-             <number>0</number>
+           </item>
+           <item>
+            <property name="text">
+             <string>Crop to fit</string>
             </property>
-            <property name="rightMargin">
-             <number>0</number>
+           </item>
+           <item>
+            <property name="text">
+             <string>Stretch to fit</string>
             </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QCheckBox" name="tags_scale_up">
-              <property name="text">
-               <string>Scale up</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="tags_scale_down">
-              <property name="text">
-               <string>Scale down</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           </item>
           </widget>
          </item>
          <item>
@@ -308,65 +295,43 @@
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="tags_resize_mode" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
-            <property name="spacing">
-             <number>2</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QRadioButton" name="tags_keep">
-              <property name="text">
-               <string>Fit</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="tags_crop">
-              <property name="text">
-               <string>Fill</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="tags_stretch">
-              <property name="text">
-               <string>Stretch</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <widget class="QCheckBox" name="tags_scale_up">
+           <property name="text">
+            <string>Don't enlarge</string>
+           </property>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="save_to_file">
+       <widget class="QGroupBox" name="file_scale_down">
         <property name="title">
          <string>Resize images saved to files</string>
         </property>
         <property name="checkable">
-         <bool>false</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QComboBox" name="file_resize_mode">
+           <item>
+            <property name="text">
+             <string>Maintain aspect ratio</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Crop to fit</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Stretch to fit</string>
+            </property>
+           </item>
+          </widget>
+         </item>
          <item>
           <widget class="QWidget" name="file_scale_widget" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -382,20 +347,6 @@
             <property name="bottomMargin">
              <number>0</number>
             </property>
-            <item>
-             <widget class="QCheckBox" name="file_scale_up">
-              <property name="text">
-               <string>Scale up</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="file_scale_down">
-              <property name="text">
-               <string>Scale down</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </widget>
          </item>
@@ -514,48 +465,10 @@
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="file_resize_mode" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
-            <property name="spacing">
-             <number>2</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QRadioButton" name="file_keep">
-              <property name="text">
-               <string>Fit</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="file_crop">
-              <property name="text">
-               <string>Fill</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="file_stretch">
-              <property name="text">
-               <string>Stretch</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <widget class="QCheckBox" name="file_scale_up">
+           <property name="text">
+            <string>Don't enlarge</string>
+           </property>
           </widget>
          </item>
         </layout>

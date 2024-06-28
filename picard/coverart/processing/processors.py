@@ -35,14 +35,16 @@ class ResizeImage(ImageProcessor):
 
     def save_to_file(self):
         config = get_config()
-        return config.setting['cover_file_scale_down'] or config.setting['cover_file_scale_up']
+        return config.setting['cover_file_resize']
 
     def save_to_tags(self):
         config = get_config()
-        return config.setting['cover_tags_scale_down'] or config.setting['cover_tags_scale_up']
+        return config.setting['cover_tags_resize']
 
     def same_processing(self):
         setting = get_config().setting
+        both_resize = setting['cover_tags_resize'] and setting['cover_file_resize']
+        same_enlarge = setting['cover_tags_dont_enlarge'] == setting['cover_file_dont_enlarge']
         tags_size = (
             setting['cover_tags_resize_target_width'] if setting['cover_tags_resize_use_width'] else 0,
             setting['cover_tags_resize_target_height'] if setting['cover_tags_resize_use_height'] else 0
@@ -52,35 +54,28 @@ class ResizeImage(ImageProcessor):
             setting['cover_file_resize_target_height'] if setting['cover_file_resize_use_height'] else 0
         )
         same_size = tags_size == file_size
-        tags_direction = (setting['cover_tags_scale_up'], setting['cover_tags_scale_down'])
-        file_direction = (setting['cover_file_scale_up'], setting['cover_file_scale_down'])
-        same_direction = tags_direction == file_direction and any(tags_direction)
-        tags_resize_mode = (setting['cover_tags_stretch'], setting['cover_tags_crop'])
-        file_resize_mode = (setting['cover_file_stretch'], setting['cover_file_crop'])
-        same_resize_mode = tags_resize_mode == file_resize_mode
-        return same_size and same_direction and same_resize_mode
+        same_resize_mode = setting['cover_tags_resize_mode'] == setting['cover_file_resize_mode']
+        return both_resize and same_enlarge and same_size and same_resize_mode
 
     def run(self, image, target):
         start_time = time.time()
         config = get_config()
         if target == ProcessingTarget.TAGS:
-            scale_up = config.setting['cover_tags_scale_up']
-            scale_down = config.setting['cover_tags_scale_down']
+            scale_up = not config.setting['cover_tags_dont_enlarge']
             use_width = config.setting['cover_tags_resize_use_width']
             target_width = config.setting['cover_tags_resize_target_width']
             use_height = config.setting['cover_tags_resize_use_height']
             target_height = config.setting['cover_tags_resize_target_height']
-            stretch = config.setting['cover_tags_stretch']
-            crop = config.setting['cover_tags_crop']
+            crop = config.setting['cover_tags_resize_mode'] == 1
+            stretch = config.setting['cover_tags_resize_mode'] == 2
         else:
-            scale_up = config.setting['cover_file_scale_up']
-            scale_down = config.setting['cover_file_scale_down']
+            scale_up = not config.setting['cover_file_dont_enlarge']
             use_width = config.setting['cover_file_resize_use_width']
             target_width = config.setting['cover_file_resize_target_width']
             use_height = config.setting['cover_file_resize_use_height']
             target_height = config.setting['cover_file_resize_target_height']
-            stretch = config.setting['cover_file_stretch']
-            crop = config.setting['cover_file_crop']
+            crop = config.setting['cover_file_resize_mode'] == 1
+            stretch = config.setting['cover_file_resize_mode'] == 2
 
         width_resize = target_width if use_width else image.info.width
         height_resize = target_height if use_height else image.info.height
@@ -95,8 +90,7 @@ class ResizeImage(ImageProcessor):
             width_scale_factor = scale_factor
             height_scale_factor = scale_factor
         if (width_scale_factor == 1 and height_scale_factor == 1
-                or ((width_scale_factor > 1 or height_scale_factor > 1) and not scale_up)
-                or ((width_scale_factor < 1 or height_scale_factor < 1) and not scale_down)):
+                or ((width_scale_factor > 1 or height_scale_factor > 1) and not scale_up)):
             # no resizing needed
             return
 

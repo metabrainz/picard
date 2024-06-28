@@ -20,6 +20,8 @@
 
 from functools import partial
 
+from PyQt6.QtCore import Qt
+
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -47,24 +49,22 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.register_setting('filter_cover_by_size')
         self.register_setting('cover_minimum_width')
         self.register_setting('cover_minimum_height')
-        self.register_setting('cover_tags_scale_up')
-        self.register_setting('cover_tags_scale_down')
+        self.register_setting('cover_tags_dont_enlarge')
+        self.register_setting('cover_tags_resize')
         self.register_setting('cover_tags_resize_use_width')
         self.register_setting('cover_tags_resize_target_width')
         self.register_setting('cover_tags_resize_use_height')
         self.register_setting('cover_tags_resize_target_height')
-        self.register_setting('cover_tags_stretch')
-        self.register_setting('cover_tags_crop')
+        self.register_setting('cover_tags_resize_mode')
         self.register_setting('cover_tags_convert_images')
         self.register_setting('cover_tags_convert_to_format')
-        self.register_setting('cover_file_scale_up')
-        self.register_setting('cover_file_scale_down')
+        self.register_setting('cover_file_dont_enlarge')
+        self.register_setting('cover_file_resize')
         self.register_setting('cover_file_resize_use_width')
         self.register_setting('cover_file_resize_target_width')
         self.register_setting('cover_file_resize_use_height')
         self.register_setting('cover_file_resize_target_height')
-        self.register_setting('cover_file_stretch')
-        self.register_setting('cover_file_crop')
+        self.register_setting('cover_file_resize_mode')
         self.register_setting('cover_file_convert_images')
         self.register_setting('cover_file_convert_to_format')
 
@@ -79,8 +79,8 @@ class CoverProcessingOptionsPage(OptionsPage):
             "1000x1000 would result in a final image size of 1000x500."
             "</p>"
         )
-        self.ui.tags_keep.setToolTip(_(tooltip_keep))
-        self.ui.file_keep.setToolTip(_(tooltip_keep))
+        self.ui.tags_resize_mode.setItemData(0, _(tooltip_keep), Qt.ItemDataRole.ToolTipRole)
+        self.ui.file_resize_mode.setItemData(0, _(tooltip_keep), Qt.ItemDataRole.ToolTipRole)
         tooltip_crop = (
             "<p>"
             "Scale the source image so that it completely fills the target dimensions "
@@ -94,8 +94,8 @@ class CoverProcessingOptionsPage(OptionsPage):
             "would be center cropped resulting in the final image size of 1000x1000."
             "</p>"
         )
-        self.ui.tags_crop.setToolTip(_(tooltip_crop))
-        self.ui.file_crop.setToolTip(_(tooltip_crop))
+        self.ui.tags_resize_mode.setItemData(1, _(tooltip_crop), Qt.ItemDataRole.ToolTipRole)
+        self.ui.file_resize_mode.setItemData(1, _(tooltip_crop), Qt.ItemDataRole.ToolTipRole)
         tooltip_stretch = (
             "<p>"
             "Stretch the image to exactly fit the specified dimensions, "
@@ -106,8 +106,8 @@ class CoverProcessingOptionsPage(OptionsPage):
             "size of 1000x1000."
             "</p>"
         )
-        self.ui.tags_stretch.setToolTip(_(tooltip_stretch))
-        self.ui.file_stretch.setToolTip(_(tooltip_stretch))
+        self.ui.tags_resize_mode.setItemData(2, _(tooltip_stretch), Qt.ItemDataRole.ToolTipRole)
+        self.ui.file_resize_mode.setItemData(2, _(tooltip_stretch), Qt.ItemDataRole.ToolTipRole)
 
         tags_checkboxes = (self.ui.tags_resize_width_label, self.ui.tags_resize_height_label)
         tags_at_least_one_checked = partial(self._ensure_at_least_one_checked, tags_checkboxes)
@@ -142,24 +142,22 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.filtering.setChecked(config.setting['filter_cover_by_size'])
         self.ui.filtering_width_value.setValue(config.setting['cover_minimum_width'])
         self.ui.filtering_height_value.setValue(config.setting['cover_minimum_height'])
-        self.ui.tags_scale_up.setChecked(config.setting['cover_tags_scale_up'])
-        self.ui.tags_scale_down.setChecked(config.setting['cover_tags_scale_down'])
+        self.ui.tags_scale_up.setChecked(config.setting['cover_tags_dont_enlarge'])
+        self.ui.tags_scale_down.setChecked(config.setting['cover_tags_resize'])
         self.ui.tags_resize_width_label.setChecked(config.setting['cover_tags_resize_use_width'])
         self.ui.tags_resize_width_value.setValue(config.setting['cover_tags_resize_target_width'])
         self.ui.tags_resize_height_label.setChecked(config.setting['cover_tags_resize_use_height'])
         self.ui.tags_resize_height_value.setValue(config.setting['cover_tags_resize_target_height'])
-        self.ui.tags_stretch.setChecked(config.setting['cover_tags_stretch'])
-        self.ui.tags_crop.setChecked(config.setting['cover_tags_crop'])
+        self.ui.tags_resize_mode.setCurrentIndex(config.setting['cover_tags_resize_mode'])
         self.ui.convert_tags.setChecked(config.setting['cover_tags_convert_images'])
         self.ui.convert_tags_format.setCurrentText(config.setting['cover_tags_convert_to_format'])
-        self.ui.file_scale_up.setChecked(config.setting['cover_file_scale_up'])
-        self.ui.file_scale_down.setChecked(config.setting['cover_file_scale_down'])
+        self.ui.file_scale_up.setChecked(config.setting['cover_file_dont_enlarge'])
+        self.ui.file_scale_down.setChecked(config.setting['cover_file_resize'])
         self.ui.file_resize_width_label.setChecked(config.setting['cover_file_resize_use_width'])
         self.ui.file_resize_width_value.setValue(config.setting['cover_file_resize_target_width'])
         self.ui.file_resize_height_label.setChecked(config.setting['cover_file_resize_use_height'])
         self.ui.file_resize_height_value.setValue(config.setting['cover_file_resize_target_height'])
-        self.ui.file_stretch.setChecked(config.setting['cover_file_stretch'])
-        self.ui.file_crop.setChecked(config.setting['cover_file_crop'])
+        self.ui.file_resize_mode.setCurrentIndex(config.setting['cover_file_resize_mode'])
         self.ui.convert_file.setChecked(config.setting['cover_file_convert_images'])
         self.ui.convert_file_format.setCurrentText(config.setting['cover_file_convert_to_format'])
 
@@ -168,24 +166,22 @@ class CoverProcessingOptionsPage(OptionsPage):
         config.setting['filter_cover_by_size'] = self.ui.filtering.isChecked()
         config.setting['cover_minimum_width'] = self.ui.filtering_width_value.value()
         config.setting['cover_minimum_height'] = self.ui.filtering_height_value.value()
-        config.setting['cover_tags_scale_up'] = self.ui.tags_scale_up.isChecked()
-        config.setting['cover_tags_scale_down'] = self.ui.tags_scale_down.isChecked()
+        config.setting['cover_tags_dont_enlarge'] = self.ui.tags_scale_up.isChecked()
+        config.setting['cover_tags_resize'] = self.ui.tags_scale_down.isChecked()
         config.setting['cover_tags_resize_use_width'] = self.ui.tags_resize_width_label.isChecked()
         config.setting['cover_tags_resize_target_width'] = self.ui.tags_resize_width_value.value()
         config.setting['cover_tags_resize_use_height'] = self.ui.tags_resize_height_label.isChecked()
         config.setting['cover_tags_resize_target_height'] = self.ui.tags_resize_height_value.value()
-        config.setting['cover_tags_stretch'] = self.ui.tags_stretch.isChecked()
-        config.setting['cover_tags_crop'] = self.ui.tags_crop.isChecked()
+        config.setting['cover_tags_resize_mode'] = self.ui.tags_resize_mode.currentIndex()
         config.setting['cover_tags_convert_images'] = self.ui.convert_tags.isChecked()
         config.setting['cover_tags_convert_to_format'] = self.ui.convert_tags_format.currentText()
-        config.setting['cover_file_scale_up'] = self.ui.file_scale_up.isChecked()
-        config.setting['cover_file_scale_down'] = self.ui.file_scale_down.isChecked()
+        config.setting['cover_file_dont_enlarge'] = self.ui.file_scale_up.isChecked()
+        config.setting['cover_file_resize'] = self.ui.file_scale_down.isChecked()
         config.setting['cover_file_resize_use_width'] = self.ui.file_resize_width_label.isChecked()
         config.setting['cover_file_resize_target_width'] = self.ui.file_resize_width_value.value()
         config.setting['cover_file_resize_use_height'] = self.ui.file_resize_height_label.isChecked()
         config.setting['cover_file_resize_target_height'] = self.ui.file_resize_height_value.value()
-        config.setting['cover_file_stretch'] = self.ui.file_stretch.isChecked()
-        config.setting['cover_file_crop'] = self.ui.file_crop.isChecked()
+        config.setting['cover_file_resize_mode'] = self.ui.file_resize_mode.currentIndex()
         config.setting['cover_file_convert_images'] = self.ui.convert_file.isChecked()
         config.setting['cover_file_convert_to_format'] = self.ui.convert_file_format.currentText()
 

@@ -84,24 +84,22 @@ class ImageProcessorsTest(PicardTestCase):
         super().setUp()
         self.settings = {
             'enabled_plugins': [],
-            'cover_tags_scale_up': True,
-            'cover_tags_scale_down': True,
+            'cover_tags_resize': True,
+            'cover_tags_dont_enlarge': False,
             'cover_tags_resize_use_width': True,
             'cover_tags_resize_target_width': 500,
             'cover_tags_resize_use_height': True,
             'cover_tags_resize_target_height': 500,
-            'cover_tags_stretch': False,
-            'cover_tags_crop': False,
+            'cover_tags_resize_mode': 0,
             'cover_tags_convert_images': False,
             'cover_tags_convert_to_format': 'jpeg',
-            'cover_file_scale_up': True,
-            'cover_file_scale_down': True,
+            'cover_file_resize': True,
+            'cover_file_dont_enlarge': False,
             'cover_file_resize_use_width': True,
             'cover_file_resize_target_width': 750,
             'cover_file_resize_use_height': True,
             'cover_file_resize_target_height': 750,
-            'cover_file_stretch': False,
-            'cover_file_crop': False,
+            'cover_file_resize_mode': 0,
             'save_images_to_tags': True,
             'save_images_to_files': True,
             'cover_file_convert_images': False,
@@ -225,7 +223,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_stretch_both_dimensions(self):
         settings = copy(self.settings)
-        settings['cover_tags_stretch'] = True
+        settings['cover_tags_resize_mode'] = 2
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (500, 500))
         self._check_resize_image((200, 500), (500, 500))
@@ -234,7 +232,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_stretch_only_width(self):
         settings = copy(self.settings)
-        settings['cover_tags_stretch'] = True
+        settings['cover_tags_resize_mode'] = 2
         settings['cover_tags_resize_use_height'] = False
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (500, 100))
@@ -244,7 +242,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_stretch_only_height(self):
         settings = copy(self.settings)
-        settings['cover_tags_stretch'] = True
+        settings['cover_tags_resize_mode'] = 2
         settings['cover_tags_resize_use_width'] = False
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (1000, 500))
@@ -254,7 +252,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_crop_both_dimensions(self):
         settings = copy(self.settings)
-        settings['cover_tags_crop'] = True
+        settings['cover_tags_resize_mode'] = 1
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (500, 500))
         self._check_resize_image((750, 1000), (500, 500))
@@ -263,7 +261,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_crop_only_width(self):
         settings = copy(self.settings)
-        settings['cover_tags_crop'] = True
+        settings['cover_tags_resize_mode'] = 1
         settings['cover_tags_resize_use_height'] = False
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (500, 100))
@@ -273,7 +271,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_crop_only_height(self):
         settings = copy(self.settings)
-        settings['cover_tags_crop'] = True
+        settings['cover_tags_resize_mode'] = 1
         settings['cover_tags_resize_use_width'] = False
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (1000, 500))

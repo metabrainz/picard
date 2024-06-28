@@ -43,6 +43,7 @@ from picard.const.defaults import (
     DEFAULT_COVER_IMAGE_FILENAME,
     DEFAULT_COVER_MAX_SIZE,
     DEFAULT_COVER_MIN_SIZE,
+    DEFAULT_COVER_RESIZE_MODE,
     DEFAULT_CURRENT_BROWSER_PATH,
     DEFAULT_DRIVES,
     DEFAULT_FPCALC_THREADS,
@@ -176,24 +177,22 @@ BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a 
 BoolOption('setting', 'filter_cover_by_size', False)
 IntOption('setting', 'cover_minimum_width', DEFAULT_COVER_MIN_SIZE)
 IntOption('setting', 'cover_minimum_height', DEFAULT_COVER_MIN_SIZE)
-BoolOption('setting', 'cover_tags_scale_up', False)
-BoolOption('setting', 'cover_tags_scale_down', False)
+BoolOption('setting', 'cover_tags_dont_enlarge', True)
+BoolOption('setting', 'cover_tags_resize', False)
 BoolOption('setting', 'cover_tags_resize_use_width', True)
 IntOption('setting', 'cover_tags_resize_target_width', DEFAULT_COVER_MAX_SIZE)
 BoolOption('setting', 'cover_tags_resize_use_height', True)
 IntOption('setting', 'cover_tags_resize_target_height', DEFAULT_COVER_MAX_SIZE)
-BoolOption('setting', 'cover_tags_stretch', False)
-BoolOption('setting', 'cover_tags_crop', False)
+IntOption('setting', 'cover_tags_resize_mode', DEFAULT_COVER_RESIZE_MODE)
 BoolOption('setting', 'cover_tags_convert_images', False)
 TextOption('setting', 'cover_tags_convert_to_format', DEFAULT_COVER_CONVERTING_FORMAT)
-BoolOption('setting', 'cover_file_scale_up', False)
-BoolOption('setting', 'cover_file_scale_down', False)
+BoolOption('setting', 'cover_file_dont_enlarge', True)
+BoolOption('setting', 'cover_file_resize', False)
 BoolOption('setting', 'cover_file_resize_use_width', True)
 IntOption('setting', 'cover_file_resize_target_width', DEFAULT_COVER_MAX_SIZE)
 BoolOption('setting', 'cover_file_resize_use_height', True)
 IntOption('setting', 'cover_file_resize_target_height', DEFAULT_COVER_MAX_SIZE)
-BoolOption('setting', 'cover_file_stretch', False)
-BoolOption('setting', 'cover_file_crop', False)
+IntOption('setting', 'cover_file_resize_mode', DEFAULT_COVER_RESIZE_MODE)
 BoolOption('setting', 'cover_file_convert_images', False)
 TextOption('setting', 'cover_file_convert_to_format', DEFAULT_COVER_CONVERTING_FORMAT)
 
