@@ -63,12 +63,12 @@ class ProcessingImage:
         else:
             self._qimage = QImage.fromData(image)
 
-    def get_result(self, image_format=None, default_format=False, quality=90):
+    def get_qimage(self):
+        return self._qimage
+
+    def get_result(self, image_format=None, quality=90):
         if image_format is None:
-            if not default_format:
-                return self._qimage
-            else:
-                image_format = self.info.format
+            image_format = self.info.format
         buffer = QBuffer()
         if not self._qimage.save(buffer, image_format, quality=quality):
             raise CoverArtEncodingError(f"Failed to encode into {image_format}")

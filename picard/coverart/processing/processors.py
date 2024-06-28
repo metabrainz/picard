@@ -100,7 +100,7 @@ class ResizeImage(ImageProcessor):
             # no resizing needed
             return
 
-        qimage = image.get_result()
+        qimage = image.get_qimage()
         if stretch:
             scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.IgnoreAspectRatio)
         elif crop:

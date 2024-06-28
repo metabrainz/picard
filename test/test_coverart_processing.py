@@ -162,7 +162,7 @@ class ImageProcessorsTest(PicardTestCase):
         image = ProcessingImage(create_fake_image(size[0], size[1], 'jpg'))
         processor = ResizeImage()
         processor.run(image, ProcessingTarget.TAGS)
-        new_size = (image.get_result().width(), image.get_result().height())
+        new_size = (image.get_qimage().width(), image.get_qimage().height())
         new_info_size = (image.info.width, image.info.height)
         self.assertEqual(new_size, expected_size)
         self.assertEqual(new_info_size, expected_size)
@@ -285,7 +285,7 @@ class ImageProcessorsTest(PicardTestCase):
         image = ProcessingImage(create_fake_image(100, 100, format))
         processor = ConvertImage()
         processor.run(image, ProcessingTarget.TAGS)
-        new_image = image.get_result(default_format=True)
+        new_image = image.get_result()
         new_info = imageinfo.identify(new_image)
         self.assertIn(new_info.format, ConvertImage._format_aliases[expected_format])
 
