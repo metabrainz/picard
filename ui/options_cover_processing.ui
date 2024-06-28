@@ -162,23 +162,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QComboBox" name="tags_resize_mode">
-           <item>
-            <property name="text">
-             <string>Maintain aspect ratio</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Crop to fit</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Stretch to fit</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="tags_resize_mode"/>
          </item>
          <item>
           <widget class="QWidget" name="tags_resize_width_widget" native="true">
@@ -314,23 +298,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QComboBox" name="file_resize_mode">
-           <item>
-            <property name="text">
-             <string>Maintain aspect ratio</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Crop to fit</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Stretch to fit</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="file_resize_mode"/>
          </item>
          <item>
           <widget class="QWidget" name="file_scale_widget" native="true">
@@ -506,28 +474,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="convert_tags_format">
-           <item>
-            <property name="text">
-             <string>JPEG</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>PNG</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>WebP</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>TIFF</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="convert_tags_format"/>
          </item>
         </layout>
        </widget>
@@ -549,28 +496,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="convert_file_format">
-           <item>
-            <property name="text">
-             <string>JPEG</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>PNG</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>WebP</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>TIFF</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="convert_file_format"/>
          </item>
         </layout>
        </widget>
