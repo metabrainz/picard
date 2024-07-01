@@ -26,6 +26,7 @@ from PyQt6.QtGui import QImage
 from test.picardtestcase import PicardTestCase
 
 from picard import config
+from picard.const.cover_processing import ResizeModes
 from picard.coverart.image import CoverArtImage
 from picard.coverart.processing import run_image_processors
 from picard.coverart.processing.filters import (
@@ -85,21 +86,17 @@ class ImageProcessorsTest(PicardTestCase):
         self.settings = {
             'enabled_plugins': [],
             'cover_tags_resize': True,
-            'cover_tags_dont_enlarge': False,
-            'cover_tags_resize_use_width': True,
+            'cover_tags_enlarge': True,
             'cover_tags_resize_target_width': 500,
-            'cover_tags_resize_use_height': True,
             'cover_tags_resize_target_height': 500,
-            'cover_tags_resize_mode': 0,
+            'cover_tags_resize_mode': ResizeModes.MAINTAIN_ASPECT_RATIO,
             'cover_tags_convert_images': False,
             'cover_tags_convert_to_format': 'jpeg',
             'cover_file_resize': True,
-            'cover_file_dont_enlarge': False,
-            'cover_file_resize_use_width': True,
+            'cover_file_enlarge': True,
             'cover_file_resize_target_width': 750,
-            'cover_file_resize_use_height': True,
             'cover_file_resize_target_height': 750,
-            'cover_file_resize_mode': 0,
+            'cover_file_resize_mode': ResizeModes.MAINTAIN_ASPECT_RATIO,
             'save_images_to_tags': True,
             'save_images_to_files': True,
             'cover_file_convert_images': False,
@@ -173,7 +170,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_scale_down_only_width(self):
         settings = copy(self.settings)
-        settings['cover_tags_resize_use_height'] = False
+        settings['cover_tags_resize_mode'] = ResizeModes.SCALE_TO_WIDTH
         self.set_config_values(settings)
         self._check_resize_image((1000, 1000), (500, 500))
         self._check_resize_image((1000, 500), (500, 250))
@@ -182,7 +179,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_scale_down_only_height(self):
         settings = copy(self.settings)
-        settings['cover_tags_resize_use_width'] = False
+        settings['cover_tags_resize_mode'] = ResizeModes.SCALE_TO_HEIGHT
         self.set_config_values(settings)
         self._check_resize_image((1000, 1000), (500, 500))
         self._check_resize_image((1000, 500), (1000, 500))
@@ -197,7 +194,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_scale_up_only_width(self):
         settings = copy(self.settings)
-        settings['cover_tags_resize_use_height'] = False
+        settings['cover_tags_resize_mode'] = ResizeModes.SCALE_TO_WIDTH
         self.set_config_values(settings)
         self._check_resize_image((250, 250), (500, 500))
         self._check_resize_image((400, 500), (500, 625))
@@ -206,7 +203,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_scale_up_only_height(self):
         settings = copy(self.settings)
-        settings['cover_tags_resize_use_width'] = False
+        settings['cover_tags_resize_mode'] = ResizeModes.SCALE_TO_HEIGHT
         self.set_config_values(settings)
         self._check_resize_image((250, 250), (500, 500))
         self._check_resize_image((400, 500), (400, 500))
@@ -223,60 +220,20 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_stretch_both_dimensions(self):
         settings = copy(self.settings)
-        settings['cover_tags_resize_mode'] = 2
+        settings['cover_tags_resize_mode'] = ResizeModes.STRETCH_TO_FIT
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (500, 500))
         self._check_resize_image((200, 500), (500, 500))
         self._check_resize_image((200, 2000), (500, 500))
         self.set_config_values(self.settings)
 
-    def test_stretch_only_width(self):
-        settings = copy(self.settings)
-        settings['cover_tags_resize_mode'] = 2
-        settings['cover_tags_resize_use_height'] = False
-        self.set_config_values(settings)
-        self._check_resize_image((1000, 100), (500, 100))
-        self._check_resize_image((200, 500), (500, 500))
-        self._check_resize_image((200, 2000), (500, 2000))
-        self.set_config_values(self.settings)
-
-    def test_stretch_only_height(self):
-        settings = copy(self.settings)
-        settings['cover_tags_resize_mode'] = 2
-        settings['cover_tags_resize_use_width'] = False
-        self.set_config_values(settings)
-        self._check_resize_image((1000, 100), (1000, 500))
-        self._check_resize_image((200, 500), (200, 500))
-        self._check_resize_image((200, 2000), (200, 500))
-        self.set_config_values(self.settings)
-
     def test_crop_both_dimensions(self):
         settings = copy(self.settings)
-        settings['cover_tags_resize_mode'] = 1
+        settings['cover_tags_resize_mode'] = ResizeModes.CROP_TO_FIT
         self.set_config_values(settings)
         self._check_resize_image((1000, 100), (500, 500))
         self._check_resize_image((750, 1000), (500, 500))
         self._check_resize_image((250, 1000), (500, 500))
-        self.set_config_values(self.settings)
-
-    def test_crop_only_width(self):
-        settings = copy(self.settings)
-        settings['cover_tags_resize_mode'] = 1
-        settings['cover_tags_resize_use_height'] = False
-        self.set_config_values(settings)
-        self._check_resize_image((1000, 100), (500, 100))
-        self._check_resize_image((750, 1000), (500, 1000))
-        self._check_resize_image((250, 1000), (500, 1000))
-        self.set_config_values(self.settings)
-
-    def test_crop_only_height(self):
-        settings = copy(self.settings)
-        settings['cover_tags_resize_mode'] = 1
-        settings['cover_tags_resize_use_width'] = False
-        self.set_config_values(settings)
-        self._check_resize_image((1000, 100), (1000, 500))
-        self._check_resize_image((750, 1000), (750, 500))
-        self._check_resize_image((250, 1000), (250, 500))
         self.set_config_values(self.settings)
 
     def _check_convert_image(self, format, expected_format):

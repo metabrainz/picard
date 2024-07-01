@@ -24,6 +24,7 @@ from PyQt6.QtCore import Qt
 
 from picard import log
 from picard.config import get_config
+from picard.const.cover_processing import ResizeModes
 from picard.extension_points.cover_art_processors import (
     ImageProcessor,
     ProcessingTarget,
@@ -44,71 +45,51 @@ class ResizeImage(ImageProcessor):
     def same_processing(self):
         setting = get_config().setting
         both_resize = setting['cover_tags_resize'] and setting['cover_file_resize']
-        same_enlarge = setting['cover_tags_dont_enlarge'] == setting['cover_file_dont_enlarge']
-        tags_size = (
-            setting['cover_tags_resize_target_width'] if setting['cover_tags_resize_use_width'] else 0,
-            setting['cover_tags_resize_target_height'] if setting['cover_tags_resize_use_height'] else 0
-        )
-        file_size = (
-            setting['cover_file_resize_target_width'] if setting['cover_file_resize_use_width'] else 0,
-            setting['cover_file_resize_target_height'] if setting['cover_file_resize_use_height'] else 0
-        )
-        same_size = tags_size == file_size
+        same_enlarge = setting['cover_tags_enlarge'] == setting['cover_file_enlarge']
+        same_width = setting['cover_tags_resize_target_width'] == setting['cover_file_resize_target_width']
+        same_height = setting['cover_tags_resize_target_height'] == setting['cover_file_resize_target_height']
         same_resize_mode = setting['cover_tags_resize_mode'] == setting['cover_file_resize_mode']
-        return both_resize and same_enlarge and same_size and same_resize_mode
+        return both_resize and same_enlarge and same_width and same_height and same_resize_mode
 
     def run(self, image, target):
         start_time = time.time()
         config = get_config()
         if target == ProcessingTarget.TAGS:
-            scale_up = not config.setting['cover_tags_dont_enlarge']
-            use_width = config.setting['cover_tags_resize_use_width']
+            scale_up = config.setting['cover_tags_enlarge']
             target_width = config.setting['cover_tags_resize_target_width']
-            use_height = config.setting['cover_tags_resize_use_height']
             target_height = config.setting['cover_tags_resize_target_height']
-            crop = config.setting['cover_tags_resize_mode'] == 1
-            stretch = config.setting['cover_tags_resize_mode'] == 2
+            resize_mode = config.setting['cover_tags_resize_mode']
         else:
-            scale_up = not config.setting['cover_file_dont_enlarge']
-            use_width = config.setting['cover_file_resize_use_width']
+            scale_up = config.setting['cover_file_enlarge']
             target_width = config.setting['cover_file_resize_target_width']
-            use_height = config.setting['cover_file_resize_use_height']
             target_height = config.setting['cover_file_resize_target_height']
-            crop = config.setting['cover_file_resize_mode'] == 1
-            stretch = config.setting['cover_file_resize_mode'] == 2
+            resize_mode = config.setting['cover_file_resize_mode']
 
-        width_resize = target_width if use_width else image.info.width
-        height_resize = target_height if use_height else image.info.height
-        width_scale_factor = width_resize / image.info.width
-        height_scale_factor = height_resize / image.info.height
-        use_both_dimensions = use_height and use_width
-        if use_both_dimensions and not stretch:
-            if crop:
-                scale_factor = max(width_scale_factor, height_scale_factor)
-            else:
-                scale_factor = min(width_scale_factor, height_scale_factor)
-            width_scale_factor = scale_factor
-            height_scale_factor = scale_factor
-        if (width_scale_factor == 1 and height_scale_factor == 1
-                or ((width_scale_factor > 1 or height_scale_factor > 1) and not scale_up)):
+        width_scale_factor = target_width / image.info.width
+        height_scale_factor = target_height / image.info.height
+        if resize_mode == ResizeModes.MAINTAIN_ASPECT_RATIO:
+            scale_factor = min(width_scale_factor, height_scale_factor)
+        elif resize_mode == ResizeModes.SCALE_TO_WIDTH:
+            scale_factor = width_scale_factor
+        elif resize_mode == ResizeModes.SCALE_TO_HEIGHT:
+            scale_factor = height_scale_factor
+        else:  # crop or stretch
+            scale_factor = max(width_scale_factor, height_scale_factor)
+        if scale_factor == 1 or scale_factor > 1 and not scale_up:
             # no resizing needed
             return
 
         qimage = image.get_qimage()
-        if stretch:
-            scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.IgnoreAspectRatio)
-        elif crop:
-            scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.KeepAspectRatioByExpanding)
-            cutoff_width = (scaled_image.width() - width_resize) // 2
-            cutoff_height = (scaled_image.height() - height_resize) // 2
-            scaled_image = scaled_image.copy(cutoff_width, cutoff_height, width_resize, height_resize)
-        else:  # keep aspect ratio
-            if use_both_dimensions:
-                scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.KeepAspectRatio)
-            elif use_width:
-                scaled_image = qimage.scaledToWidth(width_resize)
-            else:
-                scaled_image = qimage.scaledToHeight(height_resize)
+        new_width = image.info.width * scale_factor
+        new_height = image.info.height * scale_factor
+        if resize_mode == ResizeModes.STRETCH_TO_FIT:
+            new_width = image.info.width * width_scale_factor
+            new_height = image.info.height * height_scale_factor
+        scaled_image = qimage.scaled(int(new_width), int(new_height), Qt.AspectRatioMode.IgnoreAspectRatio)
+        if resize_mode == ResizeModes.CROP_TO_FIT:
+            cutoff_width = (scaled_image.width() - target_width) // 2
+            cutoff_height = (scaled_image.height() - target_height) // 2
+            scaled_image = scaled_image.copy(cutoff_width, cutoff_height, target_width, target_height)
 
         log.debug(
             "Resized cover art from %d x %d to %d x %d in %.2f ms",

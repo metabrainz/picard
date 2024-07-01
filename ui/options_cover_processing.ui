@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>535</width>
-    <height>467</height>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -183,9 +183,9 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QCheckBox" name="tags_resize_width_label">
+             <widget class="QLabel" name="tags_resize_width_label">
               <property name="text">
-               <string>Width:</string>
+               <string>Maximum width:</string>
               </property>
              </widget>
             </item>
@@ -240,9 +240,9 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QCheckBox" name="tags_resize_height_label">
+             <widget class="QLabel" name="tags_resize_height_label">
               <property name="text">
-               <string>Height:</string>
+               <string>Maximum height:</string>
               </property>
              </widget>
             </item>
@@ -281,7 +281,7 @@
          <item>
           <widget class="QCheckBox" name="tags_scale_up">
            <property name="text">
-            <string>Don't enlarge</string>
+            <string>Enlarge</string>
            </property>
           </widget>
          </item>
@@ -337,9 +337,9 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QCheckBox" name="file_resize_width_label">
+             <widget class="QLabel" name="file_resize_width_label">
               <property name="text">
-               <string>Width:</string>
+               <string>Maximum width:</string>
               </property>
              </widget>
             </item>
@@ -394,9 +394,9 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QCheckBox" name="file_resize_height_label">
+             <widget class="QLabel" name="file_resize_height_label">
               <property name="text">
-               <string>Height:</string>
+               <string>Maximum height:</string>
               </property>
              </widget>
             </item>
@@ -435,7 +435,7 @@
          <item>
           <widget class="QCheckBox" name="file_scale_up">
            <property name="text">
-            <string>Don't enlarge</string>
+            <string>Enlarge</string>
            </property>
           </widget>
          </item>

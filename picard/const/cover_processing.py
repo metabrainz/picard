@@ -20,8 +20,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
+from enum import IntEnum
 
 from picard.i18n import N_
+
+
+class ResizeModes(IntEnum):
+    MAINTAIN_ASPECT_RATIO = 0,
+    SCALE_TO_WIDTH = 1,
+    SCALE_TO_HEIGHT = 2,
+    CROP_TO_FIT = 3,
+    STRETCH_TO_FIT = 4
 
 
 CoverResizeMode = namedtuple('CoverResizeMode', ['mode', 'title', 'tooltip'])
@@ -32,7 +41,7 @@ COVER_RESIZE_MODES = [
     # different from the order of appearance in the combo box.  This will
     # allow modes to be added or removed and re-ordered if required.
 
-    CoverResizeMode(0, N_('Maintain aspect ratio'), N_(
+    CoverResizeMode(ResizeModes.MAINTAIN_ASPECT_RATIO, N_('Maintain aspect ratio'), N_(
         "<p>"
         "Scale the source image so that it fits within the target dimensions."
         "</p><p>"
@@ -44,7 +53,25 @@ COVER_RESIZE_MODES = [
         "</p>"
     )),
 
-    CoverResizeMode(1, N_('Crop to fit'), N_(
+    CoverResizeMode(ResizeModes.SCALE_TO_WIDTH, N_('Scale to width'), N_(
+        "<p>"
+        "Scale the width of the source image to the target width while keeping aspect ratio."
+        "</p><p>"
+        "For example, a 2000x1000 image resized to a target width of "
+        "1000 would result in a final image size of 1000x500."
+        "</p>"
+    )),
+
+    CoverResizeMode(ResizeModes.SCALE_TO_HEIGHT, N_('Scale to height'), N_(
+        "<p>"
+        "Scale the height of the source image to the target height while keeping aspect ratio."
+        "</p><p>"
+        "For example, a 1000x2000 image resized to a target height of "
+        "1000 would result in a final image size of 500x1000."
+        "</p>"
+    )),
+
+    CoverResizeMode(ResizeModes.CROP_TO_FIT, N_('Crop to fit'), N_(
         "<p>"
         "Scale the source image so that it completely fills the target dimensions "
         "in both directions."
@@ -58,7 +85,7 @@ COVER_RESIZE_MODES = [
         "</p>"
     )),
 
-    CoverResizeMode(2, N_('Stretch to fit'), N_(
+    CoverResizeMode(ResizeModes.STRETCH_TO_FIT, N_('Stretch to fit'), N_(
         "<p>"
         "Stretch the image to exactly fit the specified dimensions, "
         "distorting it if necessary."
