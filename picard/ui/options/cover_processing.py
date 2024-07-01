@@ -22,6 +22,7 @@
 from functools import partial
 
 from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QSpinBox
 
 from picard.config import get_config
 from picard.const.cover_processing import (
@@ -97,15 +98,18 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.file_resize_mode.currentIndexChanged.connect(file_resize_mode_changed)
 
     def _resize_mode_changed(self, width_widget, height_widget, index):
+        width_visible = True
+        height_visible = True
         if index == ResizeModes.SCALE_TO_WIDTH:
-            width_widget.setEnabled(True)
-            height_widget.setEnabled(False)
+            height_visible = False
         elif index == ResizeModes.SCALE_TO_HEIGHT:
-            width_widget.setEnabled(False)
-            height_widget.setEnabled(True)
-        else:
-            width_widget.setEnabled(True)
-            height_widget.setEnabled(True)
+            width_visible = False
+        width_widget.setEnabled(width_visible)
+        width_spinbox = width_widget.findChildren(QSpinBox)[0]
+        width_spinbox.lineEdit().setVisible(width_visible)
+        height_widget.setEnabled(height_visible)
+        height_spinbox = height_widget.findChildren(QSpinBox)[0]
+        height_spinbox.lineEdit().setVisible(height_visible)
 
     def load(self):
         config = get_config()
