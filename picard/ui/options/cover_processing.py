@@ -71,15 +71,11 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.register_setting('cover_file_convert_images')
         self.register_setting('cover_file_convert_to_format')
 
-        self.mode_number_to_line = {}   # Map of mode number to combo box line index
-        self.mode_line_to_number = {}   # Map of combo box line index to mode number
-        for item_id, resize_mode in enumerate(COVER_RESIZE_MODES):
-            self.mode_line_to_number[item_id] = resize_mode.mode
-            self.mode_number_to_line[resize_mode.mode] = item_id
-            self.ui.tags_resize_mode.addItem(resize_mode.title, resize_mode.mode)
-            self.ui.file_resize_mode.addItem(resize_mode.title, resize_mode.mode)
-            self.ui.tags_resize_mode.setItemData(item_id, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
-            self.ui.file_resize_mode.setItemData(item_id, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
+        for resize_mode in COVER_RESIZE_MODES:
+            self.ui.tags_resize_mode.addItem(resize_mode.title, resize_mode.mode.value)
+            self.ui.file_resize_mode.addItem(resize_mode.title, resize_mode.mode.value)
+            self.ui.tags_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
+            self.ui.file_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
 
         self.ui.convert_tags_format.addItems(COVER_CONVERTING_FORMATS)
         self.ui.convert_file_format.addItems(COVER_CONVERTING_FORMATS)
@@ -120,18 +116,20 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.tags_scale_down.setChecked(config.setting['cover_tags_resize'])
         self.ui.tags_resize_width_value.setValue(config.setting['cover_tags_resize_target_width'])
         self.ui.tags_resize_height_value.setValue(config.setting['cover_tags_resize_target_height'])
-        self.ui.tags_resize_mode.setCurrentIndex(self.mode_number_to_line[config.setting['cover_tags_resize_mode']]
-                                                 if config.setting['cover_tags_resize_mode'] in self.mode_number_to_line
-                                                 else 0)
+        current_index = self.ui.tags_resize_mode.findData(config.setting['cover_tags_resize_mode'])
+        if current_index == -1:
+            current_index = ResizeModes.MAINTAIN_ASPECT_RATIO
+        self.ui.tags_resize_mode.setCurrentIndex(current_index)
         self.ui.convert_tags.setChecked(config.setting['cover_tags_convert_images'])
         self.ui.convert_tags_format.setCurrentText(config.setting['cover_tags_convert_to_format'])
         self.ui.file_scale_up.setChecked(config.setting['cover_file_enlarge'])
         self.ui.file_scale_down.setChecked(config.setting['cover_file_resize'])
         self.ui.file_resize_width_value.setValue(config.setting['cover_file_resize_target_width'])
         self.ui.file_resize_height_value.setValue(config.setting['cover_file_resize_target_height'])
-        self.ui.file_resize_mode.setCurrentIndex(self.mode_number_to_line[config.setting['cover_file_resize_mode']]
-                                                 if config.setting['cover_file_resize_mode'] in self.mode_number_to_line
-                                                 else 0)
+        current_index = self.ui.file_resize_mode.findData(config.setting['cover_file_resize_mode'])
+        if current_index == -1:
+            current_index = ResizeModes.MAINTAIN_ASPECT_RATIO
+        self.ui.file_resize_mode.setCurrentIndex(current_index)
         self.ui.convert_file.setChecked(config.setting['cover_file_convert_images'])
         self.ui.convert_file_format.setCurrentText(config.setting['cover_file_convert_to_format'])
 
@@ -144,14 +142,14 @@ class CoverProcessingOptionsPage(OptionsPage):
         config.setting['cover_tags_resize'] = self.ui.tags_scale_down.isChecked()
         config.setting['cover_tags_resize_target_width'] = self.ui.tags_resize_width_value.value()
         config.setting['cover_tags_resize_target_height'] = self.ui.tags_resize_height_value.value()
-        config.setting['cover_tags_resize_mode'] = self.mode_line_to_number[self.ui.tags_resize_mode.currentIndex()]
+        config.setting['cover_tags_resize_mode'] = self.ui.tags_resize_mode.currentData()
         config.setting['cover_tags_convert_images'] = self.ui.convert_tags.isChecked()
         config.setting['cover_tags_convert_to_format'] = self.ui.convert_tags_format.currentText()
         config.setting['cover_file_enlarge'] = self.ui.file_scale_up.isChecked()
         config.setting['cover_file_resize'] = self.ui.file_scale_down.isChecked()
         config.setting['cover_file_resize_target_width'] = self.ui.file_resize_width_value.value()
         config.setting['cover_file_resize_target_height'] = self.ui.file_resize_height_value.value()
-        config.setting['cover_file_resize_mode'] = self.mode_line_to_number[self.ui.file_resize_mode.currentIndex()]
+        config.setting['cover_file_resize_mode'] = self.ui.file_resize_mode.currentData()
         config.setting['cover_file_convert_images'] = self.ui.convert_file.isChecked()
         config.setting['cover_file_convert_to_format'] = self.ui.convert_file_format.currentText()
 

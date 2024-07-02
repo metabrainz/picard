@@ -35,7 +35,7 @@ class ResizeModes(IntEnum):
 
 CoverResizeMode = namedtuple('CoverResizeMode', ['mode', 'title', 'tooltip'])
 
-COVER_RESIZE_MODES = [
+COVER_RESIZE_MODES = (
     # Items are entered in the order they should appear in the combo box.
     # The number is the mode number stored in the settings and may be
     # different from the order of appearance in the combo box.  This will
@@ -95,6 +95,6 @@ COVER_RESIZE_MODES = [
         "size of 1000x1000."
         "</p>"
     )),
-]
+)
 
-COVER_CONVERTING_FORMATS = ['JPEG', 'PNG', 'WebP', 'TIFF']
+COVER_CONVERTING_FORMATS = ('JPEG', 'PNG', 'WebP', 'TIFF')
