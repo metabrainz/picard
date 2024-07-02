@@ -24,6 +24,7 @@ from PyQt6.QtCore import Qt
 
 from picard import log
 from picard.config import get_config
+from picard.const.cover_processing import ResizeModes
 from picard.extension_points.cover_art_processors import (
     ImageProcessor,
     ProcessingTarget,
@@ -35,86 +36,60 @@ class ResizeImage(ImageProcessor):
 
     def save_to_file(self):
         config = get_config()
-        return config.setting['cover_file_scale_down'] or config.setting['cover_file_scale_up']
+        return config.setting['cover_file_resize']
 
     def save_to_tags(self):
         config = get_config()
-        return config.setting['cover_tags_scale_down'] or config.setting['cover_tags_scale_up']
+        return config.setting['cover_tags_resize']
 
     def same_processing(self):
         setting = get_config().setting
-        tags_size = (
-            setting['cover_tags_resize_target_width'] if setting['cover_tags_resize_use_width'] else 0,
-            setting['cover_tags_resize_target_height'] if setting['cover_tags_resize_use_height'] else 0
-        )
-        file_size = (
-            setting['cover_file_resize_target_width'] if setting['cover_file_resize_use_width'] else 0,
-            setting['cover_file_resize_target_height'] if setting['cover_file_resize_use_height'] else 0
-        )
-        same_size = tags_size == file_size
-        tags_direction = (setting['cover_tags_scale_up'], setting['cover_tags_scale_down'])
-        file_direction = (setting['cover_file_scale_up'], setting['cover_file_scale_down'])
-        same_direction = tags_direction == file_direction and any(tags_direction)
-        tags_resize_mode = (setting['cover_tags_stretch'], setting['cover_tags_crop'])
-        file_resize_mode = (setting['cover_file_stretch'], setting['cover_file_crop'])
-        same_resize_mode = tags_resize_mode == file_resize_mode
-        return same_size and same_direction and same_resize_mode
+        both_resize = setting['cover_tags_resize'] and setting['cover_file_resize']
+        same_enlarge = setting['cover_tags_enlarge'] == setting['cover_file_enlarge']
+        same_width = setting['cover_tags_resize_target_width'] == setting['cover_file_resize_target_width']
+        same_height = setting['cover_tags_resize_target_height'] == setting['cover_file_resize_target_height']
+        same_resize_mode = setting['cover_tags_resize_mode'] == setting['cover_file_resize_mode']
+        return both_resize and same_enlarge and same_width and same_height and same_resize_mode
 
     def run(self, image, target):
         start_time = time.time()
         config = get_config()
         if target == ProcessingTarget.TAGS:
-            scale_up = config.setting['cover_tags_scale_up']
-            scale_down = config.setting['cover_tags_scale_down']
-            use_width = config.setting['cover_tags_resize_use_width']
+            scale_up = config.setting['cover_tags_enlarge']
             target_width = config.setting['cover_tags_resize_target_width']
-            use_height = config.setting['cover_tags_resize_use_height']
             target_height = config.setting['cover_tags_resize_target_height']
-            stretch = config.setting['cover_tags_stretch']
-            crop = config.setting['cover_tags_crop']
+            resize_mode = config.setting['cover_tags_resize_mode']
         else:
-            scale_up = config.setting['cover_file_scale_up']
-            scale_down = config.setting['cover_file_scale_down']
-            use_width = config.setting['cover_file_resize_use_width']
+            scale_up = config.setting['cover_file_enlarge']
             target_width = config.setting['cover_file_resize_target_width']
-            use_height = config.setting['cover_file_resize_use_height']
             target_height = config.setting['cover_file_resize_target_height']
-            stretch = config.setting['cover_file_stretch']
-            crop = config.setting['cover_file_crop']
+            resize_mode = config.setting['cover_file_resize_mode']
 
-        width_resize = target_width if use_width else image.info.width
-        height_resize = target_height if use_height else image.info.height
-        width_scale_factor = width_resize / image.info.width
-        height_scale_factor = height_resize / image.info.height
-        use_both_dimensions = use_height and use_width
-        if use_both_dimensions and not stretch:
-            if crop:
-                scale_factor = max(width_scale_factor, height_scale_factor)
-            else:
-                scale_factor = min(width_scale_factor, height_scale_factor)
-            width_scale_factor = scale_factor
-            height_scale_factor = scale_factor
-        if (width_scale_factor == 1 and height_scale_factor == 1
-                or ((width_scale_factor > 1 or height_scale_factor > 1) and not scale_up)
-                or ((width_scale_factor < 1 or height_scale_factor < 1) and not scale_down)):
+        width_scale_factor = target_width / image.info.width
+        height_scale_factor = target_height / image.info.height
+        if resize_mode == ResizeModes.MAINTAIN_ASPECT_RATIO:
+            scale_factor = min(width_scale_factor, height_scale_factor)
+        elif resize_mode == ResizeModes.SCALE_TO_WIDTH:
+            scale_factor = width_scale_factor
+        elif resize_mode == ResizeModes.SCALE_TO_HEIGHT:
+            scale_factor = height_scale_factor
+        else:  # crop or stretch
+            scale_factor = max(width_scale_factor, height_scale_factor)
+        if scale_factor == 1 or scale_factor > 1 and not scale_up:
             # no resizing needed
             return
 
-        qimage = image.get_result()
-        if stretch:
-            scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.IgnoreAspectRatio)
-        elif crop:
-            scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.KeepAspectRatioByExpanding)
-            cutoff_width = (scaled_image.width() - width_resize) // 2
-            cutoff_height = (scaled_image.height() - height_resize) // 2
-            scaled_image = scaled_image.copy(cutoff_width, cutoff_height, width_resize, height_resize)
-        else:  # keep aspect ratio
-            if use_both_dimensions:
-                scaled_image = qimage.scaled(width_resize, height_resize, Qt.AspectRatioMode.KeepAspectRatio)
-            elif use_width:
-                scaled_image = qimage.scaledToWidth(width_resize)
-            else:
-                scaled_image = qimage.scaledToHeight(height_resize)
+        qimage = image.get_qimage()
+        new_width = image.info.width * scale_factor
+        new_height = image.info.height * scale_factor
+        if resize_mode == ResizeModes.STRETCH_TO_FIT:
+            new_width = image.info.width * width_scale_factor
+            new_height = image.info.height * height_scale_factor
+        scaled_image = qimage.scaled(int(new_width), int(new_height), Qt.AspectRatioMode.IgnoreAspectRatio)
+        if resize_mode == ResizeModes.CROP_TO_FIT:
+            cutoff_width = (scaled_image.width() - target_width) // 2
+            cutoff_height = (scaled_image.height() - target_height) // 2
+            scaled_image = scaled_image.copy(cutoff_width, cutoff_height, target_width, target_height)
 
         log.debug(
             "Resized cover art from %d x %d to %d x %d in %.2f ms",

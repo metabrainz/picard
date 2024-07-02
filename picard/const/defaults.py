@@ -16,6 +16,7 @@
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Vladislav Karbovskii
+# Copyright (C) 2024 Giorgio Fontanive
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,6 +41,7 @@ from picard.const import (
     RELEASE_PRIMARY_GROUPS,
     RELEASE_SECONDARY_GROUPS,
 )
+from picard.const.cover_processing import ResizeModes
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -153,4 +155,6 @@ DEFAULT_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 DEFAULT_COVER_MIN_SIZE = 250
 DEFAULT_COVER_MAX_SIZE = 1000
-DEFAULT_COVER_CONVERTING_FORMAT = "jpeg"
+DEFAULT_COVER_RESIZE_MODE = ResizeModes.MAINTAIN_ASPECT_RATIO
+
+DEFAULT_COVER_CONVERTING_FORMAT = 'JPEG'
