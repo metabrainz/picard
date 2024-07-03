@@ -67,13 +67,13 @@ def run_image_processors(data, coverartimage):
             tags_image = image.copy()
             for processor in tags_queue:
                 processor.run(tags_image, ProcessingTarget.TAGS)
-            tags_data = tags_image.get_result(default_format=True)
+            tags_data = tags_image.get_result()
         coverartimage.set_tags_data(tags_data)
         if config.setting['save_images_to_files']:
             file_image = image.copy()
             for processor in file_queue:
                 processor.run(file_image, ProcessingTarget.FILE)
-            file_data = file_image.get_result(default_format=True)
+            file_data = file_image.get_result()
             coverartimage.set_external_file_data(file_data)
         log.debug(
             "Image processing for %s finished in %d ms",
