@@ -74,10 +74,10 @@ class CoverArt:
         else:
             log.debug("Cover art disabled by user options.")
 
-    def _set_metadata(self, coverartimage, data):
+    def _set_metadata(self, coverartimage, data, info):
         try:
             if coverartimage.can_be_processed:
-                run_image_processors(data, coverartimage)
+                run_image_processors(coverartimage, data, info)
             else:
                 coverartimage.set_tags_data(data)
             if coverartimage.can_be_saved_to_metadata:
@@ -102,20 +102,16 @@ class CoverArt:
             self.album.error_append(e)
 
     def _should_save_image(self, coverartimage, data, info):
-        log.warning("image save check")
         config = get_config()
         if config.setting['dont_replace_with_smaller_cover']:
             downloaded_types = coverartimage.normalized_types()
-            log.warning(downloaded_types)
-            log.warning(self.previous_images.keys())
             if downloaded_types in self.previous_images:
                 previous_image = self.previous_images[downloaded_types]
-                log.warning(previous_image)
                 if info.width < previous_image.width or info.height < previous_image.height:
                     log.debug("Discarding cover art. A bigger image with the same types is already embedded.")
                     return False
         if coverartimage.can_be_filtered:
-            return run_image_filters(data)
+            return run_image_filters(data, info)
         return True
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
@@ -139,7 +135,7 @@ class CoverArt:
             try:
                 info = imageinfo.identify(data)
                 if self._should_save_image(coverartimage, data, info):
-                    self._set_metadata(coverartimage, data)
+                    self._set_metadata(coverartimage, data, info)
             except (CoverArtImageIOError, imageinfo.IdentificationError):
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.

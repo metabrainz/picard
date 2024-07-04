@@ -50,7 +50,12 @@ def create_fake_image(width, height, image_format):
     image = QImage(width, height, QImage.Format.Format_ARGB32)
     image.save(buffer, image_format)
     buffer.close()
-    return buffer.data()
+    data = buffer.data()
+    try:
+        info = imageinfo.identify(data)
+    except imageinfo.IdentificationError:
+        info = None
+    return data, info
 
 
 class ImageFiltersTest(PicardTestCase):
@@ -64,12 +69,12 @@ class ImageFiltersTest(PicardTestCase):
         self.set_config_values(settings)
 
     def test_filter_by_size(self):
-        image1 = create_fake_image(400, 600, 'png')
-        image2 = create_fake_image(500, 500, 'jpeg')
-        image3 = create_fake_image(600, 600, 'bmp')
-        self.assertFalse(size_filter(image1))
-        self.assertTrue(size_filter(image2))
-        self.assertTrue(size_filter(image3))
+        image1, info1 = create_fake_image(400, 600, 'png')
+        image2, info2 = create_fake_image(500, 500, 'jpeg')
+        image3, info3 = create_fake_image(600, 600, 'tiff')
+        self.assertFalse(size_filter(image1, info1))
+        self.assertTrue(size_filter(image2, info2))
+        self.assertTrue(size_filter(image3, info3))
 
     def test_filter_by_size_metadata(self):
         image_metadata1 = {'width': 400, 'height': 600}
@@ -105,8 +110,8 @@ class ImageProcessorsTest(PicardTestCase):
 
     def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
         coverartimage = CoverArtImage()
-        image = create_fake_image(size[0], size[1], 'jpg')
-        run_image_processors(image, coverartimage)
+        image, info = create_fake_image(size[0], size[1], 'jpg')
+        run_image_processors(coverartimage, image, info)
         tags_size = (coverartimage.width, coverartimage.height)
         if config.setting['save_images_to_tags']:
             self.assertEqual(tags_size, expected_tags_size)
@@ -154,7 +159,7 @@ class ImageProcessorsTest(PicardTestCase):
         self.set_config_values(self.settings)
 
     def _check_resize_image(self, size, expected_size):
-        image = ProcessingImage(create_fake_image(size[0], size[1], 'jpg'))
+        image = ProcessingImage(*create_fake_image(size[0], size[1], 'jpg'))
         processor = ResizeImage()
         processor.run(image, ProcessingTarget.TAGS)
         new_size = (image.get_qimage().width(), image.get_qimage().height())
@@ -237,7 +242,7 @@ class ImageProcessorsTest(PicardTestCase):
         self.set_config_values(self.settings)
 
     def _check_convert_image(self, format, expected_format):
-        image = ProcessingImage(create_fake_image(100, 100, format))
+        image = ProcessingImage(*create_fake_image(100, 100, format))
         processor = ConvertImage()
         processor.run(image, ProcessingTarget.TAGS)
         new_image = image.get_result()
@@ -255,7 +260,7 @@ class ImageProcessorsTest(PicardTestCase):
         self.set_config_values(self.settings)
 
     def test_identification_error(self):
-        image = create_fake_image(0, 0, 'jpg')
+        image, info = create_fake_image(0, 0, 'jpg')
         coverartimage = CoverArtImage()
         with self.assertRaises(CoverArtProcessingError):
-            run_image_processors(image, coverartimage)
+            run_image_processors(coverartimage, image, info)

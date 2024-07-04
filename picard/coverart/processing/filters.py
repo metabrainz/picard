@@ -18,8 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6.QtGui import QImage
-
 from picard import log
 from picard.config import get_config
 from picard.extension_points.cover_art_filters import (
@@ -47,9 +45,8 @@ def _check_threshold_size(width, height):
     return True
 
 
-def size_filter(data):
-    image = QImage.fromData(data)
-    return _check_threshold_size(image.width(), image.height())
+def size_filter(data, info):
+    return _check_threshold_size(info.width, info.height)
 
 
 def size_metadata_filter(metadata):
