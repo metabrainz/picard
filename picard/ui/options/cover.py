@@ -67,6 +67,7 @@ class CoverOptionsPage(OptionsPage):
 
         self.register_setting('save_images_to_tags', ['save_images_to_tags'])
         self.register_setting('embed_only_one_front_image', ['cb_embed_front_only'])
+        self.register_setting('dont_replace_with_smaller_cover', ['dont_replace_with_smaller_cover'])
         self.register_setting('save_images_to_files', ['save_images_to_files'])
         self.register_setting('cover_image_filename', ['cover_image_filename'])
         self.register_setting('save_images_overwrite', ['save_images_overwrite'])
@@ -92,6 +93,7 @@ class CoverOptionsPage(OptionsPage):
         config = get_config()
         self.ui.save_images_to_tags.setChecked(config.setting['save_images_to_tags'])
         self.ui.cb_embed_front_only.setChecked(config.setting['embed_only_one_front_image'])
+        self.ui.cb_dont_replace_with_smaller.setChecked(config.setting['dont_replace_with_smaller_cover'])
         self.ui.save_images_to_files.setChecked(config.setting['save_images_to_files'])
         self.ui.cover_image_filename.setText(config.setting['cover_image_filename'])
         self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
@@ -109,6 +111,7 @@ class CoverOptionsPage(OptionsPage):
         config = get_config()
         config.setting['save_images_to_tags'] = self.ui.save_images_to_tags.isChecked()
         config.setting['embed_only_one_front_image'] = self.ui.cb_embed_front_only.isChecked()
+        config.setting['dont_replace_with_smaller_cover'] = self.ui.cb_dont_replace_with_smaller.isChecked()
         config.setting['save_images_to_files'] = self.ui.save_images_to_files.isChecked()
         config.setting['cover_image_filename'] = self.ui.cover_image_filename.text()
         config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()

@@ -101,3 +101,9 @@ class ImageList(MutableSequence):
             self._hash_dict = {img.datahash.hash(): img for img in self._images}
             self._dirty = False
         return self._hash_dict
+
+    def get_types_dict(self):
+        types_dict = dict()
+        for image in self._images:
+            types_dict[image.normalized_types()] = image
+        return types_dict

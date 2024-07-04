@@ -49,6 +49,7 @@ from picard.extension_points.cover_art_processors import (
 )
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
+from picard.util import imageinfo
 
 
 class CoverArt:
@@ -59,6 +60,7 @@ class CoverArt:
         self.metadata = metadata
         self.release = release  # not used in this class, but used by providers
         self.front_image_found = False
+        self.previous_images = album.orig_metadata.images.get_types_dict()
 
     def __repr__(self):
         return "%s for %r" % (self.__class__.__name__, self.album)
@@ -99,6 +101,23 @@ class CoverArt:
         except (CoverArtImageIdentificationError, CoverArtProcessingError) as e:
             self.album.error_append(e)
 
+    def _should_save_image(self, coverartimage, data, info):
+        log.warning("image save check")
+        config = get_config()
+        if config.setting['dont_replace_with_smaller_cover']:
+            downloaded_types = coverartimage.normalized_types()
+            log.warning(downloaded_types)
+            log.warning(self.previous_images.keys())
+            if downloaded_types in self.previous_images:
+                previous_image = self.previous_images[downloaded_types]
+                log.warning(previous_image)
+                if info.width < previous_image.width or info.height < previous_image.height:
+                    log.debug("Discarding cover art. A bigger image with the same types is already embedded.")
+                    return False
+        if coverartimage.can_be_filtered:
+            return run_image_filters(data)
+        return True
+
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
         self.album._requests -= 1
@@ -117,16 +136,14 @@ class CoverArt:
                 },
                 echo=None
             )
-            filters_result = True
-            if coverartimage.can_be_filtered:
-                filters_result = run_image_filters(data)
-            if filters_result:
-                try:
+            try:
+                info = imageinfo.identify(data)
+                if self._should_save_image(coverartimage, data, info):
                     self._set_metadata(coverartimage, data)
-                except CoverArtImageIOError:
-                    # It doesn't make sense to store/download more images if we can't
-                    # save them in the temporary folder, abort.
-                    return
+            except (CoverArtImageIOError, imageinfo.IdentificationError):
+                # It doesn't make sense to store/download more images if we can't
+                # save them in the temporary folder, abort.
+                return
 
         self.next_in_queue()
 

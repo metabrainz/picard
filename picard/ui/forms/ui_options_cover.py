@@ -31,6 +31,9 @@ class Ui_CoverOptionsPage(object):
         self.cb_embed_front_only = QtWidgets.QCheckBox(parent=self.save_images_to_tags)
         self.cb_embed_front_only.setObjectName("cb_embed_front_only")
         self.vboxlayout.addWidget(self.cb_embed_front_only)
+        self.cb_dont_replace_with_smaller = QtWidgets.QCheckBox(parent=self.save_images_to_tags)
+        self.cb_dont_replace_with_smaller.setObjectName("cb_dont_replace_with_smaller")
+        self.vboxlayout.addWidget(self.cb_dont_replace_with_smaller)
         self.verticalLayout.addWidget(self.save_images_to_tags)
         self.save_images_to_files = QtWidgets.QGroupBox(parent=CoverOptionsPage)
         self.save_images_to_files.setCheckable(True)
@@ -100,6 +103,7 @@ class Ui_CoverOptionsPage(object):
     def retranslateUi(self, CoverOptionsPage):
         self.save_images_to_tags.setTitle(_("Embed cover images into tags"))
         self.cb_embed_front_only.setText(_("Embed only a single front image"))
+        self.cb_dont_replace_with_smaller.setText(_("Never replace cover images with smaller ones"))
         self.save_images_to_files.setTitle(_("Save cover images as separate files"))
         self.label_use_filename.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
