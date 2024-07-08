@@ -39,9 +39,9 @@ from picard.extension_points.cover_art_processors import (
 from picard.util.imageinfo import IdentificationError
 
 
-def run_image_filters(data, info):
+def run_image_filters(data, info, album, coverartimage):
     for f in ext_point_cover_art_filters:
-        if not f(data, info):
+        if not f(data, info, album, coverartimage):
             return False
     return True
 

@@ -105,5 +105,10 @@ class ImageList(MutableSequence):
     def get_types_dict(self):
         types_dict = dict()
         for image in self._images:
+            image_types = image.normalized_types()
+            if image_types in types_dict:
+                previous_image = types_dict[image_types]
+                if image.width > previous_image.width or image.height > previous_image.height:
+                    continue
             types_dict[image.normalized_types()] = image
         return types_dict
