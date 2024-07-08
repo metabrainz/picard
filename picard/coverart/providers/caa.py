@@ -11,7 +11,7 @@
 # Copyright (C) 2015-2016 Rahul Raturi
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
-# Copyright (C) 2018 Bob Swift
+# Copyright (C) 2018, 2024 Bob Swift
 # Copyright (C) 2018 Vishal Choudhary
 #
 # This program is free software; you can redistribute it and/or
@@ -169,6 +169,8 @@ class ProviderOptionsCaa(ProviderOptions):
             types_include=self.caa_image_types,
             types_exclude=self.caa_image_types_to_omit,
             parent=self,
+            instructions_top=None,
+            instructions_bottom=None,
         )
         if ok:
             self.caa_image_types = types

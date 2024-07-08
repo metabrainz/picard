@@ -11,7 +11,7 @@
 # Copyright (C) 2015-2016 Rahul Raturi
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
-# Copyright (C) 2018 Bob Swift
+# Copyright (C) 2018, 2024 Bob Swift
 # Copyright (C) 2018 Vishal Choudhary
 #
 # This program is free software; you can redistribute it and/or
@@ -164,6 +164,8 @@ class CAATypesSelectorDialog(PicardDialog):
         types_include {[string]} -- List of CAA image types to include (default: {None})
         types_exclude {[string]} -- List of CAA image types to exclude (default: {None})
         parent {[type]} -- Parent of the QDialog object being created (default: {None})
+        instructions_top {string} -- Replacement for the default instruction text to display above the list boxes (default: {None})
+        instructions_bottom {string} -- Replacement for the instruction text to display between the list boxes and the button bar (default: {None})
     """
 
     help_url = 'doc_cover_art_types'
@@ -173,6 +175,8 @@ class CAATypesSelectorDialog(PicardDialog):
         types_include=None,
         types_exclude=None,
         parent=None,
+        instructions_top=None,
+        instructions_bottom=None,
     ):
         super().__init__(parent=parent)
         types_include = set(types_include or ())
@@ -201,7 +205,10 @@ class CAATypesSelectorDialog(PicardDialog):
 
         # Add instructions to the dialog box
         instructions = QtWidgets.QLabel()
-        instructions.setText(_("Please select the contents of the image type 'Include' and 'Exclude' lists."))
+        if instructions_top:
+            instructions.setText(_(instructions_top))
+        else:
+            instructions.setText(_("Please select the contents of the image type 'Include' and 'Exclude' lists."))
         instructions.setWordWrap(True)
         instructions.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.layout.addWidget(instructions)
@@ -244,13 +251,16 @@ class CAATypesSelectorDialog(PicardDialog):
 
         # Add usage explanation to the dialog box
         instructions = QtWidgets.QLabel()
-        instructions.setText(_(
-            "CAA images with an image type found in the 'Include' list will be downloaded and used "
-            "UNLESS they also have an image type found in the 'Exclude' list. Images with types "
-            "found in the 'Exclude' list will NEVER be used. Image types not appearing in the 'Include' "
-            "or 'Exclude' lists will not be considered when determining whether or not to download and "
-            "use a CAA image.\n")
-        )
+        if instructions_bottom:
+            instructions.setText(_(instructions_bottom))
+        else:
+            instructions.setText(_(
+                "CAA images with an image type found in the 'Include' list will be downloaded and used "
+                "UNLESS they also have an image type found in the 'Exclude' list. Images with types "
+                "found in the 'Exclude' list will NEVER be used. Image types not appearing in the 'Include' "
+                "or 'Exclude' lists will not be considered when determining whether or not to download and "
+                "use a CAA image.\n")
+            )
         instructions.setWordWrap(True)
         instructions.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.layout.addWidget(instructions)
@@ -366,11 +376,15 @@ class CAATypesSelectorDialog(PicardDialog):
         types_include=None,
         types_exclude=None,
         parent=None,
+        instructions_top=None,
+        instructions_bottom=None,
     ):
         dialog = cls(
             types_include=types_include,
             types_exclude=types_exclude,
             parent=parent,
+            instructions_top=instructions_top,
+            instructions_bottom=instructions_bottom,
         )
         result = dialog.exec()
         return (dialog.included, dialog.excluded, result == QtWidgets.QDialog.DialogCode.Accepted)
