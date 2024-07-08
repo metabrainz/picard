@@ -69,6 +69,20 @@ def bigger_previous_image_filter(data, info, album, coverartimage):
 
 
 def image_types_filter(data, info, album, coverartimage):
+    config = get_config()
+    if config.setting['dont_replace_cover_of_types'] and config.setting['save_images_to_tags']:
+        downloaded_types = set(coverartimage.normalized_types())
+        never_replace_types = config.setting['dont_replace_included_types']
+        always_replace_types = config.setting['dont_replace_excluded_types']
+        previous_image_types = album.orig_metadata.images.get_types_dict()
+        if downloaded_types.intersection(always_replace_types):
+            return True
+        for previous_image_type in previous_image_types:
+            type_already_embedded = downloaded_types.intersection(previous_image_type)
+            should_not_replace = downloaded_types.intersection(never_replace_types)
+            if type_already_embedded and should_not_replace:
+                log.debug("Discarding cover art. An image with the same type is already embedded.")
+                return False
     return True
 
 

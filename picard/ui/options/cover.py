@@ -31,6 +31,10 @@ from picard.config import (
     Option,
     get_config,
 )
+from picard.const.defaults import (
+    DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE,
+    DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE,
+)
 from picard.coverart.providers import cover_art_providers
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -38,6 +42,7 @@ from picard.i18n import (
     gettext as _,
 )
 
+from picard.ui.caa_types_selector import CAATypesSelectorDialog
 from picard.ui.forms.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
@@ -62,12 +67,17 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_files.clicked.connect(self.update_ca_providers_groupbox_state)
         self.ui.save_images_to_tags.clicked.connect(self.update_ca_providers_groupbox_state)
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
+        self.ui.cb_never_replace_types.toggled.connect(self.ui.select_types_button.setEnabled)
+        self.ui.select_types_button.clicked.connect(self.select_never_replace_image_types)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
                                           self.ui.down_button)
 
         self.register_setting('save_images_to_tags', ['save_images_to_tags'])
         self.register_setting('embed_only_one_front_image', ['cb_embed_front_only'])
         self.register_setting('dont_replace_with_smaller_cover', ['dont_replace_with_smaller_cover'])
+        self.register_setting('dont_replace_cover_of_types', ['dont_replace_cover_of_types'])
+        self.register_setting('dont_replace_included_types', ['dont_replace_included_types'])
+        self.register_setting('dont_replace_excluded_types', ['dont_replace_excluded_types'])
         self.register_setting('save_images_to_files', ['save_images_to_files'])
         self.register_setting('cover_image_filename', ['cover_image_filename'])
         self.register_setting('save_images_overwrite', ['save_images_overwrite'])
@@ -78,6 +88,8 @@ class CoverOptionsPage(OptionsPage):
     def restore_defaults(self):
         # Remove previous entries
         self.ui.ca_providers_list.clear()
+        self.dont_replace_included_types = DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE
+        self.dont_replace_excluded_types = DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE
         super().restore_defaults()
 
     def _load_cover_art_providers(self):
@@ -94,6 +106,10 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_to_tags.setChecked(config.setting['save_images_to_tags'])
         self.ui.cb_embed_front_only.setChecked(config.setting['embed_only_one_front_image'])
         self.ui.cb_dont_replace_with_smaller.setChecked(config.setting['dont_replace_with_smaller_cover'])
+        self.ui.cb_never_replace_types.setChecked(config.setting['dont_replace_cover_of_types'])
+        self.ui.select_types_button.setEnabled(config.setting['dont_replace_cover_of_types'])
+        self.dont_replace_included_types = config.setting['dont_replace_included_types']
+        self.dont_replace_excluded_types = config.setting['dont_replace_excluded_types']
         self.ui.save_images_to_files.setChecked(config.setting['save_images_to_files'])
         self.ui.cover_image_filename.setText(config.setting['cover_image_filename'])
         self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
@@ -112,6 +128,9 @@ class CoverOptionsPage(OptionsPage):
         config.setting['save_images_to_tags'] = self.ui.save_images_to_tags.isChecked()
         config.setting['embed_only_one_front_image'] = self.ui.cb_embed_front_only.isChecked()
         config.setting['dont_replace_with_smaller_cover'] = self.ui.cb_dont_replace_with_smaller.isChecked()
+        config.setting['dont_replace_cover_of_types'] = self.ui.cb_never_replace_types.isChecked()
+        config.setting['dont_replace_included_types'] = self.dont_replace_included_types
+        config.setting['dont_replace_excluded_types'] = self.dont_replace_excluded_types
         config.setting['save_images_to_files'] = self.ui.save_images_to_files.isChecked()
         config.setting['cover_image_filename'] = self.ui.cover_image_filename.text()
         config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
@@ -123,6 +142,16 @@ class CoverOptionsPage(OptionsPage):
         files_enabled = self.ui.save_images_to_files.isChecked()
         tags_enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
+
+    def select_never_replace_image_types(self):
+        (included_types, excluded_types, ok) = CAATypesSelectorDialog.display(
+            types_include=self.dont_replace_included_types,
+            types_exclude=self.dont_replace_excluded_types,
+            parent=self,
+        )
+        if ok:
+            self.dont_replace_included_types = included_types
+            self.dont_replace_excluded_types = excluded_types
 
 
 register_options_page(CoverOptionsPage)

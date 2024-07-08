@@ -32,6 +32,7 @@ from picard.coverart.image import CoverArtImage
 from picard.coverart.processing import run_image_processors
 from picard.coverart.processing.filters import (
     bigger_previous_image_filter,
+    image_types_filter,
     size_filter,
     size_metadata_filter,
 )
@@ -69,6 +70,9 @@ class ImageFiltersTest(PicardTestCase):
             'cover_minimum_width': 500,
             'cover_minimum_height': 500,
             'dont_replace_with_smaller_cover': True,
+            'dont_replace_cover_of_types': True,
+            'dont_replace_included_types': ['front', 'booklet'],
+            'dont_replace_excluded_types': ['back'],
             'save_images_to_tags': True,
         }
         self.set_config_values(settings)
@@ -89,12 +93,16 @@ class ImageFiltersTest(PicardTestCase):
         self.assertTrue(size_metadata_filter(image_metadata2))
         self.assertTrue(size_metadata_filter(image_metadata3))
 
-    def test_filter_by_previous_image_size(self):
+    def _create_fake_album(self):
         previous_coverartimage = CoverArtImage(types=['front'], support_types=True)
         previous_coverartimage.width = 1000
         previous_coverartimage.height = 1000
         album = Album(None)
         album.orig_metadata.images = ImageList([previous_coverartimage])
+        return album
+
+    def test_filter_by_previous_image_size(self):
+        album = self._create_fake_album()
         image1, info1 = create_fake_image(500, 500, 'jpg')
         image2, info2 = create_fake_image(2000, 2000, 'jpg')
         coverartimage = CoverArtImage(types=['front'], support_types=True)
@@ -102,6 +110,20 @@ class ImageFiltersTest(PicardTestCase):
         self.assertTrue(bigger_previous_image_filter(image2, info2, album, coverartimage))
         coverartimage = CoverArtImage(types=['back'], support_types=True)
         self.assertTrue(bigger_previous_image_filter(image1, info1, album, coverartimage))
+
+    def test_filter_by_image_type(self):
+        album = self._create_fake_album()
+        image, info = create_fake_image(1000, 1000, 'jpg')
+        coverartimage1 = CoverArtImage(types=['front'], support_types=True)
+        coverartimage2 = CoverArtImage(types=['back'], support_types=True)
+        coverartimage3 = CoverArtImage(types=['front', 'back'], support_types=True)
+        coverartimage4 = CoverArtImage(types=['spine'], support_types=True)
+        coverartimage5 = CoverArtImage(types=['booklet', 'spine'], support_types=True)
+        self.assertFalse(image_types_filter(image, info, album, coverartimage1))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage2))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage3))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage4))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage5))
 
 
 class ImageProcessorsTest(PicardTestCase):
