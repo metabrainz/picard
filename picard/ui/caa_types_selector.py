@@ -205,10 +205,9 @@ class CAATypesSelectorDialog(PicardDialog):
 
         # Add instructions to the dialog box
         instructions = QtWidgets.QLabel()
-        if instructions_top:
-            instructions.setText(_(instructions_top))
-        else:
-            instructions.setText(_("Please select the contents of the image type 'Include' and 'Exclude' lists."))
+        if instructions_top is None:
+            instructions_top = N_("Please select the contents of the image type 'Include' and 'Exclude' lists.")
+        instructions.setText(_(instructions_top))
         instructions.setWordWrap(True)
         instructions.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.layout.addWidget(instructions)
@@ -251,16 +250,15 @@ class CAATypesSelectorDialog(PicardDialog):
 
         # Add usage explanation to the dialog box
         instructions = QtWidgets.QLabel()
-        if instructions_bottom:
-            instructions.setText(_(instructions_bottom))
-        else:
-            instructions.setText(_(
+        if instructions_bottom is None:
+            instructions_bottom = N_(
                 "CAA images with an image type found in the 'Include' list will be downloaded and used "
                 "UNLESS they also have an image type found in the 'Exclude' list. Images with types "
                 "found in the 'Exclude' list will NEVER be used. Image types not appearing in the 'Include' "
                 "or 'Exclude' lists will not be considered when determining whether or not to download and "
-                "use a CAA image.\n")
+                "use a CAA image.\n"
             )
+        instructions.setText(_(instructions_bottom))
         instructions.setWordWrap(True)
         instructions.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.layout.addWidget(instructions)
