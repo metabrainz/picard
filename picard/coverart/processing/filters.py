@@ -45,8 +45,8 @@ def _check_threshold_size(width, height):
     return True
 
 
-def size_filter(data, info, album, coverartimage):
-    return _check_threshold_size(info.width, info.height)
+def size_filter(data, image_info, album, coverartimage):
+    return _check_threshold_size(image_info.width, image_info.height)
 
 
 def size_metadata_filter(metadata):
@@ -55,20 +55,20 @@ def size_metadata_filter(metadata):
     return _check_threshold_size(metadata['width'], metadata['height'])
 
 
-def bigger_previous_image_filter(data, info, album, coverartimage):
+def bigger_previous_image_filter(data, image_info, album, coverartimage):
     config = get_config()
     if config.setting['dont_replace_with_smaller_cover'] and config.setting['save_images_to_tags']:
         downloaded_types = coverartimage.normalized_types()
         previous_images = album.orig_metadata.images.get_types_dict()
         if downloaded_types in previous_images:
             previous_image = previous_images[downloaded_types]
-            if info.width < previous_image.width or info.height < previous_image.height:
+            if image_info.width < previous_image.width or image_info.height < previous_image.height:
                 log.debug("Discarding cover art. A bigger image with the same types is already embedded.")
                 return False
     return True
 
 
-def image_types_filter(data, info, album, coverartimage):
+def image_types_filter(data, image_info, album, coverartimage):
     config = get_config()
     if config.setting['dont_replace_cover_of_types'] and config.setting['save_images_to_tags']:
         downloaded_types = set(coverartimage.normalized_types())

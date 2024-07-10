@@ -72,8 +72,8 @@ DEFAULT_RELEASE_TYPE_SCORES = [(g, DEFAULT_RELEASE_SCORE) for g in list(RELEASE_
 
 
 DEFAULT_CAA_IMAGE_SIZE = 500
-DEFAULT_CAA_IMAGE_TYPE_INCLUDE = ['front']
-DEFAULT_CAA_IMAGE_TYPE_EXCLUDE = ['matrix/runout', 'raw/unedited', 'watermark']
+DEFAULT_CAA_IMAGE_TYPE_INCLUDE = ('front',)
+DEFAULT_CAA_IMAGE_TYPE_EXCLUDE = ('matrix/runout', 'raw/unedited', 'watermark')
 
 DEFAULT_LOCAL_COVER_ART_REGEX = r'^(?:cover|folder|albumart)(.*)\.(?:jpe?g|png|gif|tiff?|webp)$'
 
@@ -85,8 +85,8 @@ DEFAULT_QUERY_LIMIT = 50
 
 DEFAULT_DRIVES = get_default_cdrom_drives()
 
-DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE = ['front']
-DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE = ['matrix/runout', 'raw/unedited', 'watermark']
+DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE = ('front',)
+DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE = ('matrix/runout', 'raw/unedited', 'watermark')
 DEFAULT_CA_PROVIDERS = [
     ('Cover Art Archive', True),
     ('UrlRelationships', True),

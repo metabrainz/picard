@@ -39,9 +39,9 @@ from picard.extension_points.cover_art_processors import (
 from picard.util.imageinfo import IdentificationError
 
 
-def run_image_filters(data, info, album, coverartimage):
+def run_image_filters(data, image_info, album, coverartimage):
     for f in ext_point_cover_art_filters:
-        if not f(data, info, album, coverartimage):
+        if not f(data, image_info, album, coverartimage):
             return False
     return True
 
@@ -53,13 +53,13 @@ def run_image_metadata_filters(metadata):
     return True
 
 
-def run_image_processors(coverartimage, data, info):
+def run_image_processors(coverartimage, data, image_info):
     config = get_config()
     tags_data = data
     file_data = data
     try:
         start_time = time.time()
-        image = ProcessingImage(data, info)
+        image = ProcessingImage(data, image_info)
         both_queue, tags_queue, file_queue = get_cover_art_processors()
         for processor in both_queue:
             processor.run(image, ProcessingTarget.BOTH)
