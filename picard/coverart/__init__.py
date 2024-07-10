@@ -73,10 +73,10 @@ class CoverArt:
         else:
             log.debug("Cover art disabled by user options.")
 
-    def _set_metadata(self, coverartimage, data, info):
+    def _set_metadata(self, coverartimage, data, image_info):
         try:
             if coverartimage.can_be_processed:
-                run_image_processors(coverartimage, data, info)
+                run_image_processors(coverartimage, data, image_info)
             else:
                 coverartimage.set_tags_data(data)
             if coverartimage.can_be_saved_to_metadata:
@@ -119,12 +119,12 @@ class CoverArt:
                 echo=None
             )
             try:
-                info = imageinfo.identify(data)
+                image_info = imageinfo.identify(data)
                 filters_result = True
                 if coverartimage.can_be_filtered:
-                    filters_result = run_image_filters(data, info, self.album, coverartimage)
+                    filters_result = run_image_filters(data, image_info, self.album, coverartimage)
                 if filters_result:
-                    self._set_metadata(coverartimage, data, info)
+                    self._set_metadata(coverartimage, data, image_info)
             except (CoverArtImageIOError, imageinfo.IdentificationError):
                 # It doesn't make sense to store/download more images if we can't
                 # save them in the temporary folder, abort.

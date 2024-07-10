@@ -110,5 +110,5 @@ class ImageList(MutableSequence):
                 previous_image = types_dict[image_types]
                 if image.width > previous_image.width or image.height > previous_image.height:
                     continue
-            types_dict[image.normalized_types()] = image
+            types_dict[image_types] = image
         return types_dict
