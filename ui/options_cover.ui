@@ -45,6 +45,37 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="cb_dont_replace_with_smaller">
+        <property name="text">
+         <string>Never replace cover images with smaller ones</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="never_replace_types_layout">
+        <item>
+         <widget class="QCheckBox" name="cb_never_replace_types">
+          <property name="text">
+           <string>Never replace cover images matching selected types</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="select_types_button">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Select Types...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -130,8 +161,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-up.png">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme=":/images/16x16/go-up.png"/>
           </property>
           <property name="toolButtonStyle">
            <enum>Qt::ToolButtonIconOnly</enum>
@@ -150,8 +180,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme=":/images/16x16/go-down.png">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme=":/images/16x16/go-down.png"/>
           </property>
           <property name="toolButtonStyle">
            <enum>Qt::ToolButtonIconOnly</enum>

@@ -26,10 +26,13 @@ from PyQt6.QtGui import QImage
 from test.picardtestcase import PicardTestCase
 
 from picard import config
+from picard.album import Album
 from picard.const.cover_processing import ResizeModes
 from picard.coverart.image import CoverArtImage
 from picard.coverart.processing import run_image_processors
 from picard.coverart.processing.filters import (
+    bigger_previous_image_filter,
+    image_types_filter,
     size_filter,
     size_metadata_filter,
 )
@@ -43,6 +46,7 @@ from picard.extension_points.cover_art_processors import (
     ProcessingTarget,
 )
 from picard.util import imageinfo
+from picard.util.imagelist import ImageList
 
 
 def create_fake_image(width, height, image_format):
@@ -50,7 +54,12 @@ def create_fake_image(width, height, image_format):
     image = QImage(width, height, QImage.Format.Format_ARGB32)
     image.save(buffer, image_format)
     buffer.close()
-    return buffer.data()
+    data = buffer.data()
+    try:
+        info = imageinfo.identify(data)
+    except imageinfo.IdentificationError:
+        info = None
+    return data, info
 
 
 class ImageFiltersTest(PicardTestCase):
@@ -59,17 +68,22 @@ class ImageFiltersTest(PicardTestCase):
         settings = {
             'filter_cover_by_size': True,
             'cover_minimum_width': 500,
-            'cover_minimum_height': 500
+            'cover_minimum_height': 500,
+            'dont_replace_with_smaller_cover': True,
+            'dont_replace_cover_of_types': True,
+            'dont_replace_included_types': ['front', 'booklet'],
+            'dont_replace_excluded_types': ['back'],
+            'save_images_to_tags': True,
         }
         self.set_config_values(settings)
 
     def test_filter_by_size(self):
-        image1 = create_fake_image(400, 600, 'png')
-        image2 = create_fake_image(500, 500, 'jpeg')
-        image3 = create_fake_image(600, 600, 'bmp')
-        self.assertFalse(size_filter(image1))
-        self.assertTrue(size_filter(image2))
-        self.assertTrue(size_filter(image3))
+        image1, info1 = create_fake_image(400, 600, 'png')
+        image2, info2 = create_fake_image(500, 500, 'jpeg')
+        image3, info3 = create_fake_image(600, 600, 'tiff')
+        self.assertFalse(size_filter(image1, info1, None, None))
+        self.assertTrue(size_filter(image2, info2, None, None))
+        self.assertTrue(size_filter(image3, info3, None, None))
 
     def test_filter_by_size_metadata(self):
         image_metadata1 = {'width': 400, 'height': 600}
@@ -78,6 +92,38 @@ class ImageFiltersTest(PicardTestCase):
         self.assertFalse(size_metadata_filter(image_metadata1))
         self.assertTrue(size_metadata_filter(image_metadata2))
         self.assertTrue(size_metadata_filter(image_metadata3))
+
+    def _create_fake_album(self):
+        previous_coverartimage = CoverArtImage(types=['front'], support_types=True)
+        previous_coverartimage.width = 1000
+        previous_coverartimage.height = 1000
+        album = Album(None)
+        album.orig_metadata.images = ImageList([previous_coverartimage])
+        return album
+
+    def test_filter_by_previous_image_size(self):
+        album = self._create_fake_album()
+        image1, info1 = create_fake_image(500, 500, 'jpg')
+        image2, info2 = create_fake_image(2000, 2000, 'jpg')
+        coverartimage = CoverArtImage(types=['front'], support_types=True)
+        self.assertFalse(bigger_previous_image_filter(image1, info1, album, coverartimage))
+        self.assertTrue(bigger_previous_image_filter(image2, info2, album, coverartimage))
+        coverartimage = CoverArtImage(types=['back'], support_types=True)
+        self.assertTrue(bigger_previous_image_filter(image1, info1, album, coverartimage))
+
+    def test_filter_by_image_type(self):
+        album = self._create_fake_album()
+        image, info = create_fake_image(1000, 1000, 'jpg')
+        coverartimage1 = CoverArtImage(types=['front'], support_types=True)
+        coverartimage2 = CoverArtImage(types=['back'], support_types=True)
+        coverartimage3 = CoverArtImage(types=['front', 'back'], support_types=True)
+        coverartimage4 = CoverArtImage(types=['spine'], support_types=True)
+        coverartimage5 = CoverArtImage(types=['booklet', 'spine'], support_types=True)
+        self.assertFalse(image_types_filter(image, info, album, coverartimage1))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage2))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage3))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage4))
+        self.assertTrue(image_types_filter(image, info, album, coverartimage5))
 
 
 class ImageProcessorsTest(PicardTestCase):
@@ -105,8 +151,8 @@ class ImageProcessorsTest(PicardTestCase):
 
     def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
         coverartimage = CoverArtImage()
-        image = create_fake_image(size[0], size[1], 'jpg')
-        run_image_processors(image, coverartimage)
+        image, info = create_fake_image(size[0], size[1], 'jpg')
+        run_image_processors(coverartimage, image, info)
         tags_size = (coverartimage.width, coverartimage.height)
         if config.setting['save_images_to_tags']:
             self.assertEqual(tags_size, expected_tags_size)
@@ -154,7 +200,7 @@ class ImageProcessorsTest(PicardTestCase):
         self.set_config_values(self.settings)
 
     def _check_resize_image(self, size, expected_size):
-        image = ProcessingImage(create_fake_image(size[0], size[1], 'jpg'))
+        image = ProcessingImage(*create_fake_image(size[0], size[1], 'jpg'))
         processor = ResizeImage()
         processor.run(image, ProcessingTarget.TAGS)
         new_size = (image.get_qimage().width(), image.get_qimage().height())
@@ -237,7 +283,7 @@ class ImageProcessorsTest(PicardTestCase):
         self.set_config_values(self.settings)
 
     def _check_convert_image(self, format, expected_format):
-        image = ProcessingImage(create_fake_image(100, 100, format))
+        image = ProcessingImage(*create_fake_image(100, 100, format))
         processor = ConvertImage()
         processor.run(image, ProcessingTarget.TAGS)
         new_image = image.get_result()
@@ -255,7 +301,7 @@ class ImageProcessorsTest(PicardTestCase):
         self.set_config_values(self.settings)
 
     def test_identification_error(self):
-        image = create_fake_image(0, 0, 'jpg')
+        image, info = create_fake_image(0, 0, 'jpg')
         coverartimage = CoverArtImage()
         with self.assertRaises(CoverArtProcessingError):
-            run_image_processors(image, coverartimage)
+            run_image_processors(coverartimage, image, info)

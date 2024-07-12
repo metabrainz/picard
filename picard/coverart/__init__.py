@@ -49,6 +49,7 @@ from picard.extension_points.cover_art_processors import (
 )
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
+from picard.util import imageinfo
 
 
 class CoverArt:
@@ -72,10 +73,10 @@ class CoverArt:
         else:
             log.debug("Cover art disabled by user options.")
 
-    def _set_metadata(self, coverartimage, data):
+    def _set_metadata(self, coverartimage, data, image_info):
         try:
             if coverartimage.can_be_processed:
-                run_image_processors(data, coverartimage)
+                run_image_processors(coverartimage, data, image_info)
             else:
                 coverartimage.set_tags_data(data)
             if coverartimage.can_be_saved_to_metadata:
@@ -117,16 +118,17 @@ class CoverArt:
                 },
                 echo=None
             )
-            filters_result = True
-            if coverartimage.can_be_filtered:
-                filters_result = run_image_filters(data)
-            if filters_result:
-                try:
-                    self._set_metadata(coverartimage, data)
-                except CoverArtImageIOError:
-                    # It doesn't make sense to store/download more images if we can't
-                    # save them in the temporary folder, abort.
-                    return
+            try:
+                image_info = imageinfo.identify(data)
+                filters_result = True
+                if coverartimage.can_be_filtered:
+                    filters_result = run_image_filters(data, image_info, self.album, coverartimage)
+                if filters_result:
+                    self._set_metadata(coverartimage, data, image_info)
+            except (CoverArtImageIOError, imageinfo.IdentificationError):
+                # It doesn't make sense to store/download more images if we can't
+                # save them in the temporary folder, abort.
+                return
 
         self.next_in_queue()
 

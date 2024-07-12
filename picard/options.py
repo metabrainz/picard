@@ -34,6 +34,8 @@ from picard.config import (
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.defaults import (
     DEFAULT_AUTOBACKUP_DIRECTORY,
+    DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE,
+    DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE,
     DEFAULT_CA_PROVIDERS,
     DEFAULT_CAA_IMAGE_SIZE,
     DEFAULT_CAA_IMAGE_TYPE_EXCLUDE,
@@ -166,6 +168,10 @@ TextOption('setting', 'cd_lookup_device', ','.join(DEFAULT_DRIVES))
 ListOption('setting', 'ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art providers"))
 TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images"))
 BoolOption('setting', 'embed_only_one_front_image', True, title=N_("Embed only a single front image"))
+BoolOption('setting', 'dont_replace_with_smaller_cover', False, title=N_("Never replace cover images with smaller ones"))
+BoolOption('setting', 'dont_replace_cover_of_types', False, title=N_("Never replace cover images of the given types"))
+ListOption('setting', 'dont_replace_included_types', DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE, title=N_("Never replace cover images of these types"))
+ListOption('setting', 'dont_replace_excluded_types', DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE, title=N_("Always replace cover images of these types"))
 BoolOption('setting', 'image_type_as_filename', False, title=N_("Always use the primary image type as the file name for non-front images"))
 BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files"))
 BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images as separate files"))
