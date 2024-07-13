@@ -69,6 +69,7 @@ jobs:
         python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Compile and install PyInstaller
       run: |
+        cd ..
         git clone --depth 1 --branch "$PYINSTALLER_VERSION" https://github.com/pyinstaller/pyinstaller.git pyinstaller
         cd pyinstaller/bootloader
         python3 ./waf --verbose all
