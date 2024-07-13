@@ -84,10 +84,11 @@ jobs:
       run: |
         pip3 install -r requirements-build.txt
         pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
+        pip3 install pytest
     - name: Run tests
       timeout-minutes: 30
       run: |
-        python3 setup.py test
+        pytest --verbose
     - name: Prepare code signing certificate
       run: |
         if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
@@ -167,13 +168,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements-build.txt
         pip install -r requirements-win.txt
+        pip install pytest
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
         python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
-      run: python setup.py test
+      run: pytest --verbose
     - name: Prepare code signing certificate
       if: matrix.type != 'store-app'
       run: |
