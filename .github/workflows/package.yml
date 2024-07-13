@@ -34,7 +34,7 @@ jobs:
           python-version: 3.9
           disable-webp: 1
         - macos-deployment-version: 10.14
-          python-version: 3.12
+          python-version: 3.11
           disable-webp: 0
     env:
       DISCID_VERSION: 0.6.4
