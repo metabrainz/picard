@@ -178,3 +178,15 @@ class TagGenreFilterTest(PicardTestCase):
         genres = Counter(ax=4, bx=5, ay=20, by=10, bz=4)
         result = tag_filter.filter(genres, minusage=50)
         self.assertEqual([('bx', 5), ('by', 10)], list(result.items()))
+
+    def test_filter_method_empty_input(self):
+        tag_filter = TagGenreFilter("")
+        genres = Counter()
+        result = tag_filter.filter(genres)
+        self.assertEqual([], list(result.items()))
+
+    def test_filter_method_empty_result(self):
+        tag_filter = TagGenreFilter("-*")
+        genres = Counter(ax=1, bx=2, ay=3, by=4)
+        result = tag_filter.filter(genres)
+        self.assertEqual([], list(result.items()))
