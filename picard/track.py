@@ -115,6 +115,8 @@ class TagGenreFilter:
         for name, count in counter.items():
             if not self.skip(name):
                 result[name] = count
+        if not result:
+            return result
         topcount = result.most_common(1)[0][1]
         for name, count in counter.items():
             percent = 100 * count // topcount
