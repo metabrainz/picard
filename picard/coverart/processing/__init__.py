@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
 import time
 
 from picard import log
@@ -36,6 +37,7 @@ from picard.extension_points.cover_art_processors import (
     ProcessingTarget,
     get_cover_art_processors,
 )
+from picard.util import thread
 from picard.util.imageinfo import IdentificationError
 
 
@@ -53,6 +55,24 @@ def run_image_metadata_filters(metadata):
     return True
 
 
+def _run_processors_queue(image, target, queue, coverartimage, start_time):
+    for processor in queue:
+        processor.run(image, target)
+    data = image.get_result()
+    if target == ProcessingTarget.TAGS:
+        coverartimage.set_tags_data(data)
+        image_target = "embedded"
+    else:
+        coverartimage.set_external_file_data(data)
+        image_target = "external"
+    log.debug(
+        "Image processing for %s cover art image %s finished in %d ms",
+        image_target,
+        coverartimage,
+        1000 * (time.time() - start_time)
+    )
+
+
 def run_image_processors(coverartimage, data, image_info):
     config = get_config()
     tags_data = data
@@ -63,23 +83,28 @@ def run_image_processors(coverartimage, data, image_info):
         both_queue, tags_queue, file_queue = get_cover_art_processors()
         for processor in both_queue:
             processor.run(image, ProcessingTarget.BOTH)
-        if config.setting['save_images_to_tags']:
-            tags_image = image.copy()
-            for processor in tags_queue:
-                processor.run(tags_image, ProcessingTarget.TAGS)
-            tags_data = tags_image.get_result()
-        coverartimage.set_tags_data(tags_data)
         if config.setting['save_images_to_files']:
-            file_image = image.copy()
-            for processor in file_queue:
-                processor.run(file_image, ProcessingTarget.FILE)
-            file_data = file_image.get_result()
-            coverartimage.set_external_file_data(file_data)
-        log.debug(
-            "Image processing for %s finished in %d ms",
-            coverartimage,
-            1000 * (time.time() - start_time)
-        )
+            run_queue = partial(
+                _run_processors_queue,
+                image.copy(),
+                ProcessingTarget.FILE,
+                file_queue,
+                coverartimage,
+                start_time
+            )
+            thread.run_task(run_queue)
+        if config.setting['save_images_to_tags']:
+            run_queue = partial(
+                _run_processors_queue,
+                image.copy(),
+                ProcessingTarget.TAGS,
+                tags_queue,
+                coverartimage,
+                start_time
+            )
+            thread.run_task(run_queue)
+        else:
+            coverartimage.set_tags_data(tags_data)
     except IdentificationError as e:
         raise CoverArtProcessingError(e)
     except CoverArtProcessingError as e:

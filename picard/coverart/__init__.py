@@ -49,7 +49,10 @@ from picard.extension_points.cover_art_processors import (
 )
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
-from picard.util import imageinfo
+from picard.util import (
+    imageinfo,
+    thread,
+)
 
 
 class CoverArt:
@@ -76,12 +79,11 @@ class CoverArt:
     def _set_metadata(self, coverartimage, data, image_info):
         try:
             if coverartimage.can_be_processed:
-                run_image_processors(coverartimage, data, image_info)
+                thread.run_task(partial(run_image_processors, coverartimage, data, image_info))
             else:
                 coverartimage.set_tags_data(data)
             if coverartimage.can_be_saved_to_metadata:
-                log.debug("Storing to metadata: %r [%s]",
-                    coverartimage, coverartimage.imageinfo_as_string())
+                log.debug("Storing to metadata: %r", coverartimage)
                 self.metadata.images.append(coverartimage)
                 for track in self.album._new_tracks:
                     track.metadata.images.append(coverartimage)
@@ -91,8 +93,7 @@ class CoverArt:
                 if not self.front_image_found:
                     self.front_image_found = coverartimage.is_front_image()
             else:
-                log.debug("Not storing to metadata: %r [%s]",
-                    coverartimage, coverartimage.imageinfo_as_string())
+                log.debug("Not storing to metadata: %r", coverartimage)
         except CoverArtImageIOError as e:
             self.album.error_append(e)
             self.album._finalize_loading(error=True)

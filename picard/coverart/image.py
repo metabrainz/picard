@@ -325,6 +325,16 @@ class CoverArtImage:
         self.external_file_coverart = CoverArtImage(data=data, url=self.url)
 
     @property
+    def has_finished_processing(self):
+        if not self.datahash:
+            return False
+        config = get_config()
+        if (config.setting['save_images_to_files'] and not
+                (self.external_file_coverart and self.external_file_coverart.datahash)):
+            return False
+        return True
+
+    @property
     def maintype(self):
         """Returns one type only, even for images having more than one type set.
         This is mostly used when saving cover art to tags because most formats
