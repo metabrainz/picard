@@ -152,7 +152,8 @@ class ImageProcessorsTest(PicardTestCase):
     def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
         coverartimage = CoverArtImage()
         image, info = create_fake_image(size[0], size[1], 'jpg')
-        run_image_processors(coverartimage, image, info)
+        album = Album(None)
+        run_image_processors(coverartimage, image, info, album)
         tags_size = (coverartimage.width, coverartimage.height)
         if config.setting['save_images_to_tags']:
             self.assertEqual(tags_size, expected_tags_size)
@@ -300,8 +301,20 @@ class ImageProcessorsTest(PicardTestCase):
             self._check_convert_image('jpeg', format)
         self.set_config_values(self.settings)
 
-    def test_identification_error(self):
-        image, info = create_fake_image(0, 0, 'jpg')
+    def _check_processing_error(self, image, info):
+        self.set_config_values(self.settings)
         coverartimage = CoverArtImage()
-        with self.assertRaises(CoverArtProcessingError):
-            run_image_processors(coverartimage, image, info)
+        album = Album(None)
+        run_image_processors(coverartimage, image, info, album)
+        self.assertNotEqual(album.errors, [])
+        for error in album.errors:
+            self.assertIsInstance(error, CoverArtProcessingError)
+
+    def test_identification_error(self):
+        image, info = create_fake_image(0, 0, "jpg")
+        self._check_processing_error(image, info)
+
+    def test_encoding_error(self):
+        image, info = create_fake_image(500, 500, "jpg")
+        info.extension = ".test"
+        self._check_processing_error(image, info)

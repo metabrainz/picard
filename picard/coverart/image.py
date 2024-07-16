@@ -328,10 +328,10 @@ class CoverArtImage:
     def has_finished_processing(self):
         if not self.datahash:
             return False
-        config = get_config()
-        if (config.setting['save_images_to_files'] and not
-                (self.external_file_coverart and self.external_file_coverart.datahash)):
-            return False
+        if not (self.external_file_coverart and self.external_file_coverart.datahash):
+            config = get_config()
+            if config.setting['save_images_to_files']:
+                return False
         return True
 
     @property

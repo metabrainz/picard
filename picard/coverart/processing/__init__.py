@@ -55,60 +55,48 @@ def run_image_metadata_filters(metadata):
     return True
 
 
-def _run_processors_queue(image, target, queue, coverartimage, start_time):
-    for processor in queue:
-        processor.run(image, target)
-    data = image.get_result()
-    if target == ProcessingTarget.TAGS:
-        coverartimage.set_tags_data(data)
-        image_target = "embedded"
-    else:
-        coverartimage.set_external_file_data(data)
-        image_target = "external"
-    log.debug(
-        "Image processing for %s cover art image %s finished in %d ms",
-        image_target,
-        coverartimage,
-        1000 * (time.time() - start_time)
-    )
+def _run_processors_queue(album, coverartimage, initial_data, start_time, image, target, queue):
+    data = initial_data
+    try:
+        for processor in queue:
+            processor.run(image, target)
+        data = image.get_result()
+    except CoverArtProcessingError as e:
+        album.error_append(e)
+    finally:
+        if target == ProcessingTarget.TAGS:
+            coverartimage.set_tags_data(data)
+        else:
+            coverartimage.set_external_file_data(data)
+        log.debug(
+            "Image processing for %s cover art image %s finished in %d ms",
+            target.name,
+            coverartimage,
+            1000 * (time.time() - start_time)
+        )
 
 
-def run_image_processors(coverartimage, data, image_info):
+def run_image_processors(coverartimage, data, image_info, album):
     config = get_config()
-    tags_data = data
-    file_data = data
     try:
         start_time = time.time()
         image = ProcessingImage(data, image_info)
         both_queue, tags_queue, file_queue = get_cover_art_processors()
         for processor in both_queue:
             processor.run(image, ProcessingTarget.BOTH)
+        run_queue_common = partial(_run_processors_queue, album, coverartimage, data, start_time)
         if config.setting['save_images_to_files']:
-            run_queue = partial(
-                _run_processors_queue,
-                image.copy(),
-                ProcessingTarget.FILE,
-                file_queue,
-                coverartimage,
-                start_time
-            )
+            run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.FILE, file_queue)
             thread.run_task(run_queue)
         if config.setting['save_images_to_tags']:
-            run_queue = partial(
-                _run_processors_queue,
-                image.copy(),
-                ProcessingTarget.TAGS,
-                tags_queue,
-                coverartimage,
-                start_time
-            )
+            run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.TAGS, tags_queue)
             thread.run_task(run_queue)
         else:
-            coverartimage.set_tags_data(tags_data)
+            coverartimage.set_tags_data(data)
     except IdentificationError as e:
-        raise CoverArtProcessingError(e)
+        album.error_append(CoverArtProcessingError(e))
     except CoverArtProcessingError as e:
-        coverartimage.set_tags_data(tags_data)
+        coverartimage.set_tags_data(data)
         if config.setting['save_images_to_files']:
-            coverartimage.set_external_file_data(file_data)
-        raise e
+            coverartimage.set_external_file_data(data)
+        album.error_append(e)

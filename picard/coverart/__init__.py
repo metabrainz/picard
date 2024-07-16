@@ -44,9 +44,6 @@ from picard.coverart.providers import (
     CoverArtProvider,
     cover_art_providers,
 )
-from picard.extension_points.cover_art_processors import (
-    CoverArtProcessingError,
-)
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
 from picard.util import (
@@ -79,7 +76,7 @@ class CoverArt:
     def _set_metadata(self, coverartimage, data, image_info):
         try:
             if coverartimage.can_be_processed:
-                thread.run_task(partial(run_image_processors, coverartimage, data, image_info))
+                thread.run_task(partial(run_image_processors, coverartimage, data, image_info, self.album))
             else:
                 coverartimage.set_tags_data(data)
             if coverartimage.can_be_saved_to_metadata:
@@ -98,7 +95,7 @@ class CoverArt:
             self.album.error_append(e)
             self.album._finalize_loading(error=True)
             raise e
-        except (CoverArtImageIdentificationError, CoverArtProcessingError) as e:
+        except CoverArtImageIdentificationError as e:
             self.album.error_append(e)
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
