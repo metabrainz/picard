@@ -460,7 +460,6 @@ class Album(MetadataItem):
         self._tracks_loaded = True
 
     def _finalize_loading_album(self):
-        self._new_metadata.images.wait_for_image_processing()
         with self.suspend_metadata_images_update:
             for track in self._new_tracks:
                 track.orig_metadata.copy(track.metadata)

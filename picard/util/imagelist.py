@@ -24,7 +24,6 @@
 
 
 from collections.abc import MutableSequence
-import time
 
 from picard.config import get_config
 
@@ -113,7 +112,3 @@ class ImageList(MutableSequence):
                     continue
             types_dict[image_types] = image
         return types_dict
-
-    def wait_for_image_processing(self):
-        while not all(image.has_finished_processing for image in self._images):
-            time.sleep(0.1)

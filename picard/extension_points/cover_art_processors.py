@@ -92,16 +92,16 @@ class ImageProcessor:
 
 
 def get_cover_art_processors():
-    queue_both, queue_tags, queue_file = [], [], []
+    queues = dict.fromkeys(list(ProcessingTarget), [])
     for processor in ext_point_cover_art_processors:
         if processor.same_processing():
-            queue_both.append(processor)
+            queues[ProcessingTarget.BOTH].append(processor)
         else:
             if processor.save_to_tags():
-                queue_tags.append(processor)
+                queues[ProcessingTarget.TAGS].append(processor)
             if processor.save_to_file():
-                queue_file.append(processor)
-    return queue_both, queue_tags, queue_file
+                queues[ProcessingTarget.FILE].append(processor)
+    return queues
 
 
 def register_cover_art_processor(cover_art_processor):

@@ -29,7 +29,7 @@ from picard import config
 from picard.album import Album
 from picard.const.cover_processing import ResizeModes
 from picard.coverart.image import CoverArtImage
-from picard.coverart.processing import run_image_processors
+from picard.coverart.processing import CoverArtImageProcessing
 from picard.coverart.processing.filters import (
     bigger_previous_image_filter,
     image_types_filter,
@@ -153,7 +153,9 @@ class ImageProcessorsTest(PicardTestCase):
         coverartimage = CoverArtImage()
         image, info = create_fake_image(size[0], size[1], 'jpg')
         album = Album(None)
-        run_image_processors(coverartimage, image, info, album)
+        image_processing = CoverArtImageProcessing(album)
+        image_processing.run_image_processors(coverartimage, image, info)
+        image_processing.threadpool.waitForDone()
         tags_size = (coverartimage.width, coverartimage.height)
         if config.setting['save_images_to_tags']:
             self.assertEqual(tags_size, expected_tags_size)
@@ -305,7 +307,9 @@ class ImageProcessorsTest(PicardTestCase):
         self.set_config_values(self.settings)
         coverartimage = CoverArtImage()
         album = Album(None)
-        run_image_processors(coverartimage, image, info, album)
+        image_processing = CoverArtImageProcessing(album)
+        image_processing.run_image_processors(coverartimage, image, info)
+        image_processing.threadpool.waitForDone()
         self.assertNotEqual(album.errors, [])
         for error in album.errors:
             self.assertIsInstance(error, CoverArtProcessingError)

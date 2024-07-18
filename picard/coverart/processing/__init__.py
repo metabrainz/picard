@@ -21,8 +21,14 @@
 from functools import partial
 import time
 
+from PyQt6.QtCore import QThreadPool
+
 from picard import log
 from picard.config import get_config
+from picard.coverart.image import (
+    CoverArtImageIdentificationError,
+    CoverArtImageIOError,
+)
 from picard.coverart.processing import (  # noqa: F401 # pylint: disable=unused-import
     filters,
     processors,
@@ -55,48 +61,79 @@ def run_image_metadata_filters(metadata):
     return True
 
 
-def _run_processors_queue(album, coverartimage, initial_data, start_time, image, target, queue):
-    data = initial_data
-    try:
-        for processor in queue:
-            processor.run(image, target)
-        data = image.get_result()
-    except CoverArtProcessingError as e:
-        album.error_append(e)
-    finally:
-        if target == ProcessingTarget.TAGS:
-            coverartimage.set_tags_data(data)
-        else:
-            coverartimage.set_external_file_data(data)
-        log.debug(
-            "Image processing for %s cover art image %s finished in %d ms",
-            target.name,
-            coverartimage,
-            1000 * (time.time() - start_time)
-        )
+def handle_processing_exceptions(func):
+    def wrapper(self, *args, **kwargs):
+        try:
+            func(self, *args, **kwargs)
+        except CoverArtImageIOError as e:
+            self.album.error_append(e)
+            self.threadpool.clear()
+            if self.album.loaded:
+                self.album._finalize_loading(error=True)
+        except (CoverArtImageIdentificationError, CoverArtProcessingError) as e:
+            self.album.error_append(e)
+    return wrapper
 
 
-def run_image_processors(coverartimage, data, image_info, album):
-    config = get_config()
-    try:
-        start_time = time.time()
-        image = ProcessingImage(data, image_info)
-        both_queue, tags_queue, file_queue = get_cover_art_processors()
-        for processor in both_queue:
-            processor.run(image, ProcessingTarget.BOTH)
-        run_queue_common = partial(_run_processors_queue, album, coverartimage, data, start_time)
-        if config.setting['save_images_to_files']:
-            run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.FILE, file_queue)
-            thread.run_task(run_queue)
-        if config.setting['save_images_to_tags']:
-            run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.TAGS, tags_queue)
-            thread.run_task(run_queue)
+class CoverArtImageProcessing:
+
+    def __init__(self, album):
+        self.album = album
+        self.queues = get_cover_art_processors()
+        self.threadpool = QThreadPool()
+        self.threadpool.setMaxThreadCount(1)
+
+    @handle_processing_exceptions
+    def _run_processors_queue(self, coverartimage, initial_data, start_time, image, target):
+        data = initial_data
+        try:
+            queue = self.queues[target]
+            for processor in queue:
+                processor.run(image, target)
+            data = image.get_result()
+        except CoverArtProcessingError as e:
+            raise e
+        finally:
+            if target == ProcessingTarget.TAGS:
+                coverartimage.set_tags_data(data)
+            else:
+                coverartimage.set_external_file_data(data)
+            log.debug(
+                "Image processing for %s cover art image %s finished in %d ms",
+                target.name,
+                coverartimage,
+                1000 * (time.time() - start_time)
+            )
+
+    @handle_processing_exceptions
+    def _run_image_processors(self, coverartimage, initial_data, image_info):
+        config = get_config()
+        try:
+            start_time = time.time()
+            image = ProcessingImage(initial_data, image_info)
+            for processor in self.queues[ProcessingTarget.BOTH]:
+                processor.run(image, ProcessingTarget.BOTH)
+            run_queue_common = partial(self._run_processors_queue, coverartimage, initial_data, start_time)
+            if config.setting['save_images_to_files']:
+                run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.FILE)
+                thread.run_task(run_queue, thread_pool=self.threadpool)
+            if config.setting['save_images_to_tags']:
+                run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.TAGS)
+                thread.run_task(run_queue, thread_pool=self.threadpool)
+            else:
+                coverartimage.set_tags_data(initial_data)
+        except IdentificationError as e:
+            raise CoverArtProcessingError(e)
+        except CoverArtProcessingError as e:
+            coverartimage.set_tags_data(initial_data)
+            if config.setting['save_images_to_files']:
+                coverartimage.set_external_file_data(initial_data)
+            raise e
+
+    def run_image_processors(self, coverartimage, initial_data, image_info):
+        if coverartimage.can_be_processed:
+            run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info)
+            thread.run_task(run_processors, thread_pool=self.threadpool)
         else:
-            coverartimage.set_tags_data(data)
-    except IdentificationError as e:
-        album.error_append(CoverArtProcessingError(e))
-    except CoverArtProcessingError as e:
-        coverartimage.set_tags_data(data)
-        if config.setting['save_images_to_files']:
-            coverartimage.set_external_file_data(data)
-        album.error_append(e)
+            set_data = partial(handle_processing_exceptions, coverartimage.set_tags_data, initial_data)
+            thread.run_task(set_data, thread_pool=self.threadpool)
