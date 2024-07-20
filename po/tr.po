@@ -12,21 +12,22 @@
 # Sertan Şentürk <sertan.senturk@upf.edu>, 2017
 # portik <yetmisbeskere75@hotmail.com>, 2013-2014
 # portik <yetmisbeskere75@hotmail.com>, 2012
+# brtc <brtc@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-04-07 12:29+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Turkish <https://translations.metabrainz.org/projects/"
-"picard/3/app/tr/>\n"
+"PO-Revision-Date: 2024-07-20 13:42+0000\n"
+"Last-Translator: brtc <brtc@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
+"3/app/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:155
@@ -36,12 +37,12 @@ msgstr "Eşlenmeyen Dosyalar"
 #: picard/album.py:521
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "%(id)s albümü yüklendi: %(artist)s - %(album)s"
 
 #: picard/album.py:578
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr ""
+msgstr "%(id)s albümü yükleniyor…"
 
 #: picard/album.py:795
 msgid "[loading album information]"
@@ -55,26 +56,26 @@ msgstr "[albüm bilgisi yüklenemedi: %s]"
 #: picard/cluster.py:266
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "%(album)s kümesi belirlendi!"
 
 #: picard/cluster.py:269
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "%(album)s kümesi için eşleşen sürüm yok"
 
 #: picard/cluster.py:288
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr ""
+msgstr "%(album)s kümesinin meta verileri aranıyor…"
 
 #: picard/cluster.py:337
 msgid "Unclustered Files"
-msgstr ""
+msgstr "Kümelenmemiş Dosyalar"
 
 #: picard/collection.py:89
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "Koleksiyonlar değiştirilirken hata oluştu: %(error)s"
 
 #: picard/collection.py:98
 #, python-format
@@ -129,23 +130,23 @@ msgstr "Kaldır"
 
 #: picard/config_upgrade.py:446
 msgid "Primary file naming script"
-msgstr ""
+msgstr "Birincil dosya adlandırma komutu"
 
 #: picard/debug_opts.py:82
 msgid "Web Service Replies"
-msgstr ""
+msgstr "İnternet Hizmeti Yanıtları"
 
 #: picard/debug_opts.py:82
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "İnternet hizmeti yanıtlarının içeriğini günlüğe kaydet"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Eklenti Tam Yolu"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Eklentinin tam yollarını günlüğe kaydet"
 
 #: picard/file.py:228
 msgid ""
@@ -290,23 +291,20 @@ msgid "Check for program updates during startup"
 msgstr ""
 
 #: picard/options.py:196 picard/ui/ui_options_general.py:215
-#, fuzzy
 msgid "Automatically cluster all new files"
-msgstr "Bütün yeni dosyaları otomatik olarak tara"
+msgstr "Tüm yeni dosyaları otomatik olarak kümele"
 
 #: picard/options.py:197 picard/ui/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
 msgstr ""
 
 #: picard/options.py:198
-#, fuzzy
 msgid "Server address"
-msgstr "Sunucu adresi:"
+msgstr "Sunucu adresi"
 
 #: picard/options.py:199
-#, fuzzy
 msgid "Port"
-msgstr "Bağlantı Noktası:"
+msgstr "Bağlantı Noktası"
 
 #: picard/options.py:200
 msgid "Days between update checks"
@@ -389,18 +387,16 @@ msgid "Show text labels under icons"
 msgstr "İkonların altında yazı etiketlerini göster"
 
 #: picard/options.py:228
-#, fuzzy
 msgid "User interface language"
-msgstr "Kullanıcı arayüzü dili:"
+msgstr "Kullanıcı arayüzü dili"
 
 #: picard/options.py:229
 msgid "User interface color theme"
 msgstr ""
 
 #: picard/options.py:230
-#, fuzzy
 msgid "Use advanced search syntax"
-msgstr "Gelişmiş sorgu biçimini kullan"
+msgstr "Gelişmiş arama söz dizimini kullanın"
 
 #: picard/options.py:234
 msgid "Colors to use for light theme"
@@ -423,19 +419,16 @@ msgid "Automatic backup destination directory"
 msgstr ""
 
 #: picard/options.py:262
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Küme aramaları için minimum benzerlik:"
+msgstr "Küme aramaları için en düşük benzerlik"
 
 #: picard/options.py:263
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Dosya aramaları için gerekli olan minimum benzerlik"
+msgstr "Dosya aramaları için gerekli olan en düşük benzerlik"
 
 #: picard/options.py:264
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Dosyaları parçalarla eşlemek için gerekli olan minimum benzerlik:"
+msgstr "Dosyaları parçalarla eşleştirmek için gerekli olan en düşük benzerlik"
 
 #: picard/options.py:268
 msgid "Translation locales"
@@ -470,10 +463,8 @@ msgid "Use standardized instrument and vocal credits"
 msgstr ""
 
 #: picard/options.py:276
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Sürüm ilişkilerini kullan"
+msgstr "Parça ve sürüm ilişkilerini kullan"
 
 #: picard/options.py:277
 msgid "Translate artist names"
@@ -488,18 +479,16 @@ msgid "Various Artists name"
 msgstr ""
 
 #: picard/options.py:283
-#, fuzzy
 msgid "Browser integration"
-msgstr "Tarayıcı Entegrasyonu"
+msgstr "Tarayıcı bütünleşmesi"
 
 #: picard/options.py:284 picard/ui/ui_options_network.py:174
 msgid "Listen only on localhost"
 msgstr ""
 
 #: picard/options.py:285
-#, fuzzy
 msgid "Default listening port"
-msgstr "Varsayılan dinleme portu:"
+msgstr "Varsayılan dinleme bağlantı noktası"
 
 #: picard/options.py:286
 msgid "Network cache size in bytes"
@@ -543,7 +532,7 @@ msgstr ""
 
 #: picard/options.py:312 picard/ui/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
-msgstr "Derecelendirmeleri MusicBrainz'e gönder."
+msgstr "Derecelendirmeleri MusicBrainz'e gönderin"
 
 #: picard/options.py:316 picard/ui/ui_options_releases.py:117
 msgid "Preferred release countries"
@@ -570,18 +559,16 @@ msgid "Additional file patterns"
 msgstr ""
 
 #: picard/options.py:325
-#, fuzzy
 msgid "Move files"
-msgstr "Dosyaları &Taşı"
+msgstr "Dosyaları taşı"
 
 #: picard/options.py:326
 msgid "Destination directory"
 msgstr ""
 
 #: picard/options.py:327
-#, fuzzy
 msgid "Rename files"
-msgstr "Dosyaları &Adlandır"
+msgstr "Dosyaları yeniden adlandır"
 
 #: picard/options.py:331 picard/ui/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
@@ -1985,10 +1972,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/serializer.py:204
-#, fuzzy, python-format
-#| msgid "Error loading collections: %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Koleksiyonları yüklerken hata: %(error)s"
+msgstr "\"%(filename)s\" dosyası dışa aktarılırken hata oluştu: %(error)s."
 
 #: picard/script/serializer.py:211
 msgid "Export Script File"
@@ -2262,10 +2248,8 @@ msgid "Show more details"
 msgstr "Daha fazla detay göster"
 
 #: picard/ui/coverartbox.py:397
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox.py:434
 msgid "New Cover Art"
@@ -2366,7 +2350,6 @@ msgid "Format:"
 msgstr "Biçim:"
 
 #: picard/ui/infodialog.py:297 picard/util/checkupdate.py:162
-#, fuzzy
 msgid "unknown"
 msgstr "bilinmeyen"
 
@@ -2407,12 +2390,11 @@ msgid "Album:"
 msgstr "Albüm:"
 
 #: picard/ui/infodialog.py:321
-#, fuzzy
 msgid "Artist:"
-msgstr "Artist"
+msgstr "Sanatçı:"
 
 #: picard/ui/infodialog.py:351
-#, fuzzy, python-format
+#, python-format
 msgid "Disc %d"
 msgstr "Disk %d"
 
@@ -2480,7 +2462,7 @@ msgstr[1] ""
 
 #: picard/ui/itemviews.py:164 picard/util/tags.py:129
 msgid "Title"
-msgstr "Parça Adı"
+msgstr "Başlık"
 
 #: picard/ui/itemviews.py:165 picard/ui/searchdialog/track.py:62
 #: picard/util/tags.py:77
@@ -2497,7 +2479,7 @@ msgstr "Besteci"
 
 #: picard/ui/itemviews.py:170 picard/util/tags.py:65
 msgid "Disc Subtitle"
-msgstr "Disk Altbaşlığı"
+msgstr "Disk Alt başlığı"
 
 #: picard/ui/itemviews.py:171
 msgid "Track No."
@@ -2516,10 +2498,8 @@ msgid "Media"
 msgstr "Medya"
 
 #: picard/ui/itemviews.py:176
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Boyut:"
+msgstr "Boyut"
 
 #: picard/ui/itemviews.py:177 picard/util/tags.py:71
 msgid "Genre"
@@ -2594,9 +2574,8 @@ msgid "Loading…"
 msgstr "Yükleniyor…"
 
 #: picard/ui/itemviews.py:563
-#, fuzzy
 msgid "Show &more details…"
-msgstr "Daha fazla detay göster…"
+msgstr "Daha fa&zla ayrıntıyı göster…"
 
 #: picard/ui/itemviews.py:617
 #, python-format
@@ -2608,9 +2587,8 @@ msgid "Collections"
 msgstr "Koleksiyonlar"
 
 #: picard/ui/itemviews.py:650
-#, fuzzy
 msgid "P&lugins"
-msgstr "Eklentiler"
+msgstr "Ek&lentiler"
 
 #: picard/ui/itemviews.py:669
 msgid "&Run scripts"
@@ -2661,12 +2639,11 @@ msgid "There are no files matched to this track"
 msgstr ""
 
 #: picard/ui/itemviews.py:1118
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "Eşlenmeyen Dosyalar"
-msgstr[1] "Eşlenmeyen Dosyalar"
+msgstr[0] "%i dosya eşleşti"
+msgstr[1] "%i dosya eşleşti"
 
 #: picard/ui/itemviews.py:1156
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -2715,10 +2692,8 @@ msgid "Verbosity"
 msgstr ""
 
 #: picard/ui/logview.py:199 picard/ui/logview.py:200
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "Seçenekler"
+msgstr "Hata Ayıklama Seçenekleri"
 
 #: picard/ui/logview.py:210
 msgid "String to highlight"
@@ -2821,7 +2796,7 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox.py:369
 msgid "Edit…"
-msgstr "Düzenle"
+msgstr "Düzenle…"
 
 #: picard/ui/metadatabox.py:375
 msgid "Add to 'Preserve Tags' List"
@@ -2833,7 +2808,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/actions.py:218 picard/ui/metadatabox.py:396
 msgid "Lookup in &Browser"
-msgstr "Tarayıcıda Ara"
+msgstr "Tarayıcıda a&ra"
 
 #: picard/ui/metadatabox.py:428
 msgid "Use Original Value"
@@ -2842,9 +2817,8 @@ msgstr[0] "Orijinal Değeri Kullan"
 msgstr[1] "Orijinal Değerleri Kullan"
 
 #: picard/ui/metadatabox.py:435
-#, fuzzy
 msgid "&Copy"
-msgstr "Kopyala"
+msgstr "&Kopyala"
 
 #: picard/ui/mainwindow/actions.py:102 picard/ui/metadatabox.py:439
 msgid "&Paste"
@@ -3109,9 +3083,8 @@ msgid "Close the script editor without saving changes"
 msgstr ""
 
 #: picard/ui/scripteditor.py:588
-#, fuzzy
 msgid "&Script"
-msgstr "Abece"
+msgstr "Kom&ut"
 
 #: picard/ui/scripteditor.py:591
 msgid "View/Edit Script &Metadata"
@@ -3187,10 +3160,8 @@ msgid "Empty / blank script"
 msgstr ""
 
 #: picard/ui/scripteditor.py:663
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Abece"
+msgstr "Yeni Komut"
 
 #: picard/ui/scripteditor.py:756
 msgid ""
@@ -3370,9 +3341,8 @@ msgid "Available Language Scripts"
 msgstr ""
 
 #: picard/ui/ui_infodialog.py:88
-#, fuzzy
 msgid "&Error"
-msgstr "Hata"
+msgstr "&Hata"
 
 #: picard/ui/ui_infodialog.py:89
 msgid "A&rtwork"
@@ -3521,7 +3491,7 @@ msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:110
 msgid "Fingerprint calculator:"
-msgstr "Parmakizi hesaplayıcı"
+msgstr "Parmak izi hesaplayıcı:"
 
 #: picard/ui/ui_options_fingerprinting.py:111
 #: picard/ui/ui_options_interface.py:138
@@ -3645,7 +3615,7 @@ msgstr "Çeşitli"
 
 #: picard/ui/searchdialog/__init__.py:96 picard/ui/ui_options_interface.py:132
 msgid "Use advanced query syntax"
-msgstr "Gelişmiş sorgu biçimini kullan"
+msgstr "Gelişmiş sorgu söz dizimini kullanın"
 
 #: picard/ui/ui_options_interface.py:133
 msgid "Show the new user dialog when starting Picard"
@@ -3693,10 +3663,8 @@ msgid "Configuration file:"
 msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:144
-#, fuzzy
-#| msgid "Open plugin folder"
 msgid "Open folder…"
-msgstr "Eklenti klasörünü aç"
+msgstr "Klasör aç…"
 
 #: picard/ui/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
@@ -3728,7 +3696,7 @@ msgstr "Dosyaları parçalarla eşlemek için gerekli olan minimum benzerlik:"
 
 #: picard/ui/ui_options_matching.py:82
 msgid "Minimal similarity for file lookups:"
-msgstr "Dosya aramaları için gerekli olan minimum benzerlik"
+msgstr "Dosya aramaları için en düşük benzerlik:"
 
 #: picard/ui/ui_options_matching.py:83
 msgid "Minimal similarity for cluster lookups:"
@@ -3739,7 +3707,6 @@ msgid "Metadata"
 msgstr "Metadata"
 
 #: picard/ui/ui_options_metadata.py:136
-#, fuzzy
 msgid "Translate artist names to these locales where possible:"
 msgstr "Mümkünse sanatçı adlarını şu dile çevir:"
 
@@ -3761,7 +3728,7 @@ msgstr "Özel Alanlar"
 
 #: picard/ui/ui_options_metadata.py:147
 msgid "Various artists:"
-msgstr "Farklı Sanatçılar"
+msgstr "Çeşitli sanatçılar:"
 
 #: picard/ui/ui_options_metadata.py:148
 msgid "Standalone recordings:"
@@ -3794,10 +3761,8 @@ msgid "Password:"
 msgstr "Şifre:"
 
 #: picard/ui/ui_options_network.py:169
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "Ağ"
+msgstr "Ağ seçenekleri"
 
 #: picard/ui/ui_options_network.py:170
 msgid "Request timeout in seconds:"
@@ -4099,9 +4064,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:64
-#, fuzzy
 msgid "Also include RIFF INFO tags in the files"
-msgstr "Dosyalara ayrıca ID3v1 etiketlerinide yaz"
+msgstr "Ayrıca dosyalara RIFF INFO etiketlerini de ekleyin"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:67
 msgid "Windows-1252"
@@ -4143,9 +4107,8 @@ msgid "Select the file naming script to load into the editor"
 msgstr ""
 
 #: picard/ui/ui_scripteditor.py:216 picard/ui/ui_scripteditor_details.py:105
-#, fuzzy
 msgid "Title:"
-msgstr "Parça Adı"
+msgstr "Başlık:"
 
 #: picard/ui/ui_scripteditor_details.py:97
 msgid "File Naming Script Metadata"
@@ -4172,14 +4135,12 @@ msgid "Author:"
 msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:103
-#, fuzzy
 msgid "Version:"
-msgstr "Versiyon"
+msgstr "Sürüm:"
 
 #: picard/ui/ui_scripteditor_details.py:104
-#, fuzzy
 msgid "License:"
-msgstr "Lisans"
+msgstr "Lisans:"
 
 #: picard/ui/ui_scripteditor_details.py:106
 msgid "License under which the file naming script is available."
@@ -4254,11 +4215,9 @@ msgid "Clos&e"
 msgstr ""
 
 #: picard/ui/util.py:139
-#, fuzzy
 msgid "You have to restart Picard for the changes to take effect."
 msgstr ""
-"Arayüz dilini değiştirdiniz. Değişikliklerin uygulanabilmesi için Picard'ı "
-"yeniden başlatmanız gerekmekte."
+"Değişikliklerin etkili olması için Picard'ı yeniden başlatmanız gerekir."
 
 #: picard/ui/util.py:142
 msgid "Changes only applied on restart"
@@ -4414,9 +4373,8 @@ msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
 #: picard/ui/mainwindow/__init__.py:1307
-#, fuzzy
 msgid "Authentication Required"
-msgstr "Kimlik denetimi gerekli"
+msgstr "Kimlik Doğrulaması Gerekli"
 
 #: picard/ui/mainwindow/__init__.py:1308
 msgid ""
@@ -4435,7 +4393,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/actions.py:77
 msgid "&Options…"
-msgstr "&Seçenekler"
+msgstr "&Seçenekler…"
 
 #: picard/ui/mainwindow/actions.py:85
 msgid "Open &file naming script editor…"
@@ -4558,9 +4516,8 @@ msgid "Submit file as a new release to MusicBrainz"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:265
-#, fuzzy
 msgid "Search for similar items…"
-msgstr "Benzer albümleri ara…"
+msgstr "Benzer öğeleri arayın…"
 
 #: picard/ui/mainwindow/actions.py:266
 #: picard/ui/options/interface_toolbar.py:132
@@ -4586,9 +4543,8 @@ msgid "View similar releases and optionally choose a different release"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:286
-#, fuzzy
 msgid "Search for similar tracks…"
-msgstr "Benzer albümleri ara…"
+msgstr "Benzer parçaları arayın…"
 
 #: picard/ui/mainwindow/actions.py:287
 msgid "View similar tracks and optionally choose a different release"
@@ -4611,9 +4567,8 @@ msgid "Ctrl+B"
 msgstr "Ctrl+B"
 
 #: picard/ui/mainwindow/actions.py:317
-#, fuzzy
 msgid "&Metadata"
-msgstr "Metadata"
+msgstr "&Meta veri"
 
 #: picard/ui/mainwindow/actions.py:321
 msgid "Ctrl+Shift+M"
@@ -4624,9 +4579,8 @@ msgid "&Cover Art"
 msgstr "&Kapak Resmi"
 
 #: picard/ui/mainwindow/actions.py:341
-#, fuzzy
 msgid "&Actions"
-msgstr "Eylemler"
+msgstr "E&ylemler"
 
 #: picard/ui/mainwindow/actions.py:360
 msgid "Lookup the details of the CD in your drive"
@@ -4872,9 +4826,8 @@ msgid "Are you sure?"
 msgstr ""
 
 #: picard/ui/options/dialog.py:545 picard/ui/options/maintenance.py:101
-#, fuzzy
 msgid "Option"
-msgstr "Seçenekler"
+msgstr "Seçenek"
 
 #: picard/ui/options/dialog.py:548
 #, python-format
@@ -4908,10 +4861,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr ""
 
 #: picard/ui/options/general.py:174
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "CD Arama Hatası"
+msgstr "Oturum kapatma hatası"
 
 #: picard/ui/options/general.py:175
 #, python-format
@@ -5021,9 +4972,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/interface.py:193
-#, fuzzy
 msgid "You have changed the interface language."
-msgstr "Kullanıcı arayüzü dili:"
+msgstr "Arayüz dilini değiştirdiniz."
 
 #: picard/ui/options/interface.py:213
 msgid "Option Setting Warning"
@@ -5059,9 +5009,8 @@ msgid "Add Files"
 msgstr "Dosya Ekle"
 
 #: picard/ui/options/interface_toolbar.py:84
-#, fuzzy
 msgid "Cluster"
-msgstr "&Kümele"
+msgstr "Kümele"
 
 #: picard/ui/options/interface_toolbar.py:88
 msgid "Lookup"
@@ -5350,7 +5299,6 @@ msgid "Copy to a new profile"
 msgstr ""
 
 #: picard/ui/options/profiles.py:121
-#, fuzzy
 msgid "Delete"
 msgstr "Sil"
 
@@ -5363,10 +5311,8 @@ msgid "Settings to include in profile"
 msgstr ""
 
 #: picard/ui/options/profiles.py:214
-#, fuzzy
-#| msgid "Title"
 msgid "title"
-msgstr "Parça Adı"
+msgstr "başlık"
 
 #: picard/ui/options/profiles.py:251
 msgid "Unknown script"
@@ -5377,10 +5323,8 @@ msgid "No enabled scripts"
 msgstr ""
 
 #: picard/ui/options/profiles.py:257
-#, fuzzy
-#| msgid "Enable track ratings"
 msgid "Enabled scripts:"
-msgstr "Parça derecelendirmelerini aktive et"
+msgstr "Etkinleştirilen komutlar:"
 
 #: picard/ui/options/profiles.py:262
 msgid "No enabled providers"
@@ -5401,11 +5345,11 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:357
 msgid "Invalid Title"
-msgstr ""
+msgstr "Geçersiz Başlık"
 
 #: picard/ui/options/profiles.py:358
 msgid "The profile title cannot be blank."
-msgstr ""
+msgstr "Profil başlığı boş olamaz."
 
 #: picard/ui/options/ratings.py:37
 msgid "Ratings"
@@ -5571,7 +5515,6 @@ msgid "Track Search Results"
 msgstr ""
 
 #: picard/ui/searchdialog/track.py:64
-#, fuzzy
 msgid "Release"
 msgstr "Sürüm"
 
@@ -5635,7 +5578,7 @@ msgstr ""
 
 #: picard/util/__init__.py:383
 msgid "No Title"
-msgstr ""
+msgstr "Başlık Yok"
 
 #: picard/util/bytes2human.py:43
 #, python-format
@@ -5890,14 +5833,12 @@ msgid "MusicBrainz Recording Id"
 msgstr ""
 
 #: picard/util/tags.py:94
-#, fuzzy
 msgid "MusicBrainz Release Group Id"
-msgstr "MusicBrainz Albüm Sanatçısı Id"
+msgstr "MusicBrainz Sürüm Grubu Kimliği"
 
 #: picard/util/tags.py:95
-#, fuzzy
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz Disk Id"
+msgstr "MusicBrainz Parça Kimliği"
 
 #: picard/util/tags.py:96
 msgid "MusicBrainz Work Id"
@@ -6017,7 +5958,7 @@ msgstr ""
 
 #: picard/util/tags.py:127
 msgid "Subtitle"
-msgstr "Altbaşlık"
+msgstr "Alt başlık"
 
 #: picard/util/tags.py:128
 #, fuzzy
@@ -6027,7 +5968,7 @@ msgstr "Sözler"
 
 #: picard/util/tags.py:130
 msgid "Title Sort Order"
-msgstr "Parça Adı Sıralama Düzeni"
+msgstr "Başlık Sıralama Düzeni"
 
 #: picard/util/tags.py:131
 msgid "Total Discs"

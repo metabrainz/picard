@@ -3,50 +3,51 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# brtc <brtc@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-29 06:46+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-07-20 13:42+0000\n"
+"Last-Translator: brtc <brtc@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
-"constants/tr/>\n"
+"3/constants/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
 msgid "Stable releases only"
-msgstr ""
+msgstr "Yalnızca kararlı sürümler"
 
 #: picard/const/__init__.py:177
 msgid "Stable and Beta releases"
-msgstr ""
+msgstr "Kararlı ve Beta sürümler"
 
 #: picard/const/__init__.py:183
 msgid "Stable, Beta and Dev releases"
-msgstr ""
+msgstr "Kararlı, Beta ve Geliştirme sürümleri"
 
 #: picard/const/__init__.py:201
 msgid "My script"
-msgstr ""
+msgstr "Komutum"
 
 #: picard/const/__init__.py:203
 msgid "My profile"
-msgstr ""
+msgstr "Profilim"
 
 #: picard/const/__init__.py:204
 msgid "(copy)"
-msgstr ""
+msgstr "(kopya)"
 
 #: picard/const/__init__.py:205
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
@@ -80,7 +81,7 @@ msgstr "İngilizce"
 
 #: picard/const/languages.py:40 picard/const/locales.py:229
 msgid "English (Australia)"
-msgstr ""
+msgstr "İngilizce (Avustralya)"
 
 #: picard/const/languages.py:41 picard/const/locales.py:237
 msgid "English (Canada)"
@@ -108,7 +109,7 @@ msgstr "Fransızca"
 
 #: picard/const/languages.py:50 picard/const/locales.py:412
 msgid "French (Canada)"
-msgstr ""
+msgstr "Fransızca (Kanada)"
 
 #: picard/const/languages.py:52 picard/const/locales.py:469
 msgid "Galician"
@@ -125,7 +126,7 @@ msgstr "Macarca"
 
 #: picard/const/languages.py:57 picard/const/locales.py:526
 msgid "Icelandic"
-msgstr ""
+msgstr "İzlandaca"
 
 #: picard/const/languages.py:58 picard/const/locales.py:528
 msgid "Italian"
@@ -145,7 +146,7 @@ msgstr "Litvanyaca"
 
 #: picard/const/languages.py:63 picard/const/locales.py:689
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malayca (Malezya)"
 
 #: picard/const/languages.py:64 picard/const/locales.py:705
 msgid "Norwegian Bokmål"
@@ -205,11 +206,11 @@ msgstr "Ukraynaca"
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Çince (Çin)"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Çince (Tayvan)"
 
 #: picard/const/locales.py:27
 msgid "Afar"
