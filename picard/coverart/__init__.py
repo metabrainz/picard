@@ -130,7 +130,7 @@ class CoverArt:
             and not config.setting['save_images_to_files']
             and config.setting['embed_only_one_front_image']):
             # no need to continue
-            self.image_processing.threadpool.waitForDone()
+            self.image_processing.wait_for_processing()
             self.album._finalize_loading(None)
             return
 
@@ -155,7 +155,7 @@ class CoverArt:
                 return
             except StopIteration:
                 # nothing more to do
-                self.image_processing.threadpool.waitForDone()
+                self.image_processing.wait_for_processing()
                 self.album._finalize_loading(None)
                 return
 

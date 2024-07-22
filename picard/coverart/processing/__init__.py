@@ -137,3 +137,6 @@ class CoverArtImageProcessing:
         else:
             set_data = partial(handle_processing_exceptions, coverartimage.set_tags_data, initial_data)
             thread.run_task(set_data, thread_pool=self.threadpool)
+
+    def wait_for_processing(self):
+        self.threadpool.waitForDone()
