@@ -542,7 +542,7 @@ class Metadata(MutableMapping):
 
     def __iter__(self):
         with self._lock.lock_for_read():
-            return iter(self._store)
+            yield from self._store
 
     def items(self):
         with self._lock.lock_for_read():
