@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Vaclovas lntas (Vac.) <vaclovas1999@gmail.com>, 2023
 # "Vac31." <gateway_31@protonmail.com>, 2023.
+# Vaclovas Intas <gateway_31@protonmail.com>, 2024.
 #
 # Translators:
 #
@@ -11,10 +12,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2023-11-12 20:27+0000\n"
-"Last-Translator: \"Vac31.\" <gateway_31@protonmail.com>\n"
+"PO-Revision-Date: 2024-07-23 10:42+0000\n"
+"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
-"picard/appstream/lt/>\n"
+"picard/3/appstream/lt/>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,15 +23,15 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "„MusicBrainz Picard“"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
 msgid "MusicBrainz's music tagger"
-msgstr "MusicBrainz muzikos žymeklis"
+msgstr "„MusicBrainz“ muzikos žymeklis"
 
 #: org.musicbrainz.Picard.appdata.xml.in:10
 msgid ""
@@ -38,8 +39,8 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
-"Ar tau reikia sutvarkyti muzikos biblioteką? Picard yra atvirojo kodo "
-"tarpplatforminė muzikos žymeklis, sukurtas MusicBrainz. Jis turi galimybę "
+"Ar tau reikia sutvarkyti muzikos biblioteką? „Picard“ – tai atvirojo kodo "
+"tarpplatforminė muzikos žymeklė, sukurta „MusicBrainz“. Jis turi galimybę "
 "identifikuoti garso failus net be jokių esamų metaduomenų."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
@@ -50,9 +51,9 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard padeda tvarkyti muzikos kolekciją pervadinant muzikos failus ir "
-"rūšiuojant juos į aplankų struktūrą būtent taip, kaip nori. Galima naudoti "
-"įvairius įskiepių ir netgi gali parašyti savo įskiepį. Picard palaiko "
+"„Picard“ padeda tvarkyti muzikos kolekciją pervadinant muzikos failus ir "
+"surūšiuojant juos į aplankų struktūrą būtent taip, kaip nori. Galima naudoti "
+"įvairius įskiepius ir netgi gali parašyti savo įskiepį. „Picard“ palaiko "
 "daugybę garso formatų, taip pat gali peržiūrėti visą CD."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
@@ -68,7 +69,7 @@ msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
 msgstr ""
-"Daugybė formatų: Picard palaiko visus populiarius muzikos formatus, "
+"Daugybė formatų: „Picard“ palaiko visus populiarius muzikos formatus, "
 "įskaitant MP3, FLAC, OGG, M4A, WMA, WAV ir daugiau."
 
 #: org.musicbrainz.Picard.appdata.xml.in:31
@@ -76,7 +77,7 @@ msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: Picard naudoja AcoustID garso atspaudus, leidžiančius "
+"„AcoustID“: „Picard“ naudoja „AcoustID“ garso atspaudus, leidžiančius "
 "identifikuoti failus pagal tikrąją muziką, net jei jie neturi metaduomenų."
 
 #: org.musicbrainz.Picard.appdata.xml.in:35
@@ -85,14 +86,14 @@ msgid ""
 "MusicBrainz database to provide accurate information about millions of music "
 "releases."
 msgstr ""
-"Visapusiška duomenų bazė: Picard naudoja atvirą ir bendruomenės prižiūrimą "
-"MusicBrainz duomenų bazę, kad pateiktų tikslią informaciją apie milijonus "
+"Visapusiška duomenų bazė: „Picard“ naudoja atvirą ir bendruomenės prižiūrimą "
+"„MusicBrainz“ duomenų bazę, kad pateiktų tikslią informaciją apie milijonus "
 "muzikos leidinių."
 
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
 msgstr ""
-"CD peržiūros: Picard gali vienu paspaudimu peržiūrėti ištisų muzikos CD "
+"CD peržiūros: „Picard“ gali vienu paspaudimu peržiūrėti ištisų muzikos CD "
 "diskų."
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
@@ -100,7 +101,7 @@ msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
 msgstr ""
-"Įskiepių palaikymas: Jei tau reikia konkrečios funkcijos, gali rinktis iš "
+"Įskiepių palaikymas: jei tau reikia konkrečios funkcijos, gali rinktis iš "
 "galimų įskiepių arba parašyti savo."
 
 #: org.musicbrainz.Picard.appdata.xml.in:47
@@ -110,14 +111,15 @@ msgid ""
 "look like."
 msgstr ""
 "Skriptavimas: lanksti, bet lengvai išmokstama skriptų kalba leidžia tiksliai "
-"nurodyti, kaip bus pavadinti tavo muzikos failai ir kaip atrodys žymos."
+"nurodyti, kaip bus pavadinti tavo muzikos failai ir kaip atrodys žymės."
 
 #: org.musicbrainz.Picard.appdata.xml.in:52
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
 msgstr ""
-"Viršelis: Picard gali surasti ir atsisiųsti tinkamą viršelį tavo albumams."
+"Viršelio apipavidalinimai: „Picard“ gali surasti ir atsisiųsti tinkamą "
+"viršelio apipavidalinimus tavo albumams."
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
@@ -125,16 +127,17 @@ msgid ""
 "later, and is hosted on GitHub where it is actively developed by some "
 "awesome developers."
 msgstr ""
-"Atviras šaltinis: Picard yra licencijuota pagal GNU General Public licenciją "
-"2.0 ar vėlesnę ir talpinama GitHub, kur ją aktyviai kuria nuostabūs kūrėjai."
+"Atvirojo kodo: „Picard“ licencijuota pagal „GNU General Public“ licenciją "
+"2.0 ar vėlesnę ir talpinama sistemoje „GitHub“, kur ją aktyviai kuria "
+"nuostabūs kūrėjai."
 
 #: org.musicbrainz.Picard.appdata.xml.in:109
 msgid "MetaBrainz Foundation"
-msgstr "MetaBrainz Fondas"
+msgstr "„MetaBrainz“ fondas"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr "Žymėk savo muziką su naujos kartos MusicBrainz žymekliu"
+msgstr "Žymėk savo muziką su naujos kartos „MusicBrainz“ žymekliu"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
