@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-06-05 18:43+0000\n"
+"PO-Revision-Date: 2024-07-25 20:42+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" "
 "<ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.4\n"
+"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -69,7 +69,7 @@ msgstr "Ser etter metadata for filklynge %(album)s…"
 
 #: picard/cluster.py:330
 msgid "Unclustered Files"
-msgstr ""
+msgstr "Ugrupperte filer"
 
 #: picard/collection.py:78
 #, python-format
@@ -88,7 +88,7 @@ msgstr[1] "%(count)i utgivelser fjernet fra samling \"%(name)s\""
 #: picard/collection.py:97
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "Feil ved redigering av samlinger: %(error)s"
 
 #: picard/collection.py:119
 #, python-format
@@ -174,7 +174,7 @@ msgstr "Feil"
 
 #: picard/log.py:68
 msgid "Warning"
-msgstr ""
+msgstr "Advarsel"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -187,7 +187,7 @@ msgstr ""
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Uventet autoriseringsfeil"
 
 #: picard/oauth.py:288
 #, python-format
@@ -197,12 +197,12 @@ msgstr ""
 #: picard/pluginmanager.py:271
 #, python-format
 msgid "Unable to load plugin '%s'"
-msgstr ""
+msgstr "Kunne ikke laste programtillegg «%s»"
 
 #: picard/pluginmanager.py:302
 #, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr ""
+msgstr "Feil ved lasting av programtillegg «%(plugin)s»"
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -210,17 +210,20 @@ msgid ""
 "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this "
 "version of Picard."
 msgstr ""
+"Programtillegget «%(plugin)s» fra «%(filename)s» er ikke kompatibelt med "
+"denne versjonen av Picard."
 
 #: picard/pluginmanager.py:354
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
 msgstr ""
+"Programtillegget «%(plugin)s» har en ugyldig API versjonsstreng: %(error)s"
 
 #: picard/pluginmanager.py:360 picard/ui/options/plugins.py:431
 #: picard/ui/options/plugins.py:443 picard/ui/options/plugins.py:464
 #, python-format
 msgid "Plugin \"%(plugin)s\""
-msgstr ""
+msgstr "Programtillegget «%(plugin)s»"
 
 #: picard/pluginmanager.py:371
 #, python-format
@@ -243,7 +246,7 @@ msgstr "Tjeneradresse"
 
 #: picard/profile.py:49
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:208
 msgid "Automatically scan all new files"
@@ -322,11 +325,11 @@ msgstr ""
 
 #: picard/profile.py:74
 msgid "Various Artists name"
-msgstr ""
+msgstr "Navn brukt for diverse artister"
 
 #: picard/profile.py:75
 msgid "Standalone recordings name"
-msgstr ""
+msgstr "Navn brukt for frittstående innspillinger"
 
 #: picard/profile.py:78 picard/ui/ui_options_releases.py:110
 msgid "Preferred release types"
@@ -338,19 +341,19 @@ msgstr "Foretrukne utgivelsesland"
 
 #: picard/profile.py:80 picard/ui/ui_options_releases.py:116
 msgid "Preferred medium formats"
-msgstr ""
+msgstr "Foretrukne mediumformater"
 
 #: picard/profile.py:83 picard/ui/ui_options_genres.py:119
 msgid "Use genres from MusicBrainz"
-msgstr ""
+msgstr "Bruk sjangre fra MusicBrainz"
 
 #: picard/profile.py:86 picard/ui/ui_options_genres.py:120
 msgid "Use only my genres"
-msgstr ""
+msgstr "Bruk bare mine sjangre"
 
 #: picard/profile.py:87
 msgid "Use album artist genres"
-msgstr ""
+msgstr "Bruk albumartistsjangre"
 
 #: picard/profile.py:88 picard/ui/ui_options_genres.py:122
 msgid "Use folksonomy tags as genre"
@@ -370,7 +373,7 @@ msgstr ""
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
-msgstr ""
+msgstr "Ekskludér eller inkludér sjangre"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
@@ -378,7 +381,7 @@ msgstr "Skru på sporvurderinger"
 
 #: picard/profile.py:98
 msgid "Email to use when saving ratings"
-msgstr ""
+msgstr "Bruk følgende epost ved lagring av vurderinger"
 
 #: picard/profile.py:99 picard/ui/ui_options_ratings.py:50
 msgid "Submit ratings to MusicBrainz"
@@ -390,7 +393,7 @@ msgstr "Tagger"
 
 #: picard/profile.py:107
 msgid "Don't write tags"
-msgstr ""
+msgstr "Ikke lagre tagger"
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
@@ -402,7 +405,7 @@ msgstr "Fjern eksisterende tagger"
 
 #: picard/profile.py:110 picard/ui/ui_options_tags.py:75
 msgid "Keep embedded images when clearing tags"
-msgstr ""
+msgstr "Behold innsatte bilder når tagger fjernes"
 
 #: picard/profile.py:111 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
@@ -414,7 +417,7 @@ msgstr "Fjern APEv2 tagger fra mp3 filer"
 
 #: picard/profile.py:113 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
-msgstr ""
+msgstr "Reparer manglende søkepunkter i FLAC-filer"
 
 #: picard/profile.py:114
 msgid "Preserved tags list"
@@ -478,7 +481,7 @@ msgstr "Bygg inn omslagsbilder i filer"
 
 #: picard/profile.py:142 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
-msgstr ""
+msgstr "Bygg bare inn ett forsideomslagsbilde"
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
@@ -486,7 +489,7 @@ msgstr "Lagre omslagsbilder som egne filer"
 
 #: picard/profile.py:144
 msgid "File name for images"
-msgstr ""
+msgstr "Filnavn for bilder"
 
 #: picard/profile.py:145
 msgid "Overwrite existing image files"
@@ -510,7 +513,7 @@ msgstr "Filnavn og -flytting"
 
 #: picard/profile.py:156
 msgid "Move files"
-msgstr ""
+msgstr "Filflytting"
 
 #: picard/profile.py:157
 msgid "Destination directory"
@@ -518,11 +521,11 @@ msgstr "Destinasjonsmappe"
 
 #: picard/profile.py:158
 msgid "Move additional files"
-msgstr ""
+msgstr "Flytt tilleggsfiler"
 
 #: picard/profile.py:159
 msgid "Additional file patterns"
-msgstr ""
+msgstr "Tilleggsfilslogikk"
 
 #: picard/profile.py:160 picard/ui/ui_options_renaming.py:154
 msgid "Delete empty directories"
@@ -530,7 +533,7 @@ msgstr "Slett tomme mapper"
 
 #: picard/profile.py:161
 msgid "Rename files"
-msgstr ""
+msgstr "Omdøp filer"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
@@ -543,11 +546,11 @@ msgstr "Bytt ut tegn som ikke er ASCII"
 #: picard/profile.py:166 picard/ui/ui_options_renaming_compat.py:90
 #: picard/ui/ui_win_compat_dialog.py:191
 msgid "Windows compatibility"
-msgstr "Windows kombatibilitet"
+msgstr "Windows kompatibilitet"
 
 #: picard/profile.py:167
 msgid "Replacement characters used for Windows compatibility"
-msgstr ""
+msgstr "Erstatningstegn brukt for Windowskompatibilitet"
 
 #: picard/profile.py:168 picard/ui/options/renaming_compat.py:133
 msgid "Windows long path support"
@@ -555,7 +558,7 @@ msgstr ""
 
 #: picard/profile.py:169 picard/ui/ui_options_renaming_compat.py:93
 msgid "Replace spaces with underscores"
-msgstr ""
+msgstr "Erstatt mellomrom med understreker"
 
 #: picard/profile.py:170
 msgid "Replacement character to use for directory separators"
@@ -567,11 +570,11 @@ msgstr "Skripting"
 
 #: picard/profile.py:177
 msgid "Enable tagger scripts"
-msgstr ""
+msgstr "Skru på taggerskript"
 
 #: picard/profile.py:178
 msgid "Tagger scripts"
-msgstr ""
+msgstr "Taggerskript"
 
 #: picard/profile.py:183 picard/ui/options/interface.py:67
 msgid "User Interface"
@@ -583,7 +586,7 @@ msgstr "Vis tekst under ikoner"
 
 #: picard/profile.py:187 picard/ui/ui_options_interface.py:120
 msgid "Show icons in menus"
-msgstr ""
+msgstr "Vis ikoner i menyer"
 
 #: picard/profile.py:188
 #, fuzzy
@@ -592,7 +595,7 @@ msgstr "Brukergrensesnittsspråk"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
-msgstr ""
+msgstr "Brukergrensesnittsfargetema"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -600,23 +603,23 @@ msgstr "Tillat inkludering av flere mapper"
 
 #: picard/profile.py:191 picard/ui/ui_options_interface.py:125
 msgid "Use builtin search rather than looking in browser"
-msgstr "Bruk innebygget søk isteden for nettleserens"
+msgstr "Bruk innebygget søk heller enn nettleserens"
 
 #: picard/profile.py:192
 msgid "Use advanced search syntax"
-msgstr ""
+msgstr "Bruk avansert søkesyntaks"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
-msgstr ""
+msgstr "Vis brukeradvarselsdialog når Picard starter"
 
 #: picard/profile.py:194 picard/ui/ui_options_interface.py:128
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr "Vis en avsluttingsbekreftelse ved ulagrede filer"
+msgstr "Vis avsluttingsbekreftelse ved ulagrede filer"
 
 #: picard/profile.py:195 picard/ui/ui_options_interface.py:129
 msgid "Show a confirmation dialog when saving files"
-msgstr ""
+msgstr "Vis bekreftelsesdialog ved lagring av filer"
 
 #: picard/profile.py:196 picard/ui/ui_options_interface.py:130
 msgid "Adjust horizontal position in file browser automatically"
@@ -624,23 +627,23 @@ msgstr ""
 
 #: picard/profile.py:197
 msgid "Begin browsing in a specific directory"
-msgstr ""
+msgstr "Bla i ei spesifikk mappe"
 
 #: picard/profile.py:198
 msgid "Directory to begin browsing"
-msgstr ""
+msgstr "Mappe å bla i"
 
 #: picard/profile.py:201
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "Farger til lyst tema"
 
 #: picard/profile.py:202
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "Farger til mørkt tema"
 
 #: picard/profile.py:205
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "Tagger som vises øverst"
 
 #: picard/profile.py:208
 msgid "Layout of the tool bar"
@@ -820,7 +823,7 @@ msgstr ""
 #: picard/ui/coverartbox.py:613 picard/ui/mainwindow.py:1270
 #: picard/ui/options/maintenance.py:168 picard/ui/options/scripting.py:132
 msgid "All files"
-msgstr ""
+msgstr "Alle filer"
 
 #: picard/tagger.py:1213
 #, python-format
@@ -830,16 +833,16 @@ msgstr ""
 #: picard/track.py:121
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
-msgstr ""
+msgstr "Feillinje %(lineno)d: %(error)s"
 
 #: picard/track.py:390
 msgid "[loading recording information]"
-msgstr ""
+msgstr "[laster sporinformasjon]"
 
 #: picard/track.py:439
 #, python-format
 msgid "[could not load recording %s]"
-msgstr "[kunne ikke laste innspillingen %s]"
+msgstr "[kunne ikke laste spor %s]"
 
 #: picard/acoustid/__init__.py:112
 #, python-format
@@ -951,11 +954,11 @@ msgstr "Cover Art Archive"
 
 #: picard/coverart/providers/caa.py:197
 msgid "Cover Art Archive: Release"
-msgstr ""
+msgstr "Cover Art Archive: Utgivelse"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr ""
+msgstr "Cover Art Archive: Utgivelsesgruppe"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -978,15 +981,15 @@ msgstr ""
 
 #: picard/script/__init__.py:152
 msgid "Default file naming script"
-msgstr ""
+msgstr "Standard fildøpningskript"
 
 #: picard/script/__init__.py:164
 msgid "[album artist]/[album]/[track #]. [title]"
-msgstr ""
+msgstr "[albumartist]/[album]/[spor nr.]. [tittel]"
 
 #: picard/script/__init__.py:178
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
-msgstr ""
+msgstr "[albumartist]/[album]/[plate og spor nr.] [artist] - [tittel]"
 
 #: picard/script/functions.py:186
 msgid ""
@@ -4873,7 +4876,7 @@ msgstr ""
 
 #: picard/ui/options/interface.py:105
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: picard/ui/options/interface.py:106
 msgid "The Qt5 theme configured in the desktop environment"
@@ -4914,7 +4917,7 @@ msgstr ""
 
 #: picard/ui/options/interface_colors.py:67
 msgid "Choose a color"
-msgstr ""
+msgstr "Velg farge"
 
 #: picard/ui/options/interface_colors.py:146
 msgid "Colors changed"
@@ -5006,7 +5009,7 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:93
 msgid "Value"
-msgstr ""
+msgstr "Verdi"
 
 #: picard/ui/options/maintenance.py:127
 #, python-format
@@ -5186,7 +5189,7 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:115
 msgid "New"
-msgstr ""
+msgstr "Ny"
 
 #: picard/ui/options/profiles.py:116
 msgid "Create a new profile"
@@ -5194,7 +5197,7 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:121
 msgid "Copy to a new profile"
-msgstr ""
+msgstr "Kopier til ny profil"
 
 #: picard/ui/options/profiles.py:125
 msgid "Delete"
@@ -5202,15 +5205,15 @@ msgstr "Slett"
 
 #: picard/ui/options/profiles.py:126
 msgid "Delete the profile"
-msgstr ""
+msgstr "Slett profil"
 
 #: picard/ui/options/profiles.py:218
 msgid "Settings to include in profile"
-msgstr ""
+msgstr "alternativer å inkludere i profilen"
 
 #: picard/ui/options/profiles.py:251
 msgid "Unknown script"
-msgstr ""
+msgstr "Ukjent skript"
 
 #: picard/ui/options/profiles.py:255
 msgid "No scripts in list"
@@ -5237,11 +5240,11 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:373
 msgid "Invalid Title"
-msgstr ""
+msgstr "Ugyldig tittel"
 
 #: picard/ui/options/profiles.py:374
 msgid "The profile title cannot be blank."
-msgstr ""
+msgstr "Profiltittelen kan ikke være tom."
 
 #: picard/ui/options/ratings.py:41
 msgid "Ratings"
@@ -5289,7 +5292,7 @@ msgstr ""
 #: picard/ui/options/scripting.py:176
 #, python-format
 msgid "%s (imported)"
-msgstr ""
+msgstr "%s (importert)"
 
 #: picard/ui/options/scripting.py:243
 msgid "Script Error"
@@ -5317,7 +5320,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/__init__.py:187
 msgid "Search in browser"
-msgstr ""
+msgstr "Søk i nettleser"
 
 #: picard/ui/searchdialog/__init__.py:210
 msgid "<strong>Loading…</strong>"
@@ -5413,11 +5416,11 @@ msgstr ""
 
 #: picard/ui/widgets/profilelistwidget.py:48
 msgid "Remove profile"
-msgstr ""
+msgstr "Fjern profil"
 
 #: picard/ui/widgets/profilelistwidget.py:83
 msgid "Are you sure you want to remove this profile?"
-msgstr ""
+msgstr "Er du sikker på at du vil fjerne denne profilen?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
@@ -5463,7 +5466,7 @@ msgstr ""
 
 #: picard/util/__init__.py:377
 msgid "No Title"
-msgstr ""
+msgstr "Ingen tittel"
 
 #: picard/util/bytes2human.py:37
 #, python-format
@@ -5596,7 +5599,7 @@ msgstr "BPM"
 
 #: picard/util/tags.py:49
 msgid "Catalog Number"
-msgstr "Katalog nummer"
+msgstr "Katalognummer"
 
 #: picard/util/tags.py:50
 msgid "Comment"
@@ -5716,7 +5719,7 @@ msgstr ""
 
 #: picard/util/tags.py:87
 msgid "MusicBrainz Original Artist Id"
-msgstr ""
+msgstr "MusicBrainz opprinnelig artist Id"
 
 #: picard/util/tags.py:88
 msgid "MusicBrainz Recording Id"
@@ -5752,7 +5755,7 @@ msgstr "Opprinnelig artist"
 
 #: picard/util/tags.py:97
 msgid "Original Filename"
-msgstr ""
+msgstr "Opprinnelig filnavn"
 
 #: picard/util/tags.py:98
 msgid "Original Year"
@@ -5836,7 +5839,7 @@ msgstr "Skript"
 
 #: picard/util/tags.py:119
 msgid "Show Name"
-msgstr ""
+msgstr "Vis navn"
 
 #: picard/util/tags.py:120
 msgid "Show Name Sort Order"
@@ -5844,7 +5847,7 @@ msgstr ""
 
 #: picard/util/tags.py:121
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Vis verk og sats"
 
 #: picard/util/tags.py:122
 msgid "Subtitle"
@@ -5881,22 +5884,22 @@ msgstr "Skriver"
 #: picard/util/time.py:48
 #, python-format
 msgid "%(days).2dd %(hours).2dh"
-msgstr ""
+msgstr "%(days).2dd %(hours).2dt"
 
 #: picard/util/time.py:50
 #, python-format
 msgid "%(hours).2dh %(minutes).2dm"
-msgstr ""
+msgstr "%(hours).2dt %(minutes).2dm"
 
 #: picard/util/time.py:52
 #, python-format
 msgid "%(minutes).2dm %(seconds).2ds"
-msgstr ""
+msgstr "%(minutes).2dm %(seconds).2ds"
 
 #: picard/util/time.py:54
 #, python-format
 msgid "%(seconds).2ds"
-msgstr ""
+msgstr "%(seconds).2ds"
 
 #: picard/util/versions.py:66
 msgid "is not installed"
