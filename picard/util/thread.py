@@ -29,6 +29,7 @@
 
 
 import sys
+import threading
 import time
 import traceback
 
@@ -55,10 +56,11 @@ class ProxyToMainEvent(QEvent):
 
 class Runnable(QRunnable):
 
-    def __init__(self, func, next_func, traceback=True):
+    def __init__(self, func, next_func, task_counter=None, traceback=True):
         super().__init__()
         self.func = func
         self.next_func = next_func
+        self.task_counter = task_counter
         self.traceback = traceback
 
     def run(self):
@@ -70,9 +72,35 @@ class Runnable(QRunnable):
             to_main(self.next_func, error=sys.exc_info()[1])
         else:
             to_main(self.next_func, result=result)
+        finally:
+            if self.task_counter:
+                self.task_counter.decrement()
 
 
-def run_task(func, next_func=None, priority=0, thread_pool=None, traceback=True):
+class TaskCounter:
+
+    def __init__(self):
+        self.count = 0
+        self.lock = threading.Lock()
+        self.condition = threading.Condition(self.lock)
+
+    def decrement(self):
+        with self.lock:
+            self.count -= 1
+            if self.count == 0:
+                self.condition.notify_all()
+
+    def increment(self):
+        with self.lock:
+            self.count += 1
+
+    def wait_for_tasks(self):
+        with self.lock:
+            while self.count > 0:
+                self.condition.wait()
+
+
+def run_task(func, next_func=None, priority=0, thread_pool=None, task_counter=None, traceback=True):
     """Schedules func to be run on a separate thread
 
     Args:
@@ -80,12 +108,10 @@ def run_task(func, next_func=None, priority=0, thread_pool=None, traceback=True)
         next_func: Callback function to run after the thread has been completed.
           The callback will be run on the main thread.
         priority: Priority for the run queue's order of execution.
-        thread_pool: Instance of concurrent.futures.Executor to run this task.
+        thread_pool: Instance of QThreadPool to run this task.
+        task_counter: Instance of TaskCounter to count the number of tasks currently running.
         traceback: If set to true the stack trace will be logged to the error log
           if an exception was raised.
-
-    Returns:
-        An instance of concurrent.futures.Future
     """
     def _no_operation(*args, **kwargs):
         return
@@ -93,9 +119,12 @@ def run_task(func, next_func=None, priority=0, thread_pool=None, traceback=True)
     if not next_func:
         next_func = _no_operation
 
+    if task_counter:
+        task_counter.increment()
+
     if not thread_pool:
         thread_pool = QCoreApplication.instance().thread_pool
-    thread_pool.start(Runnable(func, next_func, traceback), priority)
+    thread_pool.start(Runnable(func, next_func, task_counter, traceback), priority)
 
 
 def to_main(func, *args, **kwargs):
