@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-07-25 20:42+0000\n"
+"PO-Revision-Date: 2024-07-26 23:42+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" "
 "<ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -3088,7 +3088,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:570
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "%Tilbakestill alle skript"
 
 #: picard/ui/scripteditor.py:571
 msgid "Reset all scripts to the saved values"
@@ -3218,7 +3218,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:1132
 msgid "Error Deleting Script"
-msgstr ""
+msgstr "Feil ved sletting av skript"
 
 #: picard/ui/scripteditor.py:1133
 #, python-format
@@ -3254,7 +3254,7 @@ msgstr "Kopi"
 
 #: picard/ui/options/renaming.py:262 picard/ui/scripteditor.py:1304
 msgid "The file naming format must not be empty."
-msgstr "Filnanvsformat kan ikke være tom."
+msgstr "Filnavnsformat kan ikke være tom."
 
 #: picard/ui/scripteditor.py:1341
 msgid "Script Details"
@@ -3270,7 +3270,7 @@ msgstr ""
 #: picard/ui/scriptsmenu.py:63
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
-msgstr ""
+msgstr "Skriptfeil i \"%(script)s\": %(message)s"
 
 #: picard/ui/tagsfromfilenames.py:131 picard/ui/tagsfromfilenames.py:142
 msgid "File Name"
@@ -3278,7 +3278,7 @@ msgstr "Filnavn"
 
 #: picard/ui/ui_aboutdialog.py:89
 msgid "About Picard"
-msgstr ""
+msgstr "Om Picard"
 
 #: picard/ui/mainwindow/__init__.py:201 picard/ui/ui_aboutdialog.py:90
 msgid "MusicBrainz Picard"
@@ -3300,7 +3300,7 @@ msgstr ""
 
 #: picard/ui/ui_cdlookup.py:94
 msgid "Submit disc ID"
-msgstr ""
+msgstr "Send inn disk ID"
 
 #: picard/ui/ui_cdlookup.py:95
 #, fuzzy
@@ -3309,7 +3309,7 @@ msgstr "Last inn i Picard"
 
 #: picard/ui/ui_cdlookup.py:96
 msgid "&Submit disc ID"
-msgstr ""
+msgstr "&Send inn disk ID"
 
 #: picard/ui/ui_cdlookup.py:97 picard/ui/util.py:59
 msgid "&Cancel"
@@ -3373,11 +3373,11 @@ msgstr ""
 
 #: picard/ui/ui_infodialog.py:88
 msgid "&Error"
-msgstr ""
+msgstr "&Feil"
 
 #: picard/ui/ui_infodialog.py:89
 msgid "A&rtwork"
-msgstr "G&rafikk"
+msgstr "&Omslag"
 
 #: picard/ui/ui_infostatus.py:112 picard/ui/ui_provider_options_caa.py:74
 #: picard/ui/ui_provider_options_local.py:58
@@ -3475,6 +3475,7 @@ msgid "Overwrite the file if it already exists"
 msgstr "Overskriv filen hvis den allerede finnes?"
 
 #: picard/ui/ui_options_cover.py:108
+#, fuzzy
 msgid "Cover Art Providers"
 msgstr "Omslagsbilde opphav"
 
@@ -3606,7 +3607,7 @@ msgstr " %"
 
 #: picard/ui/ui_options_genres.py:131
 msgid "Maximum number of genres:"
-msgstr ""
+msgstr "Maksimalt antall sjangre:"
 
 #: picard/ui/ui_options_genres.py:132
 msgid "Join multiple genres with:"
@@ -3630,7 +3631,7 @@ msgstr ""
 
 #: picard/ui/ui_options_interface.py:124
 msgid "Appearance"
-msgstr ""
+msgstr "Utseendet"
 
 #: picard/ui/ui_options_interface.py:127
 msgid "User interface language:"
@@ -3638,7 +3639,7 @@ msgstr "Brukergrensesnittsspråk:"
 
 #: picard/ui/ui_options_interface.py:128
 msgid "User interface color theme:"
-msgstr ""
+msgstr "Fargetema for brukergrensesnitt:"
 
 #: picard/ui/ui_options_interface.py:129
 msgid "Miscellaneous"
@@ -3659,7 +3660,7 @@ msgstr "Begynn søk i følgende mappe:"
 #: picard/ui/options/interface_colors.py:93
 #: picard/ui/ui_options_interface_colors.py:55
 msgid "Colors"
-msgstr ""
+msgstr "Farger"
 
 #: picard/ui/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -3747,11 +3748,11 @@ msgstr "Hvis mulig, bruk følgende region til oversetting av artistnavn:"
 
 #: picard/ui/ui_options_metadata.py:137 picard/ui/ui_options_metadata.py:139
 msgid "Select…"
-msgstr ""
+msgstr "Velg…"
 
 #: picard/ui/ui_options_metadata.py:138
 msgid "Ignore artist name translation for these language scripts:"
-msgstr ""
+msgstr "Ignorer oversettelser av artistnavn for disse skriftspråkene:"
 
 #: picard/ui/ui_options_metadata.py:144
 msgid "Use track relationships"
@@ -3776,16 +3777,17 @@ msgid "Default"
 msgstr "Standard"
 
 #: picard/ui/ui_options_network.py:162
+#, fuzzy
 msgid "Web Proxy"
 msgstr "Mellomleddstjener"
 
 #: picard/ui/ui_options_network.py:163
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: picard/ui/ui_options_network.py:164
 msgid "SOCKS"
-msgstr ""
+msgstr "SOCKS"
 
 #: picard/ui/ui_options_network.py:165 picard/ui/ui_passworddialog.py:69
 msgid "Username:"
@@ -3857,11 +3859,11 @@ msgstr ""
 
 #: picard/ui/ui_options_profiles.py:82
 msgid "Move profile up"
-msgstr ""
+msgstr "Flytt profil oppover"
 
 #: picard/ui/ui_options_profiles.py:83
 msgid "Move profile down"
-msgstr ""
+msgstr "Flytt profil nedover"
 
 #: picard/ui/ui_options_ratings.py:54
 msgid ""
@@ -3904,7 +3906,7 @@ msgstr "Destinasjonsmappe:"
 
 #: picard/ui/ui_options_renaming.py:159
 msgid "Move additional files (case insensitive):"
-msgstr "Flytt også filtypene (navn er ikke versalsensitiv):"
+msgstr "Flytt også filtypene (navn er ikke versalsensitive):"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Rename files when saving"
@@ -3924,11 +3926,11 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming.py:165 picard/ui/ui_scripteditor.py:218
 msgid "Before"
-msgstr ""
+msgstr "Før"
 
 #: picard/ui/ui_options_renaming.py:166 picard/ui/ui_scripteditor.py:219
 msgid "After"
-msgstr ""
+msgstr "Etter"
 
 #: picard/ui/ui_options_renaming.py:167
 msgid "Reload examples"
@@ -3936,7 +3938,7 @@ msgstr ""
 
 #: picard/ui/ui_options_renaming_compat.py:97
 msgid "Customize…"
-msgstr ""
+msgstr "Tilpass…"
 
 #: picard/ui/ui_options_renaming_compat.py:98
 msgid "Allow paths longer than 259 characters"
@@ -3982,11 +3984,11 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:134
 msgid "Import"
-msgstr ""
+msgstr "Importér"
 
 #: picard/ui/ui_options_script.py:135
 msgid "Export"
-msgstr ""
+msgstr "Eksportér"
 
 #: picard/ui/ui_options_script.py:136
 #, fuzzy
@@ -4009,7 +4011,7 @@ msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:51
 msgid "AAC files"
-msgstr ""
+msgstr "AAC filer"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:52
 msgid ""
@@ -4023,16 +4025,16 @@ msgstr ""
 #: picard/ui/ui_options_tags_compatibility_aac.py:53
 #: picard/ui/ui_options_tags_compatibility_ac3.py:53
 msgid "Save APEv2 tags"
-msgstr ""
+msgstr "Lagre APEv2 tagger"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:54
 #: picard/ui/ui_options_tags_compatibility_ac3.py:54
 msgid "Do not save tags"
-msgstr ""
+msgstr "Ikke lagre tagger"
 
 #: picard/ui/ui_options_tags_compatibility_ac3.py:51
 msgid "AC3 files"
-msgstr ""
+msgstr "AC3 filer"
 
 #: picard/ui/ui_options_tags_compatibility_ac3.py:52
 msgid ""
@@ -4084,8 +4086,8 @@ msgid ""
 "</p></body></html>"
 msgstr ""
 "<html><head/><body><p>Standard er \"/\" for å opprettholde kompatibilitet "
-"med tidligere Picardutgivelser.</p><p>Nye alternativer er. '; _' Eller '_ / "
-"_'. Du kan også skrive din egen. </p></body></html>"
+"med tidligere versjoner av Picard.</p><p>Nye alternativer er. \"; _\" Eller "
+"\"_ / _\". Du kan også skrive din egen. </p></body></html>"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:132
 msgid "Also include ID3v1 tags in the files"
@@ -4093,7 +4095,7 @@ msgstr "Inkluder også ID3v1 tagger i filene"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:62
 msgid "WAVE files"
-msgstr ""
+msgstr "WAVE filer"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:63
 msgid ""
@@ -4105,11 +4107,11 @@ msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:64
 msgid "Also include RIFF INFO tags in the files"
-msgstr ""
+msgstr "Inkluder også RIFF INFO tagger i filene"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:67
 msgid "Windows-1252"
-msgstr ""
+msgstr "Windows-1252"
 
 #: picard/ui/ui_passworddialog.py:68
 msgid "Authentication required"
@@ -4117,7 +4119,7 @@ msgstr "Autorisering nødvendig"
 
 #: picard/ui/ui_provider_options_caa.py:75
 msgid "Download only cover art images matching selected types"
-msgstr "Last bare ned omslagsbilder valgte typer"
+msgstr "Last bare ned omslagsbilder av valgte typer"
 
 #: picard/ui/ui_provider_options_caa.py:76
 msgid "Select types…"
@@ -4142,8 +4144,8 @@ msgid ""
 "it will default to Front type."
 msgstr ""
 "Første gruppe i det eventuelle regulære uttrykket, vil bli benyttet som "
-"type, dvs omslag-bakside-rygg.jpg settest som bakside + rygg, hvis ingen "
-"type er funnet, vil typen bli satt som forside"
+"type, dvs omslag-bakside-rygg.jpg vil bli satt som bakside + rygg. Hvis "
+"ingen type blir funnet, vil den bli satt som type Forside"
 
 #: picard/ui/ui_scripteditor.py:215
 msgid "Select the file naming script to load into the editor"
@@ -4151,7 +4153,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor.py:216 picard/ui/ui_scripteditor_details.py:105
 msgid "Title:"
-msgstr ""
+msgstr "Tittel:"
 
 #: picard/ui/ui_scripteditor_details.py:97
 msgid "File Naming Script Metadata"
@@ -4163,7 +4165,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:99
 msgid "Last Updated:"
-msgstr ""
+msgstr "Sist oppdatert:"
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "Date and time the file naming script was last updated (UTC)."
@@ -4171,7 +4173,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Now"
-msgstr ""
+msgstr "Nå"
 
 #: picard/ui/ui_scripteditor_details.py:102
 msgid "Author:"
@@ -4179,11 +4181,11 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:103
 msgid "Version:"
-msgstr ""
+msgstr "Versjon:"
 
 #: picard/ui/ui_scripteditor_details.py:104
 msgid "License:"
-msgstr ""
+msgstr "Lisens:"
 
 #: picard/ui/ui_scripteditor_details.py:106
 msgid "License under which the file naming script is available."
@@ -4216,30 +4218,30 @@ msgstr "Erstatt understreker med mellomrom"
 
 #: picard/ui/ui_tagsfromfilenames.py:61
 msgid "&Preview"
-msgstr "&Forhåndsvis"
+msgstr "&Forhåndsvisning"
 
 #: picard/ui/ui_widget_taglisteditor.py:75
 msgid "Add new tag"
-msgstr ""
+msgstr "Legg til ny tagg"
 
 #: picard/ui/ui_widget_taglisteditor.py:76
 #: picard/ui/ui_widget_taglisteditor.py:77
 msgid "Move tag up"
-msgstr ""
+msgstr "Flytt taggen oppover"
 
 #: picard/ui/ui_widget_taglisteditor.py:78
 #: picard/ui/ui_widget_taglisteditor.py:79
 msgid "Move tag down"
-msgstr ""
+msgstr "Flytt taggen nedover"
 
 #: picard/ui/ui_widget_taglisteditor.py:80
 #: picard/ui/ui_widget_taglisteditor.py:81
 msgid "Remove selected tags"
-msgstr ""
+msgstr "Fjern valgte tagger"
 
 #: picard/ui/ui_widget_taglisteditor.py:82
 msgid "Remove tags"
-msgstr ""
+msgstr "Fjern tagger"
 
 #: picard/ui/ui_win_compat_dialog.py:198
 msgid "Character"
@@ -4247,7 +4249,7 @@ msgstr "Rolle"
 
 #: picard/ui/ui_win_compat_dialog.py:199
 msgid "Replacement"
-msgstr ""
+msgstr "Erstatning"
 
 #: picard/ui/util.py:58
 msgid "&Ok"
@@ -4798,6 +4800,7 @@ msgid "&Check for Update…"
 msgstr ""
 
 #: picard/ui/options/__init__.py:122
+#, fuzzy
 msgid "Regex Error"
 msgstr "Feil i Regeks"
 
@@ -4836,7 +4839,7 @@ msgstr "Gjenopprett &alle standardinnstillinger"
 
 #: picard/ui/options/dialog.py:184
 msgid "Reset all of Picard's settings"
-msgstr "Tilbakestill alle Picard innstillinger"
+msgstr "Tilbakestill alle Picard innstillingene"
 
 #: picard/ui/options/dialog.py:186
 msgid "Reset all settings for current option page"
@@ -4864,7 +4867,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:453
 msgid "Unexpected error"
-msgstr ""
+msgstr "Uventet feil"
 
 #: picard/ui/options/dialog.py:499
 msgid "You are about to reset your options for this page."
