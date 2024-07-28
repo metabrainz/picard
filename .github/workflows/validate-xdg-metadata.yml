@@ -13,7 +13,7 @@ on:
 
 jobs:
   validate-xdg-metadata:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
@@ -23,14 +23,11 @@ jobs:
     - name: Install utils
       run: |
         sudo apt-get update
-        sudo apt-get install appstream-util desktop-file-utils gettext
+        sudo apt-get install appstream desktop-file-utils gettext
     - name: Validate AppStream metadata
       run: |
         python setup.py build_appdata
-        appstream-util validate-relax org.musicbrainz.Picard.appdata.xml
-        # TODO: Consider using appstreamcli once ubuntu-latest provides
-        #       appstreamcli>=0.16, as this tool catches more issues.
-        #appstreamcli validate --pedantic --explain org.musicbrainz.Picard.appdata.xml
+        appstreamcli validate --pedantic --explain org.musicbrainz.Picard.appdata.xml
     - name: Validate desktop file
       run: |
         python setup.py build_desktop_file
