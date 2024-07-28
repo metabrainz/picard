@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-07-26 23:42+0000\n"
+"PO-Revision-Date: 2024-07-28 11:42+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" "
 "<ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -2810,7 +2810,7 @@ msgstr "Legg til ny tagg…"
 
 #: picard/ui/metadatabox.py:239
 msgid "Show Changes First"
-msgstr "Se endringer først"
+msgstr "Vis endringer øverst"
 
 #: picard/ui/metadatabox.py:244
 msgid "Alt+Shift+A"
@@ -2830,11 +2830,11 @@ msgstr "Endre…"
 
 #: picard/ui/metadatabox.py:375
 msgid "Add to 'Preserve Tags' List"
-msgstr "Legg til i \"Behold Tagger\" listen"
+msgstr "Legg til i lista av tagger som skal bevares"
 
 #: picard/ui/metadatabox.py:380
 msgid "Remove from 'Preserve Tags' List"
-msgstr "Fjern fra \"Behold Tagger\" listen"
+msgstr "Fjern fra lista av tagger som skal bevares"
 
 #: picard/ui/mainwindow/actions.py:218 picard/ui/metadatabox.py:396
 msgid "Lookup in &Browser"
@@ -2843,12 +2843,12 @@ msgstr "Slå opp i &nettleser"
 #: picard/ui/metadatabox.py:428
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
-msgstr[0] "Bruk opprinnelig verdi"
-msgstr[1] "Bruk opprinnelige verdier"
+msgstr[0] "Bruk den opprinnelig verdien"
+msgstr[1] "Bruk de opprinnelige verdiene"
 
 #: picard/ui/metadatabox.py:435
 msgid "&Copy"
-msgstr ""
+msgstr "&Kopi"
 
 #: picard/ui/mainwindow/actions.py:102 picard/ui/metadatabox.py:439
 msgid "&Paste"
@@ -2864,14 +2864,22 @@ msgid ""
 "work in small batches</li></ul><p>Picard is open source software written by "
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
+"<p><strong>Endringer gjort av Picard kan ikke reverseres.</strong></"
+"p><p>Picard er et veldig fleksibelt musikktaggingsverktøy som kan endre navn "
+"på filer og overskrive tagger. Vi anbefaler <strong>på det sterkeste</"
+"strong> at du:</p><ul><li>Leser <a href='{documentation_url}'>Brukerguiden</"
+"a> (som også er tilgjengelig fra Hjelp-menyen) </li><li>Tester med kopier av "
+"musikkfilene dine; og arbeider i små puljer.</li></ul><p>Picard er et åpent-"
+"kildekodeprogram skrevet av frivillige. Det leveres som det er uten "
+"garanti.</p>"
 
 #: picard/ui/newuserdialog.py:52
 msgid "Show this message again the next time you start Picard."
-msgstr ""
+msgstr "Hvis denne meldingen igjen neste gang Picard starter."
 
 #: picard/ui/newuserdialog.py:57
 msgid "New User Warning"
-msgstr ""
+msgstr "Advarsel for nybegynnere"
 
 #: picard/ui/passworddialog.py:44
 #, python-format
@@ -2904,23 +2912,23 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:207
 msgid "Player"
-msgstr ""
+msgstr "Spiller"
 
 #: picard/ui/playertoolbar.py:215
 msgid "Play"
-msgstr "Skuespill"
+msgstr "Spill"
 
 #: picard/ui/playertoolbar.py:216
 msgid "Play selected files"
-msgstr ""
+msgstr "Spill markerte filer"
 
 #: picard/ui/playertoolbar.py:222
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 #: picard/ui/playertoolbar.py:223
 msgid "Pause or resume current playback"
-msgstr ""
+msgstr "Pause eller gjenoppta avspillingen"
 
 #: picard/ui/playertoolbar.py:365
 #, python-format
@@ -2929,11 +2937,11 @@ msgstr "%1.1f ×"
 
 #: picard/ui/playertoolbar.py:371
 msgid "Change playback speed"
-msgstr ""
+msgstr "Endre avspillingshastighet"
 
 #: picard/ui/playertoolbar.py:378
 msgid "Playback speed"
-msgstr ""
+msgstr "Avspillingshastighet"
 
 #: picard/ui/playertoolbar.py:421
 #, python-format
@@ -2942,11 +2950,11 @@ msgstr "%d%%"
 
 #: picard/ui/playertoolbar.py:427
 msgid "Change audio volume"
-msgstr ""
+msgstr "Endre lydvolum"
 
 #: picard/ui/playertoolbar.py:433
 msgid "Audio volume"
-msgstr ""
+msgstr "Lydvolum"
 
 #: picard/ui/pluginupdatedialog.py:45
 msgid "Perform this check again the next time you start Picard."
@@ -2967,14 +2975,14 @@ msgstr[1] ""
 #: picard/ui/pluginupdatedialog.py:72
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Vil du oppdatere programtillegget nå?"
+msgstr[1] "Vil du oppdatere programtilleggene nå?"
 
 #: picard/ui/pluginupdatedialog.py:80
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "pluss ett till programtillegg."
+msgstr[1] "pluss {extra_file_count:,d} till programtillegg."
 
 #: picard/ui/ratingwidget.py:100
 #, python-format
@@ -2986,50 +2994,50 @@ msgstr ""
 #: picard/ui/savewarningdialog.py:44
 msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "overskrive eksisterende metadata (tagger) inne i fila"
+msgstr[1] "overskrive eksisterende metadata (tagger) inne i filene"
 
 #: picard/ui/savewarningdialog.py:49
 msgid "rename the file"
 msgid_plural "rename the files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "omdøpe denne fila"
+msgstr[1] "omdøpe disse filene"
 
 #: picard/ui/savewarningdialog.py:54
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "flytte fila til ett annet sted"
+msgstr[1] "flytte filene til et annet sted"
 
 #: picard/ui/savewarningdialog.py:60
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du er i ferd med å lagre ei fil og dette vil:"
+msgstr[1] "Du er i ferd med å lagre {file_count:,d} filer og dette vil:"
 
 #: picard/ui/savewarningdialog.py:64
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
-msgstr ""
+msgstr "<strong> Denne handlingen kan ikke angres. </strong> Vil du fortsette?"
 
 #: picard/ui/savewarningdialog.py:67
 msgid "<li>{action}</li>"
-msgstr ""
+msgstr "<li>{action}</li>"
 
 #: picard/ui/savewarningdialog.py:68
 msgid "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
-msgstr ""
+msgstr "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
 
 #: picard/ui/savewarningdialog.py:70
 msgid "There are no actions selected. No changes will be saved."
-msgstr ""
+msgstr "Ingen handlinger er valgt, ingen endringer vil lagres."
 
 #: picard/ui/savewarningdialog.py:72
 msgid "Don't show this warning again."
-msgstr ""
+msgstr "Ikke vis denne advarselen igjen."
 
 #: picard/ui/savewarningdialog.py:78
 msgid "File Save Warning"
-msgstr ""
+msgstr "Fillagringsadvarsel"
 
 #: picard/ui/scripteditor.py:147
 msgid "Renaming options are disabled"
@@ -3052,7 +3060,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:352 picard/ui/scripteditor.py:1247
 msgid "Confirm"
-msgstr ""
+msgstr "Bekreft"
 
 #: picard/ui/scripteditor.py:426
 msgid "File naming script editor"
@@ -3060,7 +3068,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:481
 msgid "Reset"
-msgstr ""
+msgstr "Tilbakestill"
 
 #: picard/ui/options/dialog.py:189 picard/ui/scripteditor.py:486
 msgid "Make It So!"
@@ -3072,7 +3080,7 @@ msgstr "&Fil"
 
 #: picard/ui/scripteditor.py:558
 msgid "&Import a script file"
-msgstr ""
+msgstr "&Importér en skriptfil"
 
 #: picard/ui/scripteditor.py:559
 msgid "Import a file as a new script"
