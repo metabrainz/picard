@@ -11,14 +11,15 @@
 # CatQuest, The Endeavouring Cat, 2013
 # CatQuest, The Endeavouring Cat, 2014
 # "ApeKattQuest, MonkeyPython" <ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
+# "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-07-28 11:42+0000\n"
-"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
-"<ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2024-07-29 11:14+0000\n"
+"Last-Translator: \"ApeKattQuest, MonkeyPython\" <monkeypython+inst@yepmail."
+"net>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/2/app/nb_NO/>\n"
 "Language: nb\n"
@@ -4450,7 +4451,6 @@ msgid "Export"
 msgstr "Eksportér"
 
 #: picard/ui/ui_options_script.py:130
-#, fuzzy
 msgid "Documentation"
 msgstr "Dokumentasjon"
 
