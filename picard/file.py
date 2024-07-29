@@ -821,6 +821,8 @@ class File(MetadataItem):
             return self.base_filename
         elif column == 'covercount':
             return self.cover_art_description()
+        elif column == 'coverdimensions':
+            return self.cover_art_dimensions()
         value = m[column]
         if not value and not get_config().setting['clear_existing_tags']:
             value = self.orig_metadata[column]

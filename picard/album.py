@@ -813,6 +813,8 @@ class Album(MetadataItem):
             return self.metadata['totaldiscs']
         elif column == 'covercount':
             return self.cover_art_description()
+        elif column == 'coverdimensions':
+            return self.cover_art_dimensions()
         else:
             return self.metadata[column]
 

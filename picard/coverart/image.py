@@ -229,6 +229,11 @@ class CoverArtImage:
                                                                 self.datalength,
                                                                 self.tempfile_filename)
 
+    def dimensions_as_string(self):
+        if self.datahash is None:
+            return ""
+        return f"{self.width}x{self.height}"
+
     def _repr(self):
         if self.url is not None:
             yield "url=%r" % self.url.toString()

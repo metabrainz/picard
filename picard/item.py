@@ -164,6 +164,12 @@ class Item:
             return ngettext("%i image not in all tracks", "%i different images among tracks",
                             number_of_images) % number_of_images
 
+    def cover_art_dimensions(self):
+        front_image = self.metadata.images.get_front_image()
+        if front_image:
+            return front_image.dimensions_as_string()
+        return ''
+
 
 class ImageListState:
     def __init__(self):
