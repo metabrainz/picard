@@ -3,21 +3,23 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-29 06:46+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-07-29 19:42+0000\n"
+"Last-Translator: \"ApeKattQuest, MonkeyPython\" <monkeypython+inst@yepmail."
+"net>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
-"projects/picard/constants/nb_NO/>\n"
+"projects/picard/3/constants/nb_NO/>\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -38,15 +40,15 @@ msgstr "Mitt skript"
 
 #: picard/const/__init__.py:203
 msgid "My profile"
-msgstr ""
+msgstr "Min profil"
 
 #: picard/const/__init__.py:204
 msgid "(copy)"
-msgstr ""
+msgstr "(kopi)"
 
 #: picard/const/__init__.py:205
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
@@ -80,7 +82,7 @@ msgstr "Engelsk"
 
 #: picard/const/languages.py:40 picard/const/locales.py:229
 msgid "English (Australia)"
-msgstr ""
+msgstr "Engelsk (Australia)"
 
 #: picard/const/languages.py:41 picard/const/locales.py:237
 msgid "English (Canada)"
@@ -145,7 +147,7 @@ msgstr "Litauisk"
 
 #: picard/const/languages.py:63 picard/const/locales.py:689
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Malay (Malaysia)"
 
 #: picard/const/languages.py:64 picard/const/locales.py:705
 msgid "Norwegian Bokmål"
@@ -169,7 +171,7 @@ msgstr "Portugisisk"
 
 #: picard/const/languages.py:70 picard/const/locales.py:781
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Portugisisk (Brazil)"
 
 #: picard/const/languages.py:71 picard/const/locales.py:810
 msgid "Romanian"
@@ -209,7 +211,7 @@ msgstr "Kinesisk (Kina)"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Kinesisk (Taiwan)"
 
 #: picard/const/locales.py:27
 msgid "Afar"
@@ -217,27 +219,27 @@ msgstr "Afar"
 
 #: picard/const/locales.py:28
 msgid "Afar (Djibouti)"
-msgstr ""
+msgstr "Afar (Djibouti)"
 
 #: picard/const/locales.py:29
 msgid "Afar (Eritrea)"
-msgstr ""
+msgstr "Afar (Eritrea)"
 
 #: picard/const/locales.py:30
 msgid "Afar (Eritrea) (Saho)"
-msgstr ""
+msgstr "Afar (Eritrea) (Saho)"
 
 #: picard/const/locales.py:31
 msgid "Afar (Ethiopia)"
-msgstr ""
+msgstr "Afar (Etiopia)"
 
 #: picard/const/locales.py:32
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abkhasisk"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
-msgstr ""
+msgstr "Abkhasisk (Georgia)"
 
 #: picard/const/locales.py:34
 msgid "Afrikaans"
@@ -245,19 +247,19 @@ msgstr "Afrikansk"
 
 #: picard/const/locales.py:35
 msgid "Afrikaans (Namibia)"
-msgstr ""
+msgstr "Afrikaans (Namibia)"
 
 #: picard/const/locales.py:36
 msgid "Afrikaans (South Africa)"
-msgstr ""
+msgstr "Afrikaans (Sør-Afrika)"
 
 #: picard/const/locales.py:37
 msgid "Aghem"
-msgstr ""
+msgstr "Aghem"
 
 #: picard/const/locales.py:38
 msgid "Aghem (Cameroon)"
-msgstr ""
+msgstr "Aghem (Kamerun)"
 
 #: picard/const/locales.py:39
 msgid "Akan"
@@ -265,7 +267,7 @@ msgstr "Akan"
 
 #: picard/const/locales.py:40
 msgid "Akan (Ghana)"
-msgstr ""
+msgstr "Akan (Ghana)"
 
 #: picard/const/locales.py:41
 msgid "Amharic"
@@ -273,7 +275,7 @@ msgstr "Amharisk"
 
 #: picard/const/locales.py:42
 msgid "Amharic (Ethiopia)"
-msgstr ""
+msgstr "Amharisk (Etiopia)"
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
