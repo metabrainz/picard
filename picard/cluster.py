@@ -231,6 +231,8 @@ class Cluster(FileList):
             return self.metadata['totaldiscs']
         elif column == 'covercount':
             return self.cover_art_description()
+        elif column == 'coverdimensions':
+            return self.cover_art_dimensions()
         return self.metadata[column]
 
     def _lookup_finished(self, document, http, error):

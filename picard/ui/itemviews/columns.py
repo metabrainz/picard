@@ -220,6 +220,7 @@ DEFAULT_COLUMNS = Columns((
     Column(N_("Original Release Date"), 'originaldate'),
     Column(N_("Release Date"), 'releasedate'),
     Column(N_("Cover"), 'covercount'),
+    Column(N_("Cover Dimensions"), 'coverdimensions')
 ))
 
 

@@ -257,6 +257,8 @@ class Track(FileListItem):
             return "%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
         elif column == 'covercount':
             return self.cover_art_description()
+        elif column == 'coverdimensions':
+            return self.cover_art_dimensions()
         elif column in m:
             return m[column]
         elif self.num_linked_files == 1:
