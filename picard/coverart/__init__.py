@@ -32,20 +32,14 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config
-from picard.coverart.image import (
-    CoverArtImageIdentificationError,
-    CoverArtImageIOError,
-)
+from picard.coverart.image import CoverArtImageIOError
 from picard.coverart.processing import (
+    CoverArtImageProcessing,
     run_image_filters,
-    run_image_processors,
 )
 from picard.coverart.providers import (
     CoverArtProvider,
     cover_art_providers,
-)
-from picard.extension_points.cover_art_processors import (
-    CoverArtProcessingError,
 )
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
@@ -60,6 +54,7 @@ class CoverArt:
         self.metadata = metadata
         self.release = release  # not used in this class, but used by providers
         self.front_image_found = False
+        self.image_processing = CoverArtImageProcessing(album)
 
     def __repr__(self):
         return "%s for %r" % (self.__class__.__name__, self.album)
@@ -74,31 +69,19 @@ class CoverArt:
             log.debug("Cover art disabled by user options.")
 
     def _set_metadata(self, coverartimage, data, image_info):
-        try:
-            if coverartimage.can_be_processed:
-                run_image_processors(coverartimage, data, image_info)
-            else:
-                coverartimage.set_tags_data(data)
-            if coverartimage.can_be_saved_to_metadata:
-                log.debug("Storing to metadata: %r [%s]",
-                    coverartimage, coverartimage.imageinfo_as_string())
-                self.metadata.images.append(coverartimage)
-                for track in self.album._new_tracks:
-                    track.metadata.images.append(coverartimage)
-                # If the image already was a front image,
-                # there might still be some other non-CAA front
-                # images in the queue - ignore them.
-                if not self.front_image_found:
-                    self.front_image_found = coverartimage.is_front_image()
-            else:
-                log.debug("Not storing to metadata: %r [%s]",
-                    coverartimage, coverartimage.imageinfo_as_string())
-        except CoverArtImageIOError as e:
-            self.album.error_append(e)
-            self.album._finalize_loading(error=True)
-            raise e
-        except (CoverArtImageIdentificationError, CoverArtProcessingError) as e:
-            self.album.error_append(e)
+        self.image_processing.run_image_processors(coverartimage, data, image_info)
+        if coverartimage.can_be_saved_to_metadata:
+            log.debug("Storing to metadata: %r", coverartimage)
+            self.metadata.images.append(coverartimage)
+            for track in self.album._new_tracks:
+                track.metadata.images.append(coverartimage)
+            # If the image already was a front image,
+            # there might still be some other non-CAA front
+            # images in the queue - ignore them.
+            if not self.front_image_found:
+                self.front_image_found = coverartimage.is_front_image()
+        else:
+            log.debug("Not storing to metadata: %r", coverartimage)
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
@@ -125,9 +108,7 @@ class CoverArt:
                     filters_result = run_image_filters(data, image_info, self.album, coverartimage)
                 if filters_result:
                     self._set_metadata(coverartimage, data, image_info)
-            except (CoverArtImageIOError, imageinfo.IdentificationError):
-                # It doesn't make sense to store/download more images if we can't
-                # save them in the temporary folder, abort.
+            except imageinfo.IdentificationError:
                 return
 
         self.next_in_queue()
@@ -139,6 +120,9 @@ class CoverArt:
         if self.album.id not in self.album.tagger.albums:
             # album removed
             return
+        if self.album.loaded:
+            # album has finished loading due to errors
+            return
 
         config = get_config()
         if (self.front_image_found
@@ -146,6 +130,7 @@ class CoverArt:
             and not config.setting['save_images_to_files']
             and config.setting['embed_only_one_front_image']):
             # no need to continue
+            self.image_processing.wait_for_processing()
             self.album._finalize_loading(None)
             return
 
@@ -170,6 +155,7 @@ class CoverArt:
                 return
             except StopIteration:
                 # nothing more to do
+                self.image_processing.wait_for_processing()
                 self.album._finalize_loading(None)
                 return
 
