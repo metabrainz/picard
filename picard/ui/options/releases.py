@@ -8,7 +8,7 @@
 # Copyright (C) 2013-2015, 2018-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Suhas
-# Copyright (C) 2018-2022 Philipp Wolfer
+# Copyright (C) 2018-2022, 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,8 +24,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
-from operator import itemgetter
+from functools import partial
 
 from PyQt6 import (
     QtCore,
@@ -275,31 +274,27 @@ class ReleasesOptionsPage(OptionsPage):
 
     def _load_list_items(self, setting, source, list1, list2):
         if setting == 'preferred_release_countries':
-            source_list = [(c[0], gettext_countries(c[1])) for c in
-                           source.items()]
+            translate_func = gettext_countries
         elif setting == 'preferred_release_formats':
-            source_list = [(c[0], pgettext_attributes('medium_format', c[1])) for c
-                           in source.items()]
+            translate_func = partial(pgettext_attributes, 'medium_format')
         else:
-            source_list = [(c[0], _(c[1])) for c in source.items()]
+            translate_func = _
 
         def fcmp(x):
             return sort_key(x[1])
+
+        source_list = [(c[0], translate_func(c[1])) for c in source.items()]
         source_list.sort(key=fcmp)
         config = get_config()
         saved_data = config.setting[setting]
-        move = []
         for data, name in source_list:
             item = QtWidgets.QListWidgetItem(name)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
             try:
-                i = saved_data.index(data)
-                move.append((i, item))
-            except BaseException:
+                saved_data.index(data)
+                list2.addItem(item)
+            except ValueError:
                 list1.addItem(item)
-        move.sort(key=itemgetter(0))
-        for i, item in move:
-            list2.addItem(item)
 
     def _save_list_items(self, setting, list1):
         data = [
