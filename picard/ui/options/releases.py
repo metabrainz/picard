@@ -24,7 +24,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from functools import partial
+from functools import (
+    cmp_to_key,
+    partial,
+)
+from locale import strcoll
 
 from PyQt6 import (
     QtCore,
@@ -47,7 +51,6 @@ from picard.i18n import (
     gettext_countries,
     pgettext_attributes,
 )
-from picard.util import strxfrm
 
 from picard.ui.forms.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.options import OptionsPage
@@ -281,7 +284,8 @@ class ReleasesOptionsPage(OptionsPage):
             translate_func = _
 
         def fcmp(x):
-            return strxfrm(x[1])
+            # Workaround for PICARD-2914 to avoid segfaults on macOS with strxfrm.
+            return cmp_to_key(strcoll)(x[1])
 
         source_list = [(c[0], translate_func(c[1])) for c in source.items()]
         source_list.sort(key=fcmp)
