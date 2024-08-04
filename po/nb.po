@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-07-29 11:14+0000\n"
+"PO-Revision-Date: 2024-08-04 18:42+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" <monkeypython+inst@yepmail."
 "net>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -3588,7 +3588,7 @@ msgstr "Kjør igang!"
 
 #: picard/ui/scripteditor.py:536
 msgid "&Import a script file"
-msgstr "&Importér en skriptfil"
+msgstr "&Importér ei skriptfil"
 
 #: picard/ui/scripteditor.py:537
 msgid "Import a file as a new script"
