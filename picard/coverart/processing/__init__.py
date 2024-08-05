@@ -19,14 +19,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+from queue import Queue
 import time
-
-from PyQt6.QtCore import QThreadPool
 
 from picard import log
 from picard.config import get_config
+from picard.const.cover_processing import COVER_PROCESSING_SLEEP
 from picard.coverart.image import (
-    CoverArtImageIdentificationError,
+    CoverArtImageError,
     CoverArtImageIOError,
 )
 from picard.coverart.processing import (  # noqa: F401 # pylint: disable=unused-import
@@ -65,13 +65,8 @@ def handle_processing_exceptions(func):
     def wrapper(self, *args, **kwargs):
         try:
             func(self, *args, **kwargs)
-        except CoverArtImageIOError as e:
-            self.album.error_append(e)
-            self.threadpool.clear()
-            if self.album.loaded:
-                self.album._finalize_loading(error=True)
-        except (CoverArtImageIdentificationError, CoverArtProcessingError) as e:
-            self.album.error_append(e)
+        except (CoverArtImageError, CoverArtProcessingError) as e:
+            self.errors.put(e)
     return wrapper
 
 
@@ -80,8 +75,8 @@ class CoverArtImageProcessing:
     def __init__(self, album):
         self.album = album
         self.queues = get_cover_art_processors()
-        self.threadpool = QThreadPool()
-        self.threadpool.setMaxThreadCount(1)
+        self.task_counter = thread.TaskCounter()
+        self.errors = Queue()
 
     @handle_processing_exceptions
     def _run_processors_queue(self, coverartimage, initial_data, start_time, image, target):
@@ -90,6 +85,7 @@ class CoverArtImageProcessing:
             queue = self.queues[target]
             for processor in queue:
                 processor.run(image, target)
+                time.sleep(COVER_PROCESSING_SLEEP)
             data = image.get_result()
         except CoverArtProcessingError as e:
             raise e
@@ -113,13 +109,14 @@ class CoverArtImageProcessing:
             image = ProcessingImage(initial_data, image_info)
             for processor in self.queues[ProcessingTarget.BOTH]:
                 processor.run(image, ProcessingTarget.BOTH)
+                time.sleep(COVER_PROCESSING_SLEEP)
             run_queue_common = partial(self._run_processors_queue, coverartimage, initial_data, start_time)
             if config.setting['save_images_to_files']:
                 run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.FILE)
-                thread.run_task(run_queue, thread_pool=self.threadpool)
+                thread.run_task(run_queue, task_counter=self.task_counter)
             if config.setting['save_images_to_tags']:
                 run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.TAGS)
-                thread.run_task(run_queue, thread_pool=self.threadpool)
+                thread.run_task(run_queue, task_counter=self.task_counter)
             else:
                 coverartimage.set_tags_data(initial_data)
         except IdentificationError as e:
@@ -133,10 +130,17 @@ class CoverArtImageProcessing:
     def run_image_processors(self, coverartimage, initial_data, image_info):
         if coverartimage.can_be_processed:
             run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info)
-            thread.run_task(run_processors, thread_pool=self.threadpool)
+            thread.run_task(run_processors, task_counter=self.task_counter)
         else:
             set_data = partial(handle_processing_exceptions, coverartimage.set_tags_data, initial_data)
-            thread.run_task(set_data, thread_pool=self.threadpool)
+            thread.run_task(set_data, task_counter=self.task_counter)
 
     def wait_for_processing(self):
-        self.threadpool.waitForDone()
+        self.task_counter.wait_for_tasks()
+        has_io_error = False
+        while not self.errors.empty():
+            error = self.errors.get()
+            self.album.error_append(error)
+            if isinstance(error, CoverArtImageIOError):
+                has_io_error = True
+        return has_io_error

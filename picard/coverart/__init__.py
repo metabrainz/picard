@@ -120,9 +120,6 @@ class CoverArt:
         if self.album.id not in self.album.tagger.albums:
             # album removed
             return
-        if self.album.loaded:
-            # album has finished loading due to errors
-            return
 
         config = get_config()
         if (self.front_image_found
@@ -130,8 +127,8 @@ class CoverArt:
             and not config.setting['save_images_to_files']
             and config.setting['embed_only_one_front_image']):
             # no need to continue
-            self.image_processing.wait_for_processing()
-            self.album._finalize_loading(None)
+            processing_result = self.image_processing.wait_for_processing()
+            self.album._finalize_loading(error=processing_result)
             return
 
         if self._queue_empty():
@@ -155,8 +152,8 @@ class CoverArt:
                 return
             except StopIteration:
                 # nothing more to do
-                self.image_processing.wait_for_processing()
-                self.album._finalize_loading(None)
+                processing_result = self.image_processing.wait_for_processing()
+                self.album._finalize_loading(error=processing_result)
                 return
 
         # We still have some items to try!
