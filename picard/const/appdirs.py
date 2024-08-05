@@ -48,6 +48,5 @@ def cache_folder():
 
 
 def plugin_folder():
-    # FIXME: This really should be in QStandardPaths.StandardLocation.AppDataLocation instead,
-    # but this is a breaking change that requires data migration
-    return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(config_folder(), 'plugins')))
+    appdata_folder = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
+    return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(appdata_folder, 'plugins3')))
