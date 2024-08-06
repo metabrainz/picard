@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-07-20 13:42+0000\n"
+"PO-Revision-Date: 2024-08-06 20:42+0000\n"
 "Last-Translator: brtc <brtc@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
 "2/app/tr/>\n"
@@ -76,15 +76,15 @@ msgstr "Kümelenmemiş Dosyalar"
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i tane sürüm \"%(name)s\" koleksiyonuna eklendi"
+msgstr[1] "%(count)i tane sürüm \"%(name)s\" koleksiyonuna eklendi"
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i tane sürüm \"%(name)s\" koleksiyonundan kaldırıldı"
+msgstr[1] "%(count)i tane sürüm \"%(name)s\" koleksiyonundan kaldırıldı"
 
 #: picard/collection.py:97
 #, python-format
@@ -137,6 +137,8 @@ msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"Dosya ayrıştırılamadı; dosya hasarlı veya desteklenmeyen bir dosya biçimine "
+"sahip."
 
 #: picard/file.py:853
 #, python-format
@@ -146,12 +148,12 @@ msgstr ""
 #: picard/file.py:855
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "'%(filename)s' dosyası tanımlandı!"
 
 #: picard/file.py:867
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "'%(filename)s' dosyası için eşleşen parça yok"
 
 #: picard/file.py:899
 #, python-format
@@ -179,12 +181,12 @@ msgstr ""
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Beklenmeyen kimlik doğrulama hatası"
 
 #: picard/oauth.py:288
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "Beklenmeyen istek hatası (HTTP kodu %s)"
 
 #: picard/pluginmanager.py:271
 #, python-format
@@ -492,7 +494,7 @@ msgstr ""
 
 #: picard/profile.py:148
 msgid "Cover art providers"
-msgstr ""
+msgstr "Kapak görseli sağlayıcıları"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
@@ -621,19 +623,19 @@ msgstr ""
 
 #: picard/profile.py:201
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "Açık tema için kullanılacak renkler"
 
 #: picard/profile.py:202
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "Koyu tema için kullanılacak renkler"
 
 #: picard/profile.py:205
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "Üstte gösterilecek etiketler"
 
 #: picard/profile.py:208
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "Araç çubuğunun düzeni"
 
 #: picard/profile.py:213 picard/ui/options/advanced.py:44
 msgid "Advanced"
@@ -677,7 +679,7 @@ msgstr ""
 
 #: picard/profile.py:233
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Karşılaştırma için göz ardı edilecek etiketler"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
