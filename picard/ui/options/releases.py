@@ -43,7 +43,7 @@ from picard.const import (
 )
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.const.sys import IS_WIN
-from picard.util import strxfrm
+from picard.i18n import sort_key
 
 from picard.ui.options import (
     OptionsPage,
@@ -285,7 +285,7 @@ class ReleasesOptionsPage(OptionsPage):
             source_list = [(c[0], _(c[1])) for c in source.items()]
 
         def fcmp(x):
-            return strxfrm(x[1])
+            return sort_key(x[1])
         source_list.sort(key=fcmp)
         config = get_config()
         saved_data = config.setting[setting]

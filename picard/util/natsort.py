@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2020, 2022 Philipp Wolfer
+# Copyright (C) 2019-2020, 2022, 2024 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 
 import re
 
-from picard.util import strxfrm
+from picard.i18n import sort_key
 
 
 RE_NUMBER = re.compile(r'(\d+)')
@@ -35,8 +35,7 @@ def natkey(text):
     """
     Return a sort key for a string for natural sort order.
     """
-    return [int(s) if s.isdecimal() else strxfrm(s)
-            for s in RE_NUMBER.split(str(text).replace('\0', ''))]
+    return sort_key(text, numeric=True)
 
 
 def natsorted(values):

@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2020 Philipp Wolfer
+# Copyright (C) 2019-2020, 2024 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -19,18 +19,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
-from locale import strxfrm
-
 from test.picardtestcase import PicardTestCase
 
+from picard.i18n import setup_gettext
 from picard.util import natsort
 
 
 class NatsortTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        setup_gettext(None, 'en')
+
     def test_natkey(self):
         self.assertTrue(natsort.natkey('foo1bar') < natsort.natkey('foo02bar'))
-        self.assertTrue(natsort.natkey('foo1bar') == natsort.natkey('foo01bar'))
         self.assertTrue(natsort.natkey('foo (100)') < natsort.natkey('foo (00200)'))
 
     def test_natsorted(self):
@@ -40,10 +41,10 @@ class NatsortTest(PicardTestCase):
         self.assertEqual(expected, sorted_list)
 
     def test_natkey_handles_null_char(self):
-        self.assertEqual(natsort.natkey('foo\0'), natsort.natkey('foo'))
+        self.assertFalse(natsort.natkey('foo\0') < natsort.natkey('foo'))
+        self.assertFalse(natsort.natkey('foo\0') > natsort.natkey('foo'))
 
     def test_natkey_handles_numeric_chars(self):
-        self.assertEqual(
-            natsort.natkey('foo0123456789|²³|٠١٢٣٤٥٦٧٨٩|๐๑๒๓๔๕๖๗๘๙|𝟜𝟚bar'),
-            [strxfrm('foo'), 123456789, strxfrm('|²³|'), 123456789,
-             strxfrm('|'), 123456789, strxfrm('|'), 42, strxfrm('bar')])
+        for four in ('4', '𝟜', '٤', '๔'):
+            self.assertTrue(natsort.natkey('03') < natsort.natkey(four))
+            self.assertTrue(natsort.natkey(four) < natsort.natkey('05'))

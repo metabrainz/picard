@@ -74,6 +74,7 @@ from picard.file import (
     File,
     FileErrorType,
 )
+from picard.i18n import sort_key
 from picard.plugin import ExtensionPoint
 from picard.track import (
     NonAlbumTrack,
@@ -85,7 +86,6 @@ from picard.util import (
     natsort,
     normpath,
     restore_method,
-    strxfrm,
 )
 
 from picard.ui.collectionmenu import CollectionMenu
@@ -941,7 +941,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         elif column in MainPanel.NAT_SORT_COLUMNS:
             sortkey = natsort.natkey(self.text(column))
         else:
-            sortkey = strxfrm(self.text(column))
+            sortkey = sort_key(self.text(column))
         self._sortkeys[column] = sortkey
         return sortkey
 

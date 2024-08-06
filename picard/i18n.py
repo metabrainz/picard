@@ -5,7 +5,7 @@
 # Copyright (C) 2012 Frederik “Freso” S. Olesen
 # Copyright (C) 2013-2014, 2018-2022 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2017-2022 Philipp Wolfer
+# Copyright (C) 2017-2022, 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,7 +27,10 @@ import gettext
 import locale
 import os
 
-from PyQt5.QtCore import QLocale
+from PyQt5.QtCore import (
+    QCollator,
+    QLocale,
+)
 
 from picard.const.sys import (
     IS_MACOS,
@@ -39,6 +42,9 @@ builtins.__dict__['N_'] = lambda a: a
 
 
 _logger = None
+_qcollator = QCollator()
+_qcollator_numeric = QCollator()
+_qcollator_numeric.setNumericMode(True)
 
 
 def set_locale_from_env():
@@ -133,7 +139,7 @@ def _log_lang_env_vars():
 
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
-    global _logger
+    global _logger, _qcollator, _qcollator_numeric
     if not logger:
         _logger = lambda *a, **b: None  # noqa: E731
     else:
@@ -170,6 +176,9 @@ def setup_gettext(localedir, ui_language=None, logger=None):
 
     _logger("Using locale: %r", current_locale)
     QLocale.setDefault(QLocale(current_locale))
+    _qcollator = QCollator()
+    _qcollator_numeric = QCollator()
+    _qcollator_numeric.setNumericMode(True)
 
     trans = _load_translation('picard', localedir, language=current_locale)
     trans_attributes = _load_translation('picard-attributes', localedir, language=current_locale)
@@ -214,3 +223,15 @@ def gettext_ctxt(gettext_, message, context=None):
         # no translation found, return original message
         return message
     return translated
+
+
+def sort_key(string, numeric=False):
+    """Transforms a string to one that can be used in locale-aware comparisons.
+
+    Args:
+        string: The string to convert
+
+    Returns: An object that can be compared locale-aware
+    """
+    collator = _qcollator_numeric if numeric else _qcollator
+    return collator.sortKey(string.replace('\0', ''))
