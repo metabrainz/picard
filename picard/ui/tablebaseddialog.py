@@ -38,8 +38,8 @@ from PyQt5.QtCore import pyqtSignal
 
 from picard import log
 from picard.config import get_config
+from picard.i18n import sort_key
 from picard.util import (
-    natsort,
     restore_method,
     throttle,
 )
@@ -128,7 +128,7 @@ class TableBasedDialog(PicardDialog):
         # matching comparison operator will be used when sorting
         # get() will return a string, force conversion if asked to
         if sortkey is None:
-            sortkey = natsort.natkey(value)
+            sortkey = sort_key(value, numeric=True)
         item = SortableTableWidgetItem(sortkey)
         item.setData(QtCore.Qt.ItemDataRole.DisplayRole, value)
         pos = self.colpos(colname)
