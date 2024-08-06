@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-07-20 13:42+0000\n"
+"PO-Revision-Date: 2024-08-06 20:42+0000\n"
 "Last-Translator: brtc <brtc@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
 "3/app/tr/>\n"
@@ -81,15 +81,15 @@ msgstr "Koleksiyonlar değiştirilirken hata oluştu: %(error)s"
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i tane sürüm \"%(name)s\" koleksiyonuna eklendi"
+msgstr[1] "%(count)i tane sürüm \"%(name)s\" koleksiyonuna eklendi"
 
 #: picard/collection.py:109
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(count)i tane sürüm \"%(name)s\" koleksiyonundan kaldırıldı"
+msgstr[1] "%(count)i tane sürüm \"%(name)s\" koleksiyonundan kaldırıldı"
 
 #: picard/collection.py:137
 #, python-format
@@ -153,6 +153,8 @@ msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"Dosya ayrıştırılamadı; dosya hasarlı veya desteklenmeyen bir dosya biçimine "
+"sahip."
 
 #: picard/file.py:869
 #, python-format
@@ -162,12 +164,12 @@ msgstr ""
 #: picard/file.py:871
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "'%(filename)s' dosyası tanımlandı!"
 
 #: picard/file.py:883
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "'%(filename)s' dosyası için eşleşen parça yok"
 
 #: picard/file.py:915
 #, python-format
@@ -199,16 +201,16 @@ msgstr ""
 
 #: picard/oauth.py:348 picard/oauth.py:375
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Beklenmeyen kimlik doğrulama hatası"
 
 #: picard/oauth.py:387
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "Beklenmeyen istek hatası (HTTP kodu %s)"
 
 #: picard/options.py:145
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Karşılaştırma için göz ardı edilecek etiketler"
 
 #: picard/options.py:146
 msgid "Completeness check ignore: Data tracks"
@@ -248,7 +250,7 @@ msgstr ""
 
 #: picard/options.py:162
 msgid "Cover art providers"
-msgstr ""
+msgstr "Kapak görseli sağlayıcıları"
 
 #: picard/options.py:163
 msgid "File name for images"
@@ -400,23 +402,23 @@ msgstr "Gelişmiş arama söz dizimini kullanın"
 
 #: picard/options.py:234
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "Açık tema için kullanılacak renkler"
 
 #: picard/options.py:235
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "Koyu tema için kullanılacak renkler"
 
 #: picard/options.py:250
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "Araç çubuğunun düzeni"
 
 #: picard/options.py:254
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "Üstte gösterilecek etiketler"
 
 #: picard/options.py:258
 msgid "Automatic backup destination directory"
-msgstr ""
+msgstr "Otomatik yedekleme için hedef dizini"
 
 #: picard/options.py:262
 msgid "Minimal similarity for cluster lookups"
