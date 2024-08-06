@@ -83,7 +83,6 @@ from picard.track import (
 from picard.util import (
     icontheme,
     iter_files_from_objects,
-    natsort,
     normpath,
     restore_method,
 )
@@ -939,7 +938,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if column == MainPanel.LENGTH_COLUMN:
             sortkey = self.obj.metadata.length or 0
         elif column in MainPanel.NAT_SORT_COLUMNS:
-            sortkey = natsort.natkey(self.text(column))
+            sortkey = sort_key(self.text(column), numeric=True)
         else:
             sortkey = sort_key(self.text(column))
         self._sortkeys[column] = sortkey

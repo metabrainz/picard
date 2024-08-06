@@ -230,6 +230,7 @@ def sort_key(string, numeric=False):
 
     Args:
         string: The string to convert
+        numeric: Boolean indicating whether to use number aware sorting (natural sorting)
 
     Returns: An object that can be compared locale-aware
     """

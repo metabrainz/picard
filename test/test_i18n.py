@@ -79,10 +79,22 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Frankreich', gettext_countries('France'))
 
     def test_sort_key(self):
-        i18n.setup_gettext(None, 'de')
+        i18n.setup_gettext(localedir, 'de')
         self.assertTrue(i18n.sort_key('äb') < i18n.sort_key('ac'))
         self.assertTrue(i18n.sort_key('foo002') < i18n.sort_key('foo1'))
         self.assertTrue(i18n.sort_key('foo1', numeric=True) < i18n.sort_key('foo002', numeric=True))
+
+    def test_sort_key_numbers_different_scripts(self):
+        i18n.setup_gettext(localedir, 'en')
+        for four in ('4', '𝟜', '٤', '๔'):
+            self.assertTrue(
+                i18n.sort_key('03', numeric=True) < i18n.sort_key(four, numeric=True),
+                msg=f'03 < {four}'
+            )
+            self.assertTrue(
+                i18n.sort_key(four, numeric=True) < i18n.sort_key('05', numeric=True),
+                msg=f'{four} < 05'
+            )
 
 
 @patch('locale.getpreferredencoding', autospec=True)
