@@ -26,6 +26,7 @@ import builtins
 import gettext
 import locale
 import os
+import re
 
 from PyQt5.QtCore import (
     QCollator,
@@ -225,6 +226,11 @@ def gettext_ctxt(gettext_, message, context=None):
     return translated
 
 
+def _digit_replace(matchobj):
+    s = matchobj.group(0)
+    return str(int(s)) if s.isdigit() else s
+
+
 def sort_key(string, numeric=False):
     """Transforms a string to one that can be used in locale-aware comparisons.
 
@@ -235,4 +241,8 @@ def sort_key(string, numeric=False):
     Returns: An object that can be compared locale-aware
     """
     collator = _qcollator_numeric if numeric else _qcollator
+    # On macOS / Windows the numeric sorting does not work reliable with non-latin
+    # scripts. Replace numbers in the sort string with their latin equivalent.
+    if numeric and (IS_MACOS or IS_WIN):
+        string = re.sub(r'\d', _digit_replace, string)
     return collator.sortKey(string.replace('\0', ''))
