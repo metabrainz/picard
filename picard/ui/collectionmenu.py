@@ -33,7 +33,7 @@ from picard.collection import (
     load_user_collections,
     user_collections,
 )
-from picard.util import strxfrm
+from picard.i18n import sort_key
 
 
 class CollectionMenu(QtWidgets.QMenu):
@@ -50,7 +50,7 @@ class CollectionMenu(QtWidgets.QMenu):
         self.actions = []
         for id_, collection in sorted(user_collections.items(),
                                       key=lambda k_v:
-                                      (strxfrm(str(k_v[1])), k_v[0])):
+                                      (sort_key(str(k_v[1])), k_v[0])):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
