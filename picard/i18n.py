@@ -245,4 +245,8 @@ def sort_key(string, numeric=False):
     # scripts. Replace numbers in the sort string with their latin equivalent.
     if numeric and (IS_MACOS or IS_WIN):
         string = re.sub(r'\d', _digit_replace, string)
-    return collator.sortKey(string.replace('\0', ''))
+
+    # On macOS numeric sorting of strings entirely consisting of numeric characters fails
+    # and always sorts alphabetically (002 < 1). Always prefix with an alphabeticcharacter
+    # to work around that.
+    return collator.sortKey('a' + string.replace('\0', ''))
