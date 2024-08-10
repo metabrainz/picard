@@ -47,8 +47,8 @@ from picard.i18n import (
     gettext as _,
     gettext_countries,
     pgettext_attributes,
+    sort_key,
 )
-from picard.util import strxfrm
 
 from picard.ui.forms.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.options import OptionsPage
@@ -284,7 +284,7 @@ class ReleasesOptionsPage(OptionsPage):
             source_list = [(c[0], _(c[1])) for c in source.items()]
 
         def fcmp(x):
-            return strxfrm(x[1])
+            return sort_key(x[1])
         source_list.sort(key=fcmp)
         config = get_config()
         saved_data = config.setting[setting]

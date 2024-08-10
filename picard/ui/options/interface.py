@@ -43,8 +43,8 @@ from picard.i18n import (
     N_,
     gettext as _,
     gettext_constants,
+    sort_key,
 )
-from picard.util import strxfrm
 
 from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.options import OptionsPage
@@ -106,7 +106,7 @@ class InterfaceOptionsPage(OptionsPage):
         language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
 
         def fcmp(x):
-            return strxfrm(x[2])
+            return sort_key(x[2])
         for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = '%s (%s)' % (translation, native)

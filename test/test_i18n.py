@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019, 2023 Philipp Wolfer
+# Copyright (C) 2019, 2023-2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ from picard.i18n import (
     ngettext,
     pgettext_attributes,
     setup_gettext,
+    sort_key,
 )
 
 
@@ -83,6 +84,28 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Kassette', pgettext_attributes('medium_format', 'Cassette'))
         # self.assertEqual('Französisch', gettext_constants('French'))
         self.assertEqual('Frankreich', gettext_countries('France'))
+
+    def test_sort_key(self):
+        setup_gettext(localedir, 'de')
+        self.assertTrue(sort_key('äb') < sort_key('ac'))
+        self.assertTrue(sort_key('foo002') < sort_key('foo1'))
+        self.assertTrue(sort_key('002 foo') < sort_key('1 foo'))
+        self.assertTrue(sort_key('foo1', numeric=True) < sort_key('foo002', numeric=True))
+        self.assertTrue(sort_key('004', numeric=True) < sort_key('5', numeric=True))
+        self.assertTrue(sort_key('0042', numeric=True) < sort_key('50', numeric=True))
+        self.assertTrue(sort_key('5', numeric=True) < sort_key('0042', numeric=True))
+
+    def test_sort_key_numbers_different_scripts(self):
+        setup_gettext(localedir, 'en')
+        for four in ('4', '𝟜', '٤', '๔'):
+            self.assertTrue(
+                sort_key('3', numeric=True) < sort_key(four, numeric=True),
+                msg=f'3 < {four}'
+            )
+            self.assertTrue(
+                sort_key(four, numeric=True) < sort_key('5', numeric=True),
+                msg=f'{four} < 5'
+            )
 
 
 @patch('locale.getpreferredencoding', autospec=True)

@@ -33,11 +33,9 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
+    sort_key,
 )
-from picard.util import (
-    icontheme,
-    strxfrm,
-)
+from picard.util import icontheme
 
 from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_options_interface_colors import (
@@ -131,7 +129,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
                 yield color_key, color_value, title, group
 
         prev_group = None
-        for color_key, color_value, title, group in sorted(colors(), key=lambda c: (strxfrm(c[3]), strxfrm(c[2]))):
+        for color_key, color_value, title, group in sorted(colors(), key=lambda c: (sort_key(c[3]), sort_key(c[2]))):
             if prev_group != group:
                 groupbox = QtWidgets.QGroupBox(group)
                 self.colors_list.addWidget(groupbox)

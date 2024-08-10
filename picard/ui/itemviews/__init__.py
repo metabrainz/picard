@@ -62,13 +62,10 @@ from picard.i18n import (
     N_,
     gettext as _,
     ngettext,
+    sort_key,
 )
 from picard.track import Track
-from picard.util import (
-    icontheme,
-    natsort,
-    strxfrm,
-)
+from picard.util import icontheme
 
 from picard.ui.colors import interface_colors
 from picard.ui.itemviews.basetreeview import BaseTreeView
@@ -345,9 +342,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if this_column.sort_type == ColumnSortType.SORTKEY:
             sortkey = this_column.sortkey(self.obj)
         elif this_column.sort_type == ColumnSortType.NAT:
-            sortkey = natsort.natkey(self.text(column))
+            sortkey = sort_key(self.text(column), numeric=True)
         else:
-            sortkey = strxfrm(self.text(column))
+            sortkey = sort_key(self.text(column))
         self._sortkeys[column] = sortkey
         return sortkey
 

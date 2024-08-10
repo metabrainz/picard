@@ -5,7 +5,7 @@
 # Copyright (C) 2012 Frederik “Freso” S. Olesen
 # Copyright (C) 2013-2014, 2018-2024 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2017-2023 Philipp Wolfer
+# Copyright (C) 2017-2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,8 +24,12 @@
 import gettext as module_gettext
 import locale
 import os
+import re
 
-from PyQt6.QtCore import QLocale
+from PyQt6.QtCore import (
+    QCollator,
+    QLocale,
+)
 
 from picard.const.sys import (
     IS_MACOS,
@@ -34,6 +38,9 @@ from picard.const.sys import (
 
 
 _logger = None
+_qcollator = QCollator()
+_qcollator_numeric = QCollator()
+_qcollator_numeric.setNumericMode(True)
 
 _null_translations = module_gettext.NullTranslations()
 _translation = {
@@ -136,7 +143,7 @@ def _log_lang_env_vars():
 
 def setup_gettext(localedir, ui_language=None, logger=None):
     """Setup locales, load translations, install gettext functions."""
-    global _logger
+    global _logger, _qcollator, _qcollator_numeric
     if not logger:
         _logger = lambda *a, **b: None  # noqa: E731
     else:
@@ -173,6 +180,9 @@ def setup_gettext(localedir, ui_language=None, logger=None):
 
     _logger("Using locale: %r", current_locale)
     QLocale.setDefault(QLocale(current_locale))
+    _qcollator = QCollator()
+    _qcollator_numeric = QCollator()
+    _qcollator_numeric.setNumericMode(True)
 
     global _translation
     _translation = {
@@ -217,3 +227,29 @@ def gettext_countries(message: str) -> str:
 
 def gettext_constants(message: str) -> str:
     return _translation['constants'].gettext(message)
+
+
+def _digit_replace(matchobj):
+    s = matchobj.group(0)
+    return str(int(s)) if s.isdigit() else s
+
+
+def sort_key(string, numeric=False):
+    """Transforms a string to one that can be used in locale-aware comparisons.
+
+    Args:
+        string: The string to convert
+        numeric: Boolean indicating whether to use number aware sorting (natural sorting)
+
+    Returns: An object that can be compared locale-aware
+    """
+    collator = _qcollator_numeric if numeric else _qcollator
+    # On macOS / Windows the numeric sorting does not work reliable with non-latin
+    # scripts. Replace numbers in the sort string with their latin equivalent.
+    if numeric and (IS_MACOS or IS_WIN):
+        string = re.sub(r'\d', _digit_replace, string)
+
+    # On macOS numeric sorting of strings entirely consisting of numeric characters fails
+    # and always sorts alphabetically (002 < 1). Always prefix with an alphabeticcharacter
+    # to work around that.
+    return collator.sortKey('a' + string.replace('\0', ''))
