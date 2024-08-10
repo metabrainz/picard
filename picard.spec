@@ -106,6 +106,7 @@ else:
     exe = EXE(pyz,
               a.scripts,
               exclude_binaries=True,
+              target_arch='universal2' if os_name == 'Darwin' else None,
               # Avoid name clash between picard executable and picard module folder
               name='picard' if os_name == 'Windows' else 'picard-run',
               debug=False,
