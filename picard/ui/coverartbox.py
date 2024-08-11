@@ -64,8 +64,12 @@ from picard.util import (
 )
 from picard.util.lrucache import LRUCache
 
+from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
-from picard.ui.util import FileDialog
+from picard.ui.util import (
+    FileDialog,
+    StandardButton,
+)
 from picard.ui.widgets import ActiveLabel
 
 
@@ -376,6 +380,35 @@ def iter_file_parents(file):
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
+class ImageURLDialog(PicardDialog):
+
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.setWindowTitle(_("Enter url"))
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        self.layout = QtWidgets.QVBoxLayout(self)
+        self.label = QtWidgets.QLabel(_("Cover art url:"))
+        self.url = QtWidgets.QLineEdit(self)
+        self.buttonbox = QtWidgets.QDialogButtonBox(self)
+        accept_role = QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
+        self.buttonbox.addButton(StandardButton(StandardButton.OK), accept_role)
+        reject_role = QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        self.buttonbox.addButton(StandardButton(StandardButton.CANCEL), reject_role)
+        self.buttonbox.accepted.connect(self.accept)
+        self.buttonbox.rejected.connect(self.reject)
+        self.layout.addWidget(self.label)
+        self.layout.addWidget(self.url)
+        self.layout.addWidget(self.buttonbox)
+        self.setLayout(self.layout)
+
+    @classmethod
+    def display(cls, parent=None):
+        dialog = cls(parent=parent)
+        result = dialog.exec()
+        url = QtCore.QUrl(dialog.url.text())
+        return (url, result == QtWidgets.QDialog.DialogCode.Accepted)
+
+
 class CoverArtBox(QtWidgets.QGroupBox):
 
     def __init__(self, parent=None):
@@ -619,6 +652,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
             if file_urls:
                 self.fetch_remote_image(file_urls[0])
 
+    def choose_image_from_url(self):
+        url, ok = ImageURLDialog.display(parent=self)
+        if ok:
+            self.fetch_remote_image(url)
+
     def set_load_image_behavior(self, behavior):
         config = get_config()
         config.setting['load_image_behavior'] = behavior
@@ -647,6 +685,10 @@ class CoverArtBox(QtWidgets.QGroupBox):
             choose_local_file_action = QtGui.QAction(name, parent=menu)
             choose_local_file_action.triggered.connect(self.choose_local_file)
             menu.addAction(choose_local_file_action)
+            name = _("Add from url…")
+            choose_image_from_url_action = QtGui.QAction(name, parent=menu)
+            choose_image_from_url_action.triggered.connect(self.choose_image_from_url)
+            menu.addAction(choose_image_from_url_action)
 
         if not menu.isEmpty():
             menu.addSeparator()
