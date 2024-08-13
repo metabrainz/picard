@@ -1,3 +1,12 @@
+# Version 2.12.1 - 2024-08-13
+
+## Bugfixes
+- [PICARD-2914](https://tickets.metabrainz.org/browse/PICARD-2914) - macOS: Crash when opening options with Spanish UI
+- [PICARD-2939](https://tickets.metabrainz.org/browse/PICARD-2939) - Crash when loading release with genre filters resulting in empty genre list
+- [PICARD-2940](https://tickets.metabrainz.org/browse/PICARD-2940) - Possible bug with locking in `Metadata.__iter__`
+- [PICARD-2946](https://tickets.metabrainz.org/browse/PICARD-2946) - Fix display length value in AppStream metadata
+
+
 # Version 2.12 - 2024-06-27
 
 ## Bugfixes
