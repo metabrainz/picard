@@ -44,13 +44,14 @@
 # Maureen <mry_33@163.com>, 2014
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 # 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
+# KenParker_CN <peekabookenny@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-06 09:48+0200\n"
-"PO-Revision-Date: 2024-04-07 12:29+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-08-14 16:42+0000\n"
+"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
 "projects/picard/3/app/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -58,7 +59,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:155
@@ -176,11 +177,11 @@ msgstr ""
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "插件路径"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "插件日志路径"
 
 #: picard/file.py:228
 msgid ""
@@ -227,7 +228,7 @@ msgstr "信息"
 
 #: picard/log.py:80
 msgid "Debug"
-msgstr ""
+msgstr "调试"
 
 #: picard/oauth.py:197
 #, fuzzy
@@ -322,11 +323,11 @@ msgstr "自动扫描所有新文件"
 
 #: picard/options.py:194 picard/ui/ui_options_general.py:218
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "启动时检查插件更新"
 
 #: picard/options.py:195 picard/ui/ui_options_general.py:219
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "启动时检查程序更新"
 
 #: picard/options.py:196 picard/ui/ui_options_general.py:215
 msgid "Automatically cluster all new files"
@@ -346,7 +347,7 @@ msgstr "端口"
 
 #: picard/options.py:200
 msgid "Days between update checks"
-msgstr ""
+msgstr "检查更新间隔天数"
 
 #: picard/options.py:201
 #, fuzzy
@@ -355,7 +356,7 @@ msgstr "要检查的更新:"
 
 #: picard/options.py:206
 msgid "Use album artist genres"
-msgstr ""
+msgstr "使用专辑艺术家的流派"
 
 #: picard/options.py:207 picard/ui/ui_options_genres.py:128
 msgid "Use folksonomy tags as genre"
@@ -363,7 +364,7 @@ msgstr "使用用户标签作为流派"
 
 #: picard/options.py:208
 msgid "Genres to include or exclude"
-msgstr ""
+msgstr "包含或排除的流派"
 
 #: picard/options.py:209
 #, fuzzy
@@ -414,7 +415,7 @@ msgstr "在菜单中显示图标"
 
 #: picard/options.py:224
 msgid "Show a usage warning dialog when Picard starts"
-msgstr ""
+msgstr "Picard 启动时显示使用警告对话框"
 
 #: picard/options.py:225
 msgid "Begin browsing in a specific directory"
@@ -445,19 +446,19 @@ msgstr "使用高级查询语法"
 
 #: picard/options.py:234
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "浅色主题使用的颜色"
 
 #: picard/options.py:235
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "暗色主题使用的颜色"
 
 #: picard/options.py:250
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "工具栏布局"
 
 #: picard/options.py:254
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "显示在顶部的标签"
 
 #: picard/options.py:258
 #, fuzzy
@@ -546,7 +547,7 @@ msgstr "默认监听端口:"
 
 #: picard/options.py:286
 msgid "Network cache size in bytes"
-msgstr ""
+msgstr "网络缓存大小（字节单位）"
 
 #: picard/options.py:287
 #, fuzzy
@@ -555,27 +556,27 @@ msgstr "请求超时秒数："
 
 #: picard/options.py:288
 msgid "Proxy password"
-msgstr ""
+msgstr "代理密码"
 
 #: picard/options.py:289
 msgid "Proxy server address"
-msgstr ""
+msgstr "代理服务器地址"
 
 #: picard/options.py:290
 msgid "Proxy server port"
-msgstr ""
+msgstr "代理服务器端口"
 
 #: picard/options.py:291
 msgid "Type of proxy server"
-msgstr ""
+msgstr "代理服务器类型"
 
 #: picard/options.py:292
 msgid "Proxy username"
-msgstr ""
+msgstr "代理用户名"
 
 #: picard/options.py:293
 msgid "Use a web proxy server"
-msgstr ""
+msgstr "使用 Web 代理服务器"
 
 #: picard/options.py:309 picard/ui/ui_options_ratings.py:53
 msgid "Enable track ratings"
@@ -583,7 +584,7 @@ msgstr "启用曲目评分"
 
 #: picard/options.py:311
 msgid "Email to use when saving ratings"
-msgstr ""
+msgstr "保存评分时使用的电子邮件"
 
 #: picard/options.py:312 picard/ui/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
@@ -631,7 +632,7 @@ msgstr "替换非 ASCII 字符"
 
 #: picard/options.py:332
 msgid "Replacement character to use for directory separators"
-msgstr ""
+msgstr "用于目录分隔符的替换字符"
 
 #: picard/options.py:333 picard/ui/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
@@ -639,7 +640,7 @@ msgstr "使用下划线替代空格"
 
 #: picard/options.py:334
 msgid "Replacement characters used for Windows compatibility"
-msgstr ""
+msgstr "兼容 Windows 的替换字符"
 
 #: picard/options.py:335 picard/ui/ui_options_renaming_compat.py:96
 #: picard/ui/ui_win_compat_dialog.py:197
@@ -724,7 +725,7 @@ msgstr "写入 ID3v1 标签"
 
 #: picard/options.py:371
 msgid "ID3v2 version to write"
-msgstr ""
+msgstr "写入的 ID3v2 版本"
 
 #: picard/options.py:375 picard/ui/ui_options_tags_compatibility_wave.py:65
 msgid "Remove existing RIFF INFO tags from WAVE files"
@@ -3249,7 +3250,7 @@ msgstr "未修改的专辑"
 
 #: picard/ui/itemviews.py:1116
 msgid "There are no files matched to this track"
-msgstr ""
+msgstr "没有与此曲目匹配的文件"
 
 #: picard/ui/itemviews.py:1118
 #, fuzzy, python-format
@@ -3264,11 +3265,11 @@ msgstr "处理（多处）错误：请参阅“音轨信息”对话框中的“
 
 #: picard/ui/itemviews.py:1198
 msgid "File not found"
-msgstr ""
+msgstr "无法找到文件"
 
 #: picard/ui/itemviews.py:1201
 msgid "File permission error"
-msgstr ""
+msgstr "文件权限错误"
 
 #: picard/ui/itemviews.py:1204
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
@@ -3536,23 +3537,23 @@ msgstr "音量"
 
 #: picard/ui/pluginupdatedialog.py:45
 msgid "Perform this check again the next time you start Picard."
-msgstr ""
+msgstr "下次启动 Picard 时再次检查."
 
 #: picard/ui/pluginupdatedialog.py:50
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Picard 插件更新"
 
 #: picard/ui/pluginupdatedialog.py:67
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
-msgstr[0] ""
+msgstr[0] "您当前安装的插件有可用更新："
 
 #: picard/ui/pluginupdatedialog.py:72
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
+msgstr[0] "您想立即更新插件吗？"
 
 #: picard/ui/pluginupdatedialog.py:80
 msgid "plus {extra_file_count:,d} other plugin."
@@ -4304,7 +4305,7 @@ msgstr "打开文件夹"
 
 #: picard/ui/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
-msgstr ""
+msgstr "自动配置备份目录:"
 
 #: picard/ui/ui_options_maintenance.py:147
 #, fuzzy
@@ -4412,7 +4413,7 @@ msgstr "请求超时秒数："
 
 #: picard/ui/ui_options_network.py:171
 msgid "Cache size (MB):"
-msgstr ""
+msgstr "缓存大小 (MB):"
 
 #: picard/ui/ui_options_network.py:172
 msgid "Browser Integration"
@@ -4878,7 +4879,7 @@ msgstr "您已更改了程序主题。您必须重新启动 Picard 才能使更�
 
 #: picard/ui/util.py:142
 msgid "Changes only applied on restart"
-msgstr ""
+msgstr "更改仅在重启时应用"
 
 #: picard/ui/mainwindow/__init__.py:330
 msgid "Unsaved Changes"
@@ -5416,19 +5417,19 @@ msgstr "专辑封面"
 
 #: picard/ui/options/dialog.py:111
 msgid "This page failed to initialize"
-msgstr ""
+msgstr "此页面初始化失败"
 
 #: picard/ui/options/dialog.py:114
 #, python-format
 msgid "Error while initializing option page '%s':"
-msgstr ""
+msgstr "初始化选项页‘%s’时出错："
 
 #: picard/ui/options/dialog.py:131
 #, python-format
 msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
 "report a bug."
-msgstr ""
+msgstr "请参阅<a href=\"%s\">故障排除文档</a>并最终报告错误。"
 
 #: picard/ui/options/dialog.py:157
 #, fuzzy, python-format
@@ -5536,6 +5537,9 @@ msgid ""
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"撤销 MusicBrainz 服务器的访问权限时发生服务器错误：%s\n"
+"\n"
+"是否仍然删除本地存储的凭据？"
 
 #: picard/ui/options/genres.py:45
 msgid ""
@@ -5663,7 +5667,7 @@ msgstr "系统默认"
 
 #: picard/ui/options/interface.py:184
 msgid "You have changed the application theme."
-msgstr ""
+msgstr "您已更改应用程序主题。"
 
 #: picard/ui/options/interface.py:186
 msgid ""
@@ -5693,6 +5697,10 @@ msgid ""
 "\n"
 "Are you sure that you want to enable this setting?"
 msgstr ""
+"启用多个目录选项设置后，Picard "
+"将不再使用系统文件选择器来选择目录。这可能会导致功能减少。\n"
+"\n"
+"您确定要启用此设置吗？"
 
 #: picard/ui/options/interface_colors.py:68
 msgid "Choose a color"
@@ -5700,7 +5708,7 @@ msgstr "选择颜色"
 
 #: picard/ui/options/interface_colors.py:143
 msgid "You have changed the interface colors."
-msgstr ""
+msgstr "您已更改界面颜色。"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -5829,6 +5837,8 @@ msgid ""
 "The path provided isn't a valid directory, reverting to:\n"
 "%s\n"
 msgstr ""
+"提供的路径不是有效目录，恢复为：\n"
+"%s\n"
 
 #: picard/ui/options/maintenance.py:172
 #, fuzzy, python-format
