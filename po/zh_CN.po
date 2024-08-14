@@ -44,21 +44,22 @@
 # Maureen <mry_33@163.com>, 2014
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 # 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
+# KenParker_CN <peekabookenny@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2023-08-30 09:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-08-14 16:42+0000\n"
+"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
-"projects/picard/app/zh_Hans/>\n"
+"projects/picard/2/app/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -211,7 +212,7 @@ msgstr "信息"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "调试"
 
 #: picard/oauth.py:249 picard/oauth.py:276
 msgid "Unexpected authentication error"
@@ -288,15 +289,15 @@ msgstr "载入新文件时忽略 MBID"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "启动时检查插件更新"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "启动时检查程序更新"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
-msgstr ""
+msgstr "检查更新间隔天数"
 
 #: picard/profile.py:56
 #, fuzzy
@@ -380,7 +381,7 @@ msgstr "只使用我的流派"
 
 #: picard/profile.py:87
 msgid "Use album artist genres"
-msgstr ""
+msgstr "使用专辑艺术家的流派"
 
 #: picard/profile.py:88 picard/ui/ui_options_genres.py:122
 msgid "Use folksonomy tags as genre"
@@ -403,7 +404,7 @@ msgstr "多个流派的连接符:"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
-msgstr ""
+msgstr "包含或排除的流派"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
@@ -411,7 +412,7 @@ msgstr "启用曲目评分"
 
 #: picard/profile.py:98
 msgid "Email to use when saving ratings"
-msgstr ""
+msgstr "保存评分时使用的电子邮件"
 
 #: picard/profile.py:99 picard/ui/ui_options_ratings.py:50
 msgid "Submit ratings to MusicBrainz"
@@ -455,7 +456,7 @@ msgstr "保留标签列表"
 
 #: picard/profile.py:117
 msgid "ID3v2 version to write"
-msgstr ""
+msgstr "写入的 ID3v2 版本"
 
 #: picard/profile.py:118 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
@@ -580,7 +581,7 @@ msgstr "Windows 兼容性"
 
 #: picard/profile.py:167
 msgid "Replacement characters used for Windows compatibility"
-msgstr ""
+msgstr "兼容 Windows 的替换字符"
 
 #: picard/profile.py:168 picard/ui/options/renaming_compat.py:133
 msgid "Windows long path support"
@@ -592,7 +593,7 @@ msgstr "使用下划线替代空格"
 
 #: picard/profile.py:170
 msgid "Replacement character to use for directory separators"
-msgstr ""
+msgstr "用于目录分隔符的替换字符"
 
 #: picard/profile.py:175 picard/ui/options/scripting.py:100
 msgid "Scripting"
@@ -643,7 +644,7 @@ msgstr "使用高级查询语法"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
-msgstr ""
+msgstr "Picard 启动时显示使用警告对话框"
 
 #: picard/profile.py:194 picard/ui/ui_options_interface.py:128
 msgid "Show a quit confirmation dialog for unsaved changes"
@@ -667,19 +668,19 @@ msgstr "浏览开始的目录"
 
 #: picard/profile.py:201
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "浅色主题使用的颜色"
 
 #: picard/profile.py:202
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "暗色主题使用的颜色"
 
 #: picard/profile.py:205
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "显示在顶部的标签"
 
 #: picard/profile.py:208
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "工具栏布局"
 
 #: picard/profile.py:213 picard/ui/options/advanced.py:44
 msgid "Advanced"
@@ -727,7 +728,7 @@ msgstr "比较时忽略以下标签"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
-msgstr ""
+msgstr "使用 Web 代理服务器"
 
 #: picard/profile.py:239
 msgid "type of proxy server"
@@ -735,19 +736,19 @@ msgstr ""
 
 #: picard/profile.py:240
 msgid "Proxy server address"
-msgstr ""
+msgstr "代理服务器地址"
 
 #: picard/profile.py:241
 msgid "Proxy server port"
-msgstr ""
+msgstr "代理服务器端口"
 
 #: picard/profile.py:242
 msgid "Proxy username"
-msgstr ""
+msgstr "代理用户名"
 
 #: picard/profile.py:243
 msgid "Proxy password"
-msgstr ""
+msgstr "代理密码"
 
 #: picard/profile.py:244
 #, fuzzy
@@ -4038,23 +4039,23 @@ msgstr "音量"
 
 #: picard/ui/pluginupdatedialog.py:38
 msgid "Perform this check again the next time you start Picard."
-msgstr ""
+msgstr "下次启动 Picard 时再次检查."
 
 #: picard/ui/pluginupdatedialog.py:43
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Picard 插件更新"
 
 #: picard/ui/pluginupdatedialog.py:60
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
-msgstr[0] ""
+msgstr[0] "您当前安装的插件有可用更新："
 
 #: picard/ui/pluginupdatedialog.py:65
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
+msgstr[0] "您想立即更新插件吗？"
 
 #: picard/ui/pluginupdatedialog.py:73
 msgid "plus {extra_file_count:,d} other plugin."
