@@ -65,6 +65,6 @@ class Ui_PasswordDialog(object):
         QtCore.QMetaObject.connectSlotsByName(PasswordDialog)
 
     def retranslateUi(self, PasswordDialog):
-        PasswordDialog.setWindowTitle(_("Authentication required"))
+        PasswordDialog.setWindowTitle(_("Authentication Required"))
         self.label.setText(_("Username:"))
         self.label_2.setText(_("Password:"))
