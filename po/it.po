@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-06-27 20:42+0000\n"
+"PO-Revision-Date: 2024-08-23 11:42+0000\n"
 "Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
 "metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.6\n"
+"X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -412,7 +412,7 @@ msgstr "Elimina i tag esistenti"
 
 #: picard/profile.py:110 picard/ui/ui_options_tags.py:75
 msgid "Keep embedded images when clearing tags"
-msgstr "Mantieni le immagini incluse nei file quando si eliminano i tag"
+msgstr "Mantieni le immagini integrate nei file quando si eliminano i tag"
 
 #: picard/profile.py:111 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
@@ -484,11 +484,11 @@ msgstr "Copertine"
 
 #: picard/profile.py:141 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
-msgstr "Includi le immagini di copertina nei tag"
+msgstr "Integra le immagini di copertina nei tag"
 
 #: picard/profile.py:142 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
-msgstr "Includi una sola immagine di copertina frontale"
+msgstr "Integra una sola immagine di copertina frontale"
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
