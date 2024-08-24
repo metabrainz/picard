@@ -226,11 +226,6 @@ def gettext_ctxt(gettext_, message, context=None):
     return translated
 
 
-def _digit_replace(matchobj):
-    s = matchobj.group(0)
-    return str(int(s)) if s.isdigit() else s
-
-
 def sort_key(string, numeric=False):
     """Transforms a string to one that can be used in locale-aware comparisons.
 
@@ -240,13 +235,44 @@ def sort_key(string, numeric=False):
 
     Returns: An object that can be compared locale-aware
     """
+    # QCollator.sortKey is broken, see https://bugreports.qt.io/browse/QTBUG-128170
+    if IS_WIN:
+        return _sort_key_strxfrm(string, numeric)
+    else:
+        return _sort_key_qt(string, numeric)
+
+
+RE_NUMBER = re.compile(r'(\d+)')
+
+
+def _digits_replace(matchobj):
+    s = matchobj.group(0)
+    return str(int(s)) if s.isdecimal() else s
+
+
+def _sort_key_qt(string, numeric=False):
     collator = _qcollator_numeric if numeric else _qcollator
     # On macOS / Windows the numeric sorting does not work reliable with non-latin
     # scripts. Replace numbers in the sort string with their latin equivalent.
     if numeric and (IS_MACOS or IS_WIN):
-        string = re.sub(r'\d', _digit_replace, string)
+        string = RE_NUMBER.sub(_digits_replace, string)
 
     # On macOS numeric sorting of strings entirely consisting of numeric characters fails
-    # and always sorts alphabetically (002 < 1). Always prefix with an alphabeticcharacter
+    # and always sorts alphabetically (002 < 1). Always prefix with an alphabetic character
     # to work around that.
     return collator.sortKey('a' + string.replace('\0', ''))
+
+
+def _sort_key_strxfrm(string, numeric=False):
+    if numeric:
+        return [int(s) if s.isdecimal() else _strxfrm(s)
+            for s in RE_NUMBER.split(str(string).replace('\0', ''))]
+    else:
+        return _strxfrm(string)
+
+
+def _strxfrm(string):
+    try:
+        return locale.strxfrm(string)
+    except (OSError, ValueError):
+        return string.lower()

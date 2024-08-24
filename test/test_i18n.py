@@ -83,10 +83,12 @@ class TestI18n(PicardTestCase):
         self.assertTrue(i18n.sort_key('äb') < i18n.sort_key('ac'))
         self.assertTrue(i18n.sort_key('foo002') < i18n.sort_key('foo1'))
         self.assertTrue(i18n.sort_key('002 foo') < i18n.sort_key('1 foo'))
+        self.assertTrue(i18n.sort_key('1') < i18n.sort_key('C'))
         self.assertTrue(i18n.sort_key('foo1', numeric=True) < i18n.sort_key('foo002', numeric=True))
         self.assertTrue(i18n.sort_key('004', numeric=True) < i18n.sort_key('5', numeric=True))
         self.assertTrue(i18n.sort_key('0042', numeric=True) < i18n.sort_key('50', numeric=True))
         self.assertTrue(i18n.sort_key('5', numeric=True) < i18n.sort_key('0042', numeric=True))
+        self.assertTrue(i18n.sort_key('99', numeric=True) < i18n.sort_key('100', numeric=True))
 
     def test_sort_key_numbers_different_scripts(self):
         i18n.setup_gettext(localedir, 'en')
