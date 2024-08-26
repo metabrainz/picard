@@ -297,6 +297,9 @@ class Cluster(FileList):
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
+            catno=self.metadata['catalognumber'],
+            barcode=self.metadata['barcode'],
+            asin=self.metadata['asin'],
             limit=config.setting['query_limit'])
 
     def clear_lookup_task(self):
