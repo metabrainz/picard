@@ -166,6 +166,17 @@ class Cluster(FileList):
 
     def update(self, signal=True):
         self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)
+        metadata_counters = {}
+        tags_to_update = ['catalognumber', 'barcode', 'asin', 'genre']
+        for file in self.files:
+            for tag in tags_to_update:
+                if tag in file.metadata:
+                    value = file.metadata[tag]
+                    if tag not in metadata_counters:
+                        metadata_counters[tag] = Counter()
+                    metadata_counters[tag][value] += 1
+        for tag in metadata_counters:
+            self.metadata[tag] = metadata_counters[tag].most_common(1)[0][0]
         if signal and self.ui_item:
             self.ui_item.update()
 
