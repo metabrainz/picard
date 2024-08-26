@@ -72,6 +72,9 @@ CLUSTER_COMPARISON_WEIGHTS = {
     'releasecountry': 2,
     'releasetype': 10,
     'totalalbumtracks': 5,
+    'catalognumber': 60,
+    'asin': 65,
+    'barcode': 68,
 }
 
 
