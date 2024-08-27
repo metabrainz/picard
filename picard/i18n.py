@@ -196,6 +196,10 @@ def setup_gettext(localedir, ui_language=None, logger=None):
 
 def gettext(message: str) -> str:
     """Translate the messsage using the current translator."""
+    # Calling gettext("") by default returns the header of the PO file for the
+    # current locale. This is unexpected. Return an empty string instead.
+    if message == "":
+        return message
     return _translation['main'].gettext(message)
 
 

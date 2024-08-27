@@ -85,6 +85,10 @@ class TestI18n(PicardTestCase):
         # self.assertEqual('Französisch', gettext_constants('French'))
         self.assertEqual('Frankreich', gettext_countries('France'))
 
+    def test_gettext_handles_empty_string(self):
+        setup_gettext(localedir, 'fr')
+        self.assertEqual('', _(''))
+
     def test_sort_key(self):
         setup_gettext(localedir, 'de')
         self.assertTrue(sort_key('äb') < sort_key('ac'))
