@@ -1,3 +1,9 @@
+# Version 2.12.2 - 2024-08-27
+
+## Bugfixes
+- [PICARD-2953](https://tickets.metabrainz.org/browse/PICARD-2953) - Windows: Incorrect sort order in list views and search result
+
+
 # Version 2.12.1 - 2024-08-13
 
 ## Bugfixes
