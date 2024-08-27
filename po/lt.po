@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-07-23 10:42+0000\n"
+"PO-Revision-Date: 2024-08-27 12:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -23,8 +23,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 5.6.2\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -153,16 +153,12 @@ msgid "Log plugin full paths"
 msgstr "Žurnalo įskiepių pilni keliai"
 
 #: picard/debug_opts.py:83
-#, fuzzy
-#| msgid "Web Service Replies"
 msgid "Web Service Post Data"
-msgstr "Žiniatinklio paslaugos atsakymai"
+msgstr "Žiniatinklio paslaugos išsiuntimo duomenys"
 
 #: picard/debug_opts.py:83
-#, fuzzy
-#| msgid "Log content of web service replies"
 msgid "Log data of web service post requests"
-msgstr "Žurnalo žiniatinklio paslaugos atsakymų turinys"
+msgstr "Žurnalo duomenys apie žiniatinklio paslaugos išsiuntimo užklausas"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Replies"
@@ -304,19 +300,19 @@ msgstr "Įterpti tik vieną priekinį vaizdą"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_cover.py:120
 msgid "Never replace cover images with smaller ones"
-msgstr ""
+msgstr "Niekada nepakeisti viršelio vaizdų su mažesnėmis"
 
 #: picard/options.py:172
 msgid "Never replace cover images of the given types"
-msgstr ""
+msgstr "Niekada nepakeisti nurodytų tipų viršelio vaizdų"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
-msgstr ""
+msgstr "Niekada nepakeisti šių tipų viršelio vaizdų"
 
 #: picard/options.py:174
 msgid "Always replace cover images of these types"
-msgstr ""
+msgstr "Visada pakeisti šių tipų viršelio vaizdus"
 
 #: picard/options.py:175 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
@@ -6759,61 +6755,59 @@ msgstr "Remiksuotojas"
 
 #: picard/util/tags.py:116
 msgid "ReplayGain Album Gain"
-msgstr "ReplayGain albumo stiprinimas"
+msgstr "„ReplayGain“ albumo stiprinimas"
 
 #: picard/util/tags.py:117
 msgid "ReplayGain Album Peak"
-msgstr "ReplayGain albumo pikas"
+msgstr "„ReplayGain“ albumo pikas"
 
 #: picard/util/tags.py:118
 msgid "ReplayGain Album Range"
-msgstr "ReplayGain albumo rėžis"
+msgstr "„ReplayGain“ albumo rėžis"
 
 #: picard/util/tags.py:119
 msgid "ReplayGain Reference Loudness"
-msgstr "ReplayGain patariamojo garsumas"
+msgstr "„ReplayGain“ patariamojo garsumas"
 
 #: picard/util/tags.py:120
 msgid "ReplayGain Track Gain"
-msgstr "ReplayGain takelio stiprinimas"
+msgstr "„ReplayGain“ takelio stiprinimas"
 
 #: picard/util/tags.py:121
 msgid "ReplayGain Track Peak"
-msgstr "ReplayGain takelio pikas"
+msgstr "„ReplayGain“ takelio pikas"
 
 #: picard/util/tags.py:122
 msgid "ReplayGain Track Range"
-msgstr "ReplayGain takelio rėžis"
+msgstr "„ReplayGain“ takelio rėžis"
 
 #: picard/util/tags.py:123
 msgid "Script"
 msgstr "Raštas"
 
 #: picard/util/tags.py:124
-#, fuzzy
 msgid "Show Name"
-msgstr "Vardas"
+msgstr "Šou pavadinimas"
 
 #: picard/util/tags.py:125
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Šou pavadinimo rikiavimo tvarka"
 
 #: picard/util/tags.py:126
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Šou kūrinys ir dalis"
 
 #: picard/util/tags.py:127
 msgid "Subtitle"
 msgstr "Popavadinimas"
 
 #: picard/util/tags.py:128
-#, fuzzy
 msgid "Synced Lyrics"
-msgstr "Dainos žodžiai"
+msgstr "Sinchronizuoti dainos žodžiai"
 
 #: picard/util/tags.py:130
 msgid "Title Sort Order"
-msgstr "Pavadinimo rūšiavimo tvarka"
+msgstr "Pavadinimo rikiavimo tvarka"
 
 #: picard/util/tags.py:131
 msgid "Total Discs"
