@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-07-23 10:42+0000\n"
+"PO-Revision-Date: 2024-08-27 12:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -6267,48 +6267,47 @@ msgstr "Remiksuotojas"
 
 #: picard/util/tags.py:111
 msgid "ReplayGain Album Gain"
-msgstr "ReplayGain albumo stiprinimas"
+msgstr "„ReplayGain“ albumo stiprinimas"
 
 #: picard/util/tags.py:112
 msgid "ReplayGain Album Peak"
-msgstr "ReplayGain albumo pikas"
+msgstr "„ReplayGain“ albumo pikas"
 
 #: picard/util/tags.py:113
 msgid "ReplayGain Album Range"
-msgstr "ReplayGain albumo rėžis"
+msgstr "„ReplayGain“ albumo rėžis"
 
 #: picard/util/tags.py:114
 msgid "ReplayGain Reference Loudness"
-msgstr "ReplayGain patariamojo garsumas"
+msgstr "„ReplayGain“ patariamojo garsumas"
 
 #: picard/util/tags.py:115
 msgid "ReplayGain Track Gain"
-msgstr "ReplayGain takelio stiprinimas"
+msgstr "„ReplayGain“ takelio stiprinimas"
 
 #: picard/util/tags.py:116
 msgid "ReplayGain Track Peak"
-msgstr "ReplayGain takelio pikas"
+msgstr "„ReplayGain“ takelio pikas"
 
 #: picard/util/tags.py:117
 msgid "ReplayGain Track Range"
-msgstr "ReplayGain takelio rėžis"
+msgstr "„ReplayGain“ takelio rėžis"
 
 #: picard/util/tags.py:118
 msgid "Script"
 msgstr "Raštas"
 
 #: picard/util/tags.py:119
-#, fuzzy
 msgid "Show Name"
-msgstr "Vardas"
+msgstr "Šou pavadinimas"
 
 #: picard/util/tags.py:120
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Šou pavadinimo rikiavimo tvarka"
 
 #: picard/util/tags.py:121
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Šou kūrinys ir dalis"
 
 #: picard/util/tags.py:122
 msgid "Subtitle"
@@ -6316,7 +6315,7 @@ msgstr "Popavadinimas"
 
 #: picard/util/tags.py:124
 msgid "Title Sort Order"
-msgstr "Pavadinimo rūšiavimo tvarka"
+msgstr "Pavadinimo rikiavimo tvarka"
 
 #: picard/util/tags.py:125
 msgid "Total Discs"
