@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-08-27 12:42+0000\n"
+"PO-Revision-Date: 2024-08-28 19:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -5820,7 +5820,7 @@ msgstr "Rodyti naršyklėje"
 
 #: picard/ui/searchdialog/artist.py:52
 msgid "Artist Search Dialog"
-msgstr ""
+msgstr "Atlikėjo paieškos dialogo langas"
 
 #: picard/ui/searchdialog/artist.py:56
 msgid "Gender"
@@ -5832,7 +5832,7 @@ msgstr "Teritorija"
 
 #: picard/ui/searchdialog/artist.py:58
 msgid "Begin"
-msgstr ""
+msgstr "Pradžia"
 
 #: picard/ui/searchdialog/artist.py:59
 msgid "Begin Area"
@@ -5840,7 +5840,7 @@ msgstr "Pradžios teritorija"
 
 #: picard/ui/searchdialog/artist.py:60
 msgid "End"
-msgstr ""
+msgstr "Pabaiga"
 
 #: picard/ui/searchdialog/artist.py:61
 msgid "End Area"
@@ -5848,7 +5848,7 @@ msgstr "Pabaigos teritorija"
 
 #: picard/ui/searchdialog/track.py:67
 msgid "Track Search Results"
-msgstr ""
+msgstr "Takelio paieškos rezultatai"
 
 #: picard/ui/searchdialog/track.py:72
 msgid "Release"
@@ -6127,7 +6127,7 @@ msgstr "Tonacija"
 
 #: picard/util/tags.py:70
 msgid "Record Label"
-msgstr "Įrašų kompanija"
+msgstr "Įrašų leidykla"
 
 #: picard/util/tags.py:74
 msgid "Lyricist"
@@ -6159,51 +6159,51 @@ msgstr "Dalies skaičius"
 
 #: picard/util/tags.py:82
 msgid "MusicBrainz Release Artist Id"
-msgstr "MusicBrainz leidinio atlikėjo ID"
+msgstr "„MusicBrainz“ leidinio atlikėjo ID"
 
 #: picard/util/tags.py:83
 msgid "MusicBrainz Release Id"
-msgstr "MusicBrainz leidinio ID"
+msgstr "„MusicBrainz“ leidinio ID"
 
 #: picard/util/tags.py:84
 msgid "MusicBrainz Artist Id"
-msgstr "MusicBrainz atlikėjo ID"
+msgstr "„MusicBrainz“ atlikėjo ID"
 
 #: picard/util/tags.py:85
 msgid "MusicBrainz Disc Id"
-msgstr "MusicBrainz disko ID"
+msgstr "„MusicBrainz“ disko ID"
 
 #: picard/util/tags.py:86
 msgid "MusicBrainz Original Release Id"
-msgstr "MusicBrainz originalus leidinio ID"
+msgstr "„MusicBrainz“ originalus leidinio ID"
 
 #: picard/util/tags.py:87
 msgid "MusicBrainz Original Artist Id"
-msgstr "MusicBrainz originalus atlikėjo ID"
+msgstr "„MusicBrainz“ originalus atlikėjo ID"
 
 #: picard/util/tags.py:88
 msgid "MusicBrainz Recording Id"
-msgstr "MusicBrainz įrašo ID"
+msgstr "„MusicBrainz“ įrašo ID"
 
 #: picard/util/tags.py:89
 msgid "MusicBrainz Release Group Id"
-msgstr "MusicBrainz leidinių grupės ID"
+msgstr "„MusicBrainz“ leidinių grupės ID"
 
 #: picard/util/tags.py:90
 msgid "MusicBrainz Track Id"
-msgstr "MusicBrainz takelio ID"
+msgstr "„MusicBrainz“ takelio ID"
 
 #: picard/util/tags.py:91
 msgid "MusicBrainz Work Id"
-msgstr "MusicBrainz kūrinio ID"
+msgstr "„MusicBrainz“ kūrinio ID"
 
 #: picard/util/tags.py:92
 msgid "MusicIP Fingerprint"
-msgstr "MusicIP atspaudas"
+msgstr "„MusicIP“ atspaudas"
 
 #: picard/util/tags.py:93
 msgid "MusicIP PUID"
-msgstr "MusicIP PUID"
+msgstr "„MusicIP“ PUID"
 
 #: picard/util/tags.py:94
 msgid "Original Album"
@@ -6239,11 +6239,11 @@ msgstr "Prodiuseris"
 
 #: picard/util/tags.py:103
 msgid "R128 Album Gain"
-msgstr "R128 albumo stiprinimas"
+msgstr "„R128“ albumo stiprinimas"
 
 #: picard/util/tags.py:104
 msgid "R128 Track Gain"
-msgstr "R128 takelio stiprinimas"
+msgstr "„R128“ takelio stiprinimas"
 
 #: picard/util/tags.py:105
 msgid "Rating"
@@ -6367,7 +6367,7 @@ msgstr "nėra įdiegta"
 
 #: picard/util/webbrowser2.py:47
 msgid "Web Browser Error"
-msgstr "Žiniatinklio naršyklės klaida"
+msgstr "Interneto naršyklės klaida"
 
 #: picard/util/webbrowser2.py:47
 #, python-format
@@ -6376,7 +6376,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Klaida paleidžiant žiniatinklio naršyklę:\n"
+"Klaida paleidžiant interneto naršyklę:\n"
 "\n"
 "%s."
 
