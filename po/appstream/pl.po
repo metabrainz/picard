@@ -4,6 +4,7 @@
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Transifex Bot <>, 2023
 # Echelon666 <echelon01@wp.pl>, 2024.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2024.
 #
 # Translators:
 #
@@ -12,8 +13,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2024-08-29 06:30+0000\n"
-"Last-Translator: Echelon666 <echelon01@wp.pl>\n"
+"PO-Revision-Date: 2024-08-29 12:18+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "appstream/pl/>\n"
 "Language: pl\n"
@@ -30,6 +31,7 @@ msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
+#, fuzzy
 msgid "MusicBrainz's music tagger"
 msgstr ""
 "MusicBrainz Picard jest narzędziem do edycji metadanych (inaczej tagów, "
