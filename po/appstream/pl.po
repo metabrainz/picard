@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2024-08-29 12:18+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-08-30 12:42+0000\n"
+"Last-Translator: Echelon666 <echelon01@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "appstream/pl/>\n"
 "Language: pl\n"
@@ -31,11 +31,10 @@ msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
-#, fuzzy
 msgid "MusicBrainz's music tagger"
 msgstr ""
-"MusicBrainz Picard jest narzędziem do edycji metadanych (inaczej tagów, "
-"znaczników) plików audio. W skrócie nazywany tagerem."
+"MusicBrainz Picard służy do edycji metadanych (tagów ID3, znaczników) plików "
+"audio"
 
 #: org.musicbrainz.Picard.appdata.xml.in:10
 msgid ""
@@ -98,8 +97,8 @@ msgstr ""
 #: org.musicbrainz.Picard.appdata.xml.in:40
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
 msgstr ""
-"Sprawdzanie płyt CD: Picard może jednym kliknięciem sprawdzić (...) całą "
-"płytę CD z muzyką."
+"Sprawdzanie płyt CD: Picard może jednym kliknięciem sprawdzić całą płytę CD "
+"z muzyką."
 
 #: org.musicbrainz.Picard.appdata.xml.in:43
 msgid ""
