@@ -34,7 +34,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-05-19 17:42+0000\n"
+"PO-Revision-Date: 2024-08-31 14:42+0000\n"
 "Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz"
 ".org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
@@ -46,7 +46,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
 "n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.5.4\n"
+"X-Generator: Weblate 5.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -105,9 +105,9 @@ msgstr[3] "%(count)i релизов добавлено в коллекцию \"%
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "Удален %(count)i релиз из коллекции \"%(name)s\""
-msgstr[1] "Удалены %(count)i релизы из коллекции \"%(name)s\""
-msgstr[2] "Удален %(count)i релиз из коллекции \"%(name)s\""
-msgstr[3] "Удален %(count)i релиз из коллекции \"%(name)s\""
+msgstr[1] "Удалено %(count)i релиза из коллекции \"%(name)s\""
+msgstr[2] "Удалено %(count)i релизов из коллекции \"%(name)s\""
+msgstr[3] "Удалено %(count)i релизов из коллекции \"%(name)s\""
 
 #: picard/collection.py:97
 #, python-format
@@ -121,7 +121,7 @@ msgstr "Ошибка при загрузке коллекции: %(error)s"
 
 #: picard/config_upgrade.py:82 picard/config_upgrade.py:95
 msgid "Various Artists file naming scheme removal"
-msgstr "Various Artists схема именования файлов для удаления"
+msgstr "Схема для удаления файлов с разными исполнителями"
 
 #: picard/config_upgrade.py:83
 msgid ""
@@ -163,15 +163,15 @@ msgstr "Удалить"
 
 #: picard/config_upgrade.py:422
 msgid "Primary file naming script"
-msgstr "Основной скрипт именования файлов"
+msgstr "Скрипт основного именования файлов"
 
 #: picard/file.py:216
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
-"Файл не удалось проанализировать, либо он поврежден, либо формат файла не "
-"поддерживается."
+"Файл не удалось проанализировать; он может быть поврежден, либо формат файла "
+"не поддерживается."
 
 #: picard/file.py:853
 #, python-format
@@ -219,7 +219,7 @@ msgstr "Неожиданная ошибка аутентификации"
 #: picard/oauth.py:288
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr "Неожиданная ошибка запроса (Код HTTP %s)"
+msgstr "Неожиданная ошибка запроса (код HTTP %s)"
 
 #: picard/pluginmanager.py:271
 #, python-format
@@ -284,23 +284,23 @@ msgstr "Автоматически кластеризовать все новы�
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:210
 msgid "Ignore MBIDs when loading new files"
-msgstr "Игнорировать MBIDs при загрузке новых файлов"
+msgstr "Игнорировать MBID при загрузке новых файлов"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr "Проверка обновлений плагинов при запуске"
+msgstr "Проверять обновления плагинов при запуске"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
-msgstr "Проверка обновлений программы при запуске"
+msgstr "Проверять обновления программы при запуске"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
-msgstr ""
+msgstr "Дни между проверками обновлений"
 
 #: picard/profile.py:56
 msgid "Updates to check"
-msgstr ""
+msgstr "Проверять обновления в каналах"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:129
@@ -385,11 +385,11 @@ msgstr "Использовать теги, выбранные сообществ
 
 #: picard/profile.py:89
 msgid "Minimal genre usage"
-msgstr ""
+msgstr "Минимальное использование жанров"
 
 #: picard/profile.py:90
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "Максимальное количество жанров"
 
 #: picard/profile.py:91
 msgid "Join multiple genres with"
@@ -397,7 +397,7 @@ msgstr ""
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
-msgstr ""
+msgstr "Включать или исключать жанры"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
@@ -519,11 +519,11 @@ msgstr "Имя файла для изображений"
 
 #: picard/profile.py:145
 msgid "Overwrite existing image files"
-msgstr "Перезаписать существующие файлы изображений"
+msgstr "Перезаписывать существующие файлы изображений"
 
 #: picard/profile.py:146 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
-msgstr "Сохранить только изображение лицевой обложи как отдельный файл"
+msgstr "Сохранять только изображение лицевой обложи как отдельный файл"
 
 #: picard/profile.py:147 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
@@ -613,7 +613,7 @@ msgstr "Показывать подписи под значками"
 
 #: picard/profile.py:187 picard/ui/ui_options_interface.py:120
 msgid "Show icons in menus"
-msgstr ""
+msgstr "Показывать иконки в меню"
 
 #: picard/profile.py:188
 msgid "User interface language"
@@ -637,16 +637,16 @@ msgstr "Использовать расширенный синтаксис по�
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
-msgstr ""
+msgstr "Показывать диалог предупреждения об использовании при запуске Picard"
 
 #: picard/profile.py:194 picard/ui/ui_options_interface.py:128
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
-"Показать диалоговое окно подтверждения выхода при несохраненных изменений"
+"Показать диалоговое окно подтверждения выхода при несохраненных изменениях"
 
 #: picard/profile.py:195 picard/ui/ui_options_interface.py:129
 msgid "Show a confirmation dialog when saving files"
-msgstr ""
+msgstr "Показать диалоговое окно подтверждения сохранения файлов"
 
 #: picard/profile.py:196 picard/ui/ui_options_interface.py:130
 msgid "Adjust horizontal position in file browser automatically"
@@ -682,7 +682,7 @@ msgstr "Расширенные"
 
 #: picard/profile.py:216
 msgid "Ignore file paths matching a regular expression"
-msgstr ""
+msgstr "Игнорировать расположения, совпадающие с регулярным выражением"
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
@@ -690,15 +690,16 @@ msgstr "Игнорировать скрытые файлы"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
-msgstr ""
+msgstr "Включать подпапки при добавлении файлов из папки"
 
 #: picard/profile.py:221
 msgid "Ignore track duration difference under x seconds"
-msgstr ""
+msgstr "Игнорировать разницу в продолжительности трека до x секунд"
 
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
 msgstr ""
+"Максимальное количество сущностей, возвращаемых по запросу в MusicBrainz"
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
@@ -718,7 +719,7 @@ msgstr ""
 
 #: picard/profile.py:233
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Игнорируемые теги для сравнения"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
@@ -2518,10 +2519,10 @@ msgstr "Запросы, ожидающие обработки"
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%i изображение"
+msgstr[1] "%i изображения"
+msgstr[2] "%i изображений"
+msgstr[3] "%i изображений"
 
 #: picard/ui/item.py:144
 #, python-format
