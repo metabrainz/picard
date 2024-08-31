@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-08-30 12:42+0000\n"
+"PO-Revision-Date: 2024-08-31 14:42+0000\n"
 "Last-Translator: Echelon666 <echelon01@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/2/"
 "app/pl/>\n"
@@ -33,7 +33,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -301,7 +301,7 @@ msgstr "Przetłumacz nazwy artystów"
 
 #: picard/profile.py:65
 msgid "Translation locales"
-msgstr "Lokalizacja tłumaczeń"
+msgstr "Języki tłumaczeń"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
@@ -876,13 +876,14 @@ msgstr "Brak wyników wyszukiwania AcoustID dla '%(filename)s'"
 #: picard/acoustid/__init__.py:190
 #, python-format
 msgid "Looking up the fingerprint for file '%(filename)s' …"
-msgstr "Wyszukiwanie odcisku dla pliku '%(filename)s' …"
+msgstr "Wyszukiwanie odcisku audio dla pliku '%(filename)s' …"
 
 #: picard/acoustid/manager.py:184
 msgid ""
 "AcoustID submission finished, but not all fingerprints have been submitted"
 msgstr ""
-"Zgłoszenie do AcoustID ukończone, ale nie wszystkie odciski zostały zgłoszone"
+"Zgłoszenie do AcoustID ukończone, ale nie wszystkie odciski audio zostały "
+"zgłoszone"
 
 #: picard/acoustid/manager.py:186
 msgid "AcoustID submission finished successfully"
@@ -2784,8 +2785,8 @@ msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr ""
-"Dla tego pliku nie obliczono odcisku palca. Aby obliczyć odcisk palca, użyj "
-"opcji „Skanuj” lub „Generuj odciski palców AcousID”."
+"Dla tego pliku nie obliczono odcisku audio. Aby obliczyć odcisk audio, użyj "
+"opcji „Skanuj” lub „Generuj odciski audio AcoustID”."
 
 #: picard/ui/logview.py:169
 msgid "Log"
@@ -2895,7 +2896,7 @@ msgstr "Nasłuchiwanie na porcie %(port)d"
 
 #: picard/ui/mainwindow.py:487
 msgid "AcoustID submission not configured"
-msgstr "Przesyłanie AcousID nie zostało skonfigurowane"
+msgstr "Przesyłanie AcoustID nie zostało skonfigurowane"
 
 #: picard/ui/mainwindow.py:488
 msgid ""
@@ -4047,31 +4048,31 @@ msgstr "Formularz"
 
 #: picard/ui/ui_multi_locale_selector.py:85
 msgid "Locale Selector"
-msgstr "Selektor ustawień regionalnych"
+msgstr "Selektor języków"
 
 #: picard/ui/ui_multi_locale_selector.py:86
 msgid "Selected Locales"
-msgstr "Wybrane lokalizacje"
+msgstr "Wybrane języki"
 
 #: picard/ui/ui_multi_locale_selector.py:87
 msgid "Move selected locale up"
-msgstr "Przenieś wybrane ustawienia regionalne w górę"
+msgstr "Przenieś wybrany język w górę"
 
 #: picard/ui/ui_multi_locale_selector.py:88
 msgid "Add to selected locales"
-msgstr "Dodaj do wybranych lokalizacji"
+msgstr "Dodaj do wybranych języków"
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
-msgstr "Usuń wybrane ustawienia regionalne"
+msgstr "Usuń wybrany język"
 
 #: picard/ui/ui_multi_locale_selector.py:90
 msgid "Move selected locale down"
-msgstr "Przesuń wybrane ustawienia regionalne w dół"
+msgstr "Przesuń wybrany język w dół"
 
 #: picard/ui/ui_multi_locale_selector.py:91
 msgid "Available Locales"
-msgstr "Dostępne lokalizacje"
+msgstr "Dostępne języki"
 
 #: picard/ui/ui_options.py:50
 msgid "Options"
@@ -4157,7 +4158,7 @@ msgstr "Przenieś pozycję w dół"
 
 #: picard/ui/ui_options_fingerprinting.py:97
 msgid "Audio Fingerprinting"
-msgstr "Odciski audio"
+msgstr "Odcisk audio"
 
 #: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
@@ -4185,7 +4186,7 @@ msgstr "Maksymalna liczba wątków do wykorzystania w kalkulatorze:"
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
-msgstr "Generator odcisków:"
+msgstr "Generator odcisków audio:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:132 picard/ui/ui_options_renaming.py:152
@@ -5987,7 +5988,7 @@ msgstr "MusicBrainz ID pracy"
 
 #: picard/util/tags.py:92
 msgid "MusicIP Fingerprint"
-msgstr "Odcisk palca MusicIP"
+msgstr "Odcisk audio MusicIP"
 
 #: picard/util/tags.py:93
 msgid "MusicIP PUID"
