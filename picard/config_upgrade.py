@@ -31,6 +31,7 @@ from inspect import (
     getmembers,
     isfunction,
 )
+import os
 import re
 import sys
 
@@ -47,6 +48,7 @@ from picard.config import (
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_REPLACEMENT,
     DEFAULT_SCRIPT_NAME,
 )
 from picard.const.sys import IS_FROZEN
@@ -548,6 +550,15 @@ def upgrade_to_v3_0_0dev4(config):
         config.persist.remove('album_view_header_state')
     if config.persist['file_view_header_locked']:
         config.persist.remove('file_view_header_state')
+
+
+def upgrade_to_v3_0_0dev5(config):
+    """Ensure "replace_dir_separator" contains no directory separator"""
+    replace_dir_separator = config.setting['replace_dir_separator']
+    replace_dir_separator = replace_dir_separator.replace(os.sep, DEFAULT_REPLACEMENT)
+    if os.altsep:
+        replace_dir_separator = replace_dir_separator.replace(os.altsep, DEFAULT_REPLACEMENT)
+    config.setting['replace_dir_separator'] = replace_dir_separator
 
 
 def rename_option(config, old_opt, new_opt, option_type, default):

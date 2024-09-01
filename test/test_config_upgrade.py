@@ -21,6 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os
 
 from PyQt6.QtCore import QByteArray
 
@@ -66,9 +67,11 @@ from picard.config_upgrade import (
     upgrade_to_v2_8_0dev2,
     upgrade_to_v3_0_0dev3,
     upgrade_to_v3_0_0dev4,
+    upgrade_to_v3_0_0dev5,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
+    DEFAULT_REPLACEMENT,
     DEFAULT_SCRIPT_NAME,
 )
 from picard.util import unique_numbered_title
@@ -541,3 +544,14 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v3_0_0dev4(self.config)
         self.assertEqual(b'', self.config.persist['album_view_header_state'])
         self.assertEqual(b'', self.config.persist['file_view_header_state'])
+
+    def test_upgrade_to_v3_0_0dev5(self):
+        TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT)
+        self.config.setting['replace_dir_separator'] = os.sep
+        upgrade_to_v3_0_0dev5(self.config)
+        self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
+
+        if os.altsep:
+            self.config.setting['replace_dir_separator'] = os.altsep
+            upgrade_to_v3_0_0dev5(self.config)
+            self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
