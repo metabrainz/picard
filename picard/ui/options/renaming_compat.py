@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2014-2015, 2018-2022 Philipp Wolfer
+# Copyright (C) 2009-2010, 2014-2015, 2018-2024 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2011-2013 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -32,7 +32,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+import os
 import re
 
 from PyQt5 import (
@@ -52,6 +52,7 @@ from picard.util import system_supports_long_paths
 
 from picard.ui import PicardDialog
 from picard.ui.options import (
+    OptionsCheckError,
     OptionsPage,
     register_options_page,
 )
@@ -100,6 +101,7 @@ class RenamingCompatOptionsPage(OptionsPage):
         self.ui.windows_long_paths.toggled.connect(self.on_options_changed)
         self.ui.replace_spaces_with_underscores.toggled.connect(self.on_options_changed)
         self.ui.replace_dir_separator.textChanged.connect(self.on_options_changed)
+        self.ui.replace_dir_separator.setValidator(NoDirectorySeparatorValidator())
         self.ui.btn_windows_compatibility_change.clicked.connect(self.open_win_compat_dialog)
 
     def load(self):
@@ -125,6 +127,14 @@ class RenamingCompatOptionsPage(OptionsPage):
         options = self.get_options()
         for key, value in options.items():
             config.setting[key] = value
+
+    def check(self):
+        (valid_state, _text, _pos) = self.ui.replace_dir_separator.validator().validate(self.ui.replace_dir_separator.text(), 0)
+        if valid_state != QtGui.QValidator.State.Acceptable:
+            raise OptionsCheckError(
+                _("Invalid directory separator replacement"),
+                _("The replacement for directory separators must not be itself a directory separator.")
+            )
 
     def toggle_windows_long_paths(self, state):
         if state and not system_supports_long_paths():
@@ -158,6 +168,15 @@ class RenamingCompatOptionsPage(OptionsPage):
         if dialog.exec_() == QtWidgets.QDialog.DialogCode.Accepted:
             self.win_compat_replacements = dialog.replacements
             self.on_options_changed()
+
+
+class NoDirectorySeparatorValidator(QtGui.QValidator):
+    def validate(self, text: str, pos):
+        if os.sep in text or (os.altsep and os.altsep in text):
+            state = QtGui.QValidator.State.Invalid
+        else:
+            state = QtGui.QValidator.State.Acceptable
+        return state, text, pos
 
 
 class WinCompatReplacementValidator(QtGui.QValidator):
