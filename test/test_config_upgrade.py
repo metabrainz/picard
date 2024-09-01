@@ -21,6 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os
 
 from PyQt5.QtCore import QByteArray
 
@@ -58,12 +59,15 @@ from picard.config_upgrade import (
     upgrade_to_v2_6_0_beta_3,
     upgrade_to_v2_6_0_dev_1,
     upgrade_to_v2_8_0_dev_2,
+    upgrade_to_v2_12_3_dev_1,
 )
 from picard.const import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_SCRIPT_NAME,
 )
 from picard.util import unique_numbered_title
+
+from picard.ui.options.renaming_compat import DEFAULT_REPLACEMENT
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
@@ -364,3 +368,14 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
         upgrade_to_v2_8_0_dev_2(self.config)
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
+
+    def test_upgrade_to_v2_12_3_dev_1(self):
+        TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT)
+        self.config.setting['replace_dir_separator'] = os.sep
+        upgrade_to_v2_12_3_dev_1(self.config)
+        self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
+
+        if os.altsep:
+            self.config.setting['replace_dir_separator'] = os.altsep
+            upgrade_to_v2_12_3_dev_1(self.config)
+            self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
