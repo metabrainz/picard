@@ -26,7 +26,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+import os
 import re
 
 from PyQt5 import QtWidgets
@@ -45,6 +45,8 @@ from picard.const import (
 )
 from picard.const.sys import IS_FROZEN
 from picard.util import unique_numbered_title
+
+from picard.ui.options.renaming_compat import DEFAULT_REPLACEMENT
 
 
 # TO ADD AN UPGRADE HOOK:
@@ -478,6 +480,15 @@ def upgrade_to_v2_10_1_dev_2(config):
     config.persist['splitters_OptionsDialog'] = b''
 
 
+def upgrade_to_v2_12_3_dev_1(config):
+    """Ensure "replace_dir_separator" contains no directory separator"""
+    replace_dir_separator = config.setting['replace_dir_separator']
+    replace_dir_separator = replace_dir_separator.replace(os.sep, DEFAULT_REPLACEMENT)
+    if os.altsep:
+        replace_dir_separator = replace_dir_separator.replace(os.altsep, DEFAULT_REPLACEMENT)
+    config.setting['replace_dir_separator'] = replace_dir_separator
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
@@ -524,4 +535,5 @@ def upgrade_config(config):
     cfg.register_upgrade_hook(upgrade_to_v2_8_0_dev_2)
     cfg.register_upgrade_hook(upgrade_to_v2_9_0_alpha_2)
     cfg.register_upgrade_hook(upgrade_to_v2_10_1_dev_2)
+    cfg.register_upgrade_hook(upgrade_to_v2_12_3_dev_1)
     cfg.run_upgrade_hooks(log.debug)
