@@ -34,14 +34,14 @@
 # yvanz, 2016-2019,2021
 # yvanz, 2016
 # Laurent Monin <i18n@norz.org>, 2013
-# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023.
+# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-04-07 12:28+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-09-04 19:42+0000\n"
+"Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
 "Language: fr\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.7.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:137
@@ -244,10 +244,8 @@ msgid "Error"
 msgstr "Erreur"
 
 #: picard/log.py:78
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "Alerte Nouvel Utilisateur"
+msgstr "Attention"
 
 #: picard/log.py:79 picard/ui/infodialog.py:235 picard/ui/infodialog.py:479
 #: picard/ui/options/interface_toolbar.py:105
@@ -256,7 +254,7 @@ msgstr "Information"
 
 #: picard/log.py:80
 msgid "Debug"
-msgstr ""
+msgstr "Débogage"
 
 #: picard/oauth.py:197
 #, fuzzy
@@ -558,10 +556,8 @@ msgid "Use standardized instrument and vocal credits"
 msgstr "Utiliser les crédits d’instruments et de voix normalisés"
 
 #: picard/options.py:306
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Utiliser les relations de parution"
+msgstr "Utiliser les relations de parution et de piste"
 
 #: picard/options.py:307
 msgid "Translate artist names"
