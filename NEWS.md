@@ -1,3 +1,10 @@
+# Version 2.12.3 - 2024-09-04
+
+## Bugfixes
+- [PICARD-2958](https://tickets.metabrainz.org/browse/PICARD-2958) - Hovering over unmatched files shows a tooltip with the PO translation file header for the active locale
+- [PICARD-2960](https://tickets.metabrainz.org/browse/PICARD-2960) - Replacement for directory separators can itself be set to a directory separator
+
+
 # Version 2.12.2 - 2024-08-27
 
 ## Bugfixes
