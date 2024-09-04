@@ -130,6 +130,8 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:204': '7" Acetate',
     'DB:medium_format/name:205': '10" Acetate',
     'DB:medium_format/name:206': '12" Acetate',
+    'DB:medium_format/name:207': '3" Vinyl',
+    'DB:medium_format/name:208': 'ROM cartridge',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',

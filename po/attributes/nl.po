@@ -12,11 +12,13 @@
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 # mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2023, 2024.
 # yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
+# Aszazin <aszazin@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-01-17 09:58+0000\n"
-"Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2024-08-05 00:42+0000\n"
+"Last-Translator: mfmeulenbelt <mfmeulenbelt@users.noreply.translations."
+"metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/nl/>\n"
 "Language: nl\n"
@@ -24,8 +26,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.6.2\n"
 
+#. name:Motet
 #: DB:work_type/description:9
 msgctxt "work_type"
 msgid ""
@@ -37,6 +40,7 @@ msgstr ""
 "Meestal worden motetten niet door een instrument begeleid. Wat precies als "
 "een motet wordt beschouwd, hangt af van de periode."
 
+#. name:Sonata
 #: DB:work_type/description:5
 msgctxt "work_type"
 msgid ""
@@ -81,6 +85,11 @@ msgstr "12″-schellak"
 msgctxt "medium_format"
 msgid "12\" Vinyl"
 msgstr "12″-vinyl"
+
+#: DB:medium_format/name:207
+msgctxt "medium_format"
+msgid "3\" Vinyl"
+msgstr "3″-vinyl"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -132,11 +141,13 @@ msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8cm-cd+g"
 
+#. name:MiniDVD
 #: DB:medium_format/description:166
 msgctxt "medium_format"
 msgid "8cm DVD, often used for video singles."
 msgstr "8cm-dvd, vaak gebruikt voor videosingles."
 
+#. name:Pathé disc
 #: DB:medium_format/description:58
 msgctxt "medium_format"
 msgid ""
@@ -146,6 +157,7 @@ msgstr ""
 "Verticaal gesneden platen van schellak die op 90 toeren moeten worden "
 "afgespeeld. Deze platen werden tussen 1906 en 1932 geproduceerd door Pathé."
 
+#. name:Compilation
 #: DB:release_group_secondary_type/description:1
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -205,6 +217,7 @@ msgstr ""
 "eerder uitgebrachte opnamen van verschillende artiesten moet zowel het type "
 "‘compilatie’ als het type ‘soundtrack’ hebben.</p>"
 
+#. name:Single
 #: DB:release_group_primary_type/description:2
 msgctxt "release_group_primary_type"
 msgid ""
@@ -270,6 +283,7 @@ msgstr ""
 "<p>Er zijn ook andere ‘gedeelde singles’ met nummers van twee verschillende "
 "artiesten die op één medium (meestal vinyl) worden uitgebracht.</p>"
 
+#. name:KiT Album
 #: DB:medium_format/description:95
 msgctxt "medium_format"
 msgid ""
@@ -281,6 +295,7 @@ msgstr ""
 "een telefoon wordt verbonden, waarna de uitgave via een bijbehorende app een "
 "beperkte tijd te beluisteren is."
 
+#. name:Park
 #: DB:place_type/description:9
 msgctxt "place_type"
 msgid ""
@@ -290,6 +305,7 @@ msgstr ""
 "Een park is een niet-bebouwd gebied in een verder bebouwd en bewoond gebied "
 "dat voor recreatie wordt gebruikt."
 
+#. name:Mixed Mode CD
 #: DB:medium_format/description:129
 msgctxt "medium_format"
 msgid ""
@@ -302,6 +318,7 @@ msgstr ""
 "overgeslagen, omdat de cd-speler het niet begrijpt. Deze cd’s werden nogal "
 "eens gebruikt bij oude computerspelletjes."
 
+#. name:Enhanced CD
 #: DB:medium_format/description:42
 msgctxt "medium_format"
 msgid ""
@@ -313,6 +330,7 @@ msgstr ""
 "correct zijn gescheiden, proberen cd-spelers de datasessie niet af te "
 "spelen, en maakt de data-sessie geen deel van de disc-ID uit."
 
+#. name:DJ-mix
 #: DB:release_group_secondary_type/description:8
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -337,6 +355,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "A mixolydisch"
 
+#. name:Ballet
 #: DB:work_type/description:2
 msgctxt "work_type"
 msgid ""
@@ -346,11 +365,13 @@ msgstr ""
 "Een ballet is muziek die is gecomponeerd om samen met choreografie te worden "
 "gebruikt in een balletvoorstelling."
 
+#. name:Box
 #: DB:release_packaging/description:19
 msgctxt "release_packaging"
 msgid "A box usually containing multiple discs as part of a boxed set."
 msgstr "Een doos met meestal meerdere cd’s als onderdeel van een boxset."
 
+#. name:Cantata
 #: DB:work_type/description:3
 msgctxt "work_type"
 msgid ""
@@ -360,6 +381,7 @@ msgstr ""
 "Een cantate is een vocale compositie (vaak voor een koor) met een "
 "instrumentale (meestal orkestrale) begeleiding, meestal in meerdere delen."
 
+#. name:Download Card
 #: DB:medium_format/description:46
 msgctxt "medium_format"
 msgid ""
@@ -372,6 +394,7 @@ msgstr ""
 "code waarmee de muziek kan worden gedownload. Vaak worden ze met fysieke "
 "uitgaven gebundeld, maar soms worden ze ook los verkocht (vooral in Azië)."
 
+#. name:Manufacturer
 #: DB:label_type/description:10
 msgctxt "label_type"
 msgid ""
@@ -381,6 +404,7 @@ msgstr ""
 "Een bedrijf dat fysieke uitgaven produceert (zoals het persen van cd’s of "
 "vinylplaten)."
 
+#. name:Concerto
 #: DB:work_type/description:4
 msgctxt "work_type"
 msgid ""
@@ -389,6 +413,7 @@ msgstr ""
 "Een concerto is een compositie voor een of meerdere solisten, begeleid door "
 "een orkest."
 
+#. name:Convention/Expo
 #: DB:event_type/description:4
 msgctxt "event_type"
 msgid ""
@@ -399,6 +424,33 @@ msgstr ""
 "Een conventie, expo of handelsbeurs is een evenement dat meestal niet draait "
 "om muziekoptredens, maar dat wel muziek als extra activiteit kan hebben."
 
+#. name:Flyer
+#: DB:event_art_archive.art_type/description:6
+msgctxt "event_art_type"
+msgid ""
+"A document generally smaller than a poster that is usually meant to be "
+"printed and shared with the public to either promote an event in advance or "
+"give additional information for the attendees. If the flyer for an event is "
+"just a scaled down version of the poster, both types can be added to the "
+"same image."
+msgstr ""
+"Een document dat meestal kleiner is dan een poster en dat meestal wordt "
+"gedrukt om met het publiek te delen om reclame voor een evenement te maken "
+"of bezoekers meer informatie te geven. Als de flyer niets meer is dan een "
+"kleinere versie van de poster, kunnen beide types aan dezelfde afbeelding "
+"worden toegevoegd."
+
+#. name:Ticket
+#: DB:event_art_archive.art_type/description:2
+msgctxt "event_art_type"
+msgid ""
+"A document generally used for admission to the event, whether physical or "
+"digital. Use this also for ticket stubs and passes."
+msgstr ""
+"Een document dat meestal toegang geeft tot een evenement, zowel fysiek als "
+"digitaal. Gebruik dit type ook voor controlestrookjes en pasjes."
+
+#. name:Promotion
 #: DB:release_status/description:2
 msgctxt "release_status"
 msgid ""
@@ -410,6 +462,7 @@ msgstr ""
 "promoten (bijv. prerelease-uitgaven, uitgaven die met een tijdschrift "
 "gebundeld zijn of versies die aan radio-dj’s worden gegeven om te draaien)."
 
+#. name:Group
 #: DB:artist_type/description:2
 msgctxt "artist_type"
 msgid ""
@@ -420,6 +473,7 @@ msgstr ""
 "heeft de groep tijdens verschillende optredens of opnamen verschillende "
 "leden)."
 
+#. name:Family
 #: DB:instrument_type/description:7
 msgctxt "instrument_type"
 msgid ""
@@ -429,12 +483,14 @@ msgstr ""
 "Een groep verwante maar verschillende instrumenten, zoals de verschillende "
 "violen."
 
+#. name:Bootleg Production
 #: DB:label_type/description:5
 msgctxt "label_type"
 msgid "A label that primarily puts out unsanctioned (bootleg) releases."
 msgstr ""
 "Een platenmaatschappij die vooral onofficiële (bootleg)uitgaven uitbrengt."
 
+#. name:Longbox
 #: DB:release_packaging/description:55
 msgctxt "release_packaging"
 msgid ""
@@ -445,16 +501,28 @@ msgstr ""
 "Amerika werden gebruikt om cd’s te verkopen, zodat ze in bestaande "
 "vinylrekken in winkels zouden passen."
 
+#. name:Amphitheatre
 #: DB:place_type/description:43
 msgctxt "place_type"
 msgid "A large, permanent outdoor stage, typically with a fixed seating area."
 msgstr "Een groot, permanent openluchtpodium, meestal met vaste zitplekken."
+
+#. name:Setlist
+#: DB:event_art_archive.art_type/description:3
+msgctxt "event_art_type"
+msgid ""
+"A list of songs to be played in the event, often printed or handwritten for "
+"use by the artist."
+msgstr ""
+"Een lijst met nummers die op het evenement worden gespeeld, meestal "
+"afgedrukt of handgeschreven, die door de artiest wordt gebruikt."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
 msgstr "A grote terts"
 
+#. name:Mass
 #: DB:work_type/description:8
 msgctxt "work_type"
 msgid ""
@@ -466,6 +534,7 @@ msgstr ""
 "christelijke eucharistische liturgie (Kyrie – Gloria – Credo – Sanctus – "
 "Benedictus – Agnus Dei, soms met toegevoegde delen) op muziek zijn gezet."
 
+#. name:Masterclass/Clinic
 #: DB:event_type/description:5
 msgctxt "event_type"
 msgid ""
@@ -477,6 +546,7 @@ msgstr ""
 "tot middelgrote groep ontmoet en individueel instrueert en/of vragen "
 "beantwoordt met de bedoeling om het spelen van het publiek te verbeteren."
 
+#. name:Clamshell Case
 #: DB:release_packaging/description:56
 msgctxt "release_packaging"
 msgid ""
@@ -492,6 +562,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
 msgstr "a kleine terts"
 
+#. name:Partita
 #: DB:work_type/description:13
 msgctxt "work_type"
 msgid ""
@@ -501,6 +572,7 @@ msgstr ""
 "Een partita is een instrumentale compositie van een serie variaties. In de "
 "huidige definitie lijkt het erg op een suite."
 
+#. name:Launch event
 #: DB:event_type/description:3
 msgctxt "event_type"
 msgid ""
@@ -510,11 +582,13 @@ msgstr ""
 "Een feest, receptie of ander evenement dat speciaal wordt gehouden voor het "
 "lanceren van een uitgave."
 
+#. name:Digibook
 #: DB:release_packaging/description:17
 msgctxt "release_packaging"
 msgid "A perfect bound book with a sleeve at the end to hold a CD"
 msgstr "Een boek met achterin een hoesje voor een cd."
 
+#. name:Stage performance
 #: DB:event_type/description:6
 msgctxt "event_type"
 msgid ""
@@ -528,12 +602,14 @@ msgstr ""
 "tegenstelling tot een <a href=\"https://en.wikipedia.org/wiki/"
 "Concert_performance\">concert</a> van alleen de muziek)."
 
+#. name:Pressing plant
 #: DB:place_type/description:8
 msgctxt "place_type"
 msgid "A place (generally a factory) at which physical media are manufactured."
 msgstr ""
 "Een plaats (meestal een fabriek) waar fysieke media worden gefabriceerd."
 
+#. name:Indoor arena
 #: DB:place_type/description:5
 msgctxt "place_type"
 msgid ""
@@ -545,6 +621,7 @@ msgstr ""
 "zitplaatsen voor toeschouwers. Een overdekte arena kan worden gebruikt voor "
 "indoorsporten, concerten en andere evenementen."
 
+#. name:Studio
 #: DB:place_type/description:1
 msgctxt "place_type"
 msgid ""
@@ -554,6 +631,7 @@ msgstr ""
 "Een plaats die bedoeld is voor de productie van muziek. Het is meestal een "
 "opnamestudio."
 
+#. name:Venue
 #: DB:place_type/description:2
 msgctxt "place_type"
 msgid ""
@@ -562,6 +640,7 @@ msgid ""
 msgstr ""
 "Een plaats die vooral bedoeld is voor liveoptredens, zoals een concertzaal."
 
+#. name:Religious building
 #: DB:place_type/description:6
 msgctxt "place_type"
 msgid ""
@@ -573,6 +652,7 @@ msgstr ""
 "heeft. Religieuze gebouwen worden vaak gebruikt voor concerten en opnamen, "
 "vooral voor klassieke muziek."
 
+#. name:Stadium
 #: DB:place_type/description:4
 msgctxt "place_type"
 msgid ""
@@ -584,6 +664,7 @@ msgstr ""
 "heeft. Meestal bestaat het uit een veld met daaromheen een gebouw voor "
 "toeschouwers zonder dak, of een dak dat kan worden ingetrokken."
 
+#. name:Cancelled
 #: DB:release_status/description:6
 msgctxt "release_status"
 msgid ""
@@ -595,6 +676,7 @@ msgstr ""
 "maar waarvoor genoeg informatie is om haar toe te voegen (bijv. omdat ze al "
 "kon worden besteld)."
 
+#. name:Play
 #: DB:work_type/description:28
 msgctxt "work_type"
 msgid ""
@@ -606,6 +688,7 @@ msgstr ""
 "uitgeschreven dialogen tussen personages. Toneelstukken zijn bedoeld voor "
 "theatervoorstellingen in plaats van gelezen te worden."
 
+#. name:Poem
 #: DB:work_type/description:21
 msgctxt "work_type"
 msgid ""
@@ -616,6 +699,7 @@ msgstr ""
 "woorden meestal worden gekozen voor de klank en voor de beelden en ideeën "
 "die ze oproepen."
 
+#. name:Withdrawn
 #: DB:release_status/description:5
 msgctxt "release_status"
 msgid ""
@@ -629,6 +713,7 @@ msgstr ""
 "een paar veranderingen uit te brengen of om de uitgave helemaal te schrappen "
 "(bijv. om juridische redenen)."
 
+#. name:Demo
 #: DB:release_group_secondary_type/description:10
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -640,6 +725,7 @@ msgstr ""
 "muziek van de artiest bij platenmaatschappijen, uitgevers en andere "
 "artiesten onder de aandacht te brengen."
 
+#. name:Quartet
 #: DB:work_type/description:14
 msgctxt "work_type"
 msgid ""
@@ -648,6 +734,17 @@ msgstr ""
 "Een kwartet is een compositie die voor vier stemmen of instrumenten wordt "
 "geschreven."
 
+#. name:ROM cartridge
+#: DB:medium_format/description:208
+msgctxt "medium_format"
+msgid ""
+"A read only memory cartridge or card, such as the ones used by early home "
+"computers and some video game systems."
+msgstr ""
+"Een alleen-lezen geheugencartridge of -kaart zoals werden gebruikt door "
+"vroege pc’s en sommige spelcomputers."
+
+#. name:Festival
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
@@ -655,6 +752,7 @@ msgstr ""
 "Een terugkerend festival dat meestal jaarlijks op dezelfde plek wordt "
 "gehouden."
 
+#. name:Field recording
 #: DB:release_group_secondary_type/description:12
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -664,11 +762,13 @@ msgstr ""
 "Een uitgave die vooral uit veldopnamen bestaat (zoals natuurgeluiden of "
 "stads-/industrielawaai)."
 
+#. name:Remix
 #: DB:release_group_secondary_type/description:7
 msgctxt "release_group_secondary_type"
 msgid "A release that primarily contains remixed material."
 msgstr "Een uitgave met vooral geremixte materialen."
 
+#. name:Live
 #: DB:release_group_secondary_type/description:6
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -679,6 +779,7 @@ msgstr ""
 "fysiek aanwezig als mensen die via de radio of anderszins tijdens de "
 "uitvoering luisteren."
 
+#. name:Educational institution
 #: DB:place_type/description:7
 msgctxt "place_type"
 msgid ""
@@ -688,89 +789,106 @@ msgstr ""
 "Een school, conservatorium of ander soortgelijk onderwijsinstituut (vooral, "
 "maar niet alleen, een plek waar onderwijs in de muziek wordt gegeven)"
 
+#. name:Artist award
 #: DB:series_type/description:14
 msgctxt "series_type"
 msgid "A series of artists honoured by the same award."
 msgstr "Een serie artiesten die dezelfde prijs hebben gewonnen."
 
+#. name:Artist series
 #: DB:series_type/description:13
 msgctxt "series_type"
 msgid "A series of artists."
 msgstr "Een serie artiesten."
 
+#. name:Award ceremony
 #: DB:series_type/description:15
 msgctxt "series_type"
 msgid "A series of award ceremonies, usually one per year."
 msgstr "Een serie prijsuitreikingen, meestal eens per jaar."
 
+#. name:Event series
 #: DB:series_type/description:6
 msgctxt "series_type"
 msgid "A series of events."
 msgstr "Een serie evenementen."
 
+#. name:Run
 #: DB:series_type/description:9
 msgctxt "series_type"
 msgid "A series of performances of the same show at the same venue."
 msgstr "Een serie optredens van dezelfde show op dezelfde locatie."
 
+#. name:Recording award
 #: DB:series_type/description:48
 msgctxt "series_type"
 msgid "A series of recordings honoured by the same award."
 msgstr "Een serie van opnamen geëerd met dezelfde prijs."
 
+#. name:Recording series
 #: DB:series_type/description:3
 msgctxt "series_type"
 msgid "A series of recordings."
 msgstr "Een serie opnamen."
 
+#. name:Tour
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
 msgstr ""
 "Een serie gerelateerde concerten van een artiest op verschillende locaties."
 
+#. name:Residency
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
 msgstr "Een serie gerelateerde concerten van een artiest op dezelfde locatie."
 
+#. name:Podcast
 #: DB:series_type/description:80
 msgctxt "series_type"
 msgid ""
 "A series of release groups containing episodes of the same podcast series."
 msgstr "Een serie uitgavegroepen met afleveringen van dezelfde podcastserie."
 
+#. name:Release group award
 #: DB:series_type/description:47
 msgctxt "series_type"
 msgid "A series of release groups honoured by the same award."
 msgstr "Een serie van uitgavegroepen geëerd met dezelfde prijs."
 
+#. name:Release group series
 #: DB:series_type/description:1
 msgctxt "series_type"
 msgid "A series of release groups."
 msgstr "Een serie uitgavegroepen."
 
+#. name:Release series
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "Een serie uitgaven."
 
+#. name:Work award
 #: DB:series_type/description:46
 msgctxt "series_type"
 msgid "A series of works honoured by the same award."
 msgstr "Een serie van composities geëerd met dezelfde prijs."
 
+#. name:Catalogue
 #: DB:series_type/description:5
 msgctxt "series_type"
 msgid "A series of works which form a catalogue of classical compositions."
 msgstr ""
 "Een serie composities die een catalogus van klassieke composities vormen."
 
+#. name:Work series
 #: DB:series_type/description:4
 msgctxt "series_type"
 msgid "A series of works."
 msgstr "Een serie composities."
 
+#. name:Club
 #: DB:place_type/description:42
 msgctxt "place_type"
 msgid ""
@@ -781,6 +899,7 @@ msgstr ""
 "sociale gelegenheden worden gehouden. Soms hebben ze een podium of vaste "
 "zitplaatsen."
 
+#. name:Song-cycle
 #: DB:work_type/description:15
 msgctxt "work_type"
 msgid ""
@@ -793,6 +912,7 @@ msgstr ""
 "dezelfde componist en vaak worden er teksten gebruikt van dezelfde dichter "
 "of tekstschrijver."
 
+#. name:Song
 #: DB:work_type/description:17
 msgctxt "work_type"
 msgid ""
@@ -806,6 +926,7 @@ msgstr ""
 "voorkomende vorm in volksmuziek en populaire muziek, maar komt ook vrij veel "
 "voor in een klassieke context."
 
+#. name:Soundtrack
 #: DB:work_type/description:22
 msgctxt "work_type"
 msgid ""
@@ -815,6 +936,7 @@ msgstr ""
 "Een soundtrack is muziek die een film, televisieprogramma, computerspel of "
 "zelfs boek begeleidt."
 
+#. name:Soundtrack
 #: DB:release_group_secondary_type/description:2
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -828,6 +950,7 @@ msgstr ""
 "moeten als soundtracks worden ingevoerd, omdat de muzikale eigenschappen van "
 "de cd’s voor MusicBrainz interessanter zijn dan de data."
 
+#. name:Ensemble
 #: DB:instrument_type/description:6
 msgctxt "instrument_type"
 msgid ""
@@ -837,6 +960,7 @@ msgstr ""
 "Een standaardgroep van instrumenten die vaak samen worden bespeeld, zoals "
 "een strijkkwartet."
 
+#. name:Minimax CD
 #: DB:medium_format/description:165
 msgctxt "medium_format"
 msgid ""
@@ -846,6 +970,7 @@ msgstr ""
 "Een cd met de standaarddiameter, waarvan alleen de binnenste 8 cm "
 "afspeelbaar is. De buitenrand is van doorzichtig plastic, soms met opdruk."
 
+#. name:Minimax DVD
 #: DB:medium_format/description:167
 msgctxt "medium_format"
 msgid ""
@@ -855,6 +980,7 @@ msgstr ""
 "Een dvd met de standaarddiameter, waarvan alleen de binnenste 8 cm "
 "afspeelbaar is. De buitenrand is van doorzichtig plastic, soms met opdruk."
 
+#. name:Suite
 #: DB:work_type/description:6
 msgctxt "work_type"
 msgid ""
@@ -866,6 +992,7 @@ msgstr ""
 "normaal gesproken in een concertvorm worden opgevoerd. Het kunnen delen van "
 "een ballet of opera zijn of originele stukken."
 
+#. name:Symphonic poem
 #: DB:work_type/description:18
 msgctxt "work_type"
 msgid ""
@@ -877,6 +1004,7 @@ msgstr ""
 "een schilderij, landschap, gedicht, verhaal of andere niet-muzikale bron tot "
 "de verbeelding roept."
 
+#. name:Symphony
 #: DB:work_type/description:16
 msgctxt "work_type"
 msgid ""
@@ -886,6 +1014,7 @@ msgstr ""
 "Een symfonie is een uitgebreide compositie die bijna altijd wordt geschreven "
 "voor een orkest zonder solisten."
 
+#. name:Festival stage
 #: DB:place_type/description:45
 msgctxt "place_type"
 msgid ""
@@ -895,11 +1024,13 @@ msgstr ""
 "Een tijdelijk openluchtpodium opgericht voor een muziekfestival of een ander "
 "vergelijkbaar evenement."
 
+#. name:Slim Jewel Case
 #: DB:release_packaging/description:2
 msgctxt "release_packaging"
 msgid "A thinner jewel case, commonly used for CD singles."
 msgstr "Een dunnere variant van de jewel case, vaak gebruikt voor cd-singles."
 
+#. name:DataPlay
 #: DB:medium_format/description:128
 msgctxt "medium_format"
 msgid ""
@@ -911,6 +1042,7 @@ msgstr ""
 "bedoeld als draagbaar medium, maar werd geen commercieel succes. In de "
 "vroegen jaren 2000 zijn een paar DataPlay-albums uitgebracht."
 
+#. name:Betacam SP
 #: DB:medium_format/description:131
 msgctxt "medium_format"
 msgid ""
@@ -920,6 +1052,7 @@ msgstr ""
 "Een soort video dat in de jaren 1980 en 1990 professioneel werd gebruikt, "
 "waaronder voor televisie- en videoarchivering."
 
+#. name:Zarzuela
 #: DB:work_type/description:19
 msgctxt "work_type"
 msgid ""
@@ -1131,6 +1264,7 @@ msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Album"
 
+#. name:Manual
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
 msgid "Allows for manually setting the position of each item in the series."
@@ -1163,6 +1297,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Amṛtavāhiṇi"
 msgstr "Amṛtavāhiṇi"
 
+#. name:EP
 #: DB:release_group_primary_type/description:3
 msgctxt "release_group_primary_type"
 msgid ""
@@ -1181,6 +1316,7 @@ msgstr ""
 "meestal kan je er alleen vanuit gaan dat een uitgave een EP is als de "
 "artiest haar een EP noemt."
 
+#. name:Album
 #: DB:release_group_primary_type/description:1
 msgctxt "release_group_primary_type"
 msgid ""
@@ -1192,6 +1328,7 @@ msgstr ""
 "meestal uit niet eerder uitgegeven materiaal (tenzij het type wordt "
 "gecombineerd met secundaire types zoals ‘compilatie’)."
 
+#. name:Pseudo-Release
 #: DB:release_status/description:4
 msgctxt "release_status"
 msgid ""
@@ -1203,6 +1340,7 @@ msgstr ""
 "Deze komen niet overeen met een echte uitgave en moeten aan de originele "
 "uitgave worden gekoppeld met de vertaald/getranslitereerd-relatie."
 
+#. name:Aria
 #: DB:work_type/description:1
 msgctxt "work_type"
 msgid ""
@@ -1214,6 +1352,7 @@ msgstr ""
 "een orkest wordt begeleid. Aria’s komen meestal voor in opera’s, maar ook in "
 "cantates, oratoria of zelfs op zichzelf (bijvoorbeeld in ariaconcerten)."
 
+#. name:Audio drama
 #: DB:work_type/description:25
 msgctxt "work_type"
 msgid ""
@@ -1224,6 +1363,7 @@ msgstr ""
 "radio wordt uitgezonden of op een audiomedium (cassette, cd, etc.) wordt "
 "uitgebracht."
 
+#. name:Audio drama
 #: DB:release_group_secondary_type/description:11
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -1235,6 +1375,7 @@ msgstr ""
 "maar niet altijd, bedoeld voor de radio). In tegenstelling tot luisterboeken "
 "zijn er vaak meer mensen te horen dan alleen een verteller."
 
+#. name:Audiobook
 #: DB:release_group_secondary_type/description:5
 msgctxt "release_group_secondary_type"
 msgid "An audiobook is a book read by a narrator without music."
@@ -1242,6 +1383,7 @@ msgstr ""
 "Een luisterboek is een boek dat zonder muzikale begeleiding wordt "
 "voorgelezen."
 
+#. name:Award ceremony
 #: DB:event_type/description:7
 msgctxt "event_type"
 msgid ""
@@ -1253,6 +1395,7 @@ msgstr ""
 "prijzen is, maar waarbij vaak tussen de prijzen door muziekoptredens zijn. "
 "Dit is vooral bij muziekprijzen."
 
+#. name:Broadcast
 #: DB:release_group_primary_type/description:12
 msgctxt "release_group_primary_type"
 msgid ""
@@ -1262,6 +1405,19 @@ msgstr ""
 "Een uitzending is een aflevering die oorspronkelijk via radio, televisie of "
 "het internet (zoals een podcast) is uitgezonden."
 
+#. name:Competition
+#: DB:event_type/description:40
+msgctxt "event_type"
+msgid ""
+"An event in which the participants perform live and a winner is then chosen "
+"(as opposed to an award ceremony where awards are presented for previously "
+"released or performed music)."
+msgstr ""
+"Een evenement waarop de deelnemers live optreden, waarna er een winnaar "
+"wordt gekozen. (Dit is dus anders dan een prijsuitreiking waar prijzen "
+"worden uitgedeeld voor eerder uitgegeven of gespeelde muziek)."
+
+#. name:Festival
 #: DB:event_type/description:2
 msgctxt "event_type"
 msgid ""
@@ -1271,6 +1427,34 @@ msgstr ""
 "Een evenement waarbij een aantal verschillende artiesten gedurende de dag "
 "optreedt. Grotere festivals kunnen meerdere dagen duren."
 
+#. name:Merchandise
+#: DB:event_art_archive.art_type/description:7
+msgctxt "event_art_type"
+msgid ""
+"An image for any sort of event-related goods sold (or freely shared) to "
+"promote the event or during it, such as t-shirts, caps, stickers, etc. If "
+"more than one art type applies (for example, if a poster is sold as "
+"merchandise) use “merchandise” alongside any other appropriate types."
+msgstr ""
+"Een afbeelding van elk soort artikel dat wordt verkocht (of uitgedeeld) om "
+"reclame voor een evenement te maken of tijdens een evenement, zoals T-shirts "
+"of petjes. Als meerdere soorten afbeelding van toepassing zijn (als posters "
+"bijvoorbeeld ook worden verkocht) kan je ‘merchandise’ naast de andere types "
+"gebruiken."
+
+#. name:Schedule
+#: DB:event_art_archive.art_type/description:5
+msgctxt "event_art_type"
+msgid ""
+"An image usually showing the order and time for the performances in an "
+"event. Can be a standalone image, but also a poster or banner (in which case "
+"all applicable types should be set)."
+msgstr ""
+"Een afbeelding waarop meestal de volgorde en tijden van de optredens op een "
+"evenement staan. Dit kan een losse afbeelding zijn, maar ook een poster of "
+"banier (stel dan alle relevante types in)."
+
+#. name:Concert
 #: DB:event_type/description:1
 msgctxt "event_type"
 msgid ""
@@ -1280,6 +1464,7 @@ msgstr ""
 "Een individueel concert van een enkele artiest of samenwerkende artiesten, "
 "vaak met ondersteunende artiesten die voor de hoofdartiest optreden."
 
+#. name:Concert hall / Theatre
 #: DB:place_type/description:44
 msgctxt "place_type"
 msgid ""
@@ -1289,16 +1474,30 @@ msgstr ""
 "Een zaal met vaste plaatsen, zowel voor muziek (meestal, maar niet altijd "
 "klassiek) als voor theater."
 
+#. name:Map
+#: DB:event_art_archive.art_type/description:8
+msgctxt "event_art_type"
+msgid ""
+"An internal plan of the event venue, or an external access map specifically "
+"created for the event, for example showing the recommended ways to access "
+"the venue, or the location of specific stages and stands inside of it."
+msgstr ""
+"Een plattegrond van de evenementlocatie of de omgeving daarvan, bijvoorbeeld "
+"om toegangen of de locaties van specifieke podia aan te geven."
+
+#. name:Interview
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr "Een interviewuitgave bevat een interview, meestal met een artiest."
 
+#. name:Metal Tin
 #: DB:release_packaging/description:54
 msgctxt "release_packaging"
 msgid "An often decorated metal tin containing one or more CDs."
 msgstr "Een vaak versierd metalen doosje met één of meer cd’s."
 
+#. name:Opera
 #: DB:work_type/description:10
 msgctxt "work_type"
 msgid ""
@@ -1311,6 +1510,7 @@ msgstr ""
 "in aria’s en recitatieven, maar sommige soorten opera’s hebben ook gesproken "
 "dialogen."
 
+#. name:Oratorio
 #: DB:work_type/description:11
 msgctxt "work_type"
 msgid ""
@@ -1324,11 +1524,13 @@ msgstr ""
 "het meestal niet theatraal opgevoerd, dus zonder kostuums, decor en veel "
 "interactie tussen de personages."
 
+#. name:Rights Society
 #: DB:label_type/description:8
 msgctxt "label_type"
 msgid "An organization which collects royalties on behalf of artists."
 msgstr "Een organisatie die namens artiesten royalty’s int."
 
+#. name:Overture
 #: DB:work_type/description:12
 msgctxt "work_type"
 msgid ""
@@ -1340,6 +1542,7 @@ msgstr ""
 "zichzelf staande (concert)ouvertures bestaan ook. Meestal zijn dat "
 "composities die korter zijn dan een symfonisch gedicht."
 
+#. name:Bootleg
 #: DB:release_status/description:3
 msgctxt "release_status"
 msgid ""
@@ -1351,6 +1554,7 @@ msgstr ""
 "door de artiest en/of de platenmaatschappij. Hieronder vallen ook "
 "onofficiële liveopnamen en illegaal verspreide uitgaven."
 
+#. name:Étude
 #: DB:work_type/description:20
 msgctxt "work_type"
 msgid ""
@@ -1367,6 +1571,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Anberefşan"
 msgstr "Anberefşan"
 
+#. name:Official
 #: DB:release_status/description:1
 msgctxt "release_status"
 msgid ""
@@ -1376,6 +1581,7 @@ msgstr ""
 "Elke uitgave waar de artiest en/of de platenmaatschappij officieel "
 "toestemming heeft gegeven. De meeste uitgaven vallen in deze categorie."
 
+#. name:Other
 #: DB:release_group_primary_type/description:11
 msgctxt "release_group_primary_type"
 msgid ""
@@ -1705,6 +1911,11 @@ msgctxt "work_type"
 msgid "Ballet"
 msgstr "Ballet"
 
+#: DB:event_art_archive.art_type/name:4
+msgctxt "event_art_type"
+msgid "Banner"
+msgstr "banier"
+
 #: DB:work_attribute_type_allowed_value/value:866
 msgctxt "work_attribute_type_allowed_value"
 msgid "Basant"
@@ -1740,6 +1951,7 @@ msgctxt "work_type"
 msgid "Beijing opera"
 msgstr "Jing-opera (Peking-opera)"
 
+#. name:Beijing opera
 #: DB:work_type/description:26
 msgctxt "work_type"
 msgid ""
@@ -2303,6 +2515,7 @@ msgctxt "area_type"
 msgid "City"
 msgstr "Stad"
 
+#. name:City
 #: DB:area_type/description:3
 msgctxt "area_type"
 msgid "City is used for settlements of any size, including towns and villages."
@@ -2317,6 +2530,11 @@ msgstr "Clamshell Case"
 msgctxt "place_type"
 msgid "Club"
 msgstr "Club"
+
+#: DB:event_type/name:40
+msgctxt "event_type"
+msgid "Competition"
+msgstr "Concurrentie"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -2336,7 +2554,7 @@ msgstr "Concertgebouw / Theater"
 #: DB:work_type/name:4
 msgctxt "work_type"
 msgid "Concerto"
-msgstr "Concerto"
+msgstr "Concert"
 
 #: DB:event_type/name:4
 msgctxt "event_type"
@@ -2348,6 +2566,7 @@ msgctxt "medium_format"
 msgid "Copy Control CD"
 msgstr "cd met kopieerbeveiliging"
 
+#. name:Copy Control CD
 #: DB:medium_format/description:61
 msgctxt "medium_format"
 msgid ""
@@ -2366,6 +2585,7 @@ msgctxt "area_type"
 msgid "Country"
 msgstr "Land"
 
+#. name:Country
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
@@ -2380,6 +2600,7 @@ msgctxt "area_type"
 msgid "County"
 msgstr "Gewest"
 
+#. name:County
 #: DB:area_type/description:7
 msgctxt "area_type"
 msgid ""
@@ -2790,6 +3011,7 @@ msgctxt "area_type"
 msgid "District"
 msgstr "Stadsdeel"
 
+#. name:District
 #: DB:area_type/description:5
 msgctxt "area_type"
 msgid "District is used for a division of a large city, e.g. Queens."
@@ -3273,6 +3495,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Fireng-i Fer"
 msgstr "Fireng-i Fer"
 
+#. name:Phonograph record
 #: DB:medium_format/description:73
 msgctxt "medium_format"
 msgid ""
@@ -3288,6 +3511,7 @@ msgctxt "medium_format"
 msgid "Flexi-disc"
 msgstr "flexidisc"
 
+#. name:Flexi-disc
 #: DB:medium_format/description:51
 msgctxt "medium_format"
 msgid ""
@@ -3303,6 +3527,12 @@ msgctxt "medium_format"
 msgid "Floppy Disk"
 msgstr "floppy"
 
+#: DB:event_art_archive.art_type/name:6
+msgctxt "event_art_type"
+msgid "Flyer"
+msgstr "Flyer"
+
+#. name:Not applicable
 #: DB:gender/description:4
 msgctxt "gender"
 msgid ""
@@ -3462,6 +3692,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Gaṁbhīra vāṇi"
 msgstr "Gaṁbhīra vāṇi"
 
+#: DB:editor_collection_type/name:16
+msgctxt "collection_type"
+msgid "Genre collection"
+msgstr "Collectie van series"
+
 #: DB:work_attribute_type_allowed_value/value:376
 msgctxt "work_attribute_type_allowed_value"
 msgid "Gerdaniye"
@@ -3477,6 +3712,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Gerdaniyekürdi"
 msgstr "Gerdaniyekürdi"
 
+#. name:Tefifon
 #: DB:medium_format/description:90
 msgctxt "medium_format"
 msgid ""
@@ -3976,350 +4212,425 @@ msgctxt "work_attribute_type"
 msgid "ICE ID"
 msgstr "ICE-ID"
 
+#. name:SADAIC ID
 #: DB:work_attribute_type/description:24
 msgctxt "work_attribute_type"
 msgid "ID for the Argentinean rights society SADAIC"
 msgstr "Een ID van de Argentijnse rechtenorganisatie SADAIC"
 
+#. name:APRA ID
 #: DB:work_attribute_type/description:13
 msgctxt "work_attribute_type"
 msgid "ID for the Australasian rights society APRA"
 msgstr "Een ID van de Australisch-Aziatische rechtenorganisatie APRA"
 
+#. name:AKM ID
 #: DB:work_attribute_type/description:23
 msgctxt "work_attribute_type"
 msgid "ID for the Austrian rights society AKM"
 msgstr "Een ID van de Oostenrijkse rechtenorganisatie AKM"
 
+#. name:COSCAP ID
 #: DB:work_attribute_type/description:73
 msgctxt "work_attribute_type"
 msgid "ID for the Barbadian rights society COSCAP"
 msgstr "Een ID van de Barbadiaanse rechtenorganisatie COSCAP"
 
+#. name:SABAM ID
 #: DB:work_attribute_type/description:28
 msgctxt "work_attribute_type"
 msgid "ID for the Belgian rights society SABAM"
 msgstr "Een ID van de Belgische rechtenorganisatie SABAM"
 
+#. name:SOBODAYCOM ID
 #: DB:work_attribute_type/description:61
 msgctxt "work_attribute_type"
 msgid "ID for the Bolivian rights society SOBODAYCOM"
 msgstr "Een ID van de Boliviaanse rechtenorganisatie SOBODAYCOM"
 
+#. name:ECAD ID
 #: DB:work_attribute_type/description:37
 msgctxt "work_attribute_type"
 msgid "ID for the Brazilian rights society ECAD"
 msgstr "Een ID van de Braziliaanse rechtenorganisatie ECAD"
 
+#. name:PRS tune code
 #: DB:work_attribute_type/description:34
 msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
 msgstr "Een ID van de Britse rechtenorganisatie PRS for Music"
 
+#. name:SOCAN ID
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SOCAN"
 msgstr "Een ID van de Canadese rechtenorganisatie SOCAN"
 
+#. name:SODRAC ID
 #: DB:work_attribute_type/description:53
 msgctxt "work_attribute_type"
 msgid "ID for the Canadian rights society SODRAC"
 msgstr "Een ID van de Canadese rechtenorganisatie SODRAC"
 
+#. name:SCD ID
 #: DB:work_attribute_type/description:173
 msgctxt "work_attribute_type"
 msgid "ID for the Chilean rights society SCD"
 msgstr "Een ID van de Chileense rechtenorganisatie SCD"
 
+#. name:MCSC ID
 #: DB:work_attribute_type/description:71
 msgctxt "work_attribute_type"
 msgid "ID for the Chinese rights society MCSC"
 msgstr "Een ID van de Chinese rechtenorganisatie MCSC"
 
+#. name:SAYCO ID
 #: DB:work_attribute_type/description:39
 msgctxt "work_attribute_type"
 msgid "ID for the Colombian rights society SAYCO"
 msgstr "Een ID van de Colombiaanse rechtenorganisatie SAYCO"
 
+#. name:ACAM ID
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "Een ID van de Costa Ricaanse rechtenorganisatie ACAM"
 
+#. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
 msgid "ID for the Cuban rights society ACDAM"
 msgstr "Een ID van de Cubaanse rechtenorganisatie ACDAM"
 
+#. name:OSA ID
 #: DB:work_attribute_type/description:25
 msgctxt "work_attribute_type"
 msgid "ID for the Czech rights society OSA"
 msgstr "Een ID van de Tsjechische rechtenorganisatie OSA"
 
+#. name:KODA ID
 #: DB:work_attribute_type/description:51
 msgctxt "work_attribute_type"
 msgid "ID for the Danish rights society KODA"
 msgstr "Een ID van de Deense rechtenorganisatie KODA"
 
+#. name:SGACEDOM ID
 #: DB:work_attribute_type/description:60
 msgctxt "work_attribute_type"
 msgid "ID for the Dominican rights society SGACEDOM"
 msgstr "Een ID van de Dominicaanse rechtenorganisatie SGACEDOM"
 
+#. name:BUMA/STEMRA ID
 #: DB:work_attribute_type/description:26
 msgctxt "work_attribute_type"
 msgid "ID for the Dutch rights society BUMA/STEMRA"
 msgstr "Een ID van de Nederlandse rechtenorganisatie BUMA/STEMRA"
 
+#. name:SAYCE ID
 #: DB:work_attribute_type/description:40
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "Een ID van de Ecuadoraanse rechtenorganisatie SAYCE"
 
+#. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
 msgctxt "work_attribute_type"
 msgid "ID for the Finnish rights society TEOSTO"
 msgstr "Een ID van de Finse rechtenorganisatie TEOSTO"
 
+#. name:SACEM ID
 #: DB:work_attribute_type/description:21
 msgctxt "work_attribute_type"
 msgid "ID for the French rights society Sacem"
 msgstr "Een ID van de Franse rechtenorganisatie Sacem"
 
+#. name:GEMA ID
 #: DB:work_attribute_type/description:9
 msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr "Een ID van de Duitse rechtenorganisatie GEMA"
 
+#. name:AEI ID
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
 msgid "ID for the Guatemalan rights society AEI"
 msgstr "Een ID van de Guatemalaanse rechtenorganisatie AEI"
 
+#. name:AACIMH ID
 #: DB:work_attribute_type/description:57
 msgctxt "work_attribute_type"
 msgid "ID for the Honduran rights society AACIMH"
 msgstr "Een ID van de Hondurese rechtenorganisatie AACIMH"
 
+#. name:CASH ID
 #: DB:work_attribute_type/description:19
 msgctxt "work_attribute_type"
 msgid "ID for the Hong Kong rights society CASH"
 msgstr "Een ID van de Hongkongse rechtenorganisatie CASH"
 
+#. name:ARTISJUS ID
 #: DB:work_attribute_type/description:48
 msgctxt "work_attribute_type"
 msgid "ID for the Hungarian rights society ARTISJUS"
 msgstr "Een ID van de Hongaarse rechtenorganisatie ARTISJUS"
 
+#. name:STEF ID
 #: DB:work_attribute_type/description:54
 msgctxt "work_attribute_type"
 msgid "ID for the Icelandic rights society STEF"
 msgstr "Een ID van de IJslandse rechtenorganisatie STEF"
 
+#. name:IPRS ID
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
 msgstr "Een ID van de Indiase rechtenorganisatie IPRS"
 
+#. name:ICE ID
 #: DB:work_attribute_type/description:29
 msgctxt "work_attribute_type"
 msgid "ID for the International Copyright Enterprise"
 msgstr "Een ID van de International Copyright Enterprise"
 
+#. name:IMRO ID
 #: DB:work_attribute_type/description:52
 msgctxt "work_attribute_type"
 msgid "ID for the Irish rights society IMRO"
 msgstr "Een ID van de Ierse rechtenorganisatie IMRO"
 
+#. name:ACUM ID
 #: DB:work_attribute_type/description:206
 msgctxt "work_attribute_type"
 msgid "ID for the Israeli rights society ACUM"
 msgstr "Een ID van de Israëlische rechtenorganisatie ACUM"
 
+#. name:SIAE ID
 #: DB:work_attribute_type/description:36
 msgctxt "work_attribute_type"
 msgid "ID for the Italian rights society SIAE"
 msgstr "Een ID van de Italiaanse rechtenorganisatie SIAE"
 
+#. name:JACAP ID
 #: DB:work_attribute_type/description:69
 msgctxt "work_attribute_type"
 msgid "ID for the Jamaican rights society JACAP"
 msgstr "Een ID van de Jamaicaanse rechtenorganisatie JACAP"
 
+#. name:JASRAC ID
 #: DB:work_attribute_type/description:3
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society JASRAC"
 msgstr "Een ID van de Japanse rechtenorganisatie JASRAC"
 
+#. name:NexTone ID
 #: DB:work_attribute_type/description:33
 msgctxt "work_attribute_type"
 msgid "ID for the Japanese rights society NexTone"
 msgstr "Een ID van de Japanse rechtenorganisatie NexTone"
 
+#. name:KOMCA ID
 #: DB:work_attribute_type/description:11
 msgctxt "work_attribute_type"
 msgid "ID for the Korean rights society KOMCA"
 msgstr "Een ID van de Koreaanse rechtenorganisatie KOMCA"
 
+#. name:AKKA/LAA ID
 #: DB:work_attribute_type/description:63
 msgctxt "work_attribute_type"
 msgid "ID for the Latvian rights society AKKA/LAA"
 msgstr "Een ID van de Letse rechtenorganisatie AKKA/LAA"
 
+#. name:LATGA ID
 #: DB:work_attribute_type/description:207
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Latvian rights society AKKA/LAA"
 msgctxt "work_attribute_type"
 msgid "ID for the Lithuanian rights society LATGA"
-msgstr "Een ID van de Letse rechtenorganisatie AKKA/LAA"
+msgstr "Een ID van de Litouwse rechtenorganisatie LATGA"
 
+#. name:MACP ID
 #: DB:work_attribute_type/description:49
 msgctxt "work_attribute_type"
 msgid "ID for the Malaysian rights society MACP"
 msgstr "Een ID van de Maleisische rechtenorganisatie MACP"
 
+#. name:SACM ID
 #: DB:work_attribute_type/description:27
 msgctxt "work_attribute_type"
 msgid "ID for the Mexican rights society SACM"
 msgstr "Een ID van de Mexicaanse rechtenorganisatie SACM"
 
+#. name:NICAUTOR ID
 #: DB:work_attribute_type/description:59
 msgctxt "work_attribute_type"
 msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgstr "Een ID van de Nicaraguaanse rechtenorganisatie NICAUTOR"
 
+#. name:TONO ID
 #: DB:work_attribute_type/description:67
 msgctxt "work_attribute_type"
 msgid "ID for the Norwegian rights society TONO"
 msgstr "Een ID van de Noorse rechtenorganisatie TONO"
 
+#. name:SPAC ID
 #: DB:work_attribute_type/description:62
 msgctxt "work_attribute_type"
 msgid "ID for the Panamanian rights society SPAC"
 msgstr "Een ID van de Panamese rechtenorganisatie SPAC"
 
+#. name:APA ID
 #: DB:work_attribute_type/description:46
 msgctxt "work_attribute_type"
 msgid "ID for the Paraguayan rights society APA"
 msgstr "Een ID van de Paraguayaanse rechtenorganisatie APA"
 
+#. name:APDAYC ID
 #: DB:work_attribute_type/description:41
 msgctxt "work_attribute_type"
 msgid "ID for the Peruvian rights society APDAYC"
 msgstr "Een ID van de Peruviaanse rechtenorganisatie APDAYC"
 
+#. name:ZAiKS ID
 #: DB:work_attribute_type/description:30
 msgctxt "work_attribute_type"
 msgid "ID for the Polish rights society ZAiKS"
 msgstr "Een ID van de Poolse rechtenorganisatie ZAiKS"
 
+#. name:SPA ID
 #: DB:work_attribute_type/description:35
 msgctxt "work_attribute_type"
 msgid "ID for the Portuguese rights society SPA"
 msgstr "Een ID van de Portugese rechtenorganisatie SPA"
 
+#. name:SACIM ID
 #: DB:work_attribute_type/description:56
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "Een ID van de Salvadoraanse rechtenorganisatie SACIM"
 
+#. name:COMPASS ID
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
 msgid "ID for the Singaporean rights society COMPASS"
 msgstr "Een ID van de Singaporese rechtenorganisatie COMPASS"
 
+#. name:SAZAS ID
 #: DB:work_attribute_type/description:140
 msgctxt "work_attribute_type"
 msgid "ID for the Slovenian rights society SAZAS"
 msgstr "Een ID van de Sloveense rechtenorganisatie SAZAS"
 
+#. name:SAMRO ID
 #: DB:work_attribute_type/description:68
 msgctxt "work_attribute_type"
 msgid "ID for the South African rights society SAMRO"
 msgstr "Een ID van de Zuid-Afrikaanse rechtenorganisatie SAMRO"
 
+#. name:SGAE ID
 #: DB:work_attribute_type/description:20
 msgctxt "work_attribute_type"
 msgid "ID for the Spanish rights society SGAE"
 msgstr "Een ID van de Spaanse rechtenorganisatie SGAE"
 
+#. name:STIM ID
 #: DB:work_attribute_type/description:50
 msgctxt "work_attribute_type"
 msgid "ID for the Swedish rights society STIM"
 msgstr "Een ID van de Zweedse rechtenorganisatie STIM"
 
+#. name:SUISA ID
 #: DB:work_attribute_type/description:18
 msgctxt "work_attribute_type"
 msgid "ID for the Swiss rights society SUISA"
 msgstr "Een ID van de Zwitserse rechtenorganisatie SUISA"
 
+#. name:MÜST ID
 #: DB:work_attribute_type/description:12
 msgctxt "work_attribute_type"
 msgid "ID for the Taiwanese rights society MÜST"
 msgstr "Een ID van de Taiwanese rechtenorganisatie MÜST"
 
+#. name:MCT ID
 #: DB:work_attribute_type/description:72
 msgctxt "work_attribute_type"
 msgid "ID for the Thai rights society MCT"
 msgstr "Een ID van de Thaise rechtenorganisatie MCT"
 
+#. name:COTT ID
 #: DB:work_attribute_type/description:65
 msgctxt "work_attribute_type"
 msgid "ID for the Trinidadian and Tobagonian rights society COTT"
 msgstr "Een ID van de Trinidadaanse rechtenorganisatie COTT"
 
+#. name:ASCAP ID
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
 msgstr "Een ID van de Amerikaanse rechtenorganisatie ASCAP"
 
+#. name:BMI ID
 #: DB:work_attribute_type/description:7
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society BMI"
 msgstr "Een ID van de Amerikaanse rechtenorganisatie BMI"
 
+#. name:GMR ID
 #: DB:work_attribute_type/description:106
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society GMR"
 msgstr "Een ID van de Amerikaanse rechtenorganisatie GMR"
 
+#. name:SESAC ID
 #: DB:work_attribute_type/description:8
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
 msgstr "Een ID van de Amerikaanse rechtenorganisatie SESAC"
 
+#. name:AGADU ID
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
 msgid "ID for the Uruguayan rights society AGADU"
 msgstr "Een ID van de Uruguayaanse rechtenorganisatie AGADU"
 
+#. name:SACVEN ID
 #: DB:work_attribute_type/description:42
 msgctxt "work_attribute_type"
 msgid "ID for the Venezuelan rights society SACVEN"
 msgstr "Een ID van de Venezolaanse rechtenorganisatie SACVEN"
 
+#. name:VCPMC ID
 #: DB:work_attribute_type/description:107
 msgctxt "work_attribute_type"
 msgid "ID for the Vietnamese rights society VCPMC"
 msgstr "Een ID van de Vietnamese rechtenorganisatie VCPMC"
 
+#. name:Soundreef ID
+#: DB:work_attribute_type/description:208
+msgctxt "work_attribute_type"
+msgid ""
+"ID for the international (but primarily Italian) rights society Soundreef"
+msgstr ""
+"Een ID van de internationale (maar vooral Italiaanse) rechtenorganisatie "
+"Soundreef"
+
+#. name:AMRA ID
 #: DB:work_attribute_type/description:38
 msgctxt "work_attribute_type"
 msgid "ID for the international (formerly US) rights society AMRA"
 msgstr ""
 "Een ID van de internationale (vroeger Amerikaanse) rechtenorganisatie AMRA"
 
+#. name:LatinNet ID
 #: DB:work_attribute_type/description:55
 msgctxt "work_attribute_type"
 msgid "ID for the international rights society consortium LatinNet"
 msgstr "Een ID van het internationale auteursrechtenconsortium LatinNet"
 
+#. name:CCLI ID
 #: DB:work_attribute_type/description:22
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company CCLI"
 msgstr "Een ID van het particuliere licentiebedrijf CCLI"
 
+#. name:HFA ID
 #: DB:work_attribute_type/description:64
 msgctxt "work_attribute_type"
 msgid "ID for the private licensing company HFA (Harry Fox Agency)"
@@ -4355,6 +4666,7 @@ msgctxt "work_type"
 msgid "Incidental music"
 msgstr "Toneelmuziek"
 
+#. name:Incidental music
 #: DB:work_type/description:30
 msgctxt "work_type"
 msgid ""
@@ -4443,6 +4755,7 @@ msgctxt "area_type"
 msgid "Island"
 msgstr "Eiland"
 
+#. name:Island
 #: DB:area_type/description:6
 msgctxt "area_type"
 msgid ""
@@ -4484,6 +4797,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Janaranjani"
 msgstr "Janaranjani"
 
+#. name:SnapPack
 #: DB:release_packaging/description:21
 msgctxt "release_packaging"
 msgid ""
@@ -5013,12 +5327,9 @@ msgid "Kōmal riṣabh asāvēri"
 msgstr "Kōmal riṣabh asāvēri"
 
 #: DB:work_attribute_type/name:207
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "APA ID"
 msgctxt "work_attribute_type"
 msgid "LATGA ID"
-msgstr "APA-ID"
+msgstr "LATGA-ID"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
@@ -5260,6 +5571,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Manōranjani"
 msgstr "Manōranjani"
 
+#: DB:event_art_archive.art_type/name:8
+msgctxt "event_art_type"
+msgid "Map"
+msgstr "plattegrond"
+
 #: DB:work_attribute_type_allowed_value/value:639
 msgctxt "work_attribute_type_allowed_value"
 msgid "Marş"
@@ -5354,6 +5670,11 @@ msgstr "Meghamalhar"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Mehter"
 msgstr "Mehter"
+
+#: DB:event_art_archive.art_type/name:7
+msgctxt "event_art_type"
+msgid "Merchandise"
+msgstr "merchandise"
 
 #: DB:work_attribute_type_allowed_value/value:642
 msgctxt "work_attribute_type_allowed_value"
@@ -5580,6 +5901,7 @@ msgctxt "area_type"
 msgid "Municipality"
 msgstr "Gemeente"
 
+#. name:Municipality
 #: DB:area_type/description:4
 msgctxt "area_type"
 msgid ""
@@ -5597,8 +5919,11 @@ msgid "Murabba"
 msgstr "Murabba"
 
 #: DB:work_attribute_type_allowed_value/value:811
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "Murabba Beste "
 msgctxt "work_attribute_type_allowed_value"
-msgid "Murabba Beste "
+msgid "Murabba Beste"
 msgstr "Murabba Beste "
 
 #: DB:work_type/name:29
@@ -5606,6 +5931,7 @@ msgctxt "work_type"
 msgid "Musical"
 msgstr "Musical"
 
+#. name:Musical
 #: DB:work_type/description:29
 msgctxt "work_type"
 msgid ""
@@ -6050,6 +6376,7 @@ msgctxt "gender"
 msgid "Non-binary"
 msgstr "Niet-binair"
 
+#. name:Spokenword
 #: DB:release_group_secondary_type/description:3
 msgctxt "release_group_secondary_type"
 msgid "Non-music spoken word releases."
@@ -6149,6 +6476,18 @@ msgstr "obi"
 msgctxt "release_status"
 msgid "Official"
 msgstr "Officieel"
+
+#. name:3" Vinyl
+#: DB:medium_format/description:207
+msgctxt "medium_format"
+msgid ""
+"One-sided 3\" vinyl records to be played with purpose-built players; "
+"originally developed in Japan and now mostly found as a Record Store Day "
+"curiosity."
+msgstr ""
+"Eenzijdige 3″-vinylplaat die met speciaal gemaakte draaitafels moeten worden "
+"afgespeeld. Ontwikkeld in Japan en nu vooral een curiosa tijdens de Record "
+"Store Day."
 
 #: DB:work_type/name:10
 msgctxt "work_type"
@@ -6371,6 +6710,7 @@ msgctxt "alias_type"
 msgid "Place name"
 msgstr "Naam van de plaats"
 
+#. name:Slidepack
 #: DB:release_packaging/description:20
 msgctxt "release_packaging"
 msgid "Plastic CD tray inside a cardboard slipcover"
@@ -6416,6 +6756,11 @@ msgctxt "cover_art_type"
 msgid "Poster"
 msgstr "poster"
 
+#: DB:event_art_archive.art_type/name:1
+msgctxt "event_art_type"
+msgid "Poster"
+msgstr "poster"
+
 #: DB:work_attribute_type_allowed_value/value:998
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pratāpavarāli"
@@ -6436,6 +6781,7 @@ msgctxt "release_status"
 msgid "Promotion"
 msgstr "Promotie"
 
+#. name:Mixtape/Street
 #: DB:release_group_secondary_type/description:9
 msgctxt "release_group_secondary_type"
 msgid ""
@@ -6537,6 +6883,11 @@ msgstr "Pūrṇacandrika"
 msgctxt "work_type"
 msgid "Quartet"
 msgstr "Kwartet"
+
+#: DB:medium_format/name:208
+msgctxt "medium_format"
+msgid "ROM cartridge"
+msgstr "ROM-cartridge"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -6645,6 +6996,11 @@ msgstr "Ravicandrika"
 
 #: DB:cover_art_archive.art_type/name:14
 msgctxt "cover_art_type"
+msgid "Raw/Unedited"
+msgstr "onbewerkt"
+
+#: DB:event_art_archive.art_type/name:9
+msgctxt "event_art_type"
 msgid "Raw/Unedited"
 msgstr "onbewerkt"
 
@@ -7150,6 +7506,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Sazsemaisi"
 msgstr "Sazsemaisi"
 
+#: DB:event_art_archive.art_type/name:5
+msgctxt "event_art_type"
+msgid "Schedule"
+msgstr "tijdschema"
+
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:recording_alias_type/name:2
 #: DB:release_alias_type/name:2 DB:release_group_alias_type/name:2
@@ -7225,6 +7586,11 @@ msgctxt "alias_type"
 msgid "Series name"
 msgstr "Serienaam"
 
+#: DB:event_art_archive.art_type/name:3
+msgctxt "event_art_type"
+msgid "Setlist"
+msgstr "Setlijst"
+
 #: DB:work_attribute_type_allowed_value/value:663
 msgctxt "work_attribute_type_allowed_value"
 msgid "Seyir"
@@ -7235,6 +7601,7 @@ msgctxt "medium_format"
 msgid "Shellac"
 msgstr "schellak"
 
+#. name:Shellac
 #: DB:medium_format/description:53
 msgctxt "medium_format"
 msgid ""
@@ -7335,6 +7702,7 @@ msgctxt "work_type"
 msgid "Song-cycle"
 msgstr "Liedcyclus"
 
+#. name:Automatic
 #: DB:series_ordering_type/description:1
 msgctxt "series_ordering_type"
 msgid ""
@@ -7343,6 +7711,11 @@ msgid ""
 msgstr ""
 "Sorteert de objecten in een serie automatisch aan de hand van de "
 "nummereigenschappen. Maakt hierbij gebruik van een natuurlijke volgorde."
+
+#: DB:work_attribute_type/name:208
+msgctxt "work_attribute_type"
+msgid "Soundreef ID"
+msgstr "Soundreef-ID"
 
 #: DB:release_group_secondary_type/name:2
 msgctxt "release_group_secondary_type"
@@ -7394,6 +7767,7 @@ msgctxt "area_type"
 msgid "Subdivision"
 msgstr "Onderafdeling"
 
+#. name:Subdivision
 #: DB:area_type/description:2
 msgctxt "area_type"
 msgid ""
@@ -7725,6 +8099,7 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tevşihilahi"
 msgstr "Tevşihilahi"
 
+#. name:DVDplus (CD side)
 #: DB:medium_format/description:70
 msgctxt "medium_format"
 msgid ""
@@ -7734,6 +8109,7 @@ msgstr ""
 "De cd-laag van een DVDplus. De dvd-laag moet als een apart medium worden "
 "toegevoegd."
 
+#. name:DualDisc (CD side)
 #: DB:medium_format/description:67
 msgctxt "medium_format"
 msgid ""
@@ -7743,6 +8119,7 @@ msgstr ""
 "De cd-laag van een DualDisc. De dvd-laag moet als een apart medium worden "
 "toegevoegd."
 
+#. name:Hybrid SACD (CD layer)
 #: DB:medium_format/description:63
 msgctxt "medium_format"
 msgid ""
@@ -7752,6 +8129,7 @@ msgstr ""
 "De cd-laag van een hybride sacd. De sacd-laag moet als een apart medium "
 "worden toegevoegd."
 
+#. name:VinylDisc (CD side)
 #: DB:medium_format/description:82
 msgctxt "medium_format"
 msgid ""
@@ -7761,6 +8139,7 @@ msgstr ""
 "De cd-kant van een VinylDisc (variant met vinyl en cd). De vinylkant moet "
 "als afzonderlijk medium worden toegevoegd."
 
+#. name:CED
 #: DB:medium_format/description:60
 msgctxt "medium_format"
 msgid ""
@@ -7774,6 +8153,7 @@ msgstr ""
 "af te spelen op een tv door middel van een speciale naald en een plaat die "
 "lijkt op een grammofoonplaat."
 
+#. name:DVDplus (DVD-Audio side)
 #: DB:medium_format/description:68
 msgctxt "medium_format"
 msgid ""
@@ -7783,6 +8163,7 @@ msgstr ""
 "De dvd-audio-laag van een DVDplus. De cd-laag moet als een apart medium "
 "worden toegevoegd."
 
+#. name:DualDisc (DVD-Audio side)
 #: DB:medium_format/description:65
 msgctxt "medium_format"
 msgid ""
@@ -7792,6 +8173,7 @@ msgstr ""
 "De dvd-audio-laag van een DualDisc. De cd-laag moet als een apart medium "
 "worden toegevoegd."
 
+#. name:DVDplus (DVD-Video side)
 #: DB:medium_format/description:69
 msgctxt "medium_format"
 msgid ""
@@ -7801,6 +8183,7 @@ msgstr ""
 "De dvd-video-laag van een DVDplus. De cd-laag moet als een apart medium "
 "worden toegevoegd."
 
+#. name:DualDisc (DVD-Video side)
 #: DB:medium_format/description:66
 msgctxt "medium_format"
 msgid ""
@@ -7810,6 +8193,7 @@ msgstr ""
 "De dvd-video-laag van een DualDisc. De cd-laag moet als een apart medium "
 "worden toegevoegd."
 
+#. name:DualDisc (DVD side)
 #: DB:medium_format/description:130
 msgctxt "medium_format"
 msgid ""
@@ -7821,6 +8205,7 @@ msgstr ""
 "audio of dvd-video is (of beiden). De cd-laag moet als een apart medium "
 "worden toegevoegd."
 
+#. name:VinylDisc (DVD side)
 #: DB:medium_format/description:80
 msgctxt "medium_format"
 msgid ""
@@ -7830,6 +8215,7 @@ msgstr ""
 "De dvd-kant van een VinylDisc (variant met vinyl en dvd). De vinylkant moet "
 "als afzonderlijk medium worden toegevoegd."
 
+#. name:Hybrid SACD (SACD layer)
 #: DB:medium_format/description:64
 msgctxt "medium_format"
 msgid ""
@@ -7839,6 +8225,7 @@ msgstr ""
 "De sacd-laag van een hybride sacd. De cd-laag moet als een apart medium "
 "worden toegevoegd."
 
+#. name:Bottom
 #: DB:cover_art_archive.art_type/description:49
 msgctxt "cover_art_type"
 msgid ""
@@ -7850,6 +8237,7 @@ msgstr ""
 "voorkomende verpakkingen met zes kanten, is dit de kant haaks op en onder de "
 "voorkant, achterkant en rug)."
 
+#. name:Madrigal
 #: DB:work_type/description:7
 msgctxt "work_type"
 msgid ""
@@ -7861,6 +8249,7 @@ msgstr ""
 "geen instrumentale begeleiding, hoewel dat bij latere madrigalen "
 "gebruikelijker werd."
 
+#. name:Operetta
 #: DB:work_type/description:24
 msgctxt "work_type"
 msgid ""
@@ -7870,6 +8259,7 @@ msgstr ""
 "Een operette is een lichte opera, zowel qua muziek als onderwerp. Operettes "
 "zijn meestal kort en bevatten gesproken delen."
 
+#. name:Matrix/Runout
 #: DB:cover_art_archive.art_type/description:15
 msgctxt "cover_art_type"
 msgid ""
@@ -7881,6 +8271,7 @@ msgstr ""
 "matrixnummers. Meestal is dit het onbeschreven centrum van een cd of een "
 "grammofoonplaat."
 
+#. name:Top
 #: DB:cover_art_archive.art_type/description:48
 msgctxt "cover_art_type"
 msgid ""
@@ -7892,11 +8283,13 @@ msgstr ""
 "voorkomende verpakkingen met zes kanten, is dit de kant haaks op en boven de "
 "voorkant, achterkant en rug)."
 
+#. name:Jewel Case
 #: DB:release_packaging/description:1
 msgctxt "release_packaging"
 msgid "The traditional CD case, made of hard, brittle plastic."
 msgstr "Het traditionele cd-doosje, gemaakt van hard, bros plastic."
 
+#. name:VinylDisc (Vinyl side)
 #: DB:medium_format/description:81
 msgctxt "medium_format"
 msgid ""
@@ -7906,6 +8299,7 @@ msgstr ""
 "De vinylkant van een VinylDisc. De cd- of dvdkant moet als afzonderlijk "
 "medium worden toegevoegd."
 
+#. name:Choir
 #: DB:artist_type/description:6
 msgctxt "artist_type"
 msgid ""
@@ -7917,6 +8311,7 @@ msgstr ""
 "zangeressen). Kleinere vocale ensembles en groepen die zichzelf meestal geen "
 "koor noemen, kunnen beter als ‘groep’ worden toegevoegd."
 
+#. name:Character
 #: DB:artist_type/description:4
 msgctxt "artist_type"
 msgid ""
@@ -7926,6 +8321,7 @@ msgstr ""
 "Dit geeft een fictief personage aan (dit kan een persoon, dier of elk ander "
 "personage zijn)."
 
+#. name:Person
 #: DB:artist_type/description:1
 msgctxt "artist_type"
 msgid ""
@@ -7935,6 +8331,7 @@ msgstr ""
 "Dit geeft een persoon aan en wordt zowel voor de wettelijke naam (John "
 "Lennon) als een artiestennaam (Sting) gebruikt."
 
+#. name:Orchestra
 #: DB:artist_type/description:5
 msgctxt "artist_type"
 msgid ""
@@ -7948,6 +8345,7 @@ msgstr ""
 "groepen die zichzelf meestal geen orkest noemen, kunnen beter als ‘groep’ "
 "worden toegevoegd."
 
+#. name:Prose
 #: DB:work_type/description:23
 msgctxt "work_type"
 msgid ""
@@ -7959,6 +8357,7 @@ msgstr ""
 "geschreven in redelijk normaal taalgebruik zonder metrum (bijvoorbeeld "
 "romans, korte verhalen, essays, etc.)."
 
+#. name:SACD (2 channels)
 #: DB:medium_format/description:84
 msgctxt "medium_format"
 msgid ""
@@ -7966,6 +8365,7 @@ msgid ""
 msgstr ""
 "Dit geeft een tweekanaals-inhoudsopgave (stereo/mono) van een SACD aan."
 
+#. name:SHM-SACD (2 channels)
 #: DB:medium_format/description:89
 msgctxt "medium_format"
 msgid ""
@@ -7973,6 +8373,7 @@ msgid ""
 msgstr ""
 "Dit geeft een tweekanaals-inhoudsopgave (stereo/mono) van een SHM-SACD aan."
 
+#. name:Hybrid SACD (SACD layer, 2 channels)
 #: DB:medium_format/description:87
 msgctxt "medium_format"
 msgid ""
@@ -7982,16 +8383,19 @@ msgstr ""
 "Dit geeft een tweekanaals-inhoudsopgave (stereo/mono) van op de SACD-laag "
 "van een hybride SACD aan."
 
+#. name:SACD (multichannel)
 #: DB:medium_format/description:85
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SACD."
 msgstr "Dit geeft een meerkanaals-inhoudsopgave van een SACD aan."
 
+#. name:SHM-SACD (multichannel)
 #: DB:medium_format/description:88
 msgctxt "medium_format"
 msgid "This represents the multichannel table of contents on a SHM-SACD."
 msgstr "Dit geeft een meerkanaals-inhoudsopgave van een SHM-SACD aan."
 
+#. name:Hybrid SACD (SACD layer, multichannel)
 #: DB:medium_format/description:86
 msgctxt "medium_format"
 msgid ""
@@ -8000,6 +8404,11 @@ msgid ""
 msgstr ""
 "Dit geeft een meerkanaals-inhoudsopgave op de SACD-laag van een hybride SACD "
 "aan."
+
+#: DB:event_art_archive.art_type/name:2
+msgctxt "event_art_type"
+msgid "Ticket"
+msgstr "kaartje"
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -8141,16 +8550,53 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
 
+#. name:Watermark
+#: DB:cover_art_archive.art_type/description:13
+msgctxt "cover_art_type"
+msgid ""
+"Use in combination with any other appropriate types for images that are "
+"watermarked and are not desirable for display (but can be used for "
+"reference)."
+msgstr ""
+"Gebruik deze eigenschap met alle andere relevante soorten afbeeldingen die "
+"een watermerk hebben en niet gewenst zijn voor weergave (maar als referentie "
+"kunnen worden gebruikt)."
+
+#. name:Watermark
+#: DB:event_art_archive.art_type/description:10
+msgctxt "event_art_type"
+msgid ""
+"Use in combination with any other appropriate types for images that are "
+"watermarked and are not desirable for display (but can be used for "
+"reference)."
+msgstr ""
+"Gebruik deze eigenschap met alle andere relevante soorten afbeeldingen die "
+"een watermerk hebben en niet gewenst zijn voor weergave (maar als referentie "
+"kunnen worden gebruikt)."
+
+#. name:Raw/Unedited
 #: DB:cover_art_archive.art_type/description:14
 msgctxt "cover_art_type"
 msgid ""
-"Use for images that need work to be used for tagging (but can possibly "
-"already be used for reference)"
+"Use in combination with any other appropriate types for images that need "
+"work to be used for display (but can possibly already be used for reference)."
 msgstr ""
 "Gebruik deze eigenschap voor afbeeldingen die bewerkt moeten worden voordat "
-"ze voor het taggen kunnen worden gebruikt (maar die misschien al als "
-"referentie kunnen worden gebruikt)"
+"ze kunnen worden weergegeven (maar die misschien al als referentie kunnen "
+"worden gebruikt)"
 
+#. name:Raw/Unedited
+#: DB:event_art_archive.art_type/description:9
+msgctxt "event_art_type"
+msgid ""
+"Use in combination with any other appropriate types for images that need "
+"work to be used for display (but can possibly already be used for reference)."
+msgstr ""
+"Gebruik deze eigenschap voor afbeeldingen die bewerkt moeten worden voordat "
+"ze kunnen worden weergegeven (maar die misschien al als referentie kunnen "
+"worden gebruikt)"
+
+#. name:Military base
 #: DB:area_type/description:8
 msgctxt "area_type"
 msgid ""
@@ -8160,6 +8606,7 @@ msgstr ""
 "Dit type gebied wordt gebruikt voor militaire bases die zo groot zijn dat ze "
 "als gebied in plaats van een plaats kunnen worden beschouwd."
 
+#. name:Indigenous territory / reserve
 #: DB:area_type/description:9
 msgctxt "area_type"
 msgid ""
@@ -8170,6 +8617,27 @@ msgstr ""
 "Inheemse gebieden zijn semiautonome gebieden die door inheemse "
 "bevolkingsgroepen worden bestuurd, zoals de indianenreservaten in Noord-"
 "Amerika en de inheemse gebieden in Centraal- en Zuid-Amerika."
+
+#. name:Poster
+#: DB:event_art_archive.art_type/description:1
+msgctxt "event_art_type"
+msgid ""
+"Usually a large printed or digital sheet, that often contains pictures, and "
+"is generally posted publicly to promote the event."
+msgstr ""
+"Een groot gedrukt of digitaal vel met afbeeldingen die meestal worden "
+"opgehangen om reclame voor het evenement te maken."
+
+#. name:Banner
+#: DB:event_art_archive.art_type/description:4
+msgctxt "event_art_type"
+msgid ""
+"Usually horizontal image used to promote an event, for example in social "
+"media, which tends to have less information than a poster."
+msgstr ""
+"Een meestal horizontale afbeelding die wordt gebruikt om reclame voor een "
+"evenement te maken, bijvoorbeeld op sociale media. Een banier bevat meestal "
+"minder informatie dan een poster."
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
@@ -8291,6 +8759,7 @@ msgctxt "place_type"
 msgid "Venue"
 msgstr "Zaal"
 
+#. name:VHD
 #: DB:medium_format/description:59
 msgctxt "medium_format"
 msgid ""
@@ -8373,6 +8842,11 @@ msgstr "Vīra vasantaṁ"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
+msgid "Watermark"
+msgstr "watermerk"
+
+#: DB:event_art_archive.art_type/name:10
+msgctxt "event_art_type"
 msgid "Watermark"
 msgstr "watermerk"
 
