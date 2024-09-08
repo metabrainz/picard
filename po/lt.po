@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-09-01 15:42+0000\n"
+"PO-Revision-Date: 2024-09-08 18:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.7.1\n"
+"X-Generator: Weblate 5.7.2\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:137
@@ -6148,7 +6148,7 @@ msgstr "Išdiegti įskiepį"
 
 #: picard/ui/options/plugins.py:415
 msgid "Reloading list of available plugins…"
-msgstr "Perkraunama pasiekiamų įskiepių sąrašas…"
+msgstr "Įkeliamas pasiekiamų įskiepių sąrašas…"
 
 #: picard/ui/options/plugins.py:424
 #, python-format
@@ -6157,7 +6157,7 @@ msgid ""
 "\n"
 "%(error)s"
 msgstr ""
-"Kraunant įskiepį „%(plugin)s“ įvyko klaida:\n"
+"Įkeliant įskiepį „%(plugin)s“ įvyko klaida:\n"
 "\n"
 "%(error)s."
 
@@ -6165,7 +6165,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
-msgstr "Įskiepis „%(plugin)s“ nesuderinamas su šia Picard versija."
+msgstr "Įskiepis „%(plugin)s“ nėra suderinamas su šia „Picard“ versija."
 
 #: picard/ui/options/plugins.py:457
 #, python-format
@@ -6173,7 +6173,7 @@ msgid ""
 "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next "
 "run of Picard."
 msgstr ""
-"Įskiepis „%(plugin)s“ bus atnaujintas į versiją %(version)s kito Picard "
+"Įskiepis „%(plugin)s“ bus atnaujintas į versiją %(version)s kito „Picard“ "
 "paleidimo metu."
 
 #: picard/ui/options/plugins.py:480
@@ -6184,15 +6184,15 @@ msgstr "Išdiegti įskiepį „%(plugin)s“?"
 #: picard/ui/options/plugins.py:481
 #, python-format
 msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
-msgstr "Ar tikrai nori išdiegti įskiepį %(plugin)s?"
+msgstr "Ar tikrai nori išdiegti įskiepį „%(plugin)s“?"
 
 #: picard/ui/options/plugins.py:613
 msgid "Restart Picard to upgrade to new version"
-msgstr "Paleisk Picard iš naujo, kad galėtum atnaujinti į naują versiją"
+msgstr "Paleisk „Picard“ iš naujo, kad galėtum atnaujinti į naują versiją"
 
 #: picard/ui/options/plugins.py:615
 msgid "New version available"
-msgstr "Pasiekiama nauja versija"
+msgstr "Yra nauja versija"
 
 #: picard/ui/options/plugins.py:622
 msgid "Authors"
@@ -6209,7 +6209,7 @@ msgstr "Naudotojo vadovas"
 #: picard/ui/options/plugins.py:690
 #, python-format
 msgid "The plugin \"%(plugin)s\" could not be downloaded."
-msgstr "Nepavyko atsisiųsti įskiepio %(plugin)s."
+msgstr "Nepavyko atsisiųsti įskiepio „%(plugin)s“."
 
 #: picard/ui/options/plugins.py:691
 msgid "Please try again later."
@@ -6294,7 +6294,7 @@ msgstr "Pageidaujami leidiniai"
 
 #: picard/ui/options/releases.py:190
 msgid "Reset all"
-msgstr "Nustatyti viską iš naujo"
+msgstr "Atkurti viską"
 
 #: picard/ui/options/renaming.py:70
 msgid "File Naming"
@@ -6314,10 +6314,10 @@ msgid ""
 "exceeding the 259 character limit traditionally imposed by the Windows API. "
 "Some software might not be able to properly access those files."
 msgstr ""
-"Įjungus ilgus kelius Windows sistemoje, failai gali būti išsaugomi su kelio "
-"pavadinimais, viršijančiais 259 simbolių ribą, kurią tradiciškai nustato "
-"Windows API. Kai kuri programinė įranga gali negalėti tinkamai prieiti prie "
-"šių failų."
+"Įjungus ilgus kelius „Windows“ sistemoje, failai gali būti išsaugomi su "
+"kelio pavadinimais, viršijančiais 259 simbolių ribojimą, kurią tradiciškai "
+"nustato „Windows“ API. Kai kurios programinės įrangos gali nepavykti "
+"tinkamai pasiekti prie šių failų."
 
 #: picard/ui/options/scripting.py:103
 msgid "Scripting"
@@ -6325,19 +6325,19 @@ msgstr "Skriptavimas"
 
 #: picard/ui/options/scripting.py:121
 msgid "Show scripting documentation in new window."
-msgstr ""
+msgstr "Rodyti skriptų dokumentaciją naujame lange."
 
 #: picard/ui/options/scripting.py:124
 msgid "Import a script file as a new script."
-msgstr ""
+msgstr "Importuoti skripto failą kaip naują skriptą."
 
 #: picard/ui/options/scripting.py:127
 msgid "Export the current script to a file."
-msgstr ""
+msgstr "Eksportuoti dabartinį skriptą į failą."
 
 #: picard/ui/options/scripting.py:131
 msgid "Picard tagging script package"
-msgstr "Picard žymėjimo skripto paketas"
+msgstr "„Picard“ žymėjimo skripto paketas"
 
 #: picard/ui/options/scripting.py:176
 #, python-format
@@ -6374,11 +6374,11 @@ msgstr "Ieškoti naršyklėje"
 
 #: picard/ui/searchdialog/__init__.py:211
 msgid "<strong>Loading…</strong>"
-msgstr ""
+msgstr "<strong>Įkeliama…</strong>"
 
 #: picard/ui/searchdialog/__init__.py:242
 msgid "Retry"
-msgstr "Kartoti"
+msgstr "Pakartoti"
 
 #: picard/ui/searchdialog/__init__.py:260
 #, python-format
@@ -6387,14 +6387,18 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
+"<strong>Gaunant rezultatus įvyko toliau nurodyta klaida:<br><br></"
+"strong>Tinklo užklausos klaida dėl %(url)s:<br>%(error)s (QT kodas %(qtcode)"
+"d, HTTP kodas %(statuscode)r)<br>."
 
 #: picard/ui/searchdialog/__init__.py:265
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
+"<strong>Nerasta rezultatų. Bandyk atlikti kitą paieškos užklausą.</strong>"
 
 #: picard/ui/searchdialog/album.py:139 picard/ui/searchdialog/track.py:55
 msgid "Load into Picard"
-msgstr "Įkrauti į Picard"
+msgstr "Įkelti į „Picard“"
 
 #: picard/ui/searchdialog/album.py:144
 msgid "Album Search Results"
@@ -6463,7 +6467,7 @@ msgstr "Pervadinti profilį"
 
 #: picard/ui/widgets/profilelistwidget.py:52
 msgid "Remove profile"
-msgstr "Pašalinti profilį"
+msgstr "Šalinti profilį"
 
 #: picard/ui/widgets/profilelistwidget.py:87
 msgid "Are you sure you want to remove this profile?"
@@ -6479,7 +6483,7 @@ msgstr "Pervardinti skriptą"
 
 #: picard/ui/widgets/scriptlistwidget.py:62
 msgid "Remove script"
-msgstr "Pašalinti skriptą"
+msgstr "Šalinti skriptą"
 
 #: picard/ui/widgets/scriptlistwidget.py:94
 msgid "Are you sure you want to remove this script?"
@@ -6491,6 +6495,7 @@ msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
 msgstr ""
+"<em>Funkcija <code>$%s</code> neegzistuoja.<br><br>Ar trūksta įskiepio?</em>"
 
 #: picard/ui/widgets/scripttextedit.py:356
 msgid "&Word wrap script"
@@ -6498,7 +6503,7 @@ msgstr "Ž&odžio skaidymas į eilutes skriptas"
 
 #: picard/ui/widgets/scripttextedit.py:357
 msgid "Word wrap long lines in the editor"
-msgstr ""
+msgstr "Skaidyti žodžio ilgas eilutes rengyklėje"
 
 #: picard/ui/widgets/scripttextedit.py:359
 msgid "Ctrl+Shift+W"
@@ -6517,8 +6522,9 @@ msgid ""
 "The table is locked. To enable sorting and column resizing\n"
 "unlock the table in the table header's context menu."
 msgstr ""
-"Lentelė užrakinta. Norint įjungti rūšiavimą ir stulpelių dydžio keitimą,\n"
-" atrakink lentelę lentelių antraštėje esančiame kontekstiniame meniu."
+"Lentelė užrakinta. Kad įjungtum rūšiavimą ir pakeistum stulpelių dydžio "
+"keitimą,\n"
+"atrakink lentelę lentelių antraštės kontekstiniame meniu."
 
 #: picard/util/__init__.py:361
 msgid "No Title"
@@ -6532,7 +6538,7 @@ msgstr "%(value)s B"
 #: picard/util/bytes2human.py:44
 #, python-format
 msgid "%(value)s kB"
-msgstr "%(value)s kB"
+msgstr "%(value)s KB"
 
 #: picard/util/bytes2human.py:45
 #, python-format
@@ -6581,12 +6587,12 @@ msgstr "%(value)s PiB"
 
 #: picard/util/checkupdate.py:104
 msgid "Error loading Picard releases list: {error_message}"
-msgstr "Klaida kraunant Picard leidimų sąrašą: {error_message}."
+msgstr "Klaida įkeliant „Picard“ leidimų sąrašą: {error_message}."
 
 #: picard/util/checkupdate.py:108 picard/util/checkupdate.py:142
 #: picard/util/checkupdate.py:162
 msgid "Picard Update"
-msgstr "Picard naujinimas"
+msgstr "„Picard“ naujinimas"
 
 #: picard/util/checkupdate.py:109
 msgid ""
@@ -6605,12 +6611,12 @@ msgid ""
 "\n"
 "Would you like to download the new version?"
 msgstr ""
-"Yra nauja Picard versija.\n"
+"Yra nauja „Picard“ versija.\n"
 "\n"
 "Ši versija: {picard_old_version}\n"
 "Nauja versija: {picard_new_version}\n"
 "\n"
-"Ar nori atsisiųsti naują versiją?"
+"Ar nori atsisiųsti naująją versiją?"
 
 #: picard/util/checkupdate.py:163
 msgid ""
@@ -6619,25 +6625,26 @@ msgid ""
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
-"Šiuo metu nėra jokio tavo prenumeruojamam naujinimo lygiui: {update_level}\n"
+"Šiuo metu nėra jokio naujinimo tavo prenumeruojamam naujinimo lygiui: "
+"{update_level}\n"
 "\n"
 "Tavo versija: {picard_old_version}\n"
 
 #: picard/util/tags.py:41
 msgid "AcoustID Fingerprint"
-msgstr "AcoustID atspaudas"
+msgstr "„AcoustID“ atspaudas"
 
 #: picard/util/tags.py:42
 msgid "AcoustID"
-msgstr "AcoustID"
+msgstr "„AcoustID“"
 
 #: picard/util/tags.py:44
 msgid "Album Artist Sort Order"
-msgstr "Albumo atlikėjo rūšiavimo tvarka"
+msgstr "Albumo atlikėjo rikiavimo tvarka"
 
 #: picard/util/tags.py:46
 msgid "Album Sort Order"
-msgstr "Albumo rūšiavimo tvarka"
+msgstr "Albumo rikiavimo tvarka"
 
 #: picard/util/tags.py:47
 msgid "Arranger"
@@ -6649,7 +6656,7 @@ msgstr "Atlikėjai"
 
 #: picard/util/tags.py:50
 msgid "Artist Sort Order"
-msgstr "Atlikėjo rūšiavimo tvarka"
+msgstr "Atlikėjo rikiavimo tvarka"
 
 #: picard/util/tags.py:51
 msgid "ASIN"
@@ -6657,7 +6664,7 @@ msgstr "ASIN"
 
 #: picard/util/tags.py:53
 msgid "BPM"
-msgstr "BPM"
+msgstr "BPM (beatai per minutę)"
 
 #: picard/util/tags.py:54
 msgid "Catalog Number"
@@ -6669,11 +6676,11 @@ msgstr "Komentaras"
 
 #: picard/util/tags.py:56
 msgid "Compilation (iTunes)"
-msgstr "Rinkinys (iTunes)"
+msgstr "Rinkinys („iTunes“)"
 
 #: picard/util/tags.py:58
 msgid "Composer Sort Order"
-msgstr "Kompozitoriaus rūšiavimo tvarka"
+msgstr "Kompozitoriaus rikiavimo tvarka"
 
 #: picard/util/tags.py:59
 msgid "Conductor"
@@ -6697,7 +6704,7 @@ msgstr "Disko numeris"
 
 #: picard/util/tags.py:66
 msgid "DJ-Mixer"
-msgstr "DJ suvedėjas"
+msgstr "DJ miksuotojas"
 
 #: picard/util/tags.py:67
 msgid "Encoded By"
@@ -6709,7 +6716,7 @@ msgstr "Koderio nustatymai"
 
 #: picard/util/tags.py:69
 msgid "Engineer"
-msgstr "Muzikos režisierius"
+msgstr "Muzikos inžinierius"
 
 #: picard/util/tags.py:70
 msgid "Gapless Playback"
