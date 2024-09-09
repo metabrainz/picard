@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-09-08 14:42+0000\n"
+"PO-Revision-Date: 2024-09-09 15:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -5677,7 +5677,7 @@ msgstr "Išdiegti įskiepį"
 
 #: picard/ui/options/plugins.py:423
 msgid "Reloading list of available plugins…"
-msgstr "Perkraunama pasiekiamų įskiepių sąrašas…"
+msgstr "Įkeliamas pasiekiamų įskiepių sąrašas…"
 
 #: picard/ui/options/plugins.py:432
 #, python-format
@@ -5686,7 +5686,7 @@ msgid ""
 "\n"
 "%(error)s"
 msgstr ""
-"Kraunant įskiepį „%(plugin)s“ įvyko klaida:\n"
+"Įkeliant įskiepį „%(plugin)s“ įvyko klaida:\n"
 "\n"
 "%(error)s."
 
@@ -5694,7 +5694,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The plugin \"%(plugin)s\" is not compatible with this version of Picard."
-msgstr "Įskiepis „%(plugin)s“ nesuderinamas su šia Picard versija."
+msgstr "Įskiepis „%(plugin)s“ nėra suderinamas su šia „Picard“ versija."
 
 #: picard/ui/options/plugins.py:465
 #, python-format
@@ -5702,7 +5702,7 @@ msgid ""
 "The plugin \"%(plugin)s\" will be upgraded to version %(version)s on next "
 "run of Picard."
 msgstr ""
-"Įskiepis „%(plugin)s“ bus atnaujintas į versiją %(version)s kito Picard "
+"Įskiepis „%(plugin)s“ bus atnaujintas į versiją %(version)s kito „Picard“ "
 "paleidimo metu."
 
 #: picard/ui/options/plugins.py:488
@@ -5713,15 +5713,15 @@ msgstr "Išdiegti įskiepį „%(plugin)s“?"
 #: picard/ui/options/plugins.py:489
 #, python-format
 msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
-msgstr "Ar tikrai nori išdiegti įskiepį %(plugin)s?"
+msgstr "Ar tikrai nori išdiegti įskiepį „%(plugin)s“?"
 
 #: picard/ui/options/plugins.py:621
 msgid "Restart Picard to upgrade to new version"
-msgstr "Paleisk Picard iš naujo, kad galėtum atnaujinti į naują versiją"
+msgstr "Paleisk „Picard“ iš naujo, kad atnaujintum į naują versiją"
 
 #: picard/ui/options/plugins.py:623
 msgid "New version available"
-msgstr "Pasiekiama nauja versija"
+msgstr "Yra nauja versija"
 
 #: picard/ui/options/plugins.py:630
 msgid "Authors"
@@ -5738,7 +5738,7 @@ msgstr "Naudotojo vadovas"
 #: picard/ui/options/plugins.py:699
 #, python-format
 msgid "The plugin \"%(plugin)s\" could not be downloaded."
-msgstr "Nepavyko atsisiųsti įskiepio %(plugin)s."
+msgstr "Nepavyko atsisiųsti įskiepio „%(plugin)s“."
 
 #: picard/ui/options/plugins.py:700
 msgid "Please try again later."
@@ -5817,7 +5817,7 @@ msgstr "Pageidaujami leidiniai"
 
 #: picard/ui/options/releases.py:195
 msgid "Reset all"
-msgstr "Nustatyti viską iš naujo"
+msgstr "Atkurti viską"
 
 #: picard/ui/options/renaming.py:256
 msgid "The location to move files to must not be empty."
@@ -5833,10 +5833,10 @@ msgid ""
 "exceeding the 259 character limit traditionally imposed by the Windows API. "
 "Some software might not be able to properly access those files."
 msgstr ""
-"Įjungus ilgus kelius Windows sistemoje, failai gali būti išsaugomi su kelio "
-"pavadinimais, viršijančiais 259 simbolių ribą, kurią tradiciškai nustato "
-"Windows API. Kai kuri programinė įranga gali negalėti tinkamai prieiti prie "
-"šių failų."
+"Įjungus ilgus kelius „Windows“ sistemoje, failai gali būti išsaugomi su "
+"kelio pavadinimais, viršijančiais 259 simbolių ribojimą, kurią tradiciškai "
+"nustato „Windows“ API. Kai kurios programinės įrangos gali nepavykti "
+"tinkamai pasiekti prie šių failų."
 
 #: picard/ui/options/scripting.py:124
 msgid "Show scripting documentation in new window."
@@ -5909,7 +5909,7 @@ msgstr ""
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
-"<strong>Nerasta rezultatų. Bandyk atlikti kitą paieškos užklausą.</strong>"
+"<strong>Rezultatų nerasta. Bandyk atlikti kitą paieškos užklausą.</strong>"
 
 #: picard/ui/searchdialog/album.py:145 picard/ui/searchdialog/track.py:63
 msgid "Load into Picard"
