@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-09-08 18:42+0000\n"
+"PO-Revision-Date: 2024-09-10 12:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -6188,7 +6188,7 @@ msgstr "Ar tikrai nori išdiegti įskiepį „%(plugin)s“?"
 
 #: picard/ui/options/plugins.py:613
 msgid "Restart Picard to upgrade to new version"
-msgstr "Paleisk „Picard“ iš naujo, kad galėtum atnaujinti į naują versiją"
+msgstr "Paleisk „Picard“ iš naujo, kad atnaujintum į naują versiją"
 
 #: picard/ui/options/plugins.py:615
 msgid "New version available"
@@ -6394,7 +6394,7 @@ msgstr ""
 #: picard/ui/searchdialog/__init__.py:265
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
-"<strong>Nerasta rezultatų. Bandyk atlikti kitą paieškos užklausą.</strong>"
+"<strong>Rezultatų nerasta. Bandyk atlikti kitą paieškos užklausą.</strong>"
 
 #: picard/ui/searchdialog/album.py:139 picard/ui/searchdialog/track.py:55
 msgid "Load into Picard"
