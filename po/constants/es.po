@@ -2,35 +2,36 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-#
+# reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-26 13:00+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Spanish <https://translate.uploadedlobster.com/projects/"
-"picard/constants/es/>\n"
+"PO-Revision-Date: 2024-09-14 08:42+0000\n"
+"Last-Translator: reosarevok <reosarevok@users.noreply.translations.metabrainz"
+".org>\n"
+"Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
+"2/constants/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.7.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
 msgid "Stable releases only"
-msgstr "Solo lanzamientos Estables"
+msgstr "Solo lanzamientos estables"
 
 #: picard/const/__init__.py:177
 msgid "Stable and Beta releases"
-msgstr "Lanzamientos Estables y Betas"
+msgstr "Lanzamientos estables y betas"
 
 #: picard/const/__init__.py:183
 msgid "Stable, Beta and Dev releases"
-msgstr "Lanzamientos Estables, Betas y Dev"
+msgstr "Lanzamientos estables, betas y alfas"
 
 #: picard/const/__init__.py:201
 msgid "My script"
@@ -42,11 +43,12 @@ msgstr "Mi perfil"
 
 #: picard/const/__init__.py:204
 msgid "(copy)"
-msgstr ""
+msgstr "(copia)"
 
 #: picard/const/__init__.py:205
+#, fuzzy
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:29 picard/const/locales.py:48
 #: picard/const/scripts.py:29
@@ -153,7 +155,7 @@ msgstr "Noruego bokmål"
 
 #: picard/const/languages.py:66 picard/const/locales.py:716
 msgid "Dutch"
-msgstr "Danés"
+msgstr "Holandés"
 
 #: picard/const/languages.py:67 picard/const/locales.py:745
 msgid "Occitan"
@@ -169,7 +171,7 @@ msgstr "Portugués"
 
 #: picard/const/languages.py:70 picard/const/locales.py:781
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Portugués (Brasil)"
 
 #: picard/const/languages.py:71 picard/const/locales.py:810
 msgid "Romanian"
