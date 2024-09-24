@@ -27,7 +27,6 @@ from typing import (
     Type,
 )
 
-from picard.album import register_album_post_removal_processor
 from picard.config import (
     Config,
     ConfigSection,
@@ -36,6 +35,13 @@ from picard.config import (
 from picard.coverart.providers import CoverArtProvider
 from picard.extension_points.cover_art_providers import (
     register_cover_art_provider,
+)
+from picard.extension_points.event_hooks import (
+    register_album_post_removal_processor,
+    register_file_post_addition_to_track_processor,
+    register_file_post_load_processor,
+    register_file_post_removal_from_track_processor,
+    register_file_post_save_processor,
 )
 from picard.extension_points.formats import register_format
 from picard.extension_points.item_actions import (
@@ -46,21 +52,14 @@ from picard.extension_points.item_actions import (
     register_file_action,
     register_track_action,
 )
-from picard.extension_points.options_pages import register_options_page
-from picard.extension_points.script_functions import register_script_function
-from picard.file import (
-    File,
-    register_file_post_addition_to_track_processor,
-    register_file_post_load_processor,
-    register_file_post_removal_from_track_processor,
-    register_file_post_save_processor,
-)
-from picard.metadata import (
+from picard.extension_points.metadata import (
     register_album_metadata_processor,
     register_track_metadata_processor,
 )
+from picard.extension_points.options_pages import register_options_page
+from picard.extension_points.script_functions import register_script_function
+from picard.file import File
 from picard.plugin3.manifest import PluginManifest
-from picard.plugin import PluginPriority
 from picard.webservice import WebService
 from picard.webservice.api_helpers import MBAPIHelper
 
@@ -98,26 +97,26 @@ class PluginApi:
         return self._api_config
 
     # Metadata processors
-    def register_album_metadata_processor(function: Callable, priority: PluginPriority = PluginPriority.NORMAL) -> None:
+    def register_album_metadata_processor(function: Callable, priority: int = 0) -> None:
         return register_album_metadata_processor(function, priority)
 
-    def register_track_metadata_processor(function: Callable, priority: PluginPriority = PluginPriority.NORMAL) -> None:
+    def register_track_metadata_processor(function: Callable, priority: int = 0) -> None:
         return register_track_metadata_processor(function, priority)
 
     # Event hooks
-    def register_album_post_removal_processor(function: Callable, priority: PluginPriority = PluginPriority.NORMAL) -> None:
+    def register_album_post_removal_processor(function: Callable, priority: int = 0) -> None:
         return register_album_post_removal_processor(function, priority)
 
-    def register_file_post_load_processor(function: Callable, priority: PluginPriority = PluginPriority.NORMAL) -> None:
+    def register_file_post_load_processor(function: Callable, priority: int = 0) -> None:
         return register_file_post_load_processor(function, priority)
 
-    def register_file_post_addition_to_track_processor(function: Callable, priority: PluginPriority = PluginPriority.NORMAL) -> None:
+    def register_file_post_addition_to_track_processor(function: Callable, priority: int = 0) -> None:
         return register_file_post_addition_to_track_processor(function, priority)
 
-    def register_file_post_removal_from_track_processor(function: Callable, priority: PluginPriority = PluginPriority.NORMAL) -> None:
+    def register_file_post_removal_from_track_processor(function: Callable, priority: int = 0) -> None:
         return register_file_post_removal_from_track_processor(function, priority)
 
-    def register_file_post_save_processor(function: Callable, priority: PluginPriority = PluginPriority.NORMAL) -> None:
+    def register_file_post_save_processor(function: Callable, priority: int = 0) -> None:
         return register_file_post_save_processor(function, priority)
 
     # Cover art
