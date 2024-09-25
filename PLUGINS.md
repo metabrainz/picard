@@ -153,11 +153,11 @@ The file MUST define the following mandatory metadata fields:
 
 | Field name     | Type   | Description                                                      |
 |----------------|--------|------------------------------------------------------------------|
-| id             | string | The plugin's unique name. Must be a valid Python package name and only consist of the characters `[a-z0-9_]` |
+| ~~id~~             | ~~string~~ | ~~The plugin's unique name. Must be a valid Python package name and only consist of the characters `[a-z0-9_]`~~ |
 | name           | table  | Table of multi-lingual display names. The keys are locale names. At least an English description is mandatory. |
-| author         | string | The plugin author                                                |
+| authors        | string[] | The plugin author                                                |
 | description    | table  | Table of multi-lingual detailed plugin descriptions. The keys are locale names. At least an English description is mandatory. Supports Markdown formatting. |
-| version        | string | Plugin version. Use semantic versioning in the format "x.y.z"    |
+| ~~version~~        | ~~string~~ | ~~Plugin version. Use semantic versioning in the format "x.y.z"~~    |
 | api            | list   | The Picard API versions supported by the plugin                  |
 | license        | string | License, should be a [SPDX license name](https://spdx.org/licenses/) and GPLv2 compatible |
 
@@ -387,6 +387,32 @@ are not provided in the official plugin list. The user needs to enter the
 plugin's git URL and Picard will verify the manifest and offer to install and
 activate the plugin. The UI must make it clear that the user is installing the
 plugin at their own risk and that the plugin can execute arbitrary code.
+
+
+### Blacklisting plugins
+TBD
+
+
+## Plugin management
+
+Picard will provide a command line interface and a options user interface to
+manage plugins.
+
+### Command line interface
+
+```
+picard plugin list
+picard plugin install https://git.sr.ht/~phw/picard-plugin-example
+picard plugin info https://git.sr.ht/~phw/picard-plugin-example
+picard plugin uninstall ...
+picard plugin enable ...
+picard plugin disable ...
+```
+
+Plugins can be referenced by repository URI or by `{uri-hash}-{last-path-part}`.
+E.g. the plugin can be referenced by
+`https://git.sr.ht/~phw/picard-plugin-example` or by
+`0c43dd9b75eebb260a83e6ac57b4128f-picard-plugin-example`.
 
 
 ## To be discussed
