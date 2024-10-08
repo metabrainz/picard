@@ -1,30 +1,31 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Transifex Bot <>, 2023
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2024.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Ukrainian (https://app.transifex.com/musicbrainz/teams/13846/"
-"uk/)\n"
+"PO-Revision-Date: 2024-10-09 07:42+0000\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
+"Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
+"picard/3/appstream/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -42,6 +43,7 @@ msgid ""
 msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
+#, fuzzy
 msgid ""
 "Picard helps you organize your music collection by renaming your music files "
 "and sorting them into a folder structure exactly the way you want it. A "
@@ -49,6 +51,11 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
+"Picard допомагає організувати вашу музичну колекцію, перейменовуючи музичні "
+"файли та сортуючи їх у структурі папок саме так, як вам потрібно. Доступні "
+"різноманітні плагіни, і ви навіть можете створити свій власний. Picard "
+"підтримує широкий спектр аудіоформатів, а також може знайти для вас цілий "
+"компакт-диск."
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
