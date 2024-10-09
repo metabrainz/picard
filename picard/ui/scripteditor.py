@@ -133,7 +133,8 @@ class ScriptEditorExamples():
             script_text (str, optional): Text of the file naming script to use. Defaults to None.
         """
         if override and isinstance(override, dict):
-            self.settings = SettingsOverride(self.settings, override)
+            config = get_config()
+            self.settings = SettingsOverride(config.setting, override)
         if script_text and isinstance(script_text, str):
             self.script_text = script_text
 
