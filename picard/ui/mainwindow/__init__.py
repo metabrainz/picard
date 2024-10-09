@@ -184,7 +184,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.player.error.connect(self._on_player_error)
 
         self.script_editor_dialog = None
-        self.examples = None
 
         self.tagger.pluginmanager.updates_available.connect(self.show_plugin_update_dialog)
 
@@ -1485,8 +1484,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def open_file_naming_script_editor(self):
         """Open the file naming script editor / manager in a new window.
         """
-        self.examples = ScriptEditorExamples(tagger=self.tagger)
-        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
+        examples = ScriptEditorExamples(tagger=self.tagger)
+        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
         self.script_editor_dialog.signal_save.connect(self._script_editor_save)
         self.script_editor_dialog.signal_selection_changed.connect(self._update_selector_from_script_editor)
         self.script_editor_dialog.signal_index_changed.connect(self._script_editor_index_changed)
@@ -1516,22 +1515,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _update_script_editor_example_files(self):
         """Update the list of example files for the file naming script editor.
         """
-        if self.examples:
-            self.examples.update_sample_example_files()
+        script_editor_dialog = self.script_editor_dialog
+        if script_editor_dialog and script_editor_dialog.isVisible():
+            script_editor_dialog.examples.update_sample_example_files()
             self._update_script_editor_examples()
 
     def _update_script_editor_examples(self):
         """Update the examples for the file naming script editor, using current settings.
         """
-        if self.examples:
+        script_editor_dialog = self.script_editor_dialog
+        if script_editor_dialog and script_editor_dialog.isVisible():
             config = get_config()
             override = {
                 "rename_files": config.setting["rename_files"],
                 "move_files": config.setting["move_files"],
             }
-            self.examples.update_examples(override=override)
-            if self.script_editor_dialog:
-                self.script_editor_dialog.display_examples()
+            script_editor_dialog.examples.update_examples(override=override)
+            script_editor_dialog.display_examples()
 
     def _script_editor_index_changed(self):
         """Process "signal_index_changed" signal from the script editor.
