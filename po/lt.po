@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-09-10 12:42+0000\n"
+"PO-Revision-Date: 2024-10-12 08:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -73,7 +73,7 @@ msgstr "Nesuklasterizuoti failai"
 #: picard/collection.py:89
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr "Klaida modifikuojant kolekcijas: %(error)s"
+msgstr "Klaida modifikuojant kolekcijas: %(error)s."
 
 #: picard/collection.py:98
 #, python-format
@@ -96,7 +96,7 @@ msgstr[3] "Pašalinta %(count)i leidinių iš kolekcijos „%(name)s“"
 #: picard/collection.py:137
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr "Klaida įkeliant kolekcijas: %(error)s"
+msgstr "Klaida įkeliant kolekcijas: %(error)s."
 
 #: picard/config_upgrade.py:112 picard/config_upgrade.py:125
 msgid "Various Artists file naming scheme removal"
@@ -3255,7 +3255,7 @@ msgstr ""
 
 #: picard/ui/playertoolbar.py:213
 msgid "Player"
-msgstr "Leistuvas"
+msgstr "Grotuvas"
 
 #: picard/ui/playertoolbar.py:222
 msgid "Play"
@@ -5865,9 +5865,8 @@ msgid "You have changed the interface language."
 msgstr "Naudotojo sąsajos kalba"
 
 #: picard/ui/options/interface.py:217
-#, fuzzy
 msgid "Option Setting Warning"
-msgstr "Failo išsaugojimo įspėjimas"
+msgstr "Parinkties nustatymo įspėjimas"
 
 #: picard/ui/options/interface.py:218
 msgid ""
@@ -5880,21 +5879,19 @@ msgstr ""
 
 #: picard/ui/options/interface_colors.py:74
 msgid "Choose a color"
-msgstr ""
+msgstr "Pasirinkite spalvą"
 
 #: picard/ui/options/interface_colors.py:156
-#, fuzzy
-#| msgid "Restore default columns"
 msgid "Restore default color"
-msgstr "Atkurti numatytuosius stulpelius"
+msgstr "Atkurti numatytąją spalvą"
 
 #: picard/ui/options/interface_colors.py:172
 msgid "You have changed the interface colors."
-msgstr "Pakeitei sąsajos spalvas."
+msgstr "Pakeitėte sąsajos spalvas."
 
 #: picard/ui/options/interface_toolbar.py:69
 msgid "Action Toolbar"
-msgstr ""
+msgstr "Veiksmų įrankių juosta"
 
 #: picard/ui/options/interface_toolbar.py:77
 msgid "Add Folder"
@@ -5906,19 +5903,19 @@ msgstr "Pridėti failus"
 
 #: picard/ui/options/interface_toolbar.py:85
 msgid "Cluster"
-msgstr ""
+msgstr "Klasterizuoti"
 
 #: picard/ui/options/interface_toolbar.py:89
 msgid "Lookup"
-msgstr ""
+msgstr "Ieškoti"
 
 #: picard/ui/options/interface_toolbar.py:93
 msgid "Scan"
-msgstr ""
+msgstr "Skenuoti"
 
 #: picard/ui/options/interface_toolbar.py:97
 msgid "Lookup in Browser"
-msgstr ""
+msgstr "Ieškoti naršyklėje"
 
 #: picard/ui/options/interface_toolbar.py:101
 msgid "Save"
@@ -5926,15 +5923,15 @@ msgstr "Išsaugoti"
 
 #: picard/ui/options/interface_toolbar.py:113
 msgid "Submit AcoustIDs"
-msgstr ""
+msgstr "Pateikti „AcoustID“"
 
 #: picard/ui/options/interface_toolbar.py:121
 msgid "Open in Player"
-msgstr ""
+msgstr "Atidaryti grotuve"
 
 #: picard/ui/options/interface_toolbar.py:125
 msgid "Lookup CD…"
-msgstr ""
+msgstr "Peržiūrėti CD…"
 
 #: picard/ui/options/interface_toolbar.py:178
 msgid "Drag and Drop to re-order"
@@ -5946,7 +5943,7 @@ msgstr "Pasirinkti veiksmą"
 
 #: picard/ui/options/interface_top_tags.py:36
 msgid "Top Tags"
-msgstr ""
+msgstr "Geriausi žymės"
 
 #: picard/ui/options/maintenance.py:74
 msgid "Maintenance"
@@ -6032,7 +6029,7 @@ msgstr ""
 "Nepavyko išsaugoti konfigūracijos failo į:\n"
 "%s\n"
 "\n"
-"Žiūrėk žurnalus, norint rasti išsamesnės informacijos."
+"Žiūrėkite žurnalus dėl išsamesnės informacijos."
 
 #: picard/ui/options/maintenance.py:243 picard/ui/options/maintenance.py:252
 msgid "Backup Configuration File"
@@ -6050,7 +6047,7 @@ msgstr ""
 #: picard/ui/options/maintenance.py:283 picard/ui/options/maintenance.py:298
 #: picard/ui/options/maintenance.py:309
 msgid "Load Backup Configuration File"
-msgstr ""
+msgstr "Įkelti atsarginės kopijos konfigūracijos failą"
 
 #: picard/ui/options/maintenance.py:284
 #, python-format
@@ -6063,19 +6060,22 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Kraunant atsarginę konfigūracijos failo kopiją bus pakeisti dabartiniai "
-"konfigūracijos nustatymai. Prieš bet kokį pakeitimą dabartinė konfigūracija "
-"bus automatiškai išsaugota į:\n"
+"Įkeliant atsarginę konfigūracijos failo kopiją bus pakeisti dabartiniai "
+"konfigūracijos nustatymai.\n"
+"Prieš bet kokį pakeitimą dabartinė konfigūracija bus automatiškai išsaugota "
+"į :\n"
 "%s\n"
 "\n"
-"Ar nori tęsti?"
+"Ar norite tęsti?"
 
 #: picard/ui/options/maintenance.py:299
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Configuration successfully loaded from:\n"
 "%s"
-msgstr "Skriptas sėkmingai eksportuotas į %s."
+msgstr ""
+"Konfigūracija sėkmingai įkelta iš:\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:310
 #, python-format
@@ -6085,10 +6085,14 @@ msgid ""
 "\n"
 "Please see the logs for more details."
 msgstr ""
+"Buvo problema atkuriant konfigūracijos failą iš:\n"
+"%s\n"
+"\n"
+"Žiūrėkite žurnalus dėl išsamesnės informacijos."
 
 #: picard/ui/options/maintenance.py:322
 msgid "Select Configuration File to Load"
-msgstr "Pasirinkti konfigūracijos failą, kurį pakrauti"
+msgstr "Pasirinkite konfigūracijos failą, kurį įkelti"
 
 #: picard/ui/options/maintenance.py:371
 #: picard/ui/widgets/profilelistwidget.py:88
@@ -6098,7 +6102,7 @@ msgstr "Patvirtinti pašalinimą"
 
 #: picard/ui/options/maintenance.py:372
 msgid "Are you sure you want to remove the selected option settings?"
-msgstr "Ar tikrai nori pašalinti pasirinktos parinkties nustatymus?"
+msgstr "Ar tikrai norite pašalinti pasirinktos parinkties nustatymus?"
 
 #: picard/ui/options/matching.py:36
 msgid "Matching"
@@ -6120,6 +6124,15 @@ msgid ""
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
+"Kiekviename pasirinktame rašte yra atitinkama slenkstinė reikšmė, pagal "
+"kurią nustatoma, ar tas raštas turėtų būti naudojamas. Kai atlikėjo vardas "
+"vertinamas siekiant nustatyti, ar jis atitinka vieną iš jūsų pasirinktų "
+"raštų, jis pirmiausia analizuojamas siekiant nustatyti, kurie raštai yra "
+"pavadinime ir kokia svertinė procentinė pavadinimo dalis priklauso "
+"kiekvienam iš jų. Tada tikrinamas kiekvienas iš jūsų pasirinktų raštų, ir "
+"jei pavadinime yra raštui priklausančių simbolių, o rašto simbolių "
+"procentinė dalis pavadinime atitinka arba viršija skriptui nustatytą "
+"atitikimo ribą, atlikėjo vardas nebus verčiamas."
 
 #: picard/ui/options/network.py:37
 msgid "Network"
@@ -6157,7 +6170,7 @@ msgid ""
 "\n"
 "%(error)s"
 msgstr ""
-"Įkeliant įskiepį „%(plugin)s“ įvyko klaida:\n"
+"Įvyko klaida įkeliant įskiepį „%(plugin)s“:\n"
 "\n"
 "%(error)s."
 
@@ -6184,11 +6197,11 @@ msgstr "Išdiegti įskiepį „%(plugin)s“?"
 #: picard/ui/options/plugins.py:481
 #, python-format
 msgid "Do you really want to uninstall the plugin \"%(plugin)s\"?"
-msgstr "Ar tikrai nori išdiegti įskiepį „%(plugin)s“?"
+msgstr "Ar tikrai norite išdiegti įskiepį „%(plugin)s“?"
 
 #: picard/ui/options/plugins.py:613
 msgid "Restart Picard to upgrade to new version"
-msgstr "Paleisk „Picard“ iš naujo, kad atnaujintum į naują versiją"
+msgstr "Paleiskite „Picard“ iš naujo, kad atnaujintumėte į naują versiją"
 
 #: picard/ui/options/plugins.py:615
 msgid "New version available"
@@ -6213,7 +6226,7 @@ msgstr "Nepavyko atsisiųsti įskiepio „%(plugin)s“."
 
 #: picard/ui/options/plugins.py:691
 msgid "Please try again later."
-msgstr "Bandyk dar kartą vėliau."
+msgstr "Bandykite dar kartą vėliau."
 
 #: picard/ui/options/profiles.py:63
 msgid "Option Profiles"
@@ -6471,7 +6484,7 @@ msgstr "Šalinti profilį"
 
 #: picard/ui/widgets/profilelistwidget.py:87
 msgid "Are you sure you want to remove this profile?"
-msgstr "Ar tikrai nori pašalinti šį profilį?"
+msgstr "Ar tikrai norite pašalinti šį profilį?"
 
 #: picard/ui/widgets/scriptdocumentation.py:110
 msgid "Open Scripting Documentation in your browser"
@@ -6487,7 +6500,7 @@ msgstr "Šalinti skriptą"
 
 #: picard/ui/widgets/scriptlistwidget.py:94
 msgid "Are you sure you want to remove this script?"
-msgstr "Ar tikrai nori pašalinti šį skriptą?"
+msgstr "Ar tikrai norite pašalinti šį skriptą?"
 
 #: picard/ui/widgets/scripttextedit.py:283
 #, python-format
@@ -6522,9 +6535,8 @@ msgid ""
 "The table is locked. To enable sorting and column resizing\n"
 "unlock the table in the table header's context menu."
 msgstr ""
-"Lentelė užrakinta. Kad įjungtum rūšiavimą ir pakeistum stulpelių dydžio "
-"keitimą,\n"
-"atrakink lentelę lentelių antraštės kontekstiniame meniu."
+"Lentelė užrakinta. Kad įjungtumėte rikiavimą ir stulpelių dydžio keitimą,\n"
+"atrakinkite lentelę lentelių antraštės kontekstiniame meniu."
 
 #: picard/util/__init__.py:361
 msgid "No Title"
@@ -6616,7 +6628,7 @@ msgstr ""
 "Ši versija: {picard_old_version}\n"
 "Nauja versija: {picard_new_version}\n"
 "\n"
-"Ar nori atsisiųsti naująją versiją?"
+"Ar norite atsisiųsti naująją versiją?"
 
 #: picard/util/checkupdate.py:163
 msgid ""
@@ -6625,10 +6637,10 @@ msgid ""
 "\n"
 "Your version: {picard_old_version}\n"
 msgstr ""
-"Šiuo metu nėra jokio naujinimo tavo prenumeruojamam naujinimo lygiui: "
+"Šiuo metu nėra jokio naujinimo jūsų prenumeruojamam naujinimo lygiui: "
 "{update_level}\n"
 "\n"
-"Tavo versija: {picard_old_version}\n"
+"Jūsų versija: {picard_old_version}\n"
 
 #: picard/util/tags.py:41
 msgid "AcoustID Fingerprint"
@@ -6832,7 +6844,7 @@ msgstr "Originalūs metai"
 
 #: picard/util/tags.py:104
 msgid "Performer"
-msgstr "Atlikėjas"
+msgstr "Muzikos atlikėjas"
 
 #: picard/util/tags.py:105
 msgid "Podcast"
