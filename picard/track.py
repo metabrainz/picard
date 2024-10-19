@@ -313,6 +313,8 @@ class Track(FileListItem):
             tm['~silence'] = '1'
 
         if config.setting['use_genres']:
+            self.add_folksonomy_tags()
+            self.add_genres()
             self._convert_folksonomy_tags_to_genre()
 
         # Convert Unicode punctuation
@@ -367,6 +369,18 @@ class Track(FileListItem):
             filters=config.setting['genres_filter'],
             join_with=config.setting['join_genres']
         )
+
+    def add_folksonomy_tags(self):
+        config = get_config()
+        tags = Counter(self._folksonomy_tags)
+        tags += self.album._folksonomy_tags
+        self.metadata['_folksonomy_tags'] = self._genres_to_metadata(tags, join_with=config.setting['join_genres'])
+
+    def add_genres(self):
+        config = get_config()
+        _genres = Counter(self._genres)
+        _genres += self.album._genres
+        self.metadata['_genres'] = self._genres_to_metadata(_genres, join_with=config.setting['join_genres'])
 
 
 class NonAlbumTrack(Track):
