@@ -348,9 +348,13 @@ class Track(FileListItem):
 
     def _convert_folksonomy_tags_to_genre(self):
         config = get_config()
-        # Combine release and track genres
         genres = Counter(self.genres)
-        genres += self.album.genres
+        use_folksonomy = config.setting['folksonomy_tags']
+        if use_folksonomy:
+            genres += self.album._folksonomy_tags
+        else:
+            genres += self.album._genres
+        # Combine release and track genres
         if self.album.release_group:
             genres += self.album.release_group.genres
         if not genres and config.setting['artists_genres']:
