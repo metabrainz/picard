@@ -310,6 +310,14 @@ class MetadataItem(QtCore.QObject, Item):
         if name:
             self._genres[name] += count
 
+    @property
+    def folksonomy_tags(self):
+        return self._folksonomy_tags
+
+    def add_folksonomy_tag(self, name, count):
+        if name:
+            self._folksonomy_tags[name] += count
+
     @staticmethod
     def set_genre_inc_params(inc, config=None):
         require_authentication = False
@@ -321,14 +329,6 @@ class MetadataItem(QtCore.QObject, Item):
             else:
                 inc |= {'tags', 'genres'}
         return require_authentication
-
-    @property
-    def folksonomy_tags(self):
-        return self._folksonomy_tags
-
-    def add_folksonomy_tag(self, name, count):
-        if name:
-            self._folksonomy_tags[name] += count
 
 
 class FileListItem(MetadataItem):
