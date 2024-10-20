@@ -636,16 +636,14 @@ def add_secondary_release_types(node, m):
 def add_genres_from_node(node, obj):
     if obj is None:
         return
-    config = get_config()
-    if config.setting['use_genres']:
-        if 'tags' in node:
-            add_tags(node['tags'], obj)
-        if 'user-tags' in node:
-            add_user_tags(node['user-tags'], obj)
-        if 'genres' in node:
-            add_genres(node['genres'], obj)
-        if 'user-genres' in node:
-            add_user_genres(node['user-genres'], obj)
+    if 'tags' in node:
+        add_tags(node['tags'], obj)
+    if 'user-tags' in node:
+        add_user_tags(node['user-tags'], obj)
+    if 'genres' in node:
+        add_genres(node['genres'], obj)
+    if 'user-genres' in node:
+        add_user_genres(node['user-genres'], obj)
 
 
 def add_genres(node, obj):
