@@ -163,6 +163,9 @@ class Metadata(MutableMapping):
         ('totaltracks', 5),
         ('discnumber', 5),
         ('totaldiscs', 4),
+        ('catalognumber', 30),
+        ('barcode', 33),
+        ('asin', 32),
     ]
 
     __date_match_factors = {
@@ -232,6 +235,8 @@ class Metadata(MutableMapping):
                             ia = a
                             ib = b
                         score = 1.0 - (int(ia != ib))
+                    elif name in {'catalognumber', 'barcode', 'asin'}:
+                        score = 1.0 if a == b else 0.0
                     else:
                         score = similarity2(a, b)
                     parts.append((score, weight))
@@ -288,6 +293,26 @@ class Metadata(MutableMapping):
                     parts.append((score, weights['totalalbumtracks']))
                 except (ValueError, KeyError):
                     pass
+
+            if 'catalognumber' in self and 'catalognumber' in weights:
+                try:
+                    found = 0.0
+                    for _ in release['label-info']:
+                        if self['catalognumber'] == _['catalog-number']:
+                            print(_['catalog-number'])
+                            found += 1.0
+                            break
+                    parts.append((found, weights['catalognumber']))
+                except (KeyError, IndexError):
+                    pass
+
+            if 'barcode' in self and 'barcode' in weights:
+                score = 1.0 if self['barcode'] == release['barcode'] else 0.0
+                parts.append((score, weights['barcode']))
+
+            if 'asin' in self and 'asin' in weights:
+                score = 1.0 if self['asin'] == release['asin'] else 0.0
+                parts.append((score, weights['asin']))
 
             # Date Logic
             date_match_factor = 0.0
