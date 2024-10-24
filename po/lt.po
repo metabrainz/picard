@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-10-12 08:42+0000\n"
+"PO-Revision-Date: 2024-10-24 08:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -111,8 +111,8 @@ msgid ""
 msgstr ""
 "Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
-"Tavo failų pavadinimų schema automatiškai sujungiama su vieno atlikėjų "
-"albumų schema."
+"Jūsų failų pavadinimų schema automatiškai sujungta su vieno atlikėjų albumų "
+"pavadinimų schema."
 
 #: picard/config_upgrade.py:96
 msgid ""
@@ -125,10 +125,10 @@ msgid ""
 msgstr ""
 "Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
-"Šiuo metu šios parinkties nenaudoji, bet turi apibrėžtą atskirą failo "
-"pavadinimo schemą.\n"
-"Ar nori ją pašalinti, ar sujungti su vieno atlikėjų albumų failų pavadinimų "
-"schema?"
+"Šiuo metu šios parinkties nenaudojate, bet turite apibrėžtą atskirą failų "
+"pavadinimų schemą.\n"
+"Ar norite ją pašalinti, ar sujungti su vieno atlikėjo albumų failų "
+"pavadinimų schema?"
 
 #: picard/config_upgrade.py:103
 msgid "Merge"
@@ -138,7 +138,7 @@ msgstr "Sujungti"
 #: picard/ui/options/interface_toolbar.py:100
 #: picard/ui/ui_options_interface_toolbar.py:80
 msgid "Remove"
-msgstr "Pašalinti"
+msgstr "Šalinti"
 
 #: picard/config_upgrade.py:422
 msgid "Primary file naming script"
@@ -170,7 +170,7 @@ msgstr "Nėra atitinkamų takelių failui „%(filename)s“"
 #: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "Ieškoma metaduomenų failui %(filename)s …"
+msgstr "Ieškoma metaduomenų failui %(filename)s…"
 
 #: picard/log.py:67 picard/ui/options/renaming.py:256
 #: picard/ui/scripteditor.py:857 picard/ui/scripteditor.py:860
@@ -266,11 +266,11 @@ msgstr "Ignoruoti MBID, kai įkeliami nauji failai"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr "Tikrinti įskiepio naujinimus paleidimo metu"
+msgstr "Tikrinti, ar yra įskiepių naujinimų paleidimo metu"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
-msgstr "Tikrinti programos naujinimus paleidimo metu"
+msgstr "Tikrinti, ar yra programos naujinimų paleidimo metu"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
@@ -287,7 +287,7 @@ msgstr "Metaduomenys"
 
 #: picard/profile.py:64
 msgid "Translate artist names"
-msgstr "Versti atlikėjų pavadinimus"
+msgstr "Versti atlikėjų vardus"
 
 #: picard/profile.py:65
 msgid "Translation locales"
@@ -295,7 +295,7 @@ msgstr "Vertimo lokalės"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
-msgstr "Versti atlikėjų pavadinimus išimtis"
+msgstr "Versti atlikėjų vardus išimtis"
 
 #: picard/profile.py:67
 msgid "Translation script exceptions"
@@ -303,7 +303,7 @@ msgstr "Vertimo rašto išimtys"
 
 #: picard/profile.py:68 picard/ui/ui_options_metadata.py:134
 msgid "Use standardized artist names"
-msgstr "Naudoti tipinius atlikėjų pavadinimus"
+msgstr "Naudoti tipinius atlikėjų vardus"
 
 #: picard/profile.py:69 picard/ui/ui_options_metadata.py:135
 msgid "Use standardized instrument and vocal credits"
@@ -510,7 +510,7 @@ msgstr ""
 
 #: picard/profile.py:148
 msgid "Cover art providers"
-msgstr "Viršelio apipavidalinimų paslaugų teikėjai"
+msgstr "Viršelio apipavidalinimų teikėjai"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
@@ -627,7 +627,7 @@ msgstr "Rodyti patvirtinimo dialogą, kai išsaugomi failai"
 
 #: picard/profile.py:196 picard/ui/ui_options_interface.py:130
 msgid "Adjust horizontal position in file browser automatically"
-msgstr "Automatiškai reguliuoti horizontalią poziciją failų naršyklėje"
+msgstr "Automatiškai priderinti horizontalią poziciją failų naršyklėje"
 
 #: picard/profile.py:197
 msgid "Begin browsing in a specific directory"
@@ -675,7 +675,7 @@ msgstr "Ignoruoti takelio trukmės skirtumą iki x sekundžių"
 
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Didžiausias grąžintinų subjektų skaičius per „MusicBrainz“ užklausą"
+msgstr "Didžiausias grąžintinų subjektų skaičius pagal „MusicBrainz“ užklausą"
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
@@ -731,7 +731,7 @@ msgstr "Naršyklės integracija"
 
 #: picard/profile.py:248
 msgid "Default listening port"
-msgstr "Numatytas klausymo prievadas"
+msgstr "Numatytasis klausymo prievadas"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
