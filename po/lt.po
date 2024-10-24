@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-10-12 08:42+0000\n"
+"PO-Revision-Date: 2024-10-24 08:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -111,8 +111,8 @@ msgid ""
 msgstr ""
 "Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
-"Tavo failų pavadinimų schema automatiškai sujungiama su vieno atlikėjų "
-"albumų schema."
+"Jūsų failų pavadinimų schema automatiškai sujungta su vieno atlikėjų albumų "
+"pavadinimų schema."
 
 #: picard/config_upgrade.py:126
 msgid ""
@@ -125,10 +125,10 @@ msgid ""
 msgstr ""
 "Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
-"Šiuo metu šios parinkties nenaudoji, bet turi apibrėžtą atskirą failo "
-"pavadinimo schemą.\n"
-"Ar nori ją pašalinti, ar sujungti su vieno atlikėjų albumų failų pavadinimų "
-"schema?"
+"Šiuo metu šios parinkties nenaudojate, bet turite apibrėžtą atskirą failų "
+"pavadinimų schemą.\n"
+"Ar norite ją pašalinti, ar sujungti su vieno atlikėjo albumų failų "
+"pavadinimų schema?"
 
 #: picard/config_upgrade.py:133
 msgid "Merge"
@@ -138,7 +138,7 @@ msgstr "Sujungti"
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
 #: picard/ui/metadatabox.py:435 picard/ui/options/interface_toolbar.py:109
 msgid "Remove"
-msgstr "Pašalinti"
+msgstr "Šalinti"
 
 #: picard/config_upgrade.py:446
 msgid "Primary file naming script"
@@ -154,19 +154,19 @@ msgstr "Žurnalo įskiepių pilni keliai"
 
 #: picard/debug_opts.py:83
 msgid "Web Service Post Data"
-msgstr "Žiniatinklio paslaugos išsiuntimo duomenys"
+msgstr "Interneto paslaugos išsiuntimo duomenys"
 
 #: picard/debug_opts.py:83
 msgid "Log data of web service post requests"
-msgstr "Žurnalo duomenys apie žiniatinklio paslaugos išsiuntimo užklausas"
+msgstr "Žurnalo duomenys apie interneto paslaugos išsiuntimo užklausas"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Replies"
-msgstr "Žiniatinklio paslaugos atsakymai"
+msgstr "Interneto paslaugos atsakymai"
 
 #: picard/debug_opts.py:84
 msgid "Log content of web service replies"
-msgstr "Žurnalo žiniatinklio paslaugos atsakymų turinys"
+msgstr "Žurnalo interneto paslaugos atsakymų turinys"
 
 #: picard/file.py:215
 msgid ""
@@ -194,7 +194,7 @@ msgstr "Nėra atitinkamų takelių failui „%(filename)s“"
 #: picard/file.py:911
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "Ieškoma metaduomenų failui %(filename)s …"
+msgstr "Ieškoma metaduomenų failui %(filename)s…"
 
 #: picard/item.py:161
 #, python-format
@@ -280,7 +280,7 @@ msgstr "Ignoruoti takelio trukmės skirtumą iki x sekundžių"
 
 #: picard/options.py:159 picard/ui/forms/ui_options_advanced.py:146
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Didžiausias grąžintinų subjektų skaičius per „MusicBrainz“ užklausą"
+msgstr "Didžiausias grąžintinų subjektų skaičius pagal „MusicBrainz“ užklausą"
 
 #: picard/options.py:160 picard/ui/forms/ui_options_advanced.py:148
 msgid "Include sub-folders when adding files from folder"
@@ -288,7 +288,7 @@ msgstr "Įtraukti poaplankus, kai pridedant failus iš aplanko"
 
 #: picard/options.py:168
 msgid "Cover art providers"
-msgstr "Viršelio apipavidalinimų paslaugų teikėjai"
+msgstr "Viršelio apipavidalinimų teikėjai"
 
 #: picard/options.py:169
 msgid "File name for images"
@@ -312,7 +312,7 @@ msgstr "Niekada nepakeisti šių tipų viršelio vaizdų"
 
 #: picard/options.py:174
 msgid "Always replace cover images of these types"
-msgstr "Visada pakeisti šių tipų viršelio vaizdus"
+msgstr "Visada pakeisti šių tipų viršelio vaizdų"
 
 #: picard/options.py:175 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
@@ -342,11 +342,11 @@ msgstr "Automatiškai skenuoti visus naujus failus"
 
 #: picard/options.py:224 picard/ui/forms/ui_options_general.py:218
 msgid "Check for plugin updates during startup"
-msgstr "Tikrinti įskiepio naujinimus paleidimo metu"
+msgstr "Tikrinti, ar yra įskiepių naujinimų paleidimo metu"
 
 #: picard/options.py:225 picard/ui/forms/ui_options_general.py:219
 msgid "Check for program updates during startup"
-msgstr "Tikrinti programos naujinimus paleidimo metu"
+msgstr "Tikrinti, ar yra programos naujinimų paleidimo metu"
 
 #: picard/options.py:226 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
@@ -414,7 +414,7 @@ msgstr "Naudoti integruotą paiešką, o ne ieškoti naršyklėje"
 
 #: picard/options.py:249 picard/ui/forms/ui_options_interface.py:136
 msgid "Adjust horizontal position in file browser automatically"
-msgstr "Automatiškai reguliuoti horizontalią poziciją failų naršyklėje"
+msgstr "Automatiškai priderinti horizontalią poziciją failų naršyklėje"
 
 #: picard/options.py:250 picard/ui/forms/ui_options_interface.py:135
 msgid "Show a confirmation dialog when saving files"
@@ -515,7 +515,7 @@ msgstr "Vertimo rašto išimtys"
 
 #: picard/options.py:304 picard/ui/forms/ui_options_metadata.py:140
 msgid "Use standardized artist names"
-msgstr "Naudoti tipinius atlikėjų pavadinimus"
+msgstr "Naudoti tipinius atlikėjų vardus"
 
 #: picard/options.py:305 picard/ui/forms/ui_options_metadata.py:141
 msgid "Use standardized instrument and vocal credits"
@@ -527,11 +527,11 @@ msgstr "Naudoti takelio ir leidinio santykius"
 
 #: picard/options.py:307
 msgid "Translate artist names"
-msgstr "Versti atlikėjų pavadinimus"
+msgstr "Versti atlikėjų vardus"
 
 #: picard/options.py:308
 msgid "Translate artist names exception"
-msgstr "Versti atlikėjų pavadinimus išimtis"
+msgstr "Versti atlikėjų vardus išimtis"
 
 #: picard/options.py:309
 msgid "Various Artists name"
@@ -547,7 +547,7 @@ msgstr "Klausyti tik vietinėje serveryje"
 
 #: picard/options.py:315
 msgid "Default listening port"
-msgstr "Numatytas klausymo prievadas"
+msgstr "Numatytasis klausymo prievadas"
 
 #: picard/options.py:316
 msgid "Network cache size in bytes"
