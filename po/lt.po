@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-10-24 08:42+0000\n"
+"PO-Revision-Date: 2024-10-31 20:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -40,7 +40,7 @@ msgstr "Įkeltas albumas %(id)s: %(artist)s – %(album)s"
 #: picard/album.py:556
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr "Įkeliamas albumas %(id)s …"
+msgstr "Įkeliamas albumas %(id)s…"
 
 #: picard/album.py:781
 msgid "[loading album information]"
@@ -54,21 +54,21 @@ msgstr "[nepavyko įkelti albumo %s]"
 #: picard/cluster.py:259
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr "Identifikuotas klasteris %(album)s."
+msgstr "Identifikuota sankaupa „%(album)s“."
 
 #: picard/cluster.py:262
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Nėra atitinkamų leidinių klasteriui %(album)s"
+msgstr "Nėra atitinkamų leidinių sankaupui %(album)s"
 
 #: picard/cluster.py:281
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr "Ieškoma metaduomenų klasteriui %(album)s…"
+msgstr "Ieškoma metaduomenų sankaupui %(album)s…"
 
 #: picard/cluster.py:337
 msgid "Unclustered Files"
-msgstr "Nesuklasterizuoti failai"
+msgstr "Nesusankaupti failai"
 
 #: picard/collection.py:89
 #, python-format
@@ -184,7 +184,7 @@ msgstr "Nėra atitikmenų takelių, viršijančių ribą failui „%(filename)s�
 #: picard/file.py:867
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr "Failas „%(filename)s“ identifikuotas."
+msgstr "Identifikuotas failas „%(filename)s“."
 
 #: picard/file.py:879
 #, python-format
@@ -288,7 +288,7 @@ msgstr "Įtraukti poaplankus, kai pridedant failus iš aplanko"
 
 #: picard/options.py:168
 msgid "Cover art providers"
-msgstr "Viršelio apipavidalinimų teikėjai"
+msgstr "Viršelio teikėjai"
 
 #: picard/options.py:169
 msgid "File name for images"
@@ -350,7 +350,7 @@ msgstr "Tikrinti, ar yra programos naujinimų paleidimo metu"
 
 #: picard/options.py:226 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
-msgstr "Automatiškai klasterizuoti visus naujus failus"
+msgstr "Automatiškai sankaupti visus naujus failus"
 
 #: picard/options.py:227 picard/ui/forms/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
@@ -478,7 +478,7 @@ msgstr "Automatinis atsarginės kopijos paskirties katalogas"
 
 #: picard/options.py:292
 msgid "Minimal similarity for cluster lookups"
-msgstr "Mažiausias klasterių paieškos skaičius panašumas"
+msgstr "Mažiausias sankaupų paieškos skaičius panašumas"
 
 #: picard/options.py:293
 msgid "Minimal similarity for file lookups"
@@ -498,8 +498,7 @@ msgstr "Konvertuoti Unikodo skyrybos ženklus į ASCII"
 
 #: picard/options.py:300 picard/ui/forms/ui_options_metadata.py:145
 msgid "Guess track number and title from filename if empty"
-msgstr ""
-"Atspėti takelio numerį ir pavadinimą iš failo pavadinimo, jei yra tuščias"
+msgstr "Spėti takelio numerį ir pavadinimą iš failo pavadinimo, jei yra tuščias"
 
 #: picard/options.py:301
 msgid "Standalone recordings name"
@@ -519,7 +518,7 @@ msgstr "Naudoti tipinius atlikėjų vardus"
 
 #: picard/options.py:305 picard/ui/forms/ui_options_metadata.py:141
 msgid "Use standardized instrument and vocal credits"
-msgstr "Naudoti tipinius instrumentų ir vokalo kūrėjus"
+msgstr "Naudoti tipinius instrumentų ir vokalo įvardijimus"
 
 #: picard/options.py:306
 msgid "Use track and release relationships"
@@ -535,7 +534,7 @@ msgstr "Versti atlikėjų vardus išimtis"
 
 #: picard/options.py:309
 msgid "Various Artists name"
-msgstr "Įvairių atlikėjų pavadinimas"
+msgstr "Įvairių atlikėjų vardas"
 
 #: picard/options.py:313
 msgid "Browser integration"
@@ -555,7 +554,7 @@ msgstr "Tinklo podėlio dydis baitais"
 
 #: picard/options.py:317
 msgid "Request timeout in seconds"
-msgstr "Užklausos laiko ribojimas sekundėmis"
+msgstr "Užklausos skirtasis laikas sekundėmis"
 
 #: picard/options.py:318
 msgid "Proxy password"
@@ -579,7 +578,7 @@ msgstr "Tarpinio serverio naudotojo vardas"
 
 #: picard/options.py:323
 msgid "Use a web proxy server"
-msgstr "Naudoti žiniatinklio tarpinį serverį"
+msgstr "Naudoti interneto tarpinį serverį"
 
 #: picard/options.py:339 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
@@ -639,7 +638,7 @@ msgstr "Keičiamasis simbolis, naudojamas katalogų skirtukams"
 
 #: picard/options.py:363 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
-msgstr "Pakeisti tarpelius su pabraukimais"
+msgstr "Pakeisti tarpus su pabraukimais"
 
 #: picard/options.py:364
 msgid "Replacement characters used for Windows compatibility"
@@ -668,7 +667,7 @@ msgstr "Valyti esamas žymes"
 
 #: picard/options.py:377
 msgid "Don't write tags"
-msgstr "Nerašyti žymių"
+msgstr "Neįrašyti žymių"
 
 #: picard/options.py:378 picard/ui/forms/ui_options_tags.py:84
 msgid "Fix missing seekpoints for FLAC files"
@@ -680,7 +679,7 @@ msgstr "Išlaikytų žymių sąrašas"
 
 #: picard/options.py:380 picard/ui/forms/ui_options_tags.py:81
 msgid "Keep embedded images when clearing tags"
-msgstr "Palikti įterptus vaizdus, kai išvalomos žymės"
+msgstr "Laikyti įterptus vaizdus, kai išvalomos žymės"
 
 #: picard/options.py:381 picard/ui/forms/ui_options_tags.py:78
 msgid "Preserve timestamps of tagged files"
@@ -688,11 +687,11 @@ msgstr "Išlaikyti žymėtų failų laiko žymes"
 
 #: picard/options.py:382 picard/ui/forms/ui_options_tags.py:83
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Pašalinti APEv2 žymas iš MP3 failų"
+msgstr "Šalinti APEv2 žymes iš MP3 failų"
 
 #: picard/options.py:383 picard/ui/forms/ui_options_tags.py:82
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Pašalinti ID3 žymes iš FLAC failų"
+msgstr "Šalinti ID3 žymes iš FLAC failų"
 
 #: picard/options.py:387
 msgid "Save APEv2 tags to AAC"
@@ -701,7 +700,7 @@ msgstr "Išsaugoti APEv2 žymes į AAC"
 #: picard/options.py:388
 #: picard/ui/forms/ui_options_tags_compatibility_aac.py:55
 msgid "Remove APEv2 tags from AAC files"
-msgstr "Pašalinti APEv2 žymes iš AAC failų"
+msgstr "Šalinti APEv2 žymes iš AAC failų"
 
 #: picard/options.py:392
 msgid "Save APEv2 tags to AC3"
@@ -710,7 +709,7 @@ msgstr "Išsaugoti APEv2 žymes į AC3"
 #: picard/options.py:393
 #: picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
 msgid "Remove APEv2 tags from AC3 files"
-msgstr "Pašalinti APEv2 žymes iš AC3 failų"
+msgstr "Šalinti APEv2 žymes iš AC3 failų"
 
 #: picard/options.py:397
 msgid "ID3v2.3 join character"
@@ -737,7 +736,7 @@ msgstr "ID3v2 versija įrašyti"
 #: picard/options.py:405
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr "Pašalinti esamas RIFF INFO žymes iš WAVE failų"
+msgstr "Šalinti esamas RIFF INFO žymes iš WAVE failų"
 
 #: picard/options.py:406
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
@@ -768,7 +767,8 @@ msgid ""
 "Plugin \"%(plugin)s\" from \"%(filename)s\" is not compatible with this "
 "version of Picard."
 msgstr ""
-"Įskiepis „%(plugin)s“ iš „%(filename)s“ nepalaikomas su šia „Picard“ versija."
+"Įskiepis „%(plugin)s“ iš „%(filename)s“ nesuderinamas su šia „Picard“ "
+"versija."
 
 #: picard/pluginmanager.py:360
 #, python-format
@@ -2596,7 +2596,7 @@ msgstr "Padėkos"
 #: picard/ui/aboutdialog.py:112
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
-msgstr "Autorinės teisės © %(copyright_years)s %(authors_credits)s ir kiti"
+msgstr "© %(copyright_years)s %(authors_credits)s ir kiti"
 
 #: picard/ui/aboutdialog.py:114
 msgid "Official website"
