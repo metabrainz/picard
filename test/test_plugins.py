@@ -295,6 +295,7 @@ class TestPluginWrapper(PicardTestCase):
 
 class TestPluginFunctions(PicardTestCase):
     def setUp(self):
+        super().setUp()
         self.set_config_values({
             'enabled_plugins': [],
         })
