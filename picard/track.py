@@ -75,7 +75,10 @@ from picard.script import (
     ScriptParser,
     iter_active_tagging_scripts,
 )
-from picard.util import pattern_as_regex
+from picard.util import (
+    pattern_as_regex,
+    titlecase,
+)
 from picard.util.imagelist import ImageList
 from picard.util.textencoding import asciipunct
 
@@ -358,7 +361,7 @@ class Track(FileListItem):
 
         # Find most common genres
         most_common_genres = genres.most_common(limit)
-        genres_list = [titlize(name) for name, _count in most_common_genres]
+        genres_list = [titlecase(name) for name, _count in most_common_genres]
         genres_list.sort()
 
         # And generate the genre metadata tag
