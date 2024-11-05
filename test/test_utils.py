@@ -74,6 +74,7 @@ from picard.util import (
     pattern_as_regex,
     sort_by_similarity,
     system_supports_long_paths,
+    titlecase,
     tracknum_and_title_from_filename,
     tracknum_from_filename,
     uniqify,
@@ -1019,3 +1020,51 @@ class DetectUnicodeEncodingTest(PicardTestCase):
         expected_encoding = 'windows-1251'
         file_path = get_test_data_path('eac-windows1251.log')
         self.assertEqual(expected_encoding, detect_file_encoding(file_path))
+
+
+class TitlecaseTest(PicardTestCase):
+
+    def test_titlecase(self):
+        tests = (
+            # empty string
+            ('', ''),
+            # simple cases
+            ('hello world', 'Hello World'),
+            ('Hello World', 'Hello World'),
+            ('HELLO WORLD', 'HELLO WORLD'),
+            # contractions and possessives
+            ("children's music", "Children's Music"),
+            ("CHILDREN'S MUSIC", "CHILDREN'S MUSIC"),
+            ("don't stop", "Don't Stop"),
+            # hyphenated words
+            ('first-class ticket', 'First-Class Ticket'),
+            ('FIRST-CLASS ticket', 'FIRST-CLASS Ticket'),
+            # multiple spaces
+            ('hello   world', 'Hello   World'),
+            # punctuation
+            ('hello, world!', 'Hello, World!'),
+            ('hello... world', 'Hello... World'),
+            # special characters
+            ('über café', 'Über Café'),
+            ('españa', 'España'),
+            ('ñandu', 'Ñandu'),
+            # single character words
+            ('a b c', 'A B C'),
+            # numbers
+            ('2001 a space odyssey', '2001 A Space Odyssey'),
+            # preserves existing capitalization after first letter
+            ('MacDonald had a farm', 'MacDonald Had A Farm'),
+            ('LaTeX document', 'LaTeX Document'),
+            # mixed case
+            ('mIxEd CaSe', 'MIxEd CaSe'),
+            # unicode boundaries
+            ('hello—world', 'Hello—World'),
+            ('hello\u2014world', 'Hello\u2014World'),
+            # preserves all caps
+            ('IBM PC', 'IBM PC'),
+            # single letter
+            ('a', 'A'),
+            ('A', 'A'),
+        )
+        for input, expected in tests:
+            self.assertEqual(expected, titlecase(input))
