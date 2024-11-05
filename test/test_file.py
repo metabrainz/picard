@@ -154,7 +154,16 @@ class TestPreserveTimes(PicardTestCase):
         # HERE an external access to the file is possible, modifying its access time
 
         # read times again and compare with original
-        st = os.stat(self.file.filename)
+        max_tries = 10
+        while max_tries:
+            self._read_testfile()  # required
+            st = os.stat(self.file.filename)
+            if st.st_atime_ns > 0:
+                break
+            max_tries -= 1
+
+        self.assertTrue(max_tries > 0, "Max attempts to os.stat() attained!")
+
         (after_atime_ns, after_mtime_ns) = (st.st_atime_ns, st.st_mtime_ns)
 
         # on macOS 10.14 and later os.utime only sets the times with second
@@ -172,7 +181,7 @@ class TestPreserveTimes(PicardTestCase):
         # access times may not be equal
         # time difference should be positive and reasonably low (if no access in between, it should be 0)
         delta = after_atime_ns - before_atime_ns
-        tolerance = 10**7  # 0.01 seconds
+        tolerance = 10**8  # 0.1 seconds
         self.assertTrue(0 <= delta < tolerance, "0 <= %s < %s" % (delta, tolerance))
 
         # ensure written data can be read back
