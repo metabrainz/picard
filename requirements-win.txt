@@ -1,10 +1,10 @@
 discid==1.2.0
-fasteners==0.18
-Markdown==3.4.4
+fasteners==0.19
+Markdown==3.7
 mutagen==1.47.0
-PyJWT==2.8.0
+PyJWT==2.9.0
 PyQt5==5.15.11
-python-dateutil==2.8.2
-pywin32==306
-PyYAML==6.0.1
-charset-normalizer==3.3.2
+python-dateutil==2.9.0.post0
+pywin32==308
+PyYAML==6.0.2
+charset-normalizer==3.4.0
