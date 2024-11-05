@@ -324,29 +324,6 @@ class Track(FileListItem):
 
     @staticmethod
     def _genres_to_metadata(genres, limit=None, minusage=0, filters='', join_with=None):
-        def titlize(text):
-            """Converts text to title case using custom rules.
-
-            Capitalizes the first character of each word while converting remaining
-            characters to lowercase. Handles contractions properly by keeping the
-            apostrophe intact.
-
-            Args:
-                text (str): The input string to be converted to title case.
-
-            Returns:
-                str: The input text converted to title case format.
-
-            Examples:
-                >>> titlize("children's music")
-                'Children's Music'
-                >>> titlize("blues")
-                "Blues"
-            """
-            return re.sub(r"[A-Za-z]+('[A-Za-z]+)?",
-                        lambda m: m.group(0)[0].upper() + m.group(0)[1:].lower(),
-                        text)
-
         if limit is not None and limit < 1:
             return []
 
