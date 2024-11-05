@@ -9,4 +9,4 @@ PyQt6-Qt6>=6.6.1
 python-dateutil~=2.7
 pywin32; sys_platform == 'win32'
 PyYAML>=5.1, <7
-charset-normalizer~=3.3.2
+charset-normalizer~=3.3
