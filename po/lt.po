@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-10-31 20:42+0000\n"
+"PO-Revision-Date: 2024-11-05 10:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.2\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -233,12 +233,12 @@ msgstr "Įskiepis „%(plugin)s“"
 #: picard/pluginmanager.py:371
 #, python-format
 msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
-msgstr "Nepavyko pakrauti užpakalinio įskiepio „%(plugin)s“ iš „%(filename)s“"
+msgstr "Nepavyko įkelti išskleisto įskiepio „%(plugin)s“ iš „%(filename)s“"
 
 #: picard/pluginmanager.py:512
 #, python-format
 msgid "Error loading plugins list: %(error)s"
-msgstr "Klaida įkeliant įskiepių sąrašą: %(error)s"
+msgstr "Klaida įkeliant įskiepių sąrašą: %(error)s."
 
 #: picard/profile.py:46 picard/ui/options/general.py:56
 #: picard/ui/ui_options_general.py:207
@@ -788,7 +788,7 @@ msgstr "„MusicBrainz“ paskyra"
 
 #: picard/tagger.py:647
 msgid "Authorization code:"
-msgstr "Tapatybės patvirtinimo kodas:"
+msgstr "Patvirtinimo kodas:"
 
 #: picard/tagger.py:1136
 #, python-format
@@ -836,7 +836,7 @@ msgstr "Nepavyko analizuoti perrašymo žurnalo „%s“."
 #: picard/track.py:121
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
-msgstr "Klaidos eilutė %(lineno)d: %(error)s"
+msgstr "Klaidos eilutė %(lineno)d: %(error)s."
 
 #: picard/track.py:390
 msgid "[loading recording information]"
@@ -850,12 +850,12 @@ msgstr "[nepavyko įkelti įrašo %s]"
 #: picard/acoustid/__init__.py:112
 #, python-format
 msgid "AcoustID lookup network error for '%(filename)s'!"
-msgstr "„AcoustID“ paieškos tinklo klaida dėl „%(filename)s“."
+msgstr "„AcoustID“ paieškos tinklo klaida „%(filename)s“."
 
 #: picard/acoustid/__init__.py:135
 #, python-format
 msgid "AcoustID lookup failed for '%(filename)s'!"
-msgstr "„AcoustID“ paieška nepavyko dėl „%(filename)s“."
+msgstr "„AcoustID“ paieška nepavyko „%(filename)s“."
 
 #: picard/acoustid/__init__.py:179
 #, python-format
@@ -899,11 +899,11 @@ msgstr "„AcoustID“ pateikimas nepavyko su klaida „%(error)s“: %(message)
 
 #: picard/browser/addrelease.py:144
 msgid "Add cluster as release"
-msgstr "Pridėti klasterį kaip leidinį"
+msgstr "Pridėti sankaupą kaip leidinį"
 
 #: picard/browser/addrelease.py:146
 msgid "Add cluster as release…"
-msgstr "Pridėti klasterį kaip leidinį…"
+msgstr "Pridėti sankaupą kaip leidinį…"
 
 #: picard/browser/addrelease.py:154
 msgid "Add file as release"
@@ -924,17 +924,13 @@ msgstr "Pridėti failą kaip įrašą…"
 #: picard/coverart/__init__.py:101
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
-"Viršelio apipavidalinimo tipas „%(type)s“ atsisiųstas albumui %(albumid)s iš "
-"%(host)s."
+msgstr "Viršelio tipas „%(type)s“ atsisiųstas albumui %(albumid)s iš %(host)s."
 
 #: picard/coverart/__init__.py:187
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
-msgstr ""
-"Atsisiunčiamas %(albumid)s viršelio apipavidalinimo tipas „%(type)s“ iš "
-"%(host)s…"
+msgstr "Atsisiunčiamas %(albumid)s viršelio tipas „%(type)s“ iš %(host)s…"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -966,7 +962,7 @@ msgstr "„Cover Art Archive“: leidinys"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr "„Cover Art Archive“: leidinio grupė"
+msgstr "„Cover Art Archive“: leidinių grupė"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -974,7 +970,7 @@ msgstr "Vietiniai failai"
 
 #: picard/coverart/providers/urlrels.py:39
 msgid "Allowed Cover Art URLs"
-msgstr "Leidžiami viršelio apipavidalinimų URL adresai"
+msgstr "Leidžiami viršelių URL adresai"
 
 #: picard/script/__init__.py:141
 msgid ""
