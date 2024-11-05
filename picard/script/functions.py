@@ -42,7 +42,6 @@ from functools import reduce
 from inspect import getfullargspec
 import operator
 import re
-import unicodedata
 
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.metadata import MULTI_VALUED_JOINER
@@ -54,6 +53,7 @@ from picard.script.parser import (
 )
 from picard.util import (
     pattern_as_regex,
+    titlecase,
     uniqify,
 )
 
@@ -1076,33 +1076,7 @@ Example:
 _Since Picard 2.1_"""
 ))
 def func_title(parser, text):
-    # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
-    # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
-    if not text:
-        return text
-    capitalized = text[0].capitalize()
-    capital = False
-    for i in range(1, len(text)):
-        t = text[i]
-        if t in "’'" and text[i-1].isalpha():
-            capital = False
-        elif iswbound(t):
-            capital = True
-        elif capital and t.isalpha():
-            capital = False
-            t = t.capitalize()
-        else:
-            capital = False
-        capitalized += t
-    return capitalized
-
-
-def iswbound(char):
-    # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
-    # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
-    """ Checks whether the given character is a word boundary """
-    category = unicodedata.category(char)
-    return 'Zs' == category or 'Sk' == category or 'P' == category[0]
+    return titlecase(text)
 
 
 @script_function(documentation=N_(

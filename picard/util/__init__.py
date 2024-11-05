@@ -1207,3 +1207,51 @@ def detect_file_encoding(path, max_bytes_to_read=1024*256):
             encoding = result['encoding'].lower()
 
         return encoding
+
+
+def iswbound(char):
+    # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
+    # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
+    """ Checks whether the given character is a word boundary """
+    category = unicodedata.category(char)
+    return 'Zs' == category or 'Sk' == category or 'P' == category[0]
+
+
+def titlecase(text):
+    # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
+    # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
+    """Converts text to title case following word boundary rules.
+
+    Capitalizes the first character of each word in the input text, where words
+    are determined by Unicode word boundaries. Preserves existing capitalization
+    after the first character of each word.
+
+    Args:
+        text (str): The input text to convert to title case.
+
+    Returns:
+        str: The text converted to title case. Returns empty string if input is empty.
+
+    Examples:
+        >>> titlecase("hello world")
+        'Hello World'
+        >>> titlecase("children's music")
+        'Children's Music'
+    """
+    if not text:
+        return text
+    capitalized = text[0].capitalize()
+    capital = False
+    for i in range(1, len(text)):
+        t = text[i]
+        if t in "’'" and text[i-1].isalpha():
+            capital = False
+        elif iswbound(t):
+            capital = True
+        elif capital and t.isalpha():
+            capital = False
+            t = t.capitalize()
+        else:
+            capital = False
+        capitalized += t
+    return capitalized
