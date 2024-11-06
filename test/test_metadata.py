@@ -102,9 +102,6 @@ class CommonTests:
         def get_metadata_object():
             pass
 
-        def tearDown(self):
-            pass
-
         def test_metadata_setitem(self):
             self.assertEqual(["single1-value"], self.metadata.getraw("single1"))
             self.assertEqual(["single2-value"], self.metadata.getraw("single2"))
