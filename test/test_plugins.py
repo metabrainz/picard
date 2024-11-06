@@ -105,9 +105,6 @@ class TestPicardPluginsCommon(PicardTestCase):
         super().setUp()
         logging.disable(logging.ERROR)
 
-    def tearDown(self):
-        pass
-
 
 class TestPicardPluginsCommonTmpDir(TestPicardPluginsCommon):
 
