@@ -664,6 +664,7 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
 class TestAliasesLocales(PicardTestCase):
 
     def setUp(self):
+        super().setUp()
         self.maxDiff = None
 
         self.aliases = [

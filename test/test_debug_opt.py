@@ -30,6 +30,7 @@ class DebugOptTestCase(DebugOptEnum):
 
 class TestDebugOpt(PicardTestCase):
     def setUp(self):
+        super().setUp()
         DebugOptTestCase.set_registry(set())
 
     def test_enabled(self):
