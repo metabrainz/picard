@@ -83,7 +83,9 @@ class FakeTagger(QtCore.QObject):
 
 
 class PicardTestCase(unittest.TestCase):
+
     def setUp(self):
+        super().setUp()
         log.set_level(logging.DEBUG)
         setup_gettext(None, 'C')
         self.tagger = FakeTagger()
