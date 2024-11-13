@@ -470,9 +470,9 @@ def replace_non_ascii(string, repl="_", pathsave=False, win_compat=False):
     return interim.encode('ascii', 'repl').decode('ascii')
 
 
-def _replace_char(map, ch, pathsave=False, win_compat=False):
+def _replace_char(mapping, ch, pathsave=False, win_compat=False):
     try:
-        result = map[ch]
+        result = mapping[ch]
         if ch != result and pathsave:
             result = sanitize_filename(result, win_compat=win_compat)
         return result
