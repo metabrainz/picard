@@ -465,6 +465,7 @@ def replace_non_ascii(string, repl="_", pathsave=False, win_compat=False):
 
     def error_repl(e, repl="_"):
         return (repl, e.start + 1)
+
     codecs.register_error('repl', partial(error_repl, repl=repl))
     # Decoding and encoding to allow replacements
     return interim.encode('ascii', 'repl').decode('ascii')
