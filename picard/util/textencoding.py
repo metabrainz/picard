@@ -107,7 +107,10 @@ _ADDITIONAL_COMPATIBILITY = {
 
 
 def unicode_simplify_compatibility(string, pathsave=False, win_compat=False):
-    interim = ''.join(_replace_char(_ADDITIONAL_COMPATIBILITY, ch, pathsave, win_compat) for ch in string)
+    interim = ''.join(
+        _replace_char(_ADDITIONAL_COMPATIBILITY, ch, pathsave, win_compat)
+        for ch in string
+    )
     return unicodedata.normalize("NFKC", interim)
 
 
@@ -185,7 +188,10 @@ _SIMPLIFY_PUNCTUATION = {
 
 
 def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
-    return ''.join(_replace_char(_SIMPLIFY_PUNCTUATION, ch, pathsave, win_compat) for ch in string)
+    return ''.join(
+        _replace_char(_SIMPLIFY_PUNCTUATION, ch, pathsave, win_compat)
+        for ch in string
+    )
 
 
 _SIMPLIFY_COMBINATIONS = {
@@ -427,12 +433,17 @@ def _replace_unicode_simplify_combinations(char, pathsave, win_compat):
 
 def unicode_simplify_combinations(string, pathsave=False, win_compat=False):
     return ''.join(
-        _replace_unicode_simplify_combinations(c, pathsave, win_compat) for c in string)
+        _replace_unicode_simplify_combinations(c, pathsave, win_compat)
+        for c in string
+    )
 
 
 def unicode_simplify_accents(string):
-    result = ''.join(c for c in unicodedata.normalize('NFKD', string) if not unicodedata.combining(c))
-    return result
+    return ''.join(
+        c
+        for c in unicodedata.normalize('NFKD', string)
+        if not unicodedata.combining(c)
+    )
 
 
 def asciipunct(string):
