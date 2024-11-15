@@ -313,9 +313,10 @@ class Track(FileListItem):
             tm['~silence'] = '1'
 
         if config.setting['use_genres']:
+            self._convert_folksonomy_tags_to_genre()
+            self._delete_genres_from_tags()
             self._add_folksonomy_tags()
             self._add_genres()
-            self._convert_folksonomy_tags_to_genre()
 
         # Convert Unicode punctuation
         if config.setting['convert_punctuation']:
@@ -386,6 +387,10 @@ class Track(FileListItem):
         genre = Counter(self._genres)
         genre += self.album._genres
         self._add_tags(genre, '_genres')
+
+    def _delete_genres_from_tags(self):
+        for genres in self.album.genres:
+            del self.album._folksonomy_tags[genres]
 
 
 class NonAlbumTrack(Track):
