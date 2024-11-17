@@ -389,8 +389,8 @@ class Track(FileListItem):
         self._add_tags(genre, '_genres')
 
     def _delete_genres_from_tags(self):
-        for genres in self.album.genres:
-            del self.album._folksonomy_tags[genres]
+        for genre in self.album.genres:
+            del self.album._folksonomy_tags[genre]
 
 
 class NonAlbumTrack(Track):
