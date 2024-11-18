@@ -50,16 +50,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-08-14 16:42+0000\n"
+"PO-Revision-Date: 2024-11-18 15:42+0000\n"
 "Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
-"Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
-"projects/picard/3/app/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified Han script) <https://translations."
+"metabrainz.org/projects/picard/3/app/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:137
@@ -177,19 +177,19 @@ msgstr "插件日志路径"
 
 #: picard/debug_opts.py:83
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "通过Web服务提交数据"
 
 #: picard/debug_opts.py:83
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "记录Web服务POST请求的日志数据"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Web 服务回复"
 
 #: picard/debug_opts.py:84
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "记录Web服务回复的内容"
 
 #: picard/file.py:215
 msgid ""
@@ -236,10 +236,8 @@ msgid "Error"
 msgstr "错误"
 
 #: picard/log.py:78
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "新用户提示"
+msgstr "警告"
 
 #: picard/log.py:79 picard/ui/infodialog.py:235 picard/ui/infodialog.py:479
 #: picard/ui/options/interface_toolbar.py:105
@@ -251,10 +249,8 @@ msgid "Debug"
 msgstr "调试"
 
 #: picard/oauth.py:197
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "意外的验证错误"
+msgstr "意外的token撤销错误"
 
 #: picard/oauth.py:348 picard/oauth.py:375
 msgid "Unexpected authentication error"
@@ -319,19 +315,19 @@ msgstr "仅嵌入正面封面图像"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_cover.py:120
 msgid "Never replace cover images with smaller ones"
-msgstr ""
+msgstr "不要用更小的图片替换封面图片"
 
 #: picard/options.py:172
 msgid "Never replace cover images of the given types"
-msgstr ""
+msgstr "不要用指定类型的图片替换封面图片"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
-msgstr ""
+msgstr "不要用这些类型的图片替换封面图片"
 
 #: picard/options.py:174
 msgid "Always replace cover images of these types"
-msgstr ""
+msgstr "总是用这些类型的图片替换封面图片"
 
 #: picard/options.py:175 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
@@ -386,9 +382,8 @@ msgid "Days between update checks"
 msgstr "检查更新间隔天数"
 
 #: picard/options.py:231
-#, fuzzy
 msgid "Updates to check"
-msgstr "要检查的更新:"
+msgstr "待检查的更新"
 
 #: picard/options.py:236
 msgid "Use album artist genres"
@@ -403,19 +398,16 @@ msgid "Genres to include or exclude"
 msgstr "包含或排除的流派"
 
 #: picard/options.py:239
-#, fuzzy
 msgid "Join multiple genres with"
-msgstr "多个流派的连接符:"
+msgstr "流派连接符使用"
 
 #: picard/options.py:240
-#, fuzzy
 msgid "Maximum number of genres"
-msgstr "最大流派数目:"
+msgstr "最大流派数"
 
 #: picard/options.py:241
-#, fuzzy
 msgid "Minimal genre usage"
-msgstr "最小流派用量:"
+msgstr "最小化流派使用"
 
 #: picard/options.py:242 picard/ui/forms/ui_options_genres.py:126
 msgid "Use only my genres"
@@ -466,17 +458,14 @@ msgid "Show text labels under icons"
 msgstr "在图标底部显示文字标签"
 
 #: picard/options.py:258
-#, fuzzy
 msgid "User interface language"
-msgstr "用户界面语言:"
+msgstr "用户界面语言"
 
 #: picard/options.py:259
-#, fuzzy
 msgid "User interface color theme"
-msgstr "用户界面颜色主题："
+msgstr "用户界面颜色主题"
 
 #: picard/options.py:260
-#, fuzzy
 msgid "Use advanced search syntax"
 msgstr "使用高级查询语法"
 
@@ -497,25 +486,20 @@ msgid "Tags to show at the top"
 msgstr "显示在顶部的标签"
 
 #: picard/options.py:288
-#, fuzzy
-#| msgid "Destination directory"
 msgid "Automatic backup destination directory"
-msgstr "目标目录"
+msgstr "自动备份目标目录"
 
 #: picard/options.py:292
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "簇查询的最小相似度:"
+msgstr "簇查询的最小相似度"
 
 #: picard/options.py:293
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "文件查询的最小相似度:"
+msgstr "文件查询的最小相似度"
 
 #: picard/options.py:294
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "将文件与音轨相匹配的最小相似度:"
+msgstr "文件与音轨相匹配的最小相似度"
 
 #: picard/options.py:298
 msgid "Translation locales"
@@ -550,10 +534,8 @@ msgid "Use standardized instrument and vocal credits"
 msgstr "使用标准化的乐器与人声署名"
 
 #: picard/options.py:306
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "使用专辑关系"
+msgstr "使用音轨-发行的关系"
 
 #: picard/options.py:307
 msgid "Translate artist names"
@@ -568,7 +550,6 @@ msgid "Various Artists name"
 msgstr "群星名称"
 
 #: picard/options.py:313
-#, fuzzy
 msgid "Browser integration"
 msgstr "浏览器集成"
 
@@ -577,18 +558,16 @@ msgid "Listen only on localhost"
 msgstr "仅在 localhost 监听"
 
 #: picard/options.py:315
-#, fuzzy
 msgid "Default listening port"
-msgstr "默认监听端口:"
+msgstr "默认监听端口"
 
 #: picard/options.py:316
 msgid "Network cache size in bytes"
 msgstr "网络缓存大小（字节单位）"
 
 #: picard/options.py:317
-#, fuzzy
 msgid "Request timeout in seconds"
-msgstr "请求超时秒数："
+msgstr "请求超时时间(秒)"
 
 #: picard/options.py:318
 msgid "Proxy password"
@@ -791,10 +770,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "无法加载插件「%s」"
 
 #: picard/pluginmanager.py:308
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "在「%(plugin)s」里加载插件「%(dirname)s」失败"
+msgstr "加载插件\"%(plugin)s\"失败"
 
 #: picard/pluginmanager.py:355
 #, python-format
@@ -851,7 +829,7 @@ msgstr "编号"
 
 #: picard/releasegroup.py:63
 msgid "Packaging"
-msgstr ""
+msgstr "包装"
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:67
 #: picard/ui/itemviews/columns.py:214 picard/ui/searchdialog/album.py:154
@@ -1387,8 +1365,8 @@ msgstr ""
 "`$copy(new,old)`\n"
 "\n"
 "将元数据从变量 `old` 复制到 `new`。\n"
-"`$set(new,%old%)` 之间的区别是 `$copy(new,old)` 复制多值变量时不执行扁平"
-"化。\n"
+"`$set(new,%old%)` 之间的区别是 `$copy(new,old)`\n"
+"     复制多值变量时不执行扁平化。\n"
 "\n"
 "_Picard 0.9起_"
 
@@ -2605,10 +2583,9 @@ msgstr ""
 "_Picard 2.9起_"
 
 #: picard/script/serializer.py:218
-#, fuzzy, python-format
-#| msgid "Error exporting file \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "导出文件 \"%(filename)s\" 时发生了错误。%(error)s。"
+msgstr "导出文件 \"%(filename)s\" 时发生错误: %(error)s。"
 
 #: picard/script/serializer.py:225
 msgid "Export Script File"
@@ -2689,9 +2666,9 @@ msgstr ""
 "  Jim Dong https://launchpad.net/~xuanqidongjim"
 
 #: picard/ui/aboutdialog.py:78
-#, fuzzy, python-format
+#, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Translated to simplified Chinese by %s"
+msgstr "<br/>已由%s翻译为简体中文"
 
 #: picard/ui/aboutdialog.py:81
 msgid ""
@@ -2839,7 +2816,7 @@ msgstr "出错项目"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
 msgid "Entities"
-msgstr ""
+msgstr "实体"
 
 #: picard/ui/colors.py:48
 msgid "Pending entity"
@@ -2850,14 +2827,12 @@ msgid "Saved entity"
 msgstr "已保存项目"
 
 #: picard/ui/colors.py:50
-#, fuzzy
-#| msgid "Append front cover art"
 msgid "First cover art"
-msgstr "附加为正面封面"
+msgstr "第一张封面"
 
 #: picard/ui/colors.py:50 picard/ui/colors.py:57
 msgid "Others"
-msgstr ""
+msgstr "其他"
 
 #: picard/ui/colors.py:51
 msgid "Log view text (debug)"
@@ -2866,7 +2841,7 @@ msgstr "日志视图文本（调试）"
 #: picard/ui/colors.py:51 picard/ui/colors.py:52 picard/ui/colors.py:53
 #: picard/ui/colors.py:54
 msgid "Logging"
-msgstr ""
+msgstr "日志记录"
 
 #: picard/ui/colors.py:52
 msgid "Log view text (error)"
@@ -2882,23 +2857,19 @@ msgstr "日志视图文本（警告）"
 
 #: picard/ui/colors.py:55
 msgid "Profile highlight background"
-msgstr ""
+msgstr "配置文件高亮背景"
 
 #: picard/ui/colors.py:55 picard/ui/colors.py:56
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Profiles"
-msgstr "选项配置"
+msgstr "配置文件"
 
 #: picard/ui/colors.py:56
 msgid "Profile highlight foreground"
-msgstr ""
+msgstr "配置文件高亮前景"
 
 #: picard/ui/colors.py:57
-#, fuzzy
-#| msgid "Highlight"
 msgid "Row Highlight"
-msgstr "高亮"
+msgstr "行高亮"
 
 #: picard/ui/colors.py:58
 msgid "Tag added"
@@ -2918,52 +2889,38 @@ msgid "Tag removed"
 msgstr "标签已移除"
 
 #: picard/ui/colors.py:61
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Error syntax highlight"
-msgstr "要高亮显示的字符串"
+msgstr "高亮显示错误语法"
 
 #: picard/ui/colors.py:61 picard/ui/colors.py:62 picard/ui/colors.py:63
 #: picard/ui/colors.py:64 picard/ui/colors.py:65 picard/ui/colors.py:66
 #: picard/ui/colors.py:67
-#, fuzzy
-#| msgid "Clear Highlight"
 msgid "Syntax Highlighting"
-msgstr "清除高亮"
+msgstr "语法高亮"
 
 #: picard/ui/colors.py:62
 msgid "Escape syntax highlight"
-msgstr ""
+msgstr "转义字符语法高亮"
 
 #: picard/ui/colors.py:63
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Function syntax highlight"
-msgstr "要高亮显示的字符串"
+msgstr "函数语法高亮"
 
 #: picard/ui/colors.py:64
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Noop syntax highlight"
-msgstr "要高亮显示的字符串"
+msgstr "无操作指令语法高亮"
 
 #: picard/ui/colors.py:65
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Special syntax highlight"
-msgstr "要高亮显示的字符串"
+msgstr "特殊语法高亮"
 
 #: picard/ui/colors.py:66
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Unicode syntax highlight"
-msgstr "要高亮显示的字符串"
+msgstr "Unicode 语法高亮"
 
 #: picard/ui/colors.py:67
-#, fuzzy
-#| msgid "String to highlight"
 msgid "Variable syntax highlight"
-msgstr "要高亮显示的字符串"
+msgstr "变量语法高亮"
 
 #: picard/ui/coverartbox.py:335
 msgid "View release on MusicBrainz"
@@ -3051,25 +3008,19 @@ msgstr "类型"
 
 #: picard/ui/infodialog.py:144 picard/ui/infodialog.py:177
 msgid "New Embedded"
-msgstr ""
+msgstr "新嵌入的"
 
 #: picard/ui/infodialog.py:144 picard/ui/infodialog.py:177
-#, fuzzy
-#| msgid "Export"
 msgid "New Exported"
-msgstr "导出"
+msgstr "新导出的"
 
 #: picard/ui/infodialog.py:146 picard/ui/infodialog.py:180
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "New cover art embedded into tags"
-msgstr "将封面图像嵌入到标签"
+msgstr "新封面图像已嵌入"
 
 #: picard/ui/infodialog.py:147 picard/ui/infodialog.py:181
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "New cover art saved as a separate file"
-msgstr "将封面图像保存为单独的文件"
+msgstr "新封面已保存为单独文件"
 
 #: picard/ui/infodialog.py:160 picard/ui/infodialog.py:177
 msgid "Existing Cover"
@@ -3077,35 +3028,24 @@ msgstr "现有封面"
 
 #: picard/ui/infodialog.py:162 picard/ui/infodialog.py:179
 msgid "Existing cover art already embedded into tags"
-msgstr ""
+msgstr "现有的封面已嵌入到标签中"
 
 #: picard/ui/infodialog.py:270
-#, fuzzy, python-format
-#| msgid ""
-#| "Missing temporary file: %(tempfile)s\n"
-#| "Source: %(sourcefile)s"
+#, python-format
 msgid ""
 "<strong>%(message)s</strong><br />Temporary file: <em>%(tempfile)s</em><br /"
 ">Source: <em>%(sourcefile)s</em>"
 msgstr ""
-"找不到暂时性文件：%(tempfile)s\n"
-"来源：%(sourcefile)s"
+"%(message)s</strong><br />临时文件: <em>%(tempfile)s</em><br />源: "
+"<em>%(sourcefile)s</em>"
 
 #: picard/ui/infodialog.py:305
-#, fuzzy
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %(tempfile)s\n"
-#| "Source: %(sourcefile)s"
 msgid "Double-click to open in external viewer"
-msgstr ""
-"双击可在外部查看器中打开\n"
-"临时文件: %(tempfile)s\n"
-"来源: %(sourcefile)s"
+msgstr "双击可在外部查看器中打开"
 
 #: picard/ui/infodialog.py:310
 msgid "Missing temporary file"
-msgstr ""
+msgstr "缺失临时文件"
 
 #: picard/ui/infodialog.py:399
 msgid "Filename:"
@@ -3220,10 +3160,8 @@ msgid "Verbosity"
 msgstr "冗余程度"
 
 #: picard/ui/logview.py:200 picard/ui/logview.py:201
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "选项"
+msgstr "调试选项"
 
 #: picard/ui/logview.py:211
 msgid "String to highlight"
@@ -3472,7 +3410,7 @@ msgstr[0] "您想立即更新插件吗？"
 #: picard/ui/pluginupdatedialog.py:80
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
+msgstr[0] "加上 {extra_file_count:,d} 个其他插件。"
 
 #: picard/ui/ratingwidget.py:100
 #, python-format
@@ -3684,10 +3622,8 @@ msgid "Empty / blank script"
 msgstr "空白脚本"
 
 #: picard/ui/scripteditor.py:664
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "文字"
+msgstr "新脚本"
 
 #: picard/ui/scripteditor.py:757
 msgid ""
@@ -3806,51 +3742,35 @@ msgstr "关闭（&E）"
 #: picard/ui/util.py:86
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #: picard/ui/util.py:108
-#, fuzzy
-#| msgid "&Set as starting directory"
 msgid "Select a file or a directory"
-msgstr "设置为起始目录 (&S)"
+msgstr "选择一个文件或文件夹"
 
 #: picard/ui/util.py:114
-#, fuzzy
-#| msgid "Select all"
 msgid "Select a target file"
-msgstr "全选"
+msgstr "选择一个目标文件"
 
 #: picard/ui/util.py:123
-#, fuzzy
-#| msgid "Select all"
 msgid "Select a file"
-msgstr "全选"
+msgstr "选择一个文件"
 
 #: picard/ui/util.py:132
-#, fuzzy
-#| msgid "Delete the profile"
 msgid "Select one or more files"
-msgstr "删除配置文件"
+msgstr "选择一个或多个文件"
 
 #: picard/ui/util.py:141
-#, fuzzy
-#| msgid "Select all"
 msgid "Select a directory"
-msgstr "全选"
+msgstr "选择一个目录"
 
 #: picard/ui/util.py:154
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select one or more directories"
-msgstr "删除空文件夹"
+msgstr "选择一个或多个目录"
 
 #: picard/ui/util.py:204
-#, fuzzy
-#| msgid ""
-#| "You have changed the application theme. You have to restart Picard in "
-#| "order for the change to take effect."
 msgid "You have to restart Picard for the changes to take effect."
-msgstr "您已更改了程序主题。您必须重新启动 Picard 才能使更改生效。"
+msgstr "您必须重新启动 Picard 才能使更改生效。"
 
 #: picard/ui/util.py:207
 msgid "Changes only applied on restart"
@@ -4047,14 +3967,10 @@ msgid "Default CD-ROM drive to use for lookups:"
 msgstr "用于查询的默认 CD-ROM 设备:"
 
 #: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace cover images matching selected types"
-msgstr "仅下载符合所选类型的封面图像"
+msgstr "不要替换与选定类型匹配的封面图片"
 
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
 msgid "Select Types..."
 msgstr "选择类型…"
 
@@ -4086,11 +4002,11 @@ msgstr "下移所选项"
 
 #: picard/ui/forms/ui_options_cover_processing.py:277
 msgid "Discard images if below the given size"
-msgstr ""
+msgstr "丢弃低于给定的尺寸大小的图像"
 
 #: picard/ui/forms/ui_options_cover_processing.py:278
 msgid "Minimum width:"
-msgstr ""
+msgstr "最小宽度:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:279
 #: picard/ui/forms/ui_options_cover_processing.py:281
@@ -4099,33 +4015,29 @@ msgstr ""
 #: picard/ui/forms/ui_options_cover_processing.py:291
 #: picard/ui/forms/ui_options_cover_processing.py:293
 msgid "px"
-msgstr ""
+msgstr "像素"
 
 #: picard/ui/forms/ui_options_cover_processing.py:280
 msgid "Minimum height:"
-msgstr ""
+msgstr "最小高度:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:282
-#, fuzzy
-#| msgid "Only use images of the following size:"
 msgid "Resize images to the given size"
-msgstr "只使用以下尺寸的图像:"
+msgstr "将图像调整到给定的尺寸"
 
 #: picard/ui/forms/ui_options_cover_processing.py:283
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Resize images saved to tags "
-msgstr "将封面图像嵌入到标签"
+msgstr "将保存到标签中的图像调整到指定的尺寸 "
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
 #: picard/ui/forms/ui_options_cover_processing.py:290
 msgid "Maximum width:"
-msgstr ""
+msgstr "最大宽度:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:286
 #: picard/ui/forms/ui_options_cover_processing.py:292
 msgid "Maximum height:"
-msgstr ""
+msgstr "最大高度:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:288
 #: picard/ui/forms/ui_options_cover_processing.py:294
@@ -4606,7 +4518,7 @@ msgstr "选中的文件命名脚本："
 
 #: picard/ui/forms/ui_options_renaming.py:163
 msgid "Edit file naming script…"
-msgstr "编辑文件命名脚本："
+msgstr "编辑文件命名脚本…"
 
 #: picard/ui/forms/ui_options_renaming.py:164
 #: picard/ui/forms/ui_scripteditor.py:217
@@ -5655,7 +5567,7 @@ msgstr "根据文件名获取标签（&F）…"
 #: picard/ui/mainwindow/actions.py:466
 #: picard/ui/options/interface_toolbar.py:129
 msgid "Parse File Names…"
-msgstr "解析文件名"
+msgstr "解析文件名…"
 
 #: picard/ui/mainwindow/actions.py:467
 msgid "Set tags based on the file names"
@@ -6876,7 +6788,7 @@ msgstr "版权"
 
 #: picard/util/tags.py:62
 msgid "Director"
-msgstr ""
+msgstr "导演/总监"
 
 #: picard/util/tags.py:63
 msgid "Disc Id"

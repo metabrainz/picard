@@ -1,29 +1,29 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Dian Li <xslidian@gmail.com>, 2019
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Lionel <a472714747@gmail.com>, 2020
 # poi, 2023
+# KenParker_CN <peekabookenny@gmail.com>, 2024.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: poi, 2023\n"
-"Language-Team: Chinese (China) (https://app.transifex.com/musicbrainz/"
-"teams/13846/zh_CN/)\n"
+"PO-Revision-Date: 2024-11-18 15:42+0000\n"
+"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://translations."
+"metabrainz.org/projects/picard/3/appstream/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.8.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -128,8 +128,9 @@ msgstr "MetaBrainz 基金会"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr ""
+msgstr "使用最新一代的MusicBrainz标签工具为您的音乐添加精准标签，提升音乐管理和发现的"
+"体验"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "新窗口"
