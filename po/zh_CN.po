@@ -50,16 +50,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-08-14 16:42+0000\n"
+"PO-Revision-Date: 2024-11-18 15:42+0000\n"
 "Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
-"Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
-"projects/picard/2/app/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified Han script) <https://translations."
+"metabrainz.org/projects/picard/2/app/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -200,10 +200,8 @@ msgid "Error"
 msgstr "错误"
 
 #: picard/log.py:68
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "新用户提示"
+msgstr "警告"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -229,10 +227,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "无法加载插件「%s」"
 
 #: picard/pluginmanager.py:302
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "在「%(plugin)s」里加载插件「%(dirname)s」失败"
+msgstr "加载插件\"%(plugin)s\"失败"
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -300,9 +297,8 @@ msgid "Days between update checks"
 msgstr "检查更新间隔天数"
 
 #: picard/profile.py:56
-#, fuzzy
 msgid "Updates to check"
-msgstr "要检查的更新:"
+msgstr "待检查的更新"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:129
@@ -342,10 +338,8 @@ msgid "Use release relationships"
 msgstr "使用专辑关系"
 
 #: picard/profile.py:72
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "使用专辑关系"
+msgstr "使用音轨-发行的关系"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -388,19 +382,16 @@ msgid "Use folksonomy tags as genre"
 msgstr "使用用户标签作为流派"
 
 #: picard/profile.py:89
-#, fuzzy
 msgid "Minimal genre usage"
-msgstr "最小流派用量:"
+msgstr "最小化流派使用"
 
 #: picard/profile.py:90
-#, fuzzy
 msgid "Maximum number of genres"
-msgstr "最大流派数目:"
+msgstr "最大流派数"
 
 #: picard/profile.py:91
-#, fuzzy
 msgid "Join multiple genres with"
-msgstr "多个流派的连接符:"
+msgstr "流派连接符使用"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -620,14 +611,12 @@ msgid "Show icons in menus"
 msgstr "在菜单中显示图标"
 
 #: picard/profile.py:188
-#, fuzzy
 msgid "User interface language"
-msgstr "用户界面语言:"
+msgstr "用户界面语言"
 
 #: picard/profile.py:189
-#, fuzzy
 msgid "User interface color theme"
-msgstr "用户界面颜色主题："
+msgstr "用户界面颜色主题"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -638,7 +627,6 @@ msgid "Use builtin search rather than looking in browser"
 msgstr "使用内置搜索代替浏览器查询"
 
 #: picard/profile.py:192
-#, fuzzy
 msgid "Use advanced search syntax"
 msgstr "使用高级查询语法"
 
@@ -732,7 +720,7 @@ msgstr "使用 Web 代理服务器"
 
 #: picard/profile.py:239
 msgid "type of proxy server"
-msgstr ""
+msgstr "代理服务器类型"
 
 #: picard/profile.py:240
 msgid "Proxy server address"
@@ -751,38 +739,32 @@ msgid "Proxy password"
 msgstr "代理密码"
 
 #: picard/profile.py:244
-#, fuzzy
 msgid "Request timeout in seconds"
-msgstr "请求超时秒数："
+msgstr "请求超时时间(秒)"
 
 #: picard/profile.py:245
-#, fuzzy
 msgid "Browser integration"
 msgstr "浏览器集成"
 
 #: picard/profile.py:248
-#, fuzzy
 msgid "Default listening port"
-msgstr "默认监听端口:"
+msgstr "默认监听端口"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
 msgstr "仅在 localhost 监听"
 
 #: picard/profile.py:252
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "文件查询的最小相似度:"
+msgstr "文件查询的最小相似度"
 
 #: picard/profile.py:253
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "簇查询的最小相似度:"
+msgstr "簇查询的最小相似度"
 
 #: picard/profile.py:254
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "将文件与音轨相匹配的最小相似度:"
+msgstr "文件与音轨相匹配的最小相似度"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -1333,8 +1315,8 @@ msgstr ""
 "`$copy(new,old)`\n"
 "\n"
 "将元数据从变量 `old` 复制到 `new`。\n"
-"`$set(new,%old%)` 之间的区别是 `$copy(new,old)` 复制多值变量时不执行扁平"
-"化。\n"
+"`$set(new,%old%)` 之间的区别是 `$copy(new,old)`\n"
+"     复制多值变量时不执行扁平化。\n"
 "\n"
 "_Picard 0.9起_"
 
@@ -2551,10 +2533,9 @@ msgstr ""
 "_Picard 2.9起_"
 
 #: picard/script/serializer.py:202
-#, fuzzy, python-format
-#| msgid "Error exporting file \"%(filename)s\": %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "导出文件 \"%(filename)s\" 时发生了错误。%(error)s。"
+msgstr "导出文件 \"%(filename)s\" 时发生错误: %(error)s。"
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
@@ -2635,9 +2616,9 @@ msgstr ""
 "  Jim Dong https://launchpad.net/~xuanqidongjim"
 
 #: picard/ui/aboutdialog.py:77
-#, fuzzy, python-format
+#, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Translated to simplified Chinese by %s"
+msgstr "<br/>已由%s翻译为简体中文"
 
 #: picard/ui/aboutdialog.py:80
 msgid ""
@@ -3677,7 +3658,7 @@ msgstr "根据文件名获取标签（&F）…"
 
 #: picard/ui/mainwindow.py:863 picard/ui/options/interface_toolbar.py:120
 msgid "Parse File Names…"
-msgstr "解析文件名"
+msgstr "解析文件名…"
 
 #: picard/ui/mainwindow.py:864
 msgid "Set tags based on the file names"
@@ -4060,7 +4041,7 @@ msgstr[0] "您想立即更新插件吗？"
 #: picard/ui/pluginupdatedialog.py:73
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
+msgstr[0] "加上 {extra_file_count:,d} 个其他插件。"
 
 #: picard/ui/ratingwidget.py:99
 #, python-format
@@ -4957,7 +4938,7 @@ msgstr "选中的文件命名脚本："
 
 #: picard/ui/ui_options_renaming.py:157
 msgid "Edit file naming script…"
-msgstr "编辑文件命名脚本："
+msgstr "编辑文件命名脚本…"
 
 #: picard/ui/ui_options_renaming.py:158 picard/ui/ui_scripteditor.py:211
 msgid "Files will be named like this:"
@@ -6287,7 +6268,7 @@ msgstr "版权"
 
 #: picard/util/tags.py:57
 msgid "Director"
-msgstr ""
+msgstr "导演/总监"
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
