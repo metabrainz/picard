@@ -172,6 +172,7 @@ class ExtractYearTest(PicardTestCase):
         self.assertEqual(extract_year_from_date('2020-02-28'), 2020)
         self.assertEqual(extract_year_from_date('2015.02'), 2015)
         self.assertEqual(extract_year_from_date('2015; 2015'), None)
+        self.assertEqual(extract_year_from_date('20190303201903032019030320190303'), None)
         # test for the format as supported by ID3 (https://id3.org/id3v2.4.0-structure): yyyy-MM-ddTHH:mm:ss
         self.assertEqual(extract_year_from_date('2020-07-21T13:00:00'), 2020)
 
