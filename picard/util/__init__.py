@@ -946,7 +946,7 @@ def extract_year_from_date(dt):
             return int(dt.get('year'))
         else:
             return parse(dt).year
-    except (TypeError, ValueError):
+    except (OverflowError, TypeError, ValueError):
         return None
 
 
