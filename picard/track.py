@@ -317,6 +317,9 @@ class Track(FileListItem):
 
         if config.setting['use_genres']:
             self._convert_folksonomy_tags_to_genre()
+            self._delete_genres_from_tags()
+            self._add_folksonomy_tags()
+            self._add_genres()
 
         # Convert Unicode punctuation
         if config.setting['convert_punctuation']:
@@ -349,9 +352,13 @@ class Track(FileListItem):
 
     def _convert_folksonomy_tags_to_genre(self):
         config = get_config()
-        # Combine release and track genres
         genres = Counter(self.genres)
-        genres += self.album.genres
+        use_folksonomy = config.setting['folksonomy_tags']
+        if use_folksonomy:
+            genres += self.album._folksonomy_tags
+        else:
+            genres += self.album._genres
+        # Combine release and track genres
         if self.album.release_group:
             genres += self.album.release_group.genres
         if not genres and config.setting['artists_genres']:
@@ -370,6 +377,23 @@ class Track(FileListItem):
             filters=config.setting['genres_filter'],
             join_with=config.setting['join_genres']
         )
+
+    def _add_tags(self, tags, name):
+        self.metadata[name] = tags.keys()
+
+    def _add_folksonomy_tags(self):
+        tags = Counter(self._folksonomy_tags)
+        tags += self.album._folksonomy_tags
+        self._add_tags(tags, '_folksonomy_tags')
+
+    def _add_genres(self):
+        genre = Counter(self._genres)
+        genre += self.album._genres
+        self._add_tags(genre, '_genres')
+
+    def _delete_genres_from_tags(self):
+        for genre in self.album.genres:
+            del self.album._folksonomy_tags[genre]
 
 
 class NonAlbumTrack(Track):

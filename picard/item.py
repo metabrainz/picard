@@ -200,6 +200,7 @@ class MetadataItem(QtCore.QObject, Item):
         self.iter_children_items_metadata_ignore_attrs = {}
         self.suspend_metadata_images_update = IgnoreUpdatesContext()
         self._genres = Counter()
+        self._folksonomy_tags = Counter()
 
     @property
     def tagger(self):
@@ -309,17 +310,24 @@ class MetadataItem(QtCore.QObject, Item):
         if name:
             self._genres[name] += count
 
+    @property
+    def folksonomy_tags(self):
+        return self._folksonomy_tags
+
+    def add_folksonomy_tag(self, name, count):
+        if name:
+            self._folksonomy_tags[name] += count
+
     @staticmethod
     def set_genre_inc_params(inc, config=None):
         require_authentication = False
         config = config or get_config()
         if config.setting['use_genres']:
-            use_folksonomy = config.setting['folksonomy_tags']
             if config.setting['only_my_genres']:
                 require_authentication = True
-                inc |= {'user-tags'} if use_folksonomy else {'user-genres'}
+                inc |= {'user-tags', 'user-genres'}
             else:
-                inc |= {'tags'} if use_folksonomy else {'genres'}
+                inc |= {'tags', 'genres'}
         return require_authentication
 
 
