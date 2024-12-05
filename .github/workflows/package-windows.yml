@@ -9,14 +9,15 @@ jobs:
     runs-on: windows-2019
     strategy:
       matrix:
-        type:
-        - store-app
-        - signed-app
-        - installer
-        - portable
+        setup:
+          - type: installer
+          - type: portable
+            build-portable: 1
+          - type: store-app
+            disable-autoupdate: 1
       fail-fast: false
     env:
-      CODESIGN: 0
+      CODESIGN: ${{ !!secrets.AZURE_CERT_PROFILE_NAME }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -32,9 +33,6 @@ jobs:
           -DiscidVersion $Env:DISCID_VERSION -DiscidSha256Sum $Env:DISCID_SHA256SUM `
           -FpcalcVersion $Env:FPCALC_VERSION -FpcalcSha256Sum $Env:FPCALC_SHA256SUM
         Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
-        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
-        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        Add-Content $env:GITHUB_ENV "BUILD_NUMBER=$BuildNumber"
         New-Item -Name .\artifacts -ItemType Directory
       env:
         DISCID_VERSION: 0.6.4
@@ -57,80 +55,73 @@ jobs:
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
+        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
+        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
         python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
       run: pytest --verbose
-    - name: Prepare code signing certificate
-      if: matrix.type != 'store-app'
+    - name: Prepare clean build environment
       run: |
-        If ($Env:CODESIGN_P12_URL -And $Env:AWS_ACCESS_KEY_ID) {
-          pip install awscli
-          aws s3 cp "$Env:CODESIGN_P12_URL" .\codesign.pfx
-          Add-Content $env:GITHUB_ENV "CODESIGN=1"
-        } Else {
-          Write-Output "::warning::No code signing certificate available, skipping code signing."
+        Remove-Item -Path build,dist/picard,locale -Recurse -ErrorAction Ignore
+        python setup.py clean
+    - name: Build
+      run: |
+        python setup.py build --build-number=$BuildNumber
+        python setup.py build_ext
+        pyinstaller --noconfirm --clean picard.spec
+        If ($env:PICARD_BUILD_PORTABLE -ne "1") {
+          dist\picard\_internal\fpcalc -version
         }
-      env:
-        AWS_DEFAULT_REGION: eu-central-1
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        CODESIGN_P12_URL: ${{ secrets.CODESIGN_P12_URL }}
-    - name: Build Windows 10 store app package
-      if: matrix.type == 'store-app'
-      run: |
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER
-        Move-Item .\dist\*.msix .\artifacts
       env:
         PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
-    - name: Build Windows 10 signed app package
-      if: matrix.type == 'signed-app' && env.CODESIGN == '1'
-      run: |
-        $CertificateFile = ".\codesign.pfx"
-        $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-        & .\scripts\package\win-package-appx.ps1 -BuildNumber $Env:BUILD_NUMBER `
-          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
-        Move-Item .\dist\*.msix .\artifacts
-      env:
-        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
+        PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
+        PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
+    - name: Sign picard.exe
+      uses: azure/trusted-signing-action@v0.5.0
+      if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
+      with:
+        azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+        endpoint: ${{ secrets.AZURE_ENDPOINT }}
+        trusted-signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
+        certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE_NAME }}
+        files-folder: dist\picard
+        files-folder-filter: exe
+        files-folder-recurse: true
+        timestamp-rfc3161: http://timestamp.acs.microsoft.com
+        timestamp-digest: SHA256
     - name: Build Windows installer
-      if: matrix.type == 'installer'
+      if: matrix.setup.type == 'installer'
       run: |
-        # choco install nsis
-        If ($Env:CODESIGN -eq "1") {
-          $CertificateFile = ".\codesign.pfx"
-          $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-        } Else {
-          $CertificateFile = $null
-          $CertificatePassword = $null
-        }
-        & .\scripts\package\win-package-installer.ps1 -BuildNumber $Env:BUILD_NUMBER `
-          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
+        makensis.exe /INPUTCHARSET UTF8 installer\picard-setup.nsi
         Move-Item .\installer\*.exe .\artifacts
-        dist\picard\_internal\fpcalc -version
-      env:
-        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
     - name: Build Windows portable app
-      if: matrix.type == 'portable'
+      if: matrix.setup.type == 'portable'
       run: |
-        If ($Env:CODESIGN -eq "1") {
-          $CertificateFile = ".\codesign.pfx"
-          $CertificatePassword = ConvertTo-SecureString -String $Env:CODESIGN_P12_PASSWORD -Force -AsPlainText
-        } Else {
-          $CertificateFile = $null
-          $CertificatePassword = $null
-        }
-        & .\scripts\package\win-package-portable.ps1 -BuildNumber $Env:BUILD_NUMBER `
-          -CertificateFile $CertificateFile -CertificatePassword $CertificatePassword
         Move-Item .\dist\*.exe .\artifacts
-      env:
-        CODESIGN_P12_PASSWORD: ${{ secrets.CODESIGN_P12_PASSWORD }}
-    - name: Cleanup
-      if: env.CODESIGN == '1'
-      run: Remove-Item .\codesign.pfx
+    - name: Build Windows 10 store app package
+      if: matrix.setup.type == 'store-app'
+      run: |
+        & .\scripts\package\win-package-appx.ps1 dist\picard
+        Move-Item .\dist\*.msix .\artifacts
+    - name: Sign final executable
+      uses: azure/trusted-signing-action@v0.5.0
+      if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
+      with:
+        azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+        endpoint: ${{ secrets.AZURE_ENDPOINT }}
+        trusted-signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
+        certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE_NAME }}
+        files-folder: artifacts
+        files-folder-filter: exe
+        timestamp-rfc3161: http://timestamp.acs.microsoft.com
+        timestamp-digest: SHA256
     - name: Archive production artifacts
       uses: actions/upload-artifact@v4
-      if: matrix.type != 'signed-app' || env.CODESIGN == '1'
       with:
-        name: windows-${{ matrix.type }}
+        name: windows-${{ matrix.setup.type }}
         path: artifacts/
