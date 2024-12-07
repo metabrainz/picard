@@ -4,6 +4,7 @@ Markdown==3.7
 mutagen==1.47.0
 PyJWT==2.9.0
 PyQt5==5.15.11
+PyQt5-sip==12.15.0; python_version < '3.9'
 python-dateutil==2.9.0.post0
 pywin32==308
 PyYAML==6.0.2
