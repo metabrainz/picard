@@ -561,9 +561,24 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _update_tags(self, new_selection=True, drop_album_caches=False):
         self.selection_mutex.lock()
-        files = self.files
-        tracks = self.tracks
-        self.selection_mutex.unlock()
+        try:
+            files = self.files
+            tracks = self.tracks
+
+            if not (files or tracks):
+                return None
+            for file in files:
+                old_path = file.metadata.get('path_old', file.filename)
+                file.orig_metadata['Path'] = old_path
+
+                new_path = file.metadata.get('~path_saved', file.filename)
+                file.metadata['Path'] = new_path
+            # Update album cache check
+            if new_selection or drop_album_caches:
+                self._single_file_album = len({file.metadata['album'] for file in files}) == 1
+
+        finally:
+            self.selection_mutex.unlock()
 
         if not (files or tracks):
             return None

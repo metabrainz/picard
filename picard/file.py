@@ -367,6 +367,7 @@ class File(MetadataItem):
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
+        metadata["path_old"] = old_filename
         config = get_config()
         # Check that file has not been removed since thread was queued
         # Also don't save if we are stopping.
@@ -412,6 +413,10 @@ class File(MetadataItem):
         return new_filename
 
     def _saving_finished(self, result=None, error=None):
+        if error is None and result is not None:
+            new_filename = result
+            # Add new path info after successful rename
+            self.metadata["~path_saved"] = new_filename
         # Handle file removed before save
         # Result is None if save was skipped
         if ((self.state == File.REMOVED or self.tagger.stopping)
