@@ -12,14 +12,15 @@
 # CatQuest, The Endeavouring Cat, 2014
 # "ApeKattQuest, MonkeyPython" <ApeKattQuestMonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
 # "ApeKattQuest, MonkeyPython" <monkeypython+inst@yepmail.net>, 2024.
+# "ApeKattQuest, MonkeyPython" <ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-08-04 18:42+0000\n"
-"Last-Translator: \"ApeKattQuest, MonkeyPython\" <monkeypython+inst@yepmail."
-"net>\n"
+"PO-Revision-Date: 2024-12-08 21:42+0000\n"
+"Last-Translator: \"ApeKattQuest, MonkeyPython\" "
+"<ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/2/app/nb_NO/>\n"
 "Language: nb\n"
@@ -27,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -284,19 +285,19 @@ msgstr "Metadata"
 
 #: picard/profile.py:64
 msgid "Translate artist names"
-msgstr ""
+msgstr "Oversett artistnavn"
 
 #: picard/profile.py:65
 msgid "Translation locales"
-msgstr ""
+msgstr "Oversettelsesspråk"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Unntak av oversatte artistnavn"
 
 #: picard/profile.py:67
 msgid "Translation script exceptions"
-msgstr ""
+msgstr "Unntak av oversettelseskodeskript"
 
 #: picard/profile.py:68 picard/ui/ui_options_metadata.py:134
 msgid "Use standardized artist names"
@@ -304,11 +305,11 @@ msgstr "Bruk standardiserte artistnavn"
 
 #: picard/profile.py:69 picard/ui/ui_options_metadata.py:135
 msgid "Use standardized instrument and vocal credits"
-msgstr ""
+msgstr "Bruk standardiserte instrument- og vokalkreditter"
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:136
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "Konverter Unicode skilletegn til ASCII"
+msgstr "Konverter skilletegn fra Unicode til ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
