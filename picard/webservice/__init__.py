@@ -510,7 +510,7 @@ class WebService(QtCore.QObject):
             log.debug("Skipping aborted task for %s", request.url().toString())
             return
 
-        if request.mblogin and request.path != "/oauth2/token":
+        if request.mblogin:
             self.oauth_manager.get_access_token(partial(self._send_request, request, task))
         else:
             self._send_request(request, task)
