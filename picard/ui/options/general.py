@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007, 2014 Lukáš Lalinský
-# Copyright (C) 2008, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008, 2018-2024 Philipp Wolfer
 # Copyright (C) 2011, 2013 Michael Wiencek
 # Copyright (C) 2011, 2019 Wieland Hoffmann
 # Copyright (C) 2013-2014 Sophist-UK
@@ -28,7 +28,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt5 import QtCore
+from PyQt5 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.config import (
     BoolOption,
@@ -166,16 +169,38 @@ class GeneralOptionsPage(OptionsPage):
     def login(self):
         self.tagger.mb_login(self.on_login_finished, self)
 
-    def restore_defaults(self):
-        super().restore_defaults()
-        self.logout()
-
     def on_login_finished(self, successful, error_msg=None):
         self.update_login_logout(error_msg)
 
     def logout(self):
-        self.tagger.mb_logout()
+        self.tagger.mb_logout(self.on_logout_finished)
+
+    def on_logout_finished(self, successful, error_msg=None):
+        if not successful:
+            msg = QtWidgets.QMessageBox(self)
+            msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+            msg.setWindowTitle(_("Logout error"))
+            msg.setText(_(
+                "A server error occurred while revoking access to the MusicBrainz server: %s\n"
+                "\n"
+                "Remove locally stored credentials anyway?"
+            ) % error_msg)
+            msg.setStandardButtons(
+                QtWidgets.QMessageBox.StandardButton.Yes
+                | QtWidgets.QMessageBox.StandardButton.No
+                | QtWidgets.QMessageBox.StandardButton.Retry)
+            result = msg.exec()
+            if result == QtWidgets.QMessageBox.StandardButton.Yes:
+                oauth_manager = self.tagger.webservice.oauth_manager
+                oauth_manager.forget_access_token()
+                oauth_manager.forget_refresh_token()
+            elif result == QtWidgets.QMessageBox.StandardButton.Retry:
+                self.logout()
         self.update_login_logout()
+
+    def restore_defaults(self):
+        super().restore_defaults()
+        self.logout()
 
     def _update_analyze_new_files(self, cluster_new_files):
         if cluster_new_files:

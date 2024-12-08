@@ -5,7 +5,7 @@
 # Copyright (C) 2014 Lukáš Lalinský
 # Copyright (C) 2015 Sophist-UK
 # Copyright (C) 2015 Wieland Hoffmann
-# Copyright (C) 2015, 2018, 2021 Philipp Wolfer
+# Copyright (C) 2015, 2018, 2021-2022, 2024 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018-2022 Laurent Monin
@@ -24,9 +24,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from base64 import urlsafe_b64encode
 from functools import partial
+from hashlib import sha256
 from json.decoder import JSONDecodeError
+import secrets
 import time
 import urllib.parse
 
@@ -42,10 +44,35 @@ from picard.util import (
 )
 
 
+OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
+
+
+class OAuthInvalidStateError(Exception):
+    pass
+
+
 class OAuthManager(object):
 
     def __init__(self, webservice):
         self.webservice = webservice
+        # Associates state tokens with callbacks
+        self.__states = {}
+        self._redirect_uri = OOB_URI
+
+    @property
+    def redirect_uri(self):
+        return self._redirect_uri
+
+    @redirect_uri.setter
+    def redirect_uri(self, redirect_uri):
+        if not redirect_uri:
+            self._redirect_uri = OOB_URI
+        else:
+            self._redirect_uri = redirect_uri
+
+    @property
+    def is_oob(self):
+        return self.redirect_uri == OOB_URI
 
     @property
     def setting(self):
@@ -127,10 +154,48 @@ class OAuthManager(object):
     def is_logged_in(self):
         return self.is_authorized() and bool(self.username)
 
-    def revoke_tokens(self):
-        # TODO actually revoke the tokens on MB (I think it's not implementented there)
-        self.forget_refresh_token()
-        self.forget_access_token()
+    def revoke_tokens(self, callback):
+        # Actually revoke the tokens on MB.
+        # From https://musicbrainz.org/doc/Development/OAuth2#Revoking_a_token :
+        # "If your application is installed or offline and token is a
+        # refresh token, we'll revoke the entire authorization grant associated
+        # with that token."
+        log.debug("OAuth: Revoking authorization grant")
+        self._revoke_token(self.refresh_token, callback)
+
+    def _revoke_token(self, token, callback):
+        params = {
+            'token': token,
+            'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
+            'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
+        }
+        self.webservice.post_url(
+            url=self.url(path="/oauth2/revoke"),
+            data=self._query_data(params),
+            handler=partial(self._on_revoke_token_finished, callback),
+            mblogin=True,
+            priority=True,
+            important=True,
+            request_mimetype='application/x-www-form-urlencoded',
+            parse_response_type=False,
+        )
+
+    def _on_revoke_token_finished(self, callback, data, http, error):
+        successful = False
+        error_msg = None
+        try:
+            if error:
+                log.error("OAuth: revoking token failed: %s", error)
+                error_msg = self._extract_error_description(http, data)
+            else:
+                self.forget_refresh_token()
+                self.forget_access_token()
+                successful = True
+        except Exception as e:
+            log.error("OAuth: Unexpected error handling token revocation response: %r", e)
+            error_msg = _("Unexpected token revocation error")
+        finally:
+            callback(successful=successful, error_msg=error_msg)
 
     def forget_refresh_token(self):
         del self.refresh_token
@@ -156,13 +221,45 @@ class OAuthManager(object):
             queryargs=params
         )
 
-    def get_authorization_url(self, scopes):
+    def _create_code_challenge(self):
+        # see https://datatracker.ietf.org/doc/html/rfc7636#section-4.1
+        # and https://datatracker.ietf.org/doc/html/rfc7636#appendix-B
+        code_verifier = base64url_encode(secrets.token_bytes(32))
+        self.__code_verifier = code_verifier.decode('ASCII')
+        code_challenge = s256_encode(code_verifier)  # code_challenge_method=S256
+        return code_challenge.decode('ASCII')
+
+    def _create_auth_state(self, callback):
+        state = secrets.token_urlsafe(16)
+        self.__states[state] = callback
+        return state
+
+    def verify_state(self, state):
+        """Verifies a state variable used in an authorization URL.
+
+        On success returns a callback associated with this state.
+        If the state is invalid raises OAuthInvalidStateError. Can only be
+        called once on a state, the state itself will be revoked afterwards.
+        """
+        try:
+            callback = self.__states[state]
+            del self.__states[state]
+            return callback
+        except KeyError:
+            raise OAuthInvalidStateError
+
+    def get_authorization_url(self, scopes, callback: callable):
         params = {
             'response_type': 'code',
             'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
-            'redirect_uri': "urn:ietf:wg:oauth:2.0:oob",
+            'redirect_uri': self.redirect_uri,
+            'code_challenge_method': 'S256',
+            'code_challenge': self._create_code_challenge(),
             'scope': scopes,
+            'access_type': 'offline',
         }
+        if not self.is_oob:
+            params['state'] = self._create_auth_state(callback)
         return bytes(self.url(path="/oauth2/authorize", params=params).toEncoded()).decode()
 
     def set_refresh_token(self, refresh_token, scopes):
@@ -221,7 +318,8 @@ class OAuthManager(object):
             'code': authorization_code,
             'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,
             'client_secret': MUSICBRAINZ_OAUTH_CLIENT_SECRET,
-            'redirect_uri': "urn:ietf:wg:oauth:2.0:oob",
+            'redirect_uri': self.redirect_uri,
+            'code_verifier': self.__code_verifier,
         }
         self.webservice.post_url(
             url=self.url(path="/oauth2/token"),
@@ -286,3 +384,39 @@ class OAuthManager(object):
             return response['error_description']
         except (JSONDecodeError, KeyError, TypeError):
             return _("Unexpected request error (HTTP code %s)") % self._http_code(http)
+
+
+def s256_encode(input: bytes) -> bytes:
+    """Implements the S256 code challenge encoding as defined for PKCE in RFC 7636.
+
+    The input data gets hashed by SHA256 and Base64url encoded.
+
+    See also https://datatracker.ietf.org/doc/html/rfc7636#section-4.2
+
+    Args:
+        input (bytes): Input bytes to encode. Is expected to consist only of ASCII characters.
+
+    Returns:
+        bytes: encoded data
+    """
+    return base64url_encode(sha256(input).digest())
+
+
+def base64url_encode(input: bytes) -> bytes:
+    """Implements the Base64url Encoding as defined for PKCE in RFC 7636.
+
+    Base64 encoding using the URL- and filename-safe character set
+    defined in Section 5 of [RFC4648], with all trailing '='
+    characters omitted (as permitted by Section 3.2 of [RFC4648]) and
+    without the inclusion of any line breaks, whitespace, or other
+    additional characters.
+
+    See also https://datatracker.ietf.org/doc/html/rfc7636#appendix-A
+
+    Args:
+        s (bytes): Input bytes to encode.
+
+    Returns:
+        bytes: Base64url encoded data
+    """
+    return urlsafe_b64encode(input).rstrip(b'=')

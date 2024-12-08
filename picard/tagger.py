@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2009, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 amckinle
-# Copyright (C) 2008-2010, 2014-2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2010 Andrew Barnert
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -357,7 +357,7 @@ class Tagger(QtWidgets.QApplication):
                 self.pluginmanager.load_plugins_from_directory(plugin_dir)
 
         self.browser_integration = BrowserIntegration()
-        self.browser_integration.listen_port_changed.connect(self.listen_port_changed)
+        self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
 
         self._pending_files_count = 0
         self.files = {}
@@ -638,6 +638,10 @@ class Tagger(QtWidgets.QApplication):
         self._debug = level == logging.DEBUG
         log.set_level(level)
 
+    def on_listen_port_changed(self, port):
+        self.webservice.oauth_manager.redirect_uri = self._mb_login_redirect_uri()
+        self.listen_port_changed.emit(port)
+
     def _mb_login_dialog(self, parent):
         if not parent:
             parent = self.window
@@ -651,17 +655,28 @@ class Tagger(QtWidgets.QApplication):
         else:
             return None
 
-    def mb_login(self, callback, parent=None):
-        scopes = 'profile tag rating collection submit_isrc submit_barcode'
-        authorization_url = self.webservice.oauth_manager.get_authorization_url(scopes)
-        webbrowser2.open(authorization_url)
-        authorization_code = self._mb_login_dialog(parent)
-        if authorization_code is not None:
-            self.webservice.oauth_manager.exchange_authorization_code(
-                authorization_code, scopes,
-                partial(self.on_mb_authorization_finished, callback))
+    def _mb_login_redirect_uri(self):
+        if self.browser_integration and self.browser_integration.is_running:
+            return f'http://localhost:{self.browser_integration.port}/auth'
         else:
-            callback(False, None)
+            # If browser integration is disabled or not running on the standard
+            # port use out-of-band flow (with manual copying of the token).
+            return None
+
+    def mb_login(self, callback, parent=None):
+        oauth_manager = self.webservice.oauth_manager
+        scopes = 'profile tag rating collection submit_isrc submit_barcode'
+        authorization_url = oauth_manager.get_authorization_url(
+            scopes, partial(self.on_mb_authorization_finished, callback))
+        webbrowser2.open(authorization_url)
+        if oauth_manager.is_oob:
+            authorization_code = self._mb_login_dialog(parent)
+            if authorization_code is not None:
+                self.webservice.oauth_manager.exchange_authorization_code(
+                    authorization_code, scopes,
+                    partial(self.on_mb_authorization_finished, callback))
+            else:
+                callback(False, None)
 
     def on_mb_authorization_finished(self, callback, successful=False, error_msg=None):
         if successful:
@@ -670,15 +685,20 @@ class Tagger(QtWidgets.QApplication):
         else:
             callback(False, error_msg)
 
-    @classmethod
     def on_mb_login_finished(self, callback, successful, error_msg):
         if successful:
             load_user_collections()
         callback(successful, error_msg)
 
-    def mb_logout(self):
-        self.webservice.oauth_manager.revoke_tokens()
-        load_user_collections()
+    def mb_logout(self, callback):
+        self.webservice.oauth_manager.revoke_tokens(
+            partial(self.on_mb_logout_finished, callback)
+        )
+
+    def on_mb_logout_finished(self, callback, successful, error_msg):
+        if successful:
+            load_user_collections()
+        callback(successful, error_msg)
 
     def move_files_to_album(self, files, albumid=None, album=None):
         """Move `files` to tracks on album `albumid`."""
