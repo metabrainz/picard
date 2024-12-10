@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-12-08 21:42+0000\n"
+"PO-Revision-Date: 2024-12-10 18:42+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" "
 "<ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -376,19 +376,19 @@ msgstr "Ekskludér eller inkludér sjangre"
 
 #: picard/options.py:239
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "Bruk følgende symbol for å kombinere flere sjangre"
 
 #: picard/options.py:240
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "Maksimum antall sjangre"
 
 #: picard/options.py:241
 msgid "Minimal genre usage"
-msgstr ""
+msgstr "Minimum antall sjangre"
 
 #: picard/options.py:242 picard/ui/forms/ui_options_genres.py:126
 msgid "Use only my genres"
-msgstr "Bruk bare mine sjangre"
+msgstr "Bruk bare sjangre jeg har tagget"
 
 #: picard/options.py:243 picard/ui/forms/ui_options_genres.py:125
 msgid "Use genres from MusicBrainz"
@@ -489,7 +489,7 @@ msgstr "Konverter skilletegn fra Unicode til ASCII"
 
 #: picard/options.py:300 picard/ui/forms/ui_options_metadata.py:145
 msgid "Guess track number and title from filename if empty"
-msgstr ""
+msgstr "Gjett spornummer og -tittel fra filnavn dersom det er tomt"
 
 #: picard/options.py:301
 msgid "Standalone recordings name"
@@ -497,7 +497,7 @@ msgstr "Navn brukt for frittstående innspillinger"
 
 #: picard/options.py:302 picard/ui/forms/ui_options_metadata.py:143
 msgid "Use release relationships"
-msgstr "Bru utgivelsesrelasjoner"
+msgstr "Bruk utgivelsesrelasjoner"
 
 #: picard/options.py:303
 msgid "Translation script exceptions"
@@ -512,10 +512,8 @@ msgid "Use standardized instrument and vocal credits"
 msgstr "Bruk standardiserte instrument- og vokalkreditter"
 
 #: picard/options.py:306
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Bru utgivelsesrelasjoner"
+msgstr "Bruk spor og utgivelsesrelasjoner"
 
 #: picard/options.py:307
 msgid "Translate artist names"
@@ -592,7 +590,7 @@ msgstr "Foretrukne utgivelsesland"
 
 #: picard/options.py:347 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
-msgstr "Foretrukne mediumformater"
+msgstr "Foretrukne medieformater"
 
 #: picard/options.py:348 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
@@ -669,7 +667,7 @@ msgstr "Reparer manglende søkepunkter i FLAC-filer"
 
 #: picard/options.py:379
 msgid "Preserved tags list"
-msgstr ""
+msgstr "Liste over tagger som skal beholdes"
 
 #: picard/options.py:380 picard/ui/forms/ui_options_tags.py:81
 msgid "Keep embedded images when clearing tags"
@@ -681,11 +679,11 @@ msgstr "Behold systemtider i lagrede filer"
 
 #: picard/options.py:382 picard/ui/forms/ui_options_tags.py:83
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Fjern APEv2 tagger fra mp3 filer"
+msgstr "Fjern APEv2 tagger fra mp3-filer"
 
 #: picard/options.py:383 picard/ui/forms/ui_options_tags.py:82
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Fjern ID3 tagger fra FLAC filer"
+msgstr "Fjern ID3 tagger fra FLAC-filer"
 
 #: picard/options.py:387
 msgid "Save APEv2 tags to AAC"
@@ -725,7 +723,7 @@ msgstr ""
 
 #: picard/options.py:401
 msgid "ID3v2 version to write"
-msgstr ""
+msgstr "ID3v2 versjon som skal brukes"
 
 #: picard/options.py:405
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
