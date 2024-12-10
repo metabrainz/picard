@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-01-11 23:12+0100\n"
-"PO-Revision-Date: 2024-12-08 21:42+0000\n"
+"PO-Revision-Date: 2024-12-10 18:42+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" "
 "<ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -313,17 +313,15 @@ msgstr "Konverter skilletegn fra Unicode til ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
-msgstr "Bru utgivelsesrelasjoner"
+msgstr "Bruk utgivelsesrelasjoner"
 
 #: picard/profile.py:72
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Bru utgivelsesrelasjoner"
+msgstr "Bruk spor og utgivelsesrelasjoner"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
-msgstr ""
+msgstr "Gjett spornummer og -tittel fra filnavn dersom det er tomt"
 
 #: picard/profile.py:74
 msgid "Various Artists name"
@@ -343,7 +341,7 @@ msgstr "Foretrukne utgivelsesland"
 
 #: picard/profile.py:80 picard/ui/ui_options_releases.py:116
 msgid "Preferred medium formats"
-msgstr "Foretrukne mediumformater"
+msgstr "Foretrukne medieformater"
 
 #: picard/profile.py:83 picard/ui/ui_options_genres.py:119
 msgid "Use genres from MusicBrainz"
@@ -351,7 +349,7 @@ msgstr "Bruk sjangre fra MusicBrainz"
 
 #: picard/profile.py:86 picard/ui/ui_options_genres.py:120
 msgid "Use only my genres"
-msgstr "Bruk bare mine sjangre"
+msgstr "Bruk bare sjangre jeg har tagget"
 
 #: picard/profile.py:87
 msgid "Use album artist genres"
@@ -363,15 +361,15 @@ msgstr "Bruk folksonomitagger som sjanger"
 
 #: picard/profile.py:89
 msgid "Minimal genre usage"
-msgstr ""
+msgstr "Minimum antall sjangre"
 
 #: picard/profile.py:90
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "Maksimum antall sjangre"
 
 #: picard/profile.py:91
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "Bruk følgende symbol for å kombinere flere sjangre"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -411,11 +409,11 @@ msgstr "Behold innsatte bilder når tagger fjernes"
 
 #: picard/profile.py:111 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Fjern ID3 tagger fra FLAC filer"
+msgstr "Fjern ID3 tagger fra FLAC-filer"
 
 #: picard/profile.py:112 picard/ui/ui_options_tags.py:77
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Fjern APEv2 tagger fra mp3 filer"
+msgstr "Fjern APEv2 tagger fra mp3-filer"
 
 #: picard/profile.py:113 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
@@ -423,11 +421,11 @@ msgstr "Reparer manglende søkepunkter i FLAC-filer"
 
 #: picard/profile.py:114
 msgid "Preserved tags list"
-msgstr ""
+msgstr "Liste over tagger som skal beholdes"
 
 #: picard/profile.py:117
 msgid "ID3v2 version to write"
-msgstr ""
+msgstr "ID3v2 versjon som skal brukes"
 
 #: picard/profile.py:118 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
