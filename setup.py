@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Picard, the next-generation MusicBrainz tagger"""
-
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
 # Copyright (C) 2006-2008, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2007 Santiago M. Mola
 # Copyright (C) 2008 Robert Kaye
