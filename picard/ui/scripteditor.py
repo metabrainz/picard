@@ -173,7 +173,7 @@ class ScriptEditorExamples():
             if not self.settings['move_files']:
                 return os.path.basename(filename_before), os.path.basename(filename_after)
             return filename_before, filename_after
-        except (ScriptError, TypeError, WinPathTooLong):
+        except (FileNotFoundError, PermissionError, ScriptError, TypeError, WinPathTooLong):
             return "", ""
 
     def update_example_listboxes(self, before_listbox, after_listbox):

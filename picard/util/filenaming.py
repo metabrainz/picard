@@ -29,6 +29,7 @@
 from enum import IntEnum
 import math
 import os
+from pathlib import Path
 import re
 import shutil
 import struct
@@ -326,14 +327,21 @@ def _get_filename_limit(target):
         limit = limits[target]
     except KeyError:
         # we need to call statvfs on an existing target
-        d = target
-        while not os.path.exists(d):
-            d = os.path.dirname(d)
+        p = Path(target)
+        while not p.exists():
+            p = p.parent
         # XXX http://bugs.python.org/issue18695
-        try:
-            limit = os.statvfs(d).f_namemax
-        except UnicodeEncodeError:
-            limit = os.statvfs(d.encode(_io_encoding)).f_namemax
+        limit = 0
+        while not limit:
+            try:
+                try:
+                    limit = os.statvfs(p).f_namemax
+                except UnicodeEncodeError:
+                    limit = os.statvfs(str(p).encode(_io_encoding)).f_namemax
+            except (FileNotFoundError, PermissionError):
+                if p == p.parent:  # we reached the root
+                    raise
+                p = p.parent
         limits[target] = limit
     return limit
 

@@ -81,7 +81,7 @@ from picard.util import sanitize_filename
 # Various bugs and mistakes in this have been ironed out during testing.
 
 
-_additional_compatibility = {
+_ADDITIONAL_COMPATIBILITY = {
     "\u0276": "Œ",  # LATIN LETTER SMALL CAPITAL OE
     "\u1D00": "A",  # LATIN LETTER SMALL CAPITAL A
     "\u1D01": "Æ",  # LATIN LETTER SMALL CAPITAL AE
@@ -107,11 +107,14 @@ _additional_compatibility = {
 
 
 def unicode_simplify_compatibility(string, pathsave=False, win_compat=False):
-    interim = ''.join(_replace_char(_additional_compatibility, ch, pathsave, win_compat) for ch in string)
+    interim = ''.join(
+        _replace_char(_ADDITIONAL_COMPATIBILITY, ch, pathsave, win_compat)
+        for ch in string
+    )
     return unicodedata.normalize("NFKC", interim)
 
 
-_simplify_punctuation = {
+_SIMPLIFY_PUNCTUATION = {
     "\u013F": "L",  # LATIN CAPITAL LETTER L WITH MIDDLE DOT (compat)
     "\u0140": "l",  # LATIN SMALL LETTER L WITH MIDDLE DOT (compat)
     "\u2018": "'",  # LEFT SINGLE QUOTATION MARK (from ‹character-fallback›)
@@ -185,10 +188,13 @@ _simplify_punctuation = {
 
 
 def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
-    return ''.join(_replace_char(_simplify_punctuation, ch, pathsave, win_compat) for ch in string)
+    return ''.join(
+        _replace_char(_SIMPLIFY_PUNCTUATION, ch, pathsave, win_compat)
+        for ch in string
+    )
 
 
-_simplify_combinations = {
+_SIMPLIFY_COMBINATIONS = {
     "\u00C6": "AE",  # LATIN CAPITAL LETTER AE (from ‹character-fallback›)
     "\u00D0": "D",  # LATIN CAPITAL LETTER ETH
     "\u00D8": "OE",  # LATIN CAPITAL LETTER O WITH STROKE (see https://en.wikipedia.org/wiki/%C3%98)
@@ -416,7 +422,7 @@ _simplify_combinations = {
 
 
 def _replace_unicode_simplify_combinations(char, pathsave, win_compat):
-    result = _simplify_combinations.get(char)
+    result = _SIMPLIFY_COMBINATIONS.get(char)
     if result is None:
         return char
     elif not pathsave:
@@ -427,12 +433,17 @@ def _replace_unicode_simplify_combinations(char, pathsave, win_compat):
 
 def unicode_simplify_combinations(string, pathsave=False, win_compat=False):
     return ''.join(
-        _replace_unicode_simplify_combinations(c, pathsave, win_compat) for c in string)
+        _replace_unicode_simplify_combinations(c, pathsave, win_compat)
+        for c in string
+    )
 
 
 def unicode_simplify_accents(string):
-    result = ''.join(c for c in unicodedata.normalize('NFKD', string) if not unicodedata.combining(c))
-    return result
+    return ''.join(
+        c
+        for c in unicodedata.normalize('NFKD', string)
+        if not unicodedata.combining(c)
+    )
 
 
 def asciipunct(string):
@@ -454,14 +465,15 @@ def replace_non_ascii(string, repl="_", pathsave=False, win_compat=False):
 
     def error_repl(e, repl="_"):
         return (repl, e.start + 1)
+
     codecs.register_error('repl', partial(error_repl, repl=repl))
     # Decoding and encoding to allow replacements
     return interim.encode('ascii', 'repl').decode('ascii')
 
 
-def _replace_char(map, ch, pathsave=False, win_compat=False):
+def _replace_char(mapping, ch, pathsave=False, win_compat=False):
     try:
-        result = map[ch]
+        result = mapping[ch]
         if ch != result and pathsave:
             result = sanitize_filename(result, win_compat=win_compat)
         return result
