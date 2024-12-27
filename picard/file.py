@@ -550,7 +550,7 @@ class File(QtCore.QObject, Item):
             new_filename = self._format_filename(new_dirname, new_filename, metadata, settings, naming_format)
 
         new_path = os.path.join(new_dirname, new_filename)
-        return normpath(new_path)
+        return normpath(new_path, realpath=False)
 
     def _rename(self, old_filename, metadata, settings=None):
         new_filename = self.make_filename(old_filename, metadata, settings)

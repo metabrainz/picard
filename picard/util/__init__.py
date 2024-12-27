@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2012, 2014 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2023 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 david
 # Copyright (C) 2010 fatih
@@ -254,15 +254,16 @@ def system_supports_long_paths():
         return False
 
 
-def normpath(path):
+def normpath(path, realpath=True):
     path = os.path.normpath(path)
-    try:
-        path = os.path.realpath(path)
-    except OSError as why:
-        # realpath can fail if path does not exist or is not accessible
-        # or on Windows if drives are mounted without mount manager
-        # (see https://tickets.metabrainz.org/browse/PICARD-2425).
-        log.warning("Failed getting realpath for `%s`: %s", path, why)
+    if realpath:
+        try:
+            path = os.path.realpath(path)
+        except OSError as why:
+            # realpath can fail if path does not exist or is not accessible
+            # or on Windows if drives are mounted without mount manager
+            # (see https://tickets.metabrainz.org/browse/PICARD-2425).
+            log.warning("Failed getting realpath for `%s`: %s", path, why)
     # If the path is longer than 259 characters on Windows, prepend the \\?\
     # prefix. This enables access to long paths using the Windows API. See
     # https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
