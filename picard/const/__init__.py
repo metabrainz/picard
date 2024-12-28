@@ -115,26 +115,6 @@ for k, v in MB_ATTRIBUTES.items():
     elif k.startswith('DB:release_status/name:'):
         RELEASE_STATUS[v] = v
 
-# TODO: remove those 4 imports before 3.0 release
-
-# Release countries
-from picard.const.countries import (  # noqa: F401,E402 # pylint: disable=unused-import
-    RELEASE_COUNTRIES,
-)
-# List of available user interface languages
-from picard.const.languages import (  # noqa: F401,E402 # pylint: disable=unused-import
-    UI_LANGUAGES,
-)
-# List of alias locales
-from picard.const.locales import (  # noqa: F401,E402 # pylint: disable=unused-import
-    ALIAS_LOCALES,
-)
-# List of available charsets
-from picard.const.scripts import (  # noqa: F401,E402 # pylint: disable=unused-import
-    SCRIPTS,
-)
-
-
 # List of official musicbrainz servers - must support SSL for mblogin requests (such as collections).
 MUSICBRAINZ_SERVERS = [
     'musicbrainz.org',
