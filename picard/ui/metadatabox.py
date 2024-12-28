@@ -624,6 +624,8 @@ class MetadataBox(QtWidgets.QTableWidget):
 
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
+            if (len(files) == 1) and (settings['rename_files'] or settings['move_files']):
+                tag_diff.add('Path', [file.filename], [file.make_filename(file.filename, orig_metadata)], removable=False, readonly=True)
 
         for track in tracks:
             if track.num_linked_files == 0:
