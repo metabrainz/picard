@@ -27,13 +27,14 @@
 # TL, 2019
 # Tobias Sarner <Tobias.Sarner@googlemail.com>, 2020
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012-2013,2015,2017
+# chaban <chaban@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-15 12:56+0200\n"
-"PO-Revision-Date: 2024-06-05 18:43+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2024-12-29 21:42+0000\n"
+"Last-Translator: chaban <chaban@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -41,7 +42,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.4\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:137
@@ -4227,7 +4228,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:278
 msgid "Minimum width:"
-msgstr ""
+msgstr "Minimale Breite:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:279
 #: picard/ui/forms/ui_options_cover_processing.py:281
@@ -4240,7 +4241,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:280
 msgid "Minimum height:"
-msgstr ""
+msgstr "Minimale Höhe:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:282
 #, fuzzy
@@ -4257,12 +4258,12 @@ msgstr "Cover-Bilder in Tags einbetten"
 #: picard/ui/forms/ui_options_cover_processing.py:284
 #: picard/ui/forms/ui_options_cover_processing.py:290
 msgid "Maximum width:"
-msgstr ""
+msgstr "Maximale Breite:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:286
 #: picard/ui/forms/ui_options_cover_processing.py:292
 msgid "Maximum height:"
-msgstr ""
+msgstr "Maximale Höhe:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:288
 #: picard/ui/forms/ui_options_cover_processing.py:294
