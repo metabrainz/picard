@@ -245,9 +245,11 @@ class ID3File(File):
         'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
-    __lrc_line_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\d\])')
-    __lrc_syllable_re_parse = re.compile(r'(<\d\d:\d\d\.\d\d\d>)')
-    __lrc_both_re_parse = re.compile(r'(\[\d\d:\d\d\.\d\d\d\]|<\d\d:\d\d\.\d\d\d>)')
+
+    __lrc_time_format_re = r'\d+:\d{1,2}(?:.\d+)?'
+    __lrc_line_re_parse = re.compile(r'(\[' + __lrc_time_format_re + r'\])')
+    __lrc_syllable_re_parse = re.compile(r'(<' + __lrc_time_format_re + r'>)')
+    __lrc_both_re_parse = re.compile(r'(\[' + __lrc_time_format_re + r'\]|<' + __lrc_time_format_re + r'>)')
 
     def __init__(self, filename):
         super().__init__(filename)
@@ -765,8 +767,8 @@ class ID3File(File):
 
         timestamp_and_lyrics = batched(self.__lrc_both_re_parse.split(text)[1:], 2)
         for timestamp, lyrics in timestamp_and_lyrics:
-            minutes, seconds, ms = timestamp[1:-1].replace(".", ":").split(':')
-            milliseconds = int(minutes) * 60 * 1000 + int(float('%s.%s' % (seconds, ms)) * 1000)
+            minutes, seconds = timestamp[1:-1].split(':')
+            milliseconds = int(minutes) * 60 * 1000 + int(float(seconds) * 1000)
             sylt_lyrics.append((lyrics, milliseconds))
 
         # Remove frames with no lyrics and a repeating timestamp
