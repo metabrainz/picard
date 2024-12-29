@@ -290,7 +290,15 @@ def is_absolute_path(path):
     """Similar to os.path.isabs, but properly detects Windows shares as absolute paths
     See https://bugs.python.org/issue22302
     """
-    return os.path.isabs(path) or (IS_WIN and os.path.normpath(path).startswith("\\\\"))
+    if IS_WIN:
+        # Two backslashes indicate a UNC path.
+        if path.startswith("\\\\"):
+            return True
+        # Consider a single slash at the start not relative. This is the default
+        # for `os.path.isabs` since Python 3.13.
+        elif path.startswith("\\") or path.startswith("/"):
+            return False
+    return os.path.isabs(path)
 
 
 def samepath(path1, path2):
