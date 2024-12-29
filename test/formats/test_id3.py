@@ -799,6 +799,10 @@ class ID3FileTest(PicardTestCase):
             "[00:00.000]Test lyrics with\n[01:00.000]only line time stamps",
             "<00:00.000>Test lyrics with<01:00.000>only syllable time stamps",
             "[00:00.000]<00:00.000>Test extra\n<00:00.750>[00:00.750]<00:00.750>timestamp<00:01.500>",
+            "[00:01.00]<00:01.00>Test lyrics with two\n[00:01.75]<00:01.75>digit ms",
+            "[01:01.0]<01:01.000>Test lyrics with different\n[01:01.8]<01:01.7506>digit ms",
+            "[2:1.0]<2:1.0>Test lyrics with single digits\n[2:2]<2:2>or no ms",
+            "[300:1.000]<300:1.000>Test lyrics with long minutes",
             "Test invalid[00:00.000]input\nTest invalid[00:01.000]input",
             "Test lyrics with no timestamps")
         correct_sylt = (
@@ -806,6 +810,10 @@ class ID3FileTest(PicardTestCase):
             [("Test lyrics with\n", 0), ("only line time stamps", 60 * 1000)],
             [("Test lyrics with", 0), ("only syllable time stamps", 60 * 1000)],
             [("Test extra\n", 0), ("timestamp", 750), ("", 1500)],
+            [("Test lyrics with two\n", 1000), ("digit ms", 1750)],
+            [("Test lyrics with different\n", 61000), ("digit ms", 61750)],
+            [("Test lyrics with single digits\n", 121000), ("or no ms", 122000)],
+            [("Test lyrics with long minutes", (300*60+1)*1000)],
             [("input\nTest invalid", 0), ("input", 1000)],
             [])
         for lrc, correct_sylt in zip(lrc, correct_sylt):
