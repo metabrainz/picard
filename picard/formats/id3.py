@@ -245,7 +245,6 @@ class ID3File(File):
         'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
     }
 
-
     __lrc_time_format_re = r'\d+:\d{1,2}(?:.\d+)?'
     __lrc_line_re_parse = re.compile(r'(\[' + __lrc_time_format_re + r'\])')
     __lrc_syllable_re_parse = re.compile(r'(<' + __lrc_time_format_re + r'>)')
