@@ -252,15 +252,25 @@ def _digits_replace(matchobj):
 
 def _sort_key_qt(string, numeric=False):
     collator = _qcollator_numeric if numeric else _qcollator
+
+    # Null bytes can cause crashes in OS collation functions.
+    string = string.replace('\0', '')
+
     # On macOS / Windows the numeric sorting does not work reliable with non-latin
     # scripts. Replace numbers in the sort string with their latin equivalent.
     if numeric and (IS_MACOS or IS_WIN):
         string = RE_NUMBER.sub(_digits_replace, string)
 
-    # On macOS numeric sorting of strings entirely consisting of numeric characters fails
-    # and always sorts alphabetically (002 < 1). Always prefix with an alphabetic character
-    # to work around that.
-    return collator.sortKey('a' + string.replace('\0', ''))
+    if IS_MACOS:
+        # macOS does not sort the empty string before other values correctly
+        if not string:
+            string = ' '
+        # On macOS numeric sorting of strings entirely consisting of numeric
+        # characters fails and always sorts alphabetically (002 < 1). Always
+        # prefix with an alphabetic character to work around that.
+        string = 'a' + string
+
+    return collator.sortKey(string)
 
 
 def _sort_key_strxfrm(string, numeric=False):
