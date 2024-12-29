@@ -400,6 +400,7 @@ class AlbumArtistFromPathTest(PicardTestCase):
 
 class IsAbsolutePathTest(PicardTestCase):
 
+    @unittest.skipIf(IS_WIN, "POSIX test")
     def test_is_absolute(self):
         self.assertTrue(is_absolute_path('/foo/bar'))
         self.assertFalse(is_absolute_path('foo/bar'))
@@ -410,7 +411,11 @@ class IsAbsolutePathTest(PicardTestCase):
     def test_is_absolute_windows(self):
         self.assertTrue(is_absolute_path('D:/foo/bar'))
         self.assertTrue(is_absolute_path('D:\\foo\\bar'))
-        self.assertTrue(is_absolute_path('\\foo\\bar'))
+        self.assertFalse(is_absolute_path('\\foo\\bar'))
+        self.assertFalse(is_absolute_path('/foo/bar'))
+        self.assertFalse(is_absolute_path('foo/bar'))
+        self.assertFalse(is_absolute_path('./foo/bar'))
+        self.assertFalse(is_absolute_path('../foo/bar'))
         # Paths to Windows shares
         self.assertTrue(is_absolute_path('\\\\foo\\bar'))
         self.assertTrue(is_absolute_path('\\\\foo\\bar\\'))
