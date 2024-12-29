@@ -446,3 +446,23 @@ class TestPicardConfigVarOption(TestPicardConfigCommon):
         # store invalid value in config file directly
         self.config.setValue('setting/var_option', object)
         self.assertEqual(self.config.setting["var_option"], {"a", "b"})
+
+
+class TestPicardConfigSignals(TestPicardConfigCommon):
+
+    def _set_signal_value(self, name: str):
+        self.setting_name = name
+
+    def test_file_naming_signal(self):
+        TextOption('setting', 'selected_file_naming_script_id', 'abc')
+        TextOption('setting', 'unrelated_file_naming_setting', 'abc')
+
+        self.config.setting.naming_settings_changed_signal.connect(self._set_signal_value)
+
+        self.setting_name = ''
+        self.config.setting['selected_file_naming_script_id'] = 'def'
+        self.assertEqual(self.setting_name, 'selected_file_naming_script_id')
+
+        self.setting_name = ''
+        self.config.setting['unrelated_file_naming_setting'] = 'def'
+        self.assertEqual(self.setting_name, '')
