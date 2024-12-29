@@ -91,25 +91,28 @@ class TestI18n(PicardTestCase):
 
     def test_sort_key(self):
         setup_gettext(localedir, 'de')
-        self.assertTrue(sort_key('äb') < sort_key('ac'))
-        self.assertTrue(sort_key('foo002') < sort_key('foo1'))
-        self.assertTrue(sort_key('002 foo') < sort_key('1 foo'))
-        self.assertTrue(sort_key('1') < sort_key('C'))
-        self.assertTrue(sort_key('foo1', numeric=True) < sort_key('foo002', numeric=True))
-        self.assertTrue(sort_key('004', numeric=True) < sort_key('5', numeric=True))
-        self.assertTrue(sort_key('0042', numeric=True) < sort_key('50', numeric=True))
-        self.assertTrue(sort_key('5', numeric=True) < sort_key('0042', numeric=True))
-        self.assertTrue(sort_key('99', numeric=True) < sort_key('100', numeric=True))
+        self.assertLess(sort_key('äb'), sort_key('ac'))
+        self.assertLess(sort_key('foo002'), sort_key('foo1'))
+        self.assertLess(sort_key('002 foo'), sort_key('1 foo'))
+        self.assertLess(sort_key('1'), sort_key('C'))
+        self.assertLess(sort_key(''), sort_key('0'))
+        self.assertLess(sort_key('\0'), sort_key('0'))
+        self.assertLess(sort_key('0'), sort_key('00'))
+        self.assertLess(sort_key('foo1', numeric=True), sort_key('foo002', numeric=True))
+        self.assertLess(sort_key('004', numeric=True), sort_key('5', numeric=True))
+        self.assertLess(sort_key('0042', numeric=True), sort_key('50', numeric=True))
+        self.assertLess(sort_key('5', numeric=True), sort_key('0042', numeric=True))
+        self.assertLess(sort_key('99', numeric=True), sort_key('100', numeric=True))
 
     def test_sort_key_numbers_different_scripts(self):
         setup_gettext(localedir, 'en')
         for four in ('4', '𝟜', '٤', '๔'):
-            self.assertTrue(
-                sort_key('3', numeric=True) < sort_key(four, numeric=True),
+            self.assertLess(
+                sort_key('3', numeric=True), sort_key(four, numeric=True),
                 msg=f'3 < {four}'
             )
-            self.assertTrue(
-                sort_key(four, numeric=True) < sort_key('5', numeric=True),
+            self.assertLess(
+                sort_key(four, numeric=True), sort_key('5', numeric=True),
                 msg=f'{four} < 5'
             )
 
