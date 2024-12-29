@@ -1,4 +1,4 @@
 Babel>=2.10.0
-PyInstaller==6.7.0
+PyInstaller==6.11.1
 pytest>=8.1
 setuptools>=62.4.0
