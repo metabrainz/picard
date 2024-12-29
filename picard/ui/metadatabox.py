@@ -149,6 +149,9 @@ class TagDiff:
         else:
             return orig != new
 
+    def is_readonly(self, tag):
+        return bool(self.status[tag] & TagStatus.READONLY)
+
     def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False, top_tags=None):
         if orig_values:
             self.orig.add(tag, orig_values)
@@ -714,7 +717,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
                 new_item.setTextAlignment(alignment)
-                if tag == '~length':
+                if self.tag_diff.is_readonly(tag):
                     new_item.setFlags(orig_flags)
                 else:
                     new_item.setFlags(new_flags)
