@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2007, 2011 Lukáš Lalinský
-# Copyright (C) 2008-2010, 2019, 2021-2023 Philipp Wolfer
+# Copyright (C) 2008-2010, 2019, 2021-2024 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013, 2015, 2018-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
@@ -36,7 +36,7 @@ from importlib.machinery import PathFinder
 import logging
 from pathlib import (
     Path,
-    PurePosixPath,
+    PurePath,
 )
 from threading import Lock
 
@@ -200,7 +200,7 @@ def name_filter(record):
     # way that the final `__init__.py` file is removed.
     if len(parts) > 1 and parts[-1] + '.zip' == parts[-2]:
         del parts[-1]
-    record.name = str(PurePosixPath(*parts))
+    record.name = str(PurePath(*parts))
     return True
 
 
