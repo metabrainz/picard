@@ -169,14 +169,14 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
         self.assertEqual(m['~releaselanguage'], 'eng')
         self.assertEqual(m.getall('~releasecountries'), ['GB', 'NZ'])
-        self.assertEqual(a._genres, {
+        self.assertEqual(a.genres, {
             'genre1': 6, 'genre2': 3
         })
-        self.assertEqual(a._folksonomy_tags, {
+        self.assertEqual(a.folksonomy_tags, {
             'tag1': 6, 'tag2': 3
         })
         for artist in a._album_artists:
-            self.assertEqual(artist._folksonomy_tags, {
+            self.assertEqual(artist.folksonomy_tags, {
                 'british': 2,
                 'progressive rock': 10})
 
@@ -299,11 +299,11 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~video'], '')
         self.assertNotIn('originaldate', m)
         self.assertNotIn('originalyear', m)
-        self.assertEqual(t._folksonomy_tags, {
+        self.assertEqual(t.folksonomy_tags, {
             'blue-eyed soul': 1,
             'pop': 3})
         for artist in t._track_artists:
-            self.assertEqual(artist._folksonomy_tags, {
+            self.assertEqual(artist.folksonomy_tags, {
                 'dance-pop': 1,
                 'guitarist': 0})
 
@@ -776,7 +776,7 @@ class ReleaseGroupTest(MBJSONTest):
         self.assertEqual(m['releasetype'], 'album')
         self.assertEqual(m['~primaryreleasetype'], 'album')
         self.assertEqual(m['~releasegroup'], 'The Dark Side of the Moon')
-        self.assertEqual(r._folksonomy_tags, {'test2': 3, 'test': 6})
+        self.assertEqual(r.folksonomy_tags, {'test2': 3, 'test': 6})
 
 
 class NullReleaseGroupTest(MBJSONTest):

@@ -352,9 +352,9 @@ class Track(FileListItem):
         genres = Counter(self.genres)
         use_folksonomy = config.setting['folksonomy_tags']
         if use_folksonomy:
-            genres += self.album._folksonomy_tags
+            genres += self.album.folksonomy_tags
         else:
-            genres += self.album._genres
+            genres += self.album.genres
         # Combine release and track genres
         if self.album.release_group:
             genres += self.album.release_group.genres
@@ -379,18 +379,18 @@ class Track(FileListItem):
         self.metadata[name] = tags.keys()
 
     def _add_folksonomy_tags(self):
-        tags = Counter(self._folksonomy_tags)
-        tags += self.album._folksonomy_tags
+        tags = Counter(self.folksonomy_tags)
+        tags += self.album.folksonomy_tags
         self._add_tags(tags, '_folksonomy_tags')
 
     def _add_genres(self):
-        genre = Counter(self._genres)
-        genre += self.album._genres
+        genre = Counter(self.genres)
+        genre += self.album.genres
         self._add_tags(genre, '_genres')
 
     def _delete_genres_from_tags(self):
         for genre in self.album.genres:
-            del self.album._folksonomy_tags[genre]
+            del self.album.folksonomy_tags[genre]
 
 
 class NonAlbumTrack(Track):
