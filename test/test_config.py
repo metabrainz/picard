@@ -450,23 +450,90 @@ class TestPicardConfigVarOption(TestPicardConfigCommon):
 
 class TestPicardConfigSignals(TestPicardConfigCommon):
 
-    def _set_signal_value(self, name: str):
+    def _set_signal_value(self, name: str, old_value: object, new_value: object):
         self.setting_name = name
+        self.setting_old_value = old_value
+        self.setting_new_value = new_value
 
     def test_file_naming_signal(self):
-        TextOption('setting', 'option_1', 'abc')
-        TextOption('setting', 'option_2', 'abc')
+        TextOption('setting', 'option_text', 'abc')
+        BoolOption('setting', 'option_bool', False)
+        IntOption('setting', 'option_int', 1)
+        FloatOption('setting', 'option_float', 1.0)
+        ListOption('setting', 'option_list', [1, 2, 3])
+        Option('setting', 'option_set', {1, 2, 3})
+        Option('setting', 'option_dict', {'a': 1, 'b': 2, 'c': 3})
 
         self.config.setting.setting_changed_signal.connect(self._set_signal_value)
 
+        # Test text option
         self.setting_name = ''
-        self.config.setting['option_1'] = 'def'
-        self.assertEqual(self.setting_name, 'option_1')
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_text'] = 'def'
+        self.assertEqual(self.setting_name, 'option_text')
+        self.assertEqual(self.setting_old_value, 'abc')
+        self.assertEqual(self.setting_new_value, 'def')
 
+        # Test no signal if set to same value
         self.setting_name = ''
-        self.config.setting['option_1'] = 'def'
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_text'] = 'def'
         self.assertEqual(self.setting_name, '')
+        self.assertEqual(self.setting_old_value, '')
+        self.assertEqual(self.setting_new_value, '')
 
+        # Test bool option
         self.setting_name = ''
-        self.config.setting['option_2'] = 'abc'
-        self.assertEqual(self.setting_name, '')
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_bool'] = True
+        self.assertEqual(self.setting_name, 'option_bool')
+        self.assertEqual(self.setting_old_value, False)
+        self.assertEqual(self.setting_new_value, True)
+
+        # Test int option
+        self.setting_name = ''
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_int'] = 2
+        self.assertEqual(self.setting_name, 'option_int')
+        self.assertEqual(self.setting_old_value, 1)
+        self.assertEqual(self.setting_new_value, 2)
+
+        # Test float option
+        self.setting_name = ''
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_float'] = 2.5
+        self.assertEqual(self.setting_name, 'option_float')
+        self.assertEqual(self.setting_old_value, 1.0)
+        self.assertEqual(self.setting_new_value, 2.5)
+
+        # Test list option
+        self.setting_name = ''
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_list'] = [3, 2, 1]
+        self.assertEqual(self.setting_name, 'option_list')
+        self.assertEqual(self.setting_old_value, [1, 2, 3])
+        self.assertEqual(self.setting_new_value, [3, 2, 1])
+
+        # Test option (set)
+        self.setting_name = ''
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_set'] = {4, 5, 6}
+        self.assertEqual(self.setting_name, 'option_set')
+        self.assertEqual(self.setting_old_value, {1, 2, 3})
+        self.assertEqual(self.setting_new_value, {4, 5, 6})
+
+        # Test option (dict)
+        self.setting_name = ''
+        self.setting_old_value = ''
+        self.setting_new_value = ''
+        self.config.setting['option_dict'] = {'a': 3, 'b': 2, 'c': 1}
+        self.assertEqual(self.setting_name, 'option_dict')
+        self.assertEqual(self.setting_old_value, {'a': 1, 'b': 2, 'c': 3})
+        self.assertEqual(self.setting_new_value, {'a': 3, 'b': 2, 'c': 1})
