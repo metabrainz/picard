@@ -73,6 +73,11 @@ from picard.ui.edittagdialog import (
 )
 
 
+def bit_not(num):
+    """Bitwise not, unsigned"""
+    return num ^ ((1 << num.bit_length()) - 1)
+
+
 class TagStatus:
     NONE = 0
     NOCHANGE = 1
@@ -184,6 +189,12 @@ class TagDiff:
             if status & s == s:
                 return s
         return TagStatus.NOCHANGE
+
+    def set_bits(self, tag, bits):
+        self.status[tag] |= bits
+
+    def unset_bits(self, tag, bits):
+        self.status[tag] &= bit_not(bits)
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
@@ -384,16 +395,6 @@ class MetadataBox(QtWidgets.QTableWidget):
                 edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
                 edit_tag_action.setEnabled(editable)
                 menu.addAction(edit_tag_action)
-                if selected_tag not in self.preserved_tags:
-                    add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self)
-                    add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
-                    add_to_preserved_tags_action.setEnabled(editable)
-                    menu.addAction(add_to_preserved_tags_action)
-                else:
-                    remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self)
-                    remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
-                    remove_from_preserved_tags_action.setEnabled(editable)
-                    menu.addAction(remove_from_preserved_tags_action)
             removals = []
             useorigs = []
             item = self.currentItem()
@@ -437,6 +438,11 @@ class MetadataBox(QtWidgets.QTableWidget):
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
                 remove_tag_action.setEnabled(bool(removals))
                 menu.addAction(remove_tag_action)
+
+                add_to_preserved_tags_action = QtGui.QAction(_("Toggle Preserve state"), self)
+                add_to_preserved_tags_action.triggered.connect(self._toggle_preserved)
+                menu.addAction(add_to_preserved_tags_action)
+
                 if useorigs:
                     name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
                     use_orig_value_action = QtGui.QAction(name, self)
@@ -476,6 +482,14 @@ class MetadataBox(QtWidgets.QTableWidget):
         tags = list(self._selected_tags(filter_func=self._tag_is_editable))
         if len(tags) == 1:
             self._edit_tag(tags[0])
+
+    def _toggle_preserved(self):
+        for tag in self._selected_tags(filter_func=lambda t: t != '~length'):
+            if tag in self.preserved_tags:
+                self.preserved_tags.discard(tag)
+            else:
+                self.preserved_tags.add(tag)
+        self.update()
 
     def _toggle_changes_first(self, checked):
         config = get_config()
@@ -681,6 +695,14 @@ class MetadataBox(QtWidgets.QTableWidget):
         alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
 
         for i, tag in enumerate(self.tag_diff.tag_names):
+            is_preserved = tag in self.preserved_tags
+            if tag == '~length' or is_preserved:
+                self.tag_diff.set_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
+                new_item_flags = orig_flags
+            elif tag != '~length':
+                self.tag_diff.unset_bits(tag, TagStatus.NOTREMOVABLE | TagStatus.READONLY)
+                new_item_flags = new_flags
+
             color = self.colors.get(self.tag_diff.tag_status(tag),
                                     self.colors[TagStatus.NOCHANGE])
 
@@ -688,12 +710,18 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not tag_item:
                 tag_item = QtWidgets.QTableWidgetItem()
                 tag_item.setFlags(orig_flags)
-                font = tag_item.font()
-                font.setBold(True)
-                tag_item.setFont(font)
                 tag_item.setTextAlignment(alignment)
+                tag_item.setToolTip(tag)
                 self.setItem(i, self.COLUMN_TAG, tag_item)
-            tag_item.setText(display_tag_name(tag))
+            text = display_tag_name(tag)
+            is_preserved = tag in self.preserved_tags
+            font = tag_item.font()
+            font.setBold(not is_preserved)
+            tag_item.setFont(font)
+            if is_preserved:
+                preserved_indicator_fmt = _('%s [P]')
+                text = preserved_indicator_fmt % text
+            tag_item.setText(text)
 
             orig_item = self.item(i, self.COLUMN_ORIG)
             if not orig_item:
@@ -708,16 +736,15 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
                 new_item.setTextAlignment(alignment)
-                if tag == '~length':
-                    new_item.setFlags(orig_flags)
-                else:
-                    new_item.setFlags(new_flags)
                 self.setItem(i, self.COLUMN_NEW, new_item)
-            self._set_item_value(new_item, self.tag_diff.new, tag)
+            new_item.setFlags(new_item_flags)
+
             font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
             font.setStrikeOut(strikeout)
             new_item.setFont(font)
+
+            self._set_item_value(new_item, self.tag_diff.new, tag)
             new_item.setForeground(color)
 
             # Adjust row height to content size
