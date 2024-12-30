@@ -136,21 +136,8 @@ class SettingConfigSection(ConfigSection):
     PROFILES_KEY = 'user_profiles'
     SETTINGS_KEY = 'user_profile_settings'
 
-    # Set containing settings that can impact the result of file renaming (path or filename)
-    FILE_NAMING_SETTINGS = {
-        'enabled_plugins',
-        'move_files',
-        'move_files_to',
-        'rename_files',
-        'standardize_artists',
-        'va_name',
-        'windows_compatibility',
-        'selected_file_naming_script_id',
-        'file_naming_scripts',
-        'user_profiles',
-        'user_profile_settings',
-    }
-    naming_settings_changed_signal = QtCore.pyqtSignal(str)
+    # Signal emitted when the value of a setting has changed.
+    setting_changed_signal = QtCore.pyqtSignal(str)
 
     @classmethod
     def init_profile_options(cls):
@@ -206,21 +193,20 @@ class SettingConfigSection(ConfigSection):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
+        old_value = self.__getitem__(name)
         # Don't process settings that are not profile-specific
         if name in profile_groups_all_settings():
             for profile_id, settings in self._get_active_profile_settings():
                 if name in settings:
                     self._save_profile_setting(profile_id, name, value)
-                    self._send_file_naming_signal(name)
+                    if value != old_value:
+                        self.setting_changed_signal.emit(name)
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
         self._memoization[key].dirty = True
-        self._send_file_naming_signal(name)
-
-    def _send_file_naming_signal(self, name: str):
-        if name in self.FILE_NAMING_SETTINGS:
-            self.naming_settings_changed_signal.emit(name)
+        if value != old_value:
+            self.setting_changed_signal.emit(name)
 
     def _save_profile_setting(self, profile_id, name, value):
         profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]

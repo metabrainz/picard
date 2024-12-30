@@ -454,15 +454,19 @@ class TestPicardConfigSignals(TestPicardConfigCommon):
         self.setting_name = name
 
     def test_file_naming_signal(self):
-        TextOption('setting', 'selected_file_naming_script_id', 'abc')
-        TextOption('setting', 'unrelated_file_naming_setting', 'abc')
+        TextOption('setting', 'option_1', 'abc')
+        TextOption('setting', 'option_2', 'abc')
 
-        self.config.setting.naming_settings_changed_signal.connect(self._set_signal_value)
-
-        self.setting_name = ''
-        self.config.setting['selected_file_naming_script_id'] = 'def'
-        self.assertEqual(self.setting_name, 'selected_file_naming_script_id')
+        self.config.setting.setting_changed_signal.connect(self._set_signal_value)
 
         self.setting_name = ''
-        self.config.setting['unrelated_file_naming_setting'] = 'def'
+        self.config.setting['option_1'] = 'def'
+        self.assertEqual(self.setting_name, 'option_1')
+
+        self.setting_name = ''
+        self.config.setting['option_1'] = 'def'
+        self.assertEqual(self.setting_name, '')
+
+        self.setting_name = ''
+        self.config.setting['option_2'] = 'abc'
         self.assertEqual(self.setting_name, '')
