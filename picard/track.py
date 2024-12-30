@@ -314,7 +314,7 @@ class Track(FileListItem):
 
         if config.setting['use_genres']:
             self._convert_folksonomy_tags_to_genre()
-            self._delete_genres_from_tags()
+            self.album.delete_genres_from_tags()
             self._add_folksonomy_tags()
             self._add_genres()
 
@@ -387,10 +387,6 @@ class Track(FileListItem):
         genre = Counter(self.genres)
         genre += self.album.genres
         self._add_tags(genre, '_genres')
-
-    def _delete_genres_from_tags(self):
-        for genre in self.album.genres:
-            del self.album.folksonomy_tags[genre]
 
 
 class NonAlbumTrack(Track):
