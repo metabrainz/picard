@@ -238,6 +238,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         config = get_config()
+        config.setting.setting_changed_signal.connect(self._on_setting_changed)
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
@@ -280,6 +281,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
         self.tagger.clipboard().dataChanged.connect(self._update_clipboard)
+
+    def _on_setting_changed(self, key, old_value, new_value):
+        if key in ('rename_files', 'move_files'):
+            self.update(drop_album_caches=False)
 
     def _get_file_lookup(self):
         """Return a FileLookup object."""
