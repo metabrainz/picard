@@ -256,6 +256,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             function(self)
 
         get_config().setting.setting_changed.connect(self.handle_settings_changed)
+        get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
@@ -266,6 +267,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not new_value)
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
+
+    def handle_profiles_changed(self, name, old_value, new_value):
+        if name == SettingConfigSection.PROFILES_KEY:
+            self._make_profile_selector_menu()
 
     def set_processing(self, processing=True):
         self.panel.set_processing(processing)
@@ -497,6 +502,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.setIcon(icontheme.lookup('media-optical'))
         menu.triggered.connect(self.tagger.lookup_cd)
         self.cd_lookup_menu = menu
+        self._init_cd_lookup_menu()
+
+    def _init_cd_lookup_menu(self):
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
             self.enable_action(MainAction.CD_LOOKUP, False)
@@ -565,6 +573,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def toggle_tag_saving(self, checked):
         config = get_config()
         config.setting['dont_write_tags'] = not checked
+
+    def _reset_option_menu_state(self):
+        config = get_config()
+        self.actions[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
+        self.actions[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
+        self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not config.setting['dont_write_tags'])
+        self._make_script_selector_menu()
+        self._init_cd_lookup_menu()
 
     def _get_selected_or_unmatched_files(self):
         if self.selected_objects:
@@ -1589,7 +1605,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for profile in option_profiles:
             if profile['id'] == profile_id:
                 profile['enabled'] = not profile['enabled']
-                self._make_script_selector_menu()
+                config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
+                self._reset_option_menu_state()
                 return
 
     def show_new_user_dialog(self):
