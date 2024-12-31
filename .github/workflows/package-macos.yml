@@ -11,8 +11,8 @@ jobs:
       matrix:
         setup:
         - macos-deployment-version: '11.0'
-          python-version: 3.12.1-macos11
-          python-sha256sum: 6178e42679eb83196240fc58b1438f481c32c2b0557f28ccf43aa7b1b80b7c4a
+          python-version: 3.13.1-macos11
+          python-sha256sum: 67c6f0a3190851e0013214d5abd725a42ec398ff1b50eec47826820fd052d86b
     env:
       DISCID_VERSION: 0.6.4
       DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3

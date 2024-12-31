@@ -9,10 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13, ubuntu-latest, windows-2019]
-        python-version: ['3.9', '3.10', '3.11', '3.12']
-        include:
-        - os: macos-13
-          python-version: '3.9'
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
     env:
       CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
@@ -103,7 +100,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13, ubuntu-latest, windows-latest]
-        python-version: ['3.9', '3.12']
+        python-version: ['3.9', '3.13']
 
     steps:
     - uses: actions/checkout@v4
