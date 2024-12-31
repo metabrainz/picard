@@ -137,7 +137,7 @@ class SettingConfigSection(ConfigSection):
     SETTINGS_KEY = 'user_profile_settings'
 
     # Signal emitted when the value of a setting has changed.
-    setting_changed_signal = QtCore.pyqtSignal(str, object, object)
+    setting_changed = QtCore.pyqtSignal(str, object, object)
 
     @classmethod
     def init_profile_options(cls):
@@ -200,13 +200,13 @@ class SettingConfigSection(ConfigSection):
                 if name in settings:
                     self._save_profile_setting(profile_id, name, value)
                     if value != old_value:
-                        self.setting_changed_signal.emit(name, old_value, value)
+                        self.setting_changed.emit(name, old_value, value)
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
         self._memoization[key].dirty = True
         if value != old_value:
-            self.setting_changed_signal.emit(name, old_value, value)
+            self.setting_changed.emit(name, old_value, value)
 
     def _save_profile_setting(self, profile_id, name, value):
         profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
