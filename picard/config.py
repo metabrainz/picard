@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (C) 2021-2023 Bob Swift
+# Copyright (C) 2021-2024 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -136,6 +136,9 @@ class SettingConfigSection(ConfigSection):
     PROFILES_KEY = 'user_profiles'
     SETTINGS_KEY = 'user_profile_settings'
 
+    # Signal emitted when the value of a setting has changed.
+    setting_changed_signal = QtCore.pyqtSignal(str, object, object)
+
     @classmethod
     def init_profile_options(cls):
         ListOption.add_if_missing('profiles', cls.PROFILES_KEY, [])
@@ -190,15 +193,20 @@ class SettingConfigSection(ConfigSection):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
+        old_value = self.__getitem__(name)
         # Don't process settings that are not profile-specific
         if name in profile_groups_all_settings():
             for profile_id, settings in self._get_active_profile_settings():
                 if name in settings:
                     self._save_profile_setting(profile_id, name, value)
+                    if value != old_value:
+                        self.setting_changed_signal.emit(name, old_value, value)
                     return
         key = self.key(name)
         self.__qt_config.setValue(key, value)
         self._memoization[key].dirty = True
+        if value != old_value:
+            self.setting_changed_signal.emit(name, old_value, value)
 
     def _save_profile_setting(self, profile_id, name, value):
         profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
