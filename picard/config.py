@@ -59,6 +59,9 @@ class ConfigSection(QtCore.QObject):
 
     """Configuration section."""
 
+    # Signal emitted when the value of a setting has changed.
+    setting_changed = QtCore.pyqtSignal(str, object, object)
+
     def __init__(self, config, name):
         super().__init__()
         self.__qt_config = config
@@ -76,9 +79,12 @@ class ConfigSection(QtCore.QObject):
         return self.value(name, opt, opt.default)
 
     def __setitem__(self, name, value):
+        old_value = self.__getitem__(name)
         key = self.key(name)
         self.__qt_config.setValue(key, value)
         self._memoization[key].dirty = True
+        if value != old_value:
+            self.setting_changed.emit(name, old_value, value)
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
@@ -135,9 +141,6 @@ class SettingConfigSection(ConfigSection):
     """
     PROFILES_KEY = 'user_profiles'
     SETTINGS_KEY = 'user_profile_settings'
-
-    # Signal emitted when the value of a setting has changed.
-    setting_changed = QtCore.pyqtSignal(str, object, object)
 
     @classmethod
     def init_profile_options(cls):
