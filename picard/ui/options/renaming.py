@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2014-2015, 2018-2022 Philipp Wolfer
+# Copyright (C) 2009-2010, 2014-2015, 2018-2022, 2024 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2011-2013 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -45,7 +45,6 @@ from picard.i18n import (
 )
 from picard.script import ScriptParser
 
-from picard.ui.enums import MainAction
 from picard.ui.forms.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options import (
     OptionsCheckError,
@@ -270,9 +269,6 @@ class RenamingOptionsPage(OptionsPage):
         config.setting['move_additional_files_pattern'] = self.ui.move_additional_files_pattern.text()
         config.setting['delete_empty_dirs'] = self.ui.delete_empty_dirs.isChecked()
         config.setting['selected_file_naming_script_id'] = self.selected_naming_script_id
-        self.tagger.window.actions[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
-        self.tagger.window.actions[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
-        self.tagger.window.make_script_selector_menu()
 
     def display_error(self, error):
         # Ignore scripting errors, those are handled inline

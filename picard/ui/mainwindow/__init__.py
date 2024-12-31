@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Robert Kaye
 # Copyright (C) 2008 Will
-# Copyright (C) 2008-2010, 2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2008-2010, 2015, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 David Hilton
 # Copyright (C) 2011-2012 Chad Wilson
@@ -254,6 +254,20 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         for function in ext_point_ui_init:
             function(self)
+
+        get_config().setting.setting_changed.connect(self.handle_settings_changed)
+
+    def handle_settings_changed(self, name, old_value, new_value):
+        if name == 'rename_files':
+            self.actions[MainAction.ENABLE_RENAMING].setChecked(new_value)
+        elif name == 'move_files':
+            self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
+        elif name == 'dont_write_tags':
+            self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not new_value)
+        elif name == 'clear_existing_tags':
+            self.metadata_box.update()
+        elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
+            self._make_script_selector_menu()
 
     def set_processing(self, processing=True):
         self.panel.set_processing(processing)
@@ -613,7 +627,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.script_quick_selector_menu = QtWidgets.QMenu(_("&Select file naming script"))
         self.script_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
-        self.make_script_selector_menu()
+        self._make_script_selector_menu()
 
         self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
         self._make_profile_selector_menu()
@@ -915,7 +929,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, True)
         self._make_profile_selector_menu()
-        self.make_script_selector_menu()
+        self._make_script_selector_menu()
 
     def show_help(self):
         webbrowser2.open('documentation')
@@ -1441,7 +1455,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     profile_settings[p_id][script_id_key] = None
         config.profiles[SettingConfigSection.SETTINGS_KEY] = profile_settings
 
-    def make_script_selector_menu(self):
+    def _make_script_selector_menu(self):
         """Update the sub-menu of available file naming scripts.
         """
         if self.script_editor_dialog is None or not isinstance(self.script_editor_dialog, ScriptEditorDialog):
@@ -1477,7 +1491,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         log.debug("Setting naming script to: %s", id)
         config.setting['selected_file_naming_script_id'] = id
-        self.make_script_selector_menu()
         if self.script_editor_dialog:
             self.script_editor_dialog.set_selected_script_id(id)
 
@@ -1503,14 +1516,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _script_editor_save(self):
         """Process "signal_save" signal from the script editor.
         """
-        self.make_script_selector_menu()
+        self._make_script_selector_menu()
 
     def _script_editor_closed(self):
         """Process "finished" signal from the script editor.
         """
         self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, True)
         self.script_editor_dialog = None
-        self.make_script_selector_menu()
 
     def _update_script_editor_example_files(self):
         """Update the list of example files for the file naming script editor.
@@ -1579,7 +1591,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for profile in option_profiles:
             if profile['id'] == profile_id:
                 profile['enabled'] = not profile['enabled']
-                self.make_script_selector_menu()
+                self._make_script_selector_menu()
                 return
 
     def show_new_user_dialog(self):
