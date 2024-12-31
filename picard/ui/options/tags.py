@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2018-2021 Philipp Wolfer
+# Copyright (C) 2009-2010, 2018-2021, 2024 Philipp Wolfer
 # Copyright (C) 2012 Erik Wasser
 # Copyright (C) 2012 Johannes Weißl
 # Copyright (C) 2012-2013 Michael Wiencek
@@ -32,7 +32,6 @@ from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
-from picard.ui.enums import MainAction
 from picard.ui.forms.ui_options_tags import Ui_TagsOptionsPage
 from picard.ui.options import OptionsPage
 
@@ -76,16 +75,12 @@ class TagsOptionsPage(OptionsPage):
         config = get_config()
         config.setting['dont_write_tags'] = not self.ui.write_tags.isChecked()
         config.setting['preserve_timestamps'] = self.ui.preserve_timestamps.isChecked()
-        clear_existing_tags = self.ui.clear_existing_tags.isChecked()
-        if clear_existing_tags != config.setting['clear_existing_tags']:
-            config.setting['clear_existing_tags'] = clear_existing_tags
-            self.tagger.window.metadata_box.update()
+        config.setting['clear_existing_tags'] = self.ui.clear_existing_tags.isChecked()
         config.setting['preserve_images'] = self.ui.preserve_images.isChecked()
         config.setting['remove_ape_from_mp3'] = self.ui.remove_ape_from_mp3.isChecked()
         config.setting['remove_id3_from_flac'] = self.ui.remove_id3_from_flac.isChecked()
         config.setting['fix_missing_seekpoints_flac'] = self.ui.fix_missing_seekpoints_flac.isChecked()
         config.setting['preserved_tags'] = list(self.ui.preserved_tags.tags)
-        self.tagger.window.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not config.setting['dont_write_tags'])
 
 
 register_options_page(TagsOptionsPage)
