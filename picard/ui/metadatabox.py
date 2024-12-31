@@ -238,7 +238,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         config = get_config()
-        config.setting.setting_changed_signal.connect(self._on_setting_changed)
+        config.setting.setting_changed.connect(self._on_setting_changed)
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)

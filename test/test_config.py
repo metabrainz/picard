@@ -464,7 +464,7 @@ class TestPicardConfigSignals(TestPicardConfigCommon):
         Option('setting', 'option_set', {1, 2, 3})
         Option('setting', 'option_dict', {'a': 1, 'b': 2, 'c': 3})
 
-        self.config.setting.setting_changed_signal.connect(self._set_signal_value)
+        self.config.setting.setting_changed.connect(self._set_signal_value)
 
         # Test text option
         self.setting_name = ''
