@@ -282,8 +282,21 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
         self.tagger.clipboard().dataChanged.connect(self._update_clipboard)
 
-    def _on_setting_changed(self, key, old_value, new_value):
-        if key in ('rename_files', 'move_files'):
+    def _on_setting_changed(self, name, old_value, new_value):
+        settings_to_watch = {
+            "enabled_plugins",
+            "move_files",
+            "move_files_to",
+            "rename_files",
+            "standardize_artists",
+            "va_name",
+            "windows_compatibility",
+            "selected_file_naming_script_id",
+            "file_naming_scripts",
+            "user_profiles",
+            "user_profile_settings"
+        }
+        if name in settings_to_watch:
             self.update(drop_album_caches=False)
 
     def _get_file_lookup(self):
