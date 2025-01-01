@@ -636,14 +636,14 @@ def add_secondary_release_types(node, m):
 def add_genres_from_node(node, obj):
     if obj is None:
         return
+    if 'tags' in node:
+        add_tags(node['tags'], obj)
+    if 'user-tags' in node:
+        add_user_tags(node['user-tags'], obj)
     if 'genres' in node:
         add_genres(node['genres'], obj)
-    if 'tags' in node:
-        add_genres(node['tags'], obj)
     if 'user-genres' in node:
         add_user_genres(node['user-genres'], obj)
-    if 'user-tags' in node:
-        add_user_genres(node['user-tags'], obj)
 
 
 def add_genres(node, obj):
@@ -654,6 +654,16 @@ def add_genres(node, obj):
 def add_user_genres(node, obj):
     for tag in node:
         obj.add_genre(tag['name'], 1)
+
+
+def add_tags(node, obj):
+    for tag in node:
+        obj.add_folksonomy_tag(tag['name'], tag['count'])
+
+
+def add_user_tags(node, obj):
+    for tag in node:
+        obj.add_folksonomy_tag(tag['name'], 1)
 
 
 def add_isrcs_to_metadata(node, metadata):
