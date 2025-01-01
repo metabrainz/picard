@@ -227,8 +227,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.pagename_to_item = {}
         self.default_item = None
         if not default_page:
-            default_pagename = config.persist['options_last_active_page']
-        self.add_pages(None, default_pagename, self.ui.pages_tree)
+            default_page = config.persist['options_last_active_page']
+        self.add_pages(None, default_page, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
