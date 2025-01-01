@@ -70,6 +70,15 @@ class RenamingCompatOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming_compat.html"
 
+    OPTIONS = (
+        ('ascii_filenames', ['ascii_filenames']),
+        ('windows_compatibility', ['windows_compatibility']),
+        ('win_compat_replacements', ['win_compat_replacements']),
+        ('windows_long_paths', ['windows_long_paths']),
+        ('replace_spaces_with_underscores', ['replace_spaces_with_underscores']),
+        ('replace_dir_separator', ['replace_dir_separator']),
+    )
+
     options_changed = QtCore.pyqtSignal(dict)
 
     def __init__(self, parent=None):
@@ -85,13 +94,6 @@ class RenamingCompatOptionsPage(OptionsPage):
         self.ui.replace_dir_separator.textChanged.connect(self.on_options_changed)
         self.ui.replace_dir_separator.setValidator(NoDirectorySeparatorValidator())
         self.ui.btn_windows_compatibility_change.clicked.connect(self.open_win_compat_dialog)
-
-        self.register_setting('ascii_filenames', ['ascii_filenames'])
-        self.register_setting('windows_compatibility', ['windows_compatibility'])
-        self.register_setting('win_compat_replacements', ['win_compat_replacements'])
-        self.register_setting('windows_long_paths', ['windows_long_paths'])
-        self.register_setting('replace_spaces_with_underscores', ['replace_spaces_with_underscores'])
-        self.register_setting('replace_dir_separator', ['replace_dir_separator'])
 
     def load(self):
         config = get_config()

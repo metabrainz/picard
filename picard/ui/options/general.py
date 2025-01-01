@@ -60,6 +60,19 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_general.html"
 
+    OPTIONS = (
+        ('server_host', ['server_host']),
+        ('server_port', ['server_port']),
+        ('analyze_new_files', ['analyze_new_files']),
+        ('cluster_new_files', ['cluster_new_files']),
+        ('ignore_file_mbids', ['ignore_file_mbids']),
+        ('check_for_plugin_updates', ['check_for_plugin_updates']),
+        ('check_for_updates', ['check_for_updates']),
+        ('update_check_days', ['update_check_days']),
+        ('update_level', ['update_level']),
+        ('use_server_for_submission', ['use_server_for_submission']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_GeneralOptionsPage()
@@ -73,17 +86,6 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.login_error.hide()
         self.update_login_logout()
-
-        self.register_setting('server_host', ['server_host'])
-        self.register_setting('server_port', ['server_port'])
-        self.register_setting('analyze_new_files', ['analyze_new_files'])
-        self.register_setting('cluster_new_files', ['cluster_new_files'])
-        self.register_setting('ignore_file_mbids', ['ignore_file_mbids'])
-        self.register_setting('check_for_plugin_updates', ['check_for_plugin_updates'])
-        self.register_setting('check_for_updates', ['check_for_updates'])
-        self.register_setting('update_check_days', ['update_check_days'])
-        self.register_setting('update_level', ['update_level'])
-        self.register_setting('use_server_for_submission')
 
     def load(self):
         config = get_config()

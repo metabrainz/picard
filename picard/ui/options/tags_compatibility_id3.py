@@ -42,18 +42,20 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
+    OPTIONS = (
+        ('write_id3v23', ['write_id3v23', 'write_id3v24']),
+        ('id3v2_encoding', ['enc_utf8', 'enc_utf16', 'enc_iso88591']),
+        ('id3v23_join_with', ['id3v23_join_with']),
+        ('itunes_compatible_grouping', ['itunes_compatible_grouping']),
+        ('write_id3v1', ['write_id3v1']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_TagsCompatibilityOptionsPage()
         self.ui.setupUi(self)
         self.ui.write_id3v23.clicked.connect(self.update_encodings)
         self.ui.write_id3v24.clicked.connect(partial(self.update_encodings, force_utf8=True))
-
-        self.register_setting('write_id3v23', ['write_id3v23', 'write_id3v24'])
-        self.register_setting('id3v2_encoding', ['enc_utf8', 'enc_utf16', 'enc_iso88591'])
-        self.register_setting('id3v23_join_with', ['id3v23_join_with'])
-        self.register_setting('itunes_compatible_grouping', ['itunes_compatible_grouping'])
-        self.register_setting('write_id3v1', ['write_id3v1'])
 
     def load(self):
         config = get_config()

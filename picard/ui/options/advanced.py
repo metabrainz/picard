@@ -39,22 +39,24 @@ class AdvancedOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_advanced.html"
 
+    OPTIONS = (
+        ('ignore_regex', ['ignore_regex']),
+        ('ignore_hidden_files', ['ignore_hidden_files']),
+        ('recursively_add_files', ['recursively_add_files']),
+        ('ignore_track_duration_difference_under', ['ignore_track_duration_difference_under', 'label_track_duration_diff']),
+        ('query_limit', ['query_limit', 'label_query_limit']),
+        ('completeness_ignore_videos', ['completeness_ignore_videos']),
+        ('completeness_ignore_pregap', ['completeness_ignore_pregap']),
+        ('completeness_ignore_data', ['completeness_ignore_data']),
+        ('completeness_ignore_silence', ['completeness_ignore_silence']),
+        ('compare_ignore_tags', ['groupBox_ignore_tags']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
         self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
-
-        self.register_setting('ignore_regex', ['ignore_regex'])
-        self.register_setting('ignore_hidden_files', ['ignore_hidden_files'])
-        self.register_setting('recursively_add_files', ['recursively_add_files'])
-        self.register_setting('ignore_track_duration_difference_under', ['ignore_track_duration_difference_under', 'label_track_duration_diff'])
-        self.register_setting('query_limit', ['query_limit', 'label_query_limit'])
-        self.register_setting('completeness_ignore_videos', ['completeness_ignore_videos'])
-        self.register_setting('completeness_ignore_pregap', ['completeness_ignore_pregap'])
-        self.register_setting('completeness_ignore_data', ['completeness_ignore_data'])
-        self.register_setting('completeness_ignore_silence', ['completeness_ignore_silence'])
-        self.register_setting('compare_ignore_tags', ['groupBox_ignore_tags'])
 
     def load(self):
         config = get_config()

@@ -85,6 +85,21 @@ class MetadataOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_metadata.html"
 
+    OPTIONS = (
+        ('translate_artist_names', ['translate_artist_names']),
+        ('artist_locales', ['selected_locales']),
+        ('translate_artist_names_script_exception', ['translate_artist_names_script_exception']),
+        ('script_exceptions', ['selected_scripts']),
+        ('standardize_artists', ['standardize_artists']),
+        ('standardize_instruments', ['standardize_instruments']),
+        ('convert_punctuation', ['convert_punctuation']),
+        ('release_ars', ['release_ars']),
+        ('track_ars', ['track_ars']),
+        ('guess_tracknumber_and_title', ['guess_tracknumber_and_title']),
+        ('va_name', ['va_name']),
+        ('nat_name', ['nat_name']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_MetadataOptionsPage()
@@ -95,19 +110,6 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_scripts.clicked.connect(self.open_script_selector)
         self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
-
-        self.register_setting('translate_artist_names', ['translate_artist_names'])
-        self.register_setting('artist_locales', ['selected_locales'])
-        self.register_setting('translate_artist_names_script_exception', ['translate_artist_names_script_exception'])
-        self.register_setting('script_exceptions', ['selected_scripts'])
-        self.register_setting('standardize_artists', ['standardize_artists'])
-        self.register_setting('standardize_instruments', ['standardize_instruments'])
-        self.register_setting('convert_punctuation', ['convert_punctuation'])
-        self.register_setting('release_ars', ['release_ars'])
-        self.register_setting('track_ars', ['track_ars'])
-        self.register_setting('guess_tracknumber_and_title', ['guess_tracknumber_and_title'])
-        self.register_setting('va_name', ['va_name'])
-        self.register_setting('nat_name', ['nat_name'])
 
     def load(self):
         config = get_config()

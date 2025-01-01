@@ -40,22 +40,24 @@ class NetworkOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_network.html"
 
+    OPTIONS = (
+        ('use_proxy', ['web_proxy']),
+        ('proxy_type', ['proxy_type_socks', 'proxy_type_http']),
+        ('proxy_server_host', ['server_host']),
+        ('proxy_server_port', ['server_port']),
+        ('proxy_username', ['username']),
+        ('proxy_password', ['password']),
+        ('network_transfer_timeout_seconds', ['transfer_timeout']),
+        ('network_cache_size_bytes', ['network_cache_size']),
+        ('browser_integration', ['browser_integration']),
+        ('browser_integration_port', ['browser_integration_port']),
+        ('browser_integration_localhost_only', ['browser_integration_localhost_only']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
-
-        self.register_setting('use_proxy', [])
-        self.register_setting('proxy_type', ['proxy_type_socks', 'proxy_type_http'])
-        self.register_setting('proxy_server_host', ['server_host'])
-        self.register_setting('proxy_server_port', ['server_port'])
-        self.register_setting('proxy_username', ['username'])
-        self.register_setting('proxy_password', ['password'])
-        self.register_setting('network_transfer_timeout_seconds', ['transfer_timeout'])
-        self.register_setting('network_cache_size_bytes', ['network_cache_size'])
-        self.register_setting('browser_integration', [])
-        self.register_setting('browser_integration_port', ['browser_integration_port'])
-        self.register_setting('browser_integration_localhost_only', ['browser_integration_localhost_only'])
 
     def load(self):
         config = get_config()

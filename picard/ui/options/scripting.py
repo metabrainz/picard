@@ -106,6 +106,11 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_scripting.html"
 
+    OPTIONS = (
+        ('enable_tagger_scripts', ['enable_tagger_scripts']),
+        ('list_of_scripts', ['script_list']),
+    )
+
     default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
     default_script_extension = "ptsp"
 
@@ -131,9 +136,6 @@ class ScriptingOptionsPage(OptionsPage):
         self.FILE_TYPE_PACKAGE = _("Picard tagging script package") + " (*.ptsp *.yaml)"
 
         self.ui.script_list.signal_reset_selected_item.connect(self.reset_selected_item)
-
-        self.register_setting('enable_tagger_scripts', ['enable_tagger_scripts'])
-        self.register_setting('list_of_scripts', ['script_list'])
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)

@@ -52,6 +52,10 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cdlookup.html"
 
+    OPTIONS = (
+        ('cd_lookup_device', None),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_CDLookupOptionsPage()
@@ -59,8 +63,6 @@ class CDLookupOptionsPage(OptionsPage):
         if AUTO_DETECT_DRIVES:
             self._device_list = get_cdrom_drives()
             self.ui.cd_lookup_device.addItems(self._device_list)
-
-        self.register_setting('cd_lookup_device')
 
     def load(self):
         config = get_config()

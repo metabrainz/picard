@@ -45,19 +45,21 @@ class TagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags.html"
 
+    OPTIONS = (
+        ('dont_write_tags', ['write_tags']),
+        ('preserve_timestamps', ['preserve_timestamps']),
+        ('clear_existing_tags', ['clear_existing_tags']),
+        ('preserve_images', ['preserve_images']),
+        ('remove_id3_from_flac', ['remove_id3_from_flac']),
+        ('remove_ape_from_mp3', ['remove_ape_from_mp3']),
+        ('fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac']),
+        ('preserved_tags', ['preserved_tags']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
-
-        self.register_setting('dont_write_tags', ['write_tags'])
-        self.register_setting('preserve_timestamps', ['preserve_timestamps'])
-        self.register_setting('clear_existing_tags', ['clear_existing_tags'])
-        self.register_setting('preserve_images', ['preserve_images'])
-        self.register_setting('remove_id3_from_flac', ['remove_id3_from_flac'])
-        self.register_setting('remove_ape_from_mp3', ['remove_ape_from_mp3'])
-        self.register_setting('fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac'])
-        self.register_setting('preserved_tags', ['preserved_tags'])
 
     def load(self):
         config = get_config()

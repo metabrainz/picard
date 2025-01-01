@@ -72,6 +72,16 @@ class RenamingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming.html"
 
+    OPTIONS = (
+        ('move_files', ['move_files']),
+        ('move_files_to', ['move_files_to']),
+        ('move_additional_files', ['move_additional_files']),
+        ('move_additional_files_pattern', ['move_additional_files_pattern']),
+        ('delete_empty_dirs', ['delete_empty_dirs']),
+        ('rename_files', ['rename_files']),
+        ('selected_file_naming_script_id', ['naming_script_selector']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.script_text = ""
@@ -113,14 +123,6 @@ class RenamingOptionsPage(OptionsPage):
         synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
         self.current_row = -1
-
-        self.register_setting('move_files', ['move_files'])
-        self.register_setting('move_files_to', ['move_files_to'])
-        self.register_setting('move_additional_files', ['move_additional_files'])
-        self.register_setting('move_additional_files_pattern', ['move_additional_files_pattern'])
-        self.register_setting('delete_empty_dirs', ['delete_empty_dirs'])
-        self.register_setting('rename_files', ['rename_files'])
-        self.register_setting('selected_file_naming_script_id', ['naming_script_selector'])
 
     def update_selector_from_editor(self):
         """Update the script selector combo box from the script editor page.
