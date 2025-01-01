@@ -39,16 +39,18 @@ class MatchingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_matching.html"
 
+    OPTIONS = (
+        ('file_lookup_threshold', ['file_lookup_threshold']),
+        ('cluster_lookup_threshold', ['cluster_lookup_threshold']),
+        ('track_matching_threshold', ['track_matching_threshold']),
+    )
+
     _release_type_sliders = {}
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_MatchingOptionsPage()
         self.ui.setupUi(self)
-
-        self.register_setting('file_lookup_threshold', ['file_lookup_threshold'])
-        self.register_setting('cluster_lookup_threshold', ['cluster_lookup_threshold'])
-        self.register_setting('track_matching_threshold', ['track_matching_threshold'])
 
     def load(self):
         config = get_config()

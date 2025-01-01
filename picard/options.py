@@ -80,16 +80,14 @@ from picard.ui.colors import InterfaceColors
 #      The translated title will be displayed in Profiles option page.
 #
 #   2. If the option is a 'setting' which is edited in one of the option pages,
-#      then the option can be registered in the `__init__()` method of the
-#      matching `OptionPage` declaration with a call to the page's
-#      `register_setting()` method.
+#      then the option must be added to the OPTIONS tuple in the class. The
+#      first parameter is the option name, the second is a list of UI elements
+#      to highlight if the option is part of an option profile. If the setting
+#      can be overridden in profiles, the `highlights` has to be a list of
+#      widget names associated with the option.
 #
 #      Registering a setting allows it to be reset to the default when the user
 #      asks for it on the corresponding option page.
-#
-#      If the setting can be overriden in profiles, the `highlights` parameter
-#      has to be set a list of widget names associated with the option.
-#
 #
 # Please, try to keep options ordered by section and name in their own group.
 

@@ -87,6 +87,17 @@ class GenresOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_genres.html"
 
+    OPTIONS = (
+        ('use_genres', None),
+        ('only_my_genres', ['only_my_genres']),
+        ('artists_genres', ['artists_genres']),
+        ('folksonomy_tags', ['folksonomy_tags']),
+        ('min_genre_usage', ['min_genre_usage']),
+        ('max_genres', ['max_genres']),
+        ('join_genres', ['join_genres']),
+        ('genres_filter', ['genres_filter']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_GenresOptionsPage()
@@ -107,15 +118,6 @@ class GenresOptionsPage(OptionsPage):
 
         self.fmt_clear = QTextBlockFormat()
         self.fmt_clear.clearBackground()
-
-        self.register_setting('use_genres', [])
-        self.register_setting('only_my_genres', ['only_my_genres'])
-        self.register_setting('artists_genres', ['artists_genres'])
-        self.register_setting('folksonomy_tags', ['folksonomy_tags'])
-        self.register_setting('min_genre_usage', ['min_genre_usage'])
-        self.register_setting('max_genres', ['max_genres'])
-        self.register_setting('join_genres', ['join_genres'])
-        self.register_setting('genres_filter', ['genres_filter'])
 
     def load(self):
         config = get_config()

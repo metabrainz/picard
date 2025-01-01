@@ -72,6 +72,11 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_toolbar.html"
     SEPARATOR = '—' * 5
+
+    OPTIONS = (
+        ('toolbar_layout', ['toolbar_layout_list']),
+    )
+
     TOOLBAR_BUTTONS = {
         MainAction.ADD_DIRECTORY: ToolbarButtonDesc(
             N_("Add Folder"),
@@ -147,8 +152,6 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
                                           self.ui.down_button, self.update_action_buttons)
         self.update_buttons = self.move_view.update_buttons
-
-        self.register_setting('toolbar_layout', ['toolbar_layout_list'])
 
     def load(self):
         self.populate_action_list()

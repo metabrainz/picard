@@ -161,6 +161,12 @@ class ReleasesOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_releases.html"
 
+    OPTIONS = (
+        ('release_type_scores', ['type_group']),
+        ('preferred_release_countries', ['country_group']),
+        ('preferred_release_formats', ['format_group']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_ReleasesOptionsPage()
@@ -213,10 +219,6 @@ class ReleasesOptionsPage(OptionsPage):
         self.ui.preferred_country_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.ui.format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.ui.preferred_format_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
-
-        self.register_setting('release_type_scores', ['type_group'])
-        self.register_setting('preferred_release_countries', ['country_group'])
-        self.register_setting('preferred_release_formats', ['format_group'])
 
     def restore_defaults(self):
         # Clear lists

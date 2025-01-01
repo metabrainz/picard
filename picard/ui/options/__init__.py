@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009, 2019-2022 Philipp Wolfer
+# Copyright (C) 2009, 2019-2022, 2025 Philipp Wolfer
 # Copyright (C) 2013, 2015, 2018-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
@@ -53,7 +53,9 @@ class OptionsPage(QtWidgets.QWidget):
     HELP_URL = None
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
+    OPTIONS = ()
 
+    _registered_settings = []
     initialized = False
     loaded = False
 
@@ -71,8 +73,6 @@ class OptionsPage(QtWidgets.QWidget):
         def on_destroyed(obj=None):
             self.deleted = True
         self.destroyed.connect(on_destroyed)
-
-        self._registered_settings = []
 
     def set_dialog(self, dialog):
         self.dialog = dialog
@@ -131,12 +131,13 @@ class OptionsPage(QtWidgets.QWidget):
 
         regex_edit.textChanged.connect(live_checker)
 
-    def register_setting(self, name, highlights=None):
+    @classmethod
+    def register_setting(cls, name, highlights=None):
         """Register a setting edited in the page, used to restore defaults
            and to highlight when profiles are used"""
         option = Option.get('setting', name)
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
-        self._registered_settings.append(option)
+        OptionsPage._registered_settings.append(option)
         if highlights is not None:
-            profile_groups_add_setting(self.NAME, name, tuple(highlights), title=self.TITLE)
+            profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.TITLE)

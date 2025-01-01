@@ -100,6 +100,11 @@ class InterfaceColorsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_colors.html"
 
+    OPTIONS = (
+        ('interface_colors', ['colors']),
+        ('interface_colors_dark', ['colors']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_InterfaceColorsOptionsPage()
@@ -107,9 +112,6 @@ class InterfaceColorsOptionsPage(OptionsPage):
         self.new_colors = {}
         self.colors_list = QtWidgets.QVBoxLayout()
         self.ui.colors.setLayout(self.colors_list)
-
-        self.register_setting('interface_colors', ['colors'])
-        self.register_setting('interface_colors_dark', ['colors'])
 
     def update_color_selectors(self):
         if self.colors_list:

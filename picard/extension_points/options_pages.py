@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009, 2019-2022 Philipp Wolfer
+# Copyright (C) 2009, 2019-2022, 2025 Philipp Wolfer
 # Copyright (C) 2013, 2015, 2018-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
@@ -30,3 +30,5 @@ ext_point_options_pages = ExtensionPoint(label='options_pages')
 
 def register_options_page(page_class):
     ext_point_options_pages.register(page_class.__module__, page_class)
+    for opt_name, opt_highlights in page_class.OPTIONS:
+        page_class.register_setting(opt_name, opt_highlights)

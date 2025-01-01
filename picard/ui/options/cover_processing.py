@@ -49,27 +49,30 @@ class CoverProcessingOptionsPage(OptionsPage):
     PARENT = 'cover'
     SORT_ORDER = 0
 
+    OPTIONS = (
+        ('filter_cover_by_size', None),
+        ('cover_minimum_width', None),
+        ('cover_minimum_height', None),
+        ('cover_tags_enlarge', None),
+        ('cover_tags_resize', None),
+        ('cover_tags_resize_target_width', None),
+        ('cover_tags_resize_target_height', None),
+        ('cover_tags_resize_mode', None),
+        ('cover_tags_convert_images', None),
+        ('cover_tags_convert_to_format', None),
+        ('cover_file_enlarge', None),
+        ('cover_file_resize', None),
+        ('cover_file_resize_target_width', None),
+        ('cover_file_resize_target_height', None),
+        ('cover_file_resize_mode', None),
+        ('cover_file_convert_images', None),
+        ('cover_file_convert_to_format', None),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_CoverProcessingOptionsPage()
         self.ui.setupUi(self)
-        self.register_setting('filter_cover_by_size')
-        self.register_setting('cover_minimum_width')
-        self.register_setting('cover_minimum_height')
-        self.register_setting('cover_tags_enlarge')
-        self.register_setting('cover_tags_resize')
-        self.register_setting('cover_tags_resize_target_width')
-        self.register_setting('cover_tags_resize_target_height')
-        self.register_setting('cover_tags_resize_mode')
-        self.register_setting('cover_tags_convert_images')
-        self.register_setting('cover_tags_convert_to_format')
-        self.register_setting('cover_file_enlarge')
-        self.register_setting('cover_file_resize')
-        self.register_setting('cover_file_resize_target_width')
-        self.register_setting('cover_file_resize_target_height')
-        self.register_setting('cover_file_resize_mode')
-        self.register_setting('cover_file_convert_images')
-        self.register_setting('cover_file_convert_to_format')
 
         for resize_mode in COVER_RESIZE_MODES:
             self.ui.tags_resize_mode.addItem(resize_mode.title, resize_mode.mode.value)

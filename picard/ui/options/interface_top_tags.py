@@ -39,12 +39,14 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_top_tags.html"
 
+    OPTIONS = (
+        ('metadatabox_top_tags', ['top_tags_groupBox']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_InterfaceTopTagsOptionsPage()
         self.ui.setupUi(self)
-
-        self.register_setting('metadatabox_top_tags', ['top_tags_groupBox'])
 
     def load(self):
         config = get_config()

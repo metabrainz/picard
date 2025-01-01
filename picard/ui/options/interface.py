@@ -68,6 +68,22 @@ class InterfaceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface.html"
 
+    OPTIONS = (
+        ('toolbar_show_labels', ['toolbar_show_labels']),
+        ('show_menu_icons', ['show_menu_icons']),
+        ('ui_language', ['ui_language']),
+        ('ui_theme', ['ui_theme']),
+        ('allow_multi_dirs_selection', ['allow_multi_dirs_selection']),
+        ('builtin_search', ['builtin_search']),
+        ('use_adv_search_syntax', ['use_adv_search_syntax']),
+        ('show_new_user_dialog', ['new_user_dialog']),
+        ('quit_confirmation', ['quit_confirmation']),
+        ('file_save_warning', ['file_save_warning']),
+        ('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll']),
+        ('starting_directory', ['starting_directory']),
+        ('starting_directory_path', ['starting_directory_path']),
+    )
+
     # Those are labels for theme display
     _UI_THEME_LABELS = {
         UiTheme.DEFAULT: {
@@ -125,20 +141,6 @@ class InterfaceOptionsPage(OptionsPage):
             self.ui.ui_theme_container.hide()
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
-
-        self.register_setting('toolbar_show_labels', ['toolbar_show_labels'])
-        self.register_setting('show_menu_icons', ['show_menu_icons'])
-        self.register_setting('ui_language', ['ui_language', 'label'])
-        self.register_setting('ui_theme', ['ui_theme', 'label_theme'])
-        self.register_setting('allow_multi_dirs_selection', ['allow_multi_dirs_selection'])
-        self.register_setting('builtin_search', ['builtin_search'])
-        self.register_setting('use_adv_search_syntax', ['use_adv_search_syntax'])
-        self.register_setting('show_new_user_dialog', ['new_user_dialog'])
-        self.register_setting('quit_confirmation', ['quit_confirmation'])
-        self.register_setting('file_save_warning', ['file_save_warning'])
-        self.register_setting('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll'])
-        self.register_setting('starting_directory', ['starting_directory'])
-        self.register_setting('starting_directory_path', ['starting_directory_path'])
 
     def load(self):
         # Don't display the multi-selection warning when loading values.

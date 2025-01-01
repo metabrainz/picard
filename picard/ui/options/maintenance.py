@@ -77,6 +77,10 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
+    OPTIONS = (
+        ('autobackup_directory', ['autobackup_dir']),
+    )
+
     signal_reload = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
@@ -112,8 +116,6 @@ class MaintenanceOptionsPage(OptionsPage):
         palette_readonly.setColor(QtGui.QPalette.ColorRole.Base, disabled_color)
         self.ui.config_file.setPalette(palette_readonly)
         self.last_valid_path = _safe_autobackup_dir('')
-
-        self.register_setting('autobackup_directory', ['autobackup_dir'])
 
     def get_current_autobackup_dir(self):
         return _safe_autobackup_dir(self.ui.autobackup_dir.text())

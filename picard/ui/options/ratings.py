@@ -38,14 +38,16 @@ class RatingsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_ratings.html"
 
+    OPTIONS = (
+        ('enable_ratings', ['enable_ratings']),
+        ('rating_user_email', ['rating_user_email']),
+        ('submit_ratings', ['submit_ratings']),
+    )
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_RatingsOptionsPage()
         self.ui.setupUi(self)
-
-        self.register_setting('enable_ratings', [])
-        self.register_setting('rating_user_email', ['rating_user_email'])
-        self.register_setting('submit_ratings', ['submit_ratings'])
 
     def load(self):
         config = get_config()
