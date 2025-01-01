@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-28 19:08+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
-"projects/picard/constants/zh_Hant/>\n"
+"PO-Revision-Date: 2025-01-02 02:42+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translations.metabrainz.org/projects/picard/3/constants/zh_Hant/>\n"
 "Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -3089,7 +3089,7 @@ msgstr "波蘭語 (波蘭)"
 
 #: picard/const/locales.py:774
 msgid "Prussian"
-msgstr ""
+msgstr "普魯士語"
 
 #: picard/const/locales.py:775
 msgid "Prussian (world)"
@@ -3809,7 +3809,7 @@ msgstr ""
 
 #: picard/const/locales.py:962
 msgid "Toki Pona"
-msgstr ""
+msgstr "道本語"
 
 #: picard/const/locales.py:963
 msgid "Toki Pona (world)"
@@ -4005,7 +4005,7 @@ msgstr ""
 
 #: picard/const/locales.py:1013
 msgid "Walser"
-msgstr ""
+msgstr "瓦爾瑟文"
 
 #: picard/const/locales.py:1014
 msgid "Walser (Switzerland)"
