@@ -67,6 +67,7 @@ TAG_NAMES = {
     'encodedby': N_('Encoded By'),
     'encodersettings': N_('Encoder Settings'),
     'engineer': N_('Engineer'),
+    '~filepath': N_('File Path'),
     'gapless': N_('Gapless Playback'),
     'genre': N_('Genre'),
     'grouping': N_('Grouping'),

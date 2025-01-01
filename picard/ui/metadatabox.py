@@ -149,6 +149,9 @@ class TagDiff:
         else:
             return orig != new
 
+    def is_readonly(self, tag):
+        return bool(self.status[tag] & TagStatus.READONLY)
+
     def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False, top_tags=None):
         if orig_values:
             self.orig.add(tag, orig_values)
@@ -235,6 +238,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         config = get_config()
+        config.setting.setting_changed_signal.connect(self._on_setting_changed)
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
@@ -277,6 +281,23 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
         self.tagger.clipboard().dataChanged.connect(self._update_clipboard)
+
+    def _on_setting_changed(self, name, old_value, new_value):
+        settings_to_watch = {
+            "enabled_plugins",
+            "move_files",
+            "move_files_to",
+            "rename_files",
+            "standardize_artists",
+            "va_name",
+            "windows_compatibility",
+            "selected_file_naming_script_id",
+            "file_naming_scripts",
+            "user_profiles",
+            "user_profile_settings"
+        }
+        if name in settings_to_watch:
+            self.update(drop_album_caches=False)
 
     def _get_file_lookup(self):
         """Return a FileLookup object."""
@@ -624,6 +645,12 @@ class MetadataBox(QtWidgets.QTableWidget):
 
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
+            if len(files) == 1:
+                if settings['rename_files'] or settings['move_files']:
+                    new_filename = file.make_filename(file.filename, new_metadata)
+                else:
+                    new_filename = file.filename
+                tag_diff.add('~filepath', [file.filename], [new_filename], removable=False, readonly=True)
 
         for track in tracks:
             if track.num_linked_files == 0:
@@ -708,7 +735,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
                 new_item.setTextAlignment(alignment)
-                if tag == '~length':
+                if self.tag_diff.is_readonly(tag):
                     new_item.setFlags(orig_flags)
                 else:
                     new_item.setFlags(new_flags)
