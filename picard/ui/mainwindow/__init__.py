@@ -264,8 +264,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
         elif name == 'dont_write_tags':
             self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not new_value)
-        elif name == 'clear_existing_tags':
-            self.metadata_box.update()
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
