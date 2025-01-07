@@ -108,16 +108,17 @@ class Item:
     @property
     def tracknumber(self):
         """The track number as an int."""
-        try:
-            return int(self.metadata.get('tracknumber', '0').split('/')[0])
-        except ValueError:
-            return 0
+        return self._track_or_disc_number('tracknumber')
 
     @property
     def discnumber(self):
         """The disc number as an int."""
+        return self._track_or_disc_number('discnumber')
+
+    def _track_or_disc_number(self, field):
+        """Extract tracknumber or discnumber as int, defaults to 0."""
         try:
-            return int(self.metadata.get('discnumber', '0').split('/')[0])
+            return int(self.metadata.get(field, '0').split('/')[0])
         except ValueError:
             return 0
 
