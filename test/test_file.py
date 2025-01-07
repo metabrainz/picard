@@ -64,6 +64,10 @@ class FileTest(PicardTestCase):
         self.assertEqual(42, self.file.tracknumber)
         self.file.metadata['tracknumber'] = 'FOURTYTWO'
         self.assertEqual(0, self.file.tracknumber)
+        self.file.metadata['tracknumber'] = '3/12'
+        self.assertEqual(3, self.file.tracknumber)
+        self.file.metadata['tracknumber'] = '3 / 12'
+        self.assertEqual(3, self.file.tracknumber)
 
     def test_discnumber(self):
         self.assertEqual(0, self.file.discnumber)
@@ -71,9 +75,9 @@ class FileTest(PicardTestCase):
         self.assertEqual(42, self.file.discnumber)
         self.file.metadata['discnumber'] = 'FOURTYTWO'
         self.assertEqual(0, self.file.discnumber)
-        self.file.metadata["discnumber"] = "3/12"
+        self.file.metadata["discnumber"] = '3/12'
         self.assertEqual(3, self.file.discnumber)
-        self.file.metadata["discnumber"] = "3 / 12"
+        self.file.metadata["discnumber"] = '3 / 12'
         self.assertEqual(3, self.file.discnumber)
 
     def test_set_acoustid_fingerprint(self):
