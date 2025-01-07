@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018, 2020-2022, 2024 Philipp Wolfer
+# Copyright (C) 2010, 2018, 2020-2022, 2024-2025 Philipp Wolfer
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013, 2020-2021, 2023-2024 Laurent Monin
@@ -117,8 +117,8 @@ class Item:
     def discnumber(self):
         """The disc number as an int."""
         try:
-            return int(self.metadata['discnumber'])
-        except BaseException:
+            return int(self.metadata.get('discnumber', '0').split('/')[0])
+        except ValueError:
             return 0
 
     @property

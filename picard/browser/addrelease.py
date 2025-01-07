@@ -113,14 +113,6 @@ def serve_form(token):
         raise InvalidTokenError
 
 
-def extract_discnumber(metadata):
-    try:
-        discnumber = metadata.get('discnumber', '1').split('/')[0]
-        return int(discnumber)
-    except ValueError:
-        return 1
-
-
 def _open_url_with_token(payload):
     token = jwt.encode(payload, __key, algorithm=__algorithm)
     if isinstance(token, bytes):  # For compatibility with PyJWT 1.x
@@ -217,7 +209,7 @@ def _add_track_data(data, files):
     last_discnumber = None
     for f in sorted(files, key=attrgetter('discnumber', 'tracknumber')):
         m = f.metadata
-        discnumber = extract_discnumber(m)
+        discnumber = f.discnumber
         if last_discnumber is not None and discnumber != last_discnumber:
             disc_counter += 1
             track_counter = 0
