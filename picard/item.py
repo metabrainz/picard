@@ -110,7 +110,7 @@ class Item:
         """The track number as an int."""
         try:
             return int(self.metadata.get('tracknumber', '0').split('/')[0])
-        except BaseException:
+        except ValueError:
             return 0
 
     @property
