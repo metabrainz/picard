@@ -109,7 +109,7 @@ class Item:
     def tracknumber(self):
         """The track number as an int."""
         try:
-            return int(self.metadata['tracknumber'])
+            return int(self.metadata.get('tracknumber', '0').split('/')[0])
         except BaseException:
             return 0
 
