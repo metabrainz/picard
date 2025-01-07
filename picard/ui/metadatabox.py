@@ -10,11 +10,12 @@
 # Copyright (C) 2013-2014, 2021 Sophist-UK
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2015 Wieland Hoffmann
-# Copyright (C) 2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2015, 2018-2025 Philipp Wolfer
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020 Felix Schwarz
 # Copyright (C) 2020-2021 Gabriel Ferreira
+# Copyright (C) 2024 Arnab Chakraborty
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

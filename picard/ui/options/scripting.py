@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2019-2023 Philipp Wolfer
+# Copyright (C) 2009-2010, 2019-2023, 2025 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013-2015, 2017-2024 Laurent Monin
 # Copyright (C) 2014 m42i

@@ -24,6 +24,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+
 from base64 import urlsafe_b64encode
 from functools import partial
 from hashlib import sha256

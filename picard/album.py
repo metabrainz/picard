@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 ojnkpjg
-# Copyright (C) 2008-2011, 2014, 2018-2023 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Chad Wilson
 # Copyright (C) 2011-2013, 2019 Michael Wiencek
@@ -23,6 +23,8 @@
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2022 skelly37
+# Copyright (C) 2024 Giorgio Fontanive
+# Copyright (C) 2024 Rakim Middya
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

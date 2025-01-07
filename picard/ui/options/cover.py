@@ -3,13 +3,14 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018-2021, 2024 Philipp Wolfer
+# Copyright (C) 2010, 2018-2021, 2024-2025 Philipp Wolfer
 # Copyright (C) 2012, 2014 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2015, 2018-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2021 Bob Swift
+# Copyright (C) 2024 Giorgio Fontanive
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,6 +25,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 from PyQt6.QtCore import Qt
 

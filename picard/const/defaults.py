@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018, 2021, 2023 Bob Swift
+# Copyright (C) 2018, 2021, 2023-2024 Bob Swift
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Vladislav Karbovskii
@@ -31,6 +31,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 import os
 

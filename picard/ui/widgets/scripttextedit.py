@@ -4,8 +4,8 @@
 #
 # Copyright (C) 2006-2007, 2009 Lukáš Lalinský
 # Copyright (C) 2014 m42i
-# Copyright (C) 2020-2024 Philipp Wolfer
 # Copyright (C) 2020-2024 Laurent Monin
+# Copyright (C) 2020-2024 Philipp Wolfer
 # Copyright (C) 2021-2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or

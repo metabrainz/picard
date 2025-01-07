@@ -5,6 +5,7 @@
 # Copyright (C) 2018 Yvan Rivière
 # Copyright (C) 2018, 2020-2021, 2024 Laurent Monin
 # Copyright (C) 2018, 2020-2022 Philipp Wolfer
+# Copyright (C) 2024 Yohay
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

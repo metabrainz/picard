@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2018-2021, 2024 Philipp Wolfer
+# Copyright (C) 2009-2010, 2018-2021, 2024-2025 Philipp Wolfer
 # Copyright (C) 2012 Erik Wasser
 # Copyright (C) 2012 Johannes Weißl
 # Copyright (C) 2012-2013 Michael Wiencek

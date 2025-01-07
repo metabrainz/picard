@@ -23,6 +23,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+
 from picard.extension_points.options_pages import register_options_page
 from picard.plugin import ExtensionPoint
 

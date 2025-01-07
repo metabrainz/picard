@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2009-2010, 2014-2015, 2018-2024 Philipp Wolfer
+# Copyright (C) 2009-2010, 2014-2015, 2018-2025 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2011-2013 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -31,6 +31,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 
 import os
 import re

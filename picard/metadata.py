@@ -20,6 +20,7 @@
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2022 Bob Swift
 # Copyright (C) 2022 skelly37
+# Copyright (C) 2024 x11x
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

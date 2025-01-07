@@ -5,6 +5,7 @@
 # Copyright (C) 2014, 2018, 2020-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2020-2021 Philipp Wolfer
+# Copyright (C) 2024 Giorgio Fontanive
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
