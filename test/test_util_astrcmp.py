@@ -5,7 +5,7 @@
 # Copyright (C) 2017 Lukáš Lalinský
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2017-2018 Wieland Hoffmann
-# Copyright (C) 2018, 2020-2021 Laurent Monin
+# Copyright (C) 2018, 2020-2022, 2024 Laurent Monin
 # Copyright (C) 2018-2019, 2021 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
