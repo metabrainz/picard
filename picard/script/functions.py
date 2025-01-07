@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2009, 2012 Lukáš Lalinský
 # Copyright (C) 2007 Javier Kohen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2024 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Michael Wiencek
@@ -20,6 +20,7 @@
 # Copyright (C) 2018 virusMac
 # Copyright (C) 2020-2022 Bob Swift
 # Copyright (C) 2021 Adam James
+# Copyright (C) 2024 Arnab Chakraborty
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

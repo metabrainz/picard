@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2018 Antonio Larrosa
-# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2019-2022, 2024 Philipp Wolfer
 # Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or

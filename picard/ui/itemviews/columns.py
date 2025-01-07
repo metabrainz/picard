@@ -26,6 +26,7 @@
 # Copyright (C) 2021 Louis Sautier
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2023 certuna
+# Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Suryansh Shakya
 #
 # This program is free software; you can redistribute it and/or

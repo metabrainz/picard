@@ -6,7 +6,7 @@
 # Copyright (C) 2014-2015, 2018, 2020-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018, 2022-2023 Philipp Wolfer
+# Copyright (C) 2018, 2022-2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

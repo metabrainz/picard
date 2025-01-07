@@ -13,6 +13,9 @@
 # Copyright (C) 2019 Zenara Daley
 # Copyright (C) 2023 Bob Swift
 # Copyright (C) 2023 certuna
+# Copyright (C) 2024 Arnab Chakraborty
+# Copyright (C) 2024 Giorgio Fontanive
+# Copyright (C) 2024 Serial
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

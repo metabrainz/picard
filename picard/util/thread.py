@@ -12,6 +12,7 @@
 # Copyright (C) 2020, 2022 Philipp Wolfer
 # Copyright (C) 2022 Bob Swift
 # Copyright (C) 2022 skelly37
+# Copyright (C) 2024 Giorgio Fontanive
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

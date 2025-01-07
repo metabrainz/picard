@@ -6,7 +6,7 @@
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2019-2020, 2023 Philipp Wolfer
 # Copyright (C) 2020 Ray Bouchard
-# Copyright (C) 2020-2021 Laurent Monin
+# Copyright (C) 2020-2022 Laurent Monin
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
 #

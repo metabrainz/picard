@@ -27,6 +27,7 @@
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2021, 2023 Bob Swift
+# Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Suryansh Shakya
 #
 # This program is free software; you can redistribute it and/or

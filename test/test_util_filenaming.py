@@ -5,8 +5,9 @@
 # Copyright (C) 2013-2014 Ionuț Ciocîrlan
 # Copyright (C) 2016 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2018-2021 Laurent Monin
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2018-2022 Laurent Monin
+# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

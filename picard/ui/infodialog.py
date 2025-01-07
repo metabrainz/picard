@@ -12,6 +12,7 @@
 # Copyright (C) 2017-2019 Antonio Larrosa
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018-2024 Philipp Wolfer
+# Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Suryansh Shakya
 #
 # This program is free software; you can redistribute it and/or

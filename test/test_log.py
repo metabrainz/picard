@@ -3,8 +3,8 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Gabriel Ferreira
-# Copyright (C) 2021, 2024 Laurent Monin
 # Copyright (C) 2021, 2024 Philipp Wolfer
+# Copyright (C) 2021-2022, 2024 Laurent Monin
 # Copyright (C) 2024 Bob Swift
 #
 # This program is free software; you can redistribute it and/or

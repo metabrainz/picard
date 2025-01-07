@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006 Lukáš Lalinský
 # Copyright (C) 2013, 2018, 2020-2021, 2023-2024 Laurent Monin
-# Copyright (C) 2013, 2020-2021 Philipp Wolfer
+# Copyright (C) 2013, 2020-2021, 2025 Philipp Wolfer
 # Copyright (C) 2016-2017 Sambhav Kothari
 #
 # This program is free software; you can redistribute it and/or

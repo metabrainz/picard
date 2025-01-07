@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
-# Copyright (C) 2008-2009, 2018-2022 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2022, 2025 Philipp Wolfer
 # Copyright (C) 2011 Pavan Chander
 # Copyright (C) 2011-2012, 2019 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -15,6 +15,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021-2023 Bob Swift
+# Copyright (C) 2024 Giorgio Fontanive
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

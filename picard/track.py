@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2010, 2014-2015, 2018-2023 Philipp Wolfer
+# Copyright (C) 2010, 2014-2015, 2018-2025 Philipp Wolfer
 # Copyright (C) 2011 Chad Wilson
 # Copyright (C) 2011 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -23,6 +23,9 @@
 # Copyright (C) 2020, 2022 Adam James
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2024 Arnab Chakraborty
+# Copyright (C) 2024 Giorgio Fontanive
+# Copyright (C) 2024 Rakim Middya
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License

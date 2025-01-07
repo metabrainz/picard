@@ -2,9 +2,10 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
+# Copyright (C) 2022 Jeffrey Bosboom
 # Copyright (C) 2022 Laurent Monin
 # Copyright (C) 2022, 2024 Philipp Wolfer
-# Copyright (C) 2022 Jeffrey Bosboom
+# Copyright (C) 2024 ShubhamBhut
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
