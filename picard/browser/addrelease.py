@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021-2022 Laurent Monin
-# Copyright (C) 2021-2023 Philipp Wolfer
+# Copyright (C) 2021-2023, 2025 Philipp Wolfer
 # Copyright (C) 2022 Bob Swift
 # Copyright (C) 2022 jesus2099
 #
@@ -23,6 +23,7 @@
 
 
 from html import escape
+from operator import attrgetter
 from secrets import token_bytes
 
 from PyQt5.QtCore import QCoreApplication
@@ -213,7 +214,7 @@ def _add_track_data(data, files):
     disc_counter = 0
     track_counter = 0
     last_discnumber = None
-    for f in files:
+    for f in sorted(files, key=attrgetter('discnumber', 'tracknumber')):
         m = f.metadata
         discnumber = extract_discnumber(m)
         if last_discnumber is not None and discnumber != last_discnumber:
