@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2018-2024 Philipp Wolfer
+# Copyright (C) 2018-2025 Philipp Wolfer
 # Copyright (C) 2019-2022, 2024 Laurent Monin
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Sophist-UK
@@ -71,6 +71,10 @@ class FileTest(PicardTestCase):
         self.assertEqual(42, self.file.discnumber)
         self.file.metadata['discnumber'] = 'FOURTYTWO'
         self.assertEqual(0, self.file.discnumber)
+        self.file.metadata["discnumber"] = "3/12"
+        self.assertEqual(3, self.file.discnumber)
+        self.file.metadata["discnumber"] = "3 / 12"
+        self.assertEqual(3, self.file.discnumber)
 
     def test_set_acoustid_fingerprint(self):
         fingerprint = 'foo'
