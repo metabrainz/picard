@@ -3,8 +3,8 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2020-2021 Philipp Wolfer
 # Copyright (C) 2020-2021, 2023 Laurent Monin
+# Copyright (C) 2020-2022 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -50,6 +50,7 @@ ALIASES = {
     'Ray': 'Ray Bouchard',
     'RaysDev': 'Ray Bouchard',
     'Sophist': 'Sophist-UK',
+    'twodoorcoupe': 'Giorgio Fontanive',
     'vishal choudhary': 'Vishal Choudhary',
     'vishichoudhary': 'Vishal Choudhary',
     'yvanzo': 'Yvan Rivière',
