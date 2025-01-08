@@ -46,6 +46,7 @@ from collections import (
     Counter,
     defaultdict,
 )
+from operator import attrgetter
 import re
 import traceback
 
@@ -320,9 +321,8 @@ class Track(FileListItem):
 
         if config.setting['use_genres']:
             self._convert_folksonomy_tags_to_genre()
-            self.album.delete_genres_from_tags()
-            self._add_folksonomy_tags()
-            self._add_genres()
+            self._add_folksonomy_tags_variable()
+            self._add_genres_variable()
 
         # Convert Unicode punctuation
         if config.setting['convert_punctuation']:
@@ -355,24 +355,10 @@ class Track(FileListItem):
 
     def _convert_folksonomy_tags_to_genre(self):
         config = get_config()
-        genres = Counter(self.genres)
-        use_folksonomy = config.setting['folksonomy_tags']
-        if use_folksonomy:
-            genres += self.album.folksonomy_tags
+        if config.setting['folksonomy_tags']:
+            genres = self._merged_folksonomy_tags
         else:
-            genres += self.album.genres
-        # Combine release and track genres
-        if self.album.release_group:
-            genres += self.album.release_group.genres
-        if not genres and config.setting['artists_genres']:
-            # For compilations use each track's artists to look up genres
-            if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
-                for artist in self._track_artists:
-                    genres += artist.genres
-            else:
-                for artist in self.album.get_album_artists():
-                    genres += artist.genres
-
+            genres = self._merged_genres
         self.metadata['genre'] = self._genres_to_metadata(
             genres,
             limit=config.setting['max_genres'],
@@ -381,18 +367,42 @@ class Track(FileListItem):
             join_with=config.setting['join_genres']
         )
 
-    def _add_tags(self, tags, name):
-        self.metadata[name] = tags.keys()
+    @property
+    def _merged_folksonomy_tags(self):
+        return self._merge_folksonomy_tags('folksonomy_tags')
 
-    def _add_folksonomy_tags(self):
-        tags = Counter(self.folksonomy_tags)
-        tags += self.album.folksonomy_tags
-        self._add_tags(tags, '_folksonomy_tags')
+    @property
+    def _merged_genres(self):
+        return self._merge_folksonomy_tags('genres')
 
-    def _add_genres(self):
-        genre = Counter(self.genres)
-        genre += self.album.genres
-        self._add_tags(genre, '_genres')
+    def _merge_folksonomy_tags(self, name):
+        """Merge folksonomy_tags or genres from track, album, release group and artists.
+        """
+        getter = attrgetter(name)
+        genres = getter(self)
+        if self.album:
+            genres += getter(self.album)
+            if self.album.release_group:
+                genres += getter(self.album.release_group)
+        if not genres:
+            config = get_config()
+            if config.setting['artists_genres']:
+                # For compilations use each track's artists to look up genres
+                if self.metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
+                    for artist in self._track_artists:
+                        genres += getter(artist)
+                elif self.album:
+                    for artist in self.album.get_album_artists():
+                        genres += getter(artist)
+        return genres
+
+    def _add_folksonomy_tags_variable(self):
+        tags = self._merged_folksonomy_tags - self._merged_genres
+        self.metadata['~folksonomy_tags'] = sorted(tags)
+
+    def _add_genres_variable(self):
+        genres = self._merged_genres
+        self.metadata['~genres'] = sorted(genres)
 
 
 class NonAlbumTrack(Track):

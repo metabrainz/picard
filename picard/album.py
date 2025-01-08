@@ -858,10 +858,6 @@ class Album(MetadataItem):
             yield from track.files
         yield from self.unmatched_files.files
 
-    def delete_genres_from_tags(self):
-        for genre in self.genres:
-            del self.folksonomy_tags[genre]
-
 
 class NatAlbum(Album):
 
