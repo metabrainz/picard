@@ -465,6 +465,9 @@ class MetadataBox(QtWidgets.QTableWidget):
                     use_orig_value_action = QtGui.QAction(name, self)
                     use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
                     menu.addAction(use_orig_value_action)
+                    merge_tags_action = QtGui.QAction(_("Merge Original Values"), self)
+                    merge_tags_action.triggered.connect(partial(self._merge_tags, selected_tag))
+                    menu.addAction(merge_tags_action)
                     menu.addSeparator()
                 if single_tag:
                     menu.addSeparator()
@@ -490,6 +493,16 @@ class MetadataBox(QtWidgets.QTableWidget):
             for f in funcs:
                 f()
         self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
+
+    def _merge_tags(self, tag):
+        with self.tagger.window.ignore_selection_changes:
+            for obj in self.objects:
+                values = list(obj.orig_metadata.getall(tag))
+                for new_value in obj.metadata.getall(tag):
+                    if new_value not in values:
+                        values.append(new_value)
+                obj.metadata[tag] = values
+                obj.update()
 
     def _edit_tag(self, tag):
         if self.tag_diff is not None:
