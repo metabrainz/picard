@@ -8,4 +8,4 @@ PyQt5-sip==12.15.0; python_version < '3.9'
 python-dateutil==2.9.0.post0
 pywin32==308
 PyYAML==6.0.2
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1

@@ -2,10 +2,10 @@ discid==1.2.0
 fasteners==0.19
 Markdown==3.7
 mutagen==1.47.0
-PyJWT==2.9.0
-pyobjc-core==10.3.1
-pyobjc-framework-Cocoa==10.3.1
+PyJWT==2.10.1
+pyobjc-core==10.3.2
+pyobjc-framework-Cocoa==10.3.2
 PyQt5==5.15.11
 python-dateutil==2.9.0.post0
 PyYAML==6.0.2
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1
