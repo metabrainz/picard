@@ -14,18 +14,20 @@
 # Timo Martikainen <>, 2012
 # Timo Martikainen <email address hidden>, 2012
 # Timo Martikainen <email address hidden>, 2012-2014
+# poromies00 <valtteri.malila@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Juhana Uuttu <rexroom@sci.fi>, 2023\n"
-"Language-Team: Finnish (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/fi/)\n"
+"PO-Revision-Date: 2025-01-08 20:42+0000\n"
+"Last-Translator: poromies00 <valtteri.malila@gmail.com>\n"
+"Language-Team: Finnish <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -52,7 +54,7 @@ msgstr ""
 #: DB:medium_format/name:205
 msgctxt "medium_format"
 msgid "10\" Acetate"
-msgstr ""
+msgstr "10\" pikalevy"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
@@ -67,7 +69,7 @@ msgstr "10″ vinyyli"
 #: DB:medium_format/name:206
 msgctxt "medium_format"
 msgid "12\" Acetate"
-msgstr ""
+msgstr "12\" pikalevy"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
@@ -85,12 +87,9 @@ msgid "12\" Vinyl"
 msgstr "12″ vinyyli"
 
 #: DB:medium_format/name:207
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "7\" Vinyl"
 msgctxt "medium_format"
 msgid "3\" Vinyl"
-msgstr "7″ vinyyli"
+msgstr "3″ vinyyli"
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -105,7 +104,7 @@ msgstr "5,25\" levyke"
 #: DB:medium_format/name:204
 msgctxt "medium_format"
 msgid "7\" Acetate"
-msgstr ""
+msgstr "7\" pikalevy"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
@@ -146,7 +145,7 @@ msgstr "8 cm CD+G"
 #: DB:medium_format/description:166
 msgctxt "medium_format"
 msgid "8cm DVD, often used for video singles."
-msgstr ""
+msgstr "8 cm DVD, käytetään usein single videoille."
 
 #. name:Pathé disc
 #: DB:medium_format/description:58
@@ -267,6 +266,10 @@ msgid ""
 "connected to a phone via Bluetooth or headphone jack and unlocks the release "
 "for listening in a companion app for a limited period of time."
 msgstr ""
+"\"Digitaalinen keräiltävä\" laite jota käytetään pääasiassa kpop musiikille "
+"ja joka yhdistetään puhelimeen Blutetooth-yhteydellä tai kuulokeliitännällä, "
+"jonka jälkeen julkaisun lukitus vapautuu ja julkaisua pystyy kuuntelemaan "
+"kumppanisovelluksessa rajoitetun ajan."
 
 #. name:Park
 #: DB:place_type/description:9
@@ -274,6 +277,15 @@ msgctxt "place_type"
 msgid ""
 "A (usually green) space kept available for recreation in an otherwise built "
 "and populated area."
+msgstr ""
+
+#. name:CD-i
+#: DB:medium_format/description:209
+msgctxt "medium_format"
+msgid ""
+"A CD format that combines data/video and audio, used for different purposes "
+"in the 1990s including, in some cases, music releases with accompanying "
+"video content."
 msgstr ""
 
 #. name:Mixed Mode CD
@@ -365,6 +377,8 @@ msgid ""
 "A company that manufactures physical releases (such as pressing CDs or vinyl "
 "records)."
 msgstr ""
+"Yhtiö, joka valmistaa fyysisiä julkaisuja (esimerkiksi CD- tai "
+"vinyylilevyjen puristamista)."
 
 #. name:Concerto
 #: DB:work_type/description:4
@@ -641,14 +655,15 @@ msgstr ""
 "sanat valitaan yleensä niiden ääntämisen tai niiden luomien mielikuvien "
 "perusteella."
 
-#. name:Withdrawn
-#: DB:release_status/description:5
+#. name:Expunged
+#: DB:release_status/description:38
 msgctxt "release_status"
 msgid ""
-"A previously official release that was actively withdrawn from circulation "
-"by the artist and/or their record company after being released, whether to "
-"replace it with a new version with some changes or to just retire it "
-"altogether (e.g. because of legal issues)."
+"A previously official release that was actively expunged from an artist or "
+"records company’s discography. This should not be used in cases where the "
+"release was just withdrawn, there needs to be known artist or label intent "
+"to disown the release and no longer consider it part of their discography. "
+"If it is unclear, use Withdrawn."
 msgstr ""
 
 #. name:Demo
@@ -1061,6 +1076,14 @@ msgctxt "work_attribute_type"
 msgid "ASCAP ID"
 msgstr "ASCAP-tunniste"
 
+#: DB:work_attribute_type/name:211
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "APRA ID"
+msgctxt "work_attribute_type"
+msgid "AUTODIA ID"
+msgstr "APRA-tunniste"
+
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
@@ -1355,6 +1378,17 @@ msgstr ""
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr "Haastattelujulkaisu sisältää haastattelun, yleensä artistin kanssa."
+
+#. name:Withdrawn
+#: DB:release_status/description:5
+msgctxt "release_status"
+msgid ""
+"An official release that was actively withdrawn from circulation by the "
+"artist and/or their record company after being released, whether to replace "
+"it with a new version or to retire it altogether. This does not include "
+"releases that have reached the end of their “natural” life cycle, such as "
+"being sold out and out of print."
+msgstr ""
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -2204,6 +2238,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:209
+msgctxt "medium_format"
+msgid "CD-i"
+msgstr ""
 
 #: DB:medium_format/name:41
 msgctxt "medium_format"
@@ -3185,6 +3224,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:730
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evsat"
+msgstr ""
+
+#: DB:release_status/name:38
+msgctxt "release_status"
+msgid "Expunged"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:614
@@ -4186,6 +4230,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr ""
 
+#. name:AUTODIA ID
+#: DB:work_attribute_type/description:211
+msgctxt "work_attribute_type"
+msgid "ID for the Greek rights society AUTODIA"
+msgstr ""
+
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
@@ -4220,6 +4270,12 @@ msgstr ""
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
+msgstr ""
+
+#. name:WAMI ID
+#: DB:work_attribute_type/description:210
+msgctxt "work_attribute_type"
+msgid "ID for the Indonesian rights society WAMI"
 msgstr ""
 
 #. name:ICE ID
@@ -4420,6 +4476,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
 msgstr ""
 
+#. name:UACRR ID
+#: DB:work_attribute_type/description:209
+msgctxt "work_attribute_type"
+msgid "ID for the Ukrainian rights society UACRR"
+msgstr ""
+
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
@@ -4509,6 +4571,15 @@ msgstr ""
 #: DB:area_type/name:9
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
+msgstr ""
+
+#. name:Indigenous territory / reserve
+#: DB:area_type/description:9
+msgctxt "area_type"
+msgid ""
+"Indigenous territory / reserve is used for semi-autonomous territories "
+"governed by indigenous peoples, such as Indian reserves/reservations in "
+"North America and indigenous territories in Central and South America."
 msgstr ""
 
 #: DB:place_type/name:5
@@ -5535,6 +5606,14 @@ msgctxt "area_type"
 msgid "Military base"
 msgstr "Sotilastukikohta"
 
+#. name:Military base
+#: DB:area_type/description:8
+msgctxt "area_type"
+msgid ""
+"Military base is used only for any military bases that are large enough to "
+"be considered an area, not just a place."
+msgstr ""
+
 #: DB:medium_format/name:166
 msgctxt "medium_format"
 msgid "MiniDVD"
@@ -6405,6 +6484,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:993
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pahāḍi"
+msgstr ""
+
+#: DB:cover_art_archive.art_type/name:81
+msgctxt "cover_art_type"
+msgid "Panel"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:839
@@ -8032,6 +8116,14 @@ msgid ""
 "spines)."
 msgstr ""
 
+#. name:Panel
+#: DB:cover_art_archive.art_type/description:81
+msgctxt "cover_art_type"
+msgid ""
+"The individual segments of a folded packaging, such as a gatefold cover, "
+"digipak or cassette inlay (don't use this for folded booklets nor posters)."
+msgstr ""
+
 #. name:Madrigal
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -8301,6 +8393,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍī"
 msgstr ""
 
+#: DB:work_attribute_type/name:209
+msgctxt "work_attribute_type"
+msgid "UACRR ID"
+msgstr ""
+
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
@@ -8348,23 +8445,6 @@ msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
-msgstr ""
-
-#. name:Military base
-#: DB:area_type/description:8
-msgctxt "area_type"
-msgid ""
-"Used for any military bases that are large enough to be considered an area, "
-"not just a place."
-msgstr ""
-
-#. name:Indigenous territory / reserve
-#: DB:area_type/description:9
-msgctxt "area_type"
-msgid ""
-"Used for semi-autonomous territories governed by indigenous peoples, such as "
-"Indian reserves/reservations in North America and indigenous territories in "
-"Central and South America."
 msgstr ""
 
 #. name:Poster
@@ -8583,6 +8663,14 @@ msgstr "Vēlāvali"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vīra vasantaṁ"
 msgstr "Vīra vasantaṁ"
+
+#: DB:work_attribute_type/name:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "BMI ID"
+msgctxt "work_attribute_type"
+msgid "WAMI ID"
+msgstr "BMI-tunniste"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"

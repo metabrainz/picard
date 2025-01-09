@@ -20,6 +20,7 @@ MB_ATTRIBUTES = {
     'DB:cover_art_archive.art_type/name:015': 'Matrix/Runout',
     'DB:cover_art_archive.art_type/name:048': 'Top',
     'DB:cover_art_archive.art_type/name:049': 'Bottom',
+    'DB:cover_art_archive.art_type/name:081': 'Panel',
     'DB:medium_format/name:001': 'CD',
     'DB:medium_format/name:002': 'DVD',
     'DB:medium_format/name:003': 'SACD',
@@ -132,6 +133,7 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:206': '12" Acetate',
     'DB:medium_format/name:207': '3" Vinyl',
     'DB:medium_format/name:208': 'ROM cartridge',
+    'DB:medium_format/name:209': 'CD-i',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',
@@ -155,4 +157,5 @@ MB_ATTRIBUTES = {
     'DB:release_status/name:004': 'Pseudo-Release',
     'DB:release_status/name:005': 'Withdrawn',
     'DB:release_status/name:006': 'Cancelled',
+    'DB:release_status/name:038': 'Expunged',
 }

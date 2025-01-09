@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-08-26 17:42+0000\n"
+"PO-Revision-Date: 2024-11-30 22:42+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/lt/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -296,6 +296,15 @@ msgid ""
 msgstr ""
 "(Paprastai žalia) erdvė, skirta poilsiui, esanti užstatytoje ir "
 "apgyvendintoje teritorijoje."
+
+#. name:CD-i
+#: DB:medium_format/description:209
+msgctxt "medium_format"
+msgid ""
+"A CD format that combines data/video and audio, used for different purposes "
+"in the 1990s including, in some cases, music releases with accompanying "
+"video content."
+msgstr ""
 
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
@@ -666,19 +675,16 @@ msgid ""
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr ""
 
-#. name:Withdrawn
-#: DB:release_status/description:5
+#. name:Expunged
+#: DB:release_status/description:38
 msgctxt "release_status"
 msgid ""
-"A previously official release that was actively withdrawn from circulation "
-"by the artist and/or their record company after being released, whether to "
-"replace it with a new version with some changes or to just retire it "
-"altogether (e.g. because of legal issues)."
+"A previously official release that was actively expunged from an artist or "
+"records company’s discography. This should not be used in cases where the "
+"release was just withdrawn, there needs to be known artist or label intent "
+"to disown the release and no longer consider it part of their discography. "
+"If it is unclear, use Withdrawn."
 msgstr ""
-"Anksčiau oficialus leidinys, kurį atlikėjas (-a) ir (arba) jo įrašų "
-"kompanija po išleidimo aktyviai išėmė iš apyvartos, kad jį pakeistų nauja "
-"versija su tam tikrais pakeitimais arba apskritai pašalintų iš apyvartos "
-"(pvz., dėl teisinių problemų)."
 
 #. name:Demo
 #: DB:release_group_secondary_type/description:10
@@ -703,12 +709,15 @@ msgid ""
 "A read only memory cartridge or card, such as the ones used by early home "
 "computers and some video game systems."
 msgstr ""
+"Pastovios atminties kasetė arba kortelė, pavyzdžiui, naudojama "
+"ankstyvuosiuose namų kompiuteriuose ir kai kuriose vaizdo žaidimų sistemose."
 
 #. name:Festival
 #: DB:series_type/description:8
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr ""
+"Pasikartojantis festivalis, paprastai vykstantis kasmet toje pačioje vietoje."
 
 #. name:Field recording
 #: DB:release_group_secondary_type/description:12
@@ -717,12 +726,14 @@ msgid ""
 "A release mostly consisting of field recordings (such as nature sounds or "
 "city/industrial noise)."
 msgstr ""
+"Leidinys, kurį daugiausia sudaro lauko įrašai (pavyzdžiui, gamtos garsai "
+"arba miesto / pramonės triukšmas)."
 
 #. name:Remix
 #: DB:release_group_secondary_type/description:7
 msgctxt "release_group_secondary_type"
 msgid "A release that primarily contains remixed material."
-msgstr ""
+msgstr "Leidinys, kuriame daugiausia yra remiksuotos medžiagos."
 
 #. name:Live
 #: DB:release_group_secondary_type/description:6
@@ -1076,6 +1087,14 @@ msgctxt "work_attribute_type"
 msgid "ASCAP ID"
 msgstr "ASCAP ID"
 
+#: DB:work_attribute_type/name:211
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "KODA ID"
+msgctxt "work_attribute_type"
+msgid "AUTODIA ID"
+msgstr "KODA ID"
+
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
@@ -1297,7 +1316,7 @@ msgstr ""
 #: DB:release_group_secondary_type/description:5
 msgctxt "release_group_secondary_type"
 msgid "An audiobook is a book read by a narrator without music."
-msgstr "Garso knyga – knyga, kurią skaito pasakotojas (-a) be muzikos."
+msgstr "Garso knyga – knyga, kurią skaito pasakotojas be muzikos."
 
 #. name:Award ceremony
 #: DB:event_type/description:7
@@ -1401,6 +1420,28 @@ msgstr ""
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr ""
+
+#. name:Withdrawn
+#: DB:release_status/description:5
+#, fuzzy
+#| msgctxt "release_status"
+#| msgid ""
+#| "A previously official release that was actively withdrawn from "
+#| "circulation by the artist and/or their record company after being "
+#| "released, whether to replace it with a new version with some changes or "
+#| "to just retire it altogether (e.g. because of legal issues)."
+msgctxt "release_status"
+msgid ""
+"An official release that was actively withdrawn from circulation by the "
+"artist and/or their record company after being released, whether to replace "
+"it with a new version or to retire it altogether. This does not include "
+"releases that have reached the end of their “natural” life cycle, such as "
+"being sold out and out of print."
+msgstr ""
+"Anksčiau oficialus leidinys, kurį atlikėjas (-a) ir (arba) jo įrašų "
+"kompanija po išleidimo aktyviai išėmė iš apyvartos, kad jį pakeistų nauja "
+"versija su tam tikrais pakeitimais arba apskritai pašalintų iš apyvartos "
+"(pvz., dėl teisinių problemų)."
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -2250,6 +2291,11 @@ msgctxt "medium_format"
 msgid "CD-R"
 msgstr ""
 
+#: DB:medium_format/name:209
+msgctxt "medium_format"
+msgid "CD-i"
+msgstr ""
+
 #: DB:medium_format/name:41
 msgctxt "medium_format"
 msgid "CDV"
@@ -2608,12 +2654,12 @@ msgstr ""
 #: DB:medium_format/name:2
 msgctxt "medium_format"
 msgid "DVD"
-msgstr ""
+msgstr "DVD"
 
 #: DB:medium_format/name:18
 msgctxt "medium_format"
 msgid "DVD-Audio"
-msgstr ""
+msgstr "DVD-Audio"
 
 #: DB:medium_format/name:92
 msgctxt "medium_format"
@@ -3231,6 +3277,11 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:730
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evsat"
+msgstr ""
+
+#: DB:release_status/name:38
+msgctxt "release_status"
+msgid "Expunged"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:614
@@ -4227,6 +4278,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr "Vokietijos teisių organizacijos GEMA identifikatorius."
 
+#. name:AUTODIA ID
+#: DB:work_attribute_type/description:211
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Czech rights society OSA"
+msgctxt "work_attribute_type"
+msgid "ID for the Greek rights society AUTODIA"
+msgstr "Čekijos teisių organizacijos OSA identifikatorius."
+
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
@@ -4261,6 +4321,15 @@ msgstr "Islandijos teisių organizacijos STEF identifikatorius."
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
+msgstr "Indijos teisių organizacijos IPRS identifikatorius."
+
+#. name:WAMI ID
+#: DB:work_attribute_type/description:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Indian rights society IPRS"
+msgctxt "work_attribute_type"
+msgid "ID for the Indonesian rights society WAMI"
 msgstr "Indijos teisių organizacijos IPRS identifikatorius."
 
 #. name:ICE ID
@@ -4461,6 +4530,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
 msgstr "JAV teisių organizacijos SESAC identifikatorius."
 
+#. name:UACRR ID
+#: DB:work_attribute_type/description:209
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Brazilian rights society ECAD"
+msgctxt "work_attribute_type"
+msgid "ID for the Ukrainian rights society UACRR"
+msgstr "Brazilijos teisių organizacijos ECAD identifikatorius."
+
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
@@ -4559,6 +4637,24 @@ msgstr ""
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
 msgstr "vietinių gyventojų teritorija / rezervatas"
+
+#. name:Indigenous territory / reserve
+#: DB:area_type/description:9
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for semi-autonomous territories governed by indigenous peoples, such "
+#| "as Indian reserves/reservations in North America and indigenous "
+#| "territories in Central and South America."
+msgctxt "area_type"
+msgid ""
+"Indigenous territory / reserve is used for semi-autonomous territories "
+"governed by indigenous peoples, such as Indian reserves/reservations in "
+"North America and indigenous territories in Central and South America."
+msgstr ""
+"Naudojamas pusiau autonominėms teritorijoms, kurias valdo vietinės tautos, "
+"pavyzdžiui, indėnų rezervatams ir (arba) rezervatams Šiaurės Amerikoje ir "
+"vietinių gyventojų teritorijoms Centrinėje ir Pietų Amerikoje."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5586,6 +5682,21 @@ msgctxt "area_type"
 msgid "Military base"
 msgstr "Karinė bazė"
 
+#. name:Military base
+#: DB:area_type/description:8
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for any military bases that are large enough to be considered an "
+#| "area, not just a place."
+msgctxt "area_type"
+msgid ""
+"Military base is used only for any military bases that are large enough to "
+"be considered an area, not just a place."
+msgstr ""
+"Naudojama visoms karinėms bazėms, kurios yra pakankamai didelės, kad būtų "
+"laikomos ne tik vieta, bet ir teritorija."
+
 #: DB:medium_format/name:166
 msgctxt "medium_format"
 msgid "MiniDVD"
@@ -6469,6 +6580,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Pahāḍi"
 msgstr "Pahāḍi"
 
+#: DB:cover_art_archive.art_type/name:81
+msgctxt "cover_art_type"
+msgid "Panel"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pan̄cam savārī"
@@ -6763,12 +6879,9 @@ msgid "Quartet"
 msgstr "kvartetas"
 
 #: DB:medium_format/name:208
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8-Track Cartridge"
 msgctxt "medium_format"
 msgid "ROM cartridge"
-msgstr "8 takelių kasetė"
+msgstr "ROM kasetė"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -8117,6 +8230,14 @@ msgstr ""
 "pakuočių atveju – statmenas priekinei, galinei ir knygos nugarėlei dalims ir "
 "žemiau jų)."
 
+#. name:Panel
+#: DB:cover_art_archive.art_type/description:81
+msgctxt "cover_art_type"
+msgid ""
+"The individual segments of a folded packaging, such as a gatefold cover, "
+"digipak or cassette inlay (don't use this for folded booklets nor posters)."
+msgstr ""
+
 #. name:Madrigal
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -8385,6 +8506,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍī"
 msgstr ""
 
+#: DB:work_attribute_type/name:209
+msgctxt "work_attribute_type"
+msgid "UACRR ID"
+msgstr ""
+
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
@@ -8457,28 +8583,6 @@ msgstr ""
 "Naudok kartu su kitais tinkamais tipais vaizdams, kuriuos reikia apdoroti, "
 "kad būtų galima naudoti žymėjimui (bet galbūt jau galima naudoti "
 "informacijoms)."
-
-#. name:Military base
-#: DB:area_type/description:8
-msgctxt "area_type"
-msgid ""
-"Used for any military bases that are large enough to be considered an area, "
-"not just a place."
-msgstr ""
-"Naudojama visoms karinėms bazėms, kurios yra pakankamai didelės, kad būtų "
-"laikomos ne tik vieta, bet ir teritorija."
-
-#. name:Indigenous territory / reserve
-#: DB:area_type/description:9
-msgctxt "area_type"
-msgid ""
-"Used for semi-autonomous territories governed by indigenous peoples, such as "
-"Indian reserves/reservations in North America and indigenous territories in "
-"Central and South America."
-msgstr ""
-"Naudojamas pusiau autonominėms teritorijoms, kurias valdo vietinės tautos, "
-"pavyzdžiui, indėnų rezervatams ir (arba) rezervatams Šiaurės Amerikoje ir "
-"vietinių gyventojų teritorijoms Centrinėje ir Pietų Amerikoje."
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8701,6 +8805,14 @@ msgstr ""
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vīra vasantaṁ"
 msgstr ""
+
+#: DB:work_attribute_type/name:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "AEI ID"
+msgctxt "work_attribute_type"
+msgid "WAMI ID"
+msgstr "AEI ID"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
