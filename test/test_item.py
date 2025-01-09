@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2018, 2021, 2024 Philipp Wolfer
+# Copyright (C) 2018, 2021, 2024-2025 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import Counter
 from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
@@ -78,10 +79,11 @@ class MetadataItemTest(PicardTestCase):
         self.assertTrue(require_auth)
 
     def test_add_genres(self):
-        self.obj.add_genre('genre1', 2)
-        self.assertEqual(self.obj.genres['genre1'], 2)
-        self.obj.add_genre('genre1', 5)
-        self.assertEqual(self.obj.genres['genre1'], 7)
+        self.obj.add_genre('pop', 1)
+        self.obj.add_genre('rock', 1)
+        self.obj.add_genre('blues', 2)
+        self.obj.add_genre('pop', 2)
+        self.assertEqual(self.obj._genres, Counter(pop=3, rock=1, blues=2))
 
     def test_set_genre_inc_custom_config(self):
         inc = set()
