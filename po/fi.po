@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the picard project.
 #
 # Translators:
-# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2015,2017-2023
-# Jaakko Perttilä <jormangeud@gmail.com>, 2018
+# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2015,2017-2023, 2025.
+# Jaakko Perttilä <jormangeud@gmail.com>, 2018, 2025.
 # Juhana Uuttu <rexroom@sci.fi>, 2023
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
 # Mika Heiska <kilualmighty@gmail.com>, 2006
@@ -21,16 +21,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2023-10-27 22:50+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2025-01-09 15:04+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
-"app/fi/>\n"
+"2/app/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.1\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -181,10 +181,8 @@ msgid "Error"
 msgstr "Virhe"
 
 #: picard/log.py:68
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "Varoitus uudelle käyttäjälle"
+msgstr "Varoitus"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -193,13 +191,11 @@ msgstr "Lisätietoja"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Odottamaton virhe tunnistautumisessa"
+msgstr "Odottamaton virhe valtuutuksien mitätöimisessä"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
@@ -216,10 +212,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "Liitännäistä '%s' ei pystytä lataamaan"
 
 #: picard/pluginmanager.py:302
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "Liitännäisen \"%(plugin)s\" lataaminen epäonnistui \"%(dirname)s\""
+msgstr "Liitännäisen \"%(plugin)s\" lataaminen epäonnistui"
 
 #: picard/pluginmanager.py:349
 #, python-format
@@ -331,10 +326,8 @@ msgid "Use release relationships"
 msgstr "Käytä julkaisujen suhteiden tietoja"
 
 #: picard/profile.py:72
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Käytä julkaisujen suhteiden tietoja"
+msgstr "Käytä kappaleiden ja julkaisujen suhteiden tietoja"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
@@ -4081,11 +4074,8 @@ msgstr[0] "Käytä alkuperäistä arvoa"
 msgstr[1] "Käytä alkuperäisiä arvoja"
 
 #: picard/ui/metadatabox.py:437
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Käytä alkuperäistä arvoa"
+msgstr "Yhdistä alkuperäiset arvot"
 
 #: picard/ui/metadatabox.py:443
 msgid "&Copy"
@@ -4230,8 +4220,8 @@ msgstr[1] "Haluatko päivittää pluginit nyt?"
 #: picard/ui/pluginupdatedialog.py:73
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "sekä {extra_file_count:,d} muu liitännäinen."
+msgstr[1] "sekä {extra_file_count:,d} muuta liitännäistä."
 
 #: picard/ui/ratingwidget.py:99
 #, python-format
@@ -4430,10 +4420,8 @@ msgid "Empty / blank script"
 msgstr "Tyhjä komentosarja"
 
 #: picard/ui/scripteditor.py:673
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Kirjoitusjärjestelmä"
+msgstr "Uusi komentosarja"
 
 #: picard/ui/scripteditor.py:766
 msgid ""
@@ -5616,10 +5604,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Kirjautuneena sisään tunnuksella <b>%s</b>."
 
 #: picard/ui/options/general.py:182
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Virhe CD-haussa"
+msgstr "Virhe uloskirjautumisessa"
 
 #: picard/ui/options/general.py:183
 #, python-format
@@ -5628,6 +5614,9 @@ msgid ""
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Palvelinvirhe mitätöitäessä pääsyä MusicBrainz‐palvelimelle: %s\n"
+"\n"
+"Poistetaanko paikallisesti tallennetut valtuutukset kuitenkin?"
 
 #: picard/ui/options/genres.py:46
 msgid ""
@@ -6176,18 +6165,14 @@ msgid "Compatibility"
 msgstr "Yhteensopivuus"
 
 #: picard/ui/options/renaming_compat.py:135
-#, fuzzy
-#| msgid "Replace directory separators with:"
 msgid "Invalid directory separator replacement"
-msgstr "Korvaa hakemistoerottimet:"
+msgstr "Epäkelpo hakemistoerottimen korvike"
 
 #: picard/ui/options/renaming_compat.py:136
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "Käytettävä korvausmerkki hakemistoerottimiin"
+msgstr "Hakemistoerottimien korvike ei voi olla hakemistoerotin."
 
 #: picard/ui/options/renaming_compat.py:144
 msgid ""
