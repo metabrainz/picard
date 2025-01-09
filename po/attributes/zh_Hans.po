@@ -9,19 +9,21 @@
 # hesheng <tsuru00@outlook.com>, 2024.
 # LiarOnce <liaronce@hotmail.com>, 2024.
 # weeeeei <weeeeei@duck.com>, 2024.
+# KenParker_CN <peekabookenny@gmail.com>, 2024.
+# imgradeone <imgradeone@outlook.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-08-06 01:42+0000\n"
-"Last-Translator: weeeeei <weeeeei@duck.com>\n"
-"Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
-"projects/musicbrainz/attributes/zh_Hans/>\n"
+"PO-Revision-Date: 2025-01-03 15:42+0000\n"
+"Last-Translator: imgradeone <imgradeone@outlook.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://"
+"translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -282,6 +284,17 @@ msgid ""
 "and populated area."
 msgstr "一种(通常是绿色的)可供娱乐的空间，在其他建筑和人口稠密的地区。"
 
+#. name:CD-i
+#: DB:medium_format/description:209
+msgctxt "medium_format"
+msgid ""
+"A CD format that combines data/video and audio, used for different purposes "
+"in the 1990s including, in some cases, music releases with accompanying "
+"video content."
+msgstr ""
+"一种综合了数据、视频与音频的CD格式，该格式在20世纪90年代被广泛应用于多种场"
+"景，其中包括一些音乐作品的发行，这些音乐作品通常会伴随有相应的视频内容。"
+
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
 msgctxt "medium_format"
@@ -399,6 +412,9 @@ msgid ""
 "just a scaled down version of the poster, both types can be added to the "
 "same image."
 msgstr ""
+"一种通常比海报小的文件，主要用于印刷并分发给公众，用于提前宣传某个活动或向参"
+"与者提供额外信息。如果某个活动的传单只是海报的缩小版，那么这两种形式可以合并"
+"到同一张图片中。"
 
 #. name:Ticket
 #: DB:event_art_archive.art_type/description:2
@@ -626,17 +642,19 @@ msgid ""
 "usually chosen for their sound and for the images and ideas they suggest."
 msgstr "诗歌是通常较短并成行的文学作品，其语言押韵并用于表达意象及思想。"
 
-#. name:Withdrawn
-#: DB:release_status/description:5
+#. name:Expunged
+#: DB:release_status/description:38
 msgctxt "release_status"
 msgid ""
-"A previously official release that was actively withdrawn from circulation "
-"by the artist and/or their record company after being released, whether to "
-"replace it with a new version with some changes or to just retire it "
-"altogether (e.g. because of legal issues)."
+"A previously official release that was actively expunged from an artist or "
+"records company’s discography. This should not be used in cases where the "
+"release was just withdrawn, there needs to be known artist or label intent "
+"to disown the release and no longer consider it part of their discography. "
+"If it is unclear, use Withdrawn."
 msgstr ""
-"被艺术家和/或唱片公司在发行后中止流通的正式专辑，不管是改为新版本还是彻底绝版"
-"(如因为法律诉讼问题)。"
+"指曾经正式发布的作品，后来被艺术家或唱片公司积极从其目录中移除。此术语不应用"
+"于仅是撤回的情况；必须有明确的证据表明艺术家或厂牌有意不再承认该发行物，并将"
+"其从自己的目录中剔除。如果情况不明确，则应使用“撤回”。"
 
 #. name:Demo
 #: DB:release_group_secondary_type/description:10
@@ -662,7 +680,7 @@ msgctxt "medium_format"
 msgid ""
 "A read only memory cartridge or card, such as the ones used by early home "
 "computers and some video game systems."
-msgstr ""
+msgstr "只读存储器卡匣或卡，例如早期家用计算机和某些视频游戏系统所使用的那种。"
 
 #. name:Festival
 #: DB:series_type/description:8
@@ -1045,6 +1063,11 @@ msgctxt "work_attribute_type"
 msgid "ASCAP ID"
 msgstr "ASCAP ID"
 
+#: DB:work_attribute_type/name:211
+msgctxt "work_attribute_type"
+msgid "AUTODIA ID"
+msgstr "AUTODIA ID"
+
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
@@ -1300,7 +1323,6 @@ msgstr "数位不同音乐家在同一天内表演的活动。大型音乐节可
 
 #. name:Merchandise
 #: DB:event_art_archive.art_type/description:7
-#, fuzzy
 msgctxt "event_art_type"
 msgid ""
 "An image for any sort of event-related goods sold (or freely shared) to "
@@ -1308,9 +1330,10 @@ msgid ""
 "more than one art type applies (for example, if a poster is sold as "
 "merchandise) use “merchandise” alongside any other appropriate types."
 msgstr ""
-"一张用于推广或在活动期间出售（或免费分享）的活动相关商品的图片，例如T恤、帽"
-"子、贴纸等。如果有多种艺术类型适用（例如海报作为商品出售），请使用“商品”以及"
-"其他适当的类型。"
+"用于展示任何与活动周边商品的一张图片，这些商品可以是出售的或免费分发的，目的"
+"是为了宣传活动或在活动期间销售。这些商品通常包括T恤、帽子、贴纸等。如果涉及多"
+"种图片类型（例如，海报也同时作为周边销售），则应同时使用“周边”和其他适用的类"
+"型。"
 
 #. name:Schedule
 #: DB:event_art_archive.art_type/description:5
@@ -1320,6 +1343,8 @@ msgid ""
 "event. Can be a standalone image, but also a poster or banner (in which case "
 "all applicable types should be set)."
 msgstr ""
+"通常是一张显示活动中的表演顺序和时间安排的图像。它可以是一个独立的图像，也可"
+"以是海报或横幅的一部分(在这种情况下，所有适用的类型都应被设置)。"
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1346,12 +1371,28 @@ msgid ""
 "created for the event, for example showing the recommended ways to access "
 "the venue, or the location of specific stages and stands inside of it."
 msgstr ""
+"活动场地的内部平面图，或是专门为活动创建的外部访问地图，例如展示到达场地的推"
+"荐路线，或是在场地内部特定舞台和展位的位置。"
 
 #. name:Interview
 #: DB:release_group_secondary_type/description:4
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr "包含一段采访的采访专辑，通常为对艺术家的采访片段。"
+
+#. name:Withdrawn
+#: DB:release_status/description:5
+msgctxt "release_status"
+msgid ""
+"An official release that was actively withdrawn from circulation by the "
+"artist and/or their record company after being released, whether to replace "
+"it with a new version or to retire it altogether. This does not include "
+"releases that have reached the end of their “natural” life cycle, such as "
+"being sold out and out of print."
+msgstr ""
+"指艺术家或其唱片公司在发行后主动从市场上撤回的正式发行物，不管是为了用新版本"
+"替换，还是彻底停止发行。这不包括那些因自然生命周期结束（如售罄或停产）而不再"
+"销售的发行物。"
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -1763,7 +1804,7 @@ msgstr "芭蕾"
 #: DB:event_art_archive.art_type/name:4
 msgctxt "event_art_type"
 msgid "Banner"
-msgstr ""
+msgstr "横幅"
 
 #: DB:work_attribute_type_allowed_value/value:866
 msgctxt "work_attribute_type_allowed_value"
@@ -2205,6 +2246,11 @@ msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
 
+#: DB:medium_format/name:209
+msgctxt "medium_format"
+msgid "CD-i"
+msgstr "CD-i"
+
 #: DB:medium_format/name:41
 msgctxt "medium_format"
 msgid "CDV"
@@ -2378,12 +2424,9 @@ msgid "Club"
 msgstr "俱乐部"
 
 #: DB:event_type/name:40
-#, fuzzy
-#| msgctxt "release_group_secondary_type"
-#| msgid "Compilation"
 msgctxt "event_type"
 msgid "Competition"
-msgstr "汇编"
+msgstr "比赛"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -3187,6 +3230,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Evsat"
 msgstr "Evsat"
 
+#: DB:release_status/name:38
+msgctxt "release_status"
+msgid "Expunged"
+msgstr "除名"
+
 #: DB:work_attribute_type_allowed_value/value:614
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ezan"
@@ -3368,7 +3416,7 @@ msgstr "软盘"
 #: DB:event_art_archive.art_type/name:6
 msgctxt "event_art_type"
 msgid "Flyer"
-msgstr ""
+msgstr "传单"
 
 #. name:Not applicable
 #: DB:gender/description:4
@@ -3529,12 +3577,9 @@ msgid "Gaṁbhīra vāṇi"
 msgstr "Gaṁbhīra vāṇi"
 
 #: DB:editor_collection_type/name:16
-#, fuzzy
-#| msgctxt "collection_type"
-#| msgid "Series collection"
 msgctxt "collection_type"
 msgid "Genre collection"
-msgstr "系列收藏"
+msgstr "流派合集"
 
 #: DB:work_attribute_type_allowed_value/value:376
 msgctxt "work_attribute_type_allowed_value"
@@ -4186,6 +4231,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr "德国著作权协会GEMA ID"
 
+#. name:AUTODIA ID
+#: DB:work_attribute_type/description:211
+msgctxt "work_attribute_type"
+msgid "ID for the Greek rights society AUTODIA"
+msgstr "希腊著作权协会AUTODIA ID"
+
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
@@ -4221,6 +4272,12 @@ msgstr "冰岛著作权协会 STEF 的 ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
 msgstr "印度著作权协会IPRS ID"
+
+#. name:WAMI ID
+#: DB:work_attribute_type/description:210
+msgctxt "work_attribute_type"
+msgid "ID for the Indonesian rights society WAMI"
+msgstr "印度尼西亚著作权协会WAMI ID"
 
 #. name:ICE ID
 #: DB:work_attribute_type/description:29
@@ -4420,6 +4477,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
 msgstr "美国著作权协会SESAC ID"
 
+#. name:UACRR ID
+#: DB:work_attribute_type/description:209
+msgctxt "work_attribute_type"
+msgid "ID for the Ukrainian rights society UACRR"
+msgstr "乌克兰版权协会ID"
+
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
@@ -4510,6 +4573,23 @@ msgstr "配乐指（通常）为戏剧演出伴奏创作的音乐。"
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
 msgstr "土著领地/保护区"
+
+#. name:Indigenous territory / reserve
+#: DB:area_type/description:9
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for semi-autonomous territories governed by indigenous peoples, such "
+#| "as Indian reserves/reservations in North America and indigenous "
+#| "territories in Central and South America."
+msgctxt "area_type"
+msgid ""
+"Indigenous territory / reserve is used for semi-autonomous territories "
+"governed by indigenous peoples, such as Indian reserves/reservations in "
+"North America and indigenous territories in Central and South America."
+msgstr ""
+"用于原住民统治的半自治领土，如北美洲的印第安人保留地/保护区以及中美洲和南美洲"
+"的土著领地。"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5402,7 +5482,7 @@ msgstr "Manōranjani"
 #: DB:event_art_archive.art_type/name:8
 msgctxt "event_art_type"
 msgid "Map"
-msgstr ""
+msgstr "地图"
 
 #: DB:work_attribute_type_allowed_value/value:639
 msgctxt "work_attribute_type_allowed_value"
@@ -5502,7 +5582,7 @@ msgstr "Mehter"
 #: DB:event_art_archive.art_type/name:7
 msgctxt "event_art_type"
 msgid "Merchandise"
-msgstr ""
+msgstr "周边"
 
 #: DB:work_attribute_type_allowed_value/value:642
 msgctxt "work_attribute_type_allowed_value"
@@ -5533,6 +5613,19 @@ msgstr "微型卡式录音带"
 msgctxt "area_type"
 msgid "Military base"
 msgstr "军事基地"
+
+#. name:Military base
+#: DB:area_type/description:8
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for any military bases that are large enough to be considered an "
+#| "area, not just a place."
+msgctxt "area_type"
+msgid ""
+"Military base is used only for any military bases that are large enough to "
+"be considered an area, not just a place."
+msgstr "用于任何足够大的军事基地，可以被视为一个区域，而不仅仅是一个场所。"
 
 #: DB:medium_format/name:166
 msgctxt "medium_format"
@@ -5746,12 +5839,9 @@ msgid "Murabba"
 msgstr "Murabba"
 
 #: DB:work_attribute_type_allowed_value/value:811
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "Murabba Beste "
 msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste"
-msgstr "Murabba Beste "
+msgstr "Murabba Beste"
 
 #: DB:work_type/name:29
 msgctxt "work_type"
@@ -6413,6 +6503,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Pahāḍi"
 msgstr "Pahāḍi"
 
+#: DB:cover_art_archive.art_type/name:81
+msgctxt "cover_art_type"
+msgid "Panel"
+msgstr "版面"
+
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pan̄cam savārī"
@@ -6581,9 +6676,6 @@ msgid "Poster"
 msgstr "海报"
 
 #: DB:event_art_archive.art_type/name:1
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Poster"
 msgctxt "event_art_type"
 msgid "Poster"
 msgstr "海报"
@@ -6704,12 +6796,9 @@ msgid "Quartet"
 msgstr "四重奏"
 
 #: DB:medium_format/name:208
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "Cartridge"
 msgctxt "medium_format"
 msgid "ROM cartridge"
-msgstr "盒带"
+msgstr "ROM卡匣"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -6822,9 +6911,6 @@ msgid "Raw/Unedited"
 msgstr "原始/未编辑"
 
 #: DB:event_art_archive.art_type/name:9
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Raw/Unedited"
 msgctxt "event_art_type"
 msgid "Raw/Unedited"
 msgstr "原始/未编辑"
@@ -7334,7 +7420,7 @@ msgstr "Sazsemaisi"
 #: DB:event_art_archive.art_type/name:5
 msgctxt "event_art_type"
 msgid "Schedule"
-msgstr ""
+msgstr "日程"
 
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:recording_alias_type/name:2
@@ -7414,7 +7500,7 @@ msgstr "系列名称"
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
 msgid "Setlist"
-msgstr ""
+msgstr "曲目单"
 
 #: DB:work_attribute_type_allowed_value/value:663
 msgctxt "work_attribute_type_allowed_value"
@@ -8033,6 +8119,16 @@ msgstr ""
 "盒子或类似包装的底面(对于最常见的六面体包装选项而言，指垂直于正面，背面和侧面"
 "且位于下方的面)。"
 
+#. name:Panel
+#: DB:cover_art_archive.art_type/description:81
+msgctxt "cover_art_type"
+msgid ""
+"The individual segments of a folded packaging, such as a gatefold cover, "
+"digipak or cassette inlay (don't use this for folded booklets nor posters)."
+msgstr ""
+"折叠包装中的各个独立部分，例如双扉封面(gatefold cover)、Digipak塑封盒或磁带内"
+"页(不是指折叠的小册子或海报)。"
+
 #. name:Madrigal
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -8179,12 +8275,9 @@ msgid ""
 msgstr "这指的是复合SACD的SACD面的多通道列表。"
 
 #: DB:event_art_archive.art_type/name:2
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Sticker"
 msgctxt "event_art_type"
 msgid "Ticket"
-msgstr "贴纸"
+msgstr "门票"
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -8311,6 +8404,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍī"
 msgstr "Tōḍī"
 
+#: DB:work_attribute_type/name:209
+msgctxt "work_attribute_type"
+msgid "UACRR ID"
+msgstr "UACRR ID"
+
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
@@ -8328,76 +8426,39 @@ msgstr "Udaya ravicandrika"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "cover_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that are "
 "watermarked and are not desirable for display (but can be used for "
 "reference)."
-msgstr "用于不适合直接供标签使用的图像 （但可能已经足以参考）"
+msgstr "用于标记那些带有水印且不适合公开展示的图像，但可以用于参考。"
 
 #. name:Watermark
 #: DB:event_art_archive.art_type/description:10
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that are "
 "watermarked and are not desirable for display (but can be used for "
 "reference)."
-msgstr "用于不适合直接供标签使用的图像 （但可能已经足以参考）"
+msgstr "用于标记那些带有水印且不适合公开展示的图像，但可以用于参考。"
 
 #. name:Raw/Unedited
 #: DB:cover_art_archive.art_type/description:14
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "cover_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
-msgstr "用于不适合直接供标签使用的图像 （但可能已经足以参考）"
+msgstr ""
+"用于标记那些需要进一步处理才能用于公开展示的图像，但目前已经可以用于参考。"
 
 #. name:Raw/Unedited
 #: DB:event_art_archive.art_type/description:9
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
-msgstr "用于不适合直接供标签使用的图像 （但可能已经足以参考）"
-
-#. name:Military base
-#: DB:area_type/description:8
-msgctxt "area_type"
-msgid ""
-"Used for any military bases that are large enough to be considered an area, "
-"not just a place."
-msgstr "用于任何足够大的军事基地，可以被视为一个区域，而不仅仅是一个场所。"
-
-#. name:Indigenous territory / reserve
-#: DB:area_type/description:9
-msgctxt "area_type"
-msgid ""
-"Used for semi-autonomous territories governed by indigenous peoples, such as "
-"Indian reserves/reservations in North America and indigenous territories in "
-"Central and South America."
 msgstr ""
-"用于原住民统治的半自治领土，如北美洲的印第安人保留地/保护区以及中美洲和南美洲"
-"的土著领地。"
+"用于标记那些需要进一步处理才能用于公开展示的图像，但目前已经可以用于参考。"
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8406,6 +8467,8 @@ msgid ""
 "Usually a large printed or digital sheet, that often contains pictures, and "
 "is generally posted publicly to promote the event."
 msgstr ""
+"通常是一张大尺寸的印刷品或数字图像，常包含图片和文字，主要用于公开张贴以宣传"
+"某个活动。"
 
 #. name:Banner
 #: DB:event_art_archive.art_type/description:4
@@ -8413,7 +8476,7 @@ msgctxt "event_art_type"
 msgid ""
 "Usually horizontal image used to promote an event, for example in social "
 "media, which tends to have less information than a poster."
-msgstr ""
+msgstr "通常是一种横向的图像，用于在社交媒体等平台上宣传某个活动。"
 
 #: DB:work_attribute_type/name:17
 msgctxt "work_attribute_type"
@@ -8614,15 +8677,20 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Vīra vasantaṁ"
 msgstr "Vīra vasantaṁ"
 
+#: DB:work_attribute_type/name:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "BMI ID"
+msgctxt "work_attribute_type"
+msgid "WAMI ID"
+msgstr "BMI ID"
+
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
 msgid "Watermark"
 msgstr "水印"
 
 #: DB:event_art_archive.art_type/name:10
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Watermark"
 msgctxt "event_art_type"
 msgid "Watermark"
 msgstr "水印"

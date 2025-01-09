@@ -16,18 +16,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-08-22 13:42+0000\n"
-"Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
-"metabrainz.org>\n"
+"PO-Revision-Date: 2024-12-23 20:42+0000\n"
+"Last-Translator: \"salo.rock\" "
+"<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.6.2\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -315,6 +315,18 @@ msgid ""
 msgstr ""
 "Uno spazio (solitamente verde) deputato ad attività ricreative in un'area "
 "altrimenti edificata e popolata."
+
+#. name:CD-i
+#: DB:medium_format/description:209
+msgctxt "medium_format"
+msgid ""
+"A CD format that combines data/video and audio, used for different purposes "
+"in the 1990s including, in some cases, music releases with accompanying "
+"video content."
+msgstr ""
+"Un formato di CD che combina dati/video e audio e fu usato negli anni 1990 "
+"in diversi modi, tra cui in alcuni casi per pubblicare musica accompagnata "
+"da contenuti video."
 
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
@@ -720,19 +732,22 @@ msgstr ""
 "parole sono solitamente scelte per il loro suono e per le immagini e le idee "
 "che evocano."
 
-#. name:Withdrawn
-#: DB:release_status/description:5
+#. name:Expunged
+#: DB:release_status/description:38
 msgctxt "release_status"
 msgid ""
-"A previously official release that was actively withdrawn from circulation "
-"by the artist and/or their record company after being released, whether to "
-"replace it with a new version with some changes or to just retire it "
-"altogether (e.g. because of legal issues)."
+"A previously official release that was actively expunged from an artist or "
+"records company’s discography. This should not be used in cases where the "
+"release was just withdrawn, there needs to be known artist or label intent "
+"to disown the release and no longer consider it part of their discography. "
+"If it is unclear, use Withdrawn."
 msgstr ""
-"Una pubblicazione in precedenza ufficiale che è stata attivamente ritirata "
-"dalla circolazione dall'artista e/o dalla sua casa discografica dopo essere "
-"stata pubblicata, che sia per sostituirla con una nuova versione con alcuni "
-"cambiamenti o per ritirarla del tutto (per es. a causa di problemi legali)."
+"Una pubblicazione in precedenza ufficiale che è stata attivamente epurata "
+"dalla discografia di un artista o di una casa discografica. Questo status "
+"non va usato nei casi in cui la pubblicazione è stata semplicemente "
+"ritirata, deve esistere un intento noto dell'artista o dell'etichetta di "
+"rinnegare la pubblicazione e di non considerarla più come parte della "
+"propria discografia. In caso di incertezza, usa Ritirata."
 
 #. name:Demo
 #: DB:release_group_secondary_type/description:10
@@ -1180,6 +1195,11 @@ msgctxt "work_attribute_type"
 msgid "ASCAP ID"
 msgstr "ID ASCAP"
 
+#: DB:work_attribute_type/name:211
+msgctxt "work_attribute_type"
+msgid "AUTODIA ID"
+msgstr "ID AUTODIA"
+
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
@@ -1519,6 +1539,23 @@ msgid "An interview release contains an interview, generally with an artist."
 msgstr ""
 "Una pubblicazione di tipo intervista contiene un'intervista, di solito con "
 "un artista."
+
+#. name:Withdrawn
+#: DB:release_status/description:5
+msgctxt "release_status"
+msgid ""
+"An official release that was actively withdrawn from circulation by the "
+"artist and/or their record company after being released, whether to replace "
+"it with a new version or to retire it altogether. This does not include "
+"releases that have reached the end of their “natural” life cycle, such as "
+"being sold out and out of print."
+msgstr ""
+"Una pubblicazione ufficiale che è stata attivamente ritirata dalla "
+"circolazione dall'artista e/o dalla sua casa discografica dopo essere stata "
+"pubblicata, che sia per sostituirla con una nuova versione o per ritirarla "
+"del tutto. Ciò non comprende le pubblicazioni che hanno raggiunto la fine "
+"del proprio ciclo di vita \"naturale\", come per esempio quelle andate "
+"esaurite e fuori catalogo."
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -2387,6 +2424,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:209
+msgctxt "medium_format"
+msgid "CD-i"
+msgstr "CD-i"
 
 #: DB:medium_format/name:41
 msgctxt "medium_format"
@@ -3375,6 +3417,11 @@ msgstr "Eviçkürdi"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evsat"
 msgstr "Evsat"
+
+#: DB:release_status/name:38
+msgctxt "release_status"
+msgid "Expunged"
+msgstr "Epurata"
 
 #: DB:work_attribute_type_allowed_value/value:614
 msgctxt "work_attribute_type_allowed_value"
@@ -4379,6 +4426,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr "ID per la società di diritti tedesca GEMA"
 
+#. name:AUTODIA ID
+#: DB:work_attribute_type/description:211
+msgctxt "work_attribute_type"
+msgid "ID for the Greek rights society AUTODIA"
+msgstr "ID per la società di diritti greca AUTODIA"
+
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
@@ -4414,6 +4467,12 @@ msgstr "ID per la società di diritti islandese STEF"
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
 msgstr "ID per la società di diritti indiana IPRS"
+
+#. name:WAMI ID
+#: DB:work_attribute_type/description:210
+msgctxt "work_attribute_type"
+msgid "ID for the Indonesian rights society WAMI"
+msgstr "ID per la società di diritti indonesiana WAMI"
 
 #. name:ICE ID
 #: DB:work_attribute_type/description:29
@@ -4613,6 +4672,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
 msgstr "ID per la società di diritti statunitense SESAC"
 
+#. name:UACRR ID
+#: DB:work_attribute_type/description:209
+msgctxt "work_attribute_type"
+msgid "ID for the Ukrainian rights society UACRR"
+msgstr "ID per la società di diritti ucraina UACRR"
+
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
@@ -4709,6 +4774,18 @@ msgstr ""
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
 msgstr "Territorio/Riserva indigena"
+
+#. name:Indigenous territory / reserve
+#: DB:area_type/description:9
+msgctxt "area_type"
+msgid ""
+"Indigenous territory / reserve is used for semi-autonomous territories "
+"governed by indigenous peoples, such as Indian reserves/reservations in "
+"North America and indigenous territories in Central and South America."
+msgstr ""
+"Utilizzato per territori semi-autonomi amministrati da popolazioni indigene, "
+"come per es. le riserve indiane in Nord America e i territori indigeni in "
+"Centro e Sud America."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5736,6 +5813,16 @@ msgctxt "area_type"
 msgid "Military base"
 msgstr "Base militare"
 
+#. name:Military base
+#: DB:area_type/description:8
+msgctxt "area_type"
+msgid ""
+"Military base is used only for any military bases that are large enough to "
+"be considered an area, not just a place."
+msgstr ""
+"Utilizzato per basi militari sufficientemente grandi da essere considerate "
+"un'area e non solo un luogo."
+
 #: DB:medium_format/name:166
 msgctxt "medium_format"
 msgid "MiniDVD"
@@ -5949,12 +6036,9 @@ msgid "Murabba"
 msgstr "Murabba"
 
 #: DB:work_attribute_type_allowed_value/value:811
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "Murabba Beste "
 msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste"
-msgstr "Murabba Beste "
+msgstr "Murabba Beste"
 
 #: DB:work_type/name:29
 msgctxt "work_type"
@@ -6618,6 +6702,11 @@ msgstr "Codice brano PRS"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pahāḍi"
 msgstr "Pahāḍi"
+
+#: DB:cover_art_archive.art_type/name:81
+msgctxt "cover_art_type"
+msgid "Panel"
+msgstr "Pannello"
 
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
@@ -8267,6 +8356,17 @@ msgstr ""
 "confezioni più comuni a sei facce, quella perpendicolare a e sotto fronte, "
 "retro e dorso)."
 
+#. name:Panel
+#: DB:cover_art_archive.art_type/description:81
+msgctxt "cover_art_type"
+msgid ""
+"The individual segments of a folded packaging, such as a gatefold cover, "
+"digipak or cassette inlay (don't use this for folded booklets nor posters)."
+msgstr ""
+"Ciascuna delle sezioni di una confezione pieghevole, come una copertina "
+"pieghevole (gatefold), un digipak o il pieghevole di una cassetta (da non "
+"utilizzare per i libretti pieghevoli né per i poster)."
+
 #. name:Madrigal
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -8561,6 +8661,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍī"
 msgstr "Tōḍī"
 
+#: DB:work_attribute_type/name:209
+msgctxt "work_attribute_type"
+msgid "UACRR ID"
+msgstr "ID UACRR"
+
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
@@ -8621,28 +8726,6 @@ msgstr ""
 "Da usare, in combinazione con gli altri tipi correspondenti, per immagini "
 "che richiedono una lavorazione per essere adatte ad essere esposte (ma che "
 "possono già essere utili come riferimento)."
-
-#. name:Military base
-#: DB:area_type/description:8
-msgctxt "area_type"
-msgid ""
-"Used for any military bases that are large enough to be considered an area, "
-"not just a place."
-msgstr ""
-"Utilizzato per basi militari sufficientemente grandi da essere considerate "
-"un'area e non solo un luogo."
-
-#. name:Indigenous territory / reserve
-#: DB:area_type/description:9
-msgctxt "area_type"
-msgid ""
-"Used for semi-autonomous territories governed by indigenous peoples, such as "
-"Indian reserves/reservations in North America and indigenous territories in "
-"Central and South America."
-msgstr ""
-"Utilizzato per territori semi-autonomi amministrati da popolazioni indigene, "
-"come per es. le riserve indiane in Nord America e i territori indigeni in "
-"Centro e Sud America."
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8866,6 +8949,11 @@ msgstr "Vēlāvali"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vīra vasantaṁ"
 msgstr "Vīra vasantaṁ"
+
+#: DB:work_attribute_type/name:210
+msgctxt "work_attribute_type"
+msgid "WAMI ID"
+msgstr "ID WAMI"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"

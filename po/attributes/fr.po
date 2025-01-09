@@ -32,7 +32,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-08-05 12:42+0000\n"
+"PO-Revision-Date: 2024-09-23 18:42+0000\n"
 "Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/fr/>\n"
@@ -42,7 +42,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -331,6 +331,18 @@ msgid ""
 msgstr ""
 "Un espace (généralement vert) disponible pour les loisirs dans une zone "
 "urbaine."
+
+#. name:CD-i
+#: DB:medium_format/description:209
+msgctxt "medium_format"
+msgid ""
+"A CD format that combines data/video and audio, used for different purposes "
+"in the 1990s including, in some cases, music releases with accompanying "
+"video content."
+msgstr ""
+"Un format de CD pouvant combiner données, vidéo, et audio, et utilisé dans "
+"les années 1990 occasionnellement pour des parutions de musique accompagnée "
+"de contenu vidéo."
 
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
@@ -739,19 +751,16 @@ msgstr ""
 "mots sont habituellement choisis pour leur sonorité et pour les images et "
 "les idées qu’ils suggèrent."
 
-#. name:Withdrawn
-#: DB:release_status/description:5
+#. name:Expunged
+#: DB:release_status/description:38
 msgctxt "release_status"
 msgid ""
-"A previously official release that was actively withdrawn from circulation "
-"by the artist and/or their record company after being released, whether to "
-"replace it with a new version with some changes or to just retire it "
-"altogether (e.g. because of legal issues)."
+"A previously official release that was actively expunged from an artist or "
+"records company’s discography. This should not be used in cases where the "
+"release was just withdrawn, there needs to be known artist or label intent "
+"to disown the release and no longer consider it part of their discography. "
+"If it is unclear, use Withdrawn."
 msgstr ""
-"Une parution précédemment officielle qui a été activement retirée de la "
-"circulation par l’artiste ou la maison de disques après sa parution, qu’elle "
-"soit remplacée par une nouvelle version avec des changements ou qu’elle soit "
-"simplement retirée (par exemple pour des problèmes de droit)."
 
 #. name:Demo
 #: DB:release_group_secondary_type/description:10
@@ -1197,6 +1206,14 @@ msgctxt "work_attribute_type"
 msgid "ASCAP ID"
 msgstr "ID ASCAP"
 
+#: DB:work_attribute_type/name:211
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "KODA ID"
+msgctxt "work_attribute_type"
+msgid "AUTODIA ID"
+msgstr "ID KODA"
+
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
@@ -1533,6 +1550,28 @@ msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr ""
 "Une parution d'entrevue contient une entrevue, généralement avec un artiste."
+
+#. name:Withdrawn
+#: DB:release_status/description:5
+#, fuzzy
+#| msgctxt "release_status"
+#| msgid ""
+#| "A previously official release that was actively withdrawn from "
+#| "circulation by the artist and/or their record company after being "
+#| "released, whether to replace it with a new version with some changes or "
+#| "to just retire it altogether (e.g. because of legal issues)."
+msgctxt "release_status"
+msgid ""
+"An official release that was actively withdrawn from circulation by the "
+"artist and/or their record company after being released, whether to replace "
+"it with a new version or to retire it altogether. This does not include "
+"releases that have reached the end of their “natural” life cycle, such as "
+"being sold out and out of print."
+msgstr ""
+"Une parution précédemment officielle qui a été activement retirée de la "
+"circulation par l’artiste ou la maison de disques après sa parution, qu’elle "
+"soit remplacée par une nouvelle version avec des changements ou qu’elle soit "
+"simplement retirée (par exemple pour des problèmes de droit)."
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -2401,6 +2440,11 @@ msgstr "CD+G"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "CD-R"
+
+#: DB:medium_format/name:209
+msgctxt "medium_format"
+msgid "CD-i"
+msgstr "CD-i"
 
 #: DB:medium_format/name:41
 msgctxt "medium_format"
@@ -3391,6 +3435,11 @@ msgstr "Eviçkürdi"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evsat"
 msgstr "Evsat"
+
+#: DB:release_status/name:38
+msgctxt "release_status"
+msgid "Expunged"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:614
 msgctxt "work_attribute_type_allowed_value"
@@ -4398,6 +4447,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr "ID pour la GEMA, société allemande de gestion des droits"
 
+#. name:AUTODIA ID
+#: DB:work_attribute_type/description:211
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Czech rights society OSA"
+msgctxt "work_attribute_type"
+msgid "ID for the Greek rights society AUTODIA"
+msgstr "ID pour l’OSA, société tchèque de gestion des droits"
+
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
@@ -4432,6 +4490,15 @@ msgstr "ID pour la STEF, société islandaise de gestion des droits"
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
+msgstr "ID pour l’IPRS, société indienne de gestion des droits"
+
+#. name:WAMI ID
+#: DB:work_attribute_type/description:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Indian rights society IPRS"
+msgctxt "work_attribute_type"
+msgid "ID for the Indonesian rights society WAMI"
 msgstr "ID pour l’IPRS, société indienne de gestion des droits"
 
 #. name:ICE ID
@@ -4633,6 +4700,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
 msgstr "ID pour la SESAC, société états-unienne de gestion des droits"
 
+#. name:UACRR ID
+#: DB:work_attribute_type/description:209
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Brazilian rights society ECAD"
+msgctxt "work_attribute_type"
+msgid "ID for the Ukrainian rights society UACRR"
+msgstr "ID pour l’ECAD, société brésilienne de gestion des droits"
+
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
@@ -4732,6 +4808,24 @@ msgstr ""
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
 msgstr "Réserve/territoire indigène"
+
+#. name:Indigenous territory / reserve
+#: DB:area_type/description:9
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for semi-autonomous territories governed by indigenous peoples, such "
+#| "as Indian reserves/reservations in North America and indigenous "
+#| "territories in Central and South America."
+msgctxt "area_type"
+msgid ""
+"Indigenous territory / reserve is used for semi-autonomous territories "
+"governed by indigenous peoples, such as Indian reserves/reservations in "
+"North America and indigenous territories in Central and South America."
+msgstr ""
+"Utilisé pour les territoires semi-autonomes gouvernés par des peuples "
+"autochtones, tels que les réserves indiennes en Amérique du Nord et les "
+"territoires indigènes en Amérique latine."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5760,6 +5854,21 @@ msgctxt "area_type"
 msgid "Military base"
 msgstr "Base militaire"
 
+#. name:Military base
+#: DB:area_type/description:8
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for any military bases that are large enough to be considered an "
+#| "area, not just a place."
+msgctxt "area_type"
+msgid ""
+"Military base is used only for any military bases that are large enough to "
+"be considered an area, not just a place."
+msgstr ""
+"Utilisé pour toute base militaire suffisament grande pour être considérée "
+"comme une région plutôt qu’un simple lieu."
+
 #: DB:medium_format/name:166
 msgctxt "medium_format"
 msgid "MiniDVD"
@@ -5974,12 +6083,9 @@ msgid "Murabba"
 msgstr "Murabba"
 
 #: DB:work_attribute_type_allowed_value/value:811
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "Murabba Beste "
 msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste"
-msgstr "Murabba Beste "
+msgstr "Murabba Beste"
 
 #: DB:work_type/name:29
 msgctxt "work_type"
@@ -6643,6 +6749,11 @@ msgstr "Code d’air (« tune ») PRS"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pahāḍi"
 msgstr "Pahâdi"
+
+#: DB:cover_art_archive.art_type/name:81
+msgctxt "cover_art_type"
+msgid "Panel"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
@@ -8294,6 +8405,14 @@ msgstr ""
 "des emballages à six faces, celle qui est perpendiculaire à et en-dessous du "
 "devant, du derrière, et de la tranche)."
 
+#. name:Panel
+#: DB:cover_art_archive.art_type/description:81
+msgctxt "cover_art_type"
+msgid ""
+"The individual segments of a folded packaging, such as a gatefold cover, "
+"digipak or cassette inlay (don't use this for folded booklets nor posters)."
+msgstr ""
+
 #. name:Madrigal
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -8590,6 +8709,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍī"
 msgstr "Tôdî"
 
+#: DB:work_attribute_type/name:209
+msgctxt "work_attribute_type"
+msgid "UACRR ID"
+msgstr ""
+
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
@@ -8650,28 +8774,6 @@ msgstr ""
 "Utilisé en combinaison des autres types appropriés pour des images qui "
 "manquent de finition pour être affichées (mais qui sont utiles comme "
 "référence)."
-
-#. name:Military base
-#: DB:area_type/description:8
-msgctxt "area_type"
-msgid ""
-"Used for any military bases that are large enough to be considered an area, "
-"not just a place."
-msgstr ""
-"Utilisé pour toute base militaire suffisament grande pour être considérée "
-"comme une région plutôt qu’un simple lieu."
-
-#. name:Indigenous territory / reserve
-#: DB:area_type/description:9
-msgctxt "area_type"
-msgid ""
-"Used for semi-autonomous territories governed by indigenous peoples, such as "
-"Indian reserves/reservations in North America and indigenous territories in "
-"Central and South America."
-msgstr ""
-"Utilisé pour les territoires semi-autonomes gouvernés par des peuples "
-"autochtones, tels que les réserves indiennes en Amérique du Nord et les "
-"territoires indigènes en Amérique latine."
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8894,6 +8996,14 @@ msgstr "Vêlâvali"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vīra vasantaṁ"
 msgstr "Vîra vasantam"
+
+#: DB:work_attribute_type/name:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "BMI ID"
+msgctxt "work_attribute_type"
+msgid "WAMI ID"
+msgstr "ID BMI"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"

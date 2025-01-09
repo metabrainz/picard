@@ -305,6 +305,15 @@ msgstr ""
 "Een park is een niet-bebouwd gebied in een verder bebouwd en bewoond gebied "
 "dat voor recreatie wordt gebruikt."
 
+#. name:CD-i
+#: DB:medium_format/description:209
+msgctxt "medium_format"
+msgid ""
+"A CD format that combines data/video and audio, used for different purposes "
+"in the 1990s including, in some cases, music releases with accompanying "
+"video content."
+msgstr ""
+
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
 msgctxt "medium_format"
@@ -699,19 +708,16 @@ msgstr ""
 "woorden meestal worden gekozen voor de klank en voor de beelden en ideeën "
 "die ze oproepen."
 
-#. name:Withdrawn
-#: DB:release_status/description:5
+#. name:Expunged
+#: DB:release_status/description:38
 msgctxt "release_status"
 msgid ""
-"A previously official release that was actively withdrawn from circulation "
-"by the artist and/or their record company after being released, whether to "
-"replace it with a new version with some changes or to just retire it "
-"altogether (e.g. because of legal issues)."
+"A previously official release that was actively expunged from an artist or "
+"records company’s discography. This should not be used in cases where the "
+"release was just withdrawn, there needs to be known artist or label intent "
+"to disown the release and no longer consider it part of their discography. "
+"If it is unclear, use Withdrawn."
 msgstr ""
-"Een officiële uitgave die door de artiest en/of platenmaatschappij na de "
-"uitgavedatum is teruggetrokken. Dit kan gebeuren om een nieuwe versie met "
-"een paar veranderingen uit te brengen of om de uitgave helemaal te schrappen "
-"(bijv. om juridische redenen)."
 
 #. name:Demo
 #: DB:release_group_secondary_type/description:10
@@ -1154,6 +1160,14 @@ msgctxt "work_attribute_type"
 msgid "ASCAP ID"
 msgstr "ASCAP-ID"
 
+#: DB:work_attribute_type/name:211
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "KODA ID"
+msgctxt "work_attribute_type"
+msgid "AUTODIA ID"
+msgstr "KODA-ID"
+
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
 msgid "Acem"
@@ -1490,6 +1504,28 @@ msgstr ""
 msgctxt "release_group_secondary_type"
 msgid "An interview release contains an interview, generally with an artist."
 msgstr "Een interviewuitgave bevat een interview, meestal met een artiest."
+
+#. name:Withdrawn
+#: DB:release_status/description:5
+#, fuzzy
+#| msgctxt "release_status"
+#| msgid ""
+#| "A previously official release that was actively withdrawn from "
+#| "circulation by the artist and/or their record company after being "
+#| "released, whether to replace it with a new version with some changes or "
+#| "to just retire it altogether (e.g. because of legal issues)."
+msgctxt "release_status"
+msgid ""
+"An official release that was actively withdrawn from circulation by the "
+"artist and/or their record company after being released, whether to replace "
+"it with a new version or to retire it altogether. This does not include "
+"releases that have reached the end of their “natural” life cycle, such as "
+"being sold out and out of print."
+msgstr ""
+"Een officiële uitgave die door de artiest en/of platenmaatschappij na de "
+"uitgavedatum is teruggetrokken. Dit kan gebeuren om een nieuwe versie met "
+"een paar veranderingen uit te brengen of om de uitgave helemaal te schrappen "
+"(bijv. om juridische redenen)."
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -2358,6 +2394,11 @@ msgstr "cd+g"
 msgctxt "medium_format"
 msgid "CD-R"
 msgstr "cd-r"
+
+#: DB:medium_format/name:209
+msgctxt "medium_format"
+msgid "CD-i"
+msgstr ""
 
 #: DB:medium_format/name:41
 msgctxt "medium_format"
@@ -3344,6 +3385,11 @@ msgstr "Eviçkürdi"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Evsat"
 msgstr "Evsat"
+
+#: DB:release_status/name:38
+msgctxt "release_status"
+msgid "Expunged"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:614
 msgctxt "work_attribute_type_allowed_value"
@@ -4350,6 +4396,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the German rights society GEMA"
 msgstr "Een ID van de Duitse rechtenorganisatie GEMA"
 
+#. name:AUTODIA ID
+#: DB:work_attribute_type/description:211
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Czech rights society OSA"
+msgctxt "work_attribute_type"
+msgid "ID for the Greek rights society AUTODIA"
+msgstr "Een ID van de Tsjechische rechtenorganisatie OSA"
+
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
 msgctxt "work_attribute_type"
@@ -4384,6 +4439,15 @@ msgstr "Een ID van de IJslandse rechtenorganisatie STEF"
 #: DB:work_attribute_type/description:70
 msgctxt "work_attribute_type"
 msgid "ID for the Indian rights society IPRS"
+msgstr "Een ID van de Indiase rechtenorganisatie IPRS"
+
+#. name:WAMI ID
+#: DB:work_attribute_type/description:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Indian rights society IPRS"
+msgctxt "work_attribute_type"
+msgid "ID for the Indonesian rights society WAMI"
 msgstr "Een ID van de Indiase rechtenorganisatie IPRS"
 
 #. name:ICE ID
@@ -4584,6 +4648,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the US rights society SESAC"
 msgstr "Een ID van de Amerikaanse rechtenorganisatie SESAC"
 
+#. name:UACRR ID
+#: DB:work_attribute_type/description:209
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Brazilian rights society ECAD"
+msgctxt "work_attribute_type"
+msgid "ID for the Ukrainian rights society UACRR"
+msgstr "Een ID van de Braziliaanse rechtenorganisatie ECAD"
+
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
 msgctxt "work_attribute_type"
@@ -4679,6 +4752,24 @@ msgstr ""
 msgctxt "area_type"
 msgid "Indigenous territory / reserve"
 msgstr "Inheems gebied / reservaat"
+
+#. name:Indigenous territory / reserve
+#: DB:area_type/description:9
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for semi-autonomous territories governed by indigenous peoples, such "
+#| "as Indian reserves/reservations in North America and indigenous "
+#| "territories in Central and South America."
+msgctxt "area_type"
+msgid ""
+"Indigenous territory / reserve is used for semi-autonomous territories "
+"governed by indigenous peoples, such as Indian reserves/reservations in "
+"North America and indigenous territories in Central and South America."
+msgstr ""
+"Inheemse gebieden zijn semiautonome gebieden die door inheemse "
+"bevolkingsgroepen worden bestuurd, zoals de indianenreservaten in Noord-"
+"Amerika en de inheemse gebieden in Centraal- en Zuid-Amerika."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5706,6 +5797,21 @@ msgctxt "area_type"
 msgid "Military base"
 msgstr "Militaire basis"
 
+#. name:Military base
+#: DB:area_type/description:8
+#, fuzzy
+#| msgctxt "area_type"
+#| msgid ""
+#| "Used for any military bases that are large enough to be considered an "
+#| "area, not just a place."
+msgctxt "area_type"
+msgid ""
+"Military base is used only for any military bases that are large enough to "
+"be considered an area, not just a place."
+msgstr ""
+"Dit type gebied wordt gebruikt voor militaire bases die zo groot zijn dat ze "
+"als gebied in plaats van een plaats kunnen worden beschouwd."
+
 #: DB:medium_format/name:166
 msgctxt "medium_format"
 msgid "MiniDVD"
@@ -6588,6 +6694,11 @@ msgstr "PRS Tune Code"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Pahāḍi"
 msgstr "Pahāḍi"
+
+#: DB:cover_art_archive.art_type/name:81
+msgctxt "cover_art_type"
+msgid "Panel"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
@@ -8237,6 +8348,14 @@ msgstr ""
 "voorkomende verpakkingen met zes kanten, is dit de kant haaks op en onder de "
 "voorkant, achterkant en rug)."
 
+#. name:Panel
+#: DB:cover_art_archive.art_type/description:81
+msgctxt "cover_art_type"
+msgid ""
+"The individual segments of a folded packaging, such as a gatefold cover, "
+"digipak or cassette inlay (don't use this for folded booklets nor posters)."
+msgstr ""
+
 #. name:Madrigal
 #: DB:work_type/description:7
 msgctxt "work_type"
@@ -8535,6 +8654,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Tōḍī"
 msgstr "Tōḍī"
 
+#: DB:work_attribute_type/name:209
+msgctxt "work_attribute_type"
+msgid "UACRR ID"
+msgstr ""
+
 #: DB:medium_format/name:28
 msgctxt "medium_format"
 msgid "UMD"
@@ -8595,28 +8719,6 @@ msgstr ""
 "Gebruik deze eigenschap voor afbeeldingen die bewerkt moeten worden voordat "
 "ze kunnen worden weergegeven (maar die misschien al als referentie kunnen "
 "worden gebruikt)"
-
-#. name:Military base
-#: DB:area_type/description:8
-msgctxt "area_type"
-msgid ""
-"Used for any military bases that are large enough to be considered an area, "
-"not just a place."
-msgstr ""
-"Dit type gebied wordt gebruikt voor militaire bases die zo groot zijn dat ze "
-"als gebied in plaats van een plaats kunnen worden beschouwd."
-
-#. name:Indigenous territory / reserve
-#: DB:area_type/description:9
-msgctxt "area_type"
-msgid ""
-"Used for semi-autonomous territories governed by indigenous peoples, such as "
-"Indian reserves/reservations in North America and indigenous territories in "
-"Central and South America."
-msgstr ""
-"Inheemse gebieden zijn semiautonome gebieden die door inheemse "
-"bevolkingsgroepen worden bestuurd, zoals de indianenreservaten in Noord-"
-"Amerika en de inheemse gebieden in Centraal- en Zuid-Amerika."
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8839,6 +8941,14 @@ msgstr "Vēlāvali"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Vīra vasantaṁ"
 msgstr "Vīra vasantaṁ"
+
+#: DB:work_attribute_type/name:210
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "BMI ID"
+msgctxt "work_attribute_type"
+msgid "WAMI ID"
+msgstr "BMI-ID"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
