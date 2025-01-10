@@ -280,7 +280,7 @@ class Ui_CoverProcessingOptionsPage(object):
         self.filtering_height_label.setText(_("Minimum height:"))
         self.px_label2.setText(_("px"))
         self.resizing.setTitle(_("Resize images to the given size"))
-        self.tags_scale_down.setTitle(_("Resize images saved to tags "))
+        self.tags_scale_down.setTitle(_("Resize images saved to tags"))
         self.tags_resize_width_label.setText(_("Maximum width:"))
         self.px_label5.setText(_("px"))
         self.tags_resize_height_label.setText(_("Maximum height:"))

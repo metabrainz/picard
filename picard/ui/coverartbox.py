@@ -387,10 +387,10 @@ class ImageURLDialog(PicardDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.setWindowTitle(_("Enter url"))
+        self.setWindowTitle(_("Enter URL"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.layout = QtWidgets.QVBoxLayout(self)
-        self.label = QtWidgets.QLabel(_("Cover art url:"))
+        self.label = QtWidgets.QLabel(_("Cover art URL:"))
         self.url = QtWidgets.QLineEdit(self)
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
         accept_role = QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
@@ -672,7 +672,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.show_details_button.isVisible():
-            name = _("Show more details…")
+            name = _("Show &more details…")
             show_more_details_action = QtGui.QAction(name, parent=menu)
             show_more_details_action.triggered.connect(self.show_cover_art_info)
             menu.addAction(show_more_details_action)
@@ -688,7 +688,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             choose_local_file_action = QtGui.QAction(name, parent=menu)
             choose_local_file_action.triggered.connect(self.choose_local_file)
             menu.addAction(choose_local_file_action)
-            name = _("Add from url…")
+            name = _("Add from URL…")
             choose_image_from_url_action = QtGui.QAction(name, parent=menu)
             choose_image_from_url_action.triggered.connect(self.choose_image_from_url)
             menu.addAction(choose_image_from_url_action)
