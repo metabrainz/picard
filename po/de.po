@@ -28,7 +28,7 @@
 # nikki, 2013
 # nikki2 <b4931048@nwldx.com>, 2012
 # nikki, 2013
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023, 2025.
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
 # Shepard, 2012
 # Simon Legner <simon.legner@gmail.com>, 2018
@@ -47,8 +47,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-01-09 11:51+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-01-10 07:54+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/2/"
 "app/de/>\n"
 "Language: de\n"
@@ -220,10 +220,8 @@ msgid "Debug"
 msgstr "Debug"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Unerwarteter Authentifizierungsfehler"
+msgstr "Unerwarteter Fehler beim Rückruf des Authentifizierungs-Tokens"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
@@ -4087,11 +4085,8 @@ msgstr[0] "Ursprünglichen Wert benutzen"
 msgstr[1] "Ursprüngliche Werte benutzen"
 
 #: picard/ui/metadatabox.py:437
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Ursprünglichen Wert benutzen"
+msgstr "Mit ursprünglichen Werten vereinen"
 
 #: picard/ui/metadatabox.py:443
 msgid "&Copy"
@@ -5635,10 +5630,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Angemeldet als <b>%s</b>."
 
 #: picard/ui/options/general.py:182
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "CD-Abfrage-Fehler"
+msgstr "Fehler bei der Abmeldung"
 
 #: picard/ui/options/general.py:183
 #, python-format
@@ -6208,18 +6201,16 @@ msgid "Compatibility"
 msgstr "Kompatibilität"
 
 #: picard/ui/options/renaming_compat.py:135
-#, fuzzy
-#| msgid "Replace directory separators with:"
 msgid "Invalid directory separator replacement"
-msgstr "Verzeichnistrennzeichen ersetzen durch:"
+msgstr "Ungültige Ersetzung für Verzeichnistrennzeichen"
 
 #: picard/ui/options/renaming_compat.py:136
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "Ersatzzeichen für Verzeichnistrennzeichen"
+msgstr ""
+"Der Ersatz für Verzeichnistrennzeichen darf selbst kein "
+"Verzeichnistrennzeichen sein."
 
 #: picard/ui/options/renaming_compat.py:144
 msgid ""
