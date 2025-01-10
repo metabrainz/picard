@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/3/"
@@ -299,9 +299,11 @@ msgstr "שבוץ תמונה קדמית יחידה בלבד"
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr ""
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#, fuzzy
+#| msgid "Download only cover art images matching selected types"
+msgid "Never replace cover images matching selected types"
+msgstr "הורדת קובצי תמונת עטיפה התואמים לסוגים שנבחרו בלבד"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -902,16 +904,16 @@ msgstr "כל הקבצים"
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "שורת שגיאה %(lineno)d:%(error)s"
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr "[טעינת נתוני הקלטה]"
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[לא ניתן לטעון הקלטה %s]"
@@ -2956,13 +2958,13 @@ msgid "Tracks contain different images"
 msgstr "רצועות מכילות תמונות שונות"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "תמונת עטיפה"
 
 #: picard/ui/coverartbox.py:435
@@ -2987,9 +2989,9 @@ msgstr "תמונת עטיפה מקורית"
 msgid "All supported image formats"
 msgstr "כול תבניות התמונה הנתמכות"
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
-msgstr "הצגת פרטים נוספים‮…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
+msgstr "הצגת &פרטים נוספים‮…"
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
@@ -3002,7 +3004,7 @@ msgstr "בחירת קובץ מקומי …"
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "הו&ספת תיקיה‮‮…"
 
 #: picard/ui/coverartbox.py:700
@@ -4075,16 +4077,9 @@ msgstr "כונן תקליטורים לחיפוש:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "כונן תקליטור ברירת המחדל:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
-msgid "Never replace cover images matching selected types"
-msgstr "הורדת קובצי תמונת עטיפה התואמים לסוגים שנבחרו בלבד"
-
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "בחירת סוגים‮…"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -4143,7 +4138,7 @@ msgstr "בחירת תמונות רק בגדלים הבאים:"
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "שבוץ תמונות עטיפה בתגים"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4855,10 +4850,6 @@ msgstr "נדרש אימות"
 msgid "Download only cover art images matching selected types"
 msgstr "הורדת קובצי תמונת עטיפה התואמים לסוגים שנבחרו בלבד"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "בחירת סוגים‮…"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -5138,10 +5129,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&גרסאות אחרות"
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
-msgstr "הצגת &פרטים נוספים‮…"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -7221,6 +7208,14 @@ msgstr ""
 "שגיאה בעת טעינת דפדפן:\n"
 "\n"
 "%s"
+
+#~ msgid "Show more details…"
+#~ msgstr "הצגת פרטים נוספים‮…"
+
+#, fuzzy
+#~| msgid "Select types…"
+#~ msgid "Select Types..."
+#~ msgstr "בחירת סוגים‮…"
 
 #~ msgid "New Cover"
 #~ msgstr "עטיפה חדשה"

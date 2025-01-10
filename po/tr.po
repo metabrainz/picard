@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2025-01-03 23:42+0000\n"
 "Last-Translator: dirt3009 <iam@emirgecir.com.tr>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/"
@@ -291,8 +291,8 @@ msgstr ""
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+msgid "Never replace cover images matching selected types"
 msgstr ""
 
 #: picard/options.py:173
@@ -874,16 +874,16 @@ msgstr ""
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr ""
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -2360,13 +2360,13 @@ msgid "Tracks contain different images"
 msgstr ""
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Kapak Resmi"
 
 #: picard/ui/coverartbox.py:435
@@ -2389,9 +2389,9 @@ msgstr ""
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
-msgstr "Daha fazla detay göster…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
+msgstr "Daha fa&zla ayrıntıyı göster…"
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
@@ -2404,7 +2404,7 @@ msgstr ""
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "&Dizin Ekle…"
 
 #: picard/ui/coverartbox.py:700
@@ -3413,12 +3413,9 @@ msgstr "Aramalar için kullanılacak CD-ROM cihazı:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Aramalar için kullanılacak varsayılan CD-ROM cihazı:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-msgid "Never replace cover images matching selected types"
-msgstr ""
-
 #: picard/ui/forms/ui_options_cover.py:122
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -3477,7 +3474,7 @@ msgstr "Sadece şu boyuttaki resimleri kullan:"
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Kapak resimlerini etiket içine yerleştir"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4163,10 +4160,6 @@ msgstr "Kimlik Doğrulaması Gerekli"
 msgid "Download only cover art images matching selected types"
 msgstr ""
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr ""
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -4438,10 +4431,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&Diğer versiyonlar"
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
-msgstr "Daha fa&zla ayrıntıyı göster…"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -6368,6 +6357,9 @@ msgstr ""
 "Web tarayıcısı yüklenirken hata oluştu:\n"
 "\n"
 "%s"
+
+#~ msgid "Show more details…"
+#~ msgstr "Daha fazla detay göster…"
 
 #~ msgid "Authentication required"
 #~ msgstr "Kimlik denetimi gerekli"

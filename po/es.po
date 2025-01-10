@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2024-09-14 08:42+0000\n"
 "Last-Translator: reosarevok <reosarevok@users.noreply.translations."
 "metabrainz.org>\n"
@@ -311,9 +311,11 @@ msgstr ""
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr ""
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#, fuzzy
+#| msgid "Download only cover art images matching selected types"
+msgid "Never replace cover images matching selected types"
+msgstr "Descargar solamente las carátulas que encajen con los tipos elegidos"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -920,16 +922,16 @@ msgstr "Todos los archivos"
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "Error en línea %(lineno)d: %(error)s"
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr "[cargando información de la grabación]"
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[no se puede cargar la grabación %s]"
@@ -2479,13 +2481,13 @@ msgid "Tracks contain different images"
 msgstr "Las pistas contienen diferentes imágenes"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Carátula"
 
 #: picard/ui/coverartbox.py:435
@@ -2510,9 +2512,9 @@ msgstr "Imágenes originales"
 msgid "All supported image formats"
 msgstr "Todos los formatos de imagen soportados"
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
-msgstr "Ver más detalles…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
+msgstr "Ver &más detalles…"
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
@@ -2525,7 +2527,7 @@ msgstr "Elegir archivo local"
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "A&gregar carpeta…"
 
 #: picard/ui/coverartbox.py:700
@@ -3566,16 +3568,9 @@ msgstr "Unidad de CD-ROM que se utilizará para las búsquedas:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Unidad de CD-ROM predeterminada que se utilizará para las búsquedas"
 
-#: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
-msgid "Never replace cover images matching selected types"
-msgstr "Descargar solamente las carátulas que encajen con los tipos elegidos"
-
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "Elegir tipos…"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -3634,7 +3629,7 @@ msgstr "Usar solamente imágenes del siguiente tamaño:"
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Guardar las carátulas de los álbumes en los archivos"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4362,10 +4357,6 @@ msgstr "Se precisa autenticación"
 msgid "Download only cover art images matching selected types"
 msgstr "Descargar solamente las carátulas que encajen con los tipos elegidos"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "Elegir tipos…"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -4647,10 +4638,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&Otras versiones"
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
-msgstr "Ver &más detalles…"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -6721,6 +6708,14 @@ msgstr ""
 "Error lanzando navegador de web:\n"
 "\n"
 "%s"
+
+#~ msgid "Show more details…"
+#~ msgstr "Ver más detalles…"
+
+#, fuzzy
+#~| msgid "Select types…"
+#~ msgid "Select Types..."
+#~ msgstr "Elegir tipos…"
 
 #~ msgid "New Cover"
 #~ msgstr "Nueva portada"

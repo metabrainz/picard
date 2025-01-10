@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2024-08-31 14:42+0000\n"
 "Last-Translator: wileyfoxyx <wileyfoxyx@users.noreply.translations."
 "metabrainz.org>\n"
@@ -324,9 +324,11 @@ msgstr "Вставить только одно изображение на ли�
 msgid "Never replace cover images with smaller ones"
 msgstr "Никогда не заменять обложку на изображения меньшего размера"
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr "Никогда не заменять обложки следующих типов"
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#, fuzzy
+#| msgid "Download only cover art images matching selected types"
+msgid "Never replace cover images matching selected types"
+msgstr "Загружать только обложки совпадающие выбранным типам"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -918,16 +920,16 @@ msgstr "Все файлы"
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr ""
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr "[загрузка информации о записях]"
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[не удается загрузить запись %s]"
@@ -2454,13 +2456,13 @@ msgid "Tracks contain different images"
 msgstr "Треки содержат разные изображения"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Обложка"
 
 #: picard/ui/coverartbox.py:435
@@ -2485,8 +2487,9 @@ msgstr "Исходная обложка"
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+#, fuzzy
+msgid "Show &more details…"
 msgstr "Подробнее…"
 
 #: picard/ui/coverartbox.py:681
@@ -2500,7 +2503,7 @@ msgstr ""
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "Д&обавить папку…"
 
 #: picard/ui/coverartbox.py:700
@@ -3553,16 +3556,9 @@ msgstr "Привод CD-ROM для опознавания:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Привод CD-ROM по умолчанию:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
-msgid "Never replace cover images matching selected types"
-msgstr "Загружать только обложки совпадающие выбранным типам"
-
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "Выбор типов…"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -3621,7 +3617,7 @@ msgstr "Использовать изображения только следу�
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Добавлять обложки в теги"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4329,10 +4325,6 @@ msgstr "Требуется аутентификация"
 msgid "Download only cover art images matching selected types"
 msgstr "Загружать только обложки совпадающие выбранным типам"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "Выбор типов…"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -4614,11 +4606,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&Другии версии"
-
-#: picard/ui/itemviews/basetreeview.py:371
-#, fuzzy
-msgid "Show &more details…"
-msgstr "Подробнее…"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -6600,6 +6587,17 @@ msgstr ""
 "Ошибка во время запуска браузера:\n"
 "\n"
 "%s"
+
+#~ msgid "Never replace cover images of the given types"
+#~ msgstr "Никогда не заменять обложки следующих типов"
+
+#~ msgid "Show more details…"
+#~ msgstr "Подробнее…"
+
+#, fuzzy
+#~| msgid "Select types…"
+#~ msgid "Select Types..."
+#~ msgstr "Выбор типов…"
 
 #~ msgid "New Cover"
 #~ msgstr "Новая обложка"

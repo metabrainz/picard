@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2025-01-10 11:03+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
@@ -315,9 +315,11 @@ msgstr "Nur ein einziges Titelcover einbetten"
 msgid "Never replace cover images with smaller ones"
 msgstr "Niemals Cover-Bilder durch kleinere ersetzen"
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr "Cover-Bilder der angegebenen Typen niemals ersetzen"
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#, fuzzy
+#| msgid "Download only cover art images matching selected types"
+msgid "Never replace cover images matching selected types"
+msgstr "Nur zu ausgewählten Typen passende Cover-Art-Bilder herunterladen"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -905,16 +907,16 @@ msgstr "Alle Dateien"
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Fehler beim Parsen des Ripper-Protokolls „%s“"
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "Fehler Zeile %(lineno)d: %(error)s"
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr "[Aufnahmeinformationen werden geladen]"
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[Aufnahme %s wurde nicht geladen]"
@@ -3081,11 +3083,15 @@ msgid "Tracks contain different images"
 msgstr "Titel beinhaltet verschiedene Bilder"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+#, fuzzy
+#| msgid "Enter url"
+msgid "Enter URL"
 msgstr "URL eingeben"
 
 #: picard/ui/coverartbox.py:393
-msgid "Cover art url:"
+#, fuzzy
+#| msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Cover-Art-URL"
 
 #: picard/ui/coverartbox.py:435
@@ -3108,9 +3114,9 @@ msgstr "Ursprüngliches Cover-Art"
 msgid "All supported image formats"
 msgstr "Alle unterstützten Bildformate"
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
-msgstr "Mehr Details anzeigen …"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
+msgstr "&Mehr Details anzeigen …"
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
@@ -3121,7 +3127,9 @@ msgid "Choose local file…"
 msgstr "Lokale Datei auswählen …"
 
 #: picard/ui/coverartbox.py:691
-msgid "Add from url…"
+#, fuzzy
+#| msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "Von &URL hinzufügen …"
 
 #: picard/ui/coverartbox.py:700
@@ -3198,8 +3206,8 @@ msgid ""
 "<strong>%(message)s</strong><br />Temporary file: <em>%(tempfile)s</em><br /"
 ">Source: <em>%(sourcefile)s</em>"
 msgstr ""
-"<strong>%(message)s</strong><br />Temporäre Datei: <em>%(tempfile)s</em><br "
-"/>Quelle: <em>%(sourcefile)s</em>"
+"<strong>%(message)s</strong><br />Temporäre Datei: <em>%(tempfile)s</em><br /"
+">Quelle: <em>%(sourcefile)s</em>"
 
 #: picard/ui/infodialog.py:306
 msgid "Double-click to open in external viewer"
@@ -4174,16 +4182,9 @@ msgstr "Für Abfragen zu benutzendes CD-Laufwerk:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Für Abfragen standardmäßig zu benutzendes CD-Laufwerk:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
-msgid "Never replace cover images matching selected types"
-msgstr "Nur zu ausgewählten Typen passende Cover-Art-Bilder herunterladen"
-
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "Typen auswählen …"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -4242,7 +4243,7 @@ msgstr "Nur Bilder mit folgender Größe verwenden:"
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Cover-Bilder in Tags einbetten"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4957,10 +4958,6 @@ msgstr "Authentifizierung erforderlich"
 msgid "Download only cover art images matching selected types"
 msgstr "Nur zu ausgewählten Typen passende Cover-Art-Bilder herunterladen"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "Typen auswählen …"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -5244,10 +5241,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&Andere Versionen"
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
-msgstr "&Mehr Details anzeigen …"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -6356,8 +6349,8 @@ msgid ""
 "The configuration file currently contains %(totalcount)d option settings "
 "(%(unusedcount)d unused)."
 msgstr ""
-"Die Konfigurationsdatei enthält momentan %(totalcount)d Einstellungen ( "
-"%(unusedcount)d nicht verwendet)."
+"Die Konfigurationsdatei enthält momentan %(totalcount)d Einstellungen "
+"( %(unusedcount)d nicht verwendet)."
 
 #: picard/ui/options/maintenance.py:214
 msgid "Configuration files"
@@ -7379,6 +7372,17 @@ msgstr ""
 "Fehler beim Öffnen des Webbrowsers:\n"
 "\n"
 "%s"
+
+#~ msgid "Never replace cover images of the given types"
+#~ msgstr "Cover-Bilder der angegebenen Typen niemals ersetzen"
+
+#~ msgid "Show more details…"
+#~ msgstr "Mehr Details anzeigen …"
+
+#, fuzzy
+#~| msgid "Select types…"
+#~ msgid "Select Types..."
+#~ msgstr "Typen auswählen …"
 
 #~ msgid "New Cover"
 #~ msgstr "Neues Cover"

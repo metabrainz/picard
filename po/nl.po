@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2024-04-12 01:28+0000\n"
 "Last-Translator: toineenzo <toinerademacher@hotmail.com>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -300,9 +300,11 @@ msgstr "Slechts één afbeelding van de voorkant inbedden"
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr ""
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#, fuzzy
+#| msgid "Download only cover art images matching selected types"
+msgid "Never replace cover images matching selected types"
+msgstr "Alleen de volgende types afbeeldingen downloaden:"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -897,16 +899,16 @@ msgstr "Alle bestanden"
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Het logboek ‘%s’ kon niet worden gelezen"
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "Fout in regel %(lineno)d: %(error)s"
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr "[opname-informatie wordt geladen]"
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[opname %s kon niet worden geladen]"
@@ -3046,13 +3048,13 @@ msgid "Tracks contain different images"
 msgstr "Nummers hebben verschillende afbeeldingen"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Hoesafbeeldingen"
 
 #: picard/ui/coverartbox.py:435
@@ -3077,9 +3079,9 @@ msgstr "Huidige afbeelding"
 msgid "All supported image formats"
 msgstr "Alle ondersteunde afbeeldingsindelingen"
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
-msgstr "Meer details …"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
+msgstr "&Meer details …"
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
@@ -3092,7 +3094,7 @@ msgstr "Selecteer een lokaal bestand …"
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "&Map toevoegen"
 
 #: picard/ui/coverartbox.py:700
@@ -4173,16 +4175,9 @@ msgstr "Cd-station voor het opzoeken van cd’s:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Standaard cd-station voor het opzoeken van cd’s:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
-msgid "Never replace cover images matching selected types"
-msgstr "Alleen de volgende types afbeeldingen downloaden:"
-
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "Types selecteren …"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -4241,7 +4236,7 @@ msgstr "Alleen afbeeldingen van de volgende grootte gebruiken:"
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Hoesafbeeldingen in tags opslaan"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4966,10 +4961,6 @@ msgstr "Machtiging vereist"
 msgid "Download only cover art images matching selected types"
 msgstr "Alleen de volgende types afbeeldingen downloaden:"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "Types selecteren …"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -5255,10 +5246,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&Andere versies"
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
-msgstr "&Meer details …"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -7401,6 +7388,14 @@ msgstr ""
 "Fout tijdens het starten van een webbrowser:\n"
 "\n"
 "%s"
+
+#~ msgid "Show more details…"
+#~ msgstr "Meer details …"
+
+#, fuzzy
+#~| msgid "Select types…"
+#~ msgid "Select Types..."
+#~ msgstr "Types selecteren …"
 
 #~ msgid "New Cover"
 #~ msgstr "Nieuwe afbeelding"

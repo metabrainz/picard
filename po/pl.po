@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2024-09-02 16:42+0000\n"
 "Last-Translator: Echelon666 <echelon01@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
@@ -311,9 +311,9 @@ msgstr "Osadź tylko pojedynczy przedni obraz"
 msgid "Never replace cover images with smaller ones"
 msgstr "Nigdy nie zastępuj obrazów okładek mniejszymi"
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr "Nigdy nie zastępuj obrazów okładek danego typu"
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+msgid "Never replace cover images matching selected types"
+msgstr "Nigdy nie zastępuj obrazów okładek pasujących do wybranych typów"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -900,16 +900,16 @@ msgstr "Wszystkie pliki"
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Nie udało się przeanalizować dziennika zgrywania \"%s\""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "Linia błędu %(lineno)d: %(error)s"
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr "[wczytywanie informacji o nagraniu]"
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[nie można załadować nagrania %s]"
@@ -3064,13 +3064,13 @@ msgid "Tracks contain different images"
 msgstr "Ścieżki zawierają różne obrazy"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Okładka"
 
 #: picard/ui/coverartbox.py:435
@@ -3093,9 +3093,10 @@ msgstr "Oryginalna okładka"
 msgid "All supported image formats"
 msgstr "Wszystkie obsługiwane formaty obrazów"
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
-msgstr "Pokaż więcej szczegółów…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+#, fuzzy
+msgid "Show &more details…"
+msgstr "Pokaż więcej…."
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
@@ -3108,7 +3109,7 @@ msgstr "Wybierz plik lokalny…"
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "&Dodaj katalog…"
 
 #: picard/ui/coverartbox.py:700
@@ -4168,13 +4169,10 @@ msgstr "Urządzenie CD-ROM do sprawdzania:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Domyślny napęd CD-ROM do sprawdzania:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-msgid "Never replace cover images matching selected types"
-msgstr "Nigdy nie zastępuj obrazów okładek pasujących do wybranych typów"
-
 #: picard/ui/forms/ui_options_cover.py:122
-msgid "Select Types..."
-msgstr "Wybierz typy..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
+msgstr "Wybierz typy…"
 
 #: picard/ui/forms/ui_options_cover.py:124
 msgid "Use the following file name for images:"
@@ -4228,7 +4226,9 @@ msgid "Resize images to the given size"
 msgstr "Zmień rozmiar obrazów do podanego rozmiaru"
 
 #: picard/ui/forms/ui_options_cover_processing.py:283
-msgid "Resize images saved to tags "
+#, fuzzy
+#| msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Zmień rozmiar obrazów zapisanych w tagach "
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4934,10 +4934,6 @@ msgstr "Wymagane uwierzytelnienie"
 msgid "Download only cover art images matching selected types"
 msgstr "Pobierz jedynie okładki odpowiadające wybranym typom"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "Wybierz typy…"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 msgid "Only use images of at most the following size:"
 msgstr "Używaj wyłącznie obrazów o maksymalnym następującym rozmiarze:"
@@ -5224,11 +5220,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&Inne wersje"
-
-#: picard/ui/itemviews/basetreeview.py:371
-#, fuzzy
-msgid "Show &more details…"
-msgstr "Pokaż więcej…."
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -7319,6 +7310,15 @@ msgstr ""
 "Błąd podczas uruchamiania przeglądarki:\n"
 "\n"
 "%s"
+
+#~ msgid "Never replace cover images of the given types"
+#~ msgstr "Nigdy nie zastępuj obrazów okładek danego typu"
+
+#~ msgid "Show more details…"
+#~ msgstr "Pokaż więcej szczegółów…"
+
+#~ msgid "Select Types..."
+#~ msgstr "Wybierz typy..."
 
 #~ msgid "New Cover"
 #~ msgstr "Nowa okładka"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/3/"
@@ -283,9 +283,11 @@ msgstr "싱글 폰터 프론트 이미지 넣기"
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr ""
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#, fuzzy
+#| msgid "Download only cover art images matching selected types"
+msgid "Never replace cover images matching selected types"
+msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -880,16 +882,16 @@ msgstr "모든 파일들"
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr ""
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -2366,13 +2368,13 @@ msgid "Tracks contain different images"
 msgstr "트랙에 다른 이미지가 포함됨"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "커버 아트"
 
 #: picard/ui/coverartbox.py:435
@@ -2397,8 +2399,9 @@ msgstr "오리지널 커버 아트"
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+#, fuzzy
+msgid "Show &more details…"
 msgstr "상세보기…"
 
 #: picard/ui/coverartbox.py:681
@@ -2412,7 +2415,7 @@ msgstr "로컬 파일 선택하세요"
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "폴더 추가(&d)"
 
 #: picard/ui/coverartbox.py:700
@@ -3433,16 +3436,9 @@ msgstr "조회에 사용할 CD-ROM 장치:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "조회에 사용할 기본 CD-ROM 드라이브:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
-msgid "Never replace cover images matching selected types"
-msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
-
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "유형 선택…"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -3501,7 +3497,7 @@ msgstr "다음과 같은 사이즈에 대한 이미지만 사용합니다:"
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "태그에 커버 이미지 첨부"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4199,10 +4195,6 @@ msgstr "인증 필요"
 msgid "Download only cover art images matching selected types"
 msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "유형 선택…"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -4477,11 +4469,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "다른 버전(&O)"
-
-#: picard/ui/itemviews/basetreeview.py:371
-#, fuzzy
-msgid "Show &more details…"
-msgstr "상세보기…"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -6446,6 +6433,14 @@ msgstr ""
 "웹 브라우저 실행 오류:\n"
 "\n"
 "%s"
+
+#~ msgid "Show more details…"
+#~ msgstr "상세보기…"
+
+#, fuzzy
+#~| msgid "Select types…"
+#~ msgid "Select Types..."
+#~ msgstr "유형 선택…"
 
 #~ msgid "New Cover"
 #~ msgstr "새 커버"

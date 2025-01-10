@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2023-12-22 09:28+0000\n"
 "Last-Translator: Nerten <alex@nerten.info>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
@@ -301,9 +301,11 @@ msgstr ""
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr ""
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#, fuzzy
+#| msgid "Download only cover art images matching selected types"
+msgid "Never replace cover images matching selected types"
+msgstr "Завантажувати лише обкладинки, що відповідають вибраним типам"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -901,16 +903,16 @@ msgstr ""
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr ""
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -2394,13 +2396,13 @@ msgid "Tracks contain different images"
 msgstr "Треки містять різні зображення"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Обкладинки"
 
 #: picard/ui/coverartbox.py:435
@@ -2425,8 +2427,9 @@ msgstr "Оригінальна обкладинка"
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+#, fuzzy
+msgid "Show &more details…"
 msgstr "Побачити ще…"
 
 #: picard/ui/coverartbox.py:681
@@ -2440,7 +2443,7 @@ msgstr ""
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "Д&одати теку…"
 
 #: picard/ui/coverartbox.py:700
@@ -3486,16 +3489,9 @@ msgstr "Пристрій CD-ROM для пошуків:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Типовий пристрій CD-ROM для пошуків:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
-msgid "Never replace cover images matching selected types"
-msgstr "Завантажувати лише обкладинки, що відповідають вибраним типам"
-
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "Виберіть типи …"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -3554,7 +3550,7 @@ msgstr "Використовувати лише зображення таког�
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Вкладати зображення обкладинок в позначки"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4254,10 +4250,6 @@ msgstr "Потрібна автентифікація"
 msgid "Download only cover art images matching selected types"
 msgstr "Завантажувати лише обкладинки, що відповідають вибраним типам"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "Виберіть типи …"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -4538,11 +4530,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "&Інші версії"
-
-#: picard/ui/itemviews/basetreeview.py:371
-#, fuzzy
-msgid "Show &more details…"
-msgstr "Побачити ще…"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -6506,6 +6493,14 @@ msgstr ""
 "Помилка під час запуску веб-браузера:\n"
 "\n"
 "%s"
+
+#~ msgid "Show more details…"
+#~ msgstr "Побачити ще…"
+
+#, fuzzy
+#~| msgid "Select types…"
+#~ msgid "Select Types..."
+#~ msgstr "Виберіть типи …"
 
 #~ msgid "New Cover"
 #~ msgstr "Нова обкладинка"

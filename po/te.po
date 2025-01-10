@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2023-08-23 19:10+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Telugu <https://translations.metabrainz.org/projects/picard/"
@@ -277,8 +277,8 @@ msgstr ""
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+msgid "Never replace cover images matching selected types"
 msgstr ""
 
 #: picard/options.py:173
@@ -859,16 +859,16 @@ msgstr ""
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr ""
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -2341,11 +2341,11 @@ msgid "Tracks contain different images"
 msgstr ""
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr ""
 
 #: picard/ui/coverartbox.py:435
@@ -2368,8 +2368,8 @@ msgstr ""
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
 msgstr ""
 
 #: picard/ui/coverartbox.py:681
@@ -2381,7 +2381,7 @@ msgid "Choose local file…"
 msgstr ""
 
 #: picard/ui/coverartbox.py:691
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr ""
 
 #: picard/ui/coverartbox.py:700
@@ -3373,12 +3373,9 @@ msgstr ""
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr ""
 
-#: picard/ui/forms/ui_options_cover.py:121
-msgid "Never replace cover images matching selected types"
-msgstr ""
-
 #: picard/ui/forms/ui_options_cover.py:122
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -3433,7 +3430,7 @@ msgid "Resize images to the given size"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:283
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4106,10 +4103,6 @@ msgstr ""
 msgid "Download only cover art images matching selected types"
 msgstr ""
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr ""
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 msgid "Only use images of at most the following size:"
 msgstr ""
@@ -4383,10 +4376,6 @@ msgstr ""
 
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
-msgstr ""
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
 msgstr ""
 
 #: picard/ui/itemviews/basetreeview.py:376

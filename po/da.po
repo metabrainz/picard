@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2023-10-31 20:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Danish <https://translations.metabrainz.org/projects/picard/"
@@ -283,8 +283,8 @@ msgstr ""
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+msgid "Never replace cover images matching selected types"
 msgstr ""
 
 #: picard/options.py:173
@@ -876,16 +876,16 @@ msgstr ""
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr ""
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr ""
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr ""
@@ -2366,13 +2366,13 @@ msgid "Tracks contain different images"
 msgstr ""
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "Omslag"
 
 #: picard/ui/coverartbox.py:435
@@ -2397,8 +2397,8 @@ msgstr ""
 msgid "All supported image formats"
 msgstr ""
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
 msgstr ""
 
 #: picard/ui/coverartbox.py:681
@@ -2412,7 +2412,7 @@ msgstr ""
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "Tilføj &mappe…"
 
 #: picard/ui/coverartbox.py:700
@@ -3427,12 +3427,9 @@ msgstr "CD-ROM-drev der skal bruges til opslag:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "CD-ROM-drev der som standard skal bruges til opslag:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-msgid "Never replace cover images matching selected types"
-msgstr ""
-
 #: picard/ui/forms/ui_options_cover.py:122
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -3491,7 +3488,7 @@ msgstr "Brug kun billeder med den følgende størrelse:"
 #: picard/ui/forms/ui_options_cover_processing.py:283
 #, fuzzy
 #| msgid "Embed cover images into tags"
-msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "Indsæt omslag i tags"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4190,10 +4187,6 @@ msgstr "Autentifikation påkrævet"
 msgid "Download only cover art images matching selected types"
 msgstr ""
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr ""
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -4466,10 +4459,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "Andre udgaver"
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
-msgstr ""
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"

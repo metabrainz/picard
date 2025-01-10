@@ -49,7 +49,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-01-09 08:51+0100\n"
+"POT-Creation-Date: 2025-01-10 12:02+0100\n"
 "PO-Revision-Date: 2024-11-18 15:42+0000\n"
 "Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://translations."
@@ -317,9 +317,9 @@ msgstr "仅嵌入正面封面图像"
 msgid "Never replace cover images with smaller ones"
 msgstr "不要用更小的图片替换封面图片"
 
-#: picard/options.py:172
-msgid "Never replace cover images of the given types"
-msgstr "不要用指定类型的图片替换封面图片"
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+msgid "Never replace cover images matching selected types"
+msgstr "不要替换与选定类型匹配的封面图片"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
@@ -900,16 +900,16 @@ msgstr "全部文件"
 msgid "Failed parsing ripping log \"%s\""
 msgstr "解析翻录日志\"%s\"失败"
 
-#: picard/track.py:134
+#: picard/track.py:135
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
 msgstr "错误行 %(lineno)d: %(error)s"
 
-#: picard/track.py:422
+#: picard/track.py:432
 msgid "[loading recording information]"
 msgstr "[正在载入录音信息]"
 
-#: picard/track.py:472
+#: picard/track.py:482
 #, python-format
 msgid "[could not load recording %s]"
 msgstr "[无法载入录音 %s]"
@@ -2935,13 +2935,13 @@ msgid "Tracks contain different images"
 msgstr "音轨图像不同"
 
 #: picard/ui/coverartbox.py:390
-msgid "Enter url"
+msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
 #, fuzzy
 #| msgid "Cover Art"
-msgid "Cover art url:"
+msgid "Cover art URL:"
 msgstr "专辑封面"
 
 #: picard/ui/coverartbox.py:435
@@ -2966,9 +2966,9 @@ msgstr "原封面"
 msgid "All supported image formats"
 msgstr "所有支持的图像格式"
 
-#: picard/ui/coverartbox.py:675
-msgid "Show more details…"
-msgstr "显示更多细节…"
+#: picard/ui/coverartbox.py:675 picard/ui/itemviews/basetreeview.py:371
+msgid "Show &more details…"
+msgstr "显示&详情……"
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
@@ -2981,7 +2981,7 @@ msgstr "选择本地文件…"
 #: picard/ui/coverartbox.py:691
 #, fuzzy
 #| msgid "Add Fold&er…"
-msgid "Add from url…"
+msgid "Add from URL…"
 msgstr "添加文件夹（&D）…"
 
 #: picard/ui/coverartbox.py:700
@@ -3989,12 +3989,9 @@ msgstr "用于查询的 CD-ROM 设备:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "用于查询的默认 CD-ROM 设备:"
 
-#: picard/ui/forms/ui_options_cover.py:121
-msgid "Never replace cover images matching selected types"
-msgstr "不要替换与选定类型匹配的封面图片"
-
 #: picard/ui/forms/ui_options_cover.py:122
-msgid "Select Types..."
+#: picard/ui/forms/ui_provider_options_caa.py:76
+msgid "Select types…"
 msgstr "选择类型…"
 
 #: picard/ui/forms/ui_options_cover.py:124
@@ -4049,7 +4046,9 @@ msgid "Resize images to the given size"
 msgstr "将图像调整到给定的尺寸"
 
 #: picard/ui/forms/ui_options_cover_processing.py:283
-msgid "Resize images saved to tags "
+#, fuzzy
+#| msgid "Resize images saved to tags "
+msgid "Resize images saved to tags"
 msgstr "将保存到标签中的图像调整到指定的尺寸 "
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
@@ -4757,10 +4756,6 @@ msgstr "需要验证身份"
 msgid "Download only cover art images matching selected types"
 msgstr "仅下载符合所选类型的封面图像"
 
-#: picard/ui/forms/ui_provider_options_caa.py:76
-msgid "Select types…"
-msgstr "选择类型…"
-
 #: picard/ui/forms/ui_provider_options_caa.py:77
 #, fuzzy
 #| msgid "Only use images of the following size:"
@@ -5034,10 +5029,6 @@ msgstr "Ctrl+A"
 #: picard/ui/itemviews/basetreeview.py:364
 msgid "&Other versions"
 msgstr "其他版本（&O）"
-
-#: picard/ui/itemviews/basetreeview.py:371
-msgid "Show &more details…"
-msgstr "显示&详情……"
 
 #: picard/ui/itemviews/basetreeview.py:376
 msgid "Loading…"
@@ -7133,6 +7124,15 @@ msgstr ""
 "启动 web 浏览器时出错:\n"
 "\n"
 "%s"
+
+#~ msgid "Never replace cover images of the given types"
+#~ msgstr "不要用指定类型的图片替换封面图片"
+
+#~ msgid "Show more details…"
+#~ msgstr "显示更多细节…"
+
+#~ msgid "Select Types..."
+#~ msgstr "选择类型…"
 
 #~ msgid "New Cover"
 #~ msgstr "新封面"
