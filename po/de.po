@@ -20,7 +20,7 @@
 # Matthias W. <abudunx@gmail.com>, 2018
 # nikki, 2013-2015
 # nikki2 <b4931048@nwldx.com>, 2012
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023, 2024.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023, 2024, 2025.
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
 # Shepard, 2012-2014
 # Simon Legner <simon.legner@gmail.com>, 2018
@@ -33,8 +33,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 08:51+0100\n"
-"PO-Revision-Date: 2024-12-29 21:42+0000\n"
-"Last-Translator: chaban <chaban@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2025-01-10 11:03+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -163,7 +163,7 @@ msgstr ""
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Vollständige Plugin-Pfade loggen"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Post Data"
@@ -313,19 +313,19 @@ msgstr "Nur ein einziges Titelcover einbetten"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_cover.py:120
 msgid "Never replace cover images with smaller ones"
-msgstr ""
+msgstr "Niemals Cover-Bilder durch kleinere ersetzen"
 
 #: picard/options.py:172
 msgid "Never replace cover images of the given types"
-msgstr ""
+msgstr "Cover-Bilder der angegebenen Typen niemals ersetzen"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
-msgstr ""
+msgstr "Cover-Bilder der folgenden Typen niemals ersetzen"
 
 #: picard/options.py:174
 msgid "Always replace cover images of these types"
-msgstr ""
+msgstr "Cover-Bilder der folgenden Typen immer ersetzen"
 
 #: picard/options.py:175 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
@@ -2959,14 +2959,12 @@ msgid "Saved entity"
 msgstr "Gespeichertes Objekt"
 
 #: picard/ui/colors.py:50
-#, fuzzy
-#| msgid "Append front cover art"
 msgid "First cover art"
-msgstr "Titelcover hinzufügen"
+msgstr "Erstes Cover-Art"
 
 #: picard/ui/colors.py:50 picard/ui/colors.py:57
 msgid "Others"
-msgstr ""
+msgstr "Andere"
 
 #: picard/ui/colors.py:51
 msgid "Log view text (debug)"
@@ -2975,7 +2973,7 @@ msgstr "Text in Protokollansicht (Debug)"
 #: picard/ui/colors.py:51 picard/ui/colors.py:52 picard/ui/colors.py:53
 #: picard/ui/colors.py:54
 msgid "Logging"
-msgstr ""
+msgstr "Logging"
 
 #: picard/ui/colors.py:52
 msgid "Log view text (error)"
@@ -2994,20 +2992,16 @@ msgid "Profile highlight background"
 msgstr ""
 
 #: picard/ui/colors.py:55 picard/ui/colors.py:56
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Profiles"
-msgstr "Einstellungs-Profile"
+msgstr "Profile"
 
 #: picard/ui/colors.py:56
 msgid "Profile highlight foreground"
 msgstr ""
 
 #: picard/ui/colors.py:57
-#, fuzzy
-#| msgid "Highlight"
 msgid "Row Highlight"
-msgstr "Hervorhebung"
+msgstr "Zeilenhervorhebung"
 
 #: picard/ui/colors.py:58
 msgid "Tag added"
@@ -3088,13 +3082,11 @@ msgstr "Titel beinhaltet verschiedene Bilder"
 
 #: picard/ui/coverartbox.py:390
 msgid "Enter url"
-msgstr ""
+msgstr "URL eingeben"
 
 #: picard/ui/coverartbox.py:393
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover art url:"
-msgstr "Cover-Art"
+msgstr "Cover-Art-URL"
 
 #: picard/ui/coverartbox.py:435
 msgid "Show more details"
@@ -3129,10 +3121,8 @@ msgid "Choose local file…"
 msgstr "Lokale Datei auswählen …"
 
 #: picard/ui/coverartbox.py:691
-#, fuzzy
-#| msgid "Add Fold&er…"
 msgid "Add from url…"
-msgstr "&Ordner hinzufügen …"
+msgstr "Von &URL hinzufügen …"
 
 #: picard/ui/coverartbox.py:700
 msgid "Replace front cover art"
@@ -3203,32 +3193,21 @@ msgid "Existing cover art already embedded into tags"
 msgstr ""
 
 #: picard/ui/infodialog.py:271
-#, fuzzy, python-format
-#| msgid ""
-#| "Missing temporary file: %(tempfile)s\n"
-#| "Source: %(sourcefile)s"
+#, python-format
 msgid ""
 "<strong>%(message)s</strong><br />Temporary file: <em>%(tempfile)s</em><br /"
 ">Source: <em>%(sourcefile)s</em>"
 msgstr ""
-"Fehlende temporäre Datei: %(tempfile)s\n"
-"Quelle: %(sourcefile)s"
+"<strong>%(message)s</strong><br />Temporäre Datei: <em>%(tempfile)s</em><br "
+"/>Quelle: <em>%(sourcefile)s</em>"
 
 #: picard/ui/infodialog.py:306
-#, fuzzy
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %(tempfile)s\n"
-#| "Source: %(sourcefile)s"
 msgid "Double-click to open in external viewer"
-msgstr ""
-"Doppelklicken, um in externem Betrachter zu öffnen\n"
-"Temporäre Datei: %(tempfile)s\n"
-"Quelle: %(sourcefile)s"
+msgstr "Doppelklicken, um in externem Betrachter zu öffnen"
 
 #: picard/ui/infodialog.py:311
 msgid "Missing temporary file"
-msgstr ""
+msgstr "Fehlende temporäre Dateien"
 
 #: picard/ui/infodialog.py:400
 msgid "Filename:"
@@ -3967,43 +3946,31 @@ msgstr "Schließ&en"
 #: picard/ui/util.py:87
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #: picard/ui/util.py:109
-#, fuzzy
-#| msgid "&Set as starting directory"
 msgid "Select a file or a directory"
-msgstr "Als Startverzeichnis &festlegen"
+msgstr "Datei oder Verzeichnis auswählen"
 
 #: picard/ui/util.py:115
-#, fuzzy
-#| msgid "Select an action"
 msgid "Select a target file"
-msgstr "Aktion auswählen"
+msgstr "Zieldatei auswählen"
 
 #: picard/ui/util.py:124
-#, fuzzy
-#| msgid "Select all"
 msgid "Select a file"
-msgstr "Alle auswählen"
+msgstr "Datei auswählen"
 
 #: picard/ui/util.py:133
-#, fuzzy
-#| msgid "Delete the profile"
 msgid "Select one or more files"
-msgstr "Profil löschen"
+msgstr "Eine oder mehrere Dateien auswählen"
 
 #: picard/ui/util.py:142
-#, fuzzy
-#| msgid "Select an action"
 msgid "Select a directory"
-msgstr "Aktion auswählen"
+msgstr "Verzeichnis auswählen"
 
 #: picard/ui/util.py:155
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select one or more directories"
-msgstr "Leere Verzeichnisse löschen"
+msgstr "Ein oder mehrere Verzeichnisse auswählen"
 
 #: picard/ui/util.py:205
 msgid "You have to restart Picard for the changes to take effect."
@@ -4291,7 +4258,7 @@ msgstr "Maximale Höhe:"
 #: picard/ui/forms/ui_options_cover_processing.py:288
 #: picard/ui/forms/ui_options_cover_processing.py:294
 msgid "Enlarge"
-msgstr ""
+msgstr "Vergrößern"
 
 #: picard/ui/forms/ui_options_cover_processing.py:289
 #, fuzzy
@@ -4311,10 +4278,8 @@ msgstr "Tags aus Dateinamen ermitteln"
 
 #: picard/ui/forms/ui_options_cover_processing.py:297
 #: picard/ui/forms/ui_options_cover_processing.py:299
-#, fuzzy
-#| msgid "Format:"
 msgid "New format:"
-msgstr "Format:"
+msgstr "Neues Format:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:298
 #, fuzzy
@@ -6242,10 +6207,8 @@ msgid "Choose a color"
 msgstr "Farbe wählen"
 
 #: picard/ui/options/interface_colors.py:156
-#, fuzzy
-#| msgid "Restore default columns"
 msgid "Restore default color"
-msgstr "Standardspalten wiederherstellen"
+msgstr "Standardfarbe wiederherstellen"
 
 #: picard/ui/options/interface_colors.py:172
 msgid "You have changed the interface colors."
@@ -6388,16 +6351,13 @@ msgstr ""
 "Der angegebene Pfad ist kein gültiges Verzeichnis. Setze auf %s zurück.\n"
 
 #: picard/ui/options/maintenance.py:176
-#, fuzzy, python-format
-#| msgid ""
-#| "The configuration file currently contains %(totalcount)d option settings, "
-#| "%(unusedcount)d which are unused."
+#, python-format
 msgid ""
 "The configuration file currently contains %(totalcount)d option settings "
 "(%(unusedcount)d unused)."
 msgstr ""
-"Die Konfigurationsdatei enthält momentan %(totalcount)d Einstellungen, von "
-"denen %(unusedcount)d nicht verwendet werden."
+"Die Konfigurationsdatei enthält momentan %(totalcount)d Einstellungen ( "
+"%(unusedcount)d nicht verwendet)."
 
 #: picard/ui/options/maintenance.py:214
 msgid "Configuration files"
@@ -7142,10 +7102,8 @@ msgid "Engineer"
 msgstr "Tontechniker"
 
 #: picard/util/tags.py:73
-#, fuzzy
-#| msgid "File Name"
 msgid "File Path"
-msgstr "Dateiname"
+msgstr "Dateipfad"
 
 #: picard/util/tags.py:74
 msgid "Gapless Playback"
