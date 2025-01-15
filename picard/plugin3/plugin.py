@@ -23,6 +23,7 @@ import importlib.util
 from pathlib import Path
 import sys
 
+from picard.extension_points import unregister_module_extensions
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
 
@@ -131,4 +132,6 @@ class Plugin:
 
     def disable(self) -> None:
         """Disable the plugin"""
-        self._module.disable()
+        if hasattr(self._module, 'disable'):
+            self._module.disable()
+        unregister_module_extensions(self.name)
