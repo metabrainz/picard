@@ -20,13 +20,17 @@
 
 import os
 from pathlib import Path
+import shutil
 from typing import List
 
 from picard import (
     api_versions_tuple,
     log,
 )
-from picard.plugin3.plugin import Plugin
+from picard.plugin3.plugin import (
+    Plugin,
+    PluginSourceGit,
+)
 
 
 class PluginManager:
@@ -40,10 +44,17 @@ class PluginManager:
         from picard.tagger import Tagger
         self._tagger: Tagger = tagger
 
-    def add_directory(self, dir_path: str, primary: bool = False) -> None:
-        log.debug('Registering plugin directory %s', dir_path)
-        dir_path = Path(os.path.normpath(dir_path))
+    @property
+    def plugins(self):
+        return self._plugins
 
+    def add_directory(self, dir_path: str, primary: bool = False) -> None:
+        dir_path = Path(os.path.normpath(dir_path))
+        if dir_path in self._plugin_dirs:
+            log.warning('Plugin directory %s already registered', dir_path)
+            return
+
+        log.debug('Registering plugin directory %s', dir_path)
         if not dir_path.exists():
             os.makedirs(dir_path)
 
@@ -58,6 +69,22 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
+    def install_plugin(self, url):
+        source = PluginSourceGit(url)
+        dirname = os.path.basename(url)
+        source.sync(self._primary_plugin_dir.joinpath(dirname))
+
+    def uninstall_plugin(self, plugin: Plugin):
+        self.disable_plugin(plugin)
+        plugin_path = plugin.local_path
+        if plugin_path.is_relative_to(self._primary_plugin_dir):
+            if os.path.islink(plugin_path):
+                log.debug("Removing symlink %r", plugin_path)
+                os.remove(plugin_path)
+            elif os.path.isdir(plugin_path):
+                log.debug("Removing directory %r", plugin_path)
+                shutil.rmtree(plugin_path)
+
     def init_plugins(self):
         # TODO: Only load and enable plugins enabled in configuration
         for plugin in self._plugins:
@@ -67,6 +94,15 @@ class PluginManager:
             except Exception as ex:
                 log.error('Failed initializing plugin %s from %s',
                           plugin.name, plugin.local_path, exc_info=ex)
+
+    def enable_plugin(self, plugin: Plugin):
+        # TODO: Add to config
+        plugin.load_module()
+        plugin.enable(self._tagger)
+
+    def disable_plugin(self, plugin: Plugin):
+        # TODO: Remove from config
+        plugin.disable()
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):
         plugin = Plugin(plugin_dir, plugin_name)

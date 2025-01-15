@@ -122,6 +122,7 @@ from picard.i18n import (
 )
 from picard.item import MetadataItem
 from picard.options import init_options
+from picard.plugin3.cli import PluginCLI
 from picard.plugin3.manager import PluginManager
 from picard.pluginmanager import PluginManager as LegacyPluginManager
 from picard.releasegroup import ReleaseGroup
@@ -1332,6 +1333,19 @@ If a new instance will not be spawned files/directories will be passed to the ex
     parser.add_argument('FILE_OR_URL', nargs='*',
                         help="the file(s), URL(s) and MBID(s) to load")
 
+    subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
+    plugin_parser = subparsers.add_parser('plugins', help="manage plugins, see plugins --help")
+    plugin_parser.add_argument('-l', '--list', action='store_true',
+                               help="list installed plugins")
+    plugin_parser.add_argument('-i', '--install', nargs='+', metavar='URL',
+                               help="install plugin(s) from URL(s)")
+    plugin_parser.add_argument('-u', '--uninstall', nargs='+', metavar='PLUGIN',
+                               help="uninstall plugin(s)")
+    plugin_parser.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN',
+                               help="enable plugin(s)")
+    plugin_parser.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN',
+                               help="disable plugin(s)")
+
     args = parser.parse_args()
     args.remote_commands_help = False
 
@@ -1461,7 +1475,11 @@ def main(localedir=None, autoupdate=True):
     setup_translator(tagger)
 
     tagger.startTimer(1000)
-    exit_code = tagger.run()
+    if cmdline_args.subcommand == 'plugins':
+        exit_code = PluginCLI(tagger, cmdline_args).run()
+        tagger.exit()
+    else:
+        exit_code = tagger.run()
 
     if tagger.pipe_handler.unexpected_removal:
         os._exit(exit_code)
