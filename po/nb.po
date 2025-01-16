@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-01-06 00:42+0000\n"
+"PO-Revision-Date: 2025-01-16 15:44+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" "
 "<ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
@@ -443,7 +443,7 @@ msgstr "Skilletegn for ID3v2.3"
 
 #: picard/profile.py:120 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "Lagre gruppering og åndsverk på en måte som er kompatibel med iTunes"
 
 #: picard/profile.py:121
 msgid "Write ID3v1 tags"
