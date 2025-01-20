@@ -8,13 +8,13 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 # "Vac31." <Vaclovas@users.noreply.translations.metabrainz.org>, 2024.
-# Vaclovas Intas <gateway_31@protonmail.com>, 2024.
+# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-10 12:02+0100\n"
-"PO-Revision-Date: 2024-11-05 10:42+0000\n"
+"PO-Revision-Date: 2025-01-20 21:44+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -23,9 +23,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.8.2\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
+" n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:139
@@ -2818,10 +2818,8 @@ msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox.py:393
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover art URL:"
-msgstr "Viršelio apipavidalinimas"
+msgstr "Viršelio apipavidalinimo URL:"
 
 #: picard/ui/coverartbox.py:435
 msgid "Show more details"
