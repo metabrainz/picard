@@ -17,13 +17,14 @@
 # rawrower <rawrower@gmail.com>, 2019
 # Skelly 37, 2022
 # Echelon666 <echelon01@wp.pl>, 2024.
+# Peter69 <echelon01@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-01-09 11:51+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-01-20 21:44+0000\n"
+"Last-Translator: Peter69 <echelon01@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/2/"
 "app/pl/>\n"
 "Language: pl\n"
@@ -200,10 +201,8 @@ msgid "Debug"
 msgstr "Debug"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Niespodziewany błąd uwierzytelniania"
+msgstr "Nieoczekiwany błąd unieważnienia tokena"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
@@ -4448,7 +4447,7 @@ msgstr "Pusty / pusty skrypt"
 #, fuzzy
 #| msgid "Script"
 msgid "New Script"
-msgstr "Skrypt"
+msgstr "Nowy Skrypt"
 
 #: picard/ui/scripteditor.py:766
 msgid ""
@@ -5626,23 +5625,22 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Zalogowano jako <b>%s</b>."
 
 #: picard/ui/options/general.py:182
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Błąd sprawdzania CD"
+msgstr "Błąd wylogowania"
 
 #: picard/ui/options/general.py:183
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "A server error occurred while revoking access to the MusicBrainz server: %s\n"
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
-"Wystąpił błąd serwera podczas odbierania dostępu do serwera MusicBrainz: %s\n"
+"Wystąpił błąd serwera podczas cofania dostępu do serwera MusicBrainz: %s\n"
 "\n"
-"Mimo to usunąć dane uwierzytelniające przechowywane lokalnie?"
+"Czy mimo to usunąć lokalnie przechowywane dane uwierzytelniające?"
 
 #: picard/ui/options/genres.py:46
+#, fuzzy
 msgid ""
 "<html><head/><body>\n"
 "<p>Lines not starting with <b>-</b> or <b>+</b> are ignored.</p>\n"
@@ -5692,8 +5690,8 @@ msgstr ""
 "<p><u>Filtrowanie wieloznaczne:</u></p>\n"
 "<p>\n"
 "<b>-*word</b>: wyklucz wszystkie gatunki kończące się na <i>word</i><br/>\n"
-"<b>+word*</b>: uwzględnij wszystkie gatunki zaczynające się na <i>word</"
-"i><br/>\n"
+"<b>+word*</b>: uwzględnij wszystkie gatunki zaczynające się na <i>word</i><"
+"br/>\n"
 "<b>+wor?</b>: uwzględnij wszystkie gatunki zaczynające się na <i>wor</i> i "
 "kończące się dowolnym znakiem<br/>\n"
 "<b>+wor[dk]</b>: uwzględnij wszystkie gatunki zaczynające się na <i>wor</i> "
