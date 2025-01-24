@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-10 12:02+0100\n"
-"PO-Revision-Date: 2025-01-20 21:44+0000\n"
+"PO-Revision-Date: 2025-01-24 10:44+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -79,10 +79,10 @@ msgstr "Klaida modifikuojant kolekcijas: %(error)s."
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] "Pridėtas %(count)i leidinys į kolekciją „%(name)s“"
-msgstr[1] "Pridėti %(count)i leidiniai į kolekciją „%(name)s“"
-msgstr[2] "Pridėta %(count)i leidinio į kolekciją „%(name)s“"
-msgstr[3] "Pridėta %(count)i leidinių į kolekciją „%(name)s“"
+msgstr[0] "Įtrauktas %(count)i leidinys į kolekciją „%(name)s“"
+msgstr[1] "Įtraukti %(count)i leidiniai į kolekciją „%(name)s“"
+msgstr[2] "Įtraukta %(count)i leidinio į kolekciją „%(name)s“"
+msgstr[3] "Įtraukta %(count)i leidinių į kolekciją „%(name)s“"
 
 #: picard/collection.py:109
 #, python-format
@@ -288,7 +288,7 @@ msgstr "Įtraukti poaplankus, kai pridedant failus iš aplanko"
 
 #: picard/options.py:168
 msgid "Cover art providers"
-msgstr "Viršelio teikėjai"
+msgstr "Viršelio vaizdų teikėjai"
 
 #: picard/options.py:169
 msgid "File name for images"
@@ -981,13 +981,15 @@ msgstr "Pridėti failą kaip įrašą…"
 #: picard/coverart/__init__.py:97
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr "Viršelio tipas „%(type)s“ atsisiųstas albumui %(albumid)s iš %(host)s."
+msgstr ""
+"Viršelio vaizdo tipas „%(type)s“ atsisiųstas albumui %(albumid)s iš %(host)s."
 
 #: picard/coverart/__init__.py:188
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
-msgstr "Atsisiunčiamas %(albumid)s viršelio tipas „%(type)s“ iš %(host)s…"
+msgstr ""
+"Atsisiunčiamas %(albumid)s viršelio vaizdo tipas „%(type)s“ iš %(host)s…"
 
 #: picard/coverart/utils.py:43
 msgid "Unknown"
@@ -2601,7 +2603,7 @@ msgstr "Oficialioji svetainė"
 
 #: picard/ui/caa_types_selector.py:188
 msgid "Cover art types"
-msgstr "Viršelio apipavidalinimų tipai"
+msgstr "Viršelio vaizdų tipai"
 
 #: picard/ui/caa_types_selector.py:209
 msgid ""
@@ -2702,10 +2704,8 @@ msgid "Saved entity"
 msgstr "Išsaugotas subjektas"
 
 #: picard/ui/colors.py:50
-#, fuzzy
-#| msgid "Replace front cover art"
 msgid "First cover art"
-msgstr "Pakeisti priekinį viršelio apipavidalinimą"
+msgstr "Pirmasis viršelio vaizdas"
 
 #: picard/ui/colors.py:50 picard/ui/colors.py:57
 msgid "Others"
@@ -2819,7 +2819,7 @@ msgstr ""
 
 #: picard/ui/coverartbox.py:393
 msgid "Cover art URL:"
-msgstr "Viršelio apipavidalinimo URL:"
+msgstr "Viršelio vaizdo URL:"
 
 #: picard/ui/coverartbox.py:435
 msgid "Show more details"
@@ -2847,7 +2847,7 @@ msgstr "Rodyti &daugiau informacijos…"
 
 #: picard/ui/coverartbox.py:681
 msgid "Keep original cover art"
-msgstr "Palikti originalinį viršelio apipavidalinimą"
+msgstr "Išlaikyti originalų viršelio vaizdą"
 
 #: picard/ui/coverartbox.py:687
 msgid "Choose local file…"
@@ -2859,11 +2859,11 @@ msgstr ""
 
 #: picard/ui/coverartbox.py:700
 msgid "Replace front cover art"
-msgstr "Pakeisti priekinį viršelio apipavidalinimą"
+msgstr "Pakeisti priekinį viršelio vaizdą"
 
 #: picard/ui/coverartbox.py:708
 msgid "Append front cover art"
-msgstr ""
+msgstr "Pridėti priekinį viršelio vaizdą"
 
 #: picard/ui/edittagdialog.py:72
 msgid "YYYY-MM-DD"
@@ -2906,16 +2906,12 @@ msgid "New Exported"
 msgstr "Eksportuoti"
 
 #: picard/ui/infodialog.py:147 picard/ui/infodialog.py:181
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "New cover art embedded into tags"
-msgstr "Įterpti viršelio vaizdus į žymes"
+msgstr "Naujas viršelio vaizdas, įterptas į žymes"
 
 #: picard/ui/infodialog.py:148 picard/ui/infodialog.py:182
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "New cover art saved as a separate file"
-msgstr "Išsaugoti viršelio vaizdus kaip atskirus failus"
+msgstr "Naujas viršelio vaizdas, išsaugotas kaip atskiras failas"
 
 #: picard/ui/infodialog.py:161 picard/ui/infodialog.py:178
 msgid "Existing Cover"
@@ -2923,7 +2919,7 @@ msgstr "Esamas viršelis"
 
 #: picard/ui/infodialog.py:163 picard/ui/infodialog.py:180
 msgid "Existing cover art already embedded into tags"
-msgstr ""
+msgstr "Esamas viršelio vaizdas jau įterptas į žymes"
 
 #: picard/ui/infodialog.py:271
 #, fuzzy, python-format
@@ -4697,7 +4693,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_provider_options_caa.py:75
 msgid "Download only cover art images matching selected types"
-msgstr ""
+msgstr "Atsisiųsti tik viršelio vaizdus, atitinkančius pasirinktus tipus"
 
 #: picard/ui/forms/ui_provider_options_caa.py:77
 msgid "Only use images of at most the following size:"
@@ -4709,7 +4705,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_provider_options_local.py:59
 msgid "Local cover art files match the following regular expression:"
-msgstr ""
+msgstr "Vietiniai viršelio vaizdo failai atitinka šią reguliariąją reiškinį:"
 
 #: picard/ui/forms/ui_provider_options_local.py:61
 msgid ""
@@ -5590,7 +5586,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/actions.py:524
 msgid "&Check for Update…"
-msgstr ""
+msgstr "&Tikrinti, ar yra naujinimas…"
 
 #: picard/ui/options/__init__.py:122
 msgid "Regex Error"
@@ -5602,7 +5598,7 @@ msgstr "Išplėstinis"
 
 #: picard/ui/options/cover.py:58
 msgid "Cover Art"
-msgstr "Viršelio apipavidalinimas"
+msgstr "Viršelio vaizdai"
 
 #: picard/ui/options/cover.py:151
 #, fuzzy
@@ -5629,7 +5625,7 @@ msgstr ""
 
 #: picard/ui/options/cover_processing.py:50
 msgid "Processing"
-msgstr ""
+msgstr "Apdorojimas"
 
 #: picard/ui/options/dialog.py:115
 msgid "This page failed to initialize"
@@ -5704,7 +5700,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:515
 msgid "Are you sure?"
-msgstr "Ar esi įsitikinęs (-usi)?"
+msgstr "Ar esate tikri?"
 
 #: picard/ui/options/dialog.py:549 picard/ui/options/maintenance.py:104
 msgid "Option"
