@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-26 11:45+0000\n"
+"PO-Revision-Date: 2025-02-02 02:44+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Albanian <https://translate.uploadedlobster.com/projects/"
-"picard/constants/sq/>\n"
+"Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
+"3/constants/sq/>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -825,7 +825,7 @@ msgstr ""
 
 #: picard/const/locales.py:183
 msgid "Welsh"
-msgstr ""
+msgstr "Uellsisht"
 
 #: picard/const/locales.py:184
 msgid "Welsh (United Kingdom)"
@@ -1901,7 +1901,7 @@ msgstr ""
 
 #: picard/const/locales.py:464
 msgid "Scottish Gaelic"
-msgstr ""
+msgstr "Skocishte Gaelike"
 
 #: picard/const/locales.py:465
 msgid "Scottish Gaelic (United Kingdom)"
@@ -2633,7 +2633,7 @@ msgstr ""
 
 #: picard/const/locales.py:655
 msgid "Malagasy"
-msgstr ""
+msgstr "Malagashe"
 
 #: picard/const/locales.py:656
 msgid "Malagasy (Madagascar)"
@@ -2673,7 +2673,7 @@ msgstr ""
 
 #: picard/const/locales.py:665
 msgid "Malayalam"
-msgstr ""
+msgstr "Malajalamisht"
 
 #: picard/const/locales.py:666
 msgid "Malayalam (India)"
@@ -3089,7 +3089,7 @@ msgstr ""
 
 #: picard/const/locales.py:774
 msgid "Prussian"
-msgstr ""
+msgstr "Prusisht"
 
 #: picard/const/locales.py:775
 msgid "Prussian (world)"
@@ -3997,7 +3997,7 @@ msgstr ""
 
 #: picard/const/locales.py:1011
 msgid "Walloon"
-msgstr ""
+msgstr "Valonisht"
 
 #: picard/const/locales.py:1012
 msgid "Walloon (Belgium)"
