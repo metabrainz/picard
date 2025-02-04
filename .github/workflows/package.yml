@@ -75,7 +75,6 @@ jobs:
     needs:
       - package-macos
       - package-windows
-      - package-pypi
     permissions:
       contents: write
     steps:
