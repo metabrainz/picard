@@ -178,6 +178,14 @@ msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8-cm-CD+G"
 
+#: DB:medium_format/name:210
+#, fuzzy
+#| msgctxt "medium_format"
+#| msgid "8cm CD"
+msgctxt "medium_format"
+msgid "8cm CD-R"
+msgstr "8-cm-CD"
+
 #. name:MiniDVD
 #: DB:medium_format/description:166
 msgctxt "medium_format"

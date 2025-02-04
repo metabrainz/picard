@@ -9,13 +9,13 @@
 # hesheng <tsuru00@outlook.com>, 2024.
 # LiarOnce <liaronce@hotmail.com>, 2024.
 # weeeeei <weeeeei@duck.com>, 2024.
-# KenParker_CN <peekabookenny@gmail.com>, 2024.
+# KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
 # imgradeone <imgradeone@outlook.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-01-03 15:42+0000\n"
-"Last-Translator: imgradeone <imgradeone@outlook.com>\n"
+"PO-Revision-Date: 2025-01-30 11:44+0000\n"
+"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -135,6 +135,11 @@ msgstr "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8cm CD+G"
+
+#: DB:medium_format/name:210
+msgctxt "medium_format"
+msgid "8cm CD-R"
+msgstr "8cm CD-R"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
