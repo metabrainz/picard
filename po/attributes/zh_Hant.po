@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "PO-Revision-Date: 2024-12-29 00:42+0000\n"
 "Last-Translator: guardiansock <guardian.sock5925@fastmail.com>\n"
-"Language-Team: Chinese (Traditional Han script) <https://"
-"translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hant/>\n"
+"Language-Team: Chinese (Traditional Han script) <https://translations."
+"metabrainz.org/projects/musicbrainz/attributes/zh_Hant/>\n"
 "Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,6 +127,14 @@ msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8公分 CD+G"
 
+#: DB:medium_format/name:210
+#, fuzzy
+#| msgctxt "medium_format"
+#| msgid "8cm CD"
+msgctxt "medium_format"
+msgid "8cm CD-R"
+msgstr "8 公分光碟"
+
 #. name:MiniDVD
 #: DB:medium_format/description:166
 msgctxt "medium_format"
@@ -237,17 +245,17 @@ msgstr ""
 "<li>在美國市場，單曲通常包含一首主打歌曲，可能還有幾首額外的曲目或主打曲的混"
 "音版本；單曲通常以其主打歌曲命名；單曲主要是為了在廣播中播放和促進發行銷售而"
 "發行的。</li>\n"
-"<li>英國市場(也包括澳大利亞和歐洲)與美國市場類似，但單曲通常作為雙碟套裝發行"
-"，每張碟都可以單獨購買。它們有時還會有主打曲的較長版本(通常是合併了雙碟版本的"
-"曲目)，非常類似於美國風格的單曲，這稱為“加大單曲”。(在某些情況下，加大單曲的"
-"長度比原來發行的版本還要長！)</li>\n"
-"<li>日本市場更加偏向於單曲。其主要區別因素通常是單曲的長度和售價。直到1995年"
-"，這些單曲通常是使用迷你CD格式發行的，這基本上是一種直徑通常為8公分的小CD。大"
-"約在1995年左右，8公分單曲被淘汰，標準的12公分CD單曲現在更加普遍；通常，1995年"
-"之前的單曲的重新發行將以12公分格式發行，即使它們最初是以8公分格式發行的。日本"
-"單曲通常附帶歌曲的伴奏版本，並且像英國一樣有混音版本的加大單曲。有時，加大單"
-"曲的曲目比EP更多，但由於它們都是相同2-3首歌曲的替代版本，因此仍然被歸類為單曲"
-"。</li>\n"
+"<li>英國市場(也包括澳大利亞和歐洲)與美國市場類似，但單曲通常作為雙碟套裝發"
+"行，每張碟都可以單獨購買。它們有時還會有主打曲的較長版本(通常是合併了雙碟版本"
+"的曲目)，非常類似於美國風格的單曲，這稱為“加大單曲”。(在某些情況下，加大單曲"
+"的長度比原來發行的版本還要長！)</li>\n"
+"<li>日本市場更加偏向於單曲。其主要區別因素通常是單曲的長度和售價。直到1995"
+"年，這些單曲通常是使用迷你CD格式發行的，這基本上是一種直徑通常為8公分的小CD。"
+"大約在1995年左右，8公分單曲被淘汰，標準的12公分CD單曲現在更加普遍；通常，1995"
+"年之前的單曲的重新發行將以12公分格式發行，即使它們最初是以8公分格式發行的。日"
+"本單曲通常附帶歌曲的伴奏版本，並且像英國一樣有混音版本的加大單曲。有時，加大"
+"單曲的曲目比EP更多，但由於它們都是相同2-3首歌曲的替代版本，因此仍然被歸類為單"
+"曲。</li>\n"
 "</ul>\n"
 "\n"
 "<p>還有一種名為“分割單曲”的單曲變體，其中兩個不同創作者的歌曲發行在同一張唱片"
@@ -280,8 +288,8 @@ msgid ""
 "in the 1990s including, in some cases, music releases with accompanying "
 "video content."
 msgstr ""
-"一種綜合了資料、影片與音訊的CD格式，該格式在20世紀90年代被廣泛應用於多種場景"
-"，其中包括一些音樂作品的發行，這些音樂作品通常會伴隨有相應的影片內容。"
+"一種綜合了資料、影片與音訊的CD格式，該格式在20世紀90年代被廣泛應用於多種場"
+"景，其中包括一些音樂作品的發行，這些音樂作品通常會伴隨有相應的影片內容。"
 
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
@@ -496,7 +504,8 @@ msgid ""
 "A masterclass or clinic is an event where an artist meets with a small to "
 "medium-sized audience and instructs them individually and/or takes questions "
 "intended to improve the audience members' playing skills."
-msgstr "深造班或討論會是一個創作者與小至中等規模的觀眾見面的活動，並就個人技巧進行指"
+msgstr ""
+"深造班或討論會是一個創作者與小至中等規模的觀眾見面的活動，並就個人技巧進行指"
 "導，或回答觀眾提出的問題，來提升他們的演奏技巧。"
 
 #. name:Clamshell Case
@@ -658,7 +667,8 @@ msgid ""
 "A promotional release mostly meant to have limited circulation and "
 "demonstrate the sound of an artist to record labels, publishers and other "
 "artists."
-msgstr "一種宣傳版本，主要用於有限發行，向唱片公司、出版商和其他創作者展示創作者的聲"
+msgstr ""
+"一種宣傳版本，主要用於有限發行，向唱片公司、出版商和其他創作者展示創作者的聲"
 "音。"
 
 #. name:Quartet
@@ -879,7 +889,8 @@ msgctxt "medium_format"
 msgid ""
 "A standard size CD with the playing/data area of a 8cm CD; the remaining "
 "area is empty clear/translucent plastic, sometimes printed."
-msgstr "一種標準尺寸的CD，其上帶有直徑8CM的CD播放/資料區域，其餘區域為空白的透明/半透"
+msgstr ""
+"一種標準尺寸的CD，其上帶有直徑8CM的CD播放/資料區域，其餘區域為空白的透明/半透"
 "明塑膠，有些碟片表面印有資訊。"
 
 #. name:Minimax DVD
@@ -888,7 +899,8 @@ msgctxt "medium_format"
 msgid ""
 "A standard size DVD with the playing/data area of a 8cm MiniDVD; the "
 "remaining area is empty clear/translucent plastic, sometimes printed."
-msgstr "一種標準尺寸的DVD，其上帶有直徑8CM的MiniDVD播放/資料區域，其餘區域為空白的透"
+msgstr ""
+"一種標準尺寸的DVD，其上帶有直徑8CM的MiniDVD播放/資料區域，其餘區域為空白的透"
 "明/半透明塑膠，有些碟片表面印有資訊。"
 
 #. name:Suite
@@ -942,7 +954,8 @@ msgid ""
 "A very small optical disc in a protective case that was intended for "
 "portable listening. It did not find commercial success, but a few albums "
 "were released in the format in the early 00s."
-msgstr "原本用於便攜聆聽的帶保護殼的超小型光碟。它沒有取得商業上的成功，但是00年代早"
+msgstr ""
+"原本用於便攜聆聽的帶保護殼的超小型光碟。它沒有取得商業上的成功，但是00年代早"
 "期少數專輯以此格式發行。"
 
 #. name:Betacam SP
@@ -1234,8 +1247,9 @@ msgid ""
 "An alternate version of a release where the titles have been changed. These "
 "don't correspond to any real release and should be linked to the original "
 "release using the transl(iter)ation relationship."
-msgstr "某專輯變更標題後的版本。它們並不對應任何正式專輯，與原專輯間關聯為翻譯（轉寫"
-"）。"
+msgstr ""
+"某專輯變更標題後的版本。它們並不對應任何正式專輯，與原專輯間關聯為翻譯（轉"
+"寫）。"
 
 #. name:Aria
 #: DB:work_type/description:1
@@ -1265,7 +1279,8 @@ msgid ""
 "An audio drama is an audio-only performance of a play (often, but not "
 "always, meant for radio). Unlike audiobooks, it usually has multiple "
 "performers rather than a main narrator."
-msgstr "有聲劇是只有音訊的話劇(通常，但不總是，在廣播上播出)。與有聲讀物不同，它常有"
+msgstr ""
+"有聲劇是只有音訊的話劇(通常，但不總是，在廣播上播出)。與有聲讀物不同，它常有"
 "多位表演者而非單一敘述者。"
 
 #. name:Audiobook
@@ -1300,7 +1315,8 @@ msgid ""
 "An event in which the participants perform live and a winner is then chosen "
 "(as opposed to an award ceremony where awards are presented for previously "
 "released or performed music)."
-msgstr "一種活動，參與者現場表演並選出獲勝者。（相對的，頒獎儀式是通過先前發行的音樂"
+msgstr ""
+"一種活動，參與者現場表演並選出獲勝者。（相對的，頒獎儀式是通過先前發行的音樂"
 "選出獲獎者）。"
 
 #. name:Festival
@@ -1333,7 +1349,8 @@ msgid ""
 "An image usually showing the order and time for the performances in an "
 "event. Can be a standalone image, but also a poster or banner (in which case "
 "all applicable types should be set)."
-msgstr "通常是一張顯示活動中的表演順序和時間安排的圖像。它可以是一個獨立的圖像，也可"
+msgstr ""
+"通常是一張顯示活動中的表演順序和時間安排的圖像。它可以是一個獨立的圖像，也可"
 "以是海報或橫幅的一部分(在這種情況下，所有適用的類型都應被設置)。"
 
 #. name:Concert
@@ -1342,8 +1359,9 @@ msgctxt "event_type"
 msgid ""
 "An individual concert by a single artist or collaboration, often with "
 "supporting artists who perform before the main act."
-msgstr "由單一創作者或合作表演者舉辦的個人音樂會，通常有在主要表演前演出的支援創作者"
-"。"
+msgstr ""
+"由單一創作者或合作表演者舉辦的個人音樂會，通常有在主要表演前演出的支援創作"
+"者。"
 
 #. name:Concert hall / Theatre
 #: DB:place_type/description:44
@@ -1362,7 +1380,8 @@ msgid ""
 "An internal plan of the event venue, or an external access map specifically "
 "created for the event, for example showing the recommended ways to access "
 "the venue, or the location of specific stages and stands inside of it."
-msgstr "活動場地的內部平面圖，或是專門為活動創建的外部訪問地圖，例如展示到達場地的推"
+msgstr ""
+"活動場地的內部平面圖，或是專門為活動創建的外部訪問地圖，例如展示到達場地的推"
 "薦路線，或是在場地內部特定舞台和展位的位置。"
 
 #. name:Interview
@@ -1439,7 +1458,8 @@ msgid ""
 "An unofficial/underground release that was not sanctioned by the artist and/"
 "or the record company. This includes unofficial live recordings and pirated "
 "releases."
-msgstr "非官方/地下專輯是一種未經創作者/唱片公司許可的專輯，包括非官方的現場表演錄音"
+msgstr ""
+"非官方/地下專輯是一種未經創作者/唱片公司許可的專輯，包括非官方的現場表演錄音"
 "和盜版專輯。"
 
 #. name:Étude
@@ -2458,10 +2478,9 @@ msgid ""
 "ripped. There are a number of software variants: the most well-known are "
 "Macrovision's Cactus Data Shield (CDS) and SunnComm's MediaMax."
 msgstr ""
-"Copy "
-"Control光碟（CCCD）是指約在2001至2006年間發行的一類CD，這些CD含有表面上用於防"
-"止音軌被翻錄的軟體。有數個軟體變體，其中最為人知的是Macrovision的Cactus Data "
-"Shield (CDS)和SunnComm的MediaMax。"
+"Copy Control光碟（CCCD）是指約在2001至2006年間發行的一類CD，這些CD含有表面上"
+"用於防止音軌被翻錄的軟體。有數個軟體變體，其中最為人知的是Macrovision的"
+"Cactus Data Shield (CDS)和SunnComm的MediaMax。"
 
 #: DB:area_type/name:1
 msgctxt "area_type"
@@ -2489,7 +2508,8 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
-msgstr "縣指一國內更小的不是一級行政區也不是地方自治體的行政區划，如美國的縣。在顯示"
+msgstr ""
+"縣指一國內更小的不是一級行政區也不是地方自治體的行政區划，如美國的縣。在顯示"
 "某區域的上級區域時不考慮。"
 
 #: DB:work_attribute_type_allowed_value/value:608
@@ -3395,7 +3415,8 @@ msgctxt "medium_format"
 msgid ""
 "Flexi-discs are phonograph records made of a thin, flexible vinyl sheet with "
 "a molded-in groove, designed to be playable on a normal phonograph turntable."
-msgstr "軟唱片是由較薄，可彎曲塑膠片通過模壓刻上音軌的留聲機唱片，可使用常規留聲機播"
+msgstr ""
+"軟唱片是由較薄，可彎曲塑膠片通過模壓刻上音軌的留聲機唱片，可使用常規留聲機播"
 "放。"
 
 #: DB:medium_format/name:76
@@ -4571,7 +4592,8 @@ msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
 "governed by indigenous peoples, such as Indian reserves/reservations in "
 "North America and indigenous territories in Central and South America."
-msgstr "原住民領地/保留地用於原住民統治的半自治領土，如北美洲的印第安人保留地/保護區"
+msgstr ""
+"原住民領地/保留地用於原住民統治的半自治領土，如北美洲的印第安人保留地/保護區"
 "以及中美洲和南美洲的土著領地。"
 
 #: DB:place_type/name:5
@@ -4656,7 +4678,8 @@ msgid ""
 "Island is used for islands and atolls which don't form subdivisions of their "
 "own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
-msgstr "島嶼指不下轄任何行政區劃的島嶼和環礁，如斯凱島。在顯示某區域的上級區域時不考"
+msgstr ""
+"島嶼指不下轄任何行政區劃的島嶼和環礁，如斯凱島。在顯示某區域的上級區域時不考"
 "慮。"
 
 #: DB:work_attribute_type/name:69
@@ -5602,7 +5625,8 @@ msgctxt "area_type"
 msgid ""
 "Military base is used only for any military bases that are large enough to "
 "be considered an area, not just a place."
-msgstr "軍事基地僅用於任何足夠大以被視為一個區域的軍事基地，而不僅僅是一個地點。"
+msgstr ""
+"軍事基地僅用於任何足夠大以被視為一個區域的軍事基地，而不僅僅是一個地點。"
 
 #: DB:medium_format/name:166
 msgctxt "medium_format"
@@ -5806,7 +5830,8 @@ msgid ""
 "Municipality is used for small administrative divisions which, for urban "
 "municipalities, often contain a single city and a few surrounding villages. "
 "Rural municipalities typically group several villages together."
-msgstr "自治體指較小的行政區划，城鎮自治體包含一座城市和附近的村莊。農村自治體一般有"
+msgstr ""
+"自治體指較小的行政區划，城鎮自治體包含一座城市和附近的村莊。農村自治體一般有"
 "多個村莊組合而成。"
 
 #: DB:work_attribute_type_allowed_value/value:645
@@ -6375,7 +6400,8 @@ msgid ""
 "One-sided 3\" vinyl records to be played with purpose-built players; "
 "originally developed in Japan and now mostly found as a Record Store Day "
 "curiosity."
-msgstr "單面3英寸的黑膠唱片，需要用特製的唱機播放；最初在日本開發，現在大多作為唱片店"
+msgstr ""
+"單面3英寸的黑膠唱片，需要用特製的唱機播放；最初在日本開發，現在大多作為唱片店"
 "日的新奇物品出現。"
 
 #: DB:work_type/name:10
@@ -7656,7 +7682,8 @@ msgid ""
 "Subdivision is used for the main administrative divisions of a country, e.g. "
 "California, Ontario, Okinawa. These are considered when displaying the "
 "parent areas for a given area."
-msgstr "行政區指一個國家的主要行政區划，如加利福尼亞州，安大略省，沖繩縣。在顯示某區"
+msgstr ""
+"行政區指一個國家的主要行政區划，如加利福尼亞州，安大略省，沖繩縣。在顯示某區"
 "域上級區域時會考慮到。"
 
 #: DB:work_attribute_type_allowed_value/value:244
@@ -8019,7 +8046,8 @@ msgid ""
 "system developed by RCA, in which video and audio could be played back on a "
 "TV set using a special needle and high-density groove system similar to "
 "phonograph records."
-msgstr "電容電子光碟（CED）是一種由RCA開發的類比視訊光碟播放系統，能夠透過特殊的針頭"
+msgstr ""
+"電容電子光碟（CED）是一種由RCA開發的類比視訊光碟播放系統，能夠透過特殊的針頭"
 "和類似於留聲機唱片的高密度槽系統在電視機上播放影音。"
 
 #. name:DVDplus (DVD-Audio side)
@@ -8061,8 +8089,9 @@ msgid ""
 "The DVD layer of a DualDisc, when it's unclear whether it should be DVD-"
 "Audio or DVD-Video (or it includes both). The CD layer should be added as a "
 "separate medium."
-msgstr "雙面光碟的DVD層，當不清楚它應該是DVD-"
-"音訊還是DVD-影片（或者兩者都有）時。CD層應視為獨立媒體添加。"
+msgstr ""
+"雙面光碟的DVD層，當不清楚它應該是DVD-音訊還是DVD-影片（或者兩者都有）時。CD層"
+"應視為獨立媒體添加。"
 
 #. name:VinylDisc (DVD side)
 #: DB:medium_format/description:80
@@ -8087,7 +8116,8 @@ msgid ""
 "The bottom of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and below front, back and "
 "spines)."
-msgstr "盒子或類似包裝的底面(對於最常見的六面體包裝選項而言，指垂直於正面，背面和側面"
+msgstr ""
+"盒子或類似包裝的底面(對於最常見的六面體包裝選項而言，指垂直於正面，背面和側面"
 "且位於下方的麵)。"
 
 #. name:Panel
@@ -8096,8 +8126,9 @@ msgctxt "cover_art_type"
 msgid ""
 "The individual segments of a folded packaging, such as a gatefold cover, "
 "digipak or cassette inlay (don't use this for folded booklets nor posters)."
-msgstr "摺疊包裝中的各個獨立部分，例如雙扉封面(gatefold "
-"cover)、Digipak塑封盒或磁帶內頁(不是指摺疊的小冊子或海報)。"
+msgstr ""
+"摺疊包裝中的各個獨立部分，例如雙扉封面(gatefold cover)、Digipak塑封盒或磁帶內"
+"頁(不是指摺疊的小冊子或海報)。"
 
 #. name:Madrigal
 #: DB:work_type/description:7
@@ -8127,8 +8158,9 @@ msgid ""
 "The section on a CD, record or other media containing such data as matrix "
 "numbers. Usually found in the hub of a CD or the dead wax area of a vinyl "
 "record."
-msgstr "CD，唱片或其他媒體含有原版號的部分。通常可以在CD的內圈或黑膠唱片的蠟封區找到"
-"。"
+msgstr ""
+"CD，唱片或其他媒體含有原版號的部分。通常可以在CD的內圈或黑膠唱片的蠟封區找"
+"到。"
 
 #. name:Top
 #: DB:cover_art_archive.art_type/description:48
@@ -8137,7 +8169,8 @@ msgid ""
 "The top of a box or other similar packaging (for most common six sided "
 "packaging options, the one perpendicular to and above front, back and "
 "spines)."
-msgstr "盒子或類似包裝的頂面(對於最常見的六面體包裝選項而言，指垂直於正面，背面和側面"
+msgstr ""
+"盒子或類似包裝的頂面(對於最常見的六面體包裝選項而言，指垂直於正面，背面和側面"
 "且位於上方的麵)。"
 
 #. name:Jewel Case
@@ -8161,8 +8194,9 @@ msgid ""
 "This indicates a choir/chorus (an organized, usually large group of "
 "singers). Smaller vocal ensembles and groupings that do not generally call "
 "themselves choirs are better entered as “Group”."
-msgstr "這表示合唱團/合唱團（一種有組織的、通常人數很多的歌手組織）。 "
-"較小的聲樂樂團和通常不自稱為合唱團的團隊最好輸入“Group”。"
+msgstr ""
+"這表示合唱團/合唱團（一種有組織的、通常人數很多的歌手組織）。 較小的聲樂樂團"
+"和通常不自稱為合唱團的團隊最好輸入“Group”。"
 
 #. name:Character
 #: DB:artist_type/description:4
@@ -8189,8 +8223,8 @@ msgid ""
 "groupings that do not generally call themselves orchestras are better "
 "entered as “Group”."
 msgstr ""
-"這表示一個樂團（一種有組織的、通常人數很多的樂器演奏者組織）。 "
-"較小的樂團（如三重奏和四重奏）和通常不稱自己為樂團的樂隊最好輸入“ Group”。"
+"這表示一個樂團（一種有組織的、通常人數很多的樂器演奏者組織）。 較小的樂團（如"
+"三重奏和四重奏）和通常不稱自己為樂團的樂隊最好輸入“ Group”。"
 
 #. name:Prose
 #: DB:work_type/description:23
@@ -8419,7 +8453,8 @@ msgctxt "cover_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
-msgstr "用於標記那些需要進一步處理才能用於公開展示的圖像，但目前已經可以用於參考。"
+msgstr ""
+"用於標記那些需要進一步處理才能用於公開展示的圖像，但目前已經可以用於參考。"
 
 #. name:Raw/Unedited
 #: DB:event_art_archive.art_type/description:9
@@ -8427,7 +8462,8 @@ msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
-msgstr "用於標記那些需要進一步處理才能用於公開展示的圖像，但目前已經可以用於參考。"
+msgstr ""
+"用於標記那些需要進一步處理才能用於公開展示的圖像，但目前已經可以用於參考。"
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8435,7 +8471,8 @@ msgctxt "event_art_type"
 msgid ""
 "Usually a large printed or digital sheet, that often contains pictures, and "
 "is generally posted publicly to promote the event."
-msgstr "通常是一張大尺寸的印刷品或數位圖像，常包含圖片和文字，主要用於公開張貼以宣傳"
+msgstr ""
+"通常是一張大尺寸的印刷品或數位圖像，常包含圖片和文字，主要用於公開張貼以宣傳"
 "某個活動。"
 
 #. name:Banner

@@ -10,11 +10,12 @@
 # Staffan Vilcans, 2015
 # Tom Sawyer, 2022
 # Autom <filipbengtsson@live.se>, 2024.
+# Crowbardoctor <elin.ax1111@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-04-21 14:42+0000\n"
-"Last-Translator: Autom <filipbengtsson@live.se>\n"
+"PO-Revision-Date: 2025-01-12 19:44+0000\n"
+"Last-Translator: Crowbardoctor <elin.ax1111@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/sv/>\n"
 "Language: sv\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4.3\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -139,6 +140,14 @@ msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "8 cm CD+G"
 
+#: DB:medium_format/name:210
+#, fuzzy
+#| msgctxt "medium_format"
+#| msgid "8cm CD"
+msgctxt "medium_format"
+msgid "8cm CD-R"
+msgstr "8 cm CD"
+
 #. name:MiniDVD
 #: DB:medium_format/description:166
 msgctxt "medium_format"
@@ -251,6 +260,9 @@ msgid ""
 "in the 1990s including, in some cases, music releases with accompanying "
 "video content."
 msgstr ""
+"Ett CD format som kombinerar data/video och ljud, använt för olika syften "
+"under 1990-talet inklusive, i vissa fall, musiksläpp med medfört "
+"videoinnehåll."
 
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
@@ -374,6 +386,11 @@ msgid ""
 "just a scaled down version of the poster, both types can be added to the "
 "same image."
 msgstr ""
+"Ett dokument som vanligtvis är mindre än en affisch som vanligtvis är tänkt "
+"att skrivas ut och delas med allmänheten för att antingen marknadsföra ett "
+"evenemang i förväg eller ge ytterligare information till deltagarna. Om "
+"reklambladet för ett evenemang bara är en förminskad version av affischen, "
+"kan båda typerna läggas till samma bild."
 
 #. name:Ticket
 #: DB:event_art_archive.art_type/description:2
@@ -382,6 +399,9 @@ msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
 msgstr ""
+"Ett dokument som vanligtvis används för tillträde till evenemanget, oavsett "
+"om det är fysiskt eller digitalt. Använd detta även för biljettstubbar och "
+"pass."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -419,7 +439,7 @@ msgstr ""
 #: DB:label_type/description:5
 msgctxt "label_type"
 msgid "A label that primarily puts out unsanctioned (bootleg) releases."
-msgstr ""
+msgstr "Ett bolag som i första hand ger ut osanktionerade (bootleg) släpp."
 
 #. name:Longbox
 #: DB:release_packaging/description:55
@@ -428,6 +448,9 @@ msgid ""
 "A large cardboard box often used until the mid-1990s to sell CDs in North "
 "America, so that they would fit existing vinyl racks in stores."
 msgstr ""
+"En stor kartong som ofta användes fram till mitten av 1990-talet för att "
+"sälja CD-skivor i Nordamerika, så att de skulle passa befintliga vinylställ "
+"i butiker."
 
 #. name:Amphitheatre
 #: DB:place_type/description:43
@@ -442,6 +465,8 @@ msgid ""
 "A list of songs to be played in the event, often printed or handwritten for "
 "use by the artist."
 msgstr ""
+"En lista över låtar som ska spelas i evenemanget, ofta tryckta eller "
+"handskrivna för att användas av artisten."
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -468,6 +493,9 @@ msgid ""
 "medium-sized audience and instructs them individually and/or takes questions "
 "intended to improve the audience members' playing skills."
 msgstr ""
+"En masterclass eller clinic är ett evenemang där en artist träffar en liten "
+"till medelstor publik och instruerar dem individuellt och/eller tar frågor "
+"som syftar till att förbättra publikens spelfärdigheter."
 
 #. name:Clamshell Case
 #: DB:release_packaging/description:56
@@ -476,6 +504,9 @@ msgid ""
 "A minimalistic plastic case where the back and front are kept together by a "
 "small hinge. Most commonly used for cheap promotion / DIY releases."
 msgstr ""
+"Ett minimalistiskt plastfodral där baksidan och framsidan hålls samman av "
+"ett litet gångjärn. Används oftast för billiga marknadsförings-/gör-det-"
+"själv-släpp."
 
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
@@ -489,6 +520,8 @@ msgid ""
 "A partita is an instrumental piece composed of a series of variations, and "
 "it's by its current definition very similar to a suite."
 msgstr ""
+"En partita är ett instrumentalt stycke som består av en serie variationer, "
+"och det är enligt sin nuvarande definition väldigt likt en svit."
 
 #. name:Launch event
 #: DB:event_type/description:3
@@ -497,6 +530,8 @@ msgid ""
 "A party, reception or other event held specifically for the launch of a "
 "release."
 msgstr ""
+"En fest, mottagning eller annat evenemang som hålls specifikt för "
+"lanseringen av en release."
 
 #. name:Digibook
 #: DB:release_packaging/description:17

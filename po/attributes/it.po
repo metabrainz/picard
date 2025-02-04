@@ -11,12 +11,12 @@
 # salo.rock, 2012
 # salo.rock, 2022-2023
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2023.
-# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025.
 # yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-12-23 20:42+0000\n"
+"PO-Revision-Date: 2025-01-25 15:44+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -141,6 +141,11 @@ msgstr "CD 8cm"
 msgctxt "medium_format"
 msgid "8cm CD+G"
 msgstr "CD+G 8cm"
+
+#: DB:medium_format/name:210
+msgctxt "medium_format"
+msgid "8cm CD-R"
+msgstr "CD-R 8cm"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
