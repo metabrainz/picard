@@ -1,3 +1,28 @@
+# Version 2.13 - 2025-02-04
+
+## Bugfixes
+- [PICARD-2989](https://tickets.metabrainz.org/browse/PICARD-2989) - Endless recursion when reading settings after script editor dialog was opened
+- [PICARD-2991](https://tickets.metabrainz.org/browse/PICARD-2991) - File naming options inaccessible on permission errors to target path
+- [PICARD-3000](https://tickets.metabrainz.org/browse/PICARD-3000) - Children's Music is shown as "Children'S Music" in Picard
+- [PICARD-3001](https://tickets.metabrainz.org/browse/PICARD-3001) - Picard requires charset-normalizer < 3.4.0
+- [PICARD-3008](https://tickets.metabrainz.org/browse/PICARD-3008) - Poorly formatted `date` tags crash Picard with uncaught Overflow Exception
+- [PICARD-3012](https://tickets.metabrainz.org/browse/PICARD-3012) - Wrong disc numbers when submitting release
+- [PICARD-3013](https://tickets.metabrainz.org/browse/PICARD-3013) - Case only renaming broken on case-insensitive filesystems
+- [PICARD-3014](https://tickets.metabrainz.org/browse/PICARD-3014) - Sorting on macOS does not sort empty values as expected
+
+## Tasks
+- [PICARD-3002](https://tickets.metabrainz.org/browse/PICARD-3002) - Update Windows code signing certificate
+- [PICARD-3018](https://tickets.metabrainz.org/browse/PICARD-3018) - Drop support for Python 3.7
+- [PICARD-3022](https://tickets.metabrainz.org/browse/PICARD-3022) - Support Python 3.13
+
+## Improvements
+
+- [PICARD-736](https://tickets.metabrainz.org/browse/PICARD-736) - Avoid manual copying of authentication token
+- [PICARD-2882](https://tickets.metabrainz.org/browse/PICARD-2882) - Support PKCE for OAuth2 authorization
+- [PICARD-2886](https://tickets.metabrainz.org/browse/PICARD-2886) - OAuth2: Implement token revocation on the server
+- [PICARD-3021](https://tickets.metabrainz.org/browse/PICARD-3021) - Add context menu action to metadata box to merge original and new values
+
+
 # Version 2.12.3 - 2024-09-04
 
 ## Bugfixes
