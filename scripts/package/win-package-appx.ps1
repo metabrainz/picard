@@ -20,5 +20,6 @@ MakePri new /ProjectRoot $PackageDir /ConfigXml $PriConfigFile
 Pop-Location
 
 # Generate msix package
+$PicardVersion = (python -c "import picard; print(picard.__version__)")
 $PackageFile = "dist\MusicBrainz-Picard-${PicardVersion}_unsigned.msix"
 MakeAppx pack /o /h SHA256 /d $PackageDir /p $PackageFile
