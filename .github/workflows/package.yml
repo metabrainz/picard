@@ -45,13 +45,36 @@ jobs:
     permissions:
       id-token: write
 
+  pypi-release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs:
+      - package-pypi
+    environment:
+      name: pypi
+      url: https://pypi.org/p/picard
+    permissions:
+      id-token: write  # required for PyPI upload
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: picard-?dist*
+        path: dist/
+        merge-multiple: true
+    - name: Prepare distributions
+      run: |
+        ls -l dist/
+        # Remove zip source distribution (only a single sdist is allowed)
+        rm dist/picard-*.zip*
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
   github-release:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     needs:
       - package-macos
       - package-windows
-      - package-pypi
     permissions:
       contents: write
     steps:

@@ -1,3 +1,9 @@
+# Version 2.13.1 - 2025-02-05
+
+## Tasks
+- [PICARD-3027](https://tickets.metabrainz.org/browse/PICARD-3027) - Fix PyPI packaging task
+
+
 # Version 2.13 - 2025-02-04
 
 ## Bugfixes
@@ -16,7 +22,6 @@
 - [PICARD-3022](https://tickets.metabrainz.org/browse/PICARD-3022) - Support Python 3.13
 
 ## Improvements
-
 - [PICARD-736](https://tickets.metabrainz.org/browse/PICARD-736) - Avoid manual copying of authentication token
 - [PICARD-2882](https://tickets.metabrainz.org/browse/PICARD-2882) - Support PKCE for OAuth2 authorization
 - [PICARD-2886](https://tickets.metabrainz.org/browse/PICARD-2886) - OAuth2: Implement token revocation on the server
