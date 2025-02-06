@@ -21,9 +21,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from dataclasses import dataclass
 from html import escape
 from operator import attrgetter
+import re
 from secrets import token_bytes
 
 from PyQt6.QtCore import QCoreApplication
@@ -208,6 +209,7 @@ def _add_track_data(data, files):
         return 'mediums.%i.track.%i.%s' % (disc, track, name)
 
     labels = set()
+    release_dates = set()
     barcode = None
 
     disc_counter = 0
@@ -225,9 +227,13 @@ def _add_track_data(data, files):
         if m['barcode']:
             barcode = m['barcode']
         if m['discsubtitle'] and not data.get(f'mediums.{disc_counter}.name'):
-            data[f'mediums.{disc_counter}.name'] =  m['discsubtitle']
+            data[f'mediums.{disc_counter}.name'] = m['discsubtitle']
         if m['media'] and not data.get(f'mediums.{disc_counter}.format'):
-            data[f'mediums.{disc_counter}.format'] =  m['media']
+            data[f'mediums.{disc_counter}.format'] = m['media']
+        if date := PartialDate.parse(m['releasedate']):
+            release_dates.add((date, m['releasecountry']))
+        elif date := PartialDate.parse(m['date']):
+            release_dates.add((date, m['releasecountry']))
         data[mkey(disc_counter, track_counter, 'name')] = m['title']
         data[mkey(disc_counter, track_counter, 'artist_credit.names.0.name')] = m['artist']
         data[mkey(disc_counter, track_counter, 'number')] = m['tracknumber'] or str(track_counter + 1)
@@ -244,6 +250,18 @@ def _add_track_data(data, files):
     if barcode:
         data['barcode'] = barcode
 
+    # Only use the date if it is not ambiguous
+    if len(release_dates) == 1:
+        date, country = release_dates.pop()
+        if date.year:
+            data['events.0.date.year'] = str(date.year)
+            if date.month:
+                data['events.0.date.month'] = str(date.month)
+                if date.day:
+                    data['events.0.date.day'] = str(date.day)
+        if country:
+            data['events.0.country'] = country
+
 
 def _get_form(title, action, label, form_data, query_args=None):
     return _form_template.format(
@@ -256,3 +274,26 @@ def _get_form(title, action, label, form_data, query_args=None):
 
 def _format_form_data(data):
     return ''.join(_form_input_template.format(name=escape(name), value=escape(value)) for name, value in data.items())
+
+
+@dataclass(frozen=True)
+class PartialDate:
+    year: int | None
+    month: int | None
+    day: int | None
+
+    _re_partial_date = re.compile(r'(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?')
+
+    @classmethod
+    def parse(cls, date) -> 'PartialDate | None':
+        """Parses a partial date in the form YYYY-mm-dd, where both mm and dd are optional.
+
+        E.g. 2026-01-05, 2026-01 and 2026 are all valid partial dates.
+
+        Returns a PartialDate or None, if the input has an invalid format.
+        """
+        if match := cls._re_partial_date.match(date):
+            parts = map(lambda n: int(n) if n else None, match.groups())
+            return cls(*parts)
+        else:
+            return None
