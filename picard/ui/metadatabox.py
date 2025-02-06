@@ -464,20 +464,14 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _use_orig_tags(self, obj, tag, extra_objects=None):
         orig_values = list(obj.orig_metadata.getall(tag)) or [""]
-        objects = [obj]
-        if extra_objects:
-            objects.extend(extra_objects)
-        self._set_tag_values(tag, orig_values, objects)
+        self._set_tag_values_extra(tag, orig_values, obj, extra_objects)
 
     def _merge_orig_tags(self, obj, tag, extra_objects=None):
         values = list(obj.orig_metadata.getall(tag))
         for new_value in obj.metadata.getall(tag):
             if new_value not in values:
                 values.append(new_value)
-        objects = [obj]
-        if extra_objects:
-            objects.extend(extra_objects)
-        self._set_tag_values(tag, values, objects)
+        self._set_tag_values_extra(tag, values, obj, extra_objects)
 
     def edit_tag(self, tag):
         if self.tag_diff is not None:
@@ -492,6 +486,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         config = get_config()
         config.persist['show_changes_first'] = checked
         self.update()
+
+    def _set_tag_values_extra(self, tag, values, obj, extra_objects):
+        objects = [obj]
+        if extra_objects:
+            objects.extend(extra_objects)
+        self._set_tag_values(tag, values, objects=objects)
 
     def _set_tag_values(self, tag, values, objects=None):
         if objects is None:
