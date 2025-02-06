@@ -419,6 +419,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     menu.addAction(remove_from_preserved_tags_action)
             removals = []
             useorigs = []
+            mergeorigs = []
             item = self.currentItem()
             if item:
                 column = item.column()
@@ -446,15 +447,18 @@ class MetadataBox(QtWidgets.QTableWidget):
                                 track_albums.add(file.parent_item.album)
                             orig_values = list(file.orig_metadata.getall(tag)) or [""]
                             useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
+                            mergeorigs.append(partial(self._merge_orig_tags, file, tag))
                         for track in set(self.tracks)-set(file_tracks):
                             objects = [track]
                             orig_values = list(track.orig_metadata.getall(tag)) or [""]
                             useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
+                            mergeorigs.append(partial(self._merge_orig_tags, track, tag))
                             track_albums.add(track.album)
                         for album in track_albums:
                             objects = [album]
                             orig_values = list(album.orig_metadata.getall(tag)) or [""]
                             useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
+                            mergeorigs.append(partial(self._merge_orig_tags, album, tag))
                 remove_tag_action = QtGui.QAction(_("Remove"), self)
                 remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
@@ -466,7 +470,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
                     menu.addAction(use_orig_value_action)
                     merge_tags_action = QtGui.QAction(_("Merge Original Values"), self)
-                    merge_tags_action.triggered.connect(partial(self._merge_tags, selected_tag))
+                    merge_tags_action.triggered.connect(partial(self._apply_update_funcs, mergeorigs))
                     menu.addAction(merge_tags_action)
                     menu.addSeparator()
                 if single_tag:
@@ -494,15 +498,12 @@ class MetadataBox(QtWidgets.QTableWidget):
                 f()
         self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
 
-    def _merge_tags(self, tag):
-        with self.tagger.window.ignore_selection_changes:
-            for obj in self.objects:
-                values = list(obj.orig_metadata.getall(tag))
-                for new_value in obj.metadata.getall(tag):
-                    if new_value not in values:
-                        values.append(new_value)
-                obj.metadata[tag] = values
-                obj.update()
+    def _merge_orig_tags(self, obj, tag):
+        values = list(obj.orig_metadata.getall(tag))
+        for new_value in obj.metadata.getall(tag):
+            if new_value not in values:
+                values.append(new_value)
+        self._set_tag_values(tag, values, [obj])
 
     def _edit_tag(self, tag):
         if self.tag_diff is not None:
