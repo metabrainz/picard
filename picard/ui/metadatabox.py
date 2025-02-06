@@ -440,24 +440,19 @@ class MetadataBox(QtWidgets.QTableWidget):
                         file_tracks = []
                         track_albums = set()
                         for file in self.files:
-                            objects = [file]
+                            extra_objects = []
                             if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
-                                objects.append(file.parent_item)
+                                extra_objects.append(file.parent_item)
                                 file_tracks.append(file.parent_item)
                                 track_albums.add(file.parent_item.album)
-                            orig_values = list(file.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
-                            mergeorigs.append(partial(self._merge_orig_tags, file, tag))
+                            useorigs.append(partial(self._use_orig_tags, file, tag, extra_objects))
+                            mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
                         for track in set(self.tracks)-set(file_tracks):
-                            objects = [track]
-                            orig_values = list(track.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
+                            useorigs.append(partial(self._use_orig_tags, track, tag))
                             mergeorigs.append(partial(self._merge_orig_tags, track, tag))
                             track_albums.add(track.album)
                         for album in track_albums:
-                            objects = [album]
-                            orig_values = list(album.orig_metadata.getall(tag)) or [""]
-                            useorigs.append(partial(self._set_tag_values, tag, orig_values, objects))
+                            useorigs.append(partial(self._use_orig_tags, album, tag))
                             mergeorigs.append(partial(self._merge_orig_tags, album, tag))
                 remove_tag_action = QtGui.QAction(_("Remove"), self)
                 remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
@@ -498,12 +493,22 @@ class MetadataBox(QtWidgets.QTableWidget):
                 f()
         self.tagger.window.update_selection(new_selection=False, drop_album_caches=True)
 
-    def _merge_orig_tags(self, obj, tag):
+    def _use_orig_tags(self, obj, tag, extra_objects=None):
+        orig_values = list(obj.orig_metadata.getall(tag)) or [""]
+        objects = [obj]
+        if extra_objects:
+            objects.extend(extra_objects)
+        self._set_tag_values(tag, orig_values, objects)
+
+    def _merge_orig_tags(self, obj, tag, extra_objects=None):
         values = list(obj.orig_metadata.getall(tag))
         for new_value in obj.metadata.getall(tag):
             if new_value not in values:
                 values.append(new_value)
-        self._set_tag_values(tag, values, [obj])
+        objects = [obj]
+        if extra_objects:
+            objects.extend(extra_objects)
+        self._set_tag_values(tag, values, objects)
 
     def _edit_tag(self, tag):
         if self.tag_diff is not None:
