@@ -1,3 +1,9 @@
+# Version 2.13.2 - 2025-02-07
+
+## Bugfixes
+- [PICARD-3030](https://tickets.metabrainz.org/browse/PICARD-3030) - Crash when right-clicking on multi-selection of new tag values
+
+
 # Version 2.13.1 - 2025-02-05
 
 ## Tasks
