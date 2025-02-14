@@ -44,14 +44,14 @@
 # Maureen <mry_33@163.com>, 2014
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 # 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
-# KenParker_CN <peekabookenny@gmail.com>, 2024.
+# KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-01-09 11:51+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-02-14 17:44+0000\n"
+"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/2/app/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -213,10 +213,8 @@ msgid "Debug"
 msgstr "调试"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "意外的验证错误"
+msgstr "意外的令牌撤销错误"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
@@ -3917,11 +3915,8 @@ msgid_plural "Use Original Values"
 msgstr[0] "使用原始值"
 
 #: picard/ui/metadatabox.py:437
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "使用原始值"
+msgstr "合并原始值"
 
 #: picard/ui/metadatabox.py:443
 msgid "&Copy"
@@ -4245,10 +4240,8 @@ msgid "Empty / blank script"
 msgstr "空白脚本"
 
 #: picard/ui/scripteditor.py:673
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "文字"
+msgstr "新脚本"
 
 #: picard/ui/scripteditor.py:766
 msgid ""
@@ -5401,10 +5394,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "已登录为 <b>%s</b>。"
 
 #: picard/ui/options/general.py:182
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "CD 查询错误"
+msgstr "登出错误"
 
 #: picard/ui/options/general.py:183
 #, python-format
@@ -5935,18 +5926,14 @@ msgid "Compatibility"
 msgstr "兼容性"
 
 #: picard/ui/options/renaming_compat.py:135
-#, fuzzy
-#| msgid "Replace directory separators with:"
 msgid "Invalid directory separator replacement"
-msgstr "将目录分隔符替换为："
+msgstr "无效的目录分隔符替换"
 
 #: picard/ui/options/renaming_compat.py:136
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "用于目录分隔符的替换字符"
+msgstr "目录分隔符的替换字符不能本身也是目录分隔符。"
 
 #: picard/ui/options/renaming_compat.py:144
 msgid ""
