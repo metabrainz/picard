@@ -44,22 +44,22 @@
 # Maureen <mry_33@163.com>, 2014
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 # 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
-# KenParker_CN <peekabookenny@gmail.com>, 2024.
+# KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-10 12:02+0100\n"
-"PO-Revision-Date: 2024-11-18 15:42+0000\n"
+"PO-Revision-Date: 2025-02-14 17:44+0000\n"
 "Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://translations."
-"metabrainz.org/projects/picard/3/app/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified Han script) <https://"
+"translations.metabrainz.org/projects/picard/3/app/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.9.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:139
@@ -2936,23 +2936,19 @@ msgstr "音轨图像不同"
 
 #: picard/ui/coverartbox.py:390
 msgid "Enter URL"
-msgstr ""
+msgstr "输入 URL"
 
 #: picard/ui/coverartbox.py:393
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover art URL:"
-msgstr "专辑封面"
+msgstr "封面艺术 URL："
 
 #: picard/ui/coverartbox.py:435
 msgid "Show more details"
 msgstr "显示更多细节"
 
 #: picard/ui/coverartbox.py:436
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox.py:473
 msgid "New Cover Art"
@@ -2979,10 +2975,8 @@ msgid "Choose local file…"
 msgstr "选择本地文件…"
 
 #: picard/ui/coverartbox.py:691
-#, fuzzy
-#| msgid "Add Fold&er…"
 msgid "Add from URL…"
-msgstr "添加文件夹（&D）…"
+msgstr "从 URL 添加…"
 
 #: picard/ui/coverartbox.py:700
 msgid "Replace front cover art"
@@ -4046,10 +4040,8 @@ msgid "Resize images to the given size"
 msgstr "将图像调整到给定的尺寸"
 
 #: picard/ui/forms/ui_options_cover_processing.py:283
-#, fuzzy
-#| msgid "Resize images saved to tags "
 msgid "Resize images saved to tags"
-msgstr "将保存到标签中的图像调整到指定的尺寸 "
+msgstr "调整保存到标签的图片大小"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
 #: picard/ui/forms/ui_options_cover_processing.py:290
@@ -4064,36 +4056,28 @@ msgstr "最大高度:"
 #: picard/ui/forms/ui_options_cover_processing.py:288
 #: picard/ui/forms/ui_options_cover_processing.py:294
 msgid "Enlarge"
-msgstr ""
+msgstr "放大"
 
 #: picard/ui/forms/ui_options_cover_processing.py:289
-#, fuzzy
-#| msgid "Write tags to files"
 msgid "Resize images saved to files"
-msgstr "将标签写入文件"
+msgstr "调整保存到文件的图片大小"
 
 #: picard/ui/forms/ui_options_cover_processing.py:295
 msgid "Convert images to the given format"
-msgstr ""
+msgstr "将图片转换为指定格式"
 
 #: picard/ui/forms/ui_options_cover_processing.py:296
-#, fuzzy
-#| msgid "Convert File Names to Tags"
 msgid "Convert images saved to tags"
-msgstr "将文件名称转换为标签"
+msgstr "转换保存到标签的图片"
 
 #: picard/ui/forms/ui_options_cover_processing.py:297
 #: picard/ui/forms/ui_options_cover_processing.py:299
-#, fuzzy
-#| msgid "Format:"
 msgid "New format:"
-msgstr "格式:"
+msgstr "新格式:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:298
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Convert images saved to files"
-msgstr "将封面图像保存为单独的文件"
+msgstr "转换保存到标签的图片"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:103
 msgid "Audio Fingerprinting"
@@ -4301,32 +4285,24 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr "在元数据视图中的所有其他标签上方显示以下标签"
 
 #: picard/ui/forms/ui_options_maintenance.py:143
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Configuration file:"
-msgstr "设置文件"
+msgstr "设置文件："
 
 #: picard/ui/forms/ui_options_maintenance.py:144
-#, fuzzy
-#| msgid "Open folder"
 msgid "Open folder…"
-msgstr "打开文件夹"
+msgstr "打开文件夹…"
 
 #: picard/ui/forms/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
 msgstr "自动配置备份目录:"
 
 #: picard/ui/forms/ui_options_maintenance.py:147
-#, fuzzy
-#| msgid "Load Backup"
 msgid "Load backup…"
-msgstr "载入备份"
+msgstr "载入备份…"
 
 #: picard/ui/forms/ui_options_maintenance.py:148
-#, fuzzy
-#| msgid "Save Backup"
 msgid "Save backup…"
-msgstr "存储备份"
+msgstr "保存备份…"
 
 #: picard/ui/forms/ui_options_maintenance.py:149
 msgid "Select all"
@@ -4415,10 +4391,8 @@ msgid "Password:"
 msgstr "密码:"
 
 #: picard/ui/forms/ui_options_network.py:169
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "网络"
+msgstr "网络选项"
 
 #: picard/ui/forms/ui_options_network.py:170
 msgid "Request timeout in seconds:"
@@ -4757,10 +4731,8 @@ msgid "Download only cover art images matching selected types"
 msgstr "仅下载符合所选类型的封面图像"
 
 #: picard/ui/forms/ui_provider_options_caa.py:77
-#, fuzzy
-#| msgid "Only use images of the following size:"
 msgid "Only use images of at most the following size:"
-msgstr "只使用以下尺寸的图像:"
+msgstr "仅使用不超过以下尺寸的图片："
 
 #: picard/ui/forms/ui_provider_options_caa.py:78
 msgid "Download only approved images"
@@ -4953,11 +4925,10 @@ msgid "There are no files matched to this track"
 msgstr "没有与此曲目匹配的文件"
 
 #: picard/ui/itemviews/__init__.py:502
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "未匹配的文件"
+msgstr[0] "%i 个匹配的文件"
 
 #: picard/ui/itemviews/__init__.py:538
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -5088,10 +5059,8 @@ msgid "Media"
 msgstr "媒体"
 
 #: picard/ui/itemviews/columns.py:217
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "大小:"
+msgstr "大小"
 
 #: picard/ui/itemviews/columns.py:218 picard/util/tags.py:75
 msgid "Genre"
@@ -5111,7 +5080,7 @@ msgstr "封面"
 
 #: picard/ui/itemviews/columns.py:224
 msgid "Cover Dimensions"
-msgstr ""
+msgstr "封面尺寸"
 
 #: picard/ui/mainwindow/__init__.py:346
 msgid "Unsaved Changes"
@@ -5644,14 +5613,6 @@ msgid "Cover Art"
 msgstr "专辑封面"
 
 #: picard/ui/options/cover.py:151
-#, fuzzy
-#| msgid ""
-#| "CAA images with an image type found in the 'Include' list will be "
-#| "downloaded and used UNLESS they also have an image type found in the "
-#| "'Exclude' list. Images with types found in the 'Exclude' list will NEVER "
-#| "be used. Image types not appearing in the 'Include' or 'Exclude' lists "
-#| "will not be considered when determining whether or not to download and "
-#| "use a CAA image.\n"
 msgid ""
 "Embedded cover art images with a type found in the 'Include' list will never "
 "be replaced by a newly downloaded image UNLESS they also have an image type "
@@ -5660,13 +5621,14 @@ msgid ""
 "appearing in the 'Include' or 'Exclude' list will not be considered when "
 "determining whether or not to replace an embedded cover art image.\n"
 msgstr ""
-"将下载图像类型位于「包含」列表的 CAA 图像，除非图像的类型同时出现在「排除」列"
-"表。 类型位于「排除」列表的图像*永远*不会被使用。未出现在「包含」或「排除」列"
-"表的图像类型，在决定是否下载/使用某个 CAA 图像时不会被考虑。\n"
+"嵌入的封面艺术图像，如果其类型出现在“包括”列表中，将永远不会被新下载的图像替"
+"换，除非它们同时在“排除”列表中也有一个图像类型。出现在“排除”列表中的图像类型"
+"将始终被相同类型的下载图像替换。没有出现在“包括”或“排除”列表中的图像类型在决"
+"定是否替换嵌入的封面艺术图像时将不会被考虑。\n"
 
 #: picard/ui/options/cover_processing.py:50
 msgid "Processing"
-msgstr ""
+msgstr "处理中"
 
 #: picard/ui/options/dialog.py:115
 msgid "This page failed to initialize"
@@ -5685,10 +5647,9 @@ msgid ""
 msgstr "请参阅<a href=\"%s\">故障排除文档</a>并最终报告错误。"
 
 #: picard/ui/options/dialog.py:161
-#, fuzzy, python-format
-#| msgid "%s (Copy)"
+#, python-format
 msgid "%s (error)"
-msgstr "%s (副本)"
+msgstr "%s (错误)"
 
 #: picard/ui/options/dialog.py:187
 msgid "&Restore all Defaults"
@@ -5932,15 +5893,12 @@ msgstr ""
 "认”主题选项，以再次使用 Picard 的默认主题。"
 
 #: picard/ui/options/interface.py:196
-#, fuzzy
 msgid "You have changed the interface language."
-msgstr "用户界面语言:"
+msgstr "您已更改界面语言。"
 
 #: picard/ui/options/interface.py:219
-#, fuzzy
-#| msgid "File Save Warning"
 msgid "Option Setting Warning"
-msgstr "文件保存警告"
+msgstr "选项设置警告"
 
 #: picard/ui/options/interface.py:220
 msgid ""
@@ -5960,10 +5918,8 @@ msgid "Choose a color"
 msgstr "选择颜色"
 
 #: picard/ui/options/interface_colors.py:156
-#, fuzzy
-#| msgid "Restore default columns"
 msgid "Restore default color"
-msgstr "恢复默认栏"
+msgstr "恢复默认颜色"
 
 #: picard/ui/options/interface_colors.py:172
 msgid "You have changed the interface colors."
@@ -6018,10 +5974,8 @@ msgid "Drag and Drop to re-order"
 msgstr "可拖拽调整顺序"
 
 #: picard/ui/options/interface_toolbar.py:272
-#, fuzzy
-#| msgid "Select all"
 msgid "Select an action"
-msgstr "全选"
+msgstr "选择一个操作"
 
 #: picard/ui/options/interface_top_tags.py:36
 msgid "Top Tags"
@@ -6032,26 +5986,6 @@ msgid "Maintenance"
 msgstr "维护"
 
 #: picard/ui/options/maintenance.py:90
-#, fuzzy
-#| msgid ""
-#| "This allows you to remove unused option settings from the configuration "
-#| "INI file.\n"
-#| "\n"
-#| "Settings that are found in the configuration file that do not appear on "
-#| "any option settings page will be listed below. If your configuration file "
-#| "does not contain any unused option settings, then the list will be empty "
-#| "and the removal checkbox will be disabled.\n"
-#| "\n"
-#| "Note that unused option settings could come from plugins that have been "
-#| "uninstalled, so please be careful to not remove settings that you may "
-#| "want to use later when the plugin is reinstalled. Options belonging to "
-#| "plugins that are installed but currently disabled will not be listed for "
-#| "possible removal.\n"
-#| "\n"
-#| "To remove one or more settings, first enable the removal by checking the "
-#| "\"Remove selected options\" box. You can then select the settings to "
-#| "remove by checking the box next to the setting. When you choose \"Make It "
-#| "So!\" to save your option settings, the selected items will be removed."
 msgid ""
 "Settings that are found in the configuration file that do not appear on any "
 "option settings page are listed below. If your configuration file does not "
@@ -6069,26 +6003,23 @@ msgid ""
 "the \"Remove selected options\" box. When you choose \"Make It So!\" to save "
 "your option settings, the selected items will be removed."
 msgstr ""
-"这允许你从INI配置文件中移除未使用的设置选项。\n"
+"在配置文件中找到的、但在任何选项设置页面上未出现的设置列在下面。如果您的配置"
+"文件没有包含任何未使用的选项设置，那么列表将为空，并且删除复选框将被禁用。\n"
 "\n"
-"配置文件中不在任何选项页中的设置选项会列在下方。如果你的配置文件没有未使用的"
-"选项，则列表为空，移除复选框不可用。\n"
+"请注意，未使用的选项设置可能来自已卸载的插件，因此请小心不要删除那些您以后可"
+"能想使用的设置，尤其是在插件重新安装时。属于已安装但当前禁用插件的选项不会列"
+"出以供删除。\n"
 "\n"
-"注意未使用的选项可能来自已经卸载的插件，因此注意不要移除重装后需要再使用的设"
-"置选项。已安装但被禁用的的插件相关选项不会被列为待移除。\n"
-"\n"
-"要删除移除设置项，首先选中“移除所选选项”复选框，然后选中设置项旁边的复选框。"
-"在选中“就此确认!”以后可保存设置项，选择的项目会被移除。"
+"要删除一个或多个设置，请通过勾选设置旁边的框来选择要删除的设置，并通过勾选“删"
+"除所选选项”框来启用删除。当您选择“确认”以保存选项设置时，所选项将被删除。"
 
 #: picard/ui/options/maintenance.py:104
 msgid "Value"
 msgstr "值"
 
 #: picard/ui/options/maintenance.py:138
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration File Backup Directory Error"
-msgstr "需要配置"
+msgstr "配置文件备份目录错误"
 
 #: picard/ui/options/maintenance.py:139
 #, python-format
@@ -6100,48 +6031,45 @@ msgstr ""
 "%s\n"
 
 #: picard/ui/options/maintenance.py:176
-#, fuzzy, python-format
-#| msgid ""
-#| "The configuration file currently contains %(totalcount)d option settings, "
-#| "%(unusedcount)d which are unused."
+#, python-format
 msgid ""
 "The configuration file currently contains %(totalcount)d option settings "
 "(%(unusedcount)d unused)."
-msgstr "配置文件含有%(totalcount)d个设置项，%(unusedcount)d个未使用。"
+msgstr "当前配置文件包含 %(totalcount)d 个选项设置（其中 %(unusedcount)d 个未使用）。"
 
 #: picard/ui/options/maintenance.py:214
 msgid "Configuration files"
 msgstr "设置文件"
 
 #: picard/ui/options/maintenance.py:232
-#, fuzzy
-#| msgid "Backup Configuration File"
 msgid "Backup Configuration File Save Error"
-msgstr "备份设置文件"
+msgstr "备份配置文件保存错误"
 
 #: picard/ui/options/maintenance.py:233
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "Failed to save the configuration file to:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
-msgstr "恢复设置文件时出现了问题，详情已记录在日志中。"
+msgstr ""
+"无法将配置文件保存到：\n"
+"%s\n"
+"\n"
+"请查看日志以获取更多详细信息。"
 
 #: picard/ui/options/maintenance.py:245 picard/ui/options/maintenance.py:254
 msgid "Backup Configuration File"
 msgstr "备份设置文件"
 
 #: picard/ui/options/maintenance.py:255
-#, fuzzy, python-format
-#| msgid "Configuration successfully backed up to %s"
+#, python-format
 msgid ""
 "Configuration successfully backed up to:\n"
 "%s"
-msgstr "设置已备份至%s"
+msgstr ""
+"设置已备份至\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:285 picard/ui/options/maintenance.py:300
 #: picard/ui/options/maintenance.py:311
@@ -6149,13 +6077,7 @@ msgid "Load Backup Configuration File"
 msgstr "载入设置备份文件"
 
 #: picard/ui/options/maintenance.py:286
-#, fuzzy, python-format
-#| msgid ""
-#| "Loading a backup configuration file will replace the current "
-#| "configuration settings. A backup copy of the current file will be saved "
-#| "automatically.\n"
-#| "\n"
-#| "Do you want to continue?"
+#, python-format
 msgid ""
 "Loading a backup configuration file will replace the current configuration "
 "settings.\n"
@@ -6165,35 +6087,37 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"载入设置备份文件将会取代现有的设置，但现有的文件亦会自动备份存档。\n"
+"加载备份配置文件将替换当前的配置设置。 在任何更改之前，当前配置将自动保存到："
 "\n"
-"你是否要继续？"
+"%s\n"
+"\n"
+"您确定要继续吗？"
 
 #: picard/ui/options/maintenance.py:301
-#, fuzzy, python-format
-#| msgid "Configuration successfully loaded from %s"
+#, python-format
 msgid ""
 "Configuration successfully loaded from:\n"
 "%s"
-msgstr "设置已从%s载入"
+msgstr ""
+"配置文件已成功从以下位置加载：\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:312
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "There was a problem restoring the configuration file from:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
-msgstr "恢复设置文件时出现了问题，详情已记录在日志中。"
+msgstr ""
+"从以下位置恢复配置文件时出现问题：\n"
+"%s\n"
+"\n"
+"请查看日志以获取更多详细信息。"
 
 #: picard/ui/options/maintenance.py:324
-#, fuzzy
-#| msgid "Configuration File:"
 msgid "Select Configuration File to Load"
-msgstr "配置文件："
+msgstr "选择要加载的配置文件"
 
 #: picard/ui/options/maintenance.py:373
 #: picard/ui/widgets/profilelistwidget.py:88
@@ -6351,8 +6275,6 @@ msgid "Settings to include in profile"
 msgstr "要包含在配置文件中的设置"
 
 #: picard/ui/options/profiles.py:215
-#, fuzzy
-#| msgid "Title"
 msgid "title"
 msgstr "标题"
 
@@ -6361,28 +6283,20 @@ msgid "Unknown script"
 msgstr "未知脚本"
 
 #: picard/ui/options/profiles.py:257
-#, fuzzy
-#| msgid "Rename script"
 msgid "No enabled scripts"
-msgstr "重命名脚本"
+msgstr "没有已启用的脚本"
 
 #: picard/ui/options/profiles.py:258
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
-msgstr "启用标签工具脚本"
+msgstr "已启用的脚本："
 
 #: picard/ui/options/profiles.py:263
-#, fuzzy
-#| msgid "Cover art providers"
 msgid "No enabled providers"
-msgstr "专辑封面来源"
+msgstr "没有已启用的提供者"
 
 #: picard/ui/options/profiles.py:264
-#, fuzzy
-#| msgid "Enabled providers of %i listed:"
 msgid "Enabled providers:"
-msgstr "下列%i个提供者已启用："
+msgstr "已启用的提供者："
 
 #: picard/ui/options/profiles.py:281
 #, python-format
@@ -6621,7 +6535,7 @@ msgstr "是否确定要移除脚本?"
 msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
-msgstr ""
+msgstr "<em>函数 <code>$%s</code> 不存在。<br><br>您是否缺少某个插件？</em>"
 
 #: picard/ui/widgets/scripttextedit.py:356
 msgid "&Word wrap script"
@@ -6843,10 +6757,8 @@ msgid "Engineer"
 msgstr "工程师"
 
 #: picard/util/tags.py:73
-#, fuzzy
-#| msgid "File Name"
 msgid "File Path"
-msgstr "文件名"
+msgstr "文件路径"
 
 #: picard/util/tags.py:74
 msgid "Gapless Playback"
@@ -7053,10 +6965,8 @@ msgid "Subtitle"
 msgstr "副标题"
 
 #: picard/util/tags.py:132
-#, fuzzy
-#| msgid "Lyrics"
 msgid "Synced Lyrics"
-msgstr "歌词"
+msgstr "同步的歌词"
 
 #: picard/util/tags.py:134
 msgid "Title Sort Order"
