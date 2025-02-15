@@ -75,6 +75,7 @@ jobs:
         python setup.py build_ext
         pyinstaller --noconfirm --clean picard.spec
         If ($env:PICARD_BUILD_PORTABLE -ne "1") {
+          & .\scripts\package\win-build-fixes.ps1 dist\picard
           dist\picard\fpcalc -version
         }
       env:
