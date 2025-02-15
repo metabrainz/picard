@@ -14,5 +14,6 @@ $ErrorActionPreference = 'Stop'
 # DLL loading on Windows.
 # Workaround for https://tickets.metabrainz.org/browse/PICARD-2736
 $Qt5BinDir = (Join-Path -Path $Path -ChildPath PyQt5\Qt5\bin)
-Move-Item -Path (Join-Path -Path $Qt5BinDir -ChildPath *.dll) -Destination $Path -Force
+Write-Output "Moving DLLs from $Qt5BinDir to package root..."
+Move-Item -Path (Join-Path -Path $Qt5BinDir -ChildPath *.dll) -Destination $Path -Verbose -Force
 Remove-Item -Path $Qt5BinDir
