@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2019-2025 Philipp Wolfer
 # Copyright (C) 2020 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -331,6 +331,16 @@ class OggOpusTest(CommonVorbisTests.VorbisTestCase):
             'r128_track_gain': '-2857',
         }
         self._test_supported_tags(tags)
+
+    def test_leave_picture_dimensions_empty(self):
+        cover = CoverArtImage(data=load_coverart_file('mb.jpg'))
+        file_save_image(self.filename, cover)
+        raw_metadata = load_raw(self.filename)
+        data = raw_metadata['metadata_block_picture'][0]
+        image = Picture(base64.standard_b64decode(data))
+        self.assertEqual(0, image.width)
+        self.assertEqual(0, image.height)
+        self.assertEqual(0, image.depth)
 
 
 class OggTheoraTest(CommonVorbisTests.VorbisTestCase):
