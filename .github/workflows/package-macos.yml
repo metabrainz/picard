@@ -11,6 +11,11 @@ jobs:
       matrix:
         setup:
         - macos-deployment-version: '11.0'
+          target-arch: 'x86_64'
+          python-version: 3.13.1-macos11
+          python-sha256sum: 67c6f0a3190851e0013214d5abd725a42ec398ff1b50eec47826820fd052d86b
+        - macos-deployment-version: '11.0'
+          target-arch: 'arm64'
           python-version: 3.13.1-macos11
           python-sha256sum: 67c6f0a3190851e0013214d5abd725a42ec398ff1b50eec47826820fd052d86b
     env:
@@ -21,6 +26,7 @@ jobs:
       PYTHON_VERSION: ${{ matrix.setup.python-version }}
       PYTHON_SHA256SUM: ${{ matrix.setup.python-sha256sum }}
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
+      TARGET_ARCH: ${{ matrix.setup.target-arch }}
       CODESIGN: 0
     steps:
     - uses: actions/checkout@v4
@@ -45,7 +51,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip3 install -r requirements-build.txt
-        pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
+        pip3 install --no-binary "charset-normalizer,PyYAML" -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Run tests
@@ -77,5 +83,5 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: macos-app-${{ matrix.setup.macos-deployment-version }}
+        name: macos-app-${{ matrix.setup.macos-deployment-version }}-${{ matrix.setup.target-arch }}
         path: artifacts/
