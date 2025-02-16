@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008, 2012 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2010, 2014-2015, 2018-2024 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2025 Philipp Wolfer
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2012-2014 Wieland Hoffmann
 # Copyright (C) 2013 Calvin Walton
@@ -243,6 +243,7 @@ class VCommentFile(File):
         log.debug("Saving file %r", filename)
         config = get_config()
         is_flac = self._File == mutagen.flac.FLAC
+        is_opus = self._File == mutagen.oggopus.OggOpus
         file = self._File(encode_filename(filename))
         if file.tags is None:
             file.add_tags()
@@ -304,9 +305,15 @@ class VCommentFile(File):
             picture.data = image.data
             picture.mime = image.mimetype
             picture.desc = image.comment
-            picture.width = image.width
-            picture.height = image.height
             picture.type = image.id3_type
+
+            # libopus expects width, height and depth to be either all zero
+            # or all non-zero. As depth is not easily available, do not set
+            # width and height either. See PICARD-2909.
+            if not is_opus:
+                picture.width = image.width
+                picture.height = image.height
+
             if is_flac:
                 # See https://xiph.org/flac/format.html#metadata_block_picture
                 expected_block_size = (8 * 4 + len(picture.data)
