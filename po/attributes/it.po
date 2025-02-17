@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-01-25 15:44+0000\n"
+"PO-Revision-Date: 2025-02-11 00:44+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -4341,6 +4341,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
 msgstr "ID per la società di diritti britannica PRS for Music"
 
+#. name:MUSICAUTOR ID
+#: DB:work_attribute_type/description:212
+msgctxt "work_attribute_type"
+msgid "ID for the Bulgarian rights society MUSICAUTOR"
+msgstr "ID per la società di diritti bulgara MUSICAUTOR"
+
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
@@ -5572,6 +5578,11 @@ msgstr "ID MCSC"
 msgctxt "work_attribute_type"
 msgid "MCT ID"
 msgstr "ID MCT"
+
+#: DB:work_attribute_type/name:212
+msgctxt "work_attribute_type"
+msgid "MUSICAUTOR ID"
+msgstr "ID MUSICAUTOR"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
