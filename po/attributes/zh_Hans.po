@@ -11,11 +11,13 @@
 # weeeeei <weeeeei@duck.com>, 2024.
 # KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
 # imgradeone <imgradeone@outlook.com>, 2025.
+# Ral Hole <ral-hole@outlook.com>, 2025.
+# delamons <lamons.n@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-01-30 11:44+0000\n"
-"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
+"PO-Revision-Date: 2025-02-16 20:44+0000\n"
+"Last-Translator: delamons <lamons.n@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -23,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -387,7 +389,7 @@ msgctxt "label_type"
 msgid ""
 "A company that manufactures physical releases (such as pressing CDs or vinyl "
 "records)."
-msgstr "生产实体发行(如压制cd或黑胶唱片)的公司。"
+msgstr "生产实体发行（如压制CD或黑胶唱片）的公司。"
 
 #. name:Concerto
 #: DB:work_type/description:4
@@ -462,7 +464,7 @@ msgstr "一组相关但不同的乐器，就像类似小提琴的不同的乐器
 #: DB:label_type/description:5
 msgctxt "label_type"
 msgid "A label that primarily puts out unsanctioned (bootleg) releases."
-msgstr "主要发行未经授权(盗版)作品的唱片公司。"
+msgstr "主要发行未经授权（盗版/盗录）发行的厂牌。"
 
 #. name:Longbox
 #: DB:release_packaging/description:55
@@ -668,9 +670,8 @@ msgid ""
 "A promotional release mostly meant to have limited circulation and "
 "demonstrate the sound of an artist to record labels, publishers and other "
 "artists."
-msgstr ""
-"推广专辑更多意味着有限流通，用于向厂牌，词曲版权方以及其他艺术家演示某艺术家"
-"的声音。"
+msgstr "一种推广性质的发行，通常仅具有有限的流通价值，具有向厂牌，出版方以及其他艺术"
+"家展示作品的作用。"
 
 #. name:Quartet
 #: DB:work_type/description:14
@@ -2098,7 +2099,7 @@ msgstr "非法制作"
 #: DB:label_type/name:5
 msgctxt "label_type"
 msgid "Bootleg Production"
-msgstr "非法制作的产品"
+msgstr "私制商"
 
 #: DB:cover_art_archive.art_type/name:49
 msgctxt "cover_art_type"
@@ -2896,7 +2897,7 @@ msgstr "抽取式碟片盒"
 #: DB:label_type/name:1
 msgctxt "label_type"
 msgid "Distributor"
-msgstr "发行商"
+msgstr "经销商"
 
 #: DB:area_type/name:5
 msgctxt "area_type"
@@ -4146,6 +4147,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the British rights society PRS for Music"
 msgstr "英国音乐著作权协会PRS ID"
 
+#. name:MUSICAUTOR ID
+#: DB:work_attribute_type/description:212
+msgctxt "work_attribute_type"
+msgid "ID for the Bulgarian rights society MUSICAUTOR"
+msgstr "保加利亚权协MUSICAUTOR的ID"
+
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
 msgctxt "work_attribute_type"
@@ -4581,20 +4588,13 @@ msgstr "土著领地/保护区"
 
 #. name:Indigenous territory / reserve
 #: DB:area_type/description:9
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for semi-autonomous territories governed by indigenous peoples, such "
-#| "as Indian reserves/reservations in North America and indigenous "
-#| "territories in Central and South America."
 msgctxt "area_type"
 msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
 "governed by indigenous peoples, such as Indian reserves/reservations in "
 "North America and indigenous territories in Central and South America."
-msgstr ""
-"用于原住民统治的半自治领土，如北美洲的印第安人保留地/保护区以及中美洲和南美洲"
-"的土著领地。"
+msgstr "土著领土/保留地用于由土著人民管理的半自治领土，如北美的印第安人保留地/保留地"
+"以及中美洲和南美洲的土著领土。"
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5374,6 +5374,11 @@ msgctxt "work_attribute_type"
 msgid "MCT ID"
 msgstr "MCT ID"
 
+#: DB:work_attribute_type/name:212
+msgctxt "work_attribute_type"
+msgid "MUSICAUTOR ID"
+msgstr "MUSICAUTOR ID"
+
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
 msgid "Madhmad sāraṅg"
@@ -5621,16 +5626,11 @@ msgstr "军事基地"
 
 #. name:Military base
 #: DB:area_type/description:8
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for any military bases that are large enough to be considered an "
-#| "area, not just a place."
 msgctxt "area_type"
 msgid ""
 "Military base is used only for any military bases that are large enough to "
 "be considered an area, not just a place."
-msgstr "用于任何足够大的军事基地，可以被视为一个区域，而不仅仅是一个场所。"
+msgstr "军事基地仅用于任何足够大地区的军事基地，而不仅仅是一个地点。"
 
 #: DB:medium_format/name:166
 msgctxt "medium_format"
@@ -6431,7 +6431,7 @@ msgstr "交响乐"
 #: DB:label_type/name:4
 msgctxt "label_type"
 msgid "Original Production"
-msgstr "初版"
+msgstr "原创出品"
 
 #: DB:artist_type/name:3
 msgctxt "artist_type"
@@ -6722,12 +6722,12 @@ msgid ""
 "are distinct from demos in that they are designed for release directly to "
 "the public and fans; not to labels."
 msgstr ""
-"本质上属于推广品(尽管不一定免费)，混音带和街头专辑通常由艺术家发行，用于推广"
-"新人艺术家或者知名艺术家的新录音室专辑。有时也用于在录音室专辑发行间歇期保持"
-"粉丝注意力，在嘻哈流派中较为常见。通常它们未经厂牌核准，所用采样或歌曲未经许"
-"可，且制作和录音质量差异较大。尽管混音带一般由DJ混制，它们独立于商业DJ混音(常"
-"视为合辑)，其定义为含有大量新素材，包括原创制作或附加于其他艺术家伴奏上的原创"
-"人声。与样带的区别在于它们是为了直接向公众和粉丝而非厂牌方发行而制作的。"
+"本质上属于宣传品（尽管不一定免费），混音带和街头专辑通常由艺术家自行发行，用"
+"于推广新人或者新录音室专辑。有时也用于在录音室专辑发行间隙维持听众注意力，在"
+"嘻哈流派中较为常见。通常它们未经厂牌核准，可能包含未经授权的采样或歌曲，且制"
+"作和录音质量良莠不齐。尽管混音带一般由DJ混制，它们区别于商业DJ混音（常视为合"
+"辑）之处是含有大量新素材，包括原创制作或附加于其他艺术家伴奏上的原创人声。与"
+"样带的区别在于它们直接向公众和粉丝发行，而非面向厂牌。"
 
 #: DB:work_type/name:23
 msgctxt "work_type"
@@ -6742,7 +6742,7 @@ msgstr "虚拟专辑"
 #: DB:label_type/name:7
 msgctxt "label_type"
 msgid "Publisher"
-msgstr "出版社"
+msgstr "出版商"
 
 #: DB:work_attribute_type_allowed_value/value:999
 msgctxt "work_attribute_type_allowed_value"
@@ -6953,7 +6953,7 @@ msgstr "Rehavi"
 #: DB:label_type/name:6
 msgctxt "label_type"
 msgid "Reissue Production"
-msgstr "重新发行的产品"
+msgstr "再版出品"
 
 #: DB:work_attribute_type_allowed_value/value:515
 msgctxt "work_attribute_type_allowed_value"
@@ -7033,7 +7033,7 @@ msgstr "Reyya"
 #: DB:label_type/name:8
 msgctxt "label_type"
 msgid "Rights Society"
-msgstr "版权协会"
+msgstr "版权机构"
 
 #: DB:work_attribute_type_allowed_value/value:222
 msgctxt "work_attribute_type_allowed_value"
@@ -8683,12 +8683,9 @@ msgid "Vīra vasantaṁ"
 msgstr "Vīra vasantaṁ"
 
 #: DB:work_attribute_type/name:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "BMI ID"
 msgctxt "work_attribute_type"
 msgid "WAMI ID"
-msgstr "BMI ID"
+msgstr "WAMI ID"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"
@@ -8718,7 +8715,7 @@ msgstr "愿望清单"
 #: DB:release_status/name:5
 msgctxt "release_status"
 msgid "Withdrawn"
-msgstr "已取消"
+msgstr "已撤回"
 
 #: DB:series_type/name:46
 msgctxt "series_type"
