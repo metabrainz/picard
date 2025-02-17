@@ -1,3 +1,10 @@
+# Version 2.13.3 - 2025-02-17
+
+## Bugfixes
+- [PICARD-2909](https://tickets.metabrainz.org/browse/PICARD-2909) - libopus fails to read METADATA_BLOCK_PICTURE without bit depth set
+- [PICARD-3034](https://tickets.metabrainz.org/browse/PICARD-3034) - Windows: SSL errors if conflicting libssl is installed system wide
+
+
 # Version 2.13.2 - 2025-02-07
 
 ## Bugfixes
