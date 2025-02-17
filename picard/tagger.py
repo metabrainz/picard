@@ -95,6 +95,7 @@ from picard.config import (
 )
 from picard.config_upgrade import upgrade_config
 from picard.const import USER_DIR
+from picard.const.appdirs import plugin_folder
 from picard.const.sys import (
     IS_HAIKU,
     IS_MACOS,
@@ -116,10 +117,8 @@ from picard.i18n import (
 )
 from picard.item import MetadataItem
 from picard.options import init_options
-from picard.pluginmanager import (
-    PluginManager,
-    plugin_dirs,
-)
+from picard.plugin3.manager import PluginManager
+from picard.pluginmanager import PluginManager as LegacyPluginManager
 from picard.releasegroup import ReleaseGroup
 from picard.track import (
     NonAlbumTrack,
@@ -356,10 +355,12 @@ class Tagger(QtWidgets.QApplication):
         self.enable_menu_icons(config.setting['show_menu_icons'])
 
         # Load plugins
-        self.pluginmanager = PluginManager()
+        # FIXME: Legacy, remove as soong no longer used by other code
+        self.pluginmanager = LegacyPluginManager()
+
+        self.pluginmanager3 = PluginManager(self)
         if not self._no_plugins:
-            for plugin_dir in plugin_dirs():
-                self.pluginmanager.load_plugins_from_directory(plugin_dir)
+            self.pluginmanager3.add_directory(plugin_folder(), primary=True)
 
         self.browser_integration = BrowserIntegration()
         self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
@@ -771,6 +772,7 @@ class Tagger(QtWidgets.QApplication):
     def run(self):
         self.update_browser_integration()
         self.window.show()
+        self.pluginmanager3.init_plugins()
         QtCore.QTimer.singleShot(0, self._run_init)
         res = self.exec()
         self.exit()
