@@ -3,21 +3,22 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# KenParker_CN <peekabookenny@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2024-06-02 02:42+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Chinese (Simplified) <https://translations.metabrainz.org/"
-"projects/picard/3/constants/zh_Hans/>\n"
+"PO-Revision-Date: 2025-02-20 10:44+0000\n"
+"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://"
+"translations.metabrainz.org/projects/picard/3/constants/zh_Hans/>\n"
 "Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.4\n"
+"X-Generator: Weblate 5.10\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -237,7 +238,7 @@ msgstr "阿布哈兹语"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
-msgstr ""
+msgstr "阿布哈兹 (格鲁吉亚)"
 
 #: picard/const/locales.py:34
 msgid "Afrikaans"
@@ -253,11 +254,11 @@ msgstr "南非荷兰语（南非）"
 
 #: picard/const/locales.py:37
 msgid "Aghem"
-msgstr ""
+msgstr "阿年比"
 
 #: picard/const/locales.py:38
 msgid "Aghem (Cameroon)"
-msgstr ""
+msgstr "阿年比 (喀麦隆)"
 
 #: picard/const/locales.py:39
 msgid "Akan"
@@ -281,15 +282,15 @@ msgstr "阿拉贡语"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
-msgstr ""
+msgstr "阿拉贡 (西班牙)"
 
 #: picard/const/locales.py:45
 msgid "Obolo"
-msgstr ""
+msgstr "奥博洛"
 
 #: picard/const/locales.py:46
 msgid "Obolo (Nigeria)"
-msgstr ""
+msgstr "奥博洛 (尼日利亚)"
 
 #: picard/const/locales.py:47
 msgid "Syria"
@@ -297,7 +298,7 @@ msgstr "叙利亚"
 
 #: picard/const/locales.py:49
 msgid "Arabic (world)"
-msgstr ""
+msgstr "阿拉伯 (世界)"
 
 #: picard/const/locales.py:50
 msgid "Arabic (United Arab Emirates)"
@@ -309,7 +310,7 @@ msgstr "阿拉伯语（巴林）"
 
 #: picard/const/locales.py:52
 msgid "Arabic (Djibouti)"
-msgstr ""
+msgstr "阿拉伯 (吉布提)"
 
 #: picard/const/locales.py:53
 msgid "Arabic (Algeria)"
@@ -321,15 +322,15 @@ msgstr "阿拉伯语（埃及）"
 
 #: picard/const/locales.py:55
 msgid "Arabic (Western Sahara)"
-msgstr ""
+msgstr "阿拉伯 (西撒哈拉)"
 
 #: picard/const/locales.py:56
 msgid "Arabic (Eritrea)"
-msgstr ""
+msgstr "阿拉伯 (厄立特里亚)"
 
 #: picard/const/locales.py:57
 msgid "Arabic (Israel)"
-msgstr ""
+msgstr "阿拉伯 (以色列)"
 
 #: picard/const/locales.py:58
 msgid "Arabic (Iraq)"
@@ -341,7 +342,7 @@ msgstr "阿拉伯语（约旦）"
 
 #: picard/const/locales.py:60
 msgid "Arabic (Comoros)"
-msgstr ""
+msgstr "阿拉伯 (科摩罗)"
 
 #: picard/const/locales.py:61
 msgid "Arabic (Kuwait)"
@@ -361,7 +362,7 @@ msgstr "阿拉伯语（摩洛哥）"
 
 #: picard/const/locales.py:65
 msgid "Arabic (Mauritania)"
-msgstr ""
+msgstr "阿拉伯 (毛里塔尼亚)"
 
 #: picard/const/locales.py:66
 msgid "Arabic (Oman)"
@@ -369,7 +370,7 @@ msgstr "阿拉伯语（阿曼）"
 
 #: picard/const/locales.py:67
 msgid "Arabic (Palestinian Territories)"
-msgstr ""
+msgstr "阿拉伯 (巴勒斯坦地区)"
 
 #: picard/const/locales.py:68
 msgid "Arabic (Qatar)"
@@ -385,11 +386,11 @@ msgstr "阿拉伯语（苏丹）"
 
 #: picard/const/locales.py:71
 msgid "Arabic (Somalia)"
-msgstr ""
+msgstr "阿拉伯 (索马里)"
 
 #: picard/const/locales.py:72
 msgid "Arabic (South Sudan)"
-msgstr ""
+msgstr "阿拉伯 (南苏丹)"
 
 #: picard/const/locales.py:73
 msgid "Arabic (Syria)"
@@ -397,7 +398,7 @@ msgstr "阿拉伯语（叙利亚）"
 
 #: picard/const/locales.py:74
 msgid "Arabic (Chad)"
-msgstr ""
+msgstr "阿拉伯语 (乍得)"
 
 #: picard/const/locales.py:75
 msgid "Arabic (Tunisia)"
@@ -409,11 +410,11 @@ msgstr "阿拉伯语（也门）"
 
 #: picard/const/locales.py:77
 msgid "Mapuche"
-msgstr ""
+msgstr "马普切语"
 
 #: picard/const/locales.py:78
 msgid "Mapuche (Chile)"
-msgstr ""
+msgstr "马普切语 (智利)"
 
 #: picard/const/locales.py:79
 msgid "Assamese"
@@ -425,11 +426,11 @@ msgstr "阿萨姆语（印度）"
 
 #: picard/const/locales.py:81
 msgid "Asu"
-msgstr ""
+msgstr "阿苏语"
 
 #: picard/const/locales.py:82
 msgid "Asu (Tanzania)"
-msgstr ""
+msgstr "阿苏语 (坦桑尼亚)"
 
 #: picard/const/locales.py:83
 msgid "Asturian"
@@ -437,7 +438,7 @@ msgstr "阿斯图里亚斯语"
 
 #: picard/const/locales.py:84
 msgid "Asturian (Spain)"
-msgstr ""
+msgstr "阿斯图里亚斯语 (西班牙)"
 
 #: picard/const/locales.py:85
 msgid "Azerbaijani"
@@ -445,19 +446,19 @@ msgstr "阿塞拜疆语"
 
 #: picard/const/locales.py:86
 msgid "Azerbaijani (Arabic)"
-msgstr ""
+msgstr "阿塞拜疆语 (阿拉伯字母)"
 
 #: picard/const/locales.py:87
 msgid "Azerbaijani (Arabic) (Iraq)"
-msgstr ""
+msgstr "阿塞拜疆语 (阿拉伯字母) (伊拉克)"
 
 #: picard/const/locales.py:88
 msgid "Azerbaijani (Arabic) (Iran)"
-msgstr ""
+msgstr "阿塞拜疆语 (阿拉伯字母) (伊朗)"
 
 #: picard/const/locales.py:89
 msgid "Azerbaijani (Arabic) (Türkiye)"
-msgstr ""
+msgstr "阿塞拜疆语 (阿拉伯字母) (土耳其)"
 
 #: picard/const/locales.py:90
 msgid "Azerbaijani (Cyrillic)"
@@ -481,7 +482,7 @@ msgstr "巴什基尔语"
 
 #: picard/const/locales.py:95
 msgid "Bashkir (Russia)"
-msgstr ""
+msgstr "巴什基尔语 (俄罗斯)"
 
 #: picard/const/locales.py:96
 msgid "Baluchi"
@@ -489,27 +490,27 @@ msgstr "俾路支语"
 
 #: picard/const/locales.py:97
 msgid "Baluchi (Arabic)"
-msgstr ""
+msgstr "俾路支语 (阿拉伯字母)"
 
 #: picard/const/locales.py:98
 msgid "Baluchi (Arabic) (Pakistan)"
-msgstr ""
+msgstr "俾路支语 (阿拉伯字母) (巴基斯坦)"
 
 #: picard/const/locales.py:99
 msgid "Baluchi (Latin)"
-msgstr ""
+msgstr "俾路支语 (拉丁字母)"
 
 #: picard/const/locales.py:100
 msgid "Baluchi (Latin) (Pakistan)"
-msgstr ""
+msgstr "俾路支语 (拉丁字母) (巴基斯坦)"
 
 #: picard/const/locales.py:101
 msgid "Basaa"
-msgstr ""
+msgstr "巴萨语"
 
 #: picard/const/locales.py:102
 msgid "Basaa (Cameroon)"
-msgstr ""
+msgstr "巴萨语 (喀麦隆)"
 
 #: picard/const/locales.py:103
 msgid "Belarusian"
@@ -521,7 +522,7 @@ msgstr "白俄罗斯语（白俄罗斯）"
 
 #: picard/const/locales.py:105
 msgid "Belarusian (Taraskievica orthography)"
-msgstr ""
+msgstr "白俄罗斯语 (塔拉斯基维察正字法)"
 
 #: picard/const/locales.py:106
 msgid "Bemba"
@@ -529,15 +530,15 @@ msgstr "本巴语"
 
 #: picard/const/locales.py:107
 msgid "Bemba (Zambia)"
-msgstr ""
+msgstr "班巴语 (赞比亚)"
 
 #: picard/const/locales.py:108
 msgid "Bena"
-msgstr ""
+msgstr "贝纳语"
 
 #: picard/const/locales.py:109
 msgid "Bena (Tanzania)"
-msgstr ""
+msgstr "贝纳语 (坦桑尼亚)"
 
 #: picard/const/locales.py:110
 msgid "Bulgarian"
@@ -549,35 +550,35 @@ msgstr "保加利亚语（保加利亚）"
 
 #: picard/const/locales.py:112
 msgid "Haryanvi"
-msgstr ""
+msgstr "哈利亚纳语"
 
 #: picard/const/locales.py:113
 msgid "Haryanvi (India)"
-msgstr ""
+msgstr "哈利亚纳语 (印度)"
 
 #: picard/const/locales.py:114
 msgid "Western Balochi"
-msgstr ""
+msgstr "西部俾路支语"
 
 #: picard/const/locales.py:115
 msgid "Western Balochi (United Arab Emirates)"
-msgstr ""
+msgstr "西部俾路支语 (阿联酋)"
 
 #: picard/const/locales.py:116
 msgid "Western Balochi (Afghanistan)"
-msgstr ""
+msgstr "西部俾路支语 (阿富汗)"
 
 #: picard/const/locales.py:117
 msgid "Western Balochi (Iran)"
-msgstr ""
+msgstr "西部俾路支语 (伊朗)"
 
 #: picard/const/locales.py:118
 msgid "Western Balochi (Oman)"
-msgstr ""
+msgstr "西部俾路支语 (阿曼)"
 
 #: picard/const/locales.py:119
 msgid "Western Balochi (Pakistan)"
-msgstr ""
+msgstr "西部俾路支语 (巴基斯坦)"
 
 #: picard/const/locales.py:120
 msgid "Bhojpuri"
@@ -585,15 +586,15 @@ msgstr "博杰普里语"
 
 #: picard/const/locales.py:121
 msgid "Bhojpuri (India)"
-msgstr ""
+msgstr "博吉普尔语 (印度)"
 
 #: picard/const/locales.py:122
 msgid "Tai Dam"
-msgstr ""
+msgstr "台岱语"
 
 #: picard/const/locales.py:123
 msgid "Tai Dam (Vietnam)"
-msgstr ""
+msgstr "台岱语 (越南)"
 
 #: picard/const/locales.py:124
 msgid "Bambara"
@@ -601,27 +602,27 @@ msgstr "班巴拉语"
 
 #: picard/const/locales.py:125
 msgid "Bambara (Mali)"
-msgstr ""
+msgstr "班巴拉语 (马里)"
 
 #: picard/const/locales.py:126
 msgid "Bambara (N’Ko)"
-msgstr ""
+msgstr "班巴拉语 (N’Ko字母)"
 
 #: picard/const/locales.py:127
 msgid "Bambara (N’Ko) (Mali)"
-msgstr ""
+msgstr "班巴拉语 (N’Ko字母) (马里)"
 
 #: picard/const/locales.py:128
 msgid "Bangla"
-msgstr ""
+msgstr "孟加拉语"
 
 #: picard/const/locales.py:129
 msgid "Bangla (Bangladesh)"
-msgstr ""
+msgstr "孟加拉语 (孟加拉)"
 
 #: picard/const/locales.py:130
 msgid "Bangla (India)"
-msgstr ""
+msgstr "孟加拉语 (印度)"
 
 #: picard/const/locales.py:131
 msgid "Tibetan"
@@ -641,11 +642,11 @@ msgstr "布里多尼语"
 
 #: picard/const/locales.py:135
 msgid "Breton (France)"
-msgstr ""
+msgstr "布列塔尼语 (法国)"
 
 #: picard/const/locales.py:136
 msgid "Bodo"
-msgstr ""
+msgstr "博多语"
 
 #: picard/const/locales.py:137
 msgid "Bodo (India)"
@@ -657,27 +658,27 @@ msgstr "波斯尼亚语"
 
 #: picard/const/locales.py:139
 msgid "Bosnian (Cyrillic)"
-msgstr ""
+msgstr "波斯尼亚语 (西里尔字母)"
 
 #: picard/const/locales.py:140
 msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "波斯尼亚语 (西里尔字母) (波黑)"
 
 #: picard/const/locales.py:141
 msgid "Bosnian (Latin)"
-msgstr ""
+msgstr "波斯尼亚语 (拉丁字母)"
 
 #: picard/const/locales.py:142
 msgid "Bosnian (Latin) (Bosnia & Herzegovina)"
-msgstr ""
+msgstr "波斯尼亚语 (拉丁字母) (波黑)"
 
 #: picard/const/locales.py:143
 msgid "Akoose"
-msgstr ""
+msgstr "阿库泽语"
 
 #: picard/const/locales.py:144
 msgid "Akoose (Cameroon)"
-msgstr ""
+msgstr "阿库泽语 (喀麦隆)"
 
 #: picard/const/locales.py:145
 msgid "Blin"
@@ -689,7 +690,7 @@ msgstr "比林语（厄立特里亚）"
 
 #: picard/const/locales.py:148
 msgid "Catalan (Andorra)"
-msgstr ""
+msgstr "加泰罗尼亚语 (安道尔)"
 
 #: picard/const/locales.py:149
 msgid "Catalan (Spain)"
@@ -697,15 +698,15 @@ msgstr "加泰罗尼亚语（西班牙）"
 
 #: picard/const/locales.py:150
 msgid "Catalan (Spain Valencian)"
-msgstr ""
+msgstr "加泰罗尼亚语 (西班牙瓦伦西亚语)"
 
 #: picard/const/locales.py:151
 msgid "Catalan (France)"
-msgstr ""
+msgstr "加泰罗尼亚语 (法国)"
 
 #: picard/const/locales.py:152
 msgid "Catalan (Italy)"
-msgstr ""
+msgstr "加泰罗尼亚语 (意大利)"
 
 #: picard/const/locales.py:153
 msgid "Caddo"
@@ -713,7 +714,7 @@ msgstr "卡多语"
 
 #: picard/const/locales.py:154
 msgid "Caddo (United States)"
-msgstr ""
+msgstr "卡多语 (美国)"
 
 #: picard/const/locales.py:155
 msgid "Atsam"
@@ -741,7 +742,7 @@ msgstr "车臣语"
 
 #: picard/const/locales.py:161
 msgid "Chechen (Russia)"
-msgstr ""
+msgstr "车成语 (俄罗斯)"
 
 #: picard/const/locales.py:162
 msgid "Cebuano"
