@@ -54,6 +54,10 @@ if IS_WIN:
     from pywintypes import error as WinApiError  # type: ignore
     import win32file  # type: ignore
     import win32pipe  # type: ignore
+else:
+    WinApiError = None
+    win32file = None
+    win32pipe = None
 
 
 class PipeError(Exception):
