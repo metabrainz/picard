@@ -86,6 +86,7 @@ from picard.i18n import (
 )
 
 
+winreg = None
 if IS_WIN:
     import winreg
 

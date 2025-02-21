@@ -296,6 +296,7 @@ class PluginManager(QtCore.QObject):
         zip_importer = None
         manifest_data = None
         full_module_name = _PLUGIN_MODULE_PREFIX + name
+        plugin_dir = None
 
         # Legacy loading of ZIP plugins. In Python >= 3.10 this is all handled
         # by PluginMetaPathFinder. Remove once Python 3.9 is no longer supported.

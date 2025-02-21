@@ -39,6 +39,8 @@ from picard.const.sys import (
 
 
 OS_SUPPORTS_THEMES = True
+AppKit = None
+winreg = None
 if IS_MACOS:
     try:
         import AppKit
@@ -49,6 +51,8 @@ if IS_MACOS:
 
 elif IS_HAIKU:
     OS_SUPPORTS_THEMES = False
+elif IS_WIN:
+    import winreg
 
 
 # Those are values stored in config file:
@@ -138,8 +142,6 @@ class BaseTheme:
 
 
 if IS_WIN:
-    import winreg
-
     class WindowsTheme(BaseTheme):
         def setup(self, app):
             app.setStyle('Fusion')
