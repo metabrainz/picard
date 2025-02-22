@@ -110,7 +110,7 @@ class CoverArt:
                 if filters_result:
                     self._set_metadata(coverartimage, data, image_info)
             except imageinfo.IdentificationError as e:
-                log.warning(f"Couldn't identify image {coverartimage}: {e}")
+                log.warning("Couldn't identify image %r: %s", coverartimage, e)
                 return
 
         self.next_in_queue()
@@ -177,7 +177,7 @@ class CoverArt:
                     image_info = imageinfo.identify(data)
                     self._set_metadata(coverartimage, data, image_info)
             except imageinfo.IdentificationError as e:
-                log.error(f"Couldn't identify image file {path}: {e}")
+                log.error("Couldn't identify image file %r: %s", path, e)
             except OSError as exc:
                 (errnum, errmsg) = exc.args
                 log.error("Failed to read %r: %s (%d)", path, errmsg, errnum)
