@@ -109,7 +109,8 @@ class CoverArt:
                     filters_result = run_image_filters(data, image_info, self.album, coverartimage)
                 if filters_result:
                     self._set_metadata(coverartimage, data, image_info)
-            except imageinfo.IdentificationError:
+            except imageinfo.IdentificationError as e:
+                log.warning("Couldn't identify image %r: %s", coverartimage, e)
                 return
 
         self.next_in_queue()
@@ -172,7 +173,11 @@ class CoverArt:
             try:
                 path = coverartimage.url.toLocalFile()
                 with open(path, 'rb') as file:
-                    self._set_metadata(coverartimage, file.read())
+                    data = file.read()
+                    image_info = imageinfo.identify(data)
+                    self._set_metadata(coverartimage, data, image_info)
+            except imageinfo.IdentificationError as e:
+                log.error("Couldn't identify image file %r: %s", path, e)
             except OSError as exc:
                 (errnum, errmsg) = exc.args
                 log.error("Failed to read %r: %s (%d)", path, errmsg, errnum)

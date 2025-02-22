@@ -1,4 +1,12 @@
 # Configuration for prospector, mainly used by Codacy.
+output-format: grouped
+
+max-line-length: 120
+ignore-patterns:
+  - ^picard/ui/forms/ui_.*\.py$
+
+mccabe:
+  run: false
 
 pep8:
   # Please see comments in setup.cfg as to why we disable the below checks.
