@@ -1,5 +1,5 @@
-[project]
-requires-python = ">=3.8"
+#[project]
+#requires-python = ">=3.8"
 
 [build-system]
 requires = ["setuptools>=62.4.0"]
