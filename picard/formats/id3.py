@@ -741,11 +741,11 @@ class ID3File(File):
             remaining_ms = ms % 1000
             return f"{minutes:02d}:{seconds:02d}.{remaining_ms:03d}"
 
-        lyrics, milliseconds = zip(*text)
+        all_lyrics, milliseconds = zip(*text)
         milliseconds = (*milliseconds, length * 1000)
         first_timestamp = milliseconds_to_timestamp(milliseconds[0])
         lrc_lyrics = [f"[{first_timestamp}]"]
-        for i, lyrics in enumerate(lyrics):
+        for i, lyrics in enumerate(all_lyrics):
             timestamp = milliseconds_to_timestamp(milliseconds[i])
             if '\n' in lyrics:
                 split = lyrics.split('\n')
