@@ -184,7 +184,7 @@ class InterfaceColors:
         except KeyError:
             if color_key in self.default_colors:
                 return self.default_colors[color_key].value
-            raise UnknownColorException("Unknown color key: %s" % color_key)
+            raise UnknownColorException("Unknown color key: %s" % color_key) from None
 
     def get_qcolor(self, color_key):
         return QtGui.QColor(self.get_color(color_key))

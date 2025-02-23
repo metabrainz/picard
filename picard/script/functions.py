@@ -1203,7 +1203,7 @@ def func_datetime(parser, format=None):
         return datetime.datetime.now(tz=local_tz).strftime(format)
     except ValueError:
         stackitem = parser._function_stack.get()
-        raise ScriptRuntimeError(stackitem, "Unsupported format code")
+        raise ScriptRuntimeError(stackitem, "Unsupported format code") from None
 
 
 @script_function(eval_args=False, documentation=N_(

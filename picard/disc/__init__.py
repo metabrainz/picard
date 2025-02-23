@@ -81,7 +81,7 @@ class Disc:
             raise
         except ValueError as e:
             log.error("Error while processing TOC %r: %s", toc, e)
-            raise discid.TOCError(e)
+            raise discid.TOCError(e) from e
 
     def _set_disc_details(self, disc):
         self.id = disc.id

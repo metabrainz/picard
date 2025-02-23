@@ -61,7 +61,7 @@ def unpack_image(data):
     try:
         (type_, size) = struct.unpack_from('<bi', data)
     except struct.error as e:
-        raise ValueError(e)
+        raise ValueError(e) from e
     data = data[5:]
 
     mime = b''

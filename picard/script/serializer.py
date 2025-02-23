@@ -245,7 +245,7 @@ class ScriptSerializer():
             with open(filename, 'w', encoding='utf-8') as o_file:
                 o_file.write(script_text)
         except OSError as error:
-            raise ScriptSerializerExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror)
+            raise ScriptSerializerExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror) from None
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Export Script"),
@@ -279,14 +279,14 @@ class ScriptSerializer():
             with open(filename, 'r', encoding='utf-8') as i_file:
                 file_content = i_file.read()
         except OSError as error:
-            raise ScriptSerializerImportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror)
+            raise ScriptSerializerImportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror) from None
         if not file_content.strip():
             raise ScriptSerializerImportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty"))
         if file_type == cls._file_types()['package']:
             try:
                 return cls().create_from_yaml(file_content)
             except ScriptSerializerFromFileError as error:
-                raise ScriptSerializerImportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error)
+                raise ScriptSerializerImportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error) from None
         else:
             return cls(
                 title=_("Imported from %s") % filename,

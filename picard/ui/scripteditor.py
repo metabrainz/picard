@@ -1300,7 +1300,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         try:
             parser.eval(script_text)
         except Exception as e:
-            raise ScriptCheckError("", str(e))
+            raise ScriptCheckError("", str(e)) from None
         if config.setting['rename_files']:
             if not self.get_script():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))
