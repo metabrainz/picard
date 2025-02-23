@@ -407,7 +407,7 @@ class AlbumItem(TreeItem):
             oldnum = self.childCount() - 1
             newnum = len(album.tracks)
             if oldnum > newnum:  # remove old items
-                for i in range(oldnum - newnum):
+                for _i in range(oldnum - newnum):
                     item = self.child(newnum)
                     selection_changed |= item.isSelected()
                     self.takeChild(newnum)
@@ -518,7 +518,7 @@ class TrackItem(TreeItem):
                 oldnum = self.childCount()
                 newnum = track.num_linked_files
                 if oldnum > newnum:  # remove old items
-                    for i in range(oldnum - newnum):
+                    for _i in range(oldnum - newnum):
                         self.takeChild(newnum - 1).obj = None
                     oldnum = newnum
                 for i in range(oldnum):  # update existing items

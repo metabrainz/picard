@@ -506,7 +506,7 @@ class Album(MetadataItem):
             },
             timeout=3000
         )
-        for func, always in self._after_load_callbacks:
+        for func, _always in self._after_load_callbacks:
             func()
         self._after_load_callbacks = []
         if self.ui_item.isSelected():

@@ -94,7 +94,7 @@ class FileBrowser(QtWidgets.QTreeView):
         model.setRootPath("")
         self._set_model_filter()
         filters = []
-        for exts, name in supported_formats():
+        for exts, _name in supported_formats():
             filters.extend("*" + e for e in exts)
         model.setNameFilters(filters)
         # Hide unsupported files completely

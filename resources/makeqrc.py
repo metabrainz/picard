@@ -49,7 +49,7 @@ def natsort_key(s):
 
 def find_files(topdir, directory, patterns):
     tdir = os.path.join(topdir, directory)
-    for root, dirs, files in os.walk(tdir):
+    for root, _dirs, files in os.walk(tdir):
         for basename in files:
             for pattern in patterns:
                 if fnmatch.fnmatch(basename, pattern):

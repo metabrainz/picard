@@ -204,7 +204,7 @@ class APEv2File(File):
             for name, value in preserved:
                 tags[name] = value
         elif images_to_save:
-            for name, value in self._iter_cover_art_tags(tags):
+            for name, _value in self._iter_cover_art_tags(tags):
                 del tags[name]
         temp = {}
         for name, value in metadata.items():
