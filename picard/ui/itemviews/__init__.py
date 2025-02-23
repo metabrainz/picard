@@ -600,6 +600,7 @@ class FileItem(TreeItem):
             icon = FileItem.icon_file
         return (icon, tooltip)
 
+    @staticmethod
     def _match_icon_index(similarity):
         return int(similarity * 5 + 0.5)
 

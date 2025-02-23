@@ -94,6 +94,7 @@ class Id3Encoding(IntEnum):
     UTF16BE = 2
     UTF8 = 3
 
+    @staticmethod
     def from_config(id3v2_encoding):
         return {
             'utf-8': Id3Encoding.UTF8,
