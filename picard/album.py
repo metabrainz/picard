@@ -506,7 +506,7 @@ class Album(MetadataItem):
             },
             timeout=3000
         )
-        for func, _always in self._after_load_callbacks:
+        for func, _run_on_error in self._after_load_callbacks:
             func()
         self._after_load_callbacks = []
         if self.ui_item.isSelected():
@@ -536,8 +536,8 @@ class Album(MetadataItem):
                 del self._new_metadata
                 del self._new_tracks
                 self.loaded = True
-                for func, always in self._after_load_callbacks:
-                    if always:
+                for func, run_on_error in self._after_load_callbacks:
+                    if run_on_error:
                         func()
             return
 
@@ -617,11 +617,11 @@ class Album(MetadataItem):
             refresh=refresh
         )
 
-    def run_when_loaded(self, func, always=False):
+    def run_when_loaded(self, func, run_on_error=False):
         if self.loaded:
             func()
         else:
-            self._after_load_callbacks.append((func, always))
+            self._after_load_callbacks.append((func, run_on_error))
 
     def stop_loading(self):
         if self.load_task:
