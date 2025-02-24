@@ -120,6 +120,57 @@ class ParseResult(IntEnum):
     MISSING_TRACK_RELS = 2
 
 
+class TracksCache:
+    """Cache for track lookups by recording/track ID and track/disc numbers."""
+    def __init__(self):
+        """Initialize an empty cache"""
+        self._cache = defaultdict(lambda: None)
+        self._initialized = False
+
+    def build(self, tracks):
+        """Populate the cache with tracks, creating lookup keys from their metadata.
+
+        For each track, creates cache entries with combinations of:
+        - recording ID
+        - track ID
+        - track number
+        - disc number
+
+        Args:
+            tracks: List of Track objects to add to the cache
+        """
+        for track in tracks:
+            tm_recordingid = track.orig_metadata['musicbrainz_recordingid']
+            tm_trackid = track.orig_metadata['musicbrainz_trackid']
+            tm_tracknumber = track.orig_metadata['tracknumber']
+            tm_discnumber = track.orig_metadata['discnumber']
+            for tup in (
+                (tm_recordingid, tm_tracknumber, tm_discnumber),
+                (tm_recordingid, tm_tracknumber),
+                (tm_recordingid, ),
+                (tm_trackid, tm_tracknumber, tm_discnumber),
+                (tm_trackid, tm_tracknumber),
+                (tm_trackid, )):
+                self._cache[tup] = track
+        self._initialized = True
+
+    def get_track(self, mbid, tracknumber=None, discnumber=None):
+        """Get track from cache by ID and optional track/disc numbers."""
+        if tracknumber and discnumber:
+            track = self._cache[(mbid, tracknumber, discnumber)]
+            if track:
+                return track
+        if tracknumber:
+            track = self._cache[(mbid, tracknumber)]
+            if track:
+                return track
+        return self._cache[(mbid,)]
+
+    def __bool__(self):
+        """Returns True if cache was initialized"""
+        return self._initialized
+
+
 class Album(MetadataItem):
 
     def __init__(self, album_id, discid=None):
@@ -647,47 +698,32 @@ class Album(MetadataItem):
     @staticmethod
     def _match_files(files, tracks, unmatched_files, threshold=0):
         """Match files to tracks on this album, based on metadata similarity or recordingid."""
-        tracks_cache = defaultdict(lambda: None)
-
-        def build_tracks_cache():
-            for track in tracks:
-                tm_recordingid = track.orig_metadata['musicbrainz_recordingid']
-                tm_trackid = track.orig_metadata['musicbrainz_trackid']
-                tm_tracknumber = track.orig_metadata['tracknumber']
-                tm_discnumber = track.orig_metadata['discnumber']
-                for tup in (
-                    (tm_recordingid, tm_tracknumber, tm_discnumber),
-                    (tm_recordingid, tm_tracknumber),
-                    (tm_recordingid, ),
-                    (tm_trackid, tm_tracknumber, tm_discnumber),
-                    (tm_trackid, tm_tracknumber),
-                    (tm_trackid, )):
-                    tracks_cache[tup] = track
-
         SimMatchAlbum = namedtuple('SimMatchAlbum', 'similarity track')
         no_match = SimMatchAlbum(similarity=-1, track=unmatched_files)
+
+        tracks_cache = TracksCache()
 
         for file in list(files):
             if file.state == File.REMOVED:
                 continue
-            # if we have a recordingid or trackid to match against, use that in priority
+
+            # If we have a recordingid or trackid to match against, use that in priority
             # if recordingid and trackid do point to different tracks, compare the file
             # and track durations to find the better match.
-            recid = file.match_recordingid or file.metadata['musicbrainz_recordingid']
-            trackid = file.metadata['musicbrainz_trackid']
-            tracknumber = file.metadata['tracknumber']
-            discnumber = file.metadata['discnumber']
+            metadata = file.metadata
+            recordingid = file.match_recordingid or metadata['musicbrainz_recordingid']
+            trackid = metadata['musicbrainz_trackid']
+            tracknumber = metadata['tracknumber']
+            discnumber = metadata['discnumber']
 
             def mbid_candidates():
-                for mbid in (recid, trackid):
+                if not tracks_cache:
+                    tracks_cache.build(tracks)
+                for mbid in (recordingid, trackid):
                     if mbid and mbid_validate(mbid):
-                        if not tracks_cache:
-                            build_tracks_cache()
-                        track = (tracks_cache[(mbid, tracknumber, discnumber)]
-                                or tracks_cache[(mbid, tracknumber)]
-                                or tracks_cache[(mbid, )])
+                        track = tracks_cache.get_track(mbid, tracknumber, discnumber)
                         if track:
-                            similarity = track.metadata.length_score(track.metadata.length, file.metadata.length)
+                            similarity = track.metadata.length_score(track.metadata.length, metadata.length)
                             yield SimMatchAlbum(similarity=similarity, track=track)
 
             best_match = find_best_match(mbid_candidates(), no_match)
