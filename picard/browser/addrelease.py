@@ -109,8 +109,8 @@ def serve_form(token):
                 return _get_file_as_recording_form(file, tport)
         else:
             raise InvalidTokenError
-    except jwt.exceptions.InvalidTokenError:
-        raise InvalidTokenError
+    except jwt.exceptions.InvalidTokenError as e:
+        raise InvalidTokenError from e
 
 
 def _open_url_with_token(payload):

@@ -405,7 +405,7 @@ def populate_script_selection_combo_box(naming_scripts, selected_script_id, comb
 
     idx = 0
     count = -1
-    for count, (id, naming_script) in enumerate(sorted(naming_scripts.items(), key=lambda item: item[1]['title'])):
+    for count, (_id, naming_script) in enumerate(sorted(naming_scripts.items(), key=lambda item: item[1]['title'])):
         idx = _add_and_check(idx, count, naming_script['title'], naming_script)
 
     combo_box.setCurrentIndex(idx)
@@ -1300,7 +1300,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         try:
             parser.eval(script_text)
         except Exception as e:
-            raise ScriptCheckError("", str(e))
+            raise ScriptCheckError("", str(e)) from None
         if config.setting['rename_files']:
             if not self.get_script():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))

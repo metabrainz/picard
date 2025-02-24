@@ -50,8 +50,8 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
             minor = int(minor)
             patch = int(patch)
             revision = int(revision)
-        except (TypeError, ValueError):
-            raise VersionError("major, minor, patch and revision must be integer values")
+        except (TypeError, ValueError) as e:
+            raise VersionError("major, minor, patch and revision must be integer values") from e
         return super(Version, cls).__new__(cls, major, minor, patch, identifier, revision)
 
     @classmethod

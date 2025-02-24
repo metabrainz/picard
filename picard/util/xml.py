@@ -54,7 +54,7 @@ class XmlNode:
             try:
                 return self.attribs[name]
             except KeyError:
-                raise AttributeError(name)
+                raise AttributeError(name) from None
 
 
 def _node_name(n):

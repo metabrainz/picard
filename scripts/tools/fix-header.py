@@ -59,7 +59,7 @@ ALIASES = {
 
 # https://stackoverflow.com/a/4629241
 def ranges(i):
-    for a, b in itertools.groupby(enumerate(i), lambda pair: pair[1] - pair[0]):
+    for _a, b in itertools.groupby(enumerate(i), lambda pair: pair[1] - pair[0]):
         b = list(b)
         yield b[0][1], b[-1][1]
 
@@ -147,7 +147,7 @@ def parse_file(path, encoding='utf-8'):
         if lines and lines[0].startswith('#!'):
             found["shebang"] = lines[0].rstrip()
             del lines[0]
-        for num, line in enumerate(lines):
+        for line in lines:
             skip_matched = skip_pattern.search(line)
             if skip_matched:
                 found['skip'] = skip_matched.group(1)

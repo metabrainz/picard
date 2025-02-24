@@ -66,13 +66,13 @@ def iter_sorted_locales(locales):
         name = _(name)
         generic_locale = locale.split('_', 1)[0]
         if generic_locale == locale:
-            generic_names.append((name, locale))
+            generic_names.append((name, generic_locale))
         else:
             grouped_locales.setdefault(generic_locale, []).append((name, locale))
 
-    for name, locale in sorted(generic_names):
-        yield (locale, 0)
-        for name, locale in sorted(grouped_locales.get(locale, [])):
+    for _name, generic_locale in sorted(generic_names):
+        yield (generic_locale, 0)
+        for _name, locale in sorted(grouped_locales.get(generic_locale, [])):
             yield (locale, 1)
 
 

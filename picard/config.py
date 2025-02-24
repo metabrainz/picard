@@ -187,7 +187,7 @@ class SettingConfigSection(ConfigSection):
     def __getitem__(self, name):
         # Don't process settings that are not profile-specific
         if name in profile_groups_all_settings():
-            for profile_id, settings in self._get_active_profile_settings():
+            for _profile_id, settings in self._get_active_profile_settings():
                 if name in settings and settings[name] is not None:
                     return settings[name]
         opt = Option.get(self.__name, name)

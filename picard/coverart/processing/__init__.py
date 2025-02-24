@@ -121,12 +121,12 @@ class CoverArtImageProcessing:
             else:
                 coverartimage.set_tags_data(initial_data)
         except IdentificationError as e:
-            raise CoverArtProcessingError(e)
-        except CoverArtProcessingError as e:
+            raise CoverArtProcessingError(e) from e
+        except CoverArtProcessingError:
             coverartimage.set_tags_data(initial_data)
             if config.setting['save_images_to_files']:
                 coverartimage.set_external_file_data(initial_data)
-            raise e
+            raise
 
     def run_image_processors(self, coverartimage, initial_data, image_info):
         if coverartimage.can_be_processed:

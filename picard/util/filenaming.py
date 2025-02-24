@@ -247,7 +247,7 @@ def _make_win_short_filename(relpath, reserved=0):
         computed = _make_win_short_filename._computed = {}
     try:
         finaldirpath, filename_max = computed[(dirpath, reserved)]
-    except KeyError:
+    except KeyError as e:
         dirnames = dirpath.split(os.path.sep)
         # allocate space for the separators,
         # but don't include the final one
@@ -258,7 +258,7 @@ def _make_win_short_filename(relpath, reserved=0):
             raise WinPathTooLong(
                 "Path too long. "
                 "You need to move renamed files to a different directory."
-            )
+            ) from e
 
         # try to reduce directories exceeding average with a ratio proportional
         # to how much they exceed with; if not possible, reduce all dirs

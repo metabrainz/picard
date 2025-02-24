@@ -278,7 +278,7 @@ class CoverArtThumbnail(ActiveLabel):
             # Draw the default background three times to indicate that there are more
             # covers than the ones displayed
             x, y = calculate_cover_coordinates(self.shadow, cx, cy)
-            for i in range(3):
+            for _i in range(3):
                 painter.drawPixmap(x, y, self.shadow)
                 x -= displacements // 3
                 y += displacements // 3

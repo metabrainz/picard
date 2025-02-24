@@ -320,12 +320,12 @@ class CoverArtImage:
             self.extension = info.extension
             self.datalength = info.datalen
         except imageinfo.IdentificationError as e:
-            raise CoverArtImageIdentificationError(e)
+            raise CoverArtImageIdentificationError(e) from e
 
         try:
             self.datahash = DataHash(data, suffix=self.extension)
         except OSError as e:
-            raise CoverArtImageIOError(e)
+            raise CoverArtImageIOError(e) from e
 
     def set_external_file_data(self, data):
         self.external_file_coverart = CoverArtImage(data=data, url=self.url)
@@ -432,7 +432,7 @@ class CoverArtImage:
                     os.makedirs(new_dirname)
                 shutil.copyfile(self.tempfile_filename, new_filename)
             except OSError as e:
-                raise CoverArtImageIOError(e)
+                raise CoverArtImageIOError(e) from e
 
     @staticmethod
     def _next_filename(filename, counters):
@@ -458,7 +458,7 @@ class CoverArtImage:
         try:
             return self.datahash.data
         except OSError as e:
-            raise CoverArtImageIOError(e)
+            raise CoverArtImageIOError(e) from e
 
     @property
     def tempfile_filename(self):

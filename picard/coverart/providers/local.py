@@ -97,7 +97,7 @@ class CoverArtProviderLocal(CoverArtProvider):
         return list(found.intersection(self._known_types))
 
     def find_local_images(self, current_dir, match_re):
-        for root, dirs, files in os.walk(current_dir):
+        for root, _dirs, files in os.walk(current_dir):
             for filename in files:
                 m = match_re.search(filename)
                 if not m:

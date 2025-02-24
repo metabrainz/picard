@@ -166,7 +166,7 @@ class ScriptFunction:
                         % (name, expected, argcount)
                     )
         except KeyError:
-            raise ScriptUnknownFunction(self.stackitem)
+            raise ScriptUnknownFunction(self.stackitem) from None
 
         self.name = name
         self.args = args
@@ -178,7 +178,7 @@ class ScriptFunction:
         try:
             function_registry_item = parser.functions[self.name]
         except KeyError:
-            raise ScriptUnknownFunction(self.stackitem)
+            raise ScriptUnknownFunction(self.stackitem) from None
 
         if function_registry_item.eval_args:
             args = [arg.eval(parser) for arg in self.args]

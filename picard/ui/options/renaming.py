@@ -257,7 +257,7 @@ class RenamingOptionsPage(OptionsPage):
         try:
             parser.eval(self.script_text)
         except Exception as e:
-            raise ScriptCheckError("", str(e))
+            raise ScriptCheckError("", str(e)) from None
         if self.ui.rename_files.isChecked():
             if not self.script_text.strip():
                 raise ScriptCheckError("", _("The file naming format must not be empty."))

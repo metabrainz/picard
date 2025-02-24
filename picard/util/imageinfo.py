@@ -256,7 +256,7 @@ class IdentifyTiff(IdentifyImageType):
             offset, = struct.unpack(order + 'I', data[4:8])
             entry_count, = struct.unpack(order + 'H', data[offset:offset + 2])
             pos = offset + 2
-            for i in range(entry_count):
+            for _i in range(entry_count):
                 field = data[pos:pos + 12]
                 tag, tiff_type = struct.unpack(order + 'HH', field[:4])
                 if tag == TIFF_TAG_IMAGE_WIDTH:

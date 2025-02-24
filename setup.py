@@ -439,7 +439,7 @@ class picard_clean_ui(Command):
         pass
 
     def run(self):
-        for uifile, pyfile in ui_files():
+        for _uifile, pyfile in ui_files():
             try:
                 os.unlink(pyfile)
                 log.info("removing %s", pyfile)
@@ -762,7 +762,7 @@ def _explode_path(path):
 def _picard_packages():
     """Build a tuple containing each module under picard/"""
     packages = []
-    for subdir, dirs, files in os.walk("picard"):
+    for subdir, _dirs, _files in os.walk("picard"):
         packages.append(".".join(_explode_path(subdir)))
     return tuple(sorted(packages))
 

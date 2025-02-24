@@ -250,7 +250,7 @@ class PluginFunctions:
 
     def _get_functions(self):
         """Returns registered functions by order of priority (highest first) and registration"""
-        for priority, functions in sorted(self.functions.items(),
+        for _priority, functions in sorted(self.functions.items(),
                                           key=lambda i: i[0],
                                           reverse=True):
             yield from functions

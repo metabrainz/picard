@@ -1201,9 +1201,9 @@ def func_datetime(parser, format=None):
         format = '%Y-%m-%d %H:%M:%S'
     try:
         return datetime.datetime.now(tz=local_tz).strftime(format)
-    except ValueError:
+    except ValueError as e:
         stackitem = parser._function_stack.get()
-        raise ScriptRuntimeError(stackitem, "Unsupported format code")
+        raise ScriptRuntimeError(stackitem, "Unsupported format code") from e
 
 
 @script_function(eval_args=False, documentation=N_(

@@ -247,8 +247,8 @@ class OAuthManager:
             callback = self.__states[state]
             del self.__states[state]
             return callback
-        except KeyError:
-            raise OAuthInvalidStateError
+        except KeyError as e:
+            raise OAuthInvalidStateError from e
 
     def get_authorization_url(self, scopes, callback: callable):
         params = {
