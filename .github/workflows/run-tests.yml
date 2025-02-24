@@ -140,6 +140,5 @@ jobs:
       if: runner.os != 'Windows'
       timeout-minutes: 30
       run: |
-        pip install --upgrade setuptools
-        pip install pytest
+        pip install build pytest
         scripts/package/run-sdist-test.sh

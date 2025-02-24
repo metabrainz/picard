@@ -5,7 +5,7 @@
 set -e
 
 rm -rf dist
-python3 setup.py sdist
+python -m build --sdist
 cd dist
 SDIST_ARCHIVE=$(echo picard-*.tar.gz)
 tar xvf "$SDIST_ARCHIVE"
