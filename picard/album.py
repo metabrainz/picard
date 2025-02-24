@@ -212,6 +212,19 @@ class Album(MetadataItem):
         self.id = release_id
         return False
 
+    def _release_metadata_customization(self, metadata, release_node, config):
+        """Apply modifications to release metadata"""
+
+        # Custom VA name
+        if metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
+            metadata['albumartistsort'] = metadata['albumartist'] = config.setting['va_name']
+
+        # Convert Unicode punctuation
+        if config.setting['convert_punctuation']:
+            metadata.apply_func(asciipunct)
+
+        metadata['totaldiscs'] = len(release_node['media'])
+
     def _parse_release(self, release_node):
         """Parse release node from MusicBrainz API data"""
         log.debug("Loading release %r …", self.id)
@@ -229,8 +242,8 @@ class Album(MetadataItem):
         self._release_artist_nodes = _create_artist_node_dict(release_node)
 
         # Get release metadata
-        m = self._new_metadata
-        m.length = 0
+        metadata = self._new_metadata
+        metadata.length = 0
 
         rg_node = release_node['release-group']
         rg = self.release_group = self.tagger.get_release_group_by_id(rg_node['id'])
@@ -239,20 +252,11 @@ class Album(MetadataItem):
 
         _copy_artist_nodes(self._release_artist_nodes, rg_node)
         release_group_to_metadata(rg_node, rg.metadata, rg)
-        m.copy(rg.metadata)
-        release_to_metadata(release_node, m, album=self)
+        metadata.copy(rg.metadata)
+        release_to_metadata(release_node, metadata, album=self)
 
         config = get_config()
-
-        # Custom VA name
-        if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
-            m['albumartistsort'] = m['albumartist'] = config.setting['va_name']
-
-        # Convert Unicode punctuation
-        if config.setting['convert_punctuation']:
-            m.apply_func(asciipunct)
-
-        m['totaldiscs'] = len(release_node['media'])
+        self._release_metadata_customization(metadata, release_node, config)
 
         # Add album to collections
         add_release_to_user_collections(release_node)
