@@ -192,9 +192,8 @@ class Album(MetadataItem):
         except BaseException:
             self.error_append(traceback.format_exc())
 
-    def _parse_release(self, release_node):
-        log.debug("Loading release %r …", self.id)
-        self._tracks_loaded = False
+    def _hande_release_redirect(self, release_node):
+        """Handle release redirect"""
         release_id = release_node['id']
         if release_id != self.id:
             self.tagger.mbid_redirects[self.id] = release_id
@@ -204,11 +203,19 @@ class Album(MetadataItem):
                 album.match_files(self.unmatched_files.files)
                 album.update()
                 self.tagger.remove_album(self)
-                return ParseResult.REDIRECT
+                return True
             else:
                 del self.tagger.albums[self.id]
                 self.tagger.albums[release_id] = self
                 self.id = release_id
+        return False
+
+    def _parse_release(self, release_node):
+        """Parse release node from MusicBrainz API data"""
+        log.debug("Loading release %r …", self.id)
+        self._tracks_loaded = False
+        if self._hande_release_redirect(release_node):
+            return ParseResult.REDIRECT
 
         self._release_node = release_node
         # Make the release artist nodes available, since they may
