@@ -225,6 +225,19 @@ class Album(MetadataItem):
 
         metadata['totaldiscs'] = len(release_node['media'])
 
+    def _needs_track_relationships(self, release_node, config):
+        """Check if track relationships needs to be loaded"""
+        if not config.setting['track_ars']:
+            return False
+
+        try:
+            for medium_node in release_node['media']:
+                if medium_node['track-count']:
+                    return 'relations' not in medium_node['tracks'][0]['recording']
+        except KeyError:
+            pass
+        return False
+
     def _parse_release(self, release_node):
         """Parse release node from MusicBrainz API data"""
         log.debug("Loading release %r …", self.id)
@@ -261,17 +274,8 @@ class Album(MetadataItem):
         # Add album to collections
         add_release_to_user_collections(release_node)
 
-        if config.setting['track_ars']:
-            # Detect if track relationships did not get loaded
-            try:
-                for medium_node in release_node['media']:
-                    if medium_node['track-count']:
-                        if 'relations' in medium_node['tracks'][0]['recording']:
-                            return ParseResult.PARSED
-                        else:
-                            return ParseResult.MISSING_TRACK_RELS
-            except KeyError:
-                pass
+        if self._needs_track_relationships(release_node, config):
+            return ParseResult.MISSING_TRACK_RELS
 
         return ParseResult.PARSED
 
