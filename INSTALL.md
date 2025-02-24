@@ -162,9 +162,9 @@ Running the Test Suite
 ----------------------
 
 To run the included tests, follow the instructions for "Running From
-the Source Tree".  Afterward you can run the tests using setup.py:
+the Source Tree". Afterward you can run the tests using setup.py:
 
-    python3 setup.py test
+    pytest
 
 
 Packaging
