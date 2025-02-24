@@ -192,6 +192,27 @@ class Album(MetadataItem):
         except BaseException:
             self.error_append(traceback.format_exc())
 
+    def _parse_release(self, release_node):
+        """Parse release node from MusicBrainz API data"""
+        log.debug("Loading release %r …", self.id)
+        self._tracks_loaded = False
+
+        if self._hande_release_redirect(release_node):
+            return ParseResult.REDIRECT
+
+        self._release_node = release_node
+        self._setup_release_artist_nodes(release_node)
+        self._setup_release_group(release_node)
+        self._setup_release_metadata(release_node)
+
+        # Add album to collections
+        add_release_to_user_collections(release_node)
+
+        if self._needs_track_relationships(release_node):
+            return ParseResult.MISSING_TRACK_RELS
+
+        return ParseResult.PARSED
+
     def _hande_release_redirect(self, release_node):
         """Handle release redirect"""
         release_id = release_node['id']
@@ -212,8 +233,36 @@ class Album(MetadataItem):
         self.id = release_id
         return False
 
-    def _release_metadata_customization(self, metadata, release_node, config):
+    def _setup_release_artist_nodes(self, release_node):
+        """Setup release artist nodes for supplementary data"""
+        # Make the release artist nodes available, since they may
+        # contain supplementary data (aliases, tags, genres, ratings)
+        # which aren't present in the release group, track, or
+        # recording artist nodes. We can copy them into those places
+        # wherever the IDs match, so that the data is shared and
+        # available for use in mbjson.py and external plugins.
+        self._release_artist_nodes = _create_artist_node_dict(release_node)
+
+    def _setup_release_group(self, release_node):
+        """Process and setup release group data"""
+        rg_node = release_node['release-group']
+        rg = self.release_group = self.tagger.get_release_group_by_id(rg_node['id'])
+        rg.loaded_albums.add(self.id)
+        rg.refcount += 1
+        _copy_artist_nodes(self._release_artist_nodes, rg_node)
+        release_group_to_metadata(rg_node, rg.metadata, rg)
+
+    def _setup_release_metadata(self, release_node):
+        """Process and setup release metadata"""
+        metadata = self._new_metadata
+        metadata.length = 0
+        metadata.copy(self.release_group.metadata)
+        release_to_metadata(release_node, metadata, album=self)
+        self._release_metadata_customization(metadata, release_node)
+
+    def _release_metadata_customization(self, metadata, release_node):
         """Apply modifications to release metadata"""
+        config = get_config()
 
         # Custom VA name
         if metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
@@ -225,8 +274,9 @@ class Album(MetadataItem):
 
         metadata['totaldiscs'] = len(release_node['media'])
 
-    def _needs_track_relationships(self, release_node, config):
+    def _needs_track_relationships(self, release_node):
         """Check if track relationships needs to be loaded"""
+        config = get_config()
         if not config.setting['track_ars']:
             return False
 
@@ -237,47 +287,6 @@ class Album(MetadataItem):
         except KeyError:
             pass
         return False
-
-    def _parse_release(self, release_node):
-        """Parse release node from MusicBrainz API data"""
-        log.debug("Loading release %r …", self.id)
-        self._tracks_loaded = False
-        if self._hande_release_redirect(release_node):
-            return ParseResult.REDIRECT
-
-        self._release_node = release_node
-        # Make the release artist nodes available, since they may
-        # contain supplementary data (aliases, tags, genres, ratings)
-        # which aren't present in the release group, track, or
-        # recording artist nodes. We can copy them into those places
-        # wherever the IDs match, so that the data is shared and
-        # available for use in mbjson.py and external plugins.
-        self._release_artist_nodes = _create_artist_node_dict(release_node)
-
-        # Get release metadata
-        metadata = self._new_metadata
-        metadata.length = 0
-
-        rg_node = release_node['release-group']
-        rg = self.release_group = self.tagger.get_release_group_by_id(rg_node['id'])
-        rg.loaded_albums.add(self.id)
-        rg.refcount += 1
-
-        _copy_artist_nodes(self._release_artist_nodes, rg_node)
-        release_group_to_metadata(rg_node, rg.metadata, rg)
-        metadata.copy(rg.metadata)
-        release_to_metadata(release_node, metadata, album=self)
-
-        config = get_config()
-        self._release_metadata_customization(metadata, release_node, config)
-
-        # Add album to collections
-        add_release_to_user_collections(release_node)
-
-        if self._needs_track_relationships(release_node, config):
-            return ParseResult.MISSING_TRACK_RELS
-
-        return ParseResult.PARSED
 
     def _release_request_finished(self, document, http, error):
         if self.load_task is None:
