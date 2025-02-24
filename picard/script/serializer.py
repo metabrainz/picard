@@ -245,7 +245,7 @@ class ScriptSerializer():
             with open(filename, 'w', encoding='utf-8') as o_file:
                 o_file.write(script_text)
         except OSError as error:
-            raise ScriptSerializerExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror) from None
+            raise ScriptSerializerExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror) from error
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Export Script"),
