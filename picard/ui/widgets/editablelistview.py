@@ -209,7 +209,9 @@ class EditableListModel(QtCore.QAbstractListModel):
     def get_display_name(self, item):  # pylint: disable=no-self-use
         return item
 
-    def rowCount(self, parent=QtCore.QModelIndex()):  # noqa: B008
+    def rowCount(self, parent=None):
+        # if parent is None:
+        #     parent = QtCore.QModelIndex()
         return len(self._items)
 
     def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
@@ -251,14 +253,18 @@ class EditableListModel(QtCore.QAbstractListModel):
         else:
             return QtCore.Qt.ItemFlag.NoItemFlags
 
-    def insertRows(self, row, count, parent=QtCore.QModelIndex()):  # noqa: B008
+    def insertRows(self, row, count, parent=None):
+        if parent is None:
+            parent = QtCore.QModelIndex()
         super().beginInsertRows(parent, row, row + count - 1)
         for _i in range(count):
             self._items.insert(row, ("", ""))
         super().endInsertRows()
         return True
 
-    def removeRows(self, row, count, parent=QtCore.QModelIndex()):  # noqa: B008
+    def removeRows(self, row, count, parent=None):
+        if parent is None:
+            parent = QtCore.QModelIndex()
         super().beginRemoveRows(parent, row, row + count - 1)
         self._items = self._items[:row] + self._items[row + count:]
         super().endRemoveRows()
