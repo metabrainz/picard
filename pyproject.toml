@@ -1,5 +1,5 @@
 #[project]
-#requires-python = ">=3.8"
+#requires-python = ">=3.9"
 
 [build-system]
 requires = ["setuptools>=62.4.0"]
@@ -65,7 +65,7 @@ exclude = [
 line-length = 120
 indent-width = 4
 
-target-version = "py38"
+target-version = "py39"
 
 [tool.ruff.lint]
 # Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
