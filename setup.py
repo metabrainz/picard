@@ -103,43 +103,6 @@ def newer(source, target):
     return os.path.getmtime(source) > os.path.getmtime(target)
 
 
-class picard_test(Command):
-    description = "run automated tests"
-    user_options = [
-        ("tests=", None, "list of tests to run (default all)"),
-        ("verbosity=", "v", "verbosity"),
-    ]
-
-    def initialize_options(self):
-        self.tests = []
-        self.verbosity = 1
-
-    def finalize_options(self):
-        if self.tests:
-            self.tests = self.tests.split(",")
-        # In case the verbosity flag is used, verbosity is None
-        if not self.verbosity:
-            self.verbosity = 2
-        # Convert to appropriate verbosity if passed by --verbosity option
-        self.verbosity = int(self.verbosity)
-
-    def run(self):
-        import unittest
-
-        names = []
-        for filename in glob.glob("test/**/test_*.py", recursive=True):
-            modules = os.path.splitext(filename)[0].split(os.sep)
-            name = '.'.join(modules[1:])
-            if not self.tests or name in self.tests:
-                names.append('test.' + name)
-
-        tests = unittest.defaultTestLoader.loadTestsFromNames(names)
-        t = unittest.TextTestRunner(verbosity=self.verbosity)
-        testresult = t.run(tests)
-        if not testresult.wasSuccessful():
-            sys.exit("At least one test failed.")
-
-
 class picard_build_locales(Command):
     description = 'build locale files'
     user_options = [
@@ -794,7 +757,6 @@ args = {
     'ext_modules': ext_modules,
     'data_files': [],
     'cmdclass': {
-        'test': picard_test,
         'build': picard_build,
         'build_locales': picard_build_locales,
         'build_ui': picard_build_ui,
