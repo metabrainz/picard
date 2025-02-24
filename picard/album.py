@@ -195,19 +195,21 @@ class Album(MetadataItem):
     def _hande_release_redirect(self, release_node):
         """Handle release redirect"""
         release_id = release_node['id']
-        if release_id != self.id:
-            self.tagger.mbid_redirects[self.id] = release_id
-            album = self.tagger.albums.get(release_id)
-            if album:
-                log.debug("Release %r already loaded", release_id)
-                album.match_files(self.unmatched_files.files)
-                album.update()
-                self.tagger.remove_album(self)
-                return True
-            else:
-                del self.tagger.albums[self.id]
-                self.tagger.albums[release_id] = self
-                self.id = release_id
+        if release_id == self.id:
+            return False
+
+        self.tagger.mbid_redirects[self.id] = release_id
+        album = self.tagger.albums.get(release_id)
+        if album:
+            log.debug("Release %r already loaded", release_id)
+            album.match_files(self.unmatched_files.files)
+            album.update()
+            self.tagger.remove_album(self)
+            return True
+
+        del self.tagger.albums[self.id]
+        self.tagger.albums[release_id] = self
+        self.id = release_id
         return False
 
     def _parse_release(self, release_node):
