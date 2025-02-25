@@ -287,10 +287,7 @@ class ID3File(File):
             if frameid in self.__translate:
                 self._load_standard_text_frame(frame, metadata, frameid, itunes_compatible)
             elif frameid == 'TIT1':
-                name = 'work' if itunes_compatible else 'grouping'
-                for text in frame.text:
-                    if text:
-                        metadata.add(name, text)
+                self._load_tit1_frame(frame, metadata, itunes_compatible)
             elif frameid == 'TMCL':
                 self._load_tmcl_frame(frame, metadata)
             elif frameid == 'TIPL':
@@ -337,6 +334,15 @@ class ID3File(File):
                     metadata.add(name, text)
         else:
             metadata.add(name, frame)
+
+    def _load_tit1_frame(self, frame, metadata, itunes_compatible):
+        """Process a TIT1 frame and add it to metadata.
+        Handles work/grouping based on iTunes compatibility setting.
+        """
+        name = 'work' if itunes_compatible else 'grouping'
+        for text in frame.text:
+            if text:
+                metadata.add(name, text)
 
     def _load_tmcl_frame(self, frame, metadata):
         """Process a TMCL frame and add it to metadata.
