@@ -276,11 +276,9 @@ class ID3File(File):
         itunes_compatible = config.setting['itunes_compatible_grouping']
         rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
         rating_steps = config.setting['rating_steps']
-        # upgrade custom 2.3 frames to 2.4
-        for old, new in self.__upgrade.items():
-            if old in tags and new not in tags:
-                f = tags.pop(old)
-                tags.add(getattr(id3, new)(encoding=f.encoding, text=f.text))
+
+        self._upgrade_23_frames(tags)
+
         metadata = Metadata()
         for frame in tags.values():
             frameid = frame.FrameID
@@ -312,6 +310,13 @@ class ID3File(File):
 
         self._info(metadata, file)
         return metadata
+
+    def _upgrade_23_frames(self, tags):
+        """Upgrade ID3v2.3 frames to ID3v2.4 format."""
+        for old, new in self.__upgrade.items():
+            if old in tags and new not in tags:
+                f = tags.pop(old)
+                tags.add(getattr(id3, new)(encoding=f.encoding, text=f.text))
 
     def _sanitize_date(self, metadata):
         """Sanitize date value if present in metadata."""
