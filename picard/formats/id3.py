@@ -299,9 +299,9 @@ class ID3File(File):
             self._load_txxx_frame(frame, metadata, config_params)
         elif frameid == 'USLT':
             self._load_uslt_frame(frame, metadata, config_params)
-        elif frameid == 'SYLT' and frame.type == 1:
+        elif frameid == 'SYLT':
             self._load_sylt_frame(frame, metadata, config_params)
-        elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
+        elif frameid == 'UFID':
             self._load_ufid_frame(frame, metadata, config_params)
         elif frameid in self.__tag_re_parse:
             self._load_tag_regex_frame(frame, metadata, config_params, frameid)
@@ -427,8 +427,13 @@ class ID3File(File):
         """Process a SYLT frame and add it to metadata.
         Handles synchronized lyrics with timing information.
         """
+        if frame.type != 1:
+            log.warning("Unsupported SYLT type %d in %r, only type 1 is supported",
+                       frame.type, config_params['filename'])
+            return
         if frame.format != 2:
-            log.warning("Unsupported SYLT format %d in %r, only 2 is supported", frame.format, config_params['filename'])
+            log.warning("Unsupported SYLT format %d in %r, only format 2 is supported",
+                       frame.format, config_params['filename'])
             return
         name = 'syncedlyrics'
         if frame.lang:
@@ -444,7 +449,8 @@ class ID3File(File):
         """Process a UFID frame and add it to metadata.
         Handles MusicBrainz recording identifier.
         """
-        metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
+        if frame.owner == "http://musicbrainz.org":
+            metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
 
     def _load_tag_regex_frame(self, frame, metadata, config_params, frameid):
         """Process frames that require regex parsing (TRCK, TPOS, MVIN).
