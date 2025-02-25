@@ -237,6 +237,7 @@ class picard_build(build):
         make_executable('tagger.py')
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, params)
         if sys.platform == 'win32':
+            common_args = self._metadata()
             file_version = PICARD_VERSION[0:3] + (self.build_number,)
             file_version_str = '.'.join(str(v) for v in file_version)
 
@@ -245,7 +246,7 @@ class picard_build(build):
                 'file-version': file_version_str,
             }
             if os.path.isfile('installer/picard-setup.nsi.in'):
-                generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**args, **installer_args})
+                generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**common_args, **installer_args})
                 log.info('generating NSIS translation files')
                 self.spawn(['python', 'installer/i18n/json2nsh.py'])
 
@@ -253,7 +254,7 @@ class picard_build(build):
                 'filevers': str(file_version),
                 'prodvers': str(file_version),
             }
-            generate_file('win-version-info.txt.in', 'win-version-info.txt', {**args, **version_args})
+            generate_file('win-version-info.txt.in', 'win-version-info.txt', {**common_args, **version_args})
 
             default_publisher = 'CN=Metabrainz Foundation Inc., O=Metabrainz Foundation Inc., L=San Luis Obispo, S=California, C=US'
             # Combine patch version with build number. As Windows store apps require continuously
@@ -271,6 +272,15 @@ class picard_build(build):
             self.run_command('build_appdata')
             self.run_command('build_desktop_file')
         super().run()
+
+    def _metadata(self):
+        metadata = self.distribution.metadata
+        return {
+            'name': metadata.name,
+            'description': metadata.description,
+            'version': metadata.version,
+            'url': metadata.url,
+        }
 
 
 def py_from_ui(uifile):
