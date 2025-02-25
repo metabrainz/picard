@@ -4,4 +4,4 @@ from picard import register_excepthook
 register_excepthook()
 
 from picard.tagger import main
-main('%(localedir)s', %(autoupdate)s)
+main(autoupdate=%(autoupdate)s)

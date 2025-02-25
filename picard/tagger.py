@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2009, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 amckinle
-# Copyright (C) 2008-2010, 2014-2015, 2018-2024 Philipp Wolfer
+# Copyright (C) 2008-2010, 2014-2015, 2018-2025 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2010 Andrew Barnert
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -96,6 +96,8 @@ from picard.config import (
 from picard.config_upgrade import upgrade_config
 from picard.const import USER_DIR
 from picard.const.sys import (
+    FROZEN_TEMP_PATH,
+    IS_FROZEN,
     IS_HAIKU,
     IS_MACOS,
     IS_WIN,
@@ -336,8 +338,12 @@ class Tagger(QtWidgets.QApplication):
 
         check_io_encoding()
 
-        # Must be before config upgrade because upgrade dialogs need to be
-        # translated
+        if not localedir:
+            # Unfortunately we cannot use importlib.resources to access the data
+            # files, as gettext expects a path to a directory for localedir.
+            basedir = FROZEN_TEMP_PATH if IS_FROZEN else os.path.dirname(__file__)
+            localedir = os.path.join(basedir, 'locale')
+        # Must be before config upgrade because upgrade dialogs need to be translated.
         setup_gettext(localedir, config.setting['ui_language'], log.debug)
 
         upgrade_config(config)
