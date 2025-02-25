@@ -285,21 +285,7 @@ class ID3File(File):
         for frame in tags.values():
             frameid = frame.FrameID
             if frameid in self.__translate:
-                name = self.__translate[frameid]
-                if frameid.startswith('T') or frameid in {'GRP1', 'MVNM'}:
-                    for text in frame.text:
-                        if text:
-                            metadata.add(name, text)
-                elif frameid == 'COMM':
-                    for text in frame.text:
-                        if text:
-                            if frame.lang == 'eng':
-                                name = '%s:%s' % (name, frame.desc)
-                            else:
-                                name = '%s:%s:%s' % (name, frame.lang, frame.desc)
-                            metadata.add(name, text)
-                else:
-                    metadata.add(name, frame)
+                self._load_standard_text_frame(frame, metadata, frameid, itunes_compatible)
             elif frameid == 'TIT1':
                 name = 'work' if itunes_compatible else 'grouping'
                 for text in frame.text:
@@ -331,6 +317,26 @@ class ID3File(File):
 
         self._info(metadata, file)
         return metadata
+
+    def _load_standard_text_frame(self, frame, metadata, frameid, itunes_compatible):
+        """Process standard ID3 text frames and add them to metadata.
+        Handles text frames that have direct translation to Picard tags.
+        """
+        name = self.__translate[frameid]
+        if frameid.startswith('T') or frameid in {'GRP1', 'MVNM'}:
+            for text in frame.text:
+                if text:
+                    metadata.add(name, text)
+        elif frameid == 'COMM':
+            for text in frame.text:
+                if text:
+                    if frame.lang == 'eng':
+                        name = '%s:%s' % (name, frame.desc)
+                    else:
+                        name = '%s:%s:%s' % (name, frame.lang, frame.desc)
+                    metadata.add(name, text)
+        else:
+            metadata.add(name, frame)
 
     def _load_tmcl_frame(self, frame, metadata):
         """Process a TMCL frame and add it to metadata.
