@@ -306,13 +306,7 @@ class ID3File(File):
                     if text:
                         metadata.add(name, text)
             elif frameid == 'TMCL':
-                for role, name in frame.people:
-                    if role == 'performer':
-                        role = ''
-                    if role:
-                        metadata.add('performer:%s' % role, name)
-                    else:
-                        metadata.add('performer', name)
+                self._load_tmcl_frame(frame, metadata)
             elif frameid == 'TIPL':
                 self._load_tipl_frame(frame, metadata)
             elif frameid == 'TXXX':
@@ -373,6 +367,18 @@ class ID3File(File):
 
         self._info(metadata, file)
         return metadata
+
+    def _load_tmcl_frame(self, frame, metadata):
+        """Process a TMCL frame and add it to metadata.
+        Handles musician credits list, converting performer roles into the appropriate metadata.
+        """
+        for role, name in frame.people:
+            if role == 'performer':
+                role = ''
+            if role:
+                metadata.add('performer:%s' % role, name)
+            else:
+                metadata.add('performer', name)
 
     def _load_tipl_frame(self, frame, metadata):
         """Process a TIPL frame and add it to metadata.
