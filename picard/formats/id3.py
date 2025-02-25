@@ -312,10 +312,7 @@ class ID3File(File):
             elif frameid == 'TXXX':
                 self._load_txxx_frame(frame, metadata)
             elif frameid == 'USLT':
-                name = 'lyrics'
-                if frame.desc:
-                    name += ':%s' % frame.desc
-                metadata.add(name, frame.text)
+                self._load_uslt_frame(frame, metadata)
             elif frameid == 'SYLT' and frame.type == 1:
                 if frame.format != 2:
                     log.warning("Unsupported SYLT format %d in %r, only 2 is supported", frame.format, filename)
@@ -413,6 +410,15 @@ class ID3File(File):
             name = '~id3:TXXX:' + name
         for text in frame.text:
             metadata.add(name, text)
+
+    def _load_uslt_frame(self, frame, metadata):
+        """Process a USLT frame and add it to metadata.
+        Handles unsynchronized lyrics, optionally with description.
+        """
+        name = 'lyrics'
+        if frame.desc:
+            name += ':%s' % frame.desc
+        metadata.add(name, frame.text)
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
