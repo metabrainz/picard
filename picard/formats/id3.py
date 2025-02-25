@@ -37,6 +37,7 @@
 
 from collections import Counter
 from enum import IntEnum
+from functools import partial
 import re
 from urllib.parse import urlparse
 
@@ -256,6 +257,27 @@ class ID3File(File):
     def __init__(self, filename):
         super().__init__(filename)
         self.__casemap = {}
+        # Dictionary of frame processors - functions that process specific frame types
+        # Using partial() to bind frameid parameter where needed
+        self._frame_processors = {
+            'TIT1': self._load_tit1_frame,
+            'TMCL': self._load_tmcl_frame,
+            'TIPL': self._load_tipl_frame,
+            'TXXX': self._load_txxx_frame,
+            'USLT': self._load_uslt_frame,
+            'SYLT': self._load_sylt_frame,
+            'UFID': self._load_ufid_frame,
+            'APIC': self._load_apic_frame,
+            'POPM': self._load_popm_frame,
+            **{
+                frameid: partial(self._load_standard_text_frame, frameid=frameid)
+                for frameid in self.__translate
+            },
+            **{
+                frameid: partial(self._load_tag_regex_frame, frameid=frameid)
+                for frameid in self.__tag_re_parse
+            }
+        }
 
     def build_TXXX(self, encoding, desc, values):
         """Construct and return a TXXX frame."""
@@ -287,28 +309,10 @@ class ID3File(File):
         """Process an ID3 frame and add its data to the metadata."""
         frameid = frame.FrameID
 
-        if frameid in self.__translate:
-            self._load_standard_text_frame(frame, metadata, config_params, frameid)
-        elif frameid == 'TIT1':
-            self._load_tit1_frame(frame, metadata, config_params)
-        elif frameid == 'TMCL':
-            self._load_tmcl_frame(frame, metadata, config_params)
-        elif frameid == 'TIPL':
-            self._load_tipl_frame(frame, metadata, config_params)
-        elif frameid == 'TXXX':
-            self._load_txxx_frame(frame, metadata, config_params)
-        elif frameid == 'USLT':
-            self._load_uslt_frame(frame, metadata, config_params)
-        elif frameid == 'SYLT':
-            self._load_sylt_frame(frame, metadata, config_params)
-        elif frameid == 'UFID':
-            self._load_ufid_frame(frame, metadata, config_params)
-        elif frameid in self.__tag_re_parse:
-            self._load_tag_regex_frame(frame, metadata, config_params, frameid)
-        elif frameid == 'APIC':
-            self._load_apic_frame(frame, metadata, config_params)
-        elif frameid == 'POPM':
-            self._load_popm_frame(frame, metadata, config_params)
+        # Get appropriate processor from dictionary
+        processor = self._frame_processors.get(frameid)
+        if processor:
+            processor(frame, metadata, config_params)
 
     def _init_load(self, filename):
         """Initialize loading process and return necessary parameters."""
