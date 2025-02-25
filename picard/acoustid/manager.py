@@ -227,7 +227,7 @@ class AcoustIDManager:
             response_code = self._acoustid_api.webservice.http_response_code(http)
             if response_code == 413:
                 self.max_batch_size = int(self.max_batch_size * self.BATCH_SIZE_REDUCTION_FACTOR)
-                log.warn("AcoustID: payload too large, batch size reduced to %d", self.max_batch_size)
+                log.warning("AcoustID: payload too large, batch size reduced to %d", self.max_batch_size)
             else:
                 try:
                     errordoc = load_json(document)

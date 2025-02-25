@@ -351,7 +351,7 @@ class picard_build_ui(Command):
                 if m:
                     name = m.group(1)
                 else:
-                    log.warn('ignoring %r (cannot extract base name)', f)
+                    log.warning('ignoring %r (cannot extract base name)', f)
                     continue
                 uiname = name + '.ui'
                 uifile = os.path.join(head, uiname)
@@ -365,7 +365,7 @@ class picard_build_ui(Command):
                         files.append((uifile,
                                       py_from_ui_with_defaultdir(uifile)))
                     else:
-                        log.warn('ignoring %r', f)
+                        log.warning('ignoring %r', f)
             self.files = files
 
     def run(self):
@@ -444,13 +444,13 @@ class picard_clean_ui(Command):
                 os.unlink(pyfile)
                 log.info("removing %s", pyfile)
             except OSError:
-                log.warn("'%s' does not exist -- can't clean it", pyfile)
+                log.warning("'%s' does not exist -- can't clean it", pyfile)
         pyfile = os.path.join("picard", "resources.py")
         try:
             os.unlink(pyfile)
             log.info("removing %s", pyfile)
         except OSError:
-            log.warn("'%s' does not exist -- can't clean it", pyfile)
+            log.warning("'%s' does not exist -- can't clean it", pyfile)
 
 
 class picard_build_appdata(Command):
