@@ -322,10 +322,7 @@ class ID3File(File):
             elif frameid == 'APIC':
                 self._load_apic_frame(frame, metadata, filename)
             elif frameid == 'POPM':
-                # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
-                if frame.email == rating_user_email:
-                    rating = int(round(frame.rating / 255.0 * (rating_steps - 1)))
-                    metadata.add('~rating', rating)
+                self._load_popm_frame(frame, metadata, rating_user_email, rating_steps)
 
         if 'date' in metadata:
             sanitized = sanitize_date(metadata.getall('date')[0])
@@ -443,6 +440,14 @@ class ID3File(File):
             log.error("Cannot load image from %r: %s", filename, e)
         else:
             metadata.images.append(coverartimage)
+
+    def _load_popm_frame(self, frame, metadata, rating_user_email, rating_steps):
+        """Process a POPM frame and add it to metadata.
+        Handles rating, converting from ID3's 0-255 range to Picard's configured range.
+        """
+        if frame.email == rating_user_email:
+            rating = int(round(frame.rating / 255.0 * (rating_steps - 1)))
+            metadata.add('~rating', rating)
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
