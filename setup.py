@@ -508,7 +508,10 @@ class picard_regen_appdata_pot_file(Command):
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
 _regen_constants_pot_description = "Regenerate po/constants/constants.pot, parsing source tree for new or updated strings"
 try:
-    from babel.messages import frontend as babel
+    from babel.messages import (
+        frontend as babel,
+        pofile,
+    )
 
     class picard_regen_pot_file(babel.extract_messages):
         description = _regen_pot_description
@@ -527,7 +530,19 @@ try:
             self.output_file = 'po/constants/constants.pot'
             self.input_dirs = 'picard/const'
 
+    def _parse_pot_file(pot_file):
+        with open(pot_file, 'rb') as f:
+            log.info('Parsing %s' % pot_file)
+            po = pofile.read_po(f)
+            for message in po:
+                if not message.id or not isinstance(message.id, str):
+                    continue
+                yield message
+
 except ImportError:
+    def _exit_babel_required():
+        sys.exit("Babel is required to use this command (see po/README.md)")
+
     class picard_regen_pot_file(Command):
         description = _regen_pot_description
         user_options = []
@@ -539,10 +554,13 @@ except ImportError:
             pass
 
         def run(self):
-            sys.exit("Babel is required to use this command (see po/README.md)")
+            _exit_babel_required()
 
     class picard_regen_constants_pot_file(picard_regen_pot_file):
         description = _regen_constants_pot_description
+
+    def _parse_pot_file(pot_file):
+        _exit_babel_required()
 
 
 def _get_option_name(obj):
@@ -569,8 +587,6 @@ class picard_update_constants(Command):
         self.locales = self.distribution.locales
 
     def run(self):
-        from babel.messages import pofile
-
         if not self.skip_pull:
             cmd = [
                 os.path.join(os.path.dirname(__file__), 'scripts', 'tools', 'pull-shared-translations.py'),
@@ -583,20 +599,16 @@ class picard_update_constants(Command):
         countries = dict()
         countries_potfile = os.path.join('po', 'countries', 'countries.pot')
         isocode_comment = 'iso.code:'
-        with open(countries_potfile, 'rb') as f:
-            log.info('Parsing %s' % countries_potfile)
-            po = pofile.read_po(f)
-            for message in po:
-                if not message.id or not isinstance(message.id, str):
-                    continue
-                for comment in message.auto_comments:
-                    if comment.startswith(isocode_comment):
-                        code = comment.replace(isocode_comment, '')
-                        countries[code] = message.id
-            if countries:
-                self.countries_py_file(countries)
-            else:
-                sys.exit('Failed to extract any country code/name !')
+        for message in _parse_pot_file(countries_potfile):
+            for comment in message.auto_comments:
+                if comment.startswith(isocode_comment):
+                    code = comment.replace(isocode_comment, '')
+                    countries[code] = message.id
+
+        if countries:
+            self._generate_constants_file('countries.py', 'RELEASE_COUNTRIES', countries)
+        else:
+            sys.exit('Failed to extract any country code/name !')
 
         attributes = dict()
         attributes_potfile = os.path.join('po', 'attributes', 'attributes.pot')
@@ -607,57 +619,30 @@ class picard_update_constants(Command):
             'DB:release_group_secondary_type/name',
             'DB:release_status/name',
         )
-        with open(attributes_potfile, 'rb') as f:
-            log.info('Parsing %s' % attributes_potfile)
-            po = pofile.read_po(f)
-            for message in po:
-                if not message.id or not isinstance(message.id, str):
-                    continue
-                for loc, pos in message.locations:
-                    if loc in extract_attributes:
-                        attributes["%s:%03d" % (loc, pos)] = message.id
-            if attributes:
-                self.attributes_py_file(attributes)
-            else:
-                sys.exit('Failed to extract any attribute !')
+        for message in _parse_pot_file(attributes_potfile):
+            for loc, pos in message.locations:
+                if loc in extract_attributes:
+                    attributes["%s:%03d" % (loc, pos)] = message.id
 
-    def countries_py_file(self, countries):
-        header = ("# -*- coding: utf-8 -*-\n"
-                  "# Automatically generated - don't edit.\n"
-                  "# Use `python setup.py {option}` to update it.\n"
-                  "\n"
-                  "RELEASE_COUNTRIES = {{\n")
-        line = "    '{code}': '{name}',\n"
-        footer = "}}\n"
-        filename = os.path.join('picard', 'const', 'countries.py')
-        with open(filename, 'w', encoding='utf-8') as countries_py:
-            def write(s, **kwargs):
-                countries_py.write(s.format(**kwargs))
+        if attributes:
+            self._generate_constants_file('attributes.py', 'MB_ATTRIBUTES', attributes)
+        else:
+            sys.exit('Failed to extract any attribute !')
 
-            write(header, option=_get_option_name(self))
-            for code, name in sorted(countries.items(), key=lambda t: t[0]):
-                write(line, code=code, name=name.replace("'", "\\'"))
-            write(footer)
-            log.info("%s was rewritten (%d countries)", filename, len(countries))
+    def _generate_constants_file(self, filename, varname, constants):
+        infilename = os.path.join('scripts', 'package', 'constants.py.in')
+        outfilename = os.path.join('picard', 'const', filename)
 
-    def attributes_py_file(self, attributes):
-        header = ("# -*- coding: utf-8 -*-\n"
-                  "# Automatically generated - don't edit.\n"
-                  "# Use `python setup.py {option}` to update it.\n"
-                  "\n"
-                  "MB_ATTRIBUTES = {{\n")
-        line = "    '{key}': '{value}',\n"
-        footer = "}}\n"
-        filename = os.path.join('picard', 'const', 'attributes.py')
-        with open(filename, 'w', encoding='utf-8') as attributes_py:
-            def write(s, **kwargs):
-                attributes_py.write(s.format(**kwargs))
+        def escape_str(s):
+            return s.replace("'", "\\'")
 
-            write(header, option=_get_option_name(self))
-            for key, value in sorted(attributes.items(), key=lambda i: i[0]):
-                write(line, key=key, value=value.replace("'", "\\'"))
-            write(footer)
-            log.info("%s was rewritten (%d attributes)", filename, len(attributes))
+        lines = [
+            "    '%s': '%s'," % (escape_str(key), escape_str(value))
+            for key, value
+            in sorted(constants.items(), key=lambda i: i[0])
+        ]
+        generate_file(infilename, outfilename, {"varname": varname, "lines": "\n".join(lines)})
+        log.info("%s was rewritten (%d constants)", filename, len(constants))
 
 
 class picard_patch_version(Command):

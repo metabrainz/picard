@@ -16,6 +16,7 @@ on:
     - 'picard.icns'
     - 'picard.ico'
     - 'picard.spec'
+    - 'pyproject.toml'
     - 'requirements*.txt'
     - 'setup.py'
     - 'tagger.py.in'
