@@ -244,24 +244,48 @@ class Album(MetadataItem):
             self.error_append(traceback.format_exc())
 
     def _parse_release(self, release_node):
+        """Parse release node from MusicBrainz API data"""
         log.debug("Loading release %r …", self.id)
         self._tracks_loaded = False
-        release_id = release_node['id']
-        if release_id != self.id:
-            self.tagger.mbid_redirects[self.id] = release_id
-            album = self.tagger.albums.get(release_id)
-            if album:
-                log.debug("Release %r already loaded", release_id)
-                album.match_files(self.unmatched_files.files)
-                album.update()
-                self.tagger.remove_album(self)
-                return ParseResult.REDIRECT
-            else:
-                del self.tagger.albums[self.id]
-                self.tagger.albums[release_id] = self
-                self.id = release_id
+
+        if self._hande_release_redirect(release_node):
+            return ParseResult.REDIRECT
 
         self._release_node = release_node
+        self._setup_release_artist_nodes(release_node)
+        self._setup_release_group(release_node)
+        self._setup_release_metadata(release_node)
+
+        # Add album to collections
+        add_release_to_user_collections(release_node)
+
+        if self._needs_track_relationships(release_node):
+            return ParseResult.MISSING_TRACK_RELS
+
+        return ParseResult.PARSED
+
+    def _hande_release_redirect(self, release_node):
+        """Handle release redirect"""
+        release_id = release_node['id']
+        if release_id == self.id:
+            return False
+
+        self.tagger.mbid_redirects[self.id] = release_id
+        album = self.tagger.albums.get(release_id)
+        if album:
+            log.debug("Release %r already loaded", release_id)
+            album.match_files(self.unmatched_files.files)
+            album.update()
+            self.tagger.remove_album(self)
+            return True
+
+        del self.tagger.albums[self.id]
+        self.tagger.albums[release_id] = self
+        self.id = release_id
+        return False
+
+    def _setup_release_artist_nodes(self, release_node):
+        """Setup release artist nodes for supplementary data"""
         # Make the release artist nodes available, since they may
         # contain supplementary data (aliases, tags, genres, ratings)
         # which aren't present in the release group, track, or
@@ -270,48 +294,50 @@ class Album(MetadataItem):
         # available for use in mbjson.py and external plugins.
         self._release_artist_nodes = _create_artist_node_dict(release_node)
 
-        # Get release metadata
-        m = self._new_metadata
-        m.length = 0
-
+    def _setup_release_group(self, release_node):
+        """Process and setup release group data"""
         rg_node = release_node['release-group']
         rg = self.release_group = self.tagger.get_release_group_by_id(rg_node['id'])
         rg.loaded_albums.add(self.id)
         rg.refcount += 1
-
         _copy_artist_nodes(self._release_artist_nodes, rg_node)
         release_group_to_metadata(rg_node, rg.metadata, rg)
-        m.copy(rg.metadata)
-        release_to_metadata(release_node, m, album=self)
 
+    def _setup_release_metadata(self, release_node):
+        """Process and setup release metadata"""
+        metadata = self._new_metadata
+        metadata.length = 0
+        metadata.copy(self.release_group.metadata)
+        release_to_metadata(release_node, metadata, album=self)
+        self._release_metadata_customization(metadata, release_node)
+
+    def _release_metadata_customization(self, metadata, release_node):
+        """Apply modifications to release metadata"""
         config = get_config()
 
         # Custom VA name
-        if m['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
-            m['albumartistsort'] = m['albumartist'] = config.setting['va_name']
+        if metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID:
+            metadata['albumartistsort'] = metadata['albumartist'] = config.setting['va_name']
 
         # Convert Unicode punctuation
         if config.setting['convert_punctuation']:
-            m.apply_func(asciipunct)
+            metadata.apply_func(asciipunct)
 
-        m['totaldiscs'] = len(release_node['media'])
+        metadata['totaldiscs'] = len(release_node['media'])
 
-        # Add album to collections
-        add_release_to_user_collections(release_node)
+    def _needs_track_relationships(self, release_node):
+        """Check if track relationships needs to be loaded"""
+        config = get_config()
+        if not config.setting['track_ars']:
+            return False
 
-        if config.setting['track_ars']:
-            # Detect if track relationships did not get loaded
-            try:
-                for medium_node in release_node['media']:
-                    if medium_node['track-count']:
-                        if 'relations' in medium_node['tracks'][0]['recording']:
-                            return ParseResult.PARSED
-                        else:
-                            return ParseResult.MISSING_TRACK_RELS
-            except KeyError:
-                pass
-
-        return ParseResult.PARSED
+        try:
+            for medium_node in release_node['media']:
+                if medium_node['track-count']:
+                    return 'relations' not in medium_node['tracks'][0]['recording']
+        except KeyError:
+            pass
+        return False
 
     def _release_request_finished(self, document, http, error):
         if self.load_task is None:
