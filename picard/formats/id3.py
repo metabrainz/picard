@@ -269,13 +269,7 @@ class ID3File(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
-        self.__casemap = {}
-        file = self._get_file(encode_filename(filename))
-        tags = file.tags or {}
-        config = get_config()
-        itunes_compatible = config.setting['itunes_compatible_grouping']
-        rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
-        rating_steps = config.setting['rating_steps']
+        tags, config_params = self._init_load(filename)
 
         self._upgrade_23_frames(tags)
 
@@ -283,9 +277,9 @@ class ID3File(File):
         for frame in tags.values():
             frameid = frame.FrameID
             if frameid in self.__translate:
-                self._load_standard_text_frame(frame, metadata, frameid, itunes_compatible)
+                self._load_standard_text_frame(frame, metadata, frameid, config_params['itunes_compatible'])
             elif frameid == 'TIT1':
-                self._load_tit1_frame(frame, metadata, itunes_compatible)
+                self._load_tit1_frame(frame, metadata, config_params['itunes_compatible'])
             elif frameid == 'TMCL':
                 self._load_tmcl_frame(frame, metadata)
             elif frameid == 'TIPL':
@@ -295,7 +289,7 @@ class ID3File(File):
             elif frameid == 'USLT':
                 self._load_uslt_frame(frame, metadata)
             elif frameid == 'SYLT' and frame.type == 1:
-                self._load_sylt_frame(frame, metadata, file.info.length, filename)
+                self._load_sylt_frame(frame, metadata, config_params['file_length'], filename)
             elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
                 self._load_ufid_frame(frame, metadata)
             elif frameid in self.__tag_re_parse.keys():
@@ -303,13 +297,28 @@ class ID3File(File):
             elif frameid == 'APIC':
                 self._load_apic_frame(frame, metadata, filename)
             elif frameid == 'POPM':
-                self._load_popm_frame(frame, metadata, rating_user_email, rating_steps)
+                self._load_popm_frame(frame, metadata, config_params['rating_user_email'], config_params['rating_steps'])
 
         if 'date' in metadata:
             self._sanitize_date(metadata)
 
-        self._info(metadata, file)
+        self._info(metadata, config_params['file'])
         return metadata
+
+    def _init_load(self, filename):
+        """Initialize loading process and return necessary parameters."""
+        self.__casemap = {}
+        file = self._get_file(encode_filename(filename))
+        tags = file.tags or {}
+        config = get_config()
+
+        return tags, {
+            'file': file,
+            'file_length': file.info.length,
+            'itunes_compatible': config.setting['itunes_compatible_grouping'],
+            'rating_user_email': id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1),
+            'rating_steps': config.setting['rating_steps']
+        }
 
     def _upgrade_23_frames(self, tags):
         """Upgrade ID3v2.3 frames to ID3v2.4 format."""
