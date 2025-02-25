@@ -314,18 +314,7 @@ class ID3File(File):
                     else:
                         metadata.add('performer', name)
             elif frameid == 'TIPL':
-                # If file is ID3v2.3, TIPL tag could contain TMCL
-                # so we will test for TMCL values and add to TIPL if not TMCL
-                for role, name in frame.people:
-                    if role in self._tipl_roles and name:
-                        metadata.add(self._tipl_roles[role], name)
-                    else:
-                        if role == 'performer':
-                            role = ''
-                        if role:
-                            metadata.add('performer:%s' % role, name)
-                        else:
-                            metadata.add('performer', name)
+                self._load_tipl_frame(frame, metadata)
             elif frameid == 'TXXX':
                 self._load_txxx_frame(frame, metadata)
             elif frameid == 'USLT':
@@ -384,6 +373,22 @@ class ID3File(File):
 
         self._info(metadata, file)
         return metadata
+
+    def _load_tipl_frame(self, frame, metadata):
+        """Process a TIPL frame and add it to metadata.
+        If file is ID3v2.3, TIPL tag could contain TMCL values,
+        so we will test for TMCL values and add to TIPL if not TMCL.
+        """
+        for role, name in frame.people:
+            if role in self._tipl_roles and name:
+                metadata.add(self._tipl_roles[role], name)
+            else:
+                if role == 'performer':
+                    role = ''
+                if role:
+                    metadata.add('performer:%s' % role, name)
+                else:
+                    metadata.add('performer', name)
 
     def _load_txxx_frame(self, frame, metadata):
         """Process a TXXX frame and add it to metadata."""
