@@ -314,20 +314,9 @@ class ID3File(File):
             elif frameid == 'USLT':
                 self._load_uslt_frame(frame, metadata)
             elif frameid == 'SYLT' and frame.type == 1:
-                if frame.format != 2:
-                    log.warning("Unsupported SYLT format %d in %r, only 2 is supported", frame.format, filename)
-                    continue
-                name = 'syncedlyrics'
-                if frame.lang:
-                    name += ':%s' % frame.lang
-                    if frame.desc:
-                        name += ':%s' % frame.desc
-                elif frame.desc:
-                    name += '::%s' % frame.desc
-                lrc_lyrics = self._parse_sylt_text(frame.text, file.info.length)
-                metadata.add(name, lrc_lyrics)
+                self._load_sylt_frame(frame, metadata, file.info.length, filename)
             elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
-                metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
+                self._load_ufid_frame(frame, metadata)
             elif frameid in self.__tag_re_parse.keys():
                 m = self.__tag_re_parse[frameid].search(frame.text[0])
                 if m:
@@ -419,6 +408,29 @@ class ID3File(File):
         if frame.desc:
             name += ':%s' % frame.desc
         metadata.add(name, frame.text)
+
+    def _load_sylt_frame(self, frame, metadata, file_length, filename):
+        """Process a SYLT frame and add it to metadata.
+        Handles synchronized lyrics with timing information.
+        """
+        if frame.format != 2:
+            log.warning("Unsupported SYLT format %d in %r, only 2 is supported", frame.format, filename)
+            return
+        name = 'syncedlyrics'
+        if frame.lang:
+            name += ':%s' % frame.lang
+            if frame.desc:
+                name += ':%s' % frame.desc
+        elif frame.desc:
+            name += '::%s' % frame.desc
+        lrc_lyrics = self._parse_sylt_text(frame.text, file_length)
+        metadata.add(name, lrc_lyrics)
+
+    def _load_ufid_frame(self, frame, metadata):
+        """Process a UFID frame and add it to metadata.
+        Handles MusicBrainz recording identifier.
+        """
+        metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
