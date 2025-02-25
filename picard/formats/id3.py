@@ -327,28 +327,7 @@ class ID3File(File):
                         else:
                             metadata.add('performer', name)
             elif frameid == 'TXXX':
-                name = frame.desc
-                name_lower = name.lower()
-                if name in self.__rename_freetext:
-                    name = self.__rename_freetext[name]
-                if name_lower in self.__translate_freetext_ci:
-                    orig_name = name
-                    name = self.__translate_freetext_ci[name_lower]
-                    self.__casemap[name] = orig_name
-                elif name in self.__translate_freetext:
-                    name = self.__translate_freetext[name]
-                elif ((name in self.__rtranslate)
-                      != (name in self.__rtranslate_freetext)):
-                    # If the desc of a TXXX frame conflicts with the name of a
-                    # Picard tag, load it into ~id3:TXXX:desc rather than desc.
-                    #
-                    # This basically performs an XOR, making sure that 'name'
-                    # is in __rtranslate or __rtranslate_freetext, but not
-                    # both. (Being in both implies we support reading it both
-                    # ways.) Currently, the only tag in both is license.
-                    name = '~id3:TXXX:' + name
-                for text in frame.text:
-                    metadata.add(name, text)
+                self._load_txxx_frame(frame, metadata)
             elif frameid == 'USLT':
                 name = 'lyrics'
                 if frame.desc:
@@ -405,6 +384,24 @@ class ID3File(File):
 
         self._info(metadata, file)
         return metadata
+
+    def _load_txxx_frame(self, frame, metadata):
+        """Process a TXXX frame and add it to metadata."""
+        name = frame.desc
+        name_lower = name.lower()
+        if name in self.__rename_freetext:
+            name = self.__rename_freetext[name]
+        if name_lower in self.__translate_freetext_ci:
+            orig_name = name
+            name = self.__translate_freetext_ci[name_lower]
+            self.__casemap[name] = orig_name
+        elif name in self.__translate_freetext:
+            name = self.__translate_freetext[name]
+        elif ((name in self.__rtranslate)
+              != (name in self.__rtranslate_freetext)):
+            name = '~id3:TXXX:' + name
+        for text in frame.text:
+            metadata.add(name, text)
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
