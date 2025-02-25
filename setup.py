@@ -72,7 +72,6 @@ from picard import (  # noqa: E402
     PICARD_DESKTOP_NAME,
     PICARD_DISPLAY_NAME,
     PICARD_VERSION,
-    PICARD_VERSION_STR_SHORT,
 )
 
 
@@ -733,24 +732,7 @@ def _picard_packages():
 this_directory = os.path.abspath(os.path.dirname(__file__))
 
 
-def _get_description():
-    with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
-        return f.read()
-
-
-def _get_requirements():
-    with open(os.path.join(this_directory, 'requirements.txt'), encoding='utf-8') as f:
-        return f.readlines()
-
-
 args = {
-    'name': PACKAGE_NAME,
-    'version': PICARD_VERSION_STR_SHORT,
-    'description': 'The next generation MusicBrainz tagger',
-    'keywords': 'MusicBrainz metadata tagger picard',
-    'long_description': _get_description(),
-    'long_description_content_type': 'text/markdown',
-    'url': 'https://picard.musicbrainz.org/',
     'package_dir': {'picard': 'picard'},
     'packages': _picard_packages(),
     'locales': _picard_get_locale_files(),
@@ -772,28 +754,6 @@ args = {
         'patch_version': picard_patch_version,
     },
     'scripts': ['scripts/' + PACKAGE_NAME],
-    'install_requires': _get_requirements(),
-    'python_requires': '~=3.9',
-    'classifiers': [
-        'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: MacOS X',
-        'Environment :: Win32 (MS Windows)',
-        'Environment :: X11 Applications :: Qt',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-        'Programming Language :: Python :: 3.12',
-        'Programming Language :: Python :: 3.13',
-        'Operating System :: MacOS',
-        'Operating System :: Microsoft :: Windows',
-        'Operating System :: POSIX :: Linux',
-        'Topic :: Multimedia :: Sound/Audio',
-        'Topic :: Multimedia :: Sound/Audio :: Analysis',
-        'Intended Audience :: End Users/Desktop',
-    ]
 }
 
 
