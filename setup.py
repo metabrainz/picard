@@ -634,7 +634,7 @@ class picard_update_constants(Command):
         outfilename = os.path.join('picard', 'const', filename)
 
         def escape_str(s):
-            return lambda s: s.replace("'", "\\'")
+            return s.replace("'", "\\'")
 
         lines = [
             "    '%s': '%s'," % (escape_str(key), escape_str(value))
