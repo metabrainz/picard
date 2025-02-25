@@ -50,7 +50,6 @@ import tempfile
 
 from setuptools import (
     Command,
-    Extension,
     setup,
 )
 from setuptools.command.build import build
@@ -79,10 +78,6 @@ APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
 APPDATA_FILE_TEMPLATE = APPDATA_FILE + '.in'
 DESKTOP_FILE = PICARD_APP_ID + '.desktop'
 DESKTOP_FILE_TEMPLATE = DESKTOP_FILE + '.in'
-
-ext_modules = [
-    Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
-]
 
 
 def newer(source, target):
@@ -697,33 +692,8 @@ def _picard_get_locale_files():
     return locales
 
 
-def _explode_path(path):
-    """Return a list of components of the path (ie. "/a/b" -> ["a", "b"])"""
-    components = []
-    while True:
-        (path, tail) = os.path.split(path)
-        if tail == "":
-            components.reverse()
-            return components
-        components.append(tail)
-
-
-def _picard_packages():
-    """Build a tuple containing each module under picard/"""
-    packages = []
-    for subdir, _dirs, _files in os.walk("picard"):
-        packages.append(".".join(_explode_path(subdir)))
-    return tuple(sorted(packages))
-
-
-this_directory = os.path.abspath(os.path.dirname(__file__))
-
-
 args = {
-    'package_dir': {'picard': 'picard'},
-    'packages': _picard_packages(),
     'locales': _picard_get_locale_files(),
-    'ext_modules': ext_modules,
     'data_files': [],
     'cmdclass': {
         'build': picard_build,
