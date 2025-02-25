@@ -320,20 +320,7 @@ class ID3File(File):
             elif frameid in self.__tag_re_parse.keys():
                 self._load_tag_regex_frame(frame, metadata, frameid, filename)
             elif frameid == 'APIC':
-                try:
-                    coverartimage = TagCoverArtImage(
-                        file=filename,
-                        tag=frameid,
-                        types=types_from_id3(frame.type),
-                        comment=frame.desc,
-                        support_types=True,
-                        data=frame.data,
-                        id3_type=frame.type,
-                    )
-                except CoverArtImageError as e:
-                    log.error("Cannot load image from %r: %s", filename, e)
-                else:
-                    metadata.images.append(coverartimage)
+                self._load_apic_frame(frame, metadata, filename)
             elif frameid == 'POPM':
                 # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
                 if frame.email == rating_user_email:
@@ -437,6 +424,25 @@ class ID3File(File):
                     metadata[name] = value
         else:
             log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
+
+    def _load_apic_frame(self, frame, metadata, filename):
+        """Process an APIC frame and add it to metadata.
+        Handles attached pictures/cover art, including type and description.
+        """
+        try:
+            coverartimage = TagCoverArtImage(
+                file=filename,
+                tag=frame.FrameID,
+                types=types_from_id3(frame.type),
+                comment=frame.desc,
+                support_types=True,
+                data=frame.data,
+                id3_type=frame.type,
+            )
+        except CoverArtImageError as e:
+            log.error("Cannot load image from %r: %s", filename, e)
+        else:
+            metadata.images.append(coverartimage)
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
