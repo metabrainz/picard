@@ -318,13 +318,7 @@ class ID3File(File):
             elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
                 self._load_ufid_frame(frame, metadata)
             elif frameid in self.__tag_re_parse.keys():
-                m = self.__tag_re_parse[frameid].search(frame.text[0])
-                if m:
-                    for name, value in m.groupdict().items():
-                        if value is not None:
-                            metadata[name] = value
-                else:
-                    log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
+                self._load_tag_regex_frame(frame, metadata, frameid, filename)
             elif frameid == 'APIC':
                 try:
                     coverartimage = TagCoverArtImage(
@@ -431,6 +425,18 @@ class ID3File(File):
         Handles MusicBrainz recording identifier.
         """
         metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
+
+    def _load_tag_regex_frame(self, frame, metadata, frameid, filename):
+        """Process frames that require regex parsing (TRCK, TPOS, MVIN).
+        Extracts track numbers, disc numbers, and movement numbers from their respective frames.
+        """
+        m = self.__tag_re_parse[frameid].search(frame.text[0])
+        if m:
+            for name, value in m.groupdict().items():
+                if value is not None:
+                    metadata[name] = value
+        else:
+            log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
