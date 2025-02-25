@@ -308,12 +308,16 @@ class ID3File(File):
                 self._load_popm_frame(frame, metadata, rating_user_email, rating_steps)
 
         if 'date' in metadata:
-            sanitized = sanitize_date(metadata.getall('date')[0])
-            if sanitized:
-                metadata['date'] = sanitized
+            self._sanitize_date(metadata)
 
         self._info(metadata, file)
         return metadata
+
+    def _sanitize_date(self, metadata):
+        """Sanitize date value if present in metadata."""
+        sanitized = sanitize_date(metadata.getall('date')[0])
+        if sanitized:
+            metadata['date'] = sanitized
 
     def _load_standard_text_frame(self, frame, metadata, frameid, itunes_compatible):
         """Process standard ID3 text frames and add them to metadata.
