@@ -132,7 +132,7 @@ jobs:
     - name: Run pip install .
       run: |
         python -m pip install --upgrade pip
-        pip install .
+        pip install --verbose .
     - name: Test running installed package
       if: runner.os != 'Windows'
       run: picard --long-version --no-crash-dialog
