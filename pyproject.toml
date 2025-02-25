@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "picard"
-description = "MusicBrainz Picard audio tagger"
+description = "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 authors = [{name = "The MusicBrainz Team"}]
 license = {text = "GPL-2.0-or-later"}
 keywords = ["musicbrainz", "tagging", "audio"]

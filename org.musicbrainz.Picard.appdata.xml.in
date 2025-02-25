@@ -4,7 +4,9 @@
   <project_license>GPL-2.0-or-later</project_license>
   <metadata_license>CC0-1.0</metadata_license>
   <name>MusicBrainz Picard</name>
-  <summary>MusicBrainz's music tagger</summary>
+  <summary>
+    Picard is a cross-platform music tagger powered by the MusicBrainz database
+  </summary>
 
   <description>
     <p>
