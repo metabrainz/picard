@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011-2014, 2017 Lukáš Lalinský
 # Copyright (C) 2007 Santiago M. Mola
 # Copyright (C) 2008 Robert Kaye
-# Copyright (C) 2008-2009, 2018-2024 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2025 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2011-2012, 2014, 2016-2018 Wieland Hoffmann
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -53,14 +53,10 @@ from setuptools import (
     Extension,
     setup,
 )
+from setuptools.command.build import build
 from setuptools.command.install import install
 from setuptools.dist import Distribution
 
-
-try:
-    from setuptools.command.build import build
-except ImportError:
-    from distutils.command.build import build
 
 # required for PEP 517
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
@@ -685,15 +681,6 @@ class picard_patch_version(Command):
             f.truncate()
 
 
-def cflags_to_include_dirs(cflags):
-    cflags = cflags.split()
-    include_dirs = []
-    for cflag in cflags:
-        if cflag.startswith('-I'):
-            include_dirs.append(cflag[2:])
-    return include_dirs
-
-
 def _picard_get_locale_files():
     locales = []
     domain_path = {
@@ -766,13 +753,6 @@ def generate_file(infilename, outfilename, variables):
 
 def make_executable(filename):
     os.chmod(filename, os.stat(filename).st_mode | stat.S_IEXEC)
-
-
-def find_file_in_path(filename):
-    for include_path in sys.path:
-        file_path = os.path.join(include_path, filename)
-        if os.path.exists(file_path):
-            return file_path
 
 
 if sys.platform not in {'darwin', 'haiku1', 'win32'}:
