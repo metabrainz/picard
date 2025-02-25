@@ -50,7 +50,7 @@ jobs:
       if: always()
       timeout-minutes: 30
       run: |
-        python setup.py build_locales -i
+        python setup.py build_locales
         pip install pytest pytest-randomly pytest-cov
         pytest --verbose --cov=picard --cov-report xml:coverage.xml test
     - name: Submit code coverage to Codacy

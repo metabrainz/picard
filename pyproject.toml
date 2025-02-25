@@ -51,6 +51,9 @@ dependencies = {file = ["requirements.txt"]}
 [tool.setuptools.packages.find]
 include = ["picard*"]
 
+[tool.setuptools.package-data]
+"*" = ["*.mo"]
+
 [tool.isort]
 sections = [
     "FUTURE", "STDLIB", "FIRSTPARTY", "THIRDPARTY", "QT", "TEST", "PICARD", "LOCALFOLDER",

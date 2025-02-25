@@ -70,7 +70,7 @@ class TestI18n(PicardTestCase):
         self.assertEqual('France', gettext_countries('France'))
 
     @unittest.skipUnless(os.path.exists(os.path.join(localedir, 'de')),
-        'Test requires locales to be built with "python setup.py build_locales -i"')
+        'Test requires locales to be built with "python setup.py build_locales"')
     def test_existing_locales(self):
         locale_de = os.path.join(localedir, 'de', 'LC_MESSAGES', 'picard.mo')
         self.assertTrue(os.path.exists(locale_de), 'expected file %s' % locale_de)

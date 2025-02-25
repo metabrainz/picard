@@ -147,7 +147,6 @@ Then you can build Picard dependencies:
 
     python3 setup.py build
     python3 setup.py build_ext -i
-    python3 setup.py build_locales -i
 
 And to start Picard use:
 

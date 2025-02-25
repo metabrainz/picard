@@ -54,7 +54,6 @@ from setuptools import (
 )
 from setuptools.command.build import build
 from setuptools.command.install import install
-from setuptools.dist import Distribution
 
 
 # required for PEP 517
@@ -95,104 +94,36 @@ def newer(source, target):
 
 class picard_build_locales(Command):
     description = 'build locale files'
-    user_options = [
-        ('build-dir=', 'd', "directory to build to"),
-        ('inplace', 'i', "ignore build-lib and put compiled locales into the 'locale' directory"),
-    ]
 
     def initialize_options(self):
-        self.build_dir = None
-        self.inplace = 0
+        pass
 
     def finalize_options(self):
-        self.set_undefined_options('build', ('build_locales', 'build_dir'))
-        self.locales = self.distribution.locales
+        pass
 
     def run(self):
-        for domain, locale, po in self.locales:
-            if self.inplace:
-                path = os.path.join('locale', locale, 'LC_MESSAGES')
-            else:
-                path = os.path.join(self.build_dir, locale, 'LC_MESSAGES')
+        for domain, locale, po in _picard_get_locale_files():
+            path = os.path.join('picard', 'locale', locale, 'LC_MESSAGES')
             mo = os.path.join(path, '%s.mo' % domain)
             self.mkpath(path)
             self.spawn(['msgfmt', '-o', mo, po])
 
 
-Distribution.locales = None
-
-
-class picard_install_locales(Command):
-    description = "install locale files"
-    user_options = [
-        ('install-dir=', 'd', "directory to install locale files to"),
-        ('build-dir=', 'b', "build directory (where to install from)"),
-        ('force', 'f', "force installation (overwrite existing files)"),
-        ('skip-build', None, "skip the build steps"),
-    ]
-    boolean_options = ['force', 'skip-build']
-
-    def initialize_options(self):
-        self.install_dir = None
-        self.build_dir = None
-        self.force = 0
-        self.skip_build = None
-        self.outfiles = []
-
-    def finalize_options(self):
-        self.set_undefined_options('build', ('build_locales', 'build_dir'))
-        self.set_undefined_options('install',
-                                   ('install_locales', 'install_dir'),
-                                   ('force', 'force'),
-                                   ('skip_build', 'skip_build'),
-                                   )
-
-    def run(self):
-        if not self.skip_build:
-            self.run_command('build_locales')
-        self.outfiles = self.copy_tree(self.build_dir, self.install_dir)
-
-    def get_inputs(self):
-        return self.locales or []
-
-    def get_outputs(self):
-        return self.outfiles
-
-
 class picard_install(install):
 
     user_options = install.user_options + [
-        ('install-locales=', None,
-         "installation directory for locales"),
-        ('localedir=', None, ''),
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
-        ('disable-locales', None, ''),
     ]
 
     sub_commands = install.sub_commands
 
     def initialize_options(self):
         install.initialize_options(self)
-        self.install_locales = None
-        self.localedir = None
         self.disable_autoupdate = None
-        self.disable_locales = None
 
     def finalize_options(self):
         install.finalize_options(self)
-        if self.install_locales is None:
-            self.install_locales = os.path.join(self.install_data, 'share', 'locale')
-            if self.root and self.install_locales.startswith(self.root):
-                self.install_locales = self.install_locales[len(self.root):]
-        self.install_locales = os.path.normpath(self.install_locales)
-        self.localedir = self.install_locales
-        # can't use set_undefined_options :/
-        self.distribution.get_command_obj('build').localedir = self.localedir
         self.distribution.get_command_obj('build').disable_autoupdate = self.disable_autoupdate
-        if self.root is not None:
-            self.change_roots('locales')
-        if self.disable_locales is None:
-            self.sub_commands.append(('install_locales', None))
 
     def run(self):
         install.run(self)
@@ -201,20 +132,14 @@ class picard_install(install):
 class picard_build(build):
 
     user_options = build.user_options + [
-        ('build-locales=', 'd', "build directory for locale files"),
-        ('localedir=', None, ''),
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
-        ('disable-locales', None, ''),
         ('build-number=', None, 'build number (integer)'),
     ]
 
     def initialize_options(self):
         super().initialize_options()
         self.build_number = 0
-        self.build_locales = None
-        self.localedir = None
         self.disable_autoupdate = None
-        self.disable_locales = None
 
     def finalize_options(self):
         super().finalize_options()
@@ -222,17 +147,12 @@ class picard_build(build):
             self.build_number = int(self.build_number)
         except ValueError:
             self.build_number = 0
-        if self.build_locales is None:
-            self.build_locales = os.path.join(self.build_base, 'locale')
-        if self.localedir is None:
-            self.localedir = '/usr/share/locale'
         if self.disable_autoupdate is None:
             self.disable_autoupdate = False
-        if self.disable_locales is None:
-            self.sub_commands.append(('build_locales', None))
+        self.sub_commands.append(('build_locales', None))
 
     def run(self):
-        params = {'localedir': self.localedir, 'autoupdate': not self.disable_autoupdate}
+        params = {'autoupdate': not self.disable_autoupdate}
         generate_file('tagger.py.in', 'tagger.py', params)
         make_executable('tagger.py')
         generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, params)
@@ -688,7 +608,6 @@ def _picard_get_locale_files():
 
 
 args = {
-    'locales': _picard_get_locale_files(),
     'data_files': [],
     'cmdclass': {
         'build': picard_build,
@@ -699,7 +618,6 @@ args = {
         'regen_appdata_pot_file': picard_regen_appdata_pot_file,
         'build_desktop_file': picard_build_desktop_file,
         'install': picard_install,
-        'install_locales': picard_install_locales,
         'update_constants': picard_update_constants,
         'regen_pot_file': picard_regen_pot_file,
         'regen_constants_pot_file': picard_regen_constants_pot_file,

@@ -37,7 +37,7 @@ def get_locale_messages():
     data_files = []
     for locale in _picard_get_locale_files():
         data_files.append(
-            (os.path.join("build", "locale", locale[1], "LC_MESSAGES", locale[0] + ".mo"),
+            (os.path.join("picard", "locale", locale[1], "LC_MESSAGES", locale[0] + ".mo"),
              os.path.join("locale", locale[1], "LC_MESSAGES")))
     return data_files
 
