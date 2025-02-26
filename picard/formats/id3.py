@@ -104,7 +104,7 @@ class Id3Encoding(IntEnum):
 
 def id3text(text, encoding):
     """Returns a string which only contains code points which can
-    be encododed with the given numeric id3 encoding.
+    be encoded with the given numeric id3 encoding.
     """
 
     if encoding == Id3Encoding.LATIN1:
