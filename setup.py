@@ -273,7 +273,10 @@ class picard_build(build):
         if self.localedir is None:
             self.localedir = '/usr/share/locale'
         if self.disable_autoupdate is None:
-            self.disable_autoupdate = False
+            # Support setting this option with an environment variable as
+            # a workaround for https://tickets.metabrainz.org/browse/PICARD-3003
+            env_autoupdate = os.environ.get('PICARD_DISABLE_AUTOUPDATE')
+            self.disable_autoupdate = bool(env_autoupdate and env_autoupdate != '0')
         if self.disable_locales is None:
             self.sub_commands.append(('build_locales', None))
 
