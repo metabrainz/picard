@@ -37,7 +37,6 @@
 
 from collections import Counter
 from enum import IntEnum
-from functools import partial
 import re
 from urllib.parse import urlparse
 
@@ -257,8 +256,11 @@ class ID3File(File):
     def __init__(self, filename):
         super().__init__(filename)
         self.__casemap = {}
+
+        def create_frame_processors(frameids, handler):
+            return {frameid: handler for frameid in frameids}
+
         # Dictionary of frame processors - functions that process specific frame types
-        # Using partial() to bind frameid parameter where needed
         self._frame_processors = {
             'TIT1': self._load_tit1_frame,
             'TMCL': self._load_tmcl_frame,
@@ -269,14 +271,8 @@ class ID3File(File):
             'UFID': self._load_ufid_frame,
             'APIC': self._load_apic_frame,
             'POPM': self._load_popm_frame,
-            **{
-                frameid: partial(self._load_standard_text_frame, frameid=frameid)
-                for frameid in self.__translate
-            },
-            **{
-                frameid: partial(self._load_tag_regex_frame, frameid=frameid)
-                for frameid in self.__tag_re_parse
-            }
+            **create_frame_processors(self.__translate, self._load_standard_text_frame),
+            **create_frame_processors(self.__tag_re_parse, self._load_tag_regex_frame),
         }
 
     def build_TXXX(self, encoding, desc, values):
@@ -343,10 +339,11 @@ class ID3File(File):
         if sanitized:
             metadata['date'] = sanitized
 
-    def _load_standard_text_frame(self, frame, metadata, config_params, frameid):
+    def _load_standard_text_frame(self, frame, metadata, config_params):
         """Process standard ID3 text frames and add them to metadata.
         Handles text frames that have direct translation to Picard tags.
         """
+        frameid = frame.FrameID
         name = self.__translate[frameid]
         if frameid.startswith('T') or frameid in {'GRP1', 'MVNM'}:
             for text in frame.text:
@@ -455,10 +452,11 @@ class ID3File(File):
         if frame.owner == "http://musicbrainz.org":
             metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
 
-    def _load_tag_regex_frame(self, frame, metadata, config_params, frameid):
+    def _load_tag_regex_frame(self, frame, metadata, config_params):
         """Process frames that require regex parsing (TRCK, TPOS, MVIN).
         Extracts track numbers, disc numbers, and movement numbers from their respective frames.
         """
+        frameid = frame.FrameID
         m = self.__tag_re_parse[frameid].search(frame.text[0])
         if m:
             for name, value in m.groupdict().items():
