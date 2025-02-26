@@ -372,17 +372,21 @@ class ID3File(File):
             if text:
                 metadata.add(name, text)
 
+    def _add_performer(self, role, name, metadata):
+        """Add a performer to metadata with the given role."""
+        if role == 'performer':
+            role = ''
+        if role:
+            metadata.add('performer:%s' % role, name)
+        else:
+            metadata.add('performer', name)
+
     def _load_tmcl_frame(self, frame, metadata, config_params):
         """Process a TMCL frame and add it to metadata.
         Handles musician credits list, converting performer roles into the appropriate metadata.
         """
         for role, name in frame.people:
-            if role == 'performer':
-                role = ''
-            if role:
-                metadata.add('performer:%s' % role, name)
-            else:
-                metadata.add('performer', name)
+            self._add_performer(role, name, metadata)
 
     def _load_tipl_frame(self, frame, metadata, config_params):
         """Process a TIPL frame and add it to metadata.
@@ -393,12 +397,7 @@ class ID3File(File):
             if role in self._tipl_roles and name:
                 metadata.add(self._tipl_roles[role], name)
             else:
-                if role == 'performer':
-                    role = ''
-                if role:
-                    metadata.add('performer:%s' % role, name)
-                else:
-                    metadata.add('performer', name)
+                self._add_performer(role, name, metadata)
 
     def _load_txxx_frame(self, frame, metadata, config_params):
         """Process a TXXX frame and add it to metadata."""
