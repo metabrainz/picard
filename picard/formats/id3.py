@@ -112,6 +112,10 @@ def id3text(text, encoding):
     return text
 
 
+def id3_rating_user_email(config):
+    return id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
+
+
 def _remove_people_with_role(tags, frames, role):
     for frame in tags.values():
         if frame.FrameID in frames:
@@ -322,7 +326,7 @@ class ID3File(File):
             'filename': filename,
             'file_length': file.info.length,
             'itunes_compatible': config.setting['itunes_compatible_grouping'],
-            'rating_user_email': id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1),
+            'rating_user_email': id3_rating_user_email(config),
             'rating_steps': config.setting['rating_steps']
         }
 
@@ -595,7 +599,7 @@ class ID3File(File):
             elif name == 'musicbrainz_recordingid':
                 tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
             elif name == '~rating':
-                rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
+                rating_user_email = id3_rating_user_email(config)
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():
                     if frame.FrameID == 'POPM' and frame.email == rating_user_email:
@@ -727,7 +731,7 @@ class ID3File(File):
                     tags.delall(real_name)
                     tags.delall('TXXX:' + self.__rtranslate_freetext[name])
                 elif real_name == 'POPM':
-                    rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
+                    rating_user_email = id3_rating_user_email(config)
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'POPM' and frame.email == rating_user_email:
                             del tags[key]
