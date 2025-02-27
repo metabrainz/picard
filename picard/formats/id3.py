@@ -531,12 +531,7 @@ class ID3File(File):
                     else:
                         tmcl.people.append([role, value])
             elif name == 'comment' or name.startswith('comment:'):
-                (lang, desc) = parse_comment_tag(name)
-                if desc.lower()[:4] == 'itun':
-                    tags.delall('COMM:' + desc)
-                    tags.add(id3.COMM(encoding=Id3Encoding.LATIN1, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
-                else:
-                    tags.add(id3.COMM(encoding=encoding, desc=desc, lang=lang, text=values))
+                self._save_comment_tag(tags, name, values, encoding)
             elif name.startswith('lyrics:') or name == 'lyrics':
                 if ':' in name:
                     desc = name.split(':', 1)[1]
@@ -874,6 +869,15 @@ class ID3File(File):
                              type=image.id3_type,
                              desc=id3text(desctag, Id3Encoding.LATIN1),
                              data=image.data))
+
+    def _save_comment_tag(self, tags, name, values, encoding):
+        """Save comment tag to ID3 frames."""
+        (lang, desc) = parse_comment_tag(name)
+        if desc.lower()[:4] == 'itun':
+            tags.delall('COMM:' + desc)
+            tags.add(id3.COMM(encoding=Id3Encoding.LATIN1, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
+        else:
+            tags.add(id3.COMM(encoding=encoding, desc=desc, lang=lang, text=values))
 
 
 class MP3File(ID3File):
