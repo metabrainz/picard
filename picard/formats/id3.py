@@ -927,11 +927,11 @@ class ID3File(File):
             elif name in self._rtipl_roles:
                 self._remove_rtipl_role_tag(tags, name, real_name)
             elif name == 'musicbrainz_recordingid':
-                self._remove_musicbrainz_recording_id(tags, name, real_name)
+                self._remove_musicbrainz_recording_id_tag(tags, name, real_name)
             elif name == 'license':
                 self._remove_license_tag(tags, name, real_name)
             elif real_name == 'POPM':
-                self._remove_rating(tags, name, real_name, config)
+                self._remove_rating_tag(tags, name, real_name, config)
             elif real_name in self.__translate:
                 self._remove_translated_tag(tags, name, real_name)
             elif name.lower() in self.__rtranslate_freetext_ci:
@@ -983,7 +983,7 @@ class ID3File(File):
         role = self._rtipl_roles[name]
         _remove_people_with_role(tags, ['TIPL', 'IPLS'], role)
 
-    def _remove_musicbrainz_recording_id(self, tags, name, real_name):
+    def _remove_musicbrainz_recording_id_tag(self, tags, name, real_name):
         """Remove MusicBrainz recording ID from UFID frame."""
         for key, frame in list(tags.items()):
             if frame.FrameID == 'UFID' and frame.owner == "http://musicbrainz.org":
@@ -994,7 +994,7 @@ class ID3File(File):
         tags.delall(real_name)
         tags.delall('TXXX:' + self.__rtranslate_freetext['license'])
 
-    def _remove_rating(self, tags, name, real_name, config):
+    def _remove_rating_tag(self, tags, name, real_name, config):
         """Remove rating from POPM frame."""
         rating_user_email = id3_rating_user_email(config)
         for key, frame in list(tags.items()):
