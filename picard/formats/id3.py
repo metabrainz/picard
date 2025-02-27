@@ -575,69 +575,6 @@ class ID3File(File):
             if cover:
                 tags.setall('APIC', cover)
 
-    def _remove_deleted_tags(self, metadata, tags):
-        """Remove the tags from the file that were deleted in the UI"""
-        config = get_config()
-
-        for name in metadata.deleted_tags:
-            real_name = self._get_tag_name(name)
-            try:
-                if name.startswith('performer:'):
-                    role = name.split(':', 1)[1]
-                    _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
-                elif name.startswith('comment:') or name == 'comment':
-                    (lang, desc) = parse_comment_tag(name)
-                    for key, frame in list(tags.items()):
-                        if (frame.FrameID == 'COMM' and frame.desc == desc
-                            and frame.lang == lang):
-                            del tags[key]
-                elif name.startswith('lyrics:') or name == 'lyrics':
-                    if ':' in name:
-                        desc = name.split(':', 1)[1]
-                    else:
-                        desc = ''
-                    for key, frame in list(tags.items()):
-                        if frame.FrameID == 'USLT' and frame.desc == desc:
-                            del tags[key]
-                elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
-                    (lang, desc) = parse_subtag(name)
-                    for key, frame in list(tags.items()):
-                        if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang \
-                                and frame.type == 1:
-                            del tags[key]
-                elif name in self._rtipl_roles:
-                    role = self._rtipl_roles[name]
-                    _remove_people_with_role(tags, ['TIPL', 'IPLS'], role)
-                elif name == 'musicbrainz_recordingid':
-                    for key, frame in list(tags.items()):
-                        if frame.FrameID == 'UFID' and frame.owner == "http://musicbrainz.org":
-                            del tags[key]
-                elif name == 'license':
-                    tags.delall(real_name)
-                    tags.delall('TXXX:' + self.__rtranslate_freetext[name])
-                elif real_name == 'POPM':
-                    rating_user_email = id3_rating_user_email(config)
-                    for key, frame in list(tags.items()):
-                        if frame.FrameID == 'POPM' and frame.email == rating_user_email:
-                            del tags[key]
-                elif real_name in self.__translate:
-                    tags.delall(real_name)
-                elif name.lower() in self.__rtranslate_freetext_ci:
-                    delall_ci(tags, 'TXXX:' + self.__rtranslate_freetext_ci[name.lower()])
-                elif real_name in self.__translate_freetext:
-                    tags.delall('TXXX:' + real_name)
-                    if real_name in self.__rrename_freetext:
-                        tags.delall('TXXX:' + self.__rrename_freetext[real_name])
-                elif not name.startswith('~id3:') and name not in self.__other_supported_tags:
-                    tags.delall('TXXX:' + name)
-                elif name.startswith('~id3:'):
-                    frameid = name[5:]
-                    tags.delall(frameid)
-                elif name in self.__other_supported_tags:
-                    del tags[real_name]
-            except KeyError:
-                pass
-
     @classmethod
     def supports_tag(cls, name):
         return ((name and not name.startswith('~') and name not in UNSUPPORTED_TAGS)
@@ -929,6 +866,129 @@ class ID3File(File):
     def _get_images_to_save(self, metadata):
         """Get list of images to be saved to tags."""
         return list(metadata.images.to_be_saved_to_tags())
+
+    def _remove_deleted_tags(self, metadata, tags):
+        """Remove the tags from the file that were deleted in the UI."""
+        config = get_config()
+
+        for name in metadata.deleted_tags:
+            self._remove_single_tag(tags, name, config)
+
+    def _remove_single_tag(self, tags, name, config):
+        """Remove a single tag based on its name."""
+        real_name = self._get_tag_name(name)
+        try:
+            if name.startswith('performer:'):
+                self._remove_performer_tag(tags, name, real_name)
+            elif name.startswith('comment:') or name == 'comment':
+                self._remove_comment_tag(tags, name, real_name)
+            elif name.startswith('lyrics:') or name == 'lyrics':
+                self._remove_lyrics_tag(tags, name, real_name)
+            elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
+                self._remove_synced_lyrics_tag(tags, name, real_name)
+            elif name in self._rtipl_roles:
+                self._remove_rtipl_role_tag(tags, name, real_name)
+            elif name == 'musicbrainz_recordingid':
+                self._remove_musicbrainz_recording_id(tags, name, real_name)
+            elif name == 'license':
+                self._remove_license_tag(tags, name, real_name)
+            elif real_name == 'POPM':
+                self._remove_rating(tags, name, real_name, config)
+            elif real_name in self.__translate:
+                self._remove_translated_tag(tags, name, real_name)
+            elif name.lower() in self.__rtranslate_freetext_ci:
+                self._remove_freetext_ci_tag(tags, name, real_name)
+            elif real_name in self.__translate_freetext:
+                self._remove_freetext_tag(tags, name, real_name)
+            elif not name.startswith('~id3:') and name not in self.__other_supported_tags:
+                self._remove_custom_tag(tags, name, real_name)
+            elif name.startswith('~id3:'):
+                self._remove_id3_tag(tags, name, real_name)
+            elif name in self.__other_supported_tags:
+                self._remove_other_supported_tag(tags, name, real_name)
+        except KeyError:
+            pass
+
+    def _remove_performer_tag(self, tags, name, real_name):
+        """Remove performer tag from ID3 frames."""
+        role = name.split(':', 1)[1]
+        _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
+
+    def _remove_comment_tag(self, tags, name, real_name):
+        """Remove comment tag from ID3 frames."""
+        (lang, desc) = parse_comment_tag(name)
+        for key, frame in list(tags.items()):
+            if (frame.FrameID == 'COMM' and frame.desc == desc
+                    and frame.lang == lang):
+                del tags[key]
+
+    def _remove_lyrics_tag(self, tags, name, real_name):
+        """Remove lyrics tag from ID3 frames."""
+        if ':' in name:
+            desc = name.split(':', 1)[1]
+        else:
+            desc = ''
+        for key, frame in list(tags.items()):
+            if frame.FrameID == 'USLT' and frame.desc == desc:
+                del tags[key]
+
+    def _remove_synced_lyrics_tag(self, tags, name, real_name):
+        """Remove synchronized lyrics tag from ID3 frames."""
+        (lang, desc) = parse_subtag(name)
+        for key, frame in list(tags.items()):
+            if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang \
+                    and frame.type == 1:
+                del tags[key]
+
+    def _remove_rtipl_role_tag(self, tags, name, real_name):
+        """Remove role tag from ID3 frames."""
+        role = self._rtipl_roles[name]
+        _remove_people_with_role(tags, ['TIPL', 'IPLS'], role)
+
+    def _remove_musicbrainz_recording_id(self, tags, name, real_name):
+        """Remove MusicBrainz recording ID from UFID frame."""
+        for key, frame in list(tags.items()):
+            if frame.FrameID == 'UFID' and frame.owner == "http://musicbrainz.org":
+                del tags[key]
+
+    def _remove_license_tag(self, tags, name, real_name):
+        """Remove license tag from ID3 frames."""
+        tags.delall(real_name)
+        tags.delall('TXXX:' + self.__rtranslate_freetext['license'])
+
+    def _remove_rating(self, tags, name, real_name, config):
+        """Remove rating from POPM frame."""
+        rating_user_email = id3_rating_user_email(config)
+        for key, frame in list(tags.items()):
+            if frame.FrameID == 'POPM' and frame.email == rating_user_email:
+                del tags[key]
+
+    def _remove_translated_tag(self, tags, name, real_name):
+        """Remove translated tag from ID3 frames."""
+        tags.delall(real_name)
+
+    def _remove_freetext_ci_tag(self, tags, name, real_name):
+        """Remove case-insensitive free text tag from ID3 frames."""
+        delall_ci(tags, 'TXXX:' + self.__rtranslate_freetext_ci[name.lower()])
+
+    def _remove_freetext_tag(self, tags, name, real_name):
+        """Remove free text tag from ID3 frames."""
+        tags.delall('TXXX:' + real_name)
+        if real_name in self.__rrename_freetext:
+            tags.delall('TXXX:' + self.__rrename_freetext[real_name])
+
+    def _remove_custom_tag(self, tags, name, real_name):
+        """Remove custom tag from ID3 frames."""
+        tags.delall('TXXX:' + name)
+
+    def _remove_id3_tag(self, tags, name, real_name):
+        """Remove ID3-specific tag from ID3 frames."""
+        frameid = name[5:]
+        tags.delall(frameid)
+
+    def _remove_other_supported_tag(self, tags, name, real_name):
+        """Remove other supported tag from ID3 frames."""
+        del tags[real_name]
 
 
 class MP3File(ID3File):
