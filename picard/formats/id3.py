@@ -512,13 +512,15 @@ class ID3File(File):
         self._save_track_disc_movement_numbers(tags, metadata)
         self._save_images(tags, images_to_save)
         for name, values in metadata.rawitems():
-            values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
-            name_lower = name.lower()
 
             if not self.supports_tag(name):
                 continue
-            elif name == 'performer' or name.startswith('performer:'):
+
+            values = [id3text(v, encoding) for v in values]
+            name_lower = name.lower()
+
+            if name == 'performer' or name.startswith('performer:'):
                 self._save_performer(tags, name, values, config, encoding, tmcl, tipl)
             elif name == 'comment' or name.startswith('comment:'):
                 self._save_comment_tag(tags, name, values, encoding)
