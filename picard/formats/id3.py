@@ -775,6 +775,9 @@ class ID3File(File):
 
     def _save_images(self, tags, images_to_save):
         """Save cover art images to tags."""
+        if not images_to_save:
+            return
+
         counters = Counter()
         for image in images_to_save:
             desc = desctag = image.comment
@@ -784,11 +787,13 @@ class ID3File(File):
                 else:
                     desctag = "(%i)" % counters[desc]
             counters[desc] += 1
-            tags.add(id3.APIC(encoding=Id3Encoding.LATIN1,
-                             mime=image.mimetype,
-                             type=image.id3_type,
-                             desc=id3text(desctag, Id3Encoding.LATIN1),
-                             data=image.data))
+            tags.add(id3.APIC(
+                encoding=Id3Encoding.LATIN1,
+                mime=image.mimetype,
+                type=image.id3_type,
+                desc=id3text(desctag, Id3Encoding.LATIN1),
+                data=image.data
+            ))
 
     def _save_comment_tag(self, tags, name, values, encoding):
         """Save comment tag to ID3 frames."""
