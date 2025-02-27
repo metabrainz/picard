@@ -501,11 +501,7 @@ class ID3File(File):
         log.debug("Saving file %r", filename)
         tags = self._get_tags(filename)
         config = get_config()
-        if config.setting['clear_existing_tags']:
-            cover = tags.getall('APIC') if config.setting['preserve_images'] else None
-            tags.clear()
-            if cover:
-                tags.setall('APIC', cover)
+        self._initialize_tags_for_saving(tags, config)
         images_to_save = list(metadata.images.to_be_saved_to_tags())
         if images_to_save:
             tags.delall('APIC')
@@ -689,6 +685,14 @@ class ID3File(File):
                 mutagen.apev2.delete(encode_filename(filename))
             except BaseException:
                 pass
+
+    def _initialize_tags_for_saving(self, tags, config):
+        """Initialize tags for saving, handling existing tag clearing and image preservation."""
+        if config.setting['clear_existing_tags']:
+            cover = tags.getall('APIC') if config.setting['preserve_images'] else None
+            tags.clear()
+            if cover:
+                tags.setall('APIC', cover)
 
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI"""
