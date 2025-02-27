@@ -512,12 +512,12 @@ class ID3File(File):
 
         # Create parameter dictionary
         save_params = {
-            'config': config,
             'encoding': encoding,
             'people_frames': people_frames,
             'itunes_compatible': itunes_compatible,
             'rating_user_email': id3_rating_user_email(config),
             'rating_steps': config.setting['rating_steps'],
+            'write_id3v23': config.setting['write_id3v23'],
         }
 
         self._save_track_disc_movement_numbers(tags, metadata)
@@ -806,8 +806,8 @@ class ID3File(File):
 
     def _save_standard_tag(self, tags, name, values, **params):
         """Save standard ID3 frame based on tag name."""
-        config = params['config']
         encoding = params['encoding']
+        write_id3v23 = params['write_id3v23']
 
         frameid = self.__rtranslate[name]
         if frameid.startswith('W'):
@@ -825,7 +825,7 @@ class ID3File(File):
                 for url in values:
                     tags.add(id3.WOAR(url=url))
         elif frameid.startswith('T') or frameid == 'MVNM':
-            if config.setting['write_id3v23']:
+            if write_id3v23:
                 if frameid == 'TMOO':
                     tags.add(self.build_TXXX(encoding, 'mood', values))
                 if frameid == 'TDRL':
@@ -840,14 +840,14 @@ class ID3File(File):
 
     def _save_performer_tag(self, tags, name, values, **params):
         """Save performer information."""
-        config = params['config']
         people_frames = params['people_frames']
+        write_id3v23 = params['write_id3v23']
 
         if ':' in name:
             role = name.split(':', 1)[1]
         else:
             role = 'performer'
-        if config.setting['write_id3v23']:
+        if write_id3v23:
             # TIPL will be upgraded to IPLS
             frame = 'tipl'
         else:
