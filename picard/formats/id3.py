@@ -508,27 +508,6 @@ class ID3File(File):
 
         encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
 
-        if 'tracknumber' in metadata:
-            if 'totaltracks' in metadata:
-                text = '%s/%s' % (metadata['tracknumber'], metadata['totaltracks'])
-            else:
-                text = metadata['tracknumber']
-            tags.add(id3.TRCK(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
-
-        if 'discnumber' in metadata:
-            if 'totaldiscs' in metadata:
-                text = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
-            else:
-                text = metadata['discnumber']
-            tags.add(id3.TPOS(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
-
-        if 'movementnumber' in metadata:
-            if 'movementtotal' in metadata:
-                text = '%s/%s' % (metadata['movementnumber'], metadata['movementtotal'])
-            else:
-                text = metadata['movementnumber']
-            tags.add(id3.MVIN(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
-
         # This is necessary because mutagens HashKey for APIC frames only
         # includes the FrameID (APIC) and description - it's basically
         # impossible to save two images, even of different types, without
@@ -550,6 +529,8 @@ class ID3File(File):
 
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
+
+        self._save_track_disc_movement_numbers(tags, metadata)
         for name, values in metadata.rawitems():
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
@@ -872,6 +853,29 @@ class ID3File(File):
             if not frame[0] and frame[1] == sylt_lyrics[i + 1][1]:
                 sylt_lyrics.pop(i)
         return sylt_lyrics
+
+    def _save_track_disc_movement_numbers(self, tags, metadata):
+        """Save track, disc, and movement numbers to tags."""
+        if 'tracknumber' in metadata:
+            if 'totaltracks' in metadata:
+                text = '%s/%s' % (metadata['tracknumber'], metadata['totaltracks'])
+            else:
+                text = metadata['tracknumber']
+            tags.add(id3.TRCK(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
+
+        if 'discnumber' in metadata:
+            if 'totaldiscs' in metadata:
+                text = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
+            else:
+                text = metadata['discnumber']
+            tags.add(id3.TPOS(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
+
+        if 'movementnumber' in metadata:
+            if 'movementtotal' in metadata:
+                text = '%s/%s' % (metadata['movementnumber'], metadata['movementtotal'])
+            else:
+                text = metadata['movementnumber']
+            tags.add(id3.MVIN(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
 
 
 class MP3File(ID3File):
