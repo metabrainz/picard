@@ -502,15 +502,13 @@ class ID3File(File):
         tags = self._get_tags(filename)
         config = get_config()
         self._initialize_tags_for_saving(tags, config)
-        images_to_save = self._get_images_to_save(metadata)
-        if images_to_save:
-            tags.delall('APIC')
 
         encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
         tmcl, tipl = self._create_people_frames(encoding)
 
         self._save_track_disc_movement_numbers(tags, metadata)
-        self._save_images(tags, images_to_save)
+        self._save_images(tags, metadata)
+
         for name, values in metadata.rawitems():
             name = id3text(name, encoding)
 
@@ -711,10 +709,13 @@ class ID3File(File):
                 text=id3text(text, Id3Encoding.LATIN1)
             ))
 
-    def _save_images(self, tags, images_to_save):
+    def _save_images(self, tags, metadata):
         """Save cover art images to tags."""
+        images_to_save = list(metadata.images.to_be_saved_to_tags())
         if not images_to_save:
             return
+
+        tags.delall('APIC')
 
         counters = Counter()
         for image in images_to_save:
@@ -864,10 +865,6 @@ class ID3File(File):
             mutagen.id3.TMCL(encoding=encoding, people=[]),
             mutagen.id3.TIPL(encoding=encoding, people=[])
         )
-
-    def _get_images_to_save(self, metadata):
-        """Get list of images to be saved to tags."""
-        return list(metadata.images.to_be_saved_to_tags())
 
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI."""
