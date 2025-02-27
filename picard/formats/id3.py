@@ -540,7 +540,7 @@ class ID3File(File):
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
             elif name == 'musicbrainz_recordingid':
-                tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
+                self._save_musicbrainz_recording_id(tags, values)
             elif name == '~rating':
                 rating_user_email = id3_rating_user_email(config)
                 # Search for an existing POPM frame to get the current playcount
@@ -886,6 +886,10 @@ class ID3File(File):
             # If the text does not contain any timestamps, the tag is not added
             if sylt_lyrics:
                 tags.add(id3.SYLT(encoding=encoding, lang=lang, format=2, type=1, desc=desc, text=sylt_lyrics))
+
+    def _save_musicbrainz_recording_id(self, tags, values):
+        """Save MusicBrainz recording ID to UFID frame."""
+        tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
 
 
 class MP3File(ID3File):
