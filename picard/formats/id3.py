@@ -533,10 +533,7 @@ class ID3File(File):
             elif name == '~rating':
                 self._save_rating_tag(tags, values, config)
             elif name == 'grouping':
-                if config.setting['itunes_compatible_grouping']:
-                    tags.add(id3.GRP1(encoding=encoding, text=values))
-                else:
-                    tags.add(id3.TIT1(encoding=encoding, text=values))
+                self._save_grouping_tag(tags, name, values, config, encoding)
             elif name == 'work' and config.setting['itunes_compatible_grouping']:
                 tags.add(id3.TIT1(encoding=encoding, text=values))
                 tags.delall('TXXX:Work')
@@ -779,6 +776,13 @@ class ID3File(File):
         # Convert rating to range between 0 and 255
         rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
         tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
+
+    def _save_grouping_tag(self, tags, name, values, config, encoding):
+        """Save grouping tag to ID3 frames."""
+        if config.setting['itunes_compatible_grouping']:
+            tags.add(id3.GRP1(encoding=encoding, text=values))
+        else:
+            tags.add(id3.TIT1(encoding=encoding, text=values))
 
     def _save_standard_tag(self, tags, name, values, config, encoding, tmcl, tipl):
         """Save standard ID3 frame based on tag name."""
