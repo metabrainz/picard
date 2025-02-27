@@ -553,36 +553,7 @@ class ID3File(File):
                 tags.delall('TXXX:Work')
                 tags.delall('TXXX:WORK')
             elif name in self.__rtranslate:
-                frameid = self.__rtranslate[name]
-                if frameid.startswith('W'):
-                    valid_urls = all(all(urlparse(v)[:2]) for v in values)
-                    if frameid == 'WCOP':
-                        # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
-                        if len(values) > 1 or not valid_urls:
-                            tags.delall('WCOP')
-                            tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
-                        else:
-                            tags.delall('TXXX:' + self.__rtranslate_freetext[name])
-                            tags.add(id3.WCOP(url=values[0]))
-                    elif frameid == 'WOAR' and valid_urls:
-                        tags.delall('WOAR')
-                        for url in values:
-                            tags.add(id3.WOAR(url=url))
-                elif frameid.startswith('T') or frameid == 'MVNM':
-                    if config.setting['write_id3v23']:
-                        if frameid == 'TMOO':
-                            tags.add(self.build_TXXX(encoding, 'mood', values))
-                    # No need to care about the TMOO tag being added again as it is
-                    # automatically deleted by Mutagen if id2v23 is selected
-                        if frameid == 'TDRL':
-                            tags.add(self.build_TXXX(encoding, 'RELEASEDATE', values))
-                    tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
-                    if frameid == 'TSOA':
-                        tags.delall('XSOA')
-                    elif frameid == 'TSOP':
-                        tags.delall('XSOP')
-                    elif frameid == 'TSO2':
-                        tags.delall('TXXX:ALBUMARTISTSORT')
+                self._save_standard_frame(tags, name, values, config, encoding)
             elif name_lower in self.__rtranslate_freetext_ci:
                 if name_lower in self.__casemap:
                     description = self.__casemap[name_lower]
@@ -894,6 +865,37 @@ class ID3File(File):
         # Convert rating to range between 0 and 255
         rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
         tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
+
+    def _save_standard_frame(self, tags, name, values, config, encoding):
+        """Save standard ID3 frame based on tag name."""
+        frameid = self.__rtranslate[name]
+        if frameid.startswith('W'):
+            valid_urls = all(all(urlparse(v)[:2]) for v in values)
+            if frameid == 'WCOP':
+                # Only add WCOP if there is only one license URL, otherwise use TXXX:LICENSE
+                if len(values) > 1 or not valid_urls:
+                    tags.delall('WCOP')
+                    tags.add(self.build_TXXX(encoding, self.__rtranslate_freetext[name], values))
+                else:
+                    tags.delall('TXXX:' + self.__rtranslate_freetext[name])
+                    tags.add(id3.WCOP(url=values[0]))
+            elif frameid == 'WOAR' and valid_urls:
+                tags.delall('WOAR')
+                for url in values:
+                    tags.add(id3.WOAR(url=url))
+        elif frameid.startswith('T') or frameid == 'MVNM':
+            if config.setting['write_id3v23']:
+                if frameid == 'TMOO':
+                    tags.add(self.build_TXXX(encoding, 'mood', values))
+                if frameid == 'TDRL':
+                    tags.add(self.build_TXXX(encoding, 'RELEASEDATE', values))
+            tags.add(getattr(id3, frameid)(encoding=encoding, text=values))
+            if frameid == 'TSOA':
+                tags.delall('XSOA')
+            elif frameid == 'TSOP':
+                tags.delall('XSOP')
+            elif frameid == 'TSO2':
+                tags.delall('TXXX:ALBUMARTISTSORT')
 
 
 class MP3File(ID3File):
