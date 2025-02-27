@@ -499,6 +499,9 @@ class ID3File(File):
     def _save(self, filename, metadata):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
+
+        # TODO: check _get_tags vs encode_filename(), not sure if we can pass it directly using
+        # encoded_filename below
         tags = self._get_tags(filename)
         config = get_config()
         self._initialize_tags_for_saving(tags, config)
@@ -555,11 +558,13 @@ class ID3File(File):
 
         self._save_people_frames(tags, people_frames)
         self._remove_deleted_tags(tags, metadata, config)
-        self._save_tags(tags, encode_filename(filename))
+
+        encoded_filename = encode_filename(filename)
+        self._save_tags(tags, encoded_filename)
 
         if self._IsMP3 and config.setting['remove_ape_from_mp3']:
             try:
-                mutagen.apev2.delete(encode_filename(filename))
+                mutagen.apev2.delete(encoded_filename)
             except BaseException:
                 pass
 
