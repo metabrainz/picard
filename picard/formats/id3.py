@@ -547,10 +547,7 @@ class ID3File(File):
             elif name_lower in self.__rtranslate_freetext_ci:
                 self._save_freetext_ci(tags, name_lower, values, encoding)
             elif name in self.__rtranslate_freetext:
-                description = self.__rtranslate_freetext[name]
-                if description in self.__rrename_freetext:
-                    tags.delall('TXXX:' + self.__rrename_freetext[description])
-                tags.add(self.build_TXXX(encoding, description, values))
+                self._save_freetext(tags, name, values, encoding)
             elif name.startswith('~id3:'):
                 name = name[5:]
                 if name.startswith('TXXX:'):
@@ -907,6 +904,13 @@ class ID3File(File):
         else:
             description = self.__rtranslate_freetext_ci[name_lower]
         delall_ci(tags, 'TXXX:' + description)
+        tags.add(self.build_TXXX(encoding, description, values))
+
+    def _save_freetext(self, tags, name, values, encoding):
+        """Save standard free text tag."""
+        description = self.__rtranslate_freetext[name]
+        if description in self.__rrename_freetext:
+            tags.delall('TXXX:' + self.__rrename_freetext[description])
         tags.add(self.build_TXXX(encoding, description, values))
 
 
