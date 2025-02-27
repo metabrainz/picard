@@ -535,9 +535,9 @@ class ID3File(File):
             elif name in self._rtipl_roles:
                 self._save_rtipl_role(tags, name, values, **save_params)
             elif name == 'musicbrainz_recordingid':
-                self._save_musicbrainz_recording_id(tags, values, **save_params)
+                self._save_musicbrainz_recording_id_tag(tags, name, values, **save_params)
             elif name == '~rating':
-                self._save_rating_tag(tags, values, **save_params)
+                self._save_rating_tag(tags, name, values, **save_params)
             elif name == 'grouping':
                 self._save_grouping_tag(tags, name, values, **save_params)
             elif name == 'work' and config.setting['itunes_compatible_grouping']:
@@ -760,11 +760,11 @@ class ID3File(File):
             if sylt_lyrics:
                 tags.add(id3.SYLT(encoding=encoding, lang=lang, format=2, type=1, desc=desc, text=sylt_lyrics))
 
-    def _save_musicbrainz_recording_id(self, tags, values, **params):
+    def _save_musicbrainz_recording_id_tag(self, tags, name, values, **params):
         """Save MusicBrainz recording ID to UFID frame."""
         tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
 
-    def _save_rating_tag(self, tags, values, **params):
+    def _save_rating_tag(self, tags, name, values, **params):
         """Save rating to POPM frame."""
         config = params['config']
         rating_user_email = id3_rating_user_email(config)
