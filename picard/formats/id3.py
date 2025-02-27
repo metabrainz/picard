@@ -507,8 +507,7 @@ class ID3File(File):
             tags.delall('APIC')
 
         encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
-        tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
-        tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
+        tmcl, tipl = self._create_people_frames(encoding)
 
         self._save_track_disc_movement_numbers(tags, metadata)
         self._save_images(tags, images_to_save)
@@ -919,6 +918,13 @@ class ID3File(File):
     def _save_custom_tag(self, tags, name, values, encoding):
         """Save custom tag as TXXX frame."""
         tags.add(self.build_TXXX(encoding, name, values))
+
+    def _create_people_frames(self, encoding):
+        """Create and return TMCL and TIPL frames for storing people information."""
+        return (
+            mutagen.id3.TMCL(encoding=encoding, people=[]),
+            mutagen.id3.TIPL(encoding=encoding, people=[])
+        )
 
 
 class MP3File(ID3File):
