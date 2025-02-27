@@ -528,8 +528,7 @@ class ID3File(File):
             elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
                 self._save_synced_lyrics_tag(tags, name, values, encoding)
             elif name in self._rtipl_roles:
-                for value in values:
-                    tipl.people.append([self._rtipl_roles[name], value])
+                self._save_rtipl_role(tags, name, values, tipl)
             elif name == 'musicbrainz_recordingid':
                 self._save_musicbrainz_recording_id(tags, values)
             elif name == '~rating':
@@ -900,6 +899,11 @@ class ID3File(File):
                 tipl.people.append([role, value])
             else:
                 tmcl.people.append([role, value])
+
+    def _save_rtipl_role(self, tags, name, values, tipl):
+        """Save role information to TIPL frame."""
+        for value in values:
+            tipl.people.append([self._rtipl_roles[name], value])
 
 
 class MP3File(ID3File):
