@@ -551,7 +551,7 @@ class ID3File(File):
             elif name.startswith('~id3:'):
                 self._save_id3_tag(tags, name, values, encoding)
             elif not name.startswith('~') and name not in self.__other_supported_tags:
-                tags.add(self.build_TXXX(encoding, name, values))
+                self._save_custom_tag(tags, name, values, encoding)
 
         if tmcl.people:
             tags.add(tmcl)
@@ -915,6 +915,10 @@ class ID3File(File):
             frameclass = getattr(id3, name[:4], None)
             if frameclass:
                 tags.add(frameclass(encoding=encoding, text=values))
+
+    def _save_custom_tag(self, tags, name, values, encoding):
+        """Save custom tag as TXXX frame."""
+        tags.add(self.build_TXXX(encoding, name, values))
 
 
 class MP3File(ID3File):
