@@ -549,14 +549,7 @@ class ID3File(File):
             elif name in self.__rtranslate_freetext:
                 self._save_freetext(tags, name, values, encoding)
             elif name.startswith('~id3:'):
-                name = name[5:]
-                if name.startswith('TXXX:'):
-                    tags.add(self.build_TXXX(encoding, name[5:], values))
-                else:
-                    frameclass = getattr(id3, name[:4], None)
-                    if frameclass:
-                        tags.add(frameclass(encoding=encoding, text=values))
-            # don't save private / already stored tags
+                self._save_id3_tag(tags, name, values, encoding)
             elif not name.startswith('~') and name not in self.__other_supported_tags:
                 tags.add(self.build_TXXX(encoding, name, values))
 
@@ -912,6 +905,16 @@ class ID3File(File):
         if description in self.__rrename_freetext:
             tags.delall('TXXX:' + self.__rrename_freetext[description])
         tags.add(self.build_TXXX(encoding, description, values))
+
+    def _save_id3_tag(self, tags, name, values, encoding):
+        """Save ID3-specific tag."""
+        name = name[5:]
+        if name.startswith('TXXX:'):
+            tags.add(self.build_TXXX(encoding, name[5:], values))
+        else:
+            frameclass = getattr(id3, name[:4], None)
+            if frameclass:
+                tags.add(frameclass(encoding=encoding, text=values))
 
 
 class MP3File(ID3File):
