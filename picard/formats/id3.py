@@ -839,12 +839,13 @@ class ID3File(File):
             role = name.split(':', 1)[1]
         else:
             role = 'performer'
+        if config.setting['write_id3v23']:
+            # TIPL will be upgraded to IPLS
+            frame = 'tipl'
+        else:
+            frame = 'tmcl'
         for value in values:
-            if config.setting['write_id3v23']:
-                # TIPL will be upgraded to IPLS
-                people_frames['tipl'].people.append([role, value])
-            else:
-                people_frames['tmcl'].people.append([role, value])
+            people_frames[frame].people.append([role, value])
 
     def _save_rtipl_role(self, tags, name, values, **params):
         """Save role information to TIPL frame."""
