@@ -516,6 +516,8 @@ class ID3File(File):
             'encoding': encoding,
             'people_frames': people_frames,
             'itunes_compatible': itunes_compatible,
+            'rating_user_email': id3_rating_user_email(config),
+            'rating_steps': config.setting['rating_steps'],
         }
 
         self._save_track_disc_movement_numbers(tags, metadata)
@@ -773,8 +775,8 @@ class ID3File(File):
 
     def _save_rating_tag(self, tags, name, values, **params):
         """Save rating to POPM frame."""
-        config = params['config']
-        rating_user_email = id3_rating_user_email(config)
+        rating_user_email = params['rating_user_email']
+        rating_steps = params['rating_steps']
         # Search for an existing POPM frame to get the current playcount
         for frame in tags.values():
             if frame.FrameID == 'POPM' and frame.email == rating_user_email:
@@ -784,7 +786,7 @@ class ID3File(File):
             count = 0
 
         # Convert rating to range between 0 and 255
-        rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
+        rating = int(round(float(values[0]) * 255 / (rating_steps - 1)))
         tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
 
     def _save_grouping_tag(self, tags, name, values, **params):
