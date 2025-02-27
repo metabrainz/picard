@@ -506,6 +506,13 @@ class ID3File(File):
         encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
         people_frames = self._create_people_frames(encoding)
 
+        # Create parameter dictionary
+        save_params = {
+            'config': config,
+            'encoding': encoding,
+            'people_frames': people_frames
+        }
+
         self._save_track_disc_movement_numbers(tags, metadata)
         self._save_images(tags, metadata)
 
@@ -516,36 +523,35 @@ class ID3File(File):
                 continue
 
             values = [id3text(v, encoding) for v in values]
-            name_lower = name.lower()
 
             if name == 'performer' or name.startswith('performer:'):
-                self._save_performer_tag(tags, name, values, config, encoding, people_frames)
+                self._save_performer_tag(tags, name, values, **save_params)
             elif name == 'comment' or name.startswith('comment:'):
-                self._save_comment_tag(tags, name, values, encoding)
+                self._save_comment_tag(tags, name, values, **save_params)
             elif name.startswith('lyrics:') or name == 'lyrics':
-                self._save_lyrics_tag(tags, name, values, encoding)
+                self._save_lyrics_tag(tags, name, values, **save_params)
             elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
-                self._save_synced_lyrics_tag(tags, name, values, encoding)
+                self._save_synced_lyrics_tag(tags, name, values, **save_params)
             elif name in self._rtipl_roles:
-                self._save_rtipl_role(tags, name, values, people_frames)
+                self._save_rtipl_role(tags, name, values, **save_params)
             elif name == 'musicbrainz_recordingid':
-                self._save_musicbrainz_recording_id(tags, values)
+                self._save_musicbrainz_recording_id(tags, values, **save_params)
             elif name == '~rating':
-                self._save_rating_tag(tags, values, config)
+                self._save_rating_tag(tags, values, **save_params)
             elif name == 'grouping':
-                self._save_grouping_tag(tags, name, values, config, encoding)
+                self._save_grouping_tag(tags, name, values, **save_params)
             elif name == 'work' and config.setting['itunes_compatible_grouping']:
-                self._save_work_tag(tags, name, values, config, encoding)
+                self._save_work_tag(tags, name, values, **save_params)
             elif name in self.__rtranslate:
-                self._save_standard_tag(tags, name, values, config, encoding, people_frames)
-            elif name_lower in self.__rtranslate_freetext_ci:
-                self._save_freetext_ci_tag(tags, name_lower, values, encoding)
+                self._save_standard_tag(tags, name, values, **save_params)
+            elif name.lower() in self.__rtranslate_freetext_ci:
+                self._save_freetext_ci_tag(tags, name, values, **save_params)
             elif name in self.__rtranslate_freetext:
-                self._save_freetext_tag(tags, name, values, encoding)
+                self._save_freetext_tag(tags, name, values, **save_params)
             elif name.startswith('~id3:'):
-                self._save_id3_tag(tags, name, values, encoding)
+                self._save_id3_tag(tags, name, values, **save_params)
             elif not name.startswith('~') and name not in self.__other_supported_tags:
-                self._save_custom_tag(tags, name, values, encoding)
+                self._save_custom_tag(tags, name, values, **save_params)
 
         self._save_people_frames(tags, people_frames)
         self._remove_deleted_tags(metadata, tags)
@@ -724,8 +730,9 @@ class ID3File(File):
                 data=image.data
             ))
 
-    def _save_comment_tag(self, tags, name, values, encoding):
+    def _save_comment_tag(self, tags, name, values, **params):
         """Save comment tag to ID3 frames."""
+        encoding = params['encoding']
         (lang, desc) = parse_comment_tag(name)
         if desc.lower()[:4] == 'itun':
             tags.delall('COMM:' + desc)
@@ -733,8 +740,9 @@ class ID3File(File):
         else:
             tags.add(id3.COMM(encoding=encoding, desc=desc, lang=lang, text=values))
 
-    def _save_lyrics_tag(self, tags, name, values, encoding):
+    def _save_lyrics_tag(self, tags, name, values, **params):
         """Save lyrics tag to ID3 frames."""
+        encoding = params['encoding']
         if ':' in name:
             desc = name.split(':', 1)[1]
         else:
@@ -742,8 +750,9 @@ class ID3File(File):
         for value in values:
             tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
 
-    def _save_synced_lyrics_tag(self, tags, name, values, encoding):
+    def _save_synced_lyrics_tag(self, tags, name, values, **params):
         """Save synchronized lyrics tag to ID3 frames."""
+        encoding = params['encoding']
         (lang, desc) = parse_subtag(name)
         for value in values:
             sylt_lyrics = self._parse_lrc_text(value)
@@ -751,12 +760,13 @@ class ID3File(File):
             if sylt_lyrics:
                 tags.add(id3.SYLT(encoding=encoding, lang=lang, format=2, type=1, desc=desc, text=sylt_lyrics))
 
-    def _save_musicbrainz_recording_id(self, tags, values):
+    def _save_musicbrainz_recording_id(self, tags, values, **params):
         """Save MusicBrainz recording ID to UFID frame."""
         tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
 
-    def _save_rating_tag(self, tags, values, config):
+    def _save_rating_tag(self, tags, values, **params):
         """Save rating to POPM frame."""
+        config = params['config']
         rating_user_email = id3_rating_user_email(config)
         # Search for an existing POPM frame to get the current playcount
         for frame in tags.values():
@@ -770,21 +780,27 @@ class ID3File(File):
         rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
         tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
 
-    def _save_grouping_tag(self, tags, name, values, config, encoding):
+    def _save_grouping_tag(self, tags, name, values, **params):
         """Save grouping tag to ID3 frames."""
+        config = params['config']
+        encoding = params['encoding']
         if config.setting['itunes_compatible_grouping']:
             tags.add(id3.GRP1(encoding=encoding, text=values))
         else:
             tags.add(id3.TIT1(encoding=encoding, text=values))
 
-    def _save_work_tag(self, tags, name, values, config, encoding):
+    def _save_work_tag(self, tags, name, values, **params):
         """Save work tag to ID3 frames."""
+        encoding = params['encoding']
         tags.add(id3.TIT1(encoding=encoding, text=values))
         tags.delall('TXXX:Work')
         tags.delall('TXXX:WORK')
 
-    def _save_standard_tag(self, tags, name, values, config, encoding, people_frames):
+    def _save_standard_tag(self, tags, name, values, **params):
         """Save standard ID3 frame based on tag name."""
+        config = params['config']
+        encoding = params['encoding']
+
         frameid = self.__rtranslate[name]
         if frameid.startswith('W'):
             valid_urls = all(all(urlparse(v)[:2]) for v in values)
@@ -814,8 +830,11 @@ class ID3File(File):
             elif frameid == 'TSO2':
                 tags.delall('TXXX:ALBUMARTISTSORT')
 
-    def _save_performer_tag(self, tags, name, values, config, encoding, people_frames):
+    def _save_performer_tag(self, tags, name, values, **params):
         """Save performer information."""
+        config = params['config']
+        people_frames = params['people_frames']
+
         if ':' in name:
             role = name.split(':', 1)[1]
         else:
@@ -827,13 +846,16 @@ class ID3File(File):
             else:
                 people_frames['tmcl'].people.append([role, value])
 
-    def _save_rtipl_role(self, tags, name, values, people_frames):
+    def _save_rtipl_role(self, tags, name, values, **params):
         """Save role information to TIPL frame."""
+        people_frames = params['people_frames']
         for value in values:
             people_frames['tipl'].people.append([self._rtipl_roles[name], value])
 
-    def _save_freetext_ci_tag(self, tags, name_lower, values, encoding):
+    def _save_freetext_ci_tag(self, tags, name, values, **params):
         """Save case-insensitive free text tag."""
+        encoding = params['encoding']
+        name_lower = name.lower()
         if name_lower in self.__casemap:
             description = self.__casemap[name_lower]
         else:
@@ -841,15 +863,17 @@ class ID3File(File):
         delall_ci(tags, 'TXXX:' + description)
         tags.add(self.build_TXXX(encoding, description, values))
 
-    def _save_freetext_tag(self, tags, name, values, encoding):
+    def _save_freetext_tag(self, tags, name, values, **params):
         """Save standard free text tag."""
+        encoding = params['encoding']
         description = self.__rtranslate_freetext[name]
         if description in self.__rrename_freetext:
             tags.delall('TXXX:' + self.__rrename_freetext[description])
         tags.add(self.build_TXXX(encoding, description, values))
 
-    def _save_id3_tag(self, tags, name, values, encoding):
+    def _save_id3_tag(self, tags, name, values, **params):
         """Save ID3-specific tag."""
+        encoding = params['encoding']
         name = name[5:]
         if name.startswith('TXXX:'):
             tags.add(self.build_TXXX(encoding, name[5:], values))
@@ -858,8 +882,9 @@ class ID3File(File):
             if frameclass:
                 tags.add(frameclass(encoding=encoding, text=values))
 
-    def _save_custom_tag(self, tags, name, values, encoding):
+    def _save_custom_tag(self, tags, name, values, **params):
         """Save custom tag as TXXX frame."""
+        encoding = params['encoding']
         tags.add(self.build_TXXX(encoding, name, values))
 
     def _create_people_frames(self, encoding):
