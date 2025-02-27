@@ -545,12 +545,7 @@ class ID3File(File):
             elif name in self.__rtranslate:
                 self._save_standard_frame(tags, name, values, config, encoding)
             elif name_lower in self.__rtranslate_freetext_ci:
-                if name_lower in self.__casemap:
-                    description = self.__casemap[name_lower]
-                else:
-                    description = self.__rtranslate_freetext_ci[name_lower]
-                delall_ci(tags, 'TXXX:' + description)
-                tags.add(self.build_TXXX(encoding, description, values))
+                self._save_freetext_ci(tags, name_lower, values, encoding)
             elif name in self.__rtranslate_freetext:
                 description = self.__rtranslate_freetext[name]
                 if description in self.__rrename_freetext:
@@ -904,6 +899,15 @@ class ID3File(File):
         """Save role information to TIPL frame."""
         for value in values:
             tipl.people.append([self._rtipl_roles[name], value])
+
+    def _save_freetext_ci(self, tags, name_lower, values, encoding):
+        """Save case-insensitive free text tag."""
+        if name_lower in self.__casemap:
+            description = self.__casemap[name_lower]
+        else:
+            description = self.__rtranslate_freetext_ci[name_lower]
+        delall_ci(tags, 'TXXX:' + description)
+        tags.add(self.build_TXXX(encoding, description, values))
 
 
 class MP3File(ID3File):
