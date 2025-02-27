@@ -104,12 +104,16 @@ class Id3Encoding(IntEnum):
 
 def id3text(text, encoding):
     """Returns a string which only contains code points which can
-    be encododed with the given numeric id3 encoding.
+    be encoded with the given numeric id3 encoding.
     """
 
     if encoding == Id3Encoding.LATIN1:
         return text.encode('latin1', 'replace').decode('latin1')
     return text
+
+
+def id3_rating_user_email(config):
+    return id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
 
 
 def _remove_people_with_role(tags, frames, role):
@@ -257,6 +261,24 @@ class ID3File(File):
         super().__init__(filename)
         self.__casemap = {}
 
+        def create_frame_processors(frameids, handler):
+            return {frameid: handler for frameid in frameids}
+
+        # Dictionary of frame processors - functions that process specific frame types
+        self._frame_processors = {
+            'TIT1': self._load_tit1_frame,
+            'TMCL': self._load_tmcl_frame,
+            'TIPL': self._load_tipl_frame,
+            'TXXX': self._load_txxx_frame,
+            'USLT': self._load_uslt_frame,
+            'SYLT': self._load_sylt_frame,
+            'UFID': self._load_ufid_frame,
+            'APIC': self._load_apic_frame,
+            'POPM': self._load_popm_frame,
+            **create_frame_processors(self.__translate, self._load_standard_text_frame),
+            **create_frame_processors(self.__tag_re_parse, self._load_tag_regex_frame),
+        }
+
     def build_TXXX(self, encoding, desc, values):
         """Construct and return a TXXX frame."""
         # This is here so that plugins can customize the behavior of TXXX
@@ -269,142 +291,210 @@ class ID3File(File):
 
     def _load(self, filename):
         log.debug("Loading file %r", filename)
+        tags, config_params = self._init_load(filename)
+
+        self._upgrade_23_frames(tags)
+
+        metadata = Metadata()
+        for frame in tags.values():
+            self._process_frame(frame, metadata, config_params)
+
+        if 'date' in metadata:
+            self._sanitize_date(metadata)
+
+        self._info(metadata, config_params['file'])
+        return metadata
+
+    def _process_frame(self, frame, metadata, config_params):
+        """Process an ID3 frame and add its data to the metadata."""
+        frameid = frame.FrameID
+
+        # Get appropriate processor from dictionary
+        processor = self._frame_processors.get(frameid)
+        if processor:
+            processor(frame, metadata, config_params)
+
+    def _init_load(self, filename):
+        """Initialize loading process and return necessary parameters."""
         self.__casemap = {}
         file = self._get_file(encode_filename(filename))
         tags = file.tags or {}
         config = get_config()
-        itunes_compatible = config.setting['itunes_compatible_grouping']
-        rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
-        rating_steps = config.setting['rating_steps']
-        # upgrade custom 2.3 frames to 2.4
+
+        return tags, {
+            'file': file,
+            'filename': filename,
+            'file_length': file.info.length,
+            'itunes_compatible': config.setting['itunes_compatible_grouping'],
+            'rating_user_email': id3_rating_user_email(config),
+            'rating_steps': config.setting['rating_steps']
+        }
+
+    def _upgrade_23_frames(self, tags):
+        """Upgrade ID3v2.3 frames to ID3v2.4 format."""
         for old, new in self.__upgrade.items():
             if old in tags and new not in tags:
                 f = tags.pop(old)
                 tags.add(getattr(id3, new)(encoding=f.encoding, text=f.text))
-        metadata = Metadata()
-        for frame in tags.values():
-            frameid = frame.FrameID
-            if frameid in self.__translate:
-                name = self.__translate[frameid]
-                if frameid.startswith('T') or frameid in {'GRP1', 'MVNM'}:
-                    for text in frame.text:
-                        if text:
-                            metadata.add(name, text)
-                elif frameid == 'COMM':
-                    for text in frame.text:
-                        if text:
-                            if frame.lang == 'eng':
-                                name = '%s:%s' % (name, frame.desc)
-                            else:
-                                name = '%s:%s:%s' % (name, frame.lang, frame.desc)
-                            metadata.add(name, text)
-                else:
-                    metadata.add(name, frame)
-            elif frameid == 'TIT1':
-                name = 'work' if itunes_compatible else 'grouping'
-                for text in frame.text:
-                    if text:
-                        metadata.add(name, text)
-            elif frameid == 'TMCL':
-                for role, name in frame.people:
-                    if role == 'performer':
-                        role = ''
-                    if role:
-                        metadata.add('performer:%s' % role, name)
-                    else:
-                        metadata.add('performer', name)
-            elif frameid == 'TIPL':
-                # If file is ID3v2.3, TIPL tag could contain TMCL
-                # so we will test for TMCL values and add to TIPL if not TMCL
-                for role, name in frame.people:
-                    if role in self._tipl_roles and name:
-                        metadata.add(self._tipl_roles[role], name)
-                    else:
-                        if role == 'performer':
-                            role = ''
-                        if role:
-                            metadata.add('performer:%s' % role, name)
-                        else:
-                            metadata.add('performer', name)
-            elif frameid == 'TXXX':
-                name = frame.desc
-                name_lower = name.lower()
-                if name in self.__rename_freetext:
-                    name = self.__rename_freetext[name]
-                if name_lower in self.__translate_freetext_ci:
-                    orig_name = name
-                    name = self.__translate_freetext_ci[name_lower]
-                    self.__casemap[name] = orig_name
-                elif name in self.__translate_freetext:
-                    name = self.__translate_freetext[name]
-                elif ((name in self.__rtranslate)
-                      != (name in self.__rtranslate_freetext)):
-                    # If the desc of a TXXX frame conflicts with the name of a
-                    # Picard tag, load it into ~id3:TXXX:desc rather than desc.
-                    #
-                    # This basically performs an XOR, making sure that 'name'
-                    # is in __rtranslate or __rtranslate_freetext, but not
-                    # both. (Being in both implies we support reading it both
-                    # ways.) Currently, the only tag in both is license.
-                    name = '~id3:TXXX:' + name
-                for text in frame.text:
+
+    def _sanitize_date(self, metadata):
+        """Sanitize date value if present in metadata."""
+        sanitized = sanitize_date(metadata.getall('date')[0])
+        if sanitized:
+            metadata['date'] = sanitized
+
+    def _load_standard_text_frame(self, frame, metadata, config_params):
+        """Process standard ID3 text frames and add them to metadata.
+        Handles text frames that have direct translation to Picard tags.
+        """
+        frameid = frame.FrameID
+        name = self.__translate[frameid]
+        if frameid.startswith('T') or frameid in {'GRP1', 'MVNM'}:
+            for text in frame.text:
+                if text:
                     metadata.add(name, text)
-            elif frameid == 'USLT':
-                name = 'lyrics'
-                if frame.desc:
-                    name += ':%s' % frame.desc
-                metadata.add(name, frame.text)
-            elif frameid == 'SYLT' and frame.type == 1:
-                if frame.format != 2:
-                    log.warning("Unsupported SYLT format %d in %r, only 2 is supported", frame.format, filename)
-                    continue
-                name = 'syncedlyrics'
-                if frame.lang:
-                    name += ':%s' % frame.lang
-                    if frame.desc:
-                        name += ':%s' % frame.desc
-                elif frame.desc:
-                    name += '::%s' % frame.desc
-                lrc_lyrics = self._parse_sylt_text(frame.text, file.info.length)
-                metadata.add(name, lrc_lyrics)
-            elif frameid == 'UFID' and frame.owner == "http://musicbrainz.org":
-                metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
-            elif frameid in self.__tag_re_parse.keys():
-                m = self.__tag_re_parse[frameid].search(frame.text[0])
-                if m:
-                    for name, value in m.groupdict().items():
-                        if value is not None:
-                            metadata[name] = value
-                else:
-                    log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], filename)
-            elif frameid == 'APIC':
-                try:
-                    coverartimage = TagCoverArtImage(
-                        file=filename,
-                        tag=frameid,
-                        types=types_from_id3(frame.type),
-                        comment=frame.desc,
-                        support_types=True,
-                        data=frame.data,
-                        id3_type=frame.type,
-                    )
-                except CoverArtImageError as e:
-                    log.error("Cannot load image from %r: %s", filename, e)
-                else:
-                    metadata.images.append(coverartimage)
-            elif frameid == 'POPM':
-                # Rating in ID3 ranges from 0 to 255, normalize this to the range 0 to 5
-                if frame.email == rating_user_email:
-                    rating = int(round(frame.rating / 255.0 * (rating_steps - 1)))
-                    metadata.add('~rating', rating)
+        elif frameid == 'COMM':
+            for text in frame.text:
+                if text:
+                    if frame.lang == 'eng':
+                        name = '%s:%s' % (name, frame.desc)
+                    else:
+                        name = '%s:%s:%s' % (name, frame.lang, frame.desc)
+                    metadata.add(name, text)
+        else:
+            metadata.add(name, frame)
 
-        if 'date' in metadata:
-            sanitized = sanitize_date(metadata.getall('date')[0])
-            if sanitized:
-                metadata['date'] = sanitized
+    def _load_tit1_frame(self, frame, metadata, config_params):
+        """Process a TIT1 frame and add it to metadata.
+        Handles work/grouping based on iTunes compatibility setting.
+        """
+        name = 'work' if config_params['itunes_compatible'] else 'grouping'
+        for text in frame.text:
+            if text:
+                metadata.add(name, text)
 
-        self._info(metadata, file)
-        return metadata
+    def _add_performer(self, role, name, metadata):
+        """Add a performer to metadata with the given role."""
+        if role == 'performer':
+            role = ''
+        if role:
+            metadata.add('performer:%s' % role, name)
+        else:
+            metadata.add('performer', name)
+
+    def _load_tmcl_frame(self, frame, metadata, config_params):
+        """Process a TMCL frame and add it to metadata.
+        Handles musician credits list, converting performer roles into the appropriate metadata.
+        """
+        for role, name in frame.people:
+            self._add_performer(role, name, metadata)
+
+    def _load_tipl_frame(self, frame, metadata, config_params):
+        """Process a TIPL frame and add it to metadata.
+        If file is ID3v2.3, TIPL tag could contain TMCL values,
+        so we will test for TMCL values and add to TIPL if not TMCL.
+        """
+        for role, name in frame.people:
+            if role in self._tipl_roles and name:
+                metadata.add(self._tipl_roles[role], name)
+            else:
+                self._add_performer(role, name, metadata)
+
+    def _load_txxx_frame(self, frame, metadata, config_params):
+        """Process a TXXX frame and add it to metadata."""
+        name = frame.desc
+        name_lower = name.lower()
+        if name in self.__rename_freetext:
+            name = self.__rename_freetext[name]
+        if name_lower in self.__translate_freetext_ci:
+            orig_name = name
+            name = self.__translate_freetext_ci[name_lower]
+            self.__casemap[name] = orig_name
+        elif name in self.__translate_freetext:
+            name = self.__translate_freetext[name]
+        elif ((name in self.__rtranslate)
+              != (name in self.__rtranslate_freetext)):
+            name = '~id3:TXXX:' + name
+        for text in frame.text:
+            metadata.add(name, text)
+
+    def _load_uslt_frame(self, frame, metadata, config_params):
+        """Process a USLT frame and add it to metadata.
+        Handles unsynchronized lyrics, optionally with description.
+        """
+        name = 'lyrics'
+        if frame.desc:
+            name += ':%s' % frame.desc
+        metadata.add(name, frame.text)
+
+    def _load_sylt_frame(self, frame, metadata, config_params):
+        """Process a SYLT frame and add it to metadata.
+        Handles synchronized lyrics with timing information.
+        """
+        if frame.type != 1:
+            log.warning("Unsupported SYLT type %d in %r, only type 1 is supported",
+                       frame.type, config_params['filename'])
+            return
+        if frame.format != 2:
+            log.warning("Unsupported SYLT format %d in %r, only format 2 is supported",
+                       frame.format, config_params['filename'])
+            return
+        name = 'syncedlyrics'
+        if frame.lang:
+            name += ':%s' % frame.lang
+            if frame.desc:
+                name += ':%s' % frame.desc
+        elif frame.desc:
+            name += '::%s' % frame.desc
+        lrc_lyrics = self._parse_sylt_text(frame.text, config_params['file_length'])
+        metadata.add(name, lrc_lyrics)
+
+    def _load_ufid_frame(self, frame, metadata, config_params):
+        """Process a UFID frame and add it to metadata.
+        Handles MusicBrainz recording identifier.
+        """
+        if frame.owner == "http://musicbrainz.org":
+            metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
+
+    def _load_tag_regex_frame(self, frame, metadata, config_params):
+        """Process frames that require regex parsing (TRCK, TPOS, MVIN).
+        Extracts track numbers, disc numbers, and movement numbers from their respective frames.
+        """
+        frameid = frame.FrameID
+        m = self.__tag_re_parse[frameid].search(frame.text[0])
+        if m:
+            for name, value in m.groupdict().items():
+                if value is not None:
+                    metadata[name] = value
+        else:
+            log.error("Invalid %s value '%s' dropped in %r", frameid, frame.text[0], config_params['filename'])
+
+    def _load_apic_frame(self, frame, metadata, config_params):
+        """Process an APIC frame and add it to metadata.
+        Handles attached pictures/cover art, including type and description.
+        """
+        try:
+            coverartimage = TagCoverArtImage(
+                file=config_params['filename'],
+                tag=frame.FrameID,
+                types=types_from_id3(frame.type),
+                comment=frame.desc,
+                support_types=True,
+                data=frame.data,
+                id3_type=frame.type,
+            )
+        except CoverArtImageError as e:
+            log.error("Cannot load image from %r: %s", config_params['filename'], e)
+        else:
+            metadata.images.append(coverartimage)
+
+    def _load_popm_frame(self, frame, metadata, config_params):
+        """Process a POPM frame and add it to metadata.
+        Handles rating, converting from ID3's 0-255 range to Picard's configured range.
+        """
+        if frame.email == config_params['rating_user_email']:
+            rating = int(round(frame.rating / 255.0 * (config_params['rating_steps'] - 1)))
+            metadata.add('~rating', rating)
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
@@ -509,7 +599,7 @@ class ID3File(File):
             elif name == 'musicbrainz_recordingid':
                 tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
             elif name == '~rating':
-                rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
+                rating_user_email = id3_rating_user_email(config)
                 # Search for an existing POPM frame to get the current playcount
                 for frame in tags.values():
                     if frame.FrameID == 'POPM' and frame.email == rating_user_email:
@@ -641,7 +731,7 @@ class ID3File(File):
                     tags.delall(real_name)
                     tags.delall('TXXX:' + self.__rtranslate_freetext[name])
                 elif real_name == 'POPM':
-                    rating_user_email = id3text(config.setting['rating_user_email'], Id3Encoding.LATIN1)
+                    rating_user_email = id3_rating_user_email(config)
                     for key, frame in list(tags.items()):
                         if frame.FrameID == 'POPM' and frame.email == rating_user_email:
                             del tags[key]
