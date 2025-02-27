@@ -507,30 +507,11 @@ class ID3File(File):
             tags.delall('APIC')
 
         encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
-
-        # This is necessary because mutagens HashKey for APIC frames only
-        # includes the FrameID (APIC) and description - it's basically
-        # impossible to save two images, even of different types, without
-        # any description.
-        counters = Counter()
-        for image in images_to_save:
-            desc = desctag = image.comment
-            if counters[desc] > 0:
-                if desc:
-                    desctag = "%s (%i)" % (desc, counters[desc])
-                else:
-                    desctag = "(%i)" % counters[desc]
-            counters[desc] += 1
-            tags.add(id3.APIC(encoding=Id3Encoding.LATIN1,
-                              mime=image.mimetype,
-                              type=image.id3_type,
-                              desc=id3text(desctag, Id3Encoding.LATIN1),
-                              data=image.data))
-
         tmcl = mutagen.id3.TMCL(encoding=encoding, people=[])
         tipl = mutagen.id3.TIPL(encoding=encoding, people=[])
 
         self._save_track_disc_movement_numbers(tags, metadata)
+        self._save_images(tags, images_to_save)
         for name, values in metadata.rawitems():
             values = [id3text(v, encoding) for v in values]
             name = id3text(name, encoding)
@@ -876,6 +857,23 @@ class ID3File(File):
             else:
                 text = metadata['movementnumber']
             tags.add(id3.MVIN(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
+
+    def _save_images(self, tags, images_to_save):
+        """Save cover art images to tags."""
+        counters = Counter()
+        for image in images_to_save:
+            desc = desctag = image.comment
+            if counters[desc] > 0:
+                if desc:
+                    desctag = "%s (%i)" % (desc, counters[desc])
+                else:
+                    desctag = "(%i)" % counters[desc]
+            counters[desc] += 1
+            tags.add(id3.APIC(encoding=Id3Encoding.LATIN1,
+                             mime=image.mimetype,
+                             type=image.id3_type,
+                             desc=id3text(desctag, Id3Encoding.LATIN1),
+                             data=image.data))
 
 
 class MP3File(ID3File):
