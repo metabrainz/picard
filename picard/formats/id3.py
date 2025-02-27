@@ -533,12 +533,7 @@ class ID3File(File):
             elif name == 'comment' or name.startswith('comment:'):
                 self._save_comment_tag(tags, name, values, encoding)
             elif name.startswith('lyrics:') or name == 'lyrics':
-                if ':' in name:
-                    desc = name.split(':', 1)[1]
-                else:
-                    desc = ''
-                for value in values:
-                    tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
+                self._save_lyrics_tag(tags, name, values, encoding)
             elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
                 (lang, desc) = parse_subtag(name)
                 for value in values:
@@ -878,6 +873,15 @@ class ID3File(File):
             tags.add(id3.COMM(encoding=Id3Encoding.LATIN1, desc=desc, lang='eng', text=[v + '\x00' for v in values]))
         else:
             tags.add(id3.COMM(encoding=encoding, desc=desc, lang=lang, text=values))
+
+    def _save_lyrics_tag(self, tags, name, values, encoding):
+        """Save lyrics tag to ID3 frames."""
+        if ':' in name:
+            desc = name.split(':', 1)[1]
+        else:
+            desc = ''
+        for value in values:
+            tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
 
 
 class MP3File(ID3File):
