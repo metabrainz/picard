@@ -535,9 +535,7 @@ class ID3File(File):
             elif name == 'grouping':
                 self._save_grouping_tag(tags, name, values, config, encoding)
             elif name == 'work' and config.setting['itunes_compatible_grouping']:
-                tags.add(id3.TIT1(encoding=encoding, text=values))
-                tags.delall('TXXX:Work')
-                tags.delall('TXXX:WORK')
+                self._save_work_tag(tags, name, values, config, encoding)
             elif name in self.__rtranslate:
                 self._save_standard_tag(tags, name, values, config, encoding, tmcl, tipl)
             elif name_lower in self.__rtranslate_freetext_ci:
@@ -783,6 +781,12 @@ class ID3File(File):
             tags.add(id3.GRP1(encoding=encoding, text=values))
         else:
             tags.add(id3.TIT1(encoding=encoding, text=values))
+
+    def _save_work_tag(self, tags, name, values, config, encoding):
+        """Save work tag to ID3 frames."""
+        tags.add(id3.TIT1(encoding=encoding, text=values))
+        tags.delall('TXXX:Work')
+        tags.delall('TXXX:WORK')
 
     def _save_standard_tag(self, tags, name, values, config, encoding, tmcl, tipl):
         """Save standard ID3 frame based on tag name."""
