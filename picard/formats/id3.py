@@ -554,7 +554,7 @@ class ID3File(File):
                 self._save_custom_tag(tags, name, values, **save_params)
 
         self._save_people_frames(tags, people_frames)
-        self._remove_deleted_tags(metadata, tags)
+        self._remove_deleted_tags(tags, metadata)
         self._save_tags(tags, encode_filename(filename))
 
         if self._IsMP3 and config.setting['remove_ape_from_mp3']:
@@ -902,7 +902,7 @@ class ID3File(File):
         if people_frames['tipl'].people:
             tags.add(people_frames['tipl'])
 
-    def _remove_deleted_tags(self, metadata, tags):
+    def _remove_deleted_tags(self, tags, metadata):
         """Remove the tags from the file that were deleted in the UI."""
         config = get_config()
 
