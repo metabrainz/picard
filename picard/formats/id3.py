@@ -519,7 +519,7 @@ class ID3File(File):
             name_lower = name.lower()
 
             if name == 'performer' or name.startswith('performer:'):
-                self._save_performer(tags, name, values, config, encoding, tmcl, tipl)
+                self._save_performer_tag(tags, name, values, config, encoding, tmcl, tipl)
             elif name == 'comment' or name.startswith('comment:'):
                 self._save_comment_tag(tags, name, values, encoding)
             elif name.startswith('lyrics:') or name == 'lyrics':
@@ -531,7 +531,7 @@ class ID3File(File):
             elif name == 'musicbrainz_recordingid':
                 self._save_musicbrainz_recording_id(tags, values)
             elif name == '~rating':
-                self._save_rating(tags, values, config)
+                self._save_rating_tag(tags, values, config)
             elif name == 'grouping':
                 if config.setting['itunes_compatible_grouping']:
                     tags.add(id3.GRP1(encoding=encoding, text=values))
@@ -542,11 +542,11 @@ class ID3File(File):
                 tags.delall('TXXX:Work')
                 tags.delall('TXXX:WORK')
             elif name in self.__rtranslate:
-                self._save_standard_frame(tags, name, values, config, encoding)
+                self._save_standard_tag(tags, name, values, config, encoding, tmcl, tipl)
             elif name_lower in self.__rtranslate_freetext_ci:
-                self._save_freetext_ci(tags, name_lower, values, encoding)
+                self._save_freetext_ci_tag(tags, name_lower, values, encoding)
             elif name in self.__rtranslate_freetext:
-                self._save_freetext(tags, name, values, encoding)
+                self._save_freetext_tag(tags, name, values, encoding)
             elif name.startswith('~id3:'):
                 self._save_id3_tag(tags, name, values, encoding)
             elif not name.startswith('~') and name not in self.__other_supported_tags:
@@ -765,7 +765,7 @@ class ID3File(File):
         """Save MusicBrainz recording ID to UFID frame."""
         tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
 
-    def _save_rating(self, tags, values, config):
+    def _save_rating_tag(self, tags, values, config):
         """Save rating to POPM frame."""
         rating_user_email = id3_rating_user_email(config)
         # Search for an existing POPM frame to get the current playcount
@@ -780,7 +780,7 @@ class ID3File(File):
         rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
         tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
 
-    def _save_standard_frame(self, tags, name, values, config, encoding):
+    def _save_standard_tag(self, tags, name, values, config, encoding, tmcl, tipl):
         """Save standard ID3 frame based on tag name."""
         frameid = self.__rtranslate[name]
         if frameid.startswith('W'):
@@ -811,7 +811,7 @@ class ID3File(File):
             elif frameid == 'TSO2':
                 tags.delall('TXXX:ALBUMARTISTSORT')
 
-    def _save_performer(self, tags, name, values, config, encoding, tmcl, tipl):
+    def _save_performer_tag(self, tags, name, values, config, encoding, tmcl, tipl):
         """Save performer information."""
         if ':' in name:
             role = name.split(':', 1)[1]
@@ -829,7 +829,7 @@ class ID3File(File):
         for value in values:
             tipl.people.append([self._rtipl_roles[name], value])
 
-    def _save_freetext_ci(self, tags, name_lower, values, encoding):
+    def _save_freetext_ci_tag(self, tags, name_lower, values, encoding):
         """Save case-insensitive free text tag."""
         if name_lower in self.__casemap:
             description = self.__casemap[name_lower]
@@ -838,7 +838,7 @@ class ID3File(File):
         delall_ci(tags, 'TXXX:' + description)
         tags.add(self.build_TXXX(encoding, description, values))
 
-    def _save_freetext(self, tags, name, values, encoding):
+    def _save_freetext_tag(self, tags, name, values, encoding):
         """Save standard free text tag."""
         description = self.__rtranslate_freetext[name]
         if description in self.__rrename_freetext:
