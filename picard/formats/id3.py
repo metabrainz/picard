@@ -535,12 +535,7 @@ class ID3File(File):
             elif name.startswith('lyrics:') or name == 'lyrics':
                 self._save_lyrics_tag(tags, name, values, encoding)
             elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
-                (lang, desc) = parse_subtag(name)
-                for value in values:
-                    sylt_lyrics = self._parse_lrc_text(value)
-                    # If the text does not contain any timestamps, the tag is not added
-                    if sylt_lyrics:
-                        tags.add(id3.SYLT(encoding=encoding, lang=lang, format=2, type=1, desc=desc, text=sylt_lyrics))
+                self._save_synced_lyrics_tag(tags, name, values, encoding)
             elif name in self._rtipl_roles:
                 for value in values:
                     tipl.people.append([self._rtipl_roles[name], value])
@@ -882,6 +877,15 @@ class ID3File(File):
             desc = ''
         for value in values:
             tags.add(id3.USLT(encoding=encoding, desc=desc, text=value))
+
+    def _save_synced_lyrics_tag(self, tags, name, values, encoding):
+        """Save synchronized lyrics tag to ID3 frames."""
+        (lang, desc) = parse_subtag(name)
+        for value in values:
+            sylt_lyrics = self._parse_lrc_text(value)
+            # If the text does not contain any timestamps, the tag is not added
+            if sylt_lyrics:
+                tags.add(id3.SYLT(encoding=encoding, lang=lang, format=2, type=1, desc=desc, text=sylt_lyrics))
 
 
 class MP3File(ID3File):
