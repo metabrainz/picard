@@ -504,7 +504,7 @@ class ID3File(File):
         self._initialize_tags_for_saving(tags, config)
 
         encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
-        tmcl, tipl = self._create_people_frames(encoding)
+        people_frames = self._create_people_frames(encoding)
 
         self._save_track_disc_movement_numbers(tags, metadata)
         self._save_images(tags, metadata)
@@ -519,7 +519,7 @@ class ID3File(File):
             name_lower = name.lower()
 
             if name == 'performer' or name.startswith('performer:'):
-                self._save_performer_tag(tags, name, values, config, encoding, tmcl, tipl)
+                self._save_performer_tag(tags, name, values, config, encoding, people_frames)
             elif name == 'comment' or name.startswith('comment:'):
                 self._save_comment_tag(tags, name, values, encoding)
             elif name.startswith('lyrics:') or name == 'lyrics':
@@ -527,7 +527,7 @@ class ID3File(File):
             elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
                 self._save_synced_lyrics_tag(tags, name, values, encoding)
             elif name in self._rtipl_roles:
-                self._save_rtipl_role(tags, name, values, tipl)
+                self._save_rtipl_role(tags, name, values, people_frames)
             elif name == 'musicbrainz_recordingid':
                 self._save_musicbrainz_recording_id(tags, values)
             elif name == '~rating':
@@ -537,7 +537,7 @@ class ID3File(File):
             elif name == 'work' and config.setting['itunes_compatible_grouping']:
                 self._save_work_tag(tags, name, values, config, encoding)
             elif name in self.__rtranslate:
-                self._save_standard_tag(tags, name, values, config, encoding, tmcl, tipl)
+                self._save_standard_tag(tags, name, values, config, encoding, people_frames)
             elif name_lower in self.__rtranslate_freetext_ci:
                 self._save_freetext_ci_tag(tags, name_lower, values, encoding)
             elif name in self.__rtranslate_freetext:
@@ -547,13 +547,8 @@ class ID3File(File):
             elif not name.startswith('~') and name not in self.__other_supported_tags:
                 self._save_custom_tag(tags, name, values, encoding)
 
-        if tmcl.people:
-            tags.add(tmcl)
-        if tipl.people:
-            tags.add(tipl)
-
+        self._save_people_frames(tags, people_frames)
         self._remove_deleted_tags(metadata, tags)
-
         self._save_tags(tags, encode_filename(filename))
 
         if self._IsMP3 and config.setting['remove_ape_from_mp3']:
@@ -788,7 +783,7 @@ class ID3File(File):
         tags.delall('TXXX:Work')
         tags.delall('TXXX:WORK')
 
-    def _save_standard_tag(self, tags, name, values, config, encoding, tmcl, tipl):
+    def _save_standard_tag(self, tags, name, values, config, encoding, people_frames):
         """Save standard ID3 frame based on tag name."""
         frameid = self.__rtranslate[name]
         if frameid.startswith('W'):
@@ -819,7 +814,7 @@ class ID3File(File):
             elif frameid == 'TSO2':
                 tags.delall('TXXX:ALBUMARTISTSORT')
 
-    def _save_performer_tag(self, tags, name, values, config, encoding, tmcl, tipl):
+    def _save_performer_tag(self, tags, name, values, config, encoding, people_frames):
         """Save performer information."""
         if ':' in name:
             role = name.split(':', 1)[1]
@@ -828,14 +823,14 @@ class ID3File(File):
         for value in values:
             if config.setting['write_id3v23']:
                 # TIPL will be upgraded to IPLS
-                tipl.people.append([role, value])
+                people_frames['tipl'].people.append([role, value])
             else:
-                tmcl.people.append([role, value])
+                people_frames['tmcl'].people.append([role, value])
 
-    def _save_rtipl_role(self, tags, name, values, tipl):
+    def _save_rtipl_role(self, tags, name, values, people_frames):
         """Save role information to TIPL frame."""
         for value in values:
-            tipl.people.append([self._rtipl_roles[name], value])
+            people_frames['tipl'].people.append([self._rtipl_roles[name], value])
 
     def _save_freetext_ci_tag(self, tags, name_lower, values, encoding):
         """Save case-insensitive free text tag."""
@@ -869,10 +864,17 @@ class ID3File(File):
 
     def _create_people_frames(self, encoding):
         """Create and return TMCL and TIPL frames for storing people information."""
-        return (
-            mutagen.id3.TMCL(encoding=encoding, people=[]),
-            mutagen.id3.TIPL(encoding=encoding, people=[])
-        )
+        return {
+            'tmcl': mutagen.id3.TMCL(encoding=encoding, people=[]),
+            'tipl': mutagen.id3.TIPL(encoding=encoding, people=[])
+        }
+
+    def _save_people_frames(self, tags, people_frames):
+        """Save TMCL and TIPL frames to tags if they contain people information."""
+        if people_frames['tmcl'].people:
+            tags.add(people_frames['tmcl'])
+        if people_frames['tipl'].people:
+            tags.add(people_frames['tipl'])
 
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI."""
