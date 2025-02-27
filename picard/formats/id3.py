@@ -84,6 +84,7 @@ except ImportError:
             yield batch
 
 UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
+UFID_OWNER = 'http://musicbrainz.org'
 
 id3.GRP1 = compatid3.GRP1
 
@@ -453,7 +454,7 @@ class ID3File(File):
         """Process a UFID frame and add it to metadata.
         Handles MusicBrainz recording identifier.
         """
-        if frame.owner == "http://musicbrainz.org":
+        if frame.owner == UFID_OWNER:
             metadata['musicbrainz_recordingid'] = frame.data.decode('ascii', 'ignore')
 
     def _load_tag_regex_frame(self, frame, metadata, config_params):
@@ -771,7 +772,7 @@ class ID3File(File):
 
     def _save_musicbrainz_recording_id_tag(self, tags, name, values, config_params):
         """Save MusicBrainz recording ID to UFID frame."""
-        tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
+        tags.add(id3.UFID(owner=UFID_OWNER, data=bytes(values[0], 'ascii')))
 
     def _save_rating_tag(self, tags, name, values, config_params):
         """Save rating to POPM frame."""
@@ -989,7 +990,7 @@ class ID3File(File):
     def _remove_musicbrainz_recording_id_tag(self, tags, name, real_name):
         """Remove MusicBrainz recording ID from UFID frame."""
         for key, frame in list(tags.items()):
-            if frame.FrameID == 'UFID' and frame.owner == "http://musicbrainz.org":
+            if frame.FrameID == 'UFID' and frame.owner == UFID_OWNER:
                 del tags[key]
 
     def _remove_license_tag(self, tags, name, real_name):
