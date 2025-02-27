@@ -757,26 +757,21 @@ class ID3File(File):
 
     def _save_track_disc_movement_numbers(self, tags, metadata):
         """Save track, disc, and movement numbers to tags."""
-        if 'tracknumber' in metadata:
-            if 'totaltracks' in metadata:
-                text = '%s/%s' % (metadata['tracknumber'], metadata['totaltracks'])
-            else:
-                text = metadata['tracknumber']
-            tags.add(id3.TRCK(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
+        self._save_number_tag(tags, metadata, 'tracknumber', 'totaltracks', 'TRCK')
+        self._save_number_tag(tags, metadata, 'discnumber', 'totaldiscs', 'TPOS')
+        self._save_number_tag(tags, metadata, 'movementnumber', 'movementtotal', 'MVIN')
 
-        if 'discnumber' in metadata:
-            if 'totaldiscs' in metadata:
-                text = '%s/%s' % (metadata['discnumber'], metadata['totaldiscs'])
+    def _save_number_tag(self, tags, metadata, number_tag, total_tag, frame_id):
+        """Generic method to save a number tag with optional total."""
+        if number_tag in metadata:
+            if total_tag in metadata:
+                text = '%s/%s' % (metadata[number_tag], metadata[total_tag])
             else:
-                text = metadata['discnumber']
-            tags.add(id3.TPOS(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
-
-        if 'movementnumber' in metadata:
-            if 'movementtotal' in metadata:
-                text = '%s/%s' % (metadata['movementnumber'], metadata['movementtotal'])
-            else:
-                text = metadata['movementnumber']
-            tags.add(id3.MVIN(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
+                text = metadata[number_tag]
+            tags.add(getattr(id3, frame_id)(
+                encoding=Id3Encoding.LATIN1,
+                text=id3text(text, Id3Encoding.LATIN1)
+            ))
 
     def _save_images(self, tags, images_to_save):
         """Save cover art images to tags."""
