@@ -502,7 +502,7 @@ class ID3File(File):
         tags = self._get_tags(filename)
         config = get_config()
         self._initialize_tags_for_saving(tags, config)
-        images_to_save = list(metadata.images.to_be_saved_to_tags())
+        images_to_save = self._get_images_to_save(metadata)
         if images_to_save:
             tags.delall('APIC')
 
@@ -925,6 +925,10 @@ class ID3File(File):
             mutagen.id3.TMCL(encoding=encoding, people=[]),
             mutagen.id3.TIPL(encoding=encoding, people=[])
         )
+
+    def _get_images_to_save(self, metadata):
+        """Get list of images to be saved to tags."""
+        return list(metadata.images.to_be_saved_to_tags())
 
 
 class MP3File(ID3File):
