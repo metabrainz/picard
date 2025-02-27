@@ -508,12 +508,14 @@ class ID3File(File):
 
         encoding = Id3Encoding.from_config(config.setting['id3v2_encoding'])
         people_frames = self._create_people_frames(encoding)
+        itunes_compatible = config.setting['itunes_compatible_grouping']
 
         # Create parameter dictionary
         save_params = {
             'config': config,
             'encoding': encoding,
-            'people_frames': people_frames
+            'people_frames': people_frames,
+            'itunes_compatible': itunes_compatible,
         }
 
         self._save_track_disc_movement_numbers(tags, metadata)
@@ -543,7 +545,7 @@ class ID3File(File):
                 self._save_rating_tag(tags, name, values, **save_params)
             elif name == 'grouping':
                 self._save_grouping_tag(tags, name, values, **save_params)
-            elif name == 'work' and config.setting['itunes_compatible_grouping']:
+            elif name == 'work' and itunes_compatible:
                 self._save_work_tag(tags, name, values, **save_params)
             elif name in self.__rtranslate:
                 self._save_standard_tag(tags, name, values, **save_params)
@@ -787,9 +789,8 @@ class ID3File(File):
 
     def _save_grouping_tag(self, tags, name, values, **params):
         """Save grouping tag to ID3 frames."""
-        config = params['config']
         encoding = params['encoding']
-        if config.setting['itunes_compatible_grouping']:
+        if params['itunes_compatible']:
             tags.add(id3.GRP1(encoding=encoding, text=values))
         else:
             tags.add(id3.TIT1(encoding=encoding, text=values))
