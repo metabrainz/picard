@@ -561,7 +561,7 @@ class ID3File(File):
                 self._save_custom_tag(tags, name, values, config_params)
 
         self._save_people_frames(tags, people_frames)
-        self._remove_deleted_tags(tags, metadata, config)
+        self._remove_deleted_tags(tags, metadata, config_params)
 
         encoded_filename = encode_filename(filename)
         self._save_tags(tags, encoded_filename)
@@ -910,12 +910,12 @@ class ID3File(File):
         if people_frames['tipl'].people:
             tags.add(people_frames['tipl'])
 
-    def _remove_deleted_tags(self, tags, metadata, config):
+    def _remove_deleted_tags(self, tags, metadata, config_params):
         """Remove the tags from the file that were deleted in the UI."""
         for name in metadata.deleted_tags:
-            self._remove_single_tag(tags, name, config)
+            self._remove_single_tag(tags, name, config_params)
 
-    def _remove_single_tag(self, tags, name, config):
+    def _remove_single_tag(self, tags, name, config_params):
         """Remove a single tag based on its name."""
         real_name = self._get_tag_name(name)
         try:
@@ -934,7 +934,7 @@ class ID3File(File):
             elif name == 'license':
                 self._remove_license_tag(tags, name, real_name)
             elif real_name == 'POPM':
-                self._remove_rating_tag(tags, name, real_name, config)
+                self._remove_rating_tag(tags, name, real_name, config_params)
             elif real_name in self.__translate:
                 self._remove_translated_tag(tags, name, real_name)
             elif name.lower() in self.__rtranslate_freetext_ci:
@@ -997,9 +997,9 @@ class ID3File(File):
         tags.delall(real_name)
         tags.delall('TXXX:' + self.__rtranslate_freetext['license'])
 
-    def _remove_rating_tag(self, tags, name, real_name, config):
+    def _remove_rating_tag(self, tags, name, real_name, config_params):
         """Remove rating from POPM frame."""
-        rating_user_email = id3_rating_user_email(config)
+        rating_user_email = config_params['rating_user_email']
         for key, frame in list(tags.items()):
             if frame.FrameID == 'POPM' and frame.email == rating_user_email:
                 del tags[key]
