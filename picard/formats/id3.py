@@ -542,18 +542,7 @@ class ID3File(File):
             elif name == 'musicbrainz_recordingid':
                 self._save_musicbrainz_recording_id(tags, values)
             elif name == '~rating':
-                rating_user_email = id3_rating_user_email(config)
-                # Search for an existing POPM frame to get the current playcount
-                for frame in tags.values():
-                    if frame.FrameID == 'POPM' and frame.email == rating_user_email:
-                        count = getattr(frame, 'count', 0)
-                        break
-                else:
-                    count = 0
-
-                # Convert rating to range between 0 and 255
-                rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
-                tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
+                self._save_rating(tags, values, config)
             elif name == 'grouping':
                 if config.setting['itunes_compatible_grouping']:
                     tags.add(id3.GRP1(encoding=encoding, text=values))
@@ -890,6 +879,21 @@ class ID3File(File):
     def _save_musicbrainz_recording_id(self, tags, values):
         """Save MusicBrainz recording ID to UFID frame."""
         tags.add(id3.UFID(owner="http://musicbrainz.org", data=bytes(values[0], 'ascii')))
+
+    def _save_rating(self, tags, values, config):
+        """Save rating to POPM frame."""
+        rating_user_email = id3_rating_user_email(config)
+        # Search for an existing POPM frame to get the current playcount
+        for frame in tags.values():
+            if frame.FrameID == 'POPM' and frame.email == rating_user_email:
+                count = getattr(frame, 'count', 0)
+                break
+        else:
+            count = 0
+
+        # Convert rating to range between 0 and 255
+        rating = int(round(float(values[0]) * 255 / (config.setting['rating_steps'] - 1)))
+        tags.add(id3.POPM(email=rating_user_email, rating=rating, count=count))
 
 
 class MP3File(ID3File):
