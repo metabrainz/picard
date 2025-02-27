@@ -520,16 +520,7 @@ class ID3File(File):
             if not self.supports_tag(name):
                 continue
             elif name == 'performer' or name.startswith('performer:'):
-                if ':' in name:
-                    role = name.split(':', 1)[1]
-                else:
-                    role = 'performer'
-                for value in values:
-                    if config.setting['write_id3v23']:
-                        # TIPL will be upgraded to IPLS
-                        tipl.people.append([role, value])
-                    else:
-                        tmcl.people.append([role, value])
+                self._save_performer(tags, name, values, config, encoding, tmcl, tipl)
             elif name == 'comment' or name.startswith('comment:'):
                 self._save_comment_tag(tags, name, values, encoding)
             elif name.startswith('lyrics:') or name == 'lyrics':
@@ -896,6 +887,19 @@ class ID3File(File):
                 tags.delall('XSOP')
             elif frameid == 'TSO2':
                 tags.delall('TXXX:ALBUMARTISTSORT')
+
+    def _save_performer(self, tags, name, values, config, encoding, tmcl, tipl):
+        """Save performer information."""
+        if ':' in name:
+            role = name.split(':', 1)[1]
+        else:
+            role = 'performer'
+        for value in values:
+            if config.setting['write_id3v23']:
+                # TIPL will be upgraded to IPLS
+                tipl.people.append([role, value])
+            else:
+                tmcl.people.append([role, value])
 
 
 class MP3File(ID3File):
