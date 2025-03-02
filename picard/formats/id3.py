@@ -942,12 +942,12 @@ class ID3File(File):
                 self._remove_freetext_ci_tag(tags, name)
             elif real_name in self.__translate_freetext:
                 self._remove_freetext_tag(tags, name, real_name)
-            elif not name.startswith('~id3:') and name not in self.__other_supported_tags:
-                self._remove_custom_tag(tags, name)
             elif name.startswith('~id3:'):
                 self._remove_id3_tag(tags, name)
             elif name in self.__other_supported_tags:
                 self._remove_other_supported_tag(tags, name, real_name)
+            else:
+                self._remove_custom_tag(tags, name)
         except KeyError:
             pass
 
