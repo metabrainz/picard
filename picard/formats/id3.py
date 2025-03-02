@@ -922,9 +922,9 @@ class ID3File(File):
         try:
             if name.startswith('performer:'):
                 self._remove_performer_tag(tags, name)
-            elif name.startswith('comment:') or name == 'comment':
+            elif name == 'comment' or name.startswith('comment:'):
                 self._remove_comment_tag(tags, name)
-            elif name.startswith('lyrics:') or name == 'lyrics':
+            elif name == 'lyrics' or name.startswith('lyrics:'):
                 self._remove_lyrics_tag(tags, name)
             elif name == 'syncedlyrics' or name.startswith('syncedlyrics:'):
                 self._remove_synced_lyrics_tag(tags, name)
