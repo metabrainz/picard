@@ -90,14 +90,21 @@ class Disc:
         self.toc_string = disc.toc_string
         log.debug("Read disc ID %s with MCN %s", self.id, self.mcn)
 
+    @staticmethod
+    def _submission_url(id, tracks, toc_string):
+        return build_submission_url(
+            "/cdtoc/attach",
+            query_args={
+                'id': id,
+                'tracks': tracks,
+                'toc': toc_string.replace(' ', '+'),
+            }
+        )
+
     @property
     def submission_url(self):
         if self.id and self.tracks and self.toc_string:
-            return build_submission_url("/cdtoc/attach", query_args={
-                'id': self.id,
-                'tracks': self.tracks,
-                'toc': self.toc_string.replace(' ', '+'),
-            })
+            return self._submission_url(self.id, self.tracks, self.toc_string)
         else:
             return None
 
