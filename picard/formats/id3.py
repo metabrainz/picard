@@ -920,7 +920,7 @@ class ID3File(File):
         """Remove a single tag based on its name."""
         real_name = self._get_tag_name(name)
         try:
-            if name.startswith('performer:'):
+            if name == 'performer' or name.startswith('performer:'):
                 self._remove_performer_tag(tags, name)
             elif name == 'comment' or name.startswith('comment:'):
                 self._remove_comment_tag(tags, name)
@@ -953,8 +953,12 @@ class ID3File(File):
 
     def _remove_performer_tag(self, tags, name):
         """Remove performer tag from ID3 frames."""
-        role = name.split(':', 1)[1]
-        _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
+        if ':' in name:
+            roles = (name.split(':', 1)[1],)
+        else:
+            roles = ('', 'performer')
+        for role in roles:
+            _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
 
     def _remove_comment_tag(self, tags, name):
         """Remove comment tag from ID3 frames."""
