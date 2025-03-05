@@ -102,9 +102,16 @@ class picard_build_locales(Command):
         pass
 
     def run(self):
+        # build_lib is only set when run as part of the "build" command.
+        # When "buil_locales" is run standalone this will not be set and
+        # locales will be compiled in the local directory.
+        build_lib = self.distribution.get_command_obj('build').build_lib
+
         for domain, locale, po in _picard_get_locale_files():
             path = os.path.join('picard', 'locale', locale, 'LC_MESSAGES')
-            mo = os.path.join(path, '%s.mo' % domain)
+            if build_lib:
+                path = os.path.join(build_lib, path)
+            mo = os.path.join(path, f'{domain}.mo')
             self.mkpath(path)
             self.spawn(['msgfmt', '-o', mo, po])
 
