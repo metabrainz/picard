@@ -3,8 +3,8 @@
 # This file is distributed under the same license as the picard project.
 #
 # Translators:
-# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2015,2017-2023
-# Jaakko Perttilä <jormangeud@gmail.com>, 2018
+# Jaakko Perttilä <jormangeud@gmail.com>, 2012-2015,2017-2023, 2025.
+# Jaakko Perttilä <jormangeud@gmail.com>, 2018, 2025.
 # Juhana Uuttu <rexroom@sci.fi>, 2023
 # Timo Martikainen <musicbrainz@listmycds.com>, 2012
 # Mika Heiska <kilualmighty@gmail.com>, 2006
@@ -21,16 +21,16 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-10 12:02+0100\n"
-"PO-Revision-Date: 2024-04-07 12:28+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
-"Language-Team: Finnish <https://translations.metabrainz.org/projects/"
-"picard/3/app/fi/>\n"
+"PO-Revision-Date: 2025-03-05 10:44+0000\n"
+"Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
+"Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
+"3/app/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.10.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:139
@@ -146,27 +146,27 @@ msgstr "Ensisijainen tiedostonnimeämiskomentosarja"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Liitännäisen koko polku"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Kirjaa lokiin liitännäisten täydet polut"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "Verkkopalveluun lähetetty data"
 
 #: picard/debug_opts.py:84
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "Kirjaa lokiin verkkopalveluun lähetetyt POST-pyynnöt"
 
 #: picard/debug_opts.py:85
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Webpalvelun vastaukset"
 
 #: picard/debug_opts.py:85
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Kirjaa lokiin webpalvelun vastaukset"
 
 #: picard/file.py:216
 msgid ""
@@ -219,10 +219,8 @@ msgid "Error"
 msgstr "Virhe"
 
 #: picard/log.py:78
-#, fuzzy
-#| msgid "New User Warning"
 msgid "Warning"
-msgstr "Varoitus uudelle käyttäjälle"
+msgstr "Varoitus"
 
 #: picard/log.py:79 picard/ui/infodialog.py:236 picard/ui/infodialog.py:480
 #: picard/ui/options/interface_toolbar.py:110
@@ -231,13 +229,11 @@ msgstr "Lisätietoja"
 
 #: picard/log.py:80
 msgid "Debug"
-msgstr ""
+msgstr "Virheenjäljitys"
 
 #: picard/oauth.py:198
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Odottamaton virhe tunnistautumisessa"
+msgstr "Odottamaton virhe valtuutuksien mitätöimisessä"
 
 #: picard/oauth.py:349 picard/oauth.py:376
 msgid "Unexpected authentication error"
@@ -302,21 +298,19 @@ msgstr "Sisällytä vain yksi etukannen kuva"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_cover.py:120
 msgid "Never replace cover images with smaller ones"
-msgstr ""
+msgstr "Älä koskaan korvaa kansikuvia pienemmillä kuvilla"
 
 #: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace cover images matching selected types"
-msgstr "Lataa vain valintojen mukaisia kansitaidekuvia"
+msgstr "Älä koskaan korvaa seuraavia kansikuvia"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
-msgstr ""
+msgstr "Älä koskaan korvaa valitun tyyppisiä kansikuvia"
 
 #: picard/options.py:174
 msgid "Always replace cover images of these types"
-msgstr ""
+msgstr "Korvaa aina valitun tyyppiset kansikuvat"
 
 #: picard/options.py:175 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
@@ -477,10 +471,8 @@ msgid "Tags to show at the top"
 msgstr "Tagit joita näyttää yllä"
 
 #: picard/options.py:288
-#, fuzzy
-#| msgid "Destination directory"
 msgid "Automatic backup destination directory"
-msgstr "Kohdehakemisto"
+msgstr "Automaattisen varmuuskopioinnin kohdehakemisto"
 
 #: picard/options.py:292
 msgid "Minimal similarity for cluster lookups"
@@ -527,10 +519,8 @@ msgid "Use standardized instrument and vocal credits"
 msgstr "Käytä yhdenmukaistettuja soittimien ja laulujen nimiä"
 
 #: picard/options.py:306
-#, fuzzy
-#| msgid "Use release relationships"
 msgid "Use track and release relationships"
-msgstr "Käytä julkaisujen suhteiden tietoja"
+msgstr "Käytä kappaleiden ja julkaisujen suhteiden tietoja"
 
 #: picard/options.py:307
 msgid "Translate artist names"
@@ -558,7 +548,7 @@ msgstr "Oletusportti"
 
 #: picard/options.py:316
 msgid "Network cache size in bytes"
-msgstr ""
+msgstr "Verkkovälimuistin koko tavuina"
 
 #: picard/options.py:317
 msgid "Request timeout in seconds"
@@ -577,10 +567,8 @@ msgid "Proxy server port"
 msgstr "Välityspalvelimen portti"
 
 #: picard/options.py:321
-#, fuzzy
-#| msgid "type of proxy server"
 msgid "Type of proxy server"
-msgstr "välityspalvelimen tyyppi"
+msgstr "Välityspalvelimen tyyppi"
 
 #: picard/options.py:322
 msgid "Proxy username"
@@ -767,10 +755,9 @@ msgid "Unable to load plugin '%s'"
 msgstr "Liitännäistä '%s' ei pystytä lataamaan"
 
 #: picard/pluginmanager.py:308
-#, fuzzy, python-format
-#| msgid "Failed loading plugin \"%(plugin)s\" in \"%(dirname)s\""
+#, python-format
 msgid "Failed loading plugin \"%(plugin)s\""
-msgstr "Liitännäisen \"%(plugin)s\" lataaminen epäonnistui \"%(dirname)s\""
+msgstr "Liitännäisen \"%(plugin)s\" lataaminen epäonnistui"
 
 #: picard/pluginmanager.py:355
 #, python-format
@@ -830,7 +817,7 @@ msgstr "Luett. nro"
 
 #: picard/releasegroup.py:63
 msgid "Packaging"
-msgstr ""
+msgstr "Pakkaus"
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:67
 #: picard/ui/itemviews/columns.py:215 picard/ui/searchdialog/album.py:154
