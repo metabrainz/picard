@@ -94,6 +94,12 @@
             </uap:SupportedFileTypes>
           </uap:FileTypeAssociation>
         </uap:Extension>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="%(protocol)s">
+            <uap:Logo>Square44x44Logo.targetsize-44_altform-unplated.png</uap:Logo>
+            <uap:DisplayName>%(display-name)s</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
       </Extensions>
     </Application>
   </Applications>

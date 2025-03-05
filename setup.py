@@ -65,6 +65,7 @@ from picard import (  # noqa: E402
     PICARD_APP_NAME,
     PICARD_DESKTOP_NAME,
     PICARD_DISPLAY_NAME,
+    PICARD_PROTOCOL_SCHEME,
     PICARD_VERSION,
 )
 
@@ -177,6 +178,7 @@ class picard_build(build):
             installer_args = {
                 'display-name': PICARD_DISPLAY_NAME,
                 'file-version': file_version_str,
+                'protocol': PICARD_PROTOCOL_SCHEME,
             }
             if os.path.isfile('installer/picard-setup.nsi.in'):
                 generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**common_args, **installer_args})
@@ -200,6 +202,7 @@ class picard_build(build):
                 'short-name': PICARD_APP_NAME,
                 'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
                 'version': '.'.join(str(v) for v in store_version),
+                'protocol': PICARD_PROTOCOL_SCHEME,
             })
         elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
             self.run_command('build_appdata')
