@@ -71,6 +71,7 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
+    PICARD_PROTOCOL_SCHEME,
     acoustid,
     log,
 )
@@ -191,6 +192,7 @@ class ParseItemsToLoad:
         self.files = set()
         self.mbids = set()
         self.urls = set()
+        self.custom_urls = set()
 
         for item in items:
             parsed = urlparse(item)
@@ -205,6 +207,8 @@ class ParseItemsToLoad:
             elif parsed.scheme in {'http', 'https'}:
                 # .path returns / before actual link
                 self.urls.add(parsed.path[1:])
+            elif parsed.scheme == PICARD_PROTOCOL_SCHEME:
+                self.custom_urls.add(item)
             elif IS_WIN and self.WINDOWS_DRIVE_TEST.match(item):
                 # Treat all single-character schemes as part of the file spec to allow
                 # specifying a drive identifier on Windows systems.
@@ -519,6 +523,10 @@ class Tagger(QtWidgets.QApplication):
             for item in parsed_items.mbids | parsed_items.urls:
                 file_lookup.mbid_lookup(item)
 
+        if parsed_items.custom_urls:
+            for item in parsed_items.custom_urls:
+                self.browser_integration.url_handler(QtCore.QUrl(item))
+
     def handle_command_lookup(self, argstring):
         if argstring:
             argstring = argstring.upper()
@@ -765,7 +773,7 @@ class Tagger(QtWidgets.QApplication):
         if self.priority_thread_pool:
             self.priority_thread_pool.waitForDone()
         if self.browser_integration:
-            self.browser_integration.stop()
+            self.browser_integration.stop(stop_url_handler=True)
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
@@ -1517,7 +1525,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
 
     args.processable = []
     for path in args.FILE_OR_URL:
-        if not urlparse(path).netloc:
+        if not urlparse(path).scheme:
             try:
                 path = os.path.abspath(path)
             except FileNotFoundError:
