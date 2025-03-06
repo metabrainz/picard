@@ -279,6 +279,11 @@ class EditTagDialog(PicardDialog):
             self.add_value()
 
     def _group(self, is_grouped):
+        """Set the grouped state of the tag editor.
+
+        Args:
+            is_grouped: Whether the tag is in a grouped state
+        """
         self.is_grouped = is_grouped
         self.ui.add_value.setEnabled(not is_grouped)
 
