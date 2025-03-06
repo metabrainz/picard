@@ -29,7 +29,7 @@ classifiers = [
     "Topic :: Multimedia :: Sound/Audio :: Analysis",
     "Intended Audience :: End Users/Desktop",
 ]
-dynamic = ["version", "readme", "dependencies"]
+dynamic = ["version", "readme", "dependencies", "gui-scripts"]
 
 [project.urls]
 Homepage = "https://picard.musicbrainz.org/"
