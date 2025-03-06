@@ -326,14 +326,16 @@ class EditTagDialog(PicardDialog):
         value_list.insertItem(new_row, item)
         value_list.setCurrentRow(new_row)
 
-    def disable_all(self):
-        self.value_list.clear()
-        self.value_list.setEnabled(False)
-        self.ui.add_value.setEnabled(False)
+    def _set_ui_enabled_state(self, enabled):
+        """Enable or disable the tag value editing UI components.
 
-    def enable_all(self):
-        self.value_list.setEnabled(True)
-        self.ui.add_value.setEnabled(True)
+        Args:
+            enabled: Whether to enable the components (boolean)
+        """
+        if not enabled:
+            self.value_list.clear()
+        self.value_list.setEnabled(enabled)
+        self.ui.add_value.setEnabled(enabled)
 
     def _get_tag_values(self):
         """Get the current values for the selected tag.
@@ -393,11 +395,11 @@ class EditTagDialog(PicardDialog):
                 row = tag_names.findText(tag, flags)
             else:
                 # the QLineEdit is empty, disable everything
-                self.disable_all()
+                self._set_ui_enabled_state(False)
                 tag_names.setCurrentIndex(0)
                 return
 
-        self.enable_all()
+        self._set_ui_enabled_state(True)
         tag_names.setCurrentIndex(row)
         line_edit.setCursorPosition(cursor_pos)
 
