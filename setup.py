@@ -103,7 +103,7 @@ class picard_build_locales(Command):
 
     def run(self):
         # build_lib is only set when run as part of the "build" command.
-        # When "buil_locales" is run standalone this will not be set and
+        # When "build_locales" is run standalone this will not be set and
         # locales will be compiled in the local directory.
         build_lib = self.distribution.get_command_obj('build').build_lib
 
@@ -141,12 +141,14 @@ class picard_build(build):
     user_options = build.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('build-number=', None, 'build number (integer)'),
+        ('disable-locales', None, ''),
     ]
 
     def initialize_options(self):
         super().initialize_options()
         self.build_number = 0
         self.disable_autoupdate = None
+        self.disable_locales = None
 
     def finalize_options(self):
         super().finalize_options()
@@ -159,7 +161,8 @@ class picard_build(build):
             # a workaround for https://tickets.metabrainz.org/browse/PICARD-3003
             env_autoupdate = os.environ.get('PICARD_DISABLE_AUTOUPDATE')
             self.disable_autoupdate = bool(env_autoupdate and env_autoupdate != '0')
-        self.sub_commands.append(('build_locales', None))
+        if not self.disable_locales:
+            self.sub_commands.append(('build_locales', None))
 
     def run(self):
         params = {'autoupdate': not self.disable_autoupdate}

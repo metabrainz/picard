@@ -71,8 +71,9 @@ jobs:
         python setup.py clean
     - name: Build
       run: |
-        python setup.py build --build-number=$BuildNumber
-        python setup.py build_ext
+        python setup.py build --build-number=$BuildNumber --disable-locales
+        python setup.py build_locales
+        python setup.py build_ext -i
         pyinstaller --noconfirm --clean picard.spec
         If ($env:PICARD_BUILD_PORTABLE -ne "1") {
           dist\picard\_internal\fpcalc -version

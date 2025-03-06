@@ -15,7 +15,8 @@ MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
 echo "Building Picard..."
 rm -rf dist build locale
 python3 setup.py clean
-python3 setup.py build
+python3 setup.py build --disable-locales
+python3 setup.py build_locales
 python3 setup.py build_ext -i
 pyinstaller --noconfirm --clean picard.spec
 
