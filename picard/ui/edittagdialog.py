@@ -417,6 +417,11 @@ class EditTagDialog(PicardDialog):
         self.ui.tag_names.editTextChanged.connect(self.tag_changed)
 
     def _set_item_style(self, item):
+        """Set the visual style of a list item based on its grouped state.
+
+        Args:
+            item: The QListWidgetItem to style
+        """
         font = item.font()
         font.setItalic(self.is_grouped)
         item.setFont(font)
