@@ -182,7 +182,6 @@ class EditTagDialog(PicardDialog):
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
         self.value_list = self.ui.value_list
-        self.tagger = QtCore.QCoreApplication.instance()
         self.metadata_box = metadata_box
         self.tag = tag
         self.modified_tags = {}
