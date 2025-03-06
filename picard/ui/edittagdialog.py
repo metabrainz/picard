@@ -408,12 +408,30 @@ class EditTagDialog(PicardDialog):
         font.setItalic(self.is_grouped)
         item.setFont(font)
 
+    def _create_value_item(self, value):
+        """Create a QListWidgetItem for the given tag value.
+
+        Args:
+            value: The tag value to display in the item
+
+        Returns:
+            QListWidgetItem: Configured list item
+        """
+        item = QtWidgets.QListWidgetItem(value)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
+                      | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
+        self._set_item_style(item)
+        return item
+
     def _add_value_items(self, values):
+        """Add items to the value list for the given tag values.
+
+        Args:
+            values: List of tag values to add
+        """
         values = [v for v in values if v] or [""]
         for value in values:
-            item = QtWidgets.QListWidgetItem(value)
-            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
-            self._set_item_style(item)
+            item = self._create_value_item(value)
             self.value_list.addItem(item)
 
     def value_edited(self, item):
