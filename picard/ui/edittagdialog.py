@@ -55,39 +55,121 @@ AUTOCOMPLETE_RELEASE_FORMATS = sorted(RELEASE_FORMATS, key=str.casefold)
 MULTILINE_TAGS = {'comment', 'lyrics', 'syncedlyrics'}
 
 
+class CompleterConfig:
+    """Configuration for creating and setting up QCompleter instances."""
+
+    def __init__(self, options, case_insensitive_sort=True):
+        """Initialize completer configuration.
+
+        Args:
+            options: List of completion options
+            case_insensitive_sort: Whether to use case-insensitive sorting
+        """
+        self.options = options
+        self.case_insensitive_sort = case_insensitive_sort
+
+    def create_completer(self, editor):
+        """Create and configure a QCompleter instance.
+
+        Args:
+            editor: The editor widget to attach the completer to
+
+        Returns:
+            Configured QCompleter instance
+        """
+        completer = QtWidgets.QCompleter(self.options, editor)
+        completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.UnfilteredPopupCompletion)
+        completer.setCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
+        if self.case_insensitive_sort:
+            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
+        return completer
+
+
+COMPLETER_CONFIG = {
+    'releasetype': CompleterConfig(AUTOCOMPLETE_RELEASE_TYPES, case_insensitive_sort=False),
+    'releasestatus': CompleterConfig(AUTOCOMPLETE_RELEASE_STATUS),
+    'releasecountry': CompleterConfig(AUTOCOMPLETE_RELEASE_COUNTRIES),
+    'media': CompleterConfig(AUTOCOMPLETE_RELEASE_FORMATS)
+}
+
+
 class TagEditorDelegate(QtWidgets.QItemDelegate):
 
     def createEditor(self, parent, option, index):
         if not index.isValid():
             return None
+
         tag = self.get_tag_name(index)
+        editor = self._create_editor_based_on_tag_type(parent, tag, option, index)
+        self._configure_editor_for_tag(editor, tag)
+        return editor
+
+    def _create_editor_based_on_tag_type(self, parent, tag, option, index):
+        """Create appropriate editor widget based on tag type.
+
+        Args:
+            parent: Parent widget
+            tag: Tag name
+            option: Style options
+            index: Model index
+
+        Returns:
+            QWidget subclass appropriate for editing the tag
+        """
         if tag.partition(':')[0] in MULTILINE_TAGS:
             editor = QtWidgets.QPlainTextEdit(parent)
-            editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor))
+            editor.setFrameStyle(editor.style().styleHint(
+                QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor))
             editor.setMinimumSize(QtCore.QSize(0, 80))
-        else:
-            editor = super().createEditor(parent, option, index)
-        completer = None
+            return editor
+        return super().createEditor(parent, option, index)
+
+    def _configure_editor_for_tag(self, editor, tag):
+        """Configure editor widget for specific tag.
+
+        Args:
+            editor: Editor widget to configure
+            tag: Tag name
+        """
+        self._set_placeholder_text(editor, tag)
+        completer = self._create_completer_for_tag(tag, editor)
+        if completer:
+            self._setup_completer(editor, completer)
+
+    def _set_placeholder_text(self, editor, tag):
+        """Set placeholder text for specified tag.
+
+        Args:
+            editor: Editor widget
+            tag: Tag name
+        """
         if tag in {'date', 'originaldate', 'releasedate'}:
             editor.setPlaceholderText(_("YYYY-MM-DD"))
         elif tag == 'originalyear':
             editor.setPlaceholderText(_("YYYY"))
-        elif tag == 'releasetype':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_TYPES, editor)
-        elif tag == 'releasestatus':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_STATUS, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
-        elif tag == 'releasecountry':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_COUNTRIES, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
-        elif tag == 'media':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_FORMATS, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
-        if editor and completer:
-            completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.UnfilteredPopupCompletion)
-            completer.setCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
-            editor.setCompleter(completer)
-        return editor
+
+    def _create_completer_for_tag(self, tag, editor):
+        """Create completer for tag if configured.
+
+        Args:
+            tag: Tag name
+            editor: Editor widget
+
+        Returns:
+            QCompleter instance or None
+        """
+        if tag in COMPLETER_CONFIG:
+            return COMPLETER_CONFIG[tag].create_completer(editor)
+        return None
+
+    def _setup_completer(self, editor, completer):
+        """Attach completer to editor widget.
+
+        Args:
+            editor: Editor widget
+            completer: QCompleter instance
+        """
+        editor.setCompleter(completer)
 
     def get_tag_name(self, index):
         return self.parent().tag
