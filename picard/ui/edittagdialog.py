@@ -194,23 +194,50 @@ class EditTagDialog(PicardDialog):
         self.tag = tag
         self.modified_tags = {}
         self.is_grouped = False
-        self.default_tags = sorted(
-            set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
-        if len(self.metadata_box.files) == 1:
-            current_file = list(self.metadata_box.files)[0]
-            self.default_tags = list(filter(current_file.supports_tag, self.default_tags))
-        tag_names = self.ui.tag_names
-        tag_names.addItem("")
-        visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
-        tag_names.addItems(visible_tags)
-        self.completer = QtWidgets.QCompleter(visible_tags, tag_names)
-        self.completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
-        tag_names.setCompleter(self.completer)
-        self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
-        self.value_list.model().rowsRemoved.connect(self.on_rows_removed)
-        self.value_list.setItemDelegate(TagEditorDelegate(self))
+
+        self._initialize_ui()
         self.tag_changed(tag)
         self.value_selection_changed()
+
+    def _initialize_ui(self):
+        """Initialize the UI."""
+        self._setup_tag_combobox()
+        self._setup_value_list()
+        self._connect_signals()
+
+    def _setup_tag_combobox(self):
+        """Set up the tag name combobox with supported tags."""
+        self.default_tags = self._get_supported_tags()
+        visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
+
+        self.ui.tag_names.addItem("")
+        self.ui.tag_names.addItems(visible_tags)
+
+        self.completer = QtWidgets.QCompleter(visible_tags, self.ui.tag_names)
+        self.completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
+        self.ui.tag_names.setCompleter(self.completer)
+
+    def _get_supported_tags(self):
+        """Get the list of supported tags for the current files.
+
+        Returns:
+            List of supported tag names
+        """
+        tags = sorted(set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
+        if len(self.metadata_box.files) == 1:
+            current_file = list(self.metadata_box.files)[0]
+            tags = list(filter(current_file.supports_tag, tags))
+        return tags
+
+    def _setup_value_list(self):
+        """Set up the value list widget."""
+        self.ui.value_list.setItemDelegate(TagEditorDelegate(self))
+
+    def _connect_signals(self):
+        """Connect UI signals to their respective slots."""
+        model = self.ui.value_list.model()
+        model.rowsInserted.connect(self.on_rows_inserted)
+        model.rowsRemoved.connect(self.on_rows_removed)
 
     def keyPressEvent(self, event):
         if event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier and event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return}:
