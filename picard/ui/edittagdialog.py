@@ -324,6 +324,38 @@ class EditTagDialog(PicardDialog):
         self.value_list.setEnabled(True)
         self.ui.add_value.setEnabled(True)
 
+    def _get_tag_values(self):
+        """Get the current values for the selected tag.
+
+        Returns:
+            List of tag values
+        """
+        values = self.modified_tags.get(self.tag, None)
+        if values is None:
+            new_tags = self.metadata_box.tag_diff.new
+            display_value = new_tags.display_value(self.tag)
+            if display_value.is_grouped:
+                # grouped values have a special text, which isn't a valid tag value
+                values = [display_value.text]
+                self._group(True)
+            else:
+                # normal tag values
+                values = new_tags[self.tag]
+                self._group(False)
+        return values
+
+    def _update_tag_values(self, values):
+        """Update the value list with the given tag values.
+
+        Args:
+            values: List of tag values to display
+        """
+        model = self.value_list.model()
+        model.rowsInserted.disconnect(self.on_rows_inserted)
+        self._add_value_items(values)
+        model.rowsInserted.connect(self.on_rows_inserted)
+        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
+
     def tag_changed(self, tag):
         tag_names = self.ui.tag_names
         tag_names.editTextChanged.disconnect(self.tag_changed)
@@ -356,23 +388,8 @@ class EditTagDialog(PicardDialog):
         line_edit.setCursorPosition(cursor_pos)
         self.value_list.clear()
 
-        values = self.modified_tags.get(self.tag, None)
-        if values is None:
-            new_tags = self.metadata_box.tag_diff.new
-            display_value = new_tags.display_value(self.tag)
-            if display_value.is_grouped:
-                # grouped values have a special text, which isn't a valid tag value
-                values = [display_value.text]
-                self._group(True)
-            else:
-                # normal tag values
-                values = new_tags[self.tag]
-                self._group(False)
-
-        self.value_list.model().rowsInserted.disconnect(self.on_rows_inserted)
-        self._add_value_items(values)
-        self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
-        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
+        values = self._get_tag_values()
+        self._update_tag_values(values)
         tag_names.editTextChanged.connect(self.tag_changed)
 
     def _set_item_style(self, item):
