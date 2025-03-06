@@ -461,12 +461,21 @@ class EditTagDialog(PicardDialog):
                 cm.setData(cm.index(0, 0), self.tag)
                 cm.sort(0)
 
+    def _update_button_states(self, selected):
+        """Update the state of action buttons based on selection.
+
+        Args:
+            selected: Whether items are selected (boolean)
+        """
+        self.ui.edit_value.setEnabled(selected)
+        self.ui.remove_value.setEnabled(selected)
+        self.ui.move_value_up.setEnabled(selected)
+        self.ui.move_value_down.setEnabled(selected)
+
     def value_selection_changed(self):
-        selection = len(self.value_list.selectedItems()) > 0
-        self.ui.edit_value.setEnabled(selection)
-        self.ui.remove_value.setEnabled(selection)
-        self.ui.move_value_up.setEnabled(selection)
-        self.ui.move_value_down.setEnabled(selection)
+        """Handle changes to the value list selection."""
+        selected = len(self.value_list.selectedItems()) > 0
+        self._update_button_states(selected)
 
     def _modified_tag(self):
         """Get or create the list of modified values for the current tag.
