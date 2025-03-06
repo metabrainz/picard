@@ -314,6 +314,12 @@ class EditTagDialog(PicardDialog):
             self._move_row(row, 1)
 
     def _move_row(self, row, direction):
+        """Move a row in the value list up or down.
+
+        Args:
+            row: The index of the row to move
+            direction: The direction to move the row (-1 for up, 1 for down)
+        """
         value_list = self.value_list
         item = value_list.takeItem(row)
         new_row = row + direction
