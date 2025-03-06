@@ -458,8 +458,15 @@ class EditTagDialog(PicardDialog):
         self.ui.move_value_down.setEnabled(selection)
 
     def _modified_tag(self):
-        return self.modified_tags.setdefault(self.tag,
-                                             list(self.metadata_box.tag_diff.new[self.tag]) or [""])
+        """Get or create the list of modified values for the current tag.
+
+        Returns:
+            List of modified tag values, with at least one empty string if no values exist
+        """
+        return self.modified_tags.setdefault(
+            self.tag,
+            list(self.metadata_box.tag_diff.new[self.tag]) or [""]
+        )
 
     def accept(self):
         with self.tagger.window.ignore_selection_changes:
