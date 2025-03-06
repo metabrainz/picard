@@ -490,10 +490,14 @@ class EditTagDialog(PicardDialog):
             list(self.metadata_box.tag_diff.new[self.tag]) or [""]
         )
 
-    def _update_metadata_with_modified_tags(self):
-        """Update the metadata of all objects with the modified tags."""
+    def _cleanup_modified_tags(self):
+        """Remove empty values from modified tags."""
         for tag, values in self.modified_tags.items():
             self.modified_tags[tag] = [v for v in values if v]
+
+    def _update_metadata_with_modified_tags(self):
+        """Update the metadata of all objects with the modified tags."""
+        self._cleanup_modified_tags()
         modified_tags = self.modified_tags.items()
         for obj in self.metadata_box.objects:
             for tag, values in modified_tags:
