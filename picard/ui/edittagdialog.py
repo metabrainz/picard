@@ -464,7 +464,7 @@ class EditTagDialog(PicardDialog):
                 cm.sort(0)
 
     def _update_button_states(self, selected):
-        """Update the state of action buttons based on selection.
+        """Update the state of value-related action buttons based on selection.
 
         Args:
             selected: Whether items are selected (boolean)
