@@ -172,6 +172,14 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         editor.setCompleter(completer)
 
     def get_tag_name(self, index):
+        """Get the tag name for the given index.
+
+        Args:
+            index: QModelIndex of the item
+
+        Returns:
+            str: The tag name
+        """
         return self.parent().tag
 
 
