@@ -356,9 +356,13 @@ class EditTagDialog(PicardDialog):
         model.rowsInserted.connect(self.on_rows_inserted)
         self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
 
-    def tag_changed(self, tag):
+    def _update_tag_combobox(self, tag):
+        """Update the tag combobox with the current tag.
+
+        Args:
+            tag: The tag to update in the combobox
+        """
         tag_names = self.ui.tag_names
-        tag_names.editTextChanged.disconnect(self.tag_changed)
         line_edit = tag_names.lineEdit()
         cursor_pos = line_edit.cursorPosition()
         flags = QtCore.Qt.MatchFlag.MatchFixedString | QtCore.Qt.MatchFlag.MatchCaseSensitive
@@ -380,17 +384,24 @@ class EditTagDialog(PicardDialog):
                 # the QLineEdit is empty, disable everything
                 self.disable_all()
                 tag_names.setCurrentIndex(0)
-                tag_names.editTextChanged.connect(self.tag_changed)
                 return
 
         self.enable_all()
         tag_names.setCurrentIndex(row)
         line_edit.setCursorPosition(cursor_pos)
-        self.value_list.clear()
 
+    def tag_changed(self, tag):
+        """Handle changes to the selected tag.
+
+        Args:
+            tag: The tag name
+        """
+        self.ui.tag_names.editTextChanged.disconnect(self.tag_changed)
+        self._update_tag_combobox(tag)
+        self.value_list.clear()
         values = self._get_tag_values()
         self._update_tag_values(values)
-        tag_names.editTextChanged.connect(self.tag_changed)
+        self.ui.tag_names.editTextChanged.connect(self.tag_changed)
 
     def _set_item_style(self, item):
         font = item.font()
