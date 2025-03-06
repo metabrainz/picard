@@ -468,13 +468,18 @@ class EditTagDialog(PicardDialog):
             list(self.metadata_box.tag_diff.new[self.tag]) or [""]
         )
 
+    def _update_metadata_with_modified_tags(self):
+        """Update the metadata of all objects with the modified tags."""
+        for tag, values in self.modified_tags.items():
+            self.modified_tags[tag] = [v for v in values if v]
+        modified_tags = self.modified_tags.items()
+        for obj in self.metadata_box.objects:
+            for tag, values in modified_tags:
+                obj.metadata[tag] = list(values)
+            obj.update()
+
     def accept(self):
+        """Save the modified tags and close the dialog."""
         with self.tagger.window.ignore_selection_changes:
-            for tag, values in self.modified_tags.items():
-                self.modified_tags[tag] = [v for v in values if v]
-            modified_tags = self.modified_tags.items()
-            for obj in self.metadata_box.objects:
-                for tag, values in modified_tags:
-                    obj.metadata[tag] = list(values)
-                obj.update()
+            self._update_metadata_with_modified_tags()
         super().accept()
