@@ -496,11 +496,11 @@ class EditTagDialog(PicardDialog):
             self.modified_tags[tag] = [v for v in values if v]
 
     def _update_object_metadata(self, obj, modified_tags):
-        """Update the metadata for a single object.
+        """Update the metadata for a single object with the modified tags.
 
         Args:
             obj: The object to update
-            modified_tags: Dictionary of modified tags and their values
+            modified_tags: Iterable of (tag, values) pairs to update
         """
         for tag, values in modified_tags:
             obj.metadata[tag] = list(values)
