@@ -195,6 +195,7 @@ class EditTagDialog(PicardDialog):
         self.modified_tags = {}
         self.is_grouped = False
         self._updating_tag = False
+        self._metadata_mutex = QtCore.QMutex()
 
         self._initialize_ui()
         self.tag_changed(tag)
@@ -545,5 +546,9 @@ class EditTagDialog(PicardDialog):
     def accept(self):
         """Save the modified tags and close the dialog."""
         with self.tagger.window.ignore_selection_changes:
-            self._update_metadata_with_modified_tags()
+            self._metadata_mutex.lock()
+            try:
+                self._update_metadata_with_modified_tags()
+            finally:
+                self._metadata_mutex.unlock()
         super().accept()
