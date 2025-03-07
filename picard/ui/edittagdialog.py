@@ -99,7 +99,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         if not index.isValid():
             return None
 
-        tag = self.get_tag_name(index)
+        tag = self.parent().tag
         editor = self._create_editor_based_on_tag_type(parent, tag, option, index)
         self._configure_editor_for_tag(editor, tag)
         return editor
@@ -161,17 +161,6 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         if tag in COMPLETER_CONFIG:
             return COMPLETER_CONFIG[tag].create_completer(editor)
         return None
-
-    def get_tag_name(self, index):
-        """Get the tag name for the given index.
-
-        Args:
-            index: QModelIndex of the item
-
-        Returns:
-            str: The tag name
-        """
-        return self.parent().tag
 
 
 class EditTagDialog(PicardDialog):
