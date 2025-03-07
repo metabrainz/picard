@@ -132,7 +132,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
             tag: Tag name
         """
         self._set_placeholder_text(editor, tag)
-        completer = self._create_completer_for_tag(tag, editor)
+        completer = self._create_completer_for_tag(editor, tag)
         if completer:
             editor.setCompleter(completer)
 
@@ -148,12 +148,12 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         elif tag == 'originalyear':
             editor.setPlaceholderText(_("YYYY"))
 
-    def _create_completer_for_tag(self, tag, editor):
+    def _create_completer_for_tag(self, editor, tag):
         """Create completer for tag if configured.
 
         Args:
-            tag: Tag name
             editor: Editor widget
+            tag: Tag name
 
         Returns:
             QCompleter instance or None
