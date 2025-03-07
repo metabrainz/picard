@@ -222,7 +222,8 @@ class EditTagDialog(PicardDialog):
         model.rowsRemoved.connect(self.on_rows_removed)
 
     def keyPressEvent(self, event):
-        if event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier and event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return}:
+        if (event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier
+            and event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return}):
             self.add_or_edit_value()
             event.accept()
         elif event.matches(QtGui.QKeySequence.StandardKey.Delete):
