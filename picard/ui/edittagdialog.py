@@ -194,6 +194,7 @@ class EditTagDialog(PicardDialog):
         self.tag = tag
         self.modified_tags = {}
         self.is_grouped = False
+        self._updating_tag = False
 
         self._initialize_ui()
         self.tag_changed(tag)
@@ -420,12 +421,19 @@ class EditTagDialog(PicardDialog):
         Args:
             tag: The tag name
         """
-        self.ui.tag_names.editTextChanged.disconnect(self.tag_changed)
-        self._update_tag_combobox(tag)
-        self.value_list.clear()
-        values = self._get_tag_values()
-        self._update_tag_values(values)
-        self.ui.tag_names.editTextChanged.connect(self.tag_changed)
+        if self._updating_tag:
+            return
+
+        self._updating_tag = True
+        try:
+            self.ui.tag_names.editTextChanged.disconnect(self.tag_changed)
+            self._update_tag_combobox(tag)
+            self.value_list.clear()
+            values = self._get_tag_values()
+            self._update_tag_values(values)
+            self.ui.tag_names.editTextChanged.connect(self.tag_changed)
+        finally:
+            self._updating_tag = False
 
     def _set_item_style(self, item):
         """Set the visual style of a list item based on its grouped state.
