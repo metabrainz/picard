@@ -189,7 +189,7 @@ class picard_build(build):
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**common_args, **version_args})
 
-            default_publisher = 'CN=Metabrainz Foundation Inc., O=Metabrainz Foundation Inc., L=San Luis Obispo, S=California, C=US'
+            default_publisher = 'CN=MetaBrainz Foundation Inc., O=MetaBrainz Foundation Inc., L=Covina, S=California, C=US'
             # Combine patch version with build number. As Windows store apps require continuously
             # growing version numbers we combine the patch version with a build number set by the
             # build script.
