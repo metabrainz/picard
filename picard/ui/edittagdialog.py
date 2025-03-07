@@ -251,9 +251,15 @@ class EditTagDialog(PicardDialog):
             super().keyPressEvent(event)
 
     def tag_selected(self, index):
+        """Handle selection of a tag from the combobox.
+
+        Args:
+            index: Index of the selected tag
+        """
         self.add_or_edit_value()
 
     def edit_value(self):
+        """Start editing the currently selected value in the list."""
         item = self.value_list.currentItem()
         if item:
             # Do not initialize editing if editor is already active. Avoids flickering of the edit field
@@ -263,6 +269,7 @@ class EditTagDialog(PicardDialog):
             self.value_list.editItem(item)
 
     def add_value(self):
+        """Add a new empty value to the value list and start editing it."""
         item = QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable)
         self.value_list.addItem(item)
@@ -270,6 +277,7 @@ class EditTagDialog(PicardDialog):
         self.value_list.editItem(item)
 
     def add_or_edit_value(self):
+        """Add a new value or edit the last value if it's empty."""
         last_item = self.value_list.item(self.value_list.count() - 1)
         # Edit the last item, if it is empty, or add a new empty item
         if last_item and not last_item.text():
@@ -288,6 +296,7 @@ class EditTagDialog(PicardDialog):
         self.ui.add_value.setEnabled(not is_grouped)
 
     def remove_value(self):
+        """Remove the currently selected value from the list."""
         value_list = self.value_list
         row = value_list.currentRow()
         if row == 0 and self.is_grouped:
@@ -304,11 +313,13 @@ class EditTagDialog(PicardDialog):
             del self._modified_tag()[row]
 
     def move_row_up(self):
+        """Move the currently selected row up in the list."""
         row = self.value_list.currentRow()
         if row > 0:
             self._move_row(row, -1)
 
     def move_row_down(self):
+        """Move the currently selected row down in the list."""
         row = self.value_list.currentRow()
         if row + 1 < self.value_list.count():
             self._move_row(row, 1)
@@ -453,6 +464,11 @@ class EditTagDialog(PicardDialog):
             self.value_list.addItem(item)
 
     def value_edited(self, item):
+        """Handle editing of a value in the list.
+
+        Args:
+            item: The QListWidgetItem that was edited
+        """
         row = self.value_list.row(item)
         value = item.text()
         if row == 0 and self.is_grouped:
