@@ -53,6 +53,8 @@ AUTOCOMPLETE_RELEASE_COUNTRIES = sorted(RELEASE_COUNTRIES, key=str.casefold)
 AUTOCOMPLETE_RELEASE_FORMATS = sorted(RELEASE_FORMATS, key=str.casefold)
 
 MULTILINE_TAGS = {'comment', 'lyrics', 'syncedlyrics'}
+DATE_YYYYMMDD_TAGS = {'date', 'originaldate', 'releasedate'}
+DATE_YYYY_TAGS = {'originalyear'}
 
 
 class CompleterConfig:
@@ -131,22 +133,24 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
             editor: Editor widget to configure
             tag: Tag name
         """
-        self._set_placeholder_text(editor, tag)
+        placeholder = self._get_placeholder_text(tag)
+        if placeholder is not None:
+            editor.setPlaceholderText(placeholder)
         completer = self._create_completer_for_tag(editor, tag)
         if completer:
             editor.setCompleter(completer)
 
-    def _set_placeholder_text(self, editor, tag):
-        """Set placeholder text for specified tag.
+    def _get_placeholder_text(self, tag):
+        """Get placeholder text for specified tag.
 
         Args:
-            editor: Editor widget
             tag: Tag name
         """
-        if tag in {'date', 'originaldate', 'releasedate'}:
-            editor.setPlaceholderText(_("YYYY-MM-DD"))
-        elif tag == 'originalyear':
-            editor.setPlaceholderText(_("YYYY"))
+        if tag in DATE_YYYYMMDD_TAGS:
+            return _("YYYY-MM-DD")
+        if tag in DATE_YYYY_TAGS:
+            return _("YYYY")
+        return None
 
     def _create_completer_for_tag(self, editor, tag):
         """Create completer for tag if configured.
