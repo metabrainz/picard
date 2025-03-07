@@ -100,15 +100,14 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
             return None
 
         tag = self.parent().tag
-        editor = self._create_editor_based_on_tag_type(parent, tag, option, index)
+        editor = self._create_editor_based_on_tag_type(tag, option, index)
         self._configure_editor_for_tag(editor, tag)
         return editor
 
-    def _create_editor_based_on_tag_type(self, parent, tag, option, index):
+    def _create_editor_based_on_tag_type(self, tag, option, index):
         """Create appropriate editor widget based on tag type.
 
         Args:
-            parent: Parent widget
             tag: Tag name
             option: Style options
             index: Model index
@@ -116,6 +115,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         Returns:
             QWidget subclass appropriate for editing the tag
         """
+        parent = self.parent()
         if tag.partition(':')[0] in MULTILINE_TAGS:
             editor = QtWidgets.QPlainTextEdit(parent)
             editor.setFrameStyle(editor.style().styleHint(
