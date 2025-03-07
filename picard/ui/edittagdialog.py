@@ -53,6 +53,46 @@ AUTOCOMPLETE_RELEASE_COUNTRIES = sorted(RELEASE_COUNTRIES, key=str.casefold)
 AUTOCOMPLETE_RELEASE_FORMATS = sorted(RELEASE_FORMATS, key=str.casefold)
 
 MULTILINE_TAGS = {'comment', 'lyrics', 'syncedlyrics'}
+DATE_YYYYMMDD_TAGS = {'date', 'originaldate', 'releasedate'}
+DATE_YYYY_TAGS = {'originalyear'}
+
+
+class CompleterConfig:
+    """Configuration for creating and setting up QCompleter instances."""
+
+    def __init__(self, options, case_insensitive_sort=True):
+        """Initialize completer configuration.
+
+        Args:
+            options: List of completion options
+            case_insensitive_sort: Whether to use case-insensitive sorting
+        """
+        self.options = options
+        self.case_insensitive_sort = case_insensitive_sort
+
+    def create_completer(self, editor):
+        """Create and configure a QCompleter instance.
+
+        Args:
+            editor: The editor widget to attach the completer to
+
+        Returns:
+            Configured QCompleter instance
+        """
+        completer = QtWidgets.QCompleter(self.options, editor)
+        completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.UnfilteredPopupCompletion)
+        completer.setCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
+        if self.case_insensitive_sort:
+            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
+        return completer
+
+
+COMPLETER_CONFIG = {
+    'releasetype': CompleterConfig(AUTOCOMPLETE_RELEASE_TYPES, case_insensitive_sort=False),
+    'releasestatus': CompleterConfig(AUTOCOMPLETE_RELEASE_STATUS),
+    'releasecountry': CompleterConfig(AUTOCOMPLETE_RELEASE_COUNTRIES),
+    'media': CompleterConfig(AUTOCOMPLETE_RELEASE_FORMATS)
+}
 
 
 class TagEditorDelegate(QtWidgets.QItemDelegate):
@@ -60,37 +100,71 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
     def createEditor(self, parent, option, index):
         if not index.isValid():
             return None
-        tag = self.get_tag_name(index)
-        if tag.partition(':')[0] in MULTILINE_TAGS:
-            editor = QtWidgets.QPlainTextEdit(parent)
-            editor.setFrameStyle(editor.style().styleHint(QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor))
-            editor.setMinimumSize(QtCore.QSize(0, 80))
-        else:
-            editor = super().createEditor(parent, option, index)
-        completer = None
-        if tag in {'date', 'originaldate', 'releasedate'}:
-            editor.setPlaceholderText(_("YYYY-MM-DD"))
-        elif tag == 'originalyear':
-            editor.setPlaceholderText(_("YYYY"))
-        elif tag == 'releasetype':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_TYPES, editor)
-        elif tag == 'releasestatus':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_STATUS, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
-        elif tag == 'releasecountry':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_COUNTRIES, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
-        elif tag == 'media':
-            completer = QtWidgets.QCompleter(AUTOCOMPLETE_RELEASE_FORMATS, editor)
-            completer.setModelSorting(QtWidgets.QCompleter.ModelSorting.CaseInsensitivelySortedModel)
-        if editor and completer:
-            completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.UnfilteredPopupCompletion)
-            completer.setCaseSensitivity(QtCore.Qt.CaseSensitivity.CaseInsensitive)
-            editor.setCompleter(completer)
+
+        tag = self.parent().tag
+        editor = self._create_editor_based_on_tag_type(tag, option, index)
+        self._configure_editor_for_tag(editor, tag)
         return editor
 
-    def get_tag_name(self, index):
-        return self.parent().tag
+    def _create_editor_based_on_tag_type(self, tag, option, index):
+        """Create appropriate editor widget based on tag type.
+
+        Args:
+            tag: Tag name
+            option: Style options
+            index: Model index
+
+        Returns:
+            QWidget subclass appropriate for editing the tag
+        """
+        parent = self.parent()
+        if tag.partition(':')[0] in MULTILINE_TAGS:
+            editor = QtWidgets.QPlainTextEdit(parent)
+            editor.setFrameStyle(editor.style().styleHint(
+                QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor))
+            editor.setMinimumSize(QtCore.QSize(0, 80))
+            return editor
+        return super().createEditor(parent, option, index)
+
+    def _configure_editor_for_tag(self, editor, tag):
+        """Configure editor widget for specific tag.
+
+        Args:
+            editor: Editor widget to configure
+            tag: Tag name
+        """
+        placeholder = self._get_placeholder_text(tag)
+        if placeholder is not None:
+            editor.setPlaceholderText(placeholder)
+        completer = self._create_completer_for_tag(editor, tag)
+        if completer:
+            editor.setCompleter(completer)
+
+    def _get_placeholder_text(self, tag):
+        """Get placeholder text for specified tag.
+
+        Args:
+            tag: Tag name
+        """
+        if tag in DATE_YYYYMMDD_TAGS:
+            return _("YYYY-MM-DD")
+        if tag in DATE_YYYY_TAGS:
+            return _("YYYY")
+        return None
+
+    def _create_completer_for_tag(self, editor, tag):
+        """Create completer for tag if configured.
+
+        Args:
+            editor: Editor widget
+            tag: Tag name
+
+        Returns:
+            QCompleter instance or None
+        """
+        if tag in COMPLETER_CONFIG:
+            return COMPLETER_CONFIG[tag].create_completer(editor)
+        return None
 
 
 class EditTagDialog(PicardDialog):
@@ -100,31 +174,60 @@ class EditTagDialog(PicardDialog):
         self.ui = Ui_EditTagDialog()
         self.ui.setupUi(self)
         self.value_list = self.ui.value_list
-        self.tagger = QtCore.QCoreApplication.instance()
         self.metadata_box = metadata_box
         self.tag = tag
         self.modified_tags = {}
         self.is_grouped = False
-        self.default_tags = sorted(
-            set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
-        if len(self.metadata_box.files) == 1:
-            current_file = list(self.metadata_box.files)[0]
-            self.default_tags = list(filter(current_file.supports_tag, self.default_tags))
-        tag_names = self.ui.tag_names
-        tag_names.addItem("")
-        visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
-        tag_names.addItems(visible_tags)
-        self.completer = QtWidgets.QCompleter(visible_tags, tag_names)
-        self.completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
-        tag_names.setCompleter(self.completer)
-        self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
-        self.value_list.model().rowsRemoved.connect(self.on_rows_removed)
-        self.value_list.setItemDelegate(TagEditorDelegate(self))
+        self._updating_tag = False
+        self._metadata_mutex = QtCore.QMutex()
+
+        self._initialize_ui()
         self.tag_changed(tag)
         self.value_selection_changed()
 
+    def _initialize_ui(self):
+        """Initialize the UI."""
+        self._setup_tag_combobox()
+        self._setup_value_list()
+        self._connect_signals()
+
+    def _setup_tag_combobox(self):
+        """Set up the tag name combobox with supported tags."""
+        self.default_tags = self._get_supported_tags()
+        visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
+
+        self.ui.tag_names.addItem("")
+        self.ui.tag_names.addItems(visible_tags)
+
+        self.completer = QtWidgets.QCompleter(visible_tags, self.ui.tag_names)
+        self.completer.setCompletionMode(QtWidgets.QCompleter.CompletionMode.PopupCompletion)
+        self.ui.tag_names.setCompleter(self.completer)
+
+    def _get_supported_tags(self):
+        """Get the list of supported tags for the current files.
+
+        Returns:
+            List of supported tag names
+        """
+        tags = sorted(set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
+        if len(self.metadata_box.files) == 1:
+            current_file = list(self.metadata_box.files)[0]
+            tags = list(filter(current_file.supports_tag, tags))
+        return tags
+
+    def _setup_value_list(self):
+        """Set up the value list widget."""
+        self.ui.value_list.setItemDelegate(TagEditorDelegate(self))
+
+    def _connect_signals(self):
+        """Connect UI signals to their respective slots."""
+        model = self.ui.value_list.model()
+        model.rowsInserted.connect(self.on_rows_inserted)
+        model.rowsRemoved.connect(self.on_rows_removed)
+
     def keyPressEvent(self, event):
-        if event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier and event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return}:
+        if (event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier
+            and event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return}):
             self.add_or_edit_value()
             event.accept()
         elif event.matches(QtGui.QKeySequence.StandardKey.Delete):
@@ -135,9 +238,15 @@ class EditTagDialog(PicardDialog):
             super().keyPressEvent(event)
 
     def tag_selected(self, index):
+        """Handle selection of a tag from the combobox.
+
+        Args:
+            index: Index of the selected tag
+        """
         self.add_or_edit_value()
 
     def edit_value(self):
+        """Start editing the currently selected value in the list."""
         item = self.value_list.currentItem()
         if item:
             # Do not initialize editing if editor is already active. Avoids flickering of the edit field
@@ -147,6 +256,7 @@ class EditTagDialog(PicardDialog):
             self.value_list.editItem(item)
 
     def add_value(self):
+        """Add a new empty value to the value list and start editing it."""
         item = QtWidgets.QListWidgetItem()
         item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable)
         self.value_list.addItem(item)
@@ -154,6 +264,7 @@ class EditTagDialog(PicardDialog):
         self.value_list.editItem(item)
 
     def add_or_edit_value(self):
+        """Add a new value or edit the last value if it's empty."""
         last_item = self.value_list.item(self.value_list.count() - 1)
         # Edit the last item, if it is empty, or add a new empty item
         if last_item and not last_item.text():
@@ -163,10 +274,16 @@ class EditTagDialog(PicardDialog):
             self.add_value()
 
     def _group(self, is_grouped):
+        """Set the grouped state of the tag editor.
+
+        Args:
+            is_grouped: Whether the tag is in a grouped state
+        """
         self.is_grouped = is_grouped
         self.ui.add_value.setEnabled(not is_grouped)
 
     def remove_value(self):
+        """Remove the currently selected value from the list."""
         value_list = self.value_list
         row = value_list.currentRow()
         if row == 0 and self.is_grouped:
@@ -183,34 +300,80 @@ class EditTagDialog(PicardDialog):
             del self._modified_tag()[row]
 
     def move_row_up(self):
+        """Move the currently selected row up in the list."""
         row = self.value_list.currentRow()
         if row > 0:
             self._move_row(row, -1)
 
     def move_row_down(self):
+        """Move the currently selected row down in the list."""
         row = self.value_list.currentRow()
         if row + 1 < self.value_list.count():
             self._move_row(row, 1)
 
     def _move_row(self, row, direction):
+        """Move a row in the value list up or down.
+
+        Args:
+            row: The index of the row to move
+            direction: The direction to move the row (-1 for up, 1 for down)
+        """
         value_list = self.value_list
         item = value_list.takeItem(row)
         new_row = row + direction
         value_list.insertItem(new_row, item)
         value_list.setCurrentRow(new_row)
 
-    def disable_all(self):
-        self.value_list.clear()
-        self.value_list.setEnabled(False)
-        self.ui.add_value.setEnabled(False)
+    def _set_ui_enabled_state(self, enabled):
+        """Enable or disable the tag value editing UI components.
 
-    def enable_all(self):
-        self.value_list.setEnabled(True)
-        self.ui.add_value.setEnabled(True)
+        Args:
+            enabled: Whether to enable the components (boolean)
+        """
+        if not enabled:
+            self.value_list.clear()
+        self.value_list.setEnabled(enabled)
+        self.ui.add_value.setEnabled(enabled)
 
-    def tag_changed(self, tag):
+    def _get_tag_values(self):
+        """Get the current values for the selected tag.
+
+        Returns:
+            List of tag values
+        """
+        values = self.modified_tags.get(self.tag, None)
+        if values is None:
+            new_tags = self.metadata_box.tag_diff.new
+            display_value = new_tags.display_value(self.tag)
+            if display_value.is_grouped:
+                # grouped values have a special text, which isn't a valid tag value
+                values = [display_value.text]
+                self._group(True)
+            else:
+                # normal tag values
+                values = new_tags[self.tag]
+                self._group(False)
+        return values
+
+    def _update_tag_values(self, values):
+        """Update the value list with the given tag values.
+
+        Args:
+            values: List of tag values to display
+        """
+        model = self.value_list.model()
+        model.rowsInserted.disconnect(self.on_rows_inserted)
+        self._add_value_items(values)
+        model.rowsInserted.connect(self.on_rows_inserted)
+        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
+
+    def _update_tag_combobox(self, tag):
+        """Update the tag combobox with the current tag.
+
+        Args:
+            tag: The tag to update in the combobox
+        """
         tag_names = self.ui.tag_names
-        tag_names.editTextChanged.disconnect(self.tag_changed)
         line_edit = tag_names.lineEdit()
         cursor_pos = line_edit.cursorPosition()
         flags = QtCore.Qt.MatchFlag.MatchFixedString | QtCore.Qt.MatchFlag.MatchCaseSensitive
@@ -230,49 +393,76 @@ class EditTagDialog(PicardDialog):
                 row = tag_names.findText(tag, flags)
             else:
                 # the QLineEdit is empty, disable everything
-                self.disable_all()
+                self._set_ui_enabled_state(False)
                 tag_names.setCurrentIndex(0)
-                tag_names.editTextChanged.connect(self.tag_changed)
                 return
 
-        self.enable_all()
+        self._set_ui_enabled_state(True)
         tag_names.setCurrentIndex(row)
         line_edit.setCursorPosition(cursor_pos)
-        self.value_list.clear()
 
-        values = self.modified_tags.get(self.tag, None)
-        if values is None:
-            new_tags = self.metadata_box.tag_diff.new
-            display_value = new_tags.display_value(self.tag)
-            if display_value.is_grouped:
-                # grouped values have a special text, which isn't a valid tag value
-                values = [display_value.text]
-                self._group(True)
-            else:
-                # normal tag values
-                values = new_tags[self.tag]
-                self._group(False)
+    def tag_changed(self, tag):
+        """Handle changes to the selected tag.
 
-        self.value_list.model().rowsInserted.disconnect(self.on_rows_inserted)
-        self._add_value_items(values)
-        self.value_list.model().rowsInserted.connect(self.on_rows_inserted)
-        self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
-        tag_names.editTextChanged.connect(self.tag_changed)
+        Args:
+            tag: The tag name
+        """
+        if self._updating_tag:
+            return
+
+        self._updating_tag = True
+        try:
+            self.ui.tag_names.editTextChanged.disconnect(self.tag_changed)
+            self._update_tag_combobox(tag)
+            self.value_list.clear()
+            values = self._get_tag_values()
+            self._update_tag_values(values)
+            self.ui.tag_names.editTextChanged.connect(self.tag_changed)
+        finally:
+            self._updating_tag = False
 
     def _set_item_style(self, item):
+        """Set the visual style of a list item based on its grouped state.
+
+        Args:
+            item: The QListWidgetItem to style
+        """
         font = item.font()
         font.setItalic(self.is_grouped)
         item.setFont(font)
 
+    def _create_value_item(self, value):
+        """Create a QListWidgetItem for the given tag value.
+
+        Args:
+            value: The tag value to display in the item
+
+        Returns:
+            QListWidgetItem: Configured list item
+        """
+        item = QtWidgets.QListWidgetItem(value)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
+                      | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
+        self._set_item_style(item)
+        return item
+
     def _add_value_items(self, values):
+        """Add items to the value list for the given tag values.
+
+        Args:
+            values: List of tag values to add
+        """
         values = [v for v in values if v] or [""]
         for value in values:
-            item = QtWidgets.QListWidgetItem(value)
-            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
-            self._set_item_style(item)
+            item = self._create_value_item(value)
             self.value_list.addItem(item)
 
     def value_edited(self, item):
+        """Handle editing of a value in the list.
+
+        Args:
+            item: The QListWidgetItem that was edited
+        """
         row = self.value_list.row(item)
         value = item.text()
         if row == 0 and self.is_grouped:
@@ -288,24 +478,62 @@ class EditTagDialog(PicardDialog):
                 cm.setData(cm.index(0, 0), self.tag)
                 cm.sort(0)
 
+    def _update_button_states(self, selected):
+        """Update the state of value-related action buttons based on selection.
+
+        Args:
+            selected: Whether items are selected (boolean)
+        """
+        self.ui.edit_value.setEnabled(selected)
+        self.ui.remove_value.setEnabled(selected)
+        self.ui.move_value_up.setEnabled(selected)
+        self.ui.move_value_down.setEnabled(selected)
+
     def value_selection_changed(self):
-        selection = len(self.value_list.selectedItems()) > 0
-        self.ui.edit_value.setEnabled(selection)
-        self.ui.remove_value.setEnabled(selection)
-        self.ui.move_value_up.setEnabled(selection)
-        self.ui.move_value_down.setEnabled(selection)
+        """Handle changes to the value list selection."""
+        selected = len(self.value_list.selectedItems()) > 0
+        self._update_button_states(selected)
 
     def _modified_tag(self):
-        return self.modified_tags.setdefault(self.tag,
-                                             list(self.metadata_box.tag_diff.new[self.tag]) or [""])
+        """Get or create the list of modified values for the current tag.
 
-    def accept(self):
-        with self.tagger.window.ignore_selection_changes:
-            for tag, values in self.modified_tags.items():
-                self.modified_tags[tag] = [v for v in values if v]
+        Returns:
+            List of modified tag values, with at least one empty string if no values exist
+        """
+        return self.modified_tags.setdefault(
+            self.tag,
+            list(self.metadata_box.tag_diff.new[self.tag]) or [""]
+        )
+
+    def _cleanup_modified_tags(self):
+        """Remove empty values from modified tags."""
+        for tag, values in self.modified_tags.items():
+            self.modified_tags[tag] = [v for v in values if v]
+
+    def _update_object_metadata(self, obj, modified_tags):
+        """Update the metadata for a single object with the modified tags.
+
+        Args:
+            obj: The object to update
+            modified_tags: Iterable of (tag, values) pairs to update
+        """
+        for tag, values in modified_tags:
+            obj.metadata[tag] = list(values)
+        obj.update()
+
+    def _update_metadata_with_modified_tags(self):
+        """Update the metadata of all objects with the modified tags."""
+        self._metadata_mutex.lock()
+        try:
+            self._cleanup_modified_tags()
             modified_tags = self.modified_tags.items()
             for obj in self.metadata_box.objects:
-                for tag, values in modified_tags:
-                    obj.metadata[tag] = list(values)
-                obj.update()
+                self._update_object_metadata(obj, modified_tags)
+        finally:
+            self._metadata_mutex.unlock()
+
+    def accept(self):
+        """Save the modified tags and close the dialog."""
+        with self.tagger.window.ignore_selection_changes:
+            self._update_metadata_with_modified_tags()
         super().accept()
