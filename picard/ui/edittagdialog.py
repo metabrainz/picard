@@ -134,7 +134,7 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         self._set_placeholder_text(editor, tag)
         completer = self._create_completer_for_tag(tag, editor)
         if completer:
-            self._setup_completer(editor, completer)
+            editor.setCompleter(completer)
 
     def _set_placeholder_text(self, editor, tag):
         """Set placeholder text for specified tag.
@@ -161,15 +161,6 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         if tag in COMPLETER_CONFIG:
             return COMPLETER_CONFIG[tag].create_completer(editor)
         return None
-
-    def _setup_completer(self, editor, completer):
-        """Attach completer to editor widget.
-
-        Args:
-            editor: Editor widget
-            completer: QCompleter instance
-        """
-        editor.setCompleter(completer)
 
     def get_tag_name(self, index):
         """Get the tag name for the given index.
