@@ -350,9 +350,21 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_tags_with_empty_description(self):
-            for key in ('lyrics', 'lyrics:', 'comment', 'comment:', 'performer', 'performer:'):
-                name = key.rstrip(':')
-                name_with_description = name + ':foo'
+            for name in ('lyrics', 'lyrics:', 'comment', 'comment:', 'performer', 'performer:'):
+                if not self.format.supports_tag(name):
+                    continue
+                metadata = Metadata()
+                metadata[name] = 'bar'
+                original_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertIn(name, original_metadata)
+                del metadata[name]
+                new_metadata = save_and_load_metadata(self.filename, metadata)
+                self.assertNotIn(name, new_metadata)
+
+        @skipUnlessTestfile
+        def test_delete_tags_with_empty_description_keep_other(self):
+            for name in ('lyrics', 'lyrics:', 'comment', 'comment:', 'performer', 'performer:'):
+                name_with_description = name.rstrip(':') + ':foo'
                 if not self.format.supports_tag(name):
                     continue
                 metadata = Metadata()
@@ -360,7 +372,7 @@ class CommonTests:
                 metadata[name_with_description] = 'other'
                 original_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertIn(name, original_metadata)
-                del metadata[key]
+                del metadata[name]
                 new_metadata = save_and_load_metadata(self.filename, metadata)
                 self.assertNotIn(name, new_metadata)
                 # Ensure the names with description did not get deleted
