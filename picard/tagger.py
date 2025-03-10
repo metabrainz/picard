@@ -99,6 +99,7 @@ from picard.const import USER_DIR
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
+    IS_HAIKU,
     IS_MACOS,
     IS_WIN,
 )
@@ -796,24 +797,18 @@ class Tagger(QtWidgets.QApplication):
         else:
             self.browser_integration.stop()
 
-    # def event(self, event):
-    #     if isinstance(event, thread.ProxyToMainEvent):
-    #         event.run()
-    #     elif event.type() == QtCore.QEvent.Type.FileOpen:
-    #         url = event.url()
-    #         log.debug('Received file open event: %r', url)
-    #         if url.isLocalFile():
-    #             self.add_paths([url.toLocalFile()])
-    #             if IS_HAIKU:
-    #                 self.bring_tagger_front()
-    #             # We should just return True here, except that seems to
-    #             # cause the event's sender to get a -9874 error, so
-    #             # apparently there's some magic inside QFileOpenEvent...
-    #             return 1
-    #         elif url.scheme() == PICARD_PROTOCOL_SCHEME:
-    #             self.browser_integration.url_handler(url)
-    #             return 1
-    #     return super().event(event)
+    def event(self, event):
+        if isinstance(event, thread.ProxyToMainEvent):
+            event.run()
+        elif event.type() == QtCore.QEvent.Type.FileOpen:
+            url = event.url()
+            log.debug('Received file open event: %r', url)
+            if url.isLocalFile():
+                self.add_paths([url.toLocalFile()])
+                if IS_HAIKU:
+                    self.bring_tagger_front()
+                event.accept()
+        return super().event(event)
 
     def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
         config = get_config()
