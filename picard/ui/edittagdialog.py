@@ -267,8 +267,7 @@ class EditTagDialog(PicardDialog):
 
     def add_value(self):
         """Add a new empty value to the value list and start editing it."""
-        item = QtWidgets.QListWidgetItem()
-        item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable)
+        item = self._create_value_item('')
         self.value_list.addItem(item)
         self.value_list.setCurrentItem(item)
         self.value_list.editItem(item)
