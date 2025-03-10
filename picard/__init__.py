@@ -44,6 +44,8 @@ PICARD_APP_ID = "org.musicbrainz.Picard"
 PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
 PICARD_VERSION = Version(3, 0, 0, 'dev', 5)
 
+# Custom protocol for browser integration
+PICARD_PROTOCOL_SCHEME = 'org.musicbrainz.picard'
 
 # optional build version
 # it should be in the form '<platform>_<YYMMDDHHMMSS>'
