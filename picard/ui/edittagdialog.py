@@ -233,6 +233,7 @@ class EditTagDialog(PicardDialog):
         model = self.ui.value_list.model()
         model.rowsInserted.connect(self.on_rows_inserted)
         model.rowsRemoved.connect(self.on_rows_removed)
+        model.rowsMoved.connect(self.on_rows_moved)
 
     def keyPressEvent(self, event):
         if (event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier
@@ -307,6 +308,13 @@ class EditTagDialog(PicardDialog):
     def on_rows_removed(self, parent, first, last):
         for row in range(first, last + 1):
             del self._modified_tag()[row]
+
+    def on_rows_moved(self, parent, start, end, destination, row):
+        modified_tag = self._modified_tag()
+        moved_values = modified_tag[start:end + 1]
+        del modified_tag[start:end + 1]
+        for value in reversed(moved_values):
+            modified_tag.insert(row, value)
 
     def move_row_up(self):
         """Move the currently selected row up in the list."""
