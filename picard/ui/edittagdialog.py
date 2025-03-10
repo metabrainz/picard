@@ -514,30 +514,18 @@ class EditTagDialog(PicardDialog):
             list(self.metadata_box.tag_diff.new[self.tag]) or [""]
         )
 
-    def _cleanup_modified_tags(self):
-        """Remove empty values from modified tags."""
+    def _modified_tags_without_empty_values(self):
+        """Generate each modified tag and its non-empty values."""
         for tag, values in self.modified_tags.items():
-            self.modified_tags[tag] = [v for v in values if v]
-
-    def _update_object_metadata(self, obj, modified_tags):
-        """Update the metadata for a single object with the modified tags.
-
-        Args:
-            obj: The object to update
-            modified_tags: Iterable of (tag, values) pairs to update
-        """
-        for tag, values in modified_tags:
-            obj.metadata[tag] = list(values)
-        obj.update()
+            yield (tag, [v for v in values if v])
 
     def _update_metadata_with_modified_tags(self):
         """Update the metadata of all objects with the modified tags."""
         self._metadata_mutex.lock()
         try:
-            self._cleanup_modified_tags()
-            modified_tags = self.modified_tags.items()
             for obj in self.metadata_box.objects:
-                self._update_object_metadata(obj, modified_tags)
+                obj.metadata.update(self._modified_tags_without_empty_values())
+                obj.update()
         finally:
             self._metadata_mutex.unlock()
 
