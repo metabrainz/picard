@@ -203,7 +203,7 @@ class EditTagDialog(PicardDialog):
     def _setup_tag_combobox(self):
         """Set up the tag name combobox with supported tags."""
         self.default_tags = self._get_supported_tags()
-        visible_tags = [tn for tn in self.default_tags if not tn.startswith("~")]
+        visible_tags = (tn for tn in self.default_tags if not tn.startswith("~"))
 
         self.ui.tag_names.addItem("")
         self.ui.tag_names.addItems(visible_tags)
@@ -461,7 +461,6 @@ class EditTagDialog(PicardDialog):
         Args:
             values: List of tag values to add
         """
-        values = [v for v in values if v] or [""]
         for value in values:
             item = self._create_value_item(value)
             self.value_list.addItem(item)
@@ -511,7 +510,7 @@ class EditTagDialog(PicardDialog):
         """
         return self.modified_tags.setdefault(
             self.tag,
-            list(self.metadata_box.tag_diff.new[self.tag]) or [""]
+            list(self.metadata_box.tag_diff.new[self.tag])
         )
 
     def _modified_tags_without_empty_values(self):
