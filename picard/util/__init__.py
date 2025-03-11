@@ -55,6 +55,7 @@ from collections import (
     namedtuple,
 )
 from collections.abc import Mapping
+from contextlib import contextmanager
 from itertools import chain
 import json
 import ntpath
@@ -863,6 +864,20 @@ def reconnect(signal, newhandler=None, oldhandler=None):
             break
     if newhandler is not None:
         signal.connect(newhandler)
+
+
+@contextmanager
+def temporary_disconnect(signal, *handlers):
+    """
+    Create context to temporarly disconnect one or more signal handlers
+    """
+    try:
+        for handler in handlers:
+            signal.disconnect(handler)
+        yield
+    finally:
+        for handler in handlers:
+            signal.connect(handler)
 
 
 def compare_barcodes(barcode1, barcode2):
