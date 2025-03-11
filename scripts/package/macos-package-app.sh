@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-if [ -z "$TRAVIS_TAG" ] && [ -n "$TRAVIS_OSX_IMAGE" ]; then
-    python3 setup.py patch_version --platform="osx.$TRAVIS_OSX_IMAGE"
-fi
 VERSION=$(python3 -c 'import picard; print(picard.__version__)')
 
 MACOS_VERSION=$(sw_vers -productVersion)
@@ -114,7 +111,7 @@ set -e
   --keychain "$KEYCHAIN_PATH" --sign "$CERTIFICATE_NAME" "$DMG"
 md5 -r "$DMG"
 
-if [ -n "$UPLOAD_OSX" ]; then
+if [ -n "$MACOS_UPLOAD" ]; then
     echo "Preparing to upload $DMG..."
     # make upload failures non fatal
     set +e
@@ -123,9 +120,6 @@ if [ -n "$UPLOAD_OSX" ]; then
       pip3 install --upgrade awscli
       aws s3 cp --acl public-read "$DMG" "s3://${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/$DMG"
       echo "Package uploaded to https://s3.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/${DMG// /%20}"
-    else
-      # Fall back to transfer.sh
-      curl -v --retry 6 --retry-delay 10 --max-time 180 --upload-file "$DMG" https://transfer.sh/
     fi
     set -e
     # Required for a newline between the outputs
