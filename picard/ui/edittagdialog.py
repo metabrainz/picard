@@ -40,6 +40,7 @@ from picard.const import (
 )
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.i18n import gettext as _
+from picard.util import temporary_disconnect
 from picard.util.tags import TAG_NAMES
 
 from picard.ui import PicardDialog
@@ -377,10 +378,8 @@ class EditTagDialog(PicardDialog):
         Args:
             values: List of tag values to display
         """
-        model = self.value_list.model()
-        model.rowsInserted.disconnect(self.on_rows_inserted)
-        self._add_value_items(values)
-        model.rowsInserted.connect(self.on_rows_inserted)
+        with temporary_disconnect(self.value_list.model().rowsInserted, self.on_rows_inserted):
+            self._add_value_items(values)
         self.value_list.setCurrentItem(self.value_list.item(0), QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
 
     def _update_tag_combobox(self, tag):
@@ -428,12 +427,11 @@ class EditTagDialog(PicardDialog):
 
         self._updating_tag = True
         try:
-            self.ui.tag_names.editTextChanged.disconnect(self.tag_changed)
-            self._update_tag_combobox(tag)
-            self.value_list.clear()
-            values = self._get_tag_values()
-            self._update_tag_values(values)
-            self.ui.tag_names.editTextChanged.connect(self.tag_changed)
+            with temporary_disconnect(self.ui.tag_names.editTextChanged, self.tag_changed):
+                self._update_tag_combobox(tag)
+                self.value_list.clear()
+                values = self._get_tag_values()
+                self._update_tag_values(values)
         finally:
             self._updating_tag = False
 

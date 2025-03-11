@@ -76,6 +76,7 @@ from picard.util import (
     pattern_as_regex,
     sort_by_similarity,
     system_supports_long_paths,
+    temporary_disconnect,
     titlecase,
     tracknum_and_title_from_filename,
     tracknum_from_filename,
@@ -1076,3 +1077,59 @@ class TitlecaseTest(PicardTestCase):
         )
         for input, expected in tests:
             self.assertEqual(expected, titlecase(input))
+
+
+class TestTemporaryDisconnect(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+
+        from PyQt6 import QtCore
+
+        class DummySignal(QtCore.QObject):
+            action = QtCore.pyqtSignal(int)
+
+        self.signal = DummySignal()
+        self.handler1 = Mock()
+        self.handler2 = Mock()
+
+    def test_temporary_disconnect(self):
+        # Connect 2 handlers
+        self.signal.action.connect(self.handler1)
+        self.signal.action.connect(self.handler2)
+
+        # Emit signal once, and check if both handlers were called
+        self.signal.action.emit(10)
+        self.handler1.assert_called_once_with(10)
+        self.handler1.reset_mock()
+        self.handler2.assert_called_once_with(10)
+        self.handler2.reset_mock()
+
+        # Temporarly disconnect one of the handlers, and verify it's not called
+        with temporary_disconnect(self.signal.action, self.handler1):
+            self.signal.action.emit(15)
+            self.handler1.assert_not_called()
+            self.handler1.reset_mock()
+            # Ensure second handled was called (it wasn't disconnected)
+            self.handler2.assert_called_once_with(15)
+            self.handler2.reset_mock()
+
+        # Temporarly disconnect both handlers, and verify they aren't called
+        with temporary_disconnect(self.signal.action, self.handler1, self.handler2):
+            self.signal.action.emit(17)
+            self.handler1.assert_not_called()
+            self.handler1.reset_mock()
+            # Ensure second handled was called (it wasn't disconnected)
+            self.handler2.assert_not_called()
+            self.handler2.reset_mock()
+
+        # Call with an invalid handler, emit() is not called at all
+        with self.assertRaises(TypeError):
+            with temporary_disconnect(self.signal.action, None):
+                self.signal.action.emit(18)
+
+        # Now check again everything is normal again
+        self.signal.action.emit(20)
+        self.handler1.assert_called_once_with(20)
+        self.handler1.reset_mock()
+        self.handler2.assert_called_once_with(20)
+        self.handler2.reset_mock()
