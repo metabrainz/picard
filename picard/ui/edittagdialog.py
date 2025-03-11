@@ -302,14 +302,14 @@ class EditTagDialog(PicardDialog):
     def on_rows_inserted(self, parent, first, last):
         for row in range(first, last + 1):
             item = self.value_list.item(row)
-            self._modified_tag().insert(row, item.text())
+            self._current_tag_values().insert(row, item.text())
 
     def on_rows_removed(self, parent, first, last):
         for row in range(first, last + 1):
-            del self._modified_tag()[row]
+            del self._current_tag_values()[row]
 
     def on_rows_moved(self, parent, start, end, destination, row):
-        modified_tag = self._modified_tag()
+        modified_tag = self._current_tag_values()
         moved_values = modified_tag[start:end + 1]
         del modified_tag[start:end + 1]
         for value in reversed(moved_values):
@@ -396,7 +396,7 @@ class EditTagDialog(PicardDialog):
 
         # if the previous tag was new and has no value, remove it from the QComboBox.
         # e.g. typing "XYZ" should not leave "X" or "XY" in the QComboBox.
-        if self.tag and self.tag not in self.default_tags and self._modified_tag() == [""]:
+        if self._current_tag_is_transient():
             tag_names.removeItem(tag_names.findText(self.tag, flags))
 
         row = tag_names.findText(tag, flags)
@@ -485,7 +485,7 @@ class EditTagDialog(PicardDialog):
             self._group(False)
             self._set_item_style(item)
         else:
-            self._modified_tag()[row] = value
+            self._current_tag_values()[row] = value
             # add tags to the completer model once they get values
             cm = self.completer.model()
             if self.tag not in cm.stringList():
@@ -509,7 +509,7 @@ class EditTagDialog(PicardDialog):
         enabled = bool(self.value_list.selectedItems())
         self._update_button_states(enabled)
 
-    def _modified_tag(self):
+    def _current_tag_values(self):
         """Get or create the list of modified values for the current tag.
 
         Returns:
@@ -519,6 +519,13 @@ class EditTagDialog(PicardDialog):
             self.tag,
             list(self.metadata_box.tag_diff.new[self.tag])
         )
+
+    def _current_tag_is_transient(self):
+        """Check if the current tag is a custom tag that can be removed from
+        the list of tags if empty.
+        """
+        return (self.tag and self.tag not in self.default_tags
+                and not any(self._current_tag_values()))
 
     def _modified_tags_without_empty_values(self):
         """Generate each modified tag and its non-empty values."""
