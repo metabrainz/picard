@@ -396,7 +396,7 @@ class EditTagDialog(PicardDialog):
 
         # if the previous tag was new and has no value, remove it from the QComboBox.
         # e.g. typing "XYZ" should not leave "X" or "XY" in the QComboBox.
-        if self.tag and self.tag not in self.default_tags and self._current_tag_values() == [""]:
+        if self._current_tag_is_transient():
             tag_names.removeItem(tag_names.findText(self.tag, flags))
 
         row = tag_names.findText(tag, flags)
@@ -519,6 +519,13 @@ class EditTagDialog(PicardDialog):
             self.tag,
             list(self.metadata_box.tag_diff.new[self.tag])
         )
+
+    def _current_tag_is_transient(self):
+        """Check if the current tag is a custom tag that can be removed from
+        the list of tags if empty.
+        """
+        return (self.tag and self.tag not in self.default_tags
+                and not any(self._current_tag_values()))
 
     def _modified_tags_without_empty_values(self):
         """Generate each modified tag and its non-empty values."""
