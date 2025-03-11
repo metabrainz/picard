@@ -6,15 +6,17 @@ permissions: {}
 
 jobs:
   package-macos:
-    runs-on: macos-13
+    runs-on: ${{ matrix.setup.runner }}
     strategy:
       matrix:
         setup:
         - macos-deployment-version: '11.0'
+          runner: 'macos-13'
           target-arch: 'x86_64'
           python-version: 3.13.1-macos11
           python-sha256sum: 67c6f0a3190851e0013214d5abd725a42ec398ff1b50eec47826820fd052d86b
         - macos-deployment-version: '11.0'
+          runner: 'macos-14'
           target-arch: 'arm64'
           python-version: 3.13.1-macos11
           python-sha256sum: 67c6f0a3190851e0013214d5abd725a42ec398ff1b50eec47826820fd052d86b
