@@ -85,12 +85,12 @@ jobs:
         python-version: 3.13
     - uses: actions/download-artifact@v4
       with:
-        name: macos-app-10.14
+        name: macos-app-11.0-x86_64
         path: artifacts/
-    # - uses: actions/download-artifact@v4
-    #   with:
-    #     name: windows-signed-app
-    #     path: artifacts/
+    - uses: actions/download-artifact@v4
+      with:
+        name: macos-app-11.0-arm64
+        path: artifacts/
     - uses: actions/download-artifact@v4
       with:
         name: windows-store-app
