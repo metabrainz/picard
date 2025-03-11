@@ -6,25 +6,21 @@ permissions: {}
 
 jobs:
   package-macos:
-    runs-on: macos-13
+    runs-on: ${{ matrix.setup.runner }}
     strategy:
       matrix:
         setup:
         - macos-deployment-version: '11.0'
+          runner: 'macos-13'
           target-arch: 'x86_64'
-          python-version: 3.13.1-macos11
-          python-sha256sum: 67c6f0a3190851e0013214d5abd725a42ec398ff1b50eec47826820fd052d86b
         - macos-deployment-version: '11.0'
+          runner: 'macos-14'
           target-arch: 'arm64'
-          python-version: 3.13.1-macos11
-          python-sha256sum: 67c6f0a3190851e0013214d5abd725a42ec398ff1b50eec47826820fd052d86b
     env:
       DISCID_VERSION: 0.6.4
       DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3
       FPCALC_VERSION: 1.5.1
       FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
-      PYTHON_VERSION: ${{ matrix.setup.python-version }}
-      PYTHON_SHA256SUM: ${{ matrix.setup.python-sha256sum }}
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
       TARGET_ARCH: ${{ matrix.setup.target-arch }}
       CODESIGN: 0
@@ -33,6 +29,14 @@ jobs:
       with:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.13
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements-build.txt
+          requirements-macos-11.0.txt
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh

@@ -71,7 +71,7 @@ if [ "$CODESIGN" = '1' ]; then
 fi
 
 # Only test the app if it was codesigned, otherwise execution likely fails
-if [ "$CODESIGN" = '1' ] && [ "$TARGET_ARCH" = 'x86_64' ]; then
+if [ "$CODESIGN" = '1' ]; then
   "$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog || echo "Failed running picard-run"
   VERSIONS=$("$APP_BUNDLE/Contents/MacOS/picard-run" --long-version --no-crash-dialog)
   echo "$VERSIONS"
