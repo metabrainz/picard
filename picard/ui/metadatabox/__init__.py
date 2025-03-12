@@ -32,11 +32,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import (
-    Counter,
-    defaultdict,
-    namedtuple,
-)
 from functools import partial
 
 from PyQt6 import (
@@ -67,127 +62,16 @@ from picard.util import (
 from picard.util.preservedtags import PreservedTags
 from picard.util.tags import display_tag_name
 
-from picard.ui.colors import interface_colors
-from picard.ui.edittagdialog import (
+from .edittagdialog import (
     EditTagDialog,
     TagEditorDelegate,
 )
+from .tagdiff import (
+    TagDiff,
+    TagStatus,
+)
 
-
-class TagStatus:
-    NONE = 0
-    NOCHANGE = 1
-    ADDED = 2
-    REMOVED = 4
-    CHANGED = ADDED | REMOVED
-    EMPTY = 8
-    NOTREMOVABLE = 16
-    READONLY = 32
-
-
-TagCounterDisplayValue = namedtuple('TagCounterDisplayValue', ('text', 'is_grouped'))
-
-
-class TagCounter(dict):
-
-    __slots__ = ('parent', 'counts', 'different')
-
-    def __init__(self, parent):
-        self.parent = parent
-        self.counts = Counter()
-        self.different = set()
-
-    def __getitem__(self, tag):
-        return super().get(tag, [""])
-
-    def add(self, tag, values):
-        if tag not in self.different:
-            if tag not in self:
-                self[tag] = values
-            elif self[tag] != values:
-                self.different.add(tag)
-                self[tag] = [""]
-        self.counts[tag] += 1
-
-    def display_value(self, tag):
-        count = self.counts[tag]
-        missing = self.parent.objects - count
-
-        if tag in self.different:
-            text = ngettext("(different across %d item)", "(different across %d items)", count) % count
-            is_grouped = True
-        else:
-            if tag == '~length':
-                msg = format_time(self.get(tag, 0))
-            else:
-                msg = MULTI_VALUED_JOINER.join(self[tag])
-
-            if count > 0 and missing > 0:
-                text = msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing)
-                is_grouped = True
-            else:
-                text = msg
-                is_grouped = False
-
-        return TagCounterDisplayValue(text, is_grouped)
-
-
-class TagDiff:
-
-    __slots__ = ('tag_names', 'new', 'orig', 'status', 'objects', 'max_length_delta_ms')
-
-    def __init__(self, max_length_diff=2):
-        self.tag_names = []
-        self.new = TagCounter(self)
-        self.orig = TagCounter(self)
-        self.status = defaultdict(lambda: TagStatus.NONE)
-        self.objects = 0
-        self.max_length_delta_ms = max_length_diff * 1000
-
-    def __tag_ne(self, tag, orig, new):
-        if tag == '~length':
-            return abs(float(orig) - float(new)) > self.max_length_delta_ms
-        else:
-            return orig != new
-
-    def is_readonly(self, tag):
-        return bool(self.status[tag] & TagStatus.READONLY)
-
-    def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False, top_tags=None):
-        if orig_values:
-            self.orig.add(tag, orig_values)
-
-        if new_values:
-            self.new.add(tag, new_values)
-
-        if not top_tags:
-            top_tags = set()
-
-        if (orig_values and not new_values) or removed:
-            self.status[tag] |= TagStatus.REMOVED
-        elif new_values and not orig_values:
-            self.status[tag] |= TagStatus.ADDED
-            removable = True
-        elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
-            self.status[tag] |= TagStatus.CHANGED
-        elif not (orig_values or new_values or tag in top_tags):
-            self.status[tag] |= TagStatus.EMPTY
-        else:
-            self.status[tag] |= TagStatus.NOCHANGE
-
-        if not removable:
-            self.status[tag] |= TagStatus.NOTREMOVABLE
-
-        if readonly:
-            self.status[tag] |= TagStatus.READONLY
-
-    def tag_status(self, tag):
-        status = self.status[tag]
-        for s in (TagStatus.CHANGED, TagStatus.ADDED,
-                  TagStatus.REMOVED, TagStatus.EMPTY):
-            if status & s == s:
-                return s
-        return TagStatus.NOCHANGE
+from picard.ui.colors import interface_colors
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
