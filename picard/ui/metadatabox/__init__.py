@@ -75,14 +75,36 @@ from picard.ui.colors import interface_colors
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
+    """
+    A delegate for editing tags in a table, providing multiline editing support.
+
+    This delegate extends TagEditorDelegate to allow for multiline
+    editing of tag values within metadata box QTableWidget.
+    It ensures that the editor is sized appropriately for multiline content
+    and that the row height is adjusted to fit the editor.
+    """
+
+    MIN_EDITOR_HEIGHT = 80  # The minimum height for the editor widget
+    MAX_ROW_HEIGHT = 160  # The maximum height for a row
 
     def createEditor(self, parent, option, index):
+        """
+        Creates the editor widget for the given index.
+        If it's an instance of QtWidgets.QPlainTextEdit set editor and row heights.
+
+        Args:
+            parent: The parent widget of the editor.
+            option: The style option for the editor.
+            index: The model index for the item being edited.
+        Returns:
+            The editor widget.
+        """
         editor = super().createEditor(parent, option, index)
         if editor and isinstance(editor, QtWidgets.QPlainTextEdit):
             table = self.parent()
-            # Set the editor to the row height, but at least 80 pixel
+            # Set the editor to the row height, but at least MIN_EDITOR_HEIGHT pixels
             # to allow for proper multiline editing.
-            height = max(80, table.rowHeight(index.row()) - 1)
+            height = max(self.MIN_EDITOR_HEIGHT, table.rowHeight(index.row()) - 1)
             editor.setMinimumSize(QtCore.QSize(0, height))
             # Resize the row so the editor fits in. Add 1 pixel, otherwise the
             # frame gets hidden.
@@ -90,11 +112,25 @@ class TableTagEditorDelegate(TagEditorDelegate):
         return editor
 
     def sizeHint(self, option, index):
-        # Expand the row for multiline content, but limit the maximum row height.
+        """
+        Returns the size hint for the item at the given index.
+
+        This method expands the row height to accommodate multiline content,
+        but limits the maximum row height to MAX_ROW_HEIGHT pixels.
+
+        Args:
+            option: The style option for the item.
+            index: The model index for the item.
+
+        Returns:
+            The size hint (QSize) for the item.
+        """
         size_hint = super().sizeHint(option, index)
-        return QtCore.QSize(size_hint.width(), min(160, size_hint.height()))
+        height = min(self.MAX_ROW_HEIGHT, size_hint.height())
+        return QtCore.QSize(size_hint.width(), height)
 
     def get_tag_name(self, index):
+        """Retrieves the tag name associated with the given index."""
         return index.data(QtCore.Qt.ItemDataRole.UserRole)
 
 
