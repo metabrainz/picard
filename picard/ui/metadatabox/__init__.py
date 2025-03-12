@@ -62,15 +62,16 @@ from picard.util import (
 from picard.util.preservedtags import PreservedTags
 from picard.util.tags import display_tag_name
 
-from picard.ui.colors import interface_colors
-from picard.ui.edittagdialog import (
+from .edittagdialog import (
     EditTagDialog,
     TagEditorDelegate,
 )
-from picard.ui.metadatabox.tagdiff import (
+from .tagdiff import (
     TagDiff,
     TagStatus,
 )
+
+from picard.ui.colors import interface_colors
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
