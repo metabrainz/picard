@@ -90,6 +90,13 @@ class TestTagCounter(PicardTestCase):
         self.assertEqual(display_value.text, "1:00 (missing from 4 items)")
         self.assertTrue(display_value.is_grouped)
 
+    def test_display_value_nothing(self):
+        self.counter.add("artist", ["Artist 1"])
+        self.parent.objects = 0
+        display_value = self.counter.display_value("artist")
+        self.assertEqual(display_value.text, "Artist 1")
+        self.assertFalse(display_value.is_grouped)
+
 
 class TestTagDiff(PicardTestCase):
     def setUp(self):
