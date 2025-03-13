@@ -392,6 +392,20 @@ class MetadataBox(QtWidgets.QTableWidget):
 
 
     def _paste_value(self):
+        # do we have JSON in the clipboard?
+        # loop over tags in JSON then set self._set_tag_values(tag, value)
+        # loop over all original values then set self._set_tag_values(tag, original value)
+        try:
+            fieldnames = { self.COLUMN_TAG : 'tag_name', self.COLUMN_ORIG : 'original_value', self.COLUMN_NEW : 'new_value' }
+            text = self.tagger.clipboard().text()
+            data = json.loads(text)
+            for tag, values in data.items():
+                if self._tag_is_editable(tag):
+                    self._set_tag_values(tag, values['new_value'])
+            return
+        except:
+            pass
+         
         item = self.currentItem()
         if item:
             column = item.column()
