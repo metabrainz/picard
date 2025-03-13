@@ -662,10 +662,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         for row, tag in enumerate(self.tag_diff.tag_names):
             tag_item = get_table_item(row, self.COLUMN_TAG)
-            tag_item.setText(display_tag_name(tag))
-            font = tag_item.font()
-            font.setBold(True)
-            tag_item.setFont(font)
+            self._set_item_tag(tag_item, tag)
 
             color = colors.get(self.tag_diff.tag_status(tag), colors[TagStatus.UNCHANGED])
 
@@ -680,6 +677,13 @@ class MetadataBox(QtWidgets.QTableWidget):
 
             # Adjust row height to content size
             self.setRowHeight(row, self.sizeHintForRow(row))
+
+    @staticmethod
+    def _set_item_tag(item, tag):
+        item.setText(display_tag_name(tag))
+        font = item.font()
+        font.setBold(True)
+        item.setFont(font)
 
     def _set_item_value(self, item, tags, tag, color, strikeout=False):
         display_value = tags.display_value(tag)
