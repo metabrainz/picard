@@ -55,6 +55,7 @@ class TagStatus:
 
 
 TagCounterDisplayValue = namedtuple('TagCounterDisplayValue', ('text', 'is_grouped'))
+TagCounterStatus = namedtuple('TagCounterStatus', ('is_grouped', 'count', 'is_different', 'missing'))
 
 
 class TagCounter(dict):
@@ -136,6 +137,22 @@ class TagCounter(dict):
                 self[tag] = [""]
         self.counts[tag] += 1
 
+    def status(self, tag):
+        """
+        Returns tag status as a named tuple TagCounterStatus
+
+        Args:
+            tag: The tag name (string).
+
+        Returns:
+            The status (TagCounterStatus),
+        """
+        count = self.counts[tag]
+        missing = self.parent.objects - count
+        is_different = tag in self.different
+        is_grouped = is_different or (count > 0 and missing > 0)
+        return TagCounterStatus(is_grouped, count, is_different, missing)
+
     def display_value(self, tag):
         """
         Generates a user-friendly text representation of the tag's value.
@@ -153,26 +170,20 @@ class TagCounter(dict):
                 - is_grouped: A boolean indicating whether the tag has different
                               values or is missing from some objects.
         """
-        count = self.counts[tag]
-        missing = self.parent.objects - count
+        status = self.status(tag)
 
-        if tag in self.different:
-            text = ngettext("(different across %d item)", "(different across %d items)", count) % count
-            is_grouped = True
+        if status.is_different:
+            text = ngettext("(different across %d item)", "(different across %d items)", status.count) % status.count
         else:
             if tag == '~length':
-                msg = format_time(self.get(tag, 0))
+                text = format_time(self.get(tag, 0))
             else:
-                msg = MULTI_VALUED_JOINER.join(self[tag])
+                text = MULTI_VALUED_JOINER.join(self[tag])
 
-            if count > 0 and missing > 0:
-                text = msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing)
-                is_grouped = True
-            else:
-                text = msg
-                is_grouped = False
+            if status.is_grouped:
+                text += " " + (ngettext("(missing from %d item)", "(missing from %d items)", status.missing) % status.missing)
 
-        return TagCounterDisplayValue(text, is_grouped)
+        return TagCounterDisplayValue(text, status.is_grouped)
 
 
 class TagDiff:

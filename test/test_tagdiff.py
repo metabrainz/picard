@@ -57,6 +57,36 @@ class TestTagCounter(PicardTestCase):
     def test_get_missing_tag(self):
         self.assertEqual(self.counter["missing"], [""])
 
+    def test_status_different(self):
+        self.parent.objects = 2
+        self.counter.add("artist", ["Artist 1"])
+        self.counter.add("artist", ["Artist 2"])
+        status = self.counter.status("artist")
+        self.assertEqual(status.count, 2)
+        self.assertTrue(status.is_different)
+        self.assertEqual(status.missing, 0)
+        self.assertTrue(status.is_grouped)
+
+    def test_status_same(self):
+        self.parent.objects = 2
+        self.counter.add("artist", ["Artist 1"])
+        self.counter.add("artist", ["Artist 1"])
+        status = self.counter.status("artist")
+        self.assertEqual(status.count, 2)
+        self.assertFalse(status.is_different)
+        self.assertEqual(status.missing, 0)
+        self.assertFalse(status.is_grouped)
+
+    def test_status_missing_and_different(self):
+        self.parent.objects = 3
+        self.counter.add("artist", ["Artist 1"])
+        self.counter.add("artist", ["Artist 2"])
+        status = self.counter.status("artist")
+        self.assertEqual(status.count, 2)
+        self.assertTrue(status.is_different)
+        self.assertEqual(status.missing, 1)
+        self.assertTrue(status.is_grouped)
+
     def test_display_value_different(self):
         self.counter.add("artist", ["Artist 1"])
         self.counter.add("artist", ["Artist 2"])
