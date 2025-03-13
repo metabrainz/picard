@@ -32,11 +32,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import (
-    Counter,
-    defaultdict,
-    namedtuple,
-)
 from functools import partial
 
 from PyQt6 import (
@@ -68,138 +63,49 @@ from picard.util.preservedtags import PreservedTags
 from picard.util.tags import display_tag_name
 import json
 
-from picard.ui.colors import interface_colors
-from picard.ui.edittagdialog import (
+from .edittagdialog import (
     EditTagDialog,
     TagEditorDelegate,
 )
+from .tagdiff import (
+    TagDiff,
+    TagStatus,
+)
 
-
-class TagStatus:
-    NONE = 0
-    NOCHANGE = 1
-    ADDED = 2
-    REMOVED = 4
-    CHANGED = ADDED | REMOVED
-    EMPTY = 8
-    NOTREMOVABLE = 16
-    READONLY = 32
-
-
-TagCounterDisplayValue = namedtuple('TagCounterDisplayValue', ('text', 'is_grouped'))
-
-
-class TagCounter(dict):
-
-    __slots__ = ('parent', 'counts', 'different')
-
-    def __init__(self, parent):
-        self.parent = parent
-        self.counts = Counter()
-        self.different = set()
-
-    def __getitem__(self, tag):
-        return super().get(tag, [""])
-
-    def add(self, tag, values):
-        if tag not in self.different:
-            if tag not in self:
-                self[tag] = values
-            elif self[tag] != values:
-                self.different.add(tag)
-                self[tag] = [""]
-        self.counts[tag] += 1
-
-    def display_value(self, tag):
-        count = self.counts[tag]
-        missing = self.parent.objects - count
-
-        if tag in self.different:
-            text = ngettext("(different across %d item)", "(different across %d items)", count) % count
-            is_grouped = True
-        else:
-            if tag == '~length':
-                msg = format_time(self.get(tag, 0))
-            else:
-                msg = MULTI_VALUED_JOINER.join(self[tag])
-
-            if count > 0 and missing > 0:
-                text = msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing)
-                is_grouped = True
-            else:
-                text = msg
-                is_grouped = False
-
-        return TagCounterDisplayValue(text, is_grouped)
-
-
-class TagDiff:
-
-    __slots__ = ('tag_names', 'new', 'orig', 'status', 'objects', 'max_length_delta_ms')
-
-    def __init__(self, max_length_diff=2):
-        self.tag_names = []
-        self.new = TagCounter(self)
-        self.orig = TagCounter(self)
-        self.status = defaultdict(lambda: TagStatus.NONE)
-        self.objects = 0
-        self.max_length_delta_ms = max_length_diff * 1000
-
-    def __tag_ne(self, tag, orig, new):
-        if tag == '~length':
-            return abs(float(orig) - float(new)) > self.max_length_delta_ms
-        else:
-            return orig != new
-
-    def is_readonly(self, tag):
-        return bool(self.status[tag] & TagStatus.READONLY)
-
-    def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False, top_tags=None):
-        if orig_values:
-            self.orig.add(tag, orig_values)
-
-        if new_values:
-            self.new.add(tag, new_values)
-
-        if not top_tags:
-            top_tags = set()
-
-        if (orig_values and not new_values) or removed:
-            self.status[tag] |= TagStatus.REMOVED
-        elif new_values and not orig_values:
-            self.status[tag] |= TagStatus.ADDED
-            removable = True
-        elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
-            self.status[tag] |= TagStatus.CHANGED
-        elif not (orig_values or new_values or tag in top_tags):
-            self.status[tag] |= TagStatus.EMPTY
-        else:
-            self.status[tag] |= TagStatus.NOCHANGE
-
-        if not removable:
-            self.status[tag] |= TagStatus.NOTREMOVABLE
-
-        if readonly:
-            self.status[tag] |= TagStatus.READONLY
-
-    def tag_status(self, tag):
-        status = self.status[tag]
-        for s in (TagStatus.CHANGED, TagStatus.ADDED,
-                  TagStatus.REMOVED, TagStatus.EMPTY):
-            if status & s == s:
-                return s
-        return TagStatus.NOCHANGE
+from picard.ui.colors import interface_colors
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
+    """
+    A delegate for editing tags in a table, providing multiline editing support.
+
+    This delegate extends TagEditorDelegate to allow for multiline
+    editing of tag values within metadata box QTableWidget.
+    It ensures that the editor is sized appropriately for multiline content
+    and that the row height is adjusted to fit the editor.
+    """
+
+    MIN_EDITOR_HEIGHT = 80  # The minimum height for the editor widget
+    MAX_ROW_HEIGHT = 160  # The maximum height for a row
 
     def createEditor(self, parent, option, index):
+        """
+        Creates the editor widget for the given index.
+        If it's an instance of QtWidgets.QPlainTextEdit set editor and row heights.
+
+        Args:
+            parent: The parent widget of the editor.
+            option: The style option for the editor.
+            index: The model index for the item being edited.
+        Returns:
+            The editor widget.
+        """
         editor = super().createEditor(parent, option, index)
         if editor and isinstance(editor, QtWidgets.QPlainTextEdit):
             table = self.parent()
-            # Set the editor to the row height, but at least 80 pixel
+            # Set the editor to the row height, but at least MIN_EDITOR_HEIGHT pixels
             # to allow for proper multiline editing.
-            height = max(80, table.rowHeight(index.row()) - 1)
+            height = max(self.MIN_EDITOR_HEIGHT, table.rowHeight(index.row()) - 1)
             editor.setMinimumSize(QtCore.QSize(0, height))
             # Resize the row so the editor fits in. Add 1 pixel, otherwise the
             # frame gets hidden.
@@ -207,11 +113,25 @@ class TableTagEditorDelegate(TagEditorDelegate):
         return editor
 
     def sizeHint(self, option, index):
-        # Expand the row for multiline content, but limit the maximum row height.
+        """
+        Returns the size hint for the item at the given index.
+
+        This method expands the row height to accommodate multiline content,
+        but limits the maximum row height to MAX_ROW_HEIGHT pixels.
+
+        Args:
+            option: The style option for the item.
+            index: The model index for the item.
+
+        Returns:
+            The size hint (QSize) for the item.
+        """
         size_hint = super().sizeHint(option, index)
-        return QtCore.QSize(size_hint.width(), min(160, size_hint.height()))
+        height = min(self.MAX_ROW_HEIGHT, size_hint.height())
+        return QtCore.QSize(size_hint.width(), height)
 
     def get_tag_name(self, index):
+        """Retrieves the tag name associated with the given index."""
         return index.data(QtCore.Qt.ItemDataRole.UserRole)
 
 
@@ -769,8 +689,8 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         self.setRowCount(len(self.tag_diff.tag_names))
 
-        orig_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
-        new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
+        readonly_item_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
+        editable_item_flags = readonly_item_flags | QtCore.Qt.ItemFlag.ItemIsEditable
         alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
 
         for i, tag in enumerate(self.tag_diff.tag_names):
@@ -780,7 +700,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_item = self.item(i, self.COLUMN_TAG)
             if not tag_item:
                 tag_item = QtWidgets.QTableWidgetItem()
-                tag_item.setFlags(orig_flags)
+                tag_item.setFlags(readonly_item_flags)
                 font = tag_item.font()
                 font.setBold(True)
                 tag_item.setFont(font)
@@ -791,7 +711,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             orig_item = self.item(i, self.COLUMN_ORIG)
             if not orig_item:
                 orig_item = QtWidgets.QTableWidgetItem()
-                orig_item.setFlags(orig_flags)
+                orig_item.setFlags(readonly_item_flags)
                 orig_item.setTextAlignment(alignment)
                 self.setItem(i, self.COLUMN_ORIG, orig_item)
             self._set_item_value(orig_item, self.tag_diff.orig, tag)
@@ -801,11 +721,12 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
                 new_item.setTextAlignment(alignment)
-                if self.tag_diff.is_readonly(tag):
-                    new_item.setFlags(orig_flags)
-                else:
-                    new_item.setFlags(new_flags)
                 self.setItem(i, self.COLUMN_NEW, new_item)
+
+            if self.tag_diff.is_readonly(tag):
+                new_item.setFlags(readonly_item_flags)
+            else:
+                new_item.setFlags(editable_item_flags)
             self._set_item_value(new_item, self.tag_diff.new, tag)
             font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
