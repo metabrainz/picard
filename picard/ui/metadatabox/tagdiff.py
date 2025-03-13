@@ -225,7 +225,7 @@ class TagDiff:
             True if the tag values are not equal, False otherwise.
         """
         if tag == '~length':
-            return abs(float(old) - float(new)) > self.max_length_delta_ms
+            return abs(int(old) - int(new)) > self.max_length_delta_ms
         else:
             return old != new
 
