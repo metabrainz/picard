@@ -84,7 +84,7 @@ class TestTagCounter(PicardTestCase):
         self.assertTrue(display_value.is_grouped)
 
     def test_display_value_length_missing(self):
-        self.counter.add("~length", 60000)
+        self.counter.add("~length", "60000")
         self.parent.objects = 5
         display_value = self.counter.display_value("~length")
         self.assertEqual(display_value.text, "1:00 (missing from 4 items)")
@@ -145,26 +145,26 @@ class TestTagDiff(PicardTestCase):
     def test_add_length_changed_2s(self):
         self.tag_diff = TagDiff(max_length_diff=2)
         self.tag_diff.objects = 3
-        self.tag_diff.add("~length", old=10000, new=15000)
+        self.tag_diff.add("~length", old="10000", new="15000")
         self.assertEqual(self.tag_diff.tag_status("~length"), TagStatus.CHANGED)
-        self.assertEqual(self.tag_diff.old["~length"], 10000)
-        self.assertEqual(self.tag_diff.new["~length"], 15000)
+        self.assertEqual(self.tag_diff.old["~length"], "10000")
+        self.assertEqual(self.tag_diff.new["~length"], "15000")
 
     def test_add_length_no_changed_2s(self):
         self.tag_diff = TagDiff(max_length_diff=2)
         self.tag_diff.objects = 3
-        self.tag_diff.add("~length", old=10000, new=12000)
+        self.tag_diff.add("~length", old="10000", new="12000")
         self.assertEqual(self.tag_diff.tag_status("~length"), TagStatus.UNCHANGED)
-        self.assertEqual(self.tag_diff.old["~length"], 10000)
-        self.assertEqual(self.tag_diff.new["~length"], 12000)
+        self.assertEqual(self.tag_diff.old["~length"], "10000")
+        self.assertEqual(self.tag_diff.new["~length"], "12000")
 
     def test_add_length_no_changed_1s(self):
         self.tag_diff = TagDiff(max_length_diff=1)
         self.tag_diff.objects = 3
-        self.tag_diff.add("~length", old=10000, new=12000)
+        self.tag_diff.add("~length", old="10000", new="12000")
         self.assertEqual(self.tag_diff.tag_status("~length"), TagStatus.CHANGED)
-        self.assertEqual(self.tag_diff.old["~length"], 10000)
-        self.assertEqual(self.tag_diff.new["~length"], 12000)
+        self.assertEqual(self.tag_diff.old["~length"], "10000")
+        self.assertEqual(self.tag_diff.new["~length"], "12000")
 
     def test_is_readonly(self):
         self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 2"], readonly=True)
