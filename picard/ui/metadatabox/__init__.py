@@ -685,7 +685,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         font.setBold(True)
         item.setFont(font)
 
-    def _set_item_value(self, item, tags, tag, color, strikeout=False):
+    @staticmethod
+    def _set_item_value(item, tags, tag, color, strikeout=False):
         display_value = tags.display_value(tag)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
         item.setText(display_value.text)
