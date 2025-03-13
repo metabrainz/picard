@@ -45,7 +45,7 @@ from picard.util import format_time
 
 class TagStatus:
     NONE = 0
-    NOCHANGE = 1
+    UNCHANGED = 1
     ADDED = 2
     REMOVED = 4
     CHANGED = ADDED | REMOVED
@@ -273,7 +273,7 @@ class TagDiff:
         elif not (orig_values or new_values or tag in top_tags):
             self.status[tag] |= TagStatus.EMPTY
         else:
-            self.status[tag] |= TagStatus.NOCHANGE
+            self.status[tag] |= TagStatus.UNCHANGED
 
         if not removable:
             self.status[tag] |= TagStatus.NOTREMOVABLE
@@ -299,4 +299,4 @@ class TagDiff:
                   TagStatus.REMOVED, TagStatus.EMPTY):
             if status & s == s:
                 return s
-        return TagStatus.NOCHANGE
+        return TagStatus.UNCHANGED

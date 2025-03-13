@@ -549,7 +549,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             return self.tag_diff
 
         self.colors = {
-            TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.ColorRole.Text),
+            TagStatus.UNCHANGED: self.palette().color(QtGui.QPalette.ColorRole.Text),
             TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
             TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
             TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
@@ -620,7 +620,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tags_by_status.setdefault(tag_diff.tag_status(tag), []).append(tag)
 
             for status in (TagStatus.CHANGED, TagStatus.ADDED,
-                           TagStatus.REMOVED, TagStatus.NOCHANGE):
+                           TagStatus.REMOVED, TagStatus.UNCHANGED):
                 tag_diff.tag_names += tags_by_status.pop(status, [])
         else:
             tag_diff.tag_names = [
@@ -650,7 +650,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         for i, tag in enumerate(self.tag_diff.tag_names):
             color = self.colors.get(self.tag_diff.tag_status(tag),
-                                    self.colors[TagStatus.NOCHANGE])
+                                    self.colors[TagStatus.UNCHANGED])
 
             tag_item = self.item(i, self.COLUMN_TAG)
             if not tag_item:
