@@ -548,13 +548,6 @@ class MetadataBox(QtWidgets.QTableWidget):
                 break
             return self.tag_diff
 
-        self.colors = {
-            TagStatus.UNCHANGED: self.palette().color(QtGui.QPalette.ColorRole.Text),
-            TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
-            TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
-            TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
-        }
-
         config = get_config()
         tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
         tag_diff.objects = len(files)
@@ -647,6 +640,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         readonly_item_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
         editable_item_flags = readonly_item_flags | QtCore.Qt.ItemFlag.ItemIsEditable
         alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
+        colors = {
+            TagStatus.UNCHANGED: self.palette().color(QtGui.QPalette.ColorRole.Text),
+            TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
+            TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
+            TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
+        }
 
         def get_table_item(row, column):
             """
@@ -662,14 +661,13 @@ class MetadataBox(QtWidgets.QTableWidget):
             return item
 
         for row, tag in enumerate(self.tag_diff.tag_names):
-            color = self.colors.get(self.tag_diff.tag_status(tag),
-                                    self.colors[TagStatus.UNCHANGED])
-
             tag_item = get_table_item(row, self.COLUMN_TAG)
             tag_item.setText(display_tag_name(tag))
             font = tag_item.font()
             font.setBold(True)
             tag_item.setFont(font)
+
+            color = colors.get(self.tag_diff.tag_status(tag), colors[TagStatus.UNCHANGED])
 
             orig_item = get_table_item(row, self.COLUMN_ORIG)
             self._set_item_value(orig_item, self.tag_diff.orig, tag, color)
