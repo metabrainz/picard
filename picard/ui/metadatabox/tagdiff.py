@@ -241,36 +241,36 @@ class TagDiff:
         """
         return bool(self.status[tag] & TagStatus.READONLY)
 
-    def add(self, tag, old_values, new_values, removable=True, removed=False, readonly=False, top_tags=None):
+    def add(self, tag, old=None, new=None, removable=True, removed=False, readonly=False, top_tags=None):
         """
         Adds tag information to the TagDiff and updates its status.
 
         Args:
             tag: The tag name (string).
-            old_values: The old tag value(s).
-            new_values: The new tag value(s).
+            old: The old tag value(s).
+            new: The new tag value(s).
             removable (bool): Whether the tag can be removed.
             removed (bool): Whether the tag was marked as removed.
             readonly (bool): Whether the tag is read-only.
             top_tags (set): Set of top level tags
         """
-        if old_values:
-            self.old.add(tag, old_values)
+        if old:
+            self.old.add(tag, old)
 
-        if new_values:
-            self.new.add(tag, new_values)
+        if new:
+            self.new.add(tag, new)
 
         if not top_tags:
             top_tags = set()
 
-        if (old_values and not new_values) or removed:
+        if (old and not new) or removed:
             self.status[tag] |= TagStatus.REMOVED
-        elif new_values and not old_values:
+        elif new and not old:
             self.status[tag] |= TagStatus.ADDED
             removable = True
-        elif old_values and new_values and self.__tag_ne(tag, old_values, new_values):
+        elif old and new and self.__tag_ne(tag, old, new):
             self.status[tag] |= TagStatus.CHANGED
-        elif not (old_values or new_values or tag in top_tags):
+        elif not (old or new or tag in top_tags):
             self.status[tag] |= TagStatus.EMPTY
         else:
             self.status[tag] |= TagStatus.UNCHANGED
