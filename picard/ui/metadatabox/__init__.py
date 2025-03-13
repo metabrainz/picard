@@ -648,56 +648,49 @@ class MetadataBox(QtWidgets.QTableWidget):
         editable_item_flags = readonly_item_flags | QtCore.Qt.ItemFlag.ItemIsEditable
         alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
 
-        for i, tag in enumerate(self.tag_diff.tag_names):
+        def get_table_item(row, column):
+            """
+            Returns item for row and column if it exists or create a new one
+            By default, set it as read-only
+            """
+            item = self.item(row, column)
+            if not item:
+                item = QtWidgets.QTableWidgetItem()
+                item.setTextAlignment(alignment)
+                self.setItem(row, column, item)
+            item.setFlags(readonly_item_flags)
+            return item
+
+        for row, tag in enumerate(self.tag_diff.tag_names):
             color = self.colors.get(self.tag_diff.tag_status(tag),
                                     self.colors[TagStatus.UNCHANGED])
 
-            tag_item = self.item(i, self.COLUMN_TAG)
-            if not tag_item:
-                tag_item = QtWidgets.QTableWidgetItem()
-                tag_item.setFlags(readonly_item_flags)
-                font = tag_item.font()
-                font.setBold(True)
-                tag_item.setFont(font)
-                tag_item.setTextAlignment(alignment)
-                self.setItem(i, self.COLUMN_TAG, tag_item)
+            tag_item = get_table_item(row, self.COLUMN_TAG)
             tag_item.setText(display_tag_name(tag))
+            font = tag_item.font()
+            font.setBold(True)
+            tag_item.setFont(font)
 
-            orig_item = self.item(i, self.COLUMN_ORIG)
-            if not orig_item:
-                orig_item = QtWidgets.QTableWidgetItem()
-                orig_item.setFlags(readonly_item_flags)
-                orig_item.setTextAlignment(alignment)
-                self.setItem(i, self.COLUMN_ORIG, orig_item)
-            self._set_item_value(orig_item, self.tag_diff.orig, tag)
-            orig_item.setForeground(color)
+            orig_item = get_table_item(row, self.COLUMN_ORIG)
+            self._set_item_value(orig_item, self.tag_diff.orig, tag, color)
 
-            new_item = self.item(i, self.COLUMN_NEW)
-            if not new_item:
-                new_item = QtWidgets.QTableWidgetItem()
-                new_item.setTextAlignment(alignment)
-                self.setItem(i, self.COLUMN_NEW, new_item)
-
-            if self.tag_diff.is_readonly(tag):
-                new_item.setFlags(readonly_item_flags)
-            else:
+            new_item = get_table_item(row, self.COLUMN_NEW)
+            if not self.tag_diff.is_readonly(tag):
                 new_item.setFlags(editable_item_flags)
-            self._set_item_value(new_item, self.tag_diff.new, tag)
-            font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
-            font.setStrikeOut(strikeout)
-            new_item.setFont(font)
-            new_item.setForeground(color)
+            self._set_item_value(new_item, self.tag_diff.new, tag, color, strikeout=strikeout)
 
             # Adjust row height to content size
-            self.setRowHeight(i, self.sizeHintForRow(i))
+            self.setRowHeight(row, self.sizeHintForRow(row))
 
-    def _set_item_value(self, item, tags, tag):
+    def _set_item_value(self, item, tags, tag, color, strikeout=False):
         display_value = tags.display_value(tag)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
         item.setText(display_value.text)
+        item.setForeground(color)
         font = item.font()
         font.setItalic(display_value.is_grouped)
+        font.setStrikeOut(strikeout)
         item.setFont(font)
 
     @restore_method
