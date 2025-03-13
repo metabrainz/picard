@@ -274,8 +274,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                 value = self.tag_diff.orig[tag]
             elif column == self.COLUMN_NEW:
                 value = self.tag_diff.new[tag]
+
             if tag == '~length':
-                value = [format_time(value or 0), ]
+                try:
+                    value = float(value)
+                    value = [format_time(value or 0), ]
+                except (TypeError, ValueError):
+                    value = ['']
+                
             if value is not None:
                 self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
                 self.clipboard = value
