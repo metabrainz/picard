@@ -644,8 +644,8 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         self.setRowCount(len(self.tag_diff.tag_names))
 
-        orig_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
-        new_flags = orig_flags | QtCore.Qt.ItemFlag.ItemIsEditable
+        readonly_item_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
+        editable_item_flags = readonly_item_flags | QtCore.Qt.ItemFlag.ItemIsEditable
         alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
 
         for i, tag in enumerate(self.tag_diff.tag_names):
@@ -655,7 +655,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag_item = self.item(i, self.COLUMN_TAG)
             if not tag_item:
                 tag_item = QtWidgets.QTableWidgetItem()
-                tag_item.setFlags(orig_flags)
+                tag_item.setFlags(readonly_item_flags)
                 font = tag_item.font()
                 font.setBold(True)
                 tag_item.setFont(font)
@@ -666,7 +666,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             orig_item = self.item(i, self.COLUMN_ORIG)
             if not orig_item:
                 orig_item = QtWidgets.QTableWidgetItem()
-                orig_item.setFlags(orig_flags)
+                orig_item.setFlags(readonly_item_flags)
                 orig_item.setTextAlignment(alignment)
                 self.setItem(i, self.COLUMN_ORIG, orig_item)
             self._set_item_value(orig_item, self.tag_diff.orig, tag)
@@ -676,11 +676,12 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not new_item:
                 new_item = QtWidgets.QTableWidgetItem()
                 new_item.setTextAlignment(alignment)
-                if self.tag_diff.is_readonly(tag):
-                    new_item.setFlags(orig_flags)
-                else:
-                    new_item.setFlags(new_flags)
                 self.setItem(i, self.COLUMN_NEW, new_item)
+
+            if self.tag_diff.is_readonly(tag):
+                new_item.setFlags(readonly_item_flags)
+            else:
+                new_item.setFlags(editable_item_flags)
             self._set_item_value(new_item, self.tag_diff.new, tag)
             font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
