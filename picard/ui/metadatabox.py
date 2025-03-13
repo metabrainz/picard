@@ -66,6 +66,7 @@ from picard.util import (
 )
 from picard.util.preservedtags import PreservedTags
 from picard.util.tags import display_tag_name
+import json
 
 from picard.ui.colors import interface_colors
 from picard.ui.edittagdialog import (
@@ -345,9 +346,11 @@ class MetadataBox(QtWidgets.QTableWidget):
             super().keyPressEvent(event)
 
     def _copy_value(self):
-        item = self.currentItem()
-        if item:
+        def get_value_as_string(item):
             column = item.column()
+            if column == self.COLUMN_TAG:
+                return ''
+
             tag = self.tag_diff.tag_names[item.row()]
             value = None
             if column == self.COLUMN_ORIG:
@@ -355,10 +358,38 @@ class MetadataBox(QtWidgets.QTableWidget):
             elif column == self.COLUMN_NEW:
                 value = self.tag_diff.new[tag]
             if tag == '~length':
-                value = [format_time(value or 0), ]
-            if value is not None:
-                self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
-                self.clipboard = value
+                value = [format_time(value), ]
+            return value
+
+        # We can't handle copying data from multiple files
+        #if self.tag_diff.objects > 1:
+        #    return
+        
+        items = self.selectedItems()
+        if len(items) > 1:
+            data = {}
+            for item in items:
+                key = self.tag_diff.tag_names[item.row()]
+                if key not in data:
+                    data[key] = {}
+              
+                fieldnames = { self.COLUMN_TAG : 'tag_name', self.COLUMN_ORIG : 'original_value', self.COLUMN_NEW : 'new_value' }
+                fieldname = fieldnames[item.column()]
+
+                value = get_value_as_string(item)
+                if value and fieldname:
+                    data[key] = { fieldname: value } | data[key]
+            self.tagger.clipboard().setText(json.dumps(data))
+            self.clipboard = value
+        else:
+            item = self.currentItem()
+            if item:
+                value = get_value_as_string(item)
+                if value is not None:
+                    self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
+                    self.clipboard = value
+
+
 
     def _paste_value(self):
         item = self.currentItem()
