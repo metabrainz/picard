@@ -177,7 +177,7 @@ class TagCounter(dict):
 
 class TagDiff:
     """
-    Tracks the differences between original and new tag values across multiple objects.
+    Tracks the differences between old and new tag values across multiple objects.
 
     This class manages the comparison of tag values for a set of files, tracks,
     or albums. It tracks whether tags have been added, removed, changed, or
@@ -187,7 +187,7 @@ class TagDiff:
     Attributes:
         tag_names (list): A list of tag names being tracked, determining display order.
         new (TagCounter): A TagCounter instance holding the new tag values.
-        orig (TagCounter): A TagCounter instance holding the original tag values.
+        old (TagCounter): A TagCounter instance holding the old tag values.
         status (defaultdict): A dictionary mapping tag names to their TagStatus.
         objects (int): The number of objects being compared.
         max_length_delta_ms (int): The maximum allowed length difference (in ms) for
@@ -195,7 +195,7 @@ class TagDiff:
 
     """
 
-    __slots__ = ('tag_names', 'new', 'orig', 'status', 'objects', 'max_length_delta_ms')
+    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'max_length_delta_ms')
 
     def __init__(self, max_length_diff=2):
         """
@@ -207,27 +207,27 @@ class TagDiff:
         """
         self.tag_names = []
         self.new = TagCounter(self)
-        self.orig = TagCounter(self)
+        self.old = TagCounter(self)
         self.status = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
         self.max_length_delta_ms = max_length_diff * 1000
 
-    def __tag_ne(self, tag, orig, new):
+    def __tag_ne(self, tag, old, new):
         """
         Checks if two tag values are not equal, handling the special case of '~length'.
 
         Args:
             tag: The tag name (string).
-            orig: The original tag value.
+            old: The old tag value.
             new: The new tag value.
 
         Returns:
             True if the tag values are not equal, False otherwise.
         """
         if tag == '~length':
-            return abs(float(orig) - float(new)) > self.max_length_delta_ms
+            return abs(float(old) - float(new)) > self.max_length_delta_ms
         else:
-            return orig != new
+            return old != new
 
     def is_readonly(self, tag):
         """
@@ -241,21 +241,21 @@ class TagDiff:
         """
         return bool(self.status[tag] & TagStatus.READONLY)
 
-    def add(self, tag, orig_values, new_values, removable=True, removed=False, readonly=False, top_tags=None):
+    def add(self, tag, old_values, new_values, removable=True, removed=False, readonly=False, top_tags=None):
         """
         Adds tag information to the TagDiff and updates its status.
 
         Args:
             tag: The tag name (string).
-            orig_values: The original tag value(s).
+            old_values: The old tag value(s).
             new_values: The new tag value(s).
             removable (bool): Whether the tag can be removed.
             removed (bool): Whether the tag was marked as removed.
             readonly (bool): Whether the tag is read-only.
             top_tags (set): Set of top level tags
         """
-        if orig_values:
-            self.orig.add(tag, orig_values)
+        if old_values:
+            self.old.add(tag, old_values)
 
         if new_values:
             self.new.add(tag, new_values)
@@ -263,14 +263,14 @@ class TagDiff:
         if not top_tags:
             top_tags = set()
 
-        if (orig_values and not new_values) or removed:
+        if (old_values and not new_values) or removed:
             self.status[tag] |= TagStatus.REMOVED
-        elif new_values and not orig_values:
+        elif new_values and not old_values:
             self.status[tag] |= TagStatus.ADDED
             removable = True
-        elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
+        elif old_values and new_values and self.__tag_ne(tag, old_values, new_values):
             self.status[tag] |= TagStatus.CHANGED
-        elif not (orig_values or new_values or tag in top_tags):
+        elif not (old_values or new_values or tag in top_tags):
             self.status[tag] |= TagStatus.EMPTY
         else:
             self.status[tag] |= TagStatus.UNCHANGED

@@ -271,7 +271,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag = self.tag_diff.tag_names[item.row()]
             value = None
             if column == self.COLUMN_ORIG:
-                value = self.tag_diff.orig[tag]
+                value = self.tag_diff.old[tag]
             elif column == self.COLUMN_NEW:
                 value = self.tag_diff.new[tag]
             if tag == '~length':
@@ -347,7 +347,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     if tag in self.LOOKUP_TAGS:
                         if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
                             if column == self.COLUMN_ORIG:
-                                values = self.tag_diff.orig[tag]
+                                values = self.tag_diff.old[tag]
                             else:
                                 values = self.tag_diff.new[tag]
                             lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
@@ -601,7 +601,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
                 tag_diff.objects += 1
 
-        all_tags = set(list(tag_diff.orig) + list(tag_diff.new))
+        all_tags = set(list(tag_diff.old) + list(tag_diff.new))
         common_tags = [tag for tag in top_tags if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
@@ -667,7 +667,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             color = colors.get(self.tag_diff.tag_status(tag), colors[TagStatus.UNCHANGED])
 
             orig_item = get_table_item(row, self.COLUMN_ORIG)
-            self._set_item_value(orig_item, self.tag_diff.orig, tag, color)
+            self._set_item_value(orig_item, self.tag_diff.old, tag, color)
 
             new_item = get_table_item(row, self.COLUMN_NEW)
             if not self.tag_diff.is_readonly(tag):

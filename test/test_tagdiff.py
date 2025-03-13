@@ -108,30 +108,30 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.add("artist", None, ["Artist 1"])
         self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.ADDED)
         self.assertEqual(self.tag_diff.new["artist"], ["Artist 1"])
-        self.assertIsNone(self.tag_diff.orig.get("artist"))
+        self.assertIsNone(self.tag_diff.old.get("artist"))
 
     def test_add_removed_tag(self):
         self.tag_diff.add("artist", ["Artist 1"], None)
         self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.REMOVED)
-        self.assertEqual(self.tag_diff.orig["artist"], ["Artist 1"])
+        self.assertEqual(self.tag_diff.old["artist"], ["Artist 1"])
         self.assertIsNone(self.tag_diff.new.get("artist"))
 
     def test_add_removed_removed_tag(self):
         self.tag_diff.add("artist", ["Artist 1"], None, removed=True)
         self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.REMOVED)
-        self.assertEqual(self.tag_diff.orig["artist"], ["Artist 1"])
+        self.assertEqual(self.tag_diff.old["artist"], ["Artist 1"])
         self.assertIsNone(self.tag_diff.new.get("artist"))
 
     def test_add_changed_tag(self):
         self.tag_diff.add("artist", ["Artist 1"], ["Artist 2"])
         self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.CHANGED)
-        self.assertEqual(self.tag_diff.orig["artist"], ["Artist 1"])
+        self.assertEqual(self.tag_diff.old["artist"], ["Artist 1"])
         self.assertEqual(self.tag_diff.new["artist"], ["Artist 2"])
 
     def test_add_nochange_tag(self):
         self.tag_diff.add("artist", ["Artist 1"], ["Artist 1"])
         self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.UNCHANGED)
-        self.assertEqual(self.tag_diff.orig["artist"], ["Artist 1"])
+        self.assertEqual(self.tag_diff.old["artist"], ["Artist 1"])
         self.assertEqual(self.tag_diff.new["artist"], ["Artist 1"])
 
     def test_add_nochange_no_values(self):
@@ -147,7 +147,7 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.objects = 3
         self.tag_diff.add("~length", 10000, 15000)
         self.assertEqual(self.tag_diff.tag_status("~length"), TagStatus.CHANGED)
-        self.assertEqual(self.tag_diff.orig["~length"], 10000)
+        self.assertEqual(self.tag_diff.old["~length"], 10000)
         self.assertEqual(self.tag_diff.new["~length"], 15000)
 
     def test_add_length_no_changed_2s(self):
@@ -155,7 +155,7 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.objects = 3
         self.tag_diff.add("~length", 10000, 12000)
         self.assertEqual(self.tag_diff.tag_status("~length"), TagStatus.UNCHANGED)
-        self.assertEqual(self.tag_diff.orig["~length"], 10000)
+        self.assertEqual(self.tag_diff.old["~length"], 10000)
         self.assertEqual(self.tag_diff.new["~length"], 12000)
 
     def test_add_length_no_changed_1s(self):
@@ -163,7 +163,7 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.objects = 3
         self.tag_diff.add("~length", 10000, 12000)
         self.assertEqual(self.tag_diff.tag_status("~length"), TagStatus.CHANGED)
-        self.assertEqual(self.tag_diff.orig["~length"], 10000)
+        self.assertEqual(self.tag_diff.old["~length"], 10000)
         self.assertEqual(self.tag_diff.new["~length"], 12000)
 
     def test_is_readonly(self):
