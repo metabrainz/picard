@@ -301,7 +301,11 @@ def samefile(path1, path2):
 
 def format_time(ms, display_zero=False):
     """Formats time in milliseconds to a string representation."""
-    ms = float(ms)
+    try:
+        ms = float(ms)
+    except (TypeError, ValueError):
+        ms = 0
+                
     if ms == 0 and not display_zero:
         return "?:??"
     duration_seconds = round(ms / 1000)
