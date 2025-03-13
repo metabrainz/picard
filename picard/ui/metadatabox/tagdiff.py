@@ -241,7 +241,7 @@ class TagDiff:
         """
         return bool(self.status[tag] & TagStatus.READONLY)
 
-    def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False, top_tags=None):
+    def add(self, tag, orig_values, new_values, removable=True, removed=False, readonly=False, top_tags=None):
         """
         Adds tag information to the TagDiff and updates its status.
 

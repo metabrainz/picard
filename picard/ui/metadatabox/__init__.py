@@ -575,7 +575,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_values = list(orig_values or [""])
 
                 removed = tag in new_metadata.deleted_tags
-                tag_diff.add(tag, orig_values, new_values, True, removed, top_tags=top_tags_set)
+                tag_diff.add(tag, orig_values, new_values, removed=removed, top_tags=top_tags_set)
 
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
@@ -594,7 +594,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                             orig_values = track.orig_metadata.getall(tag)
                         else:
                             orig_values = new_values
-                        tag_diff.add(tag, orig_values, new_values, True)
+                        tag_diff.add(tag, orig_values, new_values)
 
                 length = str(track.metadata.length)
                 tag_diff.add('~length', length, length, removable=False, readonly=True)
