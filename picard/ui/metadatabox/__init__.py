@@ -40,6 +40,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.album import Album
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
