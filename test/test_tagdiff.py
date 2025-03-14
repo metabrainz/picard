@@ -158,6 +158,20 @@ class TestTagDiff(PicardTestCase):
         self.assertEqual(self.tag_diff.old["artist"], ["Artist 1"])
         self.assertEqual(self.tag_diff.new["artist"], ["Artist 2"])
 
+    def test_add_changed_tag_multistep(self):
+        self.tag_diff.add("artist", old=["Artist 1"])
+        self.tag_diff.add("artist", new=["Artist 2"])
+        self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.CHANGED)
+        self.assertEqual(self.tag_diff.old["artist"], ["Artist 1"])
+        self.assertEqual(self.tag_diff.new["artist"], ["Artist 2"])
+
+    def test_add_changed_tag_multistep_reversed(self):
+        self.tag_diff.add("artist", new=["Artist 2"])
+        self.tag_diff.add("artist", old=["Artist 1"])
+        self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.CHANGED)
+        self.assertEqual(self.tag_diff.old["artist"], ["Artist 1"])
+        self.assertEqual(self.tag_diff.new["artist"], ["Artist 2"])
+
     def test_add_nochange_tag(self):
         self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 1"])
         self.assertEqual(self.tag_diff.tag_status("artist"), TagStatus.UNCHANGED)
