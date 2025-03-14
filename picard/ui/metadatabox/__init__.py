@@ -271,7 +271,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             tag = self.tag_diff.tag_names[item.row()]
             value = None
             if column == self.COLUMN_ORIG:
-                value = self.tag_diff.orig[tag]
+                value = self.tag_diff.old[tag]
             elif column == self.COLUMN_NEW:
                 value = self.tag_diff.new[tag]
             if tag == '~length':
@@ -347,7 +347,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     if tag in self.LOOKUP_TAGS:
                         if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
                             if column == self.COLUMN_ORIG:
-                                values = self.tag_diff.orig[tag]
+                                values = self.tag_diff.old[tag]
                             else:
                                 values = self.tag_diff.new[tag]
                             lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
@@ -548,13 +548,6 @@ class MetadataBox(QtWidgets.QTableWidget):
                 break
             return self.tag_diff
 
-        self.colors = {
-            TagStatus.NOCHANGE: self.palette().color(QtGui.QPalette.ColorRole.Text),
-            TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
-            TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
-            TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
-        }
-
         config = get_config()
         tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
         tag_diff.objects = len(files)
@@ -582,7 +575,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_values = list(orig_values or [""])
 
                 removed = tag in new_metadata.deleted_tags
-                tag_diff.add(tag, orig_values, new_values, True, removed, top_tags=top_tags_set)
+                tag_diff.add(tag, old=orig_values, new=new_values, removed=removed, top_tags=top_tags_set)
 
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
@@ -591,7 +584,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_filename = file.make_filename(file.filename, new_metadata)
                 else:
                     new_filename = file.filename
-                tag_diff.add('~filepath', [file.filename], [new_filename], removable=False, readonly=True)
+                tag_diff.add('~filepath', old=[file.filename], new=[new_filename], removable=False, readonly=True)
 
         for track in tracks:
             if track.num_linked_files == 0:
@@ -601,14 +594,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                             orig_values = track.orig_metadata.getall(tag)
                         else:
                             orig_values = new_values
-                        tag_diff.add(tag, orig_values, new_values, True)
+                        tag_diff.add(tag, old=orig_values, new=new_values)
 
                 length = str(track.metadata.length)
-                tag_diff.add('~length', length, length, removable=False, readonly=True)
+                tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
 
                 tag_diff.objects += 1
 
-        all_tags = set(list(tag_diff.orig) + list(tag_diff.new))
+        all_tags = set(list(tag_diff.old) + list(tag_diff.new))
         common_tags = [tag for tag in top_tags if tag in all_tags]
         tag_names = common_tags + sorted(all_tags.difference(common_tags),
                                          key=lambda x: display_tag_name(x).lower())
@@ -620,7 +613,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tags_by_status.setdefault(tag_diff.tag_status(tag), []).append(tag)
 
             for status in (TagStatus.CHANGED, TagStatus.ADDED,
-                           TagStatus.REMOVED, TagStatus.NOCHANGE):
+                           TagStatus.REMOVED, TagStatus.UNCHANGED):
                 tag_diff.tag_names += tags_by_status.pop(status, [])
         else:
             tag_diff.tag_names = [
@@ -647,57 +640,60 @@ class MetadataBox(QtWidgets.QTableWidget):
         readonly_item_flags = QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
         editable_item_flags = readonly_item_flags | QtCore.Qt.ItemFlag.ItemIsEditable
         alignment = QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
+        colors = {
+            TagStatus.UNCHANGED: self.palette().color(QtGui.QPalette.ColorRole.Text),
+            TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
+            TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
+            TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
+        }
 
-        for i, tag in enumerate(self.tag_diff.tag_names):
-            color = self.colors.get(self.tag_diff.tag_status(tag),
-                                    self.colors[TagStatus.NOCHANGE])
+        def get_table_item(row, column):
+            """
+            Returns item for row and column if it exists or create a new one
+            By default, set it as read-only
+            """
+            item = self.item(row, column)
+            if not item:
+                item = QtWidgets.QTableWidgetItem()
+                item.setTextAlignment(alignment)
+                self.setItem(row, column, item)
+            item.setFlags(readonly_item_flags)
+            return item
 
-            tag_item = self.item(i, self.COLUMN_TAG)
-            if not tag_item:
-                tag_item = QtWidgets.QTableWidgetItem()
-                tag_item.setFlags(readonly_item_flags)
-                font = tag_item.font()
-                font.setBold(True)
-                tag_item.setFont(font)
-                tag_item.setTextAlignment(alignment)
-                self.setItem(i, self.COLUMN_TAG, tag_item)
-            tag_item.setText(display_tag_name(tag))
+        for row, tag in enumerate(self.tag_diff.tag_names):
+            tag_item = get_table_item(row, self.COLUMN_TAG)
+            self._set_item_tag(tag_item, tag)
 
-            orig_item = self.item(i, self.COLUMN_ORIG)
-            if not orig_item:
-                orig_item = QtWidgets.QTableWidgetItem()
-                orig_item.setFlags(readonly_item_flags)
-                orig_item.setTextAlignment(alignment)
-                self.setItem(i, self.COLUMN_ORIG, orig_item)
-            self._set_item_value(orig_item, self.tag_diff.orig, tag)
-            orig_item.setForeground(color)
+            color = colors.get(self.tag_diff.tag_status(tag), colors[TagStatus.UNCHANGED])
 
-            new_item = self.item(i, self.COLUMN_NEW)
-            if not new_item:
-                new_item = QtWidgets.QTableWidgetItem()
-                new_item.setTextAlignment(alignment)
-                self.setItem(i, self.COLUMN_NEW, new_item)
+            orig_item = get_table_item(row, self.COLUMN_ORIG)
+            self._set_item_value(orig_item, self.tag_diff.old, tag, color)
 
-            if self.tag_diff.is_readonly(tag):
-                new_item.setFlags(readonly_item_flags)
-            else:
+            new_item = get_table_item(row, self.COLUMN_NEW)
+            if not self.tag_diff.is_readonly(tag):
                 new_item.setFlags(editable_item_flags)
-            self._set_item_value(new_item, self.tag_diff.new, tag)
-            font = new_item.font()
             strikeout = self.tag_diff.tag_status(tag) == TagStatus.REMOVED
-            font.setStrikeOut(strikeout)
-            new_item.setFont(font)
-            new_item.setForeground(color)
+            self._set_item_value(new_item, self.tag_diff.new, tag, color, strikeout=strikeout)
 
             # Adjust row height to content size
-            self.setRowHeight(i, self.sizeHintForRow(i))
+            self.setRowHeight(row, self.sizeHintForRow(row))
 
-    def _set_item_value(self, item, tags, tag):
+    @staticmethod
+    def _set_item_tag(item, tag):
+        item.setText(display_tag_name(tag))
+        font = item.font()
+        font.setBold(True)
+        item.setFont(font)
+
+    @staticmethod
+    def _set_item_value(item, tags, tag, color, strikeout=False):
         display_value = tags.display_value(tag)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag)
         item.setText(display_value.text)
+        item.setForeground(color)
         font = item.font()
         font.setItalic(display_value.is_grouped)
+        font.setStrikeOut(strikeout)
         item.setFont(font)
 
     @restore_method

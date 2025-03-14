@@ -45,7 +45,7 @@ from picard.util import format_time
 
 class TagStatus:
     NONE = 0
-    NOCHANGE = 1
+    UNCHANGED = 1
     ADDED = 2
     REMOVED = 4
     CHANGED = ADDED | REMOVED
@@ -55,6 +55,7 @@ class TagStatus:
 
 
 TagCounterDisplayValue = namedtuple('TagCounterDisplayValue', ('text', 'is_grouped'))
+TagCounterStatus = namedtuple('TagCounterStatus', ('is_grouped', 'count', 'is_different', 'missing'))
 
 
 class TagCounter(dict):
@@ -136,6 +137,22 @@ class TagCounter(dict):
                 self[tag] = [""]
         self.counts[tag] += 1
 
+    def status(self, tag):
+        """
+        Returns tag status as a named tuple TagCounterStatus
+
+        Args:
+            tag: The tag name (string).
+
+        Returns:
+            The status (TagCounterStatus),
+        """
+        count = self.counts[tag]
+        missing = self.parent.objects - count
+        is_different = tag in self.different
+        is_grouped = is_different or (count > 0 and missing > 0)
+        return TagCounterStatus(is_grouped, count, is_different, missing)
+
     def display_value(self, tag):
         """
         Generates a user-friendly text representation of the tag's value.
@@ -153,31 +170,25 @@ class TagCounter(dict):
                 - is_grouped: A boolean indicating whether the tag has different
                               values or is missing from some objects.
         """
-        count = self.counts[tag]
-        missing = self.parent.objects - count
+        status = self.status(tag)
 
-        if tag in self.different:
-            text = ngettext("(different across %d item)", "(different across %d items)", count) % count
-            is_grouped = True
+        if status.is_different:
+            text = ngettext("(different across %d item)", "(different across %d items)", status.count) % status.count
         else:
             if tag == '~length':
-                msg = format_time(self.get(tag, 0))
+                text = format_time(self.get(tag, 0))
             else:
-                msg = MULTI_VALUED_JOINER.join(self[tag])
+                text = MULTI_VALUED_JOINER.join(self[tag])
 
-            if count > 0 and missing > 0:
-                text = msg + " " + (ngettext("(missing from %d item)", "(missing from %d items)", missing) % missing)
-                is_grouped = True
-            else:
-                text = msg
-                is_grouped = False
+            if status.is_grouped:
+                text += " " + (ngettext("(missing from %d item)", "(missing from %d items)", status.missing) % status.missing)
 
-        return TagCounterDisplayValue(text, is_grouped)
+        return TagCounterDisplayValue(text, status.is_grouped)
 
 
 class TagDiff:
     """
-    Tracks the differences between original and new tag values across multiple objects.
+    Tracks the differences between old and new tag values across multiple objects.
 
     This class manages the comparison of tag values for a set of files, tracks,
     or albums. It tracks whether tags have been added, removed, changed, or
@@ -187,7 +198,7 @@ class TagDiff:
     Attributes:
         tag_names (list): A list of tag names being tracked, determining display order.
         new (TagCounter): A TagCounter instance holding the new tag values.
-        orig (TagCounter): A TagCounter instance holding the original tag values.
+        old (TagCounter): A TagCounter instance holding the old tag values.
         status (defaultdict): A dictionary mapping tag names to their TagStatus.
         objects (int): The number of objects being compared.
         max_length_delta_ms (int): The maximum allowed length difference (in ms) for
@@ -195,7 +206,7 @@ class TagDiff:
 
     """
 
-    __slots__ = ('tag_names', 'new', 'orig', 'status', 'objects', 'max_length_delta_ms')
+    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'max_length_delta_ms')
 
     def __init__(self, max_length_diff=2):
         """
@@ -207,27 +218,27 @@ class TagDiff:
         """
         self.tag_names = []
         self.new = TagCounter(self)
-        self.orig = TagCounter(self)
+        self.old = TagCounter(self)
         self.status = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
         self.max_length_delta_ms = max_length_diff * 1000
 
-    def __tag_ne(self, tag, orig, new):
+    def __tag_ne(self, tag, old, new):
         """
         Checks if two tag values are not equal, handling the special case of '~length'.
 
         Args:
             tag: The tag name (string).
-            orig: The original tag value.
+            old: The old tag value.
             new: The new tag value.
 
         Returns:
             True if the tag values are not equal, False otherwise.
         """
         if tag == '~length':
-            return abs(float(orig) - float(new)) > self.max_length_delta_ms
+            return abs(int(old) - int(new)) > self.max_length_delta_ms
         else:
-            return orig != new
+            return old != new
 
     def is_readonly(self, tag):
         """
@@ -241,39 +252,39 @@ class TagDiff:
         """
         return bool(self.status[tag] & TagStatus.READONLY)
 
-    def add(self, tag, orig_values, new_values, removable, removed=False, readonly=False, top_tags=None):
+    def add(self, tag, old=None, new=None, removable=True, removed=False, readonly=False, top_tags=None):
         """
         Adds tag information to the TagDiff and updates its status.
 
         Args:
             tag: The tag name (string).
-            orig_values: The original tag value(s).
-            new_values: The new tag value(s).
+            old: The old tag value(s).
+            new: The new tag value(s).
             removable (bool): Whether the tag can be removed.
             removed (bool): Whether the tag was marked as removed.
             readonly (bool): Whether the tag is read-only.
             top_tags (set): Set of top level tags
         """
-        if orig_values:
-            self.orig.add(tag, orig_values)
+        if old:
+            self.old.add(tag, old)
 
-        if new_values:
-            self.new.add(tag, new_values)
+        if new:
+            self.new.add(tag, new)
 
         if not top_tags:
             top_tags = set()
 
-        if (orig_values and not new_values) or removed:
+        if (old and not new) or removed:
             self.status[tag] |= TagStatus.REMOVED
-        elif new_values and not orig_values:
+        elif new and not old:
             self.status[tag] |= TagStatus.ADDED
             removable = True
-        elif orig_values and new_values and self.__tag_ne(tag, orig_values, new_values):
+        elif old and new and self.__tag_ne(tag, old, new):
             self.status[tag] |= TagStatus.CHANGED
-        elif not (orig_values or new_values or tag in top_tags):
+        elif not (old or new or tag in top_tags):
             self.status[tag] |= TagStatus.EMPTY
         else:
-            self.status[tag] |= TagStatus.NOCHANGE
+            self.status[tag] |= TagStatus.UNCHANGED
 
         if not removable:
             self.status[tag] |= TagStatus.NOTREMOVABLE
@@ -299,4 +310,4 @@ class TagDiff:
                   TagStatus.REMOVED, TagStatus.EMPTY):
             if status & s == s:
                 return s
-        return TagStatus.NOCHANGE
+        return TagStatus.UNCHANGED
