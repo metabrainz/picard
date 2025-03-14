@@ -280,7 +280,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     value = [format_time(value or 0), ]
                 except (TypeError, ValueError):
                     value = ['']
-                
+
             if value is not None:
                 self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
                 self.clipboard = value
