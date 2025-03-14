@@ -258,10 +258,17 @@ class FormatTimeTest(PicardTestCase):
         self.assertEqual("0:00", util.format_time(0, display_zero=True))
         self.assertEqual("3:00", util.format_time(179750))
         self.assertEqual("3:00", util.format_time(179500))
+        self.assertEqual("3:00", util.format_time(179500.5))
         self.assertEqual("2:59", util.format_time(179499))
         self.assertEqual("59:59", util.format_time(3599499))
         self.assertEqual("1:00:00", util.format_time(3599500))
         self.assertEqual("1:02:59", util.format_time(3779499))
+        with self.assertRaises(ValueError):
+            util.format_time(-40000)
+        with self.assertRaises(ValueError):
+            util.format_time("Hello World")
+        with self.assertRaises(TypeError):
+            util.format_time(list())
 
 
 class HiddenFileTest(PicardTestCase):
