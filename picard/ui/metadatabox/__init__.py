@@ -277,7 +277,6 @@ class MetadataBox(QtWidgets.QTableWidget):
 
             if tag == '~length':
                 try:
-                    value = float(value)
                     value = [format_time(value or 0), ]
                 except (TypeError, ValueError):
                     value = ['']
