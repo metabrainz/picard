@@ -55,6 +55,7 @@ We use snake-case to name all functions and variables except for the pre-generat
 
 `gettext` and `gettext-noop` have been built-in the Picard code as `_` and `N_` respectively to provide support for internationalization/localization. You can use them without imports across all of Picard code. Make sure to mark all displayable strings for translation using `_` or `N_` as applicable. You can read more about python-gettext [here](https://docs.python.org/2/library/gettext.html).
 
+
 ### Strings quoting: single or double quotes?
 
 As a general guideline, we tend to use double quotes for translatable strings and/or English phrases; or anything that may contain one or more single quotes.
@@ -119,6 +120,7 @@ We follow the "typical" GitHub workflow when contributing changes:
 6. Do not make one big pull request with a lot of unrelated changes. If you are solving more than one issue, unless they are closely related, split them into multiple pull requests. It makes it easier to review and merge the patches this way.
 7. Try to avoid un-necessary commits after code reviews by making use of [git rebase](https://help.github.com/articles/about-git-rebase/) to fix merge conflicts, remove unwanted commits, rewording and editing previous commits or squashing multiple small related changes into one commit.
 
+
 ## Translations
 
 See [po/README.md](./po/README.md) for information about translations.
@@ -136,7 +138,9 @@ with different tagging formats. When implementing support for new tags the goal 
 be compatible with existing software as good as possible. Below are links to relevant
 metadata specifications and to the tag mapping tables used by various audio software.
 
+
 ### Format specs
+
 - [ID3](https://github.com/id3/ID3v2.4)
 - [VorbisComment](https://wiki.xiph.org/VorbisComment)
 - [OggOpus](https://wiki.xiph.org/OggOpus#Comment_Header) (in addition to Vorbis Comment spec)
@@ -150,6 +154,7 @@ metadata specifications and to the tag mapping tables used by various audio soft
 
 
 ### Tag mapping tables
+
 - [Picard](https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html)
 - [JAudiotagger](http://www.jthink.net/jaudiotagger/tagmapping.html)
 - [MP3Tag](https://help.mp3tag.de/main_tags.html)
