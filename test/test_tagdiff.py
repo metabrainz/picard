@@ -204,3 +204,29 @@ class TestTagDiff(PicardTestCase):
     def test_add_not_removable(self):
         self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 2"], removable=False)
         self.assertEqual(self.tag_diff.status["artist"], TagStatus.CHANGED | TagStatus.NOTREMOVABLE)
+
+    @staticmethod
+    def _special_handler(old, new):
+        for old_value, new_value in zip(old, new):
+            try:
+                if abs(int(old_value) - int(new_value)) > 2000:
+                    return True
+            except (ValueError, TypeError):
+                return True
+        return False
+
+    def test_special_handler_changed(self):
+        self.tag_diff = TagDiff()
+        self.tag_diff.objects = 2
+
+        self.tag_diff.tag_ne_handlers['~length_list'] = self._special_handler
+        self.tag_diff.add("~length_list", old=["10000", "12000"], new=["11000", "14500"])
+        self.assertEqual(self.tag_diff.tag_status("~length_list"), TagStatus.CHANGED)
+
+    def test_special_handler_unchanged(self):
+        self.tag_diff = TagDiff()
+        self.tag_diff.objects = 2
+
+        self.tag_diff.tag_ne_handlers['~length_list'] = self._special_handler
+        self.tag_diff.add("~length_list", old=["10000", "12000"], new=["11000", "13500"])
+        self.assertEqual(self.tag_diff.tag_status("~length_list"), TagStatus.UNCHANGED)

@@ -206,7 +206,7 @@ class TagDiff:
 
     """
 
-    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'max_length_delta_ms')
+    __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'tag_ne_handlers')
 
     def __init__(self, max_length_diff=2):
         """
@@ -221,11 +221,14 @@ class TagDiff:
         self.old = TagCounter(self)
         self.status = defaultdict(lambda: TagStatus.NONE)
         self.objects = 0
-        self.max_length_delta_ms = max_length_diff * 1000
+        self.tag_ne_handlers = defaultdict(lambda: lambda old, new: old != new)
+        # handling the special case of '~length'
+        max_length_delta_ms = max_length_diff * 1000
+        self.tag_ne_handlers['~length'] = lambda old, new: abs(int(old) - int(new)) > max_length_delta_ms
 
     def __tag_ne(self, tag, old, new):
         """
-        Checks if two tag values are not equal, handling the special case of '~length'.
+        Checks if two tag values are not equal.
 
         Args:
             tag: The tag name (string).
@@ -235,10 +238,7 @@ class TagDiff:
         Returns:
             True if the tag values are not equal, False otherwise.
         """
-        if tag == '~length':
-            return abs(int(old) - int(new)) > self.max_length_delta_ms
-        else:
-            return old != new
+        return self.tag_ne_handlers[tag](old, new)
 
     def is_readonly(self, tag):
         """
