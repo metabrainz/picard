@@ -40,6 +40,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.album import Album
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
@@ -274,8 +275,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                 value = self.tag_diff.old[tag]
             elif column == self.COLUMN_NEW:
                 value = self.tag_diff.new[tag]
+
             if tag == '~length':
-                value = [format_time(value or 0), ]
+                try:
+                    value = [format_time(value or 0), ]
+                except (TypeError, ValueError) as why:
+                    log.warning(why)
+                    value = ['']
+
             if value is not None:
                 self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
                 self.clipboard = value
