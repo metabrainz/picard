@@ -48,6 +48,7 @@ from picard.util.filenaming import (
     move_ensure_casing,
     replace_extension,
     samefile_different_casing,
+    shorten_filename,
     shorten_path,
 )
 
@@ -276,6 +277,30 @@ class ReplaceExtensionTest(PicardTestCase):
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', '.wvc'))
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', 'wvc'))
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar', 'wvc'))
+
+
+class ShortenFilenameTest(PicardTestCase):
+
+    @unittest.skipUnless(
+        os.path.supports_unicode_filenames and not IS_MACOS,
+        'for filesystem with Unicode support',
+    )
+    def test_shorten_bytes_fs_unicode_support(self):
+        self.assertEqual('ä' * 10, shorten_filename('ä' * 11, 10, ShortenMode.BYTES))
+
+    @unittest.skipIf(
+        os.path.supports_unicode_filenames and not IS_MACOS,
+        'for filesystem without Unicode support',
+    )
+    def test_shorten_bytes_fs_no_unicode_support(self):
+        self.assertEqual('ä' * 5, shorten_filename('ä' * 11, 10, ShortenMode.BYTES))
+        self.assertEqual('ä' * 2, shorten_filename('ä' * 6, 5, ShortenMode.BYTES))
+
+    def test_shorten_filename_unicode(self):
+        self.assertEqual('ä' * 10, shorten_filename('ä' * 11, 10, ShortenMode.UTF16))
+        # In NFD mode, each "ä" is represented by two code points. Hence the shortened
+        # string is only 5 characters long.
+        self.assertEqual('ä' * 5, shorten_filename('ä' * 11, 10, ShortenMode.UTF16_NFD))
 
 
 class ShortenPathTest(PicardTestCase):
