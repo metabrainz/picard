@@ -48,6 +48,7 @@ from picard.util.filenaming import (
     move_ensure_casing,
     replace_extension,
     samefile_different_casing,
+    shorten_filename,
     shorten_path,
 )
 
@@ -276,6 +277,17 @@ class ReplaceExtensionTest(PicardTestCase):
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', '.wvc'))
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', 'wvc'))
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar', 'wvc'))
+
+
+class ShortenFilenameTest(PicardTestCase):
+
+    def test_shorten_filename_bytes(self):
+        self.assertEqual(b'a' * 5, shorten_filename(b'a' * 6, 5, None))
+        self.assertEqual('a' * 5, shorten_filename('a' * 6, 5, ShortenMode.BYTES))
+        self.assertEqual('ä' * 5, shorten_filename('ä' * 11, 10, ShortenMode.BYTES))
+
+    def test_shorten_filename_unicode(self):
+        self.assertEqual('ä' * 10, shorten_filename('ä' * 11, 10, ShortenMode.UTF16))
 
 
 class ShortenPathTest(PicardTestCase):
