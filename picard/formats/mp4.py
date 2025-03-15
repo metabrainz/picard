@@ -265,7 +265,19 @@ class MP4File(File):
                 name = 'lyrics'
             if name == 'comment:':
                 name = 'comment'
-            if name in self.__r_text_tags:
+            if name in self.__r_freeform_tags_ci:
+                values = [v.encode('utf-8') for v in values]
+                delall_ci(tags, self.__r_freeform_tags_ci[name])
+                if name in self.__casemap:
+                    name = self.__casemap[name]
+                else:
+                    name = self.__r_freeform_tags_ci[name]
+                tags[name] = values
+            elif name in self.__casemap:
+                values = [v.encode('utf-8') for v in values]
+                name = self.__casemap.get(name, name)
+                tags['----:com.apple.iTunes:' + name] = values
+            elif name in self.__r_text_tags:
                 tags[self.__r_text_tags[name]] = values
             elif name in self.__r_bool_tags:
                 tags[self.__r_bool_tags[name]] = (values[0] == '1')
@@ -277,14 +289,6 @@ class MP4File(File):
             elif name in self.__r_freeform_tags:
                 values = [v.encode('utf-8') for v in values]
                 tags[self.__r_freeform_tags[name]] = values
-            elif name in self.__r_freeform_tags_ci:
-                values = [v.encode('utf-8') for v in values]
-                delall_ci(tags, self.__r_freeform_tags_ci[name])
-                if name in self.__casemap:
-                    name = self.__casemap[name]
-                else:
-                    name = self.__r_freeform_tags_ci[name]
-                tags[name] = values
             elif name == 'musicip_fingerprint':
                 tags['----:com.apple.iTunes:fingerprint'] = [b'MusicMagic Fingerprint%s' % v.encode('ascii') for v in values]
             elif self.supports_tag(name) and name not in self.__other_supported_tags:
@@ -353,7 +357,12 @@ class MP4File(File):
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):
             name = 'lyrics'
-        if name in self.__r_text_tags:
+        if name in self.__r_freeform_tags_ci:
+            return self.__r_freeform_tags_ci[name]
+        if name in self.__casemap:
+            name = self.__casemap.get(name, name)
+            return '----:com.apple.iTunes:' + name
+        elif name in self.__r_text_tags:
             return self.__r_text_tags[name]
         elif name in self.__r_bool_tags:
             return self.__r_bool_tags[name]
@@ -361,8 +370,6 @@ class MP4File(File):
             return self.__r_int_tags[name]
         elif name in self.__r_freeform_tags:
             return self.__r_freeform_tags[name]
-        elif name in self.__r_freeform_tags_ci:
-            return self.__r_freeform_tags_ci[name]
         elif name == 'musicip_fingerprint':
             return '----:com.apple.iTunes:fingerprint'
         elif name in {'tracknumber', 'totaltracks'}:
