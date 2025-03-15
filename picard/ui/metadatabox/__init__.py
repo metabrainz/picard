@@ -62,6 +62,7 @@ from picard.util import (
 )
 from picard.util.preservedtags import PreservedTags
 from picard.util.tags import display_tag_name
+import json
 
 from .edittagdialog import (
     EditTagDialog,
@@ -266,9 +267,11 @@ class MetadataBox(QtWidgets.QTableWidget):
             super().keyPressEvent(event)
 
     def _copy_value(self):
-        item = self.currentItem()
-        if item:
+        def get_value_as_string(item):
             column = item.column()
+            if column == self.COLUMN_TAG:
+                return ''
+
             tag = self.tag_diff.tag_names[item.row()]
             value = None
             if column == self.COLUMN_ORIG:
@@ -282,19 +285,61 @@ class MetadataBox(QtWidgets.QTableWidget):
                 except (TypeError, ValueError) as why:
                     log.warning(why)
                     value = ['']
+            return value
 
-            if value is not None:
-                self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
-                self.clipboard = value
+        #TODO: Support  copying data from multiple files
+
+        items = self.selectedItems()
+        if len(items) > 1:
+            # We have multiple tags selected, so copy them as a JSON string
+            data = {}
+            for item in items:
+                key = self.tag_diff.tag_names[item.row()]
+                if key not in data:
+                    data[key] = {}
+
+                fieldnames = {self.COLUMN_TAG: 'tag_name', self.COLUMN_ORIG: 'original_value', self.COLUMN_NEW: 'new_value'}
+                fieldname = fieldnames[item.column()]
+
+                value = get_value_as_string(item)
+                if value and fieldname:
+                    data[key] = { fieldname: value } | data[key]
+            mimedata = QtCore.QMimeData()
+            mimedata.setData("application/json;contents=picard-tags", json.dumps(data).encode('utf-8'))
+            mimedata.setText(json.dumps(data))
+            self.tagger.clipboard().setMimeData(mimedata)
+            self.clipboard = value
+        else:
+            # Just copy the current item as a string
+            item = self.currentItem()
+            if item:
+                value = get_value_as_string(item)
+                if value is not None:
+                    self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
+                    self.clipboard = value
 
     def _paste_value(self):
-        item = self.currentItem()
-        if item:
-            column = item.column()
-            tag = self.tag_diff.tag_names[item.row()]
-            if column == self.COLUMN_NEW and self._tag_is_editable(tag):
-                self._set_tag_values(tag, self.clipboard)
-                self.update()
+        # Do we have JSON data that represents multiple tage values?
+        mimedata = self.tagger.clipboard().mimeData()
+        if mimedata.hasFormat("application/json;contents=picard-tags"):
+            text = mimedata.data("application/json;contents=picard-tags").data().decode('utf-8')
+            data = json.loads(text)
+            for tag, values in data.items():
+                if self._tag_is_editable(tag):
+                    if 'new_value' in values:
+                        self._set_tag_values(tag, values['new_value'])
+                    else:
+                        self._set_tag_values(tag, values['original_value'])
+            return
+        else:
+            # Cliboard contents doesn't contain our JSON, so trat it as text.
+            item = self.currentItem()
+            if item:
+                column = item.column()
+                tag = self.tag_diff.tag_names[item.row()]
+                if column == self.COLUMN_NEW and self._tag_is_editable(tag):
+                    self._set_tag_values(tag, self.clipboard)
+                    self.update()
 
     def _update_clipboard(self):
         clipboard = self.tagger.clipboard().text().split(MULTI_VALUED_JOINER)
@@ -395,17 +440,16 @@ class MetadataBox(QtWidgets.QTableWidget):
                     merge_tags_action.triggered.connect(partial(self._apply_update_funcs, mergeorigs))
                     menu.addAction(merge_tags_action)
                     menu.addSeparator()
-                if single_tag:
-                    menu.addSeparator()
-                    copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
-                    copy_action.triggered.connect(self._copy_value)
-                    copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
-                    menu.addAction(copy_action)
-                    paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-                    paste_action.triggered.connect(self._paste_value)
-                    paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
-                    paste_action.setEnabled(editable)
-                    menu.addAction(paste_action)
+
+                menu.addSeparator()
+                copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
+                copy_action.triggered.connect(self._copy_value)
+                copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
+                menu.addAction(copy_action)
+                paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
+                paste_action.triggered.connect(self._paste_value)
+                paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
+                menu.addAction(paste_action)
             if single_tag or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
