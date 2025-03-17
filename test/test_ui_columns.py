@@ -21,7 +21,7 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.ui.itemviews.columns import (
+from picard.ui.columns import (
     Column,
     ColumnAlign,
     Columns,
