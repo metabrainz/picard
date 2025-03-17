@@ -70,7 +70,7 @@ class ShortFilenameTest(PicardTestCase):
         fn = make_short_filename(self.root, os.path.join(*[char * 120] * 2))
         self.assertEqual(fn, os.path.join(*[char * 120] * 2))
 
-    @unittest.skipUnless(not IS_WIN and not IS_MACOS, "non-windows, non-osx test")
+    @unittest.skipIf(IS_WIN or IS_MACOS, "non-windows, non-osx test")
     def test_bmp_unicode_on_nix(self):
         char = "\N{LATIN SMALL LETTER SHARP S}"
         max_len = self.max_len
@@ -99,7 +99,7 @@ class ShortFilenameTest(PicardTestCase):
         fn = make_short_filename(self.root, os.path.join(*[char * 200] * 2))
         self.assertEqual(fn, os.path.join(*[char * (max_len // 2)] * 2))
 
-    @unittest.skipUnless(not IS_WIN and not IS_MACOS, "non-windows, non-osx test")
+    @unittest.skipIf(IS_WIN or IS_MACOS, "non-windows, non-osx test")
     def test_nonbmp_unicode_on_nix(self):
         char = "\N{MUSICAL SYMBOL G CLEF}"
         max_len = self.max_len
@@ -107,7 +107,7 @@ class ShortFilenameTest(PicardTestCase):
         fn = make_short_filename(self.root, os.path.join(*[char * 100] * 2))
         self.assertEqual(fn, os.path.join(*[char * (max_len // divisor)] * 2))
 
-    @unittest.skipUnless(not IS_WIN and not IS_MACOS, "non-windows, non-osx test")
+    @unittest.skipIf(IS_WIN or IS_MACOS, "non-windows, non-osx test")
     def test_nonbmp_unicode_on_nix_with_windows_compat(self):
         char = "\N{MUSICAL SYMBOL G CLEF}"
         max_len = self.max_len
@@ -120,7 +120,7 @@ class ShortFilenameTest(PicardTestCase):
         fn = make_short_filename(self.root, os.path.join("a" * 200, "b" * 200, "c" * 200 + ".ext"), win_shorten_path=True)
         self.assertEqual(fn, os.path.join("a" * 116, "b" * 116, "c" * 7 + ".ext"))
 
-    @unittest.skipUnless(not IS_WIN, "non-windows test")
+    @unittest.skipIf(IS_WIN, "non-windows test")
     def test_windows_shortening_with_ancestor_on_nix(self):
         root = os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9)
         fn = make_short_filename(
@@ -205,6 +205,12 @@ class MoveEnsureCasingTest(PicardTestCase):
             files = os.listdir(d)
             self.assertIn('FOO', files)
 
+    def test_move_same_file(self):
+        # Having the same source and target path should do nothing.
+        # Just make sure the operation completes and nothing got raised.
+        path = '/foo/bar'
+        move_ensure_casing(path, path)
+
 
 class MakeSavePathTest(PicardTestCase):
 
@@ -280,6 +286,10 @@ class ReplaceExtensionTest(PicardTestCase):
 
 
 class ShortenFilenameTest(PicardTestCase):
+
+    def test_shorten_bytes(self):
+        self.assertEqual(b'a' * 10, shorten_filename(b'a' * 11, 10, None))
+        self.assertEqual('a' * 10, shorten_filename('a' * 10, 10, ShortenMode.BYTES))
 
     @unittest.skipUnless(
         os.path.supports_unicode_filenames and not IS_MACOS,
