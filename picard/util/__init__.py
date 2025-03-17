@@ -185,7 +185,7 @@ Translation: Picard will have problems with non-english characters
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, str):
-        if os.path.supports_unicode_filenames and sys.platform != "darwin":
+        if os.path.supports_unicode_filenames and not IS_MACOS:
             return filename
         else:
             return filename.encode(_io_encoding, 'replace')

@@ -113,10 +113,15 @@ def serve_form(token):
         raise InvalidTokenError from e
 
 
-def _open_url_with_token(payload):
+def _generate_token(payload):
     token = jwt.encode(payload, __key, algorithm=__algorithm)
     if isinstance(token, bytes):  # For compatibility with PyJWT 1.x
         token = token.decode()
+    return token
+
+
+def _open_url_with_token(payload):
+    token = _generate_token(payload)
     browser_integration = QCoreApplication.instance().browser_integration
     url = f'http://127.0.0.1:{browser_integration.port}/add?token={token}'
     open(url)
