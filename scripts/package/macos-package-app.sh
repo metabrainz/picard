@@ -35,7 +35,7 @@ if [ -f "$CERTIFICATE_FILE" ] && [ -n "$CODESIGN_MACOS_P12_PASSWORD" ]; then
 fi
 
 echo "Building Picard..."
-rm -rf dist build locale
+rm -rf dist build
 python3 setup.py clean
 python3 setup.py build --disable-locales
 python3 setup.py build_locales
@@ -88,18 +88,3 @@ set -e
 [ "$CODESIGN" = '1' ] && codesign --verify --verbose \
   --keychain "$KEYCHAIN_PATH" --sign "$CODESIGN_IDENTITY" "$DMG"
 md5 -r "$DMG"
-
-if [ -n "$MACOS_UPLOAD" ]; then
-    echo "Preparing to upload $DMG..."
-    # make upload failures non fatal
-    set +e
-    # Set $AWS_ARTIFACTS_BUCKET, $AWS_ACCESS_KEY_ID and $AWS_SECRET_ACCESS_KEY for AWS S3 upload to work
-    if [ -n "$AWS_ARTIFACTS_BUCKET" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
-      pip3 install --upgrade awscli
-      aws s3 cp --acl public-read "$DMG" "s3://${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/$DMG"
-      echo "Package uploaded to https://s3.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ARTIFACTS_BUCKET}/${TRAVIS_REPO_SLUG}/${TRAVIS_BUILD_NUMBER}/${DMG// /%20}"
-    fi
-    set -e
-    # Required for a newline between the outputs
-    echo -e "\n"
-fi
