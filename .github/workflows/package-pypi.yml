@@ -86,12 +86,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
-    - name: Install gettext (macOS)
-      if: runner.os == 'macOS'
-      run: |
-        brew install gettext
-        brew link gettext --force
-        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
     - name: Install gettext (Windows)
       if: runner.os == 'Windows'
       run: |

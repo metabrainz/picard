@@ -42,7 +42,6 @@ jobs:
         ./scripts/package/macos-setup.sh
         PYTHON_BASE_VERSION=$(echo $PYTHON_VERSION | sed -e "s/\.[0-9]\{1,\}$//")
         echo "/Library/Frameworks/Python.framework/Versions/$PYTHON_BASE_VERSION/bin" >> $GITHUB_PATH
-        echo "/usr/local/opt/gettext/bin" >> $GITHUB_PATH
         RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
         BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
