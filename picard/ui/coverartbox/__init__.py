@@ -36,6 +36,7 @@
 
 
 from contextlib import ExitStack
+from enum import IntEnum
 from functools import partial
 import os
 import re
@@ -71,15 +72,23 @@ from .imageurldialog import ImageURLDialog
 from picard.ui.util import FileDialog
 
 
-def set_image_replace(obj, coverartimage):
-    obj.metadata.images.strip_front_images()
-    obj.metadata.images.append(coverartimage)
-    obj.metadata_images_changed.emit()
+class CoverArtSetterMode(IntEnum):
+    APPEND = 0
+    REPLACE = 1
 
 
-def set_image_append(obj, coverartimage):
-    obj.metadata.images.append(coverartimage)
-    obj.metadata_images_changed.emit()
+class CoverArtSetter:
+
+    def __init__(self, mode, coverartimage):
+        self.mode = mode
+        self.coverartimage = coverartimage
+
+    def set_image(self, obj, coverartimage):
+        if self.mode == CoverArtSetterMode.REPLACE:
+            obj.metadata.images.strip_front_images()
+
+        obj.metadata.images.append(coverartimage)
+        obj.metadata_images_changed.emit()
 
 
 def iter_file_parents(file):
@@ -316,18 +325,18 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         config = get_config()
         if config.setting['load_image_behavior'] == 'replace':
-            set_image = set_image_replace
+            setter = CoverArtSetter(CoverArtSetterMode.REPLACE, coverartimage)
             debug_info = "Replacing with dropped %r in %r"
         else:
-            set_image = set_image_append
+            setter = CoverArtSetter(CoverArtSetterMode.APPEND, coverartimage)
             debug_info = "Appending dropped %r to %r"
 
         if isinstance(self.item, Album):
-            set_coverart_album(set_image, coverartimage, self.item)
+            set_coverart_album(setter.set_image, coverartimage, self.item)
         elif isinstance(self.item, FileListItem):
-            set_coverart_filelist(set_image, coverartimage, self.item)
+            set_coverart_filelist(setter.set_image, coverartimage, self.item)
         elif isinstance(self.item, File):
-            set_coverart_file(set_image, coverartimage, self.item)
+            set_coverart_file(setter.set_image, coverartimage, self.item)
         else:
             debug_info = "Dropping %r to %r is not handled"
 
