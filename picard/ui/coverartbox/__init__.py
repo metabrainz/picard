@@ -65,12 +65,10 @@ from picard.util import (
 )
 from picard.util.lrucache import LRUCache
 
-from picard.ui import PicardDialog
-from picard.ui.coverartbox.coverartthumbnail import CoverArtThumbnail
-from picard.ui.util import (
-    FileDialog,
-    StandardButton,
-)
+from .coverartthumbnail import CoverArtThumbnail
+from .imageurldialog import ImageURLDialog
+
+from picard.ui.util import FileDialog
 
 
 def set_image_replace(obj, coverartimage):
@@ -95,35 +93,6 @@ def iter_file_parents(file):
 
 
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
-
-
-class ImageURLDialog(PicardDialog):
-
-    def __init__(self, parent=None):
-        super().__init__(parent=parent)
-        self.setWindowTitle(_("Enter URL"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-        self.layout = QtWidgets.QVBoxLayout(self)
-        self.label = QtWidgets.QLabel(_("Cover art URL:"))
-        self.url = QtWidgets.QLineEdit(self)
-        self.buttonbox = QtWidgets.QDialogButtonBox(self)
-        accept_role = QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
-        self.buttonbox.addButton(StandardButton(StandardButton.OK), accept_role)
-        reject_role = QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        self.buttonbox.addButton(StandardButton(StandardButton.CANCEL), reject_role)
-        self.buttonbox.accepted.connect(self.accept)
-        self.buttonbox.rejected.connect(self.reject)
-        self.layout.addWidget(self.label)
-        self.layout.addWidget(self.url)
-        self.layout.addWidget(self.buttonbox)
-        self.setLayout(self.layout)
-
-    @classmethod
-    def display(cls, parent=None):
-        dialog = cls(parent=parent)
-        result = dialog.exec()
-        url = QtCore.QUrl(dialog.url.text())
-        return (url, result == QtWidgets.QDialog.DialogCode.Accepted)
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
