@@ -35,6 +35,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from contextlib import ExitStack
 from enum import IntEnum
 from functools import partial
@@ -77,66 +81,76 @@ class CoverArtSetterMode(IntEnum):
     REPLACE = 1
 
 
-class CoverArtSetter:
+class CoverArtSetter(ABC):
 
     def __init__(self, mode, coverartimage):
         self.mode = mode
         self.coverartimage = coverartimage
 
-    def set_image(self, obj, coverartimage):
+    def set_image(self, obj):
         if self.mode == CoverArtSetterMode.REPLACE:
             obj.metadata.images.strip_front_images()
 
-        obj.metadata.images.append(coverartimage)
+        obj.metadata.images.append(self.coverartimage)
         obj.metadata_images_changed.emit()
 
-
-def iter_file_parents(file):
-    parent = file.parent_item
-    if parent:
-        yield parent
-        if isinstance(parent, Track) and parent.album:
-            yield parent.album
-        elif isinstance(parent, Cluster) and parent.related_album:
-            yield parent.related_album
+    @abstractmethod
+    def set_coverart(self, obj):
+        pass
 
 
-def set_coverart_album(set_image, coverartimage, album):
-    with ExitStack() as stack:
-        stack.enter_context(album.suspend_metadata_images_update)
-        set_image(album, coverartimage)
-        for track in album.tracks:
-            stack.enter_context(track.suspend_metadata_images_update)
-            set_image(track, coverartimage)
-        for file in album.iterfiles():
-            set_image(file, coverartimage)
-            file.update(signal=False)
-    album.update(update_tracks=False)
+class CoverArtSetterAlbum(CoverArtSetter):
+
+    def set_coverart(self, album):
+        with ExitStack() as stack:
+            stack.enter_context(album.suspend_metadata_images_update)
+            self.set_image(album)
+            for track in album.tracks:
+                stack.enter_context(track.suspend_metadata_images_update)
+                self.set_image(track)
+            for file in album.iterfiles():
+                self.set_image(file)
+                file.update(signal=False)
+        album.update(update_tracks=False)
 
 
-def set_coverart_filelist(set_image, coverartimage, filelist):
-    parents = set()
-    with ExitStack() as stack:
-        stack.enter_context(filelist.suspend_metadata_images_update)
-        set_image(filelist, coverartimage)
-        for file in filelist.iterfiles():
-            for parent in iter_file_parents(file):
-                stack.enter_context(parent.suspend_metadata_images_update)
-                parents.add(parent)
-            set_image(file, coverartimage)
-            file.update(signal=False)
-        for parent in parents:
-            set_image(parent, coverartimage)
-            if isinstance(parent, Album):
-                parent.update(update_tracks=False)
-            else:
-                parent.update()
-    filelist.update()
+class CoverArtSetterFileList(CoverArtSetter):
+
+    @staticmethod
+    def iter_file_parents(file):
+        parent = file.parent_item
+        if parent:
+            yield parent
+            if isinstance(parent, Track) and parent.album:
+                yield parent.album
+            elif isinstance(parent, Cluster) and parent.related_album:
+                yield parent.related_album
+
+    def set_coverart(self, filelist):
+        parents = set()
+        with ExitStack() as stack:
+            stack.enter_context(filelist.suspend_metadata_images_update)
+            self.set_image(filelist)
+            for file in filelist.iterfiles():
+                for parent in self.iter_file_parents(file):
+                    stack.enter_context(parent.suspend_metadata_images_update)
+                    parents.add(parent)
+                self.set_image(file)
+                file.update(signal=False)
+            for parent in parents:
+                self.set_image(parent)
+                if isinstance(parent, Album):
+                    parent.update(update_tracks=False)
+                else:
+                    parent.update()
+        filelist.update()
 
 
-def set_coverart_file(set_image, coverartimage, file):
-    set_image(file, coverartimage)
-    file.update()
+class CoverArtSetterFile(CoverArtSetter):
+
+    def set_coverart(self, file):
+        self.set_image(file)
+        file.update()
 
 
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
@@ -325,20 +339,25 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         config = get_config()
         if config.setting['load_image_behavior'] == 'replace':
-            setter = CoverArtSetter(CoverArtSetterMode.REPLACE, coverartimage)
+            mode = CoverArtSetterMode.REPLACE
             debug_info = "Replacing with dropped %r in %r"
         else:
-            setter = CoverArtSetter(CoverArtSetterMode.APPEND, coverartimage)
+            mode = CoverArtSetterMode.APPEND
             debug_info = "Appending dropped %r to %r"
 
         if isinstance(self.item, Album):
-            set_coverart_album(setter.set_image, coverartimage, self.item)
+            setter_class = CoverArtSetterAlbum
         elif isinstance(self.item, FileListItem):
-            set_coverart_filelist(setter.set_image, coverartimage, self.item)
+            setter_class = CoverArtSetterFileList
         elif isinstance(self.item, File):
-            set_coverart_file(setter.set_image, coverartimage, self.item)
+            setter_class = CoverArtSetterFile
         else:
+            setter_class = None
             debug_info = "Dropping %r to %r is not handled"
+
+        if setter_class is not None:
+            setter = setter_class(mode, coverartimage)
+            setter.set_coverart(self.item)
 
         log.debug(debug_info, coverartimage, self.item)
         return coverartimage
