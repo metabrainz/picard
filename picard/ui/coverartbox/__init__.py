@@ -92,6 +92,44 @@ def iter_file_parents(file):
             yield parent.related_album
 
 
+def set_coverart_album(set_image, coverartimage, album):
+    with ExitStack() as stack:
+        stack.enter_context(album.suspend_metadata_images_update)
+        set_image(album, coverartimage)
+        for track in album.tracks:
+            stack.enter_context(track.suspend_metadata_images_update)
+            set_image(track, coverartimage)
+        for file in album.iterfiles():
+            set_image(file, coverartimage)
+            file.update(signal=False)
+    album.update(update_tracks=False)
+
+
+def set_coverart_filelist(set_image, coverartimage, filelist):
+    parents = set()
+    with ExitStack() as stack:
+        stack.enter_context(filelist.suspend_metadata_images_update)
+        set_image(filelist, coverartimage)
+        for file in filelist.iterfiles():
+            for parent in iter_file_parents(file):
+                stack.enter_context(parent.suspend_metadata_images_update)
+                parents.add(parent)
+            set_image(file, coverartimage)
+            file.update(signal=False)
+        for parent in parents:
+            set_image(parent, coverartimage)
+            if isinstance(parent, Album):
+                parent.update(update_tracks=False)
+            else:
+                parent.update()
+    filelist.update()
+
+
+def set_coverart_file(set_image, coverartimage, file):
+    set_image(file, coverartimage)
+    file.update()
+
+
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
@@ -269,41 +307,6 @@ class CoverArtBox(QtWidgets.QGroupBox):
             log.warning("Can't load image: %s", e)
             return
 
-    def _set_coverart_album(self, set_image, coverartimage, album):
-        with ExitStack() as stack:
-            stack.enter_context(album.suspend_metadata_images_update)
-            set_image(album, coverartimage)
-            for track in album.tracks:
-                stack.enter_context(track.suspend_metadata_images_update)
-                set_image(track, coverartimage)
-            for file in album.iterfiles():
-                set_image(file, coverartimage)
-                file.update(signal=False)
-        album.update(update_tracks=False)
-
-    def _set_coverart_filelist(self, set_image, coverartimage, filelist):
-        parents = set()
-        with ExitStack() as stack:
-            stack.enter_context(filelist.suspend_metadata_images_update)
-            set_image(filelist, coverartimage)
-            for file in filelist.iterfiles():
-                for parent in iter_file_parents(file):
-                    stack.enter_context(parent.suspend_metadata_images_update)
-                    parents.add(parent)
-                set_image(file, coverartimage)
-                file.update(signal=False)
-            for parent in parents:
-                set_image(parent, coverartimage)
-                if isinstance(parent, Album):
-                    parent.update(update_tracks=False)
-                else:
-                    parent.update()
-        filelist.update()
-
-    def _set_coverart_file(self, set_image, coverartimage, file):
-        set_image(file, coverartimage)
-        file.update()
-
     def _try_load_remote_image(self, url, data):
         coverartimage = CoverArtImage(
             url=url.toString(),
@@ -320,11 +323,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
             debug_info = "Appending dropped %r to %r"
 
         if isinstance(self.item, Album):
-            self._set_coverart_album(set_image, coverartimage, self.item)
+            set_coverart_album(set_image, coverartimage, self.item)
         elif isinstance(self.item, FileListItem):
-            self._set_coverart_filelist(set_image, coverartimage, self.item)
+            set_coverart_filelist(set_image, coverartimage, self.item)
         elif isinstance(self.item, File):
-            self._set_coverart_file(set_image, coverartimage, self.item)
+            set_coverart_file(set_image, coverartimage, self.item)
         else:
             debug_info = "Dropping %r to %r is not handled"
 
