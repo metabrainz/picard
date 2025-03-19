@@ -12,7 +12,6 @@ MACOS_VERSION_MINOR=${MACOS_VERSION_MINOR%.*}
 APP_BUNDLE="MusicBrainz Picard.app"
 
 CODESIGN=0
-NOTARIZE=0
 KEYCHAIN_PATH=picard.keychain
 KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
 CODESIGN_IDENTITY="MetaBrainz Foundation Inc."
