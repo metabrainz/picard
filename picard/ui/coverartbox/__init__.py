@@ -83,9 +83,10 @@ class CoverArtSetterMode(IntEnum):
 
 class CoverArtSetter(ABC):
 
-    def __init__(self, mode, coverartimage):
+    def __init__(self, mode, coverartimage, source_obj):
         self.mode = mode
         self.coverartimage = coverartimage
+        self.source_obj = source_obj
 
     def set_image(self, obj):
         if self.mode == CoverArtSetterMode.REPLACE:
@@ -95,13 +96,14 @@ class CoverArtSetter(ABC):
         obj.metadata_images_changed.emit()
 
     @abstractmethod
-    def set_coverart(self, obj):
+    def set_coverart(self):
         pass
 
 
 class CoverArtSetterAlbum(CoverArtSetter):
 
-    def set_coverart(self, album):
+    def set_coverart(self):
+        album = self.source_obj
         with ExitStack() as stack:
             stack.enter_context(album.suspend_metadata_images_update)
             self.set_image(album)
@@ -126,7 +128,8 @@ class CoverArtSetterFileList(CoverArtSetter):
             elif isinstance(parent, Cluster) and parent.related_album:
                 yield parent.related_album
 
-    def set_coverart(self, filelist):
+    def set_coverart(self):
+        filelist = self.source_obj
         parents = set()
         with ExitStack() as stack:
             stack.enter_context(filelist.suspend_metadata_images_update)
@@ -148,7 +151,8 @@ class CoverArtSetterFileList(CoverArtSetter):
 
 class CoverArtSetterFile(CoverArtSetter):
 
-    def set_coverart(self, file):
+    def set_coverart(self):
+        file = self.source_obj
         self.set_image(file)
         file.update()
 
@@ -356,8 +360,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
             debug_info = "Dropping %r to %r is not handled"
 
         if setter_class is not None:
-            setter = setter_class(mode, coverartimage)
-            setter.set_coverart(self.item)
+            setter = setter_class(mode, coverartimage, self.item)
+            setter.set_coverart()
 
         log.debug(debug_info, coverartimage, self.item)
         return coverartimage
