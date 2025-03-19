@@ -35,10 +35,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from abc import (
-    ABC,
-    abstractmethod,
-)
 from contextlib import ExitStack
 from enum import IntEnum
 from functools import partial
@@ -81,12 +77,22 @@ class CoverArtSetterMode(IntEnum):
     REPLACE = 1
 
 
-class CoverArtSetter(ABC):
+class CoverArtSetter:
 
     def __init__(self, mode, coverartimage, source_obj):
         self.mode = mode
         self.coverartimage = coverartimage
         self.source_obj = source_obj
+
+        if isinstance(self.source_obj, Album):
+            self.set_coverart = self.set_coverart_album
+        elif isinstance(self.source_obj, FileListItem):
+            self.set_coverart = self.set_coverart_filelist
+        elif isinstance(self.source_obj, File):
+            self.set_coverart = self.set_coverart_file
+
+    def set_coverart(self):
+        return False
 
     def set_image(self, obj):
         if self.mode == CoverArtSetterMode.REPLACE:
@@ -95,14 +101,7 @@ class CoverArtSetter(ABC):
         obj.metadata.images.append(self.coverartimage)
         obj.metadata_images_changed.emit()
 
-    @abstractmethod
-    def set_coverart(self):
-        pass
-
-
-class CoverArtSetterAlbum(CoverArtSetter):
-
-    def set_coverart(self):
+    def set_coverart_album(self):
         album = self.source_obj
         with ExitStack() as stack:
             stack.enter_context(album.suspend_metadata_images_update)
@@ -114,9 +113,7 @@ class CoverArtSetterAlbum(CoverArtSetter):
                 self.set_image(file)
                 file.update(signal=False)
         album.update(update_tracks=False)
-
-
-class CoverArtSetterFileList(CoverArtSetter):
+        return True
 
     @staticmethod
     def iter_file_parents(file):
@@ -128,7 +125,7 @@ class CoverArtSetterFileList(CoverArtSetter):
             elif isinstance(parent, Cluster) and parent.related_album:
                 yield parent.related_album
 
-    def set_coverart(self):
+    def set_coverart_filelist(self):
         filelist = self.source_obj
         parents = set()
         with ExitStack() as stack:
@@ -147,14 +144,13 @@ class CoverArtSetterFileList(CoverArtSetter):
                 else:
                     parent.update()
         filelist.update()
+        return True
 
-
-class CoverArtSetterFile(CoverArtSetter):
-
-    def set_coverart(self):
+    def set_coverart_file(self):
         file = self.source_obj
         self.set_image(file)
         file.update()
+        return True
 
 
 HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
@@ -349,19 +345,9 @@ class CoverArtBox(QtWidgets.QGroupBox):
             mode = CoverArtSetterMode.APPEND
             debug_info = "Appending dropped %r to %r"
 
-        if isinstance(self.item, Album):
-            setter_class = CoverArtSetterAlbum
-        elif isinstance(self.item, FileListItem):
-            setter_class = CoverArtSetterFileList
-        elif isinstance(self.item, File):
-            setter_class = CoverArtSetterFile
-        else:
-            setter_class = None
+        setter = CoverArtSetter(mode, coverartimage, self.item)
+        if not setter.set_coverart():
             debug_info = "Dropping %r to %r is not handled"
-
-        if setter_class is not None:
-            setter = setter_class(mode, coverartimage, self.item)
-            setter.set_coverart()
 
         log.debug(debug_info, coverartimage, self.item)
         return coverartimage
