@@ -118,7 +118,6 @@ class CoverArtSetter:
                 self.set_image(file)
                 file.update(signal=False)
             for parent in parents:
-                self.set_image(parent)
                 if isinstance(parent, Album):
                     parent.update(update_tracks=False)
                 else:
