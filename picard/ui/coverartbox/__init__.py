@@ -256,16 +256,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
         config = get_config()
         if config.setting['load_image_behavior'] == 'replace':
             mode = CoverArtSetterMode.REPLACE
-            debug_info = "Replacing with dropped %r in %r"
         else:
             mode = CoverArtSetterMode.APPEND
-            debug_info = "Appending dropped %r to %r"
 
         setter = CoverArtSetter(mode, coverartimage, self.item)
-        if not setter.set_coverart():
-            debug_info = "Dropping %r to %r is not handled"
+        setter.set_coverart()
 
-        log.debug(debug_info, coverartimage, self.item)
         return coverartimage
 
     def choose_local_file(self):

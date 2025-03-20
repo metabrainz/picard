@@ -38,6 +38,7 @@
 from contextlib import ExitStack
 from enum import IntEnum
 
+from picard import log
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
@@ -65,17 +66,22 @@ class CoverArtSetter:
             self.set_coverart = self.set_coverart_file
 
     def set_coverart(self):
+        log.debug("No set_coverart handler for %r", self.source_obj)
         return False
 
     def set_image(self, obj):
         if self.mode == CoverArtSetterMode.REPLACE:
             obj.metadata.images.strip_front_images()
+            log.debug("Replacing images with %r in %r", self.coverartimage, obj)
+        else:
+            log.debug("Appending image %r to %r", self.coverartimage, obj)
 
         obj.metadata.images.append(self.coverartimage)
         obj.metadata_images_changed.emit()
 
     def set_coverart_album(self):
         album = self.source_obj
+        log.debug("set_coverart_album %r", album)
         with ExitStack() as stack:
             stack.enter_context(album.suspend_metadata_images_update)
             self.set_image(album)
@@ -100,6 +106,7 @@ class CoverArtSetter:
 
     def set_coverart_filelist(self):
         filelist = self.source_obj
+        log.debug("set_coverart_filelist %r", filelist)
         parents = set()
         with ExitStack() as stack:
             stack.enter_context(filelist.suspend_metadata_images_update)
@@ -121,6 +128,7 @@ class CoverArtSetter:
 
     def set_coverart_file(self):
         file = self.source_obj
+        log.debug("set_coverart_file %r", file)
         self.set_image(file)
         file.update()
         return True
