@@ -25,6 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from html import escape
 
 from PyQt6 import (
     QtCore,
@@ -54,6 +55,7 @@ from picard.ui.columns import (
     Column,
     Columns,
 )
+from picard.ui.formattedtextdelegate import FormattedTextDelegate
 from picard.ui.forms.ui_cdlookup import Ui_CDLookupDialog
 
 
@@ -70,6 +72,7 @@ _COLUMNS = Columns((
 ))
 
 _DATA_COLUMN = _COLUMNS.pos('album')
+_FORMAT_COLUMN = _COLUMNS.pos('format')
 
 
 class CDLookupDialog(PicardDialog):
@@ -88,6 +91,8 @@ class CDLookupDialog(PicardDialog):
         release_list.setAlternatingRowColors(True)
         labels = [_(c.title) for c in _COLUMNS]
         release_list.setHeaderLabels(labels)
+        delegate = FormattedTextDelegate(release_list)
+        release_list.setItemDelegateForColumn(_FORMAT_COLUMN, delegate)
         self.ui.submit_button.setIcon(QtGui.QIcon(":/images/cdrom.png"))
         if self.releases:
             def myjoin(values):
@@ -110,7 +115,7 @@ class CDLookupDialog(PicardDialog):
                     'labels': myjoin(labels),
                     'catnos': myjoin(catalog_numbers),
                     'barcode': barcode,
-                    'format': media_formats_from_node(release.get('media', [])),
+                    'format': self._get_format(release),
                     'disambiguation': release.get('disambiguation', ''),
                 }
                 for i, column in enumerate(_COLUMNS):
@@ -166,3 +171,16 @@ class CDLookupDialog(PicardDialog):
             config = get_config()
             config.persist[self.dialog_header_state] = state
             log.debug("save_state: %s", self.dialog_header_state)
+
+    def _get_format(self, release):
+        format = escape(media_formats_from_node(release.get('media', [])))
+        selected_medium = self._get_selected_medium(release)
+        if selected_medium:
+            selected_format = escape(selected_medium.get('format', format))
+            format = format.replace(selected_format, f"<b>{selected_format}</b>")
+        return format
+
+    def _get_selected_medium(self, release):
+        for medium in release.get('media', []):
+            if any(disc.get('id') == self.disc.id for disc in medium.get('discs', [])):
+                return medium
