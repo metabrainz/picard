@@ -41,6 +41,7 @@ from picard.i18n import (
 from picard.mbjson import (
     artist_credit_from_node,
     label_info_from_node,
+    media_formats_from_node,
     release_dates_and_countries_from_node,
 )
 from picard.util import (
@@ -97,7 +98,6 @@ class CDLookupDialog(PicardDialog):
             for release in self.releases:
                 labels, catalog_numbers = label_info_from_node(release['label-info'])
                 dates, countries = release_dates_and_countries_from_node(release)
-                medium = self._get_medium(release)
                 barcode = release.get('barcode', '')
                 item = QtWidgets.QTreeWidgetItem(release_list)
                 if disc.mcn and compare_barcodes(barcode, disc.mcn):
@@ -110,7 +110,7 @@ class CDLookupDialog(PicardDialog):
                     'labels': myjoin(labels),
                     'catnos': myjoin(catalog_numbers),
                     'barcode': barcode,
-                    'format': medium.get('format', '') if medium else '',
+                    'format': media_formats_from_node(release.get('media', [])),
                     'disambiguation': release.get('disambiguation', ''),
                 }
                 for i, column in enumerate(_COLUMNS):
@@ -166,8 +166,3 @@ class CDLookupDialog(PicardDialog):
             config = get_config()
             config.persist[self.dialog_header_state] = state
             log.debug("save_state: %s", self.dialog_header_state)
-
-    def _get_medium(self, release):
-        for medium in release.get('media', []):
-            if any(disc.get('id') == self.disc.id for disc in medium.get('discs', [])):
-                return medium
