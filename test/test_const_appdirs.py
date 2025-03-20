@@ -67,12 +67,12 @@ class AppPathsTest(PicardTestCase):
 
     @unittest.skipUnless(IS_WIN, "Windows test")
     def test_plugin_folder_win(self):
-        self.assert_home_path_equals('~/AppData/Local/MusicBrainz/Picard/plugins', plugin_folder())
+        self.assert_home_path_equals('~/AppData/Roaming/MusicBrainz/Picard/plugins3', plugin_folder())
 
     @unittest.skipUnless(IS_MACOS, "macOS test")
     def test_plugin_folder_macos(self):
-        self.assert_home_path_equals('~/Library/Preferences/MusicBrainz/Picard/plugins', plugin_folder())
+        self.assert_home_path_equals('~/Library/Application Support/MusicBrainz/Picard/plugins3', plugin_folder())
 
     @unittest.skipUnless(IS_LINUX, "Linux test")
     def test_plugin_folder_linux(self):
-        self.assert_home_path_equals('~/.config/MusicBrainz/Picard/plugins', plugin_folder())
+        self.assert_home_path_equals('~/.local/share/MusicBrainz/Picard/plugins3', plugin_folder())
