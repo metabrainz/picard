@@ -29,13 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
-from collections import (
-    defaultdict,
-    namedtuple,
-)
 from html import escape
-import re
 import traceback
 
 from PyQt6 import (
@@ -57,10 +51,14 @@ from picard.i18n import (
 from picard.track import Track
 from picard.util import (
     bytes2human,
-    format_time,
     open_local_path,
 )
 
+from .utils import (
+    format_file_info,
+    format_tracklist,
+    text_as_html,
+)
 from .widgets import (
     ArtworkCoverWidget,
     ArtworkTableExisting,
@@ -284,84 +282,6 @@ class InfoDialog(PicardDialog):
         filename = data.tempfile_filename
         if filename:
             open_local_path(filename)
-
-
-def format_file_info(file_):
-    info = []
-    info.append((_("Filename:"), file_.filename))
-    if '~format' in file_.orig_metadata:
-        info.append((_("Format:"), file_.orig_metadata['~format']))
-    if '~filesize' in file_.orig_metadata:
-        size = file_.orig_metadata['~filesize']
-        try:
-            sizestr = "%s (%s)" % (bytes2human.decimal(size), bytes2human.binary(size))
-        except ValueError:
-            sizestr = _("unknown")
-        info.append((_("Size:"), sizestr))
-    if file_.orig_metadata.length:
-        info.append((_("Length:"), format_time(file_.orig_metadata.length)))
-    if '~bitrate' in file_.orig_metadata:
-        info.append((_("Bitrate:"), "%s kbps" % file_.orig_metadata['~bitrate']))
-    if '~sample_rate' in file_.orig_metadata:
-        info.append((_("Sample rate:"), "%s Hz" % file_.orig_metadata['~sample_rate']))
-    if '~bits_per_sample' in file_.orig_metadata:
-        info.append((_("Bits per sample:"), str(file_.orig_metadata['~bits_per_sample'])))
-    if '~channels' in file_.orig_metadata:
-        ch = file_.orig_metadata['~channels']
-        if ch == '1':
-            ch = _("Mono")
-        elif ch == '2':
-            ch = _("Stereo")
-        info.append((_("Channels:"), ch))
-    return '<br/>'.join(map(lambda i: '<b>%s</b> %s' %
-                            (escape(i[0]), escape(i[1])), info))
-
-
-def format_tracklist(cluster):
-    info = []
-    info.append('<b>%s</b> %s' % (_("Album:"), escape(cluster.metadata['album'])))
-    info.append('<b>%s</b> %s' % (_("Artist:"), escape(cluster.metadata['albumartist'])))
-    info.append("")
-    TrackListItem = namedtuple('TrackListItem', 'number, title, artist, length')
-    tracklists = defaultdict(list)
-    if isinstance(cluster, Album):
-        objlist = cluster.tracks
-    else:
-        objlist = cluster.iterfiles(False)
-    for obj_ in objlist:
-        m = obj_.metadata
-        artist = m['artist'] or m['albumartist'] or cluster.metadata['albumartist']
-        track = TrackListItem(m['tracknumber'], m['title'], artist,
-                              m['~length'])
-        tracklists[obj_.discnumber].append(track)
-
-    def sorttracknum(track):
-        try:
-            return int(track.number)
-        except ValueError:
-            try:
-                # This allows to parse values like '3' but also '3/10'
-                m = re.search(r'^\d+', track.number)
-                return int(m.group(0))
-            except AttributeError:
-                return 0
-
-    ndiscs = len(tracklists)
-    for discnumber in sorted(tracklists):
-        tracklist = tracklists[discnumber]
-        if ndiscs > 1:
-            info.append('<b>%s</b>' % (_("Disc %d") % discnumber))
-        lines = ['%s %s - %s (%s)' % item for item in sorted(tracklist, key=sorttracknum)]
-        info.append('<b>%s</b><br />%s<br />' % (_("Tracklist:"),
-                    '<br />'.join(escape(s).replace(' ', '&nbsp;') for s in lines)))
-    return '<br/>'.join(info)
-
-
-def text_as_html(text):
-    return '<br />'.join(escape(str(text))
-        .replace('\t', ' ')
-        .replace(' ', '&nbsp;')
-        .splitlines())
 
 
 class FileInfoDialog(InfoDialog):
