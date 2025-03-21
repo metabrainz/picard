@@ -205,6 +205,34 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.add("artist", old=["Artist 1"], new=["Artist 2"], removable=False)
         self.assertEqual(self.tag_diff.status["artist"], TagStatus.CHANGED | TagStatus.NOTREMOVABLE)
 
+    def test_update_tag_names(self):
+        self.tag_diff.add("title", old=["Title 1"], new=["Title 2"])
+        self.tag_diff.add("album", old=["Album 1"])
+        self.tag_diff.add("artist", new=["Artist 2"])
+        self.tag_diff.update_tag_names()
+        self.assertEqual(self.tag_diff.tag_names, ["album", "artist", "title"])
+
+    def test_update_tag_names_top_tags(self):
+        self.tag_diff.add("title", old=["Title 1"], new=["Title 2"])
+        self.tag_diff.add("album", old=["Album 1"])
+        self.tag_diff.add("artist", new=["Artist 2"])
+        self.tag_diff.update_tag_names(top_tags={"title"})
+        self.assertEqual(self.tag_diff.tag_names, ["title", "album", "artist"])
+
+    def test_update_tag_names_changes_first(self):
+        self.tag_diff.add("title", old=["Title 1"], new=["Title 2"])
+        self.tag_diff.add("album", old=["Album 1"])
+        self.tag_diff.add("artist", new=["Artist 2"])
+        self.tag_diff.update_tag_names(changes_first=True)
+        self.assertEqual(self.tag_diff.tag_names, ["title", "artist", "album"])
+
+    def test_update_tag_names_top_tags_and_changes(self):
+        self.tag_diff.add("title", old=["Title 1"])
+        self.tag_diff.add("album", old=["Album 1"])
+        self.tag_diff.add("artist", new=["Artist 2"])
+        self.tag_diff.update_tag_names(changes_first=True, top_tags={"title"})
+        self.assertEqual(self.tag_diff.tag_names, ["artist", "title", "album"])
+
     @staticmethod
     def _special_handler(old, new):
         for old_value, new_value in zip(old, new):
