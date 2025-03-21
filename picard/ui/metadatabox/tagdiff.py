@@ -41,6 +41,7 @@ from collections import (
 from picard.i18n import ngettext
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.util import format_time
+from picard.util.tags import display_tag_name
 
 
 class TagStatus:
@@ -311,3 +312,33 @@ class TagDiff:
             if status & s == s:
                 return s
         return TagStatus.UNCHANGED
+
+    def update_tag_names(self, changes_first=False, top_tags=None):
+        """
+        Updates the list of tag names to be displayed.
+
+        The tag names are sorted based on their name with the top_tags, and optionally
+        the changed tags, first.
+
+        Args:
+            changes_first (bool): Whether to display changed tags first.
+            top_tags (set): Set of tags to always be displayed at the top.
+        """
+        all_tags = set(list(self.old) + list(self.new))
+        common_tags = [tag for tag in top_tags if tag in all_tags] if top_tags else []
+        tag_names = common_tags + sorted(all_tags.difference(common_tags),
+                                         key=lambda x: display_tag_name(x).lower())
+
+        if changes_first:
+            tags_by_status = {}
+
+            for tag in tag_names:
+                tags_by_status.setdefault(self.tag_status(tag), []).append(tag)
+
+            for status in (TagStatus.CHANGED, TagStatus.ADDED,
+                           TagStatus.REMOVED, TagStatus.UNCHANGED):
+                self.tag_names += tags_by_status.pop(status, [])
+        else:
+            self.tag_names = [
+                tag for tag in tag_names if
+                self.status[tag] != TagStatus.EMPTY]
