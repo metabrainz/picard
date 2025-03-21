@@ -608,25 +608,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
                 tag_diff.objects += 1
 
-        all_tags = set(list(tag_diff.old) + list(tag_diff.new))
-        common_tags = [tag for tag in top_tags if tag in all_tags]
-        tag_names = common_tags + sorted(all_tags.difference(common_tags),
-                                         key=lambda x: display_tag_name(x).lower())
-
-        if config.persist['show_changes_first']:
-            tags_by_status = {}
-
-            for tag in tag_names:
-                tags_by_status.setdefault(tag_diff.tag_status(tag), []).append(tag)
-
-            for status in (TagStatus.CHANGED, TagStatus.ADDED,
-                           TagStatus.REMOVED, TagStatus.UNCHANGED):
-                tag_diff.tag_names += tags_by_status.pop(status, [])
-        else:
-            tag_diff.tag_names = [
-                tag for tag in tag_names if
-                tag_diff.status[tag] != TagStatus.EMPTY]
-
+        tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
         return tag_diff
 
     def _update_items(self, result=None, error=None):
