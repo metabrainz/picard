@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2009, 2018-2023 Philipp Wolfer
+# Copyright (C) 2009, 2018-2023, 2025 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013-2014, 2018, 2020-2021, 2023-2024 Laurent Monin
@@ -25,6 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from html import escape
 
 from PyQt6 import (
     QtCore,
@@ -34,10 +35,14 @@ from PyQt6 import (
 
 from picard import log
 from picard.config import get_config
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.mbjson import (
     artist_credit_from_node,
     label_info_from_node,
+    media_formats_from_node,
     release_dates_and_countries_from_node,
 )
 from picard.util import (
@@ -46,7 +51,28 @@ from picard.util import (
 )
 
 from picard.ui import PicardDialog
+from picard.ui.columns import (
+    Column,
+    Columns,
+)
+from picard.ui.formattedtextdelegate import FormattedTextDelegate
 from picard.ui.forms.ui_cdlookup import Ui_CDLookupDialog
+
+
+_COLUMNS = Columns((
+    Column(N_("Album"), 'album'),
+    Column(N_("Artist"), 'artist'),
+    Column(N_("Date"), 'dates'),
+    Column(N_("Country"), 'countries'),
+    Column(N_("Labels"), 'labels'),
+    Column(N_("Catalog #s"), 'catnos'),
+    Column(N_("Barcode"), 'barcode'),
+    Column(N_("Format"), 'format'),
+    Column(N_("Disambiguation"), 'disambiguation'),
+))
+
+_DATA_COLUMN = _COLUMNS.pos('album')
+_FORMAT_COLUMN = _COLUMNS.pos('format')
 
 
 class CDLookupDialog(PicardDialog):
@@ -63,9 +89,10 @@ class CDLookupDialog(PicardDialog):
         release_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         release_list.setSortingEnabled(True)
         release_list.setAlternatingRowColors(True)
-        release_list.setHeaderLabels([_("Album"), _("Artist"), _("Date"), _("Country"),
-                                      _("Labels"), _("Catalog #s"), _("Barcode"),
-                                      _("Disambiguation")])
+        labels = [_(c.title) for c in _COLUMNS]
+        release_list.setHeaderLabels(labels)
+        delegate = FormattedTextDelegate(release_list)
+        release_list.setItemDelegateForColumn(_FORMAT_COLUMN, delegate)
         self.ui.submit_button.setIcon(QtGui.QIcon(":/images/cdrom.png"))
         if self.releases:
             def myjoin(values):
@@ -80,22 +107,27 @@ class CDLookupDialog(PicardDialog):
                 item = QtWidgets.QTreeWidgetItem(release_list)
                 if disc.mcn and compare_barcodes(barcode, disc.mcn):
                     selected = item
-                item.setText(0, release['title'])
-                item.setText(1, artist_credit_from_node(release['artist-credit'])[0])
-                item.setText(2, myjoin(dates))
-                item.setText(3, myjoin(countries))
-                item.setText(4, myjoin(labels))
-                item.setText(5, myjoin(catalog_numbers))
-                item.setText(6, barcode)
-                item.setText(7, release.get('disambiguation', ''))
-                item.setData(0, QtCore.Qt.ItemDataRole.UserRole, release['id'])
+                values = {
+                    'album': release['title'],
+                    'artist': artist_credit_from_node(release['artist-credit'])[0],
+                    'dates': myjoin(dates),
+                    'countries': myjoin(countries),
+                    'labels': myjoin(labels),
+                    'catnos': myjoin(catalog_numbers),
+                    'barcode': barcode,
+                    'format': self._get_format(release),
+                    'disambiguation': release.get('disambiguation', ''),
+                }
+                for i, column in enumerate(_COLUMNS):
+                    item.setText(i, values.get(column.key, ""))
+                item.setData(_DATA_COLUMN, QtCore.Qt.ItemDataRole.UserRole, release['id'])
             release_list.setCurrentItem(selected or release_list.topLevelItem(0))
             self.ui.ok_button.setEnabled(True)
             for i in range(release_list.columnCount() - 1):
                 release_list.resizeColumnToContents(i)
             # Sort by descending date, then ascending country
-            release_list.sortByColumn(3, QtCore.Qt.SortOrder.AscendingOrder)
-            release_list.sortByColumn(2, QtCore.Qt.SortOrder.DescendingOrder)
+            release_list.sortByColumn(_COLUMNS.pos('countries'), QtCore.Qt.SortOrder.AscendingOrder)
+            release_list.sortByColumn(_COLUMNS.pos('dates'), QtCore.Qt.SortOrder.DescendingOrder)
         else:
             self.ui.results_view.setCurrentIndex(1)
         if self.disc.submission_url:
@@ -110,7 +142,7 @@ class CDLookupDialog(PicardDialog):
     def accept(self):
         release_list = self.ui.release_list
         for index in release_list.selectionModel().selectedRows():
-            release_id = release_list.itemFromIndex(index).data(0, QtCore.Qt.ItemDataRole.UserRole)
+            release_id = release_list.itemFromIndex(index).data(_DATA_COLUMN, QtCore.Qt.ItemDataRole.UserRole)
             self.tagger.load_album(release_id, discid=self.disc.id)
         super().accept()
 
@@ -139,3 +171,16 @@ class CDLookupDialog(PicardDialog):
             config = get_config()
             config.persist[self.dialog_header_state] = state
             log.debug("save_state: %s", self.dialog_header_state)
+
+    def _get_format(self, release):
+        format = escape(media_formats_from_node(release.get('media', [])))
+        selected_medium = self._get_selected_medium(release)
+        if selected_medium:
+            selected_format = escape(selected_medium.get('format', format))
+            format = format.replace(selected_format, f"<b>{selected_format}</b>")
+        return format
+
+    def _get_selected_medium(self, release):
+        for medium in release.get('media', []):
+            if any(disc.get('id') == self.disc.id for disc in medium.get('discs', [])):
+                return medium

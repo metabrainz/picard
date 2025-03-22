@@ -185,7 +185,7 @@ Translation: Picard will have problems with non-english characters
 def encode_filename(filename):
     """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, str):
-        if os.path.supports_unicode_filenames and sys.platform != "darwin":
+        if os.path.supports_unicode_filenames and not IS_MACOS:
             return filename
         else:
             return filename.encode(_io_encoding, 'replace')
@@ -300,8 +300,18 @@ def samefile(path1, path2):
 
 
 def format_time(ms, display_zero=False):
-    """Formats time in milliseconds to a string representation."""
+    """Formats time in milliseconds to a string representation.
+
+    Args:
+        ms: Time in milliseconds, must be positive.
+        display_zero: If False, times of 0ms are displayed as '?:??'
+    Raises:
+        ValueError: If `ms` is negative.
+        TypeError: If `ms` is not convertable to an integer.
+    """
     ms = float(ms)
+    if ms < 0:
+        raise ValueError("ms must be greater than or equal to 0")
     if ms == 0 and not display_zero:
         return "?:??"
     duration_seconds = round(ms / 1000)

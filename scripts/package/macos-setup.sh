@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-# Install gettext
-brew install gettext
-brew link gettext --force
-
 # Install requested Python version
 if [ -n "$PYTHON_VERSION" ]; then
   PYTHON_FILENAME=python-$PYTHON_VERSION.pkg

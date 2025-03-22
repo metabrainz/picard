@@ -55,7 +55,7 @@ if os_name == 'Windows':
     binaries += [('discid.dll', '.')]
     data_files.append((os.path.join('resources', 'win10', '*'), '.'))
 
-if os_name == 'Darwin':
+elif os_name == 'Darwin':
     binaries += [('libdiscid.0.dylib', '.')]
 
 if os.path.isfile(fpcalc_name):
@@ -78,8 +78,6 @@ a = Analysis(['tagger.py'],
              hookspath=[],
              runtime_hooks=runtime_hooks,
              excludes=[],
-             win_no_prefer_redirects=False,
-             win_private_assemblies=False,
              cipher=block_cipher)
 
 
@@ -115,7 +113,10 @@ else:
               upx=False,
               icon='picard.ico',
               version='win-version-info.txt',
-              console=False)
+              console=False,
+              # macOS code signing
+              codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
+              entitlements_file='./scripts/package/entitlements.plist')
 
 
     coll = COLLECT(exe,
@@ -167,7 +168,7 @@ else:
 
         # Add additional supported file types by extension
         from picard.formats import supported_formats
-        for extensions, name in supported_formats():
+        for extensions, _name in supported_formats():
             info_plist['CFBundleDocumentTypes'].append({
                 'CFBundleTypeExtensions': [ext[1:] for ext in extensions],
                 'CFBundleTypeRole': 'Editor',
@@ -176,6 +177,6 @@ else:
         app = BUNDLE(coll,
                      name='{} {}.app'.format(PICARD_ORG_NAME, PICARD_APP_NAME),
                      icon='picard.icns',
-                     bundle_identifier=None,
+                     bundle_identifier=PICARD_APP_ID,
                      info_plist=info_plist
                      )

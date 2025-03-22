@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
 # Copyright (C) 2010 fatih
-# Copyright (C) 2010-2011, 2014, 2018-2024 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2025 Philipp Wolfer
 # Copyright (C) 2012, 2014, 2018 Wieland Hoffmann
 # Copyright (C) 2013 Ionuț Ciocîrlan
 # Copyright (C) 2013-2014, 2018-2024 Laurent Monin
@@ -58,11 +58,14 @@ from picard.const.sys import (
 from picard.i18n import gettext as _
 from picard.util import (
     IgnoreUpdatesContext,
+    _io_encoding,
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
+    decode_filename,
     detect as charset_detect,
     detect_file_encoding,
+    encode_filename,
     encoded_queryargs,
     extract_year_from_date,
     find_best_match,
@@ -258,10 +261,17 @@ class FormatTimeTest(PicardTestCase):
         self.assertEqual("0:00", util.format_time(0, display_zero=True))
         self.assertEqual("3:00", util.format_time(179750))
         self.assertEqual("3:00", util.format_time(179500))
+        self.assertEqual("3:00", util.format_time(179500.5))
         self.assertEqual("2:59", util.format_time(179499))
         self.assertEqual("59:59", util.format_time(3599499))
         self.assertEqual("1:00:00", util.format_time(3599500))
         self.assertEqual("1:02:59", util.format_time(3779499))
+        with self.assertRaises(ValueError):
+            util.format_time(-40000)
+        with self.assertRaises(ValueError):
+            util.format_time("Hello World")
+        with self.assertRaises(TypeError):
+            util.format_time(list())
 
 
 class HiddenFileTest(PicardTestCase):
@@ -772,6 +782,42 @@ class BuildQUrlTest(PicardTestCase):
         expected = 'http://example.com?foo= %2520%26%3B&bar=%3D%25%2B%3Fabc'
         result = build_qurl('example.com', queryargs=query).toDisplayString()
         self.assertEqual(expected, result)
+
+
+class EncodeFilenameTest(PicardTestCase):
+
+    @unittest.skipUnless(
+        os.path.supports_unicode_filenames and not IS_MACOS,
+        'for filesystem with Unicode support',
+    )
+    def test_encode_fs_unicode_support(self):
+        path = '/some/file-ä.ext'
+        self.assertEqual(path, encode_filename(path))
+
+    @unittest.skipIf(
+        os.path.supports_unicode_filenames and not IS_MACOS,
+        'for filesystem without Unicode support',
+    )
+    def test_encode_fs_no_unicode_support(self):
+        path = '/some/file-ä.ext'
+        self.assertEqual(path.encode(_io_encoding), encode_filename(path))
+
+
+class DecodeFilenameTest(PicardTestCase):
+
+    def test_decode_string(self):
+        path = '/some/file-ä.ext'
+        self.assertEqual(path, decode_filename(path))
+
+    def test_decode_bytes(self):
+        path = '/some/file-ä.ext'
+        self.assertEqual(path, decode_filename(path.encode(_io_encoding)))
+
+    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
+    def test_decode_bytes_invalid_encoding(self):
+        path = '/some/file-ä.ext'.encode('latin-1')
+        with self.assertRaises(UnicodeDecodeError):
+            decode_filename(path)
 
 
 class NormpathTest(PicardTestCase):

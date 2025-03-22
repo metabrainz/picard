@@ -2,8 +2,8 @@ discid~=1.0
 Markdown~=3.2
 mutagen~=1.37
 PyJWT~=2.0
-pyobjc-core>=6.2, <11; sys_platform == 'darwin'
-pyobjc-framework-Cocoa>=6.2, <11; sys_platform == 'darwin'
+pyobjc-core>=6.2, <12; sys_platform == 'darwin'
+pyobjc-framework-Cocoa>=6.2, <12; sys_platform == 'darwin'
 PyQt6>=6.6.1
 PyQt6-Qt6>=6.6.1
 python-dateutil~=2.7

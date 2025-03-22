@@ -8,22 +8,23 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023
 # Rui Mesquita <rpedro78@gmail.com>, 2006
 # Rui <xymarior@yandex.com>, 2019
+# joaodtx <joao.buckb@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-10 12:02+0100\n"
-"PO-Revision-Date: 2023-08-30 09:27+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2025-03-18 02:44+0000\n"
+"Last-Translator: joaodtx <joao.buckb@gmail.com>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
-"picard/app/pt/>\n"
+"picard/3/app/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.10.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:139
@@ -71,7 +72,7 @@ msgstr "Ficheiros não agrupados"
 #: picard/collection.py:89
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "Erro ao modificar coleções: %(error)s"
 
 #: picard/collection.py:98
 #, python-format

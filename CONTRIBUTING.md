@@ -165,6 +165,7 @@ metadata specifications and to the tag mapping tables used by various audio soft
 - [Kodi - Music Files & Tagging](https://kodi.wiki/view/Music_tagging#Tags_Kodi_reads)
 - [Kodi - Video file tagging](https://kodi.wiki/view/Video_file_tagging#MP4_tag_options)
 - [Quod Libet - Tag Formats & Spec Deviations](https://quodlibet.readthedocs.io/en/latest/development/formats.html)
+- [TagLib Mapping of Properties](https://taglib.org/api/p_propertymapping.html)
 - [Foobar2000:ID3 Tag Mapping - Hydrogenaudio Knowledgebase](https://wiki.hydrogenaud.io/index.php?title=Foobar2000:ID3_Tag_Mapping)
 - [Tag Mapping - Hydrogenaudio Knowledgebase](https://wiki.hydrogenaud.io/index.php?title=Tag_Mapping)
 - [Windows](https://docs.microsoft.com/en-US/windows/win32/wmformat/id3-tag-support)

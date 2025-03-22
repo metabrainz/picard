@@ -1,0 +1,28 @@
+name: Linting
+on: [ push, pull_request ]
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/ruff-action@v3
+        with:
+          version: "latest"
+
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run flake8
+        run: |
+          pip install flake8
+          flake8 picard test --count --show-source --statistics
+
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run isort
+        run: |
+          pip install "isort>=5"
+          isort --check-only --diff --recursive picard test
