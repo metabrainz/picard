@@ -272,3 +272,90 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.tag_ne_handlers['~length_list'] = self._special_handler
         self.tag_diff.add("~length_list", old=["10000", "12000"], new=["11000", "13500"])
         self.assertEqual(self.tag_diff.tag_status("~length_list"), TagStatus.UNCHANGED)
+
+    def test_unchanged_tag_to_json(self):
+        self.tag_diff.add("artist", ["Artist 1"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_json()
+        self.assertEqual(tags, '{"artist": {"old": ["Artist 1"]}}')
+
+    def test_new_tag_to_json(self):
+        self.tag_diff.add("artist", new=["Artist 1"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_json()
+        self.assertEqual(tags, '{"artist": {"new": ["Artist 1"]}}')
+
+    def test_modified_tag_to_json(self):
+        self.tag_diff.add("artist", ["Artist 1"], ["Artist 2"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_json()
+        self.assertEqual(tags, '{"artist": {"old": ["Artist 1"], "new": ["Artist 2"]}}')
+
+    def test_multiple_tags_to_json(self):
+        self.tag_diff.add("artist", ["Artist 1"], ["Artist 2"])
+        self.tag_diff.add("album", ["Album 1"], ["Album 2"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_json()
+        self.assertEqual(tags, '{"album": {"old": ["Album 1"], "new": ["Album 2"]}, "artist": {"old": ["Artist 1"], "new": ["Artist 2"]}}')
+
+    def test_unchanged_tag_to_tsv(self):
+        self.tag_diff.add("artist", ["Artist 1"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'artist\tArtist 1\t\r\n')
+
+    def test_tabbed_tag_to_tsv(self):
+        self.tag_diff.add("artist", ["Artist\t1"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'artist\t"Artist\t1"\t\r\n')
+
+    def test_newline_tag_to_tsv(self):
+        self.tag_diff.add("album", ["Artist\n1"])
+        self.tag_diff.add("genre", ["Genre\r\n1"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'album\t"Artist\n1"\t\r\ngenre\t"Genre\r\n1"\t\r\n')
+
+    def test_quoted_tag_to_tsv(self):
+        self.tag_diff.add("trackname", ['This "track" is cool'])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'trackname\t"This ""track"" is cool"\t\r\n')
+
+    def test_new_tag_to_tsv(self):
+        self.tag_diff.add("artist", new=["Artist 1"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'artist\t\tArtist 1\r\n')
+
+    def test_modified_tag_to_tsv(self):
+        self.tag_diff.add("artist", ["Artist 1"], ["Artist 2"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'artist\tArtist 1\tArtist 2\r\n')
+
+    def test_multiple_tags_to_tsv(self):
+        self.tag_diff.add("artist", ["Artist 1"], ["Artist 2"])
+        self.tag_diff.add("album", ["Album 1"], ["Album 2"])
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, 'album\tAlbum 1\tAlbum 2\r\nartist\tArtist 1\tArtist 2\r\n')
+
+    def test_old_length_tag_to_tsv(self):
+        self.tag_diff.add("~length", "10000")
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, '~length\t0:10\t\r\n')
+
+    def test_new_length_tag_to_tsv(self):
+        self.tag_diff.add("~length", new="10000")
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv()
+        self.assertEqual(tags, '~length\t\t0:10\r\n')
+
+    def test_length_tag_to_pretty_tsv(self):
+        self.tag_diff.add("~length", "10000", "20000")
+        self.tag_diff.update_tag_names()
+        tags = self.tag_diff.to_tsv(prettify_times=False)
+        self.assertEqual(tags, '~length\t10000\t20000\r\n')
