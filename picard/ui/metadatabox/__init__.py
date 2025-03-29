@@ -366,10 +366,14 @@ class MetadataBox(QtWidgets.QTableWidget):
     def _paste_single(self, item, value):
         column_is_editable = (item.column() == self.COLUMN_NEW)
         tag = self.tag_diff.tag_names[item.row()]
+        objects_to_update = set()
         if column_is_editable and self._tag_is_editable(tag) and value:
             log.info("Pasting %s from text clipboard to tag %s", value, tag)
-            self._set_tag_values(tag, value.split(MULTI_VALUED_JOINER))
-            self.update()
+            value = value.split(MULTI_VALUED_JOINER)
+            objects_to_update.update(self._set_tag_values_delayed_updates(tag, value))
+        if objects_to_update:
+            objects_to_update.add(self)
+            self._update_objects(objects_to_update)
 
     def _load_data_from_json_clipboard(self, mimedata):
         try:
