@@ -343,6 +343,30 @@ class MetadataBox(QtWidgets.QTableWidget):
                     log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
                     self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
+    def _paste_multiple(self, data):
+        for tag in data:
+            if self._tag_is_editable(tag):
+                # Prefer 'new' values, but fall back to 'old' if not available
+                value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
+                if value:
+                    if isinstance(value, list):
+                        # There are multiple values for the tag
+                        value = MULTI_VALUED_JOINER.join(value)
+                    # each value may also represent multiple values
+                    log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
+                    value = value.split(MULTI_VALUED_JOINER)
+                    self._set_tag_values(tag, value)
+                else:
+                    log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
+        self.update()
+
+    def _load_data_from_json_clipboard(self, mimedata):
+        try:
+            text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
+            return json.loads(text)
+        except json.JSONDecodeError as e:
+            log.error("Failed to decode JSON data from clipboard: %r", e)
+
     def _paste_value(self):
         if not self.can_paste():
             msg = N_("No valid data in clipboard to paste")
@@ -352,28 +376,8 @@ class MetadataBox(QtWidgets.QTableWidget):
         # Prefer to paste the Picard JSON data if available, otherwise text
         mimedata = self.tagger.clipboard().mimeData()
         if mimedata.hasFormat(self.MIMETYPE_PICARD_TAGS):
-            text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
-            try:
-                data = json.loads(text)
-            except json.JSONDecodeError as e:
-                log.error("Failed to decode JSON data from clipboard: %r", e)
-                return
-
-            for tag in data:
-                if self._tag_is_editable(tag):
-                    # Prefer 'new' values, but fall back to 'old' if not available
-                    value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
-                    if value:
-                        if isinstance(value, list):
-                            # There are multiple values for the tag
-                            value = MULTI_VALUED_JOINER.join(value)
-                        # each value may also represent multiple values
-                        log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
-                        value = value.split(MULTI_VALUED_JOINER)
-                        self._set_tag_values(tag, value)
-                    else:
-                        log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
-            self.update()
+            data = self._load_data_from_json_clipboard(mimedata)
+            self._paste_multiple(data)
 
         elif mimedata.hasFormat(self.MIMETYPE_TEXT):
             # Clipboard contents contains text
