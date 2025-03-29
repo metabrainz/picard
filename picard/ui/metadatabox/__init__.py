@@ -32,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 from functools import partial
 import json
 
@@ -138,14 +139,35 @@ class TableTagEditorDelegate(TagEditorDelegate):
 
 class MetadataBox(QtWidgets.QTableWidget):
 
+    MimeConverters = namedtuple('MimeConverters', ('encode_func', 'decode_func'))
+
     MIMETYPE_PICARD_TAGS = "application/vdr.picard"
     MIMETYPE_TSV = 'text/tab-separated-values'
     MIMETYPE_TEXT = 'text/plain'
+
     mimedatas = {
-        MIMETYPE_PICARD_TAGS: 'to_json',
-        MIMETYPE_TSV: 'to_tsv',
-        MIMETYPE_TEXT: 'to_tsv',
+        MIMETYPE_PICARD_TAGS: MimeConverters(
+            encode_func=lambda tag_diff: tag_diff.to_json().encode('utf-8'),
+            decode_func=lambda target, mimedata: target._paste_from_json(mimedata)
+        ),
+        MIMETYPE_TSV: MimeConverters(
+            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
+            decode_func=None
+        ),
+        MIMETYPE_TEXT: MimeConverters(
+            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
+            decode_func=lambda target, mimedata: target._paste_from_text(mimedata)
+        )
     }
+    """
+    Mapping of MIME types to functions for encoding and decoding data to/from the clipboard.
+
+    Ordering is significant, as first mimetype that has a decode function will be used to paste the data.
+
+    Each entry in the dictionary is a named tuple with two attributes:
+    - encode_func: Function to encode a TagDiff into a byte array for the given MIME type.
+    - decode_func: Function to decode mimedata byte array from the given MIME type and apply to the target MetadataBox.
+    """
 
     COLUMN_TAG = 0
     COLUMN_ORIG = 1
@@ -276,7 +298,7 @@ class MetadataBox(QtWidgets.QTableWidget):
     def get_selected_tags(self, items):
         result = TagDiff()
         for item in items:
-            tag, value = self.get_row_info(item.row())
+            tag, value = self._get_row_info(item.row())
             col = item.column()
             result.add(
                 tag=tag,
@@ -289,7 +311,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         result.update_tag_names()
         return result
 
-    def get_row_info(self, row):
+    def _get_row_info(self, row):
         tag = self.tag_diff.tag_names[row]
         value = {}
         value[self.COLUMN_ORIG] = self.tag_diff.old[tag]
@@ -301,8 +323,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         return len(self.tracks) <= 1 and len(self.files) <= 1
 
     def can_paste(self):
+        has_valid_mime_data = False
         mimedata = self.tagger.clipboard().mimeData()
-        has_valid_mime_data = mimedata.hasFormat(self.MIMETYPE_PICARD_TAGS) or mimedata.hasFormat(self.MIMETYPE_TEXT)
+        for mimetype, converters in self.mimedatas.items():
+            if mimedata.hasFormat(mimetype) and converters.decode_func:
+                has_valid_mime_data = True
+
         return has_valid_mime_data and len(self.tracks) <= 1 and len(self.files) <= 1
 
     def _copy_value(self):
@@ -315,27 +341,26 @@ class MetadataBox(QtWidgets.QTableWidget):
         items = self.selectedItems()
         if len(items) > 1:
             # We have multiple tags selected, so copy them as a JSON string
-            data = self.get_selected_tags(items)
+            selected_data = self.get_selected_tags(items)
             # Build the mimedata to use for the clipboard
             mimedata = QtCore.QMimeData()
             converted_data_cache = {}
-            for mimetype, converter_name in self.mimedatas.items():
-                try:
-                    if converter_name not in converted_data_cache:
-                        converted_data_cache[converter_name] = getattr(data, converter_name)()
-                    converted_data = converted_data_cache[converter_name]
-                    mimedata.setData(mimetype, converted_data.encode('utf-8'))
-                except Exception as e:
-                    log.error("Failed to convert %r to '%s': %s", data, mimetype, e)
+            for mimetype, converters in self.mimedatas.items():
+                if converters.encode_func:
+                    try:
+                        encoded_data = converted_data_cache.setdefault(mimetype, converters.encode_func(selected_data))
+                        mimedata.setData(mimetype, encoded_data)
+                    except Exception as e:
+                        log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
             # Ensure we actually have something to copy to the clipboard
             if mimedata.formats():
-                log.debug("Copying %r to clipboard as %r", data.tag_names, mimedata.formats())
+                log.debug("Copying %r to clipboard as %r", selected_data.tag_names, mimedata.formats())
                 self.tagger.clipboard().setMimeData(mimedata)
         else:
             # Just copy the current item as a string
             item = self.currentItem()
             if item:
-                tag, value = self.get_row_info(item.row())
+                tag, value = self._get_row_info(item.row())
                 value = value[item.column()]
                 if tag == '~length':
                     value = self.tag_diff.handle_length(value, prettify_times=True)
@@ -343,36 +368,42 @@ class MetadataBox(QtWidgets.QTableWidget):
                     log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
                     self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
-    def _paste_multiple(self, data):
-        for tag in data:
-            if self._tag_is_editable(tag):
-                # Prefer 'new' values, but fall back to 'old' if not available
-                value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
-                if value:
-                    if isinstance(value, list):
-                        # There are multiple values for the tag
-                        value = MULTI_VALUED_JOINER.join(value)
-                    # each value may also represent multiple values
-                    log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
-                    value = value.split(MULTI_VALUED_JOINER)
-                    yield from self._set_tag_values_delayed_updates(tag, value)
-                else:
-                    log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
+    def _paste_from_json(self, mimedata):
+        def _decode_json(mimedata):
+            try:
+                text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
+                return json.loads(text)
+            except json.JSONDecodeError as e:
+                log.error("Failed to decode JSON data from clipboard: %r", e)
 
-    def _paste_single(self, item, value):
+        def _apply_tag_dict(data):
+            for tag in data:
+                if self._tag_is_editable(tag):
+                    # Prefer 'new' values, but fall back to 'old' if not available
+                    value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
+                    if value:
+                        if isinstance(value, list):
+                            # There are multiple values for the tag
+                            value = MULTI_VALUED_JOINER.join(value)
+                        # each value may also represent multiple values
+                        log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
+                        value = value.split(MULTI_VALUED_JOINER)
+                        yield from self._set_tag_values_delayed_updates(tag, value)
+                    else:
+                        log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
+
+        data = _decode_json(mimedata)
+        return _apply_tag_dict(data)
+
+    def _paste_from_text(self, mimedata):
+        item = self.currentItem()
         column_is_editable = (item.column() == self.COLUMN_NEW)
         tag = self.tag_diff.tag_names[item.row()]
+        value = mimedata.text()
         if column_is_editable and self._tag_is_editable(tag) and value:
             log.info("Pasting %s from text clipboard to tag %s", value, tag)
             value = value.split(MULTI_VALUED_JOINER)
             yield from self._set_tag_values_delayed_updates(tag, value)
-
-    def _load_data_from_json_clipboard(self, mimedata):
-        try:
-            text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
-            return json.loads(text)
-        except json.JSONDecodeError as e:
-            log.error("Failed to decode JSON data from clipboard: %r", e)
 
     def _paste_value(self):
         if not self.can_paste():
@@ -381,18 +412,15 @@ class MetadataBox(QtWidgets.QTableWidget):
             return
 
         objects_to_update = set()
-
-        # Prefer to paste the Picard JSON data if available, otherwise text
         mimedata = self.tagger.clipboard().mimeData()
-        if mimedata.hasFormat(self.MIMETYPE_PICARD_TAGS):
-            data = self._load_data_from_json_clipboard(mimedata)
-            objects_to_update.update(self._paste_multiple(data))
 
-        elif mimedata.hasFormat(self.MIMETYPE_TEXT):
-            item = self.currentItem()
-            if item:
-                value = self.tagger.clipboard().text()
-                objects_to_update.update(self._paste_single(item, value))
+        for mimetype, converters in self.mimedatas.items():
+            if mimedata.hasFormat(mimetype) and converters.decode_func:
+                objs = converters.decode_func(self, mimedata)
+                objects_to_update.update(objs)
+                if objs:
+                    # We have successfully pasted from the clipboard, don't try other mimetypes
+                    break
 
         if objects_to_update:
             objects_to_update.add(self)
