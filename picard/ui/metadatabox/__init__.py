@@ -544,7 +544,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             objects.extend(extra_objects)
         self._set_tag_values(tag, values, objects=objects)
 
-    def _set_tag_values(self, tag, values, objects=None):
+    def _set_tag_values_delayed_updates(self, tag, values, objects=None):
         if objects is None:
             objects = self.objects
         with self.tagger.window.ignore_selection_changes:
@@ -553,11 +553,21 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not values and self._tag_is_removable(tag):
                 for obj in objects:
                     del obj.metadata[tag]
-                    obj.update()
+                    yield obj
             elif values:
                 for obj in objects:
                     obj.metadata[tag] = values
-                    obj.update()
+                    yield obj
+
+    def _update_objects(self, objects):
+        for obj in set(objects):
+            try:
+                obj.update()
+            except Exception as e:
+                log.debug("Failed to update %r: %s", obj, e)
+
+    def _set_tag_values(self, tag, values, objects=None):
+        self._update_objects(self._set_tag_values_delayed_updates(tag, values, objects=objects))
 
     def _remove_tag(self, tag):
         self._set_tag_values(tag, [])
