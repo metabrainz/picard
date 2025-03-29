@@ -344,6 +344,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
     def _paste_multiple(self, data):
+        objects_to_update = set()
         for tag in data:
             if self._tag_is_editable(tag):
                 # Prefer 'new' values, but fall back to 'old' if not available
@@ -355,10 +356,12 @@ class MetadataBox(QtWidgets.QTableWidget):
                     # each value may also represent multiple values
                     log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
                     value = value.split(MULTI_VALUED_JOINER)
-                    self._set_tag_values(tag, value)
+                    objects_to_update.update(self._set_tag_values_delayed_updates(tag, value))
                 else:
                     log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
-        self.update()
+        if objects_to_update:
+            objects_to_update.add(self)
+            self._update_objects(objects_to_update)
 
     def _paste_single(self, item, value):
         column_is_editable = (item.column() == self.COLUMN_NEW)
