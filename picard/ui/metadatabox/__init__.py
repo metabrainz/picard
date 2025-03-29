@@ -344,7 +344,6 @@ class MetadataBox(QtWidgets.QTableWidget):
                     self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
     def _paste_multiple(self, data):
-        objects_to_update = set()
         for tag in data:
             if self._tag_is_editable(tag):
                 # Prefer 'new' values, but fall back to 'old' if not available
@@ -356,24 +355,17 @@ class MetadataBox(QtWidgets.QTableWidget):
                     # each value may also represent multiple values
                     log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
                     value = value.split(MULTI_VALUED_JOINER)
-                    objects_to_update.update(self._set_tag_values_delayed_updates(tag, value))
+                    yield from self._set_tag_values_delayed_updates(tag, value)
                 else:
                     log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
-        if objects_to_update:
-            objects_to_update.add(self)
-            self._update_objects(objects_to_update)
 
     def _paste_single(self, item, value):
         column_is_editable = (item.column() == self.COLUMN_NEW)
         tag = self.tag_diff.tag_names[item.row()]
-        objects_to_update = set()
         if column_is_editable and self._tag_is_editable(tag) and value:
             log.info("Pasting %s from text clipboard to tag %s", value, tag)
             value = value.split(MULTI_VALUED_JOINER)
-            objects_to_update.update(self._set_tag_values_delayed_updates(tag, value))
-        if objects_to_update:
-            objects_to_update.add(self)
-            self._update_objects(objects_to_update)
+            yield from self._set_tag_values_delayed_updates(tag, value)
 
     def _load_data_from_json_clipboard(self, mimedata):
         try:
@@ -388,17 +380,23 @@ class MetadataBox(QtWidgets.QTableWidget):
             self.tagger.window.set_statusbar_message(msg, echo=log.info, timeout=3000)
             return
 
+        objects_to_update = set()
+
         # Prefer to paste the Picard JSON data if available, otherwise text
         mimedata = self.tagger.clipboard().mimeData()
         if mimedata.hasFormat(self.MIMETYPE_PICARD_TAGS):
             data = self._load_data_from_json_clipboard(mimedata)
-            self._paste_multiple(data)
+            objects_to_update.update(self._paste_multiple(data))
 
         elif mimedata.hasFormat(self.MIMETYPE_TEXT):
             item = self.currentItem()
             if item:
                 value = self.tagger.clipboard().text()
-                self._paste_single(item, value)
+                objects_to_update.update(self._paste_single(item, value))
+
+        if objects_to_update:
+            objects_to_update.add(self)
+            self._update_objects(objects_to_update)
 
     def closeEditor(self, editor, hint):
         super().closeEditor(editor, hint)
