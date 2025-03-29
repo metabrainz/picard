@@ -360,6 +360,14 @@ class MetadataBox(QtWidgets.QTableWidget):
                     log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
         self.update()
 
+    def _paste_single(self, item, value):
+        column_is_editable = (item.column() == self.COLUMN_NEW)
+        tag = self.tag_diff.tag_names[item.row()]
+        if column_is_editable and self._tag_is_editable(tag) and value:
+            log.info("Pasting %s from text clipboard to tag %s", value, tag)
+            self._set_tag_values(tag, value.split(MULTI_VALUED_JOINER))
+            self.update()
+
     def _load_data_from_json_clipboard(self, mimedata):
         try:
             text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
@@ -380,17 +388,10 @@ class MetadataBox(QtWidgets.QTableWidget):
             self._paste_multiple(data)
 
         elif mimedata.hasFormat(self.MIMETYPE_TEXT):
-            # Clipboard contents contains text
             item = self.currentItem()
             if item:
-                column_is_editable = (item.column() == self.COLUMN_NEW)
-                tag = self.tag_diff.tag_names[item.row()]
-                if column_is_editable and self._tag_is_editable(tag):
-                    value = self.tagger.clipboard().text()
-                    if value:
-                        log.info("Pasting %s from text clipboard to tag %s", value, tag)
-                        self._set_tag_values(tag, value.split(MULTI_VALUED_JOINER))
-                        self.update()
+                value = self.tagger.clipboard().text()
+                self._paste_single(item, value)
 
     def closeEditor(self, editor, hint):
         super().closeEditor(editor, hint)
