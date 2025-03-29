@@ -566,10 +566,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _update_objects(self, objects):
         for obj in set(objects):
-            try:
-                obj.update()
-            except Exception as e:
-                log.debug("Failed to update %r: %s", obj, e)
+            obj.update()
 
     def _set_tag_values(self, tag, values, objects=None):
         self._update_objects(self._set_tag_values_delayed_updates(tag, values, objects=objects))
