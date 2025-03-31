@@ -313,34 +313,23 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _get_row_info(self, row):
         tag = self.tag_diff.tag_names[row]
-        value = {}
-        value[self.COLUMN_ORIG] = self.tag_diff.old[tag]
-        value[self.COLUMN_NEW] = self.tag_diff.new[tag]
-
+        value = {
+            self.COLUMN_ORIG: self.tag_diff.old[tag],
+            self.COLUMN_NEW: self.tag_diff.new[tag],
+        }
         return tag, value
 
-    def can_copy(self):
-        return len(self.tracks) <= 1 and len(self.files) <= 1
-
-    def can_paste(self):
-        has_valid_mime_data = False
-        mimedata = self.tagger.clipboard().mimeData()
-        for mimetype, converters in self.mimedatas.items():
-            if mimedata.hasFormat(mimetype) and converters.decode_func:
-                has_valid_mime_data = True
-
-        return has_valid_mime_data and len(self.tracks) <= 1 and len(self.files) <= 1
+    def _can_copy(self):
+        return True
 
     def _copy_value(self):
         if not self.can_copy():
-            # We cannot copy from multiple files at the same time, clear the clipboard to avoid confusion
-            msg = N_("Unable to copy when multiple tracks or files are selected.")
+            msg = N_("Unable to copy current selection.")
             self.tagger.window.set_statusbar_message(msg, echo=log.info, timeout=3000)
             return
 
         items = self.selectedItems()
         if len(items) > 1:
-            # We have multiple tags selected, so copy them as a JSON string
             selected_data = self.get_selected_tags(items)
             # Build the mimedata to use for the clipboard
             mimedata = QtCore.QMimeData()
@@ -348,8 +337,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             for mimetype, converters in self.mimedatas.items():
                 if converters.encode_func:
                     try:
-                        encoded_data = converted_data_cache.setdefault(mimetype, converters.encode_func(selected_data))
-                        mimedata.setData(mimetype, encoded_data)
+                        if converters.encode_func not in converted_data_cache:
+                            converted_data_cache[converters.encode_func] = converters.encode_func(selected_data)
+                        mimedata.setData(mimetype, converted_data_cache[converters.encode_func])
                     except Exception as e:
                         log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
             # Ensure we actually have something to copy to the clipboard
@@ -393,7 +383,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                         log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
 
         data = _decode_json(mimedata)
-        return _apply_tag_dict(data)
+        return _apply_tag_dict(data) if data else []
 
     def _paste_from_text(self, mimedata):
         item = self.currentItem()
@@ -405,8 +395,17 @@ class MetadataBox(QtWidgets.QTableWidget):
             value = value.split(MULTI_VALUED_JOINER)
             yield from self._set_tag_values_delayed_updates(tag, value)
 
+    def _can_paste(self):
+        has_valid_mime_data = False
+        mimedata = self.tagger.clipboard().mimeData()
+        for mimetype, converters in self.mimedatas.items():
+            if mimedata.hasFormat(mimetype) and converters.decode_func:
+                has_valid_mime_data = True
+
+        return has_valid_mime_data and len(self.tracks) <= 1 and len(self.files) <= 1
+
     def _paste_value(self):
-        if not self.can_paste():
+        if not self._can_paste():
             msg = N_("No valid data in clipboard to paste")
             self.tagger.window.set_statusbar_message(msg, echo=log.info, timeout=3000)
             return
@@ -525,12 +524,12 @@ class MetadataBox(QtWidgets.QTableWidget):
                 copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
                 copy_action.triggered.connect(self._copy_value)
                 copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
-                copy_action.setEnabled(self.can_copy())
+                copy_action.setEnabled(self._can_copy())
                 menu.addAction(copy_action)
                 paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
                 paste_action.triggered.connect(self._paste_value)
                 paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
-                paste_action.setEnabled(self.can_paste())
+                paste_action.setEnabled(self._can_paste())
                 menu.addAction(paste_action)
             if single_tag or removals or useorigs:
                 menu.addSeparator()
