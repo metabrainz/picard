@@ -26,6 +26,7 @@
             "name": "Ed Sheeran",
             "joinphrase": "",
             "artist": {
+                "country": "GB",
                 "disambiguation": "famous UK singer-songwriter",
                 "name": "Ed Sheeran",
                 "sort-name": "Sheeran, Ed",

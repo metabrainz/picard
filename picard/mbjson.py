@@ -9,7 +9,7 @@
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2020, 2023 David Kellner
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
 # Copyright (C) 2024 Rakim Middya
 #
@@ -28,6 +28,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import OrderedDict
 from types import SimpleNamespace
 
 from picard import log
@@ -361,10 +362,14 @@ def artist_credit_from_node(node):
     artist_sort_name = ''
     artist_names = []
     artist_sort_names = []
+    artist_countries = []
     config = get_config()
     use_credited_as = not config.setting['standardize_artists']
     for artist_info in node:
         artist = artist_info['artist']
+        if artist and 'id' in artist and artist['id']:
+            # Add artist's country code if specified, otherwise 'XX' (Unknown Country)
+            artist_countries.append(artist['country'] if 'country' in artist else 'XX')
         translated_name, sort_name = _translate_artist_node(artist, config=config)
         has_translation = (translated_name != artist['name'])
         if has_translation:
@@ -380,24 +385,41 @@ def artist_credit_from_node(node):
         if 'joinphrase' in artist_info:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
-    return (artist_name, artist_sort_name, artist_names, artist_sort_names)
+    return (artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
+
+
+def _format_artist_countries(countries: list):
+    if not countries:
+        return ''
+    # Use an OrderedDict to get a list of unique countries in the original countries order.
+    unique_countries = OrderedDict()
+    for country in countries:
+        unique_countries[country] = None
+    unique_countries = list(unique_countries.keys())
+    if len(unique_countries) < 2:
+        return unique_countries[0]
+    return f"{', '.join(unique_countries[0:-1])} & {unique_countries[-1]}"
 
 
 def artist_credit_to_metadata(node, m, release=False):
     ids = [n['artist']['id'] for n in node]
-    artist_name, artist_sort_name, artist_names, artist_sort_names = artist_credit_from_node(node)
+    artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries = artist_credit_from_node(node)
     if release:
         m['musicbrainz_albumartistid'] = ids
         m['albumartist'] = artist_name
         m['albumartistsort'] = artist_sort_name
         m['~albumartists'] = artist_names
         m['~albumartists_sort'] = artist_sort_names
+        m['~albumartistcountry'] = _format_artist_countries(artist_countries)
+        m['~albumartists_countries'] = artist_countries
     else:
         m['musicbrainz_artistid'] = ids
         m['artist'] = artist_name
         m['artistsort'] = artist_sort_name
         m['artists'] = artist_names
         m['~artists_sort'] = artist_sort_names
+        m['~artistcountry'] = _format_artist_countries(artist_countries)
+        m['~artists_countries'] = artist_countries
 
 
 def _release_event_iter(node):
