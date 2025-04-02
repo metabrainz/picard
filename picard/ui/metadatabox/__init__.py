@@ -32,7 +32,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
 from functools import partial
 import json
 
@@ -75,6 +74,7 @@ from .tagdiff import (
 )
 
 from picard.ui.colors import interface_colors
+from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
@@ -139,35 +139,9 @@ class TableTagEditorDelegate(TagEditorDelegate):
 
 class MetadataBox(QtWidgets.QTableWidget):
 
-    MimeConverters = namedtuple('MimeConverters', ('encode_func', 'decode_func'))
-
     MIMETYPE_PICARD_TAGS = "application/vdr.picard"
     MIMETYPE_TSV = 'text/tab-separated-values'
     MIMETYPE_TEXT = 'text/plain'
-
-    mimedatas = {
-        MIMETYPE_PICARD_TAGS: MimeConverters(
-            encode_func=lambda tag_diff: tag_diff.to_json().encode('utf-8'),
-            decode_func=lambda target, mimedata: target._paste_from_json(mimedata)
-        ),
-        MIMETYPE_TSV: MimeConverters(
-            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
-            decode_func=None
-        ),
-        MIMETYPE_TEXT: MimeConverters(
-            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
-            decode_func=lambda target, mimedata: target._paste_from_text(mimedata)
-        )
-    }
-    """
-    Mapping of MIME types to functions for encoding and decoding data to/from the clipboard.
-
-    Ordering is significant, as first mimetype that has a decode function will be used to paste the data.
-
-    Each entry in the dictionary is a named tuple with two attributes:
-    - encode_func: Function to encode a TagDiff into a byte array for the given MIME type.
-    - decode_func: Function to decode mimedata byte array from the given MIME type and apply to the target MetadataBox.
-    """
 
     COLUMN_TAG = 0
     COLUMN_ORIG = 1
@@ -233,6 +207,23 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._single_file_album = False
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
+
+        self.mimedata_helper = MimeDataHelper()
+        self.mimedata_helper.register(
+            self.MIMETYPE_PICARD_TAGS,
+            encode_func=lambda tag_diff: tag_diff.to_json().encode('utf-8'),
+            decode_func=lambda target, mimedata: target._paste_from_json(mimedata),
+        )
+        self.mimedata_helper.register(
+            self.MIMETYPE_TSV,
+            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
+            decode_func=None,
+        )
+        self.mimedata_helper.register(
+            self.MIMETYPE_TEXT,
+            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
+            decode_func=lambda target, mimedata: target._paste_from_text(mimedata),
+        )
 
     def _on_setting_changed(self, name, old_value, new_value):
         settings_to_watch = {
@@ -323,7 +314,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         return True
 
     def _copy_value(self):
-        if not self.can_copy():
+        if not self._can_copy():
             msg = N_("Unable to copy current selection.")
             self.tagger.window.set_statusbar_message(msg, echo=log.info, timeout=3000)
             return
@@ -334,14 +325,13 @@ class MetadataBox(QtWidgets.QTableWidget):
             # Build the mimedata to use for the clipboard
             mimedata = QtCore.QMimeData()
             converted_data_cache = {}
-            for mimetype, converters in self.mimedatas.items():
-                if converters.encode_func:
-                    try:
-                        if converters.encode_func not in converted_data_cache:
-                            converted_data_cache[converters.encode_func] = converters.encode_func(selected_data)
-                        mimedata.setData(mimetype, converted_data_cache[converters.encode_func])
-                    except Exception as e:
-                        log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
+            for mimetype, encode_func in self.mimedata_helper.encode_funcs():
+                try:
+                    if encode_func not in converted_data_cache:
+                        converted_data_cache[encode_func] = encode_func(selected_data)
+                    mimedata.setData(mimetype, converted_data_cache[encode_func])
+                except Exception as e:
+                    log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
             # Ensure we actually have something to copy to the clipboard
             if mimedata.formats():
                 log.debug("Copying %r to clipboard as %r", selected_data.tag_names, mimedata.formats())
@@ -396,12 +386,8 @@ class MetadataBox(QtWidgets.QTableWidget):
             yield from self._set_tag_values_delayed_updates(tag, value)
 
     def _can_paste(self):
-        has_valid_mime_data = False
         mimedata = self.tagger.clipboard().mimeData()
-        for mimetype, converters in self.mimedatas.items():
-            if mimedata.hasFormat(mimetype) and converters.decode_func:
-                has_valid_mime_data = True
-
+        has_valid_mime_data = any(self.mimedata_helper.decode_funcs(mimedata))
         return has_valid_mime_data and len(self.tracks) <= 1 and len(self.files) <= 1
 
     def _paste_value(self):
@@ -413,13 +399,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         objects_to_update = set()
         mimedata = self.tagger.clipboard().mimeData()
 
-        for mimetype, converters in self.mimedatas.items():
-            if mimedata.hasFormat(mimetype) and converters.decode_func:
-                objs = converters.decode_func(self, mimedata)
-                objects_to_update.update(objs)
-                if objs:
-                    # We have successfully pasted from the clipboard, don't try other mimetypes
-                    break
+        for decode_func in self.mimedata_helper.decode_funcs(mimedata):
+            objs = decode_func(self, mimedata)
+            objects_to_update.update(objs)
+            if objs:
+                # We have successfully pasted from the clipboard, don't try other mimetypes
+                break
 
         if objects_to_update:
             objects_to_update.add(self)
