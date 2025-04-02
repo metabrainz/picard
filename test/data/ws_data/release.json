@@ -38,7 +38,8 @@
                     "id": "83d91898-7763-47d7-b03b-b92132375c47",
                     "disambiguation": "",
                     "sort-name": "Pink Floyd",
-                    "name": "Pink Floyd"
+                    "name": "Pink Floyd",
+                    "country": "GB"
                 },
                 "joinphrase": ""
             }
@@ -360,7 +361,8 @@
                     }
                 ],
                 "sort-name": "Pink Floyd",
-                "name": "Pink Floyd"
+                "name": "Pink Floyd",
+                "country": "GB"
             },
             "joinphrase": "",
             "name": "Pink Floyd"

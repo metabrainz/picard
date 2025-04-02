@@ -1,0 +1,47 @@
+{
+    "disambiguation": "",
+    "video": false,
+    "id": "7684982a-efee-49e5-baf0-82a466f12508",
+    "title": "1000 Nights",
+    "length": 212306,
+    "artist-credit": [
+        {
+            "name": "Ed Sheeran",
+            "joinphrase": " feat. ",
+            "artist": {
+                "sort-name": "Sheeran, Ed",
+                "id": "b8a7c51f-362c-4dcb-a259-bc6e0095f0a6",
+                "name": "Ed Sheeran",
+                "disambiguation": "UK singer-songwriter, “Shape of You”",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "country": "GB",
+                "type": "Person"
+            }
+        },
+        {
+            "joinphrase": " & ",
+            "name": "Meek Mill",
+            "artist": {
+                "name": "Meek Mill",
+                "sort-name": "Meek Mill",
+                "id": "31bcadcc-e1da-4cad-bec8-2f4f1d41b095",
+                "country": "US",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": ""
+                }
+        },
+        {
+            "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": "",
+                "type": "Person",
+                "sort-name": "Boogie Wit da Hoodie, A",
+                "id": "c1708d03-8a66-46eb-848e-fe0d233ffb39",
+                "name": "A Boogie Wit da Hoodie"
+            },
+            "joinphrase": "",
+            "name": "A Boogie Wit da Hoodie"
+        }
+    ]
+}
