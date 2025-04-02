@@ -33,6 +33,7 @@
 
 
 from functools import partial
+import json
 
 from PyQt6 import (
     QtCore,
@@ -47,6 +48,7 @@ from picard.cluster import Cluster
 from picard.config import get_config
 from picard.file import File
 from picard.i18n import (
+    N_,
     gettext as _,
     ngettext,
 )
@@ -54,7 +56,6 @@ from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
-    format_time,
     icontheme,
     restore_method,
     thread,
@@ -73,6 +74,7 @@ from .tagdiff import (
 )
 
 from picard.ui.colors import interface_colors
+from picard.ui.metadatabox.mimedatahelper import MimeDataHelper
 
 
 class TableTagEditorDelegate(TagEditorDelegate):
@@ -137,6 +139,10 @@ class TableTagEditorDelegate(TagEditorDelegate):
 
 class MetadataBox(QtWidgets.QTableWidget):
 
+    MIMETYPE_PICARD_TAGS = "application/vdr.picard"
+    MIMETYPE_TSV = 'text/tab-separated-values'
+    MIMETYPE_TEXT = 'text/plain'
+
     COLUMN_TAG = 0
     COLUMN_ORIG = 1
     COLUMN_NEW = 2
@@ -184,7 +190,6 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.selection_mutex = QtCore.QMutex()
         self.selection_dirty = False
         self.editing = None  # the QTableWidgetItem being edited
-        self.clipboard = [""]
         self.add_tag_action = QtGui.QAction(_("Add New Tag…"), self)
         self.add_tag_action.triggered.connect(partial(self._edit_tag, ""))
         self.changes_first_action = QtGui.QAction(_("Show Changes First"), self)
@@ -202,7 +207,23 @@ class MetadataBox(QtWidgets.QTableWidget):
         self._single_file_album = False
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)
-        self.tagger.clipboard().dataChanged.connect(self._update_clipboard)
+
+        self.mimedata_helper = MimeDataHelper()
+        self.mimedata_helper.register(
+            self.MIMETYPE_PICARD_TAGS,
+            encode_func=lambda tag_diff: tag_diff.to_json().encode('utf-8'),
+            decode_func=lambda target, mimedata: target._paste_from_json(mimedata),
+        )
+        self.mimedata_helper.register(
+            self.MIMETYPE_TSV,
+            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
+            decode_func=None,
+        )
+        self.mimedata_helper.register(
+            self.MIMETYPE_TEXT,
+            encode_func=lambda tag_diff: tag_diff.to_tsv().encode('utf-8'),
+            decode_func=lambda target, mimedata: target._paste_from_text(mimedata),
+        )
 
     def _on_setting_changed(self, name, old_value, new_value):
         settings_to_watch = {
@@ -265,41 +286,129 @@ class MetadataBox(QtWidgets.QTableWidget):
         else:
             super().keyPressEvent(event)
 
+    def get_selected_tags(self, items):
+        result = TagDiff()
+        for item in items:
+            tag, value = self._get_row_info(item.row())
+            col = item.column()
+            result.add(
+                tag=tag,
+                old=value[self.COLUMN_ORIG] if col == self.COLUMN_ORIG else None,
+                new=value[self.COLUMN_NEW] if col == self.COLUMN_NEW else None,
+                removable=self.tag_diff.status[tag] != TagStatus.NOTREMOVABLE,
+                readonly=self.tag_diff.status[tag] == TagStatus.READONLY
+            )
+
+        result.update_tag_names()
+        return result
+
+    def _get_row_info(self, row):
+        tag = self.tag_diff.tag_names[row]
+        value = {
+            self.COLUMN_ORIG: self.tag_diff.old[tag],
+            self.COLUMN_NEW: self.tag_diff.new[tag],
+        }
+        return tag, value
+
+    def _can_copy(self):
+        return True
+
     def _copy_value(self):
-        item = self.currentItem()
-        if item:
-            column = item.column()
-            tag = self.tag_diff.tag_names[item.row()]
-            value = None
-            if column == self.COLUMN_ORIG:
-                value = self.tag_diff.old[tag]
-            elif column == self.COLUMN_NEW:
-                value = self.tag_diff.new[tag]
+        if not self._can_copy():
+            msg = N_("Unable to copy current selection.")
+            self.tagger.window.set_statusbar_message(msg, echo=log.info, timeout=3000)
+            return
 
-            if tag == '~length':
+        items = self.selectedItems()
+        if len(items) > 1:
+            selected_data = self.get_selected_tags(items)
+            # Build the mimedata to use for the clipboard
+            mimedata = QtCore.QMimeData()
+            converted_data_cache = {}
+            for mimetype, encode_func in self.mimedata_helper.encode_funcs():
                 try:
-                    value = [format_time(value or 0), ]
-                except (TypeError, ValueError) as why:
-                    log.warning(why)
-                    value = ['']
+                    if encode_func not in converted_data_cache:
+                        converted_data_cache[encode_func] = encode_func(selected_data)
+                    mimedata.setData(mimetype, converted_data_cache[encode_func])
+                except Exception as e:
+                    log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
+            # Ensure we actually have something to copy to the clipboard
+            if mimedata.formats():
+                log.debug("Copying %r to clipboard as %r", selected_data.tag_names, mimedata.formats())
+                self.tagger.clipboard().setMimeData(mimedata)
+        else:
+            # Just copy the current item as a string
+            item = self.currentItem()
+            if item:
+                tag, value = self._get_row_info(item.row())
+                value = value[item.column()]
+                if tag == '~length':
+                    value = self.tag_diff.handle_length(value, prettify_times=True)
+                if value is not None:
+                    log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
+                    self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
-            if value is not None:
-                self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
-                self.clipboard = value
+    def _paste_from_json(self, mimedata):
+        def _decode_json(mimedata):
+            try:
+                text = mimedata.data(self.MIMETYPE_PICARD_TAGS).data()
+                return json.loads(text)
+            except json.JSONDecodeError as e:
+                log.error("Failed to decode JSON data from clipboard: %r", e)
+
+        def _apply_tag_dict(data):
+            for tag in data:
+                if self._tag_is_editable(tag):
+                    # Prefer 'new' values, but fall back to 'old' if not available
+                    value = data[tag].get(TagDiff.NEW_VALUE) or data[tag].get(TagDiff.OLD_VALUE)
+                    if value:
+                        if isinstance(value, list):
+                            # There are multiple values for the tag
+                            value = MULTI_VALUED_JOINER.join(value)
+                        # each value may also represent multiple values
+                        log.info("Pasting '%s' from JSON clipboard to tag '%s'", value, tag)
+                        value = value.split(MULTI_VALUED_JOINER)
+                        yield from self._set_tag_values_delayed_updates(tag, value)
+                    else:
+                        log.error("Tag '%s' without new or old value found in clipboard, ignoring.", tag)
+
+        data = _decode_json(mimedata)
+        return _apply_tag_dict(data) if data else []
+
+    def _paste_from_text(self, mimedata):
+        item = self.currentItem()
+        column_is_editable = (item.column() == self.COLUMN_NEW)
+        tag = self.tag_diff.tag_names[item.row()]
+        value = mimedata.text()
+        if column_is_editable and self._tag_is_editable(tag) and value:
+            log.info("Pasting %s from text clipboard to tag %s", value, tag)
+            value = value.split(MULTI_VALUED_JOINER)
+            yield from self._set_tag_values_delayed_updates(tag, value)
+
+    def _can_paste(self):
+        mimedata = self.tagger.clipboard().mimeData()
+        has_valid_mime_data = any(self.mimedata_helper.decode_funcs(mimedata))
+        return has_valid_mime_data and len(self.tracks) <= 1 and len(self.files) <= 1
 
     def _paste_value(self):
-        item = self.currentItem()
-        if item:
-            column = item.column()
-            tag = self.tag_diff.tag_names[item.row()]
-            if column == self.COLUMN_NEW and self._tag_is_editable(tag):
-                self._set_tag_values(tag, self.clipboard)
-                self.update()
+        if not self._can_paste():
+            msg = N_("No valid data in clipboard to paste")
+            self.tagger.window.set_statusbar_message(msg, echo=log.info, timeout=3000)
+            return
 
-    def _update_clipboard(self):
-        clipboard = self.tagger.clipboard().text().split(MULTI_VALUED_JOINER)
-        if clipboard:
-            self.clipboard = clipboard
+        objects_to_update = set()
+        mimedata = self.tagger.clipboard().mimeData()
+
+        for decode_func in self.mimedata_helper.decode_funcs(mimedata):
+            objs = decode_func(self, mimedata)
+            objects_to_update.update(objs)
+            if objs:
+                # We have successfully pasted from the clipboard, don't try other mimetypes
+                break
+
+        if objects_to_update:
+            objects_to_update.add(self)
+            self._update_objects(objects_to_update)
 
     def closeEditor(self, editor, hint):
         super().closeEditor(editor, hint)
@@ -395,17 +504,18 @@ class MetadataBox(QtWidgets.QTableWidget):
                     merge_tags_action.triggered.connect(partial(self._apply_update_funcs, mergeorigs))
                     menu.addAction(merge_tags_action)
                     menu.addSeparator()
-                if single_tag:
-                    menu.addSeparator()
-                    copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
-                    copy_action.triggered.connect(self._copy_value)
-                    copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
-                    menu.addAction(copy_action)
-                    paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-                    paste_action.triggered.connect(self._paste_value)
-                    paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
-                    paste_action.setEnabled(editable)
-                    menu.addAction(paste_action)
+
+                menu.addSeparator()
+                copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
+                copy_action.triggered.connect(self._copy_value)
+                copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
+                copy_action.setEnabled(self._can_copy())
+                menu.addAction(copy_action)
+                paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
+                paste_action.triggered.connect(self._paste_value)
+                paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
+                paste_action.setEnabled(self._can_paste())
+                menu.addAction(paste_action)
             if single_tag or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
@@ -451,7 +561,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             objects.extend(extra_objects)
         self._set_tag_values(tag, values, objects=objects)
 
-    def _set_tag_values(self, tag, values, objects=None):
+    def _set_tag_values_delayed_updates(self, tag, values, objects=None):
         if objects is None:
             objects = self.objects
         with self.tagger.window.ignore_selection_changes:
@@ -460,11 +570,18 @@ class MetadataBox(QtWidgets.QTableWidget):
             if not values and self._tag_is_removable(tag):
                 for obj in objects:
                     del obj.metadata[tag]
-                    obj.update()
+                    yield obj
             elif values:
                 for obj in objects:
                     obj.metadata[tag] = values
-                    obj.update()
+                    yield obj
+
+    def _update_objects(self, objects):
+        for obj in set(objects):
+            obj.update()
+
+    def _set_tag_values(self, tag, values, objects=None):
+        self._update_objects(self._set_tag_values_delayed_updates(tag, values, objects=objects))
 
     def _remove_tag(self, tag):
         self._set_tag_values(tag, [])

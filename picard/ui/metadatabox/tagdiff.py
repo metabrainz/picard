@@ -37,7 +37,11 @@ from collections import (
     defaultdict,
     namedtuple,
 )
+import csv
+import io
+import json
 
+from picard import log
 from picard.i18n import ngettext
 from picard.metadata import MULTI_VALUED_JOINER
 from picard.util import format_time
@@ -207,6 +211,9 @@ class TagDiff:
 
     """
 
+    NEW_VALUE = 'new'
+    OLD_VALUE = 'old'
+
     __slots__ = ('tag_names', 'new', 'old', 'status', 'objects', 'tag_ne_handlers')
 
     def __init__(self, max_length_diff=2):
@@ -342,3 +349,42 @@ class TagDiff:
             self.tag_names = [
                 tag for tag in tag_names if
                 self.status[tag] != TagStatus.EMPTY]
+
+    def to_json(self):
+        result = {}
+        for tag in self.tag_names:
+            result[tag] = {}
+            if tag in self.old:
+                result[tag][self.OLD_VALUE] = self.old[tag]
+            if tag in self.new:
+                result[tag][self.NEW_VALUE] = self.new[tag]
+
+        return json.dumps(result)
+
+    def handle_length(self, value, prettify_times=True):
+        try:
+            if not isinstance(value, str) or not value:
+                return ['']
+            return [format_time(value)] if prettify_times else [value]
+        except (TypeError, ValueError) as e:
+            log.warning(e)
+            return ['']
+
+    def to_tsv(self, prettify_times=True):
+        f = io.StringIO()
+        writer = csv.writer(f, dialect='excel-tab')
+
+        for tag in self.tag_names:
+            # Take care with the special case of '~length', as that is not wrapped in a list it's a plain string
+            old = self.old[tag]
+            new = self.new[tag]
+            if tag == "~length":
+                old = self.handle_length(old, prettify_times)
+                new = self.handle_length(new, prettify_times)
+
+            writer.writerow([
+                tag,
+                MULTI_VALUED_JOINER.join(old),
+                MULTI_VALUED_JOINER.join(new)])
+
+        return f.getvalue()
