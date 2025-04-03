@@ -5,21 +5,22 @@
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2022, 2023.
+# ninjum <ninjum@gmx.es>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2025-04-03 17:44+0000\n"
+"Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
-"app/gl/>\n"
+"2/app/gl/>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.10.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -29,12 +30,12 @@ msgstr "Ficheiros sen coincidencias"
 #: picard/album.py:516
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "Álbum %(id)s cargado: %(artist)s - %(album)s"
 
 #: picard/album.py:573
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr ""
+msgstr "A cargar o álbum %(id)s …"
 
 #: picard/album.py:790
 msgid "[loading album information]"
@@ -48,49 +49,49 @@ msgstr "[non foi posíbel cargar o álbum %s]"
 #: picard/cluster.py:260
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "Clúster %(album)s identificado!"
 
 #: picard/cluster.py:263
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "Ningún lanzamento coincide co clúster %(album)s"
 
 #: picard/cluster.py:282
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr ""
+msgstr "Buscando os metadatos para o clúster %(album)s…"
 
 #: picard/cluster.py:338
 msgid "Unclustered Files"
-msgstr ""
+msgstr "Ficheiros sen clúster"
 
 #: picard/collection.py:78
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Engadido %(count)i lanzamento á colección \"%(name)s\""
+msgstr[1] "Engadido %(count)i lanzamentos á colección \"%(name)s\""
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Eliminouse %(count)i lanzamento da colección \"%(name)s\""
+msgstr[1] "Elimináronse %(count)i lanzamentos da colección \"%(name)s\""
 
 #: picard/collection.py:97
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "Erro ao modificar as coleccións: %(error)s"
 
 #: picard/collection.py:119
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr ""
+msgstr "Erro ao cargar as coleccións: %(error)s"
 
 #: picard/config_upgrade.py:84 picard/config_upgrade.py:97
 msgid "Various Artists file naming scheme removal"
-msgstr ""
+msgstr "Eliminación do esquema de nomeado de ficheiros de Artistas Varios"
 
 #: picard/config_upgrade.py:85
 msgid ""
@@ -99,6 +100,10 @@ msgid ""
 "Your file naming scheme has automatically been merged with that of single "
 "artist albums."
 msgstr ""
+"O esquema de nomeado de ficheiros separado para álbums de Artistas Varios "
+"foi eliminado nesta versión de Picard.\n"
+"O teu esquema de nomeado de ficheiros foi automaticamente combinado co de "
+"álbums de artista único."
 
 #: picard/config_upgrade.py:98
 msgid ""
@@ -109,10 +114,16 @@ msgid ""
 "Do you want to remove it or merge it with your file naming scheme for single "
 "artist albums?"
 msgstr ""
+"O esquema de nomeado de ficheiros separado para álbums de Artistas Varios "
+"foi eliminado nesta versión de Picard.\n"
+"Actualmente non usas esta opción, pero tes un esquema de nomeado de "
+"ficheiros separado definido.\n"
+"Queres eliminalo ou combinálo co teu esquema de nomeado de ficheiros para "
+"álbums de artista único?"
 
 #: picard/config_upgrade.py:105
 msgid "Merge"
-msgstr ""
+msgstr "Combinar"
 
 #: picard/config_upgrade.py:106 picard/ui/metadatabox.py:427
 #: picard/ui/options/interface_toolbar.py:100
@@ -122,33 +133,37 @@ msgstr "Borrar"
 
 #: picard/config_upgrade.py:424
 msgid "Primary file naming script"
-msgstr ""
+msgstr "Script principal de nomeado de ficheiros"
 
 #: picard/file.py:220
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"Non se puido analizar o ficheiro, pode que o ficheiro estea danado ou teña "
+"un formato de ficheiro non compatible."
 
 #: picard/file.py:853
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
+"Non se atoparon pistas que coincidan por encima do limiar para o ficheiro "
+"'%(filename)s'"
 
 #: picard/file.py:855
 #, python-format
 msgid "File '%(filename)s' identified!"
-msgstr ""
+msgstr "Ficheiro '%(filename)s' identificado!"
 
 #: picard/file.py:867
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
-msgstr ""
+msgstr "Non hai pistas que coincidan co ficheiro '%(filename)s'"
 
 #: picard/file.py:899
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr ""
+msgstr "Buscando os metadatos para o ficheiro %(filename)s …"
 
 #: picard/log.py:67 picard/ui/options/renaming.py:256
 #: picard/ui/scripteditor.py:889 picard/ui/scripteditor.py:892
@@ -158,7 +173,7 @@ msgstr "Erro"
 
 #: picard/log.py:68
 msgid "Warning"
-msgstr ""
+msgstr "Aviso"
 
 #: picard/log.py:69 picard/ui/infodialog.py:154 picard/ui/infodialog.py:365
 #: picard/ui/options/interface_toolbar.py:96
@@ -167,20 +182,20 @@ msgstr "Información"
 
 #: picard/log.py:70
 msgid "Debug"
-msgstr ""
+msgstr "Depurar"
 
 #: picard/oauth.py:196
 msgid "Unexpected token revocation error"
-msgstr ""
+msgstr "Erro de revogación de token inesperado"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
-msgstr ""
+msgstr "Erro de autenticación inesperado"
 
 #: picard/oauth.py:386
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr ""
+msgstr "Erro de solicitude inesperado (código HTTP %s)"
 
 #: picard/pluginmanager.py:271
 #, python-format
@@ -226,14 +241,12 @@ msgid "General"
 msgstr "Xeral"
 
 #: picard/profile.py:48
-#, fuzzy
 msgid "Server address"
-msgstr "Enderezo do servidor:"
+msgstr "Enderezo do servidor"
 
 #: picard/profile.py:49
-#, fuzzy
 msgid "Port"
-msgstr "Porto:"
+msgstr "Porto"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:208
 msgid "Automatically scan all new files"
@@ -246,23 +259,23 @@ msgstr "Examinar de xeito automático os ficheiros novos"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:210
 msgid "Ignore MBIDs when loading new files"
-msgstr ""
+msgstr "Ignorar os MBID ao engadir ficheiros novos"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr ""
+msgstr "Comprobar se hai actualizacións de complementos ao comezar"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
-msgstr ""
+msgstr "Comprobar se hai actualizacións do programa ao comezar"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
-msgstr ""
+msgstr "Días entre as comprobacións de actualizacións"
 
 #: picard/profile.py:56
 msgid "Updates to check"
-msgstr ""
+msgstr "Actualizacións a comprobar"
 
 #: picard/profile.py:61 picard/ui/options/metadata.py:79
 #: picard/ui/ui_options_metadata.py:129
@@ -271,31 +284,32 @@ msgstr "Metadatos"
 
 #: picard/profile.py:64
 msgid "Translate artist names"
-msgstr ""
+msgstr "Traducir nomes de artistas"
 
 #: picard/profile.py:65
+#, fuzzy
 msgid "Translation locales"
-msgstr ""
+msgstr "Configuración de locais de tradución"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Excepción na tradución de nomes de artistas"
 
 #: picard/profile.py:67
 msgid "Translation script exceptions"
-msgstr ""
+msgstr "Excepcións do script de tradución"
 
 #: picard/profile.py:68 picard/ui/ui_options_metadata.py:134
 msgid "Use standardized artist names"
-msgstr ""
+msgstr "Usar nomes de artista estandarizados"
 
 #: picard/profile.py:69 picard/ui/ui_options_metadata.py:135
 msgid "Use standardized instrument and vocal credits"
-msgstr ""
+msgstr "Usar créditos estandarizados de instrumentos e voces"
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:136
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr ""
+msgstr "Converter os caracteres de puntuación Unicode a ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
@@ -308,40 +322,43 @@ msgid "Use track and release relationships"
 msgstr "Usar relacións de lanzamento"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
+#, fuzzy
 msgid "Guess track number and title from filename if empty"
 msgstr ""
+"Adiviñar o número de pista e o título a partir do nome do ficheiro se están "
+"vacíos"
 
 #: picard/profile.py:74
 msgid "Various Artists name"
-msgstr ""
+msgstr "Nome de Artistas Varios"
 
 #: picard/profile.py:75
 msgid "Standalone recordings name"
-msgstr ""
+msgstr "Nome das gravacións independentes"
 
 #: picard/profile.py:78 picard/ui/ui_options_releases.py:110
 msgid "Preferred release types"
-msgstr ""
+msgstr "Tipos de lanzamento preferidos"
 
 #: picard/profile.py:79 picard/ui/ui_options_releases.py:111
 msgid "Preferred release countries"
-msgstr ""
+msgstr "Países de lanzamento preferidos"
 
 #: picard/profile.py:80 picard/ui/ui_options_releases.py:116
 msgid "Preferred medium formats"
-msgstr ""
+msgstr "Formatos de medio preferidos"
 
 #: picard/profile.py:83 picard/ui/ui_options_genres.py:119
 msgid "Use genres from MusicBrainz"
-msgstr ""
+msgstr "Usar xéneros de MusicBrainz"
 
 #: picard/profile.py:86 picard/ui/ui_options_genres.py:120
 msgid "Use only my genres"
-msgstr ""
+msgstr "Usar só os meus xéneros"
 
 #: picard/profile.py:87
 msgid "Use album artist genres"
-msgstr ""
+msgstr "Usar os xéneros do artista do álbum"
 
 #: picard/profile.py:88 picard/ui/ui_options_genres.py:122
 msgid "Use folksonomy tags as genre"
@@ -349,19 +366,19 @@ msgstr "Usar as etiquetas colaborativas (Folcsonomía) como xénero"
 
 #: picard/profile.py:89
 msgid "Minimal genre usage"
-msgstr ""
+msgstr "Uso mínimo de xéneros"
 
 #: picard/profile.py:90
 msgid "Maximum number of genres"
-msgstr ""
+msgstr "Número máximo de xéneros"
 
 #: picard/profile.py:91
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "Xuntar varios xéneros con"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
-msgstr ""
+msgstr "Xéneros a incluír ou excluir"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
@@ -369,7 +386,7 @@ msgstr "Activar a puntuación de pistas"
 
 #: picard/profile.py:98
 msgid "Email to use when saving ratings"
-msgstr ""
+msgstr "Correo electrónico a utilizar ao gardar as valoracións"
 
 #: picard/profile.py:99 picard/ui/ui_options_ratings.py:50
 msgid "Submit ratings to MusicBrainz"
@@ -469,7 +486,7 @@ msgstr "Incorporar as imaxes de portada dentro das etiquetas"
 
 #: picard/profile.py:142 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
-msgstr ""
+msgstr "Incorporar só unha única imaxe frontal"
 
 #: picard/profile.py:143 picard/ui/ui_options_cover.py:97
 msgid "Save cover images as separate files"
@@ -477,23 +494,25 @@ msgstr "Gardar as imaxes de portada como ficheiros separados"
 
 #: picard/profile.py:144
 msgid "File name for images"
-msgstr ""
+msgstr "Nome do ficheiro para as imaxes"
 
 #: picard/profile.py:145
 msgid "Overwrite existing image files"
-msgstr ""
+msgstr "Sobrescribir os ficheiros de imaxes existentes"
 
 #: picard/profile.py:146 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
-msgstr ""
+msgstr "Gardar só unha única imaxe frontal como ficheiro separado"
 
 #: picard/profile.py:147 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
+"Usar sempre o tipo de imaxe principal como nome do ficheiro para as imaxes "
+"non frontais"
 
 #: picard/profile.py:148
 msgid "Cover art providers"
-msgstr ""
+msgstr "Proveedores de imaxes de portadas"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
@@ -506,15 +525,15 @@ msgstr "&Mover ficheiros"
 
 #: picard/profile.py:157
 msgid "Destination directory"
-msgstr ""
+msgstr "Directorio de destino"
 
 #: picard/profile.py:158
 msgid "Move additional files"
-msgstr ""
+msgstr "Mover arquivos adicionais"
 
 #: picard/profile.py:159
 msgid "Additional file patterns"
-msgstr ""
+msgstr "Patróns de arquivos adicionais"
 
 #: picard/profile.py:160 picard/ui/ui_options_renaming.py:154
 msgid "Delete empty directories"
@@ -540,7 +559,7 @@ msgstr ""
 
 #: picard/profile.py:167
 msgid "Replacement characters used for Windows compatibility"
-msgstr ""
+msgstr "Caracteres de substitución usados para a compatibilidade con Windows"
 
 #: picard/profile.py:168 picard/ui/options/renaming_compat.py:143
 msgid "Windows long path support"
@@ -548,11 +567,11 @@ msgstr ""
 
 #: picard/profile.py:169 picard/ui/ui_options_renaming_compat.py:93
 msgid "Replace spaces with underscores"
-msgstr ""
+msgstr "Substituír espazos por guións baixos"
 
 #: picard/profile.py:170
 msgid "Replacement character to use for directory separators"
-msgstr ""
+msgstr "Caracter de substitución para usar nos separadores de directorios"
 
 #: picard/profile.py:175 picard/ui/options/scripting.py:100
 msgid "Scripting"
@@ -576,16 +595,15 @@ msgstr "Mostrar etiquetas de texto baixo as iconas"
 
 #: picard/profile.py:187 picard/ui/ui_options_interface.py:120
 msgid "Show icons in menus"
-msgstr ""
+msgstr "Amosar iconas nos menús"
 
 #: picard/profile.py:188
-#, fuzzy
 msgid "User interface language"
-msgstr "Idioma da interface de usuario:"
+msgstr "Idioma da interface de usuario"
 
 #: picard/profile.py:189
 msgid "User interface color theme"
-msgstr ""
+msgstr "Tema de cor da interface de usuario"
 
 #: picard/profile.py:190 picard/ui/ui_options_interface.py:124
 msgid "Allow selection of multiple directories"
@@ -593,7 +611,7 @@ msgstr "Permitir a selección de múltiples directorios"
 
 #: picard/profile.py:191 picard/ui/ui_options_interface.py:125
 msgid "Use builtin search rather than looking in browser"
-msgstr ""
+msgstr "Usar a busca integrada en troques de buscar no navegador"
 
 #: picard/profile.py:192
 #, fuzzy
@@ -602,43 +620,44 @@ msgstr "Usar a sintaxe avanzada de consulta"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
-msgstr ""
+msgstr "Amosar un cadro de aviso sobre o uso ao comezar Picard"
 
 #: picard/profile.py:194 picard/ui/ui_options_interface.py:128
 msgid "Show a quit confirmation dialog for unsaved changes"
-msgstr ""
+msgstr "Amosar un cadro de confirmación ao saír se hai trocos non gardados"
 
 #: picard/profile.py:195 picard/ui/ui_options_interface.py:129
 msgid "Show a confirmation dialog when saving files"
-msgstr ""
+msgstr "Amosar un cadro de confirmación ao gardar ficheiros"
 
 #: picard/profile.py:196 picard/ui/ui_options_interface.py:130
 msgid "Adjust horizontal position in file browser automatically"
 msgstr ""
+"Axustar a posición horizontal no explorador de ficheiros automáticamente"
 
 #: picard/profile.py:197
 msgid "Begin browsing in a specific directory"
-msgstr ""
+msgstr "Comezar a explorar nun directorio específico"
 
 #: picard/profile.py:198
 msgid "Directory to begin browsing"
-msgstr ""
+msgstr "Directorio no que comezar a explorar"
 
 #: picard/profile.py:201
 msgid "Colors to use for light theme"
-msgstr ""
+msgstr "Cores a empregar para o tema claro"
 
 #: picard/profile.py:202
 msgid "Colors to use for dark theme"
-msgstr ""
+msgstr "Cores a empregar para o tema escuro"
 
 #: picard/profile.py:205
 msgid "Tags to show at the top"
-msgstr ""
+msgstr "Etiquetas para amosar na parte superior"
 
 #: picard/profile.py:208
 msgid "Layout of the tool bar"
-msgstr ""
+msgstr "Disposición da barra de ferramentas"
 
 #: picard/profile.py:213 picard/ui/options/advanced.py:44
 msgid "Advanced"
@@ -646,47 +665,47 @@ msgstr "Avanzado"
 
 #: picard/profile.py:216
 msgid "Ignore file paths matching a regular expression"
-msgstr ""
+msgstr "Ignorar camiños de ficheiros que coincidan cunha expresión regular"
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
-msgstr ""
+msgstr "Ignorar ficheiros ocultos"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
-msgstr ""
+msgstr "Incluír subcartafois ao engadir ficheiros desde a carpeta"
 
 #: picard/profile.py:221
 msgid "Ignore track duration difference under x seconds"
-msgstr ""
+msgstr "Ignorar diferenza de duración das pistas inferior a x segundos"
 
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr ""
+msgstr "Número máximo de entidades a devolver por consulta a MusicBrainz"
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
-msgstr ""
+msgstr "Comprobación de integridade ignorada: Pistas de vídeo"
 
 #: picard/profile.py:230
 msgid "Completeness check ignore: Pregap tracks"
-msgstr ""
+msgstr "Comprobación de integridade ignorada: Pistas de pregap"
 
 #: picard/profile.py:231
 msgid "Completeness check ignore: Data tracks"
-msgstr ""
+msgstr "Comprobación de integridade ignorada: Pistas de datos"
 
 #: picard/profile.py:232
 msgid "Completeness check ignore: Silent tracks"
-msgstr ""
+msgstr "Comprobación de integridade ignorada: Pistas en silencio"
 
 #: picard/profile.py:233
 msgid "Tags to ignore for comparison"
-msgstr ""
+msgstr "Etiquetas a ignorar para a comparación"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
-msgstr ""
+msgstr "Usar un servidor proxy web"
 
 #: picard/profile.py:239
 msgid "type of proxy server"
@@ -694,50 +713,50 @@ msgstr ""
 
 #: picard/profile.py:240
 msgid "Proxy server address"
-msgstr ""
+msgstr "Enderezo do servidor proxy"
 
 #: picard/profile.py:241
 msgid "Proxy server port"
-msgstr ""
+msgstr "Porto do servidor proxy"
 
 #: picard/profile.py:242
 msgid "Proxy username"
-msgstr ""
+msgstr "Nome de usuario do proxy"
 
 #: picard/profile.py:243
 msgid "Proxy password"
-msgstr ""
+msgstr "Contrasinal do proxy"
 
 #: picard/profile.py:244
 msgid "Request timeout in seconds"
-msgstr ""
+msgstr "Tempo de espera da solicitude en segundos"
 
 #: picard/profile.py:245
 msgid "Browser integration"
-msgstr ""
+msgstr "Integración co navegador"
 
 #: picard/profile.py:248
 msgid "Default listening port"
-msgstr ""
+msgstr "Porto de escoita por defecto"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
-msgstr ""
+msgstr "Escoitar só en localhost"
 
 #: picard/profile.py:252
 #, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Similitude mínima para as buscas en ficheiros:"
+msgstr "Similitude mínima para as buscas en ficheiros"
 
 #: picard/profile.py:253
 #, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Similitude mínima para as buscas en clústers:"
+msgstr "Similitude mínima para as buscas en clústers"
 
 #: picard/profile.py:254
 #, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Similitude mínima para facer coincidir os ficheiros coas pistas:"
+msgstr "Similitude mínima para facer coincidir os ficheiros coas pistas"
 
 #: picard/releasegroup.py:69 picard/ui/searchdialog/album.py:155
 msgid "Tracks"
@@ -2442,15 +2461,15 @@ msgstr ""
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%i imaxe"
+msgstr[1] "%i imaxes"
 
 #: picard/ui/item.py:144
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "A imaxe %i non está en todas as pistas"
+msgstr[1] "%i imaxes diferentes entre as pistas"
 
 #: picard/ui/itemviews.py:160 picard/util/tags.py:123
 msgid "Title"
