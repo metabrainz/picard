@@ -369,7 +369,7 @@ def artist_credit_from_node(node):
         artist = artist_info['artist']
         if artist and 'id' in artist and artist['id']:
             # Add artist's country code if specified, otherwise 'XX' (Unknown Country)
-            artist_countries.append(artist['country'] if 'country' in artist else 'XX')
+            artist_countries.append(artist['country'] if 'country' in artist and artist['country'] else 'XX')
         translated_name, sort_name = _translate_artist_node(artist, config=config)
         has_translation = (translated_name != artist['name'])
         if has_translation:
