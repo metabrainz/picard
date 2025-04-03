@@ -395,10 +395,7 @@ def _format_artist_countries(countries: list):
     unique_countries = OrderedDict()
     for country in countries:
         unique_countries[country] = None
-    unique_countries = list(unique_countries.keys())
-    if len(unique_countries) < 2:
-        return unique_countries[0]
-    return f"{', '.join(unique_countries[0:-1])} & {unique_countries[-1]}"
+    return ', '.join(list(unique_countries.keys()))
 
 
 def artist_credit_to_metadata(node, m, release=False):

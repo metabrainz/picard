@@ -331,7 +331,7 @@ class RecordingMultiArtistsTest1(MBJSONTest):
         m = Metadata()
         t = Track('1')
         recording_to_metadata(self.json_doc, m, t)
-        self.assertEqual(m['~artistcountry'], 'GB & US')
+        self.assertEqual(m['~artistcountry'], 'GB, US')
         self.assertEqual(m['~artists_countries'], 'GB; US; US')
 
 
@@ -345,7 +345,7 @@ class RecordingMultiArtistsTest2(MBJSONTest):
         m = Metadata()
         t = Track('1')
         recording_to_metadata(self.json_doc, m, t)
-        self.assertEqual(m['~artistcountry'], 'GB, US & XX')
+        self.assertEqual(m['~artistcountry'], 'GB, US, XX')
         self.assertEqual(m['~artists_countries'], 'GB; US; XX')
 
 
