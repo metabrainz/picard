@@ -28,7 +28,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import OrderedDict
 from types import SimpleNamespace
 
 from picard import log
@@ -43,6 +42,7 @@ from picard.util import (
     linear_combination_of_weights,
     parse_amazon_url,
     translate_from_sortname,
+    uniqify,
 )
 from picard.util.script_detector_weighted import detect_script_weighted
 
@@ -388,16 +388,6 @@ def artist_credit_from_node(node):
     return (artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
 
 
-def _format_artist_countries(countries: list):
-    if not countries:
-        return ''
-    # Use an OrderedDict to get a list of unique countries in the original countries order.
-    unique_countries = OrderedDict()
-    for country in countries:
-        unique_countries[country] = None
-    return ', '.join(list(unique_countries.keys()))
-
-
 def artist_credit_to_metadata(node, m, release=False):
     ids = [n['artist']['id'] for n in node]
     artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries = artist_credit_from_node(node)
@@ -407,7 +397,7 @@ def artist_credit_to_metadata(node, m, release=False):
         m['albumartistsort'] = artist_sort_name
         m['~albumartists'] = artist_names
         m['~albumartists_sort'] = artist_sort_names
-        m['~albumartistcountry'] = _format_artist_countries(artist_countries)
+        m['~albumartistcountry'] = ', '.join(uniqify(artist_countries))
         m['~albumartists_countries'] = artist_countries
     else:
         m['musicbrainz_artistid'] = ids
@@ -415,7 +405,7 @@ def artist_credit_to_metadata(node, m, release=False):
         m['artistsort'] = artist_sort_name
         m['artists'] = artist_names
         m['~artists_sort'] = artist_sort_names
-        m['~artistcountry'] = _format_artist_countries(artist_countries)
+        m['~artistcountry'] = ', '.join(uniqify(artist_countries))
         m['~artists_countries'] = artist_countries
 
 
