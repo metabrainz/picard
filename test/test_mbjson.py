@@ -126,7 +126,6 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['releasecountry'], 'GB')
         self.assertEqual(m['releasestatus'], 'official')
         self.assertEqual(m['script'], 'Latn')
-        self.assertEqual(m['~albumartistcountry'], 'GB')
         self.assertEqual(m['~albumartists'], 'Pink Floyd')
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
         self.assertEqual(m['~albumartists_countries'], 'GB')
@@ -300,7 +299,6 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
         self.assertEqual(m['~recording_firstreleasedate'], '2014-06-20')
         self.assertEqual(m['~video'], '')
-        self.assertEqual(m['~artistcountry'], 'GB')
         self.assertEqual(m['~artists_countries'], 'GB')
         self.assertNotIn('originaldate', m)
         self.assertNotIn('originalyear', m)
@@ -331,7 +329,6 @@ class RecordingMultiArtistsTest1(MBJSONTest):
         m = Metadata()
         t = Track('1')
         recording_to_metadata(self.json_doc, m, t)
-        self.assertEqual(m['~artistcountry'], 'GB, US')
         self.assertEqual(m['~artists_countries'], 'GB; US; US')
 
 
@@ -345,7 +342,6 @@ class RecordingMultiArtistsTest2(MBJSONTest):
         m = Metadata()
         t = Track('1')
         recording_to_metadata(self.json_doc, m, t)
-        self.assertEqual(m['~artistcountry'], 'GB, US, XX')
         self.assertEqual(m['~artists_countries'], 'GB; US; XX')
 
 
