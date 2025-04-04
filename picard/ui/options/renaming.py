@@ -56,10 +56,10 @@ from picard.ui.options.scripting import (
 )
 from picard.ui.scripteditor import (
     ScriptEditorDialog,
-    ScriptEditorExamples,
     populate_script_selection_combo_box,
     synchronize_vertical_scrollbars,
 )
+from picard.ui.scripteditor.examples import ScriptEditorExamples
 from picard.ui.util import FileDialog
 
 
