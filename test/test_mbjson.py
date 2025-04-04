@@ -7,7 +7,7 @@
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018-2023 Philipp Wolfer
 # Copyright (C) 2020 dukeyin
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
 # Copyright (C) 2023 David Kellner
 #
@@ -127,6 +127,7 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['script'], 'Latn')
         self.assertEqual(m['~albumartists'], 'Pink Floyd')
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
+        self.assertEqual(m['~albumartists_countries'], 'GB')
         self.assertEqual(m['~releasecomment'], 'stereo')
         self.assertEqual(m['~releaseannotation'], 'Original Vinyl release')
         self.assertEqual(m['~releaselanguage'], 'eng')
@@ -291,6 +292,7 @@ class RecordingTest(MBJSONTest):
         self.assertEqual(m['~recordingtitle'], 'Thinking Out Loud')
         self.assertEqual(m['~recording_firstreleasedate'], '2014-06-20')
         self.assertEqual(m['~video'], '')
+        self.assertEqual(m['~artists_countries'], 'GB')
         self.assertNotIn('originaldate', m)
         self.assertNotIn('originalyear', m)
         self.assertEqual(t.genres, {
@@ -308,6 +310,32 @@ class RecordingTest(MBJSONTest):
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['performer:vocals'], 'Ed Sheeran')
         self.assertEqual(m['performer:acoustic guitar'], 'Ed Sheeran')
+
+
+class RecordingMultiArtistsTest1(MBJSONTest):
+    """Test multiple artists with some common contries.
+    """
+
+    filename = 'recording_multi_artists_1.json'
+
+    def test_recording_multi_artists_1(self):
+        m = Metadata()
+        t = Track('1')
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['~artists_countries'], 'GB; US; US')
+
+
+class RecordingMultiArtistsTest2(MBJSONTest):
+    """Test multiple artists with one unknown (missing) country.
+    """
+
+    filename = 'recording_multi_artists_2.json'
+
+    def test_recording_multi_artists_2(self):
+        m = Metadata()
+        t = Track('1')
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['~artists_countries'], 'GB; US; XX')
 
 
 class RecordingComposerCreditsTest(MBJSONTest):
