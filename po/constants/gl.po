@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-04-05 19:08+0000\n"
+"PO-Revision-Date: 2025-04-07 09:20+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/constants/gl/>\n"
@@ -227,19 +227,19 @@ msgstr "Afar (Eritrea)"
 
 #: picard/const/locales.py:30
 msgid "Afar (Eritrea) (Saho)"
-msgstr ""
+msgstr "Afar (Eritrea) (Saho)"
 
 #: picard/const/locales.py:31
 msgid "Afar (Ethiopia)"
-msgstr ""
+msgstr "Afar (Etiopía)"
 
 #: picard/const/locales.py:32
 msgid "Abkhazian"
-msgstr ""
+msgstr "abkhazo"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
-msgstr ""
+msgstr "abkhazo (Xeorxia)"
 
 #: picard/const/locales.py:34
 msgid "Afrikaans"
@@ -247,43 +247,43 @@ msgstr "Afrikaans"
 
 #: picard/const/locales.py:35
 msgid "Afrikaans (Namibia)"
-msgstr ""
+msgstr "Afrikaans (Namibia)"
 
 #: picard/const/locales.py:36
 msgid "Afrikaans (South Africa)"
-msgstr ""
+msgstr "Afrikaans (Sudáfrica)"
 
 #: picard/const/locales.py:37
 msgid "Aghem"
-msgstr ""
+msgstr "Aghem"
 
 #: picard/const/locales.py:38
 msgid "Aghem (Cameroon)"
-msgstr ""
+msgstr "Aghem (Camerún)"
 
 #: picard/const/locales.py:39
 msgid "Akan"
-msgstr ""
+msgstr "Acán"
 
 #: picard/const/locales.py:40
 msgid "Akan (Ghana)"
-msgstr ""
+msgstr "Akan (Ghana)"
 
 #: picard/const/locales.py:41
 msgid "Amharic"
-msgstr ""
+msgstr "amárico"
 
 #: picard/const/locales.py:42
 msgid "Amharic (Ethiopia)"
-msgstr ""
+msgstr "Amárico (Etiopía)"
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
-msgstr ""
+msgstr "aragonés"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
-msgstr ""
+msgstr "Aragonés (España)"
 
 #: picard/const/locales.py:45
 msgid "Obolo"
