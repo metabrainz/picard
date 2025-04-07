@@ -134,10 +134,8 @@ from picard.ui.passworddialog import (
 )
 from picard.ui.pluginupdatedialog import PluginUpdatesDialog
 from picard.ui.savewarningdialog import SaveWarningDialog
-from picard.ui.scripteditor import (
-    ScriptEditorDialog,
-    ScriptEditorExamples,
-)
+from picard.ui.scripteditor import ScriptEditorDialog
+from picard.ui.scripteditor.examples import ScriptEditorExamples
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
 from picard.ui.statusindicator import (
