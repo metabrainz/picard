@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-04-07 09:20+0000\n"
+"PO-Revision-Date: 2025-04-08 22:20+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/constants/gl/>\n"
@@ -287,207 +287,207 @@ msgstr "Aragonés (España)"
 
 #: picard/const/locales.py:45
 msgid "Obolo"
-msgstr ""
+msgstr "Obolo"
 
 #: picard/const/locales.py:46
 msgid "Obolo (Nigeria)"
-msgstr ""
+msgstr "Obolo (Nixeria)"
 
 #: picard/const/locales.py:47
 msgid "Syria"
-msgstr ""
+msgstr "Siria"
 
 #: picard/const/locales.py:49
 msgid "Arabic (world)"
-msgstr ""
+msgstr "árabe (mundo)"
 
 #: picard/const/locales.py:50
 msgid "Arabic (United Arab Emirates)"
-msgstr ""
+msgstr "Árabe (Emiratos Árabes Unidos)"
 
 #: picard/const/locales.py:51
 msgid "Arabic (Bahrain)"
-msgstr ""
+msgstr "árabe (Bahrain)"
 
 #: picard/const/locales.py:52
 msgid "Arabic (Djibouti)"
-msgstr ""
+msgstr "árabe (Djibouti)"
 
 #: picard/const/locales.py:53
 msgid "Arabic (Algeria)"
-msgstr ""
+msgstr "árabe (Alxeria)"
 
 #: picard/const/locales.py:54
 msgid "Arabic (Egypt)"
-msgstr ""
+msgstr "árabe (Exipto)"
 
 #: picard/const/locales.py:55
 msgid "Arabic (Western Sahara)"
-msgstr ""
+msgstr "Árabe (Sáhara Occidental)"
 
 #: picard/const/locales.py:56
 msgid "Arabic (Eritrea)"
-msgstr ""
+msgstr "árabe (Eritrea)"
 
 #: picard/const/locales.py:57
 msgid "Arabic (Israel)"
-msgstr ""
+msgstr "árabe (Israel)"
 
 #: picard/const/locales.py:58
 msgid "Arabic (Iraq)"
-msgstr ""
+msgstr "árabe (Iraq)"
 
 #: picard/const/locales.py:59
 msgid "Arabic (Jordan)"
-msgstr ""
+msgstr "Arabic (Jordan)"
 
 #: picard/const/locales.py:60
 msgid "Arabic (Comoros)"
-msgstr ""
+msgstr "Árabe (Comores)"
 
 #: picard/const/locales.py:61
 msgid "Arabic (Kuwait)"
-msgstr ""
+msgstr "Árabe (Kuwait)"
 
 #: picard/const/locales.py:62
 msgid "Arabic (Lebanon)"
-msgstr ""
+msgstr "árabe (Líbano)"
 
 #: picard/const/locales.py:63
 msgid "Arabic (Libya)"
-msgstr ""
+msgstr "árabe (Libia)"
 
 #: picard/const/locales.py:64
 msgid "Arabic (Morocco)"
-msgstr ""
+msgstr "árabe (Marrocos)"
 
 #: picard/const/locales.py:65
 msgid "Arabic (Mauritania)"
-msgstr ""
+msgstr "árabe (Mauritania)"
 
 #: picard/const/locales.py:66
 msgid "Arabic (Oman)"
-msgstr ""
+msgstr "árabe (Omán)"
 
 #: picard/const/locales.py:67
 msgid "Arabic (Palestinian Territories)"
-msgstr ""
+msgstr "Árabe (territorios palestinos)"
 
 #: picard/const/locales.py:68
 msgid "Arabic (Qatar)"
-msgstr ""
+msgstr "árabe (Qatar)"
 
 #: picard/const/locales.py:69
 msgid "Arabic (Saudi Arabia)"
-msgstr ""
+msgstr "Árabe (Arabia Saudita)"
 
 #: picard/const/locales.py:70
 msgid "Arabic (Sudan)"
-msgstr ""
+msgstr "árabe (Sudán)"
 
 #: picard/const/locales.py:71
 msgid "Arabic (Somalia)"
-msgstr ""
+msgstr "árabe (Somalia)"
 
 #: picard/const/locales.py:72
 msgid "Arabic (South Sudan)"
-msgstr ""
+msgstr "Árabe (Sudán do Sur)"
 
 #: picard/const/locales.py:73
 msgid "Arabic (Syria)"
-msgstr ""
+msgstr "árabe (Siria)"
 
 #: picard/const/locales.py:74
 msgid "Arabic (Chad)"
-msgstr ""
+msgstr "árabe (Chad)"
 
 #: picard/const/locales.py:75
 msgid "Arabic (Tunisia)"
-msgstr ""
+msgstr "árabe (Túnez)"
 
 #: picard/const/locales.py:76
 msgid "Arabic (Yemen)"
-msgstr ""
+msgstr "árabe (Iemen)"
 
 #: picard/const/locales.py:77
 msgid "Mapuche"
-msgstr ""
+msgstr "Mapuche"
 
 #: picard/const/locales.py:78
 msgid "Mapuche (Chile)"
-msgstr ""
+msgstr "Mapuche (Chile)"
 
 #: picard/const/locales.py:79
 msgid "Assamese"
-msgstr ""
+msgstr "asamés"
 
 #: picard/const/locales.py:80
 msgid "Assamese (India)"
-msgstr ""
+msgstr "Asamés (India)"
 
 #: picard/const/locales.py:81
 msgid "Asu"
-msgstr ""
+msgstr "Asu"
 
 #: picard/const/locales.py:82
 msgid "Asu (Tanzania)"
-msgstr ""
+msgstr "Asu (Tanzania)"
 
 #: picard/const/locales.py:83
 msgid "Asturian"
-msgstr ""
+msgstr "asturiano"
 
 #: picard/const/locales.py:84
 msgid "Asturian (Spain)"
-msgstr ""
+msgstr "asturiano (España)"
 
 #: picard/const/locales.py:85
 msgid "Azerbaijani"
-msgstr ""
+msgstr "azerbaixán"
 
 #: picard/const/locales.py:86
 msgid "Azerbaijani (Arabic)"
-msgstr ""
+msgstr "azerbaixán (árabe)"
 
 #: picard/const/locales.py:87
 msgid "Azerbaijani (Arabic) (Iraq)"
-msgstr ""
+msgstr "azerbaixán (árabe) (Iraq)"
 
 #: picard/const/locales.py:88
 msgid "Azerbaijani (Arabic) (Iran)"
-msgstr ""
+msgstr "Azerbaixán (árabe) (Irán)"
 
 #: picard/const/locales.py:89
 msgid "Azerbaijani (Arabic) (Türkiye)"
-msgstr ""
+msgstr "Azerbaixán (árabe) (Turquia)"
 
 #: picard/const/locales.py:90
 msgid "Azerbaijani (Cyrillic)"
-msgstr ""
+msgstr "azerbaixán (cirílico)"
 
 #: picard/const/locales.py:91
 msgid "Azerbaijani (Cyrillic) (Azerbaijan)"
-msgstr ""
+msgstr "Acerbaixán (cirílico) (Azerbaiyán)"
 
 #: picard/const/locales.py:92
 msgid "Azerbaijani (Latin)"
-msgstr ""
+msgstr "azerbaixán (latín)"
 
 #: picard/const/locales.py:93
 msgid "Azerbaijani (Latin) (Azerbaijan)"
-msgstr ""
+msgstr "Acerbaixán (latín) (Azerbaiyán)"
 
 #: picard/const/locales.py:94
 msgid "Bashkir"
-msgstr ""
+msgstr "baskir"
 
 #: picard/const/locales.py:95
 msgid "Bashkir (Russia)"
-msgstr ""
+msgstr "baskir (Rusia)"
 
 #: picard/const/locales.py:96
 msgid "Baluchi"
-msgstr ""
+msgstr "Baluchi"
 
 #: picard/const/locales.py:97
 msgid "Baluchi (Arabic)"
