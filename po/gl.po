@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-10 12:02+0100\n"
-"PO-Revision-Date: 2025-04-07 09:20+0000\n"
+"PO-Revision-Date: 2025-04-10 10:20+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/app/gl/>\n"
@@ -3788,7 +3788,7 @@ msgstr "&Axuda"
 
 #: picard/ui/mainwindow/actions.py:112 picard/ui/scripteditor.py:641
 msgid "&Help…"
-msgstr "A&xuda"
+msgstr "&Axuda…"
 
 #: picard/ui/scripteditor.py:646
 msgid "&Scripting documentation…"
@@ -5491,7 +5491,7 @@ msgstr "&Doar…"
 
 #: picard/ui/mainwindow/actions.py:135
 msgid "&Report a Bug…"
-msgstr "Info&rmar dun erro"
+msgstr "&Informar dun erro…"
 
 #: picard/ui/mainwindow/actions.py:142
 msgid "&Support Forum…"
@@ -5770,7 +5770,7 @@ msgstr "Gardar e&tiquetas"
 
 #: picard/ui/mainwindow/actions.py:466
 msgid "Tags From &File Names…"
-msgstr "Etiquetas a partir de nomes de &ficheiro"
+msgstr "Etiquetas a partir de nomes de &ficheiro…"
 
 #: picard/ui/mainwindow/actions.py:467
 #: picard/ui/options/interface_toolbar.py:134
