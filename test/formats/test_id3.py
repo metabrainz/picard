@@ -625,6 +625,71 @@ class CommonId3Tests:
             raw_metadata = load_raw(self.filename)
             self.assertEqual(metadata['releasedate'], raw_metadata['TDRL'])
 
+        @skipUnlessTestfile
+        def test_malformed_link_url_in_data(self):
+            filename = self.copy_file_tmp(os.path.join('test', 'data', 'test.mp3'), '.mp3')
+            tags = mutagen.id3.ID3()
+            try:
+                tags.load(filename)
+            except mutagen.id3.ID3NoHeaderError:
+                pass
+            frame = mutagen.id3.Frames['LINK'](data=b'\x00http://example.org/null')
+            tags.add(frame)
+            tags.save(filename)
+            metadata = load_metadata(filename)
+            self.assertIn('user_website', metadata)
+            website_url = metadata['user_website']
+            self.assertTrue('http://example.org/null' in website_url)
+            save_metadata(filename, metadata)
+            raw_metadata = load_raw(filename)
+            has_url_frame = False
+            for key in raw_metadata:
+                if key.startswith('WXXX:') or key == 'WXXX':
+                    has_url_frame = True
+                    self.assertTrue(website_url in key or website_url == raw_metadata[key])
+                    break
+            self.assertTrue(has_url_frame, "No URL frame (WXXX) found in raw metadata")
+            self.assertFalse(any(k.startswith('LINK') for k in raw_metadata))
+
+        @skipUnlessTestfile
+        def test_archive_org_link_pattern(self):
+            filename = self.copy_file_tmp(os.path.join('test', 'data', 'test.mp3'), '.mp3')
+
+            tags = mutagen.id3.ID3()
+            try:
+                tags.load(filename)
+            except mutagen.id3.ID3NoHeaderError:
+                pass
+
+            frame = mutagen.id3.Frames['LINK'](data=b'p://www.archive.org/details/test_item')
+            tags.add(frame)
+            tags.save(filename)
+
+            metadata = load_metadata(filename)
+            self.assertIn('user_website', metadata, "URL was not extracted from archive.org pattern")
+            website_url = metadata['user_website']
+            self.assertIn('archive.org', website_url, "URL doesn't contain archive.org domain")
+            self.assertIn('details/test_item', website_url, "URL path was not correctly extracted")
+
+            save_metadata(filename, metadata)
+            raw_metadata = load_raw(filename)
+            has_url_frame = False
+
+            for key in raw_metadata:
+                if key.startswith('WXXX:') or key == 'WXXX':
+                    has_url_frame = True
+                    frame = raw_metadata[key]
+                    if hasattr(frame, 'url'):
+                        self.assertIn('archive.org', frame.url)
+                        self.assertIn('details/test_item', frame.url)
+                    else:
+                        self.assertIn('archive.org', frame)
+                        self.assertIn('details/test_item', frame)
+                    break
+
+            self.assertTrue(has_url_frame, "No URL frame (WXXX) found - LINK frame wasn't converted")
+            self.assertFalse(any(k.startswith('LINK') for k in raw_metadata), "LINK frame was not removed after conversion")
+
 
 class MP3Test(CommonId3Tests.Id3TestCase):
     testfile = 'test.mp3'
