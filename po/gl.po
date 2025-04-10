@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-04-07 09:20+0000\n"
+"PO-Revision-Date: 2025-04-10 10:20+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "2/app/gl/>\n"
@@ -3520,7 +3520,7 @@ msgstr "&Pegar"
 
 #: picard/ui/mainwindow.py:531 picard/ui/scripteditor.py:649
 msgid "&Help…"
-msgstr "A&xuda"
+msgstr "&Axuda…"
 
 #: picard/ui/mainwindow.py:538
 msgid "&About…"
@@ -3532,7 +3532,7 @@ msgstr "&Doar…"
 
 #: picard/ui/mainwindow.py:551
 msgid "&Report a Bug…"
-msgstr "Info&rmar dun erro"
+msgstr "&Informar dun erro…"
 
 #: picard/ui/mainwindow.py:557
 msgid "&Support Forum…"
@@ -3822,7 +3822,7 @@ msgstr "Gardar e&tiquetas"
 
 #: picard/ui/mainwindow.py:861
 msgid "Tags From &File Names…"
-msgstr "Etiquetas a partir de nomes de &ficheiro"
+msgstr "Etiquetas a partir de nomes de &ficheiro…"
 
 #: picard/ui/mainwindow.py:862 picard/ui/options/interface_toolbar.py:120
 msgid "Parse File Names…"
@@ -4153,11 +4153,13 @@ msgid ""
 "Internal player: A valid playback service was not found, playback cannot "
 "proceed"
 msgstr ""
+"Reprodutor interno: non se atopou un servizo de reprodución válido, a "
+"reprodución non pode continuar"
 
 #: picard/ui/playertoolbar.py:180
 #, python-format
 msgid "Internal player: error, code=%(code)d, msg=%(message)s"
-msgstr ""
+msgstr "Reprodutor interno: erro, código=%(code)d, msg=%(message)s"
 
 #: picard/ui/playertoolbar.py:189
 msgid "Player"
@@ -4959,19 +4961,19 @@ msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:86
 msgid "Configuration File:"
-msgstr ""
+msgstr "Ficheiro de configuración:"
 
 #: picard/ui/ui_options_maintenance.py:87
 msgid "Open folder"
-msgstr ""
+msgstr "Abrir cartafol"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
-msgstr ""
+msgstr "Cargar copia de seguranza"
 
 #: picard/ui/ui_options_maintenance.py:89
 msgid "Save Backup"
-msgstr ""
+msgstr "Gardar copia de seguranza"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
@@ -5386,7 +5388,7 @@ msgstr "Seleccionar tipos…"
 
 #: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
-msgstr ""
+msgstr "Use só imaxes do seguinte tamaño:"
 
 #: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
@@ -5559,7 +5561,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:246
 msgid "Unknown profile"
-msgstr ""
+msgstr "Perfil descoñecido"
 
 #: picard/ui/options/dialog.py:296
 #, python-format
@@ -5756,7 +5758,7 @@ msgstr "Sistema"
 
 #: picard/ui/options/interface.py:106
 msgid "The Qt5 theme configured in the desktop environment"
-msgstr ""
+msgstr "O tema Qt5 configurado no ambiente de escritorio"
 
 #: picard/ui/options/interface.py:124
 msgid "System default"
@@ -5764,16 +5766,15 @@ msgstr "Predeterminado do sistema"
 
 #: picard/ui/options/interface.py:180
 msgid "Theme changed"
-msgstr ""
+msgstr "O tema cambiou"
 
 #: picard/ui/options/interface.py:181
-#, fuzzy
 msgid ""
 "You have changed the application theme. You have to restart Picard in order "
 "for the change to take effect."
 msgstr ""
-"Cambiou o idioma da interface. Debe reiniciar Picard para que os cambios "
-"teñan efecto."
+"Trocaches o tema da aplicación. Tes que reiniciar Picard para que o troco "
+"teña efecto."
 
 #: picard/ui/options/interface.py:183
 msgid ""
@@ -5804,16 +5805,15 @@ msgstr "Escolle unha cor"
 
 #: picard/ui/options/interface_colors.py:146
 msgid "Colors changed"
-msgstr ""
+msgstr "As cores trocaron"
 
 #: picard/ui/options/interface_colors.py:147
-#, fuzzy
 msgid ""
 "You have changed the interface colors. You may have to restart Picard in "
 "order for the changes to take effect."
 msgstr ""
-"Cambiou o idioma da interface. Debe reiniciar Picard para que os cambios "
-"teñan efecto."
+"Trocaches as cores da interface. É posible que teñas que reiniciar Picard "
+"para que os trocos teñan efecto."
 
 #: picard/ui/options/interface_toolbar.py:60
 msgid "Action Toolbar"
@@ -5892,6 +5892,26 @@ msgid ""
 "by checking the box next to the setting. When you choose \"Make It So!\" to "
 "save your option settings, the selected items will be removed."
 msgstr ""
+"Isto permítelle eliminar as opcións non utilizadas do ficheiro INI de "
+"configuración.\n"
+"\n"
+"As configuracións que se atopan no ficheiro de configuración que non "
+"aparecen en ningunha páxina de configuración de opcións listaranse a "
+"continuación. Se o ficheiro de configuración non contén ningunha opción de "
+"configuración non utilizada, a lista estará baleira e a caixa de "
+"verificación de eliminación desactivarase.\n"
+"\n"
+"Teña en conta que as opcións de configuración non utilizadas poden proceder "
+"de complementos que se desinstalaron, polo que teña coidado de non eliminar "
+"as opcións que desexe utilizar máis tarde cando se reinstale o complemento. "
+"As opcións pertencentes a complementos que están instalados pero actualmente "
+"desactivados non se listarán para a súa posible eliminación.\n"
+"\n"
+"Para eliminar unha ou máis opcións de configuración, primeiro active a "
+"eliminación marcando a caixa \"Eliminar opcións seleccionadas\". A "
+"continuación, podes seleccionar a configuración que queres eliminar marcando "
+"a caixa situada xunto á configuración. Cando escollas \"Fágao así!\" para "
+"gardar a configuración das opcións, eliminaranse os elementos seleccionados."
 
 #: picard/ui/options/maintenance.py:93
 msgid "Value"
@@ -5903,6 +5923,8 @@ msgid ""
 "The configuration file currently contains %(totalcount)d option settings, "
 "%(unusedcount)d which are unused."
 msgstr ""
+"O ficheiro de configuración contén actualmente %(totalcount)d opcións de "
+"configuración, %(unusedcount)d que están sen usar."
 
 #: picard/ui/options/maintenance.py:167
 msgid "Configuration files"
@@ -5917,11 +5939,13 @@ msgid ""
 "There was a problem backing up the configuration file. Please see the logs "
 "for more details."
 msgstr ""
+"Produciuse un problema ao facer a copia de seguranza do ficheiro de "
+"configuración. Consulte os rexistros para obter máis detalles."
 
 #: picard/ui/options/maintenance.py:216
 #, python-format
 msgid "Configuration successfully backed up to %s"
-msgstr ""
+msgstr "Realizouse unha copia de seguranza da configuración en %s"
 
 #: picard/ui/options/maintenance.py:225
 msgid "Load Backup Configuration File"
@@ -5934,17 +5958,24 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Ao cargar un ficheiro de configuración de copia de seguranza substituirá os "
+"axustes de configuración actuais. Gardarase automaticamente unha copia de "
+"seguranza do ficheiro actual.\n"
+"\n"
+"Queres continuar?"
 
 #: picard/ui/options/maintenance.py:261
 #, python-format
 msgid "Configuration successfully loaded from %s"
-msgstr ""
+msgstr "A configuración cargouse correctamente desde %s"
 
 #: picard/ui/options/maintenance.py:269
 msgid ""
 "There was a problem restoring the configuration file. Please see the logs "
 "for more details."
 msgstr ""
+"Produciuse un problema ao restaurar o ficheiro de configuración. Consulte os "
+"rexistros para obter máis detalles."
 
 #: picard/ui/options/maintenance.py:295
 #: picard/ui/widgets/profilelistwidget.py:84
@@ -6116,17 +6147,17 @@ msgstr "Script descoñecido"
 
 #: picard/ui/options/profiles.py:255
 msgid "No scripts in list"
-msgstr ""
+msgstr "Non hai scripts na lista"
 
 #: picard/ui/options/profiles.py:258
 #, python-format
 msgid "Enabled tagging scripts of %i found:"
-msgstr ""
+msgstr "Encontráronse scripts de etiquetado de %i activados:"
 
 #: picard/ui/options/profiles.py:270
 #, python-format
 msgid "Enabled providers of %i listed:"
-msgstr ""
+msgstr "Fornecedores activados de %i listados:"
 
 #: picard/ui/options/profiles.py:296
 #, python-format

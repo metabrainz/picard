@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-04-08 22:20+0000\n"
+"PO-Revision-Date: 2025-04-10 10:20+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "2/constants/gl/>\n"
@@ -491,103 +491,103 @@ msgstr "Baluchi"
 
 #: picard/const/locales.py:97
 msgid "Baluchi (Arabic)"
-msgstr ""
+msgstr "Baluchi (árabe)"
 
 #: picard/const/locales.py:98
 msgid "Baluchi (Arabic) (Pakistan)"
-msgstr ""
+msgstr "Baluchi (árabe) (Paquistán)"
 
 #: picard/const/locales.py:99
 msgid "Baluchi (Latin)"
-msgstr ""
+msgstr "Baluchi (latín)"
 
 #: picard/const/locales.py:100
 msgid "Baluchi (Latin) (Pakistan)"
-msgstr ""
+msgstr "Baluchi (latín) (Paquistán)"
 
 #: picard/const/locales.py:101
 msgid "Basaa"
-msgstr ""
+msgstr "Basaa"
 
 #: picard/const/locales.py:102
 msgid "Basaa (Cameroon)"
-msgstr ""
+msgstr "Basaa (Camerún)"
 
 #: picard/const/locales.py:103
 msgid "Belarusian"
-msgstr ""
+msgstr "bielorruso"
 
 #: picard/const/locales.py:104
 msgid "Belarusian (Belarus)"
-msgstr ""
+msgstr "Bielorruso (Bielorrusia)"
 
 #: picard/const/locales.py:105
 msgid "Belarusian (Taraskievica orthography)"
-msgstr ""
+msgstr "Bielorruso (Ortografía Taraskievica)"
 
 #: picard/const/locales.py:106
 msgid "Bemba"
-msgstr ""
+msgstr "Bemba"
 
 #: picard/const/locales.py:107
 msgid "Bemba (Zambia)"
-msgstr ""
+msgstr "Bemba (Zambia)"
 
 #: picard/const/locales.py:108
 msgid "Bena"
-msgstr ""
+msgstr "Bena"
 
 #: picard/const/locales.py:109
 msgid "Bena (Tanzania)"
-msgstr ""
+msgstr "Bena (Tanzania)"
 
 #: picard/const/locales.py:110
 msgid "Bulgarian"
-msgstr ""
+msgstr "búlgaro"
 
 #: picard/const/locales.py:111
 msgid "Bulgarian (Bulgaria)"
-msgstr ""
+msgstr "búlgaro (Bulgaria)"
 
 #: picard/const/locales.py:112
 msgid "Haryanvi"
-msgstr ""
+msgstr "Haryanvi"
 
 #: picard/const/locales.py:113
 msgid "Haryanvi (India)"
-msgstr ""
+msgstr "Haryanvi (India)"
 
 #: picard/const/locales.py:114
 msgid "Western Balochi"
-msgstr ""
+msgstr "Baluchi Occidental"
 
 #: picard/const/locales.py:115
 msgid "Western Balochi (United Arab Emirates)"
-msgstr ""
+msgstr "Baluchi Occidental (Emiratos Árabes Unidos)"
 
 #: picard/const/locales.py:116
 msgid "Western Balochi (Afghanistan)"
-msgstr ""
+msgstr "Baluchi Occidental (Afganistán)"
 
 #: picard/const/locales.py:117
 msgid "Western Balochi (Iran)"
-msgstr ""
+msgstr "Baluchi Occidental (Irán)"
 
 #: picard/const/locales.py:118
 msgid "Western Balochi (Oman)"
-msgstr ""
+msgstr "Baluchi Occidental (Omán)"
 
 #: picard/const/locales.py:119
 msgid "Western Balochi (Pakistan)"
-msgstr ""
+msgstr "Baluchi Occidental (Paquistán)"
 
 #: picard/const/locales.py:120
 msgid "Bhojpuri"
-msgstr ""
+msgstr "Bhojpuri"
 
 #: picard/const/locales.py:121
 msgid "Bhojpuri (India)"
-msgstr ""
+msgstr "Bhojpuri (India)"
 
 #: picard/const/locales.py:122
 msgid "Tai Dam"
