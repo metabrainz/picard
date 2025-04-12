@@ -54,9 +54,9 @@ from picard.ui.options.scripting import (
     ScriptCheckError,
     ScriptingDocumentationDialog,
 )
-from picard.ui.scripteditor import (
-    ScriptEditorDialog,
-    ScriptEditorExamples,
+from picard.ui.scripteditor import ScriptEditorDialog
+from picard.ui.scripteditor.examples import ScriptEditorExamples
+from picard.ui.scripteditor.utils import (
     populate_script_selection_combo_box,
     synchronize_vertical_scrollbars,
 )
