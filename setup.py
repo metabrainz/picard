@@ -517,7 +517,7 @@ class picard_update_constants(Command):
         self.weblate_key = None
 
     def finalize_options(self):
-        self.locales = self.distribution.locales
+        pass
 
     def run(self):
         if not self.skip_pull:
