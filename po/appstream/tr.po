@@ -4,6 +4,7 @@
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Transifex Bot <>, 2023
 # brtc <brtc@users.noreply.translations.metabrainz.org>, 2024.
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 #
 # Translators:
 #
@@ -12,25 +13,28 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2024-07-20 13:42+0000\n"
-"Last-Translator: brtc <brtc@users.noreply.translations.metabrainz.org>\n"
-"Language-Team: Turkish <https://translations.metabrainz.org/projects/"
-"picard/3/appstream/tr/>\n"
+"PO-Revision-Date: 2025-04-12 09:36+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
+"3/appstream/tr/>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
+#, fuzzy
 msgid ""
 "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 msgstr ""
+"Picard, MusicBrainz veri tabanı tarafından desteklenen, platformlar arası "
+"bir müzik etiketleme yazılımıdır."
 
 #: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""

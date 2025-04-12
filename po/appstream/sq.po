@@ -1,36 +1,39 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Besnik Bleta <besnik@programeshqip.org>, 2022
 # Transifex Bot <>, 2023
+# Weblate <noreply-mt-weblate@weblate.org>, 2025.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Albanian (https://app.transifex.com/musicbrainz/teams/13846/"
-"sq/)\n"
+"PO-Revision-Date: 2025-04-12 09:36+0000\n"
+"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
+"3/appstream/sq/>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
+#, fuzzy
 msgid ""
 "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 msgstr ""
+"Picard-i është një etiketues ndërplatformësh muzike që bazohet në bazën e të "
+"dhënave MusicBrainz."
 
 #: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""
