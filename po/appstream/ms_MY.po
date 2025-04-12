@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 22:58+0200\n"
+"POT-Creation-Date: 2025-04-12 10:31+0200\n"
 "PO-Revision-Date: 2018-11-25 07:37+0000\n"
 "Last-Translator: Transifex Bot <>, 2023\n"
 "Language-Team: Malay (Malaysia) (https://app.transifex.com/musicbrainz/"
@@ -29,10 +29,11 @@ msgid "MusicBrainz Picard"
 msgstr "Picard MusicBrainz"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
-msgid "MusicBrainz's music tagger"
-msgstr "Penanda muzik MusicBrainz"
+msgid ""
+"Picard is a cross-platform music tagger powered by the MusicBrainz database"
+msgstr ""
 
-#: org.musicbrainz.Picard.appdata.xml.in:10
+#: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""
 "Do you need to clean up your music library? Picard is an open-source cross-"
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
@@ -42,7 +43,7 @@ msgstr ""
 "terbuka yang rentas pelantar oleh MusicBrainz. Picard mampu mengenal pasti "
 "fail audio biarpun tanpa mana-mana data meta yang sedia ada."
 
-#: org.musicbrainz.Picard.appdata.xml.in:15
+#: org.musicbrainz.Picard.appdata.xml.in:17
 msgid ""
 "Picard helps you organize your music collection by renaming your music files "
 "and sorting them into a folder structure exactly the way you want it. A "
@@ -56,15 +57,15 @@ msgstr ""
 "menyokong pelbagai jenis format audio. Di samping itu, Picard juga mampu "
 "mencari CD lengkap untuk anda."
 
-#: org.musicbrainz.Picard.appdata.xml.in:22
+#: org.musicbrainz.Picard.appdata.xml.in:24
 msgid "Tagging audio files has never been easier."
 msgstr "Begitu mudah menanda fail-fail audio."
 
-#: org.musicbrainz.Picard.appdata.xml.in:25
+#: org.musicbrainz.Picard.appdata.xml.in:27
 msgid "Features:"
 msgstr "Ciri-ciri:"
 
-#: org.musicbrainz.Picard.appdata.xml.in:27
+#: org.musicbrainz.Picard.appdata.xml.in:29
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
@@ -72,7 +73,7 @@ msgstr ""
 "Beraneka format: Picard menyokong seluruh format muzik tenar. Antaranya "
 "termasuklah MP3, FLAC, OGG, M4A, WMA, WAV dan banyak lagi."
 
-#: org.musicbrainz.Picard.appdata.xml.in:31
+#: org.musicbrainz.Picard.appdata.xml.in:33
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
@@ -80,7 +81,7 @@ msgstr ""
 "AcoustID: Picard menggunakan sidikan bunyi AcoustID untuk membolehkan fail-"
 "fail dikenal pasti oleh kandungan muziknya biarpun tanpa data meta."
 
-#: org.musicbrainz.Picard.appdata.xml.in:35
+#: org.musicbrainz.Picard.appdata.xml.in:37
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
 "MusicBrainz database to provide accurate information about millions of music "
@@ -91,12 +92,12 @@ msgstr ""
 "MusicBrainz ialah sebuah pangkalan data terbuka yang ditanggung oleh "
 "kelompok masyarakat."
 
-#: org.musicbrainz.Picard.appdata.xml.in:40
+#: org.musicbrainz.Picard.appdata.xml.in:42
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
 msgstr ""
 "Carian CD: Picard boleh mencari CD muzik lengkap dengan hanya satu ketikan."
 
-#: org.musicbrainz.Picard.appdata.xml.in:43
+#: org.musicbrainz.Picard.appdata.xml.in:45
 msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
@@ -104,7 +105,7 @@ msgstr ""
 "Sokongan pemalam: Anda boleh membuat pilihan antara pemalam yang tersedia "
 "ataupun tulis sendiri pemalam sekiranya terdapat ciri yang anda ingini."
 
-#: org.musicbrainz.Picard.appdata.xml.in:47
+#: org.musicbrainz.Picard.appdata.xml.in:49
 msgid ""
 "Scripting: A flexible but easy to learn scripting language allows you to "
 "exactly specify how your music files will be named and how the tags will "
@@ -114,13 +115,13 @@ msgstr ""
 "dipelajari. Hal ini membolehkan anda menentukan penamaan fail muzik anda "
 "serta rupa tandanya."
 
-#: org.musicbrainz.Picard.appdata.xml.in:52
+#: org.musicbrainz.Picard.appdata.xml.in:54
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
 msgstr ""
 
-#: org.musicbrainz.Picard.appdata.xml.in:56
+#: org.musicbrainz.Picard.appdata.xml.in:58
 msgid ""
 "Open Source: Picard is licensed under the GNU General Public License 2.0 or "
 "later, and is hosted on GitHub where it is actively developed by some "
@@ -130,7 +131,7 @@ msgstr ""
 "terkemudian. Picard juga dihoskan di GitHub serta sedang giat dibangunkan "
 "oleh pembangun-pembangun yang hebat."
 
-#: org.musicbrainz.Picard.appdata.xml.in:109
+#: org.musicbrainz.Picard.appdata.xml.in:111
 msgid "MetaBrainz Foundation"
 msgstr "Yayasan MetaBrainz"
 
@@ -141,3 +142,6 @@ msgstr ""
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
 msgstr ""
+
+#~ msgid "MusicBrainz's music tagger"
+#~ msgstr "Penanda muzik MusicBrainz"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 22:58+0200\n"
+"POT-Creation-Date: 2025-04-12 10:31+0200\n"
 "PO-Revision-Date: 2023-08-23 19:10+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/"
@@ -29,10 +29,11 @@ msgid "MusicBrainz Picard"
 msgstr "מוזיקבריינז פיקארד"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
-msgid "MusicBrainz's music tagger"
-msgstr "מתייג מוזיקה של מיוזיקבריינז"
+msgid ""
+"Picard is a cross-platform music tagger powered by the MusicBrainz database"
+msgstr ""
 
-#: org.musicbrainz.Picard.appdata.xml.in:10
+#: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""
 "Do you need to clean up your music library? Picard is an open-source cross-"
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
@@ -42,7 +43,7 @@ msgstr ""
 "פתוח, חוצה מסדות, מאת מיוזיקבריינז. בעל יכולת זיהוי קבצי שמע גם ללא נתוני־על "
 "קיימים."
 
-#: org.musicbrainz.Picard.appdata.xml.in:15
+#: org.musicbrainz.Picard.appdata.xml.in:17
 msgid ""
 "Picard helps you organize your music collection by renaming your music files "
 "and sorting them into a folder structure exactly the way you want it. A "
@@ -54,15 +55,15 @@ msgstr ""
 "למבנה תיקיות בדיוק לצרכים האישיים. מגוון של מִתְקָעים זמינים, ניתן גם לכתוב "
 "מתקעים לבד. פיקארד תומך במגוון רחב של תבניות שמע ויודע לחפש תקליטור שלם."
 
-#: org.musicbrainz.Picard.appdata.xml.in:22
+#: org.musicbrainz.Picard.appdata.xml.in:24
 msgid "Tagging audio files has never been easier."
 msgstr "תיוג קובצי שמע מעולם לא היה קל יותר."
 
-#: org.musicbrainz.Picard.appdata.xml.in:25
+#: org.musicbrainz.Picard.appdata.xml.in:27
 msgid "Features:"
 msgstr "תכונות:"
 
-#: org.musicbrainz.Picard.appdata.xml.in:27
+#: org.musicbrainz.Picard.appdata.xml.in:29
 msgid ""
 "Multiple formats: Picard supports all popular music formats, including MP3, "
 "FLAC, OGG, M4A, WMA, WAV, and more."
@@ -70,15 +71,15 @@ msgstr ""
 "תבניות מרובות: פיקארד תומך בכל התבניות המוזיקה המקובלות לרבות MP3, FLAC, "
 "OGG, M4A, WMA, WAV, ועוד."
 
-#: org.musicbrainz.Picard.appdata.xml.in:31
+#: org.musicbrainz.Picard.appdata.xml.in:33
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"AcoustID: פיקארד עושה שימוש טביעת אצבע אודיו AcoustID כדי לזהות את הקבצים על־"
-"ידי המוזיקה עצמה, גם אם אין להם מטא-נתונים."
+"AcoustID: פיקארד עושה שימוש טביעת אצבע אודיו AcoustID כדי לזהות את הקבצים "
+"על־ידי המוזיקה עצמה, גם אם אין להם מטא-נתונים."
 
-#: org.musicbrainz.Picard.appdata.xml.in:35
+#: org.musicbrainz.Picard.appdata.xml.in:37
 msgid ""
 "Comprehensive database: Picard uses the open and community-maintained "
 "MusicBrainz database to provide accurate information about millions of music "
@@ -87,11 +88,11 @@ msgstr ""
 "מסד נתונים מקיף: פיקארד משתמש במסד הנתונים הפתוח המתוחזק על־ידי קהילת "
 "מיוזיקבריינז על מנת לספק מידע מדויק על מיליוני הוצאות מוזיקה."
 
-#: org.musicbrainz.Picard.appdata.xml.in:40
+#: org.musicbrainz.Picard.appdata.xml.in:42
 msgid "CD lookups: Picard can lookup entire music CDs with a click."
 msgstr "חיפוש תקליטורים: פיקארד יכול לחפש תקליטורי מוזיקה שלמים בלחיצת כפתור."
 
-#: org.musicbrainz.Picard.appdata.xml.in:43
+#: org.musicbrainz.Picard.appdata.xml.in:45
 msgid ""
 "Plugin support: If you need a particular feature, you can choose from a "
 "selection of available plugins or write your own."
@@ -99,7 +100,7 @@ msgstr ""
 "תמיכה מִתְקָעים: אם אתם צריכים תכונה מסוימת, תוכלו לבחור מתוך מבחר של מִתְקָעים "
 "זמין או לכתוב מִתְקָעים משלכם."
 
-#: org.musicbrainz.Picard.appdata.xml.in:47
+#: org.musicbrainz.Picard.appdata.xml.in:49
 msgid ""
 "Scripting: A flexible but easy to learn scripting language allows you to "
 "exactly specify how your music files will be named and how the tags will "
@@ -108,13 +109,13 @@ msgstr ""
 "תסרוט: שפת תסרוט גמישה אך קלה ללימוד מאפשרת להגדיר כיצד בדיוק קובצי המוזיקה "
 "יכונו וכיצד התגים יראו."
 
-#: org.musicbrainz.Picard.appdata.xml.in:52
+#: org.musicbrainz.Picard.appdata.xml.in:54
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
 msgstr ""
 
-#: org.musicbrainz.Picard.appdata.xml.in:56
+#: org.musicbrainz.Picard.appdata.xml.in:58
 msgid ""
 "Open Source: Picard is licensed under the GNU General Public License 2.0 or "
 "later, and is hosted on GitHub where it is actively developed by some "
@@ -123,7 +124,7 @@ msgstr ""
 "קוד פתוח: פיקארד מרושה תחת הרישיון הציבורי הכללי של GNU 2.0 ואילך, ומתארח ב־ "
 "GitHub, שם הוא מפותח באופן פעיל על־ידי כמה מפתחים מדהימים."
 
-#: org.musicbrainz.Picard.appdata.xml.in:109
+#: org.musicbrainz.Picard.appdata.xml.in:111
 msgid "MetaBrainz Foundation"
 msgstr "קרן מטהבריינז"
 
@@ -134,3 +135,6 @@ msgstr ""
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
 msgstr ""
+
+#~ msgid "MusicBrainz's music tagger"
+#~ msgstr "מתייג מוזיקה של מיוזיקבריינז"
