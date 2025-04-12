@@ -1,9 +1,10 @@
 # guardiansock <guardian.sock5925@fastmail.com>, 2024.
+# BestSteve <ibmibmibm.tw@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2024-12-24 23:42+0000\n"
-"Last-Translator: guardiansock <guardian.sock5925@fastmail.com>\n"
+"PO-Revision-Date: 2025-03-31 11:45+0000\n"
+"Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/countries/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -11,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. iso.code:AF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -806,7 +807,7 @@ msgstr "荷蘭"
 #. iso.code:AN
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:151
 msgid "Netherlands Antilles"
-msgstr "荷蘭安地卡"
+msgstr "荷屬安地列斯"
 
 #. iso.code:NC
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:152
@@ -1216,7 +1217,7 @@ msgstr "烏克蘭"
 #. iso.code:AE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:220
 msgid "United Arab Emirates"
-msgstr "阿聯"
+msgstr "阿拉伯聯合大公國"
 
 #. iso.code:GB
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:221

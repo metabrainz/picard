@@ -281,9 +281,24 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1070
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1063
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
 msgstr ""
 
 #. name:Ballet
@@ -292,6 +307,16 @@ msgctxt "work_type"
 msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
+msgstr ""
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
 msgstr ""
 
 #. name:Box
@@ -1207,8 +1232,8 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 
 #. name:Concert
@@ -1567,9 +1592,24 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1071
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1064
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:33
@@ -2037,9 +2077,24 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1065
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1058
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
@@ -2396,9 +2451,24 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1066
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1059
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
@@ -2924,9 +2994,24 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1067
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1060
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
@@ -3094,9 +3179,24 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1068
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1061
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
@@ -3298,9 +3398,24 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1069
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1062
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
@@ -4250,6 +4365,12 @@ msgstr ""
 #: DB:work_attribute_type/description:56
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
+msgstr ""
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
 msgstr ""
 
 #. name:COMPASS ID
@@ -6537,6 +6658,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "Proizvodnja"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7113,6 +7239,11 @@ msgstr ""
 #: DB:work_attribute_type/name:53
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
+msgstr ""
+
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:35

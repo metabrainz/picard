@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-02-11 00:44+0000\n"
+"PO-Revision-Date: 2025-03-22 12:44+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -378,10 +378,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "la dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "la locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "la lidio"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "la misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr "la frigio"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -392,6 +407,20 @@ msgid ""
 msgstr ""
 "Un balletto è la musica composta per essere utilizzata, insieme a una "
 "coreografia, per la produzione di un balletto di danza."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
+"Un libretto (booklet) dato in omaggio o venduto ai partecipanti che contiene "
+"informazioni sull'evento, come orari, informazioni sugli artisti e dettagli "
+"sulla musica che verrà eseguita. I programmi sono disponibili più spesso per "
+"i festival musicali e per le esibizioni in scena e di musica classica."
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -1498,12 +1527,13 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 "Un'immagine che mostra l'ordine e l'orario delle esibizioni durante un "
-"evento. Può essere un'immagine a sé stante, oppure un manifesto o un banner "
-"(e in quel caso andranno selezionati tutti i tipi rilevanti)."
+"evento. Può essere un'immagine a sé stante, oppure un manifesto, un banner o "
+"una pagina presa da un programma (e in quel caso andranno selezionati tutti "
+"i tipi rilevanti)."
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1898,10 +1928,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "si dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "si locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "si lidio"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "si misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr "si frigio"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2370,10 +2415,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "do dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "do locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "do lidio"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "do misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr "do frigio"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2637,7 +2697,7 @@ msgstr "Concerto"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr "Convention/Expo"
+msgstr "Convegno/Esposizione"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
@@ -2738,10 +2798,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "re dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "re locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "re lidio"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr "re misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr "re frigio"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3268,10 +3343,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr "mi dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1067
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "mi locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "mi lidio"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr "mi misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr "mi frigio"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3438,10 +3528,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "fa dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "fa locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "fa lidio"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr "fa misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr "fa frigio"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3649,10 +3754,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "sol dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "sol locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "sol lidio"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr "sol misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr "sol frigio"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -4604,6 +4724,12 @@ msgstr "ID per la società di diritti portoghese SPA"
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "ID per la società di diritti salvadoregna SACIM"
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "ID per la società di diritti serba SOKOJ"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -6911,6 +7037,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "Produzione"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr "Programma"
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7500,6 +7631,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr "ID SODRAC"
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr "ID SOKOJ"
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7644,7 +7780,7 @@ msgstr "Sazsemaisi"
 #: DB:event_art_archive.art_type/name:5
 msgctxt "event_art_type"
 msgid "Schedule"
-msgstr "Programma"
+msgstr "Orario"
 
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:recording_alias_type/name:2
@@ -7880,7 +8016,7 @@ msgstr "Stadio"
 #: DB:event_type/name:6
 msgctxt "event_type"
 msgid "Stage performance"
-msgstr "Esibizione messa in scena"
+msgstr "Esibizione in scena"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"

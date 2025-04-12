@@ -2,11 +2,12 @@
 # Translators:
 # Aniol, 2015
 # 0x1026 <me@hugovidafe.dev>, 2024.
+# Marc Riera <marc@marcriera.cat>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-01-01 11:28+0000\n"
-"Last-Translator: 0x1026 <me@hugovidafe.dev>\n"
+"PO-Revision-Date: 2025-04-09 01:20+0000\n"
+"Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/"
 "musicbrainz/countries/ca/>\n"
 "Language: ca\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. iso.code:AF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -89,7 +90,7 @@ msgstr "Àustria"
 #. iso.code:AZ
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:15
 msgid "Azerbaijan"
-msgstr "Azerbaitjan"
+msgstr "Azerbaidjan"
 
 #. iso.code:BS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:16
@@ -114,7 +115,7 @@ msgstr "Barbados"
 #. iso.code:BY
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:20
 msgid "Belarus"
-msgstr "Bielorússia"
+msgstr "Belarús"
 
 #. iso.code:BE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:21
@@ -269,7 +270,7 @@ msgstr "Comores"
 #. iso.code:CG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:49
 msgid "Congo"
-msgstr "Congo, República del"
+msgstr "República del Congo"
 
 #. iso.code:CK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:50
@@ -399,7 +400,7 @@ msgstr "Illes Malvines"
 #. iso.code:FO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:70
 msgid "Faroe Islands"
-msgstr "Illes Faroe"
+msgstr "Illes Fèroe"
 
 #. iso.code:FM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:139
@@ -484,7 +485,7 @@ msgstr "Grenada"
 #. iso.code:GP
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:87
 msgid "Guadeloupe"
-msgstr "Guadeloupe"
+msgstr "Guadalupe"
 
 #. iso.code:GU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:88
@@ -634,7 +635,7 @@ msgstr "Kuwait"
 #. iso.code:KG
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:115
 msgid "Kyrgyzstan"
-msgstr "Kirguizistan"
+msgstr "Kirguizstan"
 
 #. iso.code:LA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:116
@@ -783,6 +784,7 @@ msgstr "Moçambic"
 
 #. iso.code:MM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:146
+#, fuzzy
 msgid "Myanmar"
 msgstr "Myanmar"
 
@@ -1044,7 +1046,7 @@ msgstr "Singapur"
 #. iso.code:SX
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:260
 msgid "Sint Maarten (Dutch part)"
-msgstr "Sint Maarten (part Neerlandesa)"
+msgstr "Sint Maarten (part neerlandesa)"
 
 #. iso.code:SK
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:189
@@ -1084,7 +1086,7 @@ msgstr "Corea del Sud"
 #. iso.code:SS
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:257
 msgid "South Sudan"
-msgstr "Sudan del sud"
+msgstr "Sudan del Sud"
 
 #. iso.code:SU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:243
@@ -1129,7 +1131,7 @@ msgstr "Suïssa"
 #. iso.code:SY
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:204
 msgid "Syria"
-msgstr "República Àrab Siriana"
+msgstr "Síria"
 
 #. iso.code:TW
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:205
@@ -1219,7 +1221,7 @@ msgstr "Ucraïna"
 #. iso.code:AE
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:220
 msgid "United Arab Emirates"
-msgstr "Unió dels Emirats Àrabs"
+msgstr "Emirats Àrabs Units"
 
 #. iso.code:GB
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:221

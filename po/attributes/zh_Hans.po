@@ -16,8 +16,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-02-16 20:44+0000\n"
-"Last-Translator: delamons <lamons.n@gmail.com>\n"
+"PO-Revision-Date: 2025-03-22 07:45+0000\n"
+"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -35,8 +35,8 @@ msgid ""
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
 msgstr ""
-"“颂歌”是一个术语，适用于不同类型的(通常是无伴奏的)合唱作品。什么是颂歌，在很"
-"大程度上取决于那个时期。"
+"“经文歌” 是一个术语，适用于不同类型的（通常无伴奏的）合唱作品。经文歌的具体含"
+"义在不同的历史时期有所不同。"
 
 #. name:Sonata
 #: DB:work_type/description:5
@@ -45,43 +45,43 @@ msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
 msgstr ""
-"“奏鸣曲”是用来描述小型(通常是独奏或独奏+键盘)器乐作品的总称，最初出现在巴洛克"
-"音乐中。"
+"“奏鸣曲” 是一个通用术语，最初用于描述巴洛克音乐中的小规模器乐作品（通常为独奏"
+"或独奏 + 键盘）。"
 
 #: DB:medium_format/name:205
 msgctxt "medium_format"
 msgid "10\" Acetate"
-msgstr "10\" 醋酸酯光盘"
+msgstr "10\" 漆盘"
 
 #: DB:medium_format/name:54
 msgctxt "medium_format"
 msgid "10\" Shellac"
-msgstr "10\" 胶木唱片"
+msgstr "10\" 虫胶"
 
 #: DB:medium_format/name:30
 msgctxt "medium_format"
 msgid "10\" Vinyl"
-msgstr "10\" 唱片"
+msgstr "10\" 黑胶"
 
 #: DB:medium_format/name:206
 msgctxt "medium_format"
 msgid "12\" Acetate"
-msgstr "12\" 醋酸酯光盘"
+msgstr "12\" 漆盘"
 
 #: DB:medium_format/name:72
 msgctxt "medium_format"
 msgid "12\" LaserDisc"
-msgstr "12\" 激光光盘"
+msgstr "12\" 激光盘"
 
 #: DB:medium_format/name:55
 msgctxt "medium_format"
 msgid "12\" Shellac"
-msgstr "12\" 胶木唱片"
+msgstr "12\" 虫胶"
 
 #: DB:medium_format/name:31
 msgctxt "medium_format"
 msgid "12\" Vinyl"
-msgstr "12\" 唱片"
+msgstr "12\" 黑胶"
 
 #: DB:medium_format/name:207
 msgctxt "medium_format"
@@ -101,32 +101,32 @@ msgstr "5.25\" 软盘"
 #: DB:medium_format/name:204
 msgctxt "medium_format"
 msgid "7\" Acetate"
-msgstr "7\" 醋酸酯光盘"
+msgstr "7\" 漆盘"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7\" 薄膜唱片"
+msgstr "7\" 柔性唱片"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7\" 胶木唱片"
+msgstr "7\" 虫胶"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7\" 唱片"
+msgstr "7\" 黑胶"
 
 #: DB:medium_format/name:71
 msgctxt "medium_format"
 msgid "8\" LaserDisc"
-msgstr "8\" 激光光盘"
+msgstr "8\" 激光盘"
 
 #: DB:medium_format/name:78
 msgctxt "medium_format"
 msgid "8-Track Cartridge"
-msgstr "8轨磁带"
+msgstr "8轨卡带"
 
 #: DB:medium_format/name:34
 msgctxt "medium_format"
@@ -194,10 +194,10 @@ msgstr ""
 "\n"
 "<ul>\n"
 "<li>从不同的旧来源（不一定是已发行的专辑）组合在一起的录音的合辑。例如\"Best "
-"of\"（年代金曲合集）类型的专辑、回顾性的专辑，或者稀有的专辑。</li>\n"
+"of\"（精选合集）类型的专辑、回顾性的专辑，或者稀有的专辑。</li>\n"
 "<li>一个不同艺术家的歌曲合辑，通常基于一个普遍的主题（例如\"Songs for "
-"Lovers\"情曲合集），一个特定的时期(例如\"Hits of 1998\"1998年度金曲），或一些"
-"其他类型的分组（例如\"Songs From the Movies\"电影歌曲合集，或者\"the 'Café "
+"Lovers\"致爱人的歌），一个特定的时期(例如\"Hits of 1998\"1998年度金曲），或一"
+"些其他类型的分组（例如\"Songs From the Movies\"电影歌曲合集，或者\"the 'Café "
 "del Mar'系列\"合集等）。</li>\n"
 "</ul>\n"
 "\n"
@@ -341,12 +341,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "多利亚"
+msgstr "A多里安调式"
+
+#: DB:work_attribute_type_allowed_value/value:1070
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "A洛克利亚调式"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "A利底亚调式"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "混合利底亚"
+msgstr "A混合利底亚调式"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr "A弗里几亚调式"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -355,6 +370,19 @@ msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
 msgstr "芭蕾舞剧是为芭蕾舞剧创作的音乐，与舞蹈编排一起使用。"
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
+"一本提供或出售给活动参与者的小册子，其中包含关于该活动的信息，如日程安排、演"
+"出者资料以及所演奏音乐的详细信息。节目册通常用于音乐节、舞台演出和古典音乐表"
+"演。"
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -670,7 +698,8 @@ msgid ""
 "A promotional release mostly meant to have limited circulation and "
 "demonstrate the sound of an artist to record labels, publishers and other "
 "artists."
-msgstr "一种推广性质的发行，通常仅具有有限的流通价值，具有向厂牌，出版方以及其他艺术"
+msgstr ""
+"一种推广性质的发行，通常仅具有有限的流通价值，具有向厂牌，出版方以及其他艺术"
 "家展示作品的作用。"
 
 #. name:Quartet
@@ -1346,11 +1375,10 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
-msgstr ""
-"通常是一张显示活动中的表演顺序和时间安排的图像。它可以是一个独立的图像，也可"
-"以是海报或横幅的一部分(在这种情况下，所有适用的类型都应被设置)。"
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
+msgstr "一张通常展示活动中演出顺序和时间的图片。可以是独立图片，也可以是海报、横幅或"
+"节目册中的页面（在这种情况下，应设置所有适用的类型）。"
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1722,10 +1750,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "多利安B调式"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "B洛克里亚调式"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "B混合利底亚调式"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "混合吕底安B调式"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr "B弗里几亚调式"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2192,10 +2235,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "多利安C调式"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "C洛克里亚调式"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "C利底亚调式"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "混合吕底安C调式"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr "C弗里几亚调式"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2553,10 +2611,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "多利安D调式"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "D罗克里安调式"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "D利地安调式"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr "混合吕底安D调式"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr "D弗里几亚调式"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -2842,7 +2915,7 @@ msgstr "Digipak"
 #: DB:medium_format/name:12
 msgctxt "medium_format"
 msgid "Digital Media"
-msgstr "数字媒介"
+msgstr "数字媒体"
 
 #: DB:work_attribute_type_allowed_value/value:345
 msgctxt "work_attribute_type_allowed_value"
@@ -3081,10 +3154,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr "多利安E调式"
 
+#: DB:work_attribute_type_allowed_value/value:1067
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "E 罗克里安调式"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "E利地安调式"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr "混合吕底安E调式"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr "E弗里几亚调式"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3251,10 +3339,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "多利安F调式"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "F罗克里安调式"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "F利地安调式"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr "混合吕底安F调式"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr "F弗里几亚调式"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3457,10 +3560,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "多利安G调式"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "G罗克里安调式"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "G利地安调式"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr "混合吕底安G调式"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr "G弗里几亚调式"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -4411,6 +4529,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "萨尔瓦多著作权协会SACIM ID"
 
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "塞尔维亚版权协会 SOKOJ ID"
+
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
@@ -4593,7 +4717,8 @@ msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
 "governed by indigenous peoples, such as Indian reserves/reservations in "
 "North America and indigenous territories in Central and South America."
-msgstr "土著领土/保留地用于由土著人民管理的半自治领土，如北美的印第安人保留地/保留地"
+msgstr ""
+"土著领土/保留地用于由土著人民管理的半自治领土，如北美的印第安人保留地/保留地"
 "以及中美洲和南美洲的土著领土。"
 
 #: DB:place_type/name:5
@@ -6700,6 +6825,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "产品"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr "节目单"
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7280,6 +7410,11 @@ msgstr "SOCAN ID"
 msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr "SODRAC ID"
+
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr "SOKOJ ID"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
