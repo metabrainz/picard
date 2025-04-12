@@ -359,7 +359,7 @@ class MP4File(File):
             name = 'lyrics'
         if name in self.__r_freeform_tags_ci:
             return self.__r_freeform_tags_ci[name]
-        if name in self.__casemap:
+        elif name in self.__casemap:
             name = self.__casemap.get(name, name)
             return '----:com.apple.iTunes:' + name
         elif name in self.__r_text_tags:
