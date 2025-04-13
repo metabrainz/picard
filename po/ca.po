@@ -15,10 +15,10 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-12 11:37+0200\n"
-"PO-Revision-Date: 2025-04-12 08:14+0000\n"
+"PO-Revision-Date: 2025-04-13 09:17+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
-"Language-Team: Catalan <https://translations.metabrainz.org/projects/"
-"picard/3/app/ca/>\n"
+"Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
+"3/app/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,16 +34,16 @@ msgstr "Fitxers sense coincidències"
 #: picard/album.py:578
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr ""
+msgstr "S'ha carregat l'àlbum %(id)s: %(artist)s - %(album)s"
 
 #: picard/album.py:635
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr ""
+msgstr "S'està carregant l'àlbum %(id)s…"
 
 #: picard/album.py:845
 msgid "[loading album information]"
-msgstr "[carregant informació de l'àlbum]"
+msgstr "[s'està carregant la informació de l'àlbum]"
 
 #: picard/album.py:847
 #, python-format
@@ -53,45 +53,45 @@ msgstr "[no s'ha pogut carregar l'àlbum %s]"
 #: picard/cluster.py:260
 #, python-format
 msgid "Cluster %(album)s identified!"
-msgstr ""
+msgstr "S'ha identificat l'agrupació %(album)s!"
 
 #: picard/cluster.py:263
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr ""
+msgstr "No s'ha trobat cap versió coincident per a l'agrupació %(album)s"
 
 #: picard/cluster.py:282
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr ""
+msgstr "S'estan cercant les metadades de l'agrupació %(album)s…"
 
 #: picard/cluster.py:338
 msgid "Unclustered Files"
-msgstr ""
+msgstr "Fitxers sense agrupar"
 
 #: picard/collection.py:89
 #, python-format
 msgid "Error while modifying collections: %(error)s"
-msgstr ""
+msgstr "S'ha produït un error en modificar les col·leccions: %(error)s"
 
 #: picard/collection.py:99
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'ha afegit %(count)i versió a la col·lecció «%(name)s»"
+msgstr[1] "S'han afegit %(count)i versions a la col·lecció «%(name)s»"
 
 #: picard/collection.py:110
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'ha suprimit %(count)i versió de la col·lecció «%(name)s»"
+msgstr[1] "S'han suprimit %(count)i versions de la col·lecció «%(name)s»"
 
 #: picard/collection.py:137
 #, python-format
 msgid "Error loading collections: %(error)s"
-msgstr "Error al carregar les col·leccions: %(error)s"
+msgstr "S'ha produït un error en carregar les col·leccions: %(error)s"
 
 #: picard/config_upgrade.py:114 picard/config_upgrade.py:127
 msgid "Various Artists file naming scheme removal"
@@ -317,7 +317,7 @@ msgstr ""
 
 #: picard/options.py:223 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
-msgstr "Escanejar automàticament tots els nous fitxers"
+msgstr "Analitza automàticament tots els fitxers nous"
 
 #: picard/options.py:224 picard/ui/forms/ui_options_general.py:218
 msgid "Check for plugin updates during startup"
@@ -329,7 +329,7 @@ msgstr ""
 
 #: picard/options.py:226 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
-msgstr ""
+msgstr "Agrupa automàticament tots els fitxers nous"
 
 #: picard/options.py:227 picard/ui/forms/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
@@ -456,19 +456,16 @@ msgid "Automatic backup destination directory"
 msgstr ""
 
 #: picard/options.py:292
-#, fuzzy
 msgid "Minimal similarity for cluster lookups"
-msgstr "Mínima similitud per les recerques de clúster:"
+msgstr "Similitud mínima per a les cerques d'agrupacions"
 
 #: picard/options.py:293
-#, fuzzy
 msgid "Minimal similarity for file lookups"
-msgstr "Mínima semblança per recerques de fitxers:"
+msgstr "Similitud mínima per a les cerques de fitxers"
 
 #: picard/options.py:294
-#, fuzzy
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Mínima semblança per fer coincidir fitxers amb pistes:"
+msgstr "Similitud mínima per a fer coincidir els fitxers amb pistes"
 
 #: picard/options.py:298
 msgid "Translation locales"
@@ -924,7 +921,7 @@ msgstr ""
 
 #: picard/acoustid/manager.py:212
 msgid "Submitting AcoustIDs …"
-msgstr ""
+msgstr "S'estan enviant els AcoustID…"
 
 #: picard/acoustid/manager.py:242
 #, python-format
@@ -933,11 +930,11 @@ msgstr ""
 
 #: picard/browser/addrelease.py:143
 msgid "Add cluster as release"
-msgstr ""
+msgstr "Afegeix l'agrupació com a versió"
 
 #: picard/browser/addrelease.py:145
 msgid "Add cluster as release…"
-msgstr ""
+msgstr "Afegeix l'agrupació com a versió…"
 
 #: picard/browser/addrelease.py:153
 msgid "Add file as release"
@@ -2019,10 +2016,9 @@ msgid ""
 msgstr ""
 
 #: picard/script/serializer.py:218
-#, fuzzy, python-format
-#| msgid "Error loading collections: %(error)s"
+#, python-format
 msgid "Error exporting file \"%(filename)s\": %(error)s."
-msgstr "Error al carregar les col·leccions: %(error)s"
+msgstr "S'ha produït un error en exportar el fitxer «%(filename)s»: %(error)s."
 
 #: picard/script/serializer.py:225
 msgid "Export Script File"
@@ -2101,9 +2097,9 @@ msgstr ""
 "  iletlovein https://launchpad.net/~soma27"
 
 #: picard/ui/aboutdialog.py:78
-#, fuzzy, python-format
+#, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Traduït al LANG per %s"
+msgstr "<br/>Traduït al català per %s"
 
 #: picard/ui/aboutdialog.py:82
 msgid ""
@@ -2195,7 +2191,7 @@ msgstr ""
 #: picard/ui/caa_types_selector.py:279 picard/ui/options/dialog.py:189
 #: picard/ui/options/renaming_compat.py:200
 msgid "Restore &Defaults"
-msgstr ""
+msgstr "Reini&cialitza"
 
 #: picard/ui/cdlookup.py:63 picard/ui/itemviews/columns.py:82
 #: picard/ui/mainwindow/__init__.py:768 picard/util/tags.py:48
@@ -2283,10 +2279,8 @@ msgid "Profile highlight background"
 msgstr ""
 
 #: picard/ui/colors.py:55 picard/ui/colors.py:56
-#, fuzzy
-#| msgid "Files"
 msgid "Profiles"
-msgstr "Fitxers"
+msgstr "Perfils"
 
 #: picard/ui/colors.py:56
 msgid "Profile highlight foreground"
@@ -2392,10 +2386,8 @@ msgid "Verbosity"
 msgstr ""
 
 #: picard/ui/logview.py:200 picard/ui/logview.py:201
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "Opcions"
+msgstr "Opcions de depuració"
 
 #: picard/ui/logview.py:211
 msgid "String to highlight"
@@ -2598,7 +2590,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:193 picard/ui/scripteditor.py:488
 msgid "Make It So!"
-msgstr ""
+msgstr "Aplica"
 
 #: picard/ui/mainwindow/__init__.py:608 picard/ui/scripteditor.py:557
 msgid "&File"
@@ -2682,7 +2674,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:632 picard/ui/scripteditor.py:617
 msgid "&View"
-msgstr "&Veure"
+msgstr "&Visualització"
 
 #: picard/ui/scripteditor.py:620
 msgid "&Reload random example files"
@@ -2722,10 +2714,8 @@ msgid "Empty / blank script"
 msgstr ""
 
 #: picard/ui/scripteditor.py:665
-#, fuzzy
-#| msgid "Script"
 msgid "New Script"
-msgstr "Escriptura"
+msgstr "Script nou"
 
 #: picard/ui/scripteditor.py:759
 #, python-brace-format
@@ -2785,9 +2775,8 @@ msgid "Overwrite"
 msgstr ""
 
 #: picard/ui/options/profiles.py:117 picard/ui/scripteditor.py:1260
-#, fuzzy
 msgid "Copy"
-msgstr "Copiar"
+msgstr "Copia"
 
 #: picard/ui/options/renaming.py:263 picard/ui/scripteditor.py:1306
 msgid "The file naming format must not be empty."
@@ -2835,34 +2824,24 @@ msgid "Select a file or a directory"
 msgstr ""
 
 #: picard/ui/util.py:115
-#, fuzzy
-#| msgid "Save selected files"
 msgid "Select a target file"
-msgstr "Desar fitxers seleccionats"
+msgstr "Seleccioneu un fitxer de destinació"
 
 #: picard/ui/util.py:124
-#, fuzzy
-#| msgid "Save selected files"
 msgid "Select a file"
-msgstr "Desar fitxers seleccionats"
+msgstr "Seleccioneu un fitxer"
 
 #: picard/ui/util.py:133
-#, fuzzy
-#| msgid "Save selected files"
 msgid "Select one or more files"
-msgstr "Desar fitxers seleccionats"
+msgstr "Seleccioneu un o més fitxers"
 
 #: picard/ui/util.py:142
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select a directory"
-msgstr "Esborra els directoris buits"
+msgstr "Seleccioneu un directori"
 
 #: picard/ui/util.py:155
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select one or more directories"
-msgstr "Esborra els directoris buits"
+msgstr "Seleccioneu un o més directoris"
 
 #: picard/ui/util.py:205
 msgid "You have to restart Picard for the changes to take effect."
@@ -2877,10 +2856,8 @@ msgid "Show more details"
 msgstr ""
 
 #: picard/ui/coverartbox/__init__.py:96
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox/__init__.py:133
 msgid "New Cover Art"
@@ -2908,10 +2885,8 @@ msgid "Choose local file…"
 msgstr ""
 
 #: picard/ui/coverartbox/__init__.py:313
-#, fuzzy
-#| msgid "Add Fold&er…"
 msgid "Add from URL…"
-msgstr "A&fegeix carpeta…"
+msgstr "Afegeix des d'un URL…"
 
 #: picard/ui/coverartbox/__init__.py:322
 msgid "Replace front cover art"
@@ -2923,7 +2898,7 @@ msgstr ""
 
 #: picard/ui/coverartbox/coverartthumbnail.py:315
 msgid "View release on MusicBrainz"
-msgstr ""
+msgstr "Visualitza la versió a MusicBrainz"
 
 #: picard/ui/coverartbox/coverartthumbnail.py:321
 msgid "Common images on all tracks"
@@ -2938,10 +2913,8 @@ msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox/imageurldialog.py:56
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover art URL:"
-msgstr "Caràtules"
+msgstr "URL de la caràtula:"
 
 #: picard/ui/forms/ui_aboutdialog.py:89
 msgid "About Picard"
@@ -3195,10 +3168,8 @@ msgid "Resize images to the given size"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:283
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Resize images saved to tags"
-msgstr "Insereix caràtules dins les etiquetes"
+msgstr "Redimensiona les imatges desades a les etiquetes"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
 #: picard/ui/forms/ui_options_cover_processing.py:290
@@ -3216,33 +3187,25 @@ msgid "Enlarge"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:289
-#, fuzzy
-#| msgid "Write tags to files"
 msgid "Resize images saved to files"
-msgstr "Escriu etiquetes als fitxers"
+msgstr "Redimensiona les imatges desades als fitxers"
 
 #: picard/ui/forms/ui_options_cover_processing.py:295
 msgid "Convert images to the given format"
 msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:296
-#, fuzzy
-#| msgid "Convert File Names to Tags"
 msgid "Convert images saved to tags"
-msgstr "Converteix noms de fitxer a etiquetes"
+msgstr "Converteix les imatges desades a les etiquetes"
 
 #: picard/ui/forms/ui_options_cover_processing.py:297
 #: picard/ui/forms/ui_options_cover_processing.py:299
-#, fuzzy
-#| msgid "Format:"
 msgid "New format:"
-msgstr "Format:"
+msgstr "Format nou:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:298
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Convert images saved to files"
-msgstr "Desa les caràtules com fitxers separats"
+msgstr "Converteix les imatges desades als fitxers"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:103
 msgid "Audio Fingerprinting"
@@ -3254,19 +3217,19 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_fingerprinting.py:105
 msgid "Use AcoustID"
-msgstr "Utilitza AcoustID"
+msgstr "Fes servir AcoustID"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:106
 msgid "AcoustID Settings"
-msgstr "Configuració AcoustID"
+msgstr "Paràmetres d'AcoustID"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:107
 msgid "Ignore existing AcoustID fingerprints"
-msgstr ""
+msgstr "Ignora les empremtes AcoustID existents"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:108
 msgid "Save AcoustID fingerprints to file tags"
-msgstr ""
+msgstr "Desa les empremtes AcoustID a les etiquetes dels fitxers"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:109
 msgid "Maximum threads to use for calculator:"
@@ -3448,10 +3411,8 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr ""
 
 #: picard/ui/forms/ui_options_maintenance.py:143
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration file:"
-msgstr "Configuració necessària"
+msgstr "Fitxer de configuració:"
 
 #: picard/ui/forms/ui_options_maintenance.py:144
 msgid "Open folder…"
@@ -3491,16 +3452,15 @@ msgstr "Mínima semblança per recerques de fitxers:"
 
 #: picard/ui/forms/ui_options_matching.py:83
 msgid "Minimal similarity for cluster lookups:"
-msgstr "Mínima similitud per les recerques de clúster:"
+msgstr "Similitud mínima per a les cerques d'agrupacions:"
 
 #: picard/ui/forms/ui_options_metadata.py:135 picard/ui/options/metadata.py:82
 msgid "Metadata"
 msgstr "Metadades"
 
 #: picard/ui/forms/ui_options_metadata.py:136
-#, fuzzy
 msgid "Translate artist names to these locales where possible:"
-msgstr "Tradueix els noms d'artista a aquesta llengua quan sigui possible:"
+msgstr "Tradueix els noms dels artistes a aquesta llengua quan sigui possible:"
 
 #: picard/ui/forms/ui_options_metadata.py:137
 #: picard/ui/forms/ui_options_metadata.py:139
@@ -3557,10 +3517,8 @@ msgid "Password:"
 msgstr "Contrasenya:"
 
 #: picard/ui/forms/ui_options_network.py:169
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "Xarxa"
+msgstr "Opcions de xarxa"
 
 #: picard/ui/forms/ui_options_network.py:170
 msgid "Request timeout in seconds:"
@@ -3580,7 +3538,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_plugins.py:137 picard/ui/options/plugins.py:225
 msgid "Plugins"
-msgstr "Plugins"
+msgstr "Connectors"
 
 #: picard/ui/forms/ui_options_plugins.py:138 picard/ui/options/plugins.py:621
 #: picard/ui/searchdialog/album.py:146 picard/ui/searchdialog/artist.py:46
@@ -3758,7 +3716,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_script.py:136
 msgid "Documentation"
-msgstr ""
+msgstr "Documentació"
 
 #: picard/ui/forms/ui_options_tags.py:77
 msgid "Write tags to files"
@@ -3878,9 +3836,8 @@ msgstr ""
 
 #: picard/ui/forms/ui_passworddialog.py:68
 #: picard/ui/mainwindow/__init__.py:1344
-#, fuzzy
 msgid "Authentication Required"
-msgstr "Autentificació necessària"
+msgstr "Autenticació necessària"
 
 #: picard/ui/forms/ui_provider_options_caa.py:75
 msgid "Download only cover art images matching selected types"
@@ -3977,7 +3934,7 @@ msgstr "Reemplaça guions baixos per espais"
 
 #: picard/ui/forms/ui_tagsfromfilenames.py:61
 msgid "&Preview"
-msgstr ""
+msgstr "&Previsualitza"
 
 #: picard/ui/forms/ui_widget_taglisteditor.py:75
 msgid "Add new tag"
@@ -4027,7 +3984,7 @@ msgstr[1] ""
 
 #: picard/ui/infodialog/__init__.py:98
 msgid "Cluster Info"
-msgstr ""
+msgstr "Informació de l'agrupació"
 
 #: picard/ui/infodialog/dialog.py:153
 #, python-format
@@ -4165,19 +4122,19 @@ msgstr ""
 
 #: picard/ui/itemviews/__init__.py:233
 msgid "file view"
-msgstr ""
+msgstr "visualització de fitxers"
 
 #: picard/ui/itemviews/__init__.py:234
 msgid "Contains unmatched files and clusters"
-msgstr ""
+msgstr "Conté fitxers i agrupacions sense coincidències"
 
 #: picard/ui/itemviews/__init__.py:260
 msgid "Clusters"
-msgstr "Clústers"
+msgstr "Agrupacions"
 
 #: picard/ui/itemviews/__init__.py:269
 msgid "album view"
-msgstr ""
+msgstr "visualització d'àlbums"
 
 #: picard/ui/itemviews/__init__.py:270
 msgid "Contains albums and matched files"
@@ -4208,12 +4165,11 @@ msgid "There are no files matched to this track"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:502
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "Fitxers sense coincidències"
-msgstr[1] "Fitxers sense coincidències"
+msgstr[0] "%i fitxer coincident"
+msgstr[1] "%i fitxers coincidents"
 
 #: picard/ui/itemviews/__init__.py:538
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -4252,10 +4208,12 @@ msgid ""
 "No fingerprint was calculated for this file, use \"Scan\" or \"Generate "
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr ""
+"No s'ha calculat cap empremta per a aquest fitxer. Seleccioneu «Analitza» o «"
+"Genera les empremtes AcoustID» per a calcular l'empremta."
 
 #: picard/ui/itemviews/basetreeview.py:144
 msgid "Restore default columns"
-msgstr ""
+msgstr "Reinicialitza les columnes"
 
 #: picard/ui/itemviews/basetreeview.py:149
 msgid "Lock columns"
@@ -4344,10 +4302,8 @@ msgid "Media"
 msgstr "Mitjà"
 
 #: picard/ui/itemviews/columns.py:89
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Mida:"
+msgstr "Mida"
 
 #: picard/ui/itemviews/columns.py:90 picard/util/tags.py:75
 msgid "Genre"
@@ -4411,19 +4367,19 @@ msgstr "Escoltant el port %(port)d"
 
 #: picard/ui/mainwindow/__init__.py:482
 msgid "AcoustID submission not configured"
-msgstr ""
+msgstr "No s'ha configurat l'enviament d'AcoustID"
 
 #: picard/ui/mainwindow/__init__.py:484
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr ""
-"Necessiteu configurar la vostra clau API de l'AcoustID abans de poder enviar "
+"Heu de configurar la clau de l'API d'AcoustID abans de poder enviar "
 "empremtes."
 
 #: picard/ui/mainwindow/__init__.py:486
 msgid "Open AcoustID options"
-msgstr ""
+msgstr "Obre les opcions d'AcoustID"
 
 #: picard/ui/mainwindow/__init__.py:501 picard/ui/mainwindow/actions.py:360
 msgid "Lookup &CD…"
@@ -4613,7 +4569,7 @@ msgstr "Desar fitxers seleccionats"
 
 #: picard/ui/mainwindow/actions.py:191
 msgid "S&ubmit AcoustIDs"
-msgstr "&Enviar AcoustIDs"
+msgstr "Envia les empremtes Aco&ustID"
 
 #: picard/ui/mainwindow/actions.py:192
 msgid "Submit acoustic fingerprints"
@@ -4649,11 +4605,11 @@ msgstr "Ctrl+Shift+L"
 
 #: picard/ui/mainwindow/actions.py:231
 msgid "Submit cluster as release…"
-msgstr ""
+msgstr "Envia l'agrupació com a versió…"
 
 #: picard/ui/mainwindow/actions.py:232
 msgid "Submit cluster as a new release to MusicBrainz"
-msgstr ""
+msgstr "Envia l'agrupació com a versió nova a MusicBrainz"
 
 #: picard/ui/mainwindow/actions.py:243
 msgid "Submit file as standalone recording…"
@@ -4748,7 +4704,7 @@ msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow/actions.py:370
 msgid "&Scan"
-msgstr "&Escanejar"
+msgstr "Analit&za"
 
 #: picard/ui/mainwindow/actions.py:371
 msgid ""
@@ -4758,7 +4714,7 @@ msgstr ""
 
 #: picard/ui/mainwindow/actions.py:373
 msgid "Identify the file using its AcoustID audio fingerprint"
-msgstr ""
+msgstr "Identifica el fitxer amb l'empremta d'àudio AcoustID"
 
 #: picard/ui/mainwindow/actions.py:375
 msgid "Ctrl+Y"
@@ -4766,7 +4722,7 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow/actions.py:382
 msgid "&Generate AcoustID Fingerprints"
-msgstr ""
+msgstr "&Genera les empremtes AcoustID"
 
 #: picard/ui/mainwindow/actions.py:383
 #: picard/ui/options/interface_toolbar.py:122
@@ -4778,10 +4734,12 @@ msgid ""
 "Generate the AcoustID audio fingerprints for the selected files without "
 "doing a lookup"
 msgstr ""
+"Genera les empremtes d'àudio AcoustID dels fitxers seleccionats sense fer "
+"una cerca"
 
 #: picard/ui/mainwindow/actions.py:386
 msgid "Generate the AcoustID audio fingerprints for the selected files"
-msgstr ""
+msgstr "Genera les empremtes d'àudio AcoustID dels fitxers seleccionats"
 
 #: picard/ui/mainwindow/actions.py:387
 msgid "Ctrl+Shift+Y"
@@ -4793,7 +4751,7 @@ msgstr "Cl&úster"
 
 #: picard/ui/mainwindow/actions.py:395
 msgid "Cluster files into album clusters"
-msgstr ""
+msgstr "Agrupa els fitxers en agrupacions d'àlbum"
 
 #: picard/ui/mainwindow/actions.py:398
 msgid "Ctrl+U"
@@ -4841,7 +4799,7 @@ msgstr "Desa &etiquetes"
 
 #: picard/ui/mainwindow/actions.py:466
 msgid "Tags From &File Names…"
-msgstr "Etiquetar des dels &noms de fitxer"
+msgstr "Etiqueta a partir dels noms dels &fitxers…"
 
 #: picard/ui/mainwindow/actions.py:467
 #: picard/ui/options/interface_toolbar.py:134
@@ -4898,7 +4856,7 @@ msgstr ""
 
 #: picard/ui/metadatabox/__init__.py:170
 msgid "metadata view"
-msgstr ""
+msgstr "visualització de metadades"
 
 #: picard/ui/metadatabox/__init__.py:171
 msgid "Displays original and new tags for the selected files"
@@ -4963,11 +4921,8 @@ msgstr[0] "Utilitza el valor original"
 msgstr[1] "Utilitza els valors originals"
 
 #: picard/ui/metadatabox/__init__.py:503
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Utilitza el valor original"
+msgstr "Fusiona els valors originals"
 
 #: picard/ui/metadatabox/__init__.py:509
 msgid "&Copy"
@@ -5044,7 +4999,7 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:187
 msgid "&Restore all Defaults"
-msgstr ""
+msgstr "&Reinicialitza-ho tot"
 
 #: picard/ui/options/dialog.py:188
 msgid "Reset all of Picard's settings"
@@ -5130,10 +5085,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr ""
 
 #: picard/ui/options/general.py:174
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Error al cercar el CD"
+msgstr "Error en tancar la sessió"
 
 #: picard/ui/options/general.py:176
 #, python-format
@@ -5242,9 +5195,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/interface.py:196
-#, fuzzy
 msgid "You have changed the interface language."
-msgstr "Llengua de l'interfície d'usuari:"
+msgstr "Heu canviat la llengua de la interfície d'usuari."
 
 #: picard/ui/options/interface.py:219
 msgid "Option Setting Warning"
@@ -5264,10 +5216,8 @@ msgid "Choose a color"
 msgstr ""
 
 #: picard/ui/options/interface_colors.py:156
-#, fuzzy
-#| msgid "System default"
 msgid "Restore default color"
-msgstr "Paràmetres per defecte del sistema"
+msgstr "Reinicialitza el color"
 
 #: picard/ui/options/interface_colors.py:172
 msgid "You have changed the interface colors."
@@ -5275,11 +5225,11 @@ msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:69
 msgid "Action Toolbar"
-msgstr ""
+msgstr "Barra d'eines d'accions"
 
 #: picard/ui/options/interface_toolbar.py:82
 msgid "Add Folder"
-msgstr "Afegeix carpeta"
+msgstr "Afegeix una carpeta"
 
 #: picard/ui/options/interface_toolbar.py:86
 msgid "Add Files"
@@ -5287,7 +5237,7 @@ msgstr "Afegeix fitxers"
 
 #: picard/ui/options/interface_toolbar.py:90
 msgid "Cluster"
-msgstr ""
+msgstr "Agrupa"
 
 #: picard/ui/options/interface_toolbar.py:94
 msgid "Lookup"
@@ -5295,35 +5245,35 @@ msgstr "Cerca"
 
 #: picard/ui/options/interface_toolbar.py:98
 msgid "Scan"
-msgstr "Escanejar"
+msgstr "Analitza"
 
 #: picard/ui/options/interface_toolbar.py:102
 msgid "Lookup in Browser"
-msgstr "Cerca a navegador"
+msgstr "Cerca al navegador"
 
 #: picard/ui/options/interface_toolbar.py:106
 msgid "Save"
-msgstr "Desar"
+msgstr "Desa"
 
 #: picard/ui/options/interface_toolbar.py:118
 msgid "Submit AcoustIDs"
-msgstr "Enviar AcoustIDs"
+msgstr "Envia les empremtes AcoustID"
 
 #: picard/ui/options/interface_toolbar.py:126
 msgid "Open in Player"
-msgstr ""
+msgstr "Obre al reproductor"
 
 #: picard/ui/options/interface_toolbar.py:130
 msgid "Lookup CD…"
-msgstr "Cerca CD…"
+msgstr "Cerca el CD…"
 
 #: picard/ui/options/interface_toolbar.py:181
 msgid "Drag and Drop to re-order"
-msgstr ""
+msgstr "Arrossegueu i deixeu anar per a reordenar"
 
 #: picard/ui/options/interface_toolbar.py:272
 msgid "Select an action"
-msgstr ""
+msgstr "Seleccioneu una acció"
 
 #: picard/ui/options/interface_top_tags.py:36
 msgid "Top Tags"
@@ -5331,7 +5281,7 @@ msgstr ""
 
 #: picard/ui/options/maintenance.py:74
 msgid "Maintenance"
-msgstr ""
+msgstr "Manteniment"
 
 #: picard/ui/options/maintenance.py:91
 msgid ""
@@ -5357,10 +5307,10 @@ msgid "Value"
 msgstr "Valor"
 
 #: picard/ui/options/maintenance.py:138
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration File Backup Directory Error"
-msgstr "Configuració necessària"
+msgstr ""
+"S'ha produït un error al directori de còpia de seguretat del fitxer de "
+"configuració"
 
 #: picard/ui/options/maintenance.py:139
 #, python-format
@@ -5438,10 +5388,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/maintenance.py:324
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Select Configuration File to Load"
-msgstr "Configuració necessària"
+msgstr "Seleccioneu el fitxer de configuració que voleu carregar"
 
 #: picard/ui/options/maintenance.py:373
 #: picard/ui/widgets/profilelistwidget.py:88
@@ -5593,10 +5541,8 @@ msgid "Settings to include in profile"
 msgstr ""
 
 #: picard/ui/options/profiles.py:215
-#, fuzzy
-#| msgid "Title"
 msgid "title"
-msgstr "Títol"
+msgstr "títol"
 
 #: picard/ui/options/profiles.py:252
 msgid "Unknown script"
@@ -5645,7 +5591,7 @@ msgstr ""
 
 #: picard/ui/options/releases.py:197
 msgid "Reset all"
-msgstr "Reinicialitza tot"
+msgstr "Reinicialitza-ho tot"
 
 #: picard/ui/options/renaming.py:69
 msgid "File Naming"
@@ -5678,7 +5624,7 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:103
 msgid "Scripting"
-msgstr ""
+msgstr "Scripts"
 
 #: picard/ui/options/scripting.py:126
 msgid "Show scripting documentation in new window."
@@ -5818,7 +5764,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/album.py:155 picard/util/tags.py:80
 msgid "Language"
-msgstr "Idioma"
+msgstr "Llengua"
 
 #: picard/ui/searchdialog/album.py:157
 msgid "Status"
@@ -6119,10 +6065,8 @@ msgid "Engineer"
 msgstr "Enginyer"
 
 #: picard/util/tags.py:73
-#, fuzzy
-#| msgid "File Name"
 msgid "File Path"
-msgstr "Nom de fitxer"
+msgstr "Camí del fitxer"
 
 #: picard/util/tags.py:74
 msgid "Gapless Playback"
@@ -6329,10 +6273,8 @@ msgid "Subtitle"
 msgstr "Subtítol"
 
 #: picard/util/tags.py:132
-#, fuzzy
-#| msgid "Lyrics"
 msgid "Synced Lyrics"
-msgstr "Lletres"
+msgstr "Lletra sincronitzada"
 
 #: picard/util/tags.py:134
 msgid "Title Sort Order"
