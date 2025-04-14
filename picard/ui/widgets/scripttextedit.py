@@ -64,8 +64,10 @@ from picard.ui.colors import interface_colors
 
 EXTRA_VARIABLES = (
     '~absolutetracknumber',
+    '~albumartists_countries',
     '~albumartists_sort',
     '~albumartists',
+    '~artists_countries',
     '~artists_sort',
     '~datatrack',
     '~discpregap',
