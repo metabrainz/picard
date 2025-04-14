@@ -11,10 +11,10 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-12 11:37+0200\n"
-"PO-Revision-Date: 2025-04-10 10:20+0000\n"
+"PO-Revision-Date: 2025-04-14 12:20+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
-"Language-Team: Galician <https://translations.metabrainz.org/projects/"
-"picard/3/app/gl/>\n"
+"Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
+"3/app/gl/>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -5724,11 +5724,11 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox/__init__.py:318
 msgid "Unable to copy current selection."
-msgstr ""
+msgstr "Non se puido copiar a selección actual."
 
 #: picard/ui/metadatabox/__init__.py:395
 msgid "No valid data in clipboard to paste"
-msgstr ""
+msgstr "Non hai datos válidos para pegar no portapapeis"
 
 #: picard/ui/metadatabox/__init__.py:441
 msgid "Edit…"
