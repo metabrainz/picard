@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-04-13 09:17+0000\n"
+"PO-Revision-Date: 2025-04-14 12:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
@@ -690,23 +690,23 @@ msgstr ""
 
 #: picard/const/locales.py:148
 msgid "Catalan (Andorra)"
-msgstr ""
+msgstr "Català (Andorra)"
 
 #: picard/const/locales.py:149
 msgid "Catalan (Spain)"
-msgstr ""
+msgstr "Català (Espanya)"
 
 #: picard/const/locales.py:150
 msgid "Catalan (Spain Valencian)"
-msgstr ""
+msgstr "Valencià (Espanya)"
 
 #: picard/const/locales.py:151
 msgid "Catalan (France)"
-msgstr ""
+msgstr "Català (França)"
 
 #: picard/const/locales.py:152
 msgid "Catalan (Italy)"
-msgstr ""
+msgstr "Català (Itàlia)"
 
 #: picard/const/locales.py:153
 msgid "Caddo"
