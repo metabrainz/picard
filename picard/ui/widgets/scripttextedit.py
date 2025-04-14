@@ -65,8 +65,10 @@ from picard.ui.theme import theme
 
 EXTRA_VARIABLES = (
     '~absolutetracknumber',
+    '~albumartists_countries',
     '~albumartists_sort',
     '~albumartists',
+    '~artists_countries',
     '~artists_sort',
     '~datatrack',
     '~discpregap',
