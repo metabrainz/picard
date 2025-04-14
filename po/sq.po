@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-01-13 14:44+0000\n"
+"PO-Revision-Date: 2025-04-14 12:20+0000\n"
 "Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
 "2/app/sq/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -2971,7 +2971,7 @@ msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow.py:774
 msgid "&Scan"
-msgstr ""
+msgstr "&Skanoje"
 
 #: picard/ui/mainwindow.py:775
 msgid ""
@@ -3131,7 +3131,7 @@ msgstr ""
 
 #: picard/ui/mainwindow.py:1018
 msgid "&Edit"
-msgstr "&Përpunojeni"
+msgstr "&Përpunoni"
 
 #: picard/ui/mainwindow.py:1024 picard/ui/scripteditor.py:625
 msgid "&View"
@@ -5390,7 +5390,7 @@ msgstr "Hedhje Në Qarkullim"
 
 #: picard/ui/searchdialog/track.py:175
 msgid "Standalone Recording"
-msgstr ""
+msgstr "Incizim Më Vete"
 
 #: picard/ui/widgets/profilelistwidget.py:45
 msgid "Rename profile"
@@ -5866,7 +5866,7 @@ msgstr "Vepër"
 
 #: picard/util/tags.py:130
 msgid "Writer"
-msgstr ""
+msgstr "Shkrues"
 
 #: picard/util/time.py:48
 #, python-format
