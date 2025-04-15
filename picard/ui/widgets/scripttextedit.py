@@ -53,6 +53,7 @@ from picard.script import (
     script_function_names,
 )
 from picard.util.tags import (
+    EXTRA_VARIABLES,
     PRESERVED_TAGS,
     TAG_NAMES,
     display_tag_name,
@@ -60,38 +61,6 @@ from picard.util.tags import (
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
-
-
-EXTRA_VARIABLES = (
-    '~absolutetracknumber',
-    '~albumartists_countries',
-    '~albumartists_sort',
-    '~albumartists',
-    '~artists_countries',
-    '~artists_sort',
-    '~datatrack',
-    '~discpregap',
-    '~multiartist',
-    '~musicbrainz_discids',
-    '~musicbrainz_tracknumber',
-    '~performance_attributes',
-    '~pregap',
-    '~primaryreleasetype',
-    '~rating',
-    '~recording_firstreleasedate',
-    '~recordingcomment',
-    '~recordingtitle',
-    '~releasecomment',
-    '~releasecountries',
-    '~releasegroup_firstreleasedate',
-    '~releasegroup',
-    '~releasegroupcomment',
-    '~releaselanguage',
-    '~secondaryreleasetype',
-    '~silence',
-    '~totalalbumtracks',
-    '~video',
-)
 
 
 def find_regex_index(regex, text, start=0):
