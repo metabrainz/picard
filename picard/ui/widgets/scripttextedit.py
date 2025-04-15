@@ -174,15 +174,15 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
-        super().__init__(sorted(self.choices), parent)
+        super().__init__(self.choices, parent)
         self.setCompletionMode(QCompleter.CompletionMode.UnfilteredPopupCompletion)
         self.last_selected = ''
         self.highlighted.connect(self.set_highlighted)
 
     @property
     def choices(self):
-        yield from (f'${name}' for name in script_function_names())
-        yield from (f'%{name}%' for name in script_variable_tag_names())
+        yield from sorted(f'${name}' for name in script_function_names())
+        yield from sorted(f'%{name}%' for name in script_variable_tag_names())
 
     def set_highlighted(self, text):
         self.last_selected = text
