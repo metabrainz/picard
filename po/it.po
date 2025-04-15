@@ -13,17 +13,17 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-12 11:37+0200\n"
-"PO-Revision-Date: 2025-01-14 23:44+0000\n"
-"Last-Translator: \"salo.rock\" <salo.rock@users.noreply.translations."
-"metabrainz.org>\n"
-"Language-Team: Italian <https://translations.metabrainz.org/projects/"
-"picard/3/app/it/>\n"
+"PO-Revision-Date: 2025-04-15 19:20+0000\n"
+"Last-Translator: \"salo.rock\" "
+"<salo.rock@users.noreply.translations.metabrainz.org>\n"
+"Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
+"3/app/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:190
@@ -5715,11 +5715,11 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox/__init__.py:318
 msgid "Unable to copy current selection."
-msgstr ""
+msgstr "Impossibile copiare la selezione attuale."
 
 #: picard/ui/metadatabox/__init__.py:395
 msgid "No valid data in clipboard to paste"
-msgstr ""
+msgstr "Nessun dato valido da incollare negli appunti"
 
 #: picard/ui/metadatabox/__init__.py:441
 msgid "Edit…"

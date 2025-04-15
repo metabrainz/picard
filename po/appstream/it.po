@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2023.
-# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 #
 # Translators:
@@ -13,8 +13,9 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2025-04-12 09:36+0000\n"
-"Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
+"PO-Revision-Date: 2025-04-15 19:20+0000\n"
+"Last-Translator: \"salo.rock\" "
+"<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "3/appstream/it/>\n"
 "Language: it\n"
@@ -29,12 +30,11 @@ msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
 #: org.musicbrainz.Picard.appdata.xml.in:7
-#, fuzzy
 msgid ""
 "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 msgstr ""
 "Picard è un tagger musicale multipiattaforma alimentato dal database di "
-"MusicBrainz."
+"MusicBrainz"
 
 #: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""
