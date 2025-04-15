@@ -6,7 +6,7 @@
 # Copyright (C) 2014 m42i
 # Copyright (C) 2020-2024 Laurent Monin
 # Copyright (C) 2020-2024 Philipp Wolfer
-# Copyright (C) 2021-2022 Bob Swift
+# Copyright (C) 2021-2022, 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -189,8 +189,8 @@ class ScriptCompleter(QCompleter):
     @property
     def all_tags(self):
         yield from TAG_NAMES.keys()
-        yield from PRESERVED_TAGS
-        yield from EXTRA_VARIABLES
+        yield from PRESERVED_TAGS.keys()
+        yield from EXTRA_VARIABLES.keys()
 
     def set_highlighted(self, text):
         self.last_selected = text

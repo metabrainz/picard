@@ -7,6 +7,7 @@
 # Copyright (C) 2018-2021, 2023 Philipp Wolfer
 # Copyright (C) 2018-2024 Laurent Monin
 # Copyright (C) 2020 dukeyin
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -284,14 +285,15 @@ class CommonTests:
         def test_metadata_applyfunc_preserve_tags(self):
             self.assertTrue(len(PRESERVED_TAGS) > 0)
             m = Metadata()
-            m[PRESERVED_TAGS[0]] = 'value1'
+            print(f"\n{PRESERVED_TAGS}\n")
+            m[[x for x in PRESERVED_TAGS.keys()][0]] = 'value1'
             m['not_preserved'] = 'value2'
 
             def func(x):
                 return x[1:]
             m.apply_func(func)
 
-            self.assertEqual("value1", m[PRESERVED_TAGS[0]])
+            self.assertEqual("value1", m[[x for x in PRESERVED_TAGS.keys()][0]])
             self.assertEqual("alue2", m['not_preserved'])
 
         def test_metadata_applyfunc_delete_tags(self):
