@@ -181,6 +181,38 @@ FILE_INFO_TAGS = {
     '~sample_rate',
 }
 
+# Variables available to scripts (used by script editor completer)
+EXTRA_VARIABLES = (
+    '~absolutetracknumber',
+    '~albumartists_countries',
+    '~albumartists_sort',
+    '~albumartists',
+    '~artists_countries',
+    '~artists_sort',
+    '~datatrack',
+    '~discpregap',
+    '~multiartist',
+    '~musicbrainz_discids',
+    '~musicbrainz_tracknumber',
+    '~performance_attributes',
+    '~pregap',
+    '~primaryreleasetype',
+    '~rating',
+    '~recording_firstreleasedate',
+    '~recordingcomment',
+    '~recordingtitle',
+    '~releasecomment',
+    '~releasecountries',
+    '~releasegroup_firstreleasedate',
+    '~releasegroup',
+    '~releasegroupcomment',
+    '~releaselanguage',
+    '~secondaryreleasetype',
+    '~silence',
+    '~totalalbumtracks',
+    '~video',
+)
+
 
 def display_tag_name(name):
     if ':' in name:
