@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-04-14 12:20+0000\n"
+"PO-Revision-Date: 2025-04-15 22:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "2/app/ca/>\n"
@@ -95,7 +95,7 @@ msgstr "S'ha produït un error en carregar les col·leccions: %(error)s"
 
 #: picard/config_upgrade.py:84 picard/config_upgrade.py:97
 msgid "Various Artists file naming scheme removal"
-msgstr "Supressió de l'esquema de nom de fitxers per a diversos artistes"
+msgstr "Supressió de l'esquema de nom dels fitxers per a diversos artistes"
 
 #: picard/config_upgrade.py:85
 msgid ""
@@ -104,10 +104,10 @@ msgid ""
 "Your file naming scheme has automatically been merged with that of single "
 "artist albums."
 msgstr ""
-"L'esquema de nom de fitxers independent per als àlbums amb diversos artistes "
-"s'ha suprimit en aquesta versió de Picard.\n"
-"El vostre esquema de nom de fitxers s'ha fusionat automàticament amb el dels "
-"àlbums amb un únic artista."
+"L'esquema de nom dels fitxers independent per als àlbums amb diversos "
+"artistes s'ha suprimit en aquesta versió de Picard.\n"
+"El vostre esquema de nom dels fitxers s'ha fusionat automàticament amb el "
+"dels àlbums amb un únic artista."
 
 #: picard/config_upgrade.py:98
 msgid ""
@@ -118,12 +118,12 @@ msgid ""
 "Do you want to remove it or merge it with your file naming scheme for single "
 "artist albums?"
 msgstr ""
-"L'esquema de nom de fitxers independent per als àlbums amb diversos artistes "
-"s'ha suprimit en aquesta versió de Picard.\n"
+"L'esquema de nom dels fitxers independent per als àlbums amb diversos "
+"artistes s'ha suprimit en aquesta versió de Picard.\n"
 "Actualment no feu servir aquesta opció, però heu definit un esquema de nom "
-"de fitxers independent.\n"
-"Voleu suprimir-lo o fusionar-lo amb l'esquema de nom de fitxers per a àlbums "
-"amb un únic artista?"
+"dels fitxers independent.\n"
+"Voleu suprimir-lo o fusionar-lo amb l'esquema de nom dels fitxers per a "
+"àlbums amb un únic artista?"
 
 #: picard/config_upgrade.py:105
 msgid "Merge"
@@ -137,7 +137,7 @@ msgstr "Suprimeix"
 
 #: picard/config_upgrade.py:424
 msgid "Primary file naming script"
-msgstr "Script de nom de fitxers principal"
+msgstr "Script de nom dels fitxers principal"
 
 #: picard/file.py:220
 msgid ""
@@ -520,7 +520,7 @@ msgstr "Proveïdors de caràtules"
 
 #: picard/profile.py:153 picard/ui/options/renaming.py:73
 msgid "File Naming"
-msgstr ""
+msgstr "Nom dels fitxers"
 
 #: picard/profile.py:156
 msgid "Move files"
@@ -548,7 +548,7 @@ msgstr "Canvia el nom dels fitxers"
 
 #: picard/profile.py:162
 msgid "Selected file naming script"
-msgstr "Script de nom de fitxers seleccionat"
+msgstr "Script de nom dels fitxers seleccionat"
 
 #: picard/profile.py:165 picard/ui/ui_options_renaming_compat.py:89
 msgid "Replace non-ASCII characters"
@@ -613,7 +613,7 @@ msgstr "Permet la selecció de diversos directoris"
 
 #: picard/profile.py:191 picard/ui/ui_options_interface.py:125
 msgid "Use builtin search rather than looking in browser"
-msgstr "Fes servir la cerca incorporada en comptes de la cerca a l'explorador"
+msgstr "Fes servir la cerca incorporada en comptes de la cerca al navegador"
 
 #: picard/profile.py:192
 msgid "Use advanced search syntax"
@@ -733,7 +733,7 @@ msgstr "Temps d'espera de les sol·licituds en segons"
 
 #: picard/profile.py:245
 msgid "Browser integration"
-msgstr "Integració amb l'explorador"
+msgstr "Integració amb el navegador"
 
 #: picard/profile.py:248
 msgid "Default listening port"
@@ -890,10 +890,14 @@ msgstr "L'enviament d'AcoustID ha finalitzat correctament"
 msgid ""
 "AcoustID submission failed permanently, maximum batch size reduced to zero"
 msgstr ""
+"S'ha produït un error permanent en l'enviament d'AcoustID, s'ha reduït la "
+"mida màxima dels lots a zero"
 
 #: picard/acoustid/manager.py:199
 msgid "AcoustID submission failed permanently, probably too many retries"
 msgstr ""
+"S'ha produït un error permanent en l'enviament d'AcoustID, probablement hi "
+"ha hagut massa reintents"
 
 #: picard/acoustid/manager.py:209
 msgid "Submitting AcoustIDs …"
@@ -902,7 +906,7 @@ msgstr "S'estan enviant els AcoustID…"
 #: picard/acoustid/manager.py:239
 #, python-format
 msgid "AcoustID submission failed with error '%(error)s': %(message)s"
-msgstr ""
+msgstr "S'ha produït l'error «%(error)s» en l'enviament d'AcoustID: %(message)s"
 
 #: picard/browser/addrelease.py:145
 msgid "Add cluster as release"
@@ -922,22 +926,22 @@ msgstr "Afegeix el fitxer com a publicació…"
 
 #: picard/browser/addrelease.py:165
 msgid "Add file as recording"
-msgstr ""
+msgstr "Afegeix el fitxer com a enregistrament"
 
 #: picard/browser/addrelease.py:167
 msgid "Add file as recording…"
-msgstr ""
+msgstr "Afegeix el fitxer com a enregistrament…"
 
 #: picard/coverart/__init__.py:101
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr ""
+msgstr "S'ha baixat la caràtula «%(type)s» per a %(albumid)s de %(host)s"
 
 #: picard/coverart/__init__.py:187
 #, python-format
 msgid ""
 "Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"
-msgstr ""
+msgstr "S'està baixant la caràtula «%(type)s» per a %(albumid)s de %(host)s…"
 
 #: picard/coverart/utils.py:38
 msgid "Unknown"
@@ -957,50 +961,52 @@ msgstr "1200 px"
 
 #: picard/coverart/providers/caa.py:74
 msgid "Full size"
-msgstr ""
+msgstr "Mida completa"
 
 #: picard/coverart/providers/caa.py:120
 msgid "Cover Art Archive"
-msgstr ""
+msgstr "Cover Art Archive"
 
 #: picard/coverart/providers/caa.py:197
 msgid "Cover Art Archive: Release"
-msgstr ""
+msgstr "Cover Art Archive: Publicació"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr ""
+msgstr "Cover Art Archive: Grup de publicacions"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
-msgstr ""
+msgstr "Fitxers locals"
 
 #: picard/coverart/providers/urlrels.py:39
 msgid "Allowed Cover Art URLs"
-msgstr ""
+msgstr "URL de caràtules permesos"
 
 #: picard/script/__init__.py:141
 msgid ""
 "This preset example file naming script does not require any special "
 "settings, tagging scripts or plugins."
 msgstr ""
+"Aquest script de nom dels fitxers d'exemple predefinit no requereix cap "
+"paràmetre, script d'etiquetatge o connector especial."
 
 #: picard/script/__init__.py:145
 #, python-format
 msgid "Preset %(number)d: %(title)s"
-msgstr ""
+msgstr "Valor predefinit %(number)d: %(title)s"
 
 #: picard/script/__init__.py:152
 msgid "Default file naming script"
-msgstr ""
+msgstr "Script de nom dels fitxers per defecte"
 
 #: picard/script/__init__.py:164
 msgid "[album artist]/[album]/[track #]. [title]"
-msgstr ""
+msgstr "[artista de l'àlbum]/[àlbum]/[núm. de pista]. [títol]"
 
 #: picard/script/__init__.py:178
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
-msgstr ""
+msgstr "[artista de l'àlbum]/[àlbum]/[disc i núm. de pista] [artista] - [títol]"
 
 #: picard/script/functions.py:186
 msgid ""
@@ -1008,6 +1014,9 @@ msgid ""
 "\n"
 "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgstr ""
+"`$if(if,then,else)`\n"
+"\n"
+"Si `if` no està buit, retorna `then`; en cas contrari, retorna `else`."
 
 #: picard/script/functions.py:199
 msgid ""
@@ -1015,6 +1024,9 @@ msgid ""
 "\n"
 "Returns first non empty argument."
 msgstr ""
+"`$if2(a1,a2,a3,…)`\n"
+"\n"
+"Retorna el primer argument no buit."
 
 #: picard/script/functions.py:212
 msgid ""
@@ -1022,6 +1034,9 @@ msgid ""
 "\n"
 "Does nothing (useful for comments or disabling a block of code)."
 msgstr ""
+"`$noop(…)`\n"
+"\n"
+"No fa res (útil per a comentaris o per a inhabilitar una part del codi)."
 
 #: picard/script/functions.py:221
 msgid ""
@@ -1029,6 +1044,9 @@ msgid ""
 "\n"
 "Returns the first `number` characters from `text`."
 msgstr ""
+"`$left(text,nombre)`\n"
+"\n"
+"Retorna els primers `nombre` caràcters de `text`."
 
 #: picard/script/functions.py:233
 msgid ""
@@ -1036,6 +1054,9 @@ msgid ""
 "\n"
 "Returns the last `number` characters from `text`."
 msgstr ""
+"`$right(text,nombre)`\n"
+"\n"
+"Retorna els darrers `nombre` caràcters de `text`."
 
 #: picard/script/functions.py:245
 msgid ""
@@ -1043,6 +1064,9 @@ msgid ""
 "\n"
 "Returns `text` in lower case."
 msgstr ""
+"`$lower(text)`\n"
+"\n"
+"Retorna `text` en minúscula."
 
 #: picard/script/functions.py:254
 msgid ""
@@ -1050,6 +1074,9 @@ msgid ""
 "\n"
 "Returns `text` in upper case."
 msgstr ""
+"`$upper(text)`\n"
+"\n"
+"Retorna `text` en majúscula."
 
 #: picard/script/functions.py:263
 msgid ""
@@ -1171,6 +1198,14 @@ msgid ""
 "    with an underscore. `%something%` will create a \"something\" tag;\n"
 "    `%_something%` will not."
 msgstr ""
+"`$set(nom,valor)`\n"
+"\n"
+"Assigna `valor` a la variable `nom`.\n"
+"\n"
+"Nota: Per a crear una variable que es pugui fer servir per a la cadena de "
+"nom dels fitxers, però que no s'escrigui com a etiqueta als fitxers, afegiu "
+"una ratlla baixa abans del nom de la variable. `%etiquetadeprova%` crearà "
+"una etiqueta «etiquetadeprova»; `%_etiquetadeprova%` no la crearà."
 
 #: picard/script/functions.py:450
 #, python-format
@@ -1455,6 +1490,12 @@ msgid ""
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
+"`$matchedtracks()`\n"
+"\n"
+"Retorna el nombre de pistes coincidents d'una publicació.\n"
+"    **Només funciona en scripts de nom dels fitxers.**\n"
+"\n"
+"_A partir de Picard 0.12_"
 
 #: picard/script/functions.py:842
 msgid ""
@@ -1463,6 +1504,11 @@ msgid ""
 "Returns true if every track in the album is matched to a single file.\n"
 "**Only works in File Naming scripts.**"
 msgstr ""
+"`$is_complete()`\n"
+"\n"
+"Retorna `true` si totes les pistes de l'àlbum coincideixen amb un fitxer "
+"cadascuna.\n"
+"**Només funciona en script de nom dels fitxers.**"
 
 #: picard/script/functions.py:857
 msgid ""
@@ -1859,6 +1905,13 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$year(data,ordre_data=\"ymd\")`\n"
+"\n"
+"Retorna l'any de la data especificada.  L'ordre per defecte és «ymd» (any-"
+"mes-dia).  Això es pot canviar especificant «dmy» (dia-mes-any) o «mdy» (mes-"
+"dia-any).  Si la data no es vàlida, es retorna una cadena buida.\n"
+"\n"
+"_A partir de Picard 2.7_"
 
 #: picard/script/functions.py:1437
 msgid ""
@@ -1871,6 +1924,13 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$month(data,ordre_data=\"ymd\")`\n"
+"\n"
+"Retorna el mes de la data especificada.  L'ordre per defecte és «ymd» (any-"
+"mes-dia).  Això es pot canviar especificant «dmy» (dia-mes-any) o «mdy» (mes-"
+"dia-any).  Si la data no es vàlida, es retorna una cadena buida.\n"
+"\n"
+"_A partir de Picard 2.7_"
 
 #: picard/script/functions.py:1449
 msgid ""
@@ -1883,6 +1943,13 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$day(data,ordre_data=\"ymd\")`\n"
+"\n"
+"Retorna el dia de la data especificada.  L'ordre per defecte és «ymd» (any-"
+"mes-dia).  Això es pot canviar especificant «dmy» (dia-mes-any) o «mdy» (mes-"
+"dia-any).  Si la data no es vàlida, es retorna una cadena buida.\n"
+"\n"
+"_A partir de Picard 2.7_"
 
 #: picard/script/functions.py:1461
 #, python-format
@@ -1966,6 +2033,23 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
+"`$min(tipus,x,…)`\n"
+"\n"
+"Retorna el valor mínim segons la comparació especificada a `tipus`.\n"
+"\n"
+"Els valors possibles per a `tipus` són «int» (enter), «float» (punt flotant)"
+", «text» (text amb distinció entre majúscules i minúscules), «nocase» (text "
+"sense distinció entre majúscules i minúscules) i «auto» (determina "
+"automàticament el tipus dels arguments proporcionats); «auto» es fa servir "
+"com a mètode de comparació per defecte si no s'especifica `tipus`.  El tipus "
+"«auto» fa servir el primer tipus que s'aplica a tots els arguments en "
+"l'ordre de preferència següent:\n"
+"«int», «float» i «text».\n"
+"\n"
+"Es pot fer servir amb un nombre arbitrari d'arguments.  Els arguments amb "
+"diversos valors s'expandeixen automàticament.\n"
+"\n"
+"_A partir de Picard 2.9_"
 
 #: picard/script/functions.py:1603
 msgid ""
@@ -1990,6 +2074,23 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
+"`$max(tipus,x,…)`\n"
+"\n"
+"Retorna el valor màxim segons la comparació especificada a `tipus`.\n"
+"\n"
+"Els valors possibles per a `tipus` són «int» (enter), «float» (punt flotant)"
+", «text» (text amb distinció entre majúscules i minúscules), «nocase» (text "
+"sense distinció entre majúscules i minúscules) i «auto» (determina "
+"automàticament el tipus dels arguments proporcionats); «auto» es fa servir "
+"com a mètode de comparació per defecte si no s'especifica `tipus`.  El tipus "
+"«auto» fa servir el primer tipus que s'aplica a tots els arguments en "
+"l'ordre de preferència següent:\n"
+"«int», «float» i «text».\n"
+"\n"
+"Es pot fer servir amb un nombre arbitrari d'arguments.  Els arguments amb "
+"diversos valors s'expandeixen automàticament.\n"
+"\n"
+"_A partir de Picard 2.9_"
 
 #: picard/script/serializer.py:202
 #, python-format
@@ -1998,79 +2099,79 @@ msgstr "S'ha produït un error en exportar el fitxer «%(filename)s»: %(error)s
 
 #: picard/script/serializer.py:209
 msgid "Export Script File"
-msgstr ""
+msgstr "Exportació del fitxer de script"
 
 #: picard/script/serializer.py:231
 msgid "Export Script"
-msgstr ""
+msgstr "Exporta l'script"
 
 #: picard/script/serializer.py:232
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr ""
+msgstr "L'script s'ha exportat correctament a %s"
 
 #: picard/script/serializer.py:243
 #, python-format
 msgid "Error importing \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "S'ha produït un error en importar «%(filename)s»: %(error)s"
 
 #: picard/script/serializer.py:244
 #, python-format
 msgid "Error decoding \"%(filename)s\": %(error)s"
-msgstr ""
+msgstr "S'ha produït un error en descodificar «%(filename)s»: %(error)s"
 
 #: picard/script/serializer.py:246
 msgid "Import Script File"
-msgstr ""
+msgstr "Importació d'un fitxer de script"
 
 #: picard/script/serializer.py:260
 msgid "The file was empty"
-msgstr ""
+msgstr "El fitxer estava buit"
 
 #: picard/script/serializer.py:268
 #, python-format
 msgid "Imported from %s"
-msgstr ""
+msgstr "S'ha importat %s"
 
 #: picard/script/serializer.py:286
 msgid "Argument is not a dictionary"
-msgstr ""
+msgstr "L'argument no és un diccionari"
 
 #: picard/script/serializer.py:288 picard/script/serializer.py:332
 msgid "Invalid script package"
-msgstr ""
+msgstr "El paquet de scripts no és vàlid"
 
 #: picard/script/serializer.py:299
 #, python-format
 msgid "%s (Copy)"
-msgstr ""
+msgstr "%s (còpia)"
 
 #: picard/script/serializer.py:330
 msgid "File content not a dictionary"
-msgstr ""
+msgstr "El contingut del fitxer no és un diccionari"
 
 #: picard/script/serializer.py:340 picard/ui/options/scripting.py:191
 msgid "Unnamed Script"
-msgstr ""
+msgstr "Script sense nom"
 
 #: picard/script/serializer.py:351 picard/ui/options/scripting.py:133
 msgid "Picard script files"
-msgstr ""
+msgstr "Fitxers de script de Picard"
 
 #: picard/script/serializer.py:352
 msgid "Picard script package"
-msgstr ""
+msgstr "Paquet de scripts de Picard"
 
 #: picard/ui/aboutdialog.py:74
 msgid "translator-credits"
 msgstr ""
 "Equip de traducció de MusicBrainz al català:\n"
-"  https://www.transifex.com/projects/p/musicbrainz/language/ca/\n"
+"https://translations.metabrainz.org/languages/ca/\n"
 "\n"
 "Col·laboracions històriques via Launchpad:\n"
-"  David Martín Alaminos https://launchpad.net/~gnomyst\n"
-"  animarval https://launchpad.net/~animarval\n"
-"  iletlovein https://launchpad.net/~soma27"
+"David Martín Alaminos https://launchpad.net/~gnomyst\n"
+"animarval https://launchpad.net/~animarval\n"
+"iletlovein https://launchpad.net/~soma27"
 
 #: picard/ui/aboutdialog.py:77
 #, python-format
@@ -2087,19 +2188,26 @@ msgid ""
 "a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
 "from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
+"Icones de Sambhav Kothari <sambhavs.email@gmail.com> i <a href="
+"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
+"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
+"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
+"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
+"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> de <a "
+"href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
 #: picard/ui/aboutdialog.py:101
 #, python-format
 msgid "Version %(version)s"
-msgstr ""
+msgstr "Versió %(version)s"
 
 #: picard/ui/aboutdialog.py:103
 msgid "Supported formats"
-msgstr ""
+msgstr "Formats admesos"
 
 #: picard/ui/aboutdialog.py:105
 msgid "Please donate"
-msgstr ""
+msgstr "Feu una donació"
 
 #: picard/ui/aboutdialog.py:106
 msgid ""
@@ -2108,40 +2216,47 @@ msgid ""
 "volunteers. If you like this application please consider donating to the "
 "MetaBrainz Foundation to keep the service running."
 msgstr ""
+"Gràcies per fer servir Picard. Picard depèn de la base de dades MusicBrainz, "
+"que funciona gràcies a MetaBrainz Foundation amb l'ajuda de milers de "
+"persones voluntàries. Si us agrada aquesta aplicació, considereu la "
+"possibilitat de fer una donació a MetaBrainz Foundation per a mantenir el "
+"servei en funcionament."
 
 #: picard/ui/aboutdialog.py:109
 msgid "Donate now!"
-msgstr ""
+msgstr "Vull fer una donació ara!"
 
 #: picard/ui/aboutdialog.py:110
 msgid "Credits"
-msgstr ""
+msgstr "Crèdits"
 
 #: picard/ui/aboutdialog.py:111
 #, python-format
 msgid "Copyright © %(copyright_years)s %(authors_credits)s and others"
-msgstr ""
+msgstr "Copyright © %(copyright_years)s %(authors_credits)s i altres"
 
 #: picard/ui/aboutdialog.py:113
 msgid "Official website"
-msgstr ""
+msgstr "Lloc web oficial"
 
 #: picard/ui/caa_types_selector.py:174
 msgid "Cover art types"
-msgstr ""
+msgstr "Tipus de caràtules"
 
 #: picard/ui/caa_types_selector.py:194
 msgid ""
 "Please select the contents of the image type 'Include' and 'Exclude' lists."
 msgstr ""
+"Seleccioneu els continguts de les llistes de tipus d'imatges inclosos i "
+"exclosos."
 
 #: picard/ui/caa_types_selector.py:215
 msgid "Include types list"
-msgstr ""
+msgstr "Llista de tipus inclosos"
 
 #: picard/ui/caa_types_selector.py:229
 msgid "Exclude types list"
-msgstr ""
+msgstr "Llista de tipus exclosos"
 
 #: picard/ui/caa_types_selector.py:237
 msgid ""
@@ -2151,18 +2266,24 @@ msgid ""
 "types not appearing in the 'Include' or 'Exclude' lists will not be "
 "considered when determining whether or not to download and use a CAA image.\n"
 msgstr ""
+"Les imatges de CAA amb un tipus d'imatge de la llista de tipus inclosos es "
+"baixaran i es faran servir EXCEPTE si també tenen un tipus d'imatge de la "
+"llista de tipus exclosos. Les imatges amb tipus d'imatges de la llista de "
+"tipus exclosos no es faran servir MAI. Els tipus d'imatges que no apareguin "
+"en cap de les llistes no es tindran en compte a l'hora de determinar si s'ha "
+"de baixar o no una imatge de CAA.\n"
 
 #: picard/ui/caa_types_selector.py:258
 msgid "I&nclude all"
-msgstr ""
+msgstr "I&nclou-ho tot"
 
 #: picard/ui/caa_types_selector.py:259
 msgid "E&xclude all"
-msgstr ""
+msgstr "E&xclou-ho tot"
 
 #: picard/ui/caa_types_selector.py:260
 msgid "C&lear all"
-msgstr ""
+msgstr "Esb&orra-ho tot"
 
 #: picard/ui/caa_types_selector.py:261 picard/ui/options/dialog.py:131
 #: picard/ui/options/renaming_compat.py:208
@@ -2192,7 +2313,7 @@ msgstr "Segells"
 
 #: picard/ui/cdlookup.py:73 picard/ui/searchdialog/album.py:159
 msgid "Catalog #s"
-msgstr "Catàleg #s"
+msgstr "Núm. de catàleg"
 
 #: picard/ui/cdlookup.py:73 picard/ui/itemviews.py:170
 #: picard/ui/searchdialog/album.py:160 picard/util/tags.py:47
@@ -2205,7 +2326,7 @@ msgstr "Desambiguació"
 
 #: picard/ui/collectionmenu.py:60
 msgid "Refresh List"
-msgstr "Refresca la llista"
+msgstr "Actualitza la llista"
 
 #: picard/ui/collectionmenu.py:173
 #, python-format
@@ -2216,43 +2337,43 @@ msgstr[1] "%(name)s (%(count)i publicacions)"
 
 #: picard/ui/colors.py:37
 msgid "Errored entity"
-msgstr ""
+msgstr "Entitat amb errors"
 
 #: picard/ui/colors.py:38
 msgid "Pending entity"
-msgstr ""
+msgstr "Entitat pendent"
 
 #: picard/ui/colors.py:39
 msgid "Saved entity"
-msgstr ""
+msgstr "Entitat desada"
 
 #: picard/ui/colors.py:40
 msgid "Log view text (debug)"
-msgstr ""
+msgstr "Text de la visualització de registre (depuració)"
 
 #: picard/ui/colors.py:41
 msgid "Log view text (error)"
-msgstr ""
+msgstr "Text de la visualització de registre (error)"
 
 #: picard/ui/colors.py:42
 msgid "Log view text (info)"
-msgstr ""
+msgstr "Text de la visualització de registre (informació)"
 
 #: picard/ui/colors.py:43
 msgid "Log view text (warning)"
-msgstr ""
+msgstr "Text de la visualització de registre (avís)"
 
 #: picard/ui/colors.py:44
 msgid "Tag added"
-msgstr ""
+msgstr "Etiqueta afegida"
 
 #: picard/ui/colors.py:45
 msgid "Tag changed"
-msgstr ""
+msgstr "Etiqueta canviada"
 
 #: picard/ui/colors.py:46
 msgid "Tag removed"
-msgstr ""
+msgstr "Etiqueta suprimida"
 
 #: picard/ui/coverartbox.py:331
 msgid "View release on MusicBrainz"
@@ -2260,27 +2381,27 @@ msgstr "Visualitza la publicació a MusicBrainz"
 
 #: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
-msgstr ""
+msgstr "Imatges existents a totes les pistes"
 
 #: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
-msgstr ""
+msgstr "Les pistes contenen imatges diferents"
 
 #: picard/ui/coverartbox.py:395
 msgid "Show more details"
-msgstr ""
+msgstr "Mostra més detalls"
 
 #: picard/ui/coverartbox.py:432
 msgid "New Cover Art"
-msgstr ""
+msgstr "Caràtula nova"
 
 #: picard/ui/coverartbox.py:433
 msgid "Original Cover Art"
-msgstr ""
+msgstr "Caràtula original"
 
 #: picard/ui/coverartbox.py:612
 msgid "All supported image formats"
-msgstr ""
+msgstr "Tots els formats d'imatge admesos"
 
 #: picard/ui/coverartbox.py:632
 msgid "Show more details…"
@@ -2288,19 +2409,19 @@ msgstr ""
 
 #: picard/ui/coverartbox.py:638
 msgid "Keep original cover art"
-msgstr ""
+msgstr "Conserva la caràtula original"
 
 #: picard/ui/coverartbox.py:644
 msgid "Choose local file…"
-msgstr ""
+msgstr "Tria un fitxer local…"
 
 #: picard/ui/coverartbox.py:653
 msgid "Replace front cover art"
-msgstr ""
+msgstr "Substitueix la caràtula"
 
 #: picard/ui/coverartbox.py:662
 msgid "Append front cover art"
-msgstr ""
+msgstr "Annexa la caràtula"
 
 #: picard/ui/edittagdialog.py:69
 msgid "YYYY-MM-DD"
@@ -2312,7 +2433,7 @@ msgstr ""
 
 #: picard/ui/filebrowser.py:88
 msgid "&Load selected files"
-msgstr ""
+msgstr "Carrega e&ls fitxers seleccionats"
 
 #: picard/ui/filebrowser.py:91
 msgid "&Move tagged files here"
@@ -2320,15 +2441,15 @@ msgstr "&Mou els fitxers etiquetats aquí"
 
 #: picard/ui/filebrowser.py:94
 msgid "Show &hidden files"
-msgstr "Mostra fitxers &ocults"
+msgstr "Mostra els fitxers &ocults"
 
 #: picard/ui/filebrowser.py:100
 msgid "&Set as starting directory"
-msgstr ""
+msgstr "&Defineix com a directori inicial"
 
 #: picard/ui/infodialog.py:105
 msgid "Existing Cover"
-msgstr ""
+msgstr "Caràtula existent"
 
 #: picard/ui/infodialog.py:105 picard/ui/infodialog.py:110
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/artist.py:55
@@ -2443,7 +2564,7 @@ msgstr "Informació de l'agrupació"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
-msgstr ""
+msgstr "Temps estimat"
 
 #: picard/ui/infostatus.py:71 picard/ui/options/plugins.py:632
 msgid "Files"
@@ -2530,27 +2651,27 @@ msgstr "Data de publicació"
 
 #: picard/ui/itemviews.py:279
 msgid "Bad match"
-msgstr ""
+msgstr "Mala coincidència"
 
 #: picard/ui/itemviews.py:280
 msgid "Poor match"
-msgstr ""
+msgstr "Coincidència pobra"
 
 #: picard/ui/itemviews.py:281
 msgid "Ok match"
-msgstr ""
+msgstr "Coincidència adequada"
 
 #: picard/ui/itemviews.py:282
 msgid "Good match"
-msgstr ""
+msgstr "Coincidència bona"
 
 #: picard/ui/itemviews.py:283
 msgid "Great match"
-msgstr ""
+msgstr "Coincidència molt bona"
 
 #: picard/ui/itemviews.py:284
 msgid "Excellent match"
-msgstr ""
+msgstr "Coincidència excel·lent"
 
 #: picard/ui/itemviews.py:398
 msgid "Restore default columns"
@@ -2586,7 +2707,7 @@ msgstr "Carregant…"
 
 #: picard/ui/itemviews.py:547
 msgid "Show &more details…"
-msgstr ""
+msgstr "&Mostra més detalls…"
 
 #: picard/ui/itemviews.py:600
 #, python-format
@@ -2683,52 +2804,52 @@ msgstr "Registre"
 
 #: picard/ui/logview.py:180 picard/ui/logview.py:332
 msgid "Verbosity"
-msgstr ""
+msgstr "Grau de detall"
 
 #: picard/ui/logview.py:190
 msgid "String to highlight"
-msgstr ""
+msgstr "Cadena a ressaltar"
 
 #: picard/ui/logview.py:195
 msgid "Highlight"
-msgstr ""
+msgstr "Ressalta"
 
 #: picard/ui/logview.py:204
 msgid "Clear Highlight"
-msgstr ""
+msgstr "Esborra el ressaltat"
 
 #: picard/ui/logview.py:210 picard/ui/logview.py:296
 msgid "Clear Log"
-msgstr ""
+msgstr "Esborra el registre"
 
 #: picard/ui/logview.py:215
 msgid "Save As…"
-msgstr ""
+msgstr "Anomena i desa…"
 
 #: picard/ui/logview.py:260 picard/ui/logview.py:267
 msgid "Save Log View to File"
-msgstr ""
+msgstr "Desa la visualització del registre en un fitxer"
 
 #: picard/ui/logview.py:268
 msgid "File already exists, do you really want to save to this file?"
-msgstr ""
+msgstr "El fitxer ja existeix. Segur que voleu desar aquest fitxer?"
 
 #: picard/ui/logview.py:280
 msgid "Failed to save Log View to file"
-msgstr ""
+msgstr "No s'ha pogut desar la visualització de registre al fitxer"
 
 #: picard/ui/logview.py:281
 #, python-format
 msgid "Something prevented data to be written to '%s'"
-msgstr ""
+msgstr "Alguna cosa ha impedit escriure les dades a «%s»"
 
 #: picard/ui/logview.py:297
 msgid "Are you sure you want to clear the log?"
-msgstr ""
+msgstr "Segur que voleu esborrar el registre?"
 
 #: picard/ui/logview.py:339
 msgid "Activity History"
-msgstr ""
+msgstr "Historial d'activitat"
 
 #: picard/ui/mainwindow.py:221 picard/ui/ui_aboutdialog.py:84
 msgid "MusicBrainz Picard"
@@ -2796,7 +2917,7 @@ msgstr "&Opcions…"
 
 #: picard/ui/mainwindow.py:508
 msgid "Open &file naming script editor…"
-msgstr ""
+msgstr "Obre l'editor de scripts de nom dels &fitxers…"
 
 #: picard/ui/mainwindow.py:509
 msgid "Ctrl+Shift+S"
@@ -2892,7 +3013,7 @@ msgstr "Elimina els fitxers/àlbums seleccionats"
 
 #: picard/ui/mainwindow.py:626 picard/ui/metadatabox.py:401
 msgid "Lookup in &Browser"
-msgstr "Cerca a &navegador"
+msgstr "Cerca al &navegador"
 
 #: picard/ui/mainwindow.py:627
 msgid "Lookup selected item on MusicBrainz website"
@@ -2970,7 +3091,7 @@ msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow.py:705
 msgid "File &Browser"
-msgstr "&Explorador d'arxius"
+msgstr "&Explorador de fitxers"
 
 #: picard/ui/mainwindow.py:709
 msgid "Ctrl+B"
@@ -3121,7 +3242,7 @@ msgstr "Ctrl+Shift+T"
 
 #: picard/ui/mainwindow.py:872
 msgid "&Open My Collections in Browser"
-msgstr ""
+msgstr "&Obre les meves col·leccions al navegador"
 
 #: picard/ui/mainwindow.py:879
 msgid "View &Error/Debug Log"
@@ -3185,7 +3306,7 @@ msgstr "&Opcions"
 
 #: picard/ui/mainwindow.py:1039
 msgid "&Select file naming script"
-msgstr ""
+msgstr "&Selecciona un script de nom dels fitxers"
 
 #: picard/ui/mainwindow.py:1047
 msgid "&Enable/disable profiles"
@@ -3242,13 +3363,15 @@ msgstr "El sistema d'empremtes d'àudio no està configurat. Voleu fer-ho ara?"
 
 #: picard/ui/mainwindow.py:1528
 msgid "Browser integration not enabled"
-msgstr ""
+msgstr "La integració amb el navegador no està habilitada"
 
 #: picard/ui/mainwindow.py:1529
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
 msgstr ""
+"Cal habilitar la integració amb el navegador per a enviar publicacions a "
+"MusicBrainz. Voleu habilitar la integració amb el navegador ara?"
 
 #: picard/ui/mainwindow.py:1640
 #, python-format
@@ -3379,21 +3502,29 @@ msgid ""
 "work in small batches</li></ul><p>Picard is open source software written by "
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
+"<p><strong>Els canvis aplicats per Picard són irreversibles.</strong></"
+"p><p>Picard és una eina d'etiquetatge musical molt flexible que pot canviar "
+"el nom dels vostres fitxers i sobreescriure'n les etiquetes. <strong>És molt "
+"recomanable</strong> que feu el següent:</p><ul><li>Llegiu la <a "
+"href='{documentation_url}'>Guia de l'usuari</a> (també disponible al menú "
+"Ajuda)</li><li>Feu proves amb còpies dels fitxers de música i treballeu en "
+"grups petits</li></ul><p>Picard és programari lliure escrit per persones "
+"voluntàries. Es proporciona tal qual i sense cap mena de garantia.</p>"
 
 #: picard/ui/newuserdialog.py:49
 msgid "Show this message again the next time you start Picard."
-msgstr ""
+msgstr "Torna a mostrar aquest missatge la pròxima vegada que s'iniciï Picard"
 
 #: picard/ui/newuserdialog.py:54
 msgid "New User Warning"
-msgstr ""
+msgstr "Avís per a usuaris nous"
 
 #: picard/ui/passworddialog.py:43
 #, python-format
 msgid ""
 "The server %s requires you to login. Please enter your username and password."
 msgstr ""
-"El servidor %s necessita autenticació. Si us plau, introduïu el vostre nom "
+"El servidor %s requereix que inicieu la sessió. Introduïu el vostre nom "
 "d'usuari i contrasenya."
 
 #: picard/ui/passworddialog.py:64
@@ -3401,8 +3532,8 @@ msgstr ""
 msgid ""
 "The proxy %s requires you to login. Please enter your username and password."
 msgstr ""
-"El proxy %s necessita autenticació. Si us plau, introduïu el vostre nom "
-"d'usuari i contrasenya."
+"El servidor intermediari %s requereix que inicieu la sessió. Introduïu el "
+"vostre nom d'usuari i contrasenya."
 
 #: picard/ui/playertoolbar.py:174
 msgid "Internal player: The format of a media resource isn't (fully) supported"
@@ -3473,11 +3604,11 @@ msgstr ""
 
 #: picard/ui/pluginupdatedialog.py:38
 msgid "Perform this check again the next time you start Picard."
-msgstr ""
+msgstr "Torna-ho a comprovar la pròxima vegada que s'iniciï Picard."
 
 #: picard/ui/pluginupdatedialog.py:43
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Actualització de connectors de Picard"
 
 #: picard/ui/pluginupdatedialog.py:60
 msgid ""
@@ -3508,6 +3639,8 @@ msgid ""
 "Failed to submit rating for track '%(track_title)s' due to server error "
 "%(error)d"
 msgstr ""
+"No s'ha pogut enviar la puntuació de la pista «%(track_title)s» a causa d'un "
+"error del servidor: %(error)d"
 
 #: picard/ui/savewarningdialog.py:38
 msgid "overwrite existing metadata (tags) within the file"
@@ -3535,7 +3668,7 @@ msgstr[1] "Esteu a punt de desar {file_count:,d} fitxers i això:"
 
 #: picard/ui/savewarningdialog.py:58
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
-msgstr ""
+msgstr "<strong>Aquesta acció no es pot desfer.</strong> Voleu continuar?"
 
 #: picard/ui/savewarningdialog.py:61
 msgid "<li>{action}</li>"
@@ -3547,19 +3680,19 @@ msgstr ""
 
 #: picard/ui/savewarningdialog.py:64
 msgid "There are no actions selected. No changes will be saved."
-msgstr ""
+msgstr "No s'ha seleccionat cap acció. No es desarà cap canvi."
 
 #: picard/ui/savewarningdialog.py:66
 msgid "Don't show this warning again."
-msgstr ""
+msgstr "No tornis a mostrar aquest avís."
 
 #: picard/ui/savewarningdialog.py:72
 msgid "File Save Warning"
-msgstr ""
+msgstr "Avís de desament de fitxers"
 
 #: picard/ui/scripteditor.py:146
 msgid "Renaming options are disabled"
-msgstr ""
+msgstr "Les opcions de canvi de nom estan inhabilitades"
 
 #: picard/ui/scripteditor.py:219
 #, python-format
@@ -3569,24 +3702,30 @@ msgid ""
 "as file naming examples.  If you have not selected any files, then some "
 "default examples will be provided."
 msgstr ""
+"Si seleccioneu fitxers de les subfinestres Agrupació o Àlbum abans d'obrir "
+"la finestra Opcions, es triaran fins a %u fitxers aleatòriament entre els "
+"seleccionats com a exemples de noms dels fitxers.  Si no heu seleccionat cap "
+"fitxer, es proporcionaran alguns exemples per defecte."
 
 #: picard/ui/scripteditor.py:231
 #, python-format
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main window"
 msgstr ""
+"Torna a carregar fins a %u triats aleatòriament entre els fitxers "
+"seleccionats a la finestra principal"
 
 #: picard/ui/scripteditor.py:351 picard/ui/scripteditor.py:1259
 msgid "Confirm"
-msgstr ""
+msgstr "Confirma"
 
 #: picard/ui/scripteditor.py:425
 msgid "File naming script editor"
-msgstr ""
+msgstr "Editor de scripts de nom dels fitxers"
 
 #: picard/ui/scripteditor.py:491
 msgid "Reset"
-msgstr ""
+msgstr "Reincialitza"
 
 #: picard/ui/options/dialog.py:135 picard/ui/scripteditor.py:496
 msgid "Make It So!"
@@ -3594,55 +3733,55 @@ msgstr "Aplica"
 
 #: picard/ui/scripteditor.py:568
 msgid "&Import a script file"
-msgstr ""
+msgstr "&Importa un fitxer de script"
 
 #: picard/ui/scripteditor.py:569
 msgid "Import a file as a new script"
-msgstr ""
+msgstr "Importa un fitxer com a script nou"
 
 #: picard/ui/scripteditor.py:574
 msgid "&Export a script file"
-msgstr ""
+msgstr "&Exporta un fitxer de script"
 
 #: picard/ui/scripteditor.py:575
 msgid "Export the script to a file"
-msgstr ""
+msgstr "Exporta l'script a un fitxer"
 
 #: picard/ui/scripteditor.py:580
 msgid "&Reset all scripts"
-msgstr ""
+msgstr "&Reinicialitza tots els scrips"
 
 #: picard/ui/scripteditor.py:581
 msgid "Reset all scripts to the saved values"
-msgstr ""
+msgstr "Reinicialitza tots els scripts als valors desats"
 
 #: picard/ui/scripteditor.py:586
 msgid "&Save and exit"
-msgstr ""
+msgstr "De&sa i surt"
 
 #: picard/ui/scripteditor.py:587
 msgid "Save changes to the script settings and exit"
-msgstr ""
+msgstr "Desa els canvis als paràmetres de l'script i surt"
 
 #: picard/ui/scripteditor.py:592
 msgid "E&xit without saving"
-msgstr ""
+msgstr "Sur&t sense desar"
 
 #: picard/ui/scripteditor.py:593
 msgid "Close the script editor without saving changes"
-msgstr ""
+msgstr "Tanca l'editor de scripts sense desar els canvis"
 
 #: picard/ui/scripteditor.py:598
 msgid "&Script"
-msgstr ""
+msgstr "&Script"
 
 #: picard/ui/scripteditor.py:601
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "Visualitza/edita les &metadades de l'script"
 
 #: picard/ui/scripteditor.py:602
 msgid "Display the details for the script"
-msgstr ""
+msgstr "Mostra els detalls de l'script"
 
 #: picard/ui/scripteditor.py:604
 msgid "Ctrl+M"
@@ -3650,47 +3789,47 @@ msgstr "Ctrl+M"
 
 #: picard/ui/scripteditor.py:607
 msgid "Add a &new script"
-msgstr ""
+msgstr "Afegeix un script &nou"
 
 #: picard/ui/scripteditor.py:612
 msgid "&Copy the current script"
-msgstr ""
+msgstr "&Copia l'script actual"
 
 #: picard/ui/scripteditor.py:613
 msgid "Save a copy of the script as a new script"
-msgstr ""
+msgstr "Desa una còpia de l'script com a script nou"
 
 #: picard/ui/scripteditor.py:618
 msgid "&Delete the current script"
-msgstr ""
+msgstr "&Suprimeix l'script actual"
 
 #: picard/ui/scripteditor.py:619
 msgid "Delete the script"
-msgstr ""
+msgstr "Suprimeix l'script"
 
 #: picard/ui/scripteditor.py:628
 msgid "&Reload random example files"
-msgstr ""
+msgstr "To&rna a carregar els fitxers d'exemple aleatoris"
 
 #: picard/ui/scripteditor.py:637
 msgid "&Show documentation"
-msgstr ""
+msgstr "Mo&stra la documentació"
 
 #: picard/ui/scripteditor.py:638
 msgid "View the scripting documentation in a sidebar"
-msgstr ""
+msgstr "Mostra la documentació dels scripts en una barra lateral"
 
 #: picard/ui/scripteditor.py:654
 msgid "&Scripting documentation…"
-msgstr ""
+msgstr "Documentació dels &scripts…"
 
 #: picard/ui/scripteditor.py:655
 msgid "Open the scripting documentation in your browser"
-msgstr ""
+msgstr "Obre la documentació dels scripts al navegador"
 
 #: picard/ui/scripteditor.py:673
 msgid "Empty / blank script"
-msgstr ""
+msgstr "Script buit/en blanc"
 
 #: picard/ui/scripteditor.py:673
 msgid "New Script"
@@ -3709,19 +3848,29 @@ msgid ""
 "\n"
 "Are you sure that you want to continue?"
 msgstr ""
+"Hi ha com a mínim un script sense desar associat a un perfil d'opcions.\n"
+"\n"
+"   Perfils: {profile_title}\n"
+"   Script: {old_script_title}\n"
+"\n"
+"Si continueu sense desar-lo, l'script del perfil es reinicialitzarà a:\n"
+"\n"
+"   {new_script_title}\n"
+"\n"
+"Segur que voleu continuar?"
 
 #: picard/ui/scripteditor.py:889
 msgid "There is already a script with that title."
-msgstr ""
+msgstr "Ja hi ha un script amb aquest títol."
 
 #: picard/ui/scripteditor.py:892 picard/ui/scripteditor.py:1198
 #: picard/ui/scripteditor.py:1427
 msgid "The script title must not be empty."
-msgstr ""
+msgstr "El títol de l'script no pot estar buit."
 
 #: picard/ui/scripteditor.py:1143
 msgid "Error Deleting Script"
-msgstr ""
+msgstr "S'ha produït un error en suprimir l'script"
 
 #: picard/ui/scripteditor.py:1144
 #, python-format
@@ -3731,14 +3880,18 @@ msgid ""
 "\n"
 "Profile: %s"
 msgstr ""
+"No s'ha pogut suprimir l'script perquè el fa servir un dels perfils d'usuari."
+"\n"
+"\n"
+"Perfil: %s"
 
 #: picard/ui/scripteditor.py:1154
 msgid "Are you sure that you want to delete the script?"
-msgstr ""
+msgstr "Segur que voleu suprimir l'script?"
 
 #: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1240
 msgid "File Error"
-msgstr ""
+msgstr "S'ha produït un error al fitxer"
 
 #: picard/ui/scripteditor.py:1261
 msgid ""
@@ -3746,10 +3899,13 @@ msgid ""
 "\n"
 "Do you want to overwrite it, add as a copy or cancel?"
 msgstr ""
+"Ja hi ha un script amb el nom «{script_name}».\n"
+"\n"
+"Voleu sobreescriure'l, afegir una còpia o cancel·lar l'operació?"
 
 #: picard/ui/scripteditor.py:1268
 msgid "Overwrite"
-msgstr ""
+msgstr "Sobreescriu"
 
 #: picard/ui/options/profiles.py:120 picard/ui/scripteditor.py:1270
 msgid "Copy"
@@ -3757,11 +3913,11 @@ msgstr "Copia"
 
 #: picard/ui/options/renaming.py:266 picard/ui/scripteditor.py:1316
 msgid "The file naming format must not be empty."
-msgstr ""
+msgstr "El format de nom dels fitxers no pot estar buit."
 
 #: picard/ui/scripteditor.py:1353
 msgid "Script Details"
-msgstr ""
+msgstr "Detalls de l'script"
 
 #: picard/ui/scripteditor.py:1406
 msgid ""
@@ -3769,25 +3925,28 @@ msgid ""
 "\n"
 "Do you want to continue and lose these changes?"
 msgstr ""
+"Hi ha canvis sense desar a les metadades actuals.\n"
+"\n"
+"Voleu continuar i perdre aquests canvis?"
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
-msgstr ""
+msgstr "Hi ha un error a l'script «%(script)s»: %(message)s"
 
 #: picard/ui/tagsfromfilenames.py:137 picard/ui/tagsfromfilenames.py:148
 msgid "File Name"
-msgstr "Nom de fitxer"
+msgstr "Nom del fitxer"
 
 #: picard/ui/ui_aboutdialog.py:83
 msgid "About Picard"
-msgstr ""
+msgstr "Quant a Picard"
 
 #: picard/ui/options/cdlookup.py:52 picard/ui/ui_cdlookup.py:85
 #: picard/ui/ui_options_cdlookup.py:40
 #: picard/ui/ui_options_cdlookup_select.py:47
 msgid "CD Lookup"
-msgstr "Recerca de CD"
+msgstr "Cerca de CD"
 
 #: picard/ui/ui_cdlookup.py:86
 msgid "The following releases on MusicBrainz match the CD:"
@@ -4282,7 +4441,7 @@ msgstr ""
 
 #: picard/ui/ui_options_network.py:139
 msgid "Browser Integration"
-msgstr ""
+msgstr "Integració amb el navegador"
 
 #: picard/ui/ui_options_network.py:140
 msgid "Default listening port:"
@@ -4376,11 +4535,11 @@ msgstr "Reanomena els fitxers al desar-los"
 
 #: picard/ui/ui_options_renaming.py:156 picard/ui/ui_scripteditor.py:208
 msgid "Selected file naming script:"
-msgstr ""
+msgstr "Script de nom dels fitxers seleccionat:"
 
 #: picard/ui/ui_options_renaming.py:157
 msgid "Edit file naming script…"
-msgstr ""
+msgstr "Edita l'script de nom dels fitxers…"
 
 #: picard/ui/ui_options_renaming.py:158 picard/ui/ui_scripteditor.py:211
 msgid "Files will be named like this:"
@@ -4605,7 +4764,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor.py:209
 msgid "Select the file naming script to load into the editor"
-msgstr ""
+msgstr "Seleccioneu l'script de nom dels fitxers que voleu carregar a l'editor"
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
 msgid "Title:"
@@ -4613,11 +4772,11 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
-msgstr ""
+msgstr "Metadades de l'script de nom dels fitxers"
 
 #: picard/ui/ui_scripteditor_details.py:92
 msgid "Version number of the file naming script."
-msgstr ""
+msgstr "Número de versió de l'script de nom dels fitxers."
 
 #: picard/ui/ui_scripteditor_details.py:93
 msgid "Last Updated:"
@@ -4626,6 +4785,8 @@ msgstr ""
 #: picard/ui/ui_scripteditor_details.py:94
 msgid "Date and time the file naming script was last updated (UTC)."
 msgstr ""
+"Data i hora de la darrera actualització de l'script de nom dels fitxers "
+"(UTC)."
 
 #: picard/ui/ui_scripteditor_details.py:95
 msgid "Now"
@@ -4645,7 +4806,7 @@ msgstr ""
 
 #: picard/ui/ui_scripteditor_details.py:100
 msgid "License under which the file naming script is available."
-msgstr ""
+msgstr "Llicència sota la qual es publica l'script de nom dels fitxers."
 
 #: picard/ui/ui_scripteditor_details.py:101
 msgid "Description:"
@@ -4655,10 +4816,12 @@ msgstr ""
 msgid ""
 "Brief description of the file naming script, including any required plugins."
 msgstr ""
+"Descripció breu de l'script de nom dels fitxers, incloent-hi els connectors "
+"necessaris."
 
 #: picard/ui/ui_scripteditor_details.py:103
 msgid "The author of the file naming script."
-msgstr ""
+msgstr "Autor de l'script de nom dels fitxers."
 
 #: picard/ui/ui_scripting_documentation_dialog.py:36
 msgid "Scripting Documentation"
@@ -4709,11 +4872,11 @@ msgstr ""
 
 #: picard/ui/util.py:49
 msgid "&Ok"
-msgstr ""
+msgstr "D'ac&ord"
 
 #: picard/ui/util.py:52
 msgid "Clos&e"
-msgstr ""
+msgstr "T&anca"
 
 #: picard/ui/options/__init__.py:110
 msgid "Regex Error"
@@ -5342,7 +5505,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/__init__.py:187
 msgid "Search in browser"
-msgstr ""
+msgstr "Cerca al navegador"
 
 #: picard/ui/searchdialog/__init__.py:210
 msgid "<strong>Loading…</strong>"
@@ -5387,7 +5550,7 @@ msgstr ""
 
 #: picard/ui/searchdialog/artist.py:50
 msgid "Show in browser"
-msgstr ""
+msgstr "Mostra al navegador"
 
 #: picard/ui/searchdialog/artist.py:52
 msgid "Artist Search Dialog"
@@ -5443,7 +5606,7 @@ msgstr ""
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
-msgstr ""
+msgstr "Obre la documentació dels scripts al navegador"
 
 #: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
@@ -5925,7 +6088,7 @@ msgstr ""
 
 #: picard/util/webbrowser2.py:45
 msgid "Web Browser Error"
-msgstr "Error de navegador"
+msgstr "Error de navegador web"
 
 #: picard/util/webbrowser2.py:45
 #, python-format
@@ -5934,7 +6097,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Error intentant executar el navegador web:\n"
+"S'ha produït un error en iniciar el navegador web:\n"
 "\n"
 "%s"
 
