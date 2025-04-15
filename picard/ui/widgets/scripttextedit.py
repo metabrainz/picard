@@ -320,7 +320,7 @@ class ScriptTextEdit(QTextEdit):
         super().__init__(parent)
         config = get_config()
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
-        self.enable_completer()
+        self.initialize_completer()
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
         self.setMouseTracking(True)
         self.setAcceptRichText(False)
@@ -422,7 +422,7 @@ class ScriptTextEdit(QTextEdit):
             QToolTip.hideText()
             self.setToolTip('')
 
-    def enable_completer(self):
+    def initialize_completer(self):
         self.completer = ScriptCompleter()
         self.completer.setWidget(self)
         self.completer.activated.connect(self.insert_completion)
