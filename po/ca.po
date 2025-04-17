@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-04-15 22:20+0000\n"
+"PO-Revision-Date: 2025-04-17 20:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "2/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -3323,7 +3323,7 @@ msgstr "&Ajuda"
 
 #: picard/ui/mainwindow.py:1103 picard/ui/ui_options_plugins.py:134
 msgid "Actions"
-msgstr ""
+msgstr "Accions"
 
 #: picard/ui/mainwindow.py:1155
 msgid "Track"
@@ -3958,15 +3958,15 @@ msgstr "No s'ha trobat cap publicació que coincideixi amb aquest disc."
 
 #: picard/ui/ui_cdlookup.py:88
 msgid "Submit disc ID"
-msgstr ""
+msgstr "Envia l'ID de disc"
 
 #: picard/ui/ui_cdlookup.py:89
 msgid "&Load into Picard"
-msgstr ""
+msgstr "&Carrega a Picard"
 
 #: picard/ui/ui_cdlookup.py:90
 msgid "&Submit disc ID"
-msgstr ""
+msgstr "En&via l'ID de disc"
 
 #: picard/ui/ui_cdlookup.py:91 picard/ui/util.py:50
 msgid "&Cancel"
@@ -3974,101 +3974,101 @@ msgstr "&Cancel·la"
 
 #: picard/ui/ui_edittagdialog.py:115
 msgid "Edit Tag"
-msgstr "Edita etiqueta"
+msgstr "Edició de l'etiqueta"
 
 #: picard/ui/ui_edittagdialog.py:116
 msgid "Edit value"
-msgstr "Edita valor"
+msgstr "Edita el valor"
 
 #: picard/ui/ui_edittagdialog.py:117
 msgid "Add value"
-msgstr "Afegeix valor"
+msgstr "Afegeix un valor"
 
 #: picard/ui/ui_edittagdialog.py:118
 msgid "Remove value"
-msgstr "Esborra valor"
+msgstr "Suprimeix el valor"
 
 #: picard/ui/ui_edittagdialog.py:119 picard/ui/ui_edittagdialog.py:120
 msgid "Move selected value up"
-msgstr ""
+msgstr "Mou el valor seleccionat amunt"
 
 #: picard/ui/ui_edittagdialog.py:121 picard/ui/ui_edittagdialog.py:122
 msgid "Move selected value down"
-msgstr ""
+msgstr "Mou el valor seleccionat avall"
 
 #: picard/ui/ui_exception_script_selector.py:105
 msgid "Exception Language Script Selector"
-msgstr ""
+msgstr "Selector de sistemes d'escriptura amb excepcions"
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
-msgstr ""
+msgstr "Sistemes d'escriptura seleccionats"
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected language script match threshold:"
-msgstr ""
+msgstr "Llindar de coincidència del sistema d'escriptura seleccionat:"
 
 #: picard/ui/ui_exception_script_selector.py:108
 msgid "Move selected language script up"
-msgstr ""
+msgstr "Mou el sistema d'escriptura seleccionat amunt"
 
 #: picard/ui/ui_exception_script_selector.py:109
 msgid "Add to selected language scripts"
-msgstr ""
+msgstr "Afegeix als sistemes d'escriptura seleccionats"
 
 #: picard/ui/ui_exception_script_selector.py:110
 msgid "Remove selected language script"
-msgstr ""
+msgstr "Suprimeix el sistema d'escriptura seleccionat"
 
 #: picard/ui/ui_exception_script_selector.py:111
 msgid "Move selected language script down"
-msgstr ""
+msgstr "Mou el sistema d'escriptura seleccionat avall"
 
 #: picard/ui/ui_exception_script_selector.py:112
 msgid "Available Language Scripts"
-msgstr ""
+msgstr "Sistemes d'escriptura disponibles"
 
 #: picard/ui/ui_infodialog.py:82
 msgid "&Error"
-msgstr ""
+msgstr "&Error"
 
 #: picard/ui/ui_infodialog.py:83
 msgid "A&rtwork"
-msgstr ""
+msgstr "Il·lust&racions"
 
 #: picard/ui/ui_infostatus.py:106 picard/ui/ui_provider_options_caa.py:68
 #: picard/ui/ui_provider_options_local.py:52
 #: picard/ui/ui_widget_taglisteditor.py:68
 msgid "Form"
-msgstr ""
+msgstr "Formulari"
 
 #: picard/ui/ui_multi_locale_selector.py:85
 msgid "Locale Selector"
-msgstr ""
+msgstr "Selector de configuració regional"
 
 #: picard/ui/ui_multi_locale_selector.py:86
 msgid "Selected Locales"
-msgstr ""
+msgstr "Configuracions regionals seleccionades"
 
 #: picard/ui/ui_multi_locale_selector.py:87
 msgid "Move selected locale up"
-msgstr ""
+msgstr "Mou la configuració regional seleccionada amunt"
 
 #: picard/ui/ui_multi_locale_selector.py:88
 msgid "Add to selected locales"
-msgstr ""
+msgstr "Afegeix a les configuracions regionals seleccionades"
 
 #: picard/ui/ui_multi_locale_selector.py:89
 msgid "Remove selected locale"
-msgstr ""
+msgstr "Suprimeix la configuració regional seleccionada"
 
 #: picard/ui/ui_multi_locale_selector.py:90
 msgid "Move selected locale down"
-msgstr ""
+msgstr "Mou la configuració regional avall"
 
 #: picard/ui/ui_multi_locale_selector.py:91
 msgid "Available Locales"
-msgstr ""
+msgstr "Configuracions regionals disponibles"
 
 #: picard/ui/ui_options.py:50
 msgid "Options"
@@ -4076,56 +4076,62 @@ msgstr "Opcions"
 
 #: picard/ui/ui_options_advanced.py:138
 msgid "Advanced options"
-msgstr ""
+msgstr "Opcions avançades"
 
 #: picard/ui/ui_options_advanced.py:139
 msgid "Ignore file paths matching the following regular expression:"
 msgstr ""
+"Ignora els camins de fitxers que coincideixin amb l'expressió regular "
+"següent:"
 
 #: picard/ui/ui_options_advanced.py:141
 msgid "Ignore track duration difference under this number of seconds"
 msgstr ""
+"Ignora les diferències de durada de les pistes inferiors a aquest nombre de "
+"segons"
 
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
 msgstr ""
+"Ignora les pistes següents a l'hora de determinar si una publicació està "
+"completa"
 
 #: picard/ui/ui_options_advanced.py:145
 msgid "Video tracks"
-msgstr ""
+msgstr "Pistes de vídeo"
 
 #: picard/ui/ui_options_advanced.py:146
 msgid "Data tracks"
-msgstr ""
+msgstr "Pistes de dades"
 
 #: picard/ui/ui_options_advanced.py:147
 msgid "Pregap tracks"
-msgstr ""
+msgstr "Pistes al pregap"
 
 #: picard/ui/ui_options_advanced.py:148
 msgid "Silent tracks"
-msgstr ""
+msgstr "Pistes amb silenci"
 
 #: picard/ui/ui_options_advanced.py:149
 msgid "Tags to ignore for comparison:"
-msgstr ""
+msgstr "Etiquetes que s'han d'ignorar per a la comparació:"
 
 #: picard/ui/options/dialog.py:214 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
-msgstr ""
+msgstr "Perfils vinculats a les opcions"
 
 #: picard/ui/ui_options_cdlookup.py:41
 msgid "CD-ROM device to use for lookups:"
-msgstr "Unitat de CD-ROM per les recerques:"
+msgstr "Unitat de CD-ROM per les cerques:"
 
 #: picard/ui/ui_options_cdlookup_select.py:48
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "Unitat de CD-ROM per defecte en les recerques:"
+msgstr "Unitat de CD-ROM per defecte per a les cerques:"
 
 #: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
-msgstr ""
+msgstr "Fes servir el nom de fitxer següent per a les imatges:"
 
 #: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
@@ -4133,29 +4139,29 @@ msgstr "Sobreescriu el fitxer si ja existeix"
 
 #: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
-msgstr ""
+msgstr "Proveïdors de caràtules"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority:"
-msgstr ""
+msgstr "Prioritat de canvi d'ordre:"
 
 #: picard/ui/ui_options_cover.py:104
 #: picard/ui/ui_options_interface_toolbar.py:77
 msgid "Move selected item up"
-msgstr ""
+msgstr "Mou l'element seleccionat amunt"
 
 #: picard/ui/ui_options_cover.py:105
 #: picard/ui/ui_options_interface_toolbar.py:78
 msgid "Move selected item down"
-msgstr ""
+msgstr "Mou l'element seleccionat avall"
 
 #: picard/ui/ui_options_fingerprinting.py:97
 msgid "Audio Fingerprinting"
-msgstr "Recerca d'empremtes d'àudio"
+msgstr "Empremtes d'àudio"
 
 #: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
-msgstr ""
+msgstr "No facis servir les empremtes d'àudio"
 
 #: picard/ui/ui_options_fingerprinting.py:99
 msgid "Use AcoustID"
@@ -4175,7 +4181,7 @@ msgstr "Desa les empremtes AcoustID a les etiquetes dels fitxers"
 
 #: picard/ui/ui_options_fingerprinting.py:103
 msgid "Maximum threads to use for calculator:"
-msgstr ""
+msgstr "Nombre màxim de fils que farà servir la calculadora:"
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
@@ -4188,19 +4194,19 @@ msgstr "Navega…"
 
 #: picard/ui/ui_options_fingerprinting.py:106
 msgid "Download…"
-msgstr "Descarrega…"
+msgstr "Baixa…"
 
 #: picard/ui/ui_options_fingerprinting.py:107
 msgid "API key:"
-msgstr "Clau API:"
+msgstr "Clau de l'API:"
 
 #: picard/ui/ui_options_fingerprinting.py:108
 msgid "Get API key…"
-msgstr "Obté una clau API…"
+msgstr "Obtén una clau de l'API…"
 
 #: picard/ui/ui_options_general.py:199
 msgid "MusicBrainz Server"
-msgstr "Servidor MusicBrainz"
+msgstr "Servidor de MusicBrainz"
 
 #: picard/ui/ui_options_general.py:200
 msgid ""
@@ -4208,10 +4214,13 @@ msgid ""
 "of releases, recordings and disc IDs will go to the primary database on "
 "musicbrainz.org."
 msgstr ""
+"Heu configurat un servidor de MusicBrainz no oficial. Per defecte, els "
+"enviaments de publicacions, enregistraments i ID de discs aniran a la base "
+"de dades principal a musicbrainz.org."
 
 #: picard/ui/ui_options_general.py:201
 msgid "Submit data to the configured server"
-msgstr ""
+msgstr "Envia les dades al servidor configurat"
 
 #: picard/ui/ui_options_general.py:202 picard/ui/ui_options_network.py:135
 msgid "Port:"
@@ -4223,33 +4232,35 @@ msgstr "Adreça del servidor:"
 
 #: picard/ui/ui_options_general.py:205
 msgid "Log in"
-msgstr ""
+msgstr "Inicia la sessió"
 
 #: picard/ui/ui_options_general.py:206
 msgid "Log out"
-msgstr ""
+msgstr "Tanca la sessió"
 
 #: picard/ui/ui_options_general.py:211
 msgid "Update Checking"
-msgstr ""
+msgstr "Comprovació d'actualitzacions"
 
 #: picard/ui/ui_options_general.py:214
 msgid "Days between checks:"
-msgstr ""
+msgstr "Dies entre les comprovacions:"
 
 #: picard/ui/ui_options_general.py:215
 msgid "Updates to check:"
-msgstr ""
+msgstr "Actualitzacions que es comprovaran:"
 
 #: picard/ui/ui_options_genres.py:121
 msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
 msgstr ""
+"Fes servir els gèneres dels artistes de l'àlbum si no es troba cap gènere "
+"per a la publicació o el grup de publicacions"
 
 #: picard/ui/ui_options_genres.py:123
 msgid "Minimal genre usage:"
-msgstr ""
+msgstr "Ús mínim del gènere:"
 
 #: picard/ui/ui_options_genres.py:124 picard/ui/ui_options_matching.py:73
 #: picard/ui/ui_options_matching.py:74 picard/ui/ui_options_matching.py:75
@@ -4258,11 +4269,11 @@ msgstr " %"
 
 #: picard/ui/ui_options_genres.py:125
 msgid "Maximum number of genres:"
-msgstr ""
+msgstr "Nombre màxim de gèneres:"
 
 #: picard/ui/ui_options_genres.py:126
 msgid "Join multiple genres with:"
-msgstr ""
+msgstr "Concatena els gèneres amb:"
 
 #: picard/ui/ui_options_genres.py:127
 msgid " / "
@@ -4275,22 +4286,26 @@ msgstr ", "
 #: picard/ui/ui_options_genres.py:129
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgstr ""
+"Gèneres o etiquetes de folcsonomia que s'han d'incloure o excloure, un per "
+"línia:"
 
 #: picard/ui/ui_options_genres.py:130
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
+"Espai de proves de filtres de gèneres o etiquetes de folcsonomia (s'esborra "
+"en sortir):"
 
 #: picard/ui/ui_options_interface.py:118
 msgid "Appearance"
-msgstr ""
+msgstr "Aparença"
 
 #: picard/ui/ui_options_interface.py:121
 msgid "User interface language:"
-msgstr "Llengua de l'interfície d'usuari:"
+msgstr "Llengua de la interfície d'usuari:"
 
 #: picard/ui/ui_options_interface.py:122
 msgid "User interface color theme:"
-msgstr ""
+msgstr "Tema de color de la interfície d'usuari:"
 
 #: picard/ui/ui_options_interface.py:123
 msgid "Miscellaneous"
@@ -4302,44 +4317,45 @@ msgstr "Fes servir la sintaxi de consulta avançada"
 
 #: picard/ui/ui_options_interface.py:127
 msgid "Show the new user dialog when starting Picard"
-msgstr ""
+msgstr "Mostra el diàleg d'usuari nou en iniciar Picard"
 
 #: picard/ui/ui_options_interface.py:131
 msgid "Begin browsing in the following directory:"
-msgstr ""
+msgstr "Inicia l'exploració al directori següent:"
 
 #: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
 msgid "Colors"
-msgstr ""
+msgstr "Colors"
 
 #: picard/ui/ui_options_interface_toolbar.py:72
 msgid "Customize Action Toolbar"
-msgstr ""
+msgstr "Personalització de la barra d'eines d'accions"
 
 #: picard/ui/ui_options_interface_toolbar.py:73
 msgid "Add a new button to Toolbar"
-msgstr ""
+msgstr "Afegeix un botó nou a la barra d'eines"
 
 #: picard/ui/ui_options_interface_toolbar.py:74
 msgid "Add Action"
-msgstr ""
+msgstr "Afegeix una acció"
 
 #: picard/ui/ui_options_interface_toolbar.py:75
 msgid "Insert a separator"
-msgstr ""
+msgstr "Insereix un separador"
 
 #: picard/ui/ui_options_interface_toolbar.py:76
 msgid "Add Separator"
-msgstr ""
+msgstr "Afegeix un separador"
 
 #: picard/ui/ui_options_interface_toolbar.py:79
 msgid "Remove button from toolbar"
-msgstr ""
+msgstr "Suprimeix el botó de la barra d'eines"
 
 #: picard/ui/ui_options_interface_top_tags.py:37
 msgid "Show the below tags above all other tags in the metadata view"
 msgstr ""
+"Mostra les etiquetes següents sobre la resta a la visualització de metadades"
 
 #: picard/ui/ui_options_maintenance.py:86
 msgid "Configuration File:"
@@ -4359,11 +4375,11 @@ msgstr ""
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
-msgstr ""
+msgstr "Suprimeix les opcions seleccionades"
 
 #: picard/ui/ui_options_maintenance.py:91
 msgid "Select all"
-msgstr ""
+msgstr "Selecciona-ho tot"
 
 #: picard/ui/ui_options_matching.py:71
 msgid "Thresholds"
@@ -4371,11 +4387,11 @@ msgstr "Llindars"
 
 #: picard/ui/ui_options_matching.py:72
 msgid "Minimal similarity for matching files to tracks:"
-msgstr "Mínima semblança per fer coincidir fitxers amb pistes:"
+msgstr "Similitud mínima per a fer coincidir els fitxers amb pistes:"
 
 #: picard/ui/ui_options_matching.py:76
 msgid "Minimal similarity for file lookups:"
-msgstr "Mínima semblança per recerques de fitxers:"
+msgstr "Similitud mínima per a les cerques de fitxers:"
 
 #: picard/ui/ui_options_matching.py:77
 msgid "Minimal similarity for cluster lookups:"
@@ -4387,15 +4403,16 @@ msgstr "Tradueix els noms dels artistes a aquesta llengua quan sigui possible:"
 
 #: picard/ui/ui_options_metadata.py:131 picard/ui/ui_options_metadata.py:133
 msgid "Select…"
-msgstr ""
+msgstr "Selecciona…"
 
 #: picard/ui/ui_options_metadata.py:132
 msgid "Ignore artist name translation for these language scripts:"
 msgstr ""
+"Ignora la traducció del nom de l'artista per a aquests sistemes d'escriptura:"
 
 #: picard/ui/ui_options_metadata.py:138
 msgid "Use track relationships"
-msgstr ""
+msgstr "Fes servir les relacions de pistes"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
@@ -4407,25 +4424,25 @@ msgstr "Diversos artistes:"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Standalone recordings:"
-msgstr ""
+msgstr "Enregistraments independents:"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
 #: picard/ui/ui_provider_options_local.py:54
 msgid "Default"
-msgstr "Valor per defecte"
+msgstr "Reinicialitza"
 
 #: picard/ui/ui_options_network.py:131
 msgid "Web Proxy"
-msgstr "Proxy web"
+msgstr "Servidor intermediari"
 
 #: picard/ui/ui_options_network.py:132
 msgid "HTTP"
-msgstr ""
+msgstr "HTTP"
 
 #: picard/ui/ui_options_network.py:133
 msgid "SOCKS"
-msgstr ""
+msgstr "SOCKS"
 
 #: picard/ui/ui_options_network.py:134 picard/ui/ui_passworddialog.py:63
 msgid "Username:"
@@ -4437,7 +4454,7 @@ msgstr "Contrasenya:"
 
 #: picard/ui/ui_options_network.py:138
 msgid "Request timeout in seconds:"
-msgstr ""
+msgstr "Temps d'espera de les sol·licituds en segons:"
 
 #: picard/ui/ui_options_network.py:139
 msgid "Browser Integration"
@@ -4445,7 +4462,7 @@ msgstr "Integració amb el navegador"
 
 #: picard/ui/ui_options_network.py:140
 msgid "Default listening port:"
-msgstr ""
+msgstr "Port d'escolta per defecte:"
 
 #: picard/ui/options/plugins.py:226 picard/ui/ui_options_plugins.py:131
 msgid "Plugins"
@@ -4463,15 +4480,15 @@ msgstr "Versió"
 
 #: picard/ui/ui_options_plugins.py:135
 msgid "Install plugin…"
-msgstr "Instal·lar plugin…"
+msgstr "Instal·la un connector…"
 
 #: picard/ui/ui_options_plugins.py:136
 msgid "Open plugin folder"
-msgstr ""
+msgstr "Obre la carpeta de connectors"
 
 #: picard/ui/ui_options_plugins.py:137
 msgid "Reload List of Plugins"
-msgstr ""
+msgstr "Torna a carregar la llista de connectors"
 
 #: picard/ui/ui_options_plugins.py:138
 msgid "Details"
@@ -4479,15 +4496,15 @@ msgstr "Detalls"
 
 #: picard/ui/ui_options_profiles.py:75
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "Perfils d'opcions"
 
 #: picard/ui/ui_options_profiles.py:76
 msgid "Move profile up"
-msgstr ""
+msgstr "Mou el perfil amunt"
 
 #: picard/ui/ui_options_profiles.py:77
 msgid "Move profile down"
-msgstr ""
+msgstr "Mou el perfil avall"
 
 #: picard/ui/ui_options_ratings.py:48
 msgid ""
@@ -4496,30 +4513,35 @@ msgid ""
 "be stored in the files. Please specify the e-mail you want to use to save "
 "your ratings."
 msgstr ""
+"Picard desa les puntuacions juntament amb una adreça electrònica que "
+"identifica l'usuari que ha indicat la puntuació. D'aquesta manera es poden "
+"emmagatzemar les puntuacions de diversos usuaris als fitxers. Especifiqueu "
+"l'adreça electrònica que voleu fer servir per a desar les vostres "
+"puntuacions."
 
 #: picard/ui/ui_options_ratings.py:49
 msgid "E-mail:"
-msgstr "Correu electrònic:"
+msgstr "Adreça electrònica:"
 
 #: picard/ui/ui_options_releases.py:112 picard/ui/ui_options_releases.py:113
 msgid "Add to preferred release countries"
-msgstr ""
+msgstr "Afegeix als països de publicació preferits"
 
 #: picard/ui/ui_options_releases.py:114 picard/ui/ui_options_releases.py:115
 msgid "Remove from preferred release countries"
-msgstr ""
+msgstr "Suprimeix dels països de publicació preferits"
 
 #: picard/ui/ui_options_releases.py:117 picard/ui/ui_options_releases.py:118
 msgid "Add to preferred release formats"
-msgstr ""
+msgstr "Afegeix als formats de publicació preferits"
 
 #: picard/ui/ui_options_releases.py:119 picard/ui/ui_options_releases.py:120
 msgid "Remove from preferred release formats"
-msgstr ""
+msgstr "Suprimeix dels formats de publicació preferits"
 
 #: picard/ui/ui_options_renaming.py:150
 msgid "Move files when saving"
-msgstr ""
+msgstr "Mou els fitxers en desar-los"
 
 #: picard/ui/ui_options_renaming.py:151
 msgid "Destination directory:"
@@ -4741,7 +4763,7 @@ msgstr ""
 
 #: picard/ui/ui_provider_options_caa.py:70
 msgid "Select types…"
-msgstr ""
+msgstr "Selecciona els tipus…"
 
 #: picard/ui/ui_provider_options_caa.py:71
 msgid "Only use images of the following size:"
@@ -6088,7 +6110,7 @@ msgstr ""
 
 #: picard/util/webbrowser2.py:45
 msgid "Web Browser Error"
-msgstr "Error de navegador web"
+msgstr "Error del navegador web"
 
 #: picard/util/webbrowser2.py:45
 #, python-format
