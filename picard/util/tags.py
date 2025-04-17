@@ -753,7 +753,9 @@ def tag_names():
     yield from (str(tv) for tv in ALL_TAG_VARS if tv.is_tag)
 
 
-PRESERVED_TAGS = tuple(str(tv) for tv in ALL_TAG_VARS if tv.is_preserved)
+def preserved_tag_names():
+    """Tags that should be preserved by default"""
+    yield from (str(tv) for tv in ALL_TAG_VARS if tv.is_preserved)
 
 
 def calculated_tag_names():

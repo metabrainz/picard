@@ -103,9 +103,9 @@ from picard.util.filenaming import (
 from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.util.tags import (
-    PRESERVED_TAGS,
     calculated_tag_names,
     file_info_tag_names,
+    preserved_tag_names,
 )
 
 
@@ -313,8 +313,9 @@ class File(MetadataItem):
 
         # Keep original values of preserved tags
         preserved_tags = PreservedTags()
+        default_preserved_tags = set(preserved_tag_names())
         for tag, values in self.orig_metadata.rawitems():
-            if tag in preserved_tags or tag in PRESERVED_TAGS:
+            if tag in preserved_tags or tag in default_preserved_tags:
                 saved_metadata[tag] = values
         deleted_tags = self.metadata.deleted_tags
         images_changed = self.metadata.images != metadata.images
