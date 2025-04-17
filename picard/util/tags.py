@@ -32,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import MutableSequence
 import re
 
 from picard.i18n import (
@@ -95,7 +96,61 @@ class TagVar:
         return hash(self._name)
 
 
-ALL_TAG_VARS = {
+class TagVars(MutableSequence):
+    """Mutable sequence for TagVar items
+    It maintains an internal dict object for display names.
+    Also it doesn't allow to add a TagVar of the same name more than once.
+    """
+    def __init__(self, *tagvars):
+        self._items = []
+        self._name2item = dict()
+        self.extend(tagvars)
+
+    def __len__(self):
+        return len(self._items)
+
+    def __getitem__(self, index):
+        return self._items[index]
+
+    def __setitem__(self, index, tagvar):
+        name = str(tagvar)
+        if name in self._name2item:
+            raise ValueError(f"Already an item with same name: {name}")
+        self._name2item[name] = self._items[index] = tagvar
+
+    def __delitem__(self, index):
+        name = str(self._items[index])
+        del self._items[index]
+        del self._name2item[name]
+
+    def insert(self, index, tagvar):
+        name = str(tagvar)
+        if name in self._name2item:
+            raise ValueError(f"Already an item with same name: {name}")
+        self._items.insert(index, tagvar)
+        self._name2item[name] = self._items[index]
+
+    def __repr__(self):
+        return f"TagVars({self._items!r})"
+
+    def display_name(self, name):
+        tagdesc = None
+        if ':' in name:
+            name, tagdesc = name.split(':', 1)
+
+        item = self._name2item.get(name, None)
+        if item and item.shortdesc:
+            title = _(item.shortdesc)
+        else:
+            title = name
+
+        if tagdesc:
+            return '%s [%s]' % (title, tagdesc)
+        else:
+            return title
+
+
+ALL_TAG_VARS = TagVars(
     TagVar(
         'absolutetracknumber',
         shortdesc=N_('FIXME:absolutetracknumber'),
@@ -744,9 +799,7 @@ ALL_TAG_VARS = {
         'writer',
         shortdesc=N_('Writer'),
     ),
-}
-
-ALL_NAME_2_TAGVAR = {str(tv): tv for tv in ALL_TAG_VARS}
+)
 
 
 def tag_names():
@@ -778,17 +831,7 @@ def script_variable_tag_names():
 
 
 def display_tag_name(name):
-    tagdesc = None
-    if ':' in name:
-        name, tagdesc = name.split(':', 1)
-
-    tagvar = ALL_NAME_2_TAGVAR.get(name, None)
-    tagtitle = _(tagvar.shortdesc) if tagvar else name
-
-    if tagdesc:
-        return '%s [%s]' % (tagtitle, tagdesc)
-    else:
-        return tagtitle
+    return ALL_TAG_VARS.display_name(name)
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
