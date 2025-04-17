@@ -39,8 +39,8 @@ from picard.const.sys import (
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util.tags import (
-    FILE_INFO_TAGS,
     calculated_tag_names,
+    file_info_tag_names,
 )
 
 
@@ -619,7 +619,7 @@ class FileUpdateTest(PicardTestCase):
 
     def test_copy_file_info_tags(self):
         info_tags = {}
-        for info in FILE_INFO_TAGS:
+        for info in file_info_tag_names():
             info_tags[info] = 'val' + info
 
         orig_metadata = Metadata(info_tags)
@@ -629,7 +629,7 @@ class FileUpdateTest(PicardTestCase):
             'b': 'valb',
         })
         self.file._copy_file_info_tags(metadata, orig_metadata)
-        for info in FILE_INFO_TAGS:
+        for info in file_info_tag_names():
             self.assertEqual('val' + info, metadata[info])
         self.assertEqual('valb', metadata['b'])
         self.assertNotIn('a', metadata)

@@ -752,8 +752,10 @@ def calculated_tag_names():
     yield from (str(tv) for tv in ALL_TAG_VARS if tv.is_calculated)
 
 
-# Tags that contains infos related to files
-FILE_INFO_TAGS = set(str(tv) for tv in ALL_TAG_VARS if tv.is_file_info)
+def file_info_tag_names():
+    """Tags that contains infos related to files"""
+    yield from (str(tv) for tv in ALL_TAG_VARS if tv.is_file_info)
+
 
 # Variables available to scripts (used by script editor completer)
 SCRIPT_VARIABLES = tuple(str(tv) for tv in ALL_TAG_VARS if tv.is_script_variable)

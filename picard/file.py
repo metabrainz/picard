@@ -103,9 +103,9 @@ from picard.util.filenaming import (
 from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.util.tags import (
-    FILE_INFO_TAGS,
     PRESERVED_TAGS,
     calculated_tag_names,
+    file_info_tag_names,
 )
 
 
@@ -300,7 +300,7 @@ class File(MetadataItem):
                 metadata[m] = getattr(guessed, m)
 
     def _copy_file_info_tags(self, to_metadata, from_metadata):
-        for tag in FILE_INFO_TAGS:
+        for tag in file_info_tag_names():
             to_metadata[tag] = from_metadata[tag]
 
     def copy_metadata(self, metadata, preserve_deleted=True):
