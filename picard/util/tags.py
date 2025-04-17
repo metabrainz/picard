@@ -735,7 +735,11 @@ ALL_TAG_VARS = {
 
 ALL_NAME_2_TAGVAR = {str(tv): tv for tv in ALL_TAG_VARS}
 
-TAG_NAMES = {str(tv): tv.shortdesc for tv in ALL_TAG_VARS if tv.is_tag}
+
+def tag_names():
+    yield from (str(tv) for tv in ALL_TAG_VARS if tv.is_tag)
+
+
 PRESERVED_TAGS = tuple(str(tv) for tv in ALL_TAG_VARS if tv.is_preserved)
 
 # Tags that got generated in some way from the audio content.
