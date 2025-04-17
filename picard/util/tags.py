@@ -742,10 +742,15 @@ def tag_names():
 
 PRESERVED_TAGS = tuple(str(tv) for tv in ALL_TAG_VARS if tv.is_preserved)
 
-# Tags that got generated in some way from the audio content.
-# Those can be set by Picard but the new values usually should be kept
-# when moving the file between tags.
-CALCULATED_TAGS = set(str(tv) for tv in ALL_TAG_VARS if tv.is_calculated)
+
+def calculated_tag_names():
+    """
+    Tags that got generated in some way from the audio content.
+    Those can be set by Picard but the new values usually should be kept
+    when moving the file between tags.
+    """
+    yield from (str(tv) for tv in ALL_TAG_VARS if tv.is_calculated)
+
 
 # Tags that contains infos related to files
 FILE_INFO_TAGS = set(str(tv) for tv in ALL_TAG_VARS if tv.is_file_info)

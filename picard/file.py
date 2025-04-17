@@ -103,9 +103,9 @@ from picard.util.filenaming import (
 from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.util.tags import (
-    CALCULATED_TAGS,
     FILE_INFO_TAGS,
     PRESERVED_TAGS,
+    calculated_tag_names,
 )
 
 
@@ -307,7 +307,7 @@ class File(MetadataItem):
         saved_metadata = {}
 
         # Keep current value for special tags that got calculated from audio content
-        for tag in CALCULATED_TAGS:
+        for tag in calculated_tag_names():
             if tag not in metadata.deleted_tags and self.metadata[tag]:
                 saved_metadata[tag] = self.metadata[tag]
 
