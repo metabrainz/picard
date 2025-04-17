@@ -46,6 +46,19 @@ class TagVar:
         is_preserved=False, is_hidden=False, is_script_variable=True,
         is_tag=True, is_calculated=False, is_file_info=False
     ):
+        """
+        shortdesc: Short description (typically one or two words) in title case that is suitable
+                   for a column header.
+        longdesc: Brief description in sentence case describing the tag/variable.  This should
+                  be similar (within reasonable length constraints) to the description in the Picard User
+                  Guide documentation, and could be used as a tooltip when reviewing a script.
+        is_preserved: the tag is preserved (boolean, default: False)
+        is_hidden: the tag is "hidden", name will be prefixed with "~" (boolean, default: False)
+        is_script_variable: the tag can be used as script variable (boolean, default: True)
+        is_tag: the tag is an actual tag (not a calculated or derived one) (boolean, default: True)
+        is_calculated: the tag is obtained by external calculation (boolean, default: False)
+        is_file_info: the tag is a file information, displayed in file info box (boolean, default: False)
+        """
         self._name = name
         self._shortdesc = shortdesc
         self._longdesc = longdesc
