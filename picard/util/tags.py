@@ -751,15 +751,17 @@ SCRIPT_VARIABLES = tuple(str(tv) for tv in ALL_TAG_VARS if tv.is_script_variable
 
 
 def display_tag_name(name):
+    tagdesc = None
     if ':' in name:
         name, tagdesc = name.split(':', 1)
-        if tagdesc:
-            tagvar = ALL_NAME_2_TAGVAR.get(name, None)
-            tagtitle = _(tagvar.shortdesc) if tagvar else name
-            return '%s [%s]' % (tagtitle, tagdesc)
+
     tagvar = ALL_NAME_2_TAGVAR.get(name, None)
     tagtitle = _(tagvar.shortdesc) if tagvar else name
-    return tagtitle
+
+    if tagdesc:
+        return '%s [%s]' % (tagtitle, tagdesc)
+    else:
+        return tagtitle
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
