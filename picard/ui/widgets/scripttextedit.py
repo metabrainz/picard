@@ -53,8 +53,8 @@ from picard.script import (
     script_function_names,
 )
 from picard.util.tags import (
-    SCRIPT_VARIABLES,
     display_tag_name,
+    script_variable_tag_names,
 )
 
 from picard.ui import FONT_FAMILY_MONOSPACE
@@ -181,8 +181,8 @@ class ScriptCompleter(QCompleter):
 
     @property
     def choices(self):
-        yield from {'$' + name for name in script_function_names()}
-        yield from {'%' + name.replace('~', '_') + '%' for name in SCRIPT_VARIABLES}
+        yield from (f'${name}' for name in script_function_names())
+        yield from (f'%{name}%'.replace('~', '_', 1) for name in script_variable_tag_names())
 
     def set_highlighted(self, text):
         self.last_selected = text
