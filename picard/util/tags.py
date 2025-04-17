@@ -91,10 +91,6 @@ class TagVar:
         else:
             return self._name
 
-    def __hash__(self):
-        """_name should be unique (filepath == ~filepath)"""
-        return hash(self._name)
-
 
 class TagVars(MutableSequence):
     """Mutable sequence for TagVar items
