@@ -285,7 +285,6 @@ class CommonTests:
         def test_metadata_applyfunc_preserve_tags(self):
             self.assertTrue(len(PRESERVED_TAGS) > 0)
             m = Metadata()
-            print(f"\n{PRESERVED_TAGS}\n")
             m[[x for x in PRESERVED_TAGS.keys()][0]] = 'value1'
             m['not_preserved'] = 'value2'
 
