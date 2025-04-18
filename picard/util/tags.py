@@ -75,7 +75,7 @@ class TagVar:
         """default to name"""
         if self._shortdesc:
             return self._shortdesc
-        return self._name
+        return str(self)
 
     @property
     def longdesc(self):

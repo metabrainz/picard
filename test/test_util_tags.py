@@ -121,10 +121,13 @@ class TagVarsTest(PicardTestCase):
     def test_tagvars_display_name(self):
         tagvars = TagVars(
             self.tagvar_nodesc,
+            self.tagvar_hidden,
             self.tagvar_only_sd,
             self.tagvar_sd_ld,
         )
         self.assertEqual(tagvars.display_name('unknown'), 'unknown')
+        self.assertEqual(tagvars.display_name('~hidden'), '~hidden')
+        self.assertEqual(tagvars.display_name('~hidden:xxx'), '~hidden [xxx]')
         self.assertEqual(tagvars.display_name('nodesc'), 'nodesc')
         self.assertEqual(tagvars.display_name('nodesc:'), 'nodesc')
         self.assertEqual(tagvars.display_name('nodesc:xxx'), 'nodesc [xxx]')
