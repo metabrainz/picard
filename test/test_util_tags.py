@@ -41,6 +41,7 @@ class TagVarsTest(PicardTestCase):
         self.tagvar_only_sd = TagVar('only_sd', shortdesc='only_sd_shortdesc')
         self.tagvar_sd_ld = TagVar('sd_ld', shortdesc='sd_ld_shortdesc', longdesc='sd_ld_longdesc')
         self.tagvar_hidden = TagVar('hidden', is_hidden=True)
+        self.tagvar_hidden_sd = TagVar('hidden_sd', is_hidden=True, shortdesc='hidden_sd_shortdesc')
         self.tagvar_notag = TagVar('notag', is_tag=False)
         self.tagvar_nodesc = TagVar('nodesc')
 
@@ -122,12 +123,18 @@ class TagVarsTest(PicardTestCase):
         tagvars = TagVars(
             self.tagvar_nodesc,
             self.tagvar_hidden,
+            self.tagvar_hidden_sd,
             self.tagvar_only_sd,
             self.tagvar_sd_ld,
         )
         self.assertEqual(tagvars.display_name('unknown'), 'unknown')
+
         self.assertEqual(tagvars.display_name('~hidden'), '~hidden')
         self.assertEqual(tagvars.display_name('~hidden:xxx'), '~hidden [xxx]')
+
+        self.assertEqual(tagvars.display_name('~hidden_sd'), 'hidden_sd_shortdesc')
+        self.assertEqual(tagvars.display_name('~hidden_sd:xxx'), 'hidden_sd_shortdesc [xxx]')
+
         self.assertEqual(tagvars.display_name('nodesc'), 'nodesc')
         self.assertEqual(tagvars.display_name('nodesc:'), 'nodesc')
         self.assertEqual(tagvars.display_name('nodesc:xxx'), 'nodesc [xxx]')
