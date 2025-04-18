@@ -11,7 +11,7 @@
 # Copyright (C) 2013-2014, 2019-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2013-2015, 2017 Sophist-UK
 # Copyright (C) 2019 Zenara Daley
-# Copyright (C) 2023 Bob Swift
+# Copyright (C) 2023, 2025 Bob Swift
 # Copyright (C) 2023 certuna
 # Copyright (C) 2024 Arnab Chakraborty
 # Copyright (C) 2024 Giorgio Fontanive
@@ -51,9 +51,9 @@ TAG_NAMES = {
     'artist': N_('Artist'),
     'artists': N_('Artists'),
     'artistsort': N_('Artist Sort Order'),
-    'asin': N_('ASIN'),
+    'asin': N_('Amazon Standard Identification Number (ASIN)'),
     'barcode': N_('Barcode'),
-    'bpm': N_('BPM'),
+    'bpm': N_('Beats Per Minute'),
     'catalognumber': N_('Catalog Number'),
     'comment': N_('Comment'),
     'compilation': N_('Compilation (iTunes)'),
@@ -61,7 +61,7 @@ TAG_NAMES = {
     'composersort': N_('Composer Sort Order'),
     'conductor': N_('Conductor'),
     'copyright': N_('Copyright'),
-    'date': N_('Date'),
+    'date': N_('Date the album was released'),
     'director': N_('Director'),
     'discid': N_('Disc Id'),
     'discnumber': N_('Disc Number'),
@@ -72,10 +72,10 @@ TAG_NAMES = {
     'engineer': N_('Engineer'),
     '~filepath': N_('File Path'),
     'gapless': N_('Gapless Playback'),
-    'genre': N_('Genre'),
+    'genre': N_('Genre (multi)'),
     'grouping': N_('Grouping'),
-    'isrc': N_('ISRC'),
-    'key': N_('Key'),
+    'isrc': N_('International Standard Recording Code (ISRC)'),
+    'key': N_('Musical key of the track'),
     'label': N_('Record Label'),
     'language': N_('Language'),
     '~length': N_('Length'),
@@ -100,7 +100,7 @@ TAG_NAMES = {
     'musicbrainz_workid': N_('MusicBrainz Work Id'),
     'musicip_fingerprint': N_('MusicIP Fingerprint'),
     'musicip_puid': N_('MusicIP PUID'),
-    'originalalbum': N_('Original Album'),
+    'originalalbum': N_('Original album title'),
     'originalartist': N_('Original Artist'),
     'originaldate': N_('Original Release Date'),
     'originalfilename': N_('Original Filename'),
@@ -111,7 +111,7 @@ TAG_NAMES = {
     'producer': N_('Producer'),
     'r128_album_gain': N_('R128 Album Gain'),
     'r128_track_gain': N_('R128 Track Gain'),
-    '~rating': N_('Rating'),
+    '~rating': N_('MusicBrainz users rating of the track'),
     'releasecountry': N_('Release Country'),
     'releasedate': N_('Release Date'),
     'releasestatus': N_('Release Status'),
@@ -125,13 +125,13 @@ TAG_NAMES = {
     'replaygain_track_peak': N_('ReplayGain Track Peak'),
     'replaygain_track_range': N_('ReplayGain Track Range'),
     'script': N_('Script'),
-    'show': N_('Show Name'),
+    'show': N_('Name of the show if the recording is associated with a television program'),
     'showsort': N_('Show Name Sort Order'),
     'showmovement': N_('Show Work & Movement'),
     'subtitle': N_('Subtitle'),
     'syncedlyrics': N_('Synced Lyrics'),
-    'title': N_('Title'),
-    'titlesort': N_('Title Sort Order'),
+    'title': N_('Track title'),
+    'titlesort': N_('Track title sort order'),
     'totaldiscs': N_('Total Discs'),
     'totaltracks': N_('Total Tracks'),
     'tracknumber': N_('Track Number'),
@@ -140,19 +140,19 @@ TAG_NAMES = {
     'writer': N_('Writer'),
 }
 
-PRESERVED_TAGS = (
-    '~bitrate',
-    '~bits_per_sample',
-    '~channels',
-    '~dirname',
-    '~extension',
-    '~filename',
-    '~file_created_timestamp',
-    '~file_modified_timestamp',
-    '~format',
-    '~sample_rate',
-    '~video',
-)
+PRESERVED_TAGS = {
+    '~bitrate': N_('Approximate bitrate in kbps'),
+    '~bits_per_sample': N_('Bits of data per sample'),
+    '~channels': N_('Number of audio channels in the file'),
+    '~dirname': N_('Name of the directory containing the file'),
+    '~extension': N_('Extension of the file'),
+    '~filename': N_('Name of the file without extension'),
+    '~file_created_timestamp': N_('File creation timestamp'),
+    '~file_modified_timestamp': N_('File modification timestamp'),
+    '~format': N_('Media format of the file'),
+    '~sample_rate': N_('Number of digitizing samples per second (Hz)'),
+    '~video': N_('File is a video'),
+}
 
 # Tags that got generated in some way from the audio content.
 # Those can be set by Picard but the new values usually should be kept
@@ -182,44 +182,55 @@ FILE_INFO_TAGS = {
 }
 
 # Variables available to scripts (used by script editor completer)
-EXTRA_VARIABLES = (
-    '~absolutetracknumber',
-    '~albumartists_countries',
-    '~albumartists_sort',
-    '~albumartists',
-    '~artists_countries',
-    '~artists_sort',
-    '~datatrack',
-    '~discpregap',
-    '~multiartist',
-    '~musicbrainz_discids',
-    '~musicbrainz_tracknumber',
-    '~performance_attributes',
-    '~pregap',
-    '~primaryreleasetype',
-    '~rating',
-    '~recording_firstreleasedate',
-    '~recordingcomment',
-    '~recordingtitle',
-    '~releasecomment',
-    '~releasecountries',
-    '~releasegroup_firstreleasedate',
-    '~releasegroup',
-    '~releasegroupcomment',
-    '~releaselanguage',
-    '~secondaryreleasetype',
-    '~silence',
-    '~totalalbumtracks',
-    '~video',
-)
+EXTRA_VARIABLES = {
+    '~absolutetracknumber': N_('Absolute number of the track disregarding the disc number'),
+    '~albumartists_countries': N_('Album artists countries (multi)'),
+    '~albumartists_sort': N_('Sort names of the album artists (multi)'),
+    '~albumartists': N_('Album artists names (multi)'),
+    '~artists_countries': N_('Track artists countries (multi)'),
+    '~artists_sort': N_('Sort names of the track artists (multi)'),
+    '~datatrack': N_('"1" if the track is a "data track"'),
+    '~discpregap': N_('"1" if the disc has a "pregap track"'),
+    '~multiartist': N_('"1" if not all of the tracks on the album have the same primary artist'),
+    '~musicbrainz_discids': N_('List of all disc ids attached to the release (multi)'),
+    '~musicbrainz_tracknumber': N_('Track number as shown on the MusicBrainz release'),
+    '~performance_attributes': N_('Performance attributes for the work (multi)'),
+    '~pregap': N_('"1" if the track is a "pregap track"'),
+    '~primaryreleasetype': N_('Primary type of the release group'),
+    '~rating': N_('MusicBrainz users rating of the track'),
+    '~recording_firstreleasedate': N_('Date of the earliest recording for a track'),
+    '~recordingcomment': N_('Disambiguation comment for the recording'),
+    '~recordingtitle': N_('Title of the recording'),
+    '~releasecomment': N_('Disambiguation comment for the release'),
+    '~releasecountries': N_('Complete list of countries for the release (multi)'),
+    '~releasegroup_firstreleasedate': N_('Date of the earliest release in the release group'),
+    '~releasegroup': N_('Title of the release group'),
+    '~releasegroupcomment': N_('Disambiguation comment for the release group'),
+    '~releaselanguage': N_('Language code of the release'),
+    '~secondaryreleasetype': N_('Secondary types of the release group'),
+    '~silence': N_('"1" if the track is "silence'),
+    '~totalalbumtracks': N_('Total number of tracks across all discs'),
+    '~video': N_('File is a video'),
+}
 
 
-def display_tag_name(name):
+def display_tag_name(name: str):
+    if not name.strip():
+        return ''
+    na = N_("No help description available")
+    if name.startswith('_'):
+        name = '~' + name[1:]
     if ':' in name:
         name, desc = name.split(':', 1)
         if desc:
-            return '%s [%s]' % (_(TAG_NAMES.get(name, name)), desc)
-    return _(TAG_NAMES.get(name, name))
+            for _dict in (TAG_NAMES, PRESERVED_TAGS, EXTRA_VARIABLES):
+                if name in _dict:
+                    return '%s [%s]' % (_(_dict[name]), desc)
+            return '%s [%s]' % (_(na), desc)
+    for _dict in (TAG_NAMES, PRESERVED_TAGS, EXTRA_VARIABLES):
+        if name in _dict:
+            return _(_dict[name])
+    return _(na)
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')

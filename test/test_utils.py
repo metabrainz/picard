@@ -12,7 +12,7 @@
 # Copyright (C) 2016 Frederik “Freso” S. Olesen
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017 Shen-Ta Hsieh
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
 # Copyright (C) 2024 Arnab Chakraborty
 # Copyright (C) 2024 ShubhamBhut
@@ -302,14 +302,16 @@ class TagsTest(PicardTestCase):
 
     def test_display_tag_name(self):
         dtn = util.tags.display_tag_name
-        self.assertEqual(dtn('tag'), 'tag')
-        self.assertEqual(dtn('tag:desc'), 'tag [desc]')
-        self.assertEqual(dtn('tag:'), 'tag')
-        self.assertEqual(dtn('tag:de:sc'), 'tag [de:sc]')
+        self.assertEqual(dtn('tag'), 'No help description available')
+        self.assertEqual(dtn('tag:desc'), 'No help description available [desc]')
+        self.assertEqual(dtn('tag:'), 'No help description available')
+        self.assertEqual(dtn('tag:de:sc'), 'No help description available [de:sc]')
         self.assertEqual(dtn('originalyear'), 'Original Year')
         self.assertEqual(dtn('originalyear:desc'), 'Original Year [desc]')
         self.assertEqual(dtn('~length'), 'Length')
-        self.assertEqual(dtn('~lengthx'), '~lengthx')
+        self.assertEqual(dtn('~lengthx'), 'No help description available')
+        self.assertEqual(dtn('~bitrate'), 'Approximate bitrate in kbps')
+        self.assertEqual(dtn('~artists_countries'), 'Track artists countries (multi)')
         self.assertEqual(dtn(''), '')
 
 
