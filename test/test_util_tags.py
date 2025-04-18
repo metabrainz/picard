@@ -45,6 +45,10 @@ class TagVarsTest(PicardTestCase):
         self.tagvar_notag = TagVar('notag', is_tag=False)
         self.tagvar_nodesc = TagVar('nodesc')
 
+    def test_invalid_tagvar(self):
+        with self.assertRaises(TypeError):
+            TagVars('not_a_tag_var')
+
     def test_tagvars_len(self):
         tagvars = TagVars(
             self.tagvar_only_sd,

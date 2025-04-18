@@ -108,10 +108,16 @@ class TagVars(MutableSequence):
     def __getitem__(self, index):
         return self._items[index]
 
-    def __setitem__(self, index, tagvar):
+    def _get_name(self, tagvar):
+        if not isinstance(tagvar, TagVar):
+            raise TypeError(f"Value isn't a TagVar instance: {tagvar}")
         name = str(tagvar)
         if name in self._name2item:
             raise ValueError(f"Already an item with same name: {name}")
+        return name
+
+    def __setitem__(self, index, tagvar):
+        name = self._get_name(tagvar)
         self._name2item[name] = self._items[index] = tagvar
 
     def __delitem__(self, index):
@@ -120,9 +126,7 @@ class TagVars(MutableSequence):
         del self._name2item[name]
 
     def insert(self, index, tagvar):
-        name = str(tagvar)
-        if name in self._name2item:
-            raise ValueError(f"Already an item with same name: {name}")
+        name = self._get_name(tagvar)
         self._items.insert(index, tagvar)
         self._name2item[name] = self._items[index]
 
