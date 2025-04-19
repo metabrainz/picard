@@ -6,7 +6,7 @@
 # Copyright (C) 2014 m42i
 # Copyright (C) 2020-2024 Laurent Monin
 # Copyright (C) 2020-2024 Philipp Wolfer
-# Copyright (C) 2021-2022 Bob Swift
+# Copyright (C) 2021-2022, 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ from picard.script import (
     script_function_names,
 )
 from picard.util.tags import (
-    display_tag_name,
+    display_tag_tooltip,
     script_variable_tag_names,
 )
 
@@ -262,7 +262,7 @@ class VariableScriptToken(DocumentedScriptToken):
         if self._doc.characterAt(position) != '%':
             return None
         tag = self._read_allowed_chars(position + 1)
-        return display_tag_name(tag)
+        return display_tag_tooltip(tag)
 
 
 class UnicodeEscapeScriptToken(DocumentedScriptToken):

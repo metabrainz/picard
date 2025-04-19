@@ -6,6 +6,7 @@
 # Copyright (C) 2020-2022 Laurent Monin
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Serial
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,6 +31,8 @@ from picard.util.tags import (
     TagVar,
     TagVars,
     display_tag_name,
+    display_tag_tooltip,
+    markdown,
     parse_comment_tag,
     parse_subtag,
     script_variable_tag_names,
@@ -45,6 +48,10 @@ class TagVarsTest(PicardTestCase):
         self.tagvar_hidden_sd = TagVar('hidden_sd', is_hidden=True, shortdesc='hidden_sd_shortdesc')
         self.tagvar_notag = TagVar('notag', is_tag=False)
         self.tagvar_nodesc = TagVar('nodesc')
+        self.tagvar_notes1 = TagVar('notes1', shortdesc='notes1_sd', longdesc='notes1_ld', is_preserved=True, is_calculated=True,
+                                   is_file_info=True, is_hidden=True, is_script_variable=False)
+        self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False)
+        self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', is_from_mb=False)
 
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
@@ -175,6 +182,51 @@ class TagVarsTest(PicardTestCase):
                 ('nodesc', '_hidden', '_hidden_sd', 'only_sd'),
             )
 
+    def test_tagvars_display_tooltip(self):
+        tagvars = TagVars(
+            self.tagvar_nodesc,
+            self.tagvar_only_sd,
+            self.tagvar_notes1,
+            self.tagvar_notes2,
+            self.tagvar_notes3,
+        )
+        self.assertEqual(tagvars.display_tooltip('unknown'), '<p><em>%unknown%</em></p><p>No description available.</p>')
+
+        self.assertEqual(tagvars.display_tooltip('nodesc'), '<p><em>%nodesc%</em></p><p>nodesc</p>')
+
+        self.assertEqual(tagvars.display_tooltip('only_sd'), '<p><em>%only_sd%</em></p><p>only_sd_shortdesc</p>')
+
+        result = (
+            '<p><em>%_notes1%</em></p><p>notes1_ld</p>\n'
+            '<p><strong>Notes:</strong> read-only; calculated variable; provided from the file; not available for use in scripts.</p>'
+        ) if markdown is not None else (
+            '<p><em>%_notes1%</em></p><p>notes1_ld'
+            '<br /><br />'
+            '**Notes:** read-only; calculated variable; provided from the file; not available for use in scripts.</p>'
+        )
+        self.assertEqual(tagvars.display_tooltip('_notes1'), result)
+        self.assertEqual(tagvars.display_tooltip('~notes1'), result)
+
+        result = (
+            '<p><em>%notes2%</em></p><p>notes2_ld</p>\n'
+            '<p><strong>Notes:</strong> provided from the file.</p>'
+        ) if markdown is not None else (
+            '<p><em>%notes2%</em></p><p>notes2_ld'
+            '<br /><br />'
+            '**Notes:** provided from the file.</p>'
+        )
+        self.assertEqual(tagvars.display_tooltip('notes2'), result)
+
+        result = (
+            '<p><em>%notes3%</em></p><p>notes3_ld</p>\n'
+            '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
+        ) if markdown is not None else (
+            '<p><em>%notes3%</em></p><p>notes3_ld'
+            '<br /><br />'
+            '**Notes:** not provided from MusicBrainz data.</p>'
+        )
+        self.assertEqual(tagvars.display_tooltip('notes3'), result)
+
 
 class UtilTagsTest(PicardTestCase):
     def test_display_tag_name(self):
@@ -193,3 +245,40 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(('XXX', 'foo'), parse_subtag('lyrics:XXX:foo'))
         self.assertEqual(('XXX', ''), parse_subtag('lyrics:XXX'))
         self.assertEqual(('eng', 'foo'), parse_subtag('lyrics::foo'))
+
+    def test_display_tag_tooltip(self):
+        self.assertEqual(
+            display_tag_tooltip('unknown_test_variable'),
+            '<p><em>%unknown_test_variable%</em></p><p>No description available.</p>'
+        )
+
+        self.assertEqual(
+            display_tag_tooltip('album'),
+            '<p><em>%album%</em></p><p>The title of the release.</p>'
+        )
+
+        self.assertEqual(
+            display_tag_tooltip('_albumartists_sort'),
+            "<p><em>%_albumartists_sort%</em></p><p>A multi-value variable containing the sort names of the album's artists.</p>"
+        )
+
+        result = (
+            '<p><em>%albumsort%</em></p><p>The sort name of the title of the release.</p>\n'
+            '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
+        ) if markdown is not None else (
+            '<p><em>%albumsort%</em></p><p>The sort name of the title of the release.'
+            '<br /><br />'
+            '**Notes:** not provided from MusicBrainz data.</p>'
+        )
+        self.assertEqual(display_tag_tooltip('albumsort'), result)
+
+        result = (
+            '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.</p>\n'
+            '<p><strong>Notes:</strong> read-only; provided from the file.</p>'
+        ) if markdown is not None else (
+            '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.'
+            '<br /><br />'
+            '**Notes:** read-only; provided from the file.</p>'
+        )
+        self.assertEqual(display_tag_tooltip('_bitrate'), result)
+        self.assertEqual(display_tag_tooltip('~bitrate'), result)
