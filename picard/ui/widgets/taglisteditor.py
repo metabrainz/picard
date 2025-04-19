@@ -22,7 +22,7 @@
 
 from PyQt6 import QtWidgets
 
-from picard.util.tags import TAG_NAMES
+from picard.util.tags import tag_names
 
 from picard.ui.forms.ui_widget_taglisteditor import Ui_TagListEditor
 from picard.ui.widgets.editablelistview import (
@@ -41,8 +41,7 @@ class TagListEditor(QtWidgets.QWidget):
         model.user_sortable_changed.connect(self.on_user_sortable_changed)
         self.ui.sort_buttons.setVisible(model.user_sortable)
         list_view.setModel(model)
-        list_view.setItemDelegate(AutocompleteItemDelegate(
-            sorted(TAG_NAMES.keys())))
+        list_view.setItemDelegate(AutocompleteItemDelegate(sorted(tag_names())))
 
         selection = list_view.selectionModel()
         selection.selectionChanged.connect(self.on_selection_changed)

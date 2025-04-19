@@ -41,7 +41,7 @@ from picard.const import (
 from picard.const.countries import RELEASE_COUNTRIES
 from picard.i18n import gettext as _
 from picard.util import temporary_disconnect
-from picard.util.tags import TAG_NAMES
+from picard.util.tags import tag_names
 
 from picard.ui import PicardDialog
 from picard.ui.forms.ui_edittagdialog import Ui_EditTagDialog
@@ -204,7 +204,7 @@ class EditTagDialog(PicardDialog):
     def _setup_tag_combobox(self):
         """Set up the tag name combobox with supported tags."""
         self.default_tags = self._get_supported_tags()
-        visible_tags = (tn for tn in self.default_tags if not tn.startswith("~"))
+        visible_tags = (tn for tn in self.default_tags if not tn.startswith("~"))  # TODO: use TagVar.is_hidden?
 
         self.ui.tag_names.addItem("")
         self.ui.tag_names.addItems(visible_tags)
@@ -219,7 +219,7 @@ class EditTagDialog(PicardDialog):
         Returns:
             List of supported tag names
         """
-        tags = sorted(set(list(TAG_NAMES.keys()) + self.metadata_box.tag_diff.tag_names))
+        tags = sorted(set(tag_names()) + self.metadata_box.tag_diff.tag_names)
         if len(self.metadata_box.files) == 1:
             current_file = list(self.metadata_box.files)[0]
             tags = list(filter(current_file.supports_tag, tags))

@@ -39,8 +39,8 @@ from picard.const.sys import (
 from picard.file import File
 from picard.metadata import Metadata
 from picard.util.tags import (
-    CALCULATED_TAGS,
-    FILE_INFO_TAGS,
+    calculated_tag_names,
+    file_info_tag_names,
 )
 
 
@@ -619,7 +619,7 @@ class FileUpdateTest(PicardTestCase):
 
     def test_copy_file_info_tags(self):
         info_tags = {}
-        for info in FILE_INFO_TAGS:
+        for info in file_info_tag_names():
             info_tags[info] = 'val' + info
 
         orig_metadata = Metadata(info_tags)
@@ -629,7 +629,7 @@ class FileUpdateTest(PicardTestCase):
             'b': 'valb',
         })
         self.file._copy_file_info_tags(metadata, orig_metadata)
-        for info in FILE_INFO_TAGS:
+        for info in file_info_tag_names():
             self.assertEqual('val' + info, metadata[info])
         self.assertEqual('valb', metadata['b'])
         self.assertNotIn('a', metadata)
@@ -691,11 +691,11 @@ class FileCopyMetadataTest(PicardTestCase):
         self.assertEqual(self.file.metadata.deleted_tags, {'foo'})
 
     def test_copy_metadata_must_keep_file_content_specific_tags(self):
-        for tag in CALCULATED_TAGS:
+        for tag in calculated_tag_names():
             self.file.metadata[tag] = 'foo'
         new_metadata = Metadata()
         self.file.copy_metadata(new_metadata)
-        for tag in CALCULATED_TAGS:
+        for tag in calculated_tag_names():
             self.assertEqual(
                 self.file.metadata[tag], 'foo',
                 f'Tag {tag}: {self.file.metadata[tag]!r} != "foo"')
