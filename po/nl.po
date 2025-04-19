@@ -12,15 +12,16 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023, 2024.
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
-# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024.
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024, 2025.
 # toineenzo <toinerademacher@hotmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-12 11:37+0200\n"
-"PO-Revision-Date: 2024-04-12 01:28+0000\n"
-"Last-Translator: toineenzo <toinerademacher@hotmail.com>\n"
+"PO-Revision-Date: 2025-04-19 14:20+0000\n"
+"Last-Translator: mfmeulenbelt "
+"<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
 "app/nl/>\n"
 "Language: nl\n"
@@ -28,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4.3\n"
+"X-Generator: Weblate 5.11\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:190
@@ -146,27 +147,27 @@ msgstr "Primair bestandsnamenscript"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Volledig pad plug-in"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "Volledige paden van plug-ins loggen"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "Post-gegevens van webservice"
 
 #: picard/debug_opts.py:84
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "Gegevens van post-verzoeken webservice loggen"
 
 #: picard/debug_opts.py:85
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Reacties van de webserver"
 
 #: picard/debug_opts.py:85
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Logboekinhoud van de reacties van de webserver"
 
 #: picard/file.py:216
 msgid ""
@@ -231,10 +232,8 @@ msgid "Debug"
 msgstr "Foutopsporing"
 
 #: picard/oauth.py:198
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Onverwachte fout bij het aanmelden"
+msgstr "Onverwachte fout bij intrekken token"
 
 #: picard/oauth.py:349 picard/oauth.py:376
 msgid "Unexpected authentication error"
@@ -300,21 +299,20 @@ msgstr "Slechts één afbeelding van de voorkant inbedden"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_cover.py:120
 msgid "Never replace cover images with smaller ones"
-msgstr ""
+msgstr "Afbeeldingen nooit door kleinere afbeeldingen vervangen"
 
 #: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace cover images matching selected types"
-msgstr "Alleen de volgende types afbeeldingen downloaden:"
+msgstr ""
+"Afbeeldingen die overeenkomen met het geselecteerde typen nooit vervangen"
 
 #: picard/options.py:173
 msgid "Never replace cover images of these types"
-msgstr ""
+msgstr "Afbeeldingen van deze typen nooit vervangen"
 
 #: picard/options.py:174
 msgid "Always replace cover images of these types"
-msgstr ""
+msgstr "Afbeeldingen van deze typen altijd vervangen"
 
 #: picard/options.py:175 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
@@ -477,10 +475,8 @@ msgid "Tags to show at the top"
 msgstr "Tags om bovenaan weer te geven"
 
 #: picard/options.py:288
-#, fuzzy
-#| msgid "Destination directory"
 msgid "Automatic backup destination directory"
-msgstr "Doelmap"
+msgstr "Doelmap voor automatische back-ups"
 
 #: picard/options.py:292
 msgid "Minimal similarity for cluster lookups"
@@ -558,7 +554,7 @@ msgstr "Standaard luisterpoort"
 
 #: picard/options.py:316
 msgid "Network cache size in bytes"
-msgstr ""
+msgstr "Grootte netwerkcache in bytes"
 
 #: picard/options.py:317
 msgid "Request timeout in seconds"
@@ -577,10 +573,8 @@ msgid "Proxy server port"
 msgstr "Proxyserverpoort"
 
 #: picard/options.py:321
-#, fuzzy
-#| msgid "type of proxy server"
 msgid "Type of proxy server"
-msgstr "soort proxyserver"
+msgstr "Soort proxyserver"
 
 #: picard/options.py:322
 msgid "Proxy username"
@@ -831,7 +825,7 @@ msgstr "Catalogusnr."
 
 #: picard/releasegroup.py:63
 msgid "Packaging"
-msgstr ""
+msgstr "Verpakking"
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:69
 #: picard/ui/itemviews/columns.py:87 picard/ui/searchdialog/album.py:154
@@ -2912,7 +2906,7 @@ msgstr "Object met fout"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
 msgid "Entities"
-msgstr ""
+msgstr "Objecten"
 
 #: picard/ui/colors.py:48
 msgid "Pending entity"
@@ -2923,14 +2917,12 @@ msgid "Saved entity"
 msgstr "Opgeslagen object"
 
 #: picard/ui/colors.py:50
-#, fuzzy
-#| msgid "Append front cover art"
 msgid "First cover art"
-msgstr "Afbeelding van de voorkant toevoegen"
+msgstr "Eerste afbeelding"
 
 #: picard/ui/colors.py:50 picard/ui/colors.py:57
 msgid "Others"
-msgstr ""
+msgstr "Overig"
 
 #: picard/ui/colors.py:51
 msgid "Log view text (debug)"
@@ -2958,10 +2950,8 @@ msgid "Profile highlight background"
 msgstr ""
 
 #: picard/ui/colors.py:55 picard/ui/colors.py:56
-#, fuzzy
-#| msgid "Option Profiles"
 msgid "Profiles"
-msgstr "Optieprofielen"
+msgstr "Profielen"
 
 #: picard/ui/colors.py:56
 msgid "Profile highlight foreground"
@@ -3083,10 +3073,8 @@ msgid "Verbosity"
 msgstr "Uitgebreidheid"
 
 #: picard/ui/logview.py:200 picard/ui/logview.py:201
-#, fuzzy
-#| msgid "Options"
 msgid "Debug Options"
-msgstr "Opties"
+msgstr "Debugopties"
 
 #: picard/ui/logview.py:211
 msgid "String to highlight"
@@ -3556,67 +3544,47 @@ msgstr "Sluit&en"
 #: picard/ui/util.py:87
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #: picard/ui/util.py:109
-#, fuzzy
-#| msgid "&Set as starting directory"
 msgid "Select a file or a directory"
-msgstr "Als &standaardmap instellen"
+msgstr "Een bestand of map selecteren"
 
 #: picard/ui/util.py:115
-#, fuzzy
-#| msgid "Select all"
 msgid "Select a target file"
-msgstr "Alles selecteren"
+msgstr "Een doelbestand selecteren"
 
 #: picard/ui/util.py:124
-#, fuzzy
-#| msgid "Select all"
 msgid "Select a file"
-msgstr "Alles selecteren"
+msgstr "Een bestand selecteren"
 
 #: picard/ui/util.py:133
-#, fuzzy
-#| msgid "Delete the profile"
 msgid "Select one or more files"
-msgstr "Het profiel verwijderen"
+msgstr "Een of meer bestanden selecteren"
 
 #: picard/ui/util.py:142
-#, fuzzy
-#| msgid "Select all"
 msgid "Select a directory"
-msgstr "Alles selecteren"
+msgstr "Een map selecteren"
 
 #: picard/ui/util.py:155
-#, fuzzy
-#| msgid "Delete empty directories"
 msgid "Select one or more directories"
-msgstr "Lege mappen verwijderen"
+msgstr "Een of meer mappen selecteren"
 
 #: picard/ui/util.py:205
-#, fuzzy
-#| msgid ""
-#| "You have changed the application theme. You have to restart Picard in "
-#| "order for the change to take effect."
 msgid "You have to restart Picard for the changes to take effect."
-msgstr ""
-"Je hebt het thema van de applicatie gewijzigd. Je moet Picard herstarten om "
-"het nieuwe thema te gebruiken."
+msgstr "De veranderingen worden actief nadat je Picard hebt herstart."
 
 #: picard/ui/util.py:208
 msgid "Changes only applied on restart"
-msgstr ""
+msgstr "Veranderingen alleen bij herstart toegepast"
 
 #: picard/ui/coverartbox/__init__.py:95
 msgid "Show more details"
 msgstr "Meer details"
 
 #: picard/ui/coverartbox/__init__.py:96
-#, fuzzy
-#| msgid "Ctrl+Shift+S"
 msgid "Ctrl+Shift+I"
-msgstr "Ctrl+Shift+S"
+msgstr "Ctrl+Shift+I"
 
 #: picard/ui/coverartbox/__init__.py:133
 msgid "New Cover Art"
@@ -3644,10 +3612,8 @@ msgid "Choose local file…"
 msgstr "Selecteer een lokaal bestand …"
 
 #: picard/ui/coverartbox/__init__.py:313
-#, fuzzy
-#| msgid "Add Fold&er…"
 msgid "Add from URL…"
-msgstr "&Map toevoegen"
+msgstr "Vanaf een URL toevoegen …"
 
 #: picard/ui/coverartbox/__init__.py:322
 msgid "Replace front cover art"
@@ -3671,13 +3637,11 @@ msgstr "Nummers hebben verschillende afbeeldingen"
 
 #: picard/ui/coverartbox/imageurldialog.py:53
 msgid "Enter URL"
-msgstr ""
+msgstr "Voer URL in"
 
 #: picard/ui/coverartbox/imageurldialog.py:56
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover art URL:"
-msgstr "Hoesafbeeldingen"
+msgstr "URL van afbeeldingen:"
 
 #: picard/ui/forms/ui_aboutdialog.py:89
 msgid "About Picard"
@@ -3915,7 +3879,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_cover_processing.py:278
 msgid "Minimum width:"
-msgstr ""
+msgstr "Minimumbreedte:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:279
 #: picard/ui/forms/ui_options_cover_processing.py:281
@@ -3924,11 +3888,11 @@ msgstr ""
 #: picard/ui/forms/ui_options_cover_processing.py:291
 #: picard/ui/forms/ui_options_cover_processing.py:293
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: picard/ui/forms/ui_options_cover_processing.py:280
 msgid "Minimum height:"
-msgstr ""
+msgstr "Minimumhoogte:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:282
 #, fuzzy
@@ -3945,12 +3909,12 @@ msgstr "Hoesafbeeldingen in tags opslaan"
 #: picard/ui/forms/ui_options_cover_processing.py:284
 #: picard/ui/forms/ui_options_cover_processing.py:290
 msgid "Maximum width:"
-msgstr ""
+msgstr "Maximumbreedte:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:286
 #: picard/ui/forms/ui_options_cover_processing.py:292
 msgid "Maximum height:"
-msgstr ""
+msgstr "Maximumhoogte:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:288
 #: picard/ui/forms/ui_options_cover_processing.py:294
@@ -4199,32 +4163,24 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr "De volgende tags bovenin het overzicht van metadata tonen"
 
 #: picard/ui/forms/ui_options_maintenance.py:143
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Configuration file:"
-msgstr "Configuratiebestanden"
+msgstr "Configuratiebestand:"
 
 #: picard/ui/forms/ui_options_maintenance.py:144
-#, fuzzy
-#| msgid "Open folder"
 msgid "Open folder…"
-msgstr "Map openen"
+msgstr "Map openen …"
 
 #: picard/ui/forms/ui_options_maintenance.py:145
 msgid "Automatic configuration backups directory:"
-msgstr ""
+msgstr "Map voor automatische configuratieback-ups:"
 
 #: picard/ui/forms/ui_options_maintenance.py:147
-#, fuzzy
-#| msgid "Load Backup"
 msgid "Load backup…"
-msgstr "Back-up laden"
+msgstr "Back-up laden …"
 
 #: picard/ui/forms/ui_options_maintenance.py:148
-#, fuzzy
-#| msgid "Save Backup"
 msgid "Save backup…"
-msgstr "Back-up opslaan"
+msgstr "Back-up opslaan …"
 
 #: picard/ui/forms/ui_options_maintenance.py:149
 msgid "Select all"
@@ -4313,10 +4269,8 @@ msgid "Password:"
 msgstr "Wachtwoord:"
 
 #: picard/ui/forms/ui_options_network.py:169
-#, fuzzy
-#| msgid "Network"
 msgid "Network options"
-msgstr "Netwerk"
+msgstr "Netwerkopties"
 
 #: picard/ui/forms/ui_options_network.py:170
 msgid "Request timeout in seconds:"
@@ -4324,7 +4278,7 @@ msgstr "Maximale wachttijd voor verzoeken in seconden:"
 
 #: picard/ui/forms/ui_options_network.py:171
 msgid "Cache size (MB):"
-msgstr ""
+msgstr "Cachegrootte (MB):"
 
 #: picard/ui/forms/ui_options_network.py:172
 msgid "Browser Integration"
@@ -4665,10 +4619,8 @@ msgid "Download only cover art images matching selected types"
 msgstr "Alleen de volgende types afbeeldingen downloaden:"
 
 #: picard/ui/forms/ui_provider_options_caa.py:77
-#, fuzzy
-#| msgid "Only use images of the following size:"
 msgid "Only use images of at most the following size:"
-msgstr "Alleen afbeeldingen van de volgende grootte gebruiken:"
+msgstr "Alleen afbeeldingen van maximaal de volgende grootte gebruiken:"
 
 #: picard/ui/forms/ui_provider_options_caa.py:78
 msgid "Download only approved images"
@@ -4828,20 +4780,12 @@ msgstr ""
 "Bron: %(sourcefile)s"
 
 #: picard/ui/infodialog/dialog.py:188
-#, fuzzy
-#| msgid ""
-#| "Double-click to open in external viewer\n"
-#| "Temporary file: %(tempfile)s\n"
-#| "Source: %(sourcefile)s"
 msgid "Double-click to open in external viewer"
-msgstr ""
-"Dubbelklikken om in een extern programma te openen\n"
-"Tijdelijk bestand: %(tempfile)s\n"
-"Bron: %(sourcefile)s"
+msgstr "Dubbelklikken om in een extern programma te openen"
 
 #: picard/ui/infodialog/dialog.py:193
 msgid "Missing temporary file"
-msgstr ""
+msgstr "Ontbrekend tijdelijk bestand"
 
 #: picard/ui/infodialog/utils.py:49
 msgid "Filename:"
@@ -5008,15 +4952,14 @@ msgstr "De uitgave heeft geen wijzigingen"
 
 #: picard/ui/itemviews/__init__.py:500
 msgid "There are no files matched to this track"
-msgstr ""
+msgstr "Er zijn geen bestanden aan dit nummer gekoppeld"
 
 #: picard/ui/itemviews/__init__.py:502
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "Niet-overeenkomende bestanden"
-msgstr[1] "Niet-overeenkomende bestanden"
+msgstr[0] "%i gekoppeld bestand"
+msgstr[1] "%i gekoppelde bestanden"
 
 #: picard/ui/itemviews/__init__.py:538
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -5026,11 +4969,11 @@ msgstr ""
 
 #: picard/ui/itemviews/__init__.py:577
 msgid "File not found"
-msgstr ""
+msgstr "Bestand niet gevonden"
 
 #: picard/ui/itemviews/__init__.py:580
 msgid "File permission error"
-msgstr ""
+msgstr "Fout met bestandsmachtiging"
 
 #: picard/ui/itemviews/__init__.py:583
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
@@ -5152,10 +5095,8 @@ msgid "Media"
 msgstr "Medium"
 
 #: picard/ui/itemviews/columns.py:89
-#, fuzzy
-#| msgid "Size:"
 msgid "Size"
-msgstr "Grootte:"
+msgstr "Grootte"
 
 #: picard/ui/itemviews/columns.py:90 picard/util/tags.py:75
 msgid "Genre"
@@ -5175,7 +5116,7 @@ msgstr "Afbeelding"
 
 #: picard/ui/itemviews/columns.py:96
 msgid "Cover Dimensions"
-msgstr ""
+msgstr "Afmetingen afbeelding"
 
 #: picard/ui/mainwindow/__init__.py:346
 msgid "Unsaved Changes"
@@ -5761,11 +5702,11 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox/__init__.py:318
 msgid "Unable to copy current selection."
-msgstr ""
+msgstr "Kan huidige selectie niet kopiëren."
 
 #: picard/ui/metadatabox/__init__.py:395
 msgid "No valid data in clipboard to paste"
-msgstr ""
+msgstr "Geen geldige gegevens op klembord om te plakken"
 
 #: picard/ui/metadatabox/__init__.py:441
 msgid "Edit…"
@@ -5786,11 +5727,8 @@ msgstr[0] "Gebruik de originele waarde"
 msgstr[1] "Originele waarden gebruiken"
 
 #: picard/ui/metadatabox/__init__.py:503
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Gebruik de originele waarde"
+msgstr "Originele waarden samenvoegen"
 
 #: picard/ui/metadatabox/__init__.py:509
 msgid "&Copy"
@@ -5831,14 +5769,6 @@ msgid "Cover Art"
 msgstr "Hoesafbeeldingen"
 
 #: picard/ui/options/cover.py:152
-#, fuzzy
-#| msgid ""
-#| "CAA images with an image type found in the 'Include' list will be "
-#| "downloaded and used UNLESS they also have an image type found in the "
-#| "'Exclude' list. Images with types found in the 'Exclude' list will NEVER "
-#| "be used. Image types not appearing in the 'Include' or 'Exclude' lists "
-#| "will not be considered when determining whether or not to download and "
-#| "use a CAA image.\n"
 msgid ""
 "Embedded cover art images with a type found in the 'Include' list will never "
 "be replaced by a newly downloaded image UNLESS they also have an image type "
@@ -5847,12 +5777,13 @@ msgid ""
 "appearing in the 'Include' or 'Exclude' list will not be considered when "
 "determining whether or not to replace an embedded cover art image.\n"
 msgstr ""
-"Afbeeldingen met een type in de lijst ‘wel gebruiken’ zullen worden "
-"gedownload en gebruikt, tenzij de afbeeldingen een type hebben dat in de "
-"lijst ‘niet gebruiken’ staat. Afbeeldingen waarvan een of meer types in de "
-"lijst ‘niet gebruiken’ staan, zullen nooit worden gebruikt. Afbeeldingen met "
-"types in geen van beide lijsten worden niet meegenomen bij het bepalen of de "
-"afbeelding wordt gedownload of gebruikt.\n"
+"Ingebedde afbeeldingen met een type in de lijst ‘wel gebruiken’ zullen nooit "
+"worden vervangen door een nieuw gedownloade afbeelding, TENZIJ ze ook een "
+"type in de lijst ‘niet gebruiken’ hebben. Afbeeldingen waarvan een of meer "
+"typen in de lijst ‘niet gebruiken’ staan, zullen altijd worden vervangen "
+"door gedownloade afbeeldingen van hetzelfde type. Afbeeldingen met typen in "
+"geen van beide lijsten worden niet meegenomen bij het bepalen of de "
+"ingebedde afbeelding wordt vervangen.\n"
 
 #: picard/ui/options/cover_processing.py:50
 msgid "Processing"
@@ -5860,12 +5791,12 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:115
 msgid "This page failed to initialize"
-msgstr ""
+msgstr "Deze pagina kon niet worden weergegeven"
 
 #: picard/ui/options/dialog.py:118
 #, python-format
 msgid "Error while initializing option page '%s':"
-msgstr ""
+msgstr "Fout bij het weergeven van optiepagina “%s”:"
 
 #: picard/ui/options/dialog.py:135
 #, python-format
@@ -5873,12 +5804,13 @@ msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
 "report a bug."
 msgstr ""
+"Zie de <a href=\"%s\">Documentatie over probleemoplossing</a> en meld "
+"eventueel een bug."
 
 #: picard/ui/options/dialog.py:161
-#, fuzzy, python-format
-#| msgid "%s (Copy)"
+#, python-format
 msgid "%s (error)"
-msgstr "%s (Kopiëren)"
+msgstr "%s (fout)"
 
 #: picard/ui/options/dialog.py:187
 msgid "&Restore all Defaults"
@@ -5972,10 +5904,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Aangemeld als <b>%s</b>."
 
 #: picard/ui/options/general.py:174
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Fout bij opzoeken van de cd"
+msgstr "Fout bij het afmelden"
 
 #: picard/ui/options/general.py:176
 #, python-format
@@ -5984,6 +5914,10 @@ msgid ""
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Bij het terugtrekken van de toegang tot de MusicBrainz-server trad een fout "
+"op: %s\n"
+"\n"
+"Wil je lokaal opgeslagen aanmeldgegevens toch verwijderen?"
 
 #: picard/ui/options/genres.py:43
 msgid ""
@@ -6116,7 +6050,7 @@ msgstr "Systeemstandaard"
 
 #: picard/ui/options/interface.py:187
 msgid "You have changed the application theme."
-msgstr ""
+msgstr "Je hebt het thema van de applicatie gewijzigd."
 
 #: picard/ui/options/interface.py:190
 msgid ""
@@ -6130,16 +6064,12 @@ msgstr ""
 "gebruiken."
 
 #: picard/ui/options/interface.py:196
-#, fuzzy
-#| msgid "User interface language"
 msgid "You have changed the interface language."
-msgstr "Weergavetaal"
+msgstr "Je hebt de weergavetaal gewijzigd."
 
 #: picard/ui/options/interface.py:219
-#, fuzzy
-#| msgid "File Save Warning"
 msgid "Option Setting Warning"
-msgstr "Bestanden opslaan"
+msgstr "Waarschuwing over de instelling"
 
 #: picard/ui/options/interface.py:221
 msgid ""
@@ -6149,20 +6079,23 @@ msgid ""
 "\n"
 "Are you sure that you want to enable this setting?"
 msgstr ""
+"Als je de optie meerdere mappen inschakelt, gebruikt Picard niet langer de "
+"bestandenkiezer van het systeem om mappen te selecteren. Hierdoor mis je "
+"mogelijk functies.\n"
+"\n"
+"Wil je deze instelling toch inschakelen?"
 
 #: picard/ui/options/interface_colors.py:72
 msgid "Choose a color"
 msgstr "Kies een kleur"
 
 #: picard/ui/options/interface_colors.py:156
-#, fuzzy
-#| msgid "Restore default columns"
 msgid "Restore default color"
-msgstr "Standaardkolommen herstellen"
+msgstr "Standaardkleur herstellen"
 
 #: picard/ui/options/interface_colors.py:172
 msgid "You have changed the interface colors."
-msgstr ""
+msgstr "Je hebt de weergavekleuren gewijzigd."
 
 #: picard/ui/options/interface_toolbar.py:69
 msgid "Action Toolbar"
@@ -6227,26 +6160,6 @@ msgid "Maintenance"
 msgstr "Onderhoud"
 
 #: picard/ui/options/maintenance.py:91
-#, fuzzy
-#| msgid ""
-#| "This allows you to remove unused option settings from the configuration "
-#| "INI file.\n"
-#| "\n"
-#| "Settings that are found in the configuration file that do not appear on "
-#| "any option settings page will be listed below. If your configuration file "
-#| "does not contain any unused option settings, then the list will be empty "
-#| "and the removal checkbox will be disabled.\n"
-#| "\n"
-#| "Note that unused option settings could come from plugins that have been "
-#| "uninstalled, so please be careful to not remove settings that you may "
-#| "want to use later when the plugin is reinstalled. Options belonging to "
-#| "plugins that are installed but currently disabled will not be listed for "
-#| "possible removal.\n"
-#| "\n"
-#| "To remove one or more settings, first enable the removal by checking the "
-#| "\"Remove selected options\" box. You can then select the settings to "
-#| "remove by checking the box next to the setting. When you choose \"Make It "
-#| "So!\" to save your option settings, the selected items will be removed."
 msgid ""
 "Settings that are found in the configuration file that do not appear on any "
 "option settings page are listed below. If your configuration file does not "
@@ -6264,8 +6177,6 @@ msgid ""
 "the \"Remove selected options\" box. When you choose \"Make It So!\" to save "
 "your option settings, the selected items will be removed."
 msgstr ""
-"Hiermee kan je ongebruikte opties uit het configuratiebestand verwijderen.\n"
-"\n"
 "Hieronder worden opties weergegeven die wel in het configuratiebestand "
 "staan, maar niet op een optiepagina. Als je configuratiebestand geen "
 "ongebruikte opties bevat, is de lijst leeg en kan het vakje voor verwijderen "
@@ -6276,18 +6187,16 @@ msgstr ""
 "opties wil gebruiken, moet je de opties dus niet verwijderen. Opties van "
 "plug-ins die alleen zijn uitgeschakeld, worden niet weergegeven.\n"
 "\n"
-"Om een of meer opties te verwijderen, vink je eerst het vakje “Geselecteerde "
-"opties verwijderen” aan, en daarna de vakjes naast de opties die je wil "
-"verwijderen. Als je onderaan de pagina op “Ok” klikt, worden de "
-"geselecteerde opties verwijderd."
+"Om een of meer opties te verwijderen, vink je het vakje naast de opties die "
+"je wilt verwijderen aan en schakel je het verwijderen in met het "
+"selectievakje “Geselecteerde opties verwijderen”. Als je op “Oké” klikt, "
+"worden de geselecteerde opties verwijderd."
 
 #: picard/ui/options/maintenance.py:104
 msgid "Value"
 msgstr "Waarde"
 
 #: picard/ui/options/maintenance.py:138
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration File Backup Directory Error"
 msgstr "Configuratie vereist"
 
@@ -6296,13 +6205,10 @@ msgstr "Configuratie vereist"
 msgid ""
 "The path provided isn't a valid directory, reverting to:\n"
 "%s\n"
-msgstr ""
+msgstr "Het opgegeven mappad is niet geldig; %s wordt hersteld.\n"
 
 #: picard/ui/options/maintenance.py:176
-#, fuzzy, python-format
-#| msgid ""
-#| "The configuration file currently contains %(totalcount)d option settings, "
-#| "%(unusedcount)d which are unused."
+#, python-format
 msgid ""
 "The configuration file currently contains %(totalcount)d option settings "
 "(%(unusedcount)d unused)."
@@ -6315,36 +6221,30 @@ msgid "Configuration files"
 msgstr "Configuratiebestanden"
 
 #: picard/ui/options/maintenance.py:232
-#, fuzzy
-#| msgid "Backup Configuration File"
 msgid "Backup Configuration File Save Error"
-msgstr "Back-up van configuratiebestand maken"
+msgstr "Fout bij maken reservekopie configuratiebestand"
 
 #: picard/ui/options/maintenance.py:233
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "Failed to save the configuration file to:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
 msgstr ""
-"Er was een probleem met het herstellen van je configuratiebestand. Zie het "
-"logboek voor meer informatie."
+"Configuratiebestand opslaan naar %s mislukt. Zie het logboek voor meer "
+"informatie."
 
 #: picard/ui/options/maintenance.py:245 picard/ui/options/maintenance.py:254
 msgid "Backup Configuration File"
 msgstr "Back-up van configuratiebestand maken"
 
 #: picard/ui/options/maintenance.py:255
-#, fuzzy, python-format
-#| msgid "Configuration successfully backed up to %s"
+#, python-format
 msgid ""
 "Configuration successfully backed up to:\n"
 "%s"
-msgstr "Configuratie met succes in %s opgeslagen"
+msgstr "Configuratie met succes opgeslagen in %s"
 
 #: picard/ui/options/maintenance.py:285 picard/ui/options/maintenance.py:300
 #: picard/ui/options/maintenance.py:311
@@ -6352,13 +6252,7 @@ msgid "Load Backup Configuration File"
 msgstr "Back-up van configuratiebestand laden"
 
 #: picard/ui/options/maintenance.py:286
-#, fuzzy, python-format
-#| msgid ""
-#| "Loading a backup configuration file will replace the current "
-#| "configuration settings. A backup copy of the current file will be saved "
-#| "automatically.\n"
-#| "\n"
-#| "Do you want to continue?"
+#, python-format
 msgid ""
 "Loading a backup configuration file will replace the current configuration "
 "settings.\n"
@@ -6369,38 +6263,37 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 "Als je een configuratiebestand uit een back-up laadt, wordt de huidige "
-"configuratie overschreven. Er wordt automatisch een back-up van het huidige "
-"bestand gemaakt.\n"
+"configuratie overschreven. Er wordt automatisch een back-up van de huidige "
+"configuratie opgeslagen in:\n"
+"%s\n"
 "\n"
 "Wil je verdergaan?"
 
 #: picard/ui/options/maintenance.py:301
-#, fuzzy, python-format
-#| msgid "Configuration successfully loaded from %s"
+#, python-format
 msgid ""
 "Configuration successfully loaded from:\n"
 "%s"
-msgstr "Configuratie met succes uit %s geladen"
+msgstr ""
+"Configuratie met succes geladen uit:\n"
+"%s"
 
 #: picard/ui/options/maintenance.py:312
-#, fuzzy, python-format
-#| msgid ""
-#| "There was a problem restoring the configuration file. Please see the logs "
-#| "for more details."
+#, python-format
 msgid ""
 "There was a problem restoring the configuration file from:\n"
 "%s\n"
 "\n"
 "Please see the logs for more details."
 msgstr ""
-"Er was een probleem met het herstellen van je configuratiebestand. Zie het "
-"logboek voor meer informatie."
+"Er was een probleem met het herstellen van je configuratiebestand uit:\n"
+"%s\n"
+"\n"
+"Zie het logboek voor meer informatie."
 
 #: picard/ui/options/maintenance.py:324
-#, fuzzy
-#| msgid "Configuration File:"
 msgid "Select Configuration File to Load"
-msgstr "Configuratiebestand:"
+msgstr "Selecteer een configuratiebestand om te laden"
 
 #: picard/ui/options/maintenance.py:373
 #: picard/ui/widgets/profilelistwidget.py:88
@@ -6566,38 +6459,28 @@ msgid "Settings to include in profile"
 msgstr "Opties waarop het profiel betrekking heeft"
 
 #: picard/ui/options/profiles.py:215
-#, fuzzy
-#| msgid "Title"
 msgid "title"
-msgstr "Titel"
+msgstr "titel"
 
 #: picard/ui/options/profiles.py:252
 msgid "Unknown script"
 msgstr "Onbekend schrift"
 
 #: picard/ui/options/profiles.py:257
-#, fuzzy
-#| msgid "Rename script"
 msgid "No enabled scripts"
-msgstr "Script hernoemen"
+msgstr "Geen ingeschakelde scripts"
 
 #: picard/ui/options/profiles.py:258
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
-msgstr "Tagscripts inschakelen"
+msgstr "Ingeschakelde scripts:"
 
 #: picard/ui/options/profiles.py:263
-#, fuzzy
-#| msgid "Cover art providers"
 msgid "No enabled providers"
-msgstr "Bronnen voor afbeeldingen"
+msgstr "Geen ingeschakelde aanbieders"
 
 #: picard/ui/options/profiles.py:264
-#, fuzzy
-#| msgid "Enabled providers of %i listed:"
 msgid "Enabled providers:"
-msgstr "Van de %i gevonden aanbieders is ingeschakeld:"
+msgstr "Ingeschakelde aanbieders:"
 
 #: picard/ui/options/profiles.py:281
 #, python-format
@@ -6641,18 +6524,16 @@ msgid "Compatibility"
 msgstr "Compatibiliteit"
 
 #: picard/ui/options/renaming_compat.py:127
-#, fuzzy
-#| msgid "Replace directory separators with:"
 msgid "Invalid directory separator replacement"
-msgstr "Scheidingstekens voor mappen vervangen door:"
+msgstr "Ongeldige plaats voor scheidingsteken voor mappen"
 
 #: picard/ui/options/renaming_compat.py:128
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "Vervangend teken voor mapscheidingstekens"
+msgstr ""
+"Het vervangende scheidingsteken voor mappen moet zelf een scheidingsteken "
+"voor mappen zijn."
 
 #: picard/ui/options/renaming_compat.py:137
 msgid ""
@@ -6905,6 +6786,8 @@ msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
 msgstr ""
+"<em>De functie <code>$%s</code> bestaat niet.<br><br>Ontbreekt er een plug-"
+"in?</em>"
 
 #: picard/ui/widgets/scripttextedit.py:356
 msgid "&Word wrap script"
@@ -7131,10 +7014,8 @@ msgid "Engineer"
 msgstr "Technicus"
 
 #: picard/util/tags.py:73
-#, fuzzy
-#| msgid "File Name"
 msgid "File Path"
-msgstr "Bestandsnaam"
+msgstr "Bestandspad"
 
 #: picard/util/tags.py:74
 msgid "Gapless Playback"
@@ -7341,10 +7222,8 @@ msgid "Subtitle"
 msgstr "Ondertitel"
 
 #: picard/util/tags.py:132
-#, fuzzy
-#| msgid "Lyrics"
 msgid "Synced Lyrics"
-msgstr "Tekst"
+msgstr "Gesynchroniseerde tekst"
 
 #: picard/util/tags.py:134
 msgid "Title Sort Order"
