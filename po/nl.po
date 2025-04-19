@@ -12,15 +12,16 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023, 2024.
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
-# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024.
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024, 2025.
 # toineenzo <toinerademacher@hotmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2024-04-12 01:28+0000\n"
-"Last-Translator: toineenzo <toinerademacher@hotmail.com>\n"
+"PO-Revision-Date: 2025-04-19 14:20+0000\n"
+"Last-Translator: mfmeulenbelt "
+"<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
 "app/nl/>\n"
 "Language: nl\n"
@@ -28,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4.3\n"
+"X-Generator: Weblate 5.11\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -191,10 +192,8 @@ msgid "Debug"
 msgstr "Foutopsporing"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Onverwachte fout bij het aanmelden"
+msgstr "Onverwachte fout bij intrekken token"
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
@@ -4029,11 +4028,8 @@ msgstr[0] "Gebruik de originele waarde"
 msgstr[1] "Originele waarden gebruiken"
 
 #: picard/ui/metadatabox.py:437
-#, fuzzy
-#| msgid "Use Original Value"
-#| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
-msgstr "Gebruik de originele waarde"
+msgstr "Originele waarden samenvoegen"
 
 #: picard/ui/metadatabox.py:443
 msgid "&Copy"
@@ -5570,10 +5566,8 @@ msgid "Logged in as <b>%s</b>."
 msgstr "Aangemeld als <b>%s</b>."
 
 #: picard/ui/options/general.py:182
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Logout error"
-msgstr "Fout bij opzoeken van de cd"
+msgstr "Fout bij het afmelden"
 
 #: picard/ui/options/general.py:183
 #, python-format
@@ -5582,6 +5576,10 @@ msgid ""
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Bij het terugtrekken van de toegang tot de MusicBrainz-server trad een fout "
+"op: %s\n"
+"\n"
+"Wil je lokaal opgeslagen aanmeldgegevens toch verwijderen?"
 
 #: picard/ui/options/genres.py:46
 msgid ""
@@ -6135,18 +6133,16 @@ msgid "Compatibility"
 msgstr "Compatibiliteit"
 
 #: picard/ui/options/renaming_compat.py:135
-#, fuzzy
-#| msgid "Replace directory separators with:"
 msgid "Invalid directory separator replacement"
-msgstr "Scheidingstekens voor mappen vervangen door:"
+msgstr "Ongeldige plaats voor scheidingsteken voor mappen"
 
 #: picard/ui/options/renaming_compat.py:136
-#, fuzzy
-#| msgid "Replacement character to use for directory separators"
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr "Vervangend teken voor mapscheidingstekens"
+msgstr ""
+"Het vervangende scheidingsteken voor mappen moet zelf een scheidingsteken "
+"voor mappen zijn."
 
 #: picard/ui/options/renaming_compat.py:144
 msgid ""
