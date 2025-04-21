@@ -136,6 +136,7 @@ TAG_NAMES = {
     'totaltracks': N_('Total Tracks'),
     'tracknumber': N_('Track Number'),
     'website': N_('Artist Website'),
+    'user_website': N_('User Defined Website'),
     'work': N_('Work'),
     'writer': N_('Writer'),
 }

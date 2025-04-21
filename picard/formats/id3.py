@@ -170,6 +170,7 @@ class ID3File(File):
         'TSOT': 'titlesort',
         'WCOP': 'license',
         'WOAR': 'website',
+        'WXXX': 'user_website',
         'COMM': 'comment',
         'TOAL': 'originalalbum',
         'TOPE': 'originalartist',
@@ -299,6 +300,8 @@ class ID3File(File):
         metadata = Metadata()
         for frame in tags.values():
             self._process_frame(frame, metadata, config_params)
+
+        self._process_link_frames_on_load(tags, metadata)
 
         if 'date' in metadata:
             self._sanitize_date(metadata)
@@ -614,6 +617,12 @@ class ID3File(File):
 
     def _save_tags(self, tags, filename):
         config = get_config()
+
+        try:
+            self._sanitize_id3_frames(tags)
+        except Exception as e:
+            log.error("Error sanitizing ID3 frames: %s", e)
+
         if config.setting['write_id3v1']:
             v1 = 2
         else:
@@ -622,10 +631,128 @@ class ID3File(File):
         if config.setting['write_id3v23']:
             tags.update_to_v23()
             separator = config.setting['id3v23_join_with']
-            tags.save(filename, v2_version=3, v1=v1, v23_sep=separator)
+            try:
+                tags.save(filename, v2_version=3, v1=v1, v23_sep=separator)
+            except ValueError:
+                for frame_id in list(tags.keys()):
+                    if not (frame_id.isalnum() and frame_id.isupper()):
+                        log.warning("Removing invalid frame ID: %r", frame_id)
+                        del tags[frame_id]
+                tags.save(filename, v2_version=3, v1=v1, v23_sep=separator)
         else:
             tags.update_to_v24()
             tags.save(filename, v2_version=4, v1=v1)
+
+    def _sanitize_id3_frames(self, tags):
+        """This method attempts to fix various issues with ID3 frames:
+        1. Handle invalid LINK frames (convert to WXXX if possible)
+        2. Remove null bytes and other illegal characters from frame IDs
+        Note: In the future, we might consider prompting users about invalid frames."""
+        to_remove = []
+        to_add = []
+        confirmed_problematic_frames = []
+        extracted_urls = []
+        for frame_id, frame in list(tags.items()):
+            try:
+                invalid_id = False
+                if '\x00' in frame_id:
+                    invalid_id = True
+                if self._is_malformed_frame(frame_id, frame):
+                    invalid_id = True
+                    for url in self._extract_and_convert_link_frame(frame, frame_id):
+                        log.debug("Successfully converted malformed LINK frame %r to URL: %r", frame_id, url)
+                        extracted_urls.append(url)
+                        wxxx_frame = mutagen.id3.WXXX(encoding=Id3Encoding.LATIN1, desc="URL from malformed LINK frame", url=url)
+                        to_add.append(wxxx_frame)
+
+                if invalid_id:
+                    confirmed_problematic_frames.append(frame_id)
+                    to_remove.append(frame_id)
+
+            except Exception as e:
+                log.error("Error processing frame %r: %s", frame_id, e)
+
+        for frame_id in to_remove:
+            del tags[frame_id]
+        for frame in to_add:
+            tags.add(frame)
+
+        if extracted_urls and hasattr(self, 'metadata') and hasattr(self, 'orig_metadata'):
+            if 'user_website' not in self.metadata:
+                self.metadata['user_website'] = extracted_urls
+            if 'user_website' not in self.orig_metadata:
+                self.orig_metadata['user_website'] = extracted_urls
+
+        return confirmed_problematic_frames
+
+    def _extract_and_convert_link_frame(self, frame, frame_id):
+        """Extract URL from a malformed LINK frame and convert it to a WXXX frame. Handles cases where URLs
+        are split between frame ID and data or separated by null bytes (common for archive.org)"""
+
+        try:
+            url_parts = []
+            if hasattr(frame, 'data') and frame.data:
+                frame_data = frame.data.decode('latin1', errors='ignore')
+                if '\x00' in frame_data:
+                    parts = frame_data.split('\x00', 1)
+                    # Likely valid LINK frame if the first part looks like a URL and second part doesn't contain URL patterns
+                    if (parts[0] and self._contains_url_pattern(parts[0])
+                            and len(parts) > 1 and not self._contains_url_pattern(parts[1])):
+                        log.debug("Skipping valid LINK frame with URL %r", parts[0])
+                        return
+
+            if ':' in frame_id:
+                frame_id_parts = frame_id.split(':', 1)
+                if frame_id_parts[0] == 'LINK':
+                    # Standard case where everything after LINK: is part of the URL
+                    url_parts.append(frame_id_parts[1])
+                elif any(proto in frame_id_parts[0] for proto in ('LINKhttp', 'LINKhtt', 'LINKwww')):
+                    # Case where part of the URL protocol is in the frame_id
+                    prefix = 'LINK'
+                    protocol_part = frame_id_parts[0][len(prefix):]
+                    url_parts.append(protocol_part + ':' + frame_id_parts[1])
+
+            if hasattr(frame, 'data') and frame.data:
+                frame_data = frame.data.decode('latin1', errors='ignore').strip()
+                if frame_data:
+                    if '\x00' in frame_data:
+                        parts = frame_data.split('\x00')
+                        for part in parts:
+                            if part.strip() and self._contains_url_pattern(part):
+                                url_parts.append(part.strip())
+                    elif self._contains_url_pattern(frame_data):
+                        url_parts.append(frame_data)
+
+            combined_url = ''.join(url_parts).strip(':;,. \t\n\r')
+
+            if combined_url:
+                url_match = re.search(r'(?:https?:?(?:/+|\\+)|www\.)[a-zA-Z0-9][-a-zA-Z0-9\.]+\.[a-zA-Z]{2,}(?:/[^\s:;,]*)?', combined_url)
+                if url_match:
+                    raw_url = url_match.group(0)
+
+                    if raw_url.startswith('www.'):
+                        final_url = 'http://' + raw_url
+                    elif raw_url.startswith(('http://', 'https://')):
+                        final_url = raw_url
+                    else:
+                        final_url = re.sub(r'^htt:?p', 'http', raw_url)
+                        if not final_url.startswith(('http://', 'https://')):
+                            if final_url.startswith(':'):
+                                final_url = 'http' + final_url
+                            elif final_url.startswith('//'):
+                                final_url = 'http:' + final_url
+                            elif final_url.startswith('p://'):
+                                final_url = 'http://' + final_url[4:]
+                            else:
+                                final_url = 'http://' + final_url
+
+                    yield final_url
+                    return
+
+            log.warning("Could not extract URL from malformed LINK frame %r", frame_id)
+
+        except Exception as e:
+            log.error("Failed to process LINK frame %r: %s", frame_id, e)
 
     def format_specific_metadata(self, metadata, tag, settings=None):
         if not settings:
@@ -1035,6 +1162,53 @@ class ID3File(File):
         """Remove other supported tag from ID3 frames."""
         del tags[real_name]
 
+    def _contains_url_pattern(self, text):
+        """Check if the given text contains URL-like patterns."""
+        return any(term in text for term in ('http', 'www.', '://'))
+
+    def _is_malformed_frame(self, frame_id, frame):
+        """Check if a LINK frame is malformed (contains URL in wrong place)."""
+        if not frame_id.startswith('LINK'):
+            return False
+
+        if ':' in frame_id and self._contains_url_pattern(frame_id):
+            return True
+
+        if hasattr(frame, 'data') and frame.data:
+            try:
+                frame_data = frame.data.decode('latin1', errors='ignore')
+
+                if frame_data.startswith('\x00') and self._contains_url_pattern(frame_data[1:]):
+                    return True
+
+                if '\x00' in frame_data:
+                    parts = frame_data.split('\x00', 1)
+                    if len(parts) > 1 and self._contains_url_pattern(parts[1]):
+                        return True
+
+                if self._contains_url_pattern(frame_data) and '\x00' not in frame_data:
+                    return True
+
+            except Exception:
+                return True
+
+        return False
+
+    def _process_link_frames_on_load(self, tags, metadata):
+        """Process malformed LINK frames during initial file load and add them as website URLs."""
+
+        malformed_link_frames = []
+        for frame_id, frame in list(tags.items()):
+            if self._is_malformed_frame(frame_id, frame):
+                malformed_link_frames.append((frame_id, frame))
+
+        if not malformed_link_frames:
+            return
+
+        for frame_id, frame in malformed_link_frames:
+            for url in self._extract_and_convert_link_frame(frame, frame_id):
+                metadata.add('user_website', url)
+
 
 class MP3File(ID3File):
 
@@ -1080,10 +1254,23 @@ class NonCompatID3File(ID3File):
 
     def _save_tags(self, tags, filename):
         config = get_config()
+
+        try:
+            self._sanitize_id3_frames(tags)
+        except Exception as e:
+            log.error("Error sanitizing ID3 frames: %s", e)
+
         if config.setting['write_id3v23']:
             compatid3.update_to_v23(tags)
             separator = config.setting['id3v23_join_with']
-            tags.save(filename, v2_version=3, v23_sep=separator)
+            try:
+                tags.save(filename, v2_version=3, v23_sep=separator)
+            except ValueError:
+                for frame_id in list(tags.keys()):
+                    if not (frame_id.isalnum() and frame_id.isupper()):
+                        log.warning("Removing invalid frame ID: %r", frame_id)
+                        del tags[frame_id]
+                tags.save(filename, v2_version=3, v23_sep=separator)
         else:
             tags.update_to_v24()
             tags.save(filename, v2_version=4)
