@@ -91,6 +91,13 @@ class TagVar:
         else:
             return self._name
 
+    def script_name(self):
+        """In scripts, ~ prefix is replaced with _ for hidden variables"""
+        if self.is_hidden:
+            return '_' + self._name
+        else:
+            return self._name
+
 
 class TagVars(MutableSequence):
     """Mutable sequence for TagVar items

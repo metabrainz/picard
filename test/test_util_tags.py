@@ -99,6 +99,14 @@ class TagVarsTest(PicardTestCase):
         names = tuple(tagvars.names())
         self.assertEqual(names, ('only_sd', 'sd_ld', '~hidden', 'notag'))
 
+    def test_tagvars_script_names(self):
+        tagvars = TagVars(
+            self.tagvar_only_sd,
+            self.tagvar_hidden,
+        )
+        script_names = tuple(tagvar.script_name() for tagvar in tagvars)
+        self.assertEqual(script_names, ('only_sd', '_hidden'))
+
     def test_tagvars_names_selector(self):
         tagvars = TagVars(
             self.tagvar_only_sd,
