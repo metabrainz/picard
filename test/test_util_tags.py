@@ -32,6 +32,7 @@ from picard.util.tags import (
     display_tag_name,
     parse_comment_tag,
     parse_subtag,
+    script_variable_tag_names,
 )
 
 
@@ -157,6 +158,22 @@ class TagVarsTest(PicardTestCase):
 
         with mock.patch("picard.util.tags._", return_value='translated'):
             self.assertEqual(tagvars.display_name('only_sd'), 'translated')
+
+    def test_script_variable_tag_names(self):
+        tagvars = TagVars(
+            self.tagvar_nodesc,
+            self.tagvar_hidden,
+            self.tagvar_hidden_sd,
+            self.tagvar_only_sd,
+            self.tagvar_sd_ld,
+        )
+        self.tagvar_sd_ld.is_script_variable = False
+
+        with mock.patch('picard.util.tags.ALL_TAGS', tagvars):
+            self.assertEqual(
+                tuple(script_variable_tag_names()),
+                ('nodesc', '_hidden', '_hidden_sd', 'only_sd'),
+            )
 
 
 class UtilTagsTest(PicardTestCase):

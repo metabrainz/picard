@@ -182,7 +182,7 @@ class ScriptCompleter(QCompleter):
     @property
     def choices(self):
         yield from (f'${name}' for name in script_function_names())
-        yield from (f'%{name}%'.replace('~', '_', 1) for name in script_variable_tag_names())
+        yield from (f'%{name}%' for name in script_variable_tag_names())
 
     def set_highlighted(self, text):
         self.last_selected = text
