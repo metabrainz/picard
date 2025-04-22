@@ -386,6 +386,7 @@ ALL_TAG_VARS = TagVars(
         'filepath',
         shortdesc=N_('File Path'),
         is_hidden=True,
+        is_tag=False,
     ),
     TagVar(
         'filesize',
@@ -434,6 +435,7 @@ ALL_TAG_VARS = TagVars(
         'length',
         shortdesc=N_('Length'),
         is_hidden=True,
+        is_tag=False,
     ),
     TagVar(
         'license',
