@@ -155,7 +155,7 @@ class TagVars(MutableSequence):
                 yield str(item)
 
 
-ALL_TAG_VARS = TagVars(
+ALL_TAGS = TagVars(
     TagVar(
         'absolutetracknumber',
         shortdesc=N_('FIXME:absolutetracknumber'),
@@ -810,12 +810,12 @@ ALL_TAG_VARS = TagVars(
 
 
 def tag_names():
-    yield from ALL_TAG_VARS.names(selector=lambda tv: tv.is_tag)
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag)
 
 
 def preserved_tag_names():
     """Tags that should be preserved by default"""
-    yield from ALL_TAG_VARS.names(selector=lambda tv: tv.is_preserved)
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_preserved)
 
 
 def calculated_tag_names():
@@ -824,21 +824,21 @@ def calculated_tag_names():
     Those can be set by Picard but the new values usually should be kept
     when moving the file between tags.
     """
-    yield from ALL_TAG_VARS.names(selector=lambda tv: tv.is_calculated)
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_calculated)
 
 
 def file_info_tag_names():
     """Tags that contains infos related to files"""
-    yield from ALL_TAG_VARS.names(selector=lambda tv: tv.is_file_info)
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_file_info)
 
 
 def script_variable_tag_names():
     """Tag names available to scripts (used by script editor completer)"""
-    yield from ALL_TAG_VARS.names(selector=lambda tv: tv.is_script_variable)
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_script_variable)
 
 
 def display_tag_name(name):
-    return ALL_TAG_VARS.display_name(name)
+    return ALL_TAGS.display_name(name)
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
