@@ -19,23 +19,24 @@
 # Echelon666 <echelon01@wp.pl>, 2024.
 # Peter69 <echelon01@wp.pl>, 2025.
 # Michal77 <michal_wilk@poczta.fm>, 2025.
+# PS <weblate@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-12 11:37+0200\n"
-"PO-Revision-Date: 2025-02-27 14:44+0000\n"
-"Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
+"PO-Revision-Date: 2025-04-18 13:43+0000\n"
+"Last-Translator: PS <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
+"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.11\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:190
@@ -167,16 +168,18 @@ msgid "Web Service Post Data"
 msgstr ""
 
 #: picard/debug_opts.py:84
+#, fuzzy
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "Dane dziennika żądań POST usługi sieciowej"
 
 #: picard/debug_opts.py:85
 msgid "Web Service Replies"
 msgstr ""
 
 #: picard/debug_opts.py:85
+#, fuzzy
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Zawartość dziennika odpowiedzi usług sieciowych"
 
 #: picard/file.py:216
 msgid ""
@@ -387,7 +390,7 @@ msgstr "Rodzaj wydania do sprawdzenia aktualizacji"
 
 #: picard/options.py:236
 msgid "Use album artist genres"
-msgstr ""
+msgstr "Użyj gatunków artystów albumów"
 
 #: picard/options.py:237 picard/ui/forms/ui_options_genres.py:128
 msgid "Use folksonomy tags as genre"
@@ -522,16 +525,18 @@ msgid "Use release relationships"
 msgstr "Użyj powiązań wydań"
 
 #: picard/options.py:303
+#, fuzzy
 msgid "Translation script exceptions"
-msgstr ""
+msgstr "Wyjątki skryptu tłumaczeniowego"
 
 #: picard/options.py:304 picard/ui/forms/ui_options_metadata.py:140
 msgid "Use standardized artist names"
 msgstr "Używaj ustandaryzowanych nazw wykonawców"
 
 #: picard/options.py:305 picard/ui/forms/ui_options_metadata.py:141
+#, fuzzy
 msgid "Use standardized instrument and vocal credits"
-msgstr ""
+msgstr "Użyj standardowych instrumentów i wokali"
 
 #: picard/options.py:306
 msgid "Use track and release relationships"
@@ -567,7 +572,7 @@ msgstr "Rozmiar pamięci podręcznej sieci w bajtach"
 
 #: picard/options.py:317
 msgid "Request timeout in seconds"
-msgstr ""
+msgstr "Limit czasu żądania w sekundach"
 
 #: picard/options.py:318
 msgid "Proxy password"
@@ -590,8 +595,9 @@ msgid "Proxy username"
 msgstr "Nazwa użytkownika proxy"
 
 #: picard/options.py:323
+#, fuzzy
 msgid "Use a web proxy server"
-msgstr ""
+msgstr "Użyj internetowego serwera proxy"
 
 #: picard/options.py:339 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
@@ -888,7 +894,7 @@ msgstr "Wszystkie obsługiwane pliki dziennika"
 
 #: picard/tagger.py:1214
 msgid "EAC / XLD / Whipper / fre:ac log files"
-msgstr ""
+msgstr "Pliki dziennika EAC / XLD / Whipper / fre:ac"
 
 #: picard/tagger.py:1215
 msgid "dBpoweramp log files"
@@ -1059,7 +1065,7 @@ msgstr ""
 #: picard/script/__init__.py:183
 #, python-format
 msgid "Preset %(number)d: %(title)s"
-msgstr ""
+msgstr "Ustawienie wstępne %(number)d: %(title)s"
 
 #: picard/script/__init__.py:190
 msgid "Default file naming script"
@@ -3033,8 +3039,9 @@ msgid "Syntax Highlighting"
 msgstr "Podświetlanie składni"
 
 #: picard/ui/colors.py:62
+#, fuzzy
 msgid "Escape syntax highlight"
-msgstr ""
+msgstr "Podświetlenie składni Escape"
 
 #: picard/ui/colors.py:63
 msgid "Function syntax highlight"
@@ -3097,8 +3104,9 @@ msgid "Log"
 msgstr "Log"
 
 #: picard/ui/logview.py:193 picard/ui/logview.py:354
+#, fuzzy
 msgid "Verbosity"
-msgstr ""
+msgstr "Rodzaj zawartości"
 
 #: picard/ui/logview.py:200 picard/ui/logview.py:201
 msgid "Debug Options"
@@ -3196,34 +3204,38 @@ msgstr "Wykonaj to sprawdzenie ponownie przy następnym uruchomieniu Picarda."
 
 #: picard/ui/pluginupdatedialog.py:50
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Aktualizacja wtyczek Picarda"
 
 #: picard/ui/pluginupdatedialog.py:68
+#, fuzzy
 msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
 msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+"Dostępna jest aktualizacja dla jednej z Twoich aktualnie zainstalowanych "
+"wtyczek:"
+msgstr[1] "Dostępne są aktualizacje dla Twoich aktualnie zainstalowanych wtyczek:"
+msgstr[2] "Dostępne są aktualizacje dla Twoich aktualnie zainstalowanych wtyczek:"
+msgstr[3] "Dostępne są aktualizacje dla Twoich aktualnie zainstalowanych wtyczek:"
 
 #: picard/ui/pluginupdatedialog.py:73
+#, fuzzy
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Czy chcesz teraz zaktualizować wtyczkę?"
+msgstr[1] "Czy chcesz teraz zaktualizować wtyczki?"
+msgstr[2] "Czy chcesz teraz zaktualizować wtyczki?"
+msgstr[3] "Czy chcesz teraz zaktualizować wtyczki?"
 
 #: picard/ui/pluginupdatedialog.py:81
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "plus {extra_file_count:,d} inna wtyczka."
+msgstr[1] "plus {extra_file_count:,d} inne wtyczki."
+msgstr[2] "plus {extra_file_count:,d} innych wtyczek."
+msgstr[3] "plus {extra_file_count:,d} innych wtyczek."
 
 #: picard/ui/ratingwidget.py:100
 #, python-format
@@ -3235,37 +3247,40 @@ msgstr ""
 "%(error)d"
 
 #: picard/ui/savewarningdialog.py:45
+#, fuzzy
 msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "nadpisze istniejące metadane (tagi) w pliku"
+msgstr[1] "nadpisze istniejące metadane (tagi) w plikach"
+msgstr[2] "nadpisze istniejące metadane (tagi) w plikach"
+msgstr[3] "nadpisze istniejące metadane (tagi) w plikach"
 
 #: picard/ui/savewarningdialog.py:50
+#, fuzzy
 msgid "rename the file"
 msgid_plural "rename the files"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "zmieni nazwę pliku"
+msgstr[1] "zmieni nazwy plików"
+msgstr[2] "zmieni nazwy plików"
+msgstr[3] "zmieni nazwy plików"
 
 #: picard/ui/savewarningdialog.py:55
+#, fuzzy
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "przeniesie plik do innej lokalizacji"
+msgstr[1] "przeniesie pliki do innej lokalizacji"
+msgstr[2] "przeniesie pliki do innej lokalizacji"
+msgstr[3] "przeniesie pliki do innej lokalizacji"
 
 #: picard/ui/savewarningdialog.py:61
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Zamierzasz zapisać {file_count:,d} plik, co spowoduje:"
+msgstr[1] "Zamierzasz zapisać {file_count:,d} pliki, co spowoduje:"
+msgstr[2] "Zamierzasz zapisać {file_count:,d} plików, co spowoduje:"
+msgstr[3] "Zamierzasz zapisać {file_count:,d} plików, co spowoduje:"
 
 #: picard/ui/savewarningdialog.py:64
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
@@ -3639,7 +3654,7 @@ msgstr "Wszystkie obsługiwane formaty obrazów"
 #: picard/ui/itemviews/basetreeview.py:371
 #, fuzzy
 msgid "Show &more details…"
-msgstr "Pokaż więcej…."
+msgstr "Pokaż więcej…"
 
 #: picard/ui/coverartbox/__init__.py:303
 msgid "Keep original cover art"
@@ -4083,6 +4098,8 @@ msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
 msgstr ""
+"Jeśli dla wydania lub grupy wydań nie znaleziono gatunków, skorzystaj z "
+"gatunków artystów albumu"
 
 #: picard/ui/forms/ui_options_genres.py:129
 msgid "Minimal genre usage:"
@@ -4118,8 +4135,10 @@ msgstr ""
 "wierszu:"
 
 #: picard/ui/forms/ui_options_genres.py:136
+#, fuzzy
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
+"Miejsce dla filtrów tagów gatunków lub folksonomii (czyszczony przy wyjściu):"
 
 #: picard/ui/forms/ui_options_interface.py:124
 msgid "Appearance"
@@ -4345,8 +4364,9 @@ msgid "Details"
 msgstr "Szczegóły"
 
 #: picard/ui/forms/ui_options_profiles.py:81
+#, fuzzy
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "Profil(e) opcji"
 
 #: picard/ui/forms/ui_options_profiles.py:82
 msgid "Move profile up"
@@ -4878,8 +4898,9 @@ msgid "Type"
 msgstr "Typ"
 
 #: picard/ui/infodialog/widgets.py:115 picard/ui/infodialog/widgets.py:148
+#, fuzzy
 msgid "New Embedded"
-msgstr ""
+msgstr "Nowe osadzone"
 
 #: picard/ui/infodialog/widgets.py:115 picard/ui/infodialog/widgets.py:148
 msgid "New Exported"
@@ -4976,10 +4997,10 @@ msgstr "Brak plików pasujących do tego utworu"
 #| msgid "Unmatched Files"
 msgid "%i matched file"
 msgid_plural "%i matched files"
-msgstr[0] "Pliki niedopasowane"
-msgstr[1] "Pliki niedopasowane"
-msgstr[2] "Pliki niedopasowane"
-msgstr[3] "Pliki niedopasowane"
+msgstr[0] "%i dopasowany plik"
+msgstr[1] "%i dopasowane pliki"
+msgstr[2] "%i dopasowanych plików"
+msgstr[3] "%i dopasowanych plików"
 
 #: picard/ui/itemviews/__init__.py:538
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -5463,8 +5484,9 @@ msgstr "Szukaj podobnych albumów…"
 
 #: picard/ui/mainwindow/actions.py:267
 #: picard/ui/options/interface_toolbar.py:138
+#, fuzzy
 msgid "Similar items"
-msgstr ""
+msgstr "Znajdź podobne"
 
 #: picard/ui/mainwindow/actions.py:268
 msgid ""
@@ -5629,8 +5651,9 @@ msgid "Save &Tags"
 msgstr "Zapisz &tagi"
 
 #: picard/ui/mainwindow/actions.py:466
+#, fuzzy
 msgid "Tags From &File Names…"
-msgstr "Tagi z nazwy &pliku"
+msgstr "Tagi z nazwy &pliku…"
 
 #: picard/ui/mainwindow/actions.py:467
 #: picard/ui/options/interface_toolbar.py:134
@@ -5727,23 +5750,25 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox/__init__.py:318
 msgid "Unable to copy current selection."
-msgstr ""
+msgstr "Nie można skopiować bieżącego zaznaczenia."
 
 #: picard/ui/metadatabox/__init__.py:395
 msgid "No valid data in clipboard to paste"
-msgstr ""
+msgstr "Brak prawidłowych danych w schowku do wklejenia"
 
 #: picard/ui/metadatabox/__init__.py:441
 msgid "Edit…"
 msgstr "Edytuj…"
 
 #: picard/ui/metadatabox/__init__.py:447
+#, fuzzy
 msgid "Add to 'Preserve Tags' List"
-msgstr ""
+msgstr "Dodaj do listy „Zachowaj tagi”"
 
 #: picard/ui/metadatabox/__init__.py:452
+#, fuzzy
 msgid "Remove from 'Preserve Tags' List"
-msgstr ""
+msgstr "Usuń z listy „Zachowaj tagi”"
 
 #: picard/ui/metadatabox/__init__.py:499
 msgid "Use Original Value"
@@ -6691,6 +6716,8 @@ msgid ""
 "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
 "Help</a>)"
 msgstr ""
+"&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Pomoc "
+"dotycząca składni</a>)"
 
 #: picard/ui/searchdialog/__init__.py:188
 msgid "Search in browser"
