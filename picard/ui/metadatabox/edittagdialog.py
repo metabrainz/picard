@@ -219,7 +219,7 @@ class EditTagDialog(PicardDialog):
         Returns:
             List of supported tag names
         """
-        tags = sorted(set(tag_names()) + self.metadata_box.tag_diff.tag_names)
+        tags = sorted(list(tag_names()) + self.metadata_box.tag_diff.tag_names)
         if len(self.metadata_box.files) == 1:
             current_file = list(self.metadata_box.files)[0]
             tags = list(filter(current_file.supports_tag, tags))
