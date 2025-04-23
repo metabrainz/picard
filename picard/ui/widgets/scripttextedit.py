@@ -175,7 +175,6 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
         super().__init__(self.choices, parent)
-        self.setCompletionMode(QCompleter.CompletionMode.UnfilteredPopupCompletion)
         self.last_selected = ''
         self.highlighted.connect(self.set_highlighted)
 
