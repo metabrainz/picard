@@ -51,7 +51,7 @@ from picard.metadata import (
 )
 from picard.track import Track
 from picard.util.imagelist import ImageList
-from picard.util.tags import PRESERVED_TAGS
+from picard.util.tags import preserved_tag_names
 
 
 settings = {
@@ -282,16 +282,17 @@ class CommonTests:
             self.assertEqual(list(map(func, self.multi1)), self.metadata.getall("multi1"))
 
         def test_metadata_applyfunc_preserve_tags(self):
-            self.assertTrue(len(PRESERVED_TAGS) > 0)
+            preserved_tag = next(preserved_tag_names())
+            self.assertTrue(bool(preserved_tag))
             m = Metadata()
-            m[PRESERVED_TAGS[0]] = 'value1'
+            m[preserved_tag] = 'value1'
             m['not_preserved'] = 'value2'
 
             def func(x):
                 return x[1:]
             m.apply_func(func)
 
-            self.assertEqual("value1", m[PRESERVED_TAGS[0]])
+            self.assertEqual("value1", m[preserved_tag])
             self.assertEqual("alue2", m['not_preserved'])
 
         def test_metadata_applyfunc_delete_tags(self):
