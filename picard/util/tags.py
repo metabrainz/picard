@@ -32,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import OrderedDict
 from collections.abc import MutableSequence
 import re
 
@@ -47,12 +48,24 @@ from picard.i18n import (
 )
 
 
+TEXT_NOTES = N_('Notes:')
+TEXT_NO_DESCRIPTION = N_('No description available.')
+
+ATTRIB2NOTE = OrderedDict(
+    is_preserved=N_('preserved read-only'),
+    not_script_variable=N_('not for use in scripts'),
+    is_calculated=N_('calculated'),
+    is_file_info=N_('info from audio file'),
+    not_from_mb=N_('not provided from MusicBrainz data'),
+)
+
+
 class TagVar:
     def __init__(
         self, name, shortdesc=None, longdesc=None,
-        is_preserved=False, is_hidden=False, is_script_variable=True,
+        is_preserved=False, is_hidden=False, not_script_variable=False,
         is_tag=True, is_calculated=False, is_file_info=False,
-        is_from_mb=True
+        not_from_mb=False
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -63,22 +76,22 @@ class TagVar:
                   contain markup.
         is_preserved: the tag is preserved (boolean, default: False)
         is_hidden: the tag is "hidden", name will be prefixed with "~" (boolean, default: False)
-        is_script_variable: the tag can be used as script variable (boolean, default: True)
+        not_script_variable: the tag cannot be used as script variable (boolean, default: False)
         is_tag: the tag is an actual tag (not a calculated or derived one) (boolean, default: True)
         is_calculated: the tag is obtained by external calculation (boolean, default: False)
         is_file_info: the tag is a file information, displayed in file info box (boolean, default: False)
-        is_from_mb: the tag information is provided from the MusicBrainz database (boolean, default: True)
+        not_from_mb: the tag information is not provided from the MusicBrainz database (boolean, default: False)
         """
         self._name = name
         self._shortdesc = shortdesc
         self._longdesc = longdesc
         self.is_preserved = is_preserved
         self.is_hidden = is_hidden
-        self.is_script_variable = is_script_variable
+        self.not_script_variable = not_script_variable
         self.is_tag = is_tag
         self.is_calculated = is_calculated
         self.is_file_info = is_file_info
-        self.is_from_mb = is_from_mb
+        self.not_from_mb = not_from_mb
 
     @property
     def shortdesc(self):
@@ -108,15 +121,10 @@ class TagVar:
         else:
             return self._name
 
-
-TEXT_NOTES = N_('**Notes:**')
-TEXT_READ_ONLY = N_('read-only')
-TEXT_FROM_FILE = N_('provided from the file')
-TEXT_NAMING_ONLY = N_('available in naming scripts only')
-TEXT_NOT_FOR_SCRIPTING = N_('not available for use in scripts')
-TEXT_CALCULATED = N_('calculated variable')
-TEXT_NOT_FROM_MB = N_('not provided from MusicBrainz data')
-TEXT_NO_DESCRIPTION = N_('No description available.')
+    def notes(self):
+        for attrib, note in ATTRIB2NOTE.items():
+            if getattr(self, attrib):
+                yield note
 
 
 class TagVars(MutableSequence):
@@ -160,56 +168,49 @@ class TagVars(MutableSequence):
     def __repr__(self):
         return f"TagVars({self._items!r})"
 
-    def display_name(self, name):
-        tagdesc = None
+    def item_from_name(self, name):
         if ':' in name:
             name, tagdesc = name.split(':', 1)
+        else:
+            tagdesc = None
 
-        item = self._name2item.get(name, None)
+        if name and name.startswith('_'):
+            search_name = name.replace('_', '~', 1)
+        elif name and name.startswith('~'):
+            search_name = name
+            name = name.replace('~', '_')
+        else:
+            search_name = name
+
+        item: TagVar = self._name2item.get(search_name, None)
+
+        return name, tagdesc, search_name, item
+
+    def display_name(self, name):
+        name, tagdesc, search_name, item = self.item_from_name(name)
+
         if item and item.shortdesc:
             title = _(item.shortdesc)
         else:
-            title = name
-
+            title = search_name
         if tagdesc:
             return '%s [%s]' % (title, tagdesc)
         else:
             return title
 
     def display_tooltip(self, name):
-        tagdesc = None
+        name, tagdesc, _search_name, item = self.item_from_name(name)
 
-        if name and name.startswith('_'):
-            name = name.replace('_', '~', 1)
-
-        if ':' in name:
-            name, tagdesc = name.split(':', 1)
-
-        item: TagVar = self._name2item.get(name, None)
         title = _(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION)
 
-        notes = []
-        if item:
-            if item.is_preserved:
-                notes.append(_(TEXT_READ_ONLY))
-            if item.is_calculated:
-                notes.append(_(TEXT_CALCULATED))
-            if item.is_file_info:
-                notes.append(_(TEXT_FROM_FILE))
-            if not item.is_script_variable:
-                notes.append(_(TEXT_NOT_FOR_SCRIPTING))
-            if not item.is_from_mb and not item.is_file_info:
-                notes.append(_(TEXT_NOT_FROM_MB))
+        notes = tuple(item.notes()) if item else tuple()
         if notes:
-            title += f"\n\n{_(TEXT_NOTES)} {'; '.join(notes)}."
+            title += f"\n\n**{_(TEXT_NOTES)}** {'; '.join(notes)}."
 
         if markdown is None:
             title = '<p>' + title.replace('\n', '<br />') + '</p>'
         else:
             title = markdown(title)
-
-        if name and name.startswith('~'):
-            name = name.replace('~', '_', 1)
 
         if tagdesc:
             return f"<p><em>%{name}%</em> [{tagdesc}]</p>{title}"
@@ -241,7 +242,7 @@ ALL_TAGS = TagVars(
             'found in a file, and is calculated using the Chromaprint software.'
         ),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'acoustid_id',
@@ -252,7 +253,7 @@ ALL_TAGS = TagVars(
             'if the fingerprints are similar enough.'
         ),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'albumartist',
@@ -311,7 +312,7 @@ ALL_TAGS = TagVars(
         'albumsort',
         shortdesc=N_('Album Sort Order'),
         longdesc=N_('The sort name of the title of the release.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'arranger',
@@ -379,7 +380,7 @@ ALL_TAGS = TagVars(
         'bpm',
         shortdesc=N_('BPM'),
         longdesc=N_('Beats per minute of the track.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'bitrate',
@@ -389,7 +390,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'bits_per_sample',
@@ -399,7 +400,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'catalognumber',
@@ -418,7 +419,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
 
     TagVar(
@@ -461,7 +462,7 @@ ALL_TAGS = TagVars(
             'The copyright message for the copyright holder of the original sound, beginning with a '
             'year and a space character.'
         ),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'datatrack',
@@ -490,7 +491,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         # TODO: Check if this actually exists or if it should be %_musicbrainz_discid%
@@ -509,7 +510,7 @@ ALL_TAGS = TagVars(
         longdesc=N_('Set to 1 if the disc the track is on has a "pregap track", otherwise empty.'),
         is_hidden=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'discsubtitle',
@@ -525,13 +526,13 @@ ALL_TAGS = TagVars(
         'encodedby',
         shortdesc=N_('Encoded By'),
         longdesc=N_('The person or organization that encoded the track.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'encodersettings',
         shortdesc=N_('Encoder Settings'),
         longdesc=N_('The settings used when encoding the track.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'engineer',
@@ -545,7 +546,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'file_created_timestamp',
@@ -554,7 +555,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'file_modified_timestamp',
@@ -563,7 +564,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'filename',
@@ -572,7 +573,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'filepath',
@@ -580,7 +581,7 @@ ALL_TAGS = TagVars(
         longdesc=N_('Full path and name of the file.'),
         is_hidden=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'filesize',
@@ -589,7 +590,7 @@ ALL_TAGS = TagVars(
         is_file_info=True,
         is_hidden=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'format',
@@ -599,13 +600,13 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'gapless',
         shortdesc=N_('Gapless Playback'),
         longdesc=N_('Indicates whether or not there are gaps between the recordings on the release.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'genre',
@@ -620,7 +621,7 @@ ALL_TAGS = TagVars(
         'grouping',
         shortdesc=N_('Grouping'),
         longdesc=N_(''),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'isrc',
@@ -634,7 +635,7 @@ ALL_TAGS = TagVars(
         'key',
         shortdesc=N_('Key'),
         longdesc=N_('The key of the music.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'label',
@@ -673,7 +674,7 @@ ALL_TAGS = TagVars(
         'lyrics',
         shortdesc=N_('Lyrics'),
         longdesc=N_('The lyrics for the track.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'media',
@@ -691,13 +692,13 @@ ALL_TAGS = TagVars(
         'mood',
         shortdesc=N_('Mood'),
         longdesc=N_(''),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'movement',
         shortdesc=N_('Movement'),
         longdesc=N_('Name of the movement (e.g.: "Andante con moto").'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'movementnumber',
@@ -706,13 +707,13 @@ ALL_TAGS = TagVars(
             'Movement number in Arabic numerals (e.g.: "2"). Players explicitly supporting this tag will often '
             'display it in Roman numerals (e.g.: "II").'
         ),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'movementtotal',
         shortdesc=N_('Movement Count'),
         longdesc=N_('Total number of movements in the work (e.g.: "4").'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'multiartist',
@@ -808,13 +809,13 @@ ALL_TAGS = TagVars(
         'musicip_fingerprint',
         shortdesc=N_('MusicIP Fingerprint'),
         longdesc=N_('The MusicIP Fingerprint for the track.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'musicip_puid',
         shortdesc=N_('MusicIP PUID'),
         longdesc=N_('The MusicIP PUIDs associated with the track.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'originalalbum',
@@ -823,7 +824,7 @@ ALL_TAGS = TagVars(
             'The release title of the earliest release in the release group intended for the title of the '
             'original recording.'
         ),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'originalartist',
@@ -832,7 +833,7 @@ ALL_TAGS = TagVars(
             'The track artist of the earliest release in the release group intended for the performers of '
             'the original recording.'
         ),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'originaldate',
@@ -855,7 +856,7 @@ ALL_TAGS = TagVars(
         'originalfilename',
         shortdesc=N_('Original Filename'),
         longdesc=N_('The original name of the audio file.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'originalyear',
@@ -891,13 +892,13 @@ ALL_TAGS = TagVars(
         'podcast',
         shortdesc=N_('Podcast'),
         longdesc=N_('Indicates whether or not the recording is a podcast.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'podcasturl',
         shortdesc=N_('Podcast URL'),
         longdesc=N_('The associated url if the recording is a podcast.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'pregap',
@@ -925,14 +926,14 @@ ALL_TAGS = TagVars(
         shortdesc=N_('R128 Album Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'r128_track_gain',
         shortdesc=N_('R128 Track Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'rating',
@@ -1023,7 +1024,7 @@ ALL_TAGS = TagVars(
             'This tag exists for specific use in scripts and plugins, but is not filled by default. In most cases it is '
             'recommended to use the `%date%` tag instead for compatibility with existing software.'
         ),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'releasegroup',
@@ -1134,49 +1135,49 @@ ALL_TAGS = TagVars(
         shortdesc=N_('ReplayGain Album Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'replaygain_album_peak',
         shortdesc=N_('ReplayGain Album Peak'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'replaygain_album_range',
         shortdesc=N_('ReplayGain Album Range'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'replaygain_reference_loudness',
         shortdesc=N_('ReplayGain Reference Loudness'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'replaygain_track_gain',
         shortdesc=N_('ReplayGain Track Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'replaygain_track_peak',
         shortdesc=N_('ReplayGain Track Peak'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'replaygain_track_range',
         shortdesc=N_('ReplayGain Track Range'),
         longdesc=N_(''),
         is_calculated=True,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'sample_rate',
@@ -1186,7 +1187,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'script',
@@ -1218,7 +1219,7 @@ ALL_TAGS = TagVars(
         'show',
         shortdesc=N_('Show Name'),
         longdesc=N_('The name of the show if the recording is associated with a television program.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'showmovement',
@@ -1229,25 +1230,25 @@ ALL_TAGS = TagVars(
             'will be displayed as "Symphony no. 5 in C minor, op. 67: II. Andante con moto" regardless of the value of the '
             'title tag.'
         ),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'showsort',
         shortdesc=N_('Show Name Sort Order'),
         longdesc=N_('The sort name of the show if the recording is associated with a television program.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'subtitle',
         shortdesc=N_('Subtitle'),
         longdesc=N_('This is used for information directly related to the contents title.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'syncedlyrics',
         shortdesc=N_('Synced Lyrics'),
         longdesc=N_('Synchronized lyrics for the track.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'title',
@@ -1258,7 +1259,7 @@ ALL_TAGS = TagVars(
         'titlesort',
         shortdesc=N_('Title Sort Order'),
         longdesc=N_('The sort name of the track title.'),
-        is_from_mb=False,
+        not_from_mb=True,
     ),
     TagVar(
         'totalalbumtracks',
@@ -1380,7 +1381,7 @@ def script_variable_tag_names():
     yield from (
         tagvar.script_name()
         for tagvar in ALL_TAGS
-        if tagvar.is_script_variable
+        if not tagvar.not_script_variable
     )
 
 

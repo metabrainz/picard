@@ -49,9 +49,9 @@ class TagVarsTest(PicardTestCase):
         self.tagvar_notag = TagVar('notag', is_tag=False)
         self.tagvar_nodesc = TagVar('nodesc')
         self.tagvar_notes1 = TagVar('notes1', shortdesc='notes1_sd', longdesc='notes1_ld', is_preserved=True, is_calculated=True,
-                                   is_file_info=True, is_hidden=True, is_script_variable=False)
-        self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False)
-        self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', is_from_mb=False)
+                                   is_file_info=True, is_hidden=True, not_script_variable=True)
+        self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, not_from_mb=True)
+        self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', not_from_mb=True)
 
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
@@ -174,7 +174,7 @@ class TagVarsTest(PicardTestCase):
             self.tagvar_only_sd,
             self.tagvar_sd_ld,
         )
-        self.tagvar_sd_ld.is_script_variable = False
+        self.tagvar_sd_ld.not_script_variable = True
 
         with mock.patch('picard.util.tags.ALL_TAGS', tagvars):
             self.assertEqual(
@@ -198,22 +198,22 @@ class TagVarsTest(PicardTestCase):
 
         result = (
             '<p><em>%_notes1%</em></p><p>notes1_ld</p>\n'
-            '<p><strong>Notes:</strong> read-only; calculated variable; provided from the file; not available for use in scripts.</p>'
+            '<p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; info from audio file.</p>'
         ) if markdown is not None else (
             '<p><em>%_notes1%</em></p><p>notes1_ld'
             '<br /><br />'
-            '**Notes:** read-only; calculated variable; provided from the file; not available for use in scripts.</p>'
+            '**Notes:** preserved read-only; not for use in scripts; calculated; info from audio file.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('_notes1'), result)
         self.assertEqual(tagvars.display_tooltip('~notes1'), result)
 
         result = (
             '<p><em>%notes2%</em></p><p>notes2_ld</p>\n'
-            '<p><strong>Notes:</strong> provided from the file.</p>'
+            '<p><strong>Notes:</strong> info from audio file; not provided from MusicBrainz data.</p>'
         ) if markdown is not None else (
             '<p><em>%notes2%</em></p><p>notes2_ld'
             '<br /><br />'
-            '**Notes:** provided from the file.</p>'
+            '**Notes:** info from audio file; not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('notes2'), result)
 
@@ -274,11 +274,11 @@ class UtilTagsTest(PicardTestCase):
 
         result = (
             '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.</p>\n'
-            '<p><strong>Notes:</strong> read-only; provided from the file.</p>'
+            '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
         ) if markdown is not None else (
             '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.'
             '<br /><br />'
-            '**Notes:** read-only; provided from the file.</p>'
+            '**Notes:** preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_tooltip('_bitrate'), result)
         self.assertEqual(display_tag_tooltip('~bitrate'), result)
