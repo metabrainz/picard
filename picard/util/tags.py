@@ -8,7 +8,7 @@
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013 Calvin Walton
-# Copyright (C) 2013-2014, 2019-2021, 2023-2024 Laurent Monin
+# Copyright (C) 2013-2014, 2019-2021, 2023-2025 Laurent Monin
 # Copyright (C) 2013-2015, 2017 Sophist-UK
 # Copyright (C) 2019 Zenara Daley
 # Copyright (C) 2023, 2025 Bob Swift
@@ -32,7 +32,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import OrderedDict
+from collections import (
+    OrderedDict,
+    namedtuple,
+)
 from collections.abc import MutableSequence
 import re
 
@@ -42,13 +45,19 @@ try:
 except ImportError:
     markdown = None
 
+from picard.const import PICARD_URLS
 from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.profile import profile_setting_title
 
+
+DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
 
 TEXT_NOTES = N_('Notes:')
+TEXT_SETTINGS = N_('Option Settings:')
+TEXT_LINKS = N_('Links:')
 TEXT_NO_DESCRIPTION = N_('No description available.')
 
 ATTRIB2NOTE = OrderedDict(
@@ -57,15 +66,16 @@ ATTRIB2NOTE = OrderedDict(
     is_calculated=N_('calculated'),
     is_file_info=N_('info from audio file'),
     not_from_mb=N_('not provided from MusicBrainz data'),
+    not_populated_by_picard=N_('not populated by stock Picard'),
 )
 
 
 class TagVar:
     def __init__(
         self, name, shortdesc=None, longdesc=None,
-        is_preserved=False, is_hidden=False, not_script_variable=False,
-        is_tag=True, is_calculated=False, is_file_info=False,
-        not_from_mb=False
+        is_preserved=False, is_hidden=False, is_script_variable=True, is_tag=True, is_calculated=False,
+        is_file_info=False, is_from_mb=True, is_populated_by_picard=True, see_also=None, related_options=None,
+        doc_links=None
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -76,22 +86,30 @@ class TagVar:
                   contain markup.
         is_preserved: the tag is preserved (boolean, default: False)
         is_hidden: the tag is "hidden", name will be prefixed with "~" (boolean, default: False)
-        not_script_variable: the tag cannot be used as script variable (boolean, default: False)
+        is_script_variable: the tag cannot be used as script variable (boolean, default: True)
         is_tag: the tag is an actual tag (not a calculated or derived one) (boolean, default: True)
         is_calculated: the tag is obtained by external calculation (boolean, default: False)
         is_file_info: the tag is a file information, displayed in file info box (boolean, default: False)
-        not_from_mb: the tag information is not provided from the MusicBrainz database (boolean, default: False)
+        is_from_mb: the tag information is provided from the MusicBrainz database (boolean, default: True)
+        is_populated_by_picard: the tag information is not populated by stock Picard (boolean, default: False)
+        see_also: an iterable containing ids of related tags
+        related_options: an iterable containing the related option settings (see picard/options.py)
+        doc_links: an iterable containing links to external documentation (DocumentLink tuples)
         """
         self._name = name
         self._shortdesc = shortdesc
         self._longdesc = longdesc
         self.is_preserved = is_preserved
         self.is_hidden = is_hidden
-        self.not_script_variable = not_script_variable
+        self.is_script_variable = is_script_variable
         self.is_tag = is_tag
         self.is_calculated = is_calculated
         self.is_file_info = is_file_info
-        self.not_from_mb = not_from_mb
+        self.is_from_mb = is_from_mb
+        self.is_populated_by_picard = is_populated_by_picard
+        self.see_also = see_also
+        self.related_options = related_options
+        self.doc_links = doc_links
 
     @property
     def shortdesc(self):
@@ -106,6 +124,18 @@ class TagVar:
         if self._longdesc:
             return self._longdesc.strip()
         return self.shortdesc
+
+    @property
+    def not_from_mb(self):
+        return not self.is_from_mb
+
+    @property
+    def not_script_variable(self):
+        return not self.is_script_variable
+
+    @property
+    def not_populated_by_picard(self):
+        return not self.is_populated_by_picard
 
     def __str__(self):
         """hidden marked with a prefix"""
@@ -125,6 +155,20 @@ class TagVar:
         for attrib, note in ATTRIB2NOTE.items():
             if getattr(self, attrib):
                 yield note
+
+    def settings(self):
+        if not self.related_options:
+            return None
+        for setting in self.related_options:
+            title = profile_setting_title(setting)
+            if title:
+                yield _(title)
+
+    def links(self):
+        if not self.doc_links:
+            return None
+        for doclink in self.doc_links:
+            yield f"<a href='{doclink.link}'>{doclink.title}</a>"
 
 
 class TagVars(MutableSequence):
@@ -198,19 +242,50 @@ class TagVars(MutableSequence):
         else:
             return title
 
+    @staticmethod
+    def _add_section(title, text):
+        return f"<p><strong>{title}</strong> {'; '.join(text)}.</p>"
+
     def display_tooltip(self, name):
         name, tagdesc, _search_name, item = self.item_from_name(name)
 
         title = _(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION)
 
+        if markdown is None:
+            title = '<p>' + title.replace('\n', '<br />') + '</p>'
+        else:
+            title = markdown(title)
+
         notes = tuple(item.notes()) if item else tuple()
         if notes:
-            title += f"\n\n**{_(TEXT_NOTES)}** {'; '.join(notes)}."
+            title += self._add_section(_(TEXT_NOTES), notes)
+
+        if tagdesc:
+            return f"<p><em>%{name}%</em> [{tagdesc}]</p>{title}"
+        else:
+            return f"<p><em>%{name}%</em></p>{title}"
+
+    def display_full_description(self, name):
+        name, tagdesc, _search_name, item = self.item_from_name(name)
+
+        title = _(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION)
 
         if markdown is None:
             title = '<p>' + title.replace('\n', '<br />') + '</p>'
         else:
             title = markdown(title)
+
+        notes = tuple(item.notes()) if item else tuple()
+        if notes:
+            title += self._add_section(_(TEXT_NOTES), notes)
+
+        settings = tuple(item.settings()) if item else tuple()
+        if settings:
+            title += self._add_section(_(TEXT_SETTINGS), settings)
+
+        links = tuple(item.links()) if item else tuple()
+        if links:
+            title += self._add_section(_(TEXT_LINKS), links)
 
         if tagdesc:
             return f"<p><em>%{name}%</em> [{tagdesc}]</p>{title}"
@@ -242,7 +317,7 @@ ALL_TAGS = TagVars(
             'found in a file, and is calculated using the Chromaprint software.'
         ),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'acoustid_id',
@@ -253,7 +328,7 @@ ALL_TAGS = TagVars(
             'if the fingerprints are similar enough.'
         ),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'albumartist',
@@ -282,9 +357,7 @@ ALL_TAGS = TagVars(
             'A multi-value variable containing the country codes for all of the credited album artists, '
             'in the same order as the artists. Duplicate country codes will be shown if there are more '
             'than one artist from the same country. If a country code is not provided by the webservice '
-            'the code "XX" will be used to indicate an unknown country. For example, if the first '
-            'credited artist is from Great Britain and there are two other credited artists from Canada, '
-            'the value would be "GB; CA; CA".'
+            'the code "XX" will be used to indicate an unknown country.'
         ),
         is_hidden=True,
         is_tag=False,
@@ -312,7 +385,7 @@ ALL_TAGS = TagVars(
         'albumsort',
         shortdesc=N_('Album Sort Order'),
         longdesc=N_('The sort name of the title of the release.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'arranger',
@@ -347,9 +420,7 @@ ALL_TAGS = TagVars(
             'A multi-value variable containing the country codes for all of the credited track artists, '
             'in the same order as the artists. Duplicate country codes will be shown if there are more '
             'than one artist from the same country. If a country code is not provided by the webservice '
-            'the code "XX" will be used to indicate an unknown country. For example, if the first '
-            'credited artist is from Great Britain and there are two other credited artists from Canada, '
-            'the value would be "GB; CA; CA".'
+            'the code "XX" will be used to indicate an unknown country.'
         ),
         is_hidden=True,
         is_tag=False,
@@ -375,12 +446,16 @@ ALL_TAGS = TagVars(
         'barcode',
         shortdesc=N_('Barcode'),
         longdesc=N_('The barcode assigned to the release.'),
+        doc_links=(
+            DocumentLink(N_('Barcode in MusicBrainz documentation'), PICARD_URLS['mb_doc'] + 'Barcode'),
+            DocumentLink(N_('Barcode mapping in Picard documentation'),  PICARD_URLS['documentation'] + 'appendices/tag_mapping.html#id6'),
+        ),
     ),
     TagVar(
         'bpm',
         shortdesc=N_('BPM'),
         longdesc=N_('Beats per minute of the track.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'bitrate',
@@ -390,7 +465,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'bits_per_sample',
@@ -400,7 +475,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'catalognumber',
@@ -419,7 +494,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
 
     TagVar(
@@ -427,10 +502,10 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Comment'),
         longdesc=N_(
             'The disambiguation comment entered to help distinguish one release from another (e.g.: '
-            'Deluxe version with 2 bonus tracks). This is not populated by stock Picard. It may be '
-            'used and populated by certain plugins. Picard stores this information in the '
-            '`%_releasecomment%` variable.'
+            'Deluxe version with 2 bonus tracks).'
         ),
+        is_populated_by_picard=False,
+        see_also=('releasecomment', ),
     ),
     TagVar(
         'compilation',
@@ -462,7 +537,7 @@ ALL_TAGS = TagVars(
             'The copyright message for the copyright holder of the original sound, beginning with a '
             'year and a space character.'
         ),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'datatrack',
@@ -474,7 +549,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'date',
         shortdesc=N_('Date'),
-        longdesc=N_('The date that the release (album) was issued, in the format YYYY-MM-DD.'),
+        longdesc=N_('The date that the release (album) was issued, in the format `YYYY-MM-DD`.'),
     ),
     TagVar(
         'director',
@@ -491,13 +566,14 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         # TODO: Check if this actually exists or if it should be %_musicbrainz_discid%
         'discid',
         shortdesc=N_('Disc Id'),
         longdesc=N_(''),
+        see_also=('musicbrainz_discid', ),
     ),
     TagVar(
         'discnumber',
@@ -510,7 +586,7 @@ ALL_TAGS = TagVars(
         longdesc=N_('Set to 1 if the disc the track is on has a "pregap track", otherwise empty.'),
         is_hidden=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'discsubtitle',
@@ -526,13 +602,13 @@ ALL_TAGS = TagVars(
         'encodedby',
         shortdesc=N_('Encoded By'),
         longdesc=N_('The person or organization that encoded the track.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'encodersettings',
         shortdesc=N_('Encoder Settings'),
         longdesc=N_('The settings used when encoding the track.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'engineer',
@@ -546,25 +622,25 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'file_created_timestamp',
         shortdesc=N_('File created timestamp'),
-        longdesc=N_('The file creation timestamp in the form "YYYY-MM-DD HH:MM:SS" as reported by the file system.'),
+        longdesc=N_('The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by the file system.'),
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'file_modified_timestamp',
         shortdesc=N_('File modified timestamp'),
-        longdesc=N_('The file modification timestamp in the form "YYYY-MM-DD HH:MM:SS" as reported by the file system.'),
+        longdesc=N_('The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by the file system.'),
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'filename',
@@ -573,7 +649,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'filepath',
@@ -581,7 +657,7 @@ ALL_TAGS = TagVars(
         longdesc=N_('Full path and name of the file.'),
         is_hidden=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'filesize',
@@ -590,7 +666,7 @@ ALL_TAGS = TagVars(
         is_file_info=True,
         is_hidden=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'format',
@@ -600,28 +676,28 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'gapless',
         shortdesc=N_('Gapless Playback'),
         longdesc=N_('Indicates whether or not there are gaps between the recordings on the release.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'genre',
         shortdesc=N_('Genre'),
         longdesc=N_(
-            'A multi-value tag containing the specified genre information from MusicBrainz. Requires the '
-            '"Use genres from MusicBrainz" option setting be enabled.'
+            'A multi-value tag containing the specified genre information from MusicBrainz.'
         ),
+        related_options=('use_genres', ),
     ),
     TagVar(
         # TODO: Check if this actually exists or if it was provided by the last.fm plugin.
         'grouping',
         shortdesc=N_('Grouping'),
         longdesc=N_(''),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'isrc',
@@ -635,7 +711,7 @@ ALL_TAGS = TagVars(
         'key',
         shortdesc=N_('Key'),
         longdesc=N_('The key of the music.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'label',
@@ -674,13 +750,12 @@ ALL_TAGS = TagVars(
         'lyrics',
         shortdesc=N_('Lyrics'),
         longdesc=N_('The lyrics for the track.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'media',
         shortdesc=N_('Media'),
-        # TODO: Confirm this is a multi-value.
-        longdesc=N_('A multi-value tag containing the media on which the release was distributed (e.g.: CD).'),
+        longdesc=N_('The media on which the release was distributed (e.g.: CD).'),
     ),
     TagVar(
         'mixer',
@@ -688,17 +763,16 @@ ALL_TAGS = TagVars(
         longdesc=N_('The names of the "*Mixed By*" engineers associated with the track.'),
     ),
     TagVar(
-        # TODO: Check if this actually exists or if it was provided by the last.fm plugin.
         'mood',
         shortdesc=N_('Mood'),
-        longdesc=N_(''),
-        not_from_mb=True,
+        longdesc=N_('The mood associated with the track.'),
+        is_from_mb=False,
     ),
     TagVar(
         'movement',
         shortdesc=N_('Movement'),
         longdesc=N_('Name of the movement (e.g.: "Andante con moto").'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'movementnumber',
@@ -707,13 +781,13 @@ ALL_TAGS = TagVars(
             'Movement number in Arabic numerals (e.g.: "2"). Players explicitly supporting this tag will often '
             'display it in Roman numerals (e.g.: "II").'
         ),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'movementtotal',
         shortdesc=N_('Movement Count'),
         longdesc=N_('Total number of movements in the work (e.g.: "4").'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'multiartist',
@@ -809,13 +883,13 @@ ALL_TAGS = TagVars(
         'musicip_fingerprint',
         shortdesc=N_('MusicIP Fingerprint'),
         longdesc=N_('The MusicIP Fingerprint for the track.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'musicip_puid',
         shortdesc=N_('MusicIP PUID'),
         longdesc=N_('The MusicIP PUIDs associated with the track.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'originalalbum',
@@ -824,7 +898,7 @@ ALL_TAGS = TagVars(
             'The release title of the earliest release in the release group intended for the title of the '
             'original recording.'
         ),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'originalartist',
@@ -833,22 +907,15 @@ ALL_TAGS = TagVars(
             'The track artist of the earliest release in the release group intended for the performers of '
             'the original recording.'
         ),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'originaldate',
         shortdesc=N_('Original Release Date'),
         longdesc=N_(
-            'The original release date in the format YYYY-MM-DD. By default this is set to the earliest '
+            'The original release date in the format `YYYY-MM-DD`. By default this is set to the earliest '
             'release in the release group. This can provide, for example, the release date of the vinyl '
-            'version of what you have on CD.\n\nThis is the same information provided in the '
-            '`%_releasegroup_firstreleasedate%` variable, and is consistent across all tracks in the '
-            'release. If you prefer to have this tag populated with the date of the earliest recording of '
-            'the track in the database, which will likely be different for each track in the release, '
-            'this can be achieved by enabling a one-line tagging script as:\n\n'
-            '`$set(originaldate,%_recording_firstreleasedate%)`\n\nBe aware that setting this can cause a '
-            'release to be scattered across multiple directories if you use `%originaldate%` as part of '
-            'the path portion of your file naming script.\n\n**Note:** If you are storing tags in MP3 files as '
+            'version of what you have on CD.\n\n**Note:** If you are storing tags in MP3 files as '
             'ID3v2.3 then the original date can only be stored as a year.'
         ),
     ),
@@ -856,7 +923,7 @@ ALL_TAGS = TagVars(
         'originalfilename',
         shortdesc=N_('Original Filename'),
         longdesc=N_('The original name of the audio file.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'originalyear',
@@ -872,7 +939,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('FIXME:performance_attributes'),
         longdesc=N_(
             'List of performance attributes for the work (e.g.: "*live*", "*cover*", "*medley*"). Use `$inmulti()` '
-            'to check for a specific type (i.e.: `$if($inmulti(%_performance_attributes%,medley), (Medley),)`).'
+            'to check for a specific type (e.g.: `$if($inmulti(%_performance_attributes%,medley), (Medley),)`).'
         ),
         is_hidden=True,
         is_tag=False,
@@ -892,13 +959,13 @@ ALL_TAGS = TagVars(
         'podcast',
         shortdesc=N_('Podcast'),
         longdesc=N_('Indicates whether or not the recording is a podcast.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'podcasturl',
         shortdesc=N_('Podcast URL'),
         longdesc=N_('The associated url if the recording is a podcast.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'pregap',
@@ -926,14 +993,14 @@ ALL_TAGS = TagVars(
         shortdesc=N_('R128 Album Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'r128_track_gain',
         shortdesc=N_('R128 Track Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'rating',
@@ -944,7 +1011,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'recording_firstreleasedate',
         shortdesc=N_('FIXME:recording_firstreleasedate'),
-        longdesc=N_('The date of the earliest recording for a track in the format YYYY-MM-DD.'),
+        longdesc=N_('The date of the earliest recording for a track in the format `YYYY-MM-DD`.'),
         is_hidden=True,
         is_tag=False,
     ),
@@ -1018,13 +1085,13 @@ ALL_TAGS = TagVars(
     TagVar(
         'releasedate',
         shortdesc=N_('Release Date'),
-        # TODO: Confirm long description and that this is not provided from the MB data.
         longdesc=N_(
             'The date that the release (album) was issued, in the format `YYYY-MM-DD`.'
             'This tag exists for specific use in scripts and plugins, but is not filled by default. In most cases it is '
             'recommended to use the `%date%` tag instead for compatibility with existing software.'
         ),
-        not_from_mb=True,
+        is_from_mb=False,
+        see_also=('date', ),
     ),
     TagVar(
         'releasegroup',
@@ -1039,13 +1106,12 @@ ALL_TAGS = TagVars(
         'releasegroup_firstreleasedate',
         shortdesc=N_('FIXME:releasegroup_firstreleasedate'),
         longdesc=N_(
-            'The date of the earliest release in the release group in the format YYYY-MM-DD. This is intended to '
+            'The date of the earliest release in the release group in the format `YYYY-MM-DD`. This is intended to '
             'provide, for example, the release date of the vinyl version of what you have on CD.'
-            '\n\n'
-            'Note: This is the same information provided in the `%originaldate%` tag.'
         ),
         is_hidden=True,
         is_tag=False,
+        see_also=('originaldate', )
     ),
     TagVar(
         'releasegroup_series',
@@ -1121,9 +1187,9 @@ ALL_TAGS = TagVars(
         'releasetype',
         shortdesc=N_('Release Type'),
         longdesc=N_(
-            'A multi-value tag containing the types of release assigned to the release group. See also '
-            '`%_primaryreleasetype%` and `%_secondaryreleasetype%`.'
+            'A multi-value tag containing the types of release assigned to the release group.'
         ),
+        see_also=('primaryreleasetype', 'secondaryreleasetype'),
     ),
     TagVar(
         'remixer',
@@ -1135,59 +1201,59 @@ ALL_TAGS = TagVars(
         shortdesc=N_('ReplayGain Album Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'replaygain_album_peak',
         shortdesc=N_('ReplayGain Album Peak'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'replaygain_album_range',
         shortdesc=N_('ReplayGain Album Range'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'replaygain_reference_loudness',
         shortdesc=N_('ReplayGain Reference Loudness'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'replaygain_track_gain',
         shortdesc=N_('ReplayGain Track Gain'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'replaygain_track_peak',
         shortdesc=N_('ReplayGain Track Peak'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'replaygain_track_range',
         shortdesc=N_('ReplayGain Track Range'),
         longdesc=N_(''),
         is_calculated=True,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'sample_rate',
         shortdesc=N_('File sample rate'),
-        longdesc=N_(''),
+        longdesc=N_('The sample rate of the audio file.'),
         is_file_info=True,
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'script',
@@ -1208,10 +1274,9 @@ ALL_TAGS = TagVars(
         is_tag=False,
     ),
     TagVar(
-        # TODO: Does this actually exist and does it come from MusicBrainz?  Is it an indicator if a track is silence?
         'silence',
         shortdesc=N_('FIXME:silence'),
-        longdesc=N_(''),
+        longdesc=N_('1 if the track title is "[silence]"'),
         is_hidden=True,
         is_tag=False,
     ),
@@ -1219,7 +1284,7 @@ ALL_TAGS = TagVars(
         'show',
         shortdesc=N_('Show Name'),
         longdesc=N_('The name of the show if the recording is associated with a television program.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'showmovement',
@@ -1230,25 +1295,25 @@ ALL_TAGS = TagVars(
             'will be displayed as "Symphony no. 5 in C minor, op. 67: II. Andante con moto" regardless of the value of the '
             'title tag.'
         ),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'showsort',
         shortdesc=N_('Show Name Sort Order'),
         longdesc=N_('The sort name of the show if the recording is associated with a television program.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'subtitle',
         shortdesc=N_('Subtitle'),
         longdesc=N_('This is used for information directly related to the contents title.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'syncedlyrics',
         shortdesc=N_('Synced Lyrics'),
         longdesc=N_('Synchronized lyrics for the track.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'title',
@@ -1259,7 +1324,7 @@ ALL_TAGS = TagVars(
         'titlesort',
         shortdesc=N_('Title Sort Order'),
         longdesc=N_('The sort name of the track title.'),
-        not_from_mb=True,
+        is_from_mb=False,
     ),
     TagVar(
         'totalalbumtracks',
@@ -1391,6 +1456,10 @@ def display_tag_name(name):
 
 def display_tag_tooltip(name):
     return ALL_TAGS.display_tooltip(name)
+
+
+def display_tag_full_description(name):
+    return ALL_TAGS.display_full_description(name)
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')

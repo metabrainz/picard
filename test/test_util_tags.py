@@ -27,9 +27,11 @@ import unittest.mock as mock
 
 from test.picardtestcase import PicardTestCase
 
+from picard.profile import profile_groups_add_setting
 from picard.util.tags import (
     TagVar,
     TagVars,
+    display_tag_full_description,
     display_tag_name,
     display_tag_tooltip,
     markdown,
@@ -49,9 +51,9 @@ class TagVarsTest(PicardTestCase):
         self.tagvar_notag = TagVar('notag', is_tag=False)
         self.tagvar_nodesc = TagVar('nodesc')
         self.tagvar_notes1 = TagVar('notes1', shortdesc='notes1_sd', longdesc='notes1_ld', is_preserved=True, is_calculated=True,
-                                   is_file_info=True, is_hidden=True, not_script_variable=True)
-        self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, not_from_mb=True)
-        self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', not_from_mb=True)
+                                   is_file_info=True, is_hidden=True, is_script_variable=False)
+        self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False)
+        self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', is_from_mb=False)
 
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
@@ -174,7 +176,7 @@ class TagVarsTest(PicardTestCase):
             self.tagvar_only_sd,
             self.tagvar_sd_ld,
         )
-        self.tagvar_sd_ld.not_script_variable = True
+        self.tagvar_sd_ld.is_script_variable = False
 
         with mock.patch('picard.util.tags.ALL_TAGS', tagvars):
             self.assertEqual(
@@ -197,33 +199,21 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_tooltip('only_sd'), '<p><em>%only_sd%</em></p><p>only_sd_shortdesc</p>')
 
         result = (
-            '<p><em>%_notes1%</em></p><p>notes1_ld</p>\n'
+            '<p><em>%_notes1%</em></p><p>notes1_ld</p>'
             '<p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; info from audio file.</p>'
-        ) if markdown is not None else (
-            '<p><em>%_notes1%</em></p><p>notes1_ld'
-            '<br /><br />'
-            '**Notes:** preserved read-only; not for use in scripts; calculated; info from audio file.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('_notes1'), result)
         self.assertEqual(tagvars.display_tooltip('~notes1'), result)
 
         result = (
-            '<p><em>%notes2%</em></p><p>notes2_ld</p>\n'
+            '<p><em>%notes2%</em></p><p>notes2_ld</p>'
             '<p><strong>Notes:</strong> info from audio file; not provided from MusicBrainz data.</p>'
-        ) if markdown is not None else (
-            '<p><em>%notes2%</em></p><p>notes2_ld'
-            '<br /><br />'
-            '**Notes:** info from audio file; not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('notes2'), result)
 
         result = (
-            '<p><em>%notes3%</em></p><p>notes3_ld</p>\n'
+            '<p><em>%notes3%</em></p><p>notes3_ld</p>'
             '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
-        ) if markdown is not None else (
-            '<p><em>%notes3%</em></p><p>notes3_ld'
-            '<br /><br />'
-            '**Notes:** not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('notes3'), result)
 
@@ -263,22 +253,69 @@ class UtilTagsTest(PicardTestCase):
         )
 
         result = (
-            '<p><em>%albumsort%</em></p><p>The sort name of the title of the release.</p>\n'
+            '<p><em>%albumsort%</em></p><p>The sort name of the title of the release.</p>'
             '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
-        ) if markdown is not None else (
-            '<p><em>%albumsort%</em></p><p>The sort name of the title of the release.'
-            '<br /><br />'
-            '**Notes:** not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_tooltip('albumsort'), result)
 
         result = (
-            '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.</p>\n'
+            '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.</p>'
             '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
-        ) if markdown is not None else (
-            '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.'
-            '<br /><br />'
-            '**Notes:** preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_tooltip('_bitrate'), result)
         self.assertEqual(display_tag_tooltip('~bitrate'), result)
+
+        result = (
+            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
+            '<ul>\n'
+            '<li>vocals or instruments for the associated release or recording, where "type" can be "<em>vocal</em>", '
+            '"<em>guest guitar</em>", "<em>solo violin</em>", etc.</li>\n'
+            '<li>the orchestra for the associated release or recording, where "type" is "<em>orchestra</em>"</li>\n'
+            '<li>the concert master for the associated release or recording, where "type" is "<em>concertmaster</em>"</li>\n'
+            '</ul>'
+        ) if markdown is not None else (
+            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
+            '<br /><br />'
+            '- vocals or instruments for the associated release or recording, where "type" can be "*vocal*", "*guest guitar*", "*solo violin*", etc.<br />'
+            '- the orchestra for the associated release or recording, where "type" is "*orchestra*"<br />'
+            '- the concert master for the associated release or recording, where "type" is "*concertmaster*"</p>'
+        )
+        self.assertEqual(display_tag_tooltip('performer'), result)
+
+    def test_display_tag_full_description(self):
+        profile_groups_add_setting('junk', 'use_genres', None, 'Use genres from MusicBrainz')
+        result = (
+            '<p><em>%genre%</em></p><p>A multi-value tag containing the specified genre information from MusicBrainz.</p>'
+            '<p><strong>Option Settings:</strong> Use genres from MusicBrainz.</p>'
+        )
+        self.assertEqual(display_tag_full_description('genre'), result)
+
+        result = (
+            '<p><em>%barcode%</em></p><p>The barcode assigned to the release.</p>'
+            "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/Barcode'>Barcode in MusicBrainz documentation</a>; "
+            "<a href='https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html#id6'>Barcode mapping in Picard documentation</a>.</p>"
+        )
+        self.assertEqual(display_tag_full_description('barcode'), result)
+
+        result = (
+            '<p><em>%_sample_rate%</em></p><p>The sample rate of the audio file.</p>'
+            '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
+        )
+        self.assertEqual(display_tag_full_description('_sample_rate'), result)
+
+        result = (
+            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
+            '<ul>\n'
+            '<li>vocals or instruments for the associated release or recording, where "type" can be "<em>vocal</em>", '
+            '"<em>guest guitar</em>", "<em>solo violin</em>", etc.</li>\n'
+            '<li>the orchestra for the associated release or recording, where "type" is "<em>orchestra</em>"</li>\n'
+            '<li>the concert master for the associated release or recording, where "type" is "<em>concertmaster</em>"</li>\n'
+            '</ul>'
+        ) if markdown is not None else (
+            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
+            '<br /><br />'
+            '- vocals or instruments for the associated release or recording, where "type" can be "*vocal*", "*guest guitar*", "*solo violin*", etc.<br />'
+            '- the orchestra for the associated release or recording, where "type" is "*orchestra*"<br />'
+            '- the concert master for the associated release or recording, where "type" is "*concertmaster*"</p>'
+        )
+        self.assertEqual(display_tag_full_description('performer'), result)
