@@ -58,6 +58,7 @@ DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
 TEXT_NOTES = N_('Notes:')
 TEXT_SETTINGS = N_('Option Settings:')
 TEXT_LINKS = N_('Links:')
+TEXT_SEE_ALSO = N_('See Also:')
 TEXT_NO_DESCRIPTION = N_('No description available.')
 
 ATTRIB2NOTE = OrderedDict(
@@ -169,6 +170,12 @@ class TagVar:
             return None
         for doclink in self.doc_links:
             yield f"<a href='{doclink.link}'>{doclink.title}</a>"
+
+    def see_alsos(self):
+        if not self.see_also:
+            return None
+        for item in self.see_also:
+            yield item
 
 
 class TagVars(MutableSequence):
@@ -286,6 +293,16 @@ class TagVars(MutableSequence):
         links = tuple(item.links()) if item else tuple()
         if links:
             title += self._add_section(_(TEXT_LINKS), links)
+
+        alsos = tuple(item.see_alsos()) if item else tuple()
+        if alsos:
+            temp = set()
+            for also_name in alsos:
+                also_name, _also_desc, _also_search_name, also_item = self.item_from_name(also_name)
+                if also_item:
+                    temp.add('%' + also_name + '%')
+            if temp:
+                title += self._add_section(_(TEXT_SEE_ALSO), temp)
 
         if tagdesc:
             return f"<p><em>%{name}%</em> [{tagdesc}]</p>{title}"
