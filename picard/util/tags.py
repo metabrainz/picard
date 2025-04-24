@@ -862,7 +862,7 @@ ALL_TAGS = TagVars(
         'originalyear',
         shortdesc=N_('Original Year'),
         longdesc=N_(
-            'The year of the original release date in the format YYYY. By default this is set to the earliest '
+            'The year of the original release date in the format `YYYY`. By default this is set to the earliest '
             'release in the release group. This can provide, for example, the release year of the vinyl version '
             'of what you have on CD.'
         ),
@@ -1020,7 +1020,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Release Date'),
         # TODO: Confirm long description and that this is not provided from the MB data.
         longdesc=N_(
-            'The date that the release (album) was issued, in the format YYYY-MM-DD.'
+            'The date that the release (album) was issued, in the format `YYYY-MM-DD`.'
             'This tag exists for specific use in scripts and plugins, but is not filled by default. In most cases it is '
             'recommended to use the `%date%` tag instead for compatibility with existing software.'
         ),
