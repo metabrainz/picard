@@ -157,7 +157,7 @@ class TagVar:
             if getattr(self, attrib):
                 yield note
 
-    def settings(self):
+    def related_options_titles(self):
         if not self.related_options:
             return None
         for setting in self.related_options:
@@ -175,7 +175,7 @@ class TagVar:
         if not self.see_also:
             return None
         for item in self.see_also:
-            yield item
+            yield f"%{item}%"
 
 
 class TagVars(MutableSequence):
@@ -250,64 +250,47 @@ class TagVars(MutableSequence):
             return title
 
     @staticmethod
-    def _add_section(title, text):
-        return f"<p><strong>{title}</strong> {'; '.join(text)}.</p>"
+    def _add_section(title, values):
+        if not values:
+            return ''
+        return f"<p><strong>{title}</strong> {'; '.join(values)}.</p>"
 
-    def display_tooltip(self, name):
-        name, tagdesc, _search_name, item = self.item_from_name(name)
-
-        title = _(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION)
-
+    @staticmethod
+    def _markdown(text: str):
         if markdown is None:
-            title = '<p>' + title.replace('\n', '<br />') + '</p>'
-        else:
-            title = markdown(title)
+            return '<p>' + text.replace('\n', '<br />') + '</p>'
+        return markdown(text)
+
+    def display_tooltip(self, tagname):
+        name, tagdesc, _search_name, item = self.item_from_name(tagname)
+
+        content = self._markdown(_(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION))
 
         notes = tuple(item.notes()) if item else tuple()
-        if notes:
-            title += self._add_section(_(TEXT_NOTES), notes)
+        content += self._add_section(_(TEXT_NOTES), notes)
 
         if tagdesc:
-            return f"<p><em>%{name}%</em> [{tagdesc}]</p>{title}"
+            return f"<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
         else:
-            return f"<p><em>%{name}%</em></p>{title}"
+            return f"<p><em>%{name}%</em></p>{content}"
 
-    def display_full_description(self, name):
-        name, tagdesc, _search_name, item = self.item_from_name(name)
+    def display_full_description(self, tagname):
+        # Get basic content
+        content = self.display_tooltip(tagname)
 
-        title = _(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION)
+        # Append additional sections as required
+        name, tagdesc, _search_name, item = self.item_from_name(tagname)
+        if item:
+            sections = {
+                # TEXT_NOTES: item.notes(),     # Already entered as part of basic content.
+                TEXT_SETTINGS: item.related_options_titles(),
+                TEXT_LINKS: item.links(),
+                TEXT_SEE_ALSO: item.see_alsos(),
+            }
+            for title, values in sections.items():
+                content += self._add_section(_(title), tuple(values))
 
-        if markdown is None:
-            title = '<p>' + title.replace('\n', '<br />') + '</p>'
-        else:
-            title = markdown(title)
-
-        notes = tuple(item.notes()) if item else tuple()
-        if notes:
-            title += self._add_section(_(TEXT_NOTES), notes)
-
-        settings = tuple(item.settings()) if item else tuple()
-        if settings:
-            title += self._add_section(_(TEXT_SETTINGS), settings)
-
-        links = tuple(item.links()) if item else tuple()
-        if links:
-            title += self._add_section(_(TEXT_LINKS), links)
-
-        alsos = tuple(item.see_alsos()) if item else tuple()
-        if alsos:
-            temp = set()
-            for also_name in alsos:
-                also_name, _also_desc, _also_search_name, also_item = self.item_from_name(also_name)
-                if also_item:
-                    temp.add('%' + also_name + '%')
-            if temp:
-                title += self._add_section(_(TEXT_SEE_ALSO), temp)
-
-        if tagdesc:
-            return f"<p><em>%{name}%</em> [{tagdesc}]</p>{title}"
-        else:
-            return f"<p><em>%{name}%</em></p>{title}"
+        return content
 
     def names(self, selector=None):
         for item in self._items:

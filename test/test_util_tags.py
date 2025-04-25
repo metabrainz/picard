@@ -27,8 +27,10 @@ import unittest.mock as mock
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const import PICARD_URLS
 from picard.profile import profile_groups_add_setting
 from picard.util.tags import (
+    DocumentLink,
     TagVar,
     TagVars,
     display_tag_full_description,
@@ -54,6 +56,10 @@ class TagVarsTest(PicardTestCase):
                                    is_file_info=True, is_hidden=True, is_script_variable=False)
         self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False)
         self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', is_from_mb=False)
+        self.tagvar_everything = TagVar('everything', shortdesc='everything sd', longdesc='everything ld.', is_preserved=True,
+                                        is_script_variable=False, is_tag=False, is_calculated=True, is_file_info=True, is_from_mb=False,
+                                        is_populated_by_picard=False, see_also=('artist', 'title'), related_options=('everything_test', ),
+                                        doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
 
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
@@ -216,6 +222,21 @@ class TagVarsTest(PicardTestCase):
             '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('notes3'), result)
+
+    def test_tagvars_full_description(self):
+        tagvars = TagVars(
+            self.tagvar_everything,
+        )
+        profile_groups_add_setting('junk', 'everything_test', None, 'Everything test option setting')
+        result = (
+            '<p><em>%everything%</em></p><p>everything ld.</p>'
+            '<p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; '
+            'info from audio file; not provided from MusicBrainz data; not populated by stock Picard.</p>'
+            '<p><strong>Option Settings:</strong> Everything test option setting.</p>'
+            "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
+            '<p><strong>See Also:</strong> %artist%; %title%.</p>'
+        )
+        self.assertEqual(tagvars.display_full_description('everything'), result)
 
 
 class UtilTagsTest(PicardTestCase):
