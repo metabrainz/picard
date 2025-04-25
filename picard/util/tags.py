@@ -343,7 +343,7 @@ class TagVars(MutableSequence):
 ALL_TAGS = TagVars(
     TagVar(
         'absolutetracknumber',
-        shortdesc=N_('FIXME:absolutetracknumber'),
+        shortdesc=N_('Absolute Track No.'),
         longdesc=N_(
             'The absolute number of this track disregarding the disc number. For example, '
             'this value would be 11 for the second track on disc 2 where disc 1 has 9 tracks.'
@@ -383,7 +383,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'albumartists',
-        shortdesc=N_('FIXME:albumartists'),
+        shortdesc=N_('Album Artists'),
         longdesc=N_(
             "A multi-value variable containing the names of the album's artists. These could be "
             'either "standardized" or "as credited" depending on whether the "Use standardized '
@@ -394,7 +394,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'albumartists_countries',
-        shortdesc=N_('FIXME:albumartists_countries'),
+        shortdesc=N_('Album Artists Countries'),
         longdesc=N_(
             'A multi-value variable containing the country codes for all of the credited album artists, '
             'in the same order as the artists. Duplicate country codes will be shown if there are more '
@@ -413,7 +413,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'albumartists_sort',
-        shortdesc=N_('FIXME:albumartists_sort'),
+        shortdesc=N_('Album Artists Sort Names'),
         longdesc=N_("A multi-value variable containing the sort names of the album's artists."),
         is_hidden=True,
         is_tag=False,
@@ -457,7 +457,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'artists_countries',
-        shortdesc=N_('FIXME:artists_countries'),
+        shortdesc=N_('Artists Countries'),
         longdesc=N_(
             'A multi-value variable containing the country codes for all of the credited track artists, '
             'in the same order as the artists. Duplicate country codes will be shown if there are more '
@@ -474,7 +474,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'artists_sort',
-        shortdesc=N_('FIXME:artists_sort'),
+        shortdesc=N_('Artists Sort Names'),
         longdesc=N_("A multi-value variable containing the sort names of the track's artists."),
         is_hidden=True,
         is_tag=False,
@@ -583,7 +583,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'datatrack',
-        shortdesc=N_('FIXME:datatrack'),
+        shortdesc=N_('Data Track'),
         longdesc=N_('Set to 1 if the track is a "data track", otherwise empty.'),
         is_hidden=True,
         is_tag=False,
@@ -613,8 +613,8 @@ ALL_TAGS = TagVars(
     TagVar(
         # TODO: Check if this actually exists or if it should be %_musicbrainz_discid%
         'discid',
-        shortdesc=N_('Disc Id'),
-        longdesc=N_(''),
+        shortdesc=N_('Disc ID'),
+        longdesc=N_('The identification number of the disc.'),
         see_also=('musicbrainz_discid', ),
     ),
     TagVar(
@@ -624,7 +624,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'discpregap',
-        shortdesc=N_('FIXME:discpregap'),
+        shortdesc=N_('Disc Has Pregap'),
         longdesc=N_('Set to 1 if the disc the track is on has a "pregap track", otherwise empty.'),
         is_hidden=True,
         is_tag=False,
@@ -659,7 +659,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'extension',
-        shortdesc=N_('File extension'),
+        shortdesc=N_('File Extension'),
         longdesc=N_("The file's extension."),
         is_hidden=True,
         is_preserved=True,
@@ -668,7 +668,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'file_created_timestamp',
-        shortdesc=N_('File created timestamp'),
+        shortdesc=N_('File Created Timestamp'),
         longdesc=N_('The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by the file system.'),
         is_hidden=True,
         is_preserved=True,
@@ -677,7 +677,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'file_modified_timestamp',
-        shortdesc=N_('File modified timestamp'),
+        shortdesc=N_('File Modified Timestamp'),
         longdesc=N_('The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by the file system.'),
         is_hidden=True,
         is_preserved=True,
@@ -686,7 +686,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'filename',
-        shortdesc=N_('File name'),
+        shortdesc=N_('File Name'),
         longdesc=N_('The name of the file without extension.'),
         is_hidden=True,
         is_preserved=True,
@@ -703,7 +703,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'filesize',
-        shortdesc=N_('File size'),
+        shortdesc=N_('File Size'),
         longdesc=N_('Size of the file in bytes.'),
         is_file_info=True,
         is_hidden=True,
@@ -712,7 +712,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'format',
-        shortdesc=N_('File format'),
+        shortdesc=N_('File Format'),
         longdesc=N_('Media format of the file (e.g.: MPEG-1 Audio).'),
         is_file_info=True,
         is_hidden=True,
@@ -738,7 +738,7 @@ ALL_TAGS = TagVars(
         # TODO: Check if this actually exists or if it was provided by the last.fm plugin.
         'grouping',
         shortdesc=N_('Grouping'),
-        longdesc=N_(''),
+        longdesc=N_('Genre grouping associated with the track'),
         is_from_mb=False,
     ),
     TagVar(
@@ -833,7 +833,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'multiartist',
-        shortdesc=N_('FIXME:multiartist'),
+        shortdesc=N_('Multiple Artists'),
         longdesc=N_(
             'Set to 1 if not all of the tracks on the album have the same primary artist, otherwise empty.'
         ),
@@ -842,22 +842,22 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'musicbrainz_albumartistid',
-        shortdesc=N_('MusicBrainz Release Artist Id'),
+        shortdesc=N_('Release Artist MBID'),
         longdesc=N_('A multi-value tag containing the MusicBrainz Identifiers (MBIDs) for the release artists.'),
     ),
     TagVar(
         'musicbrainz_albumid',
-        shortdesc=N_('MusicBrainz Release Id'),
+        shortdesc=N_('Release MBID'),
         longdesc=N_('The MusicBrainz Identifier (MBID) for the release.'),
     ),
     TagVar(
         'musicbrainz_artistid',
-        shortdesc=N_('MusicBrainz Artist Id'),
+        shortdesc=N_('Artist MBID'),
         longdesc=N_('A multi-value tag containing the MusicBrainz Identifiers (MBIDs) for the track artists.'),
     ),
     TagVar(
         'musicbrainz_discid',
-        shortdesc=N_('MusicBrainz Disc Id'),
+        shortdesc=N_('Disc MBID'),
         longdesc=N_(
             'The Disc ID is the code number which MusicBrainz uses to link a physical CD to a release listing. '
             'This is based on the table of contents (TOC) information read from the disc. This tag contains the '
@@ -866,7 +866,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'musicbrainz_discids',
-        shortdesc=N_('FIXME:musicbrainz_discids'),
+        shortdesc=N_('Disc IDs'),
         longdesc=N_(
             'A multi-value variable containing a list of all of the disc ids attached to the selected release. '
             'The list provided for each medium only includes the disc ids attached to that medium. For example, '
@@ -878,7 +878,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'musicbrainz_originalalbumid',
-        shortdesc=N_('MusicBrainz Original Release Id'),
+        shortdesc=N_('Original Release MBID'),
         longdesc=N_(
             'The MusicBrainz Identifier (MBID) for the original release. This is only available if the release '
             'has been merged with another release.'
@@ -886,7 +886,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'musicbrainz_originalartistid',
-        shortdesc=N_('MusicBrainz Original Artist Id'),
+        shortdesc=N_('Original Artist MBID'),
         longdesc=N_(
             'A multi-value tag containing the MusicBrainz Identifiers (MBIDs) for the track artists of the original '
             'recording. This is only available if the recording has been merged with another recording.'
@@ -894,22 +894,22 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'musicbrainz_recordingid',
-        shortdesc=N_('MusicBrainz Recording Id'),
+        shortdesc=N_('Recording MBID'),
         longdesc=N_('The MusicBrainz Identifier (MBID) for the recording.'),
     ),
     TagVar(
         'musicbrainz_releasegroupid',
-        shortdesc=N_('MusicBrainz Release Group Id'),
+        shortdesc=N_('Release Group MBID'),
         longdesc=N_('The MusicBrainz Identifier (MBID) for the release group.'),
     ),
     TagVar(
         'musicbrainz_trackid',
-        shortdesc=N_('MusicBrainz Track Id'),
+        shortdesc=N_('Track MBID'),
         longdesc=N_('The MusicBrainz Identifier (MBID) for the track.'),
     ),
     TagVar(
         'musicbrainz_tracknumber',
-        shortdesc=N_('FIXME:musicbrainz_tracknumber'),
+        shortdesc=N_('Track Number Shown'),
         longdesc=N_(
             'The track number written as on the MusicBrainz release, such as vinyl numbering (A1, A2, etc.)'
         ),
@@ -918,7 +918,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'musicbrainz_workid',
-        shortdesc=N_('MusicBrainz Work Id'),
+        shortdesc=N_('Work MBID'),
         longdesc=N_('The MusicBrainz Identifier (MBID) for the Work if a related work exists.'),
     ),
     TagVar(
@@ -978,7 +978,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'performance_attributes',
-        shortdesc=N_('FIXME:performance_attributes'),
+        shortdesc=N_('Performance Attributes'),
         longdesc=N_(
             'List of performance attributes for the work (e.g.: "*live*", "*cover*", "*medley*"). Use `$inmulti()` '
             'to check for a specific type (e.g.: `$if($inmulti(%_performance_attributes%,medley), (Medley),)`).'
@@ -1011,14 +1011,14 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'pregap',
-        shortdesc=N_('FIXME:pregap'),
+        shortdesc=N_('Pregap Track'),
         longdesc=N_('Set to 1 if the track is a "pregap track", otherwise empty.'),
         is_hidden=True,
         is_tag=False,
     ),
     TagVar(
         'primaryreleasetype',
-        shortdesc=N_('FIXME:primaryreleasetype'),
+        shortdesc=N_('Primary Release Type'),
         longdesc=N_(
             'The primary type of the release group (i.e.: *album*, *single*, *ep*, *broadcast*, or *other*).'
         ),
@@ -1033,14 +1033,14 @@ ALL_TAGS = TagVars(
     TagVar(
         'r128_album_gain',
         shortdesc=N_('R128 Album Gain'),
-        longdesc=N_(''),
+        longdesc=N_('Album gain as determined by EBU R 128 analysis.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'r128_track_gain',
         shortdesc=N_('R128 Track Gain'),
-        longdesc=N_(''),
+        longdesc=N_('Track gain as determined by EBU R 128 analysis.'),
         is_calculated=True,
         is_from_mb=False,
     ),
@@ -1052,66 +1052,66 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'recording_firstreleasedate',
-        shortdesc=N_('FIXME:recording_firstreleasedate'),
+        shortdesc=N_('Recording First Released'),
         longdesc=N_('The date of the earliest recording for a track in the format `YYYY-MM-DD`.'),
         is_hidden=True,
         is_tag=False,
     ),
     TagVar(
         'recording_series',
-        shortdesc=N_('FIXME:recording_series'),
+        shortdesc=N_('Recording Series'),
         longdesc=N_('A multi-value variable containing the series titles associated with the recording.'),
         is_hidden=True,
     ),
     TagVar(
         'recording_seriescomment',
-        shortdesc=N_('FIXME:recording_seriescomment'),
+        shortdesc=N_('Recording Series Comment'),
         longdesc=N_('A multi-value variable containing the series disambiguation comments associated with the recording.'),
         is_hidden=True,
     ),
     TagVar(
         'recording_seriesid',
-        shortdesc=N_('FIXME:recording_seriesid'),
+        shortdesc=N_('Recording Series MBID'),
         longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the recording.'),
         is_hidden=True,
     ),
     TagVar(
         'recording_seriesnumber',
-        shortdesc=N_('FIXME:recording_seriesnumber'),
+        shortdesc=N_('Recording Series Number'),
         longdesc=N_('A multi-value variable containing the series numbers associated with the recording.'),
         is_hidden=True,
     ),
     TagVar(
         'recordingcomment',
-        shortdesc=N_('FIXME:recordingcomment'),
+        shortdesc=N_('Recording Comment'),
         longdesc=N_('The disambiguation comment for the recording associated with a track.'),
         is_hidden=True,
         is_tag=False,
     ),
     TagVar(
         'recordingtitle',
-        shortdesc=N_('FIXME:recordingtitle'),
+        shortdesc=N_('Recording Title'),
         longdesc=N_('Recording title - normally the same as the track title, but can be different.'),
         is_hidden=True,
         is_tag=False,
     ),
     TagVar(
         'releaseannotation',
-        shortdesc=N_('FIXME:releaseannotation'),
+        shortdesc=N_('Release Annotation'),
         longdesc=N_('The annotation comment for the release.'),
         is_hidden=True,
         is_tag=False,
     ),
     TagVar(
         'releasecomment',
-        shortdesc=N_('FIXME:releasecomment'),
+        shortdesc=N_('Release Comment'),
         longdesc=N_('The disambiguation comment for the release.'),
         is_hidden=True,
         is_tag=False,
     ),
     TagVar(
         'releasecountries',
-        shortdesc=N_('FIXME:releasecountries'),
+        shortdesc=N_('Release Countries'),
         longdesc=N_('A multi-value variable containing the complete list of release countries for the release.'),
         is_hidden=True,
         is_tag=False,
@@ -1137,7 +1137,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'releasegroup',
-        shortdesc=N_('FIXME:releasegroup'),
+        shortdesc=N_('Release Group'),
         longdesc=N_(
             'The title of the release group. This is typically the same as the album title, but can be different.'
         ),
@@ -1146,7 +1146,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'releasegroup_firstreleasedate',
-        shortdesc=N_('FIXME:releasegroup_firstreleasedate'),
+        shortdesc=N_('RG First Released'),
         longdesc=N_(
             'The date of the earliest release in the release group in the format `YYYY-MM-DD`. This is intended to '
             'provide, for example, the release date of the vinyl version of what you have on CD.'
@@ -1169,7 +1169,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'releasegroup_seriesid',
-        shortdesc=N_('RG Series Id'),
+        shortdesc=N_('RG Series MBID'),
         longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the release group.'),
         is_hidden=True,
     ),
@@ -1181,14 +1181,14 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'releasegroupcomment',
-        shortdesc=N_('FIXME:releasegroupcomment'),
+        shortdesc=N_('RG Comment'),
         longdesc=N_('The disambiguation comment for the release group.'),
         is_hidden=True,
         is_tag=False,
     ),
     TagVar(
         'releaselanguage',
-        shortdesc=N_('FIXME:releaselanguage'),
+        shortdesc=N_('Release Language'),
         longdesc=N_('The language of the release as per ISO 639-3.'),
         is_hidden=True,
         is_tag=False,
@@ -1207,7 +1207,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'release_seriesid',
-        shortdesc=N_('Release Series Id'),
+        shortdesc=N_('Release Series MBID'),
         longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the release.'),
         is_hidden=True,
     ),
@@ -1241,55 +1241,55 @@ ALL_TAGS = TagVars(
     TagVar(
         'replaygain_album_gain',
         shortdesc=N_('ReplayGain Album Gain'),
-        longdesc=N_(''),
+        longdesc=N_('Album gain setting resulting from ReplayGain analysis of the album.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'replaygain_album_peak',
         shortdesc=N_('ReplayGain Album Peak'),
-        longdesc=N_(''),
+        longdesc=N_('Album peak setting resulting from ReplayGain analysis of the album.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'replaygain_album_range',
         shortdesc=N_('ReplayGain Album Range'),
-        longdesc=N_(''),
+        longdesc=N_('Album range setting resulting from ReplayGain analysis of the album.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'replaygain_reference_loudness',
         shortdesc=N_('ReplayGain Reference Loudness'),
-        longdesc=N_(''),
+        longdesc=N_('Album reference loudness setting resulting from ReplayGain analysis of the album.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'replaygain_track_gain',
         shortdesc=N_('ReplayGain Track Gain'),
-        longdesc=N_(''),
+        longdesc=N_('Track gain setting resulting from ReplayGain analysis of the track.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'replaygain_track_peak',
         shortdesc=N_('ReplayGain Track Peak'),
-        longdesc=N_(''),
+        longdesc=N_('Track peak setting resulting from ReplayGain analysis of the track.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'replaygain_track_range',
         shortdesc=N_('ReplayGain Track Range'),
-        longdesc=N_(''),
+        longdesc=N_('Track range setting resulting from ReplayGain analysis of the track.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'sample_rate',
-        shortdesc=N_('File sample rate'),
+        shortdesc=N_('Sample Rate'),
         longdesc=N_('The sample rate of the audio file.'),
         is_file_info=True,
         is_hidden=True,
@@ -1307,7 +1307,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'secondaryreleasetype',
-        shortdesc=N_('FIXME:secondaryreleasetype'),
+        shortdesc=N_('Secondary Release Type'),
         longdesc=N_(
             'Zero or more secondary types (i.e.: *audiobook*, *compilation*, *dj-mix*, *interview*, '
             '*live*, *mixtape/street*, *remix*, *soundtrack*, or *spokenword*) for the release group.'
@@ -1317,7 +1317,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'silence',
-        shortdesc=N_('FIXME:silence'),
+        shortdesc=N_('Silence'),
         longdesc=N_('1 if the track title is "[silence]"'),
         is_hidden=True,
         is_tag=False,
@@ -1370,7 +1370,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'totalalbumtracks',
-        shortdesc=N_('FIXME:totalalbumtracks'),
+        shortdesc=N_('Total Album Tracks'),
         longdesc=N_('The total number of tracks across all discs of this release.'),
         is_hidden=True,
         is_tag=False,
@@ -1392,7 +1392,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'video',
-        shortdesc=N_('File video flag'),
+        shortdesc=N_('Video'),
         longdesc=N_('Set to "1" if the track is a video.'),
         is_hidden=True,
         is_preserved=True,
@@ -1426,7 +1426,7 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'work_seriesid',
-        shortdesc=N_('Work Series Id'),
+        shortdesc=N_('Work Series MBID'),
         longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the work.'),
         is_hidden=True,
     ),
@@ -1448,7 +1448,7 @@ ALL_TAGS = TagVars(
         longdesc=N_(
             'A multi-value tag containing the names of the writers associated with the related work. This is '
             'not written to most file formats automatically. You can merge this with composers with a script '
-            'like:\n\n`$copymerge(composer, writer)`'
+            'like `$copymerge(composer,writer)`.'
         ),
     ),
     TagVar(
