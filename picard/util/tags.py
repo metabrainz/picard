@@ -1463,7 +1463,7 @@ def script_variable_tag_names():
     yield from (
         tagvar.script_name()
         for tagvar in ALL_TAGS
-        if not tagvar.not_script_variable
+        if tagvar.is_script_variable
     )
 
 
