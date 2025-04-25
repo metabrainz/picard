@@ -56,7 +56,8 @@ class TagVarsTest(PicardTestCase):
                                    is_file_info=True, is_hidden=True, is_script_variable=False)
         self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False)
         self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', is_from_mb=False)
-        self.tagvar_everything = TagVar('everything', shortdesc='everything sd', longdesc='everything ld.', is_preserved=True,
+        self.tagvar_everything = TagVar('everything', shortdesc='everything sd', longdesc='everything ld.',
+                                        additionaldesc='Test additional description.', is_preserved=True,
                                         is_script_variable=False, is_tag=False, is_calculated=True, is_file_info=True, is_from_mb=False,
                                         is_populated_by_picard=False, see_also=('artist', 'title'), related_options=('everything_test', ),
                                         doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
@@ -230,6 +231,7 @@ class TagVarsTest(PicardTestCase):
         profile_groups_add_setting('junk', 'everything_test', None, 'Everything test option setting')
         result = (
             '<p><em>%everything%</em></p><p>everything ld.</p>'
+            '<p>Test additional description.</p>'
             '<p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; '
             'info from audio file; not provided from MusicBrainz data; not populated by stock Picard.</p>'
             '<p><strong>Option Settings:</strong> Everything test option setting.</p>'

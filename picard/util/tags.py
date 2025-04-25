@@ -73,7 +73,7 @@ ATTRIB2NOTE = OrderedDict(
 
 class TagVar:
     def __init__(
-        self, name, shortdesc=None, longdesc=None,
+        self, name, shortdesc=None, longdesc=None, additionaldesc=None,
         is_preserved=False, is_hidden=False, is_script_variable=True, is_tag=True, is_calculated=False,
         is_file_info=False, is_from_mb=True, is_populated_by_picard=True, see_also=None, related_options=None,
         doc_links=None
@@ -83,8 +83,10 @@ class TagVar:
                    for a column header.
         longdesc: Brief description in sentence case describing the tag/variable.  This should
                   be similar (within reasonable length constraints) to the description in the Picard User
-                  Guide documentation, and could be used as a tooltip when reviewing a script.  May
-                  contain markup.
+                  Guide documentation, and will be used as a tooltip when reviewing a script.  May
+                  contain markdown.
+        additionaldesc: Additional description which might include more details or examples.  May
+                        contain markdown.
         is_preserved: the tag is preserved (boolean, default: False)
         is_hidden: the tag is "hidden", name will be prefixed with "~" (boolean, default: False)
         is_script_variable: the tag cannot be used as script variable (boolean, default: True)
@@ -100,6 +102,7 @@ class TagVar:
         self._name = name
         self._shortdesc = shortdesc
         self._longdesc = longdesc
+        self._additionaldesc = additionaldesc
         self.is_preserved = is_preserved
         self.is_hidden = is_hidden
         self.is_script_variable = is_script_variable
@@ -125,6 +128,12 @@ class TagVar:
         if self._longdesc:
             return self._longdesc.strip()
         return self.shortdesc
+
+    @property
+    def additionaldesc(self):
+        if not self._additionaldesc:
+            return ''
+        return self._additionaldesc.strip()
 
     @property
     def not_from_mb(self):
@@ -261,28 +270,38 @@ class TagVars(MutableSequence):
             return '<p>' + text.replace('\n', '<br />') + '</p>'
         return markdown(text)
 
-    def display_tooltip(self, tagname):
+    def _base_description(self, tagname):
         name, tagdesc, _search_name, item = self.item_from_name(tagname)
-
         content = self._markdown(_(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION))
-
-        notes = tuple(item.notes()) if item else tuple()
-        content += self._add_section(_(TEXT_NOTES), notes)
-
         if tagdesc:
             return f"<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
         else:
             return f"<p><em>%{name}%</em></p>{content}"
 
+    def display_tooltip(self, tagname):
+        # Get basic content
+        content = self._base_description(tagname)
+        name, tagdesc, _search_name, item = self.item_from_name(tagname)
+
+        # Append notes section
+        notes = tuple(item.notes()) if item else tuple()
+        content += self._add_section(_(TEXT_NOTES), notes)
+
+        return content
+
     def display_full_description(self, tagname):
         # Get basic content
-        content = self.display_tooltip(tagname)
+        content = self._base_description(tagname)
 
-        # Append additional sections as required
         name, tagdesc, _search_name, item = self.item_from_name(tagname)
         if item:
+            # Append additional description
+            if item.additionaldesc:
+                content += self._markdown(_(item.additionaldesc))
+
+            # Append additional sections as required
             sections = {
-                # TEXT_NOTES: item.notes(),     # Already entered as part of basic content.
+                TEXT_NOTES: item.notes(),
                 TEXT_SETTINGS: item.related_options_titles(),
                 TEXT_LINKS: item.links(),
                 TEXT_SEE_ALSO: item.see_alsos(),
