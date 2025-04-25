@@ -37,6 +37,7 @@ from collections import (
     namedtuple,
 )
 from collections.abc import MutableSequence
+from enum import IntEnum
 import re
 
 
@@ -55,10 +56,22 @@ from picard.profile import profile_setting_title
 
 DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
 
-TEXT_NOTES = N_('Notes:')
-TEXT_SETTINGS = N_('Option Settings:')
-TEXT_LINKS = N_('Links:')
-TEXT_SEE_ALSO = N_('See Also:')
+
+class Section(IntEnum):
+    notes = 1
+    options = 2
+    links = 3
+    see_also = 4
+
+
+SectionInfo = namedtuple('Section', ('title', 'tagvar_func'))
+SECTIONS = {
+    Section.notes: SectionInfo(N_('Notes'), 'notes'),
+    Section.options: SectionInfo(N_('Option Settings'), 'related_options_titles'),
+    Section.links: SectionInfo(N_('Links'), 'links'),
+    Section.see_also: SectionInfo(N_('See Also'), 'see_alsos'),
+}
+
 TEXT_NO_DESCRIPTION = N_('No description available.')
 
 ATTRIB2NOTE = OrderedDict(
@@ -186,6 +199,18 @@ class TagVar:
         for item in self.see_also:
             yield f"%{item}%"
 
+    def _gen_sections(self, fmt, include_sections):
+        for section_id in include_sections:
+            section = SECTIONS[section_id]
+            func_for_values = getattr(self, section.tagvar_func)
+            values = tuple(func_for_values())
+            if not values:
+                continue
+            yield fmt.format(
+                title=_(section.title),
+                values='; '.join(values),
+            )
+
 
 class TagVars(MutableSequence):
     """Mutable sequence for TagVar items
@@ -259,12 +284,6 @@ class TagVars(MutableSequence):
             return title
 
     @staticmethod
-    def _add_section(title, values):
-        if not values:
-            return ''
-        return f"<p><strong>{title}</strong> {'; '.join(values)}.</p>"
-
-    @staticmethod
     def _markdown(text: str):
         if markdown is None:
             return '<p>' + text.replace('\n', '<br />') + '</p>'
@@ -278,14 +297,19 @@ class TagVars(MutableSequence):
         else:
             return f"<p><em>%{name}%</em></p>{content}"
 
+    def _add_sections(self, item, include_sections):
+        # Note: format has to be translatable, for languages not using left-to-right for example
+        fmt = _("<p><strong>{title}:</strong> {values}.</p>")
+        return ''.join(item._gen_sections(fmt, include_sections))
+
     def display_tooltip(self, tagname):
         # Get basic content
         content = self._base_description(tagname)
         name, tagdesc, _search_name, item = self.item_from_name(tagname)
 
         # Append notes section
-        notes = tuple(item.notes()) if item else tuple()
-        content += self._add_section(_(TEXT_NOTES), notes)
+        if item:
+            content += self._add_sections(item, (Section.notes, ))
 
         return content
 
@@ -300,14 +324,13 @@ class TagVars(MutableSequence):
                 content += self._markdown(_(item.additionaldesc))
 
             # Append additional sections as required
-            sections = {
-                TEXT_NOTES: item.notes(),
-                TEXT_SETTINGS: item.related_options_titles(),
-                TEXT_LINKS: item.links(),
-                TEXT_SEE_ALSO: item.see_alsos(),
-            }
-            for title, values in sections.items():
-                content += self._add_section(_(title), tuple(values))
+            include_sections = (
+                Section.notes,
+                Section.options,
+                Section.links,
+                Section.see_also,
+            )
+            content += self._add_sections(item, include_sections)
 
         return content
 

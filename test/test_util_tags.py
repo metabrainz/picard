@@ -43,6 +43,64 @@ from picard.util.tags import (
 )
 
 
+class TagVarTest(PicardTestCase):
+    def test_basic_properties(self):
+        tv = TagVar('name')
+
+        # native properties
+        self.assertEqual(tv._name, 'name')
+        self.assertIsNone(tv._shortdesc)
+        self.assertIsNone(tv._longdesc)
+        self.assertIsNone(tv._additionaldesc)
+        self.assertFalse(tv.is_preserved)
+        self.assertFalse(tv.is_hidden)
+        self.assertTrue(tv.is_script_variable)
+        self.assertTrue(tv.is_tag)
+        self.assertFalse(tv.is_calculated)
+        self.assertFalse(tv.is_file_info)
+        self.assertTrue(tv.is_from_mb)
+        self.assertTrue(tv.is_populated_by_picard)
+        self.assertIsNone(tv.see_also)
+        self.assertIsNone(tv.related_options)
+        self.assertIsNone(tv.doc_links)
+
+        # derived properties
+        self.assertEqual(tv.shortdesc, 'name')
+        self.assertEqual(tv.longdesc, 'name')
+        self.assertEqual(tv.additionaldesc, '')
+
+        self.assertFalse(tv.not_from_mb)
+        self.assertFalse(tv.not_script_variable)
+        self.assertFalse(tv.not_populated_by_picard)
+
+        # basic methods
+        self.assertEqual(tv.script_name(), 'name')
+        self.assertEqual(str(tv), 'name')
+
+    def test_basic_hidden_script_name(self):
+        tv = TagVar('name', is_hidden=True)
+        self.assertEqual(tv.script_name(), '_name')
+
+    def test_basic_notes(self):
+        see_also = ('a', 'b',)
+        related_options = ('o1', 'o2',)
+        doc_links = (
+            DocumentLink('L1', 'U1'),
+            DocumentLink('L2', 'U2'),
+        )
+
+        tv = TagVar(
+            'name',
+            see_also=see_also,
+            related_options=related_options,
+            doc_links=doc_links,
+        )
+
+        self.assertEqual(tv.see_also, see_also)
+        self.assertEqual(tv.related_options, related_options)
+        self.assertEqual(tv.doc_links, doc_links)
+
+
 class TagVarsTest(PicardTestCase):
 
     def setUp(self):
