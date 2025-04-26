@@ -75,6 +75,7 @@ SECTIONS = {
 TEXT_NO_DESCRIPTION = N_('No description available.')
 
 ATTRIB2NOTE = OrderedDict(
+    is_multi_value=N_('multi-value variable'),
     is_preserved=N_('preserved read-only'),
     not_script_variable=N_('not for use in scripts'),
     is_calculated=N_('calculated'),
@@ -88,8 +89,8 @@ class TagVar:
     def __init__(
         self, name, shortdesc=None, longdesc=None, additionaldesc=None,
         is_preserved=False, is_hidden=False, is_script_variable=True, is_tag=True, is_calculated=False,
-        is_file_info=False, is_from_mb=True, is_populated_by_picard=True, see_also=None, related_options=None,
-        doc_links=None
+        is_file_info=False, is_from_mb=True, is_populated_by_picard=True, is_multi_value=False,
+        see_also=None, related_options=None, doc_links=None
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -108,6 +109,7 @@ class TagVar:
         is_file_info: the tag is a file information, displayed in file info box (boolean, default: False)
         is_from_mb: the tag information is provided from the MusicBrainz database (boolean, default: True)
         is_populated_by_picard: the tag information is populated by stock Picard (boolean, default: True)
+        is_multi_value: the tag is a multi-value variable (boolean, default: False)
         see_also: an iterable containing ids of related tags
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
@@ -124,6 +126,7 @@ class TagVar:
         self.is_file_info = is_file_info
         self.is_from_mb = is_from_mb
         self.is_populated_by_picard = is_populated_by_picard
+        self.is_multi_value = is_multi_value
         self.see_also = see_also
         self.related_options = related_options
         self.doc_links = doc_links
@@ -385,24 +388,25 @@ ALL_TAGS = TagVars(
         'albumartists',
         shortdesc=N_('Album Artists'),
         longdesc=N_(
-            "A multi-value variable containing the names of the album's artists. These could be "
-            'either "standardized" or "as credited" depending on whether the "Use standardized '
-            'artist names" metadata option is enabled.'
+            'The artists primarily credited on the release. These could be either "standardized" or '
+            '"as credited" depending on whether the "Use standardized artist names" metadata option is enabled.'
         ),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
     ),
     TagVar(
         'albumartists_countries',
         shortdesc=N_('Album Artists Countries'),
         longdesc=N_(
-            'A multi-value variable containing the country codes for all of the credited album artists, '
-            'in the same order as the artists. Duplicate country codes will be shown if there are more '
-            'than one artist from the same country. If a country code is not provided by the webservice '
-            'the code "XX" will be used to indicate an unknown country.'
+            'The country codes for all of the credited album artists, in the same order as the artists. '
+            'Duplicate country codes will be shown if there are more than one artist from the same country. '
+            'If a country code is not provided by the webservice the code "XX" will be used to indicate an '
+            'unknown country.'
         ),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
     ),
     TagVar(
         'albumartistsort',
@@ -414,9 +418,10 @@ ALL_TAGS = TagVars(
     TagVar(
         'albumartists_sort',
         shortdesc=N_('Album Artists Sort Names'),
-        longdesc=N_("A multi-value variable containing the sort names of the album's artists."),
+        longdesc=N_("The sort names of the album's artists."),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
     ),
     TagVar(
         'album',
@@ -450,39 +455,41 @@ ALL_TAGS = TagVars(
         'artists',
         shortdesc=N_('Artists'),
         longdesc=N_(
-            'A multi-value tag containing the track artist names. These could be either "standardized" '
-            'or "as credited" depending on whether the "Use standardized artist names" metadata option '
-            'is enabled.'
+            'The track artist names. These could be either "standardized" or "as credited" depending on '
+            'whether the "Use standardized artist names" metadata option is enabled.'
         ),
+        is_multi_value=True,
     ),
     TagVar(
         'artists_countries',
         shortdesc=N_('Artists Countries'),
         longdesc=N_(
-            'A multi-value variable containing the country codes for all of the credited track artists, '
-            'in the same order as the artists. Duplicate country codes will be shown if there are more '
-            'than one artist from the same country. If a country code is not provided by the webservice '
-            'the code "XX" will be used to indicate an unknown country.'
+            'The country codes for all of the credited track artists, in the same order as the artists. '
+            'Duplicate country codes will be shown if there are more than one artist from the same country. '
+            'If a country code is not provided by the webservice the code "XX" will be used to indicate an '
+            'unknown country.'
         ),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
     ),
     TagVar(
         'artistsort',
         shortdesc=N_('Artist Sort Order'),
-        longdesc=N_('The track artists sort names, separated by the specified join phrases.'),
+        longdesc=N_("The sort names of the track's artists, separated by the specified join phrases."),
     ),
     TagVar(
         'artists_sort',
         shortdesc=N_('Artists Sort Names'),
-        longdesc=N_("A multi-value variable containing the sort names of the track's artists."),
+        longdesc=N_("The sort names of the track's artists."),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
     ),
     TagVar(
         'asin',
         shortdesc=N_('ASIN'),
-        longdesc=N_('The Amazon Standard Identification Number - the number identifying the item on Amazon.'),
+        longdesc=N_('The Amazon Standard Identification Number, which is the number identifying the item on Amazon.'),
     ),
     TagVar(
         'barcode',
@@ -523,10 +530,10 @@ ALL_TAGS = TagVars(
         'catalognumber',
         shortdesc=N_('Catalog Number'),
         longdesc=N_(
-            'A multi-value tag contining the numbers assigned to the release by the labels, '
-            'which can often be found on the spine or near the barcode. There may be more than '
-            'one, especially when multiple labels are involved.'
+            'The catalog numbers assigned to the release by the labels, which can often be found on the spine '
+            'or near the barcode. There may be more than one, especially when multiple labels are involved.'
         ),
+        is_multi_value=True,
     ),
     TagVar(
         'channels',
@@ -558,11 +565,13 @@ ALL_TAGS = TagVars(
         'composer',
         shortdesc=N_('Composer'),
         longdesc=N_('The names of the composers for the associated work.'),
+        is_multi_value=True,
     ),
     TagVar(
         'composersort',
         shortdesc=N_('Composer Sort Order'),
         longdesc=N_('The sort names of the composers for the associated work.'),
+        is_multi_value=True,
     ),
     TagVar(
         'conductor',
@@ -571,6 +580,7 @@ ALL_TAGS = TagVars(
             'The names of the conductors associated with the track. These can include the conductor '
             'and chorus master, and could be associated with the release or recording.'
         ),
+        is_multi_value=True,
     ),
     TagVar(
         'copyright',
@@ -600,6 +610,7 @@ ALL_TAGS = TagVars(
             'The director of a track as provided by the "*Video Director*" or "*Audio Director*" relationship '
             'in MusicBrainz.'
         ),
+        is_multi_value=True,
     ),
     TagVar(
         'dirname',
@@ -639,6 +650,7 @@ ALL_TAGS = TagVars(
         'djmixer',
         shortdesc=N_('DJ-Mixer'),
         longdesc=N_('The names of the DJ mixers for the track.'),
+        is_multi_value=True,
     ),
     TagVar(
         'encodedby',
@@ -656,6 +668,7 @@ ALL_TAGS = TagVars(
         'engineer',
         shortdesc=N_('Engineer'),
         longdesc=N_('The names of the engineers associated with the track.'),
+        is_multi_value=True,
     ),
     TagVar(
         'extension',
@@ -730,9 +743,10 @@ ALL_TAGS = TagVars(
         'genre',
         shortdesc=N_('Genre'),
         longdesc=N_(
-            'A multi-value tag containing the specified genre information from MusicBrainz.'
+            'The specified genre information from MusicBrainz.'
         ),
         related_options=('use_genres', ),
+        is_multi_value=True,
     ),
     TagVar(
         # TODO: Check if this actually exists or if it was provided by the last.fm plugin.
@@ -745,9 +759,10 @@ ALL_TAGS = TagVars(
         'isrc',
         shortdesc=N_('ISRC'),
         longdesc=N_(
-            'The International Standard Recording Code - an international standard code for uniquely '
+            'The International Standard Recording Code, which is an international standard code for uniquely '
             'identifying sound recordings and music video recordings.'
         ),
+        is_multi_value=True,
     ),
     TagVar(
         'key',
@@ -758,7 +773,8 @@ ALL_TAGS = TagVars(
     TagVar(
         'label',
         shortdesc=N_('Record Label'),
-        longdesc=N_('A multi-value tag containing the names of the labels associated with the release.'),
+        longdesc=N_('The names of the labels associated with the release.'),
+        is_multi_value=True,
     ),
     TagVar(
         'language',
@@ -775,17 +791,19 @@ ALL_TAGS = TagVars(
     TagVar(
         'license',
         shortdesc=N_('License'),
-        longdesc=N_('The licenses associated with the track, either through the release or recording relationships.'),
+        longdesc=N_('The license associated with the track, either through the release or recording relationships.'),
     ),
     TagVar(
         'lyricist',
         shortdesc=N_('Lyricist'),
         longdesc=N_('The names of the lyricists for the associated work.'),
+        is_multi_value=True,
     ),
     TagVar(
         'lyricistsort',
         shortdesc=N_('Lyricist Sort'),
         longdesc=N_('The sort names of the lyricists for the associated work.'),
+        is_multi_value=True,
         is_hidden=True,
     ),
     TagVar(
@@ -803,6 +821,7 @@ ALL_TAGS = TagVars(
         'mixer',
         shortdesc=N_('Mixer'),
         longdesc=N_('The names of the "*Mixed By*" engineers associated with the track.'),
+        is_multi_value=True,
     ),
     TagVar(
         'mood',
@@ -843,7 +862,8 @@ ALL_TAGS = TagVars(
     TagVar(
         'musicbrainz_albumartistid',
         shortdesc=N_('Release Artist MBID'),
-        longdesc=N_('A multi-value tag containing the MusicBrainz Identifiers (MBIDs) for the release artists.'),
+        longdesc=N_('The MusicBrainz Identifiers (MBIDs) for the release artists.'),
+        is_multi_value=True,
     ),
     TagVar(
         'musicbrainz_albumid',
@@ -853,7 +873,8 @@ ALL_TAGS = TagVars(
     TagVar(
         'musicbrainz_artistid',
         shortdesc=N_('Artist MBID'),
-        longdesc=N_('A multi-value tag containing the MusicBrainz Identifiers (MBIDs) for the track artists.'),
+        longdesc=N_('The MusicBrainz Identifiers (MBIDs) for the track artists.'),
+        is_multi_value=True,
     ),
     TagVar(
         'musicbrainz_discid',
@@ -868,13 +889,16 @@ ALL_TAGS = TagVars(
         'musicbrainz_discids',
         shortdesc=N_('Disc IDs'),
         longdesc=N_(
-            'A multi-value variable containing a list of all of the disc ids attached to the selected release. '
-            'The list provided for each medium only includes the disc ids attached to that medium. For example, '
-            'the list provided for Disc 1 of a three CD set will not include the disc ids attached to discs 2 '
-            'and 3 of the set.'
+            'A list of all of the disc ids attached to the selected release. The list provided for each medium only '
+            'includes the disc ids attached to that medium.'
+        ),
+        additionaldesc=N_(
+            'For example, the list provided for Disc 1 of a three CD set will not include the disc ids attached to '
+            'discs 2 and 3 of the set.'
         ),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
     ),
     TagVar(
         'musicbrainz_originalalbumid',
@@ -888,9 +912,10 @@ ALL_TAGS = TagVars(
         'musicbrainz_originalartistid',
         shortdesc=N_('Original Artist MBID'),
         longdesc=N_(
-            'A multi-value tag containing the MusicBrainz Identifiers (MBIDs) for the track artists of the original '
-            'recording. This is only available if the recording has been merged with another recording.'
+            'The MusicBrainz Identifiers (MBIDs) for the track artists of the original recording. This is only '
+            'available if the recording has been merged with another recording.'
         ),
+        is_multi_value=True,
     ),
     TagVar(
         'musicbrainz_recordingid',
@@ -920,6 +945,7 @@ ALL_TAGS = TagVars(
         'musicbrainz_workid',
         shortdesc=N_('Work MBID'),
         longdesc=N_('The MusicBrainz Identifier (MBID) for the Work if a related work exists.'),
+        is_multi_value=True,    # TODO: Need to confirm multi-value.
     ),
     TagVar(
         'musicip_fingerprint',
@@ -979,10 +1005,12 @@ ALL_TAGS = TagVars(
     TagVar(
         'performance_attributes',
         shortdesc=N_('Performance Attributes'),
-        longdesc=N_(
-            'List of performance attributes for the work (e.g.: "*live*", "*cover*", "*medley*"). Use `$inmulti()` '
-            'to check for a specific type (e.g.: `$if($inmulti(%_performance_attributes%,medley), (Medley),)`).'
+        longdesc=N_('List of performance attributes for the work (e.g.: "*live*", "*cover*", "*medley*").'),
+        additionaldesc=N_(
+            'Use `$inmulti()` to check for a specific type (e.g.: `$if($inmulti(%_performance_attributes%,medley), '
+            '(Medley),)`).'
         ),
+        is_multi_value=True,
         is_hidden=True,
         is_tag=False,
     ),
@@ -996,6 +1024,7 @@ ALL_TAGS = TagVars(
             '- the orchestra for the associated release or recording, where "type" is "*orchestra*"\n'
             '- the concert master for the associated release or recording, where "type" is "*concertmaster*"'
         ),
+        is_multi_value=True,    # TODO: Confirm that this is a multi-value
     ),
     TagVar(
         'podcast',
@@ -1006,7 +1035,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'podcasturl',
         shortdesc=N_('Podcast URL'),
-        longdesc=N_('The associated url if the recording is a podcast.'),
+        longdesc=N_('The associated URL if the recording is a podcast.'),
         is_from_mb=False,
     ),
     TagVar(
@@ -1024,23 +1053,25 @@ ALL_TAGS = TagVars(
         ),
         is_hidden=True,
         is_tag=False,
+        doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
         'producer',
         shortdesc=N_('Producer'),
         longdesc=N_('The names of the producers for the associated release or recording.'),
+        is_multi_value=True,
     ),
     TagVar(
         'r128_album_gain',
         shortdesc=N_('R128 Album Gain'),
-        longdesc=N_('Album gain as determined by EBU R 128 analysis.'),
+        longdesc=N_('Album gain as determined by European Broadcasting Union "R 128" analysis.'),
         is_calculated=True,
         is_from_mb=False,
     ),
     TagVar(
         'r128_track_gain',
         shortdesc=N_('R128 Track Gain'),
-        longdesc=N_('Track gain as determined by EBU R 128 analysis.'),
+        longdesc=N_('Track gain as determined by European Broadcasting Union "R 128" analysis.'),
         is_calculated=True,
         is_from_mb=False,
     ),
@@ -1060,26 +1091,30 @@ ALL_TAGS = TagVars(
     TagVar(
         'recording_series',
         shortdesc=N_('Recording Series'),
-        longdesc=N_('A multi-value variable containing the series titles associated with the recording.'),
+        longdesc=N_('The series titles associated with the recording.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'recording_seriescomment',
         shortdesc=N_('Recording Series Comment'),
-        longdesc=N_('A multi-value variable containing the series disambiguation comments associated with the recording.'),
+        longdesc=N_('The series disambiguation comments associated with the recording.'),
+        is_multi_value=True,
         is_hidden=True,
     ),
     TagVar(
         'recording_seriesid',
         shortdesc=N_('Recording Series MBID'),
-        longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the recording.'),
+        longdesc=N_('The series MusicBrainz Identifiers (MBIDs) associated with the recording.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'recording_seriesnumber',
         shortdesc=N_('Recording Series Number'),
-        longdesc=N_('A multi-value variable containing the series numbers associated with the recording.'),
+        longdesc=N_('The series numbers associated with the recording.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'recordingcomment',
@@ -1112,9 +1147,10 @@ ALL_TAGS = TagVars(
     TagVar(
         'releasecountries',
         shortdesc=N_('Release Countries'),
-        longdesc=N_('A multi-value variable containing the complete list of release countries for the release.'),
+        longdesc=N_('The complete list of release countries for the release.'),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
     ),
     TagVar(
         'releasecountry',
@@ -1127,8 +1163,8 @@ ALL_TAGS = TagVars(
     TagVar(
         'releasedate',
         shortdesc=N_('Release Date'),
-        longdesc=N_(
-            'The date that the release (album) was issued, in the format `YYYY-MM-DD`.'
+        longdesc=N_('The date that the release (album) was issued, in the format `YYYY-MM-DD`.'),
+        additionaldesc=N_(
             'This tag exists for specific use in scripts and plugins, but is not filled by default. In most cases it is '
             'recommended to use the `%date%` tag instead for compatibility with existing software.'
         ),
@@ -1158,26 +1194,30 @@ ALL_TAGS = TagVars(
     TagVar(
         'releasegroup_series',
         shortdesc=N_('RG Series'),
-        longdesc=N_('A multi-value variable containing the series titles associated with the release group.'),
+        longdesc=N_('The series titles associated with the release group.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'releasegroup_seriescomment',
         shortdesc=N_('RG Series Comment'),
-        longdesc=N_('A multi-value variable containing the series disambiguation comments associated with the release group.'),
+        longdesc=N_('The series disambiguation comments associated with the release group.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'releasegroup_seriesid',
         shortdesc=N_('RG Series MBID'),
-        longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the release group.'),
+        longdesc=N_('The series MusicBrainz Identifiers (MBIDs) associated with the release group.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'releasegroup_seriesnumber',
         shortdesc=N_('RG Series Number'),
-        longdesc=N_('A multi-value variable containing the series numbers associated with the release group.'),
+        longdesc=N_('The series numbers associated with the release group.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'releasegroupcomment',
@@ -1196,26 +1236,30 @@ ALL_TAGS = TagVars(
     TagVar(
         'release_series',
         shortdesc=N_('Release Series'),
-        longdesc=N_('A multi-value variable containing the series titles associated with the release.'),
+        longdesc=N_('The series titles associated with the release.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'release_seriescomment',
         shortdesc=N_('Release Series Comment'),
-        longdesc=N_('A multi-value variable containing the series disambiguation comments associated with the release.'),
+        longdesc=N_('The series disambiguation comments associated with the release.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'release_seriesid',
         shortdesc=N_('Release Series MBID'),
-        longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the release.'),
+        longdesc=N_('The series MusicBrainz Identifiers (MBIDs) associated with the release.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'release_seriesnumber',
         shortdesc=N_('Release Series Number'),
-        longdesc=N_('A multi-value variable containing the series numbers associated with the release.'),
+        longdesc=N_('The series numbers associated with the release.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'releasestatus',
@@ -1228,15 +1272,16 @@ ALL_TAGS = TagVars(
     TagVar(
         'releasetype',
         shortdesc=N_('Release Type'),
-        longdesc=N_(
-            'A multi-value tag containing the types of release assigned to the release group.'
-        ),
+        longdesc=N_('The types of release assigned to the release group.'),
+        is_multi_value=True,
         see_also=('primaryreleasetype', 'secondaryreleasetype'),
+        doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
         'remixer',
         shortdesc=N_('Remixer'),
         longdesc=N_('The names of the remixer engineers associated with the track.'),
+        is_multi_value=True,
     ),
     TagVar(
         'replaygain_album_gain',
@@ -1314,6 +1359,8 @@ ALL_TAGS = TagVars(
         ),
         is_hidden=True,
         is_tag=False,
+        is_multi_value=True,
+        doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
         'silence',
@@ -1333,9 +1380,11 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Show Work & Movement'),
         longdesc=N_(
             'Show work and movement. If this tag is set to "1" players supporting this tag, such as iTunes and MusicBee, '
-            'will display the work, movement number and movement name instead of the track title. For example, the track '
-            'will be displayed as "Symphony no. 5 in C minor, op. 67: II. Andante con moto" regardless of the value of the '
-            'title tag.'
+            'will display the work, movement number and movement name instead of the track title.'
+        ),
+        additionaldesc=N_(
+            'For example, the track will be displayed as "Symphony no. 5 in C minor, op. 67: II. Andante con moto" '
+            'regardless of the value of the title tag.'
         ),
         is_from_mb=False,
     ),
@@ -1406,35 +1455,40 @@ ALL_TAGS = TagVars(
     TagVar(
         'work',
         shortdesc=N_('Work'),
-        longdesc=N_(
-            'The name of the work associated with the track (e.g.: "Symphony no. 5 in C minor, op. 67").\n\nNote: If you '
-            'are using iTunes together with MP3 files you should activate the "Save iTunes compatible grouping and work" '
-            'option in order for the work to be displayed correctly.'
+        longdesc=N_('The name of the work associated with the track (e.g.: "Symphony no. 5 in C minor, op. 67").'),
+        additionaldesc=N_(
+            'Note: If you are using iTunes together with MP3 files you should activate the "Save iTunes compatible '
+            'grouping and work" option in order for the work to be displayed correctly.'
         ),
+        related_options=('itunes_compatible_grouping', )
     ),
     TagVar(
         'work_series',
         shortdesc=N_('Work Series'),
-        longdesc=N_('A multi-value variable containing the series titles associated with the work.'),
+        longdesc=N_('The series titles associated with the work.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'work_seriescomment',
         shortdesc=N_('Work Series Comment'),
-        longdesc=N_('A multi-value variable containing the series disambiguation comments associated with the work.'),
+        longdesc=N_('The series disambiguation comments associated with the work.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'work_seriesid',
         shortdesc=N_('Work Series MBID'),
-        longdesc=N_('A multi-value variable containing the series MusicBrainz Identifiers (MBIDs) associated with the work.'),
+        longdesc=N_('The series MusicBrainz Identifiers (MBIDs) associated with the work.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'work_seriesnumber',
         shortdesc=N_('Work Series Number'),
-        longdesc=N_('A multi-value variable containing the series numbers associated with the work.'),
+        longdesc=N_('The series numbers associated with the work.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
     TagVar(
         'workcomment',
@@ -1446,16 +1500,18 @@ ALL_TAGS = TagVars(
         'writer',
         shortdesc=N_('Writer'),
         longdesc=N_(
-            'A multi-value tag containing the names of the writers associated with the related work. This is '
-            'not written to most file formats automatically. You can merge this with composers with a script '
-            'like `$copymerge(composer,writer)`.'
+            'The names of the writers associated with the related work. This is not written to most file formats '
+            'automatically.'
         ),
+        additionaldesc=N_('You can merge this with composers with a script like `$copymerge(composer,writer)`.'),
+        is_multi_value=True,
     ),
     TagVar(
         'writersort',
         shortdesc=N_('Writer Sort'),
         longdesc=N_('The sort names of the writers for the work.'),
         is_hidden=True,
+        is_multi_value=True,
     ),
 )
 

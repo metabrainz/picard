@@ -330,7 +330,7 @@ class UtilTagsTest(PicardTestCase):
 
         self.assertEqual(
             display_tag_tooltip('_albumartists_sort'),
-            "<p><em>%_albumartists_sort%</em></p><p>A multi-value variable containing the sort names of the album's artists.</p>"
+            "<p><em>%_albumartists_sort%</em></p><p>The sort names of the album's artists.</p><p><strong>Notes:</strong> multi-value variable.</p>"
         )
 
         result = (
@@ -353,21 +353,22 @@ class UtilTagsTest(PicardTestCase):
             '"<em>guest guitar</em>", "<em>solo violin</em>", etc.</li>\n'
             '<li>the orchestra for the associated release or recording, where "type" is "<em>orchestra</em>"</li>\n'
             '<li>the concert master for the associated release or recording, where "type" is "<em>concertmaster</em>"</li>\n'
-            '</ul>'
+            '</ul><p><strong>Notes:</strong> multi-value variable.</p>'
         ) if markdown is not None else (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
             '<br /><br />'
             '- vocals or instruments for the associated release or recording, where "type" can be "*vocal*", "*guest guitar*", "*solo violin*", etc.<br />'
             '- the orchestra for the associated release or recording, where "type" is "*orchestra*"<br />'
             '- the concert master for the associated release or recording, where "type" is "*concertmaster*"</p>'
+            '<p><strong>Notes:</strong> multi-value variable.</p>'
         )
         self.assertEqual(display_tag_tooltip('performer'), result)
 
     def test_display_tag_full_description(self):
         profile_groups_add_setting('junk', 'use_genres', None, 'Use genres from MusicBrainz')
         result = (
-            '<p><em>%genre%</em></p><p>A multi-value tag containing the specified genre information from MusicBrainz.</p>'
-            '<p><strong>Option Settings:</strong> Use genres from MusicBrainz.</p>'
+            '<p><em>%genre%</em></p><p>The specified genre information from MusicBrainz.</p><p><strong>Notes:</strong> multi-value '
+            'variable.</p><p><strong>Option Settings:</strong> Use genres from MusicBrainz.</p>'
         )
         self.assertEqual(display_tag_full_description('genre'), result)
 
@@ -392,11 +393,13 @@ class UtilTagsTest(PicardTestCase):
             '<li>the orchestra for the associated release or recording, where "type" is "<em>orchestra</em>"</li>\n'
             '<li>the concert master for the associated release or recording, where "type" is "<em>concertmaster</em>"</li>\n'
             '</ul>'
+            '<p><strong>Notes:</strong> multi-value variable.</p>'
         ) if markdown is not None else (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
             '<br /><br />'
             '- vocals or instruments for the associated release or recording, where "type" can be "*vocal*", "*guest guitar*", "*solo violin*", etc.<br />'
             '- the orchestra for the associated release or recording, where "type" is "*orchestra*"<br />'
             '- the concert master for the associated release or recording, where "type" is "*concertmaster*"</p>'
+            '<p><strong>Notes:</strong> multi-value variable.</p>'
         )
         self.assertEqual(display_tag_full_description('performer'), result)
