@@ -35,7 +35,6 @@ _settings_groups = {}
 _groups_order = defaultdict(lambda: -1)
 _groups_count = 0
 _known_settings = set()
-_settings_titles = {}
 
 
 def profile_groups_order(group):
@@ -52,7 +51,6 @@ def profile_groups_add_setting(group, option_name, highlights, title=None):
         _settings_groups[group]['settings'] = []
     _settings_groups[group]['settings'].append(SettingDesc(option_name, highlights))
     _known_settings.add(option_name)
-    _settings_titles[option_name] = title
 
 
 def profile_groups_all_settings():
@@ -94,9 +92,3 @@ def profile_groups_reset():
     _groups_order = defaultdict(lambda: -1)
     _groups_count = 0
     _known_settings = set()
-
-
-def profile_setting_title(option_name):
-    if option_name not in _settings_titles:
-        return None
-    return _settings_titles[option_name]

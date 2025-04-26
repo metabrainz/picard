@@ -22,12 +22,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import unittest.mock as mock
 
 from test.picardtestcase import PicardTestCase
 
 from picard.const import PICARD_URLS
+from picard.options import Option
 from picard.profile import profile_groups_add_setting
 from picard.util.tags import (
     DocumentLink,
@@ -117,8 +117,12 @@ class TagVarsTest(PicardTestCase):
         self.tagvar_everything = TagVar('everything', shortdesc='everything sd', longdesc='everything ld.',
                                         additionaldesc='Test additional description.', is_preserved=True,
                                         is_script_variable=False, is_tag=False, is_calculated=True, is_file_info=True, is_from_mb=False,
-                                        is_populated_by_picard=False, see_also=('artist', 'title'), related_options=('everything_test', ),
+                                        is_populated_by_picard=False, is_multi_value=True,
+                                        see_also=('artist', 'title'),
+                                        related_options=('everything_test', 'not_a_valid_option_setting'),
                                         doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
+        if ('setting', 'everything_test') not in Option.registry:
+            Option('setting', 'everything_test', None, title='Everything test setting')
 
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
@@ -290,9 +294,10 @@ class TagVarsTest(PicardTestCase):
         result = (
             '<p><em>%everything%</em></p><p>everything ld.</p>'
             '<p>Test additional description.</p>'
-            '<p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; '
-            'info from audio file; not provided from MusicBrainz data; not populated by stock Picard.</p>'
-            '<p><strong>Option Settings:</strong> Everything test option setting.</p>'
+            '<p><strong>Notes:</strong> multi-value variable; preserved read-only; not for use in scripts; '
+            'calculated; info from audio file; not provided from MusicBrainz data; not populated by stock '
+            'Picard.</p>'
+            '<p><strong>Option Settings:</strong> Everything test setting; No option title available.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
             '<p><strong>See Also:</strong> %artist%; %title%.</p>'
         )

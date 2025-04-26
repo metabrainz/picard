@@ -51,7 +51,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.profile import profile_setting_title
+from picard.options import get_option_title
 
 
 DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
@@ -186,7 +186,7 @@ class TagVar:
         if not self.related_options:
             return None
         for setting in self.related_options:
-            title = profile_setting_title(setting)
+            title = get_option_title(setting)
             if title:
                 yield _(title)
 

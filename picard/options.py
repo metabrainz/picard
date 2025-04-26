@@ -5,6 +5,7 @@
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Laurent Monin
 # Copyright (C) 2025 Philipp Wolfer
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -436,3 +437,10 @@ BoolOption('persist', 'script_editor_wordwrap', False)
 
 def init_options():
     pass
+
+
+def get_option_title(text):
+    key = ('setting', text)
+    if key not in Option.registry or not Option.registry[key].title:
+        return N_('No option title available')
+    return Option.registry[key].title
