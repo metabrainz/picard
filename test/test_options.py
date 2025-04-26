@@ -39,7 +39,7 @@ class OptionsUtilitiesTest(PicardTestCase):
         self.assertEqual(get_option_title('invalid_option'), 'No option title available')
 
         # No title assigned to the option
-        self.assertEqual(get_option_title('log_verbosity'), 'No option title available')
+        self.assertEqual(get_option_title('test_option_without_title'), 'No option title available')
 
         # Title assigned to the option
-        self.assertEqual(get_option_title('ignore_hidden_files'), 'Ignore hidden files')
+        self.assertEqual(get_option_title('test_option_with_title'), 'Test option with title')

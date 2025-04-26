@@ -60,6 +60,7 @@ class TagVarTest(PicardTestCase):
         self.assertFalse(tv.is_file_info)
         self.assertTrue(tv.is_from_mb)
         self.assertTrue(tv.is_populated_by_picard)
+        self.assertFalse(tv.is_multi_value)
         self.assertIsNone(tv.see_also)
         self.assertIsNone(tv.related_options)
         self.assertIsNone(tv.doc_links)
@@ -370,7 +371,8 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(display_tag_tooltip('performer'), result)
 
     def test_display_tag_full_description(self):
-        profile_groups_add_setting('junk', 'use_genres', None, 'Use genres from MusicBrainz')
+        if ('setting', 'use_genres') not in Option.registry:
+            Option('setting', 'use_genres', None, title='Use genres from MusicBrainz')
         result = (
             '<p><em>%genre%</em></p><p>The specified genre information from MusicBrainz.</p><p><strong>Notes:</strong> multi-value '
             'variable.</p><p><strong>Option Settings:</strong> Use genres from MusicBrainz.</p>'

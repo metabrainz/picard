@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Vladislav Karbovskii
-# Copyright (C) 2021-2023, 2025 Bob Swift
+# Copyright (C) 2021-2023 Bob Swift
 # Copyright (C) 2021-2023 Philipp Wolfer
 # Copyright (C) 2021-2024 Laurent Monin
 # Copyright (C) 2022 Marcin Szalowicz
