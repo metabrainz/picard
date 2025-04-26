@@ -102,12 +102,12 @@ class TagVar:
                         contain markdown.
         is_preserved: the tag is preserved (boolean, default: False)
         is_hidden: the tag is "hidden", name will be prefixed with "~" (boolean, default: False)
-        is_script_variable: the tag cannot be used as script variable (boolean, default: True)
+        is_script_variable: the tag can be used as script variable (boolean, default: True)
         is_tag: the tag is an actual tag (not a calculated or derived one) (boolean, default: True)
         is_calculated: the tag is obtained by external calculation (boolean, default: False)
         is_file_info: the tag is a file information, displayed in file info box (boolean, default: False)
         is_from_mb: the tag information is provided from the MusicBrainz database (boolean, default: True)
-        is_populated_by_picard: the tag information is not populated by stock Picard (boolean, default: False)
+        is_populated_by_picard: the tag information is populated by stock Picard (boolean, default: True)
         see_also: an iterable containing ids of related tags
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
