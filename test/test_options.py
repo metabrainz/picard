@@ -36,10 +36,10 @@ class OptionsUtilitiesTest(PicardTestCase):
             Option('setting', 'test_option_without_title', None)
 
         # Invalid option name
-        self.assertEqual(get_option_title('invalid_option'), 'No option title available')
+        self.assertEqual(get_option_title('invalid_option'), None)
 
         # No title assigned to the option
-        self.assertEqual(get_option_title('test_option_without_title'), 'No option title available')
+        self.assertEqual(get_option_title('test_option_without_title'), "No title for setting 'test_option_without_title'")
 
         # Title assigned to the option
         self.assertEqual(get_option_title('test_option_with_title'), 'Test option with title')

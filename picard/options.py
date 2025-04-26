@@ -439,8 +439,11 @@ def init_options():
     pass
 
 
-def get_option_title(text):
-    key = ('setting', text)
-    if key not in Option.registry or not Option.registry[key].title:
-        return N_('No option title available')
-    return Option.registry[key].title
+def get_option_title(name):
+    key = ('setting', name)
+    if key not in Option.registry:
+        return None
+    title = Option.registry[key].title
+    if title:
+        return title
+    return N_("No title for setting '%s'") % name

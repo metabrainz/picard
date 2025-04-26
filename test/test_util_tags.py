@@ -298,7 +298,7 @@ class TagVarsTest(PicardTestCase):
             '<p><strong>Notes:</strong> multi-value variable; preserved read-only; not for use in scripts; '
             'calculated; info from audio file; not provided from MusicBrainz data; not populated by stock '
             'Picard.</p>'
-            '<p><strong>Option Settings:</strong> Everything test setting; No option title available.</p>'
+            '<p><strong>Option Settings:</strong> Everything test setting.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
             '<p><strong>See Also:</strong> %artist%; %title%.</p>'
         )
