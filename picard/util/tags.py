@@ -624,11 +624,15 @@ ALL_TAGS = TagVars(
         is_from_mb=False,
     ),
     TagVar(
-        # TODO: Check if this actually exists or if it should be %_musicbrainz_discid%
         'discid',
-        shortdesc=N_('Disc ID'),
-        longdesc=N_('The identification number of the disc.'),
+        shortdesc=N_('FreeDB Disc ID'),
+        longdesc=N_('The identification number of the disc in the FreeDB database.'),
         see_also=('musicbrainz_discid', ),
+        doc_links=(
+            DocumentLink(N_('FreeDB'), 'https://wikipedia.org/wiki/Freedb'),
+            DocumentLink(N_('FreeDB DiscID Calculation'), 'https://wikipedia.org/wiki/CDDB#Example_calculation_of_a_CDDB1_(FreeDB)_disc_ID'),
+            DocumentLink(N_('FreeDB DiscID including Calculation Example (French)'), 'https://fr.wikipedia.org/wiki/DiscId'),
+        ),
     ),
     TagVar(
         'discnumber',
@@ -880,12 +884,15 @@ ALL_TAGS = TagVars(
     ),
     TagVar(
         'musicbrainz_discid',
-        shortdesc=N_('Disc MBID'),
+        shortdesc=N_('MusicBrainz DiscID'),
         longdesc=N_(
             'The Disc ID is the code number which MusicBrainz uses to link a physical CD to a release listing. '
             'This is based on the table of contents (TOC) information read from the disc. This tag contains the '
             'Disc ID if the album information was retrieved using `Tools > Lookup CD` from the menu.'
         ),
+        see_also=('discid', ),
+        is_calculated=True,
+        doc_links=(DocumentLink(N_('Disc ID Calculations'), PICARD_URLS['mb_doc'] + 'Disc_ID_Calculation'), ),
     ),
     TagVar(
         'musicbrainz_discids',
@@ -1056,7 +1063,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_tag=False,
         see_also=('releasetype', '_secondaryreleasetype'),
-        doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
+        doc_links=(DocumentLink(N_('Release group types'), PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
         'producer',
@@ -1278,7 +1285,7 @@ ALL_TAGS = TagVars(
         longdesc=N_('The types of release assigned to the release group.'),
         is_multi_value=True,
         see_also=('_primaryreleasetype', '_secondaryreleasetype'),
-        doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
+        doc_links=(DocumentLink(N_('Release group types'), PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
         'remixer',
@@ -1364,7 +1371,7 @@ ALL_TAGS = TagVars(
         is_tag=False,
         is_multi_value=True,
         see_also=('releasetype', '_primaryreleasetype'),
-        doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
+        doc_links=(DocumentLink(N_('Release group types'), PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
         'silence',
