@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021-2022 Philipp Wolfer
 # Copyright (C) 2021-2024 Laurent Monin
 #
@@ -29,6 +29,10 @@ from PyQt6 import (
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
+from picard.util.tags import (
+    ALL_TAGS,
+    TagVar,
+)
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
@@ -62,6 +66,10 @@ code {
 class ScriptingDocumentationWidget(QtWidgets.QWidget):
     """Custom widget to display the scripting documentation.
     """
+    # TODO: Select better colors, and create different settings for dark theme as appropriate.
+    BUTTON_STYLE_SELECTED = 'padding: 3px; border: 1px solid; border-radius: 7px; background: #8FBC8F; color: #000;'
+    BUTTON_STYLE_NOT_SELECTED = 'padding: 3px; border: 1px solid; border-radius: 7px; background: #A9A9A9; color: #000;'
+
     def __init__(self, include_link=True, parent=None):
         """Custom widget to display the scripting documentation.
 
@@ -95,30 +103,108 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             postprocessor=process_html,
         )
 
-        html = DOCUMENTATION_HTML_TEMPLATE % {
+        func_html = DOCUMENTATION_HTML_TEMPLATE % {
             'html': "<dl>%s</dl>" % funcdoc,
             'script_function_fg': interface_colors.get_qcolor('syntax_hl_func').name(),
             'monospace_font': FONT_FAMILY_MONOSPACE,
             'dir': text_direction,
             'inline_start': 'right' if text_direction == 'rtl' else 'left'
         }
+
+        def process_tag(tag: TagVar):
+            template = '<dt>%s</dt><dd>%s</dd>'
+            tag_title = '%' + tag.script_name() + '%'
+            tag_desc = tag.full_description()
+            return template % ("<code>%s</code>" % tag_title, tag_desc)
+
+        tagdoc = ''
+        for tag in ALL_TAGS:
+            tagdoc += process_tag(tag)
+
+        tag_html = DOCUMENTATION_HTML_TEMPLATE % {
+            'html': "<dl>%s</dl>" % tagdoc,
+            'script_function_fg': interface_colors.get_qcolor('syntax_hl_func').name(),
+            'monospace_font': FONT_FAMILY_MONOSPACE,
+            'dir': text_direction,
+            'inline_start': 'right' if text_direction == 'rtl' else 'left'
+        }
+
+        self.selected_panel = 1
+
         # Scripting code is always left-to-right. Qt does not support the dir
         # attribute on inline tags, insert explicit left-right-marks instead.
         if text_direction == 'rtl':
-            html = html.replace('<code>', '<code>&#8206;')
+            func_html = func_html.replace('<code>', '<code>&#8206;')
+            tag_html = tag_html.replace('<code>', '<code>&#8206;')
 
         link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + _('Open Scripting Documentation in your browser') + '</a>'
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName('docs_verticalLayout')
-        self.textBrowser = QtWidgets.QTextBrowser(self)
-        self.textBrowser.setEnabled(True)
-        self.textBrowser.setMinimumSize(QtCore.QSize(0, 0))
-        self.textBrowser.setObjectName('docs_textBrowser')
-        self.textBrowser.setHtml(html)
-        self.textBrowser.show()
-        self.verticalLayout.addWidget(self.textBrowser)
+
+        self.pb_functions = QtWidgets.QPushButton(self)
+        self.pb_functions.setText(_('Functions'))
+        self.pb_functions.clicked.connect(self._pb_functions_clicked)
+
+        self.pb_tags = QtWidgets.QPushButton(self)
+        self.pb_tags.setText(_('Tags'))
+        self.pb_tags.clicked.connect(self._pb_tags_clicked)
+
+        self.pb_frame = QtWidgets.QFrame(self)
+        self.pb_frame.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.pb_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.pb_frame.setContentsMargins(0, 0, 0, 0)
+        self.pb_frame.setObjectName("docs_pb_frame")
+        self.pb_frame.show()
+
+        self.pb_layout = QtWidgets.QHBoxLayout(self.pb_frame)
+        self.pb_layout.setContentsMargins(0, 0, 0, 0)
+        self.pb_layout.setObjectName('docs_pb_layout')
+        self.pb_layout.addWidget(self.pb_functions)
+        self.pb_layout.addWidget(self.pb_tags)
+        self.verticalLayout.addWidget(self.pb_frame)
+
+        self.frame_1 = QtWidgets.QFrame(parent=self)
+        self.frame_1.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.frame_1.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_1.setContentsMargins(0, 0, 0, 0)
+        self.frame_1.setObjectName("docs_frame_1")
+        self.frame_1.show()
+
+        self.frame_1_layout = QtWidgets.QVBoxLayout(self.frame_1)
+        self.frame_1_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.textBrowser_1 = QtWidgets.QTextBrowser(self)
+        self.textBrowser_1.setEnabled(True)
+        self.textBrowser_1.setMinimumSize(QtCore.QSize(0, 0))
+        self.textBrowser_1.setObjectName('function_docs_textBrowser')
+        self.textBrowser_1.setHtml(func_html)
+        self.textBrowser_1.show()
+        self.frame_1_layout.addWidget(self.textBrowser_1)
+
+        self.frame_2 = QtWidgets.QFrame(parent=self)
+        self.frame_2.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_2.setContentsMargins(0, 0, 0, 0)
+        self.frame_2.setObjectName("docs_frame_2")
+        self.frame_2.show()
+
+        self.frame_2_layout = QtWidgets.QVBoxLayout(self.frame_2)
+        self.frame_2_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.textBrowser_2 = QtWidgets.QTextBrowser(self)
+        self.textBrowser_2.setEnabled(True)
+        self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 0))
+        self.textBrowser_2.setObjectName('tags_docs_textBrowser')
+        self.textBrowser_2.setOpenExternalLinks(True)
+        self.textBrowser_2.setHtml(tag_html)
+        self.textBrowser_2.show()
+        self.frame_2_layout.addWidget(self.textBrowser_2)
+
+        self.verticalLayout.addWidget(self.frame_1)
+        self.verticalLayout.addWidget(self.frame_2)
+
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout.setObjectName('docs_horizontalLayout')
@@ -138,3 +224,24 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             self.scripting_doc_link.show()
             self.horizontalLayout.addWidget(self.scripting_doc_link)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.display_panel()
+
+    def display_panel(self):
+        if self.selected_panel == 1:
+            self.frame_1.setVisible(True)
+            self.frame_2.setVisible(False)
+            self.pb_functions.setStyleSheet(self.BUTTON_STYLE_SELECTED)
+            self.pb_tags.setStyleSheet(self.BUTTON_STYLE_NOT_SELECTED)
+        else:
+            self.frame_1.setVisible(False)
+            self.frame_2.setVisible(True)
+            self.pb_functions.setStyleSheet(self.BUTTON_STYLE_NOT_SELECTED)
+            self.pb_tags.setStyleSheet(self.BUTTON_STYLE_SELECTED)
+
+    def _pb_functions_clicked(self):
+        self.selected_panel = 1
+        self.display_panel()
+
+    def _pb_tags_clicked(self):
+        self.selected_panel = 2
+        self.display_panel()

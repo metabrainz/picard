@@ -217,6 +217,35 @@ class TagVar:
                 values='; '.join(values),
             )
 
+    @staticmethod
+    def _markdown(text: str):
+        if markdown is None:
+            return '<p>' + text.replace('\n', '<br />') + '</p>'
+        return markdown(text)
+
+    def _add_sections(self, include_sections):
+        # Note: format has to be translatable, for languages not using left-to-right for example
+        fmt = _("<p><strong>{title}:</strong> {values}.</p>")
+        return ''.join(self._gen_sections(fmt, include_sections))
+
+    def full_description(self):
+        content = self._markdown(_(self.longdesc) if self.longdesc else _(TEXT_NO_DESCRIPTION))
+
+        # Append additional description
+        if self.additionaldesc:
+            content += self._markdown(_(self.additionaldesc))
+
+        # Append additional sections as required
+        include_sections = (
+            Section.notes,
+            Section.options,
+            Section.links,
+            Section.see_also,
+        )
+        content += self._add_sections(include_sections)
+
+        return content
+
 
 class TagVars(MutableSequence):
     """Mutable sequence for TagVar items
