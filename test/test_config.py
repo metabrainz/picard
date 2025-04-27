@@ -55,7 +55,11 @@ class TestPicardConfigCommon(PicardTestCase):
 
         self.config.application["version"] = "testing"
         logging.disable(logging.ERROR)
+        self.old_registry = dict(Option.registry)
         Option.registry = {}
+
+    def tearDown(self):
+        Option.registry = self.old_registry
 
     def cleanup_config_obj(self):
         # Ensure QSettings do not recreate the file on exit

@@ -27,9 +27,13 @@ import unittest.mock as mock
 from test.picardtestcase import PicardTestCase
 
 from picard.const import PICARD_URLS
-from picard.options import Option
+from picard.options import (
+    Option,
+    get_option_title,
+)
 from picard.profile import profile_groups_add_setting
 from picard.util.tags import (
+    ALL_TAGS,
     DocumentLink,
     TagVar,
     TagVars,
@@ -105,6 +109,7 @@ class TagVarTest(PicardTestCase):
 class TagVarsTest(PicardTestCase):
 
     def setUp(self):
+        self.old_registry = dict(Option.registry)
         self.tagvar_only_sd = TagVar('only_sd', shortdesc='only_sd_shortdesc')
         self.tagvar_sd_ld = TagVar('sd_ld', shortdesc='sd_ld_shortdesc', longdesc='sd_ld_longdesc')
         self.tagvar_hidden = TagVar('hidden', is_hidden=True)
@@ -124,6 +129,9 @@ class TagVarsTest(PicardTestCase):
                                         doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
         if ('setting', 'everything_test') not in Option.registry:
             Option('setting', 'everything_test', None, title='Everything test setting')
+
+    def tearDown(self):
+        Option.registry = self.old_registry
 
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
@@ -410,3 +418,17 @@ class UtilTagsTest(PicardTestCase):
             '<p><strong>Notes:</strong> multi-value variable.</p>'
         )
         self.assertEqual(display_tag_full_description('performer'), result)
+
+
+class UtilTagsOptionsTest(PicardTestCase):
+    def test_options_exist(self):
+        """Ensure all related options actually exist in the option settings registry (Option.registry)
+        and have a title set.
+        """
+        for tv in ALL_TAGS:
+            if tv.related_options is None:
+                continue
+            for opt in tv.related_options:
+                title = get_option_title(opt)
+                self.assertIsNotNone(title, f"Missing related option setting '{opt}'")
+            self.assertFalse(title.startswith('No title for setting'), f"Missing title for option setting '{opt}'")

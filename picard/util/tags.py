@@ -363,6 +363,7 @@ ALL_TAGS = TagVars(
         ),
         is_calculated=True,
         is_from_mb=False,
+        related_options=('fingerprinting_system', 'save_acoustid_fingerprints'),
     ),
     TagVar(
         'acoustid_id',
@@ -374,6 +375,7 @@ ALL_TAGS = TagVars(
         ),
         is_calculated=True,
         is_from_mb=False,
+        related_options=('fingerprinting_system', 'save_acoustid_fingerprints'),
     ),
     TagVar(
         'albumartist',
@@ -554,7 +556,7 @@ ALL_TAGS = TagVars(
             'Deluxe version with 2 bonus tracks).'
         ),
         is_populated_by_picard=False,
-        see_also=('releasecomment', ),
+        see_also=('_releasecomment', ),
     ),
     TagVar(
         'compilation',
@@ -1053,6 +1055,7 @@ ALL_TAGS = TagVars(
         ),
         is_hidden=True,
         is_tag=False,
+        see_also=('releasetype', '_secondaryreleasetype'),
         doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
@@ -1274,7 +1277,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Release Type'),
         longdesc=N_('The types of release assigned to the release group.'),
         is_multi_value=True,
-        see_also=('primaryreleasetype', 'secondaryreleasetype'),
+        see_also=('_primaryreleasetype', '_secondaryreleasetype'),
         doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
@@ -1360,6 +1363,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_tag=False,
         is_multi_value=True,
+        see_also=('releasetype', '_primaryreleasetype'),
         doc_links=(DocumentLink('Release group types', PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
     ),
     TagVar(
