@@ -430,5 +430,19 @@ class UtilTagsOptionsTest(PicardTestCase):
                 continue
             for opt in tv.related_options:
                 title = get_option_title(opt)
-                self.assertIsNotNone(title, f"Missing related option setting '{opt}'")
-            self.assertFalse(title.startswith('No title for setting'), f"Missing title for option setting '{opt}'")
+                self.assertIsNotNone(title, f"Missing related option setting '{opt}' in '{str(tv)}'")
+            self.assertFalse(title.startswith('No title for setting'), f"Missing title for option setting '{opt}' in '{str(tv)}'")
+
+
+class UtilTagsSeeAlsoTest(PicardTestCase):
+    def test_see_alsos_exist(self):
+        """Ensure all `see_also` tags actually exist in the `ALL_TAGS` collection and that a tag's
+        `see_also` tags do not refer to itself.
+        """
+        for tv in ALL_TAGS:
+            if tv.see_also is None:
+                continue
+            for also in tv.see_also:
+                name = ALL_TAGS.script_name_from_name(also)
+                self.assertIsNotNone(name, f"Invalid see_also '{also}' in '{str(tv)}' tag")
+                self.assertNotEqual(name, str(tv), f"Circular see_also reference in '{str(tv)}' tag")
