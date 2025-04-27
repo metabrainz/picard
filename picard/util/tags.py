@@ -194,7 +194,8 @@ class TagVar:
         if not self.doc_links:
             return
         for doclink in self.doc_links:
-            yield f"<a href='{doclink.link}'>{doclink.title}</a>"
+            translated_title = _(doclink.title)
+            yield f"<a href='{doclink.link}'>{translated_title}</a>"
 
     def see_alsos(self):
         if not self.see_also:
@@ -303,10 +304,10 @@ class TagVars(MutableSequence):
     def _base_description(self, tagname):
         name, tagdesc, _search_name, item = self.item_from_name(tagname)
         content = self._markdown(_(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION))
-        if tagdesc:
-            return f"<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
-        else:
-            return f"<p><em>%{name}%</em></p>{content}"
+        fmt_tagdesc = _("<p><em>%{name}%</em> [{tagdesc}]</p>{content}")
+        fmt_normal = _("<p><em>%{name}%</em></p>{content}")
+        fmt = fmt_tagdesc if tagdesc else fmt_normal
+        return fmt.format(name=name, content=content, tagdesc=tagdesc)
 
     def _add_sections(self, item, include_sections):
         # Note: format has to be translatable, for languages not using left-to-right for example
