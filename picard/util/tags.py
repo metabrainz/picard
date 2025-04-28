@@ -180,7 +180,7 @@ class TagVar:
     def notes(self):
         for attrib, note in ATTRIB2NOTE.items():
             if getattr(self, attrib):
-                yield note
+                yield _(note)
 
     def related_options_titles(self):
         if not self.related_options:

@@ -47,6 +47,16 @@ from picard.util.tags import (
 )
 
 
+def _translate_patch(s):
+    if s in {
+        "<p><strong>{title}:</strong> {values}.</p>",
+        "<p><em>%{name}%</em> [{tagdesc}]</p>{content}",
+        "<p><em>%{name}%</em></p>{content}",
+    }:
+        return s.replace('<p>', '<p dir="rtl">')
+    return f"_({s})"
+
+
 class TagVarTest(PicardTestCase):
     def test_basic_properties(self):
         tv = TagVar('name')
@@ -294,6 +304,24 @@ class TagVarsTest(PicardTestCase):
             '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('notes3'), result)
+
+    @mock.patch("picard.util.tags._", side_effect=_translate_patch)
+    def test_tagvars_display_tooltip_translate(self, mock):
+        tagvars = TagVars(
+            self.tagvar_nodesc,
+            self.tagvar_only_sd,
+            self.tagvar_hidden_sd,
+            self.tagvar_notes1,
+        )
+        self.assertEqual(tagvars.display_tooltip('nodesc'), '<p dir="rtl"><em>%nodesc%</em></p><p>_(nodesc)</p>')
+        self.assertEqual(tagvars.display_tooltip('only_sd'), '<p dir="rtl"><em>%only_sd%</em></p><p>_(only_sd_shortdesc)</p>')
+        self.assertEqual(tagvars.display_tooltip('~hidden:xxx'), '<p dir="rtl"><em>%_hidden%</em> [xxx]</p><p>_(No description available.)</p>')
+
+        result = (
+            '<p dir="rtl"><em>%_notes1%</em></p><p>_(notes1_ld)</p>'
+            '<p dir="rtl"><strong>_(Notes):</strong> _(preserved read-only); _(not for use in scripts); _(calculated); _(info from audio file).</p>'
+        )
+        self.assertEqual(tagvars.display_tooltip('_notes1'), result)
 
     def test_tagvars_full_description(self):
         tagvars = TagVars(
