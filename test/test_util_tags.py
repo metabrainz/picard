@@ -474,3 +474,17 @@ class UtilTagsSeeAlsoTest(PicardTestCase):
                 name = ALL_TAGS.script_name_from_name(also)
                 self.assertIsNotNone(name, f"Invalid see_also '{also}' in '{str(tv)}' tag")
                 self.assertNotEqual(name, str(tv), f"Circular see_also reference in '{str(tv)}' tag")
+
+
+class UtilTagsLinksTest(PicardTestCase):
+    def test_links_completeness(self):
+        """Ensure all `doc_links` entries have both a title and a link.
+        """
+        for tv in ALL_TAGS:
+            if tv.doc_links is None:
+                continue
+            for doc_link in tv.doc_links:
+                title = doc_link.title.strip()
+                link = doc_link.link.strip()
+                self.assertNotEqual(title, '', f"Invalid link (missing title) in '{str(tv)}' tag")
+                self.assertNotEqual(link, '', f"Invalid link (missing URL) in '{str(tv)}' tag")
