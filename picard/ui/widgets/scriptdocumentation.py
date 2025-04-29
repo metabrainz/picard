@@ -66,10 +66,6 @@ code {
 class ScriptingDocumentationWidget(QtWidgets.QWidget):
     """Custom widget to display the scripting documentation.
     """
-    # TODO: Select better colors, and create different settings for dark theme as appropriate.
-    BUTTON_STYLE_SELECTED = 'padding: 3px; border: 1px solid; border-radius: 7px; background: #8FBC8F; color: #000;'
-    BUTTON_STYLE_NOT_SELECTED = 'padding: 3px; border: 1px solid; border-radius: 7px; background: #A9A9A9; color: #000;'
-
     def __init__(self, include_link=True, parent=None):
         """Custom widget to display the scripting documentation.
 
@@ -114,7 +110,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         def process_tag(tag: TagVar):
             template = '<dt>%s</dt><dd>%s</dd>'
             tag_title = '%' + tag.script_name() + '%'
-            tag_desc = tag.full_description()
+            tag_desc = tag.full_description_content()
             return template % ("<code>%s</code>" % tag_title, tag_desc)
 
         tagdoc = ''
@@ -143,27 +139,23 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName('docs_verticalLayout')
 
-        self.pb_functions = QtWidgets.QPushButton(self)
-        self.pb_functions.setText(_('Functions'))
-        self.pb_functions.clicked.connect(self._pb_functions_clicked)
+        self.selected_docs = QtWidgets.QLabel(self)
+        self.selected_docs.setText(_('Functions:'))
+        self.selected_docs.setStyleSheet('font-weight: bold;')
 
-        self.pb_tags = QtWidgets.QPushButton(self)
-        self.pb_tags.setText(_('Tags'))
-        self.pb_tags.clicked.connect(self._pb_tags_clicked)
+        self.pb_spacer = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
 
-        self.pb_frame = QtWidgets.QFrame(self)
-        self.pb_frame.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.pb_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-        self.pb_frame.setContentsMargins(0, 0, 0, 0)
-        self.pb_frame.setObjectName("docs_pb_frame")
-        self.pb_frame.show()
+        self.pb_toggle = QtWidgets.QPushButton(self)
+        self.pb_toggle.setText(_('Tags:'))
+        self.pb_toggle.setEnabled(True)
+        self.pb_toggle.clicked.connect(self._pb_toggle_clicked)
 
-        self.pb_layout = QtWidgets.QHBoxLayout(self.pb_frame)
-        self.pb_layout.setContentsMargins(0, 0, 0, 0)
+        self.pb_layout = QtWidgets.QHBoxLayout()
         self.pb_layout.setObjectName('docs_pb_layout')
-        self.pb_layout.addWidget(self.pb_functions)
-        self.pb_layout.addWidget(self.pb_tags)
-        self.verticalLayout.addWidget(self.pb_frame)
+        self.pb_layout.addWidget(self.selected_docs)
+        self.pb_layout.addItem(self.pb_spacer)
+        self.pb_layout.addWidget(self.pb_toggle)
+        self.verticalLayout.addItem(self.pb_layout)
 
         self.frame_1 = QtWidgets.QFrame(parent=self)
         self.frame_1.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
@@ -230,18 +222,16 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         if self.selected_panel == 1:
             self.frame_1.setVisible(True)
             self.frame_2.setVisible(False)
-            self.pb_functions.setStyleSheet(self.BUTTON_STYLE_SELECTED)
-            self.pb_tags.setStyleSheet(self.BUTTON_STYLE_NOT_SELECTED)
+            self.selected_docs.setText(_('Functions:'))
+            self.pb_toggle.setText(_('Tags'))
         else:
             self.frame_1.setVisible(False)
             self.frame_2.setVisible(True)
-            self.pb_functions.setStyleSheet(self.BUTTON_STYLE_NOT_SELECTED)
-            self.pb_tags.setStyleSheet(self.BUTTON_STYLE_SELECTED)
+            self.selected_docs.setText(_('Tags:'))
+            self.pb_toggle.setText(_('Functions'))
 
-    def _pb_functions_clicked(self):
-        self.selected_panel = 1
-        self.display_panel()
-
-    def _pb_tags_clicked(self):
-        self.selected_panel = 2
+    def _pb_toggle_clicked(self):
+        self.selected_panel += 1
+        if self.selected_panel > 2:
+            self.selected_panel = 1
         self.display_panel()

@@ -57,6 +57,12 @@ from picard.options import get_option_title
 DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
 
 
+def _markdown(text: str):
+    if markdown is None:
+        return '<p>' + text.replace('\n', '<br />') + '</p>'
+    return markdown(text)
+
+
 class Section(IntEnum):
     notes = 1
     options = 2
@@ -205,6 +211,9 @@ class TagVar:
             if name:
                 yield f"%{name}%"
 
+    def _base_description(self):
+        return _markdown(_(self.longdesc) if self.longdesc else _(TEXT_NO_DESCRIPTION))
+
     def _gen_sections(self, fmt, include_sections):
         for section_id in include_sections:
             section = SECTIONS[section_id]
@@ -217,23 +226,22 @@ class TagVar:
                 values='; '.join(values),
             )
 
-    @staticmethod
-    def _markdown(text: str):
-        if markdown is None:
-            return '<p>' + text.replace('\n', '<br />') + '</p>'
-        return markdown(text)
-
     def _add_sections(self, include_sections):
         # Note: format has to be translatable, for languages not using left-to-right for example
         fmt = _("<p><strong>{title}:</strong> {values}.</p>")
         return ''.join(self._gen_sections(fmt, include_sections))
 
-    def full_description(self):
-        content = self._markdown(_(self.longdesc) if self.longdesc else _(TEXT_NO_DESCRIPTION))
+    def tooltip_content(self):
+        content = self._base_description()
+        content += self._add_sections((Section.notes, ))
+        return content
+
+    def full_description_content(self):
+        content = self._base_description()
 
         # Append additional description
         if self.additionaldesc:
-            content += self._markdown(_(self.additionaldesc))
+            content += _markdown(_(self.additionaldesc))
 
         # Append additional sections as required
         include_sections = (
@@ -245,6 +253,10 @@ class TagVar:
         content += self._add_sections(include_sections)
 
         return content
+
+    def full_description(self):
+        content = self.full_description_content()
+        return _("<p><em>%{name}%</em></p>{content}").format(name=self.script_name(), content=content)
 
 
 class TagVars(MutableSequence):
@@ -325,55 +337,21 @@ class TagVars(MutableSequence):
             return title
 
     @staticmethod
-    def _markdown(text: str):
-        if markdown is None:
-            return '<p>' + text.replace('\n', '<br />') + '</p>'
-        return markdown(text)
-
-    def _base_description(self, tagname):
-        name, tagdesc, _search_name, item = self.item_from_name(tagname)
-        content = self._markdown(_(item.longdesc) if item and item.longdesc else _(TEXT_NO_DESCRIPTION))
+    def _format_display(name, content, tagdesc):
         fmt_tagdesc = _("<p><em>%{name}%</em> [{tagdesc}]</p>{content}")
         fmt_normal = _("<p><em>%{name}%</em></p>{content}")
         fmt = fmt_tagdesc if tagdesc else fmt_normal
         return fmt.format(name=name, content=content, tagdesc=tagdesc)
 
-    def _add_sections(self, item, include_sections):
-        # Note: format has to be translatable, for languages not using left-to-right for example
-        fmt = _("<p><strong>{title}:</strong> {values}.</p>")
-        return ''.join(item._gen_sections(fmt, include_sections))
-
     def display_tooltip(self, tagname):
-        # Get basic content
-        content = self._base_description(tagname)
         name, tagdesc, _search_name, item = self.item_from_name(tagname)
-
-        # Append notes section
-        if item:
-            content += self._add_sections(item, (Section.notes, ))
-
-        return content
+        content = item.tooltip_content() if item else _markdown(_(TEXT_NO_DESCRIPTION))
+        return self._format_display(name, content, tagdesc)
 
     def display_full_description(self, tagname):
-        # Get basic content
-        content = self._base_description(tagname)
-
         name, tagdesc, _search_name, item = self.item_from_name(tagname)
-        if item:
-            # Append additional description
-            if item.additionaldesc:
-                content += self._markdown(_(item.additionaldesc))
-
-            # Append additional sections as required
-            include_sections = (
-                Section.notes,
-                Section.options,
-                Section.links,
-                Section.see_also,
-            )
-            content += self._add_sections(item, include_sections)
-
-        return content
+        content = item.full_description_content() if item else _markdown(_(TEXT_NO_DESCRIPTION))
+        return self._format_display(name, content, tagdesc)
 
     def names(self, selector=None):
         for item in self._items:

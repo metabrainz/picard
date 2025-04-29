@@ -80,9 +80,7 @@ from picard.ui.options.scripting import (
     OptionsCheckError,
     ScriptCheckError,
 )
-from picard.ui.widgets.scriptdocumentation import (
-    ScriptingDocumentationWidget,
-)
+from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 
 
 class ScriptFileError(OptionsCheckError):
