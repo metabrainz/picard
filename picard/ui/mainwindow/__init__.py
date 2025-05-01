@@ -288,7 +288,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 self.remove_selected_objects()
         elif event.matches(QtGui.QKeySequence.StandardKey.Find):
-            self.search_edit.setFocus(QtCore.Qt.FocusReason.ShortcutFocusReason)
+            self.toggle_find_boxes()
         else:
             super().keyPressEvent(event)
 
@@ -1631,6 +1631,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')
+
+    def toggle_find_boxes(self):
+        """Toggle the find boxes in the main panel."""
+        self.panel.toggle_find_boxes()
 
 
 def update_last_check_date(is_success):
