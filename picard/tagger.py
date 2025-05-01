@@ -253,7 +253,6 @@ class Tagger(QtWidgets.QApplication):
         init_options()
         setup_config(app=self, filename=picard_args.config_file)
         config = get_config()
-        theme.setup(self)
 
         self._to_load = picard_args.processable
 
@@ -389,6 +388,8 @@ class Tagger(QtWidgets.QApplication):
         # Load release version information
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(self)
+
+        theme.setup(self)
 
     @property
     def is_wayland(self):
