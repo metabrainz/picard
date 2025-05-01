@@ -111,7 +111,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             template = '<dt>%s</dt><dd>%s</dd>'
             tag_title = '%' + tag.script_name() + '%'
             tag_desc = tag.full_description_content()
-            return template % ("<code>%s</code>" % tag_title, tag_desc)
+            return template % (f'<a id="{tag.script_name()}"><code>{tag_title}</code></a>', tag_desc)
 
         tagdoc = ''
         for tag in sorted(ALL_TAGS, key=lambda x: x.script_name()):

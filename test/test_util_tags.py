@@ -336,7 +336,7 @@ class TagVarsTest(PicardTestCase):
             'Picard.</p>'
             '<p><strong>Option Settings:</strong> Everything test setting.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
-            '<p><strong>See Also:</strong> %artist%; %title%.</p>'
+            '<p><strong>See Also:</strong> <a href="#artist">%artist%</a>; <a href="#title">%title%</a>.</p>'
         )
         self.assertEqual(tagvars.display_full_description('everything'), result)
 

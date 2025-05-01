@@ -209,7 +209,7 @@ class TagVar:
         for tag in self.see_also:
             name = ALL_TAGS.script_name_from_name(tag)
             if name:
-                yield f"%{name}%"
+                yield f'<a href="#{tag}">%{tag}%</a>'
 
     def _base_description(self):
         return _markdown(_(self.longdesc) if self.longdesc else _(TEXT_NO_DESCRIPTION))
