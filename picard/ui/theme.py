@@ -97,6 +97,7 @@ class BaseTheme:
 
     def setup(self, app):
         config = get_config()
+        ui_theme = config.setting['ui_theme']
         self._loaded_config_theme = UiTheme(config.setting['ui_theme'])
 
         # Use the new fusion style from PyQt6 for a modern and consistent look
@@ -113,7 +114,20 @@ class BaseTheme:
         palette = QtGui.QPalette(app.palette())
         base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
         self._dark_theme = base_color.lightness() < 128
-        self.update_palette(palette, self.is_dark_theme, self.accent_color)
+
+        is_dark_theme = self.is_dark_theme
+        accent_color = self.accent_color
+        if accent_color:
+            accent_color_str = accent_color.name(QtGui.QColor.NameFormat.HexArgb)
+        else:
+            accent_color_str = "None"
+
+        log.debug(
+            "Theme: %s (%s) dark=%s accent_color=%s",
+            ui_theme, self.__class__.__name__, is_dark_theme, accent_color_str
+        )
+
+        self.update_palette(palette, is_dark_theme, accent_color)
         app.setPalette(palette)
 
     @property
