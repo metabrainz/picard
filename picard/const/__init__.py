@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018, 2021, 2023 Bob Swift
+# Copyright (C) 2018, 2021, 2023, 2025 Bob Swift
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Vladislav Karbovskii
@@ -86,6 +86,7 @@ PICARD_URLS = {
     'chromaprint':             "https://acoustid.org/chromaprint#download",
     'acoustid_apikey':         "https://acoustid.org/api-key",
     'acoustid_track':          "https://acoustid.org/track/",
+    'mb_doc':                  "https://musicbrainz.org/doc/",
 }
 
 # Various Artists MBID

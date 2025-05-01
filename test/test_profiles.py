@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021, 2023 Bob Swift
+# Copyright (C) 2021, 2023, 2025 Bob Swift
 # Copyright (C) 2022 Philipp Wolfer
 # Copyright (C) 2024 Laurent Monin
 #
@@ -66,6 +66,7 @@ class TestPicardProfilesCommon(PicardTestCase):
 
         self.config.application["version"] = "testing"
         logging.disable(logging.ERROR)
+        self.old_registry = dict(Option.registry)
         Option.registry = {}
 
         ListOption('profiles', self.PROFILES_KEY, [])
@@ -89,6 +90,9 @@ class TestPicardProfilesCommon(PicardTestCase):
         BoolOption("setting", self.test_setting_1, True)
         IntOption("setting", self.test_setting_2, 42)
         TextOption("setting", self.test_setting_3, "xyz")
+
+    def tearDown(self):
+        Option.registry = self.old_registry
 
     def cleanup_config_obj(self):
         # Ensure QSettings do not recreate the file on exit

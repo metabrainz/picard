@@ -5,6 +5,7 @@
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Laurent Monin
 # Copyright (C) 2025 Philipp Wolfer
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -207,10 +208,10 @@ ListOption('persist', 'options_pages_tree_state', [])
 # Fingerprinting
 TextOption('setting', 'acoustid_apikey', '')
 TextOption('setting', 'acoustid_fpcalc', '')
-TextOption('setting', 'fingerprinting_system', 'acoustid')
+TextOption('setting', 'fingerprinting_system', 'acoustid', title=N_('Use AcoustID audio fingerprinting'))
 IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS)
 BoolOption('setting', 'ignore_existing_acoustid_fingerprints', False)
-BoolOption('setting', 'save_acoustid_fingerprints', False)
+BoolOption('setting', 'save_acoustid_fingerprints', False, title=N_('Save AcoustID fingerprints'))
 
 # picard/ui/options/general.py
 # General
@@ -436,3 +437,13 @@ BoolOption('persist', 'script_editor_wordwrap', False)
 
 def init_options():
     pass
+
+
+def get_option_title(name):
+    key = ('setting', name)
+    if key not in Option.registry:
+        return None
+    title = Option.registry[key].title
+    if title:
+        return title
+    return N_("No title for setting '%s'") % name

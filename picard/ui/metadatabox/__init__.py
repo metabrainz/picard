@@ -62,7 +62,10 @@ from picard.util import (
     throttle,
 )
 from picard.util.preservedtags import PreservedTags
-from picard.util.tags import display_tag_name
+from picard.util.tags import (
+    display_tag_name,
+    display_tag_tooltip,
+)
 
 from .edittagdialog import (
     EditTagDialog,
@@ -790,6 +793,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         font = item.font()
         font.setBold(True)
         item.setFont(font)
+        item.setToolTip(display_tag_tooltip(tag))
 
     @staticmethod
     def _set_item_value(item, tags, tag, color, strikeout=False):
