@@ -114,7 +114,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             return template % ("<code>%s</code>" % tag_title, tag_desc)
 
         tagdoc = ''
-        for tag in ALL_TAGS:
+        for tag in sorted(ALL_TAGS, key=lambda x: x.script_name()):
             tagdoc += process_tag(tag)
 
         tag_html = DOCUMENTATION_HTML_TEMPLATE % {
