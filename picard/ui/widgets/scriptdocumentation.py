@@ -63,23 +63,52 @@ code {
 '''
 
 
-class ScriptingDocumentationWidget(QtWidgets.QWidget):
-    """Custom widget to display the scripting documentation.
-    """
-    def __init__(self, include_link=True, parent=None):
-        """Custom widget to display the scripting documentation.
+def htmldoc(html, rtl):
+    htmldoc = DOCUMENTATION_HTML_TEMPLATE % {
+        'html': "<dl>%s</dl>" % html,
+        'script_function_fg': interface_colors.get_qcolor('syntax_hl_func').name(),
+        'monospace_font': FONT_FAMILY_MONOSPACE,
+        'dir': 'rtl' if rtl else 'ltr',
+        'inline_start': 'right' if rtl else 'left'
+    }
 
-        Args:
-            include_link (bool): Indicates whether the web link should be included
-            parent (QWidget): Parent screen to check layoutDirection()
-        """
+    # Scripting code is always left-to-right. Qt does not support the dir
+    # attribute on inline tags, insert explicit left-right-marks instead.
+    if rtl:
+        htmldoc = htmldoc.replace('<code>', '<code>&#8206;')
+
+    return htmldoc
+
+
+class HtmlBrowser(QtWidgets.QTextBrowser):
+    def __init__(self, html, rtl, parent=None):
         super().__init__(parent=parent)
 
-        if self.layoutDirection() == QtCore.Qt.LayoutDirection.RightToLeft:
-            text_direction = 'rtl'
-        else:
-            text_direction = 'ltr'
+        self.setEnabled(True)
+        self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.setObjectName('func_browser')
+        self.setHtml(htmldoc(html, rtl))
+        self.show()
 
+
+class DocumentationPage(QtWidgets.QWidget):
+    def __init__(self, rtl=False, parent=None):
+        super().__init__(parent=parent)
+        self.rtl = rtl
+        layout = QtWidgets.QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+
+        html = self.generate_html()
+        browser = HtmlBrowser(html, self.rtl)
+        layout.addWidget(browser)
+
+    def generate_html(self):
+        raise NotImplementedError
+
+
+class FunctionsDocumentationPage(DocumentationPage):
+    def generate_html(self):
         def process_html(html, function):
             if not html:
                 html = ''
@@ -94,44 +123,37 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             except ValueError:
                 return template % ("<code>$%s()</code>" % function.name, module, html)
 
-        funcdoc = script_function_documentation_all(
+        return script_function_documentation_all(
             fmt='html',
             postprocessor=process_html,
         )
 
-        func_html = DOCUMENTATION_HTML_TEMPLATE % {
-            'html': "<dl>%s</dl>" % funcdoc,
-            'script_function_fg': interface_colors.get_qcolor('syntax_hl_func').name(),
-            'monospace_font': FONT_FAMILY_MONOSPACE,
-            'dir': text_direction,
-            'inline_start': 'right' if text_direction == 'rtl' else 'left'
-        }
 
+class TagsDocumentationPage(DocumentationPage):
+    def generate_html(self):
         def process_tag(tag: TagVar):
             tag_name = tag.script_name()
             tag_desc = tag.full_description_content()
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
-        tagdoc = ''
+        html = ''
         for tag in sorted(ALL_TAGS, key=lambda x: x.script_name()):
-            tagdoc += process_tag(tag)
+            html += process_tag(tag)
+        return html
 
-        tag_html = DOCUMENTATION_HTML_TEMPLATE % {
-            'html': "<dl>%s</dl>" % tagdoc,
-            'script_function_fg': interface_colors.get_qcolor('syntax_hl_func').name(),
-            'monospace_font': FONT_FAMILY_MONOSPACE,
-            'dir': text_direction,
-            'inline_start': 'right' if text_direction == 'rtl' else 'left'
-        }
 
-        # Scripting code is always left-to-right. Qt does not support the dir
-        # attribute on inline tags, insert explicit left-right-marks instead.
-        if text_direction == 'rtl':
-            func_html = func_html.replace('<code>', '<code>&#8206;')
-            tag_html = tag_html.replace('<code>', '<code>&#8206;')
+class ScriptingDocumentationWidget(QtWidgets.QWidget):
+    """Custom widget to display the scripting documentation.
+    """
+    def __init__(self, include_link=True, parent=None):
+        """Custom widget to display the scripting documentation.
 
-        link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + _('Open Scripting Documentation in your browser') + '</a>'
+        Args:
+            include_link (bool): Indicates whether the web link should be included
+            parent (QWidget): Parent screen to check layoutDirection()
+        """
+        super().__init__(parent=parent)
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -140,35 +162,12 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.tabs = QtWidgets.QTabWidget()
         self.tabs.setContentsMargins(0, 0, 0, 0)
 
-        self.func_page = QtWidgets.QWidget()
-        self.func_page_layout = QtWidgets.QVBoxLayout()
-        self.func_page_layout.setContentsMargins(0, 0, 0, 0)
-        self.func_page.setLayout(self.func_page_layout)
+        rtl = (self.layoutDirection() == QtCore.Qt.LayoutDirection.RightToLeft)
+        func_page = FunctionsDocumentationPage(rtl=rtl)
+        tags_page = TagsDocumentationPage(rtl=rtl)
 
-        self.func_browser = QtWidgets.QTextBrowser()
-        self.func_browser.setEnabled(True)
-        self.func_browser.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.func_browser.setObjectName('func_browser')
-        self.func_browser.setHtml(func_html)
-        self.func_browser.show()
-        self.func_page_layout.addWidget(self.func_browser)
-
-        self.tags_page = QtWidgets.QWidget()
-        self.tags_page_layout = QtWidgets.QVBoxLayout()
-        self.tags_page_layout.setContentsMargins(0, 0, 0, 0)
-        self.tags_page.setLayout(self.tags_page_layout)
-
-        self.tags_browser = QtWidgets.QTextBrowser()
-        self.tags_browser.setEnabled(True)
-        self.tags_browser.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.tags_browser.setObjectName('tags_browser')
-        self.tags_browser.setOpenExternalLinks(True)
-        self.tags_browser.setHtml(tag_html)
-        self.tags_browser.show()
-        self.tags_page_layout.addWidget(self.tags_browser)
-
-        self.tabs.addTab(self.func_page, _("Functions"))
-        self.tabs.addTab(self.tags_page, _("Tags"))
+        self.tabs.addTab(func_page, _("Functions"))
+        self.tabs.addTab(tags_page, _("Tags"))
 
         self.verticalLayout.addWidget(self.tabs)
 
@@ -177,6 +176,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.horizontalLayout.setObjectName('docs_horizontalLayout')
 
         if include_link:
+            link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + _('Open Scripting Documentation in your browser') + '</a>'
             self.scripting_doc_link = QtWidgets.QLabel()
 
             sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
