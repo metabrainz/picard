@@ -125,8 +125,6 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             'inline_start': 'right' if text_direction == 'rtl' else 'left'
         }
 
-        self.selected_panel = 1
-
         # Scripting code is always left-to-right. Qt does not support the dir
         # attribute on inline tags, insert explicit left-right-marks instead.
         if text_direction == 'rtl':
