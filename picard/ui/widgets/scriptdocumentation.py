@@ -48,7 +48,7 @@ dt {
 }
 dd {
     /* Qt does not support margin-inline-start, use margin-left/margin-right instead */
-    margin-%(inline_start)s: 50px;
+    margin-%(inline_start)s: 20px;
     margin-bottom: 50px;
 }
 code {
@@ -139,63 +139,40 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName('docs_verticalLayout')
 
-        self.selected_docs = QtWidgets.QLabel(self)
-        self.selected_docs.setText(_('Functions:'))
-        self.selected_docs.setStyleSheet('font-weight: bold;')
+        self.tabs = QtWidgets.QTabWidget(self)
+        self.tabs.setContentsMargins(0, 0, 0, 0)
 
-        self.pb_spacer = QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.func_page = QtWidgets.QWidget(self)
+        self.func_page_layout = QtWidgets.QVBoxLayout()
+        self.func_page_layout.setContentsMargins(0, 0, 0, 0)
+        self.func_page.setLayout(self.func_page_layout)
 
-        self.pb_toggle = QtWidgets.QPushButton(self)
-        self.pb_toggle.setText(_('Tags:'))
-        self.pb_toggle.setEnabled(True)
-        self.pb_toggle.clicked.connect(self._pb_toggle_clicked)
+        self.func_browser = QtWidgets.QTextBrowser(self)
+        self.func_browser.setEnabled(True)
+        self.func_browser.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.func_browser.setObjectName('func_browser')
+        self.func_browser.setHtml(func_html)
+        self.func_browser.show()
+        self.func_page_layout.addWidget(self.func_browser)
 
-        self.pb_layout = QtWidgets.QHBoxLayout()
-        self.pb_layout.setObjectName('docs_pb_layout')
-        self.pb_layout.addWidget(self.selected_docs)
-        self.pb_layout.addItem(self.pb_spacer)
-        self.pb_layout.addWidget(self.pb_toggle)
-        self.verticalLayout.addItem(self.pb_layout)
+        self.tags_page = QtWidgets.QWidget(self)
+        self.tags_page_layout = QtWidgets.QVBoxLayout()
+        self.tags_page_layout.setContentsMargins(0, 0, 0, 0)
+        self.tags_page.setLayout(self.tags_page_layout)
 
-        self.frame_1 = QtWidgets.QFrame(parent=self)
-        self.frame_1.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.frame_1.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-        self.frame_1.setContentsMargins(0, 0, 0, 0)
-        self.frame_1.setObjectName("docs_frame_1")
-        self.frame_1.show()
+        self.tags_browser = QtWidgets.QTextBrowser(self)
+        self.tags_browser.setEnabled(True)
+        self.tags_browser.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.tags_browser.setObjectName('tags_browser')
+        self.tags_browser.setOpenExternalLinks(True)
+        self.tags_browser.setHtml(tag_html)
+        self.tags_browser.show()
+        self.tags_page_layout.addWidget(self.tags_browser)
 
-        self.frame_1_layout = QtWidgets.QVBoxLayout(self.frame_1)
-        self.frame_1_layout.setContentsMargins(0, 0, 0, 0)
+        self.tabs.addTab(self.func_page, _("Functions"))
+        self.tabs.addTab(self.tags_page, _("Tags"))
 
-        self.textBrowser_1 = QtWidgets.QTextBrowser(self)
-        self.textBrowser_1.setEnabled(True)
-        self.textBrowser_1.setMinimumSize(QtCore.QSize(0, 0))
-        self.textBrowser_1.setObjectName('function_docs_textBrowser')
-        self.textBrowser_1.setHtml(func_html)
-        self.textBrowser_1.show()
-        self.frame_1_layout.addWidget(self.textBrowser_1)
-
-        self.frame_2 = QtWidgets.QFrame(parent=self)
-        self.frame_2.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.frame_2.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
-        self.frame_2.setContentsMargins(0, 0, 0, 0)
-        self.frame_2.setObjectName("docs_frame_2")
-        self.frame_2.show()
-
-        self.frame_2_layout = QtWidgets.QVBoxLayout(self.frame_2)
-        self.frame_2_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.textBrowser_2 = QtWidgets.QTextBrowser(self)
-        self.textBrowser_2.setEnabled(True)
-        self.textBrowser_2.setMinimumSize(QtCore.QSize(0, 0))
-        self.textBrowser_2.setObjectName('tags_docs_textBrowser')
-        self.textBrowser_2.setOpenExternalLinks(True)
-        self.textBrowser_2.setHtml(tag_html)
-        self.textBrowser_2.show()
-        self.frame_2_layout.addWidget(self.textBrowser_2)
-
-        self.verticalLayout.addWidget(self.frame_1)
-        self.verticalLayout.addWidget(self.frame_2)
+        self.verticalLayout.addWidget(self.tabs)
 
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
@@ -216,22 +193,4 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             self.scripting_doc_link.show()
             self.horizontalLayout.addWidget(self.scripting_doc_link)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        self.display_panel()
-
-    def display_panel(self):
-        if self.selected_panel == 1:
-            self.frame_1.setVisible(True)
-            self.frame_2.setVisible(False)
-            self.selected_docs.setText(_('Functions:'))
-            self.pb_toggle.setText(_('Tags'))
-        else:
-            self.frame_1.setVisible(False)
-            self.frame_2.setVisible(True)
-            self.selected_docs.setText(_('Tags:'))
-            self.pb_toggle.setText(_('Functions'))
-
-    def _pb_toggle_clicked(self):
-        self.selected_panel += 1
-        if self.selected_panel > 2:
-            self.selected_panel = 1
-        self.display_panel()
+        self.show()
