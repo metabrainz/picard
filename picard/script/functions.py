@@ -371,7 +371,9 @@ def func_rsearch(parser, text, pattern):
         return ''
     if match:
         try:
-            return match.group(1)
+            if match.group(1) is not None:
+                return match.group(1)
+            return match.group(0)
         except IndexError:
             return match.group(0)
     return ''
