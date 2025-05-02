@@ -38,6 +38,7 @@ from collections import (
 )
 from collections.abc import MutableSequence
 from enum import IntEnum
+import html
 import re
 
 
@@ -58,6 +59,7 @@ DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
 
 
 def _markdown(text: str):
+    text = html.escape(text)
     if markdown is None:
         return '<p>' + text.replace('\n', '<br />') + '</p>'
     return markdown(text)
@@ -186,7 +188,7 @@ class TagVar:
     def notes(self):
         for attrib, note in ATTRIB2NOTE.items():
             if getattr(self, attrib):
-                yield _(note)
+                yield html.escape(_(note))
 
     def related_options_titles(self):
         if not self.related_options:
@@ -194,13 +196,13 @@ class TagVar:
         for setting in self.related_options:
             title = get_option_title(setting)
             if title:
-                yield _(title)
+                yield html.escape(_(title))
 
     def links(self):
         if not self.doc_links:
             return
         for doclink in self.doc_links:
-            translated_title = _(doclink.title)
+            translated_title = html.escape(_(doclink.title))
             yield f"<a href='{doclink.link}'>{translated_title}</a>"
 
     def see_alsos(self):
