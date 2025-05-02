@@ -137,15 +137,15 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName('docs_verticalLayout')
 
-        self.tabs = QtWidgets.QTabWidget(self)
+        self.tabs = QtWidgets.QTabWidget()
         self.tabs.setContentsMargins(0, 0, 0, 0)
 
-        self.func_page = QtWidgets.QWidget(self)
+        self.func_page = QtWidgets.QWidget()
         self.func_page_layout = QtWidgets.QVBoxLayout()
         self.func_page_layout.setContentsMargins(0, 0, 0, 0)
         self.func_page.setLayout(self.func_page_layout)
 
-        self.func_browser = QtWidgets.QTextBrowser(self)
+        self.func_browser = QtWidgets.QTextBrowser()
         self.func_browser.setEnabled(True)
         self.func_browser.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.func_browser.setObjectName('func_browser')
@@ -153,12 +153,12 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.func_browser.show()
         self.func_page_layout.addWidget(self.func_browser)
 
-        self.tags_page = QtWidgets.QWidget(self)
+        self.tags_page = QtWidgets.QWidget()
         self.tags_page_layout = QtWidgets.QVBoxLayout()
         self.tags_page_layout.setContentsMargins(0, 0, 0, 0)
         self.tags_page.setLayout(self.tags_page_layout)
 
-        self.tags_browser = QtWidgets.QTextBrowser(self)
+        self.tags_browser = QtWidgets.QTextBrowser()
         self.tags_browser.setEnabled(True)
         self.tags_browser.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.tags_browser.setObjectName('tags_browser')
@@ -175,12 +175,15 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
         self.horizontalLayout.setObjectName('docs_horizontalLayout')
-        self.scripting_doc_link = QtWidgets.QLabel(self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.scripting_doc_link.sizePolicy().hasHeightForWidth())
+
         if include_link:
+            self.scripting_doc_link = QtWidgets.QLabel()
+
+            sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
+            sizePolicy.setHorizontalStretch(0)
+            sizePolicy.setVerticalStretch(0)
+            sizePolicy.setHeightForWidth(self.scripting_doc_link.sizePolicy().hasHeightForWidth())
+
             self.scripting_doc_link.setSizePolicy(sizePolicy)
             self.scripting_doc_link.setMinimumSize(QtCore.QSize(0, 20))
             self.scripting_doc_link.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -190,5 +193,6 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
             self.scripting_doc_link.setText(link)
             self.scripting_doc_link.show()
             self.horizontalLayout.addWidget(self.scripting_doc_link)
+
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.show()
