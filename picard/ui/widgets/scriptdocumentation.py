@@ -108,10 +108,10 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         }
 
         def process_tag(tag: TagVar):
-            template = '<dt>%s</dt><dd>%s</dd>'
-            tag_title = '%' + tag.script_name() + '%'
+            tag_name = tag.script_name()
             tag_desc = tag.full_description_content()
-            return template % (f'<a id="{tag.script_name()}"><code>{tag_title}</code></a>', tag_desc)
+            tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
+            return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
         tagdoc = ''
         for tag in sorted(ALL_TAGS, key=lambda x: x.script_name()):
