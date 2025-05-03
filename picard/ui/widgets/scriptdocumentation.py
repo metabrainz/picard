@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021-2022 Philipp Wolfer
-# Copyright (C) 2021-2024 Laurent Monin
+# Copyright (C) 2021-2024, 2025 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,12 +27,12 @@ from PyQt6 import (
 )
 
 from picard.const import PICARD_URLS
-from picard.i18n import gettext as _
-from picard.script import script_function_documentation_all
-from picard.util.tags import (
+from picard.const.tags import (
     ALL_TAGS,
     TagVar,
 )
+from picard.i18n import gettext as _
+from picard.script import script_function_documentation_all
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
@@ -133,7 +133,7 @@ class TagsDocumentationPage(DocumentationPage):
     def generate_html(self):
         def process_tag(tag: TagVar):
             tag_name = tag.script_name()
-            tag_desc = tag.full_description_content()
+            tag_desc = ALL_TAGS.full_description_content(tag)
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 

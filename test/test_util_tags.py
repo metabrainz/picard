@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019-2020 Philipp Wolfer
-# Copyright (C) 2020-2022 Laurent Monin
+# Copyright (C) 2020-2022, 2025 Laurent Monin
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Serial
 # Copyright (C) 2025 Bob Swift
@@ -27,20 +27,22 @@ import unittest.mock as mock
 from test.picardtestcase import PicardTestCase
 
 from picard.const import PICARD_URLS
+from picard.const.tags import (
+    ALL_TAGS,
+    DocumentLink,
+    TagVar,
+    TagVars,
+    markdown,
+)
 from picard.options import (
     Option,
     get_option_title,
 )
 from picard.profile import profile_groups_add_setting
 from picard.util.tags import (
-    ALL_TAGS,
-    DocumentLink,
-    TagVar,
-    TagVars,
     display_tag_full_description,
     display_tag_name,
     display_tag_tooltip,
-    markdown,
     parse_comment_tag,
     parse_subtag,
     script_variable_tag_names,
@@ -134,7 +136,7 @@ class TagVarsTest(PicardTestCase):
                                         additionaldesc='Test additional description.', is_preserved=True,
                                         is_script_variable=False, is_tag=False, is_calculated=True, is_file_info=True, is_from_mb=False,
                                         is_populated_by_picard=False, is_multi_value=True,
-                                        see_also=('artist', 'title'),
+                                        see_also=('_hidden_sd', 'sd_ld'),
                                         related_options=('everything_test', 'not_a_valid_option_setting'),
                                         doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
         if ('setting', 'everything_test') not in Option.registry:
@@ -253,7 +255,7 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_name('only_sd:'), 'only_sd_shortdesc')
         self.assertEqual(tagvars.display_name('only_sd:xxx'), 'only_sd_shortdesc [xxx]')
 
-        with mock.patch("picard.util.tags._", return_value='translated'):
+        with mock.patch("picard.const.tags._", return_value='translated'):
             self.assertEqual(tagvars.display_name('only_sd'), 'translated')
 
     def test_script_variable_tag_names(self):
@@ -305,7 +307,7 @@ class TagVarsTest(PicardTestCase):
         )
         self.assertEqual(tagvars.display_tooltip('notes3'), result)
 
-    @mock.patch("picard.util.tags._", side_effect=_translate_patch)
+    @mock.patch("picard.const.tags._", side_effect=_translate_patch)
     def test_tagvars_display_tooltip_translate(self, mock):
         tagvars = TagVars(
             self.tagvar_nodesc,
@@ -326,6 +328,8 @@ class TagVarsTest(PicardTestCase):
     def test_tagvars_full_description(self):
         tagvars = TagVars(
             self.tagvar_everything,
+            self.tagvar_hidden_sd,
+            self.tagvar_sd_ld,
         )
         profile_groups_add_setting('junk', 'everything_test', None, 'Everything test option setting')
         result = (
@@ -336,7 +340,7 @@ class TagVarsTest(PicardTestCase):
             'Picard.</p>'
             '<p><strong>Option Settings:</strong> Everything test setting.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
-            '<p><strong>See Also:</strong> <a href="#artist">%artist%</a>; <a href="#title">%title%</a>.</p>'
+            '<p><strong>See Also:</strong> <a href="#_hidden_sd">%_hidden_sd%</a>; <a href="#sd_ld">%sd_ld%</a>.</p>'
         )
         self.assertEqual(tagvars.display_full_description('everything'), result)
 
