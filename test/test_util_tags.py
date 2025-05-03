@@ -336,7 +336,7 @@ class TagVarsTest(PicardTestCase):
             'Picard.</p>'
             '<p><strong>Option Settings:</strong> Everything test setting.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
-            '<p><strong>See Also:</strong> %artist%; %title%.</p>'
+            '<p><strong>See Also:</strong> <a href="#artist">%artist%</a>; <a href="#title">%title%</a>.</p>'
         )
         self.assertEqual(tagvars.display_full_description('everything'), result)
 
@@ -372,7 +372,10 @@ class UtilTagsTest(PicardTestCase):
 
         self.assertEqual(
             display_tag_tooltip('_albumartists_sort'),
-            "<p><em>%_albumartists_sort%</em></p><p>The sort names of the album's artists.</p><p><strong>Notes:</strong> multi-value variable.</p>"
+            (
+                '<p><em>%_albumartists_sort%</em></p><p>The sort names of the album&#x27;s artists.</p><p><strong>Notes:'
+                '</strong> multi-value variable.</p>'
+            )
         )
 
         result = (
@@ -391,17 +394,18 @@ class UtilTagsTest(PicardTestCase):
         result = (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
             '<ul>\n'
-            '<li>vocals or instruments for the associated release or recording, where "type" can be "<em>vocal</em>", '
-            '"<em>guest guitar</em>", "<em>solo violin</em>", etc.</li>\n'
-            '<li>the orchestra for the associated release or recording, where "type" is "<em>orchestra</em>"</li>\n'
-            '<li>the concert master for the associated release or recording, where "type" is "<em>concertmaster</em>"</li>\n'
+            '<li>vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;<em>vocal</em>&quot;, '
+            '&quot;<em>guest guitar</em>&quot;, &quot;<em>solo violin</em>&quot;, etc.</li>\n'
+            '<li>the orchestra for the associated release or recording, where &quot;type&quot; is &quot;<em>orchestra</em>&quot;</li>\n'
+            '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
             '</ul><p><strong>Notes:</strong> multi-value variable.</p>'
         ) if markdown is not None else (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
             '<br /><br />'
-            '- vocals or instruments for the associated release or recording, where "type" can be "*vocal*", "*guest guitar*", "*solo violin*", etc.<br />'
-            '- the orchestra for the associated release or recording, where "type" is "*orchestra*"<br />'
-            '- the concert master for the associated release or recording, where "type" is "*concertmaster*"</p>'
+            '- vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;*vocal*&quot;, &quot;*guest '
+            'guitar*&quot;, &quot;*solo violin*&quot;, etc.<br />'
+            '- the orchestra for the associated release or recording, where &quot;type&quot; is &quot;*orchestra*&quot;<br />'
+            '- the concert master for the associated release or recording, where &quot;type&quot; is &quot;*concertmaster*&quot;</p>'
             '<p><strong>Notes:</strong> multi-value variable.</p>'
         )
         self.assertEqual(display_tag_tooltip('performer'), result)
@@ -431,18 +435,19 @@ class UtilTagsTest(PicardTestCase):
         result = (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
             '<ul>\n'
-            '<li>vocals or instruments for the associated release or recording, where "type" can be "<em>vocal</em>", '
-            '"<em>guest guitar</em>", "<em>solo violin</em>", etc.</li>\n'
-            '<li>the orchestra for the associated release or recording, where "type" is "<em>orchestra</em>"</li>\n'
-            '<li>the concert master for the associated release or recording, where "type" is "<em>concertmaster</em>"</li>\n'
+            '<li>vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;<em>vocal</em>&quot;, '
+            '&quot;<em>guest guitar</em>&quot;, &quot;<em>solo violin</em>&quot;, etc.</li>\n'
+            '<li>the orchestra for the associated release or recording, where &quot;type&quot; is &quot;<em>orchestra</em>&quot;</li>\n'
+            '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
             '</ul>'
             '<p><strong>Notes:</strong> multi-value variable.</p>'
         ) if markdown is not None else (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
             '<br /><br />'
-            '- vocals or instruments for the associated release or recording, where "type" can be "*vocal*", "*guest guitar*", "*solo violin*", etc.<br />'
-            '- the orchestra for the associated release or recording, where "type" is "*orchestra*"<br />'
-            '- the concert master for the associated release or recording, where "type" is "*concertmaster*"</p>'
+            '- vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;*vocal*&quot;, '
+            '&quot;*guest guitar*&quot;, &quot;*solo violin*&quot;, etc.<br />'
+            '- the orchestra for the associated release or recording, where &quot;type&quot; is &quot;*orchestra*&quot;<br />'
+            '- the concert master for the associated release or recording, where &quot;type&quot; is &quot;*concertmaster*&quot;</p>'
             '<p><strong>Notes:</strong> multi-value variable.</p>'
         )
         self.assertEqual(display_tag_full_description('performer'), result)

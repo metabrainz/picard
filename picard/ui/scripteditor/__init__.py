@@ -170,6 +170,14 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
 
+        # Prevent splitter from completely hiding editor or documentation panels
+        self.ui.splitter_between_editor_and_documentation.setCollapsible(0, False)
+        self.ui.splitter_between_editor_and_documentation.setCollapsible(1, False)
+
+        # Prevent splitter from completely hiding before or after example panels
+        self.ui.splitter_between_before_and_after.setCollapsible(0, False)
+        self.ui.splitter_between_before_and_after.setCollapsible(1, False)
+
         # Add links to edit script metadata
         self.ui.script_title.installEventFilter(self)
         self.ui.script_title.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.ActionsContextMenu)
@@ -177,7 +185,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
 
         self.ui.file_naming_format.setEnabled(True)
 
-        # Add scripting documentation to parent frame.
+        # Add documentation to frame
         doc_widget = ScriptingDocumentationWidget(include_link=False, parent=self)
         self.ui.documentation_frame_layout.addWidget(doc_widget)
 
@@ -194,7 +202,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
 
         synchronize_vertical_scrollbars((self.ui.example_filename_before, self.ui.example_filename_after))
 
-        self.toggle_documentation()  # Force update to display
+        self.toggle_documentation()         # Force update to display
         self.examples_current_row = -1
 
         self.selected_script_index = 0
@@ -405,6 +413,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def closeEvent(self, event):
         """Custom close event handler to check for unsaved changes.
         """
+        self.save_geometry()
         if self.unsaved_changes_in_profile_confirmation():
             self.reset_script_in_settings()
             self.set_selector_states(save_enabled=True)
