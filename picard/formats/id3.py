@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2009, 2011-2012 Lukáš Lalinský
-# Copyright (C) 2008-2011, 2014, 2018-2021, 2023 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2021, 2023, 2025 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2011-2012 Johannes Weißl
 # Copyright (C) 2011-2014 Michael Wiencek
@@ -522,7 +522,7 @@ class ID3File(File):
         }
 
         self._save_track_disc_movement_numbers(tags, metadata)
-        self._save_images(tags, metadata)
+        self._save_images_to_tags(tags, metadata)
 
         for name, values in metadata.rawitems():
             name = id3text(name, encoding)
@@ -715,7 +715,7 @@ class ID3File(File):
                 text=id3text(text, Id3Encoding.LATIN1)
             ))
 
-    def _save_images(self, tags, metadata):
+    def _save_images_to_tags(self, tags, metadata):
         """Save cover art images to tags."""
         images_to_save = list(metadata.images.to_be_saved_to_tags())
         if not images_to_save:
