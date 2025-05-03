@@ -582,6 +582,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals(r"$rsearch(test \(disc 1\),\\\(disc \\d+\\\))", "(disc 1)")
         self.assertScriptResultEquals(r"$rsearch(test,x)", "")
         self.assertScriptResultEquals(r'''$rsearch(test,[t)''', "")
+        self.assertScriptResultEquals(r'$rsearch(foo,foo|\(bar\))', "foo")
 
     def test_arguments(self):
         self.assertTrue(
