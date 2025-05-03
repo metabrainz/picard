@@ -49,9 +49,9 @@ from picard.metadata import (
     weights_from_preferred_formats,
     weights_from_release_type_scores,
 )
+from picard.tags import preserved_tag_names
 from picard.track import Track
 from picard.util.imagelist import ImageList
-from picard.util.tags import preserved_tag_names
 
 
 settings = {

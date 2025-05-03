@@ -23,7 +23,7 @@
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-from picard.util.preservedtags import PreservedTags
+from picard.tags.preservedtags import PreservedTags
 
 
 class PreservedTagsTest(PicardTestCase):

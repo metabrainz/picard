@@ -27,25 +27,25 @@ import unittest.mock as mock
 from test.picardtestcase import PicardTestCase
 
 from picard.const import PICARD_URLS
-from picard.const.tags import (
-    ALL_TAGS,
-    DocumentLink,
-    TagVar,
-    TagVars,
-    markdown,
-)
+from picard.const.tags import ALL_TAGS
 from picard.options import (
     Option,
     get_option_title,
 )
 from picard.profile import profile_groups_add_setting
-from picard.util.tags import (
+from picard.tags import (
     display_tag_full_description,
     display_tag_name,
     display_tag_tooltip,
     parse_comment_tag,
     parse_subtag,
     script_variable_tag_names,
+)
+from picard.tags.tagvar import (
+    DocumentLink,
+    TagVar,
+    TagVars,
+    markdown,
 )
 
 
@@ -255,7 +255,7 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_name('only_sd:'), 'only_sd_shortdesc')
         self.assertEqual(tagvars.display_name('only_sd:xxx'), 'only_sd_shortdesc [xxx]')
 
-        with mock.patch("picard.const.tags._", return_value='translated'):
+        with mock.patch("picard.tags.tagvar._", return_value='translated'):
             self.assertEqual(tagvars.display_name('only_sd'), 'translated')
 
     def test_script_variable_tag_names(self):
@@ -268,7 +268,7 @@ class TagVarsTest(PicardTestCase):
         )
         self.tagvar_sd_ld.is_script_variable = False
 
-        with mock.patch('picard.util.tags.ALL_TAGS', tagvars):
+        with mock.patch('picard.tags.ALL_TAGS', tagvars):
             self.assertEqual(
                 tuple(script_variable_tag_names()),
                 ('nodesc', '_hidden', '_hidden_sd', 'only_sd'),
@@ -307,7 +307,7 @@ class TagVarsTest(PicardTestCase):
         )
         self.assertEqual(tagvars.display_tooltip('notes3'), result)
 
-    @mock.patch("picard.const.tags._", side_effect=_translate_patch)
+    @mock.patch("picard.tags.tagvar._", side_effect=_translate_patch)
     def test_tagvars_display_tooltip_translate(self, mock):
         tagvars = TagVars(
             self.tagvar_nodesc,
@@ -347,9 +347,16 @@ class TagVarsTest(PicardTestCase):
 
 class UtilTagsTest(PicardTestCase):
     def test_display_tag_name(self):
-        self.assertEqual('Artist', display_tag_name('artist'))
-        self.assertEqual('Lyrics', display_tag_name('lyrics:'))
-        self.assertEqual('Comment [Foo]', display_tag_name('comment:Foo'))
+        dtn = display_tag_name
+        self.assertEqual(dtn('tag'), 'tag')
+        self.assertEqual(dtn('tag:desc'), 'tag [desc]')
+        self.assertEqual(dtn('tag:'), 'tag')
+        self.assertEqual(dtn('tag:de:sc'), 'tag [de:sc]')
+        self.assertEqual(dtn('originalyear'), 'Original Year')
+        self.assertEqual(dtn('originalyear:desc'), 'Original Year [desc]')
+        self.assertEqual(dtn('~length'), 'Length')
+        self.assertEqual(dtn('~lengthx'), '~lengthx')
+        self.assertEqual(dtn(''), '')
 
     def test_parse_comment_tag(self):
         self.assertEqual(('XXX', 'foo'), parse_comment_tag('comment:XXX:foo'))

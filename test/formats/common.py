@@ -37,7 +37,7 @@ from picard.formats.mutagenext.ac3 import AC3APEv2
 from picard.formats.mutagenext.tak import TAK
 from picard.formats.util import guess_format
 from picard.metadata import Metadata
-from picard.util.tags import file_info_tag_names
+from picard.tags import file_info_tag_names
 
 
 settings = {

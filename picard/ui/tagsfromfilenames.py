@@ -35,7 +35,7 @@ from PyQt6 import QtWidgets
 from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.script.parser import normalize_tagname
-from picard.util.tags import display_tag_name
+from picard.tags import display_tag_name
 
 from picard.ui import PicardDialog
 from picard.ui.forms.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog

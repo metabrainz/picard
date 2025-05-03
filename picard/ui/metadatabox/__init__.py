@@ -53,6 +53,11 @@ from picard.i18n import (
     ngettext,
 )
 from picard.metadata import MULTI_VALUED_JOINER
+from picard.tags import (
+    display_tag_name,
+    display_tag_tooltip,
+)
+from picard.tags.preservedtags import PreservedTags
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -60,11 +65,6 @@ from picard.util import (
     restore_method,
     thread,
     throttle,
-)
-from picard.util.preservedtags import PreservedTags
-from picard.util.tags import (
-    display_tag_name,
-    display_tag_tooltip,
 )
 
 from .edittagdialog import (

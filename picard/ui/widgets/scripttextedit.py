@@ -52,7 +52,7 @@ from picard.script import (
     script_function_documentation,
     script_function_names,
 )
-from picard.util.tags import (
+from picard.tags import (
     display_tag_tooltip,
     script_variable_tag_names,
 )

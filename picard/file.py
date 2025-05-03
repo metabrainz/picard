@@ -81,6 +81,12 @@ from picard.metadata import (
 )
 from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
+from picard.tags import (
+    calculated_tag_names,
+    file_info_tag_names,
+    preserved_tag_names,
+)
+from picard.tags.preservedtags import PreservedTags
 from picard.util import (
     any_exception_isinstance,
     bytes2human,
@@ -100,13 +106,7 @@ from picard.util.filenaming import (
     make_short_filename,
     move_ensure_casing,
 )
-from picard.util.preservedtags import PreservedTags
 from picard.util.scripttofilename import script_to_filename_with_metadata
-from picard.util.tags import (
-    calculated_tag_names,
-    file_info_tag_names,
-    preserved_tag_names,
-)
 
 
 FILE_COMPARISON_WEIGHTS = {
