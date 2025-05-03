@@ -647,7 +647,9 @@ def tracknum_and_title_from_filename(base_filename):
         stripped_filename = filename.lstrip('0')
         tnlen = len(tracknumber)
         if stripped_filename[:tnlen] == tracknumber:
-            title = stripped_filename[tnlen:].lstrip()
+            # Strip the dot in front of the tracknumber, if present
+            dot_offset = 1 if stripped_filename[tnlen:][0] == '.' else 0
+            title = stripped_filename[tnlen + dot_offset:].lstrip()
 
     return GuessedFromFilename(tracknumber, title)
 
