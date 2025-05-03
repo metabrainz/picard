@@ -335,6 +335,7 @@ class Tagger(QtWidgets.QApplication):
         # log interesting environment variables
         log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
 
+        theme.setup(self)
         check_io_encoding()
 
         if not localedir:
@@ -388,8 +389,6 @@ class Tagger(QtWidgets.QApplication):
         # Load release version information
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(self)
-
-        theme.setup(self)
 
     @property
     def is_wayland(self):
