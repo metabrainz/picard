@@ -326,6 +326,7 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_tooltip('_notes1'), result)
 
     def test_tagvars_full_description(self):
+        # Test tag with values in all attributes (notes, related options, links, and see also)
         tagvars = TagVars(
             self.tagvar_everything,
             self.tagvar_hidden_sd,
@@ -347,40 +348,60 @@ class TagVarsTest(PicardTestCase):
 
 class UtilTagsTest(PicardTestCase):
     def test_display_tag_name(self):
-        dtn = display_tag_name
-        self.assertEqual(dtn('tag'), 'tag')
-        self.assertEqual(dtn('tag:desc'), 'tag [desc]')
-        self.assertEqual(dtn('tag:'), 'tag')
-        self.assertEqual(dtn('tag:de:sc'), 'tag [de:sc]')
-        self.assertEqual(dtn('originalyear'), 'Original Year')
-        self.assertEqual(dtn('originalyear:desc'), 'Original Year [desc]')
-        self.assertEqual(dtn('~length'), 'Length')
-        self.assertEqual(dtn('~lengthx'), '~lengthx')
-        self.assertEqual(dtn(''), '')
+
+        # Tag with no extra parts and no description
+        self.assertEqual(display_tag_name('tag'), 'tag')
+
+        # Tag with one extra part and no description
+        self.assertEqual(display_tag_name('tag:desc'), 'tag [desc]')
+
+        # Tag with blank extra part and no description
+        self.assertEqual(display_tag_name('tag:'), 'tag')
+
+        # Tag with multiple extra parts and no description
+        self.assertEqual(display_tag_name('tag:de:sc'), 'tag [de:sc]')
+
+        # Tag with no extra parts and short description
+        self.assertEqual(display_tag_name('originalyear'), 'Original Year')
+
+        # Tag with one extra part and short description
+        self.assertEqual(display_tag_name('originalyear:desc'), 'Original Year [desc]')
+
+        # Hidden tag with no extra parts and short description
+        self.assertEqual(display_tag_name('~length'), 'Length')
+
+        # Invalid hidden tag (not in ALL_TAGS)
+        self.assertEqual(display_tag_name('~lengthx'), '~lengthx')
+
+        # Empty tag
+        self.assertEqual(display_tag_name(''), '')
 
     def test_parse_comment_tag(self):
-        self.assertEqual(('XXX', 'foo'), parse_comment_tag('comment:XXX:foo'))
-        self.assertEqual(('eng', 'foo'), parse_comment_tag('comment:foo'))
-        self.assertEqual(('XXX', ''), parse_comment_tag('comment:XXX'))
-        self.assertEqual(('eng', ''), parse_comment_tag('comment'))
+        self.assertEqual(parse_comment_tag('comment:XXX:foo'), ('XXX', 'foo'))
+        self.assertEqual(parse_comment_tag('comment:foo'), ('eng', 'foo'))
+        self.assertEqual(parse_comment_tag('comment:XXX'), ('XXX', ''))
+        self.assertEqual(parse_comment_tag('comment'), ('eng', ''))
 
     def test_parse_lyrics_tag(self):
-        self.assertEqual(('eng', ''), parse_subtag('lyrics'))
-        self.assertEqual(('XXX', 'foo'), parse_subtag('lyrics:XXX:foo'))
-        self.assertEqual(('XXX', ''), parse_subtag('lyrics:XXX'))
-        self.assertEqual(('eng', 'foo'), parse_subtag('lyrics::foo'))
+        self.assertEqual(parse_subtag('lyrics'), ('eng', ''))
+        self.assertEqual(parse_subtag('lyrics:XXX:foo'), ('XXX', 'foo'))
+        self.assertEqual(parse_subtag('lyrics:XXX'), ('XXX', ''))
+        self.assertEqual(parse_subtag('lyrics::foo'), ('eng', 'foo'))
 
     def test_display_tag_tooltip(self):
+        # Unknown tag
         self.assertEqual(
             display_tag_tooltip('unknown_test_variable'),
             '<p><em>%unknown_test_variable%</em></p><p>No description available.</p>'
         )
 
+        # Normal tag without notes.
         self.assertEqual(
             display_tag_tooltip('album'),
             '<p><em>%album%</em></p><p>The title of the release.</p>'
         )
 
+        # Normal tag without notes.
         self.assertEqual(
             display_tag_tooltip('_albumartists_sort'),
             (
@@ -389,12 +410,14 @@ class UtilTagsTest(PicardTestCase):
             )
         )
 
+        # Normal tag with notes.
         result = (
             '<p><em>%albumsort%</em></p><p>The sort name of the title of the release.</p>'
             '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_tooltip('albumsort'), result)
 
+        # Hidden tag with notes, testing both prefixes '~' and '_'.
         result = (
             '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.</p>'
             '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
@@ -422,6 +445,7 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(display_tag_tooltip('performer'), result)
 
     def test_display_tag_full_description(self):
+        # Tag with option setting only
         if ('setting', 'use_genres') not in Option.registry:
             Option('setting', 'use_genres', None, title='Use genres from MusicBrainz')
         result = (
@@ -430,6 +454,7 @@ class UtilTagsTest(PicardTestCase):
         )
         self.assertEqual(display_tag_full_description('genre'), result)
 
+        # Tag with link only
         result = (
             '<p><em>%barcode%</em></p><p>The barcode assigned to the release.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/Barcode'>Barcode in MusicBrainz documentation</a>; "
@@ -437,12 +462,14 @@ class UtilTagsTest(PicardTestCase):
         )
         self.assertEqual(display_tag_full_description('barcode'), result)
 
+        # Hidden tag with notes only.
         result = (
             '<p><em>%_sample_rate%</em></p><p>The sample rate of the audio file.</p>'
             '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_full_description('_sample_rate'), result)
 
+        # Tag with complex markdown (list items) and notes.
         result = (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
             '<ul>\n'
