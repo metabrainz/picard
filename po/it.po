@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-03 13:13+0200\n"
-"PO-Revision-Date: 2025-05-03 11:15+0000\n"
+"PO-Revision-Date: 2025-05-04 12:20+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -333,16 +333,12 @@ msgid "Save only a single front image as separate file"
 msgstr "Salva una sola immagine di copertina frontale come file separato"
 
 #: picard/options.py:211
-#, fuzzy
-#| msgid "Do not use audio fingerprinting"
 msgid "Use AcoustID audio fingerprinting"
-msgstr "Non usare impronte digitali audio"
+msgstr "Usa impronte digitali audio AcoustID"
 
 #: picard/options.py:214
-#, fuzzy
-#| msgid "AcoustID Fingerprint"
 msgid "Save AcoustID fingerprints"
-msgstr "Impronta digitale AcoustID"
+msgstr "Salva impronte digitali AcoustID"
 
 #: picard/options.py:224 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
@@ -549,7 +545,7 @@ msgstr "Nome per Artisti Vari"
 
 #: picard/options.py:314
 msgid "Browser integration"
-msgstr "Integrazione con browser"
+msgstr "Integrazione con il browser"
 
 #: picard/options.py:315 picard/ui/forms/ui_options_network.py:174
 msgid "Listen only on localhost"
@@ -569,7 +565,7 @@ msgstr "Scadenza richieste in secondi"
 
 #: picard/options.py:319
 msgid "Proxy password"
-msgstr "Password proxy"
+msgstr "Password del proxy"
 
 #: picard/options.py:320
 msgid "Proxy server address"
@@ -585,7 +581,7 @@ msgstr "Tipo di server proxy"
 
 #: picard/options.py:323
 msgid "Proxy username"
-msgstr "Nome utente proxy"
+msgstr "Nome utente del proxy"
 
 #: picard/options.py:324
 msgid "Use a web proxy server"
@@ -765,7 +761,7 @@ msgstr "Script di rinominazione file selezionato"
 #: picard/options.py:449
 #, python-format
 msgid "No title for setting '%s'"
-msgstr ""
+msgstr "Nessun titolo per l'impostazione '%s'"
 
 #: picard/pluginmanager.py:277
 #, python-format
@@ -2117,7 +2113,7 @@ msgid ""
 msgstr ""
 "`$find(haystack,needle)`\n"
 "\n"
-"Trova la posizione di una stringa all'interno di un'altra stringa.\n"
+"Trova l'ubicazione di una stringa all'interno di un'altra stringa.\n"
 "    Restituisce l'indice della prima occorrenza di `needle` in `haystack`, o "
 "\"\" se non trova `needle`.\n"
 "\n"
@@ -3268,8 +3264,8 @@ msgstr[1] "rinominerà i file"
 #: picard/ui/savewarningdialog.py:55
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
-msgstr[0] "sposterà il file in una nuova posizione"
-msgstr[1] "sposterà i file in una nuova posizione"
+msgstr[0] "sposterà il file in una nuova ubicazione"
+msgstr[1] "sposterà i file in una nuova ubicazione"
 
 #: picard/ui/savewarningdialog.py:61
 #, python-brace-format
@@ -4063,7 +4059,7 @@ msgstr "Dimensione cache (MB):"
 
 #: picard/ui/forms/ui_options_network.py:172
 msgid "Browser Integration"
-msgstr "Integrazione con browser"
+msgstr "Integrazione con il browser"
 
 #: picard/ui/forms/ui_options_network.py:173
 msgid "Default listening port:"
@@ -6328,7 +6324,7 @@ msgstr "Rinominazione file"
 
 #: picard/ui/options/renaming.py:253
 msgid "The location to move files to must not be empty."
-msgstr "La posizione in cui spostare i file non può essere vuota."
+msgstr "L'ubicazione in cui spostare i file non può essere vuota."
 
 #: picard/ui/options/renaming.py:263 picard/ui/scripteditor/__init__.py:989
 msgid "The file naming format must not be empty."
@@ -6812,10 +6808,8 @@ msgid "Are you sure you want to remove this profile?"
 msgstr "Sei sicuro di voler rimuovere questo profilo?"
 
 #: picard/ui/widgets/scriptdocumentation.py:169
-#, fuzzy
-#| msgid "Actions"
 msgid "Functions"
-msgstr "Azioni"
+msgstr "Funzioni"
 
 #: picard/ui/widgets/scriptdocumentation.py:179
 msgid "Open Scripting Documentation in your browser"
@@ -6982,80 +6976,70 @@ msgstr ""
 
 #: picard/util/tags.py:77
 msgid "Notes"
-msgstr ""
+msgstr "Note"
 
 #: picard/util/tags.py:78
-#, fuzzy
-#| msgid "Option Setting Warning"
 msgid "Option Settings"
-msgstr "Avvertenza sull'impostazione dell'opzione"
+msgstr "Impostazioni di opzione"
 
 #: picard/util/tags.py:79
 msgid "Links"
-msgstr ""
+msgstr "Collegamenti"
 
 #: picard/util/tags.py:80
 msgid "See Also"
-msgstr ""
+msgstr "Vedi anche"
 
 #: picard/util/tags.py:83
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available."
-msgstr "Nuova versione disponibile"
+msgstr "Nessuna descrizione disponibile."
 
 #: picard/util/tags.py:86
 msgid "multi-value variable"
-msgstr ""
+msgstr "variabile multi-valore"
 
 #: picard/util/tags.py:87
 msgid "preserved read-only"
-msgstr ""
+msgstr "mantenuto in sola lettura"
 
 #: picard/util/tags.py:88
-#, fuzzy
-#| msgid "No enabled scripts"
 msgid "not for use in scripts"
-msgstr "Nessuno script abilitato"
+msgstr "da non usare negli script"
 
 #: picard/util/tags.py:89
 msgid "calculated"
-msgstr ""
+msgstr "calcolato"
 
 #: picard/util/tags.py:90
 msgid "info from audio file"
-msgstr ""
+msgstr "info dal file audio"
 
 #: picard/util/tags.py:91
-#, fuzzy
-#| msgid "Use genres from MusicBrainz"
 msgid "not provided from MusicBrainz data"
-msgstr "Usa generi da MusicBrainz"
+msgstr "non fornito da dati di MusicBrainz"
 
 #: picard/util/tags.py:92
 msgid "not populated by stock Picard"
-msgstr ""
+msgstr "non popolato dalla versione stock di Picard"
 
 #: picard/util/tags.py:233
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
-msgstr ""
+msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/util/tags.py:261 picard/util/tags.py:344
 #, python-brace-format
 msgid "<p><em>%{name}%</em></p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em></p>{content}"
 
 #: picard/util/tags.py:343
 #, python-brace-format
 msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 
 #: picard/util/tags.py:367
-#, fuzzy
-#| msgid "Track No."
 msgid "Absolute Track No."
-msgstr "Nº di traccia"
+msgstr "Nº di traccia assoluto"
 
 #: picard/util/tags.py:369
 msgid ""
@@ -7063,6 +7047,9 @@ msgid ""
 "this value would be 11 for the second track on disc 2 where disc 1 has 9 "
 "tracks."
 msgstr ""
+"Il numero assoluto di questa traccia, ignorando il numero del disco. Per "
+"esempio, questo valore sarebbe 11 per la seconda traccia del disco 2 se il "
+"disco 1 contiene 9 tracce."
 
 #: picard/util/tags.py:377
 msgid "AcoustID Fingerprint"
@@ -7074,6 +7061,9 @@ msgid ""
 "audio information found in a file, and is calculated using the Chromaprint "
 "software."
 msgstr ""
+"L'impronta digitale acustica della traccia. L'impronta digitale si basa "
+"sulle informazioni audio trovate nel file ed è calcolata utilizzando il "
+"software Chromaprint."
 
 #: picard/util/tags.py:388
 msgid "AcoustID"
@@ -7086,6 +7076,10 @@ msgid ""
 "fingerprints may be assigned the same AcoustID if the fingerprints are "
 "similar enough."
 msgstr ""
+"L'AcoustID associato alla traccia. L'AcoustID è l'identificatore assegnato a "
+"un file audio sulla base della sua impronta digitale acustica. A più "
+"impronte digitali può essere assegnato lo stesso AcoustID se le impronte "
+"digitali sono sufficientemente simili."
 
 #: picard/util/tags.py:402
 msgid ""
@@ -7096,10 +7090,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:409
-#, fuzzy
-#| msgid "Album Artist"
 msgid "Album Artists"
-msgstr "Artista album"
+msgstr "Artisti album"
 
 #: picard/util/tags.py:411
 msgid ""
@@ -7109,10 +7101,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:420
-#, fuzzy
-#| msgid "Album Artist Sort Order"
 msgid "Album Artists Countries"
-msgstr "Nome di ordinamento artista album"
+msgstr "Paesi degli artisti album"
 
 #: picard/util/tags.py:422
 msgid ""
@@ -7133,10 +7123,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:440
-#, fuzzy
-#| msgid "Album Artist Sort Order"
 msgid "Album Artists Sort Names"
-msgstr "Nome di ordinamento artista album"
+msgstr "Nomi di ordinamento degli artisti album"
 
 #: picard/util/tags.py:441
 msgid "The sort names of the album's artists."
@@ -7184,10 +7172,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:485
-#, fuzzy
-#| msgid "Artist Sort Order"
 msgid "Artists Countries"
-msgstr "Nome di ordinamento artista"
+msgstr "Paesi degli artisti"
 
 #: picard/util/tags.py:487
 msgid ""
@@ -7208,10 +7194,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:503
-#, fuzzy
-#| msgid "Artist Sort Order"
 msgid "Artists Sort Names"
-msgstr "Nome di ordinamento artista"
+msgstr "Nomi di ordinamento degli artisti"
 
 #: picard/util/tags.py:504
 msgid "The sort names of the track's artists."
@@ -7248,26 +7232,20 @@ msgid "Beats per minute of the track."
 msgstr ""
 
 #: picard/util/tags.py:531
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "Bitrate"
-msgstr "Bitrate:"
+msgstr "Bitrate"
 
 #: picard/util/tags.py:532
 msgid "Approximate bitrate in kbps."
 msgstr ""
 
 #: picard/util/tags.py:541
-#, fuzzy
-#| msgid "Bits per sample:"
 msgid "Bits per sample"
-msgstr "Bit per campionamento:"
+msgstr "Bit per campionamento"
 
 #: picard/util/tags.py:542
-#, fuzzy
-#| msgid "Bits per sample:"
 msgid "Bits of data per sample."
-msgstr "Bit per campionamento:"
+msgstr "Bit di dati per campionamento."
 
 #: picard/util/tags.py:551
 msgid "Catalog Number"
@@ -7281,10 +7259,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:560
-#, fuzzy
-#| msgid "Channels:"
 msgid "Channels"
-msgstr "Canali:"
+msgstr "Canali"
 
 #: picard/util/tags.py:561
 msgid "Number of audio channels in the file."
@@ -7342,10 +7318,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:616
-#, fuzzy
-#| msgid "Data tracks"
 msgid "Data Track"
-msgstr "Tracce dati"
+msgstr "Traccia dati"
 
 #: picard/util/tags.py:617
 msgid "Set to 1 if the track is a \"data track\", otherwise empty."
@@ -7367,10 +7341,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:637
-#, fuzzy
-#| msgid "Director"
 msgid "Directory name"
-msgstr "Regista"
+msgstr "Nome della cartella"
 
 #: picard/util/tags.py:638
 msgid ""
@@ -7448,20 +7420,16 @@ msgid "Engineer"
 msgstr "Tecnico"
 
 #: picard/util/tags.py:694
-#, fuzzy
-#| msgid "There are no files matched to this track"
 msgid "The names of the engineers associated with the track."
-msgstr "Non ci sono file corrispondenti a questa traccia"
+msgstr "I nomi dei tecnici associati alla traccia."
 
 #: picard/util/tags.py:699
 msgid "File Extension"
 msgstr ""
 
 #: picard/util/tags.py:700
-#, fuzzy
-#| msgid "The file was empty"
 msgid "The file's extension."
-msgstr "Il file era vuoto"
+msgstr "L'estensione del file."
 
 #: picard/util/tags.py:708
 msgid "File Created Timestamp"
@@ -7484,10 +7452,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:727
-#, fuzzy
-#| msgid "The author of the file naming script."
 msgid "The name of the file without extension."
-msgstr "L'autore dello script di rinominazione file."
+msgstr "Il nome del file senza estensione."
 
 #: picard/util/tags.py:735
 msgid "File Path"
@@ -7498,22 +7464,16 @@ msgid "Full path and name of the file."
 msgstr ""
 
 #: picard/util/tags.py:743
-#, fuzzy
-#| msgid "File Name"
 msgid "File Size"
-msgstr "Nome file"
+msgstr "Dimensione del file"
 
 #: picard/util/tags.py:744
-#, fuzzy
-#| msgid "Network cache size in bytes"
 msgid "Size of the file in bytes."
-msgstr "Dimensione cache di rete in byte"
+msgstr "Dimensione del file in byte."
 
 #: picard/util/tags.py:752
-#, fuzzy
-#| msgid "Format"
 msgid "File Format"
-msgstr "Formato"
+msgstr "Formato del file"
 
 #: picard/util/tags.py:753
 msgid "Media format of the file (e.g.: MPEG-1 Audio)."
@@ -7530,10 +7490,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:770
-#, fuzzy
-#| msgid "Use genres from MusicBrainz"
 msgid "The specified genre information from MusicBrainz."
-msgstr "Usa generi da MusicBrainz"
+msgstr "Le informazioni dei generi specificate da MusicBrainz."
 
 #: picard/util/tags.py:778
 msgid "Grouping"
@@ -7586,17 +7544,15 @@ msgstr ""
 
 #: picard/util/tags.py:822
 msgid "Lyricist"
-msgstr "Autore testi"
+msgstr "Paroliere"
 
 #: picard/util/tags.py:823
 msgid "The names of the lyricists for the associated work."
 msgstr ""
 
 #: picard/util/tags.py:828
-#, fuzzy
-#| msgid "Lyricist"
 msgid "Lyricist Sort"
-msgstr "Autore testi"
+msgstr "Ordinamento paroliere"
 
 #: picard/util/tags.py:829
 msgid "The sort names of the lyricists for the associated work."
@@ -7657,10 +7613,8 @@ msgid "Total number of movements in the work (e.g.: \"4\")."
 msgstr ""
 
 #: picard/util/tags.py:879
-#, fuzzy
-#| msgid "Artists"
 msgid "Multiple Artists"
-msgstr "Artisti"
+msgstr "Più artisti"
 
 #: picard/util/tags.py:881
 msgid ""
@@ -7669,38 +7623,30 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:888
-#, fuzzy
-#| msgid "MusicBrainz Release Artist Id"
 msgid "Release Artist MBID"
-msgstr "ID artista della pubblicazione su MusicBrainz"
+msgstr "MBID dell'artista della pubblicazione"
 
 #: picard/util/tags.py:889
 msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
 msgstr ""
 
 #: picard/util/tags.py:894
-#, fuzzy
-#| msgid "Release Date"
 msgid "Release MBID"
-msgstr "Data di pubblicazione"
+msgstr "MBID della pubblicazione"
 
 #: picard/util/tags.py:895
 msgid "The MusicBrainz Identifier (MBID) for the release."
 msgstr ""
 
 #: picard/util/tags.py:899
-#, fuzzy
-#| msgid "Artist"
 msgid "Artist MBID"
-msgstr "Artista"
+msgstr "MBID dell'artista"
 
 #: picard/util/tags.py:900
 msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
 msgstr ""
 
 #: picard/util/tags.py:905
-#, fuzzy
-#| msgid "MusicBrainz Disc Id"
 msgid "MusicBrainz DiscID"
 msgstr "ID disco su MusicBrainz"
 
@@ -7713,16 +7659,12 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:913
-#, fuzzy
-#| msgid "Disambiguation"
 msgid "Disc ID Calculation"
-msgstr "Disambiguazione"
+msgstr "Calcolo dell'ID disco"
 
 #: picard/util/tags.py:917
-#, fuzzy
-#| msgid "Disc Id"
 msgid "Disc IDs"
-msgstr "ID Disco"
+msgstr "ID disco"
 
 #: picard/util/tags.py:919
 msgid ""
@@ -7737,10 +7679,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:932
-#, fuzzy
-#| msgid "Original Release Date"
 msgid "Original Release MBID"
-msgstr "Data di pubblicazione originale"
+msgstr "MBID della pubblicazione originale"
 
 #: picard/util/tags.py:934
 msgid ""
@@ -7749,10 +7689,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:940
-#, fuzzy
-#| msgid "Original Artist"
 msgid "Original Artist MBID"
-msgstr "Artista originale"
+msgstr "MBID dell'artista originale"
 
 #: picard/util/tags.py:942
 msgid ""
@@ -7770,30 +7708,24 @@ msgid "The MusicBrainz Identifier (MBID) for the recording."
 msgstr ""
 
 #: picard/util/tags.py:954
-#, fuzzy
-#| msgid "MusicBrainz Release Group Id"
 msgid "Release Group MBID"
-msgstr "ID gruppo di pubblicazioni su MusicBrainz"
+msgstr "MBID del gruppo di pubblicazioni"
 
 #: picard/util/tags.py:955
 msgid "The MusicBrainz Identifier (MBID) for the release group."
 msgstr ""
 
 #: picard/util/tags.py:959
-#, fuzzy
-#| msgid "Track Info"
 msgid "Track MBID"
-msgstr "Informazioni sulla traccia"
+msgstr "MBID della traccia"
 
 #: picard/util/tags.py:960
 msgid "The MusicBrainz Identifier (MBID) for the track."
 msgstr ""
 
 #: picard/util/tags.py:964
-#, fuzzy
-#| msgid "Track Number"
 msgid "Track Number Shown"
-msgstr "Numero di traccia"
+msgstr "Numero di traccia mostrato"
 
 #: picard/util/tags.py:966
 msgid ""
@@ -7802,10 +7734,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:973
-#, fuzzy
-#| msgid "Work"
 msgid "Work MBID"
-msgstr "Opera"
+msgstr "MBID dell'opera"
 
 #: picard/util/tags.py:974
 msgid ""
@@ -7817,10 +7747,8 @@ msgid "MusicIP Fingerprint"
 msgstr "Impronta digitale MusicIP"
 
 #: picard/util/tags.py:980
-#, fuzzy
-#| msgid "MusicIP Fingerprint"
 msgid "The MusicIP Fingerprint for the track."
-msgstr "Impronta digitale MusicIP"
+msgstr "L'impronta digitale MusicIP della traccia."
 
 #: picard/util/tags.py:985
 msgid "MusicIP PUID"
@@ -7928,20 +7856,16 @@ msgid "The associated URL if the recording is a podcast."
 msgstr ""
 
 #: picard/util/tags.py:1070
-#, fuzzy
-#| msgid "Pregap tracks"
 msgid "Pregap Track"
-msgstr "Tracce pregap"
+msgstr "Traccia pregap"
 
 #: picard/util/tags.py:1071
 msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
 msgstr ""
 
 #: picard/util/tags.py:1077
-#, fuzzy
-#| msgid "Release Type"
 msgid "Primary Release Type"
-msgstr "Tipo di pubblicazione"
+msgstr "Tipo principale della pubblicazione"
 
 #: picard/util/tags.py:1079
 msgid ""
@@ -7950,10 +7874,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1084 picard/util/tags.py:1306 picard/util/tags.py:1392
-#, fuzzy
-#| msgid "Release Type"
 msgid "Release group types"
-msgstr "Tipo di pubblicazione"
+msgstr "Tipi del gruppo di pubblicazioni"
 
 #: picard/util/tags.py:1088
 msgid "Producer"
@@ -7999,10 +7921,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1121
-#, fuzzy
-#| msgid "Pending files"
 msgid "Recording Series"
-msgstr "File in attesa"
+msgstr "Serie di registrazioni"
 
 #: picard/util/tags.py:1122
 msgid "The series titles associated with the recording."
@@ -8042,10 +7962,8 @@ msgid "The disambiguation comment for the recording associated with a track."
 msgstr ""
 
 #: picard/util/tags.py:1156
-#, fuzzy
-#| msgid "Pending files"
 msgid "Recording Title"
-msgstr "File in attesa"
+msgstr "Titolo della registrazione"
 
 #: picard/util/tags.py:1157
 msgid ""
@@ -8053,30 +7971,24 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1163
-#, fuzzy
-#| msgid "Release Status"
 msgid "Release Annotation"
-msgstr "Status della pubblicazione"
+msgstr "Annotazione sulla pubblicazione"
 
 #: picard/util/tags.py:1164
 msgid "The annotation comment for the release."
 msgstr ""
 
 #: picard/util/tags.py:1170
-#, fuzzy
-#| msgid "Release Country"
 msgid "Release Comment"
-msgstr "Paese di pubblicazione"
+msgstr "Commento della pubblicazione"
 
 #: picard/util/tags.py:1171
 msgid "The disambiguation comment for the release."
 msgstr ""
 
 #: picard/util/tags.py:1177
-#, fuzzy
-#| msgid "Release Country"
 msgid "Release Countries"
-msgstr "Paese di pubblicazione"
+msgstr "Paesi di pubblicazione"
 
 #: picard/util/tags.py:1178
 msgid "The complete list of release countries for the release."
@@ -8102,10 +8014,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1204
-#, fuzzy
-#| msgid "Release Type"
 msgid "Release Group"
-msgstr "Tipo di pubblicazione"
+msgstr "Gruppo di pubblicazioni"
 
 #: picard/util/tags.py:1206
 msgid ""
@@ -8150,62 +8060,48 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1245
-#, fuzzy
-#| msgid "Disc Number"
 msgid "RG Series Number"
-msgstr "Numero del disco"
+msgstr "Numero di serie del gruppo di pubblicazioni"
 
 #: picard/util/tags.py:1246
 msgid "The series numbers associated with the release group."
 msgstr ""
 
 #: picard/util/tags.py:1252
-#, fuzzy
-#| msgid "Comment"
 msgid "RG Comment"
-msgstr "Commento"
+msgstr "Commento del gruppo di pubblicazioni"
 
 #: picard/util/tags.py:1253
 msgid "The disambiguation comment for the release group."
 msgstr ""
 
 #: picard/util/tags.py:1259
-#, fuzzy
-#| msgid "Release Date"
 msgid "Release Language"
-msgstr "Data di pubblicazione"
+msgstr "Lingua della pubblicazione"
 
 #: picard/util/tags.py:1260
 msgid "The language of the release as per ISO 639-3."
 msgstr ""
 
 #: picard/util/tags.py:1266
-#, fuzzy
-#| msgid "Release Status"
 msgid "Release Series"
-msgstr "Status della pubblicazione"
+msgstr "Serie di pubblicazioni"
 
 #: picard/util/tags.py:1267
-#, fuzzy
-#| msgid "There is already a script with that title."
 msgid "The series titles associated with the release."
-msgstr "È già presente uno script con quel titolo."
+msgstr "I titoli delle serie associate alla pubblicazione."
 
 #: picard/util/tags.py:1273
-#, fuzzy
-#| msgid "Release Country"
 msgid "Release Series Comment"
-msgstr "Paese di pubblicazione"
+msgstr "Commento della serie di pubblicazioni"
 
 #: picard/util/tags.py:1274
 msgid "The series disambiguation comments associated with the release."
 msgstr ""
 
 #: picard/util/tags.py:1280
-#, fuzzy
-#| msgid "Release Status"
 msgid "Release Series MBID"
-msgstr "Status della pubblicazione"
+msgstr "MBID della serie di pubblicazioni"
 
 #: picard/util/tags.py:1281
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
@@ -8305,10 +8201,8 @@ msgid "Track range setting resulting from ReplayGain analysis of the track."
 msgstr ""
 
 #: picard/util/tags.py:1365
-#, fuzzy
-#| msgid "Sample rate:"
 msgid "Sample Rate"
-msgstr "Frequenza di campionamento:"
+msgstr "Frequenza di campionamento"
 
 #: picard/util/tags.py:1366
 msgid "The sample rate of the audio file."
@@ -8325,10 +8219,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1383
-#, fuzzy
-#| msgid "Release Type"
 msgid "Secondary Release Type"
-msgstr "Tipo di pubblicazione"
+msgstr "Tipo secondario della pubblicazione"
 
 #: picard/util/tags.py:1385
 msgid ""
@@ -8338,10 +8230,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1396
-#, fuzzy
-#| msgid "Silesian"
 msgid "Silence"
-msgstr "Slesiano"
+msgstr "Silenzio"
 
 #: picard/util/tags.py:1397
 msgid "1 if the track title is \"[silence]\""
@@ -8401,11 +8291,8 @@ msgid "Synchronized lyrics for the track."
 msgstr ""
 
 #: picard/util/tags.py:1441
-#, fuzzy
-#| msgid "%i file in this track"
-#| msgid_plural "%i files in this track"
 msgid "The title of the track."
-msgstr "%i file in questa traccia"
+msgstr "Il titolo della traccia."
 
 #: picard/util/tags.py:1445
 msgid "Title Sort Order"
@@ -8416,10 +8303,8 @@ msgid "The sort name of the track title."
 msgstr ""
 
 #: picard/util/tags.py:1451
-#, fuzzy
-#| msgid "Total Tracks"
 msgid "Total Album Tracks"
-msgstr "Tracce totali"
+msgstr "Tracce totali dell'album"
 
 #: picard/util/tags.py:1452
 msgid "The total number of tracks across all discs of this release."
@@ -8507,20 +8392,16 @@ msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
 msgstr ""
 
 #: picard/util/tags.py:1517
-#, fuzzy
-#| msgid "Disc Number"
 msgid "Work Series Number"
-msgstr "Numero del disco"
+msgstr "Numero di serie dell'opera"
 
 #: picard/util/tags.py:1518
 msgid "The series numbers associated with the work."
 msgstr ""
 
 #: picard/util/tags.py:1524
-#, fuzzy
-#| msgid "Comment"
 msgid "Work Comment"
-msgstr "Commento"
+msgstr "Commento dell'opera"
 
 #: picard/util/tags.py:1525
 msgid "The disambiguation comment associated with the work."
@@ -8543,10 +8424,8 @@ msgid ""
 msgstr ""
 
 #: picard/util/tags.py:1540
-#, fuzzy
-#| msgid "Writer"
 msgid "Writer Sort"
-msgstr "Autore"
+msgstr "Ordinamento autore"
 
 #: picard/util/tags.py:1541
 msgid "The sort names of the writers for the work."
