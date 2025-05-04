@@ -249,10 +249,24 @@ def func_rreplace(parser, text, old, new):
     """`$rsearch(text,pattern[,group])`
 
 [Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) search.
-    This function will return the first matching group.
 
-    If the optional `group` parameter is specified, return the
-    specified group."""
+If the optional `group` parameter is not provided or is empty, return the first
+capture group which matched something (including the empty string) or the
+entire match.
+
+If `group` is an integer, return the capture group in the position matching this integer.
+Otherwise, return the capture group named `group`, sans surrounding whitespace.
+
+Examples:
+
+    $rsearch(disc: 1,disc: \\(\\\\d+\\)) => "1"
+    $rsearch(disc: 2,\\(\\\\w+\\): \\(\\\\d+\\),1) => "disc"
+    $rsearch(disc: 3,\\(\\\\w+\\): \\(\\\\d+\\),2) => "3"
+    $rsearch(disc: 4,disc: \\(?P<disc>\\\\d+\\),disc) => "4"
+    $rsearch(disc: none,disc\\(: \\\\d+\\)?) => "disc"
+    $rsearch(disc: /5,disc: \\(\\\\d+\\)?/\\\\d+,1) => ""
+
+_group parameter since Picard 3.0_"""
 ))
 def func_rsearch(parser, text, pattern, group=None):
     try:
