@@ -359,23 +359,35 @@ def func_rreplace(parser, text, old, new):
 
 
 @script_function(documentation=N_(
-    """`$rsearch(text,pattern)`
+    """`$rsearch(text,pattern[,group])`
 
 [Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) search.
-    This function will return the first matching group."""
+    This function will return the first matching group.
+
+    If the optional `group` parameter is specified, return the
+    specified group."""
 ))
-def func_rsearch(parser, text, pattern):
+def func_rsearch(parser, text, pattern, group=None):
     try:
-        match = re.search(pattern, text)
+        match_ = re.search(pattern, text)
     except re.error:
         return ''
-    if match:
-        try:
-            if match.group(1) is not None:
-                return match.group(1)
-            return match.group(0)
-        except IndexError:
-            return match.group(0)
+    if match_:
+        if group:
+            try:
+                group = int(group)
+            except ValueError:
+                group = group.strip()
+
+            try:
+                return match_.group(group) or ''
+            except IndexError:
+                return ''
+        else:
+            for value in match_.groups():
+                if value is not None:
+                    return value
+            return match_.group(0)
     return ''
 
 
