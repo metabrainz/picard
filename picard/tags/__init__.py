@@ -33,6 +33,7 @@
 
 import re
 
+from picard.config import get_config
 from picard.const.tags import ALL_TAGS
 
 
@@ -126,3 +127,12 @@ def display_tag_tooltip(name):
 
 def display_tag_full_description(name):
     return ALL_TAGS.display_full_description(name)
+
+
+def remove_disabled_plugin_tags():
+    config = get_config()
+    plugins = config.setting['enabled_plugins']
+    tvs = [tv for tv in ALL_TAGS if (lambda x: x.plugin_id)(tv)]
+    for tv in tvs:
+        if tv.plugin_id not in plugins:
+            ALL_TAGS.remove(tv)

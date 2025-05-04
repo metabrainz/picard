@@ -39,6 +39,7 @@ from picard.tags import (
     display_tag_tooltip,
     parse_comment_tag,
     parse_subtag,
+    remove_disabled_plugin_tags,
     script_variable_tag_names,
 )
 from picard.tags.tagvar import (
@@ -57,6 +58,13 @@ def _translate_patch(s):
     }:
         return s.replace('<p>', '<p dir="rtl">')
     return f"_({s})"
+
+
+class _config_patch():
+    setting = {'enabled_plugins': ['plugin_id']}
+
+    def __init__(self):
+        pass
 
 
 class TagVarTest(PicardTestCase):
@@ -132,6 +140,7 @@ class TagVarsTest(PicardTestCase):
                                    is_file_info=True, is_hidden=True, is_script_variable=False)
         self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False)
         self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', is_from_mb=False)
+        self.tagvar_plugin = TagVar('plugin', shortdesc='plugin_sd', longdesc='plugin_ld', plugin_id='plugin_id')
         self.tagvar_everything = TagVar('everything', shortdesc='everything sd', longdesc='everything ld.',
                                         additionaldesc='Test additional description.', is_preserved=True,
                                         is_script_variable=False, is_tag=False, is_calculated=True, is_file_info=True, is_from_mb=False,
@@ -531,3 +540,23 @@ class UtilTagsLinksTest(PicardTestCase):
                 link = doc_link.link.strip()
                 self.assertNotEqual(title, '', f"Invalid link (missing title) in '{str(tv)}' tag")
                 self.assertNotEqual(link, '', f"Invalid link (missing URL) in '{str(tv)}' tag")
+
+
+class TagsPluginsTest(PicardTestCase):
+    def setUp(self):
+        self.tagvar_plugin_known = TagVar('known', shortdesc='known_sd', plugin_id='plugin_id')
+        self.tagvar_plugin_unknown = TagVar('unknown', shortdesc='unknown_sd', plugin_id='unknown_plugin_id')
+
+    def test_cleaning_plugin_var(self):
+        tagvars = TagVars(
+            self.tagvar_plugin_known,
+            self.tagvar_plugin_unknown,
+        )
+        self.assertEqual(len(tagvars), 2)
+
+        with mock.patch('picard.tags.get_config', return_value=_config_patch()):
+            with mock.patch('picard.tags.ALL_TAGS', tagvars):
+                remove_disabled_plugin_tags()
+                self.assertEqual(len(tagvars), 1)
+
+        self.assertEqual(tagvars[0], self.tagvar_plugin_known)

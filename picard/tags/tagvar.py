@@ -83,7 +83,7 @@ class TagVar:
         self, name, shortdesc=None, longdesc=None, additionaldesc=None,
         is_preserved=False, is_hidden=False, is_script_variable=True, is_tag=True, is_calculated=False,
         is_file_info=False, is_from_mb=True, is_populated_by_picard=True, is_multi_value=False,
-        see_also=None, related_options=None, doc_links=None
+        see_also=None, related_options=None, doc_links=None, plugin_id=None
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -106,6 +106,7 @@ class TagVar:
         see_also: an iterable containing ids of related tags
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
+        plugin_id: the ID of the plugin providing the tag/variable (string, default: None)
         """
         self._name = name
         self._shortdesc = shortdesc
@@ -123,6 +124,7 @@ class TagVar:
         self.see_also = see_also
         self.related_options = related_options
         self.doc_links = doc_links
+        self.plugin_id = plugin_id
 
     @property
     def shortdesc(self):
