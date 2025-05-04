@@ -44,8 +44,8 @@ import json
 from picard import log
 from picard.i18n import ngettext
 from picard.metadata import MULTI_VALUED_JOINER
+from picard.tags import display_tag_name
 from picard.util import format_time
-from picard.util.tags import display_tag_name
 
 
 class TagStatus:

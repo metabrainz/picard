@@ -38,7 +38,7 @@ from picard.const.sys import (
 )
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util.tags import (
+from picard.tags import (
     calculated_tag_names,
     file_info_tag_names,
 )

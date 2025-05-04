@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019-2020 Philipp Wolfer
-# Copyright (C) 2020-2022 Laurent Monin
+# Copyright (C) 2020-2022, 2025 Laurent Monin
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Serial
 # Copyright (C) 2025 Bob Swift
@@ -27,23 +27,25 @@ import unittest.mock as mock
 from test.picardtestcase import PicardTestCase
 
 from picard.const import PICARD_URLS
+from picard.const.tags import ALL_TAGS
 from picard.options import (
     Option,
     get_option_title,
 )
 from picard.profile import profile_groups_add_setting
-from picard.util.tags import (
-    ALL_TAGS,
-    DocumentLink,
-    TagVar,
-    TagVars,
+from picard.tags import (
     display_tag_full_description,
     display_tag_name,
     display_tag_tooltip,
-    markdown,
     parse_comment_tag,
     parse_subtag,
     script_variable_tag_names,
+)
+from picard.tags.tagvar import (
+    DocumentLink,
+    TagVar,
+    TagVars,
+    markdown,
 )
 
 
@@ -134,7 +136,7 @@ class TagVarsTest(PicardTestCase):
                                         additionaldesc='Test additional description.', is_preserved=True,
                                         is_script_variable=False, is_tag=False, is_calculated=True, is_file_info=True, is_from_mb=False,
                                         is_populated_by_picard=False, is_multi_value=True,
-                                        see_also=('artist', 'title'),
+                                        see_also=('_hidden_sd', 'sd_ld'),
                                         related_options=('everything_test', 'not_a_valid_option_setting'),
                                         doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
         if ('setting', 'everything_test') not in Option.registry:
@@ -253,7 +255,7 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_name('only_sd:'), 'only_sd_shortdesc')
         self.assertEqual(tagvars.display_name('only_sd:xxx'), 'only_sd_shortdesc [xxx]')
 
-        with mock.patch("picard.util.tags._", return_value='translated'):
+        with mock.patch("picard.tags.tagvar._", return_value='translated'):
             self.assertEqual(tagvars.display_name('only_sd'), 'translated')
 
     def test_script_variable_tag_names(self):
@@ -266,7 +268,7 @@ class TagVarsTest(PicardTestCase):
         )
         self.tagvar_sd_ld.is_script_variable = False
 
-        with mock.patch('picard.util.tags.ALL_TAGS', tagvars):
+        with mock.patch('picard.tags.ALL_TAGS', tagvars):
             self.assertEqual(
                 tuple(script_variable_tag_names()),
                 ('nodesc', '_hidden', '_hidden_sd', 'only_sd'),
@@ -305,7 +307,7 @@ class TagVarsTest(PicardTestCase):
         )
         self.assertEqual(tagvars.display_tooltip('notes3'), result)
 
-    @mock.patch("picard.util.tags._", side_effect=_translate_patch)
+    @mock.patch("picard.tags.tagvar._", side_effect=_translate_patch)
     def test_tagvars_display_tooltip_translate(self, mock):
         tagvars = TagVars(
             self.tagvar_nodesc,
@@ -324,8 +326,11 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_tooltip('_notes1'), result)
 
     def test_tagvars_full_description(self):
+        # Test tag with values in all attributes (notes, related options, links, and see also)
         tagvars = TagVars(
             self.tagvar_everything,
+            self.tagvar_hidden_sd,
+            self.tagvar_sd_ld,
         )
         profile_groups_add_setting('junk', 'everything_test', None, 'Everything test option setting')
         result = (
@@ -336,40 +341,67 @@ class TagVarsTest(PicardTestCase):
             'Picard.</p>'
             '<p><strong>Option Settings:</strong> Everything test setting.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
-            '<p><strong>See Also:</strong> <a href="#artist">%artist%</a>; <a href="#title">%title%</a>.</p>'
+            '<p><strong>See Also:</strong> <a href="#_hidden_sd">%_hidden_sd%</a>; <a href="#sd_ld">%sd_ld%</a>.</p>'
         )
         self.assertEqual(tagvars.display_full_description('everything'), result)
 
 
 class UtilTagsTest(PicardTestCase):
     def test_display_tag_name(self):
-        self.assertEqual('Artist', display_tag_name('artist'))
-        self.assertEqual('Lyrics', display_tag_name('lyrics:'))
-        self.assertEqual('Comment [Foo]', display_tag_name('comment:Foo'))
+
+        # Tag with no extra parts and no description
+        self.assertEqual(display_tag_name('tag'), 'tag')
+
+        # Tag with one extra part and no description
+        self.assertEqual(display_tag_name('tag:desc'), 'tag [desc]')
+
+        # Tag with blank extra part and no description
+        self.assertEqual(display_tag_name('tag:'), 'tag')
+
+        # Tag with multiple extra parts and no description
+        self.assertEqual(display_tag_name('tag:de:sc'), 'tag [de:sc]')
+
+        # Tag with no extra parts and short description
+        self.assertEqual(display_tag_name('originalyear'), 'Original Year')
+
+        # Tag with one extra part and short description
+        self.assertEqual(display_tag_name('originalyear:desc'), 'Original Year [desc]')
+
+        # Hidden tag with no extra parts and short description
+        self.assertEqual(display_tag_name('~length'), 'Length')
+
+        # Invalid hidden tag (not in ALL_TAGS)
+        self.assertEqual(display_tag_name('~lengthx'), '~lengthx')
+
+        # Empty tag
+        self.assertEqual(display_tag_name(''), '')
 
     def test_parse_comment_tag(self):
-        self.assertEqual(('XXX', 'foo'), parse_comment_tag('comment:XXX:foo'))
-        self.assertEqual(('eng', 'foo'), parse_comment_tag('comment:foo'))
-        self.assertEqual(('XXX', ''), parse_comment_tag('comment:XXX'))
-        self.assertEqual(('eng', ''), parse_comment_tag('comment'))
+        self.assertEqual(parse_comment_tag('comment:XXX:foo'), ('XXX', 'foo'))
+        self.assertEqual(parse_comment_tag('comment:foo'), ('eng', 'foo'))
+        self.assertEqual(parse_comment_tag('comment:XXX'), ('XXX', ''))
+        self.assertEqual(parse_comment_tag('comment'), ('eng', ''))
 
     def test_parse_lyrics_tag(self):
-        self.assertEqual(('eng', ''), parse_subtag('lyrics'))
-        self.assertEqual(('XXX', 'foo'), parse_subtag('lyrics:XXX:foo'))
-        self.assertEqual(('XXX', ''), parse_subtag('lyrics:XXX'))
-        self.assertEqual(('eng', 'foo'), parse_subtag('lyrics::foo'))
+        self.assertEqual(parse_subtag('lyrics'), ('eng', ''))
+        self.assertEqual(parse_subtag('lyrics:XXX:foo'), ('XXX', 'foo'))
+        self.assertEqual(parse_subtag('lyrics:XXX'), ('XXX', ''))
+        self.assertEqual(parse_subtag('lyrics::foo'), ('eng', 'foo'))
 
     def test_display_tag_tooltip(self):
+        # Unknown tag
         self.assertEqual(
             display_tag_tooltip('unknown_test_variable'),
             '<p><em>%unknown_test_variable%</em></p><p>No description available.</p>'
         )
 
+        # Normal tag without notes.
         self.assertEqual(
             display_tag_tooltip('album'),
             '<p><em>%album%</em></p><p>The title of the release.</p>'
         )
 
+        # Normal tag without notes.
         self.assertEqual(
             display_tag_tooltip('_albumartists_sort'),
             (
@@ -378,12 +410,14 @@ class UtilTagsTest(PicardTestCase):
             )
         )
 
+        # Normal tag with notes.
         result = (
             '<p><em>%albumsort%</em></p><p>The sort name of the title of the release.</p>'
             '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_tooltip('albumsort'), result)
 
+        # Hidden tag with notes, testing both prefixes '~' and '_'.
         result = (
             '<p><em>%_bitrate%</em></p><p>Approximate bitrate in kbps.</p>'
             '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
@@ -411,6 +445,7 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(display_tag_tooltip('performer'), result)
 
     def test_display_tag_full_description(self):
+        # Tag with option setting only
         if ('setting', 'use_genres') not in Option.registry:
             Option('setting', 'use_genres', None, title='Use genres from MusicBrainz')
         result = (
@@ -419,6 +454,7 @@ class UtilTagsTest(PicardTestCase):
         )
         self.assertEqual(display_tag_full_description('genre'), result)
 
+        # Tag with link only
         result = (
             '<p><em>%barcode%</em></p><p>The barcode assigned to the release.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/Barcode'>Barcode in MusicBrainz documentation</a>; "
@@ -426,12 +462,14 @@ class UtilTagsTest(PicardTestCase):
         )
         self.assertEqual(display_tag_full_description('barcode'), result)
 
+        # Hidden tag with notes only.
         result = (
             '<p><em>%_sample_rate%</em></p><p>The sample rate of the audio file.</p>'
             '<p><strong>Notes:</strong> preserved read-only; info from audio file; not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(display_tag_full_description('_sample_rate'), result)
 
+        # Tag with complex markdown (list items) and notes.
         result = (
             '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
             '<ul>\n'

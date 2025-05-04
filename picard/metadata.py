@@ -53,13 +53,13 @@ from picard.mbjson import (
 )
 from picard.plugin import PluginFunctions
 from picard.similarity import similarity2
+from picard.tags import preserved_tag_names
 from picard.util import (
     ReadWriteLockContext,
     extract_year_from_date,
     linear_combination_of_weights,
 )
 from picard.util.imagelist import ImageList
-from picard.util.tags import preserved_tag_names
 
 
 MULTI_VALUED_JOINER = '; '

@@ -23,7 +23,7 @@
 from picard.config import get_config
 
 
-class PreservedTags:
+class UserPreservedTags:
 
     opt_name = 'preserved_tags'
 

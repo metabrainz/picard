@@ -53,6 +53,11 @@ from picard.i18n import (
     ngettext,
 )
 from picard.metadata import MULTI_VALUED_JOINER
+from picard.tags import (
+    display_tag_name,
+    display_tag_tooltip,
+)
+from picard.tags.preserved import UserPreservedTags
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -60,11 +65,6 @@ from picard.util import (
     restore_method,
     thread,
     throttle,
-)
-from picard.util.preservedtags import PreservedTags
-from picard.util.tags import (
-    display_tag_name,
-    display_tag_tooltip,
 )
 
 from .edittagdialog import (
@@ -206,7 +206,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self._edit_selected_tag))
         # TR: Keyboard shortcut for "Remove" (tag)
         self.remove_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
-        self.preserved_tags = PreservedTags()
+        self.preserved_tags = UserPreservedTags()
         self._single_file_album = False
         self._single_track_album = False
         self.ignore_updates = IgnoreUpdatesContext(on_exit=self.update)

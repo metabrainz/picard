@@ -60,13 +60,13 @@ from picard.formats.mutagenext import (
     delall_ci,
 )
 from picard.metadata import Metadata
+from picard.tags import (
+    parse_comment_tag,
+    parse_subtag,
+)
 from picard.util import (
     encode_filename,
     sanitize_date,
-)
-from picard.util.tags import (
-    parse_comment_tag,
-    parse_subtag,
 )
 
 
