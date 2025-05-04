@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-12 11:37+0200\n"
+"POT-Creation-Date: 2025-05-03 13:13+0200\n"
 "PO-Revision-Date: 2023-08-23 19:10+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Telugu <https://translations.metabrainz.org/projects/picard/"
@@ -117,7 +117,7 @@ msgstr ""
 
 #: picard/config_upgrade.py:136
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:493
+#: picard/ui/metadatabox/__init__.py:496
 #: picard/ui/options/interface_toolbar.py:114
 msgid "Remove"
 msgstr "తీసివేయి"
@@ -156,22 +156,22 @@ msgid ""
 "file format."
 msgstr ""
 
-#: picard/file.py:866
+#: picard/file.py:867
 #, python-format
 msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:868
+#: picard/file.py:869
 #, python-format
 msgid "File '%(filename)s' identified!"
 msgstr ""
 
-#: picard/file.py:880
+#: picard/file.py:881
 #, python-format
 msgid "No matching tracks for file '%(filename)s'"
 msgstr ""
 
-#: picard/file.py:912
+#: picard/file.py:913
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr ""
@@ -191,8 +191,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: picard/log.py:77 picard/ui/options/renaming.py:253
-#: picard/ui/scripteditor.py:880 picard/ui/scripteditor.py:883
-#: picard/ui/scripteditor.py:1188 picard/ui/scripteditor.py:1416
+#: picard/ui/scripteditor/__init__.py:563
+#: picard/ui/scripteditor/__init__.py:566
+#: picard/ui/scripteditor/__init__.py:871
+#: picard/ui/scripteditor/__init__.py:1099
 msgid "Error"
 msgstr ""
 
@@ -223,509 +225,522 @@ msgstr ""
 msgid "Unexpected request error (HTTP code %s)"
 msgstr ""
 
-#: picard/options.py:151
+#: picard/options.py:152
 msgid "Tags to ignore for comparison"
 msgstr ""
 
-#: picard/options.py:152
+#: picard/options.py:153
 msgid "Completeness check ignore: Data tracks"
 msgstr ""
 
-#: picard/options.py:153
+#: picard/options.py:154
 msgid "Completeness check ignore: Pregap tracks"
 msgstr ""
 
-#: picard/options.py:154
+#: picard/options.py:155
 msgid "Completeness check ignore: Silent tracks"
 msgstr ""
 
-#: picard/options.py:155
+#: picard/options.py:156
 msgid "Completeness check ignore: Video tracks"
 msgstr ""
 
-#: picard/options.py:156 picard/ui/forms/ui_options_advanced.py:149
+#: picard/options.py:157 picard/ui/forms/ui_options_advanced.py:149
 msgid "Ignore hidden files"
 msgstr ""
 
-#: picard/options.py:157
+#: picard/options.py:158
 msgid "Ignore file paths matching a regular expression"
 msgstr ""
 
-#: picard/options.py:158
+#: picard/options.py:159
 msgid "Ignore track duration difference under x seconds"
 msgstr ""
 
-#: picard/options.py:159 picard/ui/forms/ui_options_advanced.py:146
+#: picard/options.py:160 picard/ui/forms/ui_options_advanced.py:146
 msgid "Maximum number of entities to return per MusicBrainz query"
 msgstr ""
 
-#: picard/options.py:160 picard/ui/forms/ui_options_advanced.py:148
+#: picard/options.py:161 picard/ui/forms/ui_options_advanced.py:148
 msgid "Include sub-folders when adding files from folder"
 msgstr ""
 
-#: picard/options.py:168
+#: picard/options.py:169
 msgid "Cover art providers"
 msgstr ""
 
-#: picard/options.py:169
+#: picard/options.py:170
 msgid "File name for images"
 msgstr ""
 
-#: picard/options.py:170 picard/ui/forms/ui_options_cover.py:119
+#: picard/options.py:171 picard/ui/forms/ui_options_cover.py:119
 msgid "Embed only a single front image"
 msgstr ""
 
-#: picard/options.py:171 picard/ui/forms/ui_options_cover.py:120
+#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:120
 msgid "Never replace cover images with smaller ones"
 msgstr ""
 
-#: picard/options.py:172 picard/ui/forms/ui_options_cover.py:121
+#: picard/options.py:173 picard/ui/forms/ui_options_cover.py:121
 msgid "Never replace cover images matching selected types"
 msgstr ""
 
-#: picard/options.py:173
+#: picard/options.py:174
 msgid "Never replace cover images of these types"
 msgstr ""
 
-#: picard/options.py:174
+#: picard/options.py:175
 msgid "Always replace cover images of these types"
 msgstr ""
 
-#: picard/options.py:175 picard/ui/forms/ui_options_cover.py:127
+#: picard/options.py:176 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 
-#: picard/options.py:176
+#: picard/options.py:177
 msgid "Overwrite existing image files"
 msgstr ""
 
-#: picard/options.py:177 picard/ui/forms/ui_options_cover.py:123
+#: picard/options.py:178 picard/ui/forms/ui_options_cover.py:123
 msgid "Save cover images as separate files"
 msgstr ""
 
-#: picard/options.py:178 picard/ui/forms/ui_options_cover.py:118
+#: picard/options.py:179 picard/ui/forms/ui_options_cover.py:118
 msgid "Embed cover images into tags"
 msgstr ""
 
-#: picard/options.py:179 picard/ui/forms/ui_options_cover.py:126
+#: picard/options.py:180 picard/ui/forms/ui_options_cover.py:126
 msgid "Save only a single front image as separate file"
 msgstr ""
 
-#: picard/options.py:223 picard/ui/forms/ui_options_general.py:214
+#: picard/options.py:211
+msgid "Use AcoustID audio fingerprinting"
+msgstr ""
+
+#: picard/options.py:214
+msgid "Save AcoustID fingerprints"
+msgstr ""
+
+#: picard/options.py:224 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
 msgstr ""
 
-#: picard/options.py:224 picard/ui/forms/ui_options_general.py:218
+#: picard/options.py:225 picard/ui/forms/ui_options_general.py:218
 msgid "Check for plugin updates during startup"
 msgstr ""
 
-#: picard/options.py:225 picard/ui/forms/ui_options_general.py:219
+#: picard/options.py:226 picard/ui/forms/ui_options_general.py:219
 msgid "Check for program updates during startup"
 msgstr ""
 
-#: picard/options.py:226 picard/ui/forms/ui_options_general.py:215
+#: picard/options.py:227 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
 msgstr ""
 
-#: picard/options.py:227 picard/ui/forms/ui_options_general.py:216
+#: picard/options.py:228 picard/ui/forms/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
 msgstr ""
 
-#: picard/options.py:228
+#: picard/options.py:229
 msgid "Server address"
 msgstr ""
 
-#: picard/options.py:229
+#: picard/options.py:230
 msgid "Port"
 msgstr ""
 
-#: picard/options.py:230
+#: picard/options.py:231
 msgid "Days between update checks"
 msgstr ""
 
-#: picard/options.py:231
+#: picard/options.py:232
 msgid "Updates to check"
 msgstr ""
 
-#: picard/options.py:236
+#: picard/options.py:237
 msgid "Use album artist genres"
 msgstr ""
 
-#: picard/options.py:237 picard/ui/forms/ui_options_genres.py:128
+#: picard/options.py:238 picard/ui/forms/ui_options_genres.py:128
 msgid "Use folksonomy tags as genre"
 msgstr ""
 
-#: picard/options.py:238
+#: picard/options.py:239
 msgid "Genres to include or exclude"
 msgstr ""
 
-#: picard/options.py:239
+#: picard/options.py:240
 msgid "Join multiple genres with"
 msgstr ""
 
-#: picard/options.py:240
+#: picard/options.py:241
 msgid "Maximum number of genres"
 msgstr ""
 
-#: picard/options.py:241
+#: picard/options.py:242
 msgid "Minimal genre usage"
 msgstr ""
 
-#: picard/options.py:242 picard/ui/forms/ui_options_genres.py:126
+#: picard/options.py:243 picard/ui/forms/ui_options_genres.py:126
 msgid "Use only my genres"
 msgstr ""
 
-#: picard/options.py:243 picard/ui/forms/ui_options_genres.py:125
+#: picard/options.py:244 picard/ui/forms/ui_options_genres.py:125
 msgid "Use genres from MusicBrainz"
 msgstr ""
 
-#: picard/options.py:247 picard/ui/forms/ui_options_interface.py:130
+#: picard/options.py:248 picard/ui/forms/ui_options_interface.py:130
 msgid "Allow selection of multiple directories"
 msgstr ""
 
-#: picard/options.py:248 picard/ui/forms/ui_options_interface.py:131
+#: picard/options.py:249 picard/ui/forms/ui_options_interface.py:131
 msgid "Use builtin search rather than looking in browser"
 msgstr ""
 
-#: picard/options.py:249 picard/ui/forms/ui_options_interface.py:136
+#: picard/options.py:250 picard/ui/forms/ui_options_interface.py:136
 msgid "Adjust horizontal position in file browser automatically"
 msgstr ""
 
-#: picard/options.py:250 picard/ui/forms/ui_options_interface.py:135
+#: picard/options.py:251 picard/ui/forms/ui_options_interface.py:135
 msgid "Show a confirmation dialog when saving files"
 msgstr ""
 
-#: picard/options.py:252 picard/ui/forms/ui_options_interface.py:134
+#: picard/options.py:253 picard/ui/forms/ui_options_interface.py:134
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr ""
 
-#: picard/options.py:253 picard/ui/forms/ui_options_interface.py:126
+#: picard/options.py:254 picard/ui/forms/ui_options_interface.py:126
 msgid "Show icons in menus"
 msgstr ""
 
-#: picard/options.py:254
+#: picard/options.py:255
 msgid "Show a usage warning dialog when Picard starts"
 msgstr ""
 
-#: picard/options.py:255
+#: picard/options.py:256
 msgid "Begin browsing in a specific directory"
 msgstr ""
 
-#: picard/options.py:256
+#: picard/options.py:257
 msgid "Directory to begin browsing"
 msgstr ""
 
-#: picard/options.py:257 picard/ui/forms/ui_options_interface.py:125
+#: picard/options.py:258 picard/ui/forms/ui_options_interface.py:125
 msgid "Show text labels under icons"
 msgstr ""
 
-#: picard/options.py:258
+#: picard/options.py:259
 msgid "User interface language"
 msgstr ""
 
-#: picard/options.py:259
+#: picard/options.py:260
 msgid "User interface color theme"
 msgstr ""
 
-#: picard/options.py:260
+#: picard/options.py:261
 msgid "Use advanced search syntax"
 msgstr ""
 
-#: picard/options.py:264
+#: picard/options.py:265
 msgid "Colors to use for light theme"
 msgstr ""
 
-#: picard/options.py:265
+#: picard/options.py:266
 msgid "Colors to use for dark theme"
 msgstr ""
 
-#: picard/options.py:280
+#: picard/options.py:281
 msgid "Layout of the tool bar"
 msgstr ""
 
-#: picard/options.py:284
+#: picard/options.py:285
 msgid "Tags to show at the top"
 msgstr ""
 
-#: picard/options.py:288
+#: picard/options.py:289
 msgid "Automatic backup destination directory"
 msgstr ""
 
-#: picard/options.py:292
+#: picard/options.py:293
 msgid "Minimal similarity for cluster lookups"
 msgstr ""
 
-#: picard/options.py:293
+#: picard/options.py:294
 msgid "Minimal similarity for file lookups"
 msgstr ""
 
-#: picard/options.py:294
+#: picard/options.py:295
 msgid "Minimal similarity for matching files to tracks"
 msgstr ""
 
-#: picard/options.py:298
+#: picard/options.py:299
 msgid "Translation locales"
 msgstr ""
 
-#: picard/options.py:299 picard/ui/forms/ui_options_metadata.py:142
+#: picard/options.py:300 picard/ui/forms/ui_options_metadata.py:142
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr ""
 
-#: picard/options.py:300 picard/ui/forms/ui_options_metadata.py:145
+#: picard/options.py:301 picard/ui/forms/ui_options_metadata.py:145
 msgid "Guess track number and title from filename if empty"
 msgstr ""
 
-#: picard/options.py:301
+#: picard/options.py:302
 msgid "Standalone recordings name"
 msgstr ""
 
-#: picard/options.py:302 picard/ui/forms/ui_options_metadata.py:143
+#: picard/options.py:303 picard/ui/forms/ui_options_metadata.py:143
 msgid "Use release relationships"
 msgstr ""
 
-#: picard/options.py:303
+#: picard/options.py:304
 msgid "Translation script exceptions"
 msgstr ""
 
-#: picard/options.py:304 picard/ui/forms/ui_options_metadata.py:140
+#: picard/options.py:305 picard/ui/forms/ui_options_metadata.py:140
 msgid "Use standardized artist names"
 msgstr ""
 
-#: picard/options.py:305 picard/ui/forms/ui_options_metadata.py:141
+#: picard/options.py:306 picard/ui/forms/ui_options_metadata.py:141
 msgid "Use standardized instrument and vocal credits"
 msgstr ""
 
-#: picard/options.py:306
+#: picard/options.py:307
 msgid "Use track and release relationships"
 msgstr ""
 
-#: picard/options.py:307
+#: picard/options.py:308
 msgid "Translate artist names"
 msgstr ""
 
-#: picard/options.py:308
+#: picard/options.py:309
 msgid "Translate artist names exception"
 msgstr ""
 
-#: picard/options.py:309
+#: picard/options.py:310
 msgid "Various Artists name"
 msgstr ""
 
-#: picard/options.py:313
+#: picard/options.py:314
 msgid "Browser integration"
 msgstr ""
 
-#: picard/options.py:314 picard/ui/forms/ui_options_network.py:174
+#: picard/options.py:315 picard/ui/forms/ui_options_network.py:174
 msgid "Listen only on localhost"
 msgstr ""
 
-#: picard/options.py:315
+#: picard/options.py:316
 msgid "Default listening port"
 msgstr ""
 
-#: picard/options.py:316
+#: picard/options.py:317
 msgid "Network cache size in bytes"
 msgstr ""
 
-#: picard/options.py:317
+#: picard/options.py:318
 msgid "Request timeout in seconds"
 msgstr ""
 
-#: picard/options.py:318
+#: picard/options.py:319
 #, fuzzy
 msgid "Proxy password"
 msgstr "సంకేతపదం:"
 
-#: picard/options.py:319
+#: picard/options.py:320
 msgid "Proxy server address"
 msgstr ""
 
-#: picard/options.py:320
+#: picard/options.py:321
 msgid "Proxy server port"
 msgstr ""
 
-#: picard/options.py:321
+#: picard/options.py:322
 msgid "Type of proxy server"
 msgstr ""
 
-#: picard/options.py:322
+#: picard/options.py:323
 #, fuzzy
 msgid "Proxy username"
 msgstr "వాడుకరి పేరు:"
 
-#: picard/options.py:323
+#: picard/options.py:324
 msgid "Use a web proxy server"
 msgstr ""
 
-#: picard/options.py:339 picard/ui/forms/ui_options_ratings.py:53
+#: picard/options.py:340 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
 msgstr ""
 
-#: picard/options.py:341
+#: picard/options.py:342
 msgid "Email to use when saving ratings"
 msgstr ""
 
-#: picard/options.py:342 picard/ui/forms/ui_options_ratings.py:56
+#: picard/options.py:343 picard/ui/forms/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
 msgstr ""
 
-#: picard/options.py:346 picard/ui/forms/ui_options_releases.py:117
+#: picard/options.py:347 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
 msgstr ""
 
-#: picard/options.py:347 picard/ui/forms/ui_options_releases.py:122
+#: picard/options.py:348 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
 msgstr ""
 
-#: picard/options.py:348 picard/ui/forms/ui_options_releases.py:116
+#: picard/options.py:349 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
 msgstr ""
 
-#: picard/options.py:352 picard/ui/forms/ui_options_renaming.py:160
+#: picard/options.py:353 picard/ui/forms/ui_options_renaming.py:160
 msgid "Delete empty directories"
 msgstr ""
 
-#: picard/options.py:353
+#: picard/options.py:354
 msgid "Move additional files"
 msgstr ""
 
-#: picard/options.py:354
+#: picard/options.py:355
 msgid "Additional file patterns"
 msgstr ""
 
-#: picard/options.py:355
+#: picard/options.py:356
 msgid "Move files"
 msgstr ""
 
-#: picard/options.py:356
+#: picard/options.py:357
 msgid "Destination directory"
 msgstr ""
 
-#: picard/options.py:357
+#: picard/options.py:358
 msgid "Rename files"
 msgstr ""
 
-#: picard/options.py:361 picard/ui/forms/ui_options_renaming_compat.py:95
+#: picard/options.py:362 picard/ui/forms/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
 msgstr ""
 
-#: picard/options.py:362
+#: picard/options.py:363
 msgid "Replacement character to use for directory separators"
 msgstr ""
 
-#: picard/options.py:363 picard/ui/forms/ui_options_renaming_compat.py:99
+#: picard/options.py:364 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
 msgstr ""
 
-#: picard/options.py:364
+#: picard/options.py:365
 msgid "Replacement characters used for Windows compatibility"
 msgstr ""
 
-#: picard/options.py:365 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/options.py:366 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:197
 msgid "Windows compatibility"
 msgstr ""
 
-#: picard/options.py:366 picard/ui/options/renaming_compat.py:135
+#: picard/options.py:367 picard/ui/options/renaming_compat.py:135
 msgid "Windows long path support"
 msgstr ""
 
-#: picard/options.py:371
+#: picard/options.py:372
 msgid "Enable tagger scripts"
 msgstr ""
 
-#: picard/options.py:372
+#: picard/options.py:373
 msgid "Tagger scripts"
 msgstr ""
 
-#: picard/options.py:376 picard/ui/forms/ui_options_tags.py:80
+#: picard/options.py:377 picard/ui/forms/ui_options_tags.py:80
 msgid "Clear existing tags"
 msgstr ""
 
-#: picard/options.py:377
+#: picard/options.py:378
 msgid "Don't write tags"
 msgstr ""
 
-#: picard/options.py:378 picard/ui/forms/ui_options_tags.py:84
+#: picard/options.py:379 picard/ui/forms/ui_options_tags.py:84
 msgid "Fix missing seekpoints for FLAC files"
 msgstr ""
 
-#: picard/options.py:379
+#: picard/options.py:380
 msgid "Preserved tags list"
 msgstr ""
 
-#: picard/options.py:380 picard/ui/forms/ui_options_tags.py:81
+#: picard/options.py:381 picard/ui/forms/ui_options_tags.py:81
 msgid "Keep embedded images when clearing tags"
 msgstr ""
 
-#: picard/options.py:381 picard/ui/forms/ui_options_tags.py:78
+#: picard/options.py:382 picard/ui/forms/ui_options_tags.py:78
 msgid "Preserve timestamps of tagged files"
 msgstr ""
 
-#: picard/options.py:382 picard/ui/forms/ui_options_tags.py:83
+#: picard/options.py:383 picard/ui/forms/ui_options_tags.py:83
 msgid "Remove APEv2 tags from MP3 files"
 msgstr ""
 
-#: picard/options.py:383 picard/ui/forms/ui_options_tags.py:82
+#: picard/options.py:384 picard/ui/forms/ui_options_tags.py:82
 msgid "Remove ID3 tags from FLAC files"
 msgstr ""
 
-#: picard/options.py:387
+#: picard/options.py:388
 msgid "Save APEv2 tags to AAC"
 msgstr ""
 
-#: picard/options.py:388
+#: picard/options.py:389
 #: picard/ui/forms/ui_options_tags_compatibility_aac.py:55
 msgid "Remove APEv2 tags from AAC files"
 msgstr ""
 
-#: picard/options.py:392
+#: picard/options.py:393
 msgid "Save APEv2 tags to AC3"
 msgstr ""
 
-#: picard/options.py:393
+#: picard/options.py:394
 #: picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
 msgid "Remove APEv2 tags from AC3 files"
 msgstr ""
 
-#: picard/options.py:397
+#: picard/options.py:398
 msgid "ID3v2.3 join character"
 msgstr ""
 
-#: picard/options.py:398
+#: picard/options.py:399
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr ""
 
-#: picard/options.py:399
+#: picard/options.py:400
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
 msgid "Save iTunes compatible grouping and work"
 msgstr ""
 
-#: picard/options.py:400
+#: picard/options.py:401
 msgid "Write ID3v1 tags"
 msgstr ""
 
-#: picard/options.py:401
+#: picard/options.py:402
 msgid "ID3v2 version to write"
 msgstr ""
 
-#: picard/options.py:405
+#: picard/options.py:406
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
 msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr ""
 
-#: picard/options.py:406
+#: picard/options.py:407
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr ""
 
-#: picard/options.py:407
+#: picard/options.py:408
 msgid "Write RIFF INFO tags to WAVE files"
 msgstr ""
 
-#: picard/options.py:413
+#: picard/options.py:414
 msgid "Selected file naming script"
+msgstr ""
+
+#: picard/options.py:449
+#, python-format
+msgid "No title for setting '%s'"
 msgstr ""
 
 #: picard/pluginmanager.py:277
@@ -798,7 +813,7 @@ msgstr ""
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:69
 #: picard/ui/itemviews/columns.py:87 picard/ui/searchdialog/album.py:154
-#: picard/util/tags.py:55
+#: picard/util/tags.py:516
 msgid "Barcode"
 msgstr ""
 
@@ -814,24 +829,24 @@ msgstr ""
 msgid "[no release info]"
 msgstr "[విదుదల సమాచారం లేదు]"
 
-#: picard/tagger.py:661 picard/ui/forms/ui_options_general.py:210
+#: picard/tagger.py:662 picard/ui/forms/ui_options_general.py:210
 msgid "MusicBrainz Account"
 msgstr ""
 
-#: picard/tagger.py:662
+#: picard/tagger.py:663
 msgid "Authorization code:"
 msgstr ""
 
-#: picard/tagger.py:1165
+#: picard/tagger.py:1166
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr ""
 
-#: picard/tagger.py:1183
+#: picard/tagger.py:1184
 msgid "CD Lookup Error"
 msgstr ""
 
-#: picard/tagger.py:1184
+#: picard/tagger.py:1185
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -839,25 +854,25 @@ msgid ""
 "%s"
 msgstr ""
 
-#: picard/tagger.py:1213
+#: picard/tagger.py:1214
 msgid "All supported log files"
 msgstr ""
 
-#: picard/tagger.py:1214
+#: picard/tagger.py:1215
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr ""
 
-#: picard/tagger.py:1215
+#: picard/tagger.py:1216
 msgid "dBpoweramp log files"
 msgstr ""
 
-#: picard/script/serializer.py:374 picard/tagger.py:1216
-#: picard/ui/coverartbox/__init__.py:273 picard/ui/mainwindow/__init__.py:876
+#: picard/script/serializer.py:374 picard/tagger.py:1217
+#: picard/ui/coverartbox/__init__.py:273 picard/ui/mainwindow/__init__.py:874
 #: picard/ui/options/maintenance.py:215 picard/ui/options/scripting.py:134
 msgid "All files"
 msgstr ""
 
-#: picard/tagger.py:1242
+#: picard/tagger.py:1243
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr ""
@@ -1360,8 +1375,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and "
-"\"auto\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" "
+"(automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1379,8 +1394,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and "
-"\"auto\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" "
+"(automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1398,8 +1413,8 @@ msgid ""
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and "
-"\"auto\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" "
+"(automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1417,8 +1432,8 @@ msgid ""
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and "
-"\"auto\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" "
+"(automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1970,8 +1985,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and "
-"\"auto\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" "
+"(automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -1994,8 +2009,8 @@ msgid ""
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
 "\"text\"\n"
-"(case-sensitive text), \"nocase\" (case-insensitive text) and "
-"\"auto\" (automatically\n"
+"(case-sensitive text), \"nocase\" (case-insensitive text) and \"auto\" "
+"(automatically\n"
 "determine the type of arguments provided), with \"auto\" used as the "
 "default\n"
 "comparison method if `type` is not specified.  The \"auto\" type will use "
@@ -2183,19 +2198,19 @@ msgid "Restore &Defaults"
 msgstr ""
 
 #: picard/ui/cdlookup.py:63 picard/ui/itemviews/columns.py:82
-#: picard/ui/mainwindow/__init__.py:768 picard/util/tags.py:48
+#: picard/ui/mainwindow/__init__.py:766 picard/util/tags.py:448
 msgid "Album"
 msgstr ""
 
 #: picard/ui/cdlookup.py:64 picard/ui/itemviews/columns.py:79
-#: picard/ui/mainwindow/__init__.py:769 picard/ui/searchdialog/album.py:147
-#: picard/ui/searchdialog/track.py:63 picard/util/tags.py:51
+#: picard/ui/mainwindow/__init__.py:767 picard/ui/searchdialog/album.py:147
+#: picard/ui/searchdialog/track.py:63 picard/util/tags.py:467
 msgid "Artist"
 msgstr ""
 
 #: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:92
 #: picard/ui/searchdialog/album.py:150 picard/ui/searchdialog/track.py:65
-#: picard/util/tags.py:64
+#: picard/util/tags.py:623
 msgid "Date"
 msgstr "తేదీ"
 
@@ -2285,7 +2300,7 @@ msgid "Tag added"
 msgstr ""
 
 #: picard/ui/colors.py:58 picard/ui/colors.py:59 picard/ui/colors.py:60
-#: picard/ui/options/tags.py:42
+#: picard/ui/options/tags.py:42 picard/ui/widgets/scriptdocumentation.py:170
 msgid "Tags"
 msgstr ""
 
@@ -2545,249 +2560,13 @@ msgstr ""
 msgid "File Save Warning"
 msgstr ""
 
-#: picard/ui/scripteditor.py:149
-msgid "Renaming options are disabled"
-msgstr ""
-
-#: picard/ui/scripteditor.py:223
-#, python-format
-msgid ""
-"If you select files from the Cluster pane or Album pane prior to opening the "
-"Options screen, up to %u files will be randomly chosen from your selection "
-"as file naming examples.  If you have not selected any files, then some "
-"default examples will be provided."
-msgstr ""
-
-#: picard/ui/scripteditor.py:234
-#, python-format
-msgid ""
-"Reload up to %u items chosen at random from files selected in the main window"
-msgstr ""
-
-#: picard/ui/scripteditor.py:354 picard/ui/scripteditor.py:1249
-msgid "Confirm"
-msgstr ""
-
-#: picard/ui/scripteditor.py:428
-msgid "File naming script editor"
-msgstr ""
-
-#: picard/ui/scripteditor.py:483
-msgid "Reset"
-msgstr ""
-
-#: picard/ui/options/dialog.py:193 picard/ui/scripteditor.py:488
-msgid "Make It So!"
-msgstr ""
-
-#: picard/ui/mainwindow/__init__.py:608 picard/ui/scripteditor.py:557
-msgid "&File"
-msgstr ""
-
-#: picard/ui/scripteditor.py:560
-msgid "&Import a script file"
-msgstr ""
-
-#: picard/ui/scripteditor.py:561
-msgid "Import a file as a new script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:566
-msgid "&Export a script file"
-msgstr ""
-
-#: picard/ui/scripteditor.py:567
-msgid "Export the script to a file"
-msgstr ""
-
-#: picard/ui/scripteditor.py:572
-msgid "&Reset all scripts"
-msgstr ""
-
-#: picard/ui/scripteditor.py:573
-msgid "Reset all scripts to the saved values"
-msgstr ""
-
-#: picard/ui/scripteditor.py:578
-msgid "&Save and exit"
-msgstr ""
-
-#: picard/ui/scripteditor.py:579
-msgid "Save changes to the script settings and exit"
-msgstr ""
-
-#: picard/ui/scripteditor.py:584
-msgid "E&xit without saving"
-msgstr ""
-
-#: picard/ui/scripteditor.py:585
-msgid "Close the script editor without saving changes"
-msgstr ""
-
-#: picard/ui/scripteditor.py:590
-msgid "&Script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:593
-msgid "View/Edit Script &Metadata"
-msgstr ""
-
-#: picard/ui/scripteditor.py:594
-msgid "Display the details for the script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:596
-msgid "Ctrl+M"
-msgstr ""
-
-#: picard/ui/scripteditor.py:599
-msgid "Add a &new script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:604
-msgid "&Copy the current script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:605
-msgid "Save a copy of the script as a new script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:610
-msgid "&Delete the current script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:611
-msgid "Delete the script"
-msgstr ""
-
-#: picard/ui/mainwindow/__init__.py:632 picard/ui/scripteditor.py:617
-msgid "&View"
-msgstr ""
-
-#: picard/ui/scripteditor.py:620
-msgid "&Reload random example files"
-msgstr ""
-
-#: picard/ui/scripteditor.py:629
-msgid "&Show documentation"
-msgstr ""
-
-#: picard/ui/scripteditor.py:630
-msgid "View the scripting documentation in a sidebar"
-msgstr ""
-
-#: picard/ui/mainwindow/actions.py:498 picard/ui/scripteditor.py:632
-msgid "Ctrl+H"
-msgstr ""
-
-#: picard/ui/mainwindow/__init__.py:682 picard/ui/scripteditor.py:638
-#: picard/ui/util.py:62
-msgid "&Help"
-msgstr ""
-
-#: picard/ui/mainwindow/actions.py:112 picard/ui/scripteditor.py:641
-msgid "&Help…"
-msgstr ""
-
-#: picard/ui/scripteditor.py:646
-msgid "&Scripting documentation…"
-msgstr ""
-
-#: picard/ui/scripteditor.py:647
-msgid "Open the scripting documentation in your browser"
-msgstr ""
-
-#: picard/ui/scripteditor.py:665
-msgid "Empty / blank script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:665
-msgid "New Script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:759
-#, python-brace-format
-msgid ""
-"At least one unsaved script has been attached to an option profile.\n"
-"\n"
-"   Profile: {profile_title}\n"
-"   Script: {old_script_title}\n"
-"\n"
-"Continuing without saving will reset the selected script in the profile to:\n"
-"\n"
-"   {new_script_title}\n"
-"\n"
-"Are you sure that you want to continue?"
-msgstr ""
-
-#: picard/ui/scripteditor.py:880
-msgid "There is already a script with that title."
-msgstr ""
-
-#: picard/ui/scripteditor.py:883 picard/ui/scripteditor.py:1188
-#: picard/ui/scripteditor.py:1417
-msgid "The script title must not be empty."
-msgstr ""
-
-#: picard/ui/scripteditor.py:1134
-msgid "Error Deleting Script"
-msgstr ""
-
-#: picard/ui/scripteditor.py:1136
-#, python-format
-msgid ""
-"The script could not be deleted because it is used in one of the user "
-"profiles.\n"
-"\n"
-"Profile: %s"
-msgstr ""
-
-#: picard/ui/scripteditor.py:1145
-msgid "Are you sure that you want to delete the script?"
-msgstr ""
-
-#: picard/ui/options/scripting.py:166 picard/ui/scripteditor.py:1230
-msgid "File Error"
-msgstr ""
-
-#: picard/ui/scripteditor.py:1252
-#, python-brace-format
-msgid ""
-"A script named \"{script_name}\" already exists.\n"
-"\n"
-"Do you want to overwrite it, add as a copy or cancel?"
-msgstr ""
-
-#: picard/ui/scripteditor.py:1258
-msgid "Overwrite"
-msgstr ""
-
-#: picard/ui/options/profiles.py:117 picard/ui/scripteditor.py:1260
-msgid "Copy"
-msgstr ""
-
-#: picard/ui/options/renaming.py:263 picard/ui/scripteditor.py:1306
-msgid "The file naming format must not be empty."
-msgstr ""
-
-#: picard/ui/scripteditor.py:1343
-#, fuzzy
-msgid "Script Details"
-msgstr "వివరాలు"
-
-#: picard/ui/scripteditor.py:1397
-msgid ""
-"There are unsaved changes to the current metadata.\n"
-"\n"
-"Do you want to continue and lose these changes?"
-msgstr ""
-
 #: picard/ui/scriptsmenu.py:66
 #, python-format
 msgid "Script error in \"%(script)s\": %(message)s"
 msgstr ""
 
 #: picard/ui/tagsfromfilenames.py:131 picard/ui/tagsfromfilenames.py:142
+#: picard/util/tags.py:726
 msgid "File Name"
 msgstr ""
 
@@ -2797,6 +2576,11 @@ msgstr ""
 
 #: picard/ui/forms/ui_cdlookup.py:97 picard/ui/util.py:61
 msgid "&Cancel"
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:680 picard/ui/scripteditor/__init__.py:320
+#: picard/ui/util.py:62
+msgid "&Help"
 msgstr ""
 
 #: picard/ui/util.py:63
@@ -2909,7 +2693,7 @@ msgstr ""
 msgid "About Picard"
 msgstr ""
 
-#: picard/ui/forms/ui_aboutdialog.py:90 picard/ui/mainwindow/__init__.py:200
+#: picard/ui/forms/ui_aboutdialog.py:90 picard/ui/mainwindow/__init__.py:198
 msgid "MusicBrainz Picard"
 msgstr ""
 
@@ -3540,7 +3324,7 @@ msgid "Version"
 msgstr ""
 
 #: picard/ui/forms/ui_options_plugins.py:140
-#: picard/ui/mainwindow/__init__.py:717
+#: picard/ui/mainwindow/__init__.py:715
 msgid "Actions"
 msgstr ""
 
@@ -3822,7 +3606,7 @@ msgid "Windows-1252"
 msgstr ""
 
 #: picard/ui/forms/ui_passworddialog.py:68
-#: picard/ui/mainwindow/__init__.py:1344
+#: picard/ui/mainwindow/__init__.py:1342
 msgid "Authentication Required"
 msgstr ""
 
@@ -4250,24 +4034,24 @@ msgstr ""
 msgid "Fingerprint status"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:77 picard/util/tags.py:133
+#: picard/ui/itemviews/columns.py:77 picard/util/tags.py:1440
 msgid "Title"
 msgstr "శీర్షిక"
 
 #: picard/ui/itemviews/columns.py:78 picard/ui/searchdialog/track.py:62
-#: picard/util/tags.py:81
+#: picard/util/tags.py:810
 msgid "Length"
 msgstr "నిడివి"
 
-#: picard/ui/itemviews/columns.py:80 picard/util/tags.py:46
+#: picard/ui/itemviews/columns.py:80 picard/util/tags.py:400
 msgid "Album Artist"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:81 picard/util/tags.py:60
+#: picard/ui/itemviews/columns.py:81 picard/util/tags.py:586
 msgid "Composer"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:83 picard/util/tags.py:68
+#: picard/ui/itemviews/columns.py:83 picard/util/tags.py:670
 msgid "Disc Subtitle"
 msgstr ""
 
@@ -4283,7 +4067,7 @@ msgstr ""
 msgid "Catalog No."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:88 picard/util/tags.py:85
+#: picard/ui/itemviews/columns.py:88 picard/util/tags.py:841
 msgid "Media"
 msgstr ""
 
@@ -4293,15 +4077,15 @@ msgstr ""
 msgid "Size"
 msgstr "పరిమాణం:"
 
-#: picard/ui/itemviews/columns.py:90 picard/util/tags.py:75
+#: picard/ui/itemviews/columns.py:90 picard/util/tags.py:768
 msgid "Genre"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:93 picard/util/tags.py:105
+#: picard/ui/itemviews/columns.py:93 picard/util/tags.py:1009
 msgid "Original Release Date"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:94 picard/util/tags.py:116
+#: picard/ui/itemviews/columns.py:94 picard/util/tags.py:1193
 #, fuzzy
 msgid "Release Date"
 msgstr "విడుదల స్థితి"
@@ -4314,15 +4098,15 @@ msgstr ""
 msgid "Cover Dimensions"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:346
+#: picard/ui/mainwindow/__init__.py:344
 msgid "Unsaved Changes"
 msgstr "భద్రపరచని మార్పులు"
 
-#: picard/ui/mainwindow/__init__.py:347
+#: picard/ui/mainwindow/__init__.py:345
 msgid "Are you sure you want to quit Picard?"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:349
+#: picard/ui/mainwindow/__init__.py:347
 #, python-format
 msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
@@ -4330,151 +4114,159 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/mainwindow/__init__.py:355
+#: picard/ui/mainwindow/__init__.py:353
 msgid "&Quit Picard"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:391
+#: picard/ui/mainwindow/__init__.py:389
 msgid "Ready"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:398
+#: picard/ui/mainwindow/__init__.py:396
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
 "button on the web page loads the release into Picard."
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:425
+#: picard/ui/mainwindow/__init__.py:423
 #, python-format
 msgid "Listening on port %(port)d"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:482
+#: picard/ui/mainwindow/__init__.py:480
 msgid "AcoustID submission not configured"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:484
+#: picard/ui/mainwindow/__init__.py:482
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:486
+#: picard/ui/mainwindow/__init__.py:484
 msgid "Open AcoustID options"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:501 picard/ui/mainwindow/actions.py:360
+#: picard/ui/mainwindow/__init__.py:499 picard/ui/mainwindow/actions.py:360
 msgid "Lookup &CD…"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:540
+#: picard/ui/mainwindow/__init__.py:538
 msgid "From CD ripper &log file…"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:623
+#: picard/ui/mainwindow/__init__.py:606 picard/ui/scripteditor/__init__.py:239
+msgid "&File"
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:621
 msgid "&Edit"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:642
+#: picard/ui/mainwindow/__init__.py:630 picard/ui/scripteditor/__init__.py:299
+msgid "&View"
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:640
 msgid "&Select file naming script"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:646
+#: picard/ui/mainwindow/__init__.py:644
 msgid "&Enable/disable profiles"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:650
+#: picard/ui/mainwindow/__init__.py:648
 #, fuzzy
 msgid "&Options"
 msgstr "ఎంపికలు"
 
-#: picard/ui/mainwindow/__init__.py:664
+#: picard/ui/mainwindow/__init__.py:662
 msgid "&Tools"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:757 picard/ui/mainwindow/actions.py:352
+#: picard/ui/mainwindow/__init__.py:755 picard/ui/mainwindow/actions.py:352
 #: picard/ui/searchdialog/__init__.py:49
 msgid "Search"
 msgstr "వెతుకు"
 
-#: picard/ui/mainwindow/__init__.py:770
+#: picard/ui/mainwindow/__init__.py:768
 msgid "Track"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:787
+#: picard/ui/mainwindow/__init__.py:785
 msgid "&Advanced search"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:788
+#: picard/ui/mainwindow/__init__.py:786
 msgid "&Builtin search"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:875
+#: picard/ui/mainwindow/__init__.py:873
 msgid "All supported formats"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:912
+#: picard/ui/mainwindow/__init__.py:910
 #, python-format
 msgid "Adding multiple directories from '%(directory)s' …"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:917
+#: picard/ui/mainwindow/__init__.py:915
 #, python-format
 msgid "Adding directory: '%(directory)s' …"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1029
+#: picard/ui/mainwindow/__init__.py:1027
 msgid "Configuration Required"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1030
+#: picard/ui/mainwindow/__init__.py:1028
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1143
+#: picard/ui/mainwindow/__init__.py:1141
 msgid "Browser integration not enabled"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1144
+#: picard/ui/mainwindow/__init__.py:1142
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1256
+#: picard/ui/mainwindow/__init__.py:1254
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1262
+#: picard/ui/mainwindow/__init__.py:1260
 #, python-format
 msgid "%(filename)s"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1271
+#: picard/ui/mainwindow/__init__.py:1269
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1278
+#: picard/ui/mainwindow/__init__.py:1276
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1345
+#: picard/ui/mainwindow/__init__.py:1343
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1360
+#: picard/ui/mainwindow/__init__.py:1358
 msgid "Authentication failed"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1361 picard/ui/options/general.py:151
+#: picard/ui/mainwindow/__init__.py:1359 picard/ui/options/general.py:151
 #, python-format
 msgid "Login failed: %s"
 msgstr ""
@@ -4495,8 +4287,12 @@ msgstr ""
 msgid "&Cut"
 msgstr ""
 
-#: picard/ui/mainwindow/actions.py:103 picard/ui/metadatabox/__init__.py:514
+#: picard/ui/mainwindow/actions.py:103 picard/ui/metadatabox/__init__.py:517
 msgid "&Paste"
+msgstr ""
+
+#: picard/ui/mainwindow/actions.py:112 picard/ui/scripteditor/__init__.py:323
+msgid "&Help…"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:120
@@ -4576,7 +4372,7 @@ msgstr "తీసివేయి"
 msgid "Remove selected files/albums"
 msgstr ""
 
-#: picard/ui/mainwindow/actions.py:219 picard/ui/metadatabox/__init__.py:469
+#: picard/ui/mainwindow/actions.py:219 picard/ui/metadatabox/__init__.py:472
 msgid "Lookup in &Browser"
 msgstr ""
 
@@ -4793,7 +4589,7 @@ msgstr ""
 msgid "Set tags based on the file names"
 msgstr ""
 
-#: picard/ui/mainwindow/actions.py:469 picard/ui/widgets/scripttextedit.py:368
+#: picard/ui/mainwindow/actions.py:469 picard/ui/widgets/scripttextedit.py:330
 msgid "Ctrl+Shift+T"
 msgstr ""
 
@@ -4817,6 +4613,10 @@ msgstr ""
 msgid "Ctrl+Shift+H"
 msgstr ""
 
+#: picard/ui/mainwindow/actions.py:498 picard/ui/scripteditor/__init__.py:314
+msgid "Ctrl+H"
+msgstr ""
+
 #: picard/ui/mainwindow/actions.py:505
 msgid "Open in &Player"
 msgstr ""
@@ -4837,79 +4637,79 @@ msgstr ""
 msgid "&Check for Update…"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:170
+#: picard/ui/metadatabox/__init__.py:173
 msgid "metadata view"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:171
+#: picard/ui/metadatabox/__init__.py:174
 msgid "Displays original and new tags for the selected files"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:173
+#: picard/ui/metadatabox/__init__.py:176
 msgid "Tag"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:173
+#: picard/ui/metadatabox/__init__.py:176
 msgid "Original Value"
 msgstr "అసలు విలువ"
 
-#: picard/ui/metadatabox/__init__.py:173
+#: picard/ui/metadatabox/__init__.py:176
 msgid "New Value"
 msgstr "కొత్త విలువ"
 
-#: picard/ui/metadatabox/__init__.py:193
+#: picard/ui/metadatabox/__init__.py:196
 msgid "Add New Tag…"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:195
+#: picard/ui/metadatabox/__init__.py:198
 msgid "Show Changes First"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:200
+#: picard/ui/metadatabox/__init__.py:203
 msgid "Alt+Shift+A"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:203
+#: picard/ui/metadatabox/__init__.py:206
 msgid "Alt+Shift+E"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:205
+#: picard/ui/metadatabox/__init__.py:208
 msgid "Alt+Shift+R"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:318
+#: picard/ui/metadatabox/__init__.py:321
 msgid "Unable to copy current selection."
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:395
+#: picard/ui/metadatabox/__init__.py:398
 msgid "No valid data in clipboard to paste"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:441
+#: picard/ui/metadatabox/__init__.py:444
 msgid "Edit…"
 msgstr "దిద్దు…"
 
-#: picard/ui/metadatabox/__init__.py:447
+#: picard/ui/metadatabox/__init__.py:450
 msgid "Add to 'Preserve Tags' List"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:452
+#: picard/ui/metadatabox/__init__.py:455
 msgid "Remove from 'Preserve Tags' List"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:499
+#: picard/ui/metadatabox/__init__.py:502
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/metadatabox/__init__.py:503
+#: picard/ui/metadatabox/__init__.py:506
 #, fuzzy
 #| msgid "Original Value"
 msgid "Merge Original Values"
 msgstr "అసలు విలువ"
 
-#: picard/ui/metadatabox/__init__.py:509
+#: picard/ui/metadatabox/__init__.py:512
 msgid "&Copy"
 msgstr ""
 
@@ -4992,6 +4792,10 @@ msgstr ""
 
 #: picard/ui/options/dialog.py:190
 msgid "Reset all settings for current option page"
+msgstr ""
+
+#: picard/ui/options/dialog.py:193 picard/ui/scripteditor/__init__.py:162
+msgid "Make It So!"
 msgstr ""
 
 #: picard/ui/options/dialog.py:206 picard/ui/options/dialog.py:523
@@ -5481,7 +5285,7 @@ msgstr ""
 msgid "Authors"
 msgstr ""
 
-#: picard/ui/options/plugins.py:623 picard/util/tags.py:82
+#: picard/ui/options/plugins.py:623 picard/util/tags.py:817
 msgid "License"
 msgstr ""
 
@@ -5509,6 +5313,10 @@ msgstr ""
 
 #: picard/ui/options/profiles.py:113
 msgid "Create a new profile"
+msgstr ""
+
+#: picard/ui/options/profiles.py:117 picard/ui/scripteditor/__init__.py:943
+msgid "Copy"
 msgstr ""
 
 #: picard/ui/options/profiles.py:118
@@ -5590,6 +5398,10 @@ msgstr ""
 msgid "The location to move files to must not be empty."
 msgstr ""
 
+#: picard/ui/options/renaming.py:263 picard/ui/scripteditor/__init__.py:989
+msgid "The file naming format must not be empty."
+msgstr ""
+
 #: picard/ui/options/renaming_compat.py:69
 msgid "Compatibility"
 msgstr ""
@@ -5629,6 +5441,10 @@ msgstr ""
 
 #: picard/ui/options/scripting.py:136
 msgid "Picard tagging script package"
+msgstr ""
+
+#: picard/ui/options/scripting.py:166 picard/ui/scripteditor/__init__.py:913
+msgid "File Error"
 msgstr ""
 
 #: picard/ui/options/scripting.py:178
@@ -5713,6 +5529,207 @@ msgstr ""
 msgid "Audio volume"
 msgstr ""
 
+#: picard/ui/scripteditor/__init__.py:102
+msgid "File naming script editor"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:157
+msgid "Reset"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:242
+msgid "&Import a script file"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:243
+msgid "Import a file as a new script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:248
+msgid "&Export a script file"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:249
+msgid "Export the script to a file"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:254
+msgid "&Reset all scripts"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:255
+msgid "Reset all scripts to the saved values"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:260
+msgid "&Save and exit"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:261
+msgid "Save changes to the script settings and exit"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:266
+msgid "E&xit without saving"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:267
+msgid "Close the script editor without saving changes"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:272
+msgid "&Script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:275
+msgid "View/Edit Script &Metadata"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:276
+msgid "Display the details for the script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:278
+msgid "Ctrl+M"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:281
+msgid "Add a &new script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:286
+msgid "&Copy the current script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:287
+msgid "Save a copy of the script as a new script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:292
+msgid "&Delete the current script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:293
+msgid "Delete the script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:302
+msgid "&Reload random example files"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:311
+msgid "&Show documentation"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:312
+msgid "View the scripting documentation in a sidebar"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:328
+msgid "&Scripting documentation…"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:329
+msgid "Open the scripting documentation in your browser"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:347
+msgid "Empty / blank script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:347
+msgid "New Script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:442
+#, python-brace-format
+msgid ""
+"At least one unsaved script has been attached to an option profile.\n"
+"\n"
+"   Profile: {profile_title}\n"
+"   Script: {old_script_title}\n"
+"\n"
+"Continuing without saving will reset the selected script in the profile to:\n"
+"\n"
+"   {new_script_title}\n"
+"\n"
+"Are you sure that you want to continue?"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:563
+msgid "There is already a script with that title."
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:566
+#: picard/ui/scripteditor/__init__.py:871
+#: picard/ui/scripteditor/__init__.py:1100
+msgid "The script title must not be empty."
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:817
+msgid "Error Deleting Script"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:819
+#, python-format
+msgid ""
+"The script could not be deleted because it is used in one of the user "
+"profiles.\n"
+"\n"
+"Profile: %s"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:828
+msgid "Are you sure that you want to delete the script?"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:932 picard/ui/scripteditor/utils.py:43
+msgid "Confirm"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:935
+#, python-brace-format
+msgid ""
+"A script named \"{script_name}\" already exists.\n"
+"\n"
+"Do you want to overwrite it, add as a copy or cancel?"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:941
+msgid "Overwrite"
+msgstr ""
+
+#: picard/ui/scripteditor/__init__.py:1026
+#, fuzzy
+msgid "Script Details"
+msgstr "వివరాలు"
+
+#: picard/ui/scripteditor/__init__.py:1080
+msgid ""
+"There are unsaved changes to the current metadata.\n"
+"\n"
+"Do you want to continue and lose these changes?"
+msgstr ""
+
+#: picard/ui/scripteditor/examples.py:96
+msgid "Renaming options are disabled"
+msgstr ""
+
+#: picard/ui/scripteditor/examples.py:170
+#, python-format
+msgid ""
+"If you select files from the Cluster pane or Album pane prior to opening the "
+"Options screen, up to %u files will be randomly chosen from your selection "
+"as file naming examples.  If you have not selected any files, then some "
+"default examples will be provided."
+msgstr ""
+
+#: picard/ui/scripteditor/examples.py:181
+#, python-format
+msgid ""
+"Reload up to %u items chosen at random from files selected in the main window"
+msgstr ""
+
 #: picard/ui/searchdialog/__init__.py:103
 msgid ""
 "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
@@ -5751,7 +5768,7 @@ msgstr ""
 msgid "Album Search Results"
 msgstr ""
 
-#: picard/ui/searchdialog/album.py:155 picard/util/tags.py:80
+#: picard/ui/searchdialog/album.py:155 picard/util/tags.py:805
 msgid "Language"
 msgstr "భాష"
 
@@ -5821,7 +5838,13 @@ msgstr "తీసివేయి"
 msgid "Are you sure you want to remove this profile?"
 msgstr ""
 
-#: picard/ui/widgets/scriptdocumentation.py:110
+#: picard/ui/widgets/scriptdocumentation.py:169
+#, fuzzy
+#| msgid "Options"
+msgid "Functions"
+msgstr "ఎంపికలు"
+
+#: picard/ui/widgets/scriptdocumentation.py:179
 msgid "Open Scripting Documentation in your browser"
 msgstr ""
 
@@ -5837,30 +5860,30 @@ msgstr ""
 msgid "Are you sure you want to remove this script?"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:284
+#: picard/ui/widgets/scripttextedit.py:246
 #, python-format
 msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:356
+#: picard/ui/widgets/scripttextedit.py:318
 msgid "&Word wrap script"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:357
+#: picard/ui/widgets/scripttextedit.py:319
 msgid "Word wrap long lines in the editor"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:359
+#: picard/ui/widgets/scripttextedit.py:321
 msgid "Ctrl+Shift+W"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:365
+#: picard/ui/widgets/scripttextedit.py:327
 msgid "Show help &tooltips"
 msgstr ""
 
-#: picard/ui/widgets/scripttextedit.py:366
+#: picard/ui/widgets/scripttextedit.py:328
 msgid "Show tooltips for script elements"
 msgstr ""
 
@@ -5967,334 +5990,1482 @@ msgid ""
 "Your version: {picard_old_version}\n"
 msgstr ""
 
-#: picard/util/tags.py:44
-msgid "AcoustID Fingerprint"
-msgstr ""
-
-#: picard/util/tags.py:45
-msgid "AcoustID"
-msgstr ""
-
-#: picard/util/tags.py:47
-msgid "Album Artist Sort Order"
-msgstr ""
-
-#: picard/util/tags.py:49
-msgid "Album Sort Order"
-msgstr ""
-
-#: picard/util/tags.py:50
-msgid "Arranger"
-msgstr ""
-
-#: picard/util/tags.py:52
-msgid "Artists"
-msgstr ""
-
-#: picard/util/tags.py:53
-msgid "Artist Sort Order"
-msgstr ""
-
-#: picard/util/tags.py:54
-msgid "ASIN"
-msgstr ""
-
-#: picard/util/tags.py:56
-msgid "BPM"
-msgstr ""
-
-#: picard/util/tags.py:57
-msgid "Catalog Number"
-msgstr ""
-
-#: picard/util/tags.py:58
-msgid "Comment"
-msgstr ""
-
-#: picard/util/tags.py:59
-msgid "Compilation (iTunes)"
-msgstr ""
-
-#: picard/util/tags.py:61
-msgid "Composer Sort Order"
-msgstr ""
-
-#: picard/util/tags.py:62
-msgid "Conductor"
-msgstr ""
-
-#: picard/util/tags.py:63
-msgid "Copyright"
-msgstr ""
-
-#: picard/util/tags.py:65
-msgid "Director"
-msgstr ""
-
-#: picard/util/tags.py:66
-msgid "Disc Id"
-msgstr ""
-
-#: picard/util/tags.py:67
-msgid "Disc Number"
-msgstr ""
-
-#: picard/util/tags.py:69
-msgid "DJ-Mixer"
-msgstr ""
-
-#: picard/util/tags.py:70
-msgid "Encoded By"
-msgstr ""
-
-#: picard/util/tags.py:71
-msgid "Encoder Settings"
-msgstr ""
-
-#: picard/util/tags.py:72
-msgid "Engineer"
-msgstr ""
-
-#: picard/util/tags.py:73
-msgid "File Path"
-msgstr ""
-
-#: picard/util/tags.py:74
-msgid "Gapless Playback"
-msgstr ""
-
-#: picard/util/tags.py:76
-msgid "Grouping"
-msgstr ""
-
 #: picard/util/tags.py:77
-msgid "ISRC"
+msgid "Notes"
 msgstr ""
 
 #: picard/util/tags.py:78
-msgid "Key"
-msgstr ""
+#, fuzzy
+#| msgid "Options"
+msgid "Option Settings"
+msgstr "ఎంపికలు"
 
 #: picard/util/tags.py:79
-msgid "Record Label"
+msgid "Links"
+msgstr ""
+
+#: picard/util/tags.py:80
+msgid "See Also"
 msgstr ""
 
 #: picard/util/tags.py:83
-msgid "Lyricist"
-msgstr ""
-
-#: picard/util/tags.py:84
-msgid "Lyrics"
+msgid "No description available."
 msgstr ""
 
 #: picard/util/tags.py:86
-msgid "Mixer"
+msgid "multi-value variable"
 msgstr ""
 
 #: picard/util/tags.py:87
-msgid "Mood"
+msgid "preserved read-only"
 msgstr ""
 
 #: picard/util/tags.py:88
-msgid "Movement"
+msgid "not for use in scripts"
 msgstr ""
 
 #: picard/util/tags.py:89
-msgid "Movement Number"
+msgid "calculated"
 msgstr ""
 
 #: picard/util/tags.py:90
-msgid "Movement Count"
+msgid "info from audio file"
 msgstr ""
 
 #: picard/util/tags.py:91
-msgid "MusicBrainz Release Artist Id"
+msgid "not provided from MusicBrainz data"
 msgstr ""
 
 #: picard/util/tags.py:92
-msgid "MusicBrainz Release Id"
+msgid "not populated by stock Picard"
 msgstr ""
 
-#: picard/util/tags.py:93
-msgid "MusicBrainz Artist Id"
+#: picard/util/tags.py:233
+#, python-brace-format
+msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr ""
 
-#: picard/util/tags.py:94
-msgid "MusicBrainz Disc Id"
+#: picard/util/tags.py:261 picard/util/tags.py:344
+#, python-brace-format
+msgid "<p><em>%{name}%</em></p>{content}"
 msgstr ""
 
-#: picard/util/tags.py:95
-msgid "MusicBrainz Original Release Id"
+#: picard/util/tags.py:343
+#, python-brace-format
+msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 msgstr ""
 
-#: picard/util/tags.py:96
-msgid "MusicBrainz Original Artist Id"
+#: picard/util/tags.py:367
+msgid "Absolute Track No."
 msgstr ""
 
-#: picard/util/tags.py:97
-msgid "MusicBrainz Recording Id"
+#: picard/util/tags.py:369
+msgid ""
+"The absolute number of this track disregarding the disc number. For example, "
+"this value would be 11 for the second track on disc 2 where disc 1 has 9 "
+"tracks."
 msgstr ""
 
-#: picard/util/tags.py:98
-msgid "MusicBrainz Release Group Id"
+#: picard/util/tags.py:377
+msgid "AcoustID Fingerprint"
 msgstr ""
 
-#: picard/util/tags.py:99
-msgid "MusicBrainz Track Id"
+#: picard/util/tags.py:379
+msgid ""
+"The Acoustic Fingerprint for the track. The fingerprint is based on the "
+"audio information found in a file, and is calculated using the Chromaprint "
+"software."
 msgstr ""
 
-#: picard/util/tags.py:100
-msgid "MusicBrainz Work Id"
+#: picard/util/tags.py:388
+msgid "AcoustID"
 msgstr ""
 
-#: picard/util/tags.py:101
+#: picard/util/tags.py:390
+msgid ""
+"The AcoustID associated with the track. The AcoustID is the identifier "
+"assigned to an audio file based on its acoustic fingerprint. Multiple "
+"fingerprints may be assigned the same AcoustID if the fingerprints are "
+"similar enough."
+msgstr ""
+
+#: picard/util/tags.py:402
+msgid ""
+"The artists primarily credited on the release, separated by the specified "
+"join phrases. These could be either \"standardized\" or \"as credited\" "
+"depending on whether the \"Use standardized artist names\" metadata option "
+"is enabled."
+msgstr ""
+
+#: picard/util/tags.py:409
+msgid "Album Artists"
+msgstr ""
+
+#: picard/util/tags.py:411
+msgid ""
+"The artists primarily credited on the release. These could be either "
+"\"standardized\" or \"as credited\" depending on whether the \"Use "
+"standardized artist names\" metadata option is enabled."
+msgstr ""
+
+#: picard/util/tags.py:420
+msgid "Album Artists Countries"
+msgstr ""
+
+#: picard/util/tags.py:422
+msgid ""
+"The country codes for all of the credited album artists, in the same order "
+"as the artists. Duplicate country codes will be shown if there are more than "
+"one artist from the same country. If a country code is not provided by the "
+"webservice the code \"XX\" will be used to indicate an unknown country."
+msgstr ""
+
+#: picard/util/tags.py:433
+msgid "Album Artist Sort Order"
+msgstr ""
+
+#: picard/util/tags.py:435
+msgid ""
+"The release artists sort names, separated by the specified join phrases. "
+"(e.g.: \"Beatles, The\")"
+msgstr ""
+
+#: picard/util/tags.py:440
+msgid "Album Artists Sort Names"
+msgstr ""
+
+#: picard/util/tags.py:441
+msgid "The sort names of the album's artists."
+msgstr ""
+
+#: picard/util/tags.py:449
+msgid "The title of the release."
+msgstr ""
+
+#: picard/util/tags.py:453
+msgid "Album Sort Order"
+msgstr ""
+
+#: picard/util/tags.py:454
+msgid "The sort name of the title of the release."
+msgstr ""
+
+#: picard/util/tags.py:459
+msgid "Arranger"
+msgstr ""
+
+#: picard/util/tags.py:461
+msgid ""
+"The names of the arrangers associated with the track. These can include the "
+"instrument and orchestra arrangers, and could be associated with the "
+"release, recording or work."
+msgstr ""
+
+#: picard/util/tags.py:469
+msgid ""
+"The track artist names, separated by the specified join phrases. These could "
+"be either \"standardized\" or \"as credited\" depending on whether the \"Use "
+"standardized artist names\" metadata option is enabled."
+msgstr ""
+
+#: picard/util/tags.py:476
+msgid "Artists"
+msgstr ""
+
+#: picard/util/tags.py:478
+msgid ""
+"The track artist names. These could be either \"standardized\" or \"as "
+"credited\" depending on whether the \"Use standardized artist names\" "
+"metadata option is enabled."
+msgstr ""
+
+#: picard/util/tags.py:485
+msgid "Artists Countries"
+msgstr ""
+
+#: picard/util/tags.py:487
+msgid ""
+"The country codes for all of the credited track artists, in the same order "
+"as the artists. Duplicate country codes will be shown if there are more than "
+"one artist from the same country. If a country code is not provided by the "
+"webservice the code \"XX\" will be used to indicate an unknown country."
+msgstr ""
+
+#: picard/util/tags.py:498
+msgid "Artist Sort Order"
+msgstr ""
+
+#: picard/util/tags.py:499
+msgid ""
+"The sort names of the track's artists, separated by the specified join "
+"phrases."
+msgstr ""
+
+#: picard/util/tags.py:503
+msgid "Artists Sort Names"
+msgstr ""
+
+#: picard/util/tags.py:504
+msgid "The sort names of the track's artists."
+msgstr ""
+
+#: picard/util/tags.py:511
+msgid "ASIN"
+msgstr ""
+
+#: picard/util/tags.py:512
+msgid ""
+"The Amazon Standard Identification Number, which is the number identifying "
+"the item on Amazon."
+msgstr ""
+
+#: picard/util/tags.py:517
+msgid "The barcode assigned to the release."
+msgstr ""
+
+#: picard/util/tags.py:519
+msgid "Barcode in MusicBrainz documentation"
+msgstr ""
+
+#: picard/util/tags.py:520
+msgid "Barcode mapping in Picard documentation"
+msgstr ""
+
+#: picard/util/tags.py:525
+msgid "BPM"
+msgstr ""
+
+#: picard/util/tags.py:526
+msgid "Beats per minute of the track."
+msgstr ""
+
+#: picard/util/tags.py:531
+msgid "Bitrate"
+msgstr ""
+
+#: picard/util/tags.py:532
+msgid "Approximate bitrate in kbps."
+msgstr ""
+
+#: picard/util/tags.py:541
+msgid "Bits per sample"
+msgstr ""
+
+#: picard/util/tags.py:542
+msgid "Bits of data per sample."
+msgstr ""
+
+#: picard/util/tags.py:551
+msgid "Catalog Number"
+msgstr ""
+
+#: picard/util/tags.py:553
+msgid ""
+"The catalog numbers assigned to the release by the labels, which can often "
+"be found on the spine or near the barcode. There may be more than one, "
+"especially when multiple labels are involved."
+msgstr ""
+
+#: picard/util/tags.py:560
+msgid "Channels"
+msgstr ""
+
+#: picard/util/tags.py:561
+msgid "Number of audio channels in the file."
+msgstr ""
+
+#: picard/util/tags.py:571
+msgid "Comment"
+msgstr ""
+
+#: picard/util/tags.py:573
+msgid ""
+"The disambiguation comment entered to help distinguish one release from "
+"another (e.g.: Deluxe version with 2 bonus tracks)."
+msgstr ""
+
+#: picard/util/tags.py:581
+msgid "Compilation (iTunes)"
+msgstr ""
+
+#: picard/util/tags.py:582
+msgid "1 for Various Artist albums, otherwise empty."
+msgstr ""
+
+#: picard/util/tags.py:587
+msgid "The names of the composers for the associated work."
+msgstr ""
+
+#: picard/util/tags.py:592
+msgid "Composer Sort Order"
+msgstr ""
+
+#: picard/util/tags.py:593
+msgid "The sort names of the composers for the associated work."
+msgstr ""
+
+#: picard/util/tags.py:598
+msgid "Conductor"
+msgstr ""
+
+#: picard/util/tags.py:600
+msgid ""
+"The names of the conductors associated with the track. These can include the "
+"conductor and chorus master, and could be associated with the release or "
+"recording."
+msgstr ""
+
+#: picard/util/tags.py:607
+msgid "Copyright"
+msgstr ""
+
+#: picard/util/tags.py:609
+msgid ""
+"The copyright message for the copyright holder of the original sound, "
+"beginning with a year and a space character."
+msgstr ""
+
+#: picard/util/tags.py:616
+msgid "Data Track"
+msgstr ""
+
+#: picard/util/tags.py:617
+msgid "Set to 1 if the track is a \"data track\", otherwise empty."
+msgstr ""
+
+#: picard/util/tags.py:624 picard/util/tags.py:1194
+msgid ""
+"The date that the release (album) was issued, in the format `YYYY-MM-DD`."
+msgstr ""
+
+#: picard/util/tags.py:628
+msgid "Director"
+msgstr ""
+
+#: picard/util/tags.py:630
+msgid ""
+"The director of a track as provided by the \"*Video Director*\" or \"*Audio "
+"Director*\" relationship in MusicBrainz."
+msgstr ""
+
+#: picard/util/tags.py:637
+msgid "Directory name"
+msgstr ""
+
+#: picard/util/tags.py:638
+msgid ""
+"The name of the directory containing the file at the point of being loaded "
+"into Picard."
+msgstr ""
+
+#: picard/util/tags.py:646
+msgid "FreeDB Disc ID"
+msgstr ""
+
+#: picard/util/tags.py:647
+msgid "The identification number of the disc in the FreeDB database."
+msgstr ""
+
+#: picard/util/tags.py:650
+msgid "FreeDB"
+msgstr ""
+
+#: picard/util/tags.py:651
+msgid "FreeDB DiscID Calculation"
+msgstr ""
+
+#: picard/util/tags.py:652
+msgid "FreeDB DiscID including Calculation Example (French)"
+msgstr ""
+
+#: picard/util/tags.py:657
+msgid "Disc Number"
+msgstr ""
+
+#: picard/util/tags.py:658
+msgid "The number of the disc in the release that contains this track."
+msgstr ""
+
+#: picard/util/tags.py:662
+msgid "Disc Has Pregap"
+msgstr ""
+
+#: picard/util/tags.py:663
+msgid ""
+"Set to 1 if the disc the track is on has a \"pregap track\", otherwise empty."
+msgstr ""
+
+#: picard/util/tags.py:671
+msgid "The media title given to a specific disc in the release."
+msgstr ""
+
+#: picard/util/tags.py:675
+msgid "DJ-Mixer"
+msgstr ""
+
+#: picard/util/tags.py:676
+msgid "The names of the DJ mixers for the track."
+msgstr ""
+
+#: picard/util/tags.py:681
+msgid "Encoded By"
+msgstr ""
+
+#: picard/util/tags.py:682
+msgid "The person or organization that encoded the track."
+msgstr ""
+
+#: picard/util/tags.py:687
+msgid "Encoder Settings"
+msgstr ""
+
+#: picard/util/tags.py:688
+msgid "The settings used when encoding the track."
+msgstr ""
+
+#: picard/util/tags.py:693
+msgid "Engineer"
+msgstr ""
+
+#: picard/util/tags.py:694
+msgid "The names of the engineers associated with the track."
+msgstr ""
+
+#: picard/util/tags.py:699
+msgid "File Extension"
+msgstr ""
+
+#: picard/util/tags.py:700
+msgid "The file's extension."
+msgstr ""
+
+#: picard/util/tags.py:708
+msgid "File Created Timestamp"
+msgstr ""
+
+#: picard/util/tags.py:709
+msgid ""
+"The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by "
+"the file system."
+msgstr ""
+
+#: picard/util/tags.py:717
+msgid "File Modified Timestamp"
+msgstr ""
+
+#: picard/util/tags.py:718
+msgid ""
+"The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as "
+"reported by the file system."
+msgstr ""
+
+#: picard/util/tags.py:727
+msgid "The name of the file without extension."
+msgstr ""
+
+#: picard/util/tags.py:735
+msgid "File Path"
+msgstr ""
+
+#: picard/util/tags.py:736
+msgid "Full path and name of the file."
+msgstr ""
+
+#: picard/util/tags.py:743
+#, fuzzy
+#| msgid "Size:"
+msgid "File Size"
+msgstr "పరిమాణం:"
+
+#: picard/util/tags.py:744
+msgid "Size of the file in bytes."
+msgstr ""
+
+#: picard/util/tags.py:752
+msgid "File Format"
+msgstr ""
+
+#: picard/util/tags.py:753
+msgid "Media format of the file (e.g.: MPEG-1 Audio)."
+msgstr ""
+
+#: picard/util/tags.py:762
+msgid "Gapless Playback"
+msgstr ""
+
+#: picard/util/tags.py:763
+msgid ""
+"Indicates whether or not there are gaps between the recordings on the "
+"release."
+msgstr ""
+
+#: picard/util/tags.py:770
+msgid "The specified genre information from MusicBrainz."
+msgstr ""
+
+#: picard/util/tags.py:778
+msgid "Grouping"
+msgstr ""
+
+#: picard/util/tags.py:779
+msgid "Genre grouping associated with the track"
+msgstr ""
+
+#: picard/util/tags.py:784
+msgid "ISRC"
+msgstr ""
+
+#: picard/util/tags.py:786
+msgid ""
+"The International Standard Recording Code, which is an international "
+"standard code for uniquely identifying sound recordings and music video "
+"recordings."
+msgstr ""
+
+#: picard/util/tags.py:793
+msgid "Key"
+msgstr ""
+
+#: picard/util/tags.py:794
+msgid "The key of the music."
+msgstr ""
+
+#: picard/util/tags.py:799
+msgid "Record Label"
+msgstr ""
+
+#: picard/util/tags.py:800
+msgid "The names of the labels associated with the release."
+msgstr ""
+
+#: picard/util/tags.py:806
+msgid "Work lyric language as per ISO 639-3 if a related work exists."
+msgstr ""
+
+#: picard/util/tags.py:811
+msgid "The length of the track in format mins:secs."
+msgstr ""
+
+#: picard/util/tags.py:818
+msgid ""
+"The license associated with the track, either through the release or "
+"recording relationships."
+msgstr ""
+
+#: picard/util/tags.py:822
+msgid "Lyricist"
+msgstr ""
+
+#: picard/util/tags.py:823
+msgid "The names of the lyricists for the associated work."
+msgstr ""
+
+#: picard/util/tags.py:828
+msgid "Lyricist Sort"
+msgstr ""
+
+#: picard/util/tags.py:829
+msgid "The sort names of the lyricists for the associated work."
+msgstr ""
+
+#: picard/util/tags.py:835
+msgid "Lyrics"
+msgstr ""
+
+#: picard/util/tags.py:836
+msgid "The lyrics for the track."
+msgstr ""
+
+#: picard/util/tags.py:842
+msgid "The media on which the release was distributed (e.g.: CD)."
+msgstr ""
+
+#: picard/util/tags.py:846
+msgid "Mixer"
+msgstr ""
+
+#: picard/util/tags.py:847
+msgid "The names of the \"*Mixed By*\" engineers associated with the track."
+msgstr ""
+
+#: picard/util/tags.py:852
+msgid "Mood"
+msgstr ""
+
+#: picard/util/tags.py:853
+msgid "The mood associated with the track."
+msgstr ""
+
+#: picard/util/tags.py:858
+msgid "Movement"
+msgstr ""
+
+#: picard/util/tags.py:859
+msgid "Name of the movement (e.g.: \"Andante con moto\")."
+msgstr ""
+
+#: picard/util/tags.py:864
+msgid "Movement Number"
+msgstr ""
+
+#: picard/util/tags.py:866
+msgid ""
+"Movement number in Arabic numerals (e.g.: \"2\"). Players explicitly "
+"supporting this tag will often display it in Roman numerals (e.g.: \"II\")."
+msgstr ""
+
+#: picard/util/tags.py:873
+msgid "Movement Count"
+msgstr ""
+
+#: picard/util/tags.py:874
+msgid "Total number of movements in the work (e.g.: \"4\")."
+msgstr ""
+
+#: picard/util/tags.py:879
+msgid "Multiple Artists"
+msgstr ""
+
+#: picard/util/tags.py:881
+msgid ""
+"Set to 1 if not all of the tracks on the album have the same primary artist, "
+"otherwise empty."
+msgstr ""
+
+#: picard/util/tags.py:888
+#, fuzzy
+#| msgid "Release Status"
+msgid "Release Artist MBID"
+msgstr "విడుదల స్థితి"
+
+#: picard/util/tags.py:889
+msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
+msgstr ""
+
+#: picard/util/tags.py:894
+#, fuzzy
+msgid "Release MBID"
+msgstr "విడుదల స్థితి"
+
+#: picard/util/tags.py:895
+msgid "The MusicBrainz Identifier (MBID) for the release."
+msgstr ""
+
+#: picard/util/tags.py:899
+msgid "Artist MBID"
+msgstr ""
+
+#: picard/util/tags.py:900
+msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
+msgstr ""
+
+#: picard/util/tags.py:905
+msgid "MusicBrainz DiscID"
+msgstr ""
+
+#: picard/util/tags.py:907
+msgid ""
+"The Disc ID is the code number which MusicBrainz uses to link a physical CD "
+"to a release listing. This is based on the table of contents (TOC) "
+"information read from the disc. This tag contains the Disc ID if the album "
+"information was retrieved using `Tools > Lookup CD` from the menu."
+msgstr ""
+
+#: picard/util/tags.py:913
+msgid "Disc ID Calculation"
+msgstr ""
+
+#: picard/util/tags.py:917
+msgid "Disc IDs"
+msgstr ""
+
+#: picard/util/tags.py:919
+msgid ""
+"A list of all of the disc ids attached to the selected release. The list "
+"provided for each medium only includes the disc ids attached to that medium."
+msgstr ""
+
+#: picard/util/tags.py:923
+msgid ""
+"For example, the list provided for Disc 1 of a three CD set will not include "
+"the disc ids attached to discs 2 and 3 of the set."
+msgstr ""
+
+#: picard/util/tags.py:932
+#, fuzzy
+msgid "Original Release MBID"
+msgstr "అసలు విలువ"
+
+#: picard/util/tags.py:934
+msgid ""
+"The MusicBrainz Identifier (MBID) for the original release. This is only "
+"available if the release has been merged with another release."
+msgstr ""
+
+#: picard/util/tags.py:940
+msgid "Original Artist MBID"
+msgstr ""
+
+#: picard/util/tags.py:942
+msgid ""
+"The MusicBrainz Identifiers (MBIDs) for the track artists of the original "
+"recording. This is only available if the recording has been merged with "
+"another recording."
+msgstr ""
+
+#: picard/util/tags.py:949
+msgid "Recording MBID"
+msgstr ""
+
+#: picard/util/tags.py:950
+msgid "The MusicBrainz Identifier (MBID) for the recording."
+msgstr ""
+
+#: picard/util/tags.py:954
+#, fuzzy
+#| msgid "Release Country"
+msgid "Release Group MBID"
+msgstr "విడుదల దేశం"
+
+#: picard/util/tags.py:955
+msgid "The MusicBrainz Identifier (MBID) for the release group."
+msgstr ""
+
+#: picard/util/tags.py:959
+msgid "Track MBID"
+msgstr ""
+
+#: picard/util/tags.py:960
+msgid "The MusicBrainz Identifier (MBID) for the track."
+msgstr ""
+
+#: picard/util/tags.py:964
+msgid "Track Number Shown"
+msgstr ""
+
+#: picard/util/tags.py:966
+msgid ""
+"The track number written as on the MusicBrainz release, such as vinyl "
+"numbering (A1, A2, etc.)"
+msgstr ""
+
+#: picard/util/tags.py:973
+msgid "Work MBID"
+msgstr ""
+
+#: picard/util/tags.py:974
+msgid ""
+"The MusicBrainz Identifier (MBID) for the Work if a related work exists."
+msgstr ""
+
+#: picard/util/tags.py:979
 msgid "MusicIP Fingerprint"
 msgstr ""
 
-#: picard/util/tags.py:102
+#: picard/util/tags.py:980
+msgid "The MusicIP Fingerprint for the track."
+msgstr ""
+
+#: picard/util/tags.py:985
 msgid "MusicIP PUID"
 msgstr ""
 
-#: picard/util/tags.py:103
+#: picard/util/tags.py:986
+msgid "The MusicIP PUIDs associated with the track."
+msgstr ""
+
+#: picard/util/tags.py:991
 msgid "Original Album"
 msgstr ""
 
-#: picard/util/tags.py:104
+#: picard/util/tags.py:993
+msgid ""
+"The release title of the earliest release in the release group intended for "
+"the title of the original recording."
+msgstr ""
+
+#: picard/util/tags.py:1000
 msgid "Original Artist"
 msgstr ""
 
-#: picard/util/tags.py:106
+#: picard/util/tags.py:1002
+msgid ""
+"The track artist of the earliest release in the release group intended for "
+"the performers of the original recording."
+msgstr ""
+
+#: picard/util/tags.py:1011
+msgid ""
+"The original release date in the format `YYYY-MM-DD`. By default this is set "
+"to the earliest release in the release group. This can provide, for example, "
+"the release date of the vinyl version of what you have on CD.\n"
+"\n"
+"**Note:** If you are storing tags in MP3 files as ID3v2.3 then the original "
+"date can only be stored as a year."
+msgstr ""
+
+#: picard/util/tags.py:1019
 #, fuzzy
 msgid "Original Filename"
 msgstr "అసలు విలువ"
 
-#: picard/util/tags.py:107
+#: picard/util/tags.py:1020
+msgid "The original name of the audio file."
+msgstr ""
+
+#: picard/util/tags.py:1025
 msgid "Original Year"
 msgstr ""
 
-#: picard/util/tags.py:108
+#: picard/util/tags.py:1027
+msgid ""
+"The year of the original release date in the format `YYYY`. By default this "
+"is set to the earliest release in the release group. This can provide, for "
+"example, the release year of the vinyl version of what you have on CD."
+msgstr ""
+
+#: picard/util/tags.py:1034
+msgid "Performance Attributes"
+msgstr ""
+
+#: picard/util/tags.py:1035
+msgid ""
+"List of performance attributes for the work (e.g.: \"*live*\", \"*cover*\", "
+"\"*medley*\")."
+msgstr ""
+
+#: picard/util/tags.py:1037
+msgid ""
+"Use `$inmulti()` to check for a specific type (e.g.: "
+"`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
+msgstr ""
+
+#: picard/util/tags.py:1046
 msgid "Performer"
 msgstr ""
 
-#: picard/util/tags.py:109
+#: picard/util/tags.py:1048
+msgid ""
+"The names of the performers for the specified type. These types include:\n"
+"\n"
+"- vocals or instruments for the associated release or recording, where "
+"\"type\" can be \"*vocal*\", \"*guest guitar*\", \"*solo violin*\", etc.\n"
+"- the orchestra for the associated release or recording, where \"type\" is "
+"\"*orchestra*\"\n"
+"- the concert master for the associated release or recording, where \"type\" "
+"is \"*concertmaster*\""
+msgstr ""
+
+#: picard/util/tags.py:1058
 msgid "Podcast"
 msgstr ""
 
-#: picard/util/tags.py:110
+#: picard/util/tags.py:1059
+msgid "Indicates whether or not the recording is a podcast."
+msgstr ""
+
+#: picard/util/tags.py:1064
 msgid "Podcast URL"
 msgstr ""
 
-#: picard/util/tags.py:111
+#: picard/util/tags.py:1065
+msgid "The associated URL if the recording is a podcast."
+msgstr ""
+
+#: picard/util/tags.py:1070
+msgid "Pregap Track"
+msgstr ""
+
+#: picard/util/tags.py:1071
+msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
+msgstr ""
+
+#: picard/util/tags.py:1077
+msgid "Primary Release Type"
+msgstr ""
+
+#: picard/util/tags.py:1079
+msgid ""
+"The primary type of the release group (i.e.: *album*, *single*, *ep*, "
+"*broadcast*, or *other*)."
+msgstr ""
+
+#: picard/util/tags.py:1084 picard/util/tags.py:1306 picard/util/tags.py:1392
+#, fuzzy
+#| msgid "Release Country"
+msgid "Release group types"
+msgstr "విడుదల దేశం"
+
+#: picard/util/tags.py:1088
 msgid "Producer"
 msgstr ""
 
-#: picard/util/tags.py:112
+#: picard/util/tags.py:1089
+msgid "The names of the producers for the associated release or recording."
+msgstr ""
+
+#: picard/util/tags.py:1094
 msgid "R128 Album Gain"
 msgstr ""
 
-#: picard/util/tags.py:113
+#: picard/util/tags.py:1095
+msgid ""
+"Album gain as determined by European Broadcasting Union \"R 128\" analysis."
+msgstr ""
+
+#: picard/util/tags.py:1101
 msgid "R128 Track Gain"
 msgstr ""
 
-#: picard/util/tags.py:114
+#: picard/util/tags.py:1102
+msgid ""
+"Track gain as determined by European Broadcasting Union \"R 128\" analysis."
+msgstr ""
+
+#: picard/util/tags.py:1108
 msgid "Rating"
 msgstr ""
 
-#: picard/util/tags.py:115
+#: picard/util/tags.py:1109
+msgid "The rating of the track from 0-5 by MusicBrainz users."
+msgstr ""
+
+#: picard/util/tags.py:1114
+msgid "Recording First Released"
+msgstr ""
+
+#: picard/util/tags.py:1115
+msgid ""
+"The date of the earliest recording for a track in the format `YYYY-MM-DD`."
+msgstr ""
+
+#: picard/util/tags.py:1121
+msgid "Recording Series"
+msgstr ""
+
+#: picard/util/tags.py:1122
+msgid "The series titles associated with the recording."
+msgstr ""
+
+#: picard/util/tags.py:1128
+msgid "Recording Series Comment"
+msgstr ""
+
+#: picard/util/tags.py:1129
+msgid "The series disambiguation comments associated with the recording."
+msgstr ""
+
+#: picard/util/tags.py:1135
+msgid "Recording Series MBID"
+msgstr ""
+
+#: picard/util/tags.py:1136
+msgid ""
+"The series MusicBrainz Identifiers (MBIDs) associated with the recording."
+msgstr ""
+
+#: picard/util/tags.py:1142
+msgid "Recording Series Number"
+msgstr ""
+
+#: picard/util/tags.py:1143
+msgid "The series numbers associated with the recording."
+msgstr ""
+
+#: picard/util/tags.py:1149
+msgid "Recording Comment"
+msgstr ""
+
+#: picard/util/tags.py:1150
+msgid "The disambiguation comment for the recording associated with a track."
+msgstr ""
+
+#: picard/util/tags.py:1156
+#, fuzzy
+msgid "Recording Title"
+msgstr "శీర్షిక"
+
+#: picard/util/tags.py:1157
+msgid ""
+"Recording title - normally the same as the track title, but can be different."
+msgstr ""
+
+#: picard/util/tags.py:1163
+#, fuzzy
+#| msgid "Release Status"
+msgid "Release Annotation"
+msgstr "విడుదల స్థితి"
+
+#: picard/util/tags.py:1164
+msgid "The annotation comment for the release."
+msgstr ""
+
+#: picard/util/tags.py:1170
+#, fuzzy
+#| msgid "Release Country"
+msgid "Release Comment"
+msgstr "విడుదల దేశం"
+
+#: picard/util/tags.py:1171
+msgid "The disambiguation comment for the release."
+msgstr ""
+
+#: picard/util/tags.py:1177
+#, fuzzy
+#| msgid "Release Country"
+msgid "Release Countries"
+msgstr "విడుదల దేశం"
+
+#: picard/util/tags.py:1178
+msgid "The complete list of release countries for the release."
+msgstr ""
+
+#: picard/util/tags.py:1185
 msgid "Release Country"
 msgstr "విడుదల దేశం"
 
-#: picard/util/tags.py:117
+#: picard/util/tags.py:1187
+msgid ""
+"The two-character code for the country in which the release was issued. If "
+"more than one release country was specified, this tag will contain the first "
+"one in the list."
+msgstr ""
+
+#: picard/util/tags.py:1196
+#, python-format
+msgid ""
+"This tag exists for specific use in scripts and plugins, but is not filled "
+"by default. In most cases it is recommended to use the `%date%` tag instead "
+"for compatibility with existing software."
+msgstr ""
+
+#: picard/util/tags.py:1204
+#, fuzzy
+#| msgid "Release Country"
+msgid "Release Group"
+msgstr "విడుదల దేశం"
+
+#: picard/util/tags.py:1206
+msgid ""
+"The title of the release group. This is typically the same as the album "
+"title, but can be different."
+msgstr ""
+
+#: picard/util/tags.py:1213
+msgid "RG First Released"
+msgstr ""
+
+#: picard/util/tags.py:1215
+msgid ""
+"The date of the earliest release in the release group in the format `YYYY-MM-"
+"DD`. This is intended to provide, for example, the release date of the vinyl "
+"version of what you have on CD."
+msgstr ""
+
+#: picard/util/tags.py:1224
+msgid "RG Series"
+msgstr ""
+
+#: picard/util/tags.py:1225
+msgid "The series titles associated with the release group."
+msgstr ""
+
+#: picard/util/tags.py:1231
+msgid "RG Series Comment"
+msgstr ""
+
+#: picard/util/tags.py:1232
+msgid "The series disambiguation comments associated with the release group."
+msgstr ""
+
+#: picard/util/tags.py:1238
+msgid "RG Series MBID"
+msgstr ""
+
+#: picard/util/tags.py:1239
+msgid ""
+"The series MusicBrainz Identifiers (MBIDs) associated with the release group."
+msgstr ""
+
+#: picard/util/tags.py:1245
+msgid "RG Series Number"
+msgstr ""
+
+#: picard/util/tags.py:1246
+msgid "The series numbers associated with the release group."
+msgstr ""
+
+#: picard/util/tags.py:1252
+msgid "RG Comment"
+msgstr ""
+
+#: picard/util/tags.py:1253
+msgid "The disambiguation comment for the release group."
+msgstr ""
+
+#: picard/util/tags.py:1259
+#, fuzzy
+msgid "Release Language"
+msgstr "విడుదల స్థితి"
+
+#: picard/util/tags.py:1260
+msgid "The language of the release as per ISO 639-3."
+msgstr ""
+
+#: picard/util/tags.py:1266
+#, fuzzy
+#| msgid "Release Status"
+msgid "Release Series"
+msgstr "విడుదల స్థితి"
+
+#: picard/util/tags.py:1267
+msgid "The series titles associated with the release."
+msgstr ""
+
+#: picard/util/tags.py:1273
+#, fuzzy
+#| msgid "Release Country"
+msgid "Release Series Comment"
+msgstr "విడుదల దేశం"
+
+#: picard/util/tags.py:1274
+msgid "The series disambiguation comments associated with the release."
+msgstr ""
+
+#: picard/util/tags.py:1280
+#, fuzzy
+#| msgid "Release Status"
+msgid "Release Series MBID"
+msgstr "విడుదల స్థితి"
+
+#: picard/util/tags.py:1281
+msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
+msgstr ""
+
+#: picard/util/tags.py:1287
+msgid "Release Series Number"
+msgstr ""
+
+#: picard/util/tags.py:1288
+msgid "The series numbers associated with the release."
+msgstr ""
+
+#: picard/util/tags.py:1294
 msgid "Release Status"
 msgstr "విడుదల స్థితి"
 
-#: picard/util/tags.py:118
+#: picard/util/tags.py:1296
+msgid ""
+"An indicator of the \"official\" status of the release. Possible values "
+"include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
+"release*\"."
+msgstr ""
+
+#: picard/util/tags.py:1302
 msgid "Release Type"
 msgstr ""
 
-#: picard/util/tags.py:119
+#: picard/util/tags.py:1303
+msgid "The types of release assigned to the release group."
+msgstr ""
+
+#: picard/util/tags.py:1310
 msgid "Remixer"
 msgstr ""
 
-#: picard/util/tags.py:120
+#: picard/util/tags.py:1311
+msgid "The names of the remixer engineers associated with the track."
+msgstr ""
+
+#: picard/util/tags.py:1316
 msgid "ReplayGain Album Gain"
 msgstr ""
 
-#: picard/util/tags.py:121
+#: picard/util/tags.py:1317
+msgid "Album gain setting resulting from ReplayGain analysis of the album."
+msgstr ""
+
+#: picard/util/tags.py:1323
 msgid "ReplayGain Album Peak"
 msgstr ""
 
-#: picard/util/tags.py:122
+#: picard/util/tags.py:1324
+msgid "Album peak setting resulting from ReplayGain analysis of the album."
+msgstr ""
+
+#: picard/util/tags.py:1330
 msgid "ReplayGain Album Range"
 msgstr ""
 
-#: picard/util/tags.py:123
+#: picard/util/tags.py:1331
+msgid "Album range setting resulting from ReplayGain analysis of the album."
+msgstr ""
+
+#: picard/util/tags.py:1337
 msgid "ReplayGain Reference Loudness"
 msgstr ""
 
-#: picard/util/tags.py:124
+#: picard/util/tags.py:1338
+msgid ""
+"Album reference loudness setting resulting from ReplayGain analysis of the "
+"album."
+msgstr ""
+
+#: picard/util/tags.py:1344
 msgid "ReplayGain Track Gain"
 msgstr ""
 
-#: picard/util/tags.py:125
+#: picard/util/tags.py:1345
+msgid "Track gain setting resulting from ReplayGain analysis of the track."
+msgstr ""
+
+#: picard/util/tags.py:1351
 msgid "ReplayGain Track Peak"
 msgstr ""
 
-#: picard/util/tags.py:126
+#: picard/util/tags.py:1352
+msgid "Track peak setting resulting from ReplayGain analysis of the track."
+msgstr ""
+
+#: picard/util/tags.py:1358
 msgid "ReplayGain Track Range"
 msgstr ""
 
-#: picard/util/tags.py:127
+#: picard/util/tags.py:1359
+msgid "Track range setting resulting from ReplayGain analysis of the track."
+msgstr ""
+
+#: picard/util/tags.py:1365
+msgid "Sample Rate"
+msgstr ""
+
+#: picard/util/tags.py:1366
+msgid "The sample rate of the audio file."
+msgstr ""
+
+#: picard/util/tags.py:1375
 msgid "Script"
 msgstr ""
 
-#: picard/util/tags.py:128
+#: picard/util/tags.py:1377
+msgid ""
+"The script used to write the release's track list. The possible values are "
+"taken from the ISO 15924 standard."
+msgstr ""
+
+#: picard/util/tags.py:1383
+msgid "Secondary Release Type"
+msgstr ""
+
+#: picard/util/tags.py:1385
+msgid ""
+"Zero or more secondary types (i.e.: *audiobook*, *compilation*, *dj-mix*, "
+"*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
+"*spokenword*) for the release group."
+msgstr ""
+
+#: picard/util/tags.py:1396
+#, fuzzy
+msgid "Silence"
+msgstr "ఆంగ్లం (కెనడా)"
+
+#: picard/util/tags.py:1397
+msgid "1 if the track title is \"[silence]\""
+msgstr ""
+
+#: picard/util/tags.py:1403
 #, fuzzy
 msgid "Show Name"
 msgstr "పేరు"
 
-#: picard/util/tags.py:129
-msgid "Show Name Sort Order"
+#: picard/util/tags.py:1404
+msgid ""
+"The name of the show if the recording is associated with a television "
+"program."
 msgstr ""
 
-#: picard/util/tags.py:130
+#: picard/util/tags.py:1409
 msgid "Show Work & Movement"
 msgstr ""
 
-#: picard/util/tags.py:131
+#: picard/util/tags.py:1411
+msgid ""
+"Show work and movement. If this tag is set to \"1\" players supporting this "
+"tag, such as iTunes and MusicBee, will display the work, movement number and "
+"movement name instead of the track title."
+msgstr ""
+
+#: picard/util/tags.py:1415
+msgid ""
+"For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
+"67: II. Andante con moto\" regardless of the value of the title tag."
+msgstr ""
+
+#: picard/util/tags.py:1422
+msgid "Show Name Sort Order"
+msgstr ""
+
+#: picard/util/tags.py:1423
+msgid ""
+"The sort name of the show if the recording is associated with a television "
+"program."
+msgstr ""
+
+#: picard/util/tags.py:1428
 msgid "Subtitle"
 msgstr ""
 
-#: picard/util/tags.py:132
+#: picard/util/tags.py:1429
+msgid "This is used for information directly related to the contents title."
+msgstr ""
+
+#: picard/util/tags.py:1434
 msgid "Synced Lyrics"
 msgstr ""
 
-#: picard/util/tags.py:134
+#: picard/util/tags.py:1435
+msgid "Synchronized lyrics for the track."
+msgstr ""
+
+#: picard/util/tags.py:1441
+msgid "The title of the track."
+msgstr ""
+
+#: picard/util/tags.py:1445
 msgid "Title Sort Order"
 msgstr ""
 
-#: picard/util/tags.py:135
+#: picard/util/tags.py:1446
+msgid "The sort name of the track title."
+msgstr ""
+
+#: picard/util/tags.py:1451
+msgid "Total Album Tracks"
+msgstr ""
+
+#: picard/util/tags.py:1452
+msgid "The total number of tracks across all discs of this release."
+msgstr ""
+
+#: picard/util/tags.py:1458
 msgid "Total Discs"
 msgstr ""
 
-#: picard/util/tags.py:136
+#: picard/util/tags.py:1459
+msgid "The total number of discs in this release."
+msgstr ""
+
+#: picard/util/tags.py:1463
 msgid "Total Tracks"
 msgstr ""
 
-#: picard/util/tags.py:137
+#: picard/util/tags.py:1464
+msgid "The total number of tracks on this disc."
+msgstr ""
+
+#: picard/util/tags.py:1468
 msgid "Track Number"
 msgstr ""
 
-#: picard/util/tags.py:138
+#: picard/util/tags.py:1469
+msgid "The number of the track on the disc."
+msgstr ""
+
+#: picard/util/tags.py:1473
+msgid "Video"
+msgstr ""
+
+#: picard/util/tags.py:1474
+msgid "Set to \"1\" if the track is a video."
+msgstr ""
+
+#: picard/util/tags.py:1481
 msgid "Artist Website"
 msgstr ""
 
-#: picard/util/tags.py:139
+#: picard/util/tags.py:1482
+msgid "The official website for the artist."
+msgstr ""
+
+#: picard/util/tags.py:1486
 msgid "Work"
 msgstr ""
 
-#: picard/util/tags.py:140
+#: picard/util/tags.py:1487
+msgid ""
+"The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
+"minor, op. 67\")."
+msgstr ""
+
+#: picard/util/tags.py:1489
+msgid ""
+"Note: If you are using iTunes together with MP3 files you should activate "
+"the \"Save iTunes compatible grouping and work\" option in order for the "
+"work to be displayed correctly."
+msgstr ""
+
+#: picard/util/tags.py:1496
+msgid "Work Series"
+msgstr ""
+
+#: picard/util/tags.py:1497
+msgid "The series titles associated with the work."
+msgstr ""
+
+#: picard/util/tags.py:1503
+msgid "Work Series Comment"
+msgstr ""
+
+#: picard/util/tags.py:1504
+msgid "The series disambiguation comments associated with the work."
+msgstr ""
+
+#: picard/util/tags.py:1510
+msgid "Work Series MBID"
+msgstr ""
+
+#: picard/util/tags.py:1511
+msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
+msgstr ""
+
+#: picard/util/tags.py:1517
+msgid "Work Series Number"
+msgstr ""
+
+#: picard/util/tags.py:1518
+msgid "The series numbers associated with the work."
+msgstr ""
+
+#: picard/util/tags.py:1524
+msgid "Work Comment"
+msgstr ""
+
+#: picard/util/tags.py:1525
+msgid "The disambiguation comment associated with the work."
+msgstr ""
+
+#: picard/util/tags.py:1530
 msgid "Writer"
+msgstr ""
+
+#: picard/util/tags.py:1532
+msgid ""
+"The names of the writers associated with the related work. This is not "
+"written to most file formats automatically."
+msgstr ""
+
+#: picard/util/tags.py:1535
+msgid ""
+"You can merge this with composers with a script like "
+"`$copymerge(composer,writer)`."
+msgstr ""
+
+#: picard/util/tags.py:1540
+msgid "Writer Sort"
+msgstr ""
+
+#: picard/util/tags.py:1541
+msgid "The sort names of the writers for the work."
 msgstr ""
 
 #: picard/util/time.py:51
@@ -8235,10 +9406,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Syriac (Syria)"
 #~ msgstr "ఫ్రెంచ్"
-
-#, fuzzy
-#~ msgid "Silesian"
-#~ msgstr "ఆంగ్లం (కెనడా)"
 
 #, fuzzy
 #~ msgid "Silesian (Poland)"
