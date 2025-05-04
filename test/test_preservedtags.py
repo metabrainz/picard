@@ -23,53 +23,53 @@
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-from picard.tags.preservedtags import PreservedTags
+from picard.tags.preserved import UserPreservedTags
 
 
 class PreservedTagsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        config.setting[PreservedTags.opt_name] = ["tag1", "tag2"]
+        config.setting[UserPreservedTags.opt_name] = ["tag1", "tag2"]
 
     def test_load_and_contains(self):
-        preserved = PreservedTags()
+        preserved = UserPreservedTags()
         self.assertIn("tag1", preserved)
         self.assertIn("tag2", preserved)
         self.assertIn("TAG1", preserved)
         self.assertIn(" tag1", preserved)
 
     def test_add(self):
-        preserved = PreservedTags()
+        preserved = UserPreservedTags()
         self.assertNotIn("tag3", preserved)
         preserved.add("tag3")
         self.assertIn("tag3", preserved)
         # Add must persists the change
-        self.assertIn("tag3", PreservedTags())
+        self.assertIn("tag3", UserPreservedTags())
 
     def test_add_case_insensitive(self):
-        preserved = PreservedTags()
+        preserved = UserPreservedTags()
         self.assertNotIn("tag3", preserved)
         preserved.add("TAG3")
         self.assertIn("tag3", preserved)
 
     def test_discard(self):
-        preserved = PreservedTags()
+        preserved = UserPreservedTags()
         self.assertIn("tag1", preserved)
         preserved.discard("tag1")
         self.assertNotIn("tag1", preserved)
         # Discard must persists the change
-        self.assertNotIn("tag1", PreservedTags())
+        self.assertNotIn("tag1", UserPreservedTags())
 
     def test_discard_case_insensitive(self):
-        preserved = PreservedTags()
+        preserved = UserPreservedTags()
         self.assertIn("tag1", preserved)
         preserved.discard("TAG1")
         self.assertNotIn("tag1", preserved)
 
     def test_order(self):
-        preserved = PreservedTags()
+        preserved = UserPreservedTags()
         preserved.add('tag3')
         preserved.add('tag2')
         preserved.add('tag1')
         preserved.discard('tag2')
-        self.assertEqual(config.setting[PreservedTags.opt_name], ['tag1', 'tag3'])
+        self.assertEqual(config.setting[UserPreservedTags.opt_name], ['tag1', 'tag3'])

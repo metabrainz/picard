@@ -86,7 +86,7 @@ from picard.tags import (
     file_info_tag_names,
     preserved_tag_names,
 )
-from picard.tags.preservedtags import PreservedTags
+from picard.tags.preserved import UserPreservedTags
 from picard.util import (
     any_exception_isinstance,
     bytes2human,
@@ -312,7 +312,7 @@ class File(MetadataItem):
                 saved_metadata[tag] = self.metadata[tag]
 
         # Keep original values of preserved tags
-        preserved_tags = PreservedTags()
+        preserved_tags = UserPreservedTags()
         default_preserved_tags = set(preserved_tag_names())
         for tag, values in self.orig_metadata.rawitems():
             if tag in preserved_tags or tag in default_preserved_tags:
