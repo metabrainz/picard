@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-05-03 18:20+0000\n"
+"PO-Revision-Date: 2025-05-05 11:20+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -6649,7 +6649,7 @@ msgstr "Etichetta discografica"
 
 #: picard/util/tags.py:74
 msgid "Lyricist"
-msgstr "Autore testi"
+msgstr "Paroliere"
 
 #: picard/util/tags.py:75
 msgid "Lyrics"
