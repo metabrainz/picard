@@ -24,9 +24,12 @@
 import os
 import queue
 import shlex
+from textwrap import fill
 import threading
 
 from picard import log
+
+from .handlers import RemoteCommandHandlers
 
 
 class RemoteCommand:
@@ -297,3 +300,37 @@ class RemoteCommands:
         cls.cmd_files_add(absfilepath)
         cls.parse_commands_to_queue(cls._read_commands_from_file(absfilepath))
         cls.cmd_files_remove(absfilepath)
+
+    @classmethod
+    def help(cls, maxwidth):
+        informative_text = []
+
+        message = """Usage: picard -e [command] [arguments ...]
+        or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
+
+    List of the commands available to execute in Picard from the command-line:
+    """
+
+        for name in sorted(REMOTE_COMMANDS):
+            remcmd = REMOTE_COMMANDS[name]
+            s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
+            informative_text.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
+
+        informative_text.append('')
+
+        def fmt(s):
+            informative_text.append(fill(s, width=maxwidth))
+
+        fmt("Commands are case insensitive.")
+        fmt("Picard will try to load all the positional arguments before processing commands.")
+        fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the "
+            "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running "
+            "Picard instance")
+        fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
+
+        return message, "\n".join(informative_text)
+
+    @classmethod
+    def commands(cls):
+        handlers = RemoteCommandHandlers(cls)
+        return {name: getattr(handlers, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}

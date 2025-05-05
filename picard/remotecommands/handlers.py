@@ -65,7 +65,6 @@ from picard.util.cdrom import (
     discid as _discid,
     get_cdrom_drives,
 )
-from picard.remotecommands import RemoteCommands
 
 
 class ParseItemsToLoad:
@@ -107,8 +106,9 @@ class ParseItemsToLoad:
 
 
 class RemoteCommandHandlers:
-    def __init__(self):
+    def __init__(self, remotecommands_class):
         self.tagger = QtCore.QCoreApplication.instance()
+        self.remotecommands_class = remotecommands_class
 
     def handle_command_clear_logs(self, argstring):
         self.tagger.window.log_dialog.clear()
@@ -122,7 +122,7 @@ class RemoteCommandHandlers:
             self.tagger.analyze(self.tagger.albums[album_name].iterfiles())
 
     def handle_command_from_file(self, argstring):
-        RemoteCommands.get_commands_from_file(argstring)
+        self.remotecommands_class.get_commands_from_file(argstring)
 
     def handle_command_load(self, argstring):
         parsed_items = ParseItemsToLoad([argstring])
@@ -194,7 +194,7 @@ class RemoteCommandHandlers:
             self.tagger.quit()
         else:
             log.info("QUIT command cancelled by the user.")
-            RemoteCommands.set_quit(False)  # Allow queueing more commands.
+            self.remotecommands_class.set_quit(False)  # Allow queueing more commands.
             return
 
     def handle_command_remove(self, argstring):

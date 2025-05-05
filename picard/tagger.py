@@ -55,7 +55,6 @@ import re
 import shutil
 import signal
 import sys
-from textwrap import fill
 import time
 from urllib.parse import urlparse
 from uuid import uuid4
@@ -123,11 +122,7 @@ from picard.pluginmanager import (
     plugin_dirs,
 )
 from picard.releasegroup import ReleaseGroup
-from picard.remotecommands import (
-    REMOTE_COMMANDS,
-    RemoteCommands,
-)
-from picard.remotecommands.handlers import RemoteCommandHandlers
+from picard.remotecommands import RemoteCommands
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -449,8 +444,7 @@ class Tagger(QtWidgets.QApplication):
         yield from self.clusters.iterfiles()
 
     def _init_remote_commands(self):
-        handlers = RemoteCommandHandlers()
-        self.commands = {name: getattr(handlers, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
+        self.commands = RemoteCommands.commands()
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)
@@ -1250,36 +1244,9 @@ def print_message_and_exit(message, informative_text=None, status=0):
 
 
 def print_help_for_commands():
-    if is_windowed_app():
-        maxwidth = 300
-    else:
-        maxwidth = 80
-    informative_text = []
-
-    message = """Usage: picard -e [command] [arguments ...]
-    or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
-
-List of the commands available to execute in Picard from the command-line:
-"""
-
-    for name in sorted(REMOTE_COMMANDS):
-        remcmd = REMOTE_COMMANDS[name]
-        s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
-        informative_text.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
-
-    informative_text.append('')
-
-    def fmt(s):
-        informative_text.append(fill(s, width=maxwidth))
-
-    fmt("Commands are case insensitive.")
-    fmt("Picard will try to load all the positional arguments before processing commands.")
-    fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the "
-        "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running "
-        "Picard instance")
-    fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
-
-    print_message_and_exit(message, "\n".join(informative_text))
+    maxwidth = 300 if is_windowed_app() else 80
+    message, informative_text = RemoteCommands.help(maxwidth)
+    print_message_and_exit(message, informative_text)
 
 
 def process_picard_args():
