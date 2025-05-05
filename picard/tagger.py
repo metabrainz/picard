@@ -123,6 +123,7 @@ from picard.pluginmanager import (
     plugin_dirs,
 )
 from picard.releasegroup import ReleaseGroup
+from picard.remotecommands import RemoteCommandHandlers
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -141,11 +142,6 @@ from picard.util import (
     thread,
     versions,
     webbrowser2,
-)
-from picard.util.cdrom import (
-    DISCID_NOT_LOADED_MESSAGE,
-    discid as _discid,
-    get_cdrom_drives,
 )
 from picard.util.checkupdate import UpdateCheckManager
 from picard.util.remotecommands import (
@@ -181,44 +177,6 @@ def _patched_shutil_copystat(src, dst, *, follow_symlinks=True):
 
 _orig_shutil_copystat = shutil.copystat
 shutil.copystat = _patched_shutil_copystat
-
-
-class ParseItemsToLoad:
-
-    WINDOWS_DRIVE_TEST = re.compile(r"^[a-z]\:", re.IGNORECASE)
-
-    def __init__(self, items):
-        self.files = set()
-        self.mbids = set()
-        self.urls = set()
-
-        for item in items:
-            parsed = urlparse(item)
-            log.debug(f"Parsed: {repr(parsed)}")
-            if not parsed.scheme:
-                self.files.add(item)
-            if parsed.scheme == 'file':
-                # remove file:// prefix safely
-                self.files.add(item[7:])
-            elif parsed.scheme == 'mbid':
-                self.mbids.add(parsed.netloc + parsed.path)
-            elif parsed.scheme in {'http', 'https'}:
-                # .path returns / before actual link
-                self.urls.add(parsed.path[1:])
-            elif IS_WIN and self.WINDOWS_DRIVE_TEST.match(item):
-                # Treat all single-character schemes as part of the file spec to allow
-                # specifying a drive identifier on Windows systems.
-                self.files.add(item)
-
-    # needed to indicate whether Picard should be brought to the front
-    def non_executable_items(self):
-        return bool(self.files or self.mbids or self.urls)
-
-    def __bool__(self):
-        return bool(self.files or self.mbids or self.urls)
-
-    def __str__(self):
-        return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}"
 
 
 class Tagger(QtWidgets.QApplication):
@@ -491,149 +449,8 @@ class Tagger(QtWidgets.QApplication):
         yield from self.clusters.iterfiles()
 
     def _init_remote_commands(self):
-        self.commands = {name: getattr(self, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
-
-    def handle_command_clear_logs(self, argstring):
-        self.window.log_dialog.clear()
-        self.window.history_dialog.clear()
-
-    def handle_command_cluster(self, argstring):
-        self.cluster(self.unclustered_files.files)
-
-    def handle_command_fingerprint(self, argstring):
-        for album_name in self.albums:
-            self.analyze(self.albums[album_name].iterfiles())
-
-    def handle_command_from_file(self, argstring):
-        RemoteCommands.get_commands_from_file(argstring)
-
-    def handle_command_load(self, argstring):
-        parsed_items = ParseItemsToLoad([argstring])
-        log.debug(str(parsed_items))
-
-        if parsed_items.files:
-            self.add_paths(parsed_items.files)
-
-        if parsed_items.urls or parsed_items.mbids:
-            file_lookup = self.get_file_lookup()
-            for item in parsed_items.mbids | parsed_items.urls:
-                file_lookup.mbid_lookup(item)
-
-    def handle_command_lookup(self, argstring):
-        if argstring:
-            argstring = argstring.upper()
-        if not argstring or argstring == 'ALL':
-            self.autotag(self.clusters)
-            self.autotag(self.unclustered_files.files)
-        elif argstring == 'CLUSTERED':
-            self.autotag(self.clusters)
-        elif argstring == 'UNCLUSTERED':
-            self.autotag(self.unclustered_files.files)
-        else:
-            log.error("Invalid LOOKUP command argument: '%s'", argstring)
-
-    def handle_command_lookup_cd(self, argstring):
-        if not _discid:
-            log.error(DISCID_NOT_LOADED_MESSAGE)
-            return
-        disc = Disc()
-        devices = get_cdrom_drives()
-
-        if not argstring:
-            if devices:
-                device = devices[0]
-            else:
-                device = None
-        elif argstring in devices:
-            device = argstring
-        else:
-            thread.run_task(
-                partial(self._parse_disc_ripping_log, disc, argstring),
-                partial(self._lookup_disc, disc),
-                traceback=self._debug)
-            return
-
-        thread.run_task(
-            partial(disc.read, encode_filename(device)),
-            partial(self._lookup_disc, disc),
-            traceback=self._debug)
-
-    def handle_command_pause(self, argstring):
-        arg = argstring.strip()
-        if arg:
-            try:
-                delay = float(arg)
-                if delay < 0:
-                    raise ValueError
-                log.debug("Pausing command execution by %d seconds.", delay)
-                thread.run_task(partial(time.sleep, delay))
-            except ValueError:
-                log.error(f"Invalid command pause time specified: {repr(argstring)}")
-        else:
-            log.error("No command pause time specified.")
-
-    def handle_command_quit(self, argstring):
-        if argstring.upper() == 'FORCE' or self.window.show_quit_confirmation():
-            self.quit()
-        else:
-            log.info("QUIT command cancelled by the user.")
-            RemoteCommands.set_quit(False)  # Allow queueing more commands.
-            return
-
-    def handle_command_remove(self, argstring):
-        for file in self.iter_all_files():
-            if file.filename == argstring:
-                self.remove([file])
-                return
-
-    def handle_command_remove_all(self, argstring):
-        for file in self.iter_all_files():
-            self.remove([file])
-
-    def handle_command_remove_empty(self, argstring):
-        _albums = [a for a in self.albums.values()]
-        for album in _albums:
-            if not any(album.iterfiles()):
-                self.remove_album(album)
-
-        for cluster in self.clusters:
-            if not any(cluster.iterfiles()):
-                self.remove_cluster(cluster)
-
-    def handle_command_remove_saved(self, argstring):
-        for track in self.iter_album_files():
-            if track.state == File.NORMAL:
-                self.remove([track])
-
-    def handle_command_remove_unclustered(self, argstring):
-        self.remove(self.unclustered_files.files)
-
-    def handle_command_save_matched(self, argstring):
-        for album in self.albums.values():
-            for track in album.iter_correctly_matched_tracks():
-                track.files[0].save()
-
-    def handle_command_save_modified(self, argstring):
-        for track in self.iter_album_files():
-            if track.state == File.CHANGED:
-                track.save()
-
-    def handle_command_scan(self, argstring):
-        self.analyze(self.unclustered_files.files)
-
-    def handle_command_show(self, argstring):
-        self.bring_tagger_front()
-
-    def handle_command_submit_fingerprints(self, argstring):
-        self.acoustidmanager.submit()
-
-    def handle_command_write_logs(self, argstring):
-        try:
-            with open(argstring, 'w', encoding='utf-8') as f:
-                for x in self.window.log_dialog.log_tail.contents():
-                    f.write(f"{x.message}\n")
-        except Exception as e:
-            log.error("Error writing logs to a file: %s", e)
+        handlers = RemoteCommandHandlers()
+        self.commands = {name: getattr(handlers, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
 
     def enable_menu_icons(self, enabled):
         self.setAttribute(QtCore.Qt.ApplicationAttribute.AA_DontShowIconsInMenus, not enabled)

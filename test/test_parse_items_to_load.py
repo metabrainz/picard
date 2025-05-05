@@ -24,10 +24,10 @@
 from test.picardtestcase import PicardTestCase
 
 from picard.const.sys import IS_WIN
-from picard.tagger import ParseItemsToLoad
+from picard.remotecommands import ParseItemsToLoad
 
 
-class TestMessageParsing(PicardTestCase):
+class TestParseItemsToLoad(PicardTestCase):
     def test(self):
         test_cases = {
             "test_case.mp3",
