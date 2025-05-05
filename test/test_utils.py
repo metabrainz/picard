@@ -626,6 +626,8 @@ class TracknumAndTitleFromFilenameTest(PicardTestCase):
             (('99', 'Foo'), '99 Foo.mp3'),
             (('42', 'Foo'), '0000042 Foo.mp3'),
             (('2', 'Foo'), '0000002 Foo.mp3'),
+            # Tracknumber dot not in title
+            (('77', 'Foo'), '77. Foo.mp3'),
             ((None, '20000 Feet'), '20000 Feet.mp3'),
             ((None, '20,000 Feet'), '20,000 Feet.mp3'),
             ((None, 'Venus (Original 12" version)'), 'Venus (Original 12" version).mp3'),
