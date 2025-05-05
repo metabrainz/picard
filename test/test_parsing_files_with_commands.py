@@ -23,7 +23,7 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.util.remotecommands import RemoteCommands
+from picard.remotecommands import RemoteCommands
 
 
 class TestParsingFilesWithCommands(PicardTestCase):
