@@ -24,7 +24,7 @@
 from test.picardtestcase import PicardTestCase
 
 from picard.const.sys import IS_WIN
-from picard.remotecommands import ParseItemsToLoad
+from picard.remotecommands.handlers import ParseItemsToLoad
 
 
 class TestParseItemsToLoad(PicardTestCase):

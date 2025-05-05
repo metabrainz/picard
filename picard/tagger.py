@@ -123,7 +123,11 @@ from picard.pluginmanager import (
     plugin_dirs,
 )
 from picard.releasegroup import ReleaseGroup
-from picard.remotecommands import RemoteCommandHandlers
+from picard.remotecommands import (
+    REMOTE_COMMANDS,
+    RemoteCommands,
+)
+from picard.remotecommands.handlers import RemoteCommandHandlers
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -144,10 +148,6 @@ from picard.util import (
     webbrowser2,
 )
 from picard.util.checkupdate import UpdateCheckManager
-from picard.util.remotecommands import (
-    REMOTE_COMMANDS,
-    RemoteCommands,
-)
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,

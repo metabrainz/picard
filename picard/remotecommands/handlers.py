@@ -65,7 +65,7 @@ from picard.util.cdrom import (
     discid as _discid,
     get_cdrom_drives,
 )
-from picard.util.remotecommands import RemoteCommands
+from picard.remotecommands import RemoteCommands
 
 
 class ParseItemsToLoad:
