@@ -33,6 +33,7 @@ try:
 except ImportError:
     markdown = None
 
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -338,6 +339,11 @@ class TagVars(MutableSequence):
         return self._format_display(name, content, tagdesc)
 
     def names(self, selector=None):
+        config = get_config()
+        plugins = config.setting['enabled_plugins'] if 'enabled_plugins' in config.setting else []
+
         for item in self._items:
+            if item.plugin_id and item.plugin_id not in plugins:
+                continue
             if selector is None or selector(item):
                 yield str(item)
