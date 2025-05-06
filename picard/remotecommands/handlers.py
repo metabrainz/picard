@@ -106,21 +106,21 @@ class RemoteCommandHandlers:
         self.tagger = QtCore.QCoreApplication.instance()
         self.remotecommands_class = remotecommands_class
 
-    def handle_command_clear_logs(self, argstring):
+    def clear_logs(self, argstring):
         self.tagger.window.log_dialog.clear()
         self.tagger.window.history_dialog.clear()
 
-    def handle_command_cluster(self, argstring):
+    def cluster(self, argstring):
         self.tagger.cluster(self.tagger.unclustered_files.files)
 
-    def handle_command_fingerprint(self, argstring):
+    def fingerprint(self, argstring):
         for album_name in self.tagger.albums:
             self.tagger.analyze(self.tagger.albums[album_name].iterfiles())
 
-    def handle_command_from_file(self, argstring):
+    def from_file(self, argstring):
         self.remotecommands_class.get_commands_from_file(argstring)
 
-    def handle_command_load(self, argstring):
+    def load(self, argstring):
         parsed_items = ParseItemsToLoad([argstring])
         log.debug(str(parsed_items))
 
@@ -132,7 +132,7 @@ class RemoteCommandHandlers:
             for item in parsed_items.mbids | parsed_items.urls:
                 file_lookup.mbid_lookup(item)
 
-    def handle_command_lookup(self, argstring):
+    def lookup(self, argstring):
         if not argstring:
             arg = 'ALL'
         else:
@@ -147,7 +147,7 @@ class RemoteCommandHandlers:
         if arg in {'ALL', 'UNCLUSTERED'}:
             self.tagger.autotag(self.tagger.unclustered_files.files)
 
-    def handle_command_lookup_cd(self, argstring):
+    def lookup_cd(self, argstring):
         if not _discid:
             log.error(DISCID_NOT_LOADED_MESSAGE)
             return
@@ -166,7 +166,7 @@ class RemoteCommandHandlers:
 
         self.tagger.run_lookup_cd(device)
 
-    def handle_command_pause(self, argstring):
+    def pause(self, argstring):
         arg = argstring.strip()
         if arg:
             try:
@@ -180,7 +180,7 @@ class RemoteCommandHandlers:
         else:
             log.error("No command pause time specified.")
 
-    def handle_command_quit(self, argstring):
+    def quit(self, argstring):
         if argstring.upper() == 'FORCE' or self.tagger.window.show_quit_confirmation():
             self.tagger.quit()
         else:
@@ -188,17 +188,17 @@ class RemoteCommandHandlers:
             self.remotecommands_class.set_quit(False)  # Allow queueing more commands.
             return
 
-    def handle_command_remove(self, argstring):
+    def remove(self, argstring):
         for file in self.tagger.iter_all_files():
             if file.filename == argstring:
                 self.tagger.remove([file])
                 return
 
-    def handle_command_remove_all(self, argstring):
+    def remove_all(self, argstring):
         for file in self.tagger.iter_all_files():
             self.tagger.remove([file])
 
-    def handle_command_remove_empty(self, argstring):
+    def remove_empty(self, argstring):
         _albums = [a for a in self.tagger.albums.values()]
         for album in _albums:
             if not any(album.iterfiles()):
@@ -208,34 +208,34 @@ class RemoteCommandHandlers:
             if not any(cluster.iterfiles()):
                 self.tagger.remove_cluster(cluster)
 
-    def handle_command_remove_saved(self, argstring):
+    def remove_saved(self, argstring):
         for track in self.tagger.iter_album_files():
             if track.state == File.NORMAL:
                 self.tagger.remove([track])
 
-    def handle_command_remove_unclustered(self, argstring):
+    def remove_unclustered(self, argstring):
         self.tagger.remove(self.tagger.unclustered_files.files)
 
-    def handle_command_save_matched(self, argstring):
+    def save_matched(self, argstring):
         for album in self.tagger.albums.values():
             for track in album.iter_correctly_matched_tracks():
                 track.files[0].save()
 
-    def handle_command_save_modified(self, argstring):
+    def save_modified(self, argstring):
         for track in self.tagger.iter_album_files():
             if track.state == File.CHANGED:
                 track.save()
 
-    def handle_command_scan(self, argstring):
+    def scan(self, argstring):
         self.tagger.analyze(self.tagger.unclustered_files.files)
 
-    def handle_command_show(self, argstring):
+    def show(self, argstring):
         self.tagger.bring_tagger_front()
 
-    def handle_command_submit_fingerprints(self, argstring):
+    def submit_fingerprints(self, argstring):
         self.tagger.acoustidmanager.submit()
 
-    def handle_command_write_logs(self, argstring):
+    def write_logs(self, argstring):
         try:
             with open(argstring, 'w', encoding='utf-8') as f:
                 for x in self.tagger.window.log_dialog.log_tail.contents():
