@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:55+0200\n"
-"PO-Revision-Date: 2025-05-04 12:20+0000\n"
+"PO-Revision-Date: 2025-05-06 18:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -765,7 +765,7 @@ msgstr "Script de nom dels fitxers seleccionat"
 #: picard/options.py:449
 #, python-format
 msgid "No title for setting '%s'"
-msgstr ""
+msgstr "El paràmetre «%s» no té títol"
 
 #: picard/pluginmanager.py:277
 #, python-format
@@ -1281,6 +1281,31 @@ msgid ""
 "\n"
 "_group parameter since Picard 3.0_"
 msgstr ""
+"`$rsearch(text,patró[,grup])`\n"
+"\n"
+"Cerca amb [expressions regulars](https://docs.python.org/3/library/re.html"
+"#regular-expression-syntax).\n"
+"\n"
+"Si no es proporciona el paràmetre opcional `grup` o està buit, es retorna\n"
+"el primer grup de captura que coincideix amb alguna cosa (fins i tot la "
+"cadena buida)\n"
+"o tota la coincidència.\n"
+"\n"
+"Si `grup` és un enter, es retorna el grup de captura de la posició que "
+"coincideix amb aquest enter.\n"
+"En cas contrari, es retorna el grup de captura anomenat `grup` sense espais "
+"inicials ni finals.\n"
+"\n"
+"Exemples:\n"
+"\n"
+"    $rsearch(disc: 1,disc: \\(\\\\d+\\)) => \"1\"\n"
+"    $rsearch(disc: 2,\\(\\\\w+\\): \\(\\\\d+\\),1) => \"disc\"\n"
+"    $rsearch(disc: 3,\\(\\\\w+\\): \\(\\\\d+\\),2) => \"3\"\n"
+"    $rsearch(disc: 4,disc: \\(?P<disc>\\\\d+\\),disc) => \"4\"\n"
+"    $rsearch(disc: none,disc\\(: \\\\d+\\)?) => \"disc\"\n"
+"    $rsearch(disc: /5,disc: \\(\\\\d+\\)?/\\\\d+,1) => \"\"\n"
+"\n"
+"_Paràmetre `grup` a partir de Picard 3.0_"
 
 #: picard/script/functions.py:296
 msgid ""
@@ -2811,7 +2836,7 @@ msgstr "Paquet de scripts de Picard"
 
 #: picard/tags/tagvar.py:62
 msgid "Notes"
-msgstr ""
+msgstr "Notes"
 
 #: picard/tags/tagvar.py:63
 msgid "Option Settings"
@@ -2819,11 +2844,11 @@ msgstr "Paràmetres"
 
 #: picard/tags/tagvar.py:64
 msgid "Links"
-msgstr ""
+msgstr "Enllaços"
 
 #: picard/tags/tagvar.py:65
 msgid "See Also"
-msgstr ""
+msgstr "Vegeu també"
 
 #: picard/tags/tagvar.py:68
 msgid "No description available."
@@ -2831,11 +2856,11 @@ msgstr "No hi ha cap descripció disponible."
 
 #: picard/tags/tagvar.py:71
 msgid "multi-value variable"
-msgstr ""
+msgstr "variable multivalor"
 
 #: picard/tags/tagvar.py:72
 msgid "preserved read-only"
-msgstr ""
+msgstr "preservat, només de lectura"
 
 #: picard/tags/tagvar.py:73
 msgid "not for use in scripts"
@@ -2843,11 +2868,11 @@ msgstr "no es pot fer servir en scripts"
 
 #: picard/tags/tagvar.py:74
 msgid "calculated"
-msgstr ""
+msgstr "calculat"
 
 #: picard/tags/tagvar.py:75
 msgid "info from audio file"
-msgstr ""
+msgstr "informació del fitxer d'àudio"
 
 #: picard/tags/tagvar.py:76
 msgid "not provided from MusicBrainz data"
@@ -2855,22 +2880,22 @@ msgstr "no proporcionat per les dades de MusicBrainz"
 
 #: picard/tags/tagvar.py:77
 msgid "not populated by stock Picard"
-msgstr ""
+msgstr "no emplenat per Picard de fàbrica"
 
 #: picard/tags/tagvar.py:253
 #, python-brace-format
 msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 
 #: picard/tags/tagvar.py:254
 #, python-brace-format
 msgid "<p><em>%{name}%</em></p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em></p>{content}"
 
 #: picard/tags/tagvar.py:290
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
-msgstr ""
+msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/ui/aboutdialog.py:75
 msgid "translator-credits"
