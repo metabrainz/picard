@@ -133,17 +133,19 @@ class RemoteCommandHandlers:
                 file_lookup.mbid_lookup(item)
 
     def handle_command_lookup(self, argstring):
-        if argstring:
-            argstring = argstring.upper()
-        if not argstring or argstring == 'ALL':
-            self.tagger.autotag(self.tagger.clusters)
-            self.tagger.autotag(self.tagger.unclustered_files.files)
-        elif argstring == 'CLUSTERED':
-            self.tagger.autotag(self.tagger.clusters)
-        elif argstring == 'UNCLUSTERED':
-            self.tagger.autotag(self.tagger.unclustered_files.files)
+        if not argstring:
+            arg = 'ALL'
         else:
-            log.error("Invalid LOOKUP command argument: '%s'", argstring)
+            arg = argstring.upper()
+
+        if arg not in {'ALL', 'CLUSTERED', 'UNCLUSTERED'}:
+            log.error("Invalid LOOKUP command argument: '%s'", arg)
+
+        if arg in {'ALL', 'CLUSTERED'}:
+            self.tagger.autotag(self.tagger.clusters)
+
+        if arg in {'ALL', 'UNCLUSTERED'}:
+            self.tagger.autotag(self.tagger.unclustered_files.files)
 
     def handle_command_lookup_cd(self, argstring):
         if not _discid:
