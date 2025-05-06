@@ -54,12 +54,8 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.const.sys import IS_WIN
-from picard.disc import Disc
 from picard.file import File
-from picard.util import (
-    encode_filename,
-    thread,
-)
+from picard.util import thread
 from picard.util.cdrom import (
     DISCID_NOT_LOADED_MESSAGE,
     discid as _discid,
@@ -153,9 +149,8 @@ class RemoteCommandHandlers:
         if not _discid:
             log.error(DISCID_NOT_LOADED_MESSAGE)
             return
-        disc = Disc()
-        devices = get_cdrom_drives()
 
+        devices = get_cdrom_drives()
         if not argstring:
             if devices:
                 device = devices[0]
@@ -164,16 +159,10 @@ class RemoteCommandHandlers:
         elif argstring in devices:
             device = argstring
         else:
-            thread.run_task(
-                partial(self.tagger._parse_disc_ripping_log, disc, argstring),
-                partial(self.tagger._lookup_disc, disc),
-                traceback=self.tagger._debug)
+            self.tagger.run_lookup_discid_from_logfile(argstring)
             return
 
-        thread.run_task(
-            partial(disc.read, encode_filename(device)),
-            partial(self.tagger._lookup_disc, disc),
-            traceback=self.tagger._debug)
+        self.tagger.run_lookup_cd(device)
 
     def handle_command_pause(self, argstring):
         arg = argstring.strip()

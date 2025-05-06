@@ -1011,6 +1011,9 @@ class Tagger(QtWidgets.QApplication):
             # rely on python-discid auto detection
             device = None
 
+        self.run_lookup_cd(device)
+
+    def run_lookup_cd(self, device):
         disc = Disc()
         self.set_wait_cursor()
         thread.run_task(
@@ -1027,13 +1030,17 @@ class Tagger(QtWidgets.QApplication):
             _("All files") + " (*)",
         ])
         if file_chooser.exec():
-            files = file_chooser.selectedFiles()
-            disc = Disc()
-            self.set_wait_cursor()
-            thread.run_task(
-                partial(self._parse_disc_ripping_log, disc, files[0]),
-                partial(self._lookup_disc, disc),
-                traceback=self._debug)
+            filepath = file_chooser.selectedFiles()[0]
+            self.run_lookup_discid_from_logfile(filepath)
+
+    def run_lookup_discid_from_logfile(self, filepath):
+        disc = Disc()
+        self.set_wait_cursor()
+        thread.run_task(
+            partial(self._parse_disc_ripping_log, disc, filepath),
+            partial(self._lookup_disc, disc),
+            traceback=self._debug,
+        )
 
     def _parse_disc_ripping_log(self, disc, path):
         log_readers = (
