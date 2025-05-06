@@ -74,7 +74,7 @@ class ParseItemsToLoad:
 
         for item in items:
             parsed = urlparse(item)
-            log.debug(f"Parsed: {repr(parsed)}")
+            log.debug("Parsed: %r", parsed)
             if not parsed.scheme:
                 self.files.add(item)
             if parsed.scheme == 'file':
@@ -176,7 +176,7 @@ class RemoteCommandHandlers:
                 log.debug("Pausing command execution by %d seconds.", delay)
                 thread.run_task(partial(time.sleep, delay))
             except ValueError:
-                log.error(f"Invalid command pause time specified: {repr(argstring)}")
+                log.error("Invalid command pause time specified: %r", argstring)
         else:
             log.error("No command pause time specified.")
 
