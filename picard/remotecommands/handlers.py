@@ -191,7 +191,7 @@ class RemoteCommandHandlers:
     def remove(self, argstring):
         for file in self.tagger.iter_all_files():
             if file.filename == argstring:
-                self.tagger.remove([file])
+                self.tagger.remove_files([file])
                 return
 
     def remove_all(self, argstring):
