@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-03 13:13+0200\n"
+"POT-Creation-Date: 2025-05-05 18:55+0200\n"
 "PO-Revision-Date: 2025-05-05 17:01+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
@@ -837,7 +837,6 @@ msgstr "Embalaxe"
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:69
 #: picard/ui/itemviews/columns.py:87 picard/ui/searchdialog/album.py:154
-#: picard/util/tags.py:516
 msgid "Barcode"
 msgstr "Código de barras"
 
@@ -853,24 +852,24 @@ msgstr "[sen código de barras]"
 msgid "[no release info]"
 msgstr "[sen información de lanzamento]"
 
-#: picard/tagger.py:662 picard/ui/forms/ui_options_general.py:210
+#: picard/tagger.py:472 picard/ui/forms/ui_options_general.py:210
 msgid "MusicBrainz Account"
 msgstr "Conta de MusicBrainz"
 
-#: picard/tagger.py:663
+#: picard/tagger.py:473
 msgid "Authorization code:"
 msgstr "Código de autorización:"
 
-#: picard/tagger.py:1166
+#: picard/tagger.py:976
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Eliminando álbum %(id)s: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1184
+#: picard/tagger.py:994
 msgid "CD Lookup Error"
 msgstr "Produciuse un erro na consulta do CD"
 
-#: picard/tagger.py:1185
+#: picard/tagger.py:995
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -881,25 +880,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1214
+#: picard/tagger.py:1024
 msgid "All supported log files"
 msgstr "Todos os ficheiros de rexistro soportados"
 
-#: picard/tagger.py:1215
+#: picard/tagger.py:1025
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "Ficheiros de rexistro EAC / XLD / Whipper / fre:ac"
 
-#: picard/tagger.py:1216
+#: picard/tagger.py:1026
 msgid "dBpoweramp log files"
 msgstr "Ficheiros de rexistro de dBpoweramp"
 
-#: picard/script/serializer.py:374 picard/tagger.py:1217
+#: picard/script/serializer.py:374 picard/tagger.py:1027
 #: picard/ui/coverartbox/__init__.py:273 picard/ui/mainwindow/__init__.py:874
 #: picard/ui/options/maintenance.py:215 picard/ui/options/scripting.py:134
 msgid "All files"
 msgstr "Todos os ficheiros"
 
-#: picard/tagger.py:1243
+#: picard/tagger.py:1053
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Fallo ao analizar o rexistro de extracción \"%s\""
@@ -1250,19 +1249,34 @@ msgstr ""
 
 #: picard/script/functions.py:249
 msgid ""
-"`$rsearch(text,pattern)`\n"
+"`$rsearch(text,pattern[,group])`\n"
 "\n"
 "[Regular expression](https://docs.python.org/3/library/re.html#regular-"
 "expression-syntax) search.\n"
-"    This function will return the first matching group."
-msgstr ""
-"`$rsearch(texto,patrón)`\n"
 "\n"
-"[Expresión regular](https://docs.python.org/3/library/re.html#regular-"
-"expression-syntax) buscar.\n"
-"    Esta función devolverá o primeiro grupo coincidente."
+"If the optional `group` parameter is not provided or is empty, return the "
+"first\n"
+"capture group which matched something (including the empty string) or the\n"
+"entire match.\n"
+"\n"
+"If `group` is an integer, return the capture group in the position matching "
+"this integer.\n"
+"Otherwise, return the capture group named `group`, sans surrounding "
+"whitespace.\n"
+"\n"
+"Examples:\n"
+"\n"
+"    $rsearch(disc: 1,disc: \\(\\\\d+\\)) => \"1\"\n"
+"    $rsearch(disc: 2,\\(\\\\w+\\): \\(\\\\d+\\),1) => \"disc\"\n"
+"    $rsearch(disc: 3,\\(\\\\w+\\): \\(\\\\d+\\),2) => \"3\"\n"
+"    $rsearch(disc: 4,disc: \\(?P<disc>\\\\d+\\),disc) => \"4\"\n"
+"    $rsearch(disc: none,disc\\(: \\\\d+\\)?) => \"disc\"\n"
+"    $rsearch(disc: /5,disc: \\(\\\\d+\\)?/\\\\d+,1) => \"\"\n"
+"\n"
+"_group parameter since Picard 3.0_"
+msgstr ""
 
-#: picard/script/functions.py:268
+#: picard/script/functions.py:296
 msgid ""
 "`$num(number,length)`\n"
 "\n"
@@ -1272,7 +1286,7 @@ msgstr ""
 "\n"
 "Devolve `número` con formato de díxitos de `lonxitude` (máximo 20)."
 
-#: picard/script/functions.py:285
+#: picard/script/functions.py:313
 msgid ""
 "`$unset(name)`\n"
 "\n"
@@ -1289,7 +1303,7 @@ msgstr ""
 "Por exemplo, `$unset(performer:*)` eliminaría todas as etiquetas de "
 "intérprete."
 
-#: picard/script/functions.py:305
+#: picard/script/functions.py:333
 msgid ""
 "`$delete(name)`\n"
 "\n"
@@ -1312,7 +1326,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.1_"
 
-#: picard/script/functions.py:320
+#: picard/script/functions.py:348
 #, python-format
 msgid ""
 "`$set(name,value)`\n"
@@ -1337,7 +1351,7 @@ msgstr ""
 "    cun subliñado. `%something%` creará unha etiqueta \"algo\";\n"
 "    `%_something%` non o fará."
 
-#: picard/script/functions.py:338
+#: picard/script/functions.py:366
 #, python-format
 msgid ""
 "`$setmulti(name,value,separator=\"; \")`\n"
@@ -1372,7 +1386,7 @@ msgstr ""
 "\n"
 "_Desde Picard 1.0_"
 
-#: picard/script/functions.py:356
+#: picard/script/functions.py:384
 msgid ""
 "`$get(name)`\n"
 "\n"
@@ -1382,7 +1396,7 @@ msgstr ""
 "\n"
 "Devolve a variable `nome` (equivalente a `%name%`)."
 
-#: picard/script/functions.py:366
+#: picard/script/functions.py:394
 #, python-format
 msgid ""
 "`$copy(new,old)`\n"
@@ -1401,7 +1415,7 @@ msgstr ""
 "\n"
 "_Desde Picard 0.9_"
 
-#: picard/script/functions.py:382
+#: picard/script/functions.py:410
 msgid ""
 "`$copymerge(new,old[,keep_duplicates])`\n"
 "\n"
@@ -1428,7 +1442,7 @@ msgstr ""
 "\n"
 "_Desde Picard 1.0_"
 
-#: picard/script/functions.py:402
+#: picard/script/functions.py:430
 msgid ""
 "`$trim(text[,char])`\n"
 "\n"
@@ -1440,7 +1454,7 @@ msgstr ""
 "Recorta todos os espazos en branco iniciais e finais de `texto`.\n"
 "    O segundo parámetro opcional `carácter` especifica o carácter a recortar."
 
-#: picard/script/functions.py:415
+#: picard/script/functions.py:443
 msgid ""
 "`$add(x,y,…)`\n"
 "\n"
@@ -1460,7 +1474,7 @@ msgstr ""
 "\n"
 "    $add(x,y,z) = ((x + y) + z)\n"
 
-#: picard/script/functions.py:433
+#: picard/script/functions.py:461
 msgid ""
 "`$sub(x,y,…)`\n"
 "\n"
@@ -1480,7 +1494,7 @@ msgstr ""
 "\n"
 "    $sub(x,y,z) = ((x - y) - z)\n"
 
-#: picard/script/functions.py:451
+#: picard/script/functions.py:479
 msgid ""
 "`$div(x,y,…)`\n"
 "\n"
@@ -1500,7 +1514,7 @@ msgstr ""
 "\n"
 "    $div(x,y,z) = ((x / y) / z)\n"
 
-#: picard/script/functions.py:471
+#: picard/script/functions.py:499
 msgid ""
 "`$mod(x,y,…)`\n"
 "\n"
@@ -1520,7 +1534,7 @@ msgstr ""
 "\n"
 "    $mod(x,y,z) = ((x % y) % z)\n"
 
-#: picard/script/functions.py:489
+#: picard/script/functions.py:517
 msgid ""
 "`$mul(x,y,…)`\n"
 "\n"
@@ -1540,7 +1554,7 @@ msgstr ""
 "\n"
 "    $mul(x,y,z) = ((x * y) * z)\n"
 
-#: picard/script/functions.py:507
+#: picard/script/functions.py:535
 msgid ""
 "`$or(x,y,…)`\n"
 "\n"
@@ -1554,7 +1568,7 @@ msgstr ""
 "    Pódese usar cun número arbitrario de argumentos.\n"
 "    O resultado é verdadeiro se ALGÚN dos argumentos non está baleiro."
 
-#: picard/script/functions.py:521
+#: picard/script/functions.py:549
 msgid ""
 "`$and(x,y,…)`\n"
 "\n"
@@ -1568,7 +1582,7 @@ msgstr ""
 "    Pódese usar cun número arbitrario de argumentos.\n"
 "    O resultado é verdadeiro se TODOS os argumentos non están baleiros."
 
-#: picard/script/functions.py:535
+#: picard/script/functions.py:563
 msgid ""
 "`$not(x)`\n"
 "\n"
@@ -1578,7 +1592,7 @@ msgstr ""
 "\n"
 "Devolve verdadeiro se `x` está baleiro."
 
-#: picard/script/functions.py:547
+#: picard/script/functions.py:575
 msgid ""
 "`$eq(x,y)`\n"
 "\n"
@@ -1588,7 +1602,7 @@ msgstr ""
 "\n"
 "Devolve verdadeiro se `x` é igual a `y`."
 
-#: picard/script/functions.py:559
+#: picard/script/functions.py:587
 msgid ""
 "`$ne(x,y)`\n"
 "\n"
@@ -1598,7 +1612,7 @@ msgstr ""
 "\n"
 "Devolve verdadeiro se `x` non é igual a `y`."
 
-#: picard/script/functions.py:604
+#: picard/script/functions.py:632
 msgid ""
 "`$lt(x,y[,type])`\n"
 "\n"
@@ -1632,7 +1646,7 @@ msgstr ""
 "preferencia:\n"
 "\"int\", \"float\" e \"text\"."
 
-#: picard/script/functions.py:619
+#: picard/script/functions.py:647
 msgid ""
 "`$lte(x,y[,type])`\n"
 "\n"
@@ -1666,7 +1680,7 @@ msgstr ""
 "preferencia:\n"
 "\"int\", \"float\" e \"text\"."
 
-#: picard/script/functions.py:634
+#: picard/script/functions.py:662
 msgid ""
 "`$gt(x,y[,type])`\n"
 "\n"
@@ -1700,7 +1714,7 @@ msgstr ""
 "preferencia:\n"
 "\"int\", \"float\" e \"text\"."
 
-#: picard/script/functions.py:649
+#: picard/script/functions.py:677
 msgid ""
 "`$gte(x,y[,type])`\n"
 "\n"
@@ -1734,7 +1748,7 @@ msgstr ""
 "preferencia:\n"
 "\"int\", \"float\" e \"text\"."
 
-#: picard/script/functions.py:664
+#: picard/script/functions.py:692
 msgid ""
 "`$len(text)`\n"
 "\n"
@@ -1744,7 +1758,7 @@ msgstr ""
 "\n"
 "Devolve o número de caracteres en \"texto\"."
 
-#: picard/script/functions.py:673
+#: picard/script/functions.py:701
 msgid ""
 "`$lenmulti(name,separator=\"; \")`\n"
 "\n"
@@ -1770,7 +1784,7 @@ msgstr ""
 "\n"
 "    $lenmulti(Un; Dous; Tres) = 3\n"
 
-#: picard/script/functions.py:690
+#: picard/script/functions.py:718
 msgid ""
 "`$performer(pattern=\"\",join=\", \")`\n"
 "\n"
@@ -1797,7 +1811,7 @@ msgstr ""
 "\n"
 "_Desde Picard 0.10_"
 
-#: picard/script/functions.py:714
+#: picard/script/functions.py:742
 msgid ""
 "`$matchedtracks()`\n"
 "\n"
@@ -1813,7 +1827,7 @@ msgstr ""
 "\n"
 "_Desde Picard 0.12_"
 
-#: picard/script/functions.py:730
+#: picard/script/functions.py:758
 msgid ""
 "`$is_complete()`\n"
 "\n"
@@ -1826,7 +1840,7 @@ msgstr ""
 "ficheiro.\n"
 "**Só funciona nos scripts de nomeamento de ficheiros.**"
 
-#: picard/script/functions.py:745
+#: picard/script/functions.py:773
 msgid ""
 "`$firstalphachar(text,nonalpha=\"#\")`\n"
 "\n"
@@ -1846,7 +1860,7 @@ msgstr ""
 "\n"
 "_Desde Picard 0.12_"
 
-#: picard/script/functions.py:764
+#: picard/script/functions.py:792
 msgid ""
 "`$initials(text)`\n"
 "\n"
@@ -1862,7 +1876,7 @@ msgstr ""
 "\n"
 "_Desde Picard 0.12_"
 
-#: picard/script/functions.py:775
+#: picard/script/functions.py:803
 msgid ""
 "`$firstwords(text,length)`\n"
 "\n"
@@ -1878,7 +1892,7 @@ msgstr ""
 "\n"
 "_Desde Picard 0.12_"
 
-#: picard/script/functions.py:798
+#: picard/script/functions.py:826
 msgid ""
 "`$startswith(text,prefix)`\n"
 "\n"
@@ -1892,7 +1906,7 @@ msgstr ""
 "\n"
 "_Desde Picard 1.4_"
 
-#: picard/script/functions.py:811
+#: picard/script/functions.py:839
 msgid ""
 "`$endswith(text,suffix)`\n"
 "\n"
@@ -1906,7 +1920,7 @@ msgstr ""
 "\n"
 "_Desde Picard 1.4_"
 
-#: picard/script/functions.py:824
+#: picard/script/functions.py:852
 msgid ""
 "`$truncate(text,length)`\n"
 "\n"
@@ -1920,7 +1934,7 @@ msgstr ""
 "\n"
 "_Desde Picard 0.12_"
 
-#: picard/script/functions.py:839
+#: picard/script/functions.py:867
 msgid ""
 "`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
@@ -1950,7 +1964,7 @@ msgstr ""
 "\n"
 "_Desde Picard 1.3, anteriormente como complemento desde Picard 0.13_"
 
-#: picard/script/functions.py:861
+#: picard/script/functions.py:889
 msgid ""
 "`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
@@ -1978,7 +1992,7 @@ msgstr ""
 "\n"
 "_Desde Picard 1.3_"
 
-#: picard/script/functions.py:899
+#: picard/script/functions.py:927
 msgid ""
 "`$eq_any(x,a1,a2,…)`\n"
 "\n"
@@ -1992,7 +2006,7 @@ msgstr ""
 "Funcionalmente equivalente a `$or($eq(x,a1),$eq(x,a2),...)`.\n"
 "Funcionalmente equivalente ao complemento eq2."
 
-#: picard/script/functions.py:911
+#: picard/script/functions.py:939
 msgid ""
 "`$ne_all(x,a1,a2,…)`\n"
 "\n"
@@ -2006,7 +2020,7 @@ msgstr ""
 "Funcionalmente equivalente a `$and($ne(x,a1),$ne(x,a2),...)`.\n"
 "Funcionalmente equivalente ao complemento ne2."
 
-#: picard/script/functions.py:923
+#: picard/script/functions.py:951
 msgid ""
 "`$eq_all(x,a1,a2,…)`\n"
 "\n"
@@ -2028,7 +2042,7 @@ msgstr ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(enxeñeiro, Meat "
 "Loaf))\n"
 
-#: picard/script/functions.py:941
+#: picard/script/functions.py:969
 #, python-format
 msgid ""
 "`$ne_any(x,a1,a2,…)`\n"
@@ -2051,7 +2065,7 @@ msgstr ""
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(letrist,"
 "%composer%))\n"
 
-#: picard/script/functions.py:956
+#: picard/script/functions.py:984
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -2072,7 +2086,7 @@ msgstr ""
 "    $set(álbum,$título(%album%))\n"
 "_Desde Picard 2.1_"
 
-#: picard/script/functions.py:970
+#: picard/script/functions.py:998
 msgid ""
 "`$is_audio()`\n"
 "\n"
@@ -2086,7 +2100,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.2_"
 
-#: picard/script/functions.py:984
+#: picard/script/functions.py:1012
 msgid ""
 "`$is_video()`\n"
 "\n"
@@ -2100,7 +2114,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.2_"
 
-#: picard/script/functions.py:998
+#: picard/script/functions.py:1026
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -2124,7 +2138,7 @@ msgstr ""
 "Teña en conta que antes de Picard 2.3.2 `$find` devolvía \"-1\" se "
 "`subcadea`non se atopaba."
 
-#: picard/script/functions.py:1015
+#: picard/script/functions.py:1043
 msgid ""
 "`$reverse(text)`\n"
 "\n"
@@ -2134,7 +2148,7 @@ msgstr ""
 "\n"
 "Devolve `texto` en orde inversa."
 
-#: picard/script/functions.py:1024
+#: picard/script/functions.py:1052
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -2155,7 +2169,7 @@ msgstr ""
 "defecto\n"
 "    o inicio e o final da cadea respectivamente."
 
-#: picard/script/functions.py:1045
+#: picard/script/functions.py:1073
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -2173,7 +2187,7 @@ msgstr ""
 "    separador (ou \"; \" se non se pasa) para forzar o valor a un propio\n"
 "    etiqueta de varios valores."
 
-#: picard/script/functions.py:1064
+#: picard/script/functions.py:1092
 msgid ""
 "`$foreach(name,code,separator=\"; \")`\n"
 "\n"
@@ -2202,7 +2216,7 @@ msgstr ""
 "    usando o separador (ou \"; \" se non se pasa) para forzar o valor a a\n"
 "    etiqueta multivalor adecuada."
 
-#: picard/script/functions.py:1086
+#: picard/script/functions.py:1114
 msgid ""
 "`$while(condition,code)`\n"
 "\n"
@@ -2226,7 +2240,7 @@ msgstr ""
 "    guión. A función limita o número máximo de iteracións a 1000 como a\n"
 "    salvagarda contra crear accidentalmente un bucle infinito."
 
-#: picard/script/functions.py:1107
+#: picard/script/functions.py:1135
 msgid ""
 "`$map(name,code,separator=\"; \")`\n"
 "\n"
@@ -2269,7 +2283,7 @@ msgstr ""
 "\n"
 "Resultado: 1=PRIMEIRO:A; 2=SEGUNDA:B\n"
 
-#: picard/script/functions.py:1137
+#: picard/script/functions.py:1165
 msgid ""
 "`$join(name,text,separator=\"; \")`\n"
 "\n"
@@ -2281,7 +2295,7 @@ msgstr ""
 "Une todos os elementos en `nome`, colocando `texto` entre cada elemento e "
 "devolve o resultado como unha cadea."
 
-#: picard/script/functions.py:1148
+#: picard/script/functions.py:1176
 msgid ""
 "`$slice(name,start,end,separator=\"; \")`\n"
 "\n"
@@ -2332,7 +2346,7 @@ msgstr ""
 "    $setmulti(supporting_artists,$slice(%artists%,1))\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 
-#: picard/script/functions.py:1181
+#: picard/script/functions.py:1209
 #, python-format
 msgid ""
 "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
@@ -2368,7 +2382,7 @@ msgstr ""
 "elementos (p. ex.\n"
 "    `% 3Y`); e colgando '%' ao final da cadea de formato."
 
-#: picard/script/functions.py:1210
+#: picard/script/functions.py:1238
 msgid ""
 "`$sortmulti(name,separator=\"; \")`\n"
 "\n"
@@ -2392,7 +2406,7 @@ msgstr ""
 "\n"
 "Resultado: A; B; C\n"
 
-#: picard/script/functions.py:1227
+#: picard/script/functions.py:1255
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -2421,7 +2435,7 @@ msgstr ""
 "\n"
 "Resultado: C; B; A\n"
 
-#: picard/script/functions.py:1246
+#: picard/script/functions.py:1274
 #, python-format
 msgid ""
 "`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
@@ -2463,7 +2477,7 @@ msgstr ""
 "\n"
 "Resultado: A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1274
+#: picard/script/functions.py:1302
 msgid ""
 "`$countryname(country_code,translate=\"\")`\n"
 "\n"
@@ -2479,7 +2493,7 @@ msgstr ""
 "Se a tradución non está en branco, a saída traducirase ao idioma da "
 "configuración local actual.\n"
 
-#: picard/script/functions.py:1313
+#: picard/script/functions.py:1341
 msgid ""
 "`$year(date,date_order=\"ymd\")`\n"
 "\n"
@@ -2499,7 +2513,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.7_"
 
-#: picard/script/functions.py:1325
+#: picard/script/functions.py:1353
 msgid ""
 "`$month(date,date_order=\"ymd\")`\n"
 "\n"
@@ -2520,7 +2534,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.7_"
 
-#: picard/script/functions.py:1337
+#: picard/script/functions.py:1365
 msgid ""
 "`$day(date,date_order=\"ymd\")`\n"
 "\n"
@@ -2541,7 +2555,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.7_"
 
-#: picard/script/functions.py:1349
+#: picard/script/functions.py:1377
 #, python-format
 msgid ""
 "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
@@ -2592,7 +2606,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.7_"
 
-#: picard/script/functions.py:1382
+#: picard/script/functions.py:1410
 msgid ""
 "`$is_multi(name)`\n"
 "\n"
@@ -2620,7 +2634,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.7_"
 
-#: picard/script/functions.py:1400
+#: picard/script/functions.py:1428
 msgid ""
 "`$cleanmulti(name)`\n"
 "\n"
@@ -2648,7 +2662,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.8_"
 
-#: picard/script/functions.py:1470
+#: picard/script/functions.py:1498
 msgid ""
 "`$min(type,x,…)`\n"
 "\n"
@@ -2692,7 +2706,7 @@ msgstr ""
 "\n"
 "_Desde Picard 2.9_"
 
-#: picard/script/functions.py:1491
+#: picard/script/functions.py:1519
 msgid ""
 "`$max(type,x,…)`\n"
 "\n"
@@ -2805,6 +2819,69 @@ msgstr "Arquivos de script Picard"
 #: picard/script/serializer.py:376
 msgid "Picard script package"
 msgstr "Paquete de script Picard"
+
+#: picard/tags/tagvar.py:62
+msgid "Notes"
+msgstr "Notas"
+
+#: picard/tags/tagvar.py:63
+msgid "Option Settings"
+msgstr "Configuración de opcións"
+
+#: picard/tags/tagvar.py:64
+msgid "Links"
+msgstr "Ligazóns"
+
+#: picard/tags/tagvar.py:65
+msgid "See Also"
+msgstr "Véxase tamén"
+
+#: picard/tags/tagvar.py:68
+msgid "No description available."
+msgstr "Non hai descrición dispoñible."
+
+#: picard/tags/tagvar.py:71
+msgid "multi-value variable"
+msgstr "variable con múltiples valores"
+
+#: picard/tags/tagvar.py:72
+msgid "preserved read-only"
+msgstr "preservado só de lectura"
+
+#: picard/tags/tagvar.py:73
+msgid "not for use in scripts"
+msgstr "non para uso en scripts"
+
+#: picard/tags/tagvar.py:74
+msgid "calculated"
+msgstr "calculado"
+
+#: picard/tags/tagvar.py:75
+msgid "info from audio file"
+msgstr "información do ficheiro de audio"
+
+#: picard/tags/tagvar.py:76
+msgid "not provided from MusicBrainz data"
+msgstr "non fornecido polos datos de MusicBrainz"
+
+#: picard/tags/tagvar.py:77
+msgid "not populated by stock Picard"
+msgstr "non cuberto polo Picard predeterminado"
+
+#: picard/tags/tagvar.py:253
+#, python-brace-format
+msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
+msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
+
+#: picard/tags/tagvar.py:254
+#, python-brace-format
+msgid "<p><em>%{name}%</em></p>{content}"
+msgstr "<p><em>%{name}%</em></p>{content}"
+
+#: picard/tags/tagvar.py:290
+#, python-brace-format
+msgid "<p><strong>{title}:</strong> {values}.</p>"
+msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/ui/aboutdialog.py:75
 msgid "translator-credits"
@@ -2929,19 +3006,18 @@ msgid "Restore &Defaults"
 msgstr "Restaurar valores pre&determinados"
 
 #: picard/ui/cdlookup.py:63 picard/ui/itemviews/columns.py:82
-#: picard/ui/mainwindow/__init__.py:766 picard/util/tags.py:448
+#: picard/ui/mainwindow/__init__.py:766
 msgid "Album"
 msgstr "Álbum"
 
 #: picard/ui/cdlookup.py:64 picard/ui/itemviews/columns.py:79
 #: picard/ui/mainwindow/__init__.py:767 picard/ui/searchdialog/album.py:147
-#: picard/ui/searchdialog/track.py:63 picard/util/tags.py:467
+#: picard/ui/searchdialog/track.py:63
 msgid "Artist"
 msgstr "Artista"
 
 #: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:92
 #: picard/ui/searchdialog/album.py:150 picard/ui/searchdialog/track.py:65
-#: picard/util/tags.py:623
 msgid "Date"
 msgstr "Data"
 
@@ -3311,7 +3387,6 @@ msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Erro de script en \"%(script)s\": %(message)s"
 
 #: picard/ui/tagsfromfilenames.py:131 picard/ui/tagsfromfilenames.py:142
-#: picard/util/tags.py:726
 msgid "File Name"
 msgstr "Nome do ficheiro"
 
@@ -4835,24 +4910,23 @@ msgstr "&Executar scripts"
 msgid "Fingerprint status"
 msgstr "Estado da impresión dixital"
 
-#: picard/ui/itemviews/columns.py:77 picard/util/tags.py:1440
+#: picard/ui/itemviews/columns.py:77
 msgid "Title"
 msgstr "Título"
 
 #: picard/ui/itemviews/columns.py:78 picard/ui/searchdialog/track.py:62
-#: picard/util/tags.py:810
 msgid "Length"
 msgstr "Duración"
 
-#: picard/ui/itemviews/columns.py:80 picard/util/tags.py:400
+#: picard/ui/itemviews/columns.py:80
 msgid "Album Artist"
 msgstr "Artista do álbum"
 
-#: picard/ui/itemviews/columns.py:81 picard/util/tags.py:586
+#: picard/ui/itemviews/columns.py:81
 msgid "Composer"
 msgstr "Compositor"
 
-#: picard/ui/itemviews/columns.py:83 picard/util/tags.py:670
+#: picard/ui/itemviews/columns.py:83
 msgid "Disc Subtitle"
 msgstr "Subtítulo de disco"
 
@@ -4868,7 +4942,7 @@ msgstr "Disco No."
 msgid "Catalog No."
 msgstr "Catálogo No."
 
-#: picard/ui/itemviews/columns.py:88 picard/util/tags.py:841
+#: picard/ui/itemviews/columns.py:88
 msgid "Media"
 msgstr "Medios"
 
@@ -4876,15 +4950,15 @@ msgstr "Medios"
 msgid "Size"
 msgstr "Tamaño"
 
-#: picard/ui/itemviews/columns.py:90 picard/util/tags.py:768
+#: picard/ui/itemviews/columns.py:90
 msgid "Genre"
 msgstr "Xénero"
 
-#: picard/ui/itemviews/columns.py:93 picard/util/tags.py:1009
+#: picard/ui/itemviews/columns.py:93
 msgid "Original Release Date"
 msgstr "DAta do lanzamento orixinal"
 
-#: picard/ui/itemviews/columns.py:94 picard/util/tags.py:1193
+#: picard/ui/itemviews/columns.py:94
 msgid "Release Date"
 msgstr "Data de lanzamento"
 
@@ -6223,7 +6297,7 @@ msgstr "Nova versión dispoñible"
 msgid "Authors"
 msgstr "Autores"
 
-#: picard/ui/options/plugins.py:623 picard/util/tags.py:817
+#: picard/ui/options/plugins.py:623
 msgid "License"
 msgstr "Licenza"
 
@@ -6744,7 +6818,7 @@ msgstr "Cargar en Picard"
 msgid "Album Search Results"
 msgstr "Resultados da busca de álbums"
 
-#: picard/ui/searchdialog/album.py:155 picard/util/tags.py:805
+#: picard/ui/searchdialog/album.py:155
 msgid "Language"
 msgstr "Linguaxe"
 
@@ -6979,1628 +7053,6 @@ msgstr ""
 "\n"
 "A túa versión: {picard_old_version}\n"
 
-#: picard/util/tags.py:77
-msgid "Notes"
-msgstr "Notas"
-
-#: picard/util/tags.py:78
-msgid "Option Settings"
-msgstr "Configuración de opcións"
-
-#: picard/util/tags.py:79
-msgid "Links"
-msgstr "Ligazóns"
-
-#: picard/util/tags.py:80
-msgid "See Also"
-msgstr "Véxase tamén"
-
-#: picard/util/tags.py:83
-msgid "No description available."
-msgstr "Non hai descrición dispoñible."
-
-#: picard/util/tags.py:86
-msgid "multi-value variable"
-msgstr "variable con múltiples valores"
-
-#: picard/util/tags.py:87
-msgid "preserved read-only"
-msgstr "preservado só de lectura"
-
-#: picard/util/tags.py:88
-msgid "not for use in scripts"
-msgstr "non para uso en scripts"
-
-#: picard/util/tags.py:89
-msgid "calculated"
-msgstr "calculado"
-
-#: picard/util/tags.py:90
-msgid "info from audio file"
-msgstr "información do ficheiro de audio"
-
-#: picard/util/tags.py:91
-msgid "not provided from MusicBrainz data"
-msgstr "non fornecido polos datos de MusicBrainz"
-
-#: picard/util/tags.py:92
-msgid "not populated by stock Picard"
-msgstr "non cuberto polo Picard predeterminado"
-
-#: picard/util/tags.py:233
-#, python-brace-format
-msgid "<p><strong>{title}:</strong> {values}.</p>"
-msgstr "<p><strong>{title}:</strong> {values}.</p>"
-
-#: picard/util/tags.py:261 picard/util/tags.py:344
-#, python-brace-format
-msgid "<p><em>%{name}%</em></p>{content}"
-msgstr "<p><em>%{name}%</em></p>{content}"
-
-#: picard/util/tags.py:343
-#, python-brace-format
-msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
-msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
-
-#: picard/util/tags.py:367
-msgid "Absolute Track No."
-msgstr "Número de pista absoluto"
-
-#: picard/util/tags.py:369
-msgid ""
-"The absolute number of this track disregarding the disc number. For example, "
-"this value would be 11 for the second track on disc 2 where disc 1 has 9 "
-"tracks."
-msgstr ""
-"O número absoluto desta pista sen ter en conta o número do disco. Por "
-"exemplo, este valor sería 11 para a segunda pista do disco 2, onde o disco 1 "
-"ten 9 pistas."
-
-#: picard/util/tags.py:377
-msgid "AcoustID Fingerprint"
-msgstr "Pegada dixital de AcoustID"
-
-#: picard/util/tags.py:379
-msgid ""
-"The Acoustic Fingerprint for the track. The fingerprint is based on the "
-"audio information found in a file, and is calculated using the Chromaprint "
-"software."
-msgstr ""
-"A pegada dixital acústica da pista. A pegada dixital baséase na información "
-"de audio que se atopa nun ficheiro e calcúlase mediante o soporte lóxico "
-"(software) Chromaprint."
-
-#: picard/util/tags.py:388
-msgid "AcoustID"
-msgstr "AcoustID"
-
-#: picard/util/tags.py:390
-msgid ""
-"The AcoustID associated with the track. The AcoustID is the identifier "
-"assigned to an audio file based on its acoustic fingerprint. Multiple "
-"fingerprints may be assigned the same AcoustID if the fingerprints are "
-"similar enough."
-msgstr ""
-"O AcoustID asociado á pista. O AcoustID é o identificador asignado a un "
-"ficheiro de son baseado na súa pegada dixital acústica. Pode asignarse o "
-"mesmo AcoustID a varias pegadas dixitais se as pegadas dixitais son o "
-"suficientemente semellantes."
-
-#: picard/util/tags.py:402
-msgid ""
-"The artists primarily credited on the release, separated by the specified "
-"join phrases. These could be either \"standardized\" or \"as credited\" "
-"depending on whether the \"Use standardized artist names\" metadata option "
-"is enabled."
-msgstr ""
-"Os artistas acreditados principalmente no lanzamento, separados polas "
-"expresións de unión especificadas. Estes poden ser 'estandarizados' ou 'como "
-"aparecen nos créditos', dependendo de se está activada ou non a opción de "
-"metadatos 'Usar nomes de artista estandarizados'."
-
-#: picard/util/tags.py:409
-msgid "Album Artists"
-msgstr "Artistas do álbum"
-
-#: picard/util/tags.py:411
-msgid ""
-"The artists primarily credited on the release. These could be either "
-"\"standardized\" or \"as credited\" depending on whether the \"Use "
-"standardized artist names\" metadata option is enabled."
-msgstr ""
-"Os artistas acreditados principalmente no lanzamento. Estes poden ser "
-"'estandarizados' ou 'como aparecen nos créditos', dependendo de se está "
-"activada ou non a opción de metadatos 'Usar nomes de artista estandarizados'."
-
-#: picard/util/tags.py:420
-msgid "Album Artists Countries"
-msgstr "Países dos artistas do álbum"
-
-#: picard/util/tags.py:422
-msgid ""
-"The country codes for all of the credited album artists, in the same order "
-"as the artists. Duplicate country codes will be shown if there are more than "
-"one artist from the same country. If a country code is not provided by the "
-"webservice the code \"XX\" will be used to indicate an unknown country."
-msgstr ""
-"Os códigos de país para todos os artistas do álbum acreditados, na mesma "
-"orde que os artistas. Mostraranse códigos de país duplicados se hai máis dun "
-"artista do mesmo país. Se o servizo web non proporciona un código de país, "
-"usarase o código \"XX\" para indicar un país descoñecido."
-
-#: picard/util/tags.py:433
-msgid "Album Artist Sort Order"
-msgstr "Orde de clasificación do artista do álbum"
-
-#: picard/util/tags.py:435
-msgid ""
-"The release artists sort names, separated by the specified join phrases. "
-"(e.g.: \"Beatles, The\")"
-msgstr ""
-"Os artistas do lanzamento ordenan os nomes, separados polas frases de unión "
-"especificadas. (por exemplo: \"Beatles, The\")"
-
-#: picard/util/tags.py:440
-msgid "Album Artists Sort Names"
-msgstr "Artistas do álbum Ordenar por nomes"
-
-#: picard/util/tags.py:441
-msgid "The sort names of the album's artists."
-msgstr "Os nomes de ordenación dos artistas do álbum."
-
-#: picard/util/tags.py:449
-msgid "The title of the release."
-msgstr "O título do lanzamento."
-
-#: picard/util/tags.py:453
-msgid "Album Sort Order"
-msgstr "Orde de clasificación do álbum"
-
-#: picard/util/tags.py:454
-msgid "The sort name of the title of the release."
-msgstr "O nome de ordenación do título do lanzamento."
-
-#: picard/util/tags.py:459
-msgid "Arranger"
-msgstr "Arranxista"
-
-#: picard/util/tags.py:461
-msgid ""
-"The names of the arrangers associated with the track. These can include the "
-"instrument and orchestra arrangers, and could be associated with the "
-"release, recording or work."
-msgstr ""
-"Os nomes dos arranxistas asociados coa peza. Estes poden incluír os "
-"arranxistas de instrumentos e orquestra, e poderían estar asociados co "
-"lanzamento, a grabación ou a obra."
-
-#: picard/util/tags.py:469
-msgid ""
-"The track artist names, separated by the specified join phrases. These could "
-"be either \"standardized\" or \"as credited\" depending on whether the \"Use "
-"standardized artist names\" metadata option is enabled."
-msgstr ""
-"Os nomes dos artistas da peza, separados polas expresións de unión "
-"especificadas. Estes poden ser 'estandarizados' ou 'como aparecen nos "
-"créditos', dependendo de se a opción de metadatos 'Usar nomes de artista "
-"estandarizados' está activada."
-
-#: picard/util/tags.py:476
-msgid "Artists"
-msgstr "Artistas"
-
-#: picard/util/tags.py:478
-msgid ""
-"The track artist names. These could be either \"standardized\" or \"as "
-"credited\" depending on whether the \"Use standardized artist names\" "
-"metadata option is enabled."
-msgstr ""
-"Os nomes dos artistas da peza. Estes poden ser 'estandarizados' ou 'como "
-"aparecen nos créditos', dependendo de se a opción de metadatos 'Usar nomes "
-"de artista estandarizados' está activada."
-
-#: picard/util/tags.py:485
-msgid "Artists Countries"
-msgstr "Artistas Países"
-
-#: picard/util/tags.py:487
-msgid ""
-"The country codes for all of the credited track artists, in the same order "
-"as the artists. Duplicate country codes will be shown if there are more than "
-"one artist from the same country. If a country code is not provided by the "
-"webservice the code \"XX\" will be used to indicate an unknown country."
-msgstr ""
-"Os códigos de país para todos os artistas acreditados da peza, no mesmo orde "
-"que os artistas. Mostrarase o código de país duplicado se hai máis dun "
-"artista do mesmo país. Se o servizo web non proporciona un código de país, "
-"usarase o código 'XX' para indicar un país descoñecido."
-
-#: picard/util/tags.py:498
-msgid "Artist Sort Order"
-msgstr "Orde da ordenación por artista"
-
-#: picard/util/tags.py:499
-msgid ""
-"The sort names of the track's artists, separated by the specified join "
-"phrases."
-msgstr ""
-"Os nomes de ordenación dos artistas da peza, separados polas expresións de "
-"unión especificadas."
-
-#: picard/util/tags.py:503
-msgid "Artists Sort Names"
-msgstr "Artistas Ordenar por nomes"
-
-#: picard/util/tags.py:504
-msgid "The sort names of the track's artists."
-msgstr "Os nomes de ordenación dos artistas da peza."
-
-#: picard/util/tags.py:511
-msgid "ASIN"
-msgstr "ASIN"
-
-#: picard/util/tags.py:512
-msgid ""
-"The Amazon Standard Identification Number, which is the number identifying "
-"the item on Amazon."
-msgstr ""
-"O número de identificación estándar de Amazon, que é o número que identifica "
-"o artigo en Amazon."
-
-#: picard/util/tags.py:517
-msgid "The barcode assigned to the release."
-msgstr "O código de barras asignado ao lanzamento."
-
-#: picard/util/tags.py:519
-msgid "Barcode in MusicBrainz documentation"
-msgstr "Código de barras na documentación de MusicBrainz"
-
-#: picard/util/tags.py:520
-msgid "Barcode mapping in Picard documentation"
-msgstr "Mapeo de códigos de barras na documentación de Picard"
-
-#: picard/util/tags.py:525
-msgid "BPM"
-msgstr "BPM"
-
-#: picard/util/tags.py:526
-msgid "Beats per minute of the track."
-msgstr "Pulsos por minuto da peza."
-
-#: picard/util/tags.py:531
-msgid "Bitrate"
-msgstr "Taxa de bits"
-
-#: picard/util/tags.py:532
-msgid "Approximate bitrate in kbps."
-msgstr "Taxa de bits aproximada en kbps."
-
-#: picard/util/tags.py:541
-msgid "Bits per sample"
-msgstr "Bits por mostra"
-
-#: picard/util/tags.py:542
-msgid "Bits of data per sample."
-msgstr "Bits de datos por mostra."
-
-#: picard/util/tags.py:551
-msgid "Catalog Number"
-msgstr "Número de catálogo"
-
-#: picard/util/tags.py:553
-msgid ""
-"The catalog numbers assigned to the release by the labels, which can often "
-"be found on the spine or near the barcode. There may be more than one, "
-"especially when multiple labels are involved."
-msgstr ""
-"Os números de catálogo asignados ao lanzamento polas etiquetas, que con "
-"frecuencia se atopan na lombada ou cerca do código de barras. Pode haber "
-"máis dun, especialmente cando participan varias etiquetas."
-
-#: picard/util/tags.py:560
-msgid "Channels"
-msgstr "Canles"
-
-#: picard/util/tags.py:561
-msgid "Number of audio channels in the file."
-msgstr "Número de canles de son no ficheiro."
-
-#: picard/util/tags.py:571
-msgid "Comment"
-msgstr "Comentario"
-
-#: picard/util/tags.py:573
-msgid ""
-"The disambiguation comment entered to help distinguish one release from "
-"another (e.g.: Deluxe version with 2 bonus tracks)."
-msgstr ""
-"O comentario de desambiguación introducido para axudar a distinguir un "
-"lanzamento doutro (por exemplo: Versión Deluxe con 2 pistas adicionais)."
-
-#: picard/util/tags.py:581
-msgid "Compilation (iTunes)"
-msgstr "Compilación (iTunes)"
-
-#: picard/util/tags.py:582
-msgid "1 for Various Artist albums, otherwise empty."
-msgstr "1 para álbums de artistas varios, senón, está baleiro."
-
-#: picard/util/tags.py:587
-msgid "The names of the composers for the associated work."
-msgstr "Os nomes dos compositores para a obra asociada."
-
-#: picard/util/tags.py:592
-msgid "Composer Sort Order"
-msgstr "Orde de clasificación do compositor"
-
-#: picard/util/tags.py:593
-msgid "The sort names of the composers for the associated work."
-msgstr "Os nomes de ordenación dos compositores para a obra asociada."
-
-#: picard/util/tags.py:598
-msgid "Conductor"
-msgstr "Director de orquestra"
-
-#: picard/util/tags.py:600
-msgid ""
-"The names of the conductors associated with the track. These can include the "
-"conductor and chorus master, and could be associated with the release or "
-"recording."
-msgstr ""
-"Os nomes dos directores asociados coa peza. Estes poden incluír o director e "
-"o mestre de coro, e poderían estar asociados co lanzamento ou a gravación."
-
-#: picard/util/tags.py:607
-msgid "Copyright"
-msgstr "Dereitos de autor"
-
-#: picard/util/tags.py:609
-msgid ""
-"The copyright message for the copyright holder of the original sound, "
-"beginning with a year and a space character."
-msgstr ""
-"A mensaxe de copyright para o titular dos dereitos de autor do son orixinal, "
-"comezando cun ano e un carácter espazo."
-
-#: picard/util/tags.py:616
-msgid "Data Track"
-msgstr "Pista de datos"
-
-#: picard/util/tags.py:617
-msgid "Set to 1 if the track is a \"data track\", otherwise empty."
-msgstr ""
-"Establecer a 1 se a peza é unha 'peza de datos', senón, deixala baleira."
-
-#: picard/util/tags.py:624 picard/util/tags.py:1194
-msgid ""
-"The date that the release (album) was issued, in the format `YYYY-MM-DD`."
-msgstr "A data na que se publicou o lanzamento (álbum), no formato AAAA-MM-DD."
-
-#: picard/util/tags.py:628
-msgid "Director"
-msgstr "Director"
-
-#: picard/util/tags.py:630
-msgid ""
-"The director of a track as provided by the \"*Video Director*\" or \"*Audio "
-"Director*\" relationship in MusicBrainz."
-msgstr ""
-"O director dunha peza segundo a relación 'Director de vídeo' ou 'Director de "
-"audio' en MusicBrainz."
-
-#: picard/util/tags.py:637
-msgid "Directory name"
-msgstr "Nome do cartafol"
-
-#: picard/util/tags.py:638
-msgid ""
-"The name of the directory containing the file at the point of being loaded "
-"into Picard."
-msgstr ""
-"O nome do directorio que contén o ficheiro no momento de ser cargado en "
-"Picard."
-
-#: picard/util/tags.py:646
-msgid "FreeDB Disc ID"
-msgstr "ID do disco de FreeDB"
-
-#: picard/util/tags.py:647
-msgid "The identification number of the disc in the FreeDB database."
-msgstr "O número de identificación do disco na base de datos de FreeDB."
-
-#: picard/util/tags.py:650
-msgid "FreeDB"
-msgstr "FreeDB"
-
-#: picard/util/tags.py:651
-msgid "FreeDB DiscID Calculation"
-msgstr "Cálculo do DiscID de FreeDB"
-
-#: picard/util/tags.py:652
-msgid "FreeDB DiscID including Calculation Example (French)"
-msgstr "FreeDB DiscID incluíndo exemplo de cálculo (Francés)"
-
-#: picard/util/tags.py:657
-msgid "Disc Number"
-msgstr "Número de disco"
-
-#: picard/util/tags.py:658
-msgid "The number of the disc in the release that contains this track."
-msgstr "O número do disco no lanzamento que contén esta peza."
-
-#: picard/util/tags.py:662
-msgid "Disc Has Pregap"
-msgstr "O disco ten pregap"
-
-#: picard/util/tags.py:663
-msgid ""
-"Set to 1 if the disc the track is on has a \"pregap track\", otherwise empty."
-msgstr ""
-"Establecer a 1 se o disco no que está a peza ten unha 'peza de pregap', "
-"senón, deixala baleira."
-
-#: picard/util/tags.py:671
-msgid "The media title given to a specific disc in the release."
-msgstr "O título do medio asignado a un disco específico no lanzamento."
-
-#: picard/util/tags.py:675
-msgid "DJ-Mixer"
-msgstr "DJ-mesturador"
-
-#: picard/util/tags.py:676
-msgid "The names of the DJ mixers for the track."
-msgstr "Os nomes dos DJ mixers da peza."
-
-#: picard/util/tags.py:681
-msgid "Encoded By"
-msgstr "Codificado por"
-
-#: picard/util/tags.py:682
-msgid "The person or organization that encoded the track."
-msgstr "A persoa ou organización que codificou a pista."
-
-#: picard/util/tags.py:687
-msgid "Encoder Settings"
-msgstr "Configuración do codificador"
-
-#: picard/util/tags.py:688
-msgid "The settings used when encoding the track."
-msgstr "A configuración empregada ao codificar a pista."
-
-#: picard/util/tags.py:693
-msgid "Engineer"
-msgstr "Enxeñeiro"
-
-#: picard/util/tags.py:694
-msgid "The names of the engineers associated with the track."
-msgstr "Os nomes dos enxeñeiros asociados coa pista."
-
-#: picard/util/tags.py:699
-msgid "File Extension"
-msgstr "Extensión de ficheiro"
-
-#: picard/util/tags.py:700
-msgid "The file's extension."
-msgstr "A extensión do ficheiro."
-
-#: picard/util/tags.py:708
-msgid "File Created Timestamp"
-msgstr "Marca de tempo de creación do ficheiro"
-
-#: picard/util/tags.py:709
-msgid ""
-"The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by "
-"the file system."
-msgstr ""
-"A marca de tempo de creación do ficheiro no formato `AAAA-MM-DD HH:MM:SS` "
-"segundo o informado polo sistema de ficheiros."
-
-#: picard/util/tags.py:717
-msgid "File Modified Timestamp"
-msgstr "Marca de tempo modificada do ficheiro"
-
-#: picard/util/tags.py:718
-msgid ""
-"The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as "
-"reported by the file system."
-msgstr ""
-"A marca de tempo da modificación do ficheiro no formato `AAAA-MM-DD HH:MM:SS`"
-" segundo o informado polo sistema de ficheiros."
-
-#: picard/util/tags.py:727
-msgid "The name of the file without extension."
-msgstr "O nome do ficheiro sen a extensión."
-
-#: picard/util/tags.py:735
-msgid "File Path"
-msgstr "Camiño do ficheiro"
-
-#: picard/util/tags.py:736
-msgid "Full path and name of the file."
-msgstr "Camiño completo e nome do ficheiro."
-
-#: picard/util/tags.py:743
-msgid "File Size"
-msgstr "Tamaño do ficheiro"
-
-#: picard/util/tags.py:744
-msgid "Size of the file in bytes."
-msgstr "Tamaño do ficheiro en bytes."
-
-#: picard/util/tags.py:752
-msgid "File Format"
-msgstr "Formato de ficheiro"
-
-#: picard/util/tags.py:753
-msgid "Media format of the file (e.g.: MPEG-1 Audio)."
-msgstr "Formato multimedia do ficheiro (por exemplo: MPEG-1 Audio)."
-
-#: picard/util/tags.py:762
-msgid "Gapless Playback"
-msgstr "Reprodución sen intervalos"
-
-#: picard/util/tags.py:763
-msgid ""
-"Indicates whether or not there are gaps between the recordings on the "
-"release."
-msgstr "Indica se hai ou non lagoas entre as gravacións da publicación."
-
-#: picard/util/tags.py:770
-msgid "The specified genre information from MusicBrainz."
-msgstr "A información do xénero especificado procedente de MusicBrainz."
-
-#: picard/util/tags.py:778
-msgid "Grouping"
-msgstr "Agrupamento"
-
-#: picard/util/tags.py:779
-msgid "Genre grouping associated with the track"
-msgstr "A agrupación de xéneros asociada á peza"
-
-#: picard/util/tags.py:784
-msgid "ISRC"
-msgstr "ISRC"
-
-#: picard/util/tags.py:786
-msgid ""
-"The International Standard Recording Code, which is an international "
-"standard code for uniquely identifying sound recordings and music video "
-"recordings."
-msgstr ""
-"O Código Internacional de Rexistro de Gravacións, que é un código de "
-"estándar internacional para identificar de forma única as gravacións de son "
-"e as gravacións de videoclips musicais."
-
-#: picard/util/tags.py:793
-msgid "Key"
-msgstr "Clave"
-
-#: picard/util/tags.py:794
-msgid "The key of the music."
-msgstr "A tonalidade da música."
-
-#: picard/util/tags.py:799
-msgid "Record Label"
-msgstr "Selo discográfico"
-
-#: picard/util/tags.py:800
-msgid "The names of the labels associated with the release."
-msgstr "Os nomes das etiquetas asociadas co lanzamento."
-
-#: picard/util/tags.py:806
-msgid "Work lyric language as per ISO 639-3 if a related work exists."
-msgstr ""
-"Idioma da letra da obra segundo a norma ISO 639-3, se existe unha obra "
-"relacionada."
-
-#: picard/util/tags.py:811
-msgid "The length of the track in format mins:secs."
-msgstr "A duración da pista no formato minutos:segundos."
-
-#: picard/util/tags.py:818
-msgid ""
-"The license associated with the track, either through the release or "
-"recording relationships."
-msgstr ""
-"A licenza asociada á peza, xa sexa a través das relacións do lanzamento ou "
-"da gravación."
-
-#: picard/util/tags.py:822
-msgid "Lyricist"
-msgstr "Letrista"
-
-#: picard/util/tags.py:823
-msgid "The names of the lyricists for the associated work."
-msgstr "Os nomes dos letristas da obra asociada."
-
-#: picard/util/tags.py:828
-msgid "Lyricist Sort"
-msgstr "Ordenar polo letrista"
-
-#: picard/util/tags.py:829
-msgid "The sort names of the lyricists for the associated work."
-msgstr "Os nomes de ordenación dos letristas da obra asociada."
-
-#: picard/util/tags.py:835
-msgid "Lyrics"
-msgstr "Letras"
-
-#: picard/util/tags.py:836
-msgid "The lyrics for the track."
-msgstr "A letra da peza."
-
-#: picard/util/tags.py:842
-msgid "The media on which the release was distributed (e.g.: CD)."
-msgstr "O soporte no que se distribuíu o lanzamento (por exemplo: CD)."
-
-#: picard/util/tags.py:846
-msgid "Mixer"
-msgstr "Mesturador"
-
-#: picard/util/tags.py:847
-msgid "The names of the \"*Mixed By*\" engineers associated with the track."
-msgstr "Os nomes dos enxeñeiros de mestura asociados coa peza."
-
-#: picard/util/tags.py:852
-msgid "Mood"
-msgstr "Estado de ánimo"
-
-#: picard/util/tags.py:853
-msgid "The mood associated with the track."
-msgstr "O estado de ánimo asociado á peza."
-
-#: picard/util/tags.py:858
-msgid "Movement"
-msgstr "Movemento"
-
-#: picard/util/tags.py:859
-msgid "Name of the movement (e.g.: \"Andante con moto\")."
-msgstr "Nome do movemento (por exemplo: 'Andante con moto')."
-
-#: picard/util/tags.py:864
-msgid "Movement Number"
-msgstr "Número de movemento"
-
-#: picard/util/tags.py:866
-msgid ""
-"Movement number in Arabic numerals (e.g.: \"2\"). Players explicitly "
-"supporting this tag will often display it in Roman numerals (e.g.: \"II\")."
-msgstr ""
-"Número do movemento en numerais árabes (por exemplo: '2'). Os reprodutores "
-"que soportan explícitamente esta etiqueta adoitan mostrala en numerais "
-"romanos (por exemplo: 'II')."
-
-#: picard/util/tags.py:873
-msgid "Movement Count"
-msgstr "Conta de movementos"
-
-#: picard/util/tags.py:874
-msgid "Total number of movements in the work (e.g.: \"4\")."
-msgstr "Número total de movementos na obra (por exemplo: '4')."
-
-#: picard/util/tags.py:879
-msgid "Multiple Artists"
-msgstr "Varios artistas"
-
-#: picard/util/tags.py:881
-msgid ""
-"Set to 1 if not all of the tracks on the album have the same primary artist, "
-"otherwise empty."
-msgstr ""
-"Establecer a 1 se non todas as pezas do álbum teñen o mesmo artista "
-"principal, senón, deixala baleira."
-
-#: picard/util/tags.py:888
-msgid "Release Artist MBID"
-msgstr "MBID do artista de lanzamento"
-
-#: picard/util/tags.py:889
-msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
-msgstr "Os Identificadores MusicBrainz (MBID) para os artistas do lanzamento."
-
-#: picard/util/tags.py:894
-msgid "Release MBID"
-msgstr "MBID do lanzamento"
-
-#: picard/util/tags.py:895
-msgid "The MusicBrainz Identifier (MBID) for the release."
-msgstr "O Identificador MusicBrainz (MBID) para o lanzamento."
-
-#: picard/util/tags.py:899
-msgid "Artist MBID"
-msgstr "MBID do Artista"
-
-#: picard/util/tags.py:900
-msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
-msgstr "Os Identificadores MusicBrainz (MBID) para os artistas da peza."
-
-#: picard/util/tags.py:905
-msgid "MusicBrainz DiscID"
-msgstr "ID do disco de MusicBrainz"
-
-#: picard/util/tags.py:907
-msgid ""
-"The Disc ID is the code number which MusicBrainz uses to link a physical CD "
-"to a release listing. This is based on the table of contents (TOC) "
-"information read from the disc. This tag contains the Disc ID if the album "
-"information was retrieved using `Tools > Lookup CD` from the menu."
-msgstr ""
-"O Disc ID é o número de código que MusicBrainz utiliza para vincular un CD "
-"físico cunha listaxe de lanzamento. Isto baséase na información da táboa de "
-"contidos (TOC) lida desde o disco. Esta etiqueta contén o Disc ID se a "
-"información do álbum foi recuperada utilizando Ferramentas > Buscar CD no "
-"menú."
-
-#: picard/util/tags.py:913
-msgid "Disc ID Calculation"
-msgstr "Cálculo do ID do disco"
-
-#: picard/util/tags.py:917
-msgid "Disc IDs"
-msgstr "IDs do disco"
-
-#: picard/util/tags.py:919
-msgid ""
-"A list of all of the disc ids attached to the selected release. The list "
-"provided for each medium only includes the disc ids attached to that medium."
-msgstr ""
-"Unha lista de todos os Disc IDs asociados co lanzamento seleccionado. A "
-"lista proporcionada para cada medio só inclúe os Disc IDs asociados a ese "
-"medio."
-
-#: picard/util/tags.py:923
-msgid ""
-"For example, the list provided for Disc 1 of a three CD set will not include "
-"the disc ids attached to discs 2 and 3 of the set."
-msgstr ""
-"Por exemplo, a lista proporcionada para o Disco 1 dunha caixa de tres CDs "
-"non incluirá os Disc IDs asociados aos discos 2 e 3 da caixa."
-
-#: picard/util/tags.py:932
-msgid "Original Release MBID"
-msgstr "MBID do lanzamento orixinal"
-
-#: picard/util/tags.py:934
-msgid ""
-"The MusicBrainz Identifier (MBID) for the original release. This is only "
-"available if the release has been merged with another release."
-msgstr ""
-"O Identificador MusicBrainz (MBID) para o lanzamento orixinal. Isto só está "
-"dispoñible se o lanzamento foi fusionado cun outro lanzamento."
-
-#: picard/util/tags.py:940
-msgid "Original Artist MBID"
-msgstr "MBID do Artista orixinal"
-
-#: picard/util/tags.py:942
-msgid ""
-"The MusicBrainz Identifiers (MBIDs) for the track artists of the original "
-"recording. This is only available if the recording has been merged with "
-"another recording."
-msgstr ""
-"Os Identificadores MusicBrainz (MBID) para os artistas da peza na gravación "
-"orixinal. Isto só está dispoñible se a gravación foi fusionada cunha outra "
-"gravación."
-
-#: picard/util/tags.py:949
-msgid "Recording MBID"
-msgstr "Gravación MBID"
-
-#: picard/util/tags.py:950
-msgid "The MusicBrainz Identifier (MBID) for the recording."
-msgstr "O Identificador MusicBrainz (MBID) para a gravación."
-
-#: picard/util/tags.py:954
-msgid "Release Group MBID"
-msgstr "MBID do grupo de lanzamento"
-
-#: picard/util/tags.py:955
-msgid "The MusicBrainz Identifier (MBID) for the release group."
-msgstr "O Identificador MusicBrainz (MBID) para o grupo de lanzamentos."
-
-#: picard/util/tags.py:959
-msgid "Track MBID"
-msgstr "MBID da pista"
-
-#: picard/util/tags.py:960
-msgid "The MusicBrainz Identifier (MBID) for the track."
-msgstr "O Identificador MusicBrainz (MBID) para a peza."
-
-#: picard/util/tags.py:964
-msgid "Track Number Shown"
-msgstr "Número de pista amosado"
-
-#: picard/util/tags.py:966
-msgid ""
-"The track number written as on the MusicBrainz release, such as vinyl "
-"numbering (A1, A2, etc.)"
-msgstr ""
-"O número da peza escrito tal como aparece no lanzamento de MusicBrainz, como "
-"a numeración de vinilo (A1, A2, etc.)"
-
-#: picard/util/tags.py:973
-msgid "Work MBID"
-msgstr "MBID da obra"
-
-#: picard/util/tags.py:974
-msgid ""
-"The MusicBrainz Identifier (MBID) for the Work if a related work exists."
-msgstr ""
-"O Identificador MusicBrainz (MBID) para a obra se existe unha obra "
-"relacionada."
-
-#: picard/util/tags.py:979
-msgid "MusicIP Fingerprint"
-msgstr "Pegada dixital de MusicIP"
-
-#: picard/util/tags.py:980
-msgid "The MusicIP Fingerprint for the track."
-msgstr "A pegada dixital MusicIP da pista."
-
-#: picard/util/tags.py:985
-msgid "MusicIP PUID"
-msgstr "PUID de MusicIP"
-
-#: picard/util/tags.py:986
-msgid "The MusicIP PUIDs associated with the track."
-msgstr "Os PUIDs de MusicIP asociados á peza."
-
-#: picard/util/tags.py:991
-msgid "Original Album"
-msgstr "Álbum orixinal"
-
-#: picard/util/tags.py:993
-msgid ""
-"The release title of the earliest release in the release group intended for "
-"the title of the original recording."
-msgstr ""
-"O título do lanzamento da primeira edición no grupo de lanzamentos destinada "
-"ao título da gravación orixinal."
-
-#: picard/util/tags.py:1000
-msgid "Original Artist"
-msgstr "Artista orixinal"
-
-#: picard/util/tags.py:1002
-msgid ""
-"The track artist of the earliest release in the release group intended for "
-"the performers of the original recording."
-msgstr ""
-"O artista da peza da primeira edición no grupo de lanzamentos destinada aos "
-"intérpretes da gravación orixinal."
-
-#: picard/util/tags.py:1011
-msgid ""
-"The original release date in the format `YYYY-MM-DD`. By default this is set "
-"to the earliest release in the release group. This can provide, for example, "
-"the release date of the vinyl version of what you have on CD.\n"
-"\n"
-"**Note:** If you are storing tags in MP3 files as ID3v2.3 then the original "
-"date can only be stored as a year."
-msgstr ""
-"A data de lanzamento orixinal no formato AAAA-MM-DD. Por defecto, isto "
-"establécese na primeira edición do grupo de lanzamentos. Isto pode fornecer, "
-"por exemplo, a data de lanzamento da versión en vinilo do que tes en CD.\n"
-"\n"
-"**Nota:** Se estás a almacenar as etiquetas en arquivos MP3 como ID3v2.3, a "
-"data orixinal só se pode almacenar como un ano."
-
-#: picard/util/tags.py:1019
-msgid "Original Filename"
-msgstr "Nome do ficheiro orixinal"
-
-#: picard/util/tags.py:1020
-msgid "The original name of the audio file."
-msgstr "O nome orixinal do arquivo de son."
-
-#: picard/util/tags.py:1025
-msgid "Original Year"
-msgstr "Ano orixinal"
-
-#: picard/util/tags.py:1027
-msgid ""
-"The year of the original release date in the format `YYYY`. By default this "
-"is set to the earliest release in the release group. This can provide, for "
-"example, the release year of the vinyl version of what you have on CD."
-msgstr ""
-"O ano da data de lanzamento orixinal no formato AAAA. Por defecto, isto "
-"establécese na primeira edición do grupo de lanzamentos. Isto pode "
-"proporcionar, por exemplo, o ano de lanzamento da versión en vinilo do que "
-"tes en CD."
-
-#: picard/util/tags.py:1034
-msgid "Performance Attributes"
-msgstr "Atributos de interpretación"
-
-#: picard/util/tags.py:1035
-msgid ""
-"List of performance attributes for the work (e.g.: \"*live*\", \"*cover*\", "
-"\"*medley*\")."
-msgstr ""
-"Lista de atributos de interpretación para a obra (por exemplo: 'en directo', "
-"'versión', 'medley')."
-
-#: picard/util/tags.py:1037
-msgid ""
-"Use `$inmulti()` to check for a specific type (e.g.: "
-"`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
-msgstr ""
-"Usa $inmulti() para comprobar un tipo específico (por exemplo: "
-"`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
-
-#: picard/util/tags.py:1046
-msgid "Performer"
-msgstr "Intérprete"
-
-#: picard/util/tags.py:1048
-msgid ""
-"The names of the performers for the specified type. These types include:\n"
-"\n"
-"- vocals or instruments for the associated release or recording, where "
-"\"type\" can be \"*vocal*\", \"*guest guitar*\", \"*solo violin*\", etc.\n"
-"- the orchestra for the associated release or recording, where \"type\" is "
-"\"*orchestra*\"\n"
-"- the concert master for the associated release or recording, where \"type\" "
-"is \"*concertmaster*\""
-msgstr ""
-"Os nomes dos intérpretes para o tipo especificado. Estes tipos inclúen:\n"
-"\n"
-"- voces ou instrumentos para o lanzamento ou gravación asociada, onde o "
-"'tipo' pode ser 'vocal', 'guitarra invitada', 'violo solo', etc.\n"
-"- a orquestra para o lanzamento ou gravación asociada, onde o 'tipo' é "
-"'orquestra'\n"
-"- o mestre de concertos para o lanzamento ou gravación asociada, onde o "
-"'tipo' é 'mestre de concertos"
-
-#: picard/util/tags.py:1058
-msgid "Podcast"
-msgstr "Podcast"
-
-#: picard/util/tags.py:1059
-msgid "Indicates whether or not the recording is a podcast."
-msgstr "Indica se a gravación é ou non un podcast."
-
-#: picard/util/tags.py:1064
-msgid "Podcast URL"
-msgstr "URL do podcast"
-
-#: picard/util/tags.py:1065
-msgid "The associated URL if the recording is a podcast."
-msgstr "A URL asociada se a gravación é un podcast."
-
-#: picard/util/tags.py:1070
-msgid "Pregap Track"
-msgstr "Pista de pregap"
-
-#: picard/util/tags.py:1071
-msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
-msgstr ""
-"Establécese a 1 se a peza é unha 'peza pregap', se non, déixase en branco."
-
-#: picard/util/tags.py:1077
-msgid "Primary Release Type"
-msgstr "Tipo principal de lanzamento"
-
-#: picard/util/tags.py:1079
-msgid ""
-"The primary type of the release group (i.e.: *album*, *single*, *ep*, "
-"*broadcast*, or *other*)."
-msgstr ""
-"O tipo principal do grupo de lanzamentos (é dicir: álbum, sinxelo, EP, "
-"emisión, ou outro)."
-
-#: picard/util/tags.py:1084 picard/util/tags.py:1306 picard/util/tags.py:1392
-msgid "Release group types"
-msgstr "Tipos de grupo de lanzamento"
-
-#: picard/util/tags.py:1088
-msgid "Producer"
-msgstr "Produtor"
-
-#: picard/util/tags.py:1089
-msgid "The names of the producers for the associated release or recording."
-msgstr "Os nomes dos produtores para o lanzamento ou gravación asociada."
-
-#: picard/util/tags.py:1094
-msgid "R128 Album Gain"
-msgstr "Ganancia do álbum R128"
-
-#: picard/util/tags.py:1095
-msgid ""
-"Album gain as determined by European Broadcasting Union \"R 128\" analysis."
-msgstr ""
-"Ganancia do álbum segundo a análise 'R 128' da Unión Europea de "
-"Radiodifusión."
-
-#: picard/util/tags.py:1101
-msgid "R128 Track Gain"
-msgstr "R128 Ganancia de pista"
-
-#: picard/util/tags.py:1102
-msgid ""
-"Track gain as determined by European Broadcasting Union \"R 128\" analysis."
-msgstr ""
-"Ganancia da peza segundo a análise 'R 128' da Unión Europea de Radiodifusión."
-
-#: picard/util/tags.py:1108
-msgid "Rating"
-msgstr "Puntuación"
-
-#: picard/util/tags.py:1109
-msgid "The rating of the track from 0-5 by MusicBrainz users."
-msgstr "A valoración da peza de 0 a 5 realizada polos usuarios de MusicBrainz."
-
-#: picard/util/tags.py:1114
-msgid "Recording First Released"
-msgstr "Primeiro Lanzamento da Gravación"
-
-#: picard/util/tags.py:1115
-msgid ""
-"The date of the earliest recording for a track in the format `YYYY-MM-DD`."
-msgstr "A data da gravación máis antiga dunha peza no formato AAAA-MM-DD."
-
-#: picard/util/tags.py:1121
-msgid "Recording Series"
-msgstr "Serie de gravación"
-
-#: picard/util/tags.py:1122
-msgid "The series titles associated with the recording."
-msgstr "Os títulos das series asociadas á gravación."
-
-#: picard/util/tags.py:1128
-msgid "Recording Series Comment"
-msgstr "Comentario da serie de gravación"
-
-#: picard/util/tags.py:1129
-msgid "The series disambiguation comments associated with the recording."
-msgstr "Os comentarios de desambiguación da serie asociados á gravación."
-
-#: picard/util/tags.py:1135
-msgid "Recording Series MBID"
-msgstr "MBID da serie de gravación"
-
-#: picard/util/tags.py:1136
-msgid ""
-"The series MusicBrainz Identifiers (MBIDs) associated with the recording."
-msgstr "Os Identificadores MusicBrainz (MBID) das series asociadas á gravación."
-
-#: picard/util/tags.py:1142
-msgid "Recording Series Number"
-msgstr "Número da serie de gravación"
-
-#: picard/util/tags.py:1143
-msgid "The series numbers associated with the recording."
-msgstr "Os números das series asociados á gravación."
-
-#: picard/util/tags.py:1149
-msgid "Recording Comment"
-msgstr "Comentario da gravación"
-
-#: picard/util/tags.py:1150
-msgid "The disambiguation comment for the recording associated with a track."
-msgstr "O comentario de desambiguación para a gravación asociada a unha peza."
-
-#: picard/util/tags.py:1156
-msgid "Recording Title"
-msgstr "Título da gravación"
-
-#: picard/util/tags.py:1157
-msgid ""
-"Recording title - normally the same as the track title, but can be different."
-msgstr ""
-"Título da gravación - normalmente o mesmo que o título da peza, pero pode "
-"ser diferente."
-
-#: picard/util/tags.py:1163
-msgid "Release Annotation"
-msgstr "Anotación do lanzamento"
-
-#: picard/util/tags.py:1164
-msgid "The annotation comment for the release."
-msgstr "O comentario de anotación para o lanzamento."
-
-#: picard/util/tags.py:1170
-msgid "Release Comment"
-msgstr "Comentario do lanzamento"
-
-#: picard/util/tags.py:1171
-msgid "The disambiguation comment for the release."
-msgstr "O comentario de desambiguación para o lanzamento."
-
-#: picard/util/tags.py:1177
-msgid "Release Countries"
-msgstr "Países de lanzamento"
-
-#: picard/util/tags.py:1178
-msgid "The complete list of release countries for the release."
-msgstr "A lista completa de países de lanzamento para o lanzamento."
-
-#: picard/util/tags.py:1185
-msgid "Release Country"
-msgstr "País de lanzamento"
-
-#: picard/util/tags.py:1187
-msgid ""
-"The two-character code for the country in which the release was issued. If "
-"more than one release country was specified, this tag will contain the first "
-"one in the list."
-msgstr ""
-"O código de dúas letras do país no que se emitíu o lanzamento. Se se "
-"especificaron varios países de lanzamento, esta etiqueta conterá o primeiro "
-"da lista."
-
-#: picard/util/tags.py:1196
-#, python-format
-msgid ""
-"This tag exists for specific use in scripts and plugins, but is not filled "
-"by default. In most cases it is recommended to use the `%date%` tag instead "
-"for compatibility with existing software."
-msgstr ""
-"Esta etiqueta existe para o uso específico en scripts e complementos, pero "
-"non se enche por defecto. Na maioría dos casos, recoméndase usar a etiqueta "
-"`%date%` en vez diso para a compatibilidade co soporte lóxico existente."
-
-#: picard/util/tags.py:1204
-msgid "Release Group"
-msgstr "Grupo de lanzamento"
-
-#: picard/util/tags.py:1206
-msgid ""
-"The title of the release group. This is typically the same as the album "
-"title, but can be different."
-msgstr ""
-"O título do grupo de lanzamento. Normalmente é o mesmo que o título do "
-"álbum, pero pode ser diferente."
-
-#: picard/util/tags.py:1213
-msgid "RG First Released"
-msgstr "Primeiro Lanzamento do Grupo de Lanzamento"
-
-#: picard/util/tags.py:1215
-msgid ""
-"The date of the earliest release in the release group in the format `YYYY-MM-"
-"DD`. This is intended to provide, for example, the release date of the vinyl "
-"version of what you have on CD."
-msgstr ""
-"A data do lanzamento máis antigo no grupo de lanzamentos no formato AAAA-MM-"
-"DD. Isto ten a finalidade de proporcionar, por exemplo, a data de lanzamento "
-"da versión en vinilo do que tiñas en CD."
-
-#: picard/util/tags.py:1224
-msgid "RG Series"
-msgstr "Serie do Grupo de Lanzamento"
-
-#: picard/util/tags.py:1225
-msgid "The series titles associated with the release group."
-msgstr "Os títulos das series asociadas co grupo de lanzamento."
-
-#: picard/util/tags.py:1231
-msgid "RG Series Comment"
-msgstr "Comentario da serie do grupo de lanzamento"
-
-#: picard/util/tags.py:1232
-msgid "The series disambiguation comments associated with the release group."
-msgstr ""
-"Os comentarios de desambiguación das series asociadas co grupo de lanzamento."
-
-#: picard/util/tags.py:1238
-msgid "RG Series MBID"
-msgstr "MBID da serie do grupo de lanzamento"
-
-#: picard/util/tags.py:1239
-msgid ""
-"The series MusicBrainz Identifiers (MBIDs) associated with the release group."
-msgstr ""
-"Os Identificadores MusicBrainz (MBID) das series asociadas co grupo de "
-"lanzamento."
-
-#: picard/util/tags.py:1245
-msgid "RG Series Number"
-msgstr "Número da serie do grupo de lanzamento"
-
-#: picard/util/tags.py:1246
-msgid "The series numbers associated with the release group."
-msgstr "Os números das series asociadas co grupo de lanzamento."
-
-#: picard/util/tags.py:1252
-msgid "RG Comment"
-msgstr "Comentario do grupo de lanzamento"
-
-#: picard/util/tags.py:1253
-msgid "The disambiguation comment for the release group."
-msgstr "O comentario de desambiguación para o grupo de lanzamento."
-
-#: picard/util/tags.py:1259
-msgid "Release Language"
-msgstr "Lingua do lanzamento"
-
-#: picard/util/tags.py:1260
-msgid "The language of the release as per ISO 639-3."
-msgstr "A lingua do lanzamento segundo o ISO 639-3."
-
-#: picard/util/tags.py:1266
-msgid "Release Series"
-msgstr "Series do lanzamento"
-
-#: picard/util/tags.py:1267
-msgid "The series titles associated with the release."
-msgstr "Os títulos das series asociadas co lanzamento."
-
-#: picard/util/tags.py:1273
-msgid "Release Series Comment"
-msgstr "Comentario da serie do lanzamento"
-
-#: picard/util/tags.py:1274
-msgid "The series disambiguation comments associated with the release."
-msgstr "Os comentarios de desambiguación da serie asociados co lanzamento."
-
-#: picard/util/tags.py:1280
-msgid "Release Series MBID"
-msgstr "MBID da serie do lanzamento"
-
-#: picard/util/tags.py:1281
-msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
-msgstr ""
-"A serie de identificadores de MusicBrainz (MBID) asociados co lanzamento."
-
-#: picard/util/tags.py:1287
-msgid "Release Series Number"
-msgstr "Número de serie de lanzamento"
-
-#: picard/util/tags.py:1288
-msgid "The series numbers associated with the release."
-msgstr "Os números de serie asociados co lanzamento."
-
-#: picard/util/tags.py:1294
-msgid "Release Status"
-msgstr "Estado de lanzamento"
-
-#: picard/util/tags.py:1296
-msgid ""
-"An indicator of the \"official\" status of the release. Possible values "
-"include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
-"release*\"."
-msgstr ""
-"Un indicador do estado \"oficial\" do lanzamento. Os valores posibles "
-"inclúen \"*oficial*\", \"*promocional*\", \"*pirata*\" e "
-"\"*pseudo-lanzamento*\"."
-
-#: picard/util/tags.py:1302
-msgid "Release Type"
-msgstr "Tipo de lanzamento"
-
-#: picard/util/tags.py:1303
-msgid "The types of release assigned to the release group."
-msgstr "Os tipos de lanzamentos asignados ao grupo de lanzamentos."
-
-#: picard/util/tags.py:1310
-msgid "Remixer"
-msgstr "Remesturador"
-
-#: picard/util/tags.py:1311
-msgid "The names of the remixer engineers associated with the track."
-msgstr "Os nomes dos enxeñeiros de remestura asociados coa peza."
-
-#: picard/util/tags.py:1316
-msgid "ReplayGain Album Gain"
-msgstr "Ganancia do álbum ReplayGain"
-
-#: picard/util/tags.py:1317
-msgid "Album gain setting resulting from ReplayGain analysis of the album."
-msgstr ""
-"Axuste de ganancia do álbum resultante da análise de ReplayGain do álbum."
-
-#: picard/util/tags.py:1323
-msgid "ReplayGain Album Peak"
-msgstr "Pico do álbum ReplayGain"
-
-#: picard/util/tags.py:1324
-msgid "Album peak setting resulting from ReplayGain analysis of the album."
-msgstr "Axuste de picos do álbum resultante da análise de ReplayGain do álbum."
-
-#: picard/util/tags.py:1330
-msgid "ReplayGain Album Range"
-msgstr "Rango do álbum ReplayGain"
-
-#: picard/util/tags.py:1331
-msgid "Album range setting resulting from ReplayGain analysis of the album."
-msgstr ""
-"Configuración do rango do álbum resultante da análise de ReplayGain do álbum."
-
-#: picard/util/tags.py:1337
-msgid "ReplayGain Reference Loudness"
-msgstr "Volume de referencia ReplayGain"
-
-#: picard/util/tags.py:1338
-msgid ""
-"Album reference loudness setting resulting from ReplayGain analysis of the "
-"album."
-msgstr ""
-"Axuste de sonoridade de referencia do álbum resultante da análise de "
-"ReplayGain do álbum."
-
-#: picard/util/tags.py:1344
-msgid "ReplayGain Track Gain"
-msgstr "Ganancia da pista ReplayGain"
-
-#: picard/util/tags.py:1345
-msgid "Track gain setting resulting from ReplayGain analysis of the track."
-msgstr ""
-"Axuste de ganancia da pista resultante da análise de ReplayGain da pista."
-
-#: picard/util/tags.py:1351
-msgid "ReplayGain Track Peak"
-msgstr "Pico da pista ReplayGain"
-
-#: picard/util/tags.py:1352
-msgid "Track peak setting resulting from ReplayGain analysis of the track."
-msgstr "Axuste de picos da pista resultante da análise de ReplayGain da pista."
-
-#: picard/util/tags.py:1358
-msgid "ReplayGain Track Range"
-msgstr "Rango de pistas ReplayGain"
-
-#: picard/util/tags.py:1359
-msgid "Track range setting resulting from ReplayGain analysis of the track."
-msgstr ""
-"Configuración do rango da pista resultante da análise de ReplayGain da pista."
-
-#: picard/util/tags.py:1365
-msgid "Sample Rate"
-msgstr "Taxa de mostra"
-
-#: picard/util/tags.py:1366
-msgid "The sample rate of the audio file."
-msgstr "A taxa de mostraxe do ficheiro de son."
-
-#: picard/util/tags.py:1375
-msgid "Script"
-msgstr "Script"
-
-#: picard/util/tags.py:1377
-msgid ""
-"The script used to write the release's track list. The possible values are "
-"taken from the ISO 15924 standard."
-msgstr ""
-"O script empregado para escribir a lista de pezas do lanzamento. Os valores "
-"posibles tómanse da norma ISO 15924."
-
-#: picard/util/tags.py:1383
-msgid "Secondary Release Type"
-msgstr "Tipo secundario de lanzamento"
-
-#: picard/util/tags.py:1385
-msgid ""
-"Zero or more secondary types (i.e.: *audiobook*, *compilation*, *dj-mix*, "
-"*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
-"*spokenword*) for the release group."
-msgstr ""
-"Cero ou máis tipos secundarios (por exemplo: *audiolibro*, *recompilación*, *"
-"mestura de DJ*, *entrevista*, *en directo*, *mixtape/rúa*, *remestura*, *"
-"banda sonora* ou *palabra falada*) para o grupo de lanzamentos."
-
-#: picard/util/tags.py:1396
-msgid "Silence"
-msgstr "Silencio"
-
-#: picard/util/tags.py:1397
-msgid "1 if the track title is \"[silence]\""
-msgstr "1 se o título da peza é \"[silencio]\""
-
-#: picard/util/tags.py:1403
-msgid "Show Name"
-msgstr "Amosar o nome"
-
-#: picard/util/tags.py:1404
-msgid ""
-"The name of the show if the recording is associated with a television "
-"program."
-msgstr ""
-"O nome do programa se a gravación está asociada a un programa de televisión."
-
-#: picard/util/tags.py:1409
-msgid "Show Work & Movement"
-msgstr "Amosar obra e movemento"
-
-#: picard/util/tags.py:1411
-msgid ""
-"Show work and movement. If this tag is set to \"1\" players supporting this "
-"tag, such as iTunes and MusicBee, will display the work, movement number and "
-"movement name instead of the track title."
-msgstr ""
-"Mostrar traballo e movemento. Se esta etiqueta está definida en \"1\", os "
-"reprodutores que admitan esta etiqueta, como iTunes e MusicBee, mostrarán o "
-"traballo, o número do movemento e o nome do movemento en lugar do título da "
-"pista."
-
-#: picard/util/tags.py:1415
-msgid ""
-"For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
-"67: II. Andante con moto\" regardless of the value of the title tag."
-msgstr ""
-"Por exemplo, a peza se amosará como "
-"\"Sinfonía n.º 5 en dó menor, op. 67: II. Andante con moto\" "
-"independentemente do valor da etiqueta do título."
-
-#: picard/util/tags.py:1422
-msgid "Show Name Sort Order"
-msgstr "Amosar a orde de clasificación do nome"
-
-#: picard/util/tags.py:1423
-msgid ""
-"The sort name of the show if the recording is associated with a television "
-"program."
-msgstr ""
-"O nome de ordenación do programa se a gravación está asociada a un programa "
-"de televisión."
-
-#: picard/util/tags.py:1428
-msgid "Subtitle"
-msgstr "Subtítulo"
-
-#: picard/util/tags.py:1429
-msgid "This is used for information directly related to the contents title."
-msgstr ""
-"Isto úsase para información directamente relacionada co título do contido."
-
-#: picard/util/tags.py:1434
-msgid "Synced Lyrics"
-msgstr "Letras sincronizadas"
-
-#: picard/util/tags.py:1435
-msgid "Synchronized lyrics for the track."
-msgstr "Letra sincronizada para a peza."
-
-#: picard/util/tags.py:1441
-msgid "The title of the track."
-msgstr "O título da pista."
-
-#: picard/util/tags.py:1445
-msgid "Title Sort Order"
-msgstr "Orde da ordenación por título"
-
-#: picard/util/tags.py:1446
-msgid "The sort name of the track title."
-msgstr "O nome de ordenación do título da pista."
-
-#: picard/util/tags.py:1451
-msgid "Total Album Tracks"
-msgstr "Número total de pistas do álbum"
-
-#: picard/util/tags.py:1452
-msgid "The total number of tracks across all discs of this release."
-msgstr "O número total de pistas en todos os discos deste lanzamento."
-
-#: picard/util/tags.py:1458
-msgid "Total Discs"
-msgstr "Discos totais"
-
-#: picard/util/tags.py:1459
-msgid "The total number of discs in this release."
-msgstr "O número total de discos desta edición."
-
-#: picard/util/tags.py:1463
-msgid "Total Tracks"
-msgstr "Pistas totais"
-
-#: picard/util/tags.py:1464
-msgid "The total number of tracks on this disc."
-msgstr "O número total de pistas deste disco."
-
-#: picard/util/tags.py:1468
-msgid "Track Number"
-msgstr "Número de pista"
-
-#: picard/util/tags.py:1469
-msgid "The number of the track on the disc."
-msgstr "O número da pista no disco."
-
-#: picard/util/tags.py:1473
-msgid "Video"
-msgstr "Video"
-
-#: picard/util/tags.py:1474
-msgid "Set to \"1\" if the track is a video."
-msgstr "Definir en \"1\" se a pista é un vídeo."
-
-#: picard/util/tags.py:1481
-msgid "Artist Website"
-msgstr "Páxina web do artista"
-
-#: picard/util/tags.py:1482
-msgid "The official website for the artist."
-msgstr "A páxina web oficial do artista."
-
-#: picard/util/tags.py:1486
-msgid "Work"
-msgstr "Obra"
-
-#: picard/util/tags.py:1487
-msgid ""
-"The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
-"minor, op. 67\")."
-msgstr ""
-"O nome da obra asociada á pista (por exemplo: "
-"\"Sinfonía n.º 5 en dó menor, op. 67\")."
-
-#: picard/util/tags.py:1489
-msgid ""
-"Note: If you are using iTunes together with MP3 files you should activate "
-"the \"Save iTunes compatible grouping and work\" option in order for the "
-"work to be displayed correctly."
-msgstr ""
-"Nota: Se estás a usar iTunes xunto con ficheiros MP3, debes activar a opción "
-"\"Gardar a agrupación e o traballo compatibles con iTunes\" para que o "
-"traballo se mostre correctamente."
-
-#: picard/util/tags.py:1496
-msgid "Work Series"
-msgstr "Serie de traballos"
-
-#: picard/util/tags.py:1497
-msgid "The series titles associated with the work."
-msgstr "Os títulos das series asociados á obra."
-
-#: picard/util/tags.py:1503
-msgid "Work Series Comment"
-msgstr "Comentario da serie de traballos"
-
-#: picard/util/tags.py:1504
-msgid "The series disambiguation comments associated with the work."
-msgstr "Os comentarios de desambiguación da serie asociados coa obra."
-
-#: picard/util/tags.py:1510
-msgid "Work Series MBID"
-msgstr "Serie de traballo MBID"
-
-#: picard/util/tags.py:1511
-msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
-msgstr "A serie de identificadores MusicBrainz (MBID) asociados á obra."
-
-#: picard/util/tags.py:1517
-msgid "Work Series Number"
-msgstr "Número da serie da obra"
-
-#: picard/util/tags.py:1518
-msgid "The series numbers associated with the work."
-msgstr "Os números de serie asociados á obra."
-
-#: picard/util/tags.py:1524
-msgid "Work Comment"
-msgstr "Comentario da obra"
-
-#: picard/util/tags.py:1525
-msgid "The disambiguation comment associated with the work."
-msgstr "O comentario de desambiguación asociado á obra."
-
-#: picard/util/tags.py:1530
-msgid "Writer"
-msgstr "Escritor"
-
-#: picard/util/tags.py:1532
-msgid ""
-"The names of the writers associated with the related work. This is not "
-"written to most file formats automatically."
-msgstr ""
-"Os nomes dos escritores asociados coa obra relacionada. Isto non se escribe "
-"automaticamente na maioría dos formatos de ficheiro."
-
-#: picard/util/tags.py:1535
-msgid ""
-"You can merge this with composers with a script like "
-"`$copymerge(composer,writer)`."
-msgstr ""
-"Podes combinar isto con compositores cun script como "
-"`$copymerge(composer,writer)`."
-
-#: picard/util/tags.py:1540
-msgid "Writer Sort"
-msgstr "Ordenar polo escritor"
-
-#: picard/util/tags.py:1541
-msgid "The sort names of the writers for the work."
-msgstr "Os nomes de orde dos escritores para a obra."
-
 #: picard/util/time.py:51
 #, python-format
 msgid "%(days).2dd %(hours).2dh"
@@ -8639,6 +7091,1301 @@ msgstr ""
 "Produciuse un erro ao iniciar o navegador web:\n"
 "\n"
 "%s"
+
+#~ msgid ""
+#~ "`$rsearch(text,pattern)`\n"
+#~ "\n"
+#~ "[Regular expression](https://docs.python.org/3/library/re.html#regular-"
+#~ "expression-syntax) search.\n"
+#~ "    This function will return the first matching group."
+#~ msgstr ""
+#~ "`$rsearch(texto,patrón)`\n"
+#~ "\n"
+#~ "[Expresión regular](https://docs.python.org/3/library/re.html#regular-"
+#~ "expression-syntax) buscar.\n"
+#~ "    Esta función devolverá o primeiro grupo coincidente."
+
+#~ msgid "Absolute Track No."
+#~ msgstr "Número de pista absoluto"
+
+#~ msgid ""
+#~ "The absolute number of this track disregarding the disc number. For "
+#~ "example, this value would be 11 for the second track on disc 2 where disc "
+#~ "1 has 9 tracks."
+#~ msgstr ""
+#~ "O número absoluto desta pista sen ter en conta o número do disco. Por "
+#~ "exemplo, este valor sería 11 para a segunda pista do disco 2, onde o "
+#~ "disco 1 ten 9 pistas."
+
+#~ msgid "AcoustID Fingerprint"
+#~ msgstr "Pegada dixital de AcoustID"
+
+#~ msgid ""
+#~ "The Acoustic Fingerprint for the track. The fingerprint is based on the "
+#~ "audio information found in a file, and is calculated using the "
+#~ "Chromaprint software."
+#~ msgstr ""
+#~ "A pegada dixital acústica da pista. A pegada dixital baséase na "
+#~ "información de audio que se atopa nun ficheiro e calcúlase mediante o "
+#~ "soporte lóxico (software) Chromaprint."
+
+#~ msgid "AcoustID"
+#~ msgstr "AcoustID"
+
+#~ msgid ""
+#~ "The AcoustID associated with the track. The AcoustID is the identifier "
+#~ "assigned to an audio file based on its acoustic fingerprint. Multiple "
+#~ "fingerprints may be assigned the same AcoustID if the fingerprints are "
+#~ "similar enough."
+#~ msgstr ""
+#~ "O AcoustID asociado á pista. O AcoustID é o identificador asignado a un "
+#~ "ficheiro de son baseado na súa pegada dixital acústica. Pode asignarse o "
+#~ "mesmo AcoustID a varias pegadas dixitais se as pegadas dixitais son o "
+#~ "suficientemente semellantes."
+
+#~ msgid ""
+#~ "The artists primarily credited on the release, separated by the specified "
+#~ "join phrases. These could be either \"standardized\" or \"as credited\" "
+#~ "depending on whether the \"Use standardized artist names\" metadata "
+#~ "option is enabled."
+#~ msgstr ""
+#~ "Os artistas acreditados principalmente no lanzamento, separados polas "
+#~ "expresións de unión especificadas. Estes poden ser 'estandarizados' ou "
+#~ "'como aparecen nos créditos', dependendo de se está activada ou non a "
+#~ "opción de metadatos 'Usar nomes de artista estandarizados'."
+
+#~ msgid "Album Artists"
+#~ msgstr "Artistas do álbum"
+
+#~ msgid ""
+#~ "The artists primarily credited on the release. These could be either "
+#~ "\"standardized\" or \"as credited\" depending on whether the \"Use "
+#~ "standardized artist names\" metadata option is enabled."
+#~ msgstr ""
+#~ "Os artistas acreditados principalmente no lanzamento. Estes poden ser "
+#~ "'estandarizados' ou 'como aparecen nos créditos', dependendo de se está "
+#~ "activada ou non a opción de metadatos 'Usar nomes de artista "
+#~ "estandarizados'."
+
+#~ msgid "Album Artists Countries"
+#~ msgstr "Países dos artistas do álbum"
+
+#~ msgid ""
+#~ "The country codes for all of the credited album artists, in the same "
+#~ "order as the artists. Duplicate country codes will be shown if there are "
+#~ "more than one artist from the same country. If a country code is not "
+#~ "provided by the webservice the code \"XX\" will be used to indicate an "
+#~ "unknown country."
+#~ msgstr ""
+#~ "Os códigos de país para todos os artistas do álbum acreditados, na mesma "
+#~ "orde que os artistas. Mostraranse códigos de país duplicados se hai máis "
+#~ "dun artista do mesmo país. Se o servizo web non proporciona un código de "
+#~ "país, usarase o código \"XX\" para indicar un país descoñecido."
+
+#~ msgid "Album Artist Sort Order"
+#~ msgstr "Orde de clasificación do artista do álbum"
+
+#~ msgid ""
+#~ "The release artists sort names, separated by the specified join phrases. "
+#~ "(e.g.: \"Beatles, The\")"
+#~ msgstr ""
+#~ "Os artistas do lanzamento ordenan os nomes, separados polas frases de "
+#~ "unión especificadas. (por exemplo: \"Beatles, The\")"
+
+#~ msgid "Album Artists Sort Names"
+#~ msgstr "Artistas do álbum Ordenar por nomes"
+
+#~ msgid "The sort names of the album's artists."
+#~ msgstr "Os nomes de ordenación dos artistas do álbum."
+
+#~ msgid "The title of the release."
+#~ msgstr "O título do lanzamento."
+
+#~ msgid "Album Sort Order"
+#~ msgstr "Orde de clasificación do álbum"
+
+#~ msgid "The sort name of the title of the release."
+#~ msgstr "O nome de ordenación do título do lanzamento."
+
+#~ msgid "Arranger"
+#~ msgstr "Arranxista"
+
+#~ msgid ""
+#~ "The names of the arrangers associated with the track. These can include "
+#~ "the instrument and orchestra arrangers, and could be associated with the "
+#~ "release, recording or work."
+#~ msgstr ""
+#~ "Os nomes dos arranxistas asociados coa peza. Estes poden incluír os "
+#~ "arranxistas de instrumentos e orquestra, e poderían estar asociados co "
+#~ "lanzamento, a grabación ou a obra."
+
+#~ msgid ""
+#~ "The track artist names, separated by the specified join phrases. These "
+#~ "could be either \"standardized\" or \"as credited\" depending on whether "
+#~ "the \"Use standardized artist names\" metadata option is enabled."
+#~ msgstr ""
+#~ "Os nomes dos artistas da peza, separados polas expresións de unión "
+#~ "especificadas. Estes poden ser 'estandarizados' ou 'como aparecen nos "
+#~ "créditos', dependendo de se a opción de metadatos 'Usar nomes de artista "
+#~ "estandarizados' está activada."
+
+#~ msgid "Artists"
+#~ msgstr "Artistas"
+
+#~ msgid ""
+#~ "The track artist names. These could be either \"standardized\" or \"as "
+#~ "credited\" depending on whether the \"Use standardized artist names\" "
+#~ "metadata option is enabled."
+#~ msgstr ""
+#~ "Os nomes dos artistas da peza. Estes poden ser 'estandarizados' ou 'como "
+#~ "aparecen nos créditos', dependendo de se a opción de metadatos 'Usar "
+#~ "nomes de artista estandarizados' está activada."
+
+#~ msgid "Artists Countries"
+#~ msgstr "Artistas Países"
+
+#~ msgid ""
+#~ "The country codes for all of the credited track artists, in the same "
+#~ "order as the artists. Duplicate country codes will be shown if there are "
+#~ "more than one artist from the same country. If a country code is not "
+#~ "provided by the webservice the code \"XX\" will be used to indicate an "
+#~ "unknown country."
+#~ msgstr ""
+#~ "Os códigos de país para todos os artistas acreditados da peza, no mesmo "
+#~ "orde que os artistas. Mostrarase o código de país duplicado se hai máis "
+#~ "dun artista do mesmo país. Se o servizo web non proporciona un código de "
+#~ "país, usarase o código 'XX' para indicar un país descoñecido."
+
+#~ msgid "Artist Sort Order"
+#~ msgstr "Orde da ordenación por artista"
+
+#~ msgid ""
+#~ "The sort names of the track's artists, separated by the specified join "
+#~ "phrases."
+#~ msgstr ""
+#~ "Os nomes de ordenación dos artistas da peza, separados polas expresións "
+#~ "de unión especificadas."
+
+#~ msgid "Artists Sort Names"
+#~ msgstr "Artistas Ordenar por nomes"
+
+#~ msgid "The sort names of the track's artists."
+#~ msgstr "Os nomes de ordenación dos artistas da peza."
+
+#~ msgid "ASIN"
+#~ msgstr "ASIN"
+
+#~ msgid ""
+#~ "The Amazon Standard Identification Number, which is the number "
+#~ "identifying the item on Amazon."
+#~ msgstr ""
+#~ "O número de identificación estándar de Amazon, que é o número que "
+#~ "identifica o artigo en Amazon."
+
+#~ msgid "The barcode assigned to the release."
+#~ msgstr "O código de barras asignado ao lanzamento."
+
+#~ msgid "Barcode in MusicBrainz documentation"
+#~ msgstr "Código de barras na documentación de MusicBrainz"
+
+#~ msgid "Barcode mapping in Picard documentation"
+#~ msgstr "Mapeo de códigos de barras na documentación de Picard"
+
+#~ msgid "BPM"
+#~ msgstr "BPM"
+
+#~ msgid "Beats per minute of the track."
+#~ msgstr "Pulsos por minuto da peza."
+
+#~ msgid "Bitrate"
+#~ msgstr "Taxa de bits"
+
+#~ msgid "Approximate bitrate in kbps."
+#~ msgstr "Taxa de bits aproximada en kbps."
+
+#~ msgid "Bits per sample"
+#~ msgstr "Bits por mostra"
+
+#~ msgid "Bits of data per sample."
+#~ msgstr "Bits de datos por mostra."
+
+#~ msgid "Catalog Number"
+#~ msgstr "Número de catálogo"
+
+#~ msgid ""
+#~ "The catalog numbers assigned to the release by the labels, which can "
+#~ "often be found on the spine or near the barcode. There may be more than "
+#~ "one, especially when multiple labels are involved."
+#~ msgstr ""
+#~ "Os números de catálogo asignados ao lanzamento polas etiquetas, que con "
+#~ "frecuencia se atopan na lombada ou cerca do código de barras. Pode haber "
+#~ "máis dun, especialmente cando participan varias etiquetas."
+
+#~ msgid "Channels"
+#~ msgstr "Canles"
+
+#~ msgid "Number of audio channels in the file."
+#~ msgstr "Número de canles de son no ficheiro."
+
+#~ msgid "Comment"
+#~ msgstr "Comentario"
+
+#~ msgid ""
+#~ "The disambiguation comment entered to help distinguish one release from "
+#~ "another (e.g.: Deluxe version with 2 bonus tracks)."
+#~ msgstr ""
+#~ "O comentario de desambiguación introducido para axudar a distinguir un "
+#~ "lanzamento doutro (por exemplo: Versión Deluxe con 2 pistas adicionais)."
+
+#~ msgid "Compilation (iTunes)"
+#~ msgstr "Compilación (iTunes)"
+
+#~ msgid "1 for Various Artist albums, otherwise empty."
+#~ msgstr "1 para álbums de artistas varios, senón, está baleiro."
+
+#~ msgid "The names of the composers for the associated work."
+#~ msgstr "Os nomes dos compositores para a obra asociada."
+
+#~ msgid "Composer Sort Order"
+#~ msgstr "Orde de clasificación do compositor"
+
+#~ msgid "The sort names of the composers for the associated work."
+#~ msgstr "Os nomes de ordenación dos compositores para a obra asociada."
+
+#~ msgid "Conductor"
+#~ msgstr "Director de orquestra"
+
+#~ msgid ""
+#~ "The names of the conductors associated with the track. These can include "
+#~ "the conductor and chorus master, and could be associated with the release "
+#~ "or recording."
+#~ msgstr ""
+#~ "Os nomes dos directores asociados coa peza. Estes poden incluír o "
+#~ "director e o mestre de coro, e poderían estar asociados co lanzamento ou "
+#~ "a gravación."
+
+#~ msgid "Copyright"
+#~ msgstr "Dereitos de autor"
+
+#~ msgid ""
+#~ "The copyright message for the copyright holder of the original sound, "
+#~ "beginning with a year and a space character."
+#~ msgstr ""
+#~ "A mensaxe de copyright para o titular dos dereitos de autor do son "
+#~ "orixinal, comezando cun ano e un carácter espazo."
+
+#~ msgid "Data Track"
+#~ msgstr "Pista de datos"
+
+#~ msgid "Set to 1 if the track is a \"data track\", otherwise empty."
+#~ msgstr ""
+#~ "Establecer a 1 se a peza é unha 'peza de datos', senón, deixala baleira."
+
+#~ msgid ""
+#~ "The date that the release (album) was issued, in the format `YYYY-MM-DD`."
+#~ msgstr ""
+#~ "A data na que se publicou o lanzamento (álbum), no formato AAAA-MM-DD."
+
+#~ msgid "Director"
+#~ msgstr "Director"
+
+#~ msgid ""
+#~ "The director of a track as provided by the \"*Video Director*\" or "
+#~ "\"*Audio Director*\" relationship in MusicBrainz."
+#~ msgstr ""
+#~ "O director dunha peza segundo a relación 'Director de vídeo' ou 'Director "
+#~ "de audio' en MusicBrainz."
+
+#~ msgid "Directory name"
+#~ msgstr "Nome do cartafol"
+
+#~ msgid ""
+#~ "The name of the directory containing the file at the point of being "
+#~ "loaded into Picard."
+#~ msgstr ""
+#~ "O nome do directorio que contén o ficheiro no momento de ser cargado en "
+#~ "Picard."
+
+#~ msgid "FreeDB Disc ID"
+#~ msgstr "ID do disco de FreeDB"
+
+#~ msgid "The identification number of the disc in the FreeDB database."
+#~ msgstr "O número de identificación do disco na base de datos de FreeDB."
+
+#~ msgid "FreeDB"
+#~ msgstr "FreeDB"
+
+#~ msgid "FreeDB DiscID Calculation"
+#~ msgstr "Cálculo do DiscID de FreeDB"
+
+#~ msgid "FreeDB DiscID including Calculation Example (French)"
+#~ msgstr "FreeDB DiscID incluíndo exemplo de cálculo (Francés)"
+
+#~ msgid "Disc Number"
+#~ msgstr "Número de disco"
+
+#~ msgid "The number of the disc in the release that contains this track."
+#~ msgstr "O número do disco no lanzamento que contén esta peza."
+
+#~ msgid "Disc Has Pregap"
+#~ msgstr "O disco ten pregap"
+
+#~ msgid ""
+#~ "Set to 1 if the disc the track is on has a \"pregap track\", otherwise "
+#~ "empty."
+#~ msgstr ""
+#~ "Establecer a 1 se o disco no que está a peza ten unha 'peza de pregap', "
+#~ "senón, deixala baleira."
+
+#~ msgid "The media title given to a specific disc in the release."
+#~ msgstr "O título do medio asignado a un disco específico no lanzamento."
+
+#~ msgid "DJ-Mixer"
+#~ msgstr "DJ-mesturador"
+
+#~ msgid "The names of the DJ mixers for the track."
+#~ msgstr "Os nomes dos DJ mixers da peza."
+
+#~ msgid "Encoded By"
+#~ msgstr "Codificado por"
+
+#~ msgid "The person or organization that encoded the track."
+#~ msgstr "A persoa ou organización que codificou a pista."
+
+#~ msgid "Encoder Settings"
+#~ msgstr "Configuración do codificador"
+
+#~ msgid "The settings used when encoding the track."
+#~ msgstr "A configuración empregada ao codificar a pista."
+
+#~ msgid "Engineer"
+#~ msgstr "Enxeñeiro"
+
+#~ msgid "The names of the engineers associated with the track."
+#~ msgstr "Os nomes dos enxeñeiros asociados coa pista."
+
+#~ msgid "File Extension"
+#~ msgstr "Extensión de ficheiro"
+
+#~ msgid "The file's extension."
+#~ msgstr "A extensión do ficheiro."
+
+#~ msgid "File Created Timestamp"
+#~ msgstr "Marca de tempo de creación do ficheiro"
+
+#~ msgid ""
+#~ "The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported "
+#~ "by the file system."
+#~ msgstr ""
+#~ "A marca de tempo de creación do ficheiro no formato `AAAA-MM-DD HH:MM:SS` "
+#~ "segundo o informado polo sistema de ficheiros."
+
+#~ msgid "File Modified Timestamp"
+#~ msgstr "Marca de tempo modificada do ficheiro"
+
+#~ msgid ""
+#~ "The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as "
+#~ "reported by the file system."
+#~ msgstr ""
+#~ "A marca de tempo da modificación do ficheiro no formato `AAAA-MM-DD "
+#~ "HH:MM:SS` segundo o informado polo sistema de ficheiros."
+
+#~ msgid "The name of the file without extension."
+#~ msgstr "O nome do ficheiro sen a extensión."
+
+#~ msgid "File Path"
+#~ msgstr "Camiño do ficheiro"
+
+#~ msgid "Full path and name of the file."
+#~ msgstr "Camiño completo e nome do ficheiro."
+
+#~ msgid "File Size"
+#~ msgstr "Tamaño do ficheiro"
+
+#~ msgid "Size of the file in bytes."
+#~ msgstr "Tamaño do ficheiro en bytes."
+
+#~ msgid "File Format"
+#~ msgstr "Formato de ficheiro"
+
+#~ msgid "Media format of the file (e.g.: MPEG-1 Audio)."
+#~ msgstr "Formato multimedia do ficheiro (por exemplo: MPEG-1 Audio)."
+
+#~ msgid "Gapless Playback"
+#~ msgstr "Reprodución sen intervalos"
+
+#~ msgid ""
+#~ "Indicates whether or not there are gaps between the recordings on the "
+#~ "release."
+#~ msgstr "Indica se hai ou non lagoas entre as gravacións da publicación."
+
+#~ msgid "The specified genre information from MusicBrainz."
+#~ msgstr "A información do xénero especificado procedente de MusicBrainz."
+
+#~ msgid "Grouping"
+#~ msgstr "Agrupamento"
+
+#~ msgid "Genre grouping associated with the track"
+#~ msgstr "A agrupación de xéneros asociada á peza"
+
+#~ msgid "ISRC"
+#~ msgstr "ISRC"
+
+#~ msgid ""
+#~ "The International Standard Recording Code, which is an international "
+#~ "standard code for uniquely identifying sound recordings and music video "
+#~ "recordings."
+#~ msgstr ""
+#~ "O Código Internacional de Rexistro de Gravacións, que é un código de "
+#~ "estándar internacional para identificar de forma única as gravacións de "
+#~ "son e as gravacións de videoclips musicais."
+
+#~ msgid "Key"
+#~ msgstr "Clave"
+
+#~ msgid "The key of the music."
+#~ msgstr "A tonalidade da música."
+
+#~ msgid "Record Label"
+#~ msgstr "Selo discográfico"
+
+#~ msgid "The names of the labels associated with the release."
+#~ msgstr "Os nomes das etiquetas asociadas co lanzamento."
+
+#~ msgid "Work lyric language as per ISO 639-3 if a related work exists."
+#~ msgstr ""
+#~ "Idioma da letra da obra segundo a norma ISO 639-3, se existe unha obra "
+#~ "relacionada."
+
+#~ msgid "The length of the track in format mins:secs."
+#~ msgstr "A duración da pista no formato minutos:segundos."
+
+#~ msgid ""
+#~ "The license associated with the track, either through the release or "
+#~ "recording relationships."
+#~ msgstr ""
+#~ "A licenza asociada á peza, xa sexa a través das relacións do lanzamento "
+#~ "ou da gravación."
+
+#~ msgid "Lyricist"
+#~ msgstr "Letrista"
+
+#~ msgid "The names of the lyricists for the associated work."
+#~ msgstr "Os nomes dos letristas da obra asociada."
+
+#~ msgid "Lyricist Sort"
+#~ msgstr "Ordenar polo letrista"
+
+#~ msgid "The sort names of the lyricists for the associated work."
+#~ msgstr "Os nomes de ordenación dos letristas da obra asociada."
+
+#~ msgid "Lyrics"
+#~ msgstr "Letras"
+
+#~ msgid "The lyrics for the track."
+#~ msgstr "A letra da peza."
+
+#~ msgid "The media on which the release was distributed (e.g.: CD)."
+#~ msgstr "O soporte no que se distribuíu o lanzamento (por exemplo: CD)."
+
+#~ msgid "Mixer"
+#~ msgstr "Mesturador"
+
+#~ msgid "The names of the \"*Mixed By*\" engineers associated with the track."
+#~ msgstr "Os nomes dos enxeñeiros de mestura asociados coa peza."
+
+#~ msgid "Mood"
+#~ msgstr "Estado de ánimo"
+
+#~ msgid "The mood associated with the track."
+#~ msgstr "O estado de ánimo asociado á peza."
+
+#~ msgid "Movement"
+#~ msgstr "Movemento"
+
+#~ msgid "Name of the movement (e.g.: \"Andante con moto\")."
+#~ msgstr "Nome do movemento (por exemplo: 'Andante con moto')."
+
+#~ msgid "Movement Number"
+#~ msgstr "Número de movemento"
+
+#~ msgid ""
+#~ "Movement number in Arabic numerals (e.g.: \"2\"). Players explicitly "
+#~ "supporting this tag will often display it in Roman numerals (e.g.: "
+#~ "\"II\")."
+#~ msgstr ""
+#~ "Número do movemento en numerais árabes (por exemplo: '2'). Os "
+#~ "reprodutores que soportan explícitamente esta etiqueta adoitan mostrala "
+#~ "en numerais romanos (por exemplo: 'II')."
+
+#~ msgid "Movement Count"
+#~ msgstr "Conta de movementos"
+
+#~ msgid "Total number of movements in the work (e.g.: \"4\")."
+#~ msgstr "Número total de movementos na obra (por exemplo: '4')."
+
+#~ msgid "Multiple Artists"
+#~ msgstr "Varios artistas"
+
+#~ msgid ""
+#~ "Set to 1 if not all of the tracks on the album have the same primary "
+#~ "artist, otherwise empty."
+#~ msgstr ""
+#~ "Establecer a 1 se non todas as pezas do álbum teñen o mesmo artista "
+#~ "principal, senón, deixala baleira."
+
+#~ msgid "Release Artist MBID"
+#~ msgstr "MBID do artista de lanzamento"
+
+#~ msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
+#~ msgstr ""
+#~ "Os Identificadores MusicBrainz (MBID) para os artistas do lanzamento."
+
+#~ msgid "Release MBID"
+#~ msgstr "MBID do lanzamento"
+
+#~ msgid "The MusicBrainz Identifier (MBID) for the release."
+#~ msgstr "O Identificador MusicBrainz (MBID) para o lanzamento."
+
+#~ msgid "Artist MBID"
+#~ msgstr "MBID do Artista"
+
+#~ msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
+#~ msgstr "Os Identificadores MusicBrainz (MBID) para os artistas da peza."
+
+#~ msgid "MusicBrainz DiscID"
+#~ msgstr "ID do disco de MusicBrainz"
+
+#~ msgid ""
+#~ "The Disc ID is the code number which MusicBrainz uses to link a physical "
+#~ "CD to a release listing. This is based on the table of contents (TOC) "
+#~ "information read from the disc. This tag contains the Disc ID if the "
+#~ "album information was retrieved using `Tools > Lookup CD` from the menu."
+#~ msgstr ""
+#~ "O Disc ID é o número de código que MusicBrainz utiliza para vincular un "
+#~ "CD físico cunha listaxe de lanzamento. Isto baséase na información da "
+#~ "táboa de contidos (TOC) lida desde o disco. Esta etiqueta contén o Disc "
+#~ "ID se a información do álbum foi recuperada utilizando Ferramentas > "
+#~ "Buscar CD no menú."
+
+#~ msgid "Disc ID Calculation"
+#~ msgstr "Cálculo do ID do disco"
+
+#~ msgid "Disc IDs"
+#~ msgstr "IDs do disco"
+
+#~ msgid ""
+#~ "A list of all of the disc ids attached to the selected release. The list "
+#~ "provided for each medium only includes the disc ids attached to that "
+#~ "medium."
+#~ msgstr ""
+#~ "Unha lista de todos os Disc IDs asociados co lanzamento seleccionado. A "
+#~ "lista proporcionada para cada medio só inclúe os Disc IDs asociados a ese "
+#~ "medio."
+
+#~ msgid ""
+#~ "For example, the list provided for Disc 1 of a three CD set will not "
+#~ "include the disc ids attached to discs 2 and 3 of the set."
+#~ msgstr ""
+#~ "Por exemplo, a lista proporcionada para o Disco 1 dunha caixa de tres CDs "
+#~ "non incluirá os Disc IDs asociados aos discos 2 e 3 da caixa."
+
+#~ msgid "Original Release MBID"
+#~ msgstr "MBID do lanzamento orixinal"
+
+#~ msgid ""
+#~ "The MusicBrainz Identifier (MBID) for the original release. This is only "
+#~ "available if the release has been merged with another release."
+#~ msgstr ""
+#~ "O Identificador MusicBrainz (MBID) para o lanzamento orixinal. Isto só "
+#~ "está dispoñible se o lanzamento foi fusionado cun outro lanzamento."
+
+#~ msgid "Original Artist MBID"
+#~ msgstr "MBID do Artista orixinal"
+
+#~ msgid ""
+#~ "The MusicBrainz Identifiers (MBIDs) for the track artists of the original "
+#~ "recording. This is only available if the recording has been merged with "
+#~ "another recording."
+#~ msgstr ""
+#~ "Os Identificadores MusicBrainz (MBID) para os artistas da peza na "
+#~ "gravación orixinal. Isto só está dispoñible se a gravación foi fusionada "
+#~ "cunha outra gravación."
+
+#~ msgid "Recording MBID"
+#~ msgstr "Gravación MBID"
+
+#~ msgid "The MusicBrainz Identifier (MBID) for the recording."
+#~ msgstr "O Identificador MusicBrainz (MBID) para a gravación."
+
+#~ msgid "Release Group MBID"
+#~ msgstr "MBID do grupo de lanzamento"
+
+#~ msgid "The MusicBrainz Identifier (MBID) for the release group."
+#~ msgstr "O Identificador MusicBrainz (MBID) para o grupo de lanzamentos."
+
+#~ msgid "Track MBID"
+#~ msgstr "MBID da pista"
+
+#~ msgid "The MusicBrainz Identifier (MBID) for the track."
+#~ msgstr "O Identificador MusicBrainz (MBID) para a peza."
+
+#~ msgid "Track Number Shown"
+#~ msgstr "Número de pista amosado"
+
+#~ msgid ""
+#~ "The track number written as on the MusicBrainz release, such as vinyl "
+#~ "numbering (A1, A2, etc.)"
+#~ msgstr ""
+#~ "O número da peza escrito tal como aparece no lanzamento de MusicBrainz, "
+#~ "como a numeración de vinilo (A1, A2, etc.)"
+
+#~ msgid "Work MBID"
+#~ msgstr "MBID da obra"
+
+#~ msgid ""
+#~ "The MusicBrainz Identifier (MBID) for the Work if a related work exists."
+#~ msgstr ""
+#~ "O Identificador MusicBrainz (MBID) para a obra se existe unha obra "
+#~ "relacionada."
+
+#~ msgid "MusicIP Fingerprint"
+#~ msgstr "Pegada dixital de MusicIP"
+
+#~ msgid "The MusicIP Fingerprint for the track."
+#~ msgstr "A pegada dixital MusicIP da pista."
+
+#~ msgid "MusicIP PUID"
+#~ msgstr "PUID de MusicIP"
+
+#~ msgid "The MusicIP PUIDs associated with the track."
+#~ msgstr "Os PUIDs de MusicIP asociados á peza."
+
+#~ msgid "Original Album"
+#~ msgstr "Álbum orixinal"
+
+#~ msgid ""
+#~ "The release title of the earliest release in the release group intended "
+#~ "for the title of the original recording."
+#~ msgstr ""
+#~ "O título do lanzamento da primeira edición no grupo de lanzamentos "
+#~ "destinada ao título da gravación orixinal."
+
+#~ msgid "Original Artist"
+#~ msgstr "Artista orixinal"
+
+#~ msgid ""
+#~ "The track artist of the earliest release in the release group intended "
+#~ "for the performers of the original recording."
+#~ msgstr ""
+#~ "O artista da peza da primeira edición no grupo de lanzamentos destinada "
+#~ "aos intérpretes da gravación orixinal."
+
+#~ msgid ""
+#~ "The original release date in the format `YYYY-MM-DD`. By default this is "
+#~ "set to the earliest release in the release group. This can provide, for "
+#~ "example, the release date of the vinyl version of what you have on CD.\n"
+#~ "\n"
+#~ "**Note:** If you are storing tags in MP3 files as ID3v2.3 then the "
+#~ "original date can only be stored as a year."
+#~ msgstr ""
+#~ "A data de lanzamento orixinal no formato AAAA-MM-DD. Por defecto, isto "
+#~ "establécese na primeira edición do grupo de lanzamentos. Isto pode "
+#~ "fornecer, por exemplo, a data de lanzamento da versión en vinilo do que "
+#~ "tes en CD.\n"
+#~ "\n"
+#~ "**Nota:** Se estás a almacenar as etiquetas en arquivos MP3 como ID3v2.3, "
+#~ "a data orixinal só se pode almacenar como un ano."
+
+#~ msgid "Original Filename"
+#~ msgstr "Nome do ficheiro orixinal"
+
+#~ msgid "The original name of the audio file."
+#~ msgstr "O nome orixinal do arquivo de son."
+
+#~ msgid "Original Year"
+#~ msgstr "Ano orixinal"
+
+#~ msgid ""
+#~ "The year of the original release date in the format `YYYY`. By default "
+#~ "this is set to the earliest release in the release group. This can "
+#~ "provide, for example, the release year of the vinyl version of what you "
+#~ "have on CD."
+#~ msgstr ""
+#~ "O ano da data de lanzamento orixinal no formato AAAA. Por defecto, isto "
+#~ "establécese na primeira edición do grupo de lanzamentos. Isto pode "
+#~ "proporcionar, por exemplo, o ano de lanzamento da versión en vinilo do "
+#~ "que tes en CD."
+
+#~ msgid "Performance Attributes"
+#~ msgstr "Atributos de interpretación"
+
+#~ msgid ""
+#~ "List of performance attributes for the work (e.g.: \"*live*\", "
+#~ "\"*cover*\", \"*medley*\")."
+#~ msgstr ""
+#~ "Lista de atributos de interpretación para a obra (por exemplo: 'en "
+#~ "directo', 'versión', 'medley')."
+
+#~ msgid ""
+#~ "Use `$inmulti()` to check for a specific type (e.g.: "
+#~ "`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
+#~ msgstr ""
+#~ "Usa $inmulti() para comprobar un tipo específico (por exemplo: "
+#~ "`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
+
+#~ msgid "Performer"
+#~ msgstr "Intérprete"
+
+#~ msgid ""
+#~ "The names of the performers for the specified type. These types include:\n"
+#~ "\n"
+#~ "- vocals or instruments for the associated release or recording, where "
+#~ "\"type\" can be \"*vocal*\", \"*guest guitar*\", \"*solo violin*\", etc.\n"
+#~ "- the orchestra for the associated release or recording, where \"type\" "
+#~ "is \"*orchestra*\"\n"
+#~ "- the concert master for the associated release or recording, where "
+#~ "\"type\" is \"*concertmaster*\""
+#~ msgstr ""
+#~ "Os nomes dos intérpretes para o tipo especificado. Estes tipos inclúen:\n"
+#~ "\n"
+#~ "- voces ou instrumentos para o lanzamento ou gravación asociada, onde o "
+#~ "'tipo' pode ser 'vocal', 'guitarra invitada', 'violo solo', etc.\n"
+#~ "- a orquestra para o lanzamento ou gravación asociada, onde o 'tipo' é "
+#~ "'orquestra'\n"
+#~ "- o mestre de concertos para o lanzamento ou gravación asociada, onde o "
+#~ "'tipo' é 'mestre de concertos"
+
+#~ msgid "Podcast"
+#~ msgstr "Podcast"
+
+#~ msgid "Indicates whether or not the recording is a podcast."
+#~ msgstr "Indica se a gravación é ou non un podcast."
+
+#~ msgid "Podcast URL"
+#~ msgstr "URL do podcast"
+
+#~ msgid "The associated URL if the recording is a podcast."
+#~ msgstr "A URL asociada se a gravación é un podcast."
+
+#~ msgid "Pregap Track"
+#~ msgstr "Pista de pregap"
+
+#~ msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
+#~ msgstr ""
+#~ "Establécese a 1 se a peza é unha 'peza pregap', se non, déixase en branco."
+
+#~ msgid "Primary Release Type"
+#~ msgstr "Tipo principal de lanzamento"
+
+#~ msgid ""
+#~ "The primary type of the release group (i.e.: *album*, *single*, *ep*, "
+#~ "*broadcast*, or *other*)."
+#~ msgstr ""
+#~ "O tipo principal do grupo de lanzamentos (é dicir: álbum, sinxelo, EP, "
+#~ "emisión, ou outro)."
+
+#~ msgid "Release group types"
+#~ msgstr "Tipos de grupo de lanzamento"
+
+#~ msgid "Producer"
+#~ msgstr "Produtor"
+
+#~ msgid "The names of the producers for the associated release or recording."
+#~ msgstr "Os nomes dos produtores para o lanzamento ou gravación asociada."
+
+#~ msgid "R128 Album Gain"
+#~ msgstr "Ganancia do álbum R128"
+
+#~ msgid ""
+#~ "Album gain as determined by European Broadcasting Union \"R 128\" "
+#~ "analysis."
+#~ msgstr ""
+#~ "Ganancia do álbum segundo a análise 'R 128' da Unión Europea de "
+#~ "Radiodifusión."
+
+#~ msgid "R128 Track Gain"
+#~ msgstr "R128 Ganancia de pista"
+
+#~ msgid ""
+#~ "Track gain as determined by European Broadcasting Union \"R 128\" "
+#~ "analysis."
+#~ msgstr ""
+#~ "Ganancia da peza segundo a análise 'R 128' da Unión Europea de "
+#~ "Radiodifusión."
+
+#~ msgid "Rating"
+#~ msgstr "Puntuación"
+
+#~ msgid "The rating of the track from 0-5 by MusicBrainz users."
+#~ msgstr ""
+#~ "A valoración da peza de 0 a 5 realizada polos usuarios de MusicBrainz."
+
+#~ msgid "Recording First Released"
+#~ msgstr "Primeiro Lanzamento da Gravación"
+
+#~ msgid ""
+#~ "The date of the earliest recording for a track in the format `YYYY-MM-DD`."
+#~ msgstr "A data da gravación máis antiga dunha peza no formato AAAA-MM-DD."
+
+#~ msgid "Recording Series"
+#~ msgstr "Serie de gravación"
+
+#~ msgid "The series titles associated with the recording."
+#~ msgstr "Os títulos das series asociadas á gravación."
+
+#~ msgid "Recording Series Comment"
+#~ msgstr "Comentario da serie de gravación"
+
+#~ msgid "The series disambiguation comments associated with the recording."
+#~ msgstr "Os comentarios de desambiguación da serie asociados á gravación."
+
+#~ msgid "Recording Series MBID"
+#~ msgstr "MBID da serie de gravación"
+
+#~ msgid ""
+#~ "The series MusicBrainz Identifiers (MBIDs) associated with the recording."
+#~ msgstr ""
+#~ "Os Identificadores MusicBrainz (MBID) das series asociadas á gravación."
+
+#~ msgid "Recording Series Number"
+#~ msgstr "Número da serie de gravación"
+
+#~ msgid "The series numbers associated with the recording."
+#~ msgstr "Os números das series asociados á gravación."
+
+#~ msgid "Recording Comment"
+#~ msgstr "Comentario da gravación"
+
+#~ msgid ""
+#~ "The disambiguation comment for the recording associated with a track."
+#~ msgstr ""
+#~ "O comentario de desambiguación para a gravación asociada a unha peza."
+
+#~ msgid "Recording Title"
+#~ msgstr "Título da gravación"
+
+#~ msgid ""
+#~ "Recording title - normally the same as the track title, but can be "
+#~ "different."
+#~ msgstr ""
+#~ "Título da gravación - normalmente o mesmo que o título da peza, pero pode "
+#~ "ser diferente."
+
+#~ msgid "Release Annotation"
+#~ msgstr "Anotación do lanzamento"
+
+#~ msgid "The annotation comment for the release."
+#~ msgstr "O comentario de anotación para o lanzamento."
+
+#~ msgid "Release Comment"
+#~ msgstr "Comentario do lanzamento"
+
+#~ msgid "The disambiguation comment for the release."
+#~ msgstr "O comentario de desambiguación para o lanzamento."
+
+#~ msgid "Release Countries"
+#~ msgstr "Países de lanzamento"
+
+#~ msgid "The complete list of release countries for the release."
+#~ msgstr "A lista completa de países de lanzamento para o lanzamento."
+
+#~ msgid "Release Country"
+#~ msgstr "País de lanzamento"
+
+#~ msgid ""
+#~ "The two-character code for the country in which the release was issued. "
+#~ "If more than one release country was specified, this tag will contain the "
+#~ "first one in the list."
+#~ msgstr ""
+#~ "O código de dúas letras do país no que se emitíu o lanzamento. Se se "
+#~ "especificaron varios países de lanzamento, esta etiqueta conterá o "
+#~ "primeiro da lista."
+
+#, python-format
+#~ msgid ""
+#~ "This tag exists for specific use in scripts and plugins, but is not "
+#~ "filled by default. In most cases it is recommended to use the `%date%` "
+#~ "tag instead for compatibility with existing software."
+#~ msgstr ""
+#~ "Esta etiqueta existe para o uso específico en scripts e complementos, "
+#~ "pero non se enche por defecto. Na maioría dos casos, recoméndase usar a "
+#~ "etiqueta `%date%` en vez diso para a compatibilidade co soporte lóxico "
+#~ "existente."
+
+#~ msgid "Release Group"
+#~ msgstr "Grupo de lanzamento"
+
+#~ msgid ""
+#~ "The title of the release group. This is typically the same as the album "
+#~ "title, but can be different."
+#~ msgstr ""
+#~ "O título do grupo de lanzamento. Normalmente é o mesmo que o título do "
+#~ "álbum, pero pode ser diferente."
+
+#~ msgid "RG First Released"
+#~ msgstr "Primeiro Lanzamento do Grupo de Lanzamento"
+
+#~ msgid ""
+#~ "The date of the earliest release in the release group in the format `YYYY-"
+#~ "MM-DD`. This is intended to provide, for example, the release date of the "
+#~ "vinyl version of what you have on CD."
+#~ msgstr ""
+#~ "A data do lanzamento máis antigo no grupo de lanzamentos no formato AAAA-"
+#~ "MM-DD. Isto ten a finalidade de proporcionar, por exemplo, a data de "
+#~ "lanzamento da versión en vinilo do que tiñas en CD."
+
+#~ msgid "RG Series"
+#~ msgstr "Serie do Grupo de Lanzamento"
+
+#~ msgid "The series titles associated with the release group."
+#~ msgstr "Os títulos das series asociadas co grupo de lanzamento."
+
+#~ msgid "RG Series Comment"
+#~ msgstr "Comentario da serie do grupo de lanzamento"
+
+#~ msgid ""
+#~ "The series disambiguation comments associated with the release group."
+#~ msgstr ""
+#~ "Os comentarios de desambiguación das series asociadas co grupo de "
+#~ "lanzamento."
+
+#~ msgid "RG Series MBID"
+#~ msgstr "MBID da serie do grupo de lanzamento"
+
+#~ msgid ""
+#~ "The series MusicBrainz Identifiers (MBIDs) associated with the release "
+#~ "group."
+#~ msgstr ""
+#~ "Os Identificadores MusicBrainz (MBID) das series asociadas co grupo de "
+#~ "lanzamento."
+
+#~ msgid "RG Series Number"
+#~ msgstr "Número da serie do grupo de lanzamento"
+
+#~ msgid "The series numbers associated with the release group."
+#~ msgstr "Os números das series asociadas co grupo de lanzamento."
+
+#~ msgid "RG Comment"
+#~ msgstr "Comentario do grupo de lanzamento"
+
+#~ msgid "The disambiguation comment for the release group."
+#~ msgstr "O comentario de desambiguación para o grupo de lanzamento."
+
+#~ msgid "Release Language"
+#~ msgstr "Lingua do lanzamento"
+
+#~ msgid "The language of the release as per ISO 639-3."
+#~ msgstr "A lingua do lanzamento segundo o ISO 639-3."
+
+#~ msgid "Release Series"
+#~ msgstr "Series do lanzamento"
+
+#~ msgid "The series titles associated with the release."
+#~ msgstr "Os títulos das series asociadas co lanzamento."
+
+#~ msgid "Release Series Comment"
+#~ msgstr "Comentario da serie do lanzamento"
+
+#~ msgid "The series disambiguation comments associated with the release."
+#~ msgstr "Os comentarios de desambiguación da serie asociados co lanzamento."
+
+#~ msgid "Release Series MBID"
+#~ msgstr "MBID da serie do lanzamento"
+
+#~ msgid ""
+#~ "The series MusicBrainz Identifiers (MBIDs) associated with the release."
+#~ msgstr ""
+#~ "A serie de identificadores de MusicBrainz (MBID) asociados co lanzamento."
+
+#~ msgid "Release Series Number"
+#~ msgstr "Número de serie de lanzamento"
+
+#~ msgid "The series numbers associated with the release."
+#~ msgstr "Os números de serie asociados co lanzamento."
+
+#~ msgid "Release Status"
+#~ msgstr "Estado de lanzamento"
+
+#~ msgid ""
+#~ "An indicator of the \"official\" status of the release. Possible values "
+#~ "include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
+#~ "release*\"."
+#~ msgstr ""
+#~ "Un indicador do estado \"oficial\" do lanzamento. Os valores posibles "
+#~ "inclúen \"*oficial*\", \"*promocional*\", \"*pirata*\" e \"*pseudo-"
+#~ "lanzamento*\"."
+
+#~ msgid "Release Type"
+#~ msgstr "Tipo de lanzamento"
+
+#~ msgid "The types of release assigned to the release group."
+#~ msgstr "Os tipos de lanzamentos asignados ao grupo de lanzamentos."
+
+#~ msgid "Remixer"
+#~ msgstr "Remesturador"
+
+#~ msgid "The names of the remixer engineers associated with the track."
+#~ msgstr "Os nomes dos enxeñeiros de remestura asociados coa peza."
+
+#~ msgid "ReplayGain Album Gain"
+#~ msgstr "Ganancia do álbum ReplayGain"
+
+#~ msgid "Album gain setting resulting from ReplayGain analysis of the album."
+#~ msgstr ""
+#~ "Axuste de ganancia do álbum resultante da análise de ReplayGain do álbum."
+
+#~ msgid "ReplayGain Album Peak"
+#~ msgstr "Pico do álbum ReplayGain"
+
+#~ msgid "Album peak setting resulting from ReplayGain analysis of the album."
+#~ msgstr ""
+#~ "Axuste de picos do álbum resultante da análise de ReplayGain do álbum."
+
+#~ msgid "ReplayGain Album Range"
+#~ msgstr "Rango do álbum ReplayGain"
+
+#~ msgid "Album range setting resulting from ReplayGain analysis of the album."
+#~ msgstr ""
+#~ "Configuración do rango do álbum resultante da análise de ReplayGain do "
+#~ "álbum."
+
+#~ msgid "ReplayGain Reference Loudness"
+#~ msgstr "Volume de referencia ReplayGain"
+
+#~ msgid ""
+#~ "Album reference loudness setting resulting from ReplayGain analysis of "
+#~ "the album."
+#~ msgstr ""
+#~ "Axuste de sonoridade de referencia do álbum resultante da análise de "
+#~ "ReplayGain do álbum."
+
+#~ msgid "ReplayGain Track Gain"
+#~ msgstr "Ganancia da pista ReplayGain"
+
+#~ msgid "Track gain setting resulting from ReplayGain analysis of the track."
+#~ msgstr ""
+#~ "Axuste de ganancia da pista resultante da análise de ReplayGain da pista."
+
+#~ msgid "ReplayGain Track Peak"
+#~ msgstr "Pico da pista ReplayGain"
+
+#~ msgid "Track peak setting resulting from ReplayGain analysis of the track."
+#~ msgstr ""
+#~ "Axuste de picos da pista resultante da análise de ReplayGain da pista."
+
+#~ msgid "ReplayGain Track Range"
+#~ msgstr "Rango de pistas ReplayGain"
+
+#~ msgid "Track range setting resulting from ReplayGain analysis of the track."
+#~ msgstr ""
+#~ "Configuración do rango da pista resultante da análise de ReplayGain da "
+#~ "pista."
+
+#~ msgid "Sample Rate"
+#~ msgstr "Taxa de mostra"
+
+#~ msgid "The sample rate of the audio file."
+#~ msgstr "A taxa de mostraxe do ficheiro de son."
+
+#~ msgid "Script"
+#~ msgstr "Script"
+
+#~ msgid ""
+#~ "The script used to write the release's track list. The possible values "
+#~ "are taken from the ISO 15924 standard."
+#~ msgstr ""
+#~ "O script empregado para escribir a lista de pezas do lanzamento. Os "
+#~ "valores posibles tómanse da norma ISO 15924."
+
+#~ msgid "Secondary Release Type"
+#~ msgstr "Tipo secundario de lanzamento"
+
+#~ msgid ""
+#~ "Zero or more secondary types (i.e.: *audiobook*, *compilation*, *dj-mix*, "
+#~ "*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
+#~ "*spokenword*) for the release group."
+#~ msgstr ""
+#~ "Cero ou máis tipos secundarios (por exemplo: *audiolibro*, "
+#~ "*recompilación*, *mestura de DJ*, *entrevista*, *en directo*, *mixtape/"
+#~ "rúa*, *remestura*, *banda sonora* ou *palabra falada*) para o grupo de "
+#~ "lanzamentos."
+
+#~ msgid "Silence"
+#~ msgstr "Silencio"
+
+#~ msgid "1 if the track title is \"[silence]\""
+#~ msgstr "1 se o título da peza é \"[silencio]\""
+
+#~ msgid "Show Name"
+#~ msgstr "Amosar o nome"
+
+#~ msgid ""
+#~ "The name of the show if the recording is associated with a television "
+#~ "program."
+#~ msgstr ""
+#~ "O nome do programa se a gravación está asociada a un programa de "
+#~ "televisión."
+
+#~ msgid "Show Work & Movement"
+#~ msgstr "Amosar obra e movemento"
+
+#~ msgid ""
+#~ "Show work and movement. If this tag is set to \"1\" players supporting "
+#~ "this tag, such as iTunes and MusicBee, will display the work, movement "
+#~ "number and movement name instead of the track title."
+#~ msgstr ""
+#~ "Mostrar traballo e movemento. Se esta etiqueta está definida en \"1\", os "
+#~ "reprodutores que admitan esta etiqueta, como iTunes e MusicBee, mostrarán "
+#~ "o traballo, o número do movemento e o nome do movemento en lugar do "
+#~ "título da pista."
+
+#~ msgid ""
+#~ "For example, the track will be displayed as \"Symphony no. 5 in C minor, "
+#~ "op. 67: II. Andante con moto\" regardless of the value of the title tag."
+#~ msgstr ""
+#~ "Por exemplo, a peza se amosará como \"Sinfonía n.º 5 en dó menor, op. 67: "
+#~ "II. Andante con moto\" independentemente do valor da etiqueta do título."
+
+#~ msgid "Show Name Sort Order"
+#~ msgstr "Amosar a orde de clasificación do nome"
+
+#~ msgid ""
+#~ "The sort name of the show if the recording is associated with a "
+#~ "television program."
+#~ msgstr ""
+#~ "O nome de ordenación do programa se a gravación está asociada a un "
+#~ "programa de televisión."
+
+#~ msgid "Subtitle"
+#~ msgstr "Subtítulo"
+
+#~ msgid "This is used for information directly related to the contents title."
+#~ msgstr ""
+#~ "Isto úsase para información directamente relacionada co título do contido."
+
+#~ msgid "Synced Lyrics"
+#~ msgstr "Letras sincronizadas"
+
+#~ msgid "Synchronized lyrics for the track."
+#~ msgstr "Letra sincronizada para a peza."
+
+#~ msgid "The title of the track."
+#~ msgstr "O título da pista."
+
+#~ msgid "Title Sort Order"
+#~ msgstr "Orde da ordenación por título"
+
+#~ msgid "The sort name of the track title."
+#~ msgstr "O nome de ordenación do título da pista."
+
+#~ msgid "Total Album Tracks"
+#~ msgstr "Número total de pistas do álbum"
+
+#~ msgid "The total number of tracks across all discs of this release."
+#~ msgstr "O número total de pistas en todos os discos deste lanzamento."
+
+#~ msgid "Total Discs"
+#~ msgstr "Discos totais"
+
+#~ msgid "The total number of discs in this release."
+#~ msgstr "O número total de discos desta edición."
+
+#~ msgid "Total Tracks"
+#~ msgstr "Pistas totais"
+
+#~ msgid "The total number of tracks on this disc."
+#~ msgstr "O número total de pistas deste disco."
+
+#~ msgid "Track Number"
+#~ msgstr "Número de pista"
+
+#~ msgid "The number of the track on the disc."
+#~ msgstr "O número da pista no disco."
+
+#~ msgid "Video"
+#~ msgstr "Video"
+
+#~ msgid "Set to \"1\" if the track is a video."
+#~ msgstr "Definir en \"1\" se a pista é un vídeo."
+
+#~ msgid "Artist Website"
+#~ msgstr "Páxina web do artista"
+
+#~ msgid "The official website for the artist."
+#~ msgstr "A páxina web oficial do artista."
+
+#~ msgid "Work"
+#~ msgstr "Obra"
+
+#~ msgid ""
+#~ "The name of the work associated with the track (e.g.: \"Symphony no. 5 in "
+#~ "C minor, op. 67\")."
+#~ msgstr ""
+#~ "O nome da obra asociada á pista (por exemplo: \"Sinfonía n.º 5 en dó "
+#~ "menor, op. 67\")."
+
+#~ msgid ""
+#~ "Note: If you are using iTunes together with MP3 files you should activate "
+#~ "the \"Save iTunes compatible grouping and work\" option in order for the "
+#~ "work to be displayed correctly."
+#~ msgstr ""
+#~ "Nota: Se estás a usar iTunes xunto con ficheiros MP3, debes activar a "
+#~ "opción \"Gardar a agrupación e o traballo compatibles con iTunes\" para "
+#~ "que o traballo se mostre correctamente."
+
+#~ msgid "Work Series"
+#~ msgstr "Serie de traballos"
+
+#~ msgid "The series titles associated with the work."
+#~ msgstr "Os títulos das series asociados á obra."
+
+#~ msgid "Work Series Comment"
+#~ msgstr "Comentario da serie de traballos"
+
+#~ msgid "The series disambiguation comments associated with the work."
+#~ msgstr "Os comentarios de desambiguación da serie asociados coa obra."
+
+#~ msgid "Work Series MBID"
+#~ msgstr "Serie de traballo MBID"
+
+#~ msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
+#~ msgstr "A serie de identificadores MusicBrainz (MBID) asociados á obra."
+
+#~ msgid "Work Series Number"
+#~ msgstr "Número da serie da obra"
+
+#~ msgid "The series numbers associated with the work."
+#~ msgstr "Os números de serie asociados á obra."
+
+#~ msgid "Work Comment"
+#~ msgstr "Comentario da obra"
+
+#~ msgid "The disambiguation comment associated with the work."
+#~ msgstr "O comentario de desambiguación asociado á obra."
+
+#~ msgid "Writer"
+#~ msgstr "Escritor"
+
+#~ msgid ""
+#~ "The names of the writers associated with the related work. This is not "
+#~ "written to most file formats automatically."
+#~ msgstr ""
+#~ "Os nomes dos escritores asociados coa obra relacionada. Isto non se "
+#~ "escribe automaticamente na maioría dos formatos de ficheiro."
+
+#~ msgid ""
+#~ "You can merge this with composers with a script like "
+#~ "`$copymerge(composer,writer)`."
+#~ msgstr ""
+#~ "Podes combinar isto con compositores cun script como "
+#~ "`$copymerge(composer,writer)`."
+
+#~ msgid "Writer Sort"
+#~ msgstr "Ordenar polo escritor"
+
+#~ msgid "The sort names of the writers for the work."
+#~ msgstr "Os nomes de orde dos escritores para a obra."
 
 #~ msgid "MusicBrainz Release Id"
 #~ msgstr "ID do lanzamento de MusicBrainz"
