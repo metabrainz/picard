@@ -195,8 +195,7 @@ class RemoteCommandHandlers:
                 return
 
     def remove_all(self, argstring):
-        for file in self.tagger.iter_all_files():
-            self.tagger.remove([file])
+        self.tagger.remove_files(list(self.tagger.iter_all_files()))
 
     def remove_empty(self, argstring):
         _albums = [a for a in self.tagger.albums.values()]
