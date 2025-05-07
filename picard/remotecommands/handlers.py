@@ -142,11 +142,17 @@ class RemoteCommandHandlers:
         for album_name in self.tagger.albums:
             self.tagger.analyze(self.tagger.albums[album_name].iterfiles())
 
-    @remote_command("Load commands from a file.", help_args="[Path to a file containing commands]")
+    @remote_command(
+        "Load commands from a file.",
+        help_args="[path]"
+    )
     def from_file(self, argstring):
         self.remotecommands_class.get_commands_from_file(argstring)
 
-    @remote_command("Load one or more files/MBIDs/URLs to Picard.", help_args="[supported MBID/URL or path to a file]")
+    @remote_command(
+        "Load one or more files/MBIDs/URLs to Picard.",
+        help_args="[path/mbid/url]",
+    )
     def load(self, argstring):
         parsed_items = ParseItemsToLoad([argstring])
         log.debug(str(parsed_items))
@@ -159,7 +165,10 @@ class RemoteCommandHandlers:
             for item in parsed_items.mbids | parsed_items.urls:
                 file_lookup.mbid_lookup(item)
 
-    @remote_command("Lookup files in the clustering pane. Defaults to all files.", help_args="[clustered|unclustered|all]")
+    @remote_command(
+        "Lookup files in the clustering pane. Defaults to all files.",
+        help_args="[all|clustered|unclustered]",
+    )
     def lookup(self, argstring):
         if not argstring:
             arg = 'ALL'
@@ -175,7 +184,11 @@ class RemoteCommandHandlers:
         if arg in {'ALL', 'UNCLUSTERED'}:
             self.tagger.autotag(self.tagger.unclustered_files.files)
 
-    @remote_command("Read CD from the selected drive and lookup on MusicBrainz. Without argument, it defaults to the first (alphabetically) available disc drive.", help_args="[device/log file]")
+    @remote_command(
+        "Read CD from the selected drive and lookup on MusicBrainz. "
+        "Without argument, it defaults to the first (alphabetically) available disc drive.",
+        help_args="[path]",
+    )
     def lookup_cd(self, argstring):
         if not _discid:
             log.error(DISCID_NOT_LOADED_MESSAGE)
@@ -195,7 +208,10 @@ class RemoteCommandHandlers:
 
         self.tagger.run_lookup_cd(device)
 
-    @remote_command("Pause executable command processing.", help_args="[number of seconds to pause]")
+    @remote_command(
+        "Pause executable command processing for the specified time in seconds.",
+        help_args="[number]",
+    )
     def pause(self, argstring):
         arg = argstring.strip()
         if arg:
@@ -210,7 +226,11 @@ class RemoteCommandHandlers:
         else:
             log.error("No command pause time specified.")
 
-    @remote_command("Exit the running instance of Picard. Use the argument 'FORCE' to bypass Picard's unsaved files check.", help_args="[FORCE]")
+    @remote_command(
+        "Exit the running instance of Picard. "
+        "Use the argument 'force' to bypass Picard's unsaved files check.",
+        help_args="[force]",
+    )
     def quit(self, argstring):
         if argstring.upper() == 'FORCE' or self.tagger.window.show_quit_confirmation():
             self.tagger.quit()
@@ -219,7 +239,11 @@ class RemoteCommandHandlers:
             self.remotecommands_class.set_quit(False)  # Allow queueing more commands.
             return
 
-    @remote_command("Remove the file from Picard. Do nothing if no arguments provided.", help_args="[absolute path to one or more files]")
+    @remote_command(
+        "Remove the file matching the specified absolute path from Picard. "
+        "Do nothing if no arguments provided.",
+        help_args="[path]"
+    )
     def remove(self, argstring):
         for file in self.tagger.iter_all_files():
             if file.filename == argstring:
@@ -274,7 +298,10 @@ class RemoteCommandHandlers:
     def submit_fingerprints(self, argstring):
         self.tagger.acoustidmanager.submit()
 
-    @remote_command("Write Picard logs to a given path.", help_args="[absolute path to one file]")
+    @remote_command(
+        "Write Picard logs to a given path.",
+        help_args="[path]",
+    )
     def write_logs(self, argstring):
         try:
             with open(argstring, 'w', encoding='utf-8') as f:
