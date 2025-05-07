@@ -209,14 +209,14 @@ class RemoteCommands:
         informative_text = []
 
         message = """Usage: picard -e [command] [arguments ...]
-        or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
+       or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
 
-    List of the commands available to execute in Picard from the command-line:
-    """
+List of the commands available to execute in Picard from the command-line:
+"""
 
         for name in sorted(REMOTE_COMMANDS):
             remcmd = REMOTE_COMMANDS[name]
-            s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
+            s = " - %-35s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
             informative_text.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
 
         informative_text.append('')
@@ -228,7 +228,7 @@ class RemoteCommands:
         fmt("Picard will try to load all the positional arguments before processing commands.")
         fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the "
             "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running "
-            "Picard instance")
+            "Picard instance.")
         fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
         return message, "\n".join(informative_text)
