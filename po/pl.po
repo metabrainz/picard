@@ -20,13 +20,14 @@
 # Peter69 <echelon01@wp.pl>, 2025.
 # Michal77 <michal_wilk@poczta.fm>, 2025.
 # PS <weblate@wp.pl>, 2025.
+# Echelon <weblate@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-04-18 13:43+0000\n"
-"Last-Translator: PS <weblate@wp.pl>\n"
+"PO-Revision-Date: 2025-05-07 07:20+0000\n"
+"Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/2/"
 "app/pl/>\n"
 "Language: pl\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.11.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -982,12 +983,14 @@ msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
 #: picard/coverart/providers/caa.py:197
+#, fuzzy
 msgid "Cover Art Archive: Release"
-msgstr ""
+msgstr "Cover Art Archive: wydanie"
 
 #: picard/coverart/providers/caa_release_group.py:44
+#, fuzzy
 msgid "Cover Art Archive: Release Group"
-msgstr ""
+msgstr "Cover Art Archive: grupa wydań"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -1184,12 +1187,17 @@ msgstr ""
 "_Od Picarda 1.0_"
 
 #: picard/script/functions.py:349
+#, fuzzy
 msgid ""
 "`$rreplace(text,pattern,replace)`\n"
 "\n"
 "[Regular expression](https://docs.python.org/3/library/re.html#regular-"
 "expression-syntax) replace."
 msgstr ""
+"`$replace(text,pattern,replace)`\n"
+"\n"
+"[Regular expression](https://docs.python.org/3/library/re.html#regular-"
+"expression-syntax) zamiana."
 
 #: picard/script/functions.py:361
 msgid ""
