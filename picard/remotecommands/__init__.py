@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from functools import partial
 import os
 import queue
 import shlex
@@ -29,108 +30,10 @@ import threading
 
 from picard import log
 
-from .handlers import RemoteCommandHandlers
-
-
-class RemoteCommand:
-    def __init__(self, method_name, help_text=None, help_args=None):
-        self.method_name = method_name
-        self.help_text = help_text or ""
-        self.help_args = help_args or ""
-
-
-REMOTE_COMMANDS = {
-    'CLEAR_LOGS': RemoteCommand(
-        'handle_command_clear_logs',
-        help_text="Clear the Picard logs",
-    ),
-    'CLUSTER': RemoteCommand(
-        'handle_command_cluster',
-        help_text="Cluster all files in the cluster pane.",
-    ),
-    'FINGERPRINT': RemoteCommand(
-        'handle_command_fingerprint',
-        help_text="Calculate acoustic fingerprints for all (matched) files in the album pane.",
-    ),
-    'FROM_FILE': RemoteCommand(
-        'handle_command_from_file',
-        help_text="Load commands from a file.",
-        help_args="[Path to a file containing commands]",
-    ),
-    'LOAD': RemoteCommand(
-        'handle_command_load',
-        help_text="Load one or more files/MBIDs/URLs to Picard.",
-        help_args="[supported MBID/URL or path to a file]",
-    ),
-    'LOOKUP': RemoteCommand(
-        'handle_command_lookup',
-        help_text="Lookup files in the clustering pane. Defaults to all files.",
-        help_args="[clustered|unclustered|all]"
-    ),
-    'LOOKUP_CD': RemoteCommand(
-        'handle_command_lookup_cd',
-        help_text="Read CD from the selected drive and lookup on MusicBrainz. "
-        "Without argument, it defaults to the first (alphabetically) available disc drive.",
-        help_args="[device/log file]",
-    ),
-    'PAUSE': RemoteCommand(
-        'handle_command_pause',
-        help_text="Pause executable command processing.",
-        help_args="[number of seconds to pause]",
-    ),
-    'QUIT': RemoteCommand(
-        'handle_command_quit',
-        help_text="Exit the running instance of Picard. "
-        "Use the argument 'FORCE' to bypass Picard's unsaved files check.",
-        help_args="[FORCE]",
-    ),
-    'REMOVE': RemoteCommand(
-        'handle_command_remove',
-        help_text="Remove the file from Picard. Do nothing if no arguments provided.",
-        help_args="[absolute path to one or more files]",
-    ),
-    'REMOVE_ALL': RemoteCommand(
-        'handle_command_remove_all',
-        help_text="Remove all files from Picard.",
-    ),
-    'REMOVE_EMPTY': RemoteCommand(
-        'handle_command_remove_empty',
-        help_text="Remove all empty clusters and albums.",
-    ),
-    'REMOVE_SAVED': RemoteCommand(
-        'handle_command_remove_saved',
-        help_text="Remove all saved files from the album pane.",
-    ),
-    'REMOVE_UNCLUSTERED': RemoteCommand(
-        'handle_command_remove_unclustered',
-        help_text="Remove all unclustered files from the cluster pane.",
-    ),
-    'SAVE_MATCHED': RemoteCommand(
-        'handle_command_save_matched',
-        help_text="Save all matched files from the album pane."
-    ),
-    'SAVE_MODIFIED': RemoteCommand(
-        'handle_command_save_modified',
-        help_text="Save all modified files from the album pane.",
-    ),
-    'SCAN': RemoteCommand(
-        'handle_command_scan',
-        help_text="Scan all files in the cluster pane.",
-    ),
-    'SHOW': RemoteCommand(
-        'handle_command_show',
-        help_text="Make the running instance the currently active window.",
-    ),
-    'SUBMIT_FINGERPRINTS': RemoteCommand(
-        'handle_command_submit_fingerprints',
-        help_text="Submit outstanding acoustic fingerprints for all (matched) files in the album pane.",
-    ),
-    'WRITE_LOGS': RemoteCommand(
-        'handle_command_write_logs',
-        help_text="Write Picard logs to a given path.",
-        help_args="[absolute path to one file]",
-    ),
-}
+from .handlers import (
+    REMOTE_COMMANDS,
+    RemoteCommandHandlers,
+)
 
 
 class RemoteCommands:
@@ -306,14 +209,14 @@ class RemoteCommands:
         informative_text = []
 
         message = """Usage: picard -e [command] [arguments ...]
-        or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
+       or picard -e [command 1] [arguments ...] -e [command 2] [arguments ...]
 
-    List of the commands available to execute in Picard from the command-line:
-    """
+List of the commands available to execute in Picard from the command-line:
+"""
 
         for name in sorted(REMOTE_COMMANDS):
             remcmd = REMOTE_COMMANDS[name]
-            s = "  - %-34s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
+            s = " - %-35s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
             informative_text.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
 
         informative_text.append('')
@@ -325,7 +228,7 @@ class RemoteCommands:
         fmt("Picard will try to load all the positional arguments before processing commands.")
         fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the "
             "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running "
-            "Picard instance")
+            "Picard instance.")
         fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
         return message, "\n".join(informative_text)
@@ -333,4 +236,4 @@ class RemoteCommands:
     @classmethod
     def commands(cls):
         handlers = RemoteCommandHandlers(cls)
-        return {name: getattr(handlers, remcmd.method_name) for name, remcmd in REMOTE_COMMANDS.items()}
+        return {name: partial(remcmd.method, handlers) for name, remcmd in REMOTE_COMMANDS.items()}

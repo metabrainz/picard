@@ -54,17 +54,16 @@ from PyQt6 import QtCore
 
 from picard import log
 from picard.const.sys import IS_WIN
-from picard.disc import Disc
 from picard.file import File
-from picard.util import (
-    encode_filename,
-    thread,
-)
+from picard.util import thread
 from picard.util.cdrom import (
     DISCID_NOT_LOADED_MESSAGE,
     discid as _discid,
     get_cdrom_drives,
 )
+
+
+REMOTE_COMMANDS = dict()
 
 
 class ParseItemsToLoad:
@@ -78,7 +77,7 @@ class ParseItemsToLoad:
 
         for item in items:
             parsed = urlparse(item)
-            log.debug(f"Parsed: {repr(parsed)}")
+            log.debug("Parsed: %r", parsed)
             if not parsed.scheme:
                 self.files.add(item)
             if parsed.scheme == 'file':
@@ -105,26 +104,56 @@ class ParseItemsToLoad:
         return f"files: {repr(self.files)}  mbids: f{repr(self.mbids)}  urls: {repr(self.urls)}"
 
 
+class RemoteCommand:
+    def __init__(self, method, help_text, help_args=None):
+        self.method = method
+        self.help_text = help_text
+        self.help_args = help_args or ""
+
+
+def remote_command(help_text, help_args=None):
+    def inner(method):
+        def wrapper(*args, **kwargs):
+            method(*args, **kwargs)
+
+        name = method.__name__.upper()
+        REMOTE_COMMANDS[name] = RemoteCommand(method, help_text, help_args=help_args)
+        return wrapper
+
+    return inner
+
+
 class RemoteCommandHandlers:
     def __init__(self, remotecommands_class):
         self.tagger = QtCore.QCoreApplication.instance()
         self.remotecommands_class = remotecommands_class
 
-    def handle_command_clear_logs(self, argstring):
+    @remote_command("Clear the Picard logs")
+    def clear_logs(self, argstring):
         self.tagger.window.log_dialog.clear()
         self.tagger.window.history_dialog.clear()
 
-    def handle_command_cluster(self, argstring):
+    @remote_command("Cluster all files in the cluster pane.")
+    def cluster(self, argstring):
         self.tagger.cluster(self.tagger.unclustered_files.files)
 
-    def handle_command_fingerprint(self, argstring):
+    @remote_command("Calculate acoustic fingerprints for all (matched) files in the album pane.")
+    def fingerprint(self, argstring):
         for album_name in self.tagger.albums:
             self.tagger.analyze(self.tagger.albums[album_name].iterfiles())
 
-    def handle_command_from_file(self, argstring):
+    @remote_command(
+        "Load commands from a file.",
+        help_args="[path]"
+    )
+    def from_file(self, argstring):
         self.remotecommands_class.get_commands_from_file(argstring)
 
-    def handle_command_load(self, argstring):
+    @remote_command(
+        "Load one or more files/MBIDs/URLs to Picard.",
+        help_args="[path/mbid/url]",
+    )
+    def load(self, argstring):
         parsed_items = ParseItemsToLoad([argstring])
         log.debug(str(parsed_items))
 
@@ -136,26 +165,36 @@ class RemoteCommandHandlers:
             for item in parsed_items.mbids | parsed_items.urls:
                 file_lookup.mbid_lookup(item)
 
-    def handle_command_lookup(self, argstring):
-        if argstring:
-            argstring = argstring.upper()
-        if not argstring or argstring == 'ALL':
-            self.tagger.autotag(self.tagger.clusters)
-            self.tagger.autotag(self.tagger.unclustered_files.files)
-        elif argstring == 'CLUSTERED':
-            self.tagger.autotag(self.tagger.clusters)
-        elif argstring == 'UNCLUSTERED':
-            self.tagger.autotag(self.tagger.unclustered_files.files)
+    @remote_command(
+        "Lookup files in the clustering pane. Defaults to all files.",
+        help_args="[all|clustered|unclustered]",
+    )
+    def lookup(self, argstring):
+        if not argstring:
+            arg = 'ALL'
         else:
-            log.error("Invalid LOOKUP command argument: '%s'", argstring)
+            arg = argstring.upper()
 
-    def handle_command_lookup_cd(self, argstring):
+        if arg not in {'ALL', 'CLUSTERED', 'UNCLUSTERED'}:
+            log.error("Invalid LOOKUP command argument: '%s'", arg)
+
+        if arg in {'ALL', 'CLUSTERED'}:
+            self.tagger.autotag(self.tagger.clusters)
+
+        if arg in {'ALL', 'UNCLUSTERED'}:
+            self.tagger.autotag(self.tagger.unclustered_files.files)
+
+    @remote_command(
+        "Read CD from the selected drive and lookup on MusicBrainz. "
+        "Without argument, it defaults to the first (alphabetically) available disc drive.",
+        help_args="[path]",
+    )
+    def lookup_cd(self, argstring):
         if not _discid:
             log.error(DISCID_NOT_LOADED_MESSAGE)
             return
-        disc = Disc()
-        devices = get_cdrom_drives()
 
+        devices = get_cdrom_drives()
         if not argstring:
             if devices:
                 device = devices[0]
@@ -164,18 +203,16 @@ class RemoteCommandHandlers:
         elif argstring in devices:
             device = argstring
         else:
-            thread.run_task(
-                partial(self.tagger._parse_disc_ripping_log, disc, argstring),
-                partial(self.tagger._lookup_disc, disc),
-                traceback=self.tagger._debug)
+            self.tagger.run_lookup_discid_from_logfile(argstring)
             return
 
-        thread.run_task(
-            partial(disc.read, encode_filename(device)),
-            partial(self.tagger._lookup_disc, disc),
-            traceback=self.tagger._debug)
+        self.tagger.run_lookup_cd(device)
 
-    def handle_command_pause(self, argstring):
+    @remote_command(
+        "Pause executable command processing for the specified time in seconds.",
+        help_args="[number]",
+    )
+    def pause(self, argstring):
         arg = argstring.strip()
         if arg:
             try:
@@ -185,11 +222,16 @@ class RemoteCommandHandlers:
                 log.debug("Pausing command execution by %d seconds.", delay)
                 thread.run_task(partial(time.sleep, delay))
             except ValueError:
-                log.error(f"Invalid command pause time specified: {repr(argstring)}")
+                log.error("Invalid command pause time specified: %r", argstring)
         else:
             log.error("No command pause time specified.")
 
-    def handle_command_quit(self, argstring):
+    @remote_command(
+        "Exit the running instance of Picard. "
+        "Use the argument 'force' to bypass Picard's unsaved files check.",
+        help_args="[force]",
+    )
+    def quit(self, argstring):
         if argstring.upper() == 'FORCE' or self.tagger.window.show_quit_confirmation():
             self.tagger.quit()
         else:
@@ -197,19 +239,24 @@ class RemoteCommandHandlers:
             self.remotecommands_class.set_quit(False)  # Allow queueing more commands.
             return
 
-    def handle_command_remove(self, argstring):
+    @remote_command(
+        "Remove the file matching the specified absolute path from Picard. "
+        "Do nothing if no arguments provided.",
+        help_args="[path]"
+    )
+    def remove(self, argstring):
         for file in self.tagger.iter_all_files():
             if file.filename == argstring:
-                self.tagger.remove([file])
+                self.tagger.remove_files([file])
                 return
 
-    def handle_command_remove_all(self, argstring):
-        for file in self.tagger.iter_all_files():
-            self.tagger.remove([file])
+    @remote_command("Remove all files from Picard.")
+    def remove_all(self, argstring):
+        self.tagger.remove_files(list(self.tagger.iter_all_files()))
 
-    def handle_command_remove_empty(self, argstring):
-        _albums = [a for a in self.tagger.albums.values()]
-        for album in _albums:
+    @remote_command("Remove all empty clusters and albums.")
+    def remove_empty(self, argstring):
+        for album in list(self.tagger.albums.values()):
             if not any(album.iterfiles()):
                 self.tagger.remove_album(album)
 
@@ -217,34 +264,45 @@ class RemoteCommandHandlers:
             if not any(cluster.iterfiles()):
                 self.tagger.remove_cluster(cluster)
 
-    def handle_command_remove_saved(self, argstring):
+    @remote_command("Remove all saved files from the album pane.")
+    def remove_saved(self, argstring):
         for track in self.tagger.iter_album_files():
             if track.state == File.NORMAL:
                 self.tagger.remove([track])
 
-    def handle_command_remove_unclustered(self, argstring):
+    @remote_command("Remove all unclustered files from the cluster pane.")
+    def remove_unclustered(self, argstring):
         self.tagger.remove(self.tagger.unclustered_files.files)
 
-    def handle_command_save_matched(self, argstring):
+    @remote_command("Save all matched files from the album pane.")
+    def save_matched(self, argstring):
         for album in self.tagger.albums.values():
             for track in album.iter_correctly_matched_tracks():
                 track.files[0].save()
 
-    def handle_command_save_modified(self, argstring):
+    @remote_command("Save all modified files from the album pane.")
+    def save_modified(self, argstring):
         for track in self.tagger.iter_album_files():
             if track.state == File.CHANGED:
                 track.save()
 
-    def handle_command_scan(self, argstring):
+    @remote_command("Scan all files in the cluster pane.")
+    def scan(self, argstring):
         self.tagger.analyze(self.tagger.unclustered_files.files)
 
-    def handle_command_show(self, argstring):
+    @remote_command("Make the running instance the currently active window.")
+    def show(self, argstring):
         self.tagger.bring_tagger_front()
 
-    def handle_command_submit_fingerprints(self, argstring):
+    @remote_command("Submit outstanding acoustic fingerprints for all (matched) files in the album pane.")
+    def submit_fingerprints(self, argstring):
         self.tagger.acoustidmanager.submit()
 
-    def handle_command_write_logs(self, argstring):
+    @remote_command(
+        "Write Picard logs to a given path.",
+        help_args="[path]",
+    )
+    def write_logs(self, argstring):
         try:
             with open(argstring, 'w', encoding='utf-8') as f:
                 for x in self.tagger.window.log_dialog.log_tail.contents():
