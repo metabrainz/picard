@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
 "PO-Revision-Date: 2025-05-08 05:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
 "Language: ca\n"
@@ -5164,10 +5164,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:775
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "Llatí"
+msgstr "Puntuació"
 
 #: picard/const/tags.py:776
 msgid "The rating of the track from 0-5 by MusicBrainz users."
