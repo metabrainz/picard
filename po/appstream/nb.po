@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2025-04-12 09:36+0000\n"
+"PO-Revision-Date: 2025-05-09 07:20+0000\n"
 "Last-Translator: Weblate <noreply-mt-weblate@weblate.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/3/appstream/nb_NO/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.11.3\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -96,10 +96,11 @@ msgid ""
 msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:54
+#, fuzzy
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr ""
+msgstr "Picard kan finne og laste ned de riktige omslagsbildene for dine album."
 
 #: org.musicbrainz.Picard.appdata.xml.in:58
 msgid ""
