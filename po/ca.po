@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-05 18:55+0200\n"
+"POT-Creation-Date: 2025-05-08 07:02+0200\n"
 "PO-Revision-Date: 2025-05-06 18:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
@@ -885,25 +885,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1024
+#: picard/tagger.py:1027
 msgid "All supported log files"
 msgstr "Tots els fitxers de registre admesos"
 
-#: picard/tagger.py:1025
+#: picard/tagger.py:1028
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "Fitxers de registre d'EAC / XLD / Whipper / fre:ac"
 
-#: picard/tagger.py:1026
+#: picard/tagger.py:1029
 msgid "dBpoweramp log files"
 msgstr "Fitxers de registre de dBpoweramp"
 
-#: picard/script/serializer.py:374 picard/tagger.py:1027
+#: picard/script/serializer.py:374 picard/tagger.py:1030
 #: picard/ui/coverartbox/__init__.py:273 picard/ui/mainwindow/__init__.py:874
 #: picard/ui/options/maintenance.py:215 picard/ui/options/scripting.py:134
 msgid "All files"
 msgstr "Tots els fitxers"
 
-#: picard/tagger.py:1053
+#: picard/tagger.py:1060
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "No s'ha pogut analitzar el registre d'extracció «%s»"
@@ -1283,8 +1283,8 @@ msgid ""
 msgstr ""
 "`$rsearch(text,patró[,grup])`\n"
 "\n"
-"Cerca amb [expressions regulars](https://docs.python.org/3/library/re.html"
-"#regular-expression-syntax).\n"
+"Cerca amb [expressions regulars](https://docs.python.org/3/library/"
+"re.html#regular-expression-syntax).\n"
 "\n"
 "Si no es proporciona el paràmetre opcional `grup` o està buit, es retorna\n"
 "el primer grup de captura que coincideix amb alguna cosa (fins i tot la "
@@ -3993,7 +3993,7 @@ msgid "Miscellaneous"
 msgstr "Miscel·lània"
 
 #: picard/ui/forms/ui_options_interface.py:132
-#: picard/ui/searchdialog/__init__.py:96
+#: picard/ui/searchdialog/__init__.py:97
 msgid "Use advanced query syntax"
 msgstr "Fes servir la sintaxi de consulta avançada"
 
@@ -5094,7 +5094,7 @@ msgid "&Tools"
 msgstr "Ei&nes"
 
 #: picard/ui/mainwindow/__init__.py:755 picard/ui/mainwindow/actions.py:352
-#: picard/ui/searchdialog/__init__.py:49
+#: picard/ui/searchdialog/__init__.py:50
 msgid "Search"
 msgstr "Cerca"
 
@@ -6801,27 +6801,24 @@ msgstr ""
 "Torna a carregar fins a %u triats aleatòriament entre els fitxers "
 "seleccionats a la finestra principal"
 
-#: picard/ui/searchdialog/__init__.py:103
-msgid ""
-"&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
-"Help</a>)"
+#: picard/ui/searchdialog/__init__.py:104
+#, python-brace-format
+msgid "&#160;(<a href='{url}'>Syntax Help</a>)"
 msgstr ""
-"&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Ajuda "
-"sobre la sintaxi</a>)"
 
-#: picard/ui/searchdialog/__init__.py:188
+#: picard/ui/searchdialog/__init__.py:189
 msgid "Search in browser"
 msgstr "Cerca al navegador"
 
-#: picard/ui/searchdialog/__init__.py:211
+#: picard/ui/searchdialog/__init__.py:212
 msgid "<strong>Loading…</strong>"
 msgstr "<strong>S'està carregant…</strong>"
 
-#: picard/ui/searchdialog/__init__.py:242
+#: picard/ui/searchdialog/__init__.py:243
 msgid "Retry"
 msgstr "Torna-ho a provar"
 
-#: picard/ui/searchdialog/__init__.py:260
+#: picard/ui/searchdialog/__init__.py:261
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
@@ -6832,7 +6829,7 @@ msgstr ""
 "strong>S'ha produït un error a la sol·licitud de xarxa per a %(url)s:"
 "<br>%(error)s (codi QT %(qtcode)d, codi HTTP %(statuscode)r)<br>"
 
-#: picard/ui/searchdialog/__init__.py:265
+#: picard/ui/searchdialog/__init__.py:266
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr ""
 "<strong>No s'ha trobat cap resultat. Proveu una consulta de cerca diferent.</"
@@ -7121,6 +7118,13 @@ msgstr ""
 "S'ha produït un error en iniciar el navegador web:\n"
 "\n"
 "%s"
+
+#~ msgid ""
+#~ "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
+#~ "Help</a>)"
+#~ msgstr ""
+#~ "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Ajuda "
+#~ "sobre la sintaxi</a>)"
 
 #~ msgid ""
 #~ "`$rsearch(text,pattern)`\n"

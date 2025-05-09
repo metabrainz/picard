@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-05-05 18:55+0200\n"
+"POT-Creation-Date: 2025-05-08 07:02+0200\n"
 "PO-Revision-Date: 2025-03-05 10:44+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
@@ -886,25 +886,25 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1024
+#: picard/tagger.py:1027
 msgid "All supported log files"
 msgstr "Kaikki tuetut lokitiedostot"
 
-#: picard/tagger.py:1025
+#: picard/tagger.py:1028
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC / XLD / Whipper / fre:ac -lokitiedostot"
 
-#: picard/tagger.py:1026
+#: picard/tagger.py:1029
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp-lokitiedostot"
 
-#: picard/script/serializer.py:374 picard/tagger.py:1027
+#: picard/script/serializer.py:374 picard/tagger.py:1030
 #: picard/ui/coverartbox/__init__.py:273 picard/ui/mainwindow/__init__.py:874
 #: picard/ui/options/maintenance.py:215 picard/ui/options/scripting.py:134
 msgid "All files"
 msgstr "Kaikki tiedostot"
 
-#: picard/tagger.py:1053
+#: picard/tagger.py:1060
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "CD-kopioinnin lokitiedoston ”%s” jäsentäminen epäonnistui"
@@ -4032,7 +4032,7 @@ msgid "Miscellaneous"
 msgstr "Muut"
 
 #: picard/ui/forms/ui_options_interface.py:132
-#: picard/ui/searchdialog/__init__.py:96
+#: picard/ui/searchdialog/__init__.py:97
 msgid "Use advanced query syntax"
 msgstr "Käytä laajennettuja hakukomentoja"
 
@@ -5154,7 +5154,7 @@ msgid "&Tools"
 msgstr "Ty&ökalut"
 
 #: picard/ui/mainwindow/__init__.py:755 picard/ui/mainwindow/actions.py:352
-#: picard/ui/searchdialog/__init__.py:49
+#: picard/ui/searchdialog/__init__.py:50
 msgid "Search"
 msgstr "Haku"
 
@@ -6901,27 +6901,24 @@ msgid ""
 "Reload up to %u items chosen at random from files selected in the main window"
 msgstr "Valitse uudet %u satunnaista tiedostoa pääikkunassa valituista"
 
-#: picard/ui/searchdialog/__init__.py:103
-msgid ""
-"&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
-"Help</a>)"
+#: picard/ui/searchdialog/__init__.py:104
+#, python-brace-format
+msgid "&#160;(<a href='{url}'>Syntax Help</a>)"
 msgstr ""
-"&#160;(<a href='https://musicbrainz.org/doc/"
-"Indexed_Search_Syntax'>Hakuohjeet</a>)"
 
-#: picard/ui/searchdialog/__init__.py:188
+#: picard/ui/searchdialog/__init__.py:189
 msgid "Search in browser"
 msgstr "Etsi selaimella"
 
-#: picard/ui/searchdialog/__init__.py:211
+#: picard/ui/searchdialog/__init__.py:212
 msgid "<strong>Loading…</strong>"
 msgstr "<strong>Ladataan…</strong>"
 
-#: picard/ui/searchdialog/__init__.py:242
+#: picard/ui/searchdialog/__init__.py:243
 msgid "Retry"
 msgstr "Yritä uudelleen"
 
-#: picard/ui/searchdialog/__init__.py:260
+#: picard/ui/searchdialog/__init__.py:261
 #, python-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
@@ -6932,7 +6929,7 @@ msgstr ""
 "virhe %(url)s:<br>%(error)s (QT:n koodi %(qtcode)d, HTTP-koodi "
 "%(statuscode)r)<br>"
 
-#: picard/ui/searchdialog/__init__.py:265
+#: picard/ui/searchdialog/__init__.py:266
 msgid "<strong>No results found. Please try a different search query.</strong>"
 msgstr "<strong>Ei tuloksia. Yritä vaihtaa hakuehtoja.</strong>"
 
@@ -7215,6 +7212,13 @@ msgstr ""
 "Virhe käynnistettäessä verkkoselainta:\n"
 "\n"
 "%s"
+
+#~ msgid ""
+#~ "&#160;(<a href='https://musicbrainz.org/doc/Indexed_Search_Syntax'>Syntax "
+#~ "Help</a>)"
+#~ msgstr ""
+#~ "&#160;(<a href='https://musicbrainz.org/doc/"
+#~ "Indexed_Search_Syntax'>Hakuohjeet</a>)"
 
 #~ msgid ""
 #~ "`$rsearch(text,pattern)`\n"
