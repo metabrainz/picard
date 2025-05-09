@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2023-08-29 06:46+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2025-05-08 05:03+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Icelandic <https://translations.metabrainz.org/projects/"
-"picard/constants/is/>\n"
+"picard/3/constants/is/>\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.11.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:144
@@ -4263,7 +4263,7 @@ msgstr ""
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "AcoustID fingrafar"
 
 #: picard/const/tags.py:46
 msgid ""
@@ -4274,7 +4274,7 @@ msgstr ""
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/const/tags.py:57
 msgid ""
@@ -4286,7 +4286,7 @@ msgstr ""
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
-msgstr ""
+msgstr "Skráður listamaður útgáfu"
 
 #: picard/const/tags.py:69
 msgid ""
@@ -4321,7 +4321,7 @@ msgstr ""
 
 #: picard/const/tags.py:100
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Röðun útgáfulistamanns"
 
 #: picard/const/tags.py:102
 msgid ""
@@ -4339,7 +4339,7 @@ msgstr ""
 
 #: picard/const/tags.py:115
 msgid "Album"
-msgstr ""
+msgstr "Plata"
 
 #: picard/const/tags.py:116
 msgid "The title of the release."
@@ -4347,7 +4347,7 @@ msgstr ""
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Röðun Albúms"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
@@ -4355,7 +4355,7 @@ msgstr ""
 
 #: picard/const/tags.py:126
 msgid "Arranger"
-msgstr ""
+msgstr "Útsetjari"
 
 #: picard/const/tags.py:128
 msgid ""
@@ -4366,7 +4366,7 @@ msgstr ""
 
 #: picard/const/tags.py:134
 msgid "Artist"
-msgstr ""
+msgstr "Listamaður"
 
 #: picard/const/tags.py:136
 msgid ""
@@ -4400,7 +4400,7 @@ msgstr ""
 
 #: picard/const/tags.py:165
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Röðun listamanns"
 
 #: picard/const/tags.py:166
 msgid ""
@@ -4418,7 +4418,7 @@ msgstr ""
 
 #: picard/const/tags.py:178
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:179
 msgid ""
@@ -4428,7 +4428,7 @@ msgstr ""
 
 #: picard/const/tags.py:183
 msgid "Barcode"
-msgstr ""
+msgstr "Strikamerki"
 
 #: picard/const/tags.py:184
 msgid "The barcode assigned to the release."
@@ -4444,7 +4444,7 @@ msgstr ""
 
 #: picard/const/tags.py:192
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/const/tags.py:193
 msgid "Beats per minute of the track."
@@ -4468,7 +4468,7 @@ msgstr ""
 
 #: picard/const/tags.py:218
 msgid "Catalog Number"
-msgstr ""
+msgstr "Skráarnúmer"
 
 #: picard/const/tags.py:220
 msgid ""
@@ -4487,7 +4487,7 @@ msgstr ""
 
 #: picard/const/tags.py:238
 msgid "Comment"
-msgstr ""
+msgstr "Athugasemd"
 
 #: picard/const/tags.py:240
 msgid ""
@@ -4505,7 +4505,7 @@ msgstr ""
 
 #: picard/const/tags.py:253
 msgid "Composer"
-msgstr ""
+msgstr "Tónskáld"
 
 #: picard/const/tags.py:254
 msgid "The names of the composers for the associated work."
@@ -4521,7 +4521,7 @@ msgstr ""
 
 #: picard/const/tags.py:265
 msgid "Conductor"
-msgstr ""
+msgstr "Stjórnandi"
 
 #: picard/const/tags.py:267
 msgid ""
@@ -4532,7 +4532,7 @@ msgstr ""
 
 #: picard/const/tags.py:274
 msgid "Copyright"
-msgstr ""
+msgstr "Höfundaréttur"
 
 #: picard/const/tags.py:276
 msgid ""
@@ -4550,7 +4550,7 @@ msgstr ""
 
 #: picard/const/tags.py:290
 msgid "Date"
-msgstr ""
+msgstr "Dagsetning"
 
 #: picard/const/tags.py:291 picard/const/tags.py:861
 msgid ""
@@ -4599,7 +4599,7 @@ msgstr ""
 
 #: picard/const/tags.py:324
 msgid "Disc Number"
-msgstr ""
+msgstr "Disknúmer"
 
 #: picard/const/tags.py:325
 msgid "The number of the disc in the release that contains this track."
@@ -4616,7 +4616,7 @@ msgstr ""
 
 #: picard/const/tags.py:337
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Undirtitill disks"
 
 #: picard/const/tags.py:338
 msgid "The media title given to a specific disc in the release."
@@ -4624,7 +4624,7 @@ msgstr ""
 
 #: picard/const/tags.py:342
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ-hljóðbreytir"
 
 #: picard/const/tags.py:343
 msgid "The names of the DJ mixers for the track."
@@ -4632,7 +4632,7 @@ msgstr ""
 
 #: picard/const/tags.py:348
 msgid "Encoded By"
-msgstr ""
+msgstr "Kóðað af"
 
 #: picard/const/tags.py:349
 msgid "The person or organization that encoded the track."
@@ -4648,7 +4648,7 @@ msgstr ""
 
 #: picard/const/tags.py:360
 msgid "Engineer"
-msgstr ""
+msgstr "Upptökustjórn"
 
 #: picard/const/tags.py:361
 msgid "The names of the engineers associated with the track."
@@ -4684,7 +4684,7 @@ msgstr ""
 
 #: picard/const/tags.py:393
 msgid "File Name"
-msgstr ""
+msgstr "Skráarnafn"
 
 #: picard/const/tags.py:394
 msgid "The name of the file without extension."
@@ -4726,7 +4726,7 @@ msgstr ""
 
 #: picard/const/tags.py:435
 msgid "Genre"
-msgstr ""
+msgstr "Tegund"
 
 #: picard/const/tags.py:437
 msgid "The specified genre information from MusicBrainz."
@@ -4734,7 +4734,7 @@ msgstr ""
 
 #: picard/const/tags.py:445
 msgid "Grouping"
-msgstr ""
+msgstr "Hópun"
 
 #: picard/const/tags.py:446
 msgid "Genre grouping associated with the track"
@@ -4742,7 +4742,7 @@ msgstr ""
 
 #: picard/const/tags.py:451
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:453
 msgid ""
@@ -4761,7 +4761,7 @@ msgstr ""
 
 #: picard/const/tags.py:466
 msgid "Record Label"
-msgstr ""
+msgstr "Útgefandi"
 
 #: picard/const/tags.py:467
 msgid "The names of the labels associated with the release."
@@ -4769,7 +4769,7 @@ msgstr ""
 
 #: picard/const/tags.py:472
 msgid "Language"
-msgstr ""
+msgstr "Tungumál"
 
 #: picard/const/tags.py:473
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
@@ -4777,7 +4777,7 @@ msgstr ""
 
 #: picard/const/tags.py:477
 msgid "Length"
-msgstr ""
+msgstr "Lengd"
 
 #: picard/const/tags.py:478
 msgid "The length of the track in format mins:secs."
@@ -4795,7 +4795,7 @@ msgstr ""
 
 #: picard/const/tags.py:489
 msgid "Lyricist"
-msgstr ""
+msgstr "Textahöfundur"
 
 #: picard/const/tags.py:490
 msgid "The names of the lyricists for the associated work."
@@ -4811,7 +4811,7 @@ msgstr ""
 
 #: picard/const/tags.py:502
 msgid "Lyrics"
-msgstr ""
+msgstr "Lagatextar"
 
 #: picard/const/tags.py:503
 msgid "The lyrics for the track."
@@ -4819,7 +4819,7 @@ msgstr ""
 
 #: picard/const/tags.py:508
 msgid "Media"
-msgstr ""
+msgstr "Miðill"
 
 #: picard/const/tags.py:509
 msgid "The media on which the release was distributed (e.g.: CD)."
@@ -4827,7 +4827,7 @@ msgstr ""
 
 #: picard/const/tags.py:513
 msgid "Mixer"
-msgstr ""
+msgstr "Hljóðbreytir"
 
 #: picard/const/tags.py:514
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
@@ -4835,7 +4835,7 @@ msgstr ""
 
 #: picard/const/tags.py:519
 msgid "Mood"
-msgstr ""
+msgstr "Tegund"
 
 #: picard/const/tags.py:520
 msgid "The mood associated with the track."
@@ -4999,7 +4999,7 @@ msgstr ""
 
 #: picard/const/tags.py:646
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "MusicIP fingrafar"
 
 #: picard/const/tags.py:647
 msgid "The MusicIP Fingerprint for the track."
@@ -5007,7 +5007,7 @@ msgstr ""
 
 #: picard/const/tags.py:652
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "MusicIP PUID"
 
 #: picard/const/tags.py:653
 msgid "The MusicIP PUIDs associated with the track."
@@ -5035,7 +5035,7 @@ msgstr ""
 
 #: picard/const/tags.py:676
 msgid "Original Release Date"
-msgstr ""
+msgstr "Upphaflegur útgáfudagur"
 
 #: picard/const/tags.py:678
 msgid ""
@@ -5084,7 +5084,7 @@ msgstr ""
 
 #: picard/const/tags.py:713
 msgid "Performer"
-msgstr ""
+msgstr "Flytjandi"
 
 #: picard/const/tags.py:715
 msgid ""
@@ -5138,7 +5138,7 @@ msgstr ""
 
 #: picard/const/tags.py:755
 msgid "Producer"
-msgstr ""
+msgstr "Framleiðandi"
 
 #: picard/const/tags.py:756
 msgid "The names of the producers for the associated release or recording."
@@ -5255,7 +5255,7 @@ msgstr ""
 
 #: picard/const/tags.py:852
 msgid "Release Country"
-msgstr ""
+msgstr "Útgáfuland"
 
 #: picard/const/tags.py:854
 msgid ""
@@ -5380,7 +5380,7 @@ msgstr ""
 
 #: picard/const/tags.py:961
 msgid "Release Status"
-msgstr ""
+msgstr "Útgáfutegund"
 
 #: picard/const/tags.py:963
 msgid ""
@@ -5391,7 +5391,7 @@ msgstr ""
 
 #: picard/const/tags.py:969
 msgid "Release Type"
-msgstr ""
+msgstr "Útgáfutegund"
 
 #: picard/const/tags.py:970
 msgid "The types of release assigned to the release group."
@@ -5399,7 +5399,7 @@ msgstr ""
 
 #: picard/const/tags.py:977
 msgid "Remixer"
-msgstr ""
+msgstr "Hljóðblöndun"
 
 #: picard/const/tags.py:978
 msgid "The names of the remixer engineers associated with the track."
@@ -5473,7 +5473,7 @@ msgstr ""
 
 #: picard/const/tags.py:1042
 msgid "Script"
-msgstr ""
+msgstr "Skrift"
 
 #: picard/const/tags.py:1044
 msgid ""
@@ -5539,7 +5539,7 @@ msgstr ""
 
 #: picard/const/tags.py:1095
 msgid "Subtitle"
-msgstr ""
+msgstr "Undirtitill"
 
 #: picard/const/tags.py:1096
 msgid "This is used for information directly related to the contents title."
@@ -5555,7 +5555,7 @@ msgstr ""
 
 #: picard/const/tags.py:1107
 msgid "Title"
-msgstr ""
+msgstr "Titill"
 
 #: picard/const/tags.py:1108
 msgid "The title of the track."
@@ -5563,7 +5563,7 @@ msgstr ""
 
 #: picard/const/tags.py:1112
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Flokkun á titlum"
 
 #: picard/const/tags.py:1113
 msgid "The sort name of the track title."
@@ -5579,7 +5579,7 @@ msgstr ""
 
 #: picard/const/tags.py:1125
 msgid "Total Discs"
-msgstr ""
+msgstr "Samtals diskar"
 
 #: picard/const/tags.py:1126
 msgid "The total number of discs in this release."
@@ -5587,7 +5587,7 @@ msgstr ""
 
 #: picard/const/tags.py:1130
 msgid "Total Tracks"
-msgstr ""
+msgstr "Lagafjöldi"
 
 #: picard/const/tags.py:1131
 msgid "The total number of tracks on this disc."
@@ -5595,7 +5595,7 @@ msgstr ""
 
 #: picard/const/tags.py:1135
 msgid "Track Number"
-msgstr ""
+msgstr "Númer lags"
 
 #: picard/const/tags.py:1136
 msgid "The number of the track on the disc."

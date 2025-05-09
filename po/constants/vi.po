@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2023-08-30 09:27+0000\n"
+"PO-Revision-Date: 2025-05-08 05:03+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Vietnamese <https://translations.metabrainz.org/projects/"
-"picard/constants/vi/>\n"
+"picard/3/constants/vi/>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.11.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:144
@@ -4366,7 +4366,7 @@ msgstr ""
 
 #: picard/const/tags.py:134
 msgid "Artist"
-msgstr ""
+msgstr "Nghệ sĩ"
 
 #: picard/const/tags.py:136
 msgid ""

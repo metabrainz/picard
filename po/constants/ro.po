@@ -8,17 +8,17 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2023-08-30 09:27+0000\n"
+"PO-Revision-Date: 2025-05-08 05:03+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Romanian <https://translations.metabrainz.org/projects/picard/"
-"constants/ro/>\n"
+"3/constants/ro/>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.11.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:144
@@ -4275,7 +4275,7 @@ msgstr ""
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/const/tags.py:57
 msgid ""
@@ -4340,7 +4340,7 @@ msgstr ""
 
 #: picard/const/tags.py:115
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: picard/const/tags.py:116
 msgid "The title of the release."
@@ -4356,7 +4356,7 @@ msgstr ""
 
 #: picard/const/tags.py:126
 msgid "Arranger"
-msgstr ""
+msgstr "Orchestrator"
 
 #: picard/const/tags.py:128
 msgid ""
@@ -4367,7 +4367,7 @@ msgstr ""
 
 #: picard/const/tags.py:134
 msgid "Artist"
-msgstr ""
+msgstr "Artist"
 
 #: picard/const/tags.py:136
 msgid ""
@@ -4419,7 +4419,7 @@ msgstr ""
 
 #: picard/const/tags.py:178
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:179
 msgid ""
@@ -4429,7 +4429,7 @@ msgstr ""
 
 #: picard/const/tags.py:183
 msgid "Barcode"
-msgstr ""
+msgstr "Cod de bare"
 
 #: picard/const/tags.py:184
 msgid "The barcode assigned to the release."
@@ -4445,7 +4445,7 @@ msgstr ""
 
 #: picard/const/tags.py:192
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/const/tags.py:193
 msgid "Beats per minute of the track."
@@ -4469,7 +4469,7 @@ msgstr ""
 
 #: picard/const/tags.py:218
 msgid "Catalog Number"
-msgstr ""
+msgstr "Nr. catalog"
 
 #: picard/const/tags.py:220
 msgid ""
@@ -4488,7 +4488,7 @@ msgstr ""
 
 #: picard/const/tags.py:238
 msgid "Comment"
-msgstr ""
+msgstr "Comentariu"
 
 #: picard/const/tags.py:240
 msgid ""
@@ -4506,7 +4506,7 @@ msgstr ""
 
 #: picard/const/tags.py:253
 msgid "Composer"
-msgstr ""
+msgstr "Compozitor"
 
 #: picard/const/tags.py:254
 msgid "The names of the composers for the associated work."
@@ -4522,7 +4522,7 @@ msgstr ""
 
 #: picard/const/tags.py:265
 msgid "Conductor"
-msgstr ""
+msgstr "Dirijor"
 
 #: picard/const/tags.py:267
 msgid ""
@@ -4533,7 +4533,7 @@ msgstr ""
 
 #: picard/const/tags.py:274
 msgid "Copyright"
-msgstr ""
+msgstr "Drepturi de autor"
 
 #: picard/const/tags.py:276
 msgid ""
@@ -4551,7 +4551,7 @@ msgstr ""
 
 #: picard/const/tags.py:290
 msgid "Date"
-msgstr ""
+msgstr "Dată"
 
 #: picard/const/tags.py:291 picard/const/tags.py:861
 msgid ""
@@ -4600,7 +4600,7 @@ msgstr ""
 
 #: picard/const/tags.py:324
 msgid "Disc Number"
-msgstr ""
+msgstr "Număr disc"
 
 #: picard/const/tags.py:325
 msgid "The number of the disc in the release that contains this track."
@@ -4617,7 +4617,7 @@ msgstr ""
 
 #: picard/const/tags.py:337
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Subtitlu Disc"
 
 #: picard/const/tags.py:338
 msgid "The media title given to a specific disc in the release."
@@ -4625,7 +4625,7 @@ msgstr ""
 
 #: picard/const/tags.py:342
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ-Mixer"
 
 #: picard/const/tags.py:343
 msgid "The names of the DJ mixers for the track."
@@ -4633,7 +4633,7 @@ msgstr ""
 
 #: picard/const/tags.py:348
 msgid "Encoded By"
-msgstr ""
+msgstr "Codificat de"
 
 #: picard/const/tags.py:349
 msgid "The person or organization that encoded the track."
@@ -4649,7 +4649,7 @@ msgstr ""
 
 #: picard/const/tags.py:360
 msgid "Engineer"
-msgstr ""
+msgstr "Inginer"
 
 #: picard/const/tags.py:361
 msgid "The names of the engineers associated with the track."
@@ -4685,7 +4685,7 @@ msgstr ""
 
 #: picard/const/tags.py:393
 msgid "File Name"
-msgstr ""
+msgstr "Numele fișierului"
 
 #: picard/const/tags.py:394
 msgid "The name of the file without extension."
@@ -4727,7 +4727,7 @@ msgstr ""
 
 #: picard/const/tags.py:435
 msgid "Genre"
-msgstr ""
+msgstr "Gen muzical"
 
 #: picard/const/tags.py:437
 msgid "The specified genre information from MusicBrainz."
@@ -4743,7 +4743,7 @@ msgstr ""
 
 #: picard/const/tags.py:451
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:453
 msgid ""
@@ -4762,7 +4762,7 @@ msgstr ""
 
 #: picard/const/tags.py:466
 msgid "Record Label"
-msgstr ""
+msgstr "Casa de discuri"
 
 #: picard/const/tags.py:467
 msgid "The names of the labels associated with the release."
@@ -4770,7 +4770,7 @@ msgstr ""
 
 #: picard/const/tags.py:472
 msgid "Language"
-msgstr ""
+msgstr "Limba"
 
 #: picard/const/tags.py:473
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
@@ -4778,7 +4778,7 @@ msgstr ""
 
 #: picard/const/tags.py:477
 msgid "Length"
-msgstr ""
+msgstr "Durată:"
 
 #: picard/const/tags.py:478
 msgid "The length of the track in format mins:secs."
@@ -4786,7 +4786,7 @@ msgstr ""
 
 #: picard/const/tags.py:484
 msgid "License"
-msgstr ""
+msgstr "Licență"
 
 #: picard/const/tags.py:485
 msgid ""
@@ -4796,7 +4796,7 @@ msgstr ""
 
 #: picard/const/tags.py:489
 msgid "Lyricist"
-msgstr ""
+msgstr "Textier"
 
 #: picard/const/tags.py:490
 msgid "The names of the lyricists for the associated work."
@@ -4812,7 +4812,7 @@ msgstr ""
 
 #: picard/const/tags.py:502
 msgid "Lyrics"
-msgstr ""
+msgstr "Versuri"
 
 #: picard/const/tags.py:503
 msgid "The lyrics for the track."
@@ -5008,7 +5008,7 @@ msgstr ""
 
 #: picard/const/tags.py:652
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "MusicIP PUID"
 
 #: picard/const/tags.py:653
 msgid "The MusicIP PUIDs associated with the track."
@@ -5085,7 +5085,7 @@ msgstr ""
 
 #: picard/const/tags.py:713
 msgid "Performer"
-msgstr ""
+msgstr "Interpret"
 
 #: picard/const/tags.py:715
 msgid ""
@@ -5139,7 +5139,7 @@ msgstr ""
 
 #: picard/const/tags.py:755
 msgid "Producer"
-msgstr ""
+msgstr "Producător"
 
 #: picard/const/tags.py:756
 msgid "The names of the producers for the associated release or recording."
@@ -5402,7 +5402,7 @@ msgstr ""
 
 #: picard/const/tags.py:977
 msgid "Remixer"
-msgstr ""
+msgstr "Remixer"
 
 #: picard/const/tags.py:978
 msgid "The names of the remixer engineers associated with the track."
@@ -5476,7 +5476,7 @@ msgstr ""
 
 #: picard/const/tags.py:1042
 msgid "Script"
-msgstr ""
+msgstr "Script"
 
 #: picard/const/tags.py:1044
 msgid ""
@@ -5542,7 +5542,7 @@ msgstr ""
 
 #: picard/const/tags.py:1095
 msgid "Subtitle"
-msgstr ""
+msgstr "Subtitlu"
 
 #: picard/const/tags.py:1096
 msgid "This is used for information directly related to the contents title."
@@ -5558,7 +5558,7 @@ msgstr ""
 
 #: picard/const/tags.py:1107
 msgid "Title"
-msgstr ""
+msgstr "Titlu"
 
 #: picard/const/tags.py:1108
 msgid "The title of the track."
@@ -5590,7 +5590,7 @@ msgstr ""
 
 #: picard/const/tags.py:1130
 msgid "Total Tracks"
-msgstr ""
+msgstr "Total Piese"
 
 #: picard/const/tags.py:1131
 msgid "The total number of tracks on this disc."
@@ -5598,7 +5598,7 @@ msgstr ""
 
 #: picard/const/tags.py:1135
 msgid "Track Number"
-msgstr ""
+msgstr "Numărul piesei"
 
 #: picard/const/tags.py:1136
 msgid "The number of the track on the disc."
@@ -5679,7 +5679,7 @@ msgstr ""
 
 #: picard/const/tags.py:1197
 msgid "Writer"
-msgstr ""
+msgstr "Scriitor"
 
 #: picard/const/tags.py:1199
 msgid ""

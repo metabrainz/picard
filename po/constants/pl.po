@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-02-27 14:44+0000\n"
-"Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
+"PO-Revision-Date: 2025-05-08 05:03+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "constants/pl/>\n"
 "Language: pl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.11.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:144
@@ -4275,7 +4275,7 @@ msgstr ""
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
-msgstr ""
+msgstr "Identyfikator AcoustID"
 
 #: picard/const/tags.py:57
 msgid ""
@@ -4770,7 +4770,7 @@ msgstr ""
 
 #: picard/const/tags.py:472
 msgid "Language"
-msgstr ""
+msgstr "Język"
 
 #: picard/const/tags.py:473
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
