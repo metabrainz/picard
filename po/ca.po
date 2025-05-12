@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-08 07:02+0200\n"
-"PO-Revision-Date: 2025-05-06 18:20+0000\n"
+"PO-Revision-Date: 2025-05-12 19:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -6804,7 +6804,7 @@ msgstr ""
 #: picard/ui/searchdialog/__init__.py:104
 #, python-brace-format
 msgid "&#160;(<a href='{url}'>Syntax Help</a>)"
-msgstr ""
+msgstr "&#160;(<a href='{url}'>Ajuda de la sintaxi</a>)"
 
 #: picard/ui/searchdialog/__init__.py:189
 msgid "Search in browser"
