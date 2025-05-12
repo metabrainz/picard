@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
 "PO-Revision-Date: 2025-05-12 19:20+0000\n"
-"Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
+"Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/2/"
 "app/pl/>\n"
 "Language: pl\n"
@@ -4304,8 +4304,9 @@ msgstr ""
 "<strong>Tej czynności nie można cofnąć.</strong> Czy chcesz kontynuować?"
 
 #: picard/ui/savewarningdialog.py:61
+#, fuzzy
 msgid "<li>{action}</li>"
-msgstr ""
+msgstr "<li>{akcja}</li>"
 
 #: picard/ui/savewarningdialog.py:62
 msgid "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
@@ -5891,8 +5892,9 @@ msgid "Drag and Drop to re-order"
 msgstr "Przeciągnij i upuść, aby zmienić kolejność"
 
 #: picard/ui/options/interface_top_tags.py:40
+#, fuzzy
 msgid "Top Tags"
-msgstr ""
+msgstr "Najpopularniejsze tagi"
 
 #: picard/ui/options/maintenance.py:64
 msgid "Maintenance"
