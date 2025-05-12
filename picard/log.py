@@ -62,13 +62,29 @@ if not picard_module_path.is_dir():
 
 _MAX_TAIL_LEN = 10**6
 
-
-def set_level(level):
-    main_logger.setLevel(level)
+_DEFAULT_LOG_LEVEL = logging.INFO
 
 
 def get_effective_level():
     return main_logger.getEffectiveLevel()
+
+
+def set_verbosity(level, save_to_config=False):
+    try:
+        main_logger.setLevel(level)
+    except ValueError as e:
+        main_logger.error(e)
+        main_logger.setLevel(_DEFAULT_LOG_LEVEL)
+
+    if save_to_config:
+        # import here to avoid circular imports
+        from picard.config import get_config
+        config = get_config()
+        config.setting['log_verbosity'] = get_effective_level()
+
+
+def is_debug():
+    return get_effective_level() == logging.DEBUG
 
 
 _feat = namedtuple('_feat', ['name', 'prefix', 'color_key'])
@@ -163,7 +179,7 @@ main_logger = logging.getLogger('main')
 # do not pass logging messages to the handlers of ancestor loggers (PICARD-2651)
 main_logger.propagate = False
 
-main_logger.setLevel(logging.INFO)
+main_logger.setLevel(_DEFAULT_LOG_LEVEL)
 
 
 def name_filter(record):
@@ -242,7 +258,7 @@ history_logger = logging.getLogger('history')
 # do not pass logging messages to the handlers of ancestor loggers (PICARD-2651)
 history_logger.propagate = False
 
-history_logger.setLevel(logging.INFO)
+history_logger.setLevel(_DEFAULT_LOG_LEVEL)
 
 history_tail = TailLogger(_MAX_TAIL_LEN)
 

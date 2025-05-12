@@ -185,7 +185,6 @@ class Tagger(QtWidgets.QApplication):
 
     __instance = None
 
-    _debug = False
     _no_restore = False
 
     def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
@@ -213,10 +212,12 @@ class Tagger(QtWidgets.QApplication):
         self._no_restore = picard_args.no_restore
         self._no_plugins = picard_args.no_plugins
 
-        self.set_log_level(config.setting['log_verbosity'])
-
         if picard_args.debug or 'PICARD_DEBUG' in os.environ:
-            self.set_log_level(logging.DEBUG)
+            verbosity = logging.DEBUG
+        else:
+            verbosity = config.setting['log_verbosity']
+
+        log.set_verbosity(verbosity)
 
         if picard_args.audit:
             setup_audit(picard_args.audit)
@@ -455,10 +456,6 @@ class Tagger(QtWidgets.QApplication):
     def run_cleanup(self):
         for f in self.exit_cleanup:
             f()
-
-    def set_log_level(self, level):
-        self._debug = level == logging.DEBUG
-        log.set_level(level)
 
     def on_listen_port_changed(self, port):
         self.webservice.oauth_manager.redirect_uri = self._mb_login_redirect_uri()
@@ -1019,7 +1016,7 @@ class Tagger(QtWidgets.QApplication):
         thread.run_task(
             partial(disc.read, encode_filename(device)),
             partial(self._lookup_disc, disc),
-            traceback=self._debug)
+            traceback=log.is_debug())
 
     def lookup_discid_from_logfile(self):
         file_chooser = FileDialog(parent=self.window)
@@ -1039,7 +1036,7 @@ class Tagger(QtWidgets.QApplication):
         thread.run_task(
             partial(self._parse_disc_ripping_log, disc, filepath),
             partial(self._lookup_disc, disc),
-            traceback=self._debug,
+            traceback=log.is_debug(),
         )
 
     def _parse_disc_ripping_log(self, disc, path):
@@ -1104,7 +1101,7 @@ class Tagger(QtWidgets.QApplication):
     def cluster(self, objs, callback=None):
         """Group files with similar metadata to 'clusters'."""
         files = tuple(iter_files_from_objects(objs))
-        if log.get_effective_level() == logging.DEBUG:
+        if log.is_debug():
             limit = 5
             count = len(files)
             remain = max(0, count - limit)
