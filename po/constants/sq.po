@@ -2,14 +2,14 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-#
+# Besnik <besnik@programeshqip.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-05-08 05:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-05-12 19:20+0000\n"
+"Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
 "3/constants/sq/>\n"
 "Language: sq\n"
@@ -5163,10 +5163,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:775
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "Latinisht"
+msgstr ""
 
 #: picard/const/tags.py:776
 msgid "The rating of the track from 0-5 by MusicBrainz users."
