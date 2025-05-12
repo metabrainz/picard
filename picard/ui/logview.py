@@ -39,7 +39,6 @@ from PyQt6 import (
 )
 
 from picard import log
-from picard.config import get_config
 from picard.debug_opts import DebugOpt
 from picard.i18n import gettext as _
 from picard.util import (
@@ -341,12 +340,9 @@ class LogView(LogViewCommon):
 
     def _verbosity_changed(self, level):
         if level != self.verbosity:
-            config = get_config()
-            config.setting['log_verbosity'] = level
+            log.set_verbosity(level, save_to_config=True)
             self.verbosity = level
             self._update_verbosity_label()
-            tagger = QtCore.QCoreApplication.instance()
-            tagger.set_log_level(level)
             self.display(clear=True)
 
     def _update_verbosity_label(self):
