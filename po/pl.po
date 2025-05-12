@@ -26,8 +26,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-05-07 07:20+0000\n"
-"Last-Translator: Echelon <weblate@wp.pl>\n"
+"PO-Revision-Date: 2025-05-12 19:20+0000\n"
+"Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/2/"
 "app/pl/>\n"
 "Language: pl\n"
@@ -313,10 +313,9 @@ msgstr "Języki tłumaczeń"
 
 #: picard/profile.py:66
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Tłumasz wyjątki nazw artystów"
 
 #: picard/profile.py:67
-#, fuzzy
 msgid "Translation script exceptions"
 msgstr "Wyjątki skryptu tłumaczeniowego"
 
@@ -702,9 +701,8 @@ msgid "Completeness check ignore: Video tracks"
 msgstr "Ignoruj kontrolę kompletności: Ścieżki wideo"
 
 #: picard/profile.py:230
-#, fuzzy
 msgid "Completeness check ignore: Pregap tracks"
-msgstr "Ignoruj kontrolę kompletności: Ścieżki danych"
+msgstr "Ignoruj kontrolę kompletności: dane ukryte"
 
 #: picard/profile.py:231
 msgid "Completeness check ignore: Data tracks"
@@ -719,7 +717,6 @@ msgid "Tags to ignore for comparison"
 msgstr "Znaczniki do zignorowania przy porównaniu"
 
 #: picard/profile.py:236
-#, fuzzy
 msgid "Use a web proxy server"
 msgstr "Użyj internetowego serwera proxy"
 
@@ -983,14 +980,12 @@ msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
 #: picard/coverart/providers/caa.py:197
-#, fuzzy
 msgid "Cover Art Archive: Release"
-msgstr "Cover Art Archive: wydanie"
+msgstr "Archiwum okładek: wydanie"
 
 #: picard/coverart/providers/caa_release_group.py:44
-#, fuzzy
 msgid "Cover Art Archive: Release Group"
-msgstr "Cover Art Archive: grupa wydań"
+msgstr "Archiwum okładek: grupa wydań"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -3389,9 +3384,8 @@ msgid "Log"
 msgstr "Log"
 
 #: picard/ui/logview.py:180 picard/ui/logview.py:332
-#, fuzzy
 msgid "Verbosity"
-msgstr "Rodzaj zawartości"
+msgstr "Szczegółowość"
 
 #: picard/ui/logview.py:190
 msgid "String to highlight"
@@ -6023,8 +6017,9 @@ msgid "Matching"
 msgstr "Zgodność"
 
 #: picard/ui/options/metadata.py:216
+#, fuzzy
 msgid "{indent}{locale}"
-msgstr ""
+msgstr "{indent}{locale}"
 
 #: picard/ui/options/metadata.py:278
 msgid ""
