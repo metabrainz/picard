@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-08 07:02+0200\n"
 "PO-Revision-Date: 2025-05-12 19:20+0000\n"
-"Last-Translator: Echelon <weblate@wp.pl>\n"
+"Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
 "Language: pl\n"
@@ -166,21 +166,19 @@ msgstr "Rejestruj pełne ścieżki wtyczki"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "Dane POST dla usługi sieciowej"
 
 #: picard/debug_opts.py:84
-#, fuzzy
 msgid "Log data of web service post requests"
 msgstr "Dane dziennika żądań POST usługi sieciowej"
 
 #: picard/debug_opts.py:85
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Odpowiedzi usługi sieciowej"
 
 #: picard/debug_opts.py:85
-#, fuzzy
 msgid "Log content of web service replies"
-msgstr "Zawartość dziennika odpowiedzi usług sieciowych"
+msgstr "Zawartość dziennika odpowiedzi usługi sieciowej"
 
 #: picard/file.py:216
 msgid ""
@@ -273,9 +271,8 @@ msgid "Completeness check ignore: Data tracks"
 msgstr "Ignoruj kontrolę kompletności: Ścieżki danych"
 
 #: picard/options.py:154
-#, fuzzy
 msgid "Completeness check ignore: Pregap tracks"
-msgstr "Ignoruj kontrolę kompletności: Ścieżki danych"
+msgstr "Ignoruj kontrolę kompletności: dane ukryte"
 
 #: picard/options.py:155
 msgid "Completeness check ignore: Silent tracks"
@@ -356,16 +353,12 @@ msgid "Save only a single front image as separate file"
 msgstr "Zapisuj tylko pojedynczy przedni obraz jako oddzielny plik"
 
 #: picard/options.py:211
-#, fuzzy
-#| msgid "Do not use audio fingerprinting"
 msgid "Use AcoustID audio fingerprinting"
-msgstr "Nie używaj odcisków audio"
+msgstr "Używaj odcisków AcoustID"
 
 #: picard/options.py:214
-#, fuzzy
-#| msgid "AcoustID Fingerprint"
 msgid "Save AcoustID fingerprints"
-msgstr "Odcisk AcoustID"
+msgstr "Zapisz odciski AcoustID"
 
 #: picard/options.py:224 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
@@ -540,7 +533,6 @@ msgid "Use release relationships"
 msgstr "Użyj powiązań wydań"
 
 #: picard/options.py:304
-#, fuzzy
 msgid "Translation script exceptions"
 msgstr "Wyjątki skryptu tłumaczeniowego"
 
@@ -563,7 +555,7 @@ msgstr "Przetłumacz nazwy artystów"
 
 #: picard/options.py:309
 msgid "Translate artist names exception"
-msgstr ""
+msgstr "Tłumasz wyjątki nazw artystów"
 
 #: picard/options.py:310
 msgid "Various Artists name"
@@ -610,7 +602,6 @@ msgid "Proxy username"
 msgstr "Nazwa użytkownika proxy"
 
 #: picard/options.py:324
-#, fuzzy
 msgid "Use a web proxy server"
 msgstr "Użyj internetowego serwera proxy"
 
@@ -1058,14 +1049,12 @@ msgid "Cover Art Archive"
 msgstr "Cover Art Archive"
 
 #: picard/coverart/providers/caa.py:186
-#, fuzzy
 msgid "Cover Art Archive: Release"
-msgstr "Cover Art Archive: wydanie"
+msgstr "Archiwum okładek: wydanie"
 
 #: picard/coverart/providers/caa_release_group.py:45
-#, fuzzy
 msgid "Cover Art Archive: Release Group"
-msgstr "Cover Art Archive: grupa wydań"
+msgstr "Archiwum okładek: grupa wydań"
 
 #: picard/coverart/providers/local.py:72
 msgid "Local Files"
@@ -1275,7 +1264,6 @@ msgstr ""
 "expression-syntax) zamiana."
 
 #: picard/script/functions.py:249
-#, fuzzy
 msgid ""
 "`$rsearch(text,pattern[,group])`\n"
 "\n"
@@ -1305,8 +1293,8 @@ msgid ""
 msgstr ""
 "`$rsearch(text,pattern[,group])`\n"
 "\n"
-"[Wyszukiwanie wyrażeń regularnych](https://docs.python.org/3/library/"
-"re.html#regular-expression-syntax).\n"
+"[Wyrażenie regularne](https://docs.python.org/3/library/re.html#regular-"
+"expression-syntax).\n"
 "\n"
 "Jeśli opcjonalny parametr `group` nie jest podany lub jest pusty, zwróć "
 "pierwszą\n"
@@ -2853,18 +2841,14 @@ msgid "Picard script package"
 msgstr "Pakiet skryptów Picarda"
 
 #: picard/tags/tagvar.py:62
-#, fuzzy
 msgid "Notes"
 msgstr "Notatki"
 
 #: picard/tags/tagvar.py:63
-#, fuzzy
-#| msgid "Option Setting Warning"
 msgid "Option Settings"
-msgstr "Ostrzeżenie dotyczące ustawienia opcji"
+msgstr "Ustawienia opcji"
 
 #: picard/tags/tagvar.py:64
-#, fuzzy
 msgid "Links"
 msgstr "Linki"
 
@@ -2873,28 +2857,22 @@ msgid "See Also"
 msgstr "Zobacz także"
 
 #: picard/tags/tagvar.py:68
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available."
-msgstr "Nowa wersja dostępna"
+msgstr "Opis niedostępny"
 
 #: picard/tags/tagvar.py:71
 msgid "multi-value variable"
 msgstr "zmienna wielowartościowa"
 
 #: picard/tags/tagvar.py:72
-#, fuzzy
 msgid "preserved read-only"
 msgstr "zachowane tylko do odczytu"
 
 #: picard/tags/tagvar.py:73
-#, fuzzy
-#| msgid "No enabled scripts"
 msgid "not for use in scripts"
-msgstr "Brak włączonych skryptów"
+msgstr "Nie do użytku w skryptach"
 
 #: picard/tags/tagvar.py:74
-#, fuzzy
 msgid "calculated"
 msgstr "obliczony"
 
@@ -2903,29 +2881,27 @@ msgid "info from audio file"
 msgstr "informacje z pliku audio"
 
 #: picard/tags/tagvar.py:76
-#, fuzzy
-#| msgid "Use genres from MusicBrainz"
 msgid "not provided from MusicBrainz data"
-msgstr "Używaj gatunków z MusicBrainz"
+msgstr "dane spoza MusicBrainz"
 
 #: picard/tags/tagvar.py:77
 msgid "not populated by stock Picard"
-msgstr ""
+msgstr "niekopiowane przez Picard-a"
 
 #: picard/tags/tagvar.py:253
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 
 #: picard/tags/tagvar.py:254
 #, python-brace-format
 msgid "<p><em>%{name}%</em></p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em></p>{content}"
 
 #: picard/tags/tagvar.py:290
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
-msgstr ""
+msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/ui/aboutdialog.py:75
 msgid "translator-credits"
@@ -3185,7 +3161,6 @@ msgid "Syntax Highlighting"
 msgstr "Podświetlanie składni"
 
 #: picard/ui/colors.py:62
-#, fuzzy
 msgid "Escape syntax highlight"
 msgstr "Podświetlenie składni Escape"
 
@@ -3250,9 +3225,8 @@ msgid "Log"
 msgstr "Log"
 
 #: picard/ui/logview.py:193 picard/ui/logview.py:354
-#, fuzzy
 msgid "Verbosity"
-msgstr "Rodzaj zawartości"
+msgstr "Szczegółowość"
 
 #: picard/ui/logview.py:200 picard/ui/logview.py:201
 msgid "Debug Options"
@@ -6281,9 +6255,9 @@ msgid "Matching"
 msgstr "Zgodność"
 
 #: picard/ui/options/metadata.py:219
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{indent}{locale}"
-msgstr ""
+msgstr "{indent}{locale}"
 
 #: picard/ui/options/metadata.py:282
 msgid ""
