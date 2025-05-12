@@ -65,20 +65,16 @@ _MAX_TAIL_LEN = 10**6
 _DEFAULT_LOG_LEVEL = logging.INFO
 
 
-def set_level(level):
-    main_logger.setLevel(level)
-
-
 def get_effective_level():
     return main_logger.getEffectiveLevel()
 
 
 def set_verbosity(level, save_to_config=False):
     try:
-        set_level(level)
+        main_logger.setLevel(level)
     except ValueError as e:
         main_logger.error(e)
-        set_level(_DEFAULT_LOG_LEVEL)
+        main_logger.setLevel(_DEFAULT_LOG_LEVEL)
 
     if save_to_config:
         # import here to avoid circular imports

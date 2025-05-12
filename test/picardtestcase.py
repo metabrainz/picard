@@ -86,7 +86,7 @@ class PicardTestCase(unittest.TestCase):
 
     def setUp(self):
         super().setUp()
-        log.set_level(logging.DEBUG)
+        log.set_verbosity(logging.DEBUG)
         setup_gettext(None, 'C')
         self.tagger = FakeTagger()
         QtCore.QCoreApplication.instance = lambda: self.tagger
