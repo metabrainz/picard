@@ -1101,7 +1101,7 @@ class Tagger(QtWidgets.QApplication):
     def cluster(self, objs, callback=None):
         """Group files with similar metadata to 'clusters'."""
         files = tuple(iter_files_from_objects(objs))
-        if log.get_effective_level() == logging.DEBUG:
+        if log.is_debug():
             limit = 5
             count = len(files)
             remain = max(0, count - limit)
