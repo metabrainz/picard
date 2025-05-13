@@ -203,24 +203,7 @@ class Tagger(QtWidgets.QApplication):
         if self._debug_opts:
             DebugOpt.from_string(self._debug_opts)
 
-        # Main thread pool used for most background tasks
-        self.thread_pool = QtCore.QThreadPool(self)
-        # Two threads are needed for the pipe handler and command processing.
-        # At least one thread is required to run other Picard background tasks.
-        self.thread_pool.setMaxThreadCount(max(3, QtCore.QThread.idealThreadCount()))
-
-        # Provide a separate thread pool for operations that should not be
-        # delayed by longer background processing tasks, e.g. because the user
-        # expects instant feedback instead of waiting for a long list of
-        # operations to finish.
-        self.priority_thread_pool = QtCore.QThreadPool(self)
-        self.priority_thread_pool.setMaxThreadCount(1)
-
-        # Use a separate thread pool for file saving, with a thread count of 1,
-        # to avoid race conditions in File._save_and_rename.
-        self.save_thread_pool = QtCore.QThreadPool(self)
-        self.save_thread_pool.setMaxThreadCount(1)
-
+        self._init_threads()
         # Setup pipe handler for managing single app instance and commands.
         self.pipe_handler = pipe_handler
 
@@ -345,6 +328,26 @@ class Tagger(QtWidgets.QApplication):
         self._no_plugins = cmdline_args.no_plugins
         self._no_restore = cmdline_args.no_restore
         self._to_load = cmdline_args.processable
+
+    def _init_threads(self):
+        """Initialize threads"""
+        # Main thread pool used for most background tasks
+        self.thread_pool = QtCore.QThreadPool(self)
+        # Two threads are needed for the pipe handler and command processing.
+        # At least one thread is required to run other Picard background tasks.
+        self.thread_pool.setMaxThreadCount(max(3, QtCore.QThread.idealThreadCount()))
+
+        # Provide a separate thread pool for operations that should not be
+        # delayed by longer background processing tasks, e.g. because the user
+        # expects instant feedback instead of waiting for a long list of
+        # operations to finish.
+        self.priority_thread_pool = QtCore.QThreadPool(self)
+        self.priority_thread_pool.setMaxThreadCount(1)
+
+        # Use a separate thread pool for file saving, with a thread count of 1,
+        # to avoid race conditions in File._save_and_rename.
+        self.save_thread_pool = QtCore.QThreadPool(self)
+        self.save_thread_pool.setMaxThreadCount(1)
 
     @property
     def is_wayland(self):
