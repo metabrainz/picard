@@ -241,6 +241,7 @@ class Tagger(QtWidgets.QApplication):
             self.updatecheckmanager = UpdateCheckManager(self)
 
     def _bootstrap(self):
+        """Bootstraping"""
         # Initialize these variables early as they are needed for a clean
         # shutdown.
         self._no_restore = False
@@ -248,6 +249,7 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = False
 
     def _init_properties_from_args_or_env(self, cmdline_args):
+        """Initialize properties from command line arguments or environment"""
         self._audit = cmdline_args.audit
         self._config_file = cmdline_args.config_file
         self._debug_opts = cmdline_args.debug_opts
