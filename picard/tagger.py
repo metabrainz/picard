@@ -185,32 +185,32 @@ class Tagger(QtWidgets.QApplication):
 
     __instance = None
 
-    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
+    def __init__(self, cmdline_args, localedir, autoupdate, pipe_handler=None):
         self._bootstrap()
         super().__init__(sys.argv)
         self.__class__.__instance = self
         init_options()
-        setup_config(app=self, filename=picard_args.config_file)
+        setup_config(app=self, filename=cmdline_args.config_file)
         config = get_config()
 
-        self._to_load = picard_args.processable
+        self._to_load = cmdline_args.processable
 
         self.autoupdate_enabled = autoupdate
-        self._no_restore = picard_args.no_restore
-        self._no_plugins = picard_args.no_plugins
+        self._no_restore = cmdline_args.no_restore
+        self._no_plugins = cmdline_args.no_plugins
 
-        if picard_args.debug or 'PICARD_DEBUG' in os.environ:
+        if cmdline_args.debug or 'PICARD_DEBUG' in os.environ:
             verbosity = logging.DEBUG
         else:
             verbosity = config.setting['log_verbosity']
 
         log.set_verbosity(verbosity)
 
-        if picard_args.audit:
-            setup_audit(picard_args.audit)
+        if cmdline_args.audit:
+            setup_audit(cmdline_args.audit)
 
-        if picard_args.debug_opts:
-            DebugOpt.from_string(picard_args.debug_opts)
+        if cmdline_args.debug_opts:
+            DebugOpt.from_string(cmdline_args.debug_opts)
 
         # Main thread pool used for most background tasks
         self.thread_pool = QtCore.QThreadPool(self)
@@ -319,7 +319,7 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
-        self.window = MainWindow(disable_player=picard_args.no_player)
+        self.window = MainWindow(disable_player=cmdline_args.no_player)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -1254,7 +1254,7 @@ def print_help_for_commands():
     print_message_and_exit(message, informative_text)
 
 
-def process_picard_args():
+def process_cmdline_args():
     parser = PicardArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
@@ -1344,33 +1344,33 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    picard_args = process_picard_args()
+    cmdline_args = process_cmdline_args()
 
-    if picard_args.long_version:
+    if cmdline_args.long_version:
         _ = QtCore.QCoreApplication(sys.argv)
         print_message_and_exit(versions.as_string())
-    if picard_args.version:
+    if cmdline_args.version:
         print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
-    if picard_args.remote_commands_help:
+    if cmdline_args.remote_commands_help:
         print_help_for_commands()
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
-    if picard_args.stand_alone_instance:
+    if cmdline_args.stand_alone_instance:
         identifier = uuid4().hex
     else:
-        if picard_args.config_file:
-            identifier = blake2b(picard_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
+        if cmdline_args.config_file:
+            identifier = blake2b(cmdline_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
         else:
             identifier = 'main'
-        if picard_args.no_plugins:
+        if cmdline_args.no_plugins:
             identifier += '_NP'
 
-    if picard_args.processable:
-        log.info("Sending messages to main instance: %r", picard_args.processable)
+    if cmdline_args.processable:
+        log.info("Sending messages to main instance: %r", cmdline_args.processable)
 
     try:
         pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
-                                    identifier=identifier, args=picard_args.processable)
+                                    identifier=identifier, args=cmdline_args.processable)
         should_start = pipe_handler.is_pipe_owner
     except pipe.PipeErrorNoPermission as err:
         log.error(err)
@@ -1389,7 +1389,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_handler)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
