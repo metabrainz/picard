@@ -213,13 +213,7 @@ class Tagger(QtWidgets.QApplication):
         theme.setup(self)
         check_io_encoding()
 
-        if not localedir:
-            # Unfortunately we cannot use importlib.resources to access the data
-            # files, as gettext expects a path to a directory for localedir.
-            basedir = FROZEN_TEMP_PATH if IS_FROZEN else os.path.dirname(__file__)
-            localedir = os.path.join(basedir, 'locale')
-        # Must be before config upgrade because upgrade dialogs need to be translated.
-        setup_gettext(localedir, config.setting['ui_language'], log.debug)
+        self._init_gettext(config, localedir)
 
         upgrade_config(config)
 
@@ -357,6 +351,16 @@ class Tagger(QtWidgets.QApplication):
 
         # log interesting environment variables
         log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
+
+    def _init_gettext(self, config, localedir):
+        """Initialize gettext"""
+        if not localedir:
+            # Unfortunately we cannot use importlib.resources to access the data
+            # files, as gettext expects a path to a directory for localedir.
+            basedir = FROZEN_TEMP_PATH if IS_FROZEN else os.path.dirname(__file__)
+            localedir = os.path.join(basedir, 'locale')
+        # Must be before config upgrade because upgrade dialogs need to be translated.
+        setup_gettext(localedir, config.setting['ui_language'], log.debug)
 
     @property
     def is_wayland(self):
