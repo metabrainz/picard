@@ -224,11 +224,7 @@ class Tagger(QtWidgets.QApplication):
 
         self.enable_menu_icons(config.setting['show_menu_icons'])
 
-        # Load plugins
-        self.pluginmanager = PluginManager()
-        if not self._no_plugins:
-            for plugin_dir in plugin_dirs():
-                self.pluginmanager.load_plugins_from_directory(plugin_dir)
+        self._init_plugins()
 
         self.browser_integration = BrowserIntegration()
         self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
@@ -367,6 +363,13 @@ class Tagger(QtWidgets.QApplication):
         self._acoustid = acoustid.AcoustIDClient(acoustid_api)
         self._acoustid.init()
         self.acoustidmanager = AcoustIDManager(acoustid_api)
+
+    def _init_plugins(self):
+        """Initialize and load plugins"""
+        self.pluginmanager = PluginManager()
+        if not self._no_plugins:
+            for plugin_dir in plugin_dirs():
+                self.pluginmanager.load_plugins_from_directory(plugin_dir)
 
     @property
     def is_wayland(self):
