@@ -185,48 +185,72 @@ class Tagger(QtWidgets.QApplication):
 
     __instance = None
 
-    _no_restore = False
-
-    def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
-        # Initialize these variables early as they are needed for a clean
-        # shutdown.
-        self._acoustid = None
-        self.browser_integration = None
-        self.exit_cleanup = []
-        self.pipe_handler = None
-        self.priority_thread_pool = None
-        self.save_thread_pool = None
-        self.stopping = False
-        self.thread_pool = None
-        self.webservice = None
-
+    def __init__(self, cmdline_args, localedir, autoupdate, pipe_handler=None):
+        self._bootstrap()
         super().__init__(sys.argv)
         self.__class__.__instance = self
+        self._init_properties_from_args_or_env(cmdline_args)
         init_options()
-        setup_config(app=self, filename=picard_args.config_file)
+        setup_config(app=self, filename=self._config_file)
         config = get_config()
 
-        self._to_load = picard_args.processable
-
         self.autoupdate_enabled = autoupdate
-        self._no_restore = picard_args.no_restore
-        self._no_plugins = picard_args.no_plugins
 
-        if picard_args.debug or 'PICARD_DEBUG' in os.environ:
-            verbosity = logging.DEBUG
-        else:
-            verbosity = config.setting['log_verbosity']
+        self._init_logging(config)
+        self._init_threads()
+        self._init_pipe_server(pipe_handler)
+        self._init_remote_commands()
+        self._init_signal_handling()
 
-        log.set_verbosity(verbosity)
+        self._log_startup(config)
 
-        if picard_args.audit:
-            setup_audit(picard_args.audit)
+        theme.setup(self)
+        check_io_encoding()
 
-        if picard_args.debug_opts:
-            DebugOpt.from_string(picard_args.debug_opts)
+        self._init_gettext(config, localedir)
 
+        upgrade_config(config)
+
+        self._init_webservice()
+        self._init_fingerprinting()
+        self._init_plugins()
+        self._init_browser_integration()
+        self._init_tagger_entities()
+
+        self._init_ui(config)
+
+    def _bootstrap(self):
+        """Bootstraping"""
+        # Initialize these variables early as they are needed for a clean
+        # shutdown.
+        self.exit_cleanup = []
+        self.stopping = False
+
+    def _init_properties_from_args_or_env(self, cmdline_args):
+        """Initialize properties from command line arguments or environment"""
+        self._audit = cmdline_args.audit
+        self._config_file = cmdline_args.config_file
+        self._debug_opts = cmdline_args.debug_opts
+        self._debug = cmdline_args.debug or 'PICARD_DEBUG' in os.environ
+        self._no_player = cmdline_args.no_player
+        self._no_plugins = cmdline_args.no_plugins
+        self._no_restore = cmdline_args.no_restore
+        self._to_load = cmdline_args.processable
+
+    def _init_logging(self, config):
+        """Initialize logging & audit"""
+        log.set_verbosity(logging.DEBUG if self._debug else config.setting['log_verbosity'])
+
+        setup_audit(self._audit)
+
+        if self._debug_opts:
+            DebugOpt.from_string(self._debug_opts)
+
+    def _init_threads(self):
+        """Initialize threads"""
         # Main thread pool used for most background tasks
         self.thread_pool = QtCore.QThreadPool(self)
+        self.register_cleanup(self.thread_pool.waitForDone)
         # Two threads are needed for the pipe handler and command processing.
         # At least one thread is required to run other Picard background tasks.
         self.thread_pool.setMaxThreadCount(max(3, QtCore.QThread.idealThreadCount()))
@@ -236,47 +260,53 @@ class Tagger(QtWidgets.QApplication):
         # expects instant feedback instead of waiting for a long list of
         # operations to finish.
         self.priority_thread_pool = QtCore.QThreadPool(self)
+        self.register_cleanup(self.priority_thread_pool.waitForDone)
         self.priority_thread_pool.setMaxThreadCount(1)
 
         # Use a separate thread pool for file saving, with a thread count of 1,
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
+        self.register_cleanup(self.save_thread_pool.waitForDone)
         self.save_thread_pool.setMaxThreadCount(1)
 
-        # Setup pipe handler for managing single app instance and commands.
+    def _init_pipe_server(self, pipe_handler):
+        """Setup pipe handler for managing single app instance and commands."""
         self.pipe_handler = pipe_handler
 
         if self.pipe_handler:
+            self.register_cleanup(self.pipe_handler.stop)
             self._command_thread_running = False
             self.pipe_handler.pipe_running = True
             thread.run_task(self.pipe_server, self._pipe_server_finished)
 
-        self._init_remote_commands()
+    def _init_signal_handling(self):
+        """Set up signal handling"""
+        if IS_WIN:
+            return
 
-        if not IS_WIN:
-            # Set up signal handling
-            # It's not possible to call all available functions from signal
-            # handlers, therefore we need to set up a QSocketNotifier to listen
-            # on a socket. Sending data through a socket can be done in a
-            # signal handler, so we use the socket to notify the application of
-            # the signal.
-            # This code is adopted from
-            # https://qt-project.org/doc/qt-4.8/unix-signals.html
+        # It's not possible to call all available functions from signal
+        # handlers, therefore we need to set up a QSocketNotifier to listen
+        # on a socket. Sending data through a socket can be done in a
+        # signal handler, so we use the socket to notify the application of
+        # the signal.
+        # This code is adopted from
+        # https://qt-project.org/doc/qt-4.8/unix-signals.html
 
-            # To not make the socket module a requirement for the Windows
-            # installer, import it here and not globally
-            import socket
-            self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
+        # To not make the socket module a requirement for the Windows
+        # installer, import it here and not globally
+        import socket
+        self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
 
-            self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
-                                                         QtCore.QSocketNotifier.Type.Read, self)
-            self.signalnotifier.activated.connect(self.sighandler)
+        self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
+                                                     QtCore.QSocketNotifier.Type.Read, self)
+        self.signalnotifier.activated.connect(self.sighandler)
 
-            signal.signal(signal.SIGHUP, self.signal)
-            signal.signal(signal.SIGINT, self.signal)
-            signal.signal(signal.SIGTERM, self.signal)
+        signal.signal(signal.SIGHUP, self.signal)
+        signal.signal(signal.SIGINT, self.signal)
+        signal.signal(signal.SIGTERM, self.signal)
 
-        # Setup logging
+    def _log_startup(self, config):
+        """Log interesting infos at startup"""
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
         log.debug("Platform: %s %s %s", platform.platform(),
                   platform.python_implementation(), platform.python_version())
@@ -289,9 +319,8 @@ class Tagger(QtWidgets.QApplication):
         # log interesting environment variables
         log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
 
-        theme.setup(self)
-        check_io_encoding()
-
+    def _init_gettext(self, config, localedir):
+        """Initialize gettext"""
         if not localedir:
             # Unfortunately we cannot use importlib.resources to access the data
             # files, as gettext expects a path to a directory for localedir.
@@ -300,30 +329,36 @@ class Tagger(QtWidgets.QApplication):
         # Must be before config upgrade because upgrade dialogs need to be translated.
         setup_gettext(localedir, config.setting['ui_language'], log.debug)
 
-        upgrade_config(config)
-
+    def _init_webservice(self):
+        """Initialize web service/API"""
         self.webservice = WebService()
+        self.register_cleanup(self.webservice.stop)
         self.mb_api = MBAPIHelper(self.webservice)
-
         load_user_collections()
 
-        # Initialize fingerprinting
+    def _init_fingerprinting(self):
+        """Initialize fingerprinting"""
         acoustid_api = AcoustIdAPIHelper(self.webservice)
         self._acoustid = acoustid.AcoustIDClient(acoustid_api)
         self._acoustid.init()
+        self.register_cleanup(self._acoustid.done)
         self.acoustidmanager = AcoustIDManager(acoustid_api)
 
-        self.enable_menu_icons(config.setting['show_menu_icons'])
-
-        # Load plugins
+    def _init_plugins(self):
+        """Initialize and load plugins"""
         self.pluginmanager = PluginManager()
         if not self._no_plugins:
             for plugin_dir in plugin_dirs():
                 self.pluginmanager.load_plugins_from_directory(plugin_dir)
 
+    def _init_browser_integration(self):
+        """Initialize browser integration"""
         self.browser_integration = BrowserIntegration()
+        self.register_cleanup(self.browser_integration.stop)
         self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
 
+    def _init_tagger_entities(self):
+        """Initialize tagger objects/entities"""
         self._pending_files_count = 0
         self.files = {}
         self.clusters = ClusterList()
@@ -332,7 +367,11 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
-        self.window = MainWindow(disable_player=picard_args.no_player)
+
+    def _init_ui(self, config):
+        """Initialize User Interface / Main Window"""
+        self.enable_menu_icons(config.setting['show_menu_icons'])
+        self.window = MainWindow(disable_player=self._no_player)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -454,7 +493,7 @@ class Tagger(QtWidgets.QApplication):
         self.exit_cleanup.append(func)
 
     def run_cleanup(self):
-        for f in self.exit_cleanup:
+        for f in reversed(self.exit_cleanup):
             f()
 
     def on_listen_port_changed(self, port):
@@ -560,20 +599,6 @@ class Tagger(QtWidgets.QApplication):
             return
         self.stopping = True
         log.debug("Picard stopping")
-        if self._acoustid:
-            self._acoustid.done()
-        if self.pipe_handler:
-            self.pipe_handler.stop()
-        if self.webservice:
-            self.webservice.stop()
-        if self.thread_pool:
-            self.thread_pool.waitForDone()
-        if self.save_thread_pool:
-            self.save_thread_pool.waitForDone()
-        if self.priority_thread_pool:
-            self.priority_thread_pool.waitForDone()
-        if self.browser_integration:
-            self.browser_integration.stop()
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
@@ -1184,7 +1209,7 @@ class Tagger(QtWidgets.QApplication):
         self.signalnotifier.setEnabled(True)
 
 
-class PicardArgumentParser(argparse.ArgumentParser):
+class CmdlineArgsParser(argparse.ArgumentParser):
     def exit(self, status=0, message=None):
         if is_windowed_app():
             if message:
@@ -1253,8 +1278,8 @@ def print_help_for_commands():
     print_message_and_exit(message, informative_text)
 
 
-def process_picard_args():
-    parser = PicardArgumentParser(
+def process_cmdline_args():
+    parser = CmdlineArgsParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
 If a new instance will not be spawned files/directories will be passed to the existing instance"""
@@ -1343,33 +1368,33 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    picard_args = process_picard_args()
+    cmdline_args = process_cmdline_args()
 
-    if picard_args.long_version:
+    if cmdline_args.long_version:
         _ = QtCore.QCoreApplication(sys.argv)
         print_message_and_exit(versions.as_string())
-    if picard_args.version:
+    if cmdline_args.version:
         print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
-    if picard_args.remote_commands_help:
+    if cmdline_args.remote_commands_help:
         print_help_for_commands()
 
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
-    if picard_args.stand_alone_instance:
+    if cmdline_args.stand_alone_instance:
         identifier = uuid4().hex
     else:
-        if picard_args.config_file:
-            identifier = blake2b(picard_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
+        if cmdline_args.config_file:
+            identifier = blake2b(cmdline_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
         else:
             identifier = 'main'
-        if picard_args.no_plugins:
+        if cmdline_args.no_plugins:
             identifier += '_NP'
 
-    if picard_args.processable:
-        log.info("Sending messages to main instance: %r", picard_args.processable)
+    if cmdline_args.processable:
+        log.info("Sending messages to main instance: %r", cmdline_args.processable)
 
     try:
         pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
-                                    identifier=identifier, args=picard_args.processable)
+                                    identifier=identifier, args=cmdline_args.processable)
         should_start = pipe_handler.is_pipe_owner
     except pipe.PipeErrorNoPermission as err:
         log.error(err)
@@ -1388,7 +1413,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(picard_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_handler)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
