@@ -225,9 +225,7 @@ class Tagger(QtWidgets.QApplication):
         self.enable_menu_icons(config.setting['show_menu_icons'])
 
         self._init_plugins()
-
-        self.browser_integration = BrowserIntegration()
-        self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
+        self._init_browser_integration()
 
         self._pending_files_count = 0
         self.files = {}
@@ -370,6 +368,11 @@ class Tagger(QtWidgets.QApplication):
         if not self._no_plugins:
             for plugin_dir in plugin_dirs():
                 self.pluginmanager.load_plugins_from_directory(plugin_dir)
+
+    def _init_browser_integration(self):
+        """Initialize browser integration"""
+        self.browser_integration = BrowserIntegration()
+        self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
 
     @property
     def is_wayland(self):
