@@ -208,18 +208,7 @@ class Tagger(QtWidgets.QApplication):
         self._init_remote_commands()
         self._init_signal_handling()
 
-        # Setup logging
-        log.debug("Starting Picard from %r", os.path.abspath(__file__))
-        log.debug("Platform: %s %s %s", platform.platform(),
-                  platform.python_implementation(), platform.python_version())
-        log.debug("Versions: %s", versions.as_string())
-        log.debug("Configuration file path: %r", config.fileName())
-
-        log.debug("User directory: %r", os.path.abspath(USER_DIR))
-        log.debug("System long path support: %r", system_supports_long_paths())
-
-        # log interesting environment variables
-        log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
+        self._log_startup(config)
 
         theme.setup(self)
         check_io_encoding()
@@ -354,6 +343,20 @@ class Tagger(QtWidgets.QApplication):
         signal.signal(signal.SIGHUP, self.signal)
         signal.signal(signal.SIGINT, self.signal)
         signal.signal(signal.SIGTERM, self.signal)
+
+    def _log_startup(self, config):
+        """Log interesting infos at startup"""
+        log.debug("Starting Picard from %r", os.path.abspath(__file__))
+        log.debug("Platform: %s %s %s", platform.platform(),
+                  platform.python_implementation(), platform.python_version())
+        log.debug("Versions: %s", versions.as_string())
+        log.debug("Configuration file path: %r", config.fileName())
+
+        log.debug("User directory: %r", os.path.abspath(USER_DIR))
+        log.debug("System long path support: %r", system_supports_long_paths())
+
+        # log interesting environment variables
+        log.debug("Qt Env.: %s", " ".join("%s=%r" % (k, v) for k, v in os.environ.items() if k.startswith('QT_')))
 
     @property
     def is_wayland(self):
