@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-08 07:02+0200\n"
-"PO-Revision-Date: 2025-05-12 19:20+0000\n"
+"PO-Revision-Date: 2025-05-13 20:20+0000\n"
 "Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
@@ -2858,7 +2858,7 @@ msgstr "Zobacz także"
 
 #: picard/tags/tagvar.py:68
 msgid "No description available."
-msgstr "Opis niedostępny"
+msgstr "Opis niedostępny."
 
 #: picard/tags/tagvar.py:71
 msgid "multi-value variable"
@@ -2870,7 +2870,7 @@ msgstr "zachowane tylko do odczytu"
 
 #: picard/tags/tagvar.py:73
 msgid "not for use in scripts"
-msgstr "Nie do użytku w skryptach"
+msgstr "nie do użytku w skryptach"
 
 #: picard/tags/tagvar.py:74
 msgid "calculated"
@@ -3517,9 +3517,8 @@ msgstr "Wszystkie obsługiwane formaty obrazów"
 
 #: picard/ui/coverartbox/__init__.py:297
 #: picard/ui/itemviews/basetreeview.py:371
-#, fuzzy
 msgid "Show &more details…"
-msgstr "Pokaż więcej…"
+msgstr "Pokaż więcej szczegółów…"
 
 #: picard/ui/coverartbox/__init__.py:303
 msgid "Keep original cover art"
@@ -5360,9 +5359,8 @@ msgstr "Szukaj podobnych albumów…"
 
 #: picard/ui/mainwindow/actions.py:267
 #: picard/ui/options/interface_toolbar.py:138
-#, fuzzy
 msgid "Similar items"
-msgstr "Znajdź podobne"
+msgstr "Podobne elementy"
 
 #: picard/ui/mainwindow/actions.py:268
 msgid ""
@@ -5527,9 +5525,8 @@ msgid "Save &Tags"
 msgstr "Zapisz &tagi"
 
 #: picard/ui/mainwindow/actions.py:466
-#, fuzzy
 msgid "Tags From &File Names…"
-msgstr "Tagi z nazwy &pliku…"
+msgstr "Tagi z nazw &plików…"
 
 #: picard/ui/mainwindow/actions.py:467
 #: picard/ui/options/interface_toolbar.py:134
