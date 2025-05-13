@@ -189,28 +189,19 @@ class Tagger(QtWidgets.QApplication):
         self._bootstrap()
         super().__init__(sys.argv)
         self.__class__.__instance = self
+        self._init_properties_from_args_or_env(cmdline_args)
         init_options()
-        setup_config(app=self, filename=cmdline_args.config_file)
+        setup_config(app=self, filename=self._config_file)
         config = get_config()
 
-        self._to_load = cmdline_args.processable
-
         self.autoupdate_enabled = autoupdate
-        self._no_restore = cmdline_args.no_restore
-        self._no_plugins = cmdline_args.no_plugins
 
-        if cmdline_args.debug or 'PICARD_DEBUG' in os.environ:
-            verbosity = logging.DEBUG
-        else:
-            verbosity = config.setting['log_verbosity']
+        log.set_verbosity(logging.DEBUG if self._debug else config.setting['log_verbosity'])
 
-        log.set_verbosity(verbosity)
+        setup_audit(self._audit)
 
-        if cmdline_args.audit:
-            setup_audit(cmdline_args.audit)
-
-        if cmdline_args.debug_opts:
-            DebugOpt.from_string(cmdline_args.debug_opts)
+        if self._debug_opts:
+            DebugOpt.from_string(self._debug_opts)
 
         # Main thread pool used for most background tasks
         self.thread_pool = QtCore.QThreadPool(self)
@@ -319,7 +310,7 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
-        self.window = MainWindow(disable_player=cmdline_args.no_player)
+        self.window = MainWindow(disable_player=self._no_player)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
         # Touch these files regularly to keep them alive if Picard
@@ -344,6 +335,16 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = False
         self.thread_pool = None
         self.webservice = None
+
+    def _init_properties_from_args_or_env(self, cmdline_args):
+        self._audit = cmdline_args.audit
+        self._config_file = cmdline_args.config_file
+        self._debug_opts = cmdline_args.debug_opts
+        self._debug = cmdline_args.debug or 'PICARD_DEBUG' in os.environ
+        self._no_player = cmdline_args.no_player
+        self._no_plugins = cmdline_args.no_plugins
+        self._no_restore = cmdline_args.no_restore
+        self._to_load = cmdline_args.processable
 
     @property
     def is_wayland(self):
