@@ -46,6 +46,7 @@
 
 
 import argparse
+from collections import namedtuple
 from functools import partial
 from hashlib import blake2b
 import logging
@@ -1350,6 +1351,37 @@ If a new instance will not be spawned files/directories will be passed to the ex
     return args
 
 
+PipeStatus = namedtuple('PipeStatus', ('handler', 'is_remote'))
+
+
+def setup_pipe_handler(cmdline_args):
+    # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
+    if cmdline_args.stand_alone_instance:
+        identifier = uuid4().hex
+    else:
+        if cmdline_args.config_file:
+            identifier = blake2b(cmdline_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
+        else:
+            identifier = 'main'
+        if cmdline_args.no_plugins:
+            identifier += '_NP'
+
+    try:
+        pipe_handler = pipe.Pipe(
+            app_name=PICARD_APP_NAME,
+            app_version=PICARD_FANCY_VERSION_STR,
+            identifier=identifier,
+            args=cmdline_args.processable
+        )
+        is_remote = not pipe_handler.is_pipe_owner
+    except pipe.PipeErrorNoPermission as err:
+        log.error(err)
+        pipe_handler = None
+        is_remote = False
+
+    return PipeStatus(handler=pipe_handler, is_remote=is_remote)
+
+
 def main(localedir=None, autoupdate=True):
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
@@ -1377,32 +1409,13 @@ def main(localedir=None, autoupdate=True):
         print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
     if cmdline_args.remote_commands_help:
         print_help_for_commands()
-
-    # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
-    if cmdline_args.stand_alone_instance:
-        identifier = uuid4().hex
-    else:
-        if cmdline_args.config_file:
-            identifier = blake2b(cmdline_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
-        else:
-            identifier = 'main'
-        if cmdline_args.no_plugins:
-            identifier += '_NP'
-
     if cmdline_args.processable:
         log.info("Sending messages to main instance: %r", cmdline_args.processable)
 
-    try:
-        pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
-                                    identifier=identifier, args=cmdline_args.processable)
-        should_start = pipe_handler.is_pipe_owner
-    except pipe.PipeErrorNoPermission as err:
-        log.error(err)
-        pipe_handler = None
-        should_start = True
+    pipe_status = setup_pipe_handler(cmdline_args)
 
     # pipe has sent its args to existing one, doesn't need to start
-    if not should_start:
+    if pipe_status.is_remote:
         log.debug("No need for spawning a new instance, exiting...")
         sys.exit(0)
 
@@ -1413,7 +1426,7 @@ def main(localedir=None, autoupdate=True):
     except ImportError:
         pass
 
-    tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
     # Initialize Qt default translations
     translator = QtCore.QTranslator()
