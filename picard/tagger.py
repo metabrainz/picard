@@ -243,16 +243,9 @@ class Tagger(QtWidgets.QApplication):
     def _bootstrap(self):
         # Initialize these variables early as they are needed for a clean
         # shutdown.
-        self._acoustid = None
         self._no_restore = False
-        self.browser_integration = None
         self.exit_cleanup = []
-        self.pipe_handler = None
-        self.priority_thread_pool = None
-        self.save_thread_pool = None
         self.stopping = False
-        self.thread_pool = None
-        self.webservice = None
 
     def _init_properties_from_args_or_env(self, cmdline_args):
         self._audit = cmdline_args.audit
@@ -268,6 +261,7 @@ class Tagger(QtWidgets.QApplication):
         """Initialize threads"""
         # Main thread pool used for most background tasks
         self.thread_pool = QtCore.QThreadPool(self)
+        self.register_cleanup(self.thread_pool.waitForDone)
         # Two threads are needed for the pipe handler and command processing.
         # At least one thread is required to run other Picard background tasks.
         self.thread_pool.setMaxThreadCount(max(3, QtCore.QThread.idealThreadCount()))
@@ -277,11 +271,13 @@ class Tagger(QtWidgets.QApplication):
         # expects instant feedback instead of waiting for a long list of
         # operations to finish.
         self.priority_thread_pool = QtCore.QThreadPool(self)
+        self.register_cleanup(self.priority_thread_pool.waitForDone)
         self.priority_thread_pool.setMaxThreadCount(1)
 
         # Use a separate thread pool for file saving, with a thread count of 1,
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
+        self.register_cleanup(self.save_thread_pool.waitForDone)
         self.save_thread_pool.setMaxThreadCount(1)
 
     def _init_pipe_server(self, pipe_handler):
@@ -289,6 +285,7 @@ class Tagger(QtWidgets.QApplication):
         self.pipe_handler = pipe_handler
 
         if self.pipe_handler:
+            self.register_cleanup(self.pipe_handler.stop)
             self._command_thread_running = False
             self.pipe_handler.pipe_running = True
             thread.run_task(self.pipe_server, self._pipe_server_finished)
@@ -346,6 +343,7 @@ class Tagger(QtWidgets.QApplication):
     def _init_webservice(self):
         """Initialize web service/API"""
         self.webservice = WebService()
+        self.register_cleanup(self.webservice.stop)
         self.mb_api = MBAPIHelper(self.webservice)
 
     def _init_fingerprinting(self):
@@ -353,6 +351,7 @@ class Tagger(QtWidgets.QApplication):
         acoustid_api = AcoustIdAPIHelper(self.webservice)
         self._acoustid = acoustid.AcoustIDClient(acoustid_api)
         self._acoustid.init()
+        self.register_cleanup(self._acoustid.done)
         self.acoustidmanager = AcoustIDManager(acoustid_api)
 
     def _init_plugins(self):
@@ -365,6 +364,7 @@ class Tagger(QtWidgets.QApplication):
     def _init_browser_integration(self):
         """Initialize browser integration"""
         self.browser_integration = BrowserIntegration()
+        self.register_cleanup(self.browser_integration.stop)
         self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
 
     def _init_tagger_entities(self):
@@ -488,7 +488,7 @@ class Tagger(QtWidgets.QApplication):
         self.exit_cleanup.append(func)
 
     def run_cleanup(self):
-        for f in self.exit_cleanup:
+        for f in reversed(self.exit_cleanup):
             f()
 
     def on_listen_port_changed(self, port):
@@ -594,20 +594,6 @@ class Tagger(QtWidgets.QApplication):
             return
         self.stopping = True
         log.debug("Picard stopping")
-        if self._acoustid:
-            self._acoustid.done()
-        if self.pipe_handler:
-            self.pipe_handler.stop()
-        if self.webservice:
-            self.webservice.stop()
-        if self.thread_pool:
-            self.thread_pool.waitForDone()
-        if self.save_thread_pool:
-            self.save_thread_pool.waitForDone()
-        if self.priority_thread_pool:
-            self.priority_thread_pool.waitForDone()
-        if self.browser_integration:
-            self.browser_integration.stop()
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
