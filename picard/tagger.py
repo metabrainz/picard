@@ -220,11 +220,7 @@ class Tagger(QtWidgets.QApplication):
         self._init_webservice()
         load_user_collections()
 
-        # Initialize fingerprinting
-        acoustid_api = AcoustIdAPIHelper(self.webservice)
-        self._acoustid = acoustid.AcoustIDClient(acoustid_api)
-        self._acoustid.init()
-        self.acoustidmanager = AcoustIDManager(acoustid_api)
+        self._init_fingerprinting()
 
         self.enable_menu_icons(config.setting['show_menu_icons'])
 
@@ -364,6 +360,13 @@ class Tagger(QtWidgets.QApplication):
         """Initialize web service/API"""
         self.webservice = WebService()
         self.mb_api = MBAPIHelper(self.webservice)
+
+    def _init_fingerprinting(self):
+        """Initialize fingerprinting"""
+        acoustid_api = AcoustIdAPIHelper(self.webservice)
+        self._acoustid = acoustid.AcoustIDClient(acoustid_api)
+        self._acoustid.init()
+        self.acoustidmanager = AcoustIDManager(acoustid_api)
 
     @property
     def is_wayland(self):
