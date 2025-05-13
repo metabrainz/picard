@@ -1355,6 +1355,7 @@ PipeStatus = namedtuple('PipeStatus', ('handler', 'is_remote'))
 
 
 def setup_pipe_handler(cmdline_args):
+    """Setup pipe handler, identify if the app is running as standalone or remote instance"""
     # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
     if cmdline_args.stand_alone_instance:
         identifier = uuid4().hex
@@ -1383,6 +1384,7 @@ def setup_pipe_handler(cmdline_args):
 
 
 def setup_application():
+    """Setup QApplication"""
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
@@ -1400,6 +1402,7 @@ def setup_application():
 
 
 def setup_dbus():
+    """Setup DBus if available"""
     try:
         from PyQt6.QtDBus import QDBusConnection
         dbus = QDBusConnection.sessionBus()
@@ -1409,7 +1412,7 @@ def setup_dbus():
 
 
 def setup_translator(tagger):
-    """Initialize Qt default translations"""
+    """Setup Qt default translations"""
     translator = QtCore.QTranslator()
     locale = QtCore.QLocale()
     translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
@@ -1421,6 +1424,7 @@ def setup_translator(tagger):
 
 
 def main(localedir=None, autoupdate=True):
+    """Main entry point to the program"""
     setup_application()
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
