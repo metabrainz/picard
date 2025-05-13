@@ -204,14 +204,7 @@ class Tagger(QtWidgets.QApplication):
             DebugOpt.from_string(self._debug_opts)
 
         self._init_threads()
-        # Setup pipe handler for managing single app instance and commands.
-        self.pipe_handler = pipe_handler
-
-        if self.pipe_handler:
-            self._command_thread_running = False
-            self.pipe_handler.pipe_running = True
-            thread.run_task(self.pipe_server, self._pipe_server_finished)
-
+        self._init_pipe_server(pipe_handler)
         self._init_remote_commands()
 
         if not IS_WIN:
@@ -348,6 +341,15 @@ class Tagger(QtWidgets.QApplication):
         # to avoid race conditions in File._save_and_rename.
         self.save_thread_pool = QtCore.QThreadPool(self)
         self.save_thread_pool.setMaxThreadCount(1)
+
+    def _init_pipe_server(self, pipe_handler):
+        """Setup pipe handler for managing single app instance and commands."""
+        self.pipe_handler = pipe_handler
+
+        if self.pipe_handler:
+            self._command_thread_running = False
+            self.pipe_handler.pipe_running = True
+            thread.run_task(self.pipe_server, self._pipe_server_finished)
 
     @property
     def is_wayland(self):
