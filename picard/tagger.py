@@ -223,7 +223,6 @@ class Tagger(QtWidgets.QApplication):
         """Bootstraping"""
         # Initialize these variables early as they are needed for a clean
         # shutdown.
-        self._no_restore = False
         self.exit_cleanup = []
         self.stopping = False
 
