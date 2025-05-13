@@ -1185,7 +1185,7 @@ class Tagger(QtWidgets.QApplication):
         self.signalnotifier.setEnabled(True)
 
 
-class PicardArgumentParser(argparse.ArgumentParser):
+class CmdlineArgsParser(argparse.ArgumentParser):
     def exit(self, status=0, message=None):
         if is_windowed_app():
             if message:
@@ -1255,7 +1255,7 @@ def print_help_for_commands():
 
 
 def process_cmdline_args():
-    parser = PicardArgumentParser(
+    parser = CmdlineArgsParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
 If a new instance will not be spawned files/directories will be passed to the existing instance"""
