@@ -46,6 +46,7 @@
 
 
 import argparse
+from collections import namedtuple
 from functools import partial
 from hashlib import blake2b
 import logging
@@ -1350,7 +1351,40 @@ If a new instance will not be spawned files/directories will be passed to the ex
     return args
 
 
-def main(localedir=None, autoupdate=True):
+PipeStatus = namedtuple('PipeStatus', ('handler', 'is_remote'))
+
+
+def setup_pipe_handler(cmdline_args):
+    """Setup pipe handler, identify if the app is running as standalone or remote instance"""
+    # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
+    if cmdline_args.stand_alone_instance:
+        identifier = uuid4().hex
+    else:
+        if cmdline_args.config_file:
+            identifier = blake2b(cmdline_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
+        else:
+            identifier = 'main'
+        if cmdline_args.no_plugins:
+            identifier += '_NP'
+
+    try:
+        pipe_handler = pipe.Pipe(
+            app_name=PICARD_APP_NAME,
+            app_version=PICARD_FANCY_VERSION_STR,
+            identifier=identifier,
+            args=cmdline_args.processable
+        )
+        is_remote = not pipe_handler.is_pipe_owner
+    except pipe.PipeErrorNoPermission as err:
+        log.error(err)
+        pipe_handler = None
+        is_remote = False
+
+    return PipeStatus(handler=pipe_handler, is_remote=is_remote)
+
+
+def setup_application():
+    """Setup QApplication"""
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
@@ -1366,6 +1400,33 @@ def main(localedir=None, autoupdate=True):
     # Enable mnemonics on all platforms, even macOS
     QtGui.qt_set_sequence_auto_mnemonic(True)
 
+
+def setup_dbus():
+    """Setup DBus if available"""
+    try:
+        from PyQt6.QtDBus import QDBusConnection
+        dbus = QDBusConnection.sessionBus()
+        dbus.registerService(PICARD_APP_ID)
+    except ImportError:
+        pass
+
+
+def setup_translator(tagger):
+    """Setup Qt default translations"""
+    translator = QtCore.QTranslator()
+    locale = QtCore.QLocale()
+    translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
+    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
+    if translator.load(locale, 'qtbase_', directory=translation_path):
+        tagger.installTranslator(translator)
+    else:
+        log.debug("Qt locale %s not available", locale.name())
+
+
+def main(localedir=None, autoupdate=True):
+    """Main entry point to the program"""
+    setup_application()
+
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     cmdline_args = process_cmdline_args()
@@ -1377,53 +1438,21 @@ def main(localedir=None, autoupdate=True):
         print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
     if cmdline_args.remote_commands_help:
         print_help_for_commands()
-
-    # any of the flags that change Picard's workflow significantly should trigger creation of a new instance
-    if cmdline_args.stand_alone_instance:
-        identifier = uuid4().hex
-    else:
-        if cmdline_args.config_file:
-            identifier = blake2b(cmdline_args.config_file.encode('utf-8'), digest_size=16).hexdigest()
-        else:
-            identifier = 'main'
-        if cmdline_args.no_plugins:
-            identifier += '_NP'
-
     if cmdline_args.processable:
         log.info("Sending messages to main instance: %r", cmdline_args.processable)
 
-    try:
-        pipe_handler = pipe.Pipe(app_name=PICARD_APP_NAME, app_version=PICARD_FANCY_VERSION_STR,
-                                    identifier=identifier, args=cmdline_args.processable)
-        should_start = pipe_handler.is_pipe_owner
-    except pipe.PipeErrorNoPermission as err:
-        log.error(err)
-        pipe_handler = None
-        should_start = True
+    pipe_status = setup_pipe_handler(cmdline_args)
 
     # pipe has sent its args to existing one, doesn't need to start
-    if not should_start:
+    if pipe_status.is_remote:
         log.debug("No need for spawning a new instance, exiting...")
         sys.exit(0)
 
-    try:
-        from PyQt6.QtDBus import QDBusConnection
-        dbus = QDBusConnection.sessionBus()
-        dbus.registerService(PICARD_APP_ID)
-    except ImportError:
-        pass
+    setup_dbus()
 
-    tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_handler)
+    tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
-    # Initialize Qt default translations
-    translator = QtCore.QTranslator()
-    locale = QtCore.QLocale()
-    translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
-    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-    if translator.load(locale, 'qtbase_', directory=translation_path):
-        tagger.installTranslator(translator)
-    else:
-        log.debug("Qt locale %s not available", locale.name())
+    setup_translator(tagger)
 
     tagger.startTimer(1000)
     exit_code = tagger.run()
