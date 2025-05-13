@@ -206,29 +206,7 @@ class Tagger(QtWidgets.QApplication):
         self._init_threads()
         self._init_pipe_server(pipe_handler)
         self._init_remote_commands()
-
-        if not IS_WIN:
-            # Set up signal handling
-            # It's not possible to call all available functions from signal
-            # handlers, therefore we need to set up a QSocketNotifier to listen
-            # on a socket. Sending data through a socket can be done in a
-            # signal handler, so we use the socket to notify the application of
-            # the signal.
-            # This code is adopted from
-            # https://qt-project.org/doc/qt-4.8/unix-signals.html
-
-            # To not make the socket module a requirement for the Windows
-            # installer, import it here and not globally
-            import socket
-            self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
-
-            self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
-                                                         QtCore.QSocketNotifier.Type.Read, self)
-            self.signalnotifier.activated.connect(self.sighandler)
-
-            signal.signal(signal.SIGHUP, self.signal)
-            signal.signal(signal.SIGINT, self.signal)
-            signal.signal(signal.SIGTERM, self.signal)
+        self._init_signal_handling()
 
         # Setup logging
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
@@ -350,6 +328,32 @@ class Tagger(QtWidgets.QApplication):
             self._command_thread_running = False
             self.pipe_handler.pipe_running = True
             thread.run_task(self.pipe_server, self._pipe_server_finished)
+
+    def _init_signal_handling(self):
+        """Set up signal handling"""
+        if IS_WIN:
+            return
+
+        # It's not possible to call all available functions from signal
+        # handlers, therefore we need to set up a QSocketNotifier to listen
+        # on a socket. Sending data through a socket can be done in a
+        # signal handler, so we use the socket to notify the application of
+        # the signal.
+        # This code is adopted from
+        # https://qt-project.org/doc/qt-4.8/unix-signals.html
+
+        # To not make the socket module a requirement for the Windows
+        # installer, import it here and not globally
+        import socket
+        self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
+
+        self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
+                                                     QtCore.QSocketNotifier.Type.Read, self)
+        self.signalnotifier.activated.connect(self.sighandler)
+
+        signal.signal(signal.SIGHUP, self.signal)
+        signal.signal(signal.SIGINT, self.signal)
+        signal.signal(signal.SIGTERM, self.signal)
 
     @property
     def is_wayland(self):
