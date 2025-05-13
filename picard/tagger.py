@@ -221,24 +221,11 @@ class Tagger(QtWidgets.QApplication):
         load_user_collections()
 
         self._init_fingerprinting()
-
-        self.enable_menu_icons(config.setting['show_menu_icons'])
-
         self._init_plugins()
         self._init_browser_integration()
         self._init_tagger_entities()
 
-        self.window = MainWindow(disable_player=self._no_player)
-
-        # On macOS temporary files get deleted after 3 days not being accessed.
-        # Touch these files regularly to keep them alive if Picard
-        # is left running for a long time.
-        if IS_MACOS:
-            periodictouch.enable_timer()
-
-        # Load release version information
-        if self.autoupdate_enabled:
-            self.updatecheckmanager = UpdateCheckManager(self)
+        self._init_ui(config)
 
     def _bootstrap(self):
         """Bootstraping"""
@@ -379,6 +366,21 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
+
+    def _init_ui(self, config):
+        """Initialize User Interface / Main Window"""
+        self.enable_menu_icons(config.setting['show_menu_icons'])
+        self.window = MainWindow(disable_player=self._no_player)
+
+        # On macOS temporary files get deleted after 3 days not being accessed.
+        # Touch these files regularly to keep them alive if Picard
+        # is left running for a long time.
+        if IS_MACOS:
+            periodictouch.enable_timer()
+
+        # Load release version information
+        if self.autoupdate_enabled:
+            self.updatecheckmanager = UpdateCheckManager(self)
 
     @property
     def is_wayland(self):
