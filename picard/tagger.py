@@ -94,7 +94,10 @@ from picard.config import (
     setup_config,
 )
 from picard.config_upgrade import upgrade_config
-from picard.const import USER_DIR
+from picard.const import (
+    BROWSER_INTEGRATION_LOCALHOST,
+    USER_DIR,
+)
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -516,7 +519,7 @@ class Tagger(QtWidgets.QApplication):
 
     def _mb_login_redirect_uri(self):
         if self.browser_integration and self.browser_integration.is_running:
-            return f'http://localhost:{self.browser_integration.port}/auth'
+            return f'http://{BROWSER_INTEGRATION_LOCALHOST}:{self.browser_integration.port}/auth'
         else:
             # If browser integration is disabled or not running on the standard
             # port use out-of-band flow (with manual copying of the token).

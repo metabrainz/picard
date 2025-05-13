@@ -31,6 +31,7 @@ from http.server import (
     HTTPServer,
 )
 import re
+import socket
 import threading
 from urllib.parse import (
     parse_qs,
@@ -47,6 +48,10 @@ from picard import (
 )
 from picard.browser import addrelease
 from picard.config import get_config
+from picard.const import (
+    BROWSER_INTEGRATION_IPV6,
+    BROWSER_INTEGRATION_LOCALIP,
+)
 from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
 from picard.util.thread import to_main
@@ -107,16 +112,26 @@ class BrowserIntegration(QtCore.QObject):
         if self.server:
             self.stop()
 
+        if BROWSER_INTEGRATION_IPV6:
+            LISTEN_ALL = '::'
+            ADDRESS_FAMILY = socket.AF_INET6
+        else:
+            LISTEN_ALL = '0.0.0.0'
+            ADDRESS_FAMILY = socket.AF_INET
+
+        class OurHTTPServer(ThreadingHTTPServer):
+            address_family = ADDRESS_FAMILY
+
         config = get_config()
         if config.setting["browser_integration_localhost_only"]:
-            host_address = '127.0.0.1'
+            host_address = BROWSER_INTEGRATION_LOCALIP
         else:
-            host_address = '0.0.0.0'  # nosec
+            host_address = LISTEN_ALL  # nosec
 
         try:
             for port in range(config.setting["browser_integration_port"], 65535):
                 try:
-                    self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
+                    self.server = OurHTTPServer((host_address, port), RequestHandler)
                 except OSError:
                     continue
                 log.info("Starting the browser integration (%s:%d)", host_address, port)
