@@ -212,8 +212,6 @@ class Tagger(QtWidgets.QApplication):
         upgrade_config(config)
 
         self._init_webservice()
-        load_user_collections()
-
         self._init_fingerprinting()
         self._init_plugins()
         self._init_browser_integration()
@@ -337,6 +335,7 @@ class Tagger(QtWidgets.QApplication):
         self.webservice = WebService()
         self.register_cleanup(self.webservice.stop)
         self.mb_api = MBAPIHelper(self.webservice)
+        load_user_collections()
 
     def _init_fingerprinting(self):
         """Initialize fingerprinting"""
