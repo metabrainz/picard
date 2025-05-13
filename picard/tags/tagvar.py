@@ -33,6 +33,7 @@ try:
 except ImportError:
     markdown = None
 
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -83,7 +84,7 @@ class TagVar:
         self, name, shortdesc=None, longdesc=None, additionaldesc=None,
         is_preserved=False, is_hidden=False, is_script_variable=True, is_tag=True, is_calculated=False,
         is_file_info=False, is_from_mb=True, is_populated_by_picard=True, is_multi_value=False,
-        see_also=None, related_options=None, doc_links=None
+        see_also=None, related_options=None, doc_links=None, plugin_id=None
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -106,6 +107,7 @@ class TagVar:
         see_also: an iterable containing ids of related tags
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
+        plugin_id: the ID of the plugin providing the tag/variable (string, default: None)
         """
         self._name = name
         self._shortdesc = shortdesc
@@ -123,6 +125,7 @@ class TagVar:
         self.see_also = see_also
         self.related_options = related_options
         self.doc_links = doc_links
+        self.plugin_id = plugin_id
 
     @property
     def shortdesc(self):
@@ -336,6 +339,11 @@ class TagVars(MutableSequence):
         return self._format_display(name, content, tagdesc)
 
     def names(self, selector=None):
+        config = get_config()
+        plugins = config.setting['enabled_plugins'] if 'enabled_plugins' in config.setting else []
+
         for item in self._items:
+            if item.plugin_id and item.plugin_id not in plugins:
+                continue
             if selector is None or selector(item):
                 yield str(item)
