@@ -217,9 +217,7 @@ class Tagger(QtWidgets.QApplication):
 
         upgrade_config(config)
 
-        self.webservice = WebService()
-        self.mb_api = MBAPIHelper(self.webservice)
-
+        self._init_webservice()
         load_user_collections()
 
         # Initialize fingerprinting
@@ -361,6 +359,11 @@ class Tagger(QtWidgets.QApplication):
             localedir = os.path.join(basedir, 'locale')
         # Must be before config upgrade because upgrade dialogs need to be translated.
         setup_gettext(localedir, config.setting['ui_language'], log.debug)
+
+    def _init_webservice(self):
+        """Initialize web service/API"""
+        self.webservice = WebService()
+        self.mb_api = MBAPIHelper(self.webservice)
 
     @property
     def is_wayland(self):
