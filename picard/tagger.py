@@ -1399,6 +1399,15 @@ def setup_application():
     QtGui.qt_set_sequence_auto_mnemonic(True)
 
 
+def setup_dbus():
+    try:
+        from PyQt6.QtDBus import QDBusConnection
+        dbus = QDBusConnection.sessionBus()
+        dbus.registerService(PICARD_APP_ID)
+    except ImportError:
+        pass
+
+
 def main(localedir=None, autoupdate=True):
     setup_application()
 
@@ -1423,12 +1432,7 @@ def main(localedir=None, autoupdate=True):
         log.debug("No need for spawning a new instance, exiting...")
         sys.exit(0)
 
-    try:
-        from PyQt6.QtDBus import QDBusConnection
-        dbus = QDBusConnection.sessionBus()
-        dbus.registerService(PICARD_APP_ID)
-    except ImportError:
-        pass
+    setup_dbus()
 
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
