@@ -1382,7 +1382,7 @@ def setup_pipe_handler(cmdline_args):
     return PipeStatus(handler=pipe_handler, is_remote=is_remote)
 
 
-def main(localedir=None, autoupdate=True):
+def setup_application():
     # Some libs (ie. Phonon) require those to be set
     QtWidgets.QApplication.setApplicationName(PICARD_APP_NAME)
     QtWidgets.QApplication.setOrganizationName(PICARD_ORG_NAME)
@@ -1397,6 +1397,10 @@ def main(localedir=None, autoupdate=True):
 
     # Enable mnemonics on all platforms, even macOS
     QtGui.qt_set_sequence_auto_mnemonic(True)
+
+
+def main(localedir=None, autoupdate=True):
+    setup_application()
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
