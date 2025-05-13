@@ -185,21 +185,8 @@ class Tagger(QtWidgets.QApplication):
 
     __instance = None
 
-    _no_restore = False
-
     def __init__(self, picard_args, localedir, autoupdate, pipe_handler=None):
-        # Initialize these variables early as they are needed for a clean
-        # shutdown.
-        self._acoustid = None
-        self.browser_integration = None
-        self.exit_cleanup = []
-        self.pipe_handler = None
-        self.priority_thread_pool = None
-        self.save_thread_pool = None
-        self.stopping = False
-        self.thread_pool = None
-        self.webservice = None
-
+        self._bootstrap()
         super().__init__(sys.argv)
         self.__class__.__instance = self
         init_options()
@@ -343,6 +330,20 @@ class Tagger(QtWidgets.QApplication):
         # Load release version information
         if self.autoupdate_enabled:
             self.updatecheckmanager = UpdateCheckManager(self)
+
+    def _bootstrap(self):
+        # Initialize these variables early as they are needed for a clean
+        # shutdown.
+        self._acoustid = None
+        self._no_restore = False
+        self.browser_integration = None
+        self.exit_cleanup = []
+        self.pipe_handler = None
+        self.priority_thread_pool = None
+        self.save_thread_pool = None
+        self.stopping = False
+        self.thread_pool = None
+        self.webservice = None
 
     @property
     def is_wayland(self):
