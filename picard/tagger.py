@@ -1408,6 +1408,18 @@ def setup_dbus():
         pass
 
 
+def setup_translator(tagger):
+    """Initialize Qt default translations"""
+    translator = QtCore.QTranslator()
+    locale = QtCore.QLocale()
+    translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
+    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
+    if translator.load(locale, 'qtbase_', directory=translation_path):
+        tagger.installTranslator(translator)
+    else:
+        log.debug("Qt locale %s not available", locale.name())
+
+
 def main(localedir=None, autoupdate=True):
     setup_application()
 
@@ -1436,15 +1448,7 @@ def main(localedir=None, autoupdate=True):
 
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
-    # Initialize Qt default translations
-    translator = QtCore.QTranslator()
-    locale = QtCore.QLocale()
-    translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
-    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-    if translator.load(locale, 'qtbase_', directory=translation_path):
-        tagger.installTranslator(translator)
-    else:
-        log.debug("Qt locale %s not available", locale.name())
+    setup_translator(tagger)
 
     tagger.startTimer(1000)
     exit_code = tagger.run()
