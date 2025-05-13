@@ -226,15 +226,8 @@ class Tagger(QtWidgets.QApplication):
 
         self._init_plugins()
         self._init_browser_integration()
+        self._init_tagger_entities()
 
-        self._pending_files_count = 0
-        self.files = {}
-        self.clusters = ClusterList()
-        self.albums = {}
-        self.release_groups = {}
-        self.mbid_redirects = {}
-        self.unclustered_files = UnclusteredFiles()
-        self.nats = None
         self.window = MainWindow(disable_player=self._no_player)
 
         # On macOS temporary files get deleted after 3 days not being accessed.
@@ -373,6 +366,17 @@ class Tagger(QtWidgets.QApplication):
         """Initialize browser integration"""
         self.browser_integration = BrowserIntegration()
         self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
+
+    def _init_tagger_entities(self):
+        """Initialize tagger objects/entities"""
+        self._pending_files_count = 0
+        self.files = {}
+        self.clusters = ClusterList()
+        self.albums = {}
+        self.release_groups = {}
+        self.mbid_redirects = {}
+        self.unclustered_files = UnclusteredFiles()
+        self.nats = None
 
     @property
     def is_wayland(self):
