@@ -119,7 +119,7 @@ class BrowserIntegration(QtCore.QObject):
         if config.setting["browser_integration_localhost_only"]:
             host_address = BROWSER_INTEGRATION_LOCALIP
         else:
-            host_address = LISTEN_ALL  # nosec
+            host_address = LISTEN_ALL
 
         try:
             for port in range(config.setting["browser_integration_port"], 65535):
