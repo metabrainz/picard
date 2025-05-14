@@ -65,6 +65,7 @@ except ImportError:
 
 SERVER_VERSION = '%s-%s/%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
 RE_VALID_ORIGINS = re.compile(r'^(?:[^\.]+\.)*musicbrainz\.org$')
+LOG_PREFIX = "Browser Integration"
 
 
 def _is_valid_origin(origin):
@@ -130,28 +131,28 @@ class BrowserIntegration(QtCore.QObject):
                     self.server = OurHTTPServer((host_address, port), RequestHandler)
                 except OSError:
                     continue
-                log.info("Starting the browser integration (%s:%d)", host_address, port)
+                log.info("%s: Starting, listening on address %s and port %d", LOG_PREFIX, host_address, port)
                 self.listen_port_changed.emit(port)
                 threading.Thread(target=self.server.serve_forever).start()
                 break
             else:
-                log.error("Failed finding an available port for the browser integration.")
+                log.error("%s: Failed to find an available port in range %s-%s on address %s", LOG_PREFIX, MIN_PORT, MAX_PORT, host_address)
                 self.stop()
         except Exception:
-            log.error("Failed starting the browser integration on %s", host_address, exc_info=True)
+            log.error("%s: Failed to start listening on %s", LOG_PREFIX, host_address, exc_info=True)
 
     def stop(self):
         if self.server:
             try:
-                log.info("Stopping the browser integration")
+                log.info("%s: Stopping", LOG_PREFIX)
                 self.server.shutdown()
                 self.server.server_close()
                 self.server = None
                 self.listen_port_changed.emit(self.port)
             except Exception:
-                log.error("Failed stopping the browser integration", exc_info=True)
+                log.error("%s: Failed to stop", LOG_PREFIX, exc_info=True)
         else:
-            log.debug("Browser integration inactive, no need to stop")
+            log.debug("%s: inactive, no need to stop", LOG_PREFIX)
 
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -174,12 +175,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         try:
             self._handle_get()
         except Exception:
-            log.error('Browser integration failed handling request', exc_info=True)
+            log.error('%s: failed handling request', LOG_PREFIX, exc_info=True)
             self._response(500, 'Unexpected request error')
 
     def _fmt_message(self, format, args):
         message = format % args
-        return "%s %s" % (self.address_string(), message.translate(self._control_char_table))
+        return "%s: %s %s" % (LOG_PREFIX, self.address_string(), message.translate(self._control_char_table))
 
     def log_error(self, format, *args):
         message = self._fmt_message(format, args)
