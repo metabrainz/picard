@@ -112,9 +112,6 @@ class BrowserIntegration(QtCore.QObject):
         LISTEN_ALL = '0.0.0.0'
         ADDRESS_FAMILY = socket.AF_INET
 
-        class OurHTTPServer(ThreadingHTTPServer):
-            address_family = ADDRESS_FAMILY
-
         config = get_config()
         if config.setting["browser_integration_localhost_only"]:
             host_address = BROWSER_INTEGRATION_LOCALIP
@@ -124,6 +121,9 @@ class BrowserIntegration(QtCore.QObject):
         try:
             for port in range(config.setting["browser_integration_port"], 65535):
                 try:
+                    class OurHTTPServer(ThreadingHTTPServer):
+                        address_family = ADDRESS_FAMILY
+
                     self.server = OurHTTPServer((host_address, port), RequestHandler)
                 except OSError:
                     continue
