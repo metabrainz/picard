@@ -109,17 +109,20 @@ class BrowserIntegration(QtCore.QObject):
         if self.server:
             self.stop()
 
+        config = get_config()
+
         LISTEN_ALL = '0.0.0.0'
         ADDRESS_FAMILY = socket.AF_INET
+        MIN_PORT = config.setting["browser_integration_port"]
+        MAX_PORT = 65535
 
-        config = get_config()
         if config.setting["browser_integration_localhost_only"]:
             host_address = BROWSER_INTEGRATION_LOCALIP
         else:
             host_address = LISTEN_ALL
 
         try:
-            for port in range(config.setting["browser_integration_port"], 65535):
+            for port in range(MIN_PORT, MAX_PORT):
                 try:
                     class OurHTTPServer(ThreadingHTTPServer):
                         address_family = ADDRESS_FAMILY
