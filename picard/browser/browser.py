@@ -48,10 +48,7 @@ from picard import (
 )
 from picard.browser import addrelease
 from picard.config import get_config
-from picard.const import (
-    BROWSER_INTEGRATION_IPV6,
-    BROWSER_INTEGRATION_LOCALIP,
-)
+from picard.const import BROWSER_INTEGRATION_LOCALIP
 from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
 from picard.util.thread import to_main
@@ -112,12 +109,8 @@ class BrowserIntegration(QtCore.QObject):
         if self.server:
             self.stop()
 
-        if BROWSER_INTEGRATION_IPV6:
-            LISTEN_ALL = '::'
-            ADDRESS_FAMILY = socket.AF_INET6
-        else:
-            LISTEN_ALL = '0.0.0.0'
-            ADDRESS_FAMILY = socket.AF_INET
+        LISTEN_ALL = '0.0.0.0'
+        ADDRESS_FAMILY = socket.AF_INET
 
         class OurHTTPServer(ThreadingHTTPServer):
             address_family = ADDRESS_FAMILY
