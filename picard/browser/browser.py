@@ -136,7 +136,10 @@ class BrowserIntegration(QtCore.QObject):
                 threading.Thread(target=self.server.serve_forever).start()
                 break
             else:
-                log.error("%s: Failed to find an available port in range %s-%s on address %s", LOG_PREFIX, MIN_PORT, MAX_PORT, host_address)
+                log.error(
+                    "%s: Failed to find an available port in range %s-%s on address %s",
+                    LOG_PREFIX, MIN_PORT, MAX_PORT, host_address,
+                )
                 self.stop()
         except Exception:
             log.error("%s: Failed to start listening on %s", LOG_PREFIX, host_address, exc_info=True)
