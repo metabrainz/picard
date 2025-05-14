@@ -30,6 +30,7 @@ from http.server import (
     BaseHTTPRequestHandler,
     HTTPServer,
 )
+from itertools import chain
 import re
 import socket
 import threading
@@ -158,6 +159,18 @@ class BrowserIntegration(QtCore.QObject):
             log.debug("%s: inactive, no need to stop", LOG_PREFIX)
 
 
+# From https://github.com/python/cpython/blob/f474264b1e3cd225b45cf2c0a91226d2a9d3ee9b/Lib/http/server.py#L570C1-L573C43
+# https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
+CONTROL_CHAR_TABLE = str.maketrans(
+    {c: fr'\x{c:02x}' for c in chain(range(0x20), range(0x7f, 0xa0))}
+)
+CONTROL_CHAR_TABLE[ord('\\')] = r'\\'
+
+
+def safe_message(message):
+    return message.translate(CONTROL_CHAR_TABLE)
+
+
 class RequestHandler(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
@@ -181,17 +194,19 @@ class RequestHandler(BaseHTTPRequestHandler):
             log.error('%s: failed handling request', LOG_PREFIX, exc_info=True)
             self._response(500, 'Unexpected request error')
 
-    def _fmt_message(self, format, args):
-        message = format % args
-        return "%s: %s %s" % (LOG_PREFIX, self.address_string(), message.translate(self._control_char_table))
+    def _log(self, log_func, fmt, args):
+        log_func(
+            "%s: %s %s",
+            LOG_PREFIX,
+            self.address_string(),
+            safe_message(fmt % args),
+        )
 
     def log_error(self, format, *args):
-        message = self._fmt_message(format, args)
-        log.error(message)
+        self._log(log.error, format, args)
 
     def log_message(self, format, *args):
-        message = self._fmt_message(format, args)
-        log.info(message)
+        self._log(log.info, format, args)
 
     def _handle_get(self):
         parsed = urlparse(self.path)
