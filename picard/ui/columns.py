@@ -73,12 +73,14 @@ class Column:
     is_icon = False
     is_default = False
 
-    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None):
+    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT,
+                 sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False):
         self.title = title
         self.key = key
         self.size = size
         self.align = align
         self.sort_type = sort_type
+        self.always_visible = always_visible
         if self.sort_type == ColumnSortType.SORTKEY:
             if not callable(sortkey):
                 raise TypeError("sortkey should be a callable")
