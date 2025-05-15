@@ -74,13 +74,15 @@ class Column:
     is_default = False
 
     def __init__(self, title, key, size=None, align=ColumnAlign.LEFT,
-                 sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False):
+                 sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False,
+                 status_icon=False):
         self.title = title
         self.key = key
         self.size = size
         self.align = align
         self.sort_type = sort_type
         self.always_visible = always_visible
+        self.status_icon = status_icon
         if self.sort_type == ColumnSortType.SORTKEY:
             if not callable(sortkey):
                 raise TypeError("sortkey should be a callable")
@@ -145,6 +147,7 @@ class Columns(MutableSequence):
         self._list = list()
         self._index = dict()
         self._index_dirty = True
+        self.status_icon_column = None
         if iterable is not None:
             for e in iterable:
                 self.append(e)
@@ -160,6 +163,10 @@ class Columns(MutableSequence):
         if not isinstance(column, Column):
             raise TypeError("Not an instance of Column")
         self._index_dirty = True
+        if column.status_icon:
+            if self.status_icon_column is not None:
+                raise TypeError("Only one status icon column is supported")
+            self.status_icon_column = index
 
     def insert(self, index, column):
         self._new_column(index, column)

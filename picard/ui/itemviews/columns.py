@@ -74,7 +74,7 @@ _fingerprint_column.set_header_icon_size(16, 16, 1)
 
 
 DEFAULT_COLUMNS = Columns((
-    DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, size=250, always_visible=True),
+    DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, size=250, always_visible=True, status_icon=True),
     DefaultColumn(N_("Length"), '~length', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_length, size=50),
     DefaultColumn(N_("Artist"), 'artist', size=200),
     Column(N_("Album Artist"), 'albumartist'),
@@ -95,6 +95,3 @@ DEFAULT_COLUMNS = Columns((
     Column(N_("Cover"), 'covercount'),
     Column(N_("Cover Dimensions"), 'coverdimensions')
 ))
-
-
-ITEM_ICON_COLUMN = DEFAULT_COLUMNS.pos('title')
