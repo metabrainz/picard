@@ -2,14 +2,15 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-#
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-05-08 05:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-05-15 19:20+0000\n"
+"Last-Translator: \"salo.rock\" "
+"<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "3/constants/it/>\n"
 "Language: it\n"
@@ -4752,10 +4753,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:460
-#, fuzzy
-#| msgid "Kenyang"
 msgid "Key"
-msgstr "Kenyang"
+msgstr "Tonalità"
 
 #: picard/const/tags.py:461
 msgid "The key of the music."
@@ -4770,10 +4769,8 @@ msgid "The names of the labels associated with the release."
 msgstr ""
 
 #: picard/const/tags.py:472
-#, fuzzy
-#| msgid "Langi"
 msgid "Language"
-msgstr "Langi"
+msgstr "Lingua"
 
 #: picard/const/tags.py:473
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
@@ -5167,10 +5164,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:775
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "Latino"
+msgstr "Valutazione"
 
 #: picard/const/tags.py:776
 msgid "The rating of the track from 0-5 by MusicBrainz users."
@@ -5478,10 +5473,8 @@ msgid "The sample rate of the audio file."
 msgstr ""
 
 #: picard/const/tags.py:1042
-#, fuzzy
-#| msgid "My script"
 msgid "Script"
-msgstr "Il mio script"
+msgstr "Script"
 
 #: picard/const/tags.py:1044
 msgid ""
@@ -5501,10 +5494,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:1063
-#, fuzzy
-#| msgid "Silesian"
 msgid "Silence"
-msgstr "Slesiano"
+msgstr "Silenzio"
 
 #: picard/const/tags.py:1064
 msgid "1 if the track title is \"[silence]\""
