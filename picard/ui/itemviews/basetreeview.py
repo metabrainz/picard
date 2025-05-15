@@ -89,7 +89,7 @@ from picard.util import (
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
-from picard.ui.itemviews.columns import DEFAULT_COLUMNS
+from picard.ui.itemviews.columns import ITEMVIEW_COLUMNS
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -468,7 +468,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
-        labels = [_(c.title) if not c.is_icon else '' for c in DEFAULT_COLUMNS]
+        labels = [_(c.title) if not c.is_icon else '' for c in ITEMVIEW_COLUMNS]
         self.setHeaderLabels(labels)
 
         header = self.header()
@@ -476,7 +476,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
-        for i, c in enumerate(DEFAULT_COLUMNS):
+        for i, c in enumerate(ITEMVIEW_COLUMNS):
             header.show_column(i, c.is_default)
             if c.is_icon:
                 header.resizeSection(i, c.header_icon_size_with_border.width())
@@ -488,7 +488,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def _init_header(self):
-        header = ConfigurableColumnsHeader(DEFAULT_COLUMNS, parent=self)
+        header = ConfigurableColumnsHeader(ITEMVIEW_COLUMNS, parent=self)
         self.setHeader(header)
         self.restore_state()
 
