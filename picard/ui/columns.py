@@ -156,17 +156,18 @@ class Columns(MutableSequence):
         self._index_dirty = True
         self._list.__delitem__(index)
 
-    def insert(self, index, column):
+    def _new_column(self, index, column):
         if not isinstance(column, Column):
             raise TypeError("Not an instance of Column")
-        self._list.insert(index, column)
         self._index_dirty = True
 
+    def insert(self, index, column):
+        self._new_column(index, column)
+        self._list.insert(index, column)
+
     def __setitem__(self, index, column):
-        if not isinstance(column, Column):
-            raise TypeError("Not an instance of Column")
+        self._new_column(index, column)
         self._list.__setitem__(index, column)
-        self._index_dirty = True
 
     def __getitem__(self, index):
         return self._list.__getitem__(index)
