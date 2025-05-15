@@ -182,3 +182,8 @@ class Columns(MutableSequence):
 
     def __str__(self):
         return repr(self)
+
+    def always_visible_columns(self):
+        for i, c in enumerate(self._list):
+            if c.always_visible:
+                yield i
