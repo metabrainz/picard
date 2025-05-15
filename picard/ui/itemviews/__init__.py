@@ -257,7 +257,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(ITEM_ICON_COLUMN, "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(DEFAULT_COLUMNS.pos('title'), "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
 
     @property
     def default_drop_target(self):
