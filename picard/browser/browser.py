@@ -32,7 +32,6 @@ from http.server import (
 )
 from itertools import chain
 import re
-import socket
 import threading
 from urllib.parse import (
     parse_qs,
@@ -56,11 +55,11 @@ from picard.util.thread import to_main
 
 
 try:
-    from http.server import ThreadingHTTPServer
+    from http.server import ThreadingHTTPServer as OurHTTPServer
 except ImportError:
     from socketserver import ThreadingMixIn
 
-    class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
+    class OurHTTPServer(ThreadingMixIn, HTTPServer):
         daemon_threads = True
 
 
@@ -114,7 +113,6 @@ class BrowserIntegration(QtCore.QObject):
         config = get_config()
 
         LISTEN_ALL = '0.0.0.0'
-        ADDRESS_FAMILY = socket.AF_INET
         MIN_PORT = config.setting["browser_integration_port"]
         MAX_PORT = 65535
 
@@ -126,9 +124,6 @@ class BrowserIntegration(QtCore.QObject):
         try:
             for port in range(MIN_PORT, MAX_PORT):
                 try:
-                    class OurHTTPServer(ThreadingHTTPServer):
-                        address_family = ADDRESS_FAMILY
-
                     self.server = OurHTTPServer((host_address, port), RequestHandler)
                 except OSError:
                     continue
