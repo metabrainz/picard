@@ -81,8 +81,8 @@ from picard.album import (
     run_album_post_removal_processors,
 )
 from picard.audit import setup_audit
-from picard.browser.browser import BrowserIntegration
 from picard.browser.filelookup import FileLookup
+from picard.browser.server import BrowserIntegration
 from picard.cluster import (
     Cluster,
     ClusterList,
