@@ -89,10 +89,7 @@ from picard.util import (
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
-from picard.ui.itemviews.columns import (
-    DEFAULT_COLUMNS,
-    ITEM_ICON_COLUMN,
-)
+from picard.ui.itemviews.columns import DEFAULT_COLUMNS
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -106,7 +103,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def __init__(self, parent=None):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
-        self._visible_columns = set([ITEM_ICON_COLUMN])
+        self._always_visible_columns = set(DEFAULT_COLUMNS.always_visible_columns())
+        self._visible_columns = set(self._always_visible_columns)
 
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
@@ -116,8 +114,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def show_column(self, column, show):
-        if column == ITEM_ICON_COLUMN:
-            # The first column always visible
+        if column in self._always_visible_columns:
+            # Always visible
             # Still execute following to ensure it is shown
             show = True
         self.parent().setColumnHidden(column, not show)
@@ -131,7 +129,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         parent = self.parent()
 
         for i, column in enumerate(DEFAULT_COLUMNS):
-            if i == ITEM_ICON_COLUMN:
+            if i in self._always_visible_columns:
                 continue
             action = QtGui.QAction(_(column.title), parent)
             action.setCheckable(True)
