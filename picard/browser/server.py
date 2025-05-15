@@ -30,6 +30,7 @@ from http.server import (
     BaseHTTPRequestHandler,
     HTTPServer,
 )
+from itertools import chain
 import re
 import threading
 from urllib.parse import (
@@ -47,22 +48,24 @@ from picard import (
 )
 from picard.browser import addrelease
 from picard.config import get_config
+from picard.const import BROWSER_INTEGRATION_LOCALIP
 from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
 from picard.util.thread import to_main
 
 
 try:
-    from http.server import ThreadingHTTPServer
+    from http.server import ThreadingHTTPServer as OurHTTPServer
 except ImportError:
     from socketserver import ThreadingMixIn
 
-    class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
+    class OurHTTPServer(ThreadingMixIn, HTTPServer):
         daemon_threads = True
 
 
 SERVER_VERSION = '%s-%s/%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
 RE_VALID_ORIGINS = re.compile(r'^(?:[^\.]+\.)*musicbrainz\.org$')
+LOG_PREFIX = "Browser Integration"
 
 
 def _is_valid_origin(origin):
@@ -108,39 +111,59 @@ class BrowserIntegration(QtCore.QObject):
             self.stop()
 
         config = get_config()
+
+        LISTEN_ALL = '0.0.0.0'
+        MIN_PORT = config.setting["browser_integration_port"]
+        MAX_PORT = 65535
+
         if config.setting["browser_integration_localhost_only"]:
-            host_address = '127.0.0.1'
+            host_address = BROWSER_INTEGRATION_LOCALIP
         else:
-            host_address = '0.0.0.0'  # nosec
+            host_address = LISTEN_ALL
 
         try:
-            for port in range(config.setting["browser_integration_port"], 65535):
+            for port in range(MIN_PORT, MAX_PORT):
                 try:
-                    self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
+                    self.server = OurHTTPServer((host_address, port), RequestHandler)
                 except OSError:
                     continue
-                log.info("Starting the browser integration (%s:%d)", host_address, port)
+                log.info("%s: Starting, listening on address %s and port %d", LOG_PREFIX, host_address, port)
                 self.listen_port_changed.emit(port)
                 threading.Thread(target=self.server.serve_forever).start()
                 break
             else:
-                log.error("Failed finding an available port for the browser integration.")
+                log.error(
+                    "%s: Failed to find an available port in range %s-%s on address %s",
+                    LOG_PREFIX, MIN_PORT, MAX_PORT, host_address,
+                )
                 self.stop()
         except Exception:
-            log.error("Failed starting the browser integration on %s", host_address, exc_info=True)
+            log.error("%s: Failed to start listening on %s", LOG_PREFIX, host_address, exc_info=True)
 
     def stop(self):
         if self.server:
             try:
-                log.info("Stopping the browser integration")
+                log.info("%s: Stopping", LOG_PREFIX)
                 self.server.shutdown()
                 self.server.server_close()
                 self.server = None
                 self.listen_port_changed.emit(self.port)
             except Exception:
-                log.error("Failed stopping the browser integration", exc_info=True)
+                log.error("%s: Failed to stop", LOG_PREFIX, exc_info=True)
         else:
-            log.debug("Browser integration inactive, no need to stop")
+            log.debug("%s: inactive, no need to stop", LOG_PREFIX)
+
+
+# From https://github.com/python/cpython/blob/f474264b1e3cd225b45cf2c0a91226d2a9d3ee9b/Lib/http/server.py#L570C1-L573C43
+# https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
+CONTROL_CHAR_TABLE = str.maketrans(
+    {c: fr'\x{c:02x}' for c in chain(range(0x20), range(0x7f, 0xa0))}
+)
+CONTROL_CHAR_TABLE[ord('\\')] = r'\\'
+
+
+def safe_message(message):
+    return message.translate(CONTROL_CHAR_TABLE)
 
 
 class RequestHandler(BaseHTTPRequestHandler):
@@ -163,14 +186,22 @@ class RequestHandler(BaseHTTPRequestHandler):
         try:
             self._handle_get()
         except Exception:
-            log.error('Browser integration failed handling request', exc_info=True)
+            log.error('%s: failed handling request', LOG_PREFIX, exc_info=True)
             self._response(500, 'Unexpected request error')
 
+    def _log(self, log_func, fmt, args):
+        log_func(
+            "%s: %s %s",
+            LOG_PREFIX,
+            self.address_string(),
+            safe_message(fmt % args),
+        )
+
     def log_error(self, format, *args):
-        log.error(format, *args)
+        self._log(log.error, format, args)
 
     def log_message(self, format, *args):
-        log.info(format, *args)
+        self._log(log.info, format, args)
 
     def _handle_get(self):
         parsed = urlparse(self.path)

@@ -29,6 +29,7 @@ from secrets import token_bytes
 from PyQt6.QtCore import QCoreApplication
 
 from picard import log
+from picard.const import BROWSER_INTEGRATION_LOCALHOST
 from picard.i18n import gettext as _
 from picard.util import format_time
 from picard.util.mbserver import build_submission_url
@@ -123,7 +124,7 @@ def _generate_token(payload):
 def _open_url_with_token(payload):
     token = _generate_token(payload)
     browser_integration = QCoreApplication.instance().browser_integration
-    url = f'http://127.0.0.1:{browser_integration.port}/add?token={token}'
+    url = f'http://{BROWSER_INTEGRATION_LOCALHOST}:{browser_integration.port}/add?token={token}'
     open(url)
 
 
