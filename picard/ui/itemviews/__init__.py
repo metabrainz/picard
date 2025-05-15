@@ -94,7 +94,10 @@ class MainPanel(QtWidgets.QSplitter):
         self.setChildrenCollapsible(False)
         self.window = window
         self.create_icons()
-        self._views = [FileTreeView(window, self), AlbumTreeView(window, self)]
+        self._views = [
+            FileTreeView(window, parent=self),
+            AlbumTreeView(window, parent=self),
+        ]
         self._selected_view = self._views[0]
         self._ignore_selection_changes = False
         self._sort_enabled = None  # None at start, bool once set_sorting is called
@@ -236,8 +239,8 @@ class FileTreeView(BaseTreeView):
     header_state = 'file_view_header_state'
     header_locked = 'file_view_header_locked'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, window, parent=None):
+        super().__init__(window, parent=parent)
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, parent=self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
@@ -272,8 +275,8 @@ class AlbumTreeView(BaseTreeView):
     header_state = 'album_view_header_state'
     header_locked = 'album_view_header_locked'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, window, parent=None):
+        super().__init__(window, parent=parent)
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
