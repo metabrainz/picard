@@ -94,8 +94,8 @@ class MainPanel(QtWidgets.QSplitter):
         self.window = window
         self.create_icons()
         self._views = [
-            FileTreeView(window, parent=self),
-            AlbumTreeView(window, parent=self),
+            FileTreeView(ITEMVIEW_COLUMNS, window, parent=self),
+            AlbumTreeView(ITEMVIEW_COLUMNS, window, parent=self),
         ]
         self._selected_view = self._views[0]
         self._ignore_selection_changes = False
@@ -238,8 +238,8 @@ class FileTreeView(BaseTreeView):
     header_state = 'file_view_header_state'
     header_locked = 'file_view_header_locked'
 
-    def __init__(self, window, parent=None):
-        super().__init__(window, parent=parent)
+    def __init__(self, columns, window, parent=None):
+        super().__init__(columns, window, parent=parent)
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, parent=self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
@@ -259,7 +259,7 @@ class FileTreeView(BaseTreeView):
         self.set_clusters_text()
 
     def set_clusters_text(self):
-        self.clusters.setText(ITEMVIEW_COLUMNS.pos('title'), "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.setText(self.columns.pos('title'), "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
 
     @property
     def default_drop_target(self):
@@ -274,8 +274,8 @@ class AlbumTreeView(BaseTreeView):
     header_state = 'album_view_header_state'
     header_locked = 'album_view_header_locked'
 
-    def __init__(self, window, parent=None):
-        super().__init__(window, parent=parent)
+    def __init__(self, columns, window, parent=None):
+        super().__init__(columns, window, parent=parent)
         self.tagger.album_added.connect(self.add_album)
         self.tagger.album_removed.connect(self.remove_album)
 
@@ -285,8 +285,8 @@ class AlbumTreeView(BaseTreeView):
             self.insertTopLevelItem(0, item)
         else:
             item = AlbumItem(album, sortable=True, parent=self)
-        item.setIcon(ITEMVIEW_COLUMNS.status_icon_column, AlbumItem.icon_cd)
-        for i, column in enumerate(ITEMVIEW_COLUMNS):
+        item.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
+        for i, column in enumerate(self.columns):
             font = item.font(i)
             font.setBold(True)
             item.setFont(i, font)
