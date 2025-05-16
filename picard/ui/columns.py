@@ -92,8 +92,9 @@ class Column:
 
     def __repr__(self):
         def parms():
+            opt_attrs = ('size', 'align', 'sort_type', 'sortkey', 'always_visible', 'status_icon')
             yield from (repr(getattr(self, a)) for a in ('title', 'key'))
-            yield from (a + '=' + repr(getattr(self, a)) for a in ('size', 'align', 'sort_type', 'sortkey'))
+            yield from (a + '=' + repr(getattr(self, a)) for a in opt_attrs)
 
         return 'Column(' + ', '.join(parms()) + ')'
 
