@@ -299,6 +299,7 @@ class AlbumTreeView(BaseTreeView):
 
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
+    columns = ITEMVIEW_COLUMNS
 
     def __init__(self, obj, sortable=False, parent=None):
         super().__init__(parent)
@@ -339,7 +340,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if sortkey is not None:
             return sortkey
 
-        this_column = ITEMVIEW_COLUMNS[column]
+        this_column = self.columns[column]
 
         if this_column.sort_type == ColumnSortType.SORTKEY:
             sortkey = this_column.sortkey(self.obj)
@@ -351,7 +352,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         return sortkey
 
     def update_colums_text(self, color=None, bgcolor=None):
-        for i, column in enumerate(ITEMVIEW_COLUMNS):
+        for i, column in enumerate(self.columns):
             if color is not None:
                 self.setForeground(i, color)
             if bgcolor is not None:
@@ -367,7 +368,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 class ClusterItem(TreeItem):
 
     def post_init(self):
-        self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, ClusterItem.icon_dir)
+        self.setIcon(self.columns.status_icon_column, ClusterItem.icon_dir)
 
     def update(self, update_selection=True):
         self.update_colums_text()
@@ -440,22 +441,22 @@ class AlbumItem(TreeItem):
                 for item in items:  # Update after insertChildren so that setExpanded works
                     item.update(update_album=False)
         if album.errors:
-            self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, AlbumItem.icon_error)
-            self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, _("Processing error(s): See the Errors tab in the Album Info dialog"))
+            self.setIcon(self.columns.status_icon_column, AlbumItem.icon_error)
+            self.setToolTip(self.columns.status_icon_column, _("Processing error(s): See the Errors tab in the Album Info dialog"))
         elif album.is_complete():
             if album.is_modified():
-                self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, AlbumItem.icon_cd_saved_modified)
-                self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, _("Album modified and complete"))
+                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved_modified)
+                self.setToolTip(self.columns.status_icon_column, _("Album modified and complete"))
             else:
-                self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, AlbumItem.icon_cd_saved)
-                self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, _("Album unchanged and complete"))
+                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved)
+                self.setToolTip(self.columns.status_icon_column, _("Album unchanged and complete"))
         else:
             if album.is_modified():
-                self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, AlbumItem.icon_cd_modified)
-                self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, _("Album modified"))
+                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_modified)
+                self.setToolTip(self.columns.status_icon_column, _("Album modified"))
             else:
-                self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, AlbumItem.icon_cd)
-                self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, _("Album unchanged"))
+                self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd)
+                self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
         self.update_colums_text()
         if selection_changed and update_selection:
             TreeItem.window.update_selection(new_selection=False)
@@ -485,7 +486,7 @@ class TrackItem(TreeItem):
     def update(self, update_album=True, update_files=True, update_selection=True):
         track = self.obj
         num_linked_files = track.num_linked_files
-        fingerprint_column = ITEMVIEW_COLUMNS.pos('~fingerprint')
+        fingerprint_column = self.columns.pos('~fingerprint')
         if num_linked_files == 1:
             file = track.files[0]
             file.ui_item = self
@@ -536,11 +537,11 @@ class TrackItem(TreeItem):
                     self.addChildren(items)
             self.setExpanded(True)
         if track.errors:
-            self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, TrackItem.icon_error)
-            self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, _("Processing error(s): See the Errors tab in the Track Info dialog"))
+            self.setIcon(self.columns.status_icon_column, TrackItem.icon_error)
+            self.setToolTip(self.columns.status_icon_column, _("Processing error(s): See the Errors tab in the Track Info dialog"))
         else:
-            self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, icon)
-            self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, icon_tooltip)
+            self.setIcon(self.columns.status_icon_column, icon)
+            self.setToolTip(self.columns.status_icon_column, icon_tooltip)
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
             TreeItem.window.update_selection(new_selection=False)
@@ -553,10 +554,10 @@ class FileItem(TreeItem):
     def update(self, update_track=True, update_selection=True):
         file = self.obj
         icon, icon_tooltip = FileItem.decide_file_icon_info(file)
-        self.setIcon(ITEMVIEW_COLUMNS.status_icon_column, icon)
-        self.setToolTip(ITEMVIEW_COLUMNS.status_icon_column, icon_tooltip)
+        self.setIcon(self.columns.status_icon_column, icon)
+        self.setToolTip(self.columns.status_icon_column, icon_tooltip)
 
-        fingerprint_column = ITEMVIEW_COLUMNS.pos('~fingerprint')
+        fingerprint_column = self.columns.pos('~fingerprint')
         fingerprint_icon, fingerprint_tooltip = FileItem.decide_fingerprint_icon_info(file)
         self.setToolTip(fingerprint_column, fingerprint_tooltip)
         self.setIcon(fingerprint_column, fingerprint_icon)
