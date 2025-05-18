@@ -88,14 +88,12 @@ from picard.util import (
 )
 
 from picard.ui.collectionmenu import CollectionMenu
+from picard.ui.columns import ImageColumn
 from picard.ui.enums import MainAction
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
 from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
-
-
-DEFAULT_SECTION_SIZE = 100
 
 
 class ConfigurableColumnsHeader(TristateSortHeaderView):
@@ -158,16 +156,16 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
 
     def paintSection(self, painter, rect, index):
         column = self._columns[index]
-        if column.is_icon:
+        if isinstance(column, ImageColumn):
             painter.save()
             super().paintSection(painter, rect, index)
             painter.restore()
-            column.paint_icon(painter, rect)
+            column.paint(painter, rect)
         else:
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if self._columns[index].is_icon:
+        if not self._columns[index].sortable:
             self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
@@ -466,22 +464,22 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
-        labels = [_(c.title) if not c.is_icon else '' for c in self.columns]
+        labels = tuple(_(c.title) for c in self.columns)
         self.setHeaderLabels(labels)
 
         header = self.header()
         header.setStretchLastSection(True)
         header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
-        header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
+        header.setDefaultSectionSize(self.columns.default_width)
 
         for i, c in enumerate(self.columns):
             header.show_column(i, c.is_default)
-            if c.is_icon:
-                header.resizeSection(i, c.header_icon_size_with_border.width())
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
-            else:
-                header.resizeSection(i, c.size if c.size is not None else DEFAULT_SECTION_SIZE)
+            if c.width is not None:
+                header.resizeSection(i, c.width)
+            if c.resizeable:
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
+            else:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 

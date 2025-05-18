@@ -70,15 +70,16 @@ class ColumnSortType(IntEnum):
 
 
 class Column:
-    is_icon = False
     is_default = False
+    resizeable = True
+    sortable = True
 
-    def __init__(self, title, key, size=None, align=ColumnAlign.LEFT,
+    def __init__(self, title, key, width=None, align=ColumnAlign.LEFT,
                  sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False,
                  status_icon=False):
         self.title = title
         self.key = key
-        self.size = size
+        self.width = width
         self.align = align
         self.sort_type = sort_type
         self.always_visible = always_visible
@@ -92,7 +93,7 @@ class Column:
 
     def __repr__(self):
         def parms():
-            opt_attrs = ('size', 'align', 'sort_type', 'sortkey', 'always_visible', 'status_icon')
+            opt_attrs = ('width', 'align', 'sort_type', 'sortkey', 'always_visible', 'status_icon')
             yield from (repr(getattr(self, a)) for a in ('title', 'key'))
             yield from (a + '=' + repr(getattr(self, a)) for a in opt_attrs)
 
@@ -106,13 +107,20 @@ class DefaultColumn(Column):
     is_default = True
 
 
-class IconColumn(Column):
-    is_icon = True
+class ImageColumn(Column):
+    resizeable = False
+    sortable = False
+    size = QtCore.QSize(0, 0)
+
+    def paint(self, painter, rect):
+        raise NotImplementedError
+
+
+class IconColumn(ImageColumn):
     _header_icon = None
     header_icon_func = None
     header_icon_size = QtCore.QSize(0, 0)
     header_icon_border = 0
-    header_icon_size_with_border = QtCore.QSize(0, 0)
 
     @property
     def header_icon(self):
@@ -126,9 +134,10 @@ class IconColumn(Column):
     def set_header_icon_size(self, width, height, border):
         self.header_icon_size = QtCore.QSize(width, height)
         self.header_icon_border = border
-        self.header_icon_size_with_border = QtCore.QSize(width + 2*border, height + 2*border)
+        self.size = QtCore.QSize(width + 2*border, height + 2*border)
+        self.width = self.size.width()
 
-    def paint_icon(self, painter, rect):
+    def paint(self, painter, rect):
         icon = self.header_icon
         if not icon:
             return
@@ -144,11 +153,12 @@ class IconColumn(Column):
 
 
 class Columns(MutableSequence):
-    def __init__(self, iterable=None):
+    def __init__(self, iterable=None, default_width=None):
         self._list = list()
         self._index = dict()
         self._index_dirty = True
         self.status_icon_column = None
+        self.default_width = default_width
         if iterable is not None:
             for e in iterable:
                 self.append(e)
@@ -168,6 +178,8 @@ class Columns(MutableSequence):
             if self.status_icon_column is not None:
                 raise TypeError("Only one status icon column is supported")
             self.status_icon_column = index
+        if self.default_width is not None and column.width is None:
+            column.width = self.default_width
 
     def insert(self, index, column):
         self._new_column(index, column)

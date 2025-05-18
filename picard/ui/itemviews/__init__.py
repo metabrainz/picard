@@ -73,6 +73,7 @@ from picard.ui.itemviews.columns import (
     ITEMVIEW_COLUMNS,
     ColumnAlign,
     ColumnSortType,
+    IconColumn,
 )
 
 
@@ -357,8 +358,8 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                 self.setForeground(i, color)
             if bgcolor is not None:
                 self.setBackground(i, bgcolor)
-            if column.is_icon:
-                self.setSizeHint(i, column.header_icon_size_with_border)
+            if isinstance(column, IconColumn):
+                self.setSizeHint(i, column.size)
             else:
                 if column.align == ColumnAlign.RIGHT:
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
