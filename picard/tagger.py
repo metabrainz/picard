@@ -1200,6 +1200,7 @@ class Tagger(QtWidgets.QApplication):
 
     def lookup_discid_from_logfile(self):
         file_chooser = QtWidgets.QFileDialog(self.window)
+        file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
         file_chooser.setNameFilters([
             _("All supported log files") + " (*.log *.txt)",
             _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
