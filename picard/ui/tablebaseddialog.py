@@ -63,9 +63,6 @@ class ResultTable(QtWidgets.QTableWidget):
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
-        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
 
         self.horizontalScrollBar().valueChanged.connect(self.emit_scrolled)
         self.verticalScrollBar().valueChanged.connect(self.emit_scrolled)
@@ -157,12 +154,8 @@ class TableBasedDialog(PicardDialog):
         self.center_layout.addWidget(widget)
         widget.show()
 
-    def create_table_obj(self):
-        return ResultTable(parent_dialog=self)
-
     def create_table(self):
-        self.table = self.create_table_obj()
-        self.table.verticalHeader().setDefaultSectionSize(100)
+        self.table = ResultTable(parent_dialog=self)
         self.table.setSortingEnabled(False)
         self.table.cellDoubleClicked.connect(self.accept)
         self.table.hide()
