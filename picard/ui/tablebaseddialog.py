@@ -113,10 +113,6 @@ class TableBasedDialog(PicardDialog):
         self.create_table()
         self.finished.connect(self.save_state)
 
-    @abstractmethod
-    def get_value_for_row_id(self, row, value):
-        pass
-
     def set_table_item_value(self, row, colname, value, sortkey=None):
         # TODO: use Column.sortkey & align
         # QVariant remembers the original type of the data
@@ -128,8 +124,7 @@ class TableBasedDialog(PicardDialog):
         item.setData(QtCore.Qt.ItemDataRole.DisplayRole, value)
         pos = self.columns.pos(colname)
         if pos == 0:
-            id = self.get_value_for_row_id(row, value)
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, row)
         self.table.setItem(row, pos, item)
 
     @abstractmethod

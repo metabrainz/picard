@@ -166,9 +166,6 @@ class SearchDialog(TableBasedDialog):
             config = get_config()
             return config.setting['use_adv_search_syntax']
 
-    def get_value_for_row_id(self, row, value):
-        return row
-
     def setupUi(self):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setObjectName('vertical_layout')
