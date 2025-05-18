@@ -248,7 +248,6 @@ class EditTagDialog(PicardDialog):
         tag_names.editTextChanged.connect(self.tag_changed)
 
     def _add_value_items(self, values):
-        values = [v for v in values if v] or [""]
         for value in values:
             item = QtWidgets.QListWidgetItem(value)
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
@@ -284,8 +283,10 @@ class EditTagDialog(PicardDialog):
         self.ui.move_value_down.setEnabled(selection)
 
     def _modified_tag(self):
-        return self.modified_tags.setdefault(self.tag,
-                                             list(self.metadata_box.tag_diff.new[self.tag]) or [""])
+        return self.modified_tags.setdefault(
+            self.tag,
+            list(self.metadata_box.tag_diff.new[self.tag])
+        )
 
     def accept(self):
         with self.window.ignore_selection_changes:
