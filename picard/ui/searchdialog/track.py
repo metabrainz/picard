@@ -24,7 +24,10 @@
 
 from picard.config import get_config
 from picard.file import FILE_COMPARISON_WEIGHTS
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.mbjson import (
     countries_from_node,
     recording_to_metadata,
@@ -39,6 +42,10 @@ from picard.util import (
 )
 from picard.webservice.api_helpers import build_lucene_query
 
+from picard.ui.columns import (
+    Column,
+    Columns,
+)
 from picard.ui.searchdialog import (
     Retry,
     SearchDialog,
@@ -57,16 +64,16 @@ class TrackSearchDialog(SearchDialog):
             force_advanced_search=force_advanced_search)
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
-        self.columns = [
-            ('name',    _("Name")),
-            ('length',  _("Length")),
-            ('artist',  _("Artist")),
-            ('release', _("Release")),
-            ('date',    _("Date")),
-            ('country', _("Country")),
-            ('type',    _("Type")),
-            ('score',   _("Score")),
-        ]
+        self.columns = Columns((
+            Column(N_("Name"), 'name'),
+            Column(N_("Length"), 'length'),
+            Column(N_("Artist"), 'artist'),
+            Column(N_("Release"), 'release'),
+            Column(N_("Date"), 'date'),
+            Column(N_("Country"), 'country'),
+            Column(N_("Type"), 'type'),
+            Column(N_("Score"), 'score'),
+        ))
 
     def search(self, text):
         """Perform search using query provided by the user."""

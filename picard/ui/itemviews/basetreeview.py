@@ -89,10 +89,6 @@ from picard.util import (
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
-from picard.ui.itemviews.columns import (
-    DEFAULT_COLUMNS,
-    ITEM_ICON_COLUMN,
-)
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -104,9 +100,11 @@ DEFAULT_SECTION_SIZE = 100
 
 class ConfigurableColumnsHeader(TristateSortHeaderView):
 
-    def __init__(self, parent=None):
+    def __init__(self, columns, parent=None):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
-        self._visible_columns = set([ITEM_ICON_COLUMN])
+        self._columns = columns
+        self._always_visible_columns = set(self._columns.always_visible_columns())
+        self._visible_columns = set(self._always_visible_columns)
 
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
@@ -116,8 +114,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def show_column(self, column, show):
-        if column == ITEM_ICON_COLUMN:
-            # The first column always visible
+        if column in self._always_visible_columns:
+            # Always visible
             # Still execute following to ensure it is shown
             show = True
         self.parent().setColumnHidden(column, not show)
@@ -130,8 +128,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         menu = QtWidgets.QMenu(self)
         parent = self.parent()
 
-        for i, column in enumerate(DEFAULT_COLUMNS):
-            if i == ITEM_ICON_COLUMN:
+        for i, column in enumerate(self._columns):
+            if i in self._always_visible_columns:
                 continue
             action = QtGui.QAction(_(column.title), parent)
             action.setCheckable(True)
@@ -159,7 +157,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
         self.parent().restore_default_columns()
 
     def paintSection(self, painter, rect, index):
-        column = DEFAULT_COLUMNS[index]
+        column = self._columns[index]
         if column.is_icon:
             painter.save()
             super().paintSection(painter, rect, index)
@@ -169,7 +167,7 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if DEFAULT_COLUMNS[index].is_icon:
+        if self._columns[index].is_icon:
             self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def lock(self, is_locked):
@@ -248,8 +246,9 @@ def _add_other_versions(releases_menu, album, action_loading):
 
 class BaseTreeView(QtWidgets.QTreeWidget):
 
-    def __init__(self, window, parent=None):
+    def __init__(self, columns, window, parent=None):
         super().__init__(parent=parent)
+        self.columns = columns
         self.setAccessibleName(_(self.NAME))
         self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
@@ -469,7 +468,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_locked] = header.is_locked
 
     def restore_default_columns(self):
-        labels = [_(c.title) if not c.is_icon else '' for c in DEFAULT_COLUMNS]
+        labels = [_(c.title) if not c.is_icon else '' for c in self.columns]
         self.setHeaderLabels(labels)
 
         header = self.header()
@@ -477,7 +476,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         header.setDefaultSectionSize(DEFAULT_SECTION_SIZE)
 
-        for i, c in enumerate(DEFAULT_COLUMNS):
+        for i, c in enumerate(self.columns):
             header.show_column(i, c.is_default)
             if c.is_icon:
                 header.resizeSection(i, c.header_icon_size_with_border.width())
@@ -489,7 +488,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def _init_header(self):
-        header = ConfigurableColumnsHeader(self)
+        header = ConfigurableColumnsHeader(self.columns, parent=self)
         self.setHeader(header)
         self.restore_state()
 

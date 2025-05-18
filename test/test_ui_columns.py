@@ -41,8 +41,11 @@ class ColumnTest(PicardTestCase):
         self.assertFalse(column.is_default)
         self.assertEqual(column.align, ColumnAlign.LEFT)
         self.assertEqual(column.sort_type, ColumnSortType.TEXT)
+        self.assertFalse(column.always_visible)
+        self.assertFalse(column.status_icon)
         self.assertIsNone(column.sortkey)
-        expected_repr = "Column('title', 'key', size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None)"
+        expected_repr = ("Column('title', 'key', size=None, align=ColumnAlign.LEFT, "
+            "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)")
         self.assertEqual(repr(column), expected_repr)
         self.assertEqual(str(column), expected_repr)
 
@@ -78,8 +81,8 @@ class ColumnsTest(PicardTestCase):
 
     def test_init_columns(self):
         c1 = Column('t1', 'k1')
-        c2 = Column('t2', 'k2')
-        c3 = Column('t3', 'k3')
+        c2 = Column('t2', 'k2', always_visible=True)
+        c3 = Column('t3', 'k3', status_icon=True)
         columns = Columns([c1, c2])
         self.assertEqual(columns[0], c1)
         self.assertEqual(columns[1], c2)
@@ -97,11 +100,13 @@ class ColumnsTest(PicardTestCase):
         self.assertEqual(columns.pos('k3'), 1)
 
         expected_repr = """Columns([
-    Column('t2', 'k2', size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None),
-    Column('t3', 'k3', size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None),
+    Column('t2', 'k2', size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=True, status_icon=False),
+    Column('t3', 'k3', size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=True),
 ])"""
         self.assertEqual(repr(columns), expected_repr)
         self.assertEqual(str(columns), expected_repr)
+        self.assertEqual(columns.status_icon_column, 2)
+        self.assertEqual(tuple(columns.always_visible_columns()), (0,))
 
     def test_append_non_column(self):
         columns = Columns()
@@ -112,3 +117,10 @@ class ColumnsTest(PicardTestCase):
         columns = Columns([Column('t1', 'k1')])
         with self.assertRaisesRegex(TypeError, "^Not an instance of Column$"):
             columns[0] = 'x'
+
+    def test_more_than_one_status_icon(self):
+        c1 = Column('t1', 'k1', status_icon=True)
+        c2 = Column('t2', 'k2', status_icon=True)
+        with self.assertRaisesRegex(TypeError, "^Only one status icon column is supported$"):
+            columns = Columns([c1, c2])
+            self.assertEqual(tuple(columns), (c1,))

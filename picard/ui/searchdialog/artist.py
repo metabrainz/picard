@@ -22,10 +22,17 @@
 
 
 from picard.config import get_config
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
 
+from picard.ui.columns import (
+    Column,
+    Columns,
+)
 from picard.ui.searchdialog import (
     Retry,
     SearchDialog,
@@ -42,17 +49,17 @@ class ArtistSearchDialog(SearchDialog):
             accept_button_title=_("Show in browser"),
             search_type='artist')
         self.setWindowTitle(_("Artist Search Dialog"))
-        self.columns = [
-            ('name',        _("Name")),
-            ('type',        _("Type")),
-            ('gender',      _("Gender")),
-            ('area',        _("Area")),
-            ('begindate',   _("Begin")),
-            ('beginarea',   _("Begin Area")),
-            ('enddate',     _("End")),
-            ('endarea',     _("End Area")),
-            ('score',       _("Score")),
-        ]
+        self.columns = Columns((
+            Column(N_("Name"), 'name'),
+            Column(N_("Type"), 'type'),
+            Column(N_("Gender"), 'gender'),
+            Column(N_("Area"), 'area'),
+            Column(N_("Begin"), 'begindate'),
+            Column(N_("Begin Area"), 'beginarea'),
+            Column(N_("End"), 'enddate'),
+            Column(N_("End Area"), 'endarea'),
+            Column(N_("Score"), 'score'),
+        ))
 
     def search(self, text):
         self.retry_params = Retry(self.search, text)
