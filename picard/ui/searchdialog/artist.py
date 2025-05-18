@@ -52,7 +52,7 @@ class ArtistSearchDialog(SearchDialog):
             search_type='artist')
         self.setWindowTitle(_("Artist Search Dialog"))
         self.columns = Columns((
-            Column(N_("Name"), 'name'),
+            Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT),
             Column(N_("Type"), 'type'),
             Column(N_("Gender"), 'gender'),
             Column(N_("Area"), 'area'),

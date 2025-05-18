@@ -152,10 +152,10 @@ class AlbumSearchDialog(SearchDialog):
         self.existing_album = existing_album
         self.setWindowTitle(_("Album Search Results"))
         self.columns = Columns((
-            Column(N_("Name"), 'album'),
+            Column(N_("Name"), 'album', sort_type=ColumnSortType.NAT),
             Column(N_("Artist"), 'albumartist'),
             Column(N_("Format"), 'format'),
-            Column(N_("Tracks"), 'tracks', sort_type=ColumnSortType.NAT),
+            Column(N_("Tracks"), 'tracks', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
             Column(N_("Date"), 'date'),
             Column(N_("Country"), 'country'),
             Column(N_("Labels"), 'label'),
