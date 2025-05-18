@@ -224,6 +224,10 @@ def _add_track_data(data, files):
             labels.add((m['label'], m['catalognumber']))
         if m['barcode']:
             barcode = m['barcode']
+        if m['discsubtitle'] and not data.get(f'mediums.{disc_counter}.name'):
+            data[f'mediums.{disc_counter}.name'] =  m['discsubtitle']
+        if m['media'] and not data.get(f'mediums.{disc_counter}.format'):
+            data[f'mediums.{disc_counter}.format'] =  m['media']
         data[mkey(disc_counter, track_counter, 'name')] = m['title']
         data[mkey(disc_counter, track_counter, 'artist_credit.names.0.name')] = m['artist']
         data[mkey(disc_counter, track_counter, 'number')] = m['tracknumber'] or str(track_counter + 1)
