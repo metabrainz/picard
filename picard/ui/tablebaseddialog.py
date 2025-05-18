@@ -179,9 +179,24 @@ class TableBasedDialog(PicardDialog):
             index = model.index(row, column)
             model.setData(index, highlight_brush, QtCore.Qt.ItemDataRole.BackgroundRole)
 
-    def prepare_table(self):
+    def restore_default_columns(self):
         labels = tuple(_(c.title) for c in self.columns)
         self.table.prepare(labels)
+
+        self.table.setSortingEnabled(self.sorting_enabled)
+
+        header = self.table.horizontalHeader()
+        header.setDefaultSectionSize(self.columns.default_width)
+
+        for i, c in enumerate(self.columns):
+            if c.width is not None:
+                header.resizeSection(i, c.width)
+            if c.resizeable:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
+            else:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
+
+    def prepare_table(self):
         self.restore_table_header_state()
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
@@ -207,12 +222,12 @@ class TableBasedDialog(PicardDialog):
 
     @restore_method
     def restore_table_header_state(self):
+        self.restore_default_columns()
         header = self.table.horizontalHeader()
         config = get_config()
         state = config.persist[self.dialog_header_state]
         if state:
             header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
         log.debug("restore_state: %s", self.dialog_header_state)
 
     def save_state(self):

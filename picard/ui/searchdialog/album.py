@@ -52,6 +52,7 @@ from picard.ui.columns import (
     ColumnAlign,
     Columns,
     ColumnSortType,
+    ImageColumn,
 )
 from picard.ui.searchdialog import (
     Retry,
@@ -63,7 +64,7 @@ class CoverWidget(QtWidgets.QWidget):
 
     shown = pyqtSignal()
 
-    def __init__(self, width=100, height=100, parent=None):
+    def __init__(self, size, parent=None):
         super().__init__(parent=parent)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.destroyed.connect(self.invalidate)
@@ -75,7 +76,7 @@ class CoverWidget(QtWidgets.QWidget):
         self.loading_gif_label.setMovie(loading_gif)
         loading_gif.start()
         self.layout.addWidget(self.loading_gif_label)
-        self.__sizehint = self.__size = QtCore.QSize(width, height)
+        self.__sizehint = self.__size = QtCore.QSize(size, size)
         self.setStyleSheet("padding: 0")
 
     def set_pixmap(self, pixmap):
@@ -109,11 +110,11 @@ class CoverWidget(QtWidgets.QWidget):
 
 class CoverCell:
 
-    def __init__(self, table, release, row, column, on_show=None):
+    def __init__(self, table, release, row, column, size, on_show=None):
         self.release = release
         self.fetched = False
         self.fetch_task = None
-        self.widget = widget = CoverWidget(parent=table)
+        self.widget = widget = CoverWidget(size, parent=table)
         self.widget.destroyed.connect(self.invalidate)
         if on_show is not None:
             widget.shown.connect(partial(on_show, self))
@@ -138,6 +139,10 @@ class CoverCell:
             self.widget = None
 
 
+class CoverColumn(ImageColumn):
+    pass
+
+
 class AlbumSearchDialog(SearchDialog):
 
     dialog_header_state = 'albumsearchdialog_header_state'
@@ -152,7 +157,7 @@ class AlbumSearchDialog(SearchDialog):
         self.existing_album = existing_album
         self.setWindowTitle(_("Album Search Results"))
         self.columns = Columns((
-            Column(N_("Name"), 'album', sort_type=ColumnSortType.NAT),
+            Column(N_("Name"), 'album', sort_type=ColumnSortType.NAT, width=150),
             Column(N_("Artist"), 'albumartist'),
             Column(N_("Format"), 'format'),
             Column(N_("Tracks"), 'tracks', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
@@ -164,9 +169,9 @@ class AlbumSearchDialog(SearchDialog):
             Column(N_("Language"), '~releaselanguage'),
             Column(N_("Type"), 'releasetype'),
             Column(N_("Status"), 'releasestatus'),
-            Column(N_("Cover"), 'cover'),
-            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
-        ))
+            CoverColumn(N_("Cover"), 'cover', width=100),
+            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
+        ), default_width=100)
         self.cover_cells = []
         self.fetching = False
         self.scrolled.connect(self.fetch_coverarts)
@@ -337,14 +342,17 @@ class AlbumSearchDialog(SearchDialog):
     def display_results(self):
         self.prepare_table()
         self.cover_cells = []
-        column = self.columns.pos('cover')
+        cover_pos = self.columns.pos('cover')
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
             for c in self.columns:
                 value = release.get(c.key, "")
                 self.set_table_item_value(row, c.key, value)
-            self.cover_cells.append(CoverCell(self.table, release, row, column,
-                                              on_show=self.fetch_coverart))
+            self.cover_cells.append(CoverCell(
+                self.table, release, row, cover_pos,
+                self.columns[cover_pos].width,
+                on_show=self.fetch_coverart
+            ))
             if self.existing_album and release['musicbrainz_albumid'] == self.existing_album.id:
                 self.highlight_row(row)
         self.show_table(sort_column='score')

@@ -52,7 +52,7 @@ class ArtistSearchDialog(SearchDialog):
             search_type='artist')
         self.setWindowTitle(_("Artist Search Dialog"))
         self.columns = Columns((
-            Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT),
+            Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT, width=150),
             Column(N_("Type"), 'type'),
             Column(N_("Gender"), 'gender'),
             Column(N_("Area"), 'area'),
@@ -60,8 +60,8 @@ class ArtistSearchDialog(SearchDialog):
             Column(N_("Begin Area"), 'beginarea'),
             Column(N_("End"), 'enddate'),
             Column(N_("End Area"), 'endarea'),
-            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
-        ))
+            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
+        ), default_width=100)
 
     def search(self, text):
         self.retry_params = Retry(self.search, text)

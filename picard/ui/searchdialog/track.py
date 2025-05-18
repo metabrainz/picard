@@ -71,15 +71,15 @@ class TrackSearchDialog(SearchDialog):
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
         self.columns = Columns((
-            Column(N_("Name"), 'title'),
-            Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=_track_length_sortkey, align=ColumnAlign.RIGHT),
+            Column(N_("Name"), 'title', width=150),
+            Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=_track_length_sortkey, align=ColumnAlign.RIGHT, width=50),
             Column(N_("Artist"), 'artist'),
             Column(N_("Release"), 'album'),
             Column(N_("Date"), 'date'),
             Column(N_("Country"), 'country'),
             Column(N_("Type"), 'releasetype'),
-            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
-        ))
+            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
+        ), default_width=100)
 
     def search(self, text):
         """Perform search using query provided by the user."""
