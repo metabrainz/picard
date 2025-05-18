@@ -68,11 +68,13 @@ from picard.track import Track
 from picard.util import icontheme
 
 from picard.ui.colors import interface_colors
+from picard.ui.columns import (
+    ColumnAlign,
+    ColumnSortType,
+)
 from picard.ui.itemviews.basetreeview import BaseTreeView
 from picard.ui.itemviews.columns import (
     ITEMVIEW_COLUMNS,
-    ColumnAlign,
-    ColumnSortType,
     IconColumn,
 )
 
