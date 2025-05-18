@@ -33,7 +33,10 @@ from PyQt6.QtCore import pyqtSignal
 from picard import log
 from picard.config import get_config
 from picard.const import CAA_URL
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.mbjson import (
     countries_from_node,
     media_formats_from_node,
@@ -44,6 +47,10 @@ from picard.metadata import Metadata
 from picard.util import countries_shortlist
 from picard.webservice.api_helpers import build_lucene_query
 
+from picard.ui.columns import (
+    Column,
+    Columns,
+)
 from picard.ui.searchdialog import (
     Retry,
     SearchDialog,
@@ -142,22 +149,22 @@ class AlbumSearchDialog(SearchDialog):
         self.cluster = None
         self.existing_album = existing_album
         self.setWindowTitle(_("Album Search Results"))
-        self.columns = [
-            ('name',     _("Name")),
-            ('artist',   _("Artist")),
-            ('format',   _("Format")),
-            ('tracks',   _("Tracks")),
-            ('date',     _("Date")),
-            ('country',  _("Country")),
-            ('labels',   _("Labels")),
-            ('catnums',  _("Catalog #s")),
-            ('barcode',  _("Barcode")),
-            ('language', _("Language")),
-            ('type',     _("Type")),
-            ('status',   _("Status")),
-            ('cover',    _("Cover")),
-            ('score',    _("Score")),
-        ]
+        self.columns = Columns((
+            Column(N_("Name"), 'name'),
+            Column(N_("Artist"), 'artist'),
+            Column(N_("Format"), 'format'),
+            Column(N_("Tracks"), 'tracks'),
+            Column(N_("Date"), 'date'),
+            Column(N_("Country"), 'country'),
+            Column(N_("Labels"), 'labels'),
+            Column(N_("Catalog #s"), 'catnums'),
+            Column(N_("Barcode"), 'barcode'),
+            Column(N_("Language"), 'language'),
+            Column(N_("Type"), 'type'),
+            Column(N_("Status"), 'status'),
+            Column(N_("Cover"), 'cover'),
+            Column(N_("Score"), 'score'),
+        ))
         self.cover_cells = []
         self.fetching = False
         self.scrolled.connect(self.fetch_coverarts)
@@ -328,7 +335,7 @@ class AlbumSearchDialog(SearchDialog):
     def display_results(self):
         self.prepare_table()
         self.cover_cells = []
-        column = self.colpos('cover')
+        column = self.columns.pos('cover')
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
             self.set_table_item(row, 'name',     release, 'album')

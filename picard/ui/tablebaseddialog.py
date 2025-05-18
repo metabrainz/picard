@@ -27,7 +27,6 @@ This can be used for basic dialogs that mostly contain a table as its core featu
 """
 
 from abc import abstractmethod
-from collections import OrderedDict
 
 from PyQt6 import (
     QtCore,
@@ -38,7 +37,10 @@ from PyQt6.QtCore import pyqtSignal
 
 from picard import log
 from picard.config import get_config
-from picard.i18n import sort_key
+from picard.i18n import (
+    gettext as _,
+    sort_key,
+)
 from picard.util import (
     restore_method,
     throttle,
@@ -46,6 +48,7 @@ from picard.util import (
 
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
+from picard.ui.columns import Columns
 
 
 class ResultTable(QtWidgets.QTableWidget):
@@ -64,10 +67,10 @@ class ResultTable(QtWidgets.QTableWidget):
         self.verticalScrollBar().valueChanged.connect(self.emit_scrolled)
         self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-    def prepare(self, headers):
+    def prepare(self, labels):
         self.clear()
-        self.setColumnCount(len(headers))
-        self.setHorizontalHeaderLabels(headers)
+        self.setColumnCount(len(labels))
+        self.setHorizontalHeaderLabels(labels)
         self.setRowCount(0)
         self.setSortingEnabled(False)
 
@@ -105,28 +108,10 @@ class TableBasedDialog(PicardDialog):
     def __init__(self, parent):
         super().__init__(parent=parent)
         self.setupUi()
-        self.columns = None  # self.columns has to be an ordered dict, with column name as keys, and matching label as values
+        self.columns = Columns()
         self.sorting_enabled = True
         self.create_table()
         self.finished.connect(self.save_state)
-
-    @property
-    def columns(self):
-        return self.__columns
-
-    @columns.setter
-    def columns(self, list_of_tuples):
-        if not list_of_tuples:
-            list_of_tuples = []
-        self.__columns = OrderedDict(list_of_tuples)
-        self.__colkeys = list(self.columns.keys())
-
-    @property
-    def table_headers(self):
-        return list(self.columns.values())
-
-    def colpos(self, colname):
-        return self.__colkeys.index(colname)
 
     @abstractmethod
     def get_value_for_row_id(self, row, value):
@@ -137,6 +122,7 @@ class TableBasedDialog(PicardDialog):
         self.set_table_item_val(row, colname, value, sortkey)
 
     def set_table_item_val(self, row, colname, value, sortkey=None):
+        # TODO: use Column.sortkey & align
         # QVariant remembers the original type of the data
         # matching comparison operator will be used when sorting
         # get() will return a string, force conversion if asked to
@@ -144,7 +130,7 @@ class TableBasedDialog(PicardDialog):
             sortkey = sort_key(value, numeric=True)
         item = SortableTableWidgetItem(sortkey)
         item.setData(QtCore.Qt.ItemDataRole.DisplayRole, value)
-        pos = self.colpos(colname)
+        pos = self.columns.pos(colname)
         if pos == 0:
             id = self.get_value_for_row_id(row, value)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
@@ -190,7 +176,8 @@ class TableBasedDialog(PicardDialog):
             model.setData(index, highlight_brush, QtCore.Qt.ItemDataRole.BackgroundRole)
 
     def prepare_table(self):
-        self.table.prepare(self.table_headers)
+        labels = tuple(_(c.title) for c in self.columns)
+        self.table.prepare(labels)
         self.restore_table_header_state()
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
@@ -198,7 +185,8 @@ class TableBasedDialog(PicardDialog):
         self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
         self.table.setSortingEnabled(self.sorting_enabled)
         if self.sorting_enabled and sort_column:
-            self.table.sortItems(self.colpos(sort_column), sort_order)
+            pos = self.columns.pos(sort_column)
+            self.table.sortItems(pos, sort_order)
 
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
