@@ -43,6 +43,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt6 import QtCore
 
 from picard.i18n import N_
 from picard.util import icontheme
@@ -53,7 +54,7 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
     DefaultColumn,
-    IconColumn,
+    ImageColumn,
 )
 
 
@@ -66,6 +67,42 @@ def _sortkey_filesize(obj):
         return int(obj.metadata['~filesize'] or obj.orig_metadata['~filesize'])
     except ValueError:
         return 0
+
+
+class IconColumn(ImageColumn):
+    _header_icon = None
+    header_icon_func = None
+    header_icon_size = QtCore.QSize(0, 0)
+    header_icon_border = 0
+
+    @property
+    def header_icon(self):
+        # icon cannot be set before QApplication is created
+        # so create it during runtime and cache it
+        # Avoid error: QPixmap: Must construct a QGuiApplication before a QPixmap
+        if self._header_icon is None:
+            self._header_icon = self.header_icon_func()
+        return self._header_icon
+
+    def set_header_icon_size(self, width, height, border):
+        self.header_icon_size = QtCore.QSize(width, height)
+        self.header_icon_border = border
+        self.size = QtCore.QSize(width + 2*border, height + 2*border)
+        self.width = self.size.width()
+
+    def paint(self, painter, rect):
+        icon = self.header_icon
+        if not icon:
+            return
+        h = self.header_icon_size.height()
+        w = self.header_icon_size.width()
+        border = self.header_icon_border
+        padding_v = (rect.height() - h) // 2
+        target_rect = QtCore.QRect(
+            rect.x() + border, rect.y() + padding_v,
+            w, h
+        )
+        painter.drawPixmap(target_rect, icon.pixmap(self.header_icon_size))
 
 
 _fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')

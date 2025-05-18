@@ -27,9 +27,9 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
     DefaultColumn,
-    IconColumn,
     ImageColumn,
 )
+from picard.ui.itemviews.columns import IconColumn
 
 
 class ColumnTest(PicardTestCase):
