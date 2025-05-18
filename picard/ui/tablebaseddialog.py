@@ -117,11 +117,7 @@ class TableBasedDialog(PicardDialog):
     def get_value_for_row_id(self, row, value):
         pass
 
-    def set_table_item(self, row, colname, obj, key, sortkey=None):
-        value = obj.get(key, "")
-        self.set_table_item_val(row, colname, value, sortkey)
-
-    def set_table_item_val(self, row, colname, value, sortkey=None):
+    def set_table_item_value(self, row, colname, value, sortkey=None):
         # TODO: use Column.sortkey & align
         # QVariant remembers the original type of the data
         # matching comparison operator will be used when sorting

@@ -101,15 +101,9 @@ class ArtistSearchDialog(SearchDialog):
         self.prepare_table()
         for row, artist in enumerate(self.search_results):
             self.table.insertRow(row)
-            self.set_table_item(row, 'name',      artist, 'name')
-            self.set_table_item(row, 'type',      artist, 'type')
-            self.set_table_item(row, 'gender',    artist, 'gender')
-            self.set_table_item(row, 'area',      artist, 'area')
-            self.set_table_item(row, 'begindate', artist, 'begindate')
-            self.set_table_item(row, 'beginarea', artist, 'beginarea')
-            self.set_table_item(row, 'enddate',   artist, 'enddate')
-            self.set_table_item(row, 'endarea',   artist, 'endarea')
-            self.set_table_item(row, 'score',     artist, 'score')
+            for c in self.columns:
+                value = artist.get(c.key, "")
+                self.set_table_item_value(row, c.key, value)
         self.show_table(sort_column='score')
 
     def accept_event(self, rows):

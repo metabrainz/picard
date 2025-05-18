@@ -150,18 +150,18 @@ class AlbumSearchDialog(SearchDialog):
         self.existing_album = existing_album
         self.setWindowTitle(_("Album Search Results"))
         self.columns = Columns((
-            Column(N_("Name"), 'name'),
-            Column(N_("Artist"), 'artist'),
+            Column(N_("Name"), 'album'),
+            Column(N_("Artist"), 'albumartist'),
             Column(N_("Format"), 'format'),
             Column(N_("Tracks"), 'tracks'),
             Column(N_("Date"), 'date'),
             Column(N_("Country"), 'country'),
-            Column(N_("Labels"), 'labels'),
-            Column(N_("Catalog #s"), 'catnums'),
+            Column(N_("Labels"), 'label'),
+            Column(N_("Catalog #s"), 'catalognumber'),
             Column(N_("Barcode"), 'barcode'),
-            Column(N_("Language"), 'language'),
-            Column(N_("Type"), 'type'),
-            Column(N_("Status"), 'status'),
+            Column(N_("Language"), '~releaselanguage'),
+            Column(N_("Type"), 'releasetype'),
+            Column(N_("Status"), 'releasestatus'),
             Column(N_("Cover"), 'cover'),
             Column(N_("Score"), 'score'),
         ))
@@ -338,19 +338,9 @@ class AlbumSearchDialog(SearchDialog):
         column = self.columns.pos('cover')
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
-            self.set_table_item(row, 'name',     release, 'album')
-            self.set_table_item(row, 'artist',   release, 'albumartist')
-            self.set_table_item(row, 'format',   release, 'format')
-            self.set_table_item(row, 'tracks',   release, 'tracks')
-            self.set_table_item(row, 'date',     release, 'date')
-            self.set_table_item(row, 'country',  release, 'country')
-            self.set_table_item(row, 'labels',   release, 'label')
-            self.set_table_item(row, 'catnums',  release, 'catalognumber')
-            self.set_table_item(row, 'barcode',  release, 'barcode')
-            self.set_table_item(row, 'language', release, '~releaselanguage')
-            self.set_table_item(row, 'type',     release, 'releasetype')
-            self.set_table_item(row, 'status',   release, 'releasestatus')
-            self.set_table_item(row, 'score',    release, 'score')
+            for c in self.columns:
+                value = release.get(c.key, "")
+                self.set_table_item_value(row, c.key, value)
             self.cover_cells.append(CoverCell(self.table, release, row, column,
                                               on_show=self.fetch_coverart))
             if self.existing_album and release['musicbrainz_albumid'] == self.existing_album.id:

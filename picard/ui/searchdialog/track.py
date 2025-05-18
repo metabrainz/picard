@@ -65,13 +65,13 @@ class TrackSearchDialog(SearchDialog):
         self.file_ = None
         self.setWindowTitle(_("Track Search Results"))
         self.columns = Columns((
-            Column(N_("Name"), 'name'),
-            Column(N_("Length"), 'length'),
+            Column(N_("Name"), 'title'),
+            Column(N_("Length"), '~length'),
             Column(N_("Artist"), 'artist'),
-            Column(N_("Release"), 'release'),
+            Column(N_("Release"), 'album'),
             Column(N_("Date"), 'date'),
             Column(N_("Country"), 'country'),
-            Column(N_("Type"), 'type'),
+            Column(N_("Type"), 'releasetype'),
             Column(N_("Score"), 'score'),
         ))
 
@@ -141,14 +141,14 @@ class TrackSearchDialog(SearchDialog):
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             self.table.insertRow(row)
-            self.set_table_item(row, 'name',    track, 'title')
-            self.set_table_item(row, 'length',  track, '~length', sortkey=track.length)
-            self.set_table_item(row, 'artist',  track, 'artist')
-            self.set_table_item(row, 'release', track, 'album')
-            self.set_table_item(row, 'date',    track, 'date')
-            self.set_table_item(row, 'country', track, 'country')
-            self.set_table_item(row, 'type',    track, 'releasetype')
-            self.set_table_item(row, 'score',   track, 'score')
+            for c in self.columns:
+                value = track.get(c.key, "")
+                if c.key == '~length':
+                    # TODO: use Column sort key
+                    sortkey = track.length
+                else:
+                    sortkey = None
+                self.set_table_item_value(row, c.key, value, sortkey=sortkey)
         self.show_table(sort_column='score')
 
     def parse_tracks(self, tracks):
