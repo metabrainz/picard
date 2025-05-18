@@ -31,7 +31,9 @@ from picard.metadata import Metadata
 
 from picard.ui.columns import (
     Column,
+    ColumnAlign,
     Columns,
+    ColumnSortType,
 )
 from picard.ui.searchdialog import (
     Retry,
@@ -58,7 +60,7 @@ class ArtistSearchDialog(SearchDialog):
             Column(N_("Begin Area"), 'beginarea'),
             Column(N_("End"), 'enddate'),
             Column(N_("End Area"), 'endarea'),
-            Column(N_("Score"), 'score'),
+            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
         ))
 
     def search(self, text):

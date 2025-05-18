@@ -49,7 +49,9 @@ from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.columns import (
     Column,
+    ColumnAlign,
     Columns,
+    ColumnSortType,
 )
 from picard.ui.searchdialog import (
     Retry,
@@ -153,17 +155,17 @@ class AlbumSearchDialog(SearchDialog):
             Column(N_("Name"), 'album'),
             Column(N_("Artist"), 'albumartist'),
             Column(N_("Format"), 'format'),
-            Column(N_("Tracks"), 'tracks'),
+            Column(N_("Tracks"), 'tracks', sort_type=ColumnSortType.NAT),
             Column(N_("Date"), 'date'),
             Column(N_("Country"), 'country'),
             Column(N_("Labels"), 'label'),
-            Column(N_("Catalog #s"), 'catalognumber'),
-            Column(N_("Barcode"), 'barcode'),
+            Column(N_("Catalog #s"), 'catalognumber', sort_type=ColumnSortType.NAT),
+            Column(N_("Barcode"), 'barcode', sort_type=ColumnSortType.NAT),
             Column(N_("Language"), '~releaselanguage'),
             Column(N_("Type"), 'releasetype'),
             Column(N_("Status"), 'releasestatus'),
             Column(N_("Cover"), 'cover'),
-            Column(N_("Score"), 'score'),
+            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
         ))
         self.cover_cells = []
         self.fetching = False

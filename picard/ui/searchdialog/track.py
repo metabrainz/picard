@@ -44,12 +44,18 @@ from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.columns import (
     Column,
+    ColumnAlign,
     Columns,
+    ColumnSortType,
 )
 from picard.ui.searchdialog import (
     Retry,
     SearchDialog,
 )
+
+
+def _track_length_sortkey(track):
+    return track.length
 
 
 class TrackSearchDialog(SearchDialog):
@@ -66,13 +72,13 @@ class TrackSearchDialog(SearchDialog):
         self.setWindowTitle(_("Track Search Results"))
         self.columns = Columns((
             Column(N_("Name"), 'title'),
-            Column(N_("Length"), '~length'),
+            Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=_track_length_sortkey, align=ColumnAlign.RIGHT),
             Column(N_("Artist"), 'artist'),
             Column(N_("Release"), 'album'),
             Column(N_("Date"), 'date'),
             Column(N_("Country"), 'country'),
             Column(N_("Type"), 'releasetype'),
-            Column(N_("Score"), 'score'),
+            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
         ))
 
     def search(self, text):
@@ -143,12 +149,7 @@ class TrackSearchDialog(SearchDialog):
             self.table.insertRow(row)
             for c in self.columns:
                 value = track.get(c.key, "")
-                if c.key == '~length':
-                    # TODO: use Column sort key
-                    sortkey = track.length
-                else:
-                    sortkey = None
-                self.set_table_item_value(row, c.key, value, sortkey=sortkey)
+                self.set_table_item_value(row, c.key, value, obj=track)
         self.show_table(sort_column='score')
 
     def parse_tracks(self, tracks):

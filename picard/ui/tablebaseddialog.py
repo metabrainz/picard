@@ -48,7 +48,11 @@ from picard.util import (
 
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
-from picard.ui.columns import Columns
+from picard.ui.columns import (
+    ColumnAlign,
+    Columns,
+    ColumnSortType,
+)
 
 
 class ResultTable(QtWidgets.QTableWidget):
@@ -91,12 +95,24 @@ class ResultTable(QtWidgets.QTableWidget):
 
 class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 
-    def __init__(self, sort_key):
+    def __init__(self, obj=None):
         super().__init__()
-        self.sort_key = sort_key
+        self._obj = obj
 
     def __lt__(self, other):
-        return self.sort_key < other.sort_key
+        column = self.column()
+        return self.sortkey(column) < other.sortkey(column)
+
+    def sortkey(self, column):
+        this_column = self.tableWidget().parent_dialog.columns[column]
+
+        if this_column.sort_type == ColumnSortType.SORTKEY:
+            sortkey = this_column.sortkey(self._obj)
+        elif this_column.sort_type == ColumnSortType.NAT:
+            sortkey = sort_key(self.text(), numeric=True)
+        else:
+            sortkey = sort_key(self.text())
+        return sortkey
 
 
 class TableBasedDialog(PicardDialog):
@@ -113,16 +129,13 @@ class TableBasedDialog(PicardDialog):
         self.create_table()
         self.finished.connect(self.save_state)
 
-    def set_table_item_value(self, row, colname, value, sortkey=None):
-        # TODO: use Column.sortkey & align
-        # QVariant remembers the original type of the data
-        # matching comparison operator will be used when sorting
-        # get() will return a string, force conversion if asked to
-        if sortkey is None:
-            sortkey = sort_key(value, numeric=True)
-        item = SortableTableWidgetItem(sortkey)
-        item.setData(QtCore.Qt.ItemDataRole.DisplayRole, value)
+    def set_table_item_value(self, row, colname, value, obj=None):
+        item = SortableTableWidgetItem(obj=obj)
+        item.setText(value)
         pos = self.columns.pos(colname)
+        column = self.columns[pos]
+        if column.align == ColumnAlign.RIGHT:
+            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
         if pos == 0:
             item.setData(QtCore.Qt.ItemDataRole.UserRole, row)
         self.table.setItem(row, pos, item)
