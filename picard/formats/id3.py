@@ -563,9 +563,13 @@ class ID3File(File):
         for name in metadata.deleted_tags:
             real_name = self._get_tag_name(name)
             try:
-                if name.startswith('performer:'):
-                    role = name.split(':', 1)[1]
-                    _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
+                if name == 'performer' or name.startswith('performer:'):
+                    if ':' in name:
+                        roles = (name.split(':', 1)[1],)
+                    else:
+                        roles = ('', 'performer')
+                    for role in roles:
+                        _remove_people_with_role(tags, ['TMCL', 'TIPL', 'IPLS'], role)
                 elif name.startswith('comment:') or name == 'comment':
                     (lang, desc) = parse_comment_tag(name)
                     for key, frame in list(tags.items()):
