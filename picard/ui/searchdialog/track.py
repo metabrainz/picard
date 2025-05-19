@@ -63,13 +63,6 @@ class TrackSearchDialog(SearchDialog):
     dialog_header_state = 'tracksearchdialog_header_state'
 
     def __init__(self, parent, force_advanced_search=None):
-        super().__init__(
-            parent,
-            accept_button_title=_("Load into Picard"),
-            search_type='track',
-            force_advanced_search=force_advanced_search)
-        self.file_ = None
-        self.setWindowTitle(_("Track Search Results"))
         self.columns = Columns((
             Column(N_("Name"), 'title', width=150),
             Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=_track_length_sortkey, align=ColumnAlign.RIGHT, width=50),
@@ -80,6 +73,13 @@ class TrackSearchDialog(SearchDialog):
             Column(N_("Type"), 'releasetype'),
             Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
         ), default_width=100)
+        super().__init__(
+            parent,
+            N_("Track Search Results"),
+            accept_button_title=N_("Load into Picard"),
+            search_type='track',
+            force_advanced_search=force_advanced_search)
+        self.file_ = None
 
     def search(self, text):
         """Perform search using query provided by the user."""

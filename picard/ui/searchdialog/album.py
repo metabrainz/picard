@@ -33,10 +33,7 @@ from PyQt6.QtCore import pyqtSignal
 from picard import log
 from picard.config import get_config
 from picard.const import CAA_URL
-from picard.i18n import (
-    N_,
-    gettext as _,
-)
+from picard.i18n import N_
 from picard.mbjson import (
     countries_from_node,
     media_formats_from_node,
@@ -147,14 +144,6 @@ class AlbumSearchDialog(SearchDialog):
     dialog_header_state = 'albumsearchdialog_header_state'
 
     def __init__(self, parent, force_advanced_search=None, existing_album=None):
-        super().__init__(
-            parent,
-            accept_button_title=_("Load into Picard"),
-            search_type='album',
-            force_advanced_search=force_advanced_search)
-        self.cluster = None
-        self.existing_album = existing_album
-        self.setWindowTitle(_("Album Search Results"))
         self.columns = Columns((
             Column(N_("Name"), 'album', sort_type=ColumnSortType.NAT, width=150),
             Column(N_("Artist"), 'albumartist'),
@@ -171,6 +160,14 @@ class AlbumSearchDialog(SearchDialog):
             CoverColumn(N_("Cover"), 'cover', width=100),
             Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
         ), default_width=100)
+        super().__init__(
+            parent,
+            N_("Album Search Results"),
+            accept_button_title=N_("Load into Picard"),
+            search_type='album',
+            force_advanced_search=force_advanced_search)
+        self.cluster = None
+        self.existing_album = existing_album
         self.cover_cells = []
         self.fetching = False
         self.scrolled.connect(self.fetch_coverarts)

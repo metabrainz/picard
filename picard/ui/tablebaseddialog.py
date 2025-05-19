@@ -50,7 +50,6 @@ from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
 from picard.ui.columns import (
     ColumnAlign,
-    Columns,
     ColumnSortType,
 )
 
@@ -73,7 +72,6 @@ class ResultTable(QtWidgets.QTableWidget):
         self.setColumnCount(len(labels))
         self.setHorizontalHeaderLabels(labels)
         self.setRowCount(0)
-        self.setSortingEnabled(False)
 
     @throttle(1000)  # only emit scrolled signal once per second
     def emit_scrolled(self, value):
@@ -121,7 +119,6 @@ class TableBasedDialog(PicardDialog):
     def __init__(self, parent):
         super().__init__(parent=parent)
         self.setupUi()
-        self.columns = Columns()
         self.sorting_enabled = True
         self.create_table()
         self.finished.connect(self.save_state)
@@ -165,6 +162,8 @@ class TableBasedDialog(PicardDialog):
         def enable_accept_button():
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(enable_accept_button)
+        self.restore_default_columns()
+        self.restore_table_header_state()
 
     def highlight_row(self, row):
         model = self.table.model()
@@ -175,24 +174,24 @@ class TableBasedDialog(PicardDialog):
             model.setData(index, highlight_brush, QtCore.Qt.ItemDataRole.BackgroundRole)
 
     def restore_default_columns(self):
+        header = self.table.horizontalHeader()
+        header.setDefaultSectionSize(self.columns.default_width)
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
+
+    def prepare_table(self):
         labels = tuple(_(c.title) for c in self.columns)
         self.table.prepare(labels)
-
         self.table.setSortingEnabled(self.sorting_enabled)
 
         header = self.table.horizontalHeader()
-        header.setDefaultSectionSize(self.columns.default_width)
-
         for i, c in enumerate(self.columns):
+            if c.resizeable:
+                resize_mode = QtWidgets.QHeaderView.ResizeMode.Interactive
+            else:
+                resize_mode = QtWidgets.QHeaderView.ResizeMode.Fixed
+            header.setSectionResizeMode(i, resize_mode)
             if c.width is not None:
                 header.resizeSection(i, c.width)
-            if c.resizeable:
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
-            else:
-                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
-
-    def prepare_table(self):
-        self.restore_table_header_state()
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
         self.add_widget_to_center_layout(self.table)
@@ -217,7 +216,6 @@ class TableBasedDialog(PicardDialog):
 
     @restore_method
     def restore_table_header_state(self):
-        self.restore_default_columns()
         header = self.table.horizontalHeader()
         config = get_config()
         state = config.persist[self.dialog_header_state]

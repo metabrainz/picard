@@ -22,10 +22,7 @@
 
 
 from picard.config import get_config
-from picard.i18n import (
-    N_,
-    gettext as _,
-)
+from picard.i18n import N_
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
 
@@ -46,11 +43,6 @@ class ArtistSearchDialog(SearchDialog):
     dialog_header_state = 'artistsearchdialog_header_state'
 
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            accept_button_title=_("Show in browser"),
-            search_type='artist')
-        self.setWindowTitle(_("Artist Search Dialog"))
         self.columns = Columns((
             Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT, width=150),
             Column(N_("Type"), 'type'),
@@ -62,6 +54,11 @@ class ArtistSearchDialog(SearchDialog):
             Column(N_("End Area"), 'endarea'),
             Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
         ), default_width=100)
+        super().__init__(
+            parent,
+            N_("Artist Search Dialog"),
+            accept_button_title=N_("Show in browser"),
+            search_type='artist')
 
     def search(self, text):
         self.retry_params = Retry(self.search, text)
