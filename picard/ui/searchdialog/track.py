@@ -21,6 +21,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from operator import attrgetter
 
 from picard.config import get_config
 from picard.file import FILE_COMPARISON_WEIGHTS
@@ -54,10 +55,6 @@ from picard.ui.searchdialog import (
 )
 
 
-def _track_length_sortkey(track):
-    return track.length
-
-
 class TrackSearchDialog(SearchDialog):
 
     dialog_header_state = 'tracksearchdialog_header_state'
@@ -65,7 +62,7 @@ class TrackSearchDialog(SearchDialog):
     def __init__(self, parent, force_advanced_search=None):
         self.columns = Columns((
             Column(N_("Name"), 'title', width=150),
-            Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=_track_length_sortkey, align=ColumnAlign.RIGHT, width=50),
+            Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=attrgetter('length'), align=ColumnAlign.RIGHT, width=50),
             Column(N_("Artist"), 'artist'),
             Column(N_("Release"), 'album'),
             Column(N_("Date"), 'date'),
