@@ -67,10 +67,13 @@ class ResultTable(QtWidgets.QTableWidget):
         self.verticalScrollBar().valueChanged.connect(self.emit_scrolled)
         self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-    def prepare(self, labels):
-        self.clear()
+    def set_labels(self, labels):
+        labels = tuple(labels)
         self.setColumnCount(len(labels))
         self.setHorizontalHeaderLabels(labels)
+
+    def clear_contents(self):
+        self.clearContents()
         self.setRowCount(0)
 
     @throttle(1000)  # only emit scrolled signal once per second
@@ -163,6 +166,9 @@ class TableBasedDialog(PicardDialog):
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(enable_accept_button)
 
+        self.restore_default_columns()
+        self.restore_table_header_state()
+
     def highlight_row(self, row):
         model = self.table.model()
         highlight_color = interface_colors.get_qcolor('row_highlight')
@@ -171,29 +177,35 @@ class TableBasedDialog(PicardDialog):
             index = model.index(row, column)
             model.setData(index, highlight_brush, QtCore.Qt.ItemDataRole.BackgroundRole)
 
-    def _init_headers(self):
-        header = self.table.horizontalHeader()
+    def header(self):
+        return self.table.horizontalHeader()
+
+    def restore_default_columns(self):
+        self.table.set_labels(_(c.title) for c in self.columns)
+        self.table.setSortingEnabled(self.sorting_enabled)
+
+        header = self.header()
+        header.setStretchLastSection(True)
+        header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         header.setDefaultSectionSize(self.columns.default_width)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
+
         for i, c in enumerate(self.columns):
-            if c.resizeable:
-                resize_mode = QtWidgets.QHeaderView.ResizeMode.Interactive
-            else:
-                resize_mode = QtWidgets.QHeaderView.ResizeMode.Fixed
-            header.setSectionResizeMode(i, resize_mode)
+            # header.show_column(i, c.is_default)
             if c.width is not None:
                 header.resizeSection(i, c.width)
+            if c.resizeable:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
+            else:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
+
+        self.table.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def prepare_table(self):
-        labels = tuple(_(c.title) for c in self.columns)
-        self.table.prepare(labels)
-        self.table.setSortingEnabled(self.sorting_enabled)
-        self._init_headers()
-        self.restore_table_header_state()
+        self.table.clear_contents()
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
         self.add_widget_to_center_layout(self.table)
-        self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
+        self.header().setSortIndicatorShown(self.sorting_enabled)
         self.table.setSortingEnabled(self.sorting_enabled)
         if self.sorting_enabled and sort_column:
             pos = self.columns.pos(sort_column)
@@ -216,8 +228,7 @@ class TableBasedDialog(PicardDialog):
         config = get_config()
         state = config.persist[self.dialog_header_state]
         if state:
-            header = self.table.horizontalHeader()
-            header.restoreState(state)
+            self.header().restoreState(state)
             log.debug("restore_state: %s", self.dialog_header_state)
 
     def save_state(self):
@@ -225,7 +236,7 @@ class TableBasedDialog(PicardDialog):
             self.save_table_header_state()
 
     def save_table_header_state(self):
-        state = self.table.horizontalHeader().saveState()
+        state = self.header().saveState()
         config = get_config()
         config.persist[self.dialog_header_state] = state
         log.debug("save_state: %s", self.dialog_header_state)
