@@ -103,9 +103,8 @@ class ArtistSearchDialog(SearchDialog):
         self.prepare_table()
         for row, artist in enumerate(self.search_results):
             self.table.insertRow(row)
-            for c in self.columns:
-                value = artist.get(c.key, "")
-                self.set_table_item_value(row, c.key, value)
+            for pos, c in enumerate(self.columns):
+                self.set_table_item_value(row, pos, c, artist)
         self.show_table(sort_column='score')
 
     def accept_event(self, rows):

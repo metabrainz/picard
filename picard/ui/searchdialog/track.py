@@ -147,9 +147,8 @@ class TrackSearchDialog(SearchDialog):
         for row, obj in enumerate(self.search_results):
             track = obj[0]
             self.table.insertRow(row)
-            for c in self.columns:
-                value = track.get(c.key, "")
-                self.set_table_item_value(row, c.key, value, obj=track)
+            for pos, c in enumerate(self.columns):
+                self.set_table_item_value(row, pos, c, track)
         self.show_table(sort_column='score')
 
     def parse_tracks(self, tracks):

@@ -110,15 +110,14 @@ class CoverWidget(QtWidgets.QWidget):
 
 class CoverCell:
 
-    def __init__(self, table, release, row, column, size, on_show=None):
+    def __init__(self, release, size, on_show=None):
         self.release = release
         self.fetched = False
         self.fetch_task = None
-        self.widget = widget = CoverWidget(size, parent=table)
+        self.widget = CoverWidget(size)
         self.widget.destroyed.connect(self.invalidate)
         if on_show is not None:
-            widget.shown.connect(partial(on_show, self))
-        table.setCellWidget(row, column, widget)
+            self.widget.shown.connect(partial(on_show, self))
 
     def is_visible(self):
         if self.widget:
@@ -343,16 +342,20 @@ class AlbumSearchDialog(SearchDialog):
         self.prepare_table()
         self.cover_cells = []
         cover_pos = self.columns.pos('cover')
+        cover_size = self.columns[cover_pos].width
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
-            for c in self.columns:
-                value = release.get(c.key, "")
-                self.set_table_item_value(row, c.key, value)
-            self.cover_cells.append(CoverCell(
-                self.table, release, row, cover_pos,
-                self.columns[cover_pos].width,
-                on_show=self.fetch_coverart
-            ))
+            for pos, c in enumerate(self.columns):
+                if isinstance(c, CoverColumn):
+                    cover_cell = CoverCell(
+                        release,
+                        cover_size,
+                        on_show=self.fetch_coverart
+                    )
+                    self.cover_cells.append(cover_cell)
+                    self.table.setCellWidget(row, pos, cover_cell.widget)
+                else:
+                    self.set_table_item_value(row, pos, c, release)
             if self.existing_album and release['musicbrainz_albumid'] == self.existing_album.id:
                 self.highlight_row(row)
         self.show_table(sort_column='score')
