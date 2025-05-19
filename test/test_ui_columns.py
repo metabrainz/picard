@@ -92,6 +92,7 @@ class ColumnsTest(PicardTestCase):
         self.assertEqual(columns[1], c2)
         self.assertEqual(len(columns), 2)
         self.assertEqual(columns.pos('k2'), 1)
+        self.assertEqual(columns.get_column_by_key('k2'), (1, c2))
 
         self.assertEqual(columns[0].width, 50)
         self.assertEqual(columns[1].width, None)

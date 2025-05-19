@@ -172,3 +172,8 @@ class Columns(MutableSequence):
         for i, c in enumerate(self._list):
             if c.always_visible:
                 yield i
+
+    def get_column_by_key(self, key):
+        """Returns position and column instance for a given key"""
+        pos = self.pos(key)
+        return pos, self[pos]
