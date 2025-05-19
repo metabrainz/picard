@@ -123,6 +123,8 @@ class TableBasedDialog(PicardDialog):
         super().__init__(parent=parent)
         self.setupUi()
         self.sorting_enabled = True
+        self._sort_column_index = None
+        self._sort_order = None
         self.create_table()
         self.finished.connect(self.save_state)
 
@@ -184,6 +186,13 @@ class TableBasedDialog(PicardDialog):
         self.table.set_labels(_(c.title) for c in self.columns)
 
         header = self.header()
+
+        def sort_indicator_changed(idx, order):
+            self._sort_column_index = idx
+            self._sort_order = order
+
+        header.sortIndicatorChanged.connect(sort_indicator_changed)
+
         header.setStretchLastSection(True)
         header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         header.setDefaultSectionSize(self.columns.default_width)
@@ -205,10 +214,13 @@ class TableBasedDialog(PicardDialog):
         self.add_widget_to_center_layout(self.table)
         self.header().setSortIndicatorShown(self.sorting_enabled)
         self.table.setSortingEnabled(self.sorting_enabled)
-        if self.sorting_enabled and sort_column:
-            pos = self.columns.pos(sort_column)
-            self.table.sortItems(pos, sort_order)
-
+        if self.sorting_enabled:
+            if self._sort_column_index is None and sort_column is not None:
+                self._sort_column_index = self.columns.pos(sort_column)
+            if self._sort_order is None:
+                self._sort_order = sort_order
+            if self._sort_column_index is not None:
+                self.table.sortItems(self._sort_column_index, self._sort_order)
         self.table.resizeRowsToContents()
         self.table.setAlternatingRowColors(True)
 
