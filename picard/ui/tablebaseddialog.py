@@ -162,8 +162,6 @@ class TableBasedDialog(PicardDialog):
         def enable_accept_button():
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(enable_accept_button)
-        self.restore_default_columns()
-        self.restore_table_header_state()
 
     def highlight_row(self, row):
         model = self.table.model()
@@ -173,17 +171,10 @@ class TableBasedDialog(PicardDialog):
             index = model.index(row, column)
             model.setData(index, highlight_brush, QtCore.Qt.ItemDataRole.BackgroundRole)
 
-    def restore_default_columns(self):
+    def _init_headers(self):
         header = self.table.horizontalHeader()
         header.setDefaultSectionSize(self.columns.default_width)
         header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
-
-    def prepare_table(self):
-        labels = tuple(_(c.title) for c in self.columns)
-        self.table.prepare(labels)
-        self.table.setSortingEnabled(self.sorting_enabled)
-
-        header = self.table.horizontalHeader()
         for i, c in enumerate(self.columns):
             if c.resizeable:
                 resize_mode = QtWidgets.QHeaderView.ResizeMode.Interactive
@@ -193,6 +184,13 @@ class TableBasedDialog(PicardDialog):
             if c.width is not None:
                 header.resizeSection(i, c.width)
 
+    def prepare_table(self):
+        labels = tuple(_(c.title) for c in self.columns)
+        self.table.prepare(labels)
+        self.table.setSortingEnabled(self.sorting_enabled)
+        self._init_headers()
+        self.restore_table_header_state()
+
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
         self.add_widget_to_center_layout(self.table)
         self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
@@ -201,7 +199,6 @@ class TableBasedDialog(PicardDialog):
             pos = self.columns.pos(sort_column)
             self.table.sortItems(pos, sort_order)
 
-        self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
         self.table.setAlternatingRowColors(True)
 
@@ -216,12 +213,12 @@ class TableBasedDialog(PicardDialog):
 
     @restore_method
     def restore_table_header_state(self):
-        header = self.table.horizontalHeader()
         config = get_config()
         state = config.persist[self.dialog_header_state]
         if state:
+            header = self.table.horizontalHeader()
             header.restoreState(state)
-        log.debug("restore_state: %s", self.dialog_header_state)
+            log.debug("restore_state: %s", self.dialog_header_state)
 
     def save_state(self):
         if self.table:

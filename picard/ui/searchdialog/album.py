@@ -340,6 +340,8 @@ class AlbumSearchDialog(SearchDialog):
         self.cover_cells = []
         cover_pos = self.columns.pos('cover')
         cover_size = self.columns[cover_pos].width
+        vheader = self.table.verticalHeader()
+        vheader.setDefaultSectionSize(cover_size)
         for row, release in enumerate(self.search_results):
             self.table.insertRow(row)
             for pos, c in enumerate(self.columns):
