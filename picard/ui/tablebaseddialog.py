@@ -182,7 +182,6 @@ class TableBasedDialog(PicardDialog):
 
     def restore_default_columns(self):
         self.table.set_labels(_(c.title) for c in self.columns)
-        self.table.setSortingEnabled(self.sorting_enabled)
 
         header = self.header()
         header.setStretchLastSection(True)
@@ -198,10 +197,9 @@ class TableBasedDialog(PicardDialog):
             else:
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
-        self.table.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
-
     def prepare_table(self):
         self.table.clear_contents()
+        self.table.setSortingEnabled(False)
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
         self.add_widget_to_center_layout(self.table)
