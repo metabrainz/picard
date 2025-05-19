@@ -97,7 +97,7 @@ class Column:
             yield from (repr(getattr(self, a)) for a in ('title', 'key'))
             yield from (a + '=' + repr(getattr(self, a)) for a in opt_attrs)
 
-        return 'Column(' + ', '.join(parms()) + ')'
+        return self.__class__.__name__ + '(' + ', '.join(parms()) + ')'
 
     def __str__(self):
         return repr(self)

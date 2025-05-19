@@ -74,6 +74,11 @@ class ColumnTest(PicardTestCase):
         self.assertEqual(column.header_icon_size.width(), 10)
         self.assertEqual(column.header_icon_size.height(), 20)
         self.assertEqual(column.width, 14)
+        self.assertEqual(
+            repr(column),
+            "IconColumn('title', 'key', width=14, align=ColumnAlign.LEFT, "
+            "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)"
+        )
 
 
 class ColumnsTest(PicardTestCase):
