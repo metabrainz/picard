@@ -129,8 +129,7 @@ class TableBasedDialog(PicardDialog):
     def set_table_item_value(self, row, colname, value, obj=None):
         item = SortableTableWidgetItem(obj=obj)
         item.setText(value)
-        pos = self.columns.pos(colname)
-        column = self.columns[pos]
+        pos, column = self.columns.get_column_by_key(colname)
         if column.align == ColumnAlign.RIGHT:
             item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
         if pos == 0:
