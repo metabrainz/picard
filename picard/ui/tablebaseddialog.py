@@ -208,19 +208,33 @@ class TableBasedDialog(PicardDialog):
 
     def prepare_table(self):
         self.table.clear_contents()
+        # Disable sorting, as new elements will be added, and having sorting enabled
+        # doesn't play well.
+        # It will be eventually re-enabled in show_table()
         self.table.setSortingEnabled(False)
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
         self.add_widget_to_center_layout(self.table)
-        self.header().setSortIndicatorShown(self.sorting_enabled)
-        self.table.setSortingEnabled(self.sorting_enabled)
+        header = self.header()
+        header.setSortIndicatorShown(self.sorting_enabled)
         if self.sorting_enabled:
-            if self._sort_column_index is None and sort_column is not None:
-                self._sort_column_index = self.columns.pos(sort_column)
-            if self._sort_order is None:
-                self._sort_order = sort_order
-            if self._sort_column_index is not None:
-                self.table.sortItems(self._sort_column_index, self._sort_order)
+            if self._sort_column_index is None or self._sort_order is None:
+                # Initialize the sort column & order based on passed parameters
+                if sort_column is None:
+                    pos = 0
+                else:
+                    pos = self.columns.pos(sort_column)
+                # It will trigger a call to sort_indicator_changed()
+                # This will set _sort_column_index and _sort_order to non-None values
+                header.setSortIndicator(pos, sort_order)
+        else:
+            # no indicator
+            # https://doc.qt.io/qt-6/qheaderview.html#setSortIndicator
+            header.setSortIndicator(-1, sort_order)
+
+        # Enabling sorting will sort using current sort column & order
+        # https://doc.qt.io/qt-6/qtableview.html#setSortingEnabled
+        self.table.setSortingEnabled(self.sorting_enabled)
         self.table.resizeRowsToContents()
         self.table.setAlternatingRowColors(True)
 
