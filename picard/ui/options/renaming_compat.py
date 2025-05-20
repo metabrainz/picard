@@ -172,7 +172,7 @@ class NoDirectorySeparatorValidator(QtGui.QValidator):
 
 
 class WinCompatReplacementValidator(QtGui.QValidator):
-    _re_valid_win_replacement = re.compile(r'^[^"*:<>?|/\\\s]?$')
+    _re_valid_win_replacement = re.compile(r'^[^"*:<>?|/\\\s]{0,3}$')
 
     def validate(self, text: str, pos):
         if self._re_valid_win_replacement.match(text):
