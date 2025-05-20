@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-05-08 05:03+0000\n"
+"PO-Revision-Date: 2025-05-20 20:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
@@ -35,7 +35,7 @@ msgstr "Versions estables, beta i de desenvolupament"
 
 #: picard/const/cover_processing.py:45
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "Mantén la relació d'aspecte"
 
 #: picard/const/cover_processing.py:46
 msgid ""
@@ -45,10 +45,16 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Escala la imatge original perquè encaixi en les dimensions objectiu.</"
+"p><p>Una de les dimensions de la imatge final pot ser inferior a les "
+"dimensions objectiu si la imatge original i les dimensions objectiu tenen "
+"relacions d'aspecte diferents.</p><p>Per exemple, una imatge de 2000x1000 "
+"redimensionada a unes dimensions objectiu de 1000x1000 donarà com a resultat "
+"una imatge final de 1000x500.</p>"
 
 #: picard/const/cover_processing.py:57
 msgid "Scale to width"
-msgstr ""
+msgstr "Escala a l'amplada"
 
 #: picard/const/cover_processing.py:58
 msgid ""
@@ -56,10 +62,14 @@ msgid ""
 "aspect ratio.</p><p>For example, a 2000x1000 image resized to a target width "
 "of 1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Escala l'amplada de la imatge original a l'amplada objectiu mantenint la "
+"relació d'aspecte.</p><p>Per exemple, una imatge de 2000x1000 redimensionada "
+"a una amplada objectiu de 1000 donarà com a resultat una imatge final de "
+"1000x500.</p>"
 
 #: picard/const/cover_processing.py:66
 msgid "Scale to height"
-msgstr ""
+msgstr "Escala a l'alçada"
 
 #: picard/const/cover_processing.py:67
 msgid ""
@@ -67,10 +77,14 @@ msgid ""
 "aspect ratio.</p><p>For example, a 1000x2000 image resized to a target "
 "height of 1000 would result in a final image size of 500x1000.</p>"
 msgstr ""
+"<p>Escala l'alçada de la imatge original a l'alçada objectiu mantenint la "
+"relació d'aspecte.</p><p>Per exemple, una imatge de 1000x2000 redimensionada "
+"a una alçada objectiu de 1000 donarà com a resultat una imatge final de "
+"500x1000.</p>"
 
 #: picard/const/cover_processing.py:75
 msgid "Crop to fit"
-msgstr ""
+msgstr "Retalla"
 
 #: picard/const/cover_processing.py:76
 msgid ""
@@ -85,7 +99,7 @@ msgstr ""
 
 #: picard/const/cover_processing.py:89
 msgid "Stretch to fit"
-msgstr ""
+msgstr "Ajusta"
 
 #: picard/const/cover_processing.py:90
 msgid ""
@@ -4701,19 +4715,19 @@ msgstr ""
 
 #: picard/const/tags.py:410
 msgid "File Size"
-msgstr ""
+msgstr "Mida del fitxer"
 
 #: picard/const/tags.py:411
 msgid "Size of the file in bytes."
-msgstr ""
+msgstr "Mida del fitxer en bytes."
 
 #: picard/const/tags.py:419
 msgid "File Format"
-msgstr ""
+msgstr "Format del fitxer"
 
 #: picard/const/tags.py:420
 msgid "Media format of the file (e.g.: MPEG-1 Audio)."
-msgstr ""
+msgstr "Format multimèdia del fitxer (p. ex., àudio MPEG-1)."
 
 #: picard/const/tags.py:429
 msgid "Gapless Playback"
@@ -5473,10 +5487,8 @@ msgid "The sample rate of the audio file."
 msgstr ""
 
 #: picard/const/tags.py:1042
-#, fuzzy
-#| msgid "My script"
 msgid "Script"
-msgstr "El meu script"
+msgstr "Sistema d’escriptura"
 
 #: picard/const/tags.py:1044
 msgid ""
@@ -5550,11 +5562,11 @@ msgstr ""
 
 #: picard/const/tags.py:1101
 msgid "Synced Lyrics"
-msgstr ""
+msgstr "Lletra sincronitzada"
 
 #: picard/const/tags.py:1102
 msgid "Synchronized lyrics for the track."
-msgstr ""
+msgstr "Lletra sincronitzada de la pista."
 
 #: picard/const/tags.py:1107
 msgid "Title"
@@ -5562,7 +5574,7 @@ msgstr "Títol"
 
 #: picard/const/tags.py:1108
 msgid "The title of the track."
-msgstr ""
+msgstr "Títol de la pista."
 
 #: picard/const/tags.py:1112
 msgid "Title Sort Order"
@@ -5570,15 +5582,15 @@ msgstr "Ordenació del títol"
 
 #: picard/const/tags.py:1113
 msgid "The sort name of the track title."
-msgstr ""
+msgstr "Nom d'ordenació del títol de la pista."
 
 #: picard/const/tags.py:1118
 msgid "Total Album Tracks"
-msgstr ""
+msgstr "Total de pistes de l'àlbum"
 
 #: picard/const/tags.py:1119
 msgid "The total number of tracks across all discs of this release."
-msgstr ""
+msgstr "Nombre total de pistes en tots els discs d'aquesta publicació."
 
 #: picard/const/tags.py:1125
 msgid "Total Discs"
@@ -5586,7 +5598,7 @@ msgstr "Nombre de discs"
 
 #: picard/const/tags.py:1126
 msgid "The total number of discs in this release."
-msgstr ""
+msgstr "Nombre total de discs en aquesta publicació."
 
 #: picard/const/tags.py:1130
 msgid "Total Tracks"
@@ -5594,7 +5606,7 @@ msgstr "Nombre de pistes"
 
 #: picard/const/tags.py:1131
 msgid "The total number of tracks on this disc."
-msgstr ""
+msgstr "Nombre total de pistes en aquest disc."
 
 #: picard/const/tags.py:1135
 msgid "Track Number"
@@ -5602,11 +5614,11 @@ msgstr "Número de pista"
 
 #: picard/const/tags.py:1136
 msgid "The number of the track on the disc."
-msgstr ""
+msgstr "Número de pista al disc."
 
 #: picard/const/tags.py:1140
 msgid "Video"
-msgstr ""
+msgstr "Vídeo"
 
 #: picard/const/tags.py:1141
 msgid "Set to \"1\" if the track is a video."
@@ -5618,7 +5630,7 @@ msgstr "Lloc web de l'artista"
 
 #: picard/const/tags.py:1149
 msgid "The official website for the artist."
-msgstr ""
+msgstr "Lloc web oficial de l'artista."
 
 #: picard/const/tags.py:1153
 msgid "Work"
@@ -5639,39 +5651,39 @@ msgstr ""
 
 #: picard/const/tags.py:1163
 msgid "Work Series"
-msgstr ""
+msgstr "Sèrie de l'obra"
 
 #: picard/const/tags.py:1164
 msgid "The series titles associated with the work."
-msgstr ""
+msgstr "Títol de la sèrie associada a l'obra."
 
 #: picard/const/tags.py:1170
 msgid "Work Series Comment"
-msgstr ""
+msgstr "Comentari de la sèrie de l'obra"
 
 #: picard/const/tags.py:1171
 msgid "The series disambiguation comments associated with the work."
-msgstr ""
+msgstr "Comentaris de desambiguació de la sèrie associada a l'obra."
 
 #: picard/const/tags.py:1177
 msgid "Work Series MBID"
-msgstr ""
+msgstr "MBID de la sèrie de l'obra"
 
 #: picard/const/tags.py:1178
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
-msgstr ""
+msgstr "Identificadors de MusicBrainz (MBID) de les sèries associades a l'obra."
 
 #: picard/const/tags.py:1184
 msgid "Work Series Number"
-msgstr ""
+msgstr "Número de sèrie d'obres"
 
 #: picard/const/tags.py:1185
 msgid "The series numbers associated with the work."
-msgstr ""
+msgstr "Números de sèrie associats a l'obra."
 
 #: picard/const/tags.py:1191
 msgid "Work Comment"
-msgstr ""
+msgstr "Comentari de l'obra"
 
 #: picard/const/tags.py:1192
 msgid "The disambiguation comment associated with the work."
@@ -5695,7 +5707,7 @@ msgstr ""
 
 #: picard/const/tags.py:1207
 msgid "Writer Sort"
-msgstr ""
+msgstr "Ordre de l'escriptor"
 
 #: picard/const/tags.py:1208
 msgid "The sort names of the writers for the work."
