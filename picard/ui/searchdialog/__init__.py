@@ -43,6 +43,23 @@ from picard.ui.tablebaseddialog import TableBasedDialog
 from picard.ui.util import StandardButton
 
 
+class SearchQLineEdit(QtWidgets.QLineEdit):
+
+    def __init__(self, searchbox, parent=None):
+        super().__init__(parent)
+        self.searchbox = searchbox
+
+    def focusInEvent(self, event):
+        # When focus is on search edit box, need to disable
+        # dialog's accept button. This would avoid closing of dialog when user
+        # hits enter.
+        parent = self.searchbox.parent()
+        if parent.table:
+            parent.table.clearSelection()
+        parent.accept_button.setEnabled(False)
+        super().focusInEvent(event)
+
+
 class SearchBox(QtWidgets.QWidget):
 
     def __init__(self, force_advanced_search=None, parent=None):
@@ -59,27 +76,17 @@ class SearchBox(QtWidgets.QWidget):
             self.use_advanced_search = force_advanced_search
         self.setupUi()
 
-    def focus_in_event(self, event):
-        # When focus is on search edit box, need to disable
-        # dialog's accept button. This would avoid closing of dialog when user
-        # hits enter.
-        parent = self.parent()
-        if parent.table:
-            parent.table.clearSelection()
-        parent.accept_button.setEnabled(False)
-
     def setupUi(self):
         self.layout = QtWidgets.QVBoxLayout(self)
         self.search_row_widget = QtWidgets.QWidget(self)
         self.search_row_layout = QtWidgets.QHBoxLayout(self.search_row_widget)
         self.search_row_layout.setContentsMargins(1, 1, 1, 1)
         self.search_row_layout.setSpacing(1)
-        self.search_edit = QtWidgets.QLineEdit(self.search_row_widget)
+        self.search_edit = SearchQLineEdit(self, parent=self.search_row_widget)
         self.search_edit.setClearButtonEnabled(True)
         self.search_edit.returnPressed.connect(self.trigger_search_action)
         self.search_edit.textChanged.connect(self.enable_search)
         self.search_edit.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
-        self.search_edit.focusInEvent = self.focus_in_event
         self.search_row_layout.addWidget(self.search_edit)
         self.search_button = QtWidgets.QToolButton(self.search_row_widget)
         self.search_button.setAutoRaise(True)
