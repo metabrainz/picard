@@ -55,6 +55,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.tags import remove_disabled_plugin_tags
 from picard.util import (
     icontheme,
     open_local_path,
@@ -603,6 +604,7 @@ class PluginsOptionsPage(OptionsPage):
     def save(self):
         config = get_config()
         config.setting['enabled_plugins'] = self.enabled_plugins()
+        remove_disabled_plugin_tags()
         self.save_state()
 
     def refresh_details(self, item):
