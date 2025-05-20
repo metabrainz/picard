@@ -445,8 +445,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @restore_method
     def restore_state(self):
         config = get_config()
-        self.restore_default_columns()
-
         header_state = config.persist[self.header_state]
         header = self.header()
         if header_state and header.restoreState(header_state):
@@ -490,6 +488,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def _init_header(self):
         header = ConfigurableColumnsHeader(self.columns, parent=self)
         self.setHeader(header)
+        self.restore_default_columns()
         self.restore_state()
 
     def supportedDropActions(self):
