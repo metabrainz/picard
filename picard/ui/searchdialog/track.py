@@ -62,6 +62,7 @@ class TrackSearchDialog(SearchDialog):
     def __init__(self, parent, force_advanced_search=None):
         self.columns = Columns((
             Column(N_("Name"), 'title', width=150),
+            Column(N_("Comment"), '~recordingcomment'),
             Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=attrgetter('length'), align=ColumnAlign.RIGHT, width=50),
             Column(N_("Artist"), 'artist'),
             Column(N_("Release"), 'album'),
@@ -155,6 +156,7 @@ class TrackSearchDialog(SearchDialog):
                     track = Metadata()
                     recording_to_metadata(node, track)
                     track['score'] = node['score']
+                    track['~recordingcomment'] = node.get('disambiguation', '')
                     release_to_metadata(rel_node, track)
                     rg_node = rel_node['release-group']
                     release_group_to_metadata(rg_node, track)
@@ -169,6 +171,7 @@ class TrackSearchDialog(SearchDialog):
                 recording_to_metadata(node, track)
                 track['score'] = node['score']
                 track["album"] = _("Standalone Recording")
+                track['~recordingcomment'] = node.get('disambiguation', '')
                 self.search_results.append((track, node))
 
     def accept_event(self, rows):

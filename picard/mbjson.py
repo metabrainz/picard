@@ -102,6 +102,7 @@ _RELEASE_TO_METADATA = {
 }
 
 _ARTIST_TO_METADATA = {
+    'disambiguation': '~artistcomment',
     'gender': 'gender',
     'name': 'name',
     'type': 'type',

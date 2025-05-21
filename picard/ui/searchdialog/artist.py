@@ -45,6 +45,7 @@ class ArtistSearchDialog(SearchDialog):
     def __init__(self, parent):
         self.columns = Columns((
             Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT, width=150),
+            Column(N_("Comment"), '~artistcomment'),
             Column(N_("Type"), 'type'),
             Column(N_("Gender"), 'gender'),
             Column(N_("Area"), 'area'),
@@ -94,6 +95,7 @@ class ArtistSearchDialog(SearchDialog):
             artist = Metadata()
             artist_to_metadata(node, artist)
             artist['score'] = node['score']
+            artist['~artistcomment'] = node.get('disambiguation', '')
             self.search_results.append(artist)
 
     def display_results(self):
