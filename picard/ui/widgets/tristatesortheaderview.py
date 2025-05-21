@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2019-2020, 2022 Philipp Wolfer
-# Copyright (C) 2020-2024 Laurent Monin
+# Copyright (C) 2020-2025 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,10 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt6 import QtWidgets
 
 from picard.i18n import gettext as _
 
@@ -35,22 +32,10 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
     toggles through these states by clicking on a section header.
     """
 
-    STATE_NONE = 0
-    STATE_SECTION_MOVED_OR_RESIZED = 1
-
     def __init__(self, orientation, parent=None):
         super().__init__(orientation, parent=parent)
         self.prelock_state = None
-
-        # Remember if resize / move event just happened
-        self._section_moved_or_resized = False
         self.lock(False)
-
-        def update_state(i, o, n):
-            self._section_moved_or_resized = True
-
-        self.sectionResized.connect(update_state)
-        self.sectionMoved.connect(update_state)
 
     def mouseReleaseEvent(self, event):
         if self.is_locked:
@@ -60,25 +45,6 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
             QtWidgets.QToolTip.showText(event.globalPosition().toPoint(), tooltip, self)
             return
 
-        if event.button() == QtCore.Qt.MouseButton.LeftButton:
-            index = self.logicalIndexAt(event.pos())
-            if (index != -1 and index == self.sortIndicatorSection()
-                and self.sortIndicatorOrder() == QtCore.Qt.SortOrder.DescendingOrder):
-                # After a column was sorted descending we want to reset it
-                # to no sorting state. But we need to call the parent
-                # implementation of mouseReleaseEvent in order to handle
-                # other events, such as column move and resize.
-                # Disable clickable sections temporarily so the parent
-                # implementation  will not do the normal click behavior.
-                self.setSectionsClickable(False)
-                self._section_moved_or_resized = False
-                super().mouseReleaseEvent(event)
-                self.setSectionsClickable(True)
-                # Only treat this as an actual click if no move
-                # or resize event occurred.
-                if not self._section_moved_or_resized:
-                    self.setSortIndicator(-1, self.sortIndicatorOrder())
-                return
         # Normal handling of events
         super().mouseReleaseEvent(event)
 
@@ -91,5 +57,7 @@ class TristateSortHeaderView(QtWidgets.QHeaderView):
             if self.prelock_state is not None:
                 self.restoreState(self.prelock_state)
                 self.prelock_state = None
+
         self.setSectionsClickable(not is_locked)
         self.setSectionsMovable(not is_locked)
+        self.setSortIndicatorClearable(True)
