@@ -158,6 +158,7 @@ class AlbumSearchDialog(SearchDialog):
     def __init__(self, parent, force_advanced_search=None, existing_album=None):
         self.columns = Columns((
             Column(N_("Name"), 'album', sort_type=ColumnSortType.NAT, width=150),
+            Column(N_("Comment"), '~releasecomment'),
             Column(N_("Artist"), 'albumartist'),
             Column(N_("Format"), 'format'),
             Column(N_("Tracks"), 'tracks', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
