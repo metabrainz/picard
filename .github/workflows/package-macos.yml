@@ -17,8 +17,8 @@ jobs:
           runner: 'macos-14'
           target-arch: 'arm64'
     env:
-      DISCID_VERSION: 0.6.4
-      DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3
+      DISCID_VERSION: 0.6.5
+      DISCID_SHA256SUM: 8aa187dd5afdecc06441b49e086dd9a46b3ffac818fd9c1dae0cb55780d846f2
       FPCALC_VERSION: 1.5.1
       FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
