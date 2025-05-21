@@ -147,7 +147,7 @@ Retry = namedtuple('Retry', ['function', 'query'])
 class SearchDialog(TableBasedDialog):
     accept_button_title = ""
 
-    def __init__(self, parent, accept_button_title, show_search=True, search_type=None, force_advanced_search=None):
+    def __init__(self, parent, window_title, accept_button_title, show_search=True, search_type=None, force_advanced_search=None):
         self.accept_button_title = accept_button_title
         self.search_results = []
         self.show_search = show_search
@@ -155,6 +155,7 @@ class SearchDialog(TableBasedDialog):
         self.force_advanced_search = force_advanced_search
         self.search_box = None
         super().__init__(parent)
+        self.setWindowTitle(_(window_title))
 
     @property
     def use_advanced_search(self):
@@ -165,9 +166,6 @@ class SearchDialog(TableBasedDialog):
         else:
             config = get_config()
             return config.setting['use_adv_search_syntax']
-
-    def get_value_for_row_id(self, row, value):
-        return row
 
     def setupUi(self):
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
@@ -192,7 +190,7 @@ class SearchDialog(TableBasedDialog):
                 QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
             self.search_browser_button.clicked.connect(self.search_browser)
         self.accept_button = QtWidgets.QPushButton(
-            self.accept_button_title,
+            _(self.accept_button_title),
             self.buttonBox)
         self.accept_button.setEnabled(False)
         self.buttonBox.addButton(

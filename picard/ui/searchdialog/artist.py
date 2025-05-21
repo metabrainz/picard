@@ -22,16 +22,15 @@
 
 
 from picard.config import get_config
-from picard.i18n import (
-    N_,
-    gettext as _,
-)
+from picard.i18n import N_
 from picard.mbjson import artist_to_metadata
 from picard.metadata import Metadata
 
 from picard.ui.columns import (
     Column,
+    ColumnAlign,
     Columns,
+    ColumnSortType,
 )
 from picard.ui.searchdialog import (
     Retry,
@@ -44,13 +43,8 @@ class ArtistSearchDialog(SearchDialog):
     dialog_header_state = 'artistsearchdialog_header_state'
 
     def __init__(self, parent):
-        super().__init__(
-            parent,
-            accept_button_title=_("Show in browser"),
-            search_type='artist')
-        self.setWindowTitle(_("Artist Search Dialog"))
         self.columns = Columns((
-            Column(N_("Name"), 'name'),
+            Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT, width=150),
             Column(N_("Type"), 'type'),
             Column(N_("Gender"), 'gender'),
             Column(N_("Area"), 'area'),
@@ -58,8 +52,13 @@ class ArtistSearchDialog(SearchDialog):
             Column(N_("Begin Area"), 'beginarea'),
             Column(N_("End"), 'enddate'),
             Column(N_("End Area"), 'endarea'),
-            Column(N_("Score"), 'score'),
-        ))
+            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
+        ), default_width=100)
+        super().__init__(
+            parent,
+            N_("Artist Search Dialog"),
+            accept_button_title=N_("Show in browser"),
+            search_type='artist')
 
     def search(self, text):
         self.retry_params = Retry(self.search, text)
@@ -101,15 +100,8 @@ class ArtistSearchDialog(SearchDialog):
         self.prepare_table()
         for row, artist in enumerate(self.search_results):
             self.table.insertRow(row)
-            self.set_table_item(row, 'name',      artist, 'name')
-            self.set_table_item(row, 'type',      artist, 'type')
-            self.set_table_item(row, 'gender',    artist, 'gender')
-            self.set_table_item(row, 'area',      artist, 'area')
-            self.set_table_item(row, 'begindate', artist, 'begindate')
-            self.set_table_item(row, 'beginarea', artist, 'beginarea')
-            self.set_table_item(row, 'enddate',   artist, 'enddate')
-            self.set_table_item(row, 'endarea',   artist, 'endarea')
-            self.set_table_item(row, 'score',     artist, 'score')
+            for pos, c in enumerate(self.columns):
+                self.set_table_item_value(row, pos, c, artist)
         self.show_table(sort_column='score')
 
     def accept_event(self, rows):

@@ -48,7 +48,10 @@ from picard.util import (
 
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
-from picard.ui.columns import Columns
+from picard.ui.columns import (
+    ColumnAlign,
+    ColumnSortType,
+)
 
 
 class ResultTable(QtWidgets.QTableWidget):
@@ -59,20 +62,19 @@ class ResultTable(QtWidgets.QTableWidget):
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
-        self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
 
         self.horizontalScrollBar().valueChanged.connect(self.emit_scrolled)
         self.verticalScrollBar().valueChanged.connect(self.emit_scrolled)
         self.setHorizontalScrollMode(QtWidgets.QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-    def prepare(self, labels):
-        self.clear()
+    def set_labels(self, labels):
+        labels = tuple(labels)
         self.setColumnCount(len(labels))
         self.setHorizontalHeaderLabels(labels)
+
+    def clear_contents(self):
+        self.clearContents()
         self.setRowCount(0)
-        self.setSortingEnabled(False)
 
     @throttle(1000)  # only emit scrolled signal once per second
     def emit_scrolled(self, value):
@@ -91,12 +93,24 @@ class ResultTable(QtWidgets.QTableWidget):
 
 class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 
-    def __init__(self, sort_key):
+    def __init__(self, obj=None):
         super().__init__()
-        self.sort_key = sort_key
+        self._obj = obj
 
     def __lt__(self, other):
-        return self.sort_key < other.sort_key
+        column = self.column()
+        return self.sortkey(column) < other.sortkey(column)
+
+    def sortkey(self, column):
+        this_column = self.tableWidget().parent_dialog.columns[column]
+
+        if this_column.sort_type == ColumnSortType.SORTKEY:
+            sortkey = this_column.sortkey(self._obj)
+        elif this_column.sort_type == ColumnSortType.NAT:
+            sortkey = sort_key(self.text(), numeric=True)
+        else:
+            sortkey = sort_key(self.text())
+        return sortkey
 
 
 class TableBasedDialog(PicardDialog):
@@ -108,32 +122,23 @@ class TableBasedDialog(PicardDialog):
     def __init__(self, parent):
         super().__init__(parent=parent)
         self.setupUi()
-        self.columns = Columns()
         self.sorting_enabled = True
+        self._sort_column_index = None
+        self._sort_order = None
         self.create_table()
         self.finished.connect(self.save_state)
 
-    @abstractmethod
-    def get_value_for_row_id(self, row, value):
-        pass
+    def set_table_item_value(self, row, pos, column, obj):
+        value = obj.get(column.key, "")
+        item = SortableTableWidgetItem(obj=obj)
+        item.setText(value)
+        if column.align == ColumnAlign.RIGHT:
+            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.set_table_item(row, pos, item)
 
-    def set_table_item(self, row, colname, obj, key, sortkey=None):
-        value = obj.get(key, "")
-        self.set_table_item_val(row, colname, value, sortkey)
-
-    def set_table_item_val(self, row, colname, value, sortkey=None):
-        # TODO: use Column.sortkey & align
-        # QVariant remembers the original type of the data
-        # matching comparison operator will be used when sorting
-        # get() will return a string, force conversion if asked to
-        if sortkey is None:
-            sortkey = sort_key(value, numeric=True)
-        item = SortableTableWidgetItem(sortkey)
-        item.setData(QtCore.Qt.ItemDataRole.DisplayRole, value)
-        pos = self.columns.pos(colname)
+    def set_table_item(self, row, pos, item):
         if pos == 0:
-            id = self.get_value_for_row_id(row, value)
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, row)
         self.table.setItem(row, pos, item)
 
     @abstractmethod
@@ -153,12 +158,8 @@ class TableBasedDialog(PicardDialog):
         self.center_layout.addWidget(widget)
         widget.show()
 
-    def create_table_obj(self):
-        return ResultTable(parent_dialog=self)
-
     def create_table(self):
-        self.table = self.create_table_obj()
-        self.table.verticalHeader().setDefaultSectionSize(100)
+        self.table = ResultTable(parent_dialog=self)
         self.table.setSortingEnabled(False)
         self.table.cellDoubleClicked.connect(self.accept)
         self.table.hide()
@@ -166,6 +167,9 @@ class TableBasedDialog(PicardDialog):
         def enable_accept_button():
             self.accept_button.setEnabled(True)
         self.table.itemSelectionChanged.connect(enable_accept_button)
+
+        self.restore_default_columns()
+        self.restore_table_header_state()
 
     def highlight_row(self, row):
         model = self.table.model()
@@ -175,20 +179,62 @@ class TableBasedDialog(PicardDialog):
             index = model.index(row, column)
             model.setData(index, highlight_brush, QtCore.Qt.ItemDataRole.BackgroundRole)
 
+    def header(self):
+        return self.table.horizontalHeader()
+
+    def restore_default_columns(self):
+        self.table.set_labels(_(c.title) for c in self.columns)
+
+        header = self.header()
+
+        def sort_indicator_changed(idx, order):
+            self._sort_column_index = idx
+            self._sort_order = order
+
+        header.sortIndicatorChanged.connect(sort_indicator_changed)
+
+        header.setStretchLastSection(True)
+        header.setDefaultAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        header.setDefaultSectionSize(self.columns.default_width)
+
+        for i, c in enumerate(self.columns):
+            # header.show_column(i, c.is_default)
+            if c.width is not None:
+                header.resizeSection(i, c.width)
+            if c.resizeable:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Interactive)
+            else:
+                header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
+
     def prepare_table(self):
-        labels = tuple(_(c.title) for c in self.columns)
-        self.table.prepare(labels)
-        self.restore_table_header_state()
+        self.table.clear_contents()
+        # Disable sorting, as new elements will be added, and having sorting enabled
+        # doesn't play well.
+        # It will be eventually re-enabled in show_table()
+        self.table.setSortingEnabled(False)
 
     def show_table(self, sort_column=None, sort_order=QtCore.Qt.SortOrder.DescendingOrder):
         self.add_widget_to_center_layout(self.table)
-        self.table.horizontalHeader().setSortIndicatorShown(self.sorting_enabled)
-        self.table.setSortingEnabled(self.sorting_enabled)
-        if self.sorting_enabled and sort_column:
-            pos = self.columns.pos(sort_column)
-            self.table.sortItems(pos, sort_order)
+        header = self.header()
+        header.setSortIndicatorShown(self.sorting_enabled)
+        if self.sorting_enabled:
+            if self._sort_column_index is None or self._sort_order is None:
+                # Initialize the sort column & order based on passed parameters
+                if sort_column is None:
+                    pos = 0
+                else:
+                    pos = self.columns.pos(sort_column)
+                # It will trigger a call to sort_indicator_changed()
+                # This will set _sort_column_index and _sort_order to non-None values
+                header.setSortIndicator(pos, sort_order)
+        else:
+            # no indicator
+            # https://doc.qt.io/qt-6/qheaderview.html#setSortIndicator
+            header.setSortIndicator(-1, sort_order)
 
-        self.table.resizeColumnsToContents()
+        # Enabling sorting will sort using current sort column & order
+        # https://doc.qt.io/qt-6/qtableview.html#setSortingEnabled
+        self.table.setSortingEnabled(self.sorting_enabled)
         self.table.resizeRowsToContents()
         self.table.setAlternatingRowColors(True)
 
@@ -203,20 +249,18 @@ class TableBasedDialog(PicardDialog):
 
     @restore_method
     def restore_table_header_state(self):
-        header = self.table.horizontalHeader()
         config = get_config()
         state = config.persist[self.dialog_header_state]
         if state:
-            header.restoreState(state)
-        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Interactive)
-        log.debug("restore_state: %s", self.dialog_header_state)
+            self.header().restoreState(state)
+            log.debug("restore_state: %s", self.dialog_header_state)
 
     def save_state(self):
         if self.table:
             self.save_table_header_state()
 
     def save_table_header_state(self):
-        state = self.table.horizontalHeader().saveState()
+        state = self.header().saveState()
         config = get_config()
         config.persist[self.dialog_header_state] = state
         log.debug("save_state: %s", self.dialog_header_state)

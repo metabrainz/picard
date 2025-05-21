@@ -27,8 +27,9 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
     DefaultColumn,
-    IconColumn,
+    ImageColumn,
 )
+from picard.ui.itemviews.columns import IconColumn
 
 
 class ColumnTest(PicardTestCase):
@@ -37,14 +38,13 @@ class ColumnTest(PicardTestCase):
         column = Column('title', 'key')
         self.assertEqual(column.title, 'title')
         self.assertEqual(column.key, 'key')
-        self.assertFalse(column.is_icon)
         self.assertFalse(column.is_default)
         self.assertEqual(column.align, ColumnAlign.LEFT)
         self.assertEqual(column.sort_type, ColumnSortType.TEXT)
         self.assertFalse(column.always_visible)
         self.assertFalse(column.status_icon)
         self.assertIsNone(column.sortkey)
-        expected_repr = ("Column('title', 'key', size=None, align=ColumnAlign.LEFT, "
+        expected_repr = ("Column('title', 'key', width=None, align=ColumnAlign.LEFT, "
             "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)")
         self.assertEqual(repr(column), expected_repr)
         self.assertEqual(str(column), expected_repr)
@@ -67,20 +67,24 @@ class ColumnTest(PicardTestCase):
 
     def test_icon_column(self):
         column = IconColumn('title', 'key')
-        self.assertTrue(column.is_icon)
+        self.assertIsInstance(column, ImageColumn)
         column.header_icon_func = lambda: 'icon'
         self.assertEqual(column.header_icon, 'icon')
         column.set_header_icon_size(10, 20, 2)
         self.assertEqual(column.header_icon_size.width(), 10)
         self.assertEqual(column.header_icon_size.height(), 20)
-        self.assertEqual(column.header_icon_size_with_border.width(), 14)
-        self.assertEqual(column.header_icon_size_with_border.height(), 24)
+        self.assertEqual(column.width, 14)
+        self.assertEqual(
+            repr(column),
+            "IconColumn('title', 'key', width=14, align=ColumnAlign.LEFT, "
+            "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)"
+        )
 
 
 class ColumnsTest(PicardTestCase):
 
     def test_init_columns(self):
-        c1 = Column('t1', 'k1')
+        c1 = Column('t1', 'k1', width=50)
         c2 = Column('t2', 'k2', always_visible=True)
         c3 = Column('t3', 'k3', status_icon=True)
         columns = Columns([c1, c2])
@@ -88,6 +92,14 @@ class ColumnsTest(PicardTestCase):
         self.assertEqual(columns[1], c2)
         self.assertEqual(len(columns), 2)
         self.assertEqual(columns.pos('k2'), 1)
+        self.assertEqual(columns.get_column_by_key('k2'), (1, c2))
+
+        self.assertEqual(columns[0].width, 50)
+        self.assertEqual(columns[1].width, None)
+
+        columns = Columns([c1, c2], default_width=100)
+        self.assertEqual(columns[0].width, 50)
+        self.assertEqual(columns[1].width, 100)
 
         columns.append(c3)
         self.assertEqual(columns[2], c3)
@@ -100,8 +112,8 @@ class ColumnsTest(PicardTestCase):
         self.assertEqual(columns.pos('k3'), 1)
 
         expected_repr = """Columns([
-    Column('t2', 'k2', size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=True, status_icon=False),
-    Column('t3', 'k3', size=None, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=True),
+    Column('t2', 'k2', width=100, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=True, status_icon=False),
+    Column('t3', 'k3', width=100, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=True),
 ])"""
         self.assertEqual(repr(columns), expected_repr)
         self.assertEqual(str(columns), expected_repr)
