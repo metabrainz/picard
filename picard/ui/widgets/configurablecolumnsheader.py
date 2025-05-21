@@ -54,19 +54,21 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
-from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
+from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 
-class ConfigurableColumnsHeader(TristateSortHeaderView):
+class ConfigurableColumnsHeader(LockableHeaderView):
 
     def __init__(self, columns, parent=None):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
         self._columns = columns
         self._always_visible_columns = set(self._columns.always_visible_columns())
         self._visible_columns = set(self._always_visible_columns)
+        self.unsorted()
 
         self.sortIndicatorChanged.connect(self.on_sort_indicator_changed)
 
+    def unsorted(self):
         # enable sorting, but don't actually use it by default
         # XXX it would be nice to be able to go to the 'no sort' mode, but the
         #     internal model that QTreeWidget uses doesn't support it
@@ -126,8 +128,8 @@ class ConfigurableColumnsHeader(TristateSortHeaderView):
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if not self._columns[index].sortable:
-            self.setSortIndicator(-1, QtCore.Qt.SortOrder.AscendingOrder)
+        if index < 0 or not self._columns[index].sortable:
+            self.unsorted()
 
     def lock(self, is_locked):
         super().lock(is_locked)
