@@ -54,10 +54,10 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
-from picard.ui.widgets.tristatesortheaderview import TristateSortHeaderView
+from picard.ui.widgets.tristatesortheaderview import LockableHeaderView
 
 
-class ConfigurableColumnsHeader(TristateSortHeaderView):
+class ConfigurableColumnsHeader(LockableHeaderView):
 
     def __init__(self, columns, parent=None):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)

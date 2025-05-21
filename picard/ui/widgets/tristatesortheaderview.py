@@ -25,7 +25,7 @@ from PyQt6 import QtWidgets
 from picard.i18n import gettext as _
 
 
-class TristateSortHeaderView(QtWidgets.QHeaderView):
+class LockableHeaderView(QtWidgets.QHeaderView):
     """A QHeaderView implementation supporting locking/unlocking.
 
     A column can either be sorted ascending, descending or not sorted. The view
