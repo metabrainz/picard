@@ -107,20 +107,25 @@ class CoverWidget(QtWidgets.QWidget):
 
 class CoverCell:
 
-    def __init__(self, release, size, on_show=None):
-        self.release = release
+    def __init__(self, table, row, column, mbid, size, on_show=None):
+        self.table = table
+        self.row = row
+        self.column = column
+        self.mbid = mbid
+        self.size = size
+        self.on_show = on_show
         self.fetched = False
         self.fetch_task = None
-        self.widget = CoverWidget(size)
+        self.widget = CoverWidget(self.size)
         self.widget.destroyed.connect(self.invalidate)
-        if on_show is not None:
-            self.widget.shown.connect(partial(on_show, self))
+        if self.on_show is not None:
+            self.widget.shown.connect(partial(self.on_show, self))
+        self.table.setCellWidget(row, column, self.widget)
 
     def is_visible(self):
         if self.widget:
-            return not self.widget.visibleRegion().isEmpty()
-        else:
-            return False
+            return self.table.cell_is_visible(self.row, self.column)
+        return False
 
     def set_pixmap(self, pixmap):
         if self.widget:
@@ -133,6 +138,13 @@ class CoverCell:
     def invalidate(self):
         if self.widget:
             self.widget = None
+
+    def __repr__(self):
+        return (
+            "{c}("
+            "{o.table!r}, {o.row!r}, {o.column!r}, "
+            "{o.mbid!r}, {o.size!r}, on_show={o.on_show!r})"
+        ).format(c=self.__class__.__name__, o=self)
 
 
 class CoverColumn(ImageColumn):
@@ -186,6 +198,9 @@ class AlbumSearchDialog(SearchDialog):
 
     def search(self, text):
         """Perform search using query provided by the user."""
+        if self.fetching:
+            self.fetch_cleanup()
+            self.fetching = False
         self.retry_params = Retry(self.search, text)
         self.search_box_text(text)
         self.show_progress()
@@ -250,10 +265,10 @@ class AlbumSearchDialog(SearchDialog):
             return
         if not cell.is_visible():
             return
+        log.debug("Fetching cover art for row %d: release %s", cell.row + 1, cell.mbid)
         cell.fetched = True
-        mbid = cell.release['musicbrainz_albumid']
         cell.fetch_task = self.tagger.webservice.get_url(
-            url=f'{CAA_URL}/release/{mbid}',
+            url=f'{CAA_URL}/release/{cell.mbid}',
             handler=partial(self._caa_json_downloaded, cell),
         )
 
@@ -310,9 +325,9 @@ class AlbumSearchDialog(SearchDialog):
     def fetch_cleanup(self):
         for cell in self.cover_cells:
             if cell.fetch_task is not None:
-                log.debug("Removing cover art fetch task for %s",
-                          cell.release['musicbrainz_albumid'])
+                log.debug("Removing cover art fetch task for %s", cell.mbid)
                 self.tagger.webservice.remove_task(cell.fetch_task)
+                cell.fetch_task = None
 
     def closeEvent(self, event):
         if self.cover_cells:
@@ -346,13 +361,12 @@ class AlbumSearchDialog(SearchDialog):
             self.table.insertRow(row)
             for pos, c in enumerate(self.columns):
                 if isinstance(c, CoverColumn):
-                    cover_cell = CoverCell(
-                        release,
+                    self.cover_cells.append(CoverCell(
+                        self.table, row, pos,
+                        release['musicbrainz_albumid'],
                         cover_size,
                         on_show=self.fetch_coverart
-                    )
-                    self.cover_cells.append(cover_cell)
-                    self.table.setCellWidget(row, pos, cover_cell.widget)
+                    ))
                 else:
                     self.set_table_item_value(row, pos, c, release)
             if self.existing_album and release['musicbrainz_albumid'] == self.existing_album.id:

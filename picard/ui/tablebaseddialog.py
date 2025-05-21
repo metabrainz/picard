@@ -76,6 +76,65 @@ class ResultTable(QtWidgets.QTableWidget):
         self.clearContents()
         self.setRowCount(0)
 
+    def cell_is_visible(self, row: int, column: int) -> bool:
+        """
+        Checks if a cell currently visible within the viewport.
+
+        Args:
+            row: The row index of the cell.
+            column: The column index of the cell.
+
+        Returns:
+            True if the cell is visible, False otherwise.
+        """
+        # Source: https://forum.qt.io/topic/131108/how-to-determine-if-cell-of-a-qtablewidget-is-currently-visible/2?_=1747745577898
+        row_count = self.rowCount()
+        column_count = self.columnCount()
+        if row_count == 0 or column_count == 0:
+            return False
+
+        if not (0 <= row < row_count and 0 <= column < column_count):
+            return False
+
+        vertical_header = self.verticalHeader()
+        horizontal_header = self.horizontalHeader()
+
+        # Get the visual indices of the visible rows
+        # visualIndexAt(0) gives the visual index of the first visible item
+        # visualIndexAt(header_height) gives the visual index of the last visible item
+        # If the header is empty or fully scrolled, visualIndexAt might return -1
+        row_start = max(vertical_header.visualIndexAt(0), 0)
+        row_end = vertical_header.visualIndexAt(vertical_header.height())
+        if row_end == -1:
+            row_end = row_count - 1
+
+        # Get the visual indices of the visible columns
+        column_start = max(horizontal_header.visualIndexAt(0), 0)
+        column_end = horizontal_header.visualIndexAt(horizontal_header.width())
+        if column_end == -1:
+            column_end = column_count - 1
+
+        # Get the logical indices of the currently visible rows
+        # In PyQt, visualIndexAt returns -1 if no item is at that position,
+        # and logicalIndex converts a visual index to a logical index.
+        visible_rows = set()
+        vcount = vertical_header.count()
+        for i in range(row_start, row_end + 1):
+            # We need to check if the visual index is valid before converting
+            # to logical index, as visualIndexAt can return out-of-bounds indices
+            # for edge cases or empty headers.
+            if 0 <= i < vcount:  # Ensure visual index is within header's visual count
+                visible_rows.add(vertical_header.logicalIndex(i))
+
+        # Get the logical indices of the currently visible columns
+        visible_columns = set()
+        hcount = horizontal_header.count()
+        for j in range(column_start, column_end + 1):
+            if 0 <= j < hcount:  # Ensure visual index is within header's visual count
+                visible_columns.add(horizontal_header.logicalIndex(j))
+
+        return row in visible_rows and column in visible_columns
+
     @throttle(1000)  # only emit scrolled signal once per second
     def emit_scrolled(self, value):
         if self.parent_dialog:
