@@ -26,10 +26,11 @@ from picard.i18n import gettext as _
 
 
 class TristateSortHeaderView(QtWidgets.QHeaderView):
-    """A QHeaderView implementation supporting tristate sorting.
+    """A QHeaderView implementation supporting locking/unlocking.
 
     A column can either be sorted ascending, descending or not sorted. The view
     toggles through these states by clicking on a section header.
+    The header can be locked or unlocked.
     """
 
     def __init__(self, orientation, parent=None):
