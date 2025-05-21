@@ -54,7 +54,7 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
-from picard.ui.widgets.tristatesortheaderview import LockableHeaderView
+from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 
 class ConfigurableColumnsHeader(LockableHeaderView):
