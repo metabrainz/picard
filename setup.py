@@ -69,8 +69,8 @@ from picard import (  # noqa: E402
 )
 
 
-if sys.version_info < (3, 9):
-    sys.exit("ERROR: You need Python 3.9 or higher to use Picard.")
+if sys.version_info < (3, 10):
+    sys.exit("ERROR: You need Python 3.10 or higher to use Picard.")
 
 PACKAGE_NAME = "picard"
 APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
