@@ -298,26 +298,20 @@ class PluginManager(QtCore.QObject):
         full_module_name = _PLUGIN_MODULE_PREFIX + name
         plugin_dir = None
 
-        # Legacy loading of ZIP plugins. In Python >= 3.10 this is all handled
-        # by PluginMetaPathFinder. Remove once Python 3.9 is no longer supported.
-        if not hasattr(zipimport.zipimporter, 'find_spec'):
-            (zip_importer, plugin_dir, module_pathname, manifest_data) = self._legacy_load_zip_plugin(name)
+        spec = PluginMetaPathFinder().find_spec(full_module_name, [])
+        if not spec or not spec.loader:
+            errorfmt = _('Failed loading plugin "%(plugin)s"')
+            self.plugin_error(name, errorfmt, params={
+                'plugin': name,
+            })
+            return None
 
-        if not module_pathname:
-            spec = PluginMetaPathFinder().find_spec(full_module_name, [])
-            if not spec or not spec.loader:
-                errorfmt = _('Failed loading plugin "%(plugin)s"')
-                self.plugin_error(name, errorfmt, params={
-                    'plugin': name,
-                })
-                return None
-
-            module_pathname = spec.origin
-            if isinstance(spec.loader, zipimport.zipimporter):
-                manifest_data = load_zip_manifest(spec.loader.archive)
-            if os.path.basename(module_pathname) == '__init__.py':
-                module_pathname = os.path.dirname(module_pathname)
-            plugin_dir = plugin_dir_for_path(module_pathname)
+        module_pathname = spec.origin
+        if isinstance(spec.loader, zipimport.zipimporter):
+            manifest_data = load_zip_manifest(spec.loader.archive)
+        if os.path.basename(module_pathname) == '__init__.py':
+            module_pathname = os.path.dirname(module_pathname)
+        plugin_dir = plugin_dir_for_path(module_pathname)
 
         plugin = None
         try:
@@ -368,23 +362,6 @@ class PluginManager(QtCore.QObject):
             self.plugin_error(name, errorfmt, log_func=log.exception,
                               params={'plugin': name})
         return plugin
-
-    def _legacy_load_zip_plugin(self, name):
-        for plugin_dir in plugin_dirs():
-            zipfilename = os.path.join(plugin_dir, name + '.zip')
-            zip_importer = zip_import(zipfilename)
-            if zip_importer:
-                if not zip_importer.find_module(name):
-                    errorfmt = _('Failed loading zipped plugin "%(plugin)s" from "%(filename)s"')
-                    self.plugin_error(name, errorfmt, params={
-                        'plugin': name,
-                        'filename': zipfilename,
-                    })
-                    return (None, None, None, None)
-                module_pathname = zip_importer.get_filename(name)
-                manifest_data = load_zip_manifest(zip_importer.archive)
-                return (zip_importer, plugin_dir, module_pathname, manifest_data)
-        return (None, None, None, None)
 
     def _get_existing_paths(self, plugin_name, fileexts):
         dirpath = os.path.join(self.plugins_directory, plugin_name)
