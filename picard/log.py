@@ -188,23 +188,14 @@ def name_filter(record):
     # It provides a significant but short name from the filepath of the module
     path = Path(record.pathname).with_suffix('')
     # PyInstaller paths are already relative
-    # FIXME: With Python 3.9 this should better use
-    # path.is_relative_to(picard_module_path.parent)
-    # to avoid the exception handling.
-    if path.is_absolute():
-        try:
-            path = path.resolve().relative_to(picard_module_path)
-        except ValueError:
-            pass
+    if path.is_relative_to(picard_module_path):
+        path = path.resolve().relative_to(picard_module_path)
 
-    if path.is_absolute() and not DebugOpt.PLUGIN_FULLPATH.enabled:
-        try:
-            path = path.resolve().relative_to(USER_PLUGIN_DIR)
-            parts = list(path.parts)
-            parts.insert(0, 'plugins')
-            path = Path(*parts)
-        except ValueError:
-            pass
+    if path.is_relative_to(USER_PLUGIN_DIR) and not DebugOpt.PLUGIN_FULLPATH.enabled:
+        path = path.resolve().relative_to(USER_PLUGIN_DIR)
+        parts = list(path.parts)
+        parts.insert(0, 'plugins')
+        path = Path(*parts)
 
     parts = list(path.parts)
     if parts[-1] == '__init__':
