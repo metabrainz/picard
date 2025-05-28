@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-05-20 20:20+0000\n"
+"PO-Revision-Date: 2025-05-28 21:20+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "constants/pl/>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:144
@@ -4562,18 +4562,20 @@ msgid ""
 "The disambiguation comment entered to help distinguish one release from "
 "another (e.g.: Deluxe version with 2 bonus tracks)."
 msgstr ""
+"Komentarz ujednoznaczniający wprowadzony w celu ułatwienia odróżnienia "
+"jednego wydania od drugiego (np. wersja deluxe z 2 dodatkowymi utworami)."
 
 #: picard/const/tags.py:248
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Kompilacja (iTunes)"
 
 #: picard/const/tags.py:249
 msgid "1 for Various Artist albums, otherwise empty."
-msgstr ""
+msgstr "1 dla albumów różnych artystów, w przeciwnym razie puste."
 
 #: picard/const/tags.py:253
 msgid "Composer"
-msgstr ""
+msgstr "Kompozytor"
 
 #: picard/const/tags.py:254
 msgid "The names of the composers for the associated work."
@@ -4589,7 +4591,7 @@ msgstr ""
 
 #: picard/const/tags.py:265
 msgid "Conductor"
-msgstr ""
+msgstr "Dyrygent"
 
 #: picard/const/tags.py:267
 msgid ""
@@ -4597,16 +4599,20 @@ msgid ""
 "conductor and chorus master, and could be associated with the release or "
 "recording."
 msgstr ""
+"Nazwy dyrygentów powiązanych z utworem. Mogą to być dyrygent i kierownik "
+"chóru, a także mogą być powiązane z wydaniem lub nagraniem."
 
 #: picard/const/tags.py:274
 msgid "Copyright"
-msgstr ""
+msgstr "Prawo autorskie"
 
 #: picard/const/tags.py:276
 msgid ""
 "The copyright message for the copyright holder of the original sound, "
 "beginning with a year and a space character."
 msgstr ""
+"Informacja o prawach autorskich dla właściciela praw autorskich do "
+"oryginalnego dźwięku, rozpoczynająca się od roku i spacji."
 
 #: picard/const/tags.py:283
 msgid "Data Track"
@@ -4618,12 +4624,13 @@ msgstr ""
 
 #: picard/const/tags.py:290
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: picard/const/tags.py:291 picard/const/tags.py:861
+#, fuzzy
 msgid ""
 "The date that the release (album) was issued, in the format `YYYY-MM-DD`."
-msgstr ""
+msgstr "Data kiedy wydanie (album) został wydany, w formacie `RRRR-MM-DD`."
 
 #: picard/const/tags.py:295
 msgid "Director"
@@ -4637,13 +4644,13 @@ msgstr ""
 
 #: picard/const/tags.py:304
 msgid "Directory name"
-msgstr ""
+msgstr "Nazwa katalogu"
 
 #: picard/const/tags.py:305
 msgid ""
 "The name of the directory containing the file at the point of being loaded "
 "into Picard."
-msgstr ""
+msgstr "Nazwa katalogu zawierającego plik w momencie załadowania go do Picarda."
 
 #: picard/const/tags.py:313
 msgid "FreeDB Disc ID"
@@ -4651,11 +4658,12 @@ msgstr ""
 
 #: picard/const/tags.py:314
 msgid "The identification number of the disc in the FreeDB database."
-msgstr ""
+msgstr "Numer identyfikacyjny dysku w bazie danych FreeDB."
 
 #: picard/const/tags.py:317
+#, fuzzy
 msgid "FreeDB"
-msgstr ""
+msgstr "FreeDB"
 
 #: picard/const/tags.py:318
 msgid "FreeDB DiscID Calculation"
@@ -4666,12 +4674,13 @@ msgid "FreeDB DiscID including Calculation Example (French)"
 msgstr ""
 
 #: picard/const/tags.py:324
+#, fuzzy
 msgid "Disc Number"
-msgstr ""
+msgstr "Numer płyty"
 
 #: picard/const/tags.py:325
 msgid "The number of the disc in the release that contains this track."
-msgstr ""
+msgstr "Numer płyty w wydaniu zawierającej ten utwór."
 
 #: picard/const/tags.py:329
 msgid "Disc Has Pregap"
@@ -4700,7 +4709,7 @@ msgstr ""
 
 #: picard/const/tags.py:348
 msgid "Encoded By"
-msgstr ""
+msgstr "Zakodowane przez"
 
 #: picard/const/tags.py:349
 msgid "The person or organization that encoded the track."
@@ -4716,7 +4725,7 @@ msgstr ""
 
 #: picard/const/tags.py:360
 msgid "Engineer"
-msgstr ""
+msgstr "Inżynier dźwięku"
 
 #: picard/const/tags.py:361
 msgid "The names of the engineers associated with the track."
@@ -4724,25 +4733,30 @@ msgstr ""
 
 #: picard/const/tags.py:366
 msgid "File Extension"
-msgstr ""
+msgstr "Rozszerzenie pliku"
 
 #: picard/const/tags.py:367
 msgid "The file's extension."
-msgstr ""
+msgstr "Rozszerzenie pliku."
 
 #: picard/const/tags.py:375
+#, fuzzy
 msgid "File Created Timestamp"
-msgstr ""
+msgstr "Znak czasu utworzenia pliku"
 
 #: picard/const/tags.py:376
+#, fuzzy
 msgid ""
 "The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by "
 "the file system."
 msgstr ""
+"Znak czasu utworzenia pliku w formacie `RRRR-MM-DD GG:MM:SS` zgodnie z "
+"danymi podawanymi przez system plików."
 
 #: picard/const/tags.py:384
+#, fuzzy
 msgid "File Modified Timestamp"
-msgstr ""
+msgstr "Znak czasu modyfikacji pliku"
 
 #: picard/const/tags.py:385
 msgid ""
@@ -4752,53 +4766,55 @@ msgstr ""
 
 #: picard/const/tags.py:393
 msgid "File Name"
-msgstr ""
+msgstr "Nazwa pliku"
 
 #: picard/const/tags.py:394
 msgid "The name of the file without extension."
-msgstr ""
+msgstr "Nazwa pliku bez rozszerzenia."
 
 #: picard/const/tags.py:402
 msgid "File Path"
-msgstr ""
+msgstr "Ścieżka pliku"
 
 #: picard/const/tags.py:403
 msgid "Full path and name of the file."
-msgstr ""
+msgstr "Pełna ścieżka i nazwa pliku."
 
 #: picard/const/tags.py:410
 msgid "File Size"
-msgstr ""
+msgstr "Rozmiar pliku"
 
 #: picard/const/tags.py:411
 msgid "Size of the file in bytes."
-msgstr ""
+msgstr "Rozmiar pliku w bajtach."
 
 #: picard/const/tags.py:419
+#, fuzzy
 msgid "File Format"
-msgstr ""
+msgstr "Format pliku"
 
 #: picard/const/tags.py:420
 msgid "Media format of the file (e.g.: MPEG-1 Audio)."
-msgstr ""
+msgstr "Format multimedialny pliku (np.: MPEG-1 Audio)."
 
 #: picard/const/tags.py:429
 msgid "Gapless Playback"
 msgstr ""
 
 #: picard/const/tags.py:430
+#, fuzzy
 msgid ""
 "Indicates whether or not there are gaps between the recordings on the "
 "release."
-msgstr ""
+msgstr "Wskazuje, czy w danym wydaniu występują przerwy pomiędzy nagraniami."
 
 #: picard/const/tags.py:435
 msgid "Genre"
-msgstr ""
+msgstr "Gatunek"
 
 #: picard/const/tags.py:437
 msgid "The specified genre information from MusicBrainz."
-msgstr ""
+msgstr "Określone informacje o gatunku z MusicBrainz."
 
 #: picard/const/tags.py:445
 msgid "Grouping"
@@ -4806,11 +4822,12 @@ msgstr ""
 
 #: picard/const/tags.py:446
 msgid "Genre grouping associated with the track"
-msgstr ""
+msgstr "Grupa gatunków powiązana z utworem"
 
 #: picard/const/tags.py:451
+#, fuzzy
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:453
 msgid ""
@@ -4818,14 +4835,18 @@ msgid ""
 "standard code for uniquely identifying sound recordings and music video "
 "recordings."
 msgstr ""
+"International Standard Recording Code to międzynarodowy standardowy kod "
+"służący do jednoznacznej identyfikacji nagrań dźwiękowych i nagrań wideo."
 
 #: picard/const/tags.py:460
+#, fuzzy
 msgid "Key"
-msgstr ""
+msgstr "Klucz"
 
 #: picard/const/tags.py:461
+#, fuzzy
 msgid "The key of the music."
-msgstr ""
+msgstr "Tonacja muzyki."
 
 #: picard/const/tags.py:466
 msgid "Record Label"
@@ -4833,7 +4854,7 @@ msgstr ""
 
 #: picard/const/tags.py:467
 msgid "The names of the labels associated with the release."
-msgstr ""
+msgstr "Nazwy wytwórni powiązanych z wydaniem."
 
 #: picard/const/tags.py:472
 msgid "Language"
@@ -4845,21 +4866,22 @@ msgstr ""
 
 #: picard/const/tags.py:477
 msgid "Length"
-msgstr ""
+msgstr "Długość"
 
 #: picard/const/tags.py:478
 msgid "The length of the track in format mins:secs."
-msgstr ""
+msgstr "Długość utworu w formacie minuty:sekundy."
 
 #: picard/const/tags.py:484
 msgid "License"
-msgstr ""
+msgstr "Licencja"
 
 #: picard/const/tags.py:485
+#, fuzzy
 msgid ""
 "The license associated with the track, either through the release or "
 "recording relationships."
-msgstr ""
+msgstr "Licencja powiązana z utworem, na mocy umowy o wydaniu lub nagraniu."
 
 #: picard/const/tags.py:489
 msgid "Lyricist"
@@ -4879,19 +4901,19 @@ msgstr ""
 
 #: picard/const/tags.py:502
 msgid "Lyrics"
-msgstr ""
+msgstr "Teksty piosenek"
 
 #: picard/const/tags.py:503
 msgid "The lyrics for the track."
-msgstr ""
+msgstr "Tekst utworu."
 
 #: picard/const/tags.py:508
 msgid "Media"
-msgstr ""
+msgstr "Nośnik"
 
 #: picard/const/tags.py:509
 msgid "The media on which the release was distributed (e.g.: CD)."
-msgstr ""
+msgstr "Nośnik, na którym wydano wydanie (np. płyta CD)."
 
 #: picard/const/tags.py:513
 msgid "Mixer"
@@ -4899,15 +4921,15 @@ msgstr ""
 
 #: picard/const/tags.py:514
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
-msgstr ""
+msgstr "Nazwiska inżynierów dźwięku „*Mixed By*” współpracujących z utworem."
 
 #: picard/const/tags.py:519
 msgid "Mood"
-msgstr ""
+msgstr "Nastrój"
 
 #: picard/const/tags.py:520
 msgid "The mood associated with the track."
-msgstr ""
+msgstr "Nastrój towarzyszący utworowi."
 
 #: picard/const/tags.py:525
 msgid "Movement"
@@ -4937,41 +4959,45 @@ msgstr ""
 
 #: picard/const/tags.py:546
 msgid "Multiple Artists"
-msgstr ""
+msgstr "Wielu artystów"
 
 #: picard/const/tags.py:548
 msgid ""
 "Set to 1 if not all of the tracks on the album have the same primary artist, "
 "otherwise empty."
 msgstr ""
+"Ustaw na 1, jeśli nie wszystkie utwory w albumie mają tego samego głównego "
+"artystę, w przeciwnym razie pozostaw to pole puste."
 
 #: picard/const/tags.py:555
 msgid "Release Artist MBID"
 msgstr ""
 
 #: picard/const/tags.py:556
+#, fuzzy
 msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
-msgstr ""
+msgstr "Identyfikatory MusicBrainz (MBID) dla artystów wydających utwory."
 
 #: picard/const/tags.py:561
 msgid "Release MBID"
-msgstr ""
+msgstr "MBID wydania"
 
 #: picard/const/tags.py:562
 msgid "The MusicBrainz Identifier (MBID) for the release."
-msgstr ""
+msgstr "Identyfikator MusicBrainz (MBID) wydania."
 
 #: picard/const/tags.py:566
 msgid "Artist MBID"
-msgstr ""
+msgstr "MBID artysty"
 
 #: picard/const/tags.py:567
 msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
-msgstr ""
+msgstr "Identyfikatory MusicBrainz (MBIDs) artystów utworów."
 
 #: picard/const/tags.py:572
+#, fuzzy
 msgid "MusicBrainz DiscID"
-msgstr ""
+msgstr "Identyfikator płyty MusicBrainz"
 
 #: picard/const/tags.py:574
 msgid ""
@@ -4980,10 +5006,15 @@ msgid ""
 "information read from the disc. This tag contains the Disc ID if the album "
 "information was retrieved using `Tools > Lookup CD` from the menu."
 msgstr ""
+"Disc ID to numer kodu, którego MusicBrainz używa do łączenia fizycznej płyty "
+"CD z listą wydań. Opiera się on na informacjach z tabeli zawartości (TOC) "
+"odczytanych z płyty. Ten tag zawiera Disc ID, jeśli informacje o albumie "
+"zostały pobrane za pomocą `Tools > Lookup CD` z menu."
 
 #: picard/const/tags.py:580
+#, fuzzy
 msgid "Disc ID Calculation"
-msgstr ""
+msgstr "Obliczanie ID dysku"
 
 #: picard/const/tags.py:584
 msgid "Disc IDs"
@@ -4994,12 +5025,18 @@ msgid ""
 "A list of all of the disc ids attached to the selected release. The list "
 "provided for each medium only includes the disc ids attached to that medium."
 msgstr ""
+"Lista wszystkich identyfikatorów płyt dołączonych do wybranego wydania. "
+"Lista dostarczona dla każdego nośnika obejmuje tylko identyfikatory płyt "
+"dołączonych do tego nośnika."
 
 #: picard/const/tags.py:590
+#, fuzzy
 msgid ""
 "For example, the list provided for Disc 1 of a three CD set will not include "
 "the disc ids attached to discs 2 and 3 of the set."
 msgstr ""
+"Na przykład lista dostarczona dla płyty 1 z zestawu trzech płyt CD nie "
+"będzie zawierać identyfikatorów płyt dołączonych do płyt 2 i 3 w zestawie."
 
 #: picard/const/tags.py:599
 msgid "Original Release MBID"
@@ -5010,6 +5047,8 @@ msgid ""
 "The MusicBrainz Identifier (MBID) for the original release. This is only "
 "available if the release has been merged with another release."
 msgstr ""
+"Identyfikator MusicBrainz (MBID) dla oryginalnego wydania. Jest on dostępny "
+"tylko wtedy, gdy wydanie zostało połączone z innym wydaniem."
 
 #: picard/const/tags.py:607
 msgid "Original Artist MBID"
@@ -5021,6 +5060,9 @@ msgid ""
 "recording. This is only available if the recording has been merged with "
 "another recording."
 msgstr ""
+"Identyfikatory MusicBrainz (MBID) dla artystów utworów oryginalnego "
+"nagrania. Są dostępne tylko wtedy, gdy nagranie zostało połączone z innym "
+"nagraniem."
 
 #: picard/const/tags.py:616
 msgid "Recording MBID"
@@ -5090,6 +5132,8 @@ msgid ""
 "The release title of the earliest release in the release group intended for "
 "the title of the original recording."
 msgstr ""
+"Tytuł wydania najwcześniejszego wydania w grupie wydawniczej, mający na celu "
+"zastąpienie tytułu oryginalnego nagrania."
 
 #: picard/const/tags.py:667
 msgid "Original Artist"
@@ -5100,6 +5144,8 @@ msgid ""
 "The track artist of the earliest release in the release group intended for "
 "the performers of the original recording."
 msgstr ""
+"Wykonawca utworu, który ukazał się najwcześniej w grupie wydawniczej "
+"przeznaczonej dla wykonawców oryginalnego nagrania."
 
 #: picard/const/tags.py:676
 msgid "Original Release Date"
@@ -5114,10 +5160,17 @@ msgid ""
 "**Note:** If you are storing tags in MP3 files as ID3v2.3 then the original "
 "date can only be stored as a year."
 msgstr ""
+"Oryginalna data wydania w formacie `RRRR-MM-DD`. Domyślnie jest to "
+"najwcześniejsze wydanie w grupie wydań. Może to na przykład określać datę "
+"wydania wersji winylowej tego, co masz na płycie CD.\n"
+"\n"
+"**Uwaga:** Jeśli przechowujesz tagi w plikach MP3 jako ID3v2.3, to "
+"oryginalną datę można zapisać tylko jako rok."
 
 #: picard/const/tags.py:686
+#, fuzzy
 msgid "Original Filename"
-msgstr ""
+msgstr "Oryginalna nazwa pliku"
 
 #: picard/const/tags.py:687
 msgid "The original name of the audio file."
@@ -5128,11 +5181,15 @@ msgid "Original Year"
 msgstr ""
 
 #: picard/const/tags.py:694
+#, fuzzy
 msgid ""
 "The year of the original release date in the format `YYYY`. By default this "
 "is set to the earliest release in the release group. This can provide, for "
 "example, the release year of the vinyl version of what you have on CD."
 msgstr ""
+"Rok oryginalnej daty wydania w formacie `YYYY`. Domyślnie jest to "
+"najwcześniejsze wydanie w grupie wydań. Może to zapewnić na przykład rok "
+"wydania wersji winylowej tego, co masz na płycie CD."
 
 #: picard/const/tags.py:701
 msgid "Performance Attributes"
@@ -5145,14 +5202,17 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:704
+#, fuzzy
 msgid ""
 "Use `$inmulti()` to check for a specific type (e.g.: "
 "`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 msgstr ""
+"Użyj `$inmulti()`, aby sprawdzić konkretny typ (np.: "
+"`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 
 #: picard/const/tags.py:713
 msgid "Performer"
-msgstr ""
+msgstr "Wykonawca"
 
 #: picard/const/tags.py:715
 msgid ""
@@ -5172,15 +5232,15 @@ msgstr ""
 
 #: picard/const/tags.py:726
 msgid "Indicates whether or not the recording is a podcast."
-msgstr ""
+msgstr "Określa, czy nagranie jest podcastem."
 
 #: picard/const/tags.py:731
 msgid "Podcast URL"
-msgstr ""
+msgstr "URL podcastu"
 
 #: picard/const/tags.py:732
 msgid "The associated URL if the recording is a podcast."
-msgstr ""
+msgstr "Powiązany adres URL, jeśli nagranie jest podcastem."
 
 #: picard/const/tags.py:737
 msgid "Pregap Track"
@@ -5199,6 +5259,8 @@ msgid ""
 "The primary type of the release group (i.e.: *album*, *single*, *ep*, "
 "*broadcast*, or *other*)."
 msgstr ""
+"Podstawowy typ grupy wydań (np. *album*, *singiel*, *ep*, *broadcast* lub "
+"*inne*)."
 
 #: picard/const/tags.py:751 picard/const/tags.py:973 picard/const/tags.py:1059
 msgid "Release group types"
@@ -5206,11 +5268,11 @@ msgstr ""
 
 #: picard/const/tags.py:755
 msgid "Producer"
-msgstr ""
+msgstr "Producent"
 
 #: picard/const/tags.py:756
 msgid "The names of the producers for the associated release or recording."
-msgstr ""
+msgstr "Nazwy producentów powiązanego wydania lub nagrania."
 
 #: picard/const/tags.py:761
 msgid "R128 Album Gain"
@@ -5345,16 +5407,23 @@ msgid ""
 "by default. In most cases it is recommended to use the `%date%` tag instead "
 "for compatibility with existing software."
 msgstr ""
+"Ten tag istnieje do konkretnego użycia w skryptach i wtyczkach, ale nie jest "
+"wypełniany domyślnie. W większości przypadków zaleca się używanie tagu "
+"`%date%` zamiast tego w celu zapewnienia zgodności z istniejącym "
+"oprogramowaniem."
 
 #: picard/const/tags.py:871
 msgid "Release Group"
 msgstr ""
 
 #: picard/const/tags.py:873
+#, fuzzy
 msgid ""
 "The title of the release group. This is typically the same as the album "
 "title, but can be different."
 msgstr ""
+"Tytuł grupy wydawniczej. Zazwyczaj jest taki sam jak tytuł albumu, ale może "
+"być inny."
 
 #: picard/const/tags.py:880
 msgid "RG First Released"
