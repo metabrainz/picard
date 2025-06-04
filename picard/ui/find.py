@@ -28,7 +28,11 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.tags import preserved_tag_names
+
+from picard.tags.tagvar import (
+    TagVars,
+)
+from picard.const.tags import ALL_TAGS
 
 
 class FindBox(QtWidgets.QWidget):
@@ -50,7 +54,7 @@ class FindBox(QtWidgets.QWidget):
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.valid_tags = set(preserved_tag_names())
+        self.valid_tags = set(ALL_TAGS)
         self.selected_filters = []  # Start with "All" selected
 
         # find input
@@ -107,11 +111,11 @@ class FindBox(QtWidgets.QWidget):
         scroll_layout.addWidget(line)
 
         # Add checkboxes for all tags
-        for tag in sorted(self.valid_tags):
-            checkbox = QtWidgets.QCheckBox(tag, scroll_content)
-            checkbox.setChecked(tag in self.selected_filters)
+        for tag in sorted(self.valid_tags, key=lambda t: _(ALL_TAGS.display_name(t._name)).lower()):
+            checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(tag._name), scroll_content)
+            checkbox.setChecked(tag._name in self.selected_filters)
             scroll_layout.addWidget(checkbox)
-            checkboxes[tag] = checkbox
+            checkboxes[tag._name] = checkbox
 
         scroll_content.setLayout(scroll_layout)
         scroll.setWidget(scroll_content)
@@ -137,7 +141,7 @@ class FindBox(QtWidgets.QWidget):
                 self.filter_button.setText(_("Filters"))
 
             elif len(self.selected_filters) == 1:
-                self.filter_button.setText(_(self.selected_filters[0]))
+                self.filter_button.setText(_(ALL_TAGS.display_name(self.selected_filters[0])))
             else:
                 self.filter_button.setText(_("{num} filters").format(num=len(self.selected_filters)))
 
