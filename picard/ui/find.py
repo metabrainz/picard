@@ -28,10 +28,6 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-
-from picard.tags.tagvar import (
-    TagVars,
-)
 from picard.const.tags import ALL_TAGS
 
 
