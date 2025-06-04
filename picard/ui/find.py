@@ -24,11 +24,11 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.const.tags import ALL_TAGS
 from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.const.tags import ALL_TAGS
 
 
 class FindBox(QtWidgets.QWidget):
