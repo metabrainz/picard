@@ -347,6 +347,15 @@ def _create_show_toolbar_action(parent):
     return action
 
 
+@add_action(MainAction.SHOW_FINDBAR)
+def _create_find_toolbar_action(parent):
+    action = QtGui.QAction(_("Find"), parent)
+    action.setCheckable(True)
+    action.setShortcut(QtGui.QKeySequence(_("Ctrl+F")))
+    action.triggered.connect(parent.toggle_find_boxes)
+    return action
+
+
 @add_action(MainAction.SEARCH)
 def _create_search_action(parent):
     action = QtGui.QAction(icontheme.lookup('system-search'), _("Search"), parent)
