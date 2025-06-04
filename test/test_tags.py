@@ -37,6 +37,7 @@ from picard.tags import (
     display_tag_full_description,
     display_tag_name,
     display_tag_tooltip,
+    filterable_tag_names,
     hidden_tag_names,
     parse_comment_tag,
     parse_subtag,
@@ -565,3 +566,8 @@ class TagsGeneratorTest(PicardTestCase):
 
         for tag in tags:
             self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_preserved)
+
+    def test_all_filterable_tags(self):
+        tags = list(filterable_tag_names())
+        for tag in tags:
+            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_filterable)
