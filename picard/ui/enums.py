@@ -92,6 +92,7 @@ class MainAction(str, Enum):
     SHOW_FILE_BROWSER = 'show_file_browser_action'
     SHOW_METADATA_VIEW = 'show_metadata_view_action'
     SHOW_SCRIPT_EDITOR = 'show_script_editor_action'
+    SHOW_FINDBAR = 'show_find_bar_action'
     SHOW_TOOLBAR = 'show_toolbar_action'
     SIMILAR_ITEMS_SEARCH = 'similar_items_search_action'
     SUBMIT_ACOUSTID = 'submit_acoustid_action'

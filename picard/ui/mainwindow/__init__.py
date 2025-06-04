@@ -287,8 +287,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.metadata_box.remove_selected_tags()
             else:
                 self.remove_selected_objects()
-        elif event.matches(QtGui.QKeySequence.StandardKey.Find):
-            self.toggle_find_boxes()
+        elif (event.modifiers() == (QtCore.Qt.KeyboardModifier.ControlModifier | QtCore.Qt.KeyboardModifier.ShiftModifier)
+        and event.key() == QtCore.Qt.Key.Key_F):
+            self.search_edit.setFocus(QtCore.Qt.FocusReason.ShortcutFocusReason)
         else:
             super().keyPressEvent(event)
 
@@ -634,6 +635,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.SHOW_TOOLBAR,
             MainAction.SEARCH_TOOLBAR_TOGGLE,
+            MainAction.SHOW_FINDBAR,
             MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
         )
 
