@@ -136,8 +136,8 @@ class FindBox(QtWidgets.QWidget):
                 self.selected_filters = []
                 self.filter_button.setText(_("Filters"))
 
-            elif len(self.selected_filters) <= 2:
-                self.filter_button.setText(", ".join(_(filter) for filter in self.selected_filters))
+            elif len(self.selected_filters) == 1:
+                self.filter_button.setText(_(self.selected_filters[0]))
             else:
                 self.filter_button.setText(_("{num} filters").format(num=len(self.selected_filters)))
 
