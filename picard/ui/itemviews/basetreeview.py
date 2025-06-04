@@ -90,10 +90,6 @@ from picard.util import (
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
 from picard.ui.find import FindBox
-from picard.ui.itemviews.columns import (
-    DEFAULT_COLUMNS,
-    ITEM_ICON_COLUMN,
-)
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
