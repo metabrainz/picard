@@ -254,7 +254,7 @@ class MainPanel(QtWidgets.QSplitter):
         visible = not self._views[0].find_box.isVisible()
         for view in self._views:
             view.find_box.setVisible(visible)
-            if visible:
+            if visible and view.hasFocus():
                 view.find_box.set_focus()
             else:
                 view.find_box.clear()
