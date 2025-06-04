@@ -24,6 +24,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 from picard.tags import preserved_tag_names
 
 
@@ -41,7 +45,7 @@ class FindBox(QtWidgets.QWidget):
         self.find_icon.setPixmap(find_icon.pixmap(16, 16))
         layout.addWidget(self.find_icon)
 
-        self.filter_button = QtWidgets.QPushButton("Filters", self)
+        self.filter_button = QtWidgets.QPushButton(_("Filters"), self)
         self.filter_button.setMaximumWidth(120)
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
@@ -51,7 +55,7 @@ class FindBox(QtWidgets.QWidget):
 
         # find input
         self.find_query_box = QtWidgets.QLineEdit(self)
-        self.find_query_box.setPlaceholderText("Find")
+        self.find_query_box.setPlaceholderText(_("Find"))
         self.find_query_box.setClearButtonEnabled(True)
         self.find_query_box.textChanged.connect(self._query_changed)
         layout.addWidget(self.find_query_box)
@@ -59,7 +63,7 @@ class FindBox(QtWidgets.QWidget):
     def _show_filter_dialog(self):
         """Show dialog to select multiple filters"""
         dialog = QtWidgets.QDialog(self)
-        dialog.setWindowTitle("Select Filters")
+        dialog.setWindowTitle(_("Select Filters"))
         dialog.setMinimumWidth(300)
 
         layout = QtWidgets.QVBoxLayout(dialog)
@@ -70,7 +74,7 @@ class FindBox(QtWidgets.QWidget):
         scroll_content = QtWidgets.QWidget(scroll)
         scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
 
-        label = QtWidgets.QLabel("File Filters", scroll_content)
+        label = QtWidgets.QLabel(_("File Filters"), scroll_content)
         scroll_layout.addWidget(label)
 
         # Add a horizontal separator
@@ -79,16 +83,21 @@ class FindBox(QtWidgets.QWidget):
         line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         scroll_layout.addWidget(line)
 
+        file_filters = {
+            'filename': N_("Filename"),
+            'filepath': N_("Filepath"),
+        }
+
         checkboxes = {}
         for file_filter in ["filename", "filepath"]:
-            checkbox = QtWidgets.QCheckBox(file_filter, scroll_content)
+            checkbox = QtWidgets.QCheckBox(_(file_filters[file_filter]), scroll_content)
             checkbox.setChecked(file_filter in self.selected_filters)
             scroll_layout.addWidget(checkbox)
             checkboxes[file_filter] = checkbox
 
         scroll_layout.addItem(QtWidgets.QSpacerItem(0, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed))
 
-        label = QtWidgets.QLabel("Tag Filters", scroll_content)
+        label = QtWidgets.QLabel(_("Tag Filters"), scroll_content)
         scroll_layout.addWidget(label)
 
         # Add a horizontal separator
@@ -125,12 +134,12 @@ class FindBox(QtWidgets.QWidget):
             # Update button text
             if not self.selected_filters or self.selected_filters == []:
                 self.selected_filters = []
-                self.filter_button.setText("Filters")
+                self.filter_button.setText(_("Filters"))
 
             elif len(self.selected_filters) <= 2:
-                self.filter_button.setText(", ".join(self.selected_filters))
+                self.filter_button.setText(", ".join(_(filter) for filter in self.selected_filters))
             else:
-                self.filter_button.setText(f"{len(self.selected_filters)} filters")
+                self.filter_button.setText(_("{num} filters").format(num=len(self.selected_filters)))
 
             # Update find with new filters
             self._query_changed(self.find_query_box.text())
@@ -141,7 +150,7 @@ class FindBox(QtWidgets.QWidget):
     def clear(self):
         self.find_query_box.clear()
         self.selected_filters = []
-        self.filter_button.setText("Filters")
+        self.filter_button.setText(_("Filters"))
 
     def set_focus(self):
         self.find_query_box.setFocus()
