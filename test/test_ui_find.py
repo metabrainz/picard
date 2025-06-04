@@ -22,7 +22,7 @@
 from test.picardtestcase import PicardTestCase
 
 from picard.metadata import Metadata
-from picard.tags import preserved_tag_names
+from picard.tags import tag_names
 
 from picard.ui.find import FindBox
 from picard.ui.itemviews import MainPanel
@@ -34,7 +34,7 @@ class FindBoxTest(PicardTestCase):
 
     def test_tag_names_available(self):
         """Test that tag_names() returns valid tags for filtering"""
-        tags = set(preserved_tag_names())
+        tags = set(tag_names())
         self.assertIsInstance(tags, set)
         self.assertGreater(len(tags), 0)
         self.assertIn('artist', tags)
@@ -53,18 +53,12 @@ class FindBoxTest(PicardTestCase):
         test_cases = [
             ([], "Filters"),
             (["filename"], "filename"),
-            (["filename", "artist"], "filename, artist"),
+            (["filename", "artist"], "2 filters"),
             (["filename", "artist", "album", "title"], "4 filters"),
         ]
 
         for selected_filters, expected_text in test_cases:
-            if not selected_filters or selected_filters == []:
-                button_text = "Filters"
-            elif len(selected_filters) <= 2:
-                button_text = ", ".join(selected_filters)
-            else:
-                button_text = f"{len(selected_filters)} filters"
-
+            button_text = FindBox.make_button_text(selected_filters)
             self.assertEqual(button_text, expected_text,
                            f"Filter list {selected_filters} should produce text '{expected_text}'")
 
