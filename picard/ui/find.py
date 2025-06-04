@@ -131,18 +131,23 @@ class FindBox(QtWidgets.QWidget):
                 if checkbox.isChecked():
                     self.selected_filters.append(tag)
 
-            # Update button text
-            if not self.selected_filters or self.selected_filters == []:
+            if not self.selected_filters:
                 self.selected_filters = []
-                self.filter_button.setText(_("Filters"))
 
-            elif len(self.selected_filters) == 1:
-                self.filter_button.setText(_(ALL_TAGS.display_name(self.selected_filters[0])))
-            else:
-                self.filter_button.setText(_("{num} filters").format(num=len(self.selected_filters)))
+            # Update button text
+            self.filter_button.setText(self.make_button_text(self.selected_filters))
 
-            # Update find with new filters
             self._query_changed(self.find_query_box.text())
+
+    @classmethod
+    def make_button_text(cls, selected_filters):
+        if not selected_filters:
+            return _("Filters")
+
+        if len(selected_filters) == 1:
+            return _(ALL_TAGS.display_name(selected_filters[0]))
+
+        return _("{num} filters").format(num=len(selected_filters))
 
     def _query_changed(self, text):
         self.findChanged.emit(text, self.selected_filters)
