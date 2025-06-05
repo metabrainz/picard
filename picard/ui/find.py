@@ -50,7 +50,7 @@ class FindBox(QtWidgets.QWidget):
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.valid_tags = set(ALL_TAGS)
+        self.valid_tags = set(filter(lambda t: not t.is_hidden, ALL_TAGS))
         self.selected_filters = []  # Start with "All" selected
 
         # find input
@@ -59,6 +59,11 @@ class FindBox(QtWidgets.QWidget):
         self.find_query_box.setClearButtonEnabled(True)
         self.find_query_box.textChanged.connect(self._query_changed)
         layout.addWidget(self.find_query_box)
+
+    file_filters = {
+        'filename': N_("Filename"),
+        'filepath': N_("Filepath"),
+    }
 
     def _show_filter_dialog(self):
         """Show dialog to select multiple filters"""
@@ -83,14 +88,9 @@ class FindBox(QtWidgets.QWidget):
         line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         scroll_layout.addWidget(line)
 
-        file_filters = {
-            'filename': N_("Filename"),
-            'filepath': N_("Filepath"),
-        }
-
         checkboxes = {}
         for file_filter in ["filename", "filepath"]:
-            checkbox = QtWidgets.QCheckBox(_(file_filters[file_filter]), scroll_content)
+            checkbox = QtWidgets.QCheckBox(_(self.file_filters[file_filter]), scroll_content)
             checkbox.setChecked(file_filter in self.selected_filters)
             scroll_layout.addWidget(checkbox)
             checkboxes[file_filter] = checkbox
@@ -145,7 +145,10 @@ class FindBox(QtWidgets.QWidget):
             return _("Filters")
 
         if len(selected_filters) == 1:
-            return _(ALL_TAGS.display_name(selected_filters[0]))
+            if selected_filters[0] not in cls.file_filters.keys():
+                return _(ALL_TAGS.display_name(selected_filters[0]))
+            else:
+                return _(cls.file_filters[selected_filters[0]])
 
         return _("{num} filters").format(num=len(selected_filters))
 
