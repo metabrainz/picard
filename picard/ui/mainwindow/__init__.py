@@ -314,8 +314,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.metadata_box.remove_selected_tags()
             else:
                 self.remove_selected_objects()
-        elif (event.modifiers() == (QtCore.Qt.KeyboardModifier.ControlModifier | QtCore.Qt.KeyboardModifier.ShiftModifier)
-        and event.key() == QtCore.Qt.Key.Key_F):
+        elif event.matches(QtGui.QKeySequence.StandardKey.Find):
             self.search_edit.setFocus(QtCore.Qt.FocusReason.ShortcutFocusReason)
         else:
             super().keyPressEvent(event)

@@ -348,10 +348,11 @@ def _create_show_toolbar_action(parent):
 
 
 @add_action(MainAction.SHOW_FINDBAR)
-def _create_find_toolbar_action(parent):
-    action = QtGui.QAction(_("Find"), parent)
+def _create_find_bar_action(parent):
+    action = QtGui.QAction(_("Filter Items"), parent)
+    action.setStatusTip(_("Toggle filtering of items based on specific tag values."))
     action.setCheckable(True)
-    action.setShortcut(QtGui.QKeySequence(_("Ctrl+F")))
+    action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+F")))
     action.triggered.connect(parent.toggle_find_boxes)
     return action
 
