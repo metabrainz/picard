@@ -107,7 +107,7 @@ class FindBox(QtWidgets.QWidget):
         scroll_layout.addWidget(line)
 
         # Add checkboxes for all tags
-        for tag in sorted(self.valid_tags, key=lambda t: _(ALL_TAGS.display_name(t._name)).lower()):
+        for tag in sorted(self.valid_tags, key=lambda t: ALL_TAGS.display_name(t._name).lower()):
             checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(tag._name), scroll_content)
             checkbox.setChecked(tag._name in self.selected_filters)
             scroll_layout.addWidget(checkbox)
@@ -146,7 +146,7 @@ class FindBox(QtWidgets.QWidget):
 
         if len(selected_filters) == 1:
             if selected_filters[0] not in cls.file_filters.keys():
-                return _(ALL_TAGS.display_name(selected_filters[0]))
+                return ALL_TAGS.display_name(selected_filters[0])
             else:
                 return _(cls.file_filters[selected_filters[0]])
 
