@@ -37,9 +37,14 @@ from picard.tags import (
     display_tag_full_description,
     display_tag_name,
     display_tag_tooltip,
+    filterable_tag_names,
+    hidden_tag_names,
     parse_comment_tag,
     parse_subtag,
+    preserved_tag_names,
     script_variable_tag_names,
+    tag_names,
+    visible_tag_names,
 )
 from picard.tags.tagvar import (
     DocumentLink,
@@ -531,3 +536,38 @@ class UtilTagsLinksTest(PicardTestCase):
                 link = doc_link.link.strip()
                 self.assertNotEqual(title, '', f"Invalid link (missing title) in '{str(tv)}' tag")
                 self.assertNotEqual(link, '', f"Invalid link (missing URL) in '{str(tv)}' tag")
+
+
+class TagsGeneratorTest(PicardTestCase):
+    def test_all_tags(self):
+        tags = list(tag_names())
+        self.assertTrue(len(tags) > 0)
+
+        for tag in tags:
+            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_tag)
+
+    def test_all_visible_tags(self):
+        tags = list(visible_tag_names())
+        self.assertTrue(len(tags) > 0)
+
+        for tag in tags:
+            self.assertFalse(ALL_TAGS.item_from_name(tag)[3].is_hidden)
+
+    def test_all_hidden_tags(self):
+        tags = list(hidden_tag_names())
+        self.assertTrue(len(tags) > 0)
+
+        for tag in tags:
+            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_hidden)
+
+    def test_all_preserved_tags(self):
+        tags = list(preserved_tag_names())
+        self.assertTrue(len(tags) > 0)
+
+        for tag in tags:
+            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_preserved)
+
+    def test_all_filterable_tags(self):
+        tags = list(filterable_tag_names())
+        for tag in tags:
+            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_filterable)
