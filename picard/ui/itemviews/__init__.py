@@ -118,8 +118,8 @@ class MainPanel(QtWidgets.QSplitter):
             # Add view
             layout.addWidget(view)
 
-            # Replace the view in the splitter with the container
-            self.replaceWidget(self.indexOf(view), container)
+            # Add the container to the splitter
+            self.addWidget(container)
 
         def _view_update_selection(view):
             if not self._ignore_selection_changes:
