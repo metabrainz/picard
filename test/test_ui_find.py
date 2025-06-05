@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2025 João Sousa
 # Copyright (C) 2025 Francisco Lisboa
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,25 +22,60 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.metadata import Metadata
-from picard.tags import tag_names
+from picard.tags.tagvar import (
+    TagVar,
+    TagVars,
+)
+
+from mock import patch
 
 from picard.ui.find import FindBox
 from picard.ui.itemviews import MainPanel
 from picard.ui.itemviews.basetreeview import BaseTreeView
 
 
+TEST_TAGS = TagVars(
+    TagVar(
+        'album',
+        shortdesc='Album',
+    ),
+    TagVar(
+        'artist',
+        shortdesc='Artist',
+    ),
+    TagVar(
+        'bitrate',
+        shortdesc='Bitrate',
+        is_file_info=True,
+        is_hidden=True,
+        is_preserved=True,
+        is_tag=False,
+        is_from_mb=False,
+    ),
+    TagVar(
+        'filename',
+        shortdesc='File Name',
+        is_hidden=True,
+        is_preserved=True,
+        is_tag=False,
+        is_from_mb=False,
+    ),
+    TagVar(
+        'filepath',
+        shortdesc='File Path',
+        is_hidden=True,
+        is_tag=False,
+        is_from_mb=False,
+    ),
+    TagVar(
+        'title',
+        shortdesc='Title',
+    ),
+)
+
+
 class FindBoxTest(PicardTestCase):
     """Test the FindBox widget functionality"""
-
-    def test_tag_names_available(self):
-        """Test that tag_names() returns valid tags for filtering"""
-        tags = set(tag_names())
-        self.assertIsInstance(tags, set)
-        self.assertGreater(len(tags), 0)
-        self.assertIn('artist', tags)
-        self.assertIn('album', tags)
-        self.assertIn('title', tags)
 
     def test_findbox_class_exists(self):
         """Test that FindBox class can be imported and has required attributes"""
@@ -48,11 +84,14 @@ class FindBoxTest(PicardTestCase):
         self.assertTrue(hasattr(FindBox, 'clear'))
         self.assertTrue(hasattr(FindBox, 'set_focus'))
 
+    # @patch('picard.const.tags.ALL_TAGS', TEST_TAGS)
     def test_filter_button_text_logic(self):
         """Test the logic for updating filter button text from FindBox._show_filter_dialog"""
         test_cases = [
             ([], "Filters"),
-            (["filename"], "filename"),
+            (["filename"], "Filename"),
+            (["artist"], "Artist"),
+            (["invalid_tag"], "invalid_tag"),
             (["filename", "artist"], "2 filters"),
             (["filename", "artist", "album", "title"], "4 filters"),
         ]
@@ -62,24 +101,19 @@ class FindBoxTest(PicardTestCase):
             self.assertEqual(button_text, expected_text,
                            f"Filter list {selected_filters} should produce text '{expected_text}'")
 
-    def test_filename_filtering_patterns(self):
-        """Test filename filtering patterns used in the implementation"""
-        filename = "Test_Song.mp3"
-        base_filename = filename.lower().rsplit('.', 1)[0]
+    @patch('picard.ui.find.ALL_TAGS', TEST_TAGS)
+    def test_valid_tags(self):
+        """Test generation of valid tags"""
+        valid_tags = set(str(x) for x in FindBox.get_valid_tags())
+        self.assertEqual(len(valid_tags), 3)
 
-        self.assertTrue("test" in base_filename)
-        self.assertTrue("song" in base_filename)
-        self.assertFalse("album" in base_filename)
+        tag_names = ['album', 'artist', 'title']
+        for name in tag_names:
+            self.assertTrue(name in valid_tags)
 
-    def test_filepath_filtering_patterns(self):
-        """Test filepath filtering patterns used in the implementation"""
-        filepath = "/home/user/Music/Artist/Album/01-Song.mp3"
-        filepath_lower = filepath.lower()
-
-        self.assertTrue("music" in filepath_lower)
-        self.assertTrue("artist" in filepath_lower)
-        self.assertTrue("album" in filepath_lower)
-        self.assertTrue("song" in filepath_lower)
+        tag_names = ['bitrate', 'filename', 'filepath', 'invalid_tag']
+        for name in tag_names:
+            self.assertFalse(name in valid_tags)
 
 
 class BaseTreeViewFilteringTest(PicardTestCase):
@@ -92,111 +126,6 @@ class BaseTreeViewFilteringTest(PicardTestCase):
         self.assertTrue(hasattr(BaseTreeView, '_filter_tree_items'))
         self.assertTrue(hasattr(BaseTreeView, '_restore_all_items'))
 
-    def test_metadata_filtering_logic(self):
-        """Test metadata filtering logic used in BaseTreeView._filter_tree_items"""
-        metadata = Metadata()
-        metadata['artist'] = 'The Beatles'
-        metadata['album'] = 'Abbey Road'
-        metadata['title'] = 'Come Together'
-
-        text = "beatles"
-        filters = ["artist"]
-
-        child_match = False
-        for tag, values in metadata.rawitems():
-            if isinstance(values, list):
-                for value in values:
-                    if filters == [] or tag.lower() in filters:
-                        if text in str(value).lower():
-                            child_match = True
-                            break
-            elif filters == [] or tag.lower() in filters:
-                if text in str(values).lower():
-                    child_match = True
-                    break
-
-        self.assertTrue(child_match)
-
-        child_match = False
-        filters = ["album"]
-        for tag, values in metadata.rawitems():
-            if isinstance(values, list):
-                for value in values:
-                    if filters == [] or tag.lower() in filters:
-                        if text in str(value).lower():
-                            child_match = True
-                            break
-            elif filters == [] or tag.lower() in filters:
-                if text in str(values).lower():
-                    child_match = True
-                    break
-
-        self.assertFalse(child_match)
-
-    def test_empty_filter_searches_all(self):
-        """Test that empty filter list searches all fields"""
-        metadata = Metadata()
-        metadata['artist'] = 'Test Artist'
-        metadata['album'] = 'Different Album'
-
-        text = "test"
-        filters = []
-
-        metadata_match = False
-        for tag, values in metadata.rawitems():
-            if isinstance(values, list):
-                for value in values:
-                    if filters == [] or tag.lower() in filters:
-                        if text in str(value).lower():
-                            metadata_match = True
-                            break
-            elif filters == [] or tag.lower() in filters:
-                if text in str(values).lower():
-                    metadata_match = True
-                    break
-
-        self.assertTrue(metadata_match)
-
-    def test_filter_items_text_processing(self):
-        """Test that BaseTreeView.filter_items processes text correctly"""
-        test_text = "  TeSt  "
-        processed = test_text.strip().lower()
-
-        self.assertEqual(processed, "test")
-
-    def test_filename_iteration_logic(self):
-        """Test the logic for iterating through files for filename matching"""
-        class MockFile:
-            def __init__(self, filename):
-                self.filename = filename
-                self.base_filename = filename.split('/')[-1].rsplit('.', 1)[0]
-
-        class MockCluster:
-            def __init__(self, files):
-                self.files = files
-
-            def iterfiles(self):
-                return self.files
-
-        files = [
-            MockFile("test_song.mp3"),
-            MockFile("another_track.mp3")
-        ]
-        cluster = MockCluster(files)
-
-        text = "test"
-        filters = ["filename"]
-
-        child_match = False
-        if hasattr(cluster, 'iterfiles'):
-            for file_ in cluster.iterfiles():
-                if filters == [] or "filename" in filters:
-                    if text in file_.base_filename.lower():
-                        child_match = True
-                        break
-
-        self.assertTrue(child_match)
-
 
 class MainPanelFindTest(PicardTestCase):
     """Test find functionality integration in MainPanel"""
@@ -204,14 +133,3 @@ class MainPanelFindTest(PicardTestCase):
     def test_main_panel_has_toggle_method(self):
         """Test that MainPanel has the toggle_find_boxes method"""
         self.assertTrue(hasattr(MainPanel, 'toggle_find_boxes'))
-
-    def test_toggle_logic(self):
-        """Test the core toggle logic used in MainPanel.toggle_find_boxes"""
-        find_box_visible = False
-
-        new_visible_state = not find_box_visible
-        self.assertTrue(new_visible_state)
-
-        find_box_visible = True
-        new_visible_state = not find_box_visible
-        self.assertFalse(new_visible_state)

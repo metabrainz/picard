@@ -50,7 +50,7 @@ class FindBox(QtWidgets.QWidget):
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.valid_tags = set(filter(lambda t: not t.is_hidden, ALL_TAGS))
+        self.valid_tags = self.get_valid_tags()
         self.selected_filters = []  # Start with "All" selected
 
         # find input
@@ -138,6 +138,11 @@ class FindBox(QtWidgets.QWidget):
             self.filter_button.setText(self.make_button_text(self.selected_filters))
 
             self._query_changed(self.find_query_box.text())
+
+    @classmethod
+    def get_valid_tags(cls) -> set:
+        # TODO: Update to use (future) picard.tags.filterable_tag_names() method.
+        return set(filter(lambda t: not t.is_hidden, ALL_TAGS))
 
     @classmethod
     def make_button_text(cls, selected_filters):
