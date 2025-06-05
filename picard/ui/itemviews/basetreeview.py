@@ -582,12 +582,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             self._restore_all_items()
             return
 
-        text = text.lower()
         self._filter_tree_items(self.invisibleRootItem(), text, filters)
 
     def _filter_tree_items(self, parent, text, filters):
         """Recursively filter tree items based on find text."""
 
+        text = text.lower()
         match_found = False
 
         for i in range(parent.childCount()):
