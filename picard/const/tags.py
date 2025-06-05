@@ -412,6 +412,7 @@ ALL_TAGS = TagVars(
         is_preserved=True,
         is_tag=False,
         is_from_mb=False,
+        is_filterable=True,
     ),
     TagVar(
         'filepath',
@@ -420,6 +421,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_tag=False,
         is_from_mb=False,
+        is_filterable=True,
     ),
     TagVar(
         'filesize',
