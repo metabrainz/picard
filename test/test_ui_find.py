@@ -20,14 +20,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from unittest.mock import patch
+
 from test.picardtestcase import PicardTestCase
 
 from picard.tags.tagvar import (
     TagVar,
     TagVars,
 )
-
-from mock import patch
 
 from picard.ui.find import FindBox
 from picard.ui.itemviews import MainPanel
