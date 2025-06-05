@@ -83,7 +83,7 @@ class TagVar:
         self, name, shortdesc=None, longdesc=None, additionaldesc=None,
         is_preserved=False, is_hidden=False, is_script_variable=True, is_tag=True, is_calculated=False,
         is_file_info=False, is_from_mb=True, is_populated_by_picard=True, is_multi_value=False,
-        is_filterable=True, see_also=None, related_options=None, doc_links=None
+        is_filterable=False, see_also=None, related_options=None, doc_links=None
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -103,7 +103,7 @@ class TagVar:
         is_from_mb: the tag information is provided from the MusicBrainz database (boolean, default: True)
         is_populated_by_picard: the tag information is populated by stock Picard (boolean, default: True)
         is_multi_value: the tag is a multi-value variable (boolean, default: False)
-        is_filterable: the tag can be selected for filtering (boolean, default: True)
+        is_filterable: the tag can be selected for filtering (boolean, default: False)
         see_also: an iterable containing ids of related tags
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
