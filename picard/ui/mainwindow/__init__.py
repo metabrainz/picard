@@ -634,7 +634,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.SHOW_TOOLBAR,
             MainAction.SEARCH_TOOLBAR_TOGGLE,
-            MainAction.SHOW_FINDBAR,
+            MainAction.SHOW_FILTERBAR,
             MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
         )
 
@@ -1633,9 +1633,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_plugins_options_page(self):
         self.show_options(page='plugins')
 
-    def toggle_find_boxes(self):
-        """Toggle the find boxes in the main panel."""
-        self.panel.toggle_find_boxes()
+    def toggle_filter_boxes(self):
+        """Toggle the filter boxes in the main panel."""
+        self.panel.toggle_filter_boxes()
 
 
 def update_last_check_date(is_success):

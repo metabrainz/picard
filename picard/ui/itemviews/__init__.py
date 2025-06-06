@@ -104,16 +104,16 @@ class MainPanel(QtWidgets.QSplitter):
         self._ignore_selection_changes = False
         self._sort_enabled = None  # None at start, bool once set_sorting is called
 
-        # Create a layout for each view to include the find box
+        # Create a layout for each view to include the filter box
         for view in self._views:
             container = QtWidgets.QWidget(self)
             layout = QtWidgets.QVBoxLayout(container)
             layout.setContentsMargins(0, 0, 0, 0)
             layout.setSpacing(0)
 
-            # Create and add find box
-            find_box = view.setup_find_box()
-            layout.addWidget(find_box)
+            # Create and add filter box
+            filter_box = view.setup_filter_box()
+            layout.addWidget(filter_box)
 
             # Add view
             layout.addWidget(view)
@@ -249,15 +249,15 @@ class MainPanel(QtWidgets.QSplitter):
                 self._update_selection(view)
                 break
 
-    def toggle_find_boxes(self):
-        """Toggle visibility of find boxes in both views."""
-        visible = not self._views[0].find_box.isVisible()
+    def toggle_filter_boxes(self):
+        """Toggle visibility of filter boxes in both views."""
+        visible = not self._views[0].filter_box.isVisible()
         for view in self._views:
-            view.find_box.setVisible(visible)
+            view.filter_box.setVisible(visible)
             if visible and view.hasFocus():
-                view.find_box.set_focus()
+                view.filter_box.set_focus()
             else:
-                view.find_box.clear()
+                view.filter_box.clear()
 
 
 class FileTreeView(BaseTreeView):

@@ -347,13 +347,13 @@ def _create_show_toolbar_action(parent):
     return action
 
 
-@add_action(MainAction.SHOW_FINDBAR)
-def _create_find_bar_action(parent):
+@add_action(MainAction.SHOW_FILTERBAR)
+def _create_filter_bar_action(parent):
     action = QtGui.QAction(_("Filter Items"), parent)
     action.setStatusTip(_("Toggle filtering of items based on specific tag values."))
     action.setCheckable(True)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+F")))
-    action.triggered.connect(parent.toggle_find_boxes)
+    action.triggered.connect(parent.toggle_filter_boxes)
     return action
 
 

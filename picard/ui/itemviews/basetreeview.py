@@ -89,7 +89,7 @@ from picard.util import (
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
-from picard.ui.find import FindBox
+from picard.ui.filter import Filter
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -569,13 +569,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def default_drop_target(self):
         return None
 
-    def setup_find_box(self):
-        self.find_box = FindBox(self)
-        self.find_box.findChanged.connect(self.filter_items)
+    def setup_filter_box(self):
+        self.filter_box = Filter(self)
+        self.filter_box.filterChanged.connect(self.filter_items)
 
-        self.find_box.hide()  # Hide the find box initially
+        self.filter_box.hide()  # Hide the filter box initially
 
-        return self.find_box
+        return self.filter_box
 
     def filter_items(self, text, filters):
         if not text:  # When text is empty, show all items
@@ -585,7 +585,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self._filter_tree_items(self.invisibleRootItem(), text, filters)
 
     def _filter_tree_items(self, parent, text, filters):
-        """Recursively filter tree items based on find text."""
+        """Recursively filter tree items based on filter text."""
 
         text = text.lower()
         match_found = False
