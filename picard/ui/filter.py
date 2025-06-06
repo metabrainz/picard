@@ -34,9 +34,9 @@ from picard.tags import (
 )
 
 
-class FindBox(QtWidgets.QWidget):
+class Filter(QtWidgets.QWidget):
 
-    findChanged = QtCore.pyqtSignal(str, list)
+    filterChanged = QtCore.pyqtSignal(str, list)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -46,7 +46,7 @@ class FindBox(QtWidgets.QWidget):
         self.default_filter_button_label = N_("Filters")
 
         # filter button
-        self.filter_button = QtWidgets.QPushButton(_("Filters"), self)
+        self.filter_button = QtWidgets.QPushButton(self.default_filter_button_label, self)
         self.filter_button.setMaximumWidth(120)
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
@@ -54,12 +54,12 @@ class FindBox(QtWidgets.QWidget):
         self.filterable_tags = self.get_filterable_tags()
         self.selected_filters = []  # Start with no filters selected
 
-        # find input
-        self.find_query_box = QtWidgets.QLineEdit(self)
-        self.find_query_box.setPlaceholderText(_("Find"))
-        self.find_query_box.setClearButtonEnabled(True)
-        self.find_query_box.textChanged.connect(self._query_changed)
-        layout.addWidget(self.find_query_box)
+        # filter input
+        self.filter_query_box = QtWidgets.QLineEdit(self)
+        self.filter_query_box.setPlaceholderText(_("Type to filter..."))
+        self.filter_query_box.setClearButtonEnabled(True)
+        self.filter_query_box.textChanged.connect(self._query_changed)
+        layout.addWidget(self.filter_query_box)
 
     file_filters = {
         'filename': N_("Filename"),
@@ -138,7 +138,7 @@ class FindBox(QtWidgets.QWidget):
             # Update button text
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
-            self._query_changed(self.find_query_box.text())
+            self._query_changed(self.filter_query_box.text())
 
     @classmethod
     def get_filterable_tags(cls) -> set:
@@ -163,12 +163,12 @@ class FindBox(QtWidgets.QWidget):
         self.filter_button.setText(label)
 
     def _query_changed(self, text):
-        self.findChanged.emit(text, self.selected_filters)
+        self.filterChanged.emit(text, self.selected_filters)
 
     def clear(self):
-        self.find_query_box.clear()
+        self.filter_query_box.clear()
         self.selected_filters = []
         self.set_filter_button_label()
 
     def set_focus(self):
-        self.find_query_box.setFocus()
+        self.filter_query_box.setFocus()

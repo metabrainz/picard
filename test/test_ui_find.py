@@ -29,7 +29,7 @@ from picard.tags.tagvar import (
     TagVars,
 )
 
-from picard.ui.find import FindBox
+from picard.ui.filter import Filter
 from picard.ui.itemviews import MainPanel
 from picard.ui.itemviews.basetreeview import BaseTreeView
 
@@ -74,19 +74,19 @@ TEST_TAGS = TagVars(
 )
 
 
-class FindBoxTest(PicardTestCase):
-    """Test the FindBox widget functionality"""
+class FilterxTest(PicardTestCase):
+    """Test the Filter widget functionality"""
 
-    def test_findbox_class_exists(self):
-        """Test that FindBox class can be imported and has required attributes"""
-        self.assertTrue(hasattr(FindBox, 'findChanged'))
-        self.assertTrue(hasattr(FindBox, '_query_changed'))
-        self.assertTrue(hasattr(FindBox, 'clear'))
-        self.assertTrue(hasattr(FindBox, 'set_focus'))
+    def test_filterbox_class_exists(self):
+        """Test that Filter class can be imported and has required attributes"""
+        self.assertTrue(hasattr(Filter, 'filterChanged'))
+        self.assertTrue(hasattr(Filter, '_query_changed'))
+        self.assertTrue(hasattr(Filter, 'clear'))
+        self.assertTrue(hasattr(Filter, 'set_focus'))
 
     # @patch('picard.const.tags.ALL_TAGS', TEST_TAGS)
     def test_filter_button_text_logic(self):
-        """Test the logic for updating filter button text from FindBox._show_filter_dialog"""
+        """Test the logic for updating filter button text from Filter._show_filter_dialog"""
         test_cases = [
             ([], None),
             (["filename"], "Filename"),
@@ -97,14 +97,14 @@ class FindBoxTest(PicardTestCase):
         ]
 
         for selected_filters, expected_text in test_cases:
-            button_text = FindBox.make_button_text(selected_filters)
+            button_text = Filter.make_button_text(selected_filters)
             self.assertEqual(button_text, expected_text,
                            f"Filter list {selected_filters} should produce '{expected_text}'")
 
-    @patch('picard.ui.find.ALL_TAGS', TEST_TAGS)
+    @patch('picard.ui.filter.ALL_TAGS', TEST_TAGS)
     def test_filterable_tags(self):
         """Test generation of valid tags"""
-        filterable_tags = set(str(x) for x in FindBox.get_filterable_tags())
+        filterable_tags = set(str(x) for x in Filter.get_filterable_tags())
         self.assertEqual(len(filterable_tags), 35)
 
         tag_names = ['album', 'artist', 'title']
@@ -121,15 +121,15 @@ class BaseTreeViewFilteringTest(PicardTestCase):
 
     def test_filter_methods_exist(self):
         """Test that BaseTreeView has the required filtering methods"""
-        self.assertTrue(hasattr(BaseTreeView, 'setup_find_box'))
+        self.assertTrue(hasattr(BaseTreeView, 'setup_filter_box'))
         self.assertTrue(hasattr(BaseTreeView, 'filter_items'))
         self.assertTrue(hasattr(BaseTreeView, '_filter_tree_items'))
         self.assertTrue(hasattr(BaseTreeView, '_restore_all_items'))
 
 
-class MainPanelFindTest(PicardTestCase):
-    """Test find functionality integration in MainPanel"""
+class MainPanelFilterTest(PicardTestCase):
+    """Test filter functionality integration in MainPanel"""
 
     def test_main_panel_has_toggle_method(self):
-        """Test that MainPanel has the toggle_find_boxes method"""
-        self.assertTrue(hasattr(MainPanel, 'toggle_find_boxes'))
+        """Test that MainPanel has the toggle_filter_boxes method"""
+        self.assertTrue(hasattr(MainPanel, 'toggle_filter_boxes'))
