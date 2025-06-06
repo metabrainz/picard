@@ -45,12 +45,7 @@ class FindBox(QtWidgets.QWidget):
 
         self.default_filter_button_label = N_("Filters")
 
-        # find icon
-        self.find_icon = QtWidgets.QLabel()
-        find_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogContentsView)
-        self.find_icon.setPixmap(find_icon.pixmap(16, 16))
-        layout.addWidget(self.find_icon)
-
+        # filter button
         self.filter_button = QtWidgets.QPushButton(_("Filters"), self)
         self.filter_button.setMaximumWidth(120)
         self.filter_button.clicked.connect(self._show_filter_dialog)
