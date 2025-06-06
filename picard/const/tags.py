@@ -70,6 +70,7 @@ ALL_TAGS = TagVars(
             'These could be either "standardized" or "as credited" depending on whether the "Use '
             'standardized artist names" metadata option is enabled.'
         ),
+        is_filterable=True,
     ),
     TagVar(
         'albumartists',
@@ -114,6 +115,7 @@ ALL_TAGS = TagVars(
         'album',
         shortdesc=N_('Album'),
         longdesc=N_('The title of the release.'),
+        is_filterable=True,
     ),
     TagVar(
         'albumsort',
@@ -128,6 +130,7 @@ ALL_TAGS = TagVars(
             'The names of the arrangers associated with the track. These can include the instrument '
             'and orchestra arrangers, and could be associated with the release, recording or work.'
         ),
+        is_filterable=True,
     ),
     TagVar(
         'artist',
@@ -137,6 +140,7 @@ ALL_TAGS = TagVars(
             '"standardized" or "as credited" depending on whether the "Use standardized artist names" '
             'metadata option is enabled.'
         ),
+        is_filterable=True,
     ),
     TagVar(
         'artists',
@@ -177,6 +181,7 @@ ALL_TAGS = TagVars(
         'asin',
         shortdesc=N_('ASIN'),
         longdesc=N_('The Amazon Standard Identification Number, which is the number identifying the item on Amazon.'),
+        is_filterable=True,
     ),
     TagVar(
         'barcode',
@@ -186,6 +191,7 @@ ALL_TAGS = TagVars(
             DocumentLink(N_('Barcode in MusicBrainz documentation'), PICARD_URLS['mb_doc'] + 'Barcode'),
             DocumentLink(N_('Barcode mapping in Picard documentation'),  PICARD_URLS['documentation'] + 'appendices/tag_mapping.html#id6'),
         ),
+        is_filterable=True,
     ),
     TagVar(
         'bpm',
@@ -221,6 +227,7 @@ ALL_TAGS = TagVars(
             'or near the barcode. There may be more than one, especially when multiple labels are involved.'
         ),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'channels',
@@ -253,6 +260,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Composer'),
         longdesc=N_('The names of the composers for the associated work.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'composersort',
@@ -268,6 +276,7 @@ ALL_TAGS = TagVars(
             'and chorus master, and could be associated with the release or recording.'
         ),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'copyright',
@@ -289,6 +298,7 @@ ALL_TAGS = TagVars(
         'date',
         shortdesc=N_('Date'),
         longdesc=N_('The date that the release (album) was issued, in the format `YYYY-MM-DD`.'),
+        is_filterable=True,
     ),
     TagVar(
         'director',
@@ -298,6 +308,7 @@ ALL_TAGS = TagVars(
             'in MusicBrainz.'
         ),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'dirname',
@@ -318,11 +329,13 @@ ALL_TAGS = TagVars(
             DocumentLink(N_('FreeDB DiscID Calculation'), 'https://wikipedia.org/wiki/CDDB#Example_calculation_of_a_CDDB1_(FreeDB)_disc_ID'),
             DocumentLink(N_('FreeDB DiscID including Calculation Example (French)'), 'https://fr.wikipedia.org/wiki/DiscId'),
         ),
+        is_filterable=True,
     ),
     TagVar(
         'discnumber',
         shortdesc=N_('Disc Number'),
         longdesc=N_('The number of the disc in the release that contains this track.'),
+        is_filterable=True,
     ),
     TagVar(
         'discpregap',
@@ -336,12 +349,14 @@ ALL_TAGS = TagVars(
         'discsubtitle',
         shortdesc=N_('Disc Subtitle'),
         longdesc=N_('The media title given to a specific disc in the release.'),
+        is_filterable=True,
     ),
     TagVar(
         'djmixer',
         shortdesc=N_('DJ-Mixer'),
         longdesc=N_('The names of the DJ mixers for the track.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'encodedby',
@@ -360,6 +375,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Engineer'),
         longdesc=N_('The names of the engineers associated with the track.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'extension',
@@ -396,6 +412,7 @@ ALL_TAGS = TagVars(
         is_preserved=True,
         is_tag=False,
         is_from_mb=False,
+        is_filterable=True,
     ),
     TagVar(
         'filepath',
@@ -404,6 +421,7 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_tag=False,
         is_from_mb=False,
+        is_filterable=True,
     ),
     TagVar(
         'filesize',
@@ -433,11 +451,10 @@ ALL_TAGS = TagVars(
     TagVar(
         'genre',
         shortdesc=N_('Genre'),
-        longdesc=N_(
-            'The specified genre information from MusicBrainz.'
-        ),
+        longdesc=N_('The specified genre information from MusicBrainz.'),
         related_options=('use_genres', ),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         # TODO: Check if this actually exists or if it was provided by the last.fm plugin.
@@ -454,6 +471,7 @@ ALL_TAGS = TagVars(
             'identifying sound recordings and music video recordings.'
         ),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'key',
@@ -466,11 +484,13 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Record Label'),
         longdesc=N_('The names of the labels associated with the release.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'language',
         shortdesc=N_('Language'),
         longdesc=N_('Work lyric language as per ISO 639-3 if a related work exists.'),
+        is_filterable=True,
     ),
     TagVar(
         'length',
@@ -489,6 +509,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Lyricist'),
         longdesc=N_('The names of the lyricists for the associated work.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'lyricistsort',
@@ -502,17 +523,20 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Lyrics'),
         longdesc=N_('The lyrics for the track.'),
         is_from_mb=False,
+        is_filterable=True,
     ),
     TagVar(
         'media',
         shortdesc=N_('Media'),
         longdesc=N_('The media on which the release was distributed (e.g.: CD).'),
+        is_filterable=True,
     ),
     TagVar(
         'mixer',
         shortdesc=N_('Mixer'),
         longdesc=N_('The names of the "*Mixed By*" engineers associated with the track.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'mood',
@@ -719,6 +743,7 @@ ALL_TAGS = TagVars(
             '- the concert master for the associated release or recording, where "type" is "*concertmaster*"'
         ),
         is_multi_value=True,    # TODO: Confirm that this is a multi-value
+        is_filterable=True,
     ),
     TagVar(
         'podcast',
@@ -755,6 +780,7 @@ ALL_TAGS = TagVars(
         shortdesc=N_('Producer'),
         longdesc=N_('The names of the producers for the associated release or recording.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'r128_album_gain',
@@ -854,6 +880,7 @@ ALL_TAGS = TagVars(
             'The two-character code for the country in which the release was issued. If more than one release country '
             'was specified, this tag will contain the first one in the list.'
         ),
+        is_filterable=True,
     ),
     TagVar(
         'releasedate',
@@ -963,6 +990,7 @@ ALL_TAGS = TagVars(
             'An indicator of the "official" status of the release. Possible values include "*official*", '
             '"*promotional*", "*bootleg*", and "*pseudo-release*".'
         ),
+        is_filterable=True,
     ),
     TagVar(
         'releasetype',
@@ -971,12 +999,14 @@ ALL_TAGS = TagVars(
         is_multi_value=True,
         see_also=('_primaryreleasetype', '_secondaryreleasetype'),
         doc_links=(DocumentLink(N_('Release group types'), PICARD_URLS['mb_doc'] + 'Release_Group/Type'),),
+        is_filterable=True,
     ),
     TagVar(
         'remixer',
         shortdesc=N_('Remixer'),
         longdesc=N_('The names of the remixer engineers associated with the track.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'replaygain_album_gain',
@@ -1044,6 +1074,7 @@ ALL_TAGS = TagVars(
             "The script used to write the release's track list. The possible values are taken from the "
             'ISO 15924 standard.'
         ),
+        is_filterable=True,
     ),
     TagVar(
         'secondaryreleasetype',
@@ -1106,6 +1137,7 @@ ALL_TAGS = TagVars(
         'title',
         shortdesc=N_('Title'),
         longdesc=N_('The title of the track.'),
+        is_filterable=True,
     ),
     TagVar(
         'titlesort',
@@ -1147,6 +1179,7 @@ ALL_TAGS = TagVars(
         'website',
         shortdesc=N_('Artist Website'),
         longdesc=N_('The official website for the artist.'),
+        is_filterable=True,
     ),
     TagVar(
         'work',
@@ -1156,7 +1189,8 @@ ALL_TAGS = TagVars(
             'Note: If you are using iTunes together with MP3 files you should activate the "Save iTunes compatible '
             'grouping and work" option in order for the work to be displayed correctly.'
         ),
-        related_options=('itunes_compatible_grouping', )
+        related_options=('itunes_compatible_grouping', ),
+        is_filterable=True,
     ),
     TagVar(
         'work_series',
@@ -1201,6 +1235,7 @@ ALL_TAGS = TagVars(
         ),
         additionaldesc=N_('You can merge this with composers with a script like `$copymerge(composer,writer)`.'),
         is_multi_value=True,
+        is_filterable=True,
     ),
     TagVar(
         'writersort',
