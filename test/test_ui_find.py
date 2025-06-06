@@ -77,7 +77,7 @@ TEST_TAGS = TagVars(
 class FilterxTest(PicardTestCase):
     """Test the Filter widget functionality"""
 
-    def test_filterbox_class_exists(self):
+    def test_filter_class_exists(self):
         """Test that Filter class can be imported and has required attributes"""
         self.assertTrue(hasattr(Filter, 'filterChanged'))
         self.assertTrue(hasattr(Filter, '_query_changed'))
