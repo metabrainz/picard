@@ -144,8 +144,7 @@ class FindBox(QtWidgets.QWidget):
 
     @classmethod
     def get_filterable_tags(cls) -> set:
-        # TODO: Update to use (future) picard.tags.filterable_tag_names() method.
-        return filterable_tag_names()
+        return set(filterable_tag_names())
 
     @classmethod
     def make_button_text(cls, selected_filters):
