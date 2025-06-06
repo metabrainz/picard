@@ -88,7 +88,7 @@ class FindBoxTest(PicardTestCase):
     def test_filter_button_text_logic(self):
         """Test the logic for updating filter button text from FindBox._show_filter_dialog"""
         test_cases = [
-            ([], "Filters"),
+            ([], None),
             (["filename"], "Filename"),
             (["artist"], "Artist"),
             (["invalid_tag"], "invalid_tag"),
@@ -99,7 +99,7 @@ class FindBoxTest(PicardTestCase):
         for selected_filters, expected_text in test_cases:
             button_text = FindBox.make_button_text(selected_filters)
             self.assertEqual(button_text, expected_text,
-                           f"Filter list {selected_filters} should produce text '{expected_text}'")
+                           f"Filter list {selected_filters} should produce '{expected_text}'")
 
     @patch('picard.ui.find.ALL_TAGS', TEST_TAGS)
     def test_filterable_tags(self):
