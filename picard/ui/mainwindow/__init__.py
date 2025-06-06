@@ -25,7 +25,7 @@
 # Copyright (C) 2018 Kartik Ohri
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2018, 2021-2023 Bob Swift
+# Copyright (C) 2018, 2021-2023, 2025 Bob Swift
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
@@ -269,6 +269,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.show_metadata_view()
         self.show_cover_art()
+        self.show_filter_bars()
 
         main_layout.addWidget(self.panel)
         main_layout.addWidget(self.metadata_view)
@@ -394,6 +395,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.persist['view_metadata_view'] = self.action_is_checked(MainAction.SHOW_METADATA_VIEW)
         config.persist['view_cover_art'] = self.action_is_checked(MainAction.SHOW_COVER_ART)
         config.persist['view_toolbar'] = self.action_is_checked(MainAction.SHOW_TOOLBAR)
+        config.persist['view_filterbar'] = self.action_is_checked(MainAction.SHOW_FILTERBAR)
         config.persist['view_file_browser'] = self.action_is_checked(MainAction.SHOW_FILE_BROWSER)
         self.file_browser.save_state()
         self.panel.save_state()
@@ -1660,9 +1662,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_plugins_options_page(self):
         self.show_options(page='plugins')
 
-    def toggle_filter_boxes(self):
-        """Toggle the filter boxes in the main panel."""
-        self.panel.toggle_filter_boxes()
+    def show_filter_bars(self):
+        show_state = self.action_is_checked(MainAction.SHOW_FILTERBAR)
+        self.panel.show_filter_bars(show_state)
 
 
 def update_last_check_date(is_success):

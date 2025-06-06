@@ -25,7 +25,7 @@
 # Copyright (C) 2018 Kartik Ohri
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2018, 2021-2023 Bob Swift
+# Copyright (C) 2018, 2021-2023, 2025 Bob Swift
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
@@ -349,11 +349,14 @@ def _create_show_toolbar_action(parent):
 
 @add_action(MainAction.SHOW_FILTERBAR)
 def _create_filter_bar_action(parent):
+    config = get_config()
     action = QtGui.QAction(_("Filter Items"), parent)
     action.setStatusTip(_("Toggle filtering of items based on specific tag values."))
     action.setCheckable(True)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+F")))
-    action.triggered.connect(parent.toggle_filter_boxes)
+    if config.persist['view_filterbar']:
+        action.setChecked(True)
+    action.triggered.connect(parent.show_filter_bars)
     return action
 
 

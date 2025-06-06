@@ -22,7 +22,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Louis Sautier
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2023 certuna
@@ -249,12 +249,11 @@ class MainPanel(QtWidgets.QSplitter):
                 self._update_selection(view)
                 break
 
-    def toggle_filter_boxes(self):
-        """Toggle visibility of filter boxes in both views."""
-        visible = not self._views[0].filter_box.isVisible()
+    def show_filter_bars(self, show_state: bool):
+        """Toggle visibility of filter bars in both views."""
         for view in self._views:
-            view.filter_box.setVisible(visible)
-            if visible and view.hasFocus():
+            view.filter_box.setVisible(show_state)
+            if show_state and view.hasFocus():
                 view.filter_box.set_focus()
             else:
                 view.filter_box.clear()
