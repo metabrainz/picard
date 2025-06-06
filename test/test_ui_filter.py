@@ -38,10 +38,12 @@ TEST_TAGS = TagVars(
     TagVar(
         'album',
         shortdesc='Album',
+        is_filterable=True,
     ),
     TagVar(
         'artist',
         shortdesc='Artist',
+        is_filterable=True,
     ),
     TagVar(
         'bitrate',
@@ -70,6 +72,7 @@ TEST_TAGS = TagVars(
     TagVar(
         'title',
         shortdesc='Title',
+        is_filterable=True,
     ),
 )
 
@@ -101,11 +104,11 @@ class FilterxTest(PicardTestCase):
             self.assertEqual(button_text, expected_text,
                            f"Filter list {selected_filters} should produce '{expected_text}'")
 
-    @patch('picard.ui.filter.ALL_TAGS', TEST_TAGS)
+    @patch('picard.tags.ALL_TAGS', TEST_TAGS)
     def test_filterable_tags(self):
         """Test generation of valid tags"""
         filterable_tags = set(str(x) for x in Filter.get_filterable_tags())
-        self.assertEqual(len(filterable_tags), 35)
+        self.assertEqual(len(filterable_tags), 3)
 
         tag_names = ['album', 'artist', 'title']
         for name in tag_names:
