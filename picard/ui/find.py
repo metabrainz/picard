@@ -35,12 +35,15 @@ from picard.tags import (
 
 
 class FindBox(QtWidgets.QWidget):
+
     findChanged = QtCore.pyqtSignal(str, list)
 
     def __init__(self, parent=None):
         super().__init__(parent)
         layout = QtWidgets.QHBoxLayout(self)
         layout.setContentsMargins(2, 2, 2, 2)
+
+        self.default_filter_button_label = N_("Filters")
 
         # find icon
         self.find_icon = QtWidgets.QLabel()
@@ -138,7 +141,7 @@ class FindBox(QtWidgets.QWidget):
                 self.selected_filters = []
 
             # Update button text
-            self.filter_button.setText(self.make_button_text(self.selected_filters))
+            self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
             self._query_changed(self.find_query_box.text())
 
@@ -149,7 +152,7 @@ class FindBox(QtWidgets.QWidget):
     @classmethod
     def make_button_text(cls, selected_filters):
         if not selected_filters:
-            return _("Filters")
+            return None
 
         if len(selected_filters) == 1:
             if selected_filters[0] not in cls.file_filters.keys():
@@ -159,13 +162,18 @@ class FindBox(QtWidgets.QWidget):
 
         return _("{num} filters").format(num=len(selected_filters))
 
+    def set_filter_button_label(self, label=None):
+        if label is None:
+            label = _(self.default_filter_button_label)
+        self.filter_button.setText(label)
+
     def _query_changed(self, text):
         self.findChanged.emit(text, self.selected_filters)
 
     def clear(self):
         self.find_query_box.clear()
         self.selected_filters = []
-        self.filter_button.setText(_("Filters"))
+        self.set_filter_button_label()
 
     def set_focus(self):
         self.find_query_box.setFocus()
