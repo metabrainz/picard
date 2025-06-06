@@ -139,6 +139,7 @@ BoolOption('persist', 'view_cover_art', True)
 BoolOption('persist', 'view_file_browser', False)
 BoolOption('persist', 'view_metadata_view', True)
 BoolOption('persist', 'view_toolbar', True)
+BoolOption('persist', 'view_filterbar', False)
 BoolOption('persist', 'window_maximized', False)
 Option('persist', 'window_state', QtCore.QByteArray())
 
