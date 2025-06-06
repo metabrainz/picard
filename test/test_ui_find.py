@@ -102,18 +102,18 @@ class FindBoxTest(PicardTestCase):
                            f"Filter list {selected_filters} should produce text '{expected_text}'")
 
     @patch('picard.ui.find.ALL_TAGS', TEST_TAGS)
-    def test_valid_tags(self):
+    def test_filterable_tags(self):
         """Test generation of valid tags"""
-        valid_tags = set(str(x) for x in FindBox.get_valid_tags())
-        self.assertEqual(len(valid_tags), 3)
+        filterable_tags = set(str(x) for x in FindBox.get_filterable_tags())
+        self.assertEqual(len(filterable_tags), 35)
 
         tag_names = ['album', 'artist', 'title']
         for name in tag_names:
-            self.assertTrue(name in valid_tags)
+            self.assertTrue(name in filterable_tags)
 
         tag_names = ['bitrate', 'filename', 'filepath', 'invalid_tag']
         for name in tag_names:
-            self.assertFalse(name in valid_tags)
+            self.assertFalse(name in filterable_tags)
 
 
 class BaseTreeViewFilteringTest(PicardTestCase):

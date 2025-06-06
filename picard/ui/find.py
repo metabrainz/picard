@@ -24,10 +24,13 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.const.tags import ALL_TAGS
 from picard.i18n import (
     N_,
     gettext as _,
+)
+from picard.tags import (
+    ALL_TAGS,
+    filterable_tag_names,
 )
 
 
@@ -50,8 +53,8 @@ class FindBox(QtWidgets.QWidget):
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.valid_tags = self.get_valid_tags()
-        self.selected_filters = []  # Start with "All" selected
+        self.filterable_tags = self.get_filterable_tags()
+        self.selected_filters = []  # Start with no filters selected
 
         # find input
         self.find_query_box = QtWidgets.QLineEdit(self)
@@ -107,7 +110,7 @@ class FindBox(QtWidgets.QWidget):
         scroll_layout.addWidget(line)
 
         # Add checkboxes for all tags
-        for tag in sorted(self.valid_tags, key=lambda t: ALL_TAGS.display_name(str(t)).lower()):
+        for tag in sorted(self.filterable_tags, key=lambda t: ALL_TAGS.display_name(str(t)).lower()):
             checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(str(tag)), scroll_content)
             checkbox.setChecked(str(tag) in self.selected_filters)
             scroll_layout.addWidget(checkbox)
@@ -140,9 +143,9 @@ class FindBox(QtWidgets.QWidget):
             self._query_changed(self.find_query_box.text())
 
     @classmethod
-    def get_valid_tags(cls) -> set:
+    def get_filterable_tags(cls) -> set:
         # TODO: Update to use (future) picard.tags.filterable_tag_names() method.
-        return set(filter(lambda t: not t.is_hidden, ALL_TAGS))
+        return filterable_tag_names()
 
     @classmethod
     def make_button_text(cls, selected_filters):
