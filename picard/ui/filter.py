@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import OrderedDict
+
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -61,10 +63,10 @@ class Filter(QtWidgets.QWidget):
         self.filter_query_box.textChanged.connect(self._query_changed)
         layout.addWidget(self.filter_query_box)
 
-    file_filters = {
+    file_filters = OrderedDict({
         'filename': N_("Filename"),
         'filepath': N_("Filepath"),
-    }
+    })
 
     def _show_filter_dialog(self):
         """Show dialog to select multiple filters"""
@@ -90,8 +92,8 @@ class Filter(QtWidgets.QWidget):
         scroll_layout.addWidget(line)
 
         checkboxes = {}
-        for file_filter in ["filename", "filepath"]:
-            checkbox = QtWidgets.QCheckBox(_(self.file_filters[file_filter]), scroll_content)
+        for file_filter, title in self.file_filters.items():
+            checkbox = QtWidgets.QCheckBox(_(title), scroll_content)
             checkbox.setChecked(file_filter in self.selected_filters)
             scroll_layout.addWidget(checkbox)
             checkboxes[file_filter] = checkbox
