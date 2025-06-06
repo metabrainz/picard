@@ -88,6 +88,18 @@ def tag_names():
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag)
 
 
+def visible_tag_names():
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag and not tv.is_hidden)
+
+
+def hidden_tag_names():
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag and tv.is_hidden)
+
+
+def filterable_tag_names():
+    yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag and tv.is_filterable)
+
+
 def preserved_tag_names():
     """Tags that should be preserved by default"""
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_preserved)

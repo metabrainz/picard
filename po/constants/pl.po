@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-05-28 21:20+0000\n"
+"PO-Revision-Date: 2025-06-05 09:20+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "constants/pl/>\n"
@@ -4558,12 +4558,13 @@ msgid "Comment"
 msgstr "Komentarz"
 
 #: picard/const/tags.py:240
+#, fuzzy
 msgid ""
 "The disambiguation comment entered to help distinguish one release from "
 "another (e.g.: Deluxe version with 2 bonus tracks)."
 msgstr ""
 "Komentarz ujednoznaczniający wprowadzony w celu ułatwienia odróżnienia "
-"jednego wydania od drugiego (np. wersja deluxe z 2 dodatkowymi utworami)."
+"jednego wydania od drugiego (np. wersja Deluxe z 2 dodatkowymi utworami)."
 
 #: picard/const/tags.py:248
 msgid "Compilation (iTunes)"
@@ -5174,7 +5175,7 @@ msgstr "Oryginalna nazwa pliku"
 
 #: picard/const/tags.py:687
 msgid "The original name of the audio file."
-msgstr ""
+msgstr "Oryginalna nazwa pliku audio."
 
 #: picard/const/tags.py:692
 msgid "Original Year"
@@ -5293,14 +5294,12 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:775
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "łaciński"
+msgstr "Ocena"
 
 #: picard/const/tags.py:776
 msgid "The rating of the track from 0-5 by MusicBrainz users."
-msgstr ""
+msgstr "Ocena utworu w skali 0-5 wystawiona przez użytkowników MusicBrainz."
 
 #: picard/const/tags.py:781
 msgid "Recording First Released"
@@ -5309,15 +5308,16 @@ msgstr ""
 #: picard/const/tags.py:782
 msgid ""
 "The date of the earliest recording for a track in the format `YYYY-MM-DD`."
-msgstr ""
+msgstr "Data najwcześniejszego nagrania utworu w formacie `RRRR-MM-DD`."
 
 #: picard/const/tags.py:788
 msgid "Recording Series"
-msgstr ""
+msgstr "Seria nagrań"
 
 #: picard/const/tags.py:789
+#, fuzzy
 msgid "The series titles associated with the recording."
-msgstr ""
+msgstr "Tytuły serii powiązane z nagraniem."
 
 #: picard/const/tags.py:795
 msgid "Recording Series Comment"
@@ -5350,7 +5350,7 @@ msgstr ""
 
 #: picard/const/tags.py:817
 msgid "The disambiguation comment for the recording associated with a track."
-msgstr ""
+msgstr "Komentarz ujednoznaczniający dla nagrania powiązanego ze ścieżką."
 
 #: picard/const/tags.py:823
 msgid "Recording Title"
@@ -5390,11 +5390,14 @@ msgid "Release Country"
 msgstr ""
 
 #: picard/const/tags.py:854
+#, fuzzy
 msgid ""
 "The two-character code for the country in which the release was issued. If "
 "more than one release country was specified, this tag will contain the first "
 "one in the list."
 msgstr ""
+"Dwuznakowy kod kraju, w którym wydano wydanie. Jeśli określono więcej niż "
+"jeden kraj zwolnienia, ten tag będzie zawierał pierwszy z nich na liście."
 
 #: picard/const/tags.py:860
 msgid "Release Date"
