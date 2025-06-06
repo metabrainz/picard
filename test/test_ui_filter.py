@@ -135,4 +135,4 @@ class MainPanelFilterTest(PicardTestCase):
 
     def test_main_panel_has_toggle_method(self):
         """Test that MainPanel has the toggle_filter_boxes method"""
-        self.assertTrue(hasattr(MainPanel, 'toggle_filter_boxes'))
+        self.assertTrue(hasattr(MainPanel, 'show_filter_bars'))
