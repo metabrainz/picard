@@ -89,6 +89,7 @@ from picard.util import (
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
+from picard.ui.filter import Filter
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -567,3 +568,82 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     @property
     def default_drop_target(self):
         return None
+
+    def setup_filter_box(self):
+        self.filter_box = Filter(self)
+        self.filter_box.filterChanged.connect(self.filter_items)
+
+        self.filter_box.hide()  # Hide the filter box initially
+
+        return self.filter_box
+
+    def filter_items(self, text, filters):
+        if not text:  # When text is empty, show all items
+            self._restore_all_items()
+            return
+
+        self._filter_tree_items(self.invisibleRootItem(), text, filters)
+
+    def _filter_tree_items(self, parent, text, filters):
+        """Recursively filter tree items based on filter text."""
+
+        text = text.lower()
+        match_found = False
+
+        for i in range(parent.childCount()):
+            child = parent.child(i)
+            child_match = False
+
+            # Special handling for different object types
+            if hasattr(child, 'obj'):
+                obj = child.obj
+
+                # Handle Clusters
+                if filters == [] or any(f in filters for f in ("filename", "filepath")):
+                    # Handle Tracks with files
+                    if hasattr(obj, 'iterfiles'):
+                        for file_ in obj.iterfiles():
+                            if filters == [] or "filename" in filters:
+                                if text in file_.base_filename.lower():
+                                    child_match = True
+                                    break
+                            if filters == [] or "filepath" in filters:
+                                if text in file_.filename.lower():
+                                    child_match = True
+                                    break
+
+                # Handle metadata in Files
+                if hasattr(obj, 'metadata'):
+                    for tag, values in obj.metadata.rawitems():
+                        if isinstance(values, list):
+                            for value in values:
+                                if filters == [] or tag.lower() in filters:
+                                    if text in str(value).lower():
+                                        child_match = True
+                                        break
+                        elif text in str(values).lower():
+                            child_match = True
+                            break
+
+            # Recursively check children
+            if child.childCount() > 0:
+                child_matches = self._filter_tree_items(child, text, filters)
+                child_match |= child_matches
+
+            # Hide/show based on match
+            child.setHidden(not child_match)
+            match_found |= child_match
+
+        return match_found
+
+    def _restore_all_items(self):
+        """Show all items in the tree."""
+        self._restore_tree_items(self.invisibleRootItem())
+
+    def _restore_tree_items(self, parent):
+        """Recursively show all items."""
+        for i in range(parent.childCount()):
+            child = parent.child(i)
+            child.setHidden(False)
+            if child.childCount() > 0:
+                self._restore_tree_items(child)
