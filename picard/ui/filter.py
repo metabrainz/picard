@@ -81,6 +81,7 @@ class Filter(QtWidgets.QWidget):
         for tag in sorted(self.filterable_tags, key=lambda t: ALL_TAGS.display_name(t).lower()):
             checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(str(tag)), scroll_content)
             checkbox.setChecked(str(tag) in self.selected_filters)
+            checkbox.setToolTip(ALL_TAGS.display_tooltip(tag))
             scroll_layout.addWidget(checkbox)
             checkboxes[str(tag)] = checkbox
 
