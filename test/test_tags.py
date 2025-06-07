@@ -144,6 +144,8 @@ class TagVarsTest(PicardTestCase):
                                         see_also=('_hidden_sd', 'sd_ld'),
                                         related_options=('everything_test', 'not_a_valid_option_setting'),
                                         doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
+        self.tagvar_filter1 = TagVar('filter1', is_hidden=True, is_tag=False, is_filterable=True)
+        self.tagvar_filter2 = TagVar('filter2', is_tag=False, is_filterable=True, filter_key='filter2key')
         if ('setting', 'everything_test') not in Option.registry:
             Option('setting', 'everything_test', None, title='Everything test setting')
 
@@ -571,3 +573,18 @@ class TagsGeneratorTest(PicardTestCase):
         tags = list(filterable_tag_names())
         for tag in tags:
             self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_filterable)
+
+    def test_filterable_tags_filter_keys(self):
+        TEST_TAGS = TagVars(
+            TagVar('not_filter'),
+            TagVar('filter1', is_hidden=True, is_tag=False, is_filterable=True),
+            TagVar('filter2', is_tag=False, is_filterable=True),
+            TagVar('filter3', is_tag=False, is_filterable=True, filter_key='filter3key'),
+        )
+        with mock.patch('picard.tags.ALL_TAGS', TEST_TAGS):
+            filter_tags = list(filterable_tag_names())
+            self.assertEqual(len(filter_tags), 3)
+        self.assertEqual(TEST_TAGS.filter_key('filter1'), None)
+        self.assertEqual(TEST_TAGS.filter_key('~filter1'), '~filter1')
+        self.assertEqual(TEST_TAGS.filter_key('filter2'), 'filter2')
+        self.assertEqual(TEST_TAGS.filter_key('filter3'), 'filter3key')
