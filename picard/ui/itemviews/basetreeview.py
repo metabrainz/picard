@@ -599,15 +599,15 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 obj = child.obj
 
                 # Handle Clusters
-                if filters == [] or any(f in filters for f in ("filename", "filepath")):
+                if filters == [] or any(f in filters for f in ("~filename", "~filepath")):
                     # Handle Tracks with files
                     if hasattr(obj, 'iterfiles'):
                         for file_ in obj.iterfiles():
-                            if filters == [] or "filename" in filters:
+                            if filters == [] or "~filename" in filters:
                                 if text in file_.base_filename.lower():
                                     child_match = True
                                     break
-                            if filters == [] or "filepath" in filters:
+                            if filters == [] or "~filepath" in filters:
                                 if text in file_.filename.lower():
                                     child_match = True
                                     break

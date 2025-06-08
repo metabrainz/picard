@@ -19,8 +19,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from collections import OrderedDict
-
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -63,11 +61,6 @@ class Filter(QtWidgets.QWidget):
         self.filter_query_box.textChanged.connect(self._query_changed)
         layout.addWidget(self.filter_query_box)
 
-    file_filters = OrderedDict({
-        'filename': N_("Filename"),
-        'filepath': N_("Filepath"),
-    })
-
     def _show_filter_dialog(self):
         """Show dialog to select multiple filters"""
         dialog = QtWidgets.QDialog(self)
@@ -82,37 +75,13 @@ class Filter(QtWidgets.QWidget):
         scroll_content = QtWidgets.QWidget(scroll)
         scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
 
-        label = QtWidgets.QLabel(_("File Filters"), scroll_content)
-        scroll_layout.addWidget(label)
-
-        # Add a horizontal separator
-        line = QtWidgets.QFrame(scroll_content)
-        line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-        line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-        scroll_layout.addWidget(line)
-
         checkboxes = {}
-        for file_filter, title in self.file_filters.items():
-            checkbox = QtWidgets.QCheckBox(_(title), scroll_content)
-            checkbox.setChecked(file_filter in self.selected_filters)
-            scroll_layout.addWidget(checkbox)
-            checkboxes[file_filter] = checkbox
-
-        scroll_layout.addItem(QtWidgets.QSpacerItem(0, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed))
-
-        label = QtWidgets.QLabel(_("Tag Filters"), scroll_content)
-        scroll_layout.addWidget(label)
-
-        # Add a horizontal separator
-        line = QtWidgets.QFrame(scroll_content)
-        line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-        line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-        scroll_layout.addWidget(line)
 
         # Add checkboxes for all tags
-        for tag in sorted(self.filterable_tags, key=lambda t: ALL_TAGS.display_name(str(t)).lower()):
+        for tag in sorted(self.filterable_tags, key=lambda t: ALL_TAGS.display_name(t).lower()):
             checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(str(tag)), scroll_content)
             checkbox.setChecked(str(tag) in self.selected_filters)
+            checkbox.setToolTip(ALL_TAGS.display_tooltip(tag))
             scroll_layout.addWidget(checkbox)
             checkboxes[str(tag)] = checkbox
 
@@ -152,10 +121,7 @@ class Filter(QtWidgets.QWidget):
             return None
 
         if len(selected_filters) == 1:
-            if selected_filters[0] not in cls.file_filters.keys():
-                return ALL_TAGS.display_name(selected_filters[0])
-            else:
-                return _(cls.file_filters[selected_filters[0]])
+            return _(ALL_TAGS.display_name(selected_filters[0]))
 
         return _("{num} filters").format(num=len(selected_filters))
 

@@ -87,16 +87,16 @@ class FilterxTest(PicardTestCase):
         self.assertTrue(hasattr(Filter, 'clear'))
         self.assertTrue(hasattr(Filter, 'set_focus'))
 
-    # @patch('picard.const.tags.ALL_TAGS', TEST_TAGS)
+    @patch('picard.ui.filter.ALL_TAGS', TEST_TAGS)
     def test_filter_button_text_logic(self):
         """Test the logic for updating filter button text from Filter._show_filter_dialog"""
         test_cases = [
             ([], None),
-            (["filename"], "Filename"),
+            (["~filename"], "File Name"),
             (["artist"], "Artist"),
             (["invalid_tag"], "invalid_tag"),
-            (["filename", "artist"], "2 filters"),
-            (["filename", "artist", "album", "title"], "4 filters"),
+            (["~filename", "artist"], "2 filters"),
+            (["~filename", "artist", "album", "title"], "4 filters"),
         ]
 
         for selected_filters, expected_text in test_cases:
