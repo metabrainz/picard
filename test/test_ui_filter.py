@@ -107,7 +107,8 @@ class FilterxTest(PicardTestCase):
     @patch('picard.tags.ALL_TAGS', TEST_TAGS)
     def test_filterable_tags(self):
         """Test generation of valid tags"""
-        filterable_tags = set(str(x) for x in Filter.get_filterable_tags())
+        Filter.load_filterable_tags(force=True)
+        filterable_tags = set(str(x) for x in Filter.filterable_tags)
         self.assertEqual(len(filterable_tags), 3)
 
         tag_names = ['album', 'artist', 'title']

@@ -37,6 +37,7 @@ from picard.tags import (
 class Filter(QtWidgets.QWidget):
 
     filterChanged = QtCore.pyqtSignal(str, list)
+    filterable_tags = set()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -51,7 +52,7 @@ class Filter(QtWidgets.QWidget):
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.filterable_tags = self.get_filterable_tags()
+        self.load_filterable_tags()
         self.selected_filters = []  # Start with no filters selected
 
         # filter input
@@ -112,8 +113,9 @@ class Filter(QtWidgets.QWidget):
             self._query_changed(self.filter_query_box.text())
 
     @classmethod
-    def get_filterable_tags(cls) -> set:
-        return set(filterable_tag_names())
+    def load_filterable_tags(cls, force: bool = False):
+        if force or not cls.filterable_tags:
+            cls.filterable_tags = set(filterable_tag_names())
 
     @classmethod
     def make_button_text(cls, selected_filters):
