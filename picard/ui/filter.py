@@ -68,6 +68,8 @@ class Filter(QtWidgets.QWidget):
         self.load_filterable_tags()
         if TEST_RELOAD_FILTERABLE_TAGS:
             Filter.filterable_tags.add('~filesize')
+            self.checkboxes = {}
+        self.filter_dialog = self._build_filter_dialog()
 
         # filter input
         self.filter_query_box = QtWidgets.QLineEdit(self)
@@ -88,8 +90,7 @@ class Filter(QtWidgets.QWidget):
     def __del__(self):
         Filter.instances.discard(self)
 
-    def _show_filter_dialog(self):
-        """Show dialog to select multiple filters"""
+    def _build_filter_dialog(self):
         dialog = QtWidgets.QDialog(self)
         dialog.setWindowTitle(_("Select Filters"))
         dialog.setMinimumWidth(300)
@@ -102,7 +103,7 @@ class Filter(QtWidgets.QWidget):
         scroll_content = QtWidgets.QWidget(scroll)
         scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
 
-        checkboxes = {}
+        self.checkboxes = {}
 
         # Add checkboxes for all tags
         for tag in sorted(Filter.filterable_tags, key=lambda t: ALL_TAGS.display_name(t).lower()):
@@ -110,7 +111,7 @@ class Filter(QtWidgets.QWidget):
             checkbox.setChecked(str(tag) in self.selected_filters)
             checkbox.setToolTip(ALL_TAGS.display_tooltip(tag))
             scroll_layout.addWidget(checkbox)
-            checkboxes[str(tag)] = checkbox
+            self.checkboxes[str(tag)] = checkbox
 
         scroll_content.setLayout(scroll_layout)
         scroll.setWidget(scroll_content)
@@ -123,15 +124,16 @@ class Filter(QtWidgets.QWidget):
         button_box.rejected.connect(dialog.reject)
         layout.addWidget(button_box)
 
+        return dialog
+
+    def _show_filter_dialog(self):
+        """Show dialog to select multiple filters"""
         # Show dialog and process result
-        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+        if self.filter_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             self.selected_filters = []
-            for tag, checkbox in checkboxes.items():
+            for tag, checkbox in self.checkboxes.items():
                 if checkbox.isChecked():
                     self.selected_filters.append(tag)
-
-            if not self.selected_filters:
-                self.selected_filters = []
 
             # Update button text
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
@@ -147,6 +149,8 @@ class Filter(QtWidgets.QWidget):
             self.load_filterable_tags(force=True)
         else:
             Filter.filterable_tags.add(TEST_TAG)
+            for item in Filter.instances:
+                item.filterable_tags_updated()
 
     @classmethod
     def load_filterable_tags(cls, force: bool = False):
@@ -157,13 +161,12 @@ class Filter(QtWidgets.QWidget):
         if cls.filterable_tags == old_filterable_tags:
             return
         for item in cls.instances:
-            item: Filter
             item.filterable_tags_updated()
 
     def filterable_tags_updated(self):
         if self.initializing:
             return
-        # TODO: Rebuild the filter selection dialog?
+        self.filter_dialog = self._build_filter_dialog()
 
         # Check if selected filters were removed and re-apply the filter
         old_filters = set(self.selected_filters)
