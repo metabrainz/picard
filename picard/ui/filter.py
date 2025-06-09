@@ -123,6 +123,13 @@ class Filter(QtWidgets.QWidget):
             self._query_changed(self.filter_query_box.text())
 
     @classmethod
+    def apply_filters(cls):
+        for item in cls.instances:
+            item: Filter
+            text = item.filter_query_box.text()
+            item._query_changed(text)
+
+    @classmethod
     def load_filterable_tags(cls, force: bool = False):
         if cls.filterable_tags and not force:
             return
