@@ -40,6 +40,7 @@ class Filter(QtWidgets.QWidget):
     filterChanged = QtCore.pyqtSignal(str, list)
     filterable_tags = set()
     instances = set()
+    suspended = False
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -124,6 +125,8 @@ class Filter(QtWidgets.QWidget):
 
     @classmethod
     def apply_filters(cls):
+        if cls.suspended:
+            return
         for item in cls.instances:
             item: Filter
             text = item.filter_query_box.text()

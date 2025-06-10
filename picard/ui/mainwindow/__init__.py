@@ -110,6 +110,7 @@ from picard.ui.aboutdialog import AboutDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.enums import MainAction
 from picard.ui.filebrowser import FileBrowser
+from picard.ui.filter import Filter
 from picard.ui.infodialog import (
     AlbumInfoDialog,
     ClusterInfoDialog,
@@ -180,6 +181,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             on_exit=partial(self.set_sorting, sorting=True),
         )
 
+        self.suspend_filtering = IgnoreUpdatesContext(
+            on_first_enter=partial(self.set_filters, processing=False),
+            on_last_exit=partial(self.set_filters, processing=True),
+        )
         self.toolbar = None
         self.player = None
         self.status_indicators = []
@@ -303,6 +308,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def set_sorting(self, sorting=True):
         self.panel.set_sorting(sorting)
+
+    def set_filters(self, processing=True):
+        Filter.suspended = not processing
 
     def keyPressEvent(self, event):
         # On macOS Command+Backspace triggers the so called "Forward Delete".
