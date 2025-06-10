@@ -35,14 +35,6 @@ from picard.tags import (
 )
 
 
-# When set to True, this will add a test button and a filter item that is not
-# normally used (TEST_TAG) to allow testing of the filterable tags reloading.
-# The TEST_TAG item will be toggled from the filterable items dialog when the
-# test button is clicked.
-TEST_RELOAD_FILTERABLE_TAGS = True
-TEST_TAG = '~filesize'
-
-
 class Filter(QtWidgets.QWidget):
 
     filterChanged = QtCore.pyqtSignal(str, list)
@@ -66,9 +58,6 @@ class Filter(QtWidgets.QWidget):
 
         self.selected_filters = []  # Start with no filters selected
         self.load_filterable_tags()
-        if TEST_RELOAD_FILTERABLE_TAGS:
-            Filter.filterable_tags.add('~filesize')
-            self.checkboxes = {}
         self.filter_dialog = self._build_filter_dialog()
 
         # filter input
@@ -77,13 +66,6 @@ class Filter(QtWidgets.QWidget):
         self.filter_query_box.setClearButtonEnabled(True)
         self.filter_query_box.textChanged.connect(self._query_changed)
         layout.addWidget(self.filter_query_box)
-
-        if TEST_RELOAD_FILTERABLE_TAGS:
-            # test button
-            self.test_button = QtWidgets.QPushButton('Testing On', self)
-            self.test_button.setMaximumWidth(120)
-            self.test_button.clicked.connect(self.test_tag_reload)
-            layout.addWidget(self.test_button)
 
         self.initializing = False
 
@@ -139,18 +121,6 @@ class Filter(QtWidgets.QWidget):
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
             self._query_changed(self.filter_query_box.text())
-
-    def test_tag_reload(self):
-        # Used for testing of the filterable tags reloading.
-        new_state = 'Off' if TEST_TAG in Filter.filterable_tags else 'On'
-        for item in Filter.instances:
-            item.test_button.setText(f'Testing {new_state}')
-        if TEST_TAG in Filter.filterable_tags:
-            self.load_filterable_tags(force=True)
-        else:
-            Filter.filterable_tags.add(TEST_TAG)
-            for item in Filter.instances:
-                item.filterable_tags_updated()
 
     @classmethod
     def load_filterable_tags(cls, force: bool = False):
