@@ -56,7 +56,7 @@ class Filter(QtWidgets.QWidget):
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.selected_filters = []  # Start with no filters selected
+        self.selected_filters = set()  # Start with no filters selected
         self.load_filterable_tags()
         self.filter_dialog = self._build_filter_dialog()
 
@@ -112,10 +112,10 @@ class Filter(QtWidgets.QWidget):
         """Show dialog to select multiple filters"""
         # Show dialog and process result
         if self.filter_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            self.selected_filters = []
+            self.selected_filters = set()
             for tag, checkbox in self.checkboxes.items():
                 if checkbox.isChecked():
-                    self.selected_filters.append(tag)
+                    self.selected_filters.add(tag)
 
             # Update button text
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
@@ -139,11 +139,11 @@ class Filter(QtWidgets.QWidget):
         self.filter_dialog = self._build_filter_dialog()
 
         # Check if selected filters were removed and re-apply the filter
-        old_filters = set(self.selected_filters)
+        old_filters = self.selected_filters.copy()
         temp = old_filters.difference(Filter.filterable_tags)
         if temp:
             new = old_filters - temp
-            self.selected_filters = list(new)
+            self.selected_filters = new
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
             self._query_changed(self.filter_query_box.text())
 
@@ -153,7 +153,7 @@ class Filter(QtWidgets.QWidget):
             return None
 
         if len(selected_filters) == 1:
-            return _(ALL_TAGS.display_name(selected_filters[0]))
+            return _(ALL_TAGS.display_name(list(selected_filters)[0]))
 
         return _("{num} filters").format(num=len(selected_filters))
 
