@@ -180,11 +180,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             on_enter=partial(self.set_sorting, sorting=False),
             on_exit=partial(self.set_sorting, sorting=True),
         )
-
-        self.suspend_filtering = IgnoreUpdatesContext(
-            on_first_enter=partial(self.set_filters, processing=False),
-            on_last_exit=partial(self.set_filters, processing=True),
+        self.register_suspend_while_loading(
+            on_enter=partial(self.set_filters, processing=False),
+            on_exit=partial(self.set_filters, processing=True),
         )
+
         self.toolbar = None
         self.player = None
         self.status_indicators = []
