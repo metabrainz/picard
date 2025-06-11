@@ -45,6 +45,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 from copy import deepcopy
 import datetime
 from functools import partial
@@ -150,6 +151,9 @@ from picard.ui.util import (
 )
 
 
+SuspendWhileLoadingFuncs = namedtuple('SuspendWhileLoadingFuncs', ('on_enter', 'on_exit'))
+
+
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     defaultsize = QtCore.QSize(780, 560)
@@ -165,10 +169,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._is_wayland = self.tagger.is_wayland
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreUpdatesContext(on_exit=self.update_selection)
-        self.suspend_sorting = IgnoreUpdatesContext(
-            on_first_enter=partial(self.set_sorting, sorting=False),
-            on_last_exit=partial(self.set_sorting, sorting=True),
+
+        self._suspend_while_loading_funcs = []
+        self.suspend_while_loading = IgnoreUpdatesContext(
+            on_first_enter=self.suspend_while_loading_enter,
+            on_last_exit=self.suspend_while_loading_exit,
         )
+        self.register_suspend_while_loading(
+            on_enter=partial(self.set_sorting, sorting=False),
+            on_exit=partial(self.set_sorting, sorting=True),
+        )
+
         self.toolbar = None
         self.player = None
         self.status_indicators = []
@@ -193,6 +204,22 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         webservice_manager = self.tagger.webservice.manager
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
+
+    def register_suspend_while_loading(self, on_enter=None, on_exit=None):
+        funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
+        self._suspend_while_loading_funcs.append(funcs)
+
+    def suspend_while_loading_enter(self):
+        for func in self._suspend_while_loading_funcs:
+            if func.on_enter:
+                log.debug("enter, running: %r", func.on_enter)
+                func.on_enter()
+
+    def suspend_while_loading_exit(self):
+        for func in self._suspend_while_loading_funcs:
+            if func.on_exit:
+                log.debug("exit, running: %r", func.on_exit)
+                func.on_exit()
 
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
