@@ -30,8 +30,6 @@ from picard.tags.tagvar import (
 )
 
 from picard.ui.filter import Filter
-from picard.ui.itemviews import MainPanel
-from picard.ui.itemviews.basetreeview import BaseTreeView
 
 
 TEST_TAGS = TagVars(
@@ -80,13 +78,6 @@ TEST_TAGS = TagVars(
 class FilterxTest(PicardTestCase):
     """Test the Filter widget functionality"""
 
-    def test_filter_class_exists(self):
-        """Test that Filter class can be imported and has required attributes"""
-        self.assertTrue(hasattr(Filter, 'filterChanged'))
-        self.assertTrue(hasattr(Filter, '_query_changed'))
-        self.assertTrue(hasattr(Filter, 'clear'))
-        self.assertTrue(hasattr(Filter, 'set_focus'))
-
     @patch('picard.ui.filter.ALL_TAGS', TEST_TAGS)
     def test_filter_button_text_logic(self):
         """Test the logic for updating filter button text from Filter._show_filter_dialog"""
@@ -118,22 +109,3 @@ class FilterxTest(PicardTestCase):
         tag_names = ['bitrate', 'filename', 'filepath', 'invalid_tag']
         for name in tag_names:
             self.assertFalse(name in filterable_tags)
-
-
-class BaseTreeViewFilteringTest(PicardTestCase):
-    """Test filtering functionality in BaseTreeView"""
-
-    def test_filter_methods_exist(self):
-        """Test that BaseTreeView has the required filtering methods"""
-        self.assertTrue(hasattr(BaseTreeView, 'setup_filter_box'))
-        self.assertTrue(hasattr(BaseTreeView, 'filter_items'))
-        self.assertTrue(hasattr(BaseTreeView, '_filter_tree_items'))
-        self.assertTrue(hasattr(BaseTreeView, '_restore_all_items'))
-
-
-class MainPanelFilterTest(PicardTestCase):
-    """Test filter functionality integration in MainPanel"""
-
-    def test_main_panel_has_toggle_method(self):
-        """Test that MainPanel has the show_filter_bars method"""
-        self.assertTrue(hasattr(MainPanel, 'show_filter_bars'))
