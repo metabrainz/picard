@@ -86,6 +86,18 @@ class Filter(QtWidgets.QWidget):
         scroll_content = QtWidgets.QWidget(scroll)
         scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
 
+        # filter clear button
+        self.filter_clear_button = QtWidgets.QPushButton(_('Clear All'))
+        self.filter_clear_button.setMaximumWidth(120)
+        self.filter_clear_button.clicked.connect(self._uncheck_all_filters)
+        scroll_layout.addWidget(self.filter_clear_button)
+
+        # Add a horizontal separator
+        line = QtWidgets.QFrame(scroll_content)
+        line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        scroll_layout.addWidget(line)
+
         self.checkboxes = {}
 
         # Add checkboxes for all tags
@@ -109,6 +121,10 @@ class Filter(QtWidgets.QWidget):
 
         return dialog
 
+    def _uncheck_all_filters(self):
+        for tag, checkbox in self.checkboxes.items():
+            checkbox.setChecked(False)
+
     def _show_filter_dialog(self):
         """Show dialog to select multiple filters"""
         # Show dialog and process result
@@ -122,6 +138,11 @@ class Filter(QtWidgets.QWidget):
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
             self._query_changed(self.filter_query_box.text())
+
+        else:
+            # Reset any changes to selected filters on dialog cancel
+            for tag, checkbox in self.checkboxes.items():
+                checkbox.setChecked(tag in self.selected_filters)
 
     @classmethod
     def apply_filters(cls):
