@@ -37,7 +37,7 @@ from picard.tags import (
 
 class Filter(QtWidgets.QWidget):
 
-    filterChanged = QtCore.pyqtSignal(str, list)
+    filterChanged = QtCore.pyqtSignal(str, set)
     filterable_tags = set()
     instances = set()
     suspended = False
@@ -177,7 +177,7 @@ class Filter(QtWidgets.QWidget):
 
     def clear(self):
         self.filter_query_box.clear()
-        self.selected_filters = []
+        self.selected_filters = set()
         self.set_filter_button_label()
 
     def set_focus(self):
