@@ -26,8 +26,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-05-13 20:20+0000\n"
-"Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
+"PO-Revision-Date: 2025-06-13 09:20+0000\n"
+"Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/2/"
 "app/pl/>\n"
 "Language: pl\n"
@@ -37,7 +37,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.11.4\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -1195,6 +1195,7 @@ msgstr ""
 "expression-syntax) zamiana."
 
 #: picard/script/functions.py:361
+#, fuzzy
 msgid ""
 "`$rsearch(text,pattern)`\n"
 "\n"
@@ -1202,6 +1203,11 @@ msgid ""
 "expression-syntax) search.\n"
 "    This function will return the first matching group."
 msgstr ""
+"`$research(text,pattern)`\n"
+"\n"
+"[Wyszukiwanie wyrażeń regularnych](https://docs.python.org/3/library/re.html"
+"#regular-expression-syntax).\n"
+"Ta funkcja zwróci pierwszą pasującą grupę."
 
 #: picard/script/functions.py:380
 msgid ""
@@ -2026,6 +2032,11 @@ msgid ""
 "\n"
 "_Since Picard 2.2_"
 msgstr ""
+"`$is_video()`\n"
+"\n"
+"Zwraca wartość true, jeśli przetworzony plik jest plikiem wideo.\n"
+"\n"
+"_Od Picarda 2.2_"
 
 #: picard/script/functions.py:1110
 msgid ""
@@ -3048,6 +3059,8 @@ msgid ""
 "Missing temporary file: %(tempfile)s\n"
 "Source: %(sourcefile)s"
 msgstr ""
+"Brak pliku tymczasowego: %(tempfile)s\n"
+"Źródło: %(sourcefile)s"
 
 #: picard/ui/infodialog.py:286
 msgid "Filename:"
@@ -4161,9 +4174,9 @@ msgstr ""
 "odtwarzanie nie może być kontynuowane"
 
 #: picard/ui/playertoolbar.py:180
-#, python-format
+#, fuzzy, python-format
 msgid "Internal player: error, code=%(code)d, msg=%(message)s"
-msgstr ""
+msgstr "Wewnętrzny odtwarzacz: błąd, kod=%(code)d, msg=%(message)s"
 
 #: picard/ui/playertoolbar.py:189
 msgid "Player"
@@ -4997,11 +5010,11 @@ msgstr "Otwórz folder"
 
 #: picard/ui/ui_options_maintenance.py:88
 msgid "Load Backup"
-msgstr ""
+msgstr "Załaduj kopię zapasową"
 
 #: picard/ui/ui_options_maintenance.py:89
 msgid "Save Backup"
-msgstr ""
+msgstr "Zapisz kopię zapasową"
 
 #: picard/ui/ui_options_maintenance.py:90
 msgid "Remove selected options"
@@ -6178,9 +6191,9 @@ msgid "Enabled tagging scripts of %i found:"
 msgstr "Znaleziono włączone skrypty tagujące dla %i:"
 
 #: picard/ui/options/profiles.py:270
-#, python-format
+#, fuzzy, python-format
 msgid "Enabled providers of %i listed:"
-msgstr ""
+msgstr "Włączeni dostawcy z %i wymienionych:"
 
 #: picard/ui/options/profiles.py:296
 #, python-format
@@ -6609,7 +6622,7 @@ msgstr "Prawa autorskie"
 
 #: picard/util/tags.py:57
 msgid "Director"
-msgstr ""
+msgstr "Reżyser"
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
@@ -6825,11 +6838,12 @@ msgstr "Skrypt"
 
 #: picard/util/tags.py:119
 msgid "Show Name"
-msgstr ""
+msgstr "Pokaż nazwę"
 
 #: picard/util/tags.py:120
+#, fuzzy
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Pokaż kolejność sortowania nazw"
 
 #: picard/util/tags.py:121
 msgid "Show Work & Movement"
