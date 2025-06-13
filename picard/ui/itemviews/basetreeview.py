@@ -6,7 +6,7 @@
 # Copyright (C) 2007 Robert Kaye
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2011, 2014-2015, 2018-2024 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014-2015, 2018-2025 Philipp Wolfer
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011 Tim Blechmann
@@ -14,7 +14,7 @@
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Your Name
 # Copyright (C) 2012-2013 Wieland Hoffmann
-# Copyright (C) 2013-2014, 2016, 2018-2024 Laurent Monin
+# Copyright (C) 2013-2014, 2016, 2018-2025 Laurent Monin
 # Copyright (C) 2013-2014, 2017, 2020 Sophist-UK
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016 Simon Legner
@@ -22,7 +22,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Louis Sautier
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2023 certuna
@@ -585,8 +585,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self._filter_tree_items(self.invisibleRootItem(), text, filters)
 
     def _filter_tree_items(self, parent, text, filters):
-        """Recursively filter tree items based on filter text."""
-
         text = text.lower()
         match_found = False
 
@@ -594,41 +592,17 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             child = parent.child(i)
             child_match = False
 
-            # Special handling for different object types
             if hasattr(child, 'obj'):
                 obj = child.obj
 
-                # Handle Clusters
-                if filters == [] or any(f in filters for f in ("~filename", "~filepath")):
-                    # Handle Tracks with files
-                    if hasattr(obj, 'iterfiles'):
-                        for file_ in obj.iterfiles():
-                            if filters == [] or "~filename" in filters:
-                                if text in file_.base_filename.lower():
-                                    child_match = True
-                                    break
-                            if filters == [] or "~filepath" in filters:
-                                if text in file_.filename.lower():
-                                    child_match = True
-                                    break
+                if self._matches_file_properties(obj, text, filters):
+                    child_match = True
 
-                # Handle metadata in Files
-                if hasattr(obj, 'metadata'):
-                    for tag, values in obj.metadata.rawitems():
-                        if isinstance(values, list):
-                            for value in values:
-                                if filters == [] or tag.lower() in filters:
-                                    if text in str(value).lower():
-                                        child_match = True
-                                        break
-                        elif text in str(values).lower():
-                            child_match = True
-                            break
+                if self._matches_metadata(obj, text, filters):
+                    child_match = True
 
-            # Recursively check children
             if child.childCount() > 0:
-                child_matches = self._filter_tree_items(child, text, filters)
-                child_match |= child_matches
+                child_match |= self._filter_tree_items(child, text, filters)
 
             # Hide/show based on match
             if child.filterable:
@@ -636,6 +610,29 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             match_found |= child_match
 
         return match_found
+
+    @staticmethod
+    def _matches_file_properties(obj, text, filters):
+        if hasattr(obj, 'iterfiles') and (not filters or "~filename" in filters or "~filepath" in filters):
+            for file_ in obj.iterfiles():
+                if (not filters or "~filename" in filters) and text in file_.base_filename.lower():
+                    return True
+                if (not filters or "~filepath" in filters) and text in file_.filename.lower():
+                    return True
+        return False
+
+    @staticmethod
+    def _matches_metadata(obj, text, filters):
+        if hasattr(obj, 'metadata'):
+            for tag, values in obj.metadata.rawitems():
+                if isinstance(values, list):
+                    for value in values:
+                        if (not filters or tag.lower() in filters) and text in str(value).lower():
+                            return True
+                else:
+                    if (not filters or tag.lower() in filters) and text in str(values).lower():
+                        return True
+        return False
 
     def _restore_all_items(self):
         """Show all items in the tree."""

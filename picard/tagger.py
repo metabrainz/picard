@@ -23,7 +23,7 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017-2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2018, 2022-2023 Bob Swift
+# Copyright (C) 2018, 2022-2023, 2025 Bob Swift
 # Copyright (C) 2019 Joel Lintunen
 # Copyright (C) 2020 Julius Michaelis
 # Copyright (C) 2020-2021 Gabriel Ferreira
@@ -644,7 +644,7 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
-            self.window.set_sorting(True)
+            self.window.suspend_while_loading_exit()
 
         if remove_file:
             file.remove()
@@ -724,7 +724,7 @@ class Tagger(QtWidgets.QApplication):
         if target is None:
             log.debug("Aborting move since target is invalid")
             return
-        with self.window.suspend_sorting, self.window.metadata_box.ignore_updates:
+        with self.window.suspend_while_loading, self.window.metadata_box.ignore_updates:
             if isinstance(target, Cluster):
                 for file in process_events_iter(files):
                     file.move(target)
@@ -775,7 +775,7 @@ class Tagger(QtWidgets.QApplication):
         if new_files:
             log.debug("Adding files %r", new_files)
             new_files.sort(key=lambda x: x.filename)
-            self.window.set_sorting(False)
+            self.window.suspend_while_loading_enter()
             self._pending_files_count += len(new_files)
             unmatched_files = []
             for i, file in enumerate(new_files):
@@ -1153,7 +1153,7 @@ class Tagger(QtWidgets.QApplication):
             log.error("Error while clustering: %r", error)
             return
 
-        with self.window.suspend_sorting:
+        with self.window.suspend_while_loading:
             for file_cluster in process_events_iter(result):
                 files = set(file_cluster.files)
                 if len(files) > 1:
