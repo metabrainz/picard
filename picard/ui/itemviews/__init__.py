@@ -269,10 +269,12 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, columns, window, parent=None):
         super().__init__(columns, window, parent=parent)
-        self.unmatched_files = ClusterItem(self.tagger.unclustered_files, parent=self)
+        self.unmatched_files = ClusterItem(
+            self.tagger.unclustered_files, filterable=False, parent=self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
-        self.clusters = ClusterItem(self.tagger.clusters, parent=self)
+        self.clusters = ClusterItem(
+            self.tagger.clusters, filterable=False, parent=self)
         self.set_clusters_text()
         self.clusters.setExpanded(True)
         self.tagger.cluster_added.connect(self.add_file_cluster)
@@ -330,11 +332,12 @@ class AlbumTreeView(BaseTreeView):
 class TreeItem(QtWidgets.QTreeWidgetItem):
     columns = ITEMVIEW_COLUMNS
 
-    def __init__(self, obj, sortable=False, parent=None):
+    def __init__(self, obj, sortable=False, filterable=True, parent=None):
         super().__init__(parent)
         self._obj = None
         self.obj = obj
         self.sortable = sortable
+        self.filterable = filterable
         self._sortkeys = {}
         self.post_init()
 
