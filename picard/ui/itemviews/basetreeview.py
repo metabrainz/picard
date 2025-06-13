@@ -631,7 +631,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 child_match |= child_matches
 
             # Hide/show based on match
-            child.setHidden(not child_match)
+            if child.filterable:
+                child.setHidden(not child_match)
             match_found |= child_match
 
         return match_found
