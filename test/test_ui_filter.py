@@ -22,14 +22,23 @@
 
 from unittest.mock import patch
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    get_test_data_path,
+)
 
+from picard.file import File
+from picard.metadata import (
+    Metadata,
+    MultiMetadataProxy,
+)
 from picard.tags.tagvar import (
     TagVar,
     TagVars,
 )
 
 from picard.ui.filter import Filter
+from picard.ui.itemviews.basetreeview import BaseTreeView
 
 
 TEST_TAGS = TagVars(
@@ -75,8 +84,23 @@ TEST_TAGS = TagVars(
 )
 
 
-class FilterxTest(PicardTestCase):
-    """Test the Filter widget functionality"""
+class FilterTestTags(PicardTestCase):
+    """Test the Filter widget tags processing"""
+
+    @patch('picard.tags.ALL_TAGS', TEST_TAGS)
+    def test_filterable_tags(self):
+        """Test generation of valid tags"""
+        Filter.load_filterable_tags(force=True)
+        filterable_tags = set(str(x) for x in Filter.filterable_tags)
+        self.assertEqual(len(filterable_tags), 3)
+
+        tag_names = ['album', 'artist', 'title']
+        for name in tag_names:
+            self.assertTrue(name in filterable_tags)
+
+        tag_names = ['bitrate', 'filename', 'filepath', 'invalid_tag']
+        for name in tag_names:
+            self.assertFalse(name in filterable_tags)
 
     @patch('picard.ui.filter.ALL_TAGS', TEST_TAGS)
     def test_filter_button_text_logic(self):
@@ -95,17 +119,43 @@ class FilterxTest(PicardTestCase):
             self.assertEqual(button_text, expected_text,
                            f"Filter list {selected_filters} should produce '{expected_text}'")
 
-    @patch('picard.tags.ALL_TAGS', TEST_TAGS)
-    def test_filterable_tags(self):
-        """Test generation of valid tags"""
-        Filter.load_filterable_tags(force=True)
-        filterable_tags = set(str(x) for x in Filter.filterable_tags)
-        self.assertEqual(len(filterable_tags), 3)
 
-        tag_names = ['album', 'artist', 'title']
-        for name in tag_names:
-            self.assertTrue(name in filterable_tags)
+class FilterTestFiltering(PicardTestCase):
+    """Test filtering of basetreeview items"""
 
-        tag_names = ['bitrate', 'filename', 'filepath', 'invalid_tag']
-        for name in tag_names:
-            self.assertFalse(name in filterable_tags)
+    def test_filter_file(self):
+        test_file = get_test_data_path('test.flac')
+        test_object = File(test_file)
+
+        # Test file-related filters
+        for test_filters in [set(), {'~filename'}, {'~filepath'}, {'~filename', '~filepath'}]:
+            text = f"Error testing filters: {test_filters}"
+            self.assertTrue(BaseTreeView._matches_file_properties(test_object, '', test_filters), text)
+            self.assertTrue(BaseTreeView._matches_file_properties(test_object, 'test', test_filters), text)
+            self.assertFalse(BaseTreeView._matches_file_properties(test_object, 'not_in_path', test_filters), text)
+
+        # Test non-file-related filter
+        self.assertFalse(BaseTreeView._matches_file_properties(test_object, 'test', {'title'}))
+
+    def test_filter_metadata(self):
+        test_metadata = {
+            'title': 'test_title',
+            'artist': 'test_artist',
+        }
+        test_object = MultiMetadataProxy(Metadata(test_metadata))
+
+        # Test file-related filters
+        for test_filters in [set(), {'title'}, {'artist'}, {'title', 'artist'}]:
+            text = f"Error testing filters: {test_filters}"
+            self.assertTrue(BaseTreeView._matches_metadata(test_object, '', test_filters), text)
+            self.assertTrue(BaseTreeView._matches_metadata(test_object, 'test', test_filters), text)
+            self.assertFalse(BaseTreeView._matches_metadata(test_object, 'not_in_metadata', test_filters), text)
+
+        # Test non-file-related filter
+        self.assertFalse(BaseTreeView._matches_metadata(test_object, 'test', {'~filename'}))
+
+        # Test specific cases
+        self.assertTrue(BaseTreeView._matches_metadata(test_object, '_artist', {'artist'}))
+        self.assertFalse(BaseTreeView._matches_metadata(test_object, '_artist', {'title'}))
+        self.assertTrue(BaseTreeView._matches_metadata(test_object, '_title', {'title'}))
+        self.assertFalse(BaseTreeView._matches_metadata(test_object, '_title', {'artist'}))
