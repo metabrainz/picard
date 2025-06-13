@@ -22,7 +22,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Louis Sautier
 # Copyright (C) 2021 Petit Minion
 # Copyright (C) 2023 certuna
@@ -103,6 +103,23 @@ class MainPanel(QtWidgets.QSplitter):
         self._selected_view = self._views[0]
         self._ignore_selection_changes = False
         self._sort_enabled = None  # None at start, bool once set_sorting is called
+
+        # Create a layout for each view to include the filter box
+        for view in self._views:
+            container = QtWidgets.QWidget(self)
+            layout = QtWidgets.QVBoxLayout(container)
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setSpacing(0)
+
+            # Create and add filter box
+            filter_box = view.setup_filter_box()
+            layout.addWidget(filter_box)
+
+            # Add view
+            layout.addWidget(view)
+
+            # Add the container to the splitter
+            self.addWidget(container)
 
         def _view_update_selection(view):
             if not self._ignore_selection_changes:
@@ -232,6 +249,15 @@ class MainPanel(QtWidgets.QSplitter):
                 self._update_selection(view)
                 break
 
+    def show_filter_bars(self, show_state: bool):
+        """Toggle visibility of filter bars in both views."""
+        for view in self._views:
+            view.filter_box.setVisible(show_state)
+            if show_state and view.hasFocus():
+                view.filter_box.set_focus()
+            else:
+                view.filter_box.clear()
+
 
 class FileTreeView(BaseTreeView):
 
@@ -243,10 +269,12 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, columns, window, parent=None):
         super().__init__(columns, window, parent=parent)
-        self.unmatched_files = ClusterItem(self.tagger.unclustered_files, parent=self)
+        self.unmatched_files = ClusterItem(
+            self.tagger.unclustered_files, filterable=False, parent=self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
-        self.clusters = ClusterItem(self.tagger.clusters, parent=self)
+        self.clusters = ClusterItem(
+            self.tagger.clusters, filterable=False, parent=self)
         self.set_clusters_text()
         self.clusters.setExpanded(True)
         self.tagger.cluster_added.connect(self.add_file_cluster)
@@ -304,11 +332,12 @@ class AlbumTreeView(BaseTreeView):
 class TreeItem(QtWidgets.QTreeWidgetItem):
     columns = ITEMVIEW_COLUMNS
 
-    def __init__(self, obj, sortable=False, parent=None):
+    def __init__(self, obj, sortable=False, filterable=True, parent=None):
         super().__init__(parent)
         self._obj = None
         self.obj = obj
         self.sortable = sortable
+        self.filterable = filterable
         self._sortkeys = {}
         self.post_init()
 
