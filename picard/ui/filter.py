@@ -122,7 +122,7 @@ class Filter(QtWidgets.QWidget):
         return dialog
 
     def _uncheck_all_filters(self):
-        for tag, checkbox in self.checkboxes.items():
+        for checkbox in self.checkboxes.values():
             checkbox.setChecked(False)
 
     def _show_filter_dialog(self):
