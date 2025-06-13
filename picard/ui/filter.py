@@ -86,18 +86,6 @@ class Filter(QtWidgets.QWidget):
         scroll_content = QtWidgets.QWidget(scroll)
         scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
 
-        # filter clear button
-        self.filter_clear_button = QtWidgets.QPushButton(_('Clear All'))
-        self.filter_clear_button.setMaximumWidth(120)
-        self.filter_clear_button.clicked.connect(self._uncheck_all_filters)
-        scroll_layout.addWidget(self.filter_clear_button)
-
-        # Add a horizontal separator
-        line = QtWidgets.QFrame(scroll_content)
-        line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-        line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-        scroll_layout.addWidget(line)
-
         self.checkboxes = {}
 
         # Add checkboxes for all tags
@@ -113,11 +101,34 @@ class Filter(QtWidgets.QWidget):
         layout.addWidget(scroll)
 
         # Buttons
-        button_box = QtWidgets.QDialogButtonBox(
-            QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel)
-        button_box.accepted.connect(dialog.accept)
-        button_box.rejected.connect(dialog.reject)
-        layout.addWidget(button_box)
+
+        button_layout = QtWidgets.QHBoxLayout()
+
+        # clear all
+        self.filter_clear_button = QtWidgets.QPushButton(_('Clear All'))
+        self.filter_clear_button.clicked.connect(self._uncheck_all_filters)
+        button_layout.addWidget(self.filter_clear_button)
+
+        # spacer
+        spacer = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        button_layout.addItem(spacer)
+
+        # OK
+        self.ok_button = QtWidgets.QPushButton(_('OK'))
+        ok_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogOkButton)
+        self.ok_button.setIcon(ok_icon)
+        self.ok_button.clicked.connect(dialog.accept)
+        button_layout.addWidget(self.ok_button)
+        self.ok_button.setDefault(True)  # default selected button
+
+        # Cancel
+        self.cancel_button = QtWidgets.QPushButton(_('Cancel'))
+        cancel_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogCancelButton)
+        self.cancel_button.setIcon(cancel_icon)
+        self.cancel_button.clicked.connect(dialog.reject)
+        button_layout.addWidget(self.cancel_button)
+
+        layout.addLayout(button_layout)
 
         return dialog
 
