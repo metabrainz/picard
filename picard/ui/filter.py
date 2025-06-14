@@ -25,6 +25,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -45,20 +46,23 @@ class Filter(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         Filter.instances.add(self)
+        self.saved_filters_key = f"{type(parent).__name__}FilterItems"
         self.initializing = True
         layout = QtWidgets.QHBoxLayout(self)
         layout.setContentsMargins(2, 2, 2, 2)
 
         self.default_filter_button_label = N_("Filters")
 
+        self.load_filterable_tags()
+        self.default_filters = set()    # Default to selecting no filters
+        self.selected_filters = self._get_saved_selected_filters()
+
         # filter button
-        self.filter_button = QtWidgets.QPushButton(self.default_filter_button_label, self)
+        self.filter_button = QtWidgets.QPushButton(Filter.make_button_text(self.selected_filters), self)
         self.filter_button.setMaximumWidth(120)
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.selected_filters = set()  # Start with no filters selected
-        self.load_filterable_tags()
         self.filter_dialog = self._build_filter_dialog()
 
         # filter input
@@ -69,6 +73,13 @@ class Filter(QtWidgets.QWidget):
         layout.addWidget(self.filter_query_box)
 
         self.initializing = False
+
+    def _get_saved_selected_filters(self):
+        config = get_config()
+        temp = config.persist[self.saved_filters_key]
+        if temp is not None:
+            return set(temp)
+        return self.default_filters.copy()
 
     def __del__(self):
         Filter.instances.discard(self)
@@ -145,6 +156,10 @@ class Filter(QtWidgets.QWidget):
                 if checkbox.isChecked():
                     self.selected_filters.add(tag)
 
+            # Update persistent list of selected filters
+            config = get_config()
+            config.persist[self.saved_filters_key] = list(self.selected_filters)
+
             # Update button text
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
@@ -209,8 +224,8 @@ class Filter(QtWidgets.QWidget):
 
     def clear(self):
         self.filter_query_box.clear()
-        self.selected_filters = set()
-        self.set_filter_button_label()
+        self.selected_filters = self._get_saved_selected_filters()
+        self.set_filter_button_label(Filter.make_button_text(self.selected_filters))
 
     def set_focus(self):
         self.filter_query_box.setFocus()
