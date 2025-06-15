@@ -44,15 +44,17 @@ from picard.const import (
     USER_PLUGIN_DIR,
 )
 from picard.const.sys import IS_FROZEN
+from picard.extension_points import (
+    PLUGIN_MODULE_PREFIX,
+    unregister_module_extensions,
+)
 from picard.i18n import (
     N_,
     gettext as _,
 )
 from picard.plugin import (
-    _PLUGIN_MODULE_PREFIX,
     PluginData,
     PluginWrapper,
-    _unregister_module_extensions,
 )
 import picard.plugins
 from picard.version import (
@@ -295,7 +297,7 @@ class PluginManager(QtCore.QObject):
         module_pathname = None
         zip_importer = None
         manifest_data = None
-        full_module_name = _PLUGIN_MODULE_PREFIX + name
+        full_module_name = PLUGIN_MODULE_PREFIX + name
         plugin_dir = None
 
         spec = PluginMetaPathFinder().find_spec(full_module_name, [])
@@ -397,7 +399,7 @@ class PluginManager(QtCore.QObject):
 
     def _remove_plugin(self, plugin_name, with_update=False):
         self._remove_plugin_files(plugin_name, with_update)
-        _unregister_module_extensions(plugin_name)
+        unregister_module_extensions(plugin_name)
         self.plugins = [p for p in self.plugins if p.module_name != plugin_name]
 
     def remove_plugin(self, plugin_name, with_update=False):
@@ -537,9 +539,9 @@ class PluginManager(QtCore.QObject):
 
 class PluginMetaPathFinder(MetaPathFinder):
     def find_spec(self, fullname, path, target=None):
-        if not fullname.startswith(_PLUGIN_MODULE_PREFIX):
+        if not fullname.startswith(PLUGIN_MODULE_PREFIX):
             return None
-        plugin_name = fullname[len(_PLUGIN_MODULE_PREFIX):]
+        plugin_name = fullname[len(PLUGIN_MODULE_PREFIX):]
         for plugin_dir in plugin_dirs():
             for file_path in self._plugin_file_paths(plugin_dir, plugin_name):
                 if os.path.exists(file_path):
