@@ -128,14 +128,20 @@ class FilterTestFiltering(PicardTestCase):
         test_object = File(test_file)
 
         # Test file-related filters
-        for test_filters in [set(), {'~filename'}, {'~filepath'}, {'~filename', '~filepath'}]:
+        for test_filters in [{'~filename'}, {'~filepath'}, {'~filename', '~filepath'}]:
             text = f"Error testing filters: {test_filters}"
             self.assertTrue(BaseTreeView._matches_file_properties(test_object, '', test_filters), text)
             self.assertTrue(BaseTreeView._matches_file_properties(test_object, 'test', test_filters), text)
             self.assertFalse(BaseTreeView._matches_file_properties(test_object, 'not_in_path', test_filters), text)
 
+        # Test with no filter selected
+        test_filters = set()
+        self.assertTrue(BaseTreeView._matches_file_properties(test_object, '', test_filters))
+        self.assertTrue(BaseTreeView._matches_file_properties(test_object, 'test', test_filters))
+        self.assertTrue(BaseTreeView._matches_file_properties(test_object, 'not_in_path', test_filters))
+
         # Test non-file-related filter
-        self.assertFalse(BaseTreeView._matches_file_properties(test_object, 'test', {'title'}))
+        self.assertTrue(BaseTreeView._matches_file_properties(test_object, 'test', {'title'}))
 
     def test_filter_metadata(self):
         test_metadata = {
@@ -144,15 +150,21 @@ class FilterTestFiltering(PicardTestCase):
         }
         test_object = MultiMetadataProxy(Metadata(test_metadata))
 
-        # Test file-related filters
-        for test_filters in [set(), {'title'}, {'artist'}, {'title', 'artist'}]:
+        # Test metadata-related filters
+        for test_filters in [{'title'}, {'artist'}, {'title', 'artist'}]:
             text = f"Error testing filters: {test_filters}"
             self.assertTrue(BaseTreeView._matches_metadata(test_object, '', test_filters), text)
             self.assertTrue(BaseTreeView._matches_metadata(test_object, 'test', test_filters), text)
             self.assertFalse(BaseTreeView._matches_metadata(test_object, 'not_in_metadata', test_filters), text)
 
-        # Test non-file-related filter
-        self.assertFalse(BaseTreeView._matches_metadata(test_object, 'test', {'~filename'}))
+        # Test with no filter selected
+        test_filters = set()
+        self.assertTrue(BaseTreeView._matches_metadata(test_object, '', test_filters))
+        self.assertTrue(BaseTreeView._matches_metadata(test_object, 'test', test_filters))
+        self.assertTrue(BaseTreeView._matches_metadata(test_object, 'not_in_metadata', test_filters))
+
+        # Test non-metadata-related filter
+        self.assertTrue(BaseTreeView._matches_metadata(test_object, 'test', {'~filename'}))
 
         # Test specific cases
         self.assertTrue(BaseTreeView._matches_metadata(test_object, '_artist', {'artist'}))

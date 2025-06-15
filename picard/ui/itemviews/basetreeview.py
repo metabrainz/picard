@@ -98,6 +98,9 @@ from picard.ui.widgets.configurablecolumnsheader import (
 )
 
 
+FILE_FILTERS = {'~filename', '~filepath'}
+
+
 def _alternative_versions(album):
     config = get_config()
     versions = album.release_group.versions
@@ -578,7 +581,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return self.filter_box
 
     def filter_items(self, text, filters):
-        if not text:  # When text is empty, show all items
+        if not text or not filters:  # When text or filters is empty, show all items
             self._restore_all_items()
             return
 
@@ -590,16 +593,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         for i in range(parent.childCount()):
             child = parent.child(i)
-            child_match = False
+            child_match = True
 
             if hasattr(child, 'obj'):
                 obj = child.obj
 
-                if self._matches_file_properties(obj, text, filters):
-                    child_match = True
-
-                if self._matches_metadata(obj, text, filters):
-                    child_match = True
+                child_match &= self._matches_file_properties(obj, text, filters)
+                child_match &= self._matches_metadata(obj, text, filters)
 
             if child.childCount() > 0:
                 child_match |= self._filter_tree_items(child, text, filters)
@@ -612,27 +612,42 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         return match_found
 
     @staticmethod
-    def _matches_file_properties(obj, text, filters):
-        if hasattr(obj, 'iterfiles') and (not filters or "~filename" in filters or "~filepath" in filters):
+    def _matches_file_properties(obj, text: str, filters: set):
+        if not filters.intersection(FILE_FILTERS):   # No file filters to check
+            return True
+        if hasattr(obj, 'iterfiles'):
             for file_ in obj.iterfiles():
-                if (not filters or "~filename" in filters) and text in file_.base_filename.lower():
+                if "~filename" in filters and text in file_.base_filename.lower():
                     return True
-                if (not filters or "~filepath" in filters) and text in file_.filename.lower():
+                if "~filepath" in filters and text in file_.filename.lower():
                     return True
+        else:   # No file specs to check
+            return True
+
         return False
 
     @staticmethod
-    def _matches_metadata(obj, text, filters):
+    def _matches_metadata(obj, text: str, filters: set):
+        test_filters = filters - FILE_FILTERS
+        if not test_filters:    # No metadata filters to check
+            return True
+
+        tag_match = False   # Indicates whether a matching tag was found to check
         if hasattr(obj, 'metadata'):
             for tag, values in obj.metadata.rawitems():
+                tag = tag.lower()
+                if tag not in test_filters:
+                    continue
+                tag_match = True
                 if isinstance(values, list):
                     for value in values:
-                        if (not filters or tag.lower() in filters) and text in str(value).lower():
+                        if text in str(value).lower():
                             return True
                 else:
-                    if (not filters or tag.lower() in filters) and text in str(values).lower():
+                    if text in str(values).lower():
                         return True
-        return False
+
+        return not tag_match
 
     def _restore_all_items(self):
         """Show all items in the tree."""
