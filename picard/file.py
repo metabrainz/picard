@@ -26,7 +26,7 @@
 # Copyright (C) 2020 Ray Bouchard
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
-# Copyright (C) 2021, 2023 Bob Swift
+# Copyright (C) 2021, 2023, 2025 Bob Swift
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Suryansh Shakya
 #
@@ -107,6 +107,8 @@ from picard.util.filenaming import (
     move_ensure_casing,
 )
 from picard.util.scripttofilename import script_to_filename_with_metadata
+
+from picard.ui.filter import Filter
 
 
 FILE_COMPARISON_WEIGHTS = {
@@ -283,6 +285,7 @@ class File(MetadataItem):
                 self.set_acoustid_fingerprint(fingerprints[0])
         run_file_post_load_processors(self)
         callback(self)
+        Filter.apply_filters()
 
     def _copy_loaded_metadata(self, metadata, postprocessors=None):
         metadata['~length'] = format_time(metadata.length)
