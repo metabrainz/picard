@@ -30,10 +30,10 @@ from test.picardtestcase import PicardTestCase
 
 import picard
 from picard.const import USER_PLUGIN_DIR
+from picard.extension_points import unregister_module_extensions
 from picard.plugin import (
     PluginFunctions,
     PluginWrapper,
-    _unregister_module_extensions,
 )
 from picard.pluginmanager import (
     PluginManager,
@@ -92,7 +92,7 @@ _testplugins = _get_test_plugins()
 
 def unload_plugin(plugin_name):
     """for testing purposes"""
-    _unregister_module_extensions(plugin_name)
+    unregister_module_extensions(plugin_name)
     if hasattr(picard.plugins, plugin_name):
         delattr(picard.plugins, plugin_name)
     if plugin_name in sys.modules:
