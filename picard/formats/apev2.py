@@ -36,6 +36,7 @@ import mutagen.apev2
 import mutagen.monkeysaudio
 import mutagen.musepack
 import mutagen.optimfrog
+import mutagen.tak
 import mutagen.wavpack
 
 from picard import log
@@ -56,10 +57,7 @@ from picard.util.filenaming import (
     replace_extension,
 )
 
-from .mutagenext import (
-    aac,
-    tak,
-)
+from .mutagenext import aac
 
 
 INVALID_CHARS = re.compile('[^\x20-\x7e]')
@@ -365,7 +363,7 @@ class TAKFile(APEv2File):
     """TAK file."""
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
-    _File = tak.TAK
+    _File = mutagen.tak.TAK
 
 
 class AACFile(APEv2File):
