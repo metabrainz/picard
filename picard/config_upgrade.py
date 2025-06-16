@@ -561,6 +561,12 @@ def upgrade_to_v3_0_0dev5(config):
     config.setting['replace_dir_separator'] = replace_dir_separator
 
 
+def upgrade_to_v3_0_0dev6(config):
+    """New independent option "standardize_vocals" should use the value of the old shared option"""
+    standardize_instruments_and_vocals = config.setting['standardize_instruments']
+    config.setting['standardize_vocals'] = standardize_instruments_and_vocals
+
+
 def rename_option(config, old_opt, new_opt, option_type, default):
     _s = config.setting
     if old_opt in _s:
