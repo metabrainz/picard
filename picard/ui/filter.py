@@ -25,6 +25,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import get_config
 from picard.i18n import (
     N_,
@@ -201,6 +202,7 @@ class Filter(QtWidgets.QWidget):
         cls.filterable_tags = set(filterable_tag_names())
         if cls.filterable_tags == old_filterable_tags:
             return
+        log.debug("Loaded filterable tags: %r", cls.filterable_tags)
         for item in cls.instances:
             item.filterable_tags_updated()
 
