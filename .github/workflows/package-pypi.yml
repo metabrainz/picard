@@ -87,8 +87,6 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
-    - name: Python Version
-      run: echo 'Python ${{ steps.setup.outputs.python-version }}'
     - name: Install gettext (Windows)
       if: runner.os == 'Windows'
       run: |
