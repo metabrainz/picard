@@ -64,7 +64,7 @@ except ImportError:
 
 
 SERVER_VERSION = '%s-%s/%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
-RE_VALID_ORIGINS = re.compile(r'^(?:[^\.]+\.)*musicbrainz\.org$')
+RE_VALID_ORIGINS = re.compile(r'^(?:[^\.]+\.)*musicbrainz\.(?:org|eu)$')
 LOG_PREFIX = "Browser Integration"
 
 

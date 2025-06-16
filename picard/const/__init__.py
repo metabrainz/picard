@@ -123,6 +123,7 @@ for k, v in MB_ATTRIBUTES.items():
 MUSICBRAINZ_SERVERS = [
     'musicbrainz.org',
     'beta.musicbrainz.org',
+    'musicbrainz.eu',
 ]
 
 # Plugins and Release Versions API
