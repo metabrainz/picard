@@ -20,54 +20,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from mutagen import (
-    FileType,
-    MutagenError,
-)
 from mutagen._util import loadfile
+from mutagen.ac3 import AC3
 from mutagen.apev2 import (
     APENoHeaderError,
     APEv2,
     _APEv2Data,
     error as APEError,
 )
-
-
-try:
-    from mutagen.ac3 import AC3
-    native_ac3 = True
-except ImportError:
-    native_ac3 = False
-
-    class AC3Error(MutagenError):
-        pass
-
-    class AC3Info:
-
-        """AC3 stream information.
-
-        Attributes:
-          (none at the moment)
-        """
-
-        def __init__(self, fileobj):
-            header = fileobj.read(4)
-            if len(header) != 4 or not header.startswith(b"\x0b\x77"):
-                raise AC3Error("not a AC3 file")
-
-        @staticmethod
-        def pprint():
-            return "AC3"
-
-    class AC3(FileType):
-        @loadfile()
-        def load(self, filething, *args, **kwargs):
-            self.info = AC3Info(filething.fileobj)
-
-        @staticmethod
-        def score(filename, fileobj, header):
-            return header.startswith(b"\x0b\x77") + (filename.endswith(".ac3")
-                or filename.endswith(".eac3"))
 
 
 class AC3APEv2(AC3):
