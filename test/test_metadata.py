@@ -61,6 +61,7 @@ settings = {
     'preferred_release_formats': [],
     'standardize_artists': False,
     'standardize_instruments': False,
+    'standardize_vocals': False,
     'translate_artist_names': False,
     'release_ars': True,
     'release_type_scores': [

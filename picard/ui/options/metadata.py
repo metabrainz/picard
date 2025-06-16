@@ -92,6 +92,7 @@ class MetadataOptionsPage(OptionsPage):
         ('script_exceptions', ['selected_scripts']),
         ('standardize_artists', ['standardize_artists']),
         ('standardize_instruments', ['standardize_instruments']),
+        ('standardize_vocals', ['standardize_vocals']),
         ('convert_punctuation', ['convert_punctuation']),
         ('release_ars', ['release_ars']),
         ('track_ars', ['track_ars']),
@@ -127,6 +128,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.nat_name.setText(config.setting['nat_name'])
         self.ui.standardize_artists.setChecked(config.setting['standardize_artists'])
         self.ui.standardize_instruments.setChecked(config.setting['standardize_instruments'])
+        self.ui.standardize_vocals.setChecked(config.setting['standardize_vocals'])
         self.ui.guess_tracknumber_and_title.setChecked(config.setting['guess_tracknumber_and_title'])
 
         self.set_enabled_states()
@@ -162,6 +164,7 @@ class MetadataOptionsPage(OptionsPage):
                 self.tagger.nats.update()
         config.setting['standardize_artists'] = self.ui.standardize_artists.isChecked()
         config.setting['standardize_instruments'] = self.ui.standardize_instruments.isChecked()
+        config.setting['standardize_vocals'] = self.ui.standardize_vocals.isChecked()
         config.setting['guess_tracknumber_and_title'] = self.ui.guess_tracknumber_and_title.isChecked()
 
     def set_va_name_default(self):

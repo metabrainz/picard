@@ -9,7 +9,7 @@
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
-# Copyright (C) 2023 David Kellner
+# Copyright (C) 2023, 2025 David Kellner
 # Copyright (C) 2024 Rakim Middya
 #
 # This program is free software; you can redistribute it and/or
@@ -69,6 +69,7 @@ settings = {
     "translate_artist_names": True,
     "translate_artist_names_script_exception": False,
     "standardize_instruments": True,
+    "standardize_vocals": True,
     "release_ars": True,
     "preferred_release_countries": [],
     "artist_locales": ['en'],
@@ -315,8 +316,16 @@ class RecordingTest(MBJSONTest):
         t = Track('1')
         config.setting['standardize_instruments'] = False
         recording_to_metadata(self.json_doc, m, t)
-        self.assertEqual(m['performer:vocals'], 'Ed Sheeran')
+        self.assertEqual(m['performer:lead vocals'], 'Ed Sheeran')
         self.assertEqual(m['performer:acoustic guitar'], 'Ed Sheeran')
+
+    def test_recording_vocal_credits(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['standardize_vocals'] = False
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['performer:vocals'], 'Ed Sheeran')
+        self.assertEqual(m['performer:guitar family'], 'Ed Sheeran')
 
 
 class RecordingMultiArtistsTest1(MBJSONTest):
