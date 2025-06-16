@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -65,6 +65,9 @@ class Ui_MetadataOptionsPage(object):
         self.standardize_instruments = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.standardize_instruments.setObjectName("standardize_instruments")
         self.verticalLayout_3.addWidget(self.standardize_instruments)
+        self.standardize_vocals = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
+        self.standardize_vocals.setObjectName("standardize_vocals")
+        self.verticalLayout_3.addWidget(self.standardize_vocals)
         self.convert_punctuation = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.convert_punctuation.setObjectName("convert_punctuation")
         self.verticalLayout_3.addWidget(self.convert_punctuation)
@@ -122,7 +125,8 @@ class Ui_MetadataOptionsPage(object):
         MetadataOptionsPage.setTabOrder(self.selected_scripts, self.select_scripts)
         MetadataOptionsPage.setTabOrder(self.select_scripts, self.standardize_artists)
         MetadataOptionsPage.setTabOrder(self.standardize_artists, self.standardize_instruments)
-        MetadataOptionsPage.setTabOrder(self.standardize_instruments, self.convert_punctuation)
+        MetadataOptionsPage.setTabOrder(self.standardize_instruments, self.standardize_vocals)
+        MetadataOptionsPage.setTabOrder(self.standardize_vocals, self.convert_punctuation)
         MetadataOptionsPage.setTabOrder(self.convert_punctuation, self.release_ars)
         MetadataOptionsPage.setTabOrder(self.release_ars, self.track_ars)
         MetadataOptionsPage.setTabOrder(self.track_ars, self.guess_tracknumber_and_title)
@@ -138,7 +142,8 @@ class Ui_MetadataOptionsPage(object):
         self.translate_artist_names_script_exception.setText(_("Ignore artist name translation for these language scripts:"))
         self.select_scripts.setText(_("Select…"))
         self.standardize_artists.setText(_("Use standardized artist names"))
-        self.standardize_instruments.setText(_("Use standardized instrument and vocal credits"))
+        self.standardize_instruments.setText(_("Use standardized instrument credits"))
+        self.standardize_vocals.setText(_("Use standardized vocal credits"))
         self.convert_punctuation.setText(_("Convert Unicode punctuation characters to ASCII"))
         self.release_ars.setText(_("Use release relationships"))
         self.track_ars.setText(_("Use track relationships"))

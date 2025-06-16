@@ -8,7 +8,7 @@
 # Copyright (C) 2018-2023 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020 dukeyin
-# Copyright (C) 2020, 2023 David Kellner
+# Copyright (C) 2020, 2023, 2025 David Kellner
 # Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
 # Copyright (C) 2024 Rakim Middya
@@ -156,7 +156,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
     reltype = relation['type']
     attribs = _relation_attributes(relation)
     if reltype in {'vocal', 'instrument', 'performer'}:
-        if context.use_instrument_credits:
+        if (reltype == 'instrument' and context.use_instrument_credits) or (reltype == 'vocal' and context.use_vocal_credits):
             attr_credits = relation.get('attribute-credits', {})
         else:
             attr_credits = {}
@@ -250,6 +250,7 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
         instrumental=instrumental,
         use_credited_as=not config.setting['standardize_artists'],
         use_instrument_credits=not config.setting['standardize_instruments'],
+        use_vocal_credits=not config.setting['standardize_vocals'],
         metadata_was_cleared=dict(),
     )
     for relation in relations:
