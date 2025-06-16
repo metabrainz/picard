@@ -20,11 +20,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from mutagen._file import FileType
-from mutagen._util import (
+from mutagen import (
+    FileType,
     MutagenError,
-    loadfile,
 )
+from mutagen._util import loadfile
 from mutagen.apev2 import (
     APENoHeaderError,
     APEv2,

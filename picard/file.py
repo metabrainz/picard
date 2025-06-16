@@ -58,7 +58,7 @@ import re
 import shutil
 import time
 
-from mutagen._util import MutagenError
+from mutagen import MutagenError
 
 from picard import (
     PICARD_APP_NAME,

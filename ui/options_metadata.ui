@@ -98,7 +98,14 @@
       <item>
        <widget class="QCheckBox" name="standardize_instruments">
         <property name="text">
-         <string>Use standardized instrument and vocal credits</string>
+         <string>Use standardized instrument credits</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="standardize_vocals">
+        <property name="text">
+         <string>Use standardized vocal credits</string>
         </property>
        </widget>
       </item>
@@ -221,6 +228,7 @@
   <tabstop>select_scripts</tabstop>
   <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
+  <tabstop>standardize_vocals</tabstop>
   <tabstop>convert_punctuation</tabstop>
   <tabstop>release_ars</tabstop>
   <tabstop>track_ars</tabstop>

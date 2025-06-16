@@ -6,6 +6,7 @@
 # Copyright (C) 2024 Laurent Monin
 # Copyright (C) 2025 Philipp Wolfer
 # Copyright (C) 2025 Bob Swift
+# Copyright (C) 2025 David Kellner
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -304,7 +305,8 @@ TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalon
 BoolOption('setting', 'release_ars', True, title=N_("Use release relationships"))
 ListOption('setting', 'script_exceptions', [], title=N_("Translation script exceptions"))
 BoolOption('setting', 'standardize_artists', False, title=N_("Use standardized artist names"))
-BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument and vocal credits"))
+BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument credits"))
+BoolOption('setting', 'standardize_vocals', True, title=N_("Use standardized vocal credits"))
 BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships"))
 BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names"))
 BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception"))
