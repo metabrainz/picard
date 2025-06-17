@@ -47,7 +47,7 @@ class Filter(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         Filter.instances.add(self)
-        self.saved_filters_key = f"{type(parent).__name__}FilterItems"
+        self.saved_filters_key = f"filters_{type(parent).__name__}"
         self.initializing = True
         layout = QtWidgets.QHBoxLayout(self)
         layout.setContentsMargins(2, 2, 2, 2)

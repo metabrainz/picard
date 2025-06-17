@@ -143,8 +143,8 @@ BoolOption('persist', 'view_toolbar', True)
 BoolOption('persist', 'view_filterbar', False)
 BoolOption('persist', 'window_maximized', False)
 Option('persist', 'window_state', QtCore.QByteArray())
-ListOption('persist', 'FileTreeViewFilterItems', None)
-ListOption('persist', 'AlbumTreeViewFilterItems', None)
+ListOption('persist', 'filters_FileTreeView', None)
+ListOption('persist', 'filters_AlbumTreeView', None)
 
 # picard/ui/metadatabox.py
 #
