@@ -79,8 +79,8 @@ class Filter(QtWidgets.QWidget):
         config = get_config()
         temp = config.persist[self.saved_filters_key]
         if temp is not None:
-            return set(temp)
-        return self.default_filters.copy()
+            temp = set(temp).intersection(Filter.filterable_tags)
+        return temp or self.default_filters.copy()
 
     def __del__(self):
         Filter.instances.discard(self)
