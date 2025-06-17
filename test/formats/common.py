@@ -34,7 +34,6 @@ import picard.formats
 from picard.formats import ext_to_format
 from picard.formats.mutagenext.aac import AACAPEv2
 from picard.formats.mutagenext.ac3 import AC3APEv2
-from picard.formats.mutagenext.tak import TAK
 from picard.formats.util import guess_format
 from picard.metadata import Metadata
 from picard.tags import file_info_tag_names
@@ -88,7 +87,7 @@ def save_and_load_metadata(filename, metadata):
 
 def load_raw(filename):
     # First try special implementations in Picard
-    f = mutagen.File(filename, [AACAPEv2, AC3APEv2, TAK])
+    f = mutagen.File(filename, [AACAPEv2, AC3APEv2])
     if f is None:
         f = mutagen.File(filename)
     return f

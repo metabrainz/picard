@@ -10,7 +10,7 @@ Required:
 
 * [Python 3.10 or newer](https://www.python.org/downloads/)
 * [PyQt 6.5 or newer](https://riverbankcomputing.com/software/pyqt/download)
-* [Mutagen 1.43 or newer](https://mutagen.readthedocs.io/)
+* [Mutagen 1.45 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
 * [python-dateutil](https://dateutil.readthedocs.io/en/stable/)
 * gettext:

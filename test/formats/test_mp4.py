@@ -21,8 +21,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import unittest
-
 import mutagen
 
 from picard.formats import ext_to_format
@@ -151,7 +149,6 @@ class M4ATest(CommonMP4Tests.MP4TestCase):
     }
     unexpected_info = ['~video']
 
-    @unittest.skipUnless(mutagen.version >= (1, 43, 0), "mutagen >= 1.43.0 required")
     def test_hdvd_tag_considered_video(self):
         tags = mutagen.mp4.MP4Tags()
         tags['hdvd'] = [1]
