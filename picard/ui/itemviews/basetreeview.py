@@ -66,6 +66,7 @@ from picard.cluster import (
     UnclusteredFiles,
 )
 from picard.config import get_config
+from picard.const.tags import ALL_TAGS
 from picard.extension_points.item_actions import (
     ext_point_album_actions,
     ext_point_cluster_actions,
@@ -593,16 +594,34 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         for i in range(parent.childCount()):
             child = parent.child(i)
-            child_match = True
+            child_match = False
+            child_tags = False
 
             if hasattr(child, 'obj'):
                 obj = child.obj
+                matched_filters = set()
 
-                child_match &= self._matches_file_properties(obj, text, filters)
-                child_match &= self._matches_metadata(obj, text, filters)
+                for matcher in [self._matches_file_properties, self._matches_metadata]:
+                    has_tags, matches = matcher(obj, text, filters)
+                    child_tags |= has_tags
+                    if matches:
+                        child_match = True
+                        matched_filters = matched_filters.union(matches)
 
             if child.childCount() > 0:
                 child_match |= self._filter_tree_items(child, text, filters)
+
+            if not child_match and not child_tags:
+                child_match = True
+
+            if child_match and child.filterable:
+                self._set_item_tooltip(
+                    item=child,
+                    text=(
+                        _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters])) if matched_filters else
+                        _('No tags found for selected filters.')
+                    )
+                )
 
             # Hide/show based on match
             if child.filterable:
@@ -613,41 +632,47 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     @staticmethod
     def _matches_file_properties(obj, text: str, filters: set):
+        matches = set()
+        has_tags = False
         if not filters.intersection(FILE_FILTERS):   # No file filters to check
-            return True
+            return has_tags, matches
         if hasattr(obj, 'iterfiles'):
+            has_tags = True
             for file_ in obj.iterfiles():
                 if "~filename" in filters and text in file_.base_filename.lower():
-                    return True
+                    matches.add('~filename')
                 if "~filepath" in filters and text in file_.filename.lower():
-                    return True
-        else:   # No file specs to check
-            return True
+                    matches.add('~filepath')
 
-        return False
+        return has_tags, matches
 
     @staticmethod
     def _matches_metadata(obj, text: str, filters: set):
+        matches = set()
+        has_tags = False
         test_filters = filters - FILE_FILTERS
         if not test_filters:    # No metadata filters to check
-            return True
+            return has_tags, matches
 
-        tag_match = False   # Indicates whether a matching tag was found to check
         if hasattr(obj, 'metadata'):
             for tag, values in obj.metadata.rawitems():
                 tag = tag.lower()
                 if tag not in test_filters:
                     continue
-                tag_match = True
+                has_tags = True
                 if isinstance(values, list):
                     for value in values:
                         if text in str(value).lower():
-                            return True
+                            matches.add(tag)
                 else:
                     if text in str(values).lower():
-                        return True
+                        matches.add(tag)
 
-        return not tag_match
+        return has_tags, matches
+
+    def _set_item_tooltip(self, item: QtWidgets.QTreeWidgetItem, text: str):
+        for i in range(item.columnCount()):
+            item.setToolTip(i, text)
 
     def _restore_all_items(self):
         """Show all items in the tree."""
@@ -658,5 +683,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for i in range(parent.childCount()):
             child = parent.child(i)
             child.setHidden(False)
+            self._set_item_tooltip(child, '')
             if child.childCount() > 0:
                 self._restore_tree_items(child)
