@@ -1,16 +1,15 @@
 [build-system]
-requires = ["setuptools>=74.1.0"]
+requires = ["setuptools>=77.0.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "picard"
 description = "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 authors = [{name = "The MusicBrainz Team"}]
-license = {text = "GPL-2.0-or-later"}
+license = "GPL-2.0-or-later"
 keywords = ["musicbrainz", "tagging", "audio"]
 requires-python = ">=3.10"
 classifiers = [
-    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
     "Development Status :: 5 - Production/Stable",
     "Environment :: MacOS X",
     "Environment :: Win32 (MS Windows)",
