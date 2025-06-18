@@ -53,8 +53,8 @@ ACOUSTID_URL = 'https://api.acoustid.org/v2'
 FPCALC_NAMES = ['fpcalc', 'pyfpcalc']
 
 # MB OAuth client credentials
-MUSICBRAINZ_OAUTH_CLIENT_ID = 'ACa9wsDX19cLp-AeEP-vVw'
-MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'xIsvXbIuntaLuRRhzuazOA'
+MUSICBRAINZ_OAUTH_CLIENT_ID = 'jIqTXsN2WQvhpZXmsjo1ygxj62R9ww4X'
+MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'IVg2qnvErgX046Ptz3FsTxW4dbyQM9Jr'
 
 # Cover art archive URL
 CAA_URL = 'https://coverartarchive.org'
