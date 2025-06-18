@@ -74,7 +74,9 @@ a = Analysis(['tagger.py'],
              pathex=['picard'],
              binaries=binaries,
              datas=data_files,
-             hiddenimports=[],
+             hiddenimports=[
+                '_cffi_backend',  # required for pygit2
+             ],
              hookspath=[],
              runtime_hooks=runtime_hooks,
              excludes=[],
