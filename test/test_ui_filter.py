@@ -20,6 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import namedtuple
 from unittest.mock import patch
 
 from test.picardtestcase import (
@@ -122,40 +123,349 @@ class FilterTestTags(PicardTestCase):
 
 class FilterTestFiltering(PicardTestCase):
     """Test filtering of basetreeview items"""
+    TestConditions = namedtuple('TestConditions', 'text filters has_tags matches')
 
-    def test_filter_file(self):
+    def test_filter_file_1(self):
+        """Test with file-related filters"""
+
         test_file = get_test_data_path('test.flac')
         test_object = File(test_file)
 
-        # Test file-related filters
-        for test_filters in [set(), {'~filename'}, {'~filepath'}, {'~filename', '~filepath'}]:
-            text = f"Error testing filters: {test_filters}"
-            self.assertTrue(BaseTreeView._matches_file_properties(test_object, '', test_filters), text)
-            self.assertTrue(BaseTreeView._matches_file_properties(test_object, 'test', test_filters), text)
-            self.assertFalse(BaseTreeView._matches_file_properties(test_object, 'not_in_path', test_filters), text)
+        tests = [
+            self.TestConditions(
+                text='',
+                filters={'~filename'},
+                has_tags=True,
+                matches={'~filename'},
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'~filename'},
+                has_tags=True,
+                matches={'~filename'},
+            ),
+            self.TestConditions(
+                text='not_in_path',
+                filters={'~filename'},
+                has_tags=True,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='',
+                filters={'~filepath'},
+                has_tags=True,
+                matches={'~filepath'},
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'~filepath'},
+                has_tags=True,
+                matches={'~filepath'},
+            ),
+            self.TestConditions(
+                text='not_in_path',
+                filters={'~filepath'},
+                has_tags=True,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='',
+                filters={'~filename', '~filepath'},
+                has_tags=True,
+                matches={'~filename', '~filepath'},
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'~filename', '~filepath'},
+                has_tags=True,
+                matches={'~filename', '~filepath'},
+            ),
+            self.TestConditions(
+                text='not_in_path',
+                filters={'~filename', '~filepath'},
+                has_tags=True,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='',
+                filters={'~filename', '~filepath', 'invalid_filter'},
+                has_tags=True,
+                matches={'~filename', '~filepath'},
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'~filename', '~filepath', 'invalid_filter'},
+                has_tags=True,
+                matches={'~filename', '~filepath'},
+            ),
+            self.TestConditions(
+                text='not_in_path',
+                filters={'~filename', '~filepath', 'invalid_filter'},
+                has_tags=True,
+                matches=set(),
+            ),
+        ]
 
-        # Test non-file-related filter
-        self.assertFalse(BaseTreeView._matches_file_properties(test_object, 'test', {'title'}))
+        for test in tests:
+            text = f"Error testing: filters={test.filters}  text={repr(test.text)}"
+            has_tags, matches = BaseTreeView._matches_file_properties(test_object, test.text, test.filters)
+            self.assertEqual(has_tags, test.has_tags, text)
+            self.assertEqual(matches, test.matches, text)
 
-    def test_filter_metadata(self):
+    def test_filter_file_2(self):
+        """Test with no filter provided"""
+
+        test_file = get_test_data_path('test.flac')
+        test_object = File(test_file)
+
+        tests = [
+            self.TestConditions(
+                text='',
+                filters=set(),
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='test',
+                filters=set(),
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='not_in_path',
+                filters=set(),
+                has_tags=False,
+                matches=set(),
+            ),
+        ]
+
+        for test in tests:
+            text = f"Error testing: filters={test.filters}  text={repr(test.text)}"
+            has_tags, matches = BaseTreeView._matches_file_properties(test_object, test.text, test.filters)
+            self.assertEqual(has_tags, test.has_tags, text)
+            self.assertEqual(matches, test.matches, text)
+
+    def test_filter_file_3(self):
+        """Test with non-file-related filter provided"""
+
+        test_file = get_test_data_path('test.flac')
+        test_object = File(test_file)
+
+        tests = [
+            self.TestConditions(
+                text='test',
+                filters={'title'},
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'title', 'artist'},
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'title', 'artist', 'invalid_filter'},
+                has_tags=False,
+                matches=set(),
+            ),
+        ]
+
+        for test in tests:
+            text = f"Error testing: filters={test.filters}  text={repr(test.text)}"
+            has_tags, matches = BaseTreeView._matches_file_properties(test_object, test.text, test.filters)
+            self.assertEqual(has_tags, test.has_tags, text)
+            self.assertEqual(matches, test.matches, text)
+
+    def test_filter_metadata_1(self):
+        """Test with metadata-related filters"""
+
         test_metadata = {
             'title': 'test_title',
             'artist': 'test_artist',
         }
         test_object = MultiMetadataProxy(Metadata(test_metadata))
 
-        # Test file-related filters
-        for test_filters in [set(), {'title'}, {'artist'}, {'title', 'artist'}]:
-            text = f"Error testing filters: {test_filters}"
-            self.assertTrue(BaseTreeView._matches_metadata(test_object, '', test_filters), text)
-            self.assertTrue(BaseTreeView._matches_metadata(test_object, 'test', test_filters), text)
-            self.assertFalse(BaseTreeView._matches_metadata(test_object, 'not_in_metadata', test_filters), text)
+        tests = [
+            self.TestConditions(
+                text='',
+                filters={'title'},
+                has_tags=True,
+                matches={'title'},
+            ),
+            self.TestConditions(
+                text='',
+                filters={'artist'},
+                has_tags=True,
+                matches={'artist'},
+            ),
+            self.TestConditions(
+                text='',
+                filters={'title', 'artist'},
+                has_tags=True,
+                matches={'title', 'artist'},
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'title'},
+                has_tags=True,
+                matches={'title'},
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'artist'},
+                has_tags=True,
+                matches={'artist'},
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'title', 'artist'},
+                has_tags=True,
+                matches={'title', 'artist'},
+            ),
+            self.TestConditions(
+                text='not_in_metadata',
+                filters={'title'},
+                has_tags=True,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='not_in_metadata',
+                filters={'artist'},
+                has_tags=True,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='not_in_metadata',
+                filters={'title', 'artist'},
+                has_tags=True,
+                matches=set(),
+            ),
+        ]
 
-        # Test non-file-related filter
-        self.assertFalse(BaseTreeView._matches_metadata(test_object, 'test', {'~filename'}))
+        for test in tests:
+            text = f"Error testing: filters={test.filters}  text={repr(test.text)}"
+            has_tags, matches = BaseTreeView._matches_metadata(test_object, test.text, test.filters)
+            self.assertEqual(has_tags, test.has_tags, text)
+            self.assertEqual(matches, test.matches, text)
 
-        # Test specific cases
-        self.assertTrue(BaseTreeView._matches_metadata(test_object, '_artist', {'artist'}))
-        self.assertFalse(BaseTreeView._matches_metadata(test_object, '_artist', {'title'}))
-        self.assertTrue(BaseTreeView._matches_metadata(test_object, '_title', {'title'}))
-        self.assertFalse(BaseTreeView._matches_metadata(test_object, '_title', {'artist'}))
+    def test_filter_metadata_2(self):
+        """Test with no filter provided"""
+
+        test_metadata = {
+            'title': 'test_title',
+            'artist': 'test_artist',
+        }
+        test_object = MultiMetadataProxy(Metadata(test_metadata))
+
+        tests = [
+            self.TestConditions(
+                text='',
+                filters=set(),
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='test',
+                filters=set(),
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='not_in_metadata',
+                filters=set(),
+                has_tags=False,
+                matches=set(),
+            ),
+        ]
+
+        for test in tests:
+            text = f"Error testing: filters={test.filters}  text={repr(test.text)}"
+            has_tags, matches = BaseTreeView._matches_metadata(test_object, test.text, test.filters)
+            self.assertEqual(has_tags, test.has_tags, text)
+            self.assertEqual(matches, test.matches, text)
+
+    def test_filter_metadata_3(self):
+        """Test with non-metadata-related filters"""
+
+        test_metadata = {
+            'title': 'test_title',
+            'artist': 'test_artist',
+        }
+        test_object = MultiMetadataProxy(Metadata(test_metadata))
+
+        tests = [
+            self.TestConditions(
+                text='test',
+                filters={'~filename'},
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'~filepath'},
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'~filename', '~filepath'},
+                has_tags=False,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='test',
+                filters={'~filename', '~filepath', 'invalid_filter'},
+                has_tags=False,
+                matches=set(),
+            ),
+        ]
+
+        for test in tests:
+            text = f"Error testing: filters={test.filters}  text={repr(test.text)}"
+            has_tags, matches = BaseTreeView._matches_metadata(test_object, test.text, test.filters)
+            self.assertEqual(has_tags, test.has_tags, text)
+            self.assertEqual(matches, test.matches, text)
+
+    def test_filter_metadata_4(self):
+        """Miscellaneous specific tests"""
+
+        test_metadata = {
+            'title': 'test_title',
+            'artist': 'test_artist',
+        }
+        test_object = MultiMetadataProxy(Metadata(test_metadata))
+
+        tests = [
+            self.TestConditions(
+                text='_artist',
+                filters={'artist'},
+                has_tags=True,
+                matches={'artist'},
+            ),
+            self.TestConditions(
+                text='_artist',
+                filters={'title'},
+                has_tags=True,
+                matches=set(),
+            ),
+            self.TestConditions(
+                text='_title',
+                filters={'title'},
+                has_tags=True,
+                matches={'title'},
+            ),
+            self.TestConditions(
+                text='_title',
+                filters={'artist'},
+                has_tags=True,
+                matches=set(),
+            ),
+        ]
+
+        for test in tests:
+            text = f"Error testing: filters={test.filters}  text={repr(test.text)}"
+            has_tags, matches = BaseTreeView._matches_metadata(test_object, test.text, test.filters)
+            self.assertEqual(has_tags, test.has_tags, text)
+            self.assertEqual(matches, test.matches, text)

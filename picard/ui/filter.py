@@ -25,6 +25,8 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
+from picard.config import get_config
 from picard.i18n import (
     N_,
     gettext as _,
@@ -45,20 +47,23 @@ class Filter(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         Filter.instances.add(self)
+        self.saved_filters_key = f"filters_{type(parent).__name__}"
         self.initializing = True
         layout = QtWidgets.QHBoxLayout(self)
         layout.setContentsMargins(2, 2, 2, 2)
 
         self.default_filter_button_label = N_("Filters")
 
+        self.load_filterable_tags()
+        self.default_filters = set()    # Default to selecting no filters
+        self.selected_filters = self._get_saved_selected_filters()
+
         # filter button
-        self.filter_button = QtWidgets.QPushButton(self.default_filter_button_label, self)
+        self.filter_button = QtWidgets.QPushButton(Filter.make_button_text(self.selected_filters), self)
         self.filter_button.setMaximumWidth(120)
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.selected_filters = set()  # Start with no filters selected
-        self.load_filterable_tags()
         self.filter_dialog = self._build_filter_dialog()
 
         # filter input
@@ -70,6 +75,13 @@ class Filter(QtWidgets.QWidget):
 
         self.initializing = False
 
+    def _get_saved_selected_filters(self):
+        config = get_config()
+        temp = config.persist[self.saved_filters_key]
+        if temp is not None:
+            temp = set(temp).intersection(Filter.filterable_tags)
+        return temp or self.default_filters.copy()
+
     def __del__(self):
         Filter.instances.discard(self)
 
@@ -79,6 +91,18 @@ class Filter(QtWidgets.QWidget):
         dialog.setMinimumWidth(300)
 
         layout = QtWidgets.QVBoxLayout(dialog)
+
+        header_layout = QtWidgets.QHBoxLayout()
+
+        # Offset to line up checkbox with checkboxes in scroll area below
+        spacer = QtWidgets.QSpacerItem(9, 0, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
+        header_layout.addItem(spacer)
+
+        self.check_all_box = QtWidgets.QCheckBox(_('Select / clear all filters'))
+        self.check_all_box.setChecked(Filter.filterable_tags == self.selected_filters)
+        self.check_all_box.clicked.connect(self._check_all_box_clicked)
+        header_layout.addWidget(self.check_all_box)
+        layout.addLayout(header_layout)
 
         # Scroll area for tags
         scroll = QtWidgets.QScrollArea(dialog)
@@ -104,11 +128,6 @@ class Filter(QtWidgets.QWidget):
 
         button_layout = QtWidgets.QHBoxLayout()
 
-        # clear all
-        self.filter_clear_button = QtWidgets.QPushButton(_('Clear All'))
-        self.filter_clear_button.clicked.connect(self._uncheck_all_filters)
-        button_layout.addWidget(self.filter_clear_button)
-
         # spacer
         spacer = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         button_layout.addItem(spacer)
@@ -132,6 +151,11 @@ class Filter(QtWidgets.QWidget):
 
         return dialog
 
+    def _check_all_box_clicked(self):
+        state = self.check_all_box.checkState() == QtCore.Qt.CheckState.Checked
+        for checkbox in self.checkboxes.values():
+            checkbox.setChecked(state)
+
     def _uncheck_all_filters(self):
         for checkbox in self.checkboxes.values():
             checkbox.setChecked(False)
@@ -145,6 +169,10 @@ class Filter(QtWidgets.QWidget):
                 if checkbox.isChecked():
                     self.selected_filters.add(tag)
 
+            # Update persistent list of selected filters
+            config = get_config()
+            config.persist[self.saved_filters_key] = list(self.selected_filters)
+
             # Update button text
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
@@ -154,6 +182,8 @@ class Filter(QtWidgets.QWidget):
             # Reset any changes to selected filters on dialog cancel
             for tag, checkbox in self.checkboxes.items():
                 checkbox.setChecked(tag in self.selected_filters)
+
+        self.check_all_box.setChecked(Filter.filterable_tags == self.selected_filters)
 
     @classmethod
     def apply_filters(cls):
@@ -172,6 +202,7 @@ class Filter(QtWidgets.QWidget):
         cls.filterable_tags = set(filterable_tag_names())
         if cls.filterable_tags == old_filterable_tags:
             return
+        log.debug("Loaded filterable tags: %r", cls.filterable_tags)
         for item in cls.instances:
             item.filterable_tags_updated()
 
@@ -209,8 +240,8 @@ class Filter(QtWidgets.QWidget):
 
     def clear(self):
         self.filter_query_box.clear()
-        self.selected_filters = set()
-        self.set_filter_button_label()
+        self.selected_filters = self._get_saved_selected_filters()
+        self.set_filter_button_label(Filter.make_button_text(self.selected_filters))
 
     def set_focus(self):
         self.filter_query_box.setFocus()
