@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-05-20 20:20+0000\n"
+"PO-Revision-Date: 2025-06-22 23:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:144
@@ -4850,7 +4850,7 @@ msgstr ""
 
 #: picard/const/tags.py:519
 msgid "Mood"
-msgstr "Estil"
+msgstr "Estat d'ànim"
 
 #: picard/const/tags.py:520
 msgid "The mood associated with the track."
@@ -5517,7 +5517,7 @@ msgstr ""
 
 #: picard/const/tags.py:1070
 msgid "Show Name"
-msgstr "Mostra el nom"
+msgstr "Nom del programa"
 
 #: picard/const/tags.py:1071
 msgid ""
@@ -5544,7 +5544,7 @@ msgstr ""
 
 #: picard/const/tags.py:1089
 msgid "Show Name Sort Order"
-msgstr "Mostra l'ordenació del nom"
+msgstr "Ordenació del nom del programa"
 
 #: picard/const/tags.py:1090
 msgid ""
