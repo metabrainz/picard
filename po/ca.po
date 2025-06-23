@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-05-21 12:20+0000\n"
+"PO-Revision-Date: 2025-06-23 14:20+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "2/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -6643,7 +6643,7 @@ msgstr "Mesclador"
 
 #: picard/util/tags.py:78
 msgid "Mood"
-msgstr "Estil"
+msgstr "Estat d'ànim"
 
 #: picard/util/tags.py:79
 msgid "Movement"
@@ -6799,11 +6799,11 @@ msgstr "Sistema d’escriptura"
 
 #: picard/util/tags.py:119
 msgid "Show Name"
-msgstr "Mostra el nom"
+msgstr "Nom del programa"
 
 #: picard/util/tags.py:120
 msgid "Show Name Sort Order"
-msgstr "Mostra l'ordenació del nom"
+msgstr "Ordenació del nom del programa"
 
 #: picard/util/tags.py:121
 msgid "Show Work & Movement"
