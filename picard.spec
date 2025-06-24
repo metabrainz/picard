@@ -69,12 +69,21 @@ elif os_name == 'Darwin':
 if build_portable:
     runtime_hooks.append('scripts/pyinstaller/portable-hook.py')
 
+hiddenimports = [
+    'dataclasses',  # Provide dataclasses support for plugins
+]
+try:
+    import zstandard as _
+    hiddenimports.append('zstandard')
+except ImportError:
+    # zstandard is not available, so we don't need to include it
+    pass
 
 a = Analysis(['tagger.py'],
              pathex=['picard'],
              binaries=binaries,
              datas=data_files,
-             hiddenimports=[],
+             hiddenimports=hiddenimports,
              hookspath=[],
              runtime_hooks=runtime_hooks,
              excludes=[],
