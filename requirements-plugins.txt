@@ -1,0 +1,3 @@
+aubio~=0.4
+opencc~=1.1
+zstandard~=0.23
