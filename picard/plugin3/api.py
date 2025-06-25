@@ -97,71 +97,71 @@ class PluginApi:
         return self._api_config
 
     # Metadata processors
-    def register_album_metadata_processor(function: Callable, priority: int = 0) -> None:
+    def register_album_metadata_processor(self, function: Callable, priority: int = 0) -> None:
         return register_album_metadata_processor(function, priority)
 
-    def register_track_metadata_processor(function: Callable, priority: int = 0) -> None:
+    def register_track_metadata_processor(self, function: Callable, priority: int = 0) -> None:
         return register_track_metadata_processor(function, priority)
 
     # Event hooks
-    def register_album_post_removal_processor(function: Callable, priority: int = 0) -> None:
+    def register_album_post_removal_processor(self, function: Callable, priority: int = 0) -> None:
         return register_album_post_removal_processor(function, priority)
 
-    def register_file_post_load_processor(function: Callable, priority: int = 0) -> None:
+    def register_file_post_load_processor(self, function: Callable, priority: int = 0) -> None:
         return register_file_post_load_processor(function, priority)
 
-    def register_file_post_addition_to_track_processor(function: Callable, priority: int = 0) -> None:
+    def register_file_post_addition_to_track_processor(self, function: Callable, priority: int = 0) -> None:
         return register_file_post_addition_to_track_processor(function, priority)
 
-    def register_file_post_removal_from_track_processor(function: Callable, priority: int = 0) -> None:
+    def register_file_post_removal_from_track_processor(self, function: Callable, priority: int = 0) -> None:
         return register_file_post_removal_from_track_processor(function, priority)
 
-    def register_file_post_save_processor(function: Callable, priority: int = 0) -> None:
+    def register_file_post_save_processor(self, function: Callable, priority: int = 0) -> None:
         return register_file_post_save_processor(function, priority)
 
     # Cover art
-    def register_cover_art_provider(provider: CoverArtProvider) -> None:
+    def register_cover_art_provider(self, provider: CoverArtProvider) -> None:
         return register_cover_art_provider(provider)
 
     # File formats
-    def register_format(format: File) -> None:
+    def register_format(self, format: File) -> None:
         return register_format(format)
 
     # Scripting
-    def register_script_function(function: Callable, name: str = None, eval_args: bool = True,
+    def register_script_function(self, function: Callable, name: str = None, eval_args: bool = True,
                                  check_argcount: bool = True, documentation: str = None) -> None:
         return register_script_function(function, name, eval_args, check_argcount, documentation)
 
     # Context menu actions
-    def register_album_action(action: BaseAction) -> None:
+    def register_album_action(self, action: BaseAction) -> None:
         return register_album_action(action)
 
-    def register_cluster_action(action: BaseAction) -> None:
+    def register_cluster_action(self, action: BaseAction) -> None:
         return register_cluster_action(action)
 
-    def register_clusterlist_action(action: BaseAction) -> None:
+    def register_clusterlist_action(self, action: BaseAction) -> None:
         return register_clusterlist_action(action)
 
-    def register_track_action(action: BaseAction) -> None:
+    def register_track_action(self, action: BaseAction) -> None:
         return register_track_action(action)
 
-    def register_file_action(action: BaseAction) -> None:
+    def register_file_action(self, action: BaseAction) -> None:
         return register_file_action(action)
 
     # UI
-    def register_options_page(page_class: Type[OptionsPage]) -> None:
+    def register_options_page(self, page_class: Type[OptionsPage]) -> None:
         return register_options_page(page_class)
 
     # TODO: Replace by init function in plugin
-    # def register_ui_init(function: Callable) -> None:
+    # def register_ui_init(self, function: Callable) -> None:
     #     pass
 
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins
     # that use alternative progress displays
-    # def register_status_indicator(function: Callable) -> None:
+    # def register_status_indicator(self, function: Callable) -> None:
     #     pass
 
     # Register page for file properties. Same for track and album
-    # def register_file_info_page(page_class):
+    # def register_file_info_page(self, page_class):
     #     pass
