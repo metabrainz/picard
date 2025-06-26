@@ -451,19 +451,22 @@ class MetadataBox(QtWidgets.QTableWidget):
             remove_from_preserved_tags_action.setEnabled(editable)
             menu.addAction(remove_from_preserved_tags_action)
 
+    def _process_file_for_orig_actions(self, file, tag, useorigs, mergeorigs, file_tracks, track_albums):
+        extra_objects = []
+        if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
+            extra_objects.append(file.parent_item)
+            file_tracks.append(file.parent_item)
+            track_albums.add(file.parent_item.album)
+        useorigs.append(partial(self._use_orig_tags, file, tag, extra_objects))
+        mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
+
     def _collect_orig_tag_actions(self, tag, useorigs, mergeorigs):
         status = self.tag_diff.status[tag] & TagStatus.CHANGED
         if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
             file_tracks = []
             track_albums = set()
             for file in self.files:
-                extra_objects = []
-                if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
-                    extra_objects.append(file.parent_item)
-                    file_tracks.append(file.parent_item)
-                    track_albums.add(file.parent_item.album)
-                useorigs.append(partial(self._use_orig_tags, file, tag, extra_objects))
-                mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
+                self._process_file_for_orig_actions(file, tag, useorigs, mergeorigs, file_tracks, track_albums)
             for track in set(self.tracks) - set(file_tracks):
                 useorigs.append(partial(self._use_orig_tags, track, tag))
                 mergeorigs.append(partial(self._merge_orig_tags, track, tag))
