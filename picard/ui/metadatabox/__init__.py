@@ -461,19 +461,35 @@ class MetadataBox(QtWidgets.QTableWidget):
         mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
 
     def _collect_orig_tag_actions(self, tag, useorigs, mergeorigs):
+        """
+        Collects actions for restoring or merging original tag values for a given tag.
+
+        - Adds actions for each file, track, and album where the tag has changed or been removed.
+        - Ensures actions are only added once per object.
+        """
         status = self.tag_diff.status[tag] & TagStatus.CHANGED
-        if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
-            file_tracks = []
-            track_albums = set()
-            for file in self.files:
-                self._process_file_for_orig_actions(file, tag, useorigs, mergeorigs, file_tracks, track_albums)
-            for track in set(self.tracks) - set(file_tracks):
-                useorigs.append(partial(self._use_orig_tags, track, tag))
-                mergeorigs.append(partial(self._merge_orig_tags, track, tag))
-                track_albums.add(track.album)
-            for album in track_albums:
-                useorigs.append(partial(self._use_orig_tags, album, tag))
-                mergeorigs.append(partial(self._merge_orig_tags, album, tag))
+        if status not in (TagStatus.CHANGED, TagStatus.REMOVED):
+            return
+
+        file_tracks = []
+        track_albums = set()
+
+        # Add actions for files and their parent tracks/albums
+        for file in self.files:
+            self._process_file_for_orig_actions(
+                file, tag, useorigs, mergeorigs, file_tracks, track_albums
+            )
+
+        # Add actions for tracks not already handled
+        for track in set(self.tracks) - set(file_tracks):
+            useorigs.append(partial(self._use_orig_tags, track, tag))
+            mergeorigs.append(partial(self._merge_orig_tags, track, tag))
+            track_albums.add(track.album)
+
+        # Add actions for albums
+        for album in track_albums:
+            useorigs.append(partial(self._use_orig_tags, album, tag))
+            mergeorigs.append(partial(self._merge_orig_tags, album, tag))
 
     def _add_tag_modification_actions(self, menu, removals, useorigs, mergeorigs):
         remove_tag_action = QtGui.QAction(_("Remove"), self)
