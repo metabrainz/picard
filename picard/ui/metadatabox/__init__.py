@@ -433,6 +433,24 @@ class MetadataBox(QtWidgets.QTableWidget):
             return editor.toPlainText()
         return ''
 
+    def _add_single_tag_actions(self, menu, selected_tag):
+        editable = self._tag_is_editable(selected_tag)
+        edit_tag_action = QtGui.QAction(_("Edit…"), self)
+        edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
+        edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
+        edit_tag_action.setEnabled(editable)
+        menu.addAction(edit_tag_action)
+        if selected_tag not in self.preserved_tags:
+            add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self)
+            add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
+            add_to_preserved_tags_action.setEnabled(editable)
+            menu.addAction(add_to_preserved_tags_action)
+        else:
+            remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self)
+            remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
+            remove_from_preserved_tags_action.setEnabled(editable)
+            menu.addAction(remove_from_preserved_tags_action)
+
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
@@ -440,22 +458,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             single_tag = len(tags) == 1
             if single_tag:
                 selected_tag = tags[0]
-                editable = self._tag_is_editable(selected_tag)
-                edit_tag_action = QtGui.QAction(_("Edit…"), self)
-                edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
-                edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
-                edit_tag_action.setEnabled(editable)
-                menu.addAction(edit_tag_action)
-                if selected_tag not in self.preserved_tags:
-                    add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self)
-                    add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
-                    add_to_preserved_tags_action.setEnabled(editable)
-                    menu.addAction(add_to_preserved_tags_action)
-                else:
-                    remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self)
-                    remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
-                    remove_from_preserved_tags_action.setEnabled(editable)
-                    menu.addAction(remove_from_preserved_tags_action)
+                self._add_single_tag_actions(menu, selected_tag)
             removals = []
             useorigs = []
             mergeorigs = []
