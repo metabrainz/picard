@@ -434,6 +434,11 @@ class MetadataBox(QtWidgets.QTableWidget):
         return ''
 
     def _add_single_tag_actions(self, menu, selected_tag):
+        """
+        Adds actions for a single selected tag to the context menu.
+
+        Includes edit action and add/remove from preserved tags list.
+        """
         editable = self._tag_is_editable(selected_tag)
         edit_tag_action = QtGui.QAction(_("Edit…"), self)
         edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
@@ -496,6 +501,9 @@ class MetadataBox(QtWidgets.QTableWidget):
         mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
 
     def _add_tag_modification_actions(self, menu, removals, useorigs, mergeorigs):
+        """
+        Adds actions for removing, restoring, and merging tags to the context menu.
+        """
         remove_tag_action = QtGui.QAction(_("Remove"), self)
         remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
         remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
@@ -512,6 +520,9 @@ class MetadataBox(QtWidgets.QTableWidget):
             menu.addSeparator()
 
     def _add_copy_paste_actions(self, menu):
+        """
+        Adds copy and paste actions to the context menu.
+        """
         menu.addSeparator()
         copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
         copy_action.triggered.connect(self._copy_value)
@@ -525,6 +536,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         menu.addAction(paste_action)
 
     def contextMenuEvent(self, event):
+        """
+        Handles the right-click context menu event for the metadata table.
+
+        Builds a context menu dynamically based on the current selection and state.
+        Adds actions for editing, removing, restoring, merging, copying, pasting tags, etc.
+        """
         menu = QtWidgets.QMenu(self)
         if self.objects:
             tags = list(self._selected_tags())
@@ -539,6 +556,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if item:
                 column = item.column()
                 for tag in tags:
+                    # Add lookup action for supported tags
                     if tag in self.LOOKUP_TAGS:
                         if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
                             if column == self.COLUMN_ORIG:
@@ -548,15 +566,21 @@ class MetadataBox(QtWidgets.QTableWidget):
                             lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
                             lookup_action.triggered.connect(partial(self._open_link, values, tag))
                             menu.addAction(lookup_action)
+                    # Collect removable tags
                     if self._tag_is_removable(tag):
                         removals.append(partial(self._remove_tag, tag))
+                    # Collect actions for restoring/merging original tag values
                     self._collect_orig_tag_actions(tag, useorigs, mergeorigs)
+                # Add actions for removing, restoring, merging tags
                 self._add_tag_modification_actions(menu, removals, useorigs, mergeorigs)
+                # Add copy/paste actions
                 self._add_copy_paste_actions(menu)
+            # Add separator and "Add New Tag" if relevant
             if single_tag or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
             menu.addSeparator()
+        # Always add "Show Changes First" action
         menu.addAction(self.changes_first_action)
         menu.exec(event.globalPos())
         event.accept()
