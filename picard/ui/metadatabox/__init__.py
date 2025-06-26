@@ -433,29 +433,122 @@ class MetadataBox(QtWidgets.QTableWidget):
             return editor.toPlainText()
         return ''
 
+    def _add_single_tag_actions(self, menu, selected_tag):
+        """
+        Adds actions for a single selected tag to the context menu.
+
+        Includes edit action and add/remove from preserved tags list.
+        """
+        editable = self._tag_is_editable(selected_tag)
+        edit_tag_action = QtGui.QAction(_("Edit…"), self)
+        edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
+        edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
+        edit_tag_action.setEnabled(editable)
+        menu.addAction(edit_tag_action)
+        if selected_tag not in self.preserved_tags:
+            add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self)
+            add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
+            add_to_preserved_tags_action.setEnabled(editable)
+            menu.addAction(add_to_preserved_tags_action)
+        else:
+            remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self)
+            remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
+            remove_from_preserved_tags_action.setEnabled(editable)
+            menu.addAction(remove_from_preserved_tags_action)
+
+    def _collect_orig_tag_actions(self, tag, useorigs, mergeorigs):
+        """
+        Collects actions for restoring or merging original tag values for a given tag.
+
+        - Adds actions for each file, track, and album where the tag has changed or been removed.
+        - Ensures actions are only added once per object.
+        """
+        status = self.tag_diff.status[tag] & TagStatus.CHANGED
+        if status not in (TagStatus.CHANGED, TagStatus.REMOVED):
+            return
+
+        file_tracks = []
+        track_albums = set()
+
+        # Add actions for files and their parent tracks/albums
+        for file in self.files:
+            self._process_file_for_orig_actions(
+                file, tag, useorigs, mergeorigs, file_tracks, track_albums
+            )
+
+        # Add actions for tracks not already handled
+        for track in set(self.tracks) - set(file_tracks):
+            useorigs.append(partial(self._use_orig_tags, track, tag))
+            mergeorigs.append(partial(self._merge_orig_tags, track, tag))
+            track_albums.add(track.album)
+
+        # Add actions for albums
+        for album in track_albums:
+            useorigs.append(partial(self._use_orig_tags, album, tag))
+            mergeorigs.append(partial(self._merge_orig_tags, album, tag))
+
+    def _process_file_for_orig_actions(self, file, tag, useorigs, mergeorigs, file_tracks, track_albums):
+        """
+        Helper for _collect_orig_tag_actions.
+        Adds actions for a file and its parent track/album if appropriate.
+        """
+        extra_objects = []
+        if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
+            extra_objects.append(file.parent_item)
+            file_tracks.append(file.parent_item)
+            track_albums.add(file.parent_item.album)
+        useorigs.append(partial(self._use_orig_tags, file, tag, extra_objects))
+        mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
+
+    def _add_tag_modification_actions(self, menu, removals, useorigs, mergeorigs):
+        """
+        Adds actions for removing, restoring, and merging tags to the context menu.
+        """
+        remove_tag_action = QtGui.QAction(_("Remove"), self)
+        remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
+        remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
+        remove_tag_action.setEnabled(bool(removals))
+        menu.addAction(remove_tag_action)
+        if useorigs:
+            name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
+            use_orig_value_action = QtGui.QAction(name, self)
+            use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
+            menu.addAction(use_orig_value_action)
+            merge_tags_action = QtGui.QAction(_("Merge Original Values"), self)
+            merge_tags_action.triggered.connect(partial(self._apply_update_funcs, mergeorigs))
+            menu.addAction(merge_tags_action)
+            menu.addSeparator()
+
+    def _add_copy_paste_actions(self, menu):
+        """
+        Adds copy and paste actions to the context menu.
+        """
+        menu.addSeparator()
+        copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
+        copy_action.triggered.connect(self._copy_value)
+        copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
+        copy_action.setEnabled(self._can_copy())
+        menu.addAction(copy_action)
+        paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
+        paste_action.triggered.connect(self._paste_value)
+        paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
+        paste_action.setEnabled(self._can_paste())
+        menu.addAction(paste_action)
+
     def contextMenuEvent(self, event):
+        """
+        Handles the right-click context menu event for the metadata table.
+
+        Builds a context menu dynamically based on the current selection and state.
+        Adds actions for editing, removing, restoring, merging, copying, pasting tags, etc.
+        """
         menu = QtWidgets.QMenu(self)
         if self.objects:
             tags = list(self._selected_tags())
             single_tag = len(tags) == 1
             if single_tag:
                 selected_tag = tags[0]
-                editable = self._tag_is_editable(selected_tag)
-                edit_tag_action = QtGui.QAction(_("Edit…"), self)
-                edit_tag_action.triggered.connect(partial(self._edit_tag, selected_tag))
-                edit_tag_action.setShortcut(self.edit_tag_shortcut.key())
-                edit_tag_action.setEnabled(editable)
-                menu.addAction(edit_tag_action)
-                if selected_tag not in self.preserved_tags:
-                    add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self)
-                    add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
-                    add_to_preserved_tags_action.setEnabled(editable)
-                    menu.addAction(add_to_preserved_tags_action)
-                else:
-                    remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self)
-                    remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
-                    remove_from_preserved_tags_action.setEnabled(editable)
-                    menu.addAction(remove_from_preserved_tags_action)
+                self._add_single_tag_actions(menu, selected_tag)
             removals = []
             useorigs = []
             mergeorigs = []
@@ -463,6 +556,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             if item:
                 column = item.column()
                 for tag in tags:
+                    # Add lookup action for supported tags
                     if tag in self.LOOKUP_TAGS:
                         if (column == self.COLUMN_ORIG or column == self.COLUMN_NEW) and single_tag and item.text():
                             if column == self.COLUMN_ORIG:
@@ -472,57 +566,21 @@ class MetadataBox(QtWidgets.QTableWidget):
                             lookup_action = QtGui.QAction(_("Lookup in &Browser"), self)
                             lookup_action.triggered.connect(partial(self._open_link, values, tag))
                             menu.addAction(lookup_action)
+                    # Collect removable tags
                     if self._tag_is_removable(tag):
                         removals.append(partial(self._remove_tag, tag))
-                    status = self.tag_diff.status[tag] & TagStatus.CHANGED
-                    if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
-                        file_tracks = []
-                        track_albums = set()
-                        for file in self.files:
-                            extra_objects = []
-                            if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
-                                extra_objects.append(file.parent_item)
-                                file_tracks.append(file.parent_item)
-                                track_albums.add(file.parent_item.album)
-                            useorigs.append(partial(self._use_orig_tags, file, tag, extra_objects))
-                            mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
-                        for track in set(self.tracks)-set(file_tracks):
-                            useorigs.append(partial(self._use_orig_tags, track, tag))
-                            mergeorigs.append(partial(self._merge_orig_tags, track, tag))
-                            track_albums.add(track.album)
-                        for album in track_albums:
-                            useorigs.append(partial(self._use_orig_tags, album, tag))
-                            mergeorigs.append(partial(self._merge_orig_tags, album, tag))
-                remove_tag_action = QtGui.QAction(_("Remove"), self)
-                remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
-                remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
-                remove_tag_action.setEnabled(bool(removals))
-                menu.addAction(remove_tag_action)
-                if useorigs:
-                    name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
-                    use_orig_value_action = QtGui.QAction(name, self)
-                    use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
-                    menu.addAction(use_orig_value_action)
-                    merge_tags_action = QtGui.QAction(_("Merge Original Values"), self)
-                    merge_tags_action.triggered.connect(partial(self._apply_update_funcs, mergeorigs))
-                    menu.addAction(merge_tags_action)
-                    menu.addSeparator()
-
-                menu.addSeparator()
-                copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
-                copy_action.triggered.connect(self._copy_value)
-                copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
-                copy_action.setEnabled(self._can_copy())
-                menu.addAction(copy_action)
-                paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-                paste_action.triggered.connect(self._paste_value)
-                paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
-                paste_action.setEnabled(self._can_paste())
-                menu.addAction(paste_action)
+                    # Collect actions for restoring/merging original tag values
+                    self._collect_orig_tag_actions(tag, useorigs, mergeorigs)
+                # Add actions for removing, restoring, merging tags
+                self._add_tag_modification_actions(menu, removals, useorigs, mergeorigs)
+                # Add copy/paste actions
+                self._add_copy_paste_actions(menu)
+            # Add separator and "Add New Tag" if relevant
             if single_tag or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
             menu.addSeparator()
+        # Always add "Show Changes First" action
         menu.addAction(self.changes_first_action)
         menu.exec(event.globalPos())
         event.accept()
@@ -649,6 +707,10 @@ class MetadataBox(QtWidgets.QTableWidget):
             thread_pool=self.tagger.priority_thread_pool)
 
     def _update_tags(self, new_selection=True, drop_album_caches=False):
+        """
+        Build a TagDiff object representing the differences between original and new metadata
+        for the current selection of files and tracks.
+        """
         self.selection_mutex.lock()
         files = self.files
         tracks = self.tracks
@@ -657,43 +719,47 @@ class MetadataBox(QtWidgets.QTableWidget):
         if not (files or tracks):
             return None
 
+        # Update album/track grouping flags if selection changed or caches dropped
         if new_selection or drop_album_caches:
             self._single_file_album = len({file.metadata['album'] for file in files}) == 1
             self._single_track_album = len({track.metadata['album'] for track in tracks}) == 1
 
-        while not new_selection:  # Just an if with multiple exit points
-            # If we are dealing with the same selection
-            # skip updates unless it we are dealing with a single file/track
-            if len(files) == 1:
-                break
-            if len(tracks) == 1:
-                break
-            # Or if we are dealing with a single cluster/album
-            if self._single_file_album:
-                break
-            if self._single_track_album:
-                break
-            return self.tag_diff
+        # If selection didn't change and not a single file/track/album, skip update
+        if not new_selection:
+            if not (
+                len(files) == 1
+                or len(tracks) == 1
+                or self._single_file_album
+                or self._single_track_album
+            ):
+                return self.tag_diff
 
         config = get_config()
         tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
         tag_diff.objects = len(files)
 
-        clear_existing_tags = config.setting['clear_existing_tags']
         top_tags = config.setting['metadatabox_top_tags']
+
+        self._add_files_to_tag_diff(files, tag_diff, config, top_tags)
+        self._add_tracks_to_tag_diff(tracks, tag_diff, config)
+
+        tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
+        return tag_diff
+
+    def _add_files_to_tag_diff(self, files, tag_diff, config, top_tags):
+        """
+        Add file tags and special tags (~length, ~filepath) to tag_diff.
+        """
         top_tags_set = set(top_tags)
-
         settings = config.setting.as_dict()
-
+        clear_existing_tags = settings['clear_existing_tags']
         for file in files:
             new_metadata = file.metadata
             orig_metadata = file.orig_metadata
             tags = set(new_metadata) | set(orig_metadata)
 
             for tag in tags:
-                if tag.startswith("~"):
-                    continue
-                if not file.supports_tag(tag):
+                if tag.startswith("~") or not file.supports_tag(tag):
                     continue
                 new_values = file.format_specific_metadata(new_metadata, tag, settings)
                 orig_values = file.format_specific_metadata(orig_metadata, tag, settings)
@@ -704,8 +770,10 @@ class MetadataBox(QtWidgets.QTableWidget):
                 removed = tag in new_metadata.deleted_tags
                 tag_diff.add(tag, old=orig_values, new=new_values, removed=removed, top_tags=top_tags_set)
 
+            # Always add length tag
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
+            # Add filepath tag if only one file
             if len(files) == 1:
                 if settings['rename_files'] or settings['move_files']:
                     new_filename = file.make_filename(file.filename, new_metadata)
@@ -713,23 +781,21 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_filename = file.filename
                 tag_diff.add('~filepath', old=[file.filename], new=[new_filename], removable=False, readonly=True)
 
+    def _add_tracks_to_tag_diff(self, tracks, tag_diff, config):
+        """
+        Add track tags and ~length for tracks without linked files to tag_diff.
+        """
         for track in tracks:
-            if track.num_linked_files == 0:
-                for tag, new_values in track.metadata.rawitems():
-                    if not tag.startswith("~"):
-                        if tag in track.orig_metadata:
-                            orig_values = track.orig_metadata.getall(tag)
-                        else:
-                            orig_values = new_values
-                        tag_diff.add(tag, old=orig_values, new=new_values)
-
-                length = str(track.metadata.length)
-                tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
-
-                tag_diff.objects += 1
-
-        tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
-        return tag_diff
+            if track.num_linked_files != 0:
+                continue
+            for tag, new_values in track.metadata.rawitems():
+                if tag.startswith("~"):
+                    continue
+                orig_values = track.orig_metadata.getall(tag) if tag in track.orig_metadata else new_values
+                tag_diff.add(tag, old=orig_values, new=new_values)
+            length = str(track.metadata.length)
+            tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
+            tag_diff.objects += 1
 
     def _update_items(self, result=None, error=None):
         if self.editing:
