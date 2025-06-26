@@ -738,13 +738,21 @@ class MetadataBox(QtWidgets.QTableWidget):
         tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
         tag_diff.objects = len(files)
 
-        clear_existing_tags = config.setting['clear_existing_tags']
         top_tags = config.setting['metadatabox_top_tags']
+
+        self._add_files_to_tag_diff(files, tag_diff, config, top_tags)
+        self._add_tracks_to_tag_diff(tracks, tag_diff, config)
+
+        tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
+        return tag_diff
+
+    def _add_files_to_tag_diff(self, files, tag_diff, config, top_tags):
+        """
+        Add file tags and special tags (~length, ~filepath) to tag_diff.
+        """
         top_tags_set = set(top_tags)
-
         settings = config.setting.as_dict()
-
-        # Process files
+        clear_existing_tags = settings['clear_existing_tags']
         for file in files:
             new_metadata = file.metadata
             orig_metadata = file.orig_metadata
@@ -773,7 +781,10 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_filename = file.filename
                 tag_diff.add('~filepath', old=[file.filename], new=[new_filename], removable=False, readonly=True)
 
-        # Process tracks without linked files
+    def _add_tracks_to_tag_diff(self, tracks, tag_diff, config):
+        """
+        Add track tags and ~length for tracks without linked files to tag_diff.
+        """
         for track in tracks:
             if track.num_linked_files != 0:
                 continue
@@ -785,9 +796,6 @@ class MetadataBox(QtWidgets.QTableWidget):
             length = str(track.metadata.length)
             tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
             tag_diff.objects += 1
-
-        tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
-        return tag_diff
 
     def _update_items(self, result=None, error=None):
         if self.editing:
