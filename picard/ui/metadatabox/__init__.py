@@ -472,6 +472,22 @@ class MetadataBox(QtWidgets.QTableWidget):
                 useorigs.append(partial(self._use_orig_tags, album, tag))
                 mergeorigs.append(partial(self._merge_orig_tags, album, tag))
 
+    def _add_tag_modification_actions(self, menu, removals, useorigs, mergeorigs):
+        remove_tag_action = QtGui.QAction(_("Remove"), self)
+        remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
+        remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
+        remove_tag_action.setEnabled(bool(removals))
+        menu.addAction(remove_tag_action)
+        if useorigs:
+            name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
+            use_orig_value_action = QtGui.QAction(name, self)
+            use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
+            menu.addAction(use_orig_value_action)
+            merge_tags_action = QtGui.QAction(_("Merge Original Values"), self)
+            merge_tags_action.triggered.connect(partial(self._apply_update_funcs, mergeorigs))
+            menu.addAction(merge_tags_action)
+            menu.addSeparator()
+
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
@@ -499,21 +515,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                     if self._tag_is_removable(tag):
                         removals.append(partial(self._remove_tag, tag))
                     self._collect_orig_tag_actions(tag, useorigs, mergeorigs)
-                remove_tag_action = QtGui.QAction(_("Remove"), self)
-                remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
-                remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
-                remove_tag_action.setEnabled(bool(removals))
-                menu.addAction(remove_tag_action)
-                if useorigs:
-                    name = ngettext("Use Original Value", "Use Original Values", len(useorigs))
-                    use_orig_value_action = QtGui.QAction(name, self)
-                    use_orig_value_action.triggered.connect(partial(self._apply_update_funcs, useorigs))
-                    menu.addAction(use_orig_value_action)
-                    merge_tags_action = QtGui.QAction(_("Merge Original Values"), self)
-                    merge_tags_action.triggered.connect(partial(self._apply_update_funcs, mergeorigs))
-                    menu.addAction(merge_tags_action)
-                    menu.addSeparator()
-
+                self._add_tag_modification_actions(menu, removals, useorigs, mergeorigs)
                 menu.addSeparator()
                 copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
                 copy_action.triggered.connect(self._copy_value)
