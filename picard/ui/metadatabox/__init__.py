@@ -451,6 +451,27 @@ class MetadataBox(QtWidgets.QTableWidget):
             remove_from_preserved_tags_action.setEnabled(editable)
             menu.addAction(remove_from_preserved_tags_action)
 
+    def _collect_orig_tag_actions(self, tag, useorigs, mergeorigs):
+        status = self.tag_diff.status[tag] & TagStatus.CHANGED
+        if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
+            file_tracks = []
+            track_albums = set()
+            for file in self.files:
+                extra_objects = []
+                if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
+                    extra_objects.append(file.parent_item)
+                    file_tracks.append(file.parent_item)
+                    track_albums.add(file.parent_item.album)
+                useorigs.append(partial(self._use_orig_tags, file, tag, extra_objects))
+                mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
+            for track in set(self.tracks) - set(file_tracks):
+                useorigs.append(partial(self._use_orig_tags, track, tag))
+                mergeorigs.append(partial(self._merge_orig_tags, track, tag))
+                track_albums.add(track.album)
+            for album in track_albums:
+                useorigs.append(partial(self._use_orig_tags, album, tag))
+                mergeorigs.append(partial(self._merge_orig_tags, album, tag))
+
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
@@ -477,25 +498,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                             menu.addAction(lookup_action)
                     if self._tag_is_removable(tag):
                         removals.append(partial(self._remove_tag, tag))
-                    status = self.tag_diff.status[tag] & TagStatus.CHANGED
-                    if status == TagStatus.CHANGED or status == TagStatus.REMOVED:
-                        file_tracks = []
-                        track_albums = set()
-                        for file in self.files:
-                            extra_objects = []
-                            if file.parent_item in self.tracks and len(self.files & set(file.parent_item.files)) == 1:
-                                extra_objects.append(file.parent_item)
-                                file_tracks.append(file.parent_item)
-                                track_albums.add(file.parent_item.album)
-                            useorigs.append(partial(self._use_orig_tags, file, tag, extra_objects))
-                            mergeorigs.append(partial(self._merge_orig_tags, file, tag, extra_objects))
-                        for track in set(self.tracks)-set(file_tracks):
-                            useorigs.append(partial(self._use_orig_tags, track, tag))
-                            mergeorigs.append(partial(self._merge_orig_tags, track, tag))
-                            track_albums.add(track.album)
-                        for album in track_albums:
-                            useorigs.append(partial(self._use_orig_tags, album, tag))
-                            mergeorigs.append(partial(self._merge_orig_tags, album, tag))
+                    self._collect_orig_tag_actions(tag, useorigs, mergeorigs)
                 remove_tag_action = QtGui.QAction(_("Remove"), self)
                 remove_tag_action.triggered.connect(partial(self._apply_update_funcs, removals))
                 remove_tag_action.setShortcut(self.remove_tag_shortcut.key())
