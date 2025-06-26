@@ -488,6 +488,19 @@ class MetadataBox(QtWidgets.QTableWidget):
             menu.addAction(merge_tags_action)
             menu.addSeparator()
 
+    def _add_copy_paste_actions(self, menu):
+        menu.addSeparator()
+        copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
+        copy_action.triggered.connect(self._copy_value)
+        copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
+        copy_action.setEnabled(self._can_copy())
+        menu.addAction(copy_action)
+        paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
+        paste_action.triggered.connect(self._paste_value)
+        paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
+        paste_action.setEnabled(self._can_paste())
+        menu.addAction(paste_action)
+
     def contextMenuEvent(self, event):
         menu = QtWidgets.QMenu(self)
         if self.objects:
@@ -516,17 +529,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                         removals.append(partial(self._remove_tag, tag))
                     self._collect_orig_tag_actions(tag, useorigs, mergeorigs)
                 self._add_tag_modification_actions(menu, removals, useorigs, mergeorigs)
-                menu.addSeparator()
-                copy_action = QtGui.QAction(icontheme.lookup('edit-copy', icontheme.ICON_SIZE_MENU), _("&Copy"), self)
-                copy_action.triggered.connect(self._copy_value)
-                copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
-                copy_action.setEnabled(self._can_copy())
-                menu.addAction(copy_action)
-                paste_action = QtGui.QAction(icontheme.lookup('edit-paste', icontheme.ICON_SIZE_MENU), _("&Paste"), self)
-                paste_action.triggered.connect(self._paste_value)
-                paste_action.setShortcut(QtGui.QKeySequence.StandardKey.Paste)
-                paste_action.setEnabled(self._can_paste())
-                menu.addAction(paste_action)
+                self._add_copy_paste_actions(menu)
             if single_tag or removals or useorigs:
                 menu.addSeparator()
             menu.addAction(self.add_tag_action)
