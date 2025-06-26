@@ -707,6 +707,10 @@ class MetadataBox(QtWidgets.QTableWidget):
             thread_pool=self.tagger.priority_thread_pool)
 
     def _update_tags(self, new_selection=True, drop_album_caches=False):
+        """
+        Build a TagDiff object representing the differences between original and new metadata
+        for the current selection of files and tracks.
+        """
         self.selection_mutex.lock()
         files = self.files
         tracks = self.tracks
@@ -715,23 +719,20 @@ class MetadataBox(QtWidgets.QTableWidget):
         if not (files or tracks):
             return None
 
+        # Update album/track grouping flags if selection changed or caches dropped
         if new_selection or drop_album_caches:
             self._single_file_album = len({file.metadata['album'] for file in files}) == 1
             self._single_track_album = len({track.metadata['album'] for track in tracks}) == 1
 
-        while not new_selection:  # Just an if with multiple exit points
-            # If we are dealing with the same selection
-            # skip updates unless it we are dealing with a single file/track
-            if len(files) == 1:
-                break
-            if len(tracks) == 1:
-                break
-            # Or if we are dealing with a single cluster/album
-            if self._single_file_album:
-                break
-            if self._single_track_album:
-                break
-            return self.tag_diff
+        # If selection didn't change and not a single file/track/album, skip update
+        if not new_selection:
+            if not (
+                len(files) == 1
+                or len(tracks) == 1
+                or self._single_file_album
+                or self._single_track_album
+            ):
+                return self.tag_diff
 
         config = get_config()
         tag_diff = TagDiff(max_length_diff=config.setting['ignore_track_duration_difference_under'])
@@ -743,15 +744,14 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         settings = config.setting.as_dict()
 
+        # Process files
         for file in files:
             new_metadata = file.metadata
             orig_metadata = file.orig_metadata
             tags = set(new_metadata) | set(orig_metadata)
 
             for tag in tags:
-                if tag.startswith("~"):
-                    continue
-                if not file.supports_tag(tag):
+                if tag.startswith("~") or not file.supports_tag(tag):
                     continue
                 new_values = file.format_specific_metadata(new_metadata, tag, settings)
                 orig_values = file.format_specific_metadata(orig_metadata, tag, settings)
@@ -762,8 +762,10 @@ class MetadataBox(QtWidgets.QTableWidget):
                 removed = tag in new_metadata.deleted_tags
                 tag_diff.add(tag, old=orig_values, new=new_values, removed=removed, top_tags=top_tags_set)
 
+            # Always add length tag
             tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
                          removable=False, readonly=True)
+            # Add filepath tag if only one file
             if len(files) == 1:
                 if settings['rename_files'] or settings['move_files']:
                     new_filename = file.make_filename(file.filename, new_metadata)
@@ -771,20 +773,18 @@ class MetadataBox(QtWidgets.QTableWidget):
                     new_filename = file.filename
                 tag_diff.add('~filepath', old=[file.filename], new=[new_filename], removable=False, readonly=True)
 
+        # Process tracks without linked files
         for track in tracks:
-            if track.num_linked_files == 0:
-                for tag, new_values in track.metadata.rawitems():
-                    if not tag.startswith("~"):
-                        if tag in track.orig_metadata:
-                            orig_values = track.orig_metadata.getall(tag)
-                        else:
-                            orig_values = new_values
-                        tag_diff.add(tag, old=orig_values, new=new_values)
-
-                length = str(track.metadata.length)
-                tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
-
-                tag_diff.objects += 1
+            if track.num_linked_files != 0:
+                continue
+            for tag, new_values in track.metadata.rawitems():
+                if tag.startswith("~"):
+                    continue
+                orig_values = track.orig_metadata.getall(tag) if tag in track.orig_metadata else new_values
+                tag_diff.add(tag, old=orig_values, new=new_values)
+            length = str(track.metadata.length)
+            tag_diff.add('~length', old=length, new=length, removable=False, readonly=True)
+            tag_diff.objects += 1
 
         tag_diff.update_tag_names(config.persist['show_changes_first'], top_tags)
         return tag_diff
