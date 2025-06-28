@@ -499,6 +499,8 @@ def make_save_path(path, win_compat=False, mac_compat=False):
 
     - If win_compat is True, trailing dots in file and directory names will
       be removed, as they are unsupported on Windows (dot is a delimiter for the file extension)
+    - If win_compat is True, forbidden filenames like "CON", "PRN", "AUX", "NUL", "COM1" etc. will
+      be replaced with a trailing underscore.
     - Leading dots in file and directory names will be removed. These files cannot be properly
       handled by Windows Explorer and on Unix like systems they count as hidden
     - If mac_compat is True, normalize precomposed Unicode characters on macOS
@@ -515,6 +517,7 @@ def make_save_path(path, win_compat=False, mac_compat=False):
         path = path.replace('./', '_/').replace('.\\', '_\\')
         if path.endswith('.'):
             path = path[:-1] + '_'
+        path = replace_windows_forbidden_names(path)
     # replace . at the beginning of file and directory names
     path = path.replace('/.', '/_').replace('\\.', '\\_')
     if path.startswith('.'):
@@ -525,6 +528,43 @@ def make_save_path(path, win_compat=False, mac_compat=False):
     # Remove unicode zero-width space (\u200B) from path
     path = path.replace("\u200B", "")
     return path
+
+
+WINDOWS_FORBIDDEN_NAMES = {
+    'CON', 'PRN', 'AUX', 'NUL',
+    *('COM%d' % i for i in range(1, 10)),
+    'COM¹', 'COM²', 'COM³',
+    *('LPT%d' % i for i in range(1, 10)),
+    'LPT¹', 'LPT²', 'LPT³',
+}
+
+WINDOWS_FORBIDDEN_NAMES_RE = re.compile(
+    r'^(%s)(\.|$)' % '|'.join(re.escape(name) for name in WINDOWS_FORBIDDEN_NAMES),
+    re.IGNORECASE
+)
+
+
+def replace_windows_forbidden_names(path):
+    """Replaces Windows forbidden file names with a trailing underscore.
+
+    Windows forbids the following file names:
+    CON, PRN, AUX, NUL, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9,
+    COM¹, COM², COM³, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, LPT9,
+    LPT¹, LPT², and LPT³.
+
+    Args:
+        path: filename or path to clean
+    Returns: sanitized path
+    """
+    parts = [
+        WINDOWS_FORBIDDEN_NAMES_RE.sub(r'\1_\2', part)
+        for part in path.split(os.path.normpath(os.path.sep))
+    ]
+    if parts[0] == '':
+        # If the first part is empty, it means the path started with a separator
+        # and is a root path (e.g. "/foo/bar"). Add back the leading separator.
+        parts[0] = os.path.sep
+    return os.path.join(*parts)
 
 
 def get_available_filename(new_path, old_path=None):

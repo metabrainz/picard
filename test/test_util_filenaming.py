@@ -40,6 +40,7 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.util.filenaming import (
+    WINDOWS_FORBIDDEN_NAMES,
     ShortenMode,
     WinPathTooLong,
     get_available_filename,
@@ -47,6 +48,7 @@ from picard.util.filenaming import (
     make_short_filename,
     move_ensure_casing,
     replace_extension,
+    replace_windows_forbidden_names,
     samefile_different_casing,
     shorten_filename,
     shorten_path,
@@ -231,6 +233,11 @@ class MakeSavePathTest(PicardTestCase):
         path = 'foo/\u200Bbar'
         self.assertEqual('foo/bar', make_save_path(path))
 
+    def test_replace_windows_forbidden_names(self):
+        path = 'foo/aux.txt/nul'
+        self.assertEqual(path, make_save_path(path))
+        self.assertEqual('foo/aux_.txt/nul_', make_save_path(path, win_compat=True))
+
 
 class GetAvailableFilenameTest(PicardTestCase):
 
@@ -322,3 +329,42 @@ class ShortenPathTest(PicardTestCase):
         self.assertEqual(
             os.path.join('ä' * 255, 'ö' * 255, 'ü' * 251 + '.ext'),
             shorten_path(os.path.join('ä' * 256, 'ö' * 256, 'ü' * 256 + '.ext'), 255, ShortenMode.UTF16))
+
+
+class ReplaceWindowsForbiddenNamesTest(PicardTestCase):
+    """Test replacing Windows forbidden filenames with a trailing underscore."""
+
+    def test_replace_windows_forbidden_names(self):
+        for name in WINDOWS_FORBIDDEN_NAMES:
+            self.assertEqual(name + '_', replace_windows_forbidden_names(name))
+            self.assertEqual(name + '_.txt', replace_windows_forbidden_names(name + '.txt'))
+            self.assertEqual(name + '_.txt.foo', replace_windows_forbidden_names(name + '.txt.foo'))
+
+    def test_replace_windows_forbidden_names_lowercase(self):
+        for name in WINDOWS_FORBIDDEN_NAMES:
+            name = name.lower()
+            self.assertEqual(name + '_', replace_windows_forbidden_names(name))
+            self.assertEqual(name + '_.txt', replace_windows_forbidden_names(name + '.txt'))
+            self.assertEqual(name + '_.txt.foo', replace_windows_forbidden_names(name + '.txt.foo'))
+
+    def test_replace_windows_forbidden_names_with_extension(self):
+        for name in WINDOWS_FORBIDDEN_NAMES:
+            self.assertEqual(name + '_.txt', replace_windows_forbidden_names(name + '.txt'))
+            self.assertEqual(name + '_.txt.foo', replace_windows_forbidden_names(name + '.txt.foo'))
+
+    def test_replace_windows_forbidden_names_in_path(self):
+        for name in WINDOWS_FORBIDDEN_NAMES:
+            path = os.path.join('foo', name, 'prn.txt')
+            expected = os.path.join('foo', name + '_', 'prn_.txt')
+            self.assertEqual(expected, replace_windows_forbidden_names(path))
+
+    def test_replace_windows_forbidden_names_allow_valid(self):
+        valid_names = (
+            'null',
+            '_aux',
+            'COM⁴',
+            os.path.normpath('/foo/bar'),
+            os.path.normpath('C:\\null\\aux2'),
+        )
+        for name in valid_names:
+            self.assertEqual(name, replace_windows_forbidden_names(name))
