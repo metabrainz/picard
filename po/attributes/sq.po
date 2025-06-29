@@ -1,17 +1,19 @@
 #
 # Translators:
+# Besnik <besnik@programeshqip.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: FULL NAME <email address hidden>\n"
-"Language-Team: Albanian (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/sq/)\n"
+"PO-Revision-Date: 2025-03-17 11:45+0000\n"
+"Last-Translator: Besnik <besnik@programeshqip.org>\n"
+"Language-Team: Albanian <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/sq/>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.3\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -284,10 +286,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "La Dorike"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "La Dorike"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "La Miksolidike"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "La Miksolidike"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr ""
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -298,6 +321,16 @@ msgid ""
 msgstr ""
 "Një balet është muzikë e kompozuar për t’u përdorur, tok me koreografi, për "
 "një produksion baleti."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -371,6 +404,14 @@ msgctxt "event_art_type"
 msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
+msgstr ""
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
 msgstr ""
 
 #. name:Promotion
@@ -1303,8 +1344,8 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 
 #. name:Concert
@@ -1383,6 +1424,14 @@ msgstr ""
 "përfshin një orkestër, një kor, dhe solistë. Teksa përmban personazhe dhe "
 "subjekt, zakonisht nuk ekzekutohet në mënyrë teatrale (mungojnë kostumet, "
 "dekoret dhe ndërveprim i fuqishëm mes personazhesh)."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1685,10 +1734,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "Si Dorike"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "Si Dorike"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "Si Miksolidike"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "Si Miksolidike"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2157,10 +2227,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "Do Dorike"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "Do Dorike"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "Do Miksolidike"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "Do Miksolidike"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2458,8 +2549,8 @@ msgstr "Vend"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "Vend përdoret për zona të përfshira (ose të përfshira dikur) në standardin "
 "ISO 3166-1, p.sh., Shqipëria."
@@ -2482,6 +2573,11 @@ msgstr ""
 "nuk përbëjnë ndarjet kryesore administrative, por as janë bashki dhe komuna, "
 "p.sh. kontetë në ShBA. Këto nuk merren parasysh kur shfaqen zonat mëmë për "
 "një zonë të dhënë."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2529,10 +2625,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "Re Dorike"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "Re Dorike"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "Re Miksolidike"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr "Re Miksolidike"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3057,10 +3174,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr "Mi Dorike"
 
+#: DB:work_attribute_type_allowed_value/value:1067
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "Mi Dorike"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "Mi Miksolidike"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr "Mi Miksolidike"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3227,10 +3365,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "Fa Dorike"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "Fa Dorike"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "Fa Miksolidike"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr "Fa Miksolidike"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3443,10 +3602,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "Sol Dorike"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "Sol Dorike"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "Sol Miksolidike"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr "Sol Miksolidike"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3714,6 +3894,14 @@ msgstr "HD-DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ID ASCAP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4178,6 +4366,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr ""
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Mexican rights society SACM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4411,6 +4608,12 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr ""
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "ID për shoqërinë serbe të të drejtave, SOKOJ"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -4684,8 +4887,8 @@ msgid ""
 "own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
 msgstr ""
-"Ishull përdoret për ishuj dhe atolle që nuk përbëjnë nëndarje më vete, p."
-"sh., Skye. These are not considered when displaying the parent areas for a "
+"Ishull përdoret për ishuj dhe atolle që nuk përbëjnë nëndarje më vete, "
+"p.sh., Skye. These are not considered when displaying the parent areas for a "
 "given area. Këto nuk merren parasysh kur shfaqen zonat mëmë për një zonë të "
 "dhënë."
 
@@ -6717,6 +6920,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "Produksion"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7298,6 +7506,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7604,6 +7817,11 @@ msgstr ""
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Këllëf i Hollë"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"

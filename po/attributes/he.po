@@ -285,10 +285,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "לה דוריאן"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "לה דוריאן"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "לה מיקסולידיאן"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "לה מיקסולידיאן"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr ""
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -298,6 +319,16 @@ msgid ""
 "ballet dance production."
 msgstr ""
 "בלט הוא יצירה מוזיקלית שהולחנה לשמש יחד עם כוראוגרפיה, להפקת ריקוד בלט."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -368,6 +399,14 @@ msgctxt "event_art_type"
 msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
+msgstr ""
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
 msgstr ""
 
 #. name:Promotion
@@ -1274,8 +1313,8 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 
 #. name:Concert
@@ -1353,6 +1392,14 @@ msgstr ""
 "למרות שקיימות דמויות ועלילה, המופע בדרך כלל לא יהיה תיאטרלי (ללא תלבושות, "
 "אביזרים או אינטראקציה חזקה בין הדמויות)."
 
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
+
 #. name:Rights Society
 #: DB:label_type/description:8
 msgctxt "label_type"
@@ -1404,8 +1451,8 @@ msgid ""
 "Any release officially sanctioned by the artist and/or their record company. "
 "Most releases will fit into this category."
 msgstr ""
-"כל הוצאה שאושרה רשמית על־ידי האמן ו/או חברת התקליטים. רוב ההוצאות יתאימו "
-"לאב־סוג זה."
+"כל הוצאה שאושרה רשמית על־ידי האמן ו/או חברת התקליטים. רוב ההוצאות יתאימו לאב־"
+"סוג זה."
 
 #. name:Other
 #: DB:release_group_primary_type/description:11
@@ -1650,10 +1697,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "סי דוריאן"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "סי דוריאן"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "סי מיקסולידיאן"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "סי מיקסולידיאן"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2122,10 +2190,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "דו דוריאן"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "דו דוריאן"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "דו מיקסולידיאן"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "דו מיקסולידיאן"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2420,8 +2509,8 @@ msgstr "מדינה"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "מדינה משמשת עבור אזורים שנכללו (או נכללו קודם לכן) ב־ ISO 3166-1, למשל ארצות "
 "הברית."
@@ -2443,6 +2532,11 @@ msgstr ""
 "מחוז משמש לחלוקה מינהלית קטנה יותר של מדינה, מחוזות אינם ישויות מנהליות "
 "ראשיות אבל הם גם לא עיריות. למשל, מחוזות בארה\"ב. מחוזות אינם נחשבים בעת "
 "הצגת אזורי האב עבור אזור נתון."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2490,10 +2584,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "רה דוריאן"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "רה דוריאן"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "רה מיקסולידיאן"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr "רה מיקסולידיאן"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3018,10 +3133,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr "מי דוריאן"
 
+#: DB:work_attribute_type_allowed_value/value:1067
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "מי דוריאן"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "מי מיקסולידיאן"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr "מי מיקסולידיאן"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3188,10 +3324,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "פה דוריאן"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "פה דוריאן"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "פה מיקסולידיאן"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr "פה מיקסולידיאן"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3401,10 +3558,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "סול דוריאן"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "סול דוריאן"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "סול מיקסולידיאן"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr "סול מיקסולידיאן"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3672,6 +3850,14 @@ msgstr "HD-DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "מזהה ASCAP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4136,6 +4322,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "מזהה עבור אגודת הזכויות הקוסטריקנית ACAM"
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "מזהה עבור אגודת הזכויות הקובנית ACDAM"
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4369,6 +4564,15 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr ""
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Austrian rights society AKM"
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "מזהה עבור אגודת הזכויות האוסטרית AKM"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -6671,6 +6875,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "הפקה"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7249,6 +7458,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr " מזהה SODRAC"
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7553,6 +7767,11 @@ msgstr ""
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "מארז תקליטור דק"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"

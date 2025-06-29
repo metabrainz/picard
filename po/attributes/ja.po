@@ -26,11 +26,12 @@
 # 和田篤 <email address hidden>, 2018
 # Jaken264 <korosuke0836@gmail.com>, 2023.
 # Lunae_XD <raru0916@gmail.com>, 2024.
+# yyb987 <yyb987@users.noreply.translations.metabrainz.org>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-07-05 16:42+0000\n"
-"Last-Translator: Lunae_XD <raru0916@gmail.com>\n"
+"PO-Revision-Date: 2025-05-31 19:20+0000\n"
+"Last-Translator: yyb987 <yyb987@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ja/>\n"
 "Language: ja\n"
@@ -38,7 +39,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -358,10 +359,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "ドリアンスケール"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "ドリアンスケール"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "ミクソリディアンスケール"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "ミクソリディアンスケール"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr ""
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -372,6 +394,16 @@ msgid ""
 msgstr ""
 "バレエとは、バレエダンスの演出のために、振り付けとともに使用されるように作曲"
 "された楽曲のことです。"
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -442,6 +474,14 @@ msgctxt "event_art_type"
 msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
+msgstr ""
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
 msgstr ""
 
 #. name:Promotion
@@ -1357,8 +1397,8 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 
 #. name:Concert
@@ -1435,6 +1475,14 @@ msgstr ""
 "オラトリオは、オーケストラ、合唱団、ソリストを含む大規模な（通常は神聖な）楽"
 "曲のことである。 キャラクターとプロットを持っていますが、通常劇場で上演されな"
 "い（それは衣装、小道具、そして強いキャラクターの相互作用を欠いている）。"
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1737,10 +1785,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "ロ調ドリア"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "ロ調ドリア"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "ロ調ミクソリディア"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "ロ調ミクソリディア"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2209,10 +2278,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "ハ調ドリア"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "ハ調ドリア"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "ハ調ミクソディリア"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "ハ調ミクソディリア"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2507,8 +2597,8 @@ msgstr "国"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "国は、アメリカ合衆国などの、ISO 3166-1に含まれる（または以前含まれていた）地"
 "域を表します。"
@@ -2530,6 +2620,11 @@ msgstr ""
 "郡は、主要な行政区画ではなく、地方自治体でもない国の小規模な行政区画に使用さ"
 "れる。 例:アメリカの郡。 特定の領域の親領域を表示する場合、これらは考慮されな"
 "い。"
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2577,10 +2672,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "ニ調ドリア"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "ニ調ドリア"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr " ニ調ミクソリディア"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr " ニ調ミクソリディア"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3105,10 +3221,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr " ホ調ドリア "
 
+#: DB:work_attribute_type_allowed_value/value:1067
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr " ホ調ドリア "
+
+#: DB:work_attribute_type_allowed_value/value:1060
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr " ホ調ミクソリディア"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr " ホ調ミクソリディア"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3275,10 +3412,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "ヘ調ドリア"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "ヘ調ドリア"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr " ヘ調ミクソリディア"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr " ヘ調ミクソリディア"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3489,10 +3647,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "ト調ドリア"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "ト調ドリア"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr " ト調ミクソリディア"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr " ト調ミクソリディア"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3761,6 +3940,14 @@ msgstr "HD-DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4225,6 +4412,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "コスタリカの権利者団体ACAMのID"
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "キューバの権利者団体ACDAMのID"
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4458,6 +4654,15 @@ msgstr "ポルトガルの権利者団体SPAのID"
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "エルサルバドルの権利者団体SACIMのID"
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Norwegian rights society TONO"
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "ノルウェーの権利者団体TONOのID"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -6778,6 +6983,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "製品"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7359,6 +7569,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr "SODRAC ID"
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7665,6 +7880,11 @@ msgstr "スライドパック"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "スリムジュエルケース"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8861,7 +9081,7 @@ msgstr ""
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr "ワーク名"
+msgstr "作品名"
 
 #: DB:series_type/name:4
 msgctxt "series_type"

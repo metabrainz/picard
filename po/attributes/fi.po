@@ -333,10 +333,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "A-doorinen"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "A-doorinen"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "A-miksolyydinen"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "A-miksolyydinen"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr ""
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -347,6 +368,16 @@ msgid ""
 msgstr ""
 "Baletti on musiikkia, jota käytetään yhdessä koreografian kanssa "
 "balettitanssituotannossa."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -425,6 +456,14 @@ msgctxt "event_art_type"
 msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
+msgstr ""
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
 msgstr ""
 
 #. name:Promotion
@@ -1352,8 +1391,8 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 
 #. name:Concert
@@ -1421,6 +1460,14 @@ msgid ""
 "orchestra, a choir, and soloists. While it has characters and a plot, it is "
 "usually not performed theatrically (it lacks costumes, props and strong "
 "character interaction)."
+msgstr ""
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
 msgstr ""
 
 #. name:Rights Society
@@ -1717,10 +1764,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "B-doorinen"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "B-doorinen"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "B Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "B-miksolyydinen"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "B-miksolyydinen"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2187,10 +2255,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "C-doorinen"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "C-doorinen"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "C Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "C-miksolyydinen"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "C-miksolyydinen"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2481,11 +2570,11 @@ msgstr "Maa"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
-"Maa on nimitys alueelle, joka esiintyy (tai on esiintynyt) ISO 3166-1 -"
-"standardissa, esimerkiksi Yhdysvallat."
+"Maa on nimitys alueelle, joka esiintyy (tai on esiintynyt) ISO 3166-1 "
+"-standardissa, esimerkiksi Yhdysvallat."
 
 #: DB:area_type/name:7
 msgctxt "area_type"
@@ -2504,6 +2593,11 @@ msgstr ""
 "Piirikunta on nimitys osa-aluetta pienemmälle hallinnolliselle aluelle, joka "
 "ei kuitenkaan ole kunta, esimerkiksi Yhdysvaltojen piirikunnat. Niitä ei "
 "oteta huomioon, kun näytetään mihin isompiin alueisiin jokin alue kuuluu."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2551,10 +2645,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "D-doorinen"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "D-doorinen"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "D Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "D-miksolyydinen"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr "D-miksolyydinen"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3079,10 +3194,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr "E-doorinen"
 
+#: DB:work_attribute_type_allowed_value/value:1067
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "E-doorinen"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "E Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "E-miksolyydinen"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr "E-miksolyydinen"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3249,10 +3385,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "F-doorinen"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "F-doorinen"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "F Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "F-miksolyydinen"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr "F-miksolyydinen"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3455,10 +3612,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "G-doorinen"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "G-doorinen"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "G Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "G-miksolyydinen"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr "G-miksolyydinen"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3729,6 +3907,14 @@ msgstr "HD DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP-tunniste"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4190,6 +4376,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr ""
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr ""
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4410,6 +4602,12 @@ msgstr ""
 #: DB:work_attribute_type/description:56
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
+msgstr ""
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
 msgstr ""
 
 #. name:COMPASS ID
@@ -6703,6 +6901,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "Tuotanto"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7284,6 +7487,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7590,6 +7798,11 @@ msgstr "Slidepack"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Ohut Jewel Case"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"

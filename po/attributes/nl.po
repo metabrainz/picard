@@ -10,15 +10,15 @@
 # Remko de Keijzer <email address hidden>, 2021
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
-# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025.
 # yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 # Aszazin <aszazin@gmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-08-05 00:42+0000\n"
-"Last-Translator: mfmeulenbelt <mfmeulenbelt@users.noreply.translations."
-"metabrainz.org>\n"
+"PO-Revision-Date: 2025-04-18 19:20+0000\n"
+"Last-Translator: mfmeulenbelt "
+"<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/nl/>\n"
 "Language: nl\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.11\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -142,12 +142,9 @@ msgid "8cm CD+G"
 msgstr "8cm-cd+g"
 
 #: DB:medium_format/name:210
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr "8cm-cd"
+msgstr "8cm-cd-r"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
@@ -206,8 +203,7 @@ msgstr ""
 "‘grootste hits’, een terugblik of verzameling zeldzame opnamen.</li>\n"
 "<li>Een verzameling nummers van verschillende artiesten, meestal rond een "
 "bepaald thema (“Songs for Lovers”), een bepaalde periode (“De hits van "
-"1998”) of een bepaalde serie (“Café del Mar”).\n"
-"</li>\n"
+"1998”) of een bepaalde serie (“Café del Mar”).</li>\n"
 "</ul>\n"
 "\n"
 "<p>De volgende soorten uitgaven zijn in MusicBrainz geen compilaties:</p>\n"
@@ -321,6 +317,8 @@ msgid ""
 "in the 1990s including, in some cases, music releases with accompanying "
 "video content."
 msgstr ""
+"Een cd met zowel data/video als audio die in de jaren 1990 voor "
+"verschillende doelen werden gebruikt, zoals muziekuitgaven met videoclips."
 
 #. name:Mixed Mode CD
 #: DB:medium_format/description:129
@@ -367,10 +365,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "A dorisch"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "A locrisch"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "A lydisch"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "A mixolydisch"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr "A frygisch"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -381,6 +394,20 @@ msgid ""
 msgstr ""
 "Een ballet is muziek die is gecomponeerd om samen met choreografie te worden "
 "gebruikt in een balletvoorstelling."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
+"Een boekje dat aan het publiek wordt gegeven of verkocht met informatie over "
+"het evenement, zoals het programma en informatie over de artiesten of de "
+"muziek die wordt gespeeld. Programma’s worden meestal gemaakt voor "
+"muziekfestivals en toneel- en klassieke uitvoeringen."
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -466,6 +493,14 @@ msgid ""
 msgstr ""
 "Een document dat meestal toegang geeft tot een evenement, zowel fysiek als "
 "digitaal. Gebruik dit type ook voor controlestrookjes en pasjes."
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -726,6 +761,11 @@ msgid ""
 "to disown the release and no longer consider it part of their discography. "
 "If it is unclear, use Withdrawn."
 msgstr ""
+"Een uitgave die ooit wel officieel was, maar die actief uit de discografie "
+"van een artiest of platenmaatschappij is gewist. Deze status moet niet "
+"worden gebruikt als de uitgave alleen is teruggetrokken. Het moet bekend "
+"zijn dat de artiest of platenmaatschappij de uitgave uit de discografie "
+"heeft willen verbannen. Als het niet duidelijk is, gebruik je Teruggetrokken."
 
 #. name:Demo
 #: DB:release_group_secondary_type/description:10
@@ -1169,12 +1209,9 @@ msgid "ASCAP ID"
 msgstr "ASCAP-ID"
 
 #: DB:work_attribute_type/name:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "KODA ID"
 msgctxt "work_attribute_type"
 msgid "AUTODIA ID"
-msgstr "KODA-ID"
+msgstr "AUTODIA-ID"
 
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
@@ -1469,12 +1506,12 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 "Een afbeelding waarop meestal de volgorde en tijden van de optredens op een "
-"evenement staan. Dit kan een losse afbeelding zijn, maar ook een poster of "
-"banier (stel dan alle relevante types in)."
+"evenement staan. Dit kan een losse afbeelding zijn, maar ook een poster, een "
+"banier of een pagina uit een programma (stel dan alle relevante typen in)."
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1515,13 +1552,6 @@ msgstr "Een interviewuitgave bevat een interview, meestal met een artiest."
 
 #. name:Withdrawn
 #: DB:release_status/description:5
-#, fuzzy
-#| msgctxt "release_status"
-#| msgid ""
-#| "A previously official release that was actively withdrawn from "
-#| "circulation by the artist and/or their record company after being "
-#| "released, whether to replace it with a new version with some changes or "
-#| "to just retire it altogether (e.g. because of legal issues)."
 msgctxt "release_status"
 msgid ""
 "An official release that was actively withdrawn from circulation by the "
@@ -1532,8 +1562,10 @@ msgid ""
 msgstr ""
 "Een officiële uitgave die door de artiest en/of platenmaatschappij na de "
 "uitgavedatum is teruggetrokken. Dit kan gebeuren om een nieuwe versie met "
-"een paar veranderingen uit te brengen of om de uitgave helemaal te schrappen "
-"(bijv. om juridische redenen)."
+"een paar veranderingen uit te brengen of om de uitgave helemaal te "
+"schrappen. Dit is niet bedoeld voor uitgaven die het einde van de ‘normale’ "
+"levenscyclus hebben bereikt, zoals wanneer ze zijn uitverkocht en niet meer "
+"worden geproduceerd."
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -1567,6 +1599,14 @@ msgstr ""
 "koor en solisten. Hoewel een oratorium personages en een plot heeft, wordt "
 "het meestal niet theatraal opgevoerd, dus zonder kostuums, decor en veel "
 "interactie tussen de personages."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1870,10 +1910,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "B dorisch"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "B locrisch"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "B lydisch"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "B mixolydisch"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr "B frygisch"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2343,10 +2398,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "C dorisch"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "C locrisch"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "C lydisch"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "C mixolydisch"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr "C frygisch"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2406,7 +2476,7 @@ msgstr "cd-r"
 #: DB:medium_format/name:209
 msgctxt "medium_format"
 msgid "CD-i"
-msgstr ""
+msgstr "cd-i"
 
 #: DB:medium_format/name:41
 msgctxt "medium_format"
@@ -2638,8 +2708,8 @@ msgstr "Land"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "Land wordt gebruikt voor gebieden die zijn of waren opgenomen in de ISO "
 "3166-1, bijvoorbeeld Nederland."
@@ -2662,6 +2732,11 @@ msgstr ""
 "die geen onderafdelingen, maar ook geen gemeentes zijn. Bijvoorbeeld "
 "graafschappen in Engeland of Kreise in Duitsland. Gewesten worden niet "
 "getoond als bovenliggende gebieden van andere gebieden."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2709,10 +2784,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "D dorisch"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "D locrisch"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "D lydisch"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr "D mixolydisch"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr "D frygisch"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3239,10 +3329,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr "E dorisch"
 
+#: DB:work_attribute_type_allowed_value/value:1067
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "E locrisch"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "E lydisch"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr "E mixolydisch"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr "E frygisch"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3397,7 +3502,7 @@ msgstr "Evsat"
 #: DB:release_status/name:38
 msgctxt "release_status"
 msgid "Expunged"
-msgstr ""
+msgstr "Uitgewist"
 
 #: DB:work_attribute_type_allowed_value/value:614
 msgctxt "work_attribute_type_allowed_value"
@@ -3409,10 +3514,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "F dorisch"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "F locrisch"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "F lydisch"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr "F mixolydisch"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr "F frygisch"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3621,10 +3741,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "G dorisch"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "G locrisch"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "G lydisch"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr "G mixolydisch"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr "G frygisch"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3895,6 +4030,14 @@ msgstr "hd-dvd"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "hdcd"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP-ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4316,12 +4459,9 @@ msgstr "Een ID van de Britse rechtenorganisatie PRS for Music"
 
 #. name:MUSICAUTOR ID
 #: DB:work_attribute_type/description:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgctxt "work_attribute_type"
 msgid "ID for the Bulgarian rights society MUSICAUTOR"
-msgstr "Een ID van de Nicaraguaanse rechtenorganisatie NICAUTOR"
+msgstr "Een ID van de Bulgaarse rechtenorganisatie MUSICAUTOR"
 
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
@@ -4358,6 +4498,15 @@ msgstr "Een ID van de Colombiaanse rechtenorganisatie SAYCO"
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "Een ID van de Costa Ricaanse rechtenorganisatie ACAM"
+
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "Een ID van de Cubaanse rechtenorganisatie ACDAM"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4415,12 +4564,9 @@ msgstr "Een ID van de Duitse rechtenorganisatie GEMA"
 
 #. name:AUTODIA ID
 #: DB:work_attribute_type/description:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Czech rights society OSA"
 msgctxt "work_attribute_type"
 msgid "ID for the Greek rights society AUTODIA"
-msgstr "Een ID van de Tsjechische rechtenorganisatie OSA"
+msgstr "Een ID van de Griekse rechtenorganisatie AUTODIA"
 
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
@@ -4460,12 +4606,9 @@ msgstr "Een ID van de Indiase rechtenorganisatie IPRS"
 
 #. name:WAMI ID
 #: DB:work_attribute_type/description:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Indian rights society IPRS"
 msgctxt "work_attribute_type"
 msgid "ID for the Indonesian rights society WAMI"
-msgstr "Een ID van de Indiase rechtenorganisatie IPRS"
+msgstr "Een ID van de Indonesische rechtenorganisatie WAMI"
 
 #. name:ICE ID
 #: DB:work_attribute_type/description:29
@@ -4587,6 +4730,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "Een ID van de Salvadoraanse rechtenorganisatie SACIM"
 
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "Een ID van de Servische rechtenorganisatie SOKOJ"
+
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
@@ -4667,12 +4816,9 @@ msgstr "Een ID van de Amerikaanse rechtenorganisatie SESAC"
 
 #. name:UACRR ID
 #: DB:work_attribute_type/description:209
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Brazilian rights society ECAD"
 msgctxt "work_attribute_type"
 msgid "ID for the Ukrainian rights society UACRR"
-msgstr "Een ID van de Braziliaanse rechtenorganisatie ECAD"
+msgstr "Een ID van de Oekraïense rechtenorganisatie UACRR"
 
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
@@ -4772,21 +4918,15 @@ msgstr "Inheems gebied / reservaat"
 
 #. name:Indigenous territory / reserve
 #: DB:area_type/description:9
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for semi-autonomous territories governed by indigenous peoples, such "
-#| "as Indian reserves/reservations in North America and indigenous "
-#| "territories in Central and South America."
 msgctxt "area_type"
 msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
 "governed by indigenous peoples, such as Indian reserves/reservations in "
 "North America and indigenous territories in Central and South America."
 msgstr ""
-"Inheemse gebieden zijn semiautonome gebieden die door inheemse "
-"bevolkingsgroepen worden bestuurd, zoals de indianenreservaten in Noord-"
-"Amerika en de inheemse gebieden in Centraal- en Zuid-Amerika."
+"Inheems gebied / reservaat wordt gebruikt voor semi-autonome gebieden die "
+"door inheemse bevolkingsgroepen worden bestuurd, zoals de indianenreservaten "
+"in Noord-Amerika en de inheemse gebieden in Centraal- en Zuid-Amerika."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5570,12 +5710,9 @@ msgid "MCT ID"
 msgstr "MCT-ID"
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "NICAUTOR ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "NICAUTOR-ID"
+msgstr "MUSICAUTOR-ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -5824,18 +5961,13 @@ msgstr "Militaire basis"
 
 #. name:Military base
 #: DB:area_type/description:8
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for any military bases that are large enough to be considered an "
-#| "area, not just a place."
 msgctxt "area_type"
 msgid ""
 "Military base is used only for any military bases that are large enough to "
 "be considered an area, not just a place."
 msgstr ""
-"Dit type gebied wordt gebruikt voor militaire bases die zo groot zijn dat ze "
-"als gebied in plaats van een plaats kunnen worden beschouwd."
+"Militaire basis wordt alleen gebruikt voor militaire bases die zo groot zijn "
+"dat ze als gebied in plaats van een plaats kunnen worden beschouwd."
 
 #: DB:medium_format/name:166
 msgctxt "medium_format"
@@ -5850,7 +5982,7 @@ msgstr "MiniDVD-audio"
 #: DB:medium_format/name:169
 msgctxt "medium_format"
 msgid "MiniDVD-Video"
-msgstr "MiniDVD-Video"
+msgstr "MiniDVD-video"
 
 #: DB:medium_format/name:6
 msgctxt "medium_format"
@@ -6050,12 +6182,9 @@ msgid "Murabba"
 msgstr "Murabba"
 
 #: DB:work_attribute_type_allowed_value/value:811
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "Murabba Beste "
 msgctxt "work_attribute_type_allowed_value"
 msgid "Murabba Beste"
-msgstr "Murabba Beste "
+msgstr "Murabba Beste"
 
 #: DB:work_type/name:29
 msgctxt "work_type"
@@ -6723,7 +6852,7 @@ msgstr "Pahāḍi"
 #: DB:cover_art_archive.art_type/name:81
 msgctxt "cover_art_type"
 msgid "Panel"
-msgstr ""
+msgstr "paneel"
 
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
@@ -6911,6 +7040,11 @@ msgstr "Perserij"
 msgctxt "label_type"
 msgid "Production"
 msgstr "Productie"
+
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr "Programma"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
@@ -7501,6 +7635,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr "SODRAC-ID"
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr "SOKOJ-ID"
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7807,6 +7946,11 @@ msgstr "Slidepack"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Slim Jewel Case"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8380,6 +8524,9 @@ msgid ""
 "The individual segments of a folded packaging, such as a gatefold cover, "
 "digipak or cassette inlay (don't use this for folded booklets nor posters)."
 msgstr ""
+"De segmenten van een gevouwen verpakking, zoals een Gatefold Cover, digipak "
+"of een inlegvel voor cassettebandjes (gebruik dit niet voor gevouwen boekjes "
+"of posters)."
 
 #. name:Madrigal
 #: DB:work_type/description:7
@@ -8682,7 +8829,7 @@ msgstr "Tōḍī"
 #: DB:work_attribute_type/name:209
 msgctxt "work_attribute_type"
 msgid "UACRR ID"
-msgstr ""
+msgstr "UACRR-ID"
 
 #: DB:medium_format/name:28
 msgctxt "medium_format"
@@ -8732,7 +8879,7 @@ msgid ""
 msgstr ""
 "Gebruik deze eigenschap voor afbeeldingen die bewerkt moeten worden voordat "
 "ze kunnen worden weergegeven (maar die misschien al als referentie kunnen "
-"worden gebruikt)"
+"worden gebruikt)."
 
 #. name:Raw/Unedited
 #: DB:event_art_archive.art_type/description:9
@@ -8743,7 +8890,7 @@ msgid ""
 msgstr ""
 "Gebruik deze eigenschap voor afbeeldingen die bewerkt moeten worden voordat "
 "ze kunnen worden weergegeven (maar die misschien al als referentie kunnen "
-"worden gebruikt)"
+"worden gebruikt)."
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8968,12 +9115,9 @@ msgid "Vīra vasantaṁ"
 msgstr "Vīra vasantaṁ"
 
 #: DB:work_attribute_type/name:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "BMI ID"
 msgctxt "work_attribute_type"
 msgid "WAMI ID"
-msgstr "BMI-ID"
+msgstr "WAMI-ID"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"

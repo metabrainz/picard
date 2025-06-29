@@ -1,20 +1,21 @@
-# BestSteve <ibmibmibm.tw@gmail.com>, 2024.
+# BestSteve <ibmibmibm.tw@gmail.com>, 2024, 2025.
 # Evergarden <minna1012@gmail.com>, 2024.
 # WorldPioneerXXX <peter04peter04p@gmail.com>, 2024.
 # guardiansock <guardian.sock5925@fastmail.com>, 2024.
+# KenParker_CN <peekabookenny@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2024-12-29 00:42+0000\n"
-"Last-Translator: guardiansock <guardian.sock5925@fastmail.com>\n"
-"Language-Team: Chinese (Traditional Han script) <https://translations."
-"metabrainz.org/projects/musicbrainz/attributes/zh_Hant/>\n"
+"PO-Revision-Date: 2025-03-31 11:45+0000\n"
+"Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hant/>\n"
 "Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -128,12 +129,9 @@ msgid "8cm CD+G"
 msgstr "8公分 CD+G"
 
 #: DB:medium_format/name:210
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr "8 公分光碟"
+msgstr "8cm 可录式光碟"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
@@ -330,12 +328,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "一個多利安"
+msgstr "多里安 A 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1070
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "洛克里亞 A 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "利地安 A 調式"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "混合利底亞"
+msgstr "米索利地安 A 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr "弗里吉安 A 調式"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -344,6 +357,19 @@ msgid ""
 "A ballet is music composed to be used, together with a choreography, for a "
 "ballet dance production."
 msgstr "芭蕾是為芭蕾舞劇配合編排的音樂作品，通常與舞蹈動作結合使用。"
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
+"一本提供給活動參加者的手冊，可能免費發放或販售，內含活動相關資訊，例如時間"
+"表、表演者資料，以及演奏音樂的詳細內容。節目冊最常見於音樂節、舞台表演及古典"
+"音樂演出。"
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -422,6 +448,14 @@ msgid ""
 "digital. Use this also for ticket stubs and passes."
 msgstr "實體或者數位文件通常用於了解活動，也用作票根和通行許可。"
 
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
+
 #. name:Promotion
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -484,7 +518,7 @@ msgstr "一個紀錄了活動演奏曲目的列表，通常是列印或者手寫
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
-msgstr "一個主要的"
+msgstr "A 大調"
 
 #. name:Mass
 #: DB:work_type/description:8
@@ -521,7 +555,7 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:29
 msgctxt "work_attribute_type_allowed_value"
 msgid "A minor"
-msgstr "未成年人"
+msgstr "A 小調"
 
 #. name:Partita
 #: DB:work_type/description:13
@@ -980,22 +1014,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:26
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat major"
-msgstr "降A大調"
+msgstr "降 A 大調"
 
 #: DB:work_attribute_type_allowed_value/value:27
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-flat minor"
-msgstr "降A小調"
+msgstr "降 A 小調"
 
 #: DB:work_attribute_type_allowed_value/value:817
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp major"
-msgstr "升A大調"
+msgstr "升 A 大調"
 
 #: DB:work_attribute_type_allowed_value/value:30
 msgctxt "work_attribute_type_allowed_value"
 msgid "A-sharp minor"
-msgstr "升A小調"
+msgstr "升 A 小調"
 
 #: DB:work_attribute_type/name:57
 msgctxt "work_attribute_type"
@@ -1344,11 +1378,17 @@ msgstr ""
 
 #. name:Schedule
 #: DB:event_art_archive.art_type/description:5
+#, fuzzy
+#| msgctxt "event_art_type"
+#| msgid ""
+#| "An image usually showing the order and time for the performances in an "
+#| "event. Can be a standalone image, but also a poster or banner (in which "
+#| "case all applicable types should be set)."
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 "通常是一張顯示活動中的表演順序和時間安排的圖像。它可以是一個獨立的圖像，也可"
 "以是海報或橫幅的一部分(在這種情況下，所有適用的類型都應被設置)。"
@@ -1433,6 +1473,14 @@ msgid ""
 msgstr ""
 "神劇是一種大型(通常為神聖的)音樂作品，包括管弦樂團、合唱團和獨奏家。雖然具有"
 "角色和情節，但通常不以戲劇形式演出(因為缺乏服裝、道具和強烈的角色互動)。"
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1725,42 +1773,57 @@ msgstr "Aṭṭa"
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr "多利安B調式"
+msgstr "多里安 B 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1071
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "洛克里亞 B 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "利地安 B 調式"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr "混合利底亞B調式"
+msgstr "米索利地安 B 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr "弗里吉安 B 調式"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
 msgid "B major"
-msgstr "B大調"
+msgstr "B 大調"
 
 #: DB:work_attribute_type_allowed_value/value:34
 msgctxt "work_attribute_type_allowed_value"
 msgid "B minor"
-msgstr "B小調"
+msgstr "B 小調"
 
 #: DB:work_attribute_type_allowed_value/value:31
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat major"
-msgstr "降B大調"
+msgstr "降 B 大調"
 
 #: DB:work_attribute_type_allowed_value/value:32
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-flat minor"
-msgstr "降B小調"
+msgstr "降 B 小調"
 
 #: DB:work_attribute_type_allowed_value/value:818
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp major"
-msgstr "升B大調"
+msgstr "升 B 大調"
 
 #: DB:work_attribute_type_allowed_value/value:819
 msgctxt "work_attribute_type_allowed_value"
 msgid "B-sharp minor"
-msgstr "升B小調"
+msgstr "升 B 小調"
 
 #: DB:work_attribute_type/name:7
 msgctxt "work_attribute_type"
@@ -2195,12 +2258,27 @@ msgstr "Bṛndāvani"
 #: DB:work_attribute_type_allowed_value/value:789
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
-msgstr "多利安C調式"
+msgstr "多里安 C 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1065
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "洛克里亞 C 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "利地安 C 調式"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
-msgstr "混合利底亞C調式"
+msgstr "米索利地安 C 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr "弗里吉安 C 調式"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2210,27 +2288,27 @@ msgstr "C 大調"
 #: DB:work_attribute_type_allowed_value/value:3
 msgctxt "work_attribute_type_allowed_value"
 msgid "C minor"
-msgstr "C小調"
+msgstr "C 小調"
 
 #: DB:work_attribute_type_allowed_value/value:1
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat major"
-msgstr "降C大調"
+msgstr "降 C 大調"
 
 #: DB:work_attribute_type_allowed_value/value:812
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-flat minor"
-msgstr "降C小調"
+msgstr "降 C 小調"
 
 #: DB:work_attribute_type_allowed_value/value:4
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp major"
-msgstr "升C大調"
+msgstr "升 C 大調"
 
 #: DB:work_attribute_type_allowed_value/value:5
 msgctxt "work_attribute_type_allowed_value"
 msgid "C-sharp minor"
-msgstr "升C小調"
+msgstr "升 C 小調"
 
 #: DB:work_attribute_type/name:19
 msgctxt "work_attribute_type"
@@ -2491,8 +2569,8 @@ msgstr "國家"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr "國家和地區指列於（或曾經列於）ISO 3166-1的區域，如美國。"
 
 #: DB:area_type/name:7
@@ -2511,6 +2589,11 @@ msgid ""
 msgstr ""
 "縣指一國內更小的不是一級行政區也不是地方自治體的行政區划，如美國的縣。在顯示"
 "某區域的上級區域時不考慮。"
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2556,42 +2639,57 @@ msgstr "Cāyātarangiṇi"
 #: DB:work_attribute_type_allowed_value/value:790
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
-msgstr "多利安D調式"
+msgstr "多里安 D 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1066
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "洛克里亞 D 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "利地安 D 調式"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
-msgstr "混合利底亞D調式"
+msgstr "米索利地安 D 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr "弗里吉安 D 調式"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
 msgid "D major"
-msgstr "D大調"
+msgstr "D 大調"
 
 #: DB:work_attribute_type_allowed_value/value:9
 msgctxt "work_attribute_type_allowed_value"
 msgid "D minor"
-msgstr "D小調"
+msgstr "D 小調"
 
 #: DB:work_attribute_type_allowed_value/value:6
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat major"
-msgstr "降D大調"
+msgstr "降 D 大調"
 
 #: DB:work_attribute_type_allowed_value/value:7
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-flat minor"
-msgstr "降D小調"
+msgstr "降 D 小調"
 
 #: DB:work_attribute_type_allowed_value/value:813
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp major"
-msgstr "升D大調"
+msgstr "升 D 大調"
 
 #: DB:work_attribute_type_allowed_value/value:10
 msgctxt "work_attribute_type_allowed_value"
 msgid "D-sharp minor"
-msgstr "升D小調"
+msgstr "升 D 小調"
 
 #: DB:medium_format/name:11
 msgctxt "medium_format"
@@ -3084,42 +3182,57 @@ msgstr "Dīpāḷi"
 #: DB:work_attribute_type_allowed_value/value:791
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
-msgstr "多利安E調式"
+msgstr "多里安 E 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1067
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "洛克里亞 E 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "利地安 E 調式"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
-msgstr "混合利底亞E調式"
+msgstr "米索利地安 E 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr "弗里吉安 E 調式"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
 msgid "E major"
-msgstr "E大調"
+msgstr "E 大調"
 
 #: DB:work_attribute_type_allowed_value/value:14
 msgctxt "work_attribute_type_allowed_value"
 msgid "E minor"
-msgstr "E小調"
+msgstr "E 小調"
 
 #: DB:work_attribute_type_allowed_value/value:11
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat major"
-msgstr "降E大調"
+msgstr "降 E 大調"
 
 #: DB:work_attribute_type_allowed_value/value:12
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-flat minor"
-msgstr "降E小調"
+msgstr "降 E 小調"
 
 #: DB:work_attribute_type_allowed_value/value:814
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp major"
-msgstr "升A大調"
+msgstr "升 E 大調"
 
 #: DB:work_attribute_type_allowed_value/value:15
 msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
-msgstr "升E小調"
+msgstr "升 E 小調"
 
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
@@ -3254,12 +3367,27 @@ msgstr "Ezan"
 #: DB:work_attribute_type_allowed_value/value:792
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
-msgstr "多利安F調式"
+msgstr "多里安 F 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1068
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "洛克里亞 F 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "利地安 F 調式"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
-msgstr "混合利底亞F調式"
+msgstr "米索利地安 F 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr "弗里吉安 F 調式"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3279,7 +3407,7 @@ msgstr "降 F 大調"
 #: DB:work_attribute_type_allowed_value/value:815
 msgctxt "work_attribute_type_allowed_value"
 msgid "F-flat minor"
-msgstr "降F小調"
+msgstr "降 F 小調"
 
 #: DB:work_attribute_type_allowed_value/value:19
 msgctxt "work_attribute_type_allowed_value"
@@ -3460,12 +3588,27 @@ msgstr "正面"
 #: DB:work_attribute_type_allowed_value/value:793
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
-msgstr "多利安G調式"
+msgstr "多里安 G 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1069
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "洛克里亞 G 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "利地安 G 調式"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
-msgstr "混合利底亞G調式"
+msgstr "米索利地安 G 調式"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr "弗里吉安 G 調式"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3485,7 +3628,7 @@ msgstr "降 G 大調"
 #: DB:work_attribute_type_allowed_value/value:816
 msgctxt "work_attribute_type_allowed_value"
 msgid "G-flat minor"
-msgstr "降G小調"
+msgstr "降 G 小調"
 
 #: DB:work_attribute_type_allowed_value/value:24
 msgctxt "work_attribute_type_allowed_value"
@@ -3733,6 +3876,14 @@ msgstr "HD-DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4197,6 +4348,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "哥斯大黎加著作權協會ACAM ID"
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "古巴著作權協會ACDAM ID"
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4418,6 +4578,15 @@ msgstr "葡萄牙著作權協會SPA ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "薩爾瓦多著作權協會SACIM ID"
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Norwegian rights society TONO"
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "挪威著作權協會TONO ID"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -6713,6 +6882,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "產品"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7294,6 +7468,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr "SODRAC ID"
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7598,6 +7777,11 @@ msgstr "Slidepack"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "薄壓克力盒"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8399,7 +8583,7 @@ msgstr "Tüvanger"
 #: DB:work_attribute_type/name:5
 msgctxt "work_attribute_type"
 msgid "Tāla (Carnatic)"
-msgstr "塔拉 （卡納提克）"
+msgstr "塔拉（卡那提克）"
 
 #: DB:work_attribute_type/name:31
 msgctxt "work_attribute_type"
@@ -8885,7 +9069,7 @@ msgstr "Zirefkend"
 #: DB:work_attribute_type_allowed_value/value:681
 msgctxt "work_attribute_type_allowed_value"
 msgid "ambiguous"
-msgstr "ambiguous"
+msgstr "模稜兩可"
 
 #: DB:medium_format/name:164
 msgctxt "medium_format"

@@ -16,21 +16,24 @@
 # Tobias Toedter <email address hidden>, 2007
 # Echelon666 <echelon01@wp.pl>, 2024.
 # Peter69 <echelon01@wp.pl>, 2024.
+# Michal77 <michal_wilk@poczta.fm>, 2025.
+# PS <weblate@wp.pl>, 2025.
+# Echelon <weblate@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-12-23 13:42+0000\n"
-"Last-Translator: Peter69 <echelon01@wp.pl>\n"
+"PO-Revision-Date: 2025-06-23 11:20+0000\n"
+"Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
+"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -41,8 +44,8 @@ msgid ""
 "the period."
 msgstr ""
 "\"Motet\" jest terminem, który tyczy się różnych typów dzieł chóralnych "
-"(zwykle nieakompaniowanych). To, czym motet w istocie jest - zależy od "
-"określonego przedziału czasu"
+"(zwykle bez akompaniamentu). To, czym motet w istocie jest - zależy od "
+"określonego okresu (epoki)."
 
 #. name:Sonata
 #: DB:work_type/description:5
@@ -167,7 +170,7 @@ msgid ""
 "1932."
 msgstr ""
 "obracające się z częstotliwością 90 obr./min płyty szelakowe, produkowane "
-"przez wytwórnię Pathé w latach 1906-1932"
+"przez wytwórnię Pathé w latach 1906-1932."
 
 #. name:Compilation
 #: DB:release_group_secondary_type/description:1
@@ -380,10 +383,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "A w skali doryckiej"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "A w skali doryckiej"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "A w skali miksolidyjskiej"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "A w skali miksolidyjskiej"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr ""
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -394,6 +418,16 @@ msgid ""
 msgstr ""
 "Balet to utwór napisany do użytku w połączeniu z choreografią w widowisku "
 "baletowym."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -480,6 +514,18 @@ msgid ""
 msgstr ""
 "Dokument powszechnie używany do wstępu na wydarzenie, czy to fizyczny, czy "
 "cyfrowy. Używaj go również do biletów wstępu i karnetów."
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+#, fuzzy
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
+"Pudełko o czterech lub pięciu bokach, zwykle wykonane z tektury lub "
+"plastiku, otaczające drugie wewnętrzne opakowanie, na przykład pudełko na "
+"biżuterię."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -1489,12 +1535,12 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 "Obraz zwykle pokazujący kolejność i czas występów na wydarzeniu. Może to być "
-"samodzielny obraz, ale także plakat lub baner (w takim przypadku należy "
-"ustawić wszystkie odpowiednie typy)."
+"samodzielny obraz, ale także plakat lub baner lub strona z programu (w takim "
+"przypadku należy ustawić wszystkie odpowiednie typy)."
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1583,6 +1629,16 @@ msgstr ""
 "orkiestrę, chór i solistów. Choć ma postacie i fabułę, zwykle nie jest "
 "wystawiane teatralnie (brakuje kostiumów, rekwizytów i silnej interakcji "
 "postaci)."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
+"Organizacja zapewniająca kierownictwo kreatywne nad elementami wizualnymi "
+"wydawnictw (takimi jak ilustracje, projekty i inne dzieła sztuki)."
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1887,9 +1943,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1071
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "A w skali doryckiej"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "A w skali miksolidyjskiej"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:33
@@ -2266,7 +2343,7 @@ msgstr "Bootleg"
 #: DB:label_type/name:5
 msgctxt "label_type"
 msgid "Bootleg Production"
-msgstr "Produkcja typu bootleg "
+msgstr "Produkcja typu bootleg"
 
 #: DB:cover_art_archive.art_type/name:49
 msgctxt "cover_art_type"
@@ -2359,9 +2436,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1065
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "A w skali doryckiej"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "A w skali miksolidyjskiej"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
@@ -2659,8 +2757,8 @@ msgstr "Kraj"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "Kraj jest stosowany w przypadku obszarów uwzględnionych (lub wcześniej "
 "uwzględnionych) w normie ISO 3166-1, np. Stany Zjednoczone."
@@ -2683,6 +2781,11 @@ msgstr ""
 "które nie są głównymi podziałami administracyjnymi, ale nie są również "
 "gminami, np. hrabstwa w USA. Nie są one brane pod uwagę podczas wyświetlania "
 "obszarów nadrzędnych dla danego obszaru."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2730,9 +2833,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1066
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "A w skali doryckiej"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "A w skali miksolidyjskiej"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
@@ -3259,9 +3383,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1067
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "A w skali doryckiej"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "A w skali miksolidyjskiej"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
@@ -3429,9 +3574,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1068
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "A w skali doryckiej"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "A w skali miksolidyjskiej"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
@@ -3641,9 +3807,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1069
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "A w skali doryckiej"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "A w skali miksolidyjskiej"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
@@ -3914,6 +4101,14 @@ msgstr "HD-DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "HDS-ZAMP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4391,6 +4586,12 @@ msgid "ID for the Costa Rican rights society ACAM"
 msgstr ""
 "Identyfikator kostarykańskiego stowarzyszenia praw autorskich twórców ACAM"
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "Identyfikator chorwackiego stowarzyszenia praw autorskich HDS-ZAMP"
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4632,6 +4833,12 @@ msgid "ID for the Salvadoran rights society SACIM"
 msgstr ""
 "Identyfikator salwadorskiego stowarzyszenia praw autorskich twórców SACIM"
 
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "Identyfikator serbskiego stowarzyszenia praw autorskich twórców SOKOJ"
+
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
@@ -4834,12 +5041,6 @@ msgstr "Terytorium / rezerwat rdzennej ludności"
 
 #. name:Indigenous territory / reserve
 #: DB:area_type/description:9
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for semi-autonomous territories governed by indigenous peoples, such "
-#| "as Indian reserves/reservations in North America and indigenous "
-#| "territories in Central and South America."
 msgctxt "area_type"
 msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
@@ -4847,9 +5048,9 @@ msgid ""
 "North America and indigenous territories in Central and South America."
 msgstr ""
 "Termin „terytorium/rezerwat tubylczy” odnosi się do półautonomicznych "
-"terytoriów zarządzanych przez ludność tubylczą, takich jak rezerwaty/"
-"rezerwaty indiańskie w Ameryce Północnej i terytoria tubylcze w Ameryce "
-"Środkowej i Południowej."
+"terytoriów zarządzanych przez ludność rdzenną, takich jak rezerwaty "
+"indiańskie w Ameryce Północnej i terytoria tubylcze w Ameryce Środkowej i "
+"Południowej."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -6973,6 +7174,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "Produkcja"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7564,6 +7770,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr ""
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7870,6 +8081,11 @@ msgstr ""
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Slim Jewel Case"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8335,7 +8551,7 @@ msgid ""
 "separate medium."
 msgstr ""
 "Strona CD winylu + CD VinylDisc. Strona winylowa powinna być dodana jako "
-"osobny nośnik."
+"osobne medium."
 
 #. name:CED
 #: DB:medium_format/description:60

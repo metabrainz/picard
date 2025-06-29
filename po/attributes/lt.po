@@ -359,10 +359,31 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "Dorianas"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "Dorianas"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "Miksolydiškasis"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "Miksolydiškasis"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr ""
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -372,6 +393,16 @@ msgid ""
 "ballet dance production."
 msgstr ""
 "Baletas – muzika, sukurta kartu su choreografija baleto šokio spektakliui."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -460,6 +491,14 @@ msgid ""
 msgstr ""
 "Dokumentas, kuris paprastai naudojamas norint patekti į renginį – fizinis "
 "arba skaitmeninis. Taip pat naudok bilietų kvitams ir leidimams."
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -1385,11 +1424,17 @@ msgstr ""
 
 #. name:Schedule
 #: DB:event_art_archive.art_type/description:5
+#, fuzzy
+#| msgctxt "event_art_type"
+#| msgid ""
+#| "An image usually showing the order and time for the performances in an "
+#| "event. Can be a standalone image, but also a poster or banner (in which "
+#| "case all applicable types should be set)."
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 "Vaizdas, paprastai rodantis renginio atlikimų tvarką ir laiką. Tai gali būti "
 "atskiras vaizdas, taip pat plakatas ar reklamjuostė (tokiu atveju reikia "
@@ -1474,6 +1519,14 @@ msgid ""
 "orchestra, a choir, and soloists. While it has characters and a plot, it is "
 "usually not performed theatrically (it lacks costumes, props and strong "
 "character interaction)."
+msgstr ""
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
 msgstr ""
 
 #. name:Rights Society
@@ -1769,9 +1822,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1071
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "Dorianas"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "Miksolydiškasis"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:33
@@ -2239,9 +2313,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1065
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "Dorianas"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "Miksolydiškasis"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:2
@@ -2537,8 +2632,8 @@ msgstr "šalis"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "Šalis naudojama teritorijoms, įtrauktoms (arba anksčiau įtrauktoms) į ISO "
 "3166-1, pvz., Jungtinėms Amerikos Valstijoms."
@@ -2556,6 +2651,11 @@ msgid ""
 "not the main administrative divisions but are also not municipalities, e.g. "
 "counties in the USA. These are not considered when displaying the parent "
 "areas for a given area."
+msgstr ""
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
@@ -2604,9 +2704,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1066
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "Dorianas"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "Miksolydiškasis"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:8
@@ -3132,9 +3253,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1067
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "Dorianas"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "Miksolydiškasis"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:13
@@ -3302,9 +3444,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1068
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "Dorianas"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "Miksolydiškasis"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:17
@@ -3506,9 +3669,30 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr ""
 
+#: DB:work_attribute_type_allowed_value/value:1069
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Dorian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "Dorianas"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+#, fuzzy
+#| msgctxt "work_attribute_type_allowed_value"
+#| msgid "A Mixolydian"
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "Miksolydiškasis"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
+msgstr ""
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:22
@@ -3777,6 +3961,14 @@ msgstr ""
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr ""
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4241,6 +4433,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "Kosta Rikos teisių organizacijos ACAM identifikatorius."
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "Kubos teisių organizacijos ACDAM identifikatorius."
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4468,6 +4669,15 @@ msgstr "Portugalijos teisių organizacijos SPA identifikatorius."
 msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "Salvadoro teisių organizacijos SACIM identifikatorius."
+
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Norwegian rights society TONO"
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "Norvegijos teisių organizacijos TONO identifikatorius."
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -6797,6 +7007,11 @@ msgctxt "label_type"
 msgid "Production"
 msgstr "produkcija"
 
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr ""
+
 #: DB:release_status/name:2
 msgctxt "release_status"
 msgid "Promotion"
@@ -7384,6 +7599,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr "SODRAC ID"
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7690,6 +7910,11 @@ msgstr "pakuotė su slankmačiu (Slidepack)"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "plonas dėklas"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"

@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-02-11 00:44+0000\n"
+"PO-Revision-Date: 2025-06-09 23:20+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -25,9 +25,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
-"X-Generator: Weblate 5.9.2\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -378,10 +378,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
 msgstr "la dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1070
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Locrian"
+msgstr "la locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1063
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Lydian"
+msgstr "la lidio"
+
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
 msgstr "la misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1056
+msgctxt "work_attribute_type_allowed_value"
+msgid "A Phrygian"
+msgstr "la frigio"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -392,6 +407,20 @@ msgid ""
 msgstr ""
 "Un balletto è la musica composta per essere utilizzata, insieme a una "
 "coreografia, per la produzione di un balletto di danza."
+
+#. name:Program
+#: DB:event_art_archive.art_type/description:11
+msgctxt "event_art_type"
+msgid ""
+"A booklet given or sold to event attendees that contains information about "
+"the event, such as scheduling, performer data, and details about the music "
+"being played. Programs/programmes are most often made available for music "
+"festivals and for stage and classical performances."
+msgstr ""
+"Un libretto (booklet) dato in omaggio o venduto ai partecipanti che contiene "
+"informazioni sull'evento, come orari, informazioni sugli artisti e dettagli "
+"sulla musica che verrà eseguita. I programmi sono disponibili più spesso per "
+"i festival musicali e per le esibizioni in scena e di musica classica."
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -481,6 +510,16 @@ msgid ""
 msgstr ""
 "Un documento, fisico o digitale, usato in genere per ottenere l'ingresso a "
 "un evento. Da usare anche per le matrici di biglietti e i pass."
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
+"Una scatola a quattro o cinque lati, solitamente in cartone o in plastica, "
+"che circonda una seconda confezione interna, come un jewel case."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -642,7 +681,7 @@ msgstr ""
 msgctxt "place_type"
 msgid "A place (generally a factory) at which physical media are manufactured."
 msgstr ""
-"Un luogo (solitamente una fabbrica) in cui vengono prodotti i supporti "
+"Un posto (solitamente una fabbrica) in cui vengono prodotti i supporti "
 "fisici."
 
 #. name:Indoor arena
@@ -653,7 +692,7 @@ msgid ""
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
 msgstr ""
-"Un luogo composto da una grande area al chiuso al cui centro si trova uno "
+"Un posto composto da una grande area al chiuso al cui centro si trova uno "
 "spazio per eventi, circondato da file di posti a sedere per gli spettatori. "
 "Può essere usato per sport indoor, concerti e altri eventi di "
 "intrattenimento."
@@ -665,7 +704,7 @@ msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
 msgstr ""
-"Un luogo progettato per la produzione di musica non dal vivo, come per "
+"Un posto progettato per la produzione di musica non dal vivo, come per "
 "esempio uno studio di registrazione."
 
 #. name:Venue
@@ -675,7 +714,7 @@ msgid ""
 "A place that has live artistic performances as one of its primary functions, "
 "such as a concert hall."
 msgstr ""
-"Un luogo che fa delle esibizioni artistiche dal vivo una delle sue funzioni "
+"Un posto che fa delle esibizioni artistiche dal vivo una delle sue funzioni "
 "principali, come per esempio una sala concerti."
 
 #. name:Religious building
@@ -686,7 +725,7 @@ msgid ""
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
 msgstr ""
-"Un luogo che fa della preghiera o degli studi religiosi la sua funzione "
+"Un posto che fa della preghiera o degli studi religiosi la sua funzione "
 "primaria. Gli edifici religiosi ospitano spesso concerti e fungono da luoghi "
 "di registrazione, in modo particolare per la musica classica."
 
@@ -698,7 +737,7 @@ msgid ""
 "consisting of a pitch surrounded by a structure for spectators with no roof, "
 "or a roof which can be retracted."
 msgstr ""
-"Un luogo la cui funzione principale è ospitare eventi sportivi all'aperto, "
+"Un posto la cui funzione principale è ospitare eventi sportivi all'aperto, "
 "solitamente costituito da un campo circondato da una struttura per gli "
 "spettatori non coperta o con tetto retrattile."
 
@@ -790,7 +829,7 @@ msgstr ""
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr ""
-"Un festival che si tiene periodicamente, di solito annualmente nello stesso "
+"Un festival che si tiene periodicamente, di solito annualmente, nello stesso "
 "luogo."
 
 #. name:Field recording
@@ -876,15 +915,15 @@ msgstr "Una serie di registrazioni."
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr "Una serie di concerti collegati di un artista in diversi luoghi."
+msgstr "Una serie di concerti collegati di un artista in luoghi diversi."
 
 #. name:Residency
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
 msgstr ""
-"Una serie di concerti collegati tenuti dallo stesso artista nella stessa "
-"location."
+"Una serie di concerti collegati tenuti dallo stesso artista nello stesso "
+"luogo."
 
 #. name:Podcast
 #: DB:series_type/description:80
@@ -1498,12 +1537,13 @@ msgstr ""
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
-"event. Can be a standalone image, but also a poster or banner (in which case "
-"all applicable types should be set)."
+"event. Can be a standalone image, but also a poster, a banner or a page from "
+"a program (in which case all applicable types should be set)."
 msgstr ""
 "Un'immagine che mostra l'ordine e l'orario delle esibizioni durante un "
-"evento. Può essere un'immagine a sé stante, oppure un manifesto o un banner "
-"(e in quel caso andranno selezionati tutti i tipi rilevanti)."
+"evento. Può essere un'immagine a sé stante, oppure un manifesto, un banner o "
+"una pagina presa da un programma (e in quel caso andranno selezionati tutti "
+"i tipi rilevanti)."
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1535,7 +1575,7 @@ msgid ""
 msgstr ""
 "Una piantina del locale in cui si tiene l'evento o una pianta di accesso "
 "creata appositamente per l'evento, che mostra per esempio gli accessi "
-"consigliati o la posizione di specifici palcoscenici e chioschi."
+"consigliati o l'ubicazione di specifici palcoscenici e chioschi."
 
 #. name:Interview
 #: DB:release_group_secondary_type/description:4
@@ -1594,6 +1634,14 @@ msgstr ""
 "orchestra, coro e solisti. Pur avendo dei personaggi e una trama, non è "
 "solitamente rappresentata in scena (non ha costumi, scenografia né forte "
 "interazione tra i personaggi)."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1721,7 +1769,7 @@ msgstr "Collezione di aree"
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
 msgid "Area name"
-msgstr "Nome area"
+msgstr "Nome dell'area"
 
 #: DB:work_type/name:1
 msgctxt "work_type"
@@ -1741,7 +1789,7 @@ msgstr "Collezione di artisti"
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
-msgstr "Nome artista"
+msgstr "Nome dell'artista"
 
 #: DB:series_type/name:13
 msgctxt "series_type"
@@ -1898,10 +1946,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
 msgstr "si dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1071
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Locrian"
+msgstr "si locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1064
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Lydian"
+msgstr "si lidio"
+
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
 msgstr "si misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1057
+msgctxt "work_attribute_type_allowed_value"
+msgid "B Phrygian"
+msgstr "si frigio"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2297,7 +2360,7 @@ msgstr "Bozlak"
 #: DB:instrument_alias_type/name:3
 msgctxt "alias_type"
 msgid "Brand name"
-msgstr "Nome marca"
+msgstr "Nome della marca"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
@@ -2370,10 +2433,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "C Dorian"
 msgstr "do dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1065
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Locrian"
+msgstr "do locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1058
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Lydian"
+msgstr "do lidio"
+
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Mixolydian"
 msgstr "do misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1051
+msgctxt "work_attribute_type_allowed_value"
+msgid "C Phrygian"
+msgstr "do frigio"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2596,7 +2674,7 @@ msgstr "Città"
 msgctxt "area_type"
 msgid "City is used for settlements of any size, including towns and villages."
 msgstr ""
-"\"Città\" è utilizzato per luoghi abitati di qualsiasi dimensione, compresi "
+"“Città” è utilizzato per luoghi abitati di qualsiasi dimensione, compresi "
 "paesi e villaggi."
 
 #: DB:release_packaging/name:56
@@ -2637,7 +2715,7 @@ msgstr "Concerto"
 #: DB:event_type/name:4
 msgctxt "event_type"
 msgid "Convention/Expo"
-msgstr "Convention/Expo"
+msgstr "Convegno/Esposizione"
 
 #: DB:medium_format/name:61
 msgctxt "medium_format"
@@ -2667,8 +2745,8 @@ msgstr "Paese"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "\"Paese\" è utilizzato per le aree incluse (attualmente o in passato) nello "
 "standard ISO 3166-1, per es. gli Stati Uniti."
@@ -2691,6 +2769,11 @@ msgstr ""
 "uno Stato che non siano né le suddivisioni amministrative principali né i "
 "comuni, per es. le contee negli Stati Uniti. Queste non sono considerate "
 "quando si visualizzano le aree di livello superiore di una determinata area."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2738,10 +2821,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "D Dorian"
 msgstr "re dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1066
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Locrian"
+msgstr "re locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1059
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Lydian"
+msgstr "re lidio"
+
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Mixolydian"
 msgstr "re misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1052
+msgctxt "work_attribute_type_allowed_value"
+msgid "D Phrygian"
+msgstr "re frigio"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3268,10 +3366,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E Dorian"
 msgstr "mi dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1067
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Locrian"
+msgstr "mi locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1060
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Lydian"
+msgstr "mi lidio"
+
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Mixolydian"
 msgstr "mi misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1053
+msgctxt "work_attribute_type_allowed_value"
+msgid "E Phrygian"
+msgstr "mi frigio"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3361,7 +3474,7 @@ msgstr "Collezione di eventi"
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
-msgstr "Nome evento"
+msgstr "Nome dell'evento"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
@@ -3438,10 +3551,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "F Dorian"
 msgstr "fa dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1068
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Locrian"
+msgstr "fa locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1061
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Lydian"
+msgstr "fa lidio"
+
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Mixolydian"
 msgstr "fa misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1054
+msgctxt "work_attribute_type_allowed_value"
+msgid "F Phrygian"
+msgstr "fa frigio"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3649,10 +3777,25 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "G Dorian"
 msgstr "sol dorico"
 
+#: DB:work_attribute_type_allowed_value/value:1069
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Locrian"
+msgstr "sol locrio"
+
+#: DB:work_attribute_type_allowed_value/value:1062
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Lydian"
+msgstr "sol lidio"
+
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Mixolydian"
 msgstr "sol misolidio"
+
+#: DB:work_attribute_type_allowed_value/value:1055
+msgctxt "work_attribute_type_allowed_value"
+msgid "G Phrygian"
+msgstr "sol frigio"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -3922,6 +4065,14 @@ msgstr "HD-DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ID ASCAP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4383,6 +4534,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "ID per la società di diritti costaricana ACAM"
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "ID per la società di diritti cubana ACDAM"
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4605,6 +4765,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the Salvadoran rights society SACIM"
 msgstr "ID per la società di diritti salvadoregna SACIM"
 
+#. name:SOKOJ ID
+#: DB:work_attribute_type/description:213
+msgctxt "work_attribute_type"
+msgid "ID for the Serbian rights society SOKOJ"
+msgstr "ID per la società di diritti serba SOKOJ"
+
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
 msgctxt "work_attribute_type"
@@ -4811,7 +4977,7 @@ msgstr "Collezione di strumenti"
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
 msgid "Instrument name"
-msgstr "Nome strumento"
+msgstr "Nome dello strumento"
 
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
@@ -5457,7 +5623,7 @@ msgstr "Collezione di etichette"
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "Nome etichetta"
+msgstr "Nome dell'etichetta"
 
 #: DB:work_attribute_type_allowed_value/value:956
 msgctxt "work_attribute_type_allowed_value"
@@ -5837,7 +6003,7 @@ msgid ""
 "be considered an area, not just a place."
 msgstr ""
 "Utilizzato per basi militari sufficientemente grandi da essere considerate "
-"un'area e non solo un luogo."
+"un'area e non solo un posto."
 
 #: DB:medium_format/name:166
 msgctxt "medium_format"
@@ -6615,9 +6781,9 @@ msgid ""
 "originally developed in Japan and now mostly found as a Record Store Day "
 "curiosity."
 msgstr ""
-"Dischi in vinile da 3\" (7,6 cm) da riprodurre con lettori costruiti "
-"appositamente; originariamente sviluppati in Giappone, oggi si trovano "
-"principalmente come curiosità nei Record Store Day."
+"Dischi in vinile da 3\" (7,6 cm) a un lato solo, da riprodurre con lettori "
+"costruiti appositamente; originariamente sviluppati in Giappone, oggi si "
+"trovano principalmente come curiosità nei Record Store Day."
 
 #: DB:work_type/name:10
 msgctxt "work_type"
@@ -6838,12 +7004,12 @@ msgstr "Rullo per pianola"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place collection"
-msgstr "Collezione di luoghi"
+msgstr "Collezione di posti"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
 msgid "Place name"
-msgstr "Nome luogo"
+msgstr "Nome del posto"
 
 #. name:Slidepack
 #: DB:release_packaging/description:20
@@ -6910,6 +7076,11 @@ msgstr "Impianto di pressatura"
 msgctxt "label_type"
 msgid "Production"
 msgstr "Produzione"
+
+#: DB:event_art_archive.art_type/name:11
+msgctxt "event_art_type"
+msgid "Program"
+msgstr "Programma"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
@@ -7500,6 +7671,11 @@ msgctxt "work_attribute_type"
 msgid "SODRAC ID"
 msgstr "ID SODRAC"
 
+#: DB:work_attribute_type/name:213
+msgctxt "work_attribute_type"
+msgid "SOKOJ ID"
+msgstr "ID SOKOJ"
+
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
 msgid "SPA ID"
@@ -7644,7 +7820,7 @@ msgstr "Sazsemaisi"
 #: DB:event_art_archive.art_type/name:5
 msgctxt "event_art_type"
 msgid "Schedule"
-msgstr "Programma"
+msgstr "Orario"
 
 #: DB:artist_alias_type/name:3 DB:label_alias_type/name:2
 #: DB:place_alias_type/name:2 DB:recording_alias_type/name:2
@@ -7719,7 +7895,7 @@ msgstr "Collezione di serie"
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr "Nome serie"
+msgstr "Nome della serie"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
@@ -7807,6 +7983,11 @@ msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Slim jewel case"
 
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr "Slipcase"
+
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
 msgid "Snap Case"
@@ -7880,7 +8061,7 @@ msgstr "Stadio"
 #: DB:event_type/name:6
 msgctxt "event_type"
 msgid "Stage performance"
-msgstr "Esibizione messa in scena"
+msgstr "Esibizione in scena"
 
 #: DB:cover_art_archive.art_type/name:10
 msgctxt "cover_art_type"
@@ -9014,7 +9195,7 @@ msgstr "Collezione di opere"
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr "Nome opera"
+msgstr "Nome dell'opera"
 
 #: DB:series_type/name:4
 msgctxt "series_type"
