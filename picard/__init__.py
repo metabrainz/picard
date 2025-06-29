@@ -40,7 +40,7 @@ PICARD_APP_NAME = "Picard"
 PICARD_DISPLAY_NAME = "MusicBrainz Picard"
 PICARD_APP_ID = "org.musicbrainz.Picard"
 PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
-PICARD_VERSION = Version(2, 13, 3, 'final', 0)
+PICARD_VERSION = Version(2, 14, 0, 'dev', 1)
 
 
 # optional build version
@@ -75,6 +75,7 @@ api_versions = [
     "2.11",
     "2.12",
     "2.13",
+    "2.14",
 ]
 
 api_versions_tuple = [Version.from_string(v) for v in api_versions]
