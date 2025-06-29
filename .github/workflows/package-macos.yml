@@ -64,7 +64,7 @@ jobs:
       run: |
         pip3 install -r requirements-build.txt
         pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
-        pip install zstandard
+        pip3 install zstandard
     - name: Run tests
       timeout-minutes: 30
       run: |
