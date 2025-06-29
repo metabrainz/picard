@@ -8,7 +8,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
 # Copyright (C) 2018 Antonio Larrosa
-# Copyright (C) 2019-2022, 2024 Philipp Wolfer
+# Copyright (C) 2019-2022, 2024-2025 Philipp Wolfer
 # Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
@@ -539,7 +539,10 @@ WINDOWS_FORBIDDEN_NAMES = {
 }
 
 WINDOWS_FORBIDDEN_NAMES_RE = re.compile(
-    r'^(%s)(\.|$)' % '|'.join(re.escape(name) for name in WINDOWS_FORBIDDEN_NAMES),
+    r'(^|[{separators}])({names})(?=$|[\.{separators}])'.format(
+        separators=re.escape(os.path.sep + (os.altsep if os.altsep else '')),
+        names='|'.join(re.escape(name) for name in WINDOWS_FORBIDDEN_NAMES),
+    ),
     re.IGNORECASE
 )
 
@@ -554,17 +557,9 @@ def replace_windows_forbidden_names(path):
 
     Args:
         path: filename or path to clean
-    Returns: sanitized path
+    Returns: Path with escaped forbidden names
     """
-    parts = [
-        WINDOWS_FORBIDDEN_NAMES_RE.sub(r'\1_\2', part)
-        for part in path.split(os.path.normpath(os.path.sep))
-    ]
-    if parts[0] == '':
-        # If the first part is empty, it means the path started with a separator
-        # and is a root path (e.g. "/foo/bar"). Add back the leading separator.
-        parts[0] = os.path.sep
-    return os.path.join(*parts)
+    return WINDOWS_FORBIDDEN_NAMES_RE.sub(r'\1\2_', path)
 
 
 def get_available_filename(new_path, old_path=None):

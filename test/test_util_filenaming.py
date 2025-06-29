@@ -6,7 +6,7 @@
 # Copyright (C) 2016 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2018-2022 Laurent Monin
-# Copyright (C) 2019-2022 Philipp Wolfer
+# Copyright (C) 2019-2022, 2025 Philipp Wolfer
 # Copyright (C) 2022 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
