@@ -179,6 +179,7 @@ class Metadata(MutableMapping):
 
     def __init__(self, *args, deleted_tags=None, images=None, length=None, **kwargs):
         self._lock = ReadWriteLockContext()
+        self._length = None
         self._store = dict()
         self.deleted_tags = set()
         self.length = 0
@@ -194,13 +195,24 @@ class Metadata(MutableMapping):
             for tag in deleted_tags:
                 del self[tag]
         if length is not None:
-            self.length = int(length)
+            self.length = length
 
     def __bool__(self):
         return bool(len(self))
 
     def __len__(self):
         return len(self._store) + len(self.images)
+
+    @property
+    def length(self):
+        return self._length
+
+    @length.setter
+    def length(self, value):
+        length = int(value)
+        if length < 0:
+            raise ValueError("negative value: %d" % length)
+        self._length = length
 
     @staticmethod
     def length_score(a, b):
