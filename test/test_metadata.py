@@ -111,6 +111,16 @@ class CommonTests:
             self.assertEqual(self.multi3, self.metadata.getraw("multi3"))
             self.assertEqual(["hidden-value"], self.metadata.getraw("~hidden"))
 
+        def test_metadata_length_invalid(self):
+            m = Metadata()
+            with self.assertRaisesRegex(ValueError, r"^invalid literal"):
+                m.length = 'x'
+
+        def test_metadata_length_negative(self):
+            m = Metadata()
+            with self.assertRaisesRegex(ValueError, r"^negative value"):
+                m.length = -1
+
         def test_metadata_set_all_values_as_string(self):
             for val in (0, 2, True):
                 str_val = str(val)
