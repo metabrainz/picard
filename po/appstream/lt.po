@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Vaclovas lntas (Vac.) <vaclovas1999@gmail.com>, 2023
 # "Vac31." <gateway_31@protonmail.com>, 2023.
-# Vaclovas Intas <gateway_31@protonmail.com>, 2024.
+# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025.
 #
 # Translators:
 #
@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2024-07-23 10:42+0000\n"
+"PO-Revision-Date: 2025-06-30 23:20+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/appstream/lt/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
 " n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -39,8 +39,8 @@ msgid ""
 "platform music tagger by MusicBrainz. It has the ability to identify audio "
 "files even without any existing metadata."
 msgstr ""
-"Ar tau reikia sutvarkyti muzikos biblioteką? „Picard“ – tai atvirojo kodo "
-"tarpplatforminė muzikos žymeklė, sukurta „MusicBrainz“. Jis turi galimybę "
+"Ar jums reikia sutvarkyti muzikos biblioteką? „Picard“ – tai atvirojo kodo "
+"tarpplatforminė muzikos žymeklė, sukurta „MusicBrainz“. Ji turi galimybę "
 "identifikuoti garso failus net be jokių esamų metaduomenų."
 
 #: org.musicbrainz.Picard.appdata.xml.in:15
