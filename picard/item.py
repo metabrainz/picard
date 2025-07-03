@@ -28,7 +28,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import Counter
+from collections import (
+    Counter,
+    UserList,
+)
 
 from PyQt6 import QtCore
 
@@ -335,11 +338,73 @@ class MetadataItem(QtCore.QObject, Item):
         return require_authentication
 
 
+class ListOfMetadataItems(UserList):
+    """
+    UserList with length attribute equals to the sum of items metadata lengths.
+    """
+    def __init__(self, initlist=None):
+        self._dirty = True
+        super().__init__(initlist)
+
+    def __setitem__(self, i, item):
+        self._dirty = True
+        super().__setitem__(i, item)
+
+    def __delitem__(self, i):
+        self._dirty = True
+        super().__delitem__(i)
+
+    def __copy__(self):
+        self._dirty = True
+        return super().__copy__()
+
+    def append(self, item):
+        self._dirty = True
+        super().append(item)
+
+    def insert(self, i, item):
+        self._dirty = True
+        super().insert(i, item)
+
+    def pop(self, i=-1):
+        self._dirty = True
+        return super().pop(i)
+
+    def remove(self, item):
+        self._dirty = True
+        super().remove(item)
+
+    def clear(self):
+        self._dirty = True
+        super().clear()
+
+    def extend(self, other):
+        self._dirty = True
+        super().extend(other)
+
+    def __iadd__(self, other):  # For += operator
+        self._dirty = True
+        super().__iadd__(other)
+        return self  # In-place operations should return self
+
+    def __imul__(self, other):  # For *= operator
+        self._dirty = True
+        super().__imul__(other)
+        return self  # In-place operations should return self
+
+    @property
+    def length(self):
+        if self._dirty:
+            self._length = sum(item.metadata.length for item in self.data)
+            self._dirty = False
+        return self._length
+
+
 class FileListItem(MetadataItem):
 
     def __init__(self, obj_id=None, files=None):
         super().__init__(obj_id)
-        self.files = files or []
+        self.files = ListOfMetadataItems(files or [])
         self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}
 
     def iterfiles(self, save=False):

@@ -133,7 +133,6 @@ class Cluster(FileList):
         if not added_files:
             return
         for file in added_files:
-            self.metadata.length += file.metadata.length
             file._move(self)
             file.update(signal=False)
             if self.can_show_coverart:
@@ -152,7 +151,6 @@ class Cluster(FileList):
 
     def remove_file(self, file, new_album=True):
         self.tagger.window.set_processing(True)
-        self.metadata.length -= file.metadata.length
         self.files.remove(file)
         self.update(signal=False)
         self.ui_item.remove_file(file)
@@ -223,7 +221,7 @@ class Cluster(FileList):
         elif self.special and column in {'~length', 'album', 'covercount'}:
             return ''
         elif column == '~length':
-            return format_time(self.metadata.length)
+            return format_time(self.files.length)
         elif column == 'artist':
             return self.metadata['albumartist']
         elif column == 'tracknumber':
