@@ -378,14 +378,6 @@ class ListOfMetadataItems(UserList):
         self.set_dirty()
         super().clear()
 
-    def reverse(self):
-        self.set_dirty()
-        super().reverse()
-
-    def sort(self, /, *args, **kwds):
-        self.set_dirty()
-        super().sort(*args, **kwds)
-
     def extend(self, other):
         self.set_dirty()
         super().extend(other)
