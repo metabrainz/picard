@@ -390,6 +390,16 @@ class ListOfMetadataItems(UserList):
         self.set_dirty()
         super().extend(other)
 
+    def __iadd__(self, other):  # For += operator
+        self.set_dirty()
+        super().__iadd__(other)
+        return self  # In-place operations should return self
+
+    def __imul__(self, other):  # For *= operator
+        self.set_dirty()
+        super().__imul__(other)
+        return self  # In-place operations should return self
+
     def set_dirty(self, dirty=True):
         # log.debug("Dirty %r: %r", self, dirty)
         self._dirty = dirty
