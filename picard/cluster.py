@@ -221,7 +221,7 @@ class Cluster(FileList):
         elif self.special and column in {'~length', 'album', 'covercount'}:
             return ''
         elif column == '~length':
-            return format_time(sum(f.metadata.length for f in self.files))
+            return format_time(self.files.length)
         elif column == 'artist':
             return self.metadata['albumartist']
         elif column == 'tracknumber':
