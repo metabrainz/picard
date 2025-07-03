@@ -4,8 +4,8 @@
 #
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2018, 2020-2021 Laurent Monin
-# Copyright (C) 2019, 2022 Philipp Wolfer
+# Copyright (C) 2018, 2020-2022 Laurent Monin
+# Copyright (C) 2019, 2022, 2024-2025 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@ from urllib.parse import (
 
 from test.picardtestcase import PicardTestCase
 
+from picard.browser.browser import clean_header
 from picard.browser.filelookup import FileLookup
 from picard.util import webbrowser2
 
@@ -250,3 +251,10 @@ class BrowserLookupTest(PicardTestCase):
                 'tport': '8000',
             }
             self.assert_mb_url_matches(url, '/search/textsearch', query_args)
+
+
+class BrowserIntegrationTest(PicardTestCase):
+
+    def test_clean_header(self):
+        bad_header = "foo\nSome-Header: bar"
+        self.assertEqual("fooSome-Header bar", clean_header(bad_header))

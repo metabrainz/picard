@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
-# Copyright (C) 2012-2013, 2018, 2021-2022, 2024 Philipp Wolfer
+# Copyright (C) 2012-2013, 2018, 2021-2022, 2024-2025 Philipp Wolfer
 # Copyright (C) 2013, 2018, 2020-2021, 2024 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -148,7 +148,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         origin = self.headers['origin']
         if _is_valid_origin(origin):
             self.send_response(204)
-            self.send_header('Access-Control-Allow-Origin', origin)
+            self.send_header('Access-Control-Allow-Origin', clean_header(origin))
             self.send_header('Access-Control-Allow-Methods', 'GET')
             self.send_header('Access-Control-Allow-Credentials', 'false')
             self.send_header('Access-Control-Allow-Private-Network', 'true')
@@ -240,7 +240,11 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.send_header('Cache-Control', 'max-age=0')
         origin = self.headers['origin']
         if _is_valid_origin(origin):
-            self.send_header('Access-Control-Allow-Origin', origin)
+            self.send_header('Access-Control-Allow-Origin', clean_header(origin))
             self.send_header('Vary', 'Origin')
         self.end_headers()
         self.wfile.write(content.encode())
+
+
+def clean_header(header):
+    return re.sub("[\r\n:]", "", header)
