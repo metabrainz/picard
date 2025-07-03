@@ -343,65 +343,60 @@ class ListOfMetadataItems(UserList):
     UserList with length attribute equals to the sum of items metadata lengths.
     """
     def __init__(self, initlist=None):
-        self.set_dirty()
+        self._dirty = True
         super().__init__(initlist)
 
     def __setitem__(self, i, item):
-        self.set_dirty()
+        self._dirty = True
         super().__setitem__(i, item)
 
     def __delitem__(self, i):
-        self.set_dirty()
+        self._dirty = True
         super().__delitem__(i)
 
     def __copy__(self):
-        self.set_dirty()
+        self._dirty = True
         return super().__copy__()
 
     def append(self, item):
-        self.set_dirty()
+        self._dirty = True
         super().append(item)
 
     def insert(self, i, item):
-        self.set_dirty()
+        self._dirty = True
         super().insert(i, item)
 
     def pop(self, i=-1):
-        self.set_dirty()
+        self._dirty = True
         return super().pop(i)
 
     def remove(self, item):
-        self.set_dirty()
+        self._dirty = True
         super().remove(item)
 
     def clear(self):
-        self.set_dirty()
+        self._dirty = True
         super().clear()
 
     def extend(self, other):
-        self.set_dirty()
+        self._dirty = True
         super().extend(other)
 
     def __iadd__(self, other):  # For += operator
-        self.set_dirty()
+        self._dirty = True
         super().__iadd__(other)
         return self  # In-place operations should return self
 
     def __imul__(self, other):  # For *= operator
-        self.set_dirty()
+        self._dirty = True
         super().__imul__(other)
         return self  # In-place operations should return self
-
-    def set_dirty(self, dirty=True):
-        # log.debug("Dirty %r: %r", self, dirty)
-        self._dirty = dirty
 
     @property
     def length(self):
         if self._dirty:
             self._length = sum(item.metadata.length for item in self.data)
-            self.set_dirty(False)
-        # log.debug("Length of %r: %r", self, self._length)
+            self._dirty = False
         return self._length
 
 
