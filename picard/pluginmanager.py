@@ -333,6 +333,15 @@ class PluginManager(QtCore.QObject):
                     del sys.modules[full_module_name]
                     raise
 
+                # --- BEGIN: Verbesserte Logging-Ausgaben für Plugin-Entwickler ---
+                required_attrs = ["PLUGIN_NAME", "PLUGIN_API_VERSIONS"]
+                for attr in required_attrs:
+                    if not hasattr(plugin_module, attr):
+                        log.error(f"[pluginmanager] Plugin {name} missing required attribute: {attr}")
+                    else:
+                        log.info(f"[pluginmanager] Plugin {name} has attribute: {attr} = {getattr(plugin_module, attr)}")
+                # --- END: Verbesserte Logging-Ausgaben ---
+
             plugin = PluginWrapper(plugin_module, plugin_dir,
                                    file=module_pathname, manifest_data=manifest_data)
             compatible_versions = _compatible_api_versions(plugin.api_versions)
@@ -342,6 +351,7 @@ class PluginManager(QtCore.QObject):
                           plugin.version,
                           ", ".join([v.short_str() for v in
                                      sorted(compatible_versions)]))
+                log.info(f"[pluginmanager] Successfully loaded plugin: {plugin.name} (version {plugin.version})")
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)
                 if existing_plugin:
@@ -349,6 +359,7 @@ class PluginManager(QtCore.QObject):
                 else:
                     self.plugins.append(plugin)
             else:
+                log.error(f"[pluginmanager] Plugin {plugin.name} is not compatible with API version(s) {getattr(plugin_module, 'PLUGIN_API_VERSIONS', None)}. Picard supports: {picard.api_versions_tuple}")
                 errorfmt = _('Plugin "%(plugin)s" from "%(filename)s" is not '
                              'compatible with this version of Picard.')
                 params = {'plugin': plugin.name, 'filename': plugin.file}
