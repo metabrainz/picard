@@ -150,6 +150,7 @@ from picard.ui.util import (
     find_starting_directory,
     menu_builder,
 )
+from picard.ui.theme import AVAILABLE_UI_THEMES, UiTheme, setup as setup_theme
 
 
 SuspendWhileLoadingFuncs = namedtuple('SuspendWhileLoadingFuncs', ('on_enter', 'on_exit'))
@@ -338,10 +339,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.metadata_box.restore_state()
 
     def showEvent(self, event):
+        super().showEvent(event)
+        # Theme beim Start anwenden
+        setup_theme(QtWidgets.QApplication.instance())
         if not self.__shown:
             self.ready_for_display.emit()
             self.__shown = True
-        super().showEvent(event)
 
     def closeEvent(self, event):
         config = get_config()
@@ -609,6 +612,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         config.setting['dont_write_tags'] = not checked
 
+    def toggle_watch_folders(self, checked):
+        """Startet oder stoppt die Ordnerüberwachung per Toolbar-Schalter."""
+        if not hasattr(self.tagger, 'watchfolders') or self.tagger.watchfolders is None:
+            return
+        if checked:
+            self.tagger.watchfolders.start()
+            log.info("WatchFolder: gestartet")
+        else:
+            self.tagger.watchfolders.stop()
+            log.info("WatchFolder: gestoppt")
+
     def _reset_option_menu_state(self):
         config = get_config()
         self.actions[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
@@ -682,8 +696,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
         self._make_profile_selector_menu()
 
-        add_menu(
-            _("&Options"),
+        # Optionen-Menü
+        options_menu = self.menuBar().addMenu(_("&Options"))
+        menu_builder(options_menu, self.actions,
             MainAction.ENABLE_RENAMING,
             MainAction.ENABLE_MOVING,
             MainAction.ENABLE_TAG_SAVING,
@@ -695,6 +710,21 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.OPTIONS,
         )
+        # Theme-Umschalter als Untermenü
+        theme_menu = options_menu.addMenu(_("Theme"))
+        self.theme_action_group = QtGui.QActionGroup(self)
+        self.theme_action_group.setExclusive(True)
+        config = get_config()
+        current_theme = config.setting['ui_theme']
+        for theme in AVAILABLE_UI_THEMES:
+            label = str(theme).capitalize()
+            action = QtGui.QAction(label, self, checkable=True)
+            action.setData(str(theme))
+            if str(theme) == current_theme:
+                action.setChecked(True)
+            self.theme_action_group.addAction(action)
+            theme_menu.addAction(action)
+        self.theme_action_group.triggered.connect(self._on_theme_selected)
 
         add_menu(
             _("&Tools"),
@@ -1673,6 +1703,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_filter_bars(self):
         show_state = self.action_is_checked(MainAction.SHOW_FILTERBAR)
         self.panel.show_filter_bars(show_state)
+
+    def _on_theme_selected(self, action):
+        theme = action.data()
+        config = get_config()
+        if config.setting['ui_theme'] != theme:
+            config.setting['ui_theme'] = theme
+            setup_theme(QtWidgets.QApplication.instance())
 
 
 def update_last_check_date(is_success):

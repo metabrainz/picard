@@ -229,6 +229,8 @@ BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan a
 BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates during startup"))
 BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates during startup"))
 BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files"))
+BoolOption('setting', 'autotag_new_files', False, title=N_("Automatically tag all new files"))
+BoolOption('setting', 'show_tag_suggestions', True, title=N_("Show tag suggestions"))
 BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files"))
 TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address"))
 IntOption('setting', 'server_port', 443, title=N_("Port"))
@@ -438,6 +440,13 @@ TextOption('persist', 'tags_from_filenames_format', '')
 #
 BoolOption('persist', 'script_editor_tooltips', True)
 BoolOption('persist', 'script_editor_wordwrap', False)
+
+# picard/ui/options/watch_folders.py
+# Watch Folders
+ListOption('setting', 'watch_folders_paths', [], title=N_("Watch folders paths"))
+BoolOption('setting', 'watch_folders_autostart', True, title=N_("Start watch folders on startup"))
+BoolOption('setting', 'watch_folders_auto_tag', True, title=N_("Automatically tag new files in watch folders"))
+BoolOption('setting', 'watch_folders_auto_save', False, title=N_("Automatically save after tagging files from watch folders"))
 
 
 def init_options():

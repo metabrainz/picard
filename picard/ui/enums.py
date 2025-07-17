@@ -105,3 +105,4 @@ class MainAction(str, Enum):
     VIEW_HISTORY = 'view_history_action'
     VIEW_INFO = 'view_info_action'
     VIEW_LOG = 'view_log_action'
+    WATCH_FOLDERS_TOGGLE = 'watch_folders_toggle_action'

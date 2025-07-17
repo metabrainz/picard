@@ -503,6 +503,18 @@ def _create_view_log_action(parent):
     return action
 
 
+# Watch Folders Toggle ---------------------------------------------------------
+
+@add_action(MainAction.WATCH_FOLDERS_TOGGLE)
+def _create_watch_folders_toggle_action(parent):
+    action = QtGui.QAction(icontheme.lookup('folder-sync'), _("&Watch Folders"), parent)
+    action.setCheckable(True)
+    action.setChecked(True)
+    action.setStatusTip(_("Start/Stop automatic folder monitoring"))
+    action.triggered.connect(parent.toggle_watch_folders)
+    return action
+
+
 @add_action(MainAction.VIEW_HISTORY)
 def _create_view_history_action(parent):
     action = QtGui.QAction(_("View Activity &History"), parent)

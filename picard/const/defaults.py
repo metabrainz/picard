@@ -117,6 +117,7 @@ DEFAULT_TOOLBAR_LAYOUT = (
     MainAction.BROWSER_LOOKUP,
     '-',
     MainAction.SAVE,
+    MainAction.WATCH_FOLDERS_TOGGLE,
     MainAction.VIEW_INFO,
     MainAction.REMOVE,
     '-',
