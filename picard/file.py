@@ -964,6 +964,10 @@ file_post_save_processors = PluginFunctions(label='file_post_save_processors')
 
 
 def run_file_post_load_processors(file_object):
+    import logging
+    logging.basicConfig(filename='/home/tobber/picard_file_hook_debug.log', level=logging.DEBUG)
+    logging.debug(f"run_file_post_load_processors aufgerufen für: {file_object}")
+    logging.debug(f"Registrierte file_post_load_processors: {file_post_load_processors.functions}")
     file_post_load_processors.run(file_object)
 
 

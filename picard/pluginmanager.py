@@ -24,7 +24,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+import picard
 from functools import partial
 import importlib
 from importlib.abc import MetaPathFinder
@@ -274,7 +274,7 @@ class PluginManager(QtCore.QObject):
                   len(names))
         for name in sorted(names):
             try:
-                self._load_plugin(name)
+                self._load_plugin2(name)
             except Exception:
                 self.plugin_error(name, _("Unable to load plugin '%s'"), name, log_func=log.exception)
 
@@ -284,7 +284,8 @@ class PluginManager(QtCore.QObject):
                 return (plugin, index)
         return (None, None)
 
-    def _load_plugin(self, name):
+    def _load_plugin2(self, name):
+        global picard
         existing_plugin, existing_plugin_index = self._get_plugin_index_by_name(name)
         if existing_plugin:
             log.debug("Ignoring already loaded plugin %r (version %r at %r)",
@@ -342,6 +343,23 @@ class PluginManager(QtCore.QObject):
                         log.info(f"[pluginmanager] Plugin {name} has attribute: {attr} = {getattr(plugin_module, attr)}")
                 # --- END: Verbesserte Logging-Ausgaben ---
 
+                # --- BEGIN: Hook-Übersicht und Warnungen ---
+                KNOWN_HOOKS = [
+                    "file_post_load_processor",
+                    "track_metadata_processor",
+                    "album_metadata_processor",
+                    "register_file_post_load_processor",
+                    "register_track_metadata_processor",
+                    "register_album_metadata_processor",
+                    # ggf. weitere bekannte Hooks ergänzen
+                ]
+                found_hooks = [hook for hook in KNOWN_HOOKS if hasattr(plugin_module, hook)]
+                if found_hooks:
+                    log.info(f"[pluginmanager] Plugin {name} registriert folgende Hooks: {found_hooks}")
+                else:
+                    log.warning(f"[pluginmanager] Plugin {name} stellt keine bekannten Hooks für Picard 3.x bereit. Das Plugin wird wahrscheinlich nicht ausgeführt.")
+                # --- END: Hook-Übersicht und Warnungen ---
+
             plugin = PluginWrapper(plugin_module, plugin_dir,
                                    file=module_pathname, manifest_data=manifest_data)
             compatible_versions = _compatible_api_versions(plugin.api_versions)
@@ -358,6 +376,28 @@ class PluginManager(QtCore.QObject):
                     self.plugins[existing_plugin_index] = plugin
                 else:
                     self.plugins.append(plugin)
+                # --- BEGIN: Workaround: Hook-Registrierungsfunktionen explizit aufrufen ---
+                # Versuche, alle bekannten Hook-Registrierungsfunktionen aufzurufen
+                tagger_instance = None
+                try:
+                    import picard.tagger
+                    tagger_instance = picard.tagger.Tagger.instance() if hasattr(picard.tagger.Tagger, 'instance') else None
+                except Exception as e:
+                    log.error(f"[pluginmanager] Fehler beim Zugriff auf Tagger-Instanz: {e}")
+                for hook_func in [
+                    'register_file_post_load_processor',
+                    'register_album_metadata_processor',
+                    'register_file_post_save_processor',
+                    'register_track_metadata_processor',
+                    'register_album_post_removal_processor',
+                ]:
+                    if hasattr(plugin_module, hook_func):
+                        try:
+                            getattr(plugin_module, hook_func)(tagger_instance)
+                            log.info(f"[pluginmanager] Workaround: {hook_func} im Plugin {name} explizit aufgerufen.")
+                        except Exception as e:
+                            log.error(f"[pluginmanager] Fehler beim expliziten Aufruf von {hook_func} in Plugin {name}: {e}")
+                # --- END: Workaround ---
             else:
                 log.error(f"[pluginmanager] Plugin {plugin.name} is not compatible with API version(s) {getattr(plugin_module, 'PLUGIN_API_VERSIONS', None)}. Picard supports: {picard.api_versions_tuple}")
                 errorfmt = _('Plugin "%(plugin)s" from "%(filename)s" is not '
@@ -481,7 +521,7 @@ class PluginManager(QtCore.QObject):
 
             if not update:
                 try:
-                    installed_plugin = self._load_plugin(plugin_name)
+                    installed_plugin = self._load_plugin2(plugin_name)
                     if not installed_plugin:
                         raise RuntimeError("Failed loading newly installed plugin %s" % plugin_name)
                 except Exception as e:

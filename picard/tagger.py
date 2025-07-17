@@ -350,6 +350,9 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_plugins(self):
         """Initialize and load plugins"""
+        import logging
+        logging.basicConfig(filename='/home/tobber/picard_startup_debug.log', level=logging.DEBUG)
+        logging.debug("_init_plugins wird ausgeführt")
         self.pluginmanager = PluginManager()
         if not self._no_plugins:
             for plugin_dir in plugin_dirs():
@@ -363,6 +366,9 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_tagger_entities(self):
         """Initialize tagger objects/entities"""
+        import logging
+        logging.basicConfig(filename='/home/tobber/picard_startup_debug.log', level=logging.DEBUG)
+        logging.debug("_init_tagger_entities wird ausgeführt")
         self._pending_files_count = 0
         self.files = {}
         self.clusters = ClusterList()
@@ -744,6 +750,9 @@ class Tagger(QtWidgets.QApplication):
 
     def add_files(self, filenames, target=None):
         """Add files to the tagger."""
+        import logging
+        logging.basicConfig(filename='/home/tobber/picard_startup_debug.log', level=logging.DEBUG)
+        logging.debug(f"add_files wird aufgerufen mit: {filenames}")
         ignoreregex = None
         config = get_config()
         pattern = config.setting['ignore_regex']
