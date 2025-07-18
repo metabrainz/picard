@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import logging
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
@@ -30,36 +31,61 @@ from picard.ui.options import OptionsPage
 
 
 class RatingsOptionsPage(OptionsPage):
+    """
+    Options page for configuring ratings in Picard.
+    Provides UI and logic for rating-related settings.
+    """
 
-    NAME = 'ratings'
-    TITLE = N_("Ratings")
-    PARENT = 'metadata'
-    SORT_ORDER = 20
-    ACTIVE = True
-    HELP_URL = "/config/options_ratings.html"
+    NAME: str = 'ratings'
+    TITLE: str = N_("Ratings")
+    PARENT: str = 'metadata'
+    SORT_ORDER: int = 20
+    ACTIVE: bool = True
+    HELP_URL: str = "/config/options_ratings.html"
 
-    OPTIONS = (
+    OPTIONS: tuple[tuple[str, list[str]], ...] = (
         ('enable_ratings', ['enable_ratings']),
         ('rating_user_email', ['rating_user_email']),
         ('submit_ratings', ['submit_ratings']),
     )
 
-    def __init__(self, parent=None):
+    ui: Ui_RatingsOptionsPage
+    logger: logging.Logger
+
+    def __init__(self, parent: object = None) -> None:
+        """
+        Initialize the RatingsOptionsPage, set up the UI and connect logic.
+        :param parent: The parent widget.
+        Sets up logging for this options page.
+        """
         super().__init__(parent=parent)
         self.ui = Ui_RatingsOptionsPage()
         self.ui.setupUi(self)
+        self.logger = logging.getLogger("picard.ui.options.ratings")
 
-    def load(self):
-        config = get_config()
-        self.ui.enable_ratings.setChecked(config.setting['enable_ratings'])
-        self.ui.rating_user_email.setText(config.setting['rating_user_email'])
-        self.ui.submit_ratings.setChecked(config.setting['submit_ratings'])
+    def load(self: "RatingsOptionsPage") -> None:
+        """
+        Load current ratings settings from the configuration and update the UI accordingly. Logs errors.
+        """
+        try:
+            config = get_config()
+            self.ui.enable_ratings.setChecked(config.setting.get('enable_ratings', False))
+            self.ui.rating_user_email.setText(config.setting.get('rating_user_email', ""))
+            self.ui.submit_ratings.setChecked(config.setting.get('submit_ratings', False))
+        except Exception as e:
+            self.logger.error(f"Error loading ratings options: {e}")
 
-    def save(self):
-        config = get_config()
-        config.setting['enable_ratings'] = self.ui.enable_ratings.isChecked()
-        config.setting['rating_user_email'] = self.ui.rating_user_email.text()
-        config.setting['submit_ratings'] = self.ui.submit_ratings.isChecked()
+    def save(self: "RatingsOptionsPage") -> None:
+        """
+        Save the current ratings settings from the UI to the configuration. Logs errors.
+        """
+        try:
+            config = get_config()
+            config.setting['enable_ratings'] = self.ui.enable_ratings.isChecked()
+            config.setting['rating_user_email'] = self.ui.rating_user_email.text()
+            config.setting['submit_ratings'] = self.ui.submit_ratings.isChecked()
+        except Exception as e:
+            self.logger.error(f"Error saving ratings options: {e}")
 
 
 register_options_page(RatingsOptionsPage)

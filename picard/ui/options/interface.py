@@ -30,6 +30,7 @@
 
 
 import os.path
+import logging
 
 from PyQt6 import (
     QtCore,
@@ -60,15 +61,19 @@ from picard.ui.util import (
 
 
 class InterfaceOptionsPage(OptionsPage):
+    """
+    Options page for configuring the user interface in Picard.
+    Provides UI and logic for interface-related settings.
+    """
 
-    NAME = 'interface'
-    TITLE = N_("User Interface")
-    PARENT = None
-    SORT_ORDER = 80
-    ACTIVE = True
-    HELP_URL = "/config/options_interface.html"
+    NAME: str = 'interface'
+    TITLE: str = N_("User Interface")
+    PARENT: None = None
+    SORT_ORDER: int = 80
+    ACTIVE: bool = True
+    HELP_URL: str = "/config/options_interface.html"
 
-    OPTIONS = (
+    OPTIONS: tuple[tuple[str, list[str]], ...] = (
         ('toolbar_show_labels', ['toolbar_show_labels']),
         ('show_menu_icons', ['show_menu_icons']),
         ('ui_language', ['ui_language']),
@@ -84,30 +89,20 @@ class InterfaceOptionsPage(OptionsPage):
         ('starting_directory_path', ['starting_directory_path']),
     )
 
-    # Those are labels for theme display
-    _UI_THEME_LABELS = {
-        UiTheme.DEFAULT: {
-            'label': N_("Default"),
-            'desc': N_("The default color scheme based on the operating system display settings"),
-        },
-        UiTheme.DARK: {
-            'label': N_("Dark"),
-            'desc': N_("A dark display theme"),
-        },
-        UiTheme.LIGHT: {
-            'label': N_("Light"),
-            'desc': N_("A light display theme"),
-        },
-        UiTheme.SYSTEM: {
-            'label': N_("System"),
-            'desc': N_("The Qt6 theme configured in the desktop environment"),
-        },
-    }
+    ui: Ui_InterfaceOptionsPage
+    _UI_THEME_LABELS: dict[UiTheme, dict[str, str]]
+    logger: logging.Logger
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
+        """
+        Initialize the InterfaceOptionsPage, set up the UI and connect logic.
+        :param parent: The parent widget (optional).
+        Sets up logging for this options page.
+        """
         super().__init__(parent=parent)
         self.ui = Ui_InterfaceOptionsPage()
         self.ui.setupUi(self)
+        self.logger = logging.getLogger("picard.ui.options.interface")
 
         self.ui.ui_theme.clear()
         for theme in AVAILABLE_UI_THEMES:
@@ -121,8 +116,14 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.ui_language.addItem(_("System default"), '')
         language_list = [(lang[0], lang[1], gettext_constants(lang[2])) for lang in UI_LANGUAGES]
 
-        def fcmp(x):
+        def fcmp(x: tuple[str, str, str]) -> str:
+            """
+            Sort key for language list.
+            :param x: Tuple containing language code, native name, and translation.
+            :return: Sort key string.
+            """
             return sort_key(x[2])
+        # Add all available UI languages to the dropdown, sorted by translation name
         for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = '%s (%s)' % (translation, native)
@@ -142,65 +143,80 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
-    def load(self):
-        # Don't display the multi-selection warning when loading values.
-        # This is required because loading a different option profile could trigger the warning.
+    def load(self: "InterfaceOptionsPage") -> None:
+        """
+        Load current interface settings from the configuration and update the UI accordingly.
+        Adds error handling for config access and logs errors.
+        """
         self.ui.allow_multi_dirs_selection.blockSignals(True)
+        try:
+            config = get_config()
+            self.ui.toolbar_show_labels.setChecked(config.setting.get('toolbar_show_labels', True))
+            self.ui.allow_multi_dirs_selection.setChecked(config.setting.get('allow_multi_dirs_selection', False))
+            self.ui.show_menu_icons.setChecked(config.setting.get('show_menu_icons', True))
+            self.ui.builtin_search.setChecked(config.setting.get('builtin_search', True))
+            self.ui.use_adv_search_syntax.setChecked(config.setting.get('use_adv_search_syntax', False))
+            self.ui.new_user_dialog.setChecked(config.setting.get('show_new_user_dialog', True))
+            self.ui.quit_confirmation.setChecked(config.setting.get('quit_confirmation', True))
+            self.ui.file_save_warning.setChecked(config.setting.get('file_save_warning', True))
+            current_ui_language = config.setting.get('ui_language', '')
+            self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
+            self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting.get('filebrowser_horizontal_autoscroll', False))
+            self.ui.starting_directory.setChecked(config.setting.get('starting_directory', False))
+            self.ui.starting_directory_path.setText(config.setting.get('starting_directory_path', ''))
+            current_theme = UiTheme(config.setting.get('ui_theme', str(UiTheme.DEFAULT)))
+            self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
+        except Exception as e:
+            self.logger.error(f"Error loading interface options: {e}")
+        finally:
+            self.ui.allow_multi_dirs_selection.blockSignals(False)
 
-        config = get_config()
-        self.ui.toolbar_show_labels.setChecked(config.setting['toolbar_show_labels'])
-        self.ui.allow_multi_dirs_selection.setChecked(config.setting['allow_multi_dirs_selection'])
-        self.ui.show_menu_icons.setChecked(config.setting['show_menu_icons'])
-        self.ui.builtin_search.setChecked(config.setting['builtin_search'])
-        self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
-        self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
-        self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
-        self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
-        current_ui_language = config.setting['ui_language']
-        self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
-        self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
-        self.ui.starting_directory.setChecked(config.setting['starting_directory'])
-        self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
-        current_theme = UiTheme(config.setting['ui_theme'])
-        self.ui.ui_theme.setCurrentIndex(self.ui.ui_theme.findData(current_theme))
+    def save(self: "InterfaceOptionsPage") -> None:
+        """
+        Save the current interface settings from the UI to the configuration.
+        Adds error handling and logs theme/language changes and errors.
+        """
+        try:
+            config = get_config()
+            config.setting['toolbar_show_labels'] = self.ui.toolbar_show_labels.isChecked()
+            config.setting['allow_multi_dirs_selection'] = self.ui.allow_multi_dirs_selection.isChecked()
+            config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
+            self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
+            config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
+            config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
+            config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
+            config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
+            config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
+            self.tagger.window.update_toolbar_style()
+            new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
+            new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
+            warnings = []
+            notes = []
+            if new_theme_setting != config.setting.get('ui_theme', str(UiTheme.DEFAULT)):
+                self.logger.info(f"Theme changed: {config.setting.get('ui_theme')} -> {new_theme_setting}")
+                warnings.append(_("You have changed the application theme."))
+                if new_theme_setting == str(UiTheme.SYSTEM):
+                    notes.append(_(
+                        'Please note that using the system theme might cause the user interface to be not shown correctly. '
+                        'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
+                    ))
+                config.setting['ui_theme'] = new_theme_setting
+            if new_language != config.setting.get('ui_language', ''):
+                self.logger.info(f"Interface language changed: {config.setting.get('ui_language')} -> {new_language}")
+                config.setting['ui_language'] = new_language
+                warnings.append(_("You have changed the interface language."))
+            changes_require_restart_warning(self, warnings=warnings, notes=notes)
 
-        # re-enable the multi-selection warning
-        self.ui.allow_multi_dirs_selection.blockSignals(False)
+            config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
+            config.setting['starting_directory'] = self.ui.starting_directory.isChecked()
+            config.setting['starting_directory_path'] = os.path.normpath(self.ui.starting_directory_path.text())
+        except Exception as e:
+            self.logger.error(f"Error saving interface options: {e}")
 
-    def save(self):
-        config = get_config()
-        config.setting['toolbar_show_labels'] = self.ui.toolbar_show_labels.isChecked()
-        config.setting['allow_multi_dirs_selection'] = self.ui.allow_multi_dirs_selection.isChecked()
-        config.setting['show_menu_icons'] = self.ui.show_menu_icons.isChecked()
-        self.tagger.enable_menu_icons(config.setting['show_menu_icons'])
-        config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
-        config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
-        config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
-        config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
-        config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
-        self.tagger.window.update_toolbar_style()
-        new_theme_setting = str(self.ui.ui_theme.itemData(self.ui.ui_theme.currentIndex()))
-        new_language = self.ui.ui_language.itemData(self.ui.ui_language.currentIndex())
-        warnings = []
-        notes = []
-        if new_theme_setting != config.setting['ui_theme']:
-            warnings.append(_("You have changed the application theme."))
-            if new_theme_setting == str(UiTheme.SYSTEM):
-                notes.append(_(
-                    'Please note that using the system theme might cause the user interface to be not shown correctly. '
-                    'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
-                ))
-            config.setting['ui_theme'] = new_theme_setting
-        if new_language != config.setting['ui_language']:
-            config.setting['ui_language'] = new_language
-            warnings.append(_("You have changed the interface language."))
-        changes_require_restart_warning(self, warnings=warnings, notes=notes)
-
-        config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
-        config.setting['starting_directory'] = self.ui.starting_directory.isChecked()
-        config.setting['starting_directory_path'] = os.path.normpath(self.ui.starting_directory_path.text())
-
-    def starting_directory_browse(self):
+    def starting_directory_browse(self: "InterfaceOptionsPage") -> None:
+        """
+        Open a dialog to select the starting directory and update the UI field. Logs the selected path or cancellation.
+        """
         item = self.ui.starting_directory_path
         path = FileDialog.getExistingDirectory(
             parent=self,
@@ -209,8 +225,14 @@ class InterfaceOptionsPage(OptionsPage):
         if path:
             path = os.path.normpath(path)
             item.setText(path)
+            self.logger.info(f"Starting directory selected: {path}")
+        else:
+            self.logger.info("Starting directory selection cancelled.")
 
-    def multi_selection_warning(self):
+    def multi_selection_warning(self: "InterfaceOptionsPage") -> None:
+        """
+        Show a warning dialog when enabling multiple directory selection. Logs user response.
+        """
         if not self.ui.allow_multi_dirs_selection.isChecked():
             return
 
@@ -224,8 +246,12 @@ class InterfaceOptionsPage(OptionsPage):
             ),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             self)
-        if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
+        result = dialog.exec()
+        if result == QtWidgets.QMessageBox.StandardButton.No:
             self.ui.allow_multi_dirs_selection.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            self.logger.info("User cancelled enabling multiple directory selection.")
+        else:
+            self.logger.info("User confirmed enabling multiple directory selection.")
 
 
 register_options_page(InterfaceOptionsPage)

@@ -22,6 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import logging
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import (
     QTextBlockFormat,
@@ -79,15 +80,19 @@ Green background means the tag will be kept.
 
 
 class GenresOptionsPage(OptionsPage):
+    """
+    Options page for configuring genre handling in Picard.
+    Provides UI and logic for genre-related settings and filtering.
+    """
 
-    NAME = 'genres'
-    TITLE = N_("Genres")
-    PARENT = 'metadata'
-    SORT_ORDER = 20
-    ACTIVE = True
-    HELP_URL = "/config/options_genres.html"
+    NAME: str = 'genres'
+    TITLE: str = N_("Genres")
+    PARENT: str = 'metadata'
+    SORT_ORDER: int = 20
+    ACTIVE: bool = True
+    HELP_URL: str = "/config/options_genres.html"
 
-    OPTIONS = (
+    OPTIONS: tuple[tuple[str, list[str] | None], ...] = (
         ('use_genres', None),
         ('only_my_genres', ['only_my_genres']),
         ('artists_genres', ['artists_genres']),
@@ -98,10 +103,22 @@ class GenresOptionsPage(OptionsPage):
         ('genres_filter', ['genres_filter']),
     )
 
-    def __init__(self, parent=None):
+    ui: Ui_GenresOptionsPage
+    fmt_keep: QTextBlockFormat
+    fmt_skip: QTextBlockFormat
+    fmt_clear: QTextBlockFormat
+    logger: logging.Logger
+
+    def __init__(self, parent: object = None) -> None:
+        """
+        Initialize the GenresOptionsPage, set up the UI and connect logic.
+        :param parent: The parent widget.
+        Sets up logging for this options page.
+        """
         super().__init__(parent=parent)
         self.ui = Ui_GenresOptionsPage()
         self.ui.setupUi(self)
+        self.logger = logging.getLogger("picard.ui.options.genres")
 
         self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
         self.ui.genres_filter.textChanged.connect(self.update_test_genres_filter)
@@ -109,7 +126,7 @@ class GenresOptionsPage(OptionsPage):
         self.ui.test_genres_filter.setToolTip(_(TOOLTIP_TEST_GENRES_FILTER))
         self.ui.test_genres_filter.textChanged.connect(self.update_test_genres_filter)
 
-        # FIXME: colors aren't great from accessibility POV
+        # Accessibility: color feedback for filter results
         self.fmt_keep = QTextBlockFormat()
         self.fmt_keep.setBackground(Qt.GlobalColor.green)
 
@@ -119,60 +136,83 @@ class GenresOptionsPage(OptionsPage):
         self.fmt_clear = QTextBlockFormat()
         self.fmt_clear.clearBackground()
 
-    def load(self):
-        config = get_config()
-        self.ui.use_genres.setChecked(config.setting['use_genres'])
-        self.ui.max_genres.setValue(config.setting["max_genres"])
-        self.ui.min_genre_usage.setValue(config.setting["min_genre_usage"])
-        self.ui.join_genres.setEditText(config.setting["join_genres"])
-        self.ui.genres_filter.setPlainText(config.setting["genres_filter"])
-        self.ui.only_my_genres.setChecked(config.setting["only_my_genres"])
-        self.ui.artists_genres.setChecked(config.setting["artists_genres"])
-        self.ui.folksonomy_tags.setChecked(config.setting["folksonomy_tags"])
+    def load(self: "GenresOptionsPage") -> None:
+        """
+        Load current genre settings from the configuration and update the UI accordingly. Logs errors.
+        """
+        try:
+            config = get_config()
+            self.ui.use_genres.setChecked(config.setting.get('use_genres', False))
+            self.ui.max_genres.setValue(config.setting.get("max_genres", 0))
+            self.ui.min_genre_usage.setValue(config.setting.get("min_genre_usage", 0))
+            self.ui.join_genres.setEditText(config.setting.get("join_genres", ""))
+            self.ui.genres_filter.setPlainText(config.setting.get("genres_filter", ""))
+            self.ui.only_my_genres.setChecked(config.setting.get("only_my_genres", False))
+            self.ui.artists_genres.setChecked(config.setting.get("artists_genres", False))
+            self.ui.folksonomy_tags.setChecked(config.setting.get("folksonomy_tags", False))
+        except Exception as e:
+            self.logger.error(f"Error loading genre options: {e}")
 
-    def save(self):
-        config = get_config()
-        config.setting['use_genres'] = self.ui.use_genres.isChecked()
-        config.setting['max_genres'] = self.ui.max_genres.value()
-        config.setting['min_genre_usage'] = self.ui.min_genre_usage.value()
-        config.setting['join_genres'] = self.ui.join_genres.currentText()
-        config.setting['genres_filter'] = self.ui.genres_filter.toPlainText()
-        config.setting['only_my_genres'] = self.ui.only_my_genres.isChecked()
-        config.setting['artists_genres'] = self.ui.artists_genres.isChecked()
-        config.setting['folksonomy_tags'] = self.ui.folksonomy_tags.isChecked()
+    def save(self: "GenresOptionsPage") -> None:
+        """
+        Save the current genre settings from the UI to the configuration. Logs errors.
+        """
+        try:
+            config = get_config()
+            config.setting['use_genres'] = self.ui.use_genres.isChecked()
+            config.setting['max_genres'] = self.ui.max_genres.value()
+            config.setting['min_genre_usage'] = self.ui.min_genre_usage.value()
+            config.setting['join_genres'] = self.ui.join_genres.currentText()
+            config.setting['genres_filter'] = self.ui.genres_filter.toPlainText()
+            config.setting['only_my_genres'] = self.ui.only_my_genres.isChecked()
+            config.setting['artists_genres'] = self.ui.artists_genres.isChecked()
+            config.setting['folksonomy_tags'] = self.ui.folksonomy_tags.isChecked()
+        except Exception as e:
+            self.logger.error(f"Error saving genre options: {e}")
 
-    def update_test_genres_filter(self):
-        test_text = self.ui.test_genres_filter.toPlainText()
+    def update_test_genres_filter(self: "GenresOptionsPage") -> None:
+        """
+        Update the test genres filter UI, providing color feedback for each test genre line. Logs errors.
+        """
+        try:
+            test_text = self.ui.test_genres_filter.toPlainText()
 
-        filters = self.ui.genres_filter.toPlainText()
-        tagfilter = TagGenreFilter(filters)
+            filters = self.ui.genres_filter.toPlainText()
+            tagfilter = TagGenreFilter(filters)
 
-        # FIXME: very simple error reporting, improve
-        self.ui.label_test_genres_filter_error.setText(
-            "\n".join(tagfilter.format_errors())
-        )
+            # Simple error reporting for filter syntax
+            self.ui.label_test_genres_filter_error.setText(
+                "\n".join(tagfilter.format_errors())
+            )
 
-        def set_line_fmt(lineno, textformat):
-            obj = self.ui.test_genres_filter
-            if lineno < 0:
-                # use current cursor position
-                cursor = obj.textCursor()
-            else:
-                cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
-            obj.blockSignals(True)
-            cursor.setBlockFormat(textformat)
-            obj.blockSignals(False)
-
-        set_line_fmt(-1, self.fmt_clear)
-        for lineno, line in enumerate(test_text.splitlines()):
-            line = line.strip()
-            fmt = self.fmt_clear
-            if line:
-                if tagfilter.skip(line):
-                    fmt = self.fmt_skip
+            def set_line_fmt(lineno: int, textformat: QTextBlockFormat) -> None:
+                """
+                Set the background color for a line in the test genres filter UI.
+                :param lineno: Line number to format, or -1 for current cursor.
+                :param textformat: QTextBlockFormat to apply.
+                """
+                obj = self.ui.test_genres_filter
+                if lineno < 0:
+                    # use current cursor position
+                    cursor = obj.textCursor()
                 else:
-                    fmt = self.fmt_keep
-            set_line_fmt(lineno, fmt)
+                    cursor = QTextCursor(obj.document().findBlockByNumber(lineno))
+                obj.blockSignals(True)
+                cursor.setBlockFormat(textformat)
+                obj.blockSignals(False)
+
+            set_line_fmt(-1, self.fmt_clear)
+            for lineno, line in enumerate(test_text.splitlines()):
+                line = line.strip()
+                fmt = self.fmt_clear
+                if line:
+                    if tagfilter.skip(line):
+                        fmt = self.fmt_skip
+                    else:
+                        fmt = self.fmt_keep
+                set_line_fmt(lineno, fmt)
+        except Exception as e:
+            self.logger.error(f"Error updating test genres filter: {e}")
 
 
 register_options_page(GenresOptionsPage)
