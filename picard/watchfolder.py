@@ -32,6 +32,8 @@ class WatchFolderManager(QtCore.QObject):
         self.tagger = tagger
         self._watcher = QtCore.QFileSystemWatcher(self)
         self._watcher.directoryChanged.connect(self._on_directory_changed)
+        self.tagger.file_loaded.connect(self._on_file_loaded)
+        self.tagger.file_updated.connect(self._on_file_updated)
         self._paths: Set[str] = set()
         self._paused = False
         if paths:
@@ -105,6 +107,26 @@ class WatchFolderManager(QtCore.QObject):
                     self.tagger.add_paths([entry.path])
         except OSError as exc:
             log.error("WatchFolder: Fehler beim Zugriff auf %s – %s", directory, exc)
+
+    def _on_file_loaded(self, file):
+        """Reagiert auf eine neu in Picard geladene Datei."""
+        config = get_config()
+        if not config or not config.setting["watch_folders_auto_tag"]:
+            return
+        if file.filename in self.tagger.files:
+            log.info("WatchFolder: Starte Auto-Tagging für %s", file.filename)
+            self.tagger.run_lookup_in_browser([file])
+
+    def _on_file_updated(self, file):
+        """Reagiert auf eine Aktualisierung einer Datei (z.B. nach Tagging)."""
+        config = get_config()
+        if not config or not config.setting["watch_folders_auto_save"]:
+            return
+        # Prüfen, ob die Datei aus einem Watch-Folder stammt (optional, aber sicherer)
+        if any(file.filename.startswith(p) for p in self._paths):
+            if file.is_modified() and not file.is_saving:
+                log.info("WatchFolder: Starte Auto-Saving für %s", file.filename)
+                self.tagger.save_files([file])
 
     # ------------------------------------------------------------------
     # Helpers

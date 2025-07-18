@@ -227,15 +227,16 @@ class PluginManager(QtCore.QObject):
         (default: log.error) and as the error message to the `plugin_errored`
         signal.
 
-        Instead of using `args` the interpolation parameters can also be passed
-        with the `params` keyword parameter. This is specifically useful to
-        pass a dictionary when using named placeholders."""
+        Statt einer rein technischen Meldung wird eine deutschsprachige, benutzerfreundliche Meldung erzeugt.
+        """
         params = kwargs.get('params', args)
         if params:
             error = error % params
         log_func = kwargs.get('log_func', log.error)
         log_func(error)
-        self.plugin_errored.emit(name, error, False)
+        # Benutzerfreundliche deutsche Meldung
+        user_msg = f'Das Plugin "{name}" konnte nicht geladen werden. Bitte prüfen Sie, ob das Plugin mit dieser Picard-Version kompatibel ist oder kontaktieren Sie den Plugin-Autor.\n\n[Technischer Fehler: {error}]'
+        self.plugin_errored.emit(name, user_msg, False)
 
     def _marked_for_update(self):
         for file in os.listdir(self.plugins_directory):

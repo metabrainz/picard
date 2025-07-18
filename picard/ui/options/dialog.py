@@ -95,6 +95,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_ac3,
     tags_compatibility_id3,
     tags_compatibility_wave,
+    watchfolders,
 )
 from picard.ui.util import StandardButton
 

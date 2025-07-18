@@ -38,6 +38,11 @@ from picard.config import (
 from picard.i18n import gettext as _
 from picard.profile import profile_groups_add_setting
 
+# -----------------------------------------------------------------------------
+# Import der Unterseiten erst *nach* den Klassendefinitionen, um zirkuläre Importe
+# zu vermeiden.
+# -----------------------------------------------------------------------------
+
 
 class OptionsCheckError(Exception):
 
@@ -142,3 +147,8 @@ class OptionsPage(QtWidgets.QWidget):
         OptionsPage._registered_settings.append(option)
         if highlights is not None:
             profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.TITLE)
+
+
+# -- Unterseiten jetzt importieren (ganz am Ende, nach der Definition von OptionsPage) --
+if True:  # noqa: E701,F401
+    from picard.ui.options import tags_compatibility_wave, watchfolders  # noqa: F401

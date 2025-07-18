@@ -65,6 +65,8 @@ class GeneralOptionsPage(OptionsPage):
         ('server_port', ['server_port']),
         ('analyze_new_files', ['analyze_new_files']),
         ('cluster_new_files', ['cluster_new_files']),
+        ('autotag_new_files', ['autotag_new_files']),
+        ('show_tag_suggestions', ['show_tag_suggestions']),
         ('ignore_file_mbids', ['ignore_file_mbids']),
         ('check_for_plugin_updates', ['check_for_plugin_updates']),
         ('check_for_updates', ['check_for_updates']),
@@ -83,6 +85,16 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.logout.clicked.connect(self.logout)
         self.ui.analyze_new_files.toggled.connect(self._update_cluster_new_files)
         self.ui.cluster_new_files.toggled.connect(self._update_analyze_new_files)
+        # Neue Checkbox für Auto-Tagging
+        self.autotag_new_files = QtWidgets.QCheckBox(parent=self.ui.groupBox_2)
+        self.autotag_new_files.setObjectName("autotag_new_files")
+        self.autotag_new_files.setText(_("Automatically tag all new files"))
+        self.ui.verticalLayout.addWidget(self.autotag_new_files)
+        # Checkbox für Tag-Vorschläge
+        self.show_tag_suggestions = QtWidgets.QCheckBox(parent=self.ui.groupBox_2)
+        self.show_tag_suggestions.setObjectName("show_tag_suggestions")
+        self.show_tag_suggestions.setText(_("Show tag suggestions"))
+        self.ui.verticalLayout.addWidget(self.show_tag_suggestions)
         self.ui.login_error.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.login_error.hide()
         self.update_login_logout()
@@ -95,6 +107,8 @@ class GeneralOptionsPage(OptionsPage):
         self.update_server_host()
         self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
+        self.autotag_new_files.setChecked(config.setting['autotag_new_files'])
+        self.show_tag_suggestions.setChecked(config.setting['show_tag_suggestions'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
         self.ui.check_for_plugin_updates.setChecked(config.setting['check_for_plugin_updates'])
         self.ui.check_for_updates.setChecked(config.setting['check_for_updates'])
@@ -123,6 +137,8 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['use_server_for_submission'] = self.ui.use_server_for_submission.isChecked()
         config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
+        config.setting['autotag_new_files'] = self.autotag_new_files.isChecked()
+        config.setting['show_tag_suggestions'] = self.show_tag_suggestions.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
         config.setting['check_for_plugin_updates'] = self.ui.check_for_plugin_updates.isChecked()
         config.setting['check_for_updates'] = self.ui.check_for_updates.isChecked()

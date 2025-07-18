@@ -240,6 +240,12 @@ class Album(MetadataItem):
     def _run_album_metadata_processors(self):
         try:
             run_album_metadata_processors(self, self._new_metadata, self._release_node)
+
+            # Intelligente Tag-Vorschläge generieren
+            from picard.tag_suggestions import generate_suggestions  # Lazy import, vermeidet Zirkeln
+            suggestions = generate_suggestions(self._new_metadata, self._release_node)
+            # Speichere Vorschläge im Album-Objekt für spätere UI-Nutzung
+            self.tag_suggestions = suggestions  # type: ignore[attr-defined]
         except BaseException:
             self.error_append(traceback.format_exc())
 
@@ -346,7 +352,11 @@ class Album(MetadataItem):
         parse_result = None
         try:
             if error:
-                self.error_append(http.errorString())
+                err_str = http.errorString() if hasattr(http, 'errorString') else str(error)
+                user_msg = ("Das Laden der Album-Informationen ist fehlgeschlagen. "
+                            "Bitte prüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.\n\n"
+                            f"[Technischer Fehler: {err_str}]")
+                self.error_append(user_msg)
                 # Fix for broken NAT releases
                 if error == QtNetwork.QNetworkReply.NetworkError.ContentNotFoundError:
                     config = get_config()
@@ -626,6 +636,43 @@ class Album(MetadataItem):
 
         if not self._requests:
             self._finalize_loading_album()
+            # Vorschlags-Popup anzeigen (falls vorhanden)
+            try:
+                self._show_tag_suggestions()
+            except Exception as exc:  # noqa: broad-except
+                log.error("Fehler beim Anzeigen der Tag-Vorschläge: %s", exc)
+
+    def _show_tag_suggestions(self):
+        """Zeigt einen Dialog mit Tag-Vorschlägen und wendet sie ggf. an."""
+        from PyQt6 import QtWidgets
+        from picard.i18n import gettext as _
+        config = get_config()
+        if not config.setting['show_tag_suggestions']:
+            return
+        suggestions = getattr(self, 'tag_suggestions', None)
+        if not suggestions:
+            return
+
+        lines = [f"{tag}: {value}" for tag, value in suggestions.items()]
+        msg = ("<b>" + _("Tag-Vorschläge gefunden") + "</b><br/><br/>" +
+               _("Für dieses Album wurden folgende Tags vorgeschlagen:") +
+               "<br/>" + "<br/>".join(lines) + "<br/><br/>" +
+               _("Möchten Sie die vorgeschlagenen Werte übernehmen?"))
+
+        parent = self.tagger.window if hasattr(self.tagger, 'window') else None
+        reply = QtWidgets.QMessageBox.question(
+            parent,
+            _("Tag-Vorschläge"),
+            msg,
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
+        )
+
+        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+            self.metadata.update(suggestions)
+            self.update()
+
+        # Leere Vorschläge, damit nicht erneut angezeigt wird
+        self.tag_suggestions = {}
 
     def load(self, priority=False, refresh=False):
         if self._requests:

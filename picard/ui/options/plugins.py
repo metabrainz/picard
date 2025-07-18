@@ -420,11 +420,9 @@ class PluginsOptionsPage(OptionsPage):
     def plugin_loading_error(self, plugin_name, error):
         QtWidgets.QMessageBox.critical(
             self,
-            _('Plugin "%(plugin)s"') % {'plugin': plugin_name},
-            _('An error occurred while loading the plugin "%(plugin)s":\n\n%(error)s') % {
-                'plugin': plugin_name,
-                'error': error,
-            })
+            _('Plugin-Fehler'),
+            error
+        )
 
     def plugin_installed(self, plugin):
         log.debug("Plugin %r installed", plugin.name)

@@ -186,6 +186,8 @@ class Tagger(QtWidgets.QApplication):
     cluster_removed = QtCore.pyqtSignal(Cluster)
     album_added = QtCore.pyqtSignal(Album)
     album_removed = QtCore.pyqtSignal(Album)
+    file_loaded = QtCore.pyqtSignal(File)
+    file_updated = QtCore.pyqtSignal(File)
 
     __instance = None
 
@@ -377,6 +379,14 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
+        # Watch-Folder-Manager starten
+        try:
+            from picard.watchfolder import WatchFolderManager
+            config = get_config()
+            paths = config.setting['watch_folders_paths']  # Option liefert Liste oder Default
+            self.watchfolders = WatchFolderManager(self, paths)
+        except Exception as exc:  # noqa: broad-except
+            log.error("WatchFolderManager konnte nicht initialisiert werden: %s", exc)
 
     def _init_ui(self, config):
         """Initialize User Interface / Main Window"""
@@ -702,9 +712,19 @@ class Tagger(QtWidgets.QApplication):
             log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
-        # Auto cluster newly added files if they are not explicitly moved elsewhere
-        if self._pending_files_count == 0 and unmatched_files and config.setting['cluster_new_files']:
-            self.cluster(unmatched_files)
+        # Automatisches Taggen und / oder Clustern neu hinzugefügter Dateien
+        if self._pending_files_count == 0 and unmatched_files:
+            if config.setting.get('autotag_new_files'):
+                # Wenn Clustering ebenfalls aktiv ist, erst clustern, dann Auto-Tagging ausführen
+                if config.setting['cluster_new_files']:
+                    self.cluster(unmatched_files, callback=lambda: self.autotag(self.clusters))
+                else:
+                    # Direkt Auto-Tagging auf ungeclusterte Dateien anwenden
+                    self.autotag(unmatched_files)
+            else:
+                # Nur Clustering (falls aktiviert)
+                if config.setting['cluster_new_files']:
+                    self.cluster(unmatched_files)
 
     def move_file(self, file, target):
         """Moves a file to target, if possible
@@ -1188,6 +1208,30 @@ class Tagger(QtWidgets.QApplication):
     #  Utils
     # =======================================================================
 
+    # -------------------------------------------------------------------
+    # Preview Batch-Rename
+    # -------------------------------------------------------------------
+
+    def preview_rename(self, files):
+        """Erzeuge eine Vorschau der Dateiumbenennung.
+
+        Args:
+            files: Iterable[File] – Dateien, für die die neuen Namen berechnet
+                   werden sollen.
+
+        Returns:
+            List[Tuple[str, str, bool]] – (alter Pfad, neuer Pfad, ändert_sich)
+        """
+        previews = []
+        for file in files:
+            try:
+                new_path = file.make_filename(file.filename, file.metadata)
+            except Exception as exc:  # noqa: broad-except
+                log.error("Fehler beim Berechnen des neuen Dateinamens für %s: %s", file, exc)
+                new_path = file.filename  # Fallback: keine Änderung
+            previews.append((file.filename, new_path, file.filename != new_path))
+        return previews
+
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
         super().setOverrideCursor(
@@ -1221,6 +1265,14 @@ class Tagger(QtWidgets.QApplication):
         self.signalnotifier.setEnabled(False)
         self.quit()
         self.signalnotifier.setEnabled(True)
+
+    def _file_metadata_changed(self, file):
+        self.window.update_file_tags(file)
+        self.file_updated.emit(file)
+
+    def _update_file_list_in_album(self, album):
+        album.update_file_list()
+        self.window.update_album_tags(album)
 
 
 class CmdlineArgsParser(argparse.ArgumentParser):

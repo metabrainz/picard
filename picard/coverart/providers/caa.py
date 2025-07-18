@@ -276,7 +276,14 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album._requests -= 1
         if error:
             if not (error == QNetworkReply.NetworkError.ContentNotFoundError and self.ignore_json_not_found_error):
-                self.error("CAA JSON error: %s" % (http.errorString()))
+                err_str = http.errorString()
+                if "Operation canceled" in err_str:
+                    user_msg = ("Das Laden des Covers wurde abgebrochen. "
+                                "Bitte prüfen Sie Ihre Internetverbindung oder versuchen Sie es erneut.\n\n" 
+                                f"[Technischer Fehler: {err_str}]")
+                    self.error(user_msg)
+                else:
+                    self.error("CAA JSON error: %s" % err_str)
         else:
             if self.restrict_types:
                 log.debug("CAA types: included: %s, excluded: %s", list(self.included_types), list(self.excluded_types))

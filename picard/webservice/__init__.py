@@ -518,7 +518,13 @@ class WebService(QtCore.QObject):
             errstr = reply.errorString()
             log.error("Network request error for %s -> %s (QT code %r, %s code %d)",
                       display_reply_url, errstr, error, proto, response_code)
-            if (not request.max_retries_reached()
+            # Benutzerfreundliche deutsche Meldung für typische Netzwerkfehler
+            if error in [QNetworkReply.NetworkError.TimeoutError, QNetworkReply.NetworkError.ConnectionRefusedError, QNetworkReply.NetworkError.HostNotFoundError]:
+                user_msg = ("Die Verbindung zum Server ist fehlgeschlagen. Bitte prüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.\n\n"
+                            f"[Technischer Fehler: {errstr}]")
+                if handler is not None:
+                    handler(reply.readAll(), reply, user_msg)
+            elif (not request.max_retries_reached()
                 and (response_code == 503
                      or response_code == 429
                      # Sometimes QT returns a http status code of 200 even when there

@@ -55,7 +55,20 @@ from picard.i18n import N_
 if IS_FROZEN:
     picard_module_path = Path(FROZEN_TEMP_PATH).joinpath('picard').resolve()
 else:
-    picard_module_path = Path(PathFinder().find_spec('picard').origin).resolve()
+    # Try to find the picard module using different methods
+    spec = PathFinder().find_spec('picard')
+    if spec and spec.origin:
+        picard_module_path = Path(spec.origin).resolve()
+    else:
+        # Enhanced fallback: try multiple approaches
+        import picard
+        if hasattr(picard, '__file__') and picard.__file__:
+            picard_module_path = Path(picard.__file__).parent.resolve()
+            print(f"DEBUG: Using picard.__file__ fallback: {picard_module_path}")
+        else:
+            # Final fallback: use the current file's directory
+            picard_module_path = Path(__file__).parent.resolve()
+            print(f"DEBUG: Using __file__ fallback: {picard_module_path}")
 
 if not picard_module_path.is_dir():
     picard_module_path = picard_module_path.parent

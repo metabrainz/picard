@@ -213,6 +213,9 @@ class File(MetadataItem):
             self.error_type = FileErrorType.NOTFOUND
         elif any_exception_isinstance(error, PermissionError):
             self.error_type = FileErrorType.NOACCESS
+            # Benutzerfreundliche deutsche Meldung mit technischem Detail
+            self.error_append("Die Datei konnte nicht gespeichert werden, da keine Schreibrechte vorhanden sind. Bitte prüfen Sie die Dateiberechtigungen.\n\n[Technischer Fehler: %s]" % str(error))
+            return
         elif any_exception_isinstance(error, MutagenError):
             self.error_type = FileErrorType.PARSER
             self.error_append(_("The file failed to parse, either the file is damaged or has an unsupported file format."))

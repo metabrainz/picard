@@ -77,6 +77,13 @@ CONGESTION_SSTHRESH = defaultdict(lambda: 0)
 # Storage of last request times per host key
 LAST_REQUEST_TIMES = defaultdict(lambda: 0)
 
+# Maximale Anzahl paralleler Requests für bestimmte Hosts (z. B. Cover Art Archive)
+MAX_PARALLEL_CAA_REQUESTS = 4
+CAA_HOSTS = [
+    ("coverartarchive.org", 443),
+    ("coverartarchive.org", 80),
+]
+
 
 def set_minimum_delay(hostkey, delay_ms):
     """Set the minimun delay between requests
@@ -107,11 +114,16 @@ def get_delay_to_next_request(hostkey):
            wait is True if a delay is needed
            delay is the delay in milliseconds to next request
     """
-    if CONGESTION_UNACK[hostkey] >= int(CONGESTION_WINDOW_SIZE[hostkey]):
-        # We've maxed out the number of requests to `hostkey`, so wait
-        # until responses begin to come back.  (See `_timer_run_next_task`
-        # strobe in `_handle_reply`.)
-        return (True, sys.maxsize)
+    # Begrenzung für Cover Art Archive
+    if hostkey in CAA_HOSTS:
+        if int(CONGESTION_UNACK[hostkey]) >= MAX_PARALLEL_CAA_REQUESTS:
+            return (True, sys.maxsize)
+    else:
+        if CONGESTION_UNACK[hostkey] >= int(CONGESTION_WINDOW_SIZE[hostkey]):
+            # We've maxed out the number of requests to `hostkey`, so wait
+            # until responses begin to come back.  (See `_timer_run_next_task`
+            # strobe in `_handle_reply`.)
+            return (True, sys.maxsize)
 
     interval = REQUEST_DELAY[hostkey]
     if not interval:
