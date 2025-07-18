@@ -160,7 +160,7 @@ msgstr "Primäres Dateibenennungsskript"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Plugin-Vollpfad"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
@@ -168,19 +168,19 @@ msgstr "Vollständige Plugin-Pfade loggen"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "Webservice POST-Daten"
 
 #: picard/debug_opts.py:84
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "Daten von Webservice POST-Anfragen loggen"
 
 #: picard/debug_opts.py:85
 msgid "Web Service Replies"
-msgstr ""
+msgstr "Webservice-Antworten"
 
 #: picard/debug_opts.py:85
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Inhalt von Webservice-Antworten loggen"
 
 #: picard/file.py:216
 msgid ""
