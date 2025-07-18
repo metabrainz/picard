@@ -10936,3 +10936,7 @@ msgstr ""
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s"
+
+msgctxt "medium_format"
+msgid "Cassette"
+msgstr "Kassette"

@@ -9706,3 +9706,4 @@ msgstr "Ḍāgori"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Ṣanmukhapriya"
 msgstr "Ṣanmukhapriya"
+

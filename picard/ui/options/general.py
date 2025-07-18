@@ -108,9 +108,7 @@ class GeneralOptionsPage(OptionsPage):
             value = DEFAULT_PROGRAM_UPDATE_LEVEL
         self.ui.update_level.clear()
         for level, description in PROGRAM_UPDATE_LEVELS.items():
-            # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
-            babel_415_workaround = description['title']
-            self.ui.update_level.addItem(gettext_constants(babel_415_workaround), level)
+            self.ui.update_level.addItem(gettext_constants(description['title']), level)
         idx = self.ui.update_level.findData(value)
         if idx == -1:
             idx = self.ui.update_level.findData(DEFAULT_PROGRAM_UPDATE_LEVEL)
