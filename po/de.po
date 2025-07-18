@@ -785,7 +785,7 @@ msgstr "Ausgewähltes Dateibenennungsskript"
 #: picard/options.py:449
 #, python-format
 msgid "No title for setting '%s'"
-msgstr ""
+msgstr "Kein Titel für Einstellung '%s'"
 
 #: picard/pluginmanager.py:277
 #, python-format
@@ -1301,6 +1301,32 @@ msgid ""
 "\n"
 "_group parameter since Picard 3.0_"
 msgstr ""
+"Suche mit [regulären Ausdrücken](https://docs.python.org/3/library/re.html#"
+"regular-expression-syntax).\n"
+"\n"
+"Falls der optionale Parameter `group` nicht angegeben oder leer ist, wird "
+"die erste\n"
+"Erfassungsgruppe zurückgegeben, die etwas gefunden hat (inklusive leerer "
+"Zeichenkette)\n"
+"oder die gesamte Übereinstimmung.\n"
+"\n"
+"Falls `group` eine Ganzzahl ist, wird die Erfassungsgruppe an der Position "
+"dieser\n"
+"Ganzzahl zurückgegeben.\n"
+"Andernfalls wird die benannte Erfassungsgruppe `group` ohne umgebende "
+"Leerzeichen\n"
+"zurückgegeben.\n"
+"\n"
+"Beispiele:\n"
+"\n"
+"    $rsearch(disc: 1,disc: \\(\\\\d+\\)) => \"1\"\n"
+"    $rsearch(disc: 2,\\(\\\\w+\\): \\(\\\\d+\\),1) => \"disc\"\n"
+"    $rsearch(disc: 3,\\(\\\\w+\\): \\(\\\\d+\\),2) => \"3\"\n"
+"    $rsearch(disc: 4,disc: \\(?P<disc>\\\\d+\\),disc) => \"4\"\n"
+"    $rsearch(disc: none,disc\\(: \\\\d+\\)?) => \"disc\"\n"
+"    $rsearch(disc: /5,disc: \\(\\\\d+\\)?/\\\\d+,1) => \"\"\n"
+"\n"
+"_group-Parameter seit Picard 3.0_"
 
 #: picard/script/functions.py:296
 msgid ""
@@ -2813,7 +2839,7 @@ msgstr "Picard Skriptpaket"
 
 #: picard/tags/tagvar.py:62
 msgid "Notes"
-msgstr ""
+msgstr "Notizen"
 
 #: picard/tags/tagvar.py:63
 #, fuzzy
@@ -2823,11 +2849,11 @@ msgstr "Einstellungs-Warnung"
 
 #: picard/tags/tagvar.py:64
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: picard/tags/tagvar.py:65
 msgid "See Also"
-msgstr ""
+msgstr "Siehe auch"
 
 #: picard/tags/tagvar.py:68
 #, fuzzy
@@ -2837,11 +2863,11 @@ msgstr "Neue Version verfügbar"
 
 #: picard/tags/tagvar.py:71
 msgid "multi-value variable"
-msgstr ""
+msgstr "mehrwertige Variable"
 
 #: picard/tags/tagvar.py:72
 msgid "preserved read-only"
-msgstr ""
+msgstr "schreibgeschützt erhalten"
 
 #: picard/tags/tagvar.py:73
 #, fuzzy
@@ -2851,11 +2877,11 @@ msgstr "Keine aktivierten Skripte"
 
 #: picard/tags/tagvar.py:74
 msgid "calculated"
-msgstr ""
+msgstr "berechnet"
 
 #: picard/tags/tagvar.py:75
 msgid "info from audio file"
-msgstr ""
+msgstr "Info aus Audiodatei"
 
 #: picard/tags/tagvar.py:76
 #, fuzzy
@@ -2865,7 +2891,7 @@ msgstr "Genres von MusicBrainz verwenden"
 
 #: picard/tags/tagvar.py:77
 msgid "not populated by stock Picard"
-msgstr ""
+msgstr "nicht von Standard-Picard ausgefüllt"
 
 #: picard/tags/tagvar.py:253
 #, python-brace-format
@@ -3055,7 +3081,7 @@ msgstr "Fehlerhaftes Objekt"
 
 #: picard/ui/colors.py:47 picard/ui/colors.py:48 picard/ui/colors.py:49
 msgid "Entities"
-msgstr ""
+msgstr "Objekte"
 
 #: picard/ui/colors.py:48
 msgid "Pending entity"
@@ -3772,7 +3798,7 @@ msgstr "Ausgewähltes Element nach unten verschieben"
 
 #: picard/ui/forms/ui_options_cover_processing.py:277
 msgid "Discard images if below the given size"
-msgstr ""
+msgstr "Bilder verwerfen, wenn sie kleiner als angegeben sind"
 
 #: picard/ui/forms/ui_options_cover_processing.py:278
 msgid "Minimum width:"
