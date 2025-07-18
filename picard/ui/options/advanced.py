@@ -30,16 +30,21 @@ from picard.ui.forms.ui_options_advanced import Ui_AdvancedOptionsPage
 from picard.ui.options import OptionsPage
 
 
+
 class AdvancedOptionsPage(OptionsPage):
+    """
+    Options page for advanced settings in Picard.
+    Provides UI and logic for advanced configuration options.
+    """
 
-    NAME = 'advanced'
-    TITLE = N_("Advanced")
-    PARENT = None
-    SORT_ORDER = 90
-    ACTIVE = True
-    HELP_URL = "/config/options_advanced.html"
+    NAME: str = 'advanced'
+    TITLE: str = N_("Advanced")
+    PARENT: None = None
+    SORT_ORDER: int = 90
+    ACTIVE: bool = True
+    HELP_URL: str = "/config/options_advanced.html"
 
-    OPTIONS = (
+    OPTIONS: tuple[tuple[str, list[str]], ...] = (
         ('ignore_regex', ['ignore_regex']),
         ('ignore_hidden_files', ['ignore_hidden_files']),
         ('recursively_add_files', ['recursively_add_files']),
@@ -52,13 +57,23 @@ class AdvancedOptionsPage(OptionsPage):
         ('compare_ignore_tags', ['groupBox_ignore_tags']),
     )
 
-    def __init__(self, parent=None):
+    ui: Ui_AdvancedOptionsPage
+
+    def __init__(self, parent: object = None) -> None:
+        """
+        Initialize the AdvancedOptionsPage and connect UI elements to logic.
+        :param parent: The parent widget.
+        """
         super().__init__(parent=parent)
         self.ui = Ui_AdvancedOptionsPage()
         self.ui.setupUi(self)
         self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
 
-    def load(self):
+
+    def load(self) -> None:
+        """
+        Load current advanced settings from the configuration and update the UI accordingly.
+        """
         config = get_config()
         self.ui.ignore_regex.setText(config.setting['ignore_regex'])
         self.ui.ignore_hidden_files.setChecked(config.setting['ignore_hidden_files'])
@@ -72,7 +87,11 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.compare_ignore_tags.update(config.setting['compare_ignore_tags'])
         self.ui.compare_ignore_tags.set_user_sortable(False)
 
-    def save(self):
+
+    def save(self) -> None:
+        """
+        Save the current advanced settings from the UI to the configuration.
+        """
         config = get_config()
         config.setting['ignore_regex'] = self.ui.ignore_regex.text()
         config.setting['ignore_hidden_files'] = self.ui.ignore_hidden_files.isChecked()
@@ -87,7 +106,11 @@ class AdvancedOptionsPage(OptionsPage):
         if tags != config.setting['compare_ignore_tags']:
             config.setting['compare_ignore_tags'] = tags
 
-    def restore_defaults(self):
+
+    def restore_defaults(self) -> None:
+        """
+        Reset advanced settings to default values.
+        """
         self.ui.compare_ignore_tags.clear()
         super().restore_defaults()
 

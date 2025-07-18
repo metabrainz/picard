@@ -27,7 +27,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from typing import TYPE_CHECKING
+
+from typing import TYPE_CHECKING, Optional
 if TYPE_CHECKING:
     from picard.tagger import Tagger
 
@@ -178,7 +179,7 @@ class GeneralOptionsPage(OptionsPage):
         else:
             self.ui.server_host_primary_warning.show()
 
-    def update_login_logout(self, error_msg: str | None = None) -> None:
+    def update_login_logout(self, error_msg: Optional[str] = None) -> None:
         """
         Update the UI for login/logout status and show error messages if needed.
         :param error_msg: Optional error message for failed login.
@@ -188,7 +189,6 @@ class GeneralOptionsPage(OptionsPage):
         if self.tagger.webservice.oauth_manager.is_logged_in():
             config = get_config()
             self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist['oauth_username'])
-    tagger: 'Tagger'
             self.ui.login_error.hide()
             self.ui.login.hide()
             self.ui.logout.show()
@@ -213,7 +213,7 @@ class GeneralOptionsPage(OptionsPage):
         logger.info("Attempting user login.")
         self.tagger.mb_login(self.on_login_finished, self)
 
-    def on_login_finished(self, successful: bool, error_msg: str | None = None) -> None:
+    def on_login_finished(self, successful: bool, error_msg: Optional[str] = None) -> None:
         """
         Callback after login attempt, updates the UI accordingly.
         Adds logging for login result.
@@ -236,7 +236,7 @@ class GeneralOptionsPage(OptionsPage):
         logger.info("Attempting user logout.")
         self.tagger.mb_logout(self.on_logout_finished)
 
-    def on_logout_finished(self, successful: bool, error_msg: str | None = None) -> None:
+    def on_logout_finished(self, successful: bool, error_msg: Optional[str] = None) -> None:
         """
         Callback after logout attempt, handles errors and updates the UI.
         Adds logging for logout result.

@@ -52,16 +52,21 @@ from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.checkbox_list_item import CheckboxListItem
 
 
+
 class CoverOptionsPage(OptionsPage):
+    """
+    Options page for cover art settings in Picard.
+    Provides UI and logic for configuring cover art download, embedding, and provider selection.
+    """
 
-    NAME = 'cover'
-    TITLE = N_("Cover Art")
-    PARENT = None
-    SORT_ORDER = 35
-    ACTIVE = True
-    HELP_URL = "/config/options_cover.html"
+    NAME: str = 'cover'
+    TITLE: str = N_("Cover Art")
+    PARENT: None = None
+    SORT_ORDER: int = 35
+    ACTIVE: bool = True
+    HELP_URL: str = "/config/options_cover.html"
 
-    OPTIONS = (
+    OPTIONS: tuple[tuple[str, list[str]], ...] = (
         ('save_images_to_tags', ['save_images_to_tags']),
         ('embed_only_one_front_image', ['cb_embed_front_only']),
         ('dont_replace_with_smaller_cover', ['cb_dont_replace_with_smaller']),
@@ -76,7 +81,16 @@ class CoverOptionsPage(OptionsPage):
         ('ca_providers', ['ca_providers_list']),
     )
 
-    def __init__(self, parent=None):
+    ui: Ui_CoverOptionsPage
+    move_view: MoveableListView
+    dont_replace_included_types: list[str] | None
+    dont_replace_excluded_types: list[str] | None
+
+    def __init__(self, parent: object = None) -> None:
+        """
+        Initialisiert die CoverOptionsPage und verbindet UI-Elemente mit der Logik.
+        :param parent: Das übergeordnete Widget.
+        """
         super().__init__(parent=parent)
         self.ui = Ui_CoverOptionsPage()
         self.ui.setupUi(self)
@@ -86,84 +100,125 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
         self.ui.cb_never_replace_types.toggled.connect(self.ui.select_types_button.setEnabled)
         self.ui.select_types_button.clicked.connect(self.select_never_replace_image_types)
-        self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
-                                          self.ui.down_button)
+        self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button, self.ui.down_button)
 
-    def restore_defaults(self):
-        # Remove previous entries
-        self.ui.ca_providers_list.clear()
-        self.dont_replace_included_types = DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE
-        self.dont_replace_excluded_types = DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE
-        super().restore_defaults()
 
-    def _load_cover_art_providers(self):
-        """Load available providers, initialize provider-specific options, restore state of each
+    def restore_defaults(self) -> None:
+        """
+        Setzt die Einstellungen für Cover Art auf die Standardwerte zurück.
         """
         self.ui.ca_providers_list.clear()
-        for p in cover_art_providers():
-            item = CheckboxListItem(_(p.title), checked=p.enabled)
-            item.setData(Qt.ItemDataRole.UserRole, p.name)
-            self.ui.ca_providers_list.addItem(item)
+        self.dont_replace_included_types = DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE.copy()
+        self.dont_replace_excluded_types = DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE.copy()
+        super().restore_defaults()
 
-    def load(self):
-        config = get_config()
-        self.ui.save_images_to_tags.setChecked(config.setting['save_images_to_tags'])
-        self.ui.cb_embed_front_only.setChecked(config.setting['embed_only_one_front_image'])
-        self.ui.cb_dont_replace_with_smaller.setChecked(config.setting['dont_replace_with_smaller_cover'])
-        self.ui.cb_never_replace_types.setChecked(config.setting['dont_replace_cover_of_types'])
-        self.ui.select_types_button.setEnabled(config.setting['dont_replace_cover_of_types'])
-        self.dont_replace_included_types = config.setting['dont_replace_included_types']
-        self.dont_replace_excluded_types = config.setting['dont_replace_excluded_types']
-        self.ui.save_images_to_files.setChecked(config.setting['save_images_to_files'])
-        self.ui.cover_image_filename.setText(config.setting['cover_image_filename'])
-        self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
-        self.ui.save_only_one_front_image.setChecked(config.setting['save_only_one_front_image'])
-        self.ui.image_type_as_filename.setChecked(config.setting['image_type_as_filename'])
-        self._load_cover_art_providers()
-        self.ui.ca_providers_list.setCurrentRow(0)
-        self.update_ca_providers_groupbox_state()
 
-    def _ca_providers(self):
-        for item in qlistwidget_items(self.ui.ca_providers_list):
-            yield (item.data(Qt.ItemDataRole.UserRole), item.checked)
+    def _load_cover_art_providers(self) -> None:
+        """
+        Lädt verfügbare Cover-Art-Provider und initialisiert die zugehörigen Optionen.
+        """
+        self.ui.ca_providers_list.clear()
+        for provider in cover_art_providers():
+            try:
+                item = CheckboxListItem(_(provider.title), checked=provider.enabled)
+                item.setData(Qt.ItemDataRole.UserRole, provider.name)
+                self.ui.ca_providers_list.addItem(item)
+            except Exception as e:
+                import logging
+                logging.error(f"Fehler beim Laden des Cover-Art-Providers '{getattr(provider, 'name', repr(provider))}': {e}")
 
-    def save(self):
-        config = get_config()
-        config.setting['save_images_to_tags'] = self.ui.save_images_to_tags.isChecked()
-        config.setting['embed_only_one_front_image'] = self.ui.cb_embed_front_only.isChecked()
-        config.setting['dont_replace_with_smaller_cover'] = self.ui.cb_dont_replace_with_smaller.isChecked()
-        config.setting['dont_replace_cover_of_types'] = self.ui.cb_never_replace_types.isChecked()
-        config.setting['dont_replace_included_types'] = self.dont_replace_included_types
-        config.setting['dont_replace_excluded_types'] = self.dont_replace_excluded_types
-        config.setting['save_images_to_files'] = self.ui.save_images_to_files.isChecked()
-        config.setting['cover_image_filename'] = self.ui.cover_image_filename.text()
-        config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
-        config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
-        config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
-        config.setting['ca_providers'] = list(self._ca_providers())
 
-    def update_ca_providers_groupbox_state(self):
+    def load(self) -> None:
+        """
+        Lädt die aktuellen Cover-Art-Einstellungen aus der Konfiguration und aktualisiert die UI.
+        """
+        import logging
+        try:
+            config = get_config()
+            self.ui.save_images_to_tags.setChecked(config.setting['save_images_to_tags'])
+            self.ui.cb_embed_front_only.setChecked(config.setting['embed_only_one_front_image'])
+            self.ui.cb_dont_replace_with_smaller.setChecked(config.setting['dont_replace_with_smaller_cover'])
+            self.ui.cb_never_replace_types.setChecked(config.setting['dont_replace_cover_of_types'])
+            self.ui.select_types_button.setEnabled(config.setting['dont_replace_cover_of_types'])
+            self.dont_replace_included_types = config.setting['dont_replace_included_types']
+            self.dont_replace_excluded_types = config.setting['dont_replace_excluded_types']
+            self.ui.save_images_to_files.setChecked(config.setting['save_images_to_files'])
+            self.ui.cover_image_filename.setText(config.setting['cover_image_filename'])
+            self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
+            self.ui.save_only_one_front_image.setChecked(config.setting['save_only_one_front_image'])
+            self.ui.image_type_as_filename.setChecked(config.setting['image_type_as_filename'])
+            self._load_cover_art_providers()
+            self.ui.ca_providers_list.setCurrentRow(0)
+            self.update_ca_providers_groupbox_state()
+        except Exception as e:
+            logging.error(f"Fehler beim Laden der Cover-Art-Einstellungen: {e}")
+
+
+    def _ca_providers(self) -> list[tuple[str, bool]]:
+        """
+        Gibt eine Liste von Tupeln mit Provider-Namen und aktiviertem Status zurück.
+        """
+        return [
+            (str(item.data(Qt.ItemDataRole.UserRole)), bool(item.checked))
+            for item in qlistwidget_items(self.ui.ca_providers_list)
+        ]
+
+
+    def save(self) -> None:
+        """
+        Speichert die aktuellen Cover-Art-Einstellungen aus der UI in die Konfiguration.
+        """
+        import logging
+        try:
+            config = get_config()
+            config.setting['save_images_to_tags'] = self.ui.save_images_to_tags.isChecked()
+            config.setting['embed_only_one_front_image'] = self.ui.cb_embed_front_only.isChecked()
+            config.setting['dont_replace_with_smaller_cover'] = self.ui.cb_dont_replace_with_smaller.isChecked()
+            config.setting['dont_replace_cover_of_types'] = self.ui.cb_never_replace_types.isChecked()
+            config.setting['dont_replace_included_types'] = self.dont_replace_included_types
+            config.setting['dont_replace_excluded_types'] = self.dont_replace_excluded_types
+            config.setting['save_images_to_files'] = self.ui.save_images_to_files.isChecked()
+            config.setting['cover_image_filename'] = self.ui.cover_image_filename.text()
+            config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
+            config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
+            config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
+            config.setting['ca_providers'] = self._ca_providers()
+        except Exception as e:
+            logging.error(f"Fehler beim Speichern der Cover-Art-Einstellungen: {e}")
+
+
+    def update_ca_providers_groupbox_state(self) -> None:
+        """
+        Aktiviert oder deaktiviert die Cover-Art-Provider-Groupbox basierend auf den Einstellungen.
+        """
         files_enabled = self.ui.save_images_to_files.isChecked()
         tags_enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
 
-    def select_never_replace_image_types(self):
+
+    def select_never_replace_image_types(self) -> None:
+        """
+        Öffnet den Dialog zur Auswahl von Bildtypen, die niemals ersetzt werden sollen.
+        """
         instructions_bottom = N_(
-            "Embedded cover art images with a type found in the 'Include' list will never be replaced "
-            "by a newly downloaded image UNLESS they also have an image type in the 'Exclude' list. "
-            "Images with types found in the 'Exclude' list will always be replaced by downloaded images "
-            "of the same type. Images types not appearing in the 'Include' or 'Exclude' list will "
-            "not be considered when determining whether or not to replace an embedded cover art image.\n"
+            "Eingebettete Cover-Art-Bilder mit einem Typ aus der 'Include'-Liste werden niemals durch ein neu heruntergeladenes Bild ersetzt, "
+            "AUSSER sie haben auch einen Bildtyp aus der 'Exclude'-Liste. Bilder mit Typen aus der 'Exclude'-Liste werden immer durch "
+            "heruntergeladene Bilder desselben Typs ersetzt. Bildtypen, die weder in der 'Include'- noch in der 'Exclude'-Liste erscheinen, "
+            "werden bei der Entscheidung, ob ein eingebettetes Cover-Art-Bild ersetzt wird, nicht berücksichtigt.\n"
         )
-        (included_types, excluded_types, ok) = CAATypesSelectorDialog.display(
-            types_include=self.dont_replace_included_types,
-            types_exclude=self.dont_replace_excluded_types,
-            parent=self,
-            instructions_bottom=instructions_bottom,
-        )
-        if ok:
-            self.dont_replace_included_types = included_types
-            self.dont_replace_excluded_types = excluded_types
+        try:
+            included_types, excluded_types, ok = CAATypesSelectorDialog.display(
+                types_include=self.dont_replace_included_types,
+                types_exclude=self.dont_replace_excluded_types,
+                parent=self,
+                instructions_bottom=instructions_bottom,
+            )
+            if ok:
+                self.dont_replace_included_types = included_types
+                self.dont_replace_excluded_types = excluded_types
+        except Exception as e:
+            import logging
+            logging.error(f"Fehler beim Auswählen der Bildtypen: {e}")
 
 
 register_options_page(CoverOptionsPage)
