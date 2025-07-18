@@ -248,10 +248,8 @@ msgid "Debug"
 msgstr "Debug"
 
 #: picard/oauth.py:198
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Unerwarteter Authentifizierungsfehler"
+msgstr "Unerwarteter Token-Widerruf-Fehler"
 
 #: picard/oauth.py:349 picard/oauth.py:376
 msgid "Unexpected authentication error"
@@ -319,10 +317,8 @@ msgid "Never replace cover images with smaller ones"
 msgstr "Niemals Cover-Bilder durch kleinere ersetzen"
 
 #: picard/options.py:173 picard/ui/forms/ui_options_cover.py:121
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace cover images matching selected types"
-msgstr "Nur zu ausgewählten Typen passende Cover-Art-Bilder herunterladen"
+msgstr "Cover-Bilder der ausgewählten Typen niemals ersetzen"
 
 #: picard/options.py:174
 msgid "Never replace cover images of these types"
@@ -355,16 +351,12 @@ msgid "Save only a single front image as separate file"
 msgstr "Nur ein einziges Titelcover als separate Datei speichern"
 
 #: picard/options.py:211
-#, fuzzy
-#| msgid "Do not use audio fingerprinting"
 msgid "Use AcoustID audio fingerprinting"
-msgstr "Audio-Fingerabdrücke nicht benutzen"
+msgstr "AcoustID Audio-Fingerabdrücke verwenden"
 
 #: picard/options.py:214
-#, fuzzy
-#| msgid "AcoustID Fingerprint"
 msgid "Save AcoustID fingerprints"
-msgstr "AcoustID-Fingerabdruck"
+msgstr "AcoustID-Fingerabdrücke speichern"
 
 #: picard/options.py:224 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
@@ -2856,10 +2848,8 @@ msgid "See Also"
 msgstr "Siehe auch"
 
 #: picard/tags/tagvar.py:68
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available."
-msgstr "Neue Version verfügbar"
+msgstr "Keine Beschreibung verfügbar."
 
 #: picard/tags/tagvar.py:71
 msgid "multi-value variable"
@@ -2870,10 +2860,8 @@ msgid "preserved read-only"
 msgstr "schreibgeschützt erhalten"
 
 #: picard/tags/tagvar.py:73
-#, fuzzy
-#| msgid "No enabled scripts"
 msgid "not for use in scripts"
-msgstr "Keine aktivierten Skripte"
+msgstr "nicht für Skripte verwendet"
 
 #: picard/tags/tagvar.py:74
 msgid "calculated"
@@ -2896,17 +2884,17 @@ msgstr "nicht von Standard-Picard ausgefüllt"
 #: picard/tags/tagvar.py:253
 #, python-brace-format
 msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 
 #: picard/tags/tagvar.py:254
 #, python-brace-format
 msgid "<p><em>%{name}%</em></p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em></p>{content}"
 
 #: picard/tags/tagvar.py:290
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
-msgstr ""
+msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/ui/aboutdialog.py:75
 msgid "translator-credits"
@@ -3866,10 +3854,8 @@ msgid "New format:"
 msgstr "Neues Format:"
 
 #: picard/ui/forms/ui_options_cover_processing.py:298
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Convert images saved to files"
-msgstr "Cover-Bilder als separate Dateien speichern"
+msgstr "In Dateien gespeicherte Bilder konvertieren"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:103
 msgid "Audio Fingerprinting"
