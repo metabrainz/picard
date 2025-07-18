@@ -3122,7 +3122,7 @@ msgstr "Text in Protokollansicht (Warnung)"
 
 #: picard/ui/colors.py:55
 msgid "Profile highlight background"
-msgstr ""
+msgstr "Profil-Hervorhebung Hintergrund"
 
 #: picard/ui/colors.py:55 picard/ui/colors.py:56
 msgid "Profiles"
@@ -3130,7 +3130,7 @@ msgstr "Profile"
 
 #: picard/ui/colors.py:56
 msgid "Profile highlight foreground"
-msgstr ""
+msgstr "Profil-Hervorhebung Vordergrund"
 
 #: picard/ui/colors.py:57
 msgid "Row Highlight"
@@ -3169,13 +3169,13 @@ msgstr "Hervorhebung löschen"
 
 #: picard/ui/colors.py:62
 msgid "Escape syntax highlight"
-msgstr ""
+msgstr "Escape-Syntax-Hervorhebung"
 
 #: picard/ui/colors.py:63
 #, fuzzy
 #| msgid "String to highlight"
 msgid "Function syntax highlight"
-msgstr "Text hervorzuheben"
+msgstr "Funktions-Syntax-Hervorhebung"
 
 #: picard/ui/colors.py:64
 #, fuzzy
@@ -3811,7 +3811,7 @@ msgstr "Minimale Breite:"
 #: picard/ui/forms/ui_options_cover_processing.py:291
 #: picard/ui/forms/ui_options_cover_processing.py:293
 msgid "px"
-msgstr ""
+msgstr "px"
 
 #: picard/ui/forms/ui_options_cover_processing.py:280
 msgid "Minimum height:"
@@ -3852,7 +3852,7 @@ msgstr "Tags in Dateien schreiben"
 
 #: picard/ui/forms/ui_options_cover_processing.py:295
 msgid "Convert images to the given format"
-msgstr ""
+msgstr "Bilder in das angegebene Format konvertieren"
 
 #: picard/ui/forms/ui_options_cover_processing.py:296
 #, fuzzy
@@ -4808,7 +4808,7 @@ msgstr "Existierendes Cover"
 
 #: picard/ui/infodialog/widgets.py:133 picard/ui/infodialog/widgets.py:150
 msgid "Existing cover art already embedded into tags"
-msgstr ""
+msgstr "Vorhandenes Cover-Bild bereits in Tags eingebettet"
 
 #: picard/ui/itemviews/__init__.py:175
 msgid "Bad match"
@@ -5036,7 +5036,7 @@ msgstr "Cover"
 
 #: picard/ui/itemviews/columns.py:96
 msgid "Cover Dimensions"
-msgstr ""
+msgstr "Cover-Abmessungen"
 
 #: picard/ui/mainwindow/__init__.py:344
 msgid "Unsaved Changes"
@@ -5641,11 +5641,11 @@ msgstr "Alt+Shift+R"
 
 #: picard/ui/metadatabox/__init__.py:321
 msgid "Unable to copy current selection."
-msgstr ""
+msgstr "Aktuelle Auswahl kann nicht kopiert werden."
 
 #: picard/ui/metadatabox/__init__.py:398
 msgid "No valid data in clipboard to paste"
-msgstr ""
+msgstr "Keine gültigen Daten in der Zwischenablage zum Einfügen"
 
 #: picard/ui/metadatabox/__init__.py:444
 msgid "Edit…"
@@ -5737,7 +5737,7 @@ msgstr ""
 
 #: picard/ui/options/cover_processing.py:50
 msgid "Processing"
-msgstr ""
+msgstr "Verarbeitung"
 
 #: picard/ui/options/dialog.py:115
 msgid "This page failed to initialize"
@@ -5754,6 +5754,8 @@ msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
 "report a bug."
 msgstr ""
+"Bitte siehe <a href=\"%s\">Fehlerbehebungs-Dokumentation</a> und melde "
+"gegebenenfalls einen Fehler."
 
 #: picard/ui/options/dialog.py:161
 #, python-format
@@ -6002,7 +6004,7 @@ msgstr "Systemvoreinstellung"
 
 #: picard/ui/options/interface.py:187
 msgid "You have changed the application theme."
-msgstr ""
+msgstr "Sie haben das Anwendungsthema geändert."
 
 #: picard/ui/options/interface.py:190
 msgid ""
@@ -6047,7 +6049,7 @@ msgstr "Standardfarbe wiederherstellen"
 
 #: picard/ui/options/interface_colors.py:172
 msgid "You have changed the interface colors."
-msgstr ""
+msgstr "Sie haben die Oberflächenfarben geändert."
 
 #: picard/ui/options/interface_toolbar.py:69
 msgid "Action Toolbar"
@@ -6887,7 +6889,7 @@ msgstr ""
 #: picard/ui/searchdialog/__init__.py:104
 #, python-brace-format
 msgid "&#160;(<a href='{url}'>Syntax Help</a>)"
-msgstr ""
+msgstr "&#160;(<a href='{url}'>Syntax-Hilfe</a>)"
 
 #: picard/ui/searchdialog/__init__.py:189
 msgid "Search in browser"
@@ -7023,6 +7025,8 @@ msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
 msgstr ""
+"<em>Funktion <code>$%s</code> existiert nicht.<br><br>Fehlt ein "
+"Plugin?</em>"
 
 #: picard/ui/widgets/scripttextedit.py:318
 msgid "&Word wrap script"
