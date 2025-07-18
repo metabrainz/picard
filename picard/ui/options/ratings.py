@@ -51,6 +51,7 @@ class RatingsOptionsPage(OptionsPage):
 
     ui: Ui_RatingsOptionsPage
     logger: logging.Logger
+    error_label: object
 
     def __init__(self, parent: object = None) -> None:
         """
@@ -58,16 +59,40 @@ class RatingsOptionsPage(OptionsPage):
         :param parent: The parent widget.
         Sets up logging for this options page.
         Adds tooltips to all fields.
+        Adds error label for UI error messages.
+        Sets tab order for main fields to improve accessibility (Tab navigation).
         """
         super().__init__(parent=parent)
         self.ui = Ui_RatingsOptionsPage()
         self.ui.setupUi(self)
         self.logger = logging.getLogger("picard.ui.options.ratings")
 
-        # Tooltips for main fields (English)
-        self.ui.enable_ratings.setToolTip("Enable ratings for tracks and albums.")
-        self.ui.rating_user_email.setToolTip("E-mail address for submitting ratings to MusicBrainz.")
-        self.ui.submit_ratings.setToolTip("Automatically submit ratings to MusicBrainz when changed.")
+        # Tooltips for main fields (internationalized)
+        self.ui.enable_ratings.setToolTip(N_(
+            "Enable ratings for tracks and albums. This allows you to rate your music and store ratings in MusicBrainz and your local files."
+        ))
+        self.ui.rating_user_email.setToolTip(N_(
+            "Enter your e-mail address for submitting ratings to MusicBrainz. Example: user@example.com"
+        ))
+        self.ui.submit_ratings.setToolTip(N_(
+            "If enabled, ratings will be automatically submitted to MusicBrainz whenever you change them."
+        ))
+        # Error label for UI error messages
+        from PyQt6.QtWidgets import QLabel
+        self.error_label = QLabel("")
+        self.error_label.setStyleSheet("color: red;")
+        self.error_label.setVisible(False)
+        self.ui.verticalLayout.addWidget(self.error_label)
+        # Visual focus feedback for input fields
+        focus_style = "QLineEdit:focus { border: 2px solid #0078d7; }"  # Blue border on focus
+        self.ui.rating_user_email.setStyleSheet(focus_style)
+        # Accessibility: Set tab order for main fields
+        # This ensures logical navigation using the Tab key (enable_ratings → rating_user_email → submit_ratings)
+        try:
+            self.setTabOrder(self.ui.enable_ratings, self.ui.rating_user_email)
+            self.setTabOrder(self.ui.rating_user_email, self.ui.submit_ratings)
+        except Exception:
+            pass  # If fields do not exist, do not raise exception
 
     def load(self: "RatingsOptionsPage") -> None:
         """
@@ -78,20 +103,39 @@ class RatingsOptionsPage(OptionsPage):
             self.ui.enable_ratings.setChecked(config.setting.get('enable_ratings', False))
             self.ui.rating_user_email.setText(config.setting.get('rating_user_email', ""))
             self.ui.submit_ratings.setChecked(config.setting.get('submit_ratings', False))
+            self.error_label.setVisible(False)
         except Exception as e:
             self.logger.error(f"Error loading ratings options: {e}")
+            self.error_label.setText(f"Error loading ratings options: {e}")
+            self.error_label.setVisible(True)
 
     def save(self: "RatingsOptionsPage") -> None:
         """
         Save the current ratings settings from the UI to the configuration. Logs errors.
         """
+        import re
+        from PyQt6.QtCore import QTimer
+        email = self.ui.rating_user_email.text()
+        email_pattern = r"^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$"
+        if email and not re.match(email_pattern, email):
+            self.error_label.setText("Invalid e-mail address format. Please enter a valid e-mail (e.g. user@example.com).")
+            self.error_label.setStyleSheet("color: red;")
+            self.error_label.setVisible(True)
+            return
         try:
             config = get_config()
             config.setting['enable_ratings'] = self.ui.enable_ratings.isChecked()
-            config.setting['rating_user_email'] = self.ui.rating_user_email.text()
+            config.setting['rating_user_email'] = email
             config.setting['submit_ratings'] = self.ui.submit_ratings.isChecked()
+            self.error_label.setText("Settings saved successfully.")
+            self.error_label.setStyleSheet("color: green;")
+            self.error_label.setVisible(True)
+            QTimer.singleShot(2000, lambda: self.error_label.setVisible(False))
         except Exception as e:
             self.logger.error(f"Error saving ratings options: {e}")
+            self.error_label.setText(f"Error saving ratings options: {e}")
+            self.error_label.setStyleSheet("color: red;")
+            self.error_label.setVisible(True)
 
 
 register_options_page(RatingsOptionsPage)
