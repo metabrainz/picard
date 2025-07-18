@@ -296,7 +296,7 @@ msgstr "Differenz der Titellänge unterhalb von x Sekunden ignorieren"
 
 #: picard/options.py:160 picard/ui/forms/ui_options_advanced.py:146
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Maximale Anzahl an Entitäten pro MusicBrainz-Abfrage"
+msgstr "Maximale Anzahl an zurückgelieferten Einträgen für MusicBrainz-Abfragen"
 
 #: picard/options.py:161 picard/ui/forms/ui_options_advanced.py:148
 msgid "Include sub-folders when adding files from folder"
@@ -785,7 +785,7 @@ msgstr "Ausgewähltes Dateibenennungsskript"
 #: picard/options.py:449
 #, python-format
 msgid "No title for setting '%s'"
-msgstr "Kein Titel für Einstellung '%s'"
+msgstr ""
 
 #: picard/pluginmanager.py:277
 #, python-format
@@ -809,7 +809,8 @@ msgstr ""
 #: picard/pluginmanager.py:361
 #, python-format
 msgid "Plugin \"%(plugin)s\" has an invalid API version string: %(error)s"
-msgstr "Plugin „%(plugin)s" hat einen ungültigen API-Versions-String: %(error)s"
+msgstr ""
+"Das Plugin „%(plugin)s“ hat einen ungültigen API-Version-String: %(error)s"
 
 #: picard/pluginmanager.py:367 picard/ui/options/plugins.py:423
 #: picard/ui/options/plugins.py:435 picard/ui/options/plugins.py:456
@@ -820,7 +821,8 @@ msgstr "Plugin „%(plugin)s“"
 #: picard/pluginmanager.py:378
 #, python-format
 msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
-msgstr "Fehler beim Laden des gepackten Plugins „%(plugin)s" von „%(filename)s""
+msgstr ""
+"Fehler beim Laden des gezippten Plugins „%(plugin)s“ von „%(filename)s“"
 
 #: picard/pluginmanager.py:519
 #, python-format
@@ -979,7 +981,9 @@ msgstr ""
 
 #: picard/acoustid/manager.py:202
 msgid "AcoustID submission failed permanently, probably too many retries"
-msgstr "AcoustID-Übermittlung dauerhaft fehlgeschlagen, wahrscheinlich zu viele Wiederholungen"
+msgstr ""
+"AcoustID-Übermittlung dauerhaft fehlgeschlagen, möglicherweise zu viele "
+"Versuche"
 
 #: picard/acoustid/manager.py:212
 msgid "Submitting AcoustIDs …"
