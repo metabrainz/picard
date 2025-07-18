@@ -46,16 +46,15 @@
 
 
 from enum import (
-    Enum,
+    StrEnum,
     unique,
 )
 
 
-# TODO: when Python 3.11 will the lowest version supported move this to StrEnum
-# see https://tsak.dev/posts/python-enum/
+
 
 @unique
-class MainAction(str, Enum):
+class MainAction(StrEnum):
     ABOUT = 'about_action'
     ADD_DIRECTORY = 'add_directory_action'
     ADD_FILES = 'add_files_action'
