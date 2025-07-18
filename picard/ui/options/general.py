@@ -27,7 +27,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from picard.tagger import Tagger
 
+
+
+import logging
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -51,16 +57,21 @@ from picard.ui.forms.ui_options_general import Ui_GeneralOptionsPage
 from picard.ui.options import OptionsPage
 
 
+
 class GeneralOptionsPage(OptionsPage):
+    """
+    Options page for general settings in Picard.
+    Provides the UI and logic for configuring server, updates, and file analysis.
+    """
 
-    NAME = 'general'
-    TITLE = N_("General")
-    PARENT = None
-    SORT_ORDER = 1
-    ACTIVE = True
-    HELP_URL = "/config/options_general.html"
+    NAME: str = 'general'
+    TITLE: str = N_("General")
+    PARENT: None = None
+    SORT_ORDER: int = 1
+    ACTIVE: bool = True
+    HELP_URL: str = "/config/options_general.html"
 
-    OPTIONS = (
+    OPTIONS: tuple[tuple[str, list[str]], ...] = (
         ('server_host', ['server_host']),
         ('server_port', ['server_port']),
         ('analyze_new_files', ['analyze_new_files']),
@@ -73,7 +84,15 @@ class GeneralOptionsPage(OptionsPage):
         ('use_server_for_submission', ['use_server_for_submission']),
     )
 
-    def __init__(self, parent=None):
+    ui: Ui_GeneralOptionsPage
+    deleted: bool = False
+    tagger: 'Tagger'
+
+    def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
+        """
+        Initialize the GeneralOptionsPage and connect UI elements to logic.
+        :param parent: The parent widget.
+        """
         super().__init__(parent=parent)
         self.ui = Ui_GeneralOptionsPage()
         self.ui.setupUi(self)
@@ -87,23 +106,36 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.login_error.hide()
         self.update_login_logout()
 
-    def load(self):
-        config = get_config()
-        self.ui.server_host.setEditText(config.setting['server_host'])
-        self.ui.server_port.setValue(config.setting['server_port'])
-        self.ui.use_server_for_submission.setChecked(config.setting['use_server_for_submission'])
-        self.update_server_host()
-        self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
-        self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
-        self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
-        self.ui.check_for_plugin_updates.setChecked(config.setting['check_for_plugin_updates'])
-        self.ui.check_for_updates.setChecked(config.setting['check_for_updates'])
-        self.set_update_level(config.setting['update_level'])
-        self.ui.update_check_days.setValue(config.setting['update_check_days'])
-        if not self.tagger.autoupdate_enabled:
-            self.ui.program_update_check_group.hide()
+    def load(self) -> None:
+        """
+        Load current settings from the configuration and update the UI accordingly.
+        Adds error handling and logging for config and UI access.
+        """
+        logger = logging.getLogger(__name__)
+        try:
+            config = get_config()
+            self.ui.server_host.setEditText(config.setting['server_host'])
+            self.ui.server_port.setValue(config.setting['server_port'])
+            self.ui.use_server_for_submission.setChecked(config.setting['use_server_for_submission'])
+            self.update_server_host()
+            self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
+            self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
+            self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
+            self.ui.check_for_plugin_updates.setChecked(config.setting['check_for_plugin_updates'])
+            self.ui.check_for_updates.setChecked(config.setting['check_for_updates'])
+            self.set_update_level(config.setting['update_level'])
+            self.ui.update_check_days.setValue(config.setting['update_check_days'])
+            if not self.tagger.autoupdate_enabled:
+                self.ui.program_update_check_group.hide()
+            logger.info("General options loaded successfully.")
+        except Exception as e:
+            logger.error(f"Error loading general options: {e}")
 
-    def set_update_level(self, value):
+    def set_update_level(self, value: str) -> None:
+        """
+        Set the update level in the UI based on the value from the configuration.
+        :param value: The desired update level.
+        """
         if value not in PROGRAM_UPDATE_LEVELS:
             value = DEFAULT_PROGRAM_UPDATE_LEVEL
         self.ui.update_level.clear()
@@ -114,33 +146,49 @@ class GeneralOptionsPage(OptionsPage):
             idx = self.ui.update_level.findData(DEFAULT_PROGRAM_UPDATE_LEVEL)
         self.ui.update_level.setCurrentIndex(idx)
 
-    def save(self):
-        config = get_config()
-        config.setting['server_host'] = self.ui.server_host.currentText().strip()
-        config.setting['server_port'] = self.ui.server_port.value()
-        config.setting['use_server_for_submission'] = self.ui.use_server_for_submission.isChecked()
-        config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
-        config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
-        config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
-        config.setting['check_for_plugin_updates'] = self.ui.check_for_plugin_updates.isChecked()
-        config.setting['check_for_updates'] = self.ui.check_for_updates.isChecked()
-        config.setting['update_level'] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
-        config.setting['update_check_days'] = self.ui.update_check_days.value()
+    def save(self) -> None:
+        """
+        Save the current settings from the UI to the configuration.
+        Adds error handling and logging for config and UI access.
+        """
+        logger = logging.getLogger(__name__)
+        try:
+            config = get_config()
+            config.setting['server_host'] = self.ui.server_host.currentText().strip()
+            config.setting['server_port'] = self.ui.server_port.value()
+            config.setting['use_server_for_submission'] = self.ui.use_server_for_submission.isChecked()
+            config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
+            config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
+            config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
+            config.setting['check_for_plugin_updates'] = self.ui.check_for_plugin_updates.isChecked()
+            config.setting['check_for_updates'] = self.ui.check_for_updates.isChecked()
+            config.setting['update_level'] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
+            config.setting['update_check_days'] = self.ui.update_check_days.value()
+            logger.info("General options saved successfully.")
+        except Exception as e:
+            logger.error(f"Error saving general options: {e}")
 
-    def update_server_host(self):
+    def update_server_host(self) -> None:
+        """
+        Check if the selected server is an official MusicBrainz server and show a warning if not.
+        """
         host = self.ui.server_host.currentText().strip()
         if host and is_official_server(host):
             self.ui.server_host_primary_warning.hide()
         else:
             self.ui.server_host_primary_warning.show()
 
-    def update_login_logout(self, error_msg=None):
+    def update_login_logout(self, error_msg: str | None = None) -> None:
+        """
+        Update the UI for login/logout status and show error messages if needed.
+        :param error_msg: Optional error message for failed login.
+        """
         if self.deleted:
             return
         if self.tagger.webservice.oauth_manager.is_logged_in():
             config = get_config()
             self.ui.logged_in.setText(_("Logged in as <b>%s</b>.") % config.persist['oauth_username'])
-            self.ui.logged_in.show()
+    tagger: 'Tagger'
             self.ui.login_error.hide()
             self.ui.login.hide()
             self.ui.logout.show()
@@ -156,17 +204,50 @@ class GeneralOptionsPage(OptionsPage):
             self.ui.login.show()
             self.ui.logout.hide()
 
-    def login(self):
+    def login(self) -> None:
+        """
+        Start the login process via the tagger webservice API.
+        Adds logging for login attempts.
+        """
+        logger = logging.getLogger(__name__)
+        logger.info("Attempting user login.")
         self.tagger.mb_login(self.on_login_finished, self)
 
-    def on_login_finished(self, successful, error_msg=None):
+    def on_login_finished(self, successful: bool, error_msg: str | None = None) -> None:
+        """
+        Callback after login attempt, updates the UI accordingly.
+        Adds logging for login result.
+        :param successful: Whether the login was successful.
+        :param error_msg: Error message for failed login.
+        """
+        logger = logging.getLogger(__name__)
+        if successful:
+            logger.info("User login successful.")
+        else:
+            logger.error(f"User login failed: {error_msg}")
         self.update_login_logout(error_msg)
 
-    def logout(self):
+    def logout(self) -> None:
+        """
+        Start the logout process via the tagger webservice API.
+        Adds logging for logout attempts.
+        """
+        logger = logging.getLogger(__name__)
+        logger.info("Attempting user logout.")
         self.tagger.mb_logout(self.on_logout_finished)
 
-    def on_logout_finished(self, successful, error_msg=None):
-        if not successful:
+    def on_logout_finished(self, successful: bool, error_msg: str | None = None) -> None:
+        """
+        Callback after logout attempt, handles errors and updates the UI.
+        Adds logging for logout result.
+        :param successful: Whether the logout was successful.
+        :param error_msg: Error message for failed logout.
+        """
+        logger = logging.getLogger(__name__)
+        if successful:
+            logger.info("User logout successful.")
+        else:
+            logger.error(f"User logout failed: {error_msg}")
             msg = QtWidgets.QMessageBox(self)
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
             msg.setWindowTitle(_("Logout error"))
@@ -188,15 +269,26 @@ class GeneralOptionsPage(OptionsPage):
                 self.logout()
         self.update_login_logout()
 
-    def restore_defaults(self):
+    def restore_defaults(self) -> None:
+        """
+        Reset settings to default values and log out the user.
+        """
         super().restore_defaults()
         self.logout()
 
-    def _update_analyze_new_files(self, cluster_new_files):
+    def _update_analyze_new_files(self, cluster_new_files: bool) -> None:
+        """
+        Disable the "analyze_new_files" option when "cluster_new_files" is enabled.
+        :param cluster_new_files: State of "cluster_new_files".
+        """
         if cluster_new_files:
             self.ui.analyze_new_files.setChecked(False)
 
-    def _update_cluster_new_files(self, analyze_new_files):
+    def _update_cluster_new_files(self, analyze_new_files: bool) -> None:
+        """
+        Disable the "cluster_new_files" option when "analyze_new_files" is enabled.
+        :param analyze_new_files: State of "analyze_new_files".
+        """
         if analyze_new_files:
             self.ui.cluster_new_files.setChecked(False)
 
