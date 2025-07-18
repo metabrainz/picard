@@ -106,6 +106,18 @@ class CoverOptionsPage(OptionsPage):
         self.ui.select_types_button.clicked.connect(self.select_never_replace_image_types)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button, self.ui.down_button)
 
+        # Tooltips for main fields (English)
+        self.ui.save_images_to_tags.setToolTip("Embed cover images in music files.")
+        self.ui.cb_embed_front_only.setToolTip("Embed only the first front cover.")
+        self.ui.cb_dont_replace_with_smaller.setToolTip("Do not replace with smaller cover images.")
+        self.ui.cb_never_replace_types.setToolTip("Never replace certain image types.")
+        self.ui.select_types_button.setToolTip("Select image types that should never be replaced.")
+        self.ui.save_images_to_files.setToolTip("Save cover images as separate files.")
+        self.ui.cover_image_filename.setToolTip("Filename for saved cover images.")
+        self.ui.save_images_overwrite.setToolTip("Overwrite existing cover images.")
+        self.ui.save_only_one_front_image.setToolTip("Save only one front cover per release.")
+        self.ui.image_type_as_filename.setToolTip("Use image type as filename.")
+        self.ui.ca_providers_list.setToolTip("Order and selection of cover art providers.")
 
     def restore_defaults(self: "CoverOptionsPage") -> None:
         """

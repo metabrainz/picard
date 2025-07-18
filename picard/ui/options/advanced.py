@@ -74,6 +74,17 @@ class AdvancedOptionsPage(OptionsPage):
         self.logger = logging.getLogger("picard.ui.options.advanced")
         self.init_regex_checker(self.ui.ignore_regex, self.ui.regex_error)
 
+        # Tooltips für die wichtigsten Felder (Englisch)
+        self.ui.ignore_regex.setToolTip("Ignore files and folders matching this regular expression.")
+        self.ui.ignore_hidden_files.setToolTip("Ignore hidden files and folders.")
+        self.ui.recursively_add_files.setToolTip("Automatically add files from subfolders.")
+        self.ui.ignore_track_duration_difference_under.setToolTip("Ignore track duration difference under this value (seconds).")
+        self.ui.query_limit.setToolTip("Maximum number of simultaneous queries to MusicBrainz.")
+        self.ui.completeness_ignore_videos.setToolTip("Ignore videos in completeness check.")
+        self.ui.completeness_ignore_pregap.setToolTip("Ignore pregap tracks in completeness check.")
+        self.ui.completeness_ignore_data.setToolTip("Ignore data tracks in completeness check.")
+        self.ui.completeness_ignore_silence.setToolTip("Ignore silence tracks in completeness check.")
+        self.ui.compare_ignore_tags.setToolTip("Tags to ignore when comparing.")
 
     def load(self: "AdvancedOptionsPage") -> None:
         """

@@ -57,11 +57,17 @@ class RatingsOptionsPage(OptionsPage):
         Initialize the RatingsOptionsPage, set up the UI and connect logic.
         :param parent: The parent widget.
         Sets up logging for this options page.
+        Adds tooltips to all fields.
         """
         super().__init__(parent=parent)
         self.ui = Ui_RatingsOptionsPage()
         self.ui.setupUi(self)
         self.logger = logging.getLogger("picard.ui.options.ratings")
+
+        # Tooltips for main fields (English)
+        self.ui.enable_ratings.setToolTip("Enable ratings for tracks and albums.")
+        self.ui.rating_user_email.setToolTip("E-mail address for submitting ratings to MusicBrainz.")
+        self.ui.submit_ratings.setToolTip("Automatically submit ratings to MusicBrainz when changed.")
 
     def load(self: "RatingsOptionsPage") -> None:
         """

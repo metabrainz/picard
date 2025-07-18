@@ -120,6 +120,14 @@ class GenresOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.logger = logging.getLogger("picard.ui.options.genres")
 
+        # Tooltips for main fields (English)
+        self.ui.use_genres.setToolTip("Enable genres for tags.")
+        self.ui.only_my_genres.setToolTip("Use only your own genres, not those from MusicBrainz.")
+        self.ui.artists_genres.setToolTip("Use genres from artists if available.")
+        self.ui.folksonomy_tags.setToolTip("Use folksonomy tags as genres.")
+        self.ui.min_genre_usage.setToolTip("Minimum usage for a genre to be included.")
+        self.ui.max_genres.setToolTip("Maximum number of genres per release.")
+        self.ui.join_genres.setToolTip("Separator for joined genres.")
         self.ui.genres_filter.setToolTip(_(TOOLTIP_GENRES_FILTER))
         self.ui.genres_filter.textChanged.connect(self.update_test_genres_filter)
 

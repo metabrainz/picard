@@ -75,6 +75,15 @@ class TagsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.logger = logging.getLogger("picard.ui.options.tags")
 
+        # Tooltips for main fields (English)
+        self.ui.write_tags.setToolTip("Write tags to music files.")
+        self.ui.preserve_timestamps.setToolTip("Preserve original file timestamps.")
+        self.ui.clear_existing_tags.setToolTip("Clear existing tags before writing.")
+        self.ui.preserve_images.setToolTip("Preserve existing embedded images.")
+        self.ui.remove_id3_from_flac.setToolTip("Remove ID3 tags from FLAC files.")
+        self.ui.remove_ape_from_mp3.setToolTip("Remove APE tags from MP3 files.")
+        self.ui.fix_missing_seekpoints_flac.setToolTip("Fix missing seekpoints in FLAC files.")
+        self.ui.preserved_tags.setToolTip("List of tags to preserve when writing.")
     def load(self: "TagsOptionsPage") -> None:
         """
         Load current tag settings from the configuration and update the UI accordingly. Logs errors.
