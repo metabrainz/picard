@@ -1429,39 +1429,48 @@ def setup_translator(tagger):
 
 def main(localedir=None, autoupdate=True):
     """Main entry point to the program"""
-    setup_application()
+    try:
+        setup_application()
 
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    cmdline_args = process_cmdline_args()
+        cmdline_args = process_cmdline_args()
 
-    if cmdline_args.long_version:
-        _ = QtCore.QCoreApplication(sys.argv)
-        print_message_and_exit(versions.as_string())
-    if cmdline_args.version:
-        print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
-    if cmdline_args.remote_commands_help:
-        print_help_for_commands()
-    if cmdline_args.processable:
-        log.info("Sending messages to main instance: %r", cmdline_args.processable)
+        if cmdline_args.long_version:
+            _ = QtCore.QCoreApplication(sys.argv)
+            print_message_and_exit(versions.as_string())
+        if cmdline_args.version:
+            print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
+        if cmdline_args.remote_commands_help:
+            print_help_for_commands()
+        if cmdline_args.processable:
+            log.info("Sending messages to main instance: %r", cmdline_args.processable)
 
-    pipe_status = setup_pipe_handler(cmdline_args)
+        pipe_status = setup_pipe_handler(cmdline_args)
 
-    # pipe has sent its args to existing one, doesn't need to start
-    if pipe_status.is_remote:
-        log.debug("No need for spawning a new instance, exiting...")
-        sys.exit(0)
+        # pipe has sent its args to existing one, doesn't need to start
+        if pipe_status.is_remote:
+            log.debug("No need for spawning a new instance, exiting...")
+            sys.exit(0)
 
-    setup_dbus()
+        setup_dbus()
 
-    tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
+        tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
-    setup_translator(tagger)
+        setup_translator(tagger)
 
-    tagger.startTimer(1000)
-    exit_code = tagger.run()
+        tagger.startTimer(1000)
+        exit_code = tagger.run()
 
-    if tagger.pipe_handler.unexpected_removal:
-        os._exit(exit_code)
+        if tagger.pipe_handler.unexpected_removal:
+            os._exit(exit_code)
 
-    sys.exit(exit_code)
+        sys.exit(exit_code)
+    except Exception as e:
+        import traceback
+        error_message = f"An unexpected error occurred:\n{str(e)}\n\n{traceback.format_exc()}"
+        print_message_and_exit(
+            "Fatal error: Picard encountered an unexpected exception and needs to close.",
+            error_message,
+            status=1
+        )
