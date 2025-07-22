@@ -29,6 +29,11 @@ import pytest
 from picard.ui import theme_detect
 from itertools import chain, repeat
 
+from unittest.mock import MagicMock
+import picard.ui.theme as theme_mod
+from PyQt6 import QtGui, QtCore
+import types
+
 @pytest.fixture
 def kde_config_dir(tmp_path: Path) -> Path:
     config_dir = tmp_path / ".config"
@@ -207,3 +212,154 @@ def test_freedesktop_color_scheme_detection(gsettings_value: str, expected: bool
 def test_freedesktop_color_scheme_detection_failure(side_effect) -> None:
     with patch("subprocess.run", side_effect=side_effect):
         assert theme_detect.detect_freedesktop_color_scheme_dark() is False
+
+# Shared expected dark palette colors (should match DARK_PALETTE_COLORS in theme.py)
+EXPECTED_DARK_PALETTE_COLORS = {
+    QtGui.QPalette.ColorRole.Window: QtGui.QColor(51, 51, 51),
+    QtGui.QPalette.ColorRole.WindowText: QtCore.Qt.GlobalColor.white,
+    QtGui.QPalette.ColorRole.Base: QtGui.QColor(31, 31, 31),
+    QtGui.QPalette.ColorRole.AlternateBase: QtGui.QColor(51, 51, 51),
+    QtGui.QPalette.ColorRole.ToolTipBase: QtGui.QColor(51, 51, 51),
+    QtGui.QPalette.ColorRole.ToolTipText: QtCore.Qt.GlobalColor.white,
+    QtGui.QPalette.ColorRole.Text: QtCore.Qt.GlobalColor.white,
+    QtGui.QPalette.ColorRole.Button: QtGui.QColor(51, 51, 51),
+    QtGui.QPalette.ColorRole.ButtonText: QtCore.Qt.GlobalColor.white,
+    QtGui.QPalette.ColorRole.BrightText: QtCore.Qt.GlobalColor.red,
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text): QtCore.Qt.GlobalColor.darkGray,
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Light): QtGui.QColor(0, 0, 0, 0),
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText): QtCore.Qt.GlobalColor.darkGray,
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base): QtGui.QColor(60, 60, 60),
+    (QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Highlight): QtGui.QColor(51, 51, 51),
+    (QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.HighlightedText): QtCore.Qt.GlobalColor.white,
+}
+
+def assert_palette_matches_expected(palette, expected_colors):
+    for key, expected in expected_colors.items():
+        if isinstance(key, tuple):
+            group, role = key
+            actual = palette.color(group, role)
+        else:
+            actual = palette.color(QtGui.QPalette.ColorGroup.Active, key) if isinstance(key, QtGui.QPalette.ColorRole) else palette.color(key)
+        if isinstance(expected, QtGui.QColor):
+            # Compare by value, not object identity
+            assert actual.getRgb() == expected.getRgb(), f"Color for {key} should be {expected.getRgb()}, got {actual.getRgb()}"
+        else:
+            assert actual == QtGui.QColor(expected), f"Color for {key} should be {expected}, got {actual}"
+
+# Only check these roles for light mode, as they are guaranteed to differ
+LIGHT_MODE_DISTINCT_ROLES = [
+    QtGui.QPalette.ColorRole.Window,
+    QtGui.QPalette.ColorRole.Base,
+    QtGui.QPalette.ColorRole.Button,
+    QtGui.QPalette.ColorRole.AlternateBase,
+]
+
+def assert_palette_not_dark(palette, expected_colors):
+    for key, expected in expected_colors.items():
+        # Only check the main roles for light mode
+        if isinstance(key, tuple):
+            continue
+        if key not in LIGHT_MODE_DISTINCT_ROLES:
+            continue
+        actual = palette.color(QtGui.QPalette.ColorGroup.Active, key)
+        if isinstance(expected, QtGui.QColor):
+            assert actual.getRgb() != expected.getRgb(), f"Color for {key} should differ from dark mode in light mode; got {actual.getRgb()}"
+        else:
+            assert actual != QtGui.QColor(expected), f"Color for {key} should differ from dark mode in light mode; got {actual}"
+
+@pytest.mark.parametrize(
+    "dark_mode, expected_dark", [
+        (True, True),
+        (False, False),
+    ],
+)
+def test_linux_dark_theme_palette(monkeypatch, dark_mode, expected_dark):
+    # Simulate Linux (not Windows, not macOS, not Haiku)
+    monkeypatch.setattr(theme_mod, "IS_WIN", False)
+    monkeypatch.setattr(theme_mod, "IS_MACOS", False)
+    monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
+    # Set config to SYSTEM
+    config_mock = MagicMock()
+    config_mock.setting = {"ui_theme": "system"}
+    monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
+    # Patch _detect_linux_dark_mode to return dark_mode
+    theme = theme_mod.BaseTheme()
+    theme._detect_linux_dark_mode = lambda: dark_mode
+    # Mock app and palette
+    class DummyPalette(QtGui.QPalette):
+        pass
+    class DummyApp:
+        def __init__(self):
+            self._palette = DummyPalette()
+        def setStyle(self, style):
+            pass
+        def setStyleSheet(self, stylesheet):
+            pass
+        def palette(self):
+            return self._palette
+        def setPalette(self, palette):
+            self._palette = palette
+    app = DummyApp()
+    theme.setup(app)
+    palette = app._palette
+    if expected_dark:
+        assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
+    else:
+        assert_palette_not_dark(palette, EXPECTED_DARK_PALETTE_COLORS)
+
+@pytest.mark.parametrize(
+    "apps_use_light_theme, expected_dark", [
+        (0, True),
+        (1, False),
+    ],
+)
+def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_dark):
+    import picard.ui.theme as theme_mod
+    # Patch winreg
+    winreg_mock = types.SimpleNamespace()
+    monkeypatch.setattr(theme_mod, "winreg", winreg_mock)
+    # Mock OpenKey and QueryValueEx for dark mode
+    class DummyKey:
+        def __enter__(self): return self
+        def __exit__(self, exc_type, exc_val, exc_tb): pass
+    def openkey_side_effect(key, subkey):
+        if "Personalize" in subkey:
+            return DummyKey()
+        if "DWM" in subkey:
+            return DummyKey()
+        raise FileNotFoundError
+    def queryvalueex_side_effect(key, value):
+        if value == "AppsUseLightTheme":
+            return (apps_use_light_theme,)
+        if value == "ColorizationColor":
+            return (0x123456,)
+        raise FileNotFoundError
+    winreg_mock.HKEY_CURRENT_USER = 0
+    winreg_mock.OpenKey = openkey_side_effect
+    winreg_mock.QueryValueEx = queryvalueex_side_effect
+    # Patch config
+    config_mock = MagicMock()
+    config_mock.setting = {"ui_theme": "default"}
+    monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
+    # Instantiate WindowsTheme and run setup
+    theme = theme_mod.WindowsTheme()
+    class DummyPalette(QtGui.QPalette):
+        pass
+    class DummyApp:
+        def __init__(self):
+            self._palette = DummyPalette()
+        def setStyle(self, style):
+            pass
+        def setStyleSheet(self, stylesheet):
+            pass
+        def palette(self):
+            return self._palette
+        def setPalette(self, palette):
+            self._palette = palette
+    app = DummyApp()
+    theme.setup(app)
+    palette = app._palette
+    if expected_dark:
+        assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
+    else:
+        assert_palette_not_dark(palette, EXPECTED_DARK_PALETTE_COLORS)
