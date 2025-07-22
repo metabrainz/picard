@@ -27,6 +27,7 @@ from unittest.mock import patch
 import pytest
 
 from picard.ui import theme_detect
+from itertools import chain, repeat
 
 @pytest.fixture
 def kde_config_dir(tmp_path: Path) -> Path:
@@ -91,9 +92,10 @@ def test_detect_linux_dark_mode_integration(color_scheme: str, gtk_theme: str, k
     kdeglobals.write_text(f"[General]\n{kde_content}")
     with patch("pathlib.Path.home", return_value=kde_config_dir.parent):
         with patch("picard.ui.theme_detect.gsettings_get") as mock_gsettings:
-            # Simulate gsettings: first call for color-scheme, second for gtk-theme
-            mock_gsettings.side_effect = [color_scheme, gtk_theme]
-            # Compose the strategies in order
+            # First call: freedesktop (simulate not set, return '')
+            # Second: gnome color-scheme
+            # Third: gnome gtk-theme
+            mock_gsettings.side_effect = chain(['', color_scheme, gtk_theme], repeat(''))
             strategies = theme_detect.get_linux_dark_mode_strategies()
             result = False
             for strategy in strategies:
@@ -101,6 +103,22 @@ def test_detect_linux_dark_mode_integration(color_scheme: str, gtk_theme: str, k
                     result = True
                     break
             assert result is expected
+
+# Integration: freedesktop takes priority
+def test_detect_linux_dark_mode_priority(tmp_path: Path) -> None:
+    # If freedesktop returns dark, it should take priority over others
+    with patch("subprocess.run") as mock_run:
+        # First call: freedesktop (returns '1' for dark)
+        # Other calls: return '' (should not be called, but if so, not dark)
+        mock_run.return_value.stdout = "1"
+        mock_run.return_value.returncode = 0
+        strategies = theme_detect.get_linux_dark_mode_strategies()
+        result = False
+        for strategy in strategies:
+            if strategy():
+                result = True
+                break
+        assert result is True
 
 # --- XFCE dark mode detection ---
 @pytest.mark.parametrize(
@@ -164,3 +182,28 @@ def test_lxqt_dark_theme_detection_failure(file_exists: bool, raises, tmp_path: 
                 assert theme_detect.detect_lxqt_dark_theme() is False
         elif not file_exists:
             assert theme_detect.detect_lxqt_dark_theme() is False
+
+@pytest.mark.parametrize(
+    ("gsettings_value", "expected"),
+    [
+        ("1", True),
+        ("0", False),
+        ("", False),
+    ],
+)
+def test_freedesktop_color_scheme_detection(gsettings_value: str, expected: bool) -> None:
+    with patch("subprocess.run") as mock_run:
+        mock_run.return_value.stdout = gsettings_value
+        mock_run.return_value.returncode = 0
+        assert theme_detect.detect_freedesktop_color_scheme_dark() is expected
+
+@pytest.mark.parametrize(
+    ("side_effect",),
+    [
+        (FileNotFoundError(),),
+        (subprocess.CalledProcessError(1, "gsettings"),),
+    ],
+)
+def test_freedesktop_color_scheme_detection_failure(side_effect) -> None:
+    with patch("subprocess.run", side_effect=side_effect):
+        assert theme_detect.detect_freedesktop_color_scheme_dark() is False

@@ -98,9 +98,31 @@ def detect_lxqt_dark_theme() -> bool:
             log.debug(f"LXQt theme detection failed: {e}")
     return False
 
+def detect_freedesktop_color_scheme_dark() -> bool:
+    """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
+    value = gsettings_get('color-scheme')
+    # Try org.freedesktop.appearance first
+    try:
+        result = subprocess.run(
+            [
+                'gsettings', 'get', 'org.freedesktop.appearance', 'color-scheme',
+            ], capture_output=True, text=True, check=True,
+        )
+        value = result.stdout.strip().strip("'\"")
+        if value == '1':
+            log.debug("Detected org.freedesktop.appearance.color-scheme: dark (1)")
+            return True
+        elif value == '0':
+            log.debug("Detected org.freedesktop.appearance.color-scheme: light (0)")
+            return False
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        log.debug("gsettings get org.freedesktop.appearance.color-scheme failed.")
+    return False
+
 def get_linux_dark_mode_strategies() -> list:
     """Return the list of dark mode detection strategies in order of priority."""
     return [
+        detect_freedesktop_color_scheme_dark,
         detect_gnome_color_scheme_dark,
         detect_gnome_gtk_theme_dark,
         detect_kde_colorscheme_dark,
