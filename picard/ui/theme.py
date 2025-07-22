@@ -22,8 +22,6 @@
 
 
 from enum import Enum
-from pathlib import Path
-import subprocess
 
 from PyQt6 import (
     QtCore,
@@ -38,6 +36,9 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+
+from picard.ui.theme_detect import get_linux_dark_mode_strategies
+
 
 # DRY: Common dark background color
 DARK_BG_COLOR = QtGui.QColor(51, 51, 51)
@@ -99,56 +100,14 @@ class BaseTheme:
     def __init__(self):
         self._dark_theme = False
         self._loaded_config_theme = UiTheme.DEFAULT
+        # Registry of dark mode detection strategies for Linux DEs
+        self._dark_mode_strategies = get_linux_dark_mode_strategies()
 
-    def _gsettings_get(self, key):
-        """Helper to get a gsettings value. Returns string or None."""
-        try:
-            result = subprocess.run(
-                [
-                    'gsettings', 'get', 'org.gnome.desktop.interface', key,
-                ], capture_output=True, text=True, check=True,
-            )
-            return result.stdout.strip().strip("'\"")
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            log.debug(f"gsettings get {key} failed.")
-            return None
-
-    def _detect_gnome_color_scheme_dark(self):
-        value = self._gsettings_get('color-scheme')
-        if value and 'dark' in value.lower():
-            log.debug("Detected GNOME color-scheme: dark")
-            return True
-        return False
-
-    def _detect_gnome_gtk_theme_dark(self):
-        theme = self._gsettings_get('gtk-theme')
-        if theme and 'dark' in theme.lower():
-            log.debug(f"Detected GNOME gtk-theme: {theme} (dark)")
-            return True
-        return False
-
-    def _detect_kde_colorscheme_dark(self):
-        kdeglobals = Path.home() / ".config" / "kdeglobals"
-        if kdeglobals.exists():
-            try:
-                with open(kdeglobals, 'r') as f:
-                    for line in f:
-                        if line.strip().startswith("ColorScheme="):
-                            scheme = line.split('=', 1)[1].strip().lower()
-                            if 'dark' in scheme:
-                                log.debug(f"Detected KDE ColorScheme: {scheme} (dark)")
-                                return True
-            except OSError as e:
-                log.debug(f"KDE ColorScheme detection failed: {e}")
-        return False
-
-    def _detect_linux_dark_mode(self):
-        if self._detect_gnome_color_scheme_dark():
-            return True
-        if self._detect_gnome_gtk_theme_dark():
-            return True
-        if self._detect_kde_colorscheme_dark():
-            return True
+    def _detect_linux_dark_mode(self) -> bool:
+        # Iterate through all registered strategies
+        for strategy in self._dark_mode_strategies:
+            if strategy():
+                return True
         log.debug("No Linux system dark mode detected, defaulting to light mode.")
         return False
 
