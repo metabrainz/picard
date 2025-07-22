@@ -20,6 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os
 from pathlib import Path
 import subprocess
 
@@ -119,13 +120,50 @@ def detect_freedesktop_color_scheme_dark() -> bool:
         log.debug("gsettings get org.freedesktop.appearance.color-scheme failed.")
     return False
 
+def get_current_desktop_environment() -> str:
+    """Detect the current desktop environment (DE) as a lowercase string."""
+    de = os.environ.get("XDG_CURRENT_DESKTOP")
+    if de:
+        return de.lower()
+    # Fallbacks for KDE, XFCE, LXQt
+    if os.environ.get("KDE_FULL_SESSION") == "true":
+        return "kde"
+    if os.environ.get("XDG_SESSION_DESKTOP"):
+        return os.environ["XDG_SESSION_DESKTOP"].lower()
+    if os.environ.get("DESKTOP_SESSION"):
+        return os.environ["DESKTOP_SESSION"].lower()
+    return ""
+
+# Wrappers for DE-specific detection
+
+def detect_gnome_dark_wrapper() -> bool:
+    if get_current_desktop_environment() in {"gnome", "unity"}:
+        return detect_gnome_color_scheme_dark() or detect_gnome_gtk_theme_dark()
+    return False
+
+def detect_kde_dark_wrapper() -> bool:
+    if get_current_desktop_environment() == "kde":
+        return detect_kde_colorscheme_dark()
+    return False
+
+def detect_xfce_dark_wrapper() -> bool:
+    if get_current_desktop_environment() == "xfce":
+        return detect_xfce_dark_theme()
+    return False
+
+def detect_lxqt_dark_wrapper() -> bool:
+    if get_current_desktop_environment() == "lxqt":
+        return detect_lxqt_dark_theme()
+    return False
+
+# Update the strategy list to use wrappers
+
 def get_linux_dark_mode_strategies() -> list:
     """Return the list of dark mode detection strategies in order of priority."""
     return [
         detect_freedesktop_color_scheme_dark,
-        detect_gnome_color_scheme_dark,
-        detect_gnome_gtk_theme_dark,
-        detect_kde_colorscheme_dark,
-        detect_xfce_dark_theme,
-        detect_lxqt_dark_theme,
+        detect_gnome_dark_wrapper,
+        detect_kde_dark_wrapper,
+        detect_xfce_dark_wrapper,
+        detect_lxqt_dark_wrapper,
     ]

@@ -20,19 +20,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from itertools import (
+    chain,
+    repeat,
+)
+import os
 from pathlib import Path
 import subprocess
-from unittest.mock import patch
+import types
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
+
+from PyQt6 import (
+    QtCore,
+    QtGui,
+)
 
 import pytest
 
 from picard.ui import theme_detect
-from itertools import chain, repeat
-
-from unittest.mock import MagicMock
 import picard.ui.theme as theme_mod
-from PyQt6 import QtGui, QtCore
-import types
+
 
 @pytest.fixture
 def kde_config_dir(tmp_path: Path) -> Path:
@@ -84,30 +94,31 @@ def test_kde_colorscheme_detection(file_content: str, expected: bool, kde_config
         assert theme_detect.detect_kde_colorscheme_dark() is expected
 
 @pytest.mark.parametrize(
-    ("color_scheme", "gtk_theme", "kde_content", "expected"),
+    ("color_scheme", "gtk_theme", "kde_content", "expected", "de"),
     [
-        ("prefer-dark", "Adwaita", "ColorScheme=Breeze\n", True),
-        ("default", "Adwaita-dark", "ColorScheme=Breeze\n", True),
-        ("default", "Adwaita", "ColorScheme=BreezeDark\n", True),
-        ("default", "Adwaita", "ColorScheme=Breeze\n", False),
+        ("prefer-dark", "Adwaita", "ColorScheme=Breeze\n", True, "gnome"),
+        ("default", "Adwaita-dark", "ColorScheme=Breeze\n", True, "gnome"),
+        ("default", "Adwaita", "ColorScheme=BreezeDark\n", True, "kde"),
+        ("default", "Adwaita", "ColorScheme=Breeze\n", False, "kde"),
     ],
 )
-def test_detect_linux_dark_mode_integration(color_scheme: str, gtk_theme: str, kde_content: str, expected: bool, kde_config_dir: Path) -> None:
+def test_detect_linux_dark_mode_integration(color_scheme: str, gtk_theme: str, kde_content: str, expected: bool, de: str, kde_config_dir: Path) -> None:
     kdeglobals = kde_config_dir / "kdeglobals"
     kdeglobals.write_text(f"[General]\n{kde_content}")
-    with patch("pathlib.Path.home", return_value=kde_config_dir.parent):
-        with patch("picard.ui.theme_detect.gsettings_get") as mock_gsettings:
-            # First call: freedesktop (simulate not set, return '')
-            # Second: gnome color-scheme
-            # Third: gnome gtk-theme
-            mock_gsettings.side_effect = chain(['', color_scheme, gtk_theme], repeat(''))
-            strategies = theme_detect.get_linux_dark_mode_strategies()
-            result = False
-            for strategy in strategies:
-                if strategy():
-                    result = True
-                    break
-            assert result is expected
+    with patch.dict(os.environ, {"XDG_CURRENT_DESKTOP": de}, clear=True):
+        with patch("pathlib.Path.home", return_value=kde_config_dir.parent):
+            with patch("picard.ui.theme_detect.gsettings_get") as mock_gsettings:
+                # First call: freedesktop (simulate not set, return '')
+                # Second: gnome color-scheme
+                # Third: gnome gtk-theme
+                mock_gsettings.side_effect = chain(['', color_scheme, gtk_theme], repeat(''))
+                strategies = theme_detect.get_linux_dark_mode_strategies()
+                result = False
+                for strategy in strategies:
+                    if strategy():
+                        result = True
+                        break
+                assert result is expected
 
 # Integration: freedesktop takes priority
 def test_detect_linux_dark_mode_priority(tmp_path: Path) -> None:
@@ -268,7 +279,7 @@ def assert_palette_not_dark(palette, expected_colors):
             assert actual != QtGui.QColor(expected), f"Color for {key} should differ from dark mode in light mode; got {actual}"
 
 @pytest.mark.parametrize(
-    "dark_mode, expected_dark", [
+    ("dark_mode", "expected_dark"), [
         (True, True),
         (False, False),
     ],
@@ -308,13 +319,14 @@ def test_linux_dark_theme_palette(monkeypatch, dark_mode, expected_dark):
         assert_palette_not_dark(palette, EXPECTED_DARK_PALETTE_COLORS)
 
 @pytest.mark.parametrize(
-    "apps_use_light_theme, expected_dark", [
+    ("apps_use_light_theme", "expected_dark"), [
         (0, True),
         (1, False),
     ],
 )
 def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_dark):
     import picard.ui.theme as theme_mod
+
     # Patch winreg
     winreg_mock = types.SimpleNamespace()
     monkeypatch.setattr(theme_mod, "winreg", winreg_mock)
@@ -363,3 +375,45 @@ def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_
         assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
     else:
         assert_palette_not_dark(palette, EXPECTED_DARK_PALETTE_COLORS)
+
+
+@pytest.mark.parametrize(
+    ("env", "expected"),
+    [
+        ({"XDG_CURRENT_DESKTOP": "GNOME"}, "gnome"),
+        ({"XDG_CURRENT_DESKTOP": "KDE"}, "kde"),
+        ({"KDE_FULL_SESSION": "true"}, "kde"),
+        ({"XDG_SESSION_DESKTOP": "xfce"}, "xfce"),
+        ({"DESKTOP_SESSION": "lxqt"}, "lxqt"),
+        ({}, ""),
+    ],
+)
+def test_get_current_desktop_environment_param(env, expected):
+    with patch.dict(os.environ, env, clear=True):
+        assert theme_detect.get_current_desktop_environment() == expected
+
+@pytest.mark.parametrize(
+    "args",
+    [
+        ("gnome", theme_detect.detect_gnome_dark_wrapper, "picard.ui.theme_detect.detect_gnome_color_scheme_dark", True),
+        ("kde", theme_detect.detect_kde_dark_wrapper, "picard.ui.theme_detect.detect_kde_colorscheme_dark", True),
+        ("xfce", theme_detect.detect_xfce_dark_wrapper, "picard.ui.theme_detect.detect_xfce_dark_theme", True),
+        ("lxqt", theme_detect.detect_lxqt_dark_wrapper, "picard.ui.theme_detect.detect_lxqt_dark_theme", True),
+        ("other", theme_detect.detect_gnome_dark_wrapper, "picard.ui.theme_detect.detect_gnome_color_scheme_dark", False),
+        ("other", theme_detect.detect_kde_dark_wrapper, "picard.ui.theme_detect.detect_kde_colorscheme_dark", False),
+        ("other", theme_detect.detect_xfce_dark_wrapper, "picard.ui.theme_detect.detect_xfce_dark_theme", False),
+        ("other", theme_detect.detect_lxqt_dark_wrapper, "picard.ui.theme_detect.detect_lxqt_dark_theme", False),
+    ],
+)
+def test_de_specific_wrappers_only_run_for_matching_de_param(args):
+    de, wrapper, detect_func, should_call = args
+    env = {"XDG_CURRENT_DESKTOP": de} if de != "other" else {"XDG_CURRENT_DESKTOP": "somethingelse"}
+    with patch.dict(os.environ, env, clear=True):
+        with patch(detect_func, return_value=True) as mock_detect:
+            result = wrapper()
+            if should_call:
+                mock_detect.assert_called()
+                assert result is True
+            else:
+                mock_detect.assert_not_called()
+                assert result is False
