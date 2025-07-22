@@ -155,8 +155,9 @@ class BaseTheme:
             self._accent_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
 
         # Linux-specific: If SYSTEM theme, try to detect system dark mode
+        # Do not apply override if already dark theme
         is_dark_theme = self.is_dark_theme
-        if (not IS_WIN and not IS_MACOS and not IS_HAIKU and self._loaded_config_theme == UiTheme.SYSTEM):
+        if (not self._dark_theme and not IS_WIN and not IS_MACOS and not IS_HAIKU and self._loaded_config_theme == UiTheme.SYSTEM):
             is_dark_theme = self._detect_linux_dark_mode()
             if is_dark_theme:
                 # Apply a dark palette centrally defined

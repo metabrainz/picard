@@ -279,12 +279,15 @@ def assert_palette_not_dark(palette, expected_colors):
             assert actual != QtGui.QColor(expected), f"Color for {key} should differ from dark mode in light mode; got {actual}"
 
 @pytest.mark.parametrize(
-    ("dark_mode", "expected_dark"), [
-        (True, True),
-        (False, False),
+    "already_dark_theme, dark_mode, expect_dark_palette",
+    [
+        (True, True, False),   # Already dark, detection True: do NOT override
+        (True, False, False),  # Already dark, detection False: do NOT override
+        (False, True, True),   # Not dark, detection True: override
+        (False, False, False), # Not dark, detection False: do NOT override
     ],
 )
-def test_linux_dark_theme_palette(monkeypatch, dark_mode, expected_dark):
+def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, dark_mode, expect_dark_palette):
     # Simulate Linux (not Windows, not macOS, not Haiku)
     monkeypatch.setattr(theme_mod, "IS_WIN", False)
     monkeypatch.setattr(theme_mod, "IS_MACOS", False)
@@ -298,7 +301,15 @@ def test_linux_dark_theme_palette(monkeypatch, dark_mode, expected_dark):
     theme._detect_linux_dark_mode = lambda: dark_mode
     # Mock app and palette
     class DummyPalette(QtGui.QPalette):
-        pass
+        def __init__(self):
+            super().__init__()
+            # Set a unique color to detect override
+            self.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window, QtGui.QColor(123, 123, 123))
+            # Set base color to dark or light to control self._dark_theme
+            if already_dark_theme:
+                self.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base, QtGui.QColor(0, 0, 0))
+            else:
+                self.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base, QtGui.QColor(255, 255, 255))
     class DummyApp:
         def __init__(self):
             self._palette = DummyPalette()
@@ -313,10 +324,12 @@ def test_linux_dark_theme_palette(monkeypatch, dark_mode, expected_dark):
     app = DummyApp()
     theme.setup(app)
     palette = app._palette
-    if expected_dark:
+    if expect_dark_palette:
         assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
     else:
-        assert_palette_not_dark(palette, EXPECTED_DARK_PALETTE_COLORS)
+        # The Window color should remain the unique color if not overridden
+        window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
+        assert window_color == QtGui.QColor(123, 123, 123), f"Palette should not be overridden, got {window_color.getRgb()}"
 
 @pytest.mark.parametrize(
     ("apps_use_light_theme", "expected_dark"), [
@@ -417,3 +430,53 @@ def test_de_specific_wrappers_only_run_for_matching_de_param(args):
             else:
                 mock_detect.assert_not_called()
                 assert result is False
+
+@pytest.mark.parametrize(
+    "already_dark_theme, linux_dark_mode_detected, expect_dark_palette",
+    [
+        (True, True, False),   # Already dark, detection True: do NOT override
+        (True, False, False),  # Already dark, detection False: do NOT override
+        (False, True, True),   # Not dark, detection True: override
+        (False, False, False), # Not dark, detection False: do NOT override
+    ],
+)
+def test_linux_dark_palette_override_only_if_not_already_dark(monkeypatch, already_dark_theme, linux_dark_mode_detected, expect_dark_palette):
+    monkeypatch.setattr(theme_mod, "IS_WIN", False)
+    monkeypatch.setattr(theme_mod, "IS_MACOS", False)
+    monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
+    config_mock = MagicMock()
+    config_mock.setting = {"ui_theme": "system"}
+    monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
+
+    class DummyPalette(QtGui.QPalette):
+        def __init__(self):
+            super().__init__()
+            # Set a unique color to detect override
+            self.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window, QtGui.QColor(123, 123, 123))
+            # Set base color to dark or light to control self._dark_theme
+            if already_dark_theme:
+                self.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base, QtGui.QColor(0, 0, 0))
+            else:
+                self.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base, QtGui.QColor(255, 255, 255))
+    class DummyApp:
+        def __init__(self):
+            self._palette = DummyPalette()
+        def setStyle(self, style):
+            pass
+        def setStyleSheet(self, stylesheet):
+            pass
+        def palette(self):
+            return self._palette
+        def setPalette(self, palette):
+            self._palette = palette
+    app = DummyApp()
+    theme = theme_mod.BaseTheme()
+    theme._detect_linux_dark_mode = lambda: linux_dark_mode_detected
+    theme.setup(app)
+    palette = app._palette
+    if expect_dark_palette:
+        assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
+    else:
+        # The Window color should remain the unique color if not overridden
+        window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
+        assert window_color == QtGui.QColor(123, 123, 123), f"Palette should not be overridden, got {window_color.getRgb()}"
