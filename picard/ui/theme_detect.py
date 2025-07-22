@@ -32,13 +32,20 @@ def gsettings_get(key: str) -> str | None:
     try:
         result = subprocess.run(
             [
-                'gsettings', 'get', 'org.gnome.desktop.interface', key,
-            ], capture_output=True, text=True, check=True,
+                'gsettings',
+                'get',
+                'org.gnome.desktop.interface',
+                key,
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         return result.stdout.strip().strip("'\"")
     except (subprocess.CalledProcessError, FileNotFoundError):
         log.debug(f"gsettings get {key} failed.")
         return None
+
 
 def detect_gnome_color_scheme_dark() -> bool:
     value = gsettings_get('color-scheme')
@@ -47,12 +54,14 @@ def detect_gnome_color_scheme_dark() -> bool:
         return True
     return False
 
+
 def detect_gnome_gtk_theme_dark() -> bool:
     theme = gsettings_get('gtk-theme')
     if theme and 'dark' in theme.lower():
         log.debug(f"Detected GNOME gtk-theme: {theme} (dark)")
         return True
     return False
+
 
 def detect_kde_colorscheme_dark() -> bool:
     kdeglobals = Path.home() / ".config" / "kdeglobals"
@@ -69,12 +78,20 @@ def detect_kde_colorscheme_dark() -> bool:
             log.debug(f"KDE ColorScheme detection failed: {e}")
     return False
 
+
 def detect_xfce_dark_theme() -> bool:
     try:
         result = subprocess.run(
             [
-                'xfconf-query', '-c', 'xsettings', '-p', '/Net/ThemeName',
-            ], capture_output=True, text=True, check=True,
+                'xfconf-query',
+                '-c',
+                'xsettings',
+                '-p',
+                '/Net/ThemeName',
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         theme = result.stdout.strip().lower()
         if 'dark' in theme:
@@ -83,6 +100,7 @@ def detect_xfce_dark_theme() -> bool:
     except (subprocess.CalledProcessError, FileNotFoundError):
         log.debug("xfconf-query detection failed.")
     return False
+
 
 def detect_lxqt_dark_theme() -> bool:
     lxqt_conf = Path.home() / ".config" / "lxqt" / "session.conf"
@@ -99,6 +117,7 @@ def detect_lxqt_dark_theme() -> bool:
             log.debug(f"LXQt theme detection failed: {e}")
     return False
 
+
 def detect_freedesktop_color_scheme_dark() -> bool:
     """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
     value = gsettings_get('color-scheme')
@@ -106,8 +125,14 @@ def detect_freedesktop_color_scheme_dark() -> bool:
     try:
         result = subprocess.run(
             [
-                'gsettings', 'get', 'org.freedesktop.appearance', 'color-scheme',
-            ], capture_output=True, text=True, check=True,
+                'gsettings',
+                'get',
+                'org.freedesktop.appearance',
+                'color-scheme',
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
         )
         value = result.stdout.strip().strip("'\"")
         if value == '1':
@@ -119,6 +144,7 @@ def detect_freedesktop_color_scheme_dark() -> bool:
     except (subprocess.CalledProcessError, FileNotFoundError):
         log.debug("gsettings get org.freedesktop.appearance.color-scheme failed.")
     return False
+
 
 def get_current_desktop_environment() -> str:
     """Detect the current desktop environment (DE) as a lowercase string."""
@@ -134,29 +160,36 @@ def get_current_desktop_environment() -> str:
         return os.environ["DESKTOP_SESSION"].lower()
     return ""
 
+
 # Wrappers for DE-specific detection
+
 
 def detect_gnome_dark_wrapper() -> bool:
     if get_current_desktop_environment() in {"gnome", "unity"}:
         return detect_gnome_color_scheme_dark() or detect_gnome_gtk_theme_dark()
     return False
 
+
 def detect_kde_dark_wrapper() -> bool:
     if get_current_desktop_environment() == "kde":
         return detect_kde_colorscheme_dark()
     return False
+
 
 def detect_xfce_dark_wrapper() -> bool:
     if get_current_desktop_environment() == "xfce":
         return detect_xfce_dark_theme()
     return False
 
+
 def detect_lxqt_dark_wrapper() -> bool:
     if get_current_desktop_environment() == "lxqt":
         return detect_lxqt_dark_theme()
     return False
 
+
 # Update the strategy list to use wrappers
+
 
 def get_linux_dark_mode_strategies() -> list:
     """Return the list of dark mode detection strategies in order of priority."""
