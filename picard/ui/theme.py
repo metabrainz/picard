@@ -22,6 +22,8 @@
 
 
 from enum import Enum
+from pathlib import Path
+import subprocess
 
 from PyQt6 import (
     QtCore,
@@ -36,6 +38,9 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+
+# DRY: Common dark background color
+DARK_BG_COLOR = QtGui.QColor(51, 51, 51)
 
 
 OS_SUPPORTS_THEMES = True
@@ -95,6 +100,58 @@ class BaseTheme:
         self._dark_theme = False
         self._loaded_config_theme = UiTheme.DEFAULT
 
+    def _gsettings_get(self, key):
+        """Helper to get a gsettings value. Returns string or None."""
+        try:
+            result = subprocess.run(
+                [
+                    'gsettings', 'get', 'org.gnome.desktop.interface', key,
+                ], capture_output=True, text=True, check=True,
+            )
+            return result.stdout.strip().strip("'\"")
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            log.debug(f"gsettings get {key} failed.")
+            return None
+
+    def _detect_gnome_color_scheme_dark(self):
+        value = self._gsettings_get('color-scheme')
+        if value and 'dark' in value.lower():
+            log.debug("Detected GNOME color-scheme: dark")
+            return True
+        return False
+
+    def _detect_gnome_gtk_theme_dark(self):
+        theme = self._gsettings_get('gtk-theme')
+        if theme and 'dark' in theme.lower():
+            log.debug(f"Detected GNOME gtk-theme: {theme} (dark)")
+            return True
+        return False
+
+    def _detect_kde_colorscheme_dark(self):
+        kdeglobals = Path.home() / ".config" / "kdeglobals"
+        if kdeglobals.exists():
+            try:
+                with open(kdeglobals, 'r') as f:
+                    for line in f:
+                        if line.strip().startswith("ColorScheme="):
+                            scheme = line.split('=', 1)[1].strip().lower()
+                            if 'dark' in scheme:
+                                log.debug(f"Detected KDE ColorScheme: {scheme} (dark)")
+                                return True
+            except OSError as e:
+                log.debug(f"KDE ColorScheme detection failed: {e}")
+        return False
+
+    def _detect_linux_dark_mode(self):
+        if self._detect_gnome_color_scheme_dark():
+            return True
+        if self._detect_gnome_gtk_theme_dark():
+            return True
+        if self._detect_kde_colorscheme_dark():
+            return True
+        log.debug("No Linux system dark mode detected, defaulting to light mode.")
+        return False
+
     def setup(self, app):
         config = get_config()
         ui_theme = config.setting['ui_theme']
@@ -108,7 +165,7 @@ class BaseTheme:
             app.setStyle(MacOverrideStyle(app.style()))
 
         app.setStyleSheet(
-            'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }'
+            'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }',
         )
 
         palette = QtGui.QPalette(app.palette())
@@ -118,7 +175,34 @@ class BaseTheme:
         if self._dark_theme:
             self._accent_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
 
+        # Linux-specific: If SYSTEM theme, try to detect system dark mode
         is_dark_theme = self.is_dark_theme
+        if (not IS_WIN and not IS_MACOS and not IS_HAIKU and self._loaded_config_theme == UiTheme.SYSTEM):
+            is_dark_theme = self._detect_linux_dark_mode()
+            if is_dark_theme:
+                # Apply a dark palette similar to Windows
+                palette.setColor(QtGui.QPalette.ColorRole.Window, DARK_BG_COLOR)
+                palette.setColor(QtGui.QPalette.ColorRole.WindowText, QtCore.Qt.GlobalColor.white)
+                palette.setColor(QtGui.QPalette.ColorRole.Base, QtGui.QColor(31, 31, 31))
+                palette.setColor(QtGui.QPalette.ColorRole.AlternateBase, DARK_BG_COLOR)
+                palette.setColor(QtGui.QPalette.ColorRole.ToolTipBase, DARK_BG_COLOR)
+                palette.setColor(QtGui.QPalette.ColorRole.ToolTipText, QtCore.Qt.GlobalColor.white)
+                palette.setColor(QtGui.QPalette.ColorRole.Text, QtCore.Qt.GlobalColor.white)
+                palette.setColor(QtGui.QPalette.ColorRole.Button, DARK_BG_COLOR)
+                palette.setColor(QtGui.QPalette.ColorRole.ButtonText, QtCore.Qt.GlobalColor.white)
+                palette.setColor(QtGui.QPalette.ColorRole.BrightText, QtCore.Qt.GlobalColor.red)
+                palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text, QtCore.Qt.GlobalColor.darkGray)
+                palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Light, QtGui.QColor(0, 0, 0, 0))
+                palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText, QtCore.Qt.GlobalColor.darkGray)
+                palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base, QtGui.QColor(60, 60, 60))
+                palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Highlight, DARK_BG_COLOR)
+                palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.HighlightedText, QtCore.Qt.GlobalColor.white)
+                self._dark_theme = True
+                self._accent_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
+            else:
+                self._dark_theme = False
+                self._accent_color = None
+
         accent_color = self.accent_color
         if accent_color:
             accent_color_str = accent_color.name(QtGui.QColor.NameFormat.HexArgb)
@@ -127,7 +211,7 @@ class BaseTheme:
 
         log.debug(
             "Theme: %s (%s) dark=%s accent_color=%s",
-            ui_theme, self.__class__.__name__, is_dark_theme, accent_color_str
+            ui_theme, self.__class__.__name__, is_dark_theme, accent_color_str,
         )
 
         self.update_palette(palette, is_dark_theme, accent_color)
@@ -170,8 +254,10 @@ if IS_WIN:
                 return self._loaded_config_theme == UiTheme.DARK
             dark_theme = False
             try:
-                with winreg.OpenKey(winreg.HKEY_CURRENT_USER,
-                                    r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize") as key:
+                with winreg.OpenKey(
+                    winreg.HKEY_CURRENT_USER,
+                    r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+                ) as key:
                     dark_theme = winreg.QueryValueEx(key, "AppsUseLightTheme")[0] == 0
             except OSError:
                 log.warning("Failed reading AppsUseLightTheme from registry")
@@ -193,21 +279,21 @@ if IS_WIN:
             # Adapt to Windows 10 color scheme (dark / light theme and accent color)
             super().update_palette(palette, dark_theme, accent_color)
             if dark_theme:
-                palette.setColor(QtGui.QPalette.ColorRole.Window, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.ColorRole.Window, DARK_BG_COLOR)
                 palette.setColor(QtGui.QPalette.ColorRole.WindowText, QtCore.Qt.GlobalColor.white)
                 palette.setColor(QtGui.QPalette.ColorRole.Base, QtGui.QColor(31, 31, 31))
-                palette.setColor(QtGui.QPalette.ColorRole.AlternateBase, QtGui.QColor(51, 51, 51))
-                palette.setColor(QtGui.QPalette.ColorRole.ToolTipBase, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.ColorRole.AlternateBase, DARK_BG_COLOR)
+                palette.setColor(QtGui.QPalette.ColorRole.ToolTipBase, DARK_BG_COLOR)
                 palette.setColor(QtGui.QPalette.ColorRole.ToolTipText, QtCore.Qt.GlobalColor.white)
                 palette.setColor(QtGui.QPalette.ColorRole.Text, QtCore.Qt.GlobalColor.white)
-                palette.setColor(QtGui.QPalette.ColorRole.Button, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.ColorRole.Button, DARK_BG_COLOR)
                 palette.setColor(QtGui.QPalette.ColorRole.ButtonText, QtCore.Qt.GlobalColor.white)
                 palette.setColor(QtGui.QPalette.ColorRole.BrightText, QtCore.Qt.GlobalColor.red)
                 palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text, QtCore.Qt.GlobalColor.darkGray)
                 palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Light, QtGui.QColor(0, 0, 0, 0))
                 palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.ButtonText, QtCore.Qt.GlobalColor.darkGray)
                 palette.setColor(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base, QtGui.QColor(60, 60, 60))
-                palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Highlight, QtGui.QColor(51, 51, 51))
+                palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Highlight, DARK_BG_COLOR)
                 palette.setColor(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.HighlightedText, QtCore.Qt.GlobalColor.white)
 
     theme = WindowsTheme()
@@ -220,7 +306,7 @@ elif IS_MACOS:
         try:
             basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
                 AppKit.NSAppearanceNameAqua,
-                AppKit.NSAppearanceNameDarkAqua
+                AppKit.NSAppearanceNameDarkAqua,
             ])
             dark_appearance = basic_appearance == AppKit.NSAppearanceNameDarkAqua
         except AttributeError:
