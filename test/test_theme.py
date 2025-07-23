@@ -20,10 +20,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from itertools import (
-    chain,
-    repeat,
-)
 import os
 from pathlib import Path
 import subprocess
@@ -123,10 +119,15 @@ def test_detect_linux_dark_mode_integration(
         patch("pathlib.Path.home", return_value=kde_config_dir.parent),
         patch("picard.ui.theme_detect.gsettings_get") as mock_gsettings,
     ):
-        # First call: freedesktop (simulate not set, return '')
-        # Second: gnome color-scheme
-        # Third: gnome gtk-theme
-        mock_gsettings.side_effect = chain(["", color_scheme, gtk_theme], repeat(""))
+
+        def gsettings_get_side_effect(key):
+            if key == "color-scheme":
+                return color_scheme
+            if key == "gtk-theme":
+                return gtk_theme
+            return ""
+
+        mock_gsettings.side_effect = gsettings_get_side_effect
         strategies = theme_detect.get_linux_dark_mode_strategies()
         result = False
         for strategy in strategies:

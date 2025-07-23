@@ -127,7 +127,6 @@ def detect_lxqt_dark_theme() -> bool:
 
 def detect_freedesktop_color_scheme_dark() -> bool:
     """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
-    value = gsettings_get("color-scheme")
     # Try org.freedesktop.appearance first
     try:
         result = subprocess.run(  # nosec B603 B607
