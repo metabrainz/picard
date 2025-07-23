@@ -20,27 +20,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import os
-import subprocess
-import types
 from itertools import (
     chain,
     repeat,
 )
+import os
 from pathlib import Path
+import subprocess
+import types
 from unittest.mock import (
     MagicMock,
     patch,
 )
 
-import pytest
 from PyQt6 import (
     QtCore,
     QtGui,
 )
 
-import picard.ui.theme as theme_mod
+import pytest
+
 from picard.ui import theme_detect
+import picard.ui.theme as theme_mod
 
 
 @pytest.fixture

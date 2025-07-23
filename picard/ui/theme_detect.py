@@ -23,8 +23,8 @@
 """Dark mode detection utilities for various Linux desktop environments."""
 
 import os
-import subprocess  # noqa: S404
 from pathlib import Path
+import subprocess  # noqa: S404
 
 from picard import log
 
