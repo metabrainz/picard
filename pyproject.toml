@@ -144,7 +144,7 @@ order_by_type = true
 use_parentheses = true
 
 [tool.ruff]
-src=["api"]
+src=["picard"]
 exclude = [
     ".bzr",
     ".direnv",
@@ -201,8 +201,41 @@ unfixable = []
 #dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.isort]
-# Sort imports by module name regardless of import type (import vs from-import)
+# Custom section order matching your isort sections
+section-order = [
+    "future",
+    "standard-library",
+    "first-party",
+    "known-first-party",
+    "third-party",
+    "known-third-party",
+    "qt",
+    "test",
+    "picard",
+    "local-folder",
+    "resources",
+    "picard-ui"
+]
+default-section = "local-folder"
+
+# Match other isort settings
 force-sort-within-sections = true
+combine-as-imports = true
+lines-after-imports = 2
+order-by-type = true
+split-on-trailing-comma = true
+
+# Custom section definitions
+[tool.ruff.lint.isort.sections]
+qt = ["PyQt6"]
+test = ["test.*"]
+picard = ["picard"]
+resources = ["picard.resources"]
+picard-ui = ["picard.ui"]
+
+# Keep your existing known mappings for standard sections
+known-first-party = []
+known-third-party = ["dateutil", "fasteners", "mutagen", "yaml"]
 
 [tool.ruff.format]
 quote-style = "preserve"
