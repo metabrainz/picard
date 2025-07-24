@@ -56,7 +56,11 @@ uv venv
 . ./.venv/bin/activate # macos/linux
 .\.venv\Scripts\activate.bat # windows
 
-# install build and development dependencies
+# install all dependencies (main, build, and dev)
+uv sync
+
+# alternatively, you can install dependencies manually using `uv pip`
+uv pip install -r requirements.txt
 uv pip install -r requirements-build.txt -r requirements-dev.txt
 
 # build the project
@@ -65,6 +69,8 @@ python setup.py build
 # install picard in editable mode
 uv pip install -e .
 ```
+
+While manual installation is available, `uv sync` provides a more streamlined approach by automatically handling all dependency groups.
 
 ### 4. Run Picard
 

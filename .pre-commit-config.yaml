@@ -23,23 +23,23 @@ repos:
         pass_filenames: false
       - id: pip-compile
         name: pip-compile requirements-build.txt
-        args: [pyproject.toml, -o, requirements-build.txt, --extra, build, --generate-hashes, --universal]
+        args: [pyproject.toml, -o, requirements-build.txt, --group, build, --generate-hashes, --universal]
         pass_filenames: false
       - id: pip-compile
         name: pip-compile requirements-dev.txt
-        args: [pyproject.toml, -o, requirements-dev.txt, --extra, dev, --generate-hashes, --universal]
+        args: [pyproject.toml, -o, requirements-dev.txt, --group, dev, --generate-hashes, --universal]
         pass_filenames: false
       - id: pip-compile
         name: pip-compile requirements-plugins.txt
-        args: [pyproject.toml, -o, requirements-plugins.txt, --extra, plugins, --generate-hashes, --universal]
+        args: [pyproject.toml, -o, requirements-plugins.txt, --group, plugins, --generate-hashes, --universal]
         pass_filenames: false
       - id: pip-compile
         name: pip-compile requirements-macos-11.0.txt
-        args: [pyproject.toml, -o, requirements-macos-11.0.txt, --extra, macos_11_0, --generate-hashes, --universal]
+        args: [pyproject.toml, -o, requirements-macos-11.0.txt, --group, macos_11_0, --generate-hashes, --universal]
         pass_filenames: false
       - id: pip-compile
         name: pip-compile requirements-win.txt
-        args: [pyproject.toml, -o, requirements-win.txt, --extra, win, --generate-hashes, --universal]
+        args: [pyproject.toml, -o, requirements-win.txt, --group, win, --generate-hashes, --universal]
         pass_filenames: false
   - repo: local
     hooks:

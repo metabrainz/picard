@@ -45,7 +45,7 @@ dependencies = [
     "charset-normalizer~=3.3",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 build = [
     "Babel>=2.10.0",
     "PyInstaller==6.14.1",
@@ -217,3 +217,6 @@ skip-magic-trailing-comma = false
 line-ending = "lf"
 docstring-code-format = false
 docstring-code-line-length = "dynamic"
+
+[tool.uv]
+default-groups = ["build", "dev"]

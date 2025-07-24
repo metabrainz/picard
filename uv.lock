@@ -532,7 +532,7 @@ dependencies = [
     { name = "pyyaml" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 build = [
     { name = "babel" },
     { name = "pyinstaller" },
@@ -582,56 +582,67 @@ win = [
 
 [package.metadata]
 requires-dist = [
-    { name = "aubio", marker = "extra == 'plugins'", specifier = "~=0.4" },
-    { name = "autopep8", marker = "extra == 'dev'" },
-    { name = "babel", marker = "extra == 'build'", specifier = ">=2.10.0" },
-    { name = "babel", marker = "extra == 'dev'", specifier = ">=2.6.0" },
     { name = "charset-normalizer", specifier = "~=3.3" },
-    { name = "charset-normalizer", marker = "extra == 'macos-11-0'", specifier = "==3.4.2" },
-    { name = "charset-normalizer", marker = "extra == 'win'", specifier = "==3.4.2" },
     { name = "discid", specifier = "~=1.0" },
-    { name = "discid", marker = "extra == 'macos-11-0'", specifier = "==1.2.0" },
-    { name = "discid", marker = "extra == 'win'", specifier = "==1.2.0" },
     { name = "markdown", specifier = "~=3.2" },
-    { name = "markdown", marker = "extra == 'macos-11-0'", specifier = "==3.8" },
-    { name = "markdown", marker = "extra == 'win'", specifier = "==3.8" },
     { name = "mutagen", specifier = "~=1.45" },
-    { name = "mutagen", marker = "extra == 'macos-11-0'", specifier = "==1.47.0" },
-    { name = "mutagen", marker = "extra == 'win'", specifier = "==1.47.0" },
-    { name = "opencc", marker = "extra == 'plugins'", specifier = "~=1.1" },
-    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=4.2.0" },
-    { name = "pycodestyle", marker = "extra == 'dev'" },
-    { name = "pyinstaller", marker = "extra == 'build'", specifier = "==6.14.1" },
     { name = "pyjwt", specifier = "~=2.0" },
-    { name = "pyjwt", marker = "extra == 'macos-11-0'", specifier = "==2.10.1" },
-    { name = "pyjwt", marker = "extra == 'win'", specifier = "==2.10.1" },
-    { name = "pylint", marker = "extra == 'dev'", specifier = ">=2.6.0" },
     { name = "pyobjc-core", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<12" },
-    { name = "pyobjc-core", marker = "extra == 'macos-11-0'", specifier = "==11.0" },
     { name = "pyobjc-framework-cocoa", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<12" },
-    { name = "pyobjc-framework-cocoa", marker = "extra == 'macos-11-0'", specifier = "==11.0" },
     { name = "pyqt6", specifier = ">=6.6.1" },
-    { name = "pyqt6", marker = "extra == 'macos-11-0'", specifier = "==6.9.0" },
-    { name = "pyqt6", marker = "extra == 'win'", specifier = "==6.9.0" },
     { name = "pyqt6-qt6", specifier = ">=6.6.1" },
-    { name = "pyqt6-qt6", marker = "extra == 'macos-11-0'", specifier = "==6.9.0" },
-    { name = "pyqt6-qt6", marker = "extra == 'win'", specifier = "==6.9.0" },
-    { name = "pytest", marker = "extra == 'build'", specifier = ">=8.1" },
-    { name = "pytest-xdist", marker = "extra == 'dev'", specifier = ">=3.8.0" },
     { name = "python-dateutil", specifier = "~=2.7" },
-    { name = "python-dateutil", marker = "extra == 'macos-11-0'", specifier = "==2.9.0.post0" },
-    { name = "python-dateutil", marker = "extra == 'win'", specifier = "==2.9.0.post0" },
     { name = "pywin32", marker = "sys_platform == 'win32'" },
-    { name = "pywin32", marker = "extra == 'win'", specifier = "==310" },
     { name = "pyyaml", specifier = ">=5.1,<7" },
-    { name = "pyyaml", marker = "extra == 'macos-11-0'", specifier = "==6.0.2" },
-    { name = "pyyaml", marker = "extra == 'win'", specifier = "==6.0.2" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.12.4" },
-    { name = "setuptools", marker = "extra == 'build'", specifier = ">=74.1.0" },
-    { name = "wlc", marker = "extra == 'dev'" },
-    { name = "zstandard", marker = "extra == 'plugins'", specifier = "~=0.23" },
 ]
-provides-extras = ["build", "dev", "plugins", "macos-11-0", "win"]
+
+[package.metadata.requires-dev]
+build = [
+    { name = "babel", specifier = ">=2.10.0" },
+    { name = "pyinstaller", specifier = "==6.14.1" },
+    { name = "pytest", specifier = ">=8.1" },
+    { name = "setuptools", specifier = ">=74.1.0" },
+]
+dev = [
+    { name = "autopep8" },
+    { name = "babel", specifier = ">=2.6.0" },
+    { name = "pre-commit", specifier = ">=4.2.0" },
+    { name = "pycodestyle" },
+    { name = "pylint", specifier = ">=2.6.0" },
+    { name = "pytest-xdist", specifier = ">=3.8.0" },
+    { name = "ruff", specifier = ">=0.12.4" },
+    { name = "wlc" },
+]
+macos-11-0 = [
+    { name = "charset-normalizer", specifier = "==3.4.2" },
+    { name = "discid", specifier = "==1.2.0" },
+    { name = "markdown", specifier = "==3.8" },
+    { name = "mutagen", specifier = "==1.47.0" },
+    { name = "pyjwt", specifier = "==2.10.1" },
+    { name = "pyobjc-core", specifier = "==11.0" },
+    { name = "pyobjc-framework-cocoa", specifier = "==11.0" },
+    { name = "pyqt6", specifier = "==6.9.0" },
+    { name = "pyqt6-qt6", specifier = "==6.9.0" },
+    { name = "python-dateutil", specifier = "==2.9.0.post0" },
+    { name = "pyyaml", specifier = "==6.0.2" },
+]
+plugins = [
+    { name = "aubio", specifier = "~=0.4" },
+    { name = "opencc", specifier = "~=1.1" },
+    { name = "zstandard", specifier = "~=0.23" },
+]
+win = [
+    { name = "charset-normalizer", specifier = "==3.4.2" },
+    { name = "discid", specifier = "==1.2.0" },
+    { name = "markdown", specifier = "==3.8" },
+    { name = "mutagen", specifier = "==1.47.0" },
+    { name = "pyjwt", specifier = "==2.10.1" },
+    { name = "pyqt6", specifier = "==6.9.0" },
+    { name = "pyqt6-qt6", specifier = "==6.9.0" },
+    { name = "python-dateutil", specifier = "==2.9.0.post0" },
+    { name = "pywin32", specifier = "==310" },
+    { name = "pyyaml", specifier = "==6.0.2" },
+]
 
 [[package]]
 name = "platformdirs"
