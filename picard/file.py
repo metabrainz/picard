@@ -836,6 +836,12 @@ class File(MetadataItem):
                 value = bytes2human.binary(value)
             except ValueError:
                 pass
+        elif column == '~bitrate':
+            try:
+                if value:
+                    value = f"{float(value):.0f} kbps"
+            except (ValueError, TypeError):
+                pass
         return value
 
     def _lookup_finished(self, lookuptype, document, http, error):
