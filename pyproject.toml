@@ -77,8 +77,8 @@ macos_11_0 = [
     "PyQt6==6.9.0",
     "PyQt6-Qt6==6.9.0",
     "python-dateutil==2.9.0.post0",
-    "PyYAML==6.0.2",
-    "charset-normalizer==3.4.2",
+    "PyYAML>=5.1, <7",
+    "charset-normalizer~=3.3",
 ]
 win = [
     "discid==1.2.0",
@@ -88,9 +88,9 @@ win = [
     "PyQt6==6.9.0",
     "PyQt6-Qt6==6.9.0",
     "python-dateutil==2.9.0.post0",
-    "pywin32==310",
-    "PyYAML==6.0.2",
-    "charset-normalizer==3.4.2",
+    "pywin32",
+    "PyYAML>=5.1, <7",
+    "charset-normalizer~=3.3",
 ]
 
 [project.urls]

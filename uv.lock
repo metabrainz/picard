@@ -614,7 +614,7 @@ dev = [
     { name = "wlc" },
 ]
 macos-11-0 = [
-    { name = "charset-normalizer", specifier = "==3.4.2" },
+    { name = "charset-normalizer", specifier = "~=3.3" },
     { name = "discid", specifier = "==1.2.0" },
     { name = "markdown", specifier = "==3.8" },
     { name = "mutagen", specifier = "==1.47.0" },
@@ -624,7 +624,7 @@ macos-11-0 = [
     { name = "pyqt6", specifier = "==6.9.0" },
     { name = "pyqt6-qt6", specifier = "==6.9.0" },
     { name = "python-dateutil", specifier = "==2.9.0.post0" },
-    { name = "pyyaml", specifier = "==6.0.2" },
+    { name = "pyyaml", specifier = ">=5.1,<7" },
 ]
 plugins = [
     { name = "aubio", specifier = "~=0.4" },
@@ -632,7 +632,7 @@ plugins = [
     { name = "zstandard", specifier = "~=0.23" },
 ]
 win = [
-    { name = "charset-normalizer", specifier = "==3.4.2" },
+    { name = "charset-normalizer", specifier = "~=3.3" },
     { name = "discid", specifier = "==1.2.0" },
     { name = "markdown", specifier = "==3.8" },
     { name = "mutagen", specifier = "==1.47.0" },
@@ -640,8 +640,8 @@ win = [
     { name = "pyqt6", specifier = "==6.9.0" },
     { name = "pyqt6-qt6", specifier = "==6.9.0" },
     { name = "python-dateutil", specifier = "==2.9.0.post0" },
-    { name = "pywin32", specifier = "==310" },
-    { name = "pyyaml", specifier = "==6.0.2" },
+    { name = "pywin32" },
+    { name = "pyyaml", specifier = ">=5.1,<7" },
 ]
 
 [[package]]
