@@ -28,7 +28,72 @@ classifiers = [
     "Topic :: Multimedia :: Sound/Audio :: Analysis",
     "Intended Audience :: End Users/Desktop",
 ]
-dynamic = ["version", "readme", "dependencies", "gui-scripts"]
+dynamic = ["version", "readme"]
+
+dependencies = [
+    "discid~=1.0",
+    "Markdown~=3.2",
+    "mutagen~=1.45",
+    "PyJWT~=2.0",
+    "pyobjc-core>=6.2, <12; sys_platform == 'darwin'",
+    "pyobjc-framework-Cocoa>=6.2, <12; sys_platform == 'darwin'",
+    "PyQt6>=6.6.1",
+    "PyQt6-Qt6>=6.6.1",
+    "python-dateutil~=2.7",
+    "pywin32; sys_platform == 'win32'",
+    "PyYAML>=5.1, <7",
+    "charset-normalizer~=3.3",
+]
+
+[project.optional-dependencies]
+build = [
+    "Babel>=2.10.0",
+    "PyInstaller==6.14.1",
+    "pytest>=8.1",
+    "setuptools>=74.1.0",
+]
+dev = [
+    "autopep8",
+    "Babel>=2.6.0",
+    "flake8",
+    "isort>=5.0",
+    "pre-commit>=4.2.0",
+    "pycodestyle",
+    "pylint>=2.6.0",
+    "pytest-xdist>=3.8.0",
+    "ruff>=0.12.4",
+    "wlc",
+]
+plugins = [
+    "aubio~=0.4",
+    "opencc~=1.1",
+    "zstandard~=0.23",
+]
+macos_11_0 = [
+    "discid==1.2.0",
+    "Markdown==3.8",
+    "mutagen==1.47.0",
+    "PyJWT==2.10.1",
+    "pyobjc-core==11.0",
+    "pyobjc-framework-Cocoa==11.0",
+    "PyQt6==6.9.0",
+    "PyQt6-Qt6==6.9.0",
+    "python-dateutil==2.9.0.post0",
+    "PyYAML==6.0.2",
+    "charset-normalizer==3.4.2",
+]
+win = [
+    "discid==1.2.0",
+    "Markdown==3.8",
+    "mutagen==1.47.0",
+    "PyJWT==2.10.1",
+    "PyQt6==6.9.0",
+    "PyQt6-Qt6==6.9.0",
+    "python-dateutil==2.9.0.post0",
+    "pywin32==310",
+    "PyYAML==6.0.2",
+    "charset-normalizer==3.4.2",
+]
 
 [project.urls]
 Homepage = "https://picard.musicbrainz.org/"
@@ -108,6 +173,11 @@ exclude = [
     "venv",
     "picard/ui/forms/ui_*.py",
     "picard/resources.py",
+    "tagger.py",
+    "picard/const/attributes.py",
+    "picard/const/countries.py",
+    "picard/ui/ui_.*\\.py",
+    "scripts/picard.in"
 ]
 
 line-length = 120
