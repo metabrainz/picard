@@ -69,6 +69,13 @@ def _sortkey_filesize(obj):
         return 0
 
 
+def _sortkey_bitrate(obj):
+    try:
+        return float(obj.metadata['~bitrate'] or obj.orig_metadata['~bitrate'] or 0)
+    except (ValueError, TypeError):
+        return 0
+
+
 class IconColumn(ImageColumn):
     _header_icon = None
     header_icon_func = None
@@ -124,6 +131,8 @@ ITEMVIEW_COLUMNS = Columns((
     Column(N_("Barcode"), 'barcode'),
     Column(N_("Media"), 'media'),
     Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_filesize),
+    Column(N_("File Type"), '~format', width=120),
+    Column(N_("Bitrate"), '~bitrate', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_bitrate, width=80),
     Column(N_("Genre"), 'genre'),
     _fingerprint_column,
     Column(N_("Date"), 'date'),
