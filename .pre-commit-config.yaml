@@ -17,30 +17,37 @@ repos:
     hooks:
       - id: uv-lock
         name: Sync uv.lock with pyproject.toml
+        always_run: true
       - id: pip-compile
         name: pip-compile requirements.txt
         args: [pyproject.toml, -o, requirements.txt, --generate-hashes, --universal]
         pass_filenames: false
+        always_run: true
       - id: pip-compile
         name: pip-compile requirements-build.txt
         args: [pyproject.toml, -o, requirements-build.txt, --group, build, --generate-hashes, --universal]
         pass_filenames: false
+        always_run: true
       - id: pip-compile
         name: pip-compile requirements-dev.txt
         args: [pyproject.toml, -o, requirements-dev.txt, --group, dev, --generate-hashes, --universal]
         pass_filenames: false
+        always_run: true
       - id: pip-compile
         name: pip-compile requirements-plugins.txt
         args: [pyproject.toml, -o, requirements-plugins.txt, --group, plugins, --generate-hashes, --universal]
         pass_filenames: false
+        always_run: true
       - id: pip-compile
         name: pip-compile requirements-macos-11.0.txt
         args: [pyproject.toml, -o, requirements-macos-11.0.txt, --group, macos_11_0, --generate-hashes, --universal]
         pass_filenames: false
+        always_run: true
       - id: pip-compile
         name: pip-compile requirements-win.txt
         args: [pyproject.toml, -o, requirements-win.txt, --group, win, --generate-hashes, --universal]
         pass_filenames: false
+        always_run: true
   - repo: local
     hooks:
       - id: pytest
