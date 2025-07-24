@@ -43,11 +43,6 @@ repos:
         pass_filenames: false
   - repo: local
     hooks:
-      - id: flake8-custom
-        name: Run flake8
-        entry: scripts/precommit-flake8.sh
-        language: script
-        pass_filenames: false
       - id: pytest
         name: Run pytest
         entry: uv run --frozen pytest -n auto -x

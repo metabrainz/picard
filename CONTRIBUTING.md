@@ -92,7 +92,7 @@ Install the hooks:
 pre-commit install
 ```
 
-This ensures all code style checks (flake8, ruff, isort) and requirements file updates (using [uv](https://github.com/astral-sh/uv)) are run automatically before each commit.
+This ensures all code style checks (`ruff`) and requirements file updates (using [uv](https://github.com/astral-sh/uv)) are run automatically before each commit.
 
 **Do not edit requirements files by hand.** All requirements files are generated from `pyproject.toml` via pre-commit hooks.
 
