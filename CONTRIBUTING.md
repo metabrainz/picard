@@ -1,5 +1,113 @@
 # Contributing to Picard
 
+## Development Environment
+
+To get started with Picard development, follow these steps to set up your environment:
+
+### 1. Install `msgfmt` (gettext)
+
+Picard requires `msgfmt` from GetText for translations.
+
+- **Windows:**
+  - Download and install the latest from: https://github.com/mlocati/gettext-iconv-windows/releases (e.g. `gettext0.25.1-iconv1.17-shared-64.exe`)
+  - Add `C:\Program Files\gettext-iconv\bin` to your PATH variable.
+
+- **Linux:**
+
+```bash
+sudo apt update
+sudo apt install gettext
+```
+
+- **macOS:**
+
+```bash
+# Sometimes included in Xcode Command Line Tools
+which msgfmt
+msgfmt --version
+
+# if not installed
+brew install gettext
+```
+
+### 2. Install `uv` (Python package manager, optional)
+
+You may use [uv](https://docs.astral.sh/uv/), an extremely fast Python package manager, but this is optional. If you prefer, you can always use `pip` for traditional Python development and dependency management.
+
+- **macOS or Linux:**
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+- **Windows:**
+
+```bash
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### 3. Install Dependencies and Build
+
+Install dependencies and build the project:
+
+```bash
+# create a virtual environment and activate it
+uv venv
+. ./.venv/bin/activate # macos/linux
+.\.venv\Scripts\activate.bat # windows
+
+# install all dependencies (main, build, and dev)
+uv sync
+
+# alternatively, you can install dependencies manually using `uv pip`
+uv pip install -r requirements.txt
+uv pip install -r requirements-build.txt -r requirements-dev.txt
+
+# build the project
+python setup.py build
+
+# install picard in editable mode
+uv pip install -e .
+```
+
+While manual installation is available, `uv sync` provides a more streamlined approach by automatically handling all dependency groups.
+
+### 4. Run Picard
+
+Launch the UI for development:
+
+```bash
+uv run python ./tagger.py
+```
+
+### 5. Run Tests
+
+After making changes, run the test suite:
+
+```bash
+uv run pytest -n auto
+```
+
+### 6. Set Up pre-commit Hooks
+
+We use [pre-commit](https://pre-commit.com/) to manage code quality checks and requirements file generation.
+
+Install the hooks:
+
+```bash
+pre-commit install
+```
+
+This ensures all code style checks (`ruff`) and requirements file updates (using [uv](https://github.com/astral-sh/uv)) are run automatically before each commit.
+
+**Do not edit requirements files by hand.** All requirements files are generated from `pyproject.toml` via pre-commit hooks.
+
+To manually update requirements after changing `pyproject.toml`, run:
+
+```bash
+pre-commit run pip-compile --all-files
+```
+
 ## Coding Style
 
 As most of the other projects written in Python, we use the [PEP 8](https://www.python.org/dev/peps/pep-0008/). Though, we ignore some of the recommendations:
@@ -9,35 +117,6 @@ As most of the other projects written in Python, we use the [PEP 8](https://www.
 *Recommended video: "[Beyond PEP 8 -- Best practices for beautiful intelligible code](https://www.youtube.com/watch?v=wf-BqAjZb8M)" by Raymond Hettinger at PyCon 2015, which talks about the famous P versus NP problem.*
 
 The general idea is to make the code within a project consistent and easy to interpret (for humans).
-
-Developers may install few extra tools using:
-
-```bash
-pip install -r requirements-dev.txt
-```
-
-To fix or preserve imports style, one can use `isort .` command (requires the [isort](https://github.com/PyCQA/isort) tool, see `.isort.cfg`).
-
-It is recommended to add a pre-commit hook to check whether imports in changed code
-follow the conventions. Add a file `.git/hooks/pre-commit` with the following content
-and make it executable:
-
-```bash
-#!/usr/bin/env bash
-
-PYFILES=$(git diff --cached --name-only --diff-filter=ACM| grep "\\.py$" | grep --invert-match \
-  -e "^tagger\\.py$" \
-  -e "^picard/resources\\.py$" \
-  -e "^picard/const/\(attributes\|countries\)\\.py$" \
-  -e "^picard/ui/ui_.*\\.py$" \
-  -e "^scripts/picard\\.in$")
-
-if [ ! -z "$PYFILES" ]; then
-  set -e
-  isort --check-only --diff --quiet $PYFILES
-  flake8 $PYFILES
-fi
-```
 
 
 ### Docstrings

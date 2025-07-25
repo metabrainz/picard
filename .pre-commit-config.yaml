@@ -1,0 +1,59 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: mixed-line-ending
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.8.3
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.8.2
+    hooks:
+      - id: uv-lock
+        name: Sync uv.lock with pyproject.toml
+        always_run: true
+      - id: pip-compile
+        name: pip-compile requirements.txt
+        args: [pyproject.toml, -o, requirements.txt, --generate-hashes, --universal]
+        pass_filenames: false
+        always_run: true
+      - id: pip-compile
+        name: pip-compile requirements-build.txt
+        args: [pyproject.toml, -o, requirements-build.txt, --group, build, --generate-hashes, --universal]
+        pass_filenames: false
+        always_run: true
+      - id: pip-compile
+        name: pip-compile requirements-dev.txt
+        args: [pyproject.toml, -o, requirements-dev.txt, --group, dev, --generate-hashes, --universal]
+        pass_filenames: false
+        always_run: true
+      - id: pip-compile
+        name: pip-compile requirements-plugins.txt
+        args: [pyproject.toml, -o, requirements-plugins.txt, --group, plugins, --generate-hashes, --universal]
+        pass_filenames: false
+        always_run: true
+      - id: pip-compile
+        name: pip-compile requirements-macos-11.0.txt
+        args: [pyproject.toml, -o, requirements-macos-11.0.txt, --group, macos_11_0, --generate-hashes, --universal]
+        pass_filenames: false
+        always_run: true
+      - id: pip-compile
+        name: pip-compile requirements-win.txt
+        args: [pyproject.toml, -o, requirements-win.txt, --group, win, --generate-hashes, --universal]
+        pass_filenames: false
+        always_run: true
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run pytest
+        entry: uv run --frozen pytest -n auto -x
+        language: python
+        types: [python]
+        pass_filenames: false
+        always_run: true

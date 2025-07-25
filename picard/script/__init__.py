@@ -46,6 +46,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+
 # Those imports are required to actually parse the code and interpret decorators
 import picard.script.functions  # noqa: F401 # pylint: disable=unused-import
 from picard.script.parser import (  # noqa: F401 # pylint: disable=unused-import
