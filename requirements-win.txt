@@ -96,14 +96,14 @@ charset-normalizer==3.4.2 \
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:win)
-discid==1.2.0 \
-    --hash=sha256:cd9630bc53f5566df92819641040226e290b2047573f2c74a6e92b8eed9e86b9
+discid==1.3.0 \
+    --hash=sha256:7160a1211ac3d6a6d8213fb88dd3d73e32abe5e01336a5a4c985b082a97d4335
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:win)
-markdown==3.8 \
-    --hash=sha256:794a929b79c5af141ef5ab0f2f642d0f7b1872981250230e72682346f7cc90dc \
-    --hash=sha256:7df81e63f0df5c4b24b7d156eb81e4690595239b7d70937d0409f1b0de319c6f
+markdown==3.8.2 \
+    --hash=sha256:247b9a70dd12e27f67431ce62523e675b866d254f900c4fe75ce3dda62237c45 \
+    --hash=sha256:5c83764dbd4e00bdd94d85a19b8d55ccca20fe35b2e678a1422b380324dd5f24
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:win)
@@ -143,23 +143,23 @@ pyobjc-framework-cocoa==11.1 ; sys_platform == 'darwin' \
     --hash=sha256:bbee71eeb93b1b31ffbac8560b59a0524a8a4b90846a260d2c4f2188f3d4c721 \
     --hash=sha256:fd5245ee1997d93e78b72703be1289d75d88ff6490af94462b564892e9266350
     # via picard (pyproject.toml)
-pyqt6==6.9.0 \
-    --hash=sha256:0c8b7251608e05b479cfe731f95857e853067459f7cbbcfe90f89de1bcf04280 \
-    --hash=sha256:1cbc5a282454cf19691be09eadbde019783f1ae0523e269b211b0173b67373f6 \
-    --hash=sha256:5344240747e81bde1a4e0e98d4e6e2d96ad56a985d8f36b69cd529c1ca9ff760 \
-    --hash=sha256:6a8ff8e3cd18311bb7d937f7d741e787040ae7ff47ce751c28a94c5cddc1b4e6 \
-    --hash=sha256:d36482000f0cd7ce84a35863766f88a5e671233d5f1024656b600cd8915b3752 \
-    --hash=sha256:e344868228c71fc89a0edeb325497df4ff731a89cfa5fe57a9a4e9baecc9512b
+pyqt6==6.9.1 \
+    --hash=sha256:055870b703c1a49ca621f8a89e2ec4d848e6c739d39367eb9687af3b056d9aa3 \
+    --hash=sha256:08792c72d130a02e3248a120f0b9bbb4bf4319095f92865bc5b365b00518f53d \
+    --hash=sha256:15b95bd273bb6288b070ed7a9503d5ff377aa4882dd6d175f07cad28cdb21da0 \
+    --hash=sha256:33c23d28f6608747ecc8bfd04c8795f61631af9db4fb1e6c2a7523ec4cc916d9 \
+    --hash=sha256:37884df27f774e2e1c0c96fa41e817a222329b80ffc6241725b0dc8c110acb35 \
+    --hash=sha256:50642be03fb40f1c2111a09a1f5a0f79813e039c15e78267e6faaf8a96c1c3a6
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:win)
-pyqt6-qt6==6.9.0 \
-    --hash=sha256:1188f118d1c570d27fba39707e3d8a48525f979816e73de0da55b9e6fa9ad0a1 \
-    --hash=sha256:6d3875119dec6bf5f799facea362aa0ad39bb23aa9654112faa92477abccb5ff \
-    --hash=sha256:9c0e603c934e4f130c110190fbf2c482ff1221a58317266570678bc02db6b152 \
-    --hash=sha256:b1c4e4a78f0f22fbf88556e3d07c99e5ce93032feae5c1e575958d914612e0f9 \
-    --hash=sha256:c825a6f5a9875ef04ef6681eda16aa3a9e9ad71847aa78dfafcf388c8007aa0a \
-    --hash=sha256:cf840e8ae20a0704e0343810cf0e485552db28bf09ea976e58ec0e9b7bb27fcd
+pyqt6-qt6==6.9.1 \
+    --hash=sha256:123e4aeb037c099bb4696a3ea8edcb1d9d62cedd0b2b950556b26024c97f3293 \
+    --hash=sha256:3854c7f83ee4e8c2d91e23ab88b77f90e2ca7ace34fe72f634a446959f2b4d4a \
+    --hash=sha256:432caaedf5570bc8a9b7c75bc6af6a26bf88589536472eca73417ac019f59d41 \
+    --hash=sha256:b065af7243d1d450a49470a8185301196a18b1d41085d3ef476eb55bbb225083 \
+    --hash=sha256:cc5bd193ebd2d1a3ec66e1eee65bf532d762c239459bce1ecebf56177243e89b \
+    --hash=sha256:f9e54c424bc921ecb76792a75d123e4ecfc26b00b0c57dae526f41f1d57951d3
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:win)
@@ -196,23 +196,27 @@ python-dateutil==2.9.0.post0 \
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:win)
-pywin32==310 \
-    --hash=sha256:0867beb8addefa2e3979d4084352e4ac6e991ca45373390775f7084cc0209b9c \
-    --hash=sha256:126298077a9d7c95c53823934f000599f66ec9296b09167810eb24875f32689c \
-    --hash=sha256:19ec5fc9b1d51c4350be7bb00760ffce46e6c95eaf2f0b2f1150657b1a43c582 \
-    --hash=sha256:1e765f9564e83011a63321bb9d27ec456a0ed90d3732c4b2e312b855365ed8bd \
-    --hash=sha256:2349cc906eae872d0663d4d6290d13b90621eaf78964bb1578632ff20e152966 \
-    --hash=sha256:30f0a9b3138fb5e07eb4973b7077e1883f558e40c578c6925acc7a94c34eaa36 \
-    --hash=sha256:33babed0cf0c92a6f94cc6cc13546ab24ee13e3e800e61ed87609ab91e4c8213 \
-    --hash=sha256:5d241a659c496ada3253cd01cfaa779b048e90ce4b2b38cd44168ad555ce74ab \
-    --hash=sha256:667827eb3a90208ddbdcc9e860c81bde63a135710e21e4cb3348968e4bd5249e \
-    --hash=sha256:6dd97011efc8bf51d6793a82292419eba2c71cf8e7250cfac03bba284454abc1 \
-    --hash=sha256:851c8d927af0d879221e616ae1f66145253537bbdd321a77e8ef701b443a9a1a \
-    --hash=sha256:8a75a5cc3893e83a108c05d82198880704c44bbaee4d06e442e471d3c9ea4f3d \
-    --hash=sha256:96867217335559ac619f00ad70e513c0fcf84b8a3af9fc2bba3b59b97da70475 \
-    --hash=sha256:bf5c397c9a9a19a6f62f3fb821fbf36cac08f03770056711f765ec1503972060 \
-    --hash=sha256:c3e78706e4229b915a0821941a84e7ef420bf2b77e08c9dae3c76fd03fd2ae3d \
-    --hash=sha256:e308f831de771482b7cf692a1f308f8fca701b2d8f9dde6cc440c7da17e47b33
+pywin32==311 \
+    --hash=sha256:0502d1facf1fed4839a9a51ccbcc63d952cf318f78ffc00a7e78528ac27d7a2b \
+    --hash=sha256:184eb5e436dea364dcd3d2316d577d625c0351bf237c4e9a5fabbcfa5a58b151 \
+    --hash=sha256:3aca44c046bd2ed8c90de9cb8427f581c479e594e99b5c0bb19b29c10fd6cb87 \
+    --hash=sha256:3ce80b34b22b17ccbd937a6e78e7225d80c52f5ab9940fe0506a1a16f3dab503 \
+    --hash=sha256:62ea666235135fee79bb154e695f3ff67370afefd71bd7fea7512fc70ef31e3d \
+    --hash=sha256:6c6f2969607b5023b0d9ce2541f8d2cbb01c4f46bc87456017cf63b73f1e2d8c \
+    --hash=sha256:718a38f7e5b058e76aee1c56ddd06908116d35147e133427e59a3983f703a20d \
+    --hash=sha256:750ec6e621af2b948540032557b10a2d43b0cee2ae9758c54154d711cc852d31 \
+    --hash=sha256:797c2772017851984b97180b0bebe4b620bb86328e8a884bb626156295a63b3b \
+    --hash=sha256:7b4075d959648406202d92a2310cb990fea19b535c7f4a78d3f5e10b926eeb8a \
+    --hash=sha256:a508e2d9025764a8270f93111a970e1d0fbfc33f4153b388bb649b7eec4f9b42 \
+    --hash=sha256:a733f1388e1a842abb67ffa8e7aad0e70ac519e09b0f6a784e65a136ec7cefd2 \
+    --hash=sha256:aba8f82d551a942cb20d4a83413ccbac30790b50efb89a75e4f586ac0bb8056b \
+    --hash=sha256:b7a2c10b93f8986666d0c803ee19b5990885872a7de910fc460f9b0c2fbf92ee \
+    --hash=sha256:b8c095edad5c211ff31c05223658e71bf7116daa0ecf3ad85f3201ea3190d067 \
+    --hash=sha256:c8015b09fb9a5e188f83b7b04de91ddca4658cee2ae6f3bc483f0b21a77ef6cd \
+    --hash=sha256:d03ff496d2a0cd4a5893504789d4a15399133fe82517455e78bad62efbb7f0a3 \
+    --hash=sha256:e0c4cfb0621281fe40387df582097fd796e80430597cb9944f0ae70447bacd91 \
+    --hash=sha256:e286f46a9a39c4a18b319c28f59b61de793654af2f395c102b4f819e584b5852 \
+    --hash=sha256:f95ba5a847cba10dd8c4d8fefa9f2a6cf283b8b88ed6178fa8a6c1ab16054d0d
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:win)

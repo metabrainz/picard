@@ -96,14 +96,14 @@ charset-normalizer==3.4.2 \
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
-discid==1.2.0 \
-    --hash=sha256:cd9630bc53f5566df92819641040226e290b2047573f2c74a6e92b8eed9e86b9
+discid==1.3.0 \
+    --hash=sha256:7160a1211ac3d6a6d8213fb88dd3d73e32abe5e01336a5a4c985b082a97d4335
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
-markdown==3.8 \
-    --hash=sha256:794a929b79c5af141ef5ab0f2f642d0f7b1872981250230e72682346f7cc90dc \
-    --hash=sha256:7df81e63f0df5c4b24b7d156eb81e4690595239b7d70937d0409f1b0de319c6f
+markdown==3.8.2 \
+    --hash=sha256:247b9a70dd12e27f67431ce62523e675b866d254f900c4fe75ce3dda62237c45 \
+    --hash=sha256:5c83764dbd4e00bdd94d85a19b8d55ccca20fe35b2e678a1422b380324dd5f24
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
@@ -119,46 +119,50 @@ pyjwt==2.10.1 \
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
-pyobjc-core==11.0 \
-    --hash=sha256:02406ece449d0f41b31e579e47ca77ced3eb57533df955281bfcecc99da74fba \
-    --hash=sha256:10866b3a734d47caf48e456eea0d4815c2c9b21856157db5917b61dee06893a1 \
-    --hash=sha256:50675c0bb8696fe960a28466f9baf6943df2928a1fd85625d678fa2f428bd0bd \
-    --hash=sha256:63bced211cb8a8fb5c8ff46473603da30e51112861bd02c438fbbbc8578d9a70 \
-    --hash=sha256:a03061d4955c62ddd7754224a80cdadfdf17b6b5f60df1d9169a3b1b02923f0b \
-    --hash=sha256:b4e9dc4296110f251a4033ff3f40320b35873ea7f876bd29a1c9705bb5e08c59 \
-    --hash=sha256:c338c1deb7ab2e9436d4175d1127da2eeed4a1b564b3d83b9f3ae4844ba97e86
+pyobjc-core==11.1 \
+    --hash=sha256:18986f83998fbd5d3f56d8a8428b2f3e0754fd15cef3ef786ca0d29619024f2c \
+    --hash=sha256:4a99e6558b48b8e47c092051e7b3be05df1c8d0617b62f6fa6a316c01902d157 \
+    --hash=sha256:4c7536f3e94de0a3eae6bb382d75f1219280aa867cdf37beef39d9e7d580173c \
+    --hash=sha256:765b97dea6b87ec4612b3212258024d8496ea23517c95a1c5f0735f96b7fd529 \
+    --hash=sha256:8849e78cfe6595c4911fbba29683decfb0bf57a350aed8a43316976ba6f659d2 \
+    --hash=sha256:8cb9ed17a8d84a312a6e8b665dd22393d48336ea1d8277e7ad20c19a38edf731 \
+    --hash=sha256:b63d4d90c5df7e762f34739b39cc55bc63dbcf9fb2fb3f2671e528488c7a87fe \
+    --hash=sha256:ec36680b5c14e2f73d432b03ba7c1457dc6ca70fa59fd7daea1073f2b4157d33 \
+    --hash=sha256:f2455683e807f8541f0d83fbba0f5d9a46128ab0d5cc83ea208f0bec759b7f96
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
     #   pyobjc-framework-cocoa
-pyobjc-framework-cocoa==11.0 \
-    --hash=sha256:00346a8cb81ad7b017b32ff7bf596000f9faa905807b1bd234644ebd47f692c5 \
-    --hash=sha256:15b2bd977ed340074f930f1330f03d42912d5882b697d78bd06f8ebe263ef92e \
-    --hash=sha256:280a577b83c68175a28b2b7138d1d2d3111f2b2b66c30e86f81a19c2b02eae71 \
-    --hash=sha256:3ea7be6e6dd801b297440de02d312ba3fa7fd3c322db747ae1cb237e975f5d33 \
-    --hash=sha256:5750001db544e67f2b66f02067d8f0da96bb2ef71732bde104f01b8628f9d7ea \
-    --hash=sha256:ddff25b0755d59873d186e1e07d6aaddb19d55e3ae890d69ff2d9babf8627657 \
-    --hash=sha256:fbc65f260d617d5463c7fb9dbaaffc23c9a4fabfe3b1a50b039b61870b8daefd
+pyobjc-framework-cocoa==11.1 \
+    --hash=sha256:1b5de4e1757bb65689d6dc1f8d8717de9ec8587eb0c4831c134f13aba29f9b71 \
+    --hash=sha256:54e93e1d9b0fc41c032582a6f0834befe1d418d73893968f3f450281b11603da \
+    --hash=sha256:7b9a9b8ba07f5bf84866399e3de2aa311ed1c34d5d2788a995bdbe82cc36cfa0 \
+    --hash=sha256:806de56f06dfba8f301a244cce289d54877c36b4b19818e3b53150eb7c2424d0 \
+    --hash=sha256:87df76b9b73e7ca699a828ff112564b59251bb9bbe72e610e670a4dc9940d038 \
+    --hash=sha256:aede53a1afc5433e1e7d66568cc52acceeb171b0a6005407a42e8e82580b4fc0 \
+    --hash=sha256:b27a5bdb3ab6cdeb998443ff3fce194ffae5f518c6a079b832dbafc4426937f9 \
+    --hash=sha256:bbee71eeb93b1b31ffbac8560b59a0524a8a4b90846a260d2c4f2188f3d4c721 \
+    --hash=sha256:fd5245ee1997d93e78b72703be1289d75d88ff6490af94462b564892e9266350
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
-pyqt6==6.9.0 \
-    --hash=sha256:0c8b7251608e05b479cfe731f95857e853067459f7cbbcfe90f89de1bcf04280 \
-    --hash=sha256:1cbc5a282454cf19691be09eadbde019783f1ae0523e269b211b0173b67373f6 \
-    --hash=sha256:5344240747e81bde1a4e0e98d4e6e2d96ad56a985d8f36b69cd529c1ca9ff760 \
-    --hash=sha256:6a8ff8e3cd18311bb7d937f7d741e787040ae7ff47ce751c28a94c5cddc1b4e6 \
-    --hash=sha256:d36482000f0cd7ce84a35863766f88a5e671233d5f1024656b600cd8915b3752 \
-    --hash=sha256:e344868228c71fc89a0edeb325497df4ff731a89cfa5fe57a9a4e9baecc9512b
+pyqt6==6.9.1 \
+    --hash=sha256:055870b703c1a49ca621f8a89e2ec4d848e6c739d39367eb9687af3b056d9aa3 \
+    --hash=sha256:08792c72d130a02e3248a120f0b9bbb4bf4319095f92865bc5b365b00518f53d \
+    --hash=sha256:15b95bd273bb6288b070ed7a9503d5ff377aa4882dd6d175f07cad28cdb21da0 \
+    --hash=sha256:33c23d28f6608747ecc8bfd04c8795f61631af9db4fb1e6c2a7523ec4cc916d9 \
+    --hash=sha256:37884df27f774e2e1c0c96fa41e817a222329b80ffc6241725b0dc8c110acb35 \
+    --hash=sha256:50642be03fb40f1c2111a09a1f5a0f79813e039c15e78267e6faaf8a96c1c3a6
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
-pyqt6-qt6==6.9.0 \
-    --hash=sha256:1188f118d1c570d27fba39707e3d8a48525f979816e73de0da55b9e6fa9ad0a1 \
-    --hash=sha256:6d3875119dec6bf5f799facea362aa0ad39bb23aa9654112faa92477abccb5ff \
-    --hash=sha256:9c0e603c934e4f130c110190fbf2c482ff1221a58317266570678bc02db6b152 \
-    --hash=sha256:b1c4e4a78f0f22fbf88556e3d07c99e5ce93032feae5c1e575958d914612e0f9 \
-    --hash=sha256:c825a6f5a9875ef04ef6681eda16aa3a9e9ad71847aa78dfafcf388c8007aa0a \
-    --hash=sha256:cf840e8ae20a0704e0343810cf0e485552db28bf09ea976e58ec0e9b7bb27fcd
+pyqt6-qt6==6.9.1 \
+    --hash=sha256:123e4aeb037c099bb4696a3ea8edcb1d9d62cedd0b2b950556b26024c97f3293 \
+    --hash=sha256:3854c7f83ee4e8c2d91e23ab88b77f90e2ca7ace34fe72f634a446959f2b4d4a \
+    --hash=sha256:432caaedf5570bc8a9b7c75bc6af6a26bf88589536472eca73417ac019f59d41 \
+    --hash=sha256:b065af7243d1d450a49470a8185301196a18b1d41085d3ef476eb55bbb225083 \
+    --hash=sha256:cc5bd193ebd2d1a3ec66e1eee65bf532d762c239459bce1ecebf56177243e89b \
+    --hash=sha256:f9e54c424bc921ecb76792a75d123e4ecfc26b00b0c57dae526f41f1d57951d3
     # via
     #   picard (pyproject.toml)
     #   picard (pyproject.toml:macos-11-0)
