@@ -96,11 +96,18 @@ class UiTheme(Enum):
         return cls.DEFAULT
 
 
-AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
-if IS_WIN or IS_MACOS:
-    AVAILABLE_UI_THEMES.extend([UiTheme.LIGHT, UiTheme.DARK])
-elif not IS_HAIKU:
-    AVAILABLE_UI_THEMES.extend([UiTheme.SYSTEM])
+# Theme availability based on platform capabilities
+if IS_HAIKU:
+    # Haiku doesn't support themes - UI is hidden anyway, but keep empty for consistency
+    # Platform Detection: `IS_HAIKU` is detected via sys.platform == 'haiku1'
+    # Feature Flag: `OS_SUPPORTS_THEMES` is set to False for Haiku
+    # Empty Options: `AVAILABLE_UI_THEMES`` is set to an empty list [] for Haiku
+    # UI Hiding: The ui_theme_container widget is hidden when `OS_SUPPORTS_THEMES` is False (see `interface.py`)
+    AVAILABLE_UI_THEMES = []
+else:
+    # All other platforms: consistent structure
+    # It is now safe to add these to linux since `QtGui.QGuiApplication.styleHints().setColorScheme()` is available
+    AVAILABLE_UI_THEMES = [UiTheme.DEFAULT, UiTheme.LIGHT, UiTheme.DARK]
 
 
 class MacOverrideStyle(QtWidgets.QProxyStyle):
@@ -118,10 +125,50 @@ class MacOverrideStyle(QtWidgets.QProxyStyle):
 
 class BaseTheme:
     def __init__(self):
-        self._dark_theme = False
         self._loaded_config_theme = UiTheme.DEFAULT
+        self._dark_theme = False
+        self._accent_color = None
         # Registry of dark mode detection strategies for Linux DEs
         self._dark_mode_strategies = get_linux_dark_mode_strategies()
+
+    def _apply_dark_palette_colors(self, palette):
+        """Apply dark palette colors to the given palette."""
+        for key, value in DARK_PALETTE_COLORS.items():
+            if isinstance(key, tuple):
+                group, role = key
+                palette.setColor(group, role, value)
+            else:
+                palette.setColor(key, value)
+
+    def _get_style_hints(self) -> QtGui.QStyleHints | None:
+        """Get style hints from QGuiApplication, returning None if unavailable."""
+        return QtGui.QGuiApplication.styleHints()
+
+    def _set_color_scheme(self, color_scheme: QtCore.Qt.ColorScheme):
+        """Set the color scheme using style hints if available.
+
+        Args:
+            color_scheme: The Qt color scheme to set
+        """
+        style_hints = self._get_style_hints()
+        if style_hints is not None:
+            style_hints.setColorScheme(color_scheme)
+
+    def _apply_dark_theme_to_palette(self, palette: QtGui.QPalette):
+        """Apply dark theme colors to the given palette using Qt's color scheme or manual fallback.
+
+        This method tries to use Qt's built-in color scheme first, and falls back to
+        manually applying dark colors if style hints are unavailable.
+
+        Args:
+            palette: The palette to apply dark colors to
+        """
+        style_hints = self._get_style_hints()
+        if style_hints is not None:
+            style_hints.setColorScheme(QtCore.Qt.ColorScheme.Dark)
+        else:
+            # Fall back to manually applying dark colors
+            self._apply_dark_palette_colors(palette)
 
     def _detect_linux_dark_mode(self) -> bool:
         # Iterate through all registered strategies
@@ -137,8 +184,8 @@ class BaseTheme:
         self._loaded_config_theme = UiTheme(config.setting['ui_theme'])
 
         # Use the new fusion style from PyQt6 for a modern and consistent look
-        # across all OSes.
-        if not IS_MACOS and not IS_HAIKU and self._loaded_config_theme != UiTheme.SYSTEM:
+        # across all OSes, except when using system default theme on Linux.
+        if not IS_MACOS and not IS_HAIKU and not (not IS_WIN and self._loaded_config_theme == UiTheme.DEFAULT):
             app.setStyle('Fusion')
         elif IS_MACOS:
             app.setStyle(MacOverrideStyle(app.style()))
@@ -147,6 +194,17 @@ class BaseTheme:
             'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }',
         )
 
+        # Set color scheme based on theme configuration
+        style_hints = self._get_style_hints()
+        if style_hints is not None:
+            if self._loaded_config_theme == UiTheme.DARK:
+                self._set_color_scheme(QtCore.Qt.ColorScheme.Dark)
+            elif self._loaded_config_theme == UiTheme.LIGHT:
+                self._set_color_scheme(QtCore.Qt.ColorScheme.Light)
+            else:
+                # For DEFAULT and SYSTEM themes, let Qt follow system settings
+                self._set_color_scheme(QtCore.Qt.ColorScheme.Unknown)
+
         palette = QtGui.QPalette(app.palette())
         base_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base)
         self._dark_theme = base_color.lightness() < 128
@@ -154,7 +212,7 @@ class BaseTheme:
         if self._dark_theme:
             self._accent_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
 
-        # Linux-specific: If SYSTEM theme, try to detect system dark mode
+        # Linux-specific: If DEFAULT theme, try to detect system dark mode
         # Do not apply override if already dark theme
         is_dark_theme = self.is_dark_theme
         if (
@@ -162,17 +220,12 @@ class BaseTheme:
             and not IS_WIN
             and not IS_MACOS
             and not IS_HAIKU
-            and self._loaded_config_theme == UiTheme.SYSTEM
+            and self._loaded_config_theme == UiTheme.DEFAULT
         ):
             is_dark_theme = self._detect_linux_dark_mode()
             if is_dark_theme:
-                # Apply a dark palette centrally defined
-                for key, value in DARK_PALETTE_COLORS.items():
-                    if isinstance(key, tuple):
-                        group, role = key
-                        palette.setColor(group, role, value)
-                    else:
-                        palette.setColor(key, value)
+                # Apply dark theme to palette using Qt's color scheme or manual fallback
+                self._apply_dark_theme_to_palette(palette)
                 self._dark_theme = True
                 self._accent_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight)
             else:
@@ -264,12 +317,8 @@ class WindowsTheme(BaseTheme):
         # Adapt to Windows 10 color scheme (dark / light theme and accent color)
         super().update_palette(palette, dark_theme, accent_color)
         if dark_theme:
-            for key, value in DARK_PALETTE_COLORS.items():
-                if isinstance(key, tuple):
-                    group, role = key
-                    palette.setColor(group, role, value)
-                else:
-                    palette.setColor(key, value)
+            # Apply dark theme to palette using Qt's color scheme or manual fallback
+            self._apply_dark_theme_to_palette(palette)
 
 
 if IS_WIN:

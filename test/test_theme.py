@@ -396,9 +396,9 @@ def assert_palette_matches_expected(palette, expected_colors):
             )
         if isinstance(expected, QtGui.QColor):
             # Compare by value, not object identity
-            assert actual.getRgb() == expected.getRgb(), (
-                f"Color for {key} should be {expected.getRgb()}, got {actual.getRgb()}"
-            )
+            assert (
+                actual.getRgb() == expected.getRgb()
+            ), f"Color for {key} should be {expected.getRgb()}, got {actual.getRgb()}"
         else:
             assert actual == QtGui.QColor(expected), f"Color for {key} should be {expected}, got {actual}"
 
@@ -421,13 +421,13 @@ def assert_palette_not_dark(palette, expected_colors):
             continue
         actual = palette.color(QtGui.QPalette.ColorGroup.Active, key)
         if isinstance(expected, QtGui.QColor):
-            assert actual.getRgb() != expected.getRgb(), (
-                f"Color for {key} should differ from dark mode in light mode; got {actual.getRgb()}"
-            )
+            assert (
+                actual.getRgb() != expected.getRgb()
+            ), f"Color for {key} should differ from dark mode in light mode; got {actual.getRgb()}"
         else:
-            assert actual != QtGui.QColor(expected), (
-                f"Color for {key} should differ from dark mode in light mode; got {actual}"
-            )
+            assert actual != QtGui.QColor(
+                expected
+            ), f"Color for {key} should differ from dark mode in light mode; got {actual}"
 
 
 @pytest.mark.parametrize(
@@ -446,11 +446,14 @@ def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, dark_mode, ex
     monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
     # Set config to SYSTEM
     config_mock = MagicMock()
-    config_mock.setting = {"ui_theme": "system"}
+    config_mock.setting = {"ui_theme": "default"}
     monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
     # Patch _detect_linux_dark_mode to return dark_mode
     theme = theme_mod.BaseTheme()
     theme._detect_linux_dark_mode = lambda: dark_mode
+
+    # Mock QGuiApplication.styleHints() to return None to force manual fallback
+    monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
 
     # Mock app and palette
     app = DummyApp(already_dark_theme)
@@ -511,7 +514,8 @@ def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_
     monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
     # Instantiate WindowsTheme and run setup
     theme = theme_mod.WindowsTheme()
-
+    # Force manual fallback for palette changes
+    monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
     app = DummyApp()
     theme.setup(app)
     palette = app._palette
@@ -622,9 +626,10 @@ def test_linux_dark_palette_override_only_if_not_already_dark(
     monkeypatch.setattr(theme_mod, "IS_MACOS", False)
     monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
     config_mock = MagicMock()
-    config_mock.setting = {"ui_theme": "system"}
+    config_mock.setting = {"ui_theme": "default"}
     monkeypatch.setattr(theme_mod, "get_config", lambda: config_mock)
-
+    # Force manual fallback for palette changes
+    monkeypatch.setattr(QtGui.QGuiApplication, "styleHints", lambda: None)
     app = DummyApp(already_dark_theme)
     theme = theme_mod.BaseTheme()
     theme._detect_linux_dark_mode = lambda: linux_dark_mode_detected
