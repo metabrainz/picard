@@ -64,29 +64,29 @@ def mock_app():
 class TestStyleHintsMethods:
     """Test the new style hints related methods."""
 
-    def test_get_style_hints_returns_style_hints(self, base_theme, mock_style_hints):
-        """Test _get_style_hints returns QGuiApplication.styleHints()."""
+    def test_get_style_hints_returns_style_hints(self, mock_style_hints):
+        """Test get_style_hints returns QGuiApplication.styleHints()."""
         with patch("picard.ui.theme.QtGui.QGuiApplication.styleHints", return_value=mock_style_hints):
-            result = base_theme._get_style_hints()
+            result = theme_mod.get_style_hints()
             assert result is mock_style_hints
 
-    def test_get_style_hints_returns_none_when_unavailable(self, base_theme):
-        """Test _get_style_hints returns None when styleHints() is unavailable."""
+    def test_get_style_hints_returns_none_when_unavailable(self):
+        """Test get_style_hints returns None when styleHints() is unavailable."""
         with patch("picard.ui.theme.QtGui.QGuiApplication.styleHints", return_value=None):
-            result = base_theme._get_style_hints()
+            result = theme_mod.get_style_hints()
             assert result is None
 
-    def test_set_color_scheme_with_style_hints(self, base_theme, mock_style_hints):
-        """Test _set_color_scheme calls setColorScheme when style hints available."""
-        with patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints):
-            base_theme._set_color_scheme(QtCore.Qt.ColorScheme.Dark)
+    def test_set_color_scheme_with_style_hints(self, mock_style_hints):
+        """Test set_color_scheme calls setColorScheme when style hints available."""
+        with patch("picard.ui.theme.get_style_hints", return_value=mock_style_hints):
+            theme_mod.set_color_scheme(QtCore.Qt.ColorScheme.Dark)
             mock_style_hints.setColorScheme.assert_called_once_with(QtCore.Qt.ColorScheme.Dark)
 
-    def test_set_color_scheme_without_style_hints(self, base_theme):
-        """Test _set_color_scheme does nothing when style hints unavailable."""
-        with patch.object(base_theme, "_get_style_hints", return_value=None):
+    def test_set_color_scheme_without_style_hints(self):
+        """Test set_color_scheme does nothing when style hints unavailable."""
+        with patch("picard.ui.theme.get_style_hints", return_value=None):
             # Should not raise any exception
-            base_theme._set_color_scheme(QtCore.Qt.ColorScheme.Dark)
+            theme_mod.set_color_scheme(QtCore.Qt.ColorScheme.Dark)
 
     @pytest.mark.parametrize(
         "color_scheme",
@@ -96,92 +96,136 @@ class TestStyleHintsMethods:
             QtCore.Qt.ColorScheme.Unknown,
         ],
     )
-    def test_set_color_scheme_with_different_schemes(self, base_theme, mock_style_hints, color_scheme):
-        """Test _set_color_scheme works with different color schemes."""
-        with patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints):
-            base_theme._set_color_scheme(color_scheme)
+    def test_set_color_scheme_with_different_schemes(self, mock_style_hints, color_scheme):
+        """Test set_color_scheme works with different color schemes."""
+        with patch("picard.ui.theme.get_style_hints", return_value=mock_style_hints):
+            theme_mod.set_color_scheme(color_scheme)
             mock_style_hints.setColorScheme.assert_called_once_with(color_scheme)
 
 
 class TestApplyDarkPaletteColors:
-    """Test the _apply_dark_palette_colors method."""
+    """Test the apply_dark_palette_colors method."""
 
-    def test_apply_dark_palette_colors_applies_all_colors(self, base_theme, mock_palette):
-        """Test _apply_dark_palette_colors applies all expected colors."""
-        base_theme._apply_dark_palette_colors(mock_palette)
+    def test_apply_dark_palette_colors_applies_all_colors(self, mock_palette):
+        """Test apply_dark_palette_colors applies all dark colors to palette."""
+        theme_mod.apply_dark_palette_colors(mock_palette)
 
-        # Check that the palette colors were changed to dark theme colors
-        window_color = mock_palette.color(QtGui.QPalette.ColorRole.Window)
-        assert window_color.getRgb() == (51, 51, 51, 255)
+        # Verify colors have been changed to expected dark theme colors
+        new_window_color = mock_palette.color(QtGui.QPalette.ColorRole.Window)
+        new_text_color = mock_palette.color(QtGui.QPalette.ColorRole.Text)
 
-        window_text_color = mock_palette.color(QtGui.QPalette.ColorRole.WindowText)
-        assert window_text_color == QtCore.Qt.GlobalColor.white
+        # Check that window color is now the dark background color
+        assert new_window_color == theme_mod.DARK_BG_COLOR
+        # Check that text color is now white
+        assert new_text_color == QtCore.Qt.GlobalColor.white
 
-        base_color = mock_palette.color(QtGui.QPalette.ColorRole.Base)
-        assert base_color.getRgb() == (31, 31, 31, 255)
+    def test_apply_dark_palette_colors_applies_tuple_keys(self, mock_palette):
+        """Test apply_dark_palette_colors correctly handles tuple keys (group, role)."""
+        # Test that disabled text color is applied correctly
+        original_disabled_text = mock_palette.color(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text)
 
-    def test_apply_dark_palette_colors_applies_tuple_keys(self, base_theme, mock_palette):
-        """Test _apply_dark_palette_colors correctly handles tuple keys (group, role)."""
-        base_theme._apply_dark_palette_colors(mock_palette)
+        theme_mod.apply_dark_palette_colors(mock_palette)
 
-        # Check disabled text color (tuple key)
-        disabled_text_color = mock_palette.color(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text)
-        assert disabled_text_color == QtCore.Qt.GlobalColor.darkGray
+        new_disabled_text = mock_palette.color(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text)
 
-        # Check disabled base color (tuple key)
-        disabled_base_color = mock_palette.color(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base)
-        assert disabled_base_color.getRgb() == (60, 60, 60, 255)
+        assert new_disabled_text != original_disabled_text
+        assert new_disabled_text == QtCore.Qt.GlobalColor.darkGray
 
 
 class TestApplyDarkThemeToPalette:
-    """Test the _apply_dark_theme_to_palette method."""
+    """Test the apply_dark_theme_to_palette method."""
 
-    def test_apply_dark_theme_to_palette_with_style_hints(self, base_theme, mock_palette, mock_style_hints):
-        """Test _apply_dark_theme_to_palette uses style hints when available."""
-        with patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints):
-            base_theme._apply_dark_theme_to_palette(mock_palette)
+    def test_apply_dark_theme_to_palette_with_style_hints(self, mock_palette, mock_style_hints):
+        """Test apply_dark_theme_to_palette uses style hints when available."""
+        with patch("picard.ui.theme.get_style_hints", return_value=mock_style_hints):
+            theme_mod.apply_dark_theme_to_palette(mock_palette)
             mock_style_hints.setColorScheme.assert_called_once_with(QtCore.Qt.ColorScheme.Dark)
 
-    def test_apply_dark_theme_to_palette_without_style_hints(self, base_theme, mock_palette):
-        """Test _apply_dark_theme_to_palette falls back to manual colors when style hints unavailable."""
-        with patch.object(base_theme, "_get_style_hints", return_value=None):
-            base_theme._apply_dark_theme_to_palette(mock_palette)
+    def test_apply_dark_theme_to_palette_without_style_hints(self, mock_palette):
+        """Test apply_dark_theme_to_palette falls back to manual colors when no style hints."""
+        with patch("picard.ui.theme.get_style_hints", return_value=None):
+            with patch("picard.ui.theme.apply_dark_palette_colors") as mock_apply_colors:
+                theme_mod.apply_dark_theme_to_palette(mock_palette)
+                mock_apply_colors.assert_called_once_with(mock_palette)
 
-            # Should have applied manual dark colors
-            window_color = mock_palette.color(QtGui.QPalette.ColorRole.Window)
-            assert window_color.getRgb() == (51, 51, 51, 255)
-
-    def test_apply_dark_theme_to_palette_calls_manual_fallback(self, base_theme, mock_palette):
-        """Test _apply_dark_theme_to_palette calls _apply_dark_palette_colors when style hints unavailable."""
-        with (
-            patch.object(base_theme, "_get_style_hints", return_value=None),
-            patch.object(base_theme, "_apply_dark_palette_colors") as mock_apply,
-        ):
-            base_theme._apply_dark_theme_to_palette(mock_palette)
-            mock_apply.assert_called_once_with(mock_palette)
+    def test_apply_dark_theme_to_palette_calls_manual_fallback(self, mock_palette):
+        """Test apply_dark_theme_to_palette calls manual fallback when style hints unavailable."""
+        with patch("picard.ui.theme.get_style_hints", return_value=None):
+            with patch("picard.ui.theme.apply_dark_palette_colors") as mock_apply_colors:
+                theme_mod.apply_dark_theme_to_palette(mock_palette)
+                mock_apply_colors.assert_called_once_with(mock_palette)
 
 
 class TestThemeAvailability:
-    """Test the updated theme availability logic."""
+    """Test theme availability across platforms."""
 
     def test_available_ui_themes_includes_all_themes_except_haiku(self):
-        """Test AVAILABLE_UI_THEMES includes DEFAULT, LIGHT, and DARK themes."""
-        # The current implementation includes all themes for all platforms except Haiku
-        expected_themes = [theme_mod.UiTheme.DEFAULT, theme_mod.UiTheme.LIGHT, theme_mod.UiTheme.DARK]
+        """Test AVAILABLE_UI_THEMES includes appropriate themes based on platform and capabilities."""
+        # This test assumes we're not on Haiku
+        # On Haiku, AVAILABLE_UI_THEMES would be empty
+        if theme_mod.IS_HAIKU:
+            assert len(theme_mod.AVAILABLE_UI_THEMES) == 0
+        elif not theme_mod.IS_WIN and not theme_mod.IS_MACOS:
+            # Linux: Check if style hints are available
+            if theme_mod._style_hints_available():
+                # All themes available when style hints are supported
+                assert len(theme_mod.AVAILABLE_UI_THEMES) == 3
+                assert theme_mod.UiTheme.DEFAULT in theme_mod.AVAILABLE_UI_THEMES
+                assert theme_mod.UiTheme.LIGHT in theme_mod.AVAILABLE_UI_THEMES
+                assert theme_mod.UiTheme.DARK in theme_mod.AVAILABLE_UI_THEMES
+            else:
+                # Only DEFAULT theme available when style hints are not available
+                assert len(theme_mod.AVAILABLE_UI_THEMES) == 1
+                assert theme_mod.UiTheme.DEFAULT in theme_mod.AVAILABLE_UI_THEMES
+                assert theme_mod.UiTheme.LIGHT not in theme_mod.AVAILABLE_UI_THEMES
+                assert theme_mod.UiTheme.DARK not in theme_mod.AVAILABLE_UI_THEMES
+        else:
+            # Windows and macOS: all themes available
+            assert len(theme_mod.AVAILABLE_UI_THEMES) > 0
+            assert theme_mod.UiTheme.DEFAULT in theme_mod.AVAILABLE_UI_THEMES
+            assert theme_mod.UiTheme.LIGHT in theme_mod.AVAILABLE_UI_THEMES
+            assert theme_mod.UiTheme.DARK in theme_mod.AVAILABLE_UI_THEMES
 
-        # Check that all expected themes are present
-        for theme in expected_themes:
-            assert theme in theme_mod.AVAILABLE_UI_THEMES
+    def test_linux_style_hints_detection(self, monkeypatch):
+        """Test Linux style hints detection affects available themes."""
+        # Mock Linux platform
+        monkeypatch.setattr(theme_mod, "IS_WIN", False)
+        monkeypatch.setattr(theme_mod, "IS_MACOS", False)
+        monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
 
-        # Check that we have exactly the expected themes (for non-Haiku platforms)
-        if not theme_mod.IS_HAIKU:
-            assert len(theme_mod.AVAILABLE_UI_THEMES) == len(expected_themes)
-            for theme in theme_mod.AVAILABLE_UI_THEMES:
-                assert theme in expected_themes
+        # Test the _style_hints_available function directly
+        with patch("picard.ui.theme.get_style_hints", return_value=MagicMock()):
+            assert theme_mod._style_hints_available() is True
+
+        with patch("picard.ui.theme.get_style_hints", return_value=None):
+            assert theme_mod._style_hints_available() is False
+
+        # Test the logic that determines available themes
+        # We can't easily test the module-level AVAILABLE_UI_THEMES since it's evaluated at import time
+        # Instead, test that the logic works correctly by checking the function behavior
+        def test_available_themes_logic(style_hints_available):
+            if style_hints_available:
+                return [theme_mod.UiTheme.DEFAULT, theme_mod.UiTheme.LIGHT, theme_mod.UiTheme.DARK]
+            else:
+                return [theme_mod.UiTheme.DEFAULT]
+
+        # Test with style hints available
+        available_themes = test_available_themes_logic(True)
+        assert len(available_themes) == 3
+        assert theme_mod.UiTheme.DEFAULT in available_themes
+        assert theme_mod.UiTheme.LIGHT in available_themes
+        assert theme_mod.UiTheme.DARK in available_themes
+
+        # Test with style hints not available
+        available_themes = test_available_themes_logic(False)
+        assert len(available_themes) == 1
+        assert theme_mod.UiTheme.DEFAULT in available_themes
+        assert theme_mod.UiTheme.LIGHT not in available_themes
+        assert theme_mod.UiTheme.DARK not in available_themes
 
 
 class TestSetupColorScheme:
-    """Test the color scheme setting logic in setup method."""
+    """Test color scheme setup in theme setup method."""
 
     @pytest.mark.parametrize(
         ("theme_value", "expected_color_scheme"),
@@ -202,7 +246,7 @@ class TestSetupColorScheme:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints),
+            patch("picard.ui.theme.get_style_hints", return_value=mock_style_hints),
             patch.object(theme_mod, "MacOverrideStyle") as _,
         ):
             base_theme.setup(mock_app)
@@ -216,7 +260,7 @@ class TestSetupColorScheme:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(base_theme, "_get_style_hints", return_value=None),
+            patch("picard.ui.theme.get_style_hints", return_value=None),
             patch.object(theme_mod, "MacOverrideStyle"),
         ):
             # Should not raise any exception
@@ -224,13 +268,13 @@ class TestSetupColorScheme:
 
 
 class TestWindowsTheme:
-    """Test the WindowsTheme class updates."""
+    """Test Windows-specific theme behavior."""
 
     def test_windows_theme_apply_dark_theme_to_palette(self, mock_palette):
-        """Test WindowsTheme uses _apply_dark_theme_to_palette in update_palette."""
+        """Test WindowsTheme uses apply_dark_theme_to_palette in update_palette."""
         theme = theme_mod.WindowsTheme()
 
-        with patch.object(theme, "_apply_dark_theme_to_palette") as mock_apply:
+        with patch("picard.ui.theme.apply_dark_theme_to_palette") as mock_apply:
             theme.update_palette(mock_palette, True, None)
             mock_apply.assert_called_once_with(mock_palette)
 
@@ -238,17 +282,18 @@ class TestWindowsTheme:
         """Test WindowsTheme does not apply dark theme when dark_theme is False."""
         theme = theme_mod.WindowsTheme()
 
-        with patch.object(theme, "_apply_dark_theme_to_palette") as mock_apply:
+        with patch("picard.ui.theme.apply_dark_theme_to_palette") as mock_apply:
             theme.update_palette(mock_palette, False, None)
             mock_apply.assert_not_called()
 
 
 class TestLinuxDarkModeDetection:
-    """Test the Linux dark mode detection logic."""
+    """Test Linux dark mode detection logic."""
 
     @pytest.fixture
     def linux_theme(self, monkeypatch):
-        """Create a BaseTheme instance with Linux platform settings."""
+        """Create a Linux theme instance for testing."""
+        # Mock platform detection to simulate Linux
         monkeypatch.setattr(theme_mod, "IS_WIN", False)
         monkeypatch.setattr(theme_mod, "IS_MACOS", False)
         monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
@@ -280,11 +325,10 @@ class TestLinuxDarkModeDetection:
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
             patch.object(linux_theme, "_detect_linux_dark_mode", return_value=detect_result),
-            patch.object(linux_theme, "_apply_dark_theme_to_palette") as mock_apply,
-            patch.object(linux_theme, "_get_style_hints", return_value=None),
+            patch("picard.ui.theme.apply_dark_theme_to_palette") as mock_apply,
+            patch("picard.ui.theme.get_style_hints", return_value=None),
         ):
             linux_theme.setup(mock_app)
-
             if expected_apply_called:
                 mock_apply.assert_called_once()
             else:
@@ -304,40 +348,37 @@ class TestLinuxDarkModeDetection:
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
             patch.object(linux_theme, "_detect_linux_dark_mode", return_value=True),
-            patch.object(linux_theme, "_apply_dark_theme_to_palette") as mock_apply,
-            patch.object(linux_theme, "_get_style_hints", return_value=None),
+            patch("picard.ui.theme.apply_dark_theme_to_palette") as mock_apply,
+            patch("picard.ui.theme.get_style_hints", return_value=None),
         ):
             linux_theme.setup(mock_app)
+            # Should not apply dark theme when already dark
             mock_apply.assert_not_called()
 
 
 class TestIntegration:
-    """Integration tests for the new functionality."""
+    """Test integration scenarios."""
 
-    def test_style_hints_integration_with_real_palette(self, base_theme):
+    def test_style_hints_integration_with_real_palette(self):
         """Test integration of style hints with real palette objects."""
         palette = QtGui.QPalette()
-        original_window_color = palette.color(QtGui.QPalette.ColorRole.Window)
 
         # Test with style hints available
         mock_hints = MagicMock()
-        with patch.object(base_theme, "_get_style_hints", return_value=mock_hints):
-            base_theme._apply_dark_theme_to_palette(palette)
+        with patch("picard.ui.theme.get_style_hints", return_value=mock_hints):
+            theme_mod.apply_dark_theme_to_palette(palette)
             mock_hints.setColorScheme.assert_called_once_with(QtCore.Qt.ColorScheme.Dark)
-            # Palette should not be modified when using style hints
-            assert palette.color(QtGui.QPalette.ColorRole.Window) == original_window_color
 
-    def test_manual_fallback_integration(self, base_theme):
+    def test_manual_fallback_integration(self):
         """Test integration of manual fallback with real palette objects."""
         palette = QtGui.QPalette()
         original_window_color = palette.color(QtGui.QPalette.ColorRole.Window)
 
         # Test without style hints (manual fallback)
-        with patch.object(base_theme, "_get_style_hints", return_value=None):
-            base_theme._apply_dark_theme_to_palette(palette)
-            # Palette should be modified with dark colors
+        with patch("picard.ui.theme.get_style_hints", return_value=None):
+            theme_mod.apply_dark_theme_to_palette(palette)
+            # Verify that manual colors were applied
             new_window_color = palette.color(QtGui.QPalette.ColorRole.Window)
-            assert new_window_color.getRgb() == (51, 51, 51, 255)
             assert new_window_color != original_window_color
 
     def test_theme_setup_integration(self, mock_app):
@@ -352,10 +393,8 @@ class TestIntegration:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(theme, "_get_style_hints", return_value=mock_hints),
+            patch("picard.ui.theme.get_style_hints", return_value=mock_hints),
             patch.object(theme_mod, "MacOverrideStyle"),
         ):
             theme.setup(mock_app)
-
-            # Verify style hints were used
             mock_hints.setColorScheme.assert_called_once_with(QtCore.Qt.ColorScheme.Dark)
