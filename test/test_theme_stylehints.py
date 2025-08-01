@@ -203,6 +203,7 @@ class TestSetupColorScheme:
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
             patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints),
+            patch.object(theme_mod, "MacOverrideStyle") as _,
         ):
             base_theme.setup(mock_app)
             mock_style_hints.setColorScheme.assert_called_once_with(expected_color_scheme)
@@ -216,6 +217,7 @@ class TestSetupColorScheme:
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
             patch.object(base_theme, "_get_style_hints", return_value=None),
+            patch.object(theme_mod, "MacOverrideStyle"),
         ):
             # Should not raise any exception
             base_theme.setup(mock_app)
@@ -351,6 +353,7 @@ class TestIntegration:
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
             patch.object(theme, "_get_style_hints", return_value=mock_hints),
+            patch.object(theme_mod, "MacOverrideStyle"),
         ):
             theme.setup(mock_app)
 
