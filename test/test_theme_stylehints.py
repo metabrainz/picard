@@ -66,25 +66,25 @@ class TestStyleHintsMethods:
 
     def test_get_style_hints_returns_style_hints(self, base_theme, mock_style_hints):
         """Test _get_style_hints returns QGuiApplication.styleHints()."""
-        with patch('picard.ui.theme.QtGui.QGuiApplication.styleHints', return_value=mock_style_hints):
+        with patch("picard.ui.theme.QtGui.QGuiApplication.styleHints", return_value=mock_style_hints):
             result = base_theme._get_style_hints()
             assert result is mock_style_hints
 
     def test_get_style_hints_returns_none_when_unavailable(self, base_theme):
         """Test _get_style_hints returns None when styleHints() is unavailable."""
-        with patch('picard.ui.theme.QtGui.QGuiApplication.styleHints', return_value=None):
+        with patch("picard.ui.theme.QtGui.QGuiApplication.styleHints", return_value=None):
             result = base_theme._get_style_hints()
             assert result is None
 
     def test_set_color_scheme_with_style_hints(self, base_theme, mock_style_hints):
         """Test _set_color_scheme calls setColorScheme when style hints available."""
-        with patch.object(base_theme, '_get_style_hints', return_value=mock_style_hints):
+        with patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints):
             base_theme._set_color_scheme(QtCore.Qt.ColorScheme.Dark)
             mock_style_hints.setColorScheme.assert_called_once_with(QtCore.Qt.ColorScheme.Dark)
 
     def test_set_color_scheme_without_style_hints(self, base_theme):
         """Test _set_color_scheme does nothing when style hints unavailable."""
-        with patch.object(base_theme, '_get_style_hints', return_value=None):
+        with patch.object(base_theme, "_get_style_hints", return_value=None):
             # Should not raise any exception
             base_theme._set_color_scheme(QtCore.Qt.ColorScheme.Dark)
 
@@ -98,7 +98,7 @@ class TestStyleHintsMethods:
     )
     def test_set_color_scheme_with_different_schemes(self, base_theme, mock_style_hints, color_scheme):
         """Test _set_color_scheme works with different color schemes."""
-        with patch.object(base_theme, '_get_style_hints', return_value=mock_style_hints):
+        with patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints):
             base_theme._set_color_scheme(color_scheme)
             mock_style_hints.setColorScheme.assert_called_once_with(color_scheme)
 
@@ -138,13 +138,13 @@ class TestApplyDarkThemeToPalette:
 
     def test_apply_dark_theme_to_palette_with_style_hints(self, base_theme, mock_palette, mock_style_hints):
         """Test _apply_dark_theme_to_palette uses style hints when available."""
-        with patch.object(base_theme, '_get_style_hints', return_value=mock_style_hints):
+        with patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints):
             base_theme._apply_dark_theme_to_palette(mock_palette)
             mock_style_hints.setColorScheme.assert_called_once_with(QtCore.Qt.ColorScheme.Dark)
 
     def test_apply_dark_theme_to_palette_without_style_hints(self, base_theme, mock_palette):
         """Test _apply_dark_theme_to_palette falls back to manual colors when style hints unavailable."""
-        with patch.object(base_theme, '_get_style_hints', return_value=None):
+        with patch.object(base_theme, "_get_style_hints", return_value=None):
             base_theme._apply_dark_theme_to_palette(mock_palette)
 
             # Should have applied manual dark colors
@@ -154,8 +154,8 @@ class TestApplyDarkThemeToPalette:
     def test_apply_dark_theme_to_palette_calls_manual_fallback(self, base_theme, mock_palette):
         """Test _apply_dark_theme_to_palette calls _apply_dark_palette_colors when style hints unavailable."""
         with (
-            patch.object(base_theme, '_get_style_hints', return_value=None),
-            patch.object(base_theme, '_apply_dark_palette_colors') as mock_apply,
+            patch.object(base_theme, "_get_style_hints", return_value=None),
+            patch.object(base_theme, "_apply_dark_palette_colors") as mock_apply,
         ):
             base_theme._apply_dark_theme_to_palette(mock_palette)
             mock_apply.assert_called_once_with(mock_palette)
@@ -184,7 +184,7 @@ class TestSetupColorScheme:
     """Test the color scheme setting logic in setup method."""
 
     @pytest.mark.parametrize(
-        "theme_value,expected_color_scheme",
+        ("theme_value", "expected_color_scheme"),
         [
             ("dark", QtCore.Qt.ColorScheme.Dark),
             ("light", QtCore.Qt.ColorScheme.Light),
@@ -202,7 +202,7 @@ class TestSetupColorScheme:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(base_theme, '_get_style_hints', return_value=mock_style_hints),
+            patch.object(base_theme, "_get_style_hints", return_value=mock_style_hints),
         ):
             base_theme.setup(mock_app)
             mock_style_hints.setColorScheme.assert_called_once_with(expected_color_scheme)
@@ -215,7 +215,7 @@ class TestSetupColorScheme:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(base_theme, '_get_style_hints', return_value=None),
+            patch.object(base_theme, "_get_style_hints", return_value=None),
         ):
             # Should not raise any exception
             base_theme.setup(mock_app)
@@ -228,7 +228,7 @@ class TestWindowsTheme:
         """Test WindowsTheme uses _apply_dark_theme_to_palette in update_palette."""
         theme = theme_mod.WindowsTheme()
 
-        with patch.object(theme, '_apply_dark_theme_to_palette') as mock_apply:
+        with patch.object(theme, "_apply_dark_theme_to_palette") as mock_apply:
             theme.update_palette(mock_palette, True, None)
             mock_apply.assert_called_once_with(mock_palette)
 
@@ -236,7 +236,7 @@ class TestWindowsTheme:
         """Test WindowsTheme does not apply dark theme when dark_theme is False."""
         theme = theme_mod.WindowsTheme()
 
-        with patch.object(theme, '_apply_dark_theme_to_palette') as mock_apply:
+        with patch.object(theme, "_apply_dark_theme_to_palette") as mock_apply:
             theme.update_palette(mock_palette, False, None)
             mock_apply.assert_not_called()
 
@@ -253,7 +253,7 @@ class TestLinuxDarkModeDetection:
         return theme_mod.BaseTheme()
 
     @pytest.mark.parametrize(
-        "config_theme,detect_result,expected_apply_called",
+        ("config_theme", "detect_result", "expected_apply_called"),
         [
             ("default", True, True),  # Should apply dark theme
             ("default", False, False),  # Should not apply dark theme
@@ -277,9 +277,9 @@ class TestLinuxDarkModeDetection:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(linux_theme, '_detect_linux_dark_mode', return_value=detect_result),
-            patch.object(linux_theme, '_apply_dark_theme_to_palette') as mock_apply,
-            patch.object(linux_theme, '_get_style_hints', return_value=None),
+            patch.object(linux_theme, "_detect_linux_dark_mode", return_value=detect_result),
+            patch.object(linux_theme, "_apply_dark_theme_to_palette") as mock_apply,
+            patch.object(linux_theme, "_get_style_hints", return_value=None),
         ):
             linux_theme.setup(mock_app)
 
@@ -301,9 +301,9 @@ class TestLinuxDarkModeDetection:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(linux_theme, '_detect_linux_dark_mode', return_value=True),
-            patch.object(linux_theme, '_apply_dark_theme_to_palette') as mock_apply,
-            patch.object(linux_theme, '_get_style_hints', return_value=None),
+            patch.object(linux_theme, "_detect_linux_dark_mode", return_value=True),
+            patch.object(linux_theme, "_apply_dark_theme_to_palette") as mock_apply,
+            patch.object(linux_theme, "_get_style_hints", return_value=None),
         ):
             linux_theme.setup(mock_app)
             mock_apply.assert_not_called()
@@ -319,7 +319,7 @@ class TestIntegration:
 
         # Test with style hints available
         mock_hints = MagicMock()
-        with patch.object(base_theme, '_get_style_hints', return_value=mock_hints):
+        with patch.object(base_theme, "_get_style_hints", return_value=mock_hints):
             base_theme._apply_dark_theme_to_palette(palette)
             mock_hints.setColorScheme.assert_called_once_with(QtCore.Qt.ColorScheme.Dark)
             # Palette should not be modified when using style hints
@@ -331,7 +331,7 @@ class TestIntegration:
         original_window_color = palette.color(QtGui.QPalette.ColorRole.Window)
 
         # Test without style hints (manual fallback)
-        with patch.object(base_theme, '_get_style_hints', return_value=None):
+        with patch.object(base_theme, "_get_style_hints", return_value=None):
             base_theme._apply_dark_theme_to_palette(palette)
             # Palette should be modified with dark colors
             new_window_color = palette.color(QtGui.QPalette.ColorRole.Window)
@@ -350,7 +350,7 @@ class TestIntegration:
 
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
-            patch.object(theme, '_get_style_hints', return_value=mock_hints),
+            patch.object(theme, "_get_style_hints", return_value=mock_hints),
         ):
             theme.setup(mock_app)
 
