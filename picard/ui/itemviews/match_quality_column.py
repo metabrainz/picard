@@ -137,25 +137,19 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def paint(self, painter, option, index):
-        # Initialize the style option
-        self.initStyleOption(option, index)
+    def _get_item_data(self, index):
+        """Extract item data and validate it's a match quality column.
 
-        # Draw the background
-        if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
-            fill_brush = option.palette.highlight()
-        else:
-            fill_brush = option.palette.base()
-        painter.fillRect(option.rect, fill_brush)
-
-        # Get the item object - use the correct method for QTreeWidget
+        Returns:
+            tuple: (obj, column, stats) or (None, None, None) if validation fails
+        """
         tree_widget = self.parent()
         if not tree_widget:
-            return
+            return None, None, None
 
         item = tree_widget.itemFromIndex(index)
         if not hasattr(item, "obj") or not item.obj:
-            return
+            return None, None, None
 
         obj = item.obj
 
@@ -163,20 +157,27 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         column_index = index.column()
         columns = getattr(item, "columns", None)
         if not columns or column_index >= len(columns):
-            return
+            return None, None, None
 
         column = columns[column_index]
         if not isinstance(column, MatchQualityColumn):
-            return
+            return None, None, None
 
-        # Get the match icon and stats
-        icon = column.get_match_icon(obj)
         stats = column.get_match_stats(obj)
-
         if not stats:
-            return
+            return None, None, None
 
-        # Build the status text with compact format
+        return obj, column, stats
+
+    def _format_status_text(self, stats):
+        """Format stats into compact status text for display.
+
+        Args:
+            stats: Dictionary containing match statistics
+
+        Returns:
+            str: Formatted status text
+        """
         status_parts = []
 
         # Core match info: matched/total (always show)
@@ -191,7 +192,55 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         status_parts.append(f"{stats['extra']}")
         status_parts.append(f"{stats['unmatched']}")
 
-        status_text = "; ".join(status_parts)
+        return "; ".join(status_parts)
+
+    def _format_tooltip_text(self, stats):
+        """Format stats into detailed tooltip text.
+
+        Args:
+            stats: Dictionary containing match statistics
+
+        Returns:
+            str: Formatted tooltip text
+        """
+        tooltip_parts = []
+
+        # Core match info
+        if stats["total"] > 0:
+            percentage = (stats["matched"] / stats["total"]) * 100
+            tooltip_parts.append(f"Match: {stats['matched']}/{stats['total']} ({percentage:.1f}%)")
+        else:
+            tooltip_parts.append("Match: 0/0 (0%)")
+
+        # Additional stats with explanations
+        tooltip_parts.append(f"Missing tracks: {stats['missing']}")
+        tooltip_parts.append(f"Duplicate files: {stats['duplicates']}")
+        tooltip_parts.append(f"Extra files: {stats['extra']}")
+        tooltip_parts.append(f"Unmatched files: {stats['unmatched']}")
+
+        return "\n".join(tooltip_parts)
+
+    def paint(self, painter, option, index):
+        # Initialize the style option
+        self.initStyleOption(option, index)
+
+        # Draw the background
+        if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
+            fill_brush = option.palette.highlight()
+        else:
+            fill_brush = option.palette.base()
+        painter.fillRect(option.rect, fill_brush)
+
+        # Get item data
+        obj, column, stats = self._get_item_data(index)
+        if not stats:
+            return
+
+        # Get the match icon
+        icon = column.get_match_icon(obj)
+
+        # Format status text
+        status_text = self._format_status_text(stats)
 
         # Set text color for good contrast
         if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
@@ -224,49 +273,13 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
 
     def helpEvent(self, event, view, option, index):
         """Show tooltip with explanation of the stats."""
-        # Get the item object
-        tree_widget = view
-        if not tree_widget:
-            return False
-
-        item = tree_widget.itemFromIndex(index)
-        if not hasattr(item, "obj") or not item.obj:
-            return False
-
-        obj = item.obj
-
-        # Get the column to determine if this is a match quality column
-        column_index = index.column()
-        columns = getattr(item, "columns", None)
-        if not columns or column_index >= len(columns):
-            return False
-
-        column = columns[column_index]
-        if not isinstance(column, MatchQualityColumn):
-            return False
-
-        # Get the stats
-        stats = column.get_match_stats(obj)
+        # Get item data
+        _, __, stats = self._get_item_data(index)
         if not stats:
             return False
 
-        # Build tooltip text
-        tooltip_parts = []
-
-        # Core match info
-        if stats["total"] > 0:
-            percentage = (stats["matched"] / stats["total"]) * 100
-            tooltip_parts.append(f"Match: {stats['matched']}/{stats['total']} ({percentage:.1f}%)")
-        else:
-            tooltip_parts.append("Match: 0/0 (0%)")
-
-        # Additional stats with explanations
-        tooltip_parts.append(f"Missing tracks: {stats['missing']}")
-        tooltip_parts.append(f"Duplicate files: {stats['duplicates']}")
-        tooltip_parts.append(f"Extra files: {stats['extra']}")
-        tooltip_parts.append(f"Unmatched files: {stats['unmatched']}")
-
-        tooltip_text = "\n".join(tooltip_parts)
+        # Format tooltip text
+        tooltip_text = self._format_tooltip_text(stats)
 
         # Show the tooltip
         QtWidgets.QToolTip.showText(event.globalPos(), tooltip_text, view)

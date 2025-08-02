@@ -450,6 +450,9 @@ class TestMatchQualityColumnDelegate:
         index.column.return_value = 2
         mock_tree_widget.itemFromIndex.return_value = mock_item
 
+        # Set up delegate's parent relationship
+        delegate.parent = lambda: mock_tree_widget
+
         # Mock the column
         mock_column = Mock(spec=MatchQualityColumn)
         stats = {"matched": 5, "total": 10, "missing": 2, "duplicates": 1, "extra": 1, "unmatched": 2}
