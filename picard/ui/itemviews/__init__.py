@@ -77,6 +77,7 @@ from picard.ui.itemviews.columns import (
     ITEMVIEW_COLUMNS,
     IconColumn,
 )
+from picard.ui.itemviews.match_quality_column import MatchQualityColumn
 
 
 def get_match_color(similarity, basecolor):
@@ -392,6 +393,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             if bgcolor is not None:
                 self.setBackground(i, bgcolor)
             if isinstance(column, IconColumn):
+                self.setSizeHint(i, column.size)
+            elif isinstance(column, MatchQualityColumn):
+                # Progress columns are handled by delegate, just set size hint
                 self.setSizeHint(i, column.size)
             else:
                 if column.align == ColumnAlign.RIGHT:

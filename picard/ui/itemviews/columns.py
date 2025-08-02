@@ -56,6 +56,7 @@ from picard.ui.columns import (
     DefaultColumn,
     ImageColumn,
 )
+from picard.ui.itemviews.match_quality_column import MatchQualityColumn
 
 
 def _sortkey_length(obj):
@@ -74,6 +75,19 @@ def _sortkey_bitrate(obj):
         return float(obj.metadata['~bitrate'] or obj.orig_metadata['~bitrate'] or 0)
     except (ValueError, TypeError):
         return 0
+
+
+def _sortkey_match_quality(obj):
+    """Sort key for match quality column - sort by completion percentage."""
+    if hasattr(obj, 'get_num_matched_tracks') and hasattr(obj, 'tracks'):
+        # Album object
+        matched = obj.get_num_matched_tracks()
+        total = len(obj.tracks) if obj.tracks else 0
+        if total > 0:
+            return matched / total
+        return 0.0
+    # For track objects, return 0 since we don't show icons at track level
+    return 0.0
 
 
 class IconColumn(ImageColumn):
@@ -113,6 +127,10 @@ _fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')
 _fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
 _fingerprint_column.set_header_icon_size(16, 16, 1)
 
+_match_quality_column = MatchQualityColumn(N_("Match Quality"), '~match_quality', width=100)
+_match_quality_column.sortable = True
+_match_quality_column.sort_type = ColumnSortType.SORTKEY
+_match_quality_column.sortkey = _sortkey_match_quality
 
 ITEMVIEW_COLUMNS = Columns(
     (
@@ -155,6 +173,7 @@ ITEMVIEW_COLUMNS = Columns(
         ),
         Column(N_("Genre"), 'genre'),
         _fingerprint_column,
+        _match_quality_column,
         Column(N_("Date"), 'date'),
         Column(N_("Original Release Date"), 'originaldate'),
         Column(N_("Release Date"), 'releasedate'),
