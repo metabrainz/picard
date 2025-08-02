@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-08-01 08:36+0000\n"
+"PO-Revision-Date: 2025-08-02 09:36+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/constants/gl/>\n"
@@ -2746,267 +2746,267 @@ msgstr "Metaʼ (Camerún)"
 
 #: picard/const/locales.py:664
 msgid "Māori"
-msgstr ""
+msgstr "Māori"
 
 #: picard/const/locales.py:665
 msgid "Māori (New Zealand)"
-msgstr ""
+msgstr "Māori (Nova Zelandia)"
 
 #: picard/const/locales.py:666
 msgid "Macedonian"
-msgstr ""
+msgstr "Macedonio"
 
 #: picard/const/locales.py:667
 msgid "Macedonian (North Macedonia)"
-msgstr ""
+msgstr "Macedonio (Macedonia do Norte)"
 
 #: picard/const/locales.py:668
 msgid "Malayalam"
-msgstr ""
+msgstr "Malayalam"
 
 #: picard/const/locales.py:669
 msgid "Malayalam (India)"
-msgstr ""
+msgstr "Malayalam (India)"
 
 #: picard/const/locales.py:670
 msgid "Mongolian"
-msgstr ""
+msgstr "Mongol"
 
 #: picard/const/locales.py:671
 msgid "Mongolian (Cyrillic)"
-msgstr ""
+msgstr "Mongol (cirílico)"
 
 #: picard/const/locales.py:672
 msgid "Mongolian (Cyrillic) (Mongolia)"
-msgstr ""
+msgstr "Mongol (cirílico) (Mongolia)"
 
 #: picard/const/locales.py:673
 msgid "Mongolian (Mongolia)"
-msgstr ""
+msgstr "Mongol (Mongolia)"
 
 #: picard/const/locales.py:674
 msgid "Mongolian (Mongolian)"
-msgstr ""
+msgstr "Mongol (mongol)"
 
 #: picard/const/locales.py:675
 msgid "Mongolian (Mongolian) (China)"
-msgstr ""
+msgstr "Mongol (Mongol) (China)"
 
 #: picard/const/locales.py:676
 msgid "Mongolian (Mongolian) (Mongolia)"
-msgstr ""
+msgstr "Mongol (Mongol) (Mongolia)"
 
 #: picard/const/locales.py:677
 msgid "Manipuri"
-msgstr ""
+msgstr "Manipuri"
 
 #: picard/const/locales.py:678
 msgid "Manipuri (Bangla)"
-msgstr ""
+msgstr "Manipuri (Bangla)"
 
 #: picard/const/locales.py:679
 msgid "Manipuri (Bangla) (India)"
-msgstr ""
+msgstr "Manipuri (Bangla) (India)"
 
 #: picard/const/locales.py:680
 msgid "Manipuri (Meitei Mayek)"
-msgstr ""
+msgstr "Manipuri (Meitei Mayek)"
 
 #: picard/const/locales.py:681
 msgid "Manipuri (Meitei Mayek) (India)"
-msgstr ""
+msgstr "Manipuri (Meitei Mayek) (India)"
 
 #: picard/const/locales.py:682
 msgid "Mohawk"
-msgstr ""
+msgstr "Mohawk"
 
 #: picard/const/locales.py:683
 msgid "Mohawk (Canada)"
-msgstr ""
+msgstr "Mohawk (Canada)"
 
 #: picard/const/locales.py:684
 msgid "Marathi"
-msgstr ""
+msgstr "Maratí"
 
 #: picard/const/locales.py:685
 msgid "Marathi (India)"
-msgstr ""
+msgstr "Marathi (India)"
 
 #: picard/const/locales.py:686
 msgid "Malay"
-msgstr ""
+msgstr "Malaio"
 
 #: picard/const/locales.py:687
 msgid "Malay (Arabic)"
-msgstr ""
+msgstr "Malaio (árabe)"
 
 #: picard/const/locales.py:688
 msgid "Malay (Arabic) (Brunei)"
-msgstr ""
+msgstr "Malaio (árabe) (Brunei)"
 
 #: picard/const/locales.py:689
 msgid "Malay (Arabic) (Malaysia)"
-msgstr ""
+msgstr "Malaio (Árabe) (Malaisia)"
 
 #: picard/const/locales.py:690
 msgid "Malay (Brunei)"
-msgstr ""
+msgstr "Malaio (Brunei)"
 
 #: picard/const/locales.py:691
 msgid "Malay (Indonesia)"
-msgstr ""
+msgstr "Malaio (Indonesia)"
 
 #: picard/const/locales.py:693
 msgid "Malay (Singapore)"
-msgstr ""
+msgstr "Malaio (Singapur)"
 
 #: picard/const/locales.py:694
 msgid "Maltese"
-msgstr ""
+msgstr "Maltés"
 
 #: picard/const/locales.py:695
 msgid "Maltese (Malta)"
-msgstr ""
+msgstr "Maltés (Malta)"
 
 #: picard/const/locales.py:696
 msgid "Mundang"
-msgstr ""
+msgstr "Mundang"
 
 #: picard/const/locales.py:697
 msgid "Mundang (Cameroon)"
-msgstr ""
+msgstr "Mundang (Camerún)"
 
 #: picard/const/locales.py:698
 msgid "Muscogee"
-msgstr ""
+msgstr "Muscogee"
 
 #: picard/const/locales.py:699
 msgid "Muscogee (United States)"
-msgstr ""
+msgstr "Muscogee (Estados Unidos)"
 
 #: picard/const/locales.py:700
 msgid "Burmese"
-msgstr ""
+msgstr "Birmano"
 
 #: picard/const/locales.py:701
 msgid "Burmese (Myanmar (Burma))"
-msgstr ""
+msgstr "Birmano (Myanmar (Birmania))"
 
 #: picard/const/locales.py:702
 msgid "Erzya"
-msgstr ""
+msgstr "Erzya"
 
 #: picard/const/locales.py:703
 msgid "Erzya (Russia)"
-msgstr ""
+msgstr "Erzya (Rusia)"
 
 #: picard/const/locales.py:704
 msgid "Mazanderani"
-msgstr ""
+msgstr "Mazanderani"
 
 #: picard/const/locales.py:705
 msgid "Mazanderani (Iran)"
-msgstr ""
+msgstr "Mazanderani (Irán)"
 
 #: picard/const/locales.py:706
 msgid "Nama"
-msgstr ""
+msgstr "Nama"
 
 #: picard/const/locales.py:707
 msgid "Nama (Namibia)"
-msgstr ""
+msgstr "Nama (Namibia)"
 
 #: picard/const/locales.py:709
 msgid "Norwegian Bokmål (Norway)"
-msgstr ""
+msgstr "Bokmål noruegués (Noruega)"
 
 #: picard/const/locales.py:710
 msgid "Norwegian Bokmål (Svalbard & Jan Mayen)"
-msgstr ""
+msgstr "Noruego bokmål (Svalbard e Jan Mayen)"
 
 #: picard/const/locales.py:711
 msgid "North Ndebele"
-msgstr ""
+msgstr "Ndebele do Norte"
 
 #: picard/const/locales.py:712
 msgid "North Ndebele (Zimbabwe)"
-msgstr ""
+msgstr "Ndebele do Norte (Cimbabue)"
 
 #: picard/const/locales.py:713
 msgid "Low German"
-msgstr ""
+msgstr "baixo alemán"
 
 #: picard/const/locales.py:714
 msgid "Low German (Germany)"
-msgstr ""
+msgstr "baixo alemán (Alemaña)"
 
 #: picard/const/locales.py:715
 msgid "Low German (Netherlands)"
-msgstr ""
+msgstr "Baixo alemán (Países Baixos)"
 
 #: picard/const/locales.py:716
 msgid "Nepali"
-msgstr ""
+msgstr "Nepalí"
 
 #: picard/const/locales.py:717
 msgid "Nepali (India)"
-msgstr ""
+msgstr "Nepalí (India)"
 
 #: picard/const/locales.py:718
 msgid "Nepali (Nepal)"
-msgstr ""
+msgstr "Nepalí (Nepal)"
 
 #: picard/const/locales.py:720
 msgid "Dutch (Aruba)"
-msgstr ""
+msgstr "Neerlandés (Aruba)"
 
 #: picard/const/locales.py:721
 msgid "Dutch (Belgium)"
-msgstr ""
+msgstr "Neerlandés (Bélxica)"
 
 #: picard/const/locales.py:722
 msgid "Dutch (Caribbean Netherlands)"
-msgstr ""
+msgstr "Neerlandés (Caribe Neerlandés)"
 
 #: picard/const/locales.py:723
 msgid "Dutch (Curaçao)"
-msgstr ""
+msgstr "Neerlandés (Curaçao)"
 
 #: picard/const/locales.py:724
 msgid "Dutch (Netherlands)"
-msgstr ""
+msgstr "Neerlandés (Países Baixos)"
 
 #: picard/const/locales.py:725
 msgid "Dutch (Suriname)"
-msgstr ""
+msgstr "Neerlandés (Surinam)"
 
 #: picard/const/locales.py:726
 msgid "Dutch (Sint Maarten)"
-msgstr ""
+msgstr "Neerlandés (Sint Maarten)"
 
 #: picard/const/locales.py:727
 msgid "Kwasio"
-msgstr ""
+msgstr "Kwasio"
 
 #: picard/const/locales.py:728
 msgid "Kwasio (Cameroon)"
-msgstr ""
+msgstr "Kwasio (Camerún)"
 
 #: picard/const/locales.py:729
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Noruegués nynorsk"
 
 #: picard/const/locales.py:730
 msgid "Norwegian Nynorsk (Norway)"
-msgstr ""
+msgstr "Noruegués nynorsk (Noruega)"
 
 #: picard/const/locales.py:731
 msgid "Ngiemboon"
-msgstr ""
+msgstr "Ngiemboon"
 
 #: picard/const/locales.py:732
 msgid "Ngiemboon (Cameroon)"
-msgstr ""
+msgstr "Ngiemboon (Camerún)"
 
 #: picard/const/locales.py:733
 msgid "Norwegian"
@@ -3014,83 +3014,83 @@ msgstr "Noruegués"
 
 #: picard/const/locales.py:734
 msgid "N’Ko"
-msgstr ""
+msgstr "N’Ko"
 
 #: picard/const/locales.py:735
 msgid "N’Ko (Guinea)"
-msgstr ""
+msgstr "N’Ko (Guinea)"
 
 #: picard/const/locales.py:736
 msgid "South Ndebele"
-msgstr ""
+msgstr "Ndebele do Sur"
 
 #: picard/const/locales.py:737
 msgid "South Ndebele (South Africa)"
-msgstr ""
+msgstr "Ndebele do Sur (Sudáfrica)"
 
 #: picard/const/locales.py:738
 msgid "Northern Sotho"
-msgstr ""
+msgstr "Sotho do Norte"
 
 #: picard/const/locales.py:739
 msgid "Northern Sotho (South Africa)"
-msgstr ""
+msgstr "Sotho do Norte (Sudáfrica)"
 
 #: picard/const/locales.py:740
 msgid "Nuer"
-msgstr ""
+msgstr "Nuer"
 
 #: picard/const/locales.py:741
 msgid "Nuer (South Sudan)"
-msgstr ""
+msgstr "Nuer (Sudán do Sur)"
 
 #: picard/const/locales.py:742
 msgid "Navajo"
-msgstr ""
+msgstr "Navajo"
 
 #: picard/const/locales.py:743
 msgid "Navajo (United States)"
-msgstr ""
+msgstr "Navajo (Estados Unidos)"
 
 #: picard/const/locales.py:744
 msgid "Nyanja"
-msgstr ""
+msgstr "Nyanja"
 
 #: picard/const/locales.py:745
 msgid "Nyanja (Malawi)"
-msgstr ""
+msgstr "Nyanja (Malaui)"
 
 #: picard/const/locales.py:746
 msgid "Nyankole"
-msgstr ""
+msgstr "Nyankole"
 
 #: picard/const/locales.py:747
 msgid "Nyankole (Uganda)"
-msgstr ""
+msgstr "Nyankole (Uganda)"
 
 #: picard/const/locales.py:749
 msgid "Occitan (Spain)"
-msgstr ""
+msgstr "Occitano (España)"
 
 #: picard/const/locales.py:750
 msgid "Occitan (France)"
-msgstr ""
+msgstr "Occitano (Francia)"
 
 #: picard/const/locales.py:751
 msgid "Oromo"
-msgstr ""
+msgstr "Oromo"
 
 #: picard/const/locales.py:752
 msgid "Oromo (Ethiopia)"
-msgstr ""
+msgstr "Oromo (Etiopía)"
 
 #: picard/const/locales.py:753
 msgid "Oromo (Kenya)"
-msgstr ""
+msgstr "Oromo (Kenia)"
 
 #: picard/const/locales.py:754
 msgid "Odia"
-msgstr ""
+msgstr "Odia"
 
 #: picard/const/locales.py:755
 msgid "Odia (India)"
