@@ -578,13 +578,23 @@ class Album(MetadataItem):
             self.match_files(unmatched_files + self.unmatched_files.files)
         self.update_metadata_images()
         self.update()
+
+        # Trigger re-sort after album is fully loaded to ensure accurate match quality sorting
+        # See the module: picard/ui/itemviews/match_quality_column.py
+        # Without this, the sorting calcs never retrigger
+        if self.ui_item:
+            tree_widget = self.ui_item.treeWidget()
+            if tree_widget and tree_widget.isSortingEnabled():
+                # Clear cached sort keys for this item to force recalculation
+                self.ui_item._sortkeys.clear()
+                # Trigger re-sort by calling sortByColumn with current sort column
+                current_sort_column = tree_widget.sortColumn()
+                if current_sort_column >= 0:
+                    tree_widget.sortByColumn(current_sort_column, tree_widget.header().sortIndicatorOrder())
+
         self.tagger.window.set_statusbar_message(
             N_('Album %(id)s loaded: %(artist)s - %(album)s'),
-            {
-                'id': self.id,
-                'artist': self.metadata['albumartist'],
-                'album': self.metadata['album'],
-            },
+            {'id': self.id, 'artist': self.metadata['albumartist'], 'album': self.metadata['album']},
             timeout=3000,
         )
         for func, _run_on_error in self._after_load_callbacks:
@@ -636,10 +646,7 @@ class Album(MetadataItem):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
-        self.tagger.window.set_statusbar_message(
-            N_("Loading album %(id)s …"),
-            {'id': self.id},
-        )
+        self.tagger.window.set_statusbar_message(N_("Loading album %(id)s …"), {'id': self.id})
         self.loaded = False
         self.status = AlbumStatus.LOADING
         if self.release_group:

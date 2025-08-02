@@ -23,13 +23,13 @@ from unittest.mock import Mock, patch
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from picard.album import Album
+from picard.album import Album, AlbumStatus
 from picard.track import Track
 
 import pytest
 
 from picard.ui.itemviews import TreeItem
-from picard.ui.itemviews.columns import ITEMVIEW_COLUMNS
+from picard.ui.itemviews.columns import ITEMVIEW_COLUMNS, _sortkey_match_quality
 from picard.ui.itemviews.match_quality_column import (
     MatchQualityColumn,
     MatchQualityColumnDelegate,
@@ -528,7 +528,7 @@ class TestItemViewsIntegration:
         album.tracks = [Mock() for _ in range(5)]
 
         result = _sortkey_match_quality(album)
-        assert result == 0.6  # 3/5 = 0.6
+        assert result == -0.6  # 3/5 = 0.6, but returned as negative for proper sorting
 
         # Test with track object (should return 0.0)
         track = Mock()
@@ -628,3 +628,100 @@ class TestCodeFormattingChanges:
         with patch.object(ClusterItem, "icon_dir", QtGui.QIcon(), create=True):
             item = ClusterItem(cluster, parent=None)
             assert item is not None
+
+
+class TestMatchQualitySorting:
+    """Test match quality sorting behavior."""
+
+    @pytest.fixture
+    def mock_album_loading(self):
+        """Create a mock album that is still loading."""
+        album = Mock()
+        album.status = AlbumStatus.LOADING
+        album.get_num_matched_tracks.return_value = 0
+        album.tracks = []
+        return album
+
+    @pytest.fixture
+    def mock_album_loaded(self):
+        """Create a mock album that has finished loading."""
+        album = Mock()
+        album.status = AlbumStatus.LOADED
+        album.get_num_matched_tracks.return_value = 3
+        album.tracks = [Mock(), Mock(), Mock(), Mock(), Mock()]  # 5 tracks total
+        return album
+
+    @pytest.fixture
+    def mock_track(self):
+        """Create a mock track object."""
+        track = Mock()
+        # Track objects don't have get_num_matched_tracks or tracks attributes
+        # We'll use patch to mock hasattr behavior
+        return track
+
+    def test_sortkey_match_quality_loading_album(self, mock_album_loading):
+        """Test that loading albums return 0.0 to avoid premature sorting."""
+        result = _sortkey_match_quality(mock_album_loading)
+        assert result == 0.0
+
+    def test_sortkey_match_quality_loaded_album(self, mock_album_loaded):
+        """Test that loaded albums return correct match percentage."""
+        result = _sortkey_match_quality(mock_album_loaded)
+        # 3 matched out of 5 total = 0.6, but returned as negative for proper sorting
+        assert result == -0.6
+
+    def test_sortkey_match_quality_track_object(self, mock_track):
+        """Test that track objects return 0.0."""
+        # Mock hasattr to return False for track objects
+        with patch("builtins.hasattr", side_effect=lambda obj, attr: attr not in ('get_num_matched_tracks', 'tracks')):
+            result = _sortkey_match_quality(mock_track)
+            assert result == 0.0
+
+    def test_sortkey_match_quality_no_tracks(self, mock_album_loaded):
+        """Test that albums with no tracks return 0.0."""
+        mock_album_loaded.tracks = []
+        result = _sortkey_match_quality(mock_album_loaded)
+        assert result == 0.0
+
+    def test_sortkey_match_quality_all_matched(self, mock_album_loaded):
+        """Test that albums with all tracks matched return -1.0."""
+        mock_album_loaded.get_num_matched_tracks.return_value = 5
+        result = _sortkey_match_quality(mock_album_loaded)
+        assert result == -1.0
+
+    def test_sortkey_match_quality_no_matches(self, mock_album_loaded):
+        """Test that albums with no matches return 0.0."""
+        mock_album_loaded.get_num_matched_tracks.return_value = 0
+        result = _sortkey_match_quality(mock_album_loaded)
+        assert result == 0.0
+
+    def test_sortkey_match_quality_partial_matches(self, mock_album_loaded):
+        """Test that albums with partial matches return correct percentage."""
+        mock_album_loaded.get_num_matched_tracks.return_value = 2
+        result = _sortkey_match_quality(mock_album_loaded)
+        # 2 matched out of 5 total = 0.4, but returned as negative for proper sorting
+        assert result == -0.4
+
+    def test_sortkey_match_quality_no_status_attribute(self):
+        """Test that objects without status attribute are handled gracefully."""
+        obj = Mock()
+        obj.get_num_matched_tracks.return_value = 2
+        obj.tracks = [Mock(), Mock(), Mock()]  # 3 tracks
+        # No status attribute
+        result = _sortkey_match_quality(obj)
+        # Should calculate normally: 2/3 = 0.666..., but returned as negative
+        assert result == pytest.approx(-0.6666666666666666, rel=1e-10)
+
+    def test_sortkey_match_quality_error_status(self, mock_album_loaded):
+        """Test that albums with error status are handled correctly."""
+        mock_album_loaded.status = AlbumStatus.ERROR
+        result = _sortkey_match_quality(mock_album_loaded)
+        # Should still calculate the match percentage
+        assert result == -0.6
+
+    def test_sortkey_match_quality_none_status(self, mock_album_loaded):
+        """Test that albums with None status are handled correctly."""
+        mock_album_loaded.status = None
+        result = _sortkey_match_quality(mock_album_loaded)
+        # Should still calculate the match percentage
+        assert result == -0.6

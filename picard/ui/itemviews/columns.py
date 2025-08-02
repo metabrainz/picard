@@ -45,6 +45,7 @@
 
 from PyQt6 import QtCore
 
+from picard.album import AlbumStatus
 from picard.i18n import N_
 from picard.util import icontheme
 
@@ -81,10 +82,16 @@ def _sortkey_match_quality(obj):
     """Sort key for match quality column - sort by completion percentage."""
     if hasattr(obj, 'get_num_matched_tracks') and hasattr(obj, 'tracks'):
         # Album object
+        # Check if album is still loading - if so, return 0 to avoid premature sorting
+        if hasattr(obj, 'status') and obj.status == AlbumStatus.LOADING:
+            return 0.0
+
         matched = obj.get_num_matched_tracks()
         total = len(obj.tracks) if obj.tracks else 0
         if total > 0:
-            return matched / total
+            # Return negative percentage so that higher percentages (closer to 1.0)
+            # appear first in ascending sort order
+            return -(matched / total)
         return 0.0
     # For track objects, return 0 since we don't show icons at track level
     return 0.0
