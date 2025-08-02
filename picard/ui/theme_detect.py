@@ -28,6 +28,12 @@ import subprocess  # noqa: S404
 
 from picard import log
 
+from picard.ui.theme_detect_qtdbus import (
+    detect_freedesktop_color_scheme_dbus,
+    detect_gnome_color_scheme_dbus,
+    get_dbus_detector,
+)
+
 
 def gsettings_get(key: str) -> str | None:
     """Get a gsettings value as a string or None."""
@@ -51,6 +57,16 @@ def gsettings_get(key: str) -> str | None:
 
 def detect_gnome_color_scheme_dark() -> bool:
     """Detect if GNOME color-scheme is set to dark."""
+    # Try D-Bus first (secure method)
+    try:
+        detector = get_dbus_detector()
+        result = detector.detect_gnome_color_scheme_dbus()
+        if result is not None:
+            return result
+    except Exception:  # noqa: BLE001
+        log.debug("Unable to detect gnome color scheme with dbus.")
+
+    # Fallback to subprocess method (legacy support)
     value = gsettings_get("color-scheme")
     if value and "dark" in value.lower():
         log.debug("Detected GNOME color-scheme: dark")
@@ -127,7 +143,16 @@ def detect_lxqt_dark_theme() -> bool:
 
 def detect_freedesktop_color_scheme_dark() -> bool:
     """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
-    # Try org.freedesktop.appearance first
+    # Try D-Bus first (secure method)
+    try:
+        detector = get_dbus_detector()
+        result = detector.detect_freedesktop_portal_color_scheme()
+        if result is not None:
+            return result
+    except Exception:  # noqa: BLE001
+        log.debug("Unable to detect `freedesktop` color scheme with dbus.")
+
+    # Fallback to subprocess method (legacy support)
     try:
         result = subprocess.run(  # nosec B603 B607
             [
@@ -201,6 +226,10 @@ def detect_lxqt_dark_wrapper() -> bool:
 def get_linux_dark_mode_strategies() -> list:
     """Return the list of dark mode detection strategies in order of priority."""
     return [
+        # Pure D-Bus methods (will gracefully fail if D-Bus unavailable)
+        detect_freedesktop_color_scheme_dbus,
+        detect_gnome_color_scheme_dbus,
+        # Hybrid methods (D-Bus with subprocess fallback)
         detect_freedesktop_color_scheme_dark,
         detect_gnome_dark_wrapper,
         detect_kde_dark_wrapper,
