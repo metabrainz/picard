@@ -84,12 +84,12 @@ class DBusThemeDetector:
                 return False
 
             services = reply.arguments()[0] if reply.arguments() else []
-        except Exception:
+        except (RuntimeError, AttributeError, TypeError):
             return False
         else:
             return service_name in services
 
-    def detect_freedesktop_portal_color_scheme(self) -> bool | None:
+    def freedesktop_portal_color_scheme_is_dark(self) -> bool | None:
         """
         Detect color scheme using org.freedesktop.portal.Settings interface.
         Returns
@@ -119,7 +119,7 @@ class DBusThemeDetector:
         else:
             return None
 
-    def detect_gnome_color_scheme_dbus(self) -> bool | None:
+    def gnome_color_scheme_is_dark(self) -> bool | None:
         """
         Detect GNOME color scheme using D-Bus dconf interface.
         Returns
@@ -173,7 +173,7 @@ def detect_freedesktop_color_scheme_dbus() -> bool:
     """Detect dark mode using D-Bus freedesktop.org portal interface."""
     try:
         detector = get_dbus_detector()
-        result = detector.detect_freedesktop_portal_color_scheme()
+        result = detector.freedesktop_portal_color_scheme_is_dark()
     except (RuntimeError, AttributeError, TypeError):
         return False
     else:
@@ -184,7 +184,7 @@ def detect_gnome_color_scheme_dbus() -> bool:
     """Detect GNOME color scheme using D-Bus interface."""
     try:
         detector = get_dbus_detector()
-        result = detector.detect_gnome_color_scheme_dbus()
+        result = detector.gnome_color_scheme_is_dark()
     except (RuntimeError, AttributeError, TypeError):
         return False
     else:

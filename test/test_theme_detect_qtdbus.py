@@ -198,7 +198,7 @@ class TestDBusThemeDetector:
             mock_dbus_message.arguments.return_value = arguments
             mock_portal_interface.call.return_value = mock_dbus_message
 
-            result = mock_dbus_detector.detect_freedesktop_portal_color_scheme()
+            result = mock_dbus_detector.freedesktop_portal_color_scheme_is_dark()
             assert result == expected
 
     @pytest.mark.parametrize(
@@ -218,7 +218,7 @@ class TestDBusThemeDetector:
         """Test freedesktop portal color scheme detection with exceptions."""
         mock_portal_interface.call.side_effect = exception_type("Test exception")
 
-        result = mock_dbus_detector.detect_freedesktop_portal_color_scheme()
+        result = mock_dbus_detector.freedesktop_portal_color_scheme_is_dark()
         assert result is None
 
     @pytest.mark.parametrize(
@@ -291,7 +291,7 @@ class TestDBusThemeDetector:
 
             mock_gnome_interface.call.side_effect = call_side_effect
 
-            result = mock_dbus_detector.detect_gnome_color_scheme_dbus()
+            result = mock_dbus_detector.gnome_color_scheme_is_dark()
             assert result == expected
 
     @pytest.mark.parametrize(
@@ -311,7 +311,7 @@ class TestDBusThemeDetector:
         """Test GNOME color scheme detection with exceptions."""
         mock_gnome_interface.call.side_effect = exception_type("Test exception")
 
-        result = mock_dbus_detector.detect_gnome_color_scheme_dbus()
+        result = mock_dbus_detector.gnome_color_scheme_is_dark()
         assert result is None
 
     @pytest.mark.parametrize(
@@ -383,11 +383,11 @@ class TestDBusThemeDetector:
                 detector = DBusThemeDetector()
 
                 # Test portal detection
-                portal_result = detector.detect_freedesktop_portal_color_scheme()
+                portal_result = detector.freedesktop_portal_color_scheme_is_dark()
                 assert portal_result == (True if expected_portal else None)
 
                 # Test GNOME detection
-                gnome_result = detector.detect_gnome_color_scheme_dbus()
+                gnome_result = detector.gnome_color_scheme_is_dark()
                 assert gnome_result == (True if expected_gnome else None)
 
 
@@ -575,7 +575,7 @@ class TestGlobalFunctions:
         """Test the global detect_freedesktop_color_scheme_dbus function."""
         with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector:
             mock_detector = Mock()
-            mock_detector.detect_freedesktop_portal_color_scheme.return_value = detector_result
+            mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = detector_result
             mock_get_detector.return_value = mock_detector
 
             result = detect_freedesktop_color_scheme_dbus()
@@ -614,7 +614,7 @@ class TestGlobalFunctions:
         """Test the global detect_gnome_color_scheme_dbus function."""
         with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector:
             mock_detector = Mock()
-            mock_detector.detect_gnome_color_scheme_dbus.return_value = detector_result
+            mock_detector.gnome_color_scheme_is_dark.return_value = detector_result
             mock_get_detector.return_value = mock_detector
 
             result = detect_gnome_color_scheme_dbus()
@@ -669,8 +669,8 @@ class TestIntegration:
             def gnome_side_effect():
                 return gnome_dark
 
-            mock_detector.detect_freedesktop_portal_color_scheme.side_effect = freedesktop_side_effect
-            mock_detector.detect_gnome_color_scheme_dbus.side_effect = gnome_side_effect
+            mock_detector.freedesktop_portal_color_scheme_is_dark.side_effect = freedesktop_side_effect
+            mock_detector.gnome_color_scheme_is_dark.side_effect = gnome_side_effect
             mock_get_detector.return_value = mock_detector
 
             # Test portal detection
@@ -726,7 +726,7 @@ class TestIntegration:
                     detector = DBusThemeDetector()
                     # Mock the portal interface call
                     with patch.object(detector.portal_interface, 'call', side_effect=portal_call_side_effect):
-                        result = detector.detect_freedesktop_portal_color_scheme()
+                        result = detector.freedesktop_portal_color_scheme_is_dark()
 
                         if message_type == QDBusMessage.MessageType.ReplyMessage:
                             assert result is True

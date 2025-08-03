@@ -25,6 +25,7 @@
 import os
 from pathlib import Path
 import subprocess  # noqa: S404
+from typing import Callable
 
 from picard import log
 
@@ -55,16 +56,33 @@ def gsettings_get(key: str) -> str | None:
         return None
 
 
+def _try_dbus_detection(detection_method: Callable[[object], bool | None], method_name: str) -> bool | None:
+    """
+    Helper function to safely attempt D-Bus theme detection.
+
+    Args:
+        detection_method: The detection method to call on the detector
+        method_name: Name of the method for logging purposes
+
+    Returns:
+        The result of the detection method, or None if detection fails
+    """
+    try:
+        detector = get_dbus_detector()
+        result = detection_method(detector)
+        if result is not None:
+            return result
+    except (RuntimeError, AttributeError, TypeError):
+        log.debug(f"Unable to detect {method_name} with dbus.")
+    return None
+
+
 def detect_gnome_color_scheme_dark() -> bool:
     """Detect if GNOME color-scheme is set to dark."""
     # Try D-Bus first (secure method)
-    try:
-        detector = get_dbus_detector()
-        result = detector.detect_gnome_color_scheme_dbus()
-        if result is not None:
-            return result
-    except Exception:  # noqa: BLE001
-        log.debug("Unable to detect gnome color scheme with dbus.")
+    result = _try_dbus_detection(lambda detector: detector.detect_gnome_color_scheme_dbus(), "gnome color scheme")
+    if result is not None:
+        return result
 
     # Fallback to subprocess method (legacy support)
     value = gsettings_get("color-scheme")
@@ -144,13 +162,11 @@ def detect_lxqt_dark_theme() -> bool:
 def detect_freedesktop_color_scheme_dark() -> bool:
     """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
     # Try D-Bus first (secure method)
-    try:
-        detector = get_dbus_detector()
-        result = detector.detect_freedesktop_portal_color_scheme()
-        if result is not None:
-            return result
-    except Exception:  # noqa: BLE001
-        log.debug("Unable to detect `freedesktop` color scheme with dbus.")
+    result = _try_dbus_detection(
+        lambda detector: detector.freedesktop_portal_color_scheme_is_dark(), "freedesktop color scheme"
+    )
+    if result is not None:
+        return result
 
     # Fallback to subprocess method (legacy support)
     try:

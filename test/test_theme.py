@@ -171,8 +171,8 @@ def test_detect_linux_dark_mode_integration(
     ):
         # Mock D-Bus detector to return None (force fallback to subprocess)
         mock_detector = Mock()
-        mock_detector.detect_freedesktop_portal_color_scheme.return_value = None
-        mock_detector.detect_gnome_color_scheme_dbus.return_value = None
+        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
+        mock_detector.gnome_color_scheme_is_dark.return_value = None
         mock_get_detector.return_value = mock_detector
 
         def gsettings_get_side_effect(key):
@@ -202,7 +202,7 @@ def test_detect_linux_dark_mode_priority(tmp_path: Path) -> None:
         # Mock D-Bus to fail so we test subprocess fallback
         with patch("picard.ui.theme_detect.get_dbus_detector") as mock_get_detector:
             # Mock D-Bus detector to raise exception (simulating D-Bus unavailable)
-            mock_get_detector.side_effect = Exception("D-Bus unavailable")
+            mock_get_detector.side_effect = RuntimeError("D-Bus unavailable")
 
             with patch("subprocess.run") as mock_run:
                 # First call: freedesktop (returns '1' for dark)
@@ -221,7 +221,7 @@ def test_detect_linux_dark_mode_dbus_priority(tmp_path: Path) -> None:
     with patch("picard.ui.theme_detect_qtdbus.get_dbus_detector") as mock_get_detector:
         # Mock successful D-Bus detection
         mock_detector = Mock()
-        mock_detector.detect_freedesktop_portal_color_scheme.return_value = True
+        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = True
         mock_get_detector.return_value = mock_detector
 
         with patch("subprocess.run") as mock_run:
@@ -322,7 +322,7 @@ def test_freedesktop_color_scheme_detection(gsettings_value: str, expected: bool
     ):
         # Mock D-Bus detector to return None (force fallback to subprocess)
         mock_detector = Mock()
-        mock_detector.detect_freedesktop_portal_color_scheme.return_value = None
+        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
         mock_get_detector.return_value = mock_detector
 
         mock_run.return_value.stdout = gsettings_value
@@ -344,7 +344,7 @@ def test_freedesktop_color_scheme_detection_failure(side_effect) -> None:
     ):
         # Mock D-Bus detector to return None (force fallback to subprocess)
         mock_detector = Mock()
-        mock_detector.detect_freedesktop_portal_color_scheme.return_value = None
+        mock_detector.freedesktop_portal_color_scheme_is_dark.return_value = None
         mock_get_detector.return_value = mock_detector
 
         assert theme_detect.detect_freedesktop_color_scheme_dark() is False
