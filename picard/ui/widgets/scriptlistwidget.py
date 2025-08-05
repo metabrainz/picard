@@ -42,7 +42,6 @@ from picard.ui import HashableListWidgetItem
 
 
 class ScriptListWidget(QtWidgets.QListWidget):
-
     signal_reset_selected_item = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
@@ -81,8 +80,10 @@ class ScriptListWidget(QtWidgets.QListWidget):
         list_item = ScriptListWidgetItem(TaggingScriptSetting(name=numbered_name, enabled=True))
         list_item.setCheckState(QtCore.Qt.CheckState.Checked)
         self.addItem(list_item)
-        self.setCurrentItem(list_item, QtCore.QItemSelectionModel.SelectionFlag.Clear
-            | QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
+        self.setCurrentItem(
+            list_item,
+            QtCore.QItemSelectionModel.SelectionFlag.Clear | QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent,
+        )
 
     def remove_selected_script(self):
         items = self.selectedItems()
@@ -92,8 +93,13 @@ class ScriptListWidget(QtWidgets.QListWidget):
     def remove_script(self, item):
         row = self.row(item)
         msg = _("Are you sure you want to remove this script?")
-        reply = QtWidgets.QMessageBox.question(self, _('Confirm Remove'), msg,
-            QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            _('Confirm Remove'),
+            msg,
+            QtWidgets.QMessageBox.StandardButton.Yes,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
         if item and reply == QtWidgets.QMessageBox.StandardButton.Yes:
             item = self.takeItem(row)
             del item

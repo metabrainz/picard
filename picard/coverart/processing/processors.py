@@ -34,7 +34,6 @@ from picard.extension_points.cover_art_processors import (
 
 
 class ResizeImage(ImageProcessor):
-
     def save_to_file(self):
         config = get_config()
         return config.setting['cover_file_resize']
@@ -98,7 +97,7 @@ class ResizeImage(ImageProcessor):
             image.info.height,
             scaled_image.width(),
             scaled_image.height(),
-            1000 * (time.time() - start_time)
+            1000 * (time.time() - start_time),
         )
         image.info.width = scaled_image.width()
         image.info.height = scaled_image.height()
@@ -107,7 +106,6 @@ class ResizeImage(ImageProcessor):
 
 
 class ConvertImage(ImageProcessor):
-
     _format_aliases = {
         "jpeg": {"jpg", "jpeg"},
         "png": {"png"},

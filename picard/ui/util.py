@@ -50,7 +50,6 @@ from picard.ui.enums import MainAction
 
 
 class StandardButton(QtWidgets.QPushButton):
-
     OK = 0
     CANCEL = 1
     HELP = 2
@@ -115,8 +114,7 @@ class FileDialog(QtWidgets.QFileDialog):
         caption = _filedialog_caption(caption, _("Select a target file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getSaveFileName(
-            parent=parent, caption=caption, directory=dir,
-            filter=filter, initialFilter=selectedFilter, options=options
+            parent=parent, caption=caption, directory=dir, filter=filter, initialFilter=selectedFilter, options=options
         )
 
     @staticmethod
@@ -124,8 +122,7 @@ class FileDialog(QtWidgets.QFileDialog):
         caption = _filedialog_caption(caption, _("Select a file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileName(
-            parent=parent, caption=caption, directory=dir,
-            filter=filter, initialFilter=selectedFilter, options=options
+            parent=parent, caption=caption, directory=dir, filter=filter, initialFilter=selectedFilter, options=options
         )
 
     @staticmethod
@@ -133,8 +130,7 @@ class FileDialog(QtWidgets.QFileDialog):
         caption = _filedialog_caption(caption, _("Select one or more files"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileNames(
-            parent=parent, caption=caption, directory=dir,
-            filter=filter, initialFilter=selectedFilter, options=options
+            parent=parent, caption=caption, directory=dir, filter=filter, initialFilter=selectedFilter, options=options
         )
 
     @staticmethod
@@ -203,11 +199,7 @@ def changes_require_restart_warning(parent, warnings=None, notes=None):
         for note in notes:
             text += "<p><em>" + html_escape(note) + "</em></p>"
     text += "<p><strong>" + _("You have to restart Picard for the changes to take effect.") + "</strong></p>"
-    QtWidgets.QMessageBox.warning(
-        parent,
-        _("Changes only applied on restart"),
-        text
-    )
+    QtWidgets.QMessageBox.warning(parent, _("Changes only applied on restart"), text)
 
 
 def menu_builder(menu, main_actions, *args):

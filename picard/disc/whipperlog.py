@@ -35,8 +35,5 @@ def toc_from_file(path):
     results on other non-standard cases."""
     with open(path, encoding='utf-8') as f:
         data = yaml.safe_load(f)
-        toc_entries = (
-            TocEntry(num, t['Start sector'], t['End sector'])
-            for num, t in data['TOC'].items()
-        )
+        toc_entries = (TocEntry(num, t['Start sector'], t['End sector']) for num, t in data['TOC'].items())
         return calculate_mb_toc_numbers(toc_entries)

@@ -99,9 +99,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'albumartistsort',
         shortdesc=N_('Album Artist Sort Order'),
-        longdesc=N_(
-            'The release artists sort names, separated by the specified join phrases. (e.g.: "Beatles, The")'
-        ),
+        longdesc=N_('The release artists sort names, separated by the specified join phrases. (e.g.: "Beatles, The")'),
     ),
     TagVar(
         'albumartists_sort',
@@ -189,7 +187,10 @@ ALL_TAGS = TagVars(
         longdesc=N_('The barcode assigned to the release.'),
         doc_links=(
             DocumentLink(N_('Barcode in MusicBrainz documentation'), PICARD_URLS['mb_doc'] + 'Barcode'),
-            DocumentLink(N_('Barcode mapping in Picard documentation'),  PICARD_URLS['documentation'] + 'appendices/tag_mapping.html#id6'),
+            DocumentLink(
+                N_('Barcode mapping in Picard documentation'),
+                PICARD_URLS['documentation'] + 'appendices/tag_mapping.html#id6',
+            ),
         ),
         is_filterable=True,
     ),
@@ -239,7 +240,6 @@ ALL_TAGS = TagVars(
         is_tag=False,
         is_from_mb=False,
     ),
-
     TagVar(
         'comment',
         shortdesc=N_('Comment'),
@@ -248,7 +248,7 @@ ALL_TAGS = TagVars(
             'Deluxe version with 2 bonus tracks).'
         ),
         is_populated_by_picard=False,
-        see_also=('_releasecomment', ),
+        see_also=('_releasecomment',),
     ),
     TagVar(
         'compilation',
@@ -323,11 +323,16 @@ ALL_TAGS = TagVars(
         'discid',
         shortdesc=N_('FreeDB Disc ID'),
         longdesc=N_('The identification number of the disc in the FreeDB database.'),
-        see_also=('musicbrainz_discid', ),
+        see_also=('musicbrainz_discid',),
         doc_links=(
             DocumentLink(N_('FreeDB'), 'https://wikipedia.org/wiki/Freedb'),
-            DocumentLink(N_('FreeDB DiscID Calculation'), 'https://wikipedia.org/wiki/CDDB#Example_calculation_of_a_CDDB1_(FreeDB)_disc_ID'),
-            DocumentLink(N_('FreeDB DiscID including Calculation Example (French)'), 'https://fr.wikipedia.org/wiki/DiscId'),
+            DocumentLink(
+                N_('FreeDB DiscID Calculation'),
+                'https://wikipedia.org/wiki/CDDB#Example_calculation_of_a_CDDB1_(FreeDB)_disc_ID',
+            ),
+            DocumentLink(
+                N_('FreeDB DiscID including Calculation Example (French)'), 'https://fr.wikipedia.org/wiki/DiscId'
+            ),
         ),
         is_filterable=True,
     ),
@@ -398,7 +403,9 @@ ALL_TAGS = TagVars(
     TagVar(
         'file_modified_timestamp',
         shortdesc=N_('File Modified Timestamp'),
-        longdesc=N_('The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by the file system.'),
+        longdesc=N_(
+            'The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by the file system.'
+        ),
         is_hidden=True,
         is_preserved=True,
         is_tag=False,
@@ -452,7 +459,7 @@ ALL_TAGS = TagVars(
         'genre',
         shortdesc=N_('Genre'),
         longdesc=N_('The specified genre information from MusicBrainz.'),
-        related_options=('use_genres', ),
+        related_options=('use_genres',),
         is_multi_value=True,
         is_filterable=True,
     ),
@@ -568,9 +575,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'multiartist',
         shortdesc=N_('Multiple Artists'),
-        longdesc=N_(
-            'Set to 1 if not all of the tracks on the album have the same primary artist, otherwise empty.'
-        ),
+        longdesc=N_('Set to 1 if not all of the tracks on the album have the same primary artist, otherwise empty.'),
         is_hidden=True,
         is_tag=False,
     ),
@@ -599,9 +604,9 @@ ALL_TAGS = TagVars(
             'This is based on the table of contents (TOC) information read from the disc. This tag contains the '
             'Disc ID if the album information was retrieved using `Tools > Lookup CD` from the menu.'
         ),
-        see_also=('discid', ),
+        see_also=('discid',),
         is_calculated=True,
-        doc_links=(DocumentLink(N_('Disc ID Calculation'), PICARD_URLS['mb_doc'] + 'Disc_ID_Calculation'), ),
+        doc_links=(DocumentLink(N_('Disc ID Calculation'), PICARD_URLS['mb_doc'] + 'Disc_ID_Calculation'),),
     ),
     TagVar(
         'musicbrainz_discids',
@@ -653,9 +658,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'musicbrainz_tracknumber',
         shortdesc=N_('Track Number Shown'),
-        longdesc=N_(
-            'The track number written as on the MusicBrainz release, such as vinyl numbering (A1, A2, etc.)'
-        ),
+        longdesc=N_('The track number written as on the MusicBrainz release, such as vinyl numbering (A1, A2, etc.)'),
         is_hidden=True,
         is_tag=False,
     ),
@@ -663,7 +666,7 @@ ALL_TAGS = TagVars(
         'musicbrainz_workid',
         shortdesc=N_('Work MBID'),
         longdesc=N_('The MusicBrainz Identifier (MBID) for the Work if a related work exists.'),
-        is_multi_value=True,    # TODO: Need to confirm multi-value.
+        is_multi_value=True,  # TODO: Need to confirm multi-value.
     ),
     TagVar(
         'musicip_fingerprint',
@@ -742,7 +745,7 @@ ALL_TAGS = TagVars(
             '- the orchestra for the associated release or recording, where "type" is "*orchestra*"\n'
             '- the concert master for the associated release or recording, where "type" is "*concertmaster*"'
         ),
-        is_multi_value=True,    # TODO: Confirm that this is a multi-value
+        is_multi_value=True,  # TODO: Confirm that this is a multi-value
         is_filterable=True,
     ),
     TagVar(
@@ -767,9 +770,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'primaryreleasetype',
         shortdesc=N_('Primary Release Type'),
-        longdesc=N_(
-            'The primary type of the release group (i.e.: *album*, *single*, *ep*, *broadcast*, or *other*).'
-        ),
+        longdesc=N_('The primary type of the release group (i.e.: *album*, *single*, *ep*, *broadcast*, or *other*).'),
         is_hidden=True,
         is_tag=False,
         see_also=('releasetype', '_secondaryreleasetype'),
@@ -891,7 +892,7 @@ ALL_TAGS = TagVars(
             'recommended to use the `%date%` tag instead for compatibility with existing software.'
         ),
         is_from_mb=False,
-        see_also=('date', ),
+        see_also=('date',),
     ),
     TagVar(
         'releasegroup',
@@ -911,7 +912,7 @@ ALL_TAGS = TagVars(
         ),
         is_hidden=True,
         is_tag=False,
-        see_also=('originaldate', )
+        see_also=('originaldate',),
     ),
     TagVar(
         'releasegroup_series',
@@ -1189,7 +1190,7 @@ ALL_TAGS = TagVars(
             'Note: If you are using iTunes together with MP3 files you should activate the "Save iTunes compatible '
             'grouping and work" option in order for the work to be displayed correctly.'
         ),
-        related_options=('itunes_compatible_grouping', ),
+        related_options=('itunes_compatible_grouping',),
         is_filterable=True,
     ),
     TagVar(

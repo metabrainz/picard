@@ -67,7 +67,6 @@ REMOTE_COMMANDS = dict()
 
 
 class ParseItemsToLoad:
-
     WINDOWS_DRIVE_TEST = re.compile(r"^[a-z]\:", re.IGNORECASE)
 
     def __init__(self, items):
@@ -142,10 +141,7 @@ class RemoteCommandHandlers:
         for album_name in self.tagger.albums:
             self.tagger.analyze(self.tagger.albums[album_name].iterfiles())
 
-    @remote_command(
-        "Load commands from a file.",
-        help_args="[path]"
-    )
+    @remote_command("Load commands from a file.", help_args="[path]")
     def from_file(self, argstring):
         self.remotecommands_class.get_commands_from_file(argstring)
 
@@ -227,8 +223,7 @@ class RemoteCommandHandlers:
             log.error("No command pause time specified.")
 
     @remote_command(
-        "Exit the running instance of Picard. "
-        "Use the argument 'force' to bypass Picard's unsaved files check.",
+        "Exit the running instance of Picard. Use the argument 'force' to bypass Picard's unsaved files check.",
         help_args="[force]",
     )
     def quit(self, argstring):
@@ -240,9 +235,8 @@ class RemoteCommandHandlers:
             return
 
     @remote_command(
-        "Remove the file matching the specified absolute path from Picard. "
-        "Do nothing if no arguments provided.",
-        help_args="[path]"
+        "Remove the file matching the specified absolute path from Picard. Do nothing if no arguments provided.",
+        help_args="[path]",
     )
     def remove(self, argstring):
         for file in self.tagger.iter_all_files():

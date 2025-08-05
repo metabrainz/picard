@@ -95,7 +95,6 @@ class TagMatchExpression:
 
 
 class TagsFromFileNamesDialog(PicardDialog):
-
     help_url = 'doc_tags_from_filenames'
 
     def __init__(self, files, parent=None):
@@ -123,7 +122,9 @@ class TagsFromFileNamesDialog(PicardDialog):
         self.ui.format.setCurrentIndex(selected_index)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
         self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.ui.buttonbox.addButton(
+            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        )
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.buttonbox.helpRequested.connect(self.show_help)

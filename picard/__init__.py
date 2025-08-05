@@ -55,8 +55,7 @@ PICARD_VERSION_STR = str(PICARD_VERSION)
 PICARD_VERSION_STR_SHORT = PICARD_VERSION.short_str()
 if PICARD_BUILD_VERSION_STR:
     __version__ = "%s+%s" % (PICARD_VERSION_STR, PICARD_BUILD_VERSION_STR)
-    PICARD_FANCY_VERSION_STR = "%s (%s)" % (PICARD_VERSION_STR_SHORT,
-                                            PICARD_BUILD_VERSION_STR)
+    PICARD_FANCY_VERSION_STR = "%s (%s)" % (PICARD_VERSION_STR_SHORT, PICARD_BUILD_VERSION_STR)
 else:
     __version__ = PICARD_VERSION_STR_SHORT
     PICARD_FANCY_VERSION_STR = PICARD_VERSION_STR_SHORT
@@ -83,6 +82,7 @@ def crash_handler(exc: Exception = None):
     # with minimum chance to fail.
     from tempfile import NamedTemporaryFile
     import traceback
+
     if exc:
         if sys.version_info < (3, 10):
             trace_list = traceback.format_exception(None, exc, exc.__traceback__)
@@ -111,6 +111,7 @@ def crash_handler(exc: Exception = None):
         QApplication,
         QMessageBox,
     )
+
     app = QCoreApplication.instance()
     if not app:
         app = QApplication(sys.argv)
@@ -120,12 +121,13 @@ def crash_handler(exc: Exception = None):
     msgbox.setTextFormat(Qt.TextFormat.RichText)
     msgbox.setText(
         'An unexpected error has caused Picard to crash. '
-        'Please report this issue on the <a href="https://tickets.metabrainz.org/projects/PICARD">MusicBrainz bug tracker</a>.')
+        'Please report this issue on the <a href="https://tickets.metabrainz.org/projects/PICARD">MusicBrainz bug tracker</a>.'
+    )
     if logfile:
         logfile_url = QUrl.fromLocalFile(logfile)
         msgbox.setInformativeText(
-            'A logfile has been written to <a href="{0}">{1}</a>.'
-            .format(logfile_url.url(), logfile))
+            'A logfile has been written to <a href="{0}">{1}</a>.'.format(logfile_url.url(), logfile)
+        )
     msgbox.setDetailedText(trace)
     msgbox.setStandardButtons(QMessageBox.StandardButton.Close)
     msgbox.setDefaultButton(QMessageBox.StandardButton.Close)
@@ -136,6 +138,7 @@ def crash_handler(exc: Exception = None):
 def register_excepthook():
     def _global_exception_handler(exctype, value, traceback):
         from picard import crash_handler
+
         crash_handler(exc=value)
         sys.__excepthook__(exctype, value, traceback)
 

@@ -40,7 +40,7 @@ from picard.ui.forms.ui_provider_options_local import Ui_LocalOptions
 
 class ProviderOptionsLocal(ProviderOptions):
     """
-        Options for Local Files cover art provider
+    Options for Local Files cover art provider
     """
 
     HELP_URL = '/config/options_local_files.html'
@@ -65,7 +65,6 @@ class ProviderOptionsLocal(ProviderOptions):
 
 
 class CoverArtProviderLocal(CoverArtProvider):
-
     """Get cover art from local files"""
 
     NAME = "Local Files"
@@ -113,5 +112,5 @@ class CoverArtProviderLocal(CoverArtProvider):
                     filepath,
                     types=type_from_filename or self._default_types,
                     support_types=True,
-                    support_multi_types=True
+                    support_multi_types=True,
                 )

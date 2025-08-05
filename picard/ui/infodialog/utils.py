@@ -71,8 +71,7 @@ def format_file_info(file_):
         elif ch == '2':
             ch = _("Stereo")
         info.append((_("Channels:"), ch))
-    return '<br/>'.join(map(lambda i: '<b>%s</b> %s' %
-                            (escape(i[0]), escape(i[1])), info))
+    return '<br/>'.join(map(lambda i: '<b>%s</b> %s' % (escape(i[0]), escape(i[1])), info))
 
 
 def format_tracklist(cluster):
@@ -89,8 +88,7 @@ def format_tracklist(cluster):
     for obj_ in objlist:
         m = obj_.metadata
         artist = m['artist'] or m['albumartist'] or cluster.metadata['albumartist']
-        track = TrackListItem(m['tracknumber'], m['title'], artist,
-                              m['~length'])
+        track = TrackListItem(m['tracknumber'], m['title'], artist, m['~length'])
         tracklists[obj_.discnumber].append(track)
 
     def sorttracknum(track):
@@ -110,13 +108,12 @@ def format_tracklist(cluster):
         if ndiscs > 1:
             info.append('<b>%s</b>' % (_("Disc %d") % discnumber))
         lines = ['%s %s - %s (%s)' % item for item in sorted(tracklist, key=sorttracknum)]
-        info.append('<b>%s</b><br />%s<br />' % (_("Tracklist:"),
-                    '<br />'.join(escape(s).replace(' ', '&nbsp;') for s in lines)))
+        info.append(
+            '<b>%s</b><br />%s<br />'
+            % (_("Tracklist:"), '<br />'.join(escape(s).replace(' ', '&nbsp;') for s in lines))
+        )
     return '<br/>'.join(info)
 
 
 def text_as_html(text):
-    return '<br />'.join(escape(str(text))
-        .replace('\t', ' ')
-        .replace(' ', '&nbsp;')
-        .splitlines())
+    return '<br />'.join(escape(str(text)).replace('\t', ' ').replace(' ', '&nbsp;').splitlines())

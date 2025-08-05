@@ -27,7 +27,6 @@ from picard.util.settingsoverride import SettingsOverride
 
 
 class SettingsOverrideTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.set_config_values({'key1': 'origval1', 'key2': 'origval2'})

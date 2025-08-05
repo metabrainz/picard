@@ -40,11 +40,19 @@ QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
 
 
 def config_folder():
-    return os.path.normpath(os.environ.get('PICARD_CONFIG_DIR', QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)))
+    return os.path.normpath(
+        os.environ.get(
+            'PICARD_CONFIG_DIR', QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppConfigLocation)
+        )
+    )
 
 
 def cache_folder():
-    return os.path.normpath(os.environ.get('PICARD_CACHE_DIR', QStandardPaths.writableLocation(QStandardPaths.StandardLocation.CacheLocation)))
+    return os.path.normpath(
+        os.environ.get(
+            'PICARD_CACHE_DIR', QStandardPaths.writableLocation(QStandardPaths.StandardLocation.CacheLocation)
+        )
+    )
 
 
 def plugin_folder():

@@ -32,7 +32,6 @@ from picard.ui.options import OptionsPage
 
 
 class NetworkOptionsPage(OptionsPage):
-
     NAME = 'network'
     TITLE = N_("Network")
     PARENT = 'advanced'
@@ -73,8 +72,7 @@ class NetworkOptionsPage(OptionsPage):
         self.ui.transfer_timeout.setValue(config.setting['network_transfer_timeout_seconds'])
         self.ui.browser_integration.setChecked(config.setting['browser_integration'])
         self.ui.browser_integration_port.setValue(config.setting['browser_integration_port'])
-        self.ui.browser_integration_localhost_only.setChecked(
-            config.setting['browser_integration_localhost_only'])
+        self.ui.browser_integration_localhost_only.setChecked(config.setting['browser_integration_localhost_only'])
         self.cachesize2display(config)
 
     def save(self):
@@ -94,8 +92,7 @@ class NetworkOptionsPage(OptionsPage):
         self.tagger.webservice.set_transfer_timeout(transfer_timeout)
         config.setting['browser_integration'] = self.ui.browser_integration.isChecked()
         config.setting['browser_integration_port'] = self.ui.browser_integration_port.value()
-        config.setting['browser_integration_localhost_only'] = \
-            self.ui.browser_integration_localhost_only.isChecked()
+        config.setting['browser_integration_localhost_only'] = self.ui.browser_integration_localhost_only.isChecked()
         self.tagger.update_browser_integration()
         self.display2cachesize(config)
 

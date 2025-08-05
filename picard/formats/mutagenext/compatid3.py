@@ -46,7 +46,6 @@ known_frames["XSOP"] = XSOP
 
 
 class CompatID3(ID3):
-
     """
     Additional features over mutagen.id3.ID3:
      * Allow some v2.4 frames also in v2.3

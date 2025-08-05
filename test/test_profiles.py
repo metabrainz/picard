@@ -48,7 +48,6 @@ from picard.profile import (
 
 
 class TestPicardProfilesCommon(PicardTestCase):
-
     PROFILES_KEY = SettingConfigSection.PROFILES_KEY
     SETTINGS_KEY = SettingConfigSection.SETTINGS_KEY
 
@@ -115,7 +114,6 @@ class TestPicardProfilesCommon(PicardTestCase):
 
 
 class TestUserProfileGroups(TestPicardProfilesCommon):
-
     def test_has_groups(self):
         groups = list(profile_groups_keys())
         self.assertEqual(groups, ['group0', 'group1'])
@@ -150,23 +148,16 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
 
     def test_order(self):
         result_before = [value['title'] for value in profile_groups_values()]
-        self.assertEqual(
-            result_before,
-            ['title_group0', 'title_group1']
-        )
+        self.assertEqual(result_before, ['title_group0', 'title_group1'])
 
         profile_groups_order('group1')
         profile_groups_order('group0')
 
         result_after = [value['title'] for value in profile_groups_values()]
-        self.assertEqual(
-            result_after,
-            ['title_group1', 'title_group0']
-        )
+        self.assertEqual(result_after, ['title_group1', 'title_group0'])
 
 
 class TestUserProfiles(TestPicardProfilesCommon):
-
     def test_settings(self):
         self.config.setting[self.test_setting_0] = "abc"
         self.config.setting[self.test_setting_1] = True
@@ -347,6 +338,7 @@ class TestUserProfiles(TestPicardProfilesCommon):
 
     def test_config_option_rename(self):
         from picard.config_upgrade import rename_option
+
         self.config.setting[self.test_setting_0] = "abc"
         self.config.setting[self.test_setting_1] = True
         self.config.setting[self.test_setting_2] = 42

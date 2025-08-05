@@ -156,7 +156,6 @@ SuspendWhileLoadingFuncs = namedtuple('SuspendWhileLoadingFuncs', ('on_enter', '
 
 
 class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
-
     defaultsize = QtCore.QSize(780, 560)
     selection_updated = QtCore.pyqtSignal(object)
     ready_for_display = QtCore.pyqtSignal()
@@ -192,6 +191,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.ready_for_display.connect(self._setup_desktop_status_indicator)
         if not disable_player:
             from picard.ui.player import Player
+
             player = Player(self)
             if player.available:
                 self.player = player
@@ -231,9 +231,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         icon = QtGui.QIcon()
         for size in (16, 24, 32, 48, 128, 256):
             icon.addFile(
-                ":/images/{size}x{size}/{app_id}.png".format(
-                    size=size, app_id=PICARD_APP_ID),
-                QtCore.QSize(size, size)
+                ":/images/{size}x{size}/{app_id}.png".format(size=size, app_id=PICARD_APP_ID), QtCore.QSize(size, size)
             )
         self.setWindowIcon(icon)
 
@@ -315,9 +313,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def keyPressEvent(self, event):
         # On macOS Command+Backspace triggers the so called "Forward Delete".
         # It should be treated the same as the Delete button.
-        is_forward_delete = IS_MACOS and \
-            event.key() == QtCore.Qt.Key.Key_Backspace and \
-            event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier
+        is_forward_delete = (
+            IS_MACOS
+            and event.key() == QtCore.Qt.Key.Key_Backspace
+            and event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier
+        )
         if event.matches(QtGui.QKeySequence.StandardKey.Delete) or is_forward_delete:
             if self.metadata_box.hasFocus():
                 self.metadata_box.remove_selected_tags()
@@ -379,10 +379,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
             msg.setWindowTitle(_("Unsaved Changes"))
             msg.setText(_("Are you sure you want to quit Picard?"))
-            txt = ngettext(
-                "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
-                "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
-                unsaved_files) % unsaved_files
+            txt = (
+                ngettext(
+                    "There is %d unsaved file. Closing Picard will lose all unsaved changes.",
+                    "There are %d unsaved files. Closing Picard will lose all unsaved changes.",
+                    unsaved_files,
+                )
+                % unsaved_files
+            )
             msg.setInformativeText(txt)
             cancel = msg.addButton(QMessageBox.StandardButton.Cancel)
             msg.setDefaultButton(cancel)
@@ -429,11 +433,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.listening_label = QtWidgets.QLabel()
         self.listening_label.setStyleSheet("QLabel { margin: 0 4px 0 4px; }")
         self.listening_label.setVisible(False)
-        self.listening_label.setToolTip("<qt/>" + _(
-            "Picard listens on this port to integrate with your browser. When "
-            "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
-            "\"Tagger\" button on the web page loads the release into Picard."
-        ))
+        self.listening_label.setToolTip(
+            "<qt/>"
+            + _(
+                "Picard listens on this port to integrate with your browser. When "
+                "you \"Search\" or \"Open in Browser\" from Picard, clicking the "
+                "\"Tagger\" button on the web page loads the release into Picard."
+            )
+        )
         self.statusBar().addPermanentWidget(infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
@@ -484,6 +491,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         Empty messages are never passed to echo and history functions but they
         are sent to status bar (ie. to clear it).
         """
+
         def isdict(obj):
             return hasattr(obj, 'keys') and hasattr(obj, '__getitem__')
 
@@ -515,10 +523,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 msg.setIcon(QtWidgets.QMessageBox.Icon.Information)
                 msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
                 msg.setWindowTitle(_("AcoustID submission not configured"))
-                msg.setText(_(
-                    "You need to configure your AcoustID API key before you can submit fingerprints."))
+                msg.setText(_("You need to configure your AcoustID API key before you can submit fingerprints."))
                 open_options = QtWidgets.QPushButton(
-                    icontheme.lookup('preferences-desktop'), _("Open AcoustID options"))
+                    icontheme.lookup('preferences-desktop'), _("Open AcoustID options")
+                )
                 msg.addButton(QtWidgets.QMessageBox.StandardButton.Cancel)
                 msg.addButton(open_options, QtWidgets.QMessageBox.ButtonRole.YesRole)
                 msg.exec()
@@ -780,7 +788,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_toolbar()
 
     def _create_player_toolbar(self):
-        """"Create a toolbar with internal player control elements"""
+        """ "Create a toolbar with internal player control elements"""
         toolbar = self.player.create_toolbar()
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
         if self._is_wayland:
@@ -884,9 +892,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         text = self.search_edit.text()
         entity = self.search_combo.itemData(self.search_combo.currentIndex())
         config = get_config()
-        self.tagger.search(text, entity,
-                           config.setting['use_adv_search_syntax'],
-                           mbid_matched_callback=self._search_mbid_found)
+        self.tagger.search(
+            text, entity, config.setting['use_adv_search_syntax'], mbid_matched_callback=self._search_mbid_found
+        )
 
     def add_files(self):
         """Add files to the tagger."""
@@ -945,14 +953,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.persist['current_directory'] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
-                    N_("Adding multiple directories from '%(directory)s' …"),
-                    {'directory': parent}
+                    N_("Adding multiple directories from '%(directory)s' …"), {'directory': parent}
                 )
             else:
-                self.set_statusbar_message(
-                    N_("Adding directory: '%(directory)s' …"),
-                    {'directory': dir_list[0]}
-                )
+                self.set_statusbar_message(N_("Adding directory: '%(directory)s' …"), {'directory': dir_list[0]})
 
             self.tagger.add_paths(dir_list)
 
@@ -1025,12 +1029,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def callback(fingerprinting_system):
             if fingerprinting_system:
                 self.tagger.analyze(self.selected_objects)
+
         self._ensure_fingerprinting_configured(callback)
 
     def generate_fingerprints(self):
         def callback(fingerprinting_system):
             if fingerprinting_system:
                 self.tagger.generate_fingerprints(self.selected_objects)
+
         self._ensure_fingerprinting_configured(callback)
 
     def play_file(self):
@@ -1041,9 +1047,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.set_statusbar_message(msg, echo=log.warning, translate=None)
 
     def open_folder(self):
-        folders = iter_unique(
-            os.path.dirname(f.filename) for f
-            in iter_files_from_objects(self.selected_objects))
+        folders = iter_unique(os.path.dirname(f.filename) for f in iter_files_from_objects(self.selected_objects))
         for folder in folders:
             open_local_path(folder)
 
@@ -1052,6 +1056,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if not config.setting['fingerprinting_system']:
             if self._show_analyze_settings_info():
+
                 def on_finished(result):
                     callback(config.setting['fingerprinting_system'])
 
@@ -1061,11 +1066,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             callback(config.setting['fingerprinting_system'])
 
     def _show_analyze_settings_info(self):
-        ret = QtWidgets.QMessageBox.question(self,
+        ret = QtWidgets.QMessageBox.question(
+            self,
             _("Configuration Required"),
             _("Audio fingerprinting is not yet configured. Would you like to configure it now?"),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.Yes)
+            QtWidgets.QMessageBox.StandardButton.Yes,
+        )
         return ret == QtWidgets.QMessageBox.StandardButton.Yes
 
     def _get_first_obj_with_type(self, type):
@@ -1133,8 +1140,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # Cluster all selected unclustered files. If there are no selected
         # unclustered files cluster all unclustered files.
         files = (
-            f for f in iter_files_from_objects(self.selected_objects)
-            if f.parent_item == self.tagger.unclustered_files
+            f for f in iter_files_from_objects(self.selected_objects) if f.parent_item == self.tagger.unclustered_files
         )
         try:
             file = next(files)
@@ -1147,9 +1153,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _cluster_finished(self):
         self.panel.update_current_view()
         # Select clusters if no other item or only empty unclustered files item is selected
-        if not self.selected_objects or (len(self.selected_objects) == 1
-                and self.tagger.unclustered_files in self.selected_objects
-                and not self.tagger.unclustered_files.files):
+        if not self.selected_objects or (
+            len(self.selected_objects) == 1
+            and self.tagger.unclustered_files in self.selected_objects
+            and not self.tagger.unclustered_files.files
+        ):
             self.panel.select_object(self.tagger.clusters)
         self._update_actions()
 
@@ -1175,11 +1183,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _check_add_release(self):
         if addrelease.is_enabled():
             return True
-        ret = QtWidgets.QMessageBox.question(self,
+        ret = QtWidgets.QMessageBox.question(
+            self,
             _("Browser integration not enabled"),
-            _("Submitting releases to MusicBrainz requires the browser integration to be enabled. Do you want to enable the browser integration now?"),
+            _(
+                "Submitting releases to MusicBrainz requires the browser integration to be enabled. Do you want to enable the browser integration now?"
+            ),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.Yes)
+            QtWidgets.QMessageBox.StandardButton.Yes,
+        )
         if ret == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()
             config.setting['browser_integration'] = True
@@ -1229,14 +1241,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 can_save = can_save or obj.can_save
                 can_submit = can_submit or obj.can_submit
                 # Skip further loops if all values now True.
-                if (
-                    can_analyze
-                    and can_autotag
-                    and can_refresh
-                    and can_remove
-                    and can_save
-                    and can_submit
-                ):
+                if can_analyze and can_autotag and can_refresh and can_remove and can_save and can_submit:
                     break
 
         self.enable_action(MainAction.REMOVE, can_remove)
@@ -1290,10 +1295,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if isinstance(obj, File):
                 if obj.state == obj.ERROR:
                     msg = N_("%(filename)s (error: %(error)s)")
-                    mparms = {
-                        'filename': obj.filename,
-                        'error': obj.errors[0] if obj.errors else ''
-                    }
+                    mparms = {'filename': obj.filename, 'error': obj.errors[0] if obj.errors else ''}
                 else:
                     msg = N_("%(filename)s")
                     mparms = {
@@ -1308,7 +1310,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                         mparms = {
                             'filename': file.filename,
                             'similarity': file.similarity * 100,
-                            'error': file.errors[0] if file.errors else ''
+                            'error': file.errors[0] if file.errors else '',
                         }
                     else:
                         msg = N_("%(filename)s (%(similarity)d%%)")
@@ -1316,8 +1318,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                             'filename': file.filename,
                             'similarity': file.similarity * 100,
                         }
-                    self.set_statusbar_message(msg, mparms, echo=None,
-                                               history=None)
+                    self.set_statusbar_message(msg, mparms, echo=None, history=None)
         elif coverart_visible and new_selection:
             # Create a temporary file list which allows changing cover art for all selected files
             files = list(iter_files_from_objects(objects))
@@ -1376,11 +1377,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _show_password_dialog(self, reply, authenticator):
         config = get_config()
         if reply.url().host() == config.setting['server_host']:
-            ret = QtWidgets.QMessageBox.question(self,
+            ret = QtWidgets.QMessageBox.question(
+                self,
                 _("Authentication Required"),
-                _("Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"),
+                _(
+                    "Picard needs authorization to access your personal data on the MusicBrainz server. Would you like to log in now?"
+                ),
                 QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-                QtWidgets.QMessageBox.StandardButton.Yes)
+                QtWidgets.QMessageBox.StandardButton.Yes,
+            )
             if ret == QtWidgets.QMessageBox.StandardButton.Yes:
                 self.tagger.mb_login(self._on_mb_login_finished)
         else:
@@ -1392,9 +1397,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             log.debug("MusicBrainz authentication finished successfully")
         else:
             log.info("MusicBrainz authentication failed: %s", error_msg)
-            QtWidgets.QMessageBox.critical(self,
-                _("Authentication failed"),
-                _("Login failed: %s") % error_msg)
+            QtWidgets.QMessageBox.critical(self, _("Authentication failed"), _("Login failed: %s") % error_msg)
 
     def _show_proxy_dialog(self, proxy, authenticator):
         dialog = ProxyDialog(authenticator, proxy, parent=self)
@@ -1436,24 +1439,29 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         last_update_check = config.persist['last_update_check']
         update_level = config.setting['update_level']
         today = datetime.date.today().toordinal()
-        do_auto_update_check = check_for_updates and update_check_days > 0 and today >= last_update_check + update_check_days
-        log.debug("%(check_status)s startup check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)", {
-            'check_status': 'Initiating' if do_auto_update_check else 'Skipping',
-            'today_date': datetime.date.today(),
-            'last_check': str(datetime.date.fromordinal(last_update_check)) if last_update_check > 0 else 'never',
-            'check_interval': update_check_days,
-            'update_level': update_level,
-            'update_level_name': PROGRAM_UPDATE_LEVELS[update_level]['name'] if update_level in PROGRAM_UPDATE_LEVELS else 'unknown',
-        })
+        do_auto_update_check = (
+            check_for_updates and update_check_days > 0 and today >= last_update_check + update_check_days
+        )
+        log.debug(
+            "%(check_status)s startup check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)",
+            {
+                'check_status': 'Initiating' if do_auto_update_check else 'Skipping',
+                'today_date': datetime.date.today(),
+                'last_check': str(datetime.date.fromordinal(last_update_check)) if last_update_check > 0 else 'never',
+                'check_interval': update_check_days,
+                'update_level': update_level,
+                'update_level_name': PROGRAM_UPDATE_LEVELS[update_level]['name']
+                if update_level in PROGRAM_UPDATE_LEVELS
+                else 'unknown',
+            },
+        )
         if do_auto_update_check:
             self._check_for_update(False)
 
     def _check_for_update(self, show_always):
         config = get_config()
         self.tagger.updatecheckmanager.check_update(
-            show_always=show_always,
-            update_level=config.setting['update_level'],
-            callback=update_last_check_date
+            show_always=show_always, update_level=config.setting['update_level'], callback=update_last_check_date
         )
 
     def _check_and_repair_naming_scripts(self):
@@ -1464,10 +1472,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         script_key = 'file_renaming_scripts'
         if not config.setting[script_key]:
-            config.setting[script_key] = {
-                script['id']: script.to_dict()
-                for script in get_file_naming_script_presets()
-            }
+            config.setting[script_key] = {script['id']: script.to_dict() for script in get_file_naming_script_presets()}
         naming_script_ids = list(config.setting[script_key])
         script_id_key = 'selected_file_naming_script_id'
         if config.setting[script_id_key] not in naming_script_ids:
@@ -1506,8 +1511,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.profiles[SettingConfigSection.SETTINGS_KEY] = profile_settings
 
     def _make_script_selector_menu(self):
-        """Update the sub-menu of available file naming scripts.
-        """
+        """Update the sub-menu of available file naming scripts."""
         if self.script_editor_dialog is None or not isinstance(self.script_editor_dialog, ScriptEditorDialog):
             config = get_config()
             naming_scripts = config.setting['file_renaming_scripts']
@@ -1529,7 +1533,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_quick_selector_menu.addAction(script_action)
             group.addAction(script_action)
 
-        for (id, naming_script) in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
+        for id, naming_script in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
             _add_menu_item(naming_script['title'], id)
 
     def _select_new_naming_script(self, id):
@@ -1545,8 +1549,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.script_editor_dialog.set_selected_script_id(id)
 
     def open_file_naming_script_editor(self):
-        """Open the file naming script editor / manager in a new window.
-        """
+        """Open the file naming script editor / manager in a new window."""
         examples = ScriptEditorExamples(tagger=self.tagger)
         self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
         self.script_editor_dialog.signal_save.connect(self._script_editor_save)
@@ -1564,27 +1567,23 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, False)
 
     def _script_editor_save(self):
-        """Process "signal_save" signal from the script editor.
-        """
+        """Process "signal_save" signal from the script editor."""
         self._make_script_selector_menu()
 
     def _script_editor_closed(self):
-        """Process "finished" signal from the script editor.
-        """
+        """Process "finished" signal from the script editor."""
         self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, True)
         self.script_editor_dialog = None
 
     def _update_script_editor_example_files(self):
-        """Update the list of example files for the file naming script editor.
-        """
+        """Update the list of example files for the file naming script editor."""
         script_editor_dialog = self.script_editor_dialog
         if script_editor_dialog and script_editor_dialog.isVisible():
             script_editor_dialog.examples.update_sample_example_files()
             self._update_script_editor_examples()
 
     def _update_script_editor_examples(self):
-        """Update the examples for the file naming script editor, using current settings.
-        """
+        """Update the examples for the file naming script editor, using current settings."""
         script_editor_dialog = self.script_editor_dialog
         if script_editor_dialog and script_editor_dialog.isVisible():
             config = get_config()
@@ -1596,18 +1595,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             script_editor_dialog.display_examples()
 
     def _script_editor_index_changed(self):
-        """Process "signal_index_changed" signal from the script editor.
-        """
+        """Process "signal_index_changed" signal from the script editor."""
         self._script_editor_save()
 
     def _update_selector_from_script_editor(self):
-        """Process "signal_selection_changed" signal from the script editor.
-        """
+        """Process "signal_selection_changed" signal from the script editor."""
         self._script_editor_save()
 
     def _make_profile_selector_menu(self):
-        """Update the sub-menu of available option profiles.
-        """
+        """Update the sub-menu of available option profiles."""
         config = get_config()
         option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
         if not option_profiles:

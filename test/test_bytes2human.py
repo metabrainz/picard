@@ -87,9 +87,9 @@ class Testbytes2human(PicardTestCase):
                     values.append(int(p * x))
         list = []
         for x in sorted(values):
-            list.append(";".join([str(x), bytes2human.decimal(x),
-                                  bytes2human.binary(x),
-                                  bytes2human.short_string(x, 1024, 2)]))
+            list.append(
+                ";".join([str(x), bytes2human.decimal(x), bytes2human.binary(x), bytes2human.short_string(x, 1024, 2)])
+            )
         return list
 
     @staticmethod

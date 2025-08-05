@@ -27,7 +27,6 @@ from picard.util import union_sorted_lists
 
 
 class UnionSortedListsTest(PicardTestCase):
-
     def test_1(self):
         list1 = [1, 2, 3]
         list2 = [3, 4, 5, 6]

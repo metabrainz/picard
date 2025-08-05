@@ -45,7 +45,6 @@ from picard.util import iter_unique
 
 
 class ScriptsMenu(QtWidgets.QMenu):
-
     def __init__(self, scripts, title, parent=None):
         super().__init__(title, parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()

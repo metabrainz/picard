@@ -64,7 +64,6 @@ from picard.ui.util import FileDialog
 
 
 class RenamingOptionsPage(OptionsPage):
-
     NAME = 'filerenaming'
     TITLE = N_("File Naming")
     PARENT = None
@@ -125,22 +124,23 @@ class RenamingOptionsPage(OptionsPage):
         self.current_row = -1
 
     def update_selector_from_editor(self):
-        """Update the script selector combo box from the script editor page.
-        """
+        """Update the script selector combo box from the script editor page."""
         self.naming_scripts = self.script_editor_dialog.naming_scripts
         self.selected_naming_script_id = self.script_editor_dialog.selected_script_id
-        populate_script_selection_combo_box(self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector)
+        populate_script_selection_combo_box(
+            self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector
+        )
         self.display_examples()
 
     def update_selector_from_settings(self):
-        """Update the script selector combo box from the settings.
-        """
-        populate_script_selection_combo_box(self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector)
+        """Update the script selector combo box from the settings."""
+        populate_script_selection_combo_box(
+            self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector
+        )
         self.update_selector_in_editor()
 
     def update_selector_in_editor(self):
-        """Update the selection in the script editor page to match local selection.
-        """
+        """Update the selection in the script editor page to match local selection."""
         idx = self.ui.naming_script_selector.currentIndex()
         if self.script_editor_dialog:
             self.script_editor_dialog.set_selected_script_index(idx)
@@ -152,14 +152,16 @@ class RenamingOptionsPage(OptionsPage):
             self.update_examples_from_local()
 
     def match_after_to_before(self):
-        """Sets the selected item in the 'after' list to the corresponding item in the 'before' list.
-        """
-        self.examples.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_before, self.ui.example_filename_after)
+        """Sets the selected item in the 'after' list to the corresponding item in the 'before' list."""
+        self.examples.synchronize_selected_example_lines(
+            self.current_row, self.ui.example_filename_before, self.ui.example_filename_after
+        )
 
     def match_before_to_after(self):
-        """Sets the selected item in the 'before' list to the corresponding item in the 'after' list.
-        """
-        self.examples.synchronize_selected_example_lines(self.current_row, self.ui.example_filename_after, self.ui.example_filename_before)
+        """Sets the selected item in the 'before' list to the corresponding item in the 'after' list."""
+        self.examples.synchronize_selected_example_lines(
+            self.current_row, self.ui.example_filename_after, self.ui.example_filename_before
+        )
 
     def show_script_editing_page(self):
         self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)

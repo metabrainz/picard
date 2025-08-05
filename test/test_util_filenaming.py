@@ -56,7 +56,6 @@ from picard.util.filenaming import (
 
 
 class ShortFilenameTest(PicardTestCase):
-
     def __init__(self, *args, **kwargs):
         self.maxDiff = None
         self.root = os.path.join(IS_WIN and "X:\\" or "/", "x" * 10)
@@ -119,15 +118,17 @@ class ShortFilenameTest(PicardTestCase):
         self.assertEqual(fn, os.path.join(char * (max_len // divisor), char * (remaining // 2)))
 
     def test_windows_shortening(self):
-        fn = make_short_filename(self.root, os.path.join("a" * 200, "b" * 200, "c" * 200 + ".ext"), win_shorten_path=True)
+        fn = make_short_filename(
+            self.root, os.path.join("a" * 200, "b" * 200, "c" * 200 + ".ext"), win_shorten_path=True
+        )
         self.assertEqual(fn, os.path.join("a" * 116, "b" * 116, "c" * 7 + ".ext"))
 
     @unittest.skipIf(IS_WIN, "non-windows test")
     def test_windows_shortening_with_ancestor_on_nix(self):
         root = os.path.join(self.root, "w" * 10, "x" * 10, "y" * 9, "z" * 9)
         fn = make_short_filename(
-            root, os.path.join("b" * 200, "c" * 200, "d" * 200 + ".ext"),
-            win_shorten_path=True, relative_to=self.root)
+            root, os.path.join("b" * 200, "c" * 200, "d" * 200 + ".ext"), win_shorten_path=True, relative_to=self.root
+        )
         self.assertEqual(fn, os.path.join("b" * 100, "c" * 100, "d" * 7 + ".ext"))
 
     def test_windows_node_maxlength_shortening(self):
@@ -138,20 +139,21 @@ class ShortFilenameTest(PicardTestCase):
 
     def test_windows_selective_shortening(self):
         root = self.root + "x" * (44 - 10 - 3)
-        fn = make_short_filename(root, os.path.join(
-            os.path.join(*["a" * 9] * 10 + ["b" * 15] * 10), "c" * 10), win_shorten_path=True)
+        fn = make_short_filename(
+            root, os.path.join(os.path.join(*["a" * 9] * 10 + ["b" * 15] * 10), "c" * 10), win_shorten_path=True
+        )
         self.assertEqual(fn, os.path.join(os.path.join(*["a" * 9] * 10 + ["b" * 9] * 10), "c" * 10))
 
     def test_windows_shortening_not_needed(self):
         root = self.root + "x" * 33
-        fn = make_short_filename(root, os.path.join(
-            os.path.join(*["a" * 9] * 20), "b" * 10), win_shorten_path=True)
+        fn = make_short_filename(root, os.path.join(os.path.join(*["a" * 9] * 20), "b" * 10), win_shorten_path=True)
         self.assertEqual(fn, os.path.join(os.path.join(*["a" * 9] * 20), "b" * 10))
 
     def test_windows_path_too_long(self):
         root = self.root + "x" * 230
-        self.assertRaises(WinPathTooLong, make_short_filename,
-                          root, os.path.join("a", "b", "c", "d"), win_shorten_path=True)
+        self.assertRaises(
+            WinPathTooLong, make_short_filename, root, os.path.join("a", "b", "c", "d"), win_shorten_path=True
+        )
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_windows_long_path_allowed(self):
@@ -179,7 +181,6 @@ class ShortFilenameTest(PicardTestCase):
 
 
 class SamefileDifferentCasingTest(PicardTestCase):
-
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_samefile_different_casing(self):
         with NamedTemporaryFile(prefix='Foo') as f:
@@ -197,7 +198,6 @@ class SamefileDifferentCasingTest(PicardTestCase):
 
 
 class MoveEnsureCasingTest(PicardTestCase):
-
     def test_move_ensure_casing(self):
         with TemporaryDirectory() as d:
             file_path = os.path.join(d, 'foo')
@@ -215,7 +215,6 @@ class MoveEnsureCasingTest(PicardTestCase):
 
 
 class MakeSavePathTest(PicardTestCase):
-
     def test_replace_trailing_dots(self):
         path = 'foo./bar.'
         self.assertEqual(path, make_save_path(path))
@@ -226,11 +225,11 @@ class MakeSavePathTest(PicardTestCase):
         self.assertEqual('_foo/_bar', make_save_path(path))
 
     def test_decompose_precomposed_chars(self):
-        path = 'foo/\u00E9bar'  # é
+        path = 'foo/\u00e9bar'  # é
         self.assertEqual('foo/\u0065\u0301bar', make_save_path(path, mac_compat=True))
 
     def test_remove_zero_length_space(self):
-        path = 'foo/\u200Bbar'
+        path = 'foo/\u200bbar'
         self.assertEqual('foo/bar', make_save_path(path))
 
     def test_replace_windows_forbidden_names(self):
@@ -240,7 +239,6 @@ class MakeSavePathTest(PicardTestCase):
 
 
 class GetAvailableFilenameTest(PicardTestCase):
-
     def _add_number(self, filename, number):
         name, ext = os.path.splitext(filename)
         return '%s (%i)%s' % (name, number, ext)
@@ -285,7 +283,6 @@ class GetAvailableFilenameTest(PicardTestCase):
 
 
 class ReplaceExtensionTest(PicardTestCase):
-
     def test_replace(self):
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', '.wvc'))
         self.assertEqual('foo/bar.wvc', replace_extension('foo/bar.wv', 'wvc'))
@@ -293,7 +290,6 @@ class ReplaceExtensionTest(PicardTestCase):
 
 
 class ShortenFilenameTest(PicardTestCase):
-
     def test_shorten_bytes(self):
         self.assertEqual(b'a' * 10, shorten_filename(b'a' * 11, 10, None))
         self.assertEqual('a' * 10, shorten_filename('a' * 10, 10, ShortenMode.BYTES))
@@ -321,14 +317,15 @@ class ShortenFilenameTest(PicardTestCase):
 
 
 class ShortenPathTest(PicardTestCase):
-
     def test_shorten_path(self):
         self.assertEqual(
             os.path.join('aaaaa', 'bbbbb', 'c.mp3'),
-            shorten_path(os.path.join('a' * 6, 'b' * 6, 'cccccc.mp3'), 5, ShortenMode.BYTES))
+            shorten_path(os.path.join('a' * 6, 'b' * 6, 'cccccc.mp3'), 5, ShortenMode.BYTES),
+        )
         self.assertEqual(
             os.path.join('ä' * 255, 'ö' * 255, 'ü' * 251 + '.ext'),
-            shorten_path(os.path.join('ä' * 256, 'ö' * 256, 'ü' * 256 + '.ext'), 255, ShortenMode.UTF16))
+            shorten_path(os.path.join('ä' * 256, 'ö' * 256, 'ü' * 256 + '.ext'), 255, ShortenMode.UTF16),
+        )
 
 
 class ReplaceWindowsForbiddenNamesTest(PicardTestCase):

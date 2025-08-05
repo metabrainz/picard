@@ -138,7 +138,6 @@ class FakeRecord:
 @patch('picard.log.picard_module_path', PurePath('/path1/path2'))
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('/user/picard/plugins'))
 class NameFilterTestRel(PicardTestCase):
-
     def test_1(self):
         record = FakeRecord(name=None, pathname='/path1/path2/module/file.py')
         self.assertTrue(name_filter(record))
@@ -205,7 +204,6 @@ class NameFilterTestRel(PicardTestCase):
 @patch('picard.log.picard_module_path', PurePath('/picard'))
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('/user/picard/plugins/'))
 class NameFilterTestAbs(PicardTestCase):
-
     def test_1(self):
         record = FakeRecord(name=None, pathname='/path/module/file.py')
         self.assertTrue(name_filter(record))
@@ -273,7 +271,6 @@ class NameFilterTestAbs(PicardTestCase):
 @patch('picard.log.picard_module_path', PurePath('/path1/path2/'))  # incorrect, but testing anyway
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('/user/picard/plugins'))
 class NameFilterTestEndingSlash(PicardTestCase):
-
     def test_1(self):
         record = FakeRecord(name=None, pathname='/path3/module/file.py')
         self.assertTrue(name_filter(record))
@@ -284,7 +281,6 @@ class NameFilterTestEndingSlash(PicardTestCase):
 @patch('picard.log.picard_module_path', PureWindowsPath('C:\\path1\\path2'))
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('C:\\user\\picard\\plugins'))
 class NameFilterTestRelWin(PicardTestCase):
-
     def test_1(self):
         record = FakeRecord(name=None, pathname='C:/path1/path2/module/file.py')
         self.assertTrue(name_filter(record))
@@ -351,7 +347,6 @@ class NameFilterTestRelWin(PicardTestCase):
 @patch('picard.log.picard_module_path', PureWindowsPath('C:\\picard'))
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('C:\\user\\picard\\plugins'))
 class NameFilterTestAbsWin(PicardTestCase):
-
     def test_1(self):
         record = FakeRecord(name=None, pathname='C:/path/module/file.py')
         self.assertTrue(name_filter(record))
@@ -413,7 +408,6 @@ class NameFilterTestAbsWin(PicardTestCase):
 @patch('picard.log.picard_module_path', PureWindowsPath('C:\\path1\\path2\\'))  # incorrect, but testing anyway
 @patch('picard.log.USER_PLUGIN_DIR', PurePath('C:\\user\\picard\\plugins'))
 class NameFilterTestEndingSlashWin(PicardTestCase):
-
     def test_1(self):
         record = FakeRecord(name=None, pathname='C:/path3/module/file.py')
         self.assertTrue(name_filter(record))

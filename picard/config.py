@@ -56,7 +56,6 @@ class ConfigUpgradeError(Exception):
 
 
 class ConfigSection(QtCore.QObject):
-
     """Configuration section."""
 
     # Signal emitted when the value of a setting has changed.
@@ -90,11 +89,7 @@ class ConfigSection(QtCore.QObject):
         return self.__qt_config.contains(self.key(name))
 
     def as_dict(self):
-        return {
-            key: self[key] for section, key
-            in list(Option.registry)
-            if section == self.__name
-        }
+        return {key: self[key] for section, key in list(Option.registry) if section == self.__name}
 
     def remove(self, name):
         key = self.key(name)
@@ -137,8 +132,8 @@ class ConfigSection(QtCore.QObject):
 
 
 class SettingConfigSection(ConfigSection):
-    """Custom subclass to automatically accommodate saving and retrieving values based on user profile settings.
-    """
+    """Custom subclass to automatically accommodate saving and retrieving values based on user profile settings."""
+
     PROFILES_KEY = 'user_profiles'
     SETTINGS_KEY = 'user_profile_settings'
 
@@ -175,7 +170,11 @@ class SettingConfigSection(ConfigSection):
     def _get_profile_settings(self, profile_id):
         if self.settings_override is None:
             # Set to None if profile_id not in profile settings
-            profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY][profile_id] if profile_id in self.__qt_config.profiles[self.SETTINGS_KEY] else None
+            profile_settings = (
+                self.__qt_config.profiles[self.SETTINGS_KEY][profile_id]
+                if profile_id in self.__qt_config.profiles[self.SETTINGS_KEY]
+                else None
+            )
         else:
             # Set to None if profile_id not in settings_override
             profile_settings = self.settings_override[profile_id] if profile_id in self.settings_override else None
@@ -226,7 +225,6 @@ class SettingConfigSection(ConfigSection):
 
 
 class Config(QtCore.QSettings):
-
     """Configuration.
     QSettings is not thread safe, each thread must use its own instance of this class.
     Use `get_config()` to obtain a Config instance for the current thread.
@@ -262,9 +260,14 @@ class Config(QtCore.QSettings):
         """Build a Config object using the default configuration file
         location."""
         this = cls()
-        QtCore.QSettings.__init__(this, QtCore.QSettings.Format.IniFormat,
-                                  QtCore.QSettings.Scope.UserScope, PICARD_ORG_NAME,
-                                  PICARD_APP_NAME, parent)
+        QtCore.QSettings.__init__(
+            this,
+            QtCore.QSettings.Format.IniFormat,
+            QtCore.QSettings.Scope.UserScope,
+            PICARD_ORG_NAME,
+            PICARD_APP_NAME,
+            parent,
+        )
 
         # Check if there is a config file specifically for this version
         versioned_config_file = this._versioned_config_filename(PICARD_VERSION)
@@ -288,8 +291,7 @@ class Config(QtCore.QSettings):
         """Build a Config object using a user-provided configuration file
         path."""
         this = cls()
-        QtCore.QSettings.__init__(this, filename, QtCore.QSettings.Format.IniFormat,
-                                  parent)
+        QtCore.QSettings.__init__(this, filename, QtCore.QSettings.Format.IniFormat, parent)
         this.__initialize()
         return this
 
@@ -303,30 +305,28 @@ class Config(QtCore.QSettings):
             return
         if self._version >= PICARD_VERSION:
             if self._version > PICARD_VERSION:
-                print("Warning: config file %s was created by a more recent "
-                      "version of Picard (current is %s)" % (
-                          self._version,
-                          PICARD_VERSION
-                      ))
+                print(
+                    "Warning: config file %s was created by a more recent "
+                    "version of Picard (current is %s)" % (self._version, PICARD_VERSION)
+                )
             return
         for version in list(hooks):
             hook = hooks[version]
             if self._version < version:
                 try:
                     if hook.__doc__:
-                        log.debug("Config upgrade %s -> %s: %s" % (
-                                  self._version,
-                                  version,
-                                  hook.__doc__.strip()))
+                        log.debug("Config upgrade %s -> %s: %s" % (self._version, version, hook.__doc__.strip()))
                     hook(self)
                 except BaseException as e:
                     raise ConfigUpgradeError(
                         "Error during config upgrade from version %s to %s "
-                        "using %s()" % (
+                        "using %s()"
+                        % (
                             self._version,
                             version,
                             hook.__name__,
-                        )) from e
+                        )
+                    ) from e
                 else:
                     del hooks[version]
                     self._write_version(version)
@@ -360,8 +360,9 @@ class Config(QtCore.QSettings):
     def _versioned_config_filename(self, version=None):
         if not version:
             version = self._version
-        return os.path.join(os.path.dirname(self.fileName()), '%s-%s.ini' % (
-            self.applicationName(), version.short_str()))
+        return os.path.join(
+            os.path.dirname(self.fileName()), '%s-%s.ini' % (self.applicationName(), version.short_str())
+        )
 
     def save_user_backup(self, backup_path):
         if backup_path == self.fileName():
@@ -376,7 +377,6 @@ class OptionError(Exception):
 
 
 class Option(QtCore.QObject):
-
     """Generic option."""
 
     registry = {}
@@ -425,29 +425,24 @@ class Option(QtCore.QObject):
 
 
 class TextOption(Option):
-
     convert = str
     qtype = 'QString'
 
 
 class BoolOption(Option):
-
     convert = bool
     qtype = bool
 
 
 class IntOption(Option):
-
     convert = int
 
 
 class FloatOption(Option):
-
     convert = float
 
 
 class ListOption(Option):
-
     def convert(self, value):
         if value is None:
             return []

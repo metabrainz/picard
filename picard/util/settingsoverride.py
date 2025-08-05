@@ -24,13 +24,13 @@ from collections.abc import MutableMapping
 
 
 class SettingsOverride(MutableMapping):
-    """ This class can be used to override config temporarily
-        Basically it returns config[key] if key isn't found in internal dict
+    """This class can be used to override config temporarily
+    Basically it returns config[key] if key isn't found in internal dict
 
-        Typical usage:
+    Typical usage:
 
-        settings = SettingsOverride(config.setting)
-        settings["option"] = "value"
+    settings = SettingsOverride(config.setting)
+    settings["option"] = "value"
     """
 
     def __init__(self, orig_settings, *args, **kwargs):

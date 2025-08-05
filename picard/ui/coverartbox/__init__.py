@@ -73,7 +73,6 @@ HTML_IMG_SRC_REGEX = re.compile(r'<img .*?src="(.*?)"', re.UNICODE)
 
 
 class CoverArtBox(QtWidgets.QGroupBox):
-
     def __init__(self, parent=None):
         super().__init__("", parent=parent)
         self.layout = QtWidgets.QVBoxLayout()
@@ -88,12 +87,16 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.cover_art = CoverArtThumbnail(drops=True, pixmap_cache=self.pixmap_cache, parent=self)
         self.cover_art.image_dropped.connect(self.fetch_remote_image)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.orig_cover_art_label = QtWidgets.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(drops=False, pixmap_cache=self.pixmap_cache, parent=self)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
-        self.show_details_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info)
+        self.show_details_shortcut = QtGui.QShortcut(
+            QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info
+        )
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
         self.layout.addWidget(self.orig_cover_art_label)
@@ -197,8 +200,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
         url_query = QtCore.QUrlQuery(url.query())
         log.debug('Fetched remote image with MIME-Type %s from %s', mime, url.toString())
         # If mime indicates only binary data we can try to guess the real mime type
-        if (mime in {'application/octet-stream', 'binary/data'} or mime.startswith('image/')
-              or imageinfo.supports_mime_type(mime)):
+        if (
+            mime in {'application/octet-stream', 'binary/data'}
+            or mime.startswith('image/')
+            or imageinfo.supports_mime_type(mime)
+        ):
             try:
                 self._try_load_remote_image(url, data)
                 return
@@ -247,11 +253,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             return
 
     def _try_load_remote_image(self, url, data):
-        coverartimage = CoverArtImage(
-            url=url.toString(),
-            types=['front'],
-            data=data
-        )
+        coverartimage = CoverArtImage(url=url.toString(), types=['front'], data=data)
 
         config = get_config()
         if config.setting['load_image_behavior'] == 'replace':
@@ -269,10 +271,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFiles)
         extensions = ['*' + ext for ext in imageinfo.get_supported_extensions()]
         extensions.sort()
-        file_chooser.setNameFilters([
-            _("All supported image formats") + " (" + " ".join(extensions) + ")",
-            _("All files") + " (*)",
-        ])
+        file_chooser.setNameFilters(
+            [
+                _("All supported image formats") + " (" + " ".join(extensions) + ")",
+                _("All files") + " (*)",
+            ]
+        )
         if file_chooser.exec():
             file_urls = file_chooser.selectedUrls()
             for url in file_urls:

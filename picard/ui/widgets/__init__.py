@@ -47,9 +47,7 @@ class ElidedLabel(QtWidgets.QLabel):
         # Elide the text. On some setups, e.g. using the Breeze theme, the
         # text does not properly fit into width(), as a workaround subtract
         # 2 pixels from the available width.
-        elided_label = metrics.elidedText(self._full_label,
-                                          QtCore.Qt.TextElideMode.ElideRight,
-                                          self.width() - 2)
+        elided_label = metrics.elidedText(self._full_label, QtCore.Qt.TextElideMode.ElideRight, self.width() - 2)
         super().setText(elided_label)
         if self._full_label and elided_label != self._full_label:
             self.setToolTip(self._full_label)
@@ -88,8 +86,7 @@ class ClickableSlider(QtWidgets.QSlider):
         self._set_position_from_mouse_event(event)
 
     def _set_position_from_mouse_event(self, event):
-        value = QtWidgets.QStyle.sliderValueFromPosition(
-            self.minimum(), self.maximum(), event.pos().x(), self.width())
+        value = QtWidgets.QStyle.sliderValueFromPosition(self.minimum(), self.maximum(), event.pos().x(), self.width())
         self.setValue(value)
 
 

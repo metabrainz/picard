@@ -76,7 +76,7 @@ class ImageList(MutableSequence):
 
     def to_be_saved_to_tags(self, settings=None):
         """Generator returning images to be saved to tags according to
-           passed settings or config.setting
+        passed settings or config.setting
         """
         if settings is None:
             config = get_config()

@@ -89,48 +89,54 @@ UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
 
 
 def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
-    """In version 1.0, the file naming formats for single and various artist releases were merged.
-    """
+    """In version 1.0, the file naming formats for single and various artist releases were merged."""
     _s = config.setting
 
     def remove_va_file_naming_format(merge=True):
         if merge:
             _s['file_naming_format'] = (
                 "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
-                "albums)\n%s,\n$noop(Single Artist Albums)\n%s)" % (
-                    _s.value('va_file_naming_format', TextOption),
-                    _s['file_naming_format']
-                ))
+                "albums)\n%s,\n$noop(Single Artist Albums)\n%s)"
+                % (_s.value('va_file_naming_format', TextOption), _s['file_naming_format'])
+            )
         _s.remove('va_file_naming_format')
         _s.remove('use_va_format')
 
     if 'va_file_naming_format' in _s and 'use_va_format' in _s:
-
         if _s.value('use_va_format', BoolOption):
             remove_va_file_naming_format()
             if interactive:
                 msgbox = QtWidgets.QMessageBox()
-                msgbox.information(msgbox,
+                msgbox.information(
+                    msgbox,
                     _("Various Artists file naming scheme removal"),
-                    _("The separate file naming scheme for various artists "
+                    _(
+                        "The separate file naming scheme for various artists "
                         "albums has been removed in this version of Picard.\n"
                         "Your file naming scheme has automatically been "
-                        "merged with that of single artist albums."),
-                    QtWidgets.QMessageBox.StandardButton.Ok)
+                        "merged with that of single artist albums."
+                    ),
+                    QtWidgets.QMessageBox.StandardButton.Ok,
+                )
 
-        elif (_s.value('va_file_naming_format', TextOption)
-              != r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
-                 "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
-                 "%title%"):
+        elif (
+            _s.value('va_file_naming_format', TextOption) != r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
+            "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
+            "%title%"
+        ):
             if interactive:
                 msgbox = QtWidgets.QMessageBox()
                 msgbox.setWindowTitle(_("Various Artists file naming scheme removal"))
-                msgbox.setText(_("The separate file naming scheme for various artists "
-                    "albums has been removed in this version of Picard.\n"
-                    "You currently do not use this option, but have a "
-                    "separate file naming scheme defined.\n"
-                    "Do you want to remove it or merge it with your file "
-                    "naming scheme for single artist albums?"))
+                msgbox.setText(
+                    _(
+                        "The separate file naming scheme for various artists "
+                        "albums has been removed in this version of Picard.\n"
+                        "You currently do not use this option, but have a "
+                        "separate file naming scheme defined.\n"
+                        "Do you want to remove it or merge it with your file "
+                        "naming scheme for single artist albums?"
+                    )
+                )
                 msgbox.setIcon(QtWidgets.QMessageBox.Icon.Question)
                 merge_button = msgbox.addButton(_("Merge"), QtWidgets.QMessageBox.ButtonRole.AcceptRole)
                 msgbox.addButton(_("Remove"), QtWidgets.QMessageBox.ButtonRole.DestructiveRole)
@@ -143,16 +149,14 @@ def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
 
 
 def upgrade_to_v1_3_0dev1(config):
-    """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110).
-    """
+    """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110)."""
     old_opt = 'windows_compatible_filenames'
     new_opt = 'windows_compatibility'
     rename_option(config, old_opt, new_opt, BoolOption, True)
 
 
 def upgrade_to_v1_3_0dev2(config):
-    """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)
-    """
+    """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)"""
     _s = config.setting
     opt = 'preserved_tags'
     if opt in _s and isinstance(_s[opt], str):
@@ -160,8 +164,7 @@ def upgrade_to_v1_3_0dev2(config):
 
 
 def upgrade_to_v1_3_0dev3(config):
-    """Options were made to support lists (solving PICARD-144 and others)
-    """
+    """Options were made to support lists (solving PICARD-144 and others)"""
     _s = config.setting
     option_separators = {
         'preferred_release_countries': '  ',
@@ -170,7 +173,7 @@ def upgrade_to_v1_3_0dev3(config):
         'caa_image_types': None,
         'metadata_box_sizes': None,
     }
-    for (opt, sep) in option_separators.items():
+    for opt, sep in option_separators.items():
         if opt in _s:
             try:
                 _s[opt] = _s.raw_value(opt, qtype='QString').split(sep)
@@ -179,8 +182,7 @@ def upgrade_to_v1_3_0dev3(config):
 
 
 def upgrade_to_v1_3_0dev4(config):
-    """Option "release_type_scores" is now a list of tuples
-    """
+    """Option "release_type_scores" is now a list of tuples"""
     _s = config.setting
 
     def load_release_type_scores(setting):
@@ -220,7 +222,7 @@ def upgrade_to_v1_4_0dev3(config):
         ('ca_provider_use_amazon', 'Amazon'),
         ('ca_provider_use_caa', 'Cover Art Archive'),
         ('ca_provider_use_whitelist', 'Whitelist'),
-        ('ca_provider_use_caa_release_group_fallback', 'CaaReleaseGroup')
+        ('ca_provider_use_caa_release_group_fallback', 'CaaReleaseGroup'),
     ]
 
     newopts = []
@@ -230,12 +232,14 @@ def upgrade_to_v1_4_0dev3(config):
     _s['ca_providers'] = newopts
 
 
-OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3 = "$if2(%albumartist%,%artist%)/" \
-    "$if($ne(%albumartist%,),%album%/)" \
-    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-    "$if(%_multiartist%,%artist% - ,)" \
+OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3 = (
+    "$if2(%albumartist%,%artist%)/"
+    "$if($ne(%albumartist%,),%album%/)"
+    "$if($gt(%totaldiscs%,1),%discnumber%-,)"
+    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)"
+    "$if(%_multiartist%,%artist% - ,)"
     "%title%"
+)
 
 
 def upgrade_to_v1_4_0dev4(config):
@@ -304,12 +308,12 @@ def upgrade_to_v2_1_0dev1(config):
     _s = config.setting
     if 'folksonomy_tags' in _s and _s['folksonomy_tags']:
         _s['use_genres'] = True
-    rename_option(config, 'max_tags',      'max_genres',      IntOption,  5)
-    rename_option(config, 'min_tag_usage', 'min_genre_usage', IntOption,  90)
-    rename_option(config, 'ignore_tags',   'ignore_genres',   TextOption, '')
-    rename_option(config, 'join_tags',     'join_genres',     TextOption, '')
-    rename_option(config, 'only_my_tags',  'only_my_genres',  BoolOption, False)
-    rename_option(config, 'artists_tags',  'artists_genres',  BoolOption, False)
+    rename_option(config, 'max_tags', 'max_genres', IntOption, 5)
+    rename_option(config, 'min_tag_usage', 'min_genre_usage', IntOption, 90)
+    rename_option(config, 'ignore_tags', 'ignore_genres', TextOption, '')
+    rename_option(config, 'join_tags', 'join_genres', TextOption, '')
+    rename_option(config, 'only_my_tags', 'only_my_genres', BoolOption, False)
+    rename_option(config, 'artists_tags', 'artists_genres', BoolOption, False)
 
 
 def upgrade_to_v2_2_0dev3(config):
@@ -324,12 +328,14 @@ def upgrade_to_v2_2_0dev3(config):
         _s.remove(old_opt)
 
 
-OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1 = "$if2(%albumartist%,%artist%)/" \
-    "$if($ne(%albumartist%,),%album%/,)" \
-    "$if($gt(%totaldiscs%,1),%discnumber%-,)" \
-    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)" \
-    "$if(%_multiartist%,%artist% - ,)" \
+OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1 = (
+    "$if2(%albumartist%,%artist%)/"
+    "$if($ne(%albumartist%,),%album%/,)"
+    "$if($gt(%totaldiscs%,1),%discnumber%-,)"
+    "$if($ne(%albumartist%,),$num(%tracknumber%,2) ,)"
+    "$if(%_multiartist%,%artist% - ,)"
     "%title%"
+)
 
 
 def upgrade_to_v2_2_0dev4(config):
@@ -351,10 +357,7 @@ def upgrade_to_v2_4_0beta3(config):
 def upgrade_to_v2_5_0dev1(config):
     """Rename whitelist cover art provider"""
     _s = config.setting
-    _s['ca_providers'] = [
-        ('UrlRelationships' if n == 'Whitelist' else n, s)
-        for n, s in _s['ca_providers']
-    ]
+    _s['ca_providers'] = [('UrlRelationships' if n == 'Whitelist' else n, s) for n, s in _s['ca_providers']]
 
 
 def upgrade_to_v2_5_0dev2(config):
@@ -378,6 +381,7 @@ def upgrade_to_v2_6_0beta2(config):
 def upgrade_to_v2_6_0beta3(config):
     """Replace use_system_theme with ui_theme options"""
     from picard.ui.theme import UiTheme
+
     _s = config.setting
     if _s.value('use_system_theme', BoolOption):
         _s['ui_theme'] = str(UiTheme.SYSTEM)
@@ -385,12 +389,12 @@ def upgrade_to_v2_6_0beta3(config):
 
 
 def upgrade_to_v2_7_0dev2(config):
-    """Replace manually set persistent splitter settings with automated system.
-    """
+    """Replace manually set persistent splitter settings with automated system."""
+
     def upgrade_persisted_splitter(new_persist_key, key_map):
         _p = config.persist
         splitter_dict = {}
-        for (old_splitter_key, new_splitter_key) in key_map:
+        for old_splitter_key, new_splitter_key in key_map:
             if old_splitter_key in _p:
                 if v := _p.raw_value(old_splitter_key):
                     splitter_dict[new_splitter_key] = v
@@ -403,7 +407,7 @@ def upgrade_to_v2_7_0dev2(config):
         key_map=[
             ('bottom_splitter_state', 'main_window_bottom_splitter'),
             ('splitter_state', 'main_panel_splitter'),
-        ]
+        ],
     )
 
     # ScriptEditorDialog splitters
@@ -413,7 +417,7 @@ def upgrade_to_v2_7_0dev2(config):
             ('script_editor_splitter_samples', 'splitter_between_editor_and_examples'),
             ('script_editor_splitter_samples_before_after', 'splitter_between_before_and_after'),
             ('script_editor_splitter_documentation', 'splitter_between_editor_and_documentation'),
-        ]
+        ],
     )
 
     # OptionsDialog splitters
@@ -422,18 +426,18 @@ def upgrade_to_v2_7_0dev2(config):
         key_map=[
             ('options_splitter', 'dialog_splitter'),
             ('scripting_splitter', 'scripting_options_splitter'),
-        ]
+        ],
     )
 
 
 def upgrade_to_v2_7_0dev3(config):
-    """Save file naming scripts to dictionary.
-    """
+    """Save file naming scripts to dictionary."""
     from picard.script import get_file_naming_script_presets
     from picard.script.serializer import (
         FileNamingScriptInfo,
         ScriptSerializerFromFileError,
     )
+
     scripts = {}
     for item in config.setting.raw_value('file_naming_scripts') or []:
         try:
@@ -493,6 +497,7 @@ def upgrade_to_v2_8_0dev2(config):
 def upgrade_to_v2_9_0alpha2(config):
     """Add preset file naming scripts to editable user scripts disctionary"""
     from picard.script import get_file_naming_script_presets
+
     scripts = config.setting['file_renaming_scripts']
     for item in get_file_naming_script_presets():
         scripts[item['id']] = item.to_dict()
@@ -596,29 +601,22 @@ def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
 
     def is_upgrade_hook(f):
         """Check if passed function is an upgrade hook"""
-        return (
-            isfunction(f)
-            and f.__module__ == module_name
-            and f.__name__.startswith(prefix)
-        )
+        return isfunction(f) and f.__module__ == module_name and f.__name__.startswith(prefix)
 
     # Build a dict with version as key and function as value
     hooks = dict()
     for name, hook in getmembers(sys.modules[module_name], predicate=is_upgrade_hook):
         try:
-            version = Version.from_string(name[len(prefix):])
+            version = Version.from_string(name[len(prefix) :])
         except VersionError as e:
-            raise UpgradeHooksAutodetectError(
-                "Failed to extract version from %s()" % hook.__name__
-            ) from e
+            raise UpgradeHooksAutodetectError("Failed to extract version from %s()" % hook.__name__) from e
         if version in hooks:
             raise UpgradeHooksAutodetectError(
                 "Conflicting functions for version %s: %s vs %s" % (version, hooks[version], hook)
             )
         if version > PICARD_VERSION:
             raise UpgradeHooksAutodetectError(
-                "Upgrade hook %s has version %s > Picard version %s"
-                % (hook.__name__, version, PICARD_VERSION)
+                "Upgrade hook %s has version %s > Picard version %s" % (hook.__name__, version, PICARD_VERSION)
             )
         hooks[version] = hook
 

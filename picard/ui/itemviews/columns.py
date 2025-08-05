@@ -94,7 +94,7 @@ class IconColumn(ImageColumn):
     def set_header_icon_size(self, width, height, border):
         self.header_icon_size = QtCore.QSize(width, height)
         self.header_icon_border = border
-        self.size = QtCore.QSize(width + 2*border, height + 2*border)
+        self.size = QtCore.QSize(width + 2 * border, height + 2 * border)
         self.width = self.size.width()
 
     def paint(self, painter, rect):
@@ -105,10 +105,7 @@ class IconColumn(ImageColumn):
         w = self.header_icon_size.width()
         border = self.header_icon_border
         padding_v = (rect.height() - h) // 2
-        target_rect = QtCore.QRect(
-            rect.x() + border, rect.y() + padding_v,
-            w, h
-        )
+        target_rect = QtCore.QRect(rect.x() + border, rect.y() + padding_v, w, h)
         painter.drawPixmap(target_rect, icon.pixmap(self.header_icon_size))
 
 
@@ -117,27 +114,52 @@ _fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gra
 _fingerprint_column.set_header_icon_size(16, 16, 1)
 
 
-ITEMVIEW_COLUMNS = Columns((
-    DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, width=250, always_visible=True, status_icon=True),
-    DefaultColumn(N_("Length"), '~length', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_length, width=50),
-    DefaultColumn(N_("Artist"), 'artist', width=200),
-    Column(N_("Album Artist"), 'albumartist'),
-    Column(N_("Composer"), 'composer'),
-    Column(N_("Album"), 'album', sort_type=ColumnSortType.NAT),
-    Column(N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT),
-    Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
-    Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
-    Column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT),
-    Column(N_("Barcode"), 'barcode'),
-    Column(N_("Media"), 'media'),
-    Column(N_("Size"), '~filesize', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_filesize),
-    Column(N_("File Type"), '~format', width=120),
-    Column(N_("Bitrate"), '~bitrate', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=_sortkey_bitrate, width=80),
-    Column(N_("Genre"), 'genre'),
-    _fingerprint_column,
-    Column(N_("Date"), 'date'),
-    Column(N_("Original Release Date"), 'originaldate'),
-    Column(N_("Release Date"), 'releasedate'),
-    Column(N_("Cover"), 'covercount'),
-    Column(N_("Cover Dimensions"), 'coverdimensions')
-), default_width=100)
+ITEMVIEW_COLUMNS = Columns(
+    (
+        DefaultColumn(
+            N_("Title"), 'title', sort_type=ColumnSortType.NAT, width=250, always_visible=True, status_icon=True
+        ),
+        DefaultColumn(
+            N_("Length"),
+            '~length',
+            align=ColumnAlign.RIGHT,
+            sort_type=ColumnSortType.SORTKEY,
+            sortkey=_sortkey_length,
+            width=50,
+        ),
+        DefaultColumn(N_("Artist"), 'artist', width=200),
+        Column(N_("Album Artist"), 'albumartist'),
+        Column(N_("Composer"), 'composer'),
+        Column(N_("Album"), 'album', sort_type=ColumnSortType.NAT),
+        Column(N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT),
+        Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
+        Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
+        Column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT),
+        Column(N_("Barcode"), 'barcode'),
+        Column(N_("Media"), 'media'),
+        Column(
+            N_("Size"),
+            '~filesize',
+            align=ColumnAlign.RIGHT,
+            sort_type=ColumnSortType.SORTKEY,
+            sortkey=_sortkey_filesize,
+        ),
+        Column(N_("File Type"), '~format', width=120),
+        Column(
+            N_("Bitrate"),
+            '~bitrate',
+            align=ColumnAlign.RIGHT,
+            sort_type=ColumnSortType.SORTKEY,
+            sortkey=_sortkey_bitrate,
+            width=80,
+        ),
+        Column(N_("Genre"), 'genre'),
+        _fingerprint_column,
+        Column(N_("Date"), 'date'),
+        Column(N_("Original Release Date"), 'originaldate'),
+        Column(N_("Release Date"), 'releasedate'),
+        Column(N_("Cover"), 'covercount'),
+        Column(N_("Cover Dimensions"), 'coverdimensions'),
+    ),
+    default_width=100,
+)

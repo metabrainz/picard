@@ -141,7 +141,6 @@ class TableTagEditorDelegate(TagEditorDelegate):
 
 
 class MetadataBox(QtWidgets.QTableWidget):
-
     MIMETYPE_PICARD_TAGS = "application/vdr.picard"
     MIMETYPE_TSV = 'text/tab-separated-values'
     MIMETYPE_TEXT = 'text/plain'
@@ -203,9 +202,13 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.add_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+A")), self, partial(self._edit_tag, ""))
         self.add_tag_action.setShortcut(self.add_tag_shortcut.key())
         # TR: Keyboard shortcut for "Edit…" (tag)
-        self.edit_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self._edit_selected_tag))
+        self.edit_tag_shortcut = QtGui.QShortcut(
+            QtGui.QKeySequence(_("Alt+Shift+E")), self, partial(self._edit_selected_tag)
+        )
         # TR: Keyboard shortcut for "Remove" (tag)
-        self.remove_tag_shortcut = QtGui.QShortcut(QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags)
+        self.remove_tag_shortcut = QtGui.QShortcut(
+            QtGui.QKeySequence(_("Alt+Shift+R")), self, self.remove_selected_tags
+        )
         self.preserved_tags = UserPreservedTags()
         self._single_file_album = False
         self._single_track_album = False
@@ -238,8 +241,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             "rename_files",
             "selected_file_naming_script_id",
             "standardize_artists",
-            "user_profile_settings"
-            "user_profiles",
+            "user_profile_settingsuser_profiles",
             "va_name",
             "windows_compatibility",
         }
@@ -249,9 +251,9 @@ class MetadataBox(QtWidgets.QTableWidget):
     def _get_file_lookup(self):
         """Return a FileLookup object."""
         config = get_config()
-        return FileLookup(self, config.setting['server_host'],
-                          config.setting['server_port'],
-                          self.tagger.browser_integration.port)
+        return FileLookup(
+            self, config.setting['server_host'], config.setting['server_port'], self.tagger.browser_integration.port
+        )
 
     def _lookup_tag(self, tag):
         lookup = self._get_file_lookup()
@@ -266,10 +268,11 @@ class MetadataBox(QtWidgets.QTableWidget):
         if index.column() != self.COLUMN_NEW:
             return False
         item = self.itemFromIndex(index)
-        if item.flags() & QtCore.Qt.ItemFlag.ItemIsEditable and \
-           trigger in {QtWidgets.QAbstractItemView.EditTrigger.DoubleClicked,
-                       QtWidgets.QAbstractItemView.EditTrigger.EditKeyPressed,
-                       QtWidgets.QAbstractItemView.EditTrigger.AnyKeyPressed}:
+        if item.flags() & QtCore.Qt.ItemFlag.ItemIsEditable and trigger in {
+            QtWidgets.QAbstractItemView.EditTrigger.DoubleClicked,
+            QtWidgets.QAbstractItemView.EditTrigger.EditKeyPressed,
+            QtWidgets.QAbstractItemView.EditTrigger.AnyKeyPressed,
+        }:
             tag = self.tag_diff.tag_names[item.row()]
             values = self.tag_diff.new[tag]
             if len(values) > 1:
@@ -299,7 +302,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 old=value[self.COLUMN_ORIG] if col == self.COLUMN_ORIG else None,
                 new=value[self.COLUMN_NEW] if col == self.COLUMN_NEW else None,
                 removable=self.tag_diff.status[tag] != TagStatus.NOTREMOVABLE,
-                readonly=self.tag_diff.status[tag] == TagStatus.READONLY
+                readonly=self.tag_diff.status[tag] == TagStatus.READONLY,
             )
 
         result.update_tag_names()
@@ -380,7 +383,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _paste_from_text(self, mimedata):
         item = self.currentItem()
-        column_is_editable = (item.column() == self.COLUMN_NEW)
+        column_is_editable = item.column() == self.COLUMN_NEW
         tag = self.tag_diff.tag_names[item.row()]
         value = mimedata.text()
         if column_is_editable and self._tag_is_editable(tag) and value:
@@ -472,9 +475,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         # Add actions for files and their parent tracks/albums
         for file in self.files:
-            self._process_file_for_orig_actions(
-                file, tag, useorigs, mergeorigs, file_tracks, track_albums
-            )
+            self._process_file_for_orig_actions(file, tag, useorigs, mergeorigs, file_tracks, track_albums)
 
         # Add actions for tracks not already handled
         for track in set(self.tracks) - set(file_tracks):
@@ -659,8 +660,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         return self.tag_diff.status[tag] & TagStatus.READONLY == 0
 
     def _selected_tags(self, filter_func=None):
-        for tag in set(self.tag_diff.tag_names[item.row()]
-                       for item in self.selectedItems()):
+        for tag in set(self.tag_diff.tag_names[item.row()] for item in self.selectedItems()):
             if filter_func is None or filter_func(tag):
                 yield tag
 
@@ -703,8 +703,11 @@ class MetadataBox(QtWidgets.QTableWidget):
             return
         if new_selection:
             self._update_selection()
-        thread.run_task(partial(self._update_tags, new_selection, drop_album_caches), self._update_items,
-            thread_pool=self.tagger.priority_thread_pool)
+        thread.run_task(
+            partial(self._update_tags, new_selection, drop_album_caches),
+            self._update_items,
+            thread_pool=self.tagger.priority_thread_pool,
+        )
 
     def _update_tags(self, new_selection=True, drop_album_caches=False):
         """
@@ -726,12 +729,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
         # If selection didn't change and not a single file/track/album, skip update
         if not new_selection:
-            if not (
-                len(files) == 1
-                or len(tracks) == 1
-                or self._single_file_album
-                or self._single_track_album
-            ):
+            if not (len(files) == 1 or len(tracks) == 1 or self._single_file_album or self._single_track_album):
                 return self.tag_diff
 
         config = get_config()
@@ -771,8 +769,7 @@ class MetadataBox(QtWidgets.QTableWidget):
                 tag_diff.add(tag, old=orig_values, new=new_values, removed=removed, top_tags=top_tags_set)
 
             # Always add length tag
-            tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length),
-                         removable=False, readonly=True)
+            tag_diff.add('~length', str(orig_metadata.length), str(new_metadata.length), removable=False, readonly=True)
             # Add filepath tag if only one file
             if len(files) == 1:
                 if settings['rename_files'] or settings['move_files']:
@@ -819,7 +816,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             TagStatus.UNCHANGED: self.palette().color(QtGui.QPalette.ColorRole.Text),
             TagStatus.REMOVED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_removed')),
             TagStatus.ADDED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_added')),
-            TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed'))
+            TagStatus.CHANGED: QtGui.QBrush(interface_colors.get_qcolor('tagstatus_changed')),
         }
 
         def get_table_item(row, column):

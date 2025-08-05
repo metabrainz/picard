@@ -103,6 +103,7 @@ def _upgrade_hook_future_9999(config):
 
 # WARNING: order of _upgrade_hook_sort_*() functions is important for tests
 
+
 def _upgrade_hook_sort_2(config):
     pass
 
@@ -116,7 +117,6 @@ def _upgrade_hook_sort_2_0_0dev1(config):
 
 
 class TestPicardConfigUpgradesAutodetect(PicardTestCase):
-
     def test_upgrade_hook_autodetect_ok(self):
         hooks = autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_ok_')
         expected_version = Version(major=1, minor=2, patch=3, identifier='dev', revision=1)
@@ -126,22 +126,18 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
 
     def test_upgrade_hook_autodetect_not_ok(self):
         with self.assertRaisesRegex(
-            UpgradeHooksAutodetectError,
-            r'^Failed to extract version from _upgrade_hook_not_ok_xxx'
+            UpgradeHooksAutodetectError, r'^Failed to extract version from _upgrade_hook_not_ok_xxx'
         ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_not_ok_')
 
     def test_upgrade_hook_autodetect_tricky(self):
-        with self.assertRaisesRegex(
-            UpgradeHooksAutodetectError,
-            r"^Conflicting functions for version 1\.2\.3\.alpha1"
-        ):
+        with self.assertRaisesRegex(UpgradeHooksAutodetectError, r"^Conflicting functions for version 1\.2\.3\.alpha1"):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_tricky_')
 
     def test_upgrade_hook_autodetect_future(self):
         with self.assertRaisesRegex(
             UpgradeHooksAutodetectError,
-            r"^Upgrade hook _upgrade_hook_future_9999 has version 9999\.0\.0\.final0 > Picard version"
+            r"^Upgrade hook _upgrade_hook_future_9999 has version 9999\.0\.0\.final0 > Picard version",
         ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_future_')
 
@@ -156,7 +152,6 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
-
     def test_upgrade_to_v1_0_0final0_A(self):
         TextOption('setting', 'file_naming_format', '')
 
@@ -280,7 +275,9 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('tagger_script', self.config.setting)
 
         self.assertTrue(self.config.setting['enable_tagger_scripts'])
-        self.assertEqual([(0, unique_numbered_title(DEFAULT_SCRIPT_NAME, []), True, 'abc')], self.config.setting['list_of_scripts'])
+        self.assertEqual(
+            [(0, unique_numbered_title(DEFAULT_SCRIPT_NAME, []), True, 'abc')], self.config.setting['list_of_scripts']
+        )
 
     def test_upgrade_to_v1_4_0dev7(self):
         BoolOption('setting', 'embed_only_one_front_image', False)
@@ -499,17 +496,20 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         # New settings
         ListOption('setting', 'script_exceptions', [])
         upgrade_to_v2_7_0dev5(self.config)
-        self.assertEqual(self.config.setting['script_exceptions'], [
-            ('LATIN', 20),
-            ('HEBREW', 20),
-        ])
+        self.assertEqual(
+            self.config.setting['script_exceptions'],
+            [
+                ('LATIN', 20),
+                ('HEBREW', 20),
+            ],
+        )
 
     def test_upgrade_to_v2_8_0dev2(self):
         ListOption('setting', 'toolbar_layout', [])
         self.config.setting['toolbar_layout'] = [
             'add_directory_action',
             'extract_and_submit_acousticbrainz_features_action',
-            'save_action'
+            'save_action',
         ]
         expected = ['add_directory_action', 'save_action']
         upgrade_to_v2_8_0dev2(self.config)

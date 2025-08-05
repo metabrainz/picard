@@ -44,7 +44,6 @@ from picard.util.imagelist import ImageList
 
 
 class Item:
-
     def __init__(self):
         self.ui_item = None
 
@@ -165,11 +164,12 @@ class Item:
 
         number_of_images = len(self._images)
         if getattr(self, 'has_common_images', True):
-            return ngettext("%i image", "%i images",
-                            number_of_images) % number_of_images
+            return ngettext("%i image", "%i images", number_of_images) % number_of_images
         else:
-            return ngettext("%i image not in all tracks", "%i different images among tracks",
-                            number_of_images) % number_of_images
+            return (
+                ngettext("%i image not in all tracks", "%i different images among tracks", number_of_images)
+                % number_of_images
+            )
 
     def cover_art_dimensions(self):
         front_image = self.metadata.images.get_front_image()
@@ -218,6 +218,7 @@ class MetadataItem(QtCore.QObject, Item):
         # We used to set tagger property in subclasses, but that's not needed anymore
         assert value == QtCore.QCoreApplication.instance()
         import inspect
+
         stack = inspect.stack()
         f = stack[1]
         log.warning("MetadataItem.tagger property set at %s:%d in %s", f.filename, f.lineno, f.function)
@@ -342,6 +343,7 @@ class ListOfMetadataItems(UserList):
     """
     UserList with length attribute equals to the sum of items metadata lengths.
     """
+
     def __init__(self, initlist=None):
         self._dirty = True
         super().__init__(initlist)
@@ -401,7 +403,6 @@ class ListOfMetadataItems(UserList):
 
 
 class FileListItem(MetadataItem):
-
     def __init__(self, obj_id=None, files=None):
         super().__init__(obj_id)
         self.files = ListOfMetadataItems(files or [])

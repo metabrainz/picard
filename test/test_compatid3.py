@@ -32,7 +32,6 @@ from picard.formats.mutagenext import compatid3
 
 
 class UpdateToV23Test(PicardTestCase):
-
     def test_keep_some_v24_tag(self):
         tags = compatid3.CompatID3()
         tags.add(id3.TSOP(encoding=Id3Encoding.LATIN1, text=["foo"]))

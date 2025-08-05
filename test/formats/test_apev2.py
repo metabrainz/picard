@@ -78,7 +78,6 @@ SUPPORTED_TAGS = set(TAGS) - apev2.UNSUPPORTED_TAGS
 
 
 class CommonApeTests:
-
     class ApeTestCase(CommonTests.TagFormatsTestCase):
         def setup_tags(self):
             super().setup_tags()
@@ -94,9 +93,7 @@ class CommonApeTests:
 
         @skipUnlessTestfile
         def test_invalid_coverart(self):
-            metadata = {
-                'Cover Art (Front)': APEValue(b'filename.png\0NOTPNGDATA', BINARY)
-            }
+            metadata = {'Cover Art (Front)': APEValue(b'filename.png\0NOTPNGDATA', BINARY)}
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
@@ -104,12 +101,15 @@ class CommonApeTests:
         @skipUnlessTestfile
         def test_clear_tags_preserve_images_all(self):
             imagedata = APEValue(b'filename.png\0' + create_fake_png(b'a'), BINARY)
-            save_raw(self.filename, {
-                'Cover Art (Front)': imagedata,
-                'Cover Art': imagedata,
-                'Cover Art (foo)': imagedata,
-                'cover art (bar)': imagedata,
-            })
+            save_raw(
+                self.filename,
+                {
+                    'Cover Art (Front)': imagedata,
+                    'Cover Art': imagedata,
+                    'Cover Art (foo)': imagedata,
+                    'cover art (bar)': imagedata,
+                },
+            )
             config.setting['clear_existing_tags'] = True
             config.setting['preserve_images'] = True
             metadata = save_and_load_metadata(self.filename, Metadata())
@@ -144,17 +144,13 @@ class CommonApeTests:
                 save_metadata(self.filename, loaded_metadata)
                 raw_metadata = dict(load_raw(self.filename))
                 self.assertIn(name, raw_metadata)
-                self.assertEqual(
-                    raw_metadata[name],
-                    loaded_metadata[name.lower()])
+                self.assertEqual(raw_metadata[name], loaded_metadata[name.lower()])
                 self.assertEqual(1, len(raw_metadata[name]))
                 self.assertNotIn(name.upper(), raw_metadata)
 
         def _read_case_insensitive_tag(self, name, ape_name):
             upper_ape_name = ape_name.upper()
-            metadata = {
-                upper_ape_name: 'Some value'
-            }
+            metadata = {upper_ape_name: 'Some value'}
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(metadata[upper_ape_name], loaded_metadata[name])

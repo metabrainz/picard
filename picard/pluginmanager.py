@@ -143,7 +143,7 @@ def load_zip_manifest(archive_path):
 
 
 def zip_import(path):
-    if (not is_zip(path) or not os.path.isfile(path)):
+    if not is_zip(path) or not os.path.isfile(path):
         return None
     try:
         return zipimport.zipimporter(path)
@@ -197,7 +197,6 @@ def plugin_dir_for_path(path):
 
 
 class PluginManager(QtCore.QObject):
-
     plugin_installed = QtCore.pyqtSignal(PluginWrapper, bool)
     plugin_updated = QtCore.pyqtSignal(str, bool)
     plugin_removed = QtCore.pyqtSignal(str, bool)
@@ -269,9 +268,7 @@ class PluginManager(QtCore.QObject):
             name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
-        log.debug("Looking for plugins in directory %r, %d names found",
-                  plugindir,
-                  len(names))
+        log.debug("Looking for plugins in directory %r, %d names found", plugindir, len(names))
         for name in sorted(names):
             try:
                 self._load_plugin(name)
@@ -287,10 +284,12 @@ class PluginManager(QtCore.QObject):
     def _load_plugin(self, name):
         existing_plugin, existing_plugin_index = self._get_plugin_index_by_name(name)
         if existing_plugin:
-            log.debug("Ignoring already loaded plugin %r (version %r at %r)",
+            log.debug(
+                "Ignoring already loaded plugin %r (version %r at %r)",
                 existing_plugin.module_name,
                 existing_plugin.version,
-                existing_plugin.file)
+                existing_plugin.file,
+            )
             return
 
         spec = None
@@ -303,9 +302,13 @@ class PluginManager(QtCore.QObject):
         spec = PluginMetaPathFinder().find_spec(full_module_name, [])
         if not spec or not spec.loader:
             errorfmt = _('Failed loading plugin "%(plugin)s"')
-            self.plugin_error(name, errorfmt, params={
-                'plugin': name,
-            })
+            self.plugin_error(
+                name,
+                errorfmt,
+                params={
+                    'plugin': name,
+                },
+            )
             return None
 
         module_pathname = spec.origin
@@ -333,15 +336,15 @@ class PluginManager(QtCore.QObject):
                     del sys.modules[full_module_name]
                     raise
 
-            plugin = PluginWrapper(plugin_module, plugin_dir,
-                                   file=module_pathname, manifest_data=manifest_data)
+            plugin = PluginWrapper(plugin_module, plugin_dir, file=module_pathname, manifest_data=manifest_data)
             compatible_versions = _compatible_api_versions(plugin.api_versions)
             if compatible_versions:
-                log.debug("Loading plugin %r version %s, compatible with API: %s",
-                          plugin.name,
-                          plugin.version,
-                          ", ".join([v.short_str() for v in
-                                     sorted(compatible_versions)]))
+                log.debug(
+                    "Loading plugin %r version %s, compatible with API: %s",
+                    plugin.name,
+                    plugin.version,
+                    ", ".join([v.short_str() for v in sorted(compatible_versions)]),
+                )
                 plugin.compatible = True
                 setattr(picard.plugins, name, plugin_module)
                 if existing_plugin:
@@ -349,20 +352,22 @@ class PluginManager(QtCore.QObject):
                 else:
                     self.plugins.append(plugin)
             else:
-                errorfmt = _('Plugin "%(plugin)s" from "%(filename)s" is not '
-                             'compatible with this version of Picard.')
+                errorfmt = _('Plugin "%(plugin)s" from "%(filename)s" is not compatible with this version of Picard.')
                 params = {'plugin': plugin.name, 'filename': plugin.file}
                 self.plugin_error(plugin.name, errorfmt, params=params, log_func=log.warning)
         except VersionError as e:
             errorfmt = _('Plugin "%(plugin)s" has an invalid API version string: %(error)s')
-            self.plugin_error(name, errorfmt, params={
-                'plugin': name,
-                'error': e,
-            })
+            self.plugin_error(
+                name,
+                errorfmt,
+                params={
+                    'plugin': name,
+                    'error': e,
+                },
+            )
         except BaseException:
             errorfmt = _('Plugin "%(plugin)s"')
-            self.plugin_error(name, errorfmt, log_func=log.exception,
-                              params={'plugin': name})
+            self.plugin_error(name, errorfmt, log_func=log.exception, params={'plugin': name})
         return plugin
 
     def _get_existing_paths(self, plugin_name, fileexts):
@@ -370,10 +375,9 @@ class PluginManager(QtCore.QObject):
         if not os.path.isdir(dirpath):
             dirpath = None
         filenames = {plugin_name + ext for ext in fileexts}
-        filepaths = [os.path.join(self.plugins_directory, f)
-                     for f in os.listdir(self.plugins_directory)
-                     if f in filenames
-                     ]
+        filepaths = [
+            os.path.join(self.plugins_directory, f) for f in os.listdir(self.plugins_directory) if f in filenames
+        ]
         return (dirpath, filepaths)
 
     def _remove_plugin_files(self, plugin_name, with_update=False):
@@ -446,10 +450,10 @@ class PluginManager(QtCore.QObject):
 
     def install_plugin(self, path, update=False, plugin_name=None, plugin_data=None):
         """
-            path is either:
-                1) /some/dir/name.py
-                2) /some/dir/name (directory containing __init__.py)
-                3) /some/dir/name.zip (containing either 1 or 2)
+        path is either:
+            1) /some/dir/name.py
+            2) /some/dir/name (directory containing __init__.py)
+            3) /some/dir/name.zip (containing either 1 or 2)
 
         """
         assert path or plugin_name, "path is required if plugin_name is empty"
@@ -495,16 +499,16 @@ class PluginManager(QtCore.QObject):
     def _plugins_json_loaded(self, response, reply, error, callback=None):
         if error:
             self.tagger.window.set_statusbar_message(
-                N_("Error loading plugins list: %(error)s"),
-                {'error': reply.errorString()},
-                echo=log.error
+                N_("Error loading plugins list: %(error)s"), {'error': reply.errorString()}, echo=log.error
             )
             self._available_plugins = []
         else:
             try:
-                self._available_plugins = [PluginData(data, key) for key, data in
-                                           response['plugins'].items()
-                                           if _compatible_api_versions(data['api_versions'])]
+                self._available_plugins = [
+                    PluginData(data, key)
+                    for key, data in response['plugins'].items()
+                    if _compatible_api_versions(data['api_versions'])
+                ]
             except (AttributeError, KeyError, TypeError):
                 self._available_plugins = []
         if callback:
@@ -541,7 +545,7 @@ class PluginMetaPathFinder(MetaPathFinder):
     def find_spec(self, fullname, path, target=None):
         if not fullname.startswith(PLUGIN_MODULE_PREFIX):
             return None
-        plugin_name = fullname[len(PLUGIN_MODULE_PREFIX):]
+        plugin_name = fullname[len(PLUGIN_MODULE_PREFIX) :]
         for plugin_dir in plugin_dirs():
             for file_path in self._plugin_file_paths(plugin_dir, plugin_name):
                 if os.path.exists(file_path):

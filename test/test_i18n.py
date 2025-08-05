@@ -49,7 +49,6 @@ localedir = os.path.join(os.path.dirname(__file__), '..', 'locale')
 
 
 class TestI18n(PicardTestCase):
-
     def test_missing_locales(self):
         tmplocaledir = tempfile.mkdtemp()
 
@@ -69,8 +68,10 @@ class TestI18n(PicardTestCase):
         self.assertEqual('French', gettext_constants('French'))
         self.assertEqual('France', gettext_countries('France'))
 
-    @unittest.skipUnless(os.path.exists(os.path.join(localedir, 'de')),
-        'Test requires locales to be built with "python setup.py build_locales"')
+    @unittest.skipUnless(
+        os.path.exists(os.path.join(localedir, 'de')),
+        'Test requires locales to be built with "python setup.py build_locales"',
+    )
     def test_existing_locales(self):
         locale_de = os.path.join(localedir, 'de', 'LC_MESSAGES', 'picard.mo')
         self.assertTrue(os.path.exists(locale_de), 'expected file %s' % locale_de)
@@ -108,14 +109,8 @@ class TestI18n(PicardTestCase):
     def test_sort_key_numbers_different_scripts(self):
         setup_gettext(localedir, 'en')
         for four in ('4', '𝟜', '٤', '๔'):
-            self.assertLess(
-                sort_key('3', numeric=True), sort_key(four, numeric=True),
-                msg=f'3 < {four}'
-            )
-            self.assertLess(
-                sort_key(four, numeric=True), sort_key('5', numeric=True),
-                msg=f'{four} < 5'
-            )
+            self.assertLess(sort_key('3', numeric=True), sort_key(four, numeric=True), msg=f'3 < {four}')
+            self.assertLess(sort_key(four, numeric=True), sort_key('5', numeric=True), msg=f'{four} < 5')
 
 
 @patch('locale.getpreferredencoding', autospec=True)

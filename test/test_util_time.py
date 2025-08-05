@@ -30,7 +30,6 @@ from picard.util.time import (
 
 
 class UtilTimeTest(PicardTestCase):
-
     def test_seconds_to_dhms(self):
         self.assertTupleEqual(seconds_to_dhms(0), (0, 0, 0, 0))
         self.assertTupleEqual(seconds_to_dhms(1), (0, 0, 0, 1))

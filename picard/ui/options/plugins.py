@@ -72,9 +72,7 @@ COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
 
 
 class PluginActionButton(QtWidgets.QToolButton):
-
-    def __init__(self, icon=None, tooltip=None, retain_space=False,
-                 switch_method=None, parent=None):
+    def __init__(self, icon=None, tooltip=None, retain_space=False, switch_method=None, parent=None):
         super().__init__(parent=parent)
         if tooltip is not None:
             self.setToolTip(tooltip)
@@ -101,7 +99,6 @@ class PluginActionButton(QtWidgets.QToolButton):
 
 
 class PluginTreeWidgetItem(HashableTreeWidgetItem):
-
     def __init__(self, icons, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._icons = icons
@@ -133,8 +130,7 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
         add_button('enable', self.show_enable)
         add_button('install', self.show_install)
 
-        self.treeWidget().setItemWidget(self, COLUMN_ACTIONS,
-                                        self.buttons_widget)
+        self.treeWidget().setItemWidget(self, COLUMN_ACTIONS, self.buttons_widget)
 
     def show_install(self, button, mode):
         if mode == 'hide':
@@ -220,7 +216,6 @@ class PluginTreeWidgetItem(HashableTreeWidgetItem):
 
 
 class PluginsOptionsPage(OptionsPage):
-
     NAME = 'plugins'
     TITLE = N_("Plugins")
     PARENT = None
@@ -320,10 +315,8 @@ class PluginsOptionsPage(OptionsPage):
 
     def installable_plugins(self):
         if self.manager.available_plugins is not None:
-            installed_plugins = [plugin.module_name for plugin in
-                                 self.installed_plugins()]
-            for plugin in sorted(self.manager.available_plugins,
-                                 key=attrgetter('name')):
+            installed_plugins = [plugin.module_name for plugin in self.installed_plugins()]
+            for plugin in sorted(self.manager.available_plugins, key=attrgetter('name')):
                 if plugin.module_name not in installed_plugins:
                     yield plugin
 
@@ -350,15 +343,12 @@ class PluginsOptionsPage(OptionsPage):
                 latest = available_plugins[plugin.module_name]
                 if latest > plugin.version:
                     new_version = latest
-            self.update_plugin_item(None, plugin,
-                                    enabled=self.is_plugin_enabled(plugin),
-                                    new_version=new_version,
-                                    is_installed=True
-                                    )
+            self.update_plugin_item(
+                None, plugin, enabled=self.is_plugin_enabled(plugin), new_version=new_version, is_installed=True
+            )
 
         for plugin in self.installable_plugins():
-            self.update_plugin_item(None, plugin, enabled=False,
-                                    is_installed=False)
+            self.update_plugin_item(None, plugin, enabled=False, is_installed=False)
 
         self.ui.plugins.setSortingEnabled(True)
         self._user_interaction(True)
@@ -421,10 +411,12 @@ class PluginsOptionsPage(OptionsPage):
         QtWidgets.QMessageBox.critical(
             self,
             _('Plugin "%(plugin)s"') % {'plugin': plugin_name},
-            _('An error occurred while loading the plugin "%(plugin)s":\n\n%(error)s') % {
+            _('An error occurred while loading the plugin "%(plugin)s":\n\n%(error)s')
+            % {
                 'plugin': plugin_name,
                 'error': error,
-            })
+            },
+        )
 
     def plugin_installed(self, plugin):
         log.debug("Plugin %r installed", plugin.name)
@@ -433,13 +425,12 @@ class PluginsOptionsPage(OptionsPage):
             QtWidgets.QMessageBox.warning(
                 self,
                 _('Plugin "%(plugin)s"') % params,
-                _('The plugin "%(plugin)s" is not compatible with this version of Picard.') % params
+                _('The plugin "%(plugin)s" is not compatible with this version of Picard.') % params,
             )
             return
         item = self.find_item_by_plugin_name(plugin.module_name)
         if item:
-            self.update_plugin_item(item, plugin, make_current=True,
-                                    enabled=True, is_installed=True)
+            self.update_plugin_item(item, plugin, make_current=True, enabled=True, is_installed=True)
         else:
             self._reload()
             item = self.find_item_by_plugin_name(plugin.module_name)
@@ -454,10 +445,12 @@ class PluginsOptionsPage(OptionsPage):
             QtWidgets.QMessageBox.information(
                 self,
                 _('Plugin "%(plugin)s"') % {'plugin': plugin_name},
-                _('The plugin "%(plugin)s" will be upgraded to version %(version)s on next run of Picard.') % {
+                _('The plugin "%(plugin)s" will be upgraded to version %(version)s on next run of Picard.')
+                % {
                     'plugin': plugin.name,
                     'version': item.new_version.short_str(),
-                })
+                },
+            )
 
             item.upgrade_to_version = item.new_version
             self.update_plugin_item(item, plugin, make_current=True)
@@ -467,8 +460,7 @@ class PluginsOptionsPage(OptionsPage):
         item = self.find_item_by_plugin_name(plugin_name)
         if item:
             if self.manager.is_available(plugin_name):
-                self.update_plugin_item(item, None, make_current=True,
-                                        is_installed=False)
+                self.update_plugin_item(item, None, make_current=True, is_installed=False)
             else:  # Remove local plugin
                 self.ui.plugins.invisibleRootItem().removeChild(item)
 
@@ -480,17 +472,12 @@ class PluginsOptionsPage(OptionsPage):
             _('Uninstall plugin "%(plugin)s"?') % params,
             _('Do you really want to uninstall the plugin "%(plugin)s"?') % params,
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.No
+            QtWidgets.QMessageBox.StandardButton.No,
         )
         if buttonReply == QtWidgets.QMessageBox.StandardButton.Yes:
             self.manager.remove_plugin(plugin.module_name, with_update=True)
 
-    def update_plugin_item(self, item, plugin,
-                           make_current=False,
-                           enabled=None,
-                           new_version=None,
-                           is_installed=None
-                           ):
+    def update_plugin_item(self, item, plugin, make_current=False, enabled=None, new_version=None, is_installed=None):
         if item is None:
             item = PluginTreeWidgetItem(self.icons, self.ui.plugins)
         if plugin is not None:
@@ -506,8 +493,7 @@ class PluginsOptionsPage(OptionsPage):
 
         def update_text():
             if item.new_version is not None:
-                version = "%s → %s" % (plugin.version.short_str(),
-                                       item.new_version.short_str())
+                version = "%s → %s" % (plugin.version.short_str(), item.new_version.short_str())
             else:
                 version = plugin.version.short_str()
 
@@ -547,6 +533,7 @@ class PluginsOptionsPage(OptionsPage):
 
         if install_enabled:
             if item.new_version is not None:
+
                 def download_and_update():
                     self.download_plugin(item, update=True)
 
@@ -554,6 +541,7 @@ class PluginsOptionsPage(OptionsPage):
                 item.buttons['install'].mode('hide')
                 item.buttons['update'].mode('show')
             else:
+
                 def download_and_install():
                     self.download_plugin(item)
 
@@ -563,8 +551,7 @@ class PluginsOptionsPage(OptionsPage):
 
         if item.is_installed:
             item.buttons['install'].mode('hide')
-            item.buttons['uninstall'].mode(
-                'show' if plugin.is_user_installed else 'hide')
+            item.buttons['uninstall'].mode('show' if plugin.is_user_installed else 'hide')
             item.enable(enabled, greyout=False)
 
             def uninstall_processor():
@@ -596,6 +583,7 @@ class PluginsOptionsPage(OptionsPage):
                 return int(elem)
             except ValueError:
                 return 0
+
         item.setSortData(COLUMN_VERSION, plugin.version)
 
         return item
@@ -649,9 +637,7 @@ class PluginsOptionsPage(OptionsPage):
     @staticmethod
     def link_user_guide(user_guide):
         if user_guide:
-            user_guide = '<a href="{url}">{url}</a>'.format(
-                url=escape(user_guide)
-            )
+            user_guide = '<a href="{url}">{url}</a>'.format(url=escape(user_guide))
         return user_guide
 
     def change_details(self):

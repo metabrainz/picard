@@ -76,7 +76,6 @@ class ArtworkRow:
 
 
 class InfoDialog(PicardDialog):
-
     def __init__(self, obj, parent=None):
         super().__init__(parent=parent)
         self.obj = obj
@@ -105,7 +104,8 @@ class InfoDialog(PicardDialog):
 
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(
-            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
+        )
         self.ui.buttonBox.accepted.connect(self.accept)
 
         # Add the ArtworkTable to the ui
@@ -133,8 +133,7 @@ class InfoDialog(PicardDialog):
     def _show_errors(self, errors):
         if errors:
             color = interface_colors.get_color('log_error')
-            text = '<br />'.join(map(
-                lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
+            text = '<br />'.join(map(lambda s: '<font color="%s">%s</font>' % (color, text_as_html(s)), errors))
             self.ui.error.setText(text + '<hr />')
 
     def _artwork_infos(self, image):
@@ -150,9 +149,11 @@ class InfoDialog(PicardDialog):
 
     def _artwork_tooltip(self, message, image):
         """Format rich-text tooltip text"""
-        fmt = _("<strong>%(message)s</strong><br />"
-                "Temporary file: <em>%(tempfile)s</em><br />"
-                "Source: <em>%(sourcefile)s</em>")
+        fmt = _(
+            "<strong>%(message)s</strong><br />"
+            "Temporary file: <em>%(tempfile)s</em><br />"
+            "Source: <em>%(sourcefile)s</em>"
+        )
         return fmt % {
             'message': message,
             'tempfile': escape(image.tempfile_filename),

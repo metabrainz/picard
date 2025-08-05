@@ -31,7 +31,6 @@ from picard.util.versions import (
 
 
 class UtilVersionsTest(TestCase):
-
     def test_version_name(self):
         self.assertEqual(version_name('version'), 'Picard')
         self.assertEqual(version_name('python-version'), 'Python')

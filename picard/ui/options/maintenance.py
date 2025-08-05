@@ -69,7 +69,6 @@ def _safe_autobackup_dir(path):
 
 
 class MaintenanceOptionsPage(OptionsPage):
-
     NAME = 'maintenance'
     TITLE = N_("Maintenance")
     PARENT = 'advanced'
@@ -77,9 +76,7 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
-    OPTIONS = (
-        ('autobackup_directory', ['autobackup_dir']),
-    )
+    OPTIONS = (('autobackup_directory', ['autobackup_dir']),)
 
     signal_reload = QtCore.pyqtSignal()
 
@@ -87,20 +84,22 @@ class MaintenanceOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_MaintenanceOptionsPage()
         self.ui.setupUi(self)
-        self.ui.description.setText(_(
-            "Settings that are found in the configuration file that do not appear on any option "
-            "settings page are listed below. If your configuration file does not contain any "
-            "unused option settings, then the list will be empty and the removal checkbox will be "
-            "disabled.\n\n"
-            "Note that unused option settings could come from plugins that have been uninstalled, "
-            "so please be careful to not remove settings that you may want to use later when "
-            "the plugin is reinstalled. Options belonging to plugins that are installed but "
-            "currently disabled are not listed for possible removal.\n\n"
-            "To remove one or more settings, select the settings that you want to remove by "
-            "checking the box next to the setting, and enable the removal by checking the \"Remove "
-            "selected options\" box. When you choose \"Make It So!\" to save your option "
-            "settings, the selected items will be removed."
-        ))
+        self.ui.description.setText(
+            _(
+                "Settings that are found in the configuration file that do not appear on any option "
+                "settings page are listed below. If your configuration file does not contain any "
+                "unused option settings, then the list will be empty and the removal checkbox will be "
+                "disabled.\n\n"
+                "Note that unused option settings could come from plugins that have been uninstalled, "
+                "so please be careful to not remove settings that you may want to use later when "
+                "the plugin is reinstalled. Options belonging to plugins that are installed but "
+                "currently disabled are not listed for possible removal.\n\n"
+                "To remove one or more settings, select the settings that you want to remove by "
+                "checking the box next to the setting, and enable the removal by checking the \"Remove "
+                "selected options\" box. When you choose \"Make It So!\" to save your option "
+                "settings, the selected items will be removed."
+            )
+        )
         self.ui.tableWidget.setHorizontalHeaderLabels([_("Option"), _("Value")])
         self.ui.select_all.stateChanged.connect(self.select_all_changed)
         self.ui.open_folder_button.clicked.connect(self.open_config_dir)
@@ -136,8 +135,7 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Critical,
             _("Configuration File Backup Directory Error"),
-            _("The path provided isn't a valid directory, reverting to:\n"
-              "%s\n") % self.last_valid_path,
+            _("The path provided isn't a valid directory, reverting to:\n%s\n") % self.last_valid_path,
             QtWidgets.QMessageBox.StandardButton.Ok,
             self,
         )
@@ -173,11 +171,12 @@ class MaintenanceOptionsPage(OptionsPage):
         orphan_options = file_options.difference(current_options)
 
         self.ui.option_counts.setText(
-            _("The configuration file currently contains %(totalcount)d option "
-              "settings (%(unusedcount)d unused).") % {
+            _("The configuration file currently contains %(totalcount)d option settings (%(unusedcount)d unused).")
+            % {
                 'totalcount': len(file_options),
                 'unusedcount': len(orphan_options),
-            })
+            }
+        )
         self.ui.enable_cleanup.setChecked(False)
         self.ui.tableWidget.clearContents()
         self.ui.tableWidget.setRowCount(len(orphan_options))
@@ -210,10 +209,15 @@ class MaintenanceOptionsPage(OptionsPage):
         open_local_path(config_dir)
 
     def _get_dialog_filetypes(self, _ext='.ini'):
-        return ";;".join((
-            _("Configuration files") + " (*{0})".format(_ext,),
-            _("All files") + " (*)",
-        ))
+        return ";;".join(
+            (
+                _("Configuration files")
+                + " (*{0})".format(
+                    _ext,
+                ),
+                _("All files") + " (*)",
+            )
+        )
 
     def _make_backup_filename(self, auto=False):
         config = get_config()
@@ -230,10 +234,7 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Critical,
             _("Backup Configuration File Save Error"),
-            _("Failed to save the configuration file to:\n"
-              "%s\n"
-              "\n"
-              "Please see the logs for more details." % filename),
+            _("Failed to save the configuration file to:\n%s\n\nPlease see the logs for more details." % filename),
             QtWidgets.QMessageBox.StandardButton.Ok,
             self,
         )
@@ -252,8 +253,7 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Backup Configuration File"),
-            _("Configuration successfully backed up to:\n"
-              "%s") % filename,
+            _("Configuration successfully backed up to:\n%s") % filename,
             QtWidgets.QMessageBox.StandardButton.Ok,
             self,
         )
@@ -283,11 +283,14 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Warning,
             _("Load Backup Configuration File"),
-            _("Loading a backup configuration file will replace the current configuration settings.\n"
-              "Before any change, the current configuration will be automatically saved to:\n"
-              "%s\n"
-              "\n"
-              "Do you want to continue?") % filename,
+            _(
+                "Loading a backup configuration file will replace the current configuration settings.\n"
+                "Before any change, the current configuration will be automatically saved to:\n"
+                "%s\n"
+                "\n"
+                "Do you want to continue?"
+            )
+            % filename,
             QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
             self,
         )
@@ -298,8 +301,7 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Load Backup Configuration File"),
-            _("Configuration successfully loaded from:\n"
-              "%s") % filename,
+            _("Configuration successfully loaded from:\n%s") % filename,
             QtWidgets.QMessageBox.StandardButton.Ok,
             self,
         )
@@ -309,10 +311,8 @@ class MaintenanceOptionsPage(OptionsPage):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Load Backup Configuration File"),
-            _("There was a problem restoring the configuration file from:\n"
-              "%s\n"
-              "\n"
-              "Please see the logs for more details.") % filename,
+            _("There was a problem restoring the configuration file from:\n%s\n\nPlease see the logs for more details.")
+            % filename,
             QtWidgets.QMessageBox.StandardButton.Ok,
             self,
         )
@@ -368,11 +368,14 @@ class MaintenanceOptionsPage(OptionsPage):
             item.setCheckState(state)
 
     def _dialog_ask_remove_confirmation(self):
-        return QtWidgets.QMessageBox.question(
-            self,
-            _("Confirm Remove"),
-            _("Are you sure you want to remove the selected option settings?"),
-        ) == QtWidgets.QMessageBox.StandardButton.Yes
+        return (
+            QtWidgets.QMessageBox.question(
+                self,
+                _("Confirm Remove"),
+                _("Are you sure you want to remove the selected option settings?"),
+            )
+            == QtWidgets.QMessageBox.StandardButton.Yes
+        )
 
     def save(self):
         config = get_config()

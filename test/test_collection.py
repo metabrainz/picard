@@ -55,7 +55,6 @@ mb_api.get_collection_list.side_effect = fake_get_collection_list
 
 
 class CollectionTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.tagger.mb_api = mb_api
@@ -86,8 +85,7 @@ class CollectionTest(PicardTestCase):
         collection = Collection('foo', mb_api)
         callback = MagicMock()
         collection.add_releases(releases, callback)
-        mb_api.put_to_collection.assert_called_once_with(
-            'foo', list(releases), ANY)
+        mb_api.put_to_collection.assert_called_once_with('foo', list(releases), ANY)
         self.assertEqual(2, collection.size)
         self.assertEqual(releases, collection.releases)
         collection.tagger.window.set_statusbar_message.assert_called_once()
@@ -104,8 +102,7 @@ class CollectionTest(PicardTestCase):
         collection.size = len(releases)
         callback = MagicMock()
         collection.remove_releases(releases_to_remove, callback)
-        mb_api.delete_from_collection.assert_called_once_with(
-            'foo', list(releases_to_remove), ANY)
+        mb_api.delete_from_collection.assert_called_once_with('foo', list(releases_to_remove), ANY)
         self.assertEqual(1, collection.size)
         self.assertEqual({releases[2]}, collection.releases)
         collection.tagger.window.set_statusbar_message.assert_called_once()
@@ -127,22 +124,26 @@ class CollectionTest(PicardTestCase):
         self.set_config_values(persist={'oauth_username': 'theuser'})
         release_node = {
             'id': '54292079-790c-4e99-bf8d-12efa29fa3e9',
-            'collections': [{
-                'id': '00000000-0000-0000-0000-000000000001',
-                'name': 'collection1',
-                'editor': 'theuser',
-                'release-count': 42
-            }, {
-                'id': '00000000-0000-0000-0000-000000000002',
-                'name': 'collection2',
-                'editor': 'otheruser',
-                'release-count': 12
-            }, {
-                'id': '00000000-0000-0000-0000-000000000003',
-                'name': 'collection3',
-                'editor': 'theuser',
-                'release-count': 0
-            }]
+            'collections': [
+                {
+                    'id': '00000000-0000-0000-0000-000000000001',
+                    'name': 'collection1',
+                    'editor': 'theuser',
+                    'release-count': 42,
+                },
+                {
+                    'id': '00000000-0000-0000-0000-000000000002',
+                    'name': 'collection2',
+                    'editor': 'otheruser',
+                    'release-count': 12,
+                },
+                {
+                    'id': '00000000-0000-0000-0000-000000000003',
+                    'name': 'collection3',
+                    'editor': 'theuser',
+                    'release-count': 0,
+                },
+            ],
         }
         add_release_to_user_collections(release_node)
         self.assertEqual(2, len(picard.collection.user_collections))

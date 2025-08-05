@@ -100,7 +100,6 @@ from picard.ui.util import StandardButton
 
 
 class ErrorOptionsPage(OptionsPage):
-
     def __init__(self, parent=None, errmsg='', from_cls=None, dialog=None):
         # copy properties from failing page
         self.NAME = from_cls.NAME
@@ -114,10 +113,7 @@ class ErrorOptionsPage(OptionsPage):
 
         self.error = _("This page failed to initialize")
 
-        title_widget = QtWidgets.QLabel(
-            _("Error while initializing option page '%s':")
-            % _(from_cls.TITLE)
-        )
+        title_widget = QtWidgets.QLabel(_("Error while initializing option page '%s':") % _(from_cls.TITLE))
 
         error_widget = QtWidgets.QLabel()
         error_widget.setTextFormat(QtCore.Qt.TextFormat.PlainText)
@@ -127,13 +123,11 @@ class ErrorOptionsPage(OptionsPage):
         error_widget.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         error_widget.setLineWidth(1)
         error_widget.setTextInteractionFlags(
-            QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard
-            | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
+            QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
         )
 
         report_bug_widget = QtWidgets.QLabel(
-            _('Please see <a href="%s">Troubleshooting documentation</a>'
-              ' and eventually report a bug.')
+            _('Please see <a href="%s">Troubleshooting documentation</a> and eventually report a bug.')
             % PICARD_URLS['troubleshooting']
         )
         report_bug_widget.setOpenExternalLinks(True)
@@ -149,7 +143,6 @@ class ErrorOptionsPage(OptionsPage):
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
-
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
@@ -181,6 +174,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
         from picard.ui.forms.ui_options import Ui_OptionsDialog
+
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(self)
 
@@ -192,7 +186,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         ok = StandardButton(StandardButton.OK)
         ok.setText(_("Make It So!"))
         self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.ui.buttonbox.addButton(
+            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        )
         self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
         self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
         self.ui.buttonbox.addButton(self.ui.reset_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
@@ -233,7 +229,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # work-around to set optimal option pane width
         self.ui.pages_tree.expandAll()
-        max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2*self.ui.pages_tree.frameWidth()
+        max_page_name = self.ui.pages_tree.sizeHintForColumn(0) + 2 * self.ui.pages_tree.frameWidth()
         self.ui.dialog_splitter.setSizes([max_page_name, self.geometry().width() - max_page_name])
 
         self.ui.pages_tree.setHeaderLabels([""])
@@ -303,10 +299,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         override_profiles = profile_page._clean_and_get_all_profiles()
         override_settings = profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
-            option_group,
-            parent=self,
-            override_profiles=override_profiles,
-            override_settings=override_settings
+            option_group, parent=self, override_profiles=override_profiles, override_settings=override_settings
         )
         profile_dialog.show()
         profile_dialog.raise_()
@@ -327,6 +320,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def highlight_enabled_profile_options(self, load_settings=False):
         working_profiles, working_settings = self.get_working_profile_data()
         from picard.ui.colors import interface_colors as colors
+
         fg_color = colors.get_color('profile_hl_fg')
         bg_color = colors.get_color('profile_hl_bg')
 
@@ -365,8 +359,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     break
 
     def eventFilter(self, object, event):
-        """Process selected events.
-        """
+        """Process selected events."""
         evtype = event.type()
         if evtype == QtCore.QEvent.Type.Enter:
             if self.first_enter:
@@ -513,7 +506,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         message_box.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         message_box.setWindowTitle(_("Confirm Reset"))
         message_box.setText(_("Are you sure?") + "\n\n" + msg)
-        message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        message_box.setStandardButtons(
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
+        )
         if message_box.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
             function()
 
@@ -527,7 +522,9 @@ class AttachedProfilesDialog(PicardDialog):
         self.option_group = option_group
         self.ui = Ui_AttachedProfilesDialog()
         self.ui.setupUi(self)
-        self.ui.buttonBox.addButton(StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+        self.ui.buttonBox.addButton(
+            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        )
         self.ui.buttonBox.rejected.connect(self.close_window)
 
         config = get_config()
@@ -563,7 +560,12 @@ class AttachedProfilesDialog(PicardDialog):
             attached = []
             for profile in self.profiles:
                 if setting.name in self.settings[profile['id']]:
-                    attached.append("{0}{1}".format(profile['title'], _(" [Enabled]") if profile['enabled'] else "",))
+                    attached.append(
+                        "{0}{1}".format(
+                            profile['title'],
+                            _(" [Enabled]") if profile['enabled'] else "",
+                        )
+                    )
             attached_profiles = "\n".join(attached) or _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)
             profile_item.setEditable(False)
@@ -575,6 +577,5 @@ class AttachedProfilesDialog(PicardDialog):
         self.ui.options_list.horizontalHeader().setStretchLastSection(True)
 
     def close_window(self):
-        """Close the script metadata editor window.
-        """
+        """Close the script metadata editor window."""
         self.close()

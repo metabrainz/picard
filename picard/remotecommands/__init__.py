@@ -37,8 +37,8 @@ from .handlers import (
 
 
 class RemoteCommands:
-    """Handler for remote commands processed from the command line using the '-e' option.
-    """
+    """Handler for remote commands processed from the command line using the '-e' option."""
+
     # Collection of command files currently being parsed
     _command_files = set()
 
@@ -140,7 +140,7 @@ class RemoteCommands:
             # Don't queue any more commands after a QUIT command.
             return
 
-        for (cmd, cmdargs) in commands:
+        for cmd, cmdargs in commands:
             cmd = cmd.upper()
             if cmd not in REMOTE_COMMANDS:
                 log.error("Unknown command: %s", cmd)
@@ -217,7 +217,7 @@ List of the commands available to execute in Picard from the command-line:
         for name in sorted(REMOTE_COMMANDS):
             remcmd = REMOTE_COMMANDS[name]
             s = " - %-35s %s" % (name + " " + remcmd.help_args, remcmd.help_text)
-            informative_text.append(fill(s, width=maxwidth, subsequent_indent=' '*39))
+            informative_text.append(fill(s, width=maxwidth, subsequent_indent=' ' * 39))
 
         informative_text.append('')
 
@@ -226,9 +226,11 @@ List of the commands available to execute in Picard from the command-line:
 
         fmt("Commands are case insensitive.")
         fmt("Picard will try to load all the positional arguments before processing commands.")
-        fmt("If there is no instance to pass the arguments to, Picard will start and process the commands after the "
+        fmt(
+            "If there is no instance to pass the arguments to, Picard will start and process the commands after the "
             "positional arguments are loaded, as mentioned above. Otherwise they will be handled by the running "
-            "Picard instance.")
+            "Picard instance."
+        )
         fmt("Arguments are optional, but some commands may require one or more arguments to actually do something.")
 
         return message, "\n".join(informative_text)

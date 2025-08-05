@@ -71,7 +71,6 @@ class LogViewDialog(PicardDialog):
 
 
 class LogViewCommon(LogViewDialog):
-
     def __init__(self, log_tail, title, parent=None):
         super().__init__(title, parent=parent)
         self.displaying = False
@@ -159,7 +158,6 @@ class VerbosityMenu(QtWidgets.QMenu):
 
 
 class DebugOptsMenu(QtWidgets.QMenu):
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
@@ -176,7 +174,6 @@ class DebugOptsMenu(QtWidgets.QMenu):
 
 
 class LogView(LogViewCommon):
-
     def __init__(self, parent=None):
         super().__init__(log.main_tail, _("Log"), parent=parent)
         self.verbosity = log.get_effective_level()
@@ -286,7 +283,7 @@ class LogView(LogViewCommon):
                     self,
                     _("Save Log View to File"),
                     _("File already exists, do you really want to save to this file?"),
-                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
+                    QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
                 )
                 if reply != QtWidgets.QMessageBox.StandardButton.Yes:
                     return
@@ -298,7 +295,7 @@ class LogView(LogViewCommon):
                 QtWidgets.QMessageBox.critical(
                     self,
                     _("Failed to save Log View to file"),
-                    _("Something prevented data to be written to '%s'") % writer.fileName()
+                    _("Something prevented data to be written to '%s'") % writer.fileName(),
                 )
 
     def show(self):
@@ -315,7 +312,7 @@ class LogView(LogViewCommon):
             self,
             _("Clear Log"),
             _("Are you sure you want to clear the log?"),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
         )
         if reply != QtWidgets.QMessageBox.StandardButton.Yes:
             return
@@ -353,6 +350,5 @@ class LogView(LogViewCommon):
 
 
 class HistoryView(LogViewCommon):
-
     def __init__(self, parent=None):
         super().__init__(log.history_tail, _("Activity History"), parent=parent)

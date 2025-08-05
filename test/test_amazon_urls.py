@@ -28,7 +28,6 @@ from picard.util import parse_amazon_url
 
 
 class ParseAmazonUrlTest(PicardTestCase):
-
     def test_1(self):
         url = 'http://www.amazon.com/dp/020530902X'
         expected = {'asin': '020530902X', 'host': 'amazon.com'}

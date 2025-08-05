@@ -52,7 +52,6 @@ from picard.ui.options import OptionsPage
 
 
 class GeneralOptionsPage(OptionsPage):
-
     NAME = 'general'
     TITLE = N_("General")
     PARENT = None
@@ -172,15 +171,19 @@ class GeneralOptionsPage(OptionsPage):
             msg = QtWidgets.QMessageBox(self)
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
             msg.setWindowTitle(_("Logout error"))
-            msg.setText(_(
-                "A server error occurred while revoking access to the MusicBrainz server: %s\n"
-                "\n"
-                "Remove locally stored credentials anyway?"
-            ) % error_msg)
+            msg.setText(
+                _(
+                    "A server error occurred while revoking access to the MusicBrainz server: %s\n"
+                    "\n"
+                    "Remove locally stored credentials anyway?"
+                )
+                % error_msg
+            )
             msg.setStandardButtons(
                 QtWidgets.QMessageBox.StandardButton.Yes
                 | QtWidgets.QMessageBox.StandardButton.No
-                | QtWidgets.QMessageBox.StandardButton.Retry)
+                | QtWidgets.QMessageBox.StandardButton.Retry
+            )
             result = msg.exec()
             if result == QtWidgets.QMessageBox.StandardButton.Yes:
                 oauth_manager = self.tagger.webservice.oauth_manager

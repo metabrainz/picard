@@ -88,7 +88,6 @@ from picard.util.textencoding import asciipunct
 
 
 class TagGenreFilter:
-
     def __init__(self, filters):
         self.errors = dict()
         self.match_regexes = defaultdict(list)
@@ -143,7 +142,6 @@ class TrackArtist(MetadataItem):
 
 
 class Track(FileListItem):
-
     def __init__(self, track_id, album=None):
         super().__init__(track_id)
         self.album = album
@@ -364,7 +362,7 @@ class Track(FileListItem):
             limit=config.setting['max_genres'],
             minusage=config.setting['min_genre_usage'],
             filters=config.setting['genres_filter'],
-            join_with=config.setting['join_genres']
+            join_with=config.setting['join_genres'],
         )
 
     @property
@@ -376,8 +374,7 @@ class Track(FileListItem):
         return self._merge_folksonomy_tags('genres')
 
     def _merge_folksonomy_tags(self, name):
-        """Merge folksonomy_tags or genres from track, album, release group and artists.
-        """
+        """Merge folksonomy_tags or genres from track, album, release group and artists."""
         getter = attrgetter(name)
         genres = getter(self)
         if self.album:
@@ -406,7 +403,6 @@ class Track(FileListItem):
 
 
 class NonAlbumTrack(Track):
-
     def __init__(self, nat_id):
         tagger = QtCore.QCoreApplication.instance()
         super().__init__(nat_id, tagger.nats)
@@ -459,7 +455,7 @@ class NonAlbumTrack(Track):
             inc=inc,
             mblogin=require_authentication,
             priority=priority,
-            refresh=refresh
+            refresh=refresh,
         )
 
     @property

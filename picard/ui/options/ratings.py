@@ -30,7 +30,6 @@ from picard.ui.options import OptionsPage
 
 
 class RatingsOptionsPage(OptionsPage):
-
     NAME = 'ratings'
     TITLE = N_("Ratings")
     PARENT = 'metadata'

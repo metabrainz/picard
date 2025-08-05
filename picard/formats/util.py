@@ -57,9 +57,11 @@ def guess_format(filename, options=None):
         # Calls the score method of a particular format's associated filetype
         # and assigns a positive score depending on how closely the fileobj's header matches
         # the header for a particular file format.
-        results = [(option._File.score(filename, fileobj, header), option.__name__, option)
-                   for option in options
-                   if getattr(option, "_File", None)]
+        results = [
+            (option._File.score(filename, fileobj, header), option.__name__, option)
+            for option in options
+            if getattr(option, "_File", None)
+        ]
     if results:
         results.sort()
         if results[-1][0] > 0:

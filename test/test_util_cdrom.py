@@ -81,7 +81,6 @@ Can write RAM:
 
 
 class LinuxParseCdromInfoTest(PicardTestCase):
-
     def test_drives(self):
         with io.StringIO(MOCK_CDROM_INFO) as f:
             drives = list(cdrom._parse_linux_cdrom_info(f))
@@ -99,7 +98,6 @@ class LinuxParseCdromInfoTest(PicardTestCase):
 
 
 class GetCdromDrivesTest(PicardTestCase):
-
     def test_get_cdrom_drives(self):
         self.set_config_values({"cd_lookup_device": "/dev/cdrom"})
         # Independent of the implementation get_cdrom_drives must not rais
@@ -121,7 +119,6 @@ class GetCdromDrivesTest(PicardTestCase):
 
 @unittest.skipUnless(IS_WIN, "windows test")
 class WindowsGetCdromDrivesTest(PicardTestCase):
-
     def test_autodetect(self):
         self.assertTrue(cdrom.AUTO_DETECT_DRIVES)
 

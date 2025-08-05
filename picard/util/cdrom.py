@@ -65,9 +65,7 @@ def get_default_cdrom_drives():
 def _generic_iter_drives():
     config = get_config()
     yield from (
-        device.strip() for device
-        in config.setting['cd_lookup_device'].split(',')
-        if device and not device.isspace()
+        device.strip() for device in config.setting['cd_lookup_device'].split(',') if device and not device.isspace()
     )
 
 
@@ -78,12 +76,12 @@ def _parse_linux_cdrom_info(f):
     CAN_PLAY_AUDIO = 'Can play audio:'
     for line in f:
         if line.startswith(DRIVE_NAME):
-            drive_names = line[len(DRIVE_NAME):].split()
+            drive_names = line[len(DRIVE_NAME) :].split()
             break
     if drive_names:
         for line in f:
             if line.startswith(CAN_PLAY_AUDIO):
-                drive_audio_caps = [v == '1' for v in line[len(CAN_PLAY_AUDIO):].split()]
+                drive_audio_caps = [v == '1' for v in line[len(CAN_PLAY_AUDIO) :].split()]
                 break
     yield from zip(drive_names, drive_audio_caps)
 
@@ -125,10 +123,10 @@ else:
 
 
 def get_cdrom_drives():
-    """List available disc drives on the machine
-    """
+    """List available disc drives on the machine"""
     # add default drive from libdiscid to the list
     from picard.const.defaults import DEFAULT_DRIVES
+
     drives = set(DEFAULT_DRIVES)
     try:
         drives |= set(_iter_drives())

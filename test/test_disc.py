@@ -36,7 +36,6 @@ test_toc = [1, 11, 242457, 150, 44942, 61305, 72755, 96360, 130485, 147315, 1642
 
 
 class MockDisc:
-
     id = 'lSOVc5h6IXSuzcamJS1Gp4_tRuA-'
     mcn = '5029343070452'
     tracks = list(range(0, 11))
@@ -49,7 +48,9 @@ def mock_disc_submission_url():
 
 class DiscTest(PicardTestCase):
     def test_static_submission_url_no_config(self):
-        with patch.object(picard.util.mbserver, 'get_submission_server', return_value=ServerTuple('example.com', 443)) as mocked:
+        with patch.object(
+            picard.util.mbserver, 'get_submission_server', return_value=ServerTuple('example.com', 443)
+        ) as mocked:
             self.assertEqual(
                 picard.disc.Disc._submission_url('A', 2, 'B C'),
                 'https://example.com/cdtoc/attach?id=A&tracks=2&toc=B+C',
@@ -57,11 +58,13 @@ class DiscTest(PicardTestCase):
             mocked.assert_called_once()
 
     def test_static_submission_url(self):
-        self.set_config_values(setting={
-            'server_host': 'test.musicbrainz.org',
-            'server_port': 80,
-            'use_server_for_submission': True,
-        })
+        self.set_config_values(
+            setting={
+                'server_host': 'test.musicbrainz.org',
+                'server_port': 80,
+                'use_server_for_submission': True,
+            }
+        )
         self.assertEqual(
             picard.disc.Disc._submission_url('A', 2, 'B C'),
             'http://test.musicbrainz.org/cdtoc/attach?id=A&tracks=2&toc=B+C',
@@ -82,11 +85,13 @@ class DiscTest(PicardTestCase):
 
     @patch.object(picard.disc, 'discid')
     def test_read(self, mock_discid):
-        self.set_config_values(setting={
-            'server_host': 'musicbrainz.org',
-            'server_port': 443,
-            'use_server_for_submission': False,
-        })
+        self.set_config_values(
+            setting={
+                'server_host': 'musicbrainz.org',
+                'server_port': 443,
+                'use_server_for_submission': False,
+            }
+        )
         mock_discid.read = Mock(return_value=MockDisc())
         device = '/dev/cdrom1'
         disc = picard.disc.Disc()
@@ -127,11 +132,13 @@ class DiscTest(PicardTestCase):
 
     @patch.object(picard.disc, 'discid')
     def test_submission_url(self, mock_discid):
-        self.set_config_values(setting={
-            'server_host': 'test.musicbrainz.org',
-            'server_port': 80,
-            'use_server_for_submission': True,
-        })
+        self.set_config_values(
+            setting={
+                'server_host': 'test.musicbrainz.org',
+                'server_port': 80,
+                'use_server_for_submission': True,
+            }
+        )
         mock_discid.read = Mock(return_value=MockDisc())
         disc = picard.disc.Disc()
         disc.read()

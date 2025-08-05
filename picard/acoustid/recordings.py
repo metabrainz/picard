@@ -99,14 +99,18 @@ class RecordingResolver:
                         sources=sources,
                     )
                 else:
-                    if (sources / max_sources > SOURCE_THRESHOLD_NO_METADATA
-                        and incomplete_counts[acoustid] < MAX_NO_METADATA_RECORDINGS):
-                        self._missing_metadata.append(IncompleteRecording(
-                            mbid=mbid,
-                            acoustid=acoustid,
-                            result_score=result_score,
-                            sources=sources,
-                        ))
+                    if (
+                        sources / max_sources > SOURCE_THRESHOLD_NO_METADATA
+                        and incomplete_counts[acoustid] < MAX_NO_METADATA_RECORDINGS
+                    ):
+                        self._missing_metadata.append(
+                            IncompleteRecording(
+                                mbid=mbid,
+                                acoustid=acoustid,
+                                result_score=result_score,
+                                sources=sources,
+                            )
+                        )
                         incomplete_counts[acoustid] += 1
 
         self._load_recordings()

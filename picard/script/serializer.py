@@ -52,8 +52,8 @@ from picard.ui.util import FileDialog
 
 @unique
 class ScriptSerializerType(IntEnum):
-    """Picard Script object types
-    """
+    """Picard Script object types"""
+
     BASE = 0
     TAGGER = 1
     FILENAMING = 2
@@ -94,9 +94,9 @@ class MultilineLiteral(str):
 yaml.add_representer(MultilineLiteral, MultilineLiteral.yaml_presenter)
 
 
-class ScriptSerializer():
-    """Base class for Picard script objects.
-    """
+class ScriptSerializer:
+    """Base class for Picard script objects."""
+
     # Base class developed to support future tagging script class as possible replacement for currently used tuples in config.setting["list_of_scripts"].
 
     TYPE = ScriptSerializerType.BASE
@@ -130,8 +130,7 @@ class ScriptSerializer():
             self.script_language_version = script_language_version
 
     def _set_new_id(self):
-        """Sets the ID of the script to a new system generated uuid.
-        """
+        """Sets the ID of the script to a new system generated uuid."""
         self.id = str(uuid.uuid4())
 
     def __getitem__(self, setting):
@@ -169,8 +168,7 @@ class ScriptSerializer():
         return datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
 
     def update_last_updated(self):
-        """Update the last updated attribute to the current UTC date and time.
-        """
+        """Update the last updated attribute to the current UTC date and time."""
         self.last_updated = self.make_last_updated()
 
     def update_script_setting(self, **kwargs):
@@ -212,12 +210,13 @@ class ScriptSerializer():
         return items
 
     def export_script(self, parent=None):
-        """Export the script to a file.
-        """
+        """Export the script to a file."""
         # return _export_script_dialog(script_item=self, parent=parent)
         FILE_ERROR_EXPORT = N_('Error exporting file "%(filename)s": %(error)s.')
 
-        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        default_script_directory = os.path.normpath(
+            QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
+        )
         default_script_extension = "ptsp"
         script_filename = ".".join((self.filename, default_script_extension))
         default_path = os.path.normpath(os.path.join(default_script_directory, script_filename))
@@ -245,27 +244,30 @@ class ScriptSerializer():
             with open(filename, 'w', encoding='utf-8') as o_file:
                 o_file.write(script_text)
         except OSError as error:
-            raise ScriptSerializerExportError(format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror) from error
+            raise ScriptSerializerExportError(
+                format=FILE_ERROR_EXPORT, filename=filename, error_msg=error.strerror
+            ) from error
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Information,
             _("Export Script"),
             _("Script successfully exported to %s") % filename,
             QtWidgets.QMessageBox.StandardButton.Ok,
-            parent
+            parent,
         )
         dialog.exec()
         return True
 
     @classmethod
     def import_script(cls, parent=None):
-        """Import a script from a file.
-        """
+        """Import a script from a file."""
         FILE_ERROR_IMPORT = N_('Error importing "%(filename)s": %(error)s')
         FILE_ERROR_DECODE = N_('Error decoding "%(filename)s": %(error)s')
 
         dialog_title = _("Import Script File")
         dialog_file_types = cls._get_dialog_filetypes()
-        default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+        default_script_directory = os.path.normpath(
+            QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
+        )
         filename, file_type = FileDialog.getOpenFileName(
             parent=parent,
             caption=dialog_title,
@@ -279,19 +281,22 @@ class ScriptSerializer():
             with open(filename, 'r', encoding='utf-8') as i_file:
                 file_content = i_file.read()
         except OSError as error:
-            raise ScriptSerializerImportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror) from None
+            raise ScriptSerializerImportError(
+                format=FILE_ERROR_IMPORT, filename=filename, error_msg=error.strerror
+            ) from None
         if not file_content.strip():
-            raise ScriptSerializerImportError(format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty"))
+            raise ScriptSerializerImportError(
+                format=FILE_ERROR_IMPORT, filename=filename, error_msg=N_("The file was empty")
+            )
         if file_type == cls._file_types()['package']:
             try:
                 return cls().create_from_yaml(file_content)
             except ScriptSerializerFromFileError as error:
-                raise ScriptSerializerImportError(format=FILE_ERROR_DECODE, filename=filename, error_msg=error) from None
+                raise ScriptSerializerImportError(
+                    format=FILE_ERROR_DECODE, filename=filename, error_msg=error
+                ) from None
         else:
-            return cls(
-                title=_("Imported from %s") % filename,
-                script=file_content.strip()
-            )
+            return cls(title=_("Imported from %s") % filename, script=file_content.strip())
 
     @classmethod
     def create_from_dict(cls, script_dict, create_new_id=True):
@@ -316,8 +321,7 @@ class ScriptSerializer():
         return new_object
 
     def copy(self):
-        """Create a copy of the current script object with updated title and last updated attributes.
-        """
+        """Create a copy of the current script object with updated title and last updated attributes."""
         new_object = deepcopy(self)
         new_object.update_script_setting(
             title=_("%s (Copy)") % self.title,
@@ -384,16 +388,18 @@ class ScriptSerializer():
             str: File type selection string
         """
         file_types = cls._file_types()
-        return ";;".join((
-            file_types['package'],
-            file_types['script'],
-            file_types['all'],
-        ))
+        return ";;".join(
+            (
+                file_types['package'],
+                file_types['script'],
+                file_types['all'],
+            )
+        )
 
 
 class TaggingScriptInfo(ScriptSerializer):
-    """Picard tagging script class
-    """
+    """Picard tagging script class"""
+
     TYPE = ScriptSerializerType.TAGGER
     OUTPUT_FIELDS = ('title', 'script_language_version', 'script', 'id')
 
@@ -406,14 +412,30 @@ class TaggingScriptInfo(ScriptSerializer):
             id (str): ID code for the script. Defaults to a system generated uuid.
             last_updated (str): The UTC date and time when the script was last updated. Defaults to current date/time.
         """
-        super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_language_version=script_language_version)
+        super().__init__(
+            script=script,
+            title=title,
+            id=id,
+            last_updated=last_updated,
+            script_language_version=script_language_version,
+        )
 
 
 class FileNamingScriptInfo(ScriptSerializer):
-    """Picard file naming script class
-    """
+    """Picard file naming script class"""
+
     TYPE = ScriptSerializerType.FILENAMING
-    OUTPUT_FIELDS = ('title', 'description', 'author', 'license', 'version', 'last_updated', 'script_language_version', 'script', 'id')
+    OUTPUT_FIELDS = (
+        'title',
+        'description',
+        'author',
+        'license',
+        'version',
+        'last_updated',
+        'script_language_version',
+        'script',
+        'id',
+    )
 
     def __init__(
         self,
@@ -426,7 +448,7 @@ class FileNamingScriptInfo(ScriptSerializer):
         version='',
         last_updated=None,
         script_language_version=None,
-        **kwargs,   # Catch additional (deprecated) arguments to avoid error in prior version config_upgrade functions.
+        **kwargs,  # Catch additional (deprecated) arguments to avoid error in prior version config_upgrade functions.
     ):
         """Creates a Picard file naming script object.
 
@@ -441,7 +463,13 @@ class FileNamingScriptInfo(ScriptSerializer):
             last_updated (str): The UTC date and time when the script was last updated. Defaults to current date/time.
             script_language_version (str): The version of the script language supported by the script.
         """
-        super().__init__(script=script, title=title, id=id, last_updated=last_updated, script_language_version=script_language_version)
+        super().__init__(
+            script=script,
+            title=title,
+            id=id,
+            last_updated=last_updated,
+            script_language_version=script_language_version,
+        )
         self.author = author
         self.description = description
         self.license = license

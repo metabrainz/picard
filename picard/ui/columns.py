@@ -74,9 +74,17 @@ class Column:
     resizeable = True
     sortable = True
 
-    def __init__(self, title, key, width=None, align=ColumnAlign.LEFT,
-                 sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False,
-                 status_icon=False):
+    def __init__(
+        self,
+        title,
+        key,
+        width=None,
+        align=ColumnAlign.LEFT,
+        sort_type=ColumnSortType.TEXT,
+        sortkey=None,
+        always_visible=False,
+        status_icon=False,
+    ):
         self.title = title
         self.key = key
         self.width = width

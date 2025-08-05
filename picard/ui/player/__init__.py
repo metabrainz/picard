@@ -48,7 +48,8 @@ def get_logarithmic_volume(player_value):
     return QtMultimedia.QAudio.convertVolume(
         player_value,
         QtMultimedia.QAudio.VolumeScale.LinearVolumeScale,
-        QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale)
+        QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale,
+    )
 
 
 def get_linear_volume(slider_value):
@@ -56,7 +57,8 @@ def get_linear_volume(slider_value):
     return QtMultimedia.QAudio.convertVolume(
         slider_value,
         QtMultimedia.QAudio.VolumeScale.LogarithmicVolumeScale,
-        QtMultimedia.QAudio.VolumeScale.LinearVolumeScale)
+        QtMultimedia.QAudio.VolumeScale.LinearVolumeScale,
+    )
 
 
 class Player(QtCore.QObject):
@@ -114,8 +116,7 @@ class Player(QtCore.QObject):
     def play(self):
         """Play selected tracks with an internal player"""
         self._media_queue = deque(
-            QtCore.QUrl.fromLocalFile(file.filename)
-            for file in iter_files_from_objects(self._selected_objects)
+            QtCore.QUrl.fromLocalFile(file.filename) for file in iter_files_from_objects(self._selected_objects)
         )
         self._play_next()
 
@@ -146,7 +147,7 @@ class Player(QtCore.QObject):
 
         The value must be given in logarithmic scale as a value between 0 and 100.
         """
-        self._logarithmic_volume = logarithmic_volume / 100.
+        self._logarithmic_volume = logarithmic_volume / 100.0
         linear_volume = get_linear_volume(self._logarithmic_volume)
         log.debug('Internal player: Set volume %f -> linear %f', logarithmic_volume, linear_volume)
         self._audio_output.setVolume(linear_volume)

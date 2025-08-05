@@ -30,7 +30,6 @@ from PyQt6 import (
 
 
 class MoveableListView:
-
     def __init__(self, list_widget, up_button, down_button, callback=None):
         self.list_widget = list_widget
         self.up_button = up_button

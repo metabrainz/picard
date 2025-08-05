@@ -58,7 +58,6 @@ from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
 
 class ProfilesOptionsPage(OptionsPage):
-
     NAME = 'profiles'
     TITLE = N_("Option Profiles")
     PARENT = None
@@ -77,8 +76,7 @@ class ProfilesOptionsPage(OptionsPage):
         self.make_buttons()
 
         self.ui.profile_editor_splitter.setStretchFactor(1, 1)
-        self.move_view = MoveableListView(self.ui.profile_list, self.ui.move_up_button,
-                                          self.ui.move_down_button)
+        self.move_view = MoveableListView(self.ui.profile_list, self.ui.move_up_button, self.ui.move_down_button)
 
         self.ui.profile_list.itemChanged.connect(self.profile_item_changed)
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
@@ -96,8 +94,7 @@ class ProfilesOptionsPage(OptionsPage):
         self.ui.settings_tree.installEventFilter(self)
 
     def eventFilter(self, object, event):
-        """Process selected events.
-        """
+        """Process selected events."""
         event_type = event.type()
         if event_type == QtCore.QEvent.Type.FocusOut and object == self.ui.settings_tree:
             if self.settings_changed:
@@ -107,26 +104,30 @@ class ProfilesOptionsPage(OptionsPage):
         return False
 
     def make_buttons(self):
-        """Make buttons and add them to the button bars.
-        """
+        """Make buttons and add them to the button bars."""
         self.new_profile_button = QtWidgets.QPushButton(_("New"))
         self.new_profile_button.setToolTip(_("Create a new profile"))
         self.new_profile_button.clicked.connect(self.new_profile)
-        self.ui.profile_list_buttonbox.addButton(self.new_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(
+            self.new_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
+        )
 
         self.copy_profile_button = QtWidgets.QPushButton(_("Copy"))
         self.copy_profile_button.setToolTip(_("Copy to a new profile"))
         self.copy_profile_button.clicked.connect(self.copy_profile)
-        self.ui.profile_list_buttonbox.addButton(self.copy_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(
+            self.copy_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
+        )
 
         self.delete_profile_button = QtWidgets.QPushButton(_("Delete"))
         self.delete_profile_button.setToolTip(_("Delete the profile"))
         self.delete_profile_button.clicked.connect(self.delete_profile)
-        self.ui.profile_list_buttonbox.addButton(self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+        self.ui.profile_list_buttonbox.addButton(
+            self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
+        )
 
     def restore_defaults(self):
-        """Remove all profiles and profile settings.
-        """
+        """Remove all profiles and profile settings."""
         self.ui.profile_list.clear()
         self.profile_settings = {}
         self.profile_selected()
@@ -134,8 +135,7 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def load(self):
-        """Load initial configuration.
-        """
+        """Load initial configuration."""
         self.loading = True
         config = get_config()
         # Use deepcopy() to avoid changes made locally from being cascaded into `config.profiles`
@@ -215,7 +215,11 @@ class ProfilesOptionsPage(OptionsPage):
             title = _(group['title'])
             group_settings = group['settings']
             widget_item = QtWidgets.QTreeWidgetItem([title])
-            widget_item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable | QtCore.Qt.ItemFlag.ItemIsAutoTristate)
+            widget_item.setFlags(
+                QtCore.Qt.ItemFlag.ItemIsEnabled
+                | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+                | QtCore.Qt.ItemFlag.ItemIsAutoTristate
+            )
             widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Unchecked)
             for setting in group_settings:
                 try:
@@ -282,8 +286,7 @@ class ProfilesOptionsPage(OptionsPage):
         return _("Unknown value format")
 
     def update_current_expanded_items_list(self):
-        """Update the list of expanded sections in the settings tree for persistent settings.
-        """
+        """Update the list of expanded sections in the settings tree for persistent settings."""
         if self.building_tree:
             return
         self.expanded_sections = set()
@@ -358,7 +361,7 @@ class ProfilesOptionsPage(OptionsPage):
                     _("Invalid Title"),
                     _("The profile title cannot be blank."),
                     QtWidgets.QMessageBox.StandardButton.Ok,
-                    self
+                    self,
                 ).exec()
                 item.setText(self.ui.profile_list.unique_profile_name())
             elif text != item.text():
@@ -403,8 +406,7 @@ class ProfilesOptionsPage(OptionsPage):
             self.settings_changed = True
 
     def copy_profile(self):
-        """Make a copy of the currently selected profile.
-        """
+        """Make a copy of the currently selected profile."""
         item = self.get_current_selected_item()
         profile_id = str(uuid.uuid4())
         settings = deepcopy(self.profile_settings[self.current_profile_id])
@@ -416,15 +418,13 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def new_profile(self):
-        """Add a new profile with no settings selected.
-        """
+        """Add a new profile with no settings selected."""
         self.ui.profile_list.add_profile()
         self.update_config_overrides()
         self.reload_all_page_settings()
 
     def delete_profile(self):
-        """Delete the current profile.
-        """
+        """Delete the current profile."""
         self.ui.profile_list.remove_selected_profile()
         self.profile_selected()
         self.update_config_overrides()
@@ -459,8 +459,7 @@ class ProfilesOptionsPage(OptionsPage):
         config.persist['profile_settings_tree_expanded_list'] = sorted(self.expanded_sections)
 
     def set_button_states(self):
-        """Set the enabled / disabled states of the buttons.
-        """
+        """Set the enabled / disabled states of the buttons."""
         state = self.current_profile_id is not None
         self.copy_profile_button.setEnabled(state)
         self.delete_profile_button.setEnabled(state)

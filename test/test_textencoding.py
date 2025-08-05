@@ -34,44 +34,44 @@ from picard.const.sys import IS_WIN
 show_latin2ascii_coverage = False
 
 compatibility_from = (
-    "\u0132\u0133\u017F\u01C7\u01C8\u01C9\u01CA\u01CB\u01CC\u01F1"  # ĲĳſǇǈǉǊǋǌǱ
-    "\u01F2\u01F3\uFB00\uFB01\uFB02\uFB03\uFB04\uFB05\uFB06\uFF21"  # ǲǳﬀﬁﬂﬃﬄﬅﬆＡ
-    "\uFF22\uFF23\uFF24\uFF25\uFF26\uFF27\uFF28\uFF29\uFF2A\uFF2B"  # ＢＣＤＥＦＧＨＩＪＫ
-    "\uFF2C\uFF2D\uFF2E\uFF2F\uFF30\uFF31\uFF32\uFF33\uFF34\uFF35"  # ＬＭＮＯＰＱＲＳＴＵ
-    "\uFF36\uFF37\uFF38\uFF39\uFF3A\uFF41\uFF42\uFF43\uFF44\uFF45"  # ＶＷＸＹＺａｂｃｄｅ
-    "\uFF46\uFF47\uFF48\uFF49\uFF4A\uFF4B\uFF4C\uFF4D\uFF4E\uFF4F"  # ｆｇｈｉｊｋｌｍｎｏ
-    "\uFF50\uFF51\uFF52\uFF53\uFF54\uFF55\uFF56\uFF57\uFF58\uFF59"  # ｐｑｒｓｔｕｖｗｘｙ
-    "\uFF5A\u2100\u2101\u2102\u2105\u2106\u210A\u210B\u210C\u210D"  # ｚ℀℁ℂ℅℆ℊℋℌℍ
-    "\u210E\u2110\u2111\u2112\u2113\u2115\u2116\u2119\u211A\u211B"  # ℎℐℑℒℓℕ№ℙℚℛ
-    "\u211C\u211D\u2121\u2124\u2128\u212C\u212D\u212F\u2130\u2131"  # ℜℝ℡ℤℨℬℭℯℰℱ
-    "\u2133\u2134\u2139\u213B\u2145\u2146\u2147\u2148\u2149\u3371"  # ℳℴℹ℻ⅅⅆⅇⅈⅉ㍱
-    "\u3372\u3373\u3374\u3375\u3376\u3377\u337A\u3380\u3381\u3383"  # ㍲㍳㍴㍵㍶㍷㍺㎀㎁㎃
-    "\u3384\u3385\u3386\u3387\u3388\u3389\u338A\u338B\u338E\u338F"  # ㎄㎅㎆㎇㎈㎉㎊㎋㎎㎏
-    "\u3390\u3391\u3392\u3393\u3394\u3399\u339A\u339C\u339D\u339E"  # ㎐㎑㎒㎓㎔㎙㎚㎜㎝㎞
-    "\u33A9\u33AA\u33AB\u33AC\u33AD\u33B0\u33B1\u33B3\u33B4\u33B5"  # ㎩㎪㎫㎬㎭㎰㎱㎳㎴㎵
-    "\u33B7\u33B8\u33B9\u33BA\u33BB\u33BD\u33BE\u33BF\u33C2\u33C3"  # ㎷㎸㎹㎺㎻㎽㎾㎿㏂㏃
-    "\u33C4\u33C5\u33C7\u33C8\u33C9\u33CA\u33CB\u33CC\u33CD\u33CE"  # ㏄㏅㏇㏈㏉㏊㏋㏌㏍㏎
-    "\u33CF\u33D0\u33D1\u33D2\u33D3\u33D4\u33D5\u33D6\u33D7\u33D8"  # ㏏㏐㏑㏒㏓㏔㏕㏖㏗㏘
-    "\u33D9\u33DA\u33DB\u33DC\u33DD\u249C\u249D\u249E\u249F\u24A0"  # ㏙㏚㏛㏜㏝⒜⒝⒞⒟⒠
-    "\u24A1\u24A2\u24A3\u24A4\u24A5\u24A6\u24A7\u24A8\u24A9\u24AA"  # ⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪
-    "\u24AB\u24AC\u24AD\u24AE\u24AF\u24B0\u24B1\u24B2\u24B3\u24B4"  # ⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴
-    "\u24B5\u2160\u2161\u2162\u2163\u2164\u2165\u2166\u2167\u2168"  # ⒵ⅠⅡⅢⅣⅤⅥⅦⅧⅨ
-    "\u2169\u216A\u216B\u216C\u216D\u216E\u216F\u2170\u2171\u2172"  # ⅩⅪⅫⅬⅭⅮⅯⅰⅱⅲ
-    "\u2173\u2174\u2175\u2176\u2177\u2178\u2179\u217A\u217B\u217C"  # ⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼ
-    "\u217D\u217E\u217F\u2474\u2475\u2476\u2477\u2478\u2479\u247A"  # ⅽⅾⅿ⑴⑵⑶⑷⑸⑹⑺
-    "\u247B\u247C\u247D\u247E\u247F\u2480\u2481\u2482\u2483\u2484"  # ⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄
-    "\u2485\u2486\u2487\u2488\u2489\u248A\u248B\u248C\u248D\u248E"  # ⒅⒆⒇⒈⒉⒊⒋⒌⒍⒎
-    "\u248F\u2490\u2491\u2492\u2493\u2494\u2495\u2496\u2497\u2498"  # ⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘
-    "\u2499\u249A\u249B\uFF10\uFF11\uFF12\uFF13\uFF14\uFF15\uFF16"  # ⒙⒚⒛０１２３４５６
-    "\uFF17\uFF18\uFF19\u2002\u2003\u2004\u2005\u2006\u2007\u2008"  # ７８９\u2002\u2003\u2004\u2005\u2006\u2007\u2008
-    "\u2009\u200A\u205F\uFF02\uFF07\uFE63\uFF0D\u2024\u2025\u2026"  # \u2009\u200A\u205F＂＇﹣－․‥…
-    "\u203C\u2047\u2048\u2049\uFE10\uFE13\uFE14\uFE15\uFE16\uFE19"  # ‼⁇⁈⁉︐︓︔︕︖︙
-    "\uFE30\uFE35\uFE36\uFE37\uFE38\uFE47\uFE48\uFE50\uFE52\uFE54"  # ︰︵︶︷︸﹇﹈﹐﹒﹔
-    "\uFE55\uFE56\uFE57\uFE59\uFE5A\uFE5B\uFE5C\uFE5F\uFE60\uFE61"  # ﹕﹖﹗﹙﹚﹛﹜﹟﹠﹡
-    "\uFE62\uFE64\uFE65\uFE66\uFE68\uFE69\uFE6A\uFE6B\uFF01\uFF03"  # ﹢﹤﹥﹦﹨﹩﹪﹫！＃
-    "\uFF04\uFF05\uFF06\uFF08\uFF09\uFF0A\uFF0B\uFF0C\uFF0E\uFF0F"  # ＄％＆（）＊＋，．／
-    "\uFF1A\uFF1B\uFF1C\uFF1D\uFF1E\uFF1F\uFF20\uFF3B\uFF3C\uFF3D"  # ：；＜＝＞？＠［＼］
-    "\uFF3E\uFF3F\uFF40\uFF5B\uFF5C\uFF5D\uFF5E\u2A74\u2A75\u2A76"  # ＾＿｀｛｜｝～⩴⩵⩶
+    "\u0132\u0133\u017f\u01c7\u01c8\u01c9\u01ca\u01cb\u01cc\u01f1"  # ĲĳſǇǈǉǊǋǌǱ
+    "\u01f2\u01f3\ufb00\ufb01\ufb02\ufb03\ufb04\ufb05\ufb06\uff21"  # ǲǳﬀﬁﬂﬃﬄﬅﬆＡ
+    "\uff22\uff23\uff24\uff25\uff26\uff27\uff28\uff29\uff2a\uff2b"  # ＢＣＤＥＦＧＨＩＪＫ
+    "\uff2c\uff2d\uff2e\uff2f\uff30\uff31\uff32\uff33\uff34\uff35"  # ＬＭＮＯＰＱＲＳＴＵ
+    "\uff36\uff37\uff38\uff39\uff3a\uff41\uff42\uff43\uff44\uff45"  # ＶＷＸＹＺａｂｃｄｅ
+    "\uff46\uff47\uff48\uff49\uff4a\uff4b\uff4c\uff4d\uff4e\uff4f"  # ｆｇｈｉｊｋｌｍｎｏ
+    "\uff50\uff51\uff52\uff53\uff54\uff55\uff56\uff57\uff58\uff59"  # ｐｑｒｓｔｕｖｗｘｙ
+    "\uff5a\u2100\u2101\u2102\u2105\u2106\u210a\u210b\u210c\u210d"  # ｚ℀℁ℂ℅℆ℊℋℌℍ
+    "\u210e\u2110\u2111\u2112\u2113\u2115\u2116\u2119\u211a\u211b"  # ℎℐℑℒℓℕ№ℙℚℛ
+    "\u211c\u211d\u2121\u2124\u2128\u212c\u212d\u212f\u2130\u2131"  # ℜℝ℡ℤℨℬℭℯℰℱ
+    "\u2133\u2134\u2139\u213b\u2145\u2146\u2147\u2148\u2149\u3371"  # ℳℴℹ℻ⅅⅆⅇⅈⅉ㍱
+    "\u3372\u3373\u3374\u3375\u3376\u3377\u337a\u3380\u3381\u3383"  # ㍲㍳㍴㍵㍶㍷㍺㎀㎁㎃
+    "\u3384\u3385\u3386\u3387\u3388\u3389\u338a\u338b\u338e\u338f"  # ㎄㎅㎆㎇㎈㎉㎊㎋㎎㎏
+    "\u3390\u3391\u3392\u3393\u3394\u3399\u339a\u339c\u339d\u339e"  # ㎐㎑㎒㎓㎔㎙㎚㎜㎝㎞
+    "\u33a9\u33aa\u33ab\u33ac\u33ad\u33b0\u33b1\u33b3\u33b4\u33b5"  # ㎩㎪㎫㎬㎭㎰㎱㎳㎴㎵
+    "\u33b7\u33b8\u33b9\u33ba\u33bb\u33bd\u33be\u33bf\u33c2\u33c3"  # ㎷㎸㎹㎺㎻㎽㎾㎿㏂㏃
+    "\u33c4\u33c5\u33c7\u33c8\u33c9\u33ca\u33cb\u33cc\u33cd\u33ce"  # ㏄㏅㏇㏈㏉㏊㏋㏌㏍㏎
+    "\u33cf\u33d0\u33d1\u33d2\u33d3\u33d4\u33d5\u33d6\u33d7\u33d8"  # ㏏㏐㏑㏒㏓㏔㏕㏖㏗㏘
+    "\u33d9\u33da\u33db\u33dc\u33dd\u249c\u249d\u249e\u249f\u24a0"  # ㏙㏚㏛㏜㏝⒜⒝⒞⒟⒠
+    "\u24a1\u24a2\u24a3\u24a4\u24a5\u24a6\u24a7\u24a8\u24a9\u24aa"  # ⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪
+    "\u24ab\u24ac\u24ad\u24ae\u24af\u24b0\u24b1\u24b2\u24b3\u24b4"  # ⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴
+    "\u24b5\u2160\u2161\u2162\u2163\u2164\u2165\u2166\u2167\u2168"  # ⒵ⅠⅡⅢⅣⅤⅥⅦⅧⅨ
+    "\u2169\u216a\u216b\u216c\u216d\u216e\u216f\u2170\u2171\u2172"  # ⅩⅪⅫⅬⅭⅮⅯⅰⅱⅲ
+    "\u2173\u2174\u2175\u2176\u2177\u2178\u2179\u217a\u217b\u217c"  # ⅳⅴⅵⅶⅷⅸⅹⅺⅻⅼ
+    "\u217d\u217e\u217f\u2474\u2475\u2476\u2477\u2478\u2479\u247a"  # ⅽⅾⅿ⑴⑵⑶⑷⑸⑹⑺
+    "\u247b\u247c\u247d\u247e\u247f\u2480\u2481\u2482\u2483\u2484"  # ⑻⑼⑽⑾⑿⒀⒁⒂⒃⒄
+    "\u2485\u2486\u2487\u2488\u2489\u248a\u248b\u248c\u248d\u248e"  # ⒅⒆⒇⒈⒉⒊⒋⒌⒍⒎
+    "\u248f\u2490\u2491\u2492\u2493\u2494\u2495\u2496\u2497\u2498"  # ⒏⒐⒑⒒⒓⒔⒕⒖⒗⒘
+    "\u2499\u249a\u249b\uff10\uff11\uff12\uff13\uff14\uff15\uff16"  # ⒙⒚⒛０１２３４５６
+    "\uff17\uff18\uff19\u2002\u2003\u2004\u2005\u2006\u2007\u2008"  # ７８９\u2002\u2003\u2004\u2005\u2006\u2007\u2008
+    "\u2009\u200a\u205f\uff02\uff07\ufe63\uff0d\u2024\u2025\u2026"  # \u2009\u200A\u205F＂＇﹣－․‥…
+    "\u203c\u2047\u2048\u2049\ufe10\ufe13\ufe14\ufe15\ufe16\ufe19"  # ‼⁇⁈⁉︐︓︔︕︖︙
+    "\ufe30\ufe35\ufe36\ufe37\ufe38\ufe47\ufe48\ufe50\ufe52\ufe54"  # ︰︵︶︷︸﹇﹈﹐﹒﹔
+    "\ufe55\ufe56\ufe57\ufe59\ufe5a\ufe5b\ufe5c\ufe5f\ufe60\ufe61"  # ﹕﹖﹗﹙﹚﹛﹜﹟﹠﹡
+    "\ufe62\ufe64\ufe65\ufe66\ufe68\ufe69\ufe6a\ufe6b\uff01\uff03"  # ﹢﹤﹥﹦﹨﹩﹪﹫！＃
+    "\uff04\uff05\uff06\uff08\uff09\uff0a\uff0b\uff0c\uff0e\uff0f"  # ＄％＆（）＊＋，．／
+    "\uff1a\uff1b\uff1c\uff1d\uff1e\uff1f\uff20\uff3b\uff3c\uff3d"  # ：；＜＝＞？＠［＼］
+    "\uff3e\uff3f\uff40\uff5b\uff5c\uff5d\uff5e\u2a74\u2a75\u2a76"  # ＾＿｀｛｜｝～⩴⩵⩶
 )
 compatibility_to = (
     "IJijsLJLjljNJNjnjDZDzdzfffiflffifflststABCDEFGHIJKLMNOPQRSTU"
@@ -86,39 +86,39 @@ compatibility_to = (
     ":;<=>?@[\\]^_`{|}~::======"
 )
 compatibility_from += (
-    "\u1D00\u1D04\u1D05\u1D07\u1D0A\u1D0B\u1D0D\u1D0F\u1D18\u1D1B"  # ᴀᴄᴅᴇᴊᴋᴍᴏᴘᴛ
-    "\u1D1C\u1D20\u1D21\u1D22\u3007\u00A0\u3000"                    # ᴜᴠᴡᴢ〇\u00A0\u3000
+    "\u1d00\u1d04\u1d05\u1d07\u1d0a\u1d0b\u1d0d\u1d0f\u1d18\u1d1b"  # ᴀᴄᴅᴇᴊᴋᴍᴏᴘᴛ
+    "\u1d1c\u1d20\u1d21\u1d22\u3007\u00a0\u3000"  # ᴜᴠᴡᴢ〇\u00A0\u3000
 )
 compatibility_to += "ACDEJKMOPTUVWZ0  "
 punctuation_from = (
-    "\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F\u2032\u301D"  # ‘’‚‛“”„‟′〝
-    "\u301E\u00AB\u00BB\u2039\u203A\u00AD\u2010\u2012\u2013\u2014"  # 〞«»‹›\u00AD‐‒–—
-    "\u2015\u2016\u2044\u2045\u2046\u204E\u3008\u3009\u300A\u300B"  # ―‖⁄⁅⁆⁎〈〉《》
-    "\u3014\u3015\u3018\u3019\u301A\u301B\u2212\u2215\u2216\u2223"  # 〔〕〘〙〚〛−∕∖∣
-    "\u2225\u226A\u226B\u2985\u2986\u2022\u200B"                    # ∥≪≫⦅⦆•·
+    "\u2018\u2019\u201a\u201b\u201c\u201d\u201e\u201f\u2032\u301d"  # ‘’‚‛“”„‟′〝
+    "\u301e\u00ab\u00bb\u2039\u203a\u00ad\u2010\u2012\u2013\u2014"  # 〞«»‹›\u00AD‐‒–—
+    "\u2015\u2016\u2044\u2045\u2046\u204e\u3008\u3009\u300a\u300b"  # ―‖⁄⁅⁆⁎〈〉《》
+    "\u3014\u3015\u3018\u3019\u301a\u301b\u2212\u2215\u2216\u2223"  # 〔〕〘〙〚〛−∕∖∣
+    "\u2225\u226a\u226b\u2985\u2986\u2022\u200b"  # ∥≪≫⦅⦆•·
 )
 punctuation_to = "''''\"\"\"\"'\"\"<<>><>-----||/[]*<><<>>[][][]-/\\|||<<>>(())-"
 combinations_from = (
-    "\u00C6\u00D0\u00D8\u00DE\u00DF\u00E6\u00F0\u00F8\u00FE\u0110"  # ÆÐØÞßæðøþĐ
-    "\u0111\u0126\u0127\u0131\u0138\u0141\u0142\u014A\u014B\u0152"  # đĦħıĸŁłŊŋŒ
+    "\u00c6\u00d0\u00d8\u00de\u00df\u00e6\u00f0\u00f8\u00fe\u0110"  # ÆÐØÞßæðøþĐ
+    "\u0111\u0126\u0127\u0131\u0138\u0141\u0142\u014a\u014b\u0152"  # đĦħıĸŁłŊŋŒ
     "\u0153\u0166\u0167\u0180\u0181\u0182\u0183\u0187\u0188\u0189"  # œŦŧƀƁƂƃƇƈƉ
-    "\u018A\u018B\u018C\u0190\u0191\u0192\u0193\u0195\u0196\u0197"  # ƊƋƌƐƑƒƓƕƖƗ
-    "\u0198\u0199\u019A\u019D\u019E\u01A2\u01A3\u01A4\u01A5\u01AB"  # ƘƙƚƝƞƢƣƤƥƫ
-    "\u01AC\u01AD\u01AE\u01B2\u01B3\u01B4\u01B5\u01B6\u01E4\u01E5"  # ƬƭƮƲƳƴƵƶǤǥ
-    "\u0221\u0224\u0225\u0234\u0235\u0236\u0237\u0238\u0239\u023A"  # ȡȤȥȴȵȶȷȸȹȺ
-    "\u023B\u023C\u023D\u023E\u023F\u0240\u0243\u0244\u0246\u0247"  # ȻȼȽȾȿɀɃɄɆɇ
-    "\u0248\u0249\u024C\u024D\u024E\u024F\u0253\u0255\u0256\u0257"  # ɈɉɌɍɎɏɓɕɖɗ
-    "\u025B\u025F\u0260\u0261\u0262\u0266\u0267\u0268\u026A\u026B"  # ɛɟɠɡɢɦɧɨɪɫ
-    "\u026C\u026D\u0271\u0272\u0273\u0274\u027C\u027D\u027E\u0280"  # ɬɭɱɲɳɴɼɽɾʀ
-    "\u0282\u0288\u0289\u028B\u028F\u0290\u0291\u0299\u029B\u029C"  # ʂʈʉʋʏʐʑʙʛʜ
-    "\u029D\u029F\u02A0\u02A3\u02A5\u02A6\u02AA\u02AB\u1D03\u1D06"  # ʝʟʠʣʥʦʪʫᴃᴆ
-    "\u1D0C\u1D6B\u1D6C\u1D6D\u1D6E\u1D6F\u1D70\u1D71\u1D72\u1D73"  # ᴌᵫᵬᵭᵮᵯᵰᵱᵲᵳ
-    "\u1D74\u1D75\u1D76\u1D7A\u1D7B\u1D7D\u1D7E\u1D80\u1D81\u1D82"  # ᵴᵵᵶᵺᵻᵽᵾᶀᶁᶂ
-    "\u1D83\u1D84\u1D85\u1D86\u1D87\u1D88\u1D89\u1D8A\u1D8C\u1D8D"  # ᶃᶄᶅᶆᶇᶈᶉᶊᶌᶍ
-    "\u1D8E\u1D8F\u1D91\u1D92\u1D93\u1D96\u1D99\u1E9C\u1E9D\u1E9E"  # ᶎᶏᶑᶒᶓᶖᶙẜẝẞ
-    "\u1EFA\u1EFB\u1EFC\u1EFD\u1EFE\u1EFF\u00A9\u00AE\u20A0\u20A2"  # ỺỻỼỽỾỿ©®₠₢
-    "\u20A3\u20A4\u20A7\u20BA\u20B9\u211E\u3001\u3002\u00D7\u00F7"  # ₣₤₧₺₹℞、。×÷
-    "\u00B7\u1E9F\u0184\u0185\u01BE"                                # ·ẟƄƅƾ
+    "\u018a\u018b\u018c\u0190\u0191\u0192\u0193\u0195\u0196\u0197"  # ƊƋƌƐƑƒƓƕƖƗ
+    "\u0198\u0199\u019a\u019d\u019e\u01a2\u01a3\u01a4\u01a5\u01ab"  # ƘƙƚƝƞƢƣƤƥƫ
+    "\u01ac\u01ad\u01ae\u01b2\u01b3\u01b4\u01b5\u01b6\u01e4\u01e5"  # ƬƭƮƲƳƴƵƶǤǥ
+    "\u0221\u0224\u0225\u0234\u0235\u0236\u0237\u0238\u0239\u023a"  # ȡȤȥȴȵȶȷȸȹȺ
+    "\u023b\u023c\u023d\u023e\u023f\u0240\u0243\u0244\u0246\u0247"  # ȻȼȽȾȿɀɃɄɆɇ
+    "\u0248\u0249\u024c\u024d\u024e\u024f\u0253\u0255\u0256\u0257"  # ɈɉɌɍɎɏɓɕɖɗ
+    "\u025b\u025f\u0260\u0261\u0262\u0266\u0267\u0268\u026a\u026b"  # ɛɟɠɡɢɦɧɨɪɫ
+    "\u026c\u026d\u0271\u0272\u0273\u0274\u027c\u027d\u027e\u0280"  # ɬɭɱɲɳɴɼɽɾʀ
+    "\u0282\u0288\u0289\u028b\u028f\u0290\u0291\u0299\u029b\u029c"  # ʂʈʉʋʏʐʑʙʛʜ
+    "\u029d\u029f\u02a0\u02a3\u02a5\u02a6\u02aa\u02ab\u1d03\u1d06"  # ʝʟʠʣʥʦʪʫᴃᴆ
+    "\u1d0c\u1d6b\u1d6c\u1d6d\u1d6e\u1d6f\u1d70\u1d71\u1d72\u1d73"  # ᴌᵫᵬᵭᵮᵯᵰᵱᵲᵳ
+    "\u1d74\u1d75\u1d76\u1d7a\u1d7b\u1d7d\u1d7e\u1d80\u1d81\u1d82"  # ᵴᵵᵶᵺᵻᵽᵾᶀᶁᶂ
+    "\u1d83\u1d84\u1d85\u1d86\u1d87\u1d88\u1d89\u1d8a\u1d8c\u1d8d"  # ᶃᶄᶅᶆᶇᶈᶉᶊᶌᶍ
+    "\u1d8e\u1d8f\u1d91\u1d92\u1d93\u1d96\u1d99\u1e9c\u1e9d\u1e9e"  # ᶎᶏᶑᶒᶓᶖᶙẜẝẞ
+    "\u1efa\u1efb\u1efc\u1efd\u1efe\u1eff\u00a9\u00ae\u20a0\u20a2"  # ỺỻỼỽỾỿ©®₠₢
+    "\u20a3\u20a4\u20a7\u20ba\u20b9\u211e\u3001\u3002\u00d7\u00f7"  # ₣₤₧₺₹℞、。×÷
+    "\u00b7\u1e9f\u0184\u0185\u01be"  # ·ẟƄƅƾ
 )
 combinations_to = (
     "AEDOETHssaedoethDdHhiqLlNnOEoeTtbBBbCcDDDdEFfGhvII"
@@ -131,7 +131,6 @@ ascii_chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^
 
 
 class CompatibilityTest(PicardTestCase):
-
     def test_correct(self):
         self.maxDiff = None
         self.assertEqual(util.textencoding.unicode_simplify_compatibility(compatibility_from), compatibility_to)
@@ -147,7 +146,6 @@ class CompatibilityTest(PicardTestCase):
 
 
 class PunctuationTest(PicardTestCase):
-
     def test_correct(self):
         self.maxDiff = None
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(compatibility_from), compatibility_from)
@@ -156,8 +154,12 @@ class PunctuationTest(PicardTestCase):
         self.assertEqual(util.textencoding.unicode_simplify_punctuation(ascii_chars), ascii_chars)
 
     def test_pathsave(self):
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True), '__' if IS_WIN else '_\\')
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True), '/\\__' if IS_WIN else '/\\_\\')
+        self.assertEqual(
+            util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True), '__' if IS_WIN else '_\\'
+        )
+        self.assertEqual(
+            util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True), '/\\__' if IS_WIN else '/\\_\\'
+        )
 
     def test_pathsave_win_compat(self):
         self.assertEqual(util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True, True), '__')
@@ -168,7 +170,6 @@ class PunctuationTest(PicardTestCase):
 
 
 class CombinationsTest(PicardTestCase):
-
     def test_correct(self):
         self.maxDiff = None
         self.assertEqual(util.textencoding.unicode_simplify_combinations(combinations_from), combinations_to)
@@ -185,7 +186,6 @@ class CombinationsTest(PicardTestCase):
 
 
 class AsciiPunctTest(PicardTestCase):
-
     def test_correct(self):
         self.assertEqual(util.textencoding.asciipunct("‘Test’"), "'Test'")  # Quotations
         self.assertEqual(util.textencoding.asciipunct("“Test”"), "\"Test\"")  # Quotations
@@ -199,7 +199,6 @@ class AsciiPunctTest(PicardTestCase):
 
 
 class UnaccentTest(PicardTestCase):
-
     def test_correct(self):
         self.assertEqual(util.textencoding.unaccent("Lukáš"), "Lukas")
         self.assertEqual(util.textencoding.unaccent("Björk"), "Bjork")
@@ -214,7 +213,6 @@ class UnaccentTest(PicardTestCase):
 
 
 class ReplaceNonAsciiTest(PicardTestCase):
-
     def test_correct(self):
         self.assertEqual(util.textencoding.replace_non_ascii("Lukáš"), "Lukas")
         self.assertEqual(util.textencoding.replace_non_ascii("Björk"), "Bjork")
@@ -238,7 +236,10 @@ class ReplaceNonAsciiTest(PicardTestCase):
         self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True), expected)
 
     def test_win_compat(self):
-        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True, win_compat=True), '____/8 1_2\\')
+        self.assertEqual(
+            util.textencoding.replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True, win_compat=True),
+            '____/8 1_2\\',
+        )
 
     def test_incorrect(self):
         self.assertNotEqual(util.textencoding.replace_non_ascii("Lukáš"), "Lukáš")
@@ -249,25 +250,30 @@ if show_latin2ascii_coverage:
     # The following code set blocks are taken from:
     # http://en.wikipedia.org/wiki/Latin_script_in_Unicode
     latin_1 = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
-    latin_a = "ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿ" \
-              "ŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž"
-    latin_b = "ƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿ" \
-              "ǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿ" \
-              "ȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟȠȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȸȹȺȻȼȽȾȿ" \
-              "ɀɁɂɃɄɅɆɇɈɉɊɋɌɍɎɏ"
-    ipa_ext = "ɐɑɒɓɔɕɖɗɘəɚɛɜɝɞɟɠɡɢɣɤɥɦɧɨɩɪɫɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏ" \
-              "ʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯ"
-    phonetic = "ᴀᴁᴂᴃᴄᴅᴆᴇᴈᴉᴊᴋᴌᴍᴎᴏᴐᴑᴒᴓᴔᴕᴖᴗᴘᴙᴚᴛᴜᴝᴞᴟᴠᴡᴢᴣᴤᴥᴦᴧᴨᴩᴪᴫᴬᴭᴮᴯᴰᴱᴲᴳᴴᴵᴶᴷᴸᴹᴺᴻᴼᴽᴾᴿ" \
-               "ᵀᵁᵂᵃᵄᵅᵆᵇᵈᵉᵊᵋᵌᵍᵎᵏᵐᵑᵒᵓᵔᵕᵖᵗᵘᵙᵚᵛᵜᵝᵞᵟᵠᵡᵢᵣᵤᵥᵦᵧᵨᵩᵪᵫᵬᵭᵮᵯᵰᵱᵲᵳᵴᵵᵶᵷᵸᵹᵺᵻᵼᵽᵾᵿ" \
-               "ᶀᶁᶂᶃᶄᶅᶆᶇᶈᶉᶊᶋᶌᶍᶎᶏᶐᶑᶒᶓᶔᶕᶖᶗᶘᶙᶚᶛᶜᶝᶞᶟᶠᶡᶢᶣᶤᶥᶦᶧᶨᶩᶪᶫᶬᶭᶮᶯᶰᶱᶲᶳᶴᶵᶶᶷᶸᶹᶺᶻᶼᶽᶾᶿ"
-    latin_ext_add = "ḀḁḂḃḄḅḆḇḈḉḊḋḌḍḎḏḐḑḒḓḔḕḖḗḘḙḚḛḜḝḞḟḠḡḢḣḤḤḦḧḨḩḪḫḬḭḮḯḰḱḲḳḴḵḶḷḸḹḺḻḼḽḾḿ" \
-                    "ṀṁṂṃṄṅṆṇṈṉṊṋṌṍṎṏṐṑṒṓṔṕṖṗṘṙṚṛṜṝṞṟṠṡṢṣṤṥṦṧṨṩṪṫṬṭṮṯṰṱṲṳṴṵṶṷṸṹṺṻṼṽṾṿ" \
-                    "ẀẁẂẃẄẅẆẇẈẉẊẋẌẍẎẏẐẑẒẓẔẕẖẗẘẙẚẛẜẝẞẟẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾế" \
-                    "ỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹỺỻỼỽỾỿ"
-    letter_like = "℀℁ℂ℃℄℅℆ℇ℈℉ℊℋℌℍℎℏℐℑℒℓ℔ℕ№℗℘ℙℚℛℜℝ℞℟℠℡™℣ℤ℥Ω℧ℨ℩KÅℬℭ℮ℯℰℱℲℳℴℵℶℷℸℹ℺℻ℼℽℾℿ" \
-                  "⅀⅁⅂⅃⅄ⅅⅆⅇⅈⅉ⅊⅋⅌⅍ⅎ⅏"
-    enclosed = "⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ" \
-                "ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ⓪⓫⓬⓭⓮⓯"
+    latin_a = (
+        "ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿ"
+        "ŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž"
+    )
+    latin_b = (
+        "ƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿ"
+        "ǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿ"
+        "ȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟȠȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȸȹȺȻȼȽȾȿ"
+        "ɀɁɂɃɄɅɆɇɈɉɊɋɌɍɎɏ"
+    )
+    ipa_ext = "ɐɑɒɓɔɕɖɗɘəɚɛɜɝɞɟɠɡɢɣɤɥɦɧɨɩɪɫɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮʯ"
+    phonetic = (
+        "ᴀᴁᴂᴃᴄᴅᴆᴇᴈᴉᴊᴋᴌᴍᴎᴏᴐᴑᴒᴓᴔᴕᴖᴗᴘᴙᴚᴛᴜᴝᴞᴟᴠᴡᴢᴣᴤᴥᴦᴧᴨᴩᴪᴫᴬᴭᴮᴯᴰᴱᴲᴳᴴᴵᴶᴷᴸᴹᴺᴻᴼᴽᴾᴿ"
+        "ᵀᵁᵂᵃᵄᵅᵆᵇᵈᵉᵊᵋᵌᵍᵎᵏᵐᵑᵒᵓᵔᵕᵖᵗᵘᵙᵚᵛᵜᵝᵞᵟᵠᵡᵢᵣᵤᵥᵦᵧᵨᵩᵪᵫᵬᵭᵮᵯᵰᵱᵲᵳᵴᵵᵶᵷᵸᵹᵺᵻᵼᵽᵾᵿ"
+        "ᶀᶁᶂᶃᶄᶅᶆᶇᶈᶉᶊᶋᶌᶍᶎᶏᶐᶑᶒᶓᶔᶕᶖᶗᶘᶙᶚᶛᶜᶝᶞᶟᶠᶡᶢᶣᶤᶥᶦᶧᶨᶩᶪᶫᶬᶭᶮᶯᶰᶱᶲᶳᶴᶵᶶᶷᶸᶹᶺᶻᶼᶽᶾᶿ"
+    )
+    latin_ext_add = (
+        "ḀḁḂḃḄḅḆḇḈḉḊḋḌḍḎḏḐḑḒḓḔḕḖḗḘḙḚḛḜḝḞḟḠḡḢḣḤḤḦḧḨḩḪḫḬḭḮḯḰḱḲḳḴḵḶḷḸḹḺḻḼḽḾḿ"
+        "ṀṁṂṃṄṅṆṇṈṉṊṋṌṍṎṏṐṑṒṓṔṕṖṗṘṙṚṛṜṝṞṟṠṡṢṣṤṥṦṧṨṩṪṫṬṭṮṯṰṱṲṳṴṵṶṷṸṹṺṻṼṽṾṿ"
+        "ẀẁẂẃẄẅẆẇẈẉẊẋẌẍẎẏẐẑẒẓẔẕẖẗẘẙẚẛẜẝẞẟẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾế"
+        "ỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹỺỻỼỽỾỿ"
+    )
+    letter_like = "℀℁ℂ℃℄℅℆ℇ℈℉ℊℋℌℍℎℏℐℑℒℓ℔ℕ№℗℘ℙℚℛℜℝ℞℟℠℡™℣ℤ℥Ω℧ℨ℩KÅℬℭ℮ℯℰℱℲℳℴℵℶℷℸℹ℺℻ℼℽℾℿ⅀⅁⅂⅃⅄ⅅⅆⅇⅈⅉ⅊⅋⅌⅍ⅎ⅏"
+    enclosed = "⒐⒑⒒⒓⒔⒕⒖⒗⒘⒙⒚⒛⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ⓪⓫⓬⓭⓮⓯"
 
     print("The following lines show the coverage of Latin characters conversion to ascii.")
     print("Underscores are characters which currently do not have an ASCII representation.")

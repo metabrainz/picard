@@ -51,14 +51,12 @@ from picard.ui.util import FileDialog
 
 
 class ApiKeyValidator(QtGui.QValidator):
-
     def validate(self, input, pos):
         # Strip whitespace to avoid typical copy and paste user errors
         return (QtGui.QValidator.State.Acceptable, input.strip(), pos)
 
 
 class FingerprintingOptionsPage(OptionsPage):
-
     NAME = 'fingerprinting'
     TITLE = N_("Fingerprinting")
     PARENT = None
@@ -97,7 +95,9 @@ class FingerprintingOptionsPage(OptionsPage):
         self.ui.acoustid_fpcalc.setPlaceholderText(find_fpcalc())
         self.ui.acoustid_fpcalc.setText(config.setting['acoustid_fpcalc'])
         self.ui.acoustid_apikey.setText(config.setting['acoustid_apikey'])
-        self.ui.ignore_existing_acoustid_fingerprints.setChecked(config.setting['ignore_existing_acoustid_fingerprints'])
+        self.ui.ignore_existing_acoustid_fingerprints.setChecked(
+            config.setting['ignore_existing_acoustid_fingerprints']
+        )
         self.ui.save_acoustid_fingerprints.setChecked(config.setting['save_acoustid_fingerprints'])
         self.ui.fpcalc_threads.setValue(config.setting['fpcalc_threads'])
         self.update_groupboxes()
@@ -110,7 +110,9 @@ class FingerprintingOptionsPage(OptionsPage):
             config.setting['fingerprinting_system'] = ''
         config.setting['acoustid_fpcalc'] = self.ui.acoustid_fpcalc.text()
         config.setting['acoustid_apikey'] = self.ui.acoustid_apikey.text()
-        config.setting['ignore_existing_acoustid_fingerprints'] = self.ui.ignore_existing_acoustid_fingerprints.isChecked()
+        config.setting['ignore_existing_acoustid_fingerprints'] = (
+            self.ui.ignore_existing_acoustid_fingerprints.isChecked()
+        )
         config.setting['save_acoustid_fingerprints'] = self.ui.save_acoustid_fingerprints.isChecked()
         config.setting['fpcalc_threads'] = self.ui.fpcalc_threads.value()
 

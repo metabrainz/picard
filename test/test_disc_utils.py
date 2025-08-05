@@ -37,7 +37,6 @@ test_entries = [
 
 
 class TestCalculateMbTocNumbers(PicardTestCase):
-
     def test_calculate_mb_toc_numbers(self):
         self.assertEqual((1, 3, 60890, 150, 25064, 43611), calculate_mb_toc_numbers(test_entries))
 

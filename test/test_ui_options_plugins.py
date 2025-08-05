@@ -25,7 +25,6 @@ from picard.ui.options.plugins import PluginsOptionsPage
 
 
 class PluginsOptionsPageTest(PicardTestCase):
-
     def test_link_authors(self):
         self.assertEqual(
             '<a href="mailto:coyote@acme.com">Wile E. Coyote</a>, Road &lt;Runner&gt;',

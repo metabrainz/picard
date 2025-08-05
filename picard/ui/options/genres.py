@@ -79,7 +79,6 @@ Green background means the tag will be kept.
 
 
 class GenresOptionsPage(OptionsPage):
-
     NAME = 'genres'
     TITLE = N_("Genres")
     PARENT = 'metadata'
@@ -148,9 +147,7 @@ class GenresOptionsPage(OptionsPage):
         tagfilter = TagGenreFilter(filters)
 
         # FIXME: very simple error reporting, improve
-        self.ui.label_test_genres_filter_error.setText(
-            "\n".join(tagfilter.format_errors())
-        )
+        self.ui.label_test_genres_filter_error.setText("\n".join(tagfilter.format_errors()))
 
         def set_line_fmt(lineno, textformat):
             obj = self.ui.test_genres_filter

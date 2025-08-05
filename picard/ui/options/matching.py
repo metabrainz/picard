@@ -31,7 +31,6 @@ from picard.ui.options import OptionsPage
 
 
 class MatchingOptionsPage(OptionsPage):
-
     NAME = 'matching'
     TITLE = N_("Matching")
     PARENT = 'advanced'

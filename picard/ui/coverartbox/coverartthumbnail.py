@@ -100,7 +100,9 @@ class CoverArtThumbnail(ActiveLabel):
             pixmap = self._pixmap_cache[key]
         except KeyError:
             pixmap = QtGui.QPixmap(pixmap_path)
-            pixmap = pixmap.scaled(w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+            pixmap = pixmap.scaled(
+                w, h, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation
+            )
             pixmap.setDevicePixelRatio(self.pixel_ratio)
             self._pixmap_cache[key] = pixmap
         return pixmap
@@ -138,8 +140,7 @@ class CoverArtThumbnail(ActiveLabel):
             for url in mime_data.urls():
                 if url.scheme() in {'https', 'http', 'file'}:
                     accepted = True
-                    log.debug("Dropped %s url (with %d bytes of data)",
-                              url.toString(), len(dropped_data or ''))
+                    log.debug("Dropped %s url (with %d bytes of data)", url.toString(), len(dropped_data or ''))
                     self.image_dropped.emit(url, dropped_data)
 
         if not accepted:
@@ -206,7 +207,11 @@ class CoverArtThumbnail(ActiveLabel):
         w = h = COVERART_WIDTH
         cover = QtGui.QPixmap(self.shadow)
         cover.setDevicePixelRatio(self.pixel_ratio)
-        pixmap = pixmap.scaled(*self.scaled(w, h), QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+        pixmap = pixmap.scaled(
+            *self.scaled(w, h),
+            QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+            QtCore.Qt.TransformationMode.SmoothTransformation,
+        )
         pixmap.setDevicePixelRatio(self.pixel_ratio)
         painter = QtGui.QPainter(cover)
         bgcolor = QtGui.QColor.fromRgb(0, 0, 0, 128)
@@ -227,7 +232,7 @@ class CoverArtThumbnail(ActiveLabel):
         displacements = 20
         limited = len(data) > MAX_COVERS_TO_STACK
         if limited:
-            data_to_paint = data[:MAX_COVERS_TO_STACK - 1]
+            data_to_paint = data[: MAX_COVERS_TO_STACK - 1]
             offset = displacements * len(data_to_paint)
         else:
             data_to_paint = data
@@ -292,9 +297,18 @@ class CoverArtThumbnail(ActiveLabel):
             for k in range(5):
                 bgcolor.setAlpha(80 + k * 255 // 7)
                 painter.setPen(bgcolor)
-                painter.drawLine(x + COVERART_WIDTH + 2, y + COVERART_WIDTH + 2 + k, x + COVERART_WIDTH + border_length + 2, y + COVERART_WIDTH + 2 + k)
+                painter.drawLine(
+                    x + COVERART_WIDTH + 2,
+                    y + COVERART_WIDTH + 2 + k,
+                    x + COVERART_WIDTH + border_length + 2,
+                    y + COVERART_WIDTH + 2 + k,
+                )
         painter.end()
-        return pixmap.scaled(*self.scaled(w, h), QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation)
+        return pixmap.scaled(
+            *self.scaled(w, h),
+            QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+            QtCore.Qt.TransformationMode.SmoothTransformation,
+        )
 
     def set_metadata(self, metadata):
         data = None

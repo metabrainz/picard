@@ -83,6 +83,7 @@ except ImportError:
         while batch := tuple(islice(it, n)):
             yield batch
 
+
 UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
 UFID_OWNER = 'http://musicbrainz.org'
 
@@ -97,10 +98,7 @@ class Id3Encoding(IntEnum):
 
     @staticmethod
     def from_config(id3v2_encoding):
-        return {
-            'utf-8': Id3Encoding.UTF8,
-            'utf-16': Id3Encoding.UTF16
-        }.get(id3v2_encoding, Id3Encoding.LATIN1)
+        return {'utf-8': Id3Encoding.UTF8, 'utf-16': Id3Encoding.UTF16}.get(id3v2_encoding, Id3Encoding.LATIN1)
 
 
 def id3text(text, encoding):
@@ -126,8 +124,8 @@ def _remove_people_with_role(tags, frames, role):
 
 
 class ID3File(File):
-
     """Generic ID3-based file."""
+
     _IsMP3 = False
 
     __upgrade = {
@@ -174,12 +172,11 @@ class ID3File(File):
         'TOAL': 'originalalbum',
         'TOPE': 'originalartist',
         'TOFN': 'originalfilename',
-
         # The following are informal iTunes extensions to id3v2:
         'TCMP': 'compilation',
         'TSOC': 'composersort',
         'TSO2': 'albumartistsort',
-        'MVNM': 'movement'
+        'MVNM': 'movement',
     }
     __rtranslate = {v: k for k, v in __translate.items()}
     __translate['GRP1'] = 'grouping'  # Always read, but writing depends on itunes_compatible_grouping
@@ -244,13 +241,18 @@ class ID3File(File):
     }
     _rtipl_roles = {v: k for k, v in _tipl_roles.items()}
 
-    __other_supported_tags = ('discnumber', 'tracknumber',
-                              'totaldiscs', 'totaltracks',
-                              'movementnumber', 'movementtotal')
+    __other_supported_tags = (
+        'discnumber',
+        'tracknumber',
+        'totaldiscs',
+        'totaltracks',
+        'movementnumber',
+        'movementtotal',
+    )
     __tag_re_parse = {
         'TRCK': re.compile(r'^(?P<tracknumber>\d+)(?:/(?P<totaltracks>\d+))?$'),
         'TPOS': re.compile(r'^(?P<discnumber>\d+)(?:/(?P<totaldiscs>\d+))?$'),
-        'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$')
+        'MVIN': re.compile(r'^(?P<movementnumber>\d+)(?:/(?P<movementtotal>\d+))?$'),
     }
 
     __lrc_time_format_re = r'\d+:\d{1,2}(?:.\d+)?'
@@ -328,7 +330,7 @@ class ID3File(File):
             'file_length': file.info.length,
             'itunes_compatible': config.setting['itunes_compatible_grouping'],
             'rating_user_email': id3_rating_user_email(config),
-            'rating_steps': config.setting['rating_steps']
+            'rating_steps': config.setting['rating_steps'],
         }
 
     def _upgrade_23_frames(self, tags):
@@ -413,8 +415,7 @@ class ID3File(File):
             self.__casemap[name] = orig_name
         elif name in self.__translate_freetext:
             name = self.__translate_freetext[name]
-        elif ((name in self.__rtranslate)
-              != (name in self.__rtranslate_freetext)):
+        elif (name in self.__rtranslate) != (name in self.__rtranslate_freetext):
             name = '~id3:TXXX:' + name
         for text in frame.text:
             metadata.add(name, text)
@@ -433,12 +434,14 @@ class ID3File(File):
         Handles synchronized lyrics with timing information.
         """
         if frame.type != 1:
-            log.warning("Unsupported SYLT type %d in %r, only type 1 is supported",
-                       frame.type, config_params['filename'])
+            log.warning(
+                "Unsupported SYLT type %d in %r, only type 1 is supported", frame.type, config_params['filename']
+            )
             return
         if frame.format != 2:
-            log.warning("Unsupported SYLT format %d in %r, only format 2 is supported",
-                       frame.format, config_params['filename'])
+            log.warning(
+                "Unsupported SYLT format %d in %r, only format 2 is supported", frame.format, config_params['filename']
+            )
             return
         name = 'syncedlyrics'
         if frame.lang:
@@ -583,9 +586,11 @@ class ID3File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return ((name and not name.startswith('~') and name not in UNSUPPORTED_TAGS)
-                or name == '~rating'
-                or name.startswith('~id3'))
+        return (
+            (name and not name.startswith('~') and name not in UNSUPPORTED_TAGS)
+            or name == '~rating'
+            or name.startswith('~id3')
+        )
 
     def _get_tag_name(self, name):
         if name in self.__rtranslate:
@@ -645,15 +650,13 @@ class ID3File(File):
 
         # If this is a multi-valued field, then it needs to be flattened,
         # unless it's TIPL or TMCL which can still be multi-valued.
-        if (len(values) > 1 and tag not in ID3File._rtipl_roles
-                and not tag.startswith('performer:')):
+        if len(values) > 1 and tag not in ID3File._rtipl_roles and not tag.startswith('performer:'):
             join_with = settings['id3v23_join_with']
             values = [join_with.join(values)]
 
         return values
 
     def _parse_sylt_text(self, text, length):
-
         def milliseconds_to_timestamp(ms):
             minutes = ms // (60 * 1000)
             seconds = (ms % (60 * 1000)) // 1000
@@ -710,10 +713,7 @@ class ID3File(File):
                 text = '%s/%s' % (metadata[number_tag], metadata[total_tag])
             else:
                 text = metadata[number_tag]
-            tags.add(getattr(id3, frame_id)(
-                encoding=Id3Encoding.LATIN1,
-                text=id3text(text, Id3Encoding.LATIN1)
-            ))
+            tags.add(getattr(id3, frame_id)(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
 
     def _save_images_to_tags(self, tags, metadata):
         """Save cover art images to tags."""
@@ -732,13 +732,15 @@ class ID3File(File):
                 else:
                     desctag = "(%i)" % counters[desc]
             counters[desc] += 1
-            tags.add(id3.APIC(
-                encoding=Id3Encoding.LATIN1,
-                mime=image.mimetype,
-                type=image.id3_type,
-                desc=id3text(desctag, Id3Encoding.LATIN1),
-                data=image.data
-            ))
+            tags.add(
+                id3.APIC(
+                    encoding=Id3Encoding.LATIN1,
+                    mime=image.mimetype,
+                    type=image.id3_type,
+                    desc=id3text(desctag, Id3Encoding.LATIN1),
+                    data=image.data,
+                )
+            )
 
     def _save_comment_tag(self, tags, name, values, config_params):
         """Save comment tag to ID3 frames."""
@@ -901,7 +903,7 @@ class ID3File(File):
         """Create and return TMCL and TIPL frames for storing people information."""
         return {
             'tmcl': mutagen.id3.TMCL(encoding=encoding, people=[]),
-            'tipl': mutagen.id3.TIPL(encoding=encoding, people=[])
+            'tipl': mutagen.id3.TIPL(encoding=encoding, people=[]),
         }
 
     def _save_people_frames(self, tags, people_frames):
@@ -964,8 +966,7 @@ class ID3File(File):
         """Remove comment tag from ID3 frames."""
         (lang, desc) = parse_comment_tag(name)
         for key, frame in list(tags.items()):
-            if (frame.FrameID == 'COMM' and frame.desc == desc
-                    and frame.lang == lang):
+            if frame.FrameID == 'COMM' and frame.desc == desc and frame.lang == lang:
                 del tags[key]
 
     def _remove_lyrics_tag(self, tags, name):
@@ -982,8 +983,7 @@ class ID3File(File):
         """Remove synchronized lyrics tag from ID3 frames."""
         (lang, desc) = parse_subtag(name)
         for key, frame in list(tags.items()):
-            if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang \
-                    and frame.type == 1:
+            if frame.FrameID == 'SYLT' and frame.desc == desc and frame.lang == lang and frame.type == 1:
                 del tags[key]
 
     def _remove_rtipl_role_tag(self, tags, name):
@@ -1037,8 +1037,8 @@ class ID3File(File):
 
 
 class MP3File(ID3File):
-
     """MP3 file."""
+
     EXTENSIONS = [".mp3", ".mp2", ".m2a"]
     NAME = "MPEG-1 Audio"
     _IsMP3 = True
@@ -1056,8 +1056,8 @@ class MP3File(ID3File):
 
 
 class TrueAudioFile(ID3File):
-
     """TTA file."""
+
     EXTENSIONS = [".tta"]
     NAME = "The True Audio"
     _File = mutagen.trueaudio.TrueAudio
@@ -1090,16 +1090,16 @@ class NonCompatID3File(ID3File):
 
 
 class DSFFile(NonCompatID3File):
-
     """DSF file."""
+
     EXTENSIONS = [".dsf"]
     NAME = "DSF"
     _File = mutagen.dsf.DSF
 
 
 class AiffFile(NonCompatID3File):
-
     """AIFF file."""
+
     EXTENSIONS = [".aiff", ".aif", ".aifc"]
     NAME = "Audio Interchange File Format (AIFF)"
     _File = mutagen.aiff.AIFF
@@ -1109,8 +1109,8 @@ try:
     import mutagen.dsdiff
 
     class DSDIFFFile(NonCompatID3File):
-
         """DSF file."""
+
         EXTENSIONS = [".dff"]
         NAME = "DSDIFF"
         _File = mutagen.dsdiff.DSDIFF

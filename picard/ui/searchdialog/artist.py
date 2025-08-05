@@ -39,38 +39,40 @@ from picard.ui.searchdialog import (
 
 
 class ArtistSearchDialog(SearchDialog):
-
     dialog_header_state = 'artistsearchdialog_header_state'
 
     def __init__(self, parent):
-        self.columns = Columns((
-            Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT, width=150),
-            Column(N_("Comment"), '~artistcomment'),
-            Column(N_("Type"), 'type'),
-            Column(N_("Gender"), 'gender'),
-            Column(N_("Area"), 'area'),
-            Column(N_("Begin"), 'begindate'),
-            Column(N_("Begin Area"), 'beginarea'),
-            Column(N_("End"), 'enddate'),
-            Column(N_("End Area"), 'endarea'),
-            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
-        ), default_width=100)
+        self.columns = Columns(
+            (
+                Column(N_("Name"), 'name', sort_type=ColumnSortType.NAT, width=150),
+                Column(N_("Comment"), '~artistcomment'),
+                Column(N_("Type"), 'type'),
+                Column(N_("Gender"), 'gender'),
+                Column(N_("Area"), 'area'),
+                Column(N_("Begin"), 'begindate'),
+                Column(N_("Begin Area"), 'beginarea'),
+                Column(N_("End"), 'enddate'),
+                Column(N_("End Area"), 'endarea'),
+                Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
+            ),
+            default_width=100,
+        )
         super().__init__(
-            parent,
-            N_("Artist Search Dialog"),
-            accept_button_title=N_("Show in browser"),
-            search_type='artist')
+            parent, N_("Artist Search Dialog"), accept_button_title=N_("Show in browser"), search_type='artist'
+        )
 
     def search(self, text):
         self.retry_params = Retry(self.search, text)
         self.search_box_text(text)
         self.show_progress()
         config = get_config()
-        self.tagger.mb_api.find_artists(self.handle_reply,
-                                        query=text,
-                                        search=True,
-                                        advanced_search=self.use_advanced_search,
-                                        limit=config.setting['query_limit'])
+        self.tagger.mb_api.find_artists(
+            self.handle_reply,
+            query=text,
+            search=True,
+            advanced_search=self.use_advanced_search,
+            limit=config.setting['query_limit'],
+        )
 
     def retry(self):
         self.retry_params.function(self.retry_params.query)

@@ -54,6 +54,7 @@ from enum import (
 # TODO: when Python 3.11 will the lowest version supported move this to StrEnum
 # see https://tsak.dev/posts/python-enum/
 
+
 @unique
 class MainAction(str, Enum):
     ABOUT = 'about_action'

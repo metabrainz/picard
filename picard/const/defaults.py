@@ -69,7 +69,9 @@ DEFAULT_WIN_COMPAT_REPLACEMENTS = {
 DEFAULT_MUSIC_DIR = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.MusicLocation)
 
 DEFAULT_RELEASE_SCORE = 0.5
-DEFAULT_RELEASE_TYPE_SCORES = [(g, DEFAULT_RELEASE_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())]
+DEFAULT_RELEASE_TYPE_SCORES = [
+    (g, DEFAULT_RELEASE_SCORE) for g in list(RELEASE_PRIMARY_GROUPS.keys()) + list(RELEASE_SECONDARY_GROUPS.keys())
+]
 
 
 DEFAULT_CAA_IMAGE_SIZE = 500
@@ -134,18 +136,22 @@ DEFAULT_TOP_TAGS = [
     'date',
 ]
 
-DEFAULT_AUTOBACKUP_DIRECTORY = os.path.normpath(QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation))
+DEFAULT_AUTOBACKUP_DIRECTORY = os.path.normpath(
+    QStandardPaths.writableLocation(QStandardPaths.StandardLocation.DocumentsLocation)
+)
 
-DEFAULT_CACHE_SIZE_IN_BYTES = 100*CACHE_SIZE_DISPLAY_UNIT
+DEFAULT_CACHE_SIZE_IN_BYTES = 100 * CACHE_SIZE_DISPLAY_UNIT
 
 DEFAULT_LONG_PATHS = system_supports_long_paths() if IS_WIN else False
 
-DEFAULT_FILE_NAMING_FORMAT = "$if2(%albumartist%,%artist%)/\n" \
-    "$if(%albumartist%,%album%/,)\n" \
-    "$if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)" \
-    "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)" \
-    "$if(%_multiartist%,%artist% - ,)" \
+DEFAULT_FILE_NAMING_FORMAT = (
+    "$if2(%albumartist%,%artist%)/\n"
+    "$if(%albumartist%,%album%/,)\n"
+    "$if($gt(%totaldiscs%,1),$if($gt(%totaldiscs%,9),$num(%discnumber%,2),%discnumber%)-,)"
+    "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)"
+    "$if(%_multiartist%,%artist% - ,)"
     "%title%"
+)
 
 
 DEFAULT_SCRIPT_NAME = N_("My script")

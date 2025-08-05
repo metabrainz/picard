@@ -52,10 +52,7 @@ class MimeDataHelper:
         if self.is_registered(mimetype):
             raise ValueError(f"MIME type '{mimetype}' is already registered.")
 
-        self._registry[mimetype] = self.MimeConverters(
-            encode_func=encode_func,
-            decode_func=decode_func
-        )
+        self._registry[mimetype] = self.MimeConverters(encode_func=encode_func, decode_func=decode_func)
 
     def is_registered(self, mimetype):
         return mimetype in self._registry

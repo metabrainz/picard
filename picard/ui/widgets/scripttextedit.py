@@ -70,7 +70,6 @@ def find_regex_index(regex, text, start=0):
 
 
 class HighlightRule:
-
     def __init__(self, fmtname, regex, start_offset=0, end_offset=0):
         self.fmtname = fmtname
         self.regex = re.compile(regex)
@@ -79,7 +78,6 @@ class HighlightRule:
 
 
 class HighlightFormat(QtGui.QTextCharFormat):
-
     def __init__(self, fg_color=None, italic=False, bold=False):
         super().__init__()
         if fg_color is not None:
@@ -91,7 +89,6 @@ class HighlightFormat(QtGui.QTextCharFormat):
 
 
 class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
-
     def __init__(self, document):
         super().__init__(document)
 
@@ -106,13 +103,15 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
         }
 
         self.rules = list(self.func_rules())
-        self.rules.extend((
-            HighlightRule('unknown_func', r"\$(?!noop)[_a-zA-Z0-9]*\(", end_offset=-1),
-            HighlightRule('var', r"%[_a-zA-Z0-9:]*%"),
-            HighlightRule('unicode', r"\\u[a-fA-F0-9]{4}"),
-            HighlightRule('escape', r"\\[^u]"),
-            HighlightRule('special', r"(?<!\\)[(),]"),
-        ))
+        self.rules.extend(
+            (
+                HighlightRule('unknown_func', r"\$(?!noop)[_a-zA-Z0-9]*\(", end_offset=-1),
+                HighlightRule('var', r"%[_a-zA-Z0-9:]*%"),
+                HighlightRule('unicode', r"\\u[a-fA-F0-9]{4}"),
+                HighlightRule('escape', r"\\[^u]"),
+                HighlightRule('special', r"(?<!\\)[(),]"),
+            )
+        )
 
     def func_rules(self):
         for func_name in script_function_names():
@@ -191,7 +190,6 @@ class ScriptCompleter(QCompleter):
 
 
 class DocumentedScriptToken:
-
     allowed_chars = re.compile('[A-Za-z0-9_]')
 
     def __init__(self, doc, cursor_position):
@@ -231,7 +229,6 @@ class DocumentedScriptToken:
 
 
 class FunctionScriptToken(DocumentedScriptToken):
-
     def is_start_char(self, char):
         return char == '$'
 
@@ -242,17 +239,12 @@ class FunctionScriptToken(DocumentedScriptToken):
         try:
             return script_function_documentation(function, 'html')
         except ScriptFunctionDocUnknownFunctionError:
-            return _(
-                '<em>Function <code>$%s</code> does not exist.<br>'
-                '<br>'
-                'Are you missing a plugin?'
-                '</em>') % function
+            return _('<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a plugin?</em>') % function
         except ScriptFunctionDocError:
             return None
 
 
 class VariableScriptToken(DocumentedScriptToken):
-
     allowed_chars = re.compile('[A-Za-z0-9_:]')
 
     def is_start_char(self, char):
@@ -266,7 +258,6 @@ class VariableScriptToken(DocumentedScriptToken):
 
 
 class UnicodeEscapeScriptToken(DocumentedScriptToken):
-
     allowed_chars = re.compile('[uA-Fa-f0-9]')
     unicode_escape_sequence = re.compile('^\\\\u[a-fA-F0-9]{4}$')
 
@@ -368,7 +359,7 @@ class ScriptTextEdit(QTextEdit):
         documented_tokens = {
             FunctionScriptToken(doc, position),
             VariableScriptToken(doc, position),
-            UnicodeEscapeScriptToken(doc, position)
+            UnicodeEscapeScriptToken(doc, position),
         }
         while position >= 0 and documented_tokens:
             char = doc.characterAt(position)
@@ -393,8 +384,7 @@ class ScriptTextEdit(QTextEdit):
         self.update_wordwrap()
 
     def update_wordwrap(self):
-        """Toggles wordwrap in the script editor
-        """
+        """Toggles wordwrap in the script editor"""
         wordwrap = self.wordwrap_action.isChecked()
         config = get_config()
         config.persist['script_editor_wordwrap'] = wordwrap
@@ -404,8 +394,7 @@ class ScriptTextEdit(QTextEdit):
             self.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
     def update_show_tooltips(self):
-        """Toggles wordwrap in the script editor
-        """
+        """Toggles wordwrap in the script editor"""
         self._show_tooltips = self.show_tooltips_action.isChecked()
         config = get_config()
         config.persist['script_editor_tooltips'] = self._show_tooltips
@@ -490,9 +479,11 @@ class ScriptTextEdit(QTextEdit):
         # requested auto completion with Ctrl+Space (Control+Space on macOS)
         modifier = QtCore.Qt.KeyboardModifier.MetaModifier if IS_MACOS else QtCore.Qt.KeyboardModifier.ControlModifier
         force_completion_popup = event.key() == QtCore.Qt.Key.Key_Space and event.modifiers() & modifier
-        if not (force_completion_popup
-                or event.key() in {Qt.Key.Key_Backspace, Qt.Key.Key_Delete}
-                or self.autocomplete_trigger_chars.match(event.text())):
+        if not (
+            force_completion_popup
+            or event.key() in {Qt.Key.Key_Backspace, Qt.Key.Key_Delete}
+            or self.autocomplete_trigger_chars.match(event.text())
+        ):
             self.popup_hide()
             return
 
@@ -504,10 +495,7 @@ class ScriptTextEdit(QTextEdit):
             popup.setCurrentIndex(self.completer.currentIndex())
 
             cr = self.cursorRect()
-            cr.setWidth(
-                popup.sizeHintForColumn(0)
-                + popup.verticalScrollBar().sizeHint().width()
-            )
+            cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
             self.completer.complete(cr)
         else:
             self.popup_hide()

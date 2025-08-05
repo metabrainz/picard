@@ -104,8 +104,14 @@ class TagVarTest(PicardTestCase):
         self.assertEqual(tv.script_name(), '_name')
 
     def test_basic_notes(self):
-        see_also = ('a', 'b',)
-        related_options = ('o1', 'o2',)
+        see_also = (
+            'a',
+            'b',
+        )
+        related_options = (
+            'o1',
+            'o2',
+        )
         doc_links = (
             DocumentLink('L1', 'U1'),
             DocumentLink('L2', 'U2'),
@@ -124,7 +130,6 @@ class TagVarTest(PicardTestCase):
 
 
 class TagVarsTest(PicardTestCase):
-
     def setUp(self):
         self.old_registry = dict(Option.registry)
         self.tagvar_only_sd = TagVar('only_sd', shortdesc='only_sd_shortdesc')
@@ -133,17 +138,37 @@ class TagVarsTest(PicardTestCase):
         self.tagvar_hidden_sd = TagVar('hidden_sd', is_hidden=True, shortdesc='hidden_sd_shortdesc')
         self.tagvar_notag = TagVar('notag', is_tag=False)
         self.tagvar_nodesc = TagVar('nodesc')
-        self.tagvar_notes1 = TagVar('notes1', shortdesc='notes1_sd', longdesc='notes1_ld', is_preserved=True, is_calculated=True,
-                                   is_file_info=True, is_hidden=True, is_script_variable=False)
-        self.tagvar_notes2 = TagVar('notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False)
+        self.tagvar_notes1 = TagVar(
+            'notes1',
+            shortdesc='notes1_sd',
+            longdesc='notes1_ld',
+            is_preserved=True,
+            is_calculated=True,
+            is_file_info=True,
+            is_hidden=True,
+            is_script_variable=False,
+        )
+        self.tagvar_notes2 = TagVar(
+            'notes2', shortdesc='notes2_sd', longdesc='notes2_ld', is_file_info=True, is_from_mb=False
+        )
         self.tagvar_notes3 = TagVar('notes3', shortdesc='notes3_sd', longdesc='notes3_ld', is_from_mb=False)
-        self.tagvar_everything = TagVar('everything', shortdesc='everything sd', longdesc='everything ld.',
-                                        additionaldesc='Test additional description.', is_preserved=True,
-                                        is_script_variable=False, is_tag=False, is_calculated=True, is_file_info=True, is_from_mb=False,
-                                        is_populated_by_picard=False, is_multi_value=True,
-                                        see_also=('_hidden_sd', 'sd_ld'),
-                                        related_options=('everything_test', 'not_a_valid_option_setting'),
-                                        doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),))
+        self.tagvar_everything = TagVar(
+            'everything',
+            shortdesc='everything sd',
+            longdesc='everything ld.',
+            additionaldesc='Test additional description.',
+            is_preserved=True,
+            is_script_variable=False,
+            is_tag=False,
+            is_calculated=True,
+            is_file_info=True,
+            is_from_mb=False,
+            is_populated_by_picard=False,
+            is_multi_value=True,
+            see_also=('_hidden_sd', 'sd_ld'),
+            related_options=('everything_test', 'not_a_valid_option_setting'),
+            doc_links=(DocumentLink('Test link', PICARD_URLS['mb_doc'] + 'test'),),
+        )
         if ('setting', 'everything_test') not in Option.registry:
             Option('setting', 'everything_test', None, title='Everything test setting')
 
@@ -287,7 +312,9 @@ class TagVarsTest(PicardTestCase):
             self.tagvar_notes2,
             self.tagvar_notes3,
         )
-        self.assertEqual(tagvars.display_tooltip('unknown'), '<p><em>%unknown%</em></p><p>No description available.</p>')
+        self.assertEqual(
+            tagvars.display_tooltip('unknown'), '<p><em>%unknown%</em></p><p>No description available.</p>'
+        )
 
         self.assertEqual(tagvars.display_tooltip('nodesc'), '<p><em>%nodesc%</em></p><p>nodesc</p>')
 
@@ -307,8 +334,7 @@ class TagVarsTest(PicardTestCase):
         self.assertEqual(tagvars.display_tooltip('notes2'), result)
 
         result = (
-            '<p><em>%notes3%</em></p><p>notes3_ld</p>'
-            '<p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
+            '<p><em>%notes3%</em></p><p>notes3_ld</p><p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
         )
         self.assertEqual(tagvars.display_tooltip('notes3'), result)
 
@@ -321,8 +347,13 @@ class TagVarsTest(PicardTestCase):
             self.tagvar_notes1,
         )
         self.assertEqual(tagvars.display_tooltip('nodesc'), '<p dir="rtl"><em>%nodesc%</em></p><p>_(nodesc)</p>')
-        self.assertEqual(tagvars.display_tooltip('only_sd'), '<p dir="rtl"><em>%only_sd%</em></p><p>_(only_sd_shortdesc)</p>')
-        self.assertEqual(tagvars.display_tooltip('~hidden:xxx'), '<p dir="rtl"><em>%_hidden%</em> [xxx]</p><p>_(No description available.)</p>')
+        self.assertEqual(
+            tagvars.display_tooltip('only_sd'), '<p dir="rtl"><em>%only_sd%</em></p><p>_(only_sd_shortdesc)</p>'
+        )
+        self.assertEqual(
+            tagvars.display_tooltip('~hidden:xxx'),
+            '<p dir="rtl"><em>%_hidden%</em> [xxx]</p><p>_(No description available.)</p>',
+        )
 
         result = (
             '<p dir="rtl"><em>%_notes1%</em></p><p>_(notes1_ld)</p>'
@@ -353,7 +384,6 @@ class TagVarsTest(PicardTestCase):
 
 class UtilTagsTest(PicardTestCase):
     def test_display_tag_name(self):
-
         # Tag with no extra parts and no description
         self.assertEqual(display_tag_name('tag'), 'tag')
 
@@ -397,14 +427,11 @@ class UtilTagsTest(PicardTestCase):
         # Unknown tag
         self.assertEqual(
             display_tag_tooltip('unknown_test_variable'),
-            '<p><em>%unknown_test_variable%</em></p><p>No description available.</p>'
+            '<p><em>%unknown_test_variable%</em></p><p>No description available.</p>',
         )
 
         # Normal tag without notes.
-        self.assertEqual(
-            display_tag_tooltip('album'),
-            '<p><em>%album%</em></p><p>The title of the release.</p>'
-        )
+        self.assertEqual(display_tag_tooltip('album'), '<p><em>%album%</em></p><p>The title of the release.</p>')
 
         # Normal tag without notes.
         self.assertEqual(
@@ -412,7 +439,7 @@ class UtilTagsTest(PicardTestCase):
             (
                 '<p><em>%_albumartists_sort%</em></p><p>The sort names of the album&#x27;s artists.</p><p><strong>Notes:'
                 '</strong> multi-value variable.</p>'
-            )
+            ),
         )
 
         # Normal tag with notes.
@@ -431,21 +458,25 @@ class UtilTagsTest(PicardTestCase):
         self.assertEqual(display_tag_tooltip('~bitrate'), result)
 
         result = (
-            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
-            '<ul>\n'
-            '<li>vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;<em>vocal</em>&quot;, '
-            '&quot;<em>guest guitar</em>&quot;, &quot;<em>solo violin</em>&quot;, etc.</li>\n'
-            '<li>the orchestra for the associated release or recording, where &quot;type&quot; is &quot;<em>orchestra</em>&quot;</li>\n'
-            '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
-            '</ul><p><strong>Notes:</strong> multi-value variable.</p>'
-        ) if markdown is not None else (
-            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
-            '<br /><br />'
-            '- vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;*vocal*&quot;, &quot;*guest '
-            'guitar*&quot;, &quot;*solo violin*&quot;, etc.<br />'
-            '- the orchestra for the associated release or recording, where &quot;type&quot; is &quot;*orchestra*&quot;<br />'
-            '- the concert master for the associated release or recording, where &quot;type&quot; is &quot;*concertmaster*&quot;</p>'
-            '<p><strong>Notes:</strong> multi-value variable.</p>'
+            (
+                '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
+                '<ul>\n'
+                '<li>vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;<em>vocal</em>&quot;, '
+                '&quot;<em>guest guitar</em>&quot;, &quot;<em>solo violin</em>&quot;, etc.</li>\n'
+                '<li>the orchestra for the associated release or recording, where &quot;type&quot; is &quot;<em>orchestra</em>&quot;</li>\n'
+                '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
+                '</ul><p><strong>Notes:</strong> multi-value variable.</p>'
+            )
+            if markdown is not None
+            else (
+                '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
+                '<br /><br />'
+                '- vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;*vocal*&quot;, &quot;*guest '
+                'guitar*&quot;, &quot;*solo violin*&quot;, etc.<br />'
+                '- the orchestra for the associated release or recording, where &quot;type&quot; is &quot;*orchestra*&quot;<br />'
+                '- the concert master for the associated release or recording, where &quot;type&quot; is &quot;*concertmaster*&quot;</p>'
+                '<p><strong>Notes:</strong> multi-value variable.</p>'
+            )
         )
         self.assertEqual(display_tag_tooltip('performer'), result)
 
@@ -476,22 +507,26 @@ class UtilTagsTest(PicardTestCase):
 
         # Tag with complex markdown (list items) and notes.
         result = (
-            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
-            '<ul>\n'
-            '<li>vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;<em>vocal</em>&quot;, '
-            '&quot;<em>guest guitar</em>&quot;, &quot;<em>solo violin</em>&quot;, etc.</li>\n'
-            '<li>the orchestra for the associated release or recording, where &quot;type&quot; is &quot;<em>orchestra</em>&quot;</li>\n'
-            '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
-            '</ul>'
-            '<p><strong>Notes:</strong> multi-value variable.</p>'
-        ) if markdown is not None else (
-            '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
-            '<br /><br />'
-            '- vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;*vocal*&quot;, '
-            '&quot;*guest guitar*&quot;, &quot;*solo violin*&quot;, etc.<br />'
-            '- the orchestra for the associated release or recording, where &quot;type&quot; is &quot;*orchestra*&quot;<br />'
-            '- the concert master for the associated release or recording, where &quot;type&quot; is &quot;*concertmaster*&quot;</p>'
-            '<p><strong>Notes:</strong> multi-value variable.</p>'
+            (
+                '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:</p>\n'
+                '<ul>\n'
+                '<li>vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;<em>vocal</em>&quot;, '
+                '&quot;<em>guest guitar</em>&quot;, &quot;<em>solo violin</em>&quot;, etc.</li>\n'
+                '<li>the orchestra for the associated release or recording, where &quot;type&quot; is &quot;<em>orchestra</em>&quot;</li>\n'
+                '<li>the concert master for the associated release or recording, where &quot;type&quot; is &quot;<em>concertmaster</em>&quot;</li>\n'
+                '</ul>'
+                '<p><strong>Notes:</strong> multi-value variable.</p>'
+            )
+            if markdown is not None
+            else (
+                '<p><em>%performer%</em></p><p>The names of the performers for the specified type. These types include:'
+                '<br /><br />'
+                '- vocals or instruments for the associated release or recording, where &quot;type&quot; can be &quot;*vocal*&quot;, '
+                '&quot;*guest guitar*&quot;, &quot;*solo violin*&quot;, etc.<br />'
+                '- the orchestra for the associated release or recording, where &quot;type&quot; is &quot;*orchestra*&quot;<br />'
+                '- the concert master for the associated release or recording, where &quot;type&quot; is &quot;*concertmaster*&quot;</p>'
+                '<p><strong>Notes:</strong> multi-value variable.</p>'
+            )
         )
         self.assertEqual(display_tag_full_description('performer'), result)
 
@@ -507,7 +542,9 @@ class UtilTagsOptionsTest(PicardTestCase):
             for opt in tv.related_options:
                 title = get_option_title(opt)
                 self.assertIsNotNone(title, f"Missing related option setting '{opt}' in '{str(tv)}'")
-            self.assertFalse(title.startswith('No title for setting'), f"Missing title for option setting '{opt}' in '{str(tv)}'")
+            self.assertFalse(
+                title.startswith('No title for setting'), f"Missing title for option setting '{opt}' in '{str(tv)}'"
+            )
 
 
 class UtilTagsSeeAlsoTest(PicardTestCase):
@@ -526,8 +563,7 @@ class UtilTagsSeeAlsoTest(PicardTestCase):
 
 class UtilTagsLinksTest(PicardTestCase):
     def test_links_completeness(self):
-        """Ensure all `doc_links` entries have both a title and a link.
-        """
+        """Ensure all `doc_links` entries have both a title and a link."""
         for tv in ALL_TAGS:
             if tv.doc_links is None:
                 continue

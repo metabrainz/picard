@@ -90,34 +90,25 @@ from picard.util import (
 
 
 class ReplaceWin32IncompatTest(PicardTestCase):
-
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_correct_absolute_win32(self):
-        self.assertEqual(util.replace_win32_incompat('c:\\test\\te"st/2'),
-                             'c:\\test\\te_st/2')
-        self.assertEqual(util.replace_win32_incompat('c:\\test\\d:/2'),
-                             'c:\\test\\d_/2')
+        self.assertEqual(util.replace_win32_incompat('c:\\test\\te"st/2'), 'c:\\test\\te_st/2')
+        self.assertEqual(util.replace_win32_incompat('c:\\test\\d:/2'), 'c:\\test\\d_/2')
 
     @unittest.skipUnless(not IS_WIN, 'non-windows test')
     def test_correct_absolute_non_win32(self):
-        self.assertEqual(util.replace_win32_incompat('/test/te"st/2'),
-                             '/test/te_st/2')
-        self.assertEqual(util.replace_win32_incompat('/test/d:/2'),
-                             '/test/d_/2')
+        self.assertEqual(util.replace_win32_incompat('/test/te"st/2'), '/test/te_st/2')
+        self.assertEqual(util.replace_win32_incompat('/test/d:/2'), '/test/d_/2')
 
     def test_correct_relative(self):
-        self.assertEqual(util.replace_win32_incompat('A"*:<>?|b'),
-                             'A_______b')
-        self.assertEqual(util.replace_win32_incompat('d:tes<t'),
-                             'd_tes_t')
+        self.assertEqual(util.replace_win32_incompat('A"*:<>?|b'), 'A_______b')
+        self.assertEqual(util.replace_win32_incompat('d:tes<t'), 'd_tes_t')
 
     def test_incorrect(self):
-        self.assertNotEqual(util.replace_win32_incompat('c:\\test\\te"st2'),
-                             'c:\\test\\te"st2')
+        self.assertNotEqual(util.replace_win32_incompat('c:\\test\\te"st2'), 'c:\\test\\te"st2')
 
     def test_custom_replacement_char(self):
-        self.assertEqual(util.replace_win32_incompat('A"*:<>?|b', repl='+'),
-                             "A+++++++b")
+        self.assertEqual(util.replace_win32_incompat('A"*:<>?|b', repl='+'), "A+++++++b")
 
     def test_custom_replacement_map(self):
         input = 'foo*:<>?|"'
@@ -191,7 +182,6 @@ class ExtractYearTest(PicardTestCase):
 
 
 class SanitizeDateTest(PicardTestCase):
-
     def test_correct(self):
         self.assertEqual(util.sanitize_date(""), "")
         self.assertEqual(util.sanitize_date("0"), "")
@@ -217,7 +207,6 @@ class SanitizeDateTest(PicardTestCase):
 
 
 class SanitizeFilenameTest(PicardTestCase):
-
     def test_replace_slashes(self):
         self.assertEqual(util.sanitize_filename("AC/DC"), "AC_DC")
 
@@ -237,7 +226,6 @@ class SanitizeFilenameTest(PicardTestCase):
 
 
 class TranslateArtistTest(PicardTestCase):
-
     def test_latin(self):
         self.assertEqual("thename", util.translate_from_sortname("thename", "sort, name"))
 
@@ -248,14 +236,18 @@ class TranslateArtistTest(PicardTestCase):
         self.assertEqual("b a, d c", util.translate_from_sortname("小室哲哉", "a, b, c, d"))
 
     def test_kanji2(self):
-        self.assertEqual("Ayumi Hamasaki & Keiko", util.translate_from_sortname("浜崎あゆみ & KEIKO", "Hamasaki, Ayumi & Keiko"))
+        self.assertEqual(
+            "Ayumi Hamasaki & Keiko", util.translate_from_sortname("浜崎あゆみ & KEIKO", "Hamasaki, Ayumi & Keiko")
+        )
 
     def test_cyrillic(self):
-        self.assertEqual("Pyotr Ilyich Tchaikovsky", util.translate_from_sortname("Пётр Ильич Чайковский", "Tchaikovsky, Pyotr Ilyich"))
+        self.assertEqual(
+            "Pyotr Ilyich Tchaikovsky",
+            util.translate_from_sortname("Пётр Ильич Чайковский", "Tchaikovsky, Pyotr Ilyich"),
+        )
 
 
 class FormatTimeTest(PicardTestCase):
-
     def test(self):
         self.assertEqual("?:??", util.format_time(0))
         self.assertEqual("0:00", util.format_time(0, display_zero=True))
@@ -275,7 +267,6 @@ class FormatTimeTest(PicardTestCase):
 
 
 class HiddenFileTest(PicardTestCase):
-
     @unittest.skipUnless(not IS_WIN, "non-windows test")
     def test(self):
         self.assertTrue(util.is_hidden('/a/b/.c.mp3'))
@@ -285,6 +276,7 @@ class HiddenFileTest(PicardTestCase):
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_windows(self):
         from ctypes import windll
+
         with NamedTemporaryFile() as f:
             self.assertFalse(util.is_hidden(f.name), "%s expected not to be hidden" % f.name)
             windll.kernel32.SetFileAttributesW(f.name, 2)
@@ -299,7 +291,6 @@ class HiddenFileTest(PicardTestCase):
 
 
 class LinearCombinationTest(PicardTestCase):
-
     def test_0(self):
         parts = []
         self.assertEqual(util.linear_combination_of_weights(parts), 0.0)
@@ -337,12 +328,11 @@ class LinearCombinationTest(PicardTestCase):
         self.assertRaises(ValueError, util.linear_combination_of_weights, parts)
 
     def test_9(self):
-        parts = ((1.5, 4))
+        parts = (1.5, 4)
         self.assertRaises(TypeError, util.linear_combination_of_weights, parts)
 
 
 class AlbumArtistFromPathTest(PicardTestCase):
-
     def test_album_artist_from_path(self):
         aafp = album_artist_from_path
         file_1 = r"/10cc/Original Soundtrack/02 I'm Not in Love.mp3"
@@ -373,31 +363,20 @@ class AlbumArtistFromPathTest(PicardTestCase):
             self.assertEqual(('', 'artist'), album_artist_from_path(name, '', 'artist'))
 
     def test_strip_disc_dir(self):
+        self.assertEqual(('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/CD 1/file.flac', '', ''))
         self.assertEqual(
-            ('albumy', 'artistx'),
-            album_artist_from_path(r'/artistx/albumy/CD 1/file.flac', '', ''))
-        self.assertEqual(
-            ('albumy', 'artistx'),
-            album_artist_from_path(r'/artistx/albumy/the DVD 23 B/file.flac', '', ''))
-        self.assertEqual(
-            ('albumy', 'artistx'),
-            album_artist_from_path(r'/artistx/albumy/disc23/file.flac', '', ''))
-        self.assertNotEqual(
-            ('albumy', 'artistx'),
-            album_artist_from_path(r'/artistx/albumy/disc/file.flac', '', ''))
+            ('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/the DVD 23 B/file.flac', '', '')
+        )
+        self.assertEqual(('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/disc23/file.flac', '', ''))
+        self.assertNotEqual(('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/disc/file.flac', '', ''))
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_remove_windows_drive(self):
-        self.assertEqual(
-            ('album1', None),
-            album_artist_from_path(r'C:\album1\foo.mp3', None, None))
-        self.assertEqual(
-            ('album1', None),
-            album_artist_from_path(r'\\myserver\myshare\album1\foo.mp3', None, None))
+        self.assertEqual(('album1', None), album_artist_from_path(r'C:\album1\foo.mp3', None, None))
+        self.assertEqual(('album1', None), album_artist_from_path(r'\\myserver\myshare\album1\foo.mp3', None, None))
 
 
 class IsAbsolutePathTest(PicardTestCase):
-
     @unittest.skipIf(IS_WIN, "POSIX test")
     def test_is_absolute(self):
         self.assertTrue(is_absolute_path('/foo/bar'))
@@ -421,7 +400,6 @@ class IsAbsolutePathTest(PicardTestCase):
 
 
 class CompareBarcodesTest(PicardTestCase):
-
     def test_same(self):
         self.assertTrue(util.compare_barcodes('0727361379704', '0727361379704'))
         self.assertTrue(util.compare_barcodes('727361379704', '727361379704'))
@@ -440,7 +418,6 @@ class CompareBarcodesTest(PicardTestCase):
 
 
 class MbidValidateTest(PicardTestCase):
-
     def test_ok(self):
         self.assertTrue(util.mbid_validate('2944824d-4c26-476f-a981-be849081942f'))
         self.assertTrue(util.mbid_validate('2944824D-4C26-476F-A981-be849081942f'))
@@ -459,7 +436,6 @@ SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
 
 
 class SortBySimilarity(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.test_values = [
@@ -491,7 +467,6 @@ class SortBySimilarity(PicardTestCase):
 
 
 class LimitedJoin(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.list = [str(x) for x in range(0, 10)]
@@ -517,7 +492,6 @@ class LimitedJoin(PicardTestCase):
 
 
 class IterFilesFromObjectsTest(PicardTestCase):
-
     def test_iterate_only_unique(self):
         f1 = Mock()
         f2 = Mock()
@@ -532,7 +506,6 @@ class IterFilesFromObjectsTest(PicardTestCase):
 
 
 class IterUniqifyTest(PicardTestCase):
-
     def test_unique(self):
         items = [1, 2, 3, 2, 3, 4]
         result = uniqify(items)
@@ -540,7 +513,6 @@ class IterUniqifyTest(PicardTestCase):
 
 
 class IterUniqueTest(PicardTestCase):
-
     def test_unique(self):
         items = [1, 2, 3, 2, 3, 4]
         result = iter_unique(items)
@@ -549,7 +521,6 @@ class IterUniqueTest(PicardTestCase):
 
 
 class TracknumFromFilenameTest(PicardTestCase):
-
     def test_returns_expected_tracknumber(self):
         tests = (
             (2, '2.mp3'),
@@ -617,7 +588,6 @@ class TracknumFromFilenameTest(PicardTestCase):
 
 
 class TracknumAndTitleFromFilenameTest(PicardTestCase):
-
     def test_returns_expected_tracknumber(self):
         tests = (
             ((None, 'Foo'), 'Foo.mp3'),
@@ -647,7 +617,6 @@ class TracknumAndTitleFromFilenameTest(PicardTestCase):
 
 
 class PatternAsRegexTest(PicardTestCase):
-
     def test_regex(self):
         regex = pattern_as_regex(r'/^foo.*/')
         self.assertEqual(r'^foo.*', regex.pattern)
@@ -697,7 +666,6 @@ class PatternAsRegexTest(PicardTestCase):
 
 
 class WildcardsToRegexPatternTest(PicardTestCase):
-
     def test_wildcard_pattern(self):
         pattern = 'fo?o*'
         regex = wildcards_to_regex_pattern(pattern)
@@ -736,12 +704,14 @@ class WildcardsToRegexPatternTest(PicardTestCase):
 
 
 class BuildQUrlTest(PicardTestCase):
-
     def test_path_and_querystring(self):
         query = {'foo': 'x', 'bar': 'y'}
         self.assertEqual('http://example.com/', build_qurl('example.com', path='/').toDisplayString())
         self.assertEqual('http://example.com/foo/bar', build_qurl('example.com', path='/foo/bar').toDisplayString())
-        self.assertEqual('http://example.com/foo/bar?foo=x&bar=y', build_qurl('example.com', path='/foo/bar', queryargs=query).toDisplayString())
+        self.assertEqual(
+            'http://example.com/foo/bar?foo=x&bar=y',
+            build_qurl('example.com', path='/foo/bar', queryargs=query).toDisplayString(),
+        )
         self.assertEqual('http://example.com?foo=x&bar=y', build_qurl('example.com', queryargs=query).toDisplayString())
 
     def test_standard_ports(self):
@@ -752,7 +722,10 @@ class BuildQUrlTest(PicardTestCase):
     def test_custom_port(self):
         self.assertEqual('http://example.com:8080', build_qurl('example.com', port=8080).toDisplayString())
         self.assertEqual('http://example.com:8080/', build_qurl('example.com', port=8080, path="/").toDisplayString())
-        self.assertEqual('http://example.com:8080?foo=x', build_qurl('example.com', port=8080, queryargs={'foo': 'x'}).toDisplayString())
+        self.assertEqual(
+            'http://example.com:8080?foo=x',
+            build_qurl('example.com', port=8080, queryargs={'foo': 'x'}).toDisplayString(),
+        )
 
     def test_mb_server(self):
         for host in MUSICBRAINZ_SERVERS:
@@ -772,7 +745,6 @@ class BuildQUrlTest(PicardTestCase):
 
 
 class EncodeFilenameTest(PicardTestCase):
-
     @unittest.skipUnless(
         os.path.supports_unicode_filenames and not IS_MACOS,
         'for filesystem with Unicode support',
@@ -791,7 +763,6 @@ class EncodeFilenameTest(PicardTestCase):
 
 
 class DecodeFilenameTest(PicardTestCase):
-
     def test_decode_string(self):
         path = '/some/file-ä.ext'
         self.assertEqual(path, decode_filename(path))
@@ -808,7 +779,6 @@ class DecodeFilenameTest(PicardTestCase):
 
 
 class NormpathTest(PicardTestCase):
-
     @unittest.skipIf(IS_WIN, "non-windows test")
     def test_normpath(self):
         self.assertEqual('/foo/bar', normpath('/foo//bar'))
@@ -830,7 +800,6 @@ class NormpathTest(PicardTestCase):
 
 
 class WinPrefixLongpathTest(PicardTestCase):
-
     def test_win_prefix_longpath_is_long(self):
         path = rf'C:\foo\{253 * "a"}'
         self.assertEqual(rf'\\?\{path}', win_prefix_longpath(path))
@@ -853,7 +822,6 @@ class WinPrefixLongpathTest(PicardTestCase):
 
 
 class SystemSupportsLongPathsTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         try:
@@ -901,7 +869,6 @@ class SystemSupportsLongPathsTest(PicardTestCase):
 
 
 class IterExceptionChainTest(PicardTestCase):
-
     def test_iter_exception_chain(self):
         e1 = Mock(name='e1')
         e2 = Mock(name='e2')
@@ -916,7 +883,6 @@ class IterExceptionChainTest(PicardTestCase):
 
 
 class AnyExceptionIsinstanceTest(PicardTestCase):
-
     def test_any_exception_isinstance_itself(self):
         ex = RuntimeError()
         self.assertTrue(any_exception_isinstance(ex, RuntimeError))
@@ -942,7 +908,6 @@ class AnyExceptionIsinstanceTest(PicardTestCase):
 
 
 class IgnoreUpdatesContextTest(PicardTestCase):
-
     def test_enter_exit(self):
         context = IgnoreUpdatesContext()
         self.assertFalse(context)
@@ -1022,7 +987,6 @@ class IgnoreUpdatesContextTest(PicardTestCase):
 
 
 class DetectUnicodeEncodingTest(PicardTestCase):
-
     @unittest.skipUnless(charset_detect, "test requires charset_normalizer or chardet package")
     def test_detect_file_encoding_bom(self):
         boms = {
@@ -1041,8 +1005,9 @@ class DetectUnicodeEncodingTest(PicardTestCase):
                 f.write(bom)
                 f.close()
                 encoding = detect_file_encoding(f.name)
-                self.assertEqual(expected_encoding, encoding,
-                                 f'BOM {bom!r} detected as {encoding}, expected {expected_encoding}')
+                self.assertEqual(
+                    expected_encoding, encoding, f'BOM {bom!r} detected as {encoding}, expected {expected_encoding}'
+                )
             finally:
                 f.close()
                 os.remove(f.name)
@@ -1065,7 +1030,6 @@ class DetectUnicodeEncodingTest(PicardTestCase):
 
 
 class TitlecaseTest(PicardTestCase):
-
     def test_titlecase(self):
         tests = (
             # empty string

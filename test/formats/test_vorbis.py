@@ -78,7 +78,6 @@ PNG_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AA
 
 # prevent unittest to run tests in those classes
 class CommonVorbisTests:
-
     class VorbisTestCase(CommonTests.TagFormatsTestCase):
         def test_invalid_rating(self):
             filename = os.path.join('test', 'data', 'test-invalid-rating.ogg')
@@ -103,18 +102,14 @@ class CommonVorbisTests:
 
         @skipUnlessTestfile
         def test_invalid_metadata_block_picture_nobase64(self):
-            metadata = {
-                'metadata_block_picture': 'notbase64'
-            }
+            metadata = {'metadata_block_picture': 'notbase64'}
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
 
         @skipUnlessTestfile
         def test_invalid_metadata_block_picture_noflacpicture(self):
-            metadata = {
-                'metadata_block_picture': base64.b64encode(b'notaflacpictureblock').decode('ascii')
-            }
+            metadata = {'metadata_block_picture': base64.b64encode(b'notaflacpictureblock').decode('ascii')}
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
@@ -141,18 +136,14 @@ class CommonVorbisTests:
 
         @skipUnlessTestfile
         def test_invalid_legacy_coverart_nobase64(self):
-            metadata = {
-                'coverart': 'notbase64'
-            }
+            metadata = {'coverart': 'notbase64'}
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
 
         @skipUnlessTestfile
         def test_invalid_legacy_coverart_noimage(self):
-            metadata = {
-                'coverart': base64.b64encode(b'invalidimagedata').decode('ascii')
-            }
+            metadata = {'coverart': base64.b64encode(b'invalidimagedata').decode('ascii')}
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
@@ -167,10 +158,13 @@ class CommonVorbisTests:
         def test_delete_totaldiscs_totaltracks(self):
             # Create a test file that contains only disctotal / tracktotal,
             # but not totaldiscs and totaltracks
-            save_raw(self.filename, {
-                'disctotal': '3',
-                'tracktotal': '2',
-            })
+            save_raw(
+                self.filename,
+                {
+                    'disctotal': '3',
+                    'tracktotal': '2',
+                },
+            )
             metadata = Metadata()
             del metadata['totaldiscs']
             del metadata['totaltracks']
@@ -192,10 +186,13 @@ class CommonVorbisTests:
 
         @skipUnlessTestfile
         def test_load_strip_trailing_null_char(self):
-            save_raw(self.filename, {
-                'date': '2023-04-18\0',
-                'title': 'foo\0',
-            })
+            save_raw(
+                self.filename,
+                {
+                    'date': '2023-04-18\0',
+                    'title': 'foo\0',
+                },
+            )
             metadata = load_metadata(self.filename)
             self.assertEqual('2023-04-18', metadata['date'])
             self.assertEqual('foo', metadata['title'])
@@ -226,10 +223,10 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         # FLAC does not use the cover art tags but has its separate image implementation
         pic = Picture()
         pic.data = load_coverart_file('mb.png')
-        save_raw(self.filename, {
-            'coverart': PNG_BASE64,
-            'metadata_block_picture': base64.b64encode(pic.write()).decode('ascii')
-        })
+        save_raw(
+            self.filename,
+            {'coverart': PNG_BASE64, 'metadata_block_picture': base64.b64encode(pic.write()).decode('ascii')},
+        )
         config.setting['clear_existing_tags'] = True
         config.setting['preserve_images'] = True
         metadata = save_and_load_metadata(self.filename, Metadata())
@@ -262,9 +259,7 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
     def test_setting_fix_missing_seekpoints_flac(self, mock_flac_remove_empty_seektable):
         save_metadata(self.filename, Metadata())
         mock_flac_remove_empty_seektable.assert_not_called()
-        self.set_config_values({
-            'fix_missing_seekpoints_flac': True
-        })
+        self.set_config_values({'fix_missing_seekpoints_flac': True})
         save_metadata(self.filename, Metadata())
         mock_flac_remove_empty_seektable.assert_called_once()
 
@@ -438,38 +433,17 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 
 class OggAudioVideoFileTest(PicardTestCase):
     def test_ogg_audio(self):
-        self._test_file_is_type(
-            open_format,
-            self._copy_file_tmp('test-oggflac.oga', '.oga'),
-            vorbis.OggFLACFile)
-        self._test_file_is_type(
-            open_format,
-            self._copy_file_tmp('test.spx', '.oga'),
-            vorbis.OggSpeexFile)
-        self._test_file_is_type(
-            open_format,
-            self._copy_file_tmp('test.ogg', '.oga'),
-            vorbis.OggVorbisFile)
-        self._test_file_is_type(
-            open_format,
-            self._copy_file_tmp('test.ogg', '.ogx'),
-            vorbis.OggVorbisFile)
+        self._test_file_is_type(open_format, self._copy_file_tmp('test-oggflac.oga', '.oga'), vorbis.OggFLACFile)
+        self._test_file_is_type(open_format, self._copy_file_tmp('test.spx', '.oga'), vorbis.OggSpeexFile)
+        self._test_file_is_type(open_format, self._copy_file_tmp('test.ogg', '.oga'), vorbis.OggVorbisFile)
+        self._test_file_is_type(open_format, self._copy_file_tmp('test.ogg', '.ogx'), vorbis.OggVorbisFile)
 
     def test_ogg_opus(self):
-        self._test_file_is_type(
-            open_format,
-            self._copy_file_tmp('test.opus', '.oga'),
-            vorbis.OggOpusFile)
-        self._test_file_is_type(
-            open_format,
-            self._copy_file_tmp('test.opus', '.ogg'),
-            vorbis.OggOpusFile)
+        self._test_file_is_type(open_format, self._copy_file_tmp('test.opus', '.oga'), vorbis.OggOpusFile)
+        self._test_file_is_type(open_format, self._copy_file_tmp('test.opus', '.ogg'), vorbis.OggOpusFile)
 
     def test_ogg_video(self):
-        self._test_file_is_type(
-            open_format,
-            self._copy_file_tmp('test.ogv', '.ogv'),
-            vorbis.OggTheoraFile)
+        self._test_file_is_type(open_format, self._copy_file_tmp('test.ogv', '.ogv'), vorbis.OggTheoraFile)
 
     def _test_file_is_type(self, factory, filename, expected_type):
         f = factory(filename)

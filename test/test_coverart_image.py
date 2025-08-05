@@ -48,8 +48,7 @@ from picard.util import encode_filename
 from picard.util.filenaming import WinPathTooLong
 
 
-def create_image(extra_data, types=None, support_types=False,
-                 support_multi_types=False, comment=None, id3_type=None):
+def create_image(extra_data, types=None, support_types=False, support_multi_types=False, comment=None, id3_type=None):
     return CoverArtImage(
         data=create_fake_png(extra_data),
         types=types,
@@ -82,9 +81,7 @@ class TagCoverArtImageTest(PicardTestCase):
 class CoverArtImageTest(PicardTestCase):
     def test_repr_str_1(self):
         image = CoverArtImage(
-            url='url', types=["booklet", "front"],
-            comment='comment', support_types=True,
-            support_multi_types=True
+            url='url', types=["booklet", "front"], comment='comment', support_types=True, support_multi_types=True
         )
         expected = "CoverArtImage(url='url', types=['booklet', 'front'], support_types=True, support_multi_types=True, comment='comment')"
         self.assertEqual(expected, repr(image))
@@ -129,16 +126,36 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual(("front",), create_image(b'a').normalized_types())
         self.assertEqual(("-",), create_image(b'a', support_types=True).normalized_types())
         self.assertEqual(("front",), create_image(b'a', types=["front"], support_types=True).normalized_types())
-        self.assertEqual(("front", "back",), create_image(b'a', types=["back", "front"], support_types=True).normalized_types())
-        self.assertEqual(("back", "medium",), create_image(b'a', types=["medium", "back"], support_types=True).normalized_types())
-        self.assertEqual(("front",), create_image(b'a', types=["back", "medium"], support_types=False).normalized_types())
+        self.assertEqual(
+            (
+                "front",
+                "back",
+            ),
+            create_image(b'a', types=["back", "front"], support_types=True).normalized_types(),
+        )
+        self.assertEqual(
+            (
+                "back",
+                "medium",
+            ),
+            create_image(b'a', types=["medium", "back"], support_types=True).normalized_types(),
+        )
+        self.assertEqual(
+            ("front",), create_image(b'a', types=["back", "medium"], support_types=False).normalized_types()
+        )
 
     def test_id3_type_derived(self):
         self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a').id3_type)
         self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a', support_types=True).id3_type)
-        self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a', types=["back", "front"], support_types=True).id3_type)
-        self.assertEqual(Id3ImageType.COVER_BACK, create_image(b'a', types=["back", "medium"], support_types=True).id3_type)
-        self.assertEqual(Id3ImageType.COVER_FRONT, create_image(b'a', types=["back", "medium"], support_types=False).id3_type)
+        self.assertEqual(
+            Id3ImageType.COVER_FRONT, create_image(b'a', types=["back", "front"], support_types=True).id3_type
+        )
+        self.assertEqual(
+            Id3ImageType.COVER_BACK, create_image(b'a', types=["back", "medium"], support_types=True).id3_type
+        )
+        self.assertEqual(
+            Id3ImageType.COVER_FRONT, create_image(b'a', types=["back", "medium"], support_types=False).id3_type
+        )
         self.assertEqual(Id3ImageType.MEDIA, create_image(b'a', types=["medium"], support_types=True).id3_type)
         self.assertEqual(Id3ImageType.LEAFLET_PAGE, create_image(b'a', types=["booklet"], support_types=True).id3_type)
         self.assertEqual(Id3ImageType.OTHER, create_image(b'a', types=["spine"], support_types=True).id3_type)
@@ -239,8 +256,12 @@ class CoverArtImageTest(PicardTestCase):
     def test_sorted_images(self):
         image1 = create_image(b'a', types=["front"], support_types=True, support_multi_types=True)
         image2 = create_image(b'a', types=["booklet"], support_types=True, support_multi_types=True)
-        image3 = create_image(b'a', types=["front", "booklet"], support_types=True, support_multi_types=True, comment='a')
-        image4 = create_image(b'b', types=["front", "booklet"], support_types=True, support_multi_types=True, comment='b')
+        image3 = create_image(
+            b'a', types=["front", "booklet"], support_types=True, support_multi_types=True, comment='a'
+        )
+        image4 = create_image(
+            b'b', types=["front", "booklet"], support_types=True, support_multi_types=True, comment='b'
+        )
 
         result = sorted([image4, image3, image2, image1])
         self.maxDiff = None
@@ -267,17 +288,19 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual(coverartimage.data, imgdata)
 
     def test_save(self):
-        self.set_config_values({
-            'image_type_as_filename': True,
-            'windows_compatibility': True,
-            'win_compat_replacements': {},
-            'windows_long_paths': False,
-            'replace_spaces_with_underscores': False,
-            'replace_dir_separator': '_',
-            'enabled_plugins': [],
-            'ascii_filenames': False,
-            'save_images_overwrite': False,
-        })
+        self.set_config_values(
+            {
+                'image_type_as_filename': True,
+                'windows_compatibility': True,
+                'win_compat_replacements': {},
+                'windows_long_paths': False,
+                'replace_spaces_with_underscores': False,
+                'replace_dir_separator': '_',
+                'enabled_plugins': [],
+                'ascii_filenames': False,
+                'save_images_overwrite': False,
+            }
+        )
         metadata = Metadata()
         counters = Counter()
         with TemporaryDirectory() as d:
@@ -301,14 +324,16 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
         super().setUp()
         self.image = create_image(b'a', types=['back'], support_types=True)
         self.metadata = Metadata()
-        self.set_config_values({
-            'windows_compatibility': False,
-            'win_compat_replacements': {},
-            'enabled_plugins': [],
-            'ascii_filenames': False,
-            'replace_spaces_with_underscores': False,
-            'replace_dir_separator': '_',
-        })
+        self.set_config_values(
+            {
+                'windows_compatibility': False,
+                'win_compat_replacements': {},
+                'enabled_plugins': [],
+                'ascii_filenames': False,
+                'replace_spaces_with_underscores': False,
+                'replace_dir_separator': '_',
+            }
+        )
 
     def compare_paths(self, path1, path2):
         self.assertEqual(
@@ -317,60 +342,68 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
         )
 
     def test_make_image_filename(self):
-        filename = self.image._make_image_filename('AlbumArt', '/music/albumart',
-            self.metadata, win_compat=False, win_shorten_path=False)
+        filename = self.image._make_image_filename(
+            'AlbumArt', '/music/albumart', self.metadata, win_compat=False, win_shorten_path=False
+        )
         self.compare_paths('/music/albumart/AlbumArt', filename)
 
     def test_make_image_filename_default(self):
-        filename = self.image._make_image_filename('$noop()', '/music/albumart',
-            self.metadata, win_compat=False, win_shorten_path=False)
-        self.compare_paths(
-            os.path.join('/music/albumart/', DEFAULT_COVER_IMAGE_FILENAME), filename)
+        filename = self.image._make_image_filename(
+            '$noop()', '/music/albumart', self.metadata, win_compat=False, win_shorten_path=False
+        )
+        self.compare_paths(os.path.join('/music/albumart/', DEFAULT_COVER_IMAGE_FILENAME), filename)
 
     def test_make_image_filename_relative_path(self):
         self.metadata['album'] = 'TheAlbum'
-        filename = self.image._make_image_filename("../covers/%album%", "/music/album",
-            self.metadata, win_compat=False, win_shorten_path=False)
+        filename = self.image._make_image_filename(
+            "../covers/%album%", "/music/album", self.metadata, win_compat=False, win_shorten_path=False
+        )
         self.compare_paths('/music/covers/TheAlbum', filename)
 
     def test_make_image_filename_absolute_path(self):
-        filename = self.image._make_image_filename('/foo/bar/AlbumArt', '/music/albumart',
-            self.metadata, win_compat=False, win_shorten_path=False)
+        filename = self.image._make_image_filename(
+            '/foo/bar/AlbumArt', '/music/albumart', self.metadata, win_compat=False, win_shorten_path=False
+        )
         self.compare_paths('/foo/bar/AlbumArt', filename)
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_make_image_filename_absolute_path_no_common_base(self):
-        filename = self.image._make_image_filename('D:/foo/AlbumArt', 'C:/music',
-            self.metadata, win_compat=False, win_shorten_path=False)
+        filename = self.image._make_image_filename(
+            'D:/foo/AlbumArt', 'C:/music', self.metadata, win_compat=False, win_shorten_path=False
+        )
         self.compare_paths('D:\\foo\\AlbumArt', filename)
 
     def test_make_image_filename_script(self):
         cover_script = '%album%-$if($eq(%coverart_maintype%,front),cover,%coverart_maintype%)'
         self.metadata['album'] = 'TheAlbum'
-        filename = self.image._make_image_filename(cover_script, "/music/",
-            self.metadata, win_compat=False, win_shorten_path=False)
+        filename = self.image._make_image_filename(
+            cover_script, "/music/", self.metadata, win_compat=False, win_shorten_path=False
+        )
         self.compare_paths('/music/TheAlbum-back', filename)
 
     def test_make_image_filename_save_path(self):
-        self.set_config_values({
-            'windows_compatibility': True,
-        })
-        filename = self.image._make_image_filename(".co:ver", "/music/albumart",
-            self.metadata, win_compat=True, win_shorten_path=False)
+        self.set_config_values(
+            {
+                'windows_compatibility': True,
+            }
+        )
+        filename = self.image._make_image_filename(
+            ".co:ver", "/music/albumart", self.metadata, win_compat=True, win_shorten_path=False
+        )
         self.compare_paths('/music/albumart/_co_ver', filename)
 
     def test_make_image_filename_win_shorten_path(self):
         requested_path = "/" + 300 * "a" + "/cover"
         expected_path = "/" + 226 * "a" + "/cover"
-        filename = self.image._make_image_filename(requested_path, "/music/albumart",
-            self.metadata, win_compat=False, win_shorten_path=True)
+        filename = self.image._make_image_filename(
+            requested_path, "/music/albumart", self.metadata, win_compat=False, win_shorten_path=True
+        )
         self.compare_paths(expected_path, filename)
 
     def test_make_image_filename_win_shorten_path_too_long_base_path(self):
-        base_path = '/' + 244*'a'
+        base_path = '/' + 244 * 'a'
         with self.assertRaises(WinPathTooLong):
-            self.image._make_image_filename("cover", base_path,
-                self.metadata, win_compat=False, win_shorten_path=True)
+            self.image._make_image_filename("cover", base_path, self.metadata, win_compat=False, win_shorten_path=True)
 
 
 class LocalFileCoverArtImageTest(PicardTestCase):

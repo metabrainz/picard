@@ -33,7 +33,8 @@ version = sys.argv[1]
 re_changes = re.compile(
     '^# Version ' + re.escape(version) + r' - \d{4}-\d{2}-\d{2}\s*?\n'
     '(?P<changes>.*?)(?=# Version)',
-    re.DOTALL | re.MULTILINE)
+    re.DOTALL | re.MULTILINE,
+)
 
 with open('NEWS.md', 'r') as newsfile:
     news = newsfile.read()

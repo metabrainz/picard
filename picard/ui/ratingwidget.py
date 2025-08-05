@@ -35,7 +35,6 @@ from picard.i18n import N_
 
 
 class RatingWidget(QtWidgets.QWidget):
-
     def __init__(self, track, parent=None):
         super().__init__(parent=parent)
         self._track = track
@@ -55,7 +54,9 @@ class RatingWidget(QtWidgets.QWidget):
         self._height = self._star_size + 6
         self.setMaximumSize(self._width, self._height)
         self.setMinimumSize(self._width, self._height)
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed))
+        self.setSizePolicy(
+            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        )
         self.setMouseTracking(True)
 
     def sizeHint(self):

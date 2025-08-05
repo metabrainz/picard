@@ -55,7 +55,6 @@ from picard.ui.columns import (
 
 
 class ResultTable(QtWidgets.QTableWidget):
-
     def __init__(self, parent=None, parent_dialog=None):
         super().__init__(parent=parent)
         self.parent_dialog = parent_dialog
@@ -151,7 +150,6 @@ class ResultTable(QtWidgets.QTableWidget):
 
 
 class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
-
     def __init__(self, obj=None):
         super().__init__()
         self._obj = obj
@@ -173,7 +171,6 @@ class SortableTableWidgetItem(QtWidgets.QTableWidgetItem):
 
 
 class TableBasedDialog(PicardDialog):
-
     defaultsize = QtCore.QSize(720, 360)
     scrolled = pyqtSignal()
     resized = pyqtSignal()
@@ -225,6 +222,7 @@ class TableBasedDialog(PicardDialog):
 
         def enable_accept_button():
             self.accept_button.setEnabled(True)
+
         self.table.itemSelectionChanged.connect(enable_accept_button)
 
         self.restore_default_columns()
@@ -302,7 +300,7 @@ class TableBasedDialog(PicardDialog):
             selected_rows_user_values = []
             for idx in self.table.selectionModel().selectedRows():
                 row = self.table.itemFromIndex(idx).data(QtCore.Qt.ItemDataRole.UserRole)
-                selected_rows_user_values .append(row)
+                selected_rows_user_values.append(row)
             self.accept_event(selected_rows_user_values)
         super().accept()
 

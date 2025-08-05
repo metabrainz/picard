@@ -56,27 +56,37 @@ from picard.ui.searchdialog import (
 
 
 class TrackSearchDialog(SearchDialog):
-
     dialog_header_state = 'tracksearchdialog_header_state'
 
     def __init__(self, parent, force_advanced_search=None):
-        self.columns = Columns((
-            Column(N_("Name"), 'title', width=150),
-            Column(N_("Comment"), '~recordingcomment'),
-            Column(N_("Length"), '~length', sort_type=ColumnSortType.SORTKEY, sortkey=attrgetter('length'), align=ColumnAlign.RIGHT, width=50),
-            Column(N_("Artist"), 'artist'),
-            Column(N_("Release"), 'album'),
-            Column(N_("Date"), 'date'),
-            Column(N_("Country"), 'country'),
-            Column(N_("Type"), 'releasetype'),
-            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
-        ), default_width=100)
+        self.columns = Columns(
+            (
+                Column(N_("Name"), 'title', width=150),
+                Column(N_("Comment"), '~recordingcomment'),
+                Column(
+                    N_("Length"),
+                    '~length',
+                    sort_type=ColumnSortType.SORTKEY,
+                    sortkey=attrgetter('length'),
+                    align=ColumnAlign.RIGHT,
+                    width=50,
+                ),
+                Column(N_("Artist"), 'artist'),
+                Column(N_("Release"), 'album'),
+                Column(N_("Date"), 'date'),
+                Column(N_("Country"), 'country'),
+                Column(N_("Type"), 'releasetype'),
+                Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
+            ),
+            default_width=100,
+        )
         super().__init__(
             parent,
             N_("Track Search Results"),
             accept_button_title=N_("Load into Picard"),
             search_type='track',
-            force_advanced_search=force_advanced_search)
+            force_advanced_search=force_advanced_search,
+        )
         self.file_ = None
 
     def search(self, text):
@@ -85,11 +95,13 @@ class TrackSearchDialog(SearchDialog):
         self.search_box_text(text)
         self.show_progress()
         config = get_config()
-        self.tagger.mb_api.find_tracks(self.handle_reply,
-                                       query=text,
-                                       search=True,
-                                       advanced_search=self.use_advanced_search,
-                                       limit=config.setting['query_limit'])
+        self.tagger.mb_api.find_tracks(
+            self.handle_reply,
+            query=text,
+            search=True,
+            advanced_search=self.use_advanced_search,
+            limit=config.setting['query_limit'],
+        )
 
     def show_similar_tracks(self, file_):
         """Perform search using existing metadata information
@@ -130,10 +142,7 @@ class TrackSearchDialog(SearchDialog):
 
         if self.file_:
             metadata = self.file_.orig_metadata
-            candidates = (
-                metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS)
-                for track in tracks
-            )
+            candidates = (metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks)
             tracks = (result.track for result in sort_by_similarity(candidates))
 
         del self.search_results[:]  # Clear existing data

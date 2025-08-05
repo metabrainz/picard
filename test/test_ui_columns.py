@@ -33,7 +33,6 @@ from picard.ui.itemviews.columns import IconColumn
 
 
 class ColumnTest(PicardTestCase):
-
     def test_init_simple_column(self):
         column = Column('title', 'key')
         self.assertEqual(column.title, 'title')
@@ -44,14 +43,17 @@ class ColumnTest(PicardTestCase):
         self.assertFalse(column.always_visible)
         self.assertFalse(column.status_icon)
         self.assertIsNone(column.sortkey)
-        expected_repr = ("Column('title', 'key', width=None, align=ColumnAlign.LEFT, "
-            "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)")
+        expected_repr = (
+            "Column('title', 'key', width=None, align=ColumnAlign.LEFT, "
+            "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)"
+        )
         self.assertEqual(repr(column), expected_repr)
         self.assertEqual(str(column), expected_repr)
 
     def test_init_column_align_sort_type(self):
         def dummy():
             pass
+
         column = Column('title', 'key', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.SORTKEY, sortkey=dummy)
         self.assertEqual(column.align, ColumnAlign.RIGHT)
         self.assertEqual(column.sort_type, ColumnSortType.SORTKEY)
@@ -77,12 +79,11 @@ class ColumnTest(PicardTestCase):
         self.assertEqual(
             repr(column),
             "IconColumn('title', 'key', width=14, align=ColumnAlign.LEFT, "
-            "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)"
+            "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False)",
         )
 
 
 class ColumnsTest(PicardTestCase):
-
     def test_init_columns(self):
         c1 = Column('t1', 'k1', width=50)
         c2 = Column('t2', 'k2', always_visible=True)

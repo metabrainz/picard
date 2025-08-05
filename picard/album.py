@@ -122,6 +122,7 @@ class ParseResult(IntEnum):
 
 class TracksCache:
     """Cache for track lookups by recording/track ID and track/disc numbers."""
+
     def __init__(self):
         """Initialize an empty cache"""
         self._cache = defaultdict(lambda: None)
@@ -147,10 +148,11 @@ class TracksCache:
             for tup in (
                 (tm_recordingid, tm_tracknumber, tm_discnumber),
                 (tm_recordingid, tm_tracknumber),
-                (tm_recordingid, ),
+                (tm_recordingid,),
                 (tm_trackid, tm_tracknumber, tm_discnumber),
                 (tm_trackid, tm_tracknumber),
-                (tm_trackid, )):
+                (tm_trackid,),
+            ):
                 self._cache[tup] = track
         self._initialized = True
 
@@ -172,7 +174,6 @@ class TracksCache:
 
 
 class Album(MetadataItem):
-
     def __init__(self, album_id, discid=None):
         super().__init__(album_id)
         self.tracks = []
@@ -367,7 +368,10 @@ class Album(MetadataItem):
                     parse_result = self._parse_release(document)
                     config = get_config()
                     if parse_result == ParseResult.MISSING_TRACK_RELS:
-                        log.debug("Recording relationships not loaded in initial request for %r, issuing separate requests", self)
+                        log.debug(
+                            "Recording relationships not loaded in initial request for %r, issuing separate requests",
+                            self,
+                        )
                         self._request_recording_relationships()
                     elif parse_result == ParseResult.PARSED:
                         self._run_album_metadata_processors()
@@ -576,12 +580,8 @@ class Album(MetadataItem):
         self.update()
         self.tagger.window.set_statusbar_message(
             N_('Album %(id)s loaded: %(artist)s - %(album)s'),
-            {
-                'id': self.id,
-                'artist': self.metadata['albumartist'],
-                'album': self.metadata['album']
-            },
-            timeout=3000
+            {'id': self.id, 'artist': self.metadata['albumartist'], 'album': self.metadata['album']},
+            timeout=3000,
         )
         for func, _run_on_error in self._after_load_callbacks:
             func()
@@ -595,6 +595,7 @@ class Album(MetadataItem):
             # This is not supposed to happen, _finalize_loading should only
             # be called once after all requests finished.
             import inspect
+
             stack = inspect.stack()
             args = [self]
             msg = "Album._finalize_loading called for already loaded album %r"
@@ -631,10 +632,7 @@ class Album(MetadataItem):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
-        self.tagger.window.set_statusbar_message(
-            N_("Loading album %(id)s …"),
-            {'id': self.id}
-        )
+        self.tagger.window.set_statusbar_message(N_("Loading album %(id)s …"), {'id': self.id})
         self.loaded = False
         self.status = AlbumStatus.LOADING
         if self.release_group:
@@ -691,7 +689,7 @@ class Album(MetadataItem):
             inc=inc,
             mblogin=require_authentication,
             priority=priority,
-            refresh=refresh
+            refresh=refresh,
         )
 
     def run_when_loaded(self, func, run_on_error=False):
@@ -860,7 +858,7 @@ class Album(MetadataItem):
                 if ca_detailed:
                     elems.append(ca_detailed)
 
-                return '%s\u200E (%s)' % (title, '; '.join(elems))
+                return '%s\u200e (%s)' % (title, '; '.join(elems))
             else:
                 return title
         elif column == '~length':
@@ -922,7 +920,6 @@ class Album(MetadataItem):
 
 
 class NatAlbum(Album):
-
     def __init__(self):
         super().__init__('NATS')
         self.loaded = True

@@ -33,7 +33,6 @@ from picard.ui.options import OptionsPage
 
 
 class TagsCompatibilityWaveOptionsPage(OptionsPage):
-
     NAME = 'tags_compatibility_wave'
     TITLE = N_("WAVE")
     PARENT = 'tags'

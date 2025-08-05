@@ -117,7 +117,6 @@ class picard_build_locales(Command):
 
 
 class picard_install(install):
-
     user_options = install.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
     ]
@@ -137,7 +136,6 @@ class picard_install(install):
 
 
 class picard_build(build):
-
     user_options = build.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('build-number=', None, 'build number (integer)'),
@@ -179,7 +177,9 @@ class picard_build(build):
                 'file-version': file_version_str,
             }
             if os.path.isfile('installer/picard-setup.nsi.in'):
-                generate_file('installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**common_args, **installer_args})
+                generate_file(
+                    'installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**common_args, **installer_args}
+                )
                 log.info('generating NSIS translation files')
                 self.spawn(['python', 'installer/i18n/json2nsh.py'])
 
@@ -189,18 +189,29 @@ class picard_build(build):
             }
             generate_file('win-version-info.txt.in', 'win-version-info.txt', {**common_args, **version_args})
 
-            default_publisher = 'CN=MetaBrainz Foundation Inc., O=MetaBrainz Foundation Inc., L=Covina, S=California, C=US'
+            default_publisher = (
+                'CN=MetaBrainz Foundation Inc., O=MetaBrainz Foundation Inc., L=Covina, S=California, C=US'
+            )
             # Combine patch version with build number. As Windows store apps require continuously
             # growing version numbers we combine the patch version with a build number set by the
             # build script.
-            store_version = (PICARD_VERSION.major, PICARD_VERSION.minor, PICARD_VERSION.patch * 1000 + min(self.build_number, 999), 0)
-            generate_file('appxmanifest.xml.in', 'appxmanifest.xml', {
-                'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
-                'display-name': PICARD_DISPLAY_NAME,
-                'short-name': PICARD_APP_NAME,
-                'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
-                'version': '.'.join(str(v) for v in store_version),
-            })
+            store_version = (
+                PICARD_VERSION.major,
+                PICARD_VERSION.minor,
+                PICARD_VERSION.patch * 1000 + min(self.build_number, 999),
+                0,
+            )
+            generate_file(
+                'appxmanifest.xml.in',
+                'appxmanifest.xml',
+                {
+                    'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
+                    'display-name': PICARD_DISPLAY_NAME,
+                    'short-name': PICARD_APP_NAME,
+                    'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
+                    'version': '.'.join(str(v) for v in store_version),
+                },
+            )
         elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
             self.run_command('build_appdata')
             self.run_command('build_desktop_file')
@@ -252,14 +263,12 @@ class picard_build_ui(Command):
                 uiname = name + '.ui'
                 uifile = os.path.join(head, uiname)
                 if os.path.isfile(uifile):
-                    pyfile = os.path.join(os.path.dirname(uifile),
-                                          py_from_ui(uifile))
+                    pyfile = os.path.join(os.path.dirname(uifile), py_from_ui(uifile))
                     files.append((uifile, pyfile))
                 else:
                     uifile = os.path.join('ui', uiname)
                     if os.path.isfile(uifile):
-                        files.append((uifile,
-                                      py_from_ui_with_defaultdir(uifile)))
+                        files.append((uifile, py_from_ui_with_defaultdir(uifile)))
                     else:
                         log.warning('ignoring %r', f)
             self.files = files
@@ -269,9 +278,13 @@ class picard_build_ui(Command):
 
         _translate_re = (
             (re.compile(r'(\s+_translate = QtCore\.QCoreApplication\.translate)'), r''),
-            (re.compile(
-                r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
-                r'QtGui\.QApplication\.UnicodeUTF8\)'), r'_(\1)'),
+            (
+                re.compile(
+                    r'QtGui\.QApplication.translate\(.*?, (.*?), None, '
+                    r'QtGui\.QApplication\.UnicodeUTF8\)'
+                ),
+                r'_(\1)',
+            ),
             (re.compile(r'\b_translate\(.*?, (.*?)(?:, None)?\)'), r'_(\1)'),
         )
 
@@ -320,6 +333,7 @@ from picard.i18n import gettext as _
             compile,
             makeqrc,
         )
+
         makeqrc.main()
         compile.main()
 
@@ -363,12 +377,17 @@ class picard_build_appdata(Command):
 
     def run(self):
         with tempfile.NamedTemporaryFile(suffix=APPDATA_FILE) as tmp_file:
-            self.spawn([
-                'msgfmt', '--xml',
-                '--template=%s' % APPDATA_FILE_TEMPLATE,
-                '-d', 'po/appstream',
-                '-o', tmp_file.name,
-            ])
+            self.spawn(
+                [
+                    'msgfmt',
+                    '--xml',
+                    '--template=%s' % APPDATA_FILE_TEMPLATE,
+                    '-d',
+                    'po/appstream',
+                    '-o',
+                    tmp_file.name,
+                ]
+            )
             self.add_release_list(tmp_file.name)
 
     def add_release_list(self, source_file):
@@ -376,11 +395,7 @@ class picard_build_appdata(Command):
         with open('NEWS.md', 'r') as newsfile:
             news = newsfile.read()
             releases = [template.format(**m.groupdict()) for m in self.re_release.finditer(news)]
-            args = {
-                'app-id': PICARD_APP_ID,
-                'desktop-id': PICARD_DESKTOP_NAME,
-                'releases': '\n    '.join(releases)
-            }
+            args = {'app-id': PICARD_APP_ID, 'desktop-id': PICARD_DESKTOP_NAME, 'releases': '\n    '.join(releases)}
             generate_file(source_file, APPDATA_FILE, args)
 
 
@@ -395,12 +410,17 @@ class picard_build_desktop_file(Command):
         pass
 
     def run(self):
-        self.spawn([
-            'msgfmt', '--desktop',
-            '--template=%s' % DESKTOP_FILE_TEMPLATE,
-            '-d', 'po/appstream',
-            '-o', DESKTOP_FILE,
-        ])
+        self.spawn(
+            [
+                'msgfmt',
+                '--desktop',
+                '--template=%s' % DESKTOP_FILE_TEMPLATE,
+                '-d',
+                'po/appstream',
+                '-o',
+                DESKTOP_FILE,
+            ]
+        )
 
 
 class picard_regen_appdata_pot_file(Command):
@@ -416,30 +436,33 @@ class picard_regen_appdata_pot_file(Command):
     def run(self):
         output_dir = 'po/appstream/'
         pot_file = os.path.join(output_dir, 'picard-appstream.pot')
-        self.spawn([
-            'xgettext',
-            '--output', pot_file,
-            '--language=appdata',
-            APPDATA_FILE_TEMPLATE,
-        ])
-        self.spawn([
-            'xgettext',
-            '--output', pot_file,
-            '--language=desktop',
-            '--join-existing',
-            DESKTOP_FILE_TEMPLATE,
-        ])
+        self.spawn(
+            [
+                'xgettext',
+                '--output',
+                pot_file,
+                '--language=appdata',
+                APPDATA_FILE_TEMPLATE,
+            ]
+        )
+        self.spawn(
+            [
+                'xgettext',
+                '--output',
+                pot_file,
+                '--language=desktop',
+                '--join-existing',
+                DESKTOP_FILE_TEMPLATE,
+            ]
+        )
         for filepath in glob.glob(os.path.join(output_dir, '*.po')):
-            self.spawn([
-                'msgmerge',
-                '--update',
-                filepath,
-                pot_file
-            ])
+            self.spawn(['msgmerge', '--update', filepath, pot_file])
 
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
-_regen_constants_pot_description = "Regenerate po/constants/constants.pot, parsing source tree for new or updated strings"
+_regen_constants_pot_description = (
+    "Regenerate po/constants/constants.pot, parsing source tree for new or updated strings"
+)
 try:
     from babel.messages import (
         frontend as babel,
@@ -473,6 +496,7 @@ try:
                 yield message
 
 except ImportError:
+
     def _exit_babel_required():
         sys.exit("Babel is required to use this command (see po/README.md)")
 
@@ -571,8 +595,7 @@ class picard_update_constants(Command):
 
         lines = [
             "    '%s': '%s'," % (escape_str(key), escape_str(value))
-            for key, value
-            in sorted(constants.items(), key=lambda i: i[0])
+            for key, value in sorted(constants.items(), key=lambda i: i[0])
         ]
         generate_file(infilename, outfilename, {"varname": varname, "lines": "\n".join(lines)})
         log.info("%s was rewritten (%d constants)", filename, len(constants))
@@ -655,17 +678,15 @@ if sys.platform not in {'darwin', 'haiku1', 'win32'}:
     args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
     args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
     for size in (16, 24, 32, 48, 128, 256):
-        args['data_files'].append((
-            'share/icons/hicolor/{size}x{size}/apps'.format(size=size),
-            ['resources/images/{size}x{size}/{app_id}.png'.format(size=size, app_id=PICARD_APP_ID)]
-        ))
+        args['data_files'].append(
+            (
+                'share/icons/hicolor/{size}x{size}/apps'.format(size=size),
+                ['resources/images/{size}x{size}/{app_id}.png'.format(size=size, app_id=PICARD_APP_ID)],
+            )
+        )
     args['data_files'].append(('share/metainfo', [APPDATA_FILE]))
 
 if sys.platform == 'win32':
-    args['entry_points'] = {
-        'gui_scripts': [
-            'picard = picard.tagger:main'
-        ]
-    }
+    args['entry_points'] = {'gui_scripts': ['picard = picard.tagger:main']}
 
 setup(**args)
