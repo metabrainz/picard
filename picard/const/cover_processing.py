@@ -27,10 +27,10 @@ from picard.i18n import N_
 
 
 class ResizeModes(IntEnum):
-    MAINTAIN_ASPECT_RATIO = (0,)
-    SCALE_TO_WIDTH = (1,)
-    SCALE_TO_HEIGHT = (2,)
-    CROP_TO_FIT = (3,)
+    MAINTAIN_ASPECT_RATIO = 0
+    SCALE_TO_WIDTH = 1
+    SCALE_TO_HEIGHT = 2
+    CROP_TO_FIT = 3
     STRETCH_TO_FIT = 4
 
 
