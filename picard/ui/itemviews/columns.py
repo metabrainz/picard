@@ -89,9 +89,7 @@ def _sortkey_match_quality(obj):
         matched = obj.get_num_matched_tracks()
         total = len(obj.tracks) if obj.tracks else 0
         if total > 0:
-            # Return negative percentage so that higher percentages (closer to 1.0)
-            # appear first in ascending sort order
-            return -(matched / total)
+            return matched / total
         return 0.0
     # For track objects, return 0 since we don't show icons at track level
     return 0.0
@@ -134,13 +132,15 @@ _fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')
 _fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
 _fingerprint_column.set_header_icon_size(16, 16, 1)
 
-_match_quality_column = MatchQualityColumn(N_("Match Quality"), '~match_quality', width=100)
+_match_quality_column = MatchQualityColumn(N_("Match"), '~match_quality', width=57)
 _match_quality_column.sortable = True
 _match_quality_column.sort_type = ColumnSortType.SORTKEY
 _match_quality_column.sortkey = _sortkey_match_quality
+_match_quality_column.always_visible = True
 
 ITEMVIEW_COLUMNS = Columns(
     (
+        _match_quality_column,
         DefaultColumn(
             N_("Title"), 'title', sort_type=ColumnSortType.NAT, width=250, always_visible=True, status_icon=True
         ),
@@ -180,7 +180,6 @@ ITEMVIEW_COLUMNS = Columns(
         ),
         Column(N_("Genre"), 'genre'),
         _fingerprint_column,
-        _match_quality_column,
         Column(N_("Date"), 'date'),
         Column(N_("Original Release Date"), 'originaldate'),
         Column(N_("Release Date"), 'releasedate'),

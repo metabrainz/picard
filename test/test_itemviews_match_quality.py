@@ -485,7 +485,7 @@ class TestMatchQualityColumnDelegate:
 
         size = delegate.sizeHint(option, index)
 
-        assert size == QtCore.QSize(200, 16)
+        assert size == QtCore.QSize(57, 16)
 
 
 class TestItemViewsIntegration:
@@ -512,7 +512,7 @@ class TestItemViewsIntegration:
                 break
 
         assert match_quality_column is not None
-        assert match_quality_column.title == "Match Quality"
+        assert match_quality_column.title == "Match"
         assert match_quality_column.key == "~match_quality"
         assert match_quality_column.sortable is True
         assert match_quality_column.sort_type is not None
@@ -528,7 +528,7 @@ class TestItemViewsIntegration:
         album.tracks = [Mock() for _ in range(5)]
 
         result = _sortkey_match_quality(album)
-        assert result == -0.6  # 3/5 = 0.6, but returned as negative for proper sorting
+        assert result == 0.6
 
         # Test with track object (should return 0.0)
         track = Mock()
@@ -667,8 +667,8 @@ class TestMatchQualitySorting:
     def test_sortkey_match_quality_loaded_album(self, mock_album_loaded):
         """Test that loaded albums return correct match percentage."""
         result = _sortkey_match_quality(mock_album_loaded)
-        # 3 matched out of 5 total = 0.6, but returned as negative for proper sorting
-        assert result == -0.6
+        # 3 matched out of 5 total = 0.6
+        assert result == 0.6
 
     def test_sortkey_match_quality_track_object(self, mock_track):
         """Test that track objects return 0.0."""
@@ -687,7 +687,7 @@ class TestMatchQualitySorting:
         """Test that albums with all tracks matched return -1.0."""
         mock_album_loaded.get_num_matched_tracks.return_value = 5
         result = _sortkey_match_quality(mock_album_loaded)
-        assert result == -1.0
+        assert result == 1.0
 
     def test_sortkey_match_quality_no_matches(self, mock_album_loaded):
         """Test that albums with no matches return 0.0."""
@@ -699,8 +699,8 @@ class TestMatchQualitySorting:
         """Test that albums with partial matches return correct percentage."""
         mock_album_loaded.get_num_matched_tracks.return_value = 2
         result = _sortkey_match_quality(mock_album_loaded)
-        # 2 matched out of 5 total = 0.4, but returned as negative for proper sorting
-        assert result == -0.4
+        # 2 matched out of 5 total = 0.4
+        assert result == 0.4
 
     def test_sortkey_match_quality_no_status_attribute(self):
         """Test that objects without status attribute are handled gracefully."""
@@ -709,19 +709,19 @@ class TestMatchQualitySorting:
         obj.tracks = [Mock(), Mock(), Mock()]  # 3 tracks
         # No status attribute
         result = _sortkey_match_quality(obj)
-        # Should calculate normally: 2/3 = 0.666..., but returned as negative
-        assert result == pytest.approx(-0.6666666666666666, rel=1e-10)
+        # Should calculate normally: 2/3 = 0.666...
+        assert result == pytest.approx(0.6666666666666666, rel=1e-10)
 
     def test_sortkey_match_quality_error_status(self, mock_album_loaded):
         """Test that albums with error status are handled correctly."""
         mock_album_loaded.status = AlbumStatus.ERROR
         result = _sortkey_match_quality(mock_album_loaded)
         # Should still calculate the match percentage
-        assert result == -0.6
+        assert result == 0.6
 
     def test_sortkey_match_quality_none_status(self, mock_album_loaded):
         """Test that albums with None status are handled correctly."""
         mock_album_loaded.status = None
         result = _sortkey_match_quality(mock_album_loaded)
         # Should still calculate the match percentage
-        assert result == -0.6
+        assert result == 0.6
