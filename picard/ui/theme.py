@@ -109,12 +109,8 @@ def _style_hints_available() -> bool:
 # Theme availability based on platform capabilities
 if IS_HAIKU:
     # Haiku doesn't support themes - UI is hidden anyway, but keep empty for consistency
-    # Platform Detection: `IS_HAIKU` is detected via sys.platform == 'haiku1'
-    # Feature Flag: `OS_SUPPORTS_THEMES` is set to False for Haiku
-    # Empty Options: `AVAILABLE_UI_THEMES` is set to an empty list [] for Haiku
-    # UI Hiding: The ui_theme_container widget is hidden when `OS_SUPPORTS_THEMES` is False (see `interface.py`)
     AVAILABLE_UI_THEMES = []
-elif not IS_WIN and not IS_MACOS:  # Linux
+elif not IS_WIN and not IS_MACOS:  # Non-Windows and non-macOS platforms
     if _style_hints_available():
         # All themes available when style hints are supported
         AVAILABLE_UI_THEMES = [UiTheme.DEFAULT, UiTheme.LIGHT, UiTheme.DARK]
@@ -122,7 +118,7 @@ elif not IS_WIN and not IS_MACOS:  # Linux
         # Only DEFAULT theme available when style hints are not available
         AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
 else:
-    # Windows and macOS: consistent structure
+    # All others, like Windows and macOS: consistent structure
     AVAILABLE_UI_THEMES = [UiTheme.DEFAULT, UiTheme.LIGHT, UiTheme.DARK]
 
 
