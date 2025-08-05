@@ -46,6 +46,7 @@
 from PyQt6 import QtCore
 
 from picard.album import AlbumStatus
+from picard.const.sys import IS_LINUX
 from picard.i18n import N_
 from picard.util import icontheme
 
@@ -89,7 +90,9 @@ def _sortkey_match_quality(obj):
         matched = obj.get_num_matched_tracks()
         total = len(obj.tracks) if obj.tracks else 0
         if total > 0:
-            return matched / total
+            # Column sorting is reversed on Linux
+            multiplier = -1 if IS_LINUX else 1
+            return matched / total * multiplier
         return 0.0
     # For track objects, return 0 since we don't show icons at track level
     return 0.0
