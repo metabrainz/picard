@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from picard.ui.columns import ImageColumn
 
@@ -132,7 +132,7 @@ class MatchQualityColumn(ImageColumn):
 
 
 class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
-    """Delegate for rendering match quality icons and text in tree items."""
+    """Delegate for rendering match quality icons in tree items."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -168,31 +168,6 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
             return None, None, None
 
         return obj, column, stats
-
-    def _format_status_text(self, stats):
-        """Format stats into compact status text for display.
-
-        Args:
-            stats: Dictionary containing match statistics
-
-        Returns:
-            str: Formatted status text
-        """
-        status_parts = []
-
-        # Core match info: matched/total (always show)
-        if stats["total"] > 0:
-            status_parts.append(f"{stats['matched']}/{stats['total']}")
-        else:
-            status_parts.append("0/0")
-
-        # Always show all stats in consistent format: matched/total; missing; duplicates; extra; unmatched
-        status_parts.append(f"{stats['missing']}")
-        status_parts.append(f"{stats['duplicates']}")
-        status_parts.append(f"{stats['extra']}")
-        status_parts.append(f"{stats['unmatched']}")
-
-        return "; ".join(status_parts)
 
     def _format_tooltip_text(self, stats):
         """Format stats into detailed tooltip text.
@@ -239,37 +214,15 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         # Get the match icon
         icon = column.get_match_icon(obj)
 
-        # Format status text
-        status_text = self._format_status_text(stats)
-
-        # Set text color for good contrast
-        if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
-            painter.setPen(QtGui.QPen(option.palette.highlightedText().color()))
-        else:
-            painter.setPen(QtGui.QPen(option.palette.text().color()))
-
-        # Calculate layout - always show both icon and text
+        # Calculate layout
         icon_size = column.size
         icon_margin = 2
-        text_margin = 4
 
-        # Always draw icon and text, regardless of column width
+        # Always draw icon, regardless of column width
         if icon:
             x = option.rect.x() + icon_margin
             y = option.rect.y() + (option.rect.height() - icon_size.height()) // 2
             icon.paint(painter, QtCore.QRect(x, y, icon_size.width(), icon_size.height()))
-            text_x = x + icon_size.width() + text_margin
-        else:
-            # Fallback to text only if no icon
-            text_x = option.rect.x() + text_margin
-
-        # Draw text
-        text_rect = QtCore.QRect(
-            text_x, option.rect.y(), option.rect.width() - text_x - text_margin, option.rect.height()
-        )
-        painter.drawText(
-            text_rect, QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter, status_text
-        )
 
     def helpEvent(self, event, view, option, index):
         """Show tooltip with explanation of the stats."""
@@ -287,4 +240,4 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
 
     def sizeHint(self, option, index):
         # Return a size that accommodates both icon and text
-        return QtCore.QSize(200, 16)
+        return QtCore.QSize(57, 16)

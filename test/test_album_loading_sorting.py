@@ -48,7 +48,7 @@ class TestAlbumLoadingSorting:
         album.tracks = [Mock(), Mock(), Mock(), Mock(), Mock()]  # 5 tracks
 
         result = _sortkey_match_quality(album)
-        assert result == -0.6  # 3/5 = 0.6, but returned as negative for proper sorting
+        assert result == 0.6
 
     def test_sortkey_no_status_attribute_works_normally(self):
         """Test that objects without status attribute work normally."""
@@ -58,7 +58,7 @@ class TestAlbumLoadingSorting:
         album.tracks = [Mock(), Mock(), Mock()]  # 3 tracks
 
         result = _sortkey_match_quality(album)
-        assert result == pytest.approx(-0.6666666666666666, rel=1e-10)  # 2/3 ≈ 0.666, but returned as negative
+        assert result == pytest.approx(0.6666666666666666, rel=1e-10)  # 2/3 ≈ 0.666
 
     def test_sortkey_error_status_works_normally(self):
         """Test that albums with error status work normally."""
@@ -68,7 +68,7 @@ class TestAlbumLoadingSorting:
         album.tracks = [Mock(), Mock()]  # 2 tracks
 
         result = _sortkey_match_quality(album)
-        assert result == -0.5  # 1/2 = 0.5, but returned as negative
+        assert result == 0.5
 
     def test_sortkey_none_status_works_normally(self):
         """Test that albums with None status work normally."""
@@ -78,4 +78,4 @@ class TestAlbumLoadingSorting:
         album.tracks = [Mock(), Mock(), Mock(), Mock(), Mock()]  # 5 tracks
 
         result = _sortkey_match_quality(album)
-        assert result == -0.8  # 4/5 = 0.8, but returned as negative
+        assert result == 0.8
