@@ -134,11 +134,8 @@ class DBusThemeDetector:
 
             if reply.type() != QDBusMessage.MessageType.ErrorMessage:
                 value = reply.arguments()[0] if reply.arguments() else None
-                if value and isinstance(value, str) and "dark" in value.lower():
-                    return True
                 if value:
-                    return False
-
+                    return isinstance(value, str) and "dark" in value.lower()
         except (RuntimeError, AttributeError, TypeError):
             pass
 
