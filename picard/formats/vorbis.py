@@ -59,7 +59,11 @@ from picard.util import (
 
 FLAC_MAX_BLOCK_SIZE = 2**24 - 1  # FLAC block size is limited to a 24 bit integer
 INVALID_CHARS = re.compile('([^\x20-\x7d]|=)')
-UNSUPPORTED_TAGS = {'syncedlyrics', 'r128_album_gain', 'r128_track_gain'}
+UNSUPPORTED_TAGS = {
+    'syncedlyrics',
+    'r128_album_gain',
+    'r128_track_gain',
+}
 
 
 def sanitize_key(key):
@@ -485,7 +489,13 @@ OggVideoFile.supports_tag = VCommentFile.supports_tag
 
 def OggContainerFile(filename):
     """Generic Ogg file."""
-    options = [OggFLACFile, OggOpusFile, OggSpeexFile, OggTheoraFile, OggVorbisFile]
+    options = [
+        OggFLACFile,
+        OggOpusFile,
+        OggSpeexFile,
+        OggTheoraFile,
+        OggVorbisFile,
+    ]
     return guess_format(filename, options)
 
 
