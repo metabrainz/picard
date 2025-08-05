@@ -241,7 +241,11 @@ class Cluster(FileList):
             releases = None
 
         def statusbar(message):
-            self.tagger.window.set_statusbar_message(message, {'album': self.metadata['album']}, timeout=3000)
+            self.tagger.window.set_statusbar_message(
+                message,
+                {'album': self.metadata['album']},
+                timeout=3000,
+            )
 
         best_match_release = None
         if releases:
