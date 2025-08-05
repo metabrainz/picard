@@ -24,6 +24,7 @@ from unittest.mock import Mock, patch
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard.album import Album, AlbumStatus
+from picard.const.sys import IS_LINUX
 from picard.track import Track
 
 import pytest
@@ -34,6 +35,12 @@ from picard.ui.itemviews.match_quality_column import (
     MatchQualityColumn,
     MatchQualityColumnDelegate,
 )
+
+
+def _apply_platform_multiplier(value):
+    """Apply the same platform-specific multiplier logic as in _sortkey_match_quality."""
+    multiplier = -1 if IS_LINUX else 1
+    return value * multiplier
 
 
 class TestMatchQualityColumn:
@@ -528,7 +535,8 @@ class TestItemViewsIntegration:
         album.tracks = [Mock() for _ in range(5)]
 
         result = _sortkey_match_quality(album)
-        assert result == 0.6
+        expected = _apply_platform_multiplier(0.6)
+        assert result == expected
 
         # Test with track object (should return 0.0)
         track = Mock()
@@ -668,7 +676,8 @@ class TestMatchQualitySorting:
         """Test that loaded albums return correct match percentage."""
         result = _sortkey_match_quality(mock_album_loaded)
         # 3 matched out of 5 total = 0.6
-        assert result == 0.6
+        expected = _apply_platform_multiplier(0.6)
+        assert result == expected
 
     def test_sortkey_match_quality_track_object(self, mock_track):
         """Test that track objects return 0.0."""
@@ -684,10 +693,11 @@ class TestMatchQualitySorting:
         assert result == 0.0
 
     def test_sortkey_match_quality_all_matched(self, mock_album_loaded):
-        """Test that albums with all tracks matched return -1.0."""
+        """Test that albums with all tracks matched return correct value."""
         mock_album_loaded.get_num_matched_tracks.return_value = 5
         result = _sortkey_match_quality(mock_album_loaded)
-        assert result == 1.0
+        expected = _apply_platform_multiplier(1.0)
+        assert result == expected
 
     def test_sortkey_match_quality_no_matches(self, mock_album_loaded):
         """Test that albums with no matches return 0.0."""
@@ -700,7 +710,8 @@ class TestMatchQualitySorting:
         mock_album_loaded.get_num_matched_tracks.return_value = 2
         result = _sortkey_match_quality(mock_album_loaded)
         # 2 matched out of 5 total = 0.4
-        assert result == 0.4
+        expected = _apply_platform_multiplier(0.4)
+        assert result == expected
 
     def test_sortkey_match_quality_no_status_attribute(self):
         """Test that objects without status attribute are handled gracefully."""
@@ -710,18 +721,21 @@ class TestMatchQualitySorting:
         # No status attribute
         result = _sortkey_match_quality(obj)
         # Should calculate normally: 2/3 = 0.666...
-        assert result == pytest.approx(0.6666666666666666, rel=1e-10)
+        expected = _apply_platform_multiplier(0.6666666666666666)
+        assert result == pytest.approx(expected, rel=1e-10)
 
     def test_sortkey_match_quality_error_status(self, mock_album_loaded):
         """Test that albums with error status are handled correctly."""
         mock_album_loaded.status = AlbumStatus.ERROR
         result = _sortkey_match_quality(mock_album_loaded)
         # Should still calculate the match percentage
-        assert result == 0.6
+        expected = _apply_platform_multiplier(0.6)
+        assert result == expected
 
     def test_sortkey_match_quality_none_status(self, mock_album_loaded):
         """Test that albums with None status are handled correctly."""
         mock_album_loaded.status = None
         result = _sortkey_match_quality(mock_album_loaded)
         # Should still calculate the match percentage
-        assert result == 0.6
+        expected = _apply_platform_multiplier(0.6)
+        assert result == expected
