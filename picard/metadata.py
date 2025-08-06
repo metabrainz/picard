@@ -336,17 +336,26 @@ class Metadata(MutableMapping):
         config = get_config()
         if 'releasecountry' in weights:
             weights_from_preferred_countries(
-                parts, release, config.setting['preferred_release_countries'], weights['releasecountry']
+                parts,
+                release,
+                config.setting['preferred_release_countries'],
+                weights['releasecountry'],
             )
 
         if 'format' in weights:
             weights_from_preferred_formats(
-                parts, release, config.setting['preferred_release_formats'], weights['format']
+                parts,
+                release,
+                config.setting['preferred_release_formats'],
+                weights['format'],
             )
 
         if 'releasetype' in weights:
             weights_from_release_type_scores(
-                parts, release, config.setting['release_type_scores'], weights['releasetype']
+                parts,
+                release,
+                config.setting['release_type_scores'],
+                weights['releasetype'],
             )
 
         if 'release-group' in release:
@@ -743,7 +752,15 @@ class MultiMetadataProxy:
 
 
 def _get_total_release_weight(weights):
-    release_weights = ('album', 'totaltracks', 'totalalbumtracks', 'releasetype', 'releasecountry', 'format', 'date')
+    release_weights = (
+        'album',
+        'totaltracks',
+        'totalalbumtracks',
+        'releasetype',
+        'releasecountry',
+        'format',
+        'date',
+    )
     return sum(weights[w] for w in release_weights if w in weights)
 
 

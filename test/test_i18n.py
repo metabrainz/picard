@@ -109,8 +109,16 @@ class TestI18n(PicardTestCase):
     def test_sort_key_numbers_different_scripts(self):
         setup_gettext(localedir, 'en')
         for four in ('4', '𝟜', '٤', '๔'):
-            self.assertLess(sort_key('3', numeric=True), sort_key(four, numeric=True), msg=f'3 < {four}')
-            self.assertLess(sort_key(four, numeric=True), sort_key('5', numeric=True), msg=f'{four} < 5')
+            self.assertLess(
+                sort_key('3', numeric=True),
+                sort_key(four, numeric=True),
+                msg=f'3 < {four}',
+            )
+            self.assertLess(
+                sort_key(four, numeric=True),
+                sort_key('5', numeric=True),
+                msg=f'{four} < 5',
+            )
 
 
 @patch('locale.getpreferredencoding', autospec=True)

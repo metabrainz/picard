@@ -31,7 +31,15 @@ class VersionError(Exception):
 class Version(namedtuple('VersionBase', 'major minor patch identifier revision')):
     _version_re = re.compile(r"^(\d+)(?:[._](\d+)(?:[._](\d+)[._]?(?:(dev|a|alpha|b|beta|rc|final)[._]?(\d+))?)?)?$")
 
-    _identifiers = {'dev': 0, 'alpha': 1, 'a': 1, 'beta': 2, 'b': 2, 'rc': 3, 'final': 4}
+    _identifiers = {
+        'dev': 0,
+        'alpha': 1,
+        'a': 1,
+        'beta': 2,
+        'b': 2,
+        'rc': 3,
+        'final': 4,
+    }
 
     def __new__(cls, major, minor=0, patch=0, identifier='final', revision=0):
         if identifier not in cls.valid_identifiers():

@@ -83,7 +83,13 @@ class RecordingTest(AcoustIDTest):
                     'format': 'CD',
                     'track-count': 12,
                     'position': 1,
-                    'track': [{'position': 5, 'id': '16affcc3-9f34-48e5-88dc-68378c4cc208', 'number': 5}],
+                    'track': [
+                        {
+                            'position': 5,
+                            'id': '16affcc3-9f34-48e5-88dc-68378c4cc208',
+                            'number': 5,
+                        }
+                    ],
                 }
             ],
         )
@@ -91,7 +97,11 @@ class RecordingTest(AcoustIDTest):
         self.assertEqual(release['id'], 'a2b25883-306f-4a53-809a-a234737c209d')
         self.assertEqual(
             release['release-group'],
-            {'id': 'c24e5416-cd2e-4cff-851b-5faa78db98a2', 'primary-type': 'Album', 'secondary-types': ['Compilation']},
+            {
+                'id': 'c24e5416-cd2e-4cff-851b-5faa78db98a2',
+                'primary-type': 'Album',
+                'secondary-types': ['Compilation'],
+            },
         )
         self.assertEqual(release['country'], 'XE')
         self.assertEqual(release['date'], {'month': 6, 'day': 23, 'year': 2014})
@@ -99,7 +109,11 @@ class RecordingTest(AcoustIDTest):
         self.assertEqual(release['track-count'], 12)
         self.assertEqual(
             artist_credit['artist'],
-            {'sort-name': 'Ed Sheeran', 'name': 'Ed Sheeran', 'id': 'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6'},
+            {
+                'sort-name': 'Ed Sheeran',
+                'name': 'Ed Sheeran',
+                'id': 'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6',
+            },
         )
         self.assertEqual(artist_credit['name'], 'Ed Sheeran')
 

@@ -235,7 +235,10 @@ class RelFunc(SimpleNamespace):
 
 _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
     'artist': RelFunc(func=_relations_to_metadata_target_type_artist),
-    'series': RelFunc(func=_relations_to_metadata_target_type_series, clear_metadata_first=True),
+    'series': RelFunc(
+        func=_relations_to_metadata_target_type_series,
+        clear_metadata_first=True,
+    ),
     'url': RelFunc(func=_relations_to_metadata_target_type_url),
     'work': RelFunc(func=_relations_to_metadata_target_type_work),
 }

@@ -67,7 +67,11 @@ class ColorButton(QtWidgets.QPushButton):
         self.setStyleSheet("QPushButton { background-color: %s; }" % self.color.name())
 
     def open_color_dialog(self):
-        new_color = QtWidgets.QColorDialog.getColor(self.color, title=_("Choose a color"), parent=self.parent())
+        new_color = QtWidgets.QColorDialog.getColor(
+            self.color,
+            title=_("Choose a color"),
+            parent=self.parent(),
+        )
 
         if new_color.isValid():
             self.color = new_color

@@ -253,7 +253,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         """Return a FileLookup object."""
         config = get_config()
         return FileLookup(
-            self, config.setting['server_host'], config.setting['server_port'], self.tagger.browser_integration.port
+            self,
+            config.setting['server_host'],
+            config.setting['server_port'],
+            self.tagger.browser_integration.port,
         )
 
     def _lookup_tag(self, tag):

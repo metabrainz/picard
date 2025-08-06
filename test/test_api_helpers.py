@@ -273,9 +273,18 @@ class AcoustdIdAPITest(PicardTestCase):
             },
             length=100000,
         )
-        metadata2 = Metadata({'year': '2022'}, length=100000)
-        metadata3 = Metadata({'date': '1980-08-30'}, length=100000)
-        metadata4 = Metadata({'date': '08-30'}, length=100000)
+        metadata2 = Metadata(
+            {'year': '2022'},
+            length=100000,
+        )
+        metadata3 = Metadata(
+            {'date': '1980-08-30'},
+            length=100000,
+        )
+        metadata4 = Metadata(
+            {'date': '08-30'},
+            length=100000,
+        )
         submissions = [
             Submission('f1', 500000, recordingid='or1', metadata=metadata1),
             Submission('f2', 500000, recordingid='or2', metadata=metadata2),

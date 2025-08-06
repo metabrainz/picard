@@ -225,7 +225,10 @@ class FLACTest(CommonVorbisTests.VorbisTestCase):
         pic.data = load_coverart_file('mb.png')
         save_raw(
             self.filename,
-            {'coverart': PNG_BASE64, 'metadata_block_picture': base64.b64encode(pic.write()).decode('ascii')},
+            {
+                'coverart': PNG_BASE64,
+                'metadata_block_picture': base64.b64encode(pic.write()).decode('ascii'),
+            },
         )
         config.setting['clear_existing_tags'] = True
         config.setting['preserve_images'] = True
@@ -433,17 +436,45 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 
 class OggAudioVideoFileTest(PicardTestCase):
     def test_ogg_audio(self):
-        self._test_file_is_type(open_format, self._copy_file_tmp('test-oggflac.oga', '.oga'), vorbis.OggFLACFile)
-        self._test_file_is_type(open_format, self._copy_file_tmp('test.spx', '.oga'), vorbis.OggSpeexFile)
-        self._test_file_is_type(open_format, self._copy_file_tmp('test.ogg', '.oga'), vorbis.OggVorbisFile)
-        self._test_file_is_type(open_format, self._copy_file_tmp('test.ogg', '.ogx'), vorbis.OggVorbisFile)
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test-oggflac.oga', '.oga'),
+            vorbis.OggFLACFile,
+        )
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.spx', '.oga'),
+            vorbis.OggSpeexFile,
+        )
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.ogg', '.oga'),
+            vorbis.OggVorbisFile,
+        )
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.ogg', '.ogx'),
+            vorbis.OggVorbisFile,
+        )
 
     def test_ogg_opus(self):
-        self._test_file_is_type(open_format, self._copy_file_tmp('test.opus', '.oga'), vorbis.OggOpusFile)
-        self._test_file_is_type(open_format, self._copy_file_tmp('test.opus', '.ogg'), vorbis.OggOpusFile)
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.opus', '.oga'),
+            vorbis.OggOpusFile,
+        )
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.opus', '.ogg'),
+            vorbis.OggOpusFile,
+        )
 
     def test_ogg_video(self):
-        self._test_file_is_type(open_format, self._copy_file_tmp('test.ogv', '.ogv'), vorbis.OggTheoraFile)
+        self._test_file_is_type(
+            open_format,
+            self._copy_file_tmp('test.ogv', '.ogv'),
+            vorbis.OggTheoraFile,
+        )
 
     def _test_file_is_type(self, factory, filename, expected_type):
         f = factory(filename)

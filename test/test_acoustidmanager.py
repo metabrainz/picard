@@ -62,7 +62,12 @@ def dummy_file(i):
 class AcoustIDManagerTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.set_config_values({"clear_existing_tags": False, "compare_ignore_tags": []})
+        self.set_config_values(
+            {
+                "clear_existing_tags": False,
+                "compare_ignore_tags": [],
+            }
+        )
         self.mock_api_helper = MagicMock()
         self.mock_api_helper.submit_acoustid_fingerprints = Mock(wraps=mock_succeed_submission)
         self.acoustidmanager = AcoustIDManager(self.mock_api_helper)
@@ -119,7 +124,8 @@ class AcoustIDManagerTest(PicardTestCase):
         self.acoustidmanager.submit()
         self.assertEqual(self.mock_api_helper.submit_acoustid_fingerprints.call_count, 1)
         self.assertEqual(
-            f.acoustid_fingerprint, self.mock_api_helper.submit_acoustid_fingerprints.call_args[0][0][0].fingerprint
+            f.acoustid_fingerprint,
+            self.mock_api_helper.submit_acoustid_fingerprints.call_args[0][0][0].fingerprint,
         )
 
     def test_submit_multi_batch(self):
@@ -211,7 +217,12 @@ class SubmissionTest(PicardTestCase):
         metadata = Metadata(musicip_puid='p1')
         metadata.length = 42000
         submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
-        expected = {'fingerprint': 'abc', 'duration': '42', 'mbid': 'rec1', 'puid': 'p1'}
+        expected = {
+            'fingerprint': 'abc',
+            'duration': '42',
+            'mbid': 'rec1',
+            'puid': 'p1',
+        }
         self.assertEqual(expected, submission.args)
 
     def test_args_with_invalid_duration(self):
@@ -269,22 +280,14 @@ class SubmissionTest(PicardTestCase):
         self.assertEqual(expected, submission.args)
 
     def test_args_year(self):
-        metadata = Metadata(
-            {
-                'year': '2022',
-            }
-        )
+        metadata = Metadata({'year': '2022'})
         metadata.length = 500000
         submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
         args = submission.args
         self.assertEqual('2022', args['year'])
 
     def test_args_invalid_year(self):
-        metadata = Metadata(
-            {
-                'year': 'NaN',
-            }
-        )
+        metadata = Metadata({'year': 'NaN'})
         metadata.length = 500000
         submission = Submission('abc', 42, recordingid='rec1', metadata=metadata)
         self.assertNotIn('year', submission.args)

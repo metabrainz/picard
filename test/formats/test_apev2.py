@@ -93,7 +93,9 @@ class CommonApeTests:
 
         @skipUnlessTestfile
         def test_invalid_coverart(self):
-            metadata = {'Cover Art (Front)': APEValue(b'filename.png\0NOTPNGDATA', BINARY)}
+            metadata = {
+                'Cover Art (Front)': APEValue(b'filename.png\0NOTPNGDATA', BINARY),
+            }
             save_raw(self.filename, metadata)
             loaded_metadata = load_metadata(self.filename)
             self.assertEqual(0, len(loaded_metadata.images))

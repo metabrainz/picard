@@ -268,7 +268,11 @@ class PluginManager(QtCore.QObject):
             name = _plugin_name_from_path(path)
             if name:
                 names.add(name)
-        log.debug("Looking for plugins in directory %r, %d names found", plugindir, len(names))
+        log.debug(
+            "Looking for plugins in directory %r, %d names found",
+            plugindir,
+            len(names),
+        )
         for name in sorted(names):
             try:
                 self._load_plugin(name)
@@ -499,7 +503,9 @@ class PluginManager(QtCore.QObject):
     def _plugins_json_loaded(self, response, reply, error, callback=None):
         if error:
             self.tagger.window.set_statusbar_message(
-                N_("Error loading plugins list: %(error)s"), {'error': reply.errorString()}, echo=log.error
+                N_("Error loading plugins list: %(error)s"),
+                {'error': reply.errorString()},
+                echo=log.error,
             )
             self._available_plugins = []
         else:

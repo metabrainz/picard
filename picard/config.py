@@ -315,7 +315,14 @@ class Config(QtCore.QSettings):
             if self._version < version:
                 try:
                     if hook.__doc__:
-                        log.debug("Config upgrade %s -> %s: %s" % (self._version, version, hook.__doc__.strip()))
+                        log.debug(
+                            "Config upgrade %s -> %s: %s"
+                            % (
+                                self._version,
+                                version,
+                                hook.__doc__.strip(),
+                            )
+                        )
                     hook(self)
                 except BaseException as e:
                     raise ConfigUpgradeError(

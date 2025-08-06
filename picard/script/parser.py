@@ -51,12 +51,20 @@ class ScriptError(Exception):
 
 class ScriptParseError(ScriptError):
     def __init__(self, stackitem, message):
-        super().__init__("{prefix:s}: {message:s}".format(prefix=str(stackitem), message=message))
+        super().__init__(
+            "{prefix:s}: {message:s}".format(
+                prefix=str(stackitem),
+                message=message,
+            )
+        )
 
 
 class ScriptEndOfFile(ScriptParseError):
     def __init__(self, stackitem):
-        super().__init__(stackitem, "Unexpected end of script")
+        super().__init__(
+            stackitem,
+            "Unexpected end of script",
+        )
 
 
 class ScriptSyntaxError(ScriptParseError):
@@ -69,12 +77,20 @@ class ScriptUnicodeError(ScriptSyntaxError):
 
 class ScriptUnknownFunction(ScriptParseError):
     def __init__(self, stackitem):
-        super().__init__(stackitem, "Unknown function '{name}'".format(name=stackitem.name))
+        super().__init__(
+            stackitem,
+            "Unknown function '{name}'".format(name=stackitem.name),
+        )
 
 
 class ScriptRuntimeError(ScriptError):
     def __init__(self, stackitem, message='Unknown error'):
-        super().__init__("{prefix:s}: {message:s}".format(prefix=str(stackitem), message=message))
+        super().__init__(
+            "{prefix:s}: {message:s}".format(
+                prefix=str(stackitem),
+                message=message,
+            ),
+        )
 
 
 class StackItem:
@@ -88,9 +104,9 @@ class StackItem:
 
     def __str__(self):
         if self.name is None:
-            return "{line:d}:{column:d}".format(line=self.line, column=self.column)
+            return f"{self.line:d}:{self.column:d}"
         else:
-            return "{line:d}:{column:d}:{name}".format(line=self.line, column=self.column, name=self.name)
+            return f"{self.line:d}:{self.column:d}:{self.name}"
 
 
 class ScriptText(str):

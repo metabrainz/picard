@@ -517,7 +517,10 @@ class EditTagDialog(PicardDialog):
         Returns:
             List of modified tag values, with at least one empty string if no values exist
         """
-        return self.modified_tags.setdefault(self.tag, list(self.metadata_box.tag_diff.new[self.tag]))
+        return self.modified_tags.setdefault(
+            self.tag,
+            list(self.metadata_box.tag_diff.new[self.tag]),
+        )
 
     def _current_tag_is_transient(self):
         """Check if the current tag is a custom tag that can be removed from

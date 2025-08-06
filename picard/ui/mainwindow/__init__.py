@@ -893,7 +893,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         entity = self.search_combo.itemData(self.search_combo.currentIndex())
         config = get_config()
         self.tagger.search(
-            text, entity, config.setting['use_adv_search_syntax'], mbid_matched_callback=self._search_mbid_found
+            text,
+            entity,
+            config.setting['use_adv_search_syntax'],
+            mbid_matched_callback=self._search_mbid_found,
         )
 
     def add_files(self):
@@ -953,10 +956,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.persist['current_directory'] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
-                    N_("Adding multiple directories from '%(directory)s' …"), {'directory': parent}
+                    N_("Adding multiple directories from '%(directory)s' …"),
+                    {'directory': parent},
                 )
             else:
-                self.set_statusbar_message(N_("Adding directory: '%(directory)s' …"), {'directory': dir_list[0]})
+                self.set_statusbar_message(
+                    N_("Adding directory: '%(directory)s' …"),
+                    {'directory': dir_list[0]},
+                )
 
             self.tagger.add_paths(dir_list)
 
@@ -1295,7 +1302,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if isinstance(obj, File):
                 if obj.state == obj.ERROR:
                     msg = N_("%(filename)s (error: %(error)s)")
-                    mparms = {'filename': obj.filename, 'error': obj.errors[0] if obj.errors else ''}
+                    mparms = {
+                        'filename': obj.filename,
+                        'error': obj.errors[0] if obj.errors else '',
+                    }
                 else:
                     msg = N_("%(filename)s")
                     mparms = {
@@ -1397,7 +1407,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             log.debug("MusicBrainz authentication finished successfully")
         else:
             log.info("MusicBrainz authentication failed: %s", error_msg)
-            QtWidgets.QMessageBox.critical(self, _("Authentication failed"), _("Login failed: %s") % error_msg)
+            QtWidgets.QMessageBox.critical(
+                self,
+                _("Authentication failed"),
+                _("Login failed: %s") % error_msg,
+            )
 
     def _show_proxy_dialog(self, proxy, authenticator):
         dialog = ProxyDialog(authenticator, proxy, parent=self)
@@ -1461,7 +1475,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _check_for_update(self, show_always):
         config = get_config()
         self.tagger.updatecheckmanager.check_update(
-            show_always=show_always, update_level=config.setting['update_level'], callback=update_last_check_date
+            show_always=show_always,
+            update_level=config.setting['update_level'],
+            callback=update_last_check_date,
         )
 
     def _check_and_repair_naming_scripts(self):

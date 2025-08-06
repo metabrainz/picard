@@ -114,7 +114,12 @@ class FileDialog(QtWidgets.QFileDialog):
         caption = _filedialog_caption(caption, _("Select a target file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getSaveFileName(
-            parent=parent, caption=caption, directory=dir, filter=filter, initialFilter=selectedFilter, options=options
+            parent=parent,
+            caption=caption,
+            directory=dir,
+            filter=filter,
+            initialFilter=selectedFilter,
+            options=options,
         )
 
     @staticmethod
@@ -122,7 +127,12 @@ class FileDialog(QtWidgets.QFileDialog):
         caption = _filedialog_caption(caption, _("Select a file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileName(
-            parent=parent, caption=caption, directory=dir, filter=filter, initialFilter=selectedFilter, options=options
+            parent=parent,
+            caption=caption,
+            directory=dir,
+            filter=filter,
+            initialFilter=selectedFilter,
+            options=options,
         )
 
     @staticmethod
@@ -130,7 +140,12 @@ class FileDialog(QtWidgets.QFileDialog):
         caption = _filedialog_caption(caption, _("Select one or more files"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileNames(
-            parent=parent, caption=caption, directory=dir, filter=filter, initialFilter=selectedFilter, options=options
+            parent=parent,
+            caption=caption,
+            directory=dir,
+            filter=filter,
+            initialFilter=selectedFilter,
+            options=options,
         )
 
     @staticmethod
@@ -138,7 +153,10 @@ class FileDialog(QtWidgets.QFileDialog):
         caption = _filedialog_caption(caption, _("Select a directory"))
         options = _filedialog_options(options, default=QtWidgets.QFileDialog.Option.ShowDirsOnly)
         return QtWidgets.QFileDialog.getExistingDirectory(
-            parent=parent, caption=caption, directory=dir, options=options
+            parent=parent,
+            caption=caption,
+            directory=dir,
+            options=options,
         )
 
     @staticmethod
@@ -149,7 +167,12 @@ class FileDialog(QtWidgets.QFileDialog):
         """
         if not caption:
             caption = _("Select one or more directories")
-        file_dialog = FileDialog(parent=parent, caption=caption, directory=directory, filter=filter)
+        file_dialog = FileDialog(
+            parent=parent,
+            caption=caption,
+            directory=directory,
+            filter=filter,
+        )
         file_dialog.setFileMode(QtWidgets.QFileDialog.FileMode.Directory)
         file_dialog.setOption(QtWidgets.QFileDialog.Option.ShowDirsOnly)
         # The native dialog doesn't allow selecting >1 directory

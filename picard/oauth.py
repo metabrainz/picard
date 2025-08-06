@@ -217,7 +217,12 @@ class OAuthManager:
                 self.refresh_access_token(callback)
 
     def url(self, path=None, params=None):
-        return build_qurl(self.host, self.port, path=path, queryargs=params)
+        return build_qurl(
+            self.host,
+            self.port,
+            path=path,
+            queryargs=params,
+        )
 
     def _create_code_challenge(self):
         # see https://datatracker.ietf.org/doc/html/rfc7636#section-4.1

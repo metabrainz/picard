@@ -237,7 +237,8 @@ class TranslateArtistTest(PicardTestCase):
 
     def test_kanji2(self):
         self.assertEqual(
-            "Ayumi Hamasaki & Keiko", util.translate_from_sortname("浜崎あゆみ & KEIKO", "Hamasaki, Ayumi & Keiko")
+            "Ayumi Hamasaki & Keiko",
+            util.translate_from_sortname("浜崎あゆみ & KEIKO", "Hamasaki, Ayumi & Keiko"),
         )
 
     def test_cyrillic(self):
@@ -363,12 +364,22 @@ class AlbumArtistFromPathTest(PicardTestCase):
             self.assertEqual(('', 'artist'), album_artist_from_path(name, '', 'artist'))
 
     def test_strip_disc_dir(self):
-        self.assertEqual(('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/CD 1/file.flac', '', ''))
         self.assertEqual(
-            ('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/the DVD 23 B/file.flac', '', '')
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/CD 1/file.flac', '', ''),
         )
-        self.assertEqual(('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/disc23/file.flac', '', ''))
-        self.assertNotEqual(('albumy', 'artistx'), album_artist_from_path(r'/artistx/albumy/disc/file.flac', '', ''))
+        self.assertEqual(
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/the DVD 23 B/file.flac', '', ''),
+        )
+        self.assertEqual(
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/disc23/file.flac', '', ''),
+        )
+        self.assertNotEqual(
+            ('albumy', 'artistx'),
+            album_artist_from_path(r'/artistx/albumy/disc/file.flac', '', ''),
+        )
 
     @unittest.skipUnless(IS_WIN, "windows test")
     def test_remove_windows_drive(self):

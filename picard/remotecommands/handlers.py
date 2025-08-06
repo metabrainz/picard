@@ -141,7 +141,10 @@ class RemoteCommandHandlers:
         for album_name in self.tagger.albums:
             self.tagger.analyze(self.tagger.albums[album_name].iterfiles())
 
-    @remote_command("Load commands from a file.", help_args="[path]")
+    @remote_command(
+        "Load commands from a file.",
+        help_args="[path]",
+    )
     def from_file(self, argstring):
         self.remotecommands_class.get_commands_from_file(argstring)
 

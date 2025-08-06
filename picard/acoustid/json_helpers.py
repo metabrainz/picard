@@ -94,14 +94,21 @@ def _make_releases_node(recording):
 
 
 def _make_artist_node(artist):
-    artist_node = {'name': artist['name'], 'sort-name': artist['name'], 'id': artist['id']}
+    artist_node = {
+        'name': artist['name'],
+        'sort-name': artist['name'],
+        'id': artist['id'],
+    }
     return artist_node
 
 
 def _make_artist_credit_node(artists):
     artist_list = []
     for i, artist in enumerate(artists):
-        node = {'artist': _make_artist_node(artist), 'name': artist['name']}
+        node = {
+            'artist': _make_artist_node(artist),
+            'name': artist['name'],
+        }
         if i > 0:
             node['joinphrase'] = '; '
         artist_list.append(node)
@@ -112,7 +119,9 @@ def parse_recording(recording):
     if 'id' not in recording:  # we have no metadata for this recording
         return
 
-    recording_mb = {'id': recording['id']}
+    recording_mb = {
+        'id': recording['id'],
+    }
 
     if 'title' in recording:
         recording_mb['title'] = recording['title']

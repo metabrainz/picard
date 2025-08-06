@@ -65,7 +65,8 @@ class InterfaceColorsTest(PicardTestCase):
             self.assertEqual(config.setting[key]['entity_error'], '#000000')
             self.assertNotIn('unknowncolor', config.setting[key])
             self.assertEqual(
-                interface_colors.get_color_description('entity_error'), default_colors['entity_error'].description
+                interface_colors.get_color_description('entity_error'),
+                default_colors['entity_error'].description,
             )
             self.assertEqual(interface_colors.get_qcolor('entity_error'), QColor('#000000'))
 

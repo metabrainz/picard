@@ -203,7 +203,11 @@ class FileBrowser(QtWidgets.QTreeView):
     def load_file_for_item(self, index):
         model = self.model()
         if not model.isDir(index):
-            self.tagger.add_paths([model.filePath(index)])
+            self.tagger.add_paths(
+                [
+                    model.filePath(index),
+                ]
+            )
 
     def load_selected_files(self):
         indexes = self.selectedIndexes()

@@ -85,7 +85,9 @@ class Collection:
 
     def _error(self, reply):
         self.tagger.window.set_statusbar_message(
-            N_("Error while modifying collections: %(error)s"), {'error': reply.errorString()}, echo=log.error
+            N_("Error while modifying collections: %(error)s"),
+            {'error': reply.errorString()},
+            echo=log.error,
         )
 
     def _success_add(self, releases, callback):
@@ -114,9 +116,17 @@ class Collection:
 
     def _success(self, count, callback, status_msg, debug_msg):
         callback()
-        mparms = {'count': count, 'name': self.name}
+        mparms = {
+            'count': count,
+            'name': self.name,
+        }
         log.debug(debug_msg % mparms)
-        self.tagger.window.set_statusbar_message(status_msg, mparms, translate=None, echo=None)
+        self.tagger.window.set_statusbar_message(
+            status_msg,
+            mparms,
+            translate=None,
+            echo=None,
+        )
 
 
 def get_user_collection(collection_id):
@@ -133,7 +143,9 @@ def load_user_collections(callback=None):
     def request_finished(document, reply, error):
         if error:
             tagger.window.set_statusbar_message(
-                N_("Error loading collections: %(error)s"), {'error': reply.errorString()}, echo=log.error
+                N_("Error loading collections: %(error)s"),
+                {'error': reply.errorString()},
+                echo=log.error,
             )
             return
         if document and 'collections' in document:

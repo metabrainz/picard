@@ -121,7 +121,12 @@ class AcoustIDManager:
         if not file.acoustid_fingerprint or not file.acoustid_length:
             return
         metadata = file.metadata
-        self._submissions[file] = Submission(file.acoustid_fingerprint, file.acoustid_length, recordingid, metadata)
+        self._submissions[file] = Submission(
+            file.acoustid_fingerprint,
+            file.acoustid_length,
+            recordingid,
+            metadata,
+        )
         self._check_unsubmitted()
 
     def update(self, file, recordingid):
@@ -188,7 +193,11 @@ class AcoustIDManager:
             else:
                 log_msg = N_("AcoustID submission finished successfully")
             log.debug(log_msg)
-            self.tagger.window.set_statusbar_message(log_msg, echo=None, timeout=3000)
+            self.tagger.window.set_statusbar_message(
+                log_msg,
+                echo=None,
+                timeout=3000,
+            )
             self._check_unsubmitted()
             return
 
@@ -200,12 +209,19 @@ class AcoustIDManager:
             else:
                 log_msg = N_("AcoustID submission failed permanently, probably too many retries")
             log.error(log_msg)
-            self.tagger.window.set_statusbar_message(log_msg, echo=None, timeout=3000)
+            self.tagger.window.set_statusbar_message(
+                log_msg,
+                echo=None,
+                timeout=3000,
+            )
             self._check_unsubmitted()
             return
 
         log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)…", len(batch), len(submissions))
-        self.tagger.window.set_statusbar_message(N_("Submitting AcoustIDs …"), echo=None)
+        self.tagger.window.set_statusbar_message(
+            N_("Submitting AcoustIDs …"),
+            echo=None,
+        )
         if not errors:
             errors = []
         self._acoustid_api.submit_acoustid_fingerprints(
@@ -228,11 +244,19 @@ class AcoustIDManager:
                     message = errordoc['error']['message']
                 except BaseException:
                     message = ""
-                mparms = {'error': http.errorString(), 'message': message}
+                mparms = {
+                    'error': http.errorString(),
+                    'message': message,
+                }
                 previous_errors.append(mparms)
                 log_msg = N_("AcoustID submission failed with error '%(error)s': %(message)s")
                 log.error(log_msg, mparms)
-                self.tagger.window.set_statusbar_message(log_msg, mparms, echo=None, timeout=3000)
+                self.tagger.window.set_statusbar_message(
+                    log_msg,
+                    mparms,
+                    echo=None,
+                    timeout=3000,
+                )
         else:
             log.debug("AcoustID: %d fingerprints successfully submitted", len(batch))
             for file, submission in batch:

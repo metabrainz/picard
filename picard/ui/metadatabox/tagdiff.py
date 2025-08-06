@@ -379,6 +379,12 @@ class TagDiff:
                 old = self.handle_length(old, prettify_times)
                 new = self.handle_length(new, prettify_times)
 
-            writer.writerow([tag, MULTI_VALUED_JOINER.join(old), MULTI_VALUED_JOINER.join(new)])
+            writer.writerow(
+                [
+                    tag,
+                    MULTI_VALUED_JOINER.join(old),
+                    MULTI_VALUED_JOINER.join(new),
+                ]
+            )
 
         return f.getvalue()

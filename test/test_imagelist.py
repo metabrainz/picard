@@ -39,7 +39,11 @@ def create_test_files():
         CoverArtImage(url='file://file1', data=create_fake_png(b'a')),
         CoverArtImage(url='file://file2', data=create_fake_png(b'b')),
     ]
-    test_files = [File('test1.flac'), File('test2.flac'), File('test2.flac')]
+    test_files = [
+        File('test1.flac'),
+        File('test2.flac'),
+        File('test2.flac'),
+    ]
     test_files[0].metadata.images.append(test_images[0])
     test_files[1].metadata.images.append(test_images[1])
     test_files[2].metadata.images.append(test_images[1])

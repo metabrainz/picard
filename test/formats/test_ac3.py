@@ -76,7 +76,9 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
 
     def test_remove_ape_tags(self):
         config.setting['remove_ape_from_ac3'] = True
-        metadata = Metadata({'artist': 'Foo'})
+        metadata = Metadata(
+            {'artist': 'Foo'},
+        )
         metadata = save_and_load_metadata(self.filename, metadata)
         self.assertEqual('AC-3', metadata['~format'])
         self.assertNotIn('title', metadata)

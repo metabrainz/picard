@@ -126,12 +126,16 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
 
     def test_upgrade_hook_autodetect_not_ok(self):
         with self.assertRaisesRegex(
-            UpgradeHooksAutodetectError, r'^Failed to extract version from _upgrade_hook_not_ok_xxx'
+            UpgradeHooksAutodetectError,
+            r'^Failed to extract version from _upgrade_hook_not_ok_xxx',
         ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_not_ok_')
 
     def test_upgrade_hook_autodetect_tricky(self):
-        with self.assertRaisesRegex(UpgradeHooksAutodetectError, r"^Conflicting functions for version 1\.2\.3\.alpha1"):
+        with self.assertRaisesRegex(
+            UpgradeHooksAutodetectError,
+            r"^Conflicting functions for version 1\.2\.3\.alpha1",
+        ):
             autodetect_upgrade_hooks(module_name=__name__, prefix='_upgrade_hook_tricky_')
 
     def test_upgrade_hook_autodetect_future(self):
@@ -276,7 +280,8 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
         self.assertTrue(self.config.setting['enable_tagger_scripts'])
         self.assertEqual(
-            [(0, unique_numbered_title(DEFAULT_SCRIPT_NAME, []), True, 'abc')], self.config.setting['list_of_scripts']
+            [(0, unique_numbered_title(DEFAULT_SCRIPT_NAME, []), True, 'abc')],
+            self.config.setting['list_of_scripts'],
         )
 
     def test_upgrade_to_v1_4_0dev7(self):
