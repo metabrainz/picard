@@ -58,7 +58,10 @@ class ArtistSearchDialog(SearchDialog):
             default_width=100,
         )
         super().__init__(
-            parent, N_("Artist Search Dialog"), accept_button_title=N_("Show in browser"), search_type='artist'
+            parent,
+            N_("Artist Search Dialog"),
+            accept_button_title=N_("Show in browser"),
+            search_type='artist',
         )
 
     def search(self, text):

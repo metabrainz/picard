@@ -222,7 +222,10 @@ class MultiLocaleSelector(PicardDialog):
         self.ui.selected_locales.setCurrentRow(0)
 
         def indented_translated_locale(locale, level):
-            return _("{indent}{locale}").format(indent="    " * level, locale=gettext_constants(ALIAS_LOCALES[locale]))
+            return _("{indent}{locale}").format(
+                indent=" " * level * 4,
+                locale=gettext_constants(ALIAS_LOCALES[locale]),
+            )
 
         self.ui.available_locales.clear()
         for locale, level in iter_sorted_locales(ALIAS_LOCALES):

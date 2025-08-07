@@ -88,7 +88,14 @@ class Testbytes2human(PicardTestCase):
         list = []
         for x in sorted(values):
             list.append(
-                ";".join([str(x), bytes2human.decimal(x), bytes2human.binary(x), bytes2human.short_string(x, 1024, 2)])
+                ";".join(
+                    [
+                        str(x),
+                        bytes2human.decimal(x),
+                        bytes2human.binary(x),
+                        bytes2human.short_string(x, 1024, 2),
+                    ]
+                )
             )
         return list
 

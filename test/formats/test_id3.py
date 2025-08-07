@@ -410,7 +410,12 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_save_explicit_id3_frames(self):
-            metadata = Metadata({'~id3:TXXX:foo': 'bar', '~id3:TOWN': 'owner'})
+            metadata = Metadata(
+                {
+                    '~id3:TXXX:foo': 'bar',
+                    '~id3:TOWN': 'owner',
+                }
+            )
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertIn('TXXX:foo', raw_metadata)
@@ -614,11 +619,7 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_releasedate_v23(self):
             config.setting['write_id3v23'] = True
-            metadata = Metadata(
-                {
-                    'releasedate': '2023-04-28',
-                }
-            )
+            metadata = Metadata({'releasedate': '2023-04-28'})
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertEqual(metadata['releasedate'], raw_metadata['TXXX:RELEASEDATE'])
@@ -626,11 +627,7 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_releasedate_v24(self):
             config.setting['write_id3v23'] = False
-            metadata = Metadata(
-                {
-                    'releasedate': '2023-04-28',
-                }
-            )
+            metadata = Metadata({'releasedate': '2023-04-28'})
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertEqual(metadata['releasedate'], raw_metadata['TDRL'])

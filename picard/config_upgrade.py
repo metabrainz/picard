@@ -97,7 +97,10 @@ def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
             _s['file_naming_format'] = (
                 "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
                 "albums)\n%s,\n$noop(Single Artist Albums)\n%s)"
-                % (_s.value('va_file_naming_format', TextOption), _s['file_naming_format'])
+                % (
+                    _s.value('va_file_naming_format', TextOption),
+                    _s['file_naming_format'],
+                )
             )
         _s.remove('va_file_naming_format')
         _s.remove('use_va_format')

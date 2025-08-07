@@ -98,7 +98,10 @@ class Id3Encoding(IntEnum):
 
     @staticmethod
     def from_config(id3v2_encoding):
-        return {'utf-8': Id3Encoding.UTF8, 'utf-16': Id3Encoding.UTF16}.get(id3v2_encoding, Id3Encoding.LATIN1)
+        return {
+            'utf-8': Id3Encoding.UTF8,
+            'utf-16': Id3Encoding.UTF16,
+        }.get(id3v2_encoding, Id3Encoding.LATIN1)
 
 
 def id3text(text, encoding):
@@ -435,12 +438,16 @@ class ID3File(File):
         """
         if frame.type != 1:
             log.warning(
-                "Unsupported SYLT type %d in %r, only type 1 is supported", frame.type, config_params['filename']
+                "Unsupported SYLT type %d in %r, only type 1 is supported",
+                frame.type,
+                config_params['filename'],
             )
             return
         if frame.format != 2:
             log.warning(
-                "Unsupported SYLT format %d in %r, only format 2 is supported", frame.format, config_params['filename']
+                "Unsupported SYLT format %d in %r, only format 2 is supported",
+                frame.format,
+                config_params['filename'],
             )
             return
         name = 'syncedlyrics'
@@ -713,7 +720,12 @@ class ID3File(File):
                 text = '%s/%s' % (metadata[number_tag], metadata[total_tag])
             else:
                 text = metadata[number_tag]
-            tags.add(getattr(id3, frame_id)(encoding=Id3Encoding.LATIN1, text=id3text(text, Id3Encoding.LATIN1)))
+            tags.add(
+                getattr(id3, frame_id)(
+                    encoding=Id3Encoding.LATIN1,
+                    text=id3text(text, Id3Encoding.LATIN1),
+                )
+            )
 
     def _save_images_to_tags(self, tags, metadata):
         """Save cover art images to tags."""

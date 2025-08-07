@@ -175,7 +175,10 @@ class ReleasesOptionsPage(OptionsPage):
         def add_slider(name, griditer, context):
             label = pgettext_attributes(context, name)
             self._release_type_sliders[name] = ReleaseTypeScore(
-                self.ui.type_group, self.ui.gridLayout, label, next(griditer)
+                self.ui.type_group,
+                self.ui.gridLayout,
+                label,
+                next(griditer),
             )
 
         griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS) + len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
@@ -230,10 +233,16 @@ class ReleasesOptionsPage(OptionsPage):
             release_type_slider.setValue(scores.get(release_type, DEFAULT_RELEASE_SCORE))
 
         self._load_list_items(
-            'preferred_release_countries', RELEASE_COUNTRIES, self.ui.country_list, self.ui.preferred_country_list
+            'preferred_release_countries',
+            RELEASE_COUNTRIES,
+            self.ui.country_list,
+            self.ui.preferred_country_list,
         )
         self._load_list_items(
-            'preferred_release_formats', RELEASE_FORMATS, self.ui.format_list, self.ui.preferred_format_list
+            'preferred_release_formats',
+            RELEASE_FORMATS,
+            self.ui.format_list,
+            self.ui.preferred_format_list,
         )
 
     def save(self):

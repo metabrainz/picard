@@ -331,7 +331,11 @@ class CommonTests:
             )
             for a, b, expected in results:
                 actual = Metadata.length_score(a, b)
-                self.assertAlmostEqual(expected, actual, msg="a={a}, b={b}".format(a=a, b=b))
+                self.assertAlmostEqual(
+                    expected,
+                    actual,
+                    msg="a={a}, b={b}".format(a=a, b=b),
+                )
 
         def test_compare_is_equal(self):
             m1 = Metadata()
@@ -710,7 +714,14 @@ class CommonTests:
             self.assertEqual(recording['releases'][0], match_.release)
 
         def test_compare_to_track_without_releases(self):
-            self.set_config_values({'release_type_scores': [('Compilation', 0.6), ('Other', 0.6)]})
+            self.set_config_values(
+                {
+                    'release_type_scores': [
+                        ('Compilation', 0.6),
+                        ('Other', 0.6),
+                    ]
+                }
+            )
             track_json = acoustid_parse_recording(load_test_json('acoustid.json'))
             track = Track(track_json['id'])
             track.metadata.update(

@@ -275,7 +275,8 @@ class Cluster(FileList):
         if self.lookup_task:
             return
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the metadata for cluster %(album)s…"), {'album': self.metadata['album']}
+            N_("Looking up the metadata for cluster %(album)s…"),
+            {'album': self.metadata['album']},
         )
         config = get_config()
         self.lookup_task = self.tagger.mb_api.find_releases(

@@ -128,14 +128,18 @@ class RenamingOptionsPage(OptionsPage):
         self.naming_scripts = self.script_editor_dialog.naming_scripts
         self.selected_naming_script_id = self.script_editor_dialog.selected_script_id
         populate_script_selection_combo_box(
-            self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector
+            self.naming_scripts,
+            self.selected_naming_script_id,
+            self.ui.naming_script_selector,
         )
         self.display_examples()
 
     def update_selector_from_settings(self):
         """Update the script selector combo box from the settings."""
         populate_script_selection_combo_box(
-            self.naming_scripts, self.selected_naming_script_id, self.ui.naming_script_selector
+            self.naming_scripts,
+            self.selected_naming_script_id,
+            self.ui.naming_script_selector,
         )
         self.update_selector_in_editor()
 
@@ -154,13 +158,17 @@ class RenamingOptionsPage(OptionsPage):
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list."""
         self.examples.synchronize_selected_example_lines(
-            self.current_row, self.ui.example_filename_before, self.ui.example_filename_after
+            self.current_row,
+            self.ui.example_filename_before,
+            self.ui.example_filename_after,
         )
 
     def match_before_to_after(self):
         """Sets the selected item in the 'before' list to the corresponding item in the 'after' list."""
         self.examples.synchronize_selected_example_lines(
-            self.current_row, self.ui.example_filename_after, self.ui.example_filename_before
+            self.current_row,
+            self.ui.example_filename_after,
+            self.ui.example_filename_before,
         )
 
     def show_script_editing_page(self):

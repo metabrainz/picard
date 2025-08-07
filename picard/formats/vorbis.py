@@ -229,7 +229,9 @@ class VCommentFile(File):
                 for data in file['COVERART']:
                     try:
                         coverartimage = TagCoverArtImage(
-                            file=filename, tag='COVERART', data=base64.standard_b64decode(data)
+                            file=filename,
+                            tag='COVERART',
+                            data=base64.standard_b64decode(data),
                         )
                     except (CoverArtImageError, TypeError, ValueError) as e:
                         log.error("Cannot load image from %r: %s", filename, e)

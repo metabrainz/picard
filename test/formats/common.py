@@ -405,7 +405,15 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_nonexistant_tags(self):
-            for key in ('title', 'foo', 'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo', 'totaltracks'):
+            for key in (
+                'title',
+                'foo',
+                'comment:foo',
+                'comment:de:foo',
+                'performer:foo',
+                'lyrics:foo',
+                'totaltracks',
+            ):
                 if not self.format.supports_tag(key):
                     continue
                 metadata = Metadata()

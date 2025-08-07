@@ -134,7 +134,9 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
     def test_plugin_name_from_path(self):
         for name, path in _testplugins.items():
             self.assertEqual(
-                _plugin_name_from_path(path), 'dummyplugin', "failed to get plugin name from %s: %r" % (name, path)
+                _plugin_name_from_path(path),
+                'dummyplugin',
+                "failed to get plugin name from %s: %r" % (name, path),
             )
 
 

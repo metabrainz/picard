@@ -344,7 +344,11 @@ class PluginsOptionsPage(OptionsPage):
                 if latest > plugin.version:
                     new_version = latest
             self.update_plugin_item(
-                None, plugin, enabled=self.is_plugin_enabled(plugin), new_version=new_version, is_installed=True
+                None,
+                plugin,
+                enabled=self.is_plugin_enabled(plugin),
+                new_version=new_version,
+                is_installed=True,
             )
 
         for plugin in self.installable_plugins():

@@ -152,7 +152,11 @@ def script_function(name=None, eval_args=True, check_argcount=True, prefix='func
         else:
             sname = name
         register_script_function(
-            func, name=sname, eval_args=eval_args, check_argcount=check_argcount, documentation=documentation
+            func,
+            name=sname,
+            eval_args=eval_args,
+            check_argcount=check_argcount,
+            documentation=documentation,
         )
         return func
 

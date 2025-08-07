@@ -155,15 +155,23 @@ class PunctuationTest(PicardTestCase):
 
     def test_pathsave(self):
         self.assertEqual(
-            util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True), '__' if IS_WIN else '_\\'
+            util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True),
+            '__' if IS_WIN else '_\\',
         )
         self.assertEqual(
-            util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True), '/\\__' if IS_WIN else '/\\_\\'
+            util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True),
+            '/\\__' if IS_WIN else '/\\_\\',
         )
 
     def test_pathsave_win_compat(self):
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True, True), '__')
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True, True), '/\\__')
+        self.assertEqual(
+            util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True, True),
+            '__',
+        )
+        self.assertEqual(
+            util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True, True),
+            '/\\__',
+        )
 
     def test_incorrect(self):
         pass

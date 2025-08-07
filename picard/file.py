@@ -196,7 +196,11 @@ class File(MetadataItem):
 
     def _format_specific_copy(self, metadata, settings=None):
         """Creates a copy of metadata, but applies format_specific_metadata() to the values."""
-        copy = Metadata(deleted_tags=metadata.deleted_tags, images=metadata.images, length=metadata.length)
+        copy = Metadata(
+            deleted_tags=metadata.deleted_tags,
+            images=metadata.images,
+            length=metadata.length,
+        )
         for name in metadata:
             copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
@@ -217,7 +221,11 @@ class File(MetadataItem):
         self.error_append(str(error))
 
     def load(self, callback):
-        thread.run_task(partial(self._load_check, self.filename), partial(self._loading_finished, callback), priority=1)
+        thread.run_task(
+            partial(self._load_check, self.filename),
+            partial(self._loading_finished, callback),
+            priority=1,
+        )
 
     def _load_check(self, filename):
         # Check that file has not been removed since thread was queued
@@ -840,14 +848,22 @@ class File(MetadataItem):
         if self.state == File.REMOVED:
             return
         if error:
-            log.error("Network error encountered during the lookup for %s. Error code: %s", self.filename, error)
+            log.error(
+                "Network error encountered during the lookup for %s. Error code: %s",
+                self.filename,
+                error,
+            )
         try:
             tracks = document['recordings']
         except (KeyError, TypeError):
             tracks = None
 
         def statusbar(message):
-            self.tagger.window.set_statusbar_message(message, {'filename': self.filename}, timeout=3000)
+            self.tagger.window.set_statusbar_message(
+                message,
+                {'filename': self.filename},
+                timeout=3000,
+            )
 
         if tracks:
             if lookuptype == File.LOOKUP_ACOUSTID:
@@ -901,7 +917,8 @@ class File(MetadataItem):
         if self.lookup_task:
             return
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the metadata for file %(filename)s …"), {'filename': self.filename}
+            N_("Looking up the metadata for file %(filename)s …"),
+            {'filename': self.filename},
         )
         self.clear_lookup_task()
         metadata = self.metadata

@@ -116,7 +116,13 @@ class TailLogHandler(logging.Handler):
 
     def emit(self, record):
         with self.log_queue_lock:
-            self.log_queue.append(TailLogTuple(self.pos, self.format(record), record.levelno))
+            self.log_queue.append(
+                TailLogTuple(
+                    self.pos,
+                    self.format(record),
+                    record.levelno,
+                )
+            )
             self.pos += 1
         self.tail_logger.updated.emit()
 

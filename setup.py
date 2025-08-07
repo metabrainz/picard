@@ -178,7 +178,9 @@ class picard_build(build):
             }
             if os.path.isfile('installer/picard-setup.nsi.in'):
                 generate_file(
-                    'installer/picard-setup.nsi.in', 'installer/picard-setup.nsi', {**common_args, **installer_args}
+                    'installer/picard-setup.nsi.in',
+                    'installer/picard-setup.nsi',
+                    {**common_args, **installer_args},
                 )
                 log.info('generating NSIS translation files')
                 self.spawn(['python', 'installer/i18n/json2nsh.py'])
@@ -187,7 +189,11 @@ class picard_build(build):
                 'filevers': str(file_version),
                 'prodvers': str(file_version),
             }
-            generate_file('win-version-info.txt.in', 'win-version-info.txt', {**common_args, **version_args})
+            generate_file(
+                'win-version-info.txt.in',
+                'win-version-info.txt',
+                {**common_args, **version_args},
+            )
 
             default_publisher = (
                 'CN=MetaBrainz Foundation Inc., O=MetaBrainz Foundation Inc., L=Covina, S=California, C=US'
@@ -395,7 +401,11 @@ class picard_build_appdata(Command):
         with open('NEWS.md', 'r') as newsfile:
             news = newsfile.read()
             releases = [template.format(**m.groupdict()) for m in self.re_release.finditer(news)]
-            args = {'app-id': PICARD_APP_ID, 'desktop-id': PICARD_DESKTOP_NAME, 'releases': '\n    '.join(releases)}
+            args = {
+                'app-id': PICARD_APP_ID,
+                'desktop-id': PICARD_DESKTOP_NAME,
+                'releases': '\n    '.join(releases),
+            }
             generate_file(source_file, APPDATA_FILE, args)
 
 
@@ -456,7 +466,14 @@ class picard_regen_appdata_pot_file(Command):
             ]
         )
         for filepath in glob.glob(os.path.join(output_dir, '*.po')):
-            self.spawn(['msgmerge', '--update', filepath, pot_file])
+            self.spawn(
+                [
+                    'msgmerge',
+                    '--update',
+                    filepath,
+                    pot_file,
+                ]
+            )
 
 
 _regen_pot_description = "Regenerate po/picard.pot, parsing source tree for new or updated strings"
@@ -687,6 +704,8 @@ if sys.platform not in {'darwin', 'haiku1', 'win32'}:
     args['data_files'].append(('share/metainfo', [APPDATA_FILE]))
 
 if sys.platform == 'win32':
-    args['entry_points'] = {'gui_scripts': ['picard = picard.tagger:main']}
+    args['entry_points'] = {
+        'gui_scripts': ['picard = picard.tagger:main'],
+    }
 
 setup(**args)

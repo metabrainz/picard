@@ -41,42 +41,69 @@ class MimeDataHelperTest(PicardTestCase):
 
     def test_register(self):
         helper = MimeDataHelper()
-        helper.register(self.MIMETYPE_TEXT, encode_func=lambda x: x, decode_func=lambda x: x)
+        helper.register(
+            self.MIMETYPE_TEXT,
+            encode_func=lambda x: x,
+            decode_func=lambda x: x,
+        )
         self.assertTrue(helper.is_registered(self.MIMETYPE_TEXT))
         self.assertTrue(helper.encode_func(self.MIMETYPE_TEXT) is not None)
         self.assertTrue(helper.decode_func(self.MIMETYPE_TEXT) is not None)
 
     def test_reregister(self):
         helper = MimeDataHelper()
-        helper.register(self.MIMETYPE_TEXT, encode_func=lambda x: x, decode_func=lambda x: x)
+        helper.register(
+            self.MIMETYPE_TEXT,
+            encode_func=lambda x: x,
+            decode_func=lambda x: x,
+        )
         with pytest.raises(ValueError):
-            helper.register(self.MIMETYPE_TEXT, encode_func=lambda x: x, decode_func=lambda x: x)
+            helper.register(
+                self.MIMETYPE_TEXT,
+                encode_func=lambda x: x,
+                decode_func=lambda x: x,
+            )
 
     def test_non_callable(self):
         helper = MimeDataHelper()
         with pytest.raises(ValueError):
-            helper.register(self.MIMETYPE_TEXT, encode_func=1)
+            helper.register(
+                self.MIMETYPE_TEXT,
+                encode_func=1,
+            )
 
     def test_encode(self):
         helper = MimeDataHelper()
         result = self.MIMETYPE_TEXT + " encoded"
-        helper.register(self.MIMETYPE_TEXT, encode_func=lambda: result)
+        helper.register(
+            self.MIMETYPE_TEXT,
+            encode_func=lambda: result,
+        )
         fn = helper.encode_func(self.MIMETYPE_TEXT)
         self.assertTrue(fn() == result)
 
     def test_decode(self):
         helper = MimeDataHelper()
         result = self.MIMETYPE_TEXT + " decoded"
-        helper.register(self.MIMETYPE_TEXT, encode_func=lambda: result)
+        helper.register(
+            self.MIMETYPE_TEXT,
+            encode_func=lambda: result,
+        )
         fn = helper.encode_func(self.MIMETYPE_TEXT)
         self.assertTrue(fn() == result)
 
     def test_encode_generator(self):
         helper = MimeDataHelper()
         result = self.MIMETYPE_TEXT + " decoded"
-        helper.register(self.MIMETYPE_TEXT, encode_func=lambda: result)
+        helper.register(
+            self.MIMETYPE_TEXT,
+            encode_func=lambda: result,
+        )
         result = self.MIMETYPE_TSV + " decoded"
-        helper.register(self.MIMETYPE_TSV, encode_func=lambda: result)
+        helper.register(
+            self.MIMETYPE_TSV,
+            encode_func=lambda: result,
+        )
 
         results = []
         for mimetype, encode_func in helper.encode_funcs():
@@ -90,7 +117,10 @@ class MimeDataHelperTest(PicardTestCase):
         helper = MimeDataHelper()
 
         txtresult = self.MIMETYPE_TEXT + " decoded"
-        helper.register(self.MIMETYPE_TEXT, decode_func=lambda: txtresult)
+        helper.register(
+            self.MIMETYPE_TEXT,
+            decode_func=lambda: txtresult,
+        )
         mimedata.setData(self.MIMETYPE_TEXT, txtresult.encode())
 
         for fn in helper.decode_funcs(mimedata):
@@ -100,10 +130,16 @@ class MimeDataHelperTest(PicardTestCase):
         mimedata = QtCore.QMimeData()
         helper = MimeDataHelper()
         txtresult = self.MIMETYPE_TEXT + " decoded"
-        helper.register(self.MIMETYPE_TEXT, decode_func=lambda: txtresult)
+        helper.register(
+            self.MIMETYPE_TEXT,
+            decode_func=lambda: txtresult,
+        )
 
         tsvresult = self.MIMETYPE_TSV + " decoded"
-        helper.register(self.MIMETYPE_TSV, decode_func=lambda: tsvresult)
+        helper.register(
+            self.MIMETYPE_TSV,
+            decode_func=lambda: tsvresult,
+        )
         mimedata.setData(self.MIMETYPE_TSV, tsvresult.encode())
 
         results = []

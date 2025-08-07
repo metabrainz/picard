@@ -84,7 +84,13 @@ def is_valid_key(key):
 
     See http://wiki.hydrogenaud.io/index.php?title=APE_key
     """
-    return key and 2 <= len(key) <= 255 and key not in DISALLOWED_KEYS and INVALID_CHARS.search(key) is None
+    if not key:
+        return False
+    if not (2 <= len(key) <= 255):
+        return False
+    if key in DISALLOWED_KEYS:
+        return False
+    return INVALID_CHARS.search(key) is None
 
 
 class APEv2File(File):

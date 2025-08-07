@@ -296,7 +296,10 @@ class ScriptSerializer:
                     format=FILE_ERROR_DECODE, filename=filename, error_msg=error
                 ) from None
         else:
-            return cls(title=_("Imported from %s") % filename, script=file_content.strip())
+            return cls(
+                title=_("Imported from %s") % filename,
+                script=file_content.strip(),
+            )
 
     @classmethod
     def create_from_dict(cls, script_dict, create_new_id=True):

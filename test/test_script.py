@@ -601,16 +601,20 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals(r'$rsearch(quux,foo|\(bar\)|\(baz\)|quux)', "quux")
         self.assertScriptResultEquals(r'$rsearch(foobar,foo\(?:\(baz\)|\(bar\)\))', "bar")
         self.assertScriptResultEquals(
-            r'$rsearch(test \(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\), disc)', "1"
+            r'$rsearch(test \(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\), disc)',
+            "1",
         )
         self.assertScriptResultEquals(
-            r'$rsearch(test \(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\), name)', "test"
+            r'$rsearch(test \(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\), name)',
+            "test",
         )
         self.assertScriptResultEquals(
-            r'$rsearch(\(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\))', "1"
+            r'$rsearch(\(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\))',
+            "1",
         )
         self.assertScriptResultEquals(
-            r'$rsearch(\(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\), name)', ""
+            r'$rsearch(\(disc 1\),\(?:\(?P<name>.+\)\\s+\)?\\\(disc \(?P<disc>\\d+\)\\\), name)',
+            "",
         )
 
     def test_arguments(self):
@@ -1596,11 +1600,15 @@ class ScriptParserTest(PicardTestCase):
         # Tests with context
         context["output"] = "Output:"
         self.assertScriptResultEquals(
-            "$foreach(%foo%,$set(output,%output% %_loop_count%=%_loop_value%))%output%", foo_output, context
+            "$foreach(%foo%,$set(output,%output% %_loop_count%=%_loop_value%))%output%",
+            foo_output,
+            context,
         )
         context["output"] = "Output:"
         self.assertScriptResultEquals(
-            "$foreach(%bar%,$set(output,%output% %_loop_count%=%_loop_value%))%output%", loop_output, context
+            "$foreach(%bar%,$set(output,%output% %_loop_count%=%_loop_value%))%output%",
+            loop_output,
+            context,
         )
         # Tests with static inputs
         context["output"] = "Output:"
@@ -1612,10 +1620,16 @@ class ScriptParserTest(PicardTestCase):
         # Tests with missing inputs
         context["output"] = "Output:"
         self.assertScriptResultEquals(
-            "$foreach(,$set(output,%output% %_loop_count%=%_loop_value%))%output%", "Output:", context
+            "$foreach(,$set(output,%output% %_loop_count%=%_loop_value%))%output%",
+            "Output:",
+            context,
         )
         context["output"] = "Output:"
-        self.assertScriptResultEquals("$foreach(First:A; Second:B; Third:C,)%output%", "Output:", context)
+        self.assertScriptResultEquals(
+            "$foreach(First:A; Second:B; Third:C,)%output%",
+            "Output:",
+            context,
+        )
         # Tests with separator override
         context["output"] = "Output:"
         self.assertScriptResultEquals(
@@ -1653,22 +1667,36 @@ class ScriptParserTest(PicardTestCase):
         # Tests with invalid conditional input
         context["output"] = "Output:"
         self.assertScriptResultEquals(
-            "$while($lt(%_loop_count%,5,int),$set(output,%output% %_loop_count%))%output%", "Output:", context
+            "$while($lt(%_loop_count%,5,int),$set(output,%output% %_loop_count%))%output%",
+            "Output:",
+            context,
         )
         # Tests with forced conditional (runaway condition)
         context["output"] = "Output:"
         self.assertScriptResultEquals(
-            "$while(1,$set(output,%output% %_loop_count%))$right(%output%,4)", "1000", context
+            "$while(1,$set(output,%output% %_loop_count%))$right(%output%,4)",
+            "1000",
+            context,
         )
         context["output"] = "Output:"
         self.assertScriptResultEquals(
-            "$while(0,$set(output,%output% %_loop_count%))$right(%output%,4)", "1000", context
+            "$while(0,$set(output,%output% %_loop_count%))$right(%output%,4)",
+            "1000",
+            context,
         )
         # Tests with missing inputs
         context["output"] = "Output:"
-        self.assertScriptResultEquals("$while($lt(%_loop_count%,5,int),)%output%", "Output:", context)
+        self.assertScriptResultEquals(
+            "$while($lt(%_loop_count%,5,int),)%output%",
+            "Output:",
+            context,
+        )
         context["output"] = "Output:"
-        self.assertScriptResultEquals("$while(,$set(output,%output% %_loop_count%))%output%", "Output:", context)
+        self.assertScriptResultEquals(
+            "$while(,$set(output,%output% %_loop_count%))%output%",
+            "Output:",
+            context,
+        )
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$while: Wrong number of arguments for \$while: Expected exactly 2, "
         with self.assertRaisesRegex(ScriptError, areg):
@@ -1685,19 +1713,35 @@ class ScriptParserTest(PicardTestCase):
         alternate_output = "1=FIRST:2=A; SECOND:3=B; THIRD:4=C"
         # Tests with context
         context["foo"] = "First:A; Second:B; Third:C"
-        self.assertScriptResultEquals("$map(%foo%,$upper(%_loop_count%=%_loop_value%))", foo_output, context)
+        self.assertScriptResultEquals(
+            "$map(%foo%,$upper(%_loop_count%=%_loop_value%))",
+            foo_output,
+            context,
+        )
         context["bar"] = ["First:A", "Second:B", "Third:C"]
-        self.assertScriptResultEquals("$map(%bar%,$upper(%_loop_count%=%_loop_value%))", loop_output, context)
+        self.assertScriptResultEquals(
+            "$map(%bar%,$upper(%_loop_count%=%_loop_value%))",
+            loop_output,
+            context,
+        )
         # Tests with static inputs
         self.assertScriptResultEquals(
-            "$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%))", loop_output, context
+            "$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%))",
+            loop_output,
+            context,
         )
         # Tests for removing empty elements
         context["baz"] = ["First:A", "Second:B", "Remove", "Third:C"]
         test_output = "1=FIRST:A; 2=SECOND:B; 4=THIRD:C"
-        self.assertScriptResultEquals("$lenmulti(%baz%)", "4", context)
         self.assertScriptResultEquals(
-            "$map(%baz%,$if($eq(%_loop_count%,3),,$upper(%_loop_count%=%_loop_value%)))", test_output, context
+            "$lenmulti(%baz%)",
+            "4",
+            context,
+        )
+        self.assertScriptResultEquals(
+            "$map(%baz%,$if($eq(%_loop_count%,3),,$upper(%_loop_count%=%_loop_value%)))",
+            test_output,
+            context,
         )
         context["baz"] = ["First:A", "Second:B", "Remove", "Third:C"]
         self.assertScriptResultEquals(
@@ -1705,14 +1749,32 @@ class ScriptParserTest(PicardTestCase):
             test_output,
             context,
         )
-        self.assertScriptResultEquals("$lenmulti(%baz%)", "3", context)
-        self.assertScriptResultEquals("%baz%", test_output, context)
+        self.assertScriptResultEquals(
+            "$lenmulti(%baz%)",
+            "3",
+            context,
+        )
+        self.assertScriptResultEquals(
+            "%baz%",
+            test_output,
+            context,
+        )
         # Tests with missing inputs
-        self.assertScriptResultEquals("$map(,$upper(%_loop_count%=%_loop_value%))", "", context)
-        self.assertScriptResultEquals("$map(First:A; Second:B; Third:C,)", "", context)
+        self.assertScriptResultEquals(
+            "$map(,$upper(%_loop_count%=%_loop_value%))",
+            "",
+            context,
+        )
+        self.assertScriptResultEquals(
+            "$map(First:A; Second:B; Third:C,)",
+            "",
+            context,
+        )
         # Tests with separator override
         self.assertScriptResultEquals(
-            "$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%),:)", alternate_output, context
+            "$map(First:A; Second:B; Third:C,$upper(%_loop_count%=%_loop_value%),:)",
+            alternate_output,
+            context,
         )
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$map: Wrong number of arguments for \$map: Expected between 2 and 3, "
@@ -1732,15 +1794,39 @@ class ScriptParserTest(PicardTestCase):
         bar_output = "First:A ==> Second:B ==> Third:C"
         alternate_output = "First ==> A; Second ==> B; Third ==> C"
         # Tests with context
-        self.assertScriptResultEquals("$join(%foo%,%joiner%)", foo_output, context)
-        self.assertScriptResultEquals("$join(%bar%,%joiner%)", bar_output, context)
+        self.assertScriptResultEquals(
+            "$join(%foo%,%joiner%)",
+            foo_output,
+            context,
+        )
+        self.assertScriptResultEquals(
+            "$join(%bar%,%joiner%)",
+            bar_output,
+            context,
+        )
         # Tests with static inputs
-        self.assertScriptResultEquals("$join(First:A; Second:B; Third:C, ==> )", bar_output, context)
+        self.assertScriptResultEquals(
+            "$join(First:A; Second:B; Third:C, ==> )",
+            bar_output,
+            context,
+        )
         # Tests with missing inputs
-        self.assertScriptResultEquals("$join(, ==> )", "", context)
-        self.assertScriptResultEquals("$join(First:A; Second:B; Third:C,)", "First:ASecond:BThird:C", context)
+        self.assertScriptResultEquals(
+            "$join(, ==> )",
+            "",
+            context,
+        )
+        self.assertScriptResultEquals(
+            "$join(First:A; Second:B; Third:C,)",
+            "First:ASecond:BThird:C",
+            context,
+        )
         # Tests with separator override
-        self.assertScriptResultEquals("$join(First:A; Second:B; Third:C, ==> ,:)", alternate_output, context)
+        self.assertScriptResultEquals(
+            "$join(First:A; Second:B; Third:C, ==> ,:)",
+            alternate_output,
+            context,
+        )
         # Tests with invalid number of arguments
         areg = r"^\d+:\d+:\$join: Wrong number of arguments for \$join: Expected between 2 and 3, "
         with self.assertRaisesRegex(ScriptError, areg):

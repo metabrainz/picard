@@ -299,7 +299,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         override_profiles = profile_page._clean_and_get_all_profiles()
         override_settings = profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
-            option_group, parent=self, override_profiles=override_profiles, override_settings=override_settings
+            option_group,
+            parent=self,
+            override_profiles=override_profiles,
+            override_settings=override_settings,
         )
         profile_dialog.show()
         profile_dialog.raise_()

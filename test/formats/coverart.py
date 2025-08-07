@@ -184,9 +184,29 @@ class CommonCoverArtTests:
                     data=imgdata + b'd',
                 )
             )
-            metadata.images.append(TagCoverArtImage(file='e', tag='e', data=imgdata + b'e', is_front=False))
-            metadata.images.append(TagCoverArtImage(file='f', tag='f', data=imgdata + b'f', types=['front']))
             metadata.images.append(
-                TagCoverArtImage(file='g', tag='g', data=imgdata + b'g', types=['back'], is_front=True)
+                TagCoverArtImage(
+                    file='e',
+                    tag='e',
+                    data=imgdata + b'e',
+                    is_front=False,
+                )
+            )
+            metadata.images.append(
+                TagCoverArtImage(
+                    file='f',
+                    tag='f',
+                    data=imgdata + b'f',
+                    types=['front'],
+                )
+            )
+            metadata.images.append(
+                TagCoverArtImage(
+                    file='g',
+                    tag='g',
+                    data=imgdata + b'g',
+                    types=['back'],
+                    is_front=True,
+                )
             )
             return metadata

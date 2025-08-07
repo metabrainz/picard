@@ -189,7 +189,11 @@ class AlbumSearchDialog(SearchDialog):
     @staticmethod
     def show_releasegroup_search(releasegroup_id, existing_album=None):
         tagger = QtCore.QCoreApplication.instance()
-        dialog = AlbumSearchDialog(tagger.window, force_advanced_search=True, existing_album=existing_album)
+        dialog = AlbumSearchDialog(
+            tagger.window,
+            force_advanced_search=True,
+            existing_album=existing_album,
+        )
         dialog.search("rgid:{0}".format(releasegroup_id))
         dialog.exec()
         return dialog
@@ -216,7 +220,11 @@ class AlbumSearchDialog(SearchDialog):
         from the cluster as query."""
         self.cluster = cluster
         metadata = cluster.metadata
-        query = {"artist": metadata["albumartist"], "release": metadata["album"], "tracks": str(len(cluster.files))}
+        query = {
+            "artist": metadata["albumartist"],
+            "release": metadata["album"],
+            "tracks": str(len(cluster.files)),
+        }
 
         # If advanced query syntax setting is enabled by user, query in
         # advanced syntax style. Otherwise query only album title.
@@ -288,7 +296,8 @@ class AlbumSearchDialog(SearchDialog):
 
             if front:
                 cover_cell.fetch_task = self.tagger.webservice.download_url(
-                    url=front['thumbnails']['small'], handler=partial(self._cover_downloaded, cover_cell)
+                    url=front['thumbnails']['small'],
+                    handler=partial(self._cover_downloaded, cover_cell),
                 )
             else:
                 cover_cell.not_found()

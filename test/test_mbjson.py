@@ -137,10 +137,28 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['~release_seriesid'], '7421b602-a413-4151-bcf4-d831debc3f27')
         self.assertEqual(m['~release_seriescomment'], 'Pink Floyed special editions')
         self.assertEqual(m['~release_seriesnumber'], '')
-        self.assertEqual(a._genres, {'genre1': 6, 'genre2': 3})
-        self.assertEqual(a._folksonomy_tags, {'tag1': 6, 'tag2': 3})
+        self.assertEqual(
+            a._genres,
+            {
+                'genre1': 6,
+                'genre2': 3,
+            },
+        )
+        self.assertEqual(
+            a._folksonomy_tags,
+            {
+                'tag1': 6,
+                'tag2': 3,
+            },
+        )
         for artist in a._album_artists:
-            self.assertEqual(artist._folksonomy_tags, {'british': 2, 'progressive rock': 10})
+            self.assertEqual(
+                artist._folksonomy_tags,
+                {
+                    'british': 2,
+                    'progressive rock': 10,
+                },
+            )
 
     def test_release_without_release_relationships(self):
         config.setting['release_ars'] = False
@@ -165,10 +183,28 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m['~albumartists_sort'], 'Pink Floyd')
         self.assertEqual(m['~releaselanguage'], 'eng')
         self.assertEqual(m.getall('~releasecountries'), ['GB', 'NZ'])
-        self.assertEqual(a.genres, {'genre1': 6, 'genre2': 3})
-        self.assertEqual(a.folksonomy_tags, {'tag1': 6, 'tag2': 3})
+        self.assertEqual(
+            a.genres,
+            {
+                'genre1': 6,
+                'genre2': 3,
+            },
+        )
+        self.assertEqual(
+            a.folksonomy_tags,
+            {
+                'tag1': 6,
+                'tag2': 3,
+            },
+        )
         for artist in a._album_artists:
-            self.assertEqual(artist.folksonomy_tags, {'british': 2, 'progressive rock': 10})
+            self.assertEqual(
+                artist.folksonomy_tags,
+                {
+                    'british': 2,
+                    'progressive rock': 10,
+                },
+            )
 
     def test_preferred_release_country(self):
         m = Metadata()
@@ -191,11 +227,17 @@ class ReleaseTest(MBJSONTest):
         release_group_to_metadata(self.json_doc['release-group'], m)
         self.assertEqual(
             m.getall('~releasegroup_series'),
-            ["Absolute Radio's The 100 Collection", '1001 Albums You Must Hear Before You Die'],
+            [
+                "Absolute Radio's The 100 Collection",
+                '1001 Albums You Must Hear Before You Die',
+            ],
         )
         self.assertEqual(
             m.getall('~releasegroup_seriesid'),
-            ['4bf41050-6fa9-41a6-8398-15bdab4b0352', '4bc2a338-e1d8-4546-8a61-640da8aaf888'],
+            [
+                '4bf41050-6fa9-41a6-8398-15bdab4b0352',
+                '4bc2a338-e1d8-4546-8a61-640da8aaf888',
+            ],
         )
         self.assertEqual(m.getall('~releasegroup_seriescomment'), ['2005 edition'])
         self.assertEqual(m.getall('~releasegroup_seriesnumber'), ['15', '291'])
@@ -208,11 +250,17 @@ class ReleaseTest(MBJSONTest):
         release_group_to_metadata(self.json_doc['release-group'], m)
         self.assertEqual(
             m.getall('~releasegroup_series'),
-            ["Absolute Radio's The 100 Collection", '1001 Albums You Must Hear Before You Die'],
+            [
+                "Absolute Radio's The 100 Collection",
+                '1001 Albums You Must Hear Before You Die',
+            ],
         )
         self.assertEqual(
             m.getall('~releasegroup_seriesid'),
-            ['4bf41050-6fa9-41a6-8398-15bdab4b0352', '4bc2a338-e1d8-4546-8a61-640da8aaf888'],
+            [
+                '4bf41050-6fa9-41a6-8398-15bdab4b0352',
+                '4bc2a338-e1d8-4546-8a61-640da8aaf888',
+            ],
         )
         self.assertEqual(m.getall('~releasegroup_seriescomment'), ['2005 edition'])
         self.assertEqual(m.getall('~releasegroup_seriesnumber'), ['15', '291'])

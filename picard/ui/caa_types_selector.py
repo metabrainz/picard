@@ -221,7 +221,10 @@ class CAATypesSelectorDialog(PicardDialog):
         )
 
         self.arrows_exclude = ArrowsColumn(
-            self.list_exclude, self.list_ignore, callback=self.set_buttons_enabled_state, reverse=True
+            self.list_exclude,
+            self.list_ignore,
+            callback=self.set_buttons_enabled_state,
+            reverse=True,
         )
 
         lists_layout = QtWidgets.QHBoxLayout()

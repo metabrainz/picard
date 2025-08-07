@@ -510,7 +510,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
             settings = profile_settings[profile['id']]
             if 'selected_file_naming_script_id' in settings:
                 profiles_list.append(
-                    self.Profile(profile['id'], profile['title'], settings['selected_file_naming_script_id'])
+                    self.Profile(
+                        profile['id'],
+                        profile['title'],
+                        settings['selected_file_naming_script_id'],
+                    )
                 )
         return profiles_list
 
@@ -614,7 +618,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.selected_script_id = script_item['id']
         self.naming_scripts[self.selected_script_id] = script_item
         idx = populate_script_selection_combo_box(
-            self.naming_scripts, self.selected_script_id, self.ui.preset_naming_scripts
+            self.naming_scripts,
+            self.selected_script_id,
+            self.ui.preset_naming_scripts,
         )
         self._set_combobox_index(idx)
         self.naming_scripts = self.get_scripts_dict()
@@ -774,13 +780,17 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list."""
         self.examples.synchronize_selected_example_lines(
-            self.examples_current_row, self.ui.example_filename_before, self.ui.example_filename_after
+            self.examples_current_row,
+            self.ui.example_filename_before,
+            self.ui.example_filename_after,
         )
 
     def match_before_to_after(self):
         """Sets the selected item in the 'before' list to the corresponding item in the 'after' list."""
         self.examples.synchronize_selected_example_lines(
-            self.examples_current_row, self.ui.example_filename_after, self.ui.example_filename_before
+            self.examples_current_row,
+            self.ui.example_filename_after,
+            self.ui.example_filename_before,
         )
 
     def delete_script(self):
