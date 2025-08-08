@@ -1457,7 +1457,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             check_for_updates and update_check_days > 0 and today >= last_update_check + update_check_days
         )
         log.debug(
-            "%(check_status)s startup check for program updates.  Today: %(today_date)s, Last check: %(last_check)s (Check interval: %(check_interval)s days), Update level: %(update_level)s (%(update_level_name)s)",
+            (
+                "%(check_status)s startup check for program updates."
+                " Today: %(today_date)s,"
+                " Last check: %(last_check)s (Check interval: %(check_interval)s days),"
+                " Update level: %(update_level)s (%(update_level_name)s)"
+            ),
             {
                 'check_status': 'Initiating' if do_auto_update_check else 'Skipping',
                 'today_date': datetime.date.today(),
