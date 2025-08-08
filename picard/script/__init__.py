@@ -217,12 +217,14 @@ def get_file_naming_script_presets():
     yield FileNamingScriptInfo(
         id="Preset 3",
         title=preset_title(3, N_("[album artist]/[album]/[disc and track #] [artist] - [title]")),
-        script="$if2(%albumartist%,%artist%)/\n"
-        "$if(%albumartist%,%album%/,)\n"
-        "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
-        "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)\n"
-        "$if(%_multiartist%,%artist% - ,)\n"
-        "%title%",
+        script=(
+            "$if2(%albumartist%,%artist%)/\n"
+            "$if(%albumartist%,%album%/,)\n"
+            "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
+            "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)\n"
+            "$if(%_multiartist%,%artist% - ,)\n"
+            "%title%"
+        ),
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",
