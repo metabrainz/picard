@@ -788,7 +788,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_toolbar()
 
     def _create_player_toolbar(self):
-        """ "Create a toolbar with internal player control elements"""
+        """Create a toolbar with internal player control elements"""
         toolbar = self.player.create_toolbar()
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
         if self._is_wayland:
