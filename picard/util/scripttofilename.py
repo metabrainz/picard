@@ -61,8 +61,7 @@ def script_to_filename_with_metadata(naming_format, metadata, file=None, setting
     replace_dir_separator = settings['replace_dir_separator']
     for name in metadata:
         new_metadata[name] = [
-            sanitize_filename(str(v), repl=replace_dir_separator, win_compat=win_compat)
-            for v in metadata.getall(name)
+            sanitize_filename(str(v), repl=replace_dir_separator, win_compat=win_compat) for v in metadata.getall(name)
         ]
     naming_format = naming_format.replace('\t', '').replace('\n', '')
     filename = ScriptParser().eval(naming_format, new_metadata, file)
@@ -91,6 +90,5 @@ def script_to_filename(naming_format, metadata, file=None, settings=None):
     Returns:
         The filename.
     """
-    (filename, _unused) = script_to_filename_with_metadata(
-        naming_format, metadata, file, settings)
+    (filename, _unused) = script_to_filename_with_metadata(naming_format, metadata, file, settings)
     return filename

@@ -30,10 +30,8 @@ from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
 
 
-class NewUserDialog():
-
+class NewUserDialog:
     def __init__(self, parent):
-
         dialog_text = _(
             "<p>"
             "<strong>Changes made by Picard are not reversible.</strong>"

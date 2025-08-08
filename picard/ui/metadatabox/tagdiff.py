@@ -186,7 +186,9 @@ class TagCounter(dict):
                 text = MULTI_VALUED_JOINER.join(self[tag])
 
             if status.is_grouped:
-                text += " " + (ngettext("(missing from %d item)", "(missing from %d items)", status.missing) % status.missing)
+                text += " " + (
+                    ngettext("(missing from %d item)", "(missing from %d items)", status.missing) % status.missing
+                )
 
         return TagCounterDisplayValue(text, status.is_grouped)
 
@@ -314,8 +316,7 @@ class TagDiff:
             The tag's TagStatus.
         """
         status = self.status[tag]
-        for s in (TagStatus.CHANGED, TagStatus.ADDED,
-                  TagStatus.REMOVED, TagStatus.EMPTY):
+        for s in (TagStatus.CHANGED, TagStatus.ADDED, TagStatus.REMOVED, TagStatus.EMPTY):
             if status & s == s:
                 return s
         return TagStatus.UNCHANGED
@@ -333,8 +334,7 @@ class TagDiff:
         """
         all_tags = set(list(self.old) + list(self.new))
         common_tags = [tag for tag in top_tags if tag in all_tags] if top_tags else []
-        tag_names = common_tags + sorted(all_tags.difference(common_tags),
-                                         key=lambda x: display_tag_name(x).lower())
+        tag_names = common_tags + sorted(all_tags.difference(common_tags), key=lambda x: display_tag_name(x).lower())
 
         if changes_first:
             tags_by_status = {}
@@ -342,13 +342,10 @@ class TagDiff:
             for tag in tag_names:
                 tags_by_status.setdefault(self.tag_status(tag), []).append(tag)
 
-            for status in (TagStatus.CHANGED, TagStatus.ADDED,
-                           TagStatus.REMOVED, TagStatus.UNCHANGED):
+            for status in (TagStatus.CHANGED, TagStatus.ADDED, TagStatus.REMOVED, TagStatus.UNCHANGED):
                 self.tag_names += tags_by_status.pop(status, [])
         else:
-            self.tag_names = [
-                tag for tag in tag_names if
-                self.status[tag] != TagStatus.EMPTY]
+            self.tag_names = [tag for tag in tag_names if self.status[tag] != TagStatus.EMPTY]
 
     def to_json(self):
         result = {}
@@ -382,9 +379,12 @@ class TagDiff:
                 old = self.handle_length(old, prettify_times)
                 new = self.handle_length(new, prettify_times)
 
-            writer.writerow([
-                tag,
-                MULTI_VALUED_JOINER.join(old),
-                MULTI_VALUED_JOINER.join(new)])
+            writer.writerow(
+                [
+                    tag,
+                    MULTI_VALUED_JOINER.join(old),
+                    MULTI_VALUED_JOINER.join(new),
+                ]
+            )
 
         return f.getvalue()

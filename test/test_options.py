@@ -27,7 +27,6 @@ from picard.options import get_option_title
 
 
 class OptionsUtilitiesTest(PicardTestCase):
-
     def test_option_titles(self):
         # Add test option settings
         if ('setting', 'test_option_with_title') not in Option.registry:
@@ -39,7 +38,9 @@ class OptionsUtilitiesTest(PicardTestCase):
         self.assertEqual(get_option_title('invalid_option'), None)
 
         # No title assigned to the option
-        self.assertEqual(get_option_title('test_option_without_title'), "No title for setting 'test_option_without_title'")
+        self.assertEqual(
+            get_option_title('test_option_without_title'), "No title for setting 'test_option_without_title'"
+        )
 
         # Title assigned to the option
         self.assertEqual(get_option_title('test_option_with_title'), 'Test option with title')

@@ -21,6 +21,7 @@
 
 
 """Dummy plugin for tests"""
+
 PLUGIN_NAME = "Dummy plugin"
 PLUGIN_AUTHOR = "Zas"
 PLUGIN_DESCRIPTION = "Dummy plugin description"

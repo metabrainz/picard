@@ -45,7 +45,6 @@ LOCAL_PORT = "8000"
 
 
 class BrowserLookupTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.lookup = FileLookup(None, SERVER, PORT, LOCAL_PORT)
@@ -118,7 +117,9 @@ class BrowserLookupTest(PicardTestCase):
     @patch.object(webbrowser2, 'open')
     def test_mbid_lookup_matched_callback(self, mock_open):
         mock_matched_callback = Mock()
-        result = self.lookup.mbid_lookup('area:F03D09B3-39DC-4083-AFD6-159E3F0D462F', mbid_matched_callback=mock_matched_callback)
+        result = self.lookup.mbid_lookup(
+            'area:F03D09B3-39DC-4083-AFD6-159E3F0D462F', mbid_matched_callback=mock_matched_callback
+        )
         self.assertTrue(result)
         mock_open.assert_called_once()
         url = mock_open.call_args[0][0]
@@ -254,7 +255,6 @@ class BrowserLookupTest(PicardTestCase):
 
 
 class BrowserIntegrationTest(PicardTestCase):
-
     def test_clean_header(self):
         bad_header = "foo\nSome-Header: bar"
         self.assertEqual("fooSome-Header bar", clean_header(bad_header))

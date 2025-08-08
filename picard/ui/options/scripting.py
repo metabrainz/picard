@@ -98,7 +98,6 @@ class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
 
 
 class ScriptingOptionsPage(OptionsPage):
-
     NAME = 'scripting'
     TITLE = N_("Scripting")
     PARENT = None
@@ -111,7 +110,9 @@ class ScriptingOptionsPage(OptionsPage):
         ('list_of_scripts', ['script_list']),
     )
 
-    default_script_directory = os.path.normpath(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation))
+    default_script_directory = os.path.normpath(
+        QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
+    )
     default_script_extension = "ptsp"
 
     def __init__(self, parent=None):
@@ -120,8 +121,7 @@ class ScriptingOptionsPage(OptionsPage):
         self.ui.setupUi(self)
         self.ui.tagger_script.setEnabled(False)
         self.ui.scripting_options_splitter.setStretchFactor(1, 2)
-        self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button,
-                                          self.ui.move_down_button)
+        self.move_view = MoveableListView(self.ui.script_list, self.ui.move_up_button, self.ui.move_down_button)
         self.ui.scripting_documentation_button.clicked.connect(self.show_scripting_documentation)
         self.ui.scripting_documentation_button.setToolTip(_("Show scripting documentation in new window."))
 
@@ -159,10 +159,7 @@ class ScriptingOptionsPage(OptionsPage):
             fmt (str): Format for the error type being displayed
             error (ScriptSerializerImportExportError): The error as a ScriptSerializerImportExportError instance
         """
-        params = {
-            'filename': error.filename,
-            'error': _(error.error_msg)
-        }
+        params = {'filename': error.filename, 'error': _(error.error_msg)}
         self.output_error(_("File Error"), error.format, params)
 
     def import_script(self):

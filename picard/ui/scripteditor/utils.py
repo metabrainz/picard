@@ -43,7 +43,7 @@ def confirmation_dialog(parent, message):
         _("Confirm"),
         message,
         QtWidgets.QMessageBox.StandardButton.Ok | QtWidgets.QMessageBox.StandardButton.Cancel,
-        parent
+        parent,
     )
     return dialog.exec() == QtWidgets.QMessageBox.StandardButton.Ok
 
@@ -58,7 +58,13 @@ def synchronize_vertical_scrollbars(widgets):
     example_style = widgets[0].palette()
     highlight_bg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.Highlight)
     highlight_fg = example_style.color(QPalette.ColorGroup.Active, QPalette.ColorRole.HighlightedText)
-    stylesheet = "QListView::item:selected { color: " + highlight_fg.name() + "; background-color: " + highlight_bg.name() + "; }"
+    stylesheet = (
+        "QListView::item:selected { color: "
+        + highlight_fg.name()
+        + "; background-color: "
+        + highlight_bg.name()
+        + "; }"
+    )
 
     def _sync_scrollbar_vert(widget, value):
         widget.blockSignals(True)

@@ -45,14 +45,15 @@ from picard.tags import (
 
 
 class FileTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.tagger.acoustidmanager = MagicMock()
         self.file = File('somepath/somefile.mp3')
-        self.set_config_values({
-            'save_acoustid_fingerprints': True,
-        })
+        self.set_config_values(
+            {
+                'save_acoustid_fingerprints': True,
+            }
+        )
 
     def test_filename(self):
         self.assertEqual('somepath/somefile.mp3', self.file.filename)
@@ -116,9 +117,11 @@ class FileTest(PicardTestCase):
         self.assertEqual(values, self.file.format_specific_metadata(self.file.metadata, 'test'))
 
     def test_set_acoustid_fingerprint_no_save(self):
-        self.set_config_values({
-            'save_acoustid_fingerprints': False,
-        })
+        self.set_config_values(
+            {
+                'save_acoustid_fingerprints': False,
+            }
+        )
         fingerprint = 'foo'
         length = 36
         self.file.set_acoustid_fingerprint(fingerprint, length)
@@ -128,7 +131,6 @@ class FileTest(PicardTestCase):
 
 
 class TestPreserveTimes(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.tmp_directory = self.mktmpdir()
@@ -188,10 +190,8 @@ class TestPreserveTimes(PicardTestCase):
         self.assertEqual(self._read_testfile(), 'xxxyyy')
 
     def test_preserve_times_nofile(self):
-
         with self.assertRaises(self.file.PreserveTimesStatError):
-            self.file._preserve_times(self.file.filename,
-                                      self._modify_testfile)
+            self.file._preserve_times(self.file.filename, self._modify_testfile)
         with self.assertRaises(FileNotFoundError):
             self._read_testfile()
 
@@ -210,29 +210,32 @@ class FakeMp3File(File):
 
 
 class FileNamingTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.file = File('/somepath/somefile.mp3')
-        self.set_config_values({
-            'ascii_filenames': False,
-            'clear_existing_tags': False,
-            'enabled_plugins': [],
-            'move_files_to': '/media/music',
-            'move_files': False,
-            'rename_files': False,
-            'windows_compatibility': True,
-            'win_compat_replacements': {},
-            'windows_long_paths': False,
-            'replace_spaces_with_underscores': False,
-            'replace_dir_separator': '_',
-            'file_renaming_scripts': {'test_id': {'script': '%album%/%title%'}},
-            'selected_file_naming_script_id': 'test_id',
-        })
-        self.metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
+        self.set_config_values(
+            {
+                'ascii_filenames': False,
+                'clear_existing_tags': False,
+                'enabled_plugins': [],
+                'move_files_to': '/media/music',
+                'move_files': False,
+                'rename_files': False,
+                'windows_compatibility': True,
+                'win_compat_replacements': {},
+                'windows_long_paths': False,
+                'replace_spaces_with_underscores': False,
+                'replace_dir_separator': '_',
+                'file_renaming_scripts': {'test_id': {'script': '%album%/%title%'}},
+                'selected_file_naming_script_id': 'test_id',
+            }
+        )
+        self.metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
 
     def test_make_filename_no_move_and_rename(self):
         filename = self.file.make_filename(self.file.filename, self.metadata)
@@ -246,25 +249,19 @@ class FileNamingTest(PicardTestCase):
     def test_make_filename_move_only(self):
         config.setting['move_files'] = True
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual(
-            os.path.normpath('/media/music/somealbum/somefile.mp3'),
-            filename)
+        self.assertEqual(os.path.normpath('/media/music/somealbum/somefile.mp3'), filename)
 
     def test_make_filename_move_and_rename(self):
         config.setting['rename_files'] = True
         config.setting['move_files'] = True
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual(
-            os.path.normpath('/media/music/somealbum/sometitle.mp3'),
-            filename)
+        self.assertEqual(os.path.normpath('/media/music/somealbum/sometitle.mp3'), filename)
 
     def test_make_filename_move_relative_path(self):
         config.setting['move_files'] = True
         config.setting['move_files_to'] = 'subdir'
         filename = self.file.make_filename(self.file.filename, self.metadata)
-        self.assertEqual(
-            os.path.normpath('/somepath/subdir/somealbum/somefile.mp3'),
-            filename)
+        self.assertEqual(os.path.normpath('/somepath/subdir/somealbum/somefile.mp3'), filename)
 
     def test_make_filename_empty_script(self):
         config.setting['rename_files'] = True
@@ -301,100 +298,107 @@ class FileNamingTest(PicardTestCase):
         config.setting['rename_files'] = True
         config.setting['move_files'] = True
         config.setting['windows_compatibility'] = True
-        metadata = Metadata({
-            'album': 'somealbum.',
-            'title': 'sometitle',
-        })
+        metadata = Metadata(
+            {
+                'album': 'somealbum.',
+                'title': 'sometitle',
+            }
+        )
         filename = self.file.make_filename(self.file.filename, metadata)
-        self.assertEqual(
-            os.path.normpath('/media/music/somealbum_/sometitle.mp3'),
-            filename)
+        self.assertEqual(os.path.normpath('/media/music/somealbum_/sometitle.mp3'), filename)
 
     @unittest.skipUnless(not IS_WIN, "non-windows test")
     def test_make_filename_keep_trailing_dots(self):
         config.setting['rename_files'] = True
         config.setting['move_files'] = True
         config.setting['windows_compatibility'] = False
-        metadata = Metadata({
-            'album': 'somealbum.',
-            'title': 'sometitle',
-        })
+        metadata = Metadata(
+            {
+                'album': 'somealbum.',
+                'title': 'sometitle',
+            }
+        )
         filename = self.file.make_filename(self.file.filename, metadata)
-        self.assertEqual(
-            os.path.normpath('/media/music/somealbum./sometitle.mp3'),
-            filename)
+        self.assertEqual(os.path.normpath('/media/music/somealbum./sometitle.mp3'), filename)
 
     def test_make_filename_replace_leading_dots(self):
         config.setting['rename_files'] = True
         config.setting['move_files'] = True
         config.setting['windows_compatibility'] = True
-        metadata = Metadata({
-            'album': '.somealbum',
-            'title': '.sometitle',
-        })
+        metadata = Metadata(
+            {
+                'album': '.somealbum',
+                'title': '.sometitle',
+            }
+        )
         filename = self.file.make_filename(self.file.filename, metadata)
-        self.assertEqual(
-            os.path.normpath('/media/music/_somealbum/_sometitle.mp3'),
-            filename)
+        self.assertEqual(os.path.normpath('/media/music/_somealbum/_sometitle.mp3'), filename)
 
 
 class FileGuessTracknumberAndTitleTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.set_config_values({
-            'guess_tracknumber_and_title': True,
-        })
+        self.set_config_values(
+            {
+                'guess_tracknumber_and_title': True,
+            }
+        )
 
     def test_no_guess(self):
         f = File('/somepath/01 somefile.mp3')
-        metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-            'tracknumber': '2',
-        })
+        metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+                'tracknumber': '2',
+            }
+        )
         f._guess_tracknumber_and_title(metadata)
         self.assertEqual(metadata['tracknumber'], '2')
         self.assertEqual(metadata['title'], 'sometitle')
 
     def test_guess_title(self):
         f = File('/somepath/01 somefile.mp3')
-        metadata = Metadata({
-            'album': 'somealbum',
-            'tracknumber': '2',
-        })
+        metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'tracknumber': '2',
+            }
+        )
         f._guess_tracknumber_and_title(metadata)
         self.assertEqual(metadata['tracknumber'], '2')
         self.assertEqual(metadata['title'], 'somefile')
 
     def test_guess_tracknumber(self):
         f = File('/somepath/01 somefile.mp3')
-        metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
+        metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
         f._guess_tracknumber_and_title(metadata)
         self.assertEqual(metadata['tracknumber'], '1')
 
     def test_guess_title_tracknumber(self):
         f = File('/somepath/01 somefile.mp3')
-        metadata = Metadata({
-            'album': 'somealbum',
-        })
+        metadata = Metadata(
+            {
+                'album': 'somealbum',
+            }
+        )
         f._guess_tracknumber_and_title(metadata)
         self.assertEqual(metadata['tracknumber'], '1')
         self.assertEqual(metadata['title'], 'somefile')
 
 
 class FileAdditionalFilesPatternsTest(PicardTestCase):
-
     def test_empty_patterns(self):
         self.assertEqual(File._compile_move_additional_files_pattern('   '), set())
 
     def test_simple_patterns(self):
         pattern = 'cover.jpg'
-        expected = {
-            (re.compile(r'(?s:cover\.jpg)\Z', re.IGNORECASE), False)
-        }
+        expected = {(re.compile(r'(?s:cover\.jpg)\Z', re.IGNORECASE), False)}
         self._assert_patterns_match(pattern, expected)
 
     def test_whitespaces_patterns(self):
@@ -407,16 +411,14 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
 
     def test_duplicated_patterns(self):
         pattern = 'cover.jpg cover.jpg COVER.JPG'
-        expected = {
-            (re.compile(r'(?s:cover\.jpg)\Z', re.IGNORECASE), False)
-        }
+        expected = {(re.compile(r'(?s:cover\.jpg)\Z', re.IGNORECASE), False)}
         self._assert_patterns_match(pattern, expected)
 
     def test_simple_hidden_patterns(self):
         pattern = 'cover.jpg .hidden'
         expected = {
             (re.compile(r'(?s:cover\.jpg)\Z', re.IGNORECASE), False),
-            (re.compile(r'(?s:\.hidden)\Z', re.IGNORECASE), True)
+            (re.compile(r'(?s:\.hidden)\Z', re.IGNORECASE), True),
         }
         self._assert_patterns_match(pattern, expected)
 
@@ -439,18 +441,19 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
 
 
 class FileUpdateTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.file = File('/somepath/somefile.mp3')
         self.INVALIDSIMVAL = 666
         self.file.similarity = self.INVALIDSIMVAL  # to check if changed or not
         self.file.supports_tag = lambda x: False if x.startswith('unsupported') else True
-        self.set_config_values({
-            'clear_existing_tags': False,
-            'compare_ignore_tags': [],
-            'enabled_plugins': [],
-        })
+        self.set_config_values(
+            {
+                'clear_existing_tags': False,
+                'compare_ignore_tags': [],
+                'enabled_plugins': [],
+            }
+        )
 
     def test_same_image(self):
         image = create_image(b'a')
@@ -499,19 +502,23 @@ class FileUpdateTest(PicardTestCase):
         self.assertEqual(self.file.orig_metadata, Metadata())
 
     def test_tags_to_update(self):
-        self.file.orig_metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-            'ignoreme_old': 'a',
-            '~ignoreme_old': 'b',
-            'unsupported_old': 'c',
-        })
-        self.file.metadata = Metadata({
-            'artist': 'someartist',
-            'ignoreme_new': 'd',
-            '~ignoreme_new': 'e',
-            'unsupported_new': 'f',
-        })
+        self.file.orig_metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+                'ignoreme_old': 'a',
+                '~ignoreme_old': 'b',
+                'unsupported_old': 'c',
+            }
+        )
+        self.file.metadata = Metadata(
+            {
+                'artist': 'someartist',
+                'ignoreme_new': 'd',
+                '~ignoreme_new': 'e',
+                'unsupported_new': 'f',
+            }
+        )
 
         ignore_tags = {'ignoreme_old', 'ignoreme_new'}
 
@@ -521,14 +528,18 @@ class FileUpdateTest(PicardTestCase):
         self.assertEqual(set(result), expected)
 
     def test_unchanged_metadata(self):
-        self.file.orig_metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
-        self.file.metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
+        self.file.orig_metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
+        self.file.metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
         self.file.state = File.NORMAL
 
         self.file.update(signal=False)
@@ -536,14 +547,18 @@ class FileUpdateTest(PicardTestCase):
         self.assertEqual(self.file.state, File.NORMAL)
 
     def test_changed_metadata(self):
-        self.file.orig_metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
-        self.file.metadata = Metadata({
-            'album': 'somealbum2',
-            'title': 'sometitle2',
-        })
+        self.file.orig_metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
+        self.file.metadata = Metadata(
+            {
+                'album': 'somealbum2',
+                'title': 'sometitle2',
+            }
+        )
         self.file.state = File.NORMAL
 
         self.file.update(signal=False)
@@ -551,24 +566,30 @@ class FileUpdateTest(PicardTestCase):
         self.assertEqual(self.file.state, File.CHANGED)
 
     def test_changed_metadata_pending(self):
-        self.file.orig_metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
-        self.file.metadata = Metadata({
-            'album': 'somealbum2',
-            'title': 'sometitle2',
-        })
+        self.file.orig_metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
+        self.file.metadata = Metadata(
+            {
+                'album': 'somealbum2',
+                'title': 'sometitle2',
+            }
+        )
 
         self.file.update(signal=False)
         self.assertLess(self.file.similarity, 1.0)
         self.assertEqual(self.file.state, File.PENDING)  # it shouldn't be modified
 
     def test_clear_existing(self):
-        self.file.orig_metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
+        self.file.orig_metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
         self.file.metadata = Metadata()
         self.file.state = File.NORMAL
 
@@ -579,10 +600,12 @@ class FileUpdateTest(PicardTestCase):
         self.assertEqual(self.file.state, File.CHANGED)
 
     def test_no_new_metadata(self):
-        self.file.orig_metadata = Metadata({
-            'album': 'somealbum',
-            'title': 'sometitle',
-        })
+        self.file.orig_metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'title': 'sometitle',
+            }
+        )
         self.file.metadata = Metadata()
         self.file.state = File.NORMAL
 
@@ -592,9 +615,7 @@ class FileUpdateTest(PicardTestCase):
 
     def test_tilde_tag(self):
         self.file.orig_metadata = Metadata()
-        self.file.metadata = Metadata({
-            '~tag': 'value'
-        })
+        self.file.metadata = Metadata({'~tag': 'value'})
         self.file.state = File.NORMAL
 
         self.file.update(signal=False)
@@ -603,9 +624,7 @@ class FileUpdateTest(PicardTestCase):
 
     def test_ignored_tag(self):
         self.file.orig_metadata = Metadata()
-        self.file.metadata = Metadata({
-            'tag': 'value'
-        })
+        self.file.metadata = Metadata({'tag': 'value'})
         self.file.state = File.NORMAL
 
         config.setting["compare_ignore_tags"] = ['tag']
@@ -616,9 +635,7 @@ class FileUpdateTest(PicardTestCase):
 
     def test_unsupported_tag(self):
         self.file.orig_metadata = Metadata()
-        self.file.metadata = Metadata({
-            'unsupported': 'value'
-        })
+        self.file.metadata = Metadata({'unsupported': 'value'})
         self.file.state = File.NORMAL
 
         self.file.update(signal=False)
@@ -632,10 +649,12 @@ class FileUpdateTest(PicardTestCase):
 
         orig_metadata = Metadata(info_tags)
         orig_metadata['a'] = 'vala'
-        metadata = Metadata({
-            '~bitrate': 'xxx',
-            'b': 'valb',
-        })
+        metadata = Metadata(
+            {
+                '~bitrate': 'xxx',
+                'b': 'valb',
+            }
+        )
         self.file._copy_file_info_tags(metadata, orig_metadata)
         for info in file_info_tag_names():
             self.assertEqual('val' + info, metadata[info])
@@ -644,33 +663,40 @@ class FileUpdateTest(PicardTestCase):
 
 
 class FileCopyMetadataTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
-        metadata = Metadata({
-            'album': 'somealbum',
-            'artist': 'someartist',
-            'title': 'sometitle',
-        })
+        metadata = Metadata(
+            {
+                'album': 'somealbum',
+                'artist': 'someartist',
+                'title': 'sometitle',
+            }
+        )
         del metadata['deletedtag']
         metadata.images.append(create_image(b'a'))
         self.file = File('/somepath/somefile.mp3')
         self.file.metadata = metadata
-        self.file.orig_metadata = Metadata({
-            'album': 'origalbum',
-            'artist': 'origartist',
-            'title': 'origtitle',
-        })
+        self.file.orig_metadata = Metadata(
+            {
+                'album': 'origalbum',
+                'artist': 'origartist',
+                'title': 'origtitle',
+            }
+        )
         self.INVALIDSIMVAL = 666
-        self.set_config_values({
-            'preserved_tags': [],
-        })
+        self.set_config_values(
+            {
+                'preserved_tags': [],
+            }
+        )
 
     def test_copy_metadata_full(self):
-        new_metadata = Metadata({
-            'title': 'othertitle',
-            '~foo': 'bar',
-        })
+        new_metadata = Metadata(
+            {
+                'title': 'othertitle',
+                '~foo': 'bar',
+            }
+        )
         del new_metadata['foo']
         new_metadata.images.append(create_image(b'b'))
         self.file.copy_metadata(new_metadata, preserve_deleted=False)
@@ -679,20 +705,24 @@ class FileCopyMetadataTest(PicardTestCase):
         self.assertEqual(self.file.metadata.deleted_tags, new_metadata.deleted_tags)
 
     def test_copy_metadata_must_preserve_deleted_tags_by_default(self):
-        new_metadata = Metadata({
-            'title': 'othertitle',
-            '~foo': 'bar',
-        })
+        new_metadata = Metadata(
+            {
+                'title': 'othertitle',
+                '~foo': 'bar',
+            }
+        )
         del new_metadata['foo']
         self.file.copy_metadata(new_metadata)
         self.assertEqual(self.file.metadata, new_metadata)
         self.assertEqual(self.file.metadata.deleted_tags, {'deletedtag', 'foo'})
 
     def test_copy_metadata_do_not_preserve_deleted_tags(self):
-        new_metadata = Metadata({
-            'title': 'othertitle',
-            '~foo': 'bar',
-        })
+        new_metadata = Metadata(
+            {
+                'title': 'othertitle',
+                '~foo': 'bar',
+            }
+        )
         del new_metadata['foo']
         self.file.copy_metadata(new_metadata, preserve_deleted=False)
         self.assertEqual(self.file.metadata, new_metadata)
@@ -704,9 +734,7 @@ class FileCopyMetadataTest(PicardTestCase):
         new_metadata = Metadata()
         self.file.copy_metadata(new_metadata)
         for tag in calculated_tag_names():
-            self.assertEqual(
-                self.file.metadata[tag], 'foo',
-                f'Tag {tag}: {self.file.metadata[tag]!r} != "foo"')
+            self.assertEqual(self.file.metadata[tag], 'foo', f'Tag {tag}: {self.file.metadata[tag]!r} != "foo"')
 
     def test_copy_metadata_must_remove_deleted_acoustid_id(self):
         self.file.metadata['acoustid_id'] = 'foo'
@@ -717,14 +745,18 @@ class FileCopyMetadataTest(PicardTestCase):
         self.assertIn('acoustid_id', self.file.metadata.deleted_tags)
 
     def test_copy_metadata_with_preserved_tags(self):
-        self.set_config_values({
-            'preserved_tags': ['artist', 'title'],
-        })
-        new_metadata = Metadata({
-            'album': 'otheralbum',
-            'artist': 'otherartist',
-            'title': 'othertitle',
-        })
+        self.set_config_values(
+            {
+                'preserved_tags': ['artist', 'title'],
+            }
+        )
+        new_metadata = Metadata(
+            {
+                'album': 'otheralbum',
+                'artist': 'otherartist',
+                'title': 'othertitle',
+            }
+        )
         self.file.copy_metadata(new_metadata)
         self.assertEqual(self.file.metadata['album'], 'otheralbum')
         self.assertEqual(self.file.metadata['artist'], 'origartist')
@@ -732,8 +764,10 @@ class FileCopyMetadataTest(PicardTestCase):
 
     def test_copy_metadata_must_always_preserve_technical_variables(self):
         self.file.orig_metadata['~filename'] = 'orig.flac'
-        new_metadata = Metadata({
-            '~filename': 'new.flac',
-        })
+        new_metadata = Metadata(
+            {
+                '~filename': 'new.flac',
+            }
+        )
         self.file.copy_metadata(new_metadata)
         self.assertEqual(self.file.metadata['~filename'], 'orig.flac')

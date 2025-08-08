@@ -31,7 +31,6 @@ class BitReaderError(Exception):
 
 
 class _BitReader:
-
     def __init__(self, fileobj):
         self._fileobj = fileobj
         self._buffer = 0
@@ -100,8 +99,7 @@ class _BitReader:
 
 
 class MSBBitReader(_BitReader):
-    """BitReader implementation which reads bits starting at LSB in each byte.
-    """
+    """BitReader implementation which reads bits starting at LSB in each byte."""
 
     def bits(self, count):
         """Reads `count` bits and returns an uint, MSB read first.
@@ -129,11 +127,10 @@ class MSBBitReader(_BitReader):
 
 
 class LSBBitReader(_BitReader):
-    """BitReader implementation which reads bits starting at LSB in each byte.
-    """
+    """BitReader implementation which reads bits starting at LSB in each byte."""
 
     def _lsb(self, count):
-        value = self._buffer & 0xff >> (8 - count)
+        value = self._buffer & 0xFF >> (8 - count)
         self._buffer = self._buffer >> count
         self._bits -= count
         return value

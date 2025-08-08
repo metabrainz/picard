@@ -58,7 +58,6 @@ from picard.ui.searchdialog import (
 
 
 class CoverWidget(QtWidgets.QWidget):
-
     shown = pyqtSignal()
 
     def __init__(self, size, parent=None):
@@ -83,8 +82,9 @@ class CoverWidget(QtWidgets.QWidget):
         if wid:
             wid.widget().deleteLater()
         cover_label = QtWidgets.QLabel(self)
-        pixmap = pixmap.scaled(self.__size, QtCore.Qt.AspectRatioMode.KeepAspectRatio,
-                               QtCore.Qt.TransformationMode.SmoothTransformation)
+        pixmap = pixmap.scaled(
+            self.__size, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation
+        )
         self.__sizehint = pixmap.size()
         cover_label.setPixmap(pixmap)
         self.layout.addWidget(cover_label)
@@ -106,7 +106,6 @@ class CoverWidget(QtWidgets.QWidget):
 
 
 class CoverCell:
-
     def __init__(self, table, row, column, mbid, size, on_show=None):
         self.table = table
         self.row = row
@@ -140,11 +139,9 @@ class CoverCell:
             self.widget = None
 
     def __repr__(self):
-        return (
-            "{c}("
-            "{o.table!r}, {o.row!r}, {o.column!r}, "
-            "{o.mbid!r}, {o.size!r}, on_show={o.on_show!r})"
-        ).format(c=self.__class__.__name__, o=self)
+        return ("{c}({o.table!r}, {o.row!r}, {o.column!r}, {o.mbid!r}, {o.size!r}, on_show={o.on_show!r})").format(
+            c=self.__class__.__name__, o=self
+        )
 
 
 class CoverColumn(ImageColumn):
@@ -152,33 +149,36 @@ class CoverColumn(ImageColumn):
 
 
 class AlbumSearchDialog(SearchDialog):
-
     dialog_header_state = 'albumsearchdialog_header_state'
 
     def __init__(self, parent, force_advanced_search=None, existing_album=None):
-        self.columns = Columns((
-            Column(N_("Name"), 'album', sort_type=ColumnSortType.NAT, width=150),
-            Column(N_("Comment"), '~releasecomment'),
-            Column(N_("Artist"), 'albumartist'),
-            Column(N_("Format"), 'format'),
-            Column(N_("Tracks"), 'tracks', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
-            Column(N_("Date"), 'date'),
-            Column(N_("Country"), 'country'),
-            Column(N_("Labels"), 'label'),
-            Column(N_("Catalog #s"), 'catalognumber', sort_type=ColumnSortType.NAT),
-            Column(N_("Barcode"), 'barcode', sort_type=ColumnSortType.NAT),
-            Column(N_("Language"), '~releaselanguage'),
-            Column(N_("Type"), 'releasetype'),
-            Column(N_("Status"), 'releasestatus'),
-            CoverColumn(N_("Cover"), 'cover', width=100),
-            Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
-        ), default_width=100)
+        self.columns = Columns(
+            (
+                Column(N_("Name"), 'album', sort_type=ColumnSortType.NAT, width=150),
+                Column(N_("Comment"), '~releasecomment'),
+                Column(N_("Artist"), 'albumartist'),
+                Column(N_("Format"), 'format'),
+                Column(N_("Tracks"), 'tracks', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT),
+                Column(N_("Date"), 'date'),
+                Column(N_("Country"), 'country'),
+                Column(N_("Labels"), 'label'),
+                Column(N_("Catalog #s"), 'catalognumber', sort_type=ColumnSortType.NAT),
+                Column(N_("Barcode"), 'barcode', sort_type=ColumnSortType.NAT),
+                Column(N_("Language"), '~releaselanguage'),
+                Column(N_("Type"), 'releasetype'),
+                Column(N_("Status"), 'releasestatus'),
+                CoverColumn(N_("Cover"), 'cover', width=100),
+                Column(N_("Score"), 'score', sort_type=ColumnSortType.NAT, align=ColumnAlign.RIGHT, width=50),
+            ),
+            default_width=100,
+        )
         super().__init__(
             parent,
             N_("Album Search Results"),
             accept_button_title=N_("Load into Picard"),
             search_type='album',
-            force_advanced_search=force_advanced_search)
+            force_advanced_search=force_advanced_search,
+        )
         self.cluster = None
         self.existing_album = existing_album
         self.cover_cells = []
@@ -192,7 +192,8 @@ class AlbumSearchDialog(SearchDialog):
         dialog = AlbumSearchDialog(
             tagger.window,
             force_advanced_search=True,
-            existing_album=existing_album)
+            existing_album=existing_album,
+        )
         dialog.search("rgid:{0}".format(releasegroup_id))
         dialog.exec()
         return dialog
@@ -206,11 +207,13 @@ class AlbumSearchDialog(SearchDialog):
         self.search_box_text(text)
         self.show_progress()
         config = get_config()
-        self.tagger.mb_api.find_releases(self.handle_reply,
-                                         query=text,
-                                         search=True,
-                                         advanced_search=self.use_advanced_search,
-                                         limit=config.setting['query_limit'])
+        self.tagger.mb_api.find_releases(
+            self.handle_reply,
+            query=text,
+            search=True,
+            advanced_search=self.use_advanced_search,
+            limit=config.setting['query_limit'],
+        )
 
     def show_similar_albums(self, cluster):
         """Perform search by using existing metadata information
@@ -220,7 +223,7 @@ class AlbumSearchDialog(SearchDialog):
         query = {
             "artist": metadata["albumartist"],
             "release": metadata["album"],
-            "tracks": str(len(cluster.files))
+            "tracks": str(len(cluster.files)),
         }
 
         # If advanced query syntax setting is enabled by user, query in
@@ -294,7 +297,7 @@ class AlbumSearchDialog(SearchDialog):
             if front:
                 cover_cell.fetch_task = self.tagger.webservice.download_url(
                     url=front['thumbnails']['small'],
-                    handler=partial(self._cover_downloaded, cover_cell)
+                    handler=partial(self._cover_downloaded, cover_cell),
                 )
             else:
                 cover_cell.not_found()
@@ -362,12 +365,16 @@ class AlbumSearchDialog(SearchDialog):
             self.table.insertRow(row)
             for pos, c in enumerate(self.columns):
                 if isinstance(c, CoverColumn):
-                    self.cover_cells.append(CoverCell(
-                        self.table, row, pos,
-                        release['musicbrainz_albumid'],
-                        cover_size,
-                        on_show=self.fetch_coverart
-                    ))
+                    self.cover_cells.append(
+                        CoverCell(
+                            self.table,
+                            row,
+                            pos,
+                            release['musicbrainz_albumid'],
+                            cover_size,
+                            on_show=self.fetch_coverart,
+                        )
+                    )
                 else:
                     self.set_table_item_value(row, pos, c, release)
             if self.existing_album and release['musicbrainz_albumid'] == self.existing_album.id:
@@ -384,9 +391,7 @@ class AlbumSearchDialog(SearchDialog):
         if self.existing_album:
             self.existing_album.switch_release_version(release_mbid)
         else:
-            self.tagger.get_release_group_by_id(
-                release['musicbrainz_releasegroupid']).loaded_albums.add(
-                    release_mbid)
+            self.tagger.get_release_group_by_id(release['musicbrainz_releasegroupid']).loaded_albums.add(release_mbid)
             album = self.tagger.load_album(release_mbid)
             if self.cluster:
                 files = self.cluster.iterfiles()

@@ -41,7 +41,6 @@ from picard.ui import HashableListWidgetItem
 
 
 class ProfileListWidget(QtWidgets.QListWidget):
-
     def contextMenuEvent(self, event):
         item = self.itemAt(event.x(), event.y())
         if item:
@@ -74,8 +73,10 @@ class ProfileListWidget(QtWidgets.QListWidget):
         list_item = ProfileListWidgetItem(name=name, profile_id=profile_id)
         list_item.setCheckState(QtCore.Qt.CheckState.Checked)
         self.insertItem(0, list_item)
-        self.setCurrentItem(list_item, QtCore.QItemSelectionModel.SelectionFlag.Clear
-            | QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent)
+        self.setCurrentItem(
+            list_item,
+            QtCore.QItemSelectionModel.SelectionFlag.Clear | QtCore.QItemSelectionModel.SelectionFlag.SelectCurrent,
+        )
 
     def remove_selected_profile(self):
         items = self.selectedItems()
@@ -85,8 +86,13 @@ class ProfileListWidget(QtWidgets.QListWidget):
     def remove_profile(self, item):
         row = self.row(item)
         msg = _("Are you sure you want to remove this profile?")
-        reply = QtWidgets.QMessageBox.question(self, _('Confirm Remove'), msg,
-            QtWidgets.QMessageBox.StandardButton.Yes, QtWidgets.QMessageBox.StandardButton.No)
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            _('Confirm Remove'),
+            msg,
+            QtWidgets.QMessageBox.StandardButton.Yes,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
         if item and reply == QtWidgets.QMessageBox.StandardButton.Yes:
             item = self.takeItem(row)
             del item

@@ -31,7 +31,6 @@ from picard.ui.options import OptionsPage
 
 
 class InterfaceTopTagsOptionsPage(OptionsPage):
-
     NAME = 'interface_top_tags'
     TITLE = N_("Top Tags")
     PARENT = 'interface'
@@ -39,9 +38,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_top_tags.html"
 
-    OPTIONS = (
-        ('metadatabox_top_tags', ['top_tags_groupBox']),
-    )
+    OPTIONS = (('metadatabox_top_tags', ['top_tags_groupBox']),)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

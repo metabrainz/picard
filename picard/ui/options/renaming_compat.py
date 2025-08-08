@@ -64,7 +64,6 @@ from picard.ui.options import (
 
 
 class RenamingCompatOptionsPage(OptionsPage):
-
     NAME = 'filerenaming_compat'
     TITLE = N_("Compatibility")
     PARENT = 'filerenaming'
@@ -121,11 +120,13 @@ class RenamingCompatOptionsPage(OptionsPage):
             config.setting[key] = value
 
     def check(self):
-        (valid_state, _text, _pos) = self.ui.replace_dir_separator.validator().validate(self.ui.replace_dir_separator.text(), 0)
+        (valid_state, _text, _pos) = self.ui.replace_dir_separator.validator().validate(
+            self.ui.replace_dir_separator.text(), 0
+        )
         if valid_state != QtGui.QValidator.State.Acceptable:
             raise OptionsCheckError(
                 _("Invalid directory separator replacement"),
-                _("The replacement for directory separators must not be itself a directory separator.")
+                _("The replacement for directory separators must not be itself a directory separator."),
             )
 
     def toggle_windows_long_paths(self, state):
@@ -139,7 +140,8 @@ class RenamingCompatOptionsPage(OptionsPage):
                     "Some software might not be able to properly access those files."
                 ),
                 QtWidgets.QMessageBox.StandardButton.Ok,
-                self)
+                self,
+            )
             dialog.exec()
 
     def on_options_changed(self):

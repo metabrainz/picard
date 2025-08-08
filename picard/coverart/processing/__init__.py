@@ -68,11 +68,11 @@ def handle_processing_exceptions(func):
             func(self, *args, **kwargs)
         except (CoverArtImageError, CoverArtProcessingError) as e:
             self.errors.put(e)
+
     return wrapper
 
 
 class CoverArtImageProcessing:
-
     def __init__(self, album):
         self.album = album
         self.queues = get_cover_art_processors()
@@ -99,7 +99,7 @@ class CoverArtImageProcessing:
                 "Image processing for %s cover art image %s finished in %d ms",
                 target.name,
                 coverartimage,
-                1000 * (time.time() - start_time)
+                1000 * (time.time() - start_time),
             )
 
     @handle_processing_exceptions

@@ -52,7 +52,6 @@ class CoverArtSetterMode(IntEnum):
 
 
 class CoverArtSetter:
-
     def __init__(self, mode, coverartimage, source_obj):
         self.mode = mode
         self.coverartimage = coverartimage

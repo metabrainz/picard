@@ -60,7 +60,6 @@ from picard.ui.util import (
 
 
 class InterfaceOptionsPage(OptionsPage):
-
     NAME = 'interface'
     TITLE = N_("User Interface")
     PARENT = None
@@ -123,18 +122,15 @@ class InterfaceOptionsPage(OptionsPage):
 
         def fcmp(x):
             return sort_key(x[2])
+
         for lang_code, native, translation in sorted(language_list, key=fcmp):
             if native and native != translation:
                 name = '%s (%s)' % (translation, native)
             else:
                 name = translation
             self.ui.ui_language.addItem(name, lang_code)
-        self.ui.starting_directory.toggled.connect(
-            self.ui.starting_directory_path.setEnabled
-        )
-        self.ui.starting_directory.toggled.connect(
-            self.ui.starting_directory_browse.setEnabled
-        )
+        self.ui.starting_directory.toggled.connect(self.ui.starting_directory_path.setEnabled)
+        self.ui.starting_directory.toggled.connect(self.ui.starting_directory_browse.setEnabled)
         self.ui.starting_directory_browse.clicked.connect(self.starting_directory_browse)
 
         if not OS_SUPPORTS_THEMES:
@@ -186,10 +182,12 @@ class InterfaceOptionsPage(OptionsPage):
         if new_theme_setting != config.setting['ui_theme']:
             warnings.append(_("You have changed the application theme."))
             if new_theme_setting == str(UiTheme.SYSTEM):
-                notes.append(_(
-                    'Please note that using the system theme might cause the user interface to be not shown correctly. '
-                    'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
-                ))
+                notes.append(
+                    _(
+                        'Please note that using the system theme might cause the user interface to be not shown correctly. '
+                        'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
+                    )
+                )
             config.setting['ui_theme'] = new_theme_setting
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
@@ -223,7 +221,8 @@ class InterfaceOptionsPage(OptionsPage):
                 'Are you sure that you want to enable this setting?'
             ),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            self)
+            self,
+        )
         if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
             self.ui.allow_multi_dirs_selection.setCheckState(QtCore.Qt.CheckState.Unchecked)
 

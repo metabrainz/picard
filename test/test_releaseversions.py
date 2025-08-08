@@ -41,62 +41,159 @@ settings = {
     "standardize_tracks": False,
     "standardize_artists": False,
     "standardize_releases": False,
-    "translate_artist_names": False
+    "translate_artist_names": False,
 }
 
 
 class ReleaseTest(PicardTestCase):
-
     def test_1(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_2.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
         expected = [
-            {'id': '123', 'year': '2009', 'country': 'GB', 'format': 'CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '5', 'barcode': '0123456789', 'packaging': 'Jewel Case', 'disambiguation': 'special', '_disambiguate_name': [], 'totaltracks': 5, 'countries': [], 'formats': ['CD']},
-            {'id': '456', 'year': '2009', 'country': 'GB', 'format': 'CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '5', 'barcode': '0123456789', 'packaging': 'Digipak', 'disambiguation': 'special', '_disambiguate_name': [], 'totaltracks': 5, 'countries': [], 'formats': ['CD']},
-            {'id': '789', 'year': '2009', 'country': 'GB', 'format': 'CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '5', 'barcode': '0123456789', 'packaging': 'Digipak', 'disambiguation': 'specialx', '_disambiguate_name': [], 'totaltracks': 5, 'countries': [], 'formats': ['CD']},
+            {
+                'id': '123',
+                'year': '2009',
+                'country': 'GB',
+                'format': 'CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '5',
+                'barcode': '0123456789',
+                'packaging': 'Jewel Case',
+                'disambiguation': 'special',
+                '_disambiguate_name': [],
+                'totaltracks': 5,
+                'countries': [],
+                'formats': ['CD'],
+            },
+            {
+                'id': '456',
+                'year': '2009',
+                'country': 'GB',
+                'format': 'CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '5',
+                'barcode': '0123456789',
+                'packaging': 'Digipak',
+                'disambiguation': 'special',
+                '_disambiguate_name': [],
+                'totaltracks': 5,
+                'countries': [],
+                'formats': ['CD'],
+            },
+            {
+                'id': '789',
+                'year': '2009',
+                'country': 'GB',
+                'format': 'CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '5',
+                'barcode': '0123456789',
+                'packaging': 'Digipak',
+                'disambiguation': 'specialx',
+                '_disambiguate_name': [],
+                'totaltracks': 5,
+                'countries': [],
+                'formats': ['CD'],
+            },
         ]
         self.assertEqual(releases, expected)
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
-        self.assertEqual(r.versions[0]['name'],
-                         '5 / 2009 / GB / CD / label A / cat 123 / Jewel Case / special')
-        self.assertEqual(r.versions[1]['name'],
-                         '5 / 2009 / GB / CD / label A / cat 123 / Digipak / special')
-        self.assertEqual(r.versions[2]['name'],
-                         '5 / 2009 / GB / CD / label A / cat 123 / Digipak / specialx')
+        self.assertEqual(r.versions[0]['name'], '5 / 2009 / GB / CD / label A / cat 123 / Jewel Case / special')
+        self.assertEqual(r.versions[1]['name'], '5 / 2009 / GB / CD / label A / cat 123 / Digipak / special')
+        self.assertEqual(r.versions[2]['name'], '5 / 2009 / GB / CD / label A / cat 123 / Digipak / specialx')
 
     def test_2(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_3.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
         expected = [
-            {'id': '789', 'year': '2011', 'country': 'FR', 'format': 'CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '5', 'barcode': '0123456789', 'packaging': '??', 'disambiguation': 'special A', '_disambiguate_name': [], 'totaltracks': 5, 'countries': [], 'formats': ['CD']},
-            {'id': '789', 'year': '2011', 'country': 'FR', 'format': 'CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '5', 'barcode': '0123456789', 'packaging': '??', 'disambiguation': '', '_disambiguate_name': [], 'totaltracks': 5, 'countries': [], 'formats': ['CD']},
+            {
+                'id': '789',
+                'year': '2011',
+                'country': 'FR',
+                'format': 'CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '5',
+                'barcode': '0123456789',
+                'packaging': '??',
+                'disambiguation': 'special A',
+                '_disambiguate_name': [],
+                'totaltracks': 5,
+                'countries': [],
+                'formats': ['CD'],
+            },
+            {
+                'id': '789',
+                'year': '2011',
+                'country': 'FR',
+                'format': 'CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '5',
+                'barcode': '0123456789',
+                'packaging': '??',
+                'disambiguation': '',
+                '_disambiguate_name': [],
+                'totaltracks': 5,
+                'countries': [],
+                'formats': ['CD'],
+            },
         ]
         self.assertEqual(releases, expected)
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
-        self.assertEqual(r.versions[0]['name'],
-                         '5 / 2011 / FR / CD / label A / cat 123 / special A')
-        self.assertEqual(r.versions[1]['name'],
-                         '5 / 2011 / FR / CD / label A / cat 123')
+        self.assertEqual(r.versions[0]['name'], '5 / 2011 / FR / CD / label A / cat 123 / special A')
+        self.assertEqual(r.versions[1]['name'], '5 / 2011 / FR / CD / label A / cat 123')
 
     def test_3(self):
         self.set_config_values(settings)
         rlist = load_test_json('release_group_4.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
         expected = [
-            {'id': '789', 'year': '2009', 'country': 'FR', 'format': 'CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '5', 'barcode': '0123456789', 'packaging': '??', 'disambiguation': '', '_disambiguate_name': [], 'totaltracks': 5, 'countries': [], 'formats': ['CD']},
-            {'id': '789', 'year': '2009', 'country': 'FR', 'format': 'CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '5', 'barcode': '[no barcode]', 'packaging': '??', 'disambiguation': '', '_disambiguate_name': [], 'totaltracks': 5, 'countries': [], 'formats': ['CD']},
+            {
+                'id': '789',
+                'year': '2009',
+                'country': 'FR',
+                'format': 'CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '5',
+                'barcode': '0123456789',
+                'packaging': '??',
+                'disambiguation': '',
+                '_disambiguate_name': [],
+                'totaltracks': 5,
+                'countries': [],
+                'formats': ['CD'],
+            },
+            {
+                'id': '789',
+                'year': '2009',
+                'country': 'FR',
+                'format': 'CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '5',
+                'barcode': '[no barcode]',
+                'packaging': '??',
+                'disambiguation': '',
+                '_disambiguate_name': [],
+                'totaltracks': 5,
+                'countries': [],
+                'formats': ['CD'],
+            },
         ]
         self.assertEqual(releases, expected)
         r = ReleaseGroup(1)
         r._parse_versions(rlist)
-        self.assertEqual(r.versions[0]['name'],
-                         '5 / 2009 / FR / CD / label A / cat 123 / 0123456789')
-        self.assertEqual(r.versions[1]['name'],
-                         '5 / 2009 / FR / CD / label A / cat 123 / [no barcode]')
+        self.assertEqual(r.versions[0]['name'], '5 / 2009 / FR / CD / label A / cat 123 / 0123456789')
+        self.assertEqual(r.versions[1]['name'], '5 / 2009 / FR / CD / label A / cat 123 / [no barcode]')
 
     @patch('picard.releasegroup.VERSIONS_MAX_TRACKS', 2)
     def test_4(self):
@@ -104,7 +201,22 @@ class ReleaseTest(PicardTestCase):
         rlist = load_test_json('release_group_5.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
         expected = [
-            {'id': '789', 'year': '2009', 'country': 'FR', 'format': '3×CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '2+3+…', 'barcode': '0123456789', 'packaging': '??', 'disambiguation': '', '_disambiguate_name': [], 'totaltracks': 9, 'countries': [], 'formats': ['CD', 'CD', 'CD']},
+            {
+                'id': '789',
+                'year': '2009',
+                'country': 'FR',
+                'format': '3×CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '2+3+…',
+                'barcode': '0123456789',
+                'packaging': '??',
+                'disambiguation': '',
+                '_disambiguate_name': [],
+                'totaltracks': 9,
+                'countries': [],
+                'formats': ['CD', 'CD', 'CD'],
+            },
         ]
         self.assertEqual(releases, expected)
 
@@ -114,6 +226,21 @@ class ReleaseTest(PicardTestCase):
         rlist = load_test_json('release_group_5.json')
         releases = list(prepare_releases_for_versions(rlist['releases']))
         expected = [
-            {'id': '789', 'year': '2009', 'country': 'FR', 'format': '3×CD', 'label': 'label A', 'catnum': 'cat 123', 'tracks': '2+3+4', 'barcode': '0123456789', 'packaging': '??', 'disambiguation': '', '_disambiguate_name': [], 'totaltracks': 9, 'countries': [], 'formats': ['CD', 'CD', 'CD']},
+            {
+                'id': '789',
+                'year': '2009',
+                'country': 'FR',
+                'format': '3×CD',
+                'label': 'label A',
+                'catnum': 'cat 123',
+                'tracks': '2+3+4',
+                'barcode': '0123456789',
+                'packaging': '??',
+                'disambiguation': '',
+                '_disambiguate_name': [],
+                'totaltracks': 9,
+                'countries': [],
+                'formats': ['CD', 'CD', 'CD'],
+            },
         ]
         self.assertEqual(releases, expected)

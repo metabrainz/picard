@@ -39,7 +39,6 @@ from picard.version import (
 
 
 class VersionsTest(PicardTestCase):
-
     def test_version_conversion(self):
         versions = (
             (Version(1, 1, 0, 'final', 0), '1.1.0.final0'),
@@ -108,7 +107,7 @@ class VersionsTest(PicardTestCase):
 
         for i in range(len(api_versions) - 1):
             a = Version.from_string(api_versions[i])
-            b = Version.from_string(api_versions[i+1])
+            b = Version.from_string(api_versions[i + 1])
             self.assertLess(a, b)
 
     @unittest.skipUnless(len(api_versions_tuple) > 1, "api_versions_tuple do not have enough elements")
@@ -117,7 +116,7 @@ class VersionsTest(PicardTestCase):
 
         for i in range(len(api_versions_tuple) - 1):
             a = api_versions_tuple[i]
-            b = api_versions_tuple[i+1]
+            b = api_versions_tuple[i + 1]
             self.assertLess(a, b)
 
     def test_version_invalid_new(self):

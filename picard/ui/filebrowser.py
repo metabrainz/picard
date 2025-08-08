@@ -49,7 +49,6 @@ from picard.util.macos import (
 
 
 class FileBrowser(QtWidgets.QTreeView):
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
@@ -112,7 +111,12 @@ class FileBrowser(QtWidgets.QTreeView):
 
     def _set_model_filter(self):
         config = get_config()
-        model_filter = QtCore.QDir.Filter.AllDirs | QtCore.QDir.Filter.Files | QtCore.QDir.Filter.Drives | QtCore.QDir.Filter.NoDotAndDotDot
+        model_filter = (
+            QtCore.QDir.Filter.AllDirs
+            | QtCore.QDir.Filter.Files
+            | QtCore.QDir.Filter.Drives
+            | QtCore.QDir.Filter.NoDotAndDotDot
+        )
         if config.persist['show_hidden_files']:
             model_filter |= QtCore.QDir.Filter.Hidden
         self.model().setFilter(model_filter)
@@ -127,6 +131,7 @@ class FileBrowser(QtWidgets.QTreeView):
             if not self.focused:
                 self._restore_state()
             self.scrollTo(self.currentIndex())
+
         QtCore.QTimer.singleShot(0, scroll)
 
     def scrollTo(self, index, scrolltype=QtWidgets.QAbstractItemView.ScrollHint.EnsureVisible):
@@ -198,9 +203,11 @@ class FileBrowser(QtWidgets.QTreeView):
     def load_file_for_item(self, index):
         model = self.model()
         if not model.isDir(index):
-            self.tagger.add_paths([
-                model.filePath(index)
-            ])
+            self.tagger.add_paths(
+                [
+                    model.filePath(index),
+                ]
+            )
 
     def load_selected_files(self):
         indexes = self.selectedIndexes()

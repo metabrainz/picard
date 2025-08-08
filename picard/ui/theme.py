@@ -157,7 +157,13 @@ class BaseTheme:
         # Linux-specific: If SYSTEM theme, try to detect system dark mode
         # Do not apply override if already dark theme
         is_dark_theme = self.is_dark_theme
-        if (not self._dark_theme and not IS_WIN and not IS_MACOS and not IS_HAIKU and self._loaded_config_theme == UiTheme.SYSTEM):
+        if (
+            not self._dark_theme
+            and not IS_WIN
+            and not IS_MACOS
+            and not IS_HAIKU
+            and self._loaded_config_theme == UiTheme.SYSTEM
+        ):
             is_dark_theme = self._detect_linux_dark_mode()
             if is_dark_theme:
                 # Apply a dark palette centrally defined
@@ -181,7 +187,10 @@ class BaseTheme:
 
         log.debug(
             "Theme: %s (%s) dark=%s accent_color=%s",
-            ui_theme, self.__class__.__name__, is_dark_theme, accent_color_str,
+            ui_theme,
+            self.__class__.__name__,
+            is_dark_theme,
+            accent_color_str,
         )
 
         self.update_palette(palette, is_dark_theme, accent_color)
@@ -203,9 +212,13 @@ class BaseTheme:
     # pylint: disable=no-self-use
     def update_palette(self, palette, dark_theme, accent_color):
         if accent_color:
-            accent_text_color = QtCore.Qt.GlobalColor.white if accent_color.lightness() < 160 else QtCore.Qt.GlobalColor.black
+            accent_text_color = (
+                QtCore.Qt.GlobalColor.white if accent_color.lightness() < 160 else QtCore.Qt.GlobalColor.black
+            )
             palette.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Highlight, accent_color)
-            palette.setColor(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.HighlightedText, accent_text_color)
+            palette.setColor(
+                QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.HighlightedText, accent_text_color
+            )
 
             link_color = QtGui.QColor()
             link_color.setHsl(accent_color.hue(), accent_color.saturation(), 160, accent_color.alpha())
@@ -215,6 +228,7 @@ class BaseTheme:
 # Move `WindowsTheme` to outside of IS_WIN to enable testing.
 class WindowsTheme(BaseTheme):
     """Windows dark mode theme."""
+
     def setup(self, app):
         app.setStyle('Fusion')
         super().setup(app)
@@ -240,7 +254,7 @@ class WindowsTheme(BaseTheme):
         try:
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\DWM") as key:
                 accent_color_dword = winreg.QueryValueEx(key, "ColorizationColor")[0]
-                accent_color_hex = '#{:06x}'.format(accent_color_dword & 0xffffff)
+                accent_color_hex = '#{:06x}'.format(accent_color_dword & 0xFFFFFF)
                 accent_color = QtGui.QColor(accent_color_hex)
         except OSError:
             log.warning("Failed reading ColorizationColor from registry")
@@ -267,10 +281,12 @@ elif IS_MACOS:
         # Default procedure to identify the current appearance (theme)
         appearance = AppKit.NSAppearance.currentAppearance()
         try:
-            basic_appearance = appearance.bestMatchFromAppearancesWithNames_([
-                AppKit.NSAppearanceNameAqua,
-                AppKit.NSAppearanceNameDarkAqua,
-            ])
+            basic_appearance = appearance.bestMatchFromAppearancesWithNames_(
+                [
+                    AppKit.NSAppearanceNameAqua,
+                    AppKit.NSAppearanceNameDarkAqua,
+                ]
+            )
             dark_appearance = basic_appearance == AppKit.NSAppearanceNameDarkAqua
         except AttributeError:
             pass

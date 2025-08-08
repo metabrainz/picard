@@ -36,7 +36,6 @@ test_xml = """
 
 
 class XmlNodeTest(TestCase):
-
     def test_append_child(self):
         node = XmlNode()
         child = node.append_child('child')
@@ -59,7 +58,6 @@ class XmlNodeTest(TestCase):
 
 
 class ParseXmlTest(TestCase):
-
     def test_parse_xml(self):
         xml = parse_xml(test_xml)
         document = xml.document[0]

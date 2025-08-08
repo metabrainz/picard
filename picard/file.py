@@ -126,7 +126,6 @@ FILE_COMPARISON_WEIGHTS = {
 
 
 class FileErrorType(Enum):
-
     UNKNOWN = auto()
     NOTFOUND = auto()
     NOACCESS = auto()
@@ -134,7 +133,6 @@ class FileErrorType(Enum):
 
 
 class File(MetadataItem):
-
     NAME = None
 
     UNDEFINED = -1
@@ -197,12 +195,12 @@ class File(MetadataItem):
         return metadata.getall(tag)
 
     def _format_specific_copy(self, metadata, settings=None):
-        """Creates a copy of metadata, but applies format_specific_metadata() to the values.
-        """
+        """Creates a copy of metadata, but applies format_specific_metadata() to the values."""
         copy = Metadata(
             deleted_tags=metadata.deleted_tags,
             images=metadata.images,
-            length=metadata.length)
+            length=metadata.length,
+        )
         for name in metadata:
             copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
@@ -215,7 +213,9 @@ class File(MetadataItem):
             self.error_type = FileErrorType.NOACCESS
         elif any_exception_isinstance(error, MutagenError):
             self.error_type = FileErrorType.PARSER
-            self.error_append(_("The file failed to parse, either the file is damaged or has an unsupported file format."))
+            self.error_append(
+                _("The file failed to parse, either the file is damaged or has an unsupported file format.")
+            )
         else:
             self.error_type = FileErrorType.UNKNOWN
         self.error_append(str(error))
@@ -224,7 +224,8 @@ class File(MetadataItem):
         thread.run_task(
             partial(self._load_check, self.filename),
             partial(self._loading_finished, callback),
-            priority=1)
+            priority=1,
+        )
 
     def _load_check(self, filename):
         # Check that file has not been removed since thread was queued
@@ -250,6 +251,7 @@ class File(MetadataItem):
 
             # If loading failed, force format guessing and try loading again
             from picard.formats.util import guess_format
+
             try:
                 alternative_file = guess_format(self.filename)
             except (FileNotFoundError, OSError):
@@ -266,6 +268,7 @@ class File(MetadataItem):
                 else:
                     alternative_file.remove()  # cleanup unused File object
             from picard.formats import supported_extensions
+
             file_name, file_extension = os.path.splitext(self.base_filename)
             if file_extension not in supported_extensions():
                 log.error("Unsupported media file %r wrongly loaded. Removing …", self)
@@ -348,7 +351,8 @@ class File(MetadataItem):
         thread.run_task(
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
-            thread_pool=self.tagger.save_thread_pool)
+            thread_pool=self.tagger.save_thread_pool,
+        )
 
     def _preserve_times(self, filename, func):
         """Save filename times before calling func, and set them again"""
@@ -419,8 +423,7 @@ class File(MetadataItem):
     def _saving_finished(self, result=None, error=None):
         # Handle file removed before save
         # Result is None if save was skipped
-        if ((self.state == File.REMOVED or self.tagger.stopping)
-                and result is None):
+        if (self.state == File.REMOVED or self.tagger.stopping) and result is None:
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -481,7 +484,8 @@ class File(MetadataItem):
             metadata.copy(self.orig_metadata)
             metadata.update(file_metadata)
         (filename, new_metadata) = script_to_filename_with_metadata(
-            naming_format, metadata, file=self, settings=settings)
+            naming_format, metadata, file=self, settings=settings
+        )
         basename = os.path.basename(filename)
         if not basename:
             old_name = os.path.splitext(os.path.basename(self.filename))[0]
@@ -625,8 +629,7 @@ class File(MetadataItem):
             try:
                 shutil.move(old_file_path, new_file_path)
             except OSError as why:
-                log.error("Failed to move %r to %r: %s", old_file_path,
-                          new_file_path, why)
+                log.error("Failed to move %r to %r: %s", old_file_path, new_file_path, why)
 
     def remove(self, from_parent_item=True):
         if from_parent_item and self.parent_item:
@@ -710,11 +713,7 @@ class File(MetadataItem):
 
             for name in self._tags_to_update(ignored_tags):
                 new_values = self.format_specific_metadata(self.metadata, name, config.setting)
-                if not (
-                    new_values
-                    or clear_existing_tags
-                    or name in self.metadata.deleted_tags
-                ):
+                if not (new_values or clear_existing_tags or name in self.metadata.deleted_tags):
                     continue
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
@@ -725,8 +724,7 @@ class File(MetadataItem):
             else:
                 self.similarity = 1.0
                 if self.state in (File.CHANGED, File.NORMAL):
-                    if (self.metadata.images
-                        and self.orig_metadata.images != self.metadata.images):
+                    if self.metadata.images and self.orig_metadata.images != self.metadata.images:
                         self.state = File.CHANGED
                     else:
                         self.state = File.NORMAL
@@ -850,8 +848,11 @@ class File(MetadataItem):
         if self.state == File.REMOVED:
             return
         if error:
-            log.error("Network error encountered during the lookup for %s. Error code: %s",
-                      self.filename, error)
+            log.error(
+                "Network error encountered during the lookup for %s. Error code: %s",
+                self.filename,
+                error,
+            )
         try:
             tracks = document['recordings']
         except (KeyError, TypeError):
@@ -861,7 +862,7 @@ class File(MetadataItem):
             self.tagger.window.set_statusbar_message(
                 message,
                 {'filename': self.filename},
-                timeout=3000
+                timeout=3000,
             )
 
         if tracks:
@@ -893,10 +894,7 @@ class File(MetadataItem):
 
     def _match_to_track(self, tracks, threshold=0):
         # multiple matches -- calculate similarities to each of them
-        candidates = (
-            self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS)
-            for track in tracks
-        )
+        candidates = (self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks)
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         best_match = find_best_match(candidates, no_match)
 
@@ -920,7 +918,7 @@ class File(MetadataItem):
             return
         self.tagger.window.set_statusbar_message(
             N_("Looking up the metadata for file %(filename)s …"),
-            {'filename': self.filename}
+            {'filename': self.filename},
         )
         self.clear_lookup_task()
         metadata = self.metadata
@@ -935,7 +933,8 @@ class File(MetadataItem):
             tracks=metadata['totaltracks'],
             qdur=str(metadata.length // 2000),
             isrc=metadata['isrc'],
-            limit=config.setting['query_limit'])
+            limit=config.setting['query_limit'],
+        )
 
     def clear_lookup_task(self):
         if self.lookup_task:

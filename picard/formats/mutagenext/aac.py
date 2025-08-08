@@ -30,8 +30,8 @@ from .apev2 import (
 
 
 class AACAPEv2(AAC):
-    """AAC file with APEv2 tags.
-    """
+    """AAC file with APEv2 tags."""
+
     @loadfile()
     def load(self, filething):
         super().load(filething)

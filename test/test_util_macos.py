@@ -38,7 +38,6 @@ def fake_os_scandir(path):
 
 @unittest.skipUnless(IS_MACOS, "macOS test")
 class UtilMacosExtendRootVolumeTest(PicardTestCase):
-
     def test_path_starts_with_volumes(self):
         path = '/Volumes/path'
         result = extend_root_volume_path(path)
@@ -67,7 +66,6 @@ class UtilMacosExtendRootVolumeTest(PicardTestCase):
 
 @unittest.skipUnless(IS_MACOS, "macOS test")
 class UtilMacosStripRootVolumeTest(PicardTestCase):
-
     def test_path_starts_not_with_volumes(self):
         path = '/Users/sandra'
         result = strip_root_volume_path(path)

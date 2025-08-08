@@ -30,8 +30,9 @@ def setup_audit(prefixes_string):
     if not prefixes_string:
         return
     if 'all' in prefixes_string.split(','):
+
         def event_match(event):
-            return ('all', )
+            return ('all',)
     else:
         # prebuild the dict, constant
         PREFIXES_DICT = make_prefixes_dict(prefixes_string)
@@ -59,9 +60,9 @@ def setup_audit(prefixes_string):
 
 def list_from_prefixes_string(prefixes_string):
     """Generate a sorted list of prefixes tuples
-       A prefixes string is a comma-separated list of dot-separated keys
-       "a,b.c,d.e.f,,g" would result in following sorted list:
-       [('a',), ('b', 'c'), ('d', 'e', 'f'), ('g',)]
+    A prefixes string is a comma-separated list of dot-separated keys
+    "a,b.c,d.e.f,,g" would result in following sorted list:
+    [('a',), ('b', 'c'), ('d', 'e', 'f'), ('g',)]
     """
     yield from sorted(set(tuple(e.split('.')) for e in prefixes_string.split(',') if e))
 
@@ -83,9 +84,9 @@ def prefixes_candidates_for_length(length, prefixes_dict):
 
 def is_matching_a_prefix(key, prefixes_dict):
     """Matches dot-separated key against prefixes
-       Typical case: we want to match `os.mkdir` if prefix is `os` or `os.mkdir`
-       but not the reverse: if prefix is `os.mkdir` we don't want to match a key named `os`
-       It returns False, or the matched prefix
+    Typical case: we want to match `os.mkdir` if prefix is `os` or `os.mkdir`
+    but not the reverse: if prefix is `os.mkdir` we don't want to match a key named `os`
+    It returns False, or the matched prefix
     """
     key_tuple = tuple(key.split('.'))
     key_tuple_len = len(key_tuple)

@@ -112,7 +112,9 @@ ESCAPE_CHARS = {
     r'$\`': '`',
 }
 
-RE_LANGSTRING_LINE = re.compile(r'LangString\s+(?P<identifier>[A-Za-z0-9_]+)\s+\${LANG_[A-Z]+}\s+["\'`](?P<text>.*)["\'`]$')
+RE_LANGSTRING_LINE = re.compile(
+    r'LangString\s+(?P<identifier>[A-Za-z0-9_]+)\s+\${LANG_[A-Z]+}\s+["\'`](?P<text>.*)["\'`]$'
+)
 
 
 def language_to_code(language):
@@ -141,7 +143,7 @@ def parse_langstring(line):
     if match_:
         return (
             match_.group('identifier'),
-            unescape_string(match_.group('text'))
+            unescape_string(match_.group('text')),
         )
     else:
         return None

@@ -46,10 +46,10 @@ _extension_points = []
 
 
 class ExtensionPoint:
-
     def __init__(self, label=None):
         if label is None:
             import uuid
+
             self.label = uuid.uuid4()
         else:
             self.label = label

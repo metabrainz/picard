@@ -47,7 +47,6 @@ class ProcessingTarget(IntEnum):
 
 
 class ProcessingImage:
-
     def __init__(self, image, info=None):
         self.set_result(image)
         if info is None and not isinstance(image, QImage):
@@ -78,7 +77,6 @@ class ProcessingImage:
 
 
 class ImageProcessor:
-
     def save_to_tags(self):
         return False
 

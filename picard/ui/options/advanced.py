@@ -31,7 +31,6 @@ from picard.ui.options import OptionsPage
 
 
 class AdvancedOptionsPage(OptionsPage):
-
     NAME = 'advanced'
     TITLE = N_("Advanced")
     PARENT = None
@@ -43,7 +42,10 @@ class AdvancedOptionsPage(OptionsPage):
         ('ignore_regex', ['ignore_regex']),
         ('ignore_hidden_files', ['ignore_hidden_files']),
         ('recursively_add_files', ['recursively_add_files']),
-        ('ignore_track_duration_difference_under', ['ignore_track_duration_difference_under', 'label_track_duration_diff']),
+        (
+            'ignore_track_duration_difference_under',
+            ['ignore_track_duration_difference_under', 'label_track_duration_diff'],
+        ),
         ('query_limit', ['query_limit', 'label_query_limit']),
         ('completeness_ignore_videos', ['completeness_ignore_videos']),
         ('completeness_ignore_pregap', ['completeness_ignore_pregap']),
@@ -63,7 +65,9 @@ class AdvancedOptionsPage(OptionsPage):
         self.ui.ignore_regex.setText(config.setting['ignore_regex'])
         self.ui.ignore_hidden_files.setChecked(config.setting['ignore_hidden_files'])
         self.ui.recursively_add_files.setChecked(config.setting['recursively_add_files'])
-        self.ui.ignore_track_duration_difference_under.setValue(config.setting['ignore_track_duration_difference_under'])
+        self.ui.ignore_track_duration_difference_under.setValue(
+            config.setting['ignore_track_duration_difference_under']
+        )
         self.ui.query_limit.setCurrentText(str(config.setting['query_limit']))
         self.ui.completeness_ignore_videos.setChecked(config.setting['completeness_ignore_videos'])
         self.ui.completeness_ignore_pregap.setChecked(config.setting['completeness_ignore_pregap'])
@@ -77,7 +81,9 @@ class AdvancedOptionsPage(OptionsPage):
         config.setting['ignore_regex'] = self.ui.ignore_regex.text()
         config.setting['ignore_hidden_files'] = self.ui.ignore_hidden_files.isChecked()
         config.setting['recursively_add_files'] = self.ui.recursively_add_files.isChecked()
-        config.setting['ignore_track_duration_difference_under'] = self.ui.ignore_track_duration_difference_under.value()
+        config.setting['ignore_track_duration_difference_under'] = (
+            self.ui.ignore_track_duration_difference_under.value()
+        )
         config.setting['query_limit'] = self.ui.query_limit.currentText()
         config.setting['completeness_ignore_videos'] = self.ui.completeness_ignore_videos.isChecked()
         config.setting['completeness_ignore_pregap'] = self.ui.completeness_ignore_pregap.isChecked()

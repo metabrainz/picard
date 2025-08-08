@@ -55,7 +55,7 @@ class TestPipe(PicardTestCase):
         pipe_handler = pipe.Pipe(self.NAME, self.VERSION)
         try:
             plistener = __pool.submit(pipe_listener, pipe_handler)
-            time.sleep(.2)
+            time.sleep(0.2)
             res = ""
 
             # handle the write/read processes
@@ -65,9 +65,8 @@ class TestPipe(PicardTestCase):
             except concurrent.futures._base.TimeoutError:
                 pass
 
-            self.assertEqual(res, message,
-                            "Data is sent and read correctly")
+            self.assertEqual(res, message, "Data is sent and read correctly")
         finally:
-            time.sleep(.2)
+            time.sleep(0.2)
             pipe_handler.stop()
             __pool.shutdown()

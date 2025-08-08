@@ -100,14 +100,12 @@ def unload_plugin(plugin_name):
 
 
 class TestPicardPluginsCommon(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         logging.disable(logging.ERROR)
 
 
 class TestPicardPluginsCommonTmpDir(TestPicardPluginsCommon):
-
     def setUp(self):
         super().setUp()
         self.tmp_directory = self.mktmpdir()
@@ -115,9 +113,7 @@ class TestPicardPluginsCommonTmpDir(TestPicardPluginsCommon):
 
 
 class TestPicardPluginManager(TestPicardPluginsCommon):
-
     def test_compatible_api_version(self):
-
         # use first element from picard.api_versions, it should be compatible
         api_versions = picard.api_versions[:1]
         expected = {Version.from_string(v) for v in api_versions}
@@ -138,13 +134,13 @@ class TestPicardPluginManager(TestPicardPluginsCommon):
     def test_plugin_name_from_path(self):
         for name, path in _testplugins.items():
             self.assertEqual(
-                _plugin_name_from_path(path), 'dummyplugin',
-                "failed to get plugin name from %s: %r" % (name, path)
+                _plugin_name_from_path(path),
+                'dummyplugin',
+                "failed to get plugin name from %s: %r" % (name, path),
             )
 
 
 class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
-
     def _test_plugin_install(self, name):
         plugin_path = _testplugins[name]
         pm = PluginManager(plugins_directory=self.tmp_directory)
@@ -156,6 +152,7 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
         # if module is properly loaded, this should work
         from picard.plugins.dummyplugin import DummyPlugin
+
         DummyPlugin()
 
         # Remove plugin again
@@ -180,6 +177,7 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
         # if module is properly loaded, this should work
         from picard.plugins.dummyplugin import DummyPlugin
+
         DummyPlugin()
 
         # Remove plugin again
@@ -227,7 +225,6 @@ class TestPicardPluginsInstall(TestPicardPluginsCommonTmpDir):
 
 
 class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
-
     def setUp(self):
         super().setUp()
         self.pm = PluginManager(plugins_directory=self.tmp_directory)
@@ -252,6 +249,7 @@ class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
 
         # if module is properly loaded, this should work
         from picard.plugins.dummyplugin import DummyPlugin
+
         DummyPlugin()
 
     # singlefile
@@ -279,11 +277,8 @@ class TestPicardPluginsLoad(TestPicardPluginsCommonTmpDir):
 
 
 class TestPluginWrapper(PicardTestCase):
-
     def test_is_user_installed(self):
-        manifest = {
-            'PLUGIN_NAME': 'foo'
-        }
+        manifest = {'PLUGIN_NAME': 'foo'}
         user_plugin = PluginWrapper({}, USER_PLUGIN_DIR, manifest_data=manifest)
         self.assertTrue(user_plugin.is_user_installed)
         system_plugin = PluginWrapper({}, '/other/path/plugins', manifest_data=manifest)
@@ -293,9 +288,11 @@ class TestPluginWrapper(PicardTestCase):
 class TestPluginFunctions(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.set_config_values({
-            'enabled_plugins': [],
-        })
+        self.set_config_values(
+            {
+                'enabled_plugins': [],
+            }
+        )
 
     def test_register_order(self):
         pfs = PluginFunctions(label="test")

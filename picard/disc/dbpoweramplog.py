@@ -31,8 +31,7 @@ from picard.disc.utils import (
 from picard.util import detect_file_encoding
 
 
-RE_TOC_ENTRY = re.compile(
-    r"^Track (?P<num>\d+):\s+Ripped LBA (?P<start_sector>\d+) to (?P<end_sector>\d+)")
+RE_TOC_ENTRY = re.compile(r"^Track (?P<num>\d+):\s+Ripped LBA (?P<start_sector>\d+) to (?P<end_sector>\d+)")
 
 
 def filter_toc_entries(lines):
@@ -45,9 +44,11 @@ def filter_toc_entries(lines):
         if m:
             track_num = int(m['num'])
             if last_track_num + 1 != track_num:
-                raise NotSupportedTOCError(f"Non consecutive track numbers ({last_track_num} => {track_num}) in dBPoweramp log. Likely a partial rip, disc ID cannot be calculated")
+                raise NotSupportedTOCError(
+                    f"Non consecutive track numbers ({last_track_num} => {track_num}) in dBPoweramp log. Likely a partial rip, disc ID cannot be calculated"
+                )
             last_track_num = track_num
-            yield TocEntry(track_num, int(m['start_sector']), int(m['end_sector'])-1)
+            yield TocEntry(track_num, int(m['start_sector']), int(m['end_sector']) - 1)
 
 
 def toc_from_file(path):

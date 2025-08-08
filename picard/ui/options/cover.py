@@ -53,7 +53,6 @@ from picard.ui.widgets.checkbox_list_item import CheckboxListItem
 
 
 class CoverOptionsPage(OptionsPage):
-
     NAME = 'cover'
     TITLE = N_("Cover Art")
     PARENT = None
@@ -86,8 +85,7 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_only_one_front_image.toggled.connect(self.ui.image_type_as_filename.setDisabled)
         self.ui.cb_never_replace_types.toggled.connect(self.ui.select_types_button.setEnabled)
         self.ui.select_types_button.clicked.connect(self.select_never_replace_image_types)
-        self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button,
-                                          self.ui.down_button)
+        self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button, self.ui.down_button)
 
     def restore_defaults(self):
         # Remove previous entries
@@ -97,8 +95,7 @@ class CoverOptionsPage(OptionsPage):
         super().restore_defaults()
 
     def _load_cover_art_providers(self):
-        """Load available providers, initialize provider-specific options, restore state of each
-        """
+        """Load available providers, initialize provider-specific options, restore state of each"""
         self.ui.ca_providers_list.clear()
         for p in cover_art_providers():
             item = CheckboxListItem(_(p.title), checked=p.enabled)

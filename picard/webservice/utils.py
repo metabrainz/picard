@@ -55,8 +55,7 @@ def host_port_to_url(host, port, path=None, scheme=None, as_string=False):
             scheme = 'http'
     url.setScheme(scheme)
 
-    if ((scheme == 'https' and port != 443)
-            or (scheme == 'http' and port != 80)):
+    if (scheme == 'https' and port != 443) or (scheme == 'http' and port != 80):
         url.setPort(port)
 
     url.setHost(host)

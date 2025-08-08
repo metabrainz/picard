@@ -41,7 +41,6 @@ from picard.i18n import (
 
 
 class CollectionMenu(QtWidgets.QMenu):
-
     def __init__(self, albums, title, parent=None):
         super().__init__(title, parent=parent)
         self.releases = set(a.id for a in albums)
@@ -53,8 +52,7 @@ class CollectionMenu(QtWidgets.QMenu):
         self._ignore_update = True
         self.clear()
         self.actions = []
-        for collection in sorted(user_collections.values(),
-                                 key=lambda c: (sort_key(c.name), c.id)):
+        for collection in sorted(user_collections.values(), key=lambda c: (sort_key(c.name), c.id)):
             action = QtWidgets.QWidgetAction(self)
             action.setDefaultWidget(CollectionMenuItem(self, collection))
             self.addAction(action)
@@ -93,7 +91,6 @@ class CollectionMenu(QtWidgets.QMenu):
 
 
 class CollectionMenuItem(QtWidgets.QWidget):
-
     def __init__(self, menu, collection, parent=None):
         super().__init__(parent=parent)
         self.menu = menu
@@ -108,7 +105,8 @@ class CollectionMenuItem(QtWidgets.QWidget):
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutLeftMargin),
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutRightMargin),
-            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin))
+            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
+        )
         self.checkbox = CollectionCheckBox(menu, collection, parent=self)
         layout.addWidget(self.checkbox)
 
@@ -143,7 +141,6 @@ class CollectionMenuItem(QtWidgets.QWidget):
 
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
-
     def __init__(self, menu, collection, parent=None):
         self.menu = menu
         self.collection = collection

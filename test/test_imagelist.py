@@ -42,7 +42,7 @@ def create_test_files():
     test_files = [
         File('test1.flac'),
         File('test2.flac'),
-        File('test2.flac')
+        File('test2.flac'),
     ]
     test_files[0].metadata.images.append(test_images[0])
     test_files[1].metadata.images.append(test_images[1])
@@ -54,7 +54,6 @@ def create_test_files():
 
 
 class UpdateMetadataImagesTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         (self.test_images, self.test_files) = create_test_files()
@@ -132,7 +131,6 @@ class UpdateMetadataImagesTest(PicardTestCase):
 
 
 class RemoveMetadataImagesTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         (self.test_images, self.test_files) = create_test_files()
@@ -223,7 +221,6 @@ class RemoveMetadataImagesTest(PicardTestCase):
 
 
 class AddMetadataImagesTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         (self.test_images, self.test_files) = create_test_files()
@@ -252,7 +249,6 @@ class AddMetadataImagesTest(PicardTestCase):
 
 
 class ImageListTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.imagelist = ImageList()
@@ -263,7 +259,7 @@ class ImageListTest(PicardTestCase):
                 data=create_fake_png(name.encode('utf-8')),
                 types=types,
                 support_types=True,
-                support_multi_types=True
+                support_multi_types=True,
             )
 
         self.images = {
@@ -299,7 +295,6 @@ class ImageListTest(PicardTestCase):
         self.assertEqual(self.imagelist.get_front_image(), self.images['b'])
 
     def test_to_be_saved_to_tags(self):
-
         def to_be_saved(settings):
             return self.imagelist.to_be_saved_to_tags(settings=settings)
 

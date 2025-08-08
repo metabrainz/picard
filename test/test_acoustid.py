@@ -76,21 +76,45 @@ class RecordingTest(AcoustIDTest):
         self.assertEqual(parsed_recording['id'], '017830c1-d1cf-46f3-8801-aaaa0a930223')
         self.assertEqual(parsed_recording['length'], 225000)
         self.assertEqual(parsed_recording['title'], 'Nina')
-        self.assertEqual(release['media'], [{'format': 'CD', 'track-count': 12, 'position': 1, 'track': [{'position': 5, 'id': '16affcc3-9f34-48e5-88dc-68378c4cc208', 'number': 5}]}])
+        self.assertEqual(
+            release['media'],
+            [
+                {
+                    'format': 'CD',
+                    'track-count': 12,
+                    'position': 1,
+                    'track': [
+                        {
+                            'position': 5,
+                            'id': '16affcc3-9f34-48e5-88dc-68378c4cc208',
+                            'number': 5,
+                        }
+                    ],
+                }
+            ],
+        )
         self.assertEqual(release['title'], 'x')
         self.assertEqual(release['id'], 'a2b25883-306f-4a53-809a-a234737c209d')
-        self.assertEqual(release['release-group'], {
-            'id': 'c24e5416-cd2e-4cff-851b-5faa78db98a2',
-            'primary-type': 'Album',
-            'secondary-types': ['Compilation']
-        })
+        self.assertEqual(
+            release['release-group'],
+            {
+                'id': 'c24e5416-cd2e-4cff-851b-5faa78db98a2',
+                'primary-type': 'Album',
+                'secondary-types': ['Compilation'],
+            },
+        )
         self.assertEqual(release['country'], 'XE')
         self.assertEqual(release['date'], {'month': 6, 'day': 23, 'year': 2014})
         self.assertEqual(release['medium-count'], 1)
         self.assertEqual(release['track-count'], 12)
-        self.assertEqual(artist_credit['artist'], {'sort-name': 'Ed Sheeran',
-                                                   'name': 'Ed Sheeran',
-                                                   'id': 'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6'})
+        self.assertEqual(
+            artist_credit['artist'],
+            {
+                'sort-name': 'Ed Sheeran',
+                'name': 'Ed Sheeran',
+                'id': 'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6',
+            },
+        )
         self.assertEqual(artist_credit['name'], 'Ed Sheeran')
 
 
@@ -118,9 +142,7 @@ class MaxSourceCountTest(PicardTestCase):
         self.assertEqual(1, max_source_count([]))
 
     def test_max_source_count_smaller_1(self):
-        recordings = (
-            Recording({}, sources=0),
-        )
+        recordings = (Recording({}, sources=0),)
         self.assertEqual(1, max_source_count(recordings))
 
 
@@ -128,9 +150,11 @@ class ParseRecordingMapTest(PicardTestCase):
     def test_parse_recording_map(self):
         recordings = {
             "cb127606-8e3d-4dcf-9902-69c7a9b59bc9": {
-                "d12e0535-3b2f-4987-8b03-63d85ef57fdd": Recording({
-                    "id": "d12e0535-3b2f-4987-8b03-63d85ef57fdd",
-                }),
+                "d12e0535-3b2f-4987-8b03-63d85ef57fdd": Recording(
+                    {
+                        "id": "d12e0535-3b2f-4987-8b03-63d85ef57fdd",
+                    }
+                ),
                 "e8a313ee-b723-4b48-9395-6c8e026fc9e0": Recording(
                     {"id": "e8a313ee-b723-4b48-9395-6c8e026fc9e0"},
                     sources=4,
@@ -150,7 +174,7 @@ class ParseRecordingMapTest(PicardTestCase):
                 "acoustid": "cb127606-8e3d-4dcf-9902-69c7a9b59bc9",
                 "score": 50,
                 "sources": 4,
-            }
+            },
         ]
         self.assertEqual(expected, list(parse_recording_map(recordings)))
 

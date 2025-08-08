@@ -72,7 +72,6 @@ _DEFAULT_COLORS = defaultdict(dict)
 
 
 class DefaultColor:
-
     def __init__(self, value, description):
         qcolor = QtGui.QColor(value)
         self.value = qcolor.name()
@@ -85,8 +84,8 @@ def register_color(themes, name, value):
         _DEFAULT_COLORS[theme_name][name] = DefaultColor(value, description)
 
 
-_DARK = ('dark', )
-_LIGHT = ('light', )
+_DARK = ('dark',)
+_LIGHT = ('light',)
 _ALL = _DARK + _LIGHT
 
 register_color(_ALL, 'entity_error', '#C80000')
@@ -128,7 +127,6 @@ register_color(_DARK, 'syntax_hl_var', '#FCBB51')
 
 
 class InterfaceColors:
-
     def __init__(self, dark_theme=None):
         self._dark_theme = dark_theme
         self.set_default_colors()

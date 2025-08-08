@@ -32,7 +32,6 @@ _node_name_re = re.compile('[^a-zA-Z0-9]')
 
 
 class XmlNode:
-
     def __init__(self):
         self.text = ''
         self.children = {}

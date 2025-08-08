@@ -42,7 +42,6 @@ from .utils import (
 
 
 class FileInfoDialog(InfoDialog):
-
     def __init__(self, file_, parent=None):
         super().__init__(file_, parent=parent)
         self.setWindowTitle(_("Info") + " - " + file_.base_filename)
@@ -54,7 +53,6 @@ class FileInfoDialog(InfoDialog):
 
 
 class AlbumInfoDialog(InfoDialog):
-
     def __init__(self, album, parent=None):
         super().__init__(album, parent=parent)
         self.setWindowTitle(_("Album Info"))
@@ -68,7 +66,6 @@ class AlbumInfoDialog(InfoDialog):
 
 
 class TrackInfoDialog(InfoDialog):
-
     def __init__(self, track, parent=None):
         super().__init__(track, parent=parent)
         self.setWindowTitle(_("Track Info"))
@@ -84,15 +81,15 @@ class TrackInfoDialog(InfoDialog):
             return
 
         tabWidget.setTabText(tab_index, _("&Info"))
-        text = ngettext("%i file in this track", "%i files in this track",
-                        track.num_linked_files) % track.num_linked_files
+        text = (
+            ngettext("%i file in this track", "%i files in this track", track.num_linked_files) % track.num_linked_files
+        )
         info_files = [format_file_info(file_) for file_ in track.files]
         text += '<hr />' + '<hr />'.join(info_files)
         self.ui.info.setText(text)
 
 
 class ClusterInfoDialog(InfoDialog):
-
     def __init__(self, cluster, parent=None):
         super().__init__(cluster, parent=parent)
         self.setWindowTitle(_("Cluster Info"))

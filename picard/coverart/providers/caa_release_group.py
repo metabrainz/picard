@@ -38,7 +38,6 @@ class CaaThumbnailCoverArtImageRg(CaaThumbnailCoverArtImage):
 
 
 class CoverArtProviderCaaReleaseGroup(CoverArtProviderCaa):
-
     """Use cover art from album release group"""
 
     NAME = "CaaReleaseGroup"

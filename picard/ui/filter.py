@@ -38,7 +38,6 @@ from picard.tags import (
 
 
 class Filter(QtWidgets.QWidget):
-
     filterChanged = QtCore.pyqtSignal(str, set)
     filterable_tags = set()
     instances = set()
@@ -55,7 +54,7 @@ class Filter(QtWidgets.QWidget):
         self.default_filter_button_label = N_("Filters")
 
         self.load_filterable_tags()
-        self.default_filters = set()    # Default to selecting no filters
+        self.default_filters = set()  # Default to selecting no filters
         self.selected_filters = self._get_saved_selected_filters()
 
         # filter button
@@ -129,7 +128,9 @@ class Filter(QtWidgets.QWidget):
         button_layout = QtWidgets.QHBoxLayout()
 
         # spacer
-        spacer = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacer = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
+        )
         button_layout.addItem(spacer)
 
         # OK

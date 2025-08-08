@@ -32,7 +32,6 @@ from picard.ui.options import OptionsPage
 
 
 class TagsCompatibilityAC3OptionsPage(OptionsPage):
-
     NAME = 'tags_compatibility_ac3'
     TITLE = N_("AC3")
     PARENT = 'tags'

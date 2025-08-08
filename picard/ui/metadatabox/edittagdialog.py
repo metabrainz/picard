@@ -47,8 +47,7 @@ from picard.ui import PicardDialog
 from picard.ui.forms.ui_edittagdialog import Ui_EditTagDialog
 
 
-AUTOCOMPLETE_RELEASE_TYPES = [s.lower() for s
-                              in sorted(RELEASE_PRIMARY_GROUPS) + sorted(RELEASE_SECONDARY_GROUPS)]
+AUTOCOMPLETE_RELEASE_TYPES = [s.lower() for s in sorted(RELEASE_PRIMARY_GROUPS) + sorted(RELEASE_SECONDARY_GROUPS)]
 AUTOCOMPLETE_RELEASE_STATUS = sorted(s.lower() for s in RELEASE_STATUS)
 AUTOCOMPLETE_RELEASE_COUNTRIES = sorted(RELEASE_COUNTRIES, key=str.casefold)
 AUTOCOMPLETE_RELEASE_FORMATS = sorted(RELEASE_FORMATS, key=str.casefold)
@@ -92,12 +91,11 @@ COMPLETER_CONFIG = {
     'releasetype': CompleterConfig(AUTOCOMPLETE_RELEASE_TYPES, case_insensitive_sort=False),
     'releasestatus': CompleterConfig(AUTOCOMPLETE_RELEASE_STATUS),
     'releasecountry': CompleterConfig(AUTOCOMPLETE_RELEASE_COUNTRIES),
-    'media': CompleterConfig(AUTOCOMPLETE_RELEASE_FORMATS)
+    'media': CompleterConfig(AUTOCOMPLETE_RELEASE_FORMATS),
 }
 
 
 class TagEditorDelegate(QtWidgets.QItemDelegate):
-
     def createEditor(self, parent, option, index):
         if not index.isValid():
             return None
@@ -121,8 +119,9 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
         """
         if tag.partition(':')[0] in MULTILINE_TAGS:
             editor = QtWidgets.QPlainTextEdit(parent)
-            editor.setFrameStyle(editor.style().styleHint(
-                QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor))
+            editor.setFrameStyle(
+                editor.style().styleHint(QtWidgets.QStyle.StyleHint.SH_ItemView_DrawDelegateFrame, None, editor)
+            )
             editor.setMinimumSize(QtCore.QSize(0, 80))
             return editor
         return super().createEditor(parent, option, index)
@@ -178,7 +177,6 @@ class TagEditorDelegate(QtWidgets.QItemDelegate):
 
 
 class EditTagDialog(PicardDialog):
-
     def __init__(self, metadata_box, tag):
         super().__init__(parent=metadata_box)
         self.ui = Ui_EditTagDialog()
@@ -237,8 +235,10 @@ class EditTagDialog(PicardDialog):
         model.rowsMoved.connect(self.on_rows_moved)
 
     def keyPressEvent(self, event):
-        if (event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier
-            and event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return}):
+        if event.modifiers() == QtCore.Qt.KeyboardModifier.NoModifier and event.key() in {
+            QtCore.Qt.Key.Key_Enter,
+            QtCore.Qt.Key.Key_Return,
+        }:
             self.add_or_edit_value()
             event.accept()
         elif event.matches(QtGui.QKeySequence.StandardKey.Delete):
@@ -311,8 +311,8 @@ class EditTagDialog(PicardDialog):
 
     def on_rows_moved(self, parent, start, end, destination, row):
         modified_tag = self._current_tag_values()
-        moved_values = modified_tag[start:end + 1]
-        del modified_tag[start:end + 1]
+        moved_values = modified_tag[start : end + 1]
+        del modified_tag[start : end + 1]
         for value in reversed(moved_values):
             modified_tag.insert(row, value)
 
@@ -455,8 +455,12 @@ class EditTagDialog(PicardDialog):
             QListWidgetItem: Configured list item
         """
         item = QtWidgets.QListWidgetItem(value)
-        item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
-                      | QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsDragEnabled)
+        item.setFlags(
+            QtCore.Qt.ItemFlag.ItemIsSelectable
+            | QtCore.Qt.ItemFlag.ItemIsEnabled
+            | QtCore.Qt.ItemFlag.ItemIsEditable
+            | QtCore.Qt.ItemFlag.ItemIsDragEnabled
+        )
         self._set_item_style(item)
         return item
 
@@ -515,15 +519,14 @@ class EditTagDialog(PicardDialog):
         """
         return self.modified_tags.setdefault(
             self.tag,
-            list(self.metadata_box.tag_diff.new[self.tag])
+            list(self.metadata_box.tag_diff.new[self.tag]),
         )
 
     def _current_tag_is_transient(self):
         """Check if the current tag is a custom tag that can be removed from
         the list of tags if empty.
         """
-        return (self.tag and self.tag not in self.default_tags
-                and not any(self._current_tag_values()))
+        return self.tag and self.tag not in self.default_tags and not any(self._current_tag_values())
 
     def _modified_tags_without_empty_values(self):
         """Generate each modified tag and its non-empty values."""

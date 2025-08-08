@@ -40,14 +40,12 @@ from picard.profile import profile_groups_add_setting
 
 
 class OptionsCheckError(Exception):
-
     def __init__(self, title, info):
         self.title = title
         self.info = info
 
 
 class OptionsPage(QtWidgets.QWidget):
-
     PARENT = None
     SORT_ORDER = 1000
     ACTIVE = True
@@ -73,6 +71,7 @@ class OptionsPage(QtWidgets.QWidget):
         # See https://stackoverflow.com/questions/16842955/widgets-destroyed-signal-is-not-fired-pyqt
         def on_destroyed(obj=None):
             self.deleted = True
+
         self.destroyed.connect(on_destroyed)
 
     def set_dialog(self, dialog):
@@ -104,7 +103,9 @@ class OptionsPage(QtWidgets.QWidget):
             config.setting[key] = old_options[key]
 
     def display_error(self, error):
-        dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Icon.Warning, error.title, error.info, QtWidgets.QMessageBox.StandardButton.Ok, self)
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Warning, error.title, error.info, QtWidgets.QMessageBox.StandardButton.Ok, self
+        )
         dialog.exec()
 
     def init_regex_checker(self, regex_edit, regex_error):
@@ -135,7 +136,7 @@ class OptionsPage(QtWidgets.QWidget):
     @classmethod
     def register_setting(cls, name, highlights=None):
         """Register a setting edited in the page, used to restore defaults
-           and to highlight when profiles are used"""
+        and to highlight when profiles are used"""
         option = Option.get('setting', name)
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")

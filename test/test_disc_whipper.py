@@ -29,7 +29,6 @@ from picard.disc.whipperlog import toc_from_file
 
 
 class TestTocFromFile(PicardTestCase):
-
     def test_toc_from_file(self):
         test_log = get_test_data_path('whipper.log')
         toc = toc_from_file(test_log)

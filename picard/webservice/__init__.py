@@ -73,11 +73,14 @@ from picard.webservice.utils import port_from_qurl
 COUNT_REQUESTS_DELAY_MS = 250
 
 TEMP_ERRORS_RETRIES = 5
-USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (PICARD_ORG_NAME, PICARD_APP_NAME,
-                                             PICARD_VERSION_STR,
-                                             platform.platform(),
-                                             platform.python_implementation(),
-                                             platform.python_version())
+USER_AGENT_STRING = '%s-%s/%s (%s;%s-%s)' % (
+    PICARD_ORG_NAME,
+    PICARD_APP_NAME,
+    PICARD_VERSION_STR,
+    platform.platform(),
+    platform.python_implementation(),
+    platform.python_version(),
+)
 CLIENT_STRING = '%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
 
 
@@ -87,14 +90,16 @@ Parser = namedtuple('Parser', 'mimetype parser')
 
 
 class UnknownResponseParserError(Exception):
-
     def __init__(self, response_type):
-        message = "Unknown parser for response type '%s'. Parser for given response type does not exist." % response_type
+        message = (
+            "Unknown parser for response type '%s'. Parser for given response type does not exist." % response_type
+        )
         super().__init__(message)
 
 
 class WSRequest(QNetworkRequest):
     """Represents a single HTTP request."""
+
     _access_token = None
     _high_prio_no_cache = True
     _mblogin = None
@@ -197,7 +202,9 @@ class WSRequest(QNetworkRequest):
 
         if self.mblogin or self._high_prio_no_cache:
             self.setPriority(QNetworkRequest.Priority.HighPriority)
-            self.setAttribute(QNetworkRequest.Attribute.CacheLoadControlAttribute, QNetworkRequest.CacheLoadControl.AlwaysNetwork)
+            self.setAttribute(
+                QNetworkRequest.Attribute.CacheLoadControlAttribute, QNetworkRequest.CacheLoadControl.AlwaysNetwork
+            )
         elif self.cacheloadcontrol is not None:
             self.setAttribute(QNetworkRequest.Attribute.CacheLoadControlAttribute, self.cacheloadcontrol)
 
@@ -271,7 +278,6 @@ class WSRequest(QNetworkRequest):
 
 
 class RequestTask(namedtuple('RequestTask', 'hostkey func priority')):
-
     @staticmethod
     def from_request(request, func):
         # priority is a boolean
@@ -279,7 +285,6 @@ class RequestTask(namedtuple('RequestTask', 'hostkey func priority')):
 
 
 class RequestPriorityQueue:
-
     def __init__(self, ratecontrol):
         self._queues = defaultdict(lambda: defaultdict(deque))
         self._ratecontrol = ratecontrol
@@ -313,8 +318,7 @@ class RequestPriorityQueue:
             if not prio_queue:
                 del self._queues[prio]
                 continue
-            for hostkey in sorted(prio_queue.keys(),
-                                  key=self._ratecontrol.current_delay):
+            for hostkey in sorted(prio_queue.keys(), key=self._ratecontrol.current_delay):
                 queue = self._queues[prio][hostkey]
                 if not queue:
                     del self._queues[prio][hostkey]
@@ -329,7 +333,6 @@ class RequestPriorityQueue:
 
 
 class WebService(QtCore.QObject):
-
     PARSERS = dict()
 
     def __init__(self, parent=None):
@@ -348,7 +351,7 @@ class WebService(QtCore.QObject):
             'GET': self.manager.get,
             'POST': self.manager.post,
             'PUT': self.manager.put,
-            'DELETE': self.manager.deleteResource
+            'DELETE': self.manager.deleteResource,
         }
         self._init_queues()
         self._init_timers()
@@ -378,7 +381,9 @@ class WebService(QtCore.QObject):
 
     @staticmethod
     def display_url(url):
-        return url.toDisplayString(QUrl.UrlFormattingOption.RemoveUserInfo | QUrl.ComponentFormattingOption.EncodeSpaces)
+        return url.toDisplayString(
+            QUrl.UrlFormattingOption.RemoveUserInfo | QUrl.ComponentFormattingOption.EncodeSpaces
+        )
 
     def _init_queues(self):
         self._active_requests = {}
@@ -417,7 +422,7 @@ class WebService(QtCore.QObject):
             log.debug(
                 "NetworkDiskCache size: %s maxsize: %s",
                 bytes2human.decimal(cache.cacheSize(), l10n=False),
-                bytes2human.decimal(cache.maximumCacheSize(), l10n=False)
+                bytes2human.decimal(cache.maximumCacheSize(), l10n=False),
             )
 
     def setup_proxy(self):
@@ -459,12 +464,13 @@ class WebService(QtCore.QObject):
     @staticmethod
     def urls_equivalent(leftUrl, rightUrl):
         """
-            Lazy method to determine whether two QUrls are equivalent. At the moment it assumes that if ports are unset
-            that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
-            from QT 4.7
+        Lazy method to determine whether two QUrls are equivalent. At the moment it assumes that if ports are unset
+        that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
+        from QT 4.7
         """
-        return leftUrl.port(80) == rightUrl.port(80) and \
-            leftUrl.toString(QUrl.UrlFormattingOption.RemovePort) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
+        return leftUrl.port(80) == rightUrl.port(80) and leftUrl.toString(
+            QUrl.UrlFormattingOption.RemovePort
+        ) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
     def _handle_redirect(self, reply, request, redirect):
         error = int(reply.error())
@@ -516,15 +522,21 @@ class WebService(QtCore.QObject):
             proto = 'HTTP'
         if error != QNetworkReply.NetworkError.NoError:
             errstr = reply.errorString()
-            log.error("Network request error for %s -> %s (QT code %r, %s code %d)",
-                      display_reply_url, errstr, error, proto, response_code)
-            if (not request.max_retries_reached()
-                and (response_code == 503
-                     or response_code == 429
-                     # Sometimes QT returns a http status code of 200 even when there
-                     # is a service unavailable error.
-                     or error == QNetworkReply.NetworkError.ServiceUnavailableError
-                     )):
+            log.error(
+                "Network request error for %s -> %s (QT code %r, %s code %d)",
+                display_reply_url,
+                errstr,
+                error,
+                proto,
+                response_code,
+            )
+            if not request.max_retries_reached() and (
+                response_code == 503
+                or response_code == 429
+                # Sometimes QT returns a http status code of 200 even when there
+                # is a service unavailable error.
+                or error == QNetworkReply.NetworkError.ServiceUnavailableError
+            ):
                 slow_down = True
                 retries = request.mark_for_retry()
                 log.debug("Retrying %s (#%d)", display_reply_url, retries)
@@ -533,20 +545,21 @@ class WebService(QtCore.QObject):
             elif handler is not None:
                 handler(reply.readAll(), reply, error)
 
-            slow_down = (slow_down or response_code >= 500)
+            slow_down = slow_down or response_code >= 500
 
         else:
             error = None
             redirect = reply.attribute(QNetworkRequest.Attribute.RedirectionTargetAttribute)
             from_cache = reply.attribute(QNetworkRequest.Attribute.SourceIsFromCacheAttribute)
             cached = ' (CACHED)' if from_cache else ''
-            log.debug("Received reply for %s -> %s %d (%s) %s",
-                      display_reply_url,
-                      proto,
-                      response_code,
-                      self.http_response_phrase(reply),
-                      cached
-                      )
+            log.debug(
+                "Received reply for %s -> %s %d (%s) %s",
+                display_reply_url,
+                proto,
+                response_code,
+                self.http_response_phrase(reply),
+                cached,
+            )
             if handler is not None:
                 # Redirect if found and not infinite
                 if redirect:

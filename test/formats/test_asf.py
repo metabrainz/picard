@@ -46,9 +46,7 @@ from .coverart import CommonCoverArtTests
 
 # prevent unittest to run tests in those classes
 class CommonAsfTests:
-
     class AsfTestCase(CommonTests.TagFormatsTestCase):
-
         def test_supports_tag(self):
             fmt = ext_to_format(self.testfile_ext)
             self.assertTrue(fmt.supports_tag('copyright'))
@@ -64,9 +62,7 @@ class CommonAsfTests:
         def test_ci_tags_preserve_case(self):
             # Ensure values are not duplicated on repeated save and are saved
             # case preserving.
-            tags = {
-                'Replaygain_Album_Peak': '-6.48 dB'
-            }
+            tags = {'Replaygain_Album_Peak': '-6.48 dB'}
             save_raw(self.filename, tags)
             loaded_metadata = load_metadata(self.filename)
             loaded_metadata['replaygain_album_peak'] = '1.0'
@@ -82,9 +78,7 @@ class CommonAsfTests:
             tags = {
                 'WM/Picture': [
                     ASFByteArrayAttribute(invalid_picture_data),
-                    ASFByteArrayAttribute(
-                        asf.pack_image("image/png", png_data)
-                    )
+                    ASFByteArrayAttribute(asf.pack_image("image/png", png_data)),
                 ]
             }
             save_raw(self.filename, tags)
@@ -155,7 +149,7 @@ class AsfUtilTest(PicardTestCase):
         expected_length = 5 + 2 * len(mime) + 2 + 2 * len(description) + 2 + len(image_data)
         self.assertEqual(tag_data[0], image_type)
         self.assertEqual(len(tag_data), expected_length)
-        self.assertEqual(image_data, tag_data[-len(image_data):])
+        self.assertEqual(image_data, tag_data[-len(image_data) :])
 
         unpacked = asf.unpack_image(tag_data)
         self.assertEqual(mime, unpacked[0])
@@ -172,18 +166,18 @@ class AsfUtilTest(PicardTestCase):
             self.assertEqual(expected, asf.unpack_image(packed))
 
     def test_unpack_image_value_errors(self):
-        self.assertRaisesRegex(ValueError, "unpack_from requires a buffer of at least 5 bytes",
-                               asf.unpack_image, b'')
-        self.assertRaisesRegex(ValueError, "unpack_from requires a buffer of at least 5 bytes",
-                               asf.unpack_image, b'\x02\x01\x00\x00')
-        self.assertRaisesRegex(ValueError, "mime: missing data",
-                               asf.unpack_image, b'\x00\x00\x00\x00\x00')
-        self.assertRaisesRegex(ValueError, "mime: missing data",
-                               asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00')
-        self.assertRaisesRegex(ValueError, "desc: missing data",
-                               asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00\x00\x00a\x00')
-        self.assertRaisesRegex(ValueError, "image data size mismatch",
-                               asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00\x00\x00a\x00\x00\x00x')
+        self.assertRaisesRegex(ValueError, "unpack_from requires a buffer of at least 5 bytes", asf.unpack_image, b'')
+        self.assertRaisesRegex(
+            ValueError, "unpack_from requires a buffer of at least 5 bytes", asf.unpack_image, b'\x02\x01\x00\x00'
+        )
+        self.assertRaisesRegex(ValueError, "mime: missing data", asf.unpack_image, b'\x00\x00\x00\x00\x00')
+        self.assertRaisesRegex(ValueError, "mime: missing data", asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00')
+        self.assertRaisesRegex(
+            ValueError, "desc: missing data", asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00\x00\x00a\x00'
+        )
+        self.assertRaisesRegex(
+            ValueError, "image data size mismatch", asf.unpack_image, b'\x04\x19\x00\x00\x00a\x00\x00\x00a\x00\x00\x00x'
+        )
 
 
 class AsfCoverArtTest(CommonCoverArtTests.CoverArtTestCase):

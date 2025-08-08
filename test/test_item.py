@@ -30,7 +30,6 @@ from picard.item import MetadataItem
 
 
 class MetadataItemTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.obj = MetadataItem('id')

@@ -86,9 +86,7 @@ def test_gsettings_get_failure(side_effect) -> None:
         ("", False),
     ],
 )
-def test_kde_colorscheme_detection(
-    file_content: str, expected: bool, kde_config_dir: Path
-) -> None:
+def test_kde_colorscheme_detection(file_content: str, expected: bool, kde_config_dir: Path) -> None:
     kdeglobals = kde_config_dir / "kdeglobals"
     kdeglobals.write_text(file_content)
     with patch("pathlib.Path.home", return_value=kde_config_dir.parent):
@@ -191,9 +189,7 @@ def test_xfce_dark_theme_detection_failure(side_effect) -> None:
         ("", False),
     ],
 )
-def test_lxqt_dark_theme_detection(
-    file_content: str, expected: bool, tmp_path: Path
-) -> None:
+def test_lxqt_dark_theme_detection(file_content: str, expected: bool, tmp_path: Path) -> None:
     lxqt_dir = tmp_path / ".config" / "lxqt"
     lxqt_dir.mkdir(parents=True)
     session_conf = lxqt_dir / "session.conf"
@@ -209,9 +205,7 @@ def test_lxqt_dark_theme_detection(
         (False, None),
     ],
 )
-def test_lxqt_dark_theme_detection_failure(
-    file_exists: bool, raises, tmp_path: Path
-) -> None:
+def test_lxqt_dark_theme_detection_failure(file_exists: bool, raises, tmp_path: Path) -> None:
     lxqt_dir = tmp_path / ".config" / "lxqt"
     lxqt_dir.mkdir(parents=True)
     session_conf = lxqt_dir / "session.conf"
@@ -233,9 +227,7 @@ def test_lxqt_dark_theme_detection_failure(
         ("", False),
     ],
 )
-def test_freedesktop_color_scheme_detection(
-    gsettings_value: str, expected: bool
-) -> None:
+def test_freedesktop_color_scheme_detection(gsettings_value: str, expected: bool) -> None:
     with patch("subprocess.run") as mock_run:
         mock_run.return_value.stdout = gsettings_value
         mock_run.return_value.returncode = 0
@@ -270,16 +262,12 @@ EXPECTED_DARK_PALETTE_COLORS = {
         QtGui.QPalette.ColorGroup.Disabled,
         QtGui.QPalette.ColorRole.Text,
     ): QtCore.Qt.GlobalColor.darkGray,
-    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Light): QtGui.QColor(
-        0, 0, 0, 0
-    ),
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Light): QtGui.QColor(0, 0, 0, 0),
     (
         QtGui.QPalette.ColorGroup.Disabled,
         QtGui.QPalette.ColorRole.ButtonText,
     ): QtCore.Qt.GlobalColor.darkGray,
-    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base): QtGui.QColor(
-        60, 60, 60
-    ),
+    (QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base): QtGui.QColor(60, 60, 60),
     (
         QtGui.QPalette.ColorGroup.Inactive,
         QtGui.QPalette.ColorRole.Highlight,
@@ -308,9 +296,7 @@ def assert_palette_matches_expected(palette, expected_colors):
                 f"Color for {key} should be {expected.getRgb()}, got {actual.getRgb()}"
             )
         else:
-            assert actual == QtGui.QColor(expected), (
-                f"Color for {key} should be {expected}, got {actual}"
-            )
+            assert actual == QtGui.QColor(expected), f"Color for {key} should be {expected}, got {actual}"
 
 
 # Only check these roles for light mode, as they are guaranteed to differ
@@ -349,9 +335,7 @@ def assert_palette_not_dark(palette, expected_colors):
         (False, False, False),  # Not dark, detection False: do NOT override
     ],
 )
-def test_linux_dark_theme_palette(
-    monkeypatch, already_dark_theme, dark_mode, expect_dark_palette
-):
+def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, dark_mode, expect_dark_palette):
     # Simulate Linux (not Windows, not macOS, not Haiku)
     monkeypatch.setattr(theme_mod, "IS_WIN", False)
     monkeypatch.setattr(theme_mod, "IS_MACOS", False)
@@ -411,9 +395,7 @@ def test_linux_dark_theme_palette(
         assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
     else:
         # The Window color should remain the unique color if not overridden
-        window_color = palette.color(
-            QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window
-        )
+        window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
         assert window_color == QtGui.QColor(123, 123, 123), (
             f"Palette should not be overridden, got {window_color.getRgb()}"
         )
@@ -567,11 +549,7 @@ def test_get_current_desktop_environment_param(env, expected):
 )
 def test_de_specific_wrappers_only_run_for_matching_de_param(args):
     de, wrapper, detect_func, should_call = args
-    env = (
-        {"XDG_CURRENT_DESKTOP": de}
-        if de != "other"
-        else {"XDG_CURRENT_DESKTOP": "somethingelse"}
-    )
+    env = {"XDG_CURRENT_DESKTOP": de} if de != "other" else {"XDG_CURRENT_DESKTOP": "somethingelse"}
     with (
         patch.dict(os.environ, env, clear=True),
         patch(detect_func, return_value=True) as mock_detect,
@@ -652,9 +630,7 @@ def test_linux_dark_palette_override_only_if_not_already_dark(
         assert_palette_matches_expected(palette, EXPECTED_DARK_PALETTE_COLORS)
     else:
         # The Window color should remain the unique color if not overridden
-        window_color = palette.color(
-            QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window
-        )
+        window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
         assert window_color == QtGui.QColor(123, 123, 123), (
             f"Palette should not be overridden, got {window_color.getRgb()}"
         )

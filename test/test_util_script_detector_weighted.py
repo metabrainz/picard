@@ -30,7 +30,6 @@ from picard.util.script_detector_weighted import (
 
 
 class WeightedScriptDetectionTest(PicardTestCase):
-
     def test_detect_script_weighted(self):
         scripts = detect_script_weighted("Latin, кириллический, Ελληνική")
         self.assertAlmostEqual(scripts['LATIN'], 0.195, 3)
@@ -79,7 +78,6 @@ class WeightedScriptDetectionTest(PicardTestCase):
 
 
 class ListScriptWeightedTest(PicardTestCase):
-
     def test_list_script_weighted(self):
         scripts = list_script_weighted("Cyrillic, кириллический, 汉字")
         self.assertEqual(scripts, ['CYRILLIC', 'LATIN', 'CJK'])

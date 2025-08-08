@@ -30,8 +30,8 @@ import unicodedata as ud
 
 @unique
 class ScriptSelectionOrder(IntEnum):
-    """Character set script selection order
-    """
+    """Character set script selection order"""
+
     SPECIFIED = 0
     WEIGHTED = 1
 

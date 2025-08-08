@@ -30,7 +30,6 @@ from picard.oauth import (
 
 
 class OAuthManagerTest(PicardTestCase):
-
     def test_query_data(self):
         params = {
             'a&b': 'a b',
@@ -47,8 +46,41 @@ class OAuthManagerTest(PicardTestCase):
         self.assertEqual(b'E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM', code_challenge)
 
     def test_base64url_encode(self):
-        b = bytes([116, 24, 223, 180, 151, 153, 224, 37, 79, 250, 96, 125, 216, 173,
-            187, 186, 22, 212, 37, 77, 105, 214, 191, 240, 91, 88, 5, 88, 83,
-            132, 141, 121])
+        b = bytes(
+            [
+                116,
+                24,
+                223,
+                180,
+                151,
+                153,
+                224,
+                37,
+                79,
+                250,
+                96,
+                125,
+                216,
+                173,
+                187,
+                186,
+                22,
+                212,
+                37,
+                77,
+                105,
+                214,
+                191,
+                240,
+                91,
+                88,
+                5,
+                88,
+                83,
+                132,
+                141,
+                121,
+            ]
+        )
         encoded = base64url_encode(b)
         self.assertEqual(b'dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk', encoded)

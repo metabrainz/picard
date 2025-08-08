@@ -160,8 +160,15 @@ BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completene
 BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks"))
 BoolOption('setting', 'ignore_hidden_files', False, title=N_("Ignore hidden files"))
 TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths matching a regular expression"))
-IntOption('setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds"))
-IntOption('setting', 'query_limit', DEFAULT_QUERY_LIMIT, title=N_("Maximum number of entities to return per MusicBrainz query"))
+IntOption(
+    'setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds")
+)
+IntOption(
+    'setting',
+    'query_limit',
+    DEFAULT_QUERY_LIMIT,
+    title=N_("Maximum number of entities to return per MusicBrainz query"),
+)
 BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files from folder"))
 
 # picard/ui/options/cdlookup.py
@@ -173,11 +180,30 @@ TextOption('setting', 'cd_lookup_device', ','.join(DEFAULT_DRIVES))
 ListOption('setting', 'ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art providers"))
 TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images"))
 BoolOption('setting', 'embed_only_one_front_image', True, title=N_("Embed only a single front image"))
-BoolOption('setting', 'dont_replace_with_smaller_cover', False, title=N_("Never replace cover images with smaller ones"))
-BoolOption('setting', 'dont_replace_cover_of_types', False, title=N_("Never replace cover images matching selected types"))
-ListOption('setting', 'dont_replace_included_types', DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE, title=N_("Never replace cover images of these types"))
-ListOption('setting', 'dont_replace_excluded_types', DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE, title=N_("Always replace cover images of these types"))
-BoolOption('setting', 'image_type_as_filename', False, title=N_("Always use the primary image type as the file name for non-front images"))
+BoolOption(
+    'setting', 'dont_replace_with_smaller_cover', False, title=N_("Never replace cover images with smaller ones")
+)
+BoolOption(
+    'setting', 'dont_replace_cover_of_types', False, title=N_("Never replace cover images matching selected types")
+)
+ListOption(
+    'setting',
+    'dont_replace_included_types',
+    DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE,
+    title=N_("Never replace cover images of these types"),
+)
+ListOption(
+    'setting',
+    'dont_replace_excluded_types',
+    DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE,
+    title=N_("Always replace cover images of these types"),
+)
+BoolOption(
+    'setting',
+    'image_type_as_filename',
+    False,
+    title=N_("Always use the primary image type as the file name for non-front images"),
+)
 BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files"))
 BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images as separate files"))
 BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed cover images into tags"))
@@ -240,7 +266,9 @@ BoolOption('setting', 'use_server_for_submission', False)
 # Genres
 BoolOption('setting', 'artists_genres', False, title=N_("Use album artist genres"))
 BoolOption('setting', 'folksonomy_tags', False, title=N_("Use folksonomy tags as genre"))
-TextOption('setting', 'genres_filter', '-seen live\n-favorites\n-fixme\n-owned', title=N_("Genres to include or exclude"))
+TextOption(
+    'setting', 'genres_filter', '-seen live\n-favorites\n-fixme\n-owned', title=N_("Genres to include or exclude")
+)
 TextOption('setting', 'join_genres', '', title=N_("Join multiple genres with"))
 IntOption('setting', 'max_genres', 5, title=N_("Maximum number of genres"))
 IntOption('setting', 'min_genre_usage', 90, title=N_("Minimal genre usage"))
@@ -251,7 +279,12 @@ BoolOption('setting', 'use_genres', False, title=N_("Use genres from MusicBrainz
 # User Interface
 BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories"))
 BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search rather than looking in browser"))
-BoolOption('setting', 'filebrowser_horizontal_autoscroll', True, title=N_("Adjust horizontal position in file browser automatically"))
+BoolOption(
+    'setting',
+    'filebrowser_horizontal_autoscroll',
+    True,
+    title=N_("Adjust horizontal position in file browser automatically"),
+)
 BoolOption('setting', 'file_save_warning', True, title=N_("Show a confirmation dialog when saving files"))
 TextOption('setting', 'load_image_behavior', 'append')
 BoolOption('setting', 'quit_confirmation', True, title=N_("Show a quit confirmation dialog for unsaved changes"))
@@ -266,8 +299,18 @@ BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced sea
 
 # picard/ui/options/interface_colors.py
 # Colors
-Option('setting', 'interface_colors', InterfaceColors(dark_theme=False).get_colors(), title=N_("Colors to use for light theme"))
-Option('setting', 'interface_colors_dark', InterfaceColors(dark_theme=True).get_colors(), title=N_("Colors to use for dark theme"))
+Option(
+    'setting',
+    'interface_colors',
+    InterfaceColors(dark_theme=False).get_colors(),
+    title=N_("Colors to use for light theme"),
+)
+Option(
+    'setting',
+    'interface_colors_dark',
+    InterfaceColors(dark_theme=True).get_colors(),
+    title=N_("Colors to use for dark theme"),
+)
 
 # picard/ui/options/interface_toolbar.py
 # Action Toolbar
@@ -290,7 +333,9 @@ ListOption('setting', 'metadatabox_top_tags', DEFAULT_TOP_TAGS, title=N_("Tags t
 
 # picard/ui/options/maintenance.py
 # Maintenance
-TextOption('setting', 'autobackup_directory', DEFAULT_AUTOBACKUP_DIRECTORY, title=N_("Automatic backup destination directory"))
+TextOption(
+    'setting', 'autobackup_directory', DEFAULT_AUTOBACKUP_DIRECTORY, title=N_("Automatic backup destination directory")
+)
 
 # picard/ui/options/matching.py
 # Matching
@@ -302,7 +347,9 @@ FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Minimal simila
 # Metadata
 ListOption('setting', 'artist_locales', ['en'], title=N_("Translation locales"))
 BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation characters to ASCII"))
-BoolOption('setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename if empty"))
+BoolOption(
+    'setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename if empty")
+)
 TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name"))
 BoolOption('setting', 'release_ars', True, title=N_("Use release relationships"))
 ListOption('setting', 'script_exceptions', [], title=N_("Translation script exceptions"))
@@ -365,9 +412,19 @@ BoolOption('setting', 'rename_files', False, title=N_("Rename files"))
 # picard/ui/options/renaming_compat.py
 # Compatibility
 BoolOption('setting', 'ascii_filenames', False, title=N_("Replace non-ASCII characters"))
-TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT, title=N_("Replacement character to use for directory separators"))
+TextOption(
+    'setting',
+    'replace_dir_separator',
+    DEFAULT_REPLACEMENT,
+    title=N_("Replacement character to use for directory separators"),
+)
 BoolOption('setting', 'replace_spaces_with_underscores', False, title=N_("Replace spaces with underscores"))
-Option('setting', 'win_compat_replacements', DEFAULT_WIN_COMPAT_REPLACEMENTS, title=N_("Replacement characters used for Windows compatibility"))
+Option(
+    'setting',
+    'win_compat_replacements',
+    DEFAULT_WIN_COMPAT_REPLACEMENTS,
+    title=N_("Replacement characters used for Windows compatibility"),
+)
 BoolOption('setting', 'windows_compatibility', True, title=N_("Windows compatibility"))
 BoolOption('setting', 'windows_long_paths', DEFAULT_LONG_PATHS, title=N_("Windows long path support"))
 

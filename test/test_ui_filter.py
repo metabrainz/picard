@@ -117,12 +117,14 @@ class FilterTestTags(PicardTestCase):
 
         for selected_filters, expected_text in test_cases:
             button_text = Filter.make_button_text(selected_filters)
-            self.assertEqual(button_text, expected_text,
-                           f"Filter list {selected_filters} should produce '{expected_text}'")
+            self.assertEqual(
+                button_text, expected_text, f"Filter list {selected_filters} should produce '{expected_text}'"
+            )
 
 
 class FilterTestFiltering(PicardTestCase):
     """Test filtering of basetreeview items"""
+
     TestConditions = namedtuple('TestConditions', 'text filters has_tags matches')
 
     def test_filter_file_1(self):

@@ -32,7 +32,6 @@ from picard.ui.options import OptionsPage
 
 
 class TagsCompatibilityAACOptionsPage(OptionsPage):
-
     NAME = 'tags_compatibility_aac'
     TITLE = N_("AAC")
     PARENT = 'tags'

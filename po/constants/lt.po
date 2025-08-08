@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-05-05 18:58+0200\n"
-"PO-Revision-Date: 2025-08-06 20:36+0000\n"
+"PO-Revision-Date: 2025-06-30 23:20+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/constants/lt/>\n"
@@ -5704,8 +5704,8 @@ msgstr ""
 
 #: picard/const/tags.py:1207
 msgid "Writer Sort"
-msgstr "Rašytojo rikiavimas"
+msgstr ""
 
 #: picard/const/tags.py:1208
 msgid "The sort names of the writers for the work."
-msgstr "Kūrinio rašytojų rikiavimo vardai."
+msgstr ""

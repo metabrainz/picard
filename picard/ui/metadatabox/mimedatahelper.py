@@ -54,7 +54,7 @@ class MimeDataHelper:
 
         self._registry[mimetype] = self.MimeConverters(
             encode_func=encode_func,
-            decode_func=decode_func
+            decode_func=decode_func,
         )
 
     def is_registered(self, mimetype):

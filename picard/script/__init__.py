@@ -119,14 +119,18 @@ def script_function_documentation(name, fmt, functions=None, postprocessor=None)
     if functions is None:
         functions = dict(script_functions.ext_point_script_functions)
     if name not in functions:
-        raise ScriptFunctionDocUnknownFunctionError("no such function: %s (known functions: %r)" % (name, [name for name in functions]))
+        raise ScriptFunctionDocUnknownFunctionError(
+            "no such function: %s (known functions: %r)" % (name, [name for name in functions])
+        )
 
     if fmt == 'html':
         return functions[name].htmldoc(postprocessor)
     elif fmt == 'markdown':
         return functions[name].markdowndoc(postprocessor)
     else:
-        raise ScriptFunctionDocNoDocumentationError("no such documentation format: %s (known formats: html, markdown)" % fmt)
+        raise ScriptFunctionDocNoDocumentationError(
+            "no such documentation format: %s (known formats: html, markdown)" % fmt
+        )
 
 
 def script_function_names(functions=None):
@@ -135,14 +139,11 @@ def script_function_names(functions=None):
     yield from sorted(functions)
 
 
-def script_function_documentation_all(fmt='markdown', pre='',
-                                      post='', postprocessor=None):
+def script_function_documentation_all(fmt='markdown', pre='', post='', postprocessor=None):
     functions = dict(script_functions.ext_point_script_functions)
     doc_elements = []
     for name in script_function_names(functions):
-        doc_element = script_function_documentation(name, fmt,
-                                                    functions=functions,
-                                                    postprocessor=postprocessor)
+        doc_element = script_function_documentation(name, fmt, functions=functions, postprocessor=postprocessor)
         if doc_element:
             doc_elements.append(pre + doc_element + post)
     return "\n".join(doc_elements)
@@ -158,6 +159,7 @@ def get_file_naming_script(settings):
         str: The text of the file naming script if available, otherwise None
     """
     from picard.script import get_file_naming_script_presets
+
     scripts = settings['file_renaming_scripts']
     selected_id = settings['selected_file_naming_script_id']
     if selected_id:
@@ -177,7 +179,9 @@ def get_file_naming_script_presets():
         FileNamingScriptInfo: the next example FileNamingScriptInfo object
     """
     AUTHOR = "MusicBrainz Picard Development Team"
-    DESCRIPTION = _("This preset example file naming script does not require any special settings, tagging scripts or plugins.")
+    DESCRIPTION = _(
+        "This preset example file naming script does not require any special settings, tagging scripts or plugins."
+    )
     LICENSE = "GNU Public License version 2"
 
     def preset_title(number, title):
@@ -201,9 +205,7 @@ def get_file_naming_script_presets():
     yield FileNamingScriptInfo(
         id="Preset 2",
         title=preset_title(2, N_("[album artist]/[album]/[track #]. [title]")),
-        script="%albumartist%/\n"
-               "%album%/\n"
-               "%tracknumber%. %title%",
+        script="%albumartist%/\n%album%/\n%tracknumber%. %title%",
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",
@@ -215,12 +217,14 @@ def get_file_naming_script_presets():
     yield FileNamingScriptInfo(
         id="Preset 3",
         title=preset_title(3, N_("[album artist]/[album]/[disc and track #] [artist] - [title]")),
-        script="$if2(%albumartist%,%artist%)/\n"
-               "$if(%albumartist%,%album%/,)\n"
-               "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
-               "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)\n"
-               "$if(%_multiartist%,%artist% - ,)\n"
-               "%title%",
+        script=(
+            "$if2(%albumartist%,%artist%)/\n"
+            "$if(%albumartist%,%album%/,)\n"
+            "$if($gt(%totaldiscs%,1),%discnumber%-,)\n"
+            "$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)\n"
+            "$if(%_multiartist%,%artist% - ,)\n"
+            "%title%"
+        ),
         author=AUTHOR,
         description=DESCRIPTION,
         version="1.0",

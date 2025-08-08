@@ -62,8 +62,7 @@ def fetch_translations(component_name: str, user_key: str = '', config: WeblateC
         # Skip incomplete translations and translation templates
         language_name = translation['language']['name']
         language_code = translation['language']['code']
-        if (translation['translated_percent'] < MIN_TRANSLATED_PERCENT
-            or translation['is_template']):
+        if translation['translated_percent'] < MIN_TRANSLATED_PERCENT or translation['is_template']:
             logging.info('Skipping translation file for %s.', language_name)
             continue
 
@@ -99,14 +98,14 @@ def main():
     parser = argparse.ArgumentParser(
         prog='pull-shared-translations',
         description=(
-            'Fetches the translations for attributes and countries from '
-            'the MusicBrainz Server project on Weblate.'
+            'Fetches the translations for attributes and countries from the MusicBrainz Server project on Weblate.'
         ),
         epilog=(
             'Instead of passing the --key parameter the key can also be set in '
             'a file .weblate.ini in the repositories root directory. See '
             'po/README.md for details.'
-        ))
+        ),
+    )
     parser.add_argument('-k', '--key', help='Weblate user key')
     args = parser.parse_args()
 

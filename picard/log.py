@@ -79,6 +79,7 @@ def set_verbosity(level, save_to_config=False):
     if save_to_config:
         # import here to avoid circular imports
         from picard.config import get_config
+
         config = get_config()
         config.setting['log_verbosity'] = get_effective_level()
 
@@ -89,23 +90,23 @@ def is_debug():
 
 _feat = namedtuple('_feat', ['name', 'prefix', 'color_key'])
 
-levels_features = OrderedDict([
-    (logging.ERROR,   _feat(N_('Error'),   'E', 'log_error')),
-    (logging.WARNING, _feat(N_('Warning'), 'W', 'log_warning')),
-    (logging.INFO,    _feat(N_('Info'),    'I', 'log_info')),
-    (logging.DEBUG,   _feat(N_('Debug'),   'D', 'log_debug')),
-])
+levels_features = OrderedDict(
+    [
+        (logging.ERROR, _feat(N_('Error'), 'E', 'log_error')),
+        (logging.WARNING, _feat(N_('Warning'), 'W', 'log_warning')),
+        (logging.INFO, _feat(N_('Info'), 'I', 'log_info')),
+        (logging.DEBUG, _feat(N_('Debug'), 'D', 'log_debug')),
+    ]
+)
 
 
 # COMMON CLASSES
 
 
-TailLogTuple = namedtuple(
-    'TailLogTuple', ['pos', 'message', 'level'])
+TailLogTuple = namedtuple('TailLogTuple', ['pos', 'message', 'level'])
 
 
 class TailLogHandler(logging.Handler):
-
     def __init__(self, log_queue, tail_logger, log_queue_lock):
         super().__init__()
         self.log_queue = log_queue
@@ -119,7 +120,7 @@ class TailLogHandler(logging.Handler):
                 TailLogTuple(
                     self.pos,
                     self.format(record),
-                    record.levelno
+                    record.levelno,
                 )
             )
             self.pos += 1
@@ -130,7 +131,7 @@ def _calculate_bounds(previous_position, first_position, last_position, queue_le
     # If first item of the queue is bigger than prev, use first item position - 1 as prev
     # e.g. queue = [8, 9, 10] , prev = 6, new_prev = 8-1 = 7
     if previous_position < first_position:
-        previous_position = first_position-1
+        previous_position = first_position - 1
 
     # The offset of the first item in the queue is
     # equal to the length of the queue, minus the length to be printed
@@ -158,7 +159,9 @@ class TailLogger(QtCore.QObject):
     def contents(self, prev=-1):
         with self._queue_lock:
             if self._log_queue:
-                offset, length = _calculate_bounds(prev, self._log_queue[0].pos, self._log_queue[-1].pos, len(self._log_queue))
+                offset, length = _calculate_bounds(
+                    prev, self._log_queue[0].pos, self._log_queue[-1].pos, len(self._log_queue)
+                )
 
                 if offset >= 0:
                     yield from (self._log_queue[i] for i in range(offset, length))

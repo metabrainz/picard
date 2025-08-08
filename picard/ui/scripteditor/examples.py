@@ -38,9 +38,9 @@ from picard.util.filenaming import WinPathTooLong
 from picard.util.settingsoverride import SettingsOverride
 
 
-class ScriptEditorExamples():
-    """File naming script examples.
-    """
+class ScriptEditorExamples:
+    """File naming script examples."""
+
     max_samples = 10  # pick up to 10 samples
 
     def __init__(self, tagger):
@@ -62,8 +62,7 @@ class ScriptEditorExamples():
         return random.sample(candidates, k=length)
 
     def update_sample_example_files(self):
-        """Get a new sample of randomly selected / loaded files to use as renaming examples.
-        """
+        """Get a new sample of randomly selected / loaded files to use as renaming examples."""
         if self.tagger.window.selected_objects:
             # If files/albums/tracks are selected, sample example files from them
             candidates = iter_files_from_objects(self.tagger.window.selected_objects)
@@ -166,10 +165,14 @@ class ScriptEditorExamples():
         Returns:
             str: Notes text
         """
-        return _(
-            "If you select files from the Cluster pane or Album pane prior to opening the Options screen, "
-            "up to %u files will be randomly chosen from your selection as file naming examples.  If you "
-            "have not selected any files, then some default examples will be provided.") % cls.max_samples
+        return (
+            _(
+                "If you select files from the Cluster pane or Album pane prior to opening the Options screen, "
+                "up to %u files will be randomly chosen from your selection as file naming examples.  If you "
+                "have not selected any files, then some default examples will be provided."
+            )
+            % cls.max_samples
+        )
 
     @classmethod
     def get_tooltip_text(cls):
@@ -190,97 +193,104 @@ class ScriptEditorExamples():
         # example 1
         efile = File("ticket_to_ride.mp3")
         efile.state = File.NORMAL
-        efile.metadata.update({
-            'album': 'Help!',
-            'title': 'Ticket to Ride',
-            '~releasecomment': '2014 mono remaster',
-            'artist': 'The Beatles',
-            'artistsort': 'Beatles, The',
-            'albumartist': 'The Beatles',
-            'albumartistsort': 'Beatles, The',
-            'tracknumber': '7',
-            'totaltracks': '14',
-            'discnumber': '1',
-            'totaldiscs': '1',
-            'originaldate': '1965-08-06',
-            'originalyear': '1965',
-            'date': '2014-09-08',
-            'releasetype': ['album', 'soundtrack'],
-            '~primaryreleasetype': ['album'],
-            '~secondaryreleasetype': ['soundtrack'],
-            'releasestatus': 'official',
-            'releasecountry': 'US',
-            'barcode': '602537825745',
-            'catalognumber': 'PMC 1255',
-            'genre': 'Rock',
-            'isrc': 'GBAYE0900666',
-            'label': 'Parlophone',
-            'language': 'eng',
-            'media': '12″ Vinyl',
-            'script': 'Latn',
-            'engineer': ['Ken Scott', 'Norman Smith'],
-            'producer': 'George Martin',
-            'writer': ['John Lennon', 'Paul McCartney'],
-            '~bitrate': '192.0',
-            '~channels': '2',
-            '~extension': 'mp3',
-            '~filename': 'ticket_to_ride',
-            '~filesize': '3563068',
-            '~format': 'MPEG-1 Layer 3 - ID3v2.4',
-            '~length': '3:13',
-            '~sample_rate': '44100',
-            'musicbrainz_albumid': 'd7fbbb0a-1348-40ad-8eef-cd438d4cd203',
-            'musicbrainz_albumartistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
-            'musicbrainz_artistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
-            'musicbrainz_recordingid': 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c',
-            'musicbrainz_trackid': '392639f5-5629-477e-b04b-93bffa703405',
-            'musicbrainz_releasegroupid': '0d44e1cb-c6e0-3453-8b68-4d2082f05421',
-        })
+        efile.metadata.update(
+            {
+                'album': 'Help!',
+                'title': 'Ticket to Ride',
+                '~releasecomment': '2014 mono remaster',
+                'artist': 'The Beatles',
+                'artistsort': 'Beatles, The',
+                'albumartist': 'The Beatles',
+                'albumartistsort': 'Beatles, The',
+                'tracknumber': '7',
+                'totaltracks': '14',
+                'discnumber': '1',
+                'totaldiscs': '1',
+                'originaldate': '1965-08-06',
+                'originalyear': '1965',
+                'date': '2014-09-08',
+                'releasetype': ['album', 'soundtrack'],
+                '~primaryreleasetype': ['album'],
+                '~secondaryreleasetype': ['soundtrack'],
+                'releasestatus': 'official',
+                'releasecountry': 'US',
+                'barcode': '602537825745',
+                'catalognumber': 'PMC 1255',
+                'genre': 'Rock',
+                'isrc': 'GBAYE0900666',
+                'label': 'Parlophone',
+                'language': 'eng',
+                'media': '12″ Vinyl',
+                'script': 'Latn',
+                'engineer': ['Ken Scott', 'Norman Smith'],
+                'producer': 'George Martin',
+                'writer': ['John Lennon', 'Paul McCartney'],
+                '~bitrate': '192.0',
+                '~channels': '2',
+                '~extension': 'mp3',
+                '~filename': 'ticket_to_ride',
+                '~filesize': '3563068',
+                '~format': 'MPEG-1 Layer 3 - ID3v2.4',
+                '~length': '3:13',
+                '~sample_rate': '44100',
+                'musicbrainz_albumid': 'd7fbbb0a-1348-40ad-8eef-cd438d4cd203',
+                'musicbrainz_albumartistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
+                'musicbrainz_artistid': 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d',
+                'musicbrainz_recordingid': 'ed052ae1-c950-47f2-8d2b-46e1b58ab76c',
+                'musicbrainz_trackid': '392639f5-5629-477e-b04b-93bffa703405',
+                'musicbrainz_releasegroupid': '0d44e1cb-c6e0-3453-8b68-4d2082f05421',
+            }
+        )
         yield efile
 
         # example 2
         config = get_config()
         efile = File("track05.flac")
         efile.state = File.NORMAL
-        efile.metadata.update({
-            'album': "Coup d'État, Volume 1: Ku De Ta / Prologue",
-            'title': "I've Got to Learn the Mambo",
-            'artist': "Snowboy feat. James Hunter",
-            'artistsort': "Snowboy feat. Hunter, James",
-            'albumartist': config.setting['va_name'],
-            'albumartistsort': config.setting['va_name'],
-            'tracknumber': '5',
-            'totaltracks': '13',
-            'discnumber': '2',
-            'totaldiscs': '2',
-            'discsubtitle': "Beat Up",
-            'originaldate': '2005-07-04',
-            'originalyear': '2005',
-            'date': '2005-07-04',
-            'releasetype': ['album', 'compilation'],
-            '~primaryreleasetype': 'album',
-            '~secondaryreleasetype': 'compilation',
-            'releasestatus': 'official',
-            'releasecountry': 'AU',
-            'barcode': '5021456128754',
-            'catalognumber': 'FM001',
-            'label': 'Filter Music',
-            'media': 'CD',
-            'script': 'Latn',
-            'compilation': '1',
-            '~multiartist': '1',
-            '~bitrate': '1609.038',
-            '~channels': '2',
-            '~extension': 'flac',
-            '~filename': 'track05',
-            '~filesize': '9237672',
-            '~format': 'FLAC',
-            '~sample_rate': '44100',
-            'musicbrainz_albumid': '4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd',
-            'musicbrainz_recordingid': 'b3c487cb-0e55-477d-8df3-01ec6590f099',
-            'musicbrainz_trackid': 'f8649a05-da39-39ba-957c-7abf8f9012be',
-            'musicbrainz_albumartistid': '89ad4ac3-39f7-470e-963a-56509c546377',
-            'musicbrainz_artistid': ['7b593455-d207-482c-8c6f-19ce22c94679', '9e082466-2390-40d1-891e-4803531f43fd'],
-            'musicbrainz_releasegroupid': 'fa90225d-1810-347c-ae5f-f051a760b623',
-        })
+        efile.metadata.update(
+            {
+                'album': "Coup d'État, Volume 1: Ku De Ta / Prologue",
+                'title': "I've Got to Learn the Mambo",
+                'artist': "Snowboy feat. James Hunter",
+                'artistsort': "Snowboy feat. Hunter, James",
+                'albumartist': config.setting['va_name'],
+                'albumartistsort': config.setting['va_name'],
+                'tracknumber': '5',
+                'totaltracks': '13',
+                'discnumber': '2',
+                'totaldiscs': '2',
+                'discsubtitle': "Beat Up",
+                'originaldate': '2005-07-04',
+                'originalyear': '2005',
+                'date': '2005-07-04',
+                'releasetype': ['album', 'compilation'],
+                '~primaryreleasetype': 'album',
+                '~secondaryreleasetype': 'compilation',
+                'releasestatus': 'official',
+                'releasecountry': 'AU',
+                'barcode': '5021456128754',
+                'catalognumber': 'FM001',
+                'label': 'Filter Music',
+                'media': 'CD',
+                'script': 'Latn',
+                'compilation': '1',
+                '~multiartist': '1',
+                '~bitrate': '1609.038',
+                '~channels': '2',
+                '~extension': 'flac',
+                '~filename': 'track05',
+                '~filesize': '9237672',
+                '~format': 'FLAC',
+                '~sample_rate': '44100',
+                'musicbrainz_albumid': '4b50c71e-0a07-46ac-82e4-cb85dc0c9bdd',
+                'musicbrainz_recordingid': 'b3c487cb-0e55-477d-8df3-01ec6590f099',
+                'musicbrainz_trackid': 'f8649a05-da39-39ba-957c-7abf8f9012be',
+                'musicbrainz_albumartistid': '89ad4ac3-39f7-470e-963a-56509c546377',
+                'musicbrainz_artistid': [
+                    '7b593455-d207-482c-8c6f-19ce22c94679',
+                    '9e082466-2390-40d1-891e-4803531f43fd',
+                ],
+                'musicbrainz_releasegroupid': 'fa90225d-1810-347c-ae5f-f051a760b623',
+            }
+        )
         yield efile

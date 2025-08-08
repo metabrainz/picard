@@ -34,7 +34,6 @@ DesktopStatusIndicator = None
 
 
 class ProgressStatus:
-
     def __init__(self, files=0, albums=0, pending_files=0, pending_requests=0, progress=0):
         self.files = files
         self.albums = albums
@@ -123,13 +122,11 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
         log.warning('Failed importing PyQt6.QtDBus: %r', err)
 
     else:
-
         from picard import PICARD_DESKTOP_NAME
 
         DBUS_INTERFACE = 'com.canonical.Unity.LauncherEntry'
 
         class UnityLauncherEntryService(QObject):
-
             def __init__(self, bus, app_id):
                 QObject.__init__(self)
                 self._bus = bus
@@ -165,7 +162,7 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
                 return [self._app_uri, self.current_progress]
 
         class UnityLauncherEntryAdaptor(QDBusAbstractAdaptor):
-            """ This provides the DBus adaptor to the outside world
+            """This provides the DBus adaptor to the outside world
 
             The supported interface is:
 

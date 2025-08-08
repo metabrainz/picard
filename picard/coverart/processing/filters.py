@@ -40,7 +40,7 @@ def _check_threshold_size(width, height):
             width,
             height,
             min_width,
-            min_height
+            min_height,
         )
         return False
     return True

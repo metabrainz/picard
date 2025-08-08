@@ -296,7 +296,10 @@ class TestTagDiff(PicardTestCase):
         self.tag_diff.add("album", ["Album 1"], ["Album 2"])
         self.tag_diff.update_tag_names()
         tags = self.tag_diff.to_json()
-        self.assertEqual(tags, '{"album": {"old": ["Album 1"], "new": ["Album 2"]}, "artist": {"old": ["Artist 1"], "new": ["Artist 2"]}}')
+        self.assertEqual(
+            tags,
+            '{"album": {"old": ["Album 1"], "new": ["Album 2"]}, "artist": {"old": ["Artist 1"], "new": ["Artist 2"]}}',
+        )
 
     def test_unchanged_tag_to_tsv(self):
         self.tag_diff.add("artist", ["Artist 1"])

@@ -45,18 +45,22 @@ class MockDateTime(datetime.datetime):
 
 
 class ScriptSerializerTest(PicardTestCase):
-
     def assertYamlEquals(self, yaml_str, obj, msg=None):
         self.assertEqual(obj, yaml.safe_load(yaml_str), msg)
 
     def test_script_object_1(self):
         # Check initial loaded values.
-        test_script = ScriptSerializer(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
+        test_script = ScriptSerializer(
+            title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0'
+        )
         self.assertEqual(test_script.id, '12345')
         self.assertEqual(test_script['id'], '12345')
         self.assertEqual(test_script.last_updated, '2021-04-26')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertYamlEquals(test_script.to_yaml(), {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"})
+        self.assertYamlEquals(
+            test_script.to_yaml(),
+            {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"},
+        )
 
     def test_script_object_2(self):
         # Check updating values directly so as not to modify `last_updated`.
@@ -103,19 +107,29 @@ class ScriptSerializerTest(PicardTestCase):
 
     def test_script_object_6(self):
         # Test that extra (unknown) settings are ignored during updating
-        test_script = ScriptSerializer(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
+        test_script = ScriptSerializer(
+            title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0'
+        )
         test_script.update_script_setting(description='Updated description')
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertYamlEquals(test_script.to_yaml(), {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"})
+        self.assertYamlEquals(
+            test_script.to_yaml(),
+            {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"},
+        )
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
     def test_script_object_7(self):
         # Test that extra (unknown) settings are ignored during updating from dict
-        test_script = ScriptSerializer(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
+        test_script = ScriptSerializer(
+            title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0'
+        )
         test_script.update_from_dict({"description": "Updated description"})
         self.assertEqual(test_script['last_updated'], '2021-04-26')
-        self.assertYamlEquals(test_script.to_yaml(), {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"})
+        self.assertYamlEquals(
+            test_script.to_yaml(),
+            {"id": "12345", "script": "Script text\n", "script_language_version": "1.0", "title": "Script 1"},
+        )
         with self.assertRaises(AttributeError):
             print(test_script.description)
 
@@ -128,13 +142,20 @@ class ScriptSerializerTest(PicardTestCase):
         # Test that an exception is raised when creating or updating using an invalid YAML string
         with self.assertRaises(ScriptSerializerFromFileError):
             ScriptSerializer().create_from_yaml('Not a YAML string')
-        ScriptSerializer(title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0')
+        ScriptSerializer(
+            title='Script 1', script='Script text', id='12345', last_updated='2021-04-26', script_language_version='1.0'
+        )
 
     def test_naming_script_object_1(self):
         # Check initial loaded values.
         test_script = FileNamingScriptInfo(
-            title='Script 1', script='Script text', id='12345', last_updated='2021-04-26',
-            description='Script description', author='Script author', script_language_version='1.0'
+            title='Script 1',
+            script='Script text',
+            id='12345',
+            last_updated='2021-04-26',
+            description='Script description',
+            author='Script author',
+            script_language_version='1.0',
         )
         self.assertEqual(test_script.id, '12345')
         self.assertEqual(test_script['id'], '12345')
@@ -156,5 +177,5 @@ class ScriptSerializerTest(PicardTestCase):
             "script_language_version: '1.0'\n"
             "script: |\n"
             "  Script text\n"
-            "id: '12345'\n"
+            "id: '12345'\n",
         )

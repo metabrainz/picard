@@ -44,7 +44,6 @@ from picard.ui.util import StandardButton
 
 
 class SearchQLineEdit(QtWidgets.QLineEdit):
-
     def __init__(self, searchbox, parent=None):
         super().__init__(parent)
         self.searchbox = searchbox
@@ -61,7 +60,6 @@ class SearchQLineEdit(QtWidgets.QLineEdit):
 
 
 class SearchBox(QtWidgets.QWidget):
-
     def __init__(self, force_advanced_search=None, parent=None):
         super().__init__(parent=parent)
         self.search_action = QtGui.QAction(icontheme.lookup('system-search'), _("Search"), self)
@@ -154,7 +152,9 @@ Retry = namedtuple('Retry', ['function', 'query'])
 class SearchDialog(TableBasedDialog):
     accept_button_title = ""
 
-    def __init__(self, parent, window_title, accept_button_title, show_search=True, search_type=None, force_advanced_search=None):
+    def __init__(
+        self, parent, window_title, accept_button_title, show_search=True, search_type=None, force_advanced_search=None
+    ):
         self.accept_button_title = accept_button_title
         self.search_results = []
         self.show_search = show_search
@@ -190,22 +190,15 @@ class SearchDialog(TableBasedDialog):
         self.verticalLayout.addWidget(self.center_widget)
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
         if self.show_search and self.search_type:
-            self.search_browser_button = QtWidgets.QPushButton(
-                _("Search in browser"), self.buttonBox)
-            self.buttonBox.addButton(
-                self.search_browser_button,
-                QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+            self.search_browser_button = QtWidgets.QPushButton(_("Search in browser"), self.buttonBox)
+            self.buttonBox.addButton(self.search_browser_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
             self.search_browser_button.clicked.connect(self.search_browser)
-        self.accept_button = QtWidgets.QPushButton(
-            _(self.accept_button_title),
-            self.buttonBox)
+        self.accept_button = QtWidgets.QPushButton(_(self.accept_button_title), self.buttonBox)
         self.accept_button.setEnabled(False)
+        self.buttonBox.addButton(self.accept_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.buttonBox.addButton(
-            self.accept_button,
-            QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.buttonBox.addButton(
-            StandardButton(StandardButton.CANCEL),
-            QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
+            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        )
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
@@ -247,7 +240,9 @@ class SearchDialog(TableBasedDialog):
             retry_layout = QtWidgets.QHBoxLayout(retry_widget)
             retry_button = QtWidgets.QPushButton(_("Retry"), error_widget)
             retry_button.clicked.connect(self.retry)
-            retry_button.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Fixed))
+            retry_button.setSizePolicy(
+                QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Fixed)
+            )
             retry_layout.addWidget(retry_button)
             retry_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter | QtCore.Qt.AlignmentFlag.AlignTop)
             retry_widget.setLayout(retry_layout)
@@ -260,11 +255,15 @@ class SearchDialog(TableBasedDialog):
             'url': reply.request().url().toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo),
             'error': reply.errorString(),
             'qtcode': error,
-            'statuscode': reply.attribute(
-                QtNetwork.QNetworkRequest.Attribute.HttpStatusCodeAttribute)
+            'statuscode': reply.attribute(QtNetwork.QNetworkRequest.Attribute.HttpStatusCodeAttribute),
         }
-        error_msg = _("<strong>Following error occurred while fetching results:<br><br></strong>"
-                      "Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>") % params
+        error_msg = (
+            _(
+                "<strong>Following error occurred while fetching results:<br><br></strong>"
+                "Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
+            )
+            % params
+        )
         self.show_error(error_msg, show_retry_button=True)
 
     def no_results_found(self):
@@ -272,8 +271,7 @@ class SearchDialog(TableBasedDialog):
         self.show_error(error_msg)
 
     def search_browser(self):
-        self.tagger.search(self.search_box.query, self.search_type,
-                           adv=self.use_advanced_search, force_browser=True)
+        self.tagger.search(self.search_box.query, self.search_type, adv=self.use_advanced_search, force_browser=True)
 
     @restore_method
     def restore_state(self):

@@ -45,7 +45,7 @@ USER_DIR = appdirs.config_folder()
 USER_PLUGIN_DIR = appdirs.plugin_folder()
 
 # Network Cache default settings
-CACHE_SIZE_DISPLAY_UNIT = 1000*1000
+CACHE_SIZE_DISPLAY_UNIT = 1000 * 1000
 
 # AcoustID client API key
 ACOUSTID_KEY = 'v8pQ6oyB'
@@ -72,24 +72,24 @@ MB_DOCS_BASE_URL = "https://musicbrainz.org/doc"
 
 # URLs
 PICARD_URLS = {
-    'home':                    "https://picard.musicbrainz.org/",
-    'license':                 "https://www.gnu.org/licenses/gpl-2.0.html",
-    'documentation_server':    DOCS_SERVER_URL,     # Shows latest version and tries to match the user's language if available.
-    'documentation':           DOCS_BASE_URL + "/",
-    'troubleshooting':         DOCS_BASE_URL + "/troubleshooting/troubleshooting.html",
-    'doc_options':             DOCS_BASE_URL + "/config/configuration.html",
-    'doc_scripting':           DOCS_BASE_URL + "/extending/scripting.html",
+    'home': "https://picard.musicbrainz.org/",
+    'license': "https://www.gnu.org/licenses/gpl-2.0.html",
+    'documentation_server': DOCS_SERVER_URL,  # Shows latest version and tries to match the user's language if available.
+    'documentation': DOCS_BASE_URL + "/",
+    'troubleshooting': DOCS_BASE_URL + "/troubleshooting/troubleshooting.html",
+    'doc_options': DOCS_BASE_URL + "/config/configuration.html",
+    'doc_scripting': DOCS_BASE_URL + "/extending/scripting.html",
     'doc_tags_from_filenames': DOCS_BASE_URL + "/usage/tags_from_file_names.html",
-    'doc_naming_script_edit':  DOCS_BASE_URL + "/config/options_filerenaming_editor.html",
-    'doc_cover_art_types':     MB_DOCS_BASE_URL + "/Cover_Art/Types",
-    'plugins':                 "https://picard.musicbrainz.org/plugins/",
-    'forum':                   "https://community.metabrainz.org/c/picard",
-    'donate':                  "https://metabrainz.org/donate",
-    'chromaprint':             "https://acoustid.org/chromaprint#download",
-    'acoustid_apikey':         "https://acoustid.org/api-key",
-    'acoustid_track':          "https://acoustid.org/track/",
-    'mb_doc':                  MB_DOCS_BASE_URL + "/",
-    'mb_doc_search_syntax':    MB_DOCS_BASE_URL + "/Indexed_Search_Syntax",
+    'doc_naming_script_edit': DOCS_BASE_URL + "/config/options_filerenaming_editor.html",
+    'doc_cover_art_types': MB_DOCS_BASE_URL + "/Cover_Art/Types",
+    'plugins': "https://picard.musicbrainz.org/plugins/",
+    'forum': "https://community.metabrainz.org/c/picard",
+    'donate': "https://metabrainz.org/donate",
+    'chromaprint': "https://acoustid.org/chromaprint#download",
+    'acoustid_apikey': "https://acoustid.org/api-key",
+    'acoustid_track': "https://acoustid.org/track/",
+    'mb_doc': MB_DOCS_BASE_URL + "/",
+    'mb_doc_search_syntax': MB_DOCS_BASE_URL + "/Indexed_Search_Syntax",
 }
 
 # Various Artists MBID
@@ -142,22 +142,25 @@ MAX_COVERS_TO_STACK = 4
 PROGRAM_UPDATE_LEVELS = OrderedDict(
     [
         (
-            0, {
+            0,
+            {
                 'name': 'stable',
                 'title': N_("Stable releases only"),
-            }
+            },
         ),
         (
-            1, {
+            1,
+            {
                 'name': 'beta',
                 'title': N_("Stable and Beta releases"),
-            }
+            },
         ),
         (
-            2, {
+            2,
+            {
                 'name': 'dev',
                 'title': N_("Stable, Beta and Dev releases"),
-            }
+            },
         ),
     ]
 )

@@ -25,7 +25,6 @@ from picard.ui.tagsfromfilenames import TagMatchExpression
 
 
 class TagMatchExpressionTest(PicardTestCase):
-
     def test_parse_tags(self):
         expression = TagMatchExpression(r'%tracknumber% - %title%')
         expected_tags = ['tracknumber', 'title']
@@ -37,7 +36,7 @@ class TagMatchExpressionTest(PicardTestCase):
             '/foo/042 - The Title.mp3'
             '/042 - The Title'
             '/042 - The Title.mp3'
-            'C:\\foo\\042 - The Title.mp3'
+            'C:\\foo\\042 - The Title.mp3',
         ]
         for filename in files:
             matches = expression.match_file(filename)

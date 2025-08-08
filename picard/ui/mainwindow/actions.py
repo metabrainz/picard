@@ -65,6 +65,7 @@ def add_action(action_name):
     def decorator(fn):
         _actions_functions[action_name] = fn
         return fn
+
     return decorator
 
 
@@ -381,7 +382,9 @@ def _create_cd_lookup_action(parent):
 @add_action(MainAction.ANALYZE)
 def _create_analyze_action(parent):
     action = QtGui.QAction(icontheme.lookup('picard-analyze'), _("&Scan"), parent)
-    action.setStatusTip(_("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata"))
+    action.setStatusTip(
+        _("Use AcoustID audio fingerprint to identify the files by the actual music, even if they have no metadata")
+    )
     action.setEnabled(False)
     action.setToolTip(_("Identify the file using its AcoustID audio fingerprint"))
     # TR: Keyboard shortcut for "Analyze"

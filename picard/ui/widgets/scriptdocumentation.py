@@ -69,7 +69,7 @@ def htmldoc(html, rtl):
         'script_function_fg': interface_colors.get_qcolor('syntax_hl_func').name(),
         'monospace_font': FONT_FAMILY_MONOSPACE,
         'dir': 'rtl' if rtl else 'ltr',
-        'inline_start': 'right' if rtl else 'left'
+        'inline_start': 'right' if rtl else 'left',
     }
 
     # Scripting code is always left-to-right. Qt does not support the dir
@@ -144,8 +144,8 @@ class TagsDocumentationPage(DocumentationPage):
 
 
 class ScriptingDocumentationWidget(QtWidgets.QWidget):
-    """Custom widget to display the scripting documentation.
-    """
+    """Custom widget to display the scripting documentation."""
+
     def __init__(self, include_link=True, parent=None):
         """Custom widget to display the scripting documentation.
 
@@ -162,7 +162,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.tabs = QtWidgets.QTabWidget()
         self.tabs.setContentsMargins(0, 0, 0, 0)
 
-        rtl = (self.layoutDirection() == QtCore.Qt.LayoutDirection.RightToLeft)
+        rtl = self.layoutDirection() == QtCore.Qt.LayoutDirection.RightToLeft
         func_page = FunctionsDocumentationPage(rtl=rtl)
         tags_page = TagsDocumentationPage(rtl=rtl)
 
@@ -176,10 +176,18 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.horizontalLayout.setObjectName('docs_horizontalLayout')
 
         if include_link:
-            link = '<a href="' + PICARD_URLS['doc_scripting'] + '">' + _('Open Scripting Documentation in your browser') + '</a>'
+            link = (
+                '<a href="'
+                + PICARD_URLS['doc_scripting']
+                + '">'
+                + _('Open Scripting Documentation in your browser')
+                + '</a>'
+            )
             self.scripting_doc_link = QtWidgets.QLabel()
 
-            sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
+            sizePolicy = QtWidgets.QSizePolicy(
+                QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred
+            )
             sizePolicy.setHorizontalStretch(0)
             sizePolicy.setVerticalStretch(0)
             sizePolicy.setHeightForWidth(self.scripting_doc_link.sizePolicy().hasHeightForWidth())

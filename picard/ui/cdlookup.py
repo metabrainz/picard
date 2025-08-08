@@ -59,24 +59,25 @@ from picard.ui.formattedtextdelegate import FormattedTextDelegate
 from picard.ui.forms.ui_cdlookup import Ui_CDLookupDialog
 
 
-_COLUMNS = Columns((
-    Column(N_("Album"), 'album'),
-    Column(N_("Artist"), 'artist'),
-    Column(N_("Date"), 'dates'),
-    Column(N_("Country"), 'countries'),
-    Column(N_("Labels"), 'labels'),
-    Column(N_("Catalog #s"), 'catnos'),
-    Column(N_("Barcode"), 'barcode'),
-    Column(N_("Format"), 'format'),
-    Column(N_("Disambiguation"), 'disambiguation'),
-))
+_COLUMNS = Columns(
+    (
+        Column(N_("Album"), 'album'),
+        Column(N_("Artist"), 'artist'),
+        Column(N_("Date"), 'dates'),
+        Column(N_("Country"), 'countries'),
+        Column(N_("Labels"), 'labels'),
+        Column(N_("Catalog #s"), 'catnos'),
+        Column(N_("Barcode"), 'barcode'),
+        Column(N_("Format"), 'format'),
+        Column(N_("Disambiguation"), 'disambiguation'),
+    )
+)
 
 _DATA_COLUMN = _COLUMNS.pos('album')
 _FORMAT_COLUMN = _COLUMNS.pos('format')
 
 
 class CDLookupDialog(PicardDialog):
-
     dialog_header_state = 'cdlookupdialog_header_state'
 
     def __init__(self, releases, disc, parent=None):
@@ -95,6 +96,7 @@ class CDLookupDialog(PicardDialog):
         release_list.setItemDelegateForColumn(_FORMAT_COLUMN, delegate)
         self.ui.submit_button.setIcon(QtGui.QIcon(":/images/cdrom.png"))
         if self.releases:
+
             def myjoin(values):
                 return "\n".join(values)
 

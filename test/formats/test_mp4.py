@@ -40,7 +40,6 @@ from .coverart import CommonCoverArtTests
 
 # prevent unittest to run tests in those classes
 class CommonMP4Tests:
-
     class MP4TestCase(CommonTests.TagFormatsTestCase):
         def test_supports_tag(self):
             fmt = ext_to_format(self.testfile_ext)
@@ -72,7 +71,7 @@ class CommonMP4Tests:
             tags['----:com.apple.iTunes:replaygain_reference_loudness'] = [b'-18.00 LUFS']
             save_raw(self.filename, tags)
             loaded_metadata = load_metadata(self.filename)
-            for (key, value) in self.replaygain_tags.items():
+            for key, value in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
@@ -89,8 +88,8 @@ class CommonMP4Tests:
                 raw_metadata = load_raw(self.filename)
                 self.assertIn('----:com.apple.iTunes:' + name, raw_metadata)
                 self.assertEqual(
-                    raw_metadata['----:com.apple.iTunes:' + name][0].decode('utf-8'),
-                    loaded_metadata[name.lower()])
+                    raw_metadata['----:com.apple.iTunes:' + name][0].decode('utf-8'), loaded_metadata[name.lower()]
+                )
                 self.assertEqual(1, len(raw_metadata['----:com.apple.iTunes:' + name]))
                 self.assertNotIn('----:com.apple.iTunes:' + name.upper(), raw_metadata)
 
@@ -106,22 +105,26 @@ class CommonMP4Tests:
 
         @skipUnlessTestfile
         def test_invalid_track_and_discnumber(self):
-            metadata = Metadata({
-                'discnumber': 'notanumber',
-                'tracknumber': 'notanumber',
-            })
+            metadata = Metadata(
+                {
+                    'discnumber': 'notanumber',
+                    'tracknumber': 'notanumber',
+                }
+            )
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertNotIn('discnumber', loaded_metadata)
             self.assertNotIn('tracknumber', loaded_metadata)
 
         @skipUnlessTestfile
         def test_invalid_total_tracks_and_discs(self):
-            metadata = Metadata({
-                'discnumber': '1',
-                'totaldiscs': 'notanumber',
-                'tracknumber': '2',
-                'totaltracks': 'notanumber',
-            })
+            metadata = Metadata(
+                {
+                    'discnumber': '1',
+                    'totaldiscs': 'notanumber',
+                    'tracknumber': '2',
+                    'totaltracks': 'notanumber',
+                }
+            )
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['discnumber'], loaded_metadata['discnumber'])
             self.assertEqual('0', loaded_metadata['totaldiscs'])

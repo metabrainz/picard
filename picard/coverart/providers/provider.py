@@ -30,27 +30,26 @@ from picard.ui.options import OptionsPage
 
 
 class ProviderOptions(OptionsPage):
+    """Template class for provider's options
 
-    """ Template class for provider's options
+    It works like OptionsPage for the most (options, load, save)
+    It will append the provider's options page as a child of the main
+    cover art's options page.
 
-        It works like OptionsPage for the most (options, load, save)
-        It will append the provider's options page as a child of the main
-        cover art's options page.
+    The property _options_ui must be set to a valid Qt Ui class
+    containing the layout and widgets for defined provider's options.
 
-        The property _options_ui must be set to a valid Qt Ui class
-        containing the layout and widgets for defined provider's options.
+    A specific provider class (inhereting from CoverArtProvider) has
+    to set the subclassed ProviderOptions as OPTIONS property.
+    Options will be registered at the same time as the provider.
 
-        A specific provider class (inhereting from CoverArtProvider) has
-        to set the subclassed ProviderOptions as OPTIONS property.
-        Options will be registered at the same time as the provider.
+    class MyProviderOptions(ProviderOptions):
+        _options_ui = Ui_MyProviderOptions
+        ....
 
-        class MyProviderOptions(ProviderOptions):
-            _options_ui = Ui_MyProviderOptions
-            ....
-
-        class MyProvider(CoverArtProvider):
-            OPTIONS = ProviderOptionsMyProvider
-            ....
+    class MyProvider(CoverArtProvider):
+        OPTIONS = ProviderOptionsMyProvider
+        ....
 
     """
 
@@ -66,6 +65,7 @@ class CoverArtProviderMetaClass(type):
     """Provide default properties name & title for CoverArtProvider
     It is recommended to use those in place of NAME and TITLE that might not be defined
     """
+
     @property
     def name(cls):
         return getattr(cls, 'NAME', cls.__name__)
@@ -77,15 +77,15 @@ class CoverArtProviderMetaClass(type):
 
 class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
     """Subclasses of this class need to reimplement at least `queue_images()`.
-       `__init__()` does not have to do anything.
-       `queue_images()` will be called if `enabled()` returns `True`.
-       `queue_images()` must return `FINISHED` when it finished to queue
-       potential cover art downloads (using `queue_put(<CoverArtImage object>).
-       If `queue_images()` delegates the job of queuing downloads to another
-       method (asynchronous) it should return `WAIT` and the other method has to
-       explicitly call `next_in_queue()`.
-       If `FINISHED` is returned, `next_in_queue()` will be automatically called
-       by CoverArt object.
+    `__init__()` does not have to do anything.
+    `queue_images()` will be called if `enabled()` returns `True`.
+    `queue_images()` must return `FINISHED` when it finished to queue
+    potential cover art downloads (using `queue_put(<CoverArtImage object>).
+    If `queue_images()` delegates the job of queuing downloads to another
+    method (asynchronous) it should return `WAIT` and the other method has to
+    explicitly call `next_in_queue()`.
+    If `FINISHED` is returned, `next_in_queue()` will be automatically called
+    by CoverArt object.
     """
 
     # default state, internal use
@@ -123,7 +123,7 @@ class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
 
     def match_url_relations(self, relation_types, func):
         """Execute `func` for each relation url matching type in
-           `relation_types`
+        `relation_types`
         """
         try:
             if 'relations' in self.release:

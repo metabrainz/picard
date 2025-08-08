@@ -47,16 +47,21 @@ from picard.ui.searchdialog.album import AlbumSearchDialog
 
 
 class FileLookup:
-
-    RE_MB_ENTITY = re.compile(r"""
+    RE_MB_ENTITY = re.compile(
+        r"""
         \b(?P<entity>area|artist|instrument|label|place|recording|release|release-group|series|track|url|work)?
         \W*(?P<id>[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12})
-    """, re.VERBOSE | re.IGNORECASE)
+    """,
+        re.VERBOSE | re.IGNORECASE,
+    )
 
-    RE_MB_CDTOC = re.compile(r"""
+    RE_MB_CDTOC = re.compile(
+        r"""
         \b(?P<entity>cdtoc)
         \W*(?P<id>[a-z0-9-_.]{28})
-    """, re.VERBOSE | re.IGNORECASE)
+    """,
+        re.VERBOSE | re.IGNORECASE,
+    )
 
     def __init__(self, parent, server, port, local_port):
         self.server = server

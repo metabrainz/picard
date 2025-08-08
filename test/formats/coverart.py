@@ -70,17 +70,17 @@ class DummyUnsupportedCoverArt(CoverArtImage):
 
 # prevent unittest to run tests in those classes
 class CommonCoverArtTests:
-
     class CoverArtTestCase(CommonTests.BaseFileTestCase):
-
         supports_types = True
 
         def setUp(self):
             super().setUp()
-            self.set_config_values({
-                'clear_existing_tags': False,
-                'preserve_images': False,
-            })
+            self.set_config_values(
+                {
+                    'clear_existing_tags': False,
+                    'preserve_images': False,
+                }
+            )
             self.jpegdata = load_coverart_file('mb.jpg')
             self.pngdata = load_coverart_file('mb.png')
 
@@ -189,7 +189,7 @@ class CommonCoverArtTests:
                     file='e',
                     tag='e',
                     data=imgdata + b'e',
-                    is_front=False
+                    is_front=False,
                 )
             )
             metadata.images.append(
@@ -197,7 +197,7 @@ class CommonCoverArtTests:
                     file='f',
                     tag='f',
                     data=imgdata + b'f',
-                    types=['front']
+                    types=['front'],
                 )
             )
             metadata.images.append(
@@ -206,7 +206,7 @@ class CommonCoverArtTests:
                     tag='g',
                     data=imgdata + b'g',
                     types=['back'],
-                    is_front=True
+                    is_front=True,
                 )
             )
             return metadata

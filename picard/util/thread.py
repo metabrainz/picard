@@ -44,7 +44,6 @@ from picard import log
 
 
 class ProxyToMainEvent(QEvent):
-
     def __init__(self, func, *args, **kwargs):
         super().__init__(QEvent.Type.User)
         self.func = func
@@ -56,7 +55,6 @@ class ProxyToMainEvent(QEvent):
 
 
 class Runnable(QRunnable):
-
     def __init__(self, func, next_func, task_counter=None, traceback=True):
         super().__init__()
         self.func = func
@@ -79,7 +77,6 @@ class Runnable(QRunnable):
 
 
 class TaskCounter:
-
     def __init__(self):
         self.count = 0
         self.lock = threading.Lock()
@@ -114,6 +111,7 @@ def run_task(func, next_func=None, priority=0, thread_pool=None, task_counter=No
         traceback: If set to true the stack trace will be logged to the error log
           if an exception was raised.
     """
+
     def _no_operation(*args, **kwargs):
         return
 
@@ -129,8 +127,7 @@ def run_task(func, next_func=None, priority=0, thread_pool=None, task_counter=No
 
 
 def to_main(func, *args, **kwargs):
-    QCoreApplication.postEvent(QCoreApplication.instance(),
-                               ProxyToMainEvent(func, *args, **kwargs))
+    QCoreApplication.postEvent(QCoreApplication.instance(), ProxyToMainEvent(func, *args, **kwargs))
 
 
 def to_main_with_blocking(func, *args, **kwargs):
@@ -150,4 +147,4 @@ def to_main_with_blocking(func, *args, **kwargs):
                 break
         except Exception:
             break
-        time.sleep(.01)
+        time.sleep(0.01)

@@ -56,8 +56,7 @@ Bound = namedtuple('Bound', ['lower', 'upper'])
 
 
 class FunctionRegistryItem:
-    def __init__(self, function, eval_args, argcount, documentation=None,
-                 name=None, module=None):
+    def __init__(self, function, eval_args, argcount, documentation=None, name=None, module=None):
         self.function = function
         self.eval_args = eval_args
         self.argcount = argcount
@@ -69,7 +68,7 @@ class FunctionRegistryItem:
         return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc})'.format(
             classname=self.__class__.__name__,
             me=self,
-            doc='"""{0}"""'.format(self.documentation) if self.documentation else None
+            doc='"""{0}"""'.format(self.documentation) if self.documentation else None,
         )
 
     def _postprocess(self, data, postprocessor):
@@ -92,8 +91,7 @@ class FunctionRegistryItem:
         return self._postprocess(ret, postprocessor)
 
 
-def register_script_function(function, name=None, eval_args=True,
-                             check_argcount=True, documentation=None):
+def register_script_function(function, name=None, eval_args=True, check_argcount=True, documentation=None):
     """Registers a script function. If ``name`` is ``None``,
     ``function.__name__`` will be used.
     If ``eval_args`` is ``False``, the arguments will not be evaluated before being
@@ -128,8 +126,8 @@ def register_script_function(function, name=None, eval_args=True,
                 documentation=documentation,
                 name=name,
                 module=function.__module__,
-            )
-        )
+            ),
+        ),
     )
 
 
@@ -146,10 +144,11 @@ def script_function(name=None, eval_args=True, check_argcount=True, prefix='func
         def func_myscriptfunc():
             ...
     """
+
     def script_function_decorator(func):
         fname = func.__name__
         if name is None and prefix and fname.startswith(prefix):
-            sname = fname[len(prefix):]
+            sname = fname[len(prefix) :]
         else:
             sname = name
         register_script_function(
@@ -157,7 +156,8 @@ def script_function(name=None, eval_args=True, check_argcount=True, prefix='func
             name=sname,
             eval_args=eval_args,
             check_argcount=check_argcount,
-            documentation=documentation
+            documentation=documentation,
         )
         return func
+
     return script_function_decorator
