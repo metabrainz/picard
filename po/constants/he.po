@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2023-08-26 13:00+0000\n"
+"PO-Revision-Date: 2025-08-09 13:36+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Hebrew <https://translate.uploadedlobster.com/projects/picard/"
+"Language-Team: Hebrew <https://translations.metabrainz.org/projects/picard/2/"
 "constants/he/>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.12.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -3090,7 +3090,7 @@ msgstr "פולנית (פולין)"
 
 #: picard/const/locales.py:774
 msgid "Prussian"
-msgstr ""
+msgstr "פרוסית"
 
 #: picard/const/locales.py:775
 msgid "Prussian (world)"
@@ -3810,7 +3810,7 @@ msgstr ""
 
 #: picard/const/locales.py:962
 msgid "Toki Pona"
-msgstr ""
+msgstr "טוקי פונה"
 
 #: picard/const/locales.py:963
 msgid "Toki Pona (world)"
