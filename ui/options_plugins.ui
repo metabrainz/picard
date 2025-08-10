@@ -82,8 +82,11 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="toolTip">
+            <string>Install a plugin</string>
+           </property>
            <property name="text">
-            <string>Install plugin…</string>
+            <string>Install…</string>
            </property>
           </widget>
          </item>
@@ -95,8 +98,11 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="text">
+           <property name="toolTip">
             <string>Open plugin folder</string>
+           </property>
+           <property name="text">
+            <string>Folder</string>
            </property>
           </widget>
          </item>
@@ -108,8 +114,27 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="toolTip">
+            <string>Reload list of plugins</string>
+           </property>
            <property name="text">
-            <string>Reload List of Plugins</string>
+            <string>Reload</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="set_execution_order">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Set the execution order of the plugins</string>
+           </property>
+           <property name="text">
+            <string>Exec Order...</string>
            </property>
           </widget>
          </item>
@@ -165,8 +190,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>655</width>
-            <height>82</height>
+            <width>653</width>
+            <height>88</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -246,6 +271,7 @@
   <tabstop>install_plugin</tabstop>
   <tabstop>folder_open</tabstop>
   <tabstop>reload_list_of_plugins</tabstop>
+  <tabstop>set_execution_order</tabstop>
   <tabstop>scrollArea</tabstop>
  </tabstops>
  <resources/>

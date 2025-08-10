@@ -15,6 +15,7 @@
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 yagyanshbhatia
 # Copyright (C) 2023 tuspar
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -31,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from copy import deepcopy
 from functools import partial
 from html import escape
 from operator import attrgetter
@@ -53,6 +55,14 @@ from picard.config import (
 from picard.const import (
     PLUGINS_API,
     USER_PLUGIN_DIR,
+)
+from picard.metadata import (
+    _album_metadata_processors,
+    _track_metadata_processors,
+)
+from picard.plugin import (
+    EXEC_ORDER_KEY,
+    PluginPriority,
 )
 from picard.util import (
     icontheme,
@@ -231,6 +241,7 @@ class PluginsOptionsPage(OptionsPage):
 
     options = [
         ListOption('setting', 'enabled_plugins', []),
+        Option.add_if_missing('setting', EXEC_ORDER_KEY, dict()),
         Option('persist', 'plugins_list_state', QtCore.QByteArray()),
         Option('persist', 'plugins_list_sort_section', 0),
         Option('persist', 'plugins_list_sort_order', QtCore.Qt.SortOrder.AscendingOrder),
@@ -241,6 +252,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui = Ui_PluginsOptionsPage()
         self.ui.setupUi(self)
         plugins = self.ui.plugins
+        self.plugin_exec_order = dict()
 
         # fix for PICARD-1226, QT bug (https://bugreports.qt.io/browse/QTBUG-22572) workaround
         plugins.setStyleSheet('')
@@ -254,6 +266,7 @@ class PluginsOptionsPage(OptionsPage):
         self.ui.install_plugin.clicked.connect(self.open_plugins)
         self.ui.folder_open.clicked.connect(self.open_plugin_dir)
         self.ui.reload_list_of_plugins.clicked.connect(self.reload_list_of_plugins)
+        self.ui.set_execution_order.clicked.connect(self.set_execution_order)
 
         self.manager = self.tagger.pluginmanager
         self.manager.plugin_installed.connect(self.plugin_installed)
@@ -376,6 +389,9 @@ class PluginsOptionsPage(OptionsPage):
         header.setSectionResizeMode(COLUMN_NAME, QtWidgets.QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(COLUMN_ACTIONS, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+
+        config = get_config()
+        self.plugin_exec_order = deepcopy(config.setting[EXEC_ORDER_KEY])
 
     def _remove_all(self):
         for item in self.items():
@@ -611,6 +627,8 @@ class PluginsOptionsPage(OptionsPage):
     def save(self):
         config = get_config()
         config.setting['enabled_plugins'] = self.enabled_plugins()
+        self._clean_execution_order()
+        config.setting[EXEC_ORDER_KEY] = self.plugin_exec_order
         self.save_state()
 
     def refresh_details(self, item):
@@ -736,6 +754,159 @@ class PluginsOptionsPage(OptionsPage):
 
         event.setDropAction(QtCore.Qt.DropAction.CopyAction)
         event.accept()
+
+    def set_execution_order(self):
+        "Open a dialog to allow the user to manually set the execution order of metadata processor plugins"
+        title_text = N_("MetaData Processing Execution Order")
+
+        # Get set of all registered metadata processor plugins
+        registered_plugins = set()
+        for processor in (_album_metadata_processors, _track_metadata_processors):
+            registered_plugins.update(s for s in processor.registered_priority.keys())
+
+        if not registered_plugins:
+            msg = QtWidgets.QMessageBox(self)
+            msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+            msg.setText(_("There were no installed metadata processing plugins found."))
+            msg.setWindowTitle(_(title_text))
+            msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+
+            msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+            msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+
+            msg.show()
+
+            return
+
+        config = get_config()
+        exec_order = config.setting[EXEC_ORDER_KEY]
+        plugins = []
+
+        for plugin in self.manager.plugins:
+            module_name = plugin.module_name
+
+            # Only include registered metadata processing plugins
+            if module_name not in registered_plugins:
+                continue
+
+            # Get plugin priority
+            if module_name in exec_order:
+                priority = exec_order[module_name]
+            elif module_name in _track_metadata_processors.registered_priority:
+                priority = _track_metadata_processors.registered_priority[module_name]
+            elif module_name in _album_metadata_processors.registered_priority:
+                priority = _album_metadata_processors.registered_priority[module_name]
+            else:
+                priority = PluginPriority.NORMAL
+
+            plugins.append((priority, plugin.name, module_name, plugin.description))
+
+        def move_up(self):
+            """Move list item up"""
+            current_row = list_widget.currentRow()
+            if current_row < 1:
+                return
+            do_move(current_row, current_row - 1)
+
+        def move_dn(self):
+            """Move list item down"""
+            current_row = list_widget.currentRow()
+            if current_row >= list_widget.count() - 1:
+                return
+            do_move(current_row, current_row + 1)
+
+        def do_move(old_row, new_row):
+            current_item = list_widget.takeItem(old_row)
+            list_widget.insertItem(new_row, current_item)
+            list_widget.setCurrentRow(new_row)
+
+        dialog = QtWidgets.QDialog(self)
+        dialog.setWindowTitle(_(title_text))
+        dialog.setMinimumWidth(300)
+
+        layout = QtWidgets.QVBoxLayout(dialog)
+
+        instructions = QtWidgets.QLabel(
+            _(
+                "This displays the order in which the metadata processing plugins are executed "
+                "by Picard. You can change the order by moving the plugins up or down by selecting "
+                "the plugin to move and then use the up or down button, or by using your mouse to "
+                "drag the plugin to the desired location in the list."
+            )
+        )
+        instructions.setWordWrap(True)
+        layout.addWidget(instructions)
+
+        list_widget = QtWidgets.QListWidget()
+
+        # setting drag drop mode
+        list_widget.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
+        list_widget.setDefaultDropAction(QtCore.Qt.MoveAction)
+
+        for plugin in sorted(plugins, key=lambda i: i[0], reverse=True):
+            item = QtWidgets.QListWidgetItem(plugin[1])
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, plugin[2])
+            item.setToolTip(plugin[3])
+            list_widget.addItem(item)
+
+        layout.addWidget(list_widget)
+
+        button_layout = QtWidgets.QHBoxLayout()
+
+        # Up button
+        up_button = QtWidgets.QToolButton()
+        up_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_TitleBarShadeButton)
+        up_button.setIcon(up_icon)
+        up_button.setToolTip(_("Move selected plugin up"))
+        up_button.clicked.connect(move_up)
+        button_layout.addWidget(up_button)
+
+        # Down button
+        dn_button = QtWidgets.QToolButton()
+        dn_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_TitleBarUnshadeButton)
+        dn_button.setIcon(dn_icon)
+        dn_button.setToolTip(_("Move selected plugin down"))
+        dn_button.clicked.connect(move_dn)
+        button_layout.addWidget(dn_button)
+
+        # spacer
+        spacer = QtWidgets.QSpacerItem(
+            20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
+        )
+        button_layout.addItem(spacer)
+
+        # OK
+        ok_button = QtWidgets.QPushButton(_('OK'))
+        ok_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogOkButton)
+        ok_button.setIcon(ok_icon)
+        ok_button.clicked.connect(dialog.accept)
+        button_layout.addWidget(ok_button)
+        ok_button.setDefault(True)  # default selected button
+
+        # Cancel
+        cancel_button = QtWidgets.QPushButton(_('Cancel'))
+        cancel_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogCancelButton)
+        cancel_button.setIcon(cancel_icon)
+        cancel_button.clicked.connect(dialog.reject)
+        button_layout.addWidget(cancel_button)
+
+        layout.addLayout(button_layout)
+
+        # Show dialog and process result
+        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            for idx in range(list_widget.count()):
+                item = list_widget.item(idx)
+                module_name = item.data(QtCore.Qt.ItemDataRole.UserRole)
+                priority = -1 - idx
+                self.plugin_exec_order[module_name] = priority
+
+    def _clean_execution_order(self):
+        """Remove plugins that are no longer installed from the execution order setting"""
+        installed_plugins = set([x.module_name for x in self.manager.plugins])
+
+        for plugin in [x for x in self.plugin_exec_order.keys()]:
+            if plugin not in installed_plugins:
+                self.plugin_exec_order.pop(plugin)
 
 
 register_options_page(PluginsOptionsPage)
