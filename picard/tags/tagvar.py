@@ -80,10 +80,24 @@ ATTRIB2NOTE = OrderedDict(
 
 class TagVar:
     def __init__(
-        self, name, shortdesc=None, longdesc=None, additionaldesc=None,
-        is_preserved=False, is_hidden=False, is_script_variable=True, is_tag=True, is_calculated=False,
-        is_file_info=False, is_from_mb=True, is_populated_by_picard=True, is_multi_value=False,
-        is_filterable=False, see_also=None, related_options=None, doc_links=None
+        self,
+        name,
+        shortdesc=None,
+        longdesc=None,
+        additionaldesc=None,
+        is_preserved=False,
+        is_hidden=False,
+        is_script_variable=True,
+        is_tag=True,
+        is_calculated=False,
+        is_file_info=False,
+        is_from_mb=True,
+        is_populated_by_picard=True,
+        is_multi_value=False,
+        is_filterable=False,
+        see_also=None,
+        related_options=None,
+        doc_links=None,
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -178,6 +192,7 @@ class TagVars(MutableSequence):
     It maintains an internal dict object for display names.
     Also it doesn't allow to add a TagVar of the same name more than once.
     """
+
     def __init__(self, *tagvars):
         self._items = []
         self._name2item = dict()
@@ -306,7 +321,7 @@ class TagVars(MutableSequence):
 
     def tooltip_content(self, item: TagVar):
         content = self._base_description(item)
-        content += self._add_sections(item, (Section.notes, ))
+        content += self._add_sections(item, (Section.notes,))
         return content
 
     def full_description_content(self, item: TagVar):
