@@ -24,6 +24,19 @@ from PyQt6 import QtCore, QtWidgets
 from picard.ui.columns import ImageColumn
 
 
+# Mapping of minimum percentage threshold to icon index.
+# Checked in descending order so the highest matching threshold wins.
+THRESHOLD_TO_ICON_INDEX = {
+    1.0: 5,  # 100%
+    0.9: 4,  # 90%
+    0.8: 3,  # 80%
+    0.7: 2,  # 70%
+    0.6: 1,  # 60%
+    0.5: 0,  # 50%
+    0.0: 0,  # <50%
+}
+
+
 class MatchQualityColumn(ImageColumn):
     """Column that displays match quality using match icons at the release level."""
 
@@ -59,21 +72,11 @@ class MatchQualityColumn(ImageColumn):
         # Calculate match percentage
         percentage = matched / total
 
-        # Determine which icon to use based on percentage
-        if percentage >= 1.0:
-            icon_index = 5  # 100% match
-        elif percentage >= 0.9:
-            icon_index = 4  # 90% match
-        elif percentage >= 0.8:
-            icon_index = 3  # 80% match
-        elif percentage >= 0.7:
-            icon_index = 2  # 70% match
-        elif percentage >= 0.6:
-            icon_index = 1  # 60% match
-        elif percentage >= 0.5:
-            icon_index = 0  # 50% match
-        else:
-            icon_index = 0  # Worst match icon for less than 50%
+        # Determine which icon to use based on percentage using thresholds
+        for threshold in sorted(THRESHOLD_TO_ICON_INDEX.keys(), reverse=True):
+            if percentage >= threshold:
+                icon_index = THRESHOLD_TO_ICON_INDEX[threshold]
+                break
 
         # Get the match icons from FileItem
         from picard.ui.itemviews import FileItem
