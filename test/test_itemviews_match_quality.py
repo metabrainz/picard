@@ -541,16 +541,19 @@ class TestItemViewsIntegration:
         assert match_quality_column is None
 
     def test_album_view_has_match_quality_column_after_album_artist(self) -> None:
-        """Test that the match quality column is after the Album Artist column in album view."""
+        """Test that the match quality column is immediately after the Album Artist column in album view."""
         from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS
 
-        # The match quality column should be at index 4 (after Title, Length, Artist, Album Artist)
-        match_quality_column = ALBUMVIEW_COLUMNS[4]
+        idx_albumartist = ALBUMVIEW_COLUMNS.pos("albumartist")
+        idx_match = ALBUMVIEW_COLUMNS.pos("~match_quality")
+
+        assert idx_match == idx_albumartist + 1
+
+        match_quality_column = ALBUMVIEW_COLUMNS[idx_match]
         assert isinstance(match_quality_column, MatchQualityColumn)
         assert match_quality_column.key == "~match_quality"
 
-        # Verify that Album Artist is at index 3 (before match quality)
-        album_artist_column = ALBUMVIEW_COLUMNS[3]
+        album_artist_column = ALBUMVIEW_COLUMNS[idx_albumartist]
         assert album_artist_column.key == "albumartist"
 
     def test_sortkey_progress_function(self) -> None:

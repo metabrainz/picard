@@ -66,7 +66,6 @@ class MatchQualityColumn(ImageColumn):
             return None
 
         # Album object
-        matched = obj.get_num_matched_tracks()
         total = len(obj.tracks) if obj.tracks else 0
 
         if total == 0:
@@ -78,6 +77,7 @@ class MatchQualityColumn(ImageColumn):
             return None
 
         # Calculate match percentage
+        matched = obj.get_num_matched_tracks()
         percentage = matched / total
 
         # Determine which icon to use based on percentage using thresholds

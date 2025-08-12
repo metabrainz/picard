@@ -193,8 +193,6 @@ _common_columns = (
 FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 
 # Album view columns (with match quality column)
-# Insert `_match_quality_column` at index 4, after Title, Length, Artist, Album Artist
-ALBUMVIEW_COLUMNS = Columns(
-    _common_columns[:4] + (_match_quality_column,) + _common_columns[4:],
-    default_width=100,
-)
+# Insert `_match_quality_column` after Title, Length, Artist, Album Artist
+ALBUMVIEW_COLUMNS = Columns(_common_columns, default_width=100)
+ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _match_quality_column)
