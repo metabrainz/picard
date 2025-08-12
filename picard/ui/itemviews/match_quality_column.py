@@ -41,7 +41,7 @@ class MatchQualityColumn(ImageColumn):
     def get_match_icon(self, obj):
         """Get the appropriate match icon for the given object."""
         # Only show icons at the release (album) level, not track level
-        if not hasattr(obj, "get_num_matched_tracks") or not hasattr(obj, "tracks"):
+        if not hasattr(obj, 'get_num_matched_tracks') or not hasattr(obj, 'tracks'):
             return None
 
         # Album object
@@ -52,7 +52,7 @@ class MatchQualityColumn(ImageColumn):
             # Use pending icon for zero tracks
             from picard.ui.itemviews import FileItem
 
-            if hasattr(FileItem, "match_pending_icons") and len(FileItem.match_pending_icons) > 5:
+            if hasattr(FileItem, 'match_pending_icons') and len(FileItem.match_pending_icons) > 5:
                 return FileItem.match_pending_icons[5]  # match-pending-100.png
             return None
 
@@ -108,7 +108,7 @@ class MatchQualityColumn(ImageColumn):
         unmatched_files = obj.unmatched_files.files if hasattr(obj, "unmatched_files") else []
 
         # Calculate duplicates (tracks with more than one file)
-        for _, file_count in track_file_counts.items():
+        for file_count in track_file_counts.values():
             if file_count > 1:
                 duplicates += file_count - 1
 
