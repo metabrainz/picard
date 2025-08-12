@@ -59,7 +59,7 @@ dev = [
     "pycodestyle",
     "pylint>=2.6.0",
     "pytest-xdist>=3.8.0",
-    "ruff>=0.12.4",
+    "ruff>=0.12.8",
     "wlc",
 ]
 plugins = [
