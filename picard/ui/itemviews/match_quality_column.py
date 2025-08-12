@@ -21,6 +21,8 @@
 
 from PyQt6 import QtCore, QtWidgets
 
+from picard.i18n import gettext as _
+
 from picard.ui.columns import ImageColumn
 
 
@@ -186,15 +188,22 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         # Core match info
         if stats["total"] > 0:
             percentage = (stats["matched"] / stats["total"]) * 100
-            tooltip_parts.append(f"Match: {stats['matched']}/{stats['total']} ({percentage:.1f}%)")
         else:
-            tooltip_parts.append("Match: 0/0 (0%)")
+            percentage = 0.0
+        tooltip_parts.append(
+            _("Match: %(matched)d/%(total)d (%(percent).1f%%)")
+            % {
+                "matched": stats["matched"],
+                "total": stats["total"],
+                "percent": percentage,
+            }
+        )
 
         # Additional stats with explanations
-        tooltip_parts.append(f"Missing tracks: {stats['missing']}")
-        tooltip_parts.append(f"Duplicate files: {stats['duplicates']}")
-        tooltip_parts.append(f"Extra files: {stats['extra']}")
-        tooltip_parts.append(f"Unmatched files: {stats['unmatched']}")
+        tooltip_parts.append(_("Missing tracks: %(count)d") % {"count": stats["missing"]})
+        tooltip_parts.append(_("Duplicate files: %(count)d") % {"count": stats["duplicates"]})
+        tooltip_parts.append(_("Extra files: %(count)d") % {"count": stats["extra"]})
+        tooltip_parts.append(_("Unmatched files: %(count)d") % {"count": stats["unmatched"]})
 
         return "\n".join(tooltip_parts)
 
