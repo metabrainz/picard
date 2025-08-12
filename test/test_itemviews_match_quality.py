@@ -30,7 +30,7 @@ from picard.track import Track
 import pytest
 
 from picard.ui.itemviews import TreeItem
-from picard.ui.itemviews.columns import ITEMVIEW_COLUMNS, _sortkey_match_quality
+from picard.ui.itemviews.columns import _sortkey_match_quality
 from picard.ui.itemviews.match_quality_column import (
     MatchQualityColumn,
     MatchQualityColumnDelegate,
@@ -510,10 +510,12 @@ class TestItemViewsIntegration:
         return album
 
     def test_match_quality_column_in_itemview_columns(self) -> None:
-        """Test that MatchQualityColumn is included in ITEMVIEW_COLUMNS."""
-        # Find the match quality column
+        """Test that MatchQualityColumn is included in ITEMVIEW_COLUMNS (album view)."""
+        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS
+
+        # Find the match quality column in album view columns
         match_quality_column = None
-        for column in ITEMVIEW_COLUMNS:
+        for column in ALBUMVIEW_COLUMNS:
             if isinstance(column, MatchQualityColumn):
                 match_quality_column = column
                 break
@@ -524,6 +526,32 @@ class TestItemViewsIntegration:
         assert match_quality_column.sortable is True
         assert match_quality_column.sort_type is not None
         assert match_quality_column.sortkey is not None
+
+    def test_match_quality_column_not_in_fileview_columns(self) -> None:
+        """Test that MatchQualityColumn is NOT included in FILEVIEW_COLUMNS."""
+        from picard.ui.itemviews.columns import FILEVIEW_COLUMNS
+
+        # Verify that no match quality column exists in file view columns
+        match_quality_column = None
+        for column in FILEVIEW_COLUMNS:
+            if isinstance(column, MatchQualityColumn):
+                match_quality_column = column
+                break
+
+        assert match_quality_column is None
+
+    def test_album_view_has_match_quality_column_after_album_artist(self) -> None:
+        """Test that the match quality column is after the Album Artist column in album view."""
+        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS
+
+        # The match quality column should be at index 4 (after Title, Length, Artist, Album Artist)
+        match_quality_column = ALBUMVIEW_COLUMNS[4]
+        assert isinstance(match_quality_column, MatchQualityColumn)
+        assert match_quality_column.key == "~match_quality"
+
+        # Verify that Album Artist is at index 3 (before match quality)
+        album_artist_column = ALBUMVIEW_COLUMNS[3]
+        assert album_artist_column.key == "albumartist"
 
     def test_sortkey_progress_function(self) -> None:
         """Test the _sortkey_progress function used by MatchQualityColumn."""
@@ -634,8 +662,12 @@ class TestCodeFormattingChanges:
         cluster = Mock()
         # Mock the icon_dir attribute that's set during runtime
         with patch.object(ClusterItem, "icon_dir", QtGui.QIcon(), create=True):
-            item = ClusterItem(cluster, parent=None)
-            assert item is not None
+            # Mock the columns property at the class level to avoid RuntimeError
+            mock_columns = Mock()
+            mock_columns.status_icon_column = 0
+            with patch.object(ClusterItem, 'columns', mock_columns):
+                item = ClusterItem(cluster, parent=None)
+                assert item is not None
 
 
 class TestMatchQualitySorting:

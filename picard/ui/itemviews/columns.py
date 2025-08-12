@@ -142,53 +142,59 @@ _match_quality_column.sortkey = _sortkey_match_quality
 _match_quality_column.always_visible = True
 
 
-ITEMVIEW_COLUMNS = Columns(
-    (
-        _match_quality_column,
-        DefaultColumn(
-            N_("Title"), 'title', sort_type=ColumnSortType.NAT, width=250, always_visible=True, status_icon=True
-        ),
-        DefaultColumn(
-            N_("Length"),
-            '~length',
-            align=ColumnAlign.RIGHT,
-            sort_type=ColumnSortType.SORTKEY,
-            sortkey=_sortkey_length,
-            width=50,
-        ),
-        DefaultColumn(N_("Artist"), 'artist', width=200),
-        Column(N_("Album Artist"), 'albumartist'),
-        Column(N_("Composer"), 'composer'),
-        Column(N_("Album"), 'album', sort_type=ColumnSortType.NAT),
-        Column(N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT),
-        Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
-        Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
-        Column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT),
-        Column(N_("Barcode"), 'barcode'),
-        Column(N_("Media"), 'media'),
-        Column(
-            N_("Size"),
-            '~filesize',
-            align=ColumnAlign.RIGHT,
-            sort_type=ColumnSortType.SORTKEY,
-            sortkey=_sortkey_filesize,
-        ),
-        Column(N_("File Type"), '~format', width=120),
-        Column(
-            N_("Bitrate"),
-            '~bitrate',
-            align=ColumnAlign.RIGHT,
-            sort_type=ColumnSortType.SORTKEY,
-            sortkey=_sortkey_bitrate,
-            width=80,
-        ),
-        Column(N_("Genre"), 'genre'),
-        _fingerprint_column,
-        Column(N_("Date"), 'date'),
-        Column(N_("Original Release Date"), 'originaldate'),
-        Column(N_("Release Date"), 'releasedate'),
-        Column(N_("Cover"), 'covercount'),
-        Column(N_("Cover Dimensions"), 'coverdimensions'),
+# Common columns used by both views
+_common_columns = (
+    DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, width=250, always_visible=True, status_icon=True),
+    DefaultColumn(
+        N_("Length"),
+        '~length',
+        align=ColumnAlign.RIGHT,
+        sort_type=ColumnSortType.SORTKEY,
+        sortkey=_sortkey_length,
+        width=50,
     ),
+    DefaultColumn(N_("Artist"), 'artist', width=200),
+    Column(N_("Album Artist"), 'albumartist'),
+    Column(N_("Composer"), 'composer'),
+    Column(N_("Album"), 'album', sort_type=ColumnSortType.NAT),
+    Column(N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT),
+    Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
+    Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
+    Column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT),
+    Column(N_("Barcode"), 'barcode'),
+    Column(N_("Media"), 'media'),
+    Column(
+        N_("Size"),
+        '~filesize',
+        align=ColumnAlign.RIGHT,
+        sort_type=ColumnSortType.SORTKEY,
+        sortkey=_sortkey_filesize,
+    ),
+    Column(N_("File Type"), '~format', width=120),
+    Column(
+        N_("Bitrate"),
+        '~bitrate',
+        align=ColumnAlign.RIGHT,
+        sort_type=ColumnSortType.SORTKEY,
+        sortkey=_sortkey_bitrate,
+        width=80,
+    ),
+    Column(N_("Genre"), 'genre'),
+    _fingerprint_column,
+    Column(N_("Date"), 'date'),
+    Column(N_("Original Release Date"), 'originaldate'),
+    Column(N_("Release Date"), 'releasedate'),
+    Column(N_("Cover"), 'covercount'),
+    Column(N_("Cover Dimensions"), 'coverdimensions'),
+)
+
+
+# File view columns (without match quality column)
+FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
+
+# Album view columns (with match quality column)
+# Insert `_match_quality_column` at index 4, after Title, Length, Artist, Album Artist
+ALBUMVIEW_COLUMNS = Columns(
+    _common_columns[:4] + (_match_quality_column,) + _common_columns[4:],
     default_width=100,
 )
