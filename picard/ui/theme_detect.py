@@ -25,8 +25,15 @@
 import os
 from pathlib import Path
 import subprocess  # noqa: S404
+from typing import Callable
 
 from picard import log
+
+from picard.ui.theme_detect_qtdbus import (
+    detect_freedesktop_color_scheme_dbus,
+    detect_gnome_color_scheme_dbus,
+    get_dbus_detector,
+)
 
 
 def gsettings_get(key: str) -> str | None:
@@ -49,8 +56,35 @@ def gsettings_get(key: str) -> str | None:
         return None
 
 
+def _try_dbus_detection(detection_method: Callable[[object], bool | None], method_name: str) -> bool | None:
+    """
+    Helper function to safely attempt D-Bus theme detection.
+
+    Args:
+        detection_method: The detection method to call on the detector
+        method_name: Name of the method for logging purposes
+
+    Returns:
+        The result of the detection method, or None if detection fails
+    """
+    try:
+        detector = get_dbus_detector()
+        result = detection_method(detector)
+        if result is not None:
+            return result
+    except (RuntimeError, AttributeError, TypeError):
+        log.debug(f"Unable to detect {method_name} with dbus.")
+    return None
+
+
 def detect_gnome_color_scheme_dark() -> bool:
     """Detect if GNOME color-scheme is set to dark."""
+    # Try D-Bus first (secure method)
+    result = _try_dbus_detection(lambda detector: detector.detect_gnome_color_scheme_dbus(), "gnome color scheme")
+    if result is not None:
+        return result
+
+    # Fallback to subprocess method (legacy support)
     value = gsettings_get("color-scheme")
     if value and "dark" in value.lower():
         log.debug("Detected GNOME color-scheme: dark")
@@ -127,7 +161,14 @@ def detect_lxqt_dark_theme() -> bool:
 
 def detect_freedesktop_color_scheme_dark() -> bool:
     """Detect dark mode using org.freedesktop.appearance.color-scheme (XDG portal, cross-desktop)."""
-    # Try org.freedesktop.appearance first
+    # Try D-Bus first (secure method)
+    result = _try_dbus_detection(
+        lambda detector: detector.freedesktop_portal_color_scheme_is_dark(), "freedesktop color scheme"
+    )
+    if result is not None:
+        return result
+
+    # Fallback to subprocess method (legacy support)
     try:
         result = subprocess.run(  # nosec B603 B607
             [
@@ -201,6 +242,10 @@ def detect_lxqt_dark_wrapper() -> bool:
 def get_linux_dark_mode_strategies() -> list:
     """Return the list of dark mode detection strategies in order of priority."""
     return [
+        # Pure D-Bus methods (will gracefully fail if D-Bus unavailable)
+        detect_freedesktop_color_scheme_dbus,
+        detect_gnome_color_scheme_dbus,
+        # Hybrid methods (D-Bus with subprocess fallback)
         detect_freedesktop_color_scheme_dark,
         detect_gnome_dark_wrapper,
         detect_kde_dark_wrapper,
