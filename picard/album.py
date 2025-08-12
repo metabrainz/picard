@@ -594,7 +594,11 @@ class Album(MetadataItem):
 
         self.tagger.window.set_statusbar_message(
             N_('Album %(id)s loaded: %(artist)s - %(album)s'),
-            {'id': self.id, 'artist': self.metadata['albumartist'], 'album': self.metadata['album']},
+            {
+                'id': self.id,
+                'artist': self.metadata['albumartist'],
+                'album': self.metadata['album'],
+            },
             timeout=3000,
         )
         for func, _run_on_error in self._after_load_callbacks:
@@ -646,7 +650,10 @@ class Album(MetadataItem):
         if self._requests:
             log.info("Not reloading, some requests are still active.")
             return
-        self.tagger.window.set_statusbar_message(N_("Loading album %(id)s …"), {'id': self.id})
+        self.tagger.window.set_statusbar_message(
+            N_("Loading album %(id)s …"),
+            {'id': self.id},
+        )
         self.loaded = False
         self.status = AlbumStatus.LOADING
         if self.release_group:
