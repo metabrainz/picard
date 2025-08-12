@@ -19,11 +19,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
+
 from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
+
+
+# Structured container for delegate item data
+MatchItemData = namedtuple("MatchItemData", ["obj", "column", "stats"])
 
 
 # Mapping of minimum percentage threshold to icon index.
@@ -142,19 +148,20 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def _get_item_data(self, index):
+    def _get_item_data(self, index: QtCore.QModelIndex) -> MatchItemData | None:
         """Extract item data and validate it's a match quality column.
 
         Returns:
-            tuple: (obj, column, stats) or (None, None, None) if validation fails
+            MatchItemData | None: Named tuple with fields `obj`, `column`, `stats`,
+            or `None` if validation fails.
         """
         tree_widget = self.parent()
         if not tree_widget:
-            return None, None, None
+            return None
 
         item = tree_widget.itemFromIndex(index)
         if not hasattr(item, "obj") or not item.obj:
-            return None, None, None
+            return None
 
         obj = item.obj
 
@@ -162,17 +169,17 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         column_index = index.column()
         columns = getattr(item, "columns", None)
         if not columns or column_index >= len(columns):
-            return None, None, None
+            return None
 
         column = columns[column_index]
         if not isinstance(column, MatchQualityColumn):
-            return None, None, None
+            return None
 
         stats = column.get_match_stats(obj)
         if not stats:
-            return None, None, None
+            return None
 
-        return obj, column, stats
+        return MatchItemData(obj=obj, column=column, stats=stats)
 
     def _format_tooltip_text(self, stats):
         """Format stats into detailed tooltip text.
@@ -219,15 +226,15 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         painter.fillRect(option.rect, fill_brush)
 
         # Get item data
-        obj, column, stats = self._get_item_data(index)
-        if not stats:
+        item_data = self._get_item_data(index)
+        if not item_data:
             return
 
         # Get the match icon
-        icon = column.get_match_icon(obj)
+        icon = item_data.column.get_match_icon(item_data.obj)
 
         # Calculate layout
-        icon_size = column.size
+        icon_size = item_data.column.size
         icon_margin = 2
 
         # Always draw icon, regardless of column width
@@ -239,12 +246,12 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
     def helpEvent(self, event, view, option, index):
         """Show tooltip with explanation of the stats."""
         # Get item data
-        _, __, stats = self._get_item_data(index)
-        if not stats:
+        item_data = self._get_item_data(index)
+        if not item_data:
             return False
 
         # Format tooltip text
-        tooltip_text = self._format_tooltip_text(stats)
+        tooltip_text = self._format_tooltip_text(item_data.stats)
 
         # Show the tooltip
         QtWidgets.QToolTip.showText(event.globalPos(), tooltip_text, view)
