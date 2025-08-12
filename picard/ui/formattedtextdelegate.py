@@ -77,9 +77,7 @@ class FormattedTextDelegate(QtWidgets.QStyledItemDelegate):
         # Create a QTextDocument to render the formatted text
         doc = self._create_doc(text, option)
 
-        return QtCore.QSize(
-            math.ceil(doc.idealWidth()),
-            math.ceil(doc.size().height()))
+        return QtCore.QSize(math.ceil(doc.idealWidth()), math.ceil(doc.size().height()))
 
     def _create_doc(self, text, option):
         doc = QtGui.QTextDocument()

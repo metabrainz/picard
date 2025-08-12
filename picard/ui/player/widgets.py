@@ -56,9 +56,11 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def __init__(self, player, parent=None):
         super().__init__(_("Player"), parent=parent)
         self.setObjectName('player_toolbar')
-        self.setAllowedAreas(QtCore.Qt.ToolBarArea.TopToolBarArea
+        self.setAllowedAreas(
+            QtCore.Qt.ToolBarArea.TopToolBarArea
             | QtCore.Qt.ToolBarArea.BottomToolBarArea
-            | QtCore.Qt.ToolBarArea.NoToolBarArea)
+            | QtCore.Qt.ToolBarArea.NoToolBarArea
+        )
 
         self.player = player
         self.player.state_changed.connect(self.playback_state_changed)
@@ -227,8 +229,7 @@ class PlaybackRateButton(QtWidgets.QToolButton):
 
     def show_popover(self):
         slider_value = self.playback_rate * self.multiplier
-        popover = SliderPopover(
-            self, self.popover_position, _("Playback speed"), slider_value)
+        popover = SliderPopover(self, self.popover_position, _("Playback speed"), slider_value)
         # In 0.1 steps from 0.5 to 1.5
         popover.slider.setMinimum(5)
         popover.slider.setMaximum(15)
@@ -282,8 +283,7 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.setStatusTip(tooltip)
 
     def show_popover(self):
-        popover = SliderPopover(
-            self, self.popover_position, _("Audio volume"), self.volume)
+        popover = SliderPopover(self, self.popover_position, _("Audio volume"), self.volume)
         popover.slider.setMinimum(0)
         popover.slider.setMaximum(100)
         popover.slider.setPageStep(self.step)

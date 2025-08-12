@@ -48,7 +48,7 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
         # },
         sizes = ("250", "500", "1200", "large", "small")
         expectations = {
-            50:  [],
+            50: [],
             250: ['url 250'],
             400: ['url 250'],
             500: ['url 500', 'url 250'],
@@ -61,7 +61,7 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
         # Some older releases have no 1200px thumbnail
         sizes = ("250", "500", "large", "small")
         expectations = {
-            50:  [],
+            50: [],
             250: ['url 250'],
             400: ['url 250'],
             500: ['url 500', 'url 250'],
@@ -75,7 +75,7 @@ class CoverArtImageProviderCaaTest(PicardTestCase):
         # test if we can handle that (through size aliases)
         sizes = ("small", "large", "1200", "2000", "unknownsize")
         expectations = {
-            50:  [],
+            50: [],
             250: ['url small'],
             400: ['url small'],
             500: ['url large', 'url small'],

@@ -30,7 +30,6 @@ from picard.util import (
 
 
 class RegexNumberedTitleFmt(PicardTestCase):
-
     def test_1(self):
         fmt = ''
         result = _regex_numbered_title_fmt(fmt, 'TITLE', 'COUNT')

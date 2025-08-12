@@ -42,7 +42,6 @@ FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS = 30000
 
 
 class Submission:
-
     def __init__(self, fingerprint, duration, recordingid=None, metadata=None):
         self.fingerprint = fingerprint
         self.duration = duration
@@ -68,7 +67,10 @@ class Submission:
 
     @property
     def valid_duration(self):
-        return self.metadata is None or abs(self.duration * 1000 - self.metadata.length) <= FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+        return (
+            self.metadata is None
+            or abs(self.duration * 1000 - self.metadata.length) <= FINGERPRINT_MAX_ALLOWED_LENGTH_DIFF_MS
+        )
 
     @property
     def is_submitted(self):
@@ -102,7 +104,6 @@ class Submission:
 
 
 class AcoustIDManager:
-
     # AcoustID has a post limit of around 1 MB.
     MAX_PAYLOAD = 1000000
     # Limit each submission to N attempts
@@ -121,7 +122,11 @@ class AcoustIDManager:
             return
         metadata = file.metadata
         self._submissions[file] = Submission(
-            file.acoustid_fingerprint, file.acoustid_length, recordingid, metadata)
+            file.acoustid_fingerprint,
+            file.acoustid_length,
+            recordingid,
+            metadata,
+        )
         self._check_unsubmitted()
 
     def update(self, file, recordingid):
@@ -189,7 +194,10 @@ class AcoustIDManager:
                 log_msg = N_("AcoustID submission finished successfully")
             log.debug(log_msg)
             self.tagger.window.set_statusbar_message(
-                log_msg, echo=None, timeout=3000)
+                log_msg,
+                echo=None,
+                timeout=3000,
+            )
             self._check_unsubmitted()
             return
 
@@ -202,21 +210,23 @@ class AcoustIDManager:
                 log_msg = N_("AcoustID submission failed permanently, probably too many retries")
             log.error(log_msg)
             self.tagger.window.set_statusbar_message(
-                log_msg, echo=None, timeout=3000)
+                log_msg,
+                echo=None,
+                timeout=3000,
+            )
             self._check_unsubmitted()
             return
 
-        log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)…",
-            len(batch), len(submissions))
+        log.debug("AcoustID: submitting batch of %d fingerprints (%d remaining)…", len(batch), len(submissions))
         self.tagger.window.set_statusbar_message(
             N_("Submitting AcoustIDs …"),
-            echo=None
+            echo=None,
         )
         if not errors:
             errors = []
         self._acoustid_api.submit_acoustid_fingerprints(
             [submission for file_, submission in batch],
-            partial(self._batch_submit_finished, submissions, batch, errors)
+            partial(self._batch_submit_finished, submissions, batch, errors),
         )
 
     def _batch_submit_finished(self, submissions, batch, previous_errors, document, http, error):
@@ -236,13 +246,17 @@ class AcoustIDManager:
                     message = ""
                 mparms = {
                     'error': http.errorString(),
-                    'message': message
+                    'message': message,
                 }
                 previous_errors.append(mparms)
                 log_msg = N_("AcoustID submission failed with error '%(error)s': %(message)s")
                 log.error(log_msg, mparms)
                 self.tagger.window.set_statusbar_message(
-                    log_msg, mparms, echo=None, timeout=3000)
+                    log_msg,
+                    mparms,
+                    echo=None,
+                    timeout=3000,
+                )
         else:
             log.debug("AcoustID: %d fingerprints successfully submitted", len(batch))
             for file, submission in batch:

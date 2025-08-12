@@ -80,7 +80,6 @@ AcoustIDTask = namedtuple('AcoustIDTask', ('file', 'next_func'))
 
 
 class AcoustIDClient(QtCore.QObject):
-
     def __init__(self, acoustid_api: AcoustIdAPIHelper):
         super().__init__()
         self.tagger = QtCore.QCoreApplication.instance()
@@ -105,13 +104,11 @@ class AcoustIDClient(QtCore.QObject):
                 'body': document,
                 'filename': task.file.filename,
             }
-            log.error(
-                "AcoustID: Lookup network error for '%(filename)s': %(error)r, %(body)s" %
-                mparms)
+            log.error("AcoustID: Lookup network error for '%(filename)s': %(error)r, %(body)s" % mparms)
             self.tagger.window.set_statusbar_message(
                 N_("AcoustID lookup network error for '%(filename)s'!"),
                 mparms,
-                echo=None
+                echo=None,
             )
             task.next_func({}, http, error)
         else:
@@ -121,20 +118,19 @@ class AcoustIDClient(QtCore.QObject):
                     resolver = RecordingResolver(
                         self._acoustid_api.webservice,
                         document,
-                        callback=partial(self._on_recording_resolve_finish, task, document, http))
+                        callback=partial(self._on_recording_resolve_finish, task, document, http),
+                    )
                     resolver.resolve()
                 else:
                     mparms = {
                         'error': document['error']['message'],
-                        'filename': task.file.filename
+                        'filename': task.file.filename,
                     }
-                    log.error(
-                        "AcoustID: Lookup error for '%(filename)s': %(error)r" %
-                        mparms)
+                    log.error("AcoustID: Lookup error for '%(filename)s': %(error)r" % mparms)
                     self.tagger.window.set_statusbar_message(
                         N_("AcoustID lookup failed for '%(filename)s'!"),
                         mparms,
-                        echo=None
+                        echo=None,
                     )
                     task.next_func({}, http, error)
             except (AttributeError, KeyError, TypeError) as e:
@@ -151,15 +147,15 @@ class AcoustIDClient(QtCore.QObject):
                 task.file.metadata['acoustid_id'] = acoustid
                 task.file.update()
                 log.debug(
-                    "AcoustID: Found no matching recordings for '%s',"
-                    " setting acoustid_id tag to %r",
-                    task.file.filename, acoustid
+                    "AcoustID: Found no matching recordings for '%s', setting acoustid_id tag to %r",
+                    task.file.filename,
+                    acoustid,
                 )
         else:
             log.debug(
                 "AcoustID: Lookup successful for '%s' (recordings: %d)",
                 task.file.filename,
-                len(recording_list)
+                len(recording_list),
             )
         task.next_func({'recordings': recording_list}, http, error)
 
@@ -168,28 +164,22 @@ class AcoustIDClient(QtCore.QObject):
             log.debug("File %r was removed", task.file)
             return
         mparms = {
-            'filename': task.file.filename
+            'filename': task.file.filename,
         }
         if not result:
-            log.debug(
-                "AcoustID: lookup returned no result for file '%(filename)s'" %
-                mparms
-            )
+            log.debug("AcoustID: lookup returned no result for file '%(filename)s'" % mparms)
             self.tagger.window.set_statusbar_message(
                 N_("AcoustID lookup returned no result for file '%(filename)s'"),
                 mparms,
-                echo=None
+                echo=None,
             )
             task.file.clear_pending()
             return
-        log.debug(
-            "AcoustID: looking up the fingerprint for file '%(filename)s'" %
-            mparms
-        )
+        log.debug("AcoustID: looking up the fingerprint for file '%(filename)s'" % mparms)
         self.tagger.window.set_statusbar_message(
             N_("Looking up the fingerprint for file '%(filename)s' …"),
             mparms,
-            echo=None
+            echo=None,
         )
         params = dict(meta='recordings releasegroups releases tracks compress sources')
         if result[0] == 'fingerprint':
@@ -213,10 +203,17 @@ class AcoustIDClient(QtCore.QObject):
             self._run_next_task()
             # fpcalc returns the exit code 3 in case of decoding errors that
             # still allowed it to calculate a result.
-            if exit_code in {FpcalcExit.NOERROR, FpcalcExit.DECODING_ERROR} and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
+            if (
+                exit_code in {FpcalcExit.NOERROR, FpcalcExit.DECODING_ERROR}
+                and exit_status == QtCore.QProcess.ExitStatus.NormalExit
+            ):
                 if exit_code == FpcalcExit.DECODING_ERROR:
                     error = bytes(process.readAllStandardError()).decode()
-                    log.warning("fpcalc non-critical decoding errors for %s: %s", task.file, error)
+                    log.warning(
+                        "fpcalc non-critical decoding errors for %s: %s",
+                        task.file,
+                        error,
+                    )
                 output = bytes(process.readAllStandardOutput()).decode()
                 jsondata = json.loads(output)
                 # Use only integer part of duration, floats are not allowed in lookup
@@ -229,7 +226,8 @@ class AcoustIDClient(QtCore.QObject):
                     "Fingerprint calculator failed exit code = %r, exit status = %r, error = %s",
                     exit_code,
                     exit_status,
-                    process.errorString())
+                    process.errorString(),
+                )
         except (json.decoder.JSONDecodeError, UnicodeDecodeError, ValueError):
             log.error("Error reading fingerprint calculator output", exc_info=True)
         finally:
@@ -253,7 +251,10 @@ class AcoustIDClient(QtCore.QObject):
             self._run_next_task()
             log.error(
                 "Fingerprint calculator failed error= %s (%r) program=%r arguments=%r",
-                process.errorString(), error, process.program(), process.arguments()
+                process.errorString(),
+                error,
+                process.program(),
+                process.arguments(),
             )
         finally:
             task.next_func(None)

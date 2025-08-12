@@ -124,7 +124,9 @@ class TestID3Load(PicardTestCase):
         config_params = {'file_length': 120, 'filename': 'test.mp3'}
         self.id3_file._load_sylt_frame(frame, metadata, config_params)
         self.assertIn('syncedlyrics:ENG:Test Lyrics', metadata)
-        self.assertEqual(metadata['syncedlyrics:ENG:Test Lyrics'], '[00:00.000]<00:00.000>These are the lyrics.<00:01.000>etc.')
+        self.assertEqual(
+            metadata['syncedlyrics:ENG:Test Lyrics'], '[00:00.000]<00:00.000>These are the lyrics.<00:01.000>etc.'
+        )
 
     def test_load_sylt_frame_no_lang(self):
         frame = MagicMock(spec=SYLT)
@@ -138,7 +140,9 @@ class TestID3Load(PicardTestCase):
         config_params = {'file_length': 120, 'filename': 'test.mp3'}
         self.id3_file._load_sylt_frame(frame, metadata, config_params)
         self.assertIn('syncedlyrics::Test Lyrics', metadata)
-        self.assertEqual(metadata['syncedlyrics::Test Lyrics'], '[00:00.000]<00:00.000>These are the lyrics.<00:01.000>etc.')
+        self.assertEqual(
+            metadata['syncedlyrics::Test Lyrics'], '[00:00.000]<00:00.000>These are the lyrics.<00:01.000>etc.'
+        )
 
     def test_load_sylt_frame_unsupported_type(self):
         frame = MagicMock(spec=SYLT)

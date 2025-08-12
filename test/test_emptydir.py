@@ -29,7 +29,6 @@ from picard.util import emptydir
 
 
 class EmptyDirTestCommon(PicardTestCase):
-
     def create_temp_dir(self, extra_files=(), extra_dirs=(), ignore_errors=False):
         tempdir = self.mktmpdir(ignore_errors=ignore_errors)
         for f in extra_files:
@@ -40,7 +39,6 @@ class EmptyDirTestCommon(PicardTestCase):
 
 
 class EmptyDirTest(EmptyDirTestCommon):
-
     def test_is_empty_dir_really_empty(self):
         tempdir = self.create_temp_dir()
         self.assertTrue(emptydir.is_empty_dir(tempdir))
@@ -72,7 +70,6 @@ class EmptyDirTest(EmptyDirTestCommon):
 
 
 class RmEmptyDirTest(EmptyDirTestCommon):
-
     def test_rm_empty_dir_really_empty(self):
         tempdir = self.create_temp_dir(ignore_errors=True)
         self.assertTrue(os.path.isdir(tempdir))

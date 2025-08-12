@@ -53,7 +53,7 @@ def calculate_mb_toc_numbers(toc):
     if not num_tracks:
         raise NotSupportedTOCError("Empty track list")
 
-    expected_tracknums = tuple(range(1, num_tracks+1))
+    expected_tracknums = tuple(range(1, num_tracks + 1))
     tracknums = tuple(e.number for e in toc)
     if expected_tracknums != tracknums:
         raise NotSupportedTOCError(f"Non-standard track number sequence: {tracknums}")

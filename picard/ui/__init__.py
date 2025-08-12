@@ -61,7 +61,6 @@ else:
 
 
 class PreserveGeometry:
-
     defaultsize = None
 
     def __init__(self, *args, **kwargs):
@@ -107,10 +106,7 @@ class PreserveGeometry:
     @property
     def _get_splitters(self):
         try:
-            return {
-                self._get_name(splitter): splitter
-                for splitter in self.findChildren(QtWidgets.QSplitter)
-            }
+            return {self._get_name(splitter): splitter for splitter in self.findChildren(QtWidgets.QSplitter)}
         except AttributeError:
             return {}
 
@@ -136,8 +132,7 @@ class PreserveGeometry:
         config = get_config()
         config.persist[self.opt_name()] = self.saveGeometry()
         config.persist[self.splitters_name()] = {
-            name: bytearray(splitter.saveState())
-            for name, splitter in self._get_splitters.items()
+            name: bytearray(splitter.saveState()) for name, splitter in self._get_splitters.items()
         }
 
 
@@ -176,9 +171,12 @@ class SingletonDialog:
 
 
 class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
-
     help_url = None
-    flags = QtCore.Qt.WindowType.WindowSystemMenuHint | QtCore.Qt.WindowType.WindowTitleHint | QtCore.Qt.WindowType.WindowCloseButtonHint
+    flags = (
+        QtCore.Qt.WindowType.WindowSystemMenuHint
+        | QtCore.Qt.WindowType.WindowTitleHint
+        | QtCore.Qt.WindowType.WindowCloseButtonHint
+    )
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):

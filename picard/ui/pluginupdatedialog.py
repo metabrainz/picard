@@ -36,8 +36,7 @@ from picard.i18n import (
 UPDATE_LINES_TO_SHOW = 3
 
 
-class PluginUpdatesDialog():
-
+class PluginUpdatesDialog:
     def __init__(self, parent, plugin_names):
         self._plugin_names = sorted(plugin_names)
 
@@ -64,23 +63,32 @@ class PluginUpdatesDialog():
     @property
     def _dialog_text(self):
         file_count = len(self._plugin_names)
-        header = '<p>' + ngettext(
-            "There is an update available for one of your currently installed plugins:",
-            "There are updates available for your currently installed plugins:",
-            file_count
-        ) + '</p>'
-        footer = '<p>' + ngettext(
-            "Do you want to update the plugin now?",
-            "Do you want to update the plugins now?",
-            file_count
-        ) + '</p>'
+        header = (
+            '<p>'
+            + ngettext(
+                "There is an update available for one of your currently installed plugins:",
+                "There are updates available for your currently installed plugins:",
+                file_count,
+            )
+            + '</p>'
+        )
+        footer = (
+            '<p>'
+            + ngettext("Do you want to update the plugin now?", "Do you want to update the plugins now?", file_count)
+            + '</p>'
+        )
 
         extra_file_count = file_count - UPDATE_LINES_TO_SHOW
         if extra_file_count > 0:
-            extra_plugins = '<p>' + ngettext(
-                "plus {extra_file_count:,d} other plugin.",
-                "plus {extra_file_count:,d} other plugins.",
-                extra_file_count).format(extra_file_count=extra_file_count) + '</p>'
+            extra_plugins = (
+                '<p>'
+                + ngettext(
+                    "plus {extra_file_count:,d} other plugin.",
+                    "plus {extra_file_count:,d} other plugins.",
+                    extra_file_count,
+                ).format(extra_file_count=extra_file_count)
+                + '</p>'
+            )
         else:
             extra_plugins = ''
 

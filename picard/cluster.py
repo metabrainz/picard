@@ -77,7 +77,6 @@ CLUSTER_COMPARISON_WEIGHTS = {
 
 
 class FileList(FileListItem):
-
     def __init__(self, files=None):
         super().__init__(files=files)
         if self.files and self.can_show_coverart:
@@ -94,7 +93,6 @@ class FileList(FileListItem):
 
 
 class Cluster(FileList):
-
     def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
         super().__init__()
         self.metadata['album'] = name
@@ -109,7 +107,7 @@ class Cluster(FileList):
         if self.related_album:
             return '<Cluster %s %r>' % (
                 self.related_album.id,
-                self.related_album.metadata['album'] + '/' + self.metadata['album']
+                self.related_album.metadata['album'] + '/' + self.metadata['album'],
             )
         return '<Cluster %r>' % self.metadata['album']
 
@@ -246,7 +244,7 @@ class Cluster(FileList):
             self.tagger.window.set_statusbar_message(
                 message,
                 {'album': self.metadata['album']},
-                timeout=3000
+                timeout=3000,
             )
 
         best_match_release = None
@@ -278,14 +276,16 @@ class Cluster(FileList):
             return
         self.tagger.window.set_statusbar_message(
             N_("Looking up the metadata for cluster %(album)s…"),
-            {'album': self.metadata['album']}
+            {'album': self.metadata['album']},
         )
         config = get_config()
-        self.lookup_task = self.tagger.mb_api.find_releases(self._lookup_finished,
+        self.lookup_task = self.tagger.mb_api.find_releases(
+            self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
-            limit=config.setting['query_limit'])
+            limit=config.setting['query_limit'],
+        )
 
     def clear_lookup_task(self):
         if self.lookup_task:
@@ -329,7 +329,6 @@ class Cluster(FileList):
 
 
 class UnclusteredFiles(Cluster):
-
     """Special cluster for 'Unmatched Files' which have not been clustered."""
 
     def __init__(self):
@@ -368,7 +367,6 @@ class UnclusteredFiles(Cluster):
 
 
 class ClusterList(list, Item):
-
     """A list of clusters."""
 
     def __init__(self):

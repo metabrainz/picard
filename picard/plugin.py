@@ -52,6 +52,7 @@ from picard.version import (
 try:
     from markdown import markdown
 except ImportError:
+
     def markdown(text):
         # Simple fallback, just make sure line breaks are applied
         if not text:
@@ -60,13 +61,11 @@ except ImportError:
 
 
 class PluginShared:
-
     def __init__(self):
         super().__init__()
 
 
 class PluginWrapper(PluginShared):
-
     def __init__(self, module, plugindir, file=None, manifest_data=None):
         super().__init__()
         self.module = module
@@ -147,7 +146,7 @@ class PluginWrapper(PluginShared):
 
     @property
     def files_list(self):
-        return self.file[len(self.dir)+1:]
+        return self.file[len(self.dir) + 1 :]
 
     @property
     def is_user_installed(self):
@@ -155,7 +154,6 @@ class PluginWrapper(PluginShared):
 
 
 class PluginData(PluginShared):
-
     """Used to store plugin data from JSON API"""
 
     def __init__(self, d, module_name):
@@ -183,7 +181,6 @@ class PluginData(PluginShared):
 
 
 class PluginFunctions:
-
     """
     Store ExtensionPoint in a defaultdict with priority as key
     run() method will execute entries with higher priority value first
@@ -197,9 +194,7 @@ class PluginFunctions:
 
     def _get_functions(self):
         """Returns registered functions by order of priority (highest first) and registration"""
-        for _priority, functions in sorted(self.functions.items(),
-                                          key=lambda i: i[0],
-                                          reverse=True):
+        for _priority, functions in sorted(self.functions.items(), key=lambda i: i[0], reverse=True):
             yield from functions
 
     def run(self, *args, **kwargs):

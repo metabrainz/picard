@@ -88,10 +88,12 @@ class WAVTest(CommonId3Tests.Id3TestCase):
 
     @skipUnlessTestfile
     def test_save_riff_info(self):
-        metadata = Metadata({
-            'artist': 'the artist',
-            'album': 'the album'
-        })
+        metadata = Metadata(
+            {
+                'artist': 'the artist',
+                'album': 'the album',
+            }
+        )
         save_metadata(self.filename, metadata)
         info = RiffListInfo()
         info.load(self.filename)

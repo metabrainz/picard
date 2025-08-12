@@ -33,21 +33,18 @@ if IS_WIN:
     _search_paths = []
 else:
     _search_paths = [os.path.expanduser('~/.icons')]
-    _search_paths += [
-        os.path.join(path, 'icons') for path in
-        os.environ.get('XDG_DATA_DIRS', '/usr/share').split(':')
-    ]
+    _search_paths += [os.path.join(path, 'icons') for path in os.environ.get('XDG_DATA_DIRS', '/usr/share').split(':')]
     _search_paths.append('/usr/share/pixmaps')
 
 _current_theme = None
 if 'XDG_CURRENT_DESKTOP' in os.environ:
     desktop = os.environ['XDG_CURRENT_DESKTOP'].lower()
     if desktop in {'gnome', 'unity'}:
-        _current_theme = (os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip()[1:-1]
-                          or None)
+        _current_theme = os.popen('gsettings get org.gnome.desktop.interface icon-theme').read().strip()[1:-1] or None
 elif os.environ.get('KDE_FULL_SESSION'):
-    _current_theme = (os.popen("kreadconfig --file kdeglobals --group Icons --key Theme --default crystalsvg").read().strip()
-                      or None)
+    _current_theme = (
+        os.popen("kreadconfig --file kdeglobals --group Icons --key Theme --default crystalsvg").read().strip() or None
+    )
 
 
 ICON_SIZE_MENU = ('16x16',)

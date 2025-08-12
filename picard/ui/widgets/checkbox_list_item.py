@@ -28,7 +28,6 @@ from PyQt6 import (
 
 
 class CheckboxListItem(QtWidgets.QListWidgetItem):
-
     def __init__(self, text='', checked=False, parent=None):
         super().__init__(text, parent=parent)
         self.setFlags(self.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)

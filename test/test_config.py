@@ -40,7 +40,6 @@ from picard.config import (
 
 
 class TestPicardConfigCommon(PicardTestCase):
-
     def setUp(self):
         super().setUp()
 
@@ -69,7 +68,6 @@ class TestPicardConfigCommon(PicardTestCase):
 
 
 class TestPicardConfig(TestPicardConfigCommon):
-
     def test_remove(self):
         TextOption("setting", "text_option", "abc")
 
@@ -81,7 +79,6 @@ class TestPicardConfig(TestPicardConfigCommon):
 
 
 class TestPicardConfigOption(TestPicardConfigCommon):
-
     def test_basic_option(self):
         Option("setting", "option", "abc")
         self.assertEqual(self.config.setting["option"], "abc")
@@ -138,7 +135,6 @@ class TestPicardConfigOption(TestPicardConfigCommon):
 
 
 class TestPicardConfigSection(TestPicardConfigCommon):
-
     def test_as_dict(self):
         TextOption("setting", "text_option", "abc")
         BoolOption("setting", "bool_option", True)
@@ -156,7 +152,6 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
-
     # TextOption
     def test_text_opt_convert(self):
         opt = TextOption("setting", "text_option", "abc")
@@ -200,7 +195,6 @@ class TestPicardConfigTextOption(TestPicardConfigCommon):
 
 
 class TestPicardConfigBoolOption(TestPicardConfigCommon):
-
     # BoolOption
     def test_bool_opt_convert(self):
         opt = BoolOption("setting", "bool_option", False)
@@ -258,7 +252,6 @@ class TestPicardConfigBoolOption(TestPicardConfigCommon):
 
 
 class TestPicardConfigIntOption(TestPicardConfigCommon):
-
     # IntOption
     def test_int_opt_convert(self):
         opt = IntOption("setting", "int_option", 666)
@@ -309,7 +302,6 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
 
 
 class TestPicardConfigFloatOption(TestPicardConfigCommon):
-
     # FloatOption
     def test_float_opt_convert(self):
         opt = FloatOption("setting", "float_option", 666.6)
@@ -360,7 +352,6 @@ class TestPicardConfigFloatOption(TestPicardConfigCommon):
 
 
 class TestPicardConfigListOption(TestPicardConfigCommon):
-
     def test_list_opt_convert(self):
         opt = ListOption("setting", "list_option", [])
         self.assertEqual(opt.convert(('1', '2', '3')), ['1', '2', '3'])
@@ -410,7 +401,6 @@ class TestPicardConfigListOption(TestPicardConfigCommon):
 
 
 class TestPicardConfigVarOption(TestPicardConfigCommon):
-
     # Option
     def test_var_opt_convert(self):
         opt = Option("setting", "var_option", set())
@@ -454,7 +444,6 @@ class TestPicardConfigVarOption(TestPicardConfigCommon):
 
 
 class TestPicardConfigSignals(TestPicardConfigCommon):
-
     def _set_signal_value(self, name: str, old_value: object, new_value: object):
         self.setting_name = name
         self.setting_old_value = old_value

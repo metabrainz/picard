@@ -55,7 +55,6 @@ test_entries = [
 
 
 class TestFilterTocEntries(PicardTestCase):
-
     def test_filter_toc_entries(self):
         result = filter_toc_entries(iter(test_log))
         self.assertTrue(isinstance(result, Iterator))
@@ -69,7 +68,6 @@ class TestFilterTocEntries(PicardTestCase):
 
 
 class TestTocFromFile(PicardTestCase):
-
     def _test_toc_from_file(self, logfile):
         test_log = get_test_data_path(logfile)
         toc = toc_from_file(test_log)
@@ -84,7 +82,27 @@ class TestTocFromFile(PicardTestCase):
     def test_toc_from_file_with_datatrack(self):
         test_log = get_test_data_path('dbpoweramp-datatrack.txt')
         toc = toc_from_file(test_log)
-        self.assertEqual((1, 13, 239218, 150, 16988, 32954, 48647, 67535, 87269, 104221, 121441, 138572, 152608, 170362, 187838, 215400), toc)
+        self.assertEqual(
+            (
+                1,
+                13,
+                239218,
+                150,
+                16988,
+                32954,
+                48647,
+                67535,
+                87269,
+                104221,
+                121441,
+                138572,
+                152608,
+                170362,
+                187838,
+                215400,
+            ),
+            toc,
+        )
 
     def test_toc_from_empty_file(self):
         test_log = get_test_data_path('eac-empty.log')

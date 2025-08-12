@@ -51,12 +51,12 @@ from picard.util import (
 VERSIONS_MAX_TRACKS = 10
 VERSIONS_NAME_KEYS = ('tracks', 'year', 'country', 'format', 'label', 'catnum')
 VERSIONS_HEADINGS = {
-    'tracks':   N_("Tracks"),
-    'year':     N_("Year"),
-    'country':  N_("Country"),
-    'format':   N_("Format"),
-    'label':    N_("Label"),
-    'catnum':   N_("Cat No"),
+    'tracks': N_("Tracks"),
+    'year': N_("Year"),
+    'country': N_("Country"),
+    'format': N_("Format"),
+    'label': N_("Label"),
+    'catnum': N_("Cat No"),
 }
 # additional keys displayed only for disambiguation
 VERSIONS_EXTRA_HEADINGS = {
@@ -86,11 +86,11 @@ def prepare_releases_for_versions(releases):
             if 'format' in medium:
                 formats.append(medium['format'])
         yield {
-            'id':      node['id'],
-            'year':    node['date'][:4] if 'date' in node else '????',
+            'id': node['id'],
+            'year': node['date'][:4] if 'date' in node else '????',
             'country': country_label,
-            'format':  media_formats_from_node(node['media']),
-            'label':  ', '.join(' '.join(x.split(' ')[:2]) for x in set(labels)),
+            'format': media_formats_from_node(node['media']),
+            'label': ', '.join(' '.join(x.split(' ')[:2]) for x in set(labels)),
             'catnum': ', '.join(set(catnums)),
             'tracks': tracks,
             'barcode': node.get('barcode', '') or _('[no barcode]'),
@@ -104,7 +104,6 @@ def prepare_releases_for_versions(releases):
 
 
 class ReleaseGroup(MetadataItem):
-
     def __init__(self, rg_id):
         super().__init__(rg_id)
         self.loaded = False
@@ -153,8 +152,7 @@ class ReleaseGroup(MetadataItem):
                 dis = " / ".join(filter(None, uniqify(release['_disambiguate_name'])))
                 disname = name if not dis else name + ' / ' + dis
                 extra = "\n".join(
-                    "%s: %s" % (_(VERSIONS_EXTRA_HEADINGS[k]), release[k])
-                    for k in VERSIONS_EXTRA_KEYS if release[k]
+                    "%s: %s" % (_(VERSIONS_EXTRA_HEADINGS[k]), release[k]) for k in VERSIONS_EXTRA_KEYS if release[k]
                 )
                 version = {
                     'id': release['id'],

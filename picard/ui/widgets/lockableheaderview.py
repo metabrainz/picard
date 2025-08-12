@@ -42,7 +42,8 @@ class LockableHeaderView(QtWidgets.QHeaderView):
         if self.is_locked:
             tooltip = _(
                 "The table is locked. To enable sorting and column resizing\n"
-                "unlock the table in the table header's context menu.")
+                "unlock the table in the table header's context menu."
+            )
             QtWidgets.QToolTip.showText(event.globalPosition().toPoint(), tooltip, self)
             return
 

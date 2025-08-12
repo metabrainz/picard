@@ -54,7 +54,6 @@ class OAuthInvalidStateError(Exception):
 
 
 class OAuthManager:
-
     def __init__(self, webservice):
         self.webservice = webservice
         # Associates state tokens with callbacks
@@ -219,8 +218,10 @@ class OAuthManager:
 
     def url(self, path=None, params=None):
         return build_qurl(
-            self.host, self.port, path=path,
-            queryargs=params
+            self.host,
+            self.port,
+            path=path,
+            queryargs=params,
         )
 
     def _create_code_challenge(self):

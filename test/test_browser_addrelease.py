@@ -44,7 +44,6 @@ from picard.metadata import Metadata
 
 @unittest.skipIf(jwt is None, "PyJWT not available")
 class AddReleaseTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.tagger.browser_integration = MagicMock()
@@ -78,15 +77,16 @@ class AddReleaseTest(PicardTestCase):
 
 @unittest.skipIf(jwt is None, "PyJWT not available")
 class ServeFormTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.tagger.browser_integration = MagicMock()
         self.tagger.clusters = []
-        self.set_config_values({
-            'server_host': 'musicbrainz.org',
-            'use_server_for_submission': False,
-        })
+        self.set_config_values(
+            {
+                'server_host': 'musicbrainz.org',
+                'use_server_for_submission': False,
+            }
+        )
 
     def test_invalid_jwt(self):
         invalid_token = jwt.encode({'cluster': ''}, 'invalidkey', algorithm='HS256')
@@ -106,41 +106,50 @@ class ServeFormTest(PicardTestCase):
     def test_cluster(self):
         cluster = MagicMock()
         file1 = MagicMock()
-        file1.metadata = Metadata({
-            'tracknumber': 'A',
-            'discnumber': '2',
-            'title': 'Song 2',
-            'label': 'The Label',
-            'catalognumber': '12345',
-            'barcode': '67890',
-            'musicbrainz_recordingid': 'abc',
-        })
+        file1.metadata = Metadata(
+            {
+                'tracknumber': 'A',
+                'discnumber': '2',
+                'title': 'Song 2',
+                'label': 'The Label',
+                'catalognumber': '12345',
+                'barcode': '67890',
+                'musicbrainz_recordingid': 'abc',
+            }
+        )
         file1.discnumber = 2
         file1.tracknumber = 1
         file2 = MagicMock()
         file2.discnumber = 1
         file2.tracknumber = 1
-        file2.metadata = Metadata({
-            'tracknumber': '1',
-            'discnumber': '1',
-            'title': 'Song 1',
-        })
+        file2.metadata = Metadata(
+            {
+                'tracknumber': '1',
+                'discnumber': '1',
+                'title': 'Song 1',
+            }
+        )
         cluster.files = [file1, file2]
-        cluster.metadata = Metadata({
-            'album': 'The Album',
-            'albumartist': 'The Artist',
-        })
+        cluster.metadata = Metadata(
+            {
+                'album': 'The Album',
+                'albumartist': 'The Artist',
+            }
+        )
         self.tagger.clusters.append(cluster)
         token = _generate_token({'cluster': hash(cluster)})
         form = serve_form(token)
-        self._validate_form(form, expected_fields={
-            'name': cluster.metadata['album'],
-            'artist_credit.names.0.artist.name': cluster.metadata['albumartist'],
-            'mediums.0.track.0.name': file2.metadata['title'],
-            'mediums.0.track.0.number': file2.metadata['tracknumber'],
-            'mediums.1.track.0.name': file1.metadata['title'],
-            'mediums.1.track.0.number': file1.metadata['tracknumber'],
-        })
+        self._validate_form(
+            form,
+            expected_fields={
+                'name': cluster.metadata['album'],
+                'artist_credit.names.0.artist.name': cluster.metadata['albumartist'],
+                'mediums.0.track.0.name': file2.metadata['title'],
+                'mediums.0.track.0.number': file2.metadata['tracknumber'],
+                'mediums.1.track.0.name': file1.metadata['title'],
+                'mediums.1.track.0.number': file1.metadata['tracknumber'],
+            },
+        )
 
     def test_file_not_found(self):
         token = _generate_token({'file': 'doesnotexist'})
@@ -150,34 +159,44 @@ class ServeFormTest(PicardTestCase):
     def test_file(self):
         file = MagicMock()
         file.filename = '/some/file'
-        file.metadata = Metadata({
-            'title': 'A Song',
-            'artist': 'The Artist',
-        })
+        file.metadata = Metadata(
+            {
+                'title': 'A Song',
+                'artist': 'The Artist',
+            }
+        )
         file.metadata.length = 102000
         self.tagger.files = {file.filename: file}
         token = _generate_token({'file': file.filename})
         form = serve_form(token)
-        self._validate_form(form, expected_fields={
-            'edit-recording.name': file.metadata['title'],
-            'edit-recording.artist_credit.names.0.artist.name': file.metadata['artist'],
-            'edit-recording.length': '1:42',
-        })
+        self._validate_form(
+            form,
+            expected_fields={
+                'edit-recording.name': file.metadata['title'],
+                'edit-recording.artist_credit.names.0.artist.name': file.metadata['artist'],
+                'edit-recording.length': '1:42',
+            },
+        )
 
     def test_file_as_release(self):
         file = MagicMock()
         file.filename = '/some/file'
-        file.metadata = Metadata({
-            'title': 'A Song',
-            'artist': 'The Artist',
-        })
+        file.metadata = Metadata(
+            {
+                'title': 'A Song',
+                'artist': 'The Artist',
+            }
+        )
         self.tagger.files = {file.filename: file}
         token = _generate_token({'file': file.filename, 'as_release': True})
         form = serve_form(token)
-        self._validate_form(form, expected_fields={
-            'name': file.metadata['title'],
-            'artist_credit.names.0.artist.name': file.metadata['artist'],
-        })
+        self._validate_form(
+            form,
+            expected_fields={
+                'name': file.metadata['title'],
+                'artist_credit.names.0.artist.name': file.metadata['artist'],
+            },
+        )
 
     def _validate_form(self, form, expected_fields=None):
         self.assertTrue(form.startswith('<!doctype html>'))

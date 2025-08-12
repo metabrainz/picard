@@ -29,7 +29,6 @@ from picard.track import TagGenreFilter
 
 
 class TagGenreFilterTest(PicardTestCase):
-
     def test_no_filter(self):
         tag_filter = TagGenreFilter("# comment")
         self.assertFalse(tag_filter.skip('jazz'))

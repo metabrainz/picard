@@ -85,11 +85,11 @@ def get_match_color(similarity, basecolor):
     return QtGui.QColor(
         int(c2[0] + (c1[0] - c2[0]) * similarity),
         int(c2[1] + (c1[1] - c2[1]) * similarity),
-        int(c2[2] + (c1[2] - c2[2]) * similarity))
+        int(c2[2] + (c1[2] - c2[2]) * similarity),
+    )
 
 
 class MainPanel(QtWidgets.QSplitter):
-
     def __init__(self, window, parent=None):
         super().__init__(parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
@@ -133,20 +133,27 @@ class MainPanel(QtWidgets.QSplitter):
         TreeItem.window = window
         TreeItem.base_color = self.palette().base().color()
         TreeItem.text_color = self.palette().text().color()
-        TreeItem.text_color_secondary = self.palette() \
-            .brush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text).color()
-        TrackItem.track_colors = defaultdict(lambda: TreeItem.text_color, {
-            File.NORMAL: interface_colors.get_qcolor('entity_saved'),
-            File.CHANGED: TreeItem.text_color,
-            File.PENDING: interface_colors.get_qcolor('entity_pending'),
-            File.ERROR: interface_colors.get_qcolor('entity_error'),
-        })
-        FileItem.file_colors = defaultdict(lambda: TreeItem.text_color, {
-            File.NORMAL: TreeItem.text_color,
-            File.CHANGED: TreeItem.text_color,
-            File.PENDING: interface_colors.get_qcolor('entity_pending'),
-            File.ERROR: interface_colors.get_qcolor('entity_error'),
-        })
+        TreeItem.text_color_secondary = (
+            self.palette().brush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Text).color()
+        )
+        TrackItem.track_colors = defaultdict(
+            lambda: TreeItem.text_color,
+            {
+                File.NORMAL: interface_colors.get_qcolor('entity_saved'),
+                File.CHANGED: TreeItem.text_color,
+                File.PENDING: interface_colors.get_qcolor('entity_pending'),
+                File.ERROR: interface_colors.get_qcolor('entity_error'),
+            },
+        )
+        FileItem.file_colors = defaultdict(
+            lambda: TreeItem.text_color,
+            {
+                File.NORMAL: TreeItem.text_color,
+                File.CHANGED: TreeItem.text_color,
+                File.PENDING: interface_colors.get_qcolor('entity_pending'),
+                File.ERROR: interface_colors.get_qcolor('entity_error'),
+            },
+        )
 
     def set_processing(self, processing=True):
         self._ignore_selection_changes = processing
@@ -170,8 +177,7 @@ class MainPanel(QtWidgets.QSplitter):
         AlbumItem.icon_cd = icontheme.lookup('media-optical', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_modified = icontheme.lookup('media-optical-modified', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_cd_saved = icontheme.lookup('media-optical-saved', icontheme.ICON_SIZE_MENU)
-        AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified',
-                                                            icontheme.ICON_SIZE_MENU)
+        AlbumItem.icon_cd_saved_modified = icontheme.lookup('media-optical-saved-modified', icontheme.ICON_SIZE_MENU)
         AlbumItem.icon_error = icontheme.lookup('media-optical-error', icontheme.ICON_SIZE_MENU)
         TrackItem.icon_audio = QtGui.QIcon(":/images/track-audio.png")
         TrackItem.icon_video = QtGui.QIcon(":/images/track-video.png")
@@ -260,7 +266,6 @@ class MainPanel(QtWidgets.QSplitter):
 
 
 class FileTreeView(BaseTreeView):
-
     NAME = N_("file view")
     DESCRIPTION = N_("Contains unmatched files and clusters")
 
@@ -269,12 +274,10 @@ class FileTreeView(BaseTreeView):
 
     def __init__(self, columns, window, parent=None):
         super().__init__(columns, window, parent=parent)
-        self.unmatched_files = ClusterItem(
-            self.tagger.unclustered_files, filterable=False, parent=self)
+        self.unmatched_files = ClusterItem(self.tagger.unclustered_files, filterable=False, parent=self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
-        self.clusters = ClusterItem(
-            self.tagger.clusters, filterable=False, parent=self)
+        self.clusters = ClusterItem(self.tagger.clusters, filterable=False, parent=self)
         self.set_clusters_text()
         self.clusters.setExpanded(True)
         self.tagger.cluster_added.connect(self.add_file_cluster)
@@ -298,7 +301,6 @@ class FileTreeView(BaseTreeView):
 
 
 class AlbumTreeView(BaseTreeView):
-
     NAME = N_("album view")
     DESCRIPTION = N_("Contains albums and matched files")
 
@@ -398,7 +400,6 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
 
 
 class ClusterItem(TreeItem):
-
     def post_init(self):
         self.setIcon(self.columns.status_icon_column, ClusterItem.icon_dir)
 
@@ -434,7 +435,6 @@ class ClusterItem(TreeItem):
 
 
 class AlbumItem(TreeItem):
-
     def update(self, update_tracks=True, update_selection=True):
         album = self.obj
         selection_changed = self.isSelected()
@@ -474,7 +474,9 @@ class AlbumItem(TreeItem):
                     item.update(update_album=False)
         if album.errors:
             self.setIcon(self.columns.status_icon_column, AlbumItem.icon_error)
-            self.setToolTip(self.columns.status_icon_column, _("Processing error(s): See the Errors tab in the Album Info dialog"))
+            self.setToolTip(
+                self.columns.status_icon_column, _("Processing error(s): See the Errors tab in the Album Info dialog")
+            )
         elif album.is_complete():
             if album.is_modified():
                 self.setIcon(self.columns.status_icon_column, AlbumItem.icon_cd_saved_modified)
@@ -514,7 +516,6 @@ class NatAlbumItem(AlbumItem):
 
 
 class TrackItem(TreeItem):
-
     def update(self, update_album=True, update_files=True, update_selection=True):
         track = self.obj
         num_linked_files = track.num_linked_files
@@ -534,8 +535,7 @@ class TrackItem(TreeItem):
             if num_linked_files == 0:
                 icon_tooltip = _("There are no files matched to this track")
             else:
-                icon_tooltip = ngettext('%i matched file', '%i matched files',
-                    num_linked_files) % num_linked_files
+                icon_tooltip = ngettext('%i matched file', '%i matched files', num_linked_files) % num_linked_files
             self.setToolTip(fingerprint_column, "")
             self.setIcon(fingerprint_column, QtGui.QIcon())
             if track.ignored_for_completeness():
@@ -570,7 +570,9 @@ class TrackItem(TreeItem):
             self.setExpanded(True)
         if track.errors:
             self.setIcon(self.columns.status_icon_column, TrackItem.icon_error)
-            self.setToolTip(self.columns.status_icon_column, _("Processing error(s): See the Errors tab in the Track Info dialog"))
+            self.setToolTip(
+                self.columns.status_icon_column, _("Processing error(s): See the Errors tab in the Track Info dialog")
+            )
         else:
             self.setIcon(self.columns.status_icon_column, icon)
             self.setToolTip(self.columns.status_icon_column, icon_tooltip)
@@ -582,7 +584,6 @@ class TrackItem(TreeItem):
 
 
 class FileItem(TreeItem):
-
     def update(self, update_track=True, update_selection=True):
         file = self.obj
         icon, icon_tooltip = FileItem.decide_file_icon_info(file)
@@ -651,5 +652,7 @@ class FileItem(TreeItem):
                 tooltip = _("Unsubmitted fingerprint")
         else:
             icon = QtGui.QIcon()
-            tooltip = _('No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID Fingerprints" to calculate the fingerprint.')
+            tooltip = _(
+                'No fingerprint was calculated for this file, use "Scan" or "Generate AcoustID Fingerprints" to calculate the fingerprint.'
+            )
         return (icon, tooltip)

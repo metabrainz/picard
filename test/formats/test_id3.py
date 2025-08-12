@@ -54,15 +54,11 @@ from .coverart import CommonCoverArtTests
 
 # prevent unittest to run tests in those classes
 class CommonId3Tests:
-
     class Id3TestCase(CommonTests.TagFormatsTestCase):
-
         def setup_tags(self):
             # Note: in ID3v23, the original date can only be stored as a year.
             super().setup_tags()
-            self.set_tags({
-                'originaldate': '1980'
-            })
+            self.set_tags({'originaldate': '1980'})
             self.unsupported_tags['r128_album_gain'] = '-2857'
             self.unsupported_tags['r128_track_gain'] = '-2857'
 
@@ -158,14 +154,15 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_performer_duplication(self):
-
             config.setting['write_id3v23'] = True
-            metadata = Metadata({
-                'album': 'Foo',
-                'artist': 'Foo',
-                'performer:piano': 'Foo',
-                'title': 'Foo',
-            })
+            metadata = Metadata(
+                {
+                    'album': 'Foo',
+                    'artist': 'Foo',
+                    'performer:piano': 'Foo',
+                    'title': 'Foo',
+                }
+            )
             original_metadata = save_and_load_metadata(self.filename, metadata)
             new_metadata = save_and_load_metadata(self.filename, original_metadata)
 
@@ -173,10 +170,12 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_performer_no_role_tmcl(self):
-            metadata = Metadata({
-                'performer': 'Performer',
-                'performer:piano': 'Performer Piano',
-            })
+            metadata = Metadata(
+                {
+                    'performer': 'Performer',
+                    'performer:piano': 'Performer Piano',
+                }
+            )
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertIn(['piano', 'Performer Piano'], raw_metadata['TMCL'].people)
@@ -186,10 +185,12 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_performer_no_role_tipl(self):
             config.setting['write_id3v23'] = True
-            metadata = Metadata({
-                'performer': 'Performer',
-                'performer:piano': 'Performer Piano',
-            })
+            metadata = Metadata(
+                {
+                    'performer': 'Performer',
+                    'performer:piano': 'Performer Piano',
+                }
+            )
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertIn(['piano', 'Performer Piano'], raw_metadata['TIPL'].people)
@@ -218,7 +219,7 @@ class CommonId3Tests:
             config.setting['write_id3v23'] = True
             metadata = Metadata(self.tags)
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for (key, value) in self.tags.items():
+            for key, value in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @property
@@ -286,7 +287,9 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_delete_itun_tags(self):
             metadata = Metadata()
-            metadata['comment:iTunNORM'] = '00001E86 00001E86 0000A2A3 0000A2A3 000006A6 000006A6 000078FA 000078FA 00000211 00000211'
+            metadata['comment:iTunNORM'] = (
+                '00001E86 00001E86 0000A2A3 0000A2A3 000006A6 000006A6 000078FA 000078FA 00000211 00000211'
+            )
             metadata['comment:iTunPGAP'] = '1'
             new_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertIn('comment:iTunNORM', new_metadata)
@@ -333,7 +336,7 @@ class CommonId3Tests:
             tags.add(mutagen.id3.TXXX(desc='replaygain_reference_loudness', text='-18.00 LUFS'))
             save_raw(self.filename, tags)
             loaded_metadata = load_metadata(self.filename)
-            for (key, value) in self.replaygain_tags.items():
+            for key, value in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
@@ -362,8 +365,8 @@ class CommonId3Tests:
             raw_metadata = load_raw(self.filename)
             self.assertIn('TXXX:Replaygain_Album_Peak', raw_metadata)
             self.assertEqual(
-                raw_metadata['TXXX:Replaygain_Album_Peak'].text[0],
-                loaded_metadata['replaygain_album_peak'])
+                raw_metadata['TXXX:Replaygain_Album_Peak'].text[0], loaded_metadata['replaygain_album_peak']
+            )
             self.assertEqual(1, len(raw_metadata['TXXX:Replaygain_Album_Peak'].text))
             self.assertNotIn('TXXX:REPLAYGAIN_ALBUM_PEAK', raw_metadata)
 
@@ -395,20 +398,24 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_invalid_track_and_discnumber(self):
-            metadata = Metadata({
-                'discnumber': 'notanumber',
-                'tracknumber': 'notanumber',
-            })
+            metadata = Metadata(
+                {
+                    'discnumber': 'notanumber',
+                    'tracknumber': 'notanumber',
+                }
+            )
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertNotIn('discnumber', loaded_metadata)
             self.assertNotIn('tracknumber', loaded_metadata)
 
         @skipUnlessTestfile
         def test_save_explicit_id3_frames(self):
-            metadata = Metadata({
-                '~id3:TXXX:foo': 'bar',
-                '~id3:TOWN': 'owner'
-            })
+            metadata = Metadata(
+                {
+                    '~id3:TXXX:foo': 'bar',
+                    '~id3:TOWN': 'owner',
+                }
+            )
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertIn('TXXX:foo', raw_metadata)
@@ -437,11 +444,15 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_delete_tipl(self):
             tags = mutagen.id3.ID3Tags()
-            tags.add(mutagen.id3.TIPL(people=[
-                ['mix', 'mixer1'],
-                ['mix', 'mixer2'],
-                ['producer', 'producer1'],
-            ]))
+            tags.add(
+                mutagen.id3.TIPL(
+                    people=[
+                        ['mix', 'mixer1'],
+                        ['mix', 'mixer2'],
+                        ['producer', 'producer1'],
+                    ]
+                )
+            )
             save_raw(self.filename, tags)
             metadata = Metadata()
             metadata.delete('mixer')
@@ -463,9 +474,7 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_license_single_url(self):
-            metadata = Metadata({
-                'license': 'http://example.com'
-            })
+            metadata = Metadata({'license': 'http://example.com'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['license'], loaded_metadata['license'])
             raw_metadata = load_raw(self.filename)
@@ -473,9 +482,7 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_license_single_non_url(self):
-            metadata = Metadata({
-                'license': 'foo'
-            })
+            metadata = Metadata({'license': 'foo'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['license'], loaded_metadata['license'])
             raw_metadata = load_raw(self.filename)
@@ -483,18 +490,18 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_license_multi_url(self):
-            metadata = Metadata({
-                'license': [
-                    'http://example.com/1',
-                    'http://example.com/2',
-                ]
-            })
+            metadata = Metadata(
+                {
+                    'license': [
+                        'http://example.com/1',
+                        'http://example.com/2',
+                    ]
+                }
+            )
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['license'], loaded_metadata['license'])
             raw_metadata = load_raw(self.filename)
-            self.assertEqual(
-                set(metadata.getall('license')),
-                set(raw_metadata.get('TXXX:LICENSE').text))
+            self.assertEqual(set(metadata.getall('license')), set(raw_metadata.get('TXXX:LICENSE').text))
 
         @skipUnlessTestfile
         def test_license_wcop_and_txxx(self):
@@ -550,9 +557,7 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_woar_not_duplicated(self):
-            metadata = Metadata({
-                'website': 'http://example.com/1'
-            })
+            metadata = Metadata({'website': 'http://example.com/1'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['website'], loaded_metadata['website'])
             metadata['website'] = 'http://example.com/2'
@@ -561,9 +566,7 @@ class CommonId3Tests:
 
         @skipUnlessTestfile
         def test_woar_delete(self):
-            metadata = Metadata({
-                'website': 'http://example.com/1'
-            })
+            metadata = Metadata({'website': 'http://example.com/1'})
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(metadata['website'], loaded_metadata['website'])
             del metadata['website']
@@ -577,29 +580,37 @@ class CommonId3Tests:
                 rating = '3'
                 metadata = Metadata({'~rating': rating})
                 loaded_metadata = save_and_load_metadata(self.filename, metadata)
-                self.assertEqual(loaded_metadata['~rating'], rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+                self.assertEqual(
+                    loaded_metadata['~rating'], rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating)
+                )
 
         @skipUnlessTestfile
         def test_unchanged_metadata(self):
-            self.set_config_values({
-                'compare_ignore_tags': [],
-                'write_id3v23': True,
-            })
+            self.set_config_values(
+                {
+                    'compare_ignore_tags': [],
+                    'write_id3v23': True,
+                }
+            )
             file = open_(self.filename)
-            file.orig_metadata = Metadata({
-                'album': 'somealbum',
-                'title': 'sometitle',
-                'date': '2021',
-                'originaldate': '2021',
-                'artists': 'foo/bar',
-            })
-            file.metadata = Metadata({
-                'album': 'somealbum',
-                'title': 'sometitle',
-                'date': '2021-12',
-                'originaldate': '2021-12-04',
-                'artists': ['foo', 'bar'],
-            })
+            file.orig_metadata = Metadata(
+                {
+                    'album': 'somealbum',
+                    'title': 'sometitle',
+                    'date': '2021',
+                    'originaldate': '2021',
+                    'artists': 'foo/bar',
+                }
+            )
+            file.metadata = Metadata(
+                {
+                    'album': 'somealbum',
+                    'title': 'sometitle',
+                    'date': '2021-12',
+                    'originaldate': '2021-12-04',
+                    'artists': ['foo', 'bar'],
+                }
+            )
             file.state = File.NORMAL
             file.update(signal=False)
             self.assertEqual(file.similarity, 1.0)
@@ -608,9 +619,7 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_releasedate_v23(self):
             config.setting['write_id3v23'] = True
-            metadata = Metadata({
-                'releasedate': '2023-04-28',
-            })
+            metadata = Metadata({'releasedate': '2023-04-28'})
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertEqual(metadata['releasedate'], raw_metadata['TXXX:RELEASEDATE'])
@@ -618,9 +627,7 @@ class CommonId3Tests:
         @skipUnlessTestfile
         def test_releasedate_v24(self):
             config.setting['write_id3v23'] = False
-            metadata = Metadata({
-                'releasedate': '2023-04-28',
-            })
+            metadata = Metadata({'releasedate': '2023-04-28'})
             save_metadata(self.filename, metadata)
             raw_metadata = load_raw(self.filename)
             self.assertEqual(metadata['releasedate'], raw_metadata['TDRL'])
@@ -685,6 +692,7 @@ class DSFTest(CommonId3Tests.Id3TestCase):
 
 
 if id3.DSDIFFFile:
+
     class DSDIFFTest(CommonId3Tests.Id3TestCase):
         testfile = 'test-dsd.dff'
         supports_ratings = True
@@ -743,7 +751,6 @@ class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 
 
 class ID3FileTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.file = id3.ID3File('somepath/somefile.mp3')
@@ -785,13 +792,15 @@ class ID3FileTest(PicardTestCase):
             [("Test", 0), ("syl", 10), ("la", 20), ("bles", 30)],
             [("Test newline\nin the middle", 0), ("of the text", 1000)],
             [("Test empty lyrics at the end\n", 0), ("", 1000)],
-            [("Test timestamp estimation", 0), ("in the\nlast phrase", 1000)])
+            [("Test timestamp estimation", 0), ("in the\nlast phrase", 1000)],
+        )
         correct_lrcs = (
             "[00:00.000]<00:00.000>Test<00:00.500>normal\n[00:01.000]<00:01.000>behaviour",
             "[00:00.000]<00:00.000>Test<00:00.010>syl<00:00.020>la<00:00.030>bles",
             "[00:00.000]<00:00.000>Test newline\n[00:00.480]in the middle<00:01.000>of the text",
             "[00:00.000]<00:00.000>Test empty lyrics at the end\n[00:01.000]<00:01.000>",
-            "[00:00.000]<00:00.000>Test timestamp estimation<00:01.000>in the\n[00:01.352]last phrase")
+            "[00:00.000]<00:00.000>Test timestamp estimation<00:01.000>in the\n[00:01.352]last phrase",
+        )
         for sylt, correct_lrc in zip(sylts, correct_lrcs):
             lrc = self.file._parse_sylt_text(sylt, 2)
             self.assertEqual(lrc, correct_lrc)
@@ -807,7 +816,8 @@ class ID3FileTest(PicardTestCase):
             "[2:1.0]<2:1.0>Test lyrics with single digits\n[2:2]<2:2>or no ms",
             "[300:1.000]<300:1.000>Test lyrics with long minutes",
             "Test invalid[00:00.000]input\nTest invalid[00:01.000]input",
-            "Test lyrics with no timestamps")
+            "Test lyrics with no timestamps",
+        )
         correct_sylts = (
             [("Test", 0), ("normal\n", 500), ("behaviour", 1000)],
             [("Test lyrics with\n", 0), ("only line time stamps", 60 * 1000)],
@@ -816,9 +826,10 @@ class ID3FileTest(PicardTestCase):
             [("Test lyrics with two\n", 1000), ("digit ms", 1750)],
             [("Test lyrics with different\n", 61000), ("digit ms", 61750)],
             [("Test lyrics with single digits\n", 121000), ("or no ms", 122000)],
-            [("Test lyrics with long minutes", (300*60+1)*1000)],
+            [("Test lyrics with long minutes", (300 * 60 + 1) * 1000)],
             [("input\nTest invalid", 0), ("input", 1000)],
-            [])
+            [],
+        )
         for lrc, correct_sylt in zip(lrcs, correct_sylts):
             sylt = self.file._parse_lrc_text(lrc)
             self.assertEqual(sylt, correct_sylt)

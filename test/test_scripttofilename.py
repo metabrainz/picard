@@ -53,7 +53,6 @@ register_script_function(lambda p: '1' if p.file else '', 'has_file')
 
 
 class ScriptToFilenameTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
         self.set_config_values(settings)
@@ -88,8 +87,7 @@ class ScriptToFilenameTest(PicardTestCase):
         metadata = Metadata()
         metadata['artist'] = 'Foo'
         metadata['~extension'] = 'foo'
-        (filename, new_metadata) = script_to_filename_with_metadata(
-            '$set(_extension,bar)\n%artist%', metadata)
+        (filename, new_metadata) = script_to_filename_with_metadata('$set(_extension,bar)\n%artist%', metadata)
         self.assertEqual('Foo', filename)
         self.assertEqual('foo', metadata['~extension'])
         self.assertEqual('bar', new_metadata['~extension'])

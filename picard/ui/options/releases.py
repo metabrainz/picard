@@ -58,7 +58,6 @@ from picard.ui.widgets import ClickableSlider
 
 
 class TipSlider(ClickableSlider):
-
     _offset = QtCore.QPoint(0, -30)
     _step = 5
     _pagestep = 25
@@ -110,7 +109,6 @@ class TipSlider(ClickableSlider):
 
 
 class ReleaseTypeScore:
-
     def __init__(self, group, layout, label, cell):
         row, column = cell  # it uses 2 cells (r,c and r,c+1)
         self.group = group
@@ -133,7 +131,6 @@ class ReleaseTypeScore:
 
 
 class RowColIter:
-
     def __init__(self, max_cells, max_cols=6, step=2):
         assert max_cols % step == 0
         self.step = step
@@ -155,7 +152,6 @@ class RowColIter:
 
 
 class ReleasesOptionsPage(OptionsPage):
-
     NAME = 'releases'
     TITLE = N_("Preferred Releases")
     PARENT = 'metadata'
@@ -182,15 +178,15 @@ class ReleasesOptionsPage(OptionsPage):
                 self.ui.type_group,
                 self.ui.gridLayout,
                 label,
-                next(griditer))
+                next(griditer),
+            )
 
-        griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS)
-                              + len(RELEASE_SECONDARY_GROUPS)
-                              + 1)  # +1 for Reset button
+        griditer = RowColIter(len(RELEASE_PRIMARY_GROUPS) + len(RELEASE_SECONDARY_GROUPS) + 1)  # +1 for Reset button
         for name in RELEASE_PRIMARY_GROUPS:
             add_slider(name, griditer, context='release_group_primary_type')
-        for name in sorted(RELEASE_SECONDARY_GROUPS,
-                           key=lambda v: pgettext_attributes('release_group_secondary_type', v)):
+        for name in sorted(
+            RELEASE_SECONDARY_GROUPS, key=lambda v: pgettext_attributes('release_group_secondary_type', v)
+        ):
             add_slider(name, griditer, context='release_group_secondary_type')
 
         reset_types_btn = QtWidgets.QPushButton(self.ui.type_group)
@@ -233,19 +229,26 @@ class ReleasesOptionsPage(OptionsPage):
     def load(self):
         config = get_config()
         scores = dict(config.setting['release_type_scores'])
-        for (release_type, release_type_slider) in self._release_type_sliders.items():
-            release_type_slider.setValue(scores.get(release_type,
-                                                    DEFAULT_RELEASE_SCORE))
+        for release_type, release_type_slider in self._release_type_sliders.items():
+            release_type_slider.setValue(scores.get(release_type, DEFAULT_RELEASE_SCORE))
 
-        self._load_list_items('preferred_release_countries', RELEASE_COUNTRIES,
-                              self.ui.country_list, self.ui.preferred_country_list)
-        self._load_list_items('preferred_release_formats', RELEASE_FORMATS,
-                              self.ui.format_list, self.ui.preferred_format_list)
+        self._load_list_items(
+            'preferred_release_countries',
+            RELEASE_COUNTRIES,
+            self.ui.country_list,
+            self.ui.preferred_country_list,
+        )
+        self._load_list_items(
+            'preferred_release_formats',
+            RELEASE_FORMATS,
+            self.ui.format_list,
+            self.ui.preferred_format_list,
+        )
 
     def save(self):
         config = get_config()
         scores = []
-        for (release_type, release_type_slider) in self._release_type_sliders.items():
+        for release_type, release_type_slider in self._release_type_sliders.items():
             scores.append((release_type, release_type_slider.value()))
         config.setting['release_type_scores'] = scores
 
@@ -301,10 +304,7 @@ class ReleasesOptionsPage(OptionsPage):
                 list1.addItem(item)
 
     def _save_list_items(self, setting, list1):
-        data = [
-            item.data(QtCore.Qt.ItemDataRole.UserRole)
-            for item in qlistwidget_items(list1)
-        ]
+        data = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(list1)]
         config = get_config()
         config.setting[setting] = data
 

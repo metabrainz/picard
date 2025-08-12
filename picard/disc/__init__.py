@@ -51,7 +51,6 @@ except ImportError:
 
 
 class Disc:
-
     def __init__(self, id=None):
         self.tagger = QtCore.QCoreApplication.instance()
         self.id = id
@@ -98,7 +97,7 @@ class Disc:
                 'id': id,
                 'tracks': tracks,
                 'toc': toc_string.replace(' ', '+'),
-            }
+            },
         )
 
     @property
@@ -127,7 +126,6 @@ class Disc:
 
 
 if discid is not None:
-    discid_version = "discid %s, %s" % (discid.__version__,
-                                        discid.LIBDISCID_VERSION_STRING)
+    discid_version = "discid %s, %s" % (discid.__version__, discid.LIBDISCID_VERSION_STRING)
 else:
     discid_version = None

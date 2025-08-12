@@ -41,7 +41,6 @@ user_collections = {}
 
 
 class Collection:
-
     def __init__(self, collection_id: str, mb_api: MBAPIHelper):
         self.tagger = QtCore.QCoreApplication.instance()
         self.id = collection_id
@@ -88,7 +87,7 @@ class Collection:
         self.tagger.window.set_statusbar_message(
             N_("Error while modifying collections: %(error)s"),
             {'error': reply.errorString()},
-            echo=log.error
+            echo=log.error,
         )
 
     def _success_add(self, releases, callback):
@@ -98,7 +97,8 @@ class Collection:
         status_msg = ngettext(
             'Added %(count)i release to collection "%(name)s"',
             'Added %(count)i releases to collection "%(name)s"',
-            count)
+            count,
+        )
         debug_msg = 'Added %(count)i release(s) to collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
@@ -109,15 +109,24 @@ class Collection:
         status_msg = ngettext(
             'Removed %(count)i release from collection "%(name)s"',
             'Removed %(count)i releases from collection "%(name)s"',
-            count)
+            count,
+        )
         debug_msg = 'Removed %(count)i release(s) from collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
     def _success(self, count, callback, status_msg, debug_msg):
         callback()
-        mparms = {'count': count, 'name': self.name}
+        mparms = {
+            'count': count,
+            'name': self.name,
+        }
         log.debug(debug_msg % mparms)
-        self.tagger.window.set_statusbar_message(status_msg, mparms, translate=None, echo=None)
+        self.tagger.window.set_statusbar_message(
+            status_msg,
+            mparms,
+            translate=None,
+            echo=None,
+        )
 
 
 def get_user_collection(collection_id):
@@ -136,7 +145,7 @@ def load_user_collections(callback=None):
             tagger.window.set_statusbar_message(
                 N_("Error loading collections: %(error)s"),
                 {'error': reply.errorString()},
-                echo=log.error
+                echo=log.error,
             )
             return
         if document and 'collections' in document:

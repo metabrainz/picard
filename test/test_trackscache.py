@@ -25,7 +25,6 @@ from picard.album import TracksCache
 
 
 class TestTracksCache(PicardTestCase):
-
     def setUp(self):
         self.cache = TracksCache()
         self._init_cache(self.cache)
@@ -38,30 +37,38 @@ class TestTracksCache(PicardTestCase):
                 self.orig_metadata = metadata
 
         tracks = [
-            MockTrack({
-                'musicbrainz_recordingid': 'rec1',
-                'musicbrainz_trackid': 'track1',
-                'tracknumber': '1',
-                'discnumber': '1',
-            }),
-            MockTrack({
-                'musicbrainz_recordingid': 'rec2',
-                'musicbrainz_trackid': 'track2',
-                'tracknumber': '2',
-                'discnumber': '1',
-            }),
-            MockTrack({
-                'musicbrainz_recordingid': 'rec1',
-                'musicbrainz_trackid': 'track3',
-                'tracknumber': '2',
-                'discnumber': '2',
-            }),
-            MockTrack({
-                'musicbrainz_recordingid': 'rec4',
-                'musicbrainz_trackid': 'track4',
-                'tracknumber': '1',
-                'discnumber': '1',
-            }),
+            MockTrack(
+                {
+                    'musicbrainz_recordingid': 'rec1',
+                    'musicbrainz_trackid': 'track1',
+                    'tracknumber': '1',
+                    'discnumber': '1',
+                }
+            ),
+            MockTrack(
+                {
+                    'musicbrainz_recordingid': 'rec2',
+                    'musicbrainz_trackid': 'track2',
+                    'tracknumber': '2',
+                    'discnumber': '1',
+                }
+            ),
+            MockTrack(
+                {
+                    'musicbrainz_recordingid': 'rec1',
+                    'musicbrainz_trackid': 'track3',
+                    'tracknumber': '2',
+                    'discnumber': '2',
+                }
+            ),
+            MockTrack(
+                {
+                    'musicbrainz_recordingid': 'rec4',
+                    'musicbrainz_trackid': 'track4',
+                    'tracknumber': '1',
+                    'discnumber': '1',
+                }
+            ),
         ]
         cache.build(tracks)
 

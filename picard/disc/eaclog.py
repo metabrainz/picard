@@ -34,15 +34,19 @@ from picard.disc.utils import (
 from picard.util import detect_file_encoding
 
 
-RE_TOC_TABLE_HEADER = re.compile(r""" \s*
+RE_TOC_TABLE_HEADER = re.compile(
+    r""" \s*
     \s*.+\s+ \| # track
     \s+.+\s+ \| # start
     \s+.+\s+ \| # length
     \s+.+\s+ \| # start sector
     \s+.+\s*$   # end sector
-    """, re.VERBOSE)
+    """,
+    re.VERBOSE,
+)
 
-RE_TOC_TABLE_LINE = re.compile(r"""
+RE_TOC_TABLE_LINE = re.compile(
+    r"""
     \s*
     (?P<num>\d+)
     \s*\|\s*
@@ -53,7 +57,9 @@ RE_TOC_TABLE_LINE = re.compile(r"""
     (?P<start_sector>\d+)
     \s*\|\s*
     (?P<end_sector>\d+)
-    \s*$""", re.VERBOSE)
+    \s*$""",
+    re.VERBOSE,
+)
 
 
 def filter_toc_entries(lines):

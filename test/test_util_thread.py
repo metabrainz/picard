@@ -55,7 +55,6 @@ class MainEventInterceptor(QObject):
 
 
 class ThreadTest(PicardTestCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

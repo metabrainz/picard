@@ -52,5 +52,5 @@ def strip_root_volume_path(path):
     if root_volume:
         norm_path = os.path.normpath(path)
         if norm_path.startswith(root_volume):
-            path = os.path.join('/', norm_path[len(root_volume):])
+            path = os.path.join('/', norm_path[len(root_volume) :])
     return path

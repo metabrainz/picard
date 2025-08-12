@@ -38,7 +38,7 @@ SCRIPTS = {
     'HANGUL': N_('Hangul'),
     'HIRAGANA': N_('Hiragana'),
     'KATAKANA': N_('Katakana'),
-    'THAI': N_('Thai')
+    'THAI': N_('Thai'),
 }
 
 

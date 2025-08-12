@@ -77,7 +77,6 @@ def iter_sorted_locales(locales):
 
 
 class MetadataOptionsPage(OptionsPage):
-
     NAME = 'metadata'
     TITLE = N_("Metadata")
     PARENT = None
@@ -119,7 +118,9 @@ class MetadataOptionsPage(OptionsPage):
         self.make_locales_text()
         self.current_scripts = config.setting['script_exceptions']
         self.make_scripts_text()
-        self.ui.translate_artist_names_script_exception.setChecked(config.setting['translate_artist_names_script_exception'])
+        self.ui.translate_artist_names_script_exception.setChecked(
+            config.setting['translate_artist_names_script_exception']
+        )
 
         self.ui.convert_punctuation.setChecked(config.setting['convert_punctuation'])
         self.ui.release_ars.setChecked(config.setting['release_ars'])
@@ -151,7 +152,9 @@ class MetadataOptionsPage(OptionsPage):
         config = get_config()
         config.setting['translate_artist_names'] = self.ui.translate_artist_names.isChecked()
         config.setting['artist_locales'] = self.current_locales
-        config.setting['translate_artist_names_script_exception'] = self.ui.translate_artist_names_script_exception.isChecked()
+        config.setting['translate_artist_names_script_exception'] = (
+            self.ui.translate_artist_names_script_exception.isChecked()
+        )
         config.setting['script_exceptions'] = self.current_scripts
         config.setting['convert_punctuation'] = self.ui.convert_punctuation.isChecked()
         config.setting['release_ars'] = self.ui.release_ars.isChecked()
@@ -220,12 +223,12 @@ class MultiLocaleSelector(PicardDialog):
 
         def indented_translated_locale(locale, level):
             return _("{indent}{locale}").format(
-                indent="    " * level,
-                locale=gettext_constants(ALIAS_LOCALES[locale])
+                indent=" " * level * 4,
+                locale=gettext_constants(ALIAS_LOCALES[locale]),
             )
 
         self.ui.available_locales.clear()
-        for (locale, level) in iter_sorted_locales(ALIAS_LOCALES):
+        for locale, level in iter_sorted_locales(ALIAS_LOCALES):
             label = indented_translated_locale(locale, level)
             item = QtWidgets.QListWidgetItem(label)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, locale)
@@ -259,10 +262,7 @@ class MultiLocaleSelector(PicardDialog):
         self.ui.remove_locale.setEnabled(enabled)
 
     def save_changes(self):
-        locales = [
-            item.data(QtCore.Qt.ItemDataRole.UserRole)
-            for item in qlistwidget_items(self.ui.selected_locales)
-        ]
+        locales = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(self.ui.selected_locales)]
         self.parent().current_locales = locales
         self.parent().make_locales_text()
         self.accept()
@@ -371,10 +371,7 @@ class ScriptExceptionSelector(PicardDialog):
             selected_item.setText(label)
 
     def save_changes(self):
-        scripts = [
-            item.data(QtCore.Qt.ItemDataRole.UserRole)
-            for item in qlistwidget_items(self.ui.selected_scripts)
-        ]
+        scripts = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(self.ui.selected_scripts)]
         self.parent().current_scripts = scripts
         self.parent().make_scripts_text()
         self.accept()

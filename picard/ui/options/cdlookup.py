@@ -44,7 +44,6 @@ else:
 
 
 class CDLookupOptionsPage(OptionsPage):
-
     NAME = 'cdlookup'
     TITLE = N_("CD Lookup")
     PARENT = None
@@ -52,9 +51,7 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cdlookup.html"
 
-    OPTIONS = (
-        ('cd_lookup_device', None),
-    )
+    OPTIONS = (('cd_lookup_device', None),)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

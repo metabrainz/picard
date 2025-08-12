@@ -48,13 +48,11 @@ from picard.releasegroup import ReleaseGroup
 
 
 class FakeThreadPool(QtCore.QObject):
-
     def start(self, runnable, priority):
         runnable.run()
 
 
 class FakeTagger(QtCore.QObject):
-
     tagger_stats_changed = QtCore.pyqtSignal()
 
     def __init__(self):
@@ -83,7 +81,6 @@ class FakeTagger(QtCore.QObject):
 
 
 class PicardTestCase(unittest.TestCase):
-
     def setUp(self):
         super().setUp()
         log.set_verbosity(logging.DEBUG)
@@ -141,7 +138,7 @@ def get_test_data_path(*paths):
 
 def create_fake_png(extra):
     """Creates fake PNG data that satisfies Picard's internal image type detection"""
-    return b'\x89PNG\x0D\x0A\x1A\x0A' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
+    return b'\x89PNG\x0d\x0a\x1a\x0a' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
 
 
 def load_test_json(filename):

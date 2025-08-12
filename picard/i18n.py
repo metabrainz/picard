@@ -45,7 +45,7 @@ _qcollator_numeric.setNumericMode(True)
 
 _null_translations = module_gettext.NullTranslations()
 _translation = {
-    'main':  _null_translations,
+    'main': _null_translations,
     'attributes': _null_translations,
     'constants': _null_translations,
     'countries': _null_translations,
@@ -103,6 +103,7 @@ elif IS_MACOS:
         return defaults.objectForKey_('AppleLanguages')[0].replace('-', '_')
 
 else:
+
     def _get_default_locale():
         return None
 
@@ -283,8 +284,7 @@ def _sort_key_qt(string, numeric=False):
 
 def _sort_key_strxfrm(string, numeric=False):
     if numeric:
-        return [int(s) if s.isdecimal() else _strxfrm(s)
-            for s in RE_NUMBER.split(str(string).replace('\0', ''))]
+        return [int(s) if s.isdecimal() else _strxfrm(s) for s in RE_NUMBER.split(str(string).replace('\0', ''))]
     else:
         return _strxfrm(string)
 

@@ -80,32 +80,32 @@ LAST_REQUEST_TIMES = defaultdict(lambda: 0)
 
 def set_minimum_delay(hostkey, delay_ms):
     """Set the minimun delay between requests
-            hostkey is an unique key, for example (host, port)
-            delay_ms is the delay in milliseconds
+    hostkey is an unique key, for example (host, port)
+    delay_ms is the delay in milliseconds
     """
     REQUEST_DELAY_MINIMUM[hostkey] = int(delay_ms)
 
 
 def set_minimum_delay_for_url(url, delay_ms):
     """Set the minimun delay between requests
-            url will be converted to an unique key (host, port)
-            delay_ms is the delay in milliseconds
+    url will be converted to an unique key (host, port)
+    delay_ms is the delay in milliseconds
     """
     set_minimum_delay(hostkey_from_url(url), delay_ms)
 
 
 def current_delay(hostkey):
     """Returns the current delay (adaptive) between requests for this hostkey
-            hostkey is an unique key, for example (host, port)
+    hostkey is an unique key, for example (host, port)
     """
     return REQUEST_DELAY[hostkey]
 
 
 def get_delay_to_next_request(hostkey):
     """Calculate delay to next request to hostkey (host, port)
-       returns a tuple (wait, delay) where:
-           wait is True if a delay is needed
-           delay is the delay in milliseconds to next request
+    returns a tuple (wait, delay) where:
+        wait is True if a delay is needed
+        delay is the delay in milliseconds to next request
     """
     if CONGESTION_UNACK[hostkey] >= int(CONGESTION_WINDOW_SIZE[hostkey]):
         # We've maxed out the number of requests to `hostkey`, so wait
@@ -127,8 +127,7 @@ def get_delay_to_next_request(hostkey):
         log.debug("%s: Last request was %d ms ago, starting another one", hostkey, elapsed)
         return (False, interval)
     delay = int(math.ceil(interval - elapsed))
-    log.debug("%s: Last request was %d ms ago, waiting %d ms before starting another one",
-              hostkey, elapsed, delay)
+    log.debug("%s: Last request was %d ms ago, waiting %d ms before starting another one", hostkey, elapsed, delay)
     return (True, delay)
 
 
@@ -139,7 +138,7 @@ def _remember_request_time(hostkey):
 
 def increment_requests(hostkey):
     """Store the request time for this hostkey, and increment counter
-       It has to be called on each request
+    It has to be called on each request
     """
     _remember_request_time(hostkey)
     # Increment the number of unack'd requests on sending a new one
@@ -148,8 +147,7 @@ def increment_requests(hostkey):
 
 
 def decrement_requests(hostkey):
-    """Decrement counter, it has to be called on each reply
-    """
+    """Decrement counter, it has to be called on each reply"""
     assert CONGESTION_UNACK[hostkey] > 0
     CONGESTION_UNACK[hostkey] -= 1
     log.debug("%s: Decrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
@@ -157,22 +155,25 @@ def decrement_requests(hostkey):
 
 def copy_minimal_delay(from_hostkey, to_hostkey):
     """Copy minimal delay from one hostkey to another
-        Useful for redirections
+    Useful for redirections
     """
-    if (from_hostkey in REQUEST_DELAY_MINIMUM
-            and to_hostkey not in REQUEST_DELAY_MINIMUM):
+    if from_hostkey in REQUEST_DELAY_MINIMUM and to_hostkey not in REQUEST_DELAY_MINIMUM:
         REQUEST_DELAY_MINIMUM[to_hostkey] = REQUEST_DELAY_MINIMUM[from_hostkey]
-        log.debug("%s: Copy minimun delay from %s, setting it to %dms",
-                  to_hostkey, from_hostkey, REQUEST_DELAY_MINIMUM[to_hostkey])
+        log.debug(
+            "%s: Copy minimun delay from %s, setting it to %dms",
+            to_hostkey,
+            from_hostkey,
+            REQUEST_DELAY_MINIMUM[to_hostkey],
+        )
 
 
 def adjust(hostkey, slow_down):
     """Adjust `REQUEST` and `CONGESTION` metrics when a HTTP request completes.
 
-            Args:
-                    hostkey: `(host, port)`.
-                    slow_down: `True` if we encountered intermittent server trouble
-                    and need to slow down.
+    Args:
+            hostkey: `(host, port)`.
+            slow_down: `True` if we encountered intermittent server trouble
+            and need to slow down.
     """
     if slow_down:
         _slow_down(hostkey)
@@ -183,11 +184,9 @@ def adjust(hostkey, slow_down):
 
 def _slow_down(hostkey):
     # Backoff exponentially until ~30 seconds between requests.
-    delay = max(pow(2, REQUEST_DELAY_EXPONENT[hostkey]) * 1000,
-                REQUEST_DELAY_MINIMUM[hostkey])
+    delay = max(pow(2, REQUEST_DELAY_EXPONENT[hostkey]) * 1000, REQUEST_DELAY_MINIMUM[hostkey])
 
-    REQUEST_DELAY_EXPONENT[hostkey] = min(
-        REQUEST_DELAY_EXPONENT[hostkey] + 1, 5)
+    REQUEST_DELAY_EXPONENT[hostkey] = min(REQUEST_DELAY_EXPONENT[hostkey] + 1, 5)
 
     # Slow start threshold is ~1/2 of the window size up until we saw
     # trouble.  Shrink the new window size back to 1.
@@ -200,7 +199,7 @@ def _slow_down(hostkey):
         REQUEST_DELAY[hostkey],
         delay,
         CONGESTION_SSTHRESH[hostkey],
-        CONGESTION_WINDOW_SIZE[hostkey]
+        CONGESTION_WINDOW_SIZE[hostkey],
     )
 
     REQUEST_DELAY[hostkey] = delay
@@ -211,8 +210,7 @@ def _out_of_backoff(hostkey):
 
     # Shrink the delay between requests with each successive reply to
     # converge on maximum throughput.
-    delay = max(int(REQUEST_DELAY[hostkey] / 2),
-                REQUEST_DELAY_MINIMUM[hostkey])
+    delay = max(int(REQUEST_DELAY[hostkey] / 2), REQUEST_DELAY_MINIMUM[hostkey])
 
     cws = CONGESTION_WINDOW_SIZE[hostkey]
     sst = CONGESTION_SSTHRESH[hostkey]
@@ -226,8 +224,7 @@ def _out_of_backoff(hostkey):
         phase = 'slow start'
         cws += 1
 
-    if (REQUEST_DELAY[hostkey] != delay
-            or CONGESTION_WINDOW_SIZE[hostkey] != cws):
+    if REQUEST_DELAY[hostkey] != delay or CONGESTION_WINDOW_SIZE[hostkey] != cws:
         log.debug(
             '%s: oobackoff; delay: %dms -> %dms; %s; window size %.3f -> %.3f',
             hostkey,
@@ -235,7 +232,7 @@ def _out_of_backoff(hostkey):
             delay,
             phase,
             CONGESTION_WINDOW_SIZE[hostkey],
-            cws
+            cws,
         )
 
         CONGESTION_WINDOW_SIZE[hostkey] = cws

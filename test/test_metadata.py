@@ -72,9 +72,7 @@ settings = {
 
 
 class CommonTests:
-
     class CommonMetadataTestCase(PicardTestCase):
-
         original = None
         tags = []
 
@@ -257,11 +255,13 @@ class CommonTests:
             self.assertEqual(self.metadata._store, m._store)
 
         def test_metadata_diff(self):
-            m1 = Metadata({
-                "foo1": "bar1",
-                "foo2": "bar2",
-                "foo3": "bar3",
-            })
+            m1 = Metadata(
+                {
+                    "foo1": "bar1",
+                    "foo2": "bar2",
+                    "foo3": "bar3",
+                }
+            )
             m2 = Metadata(m1)
             m1["foo1"] = "baz"
             del m1["foo2"]
@@ -282,6 +282,7 @@ class CommonTests:
         def test_metadata_applyfunc(self):
             def func(x):
                 return x[1:]
+
             self.metadata.apply_func(func)
 
             self.assertEqual("ingle1-value", self.metadata["single1"])
@@ -301,6 +302,7 @@ class CommonTests:
 
             def func(x):
                 return x[1:]
+
             m.apply_func(func)
 
             self.assertEqual("value1", m[preserved_tag])
@@ -309,6 +311,7 @@ class CommonTests:
         def test_metadata_applyfunc_delete_tags(self):
             def func(x):
                 return None
+
             metadata = Metadata(self.metadata)
             metadata.apply_func(func)
             self.assertEqual(0, len(metadata.rawitems()))
@@ -326,10 +329,13 @@ class CommonTests:
                 (None, 2000, 0.0),
                 (None, None, 0.0),
             )
-            for (a, b, expected) in results:
+            for a, b, expected in results:
                 actual = Metadata.length_score(a, b)
-                self.assertAlmostEqual(expected, actual,
-                                       msg="a={a}, b={b}".format(a=a, b=b))
+                self.assertAlmostEqual(
+                    expected,
+                    actual,
+                    msg="a={a}, b={b}".format(a=a, b=b),
+                )
 
         def test_compare_is_equal(self):
             m1 = Metadata()
@@ -394,7 +400,7 @@ class CommonTests:
         def test_strip_whitespace(self):
             m1 = Metadata()
             m1["artist"] = "  TheArtist  "
-            m1["title"] = "\t\u00A0  tit le1 \r\n"
+            m1["title"] = "\t\u00a0  tit le1 \r\n"
             m1["genre"] = " \t"
             m1.strip_whitespace()
             self.assertEqual(m1["artist"], "TheArtist")
@@ -628,29 +634,17 @@ class CommonTests:
             release = load_test_json('release.json')
             parts = []
             weights_from_release_type_scores(parts, release, {'Album': 0.75}, 666)
-            self.assertEqual(
-                parts[0],
-                (0.75, 666)
-            )
+            self.assertEqual(parts[0], (0.75, 666))
             weights_from_release_type_scores(parts, release, {}, 666)
-            self.assertEqual(
-                parts[1],
-                (0.5, 666)
-            )
+            self.assertEqual(parts[1], (0.5, 666))
 
         def test_weights_from_release_type_scores_no_type(self):
             release = load_test_json('release_no_type.json')
             parts = []
             weights_from_release_type_scores(parts, release, {'Other': 0.75}, 123)
-            self.assertEqual(
-                parts[0],
-                (0.75, 123)
-            )
+            self.assertEqual(parts[0], (0.75, 123))
             weights_from_release_type_scores(parts, release, {}, 123)
-            self.assertEqual(
-                parts[1],
-                (0.5, 123)
-            )
+            self.assertEqual(parts[1], (0.5, 123))
 
         def test_preferred_countries(self):
             release = load_test_json('release.json')
@@ -703,37 +697,49 @@ class CommonTests:
 
         def test_compare_to_track_full(self):
             recording = load_test_json('recording_video_null.json')
-            m = Metadata({
-                'artist': 'Tim Green',
-                'release': 'Eastbound Silhouette',
-                'date': '2022',
-                'title': 'Lune',
-                'totaltracks': '6',
-                'albumartist': 'Tim Green',
-                'tracknumber': '4',
-            })
+            m = Metadata(
+                {
+                    'artist': 'Tim Green',
+                    'release': 'Eastbound Silhouette',
+                    'date': '2022',
+                    'title': 'Lune',
+                    'totaltracks': '6',
+                    'albumartist': 'Tim Green',
+                    'tracknumber': '4',
+                }
+            )
             match_ = m.compare_to_track(recording, FILE_COMPARISON_WEIGHTS)
             self.assertGreaterEqual(match_.similarity, 0.8)
             self.assertEqual(recording, match_.track)
             self.assertEqual(recording['releases'][0], match_.release)
 
         def test_compare_to_track_without_releases(self):
-            self.set_config_values({
-                'release_type_scores': [('Compilation', 0.6), ('Other', 0.6)]
-            })
+            self.set_config_values(
+                {
+                    'release_type_scores': [
+                        ('Compilation', 0.6),
+                        ('Other', 0.6),
+                    ]
+                }
+            )
             track_json = acoustid_parse_recording(load_test_json('acoustid.json'))
             track = Track(track_json['id'])
-            track.metadata.update({
-                'album': 'x',
-                'artist': 'Ed Sheeran',
-                'title': 'Nina',
-            })
+            track.metadata.update(
+                {
+                    'album': 'x',
+                    'artist': 'Ed Sheeran',
+                    'title': 'Nina',
+                }
+            )
             track.metadata.length = 225000
             m1 = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
             del track_json['releases']
             m2 = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
-            self.assertGreater(m1.similarity, m2.similarity,
-                               'Matching score for release with recordings must be higher then for release without')
+            self.assertGreater(
+                m1.similarity,
+                m2.similarity,
+                'Matching score for release with recordings must be higher then for release without',
+            )
 
 
 class MetadataTest(CommonTests.CommonMetadataTestCase):
@@ -749,21 +755,26 @@ class MultiMetadataProxyAsMetadataTest(CommonTests.CommonMetadataTestCase):
 
 
 class MultiMetadataProxyTest(PicardTestCase):
-
     def setUp(self):
         super().setUp()
-        self.m1 = Metadata({
-            "key1": "m1.val1",
-            "key2": "m1.val2",
-        })
-        self.m2 = Metadata({
-            "key2": "m2.val2",
-            "key3": "m2.val3",
-        })
-        self.m3 = Metadata({
-            "key2": "m3.val2",
-            "key4": "m3.val4",
-        })
+        self.m1 = Metadata(
+            {
+                "key1": "m1.val1",
+                "key2": "m1.val2",
+            }
+        )
+        self.m2 = Metadata(
+            {
+                "key2": "m2.val2",
+                "key3": "m2.val3",
+            }
+        )
+        self.m3 = Metadata(
+            {
+                "key2": "m3.val2",
+                "key4": "m3.val4",
+            }
+        )
 
     def test_get_attribute(self):
         mp = MultiMetadataProxy(self.m1, self.m2, self.m3)

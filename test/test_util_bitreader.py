@@ -33,9 +33,8 @@ from picard.util.bitreader import (
 
 
 class LsbBitReaderTest(PicardTestCase):
-
     def test_msb_bit_reader(self):
-        data = BytesIO(b'\x8B\xC0\x17\x10')
+        data = BytesIO(b'\x8b\xc0\x17\x10')
         reader = MSBBitReader(data)
         self.assertEqual(8944, reader.bits(14))
         self.assertFalse(reader.is_aligned())
@@ -44,7 +43,7 @@ class LsbBitReaderTest(PicardTestCase):
         self.assertEqual(32, reader.get_position())
 
     def test_lsb_bit_reader(self):
-        data = BytesIO(b'\x8B\xC0\x17\x10')
+        data = BytesIO(b'\x8b\xc0\x17\x10')
         reader = LSBBitReader(data)
         self.assertEqual(139, reader.bits(14))
         self.assertEqual(95, reader.bits(14))
@@ -52,7 +51,7 @@ class LsbBitReaderTest(PicardTestCase):
         self.assertEqual(32, reader.get_position())
 
     def test_alignment(self):
-        data = BytesIO(b'\xFF\x00')
+        data = BytesIO(b'\xff\x00')
         reader = LSBBitReader(data)
         self.assertTrue(reader.is_aligned())
         self.assertEqual(31, reader.bits(5))
@@ -62,7 +61,7 @@ class LsbBitReaderTest(PicardTestCase):
         self.assertEqual(8, reader.get_position())
 
     def test_skip(self):
-        data = BytesIO(b'\x00\xF0')
+        data = BytesIO(b'\x00\xf0')
         reader = LSBBitReader(data)
         reader.skip(12)
         self.assertEqual(3, reader.bits(2))
@@ -70,24 +69,24 @@ class LsbBitReaderTest(PicardTestCase):
         self.assertEqual(16, reader.get_position())
 
     def test_bytes(self):
-        data = BytesIO(b'\xA0\xB0\xC0\x0D')
+        data = BytesIO(b'\xa0\xb0\xc0\x0d')
         reader = LSBBitReader(data)
-        self.assertEqual(b'\xA0\xB0', reader.bytes(2))
+        self.assertEqual(b'\xa0\xb0', reader.bytes(2))
         reader.skip(4)
-        self.assertEqual(b'\xDC', reader.bytes(1))
+        self.assertEqual(b'\xdc', reader.bytes(1))
         self.assertRaises(BitReaderError, reader.bytes, 1)
 
     def test_read_negative(self):
-        self.assertRaises(ValueError, MSBBitReader(BytesIO(b'\xFF')).bits, -1)
-        self.assertRaises(ValueError, LSBBitReader(BytesIO(b'\xFF')).bits, -1)
-        self.assertRaises(ValueError, LSBBitReader(BytesIO(b'\xFF')).skip, -1)
-        self.assertRaises(ValueError, LSBBitReader(BytesIO(b'\xFF')).bytes, -1)
+        self.assertRaises(ValueError, MSBBitReader(BytesIO(b'\xff')).bits, -1)
+        self.assertRaises(ValueError, LSBBitReader(BytesIO(b'\xff')).bits, -1)
+        self.assertRaises(ValueError, LSBBitReader(BytesIO(b'\xff')).skip, -1)
+        self.assertRaises(ValueError, LSBBitReader(BytesIO(b'\xff')).bytes, -1)
 
     def test_read_not_enough_data(self):
-        self.assertRaises(BitReaderError, MSBBitReader(BytesIO(b'\xFF')).bits, 9)
-        self.assertRaises(BitReaderError, LSBBitReader(BytesIO(b'\xFF')).bits, 9)
-        self.assertRaises(BitReaderError, LSBBitReader(BytesIO(b'\xFF')).skip, 9)
-        self.assertRaises(BitReaderError, LSBBitReader(BytesIO(b'\xFF')).bytes, 2)
+        self.assertRaises(BitReaderError, MSBBitReader(BytesIO(b'\xff')).bits, 9)
+        self.assertRaises(BitReaderError, LSBBitReader(BytesIO(b'\xff')).bits, 9)
+        self.assertRaises(BitReaderError, LSBBitReader(BytesIO(b'\xff')).skip, 9)
+        self.assertRaises(BitReaderError, LSBBitReader(BytesIO(b'\xff')).bytes, 2)
 
     def test_bits_no_default_implementation(self):
         self.assertRaises(NotImplementedError, _BitReader(BytesIO(b'')).bits, 0)

@@ -105,12 +105,12 @@ def pack_image(mime, data, image_type=3, description=""):
 
 
 class ASFFile(File):
-
     """
     ASF (WMA) metadata reader/writer
     See http://msdn.microsoft.com/en-us/library/ms867702.aspx for official
     WMA tag specifications.
     """
+
     EXTENSIONS = [".wma", ".wmv", ".asf"]
     NAME = "Windows Media Audio"
     _File = ASF
@@ -215,8 +215,7 @@ class ASFFile(File):
                     try:
                         (mime, data, image_type, description) = unpack_image(image.value)
                     except ValueError as e:
-                        log.warning("Cannot unpack image from %r: %s",
-                                    filename, e)
+                        log.warning("Cannot unpack image from %r: %s", filename, e)
                         continue
                     try:
                         coverartimage = TagCoverArtImage(
@@ -270,8 +269,7 @@ class ASFFile(File):
                 tags['WM/Picture'] = cover
         cover = []
         for image in metadata.images.to_be_saved_to_tags():
-            tag_data = pack_image(image.mimetype, image.data, image.id3_type,
-                                  image.comment)
+            tag_data = pack_image(image.mimetype, image.data, image.id3_type, image.comment)
             cover.append(ASFByteArrayAttribute(tag_data))
         if cover:
             tags['WM/Picture'] = cover
@@ -307,10 +305,12 @@ class ASFFile(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return (name in cls.__TRANS
-                or name in cls.__TRANS_CI
-                or name in {'~rating', 'totaldiscs'}
-                or name.startswith('lyrics:'))
+        return (
+            name in cls.__TRANS
+            or name in cls.__TRANS_CI
+            or name in {'~rating', 'totaldiscs'}
+            or name.startswith('lyrics:')
+        )
 
     def _get_tag_name(self, name):
         if name.startswith('lyrics:'):

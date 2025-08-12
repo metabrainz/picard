@@ -70,12 +70,14 @@ from picard.ui.forms.ui_provider_options_caa import Ui_CaaOptions
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
 CaaThumbnailListItem = namedtuple('CAAThumbnailListItem', ['url', 'width'])
 
-_CAA_THUMBNAIL_SIZE_MAP = OrderedDict([
-    (250, CaaSizeItem('250', N_('250 px'))),
-    (500, CaaSizeItem('500', N_('500 px'))),
-    (1200, CaaSizeItem('1200', N_('1200 px'))),
-    (-1, CaaSizeItem(None, N_('Full size'))),
-])
+_CAA_THUMBNAIL_SIZE_MAP = OrderedDict(
+    [
+        (250, CaaSizeItem('250', N_('250 px'))),
+        (500, CaaSizeItem('500', N_('500 px'))),
+        (1200, CaaSizeItem('1200', N_('1200 px'))),
+        (-1, CaaSizeItem(None, N_('Full size'))),
+    ]
+)
 _CAA_THUMBNAIL_SIZE_ALIASES = {
     '500': 'large',
     '250': 'small',
@@ -113,7 +115,7 @@ def caa_url_fallback_list(desired_size, thumbnails):
 
 class ProviderOptionsCaa(ProviderOptions):
     """
-        Options for Cover Art Archive cover art provider
+    Options for Cover Art Archive cover art provider
     """
 
     TITLE = N_("Cover Art Archive")
@@ -144,8 +146,7 @@ class ProviderOptionsCaa(ProviderOptions):
         self.ui.cb_image_size.setCurrentIndex(index)
 
         self.ui.cb_approved_only.setChecked(config.setting['caa_approved_only'])
-        self.ui.restrict_images_types.setChecked(
-            config.setting['caa_restrict_image_types'])
+        self.ui.restrict_images_types.setChecked(config.setting['caa_restrict_image_types'])
         self.caa_image_types = config.setting['caa_image_types']
         self.caa_image_types_to_omit = config.setting['caa_image_types_to_omit']
         self.update_caa_types()
@@ -154,10 +155,8 @@ class ProviderOptionsCaa(ProviderOptions):
         config = get_config()
         size = self.ui.cb_image_size.currentData()
         config.setting['caa_image_size'] = size
-        config.setting['caa_approved_only'] = \
-            self.ui.cb_approved_only.isChecked()
-        config.setting['caa_restrict_image_types'] = \
-            self.ui.restrict_images_types.isChecked()
+        config.setting['caa_approved_only'] = self.ui.cb_approved_only.isChecked()
+        config.setting['caa_restrict_image_types'] = self.ui.restrict_images_types.isChecked()
         config.setting['caa_image_types'] = self.caa_image_types
         config.setting['caa_image_types_to_omit'] = self.caa_image_types_to_omit
 
@@ -179,7 +178,6 @@ class ProviderOptionsCaa(ProviderOptions):
 
 
 class CoverArtProviderCaa(CoverArtProvider):
-
     """Get cover art from Cover Art Archive using release mbid"""
 
     NAME = "Cover Art Archive"
@@ -298,11 +296,14 @@ class CoverArtProviderCaa(CoverArtProvider):
 
                     if self.restrict_types:
                         # accept only if image types matches according to included/excluded types
-                        accepted = bool(set(image['types']).intersection(self.included_types).difference(self.excluded_types))
-                        log.debug("CAA image %s: %s  %s",
+                        accepted = bool(
+                            set(image['types']).intersection(self.included_types).difference(self.excluded_types)
+                        )
+                        log.debug(
+                            "CAA image %s: %s  %s",
                             ('accepted' if accepted else 'rejected'),
                             image['image'],
-                            image['types']
+                            image['types'],
                         )
                     else:
                         accepted = True
@@ -338,9 +339,11 @@ class CoverArtProviderCaa(CoverArtProvider):
                             # PDFs cannot be saved to tags (as 2014/05/29)
                             coverartimage.can_be_saved_to_tags = False
                         self.queue_put(coverartimage)
-                        if config.setting['save_only_one_front_image'] and \
-                                config.setting['save_images_to_files'] and \
-                                image['front']:
+                        if (
+                            config.setting['save_only_one_front_image']
+                            and config.setting['save_images_to_files']
+                            and image['front']
+                        ):
                             break
             except (AttributeError, KeyError, TypeError) as e:
                 self.error("CAA JSON error: %s" % e)

@@ -83,7 +83,6 @@ def _is_valid_origin(origin):
 
 
 class BrowserIntegration(QtCore.QObject):
-
     listen_port_changed = QtCore.pyqtSignal(int)
 
     def __init__(self, parent=None):
@@ -134,7 +133,10 @@ class BrowserIntegration(QtCore.QObject):
             else:
                 log.error(
                     "%s: Failed to find an available port in range %s-%s on address %s",
-                    LOG_PREFIX, MIN_PORT, MAX_PORT, host_address,
+                    LOG_PREFIX,
+                    MIN_PORT,
+                    MAX_PORT,
+                    host_address,
                 )
                 self.stop()
         except Exception:
@@ -156,9 +158,7 @@ class BrowserIntegration(QtCore.QObject):
 
 # From https://github.com/python/cpython/blob/f474264b1e3cd225b45cf2c0a91226d2a9d3ee9b/Lib/http/server.py#L570C1-L573C43
 # https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
-CONTROL_CHAR_TABLE = str.maketrans(
-    {c: fr'\x{c:02x}' for c in chain(range(0x20), range(0x7f, 0xa0))}
-)
+CONTROL_CHAR_TABLE = str.maketrans({c: rf'\x{c:02x}' for c in chain(range(0x20), range(0x7F, 0xA0))})
 CONTROL_CHAR_TABLE[ord('\\')] = r'\\'
 
 
@@ -167,7 +167,6 @@ def safe_message(message):
 
 
 class RequestHandler(BaseHTTPRequestHandler):
-
     def do_OPTIONS(self):
         origin = self.headers['origin']
         if _is_valid_origin(origin):

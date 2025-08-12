@@ -306,7 +306,6 @@ def test_lxqt_dark_theme_detection_failure(file_exists: bool, raises, tmp_path: 
         elif not file_exists:
             assert theme_detect.detect_lxqt_dark_theme() is False
 
-
 @pytest.mark.parametrize(
     ("gsettings_value", "expected"),
     [
@@ -461,9 +460,9 @@ def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, dark_mode, ex
     else:
         # The Window color should remain the unique color if not overridden
         window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
-        assert window_color == QtGui.QColor(
-            123, 123, 123
-        ), f"Palette should not be overridden, got {window_color.getRgb()}"
+        assert window_color == QtGui.QColor(123, 123, 123), (
+            f"Palette should not be overridden, got {window_color.getRgb()}"
+        )
 
 
 @pytest.mark.parametrize(
@@ -635,6 +634,6 @@ def test_linux_dark_palette_override_only_if_not_already_dark(
     else:
         # The Window color should remain the unique color if not overridden
         window_color = palette.color(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window)
-        assert window_color == QtGui.QColor(
-            123, 123, 123
-        ), f"Palette should not be overridden, got {window_color.getRgb()}"
+        assert window_color == QtGui.QColor(123, 123, 123), (
+            f"Palette should not be overridden, got {window_color.getRgb()}"
+        )

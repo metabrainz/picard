@@ -177,7 +177,7 @@ TAGS = {
     'totaltracks': '10',
     'tracknumber': '2',
     'website': 'http://example.com',
-    'work': 'Foo'
+    'work': 'Foo',
 }
 
 REPLAYGAIN_TAGS = {
@@ -196,12 +196,12 @@ def skipUnlessTestfile(func):
         if not self.testfile:
             raise unittest.SkipTest("No test file set")
         func(self, *args, **kwargs)
+
     return _decorator
 
 
 # prevent unittest to run tests in those classes
 class CommonTests:
-
     class BaseFileTestCase(PicardTestCase):
         testfile = None
         testfile_ext = None
@@ -221,7 +221,6 @@ class CommonTests:
             return self.copy_file_tmp(self.testfile_path, self.testfile_ext)
 
     class SimpleFormatsTestCase(BaseFileTestCase):
-
         expected_info = {}
         unexpected_info = []
 
@@ -244,7 +243,7 @@ class CommonTests:
         def _test_supported_tags(self, tags):
             metadata = Metadata(tags)
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
-            for (key, value) in tags.items():
+            for key, value in tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         def _test_unsupported_tags(self, tags):
@@ -255,7 +254,6 @@ class CommonTests:
                 self.assertNotIn(tag, loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
 
     class TagFormatsTestCase(SimpleFormatsTestCase):
-
         def setUp(self):
             super().setUp()
             self.tags = TAGS.copy()
@@ -298,7 +296,7 @@ class CommonTests:
             }
             save_raw(self.filename, tags)
             loaded_metadata = load_metadata(self.filename)
-            for (key, value) in self.replaygain_tags.items():
+            for key, value in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
@@ -308,7 +306,7 @@ class CommonTests:
                 tags['~rating'] = '3'
             metadata = Metadata(tags)
             save_metadata(self.filename, metadata)
-            for (key, value) in tags.items():
+            for key, value in tags.items():
                 self.assertEqual(metadata[key], value, '%s: %r != %r' % (key, metadata[key], value))
 
         @skipUnlessTestfile
@@ -325,7 +323,7 @@ class CommonTests:
             metadata = Metadata(self.tags)
             save_metadata(self.filename, metadata)
             loaded_metadata = save_and_load_metadata(self.filename, Metadata())
-            for (key, value) in self.tags.items():
+            for key, value in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         @skipUnlessTestfile
@@ -381,8 +379,14 @@ class CommonTests:
         @skipUnlessTestfile
         def test_delete_tags_with_description(self):
             for key in (
-                'comment:foo', 'comment:de:foo', 'performer:foo', 'lyrics:foo',
-                'comment:a*', 'comment:a[', 'performer:(x)', 'performer: Ä é '
+                'comment:foo',
+                'comment:de:foo',
+                'performer:foo',
+                'lyrics:foo',
+                'comment:a*',
+                'comment:a[',
+                'performer:(x)',
+                'performer: Ä é ',
             ):
                 if not self.format.supports_tag(key):
                     continue
@@ -401,8 +405,15 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_delete_nonexistant_tags(self):
-            for key in ('title', 'foo', 'comment:foo', 'comment:de:foo',
-                        'performer:foo', 'lyrics:foo', 'totaltracks'):
+            for key in (
+                'title',
+                'foo',
+                'comment:foo',
+                'comment:de:foo',
+                'performer:foo',
+                'lyrics:foo',
+                'totaltracks',
+            ):
                 if not self.format.supports_tag(key):
                     continue
                 metadata = Metadata()
@@ -428,10 +439,12 @@ class CommonTests:
         def test_delete_performer(self):
             if not self.format.supports_tag('performer:'):
                 raise unittest.SkipTest('Tag "performer:" not supported for %s' % self.format.NAME)
-            metadata = Metadata({
-                'performer:piano': ['Piano1', 'Piano2'],
-                'performer:guitar': ['Guitar1'],
-            })
+            metadata = Metadata(
+                {
+                    'performer:piano': ['Piano1', 'Piano2'],
+                    'performer:guitar': ['Guitar1'],
+                }
+            )
             original_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertIn('Piano1', original_metadata.getall('performer:piano'))
             self.assertIn('Piano2', original_metadata.getall('performer:piano'))
@@ -464,7 +477,9 @@ class CommonTests:
                 metadata = Metadata()
                 metadata['~rating'] = rating
                 loaded_metadata = save_and_load_metadata(self.filename, metadata)
-                self.assertEqual(int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating))
+                self.assertEqual(
+                    int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating)
+                )
 
         @skipUnlessTestfile
         def test_invalid_rating_email(self):
@@ -530,10 +545,12 @@ class CommonTests:
         def test_invalid_track_and_discnumber(self):
             # This test assumes a non-numeric test number can be written. For
             # formats not supporting this it needs to be overridden.
-            metadata = Metadata({
-                'discnumber': 'notanumber',
-                'tracknumber': 'notanumber',
-            })
+            metadata = Metadata(
+                {
+                    'discnumber': 'notanumber',
+                    'tracknumber': 'notanumber',
+                }
+            )
             loaded_metadata = save_and_load_metadata(self.filename, metadata)
             self.assertEqual(loaded_metadata['discnumber'], metadata['discnumber'])
             self.assertEqual(loaded_metadata['totaldiscs'], metadata['totaldiscs'])

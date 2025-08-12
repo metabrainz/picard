@@ -64,7 +64,6 @@ DisplayListItem = namedtuple('DisplayListItem', ('translated_label', 'action_id'
 
 
 class InterfaceToolbarOptionsPage(OptionsPage):
-
     NAME = 'interface_toolbar'
     TITLE = N_("Action Toolbar")
     PARENT = 'interface'
@@ -73,9 +72,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_toolbar.html"
     SEPARATOR = '—' * 5
 
-    OPTIONS = (
-        ('toolbar_layout', ['toolbar_layout_list']),
-    )
+    OPTIONS = (('toolbar_layout', ['toolbar_layout_list']),)
 
     TOOLBAR_BUTTONS = {
         MainAction.ADD_DIRECTORY: ToolbarButtonDesc(
@@ -149,8 +146,9 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         self.ui.add_button.clicked.connect(self.add_to_toolbar)
         self.ui.insert_separator_button.clicked.connect(self.insert_separator)
         self.ui.remove_button.clicked.connect(self.remove_action)
-        self.move_view = MoveableListView(self.ui.toolbar_layout_list, self.ui.up_button,
-                                          self.ui.down_button, self.update_action_buttons)
+        self.move_view = MoveableListView(
+            self.ui.toolbar_layout_list, self.ui.up_button, self.ui.down_button, self.update_action_buttons
+        )
         self.update_buttons = self.move_view.update_buttons
 
     def load(self):
@@ -280,7 +278,9 @@ class AddActionDialog(PicardDialog):
 
         buttons = QtWidgets.QDialogButtonBox(
             QtWidgets.QDialogButtonBox.StandardButton.Ok | QtWidgets.QDialogButtonBox.StandardButton.Cancel,
-            QtCore.Qt.Orientation.Horizontal, self)
+            QtCore.Qt.Orientation.Horizontal,
+            self,
+        )
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)

@@ -80,9 +80,9 @@ class AACNoTagsTest(CommonTests.BaseFileTestCase):
 
     def test_remove_ape_tags(self):
         config.setting['remove_ape_from_aac'] = True
-        metadata = Metadata({
-            'artist': 'Foo'
-        })
+        metadata = Metadata(
+            {'artist': 'Foo'},
+        )
         metadata = save_and_load_metadata(self.filename, metadata)
         self.assertEqual('AAC', metadata['~format'])
         self.assertNotIn('title', metadata)

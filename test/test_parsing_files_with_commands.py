@@ -27,7 +27,6 @@ from picard.remotecommands import RemoteCommands
 
 
 class TestParsingFilesWithCommands(PicardTestCase):
-
     TEST_FILE = 'test/data/test-command-file-1.txt'
 
     def setUp(self):

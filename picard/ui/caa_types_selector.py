@@ -89,7 +89,9 @@ class ArrowsColumn(QtWidgets.QWidget):
         self.selection_list = selection_list
         self.ignore_list = ignore_list
         self.callback = callback
-        spacer_item = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacer_item = QtWidgets.QSpacerItem(
+            20, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         arrows_layout = QtWidgets.QVBoxLayout()
         arrows_layout.addItem(QtWidgets.QSpacerItem(spacer_item))
         self.button_add = ArrowButton('go-next' if reverse else 'go-previous', self.move_from_ignore)
@@ -222,7 +224,7 @@ class CAATypesSelectorDialog(PicardDialog):
             self.list_exclude,
             self.list_ignore,
             callback=self.set_buttons_enabled_state,
-            reverse=True
+            reverse=True,
         )
 
         lists_layout = QtWidgets.QHBoxLayout()
@@ -265,12 +267,11 @@ class CAATypesSelectorDialog(PicardDialog):
 
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
         self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.buttonbox.addButton(
-            StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.buttonbox.addButton(StandardButton(StandardButton.CANCEL),
-                                 QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
-        self.buttonbox.addButton(
-            StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
+            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        )
+        self.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
 
         extrabuttons = [
             (N_("I&nclude all"), self.move_all_to_include_list),
@@ -332,7 +333,7 @@ class CAATypesSelectorDialog(PicardDialog):
 
     @property
     def included(self):
-        return tuple(self.list_include.all_items_data()) or ('front', )
+        return tuple(self.list_include.all_items_data()) or ('front',)
 
     @property
     def excluded(self):

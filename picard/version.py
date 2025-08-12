@@ -38,7 +38,7 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
         'beta': 2,
         'b': 2,
         'rc': 3,
-        'final': 4
+        'final': 4,
     }
 
     def __new__(cls, major, minor=0, patch=0, identifier='final', revision=0):
@@ -70,8 +70,7 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
                 return Version(major, minor, patch)
             revision = int(revision)
             return Version(major, minor, patch, identifier, revision)
-        raise VersionError("String '%s' does not match regex '%s'" % (version_str,
-                                                                      cls._version_re.pattern))
+        raise VersionError("String '%s' does not match regex '%s'" % (version_str, cls._version_re.pattern))
 
     @classmethod
     def valid_identifiers(cls):

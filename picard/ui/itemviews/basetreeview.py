@@ -159,7 +159,6 @@ def _build_other_versions_actions(releases_menu, album, alternative_versions):
 
 
 def _add_other_versions(releases_menu, album, action_loading):
-
     if album.release_group.versions_count is not None:
         releases_menu.setTitle(_("&Other versions (%d)") % album.release_group.versions_count)
 
@@ -169,7 +168,6 @@ def _add_other_versions(releases_menu, album, action_loading):
 
 
 class BaseTreeView(QtWidgets.QTreeWidget):
-
     def __init__(self, columns, window, parent=None):
         super().__init__(parent=parent)
         self.columns = columns
@@ -309,8 +307,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     album.release_group.load_versions(callback)
                 releases_menu.setEnabled(True)
 
-        if config.setting['enable_ratings'] and \
-           len(self.window.selected_objects) == 1 and isinstance(obj, Track):
+        if config.setting['enable_ratings'] and len(self.window.selected_objects) == 1 and isinstance(obj, Track):
             action = QtWidgets.QWidgetAction(menu)
             action.setDefaultWidget(RatingWidget(obj, parent=menu))
             add_actions(
@@ -555,6 +552,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if parent_item is None:
             parent_item = self.clusters
         from picard.ui.itemviews import ClusterItem
+
         cluster_item = ClusterItem(cluster, sortable=not cluster.special, parent=parent_item)
         if cluster.hide_if_empty and not cluster.files:
             cluster_item.update()
@@ -563,7 +561,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             cluster_item.add_files(cluster.files)
 
     def moveCursor(self, action, modifiers):
-        if action in {QtWidgets.QAbstractItemView.CursorAction.MoveUp, QtWidgets.QAbstractItemView.CursorAction.MoveDown}:
+        if action in {
+            QtWidgets.QAbstractItemView.CursorAction.MoveUp,
+            QtWidgets.QAbstractItemView.CursorAction.MoveDown,
+        }:
             item = self.currentItem()
             if item and not item.isSelected():
                 self.setCurrentItem(item)
@@ -618,9 +619,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 self._set_item_tooltip(
                     item=child,
                     text=(
-                        _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters])) if matched_filters else
-                        _('No tags found for selected filters.')
-                    )
+                        _('Matches on: %s') % ', '.join(sorted([ALL_TAGS.display_name(x) for x in matched_filters]))
+                        if matched_filters
+                        else _('No tags found for selected filters.')
+                    ),
                 )
 
             # Hide/show based on match
@@ -634,7 +636,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def _matches_file_properties(obj, text: str, filters: set):
         matches = set()
         has_tags = False
-        if not filters.intersection(FILE_FILTERS):   # No file filters to check
+        if not filters.intersection(FILE_FILTERS):  # No file filters to check
             return has_tags, matches
         if hasattr(obj, 'iterfiles'):
             has_tags = True
@@ -651,7 +653,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         matches = set()
         has_tags = False
         test_filters = filters - FILE_FILTERS
-        if not test_filters:    # No metadata filters to check
+        if not test_filters:  # No metadata filters to check
             return has_tags, matches
 
         if hasattr(obj, 'metadata'):

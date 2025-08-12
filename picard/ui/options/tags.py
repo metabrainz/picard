@@ -37,7 +37,6 @@ from picard.ui.options import OptionsPage
 
 
 class TagsOptionsPage(OptionsPage):
-
     NAME = 'tags'
     TITLE = N_("Tags")
     PARENT = None

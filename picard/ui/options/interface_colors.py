@@ -46,7 +46,6 @@ from picard.ui.util import changes_require_restart_warning
 
 
 class ColorButton(QtWidgets.QPushButton):
-
     color_changed = QtCore.pyqtSignal(str)
 
     def __init__(self, initial_color=None, parent=None):
@@ -69,7 +68,10 @@ class ColorButton(QtWidgets.QPushButton):
 
     def open_color_dialog(self):
         new_color = QtWidgets.QColorDialog.getColor(
-            self.color, title=_("Choose a color"), parent=self.parent())
+            self.color,
+            title=_("Choose a color"),
+            parent=self.parent(),
+        )
 
         if new_color.isValid():
             self.color = new_color
@@ -92,7 +94,6 @@ def delete_items_of_layout(layout):
 
 
 class InterfaceColorsOptionsPage(OptionsPage):
-
     NAME = 'interface_colors'
     TITLE = N_("Colors")
     PARENT = 'interface'
@@ -160,7 +161,9 @@ class InterfaceColorsOptionsPage(OptionsPage):
             widget.setLayout(hlayout)
             groupbox_layout.addWidget(widget)
 
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.colors_list.addItem(spacerItem1)
 
     def load(self):

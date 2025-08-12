@@ -13,8 +13,10 @@ Required:
 * [Mutagen 1.45 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
 * [python-dateutil](https://dateutil.readthedocs.io/en/stable/)
-* gettext:
-  * [Windows](https://mlocati.github.io/articles/gettext-iconv-windows.html)
+* gettext (`msgfmt`):
+  * **Windows:** Download and install from [https://github.com/mlocati/gettext-iconv-windows/releases](https://github.com/mlocati/gettext-iconv-windows/releases) (e.g. `gettext0.25.1-iconv1.17-shared-64.exe`) and add `C:\Program Files\gettext-iconv\bin` to your PATH variable.
+  * **Linux:** `sudo apt install gettext` (Ubuntu/Debian) or equivalent for your distribution
+  * **macOS:** Usually included with Xcode Command Line Tools. If not: `brew install gettext`
 * a compiler
   * Windows should work with [Visual Studio Community 2019](https://aka.ms/vs/16/release/vs_community.exe)
 
@@ -34,10 +36,23 @@ Optional but recommended:
 * [charset_normalizer](https://pypi.org/project/charset-normalizer/) or [chardet](https://pypi.org/project/chardet/)
   * Required for character encoding detection in CD ripping log files
 
-We recommend you use [pip](https://pip.pypa.io/en/stable/) to install the Python
-dependencies:
+We recommend you use [uv](https://docs.astral.sh/uv/) to install the Python dependencies.
 
-Run the following command to install PyQt6, Mutagen and discid:
+**Using uv (recommended, faster):**
+
+    # Install uv first (optional but recommended)
+    # macOS/Linux: curl -LsSf https://astral.sh/uv/install.sh | sh
+    # Windows: powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+    # Installing the dependencies (main, build, and dev)
+    uv sync
+
+    # Installing dependencies for your specific platform
+    uv pip install -r requirements-macos-11.0.txt
+    uv pip install -r requirements-win.txt
+    # etc...
+
+**Using pip (traditional method):** [pip](https://pip.pypa.io/en/stable/)
 
     pip3 install -r requirements.txt
 
@@ -128,6 +143,27 @@ For other distributions, check your distribution's documentation
 on how to install the packages for Qt6, PyQt6, Python3 C headers,
 and Python3 venv.
 
+### Using uv (Recommended)
+
+```bash
+# Create virtual environment and activate it
+uv venv
+. ./.venv/bin/activate  # macOS/Linux
+# .\.venv\Scripts\activate.bat  # Windows
+
+# Install all dependencies (main, build, and dev)
+uv sync
+
+# Build the project
+python setup.py build
+python setup.py build_ext -i
+
+# Run Picard
+python ./tagger.py
+```
+
+### Using pip (Traditional)
+
 At top of source directory, create a .venv directory:
 
     python3 -m venv --system-site-packages .venv
@@ -161,9 +197,37 @@ Running the Test Suite
 ----------------------
 
 To run the included tests, follow the instructions for "Running From
-the Source Tree". Afterward you can run the tests using setup.py:
+the Source Tree". Afterward you can run the tests:
 
-    pytest
+```bash
+# Run with uv
+uv run pytest -n auto
+
+# With the virtual environment activated, omit the `uv`
+pytest -n auto
+```
+
+
+Development Setup
+----------------
+
+For development, we recommend using `uv` for faster dependency management and pre-commit hooks for code quality.
+
+### Set Up pre-commit Hooks
+
+We use [pre-commit](https://pre-commit.com/) to manage code quality checks and requirements file generation.
+
+Install the hooks:
+
+    pre-commit install
+
+This ensures all code style checks (`ruff`) and requirements file updates (using `uv`) are run automatically before each commit.
+
+**Do not edit requirements files by hand.** All requirements files are generated from `pyproject.toml` via pre-commit hooks.
+
+To manually update requirements after changing `pyproject.toml`, run:
+
+    pre-commit run pip-compile --all-files
 
 
 Packaging

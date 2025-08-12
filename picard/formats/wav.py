@@ -49,7 +49,6 @@ TRANSLATE_RIFF_INFO = {
     'INAM': 'title',
     'IPRD': 'album',
     'ITRK': 'tracknumber',
-
     # Extended, not well supported by other tools
     'ICNT': 'releasecountry',
     'IENC': 'encodedby',
@@ -71,8 +70,7 @@ def translate_tag_to_riff_name(name):
 
 
 class RiffListInfo(MutableMapping):
-    """Allows loading / saving RIFF INFO tags from / to RIFF files.
-    """
+    """Allows loading / saving RIFF INFO tags from / to RIFF files."""
 
     def __init__(self, encoding='windows-1252'):
         self.encoding = encoding

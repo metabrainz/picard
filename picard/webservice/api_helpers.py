@@ -49,14 +49,14 @@ def escape_lucene_query(text):
 
 
 def build_lucene_query(args):
-    return ' '.join('%s:(%s)' % (item, escape_lucene_query(value))
-                    for item, value in args.items() if value)
+    return ' '.join('%s:(%s)' % (item, escape_lucene_query(value)) for item, value in args.items() if value)
 
 
 def _wrap_xml_metadata(data):
-    return ('<?xml version="1.0" encoding="UTF-8"?>'
-            '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>'
-            % data)
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data
+    )
 
 
 class APIHelper:
@@ -143,8 +143,16 @@ class MBAPIHelper(APIHelper):
 
     def lookup_discid(self, discid, handler, priority=True, important=True, refresh=False):
         inc = ('artist-credits', 'labels')
-        return self._get_by_id('discid', discid, handler, inc, queryargs={'cdstubs': 'no'},
-                               priority=priority, important=important, refresh=refresh)
+        return self._get_by_id(
+            'discid',
+            discid,
+            handler,
+            inc,
+            queryargs={'cdstubs': 'no'},
+            priority=priority,
+            important=important,
+            refresh=refresh,
+        )
 
     def _find(self, entitytype, handler, **kwargs):
         filters = {}
@@ -168,9 +176,15 @@ class MBAPIHelper(APIHelper):
         if query:
             filters['query'] = query
 
-        return self.get(f"/{entitytype}", handler, unencoded_queryargs=filters,
-                        priority=True, important=True, mblogin=False,
-                        refresh=False)
+        return self.get(
+            f"/{entitytype}",
+            handler,
+            unencoded_queryargs=filters,
+            priority=True,
+            important=True,
+            mblogin=False,
+            refresh=False,
+        )
 
     def find_releases(self, handler, **kwargs):
         return self._find('release', handler, **kwargs)
@@ -196,9 +210,15 @@ class MBAPIHelper(APIHelper):
             queryargs = {}
         if inc:
             queryargs['inc'] = self._make_inc_arg(inc)
-        return self.get(f"/{entitytype}", handler, unencoded_queryargs=queryargs,
-                        priority=True, important=True, mblogin=mblogin,
-                        refresh=False)
+        return self.get(
+            f"/{entitytype}",
+            handler,
+            unencoded_queryargs=queryargs,
+            priority=True,
+            important=True,
+            mblogin=mblogin,
+            refresh=False,
+        )
 
     def browse_releases(self, handler, **kwargs):
         inc = ('media', 'labels')
@@ -210,17 +230,24 @@ class MBAPIHelper(APIHelper):
     @staticmethod
     def _xml_ratings(ratings):
         recordings = ''.join(
-            '<recording id=%s><user-rating>%s</user-rating></recording>' %
-            (quoteattr(i[1]), int(j)*20) for i, j in ratings.items() if i[0] == 'recording'
+            '<recording id=%s><user-rating>%s</user-rating></recording>' % (quoteattr(i[1]), int(j) * 20)
+            for i, j in ratings.items()
+            if i[0] == 'recording'
         )
         return _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
 
     def submit_ratings(self, ratings, handler):
         params = {'client': CLIENT_STRING}
         data = self._xml_ratings(ratings)
-        return self.post("/rating", data, handler, priority=True,
-                         unencoded_queryargs=params, parse_response_type='xml',
-                         request_mimetype='application/xml; charset=utf-8')
+        return self.post(
+            "/rating",
+            data,
+            handler,
+            priority=True,
+            unencoded_queryargs=params,
+            parse_response_type='xml',
+            request_mimetype='application/xml; charset=utf-8',
+        )
 
     def get_collection(self, collection_id, handler, limit=100, offset=0):
         if collection_id is not None:
@@ -234,8 +261,7 @@ class MBAPIHelper(APIHelper):
         else:
             path = '/collection'
             queryargs = None
-        return self.get(path, handler, priority=True, important=True,
-                        mblogin=True, unencoded_queryargs=queryargs)
+        return self.get(path, handler, priority=True, important=True, mblogin=True, unencoded_queryargs=queryargs)
 
     def get_collection_list(self, handler):
         return self.get_collection(None, handler)
@@ -243,7 +269,7 @@ class MBAPIHelper(APIHelper):
     @staticmethod
     def _collection_request(collection_id, releases, batchsize=400):
         for i in range(0, len(releases), batchsize):
-            ids = ';'.join(releases[i:i+batchsize])
+            ids = ';'.join(releases[i : i + batchsize])
             yield f"/collection/{collection_id}/releases/{ids}"
 
     @staticmethod
@@ -252,17 +278,14 @@ class MBAPIHelper(APIHelper):
 
     def put_to_collection(self, collection_id, releases, handler):
         for path in self._collection_request(collection_id, releases):
-            self.put(path, "", handler,
-                     unencoded_queryargs=self._get_client_queryarg())
+            self.put(path, "", handler, unencoded_queryargs=self._get_client_queryarg())
 
     def delete_from_collection(self, collection_id, releases, handler):
         for path in self._collection_request(collection_id, releases):
-            self.delete(path, handler,
-                        unencoded_queryargs=self._get_client_queryarg())
+            self.delete(path, handler, unencoded_queryargs=self._get_client_queryarg())
 
 
 class AcoustIdAPIHelper(APIHelper):
-
     client_key = ACOUSTID_KEY
     client_version = PICARD_VERSION_STR
 
@@ -278,8 +301,13 @@ class AcoustIdAPIHelper(APIHelper):
     def query_acoustid(self, handler, **args):
         body = self._encode_acoustid_args(args)
         return self.post(
-            "/lookup", body, handler, priority=False, important=False,
-            mblogin=False, request_mimetype='application/x-www-form-urlencoded'
+            "/lookup",
+            body,
+            handler,
+            priority=False,
+            important=False,
+            mblogin=False,
+            request_mimetype='application/x-www-form-urlencoded',
         )
 
     @staticmethod
@@ -296,6 +324,11 @@ class AcoustIdAPIHelper(APIHelper):
         args = self._submissions_to_args(submissions)
         body = self._encode_acoustid_args(args)
         return self.post(
-            "/submit", body, handler, priority=True, important=False,
-            mblogin=False, request_mimetype='application/x-www-form-urlencoded'
+            "/submit",
+            body,
+            handler,
+            priority=True,
+            important=False,
+            mblogin=False,
+            request_mimetype='application/x-www-form-urlencoded',
         )

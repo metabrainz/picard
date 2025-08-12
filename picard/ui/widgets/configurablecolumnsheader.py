@@ -58,7 +58,6 @@ from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 
 class ConfigurableColumnsHeader(LockableHeaderView):
-
     def __init__(self, columns, parent=None):
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
         self._columns = columns

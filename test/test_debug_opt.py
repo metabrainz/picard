@@ -99,10 +99,12 @@ class TestDebugOpt(PicardTestCase):
 
     def test_invalid(self):
         with self.assertRaises(ValueError):
+
             class BuggyOpt(DebugOptEnum):
                 C = "x", "x", "x"
 
     def test_invalid2(self):
         with self.assertRaises(TypeError):
+
             class BuggyOpt(DebugOptEnum):
                 C = 1, "x"

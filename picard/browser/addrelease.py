@@ -145,7 +145,7 @@ def _get_cluster_form(cluster, tport):
         '/release/add',
         _("Add cluster as release…"),
         _get_cluster_data(cluster),
-        {'tport': tport}
+        {'tport': tport},
     )
 
 
@@ -155,7 +155,7 @@ def _get_file_as_release_form(file, tport):
         '/release/add',
         _("Add file as release…"),
         _get_file_as_release_data(file),
-        {'tport': tport}
+        {'tport': tport},
     )
 
 
@@ -165,7 +165,7 @@ def _get_file_as_recording_form(file, tport):
         '/recording/create',
         _("Add file as recording…"),
         _get_file_as_recording_data(file),
-        {'tport': tport}
+        {'tport': tport},
     )
 
 
@@ -251,7 +251,4 @@ def _get_form(title, action, label, form_data, query_args=None):
 
 
 def _format_form_data(data):
-    return ''.join(
-        _form_input_template.format(name=escape(name), value=escape(value))
-        for name, value in data.items()
-    )
+    return ''.join(_form_input_template.format(name=escape(name), value=escape(value)) for name, value in data.items())

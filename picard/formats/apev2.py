@@ -84,14 +84,18 @@ def is_valid_key(key):
 
     See http://wiki.hydrogenaud.io/index.php?title=APE_key
     """
-    return (key and 2 <= len(key) <= 255
-            and key not in DISALLOWED_KEYS
-            and INVALID_CHARS.search(key) is None)
+    if not key:
+        return False
+    if not (2 <= len(key) <= 255):
+        return False
+    if key in DISALLOWED_KEYS:
+        return False
+    return INVALID_CHARS.search(key) is None
 
 
 class APEv2File(File):
-
     """Generic APEv2-based file."""
+
     _File = None
 
     __translate = {
@@ -137,8 +141,7 @@ class APEv2File(File):
         if file.tags:
             for origname, values in file.tags.items():
                 name_lower = origname.lower()
-                if (values.kind == mutagen.apev2.BINARY
-                    and name_lower.startswith('cover art')):
+                if values.kind == mutagen.apev2.BINARY and name_lower.startswith('cover art'):
                     if b'\0' in values.value:
                         descr, data = values.value.split(b'\0', 1)
                         try:
@@ -176,7 +179,7 @@ class APEv2File(File):
                         if value.endswith(')'):
                             start = value.rfind(' (')
                             if start > 0:
-                                name += ':' + value[start + 2:-1]
+                                name += ':' + value[start + 2 : -1]
                                 value = value[:start]
                     elif name in self.__rtranslate:
                         name = self.__rtranslate[name]
@@ -231,7 +234,8 @@ class APEv2File(File):
             cover_filename = 'Cover Art (Front)'
             cover_filename += image.extension
             tags['Cover Art (Front)'] = mutagen.apev2.APEValue(
-                cover_filename.encode('ascii') + b'\0' + image.data, mutagen.apev2.BINARY)
+                cover_filename.encode('ascii') + b'\0' + image.data, mutagen.apev2.BINARY
+            )
             break
             # can't save more than one item with the same name
             # (mp3tags does this, but it's against the specs)
@@ -288,17 +292,22 @@ class APEv2File(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return (bool(name) and name not in UNSUPPORTED_TAGS
-                and not name.startswith('~')
-                and (is_valid_key(name)
-                    or name.startswith('comment:')
-                    or name.startswith('lyrics:')
-                    or name.startswith('performer:')))
+        return (
+            bool(name)
+            and name not in UNSUPPORTED_TAGS
+            and not name.startswith('~')
+            and (
+                is_valid_key(name)
+                or name.startswith('comment:')
+                or name.startswith('lyrics:')
+                or name.startswith('performer:')
+            )
+        )
 
 
 class MusepackFile(APEv2File):
-
     """Musepack file."""
+
     EXTENSIONS = [".mpc", ".mp+"]
     NAME = "Musepack"
     _File = mutagen.musepack.Musepack
@@ -309,8 +318,8 @@ class MusepackFile(APEv2File):
 
 
 class WavPackFile(APEv2File):
-
     """WavPack file."""
+
     EXTENSIONS = [".wv"]
     NAME = "WavPack"
     _File = mutagen.wavpack.WavPack
@@ -332,8 +341,8 @@ class WavPackFile(APEv2File):
 
 
 class OptimFROGFile(APEv2File):
-
     """OptimFROG file."""
+
     EXTENSIONS = [".ofr", ".ofs"]
     NAME = "OptimFROG"
     _File = mutagen.optimfrog.OptimFROG
@@ -351,16 +360,16 @@ class OptimFROGFile(APEv2File):
 
 
 class MonkeysAudioFile(APEv2File):
-
     """Monkey's Audio file."""
+
     EXTENSIONS = [".ape"]
     NAME = "Monkey's Audio"
     _File = mutagen.monkeysaudio.MonkeysAudio
 
 
 class TAKFile(APEv2File):
-
     """TAK file."""
+
     EXTENSIONS = [".tak"]
     NAME = "Tom's lossless Audio Kompressor"
     _File = mutagen.tak.TAK

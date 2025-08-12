@@ -50,9 +50,14 @@ class ArtworkCoverWidget(QtWidgets.QWidget):
             if size is None:
                 size = self.SIZE
             image_label = QtWidgets.QLabel()
-            image_label.setPixmap(pixmap.scaled(size, size,
-                                                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
-                                                QtCore.Qt.TransformationMode.SmoothTransformation))
+            image_label.setPixmap(
+                pixmap.scaled(
+                    size,
+                    size,
+                    QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                    QtCore.Qt.TransformationMode.SmoothTransformation,
+                )
+            )
             image_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             layout.addWidget(image_label)
 
@@ -111,8 +116,15 @@ class ArtworkTableNew(ArtworkTableSimple):
         'external': 2,
     }
 
-    artwork_columns = ('new', 'external',)
-    _labels = (_("Type"), _("New Embedded"), _("New Exported"),)
+    artwork_columns = (
+        'new',
+        'external',
+    )
+    _labels = (
+        _("Type"),
+        _("New Embedded"),
+        _("New Exported"),
+    )
     _tooltips = {
         'new': _("New cover art embedded into tags"),
         'external': _("New cover art saved as a separate file"),
@@ -144,8 +156,17 @@ class ArtworkTableExisting(ArtworkTable):
         'external': 3,
     }
 
-    artwork_columns = ('orig', 'new', 'external',)
-    _labels = (_("Existing Cover"), _("Type"), _("New Embedded"), _("New Exported"),)
+    artwork_columns = (
+        'orig',
+        'new',
+        'external',
+    )
+    _labels = (
+        _("Existing Cover"),
+        _("Type"),
+        _("New Embedded"),
+        _("New Exported"),
+    )
     _tooltips = {
         'orig': _("Existing cover art already embedded into tags"),
         'new': _("New cover art embedded into tags"),

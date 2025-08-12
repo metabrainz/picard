@@ -48,7 +48,6 @@ from picard.util import imageinfo
 
 
 class CoverArt:
-
     def __init__(self, album, metadata, release):
         self._queue_new()
         self.album = album
@@ -100,7 +99,7 @@ class CoverArt:
                     'albumid': self.album.id,
                     'host': coverartimage.url.host(),
                 },
-                echo=None
+                echo=None,
             )
             try:
                 image_info = imageinfo.identify(data)
@@ -117,17 +116,19 @@ class CoverArt:
 
     def next_in_queue(self):
         """Downloads next item in queue.
-           If there are none left, loading of album will be finalized.
+        If there are none left, loading of album will be finalized.
         """
         if self.album.id not in self.album.tagger.albums:
             # album removed
             return
 
         config = get_config()
-        if (self.front_image_found
+        if (
+            self.front_image_found
             and config.setting['save_images_to_tags']
             and not config.setting['save_images_to_files']
-            and config.setting['embed_only_one_front_image']):
+            and config.setting['embed_only_one_front_image']
+        ):
             # no need to continue
             processing_result = self.image_processing.wait_for_processing()
             self.album._finalize_loading(error=processing_result)
@@ -163,8 +164,7 @@ class CoverArt:
         if not coverartimage.support_types and self.front_image_found:
             # we already have one front image, no need to try other type-less
             # sources
-            log.debug("Skipping %r, one front image is already available",
-                      coverartimage)
+            log.debug("Skipping %r, one front image is already available", coverartimage)
             self.next_in_queue()
             return
 
@@ -196,7 +196,7 @@ class CoverArt:
                 'albumid': self.album.id,
                 'host': coverartimage.url.host(),
             },
-            echo=None
+            echo=None,
         )
         log.debug("Downloading %r", coverartimage)
         self.album.tagger.webservice.download_url(
@@ -231,7 +231,7 @@ class CoverArt:
 
 def _retrieve_coverart(album, metadata, release):
     """Gets all cover art URLs from the metadata and then attempts to
-    download the album art. """
+    download the album art."""
 
     coverart = CoverArt(album, metadata, release)
     log.debug("New %r", coverart)

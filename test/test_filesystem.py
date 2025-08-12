@@ -107,10 +107,12 @@ class SampleFileSystem(PicardTestCase):
         """Prepare src files and dst filenames for a test."""
 
         return prepare_files(
-            self.src_directory, self.dst_directory,
-            self.src_files, self.dst_files,
+            self.src_directory,
+            self.dst_directory,
+            self.src_files,
+            self.dst_files,
             src_rel_path=src_rel_path,
-            dst_rel_path=dst_rel_path
+            dst_rel_path=dst_rel_path,
         )
 
     def _assertFile(self, path):
@@ -199,7 +201,6 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
 
 class TestFileSystem(SampleFileSystem):
-
     def _move_additional_files(self, src, dst):
         f = picard.formats.open_(src['test.mp3'])
         f._move_additional_files(src['test.mp3'], dst['test.mp3'], config)

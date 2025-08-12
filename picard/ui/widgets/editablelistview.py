@@ -241,10 +241,12 @@ class EditableListModel(QtCore.QAbstractListModel):
 
     def flags(self, index):
         if index.isValid():
-            flags = (QtCore.Qt.ItemFlag.ItemIsSelectable
+            flags = (
+                QtCore.Qt.ItemFlag.ItemIsSelectable
                 | QtCore.Qt.ItemFlag.ItemIsEditable
                 | QtCore.Qt.ItemFlag.ItemIsEnabled
-                | QtCore.Qt.ItemFlag.ItemNeverHasChildren)
+                | QtCore.Qt.ItemFlag.ItemNeverHasChildren
+            )
             if self.user_sortable:
                 flags |= QtCore.Qt.ItemFlag.ItemIsDragEnabled
             return flags
@@ -266,7 +268,7 @@ class EditableListModel(QtCore.QAbstractListModel):
         if parent is None:
             parent = QtCore.QModelIndex()
         super().beginRemoveRows(parent, row, row + count - 1)
-        self._items = self._items[:row] + self._items[row + count:]
+        self._items = self._items[:row] + self._items[row + count :]
         super().endRemoveRows()
         return True
 

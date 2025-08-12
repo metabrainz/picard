@@ -97,7 +97,7 @@ def _make_artist_node(artist):
     artist_node = {
         'name': artist['name'],
         'sort-name': artist['name'],
-        'id': artist['id']
+        'id': artist['id'],
     }
     return artist_node
 
@@ -107,7 +107,7 @@ def _make_artist_credit_node(artists):
     for i, artist in enumerate(artists):
         node = {
             'artist': _make_artist_node(artist),
-            'name': artist['name']
+            'name': artist['name'],
         }
         if i > 0:
             node['joinphrase'] = '; '
@@ -120,7 +120,7 @@ def parse_recording(recording):
         return
 
     recording_mb = {
-        'id': recording['id']
+        'id': recording['id'],
     }
 
     if 'title' in recording:

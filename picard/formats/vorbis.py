@@ -57,9 +57,13 @@ from picard.util import (
 )
 
 
-FLAC_MAX_BLOCK_SIZE = 2 ** 24 - 1  # FLAC block size is limited to a 24 bit integer
+FLAC_MAX_BLOCK_SIZE = 2**24 - 1  # FLAC block size is limited to a 24 bit integer
 INVALID_CHARS = re.compile('([^\x20-\x7d]|=)')
-UNSUPPORTED_TAGS = {'syncedlyrics', 'r128_album_gain', 'r128_track_gain'}
+UNSUPPORTED_TAGS = {
+    'syncedlyrics',
+    'r128_album_gain',
+    'r128_track_gain',
+}
 
 
 def sanitize_key(key):
@@ -118,8 +122,8 @@ def flac_remove_empty_seektable(file):
 
 
 class VCommentFile(File):
-
     """Generic VComment-based file."""
+
     _File = None
 
     __translate = {
@@ -157,7 +161,7 @@ class VCommentFile(File):
                                 count -= 1
                             start -= 1
                         if start > 0:
-                            name += value[start + 2:-1]
+                            name += value[start + 2 : -1]
                             value = value[:start]
                 elif name.startswith('rating'):
                     try:
@@ -192,7 +196,7 @@ class VCommentFile(File):
                             comment=image.desc,
                             support_types=True,
                             data=image.data,
-                            id3_type=image.type
+                            id3_type=image.type,
                         )
                     except (CoverArtImageError, TypeError, ValueError, mutagen.flac.error) as e:
                         log.error("Cannot load image from %r: %s", filename, e)
@@ -212,7 +216,7 @@ class VCommentFile(File):
                         comment=image.desc,
                         support_types=True,
                         data=image.data,
-                        id3_type=image.type
+                        id3_type=image.type,
                     )
                 except CoverArtImageError as e:
                     log.error("Cannot load image from %r: %s", filename, e)
@@ -227,7 +231,7 @@ class VCommentFile(File):
                         coverartimage = TagCoverArtImage(
                             file=filename,
                             tag='COVERART',
-                            data=base64.standard_b64decode(data)
+                            data=base64.standard_b64decode(data),
                         )
                     except (CoverArtImageError, TypeError, ValueError) as e:
                         log.error("Cannot load image from %r: %s", filename, e)
@@ -260,9 +264,9 @@ class VCommentFile(File):
             for name, value in preserved_values.items():
                 file.tags[name] = value
         images_to_save = list(metadata.images.to_be_saved_to_tags())
-        if is_flac and (images_to_save
-                or (config.setting['clear_existing_tags']
-                    and not config.setting['preserve_images'])):
+        if is_flac and (
+            images_to_save or (config.setting['clear_existing_tags'] and not config.setting['preserve_images'])
+        ):
             file.clear_pictures()
         tags = {}
 
@@ -316,17 +320,18 @@ class VCommentFile(File):
 
             if is_flac:
                 # See https://xiph.org/flac/format.html#metadata_block_picture
-                expected_block_size = (8 * 4 + len(picture.data)
-                    + len(picture.mime)
-                    + len(picture.desc.encode('UTF-8')))
+                expected_block_size = 8 * 4 + len(picture.data) + len(picture.mime) + len(picture.desc.encode('UTF-8'))
                 if expected_block_size > FLAC_MAX_BLOCK_SIZE:
-                    log.error("Failed saving image to %r: Image size of %d bytes exceeds maximum FLAC block size of %d bytes",
-                        filename, expected_block_size, FLAC_MAX_BLOCK_SIZE)
+                    log.error(
+                        "Failed saving image to %r: Image size of %d bytes exceeds maximum FLAC block size of %d bytes",
+                        filename,
+                        expected_block_size,
+                        FLAC_MAX_BLOCK_SIZE,
+                    )
                     continue
                 file.add_picture(picture)
             else:
-                tags.setdefault('METADATA_BLOCK_PICTURE', []).append(
-                    base64.b64encode(picture.write()).decode('ascii'))
+                tags.setdefault('METADATA_BLOCK_PICTURE', []).append(base64.b64encode(picture.write()).decode('ascii'))
 
         file.tags.update(tags)
 
@@ -392,40 +397,45 @@ class VCommentFile(File):
 
     @classmethod
     def supports_tag(cls, name):
-        return (bool(name) and name not in UNSUPPORTED_TAGS
-                and (is_valid_key(name)
-                    or name.startswith('comment:')
-                    or name.startswith('lyrics:')
-                    or name.startswith('performer:')))
+        return (
+            bool(name)
+            and name not in UNSUPPORTED_TAGS
+            and (
+                is_valid_key(name)
+                or name.startswith('comment:')
+                or name.startswith('lyrics:')
+                or name.startswith('performer:')
+            )
+        )
 
 
 class FLACFile(VCommentFile):
-
     """FLAC file."""
+
     EXTENSIONS = [".flac"]
     NAME = "FLAC"
     _File = mutagen.flac.FLAC
 
 
 class OggFLACFile(VCommentFile):
-
     """FLAC file."""
+
     EXTENSIONS = [".oggflac"]
     NAME = "Ogg FLAC"
     _File = mutagen.oggflac.OggFLAC
 
 
 class OggSpeexFile(VCommentFile):
-
     """Ogg Speex file."""
+
     EXTENSIONS = [".spx"]
     NAME = "Speex"
     _File = mutagen.oggspeex.OggSpeex
 
 
 class OggTheoraFile(VCommentFile):
-
     """Ogg Theora file."""
+
     EXTENSIONS = [".oggtheora"]
     NAME = "Ogg Theora"
     _File = mutagen.oggtheora.OggTheora
@@ -436,16 +446,16 @@ class OggTheoraFile(VCommentFile):
 
 
 class OggVorbisFile(VCommentFile):
-
     """Ogg Vorbis file."""
+
     EXTENSIONS = []
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
 
 
 class OggOpusFile(VCommentFile):
-
     """Ogg Opus file."""
+
     EXTENSIONS = [".opus"]
     NAME = "Ogg Opus"
     _File = mutagen.oggopus.OggOpus
@@ -486,7 +496,7 @@ def OggContainerFile(filename):
         OggOpusFile,
         OggSpeexFile,
         OggTheoraFile,
-        OggVorbisFile
+        OggVorbisFile,
     ]
     return guess_format(filename, options)
 

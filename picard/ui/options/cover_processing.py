@@ -45,7 +45,6 @@ from picard.ui.options import OptionsPage
 
 
 class CoverProcessingOptionsPage(OptionsPage):
-
     NAME = 'cover_processing'
     TITLE = N_("Processing")
     PARENT = 'cover'
@@ -86,14 +85,10 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.convert_file_format.addItems(COVER_CONVERTING_FORMATS)
 
         tags_resize_mode_changed = partial(
-            self._resize_mode_changed,
-            self.ui.tags_resize_width_widget,
-            self.ui.tags_resize_height_widget
+            self._resize_mode_changed, self.ui.tags_resize_width_widget, self.ui.tags_resize_height_widget
         )
         file_resize_mode_changed = partial(
-            self._resize_mode_changed,
-            self.ui.file_resize_width_widget,
-            self.ui.file_resize_height_widget
+            self._resize_mode_changed, self.ui.file_resize_width_widget, self.ui.file_resize_height_widget
         )
         self.ui.tags_resize_mode.currentIndexChanged.connect(tags_resize_mode_changed)
         self.ui.file_resize_mode.currentIndexChanged.connect(file_resize_mode_changed)

@@ -26,7 +26,6 @@ from picard.util.lrucache import LRUCache
 
 
 class LRUCacheTest(PicardTestCase):
-
     def test_simple_getset(self):
         lrucache = LRUCache(3)
         lrucache['test'] = 1
