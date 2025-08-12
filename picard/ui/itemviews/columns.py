@@ -141,6 +141,7 @@ _match_quality_column.sort_type = ColumnSortType.SORTKEY
 _match_quality_column.sortkey = _sortkey_match_quality
 _match_quality_column.always_visible = True
 
+
 ITEMVIEW_COLUMNS = Columns(
     (
         _match_quality_column,
