@@ -306,6 +306,7 @@ def test_lxqt_dark_theme_detection_failure(file_exists: bool, raises, tmp_path: 
         elif not file_exists:
             assert theme_detect.detect_lxqt_dark_theme() is False
 
+
 @pytest.mark.parametrize(
     ("gsettings_value", "expected"),
     [
@@ -395,9 +396,9 @@ def assert_palette_matches_expected(palette, expected_colors):
             )
         if isinstance(expected, QtGui.QColor):
             # Compare by value, not object identity
-            assert (
-                actual.getRgb() == expected.getRgb()
-            ), f"Color for {key} should be {expected.getRgb()}, got {actual.getRgb()}"
+            assert actual.getRgb() == expected.getRgb(), (
+                f"Color for {key} should be {expected.getRgb()}, got {actual.getRgb()}"
+            )
         else:
             assert actual == QtGui.QColor(expected), f"Color for {key} should be {expected}, got {actual}"
 
@@ -420,13 +421,13 @@ def assert_palette_not_dark(palette, expected_colors):
             continue
         actual = palette.color(QtGui.QPalette.ColorGroup.Active, key)
         if isinstance(expected, QtGui.QColor):
-            assert (
-                actual.getRgb() != expected.getRgb()
-            ), f"Color for {key} should differ from dark mode in light mode; got {actual.getRgb()}"
+            assert actual.getRgb() != expected.getRgb(), (
+                f"Color for {key} should differ from dark mode in light mode; got {actual.getRgb()}"
+            )
         else:
-            assert actual != QtGui.QColor(
-                expected
-            ), f"Color for {key} should differ from dark mode in light mode; got {actual}"
+            assert actual != QtGui.QColor(expected), (
+                f"Color for {key} should differ from dark mode in light mode; got {actual}"
+            )
 
 
 @pytest.mark.parametrize(
