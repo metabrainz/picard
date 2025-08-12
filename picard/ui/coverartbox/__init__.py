@@ -211,7 +211,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         lines = []
         try:
             type_text = image.types_as_string()
-        except Exception:
+        except (AttributeError, TypeError):
             type_text = '-'
         lines.append(type_text)
 
@@ -219,7 +219,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             size_dec = bytes2human.decimal(image.datalength)
             size_bin = bytes2human.binary(image.datalength)
             lines.append(f"{size_dec} ({size_bin})")
-        except Exception:
+        except (AttributeError, TypeError, ValueError):
             pass
 
         if getattr(image, 'width', None) and getattr(image, 'height', None):
