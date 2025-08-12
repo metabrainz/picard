@@ -24,7 +24,6 @@ from picard.config import get_config
 
 
 class UserPreservedTags:
-
     opt_name = 'preserved_tags'
 
     def __init__(self):

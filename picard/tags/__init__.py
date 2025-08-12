@@ -37,6 +37,8 @@ from picard.const.tags import ALL_TAGS
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
+
+
 def parse_comment_tag(name):  # noqa: E302
     """
     Parses a tag name like "comment:XXX:desc", where XXX is the language.
@@ -121,11 +123,7 @@ def file_info_tag_names():
 
 def script_variable_tag_names():
     """Tag names available to scripts (used by script editor completer)"""
-    yield from (
-        tagvar.script_name()
-        for tagvar in ALL_TAGS
-        if tagvar.is_script_variable
-    )
+    yield from (tagvar.script_name() for tagvar in ALL_TAGS if tagvar.is_script_variable)
 
 
 def display_tag_name(name):
