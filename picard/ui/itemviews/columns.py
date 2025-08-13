@@ -139,7 +139,7 @@ _match_quality_column = MatchQualityColumn(N_("Match"), '~match_quality', width=
 _match_quality_column.sortable = True
 _match_quality_column.sort_type = ColumnSortType.SORTKEY
 _match_quality_column.sortkey = _sortkey_match_quality
-_match_quality_column.always_visible = True
+_match_quality_column.is_default = True
 
 
 # Common columns used by both views
