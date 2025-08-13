@@ -140,7 +140,6 @@ class CoverArtBoxLite:
         self.orig_cover_art = _DummyThumb()
         # Bind helpers from real implementation
         self._first_image_info_lines = CoverArtBox._first_image_info_lines  # type: ignore[assignment]
-        self._filter_info_lines = CoverArtBox._filter_info_lines  # type: ignore[assignment]
 
     def isHidden(self) -> bool:  # noqa: N802
         return False

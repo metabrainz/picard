@@ -184,8 +184,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
         # Default is False per option definition
         show_details = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details', False)
         if show_details:
-            cover_text_lines = CoverArtBox._filter_info_lines(tooltip_cover_lines)
-            orig_text_lines = CoverArtBox._filter_info_lines(tooltip_orig_lines)
+            cover_text_lines = self._first_image_info_lines(self.cover_art.related_images, respect_preferences=True)
+            orig_text_lines = self._first_image_info_lines(self.orig_cover_art.related_images, respect_preferences=True)
         else:
             cover_text_lines = []
             orig_text_lines = []
@@ -228,63 +228,66 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.update_display()
 
     @staticmethod
-    def _first_image_info_lines(images: Sequence[CoverArtImage] | None) -> list[str]:
+    def _first_image_info_lines(
+        images: Sequence[CoverArtImage] | None,
+        *,
+        respect_preferences: bool = False,
+    ) -> list[str]:
         """Build multi-line info for the first image only.
 
-        Lines:
-        {type}
-        {size kB} ({size KiB})
-        dimensions W x H
-        mime
+        Order:
+        - type
+        - size (decimal and binary)
+        - dimensions (W x H)
+        - MIME type
+
+        If respect_preferences is True, the visibility of each line is
+        controlled by the corresponding settings.
         """
         if not images:
             return []
         image = images[0]
-        lines = []
-        try:
-            type_text = image.types_as_string()
-        except (AttributeError, TypeError):
-            type_text = '-'
-        lines.append(type_text)
 
-        try:
-            size_dec = bytes2human.decimal(image.datalength)
-            size_bin = bytes2human.binary(image.datalength)
-            lines.append(f"{size_dec} ({size_bin})")
-        except (AttributeError, TypeError, ValueError):
-            pass
+        # Resolve preference flags once when needed
+        if respect_preferences:
+            show_type = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_type', True)
+            show_size = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_filesize', True)
+            show_dims = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_dimensions', True)
+            show_mime = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_mimetype', True)
+        else:
+            # Do not respect preferences (i.e. show all lines for tooltip)
+            show_type = show_size = show_dims = show_mime = True
 
-        if getattr(image, 'width', None) and getattr(image, 'height', None):
-            lines.append(f"{image.width} x {image.height}")
+        result_lines: list[str] = []
 
-        mime_part = getattr(image, 'mimetype', '') or ''
-        if mime_part:
-            lines.append(mime_part)
+        # Type
+        if show_type:
+            try:
+                type_text = image.types_as_string()
+            except (AttributeError, TypeError):
+                type_text = '-'
+            result_lines.append(type_text)
 
-        return lines
+        # Size
+        if show_size:
+            try:
+                size_dec = bytes2human.decimal(image.datalength)
+                size_bin = bytes2human.binary(image.datalength)
+                result_lines.append(f"{size_dec} ({size_bin})")
+            except (AttributeError, TypeError, ValueError):
+                pass
 
-    @staticmethod
-    def _filter_info_lines(lines: list[str]) -> list[str]:
-        """Filter info lines according to user settings order: type, size, dimensions, MIME type.
+        # Dimensions
+        if show_dims and getattr(image, 'width', None) and getattr(image, 'height', None):
+            result_lines.append(f"{image.width} x {image.height}")
 
-        The incoming list is expected to be in exactly this order when available.
-        """
-        show_type = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_type', True)
-        show_size = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_filesize', True)
-        show_dims = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_dimensions', True)
-        show_mime = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_mimetype', True)
+        # MIME type
+        if show_mime:
+            mime_part = getattr(image, 'mimetype', '') or ''
+            if mime_part:
+                result_lines.append(mime_part)
 
-        result: list[str] = []
-        # Index mapping: 0 type, 1 size, 2 dimensions, 3 mimetype (if present)
-        if len(lines) > 0 and show_type:
-            result.append(lines[0])
-        if len(lines) > 1 and show_size:
-            result.append(lines[1])
-        if len(lines) > 2 and show_dims:
-            result.append(lines[2])
-        if len(lines) > 3 and show_mime:
-            result.append(lines[3])
-        return result
+        return result_lines
 
     def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
