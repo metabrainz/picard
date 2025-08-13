@@ -89,7 +89,7 @@ class MatchQualityColumn(ImageColumn):
         # Get the match icons from FileItem
         from picard.ui.itemviews import FileItem
 
-        if hasattr(FileItem, "match_icons") and icon_index < len(FileItem.match_icons):
+        if hasattr(FileItem, 'match_icons') and icon_index < len(FileItem.match_icons):
             return FileItem.match_icons[icon_index]
 
         return None
@@ -97,7 +97,7 @@ class MatchQualityColumn(ImageColumn):
     def get_match_stats(self, obj):
         """Get comprehensive match statistics for the given object."""
         # Only show stats at the release (album) level, not track level
-        if not hasattr(obj, "get_num_matched_tracks") or not hasattr(obj, "tracks"):
+        if not hasattr(obj, 'get_num_matched_tracks') or not hasattr(obj, 'tracks'):
             return None
 
         # Album object
@@ -116,7 +116,7 @@ class MatchQualityColumn(ImageColumn):
             track_file_counts[track] = len(track.files)
 
         # Count unmatched files
-        unmatched_files = obj.unmatched_files.files if hasattr(obj, "unmatched_files") else []
+        unmatched_files = obj.unmatched_files.files if hasattr(obj, 'unmatched_files') else []
 
         # Calculate duplicates (tracks with more than one file)
         for file_count in track_file_counts.values():
@@ -133,12 +133,12 @@ class MatchQualityColumn(ImageColumn):
                 missing += 1
 
         return {
-            "matched": matched,
-            "total": total,
-            "unmatched": unmatched,
-            "duplicates": duplicates,
-            "extra": extra,
-            "missing": missing,
+            'matched': matched,
+            'total': total,
+            'unmatched': unmatched,
+            'duplicates': duplicates,
+            'extra': extra,
+            'missing': missing,
         }
 
 
@@ -160,14 +160,14 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
             return None
 
         item = tree_widget.itemFromIndex(index)
-        if not hasattr(item, "obj") or not item.obj:
+        if not hasattr(item, 'obj') or not item.obj:
             return None
 
         obj = item.obj
 
         # Get the column to determine if this is a match quality column
         column_index = index.column()
-        columns = getattr(item, "columns", None)
+        columns = getattr(item, 'columns', None)
         if not columns or column_index >= len(columns):
             return None
 
@@ -193,24 +193,24 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         tooltip_parts = []
 
         # Core match info
-        if stats["total"] > 0:
-            percentage = (stats["matched"] / stats["total"]) * 100
+        if stats['total'] > 0:
+            percentage = (stats['matched'] / stats['total']) * 100
         else:
             percentage = 0.0
         tooltip_parts.append(
             _("Match: %(matched)d/%(total)d (%(percent).1f%%)")
             % {
-                "matched": stats["matched"],
-                "total": stats["total"],
-                "percent": percentage,
+                'matched': stats['matched'],
+                'total': stats['total'],
+                'percent': percentage,
             }
         )
 
         # Additional stats with explanations
-        tooltip_parts.append(_("Missing tracks: %(count)d") % {"count": stats["missing"]})
-        tooltip_parts.append(_("Duplicate files: %(count)d") % {"count": stats["duplicates"]})
-        tooltip_parts.append(_("Extra files: %(count)d") % {"count": stats["extra"]})
-        tooltip_parts.append(_("Unmatched files: %(count)d") % {"count": stats["unmatched"]})
+        tooltip_parts.append(_("Missing tracks: %(count)d") % {'count': stats['missing']})
+        tooltip_parts.append(_("Duplicate files: %(count)d") % {'count': stats['duplicates']})
+        tooltip_parts.append(_("Extra files: %(count)d") % {'count': stats['extra']})
+        tooltip_parts.append(_("Unmatched files: %(count)d") % {'count': stats['unmatched']})
 
         return "\n".join(tooltip_parts)
 

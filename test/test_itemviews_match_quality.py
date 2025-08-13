@@ -184,12 +184,12 @@ class TestMatchQualityColumn:
         stats = match_quality_column.get_match_stats(mock_album)
 
         assert stats is not None
-        assert stats["matched"] == matched
-        assert stats["total"] == total
-        assert stats["unmatched"] == unmatched
-        assert stats["duplicates"] == duplicates
-        assert stats["extra"] == extra
-        assert stats["missing"] == missing
+        assert stats['matched'] == matched
+        assert stats['total'] == total
+        assert stats['unmatched'] == unmatched
+        assert stats['duplicates'] == duplicates
+        assert stats['extra'] == extra
+        assert stats['missing'] == missing
 
     def test_get_match_stats_no_album_attributes(self, match_quality_column: MatchQualityColumn) -> None:
         """Test get_match_stats returns None for objects without album attributes."""
@@ -264,12 +264,12 @@ class TestMatchQualityColumnDelegate:
     ) -> None:
         """Test paint method when item is None."""
         painter = Mock()
-        delegate.parent = lambda: mock_tree_widget
         mock_tree_widget.itemFromIndex.return_value = None
 
         # Mock initStyleOption to avoid Qt type issues
-        with patch.object(delegate, "initStyleOption"):
-            delegate.paint(painter, mock_option, mock_index)
+        with patch.object(delegate, "parent", return_value=mock_tree_widget):
+            with patch.object(delegate, "initStyleOption"):
+                delegate.paint(painter, mock_option, mock_index)
 
         # Should return early without error
         painter.drawText.assert_not_called()
@@ -284,13 +284,13 @@ class TestMatchQualityColumnDelegate:
     ) -> None:
         """Test paint method when item has no obj."""
         painter = Mock()
-        delegate.parent = lambda: mock_tree_widget
         mock_tree_widget.itemFromIndex.return_value = mock_item
         mock_item.obj = None
 
         # Mock initStyleOption to avoid Qt type issues
-        with patch.object(delegate, "initStyleOption"):
-            delegate.paint(painter, mock_option, mock_index)
+        with patch.object(delegate, "parent", return_value=mock_tree_widget):
+            with patch.object(delegate, "initStyleOption"):
+                delegate.paint(painter, mock_option, mock_index)
 
         # Should return early without error
         painter.drawText.assert_not_called()
@@ -305,13 +305,13 @@ class TestMatchQualityColumnDelegate:
     ) -> None:
         """Test paint method when item has no columns."""
         painter = Mock()
-        delegate.parent = lambda: mock_tree_widget
         mock_tree_widget.itemFromIndex.return_value = mock_item
         mock_item.columns = None
 
         # Mock initStyleOption to avoid Qt type issues
-        with patch.object(delegate, "initStyleOption"):
-            delegate.paint(painter, mock_option, mock_index)
+        with patch.object(delegate, "parent", return_value=mock_tree_widget):
+            with patch.object(delegate, "initStyleOption"):
+                delegate.paint(painter, mock_option, mock_index)
 
         # Should return early without error
         painter.drawText.assert_not_called()
@@ -326,13 +326,13 @@ class TestMatchQualityColumnDelegate:
     ) -> None:
         """Test paint method when column is not MatchQualityColumn."""
         painter = Mock()
-        delegate.parent = lambda: mock_tree_widget
         mock_tree_widget.itemFromIndex.return_value = mock_item
         mock_item.columns[2] = Mock()  # Not MatchQualityColumn
 
         # Mock initStyleOption to avoid Qt type issues
-        with patch.object(delegate, "initStyleOption"):
-            delegate.paint(painter, mock_option, mock_index)
+        with patch.object(delegate, "parent", return_value=mock_tree_widget):
+            with patch.object(delegate, "initStyleOption"):
+                delegate.paint(painter, mock_option, mock_index)
 
         # Should return early without error
         painter.drawText.assert_not_called()
@@ -347,7 +347,6 @@ class TestMatchQualityColumnDelegate:
     ) -> None:
         """Test paint method when get_match_stats returns None."""
         painter = Mock()
-        delegate.parent = lambda: mock_tree_widget
         mock_tree_widget.itemFromIndex.return_value = mock_item
 
         # Mock the column to return None for stats
@@ -356,8 +355,9 @@ class TestMatchQualityColumnDelegate:
         mock_item.columns[2] = mock_column
 
         # Mock initStyleOption to avoid Qt type issues
-        with patch.object(delegate, "initStyleOption"):
-            delegate.paint(painter, mock_option, mock_index)
+        with patch.object(delegate, "parent", return_value=mock_tree_widget):
+            with patch.object(delegate, "initStyleOption"):
+                delegate.paint(painter, mock_option, mock_index)
 
         # Should return early without error
         painter.drawText.assert_not_called()
@@ -458,32 +458,31 @@ class TestMatchQualityColumnDelegate:
         mock_tree_widget.itemFromIndex.return_value = mock_item
 
         # Set up delegate's parent relationship
-        delegate.parent = lambda: mock_tree_widget
+        with patch.object(delegate, "parent", return_value=mock_tree_widget):
+            # Mock the column
+            mock_column = Mock(spec=MatchQualityColumn)
+            stats = {'matched': 5, 'total': 10, 'missing': 2, 'duplicates': 1, 'extra': 1, 'unmatched': 2}
+            mock_column.get_match_stats.return_value = stats
+            mock_item.columns[2] = mock_column
 
-        # Mock the column
-        mock_column = Mock(spec=MatchQualityColumn)
-        stats = {"matched": 5, "total": 10, "missing": 2, "duplicates": 1, "extra": 1, "unmatched": 2}
-        mock_column.get_match_stats.return_value = stats
-        mock_item.columns[2] = mock_column
+            with patch("picard.ui.itemviews.match_quality_column.QtWidgets.QToolTip") as mock_tooltip:
+                result = delegate.helpEvent(event, view, option, index)
 
-        with patch("picard.ui.itemviews.match_quality_column.QtWidgets.QToolTip") as mock_tooltip:
-            result = delegate.helpEvent(event, view, option, index)
+                assert result is True
+                mock_tooltip.showText.assert_called_once()
 
-            assert result is True
-            mock_tooltip.showText.assert_called_once()
-
-            # Check that tooltip text contains expected parts
-            call_args = mock_tooltip.showText.call_args
-            tooltip_text = call_args[0][1]
-            expected_parts = [
-                "Match: 5/10 (50.0%)",
-                "Missing tracks: 2",
-                "Duplicate files: 1",
-                "Extra files: 1",
-                "Unmatched files: 2",
-            ]
-            for part in expected_parts:
-                assert part in tooltip_text
+                # Check that tooltip text contains expected parts
+                call_args = mock_tooltip.showText.call_args
+                tooltip_text = call_args[0][1]
+                expected_parts = [
+                    "Match: 5/10 (50.0%)",
+                    "Missing tracks: 2",
+                    "Duplicate files: 1",
+                    "Extra files: 1",
+                    "Unmatched files: 2",
+                ]
+                for part in expected_parts:
+                    assert part in tooltip_text
 
     def test_sizeHint(self, delegate: MatchQualityColumnDelegate) -> None:
         """Test sizeHint method returns expected size."""
@@ -668,7 +667,7 @@ class TestCodeFormattingChanges:
             # Mock the columns property at the class level to avoid RuntimeError
             mock_columns = Mock()
             mock_columns.status_icon_column = 0
-            with patch.object(ClusterItem, 'columns', mock_columns):
+            with patch.object(ClusterItem, "columns", mock_columns):
                 item = ClusterItem(cluster, parent=None)
                 assert item is not None
 
@@ -717,7 +716,7 @@ class TestMatchQualitySorting:
     def test_sortkey_match_quality_track_object(self, mock_track):
         """Test that track objects return 0.0."""
         # Mock hasattr to return False for track objects
-        with patch("builtins.hasattr", side_effect=lambda obj, attr: attr not in ('get_num_matched_tracks', 'tracks')):
+        with patch("builtins.hasattr", side_effect=lambda obj, attr: attr not in ("get_num_matched_tracks", "tracks")):
             result = _sortkey_match_quality(mock_track)
             assert result == 0.0
 
