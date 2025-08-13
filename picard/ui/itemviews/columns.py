@@ -87,11 +87,11 @@ def _sortkey_match_quality(obj):
         if hasattr(obj, 'status') and obj.status == AlbumStatus.LOADING:
             return 0.0
 
-        matched = obj.get_num_matched_tracks()
         total = len(obj.tracks) if obj.tracks else 0
         if total > 0:
             # Column sorting is reversed on Linux
             multiplier = -1 if IS_LINUX else 1
+            matched = obj.get_num_matched_tracks()
             return matched / total * multiplier
         return 0.0
     # For track objects, return 0 since we don't show icons at track level
