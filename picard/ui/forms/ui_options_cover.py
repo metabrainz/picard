@@ -134,6 +134,11 @@ class Ui_CoverOptionsPage(object):
         QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
 
     def retranslateUi(self, CoverOptionsPage):
+        self.cb_show_cover_art_details.setTitle(_("Show cover art details in cover art view"))
+        self.cb_show_cover_art_details_type.setText(_("Show type (front, back, etc.)"))
+        self.cb_show_cover_art_details_filesize.setText(_("Show file size"))
+        self.cb_show_cover_art_details_dimensions.setText(_("Show dimensions"))
+        self.cb_show_cover_art_details_mimetype.setText(_("Show MIME type"))
         self.save_images_to_tags.setTitle(_("Embed cover images into tags"))
         self.cb_embed_front_only.setText(_("Embed only a single front image"))
         self.cb_dont_replace_with_smaller.setText(_("Never replace cover images with smaller ones"))
@@ -145,11 +150,6 @@ class Ui_CoverOptionsPage(object):
         self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
         self.image_type_as_filename.setText(_("Always use the primary image type as the file name for non-front images"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
-        self.cb_show_cover_art_details.setTitle(_("Show cover art details in cover art view"))
-        self.cb_show_cover_art_details_type.setText(_("Show type (front, back, etc.)"))
-        self.cb_show_cover_art_details_filesize.setText(_("Show file size"))
-        self.cb_show_cover_art_details_dimensions.setText(_("Show dimensions"))
-        self.cb_show_cover_art_details_mimetype.setText(_("Show MIME type"))
         self.move_label.setText(_("Reorder Priority:"))
         self.up_button.setToolTip(_("Move selected item up"))
         self.down_button.setToolTip(_("Move selected item down"))
