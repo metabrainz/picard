@@ -12,6 +12,49 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QGroupBox" name="cb_show_cover_art_details">
+     <property name="title">
+      <string>Show cover art details in cover art view</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QVBoxLayout" name="cover_art_details_layout">
+      <item>
+       <widget class="QCheckBox" name="cb_show_cover_art_details_type">
+        <property name="text">
+         <string>Show type (front, back, etc.)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_show_cover_art_details_filesize">
+        <property name="text">
+         <string>Show file size</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_show_cover_art_details_dimensions">
+        <property name="text">
+         <string>Show dimensions</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cb_show_cover_art_details_mimetype">
+        <property name="text">
+         <string>Show MIME type</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="save_images_to_tags">
      <property name="title">
       <string>Embed cover images into tags</string>

@@ -48,12 +48,15 @@ from PyQt6 import (
 )
 
 from picard import log
+from picard.album import Album
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImage,
     CoverArtImageError,
 )
+from picard.file import File
 from picard.i18n import gettext as _
+from picard.item import FileListItem
 from picard.util import (
     bytes2human,
     imageinfo,
@@ -125,6 +128,24 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def show_cover_art_info(self):
         self.tagger.window.view_info(default_tab=1)
 
+    @staticmethod
+    def initialize_covertartbox_settings(name: str, default: bool) -> bool:
+        """Safely read a boolean setting, falling back to default when config
+        is not initialized or the value is missing.
+        """
+        config = get_config()
+        if config is None:
+            return default
+        settings = getattr(config, 'setting', None)
+        if settings is None:
+            return default
+        if isinstance(settings, dict):
+            return bool(settings.get(name, default))
+        value = settings[name]
+        if value is None:
+            return default
+        return bool(value)
+
     def update_display(self, force=False):
         if self.isHidden():
             if not force:
@@ -155,16 +176,27 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.orig_cover_art_info_label.setVisible(True)
 
         # Update labels and tooltips with image details (only first image)
-        cover_text_lines = self._first_image_info_lines(self.cover_art.related_images)
-        orig_text_lines = self._first_image_info_lines(self.orig_cover_art.related_images)
+        # Tooltips must always show details regardless of preference
+        tooltip_cover_lines = self._first_image_info_lines(self.cover_art.related_images)
+        tooltip_orig_lines = self._first_image_info_lines(self.orig_cover_art.related_images)
+
+        # Labels can be toggled by preference for vertical space
+        # Default is False per option definition
+        show_details = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details', False)
+        if show_details:
+            cover_text_lines = CoverArtBox._filter_info_lines(tooltip_cover_lines)
+            orig_text_lines = CoverArtBox._filter_info_lines(tooltip_orig_lines)
+        else:
+            cover_text_lines = []
+            orig_text_lines = []
 
         self.cover_art_info_label.setText("\n".join(cover_text_lines))
         self.orig_cover_art_info_label.setText("\n".join(orig_text_lines))
         self.cover_art_info_label.setVisible(bool(cover_text_lines))
         self.orig_cover_art_info_label.setVisible(bool(orig_text_lines) and self.orig_cover_art.isVisible())
 
-        self.cover_art.setToolTip("<br/>".join(cover_text_lines))
-        self.orig_cover_art.setToolTip("<br/>".join(orig_text_lines))
+        self.cover_art.setToolTip("<br/>".join(tooltip_cover_lines))
+        self.orig_cover_art.setToolTip("<br/>".join(tooltip_orig_lines))
 
     def set_item(self, item):
         if not item.can_show_coverart:
@@ -230,6 +262,29 @@ class CoverArtBox(QtWidgets.QGroupBox):
             lines.append(mime_part)
 
         return lines
+
+    @staticmethod
+    def _filter_info_lines(lines: list[str]) -> list[str]:
+        """Filter info lines according to user settings order: type, size, dimensions, MIME type.
+
+        The incoming list is expected to be in exactly this order when available.
+        """
+        show_type = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_type', True)
+        show_size = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_filesize', True)
+        show_dims = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_dimensions', True)
+        show_mime = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_mimetype', True)
+
+        result: list[str] = []
+        # Index mapping: 0 type, 1 size, 2 dimensions, 3 mimetype (if present)
+        if len(lines) > 0 and show_type:
+            result.append(lines[0])
+        if len(lines) > 1 and show_size:
+            result.append(lines[1])
+        if len(lines) > 2 and show_dims:
+            result.append(lines[2])
+        if len(lines) > 3 and show_mime:
+            result.append(lines[3])
+        return result
 
     def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
@@ -328,7 +383,12 @@ class CoverArtBox(QtWidgets.QGroupBox):
             mode = CoverArtSetterMode.APPEND
 
         setter = CoverArtSetter(mode, coverartimage, self.item)
-        setter.set_coverart()
+        if isinstance(self.item, Album):
+            setter.set_coverart_album()
+        elif isinstance(self.item, FileListItem):
+            setter.set_coverart_filelist()
+        elif isinstance(self.item, File):
+            setter.set_coverart_file()
 
         return coverartimage
 

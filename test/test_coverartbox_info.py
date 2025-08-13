@@ -23,6 +23,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass
 import os
+from typing import cast
 
 from PyQt6 import QtCore
 from PyQt6.QtWidgets import QApplication
@@ -148,7 +149,7 @@ def i18n_c_locale() -> None:
 def qapplication() -> QApplication:
     # Ensure one QApplication per worker (xdist creates separate processes)
     os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-    app = QApplication.instance() or QApplication([])
+    qapp = QApplication.instance() or QApplication([])
     # Provide a FakeTagger globally for QCoreApplication.instance(), which widgets rely on
     from test.picardtestcase import FakeTagger as _FakeTagger
 
@@ -163,7 +164,7 @@ def qapplication() -> QApplication:
     tagger.primaryScreen = lambda: _DummyScreen()  # type: ignore[attr-defined]
     # Patch instance() at module import time for this worker
     QtCore.QCoreApplication.instance = lambda: tagger  # type: ignore[assignment]
-    return app
+    return cast(QApplication, qapp)
 
 
 @dataclass
@@ -265,7 +266,8 @@ def test_update_display_sets_labels_and_tooltips_single(cover_art_box: CoverArtB
         "500 x 500",
         "image/jpeg",
     ]
-    assert cover_art_box.cover_art_info_label.text() == lines_to_text(expected_lines)
+    # When details display is disabled by default, labels are empty but tooltips still show details
+    assert cover_art_box.cover_art_info_label.text() == ""
     assert cover_art_box.cover_art.toolTip() == "<br/>".join(expected_lines)
     # Only new cover is shown → header cleared, original info hidden
     assert cover_art_box.cover_art_label.text() == ""
@@ -290,6 +292,7 @@ def test_update_display_both_visible_headers_and_info(cover_art_box: CoverArtBox
 
     assert cover_art_box.cover_art_label.text() == "New Cover Art"
     assert cover_art_box.orig_cover_art_label.text() == "Original Cover Art"
-    assert cover_art_box.orig_cover_art_info_label.isVisible()
-    assert cover_art_box.cover_art_info_label.text().startswith("Front")
-    assert cover_art_box.orig_cover_art_info_label.text().startswith("Back")
+    # Details labels are hidden by default when show_cover_art_details is False
+    assert not cover_art_box.orig_cover_art_info_label.isVisible()
+    assert cover_art_box.cover_art_info_label.text() == ""
+    assert cover_art_box.orig_cover_art_info_label.text() == ""
