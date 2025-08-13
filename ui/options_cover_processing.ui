@@ -152,7 +152,7 @@
       <item>
        <widget class="QGroupBox" name="tags_scale_down">
         <property name="title">
-         <string>Resize images saved to tags </string>
+         <string>Resize images saved to tags</string>
         </property>
         <property name="checkable">
          <bool>true</bool>

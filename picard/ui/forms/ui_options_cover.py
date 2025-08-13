@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -119,7 +119,7 @@ class Ui_CoverOptionsPage(object):
         self.cb_embed_front_only.setText(_("Embed only a single front image"))
         self.cb_dont_replace_with_smaller.setText(_("Never replace cover images with smaller ones"))
         self.cb_never_replace_types.setText(_("Never replace cover images matching selected types"))
-        self.select_types_button.setText(_("Select types…"))
+        self.select_types_button.setText(_("Select Types…"))
         self.save_images_to_files.setTitle(_("Save cover images as separate files"))
         self.label_use_filename.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
