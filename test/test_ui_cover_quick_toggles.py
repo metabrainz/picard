@@ -89,7 +89,7 @@ class _FakeAction:
             self.triggered._slot(self._checked)
 
 
-@pytest.fixture()
+@pytest.fixture
 def patch_qaction() -> Iterator[None]:
     p = patch('picard.ui.mainwindow.actions.QtGui.QAction', new=_FakeAction)
     p.start()
@@ -99,13 +99,13 @@ def patch_qaction() -> Iterator[None]:
         p.stop()
 
 
-@pytest.fixture()
+@pytest.fixture
 def setup_config() -> None:
     PicardTestCase.init_config()
 
 
 @pytest.mark.parametrize(
-    "create_fn,key",
+    ('create_fn', 'key'),
     [
         (_create_enable_save_images_to_tags_action, "save_images_to_tags"),
         (_create_enable_save_images_to_files_action, "save_images_to_files"),
@@ -135,7 +135,7 @@ def test_action_toggle(
 
 
 @pytest.mark.parametrize(
-    "method_name,key,value",
+    ('method_name', 'key', 'value'),
     [
         ("toggle_save_images_to_tags", "save_images_to_tags", False),
         ("toggle_save_images_to_tags", "save_images_to_tags", True),
