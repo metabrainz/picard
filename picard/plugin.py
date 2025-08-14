@@ -260,11 +260,11 @@ class PluginFunctions:
         self.functions = defaultdict(lambda: ExtensionPoint(label=label))
         self.registered_priority = dict()
         Option.add_if_missing('setting', EXEC_ORDER_KEY, dict())
+        self.label = 'unknown' if label is None else label.split('_')[0]
 
-    @staticmethod
-    def _make_exec_order_key(function):
+    def make_exec_order_key(self, function):
         """Make the plugin key based on the module name"""
-        name = str(function.__module__)
+        name = f"{function.__module__}:{self.label}:{function.__name__}"
         if name.startswith(_PLUGIN_MODULE_PREFIX):
             name = name[_PLUGIN_MODULE_PREFIX_LEN:]
         return name
@@ -274,7 +274,7 @@ class PluginFunctions:
         if exec_order is None:
             config = get_config()
             exec_order = config.setting[EXEC_ORDER_KEY]
-        key = self._make_exec_order_key(function)
+        key = self.make_exec_order_key(function)
         if key in exec_order:
             return exec_order[key]  # Priority stored in option settings
         if key in self.registered_priority:
@@ -285,7 +285,7 @@ class PluginFunctions:
         self.functions[priority].register(module, item)
 
         # Save priority as defined in the plugin to use as a fallback
-        key = self._make_exec_order_key(item)
+        key = self.make_exec_order_key(item)
         self.registered_priority[key] = priority
 
         config = get_config()
@@ -301,7 +301,7 @@ class PluginFunctions:
 
     def run(self, *args, **kwargs):
         """Execute registered functions with passed parameters honouring priority"""
-        for _priority, function in self.get_exec_order():
+        for _priority, function, _key in self.get_exec_order():
             function(*args, **kwargs)
 
     def get_exec_order(self):
@@ -318,4 +318,4 @@ class PluginFunctions:
 
         # Return plugins sorted by priority
         for priority, function in sorted(_functions, key=lambda i: i[0], reverse=True):
-            yield priority, function
+            yield priority, function, self.make_exec_order_key(function)

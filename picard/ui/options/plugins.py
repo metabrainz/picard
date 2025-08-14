@@ -32,6 +32,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 from copy import deepcopy
 from functools import partial
 from html import escape
@@ -60,10 +61,7 @@ from picard.metadata import (
     _album_metadata_processors,
     _track_metadata_processors,
 )
-from picard.plugin import (
-    EXEC_ORDER_KEY,
-    PluginPriority,
-)
+from picard.plugin import EXEC_ORDER_KEY
 from picard.util import (
     icontheme,
     open_local_path,
@@ -80,6 +78,8 @@ from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
 
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
+
+PluginInformation = namedtuple('PluginInformation', ['key', 'priority', 'registered_priority'])
 
 
 class PluginActionButton(QtWidgets.QToolButton):
@@ -757,14 +757,24 @@ class PluginsOptionsPage(OptionsPage):
 
     def set_execution_order(self):
         "Open a dialog to allow the user to manually set the execution order of metadata processor plugins"
-        title_text = N_("MetaData Processing Execution Order")
+        title_text = N_("MetaData Plugin Processing Order")
 
-        # Get set of all registered metadata processor plugins
-        registered_plugins = set()
-        for processor in (_album_metadata_processors, _track_metadata_processors):
-            registered_plugins.update(s for s in processor.registered_priority.keys())
+        # Temporary dictionary to quickly look up plugin name and description
+        plugin_info = {}
+        for plugin in self.manager.plugins:
+            plugin_info[plugin.module_name] = (plugin.name, plugin.description)
 
-        if not registered_plugins:
+        # Get list of all registered metadata processor plugins
+        plugins = []
+        for processor in [_album_metadata_processors, _track_metadata_processors]:
+            for (priority, _function, key) in processor.get_exec_order():
+                module_name = key.split(':')[0]
+                # Don't include internal plugins
+                if module_name not in plugin_info:
+                    continue
+                plugins.append(PluginInformation(key, priority, processor.registered_priority[key]))
+
+        if not plugins:
             msg = QtWidgets.QMessageBox(self)
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
             msg.setText(_("There were no installed metadata processing plugins found."))
@@ -777,29 +787,6 @@ class PluginsOptionsPage(OptionsPage):
             msg.show()
 
             return
-
-        config = get_config()
-        exec_order = config.setting[EXEC_ORDER_KEY]
-        plugins = []
-
-        for plugin in self.manager.plugins:
-            module_name = plugin.module_name
-
-            # Only include registered metadata processing plugins
-            if module_name not in registered_plugins:
-                continue
-
-            # Get plugin priority
-            if module_name in exec_order:
-                priority = exec_order[module_name]
-            elif module_name in _track_metadata_processors.registered_priority:
-                priority = _track_metadata_processors.registered_priority[module_name]
-            elif module_name in _album_metadata_processors.registered_priority:
-                priority = _album_metadata_processors.registered_priority[module_name]
-            else:
-                priority = PluginPriority.NORMAL
-
-            plugins.append((priority, plugin.name, module_name, plugin.description))
 
         def move_up(self):
             """Move list item up"""
@@ -822,7 +809,7 @@ class PluginsOptionsPage(OptionsPage):
 
         dialog = QtWidgets.QDialog(self)
         dialog.setWindowTitle(_(title_text))
-        dialog.setMinimumWidth(300)
+        dialog.setMinimumWidth(500)
 
         layout = QtWidgets.QVBoxLayout(dialog)
 
@@ -831,7 +818,8 @@ class PluginsOptionsPage(OptionsPage):
                 "This displays the order in which the metadata processing plugins are executed "
                 "by Picard. You can change the order by moving the plugins up or down by selecting "
                 "the plugin to move and then use the up or down button, or by using your mouse to "
-                "drag the plugin to the desired location in the list."
+                "drag the plugin to the desired location in the list. List items are shown as:\n\n"
+                "Plugin Title [processor: method] (original registered priority)"
             )
         )
         instructions.setWordWrap(True)
@@ -843,10 +831,13 @@ class PluginsOptionsPage(OptionsPage):
         list_widget.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
         list_widget.setDefaultDropAction(QtCore.Qt.MoveAction)
 
-        for plugin in sorted(plugins, key=lambda i: i[0], reverse=True):
-            item = QtWidgets.QListWidgetItem(plugin[1])
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, plugin[2])
-            item.setToolTip(plugin[3])
+        for plugin in sorted(plugins, key=lambda i: i[2], reverse=True):
+            plugin: PluginInformation
+            module_name, processor_type, function_name = plugin.key.split(':', 2)
+            title = f"{plugin_info[module_name][0]} [{processor_type}: {function_name}] ({plugin.registered_priority})"
+            item = QtWidgets.QListWidgetItem(title)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, plugin.key)
+            item.setToolTip(plugin_info[module_name][1])
             list_widget.addItem(item)
 
         layout.addWidget(list_widget)
@@ -896,17 +887,18 @@ class PluginsOptionsPage(OptionsPage):
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             for idx in range(list_widget.count()):
                 item = list_widget.item(idx)
-                module_name = item.data(QtCore.Qt.ItemDataRole.UserRole)
+                key = item.data(QtCore.Qt.ItemDataRole.UserRole)
                 priority = -1 - idx
-                self.plugin_exec_order[module_name] = priority
+                self.plugin_exec_order[key] = priority
 
     def _clean_execution_order(self):
         """Remove plugins that are no longer installed from the execution order setting"""
         installed_plugins = set([x.module_name for x in self.manager.plugins])
 
-        for plugin in [x for x in self.plugin_exec_order.keys()]:
-            if plugin not in installed_plugins:
-                self.plugin_exec_order.pop(plugin)
+        for key in [x for x in self.plugin_exec_order.keys()]:
+            parts = key.split(':')
+            if len(parts) < 3 or parts[0] not in installed_plugins:
+                self.plugin_exec_order.pop(key)
 
 
 register_options_page(PluginsOptionsPage)
