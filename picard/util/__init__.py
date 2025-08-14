@@ -368,6 +368,11 @@ def canonicalize_path(path: str) -> str:
     # Avoid realpath here; resolve components manually on macOS first
     normalized = str(Path(trimmed))
 
+    # Windows: Qt QUrl without scheme can yield paths like "/C:/foo".
+    # Strip the leading slash so we keep the correct drive when absolutizing.
+    if IS_WIN and re.match(r'^/[A-Za-z]:', normalized):
+        normalized = normalized[1:]
+
     if IS_MACOS:
         resolved = _resolve_path_components_macos(normalized)
         # realpath only if possible, otherwise keep best-effort resolved path
@@ -381,6 +386,9 @@ def canonicalize_path(path: str) -> str:
         # Prefer an absolute, normalized path without crossing filesystem links.
         candidate = os.path.abspath(os.path.normpath(normalized))
 
+    # Windows: normalize drive letter to uppercase for stable comparisons
+    if IS_WIN and len(candidate) >= 2 and candidate[1] == ':':
+        candidate = candidate[0].upper() + candidate[1:]
     # Carry over Windows long-path handling from normpath
     if IS_WIN and not system_supports_long_paths():
         candidate = win_prefix_longpath(candidate)

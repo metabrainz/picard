@@ -50,6 +50,7 @@ from heapq import (
 )
 import re
 from typing import TYPE_CHECKING, cast
+from urllib.parse import unquote
 
 from PyQt6 import (
     QtCore,
@@ -500,11 +501,12 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 )
             ):
                 # Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
-                # For some Windows inputs (e.g. raw "C:\path"), QUrl.path() / toLocalFile() can be empty.
-                # Fall back to the original string with user info stripped to avoid leaking credentials.
-                local: str = (
-                    url.toLocalFile() or url.path() or url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo)
-                )
+                # For some Windows inputs (e.g. raw "C:\path"), QUrl.path() can drop the drive ("/Users/..."),
+                # which would cause os.path.abspath to adopt the current drive. Prefer the original string
+                # (without user info) before url.path() to preserve the drive letter.
+                raw_str = url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo)
+                # Unquote percent-encoding (e.g. "\\" → "%5C") to recover a plain local path
+                local: str = url.toLocalFile() or unquote(raw_str) or url.path()
                 # canonicalize handles trimming NULs, normalization and macOS NFC/NFD resolution
                 filename: str = canonicalize_path(local) if local else ''
                 file = tagger.files.get(filename)
