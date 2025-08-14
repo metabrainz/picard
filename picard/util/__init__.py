@@ -61,7 +61,7 @@ import json
 import ntpath
 from operator import attrgetter
 import os
-from pathlib import PurePath
+from pathlib import Path, PurePath
 import re
 import subprocess  # nosec: B404
 import sys
@@ -252,6 +252,140 @@ def normpath(path, realpath=True):
     if IS_WIN and not system_supports_long_paths():
         path = win_prefix_longpath(path)
     return path
+
+
+def _resolve_path_components_macos(path: str) -> str:
+    """Best-effort macOS path component resolution.
+
+    Resolve path components against the filesystem on macOS to account for
+    Unicode normalization differences (NFC vs. NFD). Returns a best‑effort
+    on-disk representation, resolving as many components as possible.
+
+    Parameters
+    ----------
+    path : str
+        The input path to resolve. Can be absolute or relative. The final
+        file/directory does not need to exist.
+
+    Returns
+    -------
+    str
+        A path with components matched to existing directory entries where
+        possible. If resolution fails for any component, the original
+        component is kept. Absolute vs. relative form is preserved.
+
+    Notes
+    -----
+    - This function does not change the drive/volume.
+    - It tolerates missing final components (resolves what exists).
+    - Matching is performed using exact, NFC, and NFD comparisons.
+    """
+
+    def _listdir_safe(directory: Path) -> list[str]:
+        try:
+            return [entry.name for entry in directory.iterdir()]
+        except OSError:
+            return []
+
+    def _match_component(candidate: str, entries: list[str]) -> str:
+        if not entries:
+            return candidate
+        if candidate in entries:
+            return candidate
+        cand_nfc = unicodedata.normalize('NFC', candidate)
+        cand_nfd = unicodedata.normalize('NFD', candidate)
+        for entry in entries:
+            if (
+                entry == cand_nfc
+                or entry == cand_nfd
+                or unicodedata.normalize('NFC', entry) == cand_nfc
+                or unicodedata.normalize('NFD', entry) == cand_nfd
+            ):
+                return entry
+        return candidate
+
+    def _join_resolved(parts: list[str], absolute: bool) -> str:
+        if not parts:
+            return os.sep if absolute else ''
+        if absolute:
+            return str(Path('/').joinpath(*parts))
+        return str(Path().joinpath(*parts))
+
+    try:
+        if not path:
+            return path
+        is_abs = Path(path).is_absolute()
+        parts = [p for p in PurePath(path).parts if p not in ('', '.')]
+        resolved_parts: list[str] = []
+        current_dir = Path('/') if is_abs else Path.cwd()
+
+        for part in parts:
+            entries = _listdir_safe(current_dir)
+            chosen = _match_component(part, entries)
+            resolved_parts.append(chosen)
+            current_dir = current_dir / chosen
+
+        return _join_resolved(resolved_parts, is_abs)
+    except Exception as err:  # noqa: BLE001
+        log.debug("canonicalize components failed for %r: %s", path, err)
+        return str(Path(path))
+
+
+def canonicalize_path(path: str) -> str:
+    """Canonicalize a path for robust I/O.
+
+    Produces a sanitized path suitable for file operations by trimming
+    trailing NULs, normalizing separators, and resolving platform-specific
+    quirks (e.g., Unicode normalization on macOS).
+
+    Parameters
+    ----------
+    path : str
+        The input path as a Unicode string.
+
+    Returns
+    -------
+    str
+        A canonicalized path. On macOS, components are matched against the
+        filesystem using normalization-insensitive rules. On all platforms,
+        the result is normalized and, where possible, resolved via
+        ``os.path.realpath``.
+
+    Notes
+    -----
+    - Trailing ``"\0"`` characters are stripped.
+    - If resolution via ``realpath`` fails, the normalized input is returned.
+    - Non-string inputs are returned unchanged.
+    """
+    if not isinstance(path, str):
+        return path  # type: ignore[return-value]
+
+    # Trim any accidental NUL terminators and normalize separators
+    trimmed = path.rstrip('\0')
+    if not trimmed:
+        return ''
+
+    # Avoid realpath here; resolve components manually on macOS first
+    normalized = str(Path(trimmed))
+
+    if IS_MACOS:
+        resolved = _resolve_path_components_macos(normalized)
+        # realpath only if possible, otherwise keep best-effort resolved path
+        try:
+            candidate = str(Path(resolved).resolve(strict=False))
+        except OSError:
+            candidate = resolved
+    else:
+        try:
+            candidate = str(Path(normalized).resolve(strict=False))
+        except OSError:
+            candidate = normalized
+
+    # Carry over Windows long-path handling from normpath
+    if IS_WIN and not system_supports_long_paths():
+        candidate = win_prefix_longpath(candidate)
+
+    return candidate
 
 
 def win_prefix_longpath(path):

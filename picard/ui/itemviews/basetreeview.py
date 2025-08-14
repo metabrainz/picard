@@ -84,7 +84,6 @@ from picard.track import (
 from picard.util import (
     icontheme,
     iter_files_from_objects,
-    normpath,
     restore_method,
 )
 
@@ -479,12 +478,18 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
             if url.scheme() == 'file' or not url.scheme():
-                filename = normpath(url.toLocalFile().rstrip('\0'))
+                # Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
+                local: str = url.toLocalFile() or url.path()
+                # canonicalize handles trimming NULs, normalization and macOS NFC/NFD resolution
+                from picard.util import canonicalize_path  # local import to avoid cycles at module import time
+
+                filename: str = canonicalize_path(local) if local else ''
                 file = tagger.files.get(filename)
                 if file:
                     files.append(file)
                 else:
-                    new_paths.append(filename)
+                    if filename:
+                        new_paths.append(filename)
             elif url.scheme() in {'http', 'https'}:
                 file_lookup = tagger.get_file_lookup()
                 file_lookup.mbid_lookup(url.path(), browser_fallback=False)
