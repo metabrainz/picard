@@ -89,6 +89,7 @@ from picard.script import get_file_naming_script_presets
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
+    canonicalize_path,
     icontheme,
     iter_files_from_objects,
     iter_unique,
@@ -928,8 +929,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
         if files:
             # Canonicalize paths before use
-            from picard.util import canonicalize_path
-
             files = [canonicalize_path(p) for p in files if p]
             config = get_config()
             config.persist['current_directory'] = os.path.dirname(files[0])
@@ -947,8 +946,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 dir=current_directory,
             )
             if directory:
-                from picard.util import canonicalize_path
-
                 dir_list.append(canonicalize_path(directory))
         else:
             dir_list = FileDialog.getMultipleDirectories(
@@ -956,8 +953,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 directory=current_directory,
             )
             if dir_list:
-                from picard.util import canonicalize_path
-
                 dir_list = [canonicalize_path(d) for d in dir_list if d]
 
         dir_count = len(dir_list)

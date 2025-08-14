@@ -82,6 +82,7 @@ from picard.track import (
     Track,
 )
 from picard.util import (
+    canonicalize_path,
     icontheme,
     iter_files_from_objects,
     restore_method,
@@ -481,8 +482,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 # Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
                 local: str = url.toLocalFile() or url.path()
                 # canonicalize handles trimming NULs, normalization and macOS NFC/NFD resolution
-                from picard.util import canonicalize_path  # local import to avoid cycles at module import time
-
                 filename: str = canonicalize_path(local) if local else ''
                 file = tagger.files.get(filename)
                 if file:
