@@ -6,12 +6,12 @@
    <enum>Qt::WindowModal</enum>
   </property>
   <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>285</width>
-    <height>295</height>
-   </rect>
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>285</width>
+     <height>295</height>
+    </rect>
   </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -104,18 +104,18 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
        <property name="text">
         <string notr="true">_</string>
        </property>
-       <property name="maxLength">
-        <number>1</number>
-       </property>
+        <property name="maxLength">
+         <number>3</number>
+        </property>
       </widget>
      </item>
      <item row="5" column="0">
@@ -150,18 +150,18 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
        <property name="text">
         <string notr="true">_</string>
        </property>
-       <property name="maxLength">
-        <number>1</number>
-       </property>
+         <property name="maxLength">
+          <number>3</number>
+         </property>
       </widget>
      </item>
      <item row="4" column="2">
@@ -172,18 +172,18 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
        <property name="text">
         <string notr="true">_</string>
        </property>
-       <property name="maxLength">
-        <number>1</number>
-       </property>
+        <property name="maxLength">
+         <number>3</number>
+        </property>
       </widget>
      </item>
      <item row="0" column="3">
@@ -207,18 +207,18 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
        <property name="text">
         <string notr="true">_</string>
        </property>
-       <property name="maxLength">
-        <number>1</number>
-       </property>
+        <property name="maxLength">
+         <number>3</number>
+        </property>
       </widget>
      </item>
      <item row="1" column="0">
@@ -241,18 +241,18 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true">_</string>
-       </property>
-       <property name="maxLength">
-        <number>1</number>
-       </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">_</string>
+        </property>
+         <property name="maxLength">
+          <number>3</number>
+         </property>
       </widget>
      </item>
      <item row="2" column="2">
@@ -263,18 +263,18 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true">_</string>
-       </property>
-       <property name="maxLength">
-        <number>1</number>
-       </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">_</string>
+        </property>
+         <property name="maxLength">
+          <number>3</number>
+         </property>
       </widget>
      </item>
      <item row="7" column="0">
@@ -297,15 +297,18 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>20</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true">_</string>
-       </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true">_</string>
+        </property>
+        <property name="maxLength">
+         <number>10</number>
+        </property>
       </widget>
      </item>
     </layout>
