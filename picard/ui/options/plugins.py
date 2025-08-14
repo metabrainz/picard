@@ -790,26 +790,26 @@ class PluginsOptionsPage(OptionsPage):
 
         def move_up(self):
             """Move list item up"""
-            current_row = list_widget.currentRow()
+            current_row = tableview.currentIndex().row()
             if current_row < 1:
                 return
             do_move(current_row, current_row - 1)
 
         def move_dn(self):
             """Move list item down"""
-            current_row = list_widget.currentRow()
-            if current_row >= list_widget.count() - 1:
+            current_row = tableview.currentIndex().row()
+            if current_row >= tableview.model.rowCount() - 1:
                 return
             do_move(current_row, current_row + 1)
 
         def do_move(old_row, new_row):
-            current_item = list_widget.takeItem(old_row)
-            list_widget.insertItem(new_row, current_item)
-            list_widget.setCurrentRow(new_row)
+            current_item = tableview.model.takeRow(old_row)
+            tableview.model.insertRow(new_row, current_item)
+            tableview.setCurrentIndex(tableview.model.index(new_row, 0))
 
         dialog = QtWidgets.QDialog(self)
         dialog.setWindowTitle(_(title_text))
-        dialog.setMinimumWidth(500)
+        dialog.setMinimumWidth(650)
 
         layout = QtWidgets.QVBoxLayout(dialog)
 
@@ -818,29 +818,64 @@ class PluginsOptionsPage(OptionsPage):
                 "This displays the order in which the metadata processing plugins are executed "
                 "by Picard. You can change the order by moving the plugins up or down by selecting "
                 "the plugin to move and then use the up or down button, or by using your mouse to "
-                "drag the plugin to the desired location in the list. List items are shown as:\n\n"
-                "Plugin Title [processor: method] (original registered priority)"
+                "drag the plugin to the desired location in the list."
             )
         )
         instructions.setWordWrap(True)
         layout.addWidget(instructions)
 
-        list_widget = QtWidgets.QListWidget()
+        tableview = CustomTableView(dialog)
 
-        # setting drag drop mode
-        list_widget.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
-        list_widget.setDefaultDropAction(QtCore.Qt.MoveAction)
+        tableview.model.setHorizontalHeaderLabels(
+            [
+                _('Plugin Name'),
+                _('Processor'),
+                _('Method/Function Called'),
+                _('Priority'),
+            ]
+        )
+
+        for idx, width in enumerate([260, 70, 230, 60]):
+            tableview.setColumnWidth(idx, width)
+
+        for idx, text in enumerate(
+            [
+                _("The name of the plugin"),
+                _("The type of metadata processor used (album or track)"),
+                _("The method or function within the plugin module that is called"),
+                _("The initial priority set when the plugin method or function was registered"),
+            ]
+        ):
+            tableview.model.horizontalHeaderItem(idx).setToolTip(text)
 
         for plugin in sorted(plugins, key=lambda i: i[2], reverse=True):
             plugin: PluginInformation
             module_name, processor_type, function_name = plugin.key.split(':', 2)
-            title = f"{plugin_info[module_name][0]} [{processor_type}: {function_name}] ({plugin.registered_priority})"
-            item = QtWidgets.QListWidgetItem(title)
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, plugin.key)
-            item.setToolTip(plugin_info[module_name][1])
-            list_widget.addItem(item)
 
-        layout.addWidget(list_widget)
+            column1 = QtGui.QStandardItem(plugin_info[module_name][0])
+            column1.setEditable(False)
+            column1.setDropEnabled(False)
+            column1.setToolTip(plugin_info[module_name][1])
+            column1.setData(plugin.key, QtCore.Qt.ItemDataRole.UserRole)
+
+            column2 = QtGui.QStandardItem(processor_type)
+            column2.setEditable(False)
+            column2.setDropEnabled(False)
+            column2.setTextAlignment(QtCore.Qt.AlignCenter)
+
+            column3 = QtGui.QStandardItem(function_name)
+            column3.setEditable(False)
+            column3.setDropEnabled(False)
+
+            column4 = QtGui.QStandardItem(str(plugin.registered_priority))
+            column4.setEditable(False)
+            column4.setDropEnabled(False)
+            column4.setTextAlignment(QtCore.Qt.AlignRight)
+
+            tableview.model.appendRow([column1, column2, column3, column4])
+
+        tableview.setCurrentIndex(tableview.model.index(0, 0))
+        layout.addWidget(tableview)
 
         button_layout = QtWidgets.QHBoxLayout()
 
@@ -885,8 +920,8 @@ class PluginsOptionsPage(OptionsPage):
 
         # Show dialog and process result
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            for idx in range(list_widget.count()):
-                item = list_widget.item(idx)
+            for idx in range(tableview.model.rowCount()):
+                item = tableview.model.item(idx, 0)
                 key = item.data(QtCore.Qt.ItemDataRole.UserRole)
                 priority = -1 - idx
                 self.plugin_exec_order[key] = priority
@@ -899,6 +934,44 @@ class PluginsOptionsPage(OptionsPage):
             parts = key.split(':')
             if len(parts) < 3 or parts[0] not in installed_plugins:
                 self.plugin_exec_order.pop(key)
+
+
+class CustomTableViewModel(QtGui.QStandardItemModel):
+
+    def dropMimeData(self, data, action, row, col, parent):
+        """Always move the entire row, and don't allow column shifting"""
+        return super().dropMimeData(data, action, row, 0, parent)
+
+
+class CustomTableViewStyle(QtWidgets.QProxyStyle):
+
+    def drawPrimitive(self, element, option, painter, widget=None):
+        """Draw a line across the entire row rather than just the column we're hovering over"""
+        if element == self.PE_IndicatorItemViewItemDrop and not option.rect.isNull():
+            option_new = QtWidgets.QStyleOption(option)
+            option_new.rect.setLeft(0)
+            if widget:
+                option_new.rect.setRight(widget.width())
+            option = option_new
+        super().drawPrimitive(element, option, painter, widget)
+
+
+class CustomTableView(QtWidgets.QTableView):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.verticalHeader().hide()
+        self.setSelectionBehavior(self.SelectRows)
+        self.setSelectionMode(self.SingleSelection)
+        self.setShowGrid(True)
+        self.setDragDropMode(self.InternalMove)
+        self.setDragDropOverwriteMode(False)
+
+        # Set our custom style - this draws the drop indicator across the whole row
+        self.setStyle(CustomTableViewStyle())
+
+        # Set our custom model - this prevents row shifting
+        self.model = CustomTableViewModel()
+        self.setModel(self.model)
 
 
 register_options_page(PluginsOptionsPage)
