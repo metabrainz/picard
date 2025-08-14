@@ -48,6 +48,8 @@ from heapq import (
     heappop,
     heappush,
 )
+import re
+from typing import TYPE_CHECKING, cast
 
 from PyQt6 import (
     QtCore,
@@ -66,6 +68,7 @@ from picard.cluster import (
     UnclusteredFiles,
 )
 from picard.config import get_config
+from picard.const.sys import IS_WIN
 from picard.const.tags import ALL_TAGS
 from picard.extension_points.item_actions import (
     ext_point_album_actions,
@@ -87,6 +90,10 @@ from picard.util import (
     iter_files_from_objects,
     restore_method,
 )
+
+
+if TYPE_CHECKING:  # Avoid runtime circular import
+    from picard.tagger import Tagger
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
@@ -475,12 +482,29 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
-        tagger = QtCore.QCoreApplication.instance()
+        # We need to cast to Tagger here to avoid type checking errors below.
+        tagger = cast("Tagger", QtCore.QCoreApplication.instance())
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
-            if url.scheme() == 'file' or not url.scheme():
+            # Accept local files via explicit file:// scheme or scheme-less URLs.
+            # Qt on Windows can misparse "C:\path" as scheme "c" with an empty path.
+            # Detect a leading Windows drive (single letter + ":") in the original (sans user info)
+            # string and treat it as a local path rather than a custom scheme.
+            if (
+                url.scheme() == 'file'
+                or not url.scheme()
+                or (
+                    IS_WIN
+                    and len(url.scheme()) == 1
+                    and re.match(r'^[a-zA-Z]:', url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
+                )
+            ):
                 # Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
-                local: str = url.toLocalFile() or url.path()
+                # For some Windows inputs (e.g. raw "C:\path"), QUrl.path() / toLocalFile() can be empty.
+                # Fall back to the original string with user info stripped to avoid leaking credentials.
+                local: str = (
+                    url.toLocalFile() or url.path() or url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo)
+                )
                 # canonicalize handles trimming NULs, normalization and macOS NFC/NFD resolution
                 filename: str = canonicalize_path(local) if local else ''
                 file = tagger.files.get(filename)

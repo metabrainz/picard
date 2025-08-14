@@ -49,7 +49,7 @@ import pytest
 def test_canonicalize_path_trims_nulls_and_normalizes(raw: str, expected: str) -> None:
     out: str = canonicalize_path(raw)
     # Only compare tail to avoid host-specific absolute prefixes
-    assert out.endswith(expected)
+    assert out.endswith(os.path.normpath(expected))
 
 
 def test_canonicalize_path_returns_non_string_unchanged() -> None:
