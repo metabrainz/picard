@@ -376,10 +376,10 @@ def canonicalize_path(path: str) -> str:
         except OSError:
             candidate = resolved
     else:
-        try:
-            candidate = str(Path(normalized).resolve(strict=False))
-        except OSError:
-            candidate = normalized
+        # On non-macOS platforms avoid resolving symlinks/junctions here, as this can
+        # unexpectedly change drive letters on Windows runners (e.g. C: → D:).
+        # Prefer an absolute, normalized path without crossing filesystem links.
+        candidate = os.path.abspath(os.path.normpath(normalized))
 
     # Carry over Windows long-path handling from normpath
     if IS_WIN and not system_supports_long_paths():
