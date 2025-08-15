@@ -67,6 +67,7 @@ import subprocess  # nosec: B404
 import sys
 from time import monotonic
 import unicodedata
+from urllib.parse import unquote
 
 from dateutil.parser import parse
 
@@ -394,6 +395,68 @@ def canonicalize_path(path: str) -> str:
         candidate = win_prefix_longpath(candidate)
 
     return candidate
+
+
+def is_local_file_url(url):
+    """Check if a QUrl should be treated as a local file.
+
+    Parameters
+    ----------
+    url : QtCore.QUrl
+        The URL to check.
+
+    Returns
+    -------
+    bool
+        True if the URL should be treated as a local file, False otherwise.
+
+    Notes
+    -----
+    Accept local files via explicit file:// scheme or scheme-less URLs.
+    Qt on Windows can misparse "C:\\path" as scheme "c" with an empty path.
+    Detect a leading Windows drive (single letter + ":") in the original (sans user info)
+    string and treat it as a local path rather than a custom scheme.
+    """
+    import re
+
+    return (
+        url.scheme() == 'file'
+        or not url.scheme()
+        or (
+            IS_WIN
+            and len(url.scheme()) == 1
+            and re.match(r'^[a-zA-Z]:', url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
+        )
+    )
+
+
+def qurl_to_local_path(url: QtCore.QUrl) -> str | None:
+    """Convert a QUrl to a normalized local filesystem path.
+
+    Parameters
+    ----------
+    url : QtCore.QUrl
+        The URL to convert to a local path.
+
+    Returns
+    -------
+    str
+        A canonicalized local filesystem path, or empty string if conversion fails.
+
+    Notes
+    -----
+    Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
+    For some Windows inputs (e.g. raw "C:\\path"), QUrl.path() can drop the drive ("/Users/..."),
+    which would cause os.path.abspath to adopt the current drive. Prefer the original string
+    (without user info) before url.path() to preserve the drive letter.
+    Unquote percent-encoding (e.g. "\\\\" → "%5C") to recover a plain local path.
+    """
+    if not is_local_file_url(url):
+        return ''
+
+    raw_str = url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo)
+    local: str = url.toLocalFile() or unquote(raw_str) or url.path()
+    return canonicalize_path(local) if local else ''
 
 
 def win_prefix_longpath(path):

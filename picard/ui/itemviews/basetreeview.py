@@ -48,9 +48,7 @@ from heapq import (
     heappop,
     heappush,
 )
-import re
 from typing import TYPE_CHECKING, cast
-from urllib.parse import unquote
 
 from PyQt6 import (
     QtCore,
@@ -69,7 +67,6 @@ from picard.cluster import (
     UnclusteredFiles,
 )
 from picard.config import get_config
-from picard.const.sys import IS_WIN
 from picard.const.tags import ALL_TAGS
 from picard.extension_points.item_actions import (
     ext_point_album_actions,
@@ -86,9 +83,9 @@ from picard.track import (
     Track,
 )
 from picard.util import (
-    canonicalize_path,
     icontheme,
     iter_files_from_objects,
+    qurl_to_local_path,
     restore_method,
 )
 
@@ -480,37 +477,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         hscrollbar.setValue(xpos)
 
     @staticmethod
-    def _is_local_file_url(url):
-        """Check if a URL should be treated as a local file.
-
-        Parameters
-        ----------
-        url : QtCore.QUrl
-            The URL to check.
-
-        Returns
-        -------
-        bool
-            True if the URL should be treated as a local file, False otherwise.
-
-        Notes
-        -----
-        Accept local files via explicit file:// scheme or scheme-less URLs.
-        Qt on Windows can misparse "C:\\path" as scheme "c" with an empty path.
-        Detect a leading Windows drive (single letter + ":") in the original (sans user info)
-        string and treat it as a local path rather than a custom scheme.
-        """
-        return (
-            url.scheme() == 'file'
-            or not url.scheme()
-            or (
-                IS_WIN
-                and len(url.scheme()) == 1
-                and re.match(r'^[a-zA-Z]:', url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
-            )
-        )
-
-    @staticmethod
     def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
@@ -518,16 +484,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         tagger = cast("Tagger", QtCore.QCoreApplication.instance())
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
-            if BaseTreeView._is_local_file_url(url):
-                # Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
-                # For some Windows inputs (e.g. raw "C:\path"), QUrl.path() can drop the drive ("/Users/..."),
-                # which would cause os.path.abspath to adopt the current drive. Prefer the original string
-                # (without user info) before url.path() to preserve the drive letter.
-                raw_str = url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo)
-                # Unquote percent-encoding (e.g. "\\" → "%5C") to recover a plain local path
-                local: str = url.toLocalFile() or unquote(raw_str) or url.path()
-                # canonicalize handles trimming NULs, normalization and macOS NFC/NFD resolution
-                filename: str = canonicalize_path(local) if local else ''
+            filename = qurl_to_local_path(url)
+            if filename:
                 file = tagger.files.get(filename)
                 if file:
                     files.append(file)
