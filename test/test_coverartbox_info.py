@@ -145,6 +145,33 @@ def i18n_c_locale() -> None:
     setup_gettext(None, 'C')
 
 
+@pytest.fixture(autouse=True)
+def setup_config() -> None:
+    # Ensure config is set up for tests
+    from picard.config import get_config
+
+    config = get_config()
+
+    if config is None:
+        from unittest.mock import Mock
+
+        import picard.config as config_module
+
+        fake_config = Mock()
+        fake_config.setting = {}
+        fake_config.persist = {}
+        fake_config.profiles = {}
+        config_module.config = fake_config
+        config = fake_config
+
+    # Set default values for cover art details preferences
+    config.setting['show_cover_art_details'] = False
+    config.setting['show_cover_art_details_type'] = True
+    config.setting['show_cover_art_details_filesize'] = True
+    config.setting['show_cover_art_details_dimensions'] = True
+    config.setting['show_cover_art_details_mimetype'] = True
+
+
 @pytest.fixture(scope="session", autouse=True)
 def qapplication() -> QApplication:
     # Ensure one QApplication per worker (xdist creates separate processes)

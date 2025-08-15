@@ -128,24 +128,6 @@ class CoverArtBox(QtWidgets.QGroupBox):
     def show_cover_art_info(self):
         self.tagger.window.view_info(default_tab=1)
 
-    @staticmethod
-    def initialize_covertartbox_settings(name: str, default: bool) -> bool:
-        """Safely read a boolean setting, falling back to default when config
-        is not initialized or the value is missing.
-        """
-        config = get_config()
-        if config is None:
-            return default
-        settings = getattr(config, 'setting', None)
-        if settings is None:
-            return default
-        if isinstance(settings, dict):
-            return bool(settings.get(name, default))
-        value = settings[name]
-        if value is None:
-            return default
-        return bool(value)
-
     def update_display(self, force=False):
         if self.isHidden():
             if not force:
@@ -182,7 +164,8 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         # Labels can be toggled by preference for vertical space
         # Default is False per option definition
-        show_details = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details', False)
+        config = get_config()
+        show_details = config.setting['show_cover_art_details']
         if show_details:
             cover_text_lines = self._first_image_info_lines(self.cover_art.related_images, respect_preferences=True)
             orig_text_lines = self._first_image_info_lines(self.orig_cover_art.related_images, respect_preferences=True)
@@ -250,10 +233,11 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         # Resolve preference flags once when needed
         if respect_preferences:
-            show_type = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_type', True)
-            show_size = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_filesize', True)
-            show_dims = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_dimensions', True)
-            show_mime = CoverArtBox.initialize_covertartbox_settings('show_cover_art_details_mimetype', True)
+            config = get_config()
+            show_type = config.setting['show_cover_art_details_type']
+            show_size = config.setting['show_cover_art_details_filesize']
+            show_dims = config.setting['show_cover_art_details_dimensions']
+            show_mime = config.setting['show_cover_art_details_mimetype']
         else:
             # Do not respect preferences (i.e. show all lines for tooltip)
             show_type = show_size = show_dims = show_mime = True
