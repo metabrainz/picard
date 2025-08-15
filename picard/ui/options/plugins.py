@@ -75,6 +75,7 @@ from picard.ui.options import (
 )
 from picard.ui.theme import theme
 from picard.ui.ui_options_plugins import Ui_PluginsOptionsPage
+from picard.ui.widgets.orderabletableview import OrderableTableView
 
 
 COLUMN_NAME, COLUMN_VERSION, COLUMN_ACTIONS = range(3)
@@ -788,25 +789,6 @@ class PluginsOptionsPage(OptionsPage):
 
             return
 
-        def move_up(self):
-            """Move list item up"""
-            current_row = tableview.currentIndex().row()
-            if current_row < 1:
-                return
-            do_move(current_row, current_row - 1)
-
-        def move_dn(self):
-            """Move list item down"""
-            current_row = tableview.currentIndex().row()
-            if current_row >= tableview.model.rowCount() - 1:
-                return
-            do_move(current_row, current_row + 1)
-
-        def do_move(old_row, new_row):
-            current_item = tableview.model.takeRow(old_row)
-            tableview.model.insertRow(new_row, current_item)
-            tableview.setCurrentIndex(tableview.model.index(new_row, 0))
-
         dialog = QtWidgets.QDialog(self)
         dialog.setWindowTitle(_(title_text))
         dialog.setMinimumWidth(650)
@@ -824,7 +806,7 @@ class PluginsOptionsPage(OptionsPage):
         instructions.setWordWrap(True)
         layout.addWidget(instructions)
 
-        tableview = CustomTableView(dialog)
+        tableview = OrderableTableView(dialog)
 
         tableview.model.setHorizontalHeaderLabels(
             [
@@ -848,7 +830,7 @@ class PluginsOptionsPage(OptionsPage):
         ):
             tableview.model.horizontalHeaderItem(idx).setToolTip(text)
 
-        for plugin in sorted(plugins, key=lambda i: i[2], reverse=True):
+        for plugin in sorted(plugins, key=lambda i: i.priority, reverse=True):
             plugin: PluginInformation
             module_name, processor_type, function_name = plugin.key.split(':', 2)
 
@@ -884,7 +866,7 @@ class PluginsOptionsPage(OptionsPage):
         up_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_TitleBarShadeButton)
         up_button.setIcon(up_icon)
         up_button.setToolTip(_("Move selected plugin up"))
-        up_button.clicked.connect(move_up)
+        up_button.clicked.connect(tableview.move_row_up)
         button_layout.addWidget(up_button)
 
         # Down button
@@ -892,7 +874,7 @@ class PluginsOptionsPage(OptionsPage):
         dn_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_TitleBarUnshadeButton)
         dn_button.setIcon(dn_icon)
         dn_button.setToolTip(_("Move selected plugin down"))
-        dn_button.clicked.connect(move_dn)
+        dn_button.clicked.connect(tableview.move_row_down)
         button_layout.addWidget(dn_button)
 
         # spacer
@@ -934,44 +916,6 @@ class PluginsOptionsPage(OptionsPage):
             parts = key.split(':')
             if len(parts) < 3 or parts[0] not in installed_plugins:
                 self.plugin_exec_order.pop(key)
-
-
-class CustomTableViewModel(QtGui.QStandardItemModel):
-
-    def dropMimeData(self, data, action, row, col, parent):
-        """Always move the entire row, and don't allow column shifting"""
-        return super().dropMimeData(data, action, row, 0, parent)
-
-
-class CustomTableViewStyle(QtWidgets.QProxyStyle):
-
-    def drawPrimitive(self, element, option, painter, widget=None):
-        """Draw a line across the entire row rather than just the column we're hovering over"""
-        if element == self.PE_IndicatorItemViewItemDrop and not option.rect.isNull():
-            option_new = QtWidgets.QStyleOption(option)
-            option_new.rect.setLeft(0)
-            if widget:
-                option_new.rect.setRight(widget.width())
-            option = option_new
-        super().drawPrimitive(element, option, painter, widget)
-
-
-class CustomTableView(QtWidgets.QTableView):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.verticalHeader().hide()
-        self.setSelectionBehavior(self.SelectRows)
-        self.setSelectionMode(self.SingleSelection)
-        self.setShowGrid(True)
-        self.setDragDropMode(self.InternalMove)
-        self.setDragDropOverwriteMode(False)
-
-        # Set our custom style - this draws the drop indicator across the whole row
-        self.setStyle(CustomTableViewStyle())
-
-        # Set our custom model - this prevents row shifting
-        self.model = CustomTableViewModel()
-        self.setModel(self.model)
 
 
 register_options_page(PluginsOptionsPage)
