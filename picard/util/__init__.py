@@ -282,13 +282,13 @@ def _resolve_path_components_macos(path: str) -> str:
     - Matching is performed using exact, NFC, and NFD comparisons.
     """
 
-    def _listdir_safe(directory: Path) -> list[str]:
+    def _listdir_safe(directory: Path) -> tuple[str, ...]:
         try:
-            return [entry.name for entry in directory.iterdir()]
+            return tuple(entry.name for entry in directory.iterdir())
         except OSError:
-            return []
+            return ()
 
-    def _match_component(candidate: str, entries: list[str]) -> str:
+    def _match_component(candidate: str, entries: tuple[str, ...]) -> str:
         if not entries:
             return candidate
         if candidate in entries:

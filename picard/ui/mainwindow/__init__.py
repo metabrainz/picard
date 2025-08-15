@@ -929,7 +929,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
         if files:
             # Canonicalize paths before use
-            files = [canonicalize_path(p) for p in files if p]
+            files = tuple(canonicalize_path(p) for p in files if p)
             config = get_config()
             config.persist['current_directory'] = os.path.dirname(files[0])
             self.tagger.add_files(files)
@@ -953,7 +953,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 directory=current_directory,
             )
             if dir_list:
-                dir_list = [canonicalize_path(d) for d in dir_list if d]
+                dir_list = tuple(canonicalize_path(d) for d in dir_list if d)
 
         dir_count = len(dir_list)
         if dir_count:
