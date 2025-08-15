@@ -480,6 +480,37 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         hscrollbar.setValue(xpos)
 
     @staticmethod
+    def _is_local_file_url(url):
+        """Check if a URL should be treated as a local file.
+
+        Parameters
+        ----------
+        url : QtCore.QUrl
+            The URL to check.
+
+        Returns
+        -------
+        bool
+            True if the URL should be treated as a local file, False otherwise.
+
+        Notes
+        -----
+        Accept local files via explicit file:// scheme or scheme-less URLs.
+        Qt on Windows can misparse "C:\\path" as scheme "c" with an empty path.
+        Detect a leading Windows drive (single letter + ":") in the original (sans user info)
+        string and treat it as a local path rather than a custom scheme.
+        """
+        return (
+            url.scheme() == 'file'
+            or not url.scheme()
+            or (
+                IS_WIN
+                and len(url.scheme()) == 1
+                and re.match(r'^[a-zA-Z]:', url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
+            )
+        )
+
+    @staticmethod
     def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
@@ -487,19 +518,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         tagger = cast("Tagger", QtCore.QCoreApplication.instance())
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
-            # Accept local files via explicit file:// scheme or scheme-less URLs.
-            # Qt on Windows can misparse "C:\path" as scheme "c" with an empty path.
-            # Detect a leading Windows drive (single letter + ":") in the original (sans user info)
-            # string and treat it as a local path rather than a custom scheme.
-            if (
-                url.scheme() == 'file'
-                or not url.scheme()
-                or (
-                    IS_WIN
-                    and len(url.scheme()) == 1
-                    and re.match(r'^[a-zA-Z]:', url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
-                )
-            ):
+            if BaseTreeView._is_local_file_url(url):
                 # Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
                 # For some Windows inputs (e.g. raw "C:\path"), QUrl.path() can drop the drive ("/Users/..."),
                 # which would cause os.path.abspath to adopt the current drive. Prefer the original string
