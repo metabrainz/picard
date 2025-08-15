@@ -74,9 +74,11 @@ from picard.ui.columns import (
 )
 from picard.ui.itemviews.basetreeview import BaseTreeView
 from picard.ui.itemviews.columns import (
-    ITEMVIEW_COLUMNS,
+    ALBUMVIEW_COLUMNS,
+    FILEVIEW_COLUMNS,
     IconColumn,
 )
+from picard.ui.itemviews.match_quality_column import MatchQualityColumn
 
 
 def get_match_color(similarity, basecolor):
@@ -97,8 +99,8 @@ class MainPanel(QtWidgets.QSplitter):
         self.window = window
         self.create_icons()
         self._views = [
-            FileTreeView(ITEMVIEW_COLUMNS, window, parent=self),
-            AlbumTreeView(ITEMVIEW_COLUMNS, window, parent=self),
+            FileTreeView(FILEVIEW_COLUMNS, window, parent=self),
+            AlbumTreeView(ALBUMVIEW_COLUMNS, window, parent=self),
         ]
         self._selected_view = self._views[0]
         self._ignore_selection_changes = False
@@ -332,8 +334,6 @@ class AlbumTreeView(BaseTreeView):
 
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
-    columns = ITEMVIEW_COLUMNS
-
     def __init__(self, obj, sortable=False, filterable=True, parent=None):
         super().__init__(parent)
         self._obj = None
@@ -342,6 +342,18 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         self.filterable = filterable
         self._sortkeys = {}
         self.post_init()
+
+    @property
+    def columns(self):
+        """Get columns from the tree widget this item belongs to.
+        Falls back to file-view columns while the item is not yet attached."""
+        # Different views use different column sets: file view uses FILEVIEW_COLUMNS; album view uses ALBUMVIEW_COLUMNS (with the Match column)
+        tree_widget = self.treeWidget()
+        if tree_widget and hasattr(tree_widget, 'columns'):
+            return tree_widget.columns
+        # During construction some items call update() before being added to a view
+        # Return a safe default to avoid crashes; once attached, the view columns apply
+        return FILEVIEW_COLUMNS
 
     @property
     def obj(self):
@@ -392,6 +404,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             if bgcolor is not None:
                 self.setBackground(i, bgcolor)
             if isinstance(column, IconColumn):
+                self.setSizeHint(i, column.size)
+            elif isinstance(column, MatchQualityColumn):
+                # Progress columns are handled by delegate, just set size hint
                 self.setSizeHint(i, column.size)
             else:
                 if column.align == ColumnAlign.RIGHT:

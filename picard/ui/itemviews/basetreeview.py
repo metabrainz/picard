@@ -91,6 +91,7 @@ from picard.util import (
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
 from picard.ui.filter import Filter
+from picard.ui.itemviews.match_quality_column import MatchQualityColumn, MatchQualityColumnDelegate
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
@@ -409,6 +410,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def _init_header(self):
         header = ConfigurableColumnsHeader(self.columns, parent=self)
         self.setHeader(header)
+
+        # Set up delegate for progress columns
+        progress_delegate = MatchQualityColumnDelegate(self)
+        for i, column in enumerate(self.columns):
+            if isinstance(column, MatchQualityColumn):
+                self.setItemDelegateForColumn(i, progress_delegate)
+
         self.restore_default_columns()
         self.restore_state()
 

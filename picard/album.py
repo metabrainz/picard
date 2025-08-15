@@ -578,6 +578,20 @@ class Album(MetadataItem):
             self.match_files(unmatched_files + self.unmatched_files.files)
         self.update_metadata_images()
         self.update()
+
+        # Trigger re-sort after album is fully loaded to ensure accurate match quality sorting
+        # See the module: picard/ui/itemviews/match_quality_column.py
+        # Without this, the sorting calcs never retrigger
+        if self.ui_item:
+            tree_widget = self.ui_item.treeWidget()
+            if tree_widget and tree_widget.isSortingEnabled():
+                # Clear cached sort keys for this item to force recalculation
+                self.ui_item._sortkeys.clear()
+                # Trigger re-sort by calling sortByColumn with current sort column
+                current_sort_column = tree_widget.sortColumn()
+                if current_sort_column >= 0:
+                    tree_widget.sortByColumn(current_sort_column, tree_widget.header().sortIndicatorOrder())
+
         self.tagger.window.set_statusbar_message(
             N_('Album %(id)s loaded: %(artist)s - %(album)s'),
             {
