@@ -388,12 +388,14 @@ def canonicalize_path(path: str) -> str:
         # Prefer an absolute, normalized path without crossing filesystem links.
         candidate = os.path.abspath(os.path.normpath(normalized))
 
-    # Windows: normalize drive letter to uppercase for stable comparisons
-    if IS_WIN and len(candidate) >= 2 and candidate[1] == ':':
-        candidate = candidate[0].upper() + candidate[1:]
-    # Carry over Windows long-path handling from normpath
-    if IS_WIN and not system_supports_long_paths():
-        candidate = win_prefix_longpath(candidate)
+    # Windows-specific path handling
+    if IS_WIN:
+        # Normalize drive letter to uppercase for stable comparisons
+        if len(candidate) >= 2 and candidate[1] == ':':
+            candidate = candidate[0].upper() + candidate[1:]
+        # Carry over Windows long-path handling from normpath
+        if not system_supports_long_paths():
+            candidate = win_prefix_longpath(candidate)
 
     return candidate
 
