@@ -789,6 +789,11 @@ class PluginsOptionsPage(OptionsPage):
 
             return
 
+        def _set_up_down_button_states():
+            row = tableview.currentIndex().row()
+            up_button.setDisabled(row < 1)
+            dn_button.setDisabled(row >= tableview.model.rowCount() - 1)
+
         dialog = QtWidgets.QDialog(self)
         dialog.setWindowTitle(_(title_text))
         dialog.setMinimumWidth(650)
@@ -857,9 +862,14 @@ class PluginsOptionsPage(OptionsPage):
             tableview.model.appendRow([column1, column2, column3, column4])
 
         tableview.setCurrentIndex(tableview.model.index(0, 0))
+        tableview.selectionModel().selectionChanged.connect(_set_up_down_button_states)
         layout.addWidget(tableview)
 
         button_layout = QtWidgets.QHBoxLayout()
+
+        # Move Label
+        move_label = QtWidgets.QLabel(_("Move row"))
+        button_layout.addWidget(move_label)
 
         # Up button
         up_button = QtWidgets.QToolButton()
@@ -899,6 +909,7 @@ class PluginsOptionsPage(OptionsPage):
         button_layout.addWidget(cancel_button)
 
         layout.addLayout(button_layout)
+        _set_up_down_button_states()
 
         # Show dialog and process result
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
