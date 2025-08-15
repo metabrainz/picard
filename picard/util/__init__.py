@@ -312,21 +312,22 @@ def _resolve_path_components_macos(path: str) -> str:
             return str(Path('/').joinpath(*parts))
         return str(Path().joinpath(*parts))
 
+    def resolved_parts(is_abs):
+        current_dir = Path('/') if is_abs else Path.cwd()
+
+        for part in PurePath(path).parts:
+            if part in ('', '.'):
+                continue
+            entries = _listdir_safe(current_dir)
+            chosen = _match_component(part, entries)
+            yield chosen
+            current_dir = current_dir / chosen
+
     try:
         if not path:
             return path
         is_abs = Path(path).is_absolute()
-        parts = [p for p in PurePath(path).parts if p not in ('', '.')]
-        resolved_parts: list[str] = []
-        current_dir = Path('/') if is_abs else Path.cwd()
-
-        for part in parts:
-            entries = _listdir_safe(current_dir)
-            chosen = _match_component(part, entries)
-            resolved_parts.append(chosen)
-            current_dir = current_dir / chosen
-
-        return _join_resolved(resolved_parts, is_abs)
+        return _join_resolved(list(resolved_parts(is_abs)), is_abs)
     except Exception as err:  # noqa: BLE001
         log.debug("canonicalize components failed for %r: %s", path, err)
         return str(Path(path))
