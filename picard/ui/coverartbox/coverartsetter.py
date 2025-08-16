@@ -35,40 +35,60 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from contextlib import ExitStack
 from enum import IntEnum
 
 from picard import log
-from picard.album import Album
-from picard.cluster import Cluster
-from picard.file import File
-from picard.item import FileListItem
-from picard.track import Track
+
+from picard.ui.coverartbox.coverart_handlers import _set_coverart_dispatch
 
 
 class CoverArtSetterMode(IntEnum):
+    """Enumeration for cover art setting modes."""
+
     APPEND = 0
     REPLACE = 1
 
 
 class CoverArtSetter:
-    def __init__(self, mode, coverartimage, source_obj):
+    """Handles setting cover art on different types of objects using single dispatch pattern."""
+
+    def __init__(self, mode: CoverArtSetterMode, coverartimage, source_obj) -> None:
+        """
+        Initialize the CoverArtSetter.
+
+        Parameters
+        ----------
+        mode : CoverArtSetterMode
+            The mode to use when setting cover art (APPEND or REPLACE)
+        coverartimage
+            The cover art image to set
+        source_obj
+            The source object to set cover art on
+        """
         self.mode = mode
         self.coverartimage = coverartimage
         self.source_obj = source_obj
 
-        if isinstance(self.source_obj, Album):
-            self.set_coverart = self.set_coverart_album
-        elif isinstance(self.source_obj, FileListItem):
-            self.set_coverart = self.set_coverart_filelist
-        elif isinstance(self.source_obj, File):
-            self.set_coverart = self.set_coverart_file
+    def set_coverart(self) -> bool:
+        """
+        Set cover art on the source object using single dispatch.
 
-    def set_coverart(self):
-        log.debug("No set_coverart handler for %r", self.source_obj)
-        return False
+        Returns
+        -------
+        bool
+            True if cover art was set successfully, False otherwise
+        """
+        return _set_coverart_dispatch(self.source_obj, self)
 
-    def set_image(self, obj):
+    def _set_image(self, obj) -> None:
+        """
+        Set the cover art image on an object based on the current mode.
+
+        Parameters
+        ----------
+        obj
+            The object to set the image on
+        """
         if self.mode == CoverArtSetterMode.REPLACE:
             obj.metadata.images.strip_front_images()
             log.debug("Replacing images with %r in %r", self.coverartimage, obj)
@@ -77,56 +97,3 @@ class CoverArtSetter:
 
         obj.metadata.images.append(self.coverartimage)
         obj.metadata_images_changed.emit()
-
-    def set_coverart_album(self):
-        album = self.source_obj
-        log.debug("set_coverart_album %r", album)
-        with ExitStack() as stack:
-            stack.enter_context(album.suspend_metadata_images_update)
-            self.set_image(album)
-            for track in album.tracks:
-                stack.enter_context(track.suspend_metadata_images_update)
-                self.set_image(track)
-            for file in album.iterfiles():
-                self.set_image(file)
-                file.update(signal=False)
-        album.update(update_tracks=False)
-        return True
-
-    @staticmethod
-    def iter_file_parents(file):
-        parent = file.parent_item
-        if parent:
-            yield parent
-            if isinstance(parent, Track) and parent.album:
-                yield parent.album
-            elif isinstance(parent, Cluster) and parent.related_album:
-                yield parent.related_album
-
-    def set_coverart_filelist(self):
-        filelist = self.source_obj
-        log.debug("set_coverart_filelist %r", filelist)
-        parents = set()
-        with ExitStack() as stack:
-            stack.enter_context(filelist.suspend_metadata_images_update)
-            self.set_image(filelist)
-            for file in filelist.iterfiles():
-                for parent in self.iter_file_parents(file):
-                    stack.enter_context(parent.suspend_metadata_images_update)
-                    parents.add(parent)
-                self.set_image(file)
-                file.update(signal=False)
-            for parent in parents:
-                if isinstance(parent, Album):
-                    parent.update(update_tracks=False)
-                else:
-                    parent.update()
-        filelist.update()
-        return True
-
-    def set_coverart_file(self):
-        file = self.source_obj
-        log.debug("set_coverart_file %r", file)
-        self.set_image(file)
-        file.update()
-        return True
