@@ -18,6 +18,7 @@
 # Copyright (C) 2017 Frederik “Freso” S. Olesen
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2023 tuspar
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,7 +39,10 @@ from collections import defaultdict
 import os.path
 
 from picard import log
-from picard.config import get_config
+from picard.config import (
+    Option,
+    get_config,
+)
 from picard.const import USER_PLUGIN_DIR
 from picard.version import (
     Version,
@@ -57,6 +61,8 @@ except ImportError:
 
 _PLUGIN_MODULE_PREFIX = "picard.plugins."
 _PLUGIN_MODULE_PREFIX_LEN = len(_PLUGIN_MODULE_PREFIX)
+
+EXEC_ORDER_KEY = 'plugins_exec_order'
 
 _extension_points = []
 
@@ -252,14 +258,64 @@ class PluginFunctions:
 
     def __init__(self, label=None):
         self.functions = defaultdict(lambda: ExtensionPoint(label=label))
+        self.registered_priority = dict()
+        Option.add_if_missing('setting', EXEC_ORDER_KEY, dict())
+        self.label = 'unknown' if label is None else label.split('_')[0]
+
+    def make_exec_order_key(self, function):
+        """Make the plugin key based on the module name"""
+        name = f"{function.__module__}:{self.label}:{function.__name__}"
+        if name.startswith(_PLUGIN_MODULE_PREFIX):
+            name = name[_PLUGIN_MODULE_PREFIX_LEN:]
+        return name
+
+    def _get_priority(self, function, exec_order=None):
+        """Get the execution priority for the specified function."""
+        if exec_order is None:
+            config = get_config()
+            exec_order = config.setting[EXEC_ORDER_KEY]
+        key = self.make_exec_order_key(function)
+        if key in exec_order:
+            return exec_order[key]  # Priority stored in option settings
+        if key in self.registered_priority:
+            return self.registered_priority[key]  # Priority defined by the plugin when registered
+        return PluginPriority.NORMAL  # Default priority to use
 
     def register(self, module, item, priority=PluginPriority.NORMAL):
         self.functions[priority].register(module, item)
 
+        # Save priority as defined in the plugin to use as a fallback
+        key = self.make_exec_order_key(item)
+        self.registered_priority[key] = priority
+
+        config = get_config()
+
+        # In some cases when registering internal plugins 'config' is not yet defined
+        if config:
+            exec_order = config.setting[EXEC_ORDER_KEY]
+
+            # Add plugin initial priority setting if not already set
+            if key not in exec_order:
+                exec_order[key] = priority
+                config.setting[EXEC_ORDER_KEY] = exec_order
+
     def run(self, *args, **kwargs):
         """Execute registered functions with passed parameters honouring priority"""
-        for priority, functions in sorted(self.functions.items(),
-                                          key=lambda i: i[0],
-                                          reverse=True):
+        for _priority, function, _key in self.get_exec_order():
+            function(*args, **kwargs)
+
+    def get_exec_order(self):
+        """Get the plugins in proper execution order"""
+        config = get_config()
+        exec_order = config.setting[EXEC_ORDER_KEY]
+        _functions = []
+
+        # Get full list of plugins to execute
+        for _priority, functions in self.functions.items():
             for function in functions:
-                function(*args, **kwargs)
+                priority = self._get_priority(function, exec_order)
+                _functions.append((priority, function))
+
+        # Return plugins sorted by priority
+        for priority, function in sorted(_functions, key=lambda i: i[0], reverse=True):
+            yield priority, function, self.make_exec_order_key(function)
