@@ -306,7 +306,6 @@ class TestLinuxDarkModeDetection:
             ("default", False, False),  # Should not apply dark theme
             ("dark", True, False),  # Should not apply (already dark)
             ("light", True, False),  # Should not apply (explicit light)
-            ("system", True, False),  # Should not apply (system theme)
         ],
     )
     def test_linux_dark_mode_detection_logic(

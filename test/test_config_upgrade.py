@@ -446,7 +446,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v2_6_0beta3(self.config)
         self.assertNotIn('use_system_theme', self.config.setting)
         self.assertIn('ui_theme', self.config.setting)
-        self.assertEqual(str(UiTheme.SYSTEM), self.config.setting['ui_theme'])
+        self.assertEqual('system', self.config.setting['ui_theme'])
 
     def test_upgrade_to_v2_7_0dev3(self):
         # Legacy settings

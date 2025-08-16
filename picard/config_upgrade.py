@@ -385,11 +385,9 @@ def upgrade_to_v2_6_0beta2(config):
 
 def upgrade_to_v2_6_0beta3(config):
     """Replace use_system_theme with ui_theme options"""
-    from picard.ui.theme import UiTheme
-
     _s = config.setting
     if _s.value('use_system_theme', BoolOption):
-        _s['ui_theme'] = str(UiTheme.SYSTEM)
+        _s['ui_theme'] = 'system'
     _s.remove('use_system_theme')
 
 

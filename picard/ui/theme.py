@@ -86,7 +86,6 @@ class UiTheme(Enum):
     DEFAULT = 'default'
     DARK = 'dark'
     LIGHT = 'light'
-    SYSTEM = 'system'
 
     def __str__(self):
         return self.value
@@ -197,8 +196,8 @@ class BaseTheme:
         self._loaded_config_theme = UiTheme(config.setting['ui_theme'])
 
         # Use the new fusion style from PyQt6 for a modern and consistent look
-        # across all OSes, except when using system default theme on Linux.
-        if not IS_MACOS and not IS_HAIKU and not (not IS_WIN and self._loaded_config_theme == UiTheme.DEFAULT):
+        # across all OSes, except for macOS and Haiku.
+        if not IS_MACOS and not IS_HAIKU:
             app.setStyle('Fusion')
         elif IS_MACOS:
             app.setStyle(MacOverrideStyle(app.style()))
@@ -215,7 +214,7 @@ class BaseTheme:
             elif self._loaded_config_theme == UiTheme.LIGHT:
                 set_color_scheme(QtCore.Qt.ColorScheme.Light)
             else:
-                # For DEFAULT and SYSTEM themes, let Qt follow system settings
+                # For DEFAULT theme, let Qt follow system settings
                 set_color_scheme(QtCore.Qt.ColorScheme.Unknown)
 
         palette = QtGui.QPalette(app.palette())

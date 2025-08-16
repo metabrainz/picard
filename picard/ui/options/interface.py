@@ -97,10 +97,6 @@ class InterfaceOptionsPage(OptionsPage):
             'label': N_("Light"),
             'desc': N_("A light display theme"),
         },
-        UiTheme.SYSTEM: {
-            'label': N_("System"),
-            'desc': N_("The Qt6 theme configured in the desktop environment"),
-        },
     }
 
     def __init__(self, parent=None):
