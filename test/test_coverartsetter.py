@@ -149,7 +149,7 @@ class TestCoverArtSetter:
         assert result is False
 
     @pytest.mark.parametrize(
-        'mock_obj_fixture,expected_result',
+        ('mock_obj_fixture', 'expected_result'),
         [
             ('mock_album', True),
             ('mock_file', True),
@@ -170,7 +170,7 @@ class TestCoverArtSetter:
         assert result is expected_result
 
     @pytest.mark.parametrize(
-        'mode,should_strip',
+        ('mode', 'should_strip'),
         [
             (CoverArtSetterMode.REPLACE, True),
             (CoverArtSetterMode.APPEND, False),
@@ -192,7 +192,7 @@ class TestCoverArtSetter:
         mock_obj.metadata_images_changed.emit.assert_called_once()
 
     @pytest.mark.parametrize(
-        'parent_type,parent_attr,expected_parents',
+        ('parent_type', 'parent_attr', 'expected_parents'),
         [
             ('track', 'album', ['track', 'album']),
             ('cluster', 'related_album', ['cluster', 'album']),
