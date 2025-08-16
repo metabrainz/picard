@@ -195,12 +195,20 @@ def test_coverartbox_label_toggle_and_tooltip_always_on(box: CoverArtBoxLite, sh
         "500 x 500",
         "image/jpeg",
     ]
+
+    # Label governed by `show_cover_art_details_type`, defaults to False
+    label_expected_lines = [
+        "55.3 kB (54 KiB)",
+        "500 x 500",
+        "image/jpeg",
+    ]
+
     # Tooltip must always include details
     assert box.cover_art.toolTip() == "<br/>".join(expected_lines)
 
     # Label content depends on toggle
     if show_details:
-        assert box.cover_art_info_label.text() == lines_to_text(expected_lines)
+        assert box.cover_art_info_label.text() == lines_to_text(label_expected_lines)
     else:
         assert box.cover_art_info_label.text() == ""
 
@@ -228,7 +236,7 @@ def _restore_cover_details_options() -> Iterator[None]:
 
 
 def test_child_option_defaults() -> None:
-    assert Option.get('setting', "show_cover_art_details_type").default is True
+    assert Option.get('setting', "show_cover_art_details_type").default is False
     assert Option.get('setting', "show_cover_art_details_filesize").default is True
     assert Option.get('setting', "show_cover_art_details_dimensions").default is True
     assert Option.get('setting', "show_cover_art_details_mimetype").default is True
