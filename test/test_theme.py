@@ -479,6 +479,10 @@ def test_linux_dark_theme_palette(monkeypatch, already_dark_theme, dark_mode, ex
 def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_dark):
     import picard.ui.theme as theme_mod
 
+    monkeypatch.setattr(theme_mod, "IS_WIN", True)
+    monkeypatch.setattr(theme_mod, "IS_MACOS", False)
+    monkeypatch.setattr(theme_mod, "IS_HAIKU", False)
+
     # Patch winreg
     winreg_mock = types.SimpleNamespace()
     monkeypatch.setattr(theme_mod, "winreg", winreg_mock)
