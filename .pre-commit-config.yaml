@@ -38,16 +38,6 @@ repos:
         args: [pyproject.toml, -o, requirements-plugins.txt, --group, plugins, --generate-hashes, --universal]
         pass_filenames: false
         always_run: true
-      - id: pip-compile
-        name: pip-compile requirements-macos-11.0.txt
-        args: [pyproject.toml, -o, requirements-macos-11.0.txt, --group, macos_11_0, --generate-hashes, --universal]
-        pass_filenames: false
-        always_run: true
-      - id: pip-compile
-        name: pip-compile requirements-win.txt
-        args: [pyproject.toml, -o, requirements-win.txt, --group, win, --generate-hashes, --universal]
-        pass_filenames: false
-        always_run: true
   - repo: local
     hooks:
       - id: pytest

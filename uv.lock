@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -572,35 +572,10 @@ dev = [
     { name = "ruff" },
     { name = "wlc" },
 ]
-macos-11-0 = [
-    { name = "charset-normalizer" },
-    { name = "discid" },
-    { name = "markdown" },
-    { name = "mutagen" },
-    { name = "pyjwt" },
-    { name = "pyobjc-core" },
-    { name = "pyobjc-framework-cocoa" },
-    { name = "pyqt6" },
-    { name = "pyqt6-qt6" },
-    { name = "python-dateutil" },
-    { name = "pyyaml" },
-]
 plugins = [
     { name = "aubio" },
     { name = "opencc" },
     { name = "zstandard" },
-]
-win = [
-    { name = "charset-normalizer" },
-    { name = "discid" },
-    { name = "markdown" },
-    { name = "mutagen" },
-    { name = "pyjwt" },
-    { name = "pyqt6" },
-    { name = "pyqt6-qt6" },
-    { name = "python-dateutil" },
-    { name = "pywin32" },
-    { name = "pyyaml" },
 ]
 
 [package.metadata]
@@ -636,35 +611,10 @@ dev = [
     { name = "ruff", specifier = ">=0.12.8" },
     { name = "wlc" },
 ]
-macos-11-0 = [
-    { name = "charset-normalizer", specifier = "~=3.3" },
-    { name = "discid", specifier = "~=1.0" },
-    { name = "markdown", specifier = "~=3.2" },
-    { name = "mutagen", specifier = "~=1.45" },
-    { name = "pyjwt", specifier = "~=2.0" },
-    { name = "pyobjc-core", specifier = ">=6.2" },
-    { name = "pyobjc-framework-cocoa", specifier = ">=6.2" },
-    { name = "pyqt6", specifier = ">=6.6.1" },
-    { name = "pyqt6-qt6", specifier = ">=6.6.1" },
-    { name = "python-dateutil", specifier = "~=2.7" },
-    { name = "pyyaml", specifier = ">=5.1,<7" },
-]
 plugins = [
     { name = "aubio", specifier = "~=0.4" },
     { name = "opencc", specifier = "~=1.1" },
     { name = "zstandard", specifier = "~=0.23" },
-]
-win = [
-    { name = "charset-normalizer", specifier = "~=3.3" },
-    { name = "discid", specifier = "~=1.0" },
-    { name = "markdown", specifier = "~=3.2" },
-    { name = "mutagen", specifier = "~=1.45" },
-    { name = "pyjwt", specifier = "~=2.0" },
-    { name = "pyqt6", specifier = ">=6.6.1" },
-    { name = "pyqt6-qt6", specifier = ">=6.6.1" },
-    { name = "python-dateutil", specifier = "~=2.7" },
-    { name = "pywin32" },
-    { name = "pyyaml", specifier = ">=5.1,<7" },
 ]
 
 [[package]]
