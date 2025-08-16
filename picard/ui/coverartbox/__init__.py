@@ -48,15 +48,12 @@ from PyQt6 import (
 )
 
 from picard import log
-from picard.album import Album
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImage,
     CoverArtImageError,
 )
-from picard.file import File
 from picard.i18n import gettext as _
-from picard.item import FileListItem
 from picard.util import (
     bytes2human,
     imageinfo,
@@ -370,12 +367,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
             mode = CoverArtSetterMode.APPEND
 
         setter = CoverArtSetter(mode, coverartimage, self.item)
-        if isinstance(self.item, Album):
-            setter.set_coverart_album()
-        elif isinstance(self.item, FileListItem):
-            setter.set_coverart_filelist()
-        elif isinstance(self.item, File):
-            setter.set_coverart_file()
+        setter.set_coverart()
 
         return coverartimage
 
