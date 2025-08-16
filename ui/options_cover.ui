@@ -70,7 +70,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Select Types...</string>
+           <string>Select Types…</string>
           </property>
          </widget>
         </item>
