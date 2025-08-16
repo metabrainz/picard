@@ -208,8 +208,11 @@ class PluginExecutionOrderOptionsPage(OptionsPage):
                 if module_name.startswith('picard.'):
                     continue
                 module_name = 'picard.plugins.' + module_name
-                name = getattr(sys.modules[module_name], 'PLUGIN_NAME', "Unknown Plugin") if module_name in sys.modules else "No Name"
-                module_desc = getattr(sys.modules[module_name], 'PLUGIN_DESCRIPTION', "Unknown Plugin") if module_name in sys.modules else "No description provided"
+                if module_name in sys.modules:
+                    name = getattr(sys.modules[module_name], 'PLUGIN_NAME', "No name provided")
+                    module_desc = getattr(sys.modules[module_name], 'PLUGIN_DESCRIPTION', "No description provided")
+                else:
+                    name = module_desc = "Unknown Plugin"
                 plugins.append(PluginInformation(key, name, markdown(module_desc), markdown(function_desc), priority))
 
         if not plugins:
