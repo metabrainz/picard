@@ -168,9 +168,11 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette):
     style_hints = get_style_hints()
     if style_hints is not None:
         style_hints.setColorScheme(QtCore.Qt.ColorScheme.Dark)
-    else:
-        # Fall back to manually applying dark colors
-        apply_dark_palette_colors(palette)
+        # Test whether the change was successful
+        if style_hints.colorScheme() == QtCore.Qt.ColorScheme.Dark:
+            return
+    # Fall back to manually applying dark colors
+    apply_dark_palette_colors(palette)
 
 
 class BaseTheme:
