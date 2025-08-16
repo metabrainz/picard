@@ -73,11 +73,6 @@ class CoverOptionsPage(OptionsPage):
         ('save_only_one_front_image', ['save_only_one_front_image']),
         ('image_type_as_filename', ['image_type_as_filename']),
         ('ca_providers', ['ca_providers_list']),
-        ('show_cover_art_details', ['cb_show_cover_art_details']),
-        ('show_cover_art_details_type', ['cb_show_cover_art_details_type']),
-        ('show_cover_art_details_filesize', ['cb_show_cover_art_details_filesize']),
-        ('show_cover_art_details_dimensions', ['cb_show_cover_art_details_dimensions']),
-        ('show_cover_art_details_mimetype', ['cb_show_cover_art_details_mimetype']),
     )
 
     def __init__(self, parent=None):
@@ -91,8 +86,6 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cb_never_replace_types.toggled.connect(self.ui.select_types_button.setEnabled)
         self.ui.select_types_button.clicked.connect(self.select_never_replace_image_types)
         self.move_view = MoveableListView(self.ui.ca_providers_list, self.ui.up_button, self.ui.down_button)
-        # Enable/disable child detail toggles based on parent group checked state
-        self.ui.cb_show_cover_art_details.toggled.connect(self._update_cover_details_children_state)
 
     def restore_defaults(self):
         # Remove previous entries
@@ -123,13 +116,6 @@ class CoverOptionsPage(OptionsPage):
         self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
         self.ui.save_only_one_front_image.setChecked(config.setting['save_only_one_front_image'])
         self.ui.image_type_as_filename.setChecked(config.setting['image_type_as_filename'])
-        self.ui.cb_show_cover_art_details.setChecked(config.setting['show_cover_art_details'])
-        # Set child detail toggles and their enabled state
-        self.ui.cb_show_cover_art_details_type.setChecked(config.setting['show_cover_art_details_type'])
-        self.ui.cb_show_cover_art_details_filesize.setChecked(config.setting['show_cover_art_details_filesize'])
-        self.ui.cb_show_cover_art_details_dimensions.setChecked(config.setting['show_cover_art_details_dimensions'])
-        self.ui.cb_show_cover_art_details_mimetype.setChecked(config.setting['show_cover_art_details_mimetype'])
-        self._update_cover_details_children_state(config.setting['show_cover_art_details'])
         self._load_cover_art_providers()
         self.ui.ca_providers_list.setCurrentRow(0)
         self.update_ca_providers_groupbox_state()
@@ -152,23 +138,11 @@ class CoverOptionsPage(OptionsPage):
         config.setting['save_only_one_front_image'] = self.ui.save_only_one_front_image.isChecked()
         config.setting['image_type_as_filename'] = self.ui.image_type_as_filename.isChecked()
         config.setting['ca_providers'] = list(self._ca_providers())
-        config.setting['show_cover_art_details'] = self.ui.cb_show_cover_art_details.isChecked()
-        config.setting['show_cover_art_details_type'] = self.ui.cb_show_cover_art_details_type.isChecked()
-        config.setting['show_cover_art_details_filesize'] = self.ui.cb_show_cover_art_details_filesize.isChecked()
-        config.setting['show_cover_art_details_dimensions'] = self.ui.cb_show_cover_art_details_dimensions.isChecked()
-        config.setting['show_cover_art_details_mimetype'] = self.ui.cb_show_cover_art_details_mimetype.isChecked()
 
     def update_ca_providers_groupbox_state(self):
         files_enabled = self.ui.save_images_to_files.isChecked()
         tags_enabled = self.ui.save_images_to_tags.isChecked()
         self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
-
-    def _update_cover_details_children_state(self, enabled: bool):
-        # When the group is unchecked, disable child checkboxes (greyed out)
-        self.ui.cb_show_cover_art_details_type.setEnabled(enabled)
-        self.ui.cb_show_cover_art_details_filesize.setEnabled(enabled)
-        self.ui.cb_show_cover_art_details_dimensions.setEnabled(enabled)
-        self.ui.cb_show_cover_art_details_mimetype.setEnabled(enabled)
 
     def select_never_replace_image_types(self):
         instructions_bottom = N_(
