@@ -28,7 +28,7 @@ classifiers = [
     "Topic :: Multimedia :: Sound/Audio :: Analysis",
     "Intended Audience :: End Users/Desktop",
 ]
-dynamic = ["version", "readme"]
+dynamic = ["version", "readme", "gui-scripts"]
 
 dependencies = [
     "discid~=1.0",
