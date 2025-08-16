@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-13, ubuntu-latest, windows-2022]
-        python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14.0-beta.3']
+        python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14']
         exclude:
         # FIXME: Python 3.14 builds on Windows and macOS excluded until
         # pywin32 and pyobjc add support for this new version.
