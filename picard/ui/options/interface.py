@@ -177,13 +177,6 @@ class InterfaceOptionsPage(OptionsPage):
         notes = []
         if new_theme_setting != config.setting['ui_theme']:
             warnings.append(_("You have changed the application theme."))
-            if new_theme_setting == str(UiTheme.SYSTEM):
-                notes.append(
-                    _(
-                        'Please note that using the system theme might cause the user interface to be not shown correctly. '
-                        'If this is the case select the "Default" theme option to use Picard\'s default theme again.'
-                    )
-                )
             config.setting['ui_theme'] = new_theme_setting
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
