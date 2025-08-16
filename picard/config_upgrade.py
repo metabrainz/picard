@@ -62,6 +62,8 @@ from picard.version import (
     VersionError,
 )
 
+from picard.ui.theme import UiTheme
+
 
 # All upgrade functions have to start with following prefix
 UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
@@ -573,6 +575,12 @@ def upgrade_to_v3_0_0dev6(config):
     """New independent option "standardize_vocals" should use the value of the old shared option"""
     standardize_instruments_and_vocals = config.setting['standardize_instruments']
     config.setting['standardize_vocals'] = standardize_instruments_and_vocals
+
+
+def upgrade_to_v3_0_0dev7(config):
+    """Change theme option SYSTEM to DEFAULT"""
+    if config.setting['ui_theme'] == "system":
+        config.setting['ui_theme'] = UiTheme.DEFAULT
 
 
 def rename_option(config, old_opt, new_opt, option_type, default):
