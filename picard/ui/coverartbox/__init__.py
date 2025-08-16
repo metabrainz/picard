@@ -35,6 +35,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Sequence
 from functools import partial
 import os
 import re
@@ -54,6 +55,7 @@ from picard.coverart.image import (
 )
 from picard.i18n import gettext as _
 from picard.util import (
+    bytes2human,
     imageinfo,
     normpath,
 )
@@ -85,22 +87,34 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.pixmap_cache = LRUCache(40)
         self.cover_art_label = QtWidgets.QLabel('')
         self.cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.cover_art_label.setWordWrap(True)
         self.cover_art = CoverArtThumbnail(drops=True, pixmap_cache=self.pixmap_cache, parent=self)
         self.cover_art.image_dropped.connect(self.fetch_remote_image)
+        self.cover_art_info_label = QtWidgets.QLabel('')
+        self.cover_art_info_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.cover_art_info_label.setWordWrap(True)
         spacerItem = QtWidgets.QSpacerItem(
             40, 20, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
         )
         self.orig_cover_art_label = QtWidgets.QLabel('')
         self.orig_cover_art = CoverArtThumbnail(drops=False, pixmap_cache=self.pixmap_cache, parent=self)
         self.orig_cover_art_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.orig_cover_art_label.setWordWrap(True)
+        self.orig_cover_art_info_label = QtWidgets.QLabel('')
+        self.orig_cover_art_info_label.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignHCenter
+        )
+        self.orig_cover_art_info_label.setWordWrap(True)
         self.show_details_button = QtWidgets.QPushButton(_('Show more details'), self)
         self.show_details_shortcut = QtGui.QShortcut(
             QtGui.QKeySequence(_("Ctrl+Shift+I")), self, self.show_cover_art_info
         )
         self.layout.addWidget(self.cover_art_label)
         self.layout.addWidget(self.cover_art)
+        self.layout.addWidget(self.cover_art_info_label)
         self.layout.addWidget(self.orig_cover_art_label)
         self.layout.addWidget(self.orig_cover_art)
+        self.layout.addWidget(self.orig_cover_art_info_label)
         self.layout.addWidget(self.show_details_button)
         self.layout.addSpacerItem(spacerItem)
         self.setLayout(self.layout)
@@ -125,16 +139,44 @@ class CoverArtBox(QtWidgets.QGroupBox):
 
         # We want to show the 2 coverarts only if they are different
         # and orig_cover_art data is set and not the default cd shadow
-        if self.orig_cover_art.data is None or self.cover_art == self.orig_cover_art:
+        if self.orig_cover_art.data is None or self.cover_art.data is None or self.cover_art == self.orig_cover_art:
             self.show_details_button.setVisible(bool(self.item and self.item.can_view_info))
             self.orig_cover_art.setVisible(False)
-            self.cover_art_label.setText('')
             self.orig_cover_art_label.setText('')
+            self.orig_cover_art_info_label.setVisible(False)
+            # No header above cover art when only one
+            self.cover_art_label.setText('')
         else:
             self.show_details_button.setVisible(True)
             self.orig_cover_art.setVisible(True)
+            # Show headers above when both are visible
             self.cover_art_label.setText(_('New Cover Art'))
             self.orig_cover_art_label.setText(_('Original Cover Art'))
+            self.orig_cover_art_info_label.setVisible(True)
+
+        # Update labels and tooltips with image details (only first image)
+        # Tooltips must always show details regardless of preference
+        tooltip_cover_lines = self._first_image_info_lines(self.cover_art.related_images)
+        tooltip_orig_lines = self._first_image_info_lines(self.orig_cover_art.related_images)
+
+        # Labels can be toggled by preference for vertical space
+        # Default is False per option definition
+        config = get_config()
+        show_details = config.setting['show_cover_art_details']
+        if show_details:
+            cover_text_lines = self._first_image_info_lines(self.cover_art.related_images, respect_preferences=True)
+            orig_text_lines = self._first_image_info_lines(self.orig_cover_art.related_images, respect_preferences=True)
+        else:
+            cover_text_lines = []
+            orig_text_lines = []
+
+        self.cover_art_info_label.setText("\n".join(cover_text_lines))
+        self.orig_cover_art_info_label.setText("\n".join(orig_text_lines))
+        self.cover_art_info_label.setVisible(bool(cover_text_lines))
+        self.orig_cover_art_info_label.setVisible(bool(orig_text_lines) and self.orig_cover_art.isVisible())
+
+        self.cover_art.setToolTip("<br/>".join(tooltip_cover_lines))
+        self.orig_cover_art.setToolTip("<br/>".join(tooltip_orig_lines))
 
     def set_item(self, item):
         if not item.can_show_coverart:
@@ -164,6 +206,69 @@ class CoverArtBox(QtWidgets.QGroupBox):
             self.cover_art.set_metadata(metadata)
         self.orig_cover_art.set_metadata(orig_metadata)
         self.update_display()
+
+    @staticmethod
+    def _first_image_info_lines(
+        images: Sequence[CoverArtImage] | None,
+        *,
+        respect_preferences: bool = False,
+    ) -> list[str]:
+        """Build multi-line info for the first image only.
+
+        Order:
+        - type
+        - size (decimal and binary)
+        - dimensions (W x H)
+        - MIME type
+
+        If respect_preferences is True, the visibility of each line is
+        controlled by the corresponding settings.
+        """
+        if not images:
+            return []
+        image = images[0]
+
+        # Resolve preference flags once when needed
+        if respect_preferences:
+            config = get_config()
+            show_type = config.setting['show_cover_art_details_type']
+            show_size = config.setting['show_cover_art_details_filesize']
+            show_dims = config.setting['show_cover_art_details_dimensions']
+            show_mime = config.setting['show_cover_art_details_mimetype']
+        else:
+            # Do not respect preferences (i.e. show all lines for tooltip)
+            show_type = show_size = show_dims = show_mime = True
+
+        result_lines: list[str] = []
+
+        # Type
+        if show_type:
+            try:
+                type_text = image.types_as_string()
+            except (AttributeError, TypeError):
+                type_text = '-'
+            result_lines.append(type_text)
+
+        # Size
+        if show_size:
+            try:
+                size_dec = bytes2human.decimal(image.datalength)
+                size_bin = bytes2human.binary(image.datalength)
+                result_lines.append(f"{size_dec} ({size_bin})")
+            except (AttributeError, TypeError, ValueError):
+                pass
+
+        # Dimensions
+        if show_dims and getattr(image, 'width', None) and getattr(image, 'height', None):
+            result_lines.append(f"{image.width} x {image.height}")
+
+        # MIME type
+        if show_mime:
+            mime_part = getattr(image, 'mimetype', '') or ''
+            if mime_part:
+                result_lines.append(mime_part)
+
+        return result_lines
 
     def fetch_remote_image(self, url, fallback_data=None):
         if self.item is None:
