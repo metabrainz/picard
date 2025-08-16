@@ -77,6 +77,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     genres,
     interface,
     interface_colors,
+    interface_cover_art_box,
     interface_toolbar,
     interface_top_tags,
     maintenance,
