@@ -10,14 +10,14 @@ repos:
         exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
       - id: mixed-line-ending
         exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
-  - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.12.8
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.9
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: [--fix]
       - id: ruff-format
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.9
+    rev: 0.8.11
     hooks:
       - id: uv-lock
         name: Sync uv.lock with pyproject.toml
