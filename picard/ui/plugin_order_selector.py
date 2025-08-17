@@ -55,7 +55,6 @@ class PluginOrderSelectorDialog(PicardDialog):
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.setMinimumWidth(650)
         self.layout = QtWidgets.QVBoxLayout(self)
-        # self.layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
 
         instructions = QtWidgets.QLabel(
             _(
@@ -67,6 +66,8 @@ class PluginOrderSelectorDialog(PicardDialog):
         )
         instructions.setWordWrap(True)
         self.layout.addWidget(instructions)
+
+        self.table_layout = QtWidgets.QHBoxLayout()
 
         self.tableview = OrderableTableView(self)
 
@@ -115,13 +116,16 @@ class PluginOrderSelectorDialog(PicardDialog):
         self.tableview.setCurrentIndex(self.tableview.model.index(0, 0))
 
         self.tableview.selectionModel().selectionChanged.connect(self._set_up_down_button_states)
-        self.layout.addWidget(self.tableview)
 
-        self.button_layout = QtWidgets.QHBoxLayout()
+        self.button_layout = QtWidgets.QVBoxLayout()
 
-        # Move Label
-        move_label = QtWidgets.QLabel(_("Move row"))
-        self.button_layout.addWidget(move_label)
+        # spacers
+        self.spacer1 = QtWidgets.QSpacerItem(
+            0, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
+        self.spacer2 = QtWidgets.QSpacerItem(
+            0, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
 
         # Up button
         self.up_button = QtWidgets.QToolButton()
@@ -129,7 +133,6 @@ class PluginOrderSelectorDialog(PicardDialog):
         self.up_button.setIcon(up_icon)
         self.up_button.setToolTip(_("Move selected plugin up"))
         self.up_button.clicked.connect(self.tableview.move_row_up)
-        self.button_layout.addWidget(self.up_button)
 
         # Down button
         self.dn_button = QtWidgets.QToolButton()
@@ -137,13 +140,16 @@ class PluginOrderSelectorDialog(PicardDialog):
         self.dn_button.setIcon(dn_icon)
         self.dn_button.setToolTip(_("Move selected plugin down"))
         self.dn_button.clicked.connect(self.tableview.move_row_down)
-        self.button_layout.addWidget(self.dn_button)
 
-        # spacer
-        spacer = QtWidgets.QSpacerItem(
-            20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
-        )
-        self.button_layout.addItem(spacer)
+        self.button_layout.addItem(self.spacer1)
+        self.button_layout.addWidget(self.up_button)
+        self.button_layout.addWidget(self.dn_button)
+        self.button_layout.addItem(self.spacer2)
+
+        self.table_layout.addWidget(self.tableview)
+        self.table_layout.addLayout(self.button_layout)
+
+        self.layout.addLayout(self.table_layout)
 
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
         self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -156,9 +162,7 @@ class PluginOrderSelectorDialog(PicardDialog):
         self.buttonbox.rejected.connect(self.reject)
         self.buttonbox.helpRequested.connect(self.show_help)
 
-        self.button_layout.addWidget(self.buttonbox)
-
-        self.layout.addLayout(self.button_layout)
+        self.layout.addWidget(self.buttonbox)
 
         self._set_up_down_button_states()
 
