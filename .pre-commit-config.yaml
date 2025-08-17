@@ -3,10 +3,13 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
       - id: check-yaml
+      - id: trailing-whitespace
+        exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
+      - id: end-of-file-fixer
+        exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
       - id: mixed-line-ending
+        exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.12.8
     hooks:
