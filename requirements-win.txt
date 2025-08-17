@@ -8,3 +8,4 @@ pyqt6-qt6==6.9.1
 python-dateutil==2.9.0.post0
 pywin32==311
 pyyaml==6.0.2
+tomlkit==0.13.3; python_version < '3.11'
