@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-03-22 12:44+0000\n"
+"PO-Revision-Date: 2025-06-09 23:20+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -25,9 +25,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
-" ? 1 : 2);\n"
-"X-Generator: Weblate 5.10.4\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
+"0) ? 1 : 2);\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -511,6 +511,16 @@ msgstr ""
 "Un documento, fisico o digitale, usato in genere per ottenere l'ingresso a "
 "un evento. Da usare anche per le matrici di biglietti e i pass."
 
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
+"Una scatola a quattro o cinque lati, solitamente in cartone o in plastica, "
+"che circonda una seconda confezione interna, come un jewel case."
+
 #. name:Promotion
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -671,7 +681,7 @@ msgstr ""
 msgctxt "place_type"
 msgid "A place (generally a factory) at which physical media are manufactured."
 msgstr ""
-"Un luogo (solitamente una fabbrica) in cui vengono prodotti i supporti "
+"Un posto (solitamente una fabbrica) in cui vengono prodotti i supporti "
 "fisici."
 
 #. name:Indoor arena
@@ -682,7 +692,7 @@ msgid ""
 "surrounded by tiered seating for spectators, which can be used for indoor "
 "sports, concerts and other entertainment events."
 msgstr ""
-"Un luogo composto da una grande area al chiuso al cui centro si trova uno "
+"Un posto composto da una grande area al chiuso al cui centro si trova uno "
 "spazio per eventi, circondato da file di posti a sedere per gli spettatori. "
 "Può essere usato per sport indoor, concerti e altri eventi di "
 "intrattenimento."
@@ -694,7 +704,7 @@ msgid ""
 "A place designed for non-live production of music, typically a recording "
 "studio."
 msgstr ""
-"Un luogo progettato per la produzione di musica non dal vivo, come per "
+"Un posto progettato per la produzione di musica non dal vivo, come per "
 "esempio uno studio di registrazione."
 
 #. name:Venue
@@ -704,7 +714,7 @@ msgid ""
 "A place that has live artistic performances as one of its primary functions, "
 "such as a concert hall."
 msgstr ""
-"Un luogo che fa delle esibizioni artistiche dal vivo una delle sue funzioni "
+"Un posto che fa delle esibizioni artistiche dal vivo una delle sue funzioni "
 "principali, come per esempio una sala concerti."
 
 #. name:Religious building
@@ -715,7 +725,7 @@ msgid ""
 "Religious buildings often host concerts and serve as recording locations, "
 "especially for classical music."
 msgstr ""
-"Un luogo che fa della preghiera o degli studi religiosi la sua funzione "
+"Un posto che fa della preghiera o degli studi religiosi la sua funzione "
 "primaria. Gli edifici religiosi ospitano spesso concerti e fungono da luoghi "
 "di registrazione, in modo particolare per la musica classica."
 
@@ -727,7 +737,7 @@ msgid ""
 "consisting of a pitch surrounded by a structure for spectators with no roof, "
 "or a roof which can be retracted."
 msgstr ""
-"Un luogo la cui funzione principale è ospitare eventi sportivi all'aperto, "
+"Un posto la cui funzione principale è ospitare eventi sportivi all'aperto, "
 "solitamente costituito da un campo circondato da una struttura per gli "
 "spettatori non coperta o con tetto retrattile."
 
@@ -819,7 +829,7 @@ msgstr ""
 msgctxt "series_type"
 msgid "A recurring festival, usually happening annually in the same location."
 msgstr ""
-"Un festival che si tiene periodicamente, di solito annualmente nello stesso "
+"Un festival che si tiene periodicamente, di solito annualmente, nello stesso "
 "luogo."
 
 #. name:Field recording
@@ -905,15 +915,15 @@ msgstr "Una serie di registrazioni."
 #: DB:series_type/description:7
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in different locations."
-msgstr "Una serie di concerti collegati di un artista in diversi luoghi."
+msgstr "Una serie di concerti collegati di un artista in luoghi diversi."
 
 #. name:Residency
 #: DB:series_type/description:12
 msgctxt "series_type"
 msgid "A series of related concerts by an artist in the same location."
 msgstr ""
-"Una serie di concerti collegati tenuti dallo stesso artista nella stessa "
-"location."
+"Una serie di concerti collegati tenuti dallo stesso artista nello stesso "
+"luogo."
 
 #. name:Podcast
 #: DB:series_type/description:80
@@ -1565,7 +1575,7 @@ msgid ""
 msgstr ""
 "Una piantina del locale in cui si tiene l'evento o una pianta di accesso "
 "creata appositamente per l'evento, che mostra per esempio gli accessi "
-"consigliati o la posizione di specifici palcoscenici e chioschi."
+"consigliati o l'ubicazione di specifici palcoscenici e chioschi."
 
 #. name:Interview
 #: DB:release_group_secondary_type/description:4
@@ -1624,6 +1634,14 @@ msgstr ""
 "orchestra, coro e solisti. Pur avendo dei personaggi e una trama, non è "
 "solitamente rappresentata in scena (non ha costumi, scenografia né forte "
 "interazione tra i personaggi)."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1751,7 +1769,7 @@ msgstr "Collezione di aree"
 #: DB:area_alias_type/name:1
 msgctxt "alias_type"
 msgid "Area name"
-msgstr "Nome area"
+msgstr "Nome dell'area"
 
 #: DB:work_type/name:1
 msgctxt "work_type"
@@ -1771,7 +1789,7 @@ msgstr "Collezione di artisti"
 #: DB:artist_alias_type/name:1
 msgctxt "alias_type"
 msgid "Artist name"
-msgstr "Nome artista"
+msgstr "Nome dell'artista"
 
 #: DB:series_type/name:13
 msgctxt "series_type"
@@ -2342,7 +2360,7 @@ msgstr "Bozlak"
 #: DB:instrument_alias_type/name:3
 msgctxt "alias_type"
 msgid "Brand name"
-msgstr "Nome marca"
+msgstr "Nome della marca"
 
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
@@ -2656,7 +2674,7 @@ msgstr "Città"
 msgctxt "area_type"
 msgid "City is used for settlements of any size, including towns and villages."
 msgstr ""
-"\"Città\" è utilizzato per luoghi abitati di qualsiasi dimensione, compresi "
+"“Città” è utilizzato per luoghi abitati di qualsiasi dimensione, compresi "
 "paesi e villaggi."
 
 #: DB:release_packaging/name:56
@@ -2727,8 +2745,8 @@ msgstr "Paese"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "\"Paese\" è utilizzato per le aree incluse (attualmente o in passato) nello "
 "standard ISO 3166-1, per es. gli Stati Uniti."
@@ -2751,6 +2769,11 @@ msgstr ""
 "uno Stato che non siano né le suddivisioni amministrative principali né i "
 "comuni, per es. le contee negli Stati Uniti. Queste non sono considerate "
 "quando si visualizzano le aree di livello superiore di una determinata area."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3451,7 +3474,7 @@ msgstr "Collezione di eventi"
 #: DB:event_alias_type/name:1
 msgctxt "alias_type"
 msgid "Event name"
-msgstr "Nome evento"
+msgstr "Nome dell'evento"
 
 #: DB:series_type/name:6
 msgctxt "series_type"
@@ -4043,6 +4066,14 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
 
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ID ASCAP"
+
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
@@ -4503,6 +4534,15 @@ msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "ID per la società di diritti costaricana ACAM"
 
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "ID per la società di diritti cubana ACDAM"
+
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
 msgctxt "work_attribute_type"
@@ -4937,7 +4977,7 @@ msgstr "Collezione di strumenti"
 #: DB:instrument_alias_type/name:1
 msgctxt "alias_type"
 msgid "Instrument name"
-msgstr "Nome strumento"
+msgstr "Nome dello strumento"
 
 #: DB:release_group_secondary_type/name:4
 msgctxt "release_group_secondary_type"
@@ -5583,7 +5623,7 @@ msgstr "Collezione di etichette"
 #: DB:label_alias_type/name:1
 msgctxt "alias_type"
 msgid "Label name"
-msgstr "Nome etichetta"
+msgstr "Nome dell'etichetta"
 
 #: DB:work_attribute_type_allowed_value/value:956
 msgctxt "work_attribute_type_allowed_value"
@@ -5963,7 +6003,7 @@ msgid ""
 "be considered an area, not just a place."
 msgstr ""
 "Utilizzato per basi militari sufficientemente grandi da essere considerate "
-"un'area e non solo un luogo."
+"un'area e non solo un posto."
 
 #: DB:medium_format/name:166
 msgctxt "medium_format"
@@ -6741,9 +6781,9 @@ msgid ""
 "originally developed in Japan and now mostly found as a Record Store Day "
 "curiosity."
 msgstr ""
-"Dischi in vinile da 3\" (7,6 cm) da riprodurre con lettori costruiti "
-"appositamente; originariamente sviluppati in Giappone, oggi si trovano "
-"principalmente come curiosità nei Record Store Day."
+"Dischi in vinile da 3\" (7,6 cm) a un lato solo, da riprodurre con lettori "
+"costruiti appositamente; originariamente sviluppati in Giappone, oggi si "
+"trovano principalmente come curiosità nei Record Store Day."
 
 #: DB:work_type/name:10
 msgctxt "work_type"
@@ -6964,12 +7004,12 @@ msgstr "Rullo per pianola"
 #: DB:editor_collection_type/name:11
 msgctxt "collection_type"
 msgid "Place collection"
-msgstr "Collezione di luoghi"
+msgstr "Collezione di posti"
 
 #: DB:place_alias_type/name:1
 msgctxt "alias_type"
 msgid "Place name"
-msgstr "Nome luogo"
+msgstr "Nome del posto"
 
 #. name:Slidepack
 #: DB:release_packaging/description:20
@@ -7855,7 +7895,7 @@ msgstr "Collezione di serie"
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
-msgstr "Nome serie"
+msgstr "Nome della serie"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
@@ -7942,6 +7982,11 @@ msgstr "Slidepack"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Slim jewel case"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr "Slipcase"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -9150,7 +9195,7 @@ msgstr "Collezione di opere"
 #: DB:work_alias_type/name:1
 msgctxt "alias_type"
 msgid "Work name"
-msgstr "Nome opera"
+msgstr "Nome dell'opera"
 
 #: DB:series_type/name:4
 msgctxt "series_type"

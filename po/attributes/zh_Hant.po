@@ -367,9 +367,9 @@ msgid ""
 "being played. Programs/programmes are most often made available for music "
 "festivals and for stage and classical performances."
 msgstr ""
-"一本提供給活動參加者的手冊，可能免費發放或販售，內含活動相關資訊，例如時間表"
-"、表演者資料，以及演奏音樂的詳細內容。節目冊最常見於音樂節、舞台表演及古典音"
-"樂演出。"
+"一本提供給活動參加者的手冊，可能免費發放或販售，內含活動相關資訊，例如時間"
+"表、表演者資料，以及演奏音樂的詳細內容。節目冊最常見於音樂節、舞台表演及古典"
+"音樂演出。"
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -447,6 +447,14 @@ msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
 msgstr "實體或者數位文件通常用於了解活動，也用作票根和通行許可。"
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -1465,6 +1473,14 @@ msgid ""
 msgstr ""
 "神劇是一種大型(通常為神聖的)音樂作品，包括管弦樂團、合唱團和獨奏家。雖然具有"
 "角色和情節，但通常不以戲劇形式演出(因為缺乏服裝、道具和強烈的角色互動)。"
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2553,8 +2569,8 @@ msgstr "國家"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr "國家和地區指列於（或曾經列於）ISO 3166-1的區域，如美國。"
 
 #: DB:area_type/name:7
@@ -2573,6 +2589,11 @@ msgid ""
 msgstr ""
 "縣指一國內更小的不是一級行政區也不是地方自治體的行政區划，如美國的縣。在顯示"
 "某區域的上級區域時不考慮。"
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3856,6 +3877,14 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
 
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP ID"
+
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
@@ -4318,6 +4347,15 @@ msgstr "哥倫比亞著作權協會SAYCO ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "哥斯大黎加著作權協會ACAM ID"
+
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "古巴著作權協會ACDAM ID"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -7739,6 +7777,11 @@ msgstr "Slidepack"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "薄壓克力盒"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"

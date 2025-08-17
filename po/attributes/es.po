@@ -46,11 +46,14 @@
 # yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 # Arainuki <esetipodealla@gmail.com>, 2024.
 # eigenric <ricardoruizfdez@gmail.com>, 2025.
+# macaumetal <macaumetal@gmail.com>, 2025.
+# onemanue <onemanue@gmail.com>, 2025.
+# Joax <joan_acosta_1994@hotmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-03-08 03:44+0000\n"
-"Last-Translator: eigenric <ricardoruizfdez@gmail.com>\n"
+"PO-Revision-Date: 2025-05-12 00:20+0000\n"
+"Last-Translator: Joax <joan_acosta_1994@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/es/>\n"
 "Language: es\n"
@@ -59,7 +62,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.11.3\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -175,12 +178,9 @@ msgid "8cm CD+G"
 msgstr "CD+G de 8cm"
 
 #: DB:medium_format/name:210
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr "CD de 8cm"
+msgstr "CD-R de 8cm"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
@@ -449,6 +449,11 @@ msgid ""
 "being played. Programs/programmes are most often made available for music "
 "festivals and for stage and classical performances."
 msgstr ""
+"Un folleto que se entrega o se vende a los asistentes a un evento y que "
+"contiene información sobre el mismo, como la programación, los datos de los "
+"artistas y detalles sobre la música que se interpretará. Los programas "
+"suelen estar disponibles para festivales de música y espectáculos de música "
+"clásica y teatral."
 
 #. name:Box
 #: DB:release_packaging/description:19
@@ -536,6 +541,14 @@ msgid ""
 msgstr ""
 "Un documento, ya sea físico o digital, usado para acceder al evento. También "
 "se aplica a pases y otros documentos similares."
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -1255,12 +1268,9 @@ msgid "ASCAP ID"
 msgstr "ID de ASCAP"
 
 #: DB:work_attribute_type/name:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "KODA ID"
 msgctxt "work_attribute_type"
 msgid "AUTODIA ID"
-msgstr "ID de KODA"
+msgstr "AUTODIA ID"
 
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
@@ -1429,9 +1439,9 @@ msgid ""
 "consists of previously unreleased material (unless this type is combined "
 "with secondary types which change that, such as \"Compilation\")."
 msgstr ""
-"Un álbum, quizás mejor definido como un lanzamiento de “larga "
-"duración” (LP), generalmente consta de material inédito (a menos que este "
-"tipo se combine con tipos secundarios que indiquen lo contrario, como "
+"Un álbum, quizás mejor definido como un lanzamiento de “larga duración” "
+"(LP), generalmente consta de material inédito (a menos que este tipo se "
+"combine con tipos secundarios que indiquen lo contrario, como "
 "“recopilación”)."
 
 #. name:Pseudo-Release
@@ -1550,12 +1560,6 @@ msgstr ""
 
 #. name:Schedule
 #: DB:event_art_archive.art_type/description:5
-#, fuzzy
-#| msgctxt "event_art_type"
-#| msgid ""
-#| "An image usually showing the order and time for the performances in an "
-#| "event. Can be a standalone image, but also a poster or banner (in which "
-#| "case all applicable types should be set)."
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
@@ -1563,8 +1567,8 @@ msgid ""
 "a program (in which case all applicable types should be set)."
 msgstr ""
 "Una imagen que indica el orden y la hora de las actuaciones en un evento. A "
-"veces es una imagen separada y otras veces un póster o un banner (en ese "
-"caso, usa todos los tipos apropiados)."
+"veces es una imagen separada y otras veces un póster, un banner o la página "
+"se un programa (en ese caso, usa todos los tipos apropiados)."
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1607,13 +1611,6 @@ msgstr ""
 
 #. name:Withdrawn
 #: DB:release_status/description:5
-#, fuzzy
-#| msgctxt "release_status"
-#| msgid ""
-#| "A previously official release that was actively withdrawn from "
-#| "circulation by the artist and/or their record company after being "
-#| "released, whether to replace it with a new version with some changes or "
-#| "to just retire it altogether (e.g. because of legal issues)."
 msgctxt "release_status"
 msgid ""
 "An official release that was actively withdrawn from circulation by the "
@@ -1622,11 +1619,11 @@ msgid ""
 "releases that have reached the end of their “natural” life cycle, such as "
 "being sold out and out of print."
 msgstr ""
-"Una publicación que originalmente fue oficial pero que ha sido retirada "
-"activamente de la circulación tras su lanzamiento por el artista y/o su "
-"compañía discográfica, ya sea para reemplazarla con una nueva versión con "
-"algunos cambios o simplemente para retirarla por completo (por ejemplo, "
-"debido a problemas legales)."
+"Una publicación oficial que ha sido retirada activamente de la circulación "
+"tras su lanzamiento por el artista y/o su compañía discográfica, ya sea para "
+"reemplazarla por una nueva versión o simplemente para retirarla por "
+"completo. Esto no incluyen lanzamientos que hayan acabado au ciclo de vida "
+"\"natual\", como un que haga sold-out o se haya descatalogado."
 
 #. name:Metal Tin
 #: DB:release_packaging/description:54
@@ -1661,6 +1658,14 @@ msgstr ""
 "por lo general no tiene representación escénica (no se usan trajes ni "
 "accesorios, y los personajes no tienen grandes interacciones en el "
 "escenario)."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1966,20 +1971,14 @@ msgid "B Dorian"
 msgstr "si dórico"
 
 #: DB:work_attribute_type_allowed_value/value:1071
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Locrian"
-msgstr "si dórico"
+msgstr "si locrio"
 
 #: DB:work_attribute_type_allowed_value/value:1064
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Lydian"
-msgstr "si mixolidio"
+msgstr "si lidio"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
@@ -1989,7 +1988,7 @@ msgstr "si mixolidio"
 #: DB:work_attribute_type_allowed_value/value:1057
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Phrygian"
-msgstr ""
+msgstr "Si Frigio"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2459,20 +2458,14 @@ msgid "C Dorian"
 msgstr "do dórico"
 
 #: DB:work_attribute_type_allowed_value/value:1065
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "C Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Locrian"
-msgstr "do dórico"
+msgstr "do locrio"
 
 #: DB:work_attribute_type_allowed_value/value:1058
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "C Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Lydian"
-msgstr "do mixolidio"
+msgstr "do lidio"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
@@ -2482,7 +2475,7 @@ msgstr "do mixolidio"
 #: DB:work_attribute_type_allowed_value/value:1051
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Phrygian"
-msgstr ""
+msgstr "Do frigio"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2776,8 +2769,8 @@ msgstr "País"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "Usamos “país” para áreas incluidas (o previamente incluidas) en la ISO "
 "3166-1, como los Estados Unidos o Puerto Rico."
@@ -2799,6 +2792,11 @@ msgstr ""
 "Un condado es un tipo de división administrativa de un país situada entre la "
 "división principal y el municipio, usado en varios países, por ejemplo en "
 "los EEUU. No los tenemos en cuenta al mostrar las relaciones entre áreas."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2847,20 +2845,14 @@ msgid "D Dorian"
 msgstr "re dórico"
 
 #: DB:work_attribute_type_allowed_value/value:1066
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Locrian"
-msgstr "re dórico"
+msgstr "re locrio"
 
 #: DB:work_attribute_type_allowed_value/value:1059
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Lydian"
-msgstr "re mixolidio"
+msgstr "re lidio"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
@@ -2870,7 +2862,7 @@ msgstr "re mixolidio"
 #: DB:work_attribute_type_allowed_value/value:1052
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Phrygian"
-msgstr ""
+msgstr "Re frigio"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3398,20 +3390,14 @@ msgid "E Dorian"
 msgstr "mi dórico"
 
 #: DB:work_attribute_type_allowed_value/value:1067
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Locrian"
-msgstr "mi dórico"
+msgstr "mi locrio"
 
 #: DB:work_attribute_type_allowed_value/value:1060
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Lydian"
-msgstr "mi mixolidio"
+msgstr "mi lidio"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
@@ -3421,7 +3407,7 @@ msgstr "mi mixolidio"
 #: DB:work_attribute_type_allowed_value/value:1053
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Phrygian"
-msgstr ""
+msgstr "Mi frigio"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3576,7 +3562,7 @@ msgstr "Evsat"
 #: DB:release_status/name:38
 msgctxt "release_status"
 msgid "Expunged"
-msgstr ""
+msgstr "Eliminado"
 
 #: DB:work_attribute_type_allowed_value/value:614
 msgctxt "work_attribute_type_allowed_value"
@@ -3589,20 +3575,14 @@ msgid "F Dorian"
 msgstr "fa dórico"
 
 #: DB:work_attribute_type_allowed_value/value:1068
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Locrian"
-msgstr "fa dórico"
+msgstr "fa locrio"
 
 #: DB:work_attribute_type_allowed_value/value:1061
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Lydian"
-msgstr "fa mixolidio"
+msgstr "fa lidio"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
@@ -3612,7 +3592,7 @@ msgstr "fa mixolidio"
 #: DB:work_attribute_type_allowed_value/value:1054
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Phrygian"
-msgstr ""
+msgstr "Fa frigio"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3821,20 +3801,14 @@ msgid "G Dorian"
 msgstr "sol dórico"
 
 #: DB:work_attribute_type_allowed_value/value:1069
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Locrian"
-msgstr "sol dórico"
+msgstr "sol locrio"
 
 #: DB:work_attribute_type_allowed_value/value:1062
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Lydian"
-msgstr "sol mixolidio"
+msgstr "sol lidio"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
@@ -3844,7 +3818,7 @@ msgstr "sol mixolidio"
 #: DB:work_attribute_type_allowed_value/value:1055
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Phrygian"
-msgstr ""
+msgstr "Sol frigio"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -4114,6 +4088,14 @@ msgstr "HD-DVD"
 msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
+
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ID de ASCAP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4535,12 +4517,9 @@ msgstr "ID de la sociedad de gestión de derechos de Gran Bretaña PRS for Music
 
 #. name:MUSICAUTOR ID
 #: DB:work_attribute_type/description:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgctxt "work_attribute_type"
 msgid "ID for the Bulgarian rights society MUSICAUTOR"
-msgstr "ID de la sociedad de gestión de derechos de Nicaragua NICAUTOR"
+msgstr "ID de la Sociedad de Gestión de Derechos Búlgara MUSICAUTOR"
 
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
@@ -4577,6 +4556,15 @@ msgstr "ID de la sociedad de gestión de derechos de Colombia SAYCO"
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "ID de la sociedad de gestión de derechos de Costa Rica ACAM"
+
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "ID de la sociedad de gestión de derechos de Cuba ACDAM"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4636,12 +4624,9 @@ msgstr "ID de la sociedad de gestión de derechos de Alemania GEMA"
 
 #. name:AUTODIA ID
 #: DB:work_attribute_type/description:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Czech rights society OSA"
 msgctxt "work_attribute_type"
 msgid "ID for the Greek rights society AUTODIA"
-msgstr "ID de la sociedad de gestión de derechos de Chequia OSA"
+msgstr "ID de la Sociedad de Gestión de Derechos Griega AUTODIA"
 
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
@@ -4681,12 +4666,9 @@ msgstr "ID de la sociedad de gestión de derechos de India IPRS"
 
 #. name:WAMI ID
 #: DB:work_attribute_type/description:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Indian rights society IPRS"
 msgctxt "work_attribute_type"
 msgid "ID for the Indonesian rights society WAMI"
-msgstr "ID de la sociedad de gestión de derechos de India IPRS"
+msgstr "ID de la sociedad de derechos humanos de Indonesia WAMI"
 
 #. name:ICE ID
 #: DB:work_attribute_type/description:29
@@ -4810,12 +4792,9 @@ msgstr "ID de la sociedad de gestión de derechos de El Salvador SACIM"
 
 #. name:SOKOJ ID
 #: DB:work_attribute_type/description:213
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Norwegian rights society TONO"
 msgctxt "work_attribute_type"
 msgid "ID for the Serbian rights society SOKOJ"
-msgstr "ID de la sociedad de gestión de derechos de Noruega TONO"
+msgstr "ID de la sociedad de derechos humanos de Serbia SOKOJ"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -4897,10 +4876,9 @@ msgstr "ID de la sociedad de gestión de derechos de Estados Unidos SESAC"
 
 #. name:UACRR ID
 #: DB:work_attribute_type/description:209
-#, fuzzy
 msgctxt "work_attribute_type"
 msgid "ID for the Ukrainian rights society UACRR"
-msgstr "ID de la sociedad de gestión de derechos de Brasil ECAD"
+msgstr "ID de la sociedad Ucraniana derechos humanos UACRR"
 
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
@@ -5001,12 +4979,6 @@ msgstr "Territorio/reserva indígena"
 
 #. name:Indigenous territory / reserve
 #: DB:area_type/description:9
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for semi-autonomous territories governed by indigenous peoples, such "
-#| "as Indian reserves/reservations in North America and indigenous "
-#| "territories in Central and South America."
 msgctxt "area_type"
 msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
@@ -5799,12 +5771,9 @@ msgid "MCT ID"
 msgstr "ID de MCT"
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "NICAUTOR ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "ID de NICAUTOR"
+msgstr "ID EDITORMUSICAL"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -6053,11 +6022,6 @@ msgstr "Base militar"
 
 #. name:Military base
 #: DB:area_type/description:8
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for any military bases that are large enough to be considered an "
-#| "area, not just a place."
 msgctxt "area_type"
 msgid ""
 "Military base is used only for any military bases that are large enough to "
@@ -6951,7 +6915,7 @@ msgstr "Pahāḍi"
 #: DB:cover_art_archive.art_type/name:81
 msgctxt "cover_art_type"
 msgid "Panel"
-msgstr ""
+msgstr "Panel"
 
 #: DB:work_attribute_type_allowed_value/value:839
 msgctxt "work_attribute_type_allowed_value"
@@ -7143,7 +7107,7 @@ msgstr "Producción"
 #: DB:event_art_archive.art_type/name:11
 msgctxt "event_art_type"
 msgid "Program"
-msgstr ""
+msgstr "Programa"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
@@ -7739,7 +7703,7 @@ msgstr "ID de SODRAC"
 #: DB:work_attribute_type/name:213
 msgctxt "work_attribute_type"
 msgid "SOKOJ ID"
-msgstr ""
+msgstr "SOKOJ ID"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
@@ -8047,6 +8011,11 @@ msgstr "Slidepack"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Caja de CD delgada"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8620,6 +8589,9 @@ msgid ""
 "The individual segments of a folded packaging, such as a gatefold cover, "
 "digipak or cassette inlay (don't use this for folded booklets nor posters)."
 msgstr ""
+"Los segmentos individuales de un empaque plegable, como una portada "
+"desplegable, un digipak o una carátula de casette (no usar esto para "
+"libretos plegables ni posters)."
 
 #. name:Madrigal
 #: DB:work_type/description:7
@@ -9210,12 +9182,9 @@ msgid "Vīra vasantaṁ"
 msgstr "Vīra vasantaṁ"
 
 #: DB:work_attribute_type/name:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "BMI ID"
 msgctxt "work_attribute_type"
 msgid "WAMI ID"
-msgstr "ID de BMI"
+msgstr "ID de WAMI"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"

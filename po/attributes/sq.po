@@ -406,6 +406,14 @@ msgid ""
 "digital. Use this also for ticket stubs and passes."
 msgstr ""
 
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
+
 #. name:Promotion
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -1416,6 +1424,14 @@ msgstr ""
 "përfshin një orkestër, një kor, dhe solistë. Teksa përmban personazhe dhe "
 "subjekt, zakonisht nuk ekzekutohet në mënyrë teatrale (mungojnë kostumet, "
 "dekoret dhe ndërveprim i fuqishëm mes personazhesh)."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2533,8 +2549,8 @@ msgstr "Vend"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "Vend përdoret për zona të përfshira (ose të përfshira dikur) në standardin "
 "ISO 3166-1, p.sh., Shqipëria."
@@ -2557,6 +2573,11 @@ msgstr ""
 "nuk përbëjnë ndarjet kryesore administrative, por as janë bashki dhe komuna, "
 "p.sh. kontetë në ShBA. Këto nuk merren parasysh kur shfaqen zonat mëmë për "
 "një zonë të dhënë."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3874,6 +3895,14 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
 
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ID ASCAP"
+
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
@@ -4336,6 +4365,15 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr ""
+
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Mexican rights society SACM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4849,8 +4887,8 @@ msgid ""
 "own, e.g. Skye. These are not considered when displaying the parent areas "
 "for a given area."
 msgstr ""
-"Ishull përdoret për ishuj dhe atolle që nuk përbëjnë nëndarje më vete, p."
-"sh., Skye. These are not considered when displaying the parent areas for a "
+"Ishull përdoret për ishuj dhe atolle që nuk përbëjnë nëndarje më vete, "
+"p.sh., Skye. These are not considered when displaying the parent areas for a "
 "given area. Këto nuk merren parasysh kur shfaqen zonat mëmë për një zonë të "
 "dhënë."
 
@@ -7779,6 +7817,11 @@ msgstr ""
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "Këllëf i Hollë"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr ""
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"

@@ -13,11 +13,13 @@
 # imgradeone <imgradeone@outlook.com>, 2025.
 # Ral Hole <ral-hole@outlook.com>, 2025.
 # delamons <lamons.n@gmail.com>, 2025.
+# Solarenta <2325840950@qq.com>, 2025.
+# Beteix <1158817754@qq.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-03-22 07:45+0000\n"
-"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
+"PO-Revision-Date: 2025-07-26 12:36+0000\n"
+"Last-Translator: Beteix <1158817754@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -25,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -458,6 +460,15 @@ msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
 msgstr "实体或者数字文档通常用于了解活动，也用作票根和通行许可。"
+
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
+"一个四面或五面的盒套，通常由纸板或塑料制成，内封有第二种包装，如珠宝盒。"
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -1377,7 +1388,8 @@ msgid ""
 "An image usually showing the order and time for the performances in an "
 "event. Can be a standalone image, but also a poster, a banner or a page from "
 "a program (in which case all applicable types should be set)."
-msgstr "一张通常展示活动中演出顺序和时间的图片。可以是独立图片，也可以是海报、横幅或"
+msgstr ""
+"一张通常展示活动中演出顺序和时间的图片。可以是独立图片，也可以是海报、横幅或"
 "节目册中的页面（在这种情况下，应设置所有适用的类型）。"
 
 #. name:Concert
@@ -1456,6 +1468,14 @@ msgid ""
 msgstr ""
 "清唱剧是一种由管弦乐队，合唱团和独奏家表演的大型（通常为神圣的）的音乐作品。"
 "虽然它有角色和情节，但它通常不是戏剧表演（缺少戏服，道具和强烈的角色互动）。"
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr "为发行品的视觉元素（如插图、设计和其他艺术）提供创意指导的机构。"
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2544,8 +2564,8 @@ msgstr "国家"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr "国家和地区指列于（或曾经列于）ISO 3166-1的区域，如美国。"
 
 #: DB:area_type/name:7
@@ -2564,6 +2584,11 @@ msgid ""
 msgstr ""
 "县指一国内更小的不是一级行政区也不是地方自治体的行政区划，如美国的县。在显示"
 "某区域的上级区域时不考虑。"
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3847,6 +3872,14 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr "HDCD"
 
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP ID"
+
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
@@ -4306,6 +4339,15 @@ msgstr "哥伦比亚著作权协会SAYCO ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
 msgstr "哥斯达黎加著作权协会ACAM ID"
+
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Cuban rights society ACDAM"
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
+msgstr "古巴著作权协会ACDAM ID"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -7720,6 +7762,11 @@ msgstr "Slidepack"
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
 msgstr "薄珍宝盒"
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
+msgstr "外封套"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"

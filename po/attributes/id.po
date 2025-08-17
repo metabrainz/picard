@@ -472,6 +472,14 @@ msgid ""
 "digital. Use this also for ticket stubs and passes."
 msgstr ""
 
+#. name:Slipcase
+#: DB:release_packaging/description:122
+msgctxt "release_packaging"
+msgid ""
+"A four- or five-sided box, usually made of cardboard or plastic, that "
+"surrounds a second inner package such as a jewel case."
+msgstr ""
+
 #. name:Promotion
 #: DB:release_status/description:2
 msgctxt "release_status"
@@ -1322,10 +1330,10 @@ msgid ""
 "consists of previously unreleased material (unless this type is combined "
 "with secondary types which change that, such as \"Compilation\")."
 msgstr ""
-"Sebuah album, mungkin lebih baik didefinisikan sebagai rilis \"Long "
-"Play\" (LP), umumnya terdiri dari materi yang belum pernah dirilis "
-"sebelumnya (kecuali jenis ini digabungkan dengan jenis sekunder yang "
-"mengubahnya, seperti \"Kompilasi\")."
+"Sebuah album, mungkin lebih baik didefinisikan sebagai rilis \"Long Play\" "
+"(LP), umumnya terdiri dari materi yang belum pernah dirilis sebelumnya "
+"(kecuali jenis ini digabungkan dengan jenis sekunder yang mengubahnya, "
+"seperti \"Kompilasi\")."
 
 #. name:Pseudo-Release
 #: DB:release_status/description:4
@@ -1525,6 +1533,14 @@ msgstr ""
 "paduan suara, dan solois. Meskipun memiliki karakter dan plot, biasanya "
 "tidak ditampilkan secara teatrikal (tidak memiliki kostum, alat peraga, dan "
 "interaksi karakter yang kuat)."
+
+#. name:Creative Agency
+#: DB:label_type/description:11
+msgctxt "label_type"
+msgid ""
+"An organization that provides creative direction for visual elements of "
+"releases (such as illustrations, design and other artwork)."
+msgstr ""
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2641,8 +2657,8 @@ msgstr "Negara"
 #: DB:area_type/description:1
 msgctxt "area_type"
 msgid ""
-"Country is used for areas included (or previously included) in ISO 3166-1, e."
-"g. United States."
+"Country is used for areas included (or previously included) in ISO 3166-1, "
+"e.g. United States."
 msgstr ""
 "Negara digunakan untuk area yang disertakan (atau disertakan sebelumnya) "
 "dalam ISO 3166-1, mis. Amerika Serikat."
@@ -2665,6 +2681,11 @@ msgstr ""
 "negara yang bukan divisi administratif utama tetapi juga bukan kotamadya, "
 "mis. kabupaten di AS. Ini tidak dipertimbangkan saat menampilkan area induk "
 "untuk area tertentu."
+
+#: DB:label_type/name:11
+msgctxt "label_type"
+msgid "Creative Agency"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3970,6 +3991,14 @@ msgctxt "medium_format"
 msgid "HDCD"
 msgstr ""
 
+#: DB:work_attribute_type/name:214
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ASCAP ID"
+msgctxt "work_attribute_type"
+msgid "HDS-ZAMP ID"
+msgstr "ASCAP ID"
+
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
 msgid "HFA ID"
@@ -4428,6 +4457,12 @@ msgstr ""
 #: DB:work_attribute_type/description:44
 msgctxt "work_attribute_type"
 msgid "ID for the Costa Rican rights society ACAM"
+msgstr ""
+
+#. name:HDS-ZAMP ID
+#: DB:work_attribute_type/description:214
+msgctxt "work_attribute_type"
+msgid "ID for the Croatian rights society HDS-ZAMP"
 msgstr ""
 
 #. name:ACDAM ID
@@ -7837,6 +7872,11 @@ msgstr ""
 #: DB:release_packaging/name:2
 msgctxt "release_packaging"
 msgid "Slim Jewel Case"
+msgstr ""
+
+#: DB:release_packaging/name:122
+msgctxt "release_packaging"
+msgid "Slipcase"
 msgstr ""
 
 #: DB:release_packaging/name:11
