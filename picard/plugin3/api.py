@@ -30,7 +30,6 @@ from typing import (
 from picard.config import (
     Config,
     ConfigSection,
-    config,
     get_config,
 )
 from picard.coverart.providers import CoverArtProvider
@@ -75,7 +74,7 @@ class PluginApi:
         self._manifest = manifest
         full_name = f'plugin.{self._manifest.module_name}'
         self._logger = getLogger(full_name)
-        self._api_config = ConfigSection(config, full_name)
+        self._api_config = ConfigSection(get_config(), full_name)
 
     @property
     def web_service(self) -> WebService:

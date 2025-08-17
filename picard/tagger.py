@@ -98,6 +98,7 @@ from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
     USER_DIR,
 )
+from picard.const.appdirs import plugin_folder
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -121,10 +122,8 @@ from picard.i18n import (
 )
 from picard.item import MetadataItem
 from picard.options import init_options
-from picard.pluginmanager import (
-    PluginManager,
-    plugin_dirs,
-)
+from picard.plugin3.manager import PluginManager
+from picard.pluginmanager import PluginManager as LegacyPluginManager
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.track import (
@@ -350,10 +349,12 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_plugins(self):
         """Initialize and load plugins"""
-        self.pluginmanager = PluginManager()
+        # FIXME: Legacy, remove as soong no longer used by other code
+        self.pluginmanager = LegacyPluginManager()
+
+        self.pluginmanager3 = PluginManager(self)
         if not self._no_plugins:
-            for plugin_dir in plugin_dirs():
-                self.pluginmanager.load_plugins_from_directory(plugin_dir)
+            self.pluginmanager3.add_directory(plugin_folder(), primary=True)
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
@@ -614,6 +615,7 @@ class Tagger(QtWidgets.QApplication):
     def run(self):
         self.update_browser_integration()
         self.window.show()
+        self.pluginmanager3.init_plugins()
         QtCore.QTimer.singleShot(0, self._run_init)
         res = self.exec()
         self.exit()
