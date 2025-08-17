@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2024 Laurent Monin
-# Copyright (C) 2024 Philipp Wolfer
+# Copyright (C) 2024-2025 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import importlib.util
-import os
+from pathlib import Path
 import sys
 
 from picard.plugin3.api import PluginApi
@@ -41,7 +41,7 @@ class PluginSourceSyncError(Exception):
 class PluginSource:
     """Abstract class for plugin sources"""
 
-    def sync(self, target_directory: str):
+    def sync(self, target_directory: Path):
         raise NotImplementedError
 
 
@@ -54,15 +54,15 @@ class PluginSourceGit(PluginSource):
         self.url = url
         self.ref = ref or 'main'
 
-    def sync(self, target_directory: str):
-        if os.path.isdir(target_directory):
+    def sync(self, target_directory: Path):
+        if target_directory.is_dir():
             print(f'{target_directory} exists, fetch changes')
-            repo = pygit2.Repository(target_directory)
+            repo = pygit2.Repository(target_directory.absolute())
             for remote in repo.remotes:
                 remote.fetch(callbacks=GitRemoteCallbacks())
         else:
             print(f'Cloning {self.url} to {target_directory}')
-            repo = pygit2.clone_repository(self.url, target_directory, callbacks=GitRemoteCallbacks())
+            repo = pygit2.clone_repository(self.url, target_directory.absolute(), callbacks=GitRemoteCallbacks())
             print(list(repo.references))
             print(list(repo.branches))
             print(list(repo.remotes))
@@ -81,13 +81,13 @@ class PluginSourceGit(PluginSource):
 class PluginSourceLocal(PluginSource):
     """Plugin is stored in a local directory, but is not a git repo"""
 
-    def sync(self, target_directory: str):
+    def sync(self, target_directory: Path):
         # TODO: copy tree to plugin directory (?)
         pass
 
 
 class Plugin:
-    local_path: str = None
+    local_path: Path = None
     remote_url: str = None
     ref = None
     name: str = None
@@ -95,13 +95,10 @@ class Plugin:
     manifest: PluginManifest = None
     _module = None
 
-    def __init__(self, plugins_dir: str, plugin_name: str):
-        if not os.path.exists(plugins_dir):
-            os.makedirs(plugins_dir)
-        self.plugins_dir = plugins_dir
+    def __init__(self, plugins_dir: Path, plugin_name: str):
         self.name = plugin_name
         self.module_name = f'picard.plugins.{self.name}'
-        self.local_path = os.path.join(self.plugins_dir, self.name)
+        self.local_path = plugins_dir.joinpath(self.name)
 
     def sync(self, plugin_source: PluginSource = None):
         """Sync plugin source"""
@@ -113,13 +110,13 @@ class Plugin:
 
     def read_manifest(self):
         """Reads metadata for the plugin from the plugin's MANIFEST.toml"""
-        manifest_path = os.path.join(self.local_path, 'MANIFEST.toml')
+        manifest_path = self.local_path.joinpath('MANIFEST.toml')
         with open(manifest_path, 'rb') as manifest_file:
             self.manifest = PluginManifest(self.name, manifest_file)
 
     def load_module(self):
         """Load corresponding module from source path"""
-        module_file = os.path.join(self.local_path, '__init__.py')
+        module_file = self.local_path.joinpath('__init__.py')
         spec = importlib.util.spec_from_file_location(self.module_name, module_file)
         module = importlib.util.module_from_spec(spec)
         sys.modules[self.module_name] = module

@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2024 Philipp Wolfer
+# Copyright (C) 2024-2025 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+from pathlib import Path
 from typing import List
 
 from picard import (
@@ -31,8 +32,8 @@ from picard.plugin3.plugin import Plugin
 class PluginManager:
     """Installs, loads and updates plugins from multiple plugin directories."""
 
-    _primary_plugin_dir: str = None
-    _plugin_dirs: List[str] = []
+    _primary_plugin_dir: Path = None
+    _plugin_dirs: List[Path] = []
     _plugins: List[Plugin] = []
 
     def __init__(self, tagger):
@@ -42,9 +43,12 @@ class PluginManager:
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         log.debug('Registering plugin directory %s', dir_path)
-        dir_path = os.path.normpath(dir_path)
+        dir_path = Path(os.path.normpath(dir_path))
 
-        for entry in os.scandir(dir_path):
+        if not dir_path.exists():
+            os.makedirs(dir_path)
+
+        for entry in dir_path.iterdir():
             if entry.is_dir():
                 plugin = self._load_plugin(dir_path, entry.name)
                 if plugin:
@@ -64,7 +68,7 @@ class PluginManager:
             except Exception as ex:
                 log.error('Failed initializing plugin %s from %s', plugin.name, plugin.local_path, exc_info=ex)
 
-    def _load_plugin(self, plugin_dir: str, plugin_name: str):
+    def _load_plugin(self, plugin_dir: Path, plugin_name: str):
         plugin = Plugin(plugin_dir, plugin_name)
         try:
             plugin.read_manifest()
@@ -79,7 +83,7 @@ class PluginManager:
                     plugin.local_path,
                 )
         except Exception as ex:
-            log.warning('Could not read plugin manifest from %r', os.path.join(plugin_dir, plugin_name), exc_info=ex)
+            log.warning('Could not read plugin manifest from %r', plugin_dir.joinpath(plugin_name), exc_info=ex)
             return None
 
 
