@@ -22,7 +22,6 @@ from __future__ import annotations
 
 import dataclasses
 import gc
-import os
 from unittest.mock import Mock
 from weakref import ref
 
@@ -30,11 +29,13 @@ from picard.metadata import Metadata
 
 import pytest
 
+from picard.ui.columns import ColumnSortType
 from picard.ui.itemviews.custom_columns import (
     ColumnValueProvider,
     CustomColumn,
     make_callable_column,
     make_field_column,
+    make_provider_column,
     make_script_column,
     make_transformed_column,
     registry,
@@ -123,10 +124,7 @@ def test_callable_column_infers_text_sort_by_default(fake_item: _FakeItem) -> No
 
 def test_infer_sortkey_when_provider_offers_sort(fake_item: _FakeItem) -> None:
     provider = _ProviderWithSort("artist")
-    # Use internal creator via module attribute to honor inference logic
-    from picard.ui.itemviews import custom_columns as cc
-
-    col = cc._create_custom_column("Artist", "artist_sorted", provider)
+    col = make_provider_column("Artist", "artist_sorted", provider)
     assert col.sort_type.name == "SORTKEY"
     # sortkey should be bound to provider.sort_key
     # Bound method is proxied through CustomColumn, not identity-equal
@@ -134,6 +132,30 @@ def test_infer_sortkey_when_provider_offers_sort(fake_item: _FakeItem) -> None:
     # Evaluate both value and sortkey for the fake item
     assert col.provider.evaluate(fake_item) == "Artist A"
     assert col.sortkey(fake_item) == "artist a"
+
+
+@pytest.mark.parametrize(
+    "sort_type",
+    [None, ColumnSortType.TEXT, ColumnSortType.SORTKEY],
+)
+def test_make_provider_column_infers_sort_type(sort_type) -> None:
+    class Prov:
+        def evaluate(self, obj: _FakeItem) -> str:  # pragma: no cover - simple
+            return "x"
+
+    class ProvWithSort(Prov):
+        def sort_key(self, obj: _FakeItem):  # pragma: no cover - simple
+            return 1
+
+    # Without sort_key: always TEXT (explicit SORTKEY would be downgraded)
+    col1 = make_provider_column("T", "k1", Prov(), sort_type=sort_type)
+    expected1 = "TEXT"
+    assert col1.sort_type.name == expected1
+
+    # With sort_key: SORTKEY unless explicitly overridden
+    col2 = make_provider_column("T", "k2", ProvWithSort(), sort_type=sort_type)
+    expected2 = sort_type.name if sort_type is not None else "SORTKEY"
+    assert col2.sort_type.name == expected2
 
 
 def test_script_column_evaluates_metadata_variable(fake_item: _FakeItem) -> None:
@@ -226,10 +248,6 @@ def test_callable_column_handles_exceptions() -> None:
 # TODO: Skip due to upstream global state interference with ScriptParser functions when full suite runs.
 # Does not impact live usage; scripts load functions correctly in app context.
 @pytest.mark.skip(reason="Temporarily skipped pending upstream global state investigation")
-@pytest.mark.skipif(
-    os.environ.get("PYTEST_XDIST_WORKER") is not None,
-    reason="Flaky under parallel (xdist) due to unknown upstream bug; skipping in workers",
-)
 def test_script_column_with_complex_expression(fake_item: _FakeItem) -> None:
     """Test script column with complex expressions."""
     script = "$if(%artist%,%artist% by %album%,Unknown)"
@@ -384,6 +402,29 @@ def test_cache_size_limit() -> None:
         result: str = col.provider.evaluate(obj)
         assert result == obj.value
 
+    # On a non-weakrefable object path, ensure FIFO eviction happens when size exceeded
+    class NonWeakRefable2:
+        def __init__(self, value: str) -> None:
+            self.value = value
+
+        def column(self, key: str) -> str:
+            return self.value
+
+        @property
+        def metadata(self) -> Metadata:
+            md = Metadata()
+            md["artist"] = self.value
+            return md
+
+    objs = [NonWeakRefable2(f"V{i}") for i in range(5)]
+    col2 = make_script_column("Test", "test_key2", "%artist%", cache_size=2)
+    # Fill beyond capacity
+    for o in objs:
+        assert col2.provider.evaluate(o) == o.value
+    # Access the last two; the first should have been evicted
+    assert col2.provider.evaluate(objs[-1]) == "V4"
+    assert col2.provider.evaluate(objs[-2]) == "V3"
+
 
 def test_registry_handles_duplicate_registration(unique_key: str) -> None:
     """Test registry behavior with duplicate key registration."""
@@ -391,12 +432,27 @@ def test_registry_handles_duplicate_registration(unique_key: str) -> None:
     col2 = make_callable_column("Second", unique_key, lambda obj: "second")
 
     try:
+        # First registration
         registry.register(col1)
         assert registry.get(unique_key) is col1
 
-        # Register second column with same key (should overwrite)
+        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+
+        # Keys appear exactly once in both views
+        assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 1
+        assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 1
+
+        # Second registration with same key: should replace, not duplicate
         registry.register(col2)
         assert registry.get(unique_key) is col2
+
+        # Still exactly one occurrence in both views, and it refers to col2
+        file_indices = [i for i, c in enumerate(FILEVIEW_COLUMNS) if c.key == unique_key]
+        album_indices = [i for i, c in enumerate(ALBUMVIEW_COLUMNS) if c.key == unique_key]
+        assert len(file_indices) == 1
+        assert len(album_indices) == 1
+        assert FILEVIEW_COLUMNS[file_indices[0]] is col2
+        assert ALBUMVIEW_COLUMNS[album_indices[0]] is col2
     finally:
         registry.unregister(unique_key)
 
@@ -423,6 +479,28 @@ def test_registry_selective_view_registration(unique_key: str) -> None:
         assert unique_key in file_keys
         assert unique_key not in album_keys
 
+    finally:
+        registry.unregister(unique_key)
+
+
+def test_registry_unregister_removes_all_occurrences(unique_key: str) -> None:
+    """Ensure unregister removes all instances from both views."""
+    col = make_callable_column("Test", unique_key, lambda obj: "test")
+
+    try:
+        # Register twice to simulate potential duplicates (older behavior)
+        registry.register(col)
+        registry.register(col)
+
+        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+
+        assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 1
+        assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 1
+
+        # Unregister should remove all occurrences
+        registry.unregister(unique_key)
+        assert unique_key not in [c.key for c in FILEVIEW_COLUMNS]
+        assert unique_key not in [c.key for c in ALBUMVIEW_COLUMNS]
     finally:
         registry.unregister(unique_key)
 
@@ -464,12 +542,6 @@ def test_column_value_provider_protocol() -> None:
     assert col.provider.evaluate(fake_item) == "custom_value"
 
 
-# TODO: Skip due to upstream global state interference during full-suite runs; not an app scenario.
-@pytest.mark.skip(reason="Temporarily skipped pending upstream global state investigation")
-@pytest.mark.skipif(
-    os.environ.get("PYTEST_XDIST_WORKER") is not None,
-    reason="Flaky under parallel (xdist) due to upstream script eval behavior; run in serial",
-)
 def test_album_like_object_avoids_caching_until_loaded() -> None:
     class AlbumLike:
         is_album_like = True

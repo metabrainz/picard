@@ -25,6 +25,7 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from picard.item import Item
+from picard.script import ScriptParser
 
 from picard.ui.columns import ColumnAlign, ColumnSortType
 from picard.ui.itemviews.custom_columns.column import CustomColumn
@@ -78,6 +79,10 @@ def _create_custom_column(
         The configured column.
     """
     inferred_sort_type = _infer_sort_type(provider, sort_type)
+    # If explicitly requested SORTKEY but provider cannot supply a sort_key,
+    # downgrade to TEXT to avoid invalid configuration
+    if inferred_sort_type == ColumnSortType.SORTKEY and not isinstance(provider, SortKeyProvider):
+        inferred_sort_type = ColumnSortType.TEXT
     return CustomColumn(
         title,
         key,
@@ -131,6 +136,8 @@ def make_script_column(
     always_visible: bool = False,
     max_runtime_ms: int = 25,
     cache_size: int = 1024,
+    parser: ScriptParser | None = None,
+    parser_factory: Callable[[], ScriptParser] | None = None,
 ) -> CustomColumn:
     """Create column whose value is computed by a script.
 
@@ -144,7 +151,13 @@ def make_script_column(
     CustomColumn
         The script-backed column.
     """
-    provider = ChainedValueProvider(script, max_runtime_ms=max_runtime_ms, cache_size=cache_size)
+    provider = ChainedValueProvider(
+        script,
+        max_runtime_ms=max_runtime_ms,
+        cache_size=cache_size,
+        parser=parser,
+        parser_factory=parser_factory,
+    )
     return _create_custom_column(
         title,
         key,
@@ -222,4 +235,39 @@ def make_transformed_column(
         align=align,
         always_visible=always_visible,
         sort_type=ColumnSortType.TEXT,
+    )
+
+
+def make_provider_column(
+    title: str,
+    key: str,
+    provider: ColumnValueProvider,
+    *,
+    width: int | None = None,
+    align: ColumnAlign = ColumnAlign.LEFT,
+    always_visible: bool = False,
+    sort_type: ColumnSortType | None = None,
+) -> CustomColumn:
+    """Create column backed directly by a provider with sort inference.
+
+    Parameters
+    ----------
+    title, key, provider, width, align, always_visible, sort_type
+        Column configuration. If ``sort_type`` is ``None`` it will be
+        inferred from the provider's capabilities (``SORTKEY`` if the
+        provider implements a ``sort_key`` method, otherwise ``TEXT``).
+
+    Returns
+    -------
+    CustomColumn
+        The provider-backed column.
+    """
+    return _create_custom_column(
+        title,
+        key,
+        provider,
+        width=width,
+        align=align,
+        always_visible=always_visible,
+        sort_type=sort_type,
     )

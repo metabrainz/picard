@@ -55,7 +55,20 @@ class CustomColumnsRegistry:
         self._by_key[column.key] = column
         from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
 
+        def _remove_all_by_key(target_columns, key: str) -> None:
+            # Ensure idempotent registration by removing any existing entries
+            # with the same key before inserting the new column.
+            while True:
+                try:
+                    pos = target_columns.pos(key)
+                except KeyError:
+                    break
+                else:
+                    del target_columns[pos]
+
         def _insert(target_columns, col: CustomColumn):
+            # Remove any previous occurrences before inserting
+            _remove_all_by_key(target_columns, col.key)
             if insert_after_key:
                 try:
                     pos = target_columns.pos(insert_after_key) + 1
@@ -89,11 +102,14 @@ class CustomColumnsRegistry:
         from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
 
         for cols in (FILEVIEW_COLUMNS, ALBUMVIEW_COLUMNS):
-            try:
-                pos = cols.pos(key)
-                del cols[pos]
-            except KeyError:
-                pass
+            # Remove all occurrences defensively
+            while True:
+                try:
+                    pos = cols.pos(key)
+                except KeyError:
+                    break
+                else:
+                    del cols[pos]
         return column
 
     def get(self, key: str) -> CustomColumn | None:

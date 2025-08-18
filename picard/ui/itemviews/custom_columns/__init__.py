@@ -27,6 +27,7 @@ from picard.ui.itemviews.custom_columns.factory import (
     _create_custom_column,
     make_callable_column,
     make_field_column,
+    make_provider_column,
     make_script_column,
     make_transformed_column,
 )
@@ -53,6 +54,7 @@ __all__ = [
     "SortKeyProvider",
     "CustomColumn",
     "make_field_column",
+    "make_provider_column",
     "make_script_column",
     "make_callable_column",
     "make_transformed_column",

@@ -142,6 +142,28 @@ def test_descending_numeric_sort_adapter(values: list[str], expected: list[str])
     assert result == expected
 
 
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        (['-2', '-10', '3', '0'], ['3', '0', '-2', '-10']),
+        (['1.2', '1.10', '-0.5', 'x'], ['1.2', '1.10', 'x', '-0.5']),
+    ],
+)
+def test_descending_numeric_sort_adapter_extended(values: list[str], expected: list[str]) -> None:
+    result = _sorted_values(DescendingNumericSortAdapter, values)
+    assert result == expected
+
+
+def test_descending_numeric_sort_adapter_with_custom_parser() -> None:
+    def adapter(base):
+        return DescendingNumericSortAdapter(base, parser=_mmss_parser)
+
+    values = ['3:30', '2:05', '1:00', 'x']
+    expected = ['3:30', '2:05', '1:00', 'x']
+    result = _sorted_values(adapter, values)
+    assert result == expected
+
+
 def test_length_sort_adapter() -> None:
     values = ["aaa", "b", "cccc", "dd"]
     expected = ["b", "dd", "aaa", "cccc"]
@@ -195,6 +217,9 @@ def test_composite_sort_adapter() -> None:
     [
         (["", "a", "", "b"], ["a", "b", "", ""]),
         (["", "A", "b"], ["A", "b", ""]),
+        ([" ", "a", "\t", "b"], ["a", "b", " ", "\t"]),
+        (["\u200b", "A", "\ufeff"], ["A", "\u200b", "\ufeff"]),
+        (["\xa0", "b", "\u2060"], ["b", "\xa0", "\u2060"]),
     ],
 )
 def test_nulls_last_adapter(values: list[str], expected: list[str]) -> None:
@@ -207,6 +232,9 @@ def test_nulls_last_adapter(values: list[str], expected: list[str]) -> None:
     [
         (["", "a", "", "b"], ["", "", "a", "b"]),
         (["", "A", "b"], ["", "A", "b"]),
+        ([" ", "a", "\t", "b"], [" ", "\t", "a", "b"]),
+        (["\u200b", "A", "\ufeff"], ["\u200b", "\ufeff", "A"]),
+        (["\xa0", "b", "\u2060"], ["\xa0", "\u2060", "b"]),
     ],
 )
 def test_nulls_first_adapter(values: list[str], expected: list[str]) -> None:
