@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:05+0200\n"
-"PO-Revision-Date: 2025-05-12 19:20+0000\n"
+"PO-Revision-Date: 2025-08-18 19:36+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -339,28 +339,24 @@ msgstr "Desa només una imatge de la caràtula com a fitxer independent"
 
 #: picard/options.py:211
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-#, fuzzy
-#| msgid "New cover art saved as a separate file"
 msgid "Show cover art details in cover art view"
-msgstr "Caràtula nova desada com a fitxer independent"
+msgstr "Mostra els detalls de la caràtula a la visualització de caràtules"
 
 #: picard/options.py:212
-#, fuzzy
-#| msgid "New cover art embedded into tags"
 msgid "Show cover art type in info labels"
-msgstr "Caràtula nova incrustada a les etiquetes"
+msgstr "Mostra el tipus de caràtula a les etiquetes d'informació"
 
 #: picard/options.py:213
 msgid "Show cover art file size in info labels"
-msgstr ""
+msgstr "Mostra la mida del fitxer de la caràtula a les etiquetes d'informació"
 
 #: picard/options.py:214
 msgid "Show cover art dimensions in info labels"
-msgstr ""
+msgstr "Mostra les dimensions de la caràtula a les etiquetes d'informació"
 
 #: picard/options.py:215
 msgid "Show cover art MIME type in info labels"
-msgstr ""
+msgstr "Mostra el tipus MIME de la caràtula a les etiquetes d'informació"
 
 #: picard/options.py:246
 msgid "Use AcoustID audio fingerprinting"
@@ -553,16 +549,12 @@ msgid "Use standardized artist names"
 msgstr "Fes servir els noms d'artista estandarditzats"
 
 #: picard/options.py:362 picard/ui/forms/ui_options_metadata.py:145
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized instrument credits"
-msgstr "Fes servir els crèdits de veu i instruments estandarditzats"
+msgstr "Fes servir els crèdits d'instruments estandarditzats"
 
 #: picard/options.py:363 picard/ui/forms/ui_options_metadata.py:146
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized vocal credits"
-msgstr "Fes servir els crèdits de veu i instruments estandarditzats"
+msgstr "Fes servir els crèdits de veu estandarditzats"
 
 #: picard/options.py:364
 msgid "Use track and release relationships"
@@ -3216,42 +3208,33 @@ msgid "&Set as starting directory"
 msgstr "&Defineix com a directori inicial"
 
 #: picard/ui/filter.py:54
-#, fuzzy
-#| msgid "Clusters"
 msgid "Filters"
-msgstr "Agrupacions"
+msgstr "Filtres"
 
 #: picard/ui/filter.py:70
 msgid "Type to filter..."
-msgstr ""
+msgstr "Escriviu per a filtrar..."
 
 #: picard/ui/filter.py:89
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select Filters"
-msgstr "Seleccioneu un fitxer"
+msgstr "Seleccioneu els filtres"
 
 #: picard/ui/filter.py:100
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select / clear all filters"
-msgstr "Seleccioneu un fitxer"
+msgstr "Selecciona/esborra tots els filtres"
 
 #: picard/ui/filter.py:137
 msgid "OK"
-msgstr ""
+msgstr "D'acord"
 
 #: picard/ui/filter.py:145
-#, fuzzy
-#| msgid "&Cancel"
 msgid "Cancel"
-msgstr "&Cancel·la"
+msgstr "Cancel·la"
 
 #: picard/ui/filter.py:232
-#, fuzzy, python-brace-format
-#| msgid "Rename files"
+#, python-brace-format
 msgid "{num} filters"
-msgstr "Canvia el nom dels fitxers"
+msgstr "{num} filtres"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
@@ -3796,8 +3779,6 @@ msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Unitat de CD-ROM per defecte per a les cerques:"
 
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
 msgid "Select Types…"
 msgstr "Selecciona els tipus…"
 
@@ -4078,23 +4059,19 @@ msgstr "Colors"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:52
 msgid "Show type (front, back, etc.)"
-msgstr ""
+msgstr "Mostra el tipus (frontal, revers, etc.)"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:53
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show file size"
-msgstr "Mostra els fitxers &ocults"
+msgstr "Mostra la mida del fitxer"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:54
-#, fuzzy
-#| msgid "Cover Dimensions"
 msgid "Show dimensions"
-msgstr "Dimensions de la caràtula"
+msgstr "Mostra les dimensions"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:55
 msgid "Show MIME type"
-msgstr ""
+msgstr "Mostra el tipus MIME"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -5019,21 +4996,17 @@ msgstr "Executa sc&ripts"
 #: picard/ui/itemviews/basetreeview.py:630
 #, python-format
 msgid "Matches on: %s"
-msgstr ""
+msgstr "Coincidències: %s"
 
 #: picard/ui/itemviews/basetreeview.py:632
-#, fuzzy
-#| msgid "&Load selected files"
 msgid "No tags found for selected filters."
-msgstr "Carrega e&ls fitxers seleccionats"
+msgstr "No s'ha trobat cap etiqueta per als filtres seleccionats."
 
 #: picard/ui/itemviews/columns.py:134
 msgid "Fingerprint status"
 msgstr "Estat de l'empremta"
 
 #: picard/ui/itemviews/columns.py:138
-#, fuzzy
-#| msgid "Matching"
 msgid "Match"
 msgstr "Coincidència"
 
@@ -5078,10 +5051,8 @@ msgid "Size"
 msgstr "Mida"
 
 #: picard/ui/itemviews/columns.py:173
-#, fuzzy
-#| msgid "Release Type"
 msgid "File Type"
-msgstr "Tipus de publicació"
+msgstr "Tipus de fitxer"
 
 #: picard/ui/itemviews/columns.py:175
 msgid "Bitrate"
@@ -5110,28 +5081,27 @@ msgstr "Dimensions de la caràtula"
 #: picard/ui/itemviews/match_quality_column.py:201
 #, python-format
 msgid "Match: %(matched)d/%(total)d (%(percent).1f%%)"
-msgstr ""
+msgstr "Coincidència: %(matched)d/%(total)d (%(percent).1f%%)"
 
 #: picard/ui/itemviews/match_quality_column.py:210
 #, python-format
 msgid "Missing tracks: %(count)d"
-msgstr ""
+msgstr "Pistes que falten: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:211
 #, python-format
 msgid "Duplicate files: %(count)d"
-msgstr ""
+msgstr "Fitxers duplicats: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:212
 #, python-format
 msgid "Extra files: %(count)d"
-msgstr ""
+msgstr "Fitxers addicionals: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:213
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "Unmatched files: %(count)d"
-msgstr "Fitxers sense coincidències"
+msgstr "Fitxers sense coincidències: %(count)d"
 
 #: picard/ui/mainwindow/__init__.py:380
 msgid "Unsaved Changes"
@@ -5527,20 +5497,18 @@ msgid "&Actions"
 msgstr "&Accions"
 
 #: picard/ui/mainwindow/actions.py:354
-#, fuzzy
-#| msgid "Similar items"
 msgid "Filter Items"
-msgstr "Elements similars"
+msgstr "Filtra els elements"
 
 #: picard/ui/mainwindow/actions.py:355
 msgid "Toggle filtering of items based on specific tag values."
 msgstr ""
+"Activeu/desactiveu el filtratge d'elements segons el valor d'etiquetes "
+"específiques."
 
 #: picard/ui/mainwindow/actions.py:357
-#, fuzzy
-#| msgid "Ctrl+Shift+I"
 msgid "Ctrl+Shift+F"
-msgstr "Ctrl+Shift+I"
+msgstr "Ctrl+Shift+F"
 
 #: picard/ui/mainwindow/actions.py:375
 msgid "Lookup the details of the CD in your drive"
@@ -6149,10 +6117,8 @@ msgid "You have changed the interface colors."
 msgstr "Heu canviat els colors de la interfície."
 
 #: picard/ui/options/interface_cover_art_box.py:34
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover Art Box"
-msgstr "Caràtules"
+msgstr "Quadre de la caràtula"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
