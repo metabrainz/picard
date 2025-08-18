@@ -670,7 +670,7 @@ class ID3File(File):
             remaining_ms = ms % 1000
             return f"{minutes:02d}:{seconds:02d}.{remaining_ms:03d}"
 
-        all_lyrics, milliseconds = zip(*text)
+        all_lyrics, milliseconds = zip(*text, strict=False)
         milliseconds = (*milliseconds, length * 1000)
         first_timestamp = milliseconds_to_timestamp(milliseconds[0])
         lrc_lyrics = [f"[{first_timestamp}]"]
