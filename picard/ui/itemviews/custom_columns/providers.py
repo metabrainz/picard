@@ -26,6 +26,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from picard.item import Item
+from picard.log import debug
 
 from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 
@@ -37,8 +38,12 @@ class FieldReferenceProvider:
     def evaluate(self, obj: Item) -> str:
         try:
             return obj.column(self.key)  # type: ignore[attr-defined]
-        except (AttributeError, KeyError, TypeError):
+        except (AttributeError, KeyError, TypeError) as e:
+            debug("FieldReferenceProvider failure for key %r: %r", self.key, e)
             return ""
+
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        return f"FieldReferenceProvider(key={self.key!r})"
 
 
 class TransformProvider:
@@ -49,8 +54,13 @@ class TransformProvider:
     def evaluate(self, obj: Item) -> str:
         try:
             return self._transform(self._base.evaluate(obj) or "")
-        except (TypeError, ValueError):
+        except (TypeError, ValueError) as e:
+            debug("TransformProvider failure using %r: %r", getattr(self._transform, "__name__", self._transform), e)
             return ""
+
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        transform_name = getattr(self._transform, "__name__", repr(self._transform))
+        return f"TransformProvider(base={self._base!r}, transform={transform_name})"
 
 
 class CallableProvider:
@@ -60,5 +70,10 @@ class CallableProvider:
     def evaluate(self, obj: Item) -> str:
         try:
             return str(self._func(obj))
-        except (TypeError, ValueError, AttributeError):
+        except (TypeError, ValueError, AttributeError) as e:
+            debug("CallableProvider failure for %r: %r", getattr(self._func, "__name__", self._func), e)
             return ""
+
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        func_name = getattr(self._func, "__name__", repr(self._func))
+        return f"CallableProvider(func={func_name})"

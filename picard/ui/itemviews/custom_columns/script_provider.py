@@ -22,20 +22,41 @@
 
 from __future__ import annotations
 
+from collections import deque
+from collections.abc import Callable
 import re
 from time import perf_counter
 from weakref import WeakKeyDictionary
 
 from picard.item import Item
+from picard.log import debug
+from picard.script import ScriptParser
 
 from picard.ui.itemviews.custom_columns.context import ContextStrategyManager
 from picard.ui.itemviews.custom_columns.resolve import ValueResolverChain
 
 
 class ChainedValueProvider:
-    """Provide script-evaluated values with caching and performance limits."""
+    """Provide script-evaluated values with caching and performance limits.
 
-    def __init__(self, script: str, max_runtime_ms: int = 25, cache_size: int = 1024):
+    Caching strategy
+    ----------------
+    - Primary cache: WeakKeyDictionary keyed by the item when it supports
+      weak references. This avoids retaining objects strongly.
+    - Fallback id-cache: A bounded FIFO cache keyed by ``id(obj)`` for
+      objects that cannot be weakly referenced. Evictions use O(1)
+      ``deque.popleft``.
+    """
+
+    def __init__(
+        self,
+        script: str,
+        max_runtime_ms: int = 25,
+        cache_size: int = 1024,
+        *,
+        parser: ScriptParser | None = None,
+        parser_factory: Callable[[], ScriptParser] | None = None,
+    ):
         """Initialize provider.
 
         Parameters
@@ -51,11 +72,12 @@ class ChainedValueProvider:
         self._max_runtime_ms = max_runtime_ms
 
         self._context_manager = ContextStrategyManager()
-        self._value_resolver = ValueResolverChain()
+        # Reuse a parser instance or factory through resolver chain
+        self._value_resolver = ValueResolverChain(parser=parser, parser_factory=parser_factory)
 
         self._cache: WeakKeyDictionary[Item, str] = WeakKeyDictionary()
         self._id_cache: dict[int, str] = {}
-        self._id_order: list[int] = []
+        self._id_order: deque[int] = deque()
         self._id_cache_max = max(16, int(cache_size))
 
         m = re.fullmatch(r"%([a-zA-Z0-9_]+)%", script)
@@ -79,7 +101,8 @@ class ChainedValueProvider:
         try:
             if obj in self._cache:
                 return self._cache[obj]
-        except TypeError:
+        except TypeError as e:
+            debug("Weak cache lookup failed (non-weakrefable object): %r", e)
             can_cache = False
         # Avoid caching for album-like objects that are not fully loaded yet
         if bool(getattr(obj, "is_album_like", False)) and not getattr(obj, "loaded", True):
@@ -107,7 +130,13 @@ class ChainedValueProvider:
             self._id_cache[obj_id] = result
             self._id_order.append(obj_id)
             if len(self._id_order) > self._id_cache_max:
-                oldest = self._id_order.pop(0)
+                oldest = self._id_order.popleft()
                 self._id_cache.pop(oldest, None)
 
         return result
+
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        return (
+            f"ChainedValueProvider(script={self._script!r}, max_runtime_ms={self._max_runtime_ms}, "
+            f"cache_size={self._id_cache_max})"
+        )

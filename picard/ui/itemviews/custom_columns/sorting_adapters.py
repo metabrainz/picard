@@ -30,6 +30,25 @@ from picard.item import Item
 from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, SortKeyProvider
 
 
+def _clean_invisible_and_whitespace(value: str | None) -> str:
+    """Remove invisible characters and trim whitespace for emptiness tests.
+
+    Treat the following as invisible: ZERO WIDTH SPACE (\u200b), BYTE ORDER MARK
+    (\ufeff), WORD JOINER (\u2060), and NO-BREAK SPACE (\xa0). Also trim
+    standard whitespace with ``strip()``.
+    """
+    if not value:
+        return ""
+    cleaned: str = (
+        value.replace("\u200b", "")  # ZERO WIDTH SPACE
+        .replace("\ufeff", "")  # BYTE ORDER MARK (BOM)
+        .replace("\u2060", "")  # WORD JOINER
+        .replace("\xa0", "")  # NO-BREAK SPACE
+        .strip()  # Standard whitespace
+    )
+    return cleaned
+
+
 class _AdapterBase(SortKeyProvider):
     """Base adapter that delegates evaluation to a wrapped provider."""
 
@@ -39,6 +58,9 @@ class _AdapterBase(SortKeyProvider):
     def evaluate(self, obj: Item) -> str:
         """Return evaluated text value for item."""
         return self._base.evaluate(obj)
+
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        return f"{self.__class__.__name__}(base={self._base!r})"
 
 
 class CasefoldSortAdapter(_AdapterBase):
@@ -71,6 +93,10 @@ class NumericSortAdapter(_AdapterBase):
         super().__init__(base)
         self._parser = parser or (lambda s: float(s))
 
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        parser_name = getattr(self._parser, "__name__", repr(self._parser))
+        return f"{self.__class__.__name__}(base={self._base!r}, parser={parser_name})"
+
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return numeric sort key for item."""
         try:
@@ -86,7 +112,7 @@ class DescendingNumericSortAdapter(NumericSortAdapter):
         """Return descending numeric sort key for item."""
         try:
             value = self._base.evaluate(obj) or "0"
-            parsed = self._parser(value) if isinstance(self, NumericSortAdapter) else float(value)
+            parsed = self._parser(value)
             return -parsed
         except (ValueError, TypeError):
             return 0
@@ -106,6 +132,9 @@ class RandomSortAdapter(_AdapterBase):
     def __init__(self, base: ColumnValueProvider, seed: int = 0):
         super().__init__(base)
         self._seed = seed
+
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        return f"{self.__class__.__name__}(base={self._base!r}, seed={self._seed})"
 
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return deterministic pseudo-random sort key for item."""
@@ -130,6 +159,9 @@ class ArticleInsensitiveAdapter(_AdapterBase):
         """
         super().__init__(base)
         self._articles = articles
+
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        return f"{self.__class__.__name__}(base={self._base!r}, articles={self._articles!r})"
 
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return article-insensitive sort key for item.
@@ -165,6 +197,10 @@ class CompositeSortAdapter(_AdapterBase):
         super().__init__(base)
         self._key_funcs = key_funcs
 
+    def __repr__(self) -> str:  # pragma: no cover - debug helper
+        funcs = [getattr(f, "__name__", repr(f)) for f in self._key_funcs]
+        return f"{self.__class__.__name__}(base={self._base!r}, key_funcs={funcs})"
+
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return composite tuple sort key for item."""
         return tuple(func(obj) for func in self._key_funcs)
@@ -176,8 +212,9 @@ class NullsLastAdapter(_AdapterBase):
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return sort key that pushes empty values to the end."""
         v = self._base.evaluate(obj)
-        is_empty = v == "" or v is None
-        key = (v or "").casefold()
+        cleaned = _clean_invisible_and_whitespace(v)
+        is_empty = cleaned == ""
+        key = cleaned.casefold()
         return (is_empty, key)
 
 
@@ -187,8 +224,9 @@ class NullsFirstAdapter(_AdapterBase):
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return sort key that pulls empty values to the front."""
         v = self._base.evaluate(obj)
-        is_empty = v == "" or v is None
-        key = (v or "").casefold()
+        cleaned = _clean_invisible_and_whitespace(v)
+        is_empty = cleaned == ""
+        key = cleaned.casefold()
         return (not is_empty, key)
 
 
