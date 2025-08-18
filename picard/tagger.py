@@ -179,7 +179,6 @@ shutil.copystat = _patched_shutil_copystat
 
 
 class Tagger(QtWidgets.QApplication):
-
     tagger_stats_changed = QtCore.pyqtSignal()
     listen_port_changed = QtCore.pyqtSignal(int)
     cluster_added = QtCore.pyqtSignal(Cluster)
@@ -299,10 +298,10 @@ class Tagger(QtWidgets.QApplication):
         # To not make the socket module a requirement for the Windows
         # installer, import it here and not globally
         import socket
+
         self.signalfd = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM, 0)
 
-        self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(),
-                                                     QtCore.QSocketNotifier.Type.Read, self)
+        self.signalnotifier = QtCore.QSocketNotifier(self.signalfd[1].fileno(), QtCore.QSocketNotifier.Type.Read, self)
         self.signalnotifier.activated.connect(self.sighandler)
 
         signal.signal(signal.SIGHUP, self.signal)
@@ -312,8 +311,9 @@ class Tagger(QtWidgets.QApplication):
     def _log_startup(self, config):
         """Log interesting infos at startup"""
         log.debug("Starting Picard from %r", os.path.abspath(__file__))
-        log.debug("Platform: %s %s %s", platform.platform(),
-                  platform.python_implementation(), platform.python_version())
+        log.debug(
+            "Platform: %s %s %s", platform.platform(), platform.python_implementation(), platform.python_version()
+        )
         log.debug("Versions: %s", versions.as_string())
         log.debug("Configuration file path: %r", config.fileName())
 
@@ -444,11 +444,13 @@ class Tagger(QtWidgets.QApplication):
 
                         while True:
                             time.sleep(0.1)
-                            if self.priority_thread_pool.activeThreadCount() > original_priority_thread_count or \
-                                    self.thread_pool.activeThreadCount() > original_main_thread_count or \
-                                    self.save_thread_pool.activeThreadCount() > original_save_thread_count or \
-                                    self.webservice.num_pending_web_requests or \
-                                    self._acoustid._running:
+                            if (
+                                self.priority_thread_pool.activeThreadCount() > original_priority_thread_count
+                                or self.thread_pool.activeThreadCount() > original_main_thread_count
+                                or self.save_thread_pool.activeThreadCount() > original_save_thread_count
+                                or self.webservice.num_pending_web_requests
+                                or self._acoustid._running
+                            ):
                                 continue
                             break
 
@@ -462,7 +464,7 @@ class Tagger(QtWidgets.QApplication):
                 # All commands finished, stop processing
                 self._command_thread_running = False
                 break
-            time.sleep(.01)
+            time.sleep(0.01)
 
     def _run_commands_finished(self, result=None, error=None):
         if error:
@@ -529,21 +531,21 @@ class Tagger(QtWidgets.QApplication):
         oauth_manager = self.webservice.oauth_manager
         scopes = 'profile tag rating collection submit_isrc submit_barcode'
         authorization_url = oauth_manager.get_authorization_url(
-            scopes, partial(self.on_mb_authorization_finished, callback))
+            scopes, partial(self.on_mb_authorization_finished, callback)
+        )
         webbrowser2.open(authorization_url)
         if oauth_manager.is_oob:
             authorization_code = self._mb_login_dialog(parent)
             if authorization_code is not None:
                 self.webservice.oauth_manager.exchange_authorization_code(
-                    authorization_code, scopes,
-                    partial(self.on_mb_authorization_finished, callback))
+                    authorization_code, scopes, partial(self.on_mb_authorization_finished, callback)
+                )
             else:
                 callback(False, None)
 
     def on_mb_authorization_finished(self, callback, successful=False, error_msg=None):
         if successful:
-            self.webservice.oauth_manager.fetch_username(
-                partial(self.on_mb_login_finished, callback))
+            self.webservice.oauth_manager.fetch_username(partial(self.on_mb_login_finished, callback))
         else:
             callback(False, error_msg)
 
@@ -553,9 +555,7 @@ class Tagger(QtWidgets.QApplication):
         callback(successful, error_msg)
 
     def mb_logout(self, callback):
-        self.webservice.oauth_manager.revoke_tokens(
-            partial(self.on_mb_logout_finished, callback)
-        )
+        self.webservice.oauth_manager.revoke_tokens(partial(self.on_mb_logout_finished, callback))
 
     def on_mb_logout_finished(self, callback, successful, error_msg):
         if successful:
@@ -668,18 +668,15 @@ class Tagger(QtWidgets.QApplication):
             is_valid_albumid = mbid_validate(albumid)
 
             if is_valid_albumid and is_valid_recordingid:
-                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track…",
-                          file, albumid, recordingid)
+                log.debug("%r has release (%s) and recording (%s) MBIDs, moving to track…", file, albumid, recordingid)
                 self.move_file_to_track(file, albumid, recordingid)
                 file_moved = True
             elif is_valid_albumid:
-                log.debug("%r has only release MBID (%s), moving to album…",
-                          file, albumid)
+                log.debug("%r has only release MBID (%s), moving to album…", file, albumid)
                 self.move_file_to_album(file, albumid)
                 file_moved = True
             elif is_valid_recordingid:
-                log.debug("%r has only recording MBID (%s), moving to non-album track…",
-                          file, recordingid)
+                log.debug("%r has only recording MBID (%s), moving to non-album track…", file, recordingid)
                 self.move_file_to_nat(file, recordingid)
                 file_moved = True
 
@@ -809,33 +806,24 @@ class Tagger(QtWidgets.QApplication):
 
     def add_paths(self, paths, target=None):
         config = get_config()
-        files = self._scan_paths_recursive(paths,
-                            config.setting['recursively_add_files'],
-                            config.setting["ignore_hidden_files"])
+        files = self._scan_paths_recursive(
+            paths, config.setting['recursively_add_files'], config.setting["ignore_hidden_files"]
+        )
         self.add_files(files, target=target)
 
     def get_file_lookup(self):
         """Return a FileLookup object."""
         config = get_config()
-        return FileLookup(self, config.setting['server_host'],
-                          config.setting['server_port'],
-                          self.browser_integration.port)
+        return FileLookup(
+            self, config.setting['server_host'], config.setting['server_port'], self.browser_integration.port
+        )
 
     def search(self, text, search_type, adv=False, mbid_matched_callback=None, force_browser=False):
         """Search on the MusicBrainz website."""
         search_types = {
-            'track': {
-                'entity': 'recording',
-                'dialog': TrackSearchDialog
-            },
-            'album': {
-                'entity': 'release',
-                'dialog': AlbumSearchDialog
-            },
-            'artist': {
-                'entity': 'artist',
-                'dialog': ArtistSearchDialog
-            },
+            'track': {'entity': 'recording', 'dialog': TrackSearchDialog},
+            'album': {'entity': 'release', 'dialog': AlbumSearchDialog},
+            'artist': {'entity': 'artist', 'dialog': ArtistSearchDialog},
         }
         if search_type not in search_types:
             return
@@ -843,15 +831,14 @@ class Tagger(QtWidgets.QApplication):
         lookup = self.get_file_lookup()
         config = get_config()
         if config.setting["builtin_search"] and not force_browser:
-            if not lookup.mbid_lookup(text, search['entity'],
-                                      mbid_matched_callback=mbid_matched_callback):
+            if not lookup.mbid_lookup(text, search['entity'], mbid_matched_callback=mbid_matched_callback):
                 dialog = search['dialog'](self.window)
                 dialog.search(text)
                 dialog.exec()
         else:
-            lookup.search_entity(search['entity'], text, adv,
-                                 mbid_matched_callback=mbid_matched_callback,
-                                 force_browser=force_browser)
+            lookup.search_entity(
+                search['entity'], text, adv, mbid_matched_callback=mbid_matched_callback, force_browser=force_browser
+            )
 
     def collection_lookup(self):
         """Lookup the users collections on the MusicBrainz website."""
@@ -877,7 +864,8 @@ class Tagger(QtWidgets.QApplication):
                 metadata['title'],
                 metadata['tracknumber'],
                 '' if item.is_album_like else str(metadata.length),
-                item.filename if isinstance(item, File) else '')
+                item.filename if isinstance(item, File) else '',
+            )
 
     def get_files_from_objects(self, objects, save=False):
         """Return list of unique files from list of albums, clusters, tracks or files.
@@ -1000,11 +988,7 @@ class Tagger(QtWidgets.QApplication):
                 elif isinstance(obj, Album):
                     self.window.set_statusbar_message(
                         N_("Removing album %(id)s: %(artist)s - %(album)s"),
-                        {
-                            'id': obj.id,
-                            'artist': obj.metadata['albumartist'],
-                            'album': obj.metadata['album']
-                        }
+                        {'id': obj.id, 'artist': obj.metadata['albumartist'], 'album': obj.metadata['album']},
                     )
                     self.remove_album(obj)
                 elif isinstance(obj, UnclusteredFiles):
@@ -1017,8 +1001,9 @@ class Tagger(QtWidgets.QApplication):
     def _lookup_disc(self, disc, result=None, error=None):
         self.restore_cursor()
         if error is not None:
-            QtWidgets.QMessageBox.critical(self.window, _("CD Lookup Error"),
-                                           _("Error while reading CD:\n\n%s") % error)
+            QtWidgets.QMessageBox.critical(
+                self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error
+            )
         else:
             disc.lookup()
 
@@ -1043,19 +1028,20 @@ class Tagger(QtWidgets.QApplication):
         disc = Disc()
         self.set_wait_cursor()
         thread.run_task(
-            partial(disc.read, encode_filename(device)),
-            partial(self._lookup_disc, disc),
-            traceback=log.is_debug())
+            partial(disc.read, encode_filename(device)), partial(self._lookup_disc, disc), traceback=log.is_debug()
+        )
 
     def lookup_discid_from_logfile(self):
         file_chooser = FileDialog(parent=self.window)
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
-        file_chooser.setNameFilters([
-            _("All supported log files") + " (*.log *.txt)",
-            _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
-            _("dBpoweramp log files") + " (*.txt)",
-            _("All files") + " (*)",
-        ])
+        file_chooser.setNameFilters(
+            [
+                _("All supported log files") + " (*.log *.txt)",
+                _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
+                _("dBpoweramp log files") + " (*.txt)",
+                _("All files") + " (*)",
+            ]
+        )
         if file_chooser.exec():
             filepath = file_chooser.selectedFiles()[0]
             self.run_lookup_discid_from_logfile(filepath)
@@ -1136,12 +1122,9 @@ class Tagger(QtWidgets.QApplication):
             count = len(files)
             remain = max(0, count - limit)
             log.debug(
-                "Clustering %d files: %r%s", count, files[:limit],
-                f" and {remain} more files..." if remain else ""
+                "Clustering %d files: %r%s", count, files[:limit], f" and {remain} more files..." if remain else ""
             )
-        thread.run_task(
-            partial(self._do_clustering, files),
-            partial(self._clustering_finished, callback))
+        thread.run_task(partial(self._do_clustering, files), partial(self._clustering_finished, callback))
 
     def _do_clustering(self, files):
         # The clustering algorithm should completely run in the thread,
@@ -1181,8 +1164,7 @@ class Tagger(QtWidgets.QApplication):
 
     def set_wait_cursor(self):
         """Sets the waiting cursor."""
-        super().setOverrideCursor(
-            QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
+        super().setOverrideCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
 
     def restore_cursor(self):
         """Restores the cursor set by ``set_wait_cursor``."""
@@ -1194,7 +1176,9 @@ class Tagger(QtWidgets.QApplication):
                 obj.load(priority=True, refresh=True)
 
     def bring_tagger_front(self):
-        self.window.setWindowState(self.window.windowState() & ~QtCore.Qt.WindowState.WindowMinimized | QtCore.Qt.WindowState.WindowActive)
+        self.window.setWindowState(
+            self.window.windowState() & ~QtCore.Qt.WindowState.WindowMinimized | QtCore.Qt.WindowState.WindowActive
+        )
         self.window.raise_()
         self.window.activateWindow()
 
@@ -1234,6 +1218,7 @@ class CmdlineArgsParser(argparse.ArgumentParser):
     def print_help(self, file=None):
         if is_windowed_app() and file is None:
             from io import StringIO
+
             file = StringIO()
             super().print_help(file=file)
             file.seek(0)
@@ -1287,7 +1272,7 @@ def process_cmdline_args():
     parser = CmdlineArgsParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""If one of the filenames begins with a hyphen, use -- to separate the options from the filenames.
-If a new instance will not be spawned files/directories will be passed to the existing instance"""
+If a new instance will not be spawned files/directories will be passed to the existing instance""",
     )
     # Qt default arguments. Parse them so Picard does not interpret the
     # arguments as file names to load.
@@ -1297,38 +1282,41 @@ If a new instance will not be spawned files/directories will be passed to the ex
     parser.add_argument('-display', nargs=1, help=argparse.SUPPRESS)
 
     # Picard specific arguments
-    parser.add_argument('-a', '--audit', action='store',
-                        default=None,
-                        help="audit events passed as a comma-separated list, prefixes supported, "
-                        "use all to match any (see https://docs.python.org/3/library/audit_events.html#audit-events)")
-    parser.add_argument('-c', '--config-file', action='store',
-                        default=None,
-                        help="location of the configuration file")
-    parser.add_argument('-d', '--debug', action='store_true',
-                        help="enable debug-level logging")
-    parser.add_argument('-e', '--exec', nargs='+', action='append',
-                        help="send command (arguments can be entered after space) to a running instance "
-                        "(use `-e help` for a list of the available commands)",
-                        metavar='COMMAND')
-    parser.add_argument('-M', '--no-player', action='store_true',
-                        help="disable built-in media player")
-    parser.add_argument('-N', '--no-restore', action='store_true',
-                        help="do not restore positions and/or sizes")
-    parser.add_argument('-P', '--no-plugins', action='store_true',
-                        help="do not load any plugins")
-    parser.add_argument('--no-crash-dialog', action='store_true',
-                        help="disable the crash dialog")
-    parser.add_argument('--debug-opts', action='store',
-                        default=None,
-                        help="comma-separated list of debug options to enable: %s" % DebugOpt.opt_names())
-    parser.add_argument('-s', '--stand-alone-instance', action='store_true',
-                        help="force Picard to create a new, stand-alone instance")
-    parser.add_argument('-v', '--version', action='store_true',
-                        help="display version information and exit")
-    parser.add_argument('-V', '--long-version', action='store_true',
-                        help="display long version information and exit")
-    parser.add_argument('FILE_OR_URL', nargs='*',
-                        help="the file(s), URL(s) and MBID(s) to load")
+    parser.add_argument(
+        '-a',
+        '--audit',
+        action='store',
+        default=None,
+        help="audit events passed as a comma-separated list, prefixes supported, "
+        "use all to match any (see https://docs.python.org/3/library/audit_events.html#audit-events)",
+    )
+    parser.add_argument('-c', '--config-file', action='store', default=None, help="location of the configuration file")
+    parser.add_argument('-d', '--debug', action='store_true', help="enable debug-level logging")
+    parser.add_argument(
+        '-e',
+        '--exec',
+        nargs='+',
+        action='append',
+        help="send command (arguments can be entered after space) to a running instance "
+        "(use `-e help` for a list of the available commands)",
+        metavar='COMMAND',
+    )
+    parser.add_argument('-M', '--no-player', action='store_true', help="disable built-in media player")
+    parser.add_argument('-N', '--no-restore', action='store_true', help="do not restore positions and/or sizes")
+    parser.add_argument('-P', '--no-plugins', action='store_true', help="do not load any plugins")
+    parser.add_argument('--no-crash-dialog', action='store_true', help="disable the crash dialog")
+    parser.add_argument(
+        '--debug-opts',
+        action='store',
+        default=None,
+        help="comma-separated list of debug options to enable: %s" % DebugOpt.opt_names(),
+    )
+    parser.add_argument(
+        '-s', '--stand-alone-instance', action='store_true', help="force Picard to create a new, stand-alone instance"
+    )
+    parser.add_argument('-v', '--version', action='store_true', help="display version information and exit")
+    parser.add_argument('-V', '--long-version', action='store_true', help="display long version information and exit")
+    parser.add_argument('FILE_OR_URL', nargs='*', help="the file(s), URL(s) and MBID(s) to load")
 
     args = parser.parse_args()
     args.remote_commands_help = False
@@ -1376,7 +1364,7 @@ def setup_pipe_handler(cmdline_args):
             app_name=PICARD_APP_NAME,
             app_version=PICARD_FANCY_VERSION_STR,
             identifier=identifier,
-            args=cmdline_args.processable
+            args=cmdline_args.processable,
         )
         is_remote = not pipe_handler.is_pipe_owner
     except pipe.PipeErrorNoPermission as err:
@@ -1399,7 +1387,8 @@ def setup_application():
     # It causes issues without scaling on Linux, see https://tickets.metabrainz.org/browse/PICARD-1948
     if IS_WIN:
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(
-            QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+            QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
+        )
 
     # Enable mnemonics on all platforms, even macOS
     QtGui.qt_set_sequence_auto_mnemonic(True)
@@ -1409,6 +1398,7 @@ def setup_dbus():
     """Setup DBus if available"""
     try:
         from PyQt6.QtDBus import QDBusConnection
+
         dbus = QDBusConnection.sessionBus()
         dbus.registerService(PICARD_APP_ID)
     except ImportError:

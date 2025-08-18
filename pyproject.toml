@@ -121,7 +121,6 @@ exclude = [
     "venv",
     "picard/ui/forms/ui_*.py",
     "picard/resources.py",
-    "tagger.py",
     "picard/const/attributes.py",
     "picard/const/countries.py",
     "picard/ui/ui_.*\\.py",
