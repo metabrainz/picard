@@ -249,7 +249,7 @@ class TestTagDiff(PicardTestCase):
 
     @staticmethod
     def _special_handler(old, new):
-        for old_value, new_value in zip(old, new):
+        for old_value, new_value in zip(old, new, strict=True):
             try:
                 if abs(int(old_value) - int(new_value)) > 2000:
                     return True

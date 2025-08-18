@@ -143,7 +143,7 @@ class TagsFromFileNamesDialog(PicardDialog):
         headers = [_("File Name")] + list(map(display_tag_name, columns))
         self.ui.files.setColumnCount(len(headers))
         self.ui.files.setHeaderLabels(headers)
-        for item, file in zip(self.items, self.files):
+        for item, file in zip(self.items, self.files, strict=True):
             matches = expression.match_file(file.filename)
             for i, column in enumerate(columns):
                 values = matches.get(column, [])

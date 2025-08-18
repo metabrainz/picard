@@ -83,7 +83,7 @@ def _parse_linux_cdrom_info(f):
             if line.startswith(CAN_PLAY_AUDIO):
                 drive_audio_caps = [v == '1' for v in line[len(CAN_PLAY_AUDIO) :].split()]
                 break
-    yield from zip(drive_names, drive_audio_caps)
+    yield from zip(drive_names, drive_audio_caps, strict=False)
 
 
 if IS_WIN:
