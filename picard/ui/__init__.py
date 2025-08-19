@@ -8,7 +8,7 @@
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2019-2023 Philipp Wolfer
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -199,9 +199,9 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             self.__shown = True
         return super().showEvent(event)
 
-    def show_help(self):
-        if self.help_url:
-            url = self.help_url
+    def show_help(self, help_url=None):
+        url = help_url or self.help_url
+        if url:
             if url.startswith('/'):
                 url = DOCS_BASE_URL + url
             webbrowser2.open(url)
