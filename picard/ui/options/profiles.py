@@ -61,7 +61,9 @@ class ProfilesOptionsPage(OptionsPage):
     NAME = 'profiles'
     TITLE = N_("Option Profiles")
     PARENT = None
-    SORT_ORDER = 10
+    # Set SORT_ORDER to negative number to ensure the profiles page is saved first to avoid
+    # an error when saving settings to a new profile that has been marked as enabled.
+    SORT_ORDER = -100
     ACTIVE = True
     HELP_URL = "/config/options_profiles.html"
 
