@@ -70,7 +70,7 @@ class Ui_OptionsDialog(object):
         self.horizontalLayout.addWidget(self.profile_warning_icon)
         self.profile_warning_text = QtWidgets.QLabel(parent=self.profile_warning)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.profile_warning_text.sizePolicy().hasHeightForWidth())
         self.profile_warning_text.setSizePolicy(sizePolicy)

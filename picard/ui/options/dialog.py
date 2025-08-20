@@ -425,12 +425,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     if not item['enabled']:
                         continue
                     profile_id = item['id']
-                    profile_title = item['title']
                     if profile_id not in working_settings:
                         continue
                     profile_settings = working_settings[profile_id]
                     if opt.name in profile_settings:
-                        profile_set.add(profile_title)
+                        profile_set.add(item['title'])
                         break
 
         if not profile_set:
