@@ -436,7 +436,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.profile_warning.setVisible(False)
             return
 
-        text = _('profile "%s"') % profile_set.pop() if len(profile_set) == 1 else _("multiple profiles")
+        if len(profile_set) == 1:
+            text = _('profile "%s"') % profile_set.pop()
+        else:
+            text = _('profiles %s') % ', '.join([f'"{x}"' for x in sorted(profile_set)])
         self.ui.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
         self.ui.profile_warning.setVisible(True)
 
