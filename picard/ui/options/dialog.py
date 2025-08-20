@@ -14,7 +14,7 @@
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2021 Gabriel Ferreira
-# Copyright (C) 2021-2023 Bob Swift
+# Copyright (C) 2021-2023, 2025 Bob Swift
 # Copyright (C) 2024 Giorgio Fontanive
 #
 # This program is free software; you can redistribute it and/or
@@ -439,14 +439,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self._show_page_error(page, e)
                 return
 
-        for page in self.loaded_pages:
+        for page in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
             try:
                 page.save()
             except Exception as e:
                 log.exception("Failed saving options page %r", page)
                 self._show_page_error(page, e)
                 return
-
         super().accept()
 
     def _show_page_error(self, page, error):
