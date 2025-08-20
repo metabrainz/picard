@@ -439,7 +439,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self._show_page_error(page, e)
                 return
 
-        for page in sorted(self.loaded_pages, key=lambda x: x.SORT_ORDER):
+        for page in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
             try:
                 page.save()
             except Exception as e:
