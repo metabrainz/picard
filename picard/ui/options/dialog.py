@@ -179,6 +179,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(self)
 
+        self.ui.profile_warning_icon.setPixmap(
+            self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxWarning).pixmap(20, 20)
+        )
+        self.ui.profile_help_button.setIcon(
+            self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxQuestion)
+        )
+        self.ui.profile_help_button.setToolTip(_("Display help regarding option profiles"))
+        self.ui.profile_help_button.clicked.connect(self._show_profile_help)
+
         self.ui.reset_all_button = QtWidgets.QPushButton(_("&Restore all Defaults"))
         self.ui.reset_all_button.setToolTip(_("Reset all of Picard's settings"))
         self.ui.reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
@@ -285,6 +294,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 _("Profiles Attached to Options"),
                 _("The options on this page are not currently available to be managed using profiles."),
             )
+
+    def _show_profile_help(self):
+        self.show_help('/usage/option_profiles.html')
 
     def display_simple_message_box(self, window_title, message):
         message_box = QtWidgets.QMessageBox(self)
@@ -400,6 +412,36 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.attached_profiles_button.setDisabled(False)
         else:
             self.ui.attached_profiles_button.setDisabled(True)
+        self.update_profile_save_warning(page)
+
+    def update_profile_save_warning(self, page):
+        working_profiles, working_settings = self.get_working_profile_data()
+        profile_set = set()
+
+        option_group = profile_groups_group_from_page(page)
+        if option_group:
+            for opt in option_group['settings']:
+                for idx, item in enumerate(working_profiles):
+                    if not item['enabled']:
+                        continue
+                    profile_id = item['id']
+                    if profile_id not in working_settings:
+                        continue
+                    profile_settings = working_settings[profile_id]
+                    if opt.name in profile_settings:
+                        profile_set.add((idx, item['title']))
+                        break
+
+        if not profile_set:
+            self.ui.profile_warning.setVisible(False)
+            return
+
+        if len(profile_set) == 1:
+            text = _('profile "%s"') % profile_set.pop()[1]
+        else:
+            text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
+        self.ui.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
+        self.ui.profile_warning.setVisible(True)
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()
