@@ -46,8 +46,13 @@
 
 
 from functools import partial
+from typing import TYPE_CHECKING
 
 from PyQt6 import QtGui
+
+
+if TYPE_CHECKING:
+    from picard.ui.mainwindow import MainWindow
 
 from picard.browser import addrelease
 from picard.config import get_config
@@ -474,6 +479,26 @@ def _create_enable_tag_saving_action(parent):
     action.setCheckable(True)
     action.setChecked(not config.setting['dont_write_tags'])
     action.triggered.connect(parent.toggle_tag_saving)
+    return action
+
+
+@add_action(MainAction.ENABLE_SAVE_IMAGES_TO_TAGS)
+def _create_enable_save_images_to_tags_action(parent: 'MainWindow') -> QtGui.QAction:
+    config = get_config()
+    action = QtGui.QAction(_("Save images to tags"), parent)
+    action.setCheckable(True)
+    action.setChecked(config.setting['save_images_to_tags'])
+    action.triggered.connect(parent.toggle_save_images_to_tags)
+    return action
+
+
+@add_action(MainAction.ENABLE_SAVE_IMAGES_TO_FILES)
+def _create_enable_save_images_to_files_action(parent: 'MainWindow') -> QtGui.QAction:
+    config = get_config()
+    action = QtGui.QAction(_("Save images to files"), parent)
+    action.setCheckable(True)
+    action.setChecked(config.setting['save_images_to_files'])
+    action.triggered.connect(parent.toggle_save_images_to_files)
     return action
 
 

@@ -294,6 +294,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
         elif name == 'dont_write_tags':
             self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not new_value)
+        elif name == 'save_images_to_tags':
+            self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_TAGS].setChecked(new_value)
+        elif name == 'save_images_to_files':
+            self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_FILES].setChecked(new_value)
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
@@ -617,11 +621,21 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         config.setting['dont_write_tags'] = not checked
 
+    def toggle_save_images_to_tags(self, checked):
+        config = get_config()
+        config.setting['save_images_to_tags'] = checked
+
+    def toggle_save_images_to_files(self, checked):
+        config = get_config()
+        config.setting['save_images_to_files'] = checked
+
     def _reset_option_menu_state(self):
         config = get_config()
         self.actions[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
         self.actions[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
         self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not config.setting['dont_write_tags'])
+        self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_TAGS].setChecked(config.setting['save_images_to_tags'])
+        self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_FILES].setChecked(config.setting['save_images_to_files'])
         self._make_script_selector_menu()
         self._init_cd_lookup_menu()
 
@@ -695,6 +709,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.ENABLE_RENAMING,
             MainAction.ENABLE_MOVING,
             MainAction.ENABLE_TAG_SAVING,
+            MainAction.ENABLE_SAVE_IMAGES_TO_TAGS,
+            MainAction.ENABLE_SAVE_IMAGES_TO_FILES,
             '-',
             self.script_quick_selector_menu,
             MainAction.SHOW_SCRIPT_EDITOR,
