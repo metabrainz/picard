@@ -239,22 +239,25 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         profile_set = set()
 
         for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
-            for item in working_profiles:
+            for idx, item in enumerate(working_profiles):
                 if not item['enabled']:
                     continue
                 profile_id = item['id']
-                profile_title = item['title']
                 if profile_id not in working_settings:
                     continue
                 profile_settings = working_settings[profile_id]
                 if opt.name in profile_settings:
-                    profile_set.add(profile_title)
+                    profile_set.add((idx, item['title']))
                     break
 
         if not profile_set:
             self.ui.profile_warning.setVisible(False)
             return
-        text = _('profile "%s"') % profile_set.pop() if len(profile_set) == 1 else _("multiple profiles")
+
+        if len(profile_set) == 1:
+            text = _('profile "%s"') % profile_set.pop()[1]
+        else:
+            text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
         self.ui.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
         self.ui.profile_warning.setVisible(True)
 
@@ -315,7 +318,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             option_colors = HighlightColors('#000000', '#F9F906')
 
         for page in self.pages:
-            all_profiles = set()
             page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
             if page_name in UserProfileGroups.SETTINGS_GROUPS:
                 if load_settings:
@@ -327,9 +329,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                             obj = getattr(page.ui, opt_field)
                         except AttributeError:
                             continue
-                        added_profile = self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
-                        if added_profile:
-                            all_profiles.add(added_profile)
+                        self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
 
     def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style):
         obj.setStyleSheet(None)
@@ -349,8 +349,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         obj.setToolTip(tooltip)
                     except AttributeError:
                         pass
-                    return profile_title
-        return None
+                    break
 
     def eventFilter(self, object, event):
         """Process selected events.
