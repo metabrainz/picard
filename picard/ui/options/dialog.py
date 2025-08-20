@@ -421,7 +421,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         option_group = profile_groups_group_from_page(page)
         if option_group:
             for opt in option_group['settings']:
-                for item in working_profiles:
+                for idx, item in enumerate(working_profiles):
                     if not item['enabled']:
                         continue
                     profile_id = item['id']
@@ -429,7 +429,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         continue
                     profile_settings = working_settings[profile_id]
                     if opt.name in profile_settings:
-                        profile_set.add(item['title'])
+                        profile_set.add((idx, item['title']))
                         break
 
         if not profile_set:
@@ -437,9 +437,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             return
 
         if len(profile_set) == 1:
-            text = _('profile "%s"') % profile_set.pop()
+            text = _('profile "%s"') % profile_set.pop()[1]
         else:
-            text = _('profiles %s') % ', '.join([f'"{x}"' for x in sorted(profile_set)])
+            text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
         self.ui.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
         self.ui.profile_warning.setVisible(True)
 
