@@ -26,18 +26,18 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:05+0200\n"
-"PO-Revision-Date: 2025-05-13 20:20+0000\n"
-"Last-Translator: Michal77 <michal_wilk@poczta.fm>\n"
+"PO-Revision-Date: 2025-08-21 06:36+0000\n"
+"Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
+"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -354,16 +354,14 @@ msgstr "Zapisuj tylko pojedynczy przedni obraz jako oddzielny plik"
 
 #: picard/options.py:211
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-#, fuzzy
-#| msgid "New cover art saved as a separate file"
 msgid "Show cover art details in cover art view"
-msgstr "Nowa okładka zapisana jako osobny plik"
+msgstr "Pokaż szczegóły okładki w widoku okładki"
 
 #: picard/options.py:212
 #, fuzzy
 #| msgid "New cover art embedded into tags"
 msgid "Show cover art type in info labels"
-msgstr "Nowa okładka osadzona w tagach"
+msgstr "Pokaż typ okładki w etykietach informacyjnych"
 
 #: picard/options.py:213
 msgid "Show cover art file size in info labels"
@@ -3225,42 +3223,34 @@ msgid "&Set as starting directory"
 msgstr "Ustaw jako &początkowy katalog"
 
 #: picard/ui/filter.py:54
-#, fuzzy
-#| msgid "Clusters"
 msgid "Filters"
-msgstr "Zbiór"
+msgstr "Filtry"
 
 #: picard/ui/filter.py:70
 msgid "Type to filter..."
-msgstr ""
+msgstr "Wpisz, aby filtrować..."
 
 #: picard/ui/filter.py:89
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select Filters"
-msgstr "Wybierz plik"
+msgstr "Wybierz filtry"
 
 #: picard/ui/filter.py:100
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select / clear all filters"
-msgstr "Wybierz plik"
+msgstr "Wybierz / wyczyść wszystkie filtry"
 
 #: picard/ui/filter.py:137
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: picard/ui/filter.py:145
-#, fuzzy
-#| msgid "&Cancel"
 msgid "Cancel"
-msgstr "&Anuluj"
+msgstr "Anuluj"
 
 #: picard/ui/filter.py:232
 #, fuzzy, python-brace-format
 #| msgid "Rename files"
 msgid "{num} filters"
-msgstr "Zmień nazwy plików"
+msgstr "{num} filtrów"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
@@ -3821,8 +3811,6 @@ msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Domyślny napęd CD-ROM do sprawdzania:"
 
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
 msgid "Select Types…"
 msgstr "Wybierz typy…"
 
@@ -4103,23 +4091,19 @@ msgstr "Kolory"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:52
 msgid "Show type (front, back, etc.)"
-msgstr ""
+msgstr "Pokaż typ (przód, tył, itp.)"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:53
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show file size"
-msgstr "Pokaż &ukryte pliki"
+msgstr "Pokaż rozmiar pliku"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:54
-#, fuzzy
-#| msgid "Cover Dimensions"
 msgid "Show dimensions"
-msgstr "Wymiary okładki"
+msgstr "Pokaż wymiary"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:55
 msgid "Show MIME type"
-msgstr ""
+msgstr "Pokaż typ MIME"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -5041,13 +5025,11 @@ msgstr "U&ruchom skrypty"
 #: picard/ui/itemviews/basetreeview.py:630
 #, python-format
 msgid "Matches on: %s"
-msgstr ""
+msgstr "Pasuje do: %s"
 
 #: picard/ui/itemviews/basetreeview.py:632
-#, fuzzy
-#| msgid "&Load selected files"
 msgid "No tags found for selected filters."
-msgstr "&Otwórz wybrane pliki"
+msgstr "Nie znaleziono tagów dla wybranych filtrów."
 
 #: picard/ui/itemviews/columns.py:134
 msgid "Fingerprint status"
@@ -5100,16 +5082,12 @@ msgid "Size"
 msgstr "Rozmiar"
 
 #: picard/ui/itemviews/columns.py:173
-#, fuzzy
-#| msgid "Release Type"
 msgid "File Type"
-msgstr "Rodzaj wydania"
+msgstr "Typ pliku"
 
 #: picard/ui/itemviews/columns.py:175
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "Bitrate"
-msgstr "Szybkość transmisji:"
+msgstr "Szybkość transmisji"
 
 #: picard/ui/itemviews/columns.py:182
 msgid "Genre"
@@ -5134,28 +5112,27 @@ msgstr "Wymiary okładki"
 #: picard/ui/itemviews/match_quality_column.py:201
 #, python-format
 msgid "Match: %(matched)d/%(total)d (%(percent).1f%%)"
-msgstr ""
+msgstr "Dopasowanie: %(matched)d/%(total)d (%(percent).1f%%)"
 
 #: picard/ui/itemviews/match_quality_column.py:210
 #, python-format
 msgid "Missing tracks: %(count)d"
-msgstr ""
+msgstr "Brakujące utwory: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:211
 #, python-format
 msgid "Duplicate files: %(count)d"
-msgstr ""
+msgstr "Duplikaty plików: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:212
-#, fuzzy, python-format
+#, python-format
 msgid "Extra files: %(count)d"
-msgstr "{title} ({count})"
+msgstr "Pliki dodatkowe: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:213
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "Unmatched files: %(count)d"
-msgstr "Pliki niedopasowane"
+msgstr "Niezgodne pliki: %(count)d"
 
 #: picard/ui/mainwindow/__init__.py:380
 msgid "Unsaved Changes"
@@ -5555,20 +5532,17 @@ msgid "&Actions"
 msgstr "&Akcje"
 
 #: picard/ui/mainwindow/actions.py:354
-#, fuzzy
-#| msgid "Similar items"
 msgid "Filter Items"
-msgstr "Podobne elementy"
+msgstr "Filtruj elementy"
 
 #: picard/ui/mainwindow/actions.py:355
 msgid "Toggle filtering of items based on specific tag values."
 msgstr ""
+"Przełączaj filtrowanie elementów na podstawie określonych wartości tagów."
 
 #: picard/ui/mainwindow/actions.py:357
-#, fuzzy
-#| msgid "Ctrl+Shift+I"
 msgid "Ctrl+Shift+F"
-msgstr "Ctrl+Shift+I"
+msgstr "Ctrl+Shift+F"
 
 #: picard/ui/mainwindow/actions.py:375
 msgid "Lookup the details of the CD in your drive"
@@ -6186,7 +6160,7 @@ msgstr "Zmieniłeś kolory interfejsu."
 #, fuzzy
 #| msgid "Cover Art"
 msgid "Cover Art Box"
-msgstr "Okładka"
+msgstr "Pudełko z grafiką okładki"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
