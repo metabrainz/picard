@@ -58,7 +58,14 @@ from picard.ui.itemviews.custom_columns.validation import (
 def fake_config(monkeypatch) -> SimpleNamespace:
     """Provide a fake config object for storage with an isolated settings map."""
 
-    cfg = SimpleNamespace(setting={'enabled_plugins': []})
+    class _FakeSetting(dict):
+        def raw_value(self, name, qtype=None):
+            return self.get(name)
+
+        def key(self, name):
+            return name
+
+    cfg = SimpleNamespace(setting=_FakeSetting({'enabled_plugins': [], 'custom_columns': []}), sync=lambda: None)
     import picard.ui.itemviews.custom_columns.storage as storage_mod
 
     monkeypatch.setattr(storage_mod, 'get_config', lambda: cfg, raising=True)

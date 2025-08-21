@@ -119,8 +119,8 @@ class CustomColumnSpec:
     width: int | None = None
     align: str = "LEFT"
     always_visible: bool = False
-    add_to_file_view: bool = False
-    add_to_album_view: bool = False
+    add_to_file_view: bool = True
+    add_to_album_view: bool = True
     insert_after_key: str | None = None
     transform: TransformName | None = None
 
