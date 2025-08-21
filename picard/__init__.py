@@ -13,7 +13,7 @@
 # Copyright (C) 2016-2017 Wieland Hoffmann
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Ville Skyttä
-# Copyright (C) 2018, 2021, 2023 Bob Swift
+# Copyright (C) 2018, 2021, 2023, 2025 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2022 skelly37
 #
@@ -42,7 +42,7 @@ PICARD_APP_NAME = "Picard"
 PICARD_DISPLAY_NAME = "MusicBrainz Picard"
 PICARD_APP_ID = "org.musicbrainz.Picard"
 PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
-PICARD_VERSION = Version(3, 0, 0, 'dev', 6)
+PICARD_VERSION = Version(3, 0, 0, 'dev', 7)
 
 
 # optional build version

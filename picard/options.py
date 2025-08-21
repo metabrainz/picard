@@ -58,6 +58,7 @@ from picard.const.defaults import (
     DEFAULT_MUSIC_DIR,
     DEFAULT_PROGRAM_UPDATE_LEVEL,
     DEFAULT_QUERY_LIMIT,
+    DEFAULT_QUICK_MENU_ITEMS,
     DEFAULT_RELEASE_TYPE_SCORES,
     DEFAULT_REPLACEMENT,
     DEFAULT_SHOW_MENU_ICONS,
@@ -266,6 +267,7 @@ IntOption('setting', 'server_port', 443, title=N_("Port"))
 IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"))
 IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check"))
 BoolOption('setting', 'use_server_for_submission', False)
+ListOption('setting', 'quick_menu_items', DEFAULT_QUICK_MENU_ITEMS)
 
 # picard/ui/options/genres.py
 # Genres

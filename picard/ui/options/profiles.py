@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2022-2023 Philipp Wolfer
 # Copyright (C) 2022-2024 Laurent Monin
 #
@@ -20,7 +20,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from copy import deepcopy
 import uuid
 
@@ -35,8 +34,12 @@ from picard.config import (
     OptionError,
     SettingConfigSection,
     get_config,
+    get_quick_menu_items,
 )
-from picard.const.defaults import DEFAULT_COPY_TEXT
+from picard.const.defaults import (
+    DEFAULT_COPY_TEXT,
+    DEFAULT_QUICK_MENU_ITEMS,
+)
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
@@ -50,10 +53,14 @@ from picard.script import (
 )
 from picard.util import get_base_title
 
+from picard.ui import PicardDialog
 from picard.ui.forms.ui_options_profiles import Ui_ProfileEditorDialog
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
-from picard.ui.util import qlistwidget_items
+from picard.ui.util import (
+    StandardButton,
+    qlistwidget_items,
+)
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
 
 
@@ -126,6 +133,13 @@ class ProfilesOptionsPage(OptionsPage):
             self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
         )
 
+        self.quick_menu_button = QtWidgets.QPushButton(_("Quick Menu"))
+        self.quick_menu_button.setToolTip(_("Select the items to appear in the quick menu for the selected profile"))
+        self.quick_menu_button.clicked.connect(self.quick_menu)
+        self.ui.profile_list_buttonbox.addButton(
+            self.quick_menu_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
+        )
+
     def restore_defaults(self):
         """Remove all profiles and profile settings."""
         self.ui.profile_list.clear()
@@ -185,7 +199,7 @@ class ProfilesOptionsPage(OptionsPage):
         # Add empty settings dictionary if no dictionary found for the profile.
         # This happens when a new profile is created.
         if profile_id not in self.profile_settings:
-            self.profile_settings[profile_id] = {}
+            self.profile_settings[profile_id] = {'quick_menu_items': DEFAULT_QUICK_MENU_ITEMS}
         return self.profile_settings[profile_id]
 
     def _all_profiles(self):
@@ -418,8 +432,10 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def new_profile(self):
-        """Add a new profile with no settings selected."""
-        self.ui.profile_list.add_profile()
+        """Add a new profile with default quick menu items and no settings selected."""
+        profile_id = str(uuid.uuid4())
+        self.ui.profile_list.add_profile(profile_id=profile_id)
+        self.profile_settings[profile_id] = {'quick_menu_items': DEFAULT_QUICK_MENU_ITEMS}
         self.update_config_overrides()
         self.reload_all_page_settings()
 
@@ -464,5 +480,96 @@ class ProfilesOptionsPage(OptionsPage):
         self.copy_profile_button.setEnabled(state)
         self.delete_profile_button.setEnabled(state)
 
+    def quick_menu(self):
+        if not self.current_profile_id:
+            msg = QtWidgets.QMessageBox(self)
+            msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+            msg.setText(_("There is no currently selected profile to update."))
+            msg.setWindowTitle(_("No Profile"))
+            msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+            msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+            msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+            msg.show()
+            return
+
+        profile_settings = self.get_settings_for_profile(self.current_profile_id)
+        settings = profile_settings['quick_menu_items'] if 'quick_menu_items' in profile_settings else []
+
+        dialog = QuickSettingsDialog(parent=self, settings=settings)
+        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            self.profile_settings[self.current_profile_id]['quick_menu_items'] = list(dialog.get_selected_options())
+
 
 register_options_page(ProfilesOptionsPage)
+
+
+class QuickSettingsDialog(PicardDialog):
+    def __init__(self, parent=None, settings=None):
+        """Display dialog box to select the options to show in the Quick Settings menu.
+        Args:
+            parent ([type], optional): Parent of the QDialog object being created. Defaults to None.
+            settings (list, optional): List of currently selected options. Defaults to None.
+        """
+        super().__init__(parent)
+
+        self.settings = settings or []
+
+        self.setWindowTitle(_("Quick Settings Menu Items"))
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        self.setMinimumWidth(650)
+        self.layout = QtWidgets.QVBoxLayout(self)
+
+        instructions = QtWidgets.QLabel(
+            _("Please select the settings that you want to appear in the Quick Settings menu for this profile.")
+        )
+        instructions.setWordWrap(True)
+        self.layout.addWidget(instructions)
+
+        self.quick_menu_tree = QtWidgets.QTreeWidget()
+        self.quick_menu_tree.headerItem().setText(0, _("Available Option Settings"))
+        self.quick_menu_tree.header().setVisible(True)
+
+        for group in get_quick_menu_items():
+            widget_item = QtWidgets.QTreeWidgetItem([_(group['group_title'])])
+            widget_item.setFlags(
+                QtCore.Qt.ItemFlag.ItemIsEnabled
+                | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+                | QtCore.Qt.ItemFlag.ItemIsAutoTristate
+            )
+            widget_item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
+            for setting in group['options']:
+                widget_item.addChild(self._make_child_item(settings, setting.name, setting.title))
+            self.quick_menu_tree.addTopLevelItem(widget_item)
+            widget_item.setExpanded(True)
+        self.building_tree = False
+
+        self.layout.addWidget(self.quick_menu_tree)
+
+        self.buttonbox = QtWidgets.QDialogButtonBox(self)
+        self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self.buttonbox.addButton(
+            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        )
+
+        self.buttonbox.accepted.connect(self.accept)
+        self.buttonbox.rejected.connect(self.reject)
+
+        self.layout.addWidget(self.buttonbox)
+
+    def _make_child_item(self, settings, name, title):
+        in_settings = settings and name in settings
+        item = QtWidgets.QTreeWidgetItem([_(title)])
+        item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+        state = QtCore.Qt.CheckState.Checked if in_settings else QtCore.Qt.CheckState.Unchecked
+        item.setCheckState(0, state)
+        return item
+
+    def get_selected_options(self):
+        for i in range(self.quick_menu_tree.topLevelItemCount()):
+            tl_item = self.quick_menu_tree.topLevelItem(i)
+            for j in range(tl_item.childCount()):
+                item = tl_item.child(j)
+                if item.checkState(0) == QtCore.Qt.CheckState.Checked:
+                    yield item.data(0, QtCore.Qt.ItemDataRole.UserRole)

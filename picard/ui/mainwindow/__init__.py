@@ -85,6 +85,7 @@ from picard.i18n import (
     gettext as _,
     ngettext,
 )
+from picard.options import get_option_title
 from picard.script import get_file_naming_script_presets
 from picard.track import Track
 from picard.util import (
@@ -704,6 +705,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
         self._make_profile_selector_menu()
 
+        self.settings_quick_selector_menu = QtWidgets.QMenu(_("&Quick settings"))
+        self._make_settings_selector_menu()
+
         add_menu(
             _("&Options"),
             MainAction.ENABLE_RENAMING,
@@ -716,6 +720,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.SHOW_SCRIPT_EDITOR,
             '-',
             self.profile_quick_selector_menu,
+            '-',
+            self.settings_quick_selector_menu,
             '-',
             MainAction.OPTIONS,
         )
@@ -1007,6 +1013,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, True)
         self._make_profile_selector_menu()
         self._make_script_selector_menu()
+        self._make_settings_selector_menu()
 
     def show_help(self):
         webbrowser2.open('documentation')
@@ -1676,7 +1683,43 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 profile['enabled'] = not profile['enabled']
                 config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
                 self._reset_option_menu_state()
+                self._make_settings_selector_menu()
                 return
+
+    def _make_settings_selector_menu(self):
+        """Update the sub-menu of selected option settings."""
+        config = get_config()
+        quick_settings = config.setting['quick_menu_items']
+
+        if not quick_settings:
+            self.settings_quick_selector_menu.setDisabled(True)
+            return
+
+        self.settings_quick_selector_menu.setDisabled(False)
+        self.settings_quick_selector_menu.clear()
+
+        group = QtGui.QActionGroup(self.settings_quick_selector_menu)
+        group.setExclusive(False)
+
+        def _add_menu_item(setting_id, title, enabled):
+            setting_action = QtGui.QAction(title, self.settings_quick_selector_menu)
+            setting_action.triggered.connect(partial(self._update_quick_setting, setting_id))
+            setting_action.setCheckable(True)
+            setting_action.setChecked(enabled)
+            self.settings_quick_selector_menu.addAction(setting_action)
+            group.addAction(setting_action)
+
+        for setting_id in quick_settings:
+            _add_menu_item(setting_id, get_option_title(setting_id), config.setting[setting_id])
+
+    def _update_quick_setting(self, setting_id):
+        """Toggle the enabled state of the selected setting.
+
+        Args:
+            settingid (str): ID code of the setting to modify
+        """
+        config = get_config()
+        config.setting[setting_id] = not config.setting[setting_id]
 
     def show_new_user_dialog(self):
         config = get_config()
