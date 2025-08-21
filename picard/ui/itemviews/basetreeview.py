@@ -408,6 +408,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
     def _init_header(self):
+        # Load any persisted user-defined custom columns before header setup
+        from picard.ui.itemviews.custom_columns.storage import load_persisted_columns_once
+
+        load_persisted_columns_once()
+
         header = ConfigurableColumnsHeader(self.columns, parent=self)
         self.setHeader(header)
 
