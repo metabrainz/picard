@@ -14,7 +14,7 @@
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2021 Gabriel Ferreira
-# Copyright (C) 2021-2022 Bob Swift
+# Copyright (C) 2021-2022, 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -126,6 +126,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
+        self.ui.profile_warning_icon.setPixmap(self.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxWarning).pixmap(20, 20))
+        self.ui.profile_help_button.setIcon(self.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxQuestion))
+        self.ui.profile_help_button.setToolTip(_("Display help regarding user profiles"))
+        self.ui.profile_help_button.clicked.connect(self._show_profile_help)
+
         self.ui.reset_all_button = QtWidgets.QPushButton(_("&Restore all Defaults"))
         self.ui.reset_all_button.setToolTip(_("Reset all of Picard's settings"))
         self.ui.reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
@@ -210,12 +215,57 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             return False
         return name in UserProfileGroups.get_setting_groups_list()
 
-    def show_attached_profiles_dialog(self):
-        window_title = _("Profiles Attached to Options")
+    def _get_selected_page(self):
         items = self.ui.pages_tree.selectedItems()
         if not items:
+            return None
+        return self.item_to_page[items[0]]
+
+    def _show_profile_help(self):
+        self.show_help('/usage/option_profiles.html')
+
+    def update_profile_save_warning(self):
+        page = self._get_selected_page()
+        if not page or not self.page_has_profile_options(page) or not hasattr(self, 'profile_page'):
+            self.ui.profile_warning.setVisible(False)
             return
-        page = self.item_to_page[items[0]]
+
+        page_name = page.PARENT if page.PARENT in UserProfileGroups.SETTINGS_GROUPS else page.NAME
+        if page_name not in UserProfileGroups.SETTINGS_GROUPS:
+            self.ui.profile_warning.setVisible(False)
+            return
+
+        working_profiles, working_settings = self.get_working_profile_data()
+        profile_set = set()
+
+        for opt in UserProfileGroups.SETTINGS_GROUPS[page_name]['settings']:
+            for idx, item in enumerate(working_profiles):
+                if not item['enabled']:
+                    continue
+                profile_id = item['id']
+                if profile_id not in working_settings:
+                    continue
+                profile_settings = working_settings[profile_id]
+                if opt.name in profile_settings:
+                    profile_set.add((idx, item['title']))
+                    break
+
+        if not profile_set:
+            self.ui.profile_warning.setVisible(False)
+            return
+
+        if len(profile_set) == 1:
+            text = _('profile "%s"') % profile_set.pop()[1]
+        else:
+            text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
+        self.ui.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
+        self.ui.profile_warning.setVisible(True)
+
+    def show_attached_profiles_dialog(self):
+        window_title = _("Profiles Attached to Options")
+        page = self._get_selected_page()
+        if not page:
+            return
         if not self.page_has_profile_options(page):
             message_box = QtWidgets.QMessageBox(self)
             message_box.setIcon(QtWidgets.QMessageBox.Icon.Information)
@@ -336,6 +386,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         else:
             self.ui.attached_profiles_button.setDisabled(True)
         self.ui.pages_stack.setCurrentWidget(page)
+        self.update_profile_save_warning()
 
     def switch_page(self):
         items = self.ui.pages_tree.selectedItems()

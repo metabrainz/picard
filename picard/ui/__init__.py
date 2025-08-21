@@ -200,9 +200,9 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             self.__shown = True
         return super().showEvent(event)
 
-    def show_help(self):
-        if self.help_url:
-            url = self.help_url
+    def show_help(self, help_url=None):
+        url = help_url or self.help_url
+        if url:
             if url.startswith('/'):
                 url = DOCS_BASE_URL + url
             webbrowser2.open(url)
