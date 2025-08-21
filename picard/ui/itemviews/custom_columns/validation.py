@@ -121,6 +121,10 @@ class RequiredFieldRule(ValidationRule):
                     "title", ValidationSeverity.ERROR, "Title is required and cannot be empty", "TITLE_REQUIRED"
                 )
             )
+        if not spec.key or spec.key.isspace():
+            results.append(
+                ValidationResult("key", ValidationSeverity.ERROR, "Key is required and cannot be empty", "KEY_REQUIRED")
+            )
         if not spec.expression or spec.expression.isspace():
             results.append(
                 ValidationResult(
