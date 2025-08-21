@@ -54,6 +54,7 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
+from picard.ui.itemviews.custom_columns.manager_dialog import CustomColumnsManagerDialog
 from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 
@@ -110,6 +111,17 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         lock_action.toggled.connect(self.lock)
         menu.addAction(lock_action)
 
+        menu.addSeparator()
+
+        def _open_manager():
+            dlg = CustomColumnsManagerDialog(parent=self)
+            dlg.exec()
+
+        manage_action = QtGui.QAction(_("Manage Custom Columns…"), menu)
+        manage_action.setEnabled(not self.is_locked and CustomColumnsManagerDialog is not None)
+        manage_action.triggered.connect(_open_manager)
+        menu.addAction(manage_action)
+
         menu.exec(event.globalPos())
         event.accept()
 
@@ -117,14 +129,21 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         self.parent().restore_default_columns()
 
     def paintSection(self, painter, rect, index):
-        column = self._columns[index]
+        # The Manage Custom Columns dialog may mutate the `self._columns` list.
+        # Guard against transient mismatches between header section count and
+        # the underlying columns list during live add/remove operations.
+        # see: picard/ui/itemviews/custom_columns/manager_dialog.py
+        try:
+            column = self._columns[index]
+        except IndexError:
+            column = None
+
+        # Always paint the default header section once
+        super().paintSection(painter, rect, index)
+
+        # Overlay custom painting for image columns
         if isinstance(column, ImageColumn):
-            painter.save()
-            super().paintSection(painter, rect, index)
-            painter.restore()
             column.paint(painter, rect)
-        else:
-            super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
         if index < 0 or not self._columns[index].sortable:
