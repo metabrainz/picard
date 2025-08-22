@@ -85,7 +85,10 @@ from picard.i18n import (
     gettext as _,
     ngettext,
 )
-from picard.options import get_option_title
+from picard.options import (
+    Option,
+    get_option_title,
+)
 from picard.script import get_file_naming_script_presets
 from picard.track import Track
 from picard.util import (
@@ -1689,7 +1692,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _make_settings_selector_menu(self):
         """Update the sub-menu of selected option settings."""
         config = get_config()
-        quick_settings = config.setting['quick_menu_items']
+        quick_settings: list = deepcopy(config.setting['quick_menu_items'])
+
+        # Don't try to display any settings that don't exist in the current context,
+        # such as settings from a plugin options page that has not been loaded.
+        for setting in config.setting['quick_menu_items']:
+            if not Option.exists('setting', setting):
+                quick_settings.remove(setting)
 
         if not quick_settings:
             self.settings_quick_selector_menu.setDisabled(True)
