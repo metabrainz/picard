@@ -28,6 +28,7 @@ from picard.config import (
     get_config,
     get_quick_menu_items,
 )
+from picard.const.defaults import DEFAULT_QUICK_MENU_ITEMS
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
@@ -63,7 +64,18 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        menu_items = config.setting['quick_menu_items']
+        self.menu_items = config.setting['quick_menu_items']
+        self._make_tree()
+
+    def _make_child_item(self, name, title, checked):
+        item = QtWidgets.QTreeWidgetItem([_(title)])
+        item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
+        item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+        state = QtCore.Qt.CheckState.Checked if checked else QtCore.Qt.CheckState.Unchecked
+        item.setCheckState(0, state)
+        return item
+
+    def _make_tree(self):
         self.ui.quick_menu_items.clear()
         for group in get_quick_menu_items():
             expand = False
@@ -75,19 +87,11 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
             )
             widget_item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
             for setting in group['options']:
-                checked = menu_items and setting.name in menu_items
+                checked = self.menu_items and setting.name in self.menu_items
                 expand |= checked
                 widget_item.addChild(self._make_child_item(setting.name, setting.title, checked))
             self.ui.quick_menu_items.addTopLevelItem(widget_item)
             widget_item.setExpanded(expand)
-
-    def _make_child_item(self, name, title, checked):
-        item = QtWidgets.QTreeWidgetItem([_(title)])
-        item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
-        item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-        state = QtCore.Qt.CheckState.Checked if checked else QtCore.Qt.CheckState.Unchecked
-        item.setCheckState(0, state)
-        return item
 
     def save(self):
         config = get_config()
@@ -102,8 +106,8 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
                     yield item.data(0, QtCore.Qt.ItemDataRole.UserRole)
 
     def restore_defaults(self):
-        self.ui.top_tags_list.clear()
-        super().restore_defaults()
+        self.menu_items = DEFAULT_QUICK_MENU_ITEMS
+        self._make_tree()
 
 
 register_options_page(InterfaceQuickMenuOptionsPage)
