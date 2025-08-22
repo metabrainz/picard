@@ -10,7 +10,7 @@
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2021 Gabriel Ferreira
-# Copyright (C) 2021, 2023, 2025 Bob Swift
+# Copyright (C) 2021, 2023 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -48,7 +48,6 @@ from picard.config import (
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
-    DEFAULT_QUICK_MENU_ITEMS,
     DEFAULT_REPLACEMENT,
     DEFAULT_SCRIPT_NAME,
 )
@@ -574,19 +573,6 @@ def upgrade_to_v3_0_0dev6(config):
     """New independent option "standardize_vocals" should use the value of the old shared option"""
     standardize_instruments_and_vocals = config.setting['standardize_instruments']
     config.setting['standardize_vocals'] = standardize_instruments_and_vocals
-
-
-def upgrade_to_v3_0_0dev7(config):
-    """Add new 'quick_menu_items' option"""
-    _s = config.setting
-    _s['quick_menu_items'] = DEFAULT_QUICK_MENU_ITEMS
-    _p = config.profiles
-    all_settings = _p['user_profile_settings']
-    for profile in _p['user_profiles']:
-        id = profile['id']
-        if id in all_settings and 'quick_menu_items' not in all_settings[id]:
-            all_settings[id]['quick_menu_items'] = DEFAULT_QUICK_MENU_ITEMS
-    _p['user_profile_settings'] = all_settings
 
 
 def rename_option(config, old_opt, new_opt, option_type, default):

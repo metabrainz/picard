@@ -70,7 +70,6 @@ class GeneralOptionsPage(OptionsPage):
         ('update_check_days', ['update_check_days']),
         ('update_level', ['update_level']),
         ('use_server_for_submission', ['use_server_for_submission']),
-        ('quick_menu_items', []),
     )
 
     def __init__(self, parent=None):

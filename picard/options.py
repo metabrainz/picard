@@ -267,7 +267,6 @@ IntOption('setting', 'server_port', 443, title=N_("Port"))
 IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"))
 IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check"))
 BoolOption('setting', 'use_server_for_submission', False)
-ListOption('setting', 'quick_menu_items', DEFAULT_QUICK_MENU_ITEMS)
 
 # picard/ui/options/genres.py
 # Genres
@@ -318,6 +317,10 @@ Option(
     InterfaceColors(dark_theme=True).get_colors(),
     title=N_("Colors to use for dark theme"),
 )
+
+# picard/ui/options/interface_quick_menu.py
+# Quick Menu
+ListOption('setting', 'quick_menu_items', DEFAULT_QUICK_MENU_ITEMS, title=N_("Options to show in the Quick Menu"))
 
 # picard/ui/options/interface_toolbar.py
 # Action Toolbar
