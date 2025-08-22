@@ -35,10 +35,7 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const.defaults import (
-    DEFAULT_COPY_TEXT,
-    DEFAULT_QUICK_MENU_ITEMS,
-)
+from picard.const.defaults import DEFAULT_COPY_TEXT
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
@@ -420,10 +417,8 @@ class ProfilesOptionsPage(OptionsPage):
         self.reload_all_page_settings()
 
     def new_profile(self):
-        """Add a new profile with default quick menu items and no settings selected."""
-        profile_id = str(uuid.uuid4())
-        self.ui.profile_list.add_profile(profile_id=profile_id)
-        self.profile_settings[profile_id] = {'quick_menu_items': DEFAULT_QUICK_MENU_ITEMS}
+        """Add a new profile with no settings selected."""
+        self.ui.profile_list.add_profile()
         self.update_config_overrides()
         self.reload_all_page_settings()
 
