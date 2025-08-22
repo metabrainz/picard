@@ -66,6 +66,7 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
         menu_items = config.setting['quick_menu_items']
         self.ui.quick_menu_items.clear()
         for group in get_quick_menu_items():
+            expand = False
             widget_item = QtWidgets.QTreeWidgetItem([_(group['group_title'])])
             widget_item.setFlags(
                 QtCore.Qt.ItemFlag.ItemIsEnabled
@@ -74,16 +75,17 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
             )
             widget_item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
             for setting in group['options']:
-                widget_item.addChild(self._make_child_item(menu_items, setting.name, setting.title))
+                checked = menu_items and setting.name in menu_items
+                expand |= checked
+                widget_item.addChild(self._make_child_item(setting.name, setting.title, checked))
             self.ui.quick_menu_items.addTopLevelItem(widget_item)
-            widget_item.setExpanded(True)
+            widget_item.setExpanded(expand)
 
-    def _make_child_item(self, menu_items, name, title):
-        in_settings = menu_items and name in menu_items
+    def _make_child_item(self, name, title, checked):
         item = QtWidgets.QTreeWidgetItem([_(title)])
         item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
         item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-        state = QtCore.Qt.CheckState.Checked if in_settings else QtCore.Qt.CheckState.Unchecked
+        state = QtCore.Qt.CheckState.Checked if checked else QtCore.Qt.CheckState.Unchecked
         item.setCheckState(0, state)
         return item
 
