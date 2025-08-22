@@ -42,11 +42,11 @@ from picard.ui.options import OptionsPage
 
 class InterfaceQuickMenuOptionsPage(OptionsPage):
     NAME = 'interface_quick_menu'
-    TITLE = N_("Quick Menu")
+    TITLE = N_("Quick Settings Menu")
     PARENT = 'interface'
     SORT_ORDER = 40
     ACTIVE = True
-    HELP_URL = "/config/options_interface_quick_menu.html"
+    HELP_URL = "/config/options_interface_quick_settings_menu.html"
 
     OPTIONS = (('quick_menu_items', ['quick_menu_items']),)
 
