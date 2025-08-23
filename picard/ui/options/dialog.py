@@ -84,7 +84,6 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     matching,
     metadata,
     network,
-    plugins,
     profiles,
     ratings,
     releases,
