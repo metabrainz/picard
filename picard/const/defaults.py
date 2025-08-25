@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
-# Copyright (C) 2018, 2021, 2023-2024 Bob Swift
+# Copyright (C) 2018, 2021, 2023-2025 Bob Swift
 # Copyright (C) 2020 RomFouq
 # Copyright (C) 2021 Gabriel Ferreira
 # Copyright (C) 2021 Vladislav Karbovskii
@@ -167,3 +167,5 @@ DEFAULT_COVER_MAX_SIZE = 1000
 DEFAULT_COVER_RESIZE_MODE = ResizeModes.MAINTAIN_ASPECT_RATIO
 
 DEFAULT_COVER_CONVERTING_FORMAT = 'JPEG'
+
+DEFAULT_QUICK_MENU_ITEMS = ['save_images_to_tags', 'save_images_to_files']

@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2021 Bob Swift
+# Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2022-2023 Philipp Wolfer
 # Copyright (C) 2022-2024 Laurent Monin
 #
@@ -19,7 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
 
 from copy import deepcopy
 import uuid

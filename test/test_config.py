@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2019-2022, 2024 Laurent Monin
 # Copyright (C) 2019-2022, 2024 Philipp Wolfer
-# Copyright (C) 2024 Bob Swift
+# Copyright (C) 2024-2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@ import shutil
 
 from test.picardtestcase import PicardTestCase
 
+from picard import config
 from picard.config import (
     BoolOption,
     Config,
@@ -36,6 +37,8 @@ from picard.config import (
     Option,
     OptionError,
     TextOption,
+    get_quick_menu_items,
+    register_quick_menu_item,
 )
 
 
@@ -531,3 +534,85 @@ class TestPicardConfigSignals(TestPicardConfigCommon):
         self.assertEqual(self.setting_name, 'option_dict')
         self.assertEqual(self.setting_old_value, {'a': 1, 'b': 2, 'c': 3})
         self.assertEqual(self.setting_new_value, {'a': 3, 'b': 2, 'c': 1})
+
+
+class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
+    def _get_menu_items(self):
+        return [x for x in get_quick_menu_items()]
+
+    def test_register_quick_menu_items(self):
+        # Save original dictionary and set new empty dictionary for testing
+        old = config._quick_menu_items
+        config._quick_menu_items = {}
+        self.assertEqual(self._get_menu_items(), [])
+
+        # Set up options for testing
+        BoolOption('setting', 'option_bool_no_title', True)
+        TextOption('setting', 'option_text', 'abc', title="Text")
+        BoolOption('setting', 'option_bool', False, title="Bool")
+        IntOption('setting', 'option_int', 1, title="Int")
+        FloatOption('setting', 'option_float', 1.0, title="Float")
+        ListOption('setting', 'option_list', [1, 2, 3], title="List")
+        Option('setting', 'option_set', {1, 2, 3}, title="Set")
+        Option('setting', 'option_dict', {'a': 1, 'b': 2, 'c': 3}, title="Dict")
+
+        # Test that options without titles are not registered
+        option = Option.get('setting', 'option_bool_no_title')
+        register_quick_menu_item(0, "test group", option)
+        menu_items = self._get_menu_items()
+        self.assertEqual(len(menu_items), 0)
+
+        # Test that only boolean options are registered
+        for opt_type in ['bool', 'text', 'int', 'float', 'list', 'set', 'dict']:
+            option = Option.get('setting', f"option_{opt_type}")
+            register_quick_menu_item(0, "test group", option)
+            menu_items = self._get_menu_items()
+            self.assertEqual(len(menu_items), 1, f"Error processing '{opt_type}' option.")
+
+        # Restore original dictionary
+        config._quick_menu_items = old
+
+    def test_return_order(self):
+        # Save original dictionary and set new empty dictionary for testing
+        old = config._quick_menu_items
+        config._quick_menu_items = {}
+        self.assertEqual(self._get_menu_items(), [])
+
+        # Set up options for testing
+        BoolOption('setting', 'option1', True, title="Option 1")
+        BoolOption('setting', 'option2', True, title="Option 2")
+        BoolOption('setting', 'option3', True, title="Option 3")
+        BoolOption('setting', 'option4', True, title="Option 4")
+
+        # Register options
+        register_quick_menu_item(2, "Group 2", Option.get('setting', 'option4'))
+        register_quick_menu_item(2, "Group 2", Option.get('setting', 'option1'))
+        register_quick_menu_item(2, "Group 2", Option.get('setting', 'option2'))
+        register_quick_menu_item(1, "Group 1", Option.get('setting', 'option3'))
+        register_quick_menu_item(3, "Group 1", Option.get('setting', 'option4'))
+
+        # Get menu items
+        items = self._get_menu_items()
+        self.assertEqual(len(items), 2)
+
+        # Confirm order returned is:
+        #   Group 1: 'option3', 'option4'
+        #   Group 2: 'option4', 'option1', 'option2'
+
+        group = items[0]
+        options = group['options']
+        self.assertEqual(group['group_title'], "Group 1")
+        self.assertEqual(len(options), 2)
+        self.assertEqual(options[0].name, 'option3')
+        self.assertEqual(options[1].name, 'option4')
+
+        group = items[1]
+        options = group['options']
+        self.assertEqual(group['group_title'], "Group 2")
+        self.assertEqual(len(options), 3)
+        self.assertEqual(options[0].name, 'option4')
+        self.assertEqual(options[1].name, 'option1')
+        self.assertEqual(options[2].name, 'option2')
+
+        # Restore original dictionary
+        config._quick_menu_items = old

@@ -12,7 +12,7 @@
 # Copyright (C) 2017 Sophist-UK
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2020-2021 Gabriel Ferreira
-# Copyright (C) 2021-2024 Bob Swift
+# Copyright (C) 2021-2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,7 +29,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import defaultdict
+from collections import (
+    defaultdict,
+    namedtuple,
+)
 import os
 import shutil
 
@@ -494,3 +497,20 @@ def load_new_config(filename=None):
         return False
     setup_config(filename=config_file)
     return True
+
+
+QuickMenuItem = namedtuple('QuickMenuItem', ['name', 'title'])
+_quick_menu_items = {}
+
+
+def register_quick_menu_item(group_order: int, group_name: str, option: Option):
+    if option.qtype is not bool or not option.title:
+        return
+    if group_name not in _quick_menu_items:
+        _quick_menu_items[group_name] = {'order': group_order, 'options': []}
+    _quick_menu_items[group_name]['options'].append(QuickMenuItem(option.name, option.title))
+
+
+def get_quick_menu_items():
+    for group, value in sorted(_quick_menu_items.items(), key=lambda x: (x[1]['order'], x[0])):
+        yield {'group_title': group, 'options': value['options']}
