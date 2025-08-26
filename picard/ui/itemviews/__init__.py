@@ -414,13 +414,19 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                 # Support custom columns with provider evaluation
                 try:
                     from picard.ui.itemviews.custom_columns import CustomColumn  # Local import to avoid cycles
+                except ImportError as exc:
+                    log.debug("Custom columns import failed: %r", exc)
+                    self.setText(i, self.obj.column(column.key))
+                    continue
 
-                    if isinstance(column, CustomColumn):
+                if isinstance(column, CustomColumn):
+                    try:
                         self.setText(i, column.provider.evaluate(self.obj))
-                        continue
-                except Exception:  # noqa: BLE001
-                    # Fallback to default behavior
-                    pass
+                    except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
+                        log.debug("Custom column '%s' evaluate failed: %r", column.key, exc)
+                        self.setText(i, self.obj.column(column.key))
+                    continue
+
                 self.setText(i, self.obj.column(column.key))
 
 
