@@ -28,6 +28,7 @@ edit, duplicate and delete entries. It delegates expression editing to
 from __future__ import annotations
 
 from dataclasses import replace
+from enum import IntEnum
 
 
 try:  # Allow import in non-GUI test environments
@@ -64,13 +65,20 @@ class _SpecsTableModel(QtCore.QAbstractTableModel):
         Parent QObject.
     """
 
-    HEADERS = [
-        _("Field Name"),
-        _("Type"),
-        _("Expression"),
-        _("Align"),
-        _("Width"),
-    ]
+    class ColumnIndex(IntEnum):
+        TITLE = 0
+        TYPE = 1
+        EXPRESSION = 2
+        ALIGN = 3
+        WIDTH = 4
+
+    HEADERS: dict[ColumnIndex, str] = {
+        ColumnIndex.TITLE: _("Field Name"),
+        ColumnIndex.TYPE: _("Type"),
+        ColumnIndex.EXPRESSION: _("Expression"),
+        ColumnIndex.ALIGN: _("Align"),
+        ColumnIndex.WIDTH: _("Width"),
+    }
 
     def __init__(self, specs: list[CustomColumnSpec], parent: QtCore.QObject | None = None) -> None:
         super().__init__(parent)
@@ -87,7 +95,10 @@ class _SpecsTableModel(QtCore.QAbstractTableModel):
         self, section: int, orientation: QtCore.Qt.Orientation, role: int = QtCore.Qt.ItemDataRole.DisplayRole
     ) -> object:
         if orientation == QtCore.Qt.Orientation.Horizontal and role == QtCore.Qt.ItemDataRole.DisplayRole:
-            return self.HEADERS[section]
+            try:
+                return self.HEADERS[self.ColumnIndex(section)]
+            except (ValueError, KeyError):
+                return None
         return None
 
     def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.ItemDataRole.DisplayRole) -> object:
@@ -95,16 +106,19 @@ class _SpecsTableModel(QtCore.QAbstractTableModel):
             return None
         spec = self._specs[index.row()]
         if role == QtCore.Qt.ItemDataRole.DisplayRole:
-            col = index.column()
-            if col == 0:
+            try:
+                col = self.ColumnIndex(index.column())
+            except ValueError:
+                return None
+            if col == self.ColumnIndex.TITLE:
                 return spec.title
-            if col == 1:
+            if col == self.ColumnIndex.TYPE:
                 return spec.kind.value
-            if col == 2:
+            if col == self.ColumnIndex.EXPRESSION:
                 return spec.expression
-            if col == 3:
+            if col == self.ColumnIndex.ALIGN:
                 return spec.align
-            if col == 4:
+            if col == self.ColumnIndex.WIDTH:
                 return "" if spec.width is None else str(spec.width)
         return None
 
@@ -163,16 +177,16 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         header.setStretchLastSection(False)
         self._table.verticalHeader().setVisible(False)
         header.setDefaultSectionSize(100)
-        header.resizeSection(0, 150)
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.Interactive)
-        header.resizeSection(1, 100)  # Type
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.Interactive)
-        header.resizeSection(2, 160)  # Expression
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeMode.Stretch)
-        header.resizeSection(3, 80)  # Align
-        header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.Interactive)
-        header.resizeSection(4, 60)  # Width (small and fixed)
-        header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeMode.Fixed)
+        header.resizeSection(_SpecsTableModel.ColumnIndex.TITLE, 150)
+        header.setSectionResizeMode(_SpecsTableModel.ColumnIndex.TITLE, QtWidgets.QHeaderView.ResizeMode.Interactive)
+        header.resizeSection(_SpecsTableModel.ColumnIndex.TYPE, 100)
+        header.setSectionResizeMode(_SpecsTableModel.ColumnIndex.TYPE, QtWidgets.QHeaderView.ResizeMode.Interactive)
+        header.resizeSection(_SpecsTableModel.ColumnIndex.EXPRESSION, 160)
+        header.setSectionResizeMode(_SpecsTableModel.ColumnIndex.EXPRESSION, QtWidgets.QHeaderView.ResizeMode.Stretch)
+        header.resizeSection(_SpecsTableModel.ColumnIndex.ALIGN, 80)
+        header.setSectionResizeMode(_SpecsTableModel.ColumnIndex.ALIGN, QtWidgets.QHeaderView.ResizeMode.Interactive)
+        header.resizeSection(_SpecsTableModel.ColumnIndex.WIDTH, 60)
+        header.setSectionResizeMode(_SpecsTableModel.ColumnIndex.WIDTH, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
         # Buttons
         self._btn_add = QtWidgets.QPushButton(_("Add…"), self)
