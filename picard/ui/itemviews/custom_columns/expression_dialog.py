@@ -27,15 +27,10 @@ registration or persistence (SRP/SOC).
 
 from __future__ import annotations
 
-
-try:  # Allow import in non-GUI test environments
-    from PyQt6 import (
-        QtCore,
-        QtWidgets,
-    )
-except Exception:  # pragma: no cover - fallback for headless lint/test
-    QtCore = None  # type: ignore[assignment]
-    QtWidgets = None  # type: ignore[assignment]
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.i18n import gettext as _
 
