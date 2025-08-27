@@ -76,7 +76,7 @@ def format_add_to(views: Iterable[str]) -> str:
         alphabetical order for forward-compatibility.
     """
 
-    view_set: set[str] = {v.upper() for v in views if v}
+    view_set: set[str] = {v.strip().upper() for v in views if v}
     ordered: list[str] = [v for v in DEFAULT_ADD_TO.split(",") if v in view_set]
     # Include any additional tokens (forward-compat) at the end in alpha order
     extras: list[str] = sorted([v for v in view_set if v not in RECOGNIZED_VIEWS])
