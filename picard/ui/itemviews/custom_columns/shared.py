@@ -36,9 +36,23 @@ RECOGNIZED_VIEWS: set[str] = {VIEW_FILE, VIEW_ALBUM}
 
 
 def parse_add_to(add_to: str | None) -> set[str]:
-    """Parse a comma-separated add_to string into a set of normalized tokens.
+    """Parse a comma-separated ``add_to`` string into normalized view tokens.
 
-    Unknown tokens are ignored. If ``add_to`` is falsy, defaults to both views.
+    Parameters
+    ----------
+    add_to : str | None
+        Comma-separated list of view identifiers (e.g., ``"FILE_VIEW,ALBUM_VIEW"``).
+        If falsy, defaults to both views as defined by ``DEFAULT_ADD_TO``.
+
+    Returns
+    -------
+    set[str]
+        Set of recognized, upper-cased view identifiers.
+
+    Notes
+    -----
+    Unknown tokens are ignored. Recognition is case-insensitive and whitespace
+    around tokens is stripped before matching.
     """
 
     raw: str = add_to or DEFAULT_ADD_TO
@@ -47,9 +61,19 @@ def parse_add_to(add_to: str | None) -> set[str]:
 
 
 def format_add_to(views: Iterable[str]) -> str:
-    """Format a set/iterable of view identifiers into a normalized string.
+    """Format view identifiers into a normalized, comma-separated string.
 
-    The output order follows ``DEFAULT_ADD_TO`` sequence when present.
+    Parameters
+    ----------
+    views : Iterable[str]
+        Iterable of view identifiers (case-insensitive).
+
+    Returns
+    -------
+    str
+        Comma-separated identifiers. Order follows ``DEFAULT_ADD_TO`` for
+        recognized views; any additional (unrecognized) tokens are appended in
+        alphabetical order for forward-compatibility.
     """
 
     view_set: set[str] = {v.upper() for v in views if v}
