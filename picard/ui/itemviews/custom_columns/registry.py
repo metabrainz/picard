@@ -23,6 +23,7 @@
 from __future__ import annotations
 
 from picard.ui.itemviews.custom_columns.column import CustomColumn
+from picard.ui.itemviews.custom_columns.shared import VIEW_ALBUM, VIEW_FILE
 
 
 class CustomColumnsRegistry:
@@ -35,8 +36,7 @@ class CustomColumnsRegistry:
         self,
         column: CustomColumn,
         *,
-        add_to_file_view: bool = True,
-        add_to_album_view: bool = True,
+        add_to: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None = None,
         insert_after_key: str | None = None,
     ) -> None:
         """Register column and insert into views.
@@ -45,10 +45,8 @@ class CustomColumnsRegistry:
         ----------
         column
                 The column instance to register.
-        add_to_file_view
-                If True, add to file view.
-        add_to_album_view
-                If True, add to album view.
+        add_to
+                Collection of views to add to, e.g. {"FILE_VIEW", "ALBUM_VIEW"}.
         insert_after_key
                 Insert after this key if present, else append.
         """
@@ -60,9 +58,10 @@ class CustomColumnsRegistry:
         # of these collections, not a stale reference from module load time.
         from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
 
-        if add_to_file_view:
+        targets = set(str(v).upper() for v in (add_to or {VIEW_FILE, VIEW_ALBUM}))
+        if VIEW_FILE in targets:
             self._insert_column(FILEVIEW_COLUMNS, column, insert_after_key)
-        if add_to_album_view:
+        if VIEW_ALBUM in targets:
             self._insert_column(ALBUMVIEW_COLUMNS, column, insert_after_key)
 
     def _insert_column(self, target_columns, column: CustomColumn, insert_after_key: str | None) -> None:
@@ -146,7 +145,7 @@ class CustomColumnsRegistry:
             from PyQt6 import QtWidgets
 
             app = QtWidgets.QApplication.instance()
-            if not app:
+            if not app or not isinstance(app, QtWidgets.QApplication):
                 return
 
             # Apply width to all matching widgets

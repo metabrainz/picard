@@ -40,6 +40,7 @@ from picard.ui.itemviews.custom_columns import (
     make_transformed_column,
     registry,
 )
+from picard.ui.itemviews.custom_columns.shared import VIEW_FILE
 
 
 @dataclasses.dataclass
@@ -469,7 +470,7 @@ def test_registry_selective_view_registration(unique_key: str) -> None:
 
     try:
         # Register only to file view
-        registry.register(col, add_to_file_view=True, add_to_album_view=False)
+        registry.register(col, add_to={VIEW_FILE})
 
         from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
 
