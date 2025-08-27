@@ -14,7 +14,7 @@
 # Copyright (C) 2017 Suhas
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2021 Gabriel Ferreira
-# Copyright (C) 2021-2022 Bob Swift
+# Copyright (C) 2021-2022, 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -71,6 +71,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     matching,
     metadata,
     network,
+    plugin_execution_order,
     plugins,
     profiles,
     ratings,
