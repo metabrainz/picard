@@ -28,8 +28,8 @@ import re
 from time import perf_counter
 from weakref import WeakKeyDictionary
 
+from picard import log
 from picard.item import Item
-from picard.log import debug
 from picard.script import ScriptParser
 
 from picard.ui.itemviews.custom_columns.context import ContextStrategyManager
@@ -102,7 +102,7 @@ class ChainedValueProvider:
             if obj in self._cache:
                 return self._cache[obj]
         except TypeError as e:
-            debug("Weak cache lookup failed (non-weakrefable object): %r", e)
+            log.debug("Weak cache lookup failed (non-weakrefable object): %r", e)
             can_cache = False
         # Avoid caching for album-like objects that are not fully loaded yet
         if bool(getattr(obj, "is_album_like", False)) and not getattr(obj, "loaded", True):
@@ -136,7 +136,8 @@ class ChainedValueProvider:
         return result
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
+        cls_name = self.__class__.__name__
         return (
-            f"ChainedValueProvider(script={self._script!r}, max_runtime_ms={self._max_runtime_ms}, "
+            f"{cls_name}(script={self._script!r}, max_runtime_ms={self._max_runtime_ms}, "
             f"cache_size={self._id_cache_max})"
         )
