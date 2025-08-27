@@ -289,6 +289,72 @@ class CustomColumnConfigManager:
     def __init__(self) -> None:
         self._config_key = "custom_columns"
 
+    # Shared cache across instances
+    _cache_specs: list[CustomColumnSpec] | None = None
+    _cache_by_key: dict[str, CustomColumnSpec] | None = None
+    _cache_dirty: bool = True
+    _cache_token: int | None = None
+
+    def _mark_dirty(self) -> None:
+        self.__class__._cache_dirty = True
+
+    def _current_config_token(self) -> int:
+        """Return a token identifying the active config instance.
+
+        Using the id of the config (or its setting map) lets us detect when
+        tests or external code swap the config object, so we auto-invalidate.
+        """
+        cfg = get_config()
+        return id(getattr(cfg, 'setting', cfg))
+
+    def _rebuild_cache(self) -> None:
+        """Rebuild caches from the underlying settings list."""
+        cls = self.__class__
+        # Read raw list from config; may be unset or wrong type
+        raw_list = self._config_list()
+        if not isinstance(raw_list, list):
+            # Normalize invalid/missing value to empty caches
+            cls._cache_specs = []
+            cls._cache_by_key = {}
+            cls._cache_dirty = False
+            return
+        specs: list[CustomColumnSpec] = []
+        # Convert each mapping entry into a validated CustomColumnSpec
+        for entry in raw_list:
+            try:
+                # Skip non-mapping entries defensively
+                if not isinstance(entry, dict):
+                    continue
+                # Require minimal fields with non-empty strings
+                key_val = entry.get('key')
+                expr_val = entry.get('expression')
+                if not isinstance(key_val, str) or not key_val.strip():
+                    continue
+                if not isinstance(expr_val, str) or not expr_val.strip():
+                    continue
+                # Safe parse to strongly-typed spec; ignore corrupt data
+                specs.append(CustomColumnSpecSerializer.from_dict(entry))
+            except (ValueError, KeyError, TypeError):
+                continue
+        # Publish rebuilt caches (list and key-indexed map)
+        cls._cache_specs = specs
+        cls._cache_by_key = {s.key: s for s in specs if s.key}
+        # Mark caches clean until next mutation or config swap
+        cls._cache_dirty = False
+
+    def _ensure_cache(self) -> None:
+        cls = self.__class__
+        # Invalidate cache if the config instance changed
+        token = self._current_config_token()
+        if cls._cache_token != token:
+            cls._cache_dirty = True
+            cls._cache_token = token
+        # Fast path: cache is valid and populated
+        if not cls._cache_dirty and cls._cache_specs is not None and cls._cache_by_key is not None:
+            return
+        # Slow path: rebuild cache from settings
+        self._rebuild_cache()
+
     def _config_list(self) -> list[dict[str, Any]]:
         cfg = get_config()
         settings = cfg.setting
@@ -306,32 +372,21 @@ class CustomColumnConfigManager:
         return []
 
     def load_specs(self) -> list[CustomColumnSpec]:
-        raw_list = self._config_list()
-        if not isinstance(raw_list, list):  # Defensive: normalize unexpected values
-            return []
-        specs: list[CustomColumnSpec] = []
-        for entry in raw_list:
-            try:
-                if not isinstance(entry, dict):
-                    continue
-                # Skip entries missing essential fields
-                key_val = entry.get('key')
-                expr_val = entry.get('expression')
-                if not isinstance(key_val, str) or not key_val.strip():
-                    continue
-                if not isinstance(expr_val, str) or not expr_val.strip():
-                    continue
-                specs.append(CustomColumnSpecSerializer.from_dict(entry))
-            except (ValueError, KeyError, TypeError):
-                continue
-        return specs
+        self._ensure_cache()
+        return list(self.__class__._cache_specs or [])
 
     def save_specs(self, specs: Iterable[CustomColumnSpec]) -> None:
         cfg = get_config()
         # Use QSettings API to write a JSON-like list under 'setting/<key>'
-        data_list = [CustomColumnSpecSerializer.to_dict(spec) for spec in specs]
+        specs_list = list(specs)
+        data_list = [CustomColumnSpecSerializer.to_dict(spec) for spec in specs_list]
         cfg.setting[self._config_key] = data_list
         cfg.sync()
+        # Update shared caches
+        cls = self.__class__
+        cls._cache_specs = specs_list
+        cls._cache_by_key = {s.key: s for s in specs_list if s.key}
+        cls._cache_dirty = False
 
     def add_or_update(self, spec: CustomColumnSpec) -> None:
         specs = self.load_specs()
@@ -348,10 +403,9 @@ class CustomColumnConfigManager:
         return changed
 
     def get_by_key(self, key: str) -> CustomColumnSpec | None:
-        for spec in self.load_specs():
-            if spec.key == key:
-                return spec
-        return None
+        self._ensure_cache()
+        mapping = self.__class__._cache_by_key or {}
+        return mapping.get(key)
 
 
 def load_specs_from_config() -> list[CustomColumnSpec]:
