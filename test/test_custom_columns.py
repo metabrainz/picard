@@ -40,6 +40,7 @@ from picard.ui.itemviews.custom_columns import (
     make_transformed_column,
     registry,
 )
+from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
 from picard.ui.itemviews.custom_columns.shared import VIEW_FILE
 
 
@@ -67,6 +68,12 @@ class _ProviderWithSort(ColumnValueProvider):
 
     def sort_key(self, obj: _FakeItem):
         return obj.column(self.key).lower()
+
+
+class _SubInjectedProvider(ChainedValueProvider):
+    # Override class defaults to demonstrate injectibility via subclassing
+    DEFAULT_MAX_RUNTIME_MS = 5
+    DEFAULT_CACHE_SIZE = 33
 
 
 @pytest.fixture
@@ -552,6 +559,47 @@ def test_column_value_provider_protocol() -> None:
     col: CustomColumn = make_callable_column("Custom", "custom_key", provider.evaluate)
     fake_item: _FakeItem = _FakeItem(values={})
     assert col.provider.evaluate(fake_item) == "custom_value"
+
+
+@pytest.mark.parametrize(
+    ("provider_cls", "expected_runtime", "expected_cache_size"),
+    [
+        (ChainedValueProvider, 25, 1024),
+        (_SubInjectedProvider, 5, 33),
+    ],
+)
+def test_chained_value_provider_defaults_via_class_injection(
+    provider_cls: type[ChainedValueProvider], expected_runtime: int, expected_cache_size: int
+) -> None:
+    provider = provider_cls("%artist%", max_runtime_ms=None, cache_size=None)
+    # When None is passed, provider should use class-level defaults
+    assert provider._max_runtime_ms == expected_runtime
+    # id-cache size is bounded by minimum 16
+    assert provider._id_cache_max == max(16, expected_cache_size)
+
+
+def test_chained_value_provider_defaults_via_monkeypatch(fake_item: _FakeItem, monkeypatch: pytest.MonkeyPatch) -> None:
+    # Inject new defaults by monkeypatching the class attributes
+    monkeypatch.setattr(ChainedValueProvider, "DEFAULT_MAX_RUNTIME_MS", -1, raising=False)
+    monkeypatch.setattr(ChainedValueProvider, "DEFAULT_CACHE_SIZE", 2, raising=False)
+
+    provider = ChainedValueProvider("%artist%", max_runtime_ms=None, cache_size=None)
+    # With negative threshold as default, evaluation should not cache
+    assert provider.evaluate(fake_item) == "Artist A"
+    fake_item.values["artist"] = "Artist B"
+    assert provider.evaluate(fake_item) == "Artist B"
+    # Cache size honors lower bound
+    assert provider._id_cache_max == 16
+
+
+@pytest.mark.parametrize("min_size, requested, expected", [(1, 1, 1), (32, 2, 32), (64, 128, 128)])
+def test_id_cache_minimum_injection(
+    min_size: int, requested: int, expected: int, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Ensure the minimum bound is injectible and respected
+    monkeypatch.setattr(ChainedValueProvider, "DEFAULT_MIN_ID_CACHE_SIZE", min_size, raising=False)
+    provider = ChainedValueProvider("%artist%", max_runtime_ms=1000, cache_size=requested)
+    assert provider._id_cache_max == expected
 
 
 def test_album_like_object_avoids_caching_until_loaded() -> None:

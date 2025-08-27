@@ -48,11 +48,16 @@ class ChainedValueProvider:
       ``deque.popleft``.
     """
 
+    # Defaults can be overridden by subclasses or patched in tests
+    DEFAULT_MAX_RUNTIME_MS: int = 25
+    DEFAULT_CACHE_SIZE: int = 1024
+    DEFAULT_MIN_ID_CACHE_SIZE: int = 16
+
     def __init__(
         self,
         script: str,
-        max_runtime_ms: int = 25,
-        cache_size: int = 1024,
+        max_runtime_ms: int | None = None,
+        cache_size: int | None = None,
         *,
         parser: ScriptParser | None = None,
         parser_factory: Callable[[], ScriptParser] | None = None,
@@ -64,11 +69,19 @@ class ChainedValueProvider:
         script
             Scripting expression to evaluate.
         max_runtime_ms
-            Limit execution time for caching.
+            Limit execution time for caching. If ``None`` uses
+            ``self.DEFAULT_MAX_RUNTIME_MS``.
         cache_size
-            Set size of the fallback id-based cache.
+            Set size of the fallback id-based cache. If ``None`` uses
+            ``self.DEFAULT_CACHE_SIZE``.
         """
         self._script = script
+
+        if max_runtime_ms is None:
+            max_runtime_ms = self.DEFAULT_MAX_RUNTIME_MS
+        if cache_size is None:
+            cache_size = self.DEFAULT_CACHE_SIZE
+
         self._max_runtime_ms = max_runtime_ms
 
         self._context_manager = ContextStrategyManager()
@@ -78,7 +91,7 @@ class ChainedValueProvider:
         self._cache: WeakKeyDictionary[Item, str] = WeakKeyDictionary()
         self._id_cache: dict[int, str] = {}
         self._id_order: deque[int] = deque()
-        self._id_cache_max = max(16, int(cache_size))
+        self._id_cache_max = max(self.DEFAULT_MIN_ID_CACHE_SIZE, int(cache_size))
 
         m = re.fullmatch(r"%([a-zA-Z0-9_]+)%", script)
         self._simple_var: str | None = m.group(1) if m else None
