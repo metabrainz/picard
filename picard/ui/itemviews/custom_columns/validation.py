@@ -32,6 +32,11 @@ from picard.script import ScriptError, ScriptParser
 from picard.ui.itemviews.custom_columns.storage import CustomColumnKind, CustomColumnSpec
 
 
+MAX_EXPRESSION_LENGTH = 500
+MAX_KEY_LENGTH = 50
+MAX_WIDTH = 1000
+
+
 class ValidationSeverity(str, Enum):
     """Severity levels for validation issues."""
 
@@ -154,9 +159,14 @@ class KeyFormatRule(ValidationRule):
                     "KEY_INVALID_FORMAT",
                 )
             )
-        if len(spec.key) > 50:
+        if len(spec.key) > MAX_KEY_LENGTH:
             results.append(
-                ValidationResult("key", ValidationSeverity.ERROR, "Key must be 50 characters or less", "KEY_TOO_LONG")
+                ValidationResult(
+                    "key",
+                    ValidationSeverity.ERROR,
+                    f"Key must be {MAX_KEY_LENGTH} characters or less",
+                    "KEY_TOO_LONG",
+                )
             )
         if spec.key in context.existing_keys:
             results.append(
@@ -217,7 +227,7 @@ class ExpressionRule(ValidationRule):
                     "expression", ValidationSeverity.ERROR, f"Invalid script syntax: {e}", "SCRIPT_SYNTAX_ERROR"
                 )
             )
-        if len(spec.expression) > 500:
+        if len(spec.expression) > MAX_EXPRESSION_LENGTH:
             results.append(
                 ValidationResult(
                     "expression",
@@ -270,7 +280,7 @@ class ConsistencyRule(ValidationRule):
                 results.append(
                     ValidationResult("width", ValidationSeverity.ERROR, "Width must be positive", "WIDTH_INVALID")
                 )
-            elif spec.width > 1000:
+            elif spec.width > MAX_WIDTH:
                 results.append(
                     ValidationResult(
                         "width", ValidationSeverity.WARNING, "Very wide columns may impact UI layout", "WIDTH_TOO_LARGE"
