@@ -29,6 +29,7 @@ import re
 
 from picard.script import ScriptError, ScriptParser
 
+from picard.ui.itemviews.custom_columns.shared import RECOGNIZED_VIEWS, parse_add_to
 from picard.ui.itemviews.custom_columns.storage import CustomColumnKind, CustomColumnSpec
 
 
@@ -286,13 +287,27 @@ class ConsistencyRule(ValidationRule):
                         "width", ValidationSeverity.WARNING, "Very wide columns may impact UI layout", "WIDTH_TOO_LARGE"
                     )
                 )
-        if not spec.add_to_file_view and not spec.add_to_album_view:
+        # Validate add_to views
+        views = parse_add_to(getattr(spec, 'add_to', None))
+        if not views:
             results.append(
                 ValidationResult(
-                    "add_to_file_view",
+                    "add_to",
                     ValidationSeverity.WARNING,
                     "Column will not be visible in any view",
                     "NO_VIEWS_SELECTED",
+                )
+            )
+        # Warn about unknown tokens in add_to
+        raw = getattr(spec, 'add_to', "") or ""
+        unknown = {t.strip().upper() for t in raw.split(",") if t.strip()} - (views or set()) - RECOGNIZED_VIEWS
+        if unknown:
+            results.append(
+                ValidationResult(
+                    "add_to",
+                    ValidationSeverity.WARNING,
+                    f"Unknown views in add_to: {', '.join(sorted(unknown))}",
+                    "UNKNOWN_VIEWS",
                 )
             )
         return results

@@ -34,6 +34,13 @@ from PyQt6 import (
 
 from picard.i18n import gettext as _
 
+from picard.ui.itemviews.custom_columns.shared import (
+    DEFAULT_ADD_TO,
+    VIEW_ALBUM,
+    VIEW_FILE,
+    format_add_to,
+    parse_add_to,
+)
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnKind,
     CustomColumnSpec,
@@ -145,8 +152,9 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             self._width.setValue(int(spec.width))
         self._align.setCurrentText(spec.align)
         self._always_visible.setChecked(spec.always_visible)
-        self._file_view.setChecked(spec.add_to_file_view)
-        self._album_view.setChecked(spec.add_to_album_view)
+        views = parse_add_to(getattr(spec, 'add_to', DEFAULT_ADD_TO))
+        self._file_view.setChecked(VIEW_FILE in views)
+        self._album_view.setChecked(VIEW_ALBUM in views)
         self._insert_after.setText(spec.insert_after_key or "")
         if spec.transform:
             self._transform.setCurrentText(spec.transform.value)
@@ -171,6 +179,12 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             return
 
         key = self._derive_key_from_field_name(title)
+        selected = []
+        if file_view:
+            selected.append(VIEW_FILE)
+        if album_view:
+            selected.append(VIEW_ALBUM)
+        add_to = format_add_to(selected)
         self.result_spec = CustomColumnSpec(
             title=title,
             key=key,
@@ -179,8 +193,7 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             width=width,
             align=align,
             always_visible=always_visible,
-            add_to_file_view=file_view,
-            add_to_album_view=album_view,
+            add_to=add_to,
             insert_after_key=insert_after,
             transform=transform,
         )
