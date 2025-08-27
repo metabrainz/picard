@@ -341,7 +341,7 @@ class CustomColumnConfigManager:
 
     def delete_by_key(self, key: str) -> bool:
         specs = self.load_specs()
-        new_specs = [s for s in specs if s.key != key]
+        new_specs = tuple(s for s in specs if s.key != key)
         changed = len(new_specs) != len(specs)
         if changed:
             self.save_specs(new_specs)
