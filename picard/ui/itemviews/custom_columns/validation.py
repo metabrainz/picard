@@ -327,9 +327,7 @@ class CustomColumnSpecValidator:
     def validate(self, spec: CustomColumnSpec, context: ValidationContext | None = None) -> ValidationReport:
         if context is None:
             context = ValidationContext()
-        all_results: list[ValidationResult] = []
-        for rule in self.rules:
-            all_results.extend(rule.validate(spec, context))
+        all_results = [result for rule in self.rules for result in rule.validate(spec, context)]
         return ValidationReport(all_results)
 
     def validate_multiple(self, specs: list[CustomColumnSpec]) -> dict[str, ValidationReport]:
