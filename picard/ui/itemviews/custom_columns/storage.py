@@ -34,6 +34,7 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 from typing import Any, Callable
 
+from picard import log
 from picard.config import get_config
 
 from picard.ui.columns import ColumnAlign
@@ -284,13 +285,16 @@ class CustomColumnConfigManager:
         cfg = get_config()
         settings = cfg.setting
         # Read the raw value directly; Option may not be registered for this key
-        try:
-            lst = settings.raw_value(self._config_key)
-        except Exception:
-            lst = None
+        lst = settings.raw_value(self._config_key)
         if isinstance(lst, list):
             return lst
         # If not set or wrong type, treat as empty without mutating config here
+        if lst is not None:
+            log.debug(
+                "Custom columns config '%s' has unexpected type %s; treating as empty",
+                self._config_key,
+                type(lst).__name__,
+            )
         return []
 
     def load_specs(self) -> list[CustomColumnSpec]:
