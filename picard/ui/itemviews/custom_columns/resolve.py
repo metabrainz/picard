@@ -30,8 +30,8 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable
 from typing import Any
 
+from picard import log
 from picard.item import Item
-from picard.log import debug
 from picard.script import ScriptParser
 
 
@@ -130,7 +130,7 @@ class ValueResolver(ABC):
                 if result:
                     return result
             except (TypeError, ValueError, AttributeError, KeyError) as e:
-                debug("ValueResolver.handle suppressed error: %r", e)
+                log.debug("%s.handle() suppressed error: %r", self.__class__.__name__, e)
         if self._next_resolver:
             return self._next_resolver.handle(obj, simple_var, script, ctx, file_obj)
         return None
@@ -207,7 +207,7 @@ class ScriptParserResolver(ValueResolver):
         try:
             parser.load_functions()
         except Exception as e:  # pragma: no cover - defensive
-            debug("Failed to load script functions: %r", e)
+            log.debug("Failed to load script functions: %r", e)
         return parser.parse(script, True)
 
     def can_resolve(self, obj: Item, simple_var: str | None, script: str, ctx: Any, file_obj: Any) -> bool:
@@ -239,7 +239,7 @@ class ScriptParserResolver(ValueResolver):
             return self._compiled_by_script[script].eval(parser)
         except Exception as e:
             # Return empty string on any error, but log at debug for diagnostics
-            debug("Script evaluation failed: %r (script=%r)", e, script)
+            log.debug("Script evaluation failed: %r (script=%r)", e, script)
             return ""
 
 
