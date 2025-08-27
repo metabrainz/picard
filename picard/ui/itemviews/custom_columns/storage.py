@@ -30,6 +30,7 @@ docstrings.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 from enum import Enum
 from typing import Any, Callable
@@ -325,7 +326,7 @@ class CustomColumnConfigManager:
                 continue
         return specs
 
-    def save_specs(self, specs: list[CustomColumnSpec]) -> None:
+    def save_specs(self, specs: Iterable[CustomColumnSpec]) -> None:
         cfg = get_config()
         # Use QSettings API to write a JSON-like list under 'setting/<key>'
         data_list = [CustomColumnSpecSerializer.to_dict(spec) for spec in specs]
@@ -336,7 +337,7 @@ class CustomColumnConfigManager:
         specs = self.load_specs()
         by_key = {s.key: s for s in specs}
         by_key[spec.key] = spec
-        self.save_specs(list(by_key.values()))
+        self.save_specs(by_key.values())
 
     def delete_by_key(self, key: str) -> bool:
         specs = self.load_specs()
@@ -358,7 +359,7 @@ def load_specs_from_config() -> list[CustomColumnSpec]:
     return CustomColumnConfigManager().load_specs()
 
 
-def save_specs_to_config(specs: list[CustomColumnSpec]) -> None:
+def save_specs_to_config(specs: Iterable[CustomColumnSpec]) -> None:
     """Save the provided specs list to configuration."""
     CustomColumnConfigManager().save_specs(specs)
 
