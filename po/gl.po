@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:05+0200\n"
-"PO-Revision-Date: 2025-08-01 08:36+0000\n"
+"PO-Revision-Date: 2025-08-27 10:36+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/app/gl/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -332,28 +332,24 @@ msgstr "Gardar só unha única imaxe frontal como ficheiro separado"
 
 #: picard/options.py:211
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-#, fuzzy
-#| msgid "New cover art saved as a separate file"
 msgid "Show cover art details in cover art view"
-msgstr "Nova imaxe de portada gardada como ficheiro separado"
+msgstr "Mostrar os detalles da portada na vista de portadas"
 
 #: picard/options.py:212
-#, fuzzy
-#| msgid "New cover art embedded into tags"
 msgid "Show cover art type in info labels"
-msgstr "Nova imaxe de portada incrustada nas etiquetas"
+msgstr "Mostrar o tipo de portada nas etiquetas de información"
 
 #: picard/options.py:213
 msgid "Show cover art file size in info labels"
-msgstr ""
+msgstr "Mostrar o tamaño do ficheiro da portada nas etiquetas de información"
 
 #: picard/options.py:214
 msgid "Show cover art dimensions in info labels"
-msgstr ""
+msgstr "Mostrar as dimensións da portada nas etiquetas de información"
 
 #: picard/options.py:215
 msgid "Show cover art MIME type in info labels"
-msgstr ""
+msgstr "Mostrar o tipo MIME da portada nas etiquetas de información"
 
 #: picard/options.py:246
 msgid "Use AcoustID audio fingerprinting"
@@ -547,16 +543,12 @@ msgid "Use standardized artist names"
 msgstr "Usar nomes de artista estandarizados"
 
 #: picard/options.py:362 picard/ui/forms/ui_options_metadata.py:145
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized instrument credits"
-msgstr "Usar créditos estandarizados de instrumentos e voces"
+msgstr "Usar créditos estandarizados de instrumentos"
 
 #: picard/options.py:363 picard/ui/forms/ui_options_metadata.py:146
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized vocal credits"
-msgstr "Usar créditos estandarizados de instrumentos e voces"
+msgstr "Usar créditos estandarizados de voces"
 
 #: picard/options.py:364
 msgid "Use track and release relationships"
@@ -3220,42 +3212,33 @@ msgid "&Set as starting directory"
 msgstr "&Establecer como directorio de inicio"
 
 #: picard/ui/filter.py:54
-#, fuzzy
-#| msgid "Clusters"
 msgid "Filters"
-msgstr "Clústers"
+msgstr "Filtros"
 
 #: picard/ui/filter.py:70
 msgid "Type to filter..."
-msgstr ""
+msgstr "Escribe para filtrar..."
 
 #: picard/ui/filter.py:89
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select Filters"
-msgstr "Selecciona un ficheiro"
+msgstr "Selecciona filtros"
 
 #: picard/ui/filter.py:100
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select / clear all filters"
-msgstr "Selecciona un ficheiro"
+msgstr "Seleccionar / limpar todos os filtros"
 
 #: picard/ui/filter.py:137
 msgid "OK"
-msgstr ""
+msgstr "Dacordo"
 
 #: picard/ui/filter.py:145
-#, fuzzy
-#| msgid "&Cancel"
 msgid "Cancel"
-msgstr "&Cancelar"
+msgstr "Cancelar"
 
 #: picard/ui/filter.py:232
-#, fuzzy, python-brace-format
-#| msgid "Rename files"
+#, python-brace-format
 msgid "{num} filters"
-msgstr "Renomear ficheiros"
+msgstr "{num} filtros"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
@@ -3798,10 +3781,8 @@ msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Unidade de CD-ROM predeterminada a usar para as consultas:"
 
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
 msgid "Select Types…"
-msgstr "Seleccionar tipos…"
+msgstr "Escoller tipos…"
 
 #: picard/ui/forms/ui_options_cover.py:124
 msgid "Use the following file name for images:"
@@ -4079,23 +4060,19 @@ msgstr "Cores"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:52
 msgid "Show type (front, back, etc.)"
-msgstr ""
+msgstr "Amosar o tipo (frontal, traseira, etc.)"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:53
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show file size"
-msgstr "Amosar fic&heiros ocultos"
+msgstr "Amosar o tamaño do ficheiro"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:54
-#, fuzzy
-#| msgid "Cover Dimensions"
 msgid "Show dimensions"
-msgstr "Dimensións da portada"
+msgstr "Amosar dimensións"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:55
 msgid "Show MIME type"
-msgstr ""
+msgstr "Amosar o tipo MIME"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
