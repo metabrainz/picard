@@ -206,8 +206,8 @@ def _align_from_name(name: str) -> ColumnAlign:
         Corresponding alignment enum (defaults to LEFT on unknown).
     """
 
-    upper = name.upper().strip()
-    if upper == "RIGHT":
+    align = name.upper().strip()
+    if align == "RIGHT":
         return ColumnAlign.RIGHT
     return ColumnAlign.LEFT
 
