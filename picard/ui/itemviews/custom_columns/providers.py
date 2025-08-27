@@ -65,7 +65,7 @@ class TransformProvider:
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         transform_name = getattr(self._transform, "__name__", repr(self._transform))
-        return f"TransformProvider(base={self._base!r}, transform={transform_name})"
+        return f"{self.__class__.__name__}(base={self._base!r}, transform={transform_name})"
 
 
 class CallableProvider:
@@ -81,4 +81,4 @@ class CallableProvider:
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         func_name = getattr(self._func, "__name__", repr(self._func))
-        return f"CallableProvider(func={func_name})"
+        return f"{self.__class__.__name__}(func={func_name})"
