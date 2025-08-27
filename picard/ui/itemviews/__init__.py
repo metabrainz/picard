@@ -398,6 +398,9 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         return sortkey
 
     def update_colums_text(self, color=None, bgcolor=None):
+        # Local import to avoid cycles
+        from picard.ui.itemviews.custom_columns import CustomColumn
+
         for i, column in enumerate(self.columns):
             if color is not None:
                 self.setForeground(i, color)
@@ -413,8 +416,6 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
                 # Support custom columns with provider evaluation
                 try:
-                    from picard.ui.itemviews.custom_columns import CustomColumn  # Local import to avoid cycles
-
                     if isinstance(column, CustomColumn):
                         self.setText(i, column.provider.evaluate(self.obj))
                         continue
