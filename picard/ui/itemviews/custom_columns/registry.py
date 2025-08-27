@@ -23,7 +23,10 @@
 from __future__ import annotations
 
 from picard.ui.itemviews.custom_columns.column import CustomColumn
-from picard.ui.itemviews.custom_columns.shared import VIEW_ALBUM, VIEW_FILE, get_recognized_view_columns
+from picard.ui.itemviews.custom_columns.shared import (
+    RECOGNIZED_VIEWS,
+    get_recognized_view_columns,
+)
 
 
 class CustomColumnsRegistry:
@@ -56,7 +59,7 @@ class CustomColumnsRegistry:
         # may be modified by plugins or other parts of the application at runtime.
         # Importing at registration time ensures we always get the current state
         # of these collections, not a stale reference from module load time.
-        targets = set(str(v).upper() for v in (add_to or {VIEW_FILE, VIEW_ALBUM}))
+        targets = set(str(v).upper() for v in (add_to or RECOGNIZED_VIEWS))
         view_columns = get_recognized_view_columns()
         for target in targets:
             cols = view_columns.get(target)
