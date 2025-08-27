@@ -30,6 +30,7 @@ import pytest
 
 from picard.ui.columns import ColumnAlign
 from picard.ui.itemviews.custom_columns import CustomColumn
+from picard.ui.itemviews.custom_columns.shared import DEFAULT_ADD_TO, VIEW_ALBUM, VIEW_FILE, parse_add_to
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnConfigManager,
     CustomColumnKind,
@@ -112,8 +113,7 @@ def sample_spec() -> CustomColumnSpec:
         width=None,
         align="LEFT",
         always_visible=False,
-        add_to_file_view=True,
-        add_to_album_view=True,
+        add_to=DEFAULT_ADD_TO,
         insert_after_key="title",
         transform=None,
     )
@@ -151,8 +151,7 @@ def test_spec_to_from_dict_roundtrip(kind: CustomColumnKind, transform: Transfor
         width=120,
         align="RIGHT",
         always_visible=True,
-        add_to_file_view=False,
-        add_to_album_view=True,
+        add_to=f"{VIEW_ALBUM}",
         insert_after_key=None,
         transform=transform,
     )
@@ -261,7 +260,7 @@ def test_register_and_persist_calls_registry(fake_config: SimpleNamespace, fake_
     # Registry was called
     assert (
         "register",
-        {'key': "k1", 'add_to_file_view': True, 'add_to_album_view': True, 'insert_after_key': "title"},
+        {'key': "k1", 'add_to': {VIEW_FILE, VIEW_ALBUM}, 'insert_after_key': "title"},
     ) in fake_registry.calls
 
 
@@ -320,29 +319,27 @@ def test_add_or_update_spec_merges_by_key(fake_config: SimpleNamespace) -> None:
 
 
 @pytest.mark.parametrize(
-    ("file_view", "album_view"),
+    "add_to",
     [
-        (True, False),
-        (False, True),
-        (False, False),
+        VIEW_FILE,
+        VIEW_ALBUM,
+        "",  # empty -> defaults to both
     ],
 )
-def test_register_and_persist_respects_view_flags(
-    fake_config: SimpleNamespace, fake_registry: SimpleNamespace, file_view: bool, album_view: bool
+def test_register_and_persist_respects_add_to(
+    fake_config: SimpleNamespace, fake_registry: SimpleNamespace, add_to: str
 ) -> None:
     spec = CustomColumnSpec(
         title="T",
-        key=f"k_flags_{int(file_view)}{int(album_view)}",
+        key=f"k_flags_{add_to or 'both'}",
         kind=CustomColumnKind.FIELD,
         expression="artist",
-        add_to_file_view=file_view,
-        add_to_album_view=album_view,
+        add_to=add_to,
     )
     register_and_persist(spec)
     expected = {
         'key': spec.key,
-        'add_to_file_view': file_view,
-        'add_to_album_view': album_view,
+        'add_to': parse_add_to(add_to),
         'insert_after_key': None,
     }
     assert ("register", expected) in fake_registry.calls
@@ -364,7 +361,7 @@ def test_load_skips_corrupt_entries(fake_config: SimpleNamespace, fake_registry:
     load_persisted_columns_once()
     assert (
         "register",
-        {'key': "k_valid", 'add_to_file_view': True, 'add_to_album_view': True, 'insert_after_key': None},
+        {'key': "k_valid", 'add_to': {VIEW_FILE, VIEW_ALBUM}, 'insert_after_key': None},
     ) in fake_registry.calls
     # Only one register should appear
     regs = [c for c in fake_registry.calls if c[0] == "register"]
@@ -397,7 +394,7 @@ def test_from_dict_defaults_when_missing() -> None:
     assert spec.width is None
     assert spec.align == "LEFT"
     assert spec.always_visible is False
-    assert spec.add_to_file_view is True and spec.add_to_album_view is True
+    assert parse_add_to(spec.add_to) == {VIEW_FILE, VIEW_ALBUM}
     assert spec.insert_after_key is None and spec.transform is None
 
 
@@ -437,8 +434,7 @@ def test_serializer_roundtrip_matches_spec_methods() -> None:
         width=200,
         align="RIGHT",
         always_visible=True,
-        add_to_file_view=False,
-        add_to_album_view=True,
+        add_to=f"{VIEW_ALBUM}",
         insert_after_key="artist",
         transform=None,
     )
@@ -491,8 +487,7 @@ def test_registrar_register_and_unregister(fake_config: SimpleNamespace, fake_re
         "register",
         {
             'key': "k_reg",
-            'add_to_file_view': True,
-            'add_to_album_view': True,
+            'add_to': {VIEW_FILE, VIEW_ALBUM},
             'insert_after_key': None,
         },
     ) in fake_registry.calls

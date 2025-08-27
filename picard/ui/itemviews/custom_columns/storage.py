@@ -46,6 +46,10 @@ from picard.ui.itemviews.custom_columns import (
     registry,
 )
 from picard.ui.itemviews.custom_columns.providers import FieldReferenceProvider
+from picard.ui.itemviews.custom_columns.shared import (
+    DEFAULT_ADD_TO,
+    parse_add_to,
+)
 
 
 class CustomColumnKind(str, Enum):
@@ -103,10 +107,8 @@ class CustomColumnSpec:
         Text alignment as ``LEFT`` or ``RIGHT``.
     always_visible
         If ``True``, the column is not toggleable in the header menu.
-    add_to_file_view
-        Whether to add this column to the File view.
-    add_to_album_view
-        Whether to add this column to the Album view.
+    add_to
+        Comma-separated list of views to add this column to.
     insert_after_key
         Insert new column after this existing key if present, else append.
     transform
@@ -120,8 +122,7 @@ class CustomColumnSpec:
     width: int | None = None
     align: str = "LEFT"
     always_visible: bool = False
-    add_to_file_view: bool = True
-    add_to_album_view: bool = True
+    add_to: str = DEFAULT_ADD_TO
     insert_after_key: str | None = None
     transform: TransformName | None = None
 
@@ -170,6 +171,13 @@ class CustomColumnSpecSerializer:
         kind = CustomColumnKind(kind_name)
         transform_value = data.get('transform')
         transform = TransformName(str(transform_value)) if transform_value is not None else None
+
+        add_to_value = data.get('add_to')
+        if isinstance(add_to_value, str) and add_to_value.strip():
+            add_to_str = add_to_value
+        else:
+            add_to_str = DEFAULT_ADD_TO
+
         return CustomColumnSpec(
             title=_safe_convert(data, "title", str, ""),
             key=_safe_convert(data, "key", str, ""),
@@ -178,8 +186,7 @@ class CustomColumnSpecSerializer:
             width=_safe_convert(data, "width", int, None),
             align=_safe_convert(data, "align", str, "LEFT"),
             always_visible=_safe_convert(data, "always_visible", bool, False),
-            add_to_file_view=_safe_convert(data, "add_to_file_view", bool, True),
-            add_to_album_view=_safe_convert(data, "add_to_album_view", bool, True),
+            add_to=add_to_str,
             insert_after_key=_safe_convert(data, "insert_after_key", str, None),
             transform=transform,
         )
@@ -376,10 +383,10 @@ class CustomColumnRegistrar:
 
     def register_column(self, spec: CustomColumnSpec) -> None:
         column = build_column_from_spec(spec)
+        views = parse_add_to(spec.add_to)
         registry.register(
             column,
-            add_to_file_view=spec.add_to_file_view,
-            add_to_album_view=spec.add_to_album_view,
+            add_to=views,
             insert_after_key=spec.insert_after_key,
         )
 
