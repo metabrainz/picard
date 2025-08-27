@@ -484,6 +484,17 @@ def test_registry_selective_view_registration(unique_key: str) -> None:
         registry.unregister(unique_key)
 
 
+def test_registry_unknown_view_raises(unique_key: str) -> None:
+    """Unknown view identifiers should raise an error during registration."""
+    col = make_callable_column("X", unique_key, lambda obj: "x")
+
+    try:
+        with pytest.raises(ValueError):
+            registry.register(col, add_to={"UNKNOWN_VIEW"})
+    finally:
+        registry.unregister(unique_key)
+
+
 def test_registry_unregister_removes_all_occurrences(unique_key: str) -> None:
     """Ensure unregister removes all instances from both views."""
     col = make_callable_column("Test", unique_key, lambda obj: "test")

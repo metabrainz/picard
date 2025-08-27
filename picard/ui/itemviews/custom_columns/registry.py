@@ -23,7 +23,7 @@
 from __future__ import annotations
 
 from picard.ui.itemviews.custom_columns.column import CustomColumn
-from picard.ui.itemviews.custom_columns.shared import VIEW_ALBUM, VIEW_FILE
+from picard.ui.itemviews.custom_columns.shared import VIEW_ALBUM, VIEW_FILE, get_recognized_view_columns
 
 
 class CustomColumnsRegistry:
@@ -56,13 +56,16 @@ class CustomColumnsRegistry:
         # may be modified by plugins or other parts of the application at runtime.
         # Importing at registration time ensures we always get the current state
         # of these collections, not a stale reference from module load time.
-        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
-
         targets = set(str(v).upper() for v in (add_to or {VIEW_FILE, VIEW_ALBUM}))
-        if VIEW_FILE in targets:
-            self._insert_column(FILEVIEW_COLUMNS, column, insert_after_key)
-        if VIEW_ALBUM in targets:
-            self._insert_column(ALBUMVIEW_COLUMNS, column, insert_after_key)
+        view_columns = get_recognized_view_columns()
+        for target in targets:
+            cols = view_columns.get(target)
+
+            # If the target is an unknown view, raise an error
+            if cols is None:
+                raise ValueError(f"Unknown view identifier: {target}")
+
+            self._insert_column(cols, column, insert_after_key)
 
     def _insert_column(self, target_columns, column: CustomColumn, insert_after_key: str | None) -> None:
         """Insert column into target columns list and apply width to existing headers.

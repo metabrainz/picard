@@ -81,3 +81,22 @@ def format_add_to(views: Iterable[str]) -> str:
     # Include any additional tokens (forward-compat) at the end in alpha order
     extras: list[str] = sorted([v for v in view_set if v not in RECOGNIZED_VIEWS])
     return ",".join([*ordered, *extras])
+
+
+def get_recognized_view_columns():
+    """Return mapping of recognized view identifiers to their columns collections.
+
+    Returns
+    -------
+    dict[str, Any]
+        Mapping from view id (e.g., ``FILE_VIEW``) to the corresponding
+        columns collection. Performed via a local import to avoid stale
+        references and import-time side effects.
+    """
+
+    from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+
+    return {
+        VIEW_FILE: FILEVIEW_COLUMNS,
+        VIEW_ALBUM: ALBUMVIEW_COLUMNS,
+    }
