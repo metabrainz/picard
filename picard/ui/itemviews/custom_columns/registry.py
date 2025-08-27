@@ -221,12 +221,8 @@ class CustomColumnsRegistry:
         if not column:
             return None
 
-        # Local import: Same reasoning as in register() - we need the current
-        # state of these mutable module-level collections at the time of
-        # unregistration, not what they were at module load time
-        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
-
-        for cols in (FILEVIEW_COLUMNS, ALBUMVIEW_COLUMNS):
+        # Use centralized helper to fetch current view columns
+        for cols in get_recognized_view_columns().values():
             self._remove_all_by_key(cols, key)
 
         return column
