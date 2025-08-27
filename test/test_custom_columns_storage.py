@@ -79,6 +79,11 @@ def fake_config(monkeypatch) -> SimpleNamespace:
     monkeypatch.setattr(ext_points_mod, 'get_config', lambda: cfg, raising=True)
     # Reset one-shot loader between tests to ensure idempotency tests are independent
     storage_mod._loaded_once = False
+    # Reset caching between tests to ensure isolation
+    storage_mod.CustomColumnConfigManager._cache_specs = None
+    storage_mod.CustomColumnConfigManager._cache_by_key = None
+    storage_mod.CustomColumnConfigManager._cache_dirty = True
+    storage_mod.CustomColumnConfigManager._cache_token = None
     return cfg
 
 
@@ -456,15 +461,89 @@ def test_config_manager_save_load_get(fake_config: SimpleNamespace, sample_spec:
     assert got is not None and got.key == sample_spec.key
 
 
+def test_get_by_key_is_O1_via_cache(fake_config: SimpleNamespace) -> None:
+    mgr = CustomColumnConfigManager()
+    # Populate with two entries and ensure get_by_key works without list scan
+    a = CustomColumnSpec(title="A", key="ka", kind=CustomColumnKind.FIELD, expression="artist")
+    b = CustomColumnSpec(title="B", key="kb", kind=CustomColumnKind.FIELD, expression="album")
+    mgr.save_specs([a, b])
+    spec_a = mgr.get_by_key("ka")
+    spec_b = mgr.get_by_key("kb")
+    assert spec_a is not None
+    assert spec_b is not None
+    assert spec_a.title == "A"
+    assert spec_b.title == "B"
+
+
+def test_cache_invalidates_on_save_updates(fake_config: SimpleNamespace) -> None:
+    mgr = CustomColumnConfigManager()
+    a = CustomColumnSpec(title="A", key="k", kind=CustomColumnKind.FIELD, expression="artist")
+    mgr.save_specs([a])
+    # Update same key and ensure cache reflects change
+    b = CustomColumnSpec(title="B", key="k", kind=CustomColumnKind.FIELD, expression="album")
+    mgr.save_specs([b])
+    got = mgr.get_by_key("k")
+    assert got is not None and got.title == "B" and got.expression == "album"
+
+
+def test_cache_invalidates_when_config_instance_changes(monkeypatch) -> None:
+    # Prepare first config
+    class _FakeSetting(dict):
+        def raw_value(self, name, qtype=None):
+            return self.get(name)
+
+        def key(self, name):
+            return name
+
+    cfg1 = SimpleNamespace(setting=_FakeSetting({'enabled_plugins': [], 'custom_columns': []}), sync=lambda: None)
+    cfg2 = SimpleNamespace(setting=_FakeSetting({'enabled_plugins': [], 'custom_columns': []}), sync=lambda: None)
+    import picard.ui.itemviews.custom_columns.storage as storage_mod
+
+    # Use first config
+    monkeypatch.setattr(storage_mod, 'get_config', lambda: cfg1, raising=True)
+    mgr = CustomColumnConfigManager()
+    a = CustomColumnSpec(title="A", key="k", kind=CustomColumnKind.FIELD, expression="artist")
+    mgr.save_specs([a])
+    spec = mgr.get_by_key("k")
+    assert spec is not None
+    assert spec.title == "A"
+
+    # Swap config instance and ensure cache invalidates automatically
+    monkeypatch.setattr(storage_mod, 'get_config', lambda: cfg2, raising=True)
+    # New config is empty, load should reflect that
+    assert mgr.get_by_key("k") is None
+
+
+def test_mark_dirty_allows_external_mutation_to_refresh(fake_config: SimpleNamespace) -> None:
+    import picard.ui.itemviews.custom_columns.storage as storage_mod
+
+    mgr = CustomColumnConfigManager()
+    a = CustomColumnSpec(title="A", key="k", kind=CustomColumnKind.FIELD, expression="artist")
+    mgr.save_specs([a])
+    assert mgr.get_by_key("k") is not None
+    # Simulate external in-place mutation of settings list without using manager API
+    fake_list = fake_config.setting['custom_columns']
+    assert isinstance(fake_list, list)
+    fake_list.clear()
+    # Mark dirty so cache rebuilds on next access
+    storage_mod.CustomColumnConfigManager._cache_dirty = True
+    assert mgr.get_by_key("k") is None
+
+
 def test_config_manager_add_update_delete(fake_config: SimpleNamespace) -> None:
     mgr = CustomColumnConfigManager()
     a = CustomColumnSpec(title="A", key="k", kind=CustomColumnKind.FIELD, expression="artist")
     b = CustomColumnSpec(title="B", key="k", kind=CustomColumnKind.FIELD, expression="album")
     mgr.add_or_update(a)
-    assert len(mgr.load_specs()) == 1 and mgr.get_by_key("k").title == "A"
+    assert len(mgr.load_specs()) == 1
+    spec_a = mgr.get_by_key("k")
+    assert spec_a is not None
+    assert spec_a.title == "A"
     mgr.add_or_update(b)
-    got = mgr.get_by_key("k")
-    assert got is not None and got.title == "B" and got.expression == "album"
+    spec_b = mgr.get_by_key("k")
+    assert spec_b is not None
+    assert spec_b.title == "B"
+    assert spec_b.expression == "album"
     assert mgr.delete_by_key("k") is True
     assert mgr.get_by_key("k") is None
     # deleting non-existent returns False
