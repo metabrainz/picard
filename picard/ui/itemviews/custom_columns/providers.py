@@ -39,7 +39,7 @@ class FieldReferenceProvider:
         try:
             return obj.column(self.key)  # type: ignore[attr-defined]
         except (AttributeError, KeyError, TypeError) as e:
-            log.debug("FieldReferenceProvider failure for key %r: %r", self.key, e)
+            log.debug("%s failure for key %r: %r", self.__class__.__name__, self.key, e)
             return ""
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
@@ -56,7 +56,10 @@ class TransformProvider:
             return self._transform(self._base.evaluate(obj) or "")
         except (TypeError, ValueError) as e:
             log.debug(
-                "TransformProvider failure using %r: %r", getattr(self._transform, "__name__", self._transform), e
+                "%s failure using %r: %r",
+                self.__class__.__name__,
+                getattr(self._transform, "__name__", self._transform),
+                e,
             )
             return ""
 
@@ -73,7 +76,7 @@ class CallableProvider:
         try:
             return str(self._func(obj))
         except (TypeError, ValueError, AttributeError) as e:
-            log.debug("CallableProvider failure for %r: %r", getattr(self._func, "__name__", self._func), e)
+            log.debug("%s failure for %r: %r", self.__class__.__name__, getattr(self._func, "__name__", self._func), e)
             return ""
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
