@@ -25,8 +25,8 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
+from picard import log
 from picard.item import Item
-from picard.log import debug
 
 from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 
@@ -39,7 +39,7 @@ class FieldReferenceProvider:
         try:
             return obj.column(self.key)  # type: ignore[attr-defined]
         except (AttributeError, KeyError, TypeError) as e:
-            debug("FieldReferenceProvider failure for key %r: %r", self.key, e)
+            log.debug("FieldReferenceProvider failure for key %r: %r", self.key, e)
             return ""
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
@@ -55,7 +55,9 @@ class TransformProvider:
         try:
             return self._transform(self._base.evaluate(obj) or "")
         except (TypeError, ValueError) as e:
-            debug("TransformProvider failure using %r: %r", getattr(self._transform, "__name__", self._transform), e)
+            log.debug(
+                "TransformProvider failure using %r: %r", getattr(self._transform, "__name__", self._transform), e
+            )
             return ""
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
@@ -71,7 +73,7 @@ class CallableProvider:
         try:
             return str(self._func(obj))
         except (TypeError, ValueError, AttributeError) as e:
-            debug("CallableProvider failure for %r: %r", getattr(self._func, "__name__", self._func), e)
+            log.debug("CallableProvider failure for %r: %r", getattr(self._func, "__name__", self._func), e)
             return ""
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
