@@ -105,7 +105,7 @@ class ChainedValueProvider:
             log.debug("Weak cache lookup failed (non-weakrefable object): %r", e)
             can_cache = False
         # Avoid caching for album-like objects that are not fully loaded yet
-        if bool(getattr(obj, "is_album_like", False)) and not getattr(obj, "loaded", True):
+        if getattr(obj, "is_album_like", False) and not getattr(obj, "loaded", True):
             avoid_cache_for_obj = True
 
         obj_id = id(obj)
