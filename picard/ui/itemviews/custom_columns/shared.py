@@ -94,7 +94,10 @@ def get_recognized_view_columns():
         references and import-time side effects.
     """
 
-    from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+    from picard.ui.itemviews.columns import (
+        ALBUMVIEW_COLUMNS,
+        FILEVIEW_COLUMNS,
+    )
 
     return {
         VIEW_FILE: FILEVIEW_COLUMNS,

@@ -198,7 +198,10 @@ def test_registry_registers_and_unregisters_columns(unique_key: str) -> None:
         # After registration column is retrievable
         assert registry.get(unique_key) is col
         # And present in both views
-        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
 
         file_keys = [c.key for c in FILEVIEW_COLUMNS]
         album_keys = [c.key for c in ALBUMVIEW_COLUMNS]
@@ -208,7 +211,10 @@ def test_registry_registers_and_unregisters_columns(unique_key: str) -> None:
         # Cleanup: ensure we remove the test column from both views and registry
         unregistered = registry.unregister(unique_key)
         assert unregistered is col
-        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
 
         assert unique_key not in [c.key for c in FILEVIEW_COLUMNS]
         assert unique_key not in [c.key for c in ALBUMVIEW_COLUMNS]
@@ -444,7 +450,10 @@ def test_registry_handles_duplicate_registration(unique_key: str) -> None:
         registry.register(col1)
         assert registry.get(unique_key) is col1
 
-        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
 
         # Keys appear exactly once in both views
         assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 1
@@ -479,7 +488,10 @@ def test_registry_selective_view_registration(unique_key: str) -> None:
         # Register only to file view
         registry.register(col, add_to={VIEW_FILE})
 
-        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
 
         file_keys: list[str] = [c.key for c in FILEVIEW_COLUMNS]
         album_keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
@@ -511,7 +523,10 @@ def test_registry_unregister_removes_all_occurrences(unique_key: str) -> None:
         registry.register(col)
         registry.register(col)
 
-        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS, FILEVIEW_COLUMNS
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
 
         assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 1
         assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 1

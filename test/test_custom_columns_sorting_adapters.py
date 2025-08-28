@@ -25,7 +25,10 @@ import dataclasses
 
 import pytest
 
-from picard.ui.columns import ColumnAlign, ColumnSortType
+from picard.ui.columns import (
+    ColumnAlign,
+    ColumnSortType,
+)
 from picard.ui.itemviews.custom_columns import (
     ArticleInsensitiveAdapter,
     CachedSortAdapter,
