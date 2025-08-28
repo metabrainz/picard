@@ -15,6 +15,7 @@ from picard.config import (
     Option,
     get_config,
 )
+from picard.i18n import setup_gettext
 
 import pytest
 
@@ -60,6 +61,12 @@ def qapplication() -> QApplication:
             fake_config.setting.setdefault(name, opt.default)
 
     return cast(QApplication, app)
+
+
+@pytest.fixture(autouse=True)
+def i18n_c_locale() -> None:
+    # Ensure deterministic number formatting
+    setup_gettext(None, 'C')
 
 
 @dataclass
