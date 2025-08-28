@@ -69,11 +69,13 @@ from picard.config_upgrade import (
     upgrade_to_v3_0_0dev3,
     upgrade_to_v3_0_0dev4,
     upgrade_to_v3_0_0dev5,
+    upgrade_to_v3_0_0dev7,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_REPLACEMENT,
     DEFAULT_SCRIPT_NAME,
+    DEFAULT_THEME_NAME,
 )
 from picard.util import unique_numbered_title
 from picard.version import Version
@@ -444,7 +446,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v2_6_0beta3(self.config)
         self.assertNotIn('use_system_theme', self.config.setting)
         self.assertIn('ui_theme', self.config.setting)
-        self.assertEqual(str(UiTheme.SYSTEM), self.config.setting['ui_theme'])
+        self.assertEqual('system', self.config.setting['ui_theme'])
 
     def test_upgrade_to_v2_7_0dev3(self):
         # Legacy settings
@@ -561,3 +563,9 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             self.config.setting['replace_dir_separator'] = os.altsep
             upgrade_to_v3_0_0dev5(self.config)
             self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
+
+    def test_upgrade_to_v3_0_0dev7(self):
+        TextOption('setting', 'ui_theme', DEFAULT_THEME_NAME)
+        self.config.setting['ui_theme'] = 'system'
+        upgrade_to_v3_0_0dev7(self.config)
+        self.assertEqual(DEFAULT_THEME_NAME, self.config.setting['ui_theme'])
