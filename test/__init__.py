@@ -25,6 +25,9 @@
 import glob
 import os.path
 
+# Ensure options are loaded for all tests
+import picard.options  # noqa: F401
+
 
 for filename in glob.glob(os.path.join(os.path.dirname(__file__), "test_*.py")):
     __import__("test." + os.path.basename(filename)[:-3])
