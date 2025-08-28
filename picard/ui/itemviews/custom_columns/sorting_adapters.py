@@ -27,7 +27,10 @@ import hashlib
 
 from picard.item import Item
 
-from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, SortKeyProvider
+from picard.ui.itemviews.custom_columns.protocols import (
+    ColumnValueProvider,
+    SortKeyProvider,
+)
 
 
 def _clean_invisible_and_whitespace(value: str | None) -> str:

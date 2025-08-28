@@ -22,7 +22,10 @@
 
 from __future__ import annotations
 
-from typing import Protocol, runtime_checkable
+from typing import (
+    Protocol,
+    runtime_checkable,
+)
 
 from picard.item import Item
 

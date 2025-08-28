@@ -27,10 +27,20 @@ from collections.abc import Callable
 from picard.item import Item
 from picard.script import ScriptParser
 
-from picard.ui.columns import ColumnAlign, ColumnSortType
+from picard.ui.columns import (
+    ColumnAlign,
+    ColumnSortType,
+)
 from picard.ui.itemviews.custom_columns.column import CustomColumn
-from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, SortKeyProvider
-from picard.ui.itemviews.custom_columns.providers import CallableProvider, FieldReferenceProvider, TransformProvider
+from picard.ui.itemviews.custom_columns.protocols import (
+    ColumnValueProvider,
+    SortKeyProvider,
+)
+from picard.ui.itemviews.custom_columns.providers import (
+    CallableProvider,
+    FieldReferenceProvider,
+    TransformProvider,
+)
 from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
 
 

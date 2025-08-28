@@ -22,8 +22,15 @@
 
 from __future__ import annotations
 
-from picard.ui.columns import Column, ColumnAlign, ColumnSortType
-from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, SortKeyProvider
+from picard.ui.columns import (
+    Column,
+    ColumnAlign,
+    ColumnSortType,
+)
+from picard.ui.itemviews.custom_columns.protocols import (
+    ColumnValueProvider,
+    SortKeyProvider,
+)
 
 
 class CustomColumn(Column):

@@ -31,7 +31,10 @@ from picard.ui.itemviews.custom_columns.factory import (
     make_script_column,
     make_transformed_column,
 )
-from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, SortKeyProvider
+from picard.ui.itemviews.custom_columns.protocols import (
+    ColumnValueProvider,
+    SortKeyProvider,
+)
 from picard.ui.itemviews.custom_columns.registry import registry
 from picard.ui.itemviews.custom_columns.sorting_adapters import (
     ArticleInsensitiveAdapter,
