@@ -35,7 +35,10 @@ from typing import Any
 
 from picard import log
 from picard.item import Item
-from picard.script import ScriptParser
+from picard.script import (
+    ScriptError,
+    ScriptParser,
+)
 
 
 class ValueResolver(ABC):
@@ -209,7 +212,7 @@ class ScriptParserResolver(ValueResolver):
         """
         try:
             parser.load_functions()
-        except Exception as e:  # pragma: no cover - defensive
+        except (RuntimeError, ImportError, KeyError, AttributeError, ValueError) as e:  # pragma: no cover - defensive
             log.debug("Failed to load script functions: %r", e)
         return parser.parse(script, True)
 
@@ -240,8 +243,7 @@ class ScriptParserResolver(ValueResolver):
             parser.context = ctx
             parser.file = file_obj
             return self._compiled_by_script[script].eval(parser)
-        except Exception as e:
-            # Return empty string on any error, but log at debug for diagnostics
+        except (ScriptError, TypeError, ValueError, AttributeError, KeyError, IndexError) as e:
             log.debug("Script evaluation failed: %r (script=%r)", e, script)
             return ""
 
