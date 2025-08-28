@@ -74,8 +74,6 @@ class MainAction(str, Enum):
     ENABLE_MOVING = 'enable_moving_action'
     ENABLE_RENAMING = 'enable_renaming_action'
     ENABLE_TAG_SAVING = 'enable_tag_saving_action'
-    ENABLE_SAVE_IMAGES_TO_TAGS = 'enable_save_images_to_tags_action'
-    ENABLE_SAVE_IMAGES_TO_FILES = 'enable_save_images_to_files_action'
     EXIT = 'exit_action'
     GENERATE_FINGERPRINTS = 'generate_fingerprints_action'
     HELP = 'help_action'

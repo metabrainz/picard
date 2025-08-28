@@ -78,6 +78,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     interface,
     interface_colors,
     interface_cover_art_box,
+    interface_quick_menu,
     interface_toolbar,
     interface_top_tags,
     maintenance,
@@ -481,7 +482,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self._show_page_error(page, e)
                 return
 
-        for page in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
+        # Force the `profiles` page to always save first to avoid an error when
+        # saving settings to a new profile that has been marked as enabled.
+        pages = [
+            self.get_page('profiles'),
+        ]
+        pages.extend(x for x in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)) if x.NAME != 'profiles')
+        for page in pages:
             try:
                 page.save()
             except Exception as e:

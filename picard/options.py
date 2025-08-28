@@ -58,6 +58,7 @@ from picard.const.defaults import (
     DEFAULT_MUSIC_DIR,
     DEFAULT_PROGRAM_UPDATE_LEVEL,
     DEFAULT_QUERY_LIMIT,
+    DEFAULT_QUICK_MENU_ITEMS,
     DEFAULT_RELEASE_TYPE_SCORES,
     DEFAULT_REPLACEMENT,
     DEFAULT_SHOW_MENU_ICONS,
@@ -316,6 +317,10 @@ Option(
     InterfaceColors(dark_theme=True).get_colors(),
     title=N_("Colors to use for dark theme"),
 )
+
+# picard/ui/options/interface_quick_menu.py
+# Quick Menu
+ListOption('setting', 'quick_menu_items', DEFAULT_QUICK_MENU_ITEMS, title=N_("Options to show in the Quick Menu"))
 
 # picard/ui/options/interface_toolbar.py
 # Action Toolbar

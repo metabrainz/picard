@@ -7,6 +7,7 @@
 # Copyright (C) 2009, 2019-2022, 2025 Philipp Wolfer
 # Copyright (C) 2013, 2015, 2018-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -34,6 +35,7 @@ from picard import log
 from picard.config import (
     Option,
     get_config,
+    register_quick_menu_item,
 )
 from picard.i18n import gettext as _
 from picard.profile import profile_groups_add_setting
@@ -141,5 +143,6 @@ class OptionsPage(QtWidgets.QWidget):
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
         OptionsPage._registered_settings.append(option)
+        register_quick_menu_item(cls.SORT_ORDER, cls.TITLE, option)
         if highlights is not None:
             profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.TITLE)
