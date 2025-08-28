@@ -109,16 +109,11 @@ def _style_hints_available() -> bool:
 if IS_HAIKU:
     # Haiku doesn't support themes - UI is hidden anyway, but keep empty for consistency
     AVAILABLE_UI_THEMES = []
-elif not IS_WIN and not IS_MACOS:  # Non-Windows and non-macOS platforms
-    if _style_hints_available():
-        # All themes available when style hints are supported
-        AVAILABLE_UI_THEMES = [UiTheme.DEFAULT, UiTheme.LIGHT, UiTheme.DARK]
-    else:
-        # Only DEFAULT theme available when style hints are not available
-        AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
-else:
-    # All others, like Windows and macOS: consistent structure
+elif IS_WIN or IS_MACOS or _style_hints_available():
     AVAILABLE_UI_THEMES = [UiTheme.DEFAULT, UiTheme.LIGHT, UiTheme.DARK]
+else:
+    # Use only default theme on platforms without style hints
+    AVAILABLE_UI_THEMES = [UiTheme.DEFAULT]
 
 
 class MacOverrideStyle(QtWidgets.QProxyStyle):
