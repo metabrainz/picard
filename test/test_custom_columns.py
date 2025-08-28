@@ -194,7 +194,7 @@ def test_registry_registers_and_unregisters_columns(unique_key: str) -> None:
     try:
         # Before registration column is not in registry
         assert registry.get(unique_key) is None
-        registry.register(col, insert_after_key="title")
+        registry.register(col)
         # After registration column is retrievable
         assert registry.get(unique_key) is col
         # And present in both views
@@ -207,6 +207,9 @@ def test_registry_registers_and_unregisters_columns(unique_key: str) -> None:
         album_keys = [c.key for c in ALBUMVIEW_COLUMNS]
         assert unique_key in file_keys
         assert unique_key in album_keys
+        # Newly registered columns should be appended at the end
+        assert FILEVIEW_COLUMNS[-1].key == unique_key
+        assert ALBUMVIEW_COLUMNS[-1].key == unique_key
     finally:
         # Cleanup: ensure we remove the test column from both views and registry
         unregistered = registry.unregister(unique_key)

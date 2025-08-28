@@ -40,7 +40,6 @@ class CustomColumnsRegistry:
         column: CustomColumn,
         *,
         add_to: set[str] | frozenset[str] | list[str] | tuple[str, ...] | None = None,
-        insert_after_key: str | None = None,
     ) -> None:
         """Register column and insert into views.
 
@@ -50,8 +49,6 @@ class CustomColumnsRegistry:
                 The column instance to register.
         add_to
                 Collection of views to add to, e.g. {"FILE_VIEW", "ALBUM_VIEW"}.
-        insert_after_key
-                Insert after this key if present, else append.
         """
         self._by_key[column.key] = column
 
@@ -68,9 +65,9 @@ class CustomColumnsRegistry:
             if cols is None:
                 raise ValueError(f"Unknown view identifier: {target}")
 
-            self._insert_column(cols, column, insert_after_key)
+            self._insert_column(cols, column)
 
-    def _insert_column(self, target_columns, column: CustomColumn, insert_after_key: str | None) -> None:
+    def _insert_column(self, target_columns, column: CustomColumn) -> None:
         """Insert column into target columns list and apply width to existing headers.
 
         Parameters
@@ -79,14 +76,12 @@ class CustomColumnsRegistry:
                 The columns collection to insert into.
         column
                 The column to insert.
-        insert_after_key
-                Insert after this key if present, else append.
         """
         # Remove any existing entries with the same key (idempotent registration)
         self._remove_all_by_key(target_columns, column.key)
 
-        # Determine insertion position
-        position = self._get_insertion_position(target_columns, insert_after_key)
+        # Always append at the end
+        position = len(target_columns)
 
         # Insert the column
         target_columns.insert(position, column)
@@ -110,29 +105,6 @@ class CustomColumnsRegistry:
                 del target_columns[pos]
             except KeyError:
                 break
-
-    def _get_insertion_position(self, target_columns, insert_after_key: str | None) -> int:
-        """Determine where to insert a column.
-
-        Parameters
-        ----------
-        target_columns
-                The columns collection.
-        insert_after_key
-                Insert after this key if present, else append.
-
-        Returns
-        -------
-        int
-                The position to insert at.
-        """
-        if not insert_after_key:
-            return len(target_columns)
-
-        try:
-            return target_columns.pos(insert_after_key) + 1
-        except KeyError:
-            return len(target_columns)
 
     def _apply_column_width_to_headers(self, target_columns, column: CustomColumn, position: int) -> None:
         """Apply column width settings to existing UI headers.
