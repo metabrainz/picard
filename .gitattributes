@@ -1,1 +1,4 @@
 picard/resources.py binary
+*.po text eol=lf
+*.pot text eol=lf
+*.py text eol=lf
