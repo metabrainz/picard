@@ -28,10 +28,8 @@ from abc import (
 )
 from typing import Any
 
-from picard.album import Album
-from picard.cluster import Cluster
 from picard.file import File
-from picard.item import Item
+from picard.item import Item, MetadataItem
 from picard.track import Track
 
 
@@ -68,25 +66,9 @@ class TrackContextStrategy(ContextStrategy):
         return (getattr(obj, 'metadata', None), file_obj)
 
 
-class AlbumContextStrategy(ContextStrategy):
-    def can_handle(self, obj: Item) -> bool:
-        return isinstance(obj, Album)
-
-    def make_context(self, obj: Item) -> tuple[Any | None, Any | None]:
-        return (getattr(obj, 'metadata', None), None)
-
-
-class ClusterContextStrategy(ContextStrategy):
-    def can_handle(self, obj: Item) -> bool:
-        return isinstance(obj, Cluster)
-
-    def make_context(self, obj: Item) -> tuple[Any | None, Any | None]:
-        return (getattr(obj, 'metadata', None), None)
-
-
 class DefaultContextStrategy(ContextStrategy):
     def can_handle(self, obj: Item) -> bool:
-        return True
+        return hasattr(obj, 'metadata') or isinstance(obj, MetadataItem)
 
     def make_context(self, obj: Item) -> tuple[Any | None, Any | None]:
         return (getattr(obj, 'metadata', None), None)
@@ -97,8 +79,6 @@ class ContextStrategyManager:
         self.strategies = [
             FileContextStrategy(),
             TrackContextStrategy(),
-            AlbumContextStrategy(),
-            ClusterContextStrategy(),
             DefaultContextStrategy(),
         ]
 
