@@ -23,7 +23,6 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-import hashlib
 
 from picard.item import Item
 
@@ -127,24 +126,6 @@ class LengthSortAdapter(_AdapterBase):
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return length-based sort key for item."""
         return len(self._base.evaluate(obj) or "")
-
-
-class RandomSortAdapter(_AdapterBase):
-    """Provide deterministic pseudo-random sort per value and seed."""
-
-    def __init__(self, base: ColumnValueProvider, seed: int = 0):
-        super().__init__(base)
-        self._seed = seed
-
-    def __repr__(self) -> str:  # pragma: no cover - debug helper
-        return f"{self.__class__.__name__}(base={self._base!r}, seed={self._seed})"
-
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
-        """Return deterministic pseudo-random sort key for item."""
-        v = self._base.evaluate(obj) or ""
-        h = hashlib.blake2b(v.encode("utf-8"), digest_size=8, person=str(self._seed).encode("utf-8")).digest()
-        # Convert first 8 bytes to integer
-        return int.from_bytes(h, byteorder="big", signed=False)
 
 
 class ArticleInsensitiveAdapter(_AdapterBase):

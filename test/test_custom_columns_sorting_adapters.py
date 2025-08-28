@@ -41,7 +41,6 @@ from picard.ui.itemviews.custom_columns import (
     NullsFirstAdapter,
     NullsLastAdapter,
     NumericSortAdapter,
-    RandomSortAdapter,
     ReverseAdapter,
     make_callable_column,
 )
@@ -172,29 +171,6 @@ def test_length_sort_adapter() -> None:
     expected = ["b", "dd", "aaa", "cccc"]
     result = _sorted_values(LengthSortAdapter, values)
     assert result == expected
-
-
-def test_random_sort_adapter_deterministic_per_seed() -> None:
-    values = ["alpha", "beta", "gamma", "delta", "epsilon"]
-
-    def adapter_seed_1(base):
-        return RandomSortAdapter(base, seed=1)
-
-    def adapter_seed_2(base):
-        return RandomSortAdapter(base, seed=2)
-
-    col1 = _build_sorted_column(adapter_seed_1)
-    col2 = _build_sorted_column(adapter_seed_1)
-    col3 = _build_sorted_column(adapter_seed_2)
-
-    items = [_ValueItem(v) for v in values]
-    order1 = [col1.provider.evaluate(it) for it in sorted(items, key=lambda it: col1.sortkey(it))]
-    order2 = [col2.provider.evaluate(it) for it in sorted(items, key=lambda it: col2.sortkey(it))]
-    order3 = [col3.provider.evaluate(it) for it in sorted(items, key=lambda it: col3.sortkey(it))]
-
-    # Same seed -> same order; different seeds -> likely different order
-    assert order1 == order2
-    assert order1 != order3
 
 
 def test_article_insensitive_adapter() -> None:
