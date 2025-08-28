@@ -49,6 +49,9 @@ localedir = os.path.join(os.path.dirname(__file__), '..', 'locale')
 
 
 class TestI18n(PicardTestCase):
+    def tearDown(self):
+        setup_gettext(None, 'C')
+
     def test_missing_locales(self):
         tmplocaledir = tempfile.mkdtemp()
 
