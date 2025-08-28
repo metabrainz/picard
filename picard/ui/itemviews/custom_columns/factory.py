@@ -134,8 +134,8 @@ def make_script_column(
     width: int | None = None,
     align: ColumnAlign = ColumnAlign.LEFT,
     always_visible: bool = False,
-    max_runtime_ms: int = 25,
-    cache_size: int = 1024,
+    max_runtime_ms: int | None = None,
+    cache_size: int | None = None,
     parser: ScriptParser | None = None,
     parser_factory: Callable[[], ScriptParser] | None = None,
 ) -> CustomColumn:
