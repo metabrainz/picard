@@ -116,14 +116,15 @@ def _parse_iso_like(value: str) -> str | None:
 
 
 def _parse_slash_separated(value: str) -> str | None:
-    if "/" not in value:
+    # We only expect 3 tokens (two slashes)
+    try:
+        tokens = value.split("/", 2)
+        a = _int_or_none(tokens[0])
+        b = _int_or_none(tokens[1])
+        c = _int_or_none(tokens[2])
+    except IndexError:
         return None
-    tokens = value.split("/")
-    if len(tokens) != 3:
-        return None
-    a = _int_or_none(tokens[0])
-    b = _int_or_none(tokens[1])
-    c = _int_or_none(tokens[2])
+
     if a is None or b is None or c is None or not (0 < c <= 9999):
         return None
     y = _clamp_year(c)
