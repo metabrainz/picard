@@ -147,11 +147,13 @@ def _parse_compact_eight(value: str) -> str | None:
     m = re.fullmatch(r"(\d{4})(\d{2})(\d{2})", value)
     if not m:
         return None
+
     y = _clamp_year(int(m.group(1)))
+    if y is None:
+        return ""
+
     a = int(m.group(2))
     b = int(m.group(3))
-    if y in (None, 0):
-        return ""
     if _is_valid_month(a) and _is_valid_day(b) and a != 0:
         return f"{y:04d}-{a:02d}-{b:02d}"
     if _is_valid_month(b) and _is_valid_day(a) and b != 0:
