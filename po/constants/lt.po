@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-06-30 23:20+0000\n"
+"PO-Revision-Date: 2025-08-29 12:04+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/constants/lt/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -144,7 +144,7 @@ msgstr "korėjiečių"
 
 #: picard/const/languages.py:62 picard/const/locales.py:634
 msgid "Lithuanian"
-msgstr "Lietuvių k."
+msgstr "lietuvių k."
 
 #: picard/const/languages.py:63 picard/const/locales.py:689
 msgid "Malay (Malaysia)"
@@ -240,35 +240,35 @@ msgstr "abchazų k."
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
-msgstr "Abchazų k. (Gruzija)"
+msgstr "abchazų k. (Gruzija)"
 
 #: picard/const/locales.py:34
 msgid "Afrikaans"
-msgstr "Afrikanų k."
+msgstr "afrikanų k."
 
 #: picard/const/locales.py:35
 msgid "Afrikaans (Namibia)"
-msgstr "Afrikanų k. (Namibija)"
+msgstr "afrikanų k. (Namibija)"
 
 #: picard/const/locales.py:36
 msgid "Afrikaans (South Africa)"
-msgstr "Afrikanų k. (Pietų Afrika)"
+msgstr "afrikanų k. (Pietų Afrika)"
 
 #: picard/const/locales.py:37
 msgid "Aghem"
-msgstr "Agemų k."
+msgstr "agemų k."
 
 #: picard/const/locales.py:38
 msgid "Aghem (Cameroon)"
-msgstr "Agemų k. (Kamerūnas)"
+msgstr "agemų k. (Kamerūnas)"
 
 #: picard/const/locales.py:39
 msgid "Akan"
-msgstr "Akanų k."
+msgstr "akanų k."
 
 #: picard/const/locales.py:40
 msgid "Akan (Ghana)"
-msgstr "Akanų k. (Gana)"
+msgstr "akanų k. (Gana)"
 
 #: picard/const/locales.py:41
 msgid "Amharic"
@@ -428,11 +428,11 @@ msgstr ""
 
 #: picard/const/locales.py:81
 msgid "Asu"
-msgstr ""
+msgstr "Azu k."
 
 #: picard/const/locales.py:82
 msgid "Asu (Tanzania)"
-msgstr ""
+msgstr "azu k. (Tanzanija)"
 
 #: picard/const/locales.py:83
 msgid "Asturian"
