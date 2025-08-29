@@ -49,6 +49,7 @@ from picard.file import File
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
+    is_date_sanitization_enabled,
     sanitize_date,
 )
 from picard.util.filenaming import (
@@ -162,7 +163,8 @@ class APEv2File(File):
                     name = name_lower
                     if name == 'year':
                         name = 'date'
-                        value = sanitize_date(value)
+                        if is_date_sanitization_enabled('apev2'):
+                            value = sanitize_date(value)
                     elif name == 'track':
                         name = 'tracknumber'
                         track = value.split('/')

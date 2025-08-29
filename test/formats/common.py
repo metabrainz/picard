@@ -64,6 +64,7 @@ settings = {
     'replace_spaces_with_underscores': False,
     'replace_dir_separator': '_',
     'win_compat_replacements': {},
+    'disable_date_sanitization_formats': [],  # introduced by PICARD-2729
 }
 
 

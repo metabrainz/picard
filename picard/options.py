@@ -370,6 +370,12 @@ BoolOption('setting', 'track_ars', False, title=N_("Use track and release relati
 BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names"))
 BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception"))
 TextOption('setting', 'va_name', "Various Artists", title=N_("Various Artists name"))
+ListOption(
+    'setting',
+    'disable_date_sanitization_formats',
+    [],
+    title=N_("Tag formats to not sanitize dates"),
+)
 
 # picard/ui/options/network.py
 # Network

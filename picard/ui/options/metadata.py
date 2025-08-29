@@ -29,6 +29,7 @@
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -98,6 +99,7 @@ class MetadataOptionsPage(OptionsPage):
         ('guess_tracknumber_and_title', ['guess_tracknumber_and_title']),
         ('va_name', ['va_name']),
         ('nat_name', ['nat_name']),
+        ('disable_date_sanitization_formats', ['disable_date_sanitization_formats']),
     )
 
     def __init__(self, parent=None):
@@ -110,6 +112,9 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_scripts.clicked.connect(self.open_script_selector)
         self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
+
+        # Add multi-select combo for disabling date sanitization per format
+        self._init_disable_date_sanitization_formats_control()
 
     def load(self):
         config = get_config()
@@ -131,6 +136,10 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.standardize_instruments.setChecked(config.setting['standardize_instruments'])
         self.ui.standardize_vocals.setChecked(config.setting['standardize_vocals'])
         self.ui.guess_tracknumber_and_title.setChecked(config.setting['guess_tracknumber_and_title'])
+
+        # Load disable date sanitization formats
+        disabled = config.setting['disable_date_sanitization_formats'] or []
+        self._set_disable_date_sanitization_checked(disabled)
 
         self.set_enabled_states()
 
@@ -169,6 +178,7 @@ class MetadataOptionsPage(OptionsPage):
         config.setting['standardize_instruments'] = self.ui.standardize_instruments.isChecked()
         config.setting['standardize_vocals'] = self.ui.standardize_vocals.isChecked()
         config.setting['guess_tracknumber_and_title'] = self.ui.guess_tracknumber_and_title.isChecked()
+        config.setting['disable_date_sanitization_formats'] = self._get_disable_date_sanitization_checked()
 
     def set_va_name_default(self):
         self.ui.va_name.setText(Option.get_default('setting', 'va_name'))
@@ -195,6 +205,61 @@ class MetadataOptionsPage(OptionsPage):
     def open_script_selector(self):
         dialog = ScriptExceptionSelector(self)
         dialog.show()
+
+    # --- Disable date sanitization formats control ---
+
+    def _init_disable_date_sanitization_formats_control(self):
+        label = QtWidgets.QLabel(self)
+        label.setObjectName('disable_date_sanitization_formats_label')
+        label.setText(_("Do not sanitize dates for these tag formats:"))
+
+        self.disable_date_sanitization_formats = QtWidgets.QComboBox(self)
+        self.disable_date_sanitization_formats.setObjectName('disable_date_sanitization_formats')
+        self.disable_date_sanitization_formats.setModel(
+            QtGui.QStandardItemModel(self.disable_date_sanitization_formats)
+        )
+        self.disable_date_sanitization_formats.setSizeAdjustPolicy(
+            QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents
+        )
+
+        for key, title in self._date_format_entries():
+            item = QtGui.QStandardItem(title)
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            item.setData(key, QtCore.Qt.ItemDataRole.UserRole)
+            item.setCheckable(True)
+            item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            self.disable_date_sanitization_formats.model().appendRow(item)
+
+        # Insert into existing layout under metadata_groupbox
+        self.ui.verticalLayout_3.addWidget(label)
+        self.ui.verticalLayout_3.addWidget(self.disable_date_sanitization_formats)
+
+    @staticmethod
+    def _date_format_entries():
+        # Key used in code -> Display label
+        return [
+            ('vorbis', _("Vorbis / FLAC / Opus (Vorbis comments)")),
+            ('apev2', _("APEv2")),
+            ('id3', _("ID3")),
+        ]
+
+    def _set_disable_date_sanitization_checked(self, keys):
+        model = self.disable_date_sanitization_formats.model()
+        checked = set(keys)
+        for row in range(model.rowCount()):
+            item = model.item(row)
+            key = item.data(QtCore.Qt.ItemDataRole.UserRole)
+            state = QtCore.Qt.CheckState.Checked if key in checked else QtCore.Qt.CheckState.Unchecked
+            item.setCheckState(state)
+
+    def _get_disable_date_sanitization_checked(self):
+        model = self.disable_date_sanitization_formats.model()
+        keys = []
+        for row in range(model.rowCount()):
+            item = model.item(row)
+            if item.checkState() == QtCore.Qt.CheckState.Checked:
+                keys.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
+        return keys
 
 
 class MultiLocaleSelector(PicardDialog):

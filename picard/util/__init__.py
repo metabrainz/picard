@@ -346,6 +346,32 @@ def sanitize_date(datestr):
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
+def is_date_sanitization_enabled(format_key: str) -> bool:
+    """Return True if date sanitization is enabled for the given tag format.
+
+    Parameters
+    ----------
+    format_key : str
+        Logical tag format key, e.g. "vorbis", "apev2", or "id3".
+
+    Returns
+    -------
+    bool
+        Whether sanitization should be applied for this format based on
+        user configuration.
+    """
+    # Local import avoids circular dependencies at module import time
+    from picard.config import get_config
+
+    try:
+        disabled = get_config().setting['disable_date_sanitization_formats']
+    except KeyError:
+        # The setting does not exist, default to enabled
+        return True
+    else:
+        return format_key not in set(disabled)
+
+
 def replace_win32_incompat(string, repl="_", replacements=None):  # noqa: E302
     """Replace win32 filename incompatible characters from ``string`` by
     ``repl``."""
