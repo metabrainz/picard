@@ -127,8 +127,8 @@ def _parse_slash_separated(value: str) -> str | None:
 
     if a is None or b is None or c is None or not (0 < c <= 9999):
         return None
-    y = _clamp_year(c)
-    if y in (None, 0):
+    y = _clamp_year(c) or None
+    if y is None:
         return ""
     if a > 12 and _is_valid_month(b) and _is_valid_day(a):
         d, m = a, b
