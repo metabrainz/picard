@@ -1,7 +1,7 @@
 # Translations template for picard.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
-# 
+#
 # Translators:
 # Artur Gorbahev <arttttur@gmail.com>, 2018
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010
@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:05+0200\n"
-"PO-Revision-Date: 2025-08-28 20:07+0000\n"
+"PO-Revision-Date: 2025-08-29 21:36+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -70,7 +70,7 @@ msgstr "Пошук метаданих для кластера%(album)s…"
 
 #: picard/cluster.py:335
 msgid "Unclustered Files"
-msgstr "Не згуртовані файли"
+msgstr "Некластеризовані файли"
 
 #: picard/collection.py:88
 #, python-format
@@ -195,10 +195,10 @@ msgstr[3] "%i зображень"
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] "%i зображення не у всіх доріжках"
+msgstr[0] "%i зображення не у всіх треках"
 msgstr[1] "%i різних зображень серед треків"
-msgstr[2] ""
-msgstr[3] ""
+msgstr[2] "%i різних зображень серед треків"
+msgstr[3] "%i різних зображень серед треків"
 
 #: picard/log.py:95 picard/ui/options/renaming.py:263 picard/ui/scripteditor/__init__.py:558 picard/ui/scripteditor/__init__.py:561 picard/ui/scripteditor/__init__.py:852 picard/ui/scripteditor/__init__.py:1080
 msgid "Error"
@@ -231,23 +231,23 @@ msgstr "Неочікувана помилка запиту (HTTP-код %s)"
 
 #: picard/options.py:156
 msgid "Tags to ignore for comparison"
-msgstr "Теги, які слід ігнорувати для порівняння"
+msgstr "Теги, які потрібно ігнорувати для порівняння"
 
 #: picard/options.py:157
 msgid "Completeness check ignore: Data tracks"
-msgstr "Перевірка повноти ігнорується: доріжки даних"
+msgstr "Перевірка повноти ігнорується: Дані доріжок"
 
 #: picard/options.py:158
 msgid "Completeness check ignore: Pregap tracks"
-msgstr "Перевірка повноти ігнорується: доріжки Pregap"
+msgstr "Перевірка повноти ігнорується: Треки перед паузою (Pregap)"
 
 #: picard/options.py:159
 msgid "Completeness check ignore: Silent tracks"
-msgstr "Перевірка повноти ігнорується: Безшумні треки"
+msgstr "Перевірка повноти ігнорується: Тихі треки"
 
 #: picard/options.py:160
 msgid "Completeness check ignore: Video tracks"
-msgstr "Перевірка повноти ігнорується: Відеодоріжки"
+msgstr "Перевірка повноти ігнорується: Відео треки"
 
 #: picard/options.py:161 picard/ui/forms/ui_options_advanced.py:149
 msgid "Ignore hidden files"
@@ -311,7 +311,7 @@ msgstr "Зберігати обкладинки як окремі файли"
 
 #: picard/options.py:209 picard/ui/forms/ui_options_cover.py:118
 msgid "Embed cover images into tags"
-msgstr "Вкладати зображення обкладинок в позначки"
+msgstr "Вбудувати обкладинки у теги"
 
 #: picard/options.py:210 picard/ui/forms/ui_options_cover.py:126
 msgid "Save only a single front image as separate file"
@@ -387,7 +387,7 @@ msgstr "Використовувати жанри виконавців альб�
 
 #: picard/options.py:273 picard/ui/forms/ui_options_genres.py:128
 msgid "Use folksonomy tags as genre"
-msgstr "Використовувати позначки фолксономії як жанр"
+msgstr "Використовувати теги користувачів як жанр"
 
 #: picard/options.py:275
 msgid "Genres to include or exclude"
@@ -667,19 +667,19 @@ msgstr "Підтримка довгих шляхів у Windows"
 
 #: picard/options.py:439
 msgid "Enable tagger scripts"
-msgstr "Увімкнути скрипти тегів"
+msgstr "Увімкнути скрипти теґерів"
 
 #: picard/options.py:440
 msgid "Tagger scripts"
-msgstr "Сценарії тегів"
+msgstr "Сценарії теґерів"
 
 #: picard/options.py:444 picard/ui/forms/ui_options_tags.py:80
 msgid "Clear existing tags"
-msgstr "Очистити наявні позначки"
+msgstr "Очистити наявні теги"
 
 #: picard/options.py:445
 msgid "Don't write tags"
-msgstr "Не пишіть теги"
+msgstr "Не писати теги"
 
 #: picard/options.py:446 picard/ui/forms/ui_options_tags.py:84
 msgid "Fix missing seekpoints for FLAC files"
@@ -695,15 +695,15 @@ msgstr "Зберігати вбудовані зображення під час
 
 #: picard/options.py:449 picard/ui/forms/ui_options_tags.py:78
 msgid "Preserve timestamps of tagged files"
-msgstr "Зберегти мітки часу для позначених файлів"
+msgstr "Зберігати часові мітки файлів із тегами"
 
 #: picard/options.py:450 picard/ui/forms/ui_options_tags.py:83
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "Вилучити позначки APEv2 з файлів MP3"
+msgstr "Вилучити теги APEv2 з файлів MP3"
 
 #: picard/options.py:451 picard/ui/forms/ui_options_tags.py:82
 msgid "Remove ID3 tags from FLAC files"
-msgstr "Вилучити позначки ID3 з файлів FLAC"
+msgstr "Вилучити теги ID3 з файлів FLAC"
 
 #: picard/options.py:455
 msgid "Save APEv2 tags to AAC"
@@ -711,7 +711,7 @@ msgstr "Зберегти теги APEv2 у форматі AAC"
 
 #: picard/options.py:456 picard/ui/forms/ui_options_tags_compatibility_aac.py:55
 msgid "Remove APEv2 tags from AAC files"
-msgstr "Вилучити позначки APEv2 з файлів AAC"
+msgstr "Вилучити теги APEv2 з файлів AAC"
 
 #: picard/options.py:460
 msgid "Save APEv2 tags to AC3"
@@ -719,7 +719,7 @@ msgstr "Зберігати APEv2-теги в AC3"
 
 #: picard/options.py:461 picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
 msgid "Remove APEv2 tags from AC3 files"
-msgstr "Вилучити позначки APEv2 з файлів AC3"
+msgstr "Вилучити теги APEv2 з файлів AC3"
 
 #: picard/options.py:465
 msgid "ID3v2.3 join character"
@@ -2581,7 +2581,7 @@ msgstr "Тег додано"
 
 #: picard/ui/colors.py:58 picard/ui/colors.py:59 picard/ui/colors.py:60 picard/ui/options/tags.py:41 picard/ui/widgets/scriptdocumentation.py:170
 msgid "Tags"
-msgstr "Позначки"
+msgstr "Теги"
 
 #: picard/ui/colors.py:59
 msgid "Tag changed"
@@ -2902,11 +2902,11 @@ msgstr "%s - %s"
 
 #: picard/ui/util.py:108
 msgid "Select a file or a directory"
-msgstr "Виберати файл або каталог"
+msgstr "Вибрати файл або каталог"
 
 #: picard/ui/util.py:114
 msgid "Select a target file"
-msgstr "Виберати цільовий файл"
+msgstr "Вибрати цільовий файл"
 
 #: picard/ui/util.py:127
 msgid "Select a file"
@@ -2914,7 +2914,7 @@ msgstr "Вибрати файл"
 
 #: picard/ui/util.py:140
 msgid "Select one or more files"
-msgstr "Виберати один або кілька файлів"
+msgstr "Вибрати один або кілька файлів"
 
 #: picard/ui/util.py:153
 msgid "Select a directory"
@@ -2922,7 +2922,7 @@ msgstr "Вибрати каталог"
 
 #: picard/ui/util.py:169
 msgid "Select one or more directories"
-msgstr "Виберати один або декілька каталогів"
+msgstr "Вибрати один або декілька каталогів"
 
 #: picard/ui/util.py:224
 msgid "You have to restart Picard for the changes to take effect."
@@ -2983,7 +2983,7 @@ msgstr "Побачити реліз MusicBrainz"
 
 #: picard/ui/coverartbox/coverartthumbnail.py:335
 msgid "Common images on all tracks"
-msgstr "Звичайні зображення на всіх доріжках"
+msgstr "Звичайні зображення на всіх трекх"
 
 #: picard/ui/coverartbox/coverartthumbnail.py:337
 msgid "Tracks contain different images"
@@ -3151,7 +3151,7 @@ msgstr "Ігнорувати такі треки під час визначен�
 
 #: picard/ui/forms/ui_options_advanced.py:151
 msgid "Video tracks"
-msgstr "Відеодоріжки"
+msgstr "Відео треки"
 
 #: picard/ui/forms/ui_options_advanced.py:152
 msgid "Data tracks"
@@ -3159,7 +3159,7 @@ msgstr "Дата треків"
 
 #: picard/ui/forms/ui_options_advanced.py:153
 msgid "Pregap tracks"
-msgstr "Доріжки перед прогалинами"
+msgstr "Треки перед паузами"
 
 #: picard/ui/forms/ui_options_advanced.py:154
 msgid "Silent tracks"
@@ -3167,7 +3167,7 @@ msgstr "Тихі треки"
 
 #: picard/ui/forms/ui_options_advanced.py:155
 msgid "Tags to ignore for comparison:"
-msgstr "Теги, які слід ігнорувати для порівняння:"
+msgstr "Теги, які потрібно ігнорувати для порівняння:"
 
 #: picard/ui/forms/ui_options_attached_profiles.py:40 picard/ui/options/dialog.py:285
 msgid "Profiles Attached to Options"
@@ -3712,7 +3712,7 @@ msgstr "Замініть роздільники каталогів на:"
 
 #: picard/ui/forms/ui_options_script.py:125
 msgid "Enable Tagger Script(s)"
-msgstr "Увімкнути скрипт(и) Tagger"
+msgstr "Увімкнути скрипт(и) теґера"
 
 #: picard/ui/forms/ui_options_script.py:126
 msgid "Tagger scripts that have been activated below will be executed automatically for each track of a release loaded from MusicBrainz."
@@ -3728,15 +3728,15 @@ msgstr "Перемістити скрипт теґера вгору"
 
 #: picard/ui/forms/ui_options_script.py:129
 msgid "Move tagger script down"
-msgstr "Перемістити скрипт тегування вниз"
+msgstr "Перемістити скрипт теґера вниз"
 
 #: picard/ui/forms/ui_options_script.py:130 picard/ui/forms/ui_options_script.py:131
 msgid "Add new tagger script"
-msgstr "Додати новий скрипт тегера"
+msgstr "Додати новий скрипт теґера"
 
 #: picard/ui/forms/ui_options_script.py:132
 msgid "Remove the selected tagger script"
-msgstr "Видалити вибраний скрипт тегера"
+msgstr "Видалити вибраний скрипт теґера"
 
 #: picard/ui/forms/ui_options_script.py:133
 msgid "Remove tagger script"
@@ -3756,7 +3756,7 @@ msgstr "Документація"
 
 #: picard/ui/forms/ui_options_tags.py:77
 msgid "Write tags to files"
-msgstr "Записувати позначки у файли"
+msgstr "Записати теги у файли"
 
 #: picard/ui/forms/ui_options_tags.py:79
 msgid "Before Tagging"
@@ -3836,7 +3836,7 @@ msgstr "<html><head/><body><p>За умовчанням використовує
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:132
 msgid "Also include ID3v1 tags in the files"
-msgstr "Також охоплювати позначки ID3v1 в цих файлах"
+msgstr "Також включати теги ID3v1 у файли"
 
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:62
 msgid "WAVE files"
@@ -3847,8 +3847,10 @@ msgid ""
 "Picard will tag WAVE files using ID3v2 tags. This is not supported by all software. For compatibility with software which does not support ID3v2 tags in WAVE files additional RIFF INFO tags can be written to the files. RIFF INFO has only limited support for tags and character "
 "encodings."
 msgstr ""
-"Picard позначатиме WAVE-файли тегами ID3v2. Це підтримується не всім програмним забезпеченням. Для сумісності з програмним забезпеченням, яке не підтримує теги ID3v2 у WAVE-файлах, до файлів можна записати додаткові теги RIFF INFO. RIFF INFO має лише обмежену підтримку тегів та "
-"кодувань символів."
+"Picard буде додавати теги до WAVE-файлів, використовуючи теги ID3v2. Не всі "
+"програми підтримують це. Для сумісності з програмами, які не підтримують "
+"теги ID3v2 у WAVE-файлах, можна додатково записати теги RIFF INFO у файли. "
+"Теги RIFF INFO мають обмежену підтримку тегів та кодування символів."
 
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:64
 msgid "Also include RIFF INFO tags in the files"
@@ -3948,7 +3950,7 @@ msgstr "Документація зі скриптів"
 
 #: picard/ui/forms/ui_tagsfromfilenames.py:59
 msgid "Convert File Names to Tags"
-msgstr "Перетворювати назви файлів у позначки"
+msgstr "Перетворювати назви файлів у теги"
 
 #: picard/ui/forms/ui_tagsfromfilenames.py:60
 msgid "Replace underscores with spaces"
@@ -4188,7 +4190,9 @@ msgstr[3] "%i збігів файлів"
 
 #: picard/ui/itemviews/__init__.py:589
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
-msgstr "Помилка(и) обробки: див. вкладку «Помилки» в діалоговому вікні «Інформація про доріжку»."
+msgstr ""
+"Помилка(и) обробки: див. вкладку «Помилки» в діалоговому вікні «Інформація "
+"про трек»."
 
 #: picard/ui/itemviews/__init__.py:628
 msgid "File not found"
@@ -4204,7 +4208,7 @@ msgstr "Помилка(и) обробки: див. вкладку «Помилк
 
 #: picard/ui/itemviews/__init__.py:638
 msgid "Track saved"
-msgstr "Доріжку збережено"
+msgstr "Трек збережено"
 
 #: picard/ui/itemviews/__init__.py:642 picard/ui/itemviews/__init__.py:649
 msgid "Pending"
@@ -4400,7 +4404,10 @@ msgstr "Готовий"
 
 #: picard/ui/mainwindow/__init__.py:439
 msgid "Picard listens on this port to integrate with your browser. When you \"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" button on the web page loads the release into Picard."
-msgstr "Picard слухає цей порт для інтеграції з вашим браузером. Коли ви жмете \"Пошук\" або \"Відкрити в браузері\" в Picard, натискання кнопки \"Теггер\" на веб-сторінці завантажує випуск у Picard."
+msgstr ""
+"Picard слухає цей порт для інтеграції з вашим браузером. Коли ви тиснете "
+"\"Пошук\" або \"Відкрити в браузері\" у Picard, натискання кнопки \"Теґер\" "
+"на веб-сторінці завантажує випуск у Picard."
 
 #: picard/ui/mainwindow/__init__.py:467
 #, python-format
@@ -4461,7 +4468,7 @@ msgstr "Пошук"
 
 #: picard/ui/mainwindow/__init__.py:814
 msgid "Track"
-msgstr "Доріжка"
+msgstr "Трек"
 
 #: picard/ui/mainwindow/__init__.py:831
 msgid "&Advanced search"
@@ -4580,7 +4587,7 @@ msgstr "&Додати файли…"
 
 #: picard/ui/mainwindow/actions.py:151
 msgid "Add files to the tagger"
-msgstr "Додати файли до Tagger"
+msgstr "Додати файли в теґер"
 
 #: picard/ui/mainwindow/actions.py:160
 msgid "Add Fold&er…"
@@ -4588,7 +4595,7 @@ msgstr "Д&одати теку…"
 
 #: picard/ui/mainwindow/actions.py:161
 msgid "Add a folder to the tagger"
-msgstr "Додати теку до Tagger"
+msgstr "Додати теку в теґер"
 
 #: picard/ui/mainwindow/actions.py:163
 msgid "Ctrl+E"
@@ -4841,11 +4848,11 @@ msgstr "Пе&ремістити файли"
 
 #: picard/ui/mainwindow/actions.py:473
 msgid "Save &Tags"
-msgstr "&Зберегти позначки"
+msgstr "&Зберегти теги"
 
 #: picard/ui/mainwindow/actions.py:482
 msgid "Tags From &File Names…"
-msgstr "Позначки з н&азв файлів…"
+msgstr "Теги з н&азв файлів…"
 
 #: picard/ui/mainwindow/actions.py:483 picard/ui/options/interface_toolbar.py:131
 msgid "Parse File Names…"
@@ -5360,7 +5367,7 @@ msgstr "Перетягніть, щоб повторно замовити"
 
 #: picard/ui/options/interface_toolbar.py:270
 msgid "Select an action"
-msgstr "Виберати дію"
+msgstr "Вибрати дію"
 
 #: picard/ui/options/interface_top_tags.py:35
 msgid "Top Tags"
@@ -5520,9 +5527,15 @@ msgid ""
 "weighted percentage of the name belongs to each script. Then each of your selected scripts are checked, and if the name contains characters belonging to the script and the percentage of script characters in the name meets or exceeds the match threshold specified for the script, then "
 "the artist name will not be translated."
 msgstr ""
-"Кожен вибраний сценарій містить порогове значення збігу, яке використовується для визначення, чи слід використовувати цей сценарій. Коли ім'я виконавця оцінюється, щоб визначити, чи відповідає воно одному з вибраних вами сценаріїв, воно спочатку аналізується, щоб визначити, які "
-"сценарії представлені в назві, і який зважений відсоток назви належить кожному сценарію. Потім перевіряється кожен з вибраних вами сценаріїв, і якщо ім'я містить символи, що належать сценарію, а відсоток символів сценарію в назві відповідає або перевищує порогове значення збігу, "
-"вказане для сценарію, то ім'я виконавця не буде перекладено."
+"Кожен вибраний сценарій містить порогове значення збігу, яке "
+"використовується для визначення, чи потрібно використовувати цей сценарій. "
+"Коли ім'я виконавця оцінюється, щоб визначити, чи відповідає воно одному з "
+"вибраних вами сценаріїв, воно спочатку аналізується, щоб визначити, які "
+"сценарії представлені в назві, і який зважений відсоток назви належить "
+"кожному сценарію. Потім перевіряється кожен з вибраних вами сценаріїв, і "
+"якщо ім'я містить символи, що належать сценарію, а відсоток символів "
+"сценарію в назві відповідає або перевищує порогове значення збігу, вказане "
+"для сценарію, то ім'я виконавця не буде перекладено."
 
 #: picard/ui/options/network.py:36
 msgid "Network"
@@ -6129,7 +6142,7 @@ msgstr "Випуск"
 
 #: picard/ui/searchdialog/track.py:85
 msgid "Track Search Results"
-msgstr "Результат Пошуку Доріжки"
+msgstr "Результат пошуку треків"
 
 #: picard/ui/searchdialog/track.py:182
 msgid "Standalone Recording"
@@ -6149,8 +6162,8 @@ msgid ""
 "unlock the table in the table header's context menu."
 msgstr ""
 "Таблицю заблоковано. Щоб увімкнути сортування та\n"
-"\n"
-"зміну розміру стовпців, розблокуйте таблицю в контекстному меню заголовка таблиці."
+"зміну розміру стовпців, розблокуйте таблицю в \n"
+"контекстному меню заголовка таблиці."
 
 #: picard/ui/widgets/profilelistwidget.py:48
 msgid "Rename profile"
