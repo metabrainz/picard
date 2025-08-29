@@ -63,7 +63,7 @@ def _parse_pure_year(value: str) -> str | None:
 
 def _format_from_components(year: int | None, month: int | None, day: int | None) -> str:
     y = _clamp_year(year if year is not None else -1)
-    if y in (None,):
+    if y is None:
         return ""
     # y could be 0 here for partial unknown dates; treat specially below
     if month is None and day is None:
