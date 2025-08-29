@@ -8,9 +8,8 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-05-15 19:20+0000\n"
-"Last-Translator: \"salo.rock\" "
-"<salo.rock@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2025-08-29 21:36+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "3/constants/it/>\n"
 "Language: it\n"
@@ -18,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -4453,7 +4452,7 @@ msgstr ""
 
 #: picard/const/tags.py:205
 msgid "Bitrate"
-msgstr ""
+msgstr "Bitrate"
 
 #: picard/const/tags.py:206
 msgid "Approximate bitrate in kbps."
@@ -4488,7 +4487,7 @@ msgstr ""
 
 #: picard/const/tags.py:245
 msgid "Comment"
-msgstr ""
+msgstr "Commento"
 
 #: picard/const/tags.py:247
 msgid ""
