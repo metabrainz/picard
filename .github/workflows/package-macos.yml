@@ -19,8 +19,8 @@ jobs:
     env:
       DISCID_VERSION: 0.6.5
       DISCID_SHA256SUM: 8aa187dd5afdecc06441b49e086dd9a46b3ffac818fd9c1dae0cb55780d846f2
-      FPCALC_VERSION: 1.5.1
-      FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
+      FPCALC_VERSION: 1.6.0
+      FPCALC_SHA256SUM: 31f654cce8308fcb22869d043770eb66afffed95e8a548fd877f0e670c16d7ec
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
       TARGET_ARCH: ${{ matrix.setup.target-arch }}
       CODESIGN: 0
