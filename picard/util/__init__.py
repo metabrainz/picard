@@ -85,6 +85,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.util.datestr_util import sanitize_date  # noqa: F401
 
 
 winreg = None
@@ -321,29 +322,6 @@ def format_time(ms, display_zero=False):
         hours, remainder = divmod(duration_seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
         return "%d:%02d:%02d" % (hours, minutes, seconds)
-
-
-def sanitize_date(datestr):
-    """Sanitize date format.
-
-    e.g.: "1980-00-00" -> "1980"
-          "1980-  -  " -> "1980"
-          "1980-00-23" -> "1980-00-23"
-          ...
-    """
-    date = []
-    for num in reversed(datestr.split("-")):
-        try:
-            num = int(num.strip())
-        except ValueError:
-            if num == '':
-                num = 0
-            else:
-                break
-        if num or (num == 0 and date):
-            date.append(num)
-    date.reverse()
-    return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
 def replace_win32_incompat(string, repl="_", replacements=None):  # noqa: E302
