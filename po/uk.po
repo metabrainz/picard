@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:05+0200\n"
-"PO-Revision-Date: 2025-08-29 21:36+0000\n"
+"PO-Revision-Date: 2025-08-30 22:36+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -196,9 +196,9 @@ msgstr[3] "%i зображень"
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
 msgstr[0] "%i зображення не у всіх треках"
-msgstr[1] "%i різних зображень серед треків"
+msgstr[1] ""
 msgstr[2] "%i різних зображень серед треків"
-msgstr[3] "%i різних зображень серед треків"
+msgstr[3] ""
 
 #: picard/log.py:95 picard/ui/options/renaming.py:263 picard/ui/scripteditor/__init__.py:558 picard/ui/scripteditor/__init__.py:561 picard/ui/scripteditor/__init__.py:852 picard/ui/scripteditor/__init__.py:1080
 msgid "Error"
@@ -395,7 +395,7 @@ msgstr "Жанри, які потрібно включити або виключ
 
 #: picard/options.py:277
 msgid "Join multiple genres with"
-msgstr "Об’єднайтеся з кількома жанрами"
+msgstr "Об’єднати з кількома жанрами"
 
 #: picard/options.py:278
 msgid "Maximum number of genres"
@@ -419,7 +419,7 @@ msgstr "Дозволити вибір кількох каталогів"
 
 #: picard/options.py:286 picard/ui/forms/ui_options_interface.py:131
 msgid "Use builtin search rather than looking in browser"
-msgstr "Використовуйте вбудований пошук, а не переглядайте в браузері"
+msgstr "Використовувати вбудований пошук замість пошуку в браузері"
 
 #: picard/options.py:291 picard/ui/forms/ui_options_interface.py:136
 msgid "Adjust horizontal position in file browser automatically"
@@ -679,7 +679,7 @@ msgstr "Очистити наявні теги"
 
 #: picard/options.py:445
 msgid "Don't write tags"
-msgstr "Не писати теги"
+msgstr "Не записувати теги"
 
 #: picard/options.py:446 picard/ui/forms/ui_options_tags.py:84
 msgid "Fix missing seekpoints for FLAC files"
@@ -715,7 +715,7 @@ msgstr "Вилучити теги APEv2 з файлів AAC"
 
 #: picard/options.py:460
 msgid "Save APEv2 tags to AC3"
-msgstr "Зберігати APEv2-теги в AC3"
+msgstr "Зберегти APEv2-теги в AC3"
 
 #: picard/options.py:461 picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
 msgid "Remove APEv2 tags from AC3 files"
@@ -731,11 +731,11 @@ msgstr "Кодування тексту ID3v2"
 
 #: picard/options.py:467 picard/ui/forms/ui_options_tags_compatibility_id3.py:131
 msgid "Save iTunes compatible grouping and work"
-msgstr "Зберігати сумісність із групуванням і роботою iTunes"
+msgstr "Зберегти сумісність із групуванням і роботою iTunes"
 
 #: picard/options.py:468
 msgid "Write ID3v1 tags"
-msgstr "Записувати теги ID3v1"
+msgstr "Записати теги ID3v1"
 
 #: picard/options.py:469
 msgid "ID3v2 version to write"
@@ -751,7 +751,7 @@ msgstr "Кодування тексту RIFF INFO"
 
 #: picard/options.py:475
 msgid "Write RIFF INFO tags to WAVE files"
-msgstr "Записувати RIFF INFO-теги у WAVE-файли"
+msgstr "Записати RIFF INFO-теги у WAVE-файли"
 
 #: picard/options.py:481
 msgid "Selected file naming script"
@@ -830,11 +830,11 @@ msgstr "Розрізнення (Disambiguation)"
 
 #: picard/releasegroup.py:96
 msgid "[no barcode]"
-msgstr "[Штрих-код відсутній]"
+msgstr "[штрих-код відсутній]"
 
 #: picard/releasegroup.py:137
 msgid "[no release info]"
-msgstr "[Інформація про випуск відсутня]"
+msgstr "[інформація про реліз відсутня]"
 
 #: picard/tagger.py:512 picard/ui/forms/ui_options_general.py:210
 msgid "MusicBrainz Account"
@@ -1004,11 +1004,11 @@ msgstr "Архів обкладинки"
 
 #: picard/coverart/providers/caa.py:184
 msgid "Cover Art Archive: Release"
-msgstr "Архів обкладинок: реліз"
+msgstr "Архів обкладинок: Реліз"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr "Архів обкладинок: група релізів"
+msgstr "Архів обкладинок: Група релізів"
 
 #: picard/coverart/providers/local.py:71
 msgid "Local Files"
@@ -2370,11 +2370,11 @@ msgstr "інформація з аудіофайлу"
 
 #: picard/tags/tagvar.py:76
 msgid "not provided from MusicBrainz data"
-msgstr "не надано з даних MusicBrainz"
+msgstr "не надано даних з MusicBrainz"
 
 #: picard/tags/tagvar.py:77
 msgid "not populated by stock Picard"
-msgstr "не заповнено запасним Пікардом"
+msgstr "Не заповнено стандартним Picard"
 
 #: picard/tags/tagvar.py:270
 #, python-brace-format
@@ -2561,7 +2561,7 @@ msgstr "Текст журналу (попередження)"
 
 #: picard/ui/colors.py:55
 msgid "Profile highlight background"
-msgstr "Фон виділення профілю"
+msgstr "Фонове підсвічування профілю"
 
 #: picard/ui/colors.py:55 picard/ui/colors.py:56
 msgid "Profiles"
@@ -2706,11 +2706,11 @@ msgstr "Рядок для виділення"
 
 #: picard/ui/logview.py:212
 msgid "Highlight"
-msgstr "Виділити"
+msgstr "Підсвітити"
 
 #: picard/ui/logview.py:221
 msgid "Clear Highlight"
-msgstr "Очистити виділення"
+msgstr "Очистити підсвічування"
 
 #: picard/ui/logview.py:227 picard/ui/logview.py:313
 msgid "Clear Log"
@@ -2751,9 +2751,14 @@ msgid ""
 "<p><strong>Changes made by Picard are not reversible.</strong></p><p>Picard is a very flexible music tagging tool which can rename your files and overwrite the tags. We <strong>strongly recommend</strong> that you:</p><ul><li>read the <a href='{documentation_url}'>User Guide</a> (also "
 "available from the Help menu)</li><li>test with copies of your music and work in small batches</li></ul><p>Picard is open source software written by volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
-"перегляд альбому<p><strong>Зміни, внесені Picard, незворотні.</strong></p><p>Picard — це дуже гнучкий інструмент для додавання тегів до музики, який може перейменовувати ваші файли та перезаписувати теги. Ми <strong>наполегливо рекомендуємо</strong> вам:</p><ul><li>прочитати <a "
-"href='{documentation_url}'>Посібник користувача</a> (також доступний у меню «Довідка»)</li><li>тестувати з копіями вашої музики та працювати невеликими партіями</li></ul><p>Picard — це програмне забезпечення з відкритим кодом, написане волонтерами. Воно надається «як є» та без "
-"гарантії.</p>"
+"<p><strong>Зміни, внесені Picard, незворотні.</strong></p><p>Picard — це "
+"дуже гнучкий інструмент для додавання тегів до музики, який може "
+"перейменовувати ваші файли та перезаписувати теги. Ми <strong>наполегливо "
+"рекомендуємо</strong> вам:</p><ul><li>прочитати <a href='{documentation_url}"
+"'>Посібник користувача</a> (також доступний у меню «Довідка»)</"
+"li><li>тестувати з копіями вашої музики та працювати невеликими "
+"партіями</li></ul><p>Picard — це програмне забезпечення з відкритим кодом, "
+"написане волонтерами. Воно надається «як є» та без гарантії.</p>"
 
 #: picard/ui/newuserdialog.py:50
 msgid "Show this message again the next time you start Picard."
@@ -2784,9 +2789,9 @@ msgstr "Оновлення плагінів Picard"
 #: picard/ui/pluginupdatedialog.py:69
 msgid "There is an update available for one of your currently installed plugins:"
 msgid_plural "There are updates available for your currently installed plugins:"
-msgstr[0] "Доступні оновлення для одного з ваших встановлених плагінів:"
+msgstr[0] "Доступні оновлення для одного з встановлених плагінів:"
 msgstr[1] ""
-msgstr[2] ""
+msgstr[2] "Доступні оновлення для встановлених плагінів:"
 msgstr[3] ""
 
 #: picard/ui/pluginupdatedialog.py:77
@@ -2794,7 +2799,7 @@ msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
 msgstr[0] "Ви хочете оновити плагін зараз?"
 msgstr[1] "Ви хочете оновити плагіни зараз?"
-msgstr[2] ""
+msgstr[2] "Ви хочете оновити плагіни зараз?"
 msgstr[3] ""
 
 #: picard/ui/pluginupdatedialog.py:86
@@ -2803,8 +2808,8 @@ msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
 msgstr[0] "плюс {extra_file_count:,d} інший плагін."
 msgstr[1] "плюс {extra_file_count:,d} інші плагіни"
-msgstr[2] ""
-msgstr[3] ""
+msgstr[2] "плюс {extra_file_count:,d} інші плагінів"
+msgstr[3] "плюс {extra_file_count:,d} інші плагінів"
 
 #: picard/ui/ratingwidget.py:101
 #, python-format
@@ -2823,16 +2828,16 @@ msgstr[3] ""
 msgid "rename the file"
 msgid_plural "rename the files"
 msgstr[0] "Перейменувати файл"
-msgstr[1] "Перейменувати файли"
-msgstr[2] ""
+msgstr[1] ""
+msgstr[2] "Перейменувати файли"
 msgstr[3] ""
 
 #: picard/ui/savewarningdialog.py:53
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
 msgstr[0] "перемістити файл в інше місце"
-msgstr[1] "перемістити файли в інше місце"
-msgstr[2] ""
+msgstr[1] ""
+msgstr[2] "перемістити файли в інше місце"
 msgstr[3] ""
 
 #: picard/ui/savewarningdialog.py:58
@@ -2841,8 +2846,8 @@ msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
 msgstr[0] "Ви збираєтеся зберегти файл {file_count:,d}, і це призведе до:"
 msgstr[1] "Ви збираєтеся зберегти файли {file_count:,d}, і це призведе до:"
-msgstr[2] ""
-msgstr[3] ""
+msgstr[2] "Ви збираєтеся зберегти файлів {file_count:,d}, і це призведе до:"
+msgstr[3] "Ви збираєтеся зберегти файлів {file_count:,d}, і це призведе до:"
 
 #: picard/ui/savewarningdialog.py:62
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
@@ -3011,7 +3016,7 @@ msgstr "Пошук CD"
 
 #: picard/ui/forms/ui_cdlookup.py:92
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "Такі випуски в базі MusicBrainz відповідають CD:"
+msgstr "Наступні релізи на MusicBrainz відповідають CD:"
 
 #: picard/ui/forms/ui_cdlookup.py:93
 msgid "No matching releases found for this disc."
@@ -3388,7 +3393,9 @@ msgstr ", "
 
 #: picard/ui/forms/ui_options_genres.py:135
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
-msgstr "Теги жанрів або фолксономії для включення або виключення, по одному на рядок:"
+msgstr ""
+"Теги жанрів або користувачів для включення або виключення, по одному на "
+"рядок:"
 
 #: picard/ui/forms/ui_options_genres.py:136
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
@@ -3847,10 +3854,11 @@ msgid ""
 "Picard will tag WAVE files using ID3v2 tags. This is not supported by all software. For compatibility with software which does not support ID3v2 tags in WAVE files additional RIFF INFO tags can be written to the files. RIFF INFO has only limited support for tags and character "
 "encodings."
 msgstr ""
-"Picard буде додавати теги до WAVE-файлів, використовуючи теги ID3v2. Не всі "
-"програми підтримують це. Для сумісності з програмами, які не підтримують "
-"теги ID3v2 у WAVE-файлах, можна додатково записати теги RIFF INFO у файли. "
-"Теги RIFF INFO мають обмежену підтримку тегів та кодування символів."
+"Picard буде додавати теги до файлів WAVE за допомогою ID3v2-тегів. Це "
+"підтримується не всім програмним забезпеченням. Для сумісності з програмами, "
+"які не підтримують ID3v2-теги у WAVE-файлах, до файлів можуть додаватися "
+"додаткові теги RIFF INFO. RIFF INFO має лише обмежену підтримку тегів і "
+"кодування символів."
 
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:64
 msgid "Also include RIFF INFO tags in the files"
@@ -5226,12 +5234,13 @@ msgid ""
 "</body></html>"
 msgstr ""
 "<html><head/><body>\n"
-"<p>Ви можете додавати жанри для перевірки фільтрів, по одному на рядок.<br/>\n"
+"<p>Ви можете додавати жанри для перевірки фільтрів, по одному на рядок.<br/>"
+"\n"
 "Цей ігровий майданчик не буде збережено після виходу з налаштувань.\n"
 "</p>\n"
 "<p>\n"
-"Червоний тло означає, що тег буде пропущено.<br/>\n"
-"Зелений тло означає, що тег буде збережено.\n"
+"Червоне тло означає, що тег буде пропущено.<br/>\n"
+"Зелене тло означає, що тег буде збережено.\n"
 "</p>\n"
 "</body></html>"
 
@@ -5527,15 +5536,13 @@ msgid ""
 "weighted percentage of the name belongs to each script. Then each of your selected scripts are checked, and if the name contains characters belonging to the script and the percentage of script characters in the name meets or exceeds the match threshold specified for the script, then "
 "the artist name will not be translated."
 msgstr ""
-"Кожен вибраний сценарій містить порогове значення збігу, яке "
-"використовується для визначення, чи потрібно використовувати цей сценарій. "
-"Коли ім'я виконавця оцінюється, щоб визначити, чи відповідає воно одному з "
-"вибраних вами сценаріїв, воно спочатку аналізується, щоб визначити, які "
-"сценарії представлені в назві, і який зважений відсоток назви належить "
-"кожному сценарію. Потім перевіряється кожен з вибраних вами сценаріїв, і "
-"якщо ім'я містить символи, що належать сценарію, а відсоток символів "
-"сценарію в назві відповідає або перевищує порогове значення збігу, вказане "
-"для сценарію, то ім'я виконавця не буде перекладено."
+"Кожен вибраний письмовий стандарт має значення порогу відповідності, що "
+"визначає, чи потрібно його застосовувати. Під час перевірки імені виконавця "
+"спершу виконується розбір, щоб з’ясувати, які стандарти представлені в імені "
+"та який відсоток символів належить кожному з них. Потім перевіряються всі "
+"вибрані стандарти: якщо ім’я містить символи певного стандарту, і відсоток "
+"цих символів у імені дорівнює або перевищує встановлений поріг для цього "
+"стандарту, ім’я виконавця не перекладається."
 
 #: picard/ui/options/network.py:36
 msgid "Network"
@@ -6161,9 +6168,8 @@ msgid ""
 "The table is locked. To enable sorting and column resizing\n"
 "unlock the table in the table header's context menu."
 msgstr ""
-"Таблицю заблоковано. Щоб увімкнути сортування та\n"
-"зміну розміру стовпців, розблокуйте таблицю в \n"
-"контекстному меню заголовка таблиці."
+"Таблицю заблоковано. Для сортування й зміни розміру\n"
+"стовпців розблокуйте її в меню заголовка."
 
 #: picard/ui/widgets/profilelistwidget.py:48
 msgid "Rename profile"
