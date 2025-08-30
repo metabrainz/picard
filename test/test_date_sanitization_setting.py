@@ -47,7 +47,7 @@ def patched_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 @pytest.mark.parametrize(
-    'format_key, disabled, expected_enabled',
+    ('format_key', 'disabled', 'expected_enabled'),
     [
         ('vorbis', [], True),
         ('vorbis', ['vorbis'], False),
@@ -66,7 +66,7 @@ def test_is_date_sanitization_enabled_decision(
 
 
 @pytest.mark.parametrize(
-    'disabled, input_date, expected',
+    ('disabled', 'input_date', 'expected'),
     [
         ([], '2021-04', ['2021']),
         ([], '2021-04-01', ['2021-04-01']),
@@ -95,7 +95,7 @@ def test_id3_v23_date_coercion_respects_setting(
 
 
 @pytest.mark.parametrize(
-    'date_in, expected_when_enabled',
+    ('date_in', 'expected_when_enabled'),
     [
         ('2005-12-00', '2005-12'),
         ('2005-00-00', '2005'),
@@ -127,4 +127,6 @@ def test_vorbis_dates_from_complaint_when_disabled(patched_get_config: None, dat
     config.setting['disable_date_sanitization_formats'] = ['vorbis']
     # Simulate vorbis path: sanitize skipped when disabled
     assert is_date_sanitization_enabled('vorbis') is False
-    assert date_in == date_in
+    # Gate sanitization like vorbis writer does
+    output: str = date_in if not is_date_sanitization_enabled('vorbis') else sanitize_date(date_in)
+    assert output == date_in
