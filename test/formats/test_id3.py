@@ -27,6 +27,7 @@
 
 
 import os.path
+from unittest.mock import patch
 
 import mutagen
 
@@ -753,6 +754,11 @@ class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 class ID3FileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        # Ensure setting exists and mock get_config to return our test config
+        config.setting['disable_date_sanitization_formats'] = []
+        self._get_config_patcher = patch('picard.config.get_config', return_value=config.config)
+        self._get_config_patcher.start()
+        self.addCleanup(self._get_config_patcher.stop)
         self.file = id3.ID3File('somepath/somefile.mp3')
         config.setting['write_id3v23'] = False
         config.setting['id3v23_join_with'] = ' / '

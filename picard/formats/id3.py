@@ -66,6 +66,7 @@ from picard.tags import (
 )
 from picard.util import (
     encode_filename,
+    is_date_sanitization_enabled,
     sanitize_date,
 )
 
@@ -305,7 +306,7 @@ class ID3File(File):
         for frame in tags.values():
             self._process_frame(frame, metadata, config_params)
 
-        if 'date' in metadata:
+        if 'date' in metadata and is_date_sanitization_enabled('id3'):
             self._sanitize_date(metadata)
 
         self._info(metadata, config_params['file'])
@@ -653,7 +654,9 @@ class ID3File(File):
         if tag == 'originaldate':
             values = [v[:4] for v in values]
         elif tag == 'date':
-            values = [(v[:4] if len(v) < 10 else v) for v in values]
+            # Only coerce invalid ID3v2.3 date if sanitization is enabled
+            if is_date_sanitization_enabled('id3'):
+                values = [(v[:4] if len(v) < 10 else v) for v in values]
 
         # If this is a multi-valued field, then it needs to be flattened,
         # unless it's TIPL or TMCL which can still be multi-valued.

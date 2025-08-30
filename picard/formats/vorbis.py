@@ -53,6 +53,7 @@ from picard.formats.util import guess_format
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
+    is_date_sanitization_enabled,
     sanitize_date,
 )
 
@@ -147,7 +148,8 @@ class VCommentFile(File):
                 name = origname
                 if name in {'date', 'originaldate', 'releasedate'}:
                     # YYYY-00-00 => YYYY
-                    value = sanitize_date(value)
+                    if is_date_sanitization_enabled('vorbis'):
+                        value = sanitize_date(value)
                 elif name == 'performer' or name == 'comment':
                     # transform "performer=Joe Barr (Piano)" to "performer:Piano=Joe Barr"
                     name += ':'
@@ -286,7 +288,8 @@ class VCommentFile(File):
                 name = 'lyrics'
             elif name in {'date', 'originaldate', 'releasedate'}:
                 # YYYY-00-00 => YYYY
-                value = sanitize_date(value)
+                if is_date_sanitization_enabled('vorbis'):
+                    value = sanitize_date(value)
             elif name.startswith('performer:') or name.startswith('comment:'):
                 # transform "performer:Piano=Joe Barr" to "performer=Joe Barr (Piano)"
                 name, desc = name.split(':', 1)
