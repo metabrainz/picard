@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-08-30 12:36+0000\n"
+"PO-Revision-Date: 2025-08-31 20:36+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/app/uk/>\n"
@@ -379,7 +379,7 @@ msgstr ""
 
 #: picard/profile.py:91
 msgid "Join multiple genres with"
-msgstr ""
+msgstr "Об’єднати з кількома жанрами"
 
 #: picard/profile.py:92
 msgid "Genres to include or exclude"
@@ -403,7 +403,7 @@ msgstr "Теги"
 
 #: picard/profile.py:107
 msgid "Don't write tags"
-msgstr "Не писати теги"
+msgstr "Не записувати теги"
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
@@ -435,7 +435,7 @@ msgstr ""
 
 #: picard/profile.py:117
 msgid "ID3v2 version to write"
-msgstr ""
+msgstr "Версія ID3v2 для запису"
 
 #: picard/profile.py:118 picard/ui/ui_options_tags_compatibility_id3.py:119
 msgid "ID3v2 text encoding"
@@ -443,15 +443,15 @@ msgstr "Кодування тексту ID3v2"
 
 #: picard/profile.py:119
 msgid "ID3v2.3 join character"
-msgstr ""
+msgstr "Символ з’єднання ID3v2.3"
 
 #: picard/profile.py:120 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
-msgstr ""
+msgstr "Зберегти сумісність із групуванням і роботою iTunes"
 
 #: picard/profile.py:121
 msgid "Write ID3v1 tags"
-msgstr ""
+msgstr "Записати теги ID3v1"
 
 #: picard/profile.py:124
 msgid "Save APEv2 tags to AAC"
@@ -463,7 +463,7 @@ msgstr "Вилучити теги APEv2 з файлів AAC"
 
 #: picard/profile.py:128
 msgid "Save APEv2 tags to AC3"
-msgstr ""
+msgstr "Зберегти APEv2-теги в AC3"
 
 #: picard/profile.py:129 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
@@ -471,7 +471,7 @@ msgstr "Вилучити теги APEv2 з файлів AC3"
 
 #: picard/profile.py:132
 msgid "Write RIFF INFO tags to WAVE files"
-msgstr ""
+msgstr "Записати RIFF INFO-теги у WAVE-файли"
 
 #: picard/profile.py:133 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
@@ -616,7 +616,7 @@ msgstr "Дозволити вибір кількох каталогів"
 
 #: picard/profile.py:191 picard/ui/ui_options_interface.py:125
 msgid "Use builtin search rather than looking in browser"
-msgstr "Використовуйте вбудований пошук, а не переглядайте в браузері"
+msgstr "Використовувати вбудований пошук замість пошуку в браузері"
 
 #: picard/profile.py:192
 #, fuzzy
@@ -791,11 +791,11 @@ msgstr "Категорія номер"
 
 #: picard/releasegroup.py:110
 msgid "[no barcode]"
-msgstr "[Штрих-код відсутній]"
+msgstr "[штрих-код відсутній]"
 
 #: picard/releasegroup.py:126
 msgid "[no release info]"
-msgstr "[Інформація про випуск відсутня]"
+msgstr "[інформація про реліз відсутня]"
 
 #: picard/tagger.py:650 picard/ui/ui_options_general.py:204
 msgid "MusicBrainz Account"
@@ -970,11 +970,11 @@ msgstr "Архів обкладинки"
 
 #: picard/coverart/providers/caa.py:197
 msgid "Cover Art Archive: Release"
-msgstr ""
+msgstr "Архів обкладинок: Реліз"
 
 #: picard/coverart/providers/caa_release_group.py:44
 msgid "Cover Art Archive: Release Group"
-msgstr ""
+msgstr "Архів обкладинок: Група релізів"
 
 #: picard/coverart/providers/local.py:78
 msgid "Local Files"
@@ -2779,9 +2779,9 @@ msgstr[3] "%i зображень"
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
 msgstr[0] "%i зображення не у всіх треках"
-msgstr[1] "%i різних зображень серед треків"
+msgstr[1] ""
 msgstr[2] "%i різних зображень серед треків"
-msgstr[3] "%i різних зображень серед треків"
+msgstr[3] ""
 
 #: picard/ui/itemviews.py:160 picard/util/tags.py:123
 msgid "Title"
@@ -3000,11 +3000,11 @@ msgstr ""
 
 #: picard/ui/logview.py:195
 msgid "Highlight"
-msgstr "Видылити"
+msgstr "Підсвітити"
 
 #: picard/ui/logview.py:204
 msgid "Clear Highlight"
-msgstr "Очистити виділення"
+msgstr "Очистити підсвічування"
 
 #: picard/ui/logview.py:210 picard/ui/logview.py:296
 msgid "Clear Log"
@@ -3705,6 +3705,14 @@ msgid ""
 "work in small batches</li></ul><p>Picard is open source software written by "
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
+"<p><strong>Зміни, внесені Picard, незворотні.</strong></p><p>Picard — це "
+"дуже гнучкий інструмент для додавання тегів до музики, який може "
+"перейменовувати ваші файли та перезаписувати теги. Ми <strong>наполегливо "
+"рекомендуємо</strong> вам:</p><ul><li>прочитати <a href='{documentation_url}"
+"'>Посібник користувача</a> (також доступний у меню «Довідка»)</"
+"li><li>тестувати з копіями вашої музики та працювати невеликими "
+"партіями</li></ul><p>Picard — це програмне забезпечення з відкритим кодом, "
+"написане волонтерами. Воно надається «як є» та без гарантії.</p>"
 
 #: picard/ui/newuserdialog.py:49
 msgid "Show this message again the next time you start Picard."
@@ -3806,26 +3814,26 @@ msgid ""
 "There is an update available for one of your currently installed plugins:"
 msgid_plural ""
 "There are updates available for your currently installed plugins:"
-msgstr[0] ""
+msgstr[0] "Доступні оновлення для одного з встановлених плагінів:"
 msgstr[1] ""
-msgstr[2] ""
+msgstr[2] "Доступні оновлення для встановлених плагінів:"
 msgstr[3] ""
 
 #: picard/ui/pluginupdatedialog.py:65
 msgid "Do you want to update the plugin now?"
 msgid_plural "Do you want to update the plugins now?"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Ви хочете оновити плагін зараз?"
+msgstr[1] "Ви хочете оновити плагіни зараз?"
+msgstr[2] "Ви хочете оновити плагіни зараз?"
 msgstr[3] ""
 
 #: picard/ui/pluginupdatedialog.py:73
 msgid "plus {extra_file_count:,d} other plugin."
 msgid_plural "plus {extra_file_count:,d} other plugins."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "плюс {extra_file_count:,d} інший плагін."
+msgstr[1] "плюс {extra_file_count:,d} інші плагіни"
+msgstr[2] "плюс {extra_file_count:,d} інші плагінів"
+msgstr[3] "плюс {extra_file_count:,d} інші плагінів"
 
 #: picard/ui/ratingwidget.py:99
 #, python-format
@@ -3845,30 +3853,30 @@ msgstr[3] ""
 #: picard/ui/savewarningdialog.py:43
 msgid "rename the file"
 msgid_plural "rename the files"
-msgstr[0] ""
+msgstr[0] "Перейменувати файл"
 msgstr[1] ""
-msgstr[2] ""
+msgstr[2] "Перейменувати файли"
 msgstr[3] ""
 
 #: picard/ui/savewarningdialog.py:48
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
-msgstr[0] ""
+msgstr[0] "перемістити файл в інше місце"
 msgstr[1] ""
-msgstr[2] ""
+msgstr[2] "перемістити файли в інше місце"
 msgstr[3] ""
 
 #: picard/ui/savewarningdialog.py:54
 msgid "You are about to save {file_count:,d} file and this will:"
 msgid_plural "You are about to save {file_count:,d} files and this will:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Ви збираєтеся зберегти файл {file_count:,d}, і це призведе до:"
+msgstr[1] "Ви збираєтеся зберегти файли {file_count:,d}, і це призведе до:"
+msgstr[2] "Ви збираєтеся зберегти файлів {file_count:,d}, і це призведе до:"
+msgstr[3] "Ви збираєтеся зберегти файлів {file_count:,d}, і це призведе до:"
 
 #: picard/ui/savewarningdialog.py:58
 msgid "<strong>This action cannot be undone.</strong> Do you want to continue?"
-msgstr ""
+msgstr "<strong>Цю дію не можна скасувати.</strong> Продовжити?"
 
 #: picard/ui/savewarningdialog.py:61
 msgid "<li>{action}</li>"
@@ -4129,7 +4137,7 @@ msgstr "Пошук CD"
 
 #: picard/ui/ui_cdlookup.py:86
 msgid "The following releases on MusicBrainz match the CD:"
-msgstr "Такі випуски в базі MusicBrainz відповідають CD:"
+msgstr "Наступні релізи на MusicBrainz відповідають CD:"
 
 #: picard/ui/ui_cdlookup.py:87
 msgid "No matching releases found for this disc."
@@ -4177,7 +4185,7 @@ msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:105
 msgid "Exception Language Script Selector"
-msgstr ""
+msgstr "Виключення вибору письмового стандарту"
 
 #: picard/ui/ui_exception_script_selector.py:106
 msgid "Selected Scripts"
@@ -4335,7 +4343,7 @@ msgstr "Аудіо Відбиток"
 
 #: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
-msgstr ""
+msgstr "Не використовувати аудіо відбиток"
 
 #: picard/ui/ui_options_fingerprinting.py:99
 msgid "Use AcoustID"
@@ -4455,6 +4463,8 @@ msgstr ", "
 #: picard/ui/ui_options_genres.py:129
 msgid "Genres or folksonomy tags to include or exclude, one per line:"
 msgstr ""
+"Теги жанрів або користувачів для включення або виключення, по одному на "
+"рядок:"
 
 #: picard/ui/ui_options_genres.py:130
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
@@ -4915,7 +4925,7 @@ msgstr ""
 "підтримується не всім програмним забезпеченням. Для сумісності з програмами, "
 "які не підтримують ID3v2-теги у WAVE-файлах, до файлів можуть додаватися "
 "додаткові теги RIFF INFO. RIFF INFO має лише обмежену підтримку тегів і "
-"кодувань символів."
+"кодування символів."
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
 #, fuzzy
@@ -5231,6 +5241,16 @@ msgid ""
 "</p>\n"
 "</body></html>"
 msgstr ""
+"<html><head/><body>\n"
+"<p>Ви можете додавати жанри для перевірки фільтрів, по одному на рядок.<br/>"
+"\n"
+"Цей ігровий майданчик не буде збережено після виходу з налаштувань.\n"
+"</p>\n"
+"<p>\n"
+"Червоне тло означає, що тег буде пропущено.<br/>\n"
+"Зелене тло означає, що тег буде збережено.\n"
+"</p>\n"
+"</body></html>"
 
 #: picard/ui/options/genres.py:87
 msgid "Genres"
@@ -5479,15 +5499,13 @@ msgid ""
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
-"Кожен вибраний сценарій містить порогове значення збігу, яке "
-"використовується для визначення, чи потрібно використовувати цей сценарій. "
-"Коли ім'я виконавця оцінюється, щоб визначити, чи відповідає воно одному з "
-"вибраних вами сценаріїв, воно спочатку аналізується, щоб визначити, які "
-"сценарії представлені в назві, і який зважений відсоток назви належить "
-"кожному сценарію. Потім перевіряється кожен з вибраних вами сценаріїв, і "
-"якщо ім'я містить символи, що належать сценарію, а відсоток символів "
-"сценарію в назві відповідає або перевищує порогове значення збігу, вказане "
-"для сценарію, то ім'я виконавця не буде перекладено."
+"Кожен вибраний письмовий стандарт має значення порогу відповідності, що "
+"визначає, чи потрібно його застосовувати. Під час перевірки імені виконавця "
+"спершу виконується розбір, щоб з’ясувати, які стандарти представлені в імені "
+"та який відсоток символів належить кожному з них. Потім перевіряються всі "
+"вибрані стандарти: якщо ім’я містить символи певного стандарту, і відсоток "
+"цих символів у імені дорівнює або перевищує встановлений поріг для цього "
+"стандарту, ім’я виконавця не перекладається."
 
 #: picard/ui/options/network.py:42
 msgid "Network"
@@ -5871,9 +5889,8 @@ msgid ""
 "The table is locked. To enable sorting and column resizing\n"
 "unlock the table in the table header's context menu."
 msgstr ""
-"Таблицю заблоковано. Щоб увімкнути сортування та\n"
-"зміну розміру стовпців, розблокуйте таблицю в \n"
-"контекстному меню заголовка таблиці."
+"Таблицю заблоковано. Для сортування й зміни розміру\n"
+"стовпців розблокуйте її в меню заголовка."
 
 #: picard/util/__init__.py:383
 msgid "No Title"
