@@ -70,6 +70,9 @@ class TagsOptionsPage(OptionsPage):
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
 
+        # Cache date sanitization entries once; formats are unlikely to change at runtime
+        self._date_sanitization_entries = date_sanitization_format_entries()
+
         # Add multi-select combo for disabling date sanitization per format
         self._init_disable_date_sanitization_formats_control()
 
@@ -116,7 +119,7 @@ class TagsOptionsPage(OptionsPage):
             QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents
         )
 
-        for key, title in self._date_format_entries():
+        for key, title in self._date_sanitization_entries:
             item = QtGui.QStandardItem(title)
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             item.setData(key, QtCore.Qt.ItemDataRole.UserRole)
@@ -127,11 +130,6 @@ class TagsOptionsPage(OptionsPage):
         # Place the control at the end of the page
         self.ui.vboxlayout.addWidget(label)
         self.ui.vboxlayout.addWidget(self.disable_date_sanitization_formats)
-
-    @staticmethod
-    def _date_format_entries() -> tuple[tuple[str, str], ...]:
-        # Re-evaluate in case formats have been registered after import time
-        return date_sanitization_format_entries()
 
     def _set_disable_date_sanitization_checked(self, keys):
         model = self.disable_date_sanitization_formats.model()
