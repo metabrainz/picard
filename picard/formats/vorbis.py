@@ -50,6 +50,7 @@ from picard.coverart.image import (
 from picard.coverart.utils import types_from_id3
 from picard.file import File
 from picard.formats.util import guess_format
+from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
@@ -126,7 +127,7 @@ class VCommentFile(File):
 
     _File = None
     FORMAT_KEY = 'vorbis'
-    FORMAT_DESCRIPTION = "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
+    FORMAT_DESCRIPTION = N_("Vorbis Comments (FLAC, Ogg Vorbis, Opus)")
     DATE_SANITIZATION_TOGGLEABLE = True
 
     __translate = {

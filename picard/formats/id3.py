@@ -59,6 +59,7 @@ from picard.formats.mutagenext import (
     compatid3,
     delall_ci,
 )
+from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.tags import (
     parse_comment_tag,
@@ -131,7 +132,7 @@ class ID3File(File):
 
     _IsMP3 = False
     FORMAT_KEY = 'id3'
-    FORMAT_DESCRIPTION = "ID3 (MP3, AIFF)"
+    FORMAT_DESCRIPTION = N_("ID3 (MP3, AIFF)")
     DATE_SANITIZATION_TOGGLEABLE = True
 
     __upgrade = {

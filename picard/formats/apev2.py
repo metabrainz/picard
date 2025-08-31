@@ -46,6 +46,7 @@ from picard.coverart.image import (
     TagCoverArtImage,
 )
 from picard.file import File
+from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
@@ -98,7 +99,7 @@ class APEv2File(File):
 
     _File = None
     FORMAT_KEY = 'apev2'
-    FORMAT_DESCRIPTION = "APEv2 (Monkey's Audio, WavPack)"
+    FORMAT_DESCRIPTION = N_("APEv2 (Monkey's Audio, WavPack)")
     DATE_SANITIZATION_TOGGLEABLE = True
 
     __translate = {

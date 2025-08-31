@@ -120,7 +120,7 @@ class TagsOptionsPage(OptionsPage):
         )
 
         for key, title in self._date_sanitization_entries:
-            item = QtGui.QStandardItem(title)
+            item = QtGui.QStandardItem(_(title))
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             item.setData(key, QtCore.Qt.ItemDataRole.UserRole)
             item.setCheckable(True)
