@@ -21,12 +21,11 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
-from typing import Any
+from typing import Any, cast
 
 from picard import config
 from picard.formats.vorbis import OggVorbisFile
 from picard.metadata import Metadata
-from picard.util import is_date_sanitization_enabled
 
 import pytest  # type: ignore
 
@@ -116,7 +115,8 @@ def test_vorbis_load_respects_date_sanitization_setting(
     expected_when_enabled: str,
 ) -> None:
     # Arrange
-    config.setting['disable_date_sanitization_formats'] = disabled
+    settings = cast(dict[str, Any], config.setting)
+    settings['disable_date_sanitization_formats'] = disabled
 
     # Monkeypatch the backend class used by vorbis to our fake
     # Seed tags via class variable consumed by __init__
@@ -130,7 +130,7 @@ def test_vorbis_load_respects_date_sanitization_setting(
     metadata = vorbis_file._load('dummy.ogg')
 
     # Assert
-    if is_date_sanitization_enabled('vorbis'):
+    if vorbis_file.is_date_sanitization_enabled():
         assert metadata['date'] == expected_when_enabled
     else:
         assert metadata['date'] == input_date
@@ -149,7 +149,8 @@ def test_vorbis_save_respects_date_sanitization_setting(
     patched_get_config: None, monkeypatch: pytest.MonkeyPatch, disabled: list[str], input_date: str, expected_saved: str
 ) -> None:
     # Arrange
-    config.setting.update(
+    settings = cast(dict[str, Any], config.setting)
+    settings.update(
         {
             'disable_date_sanitization_formats': disabled,
             'clear_existing_tags': False,

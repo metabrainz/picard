@@ -28,7 +28,6 @@ from picard.formats.util import date_sanitization_format_entries
 from picard.formats.vorbis import OggVorbisFile
 from picard.metadata import Metadata
 from picard.util import (
-    is_date_sanitization_enabled,
     sanitize_date,
 )
 
@@ -50,23 +49,30 @@ def patched_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 @pytest.mark.parametrize(
-    ('format_key', 'disabled', 'expected_enabled'),
+    ('file_cls', 'format_key'),
     [
-        ('vorbis', [], True),
-        ('vorbis', ['vorbis'], False),
-        ('apev2', [], True),
-        ('apev2', ['apev2'], False),
-        ('id3', [], True),
-        ('id3', ['id3'], False),
-        ('id3', ['vorbis', 'apev2'], True),
+        (id3.ID3File, 'id3'),
+        (OggVorbisFile, 'vorbis'),
+        (APEv2File, 'apev2'),
     ],
 )
-def test_is_date_sanitization_enabled_decision(
-    patched_get_config: None, format_key: str, disabled: list[str], expected_enabled: bool
+@pytest.mark.parametrize(
+    'disabled',
+    [
+        [],
+        ['vorbis'],
+        ['apev2'],
+        ['id3'],
+        ['vorbis', 'apev2'],
+    ],
+)
+def test_instance_method_decision_matches_disabled_setting(
+    patched_get_config: None, file_cls: Any, format_key: str, disabled: list[str]
 ) -> None:
     settings = cast(dict[str, Any], config.setting)
     settings['disable_date_sanitization_formats'] = disabled
-    assert is_date_sanitization_enabled(format_key) is expected_enabled
+    file_obj = file_cls.__new__(file_cls)
+    assert file_obj.is_date_sanitization_enabled() is (format_key not in set(disabled))
 
 
 @pytest.mark.parametrize(
@@ -115,7 +121,8 @@ def test_vorbis_dates_from_complaint_when_enabled(
     settings = cast(dict[str, Any], config.setting)
     settings['disable_date_sanitization_formats'] = []
     # Simulate vorbis path: sanitize applied when enabled
-    assert is_date_sanitization_enabled('vorbis') is True
+    vorbis = OggVorbisFile.__new__(OggVorbisFile)
+    assert vorbis.is_date_sanitization_enabled() is True
     assert sanitize_date(date_in) == expected_when_enabled
 
 
@@ -133,9 +140,10 @@ def test_vorbis_dates_from_complaint_when_disabled(patched_get_config: None, dat
     settings = cast(dict[str, Any], config.setting)
     settings['disable_date_sanitization_formats'] = ['vorbis']
     # Simulate vorbis path: sanitize skipped when disabled
-    assert is_date_sanitization_enabled('vorbis') is False
+    vorbis = OggVorbisFile.__new__(OggVorbisFile)
+    assert vorbis.is_date_sanitization_enabled() is False
     # Gate sanitization like vorbis writer does
-    output: str = date_in if not is_date_sanitization_enabled('vorbis') else sanitize_date(date_in)
+    output: str = date_in if not vorbis.is_date_sanitization_enabled() else sanitize_date(date_in)
     assert output == date_in
 
 
