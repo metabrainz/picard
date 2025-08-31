@@ -125,4 +125,4 @@ def date_sanitization_format_entries() -> tuple[tuple[str, str], ...]:
         if toggleable:
             # dropping `_()` here as it's done in the UI, e.g. see `tags.py`
             entries.append((key, desc))
-    return tuple(entries)
+    return tuple(sorted(entries))
