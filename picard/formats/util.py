@@ -33,7 +33,6 @@ from picard.extension_points.formats import (
     ext_point_formats,
     ext_to_format,
 )
-from picard.i18n import gettext as _
 
 
 def supported_formats():
@@ -88,6 +87,23 @@ def open_(filename):
         return None
 
 
+def format_key_desc_generator():
+    """Yield (file_format, key, desc) for formats with key and description.
+
+    Ensures each FORMAT_KEY is yielded at most once.
+    """
+    seen = set()
+    for file_format in ext_point_formats:
+        key = getattr(file_format, 'FORMAT_KEY', None)
+        if key is None or key in seen:
+            continue
+        desc = getattr(file_format, 'FORMAT_DESCRIPTION', None)
+        if desc is None:
+            continue
+        seen.add(key)
+        yield file_format, key, desc
+
+
 def date_sanitization_format_entries() -> tuple[tuple[str, str], ...]:
     """Return registered format entries that support date-sanitization toggle.
 
@@ -104,12 +120,9 @@ def date_sanitization_format_entries() -> tuple[tuple[str, str], ...]:
     de-duplicating on ``FORMAT_KEY``.
     """
     entries = []
-    seen = set()
-    for file_format in ext_point_formats:
-        key = getattr(file_format, 'FORMAT_KEY', None)
-        desc = getattr(file_format, 'FORMAT_DESCRIPTION', None)
+    for file_format, key, desc in format_key_desc_generator():
         toggleable = getattr(file_format, 'DATE_SANITIZATION_TOGGLEABLE', False)
-        if toggleable and key and desc and key not in seen:
-            entries.append((key, _(desc)))
-            seen.add(key)
+        if toggleable:
+            # dropping `_()` here as it's done in the UI, e.g. see `tags.py`
+            entries.append((key, desc))
     return tuple(entries)
