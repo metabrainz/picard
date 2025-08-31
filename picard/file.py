@@ -134,6 +134,12 @@ class FileErrorType(Enum):
 
 class File(MetadataItem):
     NAME = None
+    # Logical tag format key and description for the family of this handler.
+    # Subclasses should override for format families (e.g. ID3, Vorbis, APEv2).
+    FORMAT_KEY = None
+    FORMAT_DESCRIPTION = None
+    # Whether date sanitization can be toggled for this format family via settings
+    DATE_SANITIZATION_TOGGLEABLE = False
 
     UNDEFINED = -1
     PENDING = 0
@@ -960,6 +966,41 @@ class File(MetadataItem):
 
     def iterfiles(self, save=False):
         yield self
+
+    # --- Per-format feature toggles ---
+    def is_date_sanitization_enabled(self) -> bool:
+        """Determine whether date sanitization should be applied.
+
+        Returns
+        -------
+        bool
+            True if sanitization should be applied for this file's format, False otherwise.
+
+        Notes
+        -----
+        This respects the per-format user configuration keyed by ``FORMAT_KEY``.
+        If the current format does not support toggling (i.e.,
+        ``DATE_SANITIZATION_TOGGLEABLE`` is False) or ``FORMAT_KEY`` is not set,
+        this method returns True.
+        """
+        # If this format does not support toggling, always treat as enabled
+        if not getattr(self.__class__, 'DATE_SANITIZATION_TOGGLEABLE', False):
+            return True
+        format_key = getattr(self.__class__, 'FORMAT_KEY', None)
+
+        # If the format key is not set, always treat as enabled
+        if not format_key:
+            return True
+
+        # Local import to avoid circular dependencies
+        from picard.config import get_config  # pylint: disable=import-outside-toplevel
+
+        try:
+            disabled = get_config().setting['disable_date_sanitization_formats']
+        except KeyError:
+            return True
+        else:
+            return format_key not in set(disabled or [])
 
 
 file_post_load_processors = PluginFunctions(label='file_post_load_processors')

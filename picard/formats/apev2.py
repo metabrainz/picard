@@ -49,7 +49,6 @@ from picard.file import File
 from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
-    is_date_sanitization_enabled,
     sanitize_date,
 )
 from picard.util.filenaming import (
@@ -98,6 +97,9 @@ class APEv2File(File):
     """Generic APEv2-based file."""
 
     _File = None
+    FORMAT_KEY = 'apev2'
+    FORMAT_DESCRIPTION = "APEv2 (Monkey's Audio, WavPack)"
+    DATE_SANITIZATION_TOGGLEABLE = True
 
     __translate = {
         'albumartist': 'Album Artist',
@@ -163,7 +165,7 @@ class APEv2File(File):
                     name = name_lower
                     if name == 'year':
                         name = 'date'
-                        if is_date_sanitization_enabled('apev2'):
+                        if self.is_date_sanitization_enabled():
                             value = sanitize_date(value)
                     elif name == 'track':
                         name = 'tracknumber'

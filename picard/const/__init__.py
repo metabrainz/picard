@@ -37,10 +37,7 @@ from collections import OrderedDict
 from picard import PICARD_VERSION
 from picard.const import appdirs
 from picard.const.attributes import MB_ATTRIBUTES
-from picard.i18n import (
-    N_,
-    gettext as _,
-)
+from picard.i18n import N_
 
 
 # Config directory
@@ -172,13 +169,3 @@ SCRIPT_LANGUAGE_VERSION = '1.1'
 
 BROWSER_INTEGRATION_LOCALIP = '127.0.0.1'
 BROWSER_INTEGRATION_LOCALHOST = BROWSER_INTEGRATION_LOCALIP
-
-# Introduced by PICARD-2729: Major tagging formats
-MAJOR_TAGGING_FORMATS: tuple[tuple[str, str], ...] = (
-    ('vorbis', _("Vorbis Comments (FLAC, Ogg Vorbis, Opus)")),
-    ('id3', _("ID3 (MP3, AIFF)")),
-    ('apev2', _("APEv2 (Monkey's Audio, WavPack)")),
-    ('mp4', _("MP4/iTunes Tags (M4A, AAC)")),
-    ('asf', _("ASF/WMA Tags")),
-    ('riff', _("RIFF INFO (WAV)")),
-)

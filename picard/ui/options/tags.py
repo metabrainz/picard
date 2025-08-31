@@ -34,8 +34,8 @@ from PyQt6 import (
 )
 
 from picard.config import get_config
-from picard.const import MAJOR_TAGGING_FORMATS
 from picard.extension_points.options_pages import register_options_page
+from picard.formats.util import date_sanitization_format_entries
 from picard.i18n import (
     N_,
     gettext as _,
@@ -43,10 +43,6 @@ from picard.i18n import (
 
 from picard.ui.forms.ui_options_tags import Ui_TagsOptionsPage
 from picard.ui.options import OptionsPage
-
-
-# For date sanitization, we only need the first three major tagging formats
-DATE_SANITIZATION_FORMATS: tuple[tuple[str, str], ...] = MAJOR_TAGGING_FORMATS[:3]
 
 
 class TagsOptionsPage(OptionsPage):
@@ -134,7 +130,8 @@ class TagsOptionsPage(OptionsPage):
 
     @staticmethod
     def _date_format_entries() -> tuple[tuple[str, str], ...]:
-        return DATE_SANITIZATION_FORMATS
+        # Re-evaluate in case formats have been registered after import time
+        return date_sanitization_format_entries()
 
     def _set_disable_date_sanitization_checked(self, keys):
         model = self.disable_date_sanitization_formats.model()

@@ -19,9 +19,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from types import SimpleNamespace
+from typing import Any, cast
 
 from picard import config
 from picard.formats import id3
+from picard.formats.apev2 import APEv2File
+from picard.formats.util import date_sanitization_format_entries
+from picard.formats.vorbis import OggVorbisFile
 from picard.metadata import Metadata
 from picard.util import (
     is_date_sanitization_enabled,
@@ -40,6 +44,8 @@ def patched_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
     config.persist = fake.persist
     config.profiles = fake.profiles
     monkeypatch.setattr('picard.config.get_config', lambda: fake, raising=True)
+    # Ensure default expected keys exist for extension point iteration
+    fake.setting['enabled_plugins'] = []
     return None
 
 
@@ -58,7 +64,8 @@ def patched_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_is_date_sanitization_enabled_decision(
     patched_get_config: None, format_key: str, disabled: list[str], expected_enabled: bool
 ) -> None:
-    config.setting['disable_date_sanitization_formats'] = disabled
+    settings = cast(dict[str, Any], config.setting)
+    settings['disable_date_sanitization_formats'] = disabled
     assert is_date_sanitization_enabled(format_key) is expected_enabled
 
 
@@ -75,15 +82,16 @@ def test_id3_v23_date_coercion_respects_setting(
     patched_get_config: None, disabled: list[str], input_date: str, expected: list[str]
 ) -> None:
     # Arrange: configure setting and build an ID3File with v2.3 behavior
-    config.setting['disable_date_sanitization_formats'] = disabled
+    settings = cast(dict[str, Any], config.setting)
+    settings['disable_date_sanitization_formats'] = disabled
     # Avoid File.__init__ side effects by constructing without __init__
     test_file = id3.ID3File.__new__(id3.ID3File)
     metadata = Metadata()
     metadata['artist'] = ['a', 'b']
     metadata['originaldate'] = '2020-01-31'
     metadata['date'] = input_date
-    config.setting['write_id3v23'] = True
-    config.setting['id3v23_join_with'] = ' / '
+    settings['write_id3v23'] = True
+    settings['id3v23_join_with'] = ' / '
 
     # Act + Assert: artist and originaldate keep legacy semantics, date depends on setting
     assert test_file.format_specific_metadata(metadata, 'artist') == ['a / b']
@@ -104,7 +112,8 @@ def test_id3_v23_date_coercion_respects_setting(
 def test_vorbis_dates_from_complaint_when_enabled(
     patched_get_config: None, date_in: str, expected_when_enabled: str
 ) -> None:
-    config.setting['disable_date_sanitization_formats'] = []
+    settings = cast(dict[str, Any], config.setting)
+    settings['disable_date_sanitization_formats'] = []
     # Simulate vorbis path: sanitize applied when enabled
     assert is_date_sanitization_enabled('vorbis') is True
     assert sanitize_date(date_in) == expected_when_enabled
@@ -121,9 +130,55 @@ def test_vorbis_dates_from_complaint_when_enabled(
     ],
 )
 def test_vorbis_dates_from_complaint_when_disabled(patched_get_config: None, date_in: str) -> None:
-    config.setting['disable_date_sanitization_formats'] = ['vorbis']
+    settings = cast(dict[str, Any], config.setting)
+    settings['disable_date_sanitization_formats'] = ['vorbis']
     # Simulate vorbis path: sanitize skipped when disabled
     assert is_date_sanitization_enabled('vorbis') is False
     # Gate sanitization like vorbis writer does
     output: str = date_in if not is_date_sanitization_enabled('vorbis') else sanitize_date(date_in)
     assert output == date_in
+
+
+@pytest.mark.parametrize(
+    ('file_cls', 'format_key'),
+    [
+        (id3.ID3File, 'id3'),
+        (OggVorbisFile, 'vorbis'),
+        (APEv2File, 'apev2'),
+    ],
+)
+@pytest.mark.parametrize('disabled', [[], ['id3'], ['vorbis'], ['apev2'], ['vorbis', 'apev2']])
+def test_instance_method_respects_config(
+    patched_get_config: None, file_cls: Any, format_key: str, disabled: list[str]
+) -> None:
+    # Arrange
+    settings = cast(dict[str, Any], config.setting)
+    settings['disable_date_sanitization_formats'] = disabled
+    file_obj = file_cls.__new__(file_cls)
+
+    # Act
+    enabled = file_obj.is_date_sanitization_enabled()
+
+    # Assert
+    expected_enabled = format_key not in set(disabled)
+    assert enabled is expected_enabled
+
+
+def test_entries_include_known_toggleable_families(patched_get_config: None) -> None:
+    # Ensure deterministic plugin environment for extension point iteration
+    settings = cast(dict[str, Any], config.setting)
+    settings['enabled_plugins'] = []
+    entries = dict(date_sanitization_format_entries())
+    # These are provided by our built-in formats; presence is enough here
+    assert 'id3' in entries and isinstance(entries['id3'], str)
+    assert 'vorbis' in entries and isinstance(entries['vorbis'], str)
+    assert 'apev2' in entries and isinstance(entries['apev2'], str)
+
+
+def test_entries_are_unique_by_key(patched_get_config: None) -> None:
+    # Ensure deterministic plugin environment for extension point iteration
+    settings = cast(dict[str, Any], config.setting)
+    settings['enabled_plugins'] = []
+    entries = date_sanitization_format_entries()
+    keys = [k for (k, _title) in entries]
+    assert len(keys) == len(set(keys))

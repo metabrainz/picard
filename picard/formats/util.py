@@ -33,6 +33,7 @@ from picard.extension_points.formats import (
     ext_point_formats,
     ext_to_format,
 )
+from picard.i18n import gettext as _
 
 
 def supported_formats():
@@ -85,3 +86,30 @@ def open_(filename):
     except Exception as error:
         log.error("Error occurred:\n%s", error)
         return None
+
+
+def date_sanitization_format_entries() -> tuple[tuple[str, str], ...]:
+    """Return registered format entries that support date-sanitization toggle.
+
+    Returns
+    -------
+    tuple[tuple[str, str], ...]
+        Sequence of ``(format_key, translated_description)`` pairs for
+        all registered format families that allow toggling date sanitization.
+
+    Notes
+    -----
+    This inspects registered format classes and includes only those where
+    ``DATE_SANITIZATION_TOGGLEABLE`` is True. Duplicates are avoided by
+    de-duplicating on ``FORMAT_KEY``.
+    """
+    entries = []
+    seen = set()
+    for file_format in ext_point_formats:
+        key = getattr(file_format, 'FORMAT_KEY', None)
+        desc = getattr(file_format, 'FORMAT_DESCRIPTION', None)
+        toggleable = getattr(file_format, 'DATE_SANITIZATION_TOGGLEABLE', False)
+        if toggleable and key and desc and key not in seen:
+            entries.append((key, _(desc)))
+            seen.add(key)
+    return tuple(entries)
