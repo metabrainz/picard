@@ -89,7 +89,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.preserved_tags.set_user_sortable(False)
 
         # Load disable date sanitization formats
-        disabled = config.setting['disable_date_sanitization_formats'] or []
+        disabled = config.setting['disable_date_sanitization_formats']
         self._set_disable_date_sanitization_checked(disabled)
 
     def save(self):
