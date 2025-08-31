@@ -986,9 +986,9 @@ class File(MetadataItem):
         # If this format does not support toggling, always treat as enabled
         if not getattr(self.__class__, 'DATE_SANITIZATION_TOGGLEABLE', False):
             return True
-        format_key = getattr(self.__class__, 'FORMAT_KEY', None)
 
         # If the format key is not set, always treat as enabled
+        format_key = getattr(self.__class__, 'FORMAT_KEY', None)
         if not format_key:
             return True
 
@@ -1000,7 +1000,7 @@ class File(MetadataItem):
         except KeyError:
             return True
         else:
-            return format_key not in set(disabled or [])
+            return format_key not in disabled
 
 
 file_post_load_processors = PluginFunctions(label='file_post_load_processors')
