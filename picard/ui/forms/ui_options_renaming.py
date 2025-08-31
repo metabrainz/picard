@@ -156,7 +156,7 @@ class Ui_RenamingOptionsPage(object):
         self.move_files.setTitle(_("Move files when saving"))
         self.label.setText(_("Destination directory:"))
         self.move_files_to_browse.setText(_("Browse…"))
-        self.move_additional_files.setText(_("Move additional files (case insensitive):"))
+        self.move_additional_files.setText(_("Move additional files and subfolders (case insensitive):"))
         self.delete_empty_dirs.setText(_("Delete empty directories"))
         self.rename_files.setText(_("Rename files when saving"))
         self.label_2.setText(_("Selected file naming script:"))
