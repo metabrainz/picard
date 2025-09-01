@@ -59,6 +59,7 @@ from picard.formats.mutagenext import (
     compatid3,
     delall_ci,
 )
+from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.tags import (
     parse_comment_tag,
@@ -130,6 +131,9 @@ class ID3File(File):
     """Generic ID3-based file."""
 
     _IsMP3 = False
+    FORMAT_KEY = 'id3'
+    FORMAT_DESCRIPTION = N_("ID3 (MP3, AIFF)")
+    DATE_SANITIZATION_TOGGLEABLE = True
 
     __upgrade = {
         'XSOP': 'TSOP',
@@ -305,7 +309,7 @@ class ID3File(File):
         for frame in tags.values():
             self._process_frame(frame, metadata, config_params)
 
-        if 'date' in metadata:
+        if 'date' in metadata and self.is_date_sanitization_enabled():
             self._sanitize_date(metadata)
 
         self._info(metadata, config_params['file'])
@@ -653,7 +657,9 @@ class ID3File(File):
         if tag == 'originaldate':
             values = [v[:4] for v in values]
         elif tag == 'date':
-            values = [(v[:4] if len(v) < 10 else v) for v in values]
+            # Only coerce invalid ID3v2.3 date if sanitization is enabled
+            if self.is_date_sanitization_enabled():
+                values = [(v[:4] if len(v) < 10 else v) for v in values]
 
         # If this is a multi-valued field, then it needs to be flattened,
         # unless it's TIPL or TMCL which can still be multi-valued.

@@ -85,3 +85,44 @@ def open_(filename):
     except Exception as error:
         log.error("Error occurred:\n%s", error)
         return None
+
+
+def format_key_desc_generator():
+    """Yield (file_format, key, desc) for formats with key and description.
+
+    Ensures each FORMAT_KEY is yielded at most once.
+    """
+    seen = set()
+    for file_format in ext_point_formats:
+        key = getattr(file_format, 'FORMAT_KEY', None)
+        if key is None or key in seen:
+            continue
+        desc = getattr(file_format, 'FORMAT_DESCRIPTION', None)
+        if desc is None:
+            continue
+        seen.add(key)
+        yield file_format, key, desc
+
+
+def date_sanitization_format_entries() -> tuple[tuple[str, str], ...]:
+    """Return registered format entries that support date-sanitization toggle.
+
+    Returns
+    -------
+    tuple[tuple[str, str], ...]
+        Sequence of ``(format_key, translated_description)`` pairs for
+        all registered format families that allow toggling date sanitization.
+
+    Notes
+    -----
+    This inspects registered format classes and includes only those where
+    ``DATE_SANITIZATION_TOGGLEABLE`` is True. Duplicates are avoided by
+    de-duplicating on ``FORMAT_KEY``.
+    """
+    entries = []
+    for file_format, key, desc in format_key_desc_generator():
+        toggleable = getattr(file_format, 'DATE_SANITIZATION_TOGGLEABLE', False)
+        if toggleable:
+            # dropping `_()` here as it's done in the UI, e.g. see `tags.py`
+            entries.append((key, desc))
+    return tuple(sorted(entries))
