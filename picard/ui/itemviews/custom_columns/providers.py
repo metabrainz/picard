@@ -47,8 +47,20 @@ class FieldReferenceProvider:
         except (AttributeError, KeyError, TypeError) as e:
             log.debug("%s failure for key %r: %r", self.__class__.__name__, self.key, e)
             return ""
-        else:
-            return obj.column(lookup_key)  # type: ignore[attr-defined]
+
+        # Safely access and call obj.column if available and callable
+        column_method = getattr(obj, "column", None)
+        if not callable(column_method):
+            log.debug(
+                "%s missing callable 'column' attribute; returning empty",
+                type(obj).__name__,
+            )
+            return ""
+        try:
+            return column_method(lookup_key)
+        except (TypeError, AttributeError, KeyError, ValueError) as e:
+            log.debug("%s failure calling column(%r): %r", self.__class__.__name__, lookup_key, e)
+            return ""
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         return f"FieldReferenceProvider(key={self.key!r})"
