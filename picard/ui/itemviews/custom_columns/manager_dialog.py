@@ -30,10 +30,17 @@ from __future__ import annotations
 from dataclasses import replace
 from enum import IntEnum
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+
+try:
+    from PyQt6 import (
+        QtCore,
+        QtWidgets,
+    )
+except ImportError:  # pragma: no cover - allow static analysis without Qt installed
+    from typing import Any as _Any
+
+    QtCore = _Any  # type: ignore[assignment]
+    QtWidgets = _Any  # type: ignore[assignment]
 
 from picard.config import get_config
 from picard.i18n import gettext as _
@@ -122,6 +129,12 @@ class _SpecsTableModel(QtCore.QAbstractTableModel):
 
     def spec_at(self, row: int) -> CustomColumnSpec:
         return self._specs[row]
+
+    def find_row_by_key(self, key: str) -> int:
+        for idx, s in enumerate(self._specs):
+            if s.key == key:
+                return idx
+        return -1
 
     def set_specs(self, specs: list[CustomColumnSpec]) -> None:
         self.beginResetModel()
@@ -231,9 +244,14 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             spec = dlg.result_spec
             if spec:
+                # Upsert in model by key to avoid duplicate rows
+                existing_row = self._model.find_row_by_key(spec.key)
+                if existing_row >= 0:
+                    self._model.update_spec(existing_row, spec)
+                else:
+                    self._model.insert_spec(spec)
                 # Persist only; defer UI registration to Apply
                 add_or_update_spec(spec)
-                self._model.insert_spec(spec)
                 save_specs_to_config(self._model.specs())
                 self._mark_dirty()
 
@@ -247,12 +265,21 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             new_spec = dlg.result_spec
             if not new_spec:
                 return
+            # If key collides with another row, merge into that row and remove current
+            other_row = self._model.find_row_by_key(new_spec.key)
+            if other_row >= 0 and other_row != row:
+                self._model.update_spec(other_row, new_spec)
+                self._model.remove_row(row)
+                # Track old key for robust unregister on apply
+                if new_spec.key != spec.key:
+                    self._deleted_keys.add(spec.key)
+            else:
+                self._model.update_spec(row, new_spec)
+                if new_spec.key != spec.key:
+                    # Track old key for robust unregister on apply
+                    self._deleted_keys.add(spec.key)
             # Persist update (key change handled by upsert); defer UI updates to Apply
             add_or_update_spec(new_spec)
-            self._model.update_spec(row, new_spec)
-            if new_spec.key != spec.key:
-                # Track old key for robust unregister on apply
-                self._deleted_keys.add(spec.key)
             save_specs_to_config(self._model.specs())
             self._mark_dirty()
 
@@ -305,6 +332,19 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
                 registrar.unregister_column(key)
             self._deleted_keys.clear()
 
+        # De-duplicate specs by key in the model, keeping the last occurrence
+        specs = self._model.specs()
+        seen: set[str] = set()
+        dedup_reversed: list[CustomColumnSpec] = []
+        for s in reversed(specs):
+            if s.key in seen:
+                continue
+            seen.add(s.key)
+            dedup_reversed.append(s)
+        dedup_specs = list(reversed(dedup_reversed))
+        if len(dedup_specs) != len(specs):
+            self._model.set_specs(dedup_specs)
+
         save_specs_to_config(self._model.specs())
         # Best-effort to ensure live registry matches persisted specs
         registrar = CustomColumnRegistrar()
@@ -342,21 +382,21 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
     def _refresh_all_views(self) -> None:
         """Refresh headers for all open views that use recognized columns."""
-        from PyQt6 import QtWidgets
-
+        from picard.ui.columns import Columns as _Columns
         from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
 
-        app = QtWidgets.QApplication.instance()
+        app = QtWidgets.QApplication.instance() if hasattr(QtWidgets, 'QApplication') else None
         if not app:
             return
         recognized = set(get_recognized_view_columns().values())
         for widget in app.allWidgets():
             cols = getattr(widget, 'columns', None)
             if cols in recognized and hasattr(widget, 'setHeaderLabels'):
-                labels = tuple(_(c.title) for c in cols)
-                if hasattr(widget, 'setColumnCount'):
-                    widget.setColumnCount(len(cols))
-                widget.setHeaderLabels(labels)
+                if isinstance(cols, _Columns):
+                    labels = tuple(_(c.title) for c in cols)
+                    if hasattr(widget, 'setColumnCount'):
+                        widget.setColumnCount(len(cols))
+                    widget.setHeaderLabels(labels)
 
     def _mark_dirty(self) -> None:
         self._dirty = True

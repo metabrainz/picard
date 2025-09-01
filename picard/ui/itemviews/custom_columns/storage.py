@@ -388,7 +388,16 @@ class CustomColumnConfigManager:
     def save_specs(self, specs: Iterable[CustomColumnSpec]) -> None:
         cfg = get_config()
         # Use QSettings API to write a JSON-like list under 'setting/<key>'
-        specs_list = list(specs)
+        # De-duplicate by key keeping the last occurrence to match UI expectations
+        original_list = list(specs)
+        seen: set[str] = set()
+        dedup_reversed: list[CustomColumnSpec] = []
+        for spec in reversed(original_list):
+            if spec.key in seen:
+                continue
+            seen.add(spec.key)
+            dedup_reversed.append(spec)
+        specs_list = list(reversed(dedup_reversed))
         data_list = [CustomColumnSpecSerializer.to_dict(spec) for spec in specs_list]
         cfg.setting[self._config_key] = data_list
         cfg.sync()

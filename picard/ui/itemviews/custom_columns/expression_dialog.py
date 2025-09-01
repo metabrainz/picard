@@ -27,10 +27,17 @@ registration or persistence (SRP/SOC).
 
 from __future__ import annotations
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+
+try:
+    from PyQt6 import (
+        QtCore,
+        QtWidgets,
+    )
+except ImportError:  # pragma: no cover - allow static analysis without Qt installed
+    from typing import Any as _Any
+
+    QtCore = _Any  # type: ignore[assignment]
+    QtWidgets = _Any  # type: ignore[assignment]
 
 from picard.i18n import gettext as _
 
@@ -68,6 +75,27 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
 
         # Inputs
         self._title = QtWidgets.QLineEdit(self)
+        # Optional key field: if left empty we derive from Field Name
+        self._key = QtWidgets.QLineEdit(self)
+        if hasattr(self._key, 'setPlaceholderText'):
+            self._key.setPlaceholderText(_("Auto-derived from Field Name"))
+        # Explain behavior: optional, defaulting and update on conflict
+        if hasattr(self._key, 'setToolTip'):
+            self._key.setToolTip(
+                _(
+                    "Optional internal identifier. If left empty, a key will be "
+                    "derived from the Field Name. If a column with this key already "
+                    "exists, it will be updated instead of duplicated."
+                )
+            )
+        if hasattr(self._key, 'setWhatsThis'):
+            self._key.setWhatsThis(
+                _(
+                    "Optional internal identifier used to uniquely reference this column.\n"
+                    "Leave blank to auto-derive from the Field Name. If another column "
+                    "with the same key exists, your changes will update that column."
+                )
+            )
         self._kind = QtWidgets.QComboBox(self)
         self._kind.addItems([CustomColumnKind.SCRIPT.value, CustomColumnKind.FIELD.value])
 
@@ -102,6 +130,7 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         # Layout
         form = QtWidgets.QFormLayout()
         form.addRow(_("Field Name") + "*", self._title)
+        form.addRow(_("Key"), self._key)
         form.addRow(_("Type") + "*", self._kind)
         form.addRow(_("Expression") + "*", self._expression)
         # Keep transform widgets hidden and not user-selectable for now
@@ -130,6 +159,9 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         self._transform.setVisible(False)
         self._on_kind_changed(self._kind.currentText())
 
+        # Keep key placeholder roughly in sync with title
+        self._title.textChanged.connect(self._on_title_changed)
+
         if existing_spec:
             self._populate(existing_spec)
 
@@ -145,6 +177,7 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
 
     def _populate(self, spec: CustomColumnSpec) -> None:
         self._title.setText(spec.title)
+        self._key.setText(spec.key)
         self._kind.setCurrentText(spec.kind.value)
         self._expression.setPlainText(spec.expression)
         if spec.width is not None:
@@ -156,6 +189,8 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         self._album_view.setChecked(VIEW_ALBUM in views)
         if spec.transform:
             self._transform.setCurrentText(spec.transform.value)
+        # Update derived key placeholder to reflect current title
+        self._on_title_changed(self._title.text())
 
     def _accept(self) -> None:
         title = self._title.text().strip()
@@ -175,7 +210,9 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             QtWidgets.QMessageBox.warning(self, _("Invalid"), _("Expression is required."))
             return
 
-        key = self._derive_key_from_field_name(title)
+        # Use provided key if given; otherwise derive from Field Name
+        key_input = self._key.text().strip()
+        key = key_input or self._derive_key_from_field_name(title)
         selected = []
         if file_view:
             selected.append(VIEW_FILE)
@@ -194,6 +231,12 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             transform=transform,
         )
         self.accept()
+
+    def _on_title_changed(self, text: str) -> None:
+        # Update placeholder to show how the key will be derived if left empty
+        derived = self._derive_key_from_field_name(text)
+        if hasattr(self._key, 'setPlaceholderText'):
+            self._key.setPlaceholderText(derived or _("Auto-derived from Field Name"))
 
     @staticmethod
     def _derive_key_from_field_name(name: str) -> str:
