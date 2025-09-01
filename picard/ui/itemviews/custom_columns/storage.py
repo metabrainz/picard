@@ -252,12 +252,13 @@ def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
     """
 
     align = _align_from_name(spec.align)
+    column: CustomColumn
     if spec.kind == CustomColumnKind.FIELD:
-        return make_field_column(
+        column = make_field_column(
             spec.title, spec.key, width=spec.width, align=align, always_visible=spec.always_visible
         )
-    if spec.kind == CustomColumnKind.SCRIPT:
-        return make_script_column(
+    elif spec.kind == CustomColumnKind.SCRIPT:
+        column = make_script_column(
             spec.title,
             spec.key,
             spec.expression,
@@ -265,18 +266,23 @@ def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
             align=align,
             always_visible=spec.always_visible,
         )
-    # TRANSFORM: apply transform to a base provider derived from expression
-    transform_fn = _make_transform_callable(spec.transform or TransformName.STRIP)
-    base_provider = FieldReferenceProvider(spec.expression)
-    return make_transformed_column(
-        spec.title,
-        spec.key,
-        base=base_provider,
-        transform=transform_fn,
-        width=spec.width,
-        align=align,
-        always_visible=spec.always_visible,
-    )
+    else:
+        # TRANSFORM: apply transform to a base provider derived from expression
+        transform_fn = _make_transform_callable(spec.transform or TransformName.STRIP)
+        base_provider = FieldReferenceProvider(spec.expression)
+        column = make_transformed_column(
+            spec.title,
+            spec.key,
+            base=base_provider,
+            transform=transform_fn,
+            width=spec.width,
+            align=align,
+            always_visible=spec.always_visible,
+        )
+
+    # Ensure new custom columns are visible by default when restoring defaults
+    column.is_default = True
+    return column
 
 
 class CustomColumnConfigManager:

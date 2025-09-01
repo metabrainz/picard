@@ -40,12 +40,11 @@ from picard.i18n import gettext as _
 
 from picard.ui.itemviews.custom_columns.expression_dialog import CustomColumnExpressionDialog
 from picard.ui.itemviews.custom_columns.storage import (
+    CustomColumnRegistrar,
     CustomColumnSpec,
     add_or_update_spec,
-    delete_spec_by_key,
     load_specs_from_config,
     save_specs_to_config,
-    unregister_and_delete,
 )
 
 
@@ -156,7 +155,8 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
     def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
         super().__init__(parent=parent)
-        self.setWindowTitle(_("Custom Columns"))
+        # Renamed this to `Manage Columns` because we want to use the API for all columns, i.e. 'custom' columns == columns
+        self.setWindowTitle(_("Manage Columns"))
 
         # Table + model
         self._table = QtWidgets.QTableView(self)
@@ -214,6 +214,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
         self.resize(800, 400)
         self._dirty = False
+        self._deleted_keys: set[str] = set()
         self._update_apply()
 
     # --- Actions ------------------------------------------------------------
@@ -230,6 +231,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             spec = dlg.result_spec
             if spec:
+                # Persist only; defer UI registration to Apply
                 add_or_update_spec(spec)
                 self._model.insert_spec(spec)
                 save_specs_to_config(self._model.specs())
@@ -245,9 +247,15 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             new_spec = dlg.result_spec
             if not new_spec:
                 return
-            # Persist update (key change handled by upsert)
+            # Persist update (key change handled by upsert); defer UI updates to Apply
             add_or_update_spec(new_spec)
             self._model.update_spec(row, new_spec)
+            if new_spec.key != spec.key:
+                # Track old key for robust unregister on apply
+                self._deleted_keys.add(spec.key)
+                # Ensure old column hides immediately if present
+                self._make_column_nondefault(spec.key)
+                self._refresh_all_views()
             save_specs_to_config(self._model.specs())
             self._mark_dirty()
 
@@ -286,22 +294,81 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
         )
         if confirm == QtWidgets.QMessageBox.StandardButton.Yes:
-            # Unregister live and delete from persistence; fallback to delete only on import issues
-            try:
-                unregister_and_delete(spec.key)
-            except ImportError:
-                delete_spec_by_key(spec.key)
+            # Defer deletion to Apply: track key, update model/config, mark dirty
+            self._deleted_keys.add(spec.key)
             self._model.remove_row(row)
             save_specs_to_config(self._model.specs())
             self._mark_dirty()
 
     def _on_apply(self) -> None:
+        # First ensure any deleted keys are unregistered live
+        if self._deleted_keys:
+            registrar = CustomColumnRegistrar()
+            # Hide deleted columns first to avoid lingering default visibility
+            for key in list(self._deleted_keys):
+                self._make_column_nondefault(key)
+            self._refresh_all_views()
+            for key in list(self._deleted_keys):
+                registrar.unregister_column(key)
+            self._deleted_keys.clear()
+
         save_specs_to_config(self._model.specs())
+        # Best-effort to ensure live registry matches persisted specs
+        registrar = CustomColumnRegistrar()
+        for spec in self._model.specs():
+            registrar.register_column(spec)
         cfg = get_config()
         if cfg is not None:
             cfg.sync()
         self._dirty = False
         self._update_apply()
+        self._refresh_all_views()
+
+    def _refresh_current_view(self) -> None:
+        """Refresh the header of the view that opened this dialog.
+
+        This ensures changes to the columns list are reflected immediately
+        (section count, labels, visibility menu) without requiring restart.
+        """
+        parent = self.parent()
+        # The manager is opened from ConfigurableColumnsHeader context menu
+        # where the header is passed as parent. The corresponding view is
+        # the header's parent widget.
+        if parent is None:
+            return
+        header = parent
+        from picard.ui.widgets.configurablecolumnsheader import ConfigurableColumnsHeader
+
+        if isinstance(header, ConfigurableColumnsHeader):
+            view = header.parent()
+            if hasattr(view, 'restore_default_columns'):
+                view.restore_default_columns()
+
+    def _refresh_all_views(self) -> None:
+        """Refresh headers for all open views that use recognized columns."""
+        from PyQt6 import QtWidgets
+
+        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
+
+        app = QtWidgets.QApplication.instance()
+        if not app:
+            return
+        recognized = set(get_recognized_view_columns().values())
+        for widget in app.allWidgets():
+            if getattr(widget, 'columns', None) in recognized and hasattr(widget, 'restore_default_columns'):
+                widget.restore_default_columns()
+
+    def _make_column_nondefault(self, key: str) -> None:
+        """Set is_default to False for any live column matching key across views."""
+        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
+
+        for cols in get_recognized_view_columns().values():
+            try:
+                pos = cols.pos(key)
+            except KeyError:
+                continue
+            col = cols[pos]
+            col.is_default = False
 
     def _mark_dirty(self) -> None:
         self._dirty = True
