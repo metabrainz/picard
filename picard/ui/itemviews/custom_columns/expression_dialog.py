@@ -37,10 +37,10 @@ from picard.i18n import gettext as _
 from picard.ui.columns import ColumnAlign
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
-    VIEW_ALBUM,
-    VIEW_FILE,
+    RECOGNIZED_VIEWS,
     format_add_to,
     get_align_options,
+    get_ordered_view_presentations,
     normalize_align_name,
     parse_add_to,
 )
@@ -126,14 +126,15 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         self._always_visible.setVisible(False)
         if hasattr(self._always_visible, 'setToolTip'):
             self._always_visible.setToolTip(_("If on, the column cannot be hidden."))
-        self._file_view = QtWidgets.QCheckBox(_("File view"), self)
-        self._file_view.setChecked(True)
-        if hasattr(self._file_view, 'setToolTip'):
-            self._file_view.setToolTip(_("Show this column in the Files view."))
-        self._album_view = QtWidgets.QCheckBox(_("Album view"), self)
-        self._album_view.setChecked(True)
-        if hasattr(self._album_view, 'setToolTip'):
-            self._album_view.setToolTip(_("Show this column in the Albums view."))
+
+        # Build generic view checkboxes
+        self._view_checkboxes: dict[str, QtWidgets.QCheckBox] = {}
+        for vp in get_ordered_view_presentations():
+            cb = QtWidgets.QCheckBox(_(vp.title), self)
+            cb.setChecked(True)
+            if hasattr(cb, 'setToolTip') and vp.tooltip:
+                cb.setToolTip(_(vp.tooltip))
+            self._view_checkboxes[vp.id] = cb
 
         # Transform selection (only visible for Transform kind)
         self._transform_label = QtWidgets.QLabel(_("Transform"), self)
@@ -160,8 +161,8 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         form.addRow(_("Align"), self._align)
         # Always Visible is hidden and defaults to False; preserve value only when populating
         hl = QtWidgets.QHBoxLayout()
-        hl.addWidget(self._file_view)
-        hl.addWidget(self._album_view)
+        for cb in self._view_checkboxes.values():
+            hl.addWidget(cb)
         form.addRow(_("Add to views"), hl)
         # Removed insert-after placement option per upstream API
 
@@ -209,8 +210,9 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             self._align.setCurrentIndex(idx)
         self._always_visible.setChecked(spec.always_visible)
         views = parse_add_to(getattr(spec, 'add_to', DEFAULT_ADD_TO))
-        self._file_view.setChecked(VIEW_FILE in views)
-        self._album_view.setChecked(VIEW_ALBUM in views)
+        # Initialize checkboxes for recognized views; leave unknown tokens preserved in spec
+        for view_id, cb in self._view_checkboxes.items():
+            cb.setChecked(view_id in views)
         if spec.transform:
             self._transform.setCurrentText(spec.transform.value)
         # Update derived key placeholder to reflect current title
@@ -226,8 +228,18 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         # Store canonical string in spec for persistence compatibility
         align = "RIGHT" if align_enum == ColumnAlign.RIGHT else "LEFT"
         always_visible = self._always_visible.isChecked()
-        file_view = self._file_view.isChecked()
-        album_view = self._album_view.isChecked()
+        # Collect selected views generically and preserve any unknown tokens from existing spec
+        selected: list[str] = []
+        for view_id, cb in self._view_checkboxes.items():
+            if cb.isChecked():
+                selected.append(view_id)
+        if self._existing and getattr(self._existing, 'add_to', None):
+            prev_tokens = [t.strip().upper() for t in (self._existing.add_to or "").split(",") if t.strip()]
+            extras = [t for t in prev_tokens if t not in RECOGNIZED_VIEWS]
+            existing_set = set(selected)
+            for t in extras:
+                if t not in existing_set:
+                    selected.append(t)
         transform = TransformName(self._transform.currentText()) if kind == CustomColumnKind.TRANSFORM else None
 
         if not title:
@@ -240,11 +252,6 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         # Use provided key if given; otherwise derive from Field Name
         key_input = self._key.text().strip()
         key = key_input or self._derive_key_from_field_name(title)
-        selected = []
-        if file_view:
-            selected.append(VIEW_FILE)
-        if album_view:
-            selected.append(VIEW_ALBUM)
         add_to = format_add_to(selected)
         self.result_spec = CustomColumnSpec(
             title=title,

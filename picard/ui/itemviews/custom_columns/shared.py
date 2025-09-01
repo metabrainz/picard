@@ -22,9 +22,10 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Iterable
 
-from picard.i18n import gettext as _
+from picard.i18n import N_, gettext as _
 
 from picard.ui.columns import ColumnAlign
 
@@ -90,6 +91,65 @@ def format_add_to(views: Iterable[str]) -> str:
     # Include any additional tokens (forward-compat) at the end in alpha order
     extras: list[str] = sorted([v for v in view_set if v not in RECOGNIZED_VIEWS])
     return ",".join([*ordered, *extras])
+
+
+@dataclass(frozen=True, slots=True)
+class ViewPresentation:
+    """Presentation metadata for a selectable view.
+
+    Notes
+    -----
+    ``title`` and ``tooltip`` are NOT translated here. They are marked for
+    translation using ``N_()`` and must be wrapped in ``_()`` at the usage
+    site (e.g., UI code) to request the localized strings.
+
+    Attributes
+    ----------
+    id : str
+        Stable identifier of the view (e.g., ``FILE_VIEW``).
+    title : str
+        Untranslated title string; wrap with ``_()`` when used.
+    tooltip : str
+        Untranslated tooltip string; wrap with ``_()`` when used.
+    """
+
+    id: str
+    title: str
+    tooltip: str
+
+
+_VIEW_TITLES: dict[str, str] = {
+    VIEW_FILE: N_("File view"),
+    VIEW_ALBUM: N_("Album view"),
+}
+
+_VIEW_TOOLTIPS: dict[str, str] = {
+    VIEW_FILE: N_("Show this column in the Files view."),
+    VIEW_ALBUM: N_("Show this column in the Albums view."),
+}
+
+
+def get_ordered_view_presentations() -> tuple[ViewPresentation, ...]:
+    """Return ordered presentations for all recognized views.
+
+    Returns
+    -------
+    tuple[ViewPresentation, ...]
+        View presentations ordered according to ``DEFAULT_ADD_TO`` first,
+        then any remaining recognized views in alphabetical order.
+    """
+
+    default_order = [v for v in DEFAULT_ADD_TO.split(",") if v in RECOGNIZED_VIEWS]
+    remaining = sorted([v for v in RECOGNIZED_VIEWS if v not in default_order])
+    ordered_ids = [*default_order, *remaining]
+    return tuple(
+        ViewPresentation(
+            id=vid,
+            title=_VIEW_TITLES.get(vid, vid),
+            tooltip=_VIEW_TOOLTIPS.get(vid, ""),
+        )
+        for vid in ordered_ids
+    )
 
 
 def get_recognized_view_columns():
