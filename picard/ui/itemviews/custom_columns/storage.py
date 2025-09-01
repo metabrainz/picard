@@ -41,7 +41,7 @@ from picard.config import get_config
 from picard.ui.columns import ColumnAlign
 from picard.ui.itemviews.custom_columns import (
     CustomColumn,
-    make_field_column,
+    make_provider_column,
     make_script_column,
     make_transformed_column,
     registry,
@@ -254,8 +254,18 @@ def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
     align = _align_from_name(spec.align)
     column: CustomColumn
     if spec.kind == CustomColumnKind.FIELD:
-        column = make_field_column(
-            spec.title, spec.key, width=spec.width, align=align, always_visible=spec.always_visible
+        # Use the expression as the field lookup key, but keep the column's
+        # internal key as provided by the spec. This decouples display/lookup
+        # from the unique identifier used by the registry.
+        provider = FieldReferenceProvider(spec.expression)
+        column = make_provider_column(
+            spec.title,
+            spec.key,
+            provider,
+            width=spec.width,
+            align=align,
+            always_visible=spec.always_visible,
+            sort_type=None,
         )
     elif spec.kind == CustomColumnKind.SCRIPT:
         column = make_script_column(

@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+import re
 
 from picard import log
 from picard.item import Item
@@ -37,7 +38,13 @@ class FieldReferenceProvider:
 
     def evaluate(self, obj: Item) -> str:
         try:
-            return obj.column(self.key)  # type: ignore[attr-defined]
+            # Accept either plain field keys (e.g. "artist") or
+            # percent-wrapped variables (e.g. "%artist%").
+            lookup_key = self.key.strip()
+            m = re.fullmatch(r"%(.+)%", lookup_key)
+            if m:
+                lookup_key = m.group(1)
+            return obj.column(lookup_key)  # type: ignore[attr-defined]
         except (AttributeError, KeyError, TypeError) as e:
             log.debug("%s failure for key %r: %r", self.__class__.__name__, self.key, e)
             return ""
