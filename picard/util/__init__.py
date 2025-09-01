@@ -61,12 +61,13 @@ import json
 import ntpath
 from operator import attrgetter
 import os
-from pathlib import PurePath
+from pathlib import Path, PurePath
 import re
 import subprocess  # nosec: B404
 import sys
 from time import monotonic
 import unicodedata
+from urllib.parse import unquote
 
 from dateutil.parser import parse
 
@@ -252,6 +253,213 @@ def normpath(path, realpath=True):
     if IS_WIN and not system_supports_long_paths():
         path = win_prefix_longpath(path)
     return path
+
+
+def _resolve_path_components_macos(path: str) -> str:
+    """Best-effort macOS path component resolution.
+
+    Resolve path components against the filesystem on macOS to account for
+    Unicode normalization differences (NFC vs. NFD). Returns a best‑effort
+    on-disk representation, resolving as many components as possible.
+
+    Parameters
+    ----------
+    path : str
+        The input path to resolve. Can be absolute or relative. The final
+        file/directory does not need to exist.
+
+    Returns
+    -------
+    str
+        A path with components matched to existing directory entries where
+        possible. If resolution fails for any component, the original
+        component is kept. Absolute vs. relative form is preserved.
+
+    Notes
+    -----
+    - This function does not change the drive/volume.
+    - It tolerates missing final components (resolves what exists).
+    - Matching is performed using exact, NFC, and NFD comparisons.
+    """
+
+    def _listdir_safe(directory: Path) -> tuple[str, ...]:
+        try:
+            return tuple(entry.name for entry in directory.iterdir())
+        except OSError:
+            return ()
+
+    def _match_component(candidate: str, entries: tuple[str, ...]) -> str:
+        if not entries:
+            return candidate
+        if candidate in entries:
+            return candidate
+        cand_nfc = unicodedata.normalize('NFC', candidate)
+        cand_nfd = unicodedata.normalize('NFD', candidate)
+        for entry in entries:
+            if (
+                entry == cand_nfc
+                or entry == cand_nfd
+                or unicodedata.normalize('NFC', entry) == cand_nfc
+                or unicodedata.normalize('NFD', entry) == cand_nfd
+            ):
+                return entry
+        return candidate
+
+    def _join_resolved(parts: list[str], absolute: bool) -> str:
+        if not parts:
+            return os.sep if absolute else ''
+        if absolute:
+            return str(Path('/').joinpath(*parts))
+        return str(Path().joinpath(*parts))
+
+    def resolved_parts(is_abs):
+        current_dir = Path('/') if is_abs else Path.cwd()
+
+        for part in PurePath(path).parts:
+            if part in ('', '.'):
+                continue
+            entries = _listdir_safe(current_dir)
+            chosen = _match_component(part, entries)
+            yield chosen
+            current_dir = current_dir / chosen
+
+    try:
+        if not path:
+            return path
+        is_abs = Path(path).is_absolute()
+        return _join_resolved(list(resolved_parts(is_abs)), is_abs)
+    except Exception as err:  # noqa: BLE001
+        log.debug("canonicalize components failed for %r: %s", path, err)
+        return str(Path(path))
+
+
+def canonicalize_path(path: str) -> str:
+    """Canonicalize a path for robust I/O.
+
+    Produces a sanitized path suitable for file operations by trimming
+    trailing NULs, normalizing separators, and resolving platform-specific
+    quirks (e.g., Unicode normalization on macOS).
+
+    Parameters
+    ----------
+    path : str
+        The input path as a Unicode string.
+
+    Returns
+    -------
+    str
+        A canonicalized path. On macOS, components are matched against the
+        filesystem using normalization-insensitive rules. On all platforms,
+        the result is normalized and, where possible, resolved via
+        ``os.path.realpath``.
+
+    Notes
+    -----
+    - Trailing ``"\0"`` characters are stripped.
+    - If resolution via ``realpath`` fails, the normalized input is returned.
+    - Non-string inputs are returned unchanged.
+    """
+    if not isinstance(path, str):
+        return path  # type: ignore[return-value]
+
+    # Trim any accidental NUL terminators and normalize separators
+    trimmed = path.rstrip('\0')
+    if not trimmed:
+        return ''
+
+    # Avoid realpath here; resolve components manually on macOS first
+    normalized = str(Path(trimmed))
+
+    # Windows: Qt QUrl without scheme can yield paths like "/C:/foo".
+    # Strip the leading slash so we keep the correct drive when absolutizing.
+    if IS_WIN and re.match(r'^/[A-Za-z]:', normalized):
+        normalized = normalized[1:]
+
+    if IS_MACOS:
+        resolved = _resolve_path_components_macos(normalized)
+        # realpath only if possible, otherwise keep best-effort resolved path
+        try:
+            candidate = str(Path(resolved).resolve(strict=False))
+        except OSError:
+            candidate = resolved
+    else:
+        # On non-macOS platforms avoid resolving symlinks/junctions here, as this can
+        # unexpectedly change drive letters on Windows runners (e.g. C: → D:).
+        # Prefer an absolute, normalized path without crossing filesystem links.
+        candidate = os.path.abspath(os.path.normpath(normalized))
+
+    # Windows-specific path handling
+    if IS_WIN:
+        # Normalize drive letter to uppercase for stable comparisons
+        if len(candidate) >= 2 and candidate[1] == ':':
+            candidate = candidate[0].upper() + candidate[1:]
+        # Carry over Windows long-path handling from normpath
+        if not system_supports_long_paths():
+            candidate = win_prefix_longpath(candidate)
+
+    return candidate
+
+
+def is_local_file_url(url):
+    """Check if a QUrl should be treated as a local file.
+
+    Parameters
+    ----------
+    url : QtCore.QUrl
+        The URL to check.
+
+    Returns
+    -------
+    bool
+        True if the URL should be treated as a local file, False otherwise.
+
+    Notes
+    -----
+    Accept local files via explicit file:// scheme or scheme-less URLs.
+    Qt on Windows can misparse "C:\\path" as scheme "c" with an empty path.
+    Detect a leading Windows drive (single letter + ":") in the original (sans user info)
+    string and treat it as a local path rather than a custom scheme.
+    """
+    import re
+
+    return (
+        url.scheme() == 'file'
+        or not url.scheme()
+        or (
+            IS_WIN
+            and len(url.scheme()) == 1
+            and re.match(r'^[a-zA-Z]:', url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
+        )
+    )
+
+
+def qurl_to_local_path(url: QtCore.QUrl) -> str | None:
+    """Convert a QUrl to a normalized local filesystem path.
+
+    Parameters
+    ----------
+    url : QtCore.QUrl
+        The URL to convert to a local path.
+
+    Returns
+    -------
+    str
+        A canonicalized local filesystem path, or empty string if conversion fails.
+
+    Notes
+    -----
+    Prefer a local file if provided; fall back to treating the URL path as a local filesystem path.
+    For some Windows inputs (e.g. raw "C:\\path"), QUrl.path() can drop the drive ("/Users/..."),
+    which would cause os.path.abspath to adopt the current drive. Prefer the original string
+    (without user info) before url.path() to preserve the drive letter.
+    Unquote percent-encoding (e.g. "\\\\" → "%5C") to recover a plain local path.
+    """
+    if not is_local_file_url(url):
+        return ''
+
+    raw_str = url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo)
+    local: str = url.toLocalFile() or unquote(raw_str) or url.path()
+    return canonicalize_path(local) if local else ''
 
 
 def win_prefix_longpath(path):
