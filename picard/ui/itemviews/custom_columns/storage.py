@@ -110,8 +110,6 @@ class CustomColumnSpec:
         If ``True``, the column is not toggleable in the header menu.
     add_to
         Comma-separated list of views to add this column to.
-    insert_after_key
-        Insert new column after this existing key if present, else append.
     transform
         Optional transform name when ``kind == TRANSFORM``.
     """
@@ -124,7 +122,6 @@ class CustomColumnSpec:
     align: str = "LEFT"
     always_visible: bool = False
     add_to: str = DEFAULT_ADD_TO
-    insert_after_key: str | None = None
     transform: TransformName | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -188,7 +185,6 @@ class CustomColumnSpecSerializer:
             align=_safe_convert(data, "align", str, "LEFT"),
             always_visible=_safe_convert(data, "always_visible", bool, False),
             add_to=add_to_str,
-            insert_after_key=_safe_convert(data, "insert_after_key", str, None),
             transform=transform,
         )
 
@@ -442,7 +438,6 @@ class CustomColumnRegistrar:
         registry.register(
             column,
             add_to=views,
-            insert_after_key=spec.insert_after_key,
         )
 
     def unregister_column(self, key: str) -> None:

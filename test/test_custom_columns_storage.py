@@ -119,7 +119,6 @@ def sample_spec() -> CustomColumnSpec:
         align="LEFT",
         always_visible=False,
         add_to=DEFAULT_ADD_TO,
-        insert_after_key="title",
         transform=None,
     )
 
@@ -157,7 +156,6 @@ def test_spec_to_from_dict_roundtrip(kind: CustomColumnKind, transform: Transfor
         align="RIGHT",
         always_visible=True,
         add_to=f"{VIEW_ALBUM}",
-        insert_after_key=None,
         transform=transform,
     )
     d = spec.to_dict()
@@ -256,17 +254,13 @@ def test_register_and_persist_calls_registry(fake_config: SimpleNamespace, fake_
         key="k1",
         kind=CustomColumnKind.FIELD,
         expression="artist",
-        insert_after_key="title",
     )
     register_and_persist(spec)
     # Saved to config
     loaded = load_specs_from_config()
     assert len(loaded) == 1 and loaded[0].key == "k1"
     # Registry was called
-    assert (
-        "register",
-        {'key': "k1", 'add_to': {VIEW_FILE, VIEW_ALBUM}, 'insert_after_key': "title"},
-    ) in fake_registry.calls
+    assert ("register", {'key': "k1", 'add_to': {VIEW_FILE, VIEW_ALBUM}}) in fake_registry.calls
 
 
 def test_unregister_and_delete_calls_registry(fake_config: SimpleNamespace, fake_registry: SimpleNamespace) -> None:
@@ -345,7 +339,6 @@ def test_register_and_persist_respects_add_to(
     expected = {
         'key': spec.key,
         'add_to': parse_add_to(add_to),
-        'insert_after_key': None,
     }
     assert ("register", expected) in fake_registry.calls
 
@@ -364,10 +357,7 @@ def test_load_skips_corrupt_entries(fake_config: SimpleNamespace, fake_registry:
     valid = CustomColumnSpec(title="T", key="k_valid", kind=CustomColumnKind.FIELD, expression="artist").to_dict()
     fake_config.setting['custom_columns'] = [valid, "invalid", {'kind': "unknown"}]
     load_persisted_columns_once()
-    assert (
-        "register",
-        {'key': "k_valid", 'add_to': {VIEW_FILE, VIEW_ALBUM}, 'insert_after_key': None},
-    ) in fake_registry.calls
+    assert ("register", {'key': "k_valid", 'add_to': {VIEW_FILE, VIEW_ALBUM}}) in fake_registry.calls
     # Only one register should appear
     regs = [c for c in fake_registry.calls if c[0] == "register"]
     assert len(regs) == 1
@@ -400,7 +390,7 @@ def test_from_dict_defaults_when_missing() -> None:
     assert spec.align == "LEFT"
     assert spec.always_visible is False
     assert parse_add_to(spec.add_to) == {VIEW_FILE, VIEW_ALBUM}
-    assert spec.insert_after_key is None and spec.transform is None
+    assert spec.transform is None
 
 
 @pytest.mark.parametrize(
@@ -440,7 +430,6 @@ def test_serializer_roundtrip_matches_spec_methods() -> None:
         align="RIGHT",
         always_visible=True,
         add_to=f"{VIEW_ALBUM}",
-        insert_after_key="artist",
         transform=None,
     )
     d1 = spec.to_dict()
@@ -562,14 +551,7 @@ def test_registrar_register_and_unregister(fake_config: SimpleNamespace, fake_re
     reg = CustomColumnRegistrar()
     spec = CustomColumnSpec(title="R", key="k_reg", kind=CustomColumnKind.FIELD, expression="artist")
     reg.register_column(spec)
-    assert (
-        "register",
-        {
-            'key': "k_reg",
-            'add_to': {VIEW_FILE, VIEW_ALBUM},
-            'insert_after_key': None,
-        },
-    ) in fake_registry.calls
+    assert ("register", {'key': "k_reg", 'add_to': {VIEW_FILE, VIEW_ALBUM}}) in fake_registry.calls
     reg.unregister_column("k_reg")
     assert ("unregister", {'key': "k_reg"}) in fake_registry.calls
 

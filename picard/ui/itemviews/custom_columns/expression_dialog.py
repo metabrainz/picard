@@ -87,7 +87,6 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         self._file_view.setChecked(True)
         self._album_view = QtWidgets.QCheckBox(_("Album view"), self)
         self._album_view.setChecked(True)
-        self._insert_after = QtWidgets.QLineEdit(self)
 
         # Transform selection (only visible for Transform kind)
         self._transform_label = QtWidgets.QLabel(_("Transform"), self)
@@ -114,7 +113,7 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         hl.addWidget(self._file_view)
         hl.addWidget(self._album_view)
         form.addRow(_("Add to views"), hl)
-        form.addRow(_("Insert after key"), self._insert_after)
+        # Removed insert-after placement option per upstream API
 
         buttons = QtWidgets.QHBoxLayout()
         buttons.addStretch(1)
@@ -155,7 +154,6 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         views = parse_add_to(getattr(spec, 'add_to', DEFAULT_ADD_TO))
         self._file_view.setChecked(VIEW_FILE in views)
         self._album_view.setChecked(VIEW_ALBUM in views)
-        self._insert_after.setText(spec.insert_after_key or "")
         if spec.transform:
             self._transform.setCurrentText(spec.transform.value)
 
@@ -168,7 +166,6 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         always_visible = self._always_visible.isChecked()
         file_view = self._file_view.isChecked()
         album_view = self._album_view.isChecked()
-        insert_after = self._insert_after.text().strip() or None
         transform = TransformName(self._transform.currentText()) if kind == CustomColumnKind.TRANSFORM else None
 
         if not title:
@@ -194,7 +191,6 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             align=align,
             always_visible=always_visible,
             add_to=add_to,
-            insert_after_key=insert_after,
             transform=transform,
         )
         self.accept()
