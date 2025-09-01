@@ -290,8 +290,6 @@ def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
             always_visible=spec.always_visible,
         )
 
-    # Ensure new custom columns are visible by default when restoring defaults
-    column.is_default = True
     return column
 
 

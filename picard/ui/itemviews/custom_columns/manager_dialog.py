@@ -253,9 +253,6 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             if new_spec.key != spec.key:
                 # Track old key for robust unregister on apply
                 self._deleted_keys.add(spec.key)
-                # Ensure old column hides immediately if present
-                self._make_column_nondefault(spec.key)
-                self._refresh_all_views()
             save_specs_to_config(self._model.specs())
             self._mark_dirty()
 
@@ -304,10 +301,6 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         # First ensure any deleted keys are unregistered live
         if self._deleted_keys:
             registrar = CustomColumnRegistrar()
-            # Hide deleted columns first to avoid lingering default visibility
-            for key in list(self._deleted_keys):
-                self._make_column_nondefault(key)
-            self._refresh_all_views()
             for key in list(self._deleted_keys):
                 registrar.unregister_column(key)
             self._deleted_keys.clear()
@@ -341,8 +334,11 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
         if isinstance(header, ConfigurableColumnsHeader):
             view = header.parent()
-            if hasattr(view, 'restore_default_columns'):
-                view.restore_default_columns()
+            if hasattr(view, 'setHeaderLabels'):
+                labels = tuple(_(c.title) for c in view.columns)
+                if hasattr(view, 'setColumnCount'):
+                    view.setColumnCount(len(view.columns))
+                view.setHeaderLabels(labels)
 
     def _refresh_all_views(self) -> None:
         """Refresh headers for all open views that use recognized columns."""
@@ -355,20 +351,12 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             return
         recognized = set(get_recognized_view_columns().values())
         for widget in app.allWidgets():
-            if getattr(widget, 'columns', None) in recognized and hasattr(widget, 'restore_default_columns'):
-                widget.restore_default_columns()
-
-    def _make_column_nondefault(self, key: str) -> None:
-        """Set is_default to False for any live column matching key across views."""
-        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
-
-        for cols in get_recognized_view_columns().values():
-            try:
-                pos = cols.pos(key)
-            except KeyError:
-                continue
-            col = cols[pos]
-            col.is_default = False
+            cols = getattr(widget, 'columns', None)
+            if cols in recognized and hasattr(widget, 'setHeaderLabels'):
+                labels = tuple(_(c.title) for c in cols)
+                if hasattr(widget, 'setColumnCount'):
+                    widget.setColumnCount(len(cols))
+                widget.setHeaderLabels(labels)
 
     def _mark_dirty(self) -> None:
         self._dirty = True
