@@ -44,10 +44,11 @@ class FieldReferenceProvider:
             m = re.fullmatch(r"%(.+)%", lookup_key)
             if m:
                 lookup_key = m.group(1)
-            return obj.column(lookup_key)  # type: ignore[attr-defined]
         except (AttributeError, KeyError, TypeError) as e:
             log.debug("%s failure for key %r: %r", self.__class__.__name__, self.key, e)
             return ""
+        else:
+            return obj.column(lookup_key)  # type: ignore[attr-defined]
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         return f"FieldReferenceProvider(key={self.key!r})"
