@@ -68,6 +68,8 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
 
         # Inputs
         self._title = QtWidgets.QLineEdit(self)
+        if hasattr(self._title, 'setToolTip'):
+            self._title.setToolTip(_("The column header text shown in the table."))
         # Optional key field: if left empty we derive from Field Name
         self._key = QtWidgets.QLineEdit(self)
         if hasattr(self._key, 'setPlaceholderText'):
@@ -91,28 +93,49 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             )
         self._kind = QtWidgets.QComboBox(self)
         self._kind.addItems([CustomColumnKind.SCRIPT.value, CustomColumnKind.FIELD.value])
+        if hasattr(self._kind, 'setToolTip'):
+            self._kind.setToolTip(_("How the value is obtained: Script or Field."))
 
         self._expression = QtWidgets.QPlainTextEdit(self)
         if hasattr(self._expression, 'setPlaceholderText'):
             self._expression.setPlaceholderText("%artist% - %title%")
+        if hasattr(self._expression, 'setToolTip'):
+            self._expression.setToolTip(
+                _(
+                    "What to show in this column. For Field, enter a tag name (e.g., artist). "
+                    "For Script, enter a Picard script."
+                )
+            )
         self._width = QtWidgets.QSpinBox(self)
         self._width.setRange(0, 9999)
         self._width.setSpecialValueText("")
         self._width.setValue(100)
+        if hasattr(self._width, 'setToolTip'):
+            self._width.setToolTip(_("Optional fixed width in pixels (leave 0 for default)."))
         self._align = QtWidgets.QComboBox(self)
         self._align.addItems(["LEFT", "RIGHT"])
+        if hasattr(self._align, 'setToolTip'):
+            self._align.setToolTip(_("Text alignment inside the column."))
         self._always_visible = QtWidgets.QCheckBox(_("Always visible"), self)
         self._always_visible.setChecked(False)
         self._always_visible.setVisible(False)
+        if hasattr(self._always_visible, 'setToolTip'):
+            self._always_visible.setToolTip(_("If on, the column cannot be hidden."))
         self._file_view = QtWidgets.QCheckBox(_("File view"), self)
         self._file_view.setChecked(True)
+        if hasattr(self._file_view, 'setToolTip'):
+            self._file_view.setToolTip(_("Show this column in the Files view."))
         self._album_view = QtWidgets.QCheckBox(_("Album view"), self)
         self._album_view.setChecked(True)
+        if hasattr(self._album_view, 'setToolTip'):
+            self._album_view.setToolTip(_("Show this column in the Albums view."))
 
         # Transform selection (only visible for Transform kind)
         self._transform_label = QtWidgets.QLabel(_("Transform"), self)
         self._transform = QtWidgets.QComboBox(self)
         self._transform.addItems([t.value for t in TransformName])
+        if hasattr(self._transform, 'setToolTip'):
+            self._transform.setToolTip(_("Optionally change the value (e.g., UPPER, lower, title)."))
 
         # Buttons
         self._ok = QtWidgets.QPushButton(_("OK"), self)
