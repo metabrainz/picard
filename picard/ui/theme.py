@@ -97,7 +97,11 @@ class UiTheme(Enum):
 
 def get_style_hints() -> QtGui.QStyleHints | None:
     """Get style hints from QGuiApplication, returning None if unavailable."""
-    return QtGui.QGuiApplication.styleHints()
+    style_hints = QtGui.QGuiApplication.styleHints()
+    # setColorScheme was added in Qt 6.8
+    if not hasattr(style_hints, 'setColorScheme'):
+        return None
+    return style_hints
 
 
 def _style_hints_available() -> bool:
