@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:05+0200\n"
-"PO-Revision-Date: 2025-08-30 22:36+0000\n"
+"PO-Revision-Date: 2025-09-01 07:07+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -3060,7 +3060,7 @@ msgstr "Перемістити вибране значення вниз"
 
 #: picard/ui/forms/ui_exception_script_selector.py:111
 msgid "Exception Language Script Selector"
-msgstr "Виняток Вибір скрипту мови"
+msgstr "Виключення вибору письмового стандарту"
 
 #: picard/ui/forms/ui_exception_script_selector.py:112
 msgid "Selected Scripts"
@@ -3277,7 +3277,7 @@ msgstr "Аудіо Відбиток"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:104
 msgid "Do not use audio fingerprinting"
-msgstr "Не використовуйте аудіодактилоскопію"
+msgstr "Не використовувати аудіо відбиток"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:105
 msgid "Use AcoustID"
