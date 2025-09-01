@@ -27,17 +27,10 @@ registration or persistence (SRP/SOC).
 
 from __future__ import annotations
 
-
-try:
-    from PyQt6 import (
-        QtCore,
-        QtWidgets,
-    )
-except ImportError:  # pragma: no cover - allow static analysis without Qt installed
-    from typing import Any as _Any
-
-    QtCore = _Any  # type: ignore[assignment]
-    QtWidgets = _Any  # type: ignore[assignment]
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.i18n import gettext as _
 
