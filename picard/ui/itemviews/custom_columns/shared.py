@@ -23,11 +23,31 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import IntEnum
 from typing import Iterable
 
 from picard.i18n import N_, gettext as _
 
 from picard.ui.columns import ColumnAlign
+
+
+# Public table column indices for specs table and shared header labels
+class ColumnIndex(IntEnum):
+    TITLE = 0
+    TYPE = 1
+    EXPRESSION = 2
+    ALIGN = 3
+    WIDTH = 4
+
+
+# Public headers for specs-related UIs (manager table, dialogs, etc.)
+HEADERS: dict[ColumnIndex, str] = {
+    ColumnIndex.TITLE: _("Column Title"),
+    ColumnIndex.TYPE: _("Type"),
+    ColumnIndex.EXPRESSION: _("Expression"),
+    ColumnIndex.ALIGN: _("Align"),
+    ColumnIndex.WIDTH: _("Width"),
+}
 
 
 # Public identifiers for views used in configuration and API

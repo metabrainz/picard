@@ -37,7 +37,9 @@ from picard.i18n import gettext as _
 from picard.ui.columns import ColumnAlign
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
+    HEADERS,
     RECOGNIZED_VIEWS,
+    ColumnIndex,
     format_add_to,
     get_align_options,
     get_ordered_view_presentations,
@@ -73,16 +75,16 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         self._title = QtWidgets.QLineEdit(self)
         if hasattr(self._title, 'setToolTip'):
             self._title.setToolTip(_("The column header text shown in the table."))
-        # Optional key field: if left empty we derive from Field Name
+        # Optional key field: if left empty we derive from Column Title
         self._key = QtWidgets.QLineEdit(self)
         if hasattr(self._key, 'setPlaceholderText'):
-            self._key.setPlaceholderText(_("Auto-derived from Field Name"))
+            self._key.setPlaceholderText(_("Auto-derived from Column Title"))
         # Explain behavior: optional, defaulting and update on conflict
         if hasattr(self._key, 'setToolTip'):
             self._key.setToolTip(
                 _(
                     "Optional internal identifier. If left empty, a key will be "
-                    "derived from the Field Name. If a column with this key already "
+                    "derived from the Column Title. If a column with this key already "
                     "exists, it will be updated instead of duplicated."
                 )
             )
@@ -90,7 +92,7 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
             self._key.setWhatsThis(
                 _(
                     "Optional internal identifier used to uniquely reference this column.\n"
-                    "Leave blank to auto-derive from the Field Name. If another column "
+                    "Leave blank to auto-derive from the Column Title. If another column "
                     "with the same key exists, your changes will update that column."
                 )
             )
@@ -151,14 +153,14 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
 
         # Layout
         form = QtWidgets.QFormLayout()
-        form.addRow(_("Field Name") + "*", self._title)
+        form.addRow(HEADERS[ColumnIndex.TITLE] + "*", self._title)
         form.addRow(_("Key"), self._key)
-        form.addRow(_("Type") + "*", self._kind)
-        form.addRow(_("Expression") + "*", self._expression)
+        form.addRow(HEADERS[ColumnIndex.TYPE] + "*", self._kind)
+        form.addRow(HEADERS[ColumnIndex.EXPRESSION] + "*", self._expression)
         # Keep transform widgets hidden and not user-selectable for now
         form.addRow(self._transform_label, self._transform)
-        form.addRow(_("Width"), self._width)
-        form.addRow(_("Align"), self._align)
+        form.addRow(HEADERS[ColumnIndex.WIDTH], self._width)
+        form.addRow(HEADERS[ColumnIndex.ALIGN], self._align)
         # Always Visible is hidden and defaults to False; preserve value only when populating
         hl = QtWidgets.QHBoxLayout()
         for cb in self._view_checkboxes.values():
@@ -243,13 +245,13 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         transform = TransformName(self._transform.currentText()) if kind == CustomColumnKind.TRANSFORM else None
 
         if not title:
-            QtWidgets.QMessageBox.warning(self, _("Invalid"), _("Field Name is required."))
+            QtWidgets.QMessageBox.warning(self, _("Invalid"), _("Column Title is required."))
             return
         if not expression:
             QtWidgets.QMessageBox.warning(self, _("Invalid"), _("Expression is required."))
             return
 
-        # Use provided key if given; otherwise derive from Field Name
+        # Use provided key if given; otherwise derive from Column Title
         key_input = self._key.text().strip()
         key = key_input or self._derive_key_from_field_name(title)
         add_to = format_add_to(selected)
@@ -270,11 +272,11 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         # Update placeholder to show how the key will be derived if left empty
         derived = self._derive_key_from_field_name(text)
         if hasattr(self._key, 'setPlaceholderText'):
-            self._key.setPlaceholderText(derived or _("Auto-derived from Field Name"))
+            self._key.setPlaceholderText(derived or _("Auto-derived from Column Title"))
 
     @staticmethod
     def _derive_key_from_field_name(name: str) -> str:
-        """Derive an internal key from a user-facing field name.
+        """Derive an internal key from a user-facing Column Title.
 
         Rules
         -----
