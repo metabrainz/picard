@@ -34,11 +34,14 @@ from PyQt6 import (
 
 from picard.i18n import gettext as _
 
+from picard.ui.columns import ColumnAlign
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
     VIEW_ALBUM,
     VIEW_FILE,
     format_add_to,
+    get_align_options,
+    normalize_align_name,
     parse_add_to,
 )
 from picard.ui.itemviews.custom_columns.storage import (
@@ -113,7 +116,9 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         if hasattr(self._width, 'setToolTip'):
             self._width.setToolTip(_("Optional fixed width in pixels (leave 0 for default)."))
         self._align = QtWidgets.QComboBox(self)
-        self._align.addItems(["LEFT", "RIGHT"])
+        # Show translated, lowercase labels but store canonical tokens as userData
+        for label, enum_val in get_align_options():
+            self._align.addItem(label, enum_val)
         if hasattr(self._align, 'setToolTip'):
             self._align.setToolTip(_("Text alignment inside the column."))
         self._always_visible = QtWidgets.QCheckBox(_("Always visible"), self)
@@ -198,7 +203,10 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         self._expression.setPlainText(spec.expression)
         if spec.width is not None:
             self._width.setValue(int(spec.width))
-        self._align.setCurrentText(spec.align)
+        # Align: find by canonical token stored as userData
+        idx = self._align.findData(normalize_align_name(spec.align))
+        if idx != -1:
+            self._align.setCurrentIndex(idx)
         self._always_visible.setChecked(spec.always_visible)
         views = parse_add_to(getattr(spec, 'add_to', DEFAULT_ADD_TO))
         self._file_view.setChecked(VIEW_FILE in views)
@@ -213,7 +221,10 @@ class CustomColumnExpressionDialog(QtWidgets.QDialog):
         kind = CustomColumnKind(self._kind.currentText())
         expression = self._expression.toPlainText().strip()
         width = int(self._width.value()) or None
-        align = self._align.currentText().strip()
+        # Map selection back to canonical token
+        align_enum: ColumnAlign = normalize_align_name(self._align.currentData())
+        # Store canonical string in spec for persistence compatibility
+        align = "RIGHT" if align_enum == ColumnAlign.RIGHT else "LEFT"
         always_visible = self._always_visible.isChecked()
         file_view = self._file_view.isChecked()
         album_view = self._album_view.isChecked()

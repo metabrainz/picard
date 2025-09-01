@@ -203,10 +203,9 @@ def _align_from_name(name: str) -> ColumnAlign:
         Corresponding alignment enum (defaults to LEFT on unknown).
     """
 
-    align = name.upper().strip()
-    if align == "RIGHT":
-        return ColumnAlign.RIGHT
-    return ColumnAlign.LEFT
+    from picard.ui.itemviews.custom_columns.shared import normalize_align_name
+
+    return normalize_align_name(name)
 
 
 def _make_transform_callable(name: TransformName) -> Callable[[str], str]:

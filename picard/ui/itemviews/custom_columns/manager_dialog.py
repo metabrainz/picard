@@ -39,6 +39,7 @@ from picard.config import get_config
 from picard.i18n import gettext as _
 
 from picard.ui.itemviews.custom_columns.expression_dialog import CustomColumnExpressionDialog
+from picard.ui.itemviews.custom_columns.shared import display_align_label
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnRegistrar,
     CustomColumnSpec,
@@ -111,7 +112,7 @@ class _SpecsTableModel(QtCore.QAbstractTableModel):
             if col == self.ColumnIndex.EXPRESSION:
                 return spec.expression
             if col == self.ColumnIndex.ALIGN:
-                return spec.align
+                return display_align_label(spec.align)
             if col == self.ColumnIndex.WIDTH:
                 return "" if spec.width is None else str(spec.width)
         return None

@@ -24,6 +24,10 @@ from __future__ import annotations
 
 from typing import Iterable
 
+from picard.i18n import gettext as _
+
+from picard.ui.columns import ColumnAlign
+
 
 # Public identifiers for views used in configuration and API
 VIEW_FILE: str = "FILE_VIEW"
@@ -33,6 +37,11 @@ VIEW_ALBUM: str = "ALBUM_VIEW"
 DEFAULT_ADD_TO: str = f"{VIEW_FILE},{VIEW_ALBUM}"
 
 RECOGNIZED_VIEWS: set[str] = {VIEW_FILE, VIEW_ALBUM}
+
+_ALIGN_TOKEN_TO_ENUM: dict[str, ColumnAlign] = {
+    "LEFT": ColumnAlign.LEFT,
+    "RIGHT": ColumnAlign.RIGHT,
+}
 
 
 def parse_add_to(add_to: str | None) -> set[str]:
@@ -103,3 +112,56 @@ def get_recognized_view_columns():
         VIEW_FILE: FILEVIEW_COLUMNS,
         VIEW_ALBUM: ALBUMVIEW_COLUMNS,
     }
+
+
+def get_align_options() -> list[tuple[str, ColumnAlign]]:
+    """Return alignment options for UI selection.
+
+    Returns
+    -------
+    list[tuple[str, ColumnAlign]]
+        Pairs of translated, lowercase labels and corresponding
+        :class:`~picard.ui.columns.ColumnAlign` values.
+    """
+
+    return [(_("left"), _ALIGN_TOKEN_TO_ENUM["LEFT"]), (_("right"), _ALIGN_TOKEN_TO_ENUM["RIGHT"])]
+
+
+def normalize_align_name(name: str | ColumnAlign | None) -> ColumnAlign:
+    """Normalize arbitrary alignment input to a :class:`ColumnAlign` value.
+
+    Parameters
+    ----------
+    name : str | ColumnAlign | None
+        User-provided alignment token (e.g., ``"left"``/``"RIGHT"``), an
+        existing :class:`ColumnAlign` value, or ``None``.
+
+    Returns
+    -------
+    ColumnAlign
+        Normalized alignment value. Defaults to ``ColumnAlign.LEFT`` when the
+        input is falsy or unrecognized.
+    """
+
+    if isinstance(name, ColumnAlign):
+        return name
+    token = (name or "").strip().upper()
+    return _ALIGN_TOKEN_TO_ENUM.get(token, ColumnAlign.LEFT)
+
+
+def display_align_label(name: str | ColumnAlign | None) -> str:
+    """Return translated, lowercase label for an alignment value.
+
+    Parameters
+    ----------
+    name : str | ColumnAlign | None
+        Alignment token or enum; handled case-insensitively.
+
+    Returns
+    -------
+    str
+        Translated label (``"left"`` or ``"right"``).
+    """
+
+    enum_val = normalize_align_name(name)
+    return _("right") if enum_val == ColumnAlign.RIGHT else _("left")
