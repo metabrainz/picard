@@ -49,7 +49,7 @@ from picard.ui.itemviews.custom_columns.storage import (
     unregister_and_delete,
 )
 from picard.ui.itemviews.custom_columns.validation import (
-    CustomColumnSpecValidator,
+    ColumnSpecValidator,
     is_spec_valid,
     validate_spec,
 )
@@ -557,7 +557,7 @@ def test_registrar_register_and_unregister(fake_config: SimpleNamespace, fake_re
 
 
 def test_validator_required_fields() -> None:
-    validator = CustomColumnSpecValidator()
+    validator = ColumnSpecValidator()
     spec = CustomColumnSpec(title="", key="", kind=CustomColumnKind.FIELD, expression="")
     report = validator.validate(spec)
     assert not report.is_valid
@@ -566,7 +566,7 @@ def test_validator_required_fields() -> None:
 
 
 def test_validator_key_format_and_uniqueness() -> None:
-    validator = CustomColumnSpecValidator()
+    validator = ColumnSpecValidator()
     spec = CustomColumnSpec(title="T", key="1bad key", kind=CustomColumnKind.FIELD, expression="artist")
     report = validator.validate(spec, context=validator.validate_multiple([]).get('', None) or None)
     assert not report.is_valid

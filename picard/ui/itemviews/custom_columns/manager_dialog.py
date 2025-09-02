@@ -40,10 +40,8 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
 from picard.config import get_config
 from picard.i18n import gettext as _
-from picard.script.parser import ScriptError, ScriptParser
 
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
@@ -60,6 +58,10 @@ from picard.ui.itemviews.custom_columns.storage import (
     load_specs_from_config,
     save_specs_to_config,
 )
+from picard.ui.itemviews.custom_columns.validation import (
+    ColumnSpecValidator,
+    ValidationContext,
+)
 from picard.ui.util import StandardButton
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
@@ -74,58 +76,6 @@ class DialogConfig:
     MAX_WIDTH: int = 9999
     DIALOG_WIDTH: int = 1024
     DIALOG_HEIGHT: int = 540
-
-
-class ColumnSpecValidator:
-    """Validates column specifications."""
-
-    @staticmethod
-    def validate(spec: CustomColumnSpec) -> list[str]:
-        """Validate a single column specification.
-
-        Parameters
-        ----------
-        spec : CustomColumnSpec
-            The specification to validate.
-
-        Returns
-        -------
-        list[str]
-            A list of validation error messages. Empty if valid.
-        """
-        errors: list[str] = []
-        if not spec.title.strip():
-            errors.append(_("Column Title is required."))
-        expr = spec.expression.strip()
-        if not expr:
-            errors.append(_("Expression is required."))
-        else:
-            try:
-                # Parse-only validation; no context required
-                ScriptParser().eval(expr)
-            except ScriptError as e:
-                errors.append(_("Script Error: {msg}").format(msg=str(e)))
-            except (TypeError, ValueError, AttributeError, KeyError, RuntimeError) as e:
-                # Log unexpected validation errors for diagnostics without exposing details to users
-                log.debug("CustomColumns: Unexpected error validating script: %s", e, exc_info=True)
-                errors.append(_("Unexpected error validating script."))
-        return errors
-
-    @staticmethod
-    def validate_all(specs: list[CustomColumnSpec]) -> dict[int, list[str]]:
-        """Validate multiple specifications and collect errors.
-
-        Parameters
-        ----------
-        specs : list[CustomColumnSpec]
-            The list of specifications to validate.
-
-        Returns
-        -------
-        dict[int, list[str]]
-            Mapping of index to list of error messages for invalid specs.
-        """
-        return {i: errs for i, spec in enumerate(specs) if (errs := ColumnSpecValidator.validate(spec))}
 
 
 class ViewSelector(QtWidgets.QWidget):
@@ -641,9 +591,13 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         )
 
         # Validate using centralized validation
-        errors = ColumnSpecValidator.validate(spec)
-        if errors:
-            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(errors))
+        validator = ColumnSpecValidator()
+        existing_keys = {s.key for s in self._model.specs() if s.key}
+        context = ValidationContext(existing_keys - {spec.key})
+        report = validator.validate(spec, context)
+        if not report.is_valid:
+            error_messages = [result.message for result in report.errors]
+            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))
             return
 
         # If an entry with this key exists, update it; otherwise insert new
@@ -710,11 +664,22 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
         # Validate specs before persisting
         all_specs = self._model.specs()
-        errors = ColumnSpecValidator.validate_all(all_specs)
-        if errors:
-            first_idx = min(errors.keys())
-            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(errors[first_idx]))
-            self._list.setCurrentIndex(self._model.index(first_idx))
+        validator = ColumnSpecValidator()
+        reports = validator.validate_multiple(all_specs)
+
+        # Find first invalid spec
+        invalid_specs = [(key, report) for key, report in reports.items() if not report.is_valid]
+        if invalid_specs:
+            first_key, first_report = invalid_specs[0]
+            error_messages = [result.message for result in first_report.errors]
+            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))
+
+            # Find the index of the first invalid spec to select it
+            for idx, spec in enumerate(all_specs):
+                spec_key = spec.key or f"<unnamed:{id(spec)}>"
+                if spec_key == first_key:
+                    self._list.setCurrentIndex(self._model.index(idx))
+                    break
             return
 
         # Fill missing keys after validation

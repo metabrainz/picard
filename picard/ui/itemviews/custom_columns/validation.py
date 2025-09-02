@@ -313,7 +313,7 @@ class ConsistencyRule(ValidationRule):
         return results
 
 
-class CustomColumnSpecValidator:
+class ColumnSpecValidator:
     """Main validator for CustomColumnSpec objects."""
 
     def __init__(self) -> None:
@@ -344,7 +344,7 @@ class CustomColumnSpecValidator:
 
 
 def validate_spec(spec: CustomColumnSpec, existing_keys: set[str] | None = None) -> ValidationReport:
-    validator = CustomColumnSpecValidator()
+    validator = ColumnSpecValidator()
     return validator.validate(spec, ValidationContext(existing_keys))
 
 
