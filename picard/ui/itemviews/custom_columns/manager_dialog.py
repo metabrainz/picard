@@ -46,10 +46,10 @@ from picard.ui.itemviews.custom_columns.shared import (
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnRegistrar,
     CustomColumnSpec,
-    add_or_update_spec,
     load_specs_from_config,
     save_specs_to_config,
 )
+from picard.ui.util import StandardButton
 
 
 class _SpecsTableModel(QtCore.QAbstractTableModel):
@@ -185,29 +185,32 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._btn_edit = QtWidgets.QPushButton(_("Edit…"), self)
         self._btn_duplicate = QtWidgets.QPushButton(_("Duplicate"), self)
         self._btn_delete = QtWidgets.QPushButton(_("Delete"), self)
-        self._btn_apply = QtWidgets.QPushButton(_("Make It So!"), self)
-        self._btn_close = QtWidgets.QPushButton(_("Close"), self)
 
         self._btn_add.clicked.connect(self._on_add)
         self._btn_edit.clicked.connect(self._on_edit)
         self._btn_duplicate.clicked.connect(self._on_duplicate)
         self._btn_delete.clicked.connect(self._on_delete)
-        self._btn_apply.clicked.connect(self._on_apply)
-        # Persist immediately on window close if there are unapplied changes
-        self.finished.connect(lambda _: self._on_apply() if self._dirty else None)
-        self._btn_close.clicked.connect(self.close)
+        # Dialog button box with proper roles and system ordering
+        self._buttonbox = QtWidgets.QDialogButtonBox(self)
+        ok = StandardButton(StandardButton.OK)
+        ok.setText(_("Make It So!"))
+        self._buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        self._buttonbox.addButton(
+            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
+        )
+        # Keep a reference to enable/disable apply button
+        self._btn_apply = ok
 
-        # Layout
-        buttons = QtWidgets.QHBoxLayout()
+        # Add action buttons to the button box
         for b in (self._btn_add, self._btn_edit, self._btn_duplicate, self._btn_delete):
-            buttons.addWidget(b)
-        buttons.addStretch(1)
-        buttons.addWidget(self._btn_apply)
-        buttons.addWidget(self._btn_close)
+            self._buttonbox.addButton(b, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+
+        self._buttonbox.accepted.connect(self.accept)
+        self._buttonbox.rejected.connect(self.reject)
 
         layout = QtWidgets.QVBoxLayout(self)
         layout.addWidget(self._table)
-        layout.addLayout(buttons)
+        layout.addWidget(self._buttonbox)
 
         self.resize(800, 400)
         self._dirty = False
@@ -215,6 +218,15 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._update_apply()
 
     # --- Actions ------------------------------------------------------------
+    def accept(self) -> None:
+        self._on_apply()
+        super().accept()
+
+    def reject(self) -> None:
+        # Discard in-memory changes by simply closing the dialog
+        self._dirty = False
+        super().reject()
+
     def _selected_row(self) -> int:
         idxs = self._table.selectionModel().selectedRows()
         return idxs[0].row() if idxs else -1
@@ -234,9 +246,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
                     self._model.update_spec(existing_row, spec)
                 else:
                     self._model.insert_spec(spec)
-                # Persist only; defer UI registration to Apply
-                add_or_update_spec(spec)
-                save_specs_to_config(self._model.specs())
+                # Defer persistence and UI registration to Apply
                 self._mark_dirty()
 
     def _on_edit(self) -> None:
@@ -262,9 +272,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
                 if new_spec.key != spec.key:
                     # Track old key for robust unregister on apply
                     self._deleted_keys.add(spec.key)
-            # Persist update (key change handled by upsert); defer UI updates to Apply
-            add_or_update_spec(new_spec)
-            save_specs_to_config(self._model.specs())
+            # Defer persistence and UI updates to Apply
             self._mark_dirty()
 
     def _on_duplicate(self) -> None:
@@ -285,9 +293,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         if dlg.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             result = dlg.result_spec
             if result:
-                add_or_update_spec(result)
                 self._model.insert_spec(result)
-                save_specs_to_config(self._model.specs())
                 self._mark_dirty()
 
     def _on_delete(self) -> None:
@@ -302,10 +308,9 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
         )
         if confirm == QtWidgets.QMessageBox.StandardButton.Yes:
-            # Defer deletion to Apply: track key, update model/config, mark dirty
+            # Defer deletion to Apply: track key, update model, mark dirty
             self._deleted_keys.add(spec.key)
             self._model.remove_row(row)
-            save_specs_to_config(self._model.specs())
             self._mark_dirty()
 
     def _on_apply(self) -> None:
@@ -358,11 +363,13 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
         if isinstance(header, ConfigurableColumnsHeader):
             view = header.parent()
-            if hasattr(view, 'setHeaderLabels'):
+            set_header = getattr(view, 'setHeaderLabels', None)
+            set_count = getattr(view, 'setColumnCount', None)
+            if callable(set_header):
                 labels = tuple(_(c.title) for c in view.columns)
-                if hasattr(view, 'setColumnCount'):
-                    view.setColumnCount(len(view.columns))
-                view.setHeaderLabels(labels)
+                if callable(set_count):
+                    set_count(len(view.columns))
+                set_header(labels)
 
     def _refresh_all_views(self) -> None:
         """Refresh headers for all open views that use recognized columns."""
@@ -373,14 +380,16 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         if not app:
             return
         recognized = set(get_recognized_view_columns().values())
-        for widget in app.allWidgets():
+        for widget in QtWidgets.QApplication.allWidgets():
             cols = getattr(widget, 'columns', None)
-            if cols in recognized and hasattr(widget, 'setHeaderLabels'):
+            set_header = getattr(widget, 'setHeaderLabels', None)
+            set_count = getattr(widget, 'setColumnCount', None)
+            if cols in recognized and callable(set_header):
                 if isinstance(cols, _Columns):
                     labels = tuple(_(c.title) for c in cols)
-                    if hasattr(widget, 'setColumnCount'):
-                        widget.setColumnCount(len(cols))
-                    widget.setHeaderLabels(labels)
+                    if callable(set_count):
+                        set_count(len(cols))
+                    set_header(labels)
 
     def _mark_dirty(self) -> None:
         self._dirty = True
