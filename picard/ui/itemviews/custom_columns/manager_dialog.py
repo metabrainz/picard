@@ -366,14 +366,12 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         existing_row = self._model.find_row_by_key(spec.key)
         if existing_row >= 0:
             self._model.update_spec(existing_row, spec)
-            self._list.setCurrentIndex(self._model.index(existing_row))
         else:
-            row = self._model.insert_spec(spec)
-            self._list.setCurrentIndex(self._model.index(row))
-        self._current_row = self._selected_row()
+            self._model.insert_spec(spec)
         self._mark_dirty()
-        # After adding/updating, keep the editor active for further edits
-        # rather than disabling it
+        # Prepare a fresh entry for subsequent adds so the key auto-derives
+        self._list.clearSelection()
+        self._prepare_editor_for_new_entry()
 
     def _on_duplicate(self) -> None:
         row = self._selected_row()
@@ -526,6 +524,8 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
                 cb.setEnabled(True)
             self._title.clear()
             self._key.clear()
+            # Reset placeholder for auto-derived behavior
+            self._key.setPlaceholderText(_("Auto-derived from Column Title"))
             self._expression.setPlainText("")
             self._width.setValue(100)
             idx = self._align.findData(normalize_align_name("LEFT"))
