@@ -40,8 +40,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import get_config
 from picard.i18n import gettext as _
+from picard.script.parser import ScriptError, ScriptParser
 
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
@@ -94,8 +96,19 @@ class ColumnSpecValidator:
         errors: list[str] = []
         if not spec.title.strip():
             errors.append(_("Column Title is required."))
-        if not spec.expression.strip():
+        expr = spec.expression.strip()
+        if not expr:
             errors.append(_("Expression is required."))
+        else:
+            try:
+                # Parse-only validation; no context required
+                ScriptParser().eval(expr)
+            except ScriptError as e:
+                errors.append(_("Script Error: {msg}").format(msg=str(e)))
+            except (TypeError, ValueError, AttributeError, KeyError, RuntimeError) as e:
+                # Log unexpected validation errors for diagnostics without exposing details to users
+                log.debug("CustomColumns: Unexpected error validating script: %s", e, exc_info=True)
+                errors.append(_("Unexpected error validating script."))
         return errors
 
     @staticmethod
@@ -608,15 +621,13 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         # Works both when editing an existing item or preparing a new one
         title = self._title.text().strip()
         expr = self._expression.toPlainText().strip()
-        if not title or not expr:
-            QtWidgets.QMessageBox.warning(self, _("Invalid"), _("Both Title and Expression are required."))
-            return
         key_input = self._key.text().strip()
         key = key_input or self._derive_key_from_title(title)
         width = int(self._width.value()) or None
         align = "RIGHT" if normalize_align_name(self._align.currentData()).name == "RIGHT" else "LEFT"
         selected_views: list[str] = self._view_selector.get_selected()
         add_to = format_add_to(selected_views)
+
         spec = CustomColumnSpec(
             title=title,
             key=key,
@@ -628,6 +639,13 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             add_to=add_to,
             transform=None,
         )
+
+        # Validate using centralized validation
+        errors = ColumnSpecValidator.validate(spec)
+        if errors:
+            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(errors))
+            return
+
         # If an entry with this key exists, update it; otherwise insert new
         existing_row = self._model.find_row_by_key(spec.key)
         if existing_row >= 0:
@@ -635,6 +653,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         else:
             self._model.insert_spec(spec)
         self._mark_dirty()
+
         # Prepare a fresh entry for subsequent adds so the key auto-derives
         self._list.clearSelection()
         self._prepare_editor_for_new_entry()
