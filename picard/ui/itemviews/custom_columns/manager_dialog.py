@@ -31,7 +31,9 @@ columns. Internally, storage still supports multiple kinds.
 
 from __future__ import annotations
 
-from dataclasses import replace
+from contextlib import contextmanager
+from dataclasses import dataclass, replace
+import itertools
 
 from PyQt6 import (
     QtCore,
@@ -61,17 +63,188 @@ from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
 
 
+@dataclass(frozen=True)
+class DialogConfig:
+    """Configuration constants for the dialog UI and defaults."""
+
+    DEFAULT_WIDTH: int = 100
+    MIN_WIDTH: int = 0
+    MAX_WIDTH: int = 9999
+    DIALOG_WIDTH: int = 1024
+    DIALOG_HEIGHT: int = 540
+
+
+class ColumnSpecValidator:
+    """Validates column specifications."""
+
+    @staticmethod
+    def validate(spec: CustomColumnSpec) -> list[str]:
+        """Validate a single column specification.
+
+        Parameters
+        ----------
+        spec : CustomColumnSpec
+            The specification to validate.
+
+        Returns
+        -------
+        list[str]
+            A list of validation error messages. Empty if valid.
+        """
+        errors: list[str] = []
+        if not spec.title.strip():
+            errors.append(_("Column Title is required."))
+        if not spec.expression.strip():
+            errors.append(_("Expression is required."))
+        return errors
+
+    @staticmethod
+    def validate_all(specs: list[CustomColumnSpec]) -> dict[int, list[str]]:
+        """Validate multiple specifications and collect errors.
+
+        Parameters
+        ----------
+        specs : list[CustomColumnSpec]
+            The list of specifications to validate.
+
+        Returns
+        -------
+        dict[int, list[str]]
+            Mapping of index to list of error messages for invalid specs.
+        """
+        return {i: errs for i, spec in enumerate(specs) if (errs := ColumnSpecValidator.validate(spec))}
+
+
+class ViewSelector(QtWidgets.QWidget):
+    """Widget for selecting which views to add the column to."""
+
+    changed = QtCore.pyqtSignal()
+
+    def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
+        """Initialize the view selector.
+
+        Parameters
+        ----------
+        parent : QtWidgets.QWidget | None, optional
+            Parent widget, by default None.
+        """
+        super().__init__(parent)
+        layout = QtWidgets.QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self._checkboxes: dict[str, QtWidgets.QCheckBox] = {}
+        for vp in get_ordered_view_presentations():
+            cb = QtWidgets.QCheckBox(_(vp.title), self)
+            cb.setChecked(True)
+            if vp.tooltip:
+                cb.setToolTip(_(vp.tooltip))
+            cb.stateChanged.connect(self.changed.emit)
+            self._checkboxes[vp.id] = cb
+            layout.addWidget(cb)
+
+    def get_selected(self) -> list[str]:
+        """Return the list of selected view identifiers.
+
+        Returns
+        -------
+        list[str]
+            Selected view identifiers.
+        """
+        return [vid for vid, cb in self._checkboxes.items() if cb.isChecked()]
+
+    def set_selected(self, view_ids: set[str]) -> None:
+        """Set the selection state of views by identifiers.
+
+        Parameters
+        ----------
+        view_ids : set[str]
+            Identifiers of views to mark as selected; others will be unselected.
+        """
+        for vid, cb in self._checkboxes.items():
+            cb.setChecked(vid in view_ids)
+
+    def select_all(self) -> None:
+        """Select all available views."""
+        for cb in self._checkboxes.values():
+            cb.setChecked(True)
+
+
+class ViewRefresher:
+    """Handles refreshing column headers across relevant views."""
+
+    @staticmethod
+    def refresh_all_views() -> None:
+        """Refresh headers for all recognized column views.
+
+        Notes
+        -----
+        Iterates over all application widgets and updates header labels for
+        recognized column sets.
+        """
+        from picard.ui.columns import Columns as _Columns
+        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
+
+        app = QtWidgets.QApplication.instance() if hasattr(QtWidgets, 'QApplication') else None
+        if not app:
+            return
+        recognized = set(get_recognized_view_columns().values())
+        for widget in QtWidgets.QApplication.allWidgets():
+            cols = getattr(widget, 'columns', None)
+            set_header = getattr(widget, 'setHeaderLabels', None)
+            set_count = getattr(widget, 'setColumnCount', None)
+            if cols in recognized and callable(set_header):
+                if isinstance(cols, _Columns):
+                    labels = tuple(_(c.title) for c in cols)
+                    if callable(set_count):
+                        set_count(len(cols))
+                    set_header(labels)
+
+
 class _SpecListModel(QtCore.QAbstractListModel):
     """List model of CustomColumnSpec entries displaying titles."""
 
     def __init__(self, specs: list[CustomColumnSpec], parent: QtCore.QObject | None = None) -> None:
+        """Initialize the model with specifications.
+
+        Parameters
+        ----------
+        specs : list[CustomColumnSpec]
+            Initial list of specifications.
+        parent : QtCore.QObject | None, optional
+            Parent object, by default None.
+        """
         super().__init__(parent)
         self._specs: list[CustomColumnSpec] = specs
 
     def rowCount(self, parent: QtCore.QModelIndex | QtCore.QPersistentModelIndex | None = None) -> int:
+        """Return number of rows for the model.
+
+        Parameters
+        ----------
+        parent : QtCore.QModelIndex | QtCore.QPersistentModelIndex | None, optional
+            Parent index for tree models (unused), by default None.
+
+        Returns
+        -------
+        int
+            Number of rows in the model.
+        """
         return 0 if (parent and parent.isValid()) else len(self._specs)
 
     def data(self, index: QtCore.QModelIndex, role: int = QtCore.Qt.ItemDataRole.DisplayRole) -> object:
+        """Return data for a given index and role.
+
+        Parameters
+        ----------
+        index : QtCore.QModelIndex
+            Index to retrieve data for.
+        role : int, optional
+            Data role, by default Qt.DisplayRole.
+
+        Returns
+        -------
+        object
+            Value for the role; None if not applicable.
+        """
         if not index.isValid() or index.row() < 0 or index.row() >= len(self._specs):
             return None
         spec = self._specs[index.row()]
@@ -81,33 +254,99 @@ class _SpecListModel(QtCore.QAbstractListModel):
 
     # Helpers
     def specs(self) -> list[CustomColumnSpec]:
+        """Return a copy of the current specifications.
+
+        Returns
+        -------
+        list[CustomColumnSpec]
+            Copy of internal spec list.
+        """
         return list(self._specs)
 
     def spec_at(self, row: int) -> CustomColumnSpec:
+        """Return the specification at a row.
+
+        Parameters
+        ----------
+        row : int
+            Row index.
+
+        Returns
+        -------
+        CustomColumnSpec
+            Specification at the given row.
+        """
         return self._specs[row]
 
     def set_specs(self, specs: list[CustomColumnSpec]) -> None:
+        """Replace the model's specifications and reset the model.
+
+        Parameters
+        ----------
+        specs : list[CustomColumnSpec]
+            New list of specifications.
+        """
         self.beginResetModel()
         self._specs = specs
         self.endResetModel()
 
     def insert_spec(self, spec: CustomColumnSpec) -> int:
+        """Insert a specification at the end and return its row.
+
+        Parameters
+        ----------
+        spec : CustomColumnSpec
+            Specification to insert.
+
+        Returns
+        -------
+        int
+            Row index of the inserted item.
+        """
         self.beginInsertRows(QtCore.QModelIndex(), len(self._specs), len(self._specs))
         self._specs.append(spec)
         self.endInsertRows()
         return len(self._specs) - 1
 
     def update_spec(self, row: int, spec: CustomColumnSpec) -> None:
+        """Update an existing specification.
+
+        Parameters
+        ----------
+        row : int
+            Row to update.
+        spec : CustomColumnSpec
+            New specification value.
+        """
         self._specs[row] = spec
         idx = self.index(row)
         self.dataChanged.emit(idx, idx)
 
     def remove_row(self, row: int) -> None:
+        """Remove a row from the model.
+
+        Parameters
+        ----------
+        row : int
+            Row index to remove.
+        """
         self.beginRemoveRows(QtCore.QModelIndex(), row, row)
         del self._specs[row]
         self.endRemoveRows()
 
     def find_row_by_key(self, key: str) -> int:
+        """Find the first row with the given key.
+
+        Parameters
+        ----------
+        key : str
+            Column key to search for.
+
+        Returns
+        -------
+        int
+            Row index if found, otherwise -1.
+        """
         for i, s in enumerate(self._specs):
             if s.key == key:
                 return i
@@ -118,6 +357,13 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
     """Single-window UI to manage custom columns."""
 
     def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
+        """Initialize the custom columns manager dialog.
+
+        Parameters
+        ----------
+        parent : QtWidgets.QWidget | None, optional
+            Parent widget, by default None.
+        """
         super().__init__(parent=parent)
         self.setWindowTitle(_("Manage Custom Columns"))
 
@@ -151,29 +397,21 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._expression = ScriptTextEdit(self._editor_panel)
         self._expression.setPlaceholderText("%artist% - %title%")
         self._width = QtWidgets.QSpinBox(self._editor_panel)
-        self._width.setRange(0, 9999)
+        self._width.setRange(DialogConfig.MIN_WIDTH, DialogConfig.MAX_WIDTH)
         self._width.setSpecialValueText("")
-        self._width.setValue(100)
+        self._width.setValue(DialogConfig.DEFAULT_WIDTH)
         self._align = QtWidgets.QComboBox(self._editor_panel)
         for label, enum_val in get_align_options():
             self._align.addItem(label, enum_val)
 
-        views_layout = QtWidgets.QHBoxLayout()
-        self._view_checkboxes: dict[str, QtWidgets.QCheckBox] = {}
-        for vp in get_ordered_view_presentations():
-            cb = QtWidgets.QCheckBox(_(vp.title), self._editor_panel)
-            cb.setChecked(True)
-            if vp.tooltip:
-                cb.setToolTip(_(vp.tooltip))
-            self._view_checkboxes[vp.id] = cb
-            views_layout.addWidget(cb)
+        self._view_selector = ViewSelector(self._editor_panel)
 
         form.addRow(_("Column Title") + "*", self._title)
         form.addRow(_("Key"), self._key)
         form.addRow(_("Expression") + "*", self._expression)
         form.addRow(_("Width"), self._width)
         form.addRow(_("Align"), self._align)
-        form.addRow(_("Add to views"), views_layout)
+        form.addRow(_("Add to views"), self._view_selector)
         # Add button at bottom of middle pane
         self._btn_add = QtWidgets.QPushButton(_("Add"), self._editor_panel)
         self._btn_add.clicked.connect(self._on_add)
@@ -212,7 +450,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         layout.addWidget(self._splitter)
         layout.addWidget(self._buttonbox)
 
-        self.resize(1024, 540)
+        self.resize(DialogConfig.DIALOG_WIDTH, DialogConfig.DIALOG_HEIGHT)
         self._dirty = False
         self._deleted_keys: set[str] = set()
         self._populating: bool = False
@@ -227,8 +465,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._expression.textChanged.connect(self._on_form_changed)
         self._width.valueChanged.connect(self._on_form_changed)
         self._align.currentIndexChanged.connect(self._on_form_changed)
-        for cb in self._view_checkboxes.values():
-            cb.stateChanged.connect(self._on_form_changed)
+        self._view_selector.changed.connect(self._on_form_changed)
 
         # If no columns exist yet, enable editing immediately for quick entry
         if self._model.rowCount() > 0:
@@ -239,20 +476,38 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
     # --- Actions
     def accept(self) -> None:
+        """Apply changes and close the dialog with acceptance."""
         self._commit_form_to_model()
         self._on_apply()
         super().accept()
 
     def reject(self) -> None:
+        """Close the dialog discarding unsaved changes."""
         self._dirty = False
         super().reject()
 
     # List / form coordination
     def _selected_row(self) -> int:
+        """Return the currently selected row index.
+
+        Returns
+        -------
+        int
+            Selected row index, or -1 if none is selected.
+        """
         indexes = self._list.selectionModel().selectedIndexes()
         return indexes[0].row() if indexes else -1
 
     def _on_selection_changed(self, selected: QtCore.QItemSelection, deselected: QtCore.QItemSelection) -> None:
+        """Handle selection change in the list and populate the editor.
+
+        Parameters
+        ----------
+        selected : QtCore.QItemSelection
+            Newly selected indexes (unused).
+        deselected : QtCore.QItemSelection
+            Deselected indexes (unused).
+        """
         del selected, deselected
         self._commit_form_to_model()
         self._current_row = self._selected_row()
@@ -260,23 +515,27 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._populate_form(spec)
 
     def _populate_form(self, spec: CustomColumnSpec | None) -> None:
-        self._populating = True
-        try:
+        """Populate the editor form with the given specification.
+
+        Parameters
+        ----------
+        spec : CustomColumnSpec | None
+            Specification to populate, or None to clear for new entry.
+        """
+        with self._populating_context():
             enabled = spec is not None
             for w in (self._title, self._key, self._expression, self._width, self._align):
                 w.setEnabled(enabled)
-            for cb in self._view_checkboxes.values():
-                cb.setEnabled(enabled)
+            self._view_selector.setEnabled(enabled)
             if not spec:
                 self._title.clear()
                 self._key.clear()
                 self._expression.setPlainText("")
-                self._width.setValue(100)
+                self._width.setValue(DialogConfig.DEFAULT_WIDTH)
                 idx = self._align.findData(normalize_align_name("LEFT"))
                 if idx >= 0:
                     self._align.setCurrentIndex(idx)
-                for cb in self._view_checkboxes.values():
-                    cb.setChecked(True)
+                self._view_selector.select_all()
                 return
 
             self._title.setText(spec.title)
@@ -287,12 +546,10 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             if idx >= 0:
                 self._align.setCurrentIndex(idx)
             views = parse_add_to(getattr(spec, 'add_to', DEFAULT_ADD_TO))
-            for view_id, cb in self._view_checkboxes.items():
-                cb.setChecked(view_id in views)
-        finally:
-            self._populating = False
+            self._view_selector.set_selected(set(views))
 
     def _on_form_changed(self, *args) -> None:  # type: ignore[no-untyped-def]
+        """Mark dialog as dirty and update derived key placeholder."""
         del args
         if self._populating:
             return
@@ -301,6 +558,13 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._mark_dirty()
 
     def _collect_form(self) -> CustomColumnSpec | None:
+        """Collect editor form values into a `CustomColumnSpec`.
+
+        Returns
+        -------
+        CustomColumnSpec | None
+            The collected spec if editing an existing row; otherwise None.
+        """
         if self._current_row < 0:
             return None
         title = self._title.text().strip()
@@ -309,7 +573,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         expr = self._expression.toPlainText().strip()
         width = int(self._width.value()) or None
         align = "RIGHT" if normalize_align_name(self._align.currentData()).name == "RIGHT" else "LEFT"
-        selected_views: list[str] = [vid for vid, cb in self._view_checkboxes.items() if cb.isChecked()]
+        selected_views: list[str] = self._view_selector.get_selected()
         add_to = format_add_to(selected_views)
         old = self._model.spec_at(self._current_row)
         kind = CustomColumnKind.SCRIPT if old.kind != CustomColumnKind.SCRIPT else old.kind
@@ -326,6 +590,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         )
 
     def _commit_form_to_model(self) -> None:
+        """Commit current editor values to the selected model row if valid."""
         # Only commit when editing a valid, existing row
         if self._populating or self._current_row < 0 or self._current_row >= self._model.rowCount():
             return
@@ -338,6 +603,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._model.update_spec(self._current_row, new_spec)
 
     def _on_add(self) -> None:
+        """Create or update a specification based on editor form values."""
         # Create a new spec from the form values and insert it
         # Works both when editing an existing item or preparing a new one
         title = self._title.text().strip()
@@ -349,7 +615,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         key = key_input or self._derive_key_from_title(title)
         width = int(self._width.value()) or None
         align = "RIGHT" if normalize_align_name(self._align.currentData()).name == "RIGHT" else "LEFT"
-        selected_views: list[str] = [vid for vid, cb in self._view_checkboxes.items() if cb.isChecked()]
+        selected_views: list[str] = self._view_selector.get_selected()
         add_to = format_add_to(selected_views)
         spec = CustomColumnSpec(
             title=title,
@@ -374,23 +640,28 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._prepare_editor_for_new_entry()
 
     def _on_duplicate(self) -> None:
+        """Duplicate the selected specification with a unique key and title."""
         row = self._selected_row()
         if row < 0:
             return
         spec = self._model.spec_at(row)
         dup = replace(spec)
         base_key = spec.key
-        suffix = 1
-        keys = {s.key for s in self._model.specs()}
-        while f"{base_key}_{suffix}" in keys:
-            suffix += 1
-        dup.key = f"{base_key}_{suffix}"
-        dup.title = f"{spec.title} ({suffix})"
+        unique_key = self._generate_unique_key(base_key)
+        dup.key = unique_key
+        suffix_text = "1"
+        prefix = f"{base_key}_"
+        if unique_key.startswith(prefix):
+            remainder = unique_key[len(prefix) :]
+            if remainder.isdigit():
+                suffix_text = remainder
+        dup.title = f"{spec.title} ({suffix_text})"
         new_row = self._model.insert_spec(dup)
         self._list.setCurrentIndex(self._model.index(new_row))
         self._mark_dirty()
 
     def _on_delete(self) -> None:
+        """Delete the currently selected specification after confirmation."""
         row = self._selected_row()
         if row < 0:
             return
@@ -415,18 +686,20 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             self._mark_dirty()
 
     def _on_apply(self) -> None:
+        """Validate, persist, and register custom column specifications."""
         self._commit_form_to_model()
 
         # Validate specs before persisting
-        for idx, spec in enumerate(self._model.specs()):
-            if not spec.title.strip():
-                QtWidgets.QMessageBox.warning(self, _("Invalid"), _("Column Title is required."))
-                self._list.setCurrentIndex(self._model.index(idx))
-                return
-            if not spec.expression.strip():
-                QtWidgets.QMessageBox.warning(self, _("Invalid"), _("Expression is required."))
-                self._list.setCurrentIndex(self._model.index(idx))
-                return
+        all_specs = self._model.specs()
+        errors = ColumnSpecValidator.validate_all(all_specs)
+        if errors:
+            first_idx = min(errors.keys())
+            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(errors[first_idx]))
+            self._list.setCurrentIndex(self._model.index(first_idx))
+            return
+
+        # Fill missing keys after validation
+        for idx, spec in enumerate(all_specs):
             if not spec.key.strip():
                 spec.key = self._derive_key_from_title(spec.title)
                 self._model.update_spec(idx, spec)
@@ -459,79 +732,87 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
             cfg.sync()
         self._dirty = False
         self._update_apply()
-        self._refresh_all_views()
-
-    def _refresh_current_view(self) -> None:
-        parent = self.parent()
-        if parent is None:
-            return
-        header = parent
-        from picard.ui.widgets.configurablecolumnsheader import ConfigurableColumnsHeader
-
-        if isinstance(header, ConfigurableColumnsHeader):
-            view = header.parent()
-            set_header = getattr(view, 'setHeaderLabels', None)
-            set_count = getattr(view, 'setColumnCount', None)
-            if callable(set_header):
-                labels = tuple(_(c.title) for c in view.columns)
-                if callable(set_count):
-                    set_count(len(view.columns))
-                set_header(labels)
-
-    def _refresh_all_views(self) -> None:
-        from picard.ui.columns import Columns as _Columns
-        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
-
-        app = QtWidgets.QApplication.instance() if hasattr(QtWidgets, 'QApplication') else None
-        if not app:
-            return
-        recognized = set(get_recognized_view_columns().values())
-        for widget in QtWidgets.QApplication.allWidgets():
-            cols = getattr(widget, 'columns', None)
-            set_header = getattr(widget, 'setHeaderLabels', None)
-            set_count = getattr(widget, 'setColumnCount', None)
-            if cols in recognized and callable(set_header):
-                if isinstance(cols, _Columns):
-                    labels = tuple(_(c.title) for c in cols)
-                    if callable(set_count):
-                        set_count(len(cols))
-                    set_header(labels)
+        ViewRefresher.refresh_all_views()
 
     def _mark_dirty(self) -> None:
+        """Mark the dialog state as modified and update Apply button."""
         self._dirty = True
         self._update_apply()
 
     def _update_apply(self) -> None:
+        """Enable or disable the Apply button based on dirty state."""
         self._btn_apply.setEnabled(self._dirty)
 
     @staticmethod
     def _derive_key_from_title(name: str) -> str:
-        import re
+        """Derive a normalized key from a column title.
 
-        text = name.strip().lower().replace(" ", "_")
-        text = re.sub(r"[^a-z0-9_-]", "_", text)
-        text = re.sub(r"_+", "_", text)
-        return text
+        Parameters
+        ----------
+        name : str
+            Column title to derive the key from.
+
+        Returns
+        -------
+        str
+            ASCII-only, lowercase, underscore-separated key.
+        """
+        import re
+        import unicodedata
+
+        normalized = unicodedata.normalize('NFKD', name.strip().lower())
+        ascii_text = normalized.encode('ascii', 'ignore').decode('ascii')
+        key = re.sub(r'[^a-z0-9]+', '_', ascii_text)
+        return key.strip('_')
+
+    def _generate_unique_key(self, base_key: str) -> str:
+        """Generate a unique key based on a base key.
+
+        Parameters
+        ----------
+        base_key : str
+            Desired base key.
+
+        Returns
+        -------
+        str
+            Unique key not currently used by any specification.
+        """
+        existing_keys = {s.key for s in self._model.specs()}
+        if base_key not in existing_keys:
+            return base_key
+        for suffix in itertools.count(1):
+            candidate = f"{base_key}_{suffix}"
+            if candidate not in existing_keys:
+                return candidate
+        # Fallback (should not be reached)
+        return base_key
 
     # New helper to enable and clear editor for quick new entry
     def _prepare_editor_for_new_entry(self) -> None:
+        """Prepare the editor for quickly adding a new entry."""
         self._current_row = -1
-        self._populating = True
-        try:
+        with self._populating_context():
             for w in (self._title, self._key, self._expression, self._width, self._align):
                 w.setEnabled(True)
-            for cb in self._view_checkboxes.values():
-                cb.setEnabled(True)
+            self._view_selector.setEnabled(True)
             self._title.clear()
             self._key.clear()
             # Reset placeholder for auto-derived behavior
             self._key.setPlaceholderText(_("Auto-derived from Column Title"))
             self._expression.setPlainText("")
-            self._width.setValue(100)
+            self._width.setValue(DialogConfig.DEFAULT_WIDTH)
             idx = self._align.findData(normalize_align_name("LEFT"))
             if idx >= 0:
                 self._align.setCurrentIndex(idx)
-            for cb in self._view_checkboxes.values():
-                cb.setChecked(True)
+            self._view_selector.select_all()
+
+    @contextmanager
+    def _populating_context(self):
+        """Context manager to suppress change handling during form population."""
+        old = self._populating
+        self._populating = True
+        try:
+            yield
         finally:
-            self._populating = False
+            self._populating = old
