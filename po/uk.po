@@ -15,19 +15,19 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-08-21 13:09+0300\n"
-"Last-Translator: Nerten <alex@nerten.info>\n"
+"PO-Revision-Date: 2025-09-02 12:39+0000\n"
+"Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Poedit 3.7\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -495,7 +495,7 @@ msgstr "Кольори для використання в темній темі"
 
 #: picard/options.py:323
 msgid "Options to show in the Quick Menu"
-msgstr ""
+msgstr "Показати опції в Швидкому меню"
 
 #: picard/options.py:338
 msgid "Layout of the tool bar"
@@ -553,13 +553,13 @@ msgstr "Використовуйте стандартні імена викон�
 #, fuzzy
 #| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized instrument credits"
-msgstr "Використовувати стандартні інструментальні кредити"
+msgstr "Стандартизовані відомості про інструменти виконавців"
 
 #: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:146
 #, fuzzy
 #| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized vocal credits"
-msgstr "Використовувати стандартні вокальні кредити"
+msgstr "Стандартизовані відомості про вокалістів"
 
 #: picard/options.py:369
 msgid "Use track and release relationships"
@@ -579,7 +579,7 @@ msgstr "Різні ім'я виконавців"
 
 #: picard/options.py:377
 msgid "Tag formats to not sanitize dates"
-msgstr ""
+msgstr "Не змінювати дати тегів у таких форматах"
 
 #: picard/options.py:382
 msgid "Browser integration"
@@ -767,9 +767,8 @@ msgstr "Кодування тексту ID3v2"
 
 #: picard/options.py:478
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
-#, fuzzy
 msgid "Save iTunes compatible grouping and work"
-msgstr "Зберегти сумісність із групуванням і роботою iTunes"
+msgstr "Зберегти сумісні з iTunes групування та твір"
 
 #: picard/options.py:479
 msgid "Write ID3v1 tags"
@@ -1074,15 +1073,15 @@ msgstr "Дозволені URL-адреси обкладинок"
 
 #: picard/formats/apev2.py:102
 msgid "APEv2 (Monkey's Audio, WavPack)"
-msgstr ""
+msgstr "APEv2 (Monkey's Audio, WavPack)"
 
 #: picard/formats/id3.py:135
 msgid "ID3 (MP3, AIFF)"
-msgstr ""
+msgstr "ID3 (MP3, AIFF)"
 
 #: picard/formats/vorbis.py:130
 msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
-msgstr ""
+msgstr "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
 
 #: picard/script/__init__.py:183
 msgid ""
@@ -1961,6 +1960,11 @@ msgid ""
 "\n"
 "_Since Picard 1.4_"
 msgstr ""
+"$endswith(text,suffix)\n"
+"\n"
+"Повертає true, якщо `text` закінчується на `suffix`.\n"
+"\n"
+"_Since Picard 1.4_"
 
 #: picard/script/functions.py:961
 msgid ""
@@ -1970,8 +1974,14 @@ msgid ""
 "\n"
 "_Since Picard 0.12_"
 msgstr ""
+"`$truncate(text,length)`\n"
+"\n"
+"Обрізає `text` до довжини `length`.\n"
+"\n"
+"_Since Picard 0.12_"
 
 #: picard/script/functions.py:979
+#, fuzzy
 msgid ""
 "`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
@@ -1987,8 +1997,20 @@ msgid ""
 "\n"
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
+"$swapprefix(text,prefix1,prefix2,…)\n"
+"\n"
+"Переміщує вказані префікси з початку в кінець `text`. Можна вказати кілька "
+"префіксів як окремі параметри. Якщо префікс не вказано, за замовчуванням "
+"використовуються 'A' та 'The'.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
+"\n"
+"_Since Picard 1.3, раніше як плагін від Picard 0.13_"
 
 #: picard/script/functions.py:1004
+#, fuzzy
 msgid ""
 "`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
@@ -2003,6 +2025,17 @@ msgid ""
 "\n"
 "_Since Picard 1.3_"
 msgstr ""
+"$delprefix(text,prefix1,prefix2,…)\n"
+"\n"
+"Видаляє вказані префікси з початку `text`. Можна вказати кілька префіксів як "
+"окремі параметри. Якщо префікс не вказано, за замовчуванням використовуються "
+"'A' та 'The'.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"    $delprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
+"\n"
+"_Since Picard 1.3_"
 
 #: picard/script/functions.py:1045
 msgid ""
@@ -2012,6 +2045,11 @@ msgid ""
 "Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.\n"
 "Functionally equivalent to the eq2 plugin."
 msgstr ""
+"$eq_any(x,a1,a2,…)\n"
+"\n"
+"Повертає true, якщо `x` дорівнює `a1` або `a2` або …\n"
+"Функціонально еквівалентно `$or($eq(x,a1),$eq(x,a2),…)`.\n"
+"Функціонально еквівалентно плагіну eq2."
 
 #: picard/script/functions.py:1060
 msgid ""
@@ -2021,6 +2059,11 @@ msgid ""
 "Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.\n"
 "Functionally equivalent to the ne2 plugin."
 msgstr ""
+"$ne_all(x,a1,a2,…)\n"
+"\n"
+"Повертає true, якщо `x` не дорівнює `a1` і `a2` і …\n"
+"Функціонально еквівалентно `$and($ne(x,a1),$ne(x,a2),…)`.\n"
+"Функціонально еквівалентно плагіну ne2."
 
 #: picard/script/functions.py:1075
 msgid ""
@@ -2034,6 +2077,15 @@ msgid ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
 "Loaf))\n"
 msgstr ""
+"$eq_all(x,a1,a2,…)\n"
+"\n"
+"Повертає true, якщо `x` дорівнює `a1` і `a2` і …\n"
+"Функціонально еквівалентно `$and($eq(x,a1),$eq(x,a2),…)`.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
+"Loaf))\n"
 
 #: picard/script/functions.py:1096
 #, python-format
@@ -2048,8 +2100,19 @@ msgid ""
 "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
 "%composer%))\n"
 msgstr ""
+"$ne_any(x,a1,a2,…)\n"
+"\n"
+"Повертає true, якщо `x` не дорівнює `a1` або `a2` або …\n"
+"Функціонально еквівалентно `$or($ne(x,a1),$ne(x,a2),…)`.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t"
+"$if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,%composer%))"
+"\n"
 
 #: picard/script/functions.py:1113
+#, fuzzy
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -2060,6 +2123,15 @@ msgid ""
 "    $set(album,$title(%album%))\n"
 "_Since Picard 2.1_"
 msgstr ""
+"$title(text)\n"
+"\n"
+"Повертає `text` у форматі заголовка (перша літера кожного слова велика).\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t$set(album,$title(%album%))\n"
+"\n"
+"_Since Picard 2.1_"
 
 #: picard/script/functions.py:1129
 msgid ""
@@ -2069,6 +2141,11 @@ msgid ""
 "\n"
 "_Since Picard 2.2_"
 msgstr ""
+"$is_audio()\n"
+"\n"
+"Повертає true, якщо оброблюваний файл є аудіофайлом.\n"
+"\n"
+"_Since Picard 2.2_"
 
 #: picard/script/functions.py:1145
 msgid ""
@@ -2078,6 +2155,11 @@ msgid ""
 "\n"
 "_Since Picard 2.2_"
 msgstr ""
+"$is_video()\n"
+"\n"
+"Повертає true, якщо оброблюваний файл є відеофайлом.\n"
+"\n"
+"_Since Picard 2.2_"
 
 #: picard/script/functions.py:1161
 msgid ""
