@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-09-03 14:39+0000\n"
+"PO-Revision-Date: 2025-09-03 19:17+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -82,14 +82,18 @@ msgstr "Помилка під час зміни колекцій: %(error)s"
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
 msgstr[0] "Додано %(count)i реліз до колекції \"%(name)s\""
-msgstr[1] "Додано %(count)i релізів до колекції \"%(name)s\""
+msgstr[1] "Додано %(count)i релізи до колекції \"%(name)s\""
+msgstr[2] "Додано %(count)i релізів до колекції \"%(name)s\""
+msgstr[3] "Додано %(count)i релізів до колекції \"%(name)s\""
 
 #: picard/collection.py:110
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
 msgstr[0] "Видалено %(count)i реліз з колекції \"%(name)s\""
-msgstr[1] "Видалено %(count)i релізів з колекції \"%(name)s\""
+msgstr[1] "Видалено %(count)i релізи з колекції \"%(name)s\""
+msgstr[2] "Видалено %(count)i релізів з колекції \"%(name)s\""
+msgstr[3] "Видалено %(count)i релізів з колекції \"%(name)s\""
 
 #: picard/collection.py:146
 #, python-format
@@ -199,7 +203,9 @@ msgstr "Пошук метаданих для файлу %(filename)s …"
 msgid "%i image"
 msgid_plural "%i images"
 msgstr[0] "%i зображення"
-msgstr[1] "%i зображень"
+msgstr[1] "%i зображення"
+msgstr[2] "%i зображень"
+msgstr[3] "%i зображень"
 
 #: picard/item.py:170
 #, python-format
@@ -218,7 +224,7 @@ msgstr "Помилка"
 
 #: picard/log.py:96
 msgid "Warning"
-msgstr "УВАГА"
+msgstr "Попередження"
 
 #: picard/log.py:97 picard/ui/infodialog/__init__.py:47
 #: picard/ui/infodialog/dialog.py:118
@@ -315,7 +321,7 @@ msgstr "Завжди замінюйте зображення обкладино�
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 "Завжди використовуйте основний тип зображення як назву файлу для зображень, "
-"які не є передньою частиною."
+"що не є обкладинкою."
 
 #: picard/options.py:208
 msgid "Overwrite existing image files"
@@ -408,7 +414,7 @@ msgstr "Використовувати теги користувачів як ж
 
 #: picard/options.py:276
 msgid "Genres to include or exclude"
-msgstr "Жанри, які потрібно включити або виключити"
+msgstr "Включити або виключити жанри"
 
 #: picard/options.py:278
 msgid "Join multiple genres with"
@@ -519,11 +525,11 @@ msgstr "Мінімальна схожість для пошуків файлів
 
 #: picard/options.py:354
 msgid "Minimal similarity for matching files to tracks"
-msgstr "Мінімальна схожість відповідних файлів до доріжок"
+msgstr "Мінімальна схожість відповідних файлів до треків"
 
 #: picard/options.py:358
 msgid "Translation locales"
-msgstr "Локалі перекладу"
+msgstr "Мови перекладу"
 
 #: picard/options.py:359 picard/ui/forms/ui_options_metadata.py:147
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -543,7 +549,7 @@ msgstr "Використовувати спорідненість випускі
 
 #: picard/options.py:365
 msgid "Translation script exceptions"
-msgstr "Винятки з перекладацьких скриптів"
+msgstr "Винятки у перекладацьких скриптах"
 
 #: picard/options.py:366 picard/ui/forms/ui_options_metadata.py:144
 msgid "Use standardized artist names"
@@ -587,7 +593,7 @@ msgstr "Інтеграція браузера"
 
 #: picard/options.py:383 picard/ui/forms/ui_options_network.py:174
 msgid "Listen only on localhost"
-msgstr "Слухати лише локальні"
+msgstr "Слухати лише на localhost"
 
 #: picard/options.py:384
 msgid "Default listening port"
@@ -1088,7 +1094,7 @@ msgid ""
 "This preset example file naming script does not require any special "
 "settings, tagging scripts or plugins."
 msgstr ""
-"Цей приклад скрипта іменування файлів не вимагає спеціальних налаштувань, "
+"Цей приклад скрипту іменування файлів не вимагає спеціальних налаштувань, "
 "тегових скриптів чи плагінів."
 
 #: picard/script/__init__.py:188
@@ -1981,7 +1987,6 @@ msgstr ""
 "_Since Picard 0.12_"
 
 #: picard/script/functions.py:979
-#, fuzzy
 msgid ""
 "`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
@@ -1997,17 +2002,17 @@ msgid ""
 "\n"
 "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgstr ""
-"$swapprefix(text,prefix1,prefix2,…)\n"
+"`$swapprefix(text,prefix1,prefix2,…)`\n"
 "\n"
-"Переміщує вказані префікси з початку в кінець `text`. Можна вказати кілька "
-"префіксів як окремі параметри. Якщо префікс не вказано, за замовчуванням "
-"використовуються 'A' та 'The'.\n"
+"Переносить зазначені префікси з початку у кінець `text`. Можна вказати "
+"кілька префіксів як окремі параметри. Якщо префікс не вказано, за "
+"замовчуванням використовуються 'A' та 'The'.\n"
 "\n"
 "Приклад:\n"
 "\n"
-"    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
+"\t$swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
 "\n"
-"_Since Picard 1.3, раніше як плагін від Picard 0.13_"
+"_Від Picard 1.3, раніше як плагін з Picard 0.13_"
 
 #: picard/script/functions.py:1004
 #, fuzzy
@@ -2025,7 +2030,7 @@ msgid ""
 "\n"
 "_Since Picard 1.3_"
 msgstr ""
-"$delprefix(text,prefix1,prefix2,…)\n"
+"`$delprefix(text,prefix1,prefix2,…)`\n"
 "\n"
 "Видаляє вказані префікси з початку `text`. Можна вказати кілька префіксів як "
 "окремі параметри. Якщо префікс не вказано, за замовчуванням використовуються "
@@ -2033,7 +2038,7 @@ msgstr ""
 "\n"
 "Приклад:\n"
 "\n"
-"    $delprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
+"\t$delprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
 "\n"
 "_Since Picard 1.3_"
 
@@ -2112,7 +2117,6 @@ msgstr ""
 "\n"
 
 #: picard/script/functions.py:1113
-#, fuzzy
 msgid ""
 "`$title(text)`\n"
 "\n"
@@ -2128,7 +2132,6 @@ msgstr ""
 "Повертає `text` у форматі заголовка (перша літера кожного слова велика).\n"
 "\n"
 "Приклад:\n"
-"\n"
 "\t$set(album,$title(%album%))\n"
 "\n"
 "_Since Picard 2.1_"
@@ -2197,7 +2200,6 @@ msgstr ""
 "Повертає `text` у зворотному порядку."
 
 #: picard/script/functions.py:1191
-#, fuzzy
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -2209,13 +2211,12 @@ msgid ""
 "default to\n"
 "    the start and end of the string respectively."
 msgstr ""
-"$substr(text,start[,end])\n"
+"`$substr(text,start[,end])`\n"
 "\n"
-"Повертає підрядок, починаючи з символу за індексом start до\n"
-"(не включаючи) символу за індексом end. Індекси рахуються з нуля.\n"
-"Негативні числа відраховуються від кінця рядка. Якщо індекси start або end "
-"залишені порожніми, то вони за замовчуванням відповідають початку та кінцю "
-"рядка відповідно."
+"Повертає підрядок, починаючи з символу на позиції `start` до символу на "
+"позиції `end` (не включно). Індекси починаються з нуля. Від’ємні числа "
+"рахуються від кінця рядка. Якщо `start` або `end` залишені порожніми, за "
+"замовчуванням вони відповідають початку та кінцю рядка відповідно."
 
 #: picard/script/functions.py:1215
 #, fuzzy
@@ -2228,12 +2229,12 @@ msgid ""
 "    separator (or \"; \" if not passed) to coerce the value into a proper\n"
 "    multi-valued tag."
 msgstr ""
-"$getmulti(name,index,separator=\"; \")\n"
+"`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
-"Отримує елемент з індексом index із багатозначного тегу name.\n"
-"Замість name можна підставити буквальне значення, що представляє "
-"багатозначний тег. Для цього використовується роздільник (або \"; \" якщо не "
-"вказано інший), щоб перетворити значення на коректний багатозначний тег."
+"Отримує елемент з індексом `index` із багатозначного тегу `name`.  \n"
+"Замість `name` можна підставити буквальне значення, що представляє "
+"багатозначний тег, використовуючи роздільник (або \"; \", якщо не вказано), "
+"щоб перетворити значення на коректний багатозначний тег."
 
 #: picard/script/functions.py:1237
 msgid ""
@@ -2372,7 +2373,6 @@ msgstr ""
 "Результат: A; B; C\n"
 
 #: picard/script/functions.py:1420
-#, fuzzy
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -2390,8 +2390,8 @@ msgid ""
 msgstr ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
-"Повертає копію багатозначного тегу `name` з елементами у зворотному "
-"порядку.  \n"
+"Повертає копію багатозначного тегу `name` з елементами у зворотному порядку."
+"\n"
 "Цю функцію можна використовувати разом із `$sortmulti` для сортування у "
 "порядку спадання.\n"
 "\n"
@@ -2630,7 +2630,7 @@ msgstr "Помилка експорту файлу \"%(filename)s\": %(error)s."
 
 #: picard/script/serializer.py:224
 msgid "Export Script File"
-msgstr "Експортувати файл скрипта"
+msgstr "Експортувати файл скрипту"
 
 #: picard/script/serializer.py:252
 msgid "Export Script"
@@ -2639,7 +2639,7 @@ msgstr "Експортувати скрипт"
 #: picard/script/serializer.py:253
 #, python-format
 msgid "Script successfully exported to %s"
-msgstr "Скрипт успішно експортовано до %s"
+msgstr "Скрипт успішно експортований в %s"
 
 #: picard/script/serializer.py:263
 #, python-format
@@ -2653,7 +2653,7 @@ msgstr "Помилка декодування \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:266
 msgid "Import Script File"
-msgstr "Імпортувати файл скрипта"
+msgstr "Імпортувати файл скрипту"
 
 #: picard/script/serializer.py:289
 msgid "The file was empty"
@@ -2687,7 +2687,7 @@ msgstr "Безіменний скрипт"
 
 #: picard/script/serializer.py:382 picard/ui/options/scripting.py:135
 msgid "Picard script files"
-msgstr "Файли скриптів Пікара"
+msgstr "Файли скриптів Picard"
 
 #: picard/script/serializer.py:383
 msgid "Picard script package"
@@ -3506,7 +3506,7 @@ msgstr "Перемістити вибраний мовний стандарт у
 
 #: picard/ui/forms/ui_exception_script_selector.py:118
 msgid "Available Language Scripts"
-msgstr "Доступні мовні скрипти"
+msgstr "Доступні мовні стандарти"
 
 #: picard/ui/forms/ui_infodialog.py:87 picard/ui/infodialog/__init__.py:79
 #: picard/ui/infodialog/__init__.py:83 picard/ui/infodialog/__init__.py:101
@@ -3531,11 +3531,11 @@ msgstr "З"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:91
 msgid "Locale Selector"
-msgstr "Вибір локалізації"
+msgstr "Вибір мови"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:92
 msgid "Selected Locales"
-msgstr "Вибрані локалі"
+msgstr "Вибрані мови"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:93
 msgid "Move selected locale up"
@@ -3543,7 +3543,7 @@ msgstr "Перемістити вибрану мову вгору"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:94
 msgid "Add to selected locales"
-msgstr "Додати до вибраних локалізацій"
+msgstr "Додати до вибраних мов"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:95
 msgid "Remove selected locale"
@@ -3555,17 +3555,17 @@ msgstr "Перемістити вибрану мову вниз"
 
 #: picard/ui/forms/ui_multi_locale_selector.py:97
 msgid "Available Locales"
-msgstr "Доступні локалі"
+msgstr "Доступні мови"
 
 #: picard/ui/forms/ui_options.py:105
 msgid "Options"
-msgstr "Опії"
+msgstr "Опції"
 
 #: picard/ui/forms/ui_options.py:106
 #, fuzzy
 #| msgid "px"
 msgid "x"
-msgstr "пікселів"
+msgstr "x"
 
 #: picard/ui/forms/ui_options.py:107
 msgid "text"
@@ -3616,7 +3616,7 @@ msgstr "Теги, що ігноруються при порівнянні:"
 #: picard/ui/forms/ui_options_attached_profiles.py:40
 #: picard/ui/options/dialog.py:295
 msgid "Profiles Attached to Options"
-msgstr "Профілі, прикріплені до опцій"
+msgstr "Профілі прикріплені до опцій"
 
 #: picard/ui/forms/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -3644,7 +3644,7 @@ msgstr "Постачальники обкладинок"
 
 #: picard/ui/forms/ui_options_cover.py:129
 msgid "Reorder Priority:"
-msgstr "Пріоритет повторного замовлення:"
+msgstr "Пріоритет впорядкування:"
 
 #: picard/ui/forms/ui_options_cover.py:130
 #: picard/ui/forms/ui_options_interface_toolbar.py:83
@@ -3658,7 +3658,7 @@ msgstr "Перемістити вибраний елемент вниз"
 
 #: picard/ui/forms/ui_options_cover_processing.py:277
 msgid "Discard images if below the given size"
-msgstr "Відхилити зображення менші за заданий розмір"
+msgstr "Відхилити зображення менші ніж заданий розмір"
 
 #: picard/ui/forms/ui_options_cover_processing.py:278
 msgid "Minimum width:"
@@ -3867,7 +3867,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_genres.py:136
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
-msgstr "Фільтри для тегів жанрів або фолксономії (очищаються при виході):"
+msgstr "Фільтри для тегів жанрів або користувачів (очищаються при виході):"
 
 #: picard/ui/forms/ui_options_interface.py:124
 msgid "Appearance"
@@ -3940,7 +3940,7 @@ msgstr "Додати нову кнопку на Панель інструмен�
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:80
 msgid "Add Action"
-msgstr "Додати Дію"
+msgstr "Додати дію"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:81
 msgid "Insert a separator"
@@ -3998,11 +3998,11 @@ msgstr "Мінімальна схожість відповідних файлі�
 
 #: picard/ui/forms/ui_options_matching.py:82
 msgid "Minimal similarity for file lookups:"
-msgstr "Мінімальна схожість для пошуків файлів:"
+msgstr "Мінімальна схожість для пошуку файлів:"
 
 #: picard/ui/forms/ui_options_matching.py:83
 msgid "Minimal similarity for cluster lookups:"
-msgstr "Мінімальна схожість для пошуків кластерів:"
+msgstr "Мінімальна схожість для пошуку кластерів:"
 
 #: picard/ui/forms/ui_options_metadata.py:139 picard/ui/options/metadata.py:81
 msgid "Metadata"
@@ -4010,16 +4010,16 @@ msgstr "Метадані"
 
 #: picard/ui/forms/ui_options_metadata.py:140
 msgid "Translate artist names to these locales where possible:"
-msgstr "Перекладіть імена виконавців на цю мову, якщо це можливо:"
+msgstr "Перекладати імена виконавців цією мовою, якщо це можливо:"
 
 #: picard/ui/forms/ui_options_metadata.py:141
 #: picard/ui/forms/ui_options_metadata.py:143
 msgid "Select…"
-msgstr "Виберіть…"
+msgstr "Вибрати…"
 
 #: picard/ui/forms/ui_options_metadata.py:142
 msgid "Ignore artist name translation for these language scripts:"
-msgstr "Ігнорувати переклад імені виконавця для цих мовних скриптів:"
+msgstr "Ігнорувати переклад імені виконавця у цих мовних стандартах:"
 
 #: picard/ui/forms/ui_options_metadata.py:149
 msgid "Use track relationships"
@@ -4456,11 +4456,11 @@ msgstr "Назва:"
 
 #: picard/ui/forms/ui_scripteditor_details.py:97
 msgid "File Naming Script Metadata"
-msgstr "Метадані скрипта іменування файлів"
+msgstr "Метадані скрипту іменування файлів"
 
 #: picard/ui/forms/ui_scripteditor_details.py:98
 msgid "Version number of the file naming script."
-msgstr "Номер версії скрипта іменування файлів."
+msgstr "Номер версії скрипту іменування файлів."
 
 #: picard/ui/forms/ui_scripteditor_details.py:99
 msgid "Last Updated:"
@@ -4468,7 +4468,7 @@ msgstr "Останнє оновлення:"
 
 #: picard/ui/forms/ui_scripteditor_details.py:100
 msgid "Date and time the file naming script was last updated (UTC)."
-msgstr "Дата та час останнього оновлення скрипта іменування файлів (UTC)."
+msgstr "Дата та час останнього оновлення скрипту іменування файлів (UTC)."
 
 #: picard/ui/forms/ui_scripteditor_details.py:101
 msgid "Now"
@@ -4498,12 +4498,12 @@ msgstr "Опис:"
 msgid ""
 "Brief description of the file naming script, including any required plugins."
 msgstr ""
-"Короткий опис скрипта іменування файлів, включно з усіма потрібними "
+"Короткий опис скрипту іменування файлів, включно з усіма потрібними "
 "плагінами."
 
 #: picard/ui/forms/ui_scripteditor_details.py:109
 msgid "The author of the file naming script."
-msgstr "Автор скрипта іменування файлів."
+msgstr "Автор скрипту іменування файлів."
 
 #: picard/ui/forms/ui_scripting_documentation_dialog.py:42
 msgid "Scripting Documentation"
@@ -6458,7 +6458,7 @@ msgstr "Показати документацію зі скриптів у но�
 
 #: picard/ui/options/scripting.py:129
 msgid "Import a script file as a new script."
-msgstr "Імпортуйте файл скрипта як новий скрипт."
+msgstr "Імпортуйте файл скрипту як новий скрипт."
 
 #: picard/ui/options/scripting.py:132
 msgid "Export the current script to a file."
@@ -6568,15 +6568,15 @@ msgstr "Скинути"
 
 #: picard/ui/scripteditor/__init__.py:247
 msgid "&Import a script file"
-msgstr "&Імпортувати файл скрипта"
+msgstr "&Імпортувати файл скрипту"
 
 #: picard/ui/scripteditor/__init__.py:248
 msgid "Import a file as a new script"
-msgstr "Імпорт файлу як нового скрипта"
+msgstr "Імпорт файлу як нового скрипту"
 
 #: picard/ui/scripteditor/__init__.py:253
 msgid "&Export a script file"
-msgstr "&Експортувати файл скрипта"
+msgstr "&Експортувати файл скрипту"
 
 #: picard/ui/scripteditor/__init__.py:254
 msgid "Export the script to a file"
@@ -6596,7 +6596,7 @@ msgstr "&Зберегти та вийти"
 
 #: picard/ui/scripteditor/__init__.py:266
 msgid "Save changes to the script settings and exit"
-msgstr "Збережіть зміни в налаштуваннях скрипта та вийдіть"
+msgstr "Зберегти зміни в налаштуваннях скрипту та вийти"
 
 #: picard/ui/scripteditor/__init__.py:271
 msgid "E&xit without saving"
@@ -6616,7 +6616,7 @@ msgstr "Перегляд/редагування скриптів та метад
 
 #: picard/ui/scripteditor/__init__.py:281
 msgid "Display the details for the script"
-msgstr "Відобразити деталі скрипта"
+msgstr "Відобразити деталі скрипту"
 
 #: picard/ui/scripteditor/__init__.py:283
 msgid "Ctrl+M"
@@ -6632,7 +6632,7 @@ msgstr "&Скопіювати поточний скрипт"
 
 #: picard/ui/scripteditor/__init__.py:292
 msgid "Save a copy of the script as a new script"
-msgstr "Зберегти копію скрипта як новий скрипт"
+msgstr "Зберегти копію скрипту як новий скрипт"
 
 #: picard/ui/scripteditor/__init__.py:297
 msgid "&Delete the current script"
@@ -6664,7 +6664,7 @@ msgstr "Відкрийте документацію зі скриптів у в�
 
 #: picard/ui/scripteditor/__init__.py:351
 msgid "Empty / blank script"
-msgstr "Порожній / порожній скрипт"
+msgstr "Порожній / чистий скрипт"
 
 #: picard/ui/scripteditor/__init__.py:351
 msgid "New Script"
@@ -6686,13 +6686,13 @@ msgid ""
 msgstr ""
 "Принаймні один незбережений скрипт було додано до профілю опцій.\n"
 "\n"
-"Профіль: {profile_title}\n"
-"Скрипт: {old_script_title}\n"
+"\tProfile: {profile_title}\n"
+"\tScript: {old_script_title}\n"
 "\n"
 "Продовження без збереження призведе до скидання вибраного скрипту в профілі "
 "до:\n"
 "\n"
-"{new_script_title}\n"
+"\t{new_script_title}\n"
 "\n"
 "Ви впевнені, що хочете продовжити?"
 
@@ -6704,11 +6704,11 @@ msgstr "Сценарій з такою назвою вже існує."
 #: picard/ui/scripteditor/__init__.py:852
 #: picard/ui/scripteditor/__init__.py:1081
 msgid "The script title must not be empty."
-msgstr "Назва скрипта не може бути порожньою."
+msgstr "Назва скрипту не може бути порожньою."
 
 #: picard/ui/scripteditor/__init__.py:802
 msgid "Error Deleting Script"
-msgstr "Помилка видалення скрипта"
+msgstr "Помилка видалення скрипту"
 
 #: picard/ui/scripteditor/__init__.py:803
 #, python-format
@@ -6719,7 +6719,7 @@ msgid ""
 "Profile: %s"
 msgstr ""
 "Скрипт не вдалося видалити, оскільки він використовується в одному з "
-"профілів користувачів.\n"
+"профілів користувача.\n"
 "\n"
 "Профіль: %s"
 
@@ -6923,7 +6923,7 @@ msgstr "Функції"
 
 #: picard/ui/widgets/scriptdocumentation.py:183
 msgid "Open Scripting Documentation in your browser"
-msgstr "Відкрийте документацію зі скриптів у вашому браузері"
+msgstr "Відкрити документацію зі скриптів у вашому браузері"
 
 #: picard/ui/widgets/scriptlistwidget.py:58
 msgid "Rename script"
@@ -6964,7 +6964,7 @@ msgstr "Показати довідку та підказки"
 
 #: picard/ui/widgets/scripttextedit.py:319
 msgid "Show tooltips for script elements"
-msgstr "Показувати підказки для елементів скрипта"
+msgstr "Показувати підказки для елементів скрипту"
 
 #: picard/util/__init__.py:385
 msgid "No Title"
