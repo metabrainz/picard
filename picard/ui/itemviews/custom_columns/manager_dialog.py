@@ -41,6 +41,7 @@ from PyQt6 import (  # type: ignore[unresolved-import]
 
 from picard.i18n import gettext as _
 
+from picard.ui import PicardDialog
 from picard.ui.itemviews.custom_columns.column_controller import ColumnController
 from picard.ui.itemviews.custom_columns.column_form_handler import ColumnFormHandler
 from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecService
@@ -258,7 +259,7 @@ class _SpecListModel(QtCore.QAbstractListModel):
         return -1
 
 
-class CustomColumnsManagerDialog(QtWidgets.QDialog):
+class CustomColumnsManagerDialog(PicardDialog):
     """Single-window UI to manage custom columns."""
 
     def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
@@ -371,10 +372,12 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._buttonbox.addButton(
             StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
         )
+        self._buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
         self._btn_apply = ok
 
         self._buttonbox.accepted.connect(self.accept)
         self._buttonbox.rejected.connect(self.reject)
+        self._buttonbox.helpRequested.connect(self.help_requested)
 
         layout = QtWidgets.QVBoxLayout(self)
         layout.addWidget(self._splitter)
@@ -417,6 +420,10 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         """Close the dialog discarding unsaved changes."""
         self._dirty = False
         super().reject()
+
+    def help_requested(self) -> None:
+        """Show help for custom columns."""
+        self.show_help('/usage/custom_columns.html')
 
     # List / form coordination
     def _selected_row(self) -> int:
