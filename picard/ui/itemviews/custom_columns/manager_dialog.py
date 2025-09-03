@@ -65,6 +65,7 @@ from picard.ui.itemviews.custom_columns.validation import (
     ValidationContext,
 )
 from picard.ui.itemviews.custom_columns.view_selector import ViewSelector
+from picard.ui.itemviews.events import header_events
 from picard.ui.util import StandardButton
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
@@ -81,31 +82,9 @@ class DialogConfig:
     DIALOG_HEIGHT: int = 540
 
 
-def refresh_all_views() -> None:
-    """Refresh headers for all recognized column views.
-
-    Notes
-    -----
-    Iterates over all application widgets and updates header labels for
-    recognized column sets.
-    """
-    from picard.ui.columns import Columns as _Columns
-    from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
-
-    app = QtWidgets.QApplication.instance() if hasattr(QtWidgets, 'QApplication') else None
-    if not app:
-        return
-    recognized = set(get_recognized_view_columns().values())
-    for widget in QtWidgets.QApplication.allWidgets():
-        cols = getattr(widget, 'columns', None)
-        set_header = getattr(widget, 'setHeaderLabels', None)
-        set_count = getattr(widget, 'setColumnCount', None)
-        if cols in recognized and callable(set_header):
-            if isinstance(cols, _Columns):
-                labels = tuple(_(c.title) for c in cols)
-                if callable(set_count):
-                    set_count(len(cols))
-                set_header(labels)
+def broadcast_headers_updated() -> None:
+    """Broadcast a refresh request to all views."""
+    header_events.headers_updated.emit()
 
 
 class _SpecListModel(QtCore.QAbstractListModel):
@@ -712,7 +691,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         # Deduplication and persistence are handled by controller
         self._dirty = False
         self._update_apply()
-        refresh_all_views()
+        broadcast_headers_updated()
 
     # New helper to enable and clear editor for quick new entry
     def _prepare_editor_for_new_entry(self) -> None:

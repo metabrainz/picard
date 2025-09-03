@@ -91,6 +91,7 @@ from picard.util import (
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
 from picard.ui.filter import Filter
+from picard.ui.itemviews.events import header_events
 from picard.ui.itemviews.match_quality_column import MatchQualityColumn, MatchQualityColumnDelegate
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
@@ -176,6 +177,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
         self.window = window
+
+        # Subscribe to header update events
+        header_events.headers_updated.connect(self._on_header_updated)
+
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
 
@@ -387,9 +392,26 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_state] = state
         config.persist[self.header_locked] = header.is_locked
 
+    def _set_header_labels(self, update_column_count=False):
+        """Set header labels based on current columns.
+
+        Parameters
+        ----------
+        update_column_count : bool, optional
+            Whether to update the column count to match the number of columns,
+            by default False.
+        """
+        from picard.ui.columns import Columns as _Columns
+
+        cols = self.columns
+        if isinstance(cols, _Columns):
+            if update_column_count:
+                self.setColumnCount(len(cols))
+            labels = tuple(_(c.title) for c in cols)
+            self.setHeaderLabels(labels)
+
     def restore_default_columns(self):
-        labels = tuple(_(c.title) for c in self.columns)
-        self.setHeaderLabels(labels)
+        self._set_header_labels(update_column_count=False)
 
         header = self.header()
         header.setStretchLastSection(True)
@@ -406,6 +428,19 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
+
+    def _refresh_header_labels(self):
+        """Refresh header labels (and count) based on current columns."""
+        self._set_header_labels(update_column_count=True)
+
+    def _on_header_updated(self):
+        """Handle global header update events and refresh if applicable."""
+        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
+
+        recognized = set(get_recognized_view_columns().values())
+        if self.columns not in recognized:
+            return
+        self._refresh_header_labels()
 
     def _init_header(self):
         # Load any persisted user-defined custom columns before header setup
