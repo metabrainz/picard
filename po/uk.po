@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-09-02 12:39+0000\n"
+"PO-Revision-Date: 2025-09-03 14:39+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/app/uk/>\n"
@@ -2010,6 +2010,7 @@ msgid ""
 msgstr ""
 
 #: picard/script/functions.py:1110
+#, fuzzy
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -2022,6 +2023,16 @@ msgid ""
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not "
 "found."
 msgstr ""
+"$find(haystack,needle)\n"
+"\n"
+"Знаходить розташування одного рядка в іншому.\n"
+"\tПовертає індекс першого входження needle у haystack, або \"\", якщо needle "
+"не знайдено.\n"
+"\n"
+"_Since Picard 2.3_\n"
+"\n"
+"Зверніть увагу, що до версії Picard 2.3.2 $find повертав \"-1\", якщо needle "
+"не було знайдено."
 
 #: picard/script/functions.py:1127
 msgid ""
@@ -2029,8 +2040,12 @@ msgid ""
 "\n"
 "Returns `text` in reverse order."
 msgstr ""
+"$reverse(text)\n"
+"\n"
+"Повертає `text` у зворотному порядку."
 
 #: picard/script/functions.py:1136
+#, fuzzy
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -2042,8 +2057,16 @@ msgid ""
 "default to\n"
 "    the start and end of the string respectively."
 msgstr ""
+"$substr(text,start[,end])\n"
+"\n"
+"Повертає підрядок, починаючи з символу за індексом start до\n"
+"(не включаючи) символу за індексом end. Індекси рахуються з нуля.\n"
+"Негативні числа відраховуються від кінця рядка. Якщо індекси start або end "
+"залишені порожніми, то вони за замовчуванням відповідають початку та кінцю "
+"рядка відповідно."
 
 #: picard/script/functions.py:1157
+#, fuzzy
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -2053,6 +2076,12 @@ msgid ""
 "    separator (or \"; \" if not passed) to coerce the value into a proper\n"
 "    multi-valued tag."
 msgstr ""
+"$getmulti(name,index,separator=\"; \")\n"
+"\n"
+"Отримує елемент з індексом index із багатозначного тегу name.\n"
+"Замість name можна підставити буквальне значення, що представляє "
+"багатозначний тег. Для цього використовується роздільник (або \"; \" якщо не "
+"вказано інший), щоб перетворити значення на коректний багатозначний тег."
 
 #: picard/script/functions.py:1176
 msgid ""
@@ -2113,6 +2142,10 @@ msgid ""
 "Joins all elements in `name`, placing `text` between each element, and "
 "returns the result as a string."
 msgstr ""
+"$join(name,text,separator=\"; \")\n"
+"\n"
+"Об’єднує всі елементи в `name`, вставляючи `text` між кожним елементом, і "
+"повертає результат як рядок."
 
 #: picard/script/functions.py:1260
 msgid ""
@@ -2175,8 +2208,19 @@ msgid ""
 "\n"
 "Result: A; B; C\n"
 msgstr ""
+"`$sortmulti(name,separator=\"; \")`\n"
+"\n"
+"Повертає копію багатозначного тегу `name` з елементами, відсортованими в "
+"порядку зростання.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t$sortmulti(B; A; C)\n"
+"\n"
+"Результат: A; B; C\n"
 
 #: picard/script/functions.py:1339
+#, fuzzy
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -2192,6 +2236,18 @@ msgid ""
 "\n"
 "Result: C; B; A\n"
 msgstr ""
+"`$reversemulti(name,separator=\"; \")`\n"
+"\n"
+"Повертає копію багатозначного тегу `name` з елементами у зворотному "
+"порядку.  \n"
+"Цю функцію можна використовувати разом із `$sortmulti` для сортування у "
+"порядку спадання.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t$reversemulti($sortmulti(B; A; C))\n"
+"\n"
+"Результат: C; B; A\n"
 
 #: picard/script/functions.py:1358
 #, python-format
@@ -2225,6 +2281,12 @@ msgid ""
 "If translate is not blank, the output will be translated into the current "
 "locale language.\n"
 msgstr ""
+"`$countryname(country_code,translate=\"\")`\n"
+"\n"
+"Повертає назву країни за вказаним кодом країни. Якщо код країни недійсний, "
+"буде повернуто порожній рядок.\n"
+"Якщо параметр translate не порожній, результат буде перекладений на поточну "
+"мову локалі.\n"
 
 #: picard/script/functions.py:1425
 msgid ""
@@ -2249,6 +2311,14 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$month(date,date_order=\"ymd\")`\n"
+"\n"
+"Повертає місяць із вказаної дати. За замовчуванням використовується порядок "
+"\"ymd\".  \n"
+"Його можна змінити, вказавши \"dmy\" або \"mdy\".  \n"
+"Якщо дата недійсна, буде повернуто порожній рядок.\n"
+"\n"
+"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1449
 msgid ""
@@ -2261,6 +2331,14 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$day(date,date_order=\"ymd\")`\n"
+"\n"
+"Повертає день із вказаної дати. За замовчуванням використовується порядок "
+"\"ymd\".  \n"
+"Його можна змінити, вказавши \"dmy\" або \"mdy\".  \n"
+"Якщо дата недійсна, буде повернуто порожній рядок.\n"
+"\n"
+"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1461
 #, python-format
@@ -2304,6 +2382,18 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$is_multi(name)`\n"
+"\n"
+"Повертає '1', якщо аргумент є багатозначним тегом і містить більше одного "
+"елемента, інакше повертає порожній рядок.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t$is_multi(%artists%)\n"
+"\n"
+"Результат: 1, якщо є більше одного виконавця, інакше \"\".\n"
+"\n"
+"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1512
 msgid ""
@@ -2320,6 +2410,18 @@ msgid ""
 "\n"
 "_Since Picard 2.8_"
 msgstr ""
+"`$cleanmulti(name)`\n"
+"\n"
+"Видаляє всі елементи з порожнім рядком із багатозначної змінної.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t $setmulti(test,one; ; two; three)\n"
+"\t$cleanmulti(test)\n"
+"\n"
+"Результат: встановлює значення 'test' як [\"one\", \"two\", \"three\"].\n"
+"\n"
+"_Починаючи з Picard 2.8_"
 
 #: picard/script/functions.py:1582
 msgid ""
@@ -2637,7 +2739,7 @@ msgstr "Побачити реліз MusicBrainz"
 
 #: picard/ui/coverartbox.py:337
 msgid "Common images on all tracks"
-msgstr "Звичайні зображення на всіх трекх"
+msgstr "Звичайні зображення на всіх треках"
 
 #: picard/ui/coverartbox.py:339
 msgid "Tracks contain different images"
@@ -3424,11 +3526,11 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow.py:785
 msgid "&Generate AcoustID Fingerprints"
-msgstr ""
+msgstr "&Згенерувати відбитки AcoustID"
 
 #: picard/ui/mainwindow.py:786 picard/ui/options/interface_toolbar.py:108
 msgid "Generate Fingerprints"
-msgstr ""
+msgstr "Генерувати відбитки"
 
 #: picard/ui/mainwindow.py:787
 msgid ""
@@ -4205,7 +4307,7 @@ msgstr "Назва файла"
 
 #: picard/ui/ui_aboutdialog.py:83
 msgid "About Picard"
-msgstr ""
+msgstr "Про Picard"
 
 #: picard/ui/options/cdlookup.py:52 picard/ui/ui_cdlookup.py:85
 #: picard/ui/ui_options_cdlookup.py:40
@@ -4271,23 +4373,23 @@ msgstr ""
 
 #: picard/ui/ui_exception_script_selector.py:107
 msgid "Selected language script match threshold:"
-msgstr ""
+msgstr "Поріг відповідності вибраного мовного стандарту:"
 
 #: picard/ui/ui_exception_script_selector.py:108
 msgid "Move selected language script up"
-msgstr ""
+msgstr "Перемістити вибраний мовний стандарт угору"
 
 #: picard/ui/ui_exception_script_selector.py:109
 msgid "Add to selected language scripts"
-msgstr ""
+msgstr "Додати до вибраних мовних стандартів"
 
 #: picard/ui/ui_exception_script_selector.py:110
 msgid "Remove selected language script"
-msgstr ""
+msgstr "Видалити вибраний мовний стандарт"
 
 #: picard/ui/ui_exception_script_selector.py:111
 msgid "Move selected language script down"
-msgstr ""
+msgstr "Перемістити вибраний мовний стандарт униз"
 
 #: picard/ui/ui_exception_script_selector.py:112
 msgid "Available Language Scripts"
@@ -4355,7 +4457,7 @@ msgstr ""
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
-msgstr ""
+msgstr "Ігнорувати ці треки при перевірці повноти релізу"
 
 #: picard/ui/ui_options_advanced.py:145
 msgid "Video tracks"
@@ -4363,23 +4465,23 @@ msgstr "Відео треки"
 
 #: picard/ui/ui_options_advanced.py:146
 msgid "Data tracks"
-msgstr "Дата треків"
+msgstr "Треки з даними"
 
 #: picard/ui/ui_options_advanced.py:147
 msgid "Pregap tracks"
-msgstr "Треки перед паузами"
+msgstr "Паузи перед треками"
 
 #: picard/ui/ui_options_advanced.py:148
 msgid "Silent tracks"
-msgstr ""
+msgstr "Тихі треки"
 
 #: picard/ui/ui_options_advanced.py:149
 msgid "Tags to ignore for comparison:"
-msgstr "Теги, які потрібно ігнорувати для порівняння:"
+msgstr "Теги, що ігноруються при порівнянні:"
 
 #: picard/ui/options/dialog.py:214 picard/ui/ui_options_attached_profiles.py:34
 msgid "Profiles Attached to Options"
-msgstr ""
+msgstr "Профілі, прикріплені до опцій"
 
 #: picard/ui/ui_options_cdlookup.py:41
 msgid "CD-ROM device to use for lookups:"
@@ -4395,11 +4497,11 @@ msgstr ""
 
 #: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
-msgstr "Перезаписати файл, якщо він вже наявний"
+msgstr "Перезаписати уже наявний файл"
 
 #: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
-msgstr ""
+msgstr "Постачальники обкладинок"
 
 #: picard/ui/ui_options_cover.py:103
 msgid "Reorder Priority:"
@@ -4417,7 +4519,7 @@ msgstr "Перемістити вибраний елемент вниз"
 
 #: picard/ui/ui_options_fingerprinting.py:97
 msgid "Audio Fingerprinting"
-msgstr "Аудіо Відбиток"
+msgstr "Аудіо відбиток"
 
 #: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
@@ -4433,11 +4535,11 @@ msgstr "Налаштування AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:101
 msgid "Ignore existing AcoustID fingerprints"
-msgstr ""
+msgstr "Ігнорувати існуючі відбитки AcoustID"
 
 #: picard/ui/ui_options_fingerprinting.py:102
 msgid "Save AcoustID fingerprints to file tags"
-msgstr ""
+msgstr "Збереження відбитків AcoustID у файлах тегів"
 
 #: picard/ui/ui_options_fingerprinting.py:103
 msgid "Maximum threads to use for calculator:"
@@ -4445,7 +4547,7 @@ msgstr ""
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
-msgstr ""
+msgstr "Калькулятор відбитків:"
 
 #: picard/ui/ui_options_fingerprinting.py:105
 #: picard/ui/ui_options_interface.py:132 picard/ui/ui_options_renaming.py:152
@@ -5577,7 +5679,7 @@ msgid ""
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
-"Кожен вибраний письмовий стандарт має значення порогу відповідності, що "
+"Кожен вибраний мовний стандарт має значення порогу відповідності, що "
 "визначає, чи потрібно його застосовувати. Під час перевірки імені виконавця "
 "спершу виконується розбір, щоб з’ясувати, які стандарти представлені в імені "
 "та який відсоток символів належить кожному з них. Потім перевіряються всі "
@@ -6036,7 +6138,7 @@ msgstr ""
 #: picard/util/checkupdate.py:105 picard/util/checkupdate.py:139
 #: picard/util/checkupdate.py:159
 msgid "Picard Update"
-msgstr ""
+msgstr "Оновлення Picard"
 
 #: picard/util/checkupdate.py:106
 msgid ""
