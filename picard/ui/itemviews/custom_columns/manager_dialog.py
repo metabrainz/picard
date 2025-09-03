@@ -347,7 +347,12 @@ class CustomColumnsManagerDialog(PicardDialog):
         form.addRow(self._error_message_display)
 
         # Middle pane action: Update changes to selected row (non-persistent)
-        self._btn_update = QtWidgets.QPushButton(_("Update"), self._editor_panel)
+        self._btn_update = QtWidgets.QPushButton(_("Save Changes"), self._editor_panel)
+        self._btn_update.setToolTip(
+            _(
+                "Save changes to the selected column. You still need to click 'Make It So!' to apply all changes permanently."
+            )
+        )
         self._btn_update.clicked.connect(self._on_update)
         save_row = QtWidgets.QHBoxLayout()
         save_row.addStretch(1)
