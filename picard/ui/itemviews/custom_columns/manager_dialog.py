@@ -359,6 +359,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         # Splitter
         self._splitter = QtWidgets.QSplitter(self)
+        self._splitter.setObjectName('column_manager_splitter')
         self._splitter.setOrientation(QtCore.Qt.Orientation.Horizontal)
         self._splitter.addWidget(left_panel)
         self._splitter.addWidget(self._editor_panel)
