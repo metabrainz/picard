@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-09-03 19:17+0000\n"
+"PO-Revision-Date: 2025-09-03 19:36+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -61,7 +61,7 @@ msgstr "Кластер %(album)s виявлений!"
 #: picard/cluster.py:259
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Немає відповідних випусків для кластера %(album)s"
+msgstr "Немає відповідних релізів для кластера %(album)s"
 
 #: picard/cluster.py:278
 #, python-format
@@ -545,7 +545,7 @@ msgstr "Назва окремих записів"
 
 #: picard/options.py:364 picard/ui/forms/ui_options_metadata.py:148
 msgid "Use release relationships"
-msgstr "Використовувати спорідненість випусків"
+msgstr "Використовувати спорідненість релізів"
 
 #: picard/options.py:365
 msgid "Translation script exceptions"
@@ -645,7 +645,7 @@ msgstr "Надіслати оцінки до MusicBrainz"
 
 #: picard/options.py:415 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
-msgstr "Бажані країни випуску"
+msgstr "Бажані країни випуску альбому"
 
 #: picard/options.py:416 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
@@ -653,7 +653,7 @@ msgstr "Бажані середні формати"
 
 #: picard/options.py:417 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
-msgstr "Бажані типи випусків"
+msgstr "Бажані типи альбому"
 
 #: picard/options.py:421 picard/ui/forms/ui_options_renaming.py:160
 msgid "Delete empty directories"
@@ -4088,7 +4088,7 @@ msgstr "Стандартний порт для прослуховування:"
 
 #: picard/ui/forms/ui_options_plugins.py:137 picard/ui/options/plugins.py:220
 msgid "Plugins"
-msgstr "Модулі"
+msgstr "Плагіни"
 
 #: picard/ui/forms/ui_options_plugins.py:138 picard/ui/options/plugins.py:613
 #: picard/ui/searchdialog/album.py:157 picard/ui/searchdialog/artist.py:47
@@ -4103,15 +4103,15 @@ msgstr "Версія"
 #: picard/ui/forms/ui_options_plugins.py:140
 #: picard/ui/mainwindow/__init__.py:774
 msgid "Actions"
-msgstr "Actions"
+msgstr "Дії"
 
 #: picard/ui/forms/ui_options_plugins.py:141
 msgid "Install plugin…"
-msgstr "Встановити плагін …"
+msgstr "Встановити плагін…"
 
 #: picard/ui/forms/ui_options_plugins.py:142
 msgid "Open plugin folder"
-msgstr "Відкрити теку модулів"
+msgstr "Відкрити теку плагінів"
 
 #: picard/ui/forms/ui_options_plugins.py:143
 msgid "Reload List of Plugins"
@@ -4152,22 +4152,22 @@ msgstr "Ел. пошта:"
 #: picard/ui/forms/ui_options_releases.py:118
 #: picard/ui/forms/ui_options_releases.py:119
 msgid "Add to preferred release countries"
-msgstr "Додати до бажаних країн випуску"
+msgstr "Додати до бажаних країн релізу"
 
 #: picard/ui/forms/ui_options_releases.py:120
 #: picard/ui/forms/ui_options_releases.py:121
 msgid "Remove from preferred release countries"
-msgstr "Видалити з бажаних країн випуску"
+msgstr "Видалити з бажаних країн релізу"
 
 #: picard/ui/forms/ui_options_releases.py:123
 #: picard/ui/forms/ui_options_releases.py:124
 msgid "Add to preferred release formats"
-msgstr "Додати до бажаних форматів випуску"
+msgstr "Додати до бажаних форматів релізу"
 
 #: picard/ui/forms/ui_options_releases.py:125
 #: picard/ui/forms/ui_options_releases.py:126
 msgid "Remove from preferred release formats"
-msgstr "Видалити з бажаних форматів випуску"
+msgstr "Видалити з бажаних форматів релізу"
 
 #: picard/ui/forms/ui_options_renaming.py:156
 msgid "Move files when saving"
@@ -4912,11 +4912,11 @@ msgstr "Жанр"
 
 #: picard/ui/itemviews/columns.py:185
 msgid "Original Release Date"
-msgstr "Початкова дата випуску"
+msgstr "Початкова дата релізу"
 
 #: picard/ui/itemviews/columns.py:186
 msgid "Release Date"
-msgstr "Дата випуску"
+msgstr "Дата релізу"
 
 #: picard/ui/itemviews/columns.py:187 picard/ui/searchdialog/album.py:170
 msgid "Cover"
@@ -4985,7 +4985,7 @@ msgid ""
 msgstr ""
 "Picard слухає цей порт для інтеграції з вашим браузером. Коли ви тиснете "
 "\"Пошук\" або \"Відкрити в браузері\" у Picard, натискання кнопки \"Теґер\" "
-"на веб-сторінці завантажує випуск у Picard."
+"на веб-сторінці завантажує реліз у Picard."
 
 #: picard/ui/mainwindow/__init__.py:475
 #, python-format
@@ -6404,7 +6404,7 @@ msgstr "Оцінки"
 
 #: picard/ui/options/releases.py:156
 msgid "Preferred Releases"
-msgstr "Рекомендовані випуски"
+msgstr "Рекомендовані альбоми"
 
 #: picard/ui/options/releases.py:193
 msgid "Reset all"
@@ -6879,7 +6879,7 @@ msgstr "Показати в браузері"
 
 #: picard/ui/searchdialog/track.py:75
 msgid "Release"
-msgstr "Випуск"
+msgstr "Релізи"
 
 #: picard/ui/searchdialog/track.py:85
 msgid "Track Search Results"
