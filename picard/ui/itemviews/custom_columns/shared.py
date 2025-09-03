@@ -41,7 +41,7 @@ class ColumnIndex(IntEnum):
 
 
 # Public headers for specs-related UIs (manager table, dialogs, etc.)
-HEADERS: dict[ColumnIndex, str] = {
+COLUMN_INPUT_FIELD_NAMES: dict[ColumnIndex, str] = {
     ColumnIndex.TITLE: _("Column Title"),
     ColumnIndex.TYPE: _("Type"),
     ColumnIndex.EXPRESSION: _("Expression"),
@@ -59,9 +59,11 @@ DEFAULT_ADD_TO: str = f"{VIEW_FILE},{VIEW_ALBUM}"
 
 RECOGNIZED_VIEWS: set[str] = {VIEW_FILE, VIEW_ALBUM}
 
+ALIGN_LEFT_NAME: str = "LEFT"
+ALIGN_RIGHT_NAME: str = "RIGHT"
 _ALIGN_TOKEN_TO_ENUM: dict[str, ColumnAlign] = {
-    "LEFT": ColumnAlign.LEFT,
-    "RIGHT": ColumnAlign.RIGHT,
+    ALIGN_LEFT_NAME: ColumnAlign.LEFT,
+    ALIGN_RIGHT_NAME: ColumnAlign.RIGHT,
 }
 
 
@@ -204,7 +206,7 @@ def get_align_options() -> list[tuple[str, ColumnAlign]]:
         :class:`~picard.ui.columns.ColumnAlign` values.
     """
 
-    return [(_("left"), _ALIGN_TOKEN_TO_ENUM["LEFT"]), (_("right"), _ALIGN_TOKEN_TO_ENUM["RIGHT"])]
+    return [(N_("left"), _ALIGN_TOKEN_TO_ENUM["LEFT"]), (N_("right"), _ALIGN_TOKEN_TO_ENUM["RIGHT"])]
 
 
 def normalize_align_name(name: str | ColumnAlign | None) -> ColumnAlign:
@@ -245,3 +247,54 @@ def display_align_label(name: str | ColumnAlign | None) -> str:
 
     enum_val = normalize_align_name(name)
     return _("right") if enum_val == ColumnAlign.RIGHT else _("left")
+
+
+def next_incremented_title(base_title: str, existing_titles: set[str]) -> str:
+    """Generate the next incremented title by appending a numeric suffix.
+
+    Parameters
+    ----------
+    base_title : str
+        The base title to increment.
+    existing_titles : set[str]
+        Set of existing titles to avoid conflicts.
+
+    Returns
+    -------
+    str
+        The next available incremented title with format "base_title (N)".
+
+    Examples
+    --------
+    >>> next_incremented_title("Album", {"Album", "Album (1)"})
+    'Album (2)'
+    """
+    suffix = 1
+    candidate: str = f"{base_title} ({suffix})"
+    while candidate in existing_titles:
+        suffix += 1
+        candidate = f"{base_title} ({suffix})"
+    return candidate
+
+
+def next_numeric_key(existing_keys: set[int]) -> int:
+    """Generate the next available numeric key.
+
+    Parameters
+    ----------
+    existing_keys : set[int]
+        Set of existing numeric keys.
+
+    Returns
+    -------
+    int
+        The next available numeric key (max + 1), or 1 if set is empty.
+
+    Examples
+    --------
+    >>> next_numeric_key({1, 3, 5})
+    6
+    >>> next_numeric_key(set())
+    1
+    """
+    return max(existing_keys, default=0) + 1

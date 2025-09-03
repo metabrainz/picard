@@ -25,7 +25,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
-import re
 
 from picard.script import ScriptError, ScriptParser
 
@@ -144,43 +143,29 @@ class RequiredFieldRule(ValidationRule):
 
 
 class KeyFormatRule(ValidationRule):
-    KEY_PATTERN = re.compile(r"^[a-zA-Z][a-zA-Z0-9_-]*$")
-
     def validate(self, spec: CustomColumnSpec, context: ValidationContext) -> list[ValidationResult]:
         results: list[ValidationResult] = []
         # Key is optional; when present, enforce format/length/uniqueness
         if not spec.key:
             return results
-        if not self.KEY_PATTERN.match(spec.key):
+        try:
+            numeric_key = int(spec.key)
+        except (TypeError, ValueError):
             results.append(
                 ValidationResult(
-                    "key",
-                    ValidationSeverity.ERROR,
-                    "Key must start with a letter and contain only letters, numbers, underscores, and hyphens",
-                    "KEY_INVALID_FORMAT",
+                    "key", ValidationSeverity.ERROR, "Key must be a positive integer", "KEY_INVALID_FORMAT"
                 )
             )
-        if len(spec.key) > MAX_KEY_LENGTH:
+            return results
+        if numeric_key <= 0:
             results.append(
                 ValidationResult(
-                    "key",
-                    ValidationSeverity.ERROR,
-                    f"Key must be {MAX_KEY_LENGTH} characters or less",
-                    "KEY_TOO_LONG",
+                    "key", ValidationSeverity.ERROR, "Key must be a positive integer", "KEY_INVALID_FORMAT"
                 )
             )
         if spec.key in context.existing_keys:
             results.append(
                 ValidationResult("key", ValidationSeverity.ERROR, f"Key '{spec.key}' already exists", "KEY_DUPLICATE")
-            )
-        if spec.key.startswith("_") or spec.key in {"title", "artist", "album"}:
-            results.append(
-                ValidationResult(
-                    "key",
-                    ValidationSeverity.WARNING,
-                    f"Key '{spec.key}' may conflict with built-in columns",
-                    "KEY_POTENTIALLY_RESERVED",
-                )
             )
         return results
 
