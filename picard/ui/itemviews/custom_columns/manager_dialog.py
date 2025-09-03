@@ -32,7 +32,10 @@ columns. Internally, storage still supports multiple kinds.
 from __future__ import annotations
 
 from contextlib import contextmanager
-from dataclasses import dataclass, replace
+from dataclasses import (
+    dataclass,
+    replace,
+)
 
 from PyQt6 import (  # type: ignore[unresolved-import]
     QtCore,
