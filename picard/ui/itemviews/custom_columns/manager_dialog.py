@@ -312,10 +312,12 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         self._width.setSpecialValueText("")
         self._width.setValue(DialogConfig.DEFAULT_WIDTH)
         self._width.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-        self._width.setMinimumWidth(80)
+        self._width.setMaximumWidth(100)
+        self._width.setSuffix(_(' px'))
         self._align = QtWidgets.QComboBox(self._editor_panel)
         for label, enum_val in get_align_options():
             self._align.addItem(_(label), enum_val)
+        self._align.setMaximumWidth(100)
 
         self._view_selector = ViewSelector(self._editor_panel)
         self._form_handler = ColumnFormHandler(
@@ -328,30 +330,18 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
 
         form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.TITLE]) + "*", self._title)
         form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.EXPRESSION]) + "*", self._expression)
-
-        # Put width and align on the same row
-        wa_container = QtWidgets.QWidget(self._editor_panel)
-        wa_layout = QtWidgets.QHBoxLayout(wa_container)
-        wa_layout.setContentsMargins(0, 0, 0, 0)
-
-        # Width label and input
-        width_label = QtWidgets.QLabel(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.WIDTH]))
-        width_label.setBuddy(self._width)
-        wa_layout.addWidget(width_label)
-        wa_layout.addWidget(self._width)
-        wa_layout.addSpacing(15)
-
-        # Align label and input
-        align_label = QtWidgets.QLabel(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.ALIGN]))
-        align_label.setBuddy(self._align)
-        wa_layout.addWidget(align_label)
-        wa_layout.addWidget(self._align)
-
-        # Spacer and stretch
-        wa_layout.addStretch(1)
-        form.addRow(wa_container)
-
+        form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.WIDTH]), self._width)
+        form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.ALIGN]), self._align)
         form.addRow(_("Add to views"), self._view_selector)
+
+        # Display an error message to the user
+        self._error_message_display = QtWidgets.QLabel(self._editor_panel)
+        self._error_message_display.setStyleSheet("QLabel { color : red; }")
+        self._error_message_display.setWordWrap(True)
+        self._error_message_display.setText("")
+
+        form.addRow(self._error_message_display)
+
         # Middle pane action: Update changes to selected row (non-persistent)
         self._btn_update = QtWidgets.QPushButton(_("Update"), self._editor_panel)
         self._btn_update.clicked.connect(self._on_update)
@@ -440,6 +430,29 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         indexes = self._list.selectionModel().selectedIndexes()
         return indexes[0].row() if indexes else -1
 
+    def _live_spec_check(self) -> None:
+        """Handle changes in the expression field to provide live validation feedback."""
+        if self._populating:
+            return
+
+        expression = self._expression.toPlainText()
+        if not expression.strip():
+            self._error_message_display.setText("")
+            return
+
+        # Get the curernt spec from the form to validate
+        spec = self._spec_from_form()
+
+        validator = ColumnSpecValidator()
+        existing_keys = {s.key for s in self._model.specs() if s.key}
+        context = ValidationContext(existing_keys - {spec.key})
+        report = validator.validate(spec, context)
+        if report.is_valid:
+            self._error_message_display.setText("")
+        else:
+            error_messages = [result.message for result in report.errors]
+            self._error_message_display.setText("\n".join(error_messages))
+
     def _on_selection_changed(self, selected: QtCore.QItemSelection, deselected: QtCore.QItemSelection) -> None:
         """Handle selection change in the list and populate the editor.
 
@@ -481,6 +494,7 @@ class CustomColumnsManagerDialog(QtWidgets.QDialog):
         del args
         if self._populating:
             return
+        self._live_spec_check()
 
     def _spec_from_form(self) -> CustomColumnSpec:
         """Create a CustomColumnSpec from current form widget values."""
