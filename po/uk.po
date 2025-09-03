@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-09-02 12:39+0000\n"
+"PO-Revision-Date: 2025-09-03 14:39+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -2162,6 +2162,7 @@ msgstr ""
 "_Since Picard 2.2_"
 
 #: picard/script/functions.py:1161
+#, fuzzy
 msgid ""
 "`$find(haystack,needle)`\n"
 "\n"
@@ -2174,6 +2175,16 @@ msgid ""
 "Note that prior to Picard 2.3.2 `$find` returned \"-1\" if `needle` was not "
 "found."
 msgstr ""
+"$find(haystack,needle)\n"
+"\n"
+"Знаходить розташування одного рядка в іншому.\n"
+"\tПовертає індекс першого входження needle у haystack, або \"\", якщо needle "
+"не знайдено.\n"
+"\n"
+"_Since Picard 2.3_\n"
+"\n"
+"Зверніть увагу, що до версії Picard 2.3.2 $find повертав \"-1\", якщо needle "
+"не було знайдено."
 
 #: picard/script/functions.py:1180
 msgid ""
@@ -2181,8 +2192,12 @@ msgid ""
 "\n"
 "Returns `text` in reverse order."
 msgstr ""
+"$reverse(text)\n"
+"\n"
+"Повертає `text` у зворотному порядку."
 
 #: picard/script/functions.py:1191
+#, fuzzy
 msgid ""
 "`$substr(text,start[,end])`\n"
 "\n"
@@ -2194,8 +2209,16 @@ msgid ""
 "default to\n"
 "    the start and end of the string respectively."
 msgstr ""
+"$substr(text,start[,end])\n"
+"\n"
+"Повертає підрядок, починаючи з символу за індексом start до\n"
+"(не включаючи) символу за індексом end. Індекси рахуються з нуля.\n"
+"Негативні числа відраховуються від кінця рядка. Якщо індекси start або end "
+"залишені порожніми, то вони за замовчуванням відповідають початку та кінцю "
+"рядка відповідно."
 
 #: picard/script/functions.py:1215
+#, fuzzy
 msgid ""
 "`$getmulti(name,index,separator=\"; \")`\n"
 "\n"
@@ -2205,6 +2228,12 @@ msgid ""
 "    separator (or \"; \" if not passed) to coerce the value into a proper\n"
 "    multi-valued tag."
 msgstr ""
+"$getmulti(name,index,separator=\"; \")\n"
+"\n"
+"Отримує елемент з індексом index із багатозначного тегу name.\n"
+"Замість name можна підставити буквальне значення, що представляє "
+"багатозначний тег. Для цього використовується роздільник (або \"; \" якщо не "
+"вказано інший), щоб перетворити значення на коректний багатозначний тег."
 
 #: picard/script/functions.py:1237
 msgid ""
@@ -2265,6 +2294,10 @@ msgid ""
 "Joins all elements in `name`, placing `text` between each element, and "
 "returns the result as a string."
 msgstr ""
+"$join(name,text,separator=\"; \")\n"
+"\n"
+"Об’єднує всі елементи в `name`, вставляючи `text` між кожним елементом, і "
+"повертає результат як рядок."
 
 #: picard/script/functions.py:1333
 msgid ""
@@ -2327,8 +2360,19 @@ msgid ""
 "\n"
 "Result: A; B; C\n"
 msgstr ""
+"`$sortmulti(name,separator=\"; \")`\n"
+"\n"
+"Повертає копію багатозначного тегу `name` з елементами, відсортованими в "
+"порядку зростання.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t$sortmulti(B; A; C)\n"
+"\n"
+"Результат: A; B; C\n"
 
 #: picard/script/functions.py:1420
+#, fuzzy
 msgid ""
 "`$reversemulti(name,separator=\"; \")`\n"
 "\n"
@@ -2344,6 +2388,18 @@ msgid ""
 "\n"
 "Result: C; B; A\n"
 msgstr ""
+"`$reversemulti(name,separator=\"; \")`\n"
+"\n"
+"Повертає копію багатозначного тегу `name` з елементами у зворотному "
+"порядку.  \n"
+"Цю функцію можна використовувати разом із `$sortmulti` для сортування у "
+"порядку спадання.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t$reversemulti($sortmulti(B; A; C))\n"
+"\n"
+"Результат: C; B; A\n"
 
 #: picard/script/functions.py:1442
 #, python-format
@@ -2377,6 +2433,12 @@ msgid ""
 "If translate is not blank, the output will be translated into the current "
 "locale language.\n"
 msgstr ""
+"`$countryname(country_code,translate=\"\")`\n"
+"\n"
+"Повертає назву країни за вказаним кодом країни. Якщо код країни недійсний, "
+"буде повернуто порожній рядок.\n"
+"Якщо параметр translate не порожній, результат буде перекладений на поточну "
+"мову локалі.\n"
 
 #: picard/script/functions.py:1513
 msgid ""
@@ -2401,6 +2463,14 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$month(date,date_order=\"ymd\")`\n"
+"\n"
+"Повертає місяць із вказаної дати. За замовчуванням використовується порядок "
+"\"ymd\".  \n"
+"Його можна змінити, вказавши \"dmy\" або \"mdy\".  \n"
+"Якщо дата недійсна, буде повернуто порожній рядок.\n"
+"\n"
+"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1541
 msgid ""
@@ -2413,6 +2483,14 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$day(date,date_order=\"ymd\")`\n"
+"\n"
+"Повертає день із вказаної дати. За замовчуванням використовується порядок "
+"\"ymd\".  \n"
+"Його можна змінити, вказавши \"dmy\" або \"mdy\".  \n"
+"Якщо дата недійсна, буде повернуто порожній рядок.\n"
+"\n"
+"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1555
 #, python-format
@@ -2456,6 +2534,18 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$is_multi(name)`\n"
+"\n"
+"Повертає '1', якщо аргумент є багатозначним тегом і містить більше одного "
+"елемента, інакше повертає порожній рядок.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t$is_multi(%artists%)\n"
+"\n"
+"Результат: 1, якщо є більше одного виконавця, інакше \"\".\n"
+"\n"
+"_Since Picard 2.7_"
 
 #: picard/script/functions.py:1612
 msgid ""
@@ -2472,6 +2562,18 @@ msgid ""
 "\n"
 "_Since Picard 2.8_"
 msgstr ""
+"`$cleanmulti(name)`\n"
+"\n"
+"Видаляє всі елементи з порожнім рядком із багатозначної змінної.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"\t $setmulti(test,one; ; two; three)\n"
+"\t$cleanmulti(test)\n"
+"\n"
+"Результат: встановлює значення 'test' як [\"one\", \"two\", \"three\"].\n"
+"\n"
+"_Починаючи з Picard 2.8_"
 
 #: picard/script/functions.py:1684
 msgid ""
@@ -3300,7 +3402,7 @@ msgstr "Побачити реліз MusicBrainz"
 
 #: picard/ui/coverartbox/coverartthumbnail.py:335
 msgid "Common images on all tracks"
-msgstr "Звичайні зображення на всіх трекх"
+msgstr "Звичайні зображення на всіх треках"
 
 #: picard/ui/coverartbox/coverartthumbnail.py:337
 msgid "Tracks contain different images"
@@ -3316,7 +3418,7 @@ msgstr "URL обкладинки:"
 
 #: picard/ui/forms/ui_aboutdialog.py:89
 msgid "About Picard"
-msgstr "Про Пікара"
+msgstr "Про Picard"
 
 #: picard/ui/forms/ui_aboutdialog.py:90 picard/ui/mainwindow/__init__.py:234
 msgid "MusicBrainz Picard"
@@ -3384,23 +3486,23 @@ msgstr "Вибрані сценарії"
 
 #: picard/ui/forms/ui_exception_script_selector.py:113
 msgid "Selected language script match threshold:"
-msgstr "Поріг збігу вибраної мови та скриптів:"
+msgstr "Поріг відповідності вибраного мовного стандарту:"
 
 #: picard/ui/forms/ui_exception_script_selector.py:114
 msgid "Move selected language script up"
-msgstr "Перемістити вибрану мовну скриптову схему вгору"
+msgstr "Перемістити вибраний мовний стандарт угору"
 
 #: picard/ui/forms/ui_exception_script_selector.py:115
 msgid "Add to selected language scripts"
-msgstr "Додати до вибраних мовних скриптів"
+msgstr "Додати до вибраних мовних стандартів"
 
 #: picard/ui/forms/ui_exception_script_selector.py:116
 msgid "Remove selected language script"
-msgstr "Видалити вибраний мовний скрипт"
+msgstr "Видалити вибраний мовний стандарт"
 
 #: picard/ui/forms/ui_exception_script_selector.py:117
 msgid "Move selected language script down"
-msgstr "Перемістити вибраний мовний шрифт униз"
+msgstr "Перемістити вибраний мовний стандарт униз"
 
 #: picard/ui/forms/ui_exception_script_selector.py:118
 msgid "Available Language Scripts"
@@ -3467,11 +3569,11 @@ msgstr "пікселів"
 
 #: picard/ui/forms/ui_options.py:107
 msgid "text"
-msgstr ""
+msgstr "текст"
 
 #: picard/ui/forms/ui_options.py:108
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: picard/ui/forms/ui_options_advanced.py:144
 msgid "Advanced options"
@@ -3489,7 +3591,7 @@ msgstr "Ігнорувати різницю тривалості треку ме
 #: picard/ui/forms/ui_options_advanced.py:150
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
-msgstr "Ігнорувати такі треки під час визначення, чи реліз завершено"
+msgstr "Ігнорувати ці треки при перевірці повноти релізу"
 
 #: picard/ui/forms/ui_options_advanced.py:151
 msgid "Video tracks"
@@ -3497,11 +3599,11 @@ msgstr "Відео треки"
 
 #: picard/ui/forms/ui_options_advanced.py:152
 msgid "Data tracks"
-msgstr "Дата треків"
+msgstr "Треки з даними"
 
 #: picard/ui/forms/ui_options_advanced.py:153
 msgid "Pregap tracks"
-msgstr "Треки перед паузами"
+msgstr "Паузи перед треками"
 
 #: picard/ui/forms/ui_options_advanced.py:154
 msgid "Silent tracks"
@@ -3509,7 +3611,7 @@ msgstr "Тихі треки"
 
 #: picard/ui/forms/ui_options_advanced.py:155
 msgid "Tags to ignore for comparison:"
-msgstr "Теги, які потрібно ігнорувати для порівняння:"
+msgstr "Теги, що ігноруються при порівнянні:"
 
 #: picard/ui/forms/ui_options_attached_profiles.py:40
 #: picard/ui/options/dialog.py:295
@@ -3534,7 +3636,7 @@ msgstr "Використовуйте такі назви файлів для з�
 
 #: picard/ui/forms/ui_options_cover.py:125
 msgid "Overwrite the file if it already exists"
-msgstr "Перезаписати файл, якщо він вже наявний"
+msgstr "Перезаписати уже наявний файл"
 
 #: picard/ui/forms/ui_options_cover.py:128
 msgid "Cover Art Providers"
@@ -3556,7 +3658,7 @@ msgstr "Перемістити вибраний елемент вниз"
 
 #: picard/ui/forms/ui_options_cover_processing.py:277
 msgid "Discard images if below the given size"
-msgstr "Відхилити зображення, якщо вони менші за заданий розмір"
+msgstr "Відхилити зображення менші за заданий розмір"
 
 #: picard/ui/forms/ui_options_cover_processing.py:278
 msgid "Minimum width:"
@@ -3581,7 +3683,7 @@ msgstr "Змінити розмір зображень до заданого р�
 
 #: picard/ui/forms/ui_options_cover_processing.py:283
 msgid "Resize images saved to tags"
-msgstr "Зміна розміру зображень, збережених у тегах"
+msgstr "Зміна розміру зображень збережених у тегах"
 
 #: picard/ui/forms/ui_options_cover_processing.py:284
 #: picard/ui/forms/ui_options_cover_processing.py:290
@@ -3600,7 +3702,7 @@ msgstr "Збільшити"
 
 #: picard/ui/forms/ui_options_cover_processing.py:289
 msgid "Resize images saved to files"
-msgstr "Зміна розміру зображень, збережених у файлах"
+msgstr "Зміна розміру зображень збережених у файлах"
 
 #: picard/ui/forms/ui_options_cover_processing.py:295
 msgid "Convert images to the given format"
@@ -3608,7 +3710,7 @@ msgstr "Конвертувати зображення у заданий форм
 
 #: picard/ui/forms/ui_options_cover_processing.py:296
 msgid "Convert images saved to tags"
-msgstr "Конвертувати зображення, збережені у тегах"
+msgstr "Конвертувати зображення збережені у тегах"
 
 #: picard/ui/forms/ui_options_cover_processing.py:297
 #: picard/ui/forms/ui_options_cover_processing.py:299
@@ -3621,7 +3723,7 @@ msgstr "Конвертувати збережені зображення у фа
 
 #: picard/ui/forms/ui_options_fingerprinting.py:103
 msgid "Audio Fingerprinting"
-msgstr "Аудіо Відбиток"
+msgstr "Аудіо відбиток"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:104
 msgid "Do not use audio fingerprinting"
@@ -3637,11 +3739,11 @@ msgstr "Налаштування AcoustID"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:107
 msgid "Ignore existing AcoustID fingerprints"
-msgstr "Ігнорувати існуючі відбитки пальців AcoustID"
+msgstr "Ігнорувати існуючі відбитки AcoustID"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:108
 msgid "Save AcoustID fingerprints to file tags"
-msgstr "Збереження відбитків пальців AcoustID у файлах тегів"
+msgstr "Збереження відбитків AcoustID у файлах тегів"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:109
 msgid "Maximum threads to use for calculator:"
@@ -3649,7 +3751,7 @@ msgstr "Максимальна кількість потоків для вико
 
 #: picard/ui/forms/ui_options_fingerprinting.py:110
 msgid "Fingerprint calculator:"
-msgstr "Калькулятор відбитків пальців:"
+msgstr "Калькулятор відбитків:"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:111
 #: picard/ui/forms/ui_options_interface.py:138
@@ -3820,7 +3922,7 @@ msgstr "Показати тип MIME"
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
 #: picard/ui/options/interface_quick_menu.py:46
 msgid "Quick Settings Menu"
-msgstr ""
+msgstr "Меню швидких налаштувань"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
 #, fuzzy
@@ -5284,12 +5386,12 @@ msgstr "Ctrl+Y"
 
 #: picard/ui/mainwindow/actions.py:398
 msgid "&Generate AcoustID Fingerprints"
-msgstr "&Згенерувати відбитки пальців AcoustID"
+msgstr "&Згенерувати відбитки AcoustID"
 
 #: picard/ui/mainwindow/actions.py:399
 #: picard/ui/options/interface_toolbar.py:119
 msgid "Generate Fingerprints"
-msgstr "Генерувати відбитки пальців"
+msgstr "Генерувати відбитки"
 
 #: picard/ui/mainwindow/actions.py:400
 msgid ""
@@ -5574,8 +5676,9 @@ msgid "%s (error)"
 msgstr "%s (помилка)"
 
 #: picard/ui/options/dialog.py:189
+#, fuzzy
 msgid "Display help regarding option profiles"
-msgstr ""
+msgstr "Показати довідку щодо параметрів профілів"
 
 #: picard/ui/options/dialog.py:192
 msgid "&Restore all Defaults"
@@ -5630,7 +5733,7 @@ msgstr "Профілі"
 #: picard/ui/options/dialog.py:444
 #, python-format
 msgid "The highlighted settings will be applied to %s"
-msgstr ""
+msgstr "Виділені налаштування будуть застосовані до %s"
 
 #: picard/ui/options/dialog.py:502
 msgid "Unexpected error"
@@ -5870,7 +5973,7 @@ msgstr "Обкладинка"
 msgid ""
 "Please select the settings that you want to appear in the Quick Settings "
 "menu."
-msgstr ""
+msgstr "Оберіть параметри, які ви хочете бачити в Меню швидких налаштувань."
 
 #: picard/ui/options/interface_quick_menu.py:62
 #, fuzzy
@@ -6120,7 +6223,7 @@ msgid ""
 "threshold specified for the script, then the artist name will not be "
 "translated."
 msgstr ""
-"Кожен вибраний письмовий стандарт має значення порогу відповідності, що "
+"Кожен вибраний мовний стандарт має значення порогу відповідності, що "
 "визначає, чи потрібно його застосовувати. Під час перевірки імені виконавця "
 "спершу виконується розбір, щоб з’ясувати, які стандарти представлені в імені "
 "та який відсоток символів належить кожному з них. Потім перевіряються всі "
@@ -6380,7 +6483,7 @@ msgstr "Помилка сценарію"
 
 #: picard/ui/options/tags.py:111
 msgid "Do not sanitize dates for these tag formats:"
-msgstr ""
+msgstr "Не очищати дати в тегах з цими форматами:"
 
 #: picard/ui/options/tags_compatibility_aac.py:36
 msgid "AAC"
@@ -6930,7 +7033,7 @@ msgstr "Помилка завантаження списку релізів Pica
 #: picard/util/checkupdate.py:111 picard/util/checkupdate.py:148
 #: picard/util/checkupdate.py:172
 msgid "Picard Update"
-msgstr "Оновлення Пікара"
+msgstr "Оновлення Picard"
 
 #: picard/util/checkupdate.py:112
 #, python-brace-format
