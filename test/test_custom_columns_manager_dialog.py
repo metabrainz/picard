@@ -60,6 +60,14 @@ from picard.ui.itemviews.custom_columns.validation import (
 from picard.ui.itemviews.custom_columns.view_selector import ViewSelector
 
 
+# Module-level setup to ensure extension point compatibility with parallel tests
+@pytest.fixture(autouse=True, scope="module")
+def setup_extension_points():
+    """Prevent extension point iteration issues during parallel test execution."""
+    with patch('picard.script.script_functions.ext_point_script_functions', []):
+        yield
+
+
 @pytest.fixture
 def sample_spec() -> CustomColumnSpec:
     """Standard valid CustomColumnSpec for testing."""
