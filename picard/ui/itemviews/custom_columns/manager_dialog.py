@@ -393,6 +393,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._populating: bool = False
         self._current_row: int = -1
         self._awaiting_update: bool = False
+        self._has_uncommitted_changes: bool = False
         self._update_apply()
 
         # Selection and bindings
@@ -416,8 +417,33 @@ class CustomColumnsManagerDialog(PicardDialog):
     # --- Actions
     def accept(self) -> None:
         """Apply changes and close the dialog with acceptance."""
-        self._commit_form_to_model()
+        # Check for uncommitted changes and ask user what to do
+        if self._has_uncommitted_changes:
+            reply = QtWidgets.QMessageBox.question(
+                self,
+                _("Unsaved Changes"),
+                _("You have unsaved changes. Do you want to save them?"),
+                QtWidgets.QMessageBox.StandardButton.Save
+                | QtWidgets.QMessageBox.StandardButton.Discard
+                | QtWidgets.QMessageBox.StandardButton.Cancel,
+                QtWidgets.QMessageBox.StandardButton.Save,
+            )
+            if reply == QtWidgets.QMessageBox.StandardButton.Cancel:
+                return  # Don't close dialog
+            elif reply == QtWidgets.QMessageBox.StandardButton.Save:
+                # Try to save changes first
+                self._on_update()
+                # If update failed (validation error), don't close
+                if self._has_uncommitted_changes:
+                    return
+            # If reply is Discard, just continue without committing
+
+        # Only commit if there are no uncommitted changes (normal case)
+        if not self._has_uncommitted_changes:
+            self._commit_form_to_model()
+
         self._on_apply()
+        self._has_uncommitted_changes = False
         super().accept()
 
     def reject(self) -> None:
@@ -476,14 +502,27 @@ class CustomColumnsManagerDialog(PicardDialog):
         """
         del selected, deselected
 
+        # Check for uncommitted changes before changing selection
+        if self._has_uncommitted_changes and not self._populating:
+            if not self._confirm_discard_changes():
+                # User cancelled, revert selection
+                self._revert_selection()
+                return
+            # User confirmed to discard changes - don't commit them
+
         # If we were in new-entry mode, cancel it and proceed with the new selection
         if self._awaiting_update:
             self._awaiting_update = False
 
-        self._commit_form_to_model()
+        # Only commit if there are no uncommitted changes (normal case)
+        # If there were uncommitted changes and user chose to discard, skip commit
+        if not self._has_uncommitted_changes:
+            self._commit_form_to_model()
+
         self._current_row = self._selected_row()
         spec = self._model.spec_at(self._current_row) if self._current_row >= 0 else None
         self._populate_form(spec)
+        self._has_uncommitted_changes = False
         self._update_form_actions()
 
     def _populate_form(self, spec: CustomColumnSpec | None) -> None:
@@ -499,12 +538,15 @@ class CustomColumnsManagerDialog(PicardDialog):
                 self._form_handler.clear_for_new(DialogConfig.DEFAULT_WIDTH)
             else:
                 self._form_handler.populate(spec)
+        # Reset uncommitted changes flag after populating form
+        self._has_uncommitted_changes = False
 
     def _on_form_changed(self, *args) -> None:  # type: ignore[no-untyped-def]
         """Mark dialog as dirty after any form change."""
         del args
         if self._populating:
             return
+        self._has_uncommitted_changes = True
         self._live_spec_check()
 
     def _spec_from_form(self) -> CustomColumnSpec:
@@ -546,9 +588,15 @@ class CustomColumnsManagerDialog(PicardDialog):
 
     def _on_add(self) -> None:
         """Enter new-entry mode: clear form and await Update to insert the row."""
+        # Check for uncommitted changes before starting new entry
+        if self._has_uncommitted_changes:
+            if not self._confirm_discard_changes():
+                return  # User cancelled, don't start new entry
+
         # Clear selection and prepare a blank form for new entry
         self._list.clearSelection()
         self._awaiting_update = True
+        self._has_uncommitted_changes = False
         self._prepare_editor_for_new_entry()
 
         # When `Add` is clicked, make it clear that a new entry is being created
@@ -569,6 +617,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         dup = replace(dup, key=str(next_numeric_key(int(k.key) for k in self._model.specs() if str(k.key).isdigit())))
         new_row = self._model.insert_spec(dup)
         self._list.setCurrentIndex(self._model.index(new_row))
+        self._has_uncommitted_changes = False
         self._mark_dirty()
 
     def _on_delete(self) -> None:
@@ -576,11 +625,32 @@ class CustomColumnsManagerDialog(PicardDialog):
         row = self._selected_row()
         if row < 0:
             return
+
+        # Check for uncommitted changes first
+        if self._has_uncommitted_changes:
+            reply = QtWidgets.QMessageBox.question(
+                self,
+                _("Unsaved Changes"),
+                _("You have unsaved changes. Do you want to save them before deleting this column?"),
+                QtWidgets.QMessageBox.StandardButton.Save
+                | QtWidgets.QMessageBox.StandardButton.Discard
+                | QtWidgets.QMessageBox.StandardButton.Cancel,
+                QtWidgets.QMessageBox.StandardButton.Save,
+            )
+            if reply == QtWidgets.QMessageBox.StandardButton.Cancel:
+                return  # User cancelled
+            elif reply == QtWidgets.QMessageBox.StandardButton.Save:
+                # Try to save changes first
+                self._on_update()
+                # If update failed (validation error), don't proceed with delete
+                if self._has_uncommitted_changes:
+                    return
+
         spec = self._model.spec_at(row)
         confirm = QtWidgets.QMessageBox.question(
             self,
             _("Delete Custom Column"),
-            _("Are you sure you want to delete the column ‘{title}’?").format(title=spec.title),
+            _("Are you sure you want to delete the column '{title}'?").format(title=spec.title),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
         )
         if confirm == QtWidgets.QMessageBox.StandardButton.Yes:
@@ -596,8 +666,9 @@ class CustomColumnsManagerDialog(PicardDialog):
                 self._prepare_editor_for_new_entry()
             self._mark_dirty()
 
-            # Deleting cancels pending add state
+            # Deleting cancels pending add state and clears uncommitted changes
             self._awaiting_update = False
+            self._has_uncommitted_changes = False
             self._update_form_actions()
 
     def _on_apply(self) -> None:
@@ -644,6 +715,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._current_row = -1
         with self._populating_context():
             self._form_handler.clear_for_new(DialogConfig.DEFAULT_WIDTH)
+        self._has_uncommitted_changes = False
         self._update_form_actions()
 
     def _update_apply(self) -> None:
@@ -659,6 +731,35 @@ class CustomColumnsManagerDialog(PicardDialog):
         """Update the form actions based on the current row and state."""
         self._btn_update.setEnabled(self._current_row >= 0 or self._awaiting_update)
         self._btn_add.setEnabled(not self._awaiting_update)
+
+    def _confirm_discard_changes(self) -> bool:
+        """Ask user to confirm discarding uncommitted changes.
+
+        Returns
+        -------
+        bool
+            True if user confirms discarding changes, False if cancelled.
+        """
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            _("Unsaved Changes"),
+            _("You have unsaved changes that will be lost. Do you want to continue without saving?"),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return reply == QtWidgets.QMessageBox.StandardButton.Yes
+
+    def _revert_selection(self) -> None:
+        """Revert selection back to the current row when user cancels selection change."""
+        if self._current_row >= 0 and self._current_row < self._model.rowCount():
+            # Temporarily disconnect to avoid recursion
+            sel = self._list.selectionModel()
+            sel.selectionChanged.disconnect(self._on_selection_changed)
+            self._list.setCurrentIndex(self._model.index(self._current_row))
+            sel.selectionChanged.connect(self._on_selection_changed)
+        else:
+            # If no valid current row, clear selection
+            self._list.clearSelection()
 
     def _on_update(self) -> None:
         """Validate and save changes to the selected row without persisting."""
@@ -681,12 +782,15 @@ class CustomColumnsManagerDialog(PicardDialog):
 
             # Insert and select the new row
             new_row = self._model.insert_spec(spec)
-            self._list.setCurrentIndex(self._model.index(new_row))
-            self._mark_dirty()
-
+            # Set current_row before changing selection to prevent confusion in selection handler
+            self._current_row = new_row
+            # Clear uncommitted changes flag BEFORE changing selection to prevent warning dialog
+            self._has_uncommitted_changes = False
             # Re-enable Add after saving changes if we were awaiting save
             if self._awaiting_update:
                 self._awaiting_update = False
+            self._list.setCurrentIndex(self._model.index(new_row))
+            self._mark_dirty()
             self._update_form_actions()
             return
 
@@ -708,6 +812,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._model.update_spec(self._current_row, spec)
         self._mark_dirty()
 
+        # Clear uncommitted changes flag after successful update
+        self._has_uncommitted_changes = False
         # Re-enable Add after saving changes if we were awaiting save
         if self._awaiting_update:
             self._awaiting_update = False
