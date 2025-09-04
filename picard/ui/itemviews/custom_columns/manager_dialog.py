@@ -52,6 +52,7 @@ from picard.ui.itemviews.custom_columns.shared import (
     COLUMN_INPUT_FIELD_NAMES,
     ColumnIndex,
     get_align_options,
+    get_sorting_adapter_options,
 )
 from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
 from picard.ui.itemviews.custom_columns.storage import (
@@ -152,6 +153,12 @@ class CustomColumnsManagerDialog(PicardDialog):
             self._align.addItem(_(label), enum_val)
         self._align.setMaximumWidth(100)
 
+        # Sorting adapter dropdown
+        self._sorting_adapter = QtWidgets.QComboBox(self._editor_panel)
+        for display_name, class_name in get_sorting_adapter_options():
+            self._sorting_adapter.addItem(_(display_name), class_name)
+        self._sorting_adapter.setMaximumWidth(200)
+
         self._view_selector = ViewSelector(self._editor_panel)
         self._form_handler = ColumnFormHandler(
             self._title,
@@ -159,12 +166,14 @@ class CustomColumnsManagerDialog(PicardDialog):
             self._width,
             self._align,
             self._view_selector,
+            self._sorting_adapter,
         )
 
         form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.TITLE]) + "*", self._title)
         form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.EXPRESSION]) + "*", self._expression)
         form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.WIDTH]), self._width)
         form.addRow(_(COLUMN_INPUT_FIELD_NAMES[ColumnIndex.ALIGN]), self._align)
+        form.addRow(_("Sorting"), self._sorting_adapter)
         form.addRow(_("Add to views"), self._view_selector)
 
         # Display an error message to the user
@@ -238,6 +247,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._expression.textChanged.connect(self._on_form_changed)
         self._width.valueChanged.connect(self._on_form_changed)
         self._align.currentIndexChanged.connect(self._on_form_changed)
+        self._sorting_adapter.currentIndexChanged.connect(self._on_form_changed)
         self._view_selector.changed.connect(self._on_form_changed)
 
         # Dialog service to keep manager dialog thin

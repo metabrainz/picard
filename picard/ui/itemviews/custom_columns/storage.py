@@ -42,10 +42,10 @@ from picard.ui.columns import ColumnAlign
 from picard.ui.itemviews.custom_columns import (
     CustomColumn,
     make_provider_column,
-    make_script_column,
     make_transformed_column,
     registry,
 )
+from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 from picard.ui.itemviews.custom_columns.providers import FieldReferenceProvider
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
@@ -112,6 +112,8 @@ class CustomColumnSpec:
         Comma-separated list of views to add this column to.
     transform
         Optional transform name when ``kind == TRANSFORM``.
+    sorting_adapter
+        Optional sorting adapter class name for custom sorting behavior.
     """
 
     title: str
@@ -123,6 +125,7 @@ class CustomColumnSpec:
     always_visible: bool = False
     add_to: str = DEFAULT_ADD_TO
     transform: TransformName | None = None
+    sorting_adapter: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serializable dictionary."""
@@ -186,6 +189,7 @@ class CustomColumnSpecSerializer:
             always_visible=_safe_convert(data, "always_visible", bool, False),
             add_to=add_to_str,
             transform=transform,
+            sorting_adapter=_safe_convert(data, "sorting_adapter", str, ""),
         )
 
 
@@ -236,6 +240,58 @@ def _make_transform_callable(name: TransformName) -> Callable[[str], str]:
     return lambda s: s or ""
 
 
+def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_name: str) -> ColumnValueProvider:
+    """Apply the specified sorting adapter to a base provider.
+
+    Parameters
+    ----------
+    base_provider : ColumnValueProvider
+        The base provider to wrap with sorting adapter.
+    sorting_adapter_name : str
+        Name of the sorting adapter class to apply.
+
+    Returns
+    -------
+    ColumnValueProvider
+        The wrapped provider with sorting capability, or the original provider if no adapter.
+    """
+    if not sorting_adapter_name:
+        return base_provider
+
+    # Import adapters here to avoid circular imports
+    from picard.ui.itemviews.custom_columns.sorting_adapters import (
+        ArticleInsensitiveAdapter,
+        CasefoldSortAdapter,
+        DescendingCasefoldSortAdapter,
+        DescendingNumericSortAdapter,
+        LengthSortAdapter,
+        NullsFirstAdapter,
+        NullsLastAdapter,
+        NumericSortAdapter,
+        ReverseAdapter,
+    )
+
+    # Mapping of class names to actual classes
+    adapter_classes = {
+        'CasefoldSortAdapter': CasefoldSortAdapter,
+        'DescendingCasefoldSortAdapter': DescendingCasefoldSortAdapter,
+        'NumericSortAdapter': NumericSortAdapter,
+        'DescendingNumericSortAdapter': DescendingNumericSortAdapter,
+        'LengthSortAdapter': LengthSortAdapter,
+        'ArticleInsensitiveAdapter': ArticleInsensitiveAdapter,
+        'NullsLastAdapter': NullsLastAdapter,
+        'NullsFirstAdapter': NullsFirstAdapter,
+        'ReverseAdapter': ReverseAdapter,
+    }
+
+    adapter_class = adapter_classes.get(sorting_adapter_name)
+    if adapter_class is None:
+        log.warning("Unknown sorting adapter: %s", sorting_adapter_name)
+        return base_provider
+
+    return adapter_class(base_provider)
+
+
 def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
     """Build a :class:`CustomColumn` instance from a specification.
 
@@ -251,12 +307,15 @@ def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
     """
 
     align = _align_from_name(spec.align)
+    sorting_adapter = getattr(spec, 'sorting_adapter', '')
     column: CustomColumn
+
     if spec.kind == CustomColumnKind.FIELD:
         # Use the expression as the field lookup key, but keep the column's
         # internal key as provided by the spec. This decouples display/lookup
         # from the unique identifier used by the registry.
-        provider = FieldReferenceProvider(spec.expression)
+        base_provider = FieldReferenceProvider(spec.expression)
+        provider = _apply_sorting_adapter(base_provider, sorting_adapter)
         column = make_provider_column(
             spec.title,
             spec.key,
@@ -267,22 +326,30 @@ def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
             sort_type=None,
         )
     elif spec.kind == CustomColumnKind.SCRIPT:
-        column = make_script_column(
+        # For script columns, we need to create the provider first, then wrap it
+        from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
+
+        base_provider = ChainedValueProvider(spec.expression)
+        provider = _apply_sorting_adapter(base_provider, sorting_adapter)
+        column = make_provider_column(
             spec.title,
             spec.key,
-            spec.expression,
+            provider,
             width=spec.width,
             align=align,
             always_visible=spec.always_visible,
+            sort_type=None,
         )
     else:
         # TRANSFORM: apply transform to a base provider derived from expression
         transform_fn = _make_transform_callable(spec.transform or TransformName.STRIP)
         base_provider = FieldReferenceProvider(spec.expression)
+        # Apply sorting adapter to the base provider before transformation
+        adapted_base = _apply_sorting_adapter(base_provider, sorting_adapter)
         column = make_transformed_column(
             spec.title,
             spec.key,
-            base=base_provider,
+            base=adapted_base,
             transform=transform_fn,
             width=spec.width,
             align=align,

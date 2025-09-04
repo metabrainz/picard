@@ -287,3 +287,36 @@ def generate_new_key() -> str:
         A freshly generated unique key.
     """
     return str(uuid.uuid4())
+
+
+# Mapping of user-friendly names to sorting adapter class names
+SORTING_ADAPTER_NAMES: dict[str, str] = {
+    N_("Default"): "",  # No adapter (use default sorting)
+    N_("Case Insensitive"): "CasefoldSortAdapter",
+    N_("Case Insensitive - Descending"): "DescendingCasefoldSortAdapter",
+    N_("Numeric"): "NumericSortAdapter",
+    N_("Numeric - Descending"): "DescendingNumericSortAdapter",
+    N_("By Value Length"): "LengthSortAdapter",
+    N_("Article Insensitive"): "ArticleInsensitiveAdapter",
+    N_("Empty Values Last"): "NullsLastAdapter",
+    N_("Empty Values First"): "NullsFirstAdapter",
+}
+
+
+def get_sorting_adapter_options() -> tuple[tuple[str, str], ...]:
+    """Return sorting adapter options for UI selection.
+
+    Returns
+    -------
+    tuple[tuple[str, str], ...]
+        Sorted pairs of user-friendly display names and corresponding adapter class names.
+        The "Default" option always appears first.
+    """
+    items = list(SORTING_ADAPTER_NAMES.items())
+
+    # Find default and other items using list comprehensions
+    default_items = [(name, class_name) for name, class_name in items if class_name == ""]
+    other_items = sorted([(name, class_name) for name, class_name in items if class_name != ""], key=lambda x: x[0])
+
+    # Return tuple with Default first, then sorted others
+    return tuple(default_items + other_items)
