@@ -182,19 +182,6 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         form.addRow(self._error_message_display)
 
-        # Middle pane action: Update changes to selected row (non-persistent)
-        self._btn_update = QtWidgets.QPushButton(_("Save Changes"), self._editor_panel)
-        self._btn_update.setToolTip(
-            _(
-                "Save changes to the selected column. You still need to click 'Make It So!' to apply all changes permanently."
-            )
-        )
-        self._btn_update.clicked.connect(self._on_update)
-        save_row = QtWidgets.QHBoxLayout()
-        save_row.addStretch(1)
-        save_row.addWidget(self._btn_update)
-        form.addRow(save_row)
-
         # Right: docs
         self._docs = ScriptingDocumentationWidget(include_link=True, parent=self)
 
@@ -386,12 +373,16 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._has_uncommitted_changes = False
 
     def _on_form_changed(self, *args) -> None:  # type: ignore[no-untyped-def]
-        """Mark dialog as dirty after any form change."""
+        """Handle form changes by automatically updating the selected row."""
         del args
         if self._populating:
             return
         self._has_uncommitted_changes = True
         self._live_spec_check()
+
+        # Stage the changes automatically (but not persist them)
+        # Persistence is handled by the Apply button (Make It So!)
+        self._on_update()
 
     def _spec_from_form(self) -> CustomColumnSpec:
         """Create a CustomColumnSpec from current form widget values."""
@@ -588,7 +579,6 @@ class CustomColumnsManagerDialog(PicardDialog):
     def _update_form_actions(self) -> None:
         """Update the form actions based on the current row and state."""
         has_selection = self._current_row >= 0
-        self._btn_update.setEnabled(has_selection or self._awaiting_update)
         # Add button is always enabled unless already awaiting update
         self._btn_add.setEnabled(not self._awaiting_update)
         # Duplicate and Delete buttons are only enabled when an item is selected
@@ -608,21 +598,13 @@ class CustomColumnsManagerDialog(PicardDialog):
             self._list.clearSelection()
 
     def _on_update(self) -> None:
-        """Validate and save changes to the selected row without persisting."""
+        """Save changes to the selected row without persisting."""
         # Two modes: update existing row or insert a new row in new-entry mode
         if self._awaiting_update and self._current_row < 0:
             # Build spec from the form and assign a fresh unique key
             base_spec = self._form_handler.read_spec(CustomColumnKind.SCRIPT)
             new_key = self._spec_service.allocate_new_key()
             spec = replace(base_spec, key=new_key)
-
-            # Validate using centralized validation
-            existing_keys = {s.key for s in self._model.specs() if s.key} - {spec.key}
-            report = self._spec_controller.validate_single(spec, existing_keys)
-            if not report.is_valid:
-                error_messages = [result.message for result in report.errors]
-                QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))
-                return
 
             # Insert and select the new row
             new_row = self._model.insert_spec(spec)
@@ -642,13 +624,9 @@ class CustomColumnsManagerDialog(PicardDialog):
             return
         spec = self._spec_from_form()
 
-        # Validate using centralized validation
-        existing_keys = {s.key for s in self._model.specs() if s.key} - {spec.key}
-        report = self._spec_controller.validate_single(spec, existing_keys)
-        if not report.is_valid:
-            error_messages = [result.message for result in report.errors]
-            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))
-            return
+        # Can't create entries with blank titles, but if user blanks it out, replace it with a placeholder
+        if not spec.title.strip():
+            spec.title = _("Untitled Column")
 
         # Update the model without persisting
         self._model.update_spec(self._current_row, spec)
