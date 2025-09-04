@@ -45,7 +45,6 @@ from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecSer
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
     next_incremented_title,
-    next_numeric_key,
 )
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnKind,
@@ -73,7 +72,7 @@ def sample_spec() -> CustomColumnSpec:
     """Standard valid CustomColumnSpec for testing."""
     return CustomColumnSpec(
         title="Test Column",
-        key="123",
+        key="550e8400-e29b-41d4-a716-446655440000",
         kind=CustomColumnKind.SCRIPT,
         expression="%artist% - %title%",
         width=150,
@@ -89,7 +88,7 @@ def sample_specs() -> list[CustomColumnSpec]:
     return [
         CustomColumnSpec(
             title="Artist Column",
-            key="1",
+            key="550e8400-e29b-41d4-a716-446655440001",
             kind=CustomColumnKind.SCRIPT,
             expression="%artist%",
             width=100,
@@ -99,7 +98,7 @@ def sample_specs() -> list[CustomColumnSpec]:
         ),
         CustomColumnSpec(
             title="Title Column",
-            key="2",
+            key="550e8400-e29b-41d4-a716-446655440002",
             kind=CustomColumnKind.SCRIPT,
             expression="%title%",
             width=200,
@@ -109,7 +108,7 @@ def sample_specs() -> list[CustomColumnSpec]:
         ),
         CustomColumnSpec(
             title="Invalid Column",  # Will be invalid due to empty expression
-            key="3",
+            key="550e8400-e29b-41d4-a716-446655440003",
             kind=CustomColumnKind.SCRIPT,
             expression="",
             width=150,
@@ -217,31 +216,6 @@ class TestSharedUtilities:
         assert result == "Column (1000)"
         assert result not in existing
 
-    @pytest.mark.parametrize(
-        ("existing_keys", "expected"),
-        [
-            (set(), 1),
-            ({1}, 2),
-            ({1, 2, 3}, 4),
-            ({5, 10, 3}, 11),
-            ({1, 2, 4, 5}, 6),
-            ({100}, 101),
-        ],
-    )
-    def test_next_numeric_key(self, existing_keys: set[int], expected: int):
-        """Test next_numeric_key generates correct next available key."""
-        result = next_numeric_key(existing_keys)
-        assert result == expected
-        assert result not in existing_keys
-        assert result > 0
-
-    def test_next_numeric_key_large_set(self):
-        """Test next_numeric_key with large existing set."""
-        existing = set(range(1, 1000))
-        result = next_numeric_key(existing)
-        assert result == 1000
-        assert result not in existing
-
 
 class TestColumnController:
     """Test ColumnController facade class."""
@@ -287,7 +261,7 @@ class TestColumnController:
 
         # Based on our mock, the third spec (empty expression) should be invalid
         assert result is not None
-        assert result.key == "3"
+        assert result.key == "550e8400-e29b-41d4-a716-446655440003"
         assert result.expression == ""
 
         # Restore original method
@@ -682,11 +656,19 @@ class TestKeyFormatRule:
         results = rule.validate(spec, validation_context)
         assert results == []
 
-    @pytest.mark.parametrize("valid_key", ["1", "42", "999", "123456"])
-    def test_validate_valid_numeric_keys(
+    @pytest.mark.parametrize(
+        "valid_key",
+        [
+            "550e8400-e29b-41d4-a716-446655440000",
+            "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+            "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+            "01234567-89ab-cdef-0123-456789abcdef",
+        ],
+    )
+    def test_validate_valid_uuid_keys(
         self, rule: KeyFormatRule, sample_spec: CustomColumnSpec, validation_context: ValidationContext, valid_key: str
     ):
-        """Test validation passes for valid numeric keys."""
+        """Test validation passes for valid UUID keys."""
         spec = CustomColumnSpec(
             title=sample_spec.title,
             key=valid_key,
@@ -702,7 +684,8 @@ class TestKeyFormatRule:
         assert results == []
 
     @pytest.mark.parametrize(
-        "invalid_key", ["0", "-1", "-42", "abc", "1abc", "a1", "test_key", "1.5", "1e10", "1-2", "key-1"]
+        "invalid_key",
+        ["0", "-1", "-42", "abc", "1abc", "a1", "test_key", "1.5", "1e10", "1-2", "key-1", "1", "42", "999", "123456"],
     )
     def test_validate_invalid_keys(
         self,
@@ -711,7 +694,7 @@ class TestKeyFormatRule:
         validation_context: ValidationContext,
         invalid_key: str,
     ):
-        """Test validation fails for non-positive-integer keys."""
+        """Test validation fails for non-UUID keys."""
         spec = CustomColumnSpec(
             title=sample_spec.title,
             key=invalid_key,
@@ -732,13 +715,14 @@ class TestKeyFormatRule:
 
         # Should have correct error message
         format_errors = [r for r in results if r.code == "KEY_INVALID_FORMAT"]
-        assert any("positive integer" in r.message for r in format_errors)
+        assert any("valid UUID" in r.message for r in format_errors)
 
     def test_validate_duplicate_key(self, rule: KeyFormatRule, sample_spec: CustomColumnSpec):
         """Test validation fails for duplicate keys."""
+        duplicate_key = "550e8400-e29b-41d4-a716-446655440000"
         spec = CustomColumnSpec(
             title=sample_spec.title,
-            key="42",
+            key=duplicate_key,
             kind=sample_spec.kind,
             expression=sample_spec.expression,
             width=sample_spec.width,
@@ -747,8 +731,8 @@ class TestKeyFormatRule:
             add_to=sample_spec.add_to,
         )
 
-        # Context with existing key "42" (numeric key)
-        context = ValidationContext(existing_keys={"42", "123"})
+        # Context with existing key (UUID key)
+        context = ValidationContext(existing_keys={duplicate_key, "550e8400-e29b-41d4-a716-446655440001"})
         results = rule.validate(spec, context)
 
         # Should have duplicate key error
@@ -777,7 +761,7 @@ class TestKeyFormatRule:
 
         results = rule.validate(spec, validation_context)
 
-        # Should fail - zero is not positive
+        # Should fail - zero is not a valid UUID
         assert len(results) >= 1
         error_codes = [r.code for r in results]
         assert "KEY_INVALID_FORMAT" in error_codes
@@ -933,7 +917,7 @@ class TestRefactorIntegration:
 
         invalid_spec = controller.first_invalid_spec(sample_specs)
         assert invalid_spec is not None
-        assert invalid_spec.key == "3"
+        assert invalid_spec.key == "550e8400-e29b-41d4-a716-446655440003"
         assert invalid_spec.expression == ""
 
         # Restore original method
@@ -1077,15 +1061,3 @@ class TestEdgeCases:
         assert result not in existing
         assert result.startswith(extreme_title)
         assert result.endswith(f"({existing_count + 1})")
-
-    def test_next_numeric_key_extreme_cases(self):
-        """Test next_numeric_key with extreme inputs."""
-        # Very large set
-        large_set = set(range(1, 10000, 2))  # Odd numbers 1-9999
-        result = next_numeric_key(large_set)
-        assert result == 10000  # max + 1
-
-        # Single large number
-        single_large = {999999}
-        result = next_numeric_key(single_large)
-        assert result == 1000000

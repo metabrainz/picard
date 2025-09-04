@@ -25,6 +25,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
+from uuid import UUID
 
 from picard.script import ScriptError, ScriptParser
 
@@ -148,22 +149,31 @@ class KeyFormatRule(ValidationRule):
         # Key is optional; when present, enforce format/length/uniqueness
         if not spec.key:
             return results
-        try:
-            numeric_key = int(spec.key)
-        except (TypeError, ValueError):
+
+        def _normalize_key(value: UUID | str | None) -> str | None:
+            if isinstance(value, UUID):
+                return str(value)
+            value_str = str(value or "").strip()
+            if not value_str:
+                return None
+
+            # Attempt to parse the string as UUID
+            try:
+                uuid_obj = UUID(value_str)
+            except ValueError:
+                return None
+            else:
+                return str(uuid_obj)
+
+        normalized_current = _normalize_key(spec.key)
+        if not normalized_current:
             results.append(
-                ValidationResult(
-                    "key", ValidationSeverity.ERROR, "Key must be a positive integer", "KEY_INVALID_FORMAT"
-                )
+                ValidationResult("key", ValidationSeverity.ERROR, "Key must be a valid UUID", "KEY_INVALID_FORMAT")
             )
             return results
-        if numeric_key <= 0:
-            results.append(
-                ValidationResult(
-                    "key", ValidationSeverity.ERROR, "Key must be a positive integer", "KEY_INVALID_FORMAT"
-                )
-            )
-        if spec.key in context.existing_keys:
+
+        normalized_existing = {n for n in (_normalize_key(k) for k in context.existing_keys) if n}
+        if normalized_current in normalized_existing:
             results.append(
                 ValidationResult("key", ValidationSeverity.ERROR, f"Key '{spec.key}' already exists", "KEY_DUPLICATE")
             )

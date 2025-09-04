@@ -25,6 +25,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import IntEnum
 from typing import Iterable
+import uuid
 
 from picard.i18n import N_, gettext as _
 
@@ -277,24 +278,12 @@ def next_incremented_title(base_title: str, existing_titles: set[str]) -> str:
     return candidate
 
 
-def next_numeric_key(existing_keys: set[int]) -> int:
-    """Generate the next available numeric key.
-
-    Parameters
-    ----------
-    existing_keys : set[int]
-        Set of existing numeric keys.
+def generate_new_key() -> str:
+    """Generate a new unique key for a custom column.
 
     Returns
     -------
-    int
-        The next available numeric key (max + 1), or 1 if set is empty.
-
-    Examples
-    --------
-    >>> next_numeric_key({1, 3, 5})
-    6
-    >>> next_numeric_key(set())
-    1
+    str
+        A freshly generated unique key.
     """
-    return max(existing_keys, default=0) + 1
+    return str(uuid.uuid4())

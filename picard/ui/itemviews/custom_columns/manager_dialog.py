@@ -51,9 +51,9 @@ from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecSer
 from picard.ui.itemviews.custom_columns.shared import (
     COLUMN_INPUT_FIELD_NAMES,
     ColumnIndex,
+    generate_new_key,
     get_align_options,
     next_incremented_title,
-    next_numeric_key,
 )
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnKind,
@@ -375,6 +375,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._dirty = False
         self._deleted_keys: set[str] = set()
         self._populating: bool = False
+        self._deleting: bool = False
         self._current_row: int = -1
         self._awaiting_update: bool = False
         self._has_uncommitted_changes: bool = False
@@ -540,9 +541,7 @@ class CustomColumnsManagerDialog(PicardDialog):
             existing = self._model.spec_at(self._current_row)
             spec = replace(spec, key=existing.key)
         else:
-            spec = replace(
-                spec, key=str(next_numeric_key(int(k.key) for k in self._model.specs() if str(k.key).isdigit()))
-            )
+            spec = replace(spec, key=generate_new_key())
         return spec
 
     def _collect_form(self) -> CustomColumnSpec | None:
@@ -560,14 +559,32 @@ class CustomColumnsManagerDialog(PicardDialog):
     def _commit_form_to_model(self) -> None:
         """Commit current editor values to the selected model row if valid."""
         # Only commit when editing a valid, existing row
-        if self._populating or self._current_row < 0 or self._current_row >= self._model.rowCount():
+        # Don't commit during deletion operations to prevent stale form data corruption
+
+        # Always sync _current_row with actual selection before commit
+        actual_selected_row = self._selected_row()
+        if self._current_row != actual_selected_row:
+            self._current_row = actual_selected_row
+
+        if self._populating or self._deleting or self._current_row < 0 or self._current_row >= self._model.rowCount():
             return
+
         new_spec = self._collect_form()
         if new_spec is None:
             return
+
         old = self._model.spec_at(self._current_row)
+
+        # Sanity check - if form data doesn't match the current row, don't commit
+        if old and new_spec and old.title != new_spec.title:
+            # Re-populate form with correct data instead of committing wrong data
+            self._populate_form(old)
+            self._has_uncommitted_changes = False
+            return
+
         if new_spec.key and old.key and new_spec.key != old.key:
             self._deleted_keys.add(old.key)
+
         self._model.update_spec(self._current_row, new_spec)
 
     def _on_add(self) -> None:
@@ -598,7 +615,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         dup.title = next_incremented_title(spec.title, existing_titles)
 
         # Assign a fresh sequential key for duplicates
-        dup = replace(dup, key=str(next_numeric_key(int(k.key) for k in self._model.specs() if str(k.key).isdigit())))
+        dup = replace(dup, key=generate_new_key())
         new_row = self._model.insert_spec(dup)
         self._list.setCurrentIndex(self._model.index(new_row))
         self._has_uncommitted_changes = False
@@ -638,22 +655,37 @@ class CustomColumnsManagerDialog(PicardDialog):
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
         )
         if confirm == QtWidgets.QMessageBox.StandardButton.Yes:
-            self._deleted_keys.add(spec.key)
-            self._model.remove_row(row)
-            # Update selection to a valid row (next or previous) and clear editor if none
-            count = self._model.rowCount()
-            if count > 0:
-                new_row = min(row, count - 1)
-                self._list.setCurrentIndex(self._model.index(new_row))
-            else:
-                self._list.clearSelection()
-                self._prepare_editor_for_new_entry()
-            self._mark_dirty()
+            # Set deleting flag to prevent form commits during selection changes
+            self._deleting = True
+            try:
+                self._deleted_keys.add(spec.key)
+                self._model.remove_row(row)
+                # Update selection to a valid row (next or previous) and clear editor if none
+                count = self._model.rowCount()
+                if count > 0:
+                    new_row = min(row, count - 1)
+                    self._list.setCurrentIndex(self._model.index(new_row))
+                else:
+                    self._list.clearSelection()
+                    self._prepare_editor_for_new_entry()
+                self._mark_dirty()
 
-            # Deleting cancels pending add state and clears uncommitted changes
-            self._awaiting_update = False
-            self._has_uncommitted_changes = False
-            self._update_form_actions()
+                # Deleting cancels pending add state and clears uncommitted changes
+                self._awaiting_update = False
+                self._has_uncommitted_changes = False
+                self._update_form_actions()
+            finally:
+                # Always clear the deleting flag
+                self._deleting = False
+
+                # Force update current_row and form refresh to prevent stale data commits
+                self._current_row = self._selected_row()
+
+                if self._current_row >= 0:
+                    spec = self._model.spec_at(self._current_row)
+                    self._populate_form(spec)
+                    # Ensure no uncommitted changes after refresh
+                    self._has_uncommitted_changes = False
 
     def _on_apply(self) -> None:
         """Validate, persist, and register custom column specifications."""
@@ -751,7 +783,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         if self._awaiting_update and self._current_row < 0:
             # Build spec from the form and assign a fresh unique key
             base_spec = self._form_handler.read_spec(CustomColumnKind.SCRIPT)
-            new_key = str(next_numeric_key(int(k.key) for k in self._model.specs() if str(k.key).isdigit()))
+            new_key = generate_new_key()
             spec = replace(base_spec, key=new_key)
 
             # Validate using centralized validation

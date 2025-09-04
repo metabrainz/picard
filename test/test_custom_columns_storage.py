@@ -572,10 +572,15 @@ def test_validator_key_format_and_uniqueness() -> None:
     assert not report.is_valid
     assert any(r.code == "KEY_INVALID_FORMAT" for r in report.results)
     # uniqueness
-    good_spec = CustomColumnSpec(title="T", key="123", kind=CustomColumnKind.FIELD, expression="artist")
+    good_spec = CustomColumnSpec(
+        title="T", key="550e8400-e29b-41d4-a716-446655440000", kind=CustomColumnKind.FIELD, expression="artist"
+    )
     # Simulate existing key
     report2 = validator.validate(
-        good_spec, context=type("C", (), {'existing_keys': {"123"}, 'is_field_valid': lambda *_: True})()
+        good_spec,
+        context=type(
+            "C", (), {'existing_keys': {"550e8400-e29b-41d4-a716-446655440000"}, 'is_field_valid': lambda *_: True}
+        )(),
     )
     assert any(r.code == "KEY_DUPLICATE" for r in report2.results)
 
@@ -600,5 +605,7 @@ def test_validator_transform_rules() -> None:
 
 
 def test_is_spec_valid_shortcut() -> None:
-    good = CustomColumnSpec(title="T", key="123", kind=CustomColumnKind.FIELD, expression="artist")
+    good = CustomColumnSpec(
+        title="T", key="550e8400-e29b-41d4-a716-446655440000", kind=CustomColumnKind.FIELD, expression="artist"
+    )
     assert is_spec_valid(good)
