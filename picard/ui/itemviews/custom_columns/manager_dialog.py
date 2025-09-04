@@ -51,9 +51,7 @@ from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecSer
 from picard.ui.itemviews.custom_columns.shared import (
     COLUMN_INPUT_FIELD_NAMES,
     ColumnIndex,
-    generate_new_key,
     get_align_options,
-    next_incremented_title,
 )
 from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
 from picard.ui.itemviews.custom_columns.storage import (
@@ -61,9 +59,9 @@ from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnSpec,
     load_specs_from_config,
 )
+from picard.ui.itemviews.custom_columns.user_dialog_service import UserDialogService
 from picard.ui.itemviews.custom_columns.validation import (
     ColumnSpecValidator,
-    ValidationContext,
 )
 from picard.ui.itemviews.custom_columns.view_selector import ViewSelector
 from picard.ui.itemviews.events import header_events
@@ -242,6 +240,9 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._align.currentIndexChanged.connect(self._on_form_changed)
         self._view_selector.changed.connect(self._on_form_changed)
 
+        # Dialog service to keep manager dialog thin
+        self._user_dialog_service = UserDialogService(self)
+
         # If no columns exist yet, keep Add enabled but form DISABLED
         if self._model.rowCount() > 0:
             self._list.setCurrentIndex(self._model.index(0))
@@ -317,10 +318,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         # Get the curernt spec from the form to validate
         spec = self._spec_from_form()
 
-        validator = ColumnSpecValidator()
-        existing_keys = {s.key for s in self._model.specs() if s.key}
-        context = ValidationContext(existing_keys - {spec.key})
-        report = validator.validate(spec, context)
+        existing_keys = {s.key for s in self._model.specs() if s.key} - {spec.key}
+        report = self._spec_controller.validate_single(spec, existing_keys)
         if report.is_valid:
             self._error_message_display.setText("")
         else:
@@ -340,12 +339,12 @@ class CustomColumnsManagerDialog(PicardDialog):
         del selected, deselected
 
         # Check for uncommitted changes before changing selection
-        if self._has_uncommitted_changes and not self._populating:
-            if not self._confirm_discard_changes():
+        if not self._populating:
+            allowed = self._user_dialog_service.can_change_selection(self._has_uncommitted_changes)
+            if not allowed:
                 # User cancelled, revert selection
                 self._revert_selection()
                 return
-            # User confirmed to discard changes - don't commit them
 
         # If we were in new-entry mode, cancel it and proceed with the new selection
         if self._awaiting_update:
@@ -393,7 +392,7 @@ class CustomColumnsManagerDialog(PicardDialog):
             existing = self._model.spec_at(self._current_row)
             spec = replace(spec, key=existing.key)
         else:
-            spec = replace(spec, key=generate_new_key())
+            spec = replace(spec, key=self._spec_service.allocate_new_key())
         return spec
 
     def _collect_form(self) -> CustomColumnSpec | None:
@@ -442,9 +441,8 @@ class CustomColumnsManagerDialog(PicardDialog):
     def _on_add(self) -> None:
         """Enter new-entry mode: clear form, enable it, and await Update to insert the row."""
         # Check for uncommitted changes before starting new entry
-        if self._has_uncommitted_changes:
-            if not self._confirm_discard_changes():
-                return  # User cancelled, don't start new entry
+        if not self._user_dialog_service.can_change_selection(self._has_uncommitted_changes):
+            return  # User cancelled, don't start new entry
 
         # Clear selection and prepare a blank form for new entry
         self._list.clearSelection()
@@ -459,13 +457,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         if row < 0:
             return
         spec = self._model.spec_at(row)
-        dup = replace(spec)
-        # Compute next available duplicate suffix for the title
-        existing_titles = {s.title for s in self._model.specs()}
-        dup.title = next_incremented_title(spec.title, existing_titles)
-
-        # Assign a fresh sequential key for duplicates
-        dup = replace(dup, key=generate_new_key())
+        dup = self._spec_service.duplicate_with_new_title_and_key(spec, self._model.specs())
         new_row = self._model.insert_spec(dup)
         self._list.setCurrentIndex(self._model.index(new_row))
         self._has_uncommitted_changes = False
@@ -479,14 +471,8 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         # Check for uncommitted changes first
         if self._has_uncommitted_changes:
-            reply = QtWidgets.QMessageBox.question(
-                self,
-                _("Unsaved Changes"),
-                _("You have unsaved changes. Do you want to save them before deleting this column?"),
-                QtWidgets.QMessageBox.StandardButton.Save
-                | QtWidgets.QMessageBox.StandardButton.Discard
-                | QtWidgets.QMessageBox.StandardButton.Cancel,
-                QtWidgets.QMessageBox.StandardButton.Save,
+            reply = self._user_dialog_service.ask_unsaved_changes(
+                _("You have unsaved changes. Do you want to save them before deleting this column?")
             )
             if reply == QtWidgets.QMessageBox.StandardButton.Cancel:
                 return  # User cancelled
@@ -498,13 +484,7 @@ class CustomColumnsManagerDialog(PicardDialog):
                     return
 
         spec = self._model.spec_at(row)
-        confirm = QtWidgets.QMessageBox.question(
-            self,
-            _("Delete Custom Column"),
-            _("Are you sure you want to delete the column '{title}'?").format(title=spec.title),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-        )
-        if confirm == QtWidgets.QMessageBox.StandardButton.Yes:
+        if self._user_dialog_service.confirm_delete_column(spec.title):
             # Set deleting flag to prevent form commits during selection changes
             self._deleting = True
             try:
@@ -543,8 +523,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         # Validate specs before persisting
         all_specs = self._model.specs()
-        validator = ColumnSpecValidator()
-        reports = validator.validate_multiple(all_specs)
+        reports = self._spec_controller.validate_specs(all_specs)
 
         # Find first invalid spec
         invalid_specs = [(key, report) for key, report in reports.items() if not report.is_valid]
@@ -608,23 +587,6 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._btn_duplicate.setEnabled(has_selection)
         self._btn_delete.setEnabled(has_selection)
 
-    def _confirm_discard_changes(self) -> bool:
-        """Ask user to confirm discarding uncommitted changes.
-
-        Returns
-        -------
-        bool
-            True if user confirms discarding changes, False if cancelled.
-        """
-        reply = QtWidgets.QMessageBox.question(
-            self,
-            _("Unsaved Changes"),
-            _("You have unsaved changes that will be lost. Do you want to continue without saving?"),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.No,
-        )
-        return reply == QtWidgets.QMessageBox.StandardButton.Yes
-
     def _revert_selection(self) -> None:
         """Revert selection back to the current row when user cancels selection change."""
         if self._current_row >= 0 and self._current_row < self._model.rowCount():
@@ -643,14 +605,12 @@ class CustomColumnsManagerDialog(PicardDialog):
         if self._awaiting_update and self._current_row < 0:
             # Build spec from the form and assign a fresh unique key
             base_spec = self._form_handler.read_spec(CustomColumnKind.SCRIPT)
-            new_key = generate_new_key()
+            new_key = self._spec_service.allocate_new_key()
             spec = replace(base_spec, key=new_key)
 
             # Validate using centralized validation
-            validator = ColumnSpecValidator()
-            existing_keys = {s.key for s in self._model.specs() if s.key}
-            context = ValidationContext(existing_keys - {spec.key})
-            report = validator.validate(spec, context)
+            existing_keys = {s.key for s in self._model.specs() if s.key} - {spec.key}
+            report = self._spec_controller.validate_single(spec, existing_keys)
             if not report.is_valid:
                 error_messages = [result.message for result in report.errors]
                 QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))
@@ -675,10 +635,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         spec = self._spec_from_form()
 
         # Validate using centralized validation
-        validator = ColumnSpecValidator()
-        existing_keys = {s.key for s in self._model.specs() if s.key}
-        context = ValidationContext(existing_keys - {spec.key})
-        report = validator.validate(spec, context)
+        existing_keys = {s.key for s in self._model.specs() if s.key} - {spec.key}
+        report = self._spec_controller.validate_single(spec, existing_keys)
         if not report.is_valid:
             error_messages = [result.message for result in report.errors]
             QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))

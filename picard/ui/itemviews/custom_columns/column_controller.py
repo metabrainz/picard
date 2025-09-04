@@ -40,6 +40,7 @@ from picard.ui.itemviews.custom_columns.storage import (
 )
 from picard.ui.itemviews.custom_columns.validation import (
     ColumnSpecValidator,
+    ValidationContext,
     ValidationReport,
 )
 
@@ -99,6 +100,17 @@ class ColumnController:
             if not validation_report.is_valid:
                 return key, validation_report
         return None
+
+    def validate_single(self, spec: CustomColumnSpec, existing_keys: set[str]) -> ValidationReport:
+        """Validate a single column specification.
+
+        Returns
+        -------
+        ValidationReport
+            Report detailing the validation result.
+        """
+        context = ValidationContext(existing_keys=existing_keys)
+        return self._validator.validate(spec, context)
 
     def apply_all(self, model: SpecListModel) -> None:
         """Apply all specifications from a model.

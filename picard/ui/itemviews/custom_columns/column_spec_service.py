@@ -33,6 +33,7 @@ from typing import Iterable
 
 from picard.config import get_config
 
+from picard.ui.itemviews.custom_columns.shared import generate_new_key, next_incremented_title
 from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnRegistrar,
@@ -83,3 +84,44 @@ class ColumnSpecService:
         cfg = get_config()
         if cfg is not None:
             cfg.sync()
+
+    def allocate_new_key(self) -> str:
+        """Allocate a new unique key for a custom column.
+
+        Returns
+        -------
+        str
+            New unique key.
+        """
+        return generate_new_key()
+
+    def duplicate_with_new_title_and_key(
+        self, spec: CustomColumnSpec, specs: Iterable[CustomColumnSpec]
+    ) -> CustomColumnSpec:
+        """Create a duplicate of a specification with a new title and key.
+
+        Parameters
+        ----------
+        spec : CustomColumnSpec
+            Original specification to duplicate.
+        new_title : str
+            New title for the duplicated specification.
+
+        Returns
+        -------
+        CustomColumnSpec
+            New specification with updated title and unique key.
+        """
+        existing_titles = {s.title for s in specs}
+        new_title = next_incremented_title(spec.title, existing_titles)
+        new_key = self.allocate_new_key()
+        return CustomColumnSpec(
+            key=new_key,
+            title=new_title,
+            kind=spec.kind,
+            expression=spec.expression,
+            align=spec.align,
+            width=spec.width,
+            always_visible=spec.always_visible,
+            add_to=spec.add_to,
+        )
