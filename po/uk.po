@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-09-03 19:36+0000\n"
+"PO-Revision-Date: 2025-09-04 19:49+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -32,7 +32,7 @@ msgstr ""
 
 #: picard/album.py:191
 msgid "Unmatched Files"
-msgstr "Неузгоджені файли"
+msgstr "Файли без відповідності"
 
 #: picard/album.py:596
 #, python-format
@@ -255,7 +255,7 @@ msgstr "Теги, які потрібно ігнорувати для порів
 
 #: picard/options.py:158
 msgid "Completeness check ignore: Data tracks"
-msgstr "Перевірка повноти ігнорується: Дані доріжок"
+msgstr "Перевірка повноти ігнорується: Дані треків"
 
 #: picard/options.py:159
 msgid "Completeness check ignore: Pregap tracks"
@@ -3994,7 +3994,7 @@ msgstr "Порогові значення"
 
 #: picard/ui/forms/ui_options_matching.py:78
 msgid "Minimal similarity for matching files to tracks:"
-msgstr "Мінімальна схожість відповідних файлів до доріжок:"
+msgstr "Мінімальна схожість відповідних файлів до треків:"
 
 #: picard/ui/forms/ui_options_matching.py:82
 msgid "Minimal similarity for file lookups:"
@@ -4023,7 +4023,7 @@ msgstr "Ігнорувати переклад імені виконавця у �
 
 #: picard/ui/forms/ui_options_metadata.py:149
 msgid "Use track relationships"
-msgstr "Використовувати спорідненість доріжок"
+msgstr "Використовувати спорідненість треків"
 
 #: picard/ui/forms/ui_options_metadata.py:151
 msgid "Custom Fields"
@@ -4288,8 +4288,7 @@ msgstr "Перед міткою"
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr ""
-"Збережіть ці теги від очищення чи перезаписання за допомогою даних "
-"MusicBrainz:"
+"Збережіть ці теги від очищення чи перезапису за допомогою даних MusicBrainz:"
 
 #: picard/ui/forms/ui_options_tags_compatibility_aac.py:51
 msgid "AAC files"
@@ -4546,7 +4545,7 @@ msgstr "Видалити теги"
 
 #: picard/ui/forms/ui_win_compat_dialog.py:199
 msgid "Character"
-msgstr "Персонаж"
+msgstr "Символ"
 
 #: picard/ui/forms/ui_win_compat_dialog.py:200
 msgid "Replacement"
@@ -4564,8 +4563,10 @@ msgstr "Інфо про трек"
 #, python-format
 msgid "%i file in this track"
 msgid_plural "%i files in this track"
-msgstr[0] "%i файл на цій доріжці"
-msgstr[1] "%i файлів на цій доріжці"
+msgstr[0] "%i файл на цьому треку"
+msgstr[1] "%i файли на цьому треку"
+msgstr[2] "%i файлів на цьому треку"
+msgstr[3] "%i файлів на цьому треку"
 
 #: picard/ui/infodialog/__init__.py:95
 msgid "Cluster Info"
@@ -4586,11 +4587,11 @@ msgstr "Двічі клацніть, щоб відкрити у зовнішнь
 
 #: picard/ui/infodialog/dialog.py:194
 msgid "Missing temporary file"
-msgstr "Відсутній тимчасовий файл"
+msgstr "Тимчасовий файл відсутній"
 
 #: picard/ui/infodialog/utils.py:49
 msgid "Filename:"
-msgstr "Назва файла:"
+msgstr "Назва файлу:"
 
 #: picard/ui/infodialog/utils.py:51
 msgid "Format:"
@@ -4618,7 +4619,7 @@ msgstr "Частота вибірки:"
 
 #: picard/ui/infodialog/utils.py:66
 msgid "Bits per sample:"
-msgstr "Бітів на приклад:"
+msgstr "Бітів на семпл:"
 
 #: picard/ui/infodialog/utils.py:70
 msgid "Mono"
@@ -4647,7 +4648,7 @@ msgstr "Диск %d"
 
 #: picard/ui/infodialog/utils.py:113
 msgid "Tracklist:"
-msgstr "Список доріжок:"
+msgstr "Список треків:"
 
 #: picard/ui/infodialog/widgets.py:124 picard/ui/infodialog/widgets.py:143
 #: picard/ui/infodialog/widgets.py:166 picard/ui/searchdialog/album.py:168
@@ -4657,11 +4658,11 @@ msgstr "Тип"
 
 #: picard/ui/infodialog/widgets.py:125 picard/ui/infodialog/widgets.py:167
 msgid "New Embedded"
-msgstr "Новий вбудований"
+msgstr "Нове вбудоване"
 
 #: picard/ui/infodialog/widgets.py:126 picard/ui/infodialog/widgets.py:168
 msgid "New Exported"
-msgstr "Нові експортовані"
+msgstr "Нове експортоване"
 
 #: picard/ui/infodialog/widgets.py:129 picard/ui/infodialog/widgets.py:172
 msgid "New cover art embedded into tags"
@@ -4681,31 +4682,31 @@ msgstr "Існуюча обкладинка вже вбудована в тег�
 
 #: picard/ui/itemviews/__init__.py:205
 msgid "Bad match"
-msgstr "Погана спроба"
+msgstr "Погане співпадіння"
 
 #: picard/ui/itemviews/__init__.py:206
 msgid "Poor match"
-msgstr "Невдала спроба"
+msgstr "Слабке співпадіння"
 
 #: picard/ui/itemviews/__init__.py:207
 msgid "Ok match"
-msgstr "Спроба Ок"
+msgstr "Нормальне співпадіння"
 
 #: picard/ui/itemviews/__init__.py:208
 msgid "Good match"
-msgstr "Добра спроба"
+msgstr "Добре співпадіння"
 
 #: picard/ui/itemviews/__init__.py:209
 msgid "Great match"
-msgstr "Відмінна спроба"
+msgstr "Чудове співпадіння"
 
 #: picard/ui/itemviews/__init__.py:210
 msgid "Excellent match"
-msgstr "Вражаюча спроба"
+msgstr "Відмінне співпадіння"
 
 #: picard/ui/itemviews/__init__.py:271
 msgid "file view"
-msgstr "Дивитись файл"
+msgstr "перегляд файлу"
 
 #: picard/ui/itemviews/__init__.py:272
 msgid "Contains unmatched files and clusters"
@@ -4717,7 +4718,7 @@ msgstr "Кластери"
 
 #: picard/ui/itemviews/__init__.py:306
 msgid "album view"
-msgstr "Дивитись альбом"
+msgstr "Перегляд альбому"
 
 #: picard/ui/itemviews/__init__.py:307
 msgid "Contains albums and matched files"
@@ -4747,7 +4748,7 @@ msgstr "Альбом не змінено"
 
 #: picard/ui/itemviews/__init__.py:551
 msgid "There are no files matched to this track"
-msgstr "Немає файлів, що відповідають цій доріжці"
+msgstr "Немає файлів, що відповідають цьому треку"
 
 #: picard/ui/itemviews/__init__.py:553
 #, python-format
@@ -4755,6 +4756,8 @@ msgid "%i matched file"
 msgid_plural "%i matched files"
 msgstr[0] "%i збіг файлу"
 msgstr[1] "%i збігів файлів"
+msgstr[2] "%i збіги файлів"
+msgstr[3] "%i збігів файлів"
 
 #: picard/ui/itemviews/__init__.py:589
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
@@ -4782,15 +4785,15 @@ msgstr "Трек збережено"
 
 #: picard/ui/itemviews/__init__.py:642 picard/ui/itemviews/__init__.py:649
 msgid "Pending"
-msgstr "Очікує на розгляд"
+msgstr "Очікується"
 
 #: picard/ui/itemviews/__init__.py:664
 msgid "Fingerprint has already been submitted"
-msgstr "Відбиток пальця вже надіслано"
+msgstr "Відбиток вже надіслано"
 
 #: picard/ui/itemviews/__init__.py:667
 msgid "Unsubmitted fingerprint"
-msgstr "Ненадісланий відбиток пальця"
+msgstr "Ненадісланий відбиток"
 
 #: picard/ui/itemviews/__init__.py:671
 msgid ""
@@ -4798,7 +4801,7 @@ msgid ""
 "AcoustID Fingerprints\" to calculate the fingerprint."
 msgstr ""
 "Для цього файлу не обчислено відбиток. Використайте \"Сканувати\" або "
-"\"Згенерувати AcoustID-відбитки\", щоб обчислити відбиток"
+"\"Згенерувати відбитки AcoustID\", щоб його обчислити."
 
 #: picard/ui/itemviews/basetreeview.py:164
 #, python-format
@@ -4815,7 +4818,7 @@ msgstr "&Згорнути все"
 
 #: picard/ui/itemviews/basetreeview.py:195
 msgid "Select &all"
-msgstr "Вибраний & всі"
+msgstr "Вибрати & все"
 
 #: picard/ui/itemviews/basetreeview.py:197
 msgid "Ctrl+A"
@@ -4835,7 +4838,7 @@ msgstr "Колекції"
 
 #: picard/ui/itemviews/basetreeview.py:329
 msgid "P&lugins"
-msgstr "Роз&ширення"
+msgstr "Пл&агіни"
 
 #: picard/ui/itemviews/basetreeview.py:349
 msgid "&Run scripts"
@@ -4852,7 +4855,7 @@ msgstr "Для вибраних фільтрів не знайдено тегі�
 
 #: picard/ui/itemviews/columns.py:134
 msgid "Fingerprint status"
-msgstr "Стан відбитка пальця"
+msgstr "Стан аудіо відбитка"
 
 #: picard/ui/itemviews/columns.py:138
 msgid "Match"
