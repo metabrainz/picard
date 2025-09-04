@@ -25,14 +25,14 @@
 # Robert Schneider <robertschv@gmail.com>, 2019-2020
 # jaimeMF <jaimeMF@users.noreply.translations.metabrainz.org>, 2024.
 # reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2024.
+# deusdagon <mendez.jorge1988@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2024-09-14 08:42+0000\n"
-"Last-Translator: reosarevok "
-"<reosarevok@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2025-09-04 19:49+0000\n"
+"Last-Translator: deusdagon <mendez.jorge1988@gmail.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "3/app/es/>\n"
 "Language: es\n"
@@ -40,7 +40,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -3736,6 +3736,7 @@ msgid "Default listening port:"
 msgstr "Puerto de escucha predeterminado:"
 
 #: picard/ui/forms/ui_options_plugins.py:137 picard/ui/options/plugins.py:220
+#, fuzzy
 msgid "Plugins"
 msgstr "Complementos"
 
@@ -5308,6 +5309,7 @@ msgid "Advanced"
 msgstr "Avanzado"
 
 #: picard/ui/options/cover.py:57
+#, fuzzy
 msgid "Cover Art"
 msgstr "Carátula"
 
@@ -6116,6 +6118,7 @@ msgstr ""
 "puedan acceder correctamente a esos archivos."
 
 #: picard/ui/options/scripting.py:102
+#, fuzzy
 msgid "Scripting"
 msgstr "Escritura de scripts"
 
