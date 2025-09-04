@@ -317,11 +317,15 @@ def get_sorting_adapter_options() -> tuple[tuple[str, str], ...]:
         Sorted pairs of user-friendly display names and corresponding adapter class names.
         The "Default" option always appears first.
     """
-    items = list(SORTING_ADAPTER_NAMES.items())
+    # Get the Default item directly
+    default_name = N_("Default")
+    default_item = (default_name, SORTING_ADAPTER_NAMES[default_name])
 
-    # Find default and other items using list comprehensions
-    default_items = [(name, class_name) for name, class_name in items if class_name == ""]
-    other_items = sorted([(name, class_name) for name, class_name in items if class_name != ""], key=lambda x: x[0])
+    # Get other items (excluding Default) and sort them
+    other_items = sorted(
+        [(name, class_name) for name, class_name in SORTING_ADAPTER_NAMES.items() if name != default_name],
+        key=lambda x: x[0],
+    )
 
     # Return tuple with Default first, then sorted others
-    return tuple(default_items + other_items)
+    return tuple([default_item] + other_items)

@@ -18,9 +18,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Unit tests for the fe4753a custom columns refactor.
+"""Unit tests for the custom columns dialog refactor.
 
-This module tests all changes introduced in the massive refactor commit fe4753a:
+Includes the following tests and changes:
 - New ColumnController facade class
 - New ColumnFormHandler for form management
 - New ColumnSpecService for spec operations
@@ -151,8 +151,7 @@ def mock_validator() -> Mock:
 @pytest.fixture
 def mock_spec_service() -> Mock:
     """Mock ColumnSpecService for testing."""
-    service = Mock(spec=ColumnSpecService)
-    return service
+    return Mock(spec=ColumnSpecService)
 
 
 @pytest.fixture(scope="session", autouse=True)
