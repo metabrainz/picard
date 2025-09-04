@@ -33,6 +33,7 @@ Follows DRY, SOC, SRP principles with extensive use of pytest fixtures
 and parametrize to reduce code duplication while ensuring comprehensive coverage.
 """
 
+import os
 from unittest.mock import Mock, call, patch
 
 from PyQt6 import QtWidgets
@@ -154,12 +155,21 @@ def mock_spec_service() -> Mock:
     return service
 
 
-@pytest.fixture
+@pytest.fixture(scope="session", autouse=True)
 def qtapp():
     """QApplication instance for widget tests."""
+    # Set Qt platform to offscreen for headless testing
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+
+    # Ensure we have a clean Qt application instance
     app = QtWidgets.QApplication.instance()
     if app is None:
         app = QtWidgets.QApplication([])
+
+    # Ensure the application is properly initialized
+    if hasattr(app, 'processEvents'):
+        app.processEvents()
+
     return app
 
 
@@ -174,12 +184,19 @@ def mock_form_widgets(qtapp) -> dict[str, QtWidgets.QWidget]:
     align_input = Mock(spec=QtWidgets.QComboBox)
     align_input.findData = Mock(return_value=0)
 
+    title_input = Mock(spec=QtWidgets.QLineEdit)
+    expression_input = Mock(spec=QtWidgets.QPlainTextEdit)
+    width_input = Mock(spec=QtWidgets.QSpinBox)
+
+    # Type cast the mocks to their proper Qt types to satisfy the type checker
+    from typing import cast
+
     return {
-        'title_input': Mock(spec=QtWidgets.QLineEdit),
-        'expression_input': Mock(spec=QtWidgets.QPlainTextEdit),
-        'width_input': Mock(spec=QtWidgets.QSpinBox),
-        'align_input': align_input,
-        'view_selector': view_selector,
+        'title_input': cast(QtWidgets.QLineEdit, title_input),
+        'expression_input': cast(QtWidgets.QPlainTextEdit, expression_input),
+        'width_input': cast(QtWidgets.QSpinBox, width_input),
+        'align_input': cast(QtWidgets.QComboBox, align_input),
+        'view_selector': cast(QtWidgets.QWidget, view_selector),
     }
 
 
