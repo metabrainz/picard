@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Comprehensive unit tests for custom columns refactor.
+"""Comprehensive unit tests for manager dialog decoupling.
 
 Tests the five key changed classes with extensive coverage using pytest fixtures
 and parametrize to reduce code duplication while adhering to DRY, SOC, IOC, SRP, KISS.
