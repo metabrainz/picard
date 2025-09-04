@@ -184,6 +184,11 @@ def mock_form_widgets(qtapp) -> dict[str, QtWidgets.QWidget]:
     align_input = Mock(spec=QtWidgets.QComboBox)
     align_input.findData = Mock(return_value=0)
 
+    sorting_adapter_input = Mock(spec=QtWidgets.QComboBox)
+    sorting_adapter_input.findData = Mock(return_value=0)
+    sorting_adapter_input.currentData = Mock(return_value="")
+    sorting_adapter_input.setCurrentIndex = Mock()
+
     title_input = Mock(spec=QtWidgets.QLineEdit)
     expression_input = Mock(spec=QtWidgets.QPlainTextEdit)
     width_input = Mock(spec=QtWidgets.QSpinBox)
@@ -196,6 +201,7 @@ def mock_form_widgets(qtapp) -> dict[str, QtWidgets.QWidget]:
         'expression_input': cast(QtWidgets.QPlainTextEdit, expression_input),
         'width_input': cast(QtWidgets.QSpinBox, width_input),
         'align_input': cast(QtWidgets.QComboBox, align_input),
+        'sorting_adapter_input': cast(QtWidgets.QComboBox, sorting_adapter_input),
         'view_selector': cast(QtWidgets.QWidget, view_selector),
     }
 
@@ -350,6 +356,7 @@ class TestColumnFormHandler:
             width_input=mock_form_widgets['width_input'],
             align_input=mock_form_widgets['align_input'],
             view_selector=mock_form_widgets['view_selector'],
+            sorting_adapter_input=mock_form_widgets['sorting_adapter_input'],
         )
 
     def test_init(self, mock_form_widgets: dict[str, QtWidgets.QWidget]):
@@ -360,6 +367,7 @@ class TestColumnFormHandler:
             width_input=mock_form_widgets['width_input'],
             align_input=mock_form_widgets['align_input'],
             view_selector=mock_form_widgets['view_selector'],
+            sorting_adapter_input=mock_form_widgets['sorting_adapter_input'],
         )
 
         assert handler._title_input is mock_form_widgets['title_input']
@@ -989,9 +997,14 @@ class TestEdgeCases:
         malformed_align_input = Mock()
         malformed_align_input.findData = Mock(return_value=-1)  # Return -1 to test idx < 0 path
 
+        malformed_sorting_input = Mock()
+        malformed_sorting_input.findData = Mock(return_value=-1)  # Return -1 to test idx < 0 path
+        malformed_sorting_input.setCurrentIndex = Mock()
+
         malformed_widgets = mock_form_widgets.copy()
         malformed_widgets['view_selector'] = malformed_view_selector
         malformed_widgets['align_input'] = malformed_align_input
+        malformed_widgets['sorting_adapter_input'] = malformed_sorting_input
 
         handler = ColumnFormHandler(**malformed_widgets)
 

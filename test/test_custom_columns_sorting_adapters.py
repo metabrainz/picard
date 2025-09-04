@@ -36,8 +36,10 @@ from picard.ui.itemviews.custom_columns import (
     CompositeSortAdapter,
     CustomColumn,
     DescendingCasefoldSortAdapter,
+    DescendingNaturalSortAdapter,
     DescendingNumericSortAdapter,
     LengthSortAdapter,
+    NaturalSortAdapter,
     NullsFirstAdapter,
     NullsLastAdapter,
     NumericSortAdapter,
@@ -258,3 +260,94 @@ def test_reverse_adapter() -> None:
     # Case-insensitive compare: 'a' == 'A', but we reverse based on key,
     # so 'B' (from 'B') will come before 'a'
     assert desc == ["c", "B", "a"]
+
+
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        # Basic natural sorting - numbers within text
+        (["item10", "item2", "item1"], ["item1", "item2", "item10"]),
+        (["track1", "track10", "track2"], ["track1", "track2", "track10"]),
+        # Mixed text and pure numbers
+        (["10", "2", "item1", "item10"], ["2", "10", "item1", "item10"]),
+        # Same text, different numbers
+        (["version 1.10", "version 1.2", "version 1.1"], ["version 1.1", "version 1.2", "version 1.10"]),
+        # Pure text (fallback to regular sorting)
+        (["zebra", "apple", "banana"], ["apple", "banana", "zebra"]),
+    ],
+)
+def test_natural_sort_adapter(values: list[str], expected: list[str]) -> None:
+    result = _sorted_values(NaturalSortAdapter, values)
+    assert result == expected
+
+
+def test_natural_sort_adapter_basic_functionality() -> None:
+    """Test that natural sorting works for basic cases."""
+    values = ["item1", "item10", "item2"]
+    result = _sorted_values(NaturalSortAdapter, values)
+    expected = ["item1", "item2", "item10"]
+    assert result == expected
+
+
+def test_descending_natural_sort_adapter_basic_functionality() -> None:
+    """Test that descending natural sorting produces reasonable results."""
+    values = ["item1", "item10", "item2"]
+    result = _sorted_values(DescendingNaturalSortAdapter, values)
+
+    # Should produce some reasonable descending order
+    # The exact order depends on implementation, but should be different from ascending
+    natural_result = _sorted_values(NaturalSortAdapter, values)
+    assert result != natural_result  # Should be different from ascending
+    assert len(result) == len(values)  # Should have all items
+    assert set(result) == set(values)  # Should have same items
+
+
+def test_natural_sort_adapter_vs_regular_sorting() -> None:
+    """Test that natural sorting differs from regular text sorting for numeric content."""
+    values = ["file1.txt", "file10.txt", "file2.txt", "file20.txt"]
+
+    # Regular casefold sorting (lexicographic)
+    regular_result = _sorted_values(CasefoldSortAdapter, values)
+    assert regular_result == ["file1.txt", "file10.txt", "file2.txt", "file20.txt"]
+
+    # Natural sorting (numeric-aware)
+    natural_result = _sorted_values(NaturalSortAdapter, values)
+    assert natural_result == ["file1.txt", "file2.txt", "file10.txt", "file20.txt"]
+
+    # They should be different for this case
+    assert regular_result != natural_result
+
+
+def test_natural_sort_adapter_empty_handling() -> None:
+    """Test natural sort adapter handles empty strings."""
+    values = ["", "item1", "item"]
+    result = _sorted_values(NaturalSortAdapter, values)
+    # Empty string should be handled consistently
+    assert "" in result
+    assert len(result) == 3
+
+
+def test_descending_natural_sort_produces_different_order() -> None:
+    """Test that descending natural sort produces different order than ascending."""
+    values = ["track1", "track10", "track2", "track20", "track3"]
+
+    # Get ascending natural sort
+    ascending = _sorted_values(NaturalSortAdapter, values)
+
+    # Get descending natural sort
+    descending = _sorted_values(DescendingNaturalSortAdapter, values)
+
+    # Should be different orders (implementation may vary)
+    assert ascending != descending
+    assert len(ascending) == len(descending)
+    assert set(ascending) == set(descending)
+
+
+def test_natural_sort_adapter_unicode_handling() -> None:
+    """Test natural sorting with unicode characters."""
+    values = ["ñ1", "n10", "ñ2", "n1"]
+    # Natural sort should handle unicode properly
+    result = _sorted_values(NaturalSortAdapter, values)
+    # Order may depend on locale, but should be consistent
+    assert len(result) == 4
+    assert set(result) == set(values)

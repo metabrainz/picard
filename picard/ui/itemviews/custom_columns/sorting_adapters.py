@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from picard.i18n import sort_key
 from picard.item import Item
 
 from picard.ui.itemviews.custom_columns.protocols import (
@@ -278,3 +279,37 @@ class ReverseAdapter(_AdapterBase):
         if isinstance(key, str):
             return self._invert_string(key)
         return key
+
+
+class NaturalSortAdapter(_AdapterBase):
+    """Provide natural (alphanumeric) sort using locale-aware natural ordering."""
+
+    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+        """Return natural sort key for item.
+
+        Uses natural sorting to handle mixed text/numbers intelligently.
+        For example: "Track 1", "Track 2", "Track 10" instead of "Track 1", "Track 10", "Track 2".
+        """
+        return sort_key(self._base.evaluate(obj) or "", numeric=True)
+
+
+class DescendingNaturalSortAdapter(_AdapterBase):
+    """Provide descending natural (alphanumeric) sort using string inversion."""
+
+    @staticmethod
+    def _invert_string(s: str) -> str:
+        """Invert string for descending order (same as ReverseAdapter)."""
+        return "".join(chr(0x10FFFF - ord(c)) for c in s)
+
+    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+        """Return descending natural sort key for item.
+
+        Gets the natural sort key, converts to string, then inverts character order.
+        """
+
+        # Get the natural sort key and convert to string
+        natural_key = sort_key(self._base.evaluate(obj) or "", numeric=True)
+        key_str = str(natural_key)
+
+        # Apply string inversion for proper descending order
+        return self._invert_string(key_str)

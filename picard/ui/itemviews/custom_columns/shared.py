@@ -296,10 +296,13 @@ SORTING_ADAPTER_NAMES: dict[str, str] = {
     N_("Case Insensitive - Descending"): "DescendingCasefoldSortAdapter",
     N_("Numeric"): "NumericSortAdapter",
     N_("Numeric - Descending"): "DescendingNumericSortAdapter",
+    N_("Natural"): "NaturalSortAdapter",
+    N_("Natural - Descending"): "DescendingNaturalSortAdapter",
     N_("By Value Length"): "LengthSortAdapter",
     N_("Article Insensitive"): "ArticleInsensitiveAdapter",
     N_("Empty Values Last"): "NullsLastAdapter",
     N_("Empty Values First"): "NullsFirstAdapter",
+    N_("Reverse"): "ReverseAdapter",
 }
 
 
