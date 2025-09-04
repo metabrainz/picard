@@ -302,7 +302,6 @@ SORTING_ADAPTER_NAMES: dict[str, str] = {
     N_("Article Insensitive"): "ArticleInsensitiveAdapter",
     N_("Empty Values Last"): "NullsLastAdapter",
     N_("Empty Values First"): "NullsFirstAdapter",
-    N_("Reverse"): "ReverseAdapter",
 }
 
 
