@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from picard.i18n import sort_key
+from picard.i18n import sort_key as _sort_key
 from picard.item import Item
 
 from picard.ui.itemviews.custom_columns.protocols import (
@@ -290,7 +290,7 @@ class NaturalSortAdapter(_AdapterBase):
         Uses natural sorting to handle mixed text/numbers intelligently.
         For example: "Track 1", "Track 2", "Track 10" instead of "Track 1", "Track 10", "Track 2".
         """
-        return sort_key(self._base.evaluate(obj) or "", numeric=True)
+        return _sort_key(self._base.evaluate(obj) or "", numeric=True)
 
 
 class DescendingNaturalSortAdapter(_AdapterBase):
@@ -308,7 +308,7 @@ class DescendingNaturalSortAdapter(_AdapterBase):
         """
 
         # Get the natural sort key and convert to string
-        natural_key = sort_key(self._base.evaluate(obj) or "", numeric=True)
+        natural_key = _sort_key(self._base.evaluate(obj) or "", numeric=True)
         key_str = str(natural_key)
 
         # Apply string inversion for proper descending order
