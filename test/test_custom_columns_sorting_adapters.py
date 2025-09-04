@@ -23,6 +23,8 @@ from __future__ import annotations
 from collections.abc import Callable
 import dataclasses
 
+from picard.const.sys import IS_MACOS
+
 import pytest
 
 from picard.ui.columns import (
@@ -262,6 +264,7 @@ def test_reverse_adapter() -> None:
     assert desc == ["c", "B", "a"]
 
 
+@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 @pytest.mark.parametrize(
     ("values", "expected"),
     [
@@ -281,6 +284,7 @@ def test_natural_sort_adapter(values: list[str], expected: list[str]) -> None:
     assert result == expected
 
 
+@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 def test_natural_sort_adapter_basic_functionality() -> None:
     """Test that natural sorting works for basic cases."""
     values = ["item1", "item10", "item2"]
@@ -289,6 +293,7 @@ def test_natural_sort_adapter_basic_functionality() -> None:
     assert result == expected
 
 
+@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 def test_descending_natural_sort_adapter_basic_functionality() -> None:
     """Test that descending natural sorting produces reasonable results."""
     values = ["item1", "item10", "item2"]
@@ -302,6 +307,7 @@ def test_descending_natural_sort_adapter_basic_functionality() -> None:
     assert set(result) == set(values)  # Should have same items
 
 
+@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 def test_natural_sort_adapter_vs_regular_sorting() -> None:
     """Test that natural sorting differs from regular text sorting for numeric content."""
     values = ["file1.txt", "file10.txt", "file2.txt", "file20.txt"]
@@ -327,6 +333,7 @@ def test_natural_sort_adapter_empty_handling() -> None:
     assert len(result) == 3
 
 
+@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 def test_descending_natural_sort_produces_different_order() -> None:
     """Test that descending natural sort produces different order than ascending."""
     values = ["track1", "track10", "track2", "track20", "track3"]
