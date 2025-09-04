@@ -271,6 +271,9 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._btn_add.clicked.connect(self._on_add)
         self._btn_duplicate = QtWidgets.QPushButton(_("Duplicate"), self)
         self._btn_delete = QtWidgets.QPushButton(_("Delete"), self)
+        # Initially disable Duplicate and Delete buttons until an item is selected
+        self._btn_duplicate.setEnabled(False)
+        self._btn_delete.setEnabled(False)
         self._btn_duplicate.clicked.connect(self._on_duplicate)
         self._btn_delete.clicked.connect(self._on_delete)
         left_panel = QtWidgets.QWidget(self)
@@ -288,6 +291,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         form = QtWidgets.QFormLayout(self._editor_panel)
 
         self._title = QtWidgets.QLineEdit(self._editor_panel)
+        # Set "New Custom Column" as ALWAYS the placeholder
+        self._title.setPlaceholderText(_("New Custom Column"))
         self._expression = ScriptTextEdit(self._editor_panel)
         self._expression.setPlaceholderText("%artist% - %title%")
         self._width = QtWidgets.QSpinBox(self._editor_panel)
@@ -390,13 +395,13 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._align.currentIndexChanged.connect(self._on_form_changed)
         self._view_selector.changed.connect(self._on_form_changed)
 
-        # If no columns exist yet, enable editing immediately for quick entry
+        # If no columns exist yet, keep Add enabled but form DISABLED
         if self._model.rowCount() > 0:
             self._list.setCurrentIndex(self._model.index(0))
         else:
-            # Enable inputs with sensible defaults for immediate entry; allow Update
-            self._prepare_editor_for_new_entry()
-            self._awaiting_update = True
+            # Disable form initially; user must click Add first
+            self._prepare_editor_for_new_entry(enable_form=False)
+            self._awaiting_update = False  # Don't await update initially
         self._update_form_actions()
 
     # --- Actions
@@ -588,7 +593,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._model.update_spec(self._current_row, new_spec)
 
     def _on_add(self) -> None:
-        """Enter new-entry mode: clear form and await Update to insert the row."""
+        """Enter new-entry mode: clear form, enable it, and await Update to insert the row."""
         # Check for uncommitted changes before starting new entry
         if self._has_uncommitted_changes:
             if not self._confirm_discard_changes():
@@ -598,10 +603,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._list.clearSelection()
         self._awaiting_update = True
         self._has_uncommitted_changes = False
-        self._prepare_editor_for_new_entry()
-
-        # When `Add` is clicked, make it clear that a new entry is being created
-        self._title.setPlaceholderText(_("New Custom Column"))
+        # Enable the form when Add is clicked
+        self._prepare_editor_for_new_entry(enable_form=True)
 
     def _on_duplicate(self) -> None:
         """Duplicate the selected specification with an auto-incremented title."""
@@ -726,11 +729,16 @@ class CustomColumnsManagerDialog(PicardDialog):
         broadcast_headers_updated()
 
     # New helper to enable and clear editor for quick new entry
-    def _prepare_editor_for_new_entry(self) -> None:
+    def _prepare_editor_for_new_entry(self, enable_form: bool = True) -> None:
         """Prepare the editor for quickly adding a new entry."""
         self._current_row = -1
         with self._populating_context():
-            self._form_handler.clear_for_new(DialogConfig.DEFAULT_WIDTH)
+            if enable_form:
+                self._form_handler.clear_for_new(DialogConfig.DEFAULT_WIDTH)
+            else:
+                # Clear form but keep it disabled
+                self._form_handler.clear_for_new(DialogConfig.DEFAULT_WIDTH)
+                self._form_handler.set_enabled(False)
         self._has_uncommitted_changes = False
         self._update_form_actions()
 
@@ -745,8 +753,13 @@ class CustomColumnsManagerDialog(PicardDialog):
 
     def _update_form_actions(self) -> None:
         """Update the form actions based on the current row and state."""
-        self._btn_update.setEnabled(self._current_row >= 0 or self._awaiting_update)
+        has_selection = self._current_row >= 0
+        self._btn_update.setEnabled(has_selection or self._awaiting_update)
+        # Add button is always enabled unless already awaiting update
         self._btn_add.setEnabled(not self._awaiting_update)
+        # Duplicate and Delete buttons are only enabled when an item is selected
+        self._btn_duplicate.setEnabled(has_selection)
+        self._btn_delete.setEnabled(has_selection)
 
     def _confirm_discard_changes(self) -> bool:
         """Ask user to confirm discarding uncommitted changes.
