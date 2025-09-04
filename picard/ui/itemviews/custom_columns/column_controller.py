@@ -29,11 +29,12 @@ ColumnController
     Facade class that simplifies custom column operations for dialogs.
 """
 
-from typing import Any, Iterable
+from typing import Iterable
 
 from picard.ui.itemviews.custom_columns.column_spec_service import (
     ColumnSpecService,
 )
+from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnSpec,
 )
@@ -99,7 +100,7 @@ class ColumnController:
                 return key, validation_report
         return None
 
-    def apply_all(self, model: Any) -> None:
+    def apply_all(self, model: SpecListModel) -> None:
         """Apply all specifications from a model.
 
         Deduplicates and persists specifications.

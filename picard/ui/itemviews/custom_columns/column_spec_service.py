@@ -29,10 +29,11 @@ ColumnSpecService
     Service class for managing custom column specifications.
 """
 
-from typing import Any, Iterable
+from typing import Iterable
 
 from picard.config import get_config
 
+from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnRegistrar,
     CustomColumnSpec,
@@ -53,7 +54,7 @@ class ColumnSpecService:
         for key in keys:
             registrar.unregister_column(key)
 
-    def deduplicate_model_by_keys(self, model: Any) -> None:
+    def deduplicate_model_by_keys(self, model: SpecListModel) -> None:
         """Remove duplicate column specifications from a model.
 
         Preserves order while removing duplicates based on key.
