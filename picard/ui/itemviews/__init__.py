@@ -414,15 +414,12 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             else:
                 if column.align == ColumnAlign.RIGHT:
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
-                # Support custom columns with provider evaluation
-                from picard.ui.itemviews.custom_columns import CustomColumn  # Local import to avoid cycles
 
                 if isinstance(column, CustomColumn):
                     try:
                         self.setText(i, column.provider.evaluate(self.obj))
                     except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
                         log.debug("Custom column '%s' evaluate failed: %r", column.key, exc)
-                        self.setText(i, self.obj.column(column.key))
                     continue
                 self.setText(i, self.obj.column(column.key))
 

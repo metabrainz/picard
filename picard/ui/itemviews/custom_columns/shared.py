@@ -27,7 +27,10 @@ from enum import IntEnum
 from typing import Iterable
 import uuid
 
-from picard.i18n import N_, gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 
 from picard.ui.columns import ColumnAlign
 

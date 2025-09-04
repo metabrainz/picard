@@ -20,9 +20,7 @@
 
 """List model for CustomColumnSpec entries."""
 
-from PyQt6 import (  # type: ignore[unresolved-import]
-    QtCore,
-)
+from PyQt6 import QtCore  # type: ignore[unresolved-import]
 
 from picard.ui.itemviews.custom_columns.storage import CustomColumnSpec
 

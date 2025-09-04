@@ -30,10 +30,16 @@ docstrings.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
-from dataclasses import asdict, dataclass
+from collections.abc import (
+    Callable,
+    Iterable,
+)
+from dataclasses import (
+    asdict,
+    dataclass,
+)
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 from picard import log
 from picard.config import get_config
@@ -49,6 +55,7 @@ from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 from picard.ui.itemviews.custom_columns.providers import FieldReferenceProvider
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
+    normalize_align_name,
     parse_add_to,
 )
 
@@ -206,9 +213,6 @@ def _align_from_name(name: str) -> ColumnAlign:
     ColumnAlign
         Corresponding alignment enum (defaults to LEFT on unknown).
     """
-
-    from picard.ui.itemviews.custom_columns.shared import normalize_align_name
-
     return normalize_align_name(name)
 
 

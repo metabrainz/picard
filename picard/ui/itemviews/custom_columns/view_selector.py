@@ -27,9 +27,7 @@ from PyQt6 import (
 
 from picard.i18n import gettext as _
 
-from picard.ui.itemviews.custom_columns.shared import (
-    get_ordered_view_presentations,
-)
+from picard.ui.itemviews.custom_columns.shared import get_ordered_view_presentations
 
 
 class ViewSelector(QtWidgets.QWidget):

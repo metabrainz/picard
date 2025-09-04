@@ -31,13 +31,9 @@ ColumnController
 
 from typing import Iterable
 
-from picard.ui.itemviews.custom_columns.column_spec_service import (
-    ColumnSpecService,
-)
+from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecService
 from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
-from picard.ui.itemviews.custom_columns.storage import (
-    CustomColumnSpec,
-)
+from picard.ui.itemviews.custom_columns.storage import CustomColumnSpec
 from picard.ui.itemviews.custom_columns.validation import (
     ColumnSpecValidator,
     ValidationContext,

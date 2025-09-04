@@ -33,7 +33,10 @@ from typing import Iterable
 
 from picard.config import get_config
 
-from picard.ui.itemviews.custom_columns.shared import generate_new_key, next_incremented_title
+from picard.ui.itemviews.custom_columns.shared import (
+    generate_new_key,
+    next_incremented_title,
+)
 from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnRegistrar,
@@ -85,7 +88,8 @@ class ColumnSpecService:
         if cfg is not None:
             cfg.sync()
 
-    def allocate_new_key(self) -> str:
+    @staticmethod
+    def allocate_new_key() -> str:
         """Allocate a new unique key for a custom column.
 
         Returns

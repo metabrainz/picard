@@ -61,9 +61,7 @@ from picard.ui.itemviews.custom_columns.storage import (
     load_specs_from_config,
 )
 from picard.ui.itemviews.custom_columns.user_dialog_service import UserDialogService
-from picard.ui.itemviews.custom_columns.validation import (
-    ColumnSpecValidator,
-)
+from picard.ui.itemviews.custom_columns.validation import ColumnSpecValidator
 from picard.ui.itemviews.custom_columns.view_selector import ViewSelector
 from picard.ui.itemviews.events import header_events
 from picard.ui.util import StandardButton
