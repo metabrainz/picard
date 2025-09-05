@@ -128,6 +128,28 @@ class ConfigurableColumnsHeader(LockableHeaderView):
     def restore_defaults(self):
         self.parent().restore_default_columns()
 
+    def sync_visible_columns(self):
+        """Synchronize _visible_columns with actual column visibility state.
+
+        This should be called when new columns are added to ensure the context menu
+        checkboxes reflect the actual visibility state.
+        """
+        # Update always visible columns in case they changed
+        self._always_visible_columns = set(self._columns.always_visible_columns())
+
+        # For each column, check if it's actually visible in the table
+        for i in range(len(self._columns)):
+            if i in self._always_visible_columns:
+                # Always visible columns should always be in _visible_columns
+                self._visible_columns.add(i)
+            else:
+                # For other columns, check if they're actually hidden
+                is_hidden = self.parent().isColumnHidden(i)
+                if not is_hidden:
+                    self._visible_columns.add(i)
+                else:
+                    self._visible_columns.discard(i)
+
     def paintSection(self, painter, rect, index):
         # The Manage Custom Columns dialog may mutate the `self._columns` list.
         # Guard against transient mismatches between header section count and

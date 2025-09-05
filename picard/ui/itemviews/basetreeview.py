@@ -432,6 +432,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def _refresh_header_labels(self):
         """Refresh header labels (and count) based on current columns."""
         self._set_header_labels(update_column_count=True)
+        # Sync visible columns state in the header to ensure context menu checkboxes
+        # reflect the actual visibility state, especially for newly added columns
+        header = self.header()
+        header.sync_visible_columns()
 
     def _on_header_updated(self):
         """Handle global header update events and refresh if applicable."""
