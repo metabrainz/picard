@@ -22,6 +22,7 @@
 
 from PyQt6 import QtCore  # type: ignore[unresolved-import]
 
+from picard.ui.itemviews.custom_columns.shared import DEFAULT_NEW_COLUMN_NAME
 from picard.ui.itemviews.custom_columns.storage import CustomColumnSpec
 
 
@@ -75,7 +76,7 @@ class SpecListModel(QtCore.QAbstractListModel):
             return None
         spec = self._specs[index.row()]
         if role == QtCore.Qt.ItemDataRole.DisplayRole:
-            return spec.title or spec.key
+            return spec.title or DEFAULT_NEW_COLUMN_NAME
         return None
 
     # Helpers

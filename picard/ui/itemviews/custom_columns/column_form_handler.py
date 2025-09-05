@@ -31,6 +31,7 @@ from PyQt6 import QtWidgets
 from picard.ui.itemviews.custom_columns.shared import (
     ALIGN_LEFT_NAME,
     DEFAULT_ADD_TO,
+    DEFAULT_NEW_COLUMN_NAME,
     format_add_to,
     normalize_align_name,
     parse_add_to,
@@ -148,6 +149,8 @@ class ColumnFormHandler:
         """
         self.set_enabled(True)
         self._title_input.clear()
+        self._title_input.setText(DEFAULT_NEW_COLUMN_NAME)
+        self._title_input.setFocus()
         self._expression_input.setPlainText("")
         self._width_input.setValue(default_width)
         idx = self._align_input.findData(normalize_align_name(ALIGN_LEFT_NAME))

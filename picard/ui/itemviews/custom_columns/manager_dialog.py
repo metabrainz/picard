@@ -50,6 +50,7 @@ from picard.ui.itemviews.custom_columns.column_form_handler import ColumnFormHan
 from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecService
 from picard.ui.itemviews.custom_columns.shared import (
     COLUMN_INPUT_FIELD_NAMES,
+    DEFAULT_NEW_COLUMN_NAME,
     ColumnIndex,
     get_align_options,
     get_sorting_adapter_options,
@@ -136,7 +137,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         self._title = QtWidgets.QLineEdit(self._editor_panel)
         # Set "New Custom Column" as ALWAYS the placeholder
-        self._title.setPlaceholderText(_("New Custom Column"))
+        self._title.setPlaceholderText(DEFAULT_NEW_COLUMN_NAME)
         self._expression = ScriptTextEdit(self._editor_panel)
         self._expression.setPlaceholderText("%artist% - %title%")
         self._width = QtWidgets.QSpinBox(self._editor_panel)
@@ -275,7 +276,10 @@ class CustomColumnsManagerDialog(PicardDialog):
         if not self._has_uncommitted_changes:
             self._commit_form_to_model()
 
-        self._on_apply()
+        # Apply changes and check if successful
+        if not self._on_apply():
+            return  # Don't close dialog if apply failed
+
         self._has_uncommitted_changes = False
         super().accept()
 
@@ -516,7 +520,7 @@ class CustomColumnsManagerDialog(PicardDialog):
                     # Ensure no uncommitted changes after refresh
                     self._has_uncommitted_changes = False
 
-    def _on_apply(self) -> None:
+    def _on_apply(self) -> bool:
         """Validate, persist, and register custom column specifications."""
         self._commit_form_to_model()
 
@@ -537,7 +541,7 @@ class CustomColumnsManagerDialog(PicardDialog):
                 if spec_key == first_key:
                     self._list.setCurrentIndex(self._model.index(idx))
                     break
-            return
+            return False
 
         # Unregister any columns explicitly deleted during this session
 
@@ -552,6 +556,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._dirty = False
         self._update_apply()
         broadcast_headers_updated()
+        return True
 
     # New helper to enable and clear editor for quick new entry
     def _prepare_editor_for_new_entry(self, enable_form: bool = True) -> None:
@@ -623,10 +628,6 @@ class CustomColumnsManagerDialog(PicardDialog):
         if self._current_row < 0 or self._current_row >= self._model.rowCount():
             return
         spec = self._spec_from_form()
-
-        # Can't create entries with blank titles, but if user blanks it out, replace it with a placeholder
-        if not spec.title.strip():
-            spec.title = _("Untitled Column")
 
         # Update the model without persisting
         self._model.update_spec(self._current_row, spec)

@@ -70,6 +70,8 @@ _ALIGN_TOKEN_TO_ENUM: dict[str, ColumnAlign] = {
     ALIGN_RIGHT_NAME: ColumnAlign.RIGHT,
 }
 
+DEFAULT_NEW_COLUMN_NAME: str = _("Untitled Column")
+
 
 def parse_add_to(add_to: str | None) -> set[str]:
     """Parse a comma-separated ``add_to`` string into normalized view tokens.
