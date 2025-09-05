@@ -421,7 +421,11 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
                         log.debug("Custom column '%s' evaluate failed: %r", column.key, exc)
                     continue
-                self.setText(i, self.obj.column(column.key))
+                try:
+                    self.setText(i, self.obj.column(column.key))
+                except AttributeError:
+                    # Some objects like ClusterList don't have a column method
+                    log.debug("Object %r does not have column method for key '%s'", type(self.obj).__name__, column.key)
 
 
 class ClusterItem(TreeItem):

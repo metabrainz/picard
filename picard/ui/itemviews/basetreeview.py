@@ -437,6 +437,24 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         header = self.header()
         header.sync_visible_columns()
 
+    def _refresh_all_items_data(self):
+        """Refresh data for all items in the tree view."""
+
+        def refresh_item(item):
+            """Recursively refresh item and all its children."""
+            if hasattr(item, 'update_colums_text'):
+                try:
+                    item.update_colums_text()
+                except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
+                    # Log but don't fail the entire refresh operation
+                    log.debug("Failed to refresh item %r: %r", type(item).__name__, exc)
+            for i in range(item.childCount()):
+                refresh_item(item.child(i))
+
+        # Refresh all top-level items
+        for i in range(self.topLevelItemCount()):
+            refresh_item(self.topLevelItem(i))
+
     def _on_header_updated(self):
         """Handle global header update events and refresh if applicable."""
         from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
@@ -445,6 +463,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if self.columns not in recognized:
             return
         self._refresh_header_labels()
+        self._refresh_all_items_data()
 
     def _init_header(self):
         # Load any persisted user-defined custom columns before header setup
