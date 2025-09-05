@@ -156,14 +156,13 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.installEventFilter(self)
 
         # Dialog buttons
-        self.reset_button = QtWidgets.QPushButton(_("Reset"))
+        self.reset_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Reset)
         self.reset_button.setToolTip(self.reset_action.toolTip())
         self.reset_button.clicked.connect(self.reload_from_config)
+        # Adding the button with an ActionRole places it with the Cancel and Ok buttons
         self.ui.buttonbox.addButton(self.reset_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
-        self.save_button = self.ui.buttonbox.addButton(
-            _("Make It So!"), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
-        )
+        self.save_button = self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         self.save_button.setToolTip(self.save_action.toolTip())
         self.ui.buttonbox.accepted.connect(self.make_it_so)
 

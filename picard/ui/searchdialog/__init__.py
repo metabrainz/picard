@@ -40,7 +40,6 @@ from picard.util import (
 )
 
 from picard.ui.tablebaseddialog import TableBasedDialog
-from picard.ui.util import StandardButton
 
 
 class SearchQLineEdit(QtWidgets.QLineEdit):
@@ -196,9 +195,7 @@ class SearchDialog(TableBasedDialog):
         self.accept_button = QtWidgets.QPushButton(_(self.accept_button_title), self.buttonBox)
         self.accept_button.setEnabled(False)
         self.buttonBox.addButton(self.accept_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.buttonBox.addButton(
-            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        )
+        self.buttonBox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.verticalLayout.addWidget(self.buttonBox)
