@@ -442,17 +442,25 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._model.update_spec(self._current_row, new_spec)
 
     def _on_add(self) -> None:
-        """Enter new-entry mode: clear form, enable it, and await Update to insert the row."""
+        """Create a new placeholder specification and insert it into the model."""
         # Check for uncommitted changes before starting new entry
         if not self._user_dialog_service.can_change_selection(self._has_uncommitted_changes):
             return  # User cancelled, don't start new entry
 
-        # Clear selection and prepare a blank form for new entry
-        self._list.clearSelection()
-        self._awaiting_update = True
+        # Create a placeholder specification with blank expression
+        # Pass current specs to ensure unique title generation
+        current_specs = self._model.specs()
+        placeholder_spec = ColumnSpecService.create_placeholder_spec(DialogConfig.DEFAULT_WIDTH, current_specs)
+
+        # Insert the placeholder spec into the model
+        new_row = self._model.insert_spec(placeholder_spec)
+        self._list.setCurrentIndex(self._model.index(new_row))
+
+        # Explicitly populate the form with the new placeholder spec
+        self._current_row = new_row
+        self._populate_form(placeholder_spec)
         self._has_uncommitted_changes = False
-        # Enable the form when Add is clicked
-        self._prepare_editor_for_new_entry(enable_form=True)
+        self._mark_dirty()
 
     def _on_duplicate(self) -> None:
         """Duplicate the selected specification with an auto-incremented title."""
@@ -500,7 +508,7 @@ class CustomColumnsManagerDialog(PicardDialog):
                     self._list.setCurrentIndex(self._model.index(new_row))
                 else:
                     self._list.clearSelection()
-                    self._prepare_editor_for_new_entry()
+                    self._prepare_editor_for_new_entry(enable_form=False)
                 self._mark_dirty()
 
                 # Deleting cancels pending add state and clears uncommitted changes

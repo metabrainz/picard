@@ -34,11 +34,15 @@ from typing import Iterable
 from picard.config import get_config
 
 from picard.ui.itemviews.custom_columns.shared import (
+    ALIGN_LEFT_NAME,
+    DEFAULT_ADD_TO,
+    DEFAULT_NEW_COLUMN_NAME,
     generate_new_key,
     next_incremented_title,
 )
 from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel
 from picard.ui.itemviews.custom_columns.storage import (
+    CustomColumnKind,
     CustomColumnRegistrar,
     CustomColumnSpec,
     save_specs_to_config,
@@ -98,6 +102,51 @@ class ColumnSpecService:
             New unique key.
         """
         return generate_new_key()
+
+    @staticmethod
+    def create_placeholder_spec(
+        default_width: int,
+        current_specs: Iterable[CustomColumnSpec] | None = None,
+    ) -> CustomColumnSpec:
+        """Create a placeholder specification with blank expression.
+
+        Creates a specification with the same default values as the form handler's
+        clear_for_new method to ensure consistency between placeholder creation
+        and form initialization. The title will be unique based on existing specs.
+
+        Parameters
+        ----------
+        default_width : int
+            Default width for the column.
+        current_specs : Iterable[CustomColumnSpec] | None, optional
+            Current specifications to check for title conflicts, by default None.
+
+        Returns
+        -------
+        CustomColumnSpec
+            New placeholder specification with blank expression and form-aligned defaults.
+        """
+        # Generate unique title based on existing specs
+        existing_titles: set[str] = set()
+        if current_specs:
+            existing_titles = {spec.title for spec in current_specs if spec.title}
+
+        # Use base title if it doesn't exist, otherwise generate incremented title
+        if DEFAULT_NEW_COLUMN_NAME not in existing_titles:
+            unique_title = DEFAULT_NEW_COLUMN_NAME
+        else:
+            unique_title = next_incremented_title(DEFAULT_NEW_COLUMN_NAME, existing_titles)
+        return CustomColumnSpec(
+            title=unique_title,
+            key=ColumnSpecService.allocate_new_key(),
+            kind=CustomColumnKind.SCRIPT,
+            expression="",
+            width=default_width,
+            align=ALIGN_LEFT_NAME,  # Align with form handler default
+            always_visible=False,
+            add_to=DEFAULT_ADD_TO,  # Align with form handler default (select all views)
+            sorting_adapter="",  # Align with form handler default (first item)
+        )
 
     def duplicate_with_new_title_and_key(
         self, spec: CustomColumnSpec, specs: Iterable[CustomColumnSpec]
