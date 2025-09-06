@@ -186,7 +186,7 @@ class ColumnFormHandler:
         try:
             selected_views: tuple[str, ...] = self._view_selector.get_selected()
         except AttributeError:
-            selected_views = tuple(DEFAULT_ADD_TO.split(","))
+            selected_views = tuple()
         add_to = format_add_to(selected_views)
 
         return CustomColumnSpec(

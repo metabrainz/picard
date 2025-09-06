@@ -80,7 +80,7 @@ def parse_add_to(add_to: str | None) -> set[str]:
     ----------
     add_to : str | None
         Comma-separated list of view identifiers (e.g., ``"FILE_VIEW,ALBUM_VIEW"``).
-        If falsy, defaults to both views as defined by ``DEFAULT_ADD_TO``.
+        If ``None`` or an empty string, returns an empty set (no views).
 
     Returns
     -------
@@ -90,10 +90,10 @@ def parse_add_to(add_to: str | None) -> set[str]:
     Notes
     -----
     Unknown tokens are ignored. Recognition is case-insensitive and whitespace
-    around tokens is stripped before matching.
+    around tokens is stripped before matching. There is no default view set.
     """
 
-    raw: str = add_to or DEFAULT_ADD_TO
+    raw: str = add_to or ""
     tokens: Iterable[str] = (t.strip().upper() for t in raw.split(",") if t.strip())
     return {t for t in tokens if t in RECOGNIZED_VIEWS}
 
