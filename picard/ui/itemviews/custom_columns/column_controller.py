@@ -29,6 +29,7 @@ ColumnController
     Facade class that simplifies custom column operations for dialogs.
 """
 
+from dataclasses import dataclass
 from typing import Iterable
 
 from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecService
@@ -115,3 +116,54 @@ class ColumnController:
         """
         self._spec_service.deduplicate_model_by_keys(model)
         self._spec_service.persist_and_register(model.specs())
+
+
+@dataclass(frozen=True)
+class InvalidSpecAnalysis:
+    """Summary of the first invalid specification in a validation result set."""
+
+    key: str
+    error_messages: list[str]
+    warning_messages: list[str]
+    has_title_error: bool
+    has_expression_error: bool
+    has_only_blank_expression_warning: bool
+
+
+def analyze_first_invalid(reports: dict[str, ValidationReport]) -> InvalidSpecAnalysis | None:
+    """Analyze validation reports for the first blocking issue or blank-expression warning.
+
+    Parameters
+    ----------
+    reports : dict[str, ValidationReport]
+        Mapping of spec key to its validation report.
+
+    Returns
+    -------
+    InvalidSpecAnalysis | None
+        Summary for the first invalid spec, or None if all are valid.
+    """
+    for key, report in reports.items():
+        errors = report.errors
+        warnings = report.warnings
+        # Determine if this report requires user attention
+        has_only_blank_expression_warning = (
+            len(errors) == 0
+            and len(warnings) >= 1
+            and all(getattr(w, "code", None) == "EXPRESSION_EMPTY" for w in warnings)
+        )
+
+        if not report.is_valid or has_only_blank_expression_warning:
+            error_messages = [r.message for r in errors]
+            warning_messages = [r.message for r in warnings]
+            has_title_error = any(r.field == "title" for r in errors)
+            has_expression_error = any(r.field == "expression" for r in errors)
+            return InvalidSpecAnalysis(
+                key=key,
+                error_messages=error_messages,
+                warning_messages=warning_messages,
+                has_title_error=has_title_error,
+                has_expression_error=has_expression_error,
+                has_only_blank_expression_warning=has_only_blank_expression_warning,
+            )
+    return None

@@ -138,9 +138,9 @@ class RequiredFieldRule(ValidationRule):
             results.append(
                 ValidationResult(
                     "expression",
-                    ValidationSeverity.ERROR,
-                    N_("Expression is required and cannot be empty"),
-                    "EXPRESSION_REQUIRED",
+                    ValidationSeverity.WARNING,
+                    N_("Expression is blank; the column will display nothing"),
+                    "EXPRESSION_EMPTY",
                 )
             )
         return results

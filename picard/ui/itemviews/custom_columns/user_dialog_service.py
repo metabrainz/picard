@@ -26,6 +26,8 @@ from PyQt6 import QtWidgets  # type: ignore[unresolved-import]
 
 from picard.i18n import gettext as _
 
+from picard.ui.itemviews.custom_columns.column_controller import InvalidSpecAnalysis
+
 
 UnsavedAction = Literal["save", "discard", "cancel"]
 
@@ -156,3 +158,66 @@ class UserDialogService:
             title,
             dialog_message,
         )
+
+    def confirm_blank_expression(self, spec_title: str | None = None) -> bool:
+        """Ask user to confirm keeping a blank expression.
+
+        Parameters
+        ----------
+        spec_title : str | None
+            The column title for context in the dialog.
+
+        Returns
+        -------
+        bool
+            True to accept blank expression and proceed; False to go back.
+        """
+        header = _("Blank expression")
+        if spec_title and spec_title.strip():
+            header = _("Blank expression for: %s") % spec_title
+            body = (
+                _("The expression for '%s' is blank. The column will display nothing. Do you want to continue?")
+                % spec_title
+            )
+        else:
+            body = _("The expression is blank. The column will display nothing. Do you want to continue?")
+        reply: QtWidgets.QMessageBox.StandardButton = QtWidgets.QMessageBox.question(
+            self._parent_widget,
+            header,
+            body,
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return reply == QtWidgets.QMessageBox.StandardButton.Yes
+
+    def handle_apply_validation(self, analysis: InvalidSpecAnalysis, spec_title: str | None) -> tuple[bool, str | None]:
+        """Handle validation outcome during Apply.
+
+        Parameters
+        ----------
+        analysis : InvalidSpecAnalysis
+            Summary of the first invalid specification.
+        spec_title : str | None
+            Title of the spec, for dialog context.
+
+        Returns
+        -------
+        tuple[bool, str | None]
+            (proceed, focus_field). If proceed is False, focus_field can be
+            "title", "expression", or None.
+        """
+        # Only-warning case: blank expression warning and no errors
+        if analysis.has_only_blank_expression_warning:
+            if self.confirm_blank_expression(spec_title):
+                return True, None
+            # User rejected; return to dialog without additional popups
+            return False, "expression"
+
+        # Errors or other warnings: block and show error messages
+        error_messages_localized = [_(m) for m in analysis.error_messages]
+        self.show_invalid_spec_errors(error_messages_localized, spec_title)
+        if analysis.has_title_error:
+            return False, "title"
+        if analysis.has_expression_error:
+            return False, "expression"
+        return False, None

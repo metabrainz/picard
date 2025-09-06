@@ -562,7 +562,7 @@ def test_validator_required_fields() -> None:
     report = validator.validate(spec)
     assert not report.is_valid
     codes = {r.code for r in report.results}
-    assert {"TITLE_REQUIRED", "KEY_REQUIRED", "EXPRESSION_REQUIRED"}.issubset(codes)
+    assert {"TITLE_REQUIRED", "KEY_REQUIRED", "EXPRESSION_EMPTY"}.issubset(codes)
 
 
 def test_validator_key_required_and_uniqueness() -> None:
@@ -598,7 +598,7 @@ def test_validator_expression_rules_field_and_script(fake_config: SimpleNamespac
     # FIELD expression
     field_spec = CustomColumnSpec(title="T", key="k", kind=CustomColumnKind.FIELD, expression="")
     report_field = validate_spec(field_spec)
-    assert any(r.code == "EXPRESSION_REQUIRED" for r in report_field.results)
+    assert any(r.code == "EXPRESSION_EMPTY" for r in report_field.results)
     # SCRIPT expression: invalid syntax
     script_spec = CustomColumnSpec(title="T", key="k2", kind=CustomColumnKind.SCRIPT, expression="$if(1,")
     report_script = validate_spec(script_spec)

@@ -45,7 +45,7 @@ from PyQt6 import (  # type: ignore[unresolved-import]
 from picard.i18n import gettext as _
 
 from picard.ui import PicardDialog
-from picard.ui.itemviews.custom_columns.column_controller import ColumnController
+from picard.ui.itemviews.custom_columns.column_controller import ColumnController, analyze_first_invalid
 from picard.ui.itemviews.custom_columns.column_form_handler import ColumnFormHandler
 from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecService
 from picard.ui.itemviews.custom_columns.shared import (
@@ -564,33 +564,24 @@ class CustomColumnsManagerDialog(PicardDialog):
         all_specs = self._model.specs()
         reports = self._spec_controller.validate_specs(all_specs)
 
-        # Find first invalid spec
-        invalid_specs = [(key, report) for key, report in reports.items() if not report.is_valid]
-        if invalid_specs:
-            first_key, first_report = invalid_specs[0]
-            error_messages = [_(result.message) for result in first_report.errors]
-
-            # Determine which field to focus based on validation errors
-            has_title_error = any(res.field == "title" for res in first_report.errors)
-            has_expression_error = any(res.field == "expression" for res in first_report.errors)
-
-            # Find the first invalid spec to extract its title and select it
+        analysis = analyze_first_invalid(reports)
+        if analysis is not None:
+            # Locate the spec and select it to give user context
             spec_title: str | None = None
             for idx, spec in enumerate(all_specs):
                 spec_key = spec.key or f"<unnamed:{id(spec)}>"
-                if spec_key == first_key:
-                    # Use the title if available
+                if spec_key == analysis.key:
                     spec_title = spec.title if spec.title and spec.title.strip() else None
                     self._list.setCurrentIndex(self._model.index(idx))
                     break
 
-            self._user_dialog_service.show_invalid_spec_errors(error_messages, spec_title)
-            # After user confirms the warning, focus the appropriate editor
-            if has_title_error:
-                self._title.setFocus()
-            elif has_expression_error:
-                self._expression.setFocus()
-            return False
+            proceed, focus_field = self._user_dialog_service.handle_apply_validation(analysis, spec_title)
+            if not proceed:
+                if focus_field == "title":
+                    self._title.setFocus()
+                elif focus_field == "expression":
+                    self._expression.setFocus()
+                return False
 
         # Unregister any columns explicitly deleted during this session
 

@@ -923,29 +923,14 @@ class TestRefactorIntegration:
 
         # Should have reports for all specs
         assert len(reports) == len(sample_specs)
-
-        # Find first invalid spec (empty expression) using mock implementation
-        def mock_first_invalid_spec(specs):
-            reports = controller.validate_specs(specs)
-            for key, report in reports.items():
-                if not report.is_valid:
-                    # Find the spec with this key
-                    for spec in specs:
-                        if spec.key == key:
-                            return spec
-            return None
-
-        # Replace the method temporarily for this test
-        original_method = controller.first_invalid_spec
-        controller.first_invalid_spec = mock_first_invalid_spec
-
-        invalid_spec = controller.first_invalid_spec(sample_specs)
-        assert invalid_spec is not None
-        assert invalid_spec.key == "550e8400-e29b-41d4-a716-446655440003"
-        assert invalid_spec.expression == ""
-
-        # Restore original method
-        controller.first_invalid_spec = original_method
+        # With current rules, empty expression produces a WARNING (EXPRESSION_EMPTY), not an error
+        empty_key = "550e8400-e29b-41d4-a716-446655440003"
+        assert empty_key in reports
+        empty_report = reports[empty_key]
+        # Report should still be valid (warnings only)
+        assert empty_report.is_valid
+        # And it should include the blank-expression warning
+        assert any(getattr(w, 'code', None) == "EXPRESSION_EMPTY" for w in empty_report.warnings)
 
     @patch('picard.ui.itemviews.custom_columns.column_spec_service.save_specs_to_config')
     @patch('picard.ui.itemviews.custom_columns.column_spec_service.CustomColumnRegistrar')
