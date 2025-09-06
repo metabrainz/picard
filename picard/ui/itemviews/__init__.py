@@ -44,6 +44,7 @@
 
 
 from collections import defaultdict
+from contextlib import suppress
 from functools import partial
 
 from PyQt6 import (
@@ -421,11 +422,12 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
                         log.debug("Custom column '%s' evaluate failed: %r", column.key, exc)
                     continue
-                try:
-                    self.setText(i, self.obj.column(column.key))
-                except AttributeError:
+
+                with suppress(AttributeError):
                     # Some objects like ClusterList don't have a column method
-                    log.debug("Object %r does not have column method for key '%s'", type(self.obj).__name__, column.key)
+                    # Note: Do not log; it is very noisy.
+                    # See: https://github.com/metabrainz/picard/pull/2714#issuecomment-3260286574
+                    self.setText(i, self.obj.column(column.key))
 
 
 class ClusterItem(TreeItem):
