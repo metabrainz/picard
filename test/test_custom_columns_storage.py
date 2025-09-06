@@ -565,13 +565,22 @@ def test_validator_required_fields() -> None:
     assert {"TITLE_REQUIRED", "KEY_REQUIRED", "EXPRESSION_REQUIRED"}.issubset(codes)
 
 
-def test_validator_key_format_and_uniqueness() -> None:
+def test_validator_key_required_and_uniqueness() -> None:
     validator = ColumnSpecValidator()
-    spec = CustomColumnSpec(title="T", key="abc", kind=CustomColumnKind.FIELD, expression="artist")
+    # Test key is required
+    spec = CustomColumnSpec(title="T", key="", kind=CustomColumnKind.FIELD, expression="artist")
     report = validator.validate(spec, context=validator.validate_multiple([]).get('', None) or None)
     assert not report.is_valid
-    assert any(r.code == "KEY_INVALID_FORMAT" for r in report.results)
-    # uniqueness
+    assert any(r.code == "KEY_REQUIRED" for r in report.results)
+
+    # Test key can be any non-empty string (format is relaxed)
+    spec_with_any_key = CustomColumnSpec(title="T", key="abc", kind=CustomColumnKind.FIELD, expression="artist")
+    report_any_key = validator.validate(
+        spec_with_any_key, context=validator.validate_multiple([]).get('', None) or None
+    )
+    assert report_any_key.is_valid  # Any non-empty key is now valid
+
+    # Test uniqueness
     good_spec = CustomColumnSpec(
         title="T", key="550e8400-e29b-41d4-a716-446655440000", kind=CustomColumnKind.FIELD, expression="artist"
     )
