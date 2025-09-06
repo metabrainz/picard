@@ -112,7 +112,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         self._model = SpecListModel(load_specs_from_config(), parent=self)
         self._list.setModel(self._model)
-        self._btn_add = QtWidgets.QPushButton(_("Add"), self)
+        self._btn_add = QtWidgets.QPushButton(_("New"), self)
         self._btn_add.clicked.connect(self._on_add)
         self._btn_duplicate = QtWidgets.QPushButton(_("Duplicate"), self)
         self._btn_delete = QtWidgets.QPushButton(_("Delete"), self)
