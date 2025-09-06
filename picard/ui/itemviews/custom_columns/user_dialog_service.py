@@ -111,3 +111,25 @@ class UserDialogService:
             QtWidgets.QMessageBox.StandardButton.No,
         )
         return reply == QtWidgets.QMessageBox.StandardButton.Yes
+
+    def confirm_delete_columns(self, count: int) -> bool:
+        """Prompt user to confirm deletion of multiple custom columns.
+
+        Parameters
+        ----------
+        count : int
+            Number of columns to be deleted.
+
+        Returns
+        -------
+        bool
+            True if user confirms deletion, False otherwise.
+        """
+        reply: QtWidgets.QMessageBox.StandardButton = QtWidgets.QMessageBox.question(
+            self._parent_widget,
+            _("Confirm Delete"),
+            _("Are you sure you want to delete {n} selected custom columns?").format(n=count),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return reply == QtWidgets.QMessageBox.StandardButton.Yes

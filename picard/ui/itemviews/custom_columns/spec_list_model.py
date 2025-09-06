@@ -20,6 +20,8 @@
 
 """List model for CustomColumnSpec entries."""
 
+from collections.abc import Iterable
+
 from PyQt6 import QtCore  # type: ignore[unresolved-import]
 
 from picard.ui.itemviews.custom_columns.shared import DEFAULT_NEW_COLUMN_NAME
@@ -160,6 +162,20 @@ class SpecListModel(QtCore.QAbstractListModel):
         self.beginRemoveRows(QtCore.QModelIndex(), row, row)
         del self._specs[row]
         self.endRemoveRows()
+
+    def remove_rows(self, rows: Iterable[int]) -> None:
+        """Remove multiple rows from the model efficiently.
+
+        Parameters
+        ----------
+        rows : Iterable[int]
+            Sorted or unsorted Iterable of row indices to remove.
+        """
+        if not rows:
+            return
+        # Remove in descending order to keep indices stable
+        for row in sorted(set(rows), reverse=True):
+            self.remove_row(row)
 
     def find_row_by_key(self, key: str) -> int:
         """Find the first row with the given key.

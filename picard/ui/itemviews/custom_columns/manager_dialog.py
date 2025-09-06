@@ -107,7 +107,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         # Left: list + controls (Duplicate/Delete)
         self._list = QtWidgets.QListView(self)
-        self._list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
+        self._list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self._list.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
 
         self._model = SpecListModel(load_specs_from_config(), parent=self)
@@ -299,6 +299,16 @@ class CustomColumnsManagerDialog(PicardDialog):
         indexes = self._list.selectionModel().selectedIndexes()
         return indexes[0].row() if indexes else -1
 
+    def _selected_rows(self) -> list[int]:
+        """Return all currently selected row indices sorted ascending.
+
+        Returns
+        -------
+        list[int]
+            Sorted list of selected row indices.
+        """
+        return sorted({idx.row() for idx in self._list.selectionModel().selectedIndexes()})
+
     def _live_spec_check(self) -> None:
         """Handle changes in the expression field to provide live validation feedback."""
         if self._populating:
@@ -349,9 +359,17 @@ class CustomColumnsManagerDialog(PicardDialog):
         if not self._has_uncommitted_changes:
             self._commit_form_to_model()
 
-        self._current_row = self._selected_row()
-        spec = self._model.spec_at(self._current_row) if self._current_row >= 0 else None
-        self._populate_form(spec)
+        selected_rows = self._selected_rows()
+
+        if len(selected_rows) == 1:
+            self._current_row = selected_rows[0]
+            spec = self._model.spec_at(self._current_row) if self._current_row >= 0 else None
+            self._populate_form(spec)
+        else:
+            # Disable editor when multiple or none are selected
+            self._current_row = -1
+            with self._populating_context():
+                self._form_handler.set_enabled(False)
         self._has_uncommitted_changes = False
         self._update_form_actions()
 
@@ -469,9 +487,9 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._mark_dirty()
 
     def _on_delete(self) -> None:
-        """Delete the currently selected specification after confirmation."""
-        row = self._selected_row()
-        if row < 0:
+        """Delete the selected specification(s) after confirmation."""
+        rows = self._selected_rows()
+        if not rows:
             return
 
         # Check for uncommitted changes first
@@ -488,39 +506,61 @@ class CustomColumnsManagerDialog(PicardDialog):
                 if self._has_uncommitted_changes:
                     return
 
-        spec = self._model.spec_at(row)
-        if self._user_dialog_service.confirm_delete_column(spec.title):
-            # Set deleting flag to prevent form commits during selection changes
-            self._deleting = True
-            try:
+        if len(rows) == 1:
+            spec = self._model.spec_at(rows[0])
+            confirmed = self._user_dialog_service.confirm_delete_column(spec.title)
+        else:
+            confirmed = self._user_dialog_service.confirm_delete_columns(len(rows))
+
+        if not confirmed:
+            return
+
+        # Set deleting flag to prevent form commits during selection changes
+        self._deleting = True
+        try:
+            # Track deleted keys
+            for r in rows:
+                spec = self._model.spec_at(r)
                 self._deleted_keys.add(spec.key)
-                self._model.remove_row(row)
-                # Update selection to a valid row (next or previous) and clear editor if none
-                count = self._model.rowCount()
-                if count > 0:
-                    new_row = min(row, count - 1)
-                    self._list.setCurrentIndex(self._model.index(new_row))
-                else:
-                    self._list.clearSelection()
-                    self._prepare_editor_for_new_entry(enable_form=False)
-                self._mark_dirty()
 
-                # Deleting cancels pending add state and clears uncommitted changes
-                self._awaiting_update = False
+            # Remove rows (model handles ordering)
+            if len(rows) == 1:
+                self._model.remove_row(rows[0])
+            else:
+                # Batch remove
+                try:
+                    self._model.remove_rows(rows)
+                except AttributeError:
+                    # Fallback if running against older model without remove_rows
+                    for r in sorted(rows, reverse=True):
+                        self._model.remove_row(r)
+
+            # Update selection to a valid row and clear editor if none
+            count = self._model.rowCount()
+            if count > 0:
+                new_row = min(rows[0], count - 1)
+                self._list.setCurrentIndex(self._model.index(new_row))
+            else:
+                self._list.clearSelection()
+                self._prepare_editor_for_new_entry(enable_form=False)
+            self._mark_dirty()
+
+            # Deleting cancels pending add state and clears uncommitted changes
+            self._awaiting_update = False
+            self._has_uncommitted_changes = False
+            self._update_form_actions()
+        finally:
+            # Always clear the deleting flag
+            self._deleting = False
+
+            # Force update current_row and form refresh to prevent stale data commits
+            self._current_row = self._selected_row()
+
+            if self._current_row >= 0:
+                spec = self._model.spec_at(self._current_row)
+                self._populate_form(spec)
+                # Ensure no uncommitted changes after refresh
                 self._has_uncommitted_changes = False
-                self._update_form_actions()
-            finally:
-                # Always clear the deleting flag
-                self._deleting = False
-
-                # Force update current_row and form refresh to prevent stale data commits
-                self._current_row = self._selected_row()
-
-                if self._current_row >= 0:
-                    spec = self._model.spec_at(self._current_row)
-                    self._populate_form(spec)
-                    # Ensure no uncommitted changes after refresh
-                    self._has_uncommitted_changes = False
 
     def _on_apply(self) -> bool:
         """Validate, persist, and register custom column specifications."""
@@ -585,12 +625,15 @@ class CustomColumnsManagerDialog(PicardDialog):
 
     def _update_form_actions(self) -> None:
         """Update the form actions based on the current row and state."""
-        has_selection = self._current_row >= 0
-        # Add button is always enabled unless already awaiting update
-        self._btn_add.setEnabled(not self._awaiting_update)
-        # Duplicate and Delete buttons are only enabled when an item is selected
-        self._btn_duplicate.setEnabled(has_selection)
-        self._btn_delete.setEnabled(has_selection)
+        sel_count = len(self._list.selectionModel().selectedIndexes()) if self._list.selectionModel() else 0
+        has_any_selection = sel_count >= 1
+        has_single_selection = sel_count == 1 and self._current_row >= 0
+        # Add is disabled when multiple selected or awaiting update
+        self._btn_add.setEnabled((not self._awaiting_update) and (sel_count <= 1))
+        # Duplicate only enabled for exactly one selected item
+        self._btn_duplicate.setEnabled(has_single_selection)
+        # Delete enabled when at least one item is selected
+        self._btn_delete.setEnabled(has_any_selection)
 
     def _revert_selection(self) -> None:
         """Revert selection back to the current row when user cancels selection change."""
