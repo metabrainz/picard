@@ -65,7 +65,6 @@ from picard.ui.itemviews.custom_columns.user_dialog_service import UserDialogSer
 from picard.ui.itemviews.custom_columns.validation import ColumnSpecValidator
 from picard.ui.itemviews.custom_columns.view_selector import ViewSelector
 from picard.ui.itemviews.events import header_events
-from picard.ui.util import StandardButton
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
 
@@ -199,14 +198,9 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         # Buttons (OK/Cancel only in dialog button box)
         self._buttonbox = QtWidgets.QDialogButtonBox(self)
-        ok = StandardButton(StandardButton.OK)
-        ok.setText(_("Make It So!"))
-        self._buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self._buttonbox.addButton(
-            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        )
-        self._buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
-        self._btn_apply = ok
+        self._btn_apply = self._buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self._buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        self._buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
 
         self._buttonbox.accepted.connect(self.accept)
         self._buttonbox.rejected.connect(self.reject)
