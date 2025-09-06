@@ -30,6 +30,7 @@ docstrings.
 
 from __future__ import annotations
 
+from collections import defaultdict
 from collections.abc import (
     Callable,
     Iterable,
@@ -216,6 +217,14 @@ def _align_from_name(name: str) -> ColumnAlign:
     return normalize_align_name(name)
 
 
+_transforms = defaultdict(lambda: lambda s: s or "")
+_transforms[TransformName.UPPER] = lambda s: (s or "").upper()
+_transforms[TransformName.LOWER] = lambda s: (s or "").lower()
+_transforms[TransformName.TITLE] = lambda s: (s or "").title()
+_transforms[TransformName.STRIP] = lambda s: (s or "").strip()
+_transforms[TransformName.BRACKETS] = lambda s: f"[{s}]" if s else ""
+
+
 def _make_transform_callable(name: TransformName) -> Callable[[str], str]:
     """Return a safe transform callable for the given name.
 
@@ -229,19 +238,7 @@ def _make_transform_callable(name: TransformName) -> Callable[[str], str]:
     callable
         A function that takes and returns ``str``.
     """
-
-    if name == TransformName.UPPER:
-        return lambda s: (s or "").upper()
-    if name == TransformName.LOWER:
-        return lambda s: (s or "").lower()
-    if name == TransformName.TITLE:
-        return lambda s: (s or "").title()
-    if name == TransformName.STRIP:
-        return lambda s: (s or "").strip()
-    if name == TransformName.BRACKETS:
-        return lambda s: f"[{s}]" if s else ""
-    # Fallback no-op
-    return lambda s: s or ""
+    return _transforms[name]
 
 
 def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_name: str) -> ColumnValueProvider:
@@ -411,9 +408,9 @@ class CustomColumnConfigManager:
                     continue
                 # Require minimal fields with non-empty strings
                 key_val = entry.get('key')
-                expr_val = entry.get('expression')
                 if not isinstance(key_val, str) or not key_val.strip():
                     continue
+                expr_val = entry.get('expression')
                 if not isinstance(expr_val, str) or not expr_val.strip():
                     continue
                 # Safe parse to strongly-typed spec; ignore corrupt data

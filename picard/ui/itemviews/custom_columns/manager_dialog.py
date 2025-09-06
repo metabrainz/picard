@@ -78,6 +78,7 @@ class DialogConfig:
     MAX_WIDTH: int = 9999
     DIALOG_WIDTH: int = 1024
     DIALOG_HEIGHT: int = 540
+    STYLESHEET_ERROR: str = "QLabel { color : red; }"
 
 
 def broadcast_headers_updated() -> None:
@@ -176,7 +177,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         # Display an error message to the user
         self._error_message_display = QtWidgets.QLabel(self._editor_panel)
-        self._error_message_display.setStyleSheet("QLabel { color : red; }")
+        self._error_message_display.setStyleSheet(DialogConfig.STYLESHEET_ERROR)
         self._error_message_display.setWordWrap(True)
         self._error_message_display.setText("")
 
@@ -408,20 +409,19 @@ class CustomColumnsManagerDialog(PicardDialog):
         """Commit current editor values to the selected model row if valid."""
         # Only commit when editing a valid, existing row
         # Don't commit during deletion operations to prevent stale form data corruption
+        if self._populating or self._deleting:
+            return
 
         # Always sync _current_row with actual selection before commit
-        actual_selected_row = self._selected_row()
-        if self._current_row != actual_selected_row:
-            self._current_row = actual_selected_row
-
-        if self._populating or self._deleting or self._current_row < 0 or self._current_row >= self._model.rowCount():
+        current_row = self._selected_row()
+        if current_row < 0 or current_row >= self._model.rowCount():
             return
 
         new_spec = self._collect_form()
         if new_spec is None:
             return
 
-        old = self._model.spec_at(self._current_row)
+        old = self._model.spec_at(current_row)
 
         # Sanity check - if form data doesn't match the current row, don't commit
         if old and new_spec and old.title != new_spec.title:
@@ -433,7 +433,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         if new_spec.key and old.key and new_spec.key != old.key:
             self._deleted_keys.add(old.key)
 
-        self._model.update_spec(self._current_row, new_spec)
+        self._model.update_spec(current_row, new_spec)
 
     def _on_add(self) -> None:
         """Create a new placeholder specification and insert it into the model."""
