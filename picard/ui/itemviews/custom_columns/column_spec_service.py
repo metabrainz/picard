@@ -113,13 +113,11 @@ class ColumnSpecService:
         specs = model.specs()
         seen: set[str] = set()
         for index, spec in enumerate(specs):
-            key = spec.key or ""
-            if not key.strip() or key in seen:
-                new_key = self.allocate_new_key()
-                seen.add(new_key)
-                model.update_spec(index, replace(spec, key=new_key))
-            else:
-                seen.add(key)
+            key = spec.key.strip() or ""
+            if not key or key in seen:
+                key = self.allocate_new_key()
+                model.update_spec(index, replace(spec, key=key))
+            seen.add(key)
 
     @staticmethod
     def create_placeholder_spec(

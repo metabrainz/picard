@@ -123,8 +123,8 @@ class InvalidSpecAnalysis:
     """Summary of the first invalid specification in a validation result set."""
 
     key: str
-    error_messages: list[str]
-    warning_messages: list[str]
+    error_messages: tuple[str, ...]
+    warning_messages: tuple[str, ...]
     has_title_error: bool
     has_expression_error: bool
     has_only_blank_expression_warning: bool
@@ -154,8 +154,8 @@ def analyze_first_invalid(reports: dict[str, ValidationReport]) -> InvalidSpecAn
         )
 
         if not report.is_valid or has_only_blank_expression_warning:
-            error_messages = [r.message for r in errors]
-            warning_messages = [r.message for r in warnings]
+            error_messages = tuple(r.message for r in errors)
+            warning_messages = tuple(r.message for r in warnings)
             has_title_error = any(r.field == "title" for r in errors)
             has_expression_error = any(r.field == "expression" for r in errors)
             return InvalidSpecAnalysis(
