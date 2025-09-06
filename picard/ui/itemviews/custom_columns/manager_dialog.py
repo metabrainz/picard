@@ -248,14 +248,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         """Apply changes and close the dialog with acceptance."""
         # Check for uncommitted changes and ask user what to do
         if self._has_uncommitted_changes:
-            reply = QtWidgets.QMessageBox.question(
-                self,
-                _("Unsaved Changes"),
-                _("You have unsaved changes. Do you want to save them?"),
-                QtWidgets.QMessageBox.StandardButton.Save
-                | QtWidgets.QMessageBox.StandardButton.Discard
-                | QtWidgets.QMessageBox.StandardButton.Cancel,
-                QtWidgets.QMessageBox.StandardButton.Save,
+            reply = self._user_dialog_service.ask_unsaved_changes(
+                _("You have unsaved changes. Do you want to save them?")
             )
             if reply == QtWidgets.QMessageBox.StandardButton.Cancel:
                 return  # Don't close dialog
@@ -575,14 +569,27 @@ class CustomColumnsManagerDialog(PicardDialog):
         if invalid_specs:
             first_key, first_report = invalid_specs[0]
             error_messages = [_(result.message) for result in first_report.errors]
-            QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))
 
-            # Find the index of the first invalid spec to select it
+            # Determine which field to focus based on validation errors
+            has_title_error = any(res.field == "title" for res in first_report.errors)
+            has_expression_error = any(res.field == "expression" for res in first_report.errors)
+
+            # Find the first invalid spec to extract its title and select it
+            spec_title: str | None = None
             for idx, spec in enumerate(all_specs):
                 spec_key = spec.key or f"<unnamed:{id(spec)}>"
                 if spec_key == first_key:
+                    # Use the title if available
+                    spec_title = spec.title if spec.title and spec.title.strip() else None
                     self._list.setCurrentIndex(self._model.index(idx))
                     break
+
+            self._user_dialog_service.show_invalid_spec_errors(error_messages, spec_title)
+            # After user confirms the warning, focus the appropriate editor
+            if has_title_error:
+                self._title.setFocus()
+            elif has_expression_error:
+                self._expression.setFocus()
             return False
 
         # Unregister any columns explicitly deleted during this session

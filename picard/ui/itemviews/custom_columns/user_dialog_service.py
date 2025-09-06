@@ -22,7 +22,7 @@
 
 from typing import Literal
 
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets  # type: ignore[unresolved-import]
 
 from picard.i18n import gettext as _
 
@@ -133,3 +133,26 @@ class UserDialogService:
             QtWidgets.QMessageBox.StandardButton.No,
         )
         return reply == QtWidgets.QMessageBox.StandardButton.Yes
+
+    def show_invalid_spec_errors(self, messages: list[str], spec_title: str | None = None) -> None:
+        """Show validation errors for an invalid specification.
+
+        Parameters
+        ----------
+        messages : list[str]
+            Error messages to show, one per validation error.
+        spec_title : str | None
+            The column title, used in title and message if provided.
+        """
+        # Use spec_title if provided and non-empty, otherwise use default
+        title = _("Invalid column: %s") % spec_title if spec_title and spec_title.strip() else _("Invalid column")
+
+        # Build the complete message
+        dialog_message = title + "\n" + "\n".join(messages)
+
+        # Show the warning dialog
+        QtWidgets.QMessageBox.warning(
+            self._parent_widget,
+            title,
+            dialog_message,
+        )
