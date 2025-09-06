@@ -27,6 +27,7 @@ from dataclasses import dataclass
 from enum import Enum
 from uuid import UUID
 
+from picard.i18n import N_
 from picard.script import ScriptError, ScriptParser
 
 from picard.ui.itemviews.custom_columns.shared import RECOGNIZED_VIEWS, parse_add_to
@@ -124,19 +125,21 @@ class RequiredFieldRule(ValidationRule):
         if not spec.title or spec.title.isspace():
             results.append(
                 ValidationResult(
-                    "title", ValidationSeverity.ERROR, "Title is required and cannot be empty", "TITLE_REQUIRED"
+                    "title", ValidationSeverity.ERROR, N_("Title is required and cannot be empty"), "TITLE_REQUIRED"
                 )
             )
         if not spec.key or spec.key.isspace():
             results.append(
-                ValidationResult("key", ValidationSeverity.ERROR, "Key is required and cannot be empty", "KEY_REQUIRED")
+                ValidationResult(
+                    "key", ValidationSeverity.ERROR, N_("Key is required and cannot be empty"), "KEY_REQUIRED"
+                )
             )
         if not spec.expression or spec.expression.isspace():
             results.append(
                 ValidationResult(
                     "expression",
                     ValidationSeverity.ERROR,
-                    "Expression is required and cannot be empty",
+                    N_("Expression is required and cannot be empty"),
                     "EXPRESSION_REQUIRED",
                 )
             )
@@ -168,15 +171,37 @@ class KeyFormatRule(ValidationRule):
         normalized_current = _normalize_key(spec.key)
         if not normalized_current:
             results.append(
-                ValidationResult("key", ValidationSeverity.ERROR, "Key must be a valid UUID", "KEY_INVALID_FORMAT")
+                ValidationResult("key", ValidationSeverity.ERROR, N_("Key must be a valid UUID"), "KEY_INVALID_FORMAT")
             )
             return results
 
         normalized_existing = {n for n in (_normalize_key(k) for k in context.existing_keys) if n}
         if normalized_current in normalized_existing:
             results.append(
-                ValidationResult("key", ValidationSeverity.ERROR, f"Key '{spec.key}' already exists", "KEY_DUPLICATE")
+                ValidationResult(
+                    "key", ValidationSeverity.ERROR, N_("Key '%s' already exists") % spec.key, "KEY_DUPLICATE"
+                )
             )
+        return results
+
+
+class KeyRequiredRule(ValidationRule):
+    def validate(self, spec: CustomColumnSpec, context: ValidationContext) -> list[ValidationResult]:
+        results: list[ValidationResult] = []
+
+        # Key is required - check for None or blank
+        if spec.key is None or spec.key == "":
+            results.append(ValidationResult("key", ValidationSeverity.ERROR, N_("Key is required"), "KEY_REQUIRED"))
+            return results
+
+        # Check if key already exists in context
+        if spec.key in context.existing_keys:
+            results.append(
+                ValidationResult(
+                    "key", ValidationSeverity.ERROR, N_("Key '%s' already exists") % spec.key, "KEY_DUPLICATE"
+                )
+            )
+
         return results
 
 
@@ -198,7 +223,10 @@ class ExpressionRule(ValidationRule):
         if not context.is_field_valid(spec.expression):
             results.append(
                 ValidationResult(
-                    "expression", ValidationSeverity.ERROR, f"Invalid field key: '{spec.expression}'", "FIELD_INVALID"
+                    "expression",
+                    ValidationSeverity.ERROR,
+                    N_("Invalid field key: '%s'") % spec.expression,
+                    "FIELD_INVALID",
                 )
             )
         if spec.expression.startswith("$"):
@@ -206,7 +234,7 @@ class ExpressionRule(ValidationRule):
                 ValidationResult(
                     "expression",
                     ValidationSeverity.WARNING,
-                    "Field expressions should not start with '$' - use SCRIPT type for scripting",
+                    N_("Field expressions should not start with '$' - use SCRIPT type for scripting"),
                     "FIELD_SCRIPT_SYNTAX",
                 )
             )
@@ -220,7 +248,7 @@ class ExpressionRule(ValidationRule):
         except ScriptError as e:
             results.append(
                 ValidationResult(
-                    "expression", ValidationSeverity.ERROR, f"Invalid script syntax: {e}", "SCRIPT_SYNTAX_ERROR"
+                    "expression", ValidationSeverity.ERROR, N_("Invalid script syntax: %s") % e, "SCRIPT_SYNTAX_ERROR"
                 )
             )
         if len(spec.expression) > MAX_EXPRESSION_LENGTH:
@@ -228,7 +256,7 @@ class ExpressionRule(ValidationRule):
                 ValidationResult(
                     "expression",
                     ValidationSeverity.WARNING,
-                    "Very long scripts may impact performance",
+                    N_("Very long scripts may impact performance"),
                     "SCRIPT_PERFORMANCE_WARNING",
                 )
             )
@@ -243,7 +271,7 @@ class ExpressionRule(ValidationRule):
                 ValidationResult(
                     "expression",
                     ValidationSeverity.ERROR,
-                    f"Invalid base field for transform: '{spec.expression}'",
+                    N_("Invalid base field for transform: '%s'") % spec.expression,
                     "TRANSFORM_BASE_INVALID",
                 )
             )
@@ -252,7 +280,7 @@ class ExpressionRule(ValidationRule):
                 ValidationResult(
                     "transform",
                     ValidationSeverity.ERROR,
-                    "Transform type is required when kind is TRANSFORM",
+                    N_("Transform type is required when kind is TRANSFORM"),
                     "TRANSFORM_TYPE_REQUIRED",
                 )
             )
@@ -267,19 +295,22 @@ class ConsistencyRule(ValidationRule):
                 ValidationResult(
                     "transform",
                     ValidationSeverity.WARNING,
-                    "Transform specified but kind is not TRANSFORM",
+                    N_("Transform specified but kind is not TRANSFORM"),
                     "TRANSFORM_INCONSISTENT",
                 )
             )
         if spec.width is not None:
             if spec.width <= 0:
                 results.append(
-                    ValidationResult("width", ValidationSeverity.ERROR, "Width must be positive", "WIDTH_INVALID")
+                    ValidationResult("width", ValidationSeverity.ERROR, N_("Width must be positive"), "WIDTH_INVALID")
                 )
             elif spec.width > MAX_WIDTH:
                 results.append(
                     ValidationResult(
-                        "width", ValidationSeverity.WARNING, "Very wide columns may impact UI layout", "WIDTH_TOO_LARGE"
+                        "width",
+                        ValidationSeverity.WARNING,
+                        N_("Very wide columns may impact UI layout"),
+                        "WIDTH_TOO_LARGE",
                     )
                 )
         # Validate add_to views
@@ -289,7 +320,7 @@ class ConsistencyRule(ValidationRule):
                 ValidationResult(
                     "add_to",
                     ValidationSeverity.WARNING,
-                    "Column will not be visible in any view",
+                    N_("Column will not be visible in any view"),
                     "NO_VIEWS_SELECTED",
                 )
             )
@@ -301,7 +332,7 @@ class ConsistencyRule(ValidationRule):
                 ValidationResult(
                     "add_to",
                     ValidationSeverity.WARNING,
-                    f"Unknown views in add_to: {', '.join(sorted(unknown))}",
+                    N_("Unknown views in add_to: %s") % ', '.join(sorted(unknown)),
                     "UNKNOWN_VIEWS",
                 )
             )
@@ -314,7 +345,7 @@ class ColumnSpecValidator:
     def __init__(self) -> None:
         self.rules: list[ValidationRule] = [
             RequiredFieldRule(),
-            KeyFormatRule(),
+            KeyRequiredRule(),
             ExpressionRule(),
             ConsistencyRule(),
         ]

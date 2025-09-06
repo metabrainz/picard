@@ -322,7 +322,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         if report.is_valid:
             self._error_message_display.setText("")
         else:
-            error_messages = [result.message for result in report.errors]
+            error_messages = [_(result.message) for result in report.errors]
             self._error_message_display.setText("\n".join(error_messages))
 
     def _on_selection_changed(self, selected: QtCore.QItemSelection, deselected: QtCore.QItemSelection) -> None:
@@ -540,7 +540,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         invalid_specs = [(key, report) for key, report in reports.items() if not report.is_valid]
         if invalid_specs:
             first_key, first_report = invalid_specs[0]
-            error_messages = [result.message for result in first_report.errors]
+            error_messages = [_(result.message) for result in first_report.errors]
             QtWidgets.QMessageBox.warning(self, _("Invalid"), "\n".join(error_messages))
 
             # Find the index of the first invalid spec to select it
