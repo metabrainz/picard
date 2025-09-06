@@ -33,6 +33,7 @@ Follows DRY, SOC, SRP principles with extensive use of pytest fixtures
 and parametrize to reduce code duplication while ensuring comprehensive coverage.
 """
 
+from dataclasses import asdict
 import os
 from unittest.mock import Mock, call, patch
 
@@ -535,6 +536,123 @@ class TestColumnSpecService:
     def service(self) -> ColumnSpecService:
         """ColumnSpecService instance."""
         return ColumnSpecService()
+
+    def _make_model(self, specs: list[CustomColumnSpec]) -> Mock:
+        """Helper to create a mock SpecListModel with given specs."""
+        mock_model = Mock()
+        mock_model.specs.return_value = specs
+        mock_model.update_spec = Mock()
+        return mock_model
+
+    def test_ensure_unique_nonempty_keys_no_changes(self, service: ColumnSpecService) -> None:
+        """Should not modify specs when all keys are unique and non-empty."""
+        specs: list[CustomColumnSpec] = [
+            CustomColumnSpec(title="A", key="k1", kind=CustomColumnKind.FIELD, expression="artist"),
+            CustomColumnSpec(title="B", key="k2", kind=CustomColumnKind.FIELD, expression="album"),
+        ]
+        model = self._make_model(specs)
+
+        service.ensure_unique_nonempty_keys_in_model(model)
+
+        model.update_spec.assert_not_called()
+
+    @pytest.mark.parametrize("blank_key", ["", " ", "\t\t"])  # various blank-ish keys
+    def test_ensure_unique_nonempty_keys_assigns_for_blank(self, service: ColumnSpecService, blank_key: str) -> None:
+        """Should assign new keys for blank/whitespace keys and preserve others."""
+        specs: list[CustomColumnSpec] = [
+            CustomColumnSpec(title="A", key=blank_key, kind=CustomColumnKind.FIELD, expression="artist"),
+            CustomColumnSpec(title="B", key="k2", kind=CustomColumnKind.FIELD, expression="album"),
+            CustomColumnSpec(title="C", key="  ", kind=CustomColumnKind.FIELD, expression="title"),
+        ]
+        model = self._make_model(specs)
+
+        with patch.object(service, "allocate_new_key", side_effect=["ka", "kb"]) as mock_alloc:
+            service.ensure_unique_nonempty_keys_in_model(model)
+
+        # Two blank entries should be updated at indices 0 and 2
+        assert model.update_spec.call_count == 2
+        calls = model.update_spec.call_args_list
+        # First update
+        idx0, updated0 = calls[0][0]
+        assert idx0 == 0
+        assert updated0.key == "ka"
+        # Second update
+        idx2, updated2 = calls[1][0]
+        assert idx2 == 2
+        assert updated2.key == "kb"
+
+        # Allocation called exactly twice
+        assert mock_alloc.call_count == 2
+
+        # Other fields preserved
+        for idx, updated in [(idx0, updated0), (idx2, updated2)]:
+            original = specs[idx]
+            d_old = asdict(original)
+            d_new = asdict(updated)
+            d_old["key"] = d_new["key"]
+            assert d_old == d_new
+
+    def test_ensure_unique_nonempty_keys_assigns_for_duplicates_preserving_first(
+        self, service: ColumnSpecService
+    ) -> None:
+        """Should keep first duplicate occurrence and re-key subsequent duplicates."""
+        specs: list[CustomColumnSpec] = [
+            CustomColumnSpec(title="A", key="dup", kind=CustomColumnKind.FIELD, expression="artist"),
+            CustomColumnSpec(title="B", key="ok", kind=CustomColumnKind.FIELD, expression="album"),
+            CustomColumnSpec(title="C", key="dup", kind=CustomColumnKind.FIELD, expression="title"),
+            CustomColumnSpec(title="D", key="dup", kind=CustomColumnKind.FIELD, expression="tracknumber"),
+        ]
+        model = self._make_model(specs)
+
+        with patch.object(service, "allocate_new_key", side_effect=["k1", "k2"]) as mock_alloc:
+            service.ensure_unique_nonempty_keys_in_model(model)
+
+        # Two duplicates after the first should be updated: indices 2 and 3
+        assert model.update_spec.call_count == 2
+        calls = model.update_spec.call_args_list
+        # Update for index 2
+        i2, s2 = calls[0][0]
+        assert i2 == 2 and s2.key == "k1"
+        # Update for index 3
+        i3, s3 = calls[1][0]
+        assert i3 == 3 and s3.key == "k2"
+        # Ensure first duplicate occurrence (index 0) and ok key (index 1) are untouched
+        untouched_indices = {0, 1}
+        called_indices = {i2, i3}
+        assert untouched_indices.isdisjoint(called_indices)
+
+        # Allocation called exactly twice
+        assert mock_alloc.call_count == 2
+
+        # Fields preserved for updated specs
+        for idx, updated in [(i2, s2), (i3, s3)]:
+            original = specs[idx]
+            d_old = asdict(original)
+            d_new = asdict(updated)
+            d_old["key"] = d_new["key"]
+            assert d_old == d_new
+
+    def test_ensure_unique_nonempty_keys_mixed_cases(self, service: ColumnSpecService) -> None:
+        """Handle mixture of blanks and duplicates in one pass."""
+        specs: list[CustomColumnSpec] = [
+            CustomColumnSpec(title="A", key="", kind=CustomColumnKind.FIELD, expression="artist"),  # blank
+            CustomColumnSpec(title="B", key="x", kind=CustomColumnKind.FIELD, expression="album"),
+            CustomColumnSpec(title="C", key="x", kind=CustomColumnKind.FIELD, expression="title"),  # dup of index 1
+            CustomColumnSpec(title="D", key=" ", kind=CustomColumnKind.FIELD, expression="track"),  # blank
+        ]
+        model = self._make_model(specs)
+
+        with patch.object(service, "allocate_new_key", side_effect=["kA", "kB", "kC"]) as mock_alloc:
+            service.ensure_unique_nonempty_keys_in_model(model)
+
+        # Should update indices 0 (blank), 2 (dup), and 3 (blank)
+        assert model.update_spec.call_count == 3
+        updated_indices = [c[0][0] for c in model.update_spec.call_args_list]
+        assert updated_indices == [0, 2, 3]
+        # Assigned keys in order of allocation
+        assigned_keys = [c[0][1].key for c in model.update_spec.call_args_list]
+        assert assigned_keys == ["kA", "kB", "kC"]
+        assert mock_alloc.call_count == 3
 
     @patch('picard.ui.itemviews.custom_columns.column_spec_service.CustomColumnRegistrar')
     def test_unregister_keys(self, mock_registrar_class: Mock, service: ColumnSpecService):

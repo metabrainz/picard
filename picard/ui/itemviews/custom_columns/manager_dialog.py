@@ -564,6 +564,16 @@ class CustomColumnsManagerDialog(PicardDialog):
         all_specs = self._model.specs()
         reports = self._spec_controller.validate_specs(all_specs)
 
+        # Auto-fix KeyRequiredRule errors by assigning new keys silently
+        has_key_errors = any(
+            any(r.code in {"KEY_REQUIRED", "KEY_DUPLICATE"} for r in rep.errors) for rep in reports.values()
+        )
+        if has_key_errors:
+            self._spec_service.ensure_unique_nonempty_keys_in_model(self._model)
+            # Recompute after fixing keys
+            all_specs = self._model.specs()
+            reports = self._spec_controller.validate_specs(all_specs)
+
         analysis = analyze_first_invalid(reports)
         if analysis is not None:
             # Locate the spec and select it to give user context

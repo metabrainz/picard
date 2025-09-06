@@ -29,6 +29,7 @@ ColumnSpecService
     Service class for managing custom column specifications.
 """
 
+from dataclasses import replace
 from typing import Iterable
 
 from picard.config import get_config
@@ -102,6 +103,23 @@ class ColumnSpecService:
             New unique key.
         """
         return generate_new_key()
+
+    def ensure_unique_nonempty_keys_in_model(self, model: SpecListModel) -> None:
+        """Ensure all specs in the model have non-empty and unique keys.
+
+        Assigns new keys for missing/blank keys or duplicates while preserving
+        order and other fields.
+        """
+        specs = model.specs()
+        seen: set[str] = set()
+        for index, spec in enumerate(specs):
+            key = spec.key or ""
+            if not key.strip() or key in seen:
+                new_key = self.allocate_new_key()
+                seen.add(new_key)
+                model.update_spec(index, replace(spec, key=new_key))
+            else:
+                seen.add(key)
 
     @staticmethod
     def create_placeholder_spec(
