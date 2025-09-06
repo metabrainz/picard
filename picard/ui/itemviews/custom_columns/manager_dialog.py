@@ -467,6 +467,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._populate_form(placeholder_spec)
         self._has_uncommitted_changes = False
         self._mark_dirty()
+        # Focus title input for immediate editing
+        self._title.setFocus()
 
     def _on_duplicate(self) -> None:
         """Duplicate the selected specification with an auto-incremented title."""
