@@ -39,6 +39,7 @@ from picard.script import (
     ScriptError,
     ScriptParser,
 )
+from picard.script.parser import normalize_tagname
 
 
 class ValueResolver(ABC):
@@ -157,7 +158,9 @@ class ObjectColumnResolver(ValueResolver):
         """Return the string value from ``obj.column(simple_var)`` or ``""``."""
         column_fn = getattr(obj, 'column', None)
         if callable(column_fn):
-            value = column_fn(simple_var)
+            # Map leading underscore variables to '~' for hidden tags (e.g. _bitrate -> ~bitrate)
+            normalized_var = normalize_tagname(simple_var) if simple_var is not None else simple_var
+            value = column_fn(normalized_var)
             return value if isinstance(value, str) else ""
         return ""
 

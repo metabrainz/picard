@@ -28,6 +28,7 @@ import re
 
 from picard import log
 from picard.item import Item
+from picard.script.parser import normalize_tagname
 
 from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 
@@ -44,6 +45,8 @@ class FieldReferenceProvider:
             m = re.fullmatch(r"%(.+)%", lookup_key)
             if m:
                 lookup_key = m.group(1)
+            # Normalize leading underscore variables to hidden tag prefix '~'
+            lookup_key = normalize_tagname(lookup_key)
         except (AttributeError, KeyError, TypeError) as e:
             log.debug("%s failure for key %r: %r", self.__class__.__name__, self.key, e)
             return ""
