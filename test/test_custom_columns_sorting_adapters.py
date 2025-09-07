@@ -109,7 +109,7 @@ def test_descending_casefold_sort_adapter(values: list[str], expected: list[str]
 @pytest.mark.parametrize(
     ("values", "expected"),
     [
-        (["10", "2", "3.5", "x", "-1"], ["-1", "x", "2", "3.5", "10"]),
+        (["10", "2", "3.5", "x", "-1"], ["-1", "2", "3.5", "10", "x"]),
         (["000", "01", "1", "-0.5"], ["-0.5", "000", "01", "1"]),
     ],
 )
@@ -131,8 +131,8 @@ def test_numeric_sort_adapter_custom_parser() -> None:
         return NumericSortAdapter(base, parser=_mmss_parser)
 
     values = ["3:30", "2:05", "1:00", "x"]
-    # "x" falls back to 0
-    expected = ["x", "1:00", "2:05", "3:30"]
+    # "x" is non-numeric and sorts after numeric values
+    expected = ["1:00", "2:05", "3:30", "x"]
     result = _sorted_values(adapter, values)
     assert result == expected
 
@@ -140,7 +140,7 @@ def test_numeric_sort_adapter_custom_parser() -> None:
 @pytest.mark.parametrize(
     ("values", "expected"),
     [
-        (["10", "2", "3.5", "x", "-1"], ["10", "3.5", "2", "x", "-1"]),
+        (["10", "2", "3.5", "x", "-1"], ["10", "3.5", "2", "-1", "x"]),
     ],
 )
 def test_descending_numeric_sort_adapter(values: list[str], expected: list[str]) -> None:
@@ -152,7 +152,7 @@ def test_descending_numeric_sort_adapter(values: list[str], expected: list[str])
     ("values", "expected"),
     [
         (['-2', '-10', '3', '0'], ['3', '0', '-2', '-10']),
-        (['1.2', '1.10', '-0.5', 'x'], ['1.2', '1.10', 'x', '-0.5']),
+        (['1.2', '1.10', '-0.5', 'x'], ['1.2', '1.10', '-0.5', 'x']),
     ],
 )
 def test_descending_numeric_sort_adapter_extended(values: list[str], expected: list[str]) -> None:
