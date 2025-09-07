@@ -27,7 +27,11 @@ from dataclasses import dataclass
 from enum import Enum
 from uuid import UUID
 
-from picard.i18n import N_
+from picard.i18n import (
+    N_,
+    gettext as _,
+    ngettext,
+)
 from picard.script import ScriptError, ScriptParser
 
 from picard.ui.itemviews.custom_columns.shared import RECOGNIZED_VIEWS, parse_add_to
@@ -87,13 +91,13 @@ class ValidationReport:
         error_count = len(self.errors)
         warning_count = len(self.warnings)
         if error_count == 0 and warning_count == 0:
-            return "Valid"
+            return _("Valid")
         parts: list[str] = []
         if error_count:
-            parts.append(f"{error_count} error{'s' if error_count != 1 else ''}")
+            parts.append(ngettext("%d error", "%d errors", error_count) % error_count)
         if warning_count:
-            parts.append(f"{warning_count} warning{'s' if warning_count != 1 else ''}")
-        return ", ".join(parts)
+            parts.append(ngettext("%d warning", "%d warnings", warning_count) % warning_count)
+        return _(", ").join(parts)
 
 
 class ValidationRule(ABC):
