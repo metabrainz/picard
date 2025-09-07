@@ -70,7 +70,7 @@ _ALIGN_TOKEN_TO_ENUM: dict[str, ColumnAlign] = {
     ALIGN_RIGHT_NAME: ColumnAlign.RIGHT,
 }
 
-DEFAULT_NEW_COLUMN_NAME: str = _("Untitled Column")
+DEFAULT_NEW_COLUMN_NAME: str = _("Untitled")
 
 
 def parse_add_to(add_to: str | None) -> set[str]:
