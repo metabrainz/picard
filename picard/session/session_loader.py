@@ -26,6 +26,7 @@ breaking down the complex loading logic into focused, manageable components.
 
 from __future__ import annotations
 
+import gzip
 import json
 from pathlib import Path
 from typing import Any
@@ -117,7 +118,13 @@ class SessionLoader:
             If the file does not exist.
         """
         p = Path(path)
-        return json.loads(p.read_text(encoding="utf-8"))
+        # Detect gzip by magic bytes and decode accordingly
+        raw = p.read_bytes()
+        if len(raw) >= 2 and raw[0] == 0x1F and raw[1] == 0x8B:
+            text = gzip.decompress(raw).decode("utf-8")
+            return json.loads(text)
+        else:
+            return json.loads(raw.decode("utf-8"))
 
     def _prepare_session(self, data: dict[str, Any]) -> None:
         """Prepare the session for loading.
@@ -188,7 +195,7 @@ class SessionLoader:
 
         return GroupedItems(unclustered=by_unclustered, by_cluster=by_cluster, by_album=by_album, nat_items=nat_items)
 
-    def _extract_metadata(self, items: list[dict[str, Any]]) -> dict[Path, Any]:
+    def _extract_metadata(self, items: list[dict[str, Any]]) -> dict[Path, dict[str, list[Any]]]:
         """Extract metadata from session items.
 
         Parameters
@@ -198,16 +205,16 @@ class SessionLoader:
 
         Returns
         -------
-        dict[Path, Any]
-            Mapping of file paths to their metadata.
+        dict[Path, dict[str, list[Any]]]
+            Mapping of file paths to their metadata tag deltas.
         """
-        metadata_by_path: dict[Path, Any] = {}
+        metadata_by_path: dict[Path, dict[str, list[Any]]] = {}
         for it in items:
             fpath = Path(it["file_path"]).expanduser()
             md = it.get("metadata", {})
             if "tags" in md:
                 tags = {k: MetadataHandler.as_list(v) for k, v in md["tags"].items()}
-                metadata_by_path[fpath] = MetadataHandler.deserialize_metadata(tags)
+                metadata_by_path[fpath] = tags
         return metadata_by_path
 
     def _load_items(self, grouped_items: GroupedItems) -> None:
@@ -404,17 +411,17 @@ class SessionLoader:
 
         album.run_when_loaded(run)
 
-    def _schedule_metadata_application(self, metadata_map: dict[Path, Any]) -> None:
+    def _schedule_metadata_application(self, metadata_map: dict[Path, dict[str, list[Any]]]) -> None:
         """Schedule metadata application after files are loaded.
 
         Parameters
         ----------
-        metadata_map : dict[Path, Any]
-            Mapping of file paths to their metadata.
+        metadata_map : dict[Path, dict[str, list[Any]]]
+            Mapping of file paths to their metadata tag deltas.
         """
         QtCore.QTimer.singleShot(
             SessionConstants.DEFAULT_RETRY_DELAY_MS,
-            lambda: MetadataHandler.apply_saved_metadata_if_any(self.tagger, metadata_map),
+            lambda: MetadataHandler.apply_tag_deltas_if_any(self.tagger, metadata_map),
         )
 
     def _unset_restoring_flag_when_idle(self) -> None:

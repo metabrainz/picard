@@ -38,12 +38,13 @@ load_session_from_path
 
 Notes
 -----
-Session files use the .mbps extension and contain JSON data with version
-information, options, file locations, and metadata overrides.
+Session files use the .mbps.gz extension and contain gzip-compressed JSON data
+with version information, options, file locations, and metadata overrides.
 """
 
 from __future__ import annotations
 
+import gzip
 import json
 from pathlib import Path
 from typing import Any
@@ -90,20 +91,24 @@ def save_session_to_path(tagger: Any, path: str | Path) -> None:
     tagger : Any
         The Picard tagger instance to save session data from.
     path : str | Path
-        The file path to save the session to. If the extension is not .mbps,
-        it will be automatically added.
+        The file path to save the session to. If the extension does not end with
+        .mbps.gz, it will be automatically added.
 
     Notes
     -----
-    The session is saved as JSON with UTF-8 encoding and 2-space indentation.
-    If the file already exists, it will be overwritten.
+    The session is saved as minified JSON (UTF-8) and gzip-compressed. If the
+    file already exists, it will be overwritten.
     """
     p = Path(path)
-    if p.suffix.lower() != SessionConstants.SESSION_FILE_EXTENSION:
-        p = p.with_suffix(SessionConstants.SESSION_FILE_EXTENSION)
+    # Ensure multi-part extension .mbps.gz
+    if not str(p).lower().endswith(SessionConstants.SESSION_FILE_EXTENSION):
+        p = Path(str(p) + SessionConstants.SESSION_FILE_EXTENSION)
     data = export_session(tagger)
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Minify JSON and gzip-compress to reduce file size
+    json_text = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    compressed = gzip.compress(json_text.encode("utf-8"))
+    p.write_bytes(compressed)
 
 
 def load_session_from_path(tagger: Any, path: str | Path) -> None:

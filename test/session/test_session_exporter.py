@@ -97,7 +97,7 @@ def test_session_exporter_export_file_item_saved(session_exporter: SessionExport
 
 
 def test_session_exporter_export_file_item_unsaved(session_exporter: SessionExporter, cfg_options) -> None:
-    """Test exporting an unsaved file item with metadata."""
+    """Test exporting an unsaved file item with metadata (delta vs orig_metadata)."""
 
     file_mock = Mock()
     file_mock.filename = str(Path("/test/file.mp3"))
@@ -105,15 +105,14 @@ def test_session_exporter_export_file_item_unsaved(session_exporter: SessionExpo
     file_mock.parent_item = None
     file_mock.metadata = Metadata()
     file_mock.metadata["title"] = "Test Song"
+    # Provide an original metadata baseline so exporter can compute a delta
+    file_mock.orig_metadata = Metadata()
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = [file_mock]
     tagger_mock.albums = {}
 
-    with (
-        patch.object(file_mock.metadata, 'rawitems', return_value=[("title", ["Test Song"])]),
-        patch.object(session_exporter.location_detector, 'detect') as mock_detect,
-    ):
+    with patch.object(session_exporter.location_detector, 'detect') as mock_detect:
         mock_detect.return_value = SessionItemLocation(type="unclustered")
         data = session_exporter.export_session(tagger_mock)
 

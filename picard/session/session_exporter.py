@@ -159,9 +159,27 @@ class SessionExporter:
             "location": self._serialize_location(loc),
         }
 
-        # Persist unsaved tag changes
+        # Persist unsaved tag changes as deltas vs base metadata
         if not file.is_saved():
-            entry["metadata"] = {"tags": MetadataHandler.serialize_metadata_for_file(file)}
+            parent = getattr(file, "parent_item", None)
+            base_md = None
+            # If the file is under a track, diff against the track's scripted metadata (user-visible basis)
+            if parent is not None and hasattr(parent, "album"):
+                base_md = getattr(parent, "scripted_metadata", getattr(parent, "metadata", None))
+            # Otherwise, diff against the file's original on-disk metadata
+            if base_md is None:
+                base_md = getattr(file, "orig_metadata", None)
+
+            if base_md is not None:
+                diff = file.metadata.diff(base_md)
+                delta_tags = {
+                    k: MetadataHandler.as_list(v)
+                    for k, v in diff.rawitems()
+                    if k not in SessionConstants.EXCLUDED_OVERRIDE_TAGS
+                    and not str(k).startswith(SessionConstants.INTERNAL_TAG_PREFIX)
+                }
+                if delta_tags:
+                    entry["metadata"] = {"tags": delta_tags}
 
         return entry
 

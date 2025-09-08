@@ -29,8 +29,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from picard import log
 from picard.file import File
-from picard.log import log
 from picard.metadata import Metadata
 from picard.session.constants import SessionConstants
 
@@ -133,13 +133,14 @@ class MetadataHandler:
             metadata.length = file.metadata.length or file.orig_metadata.length
             file.copy_metadata(metadata)
             file.update()
-            return True
         except (AttributeError, KeyError) as e:
             log.warning(f"Failed to apply metadata to {file.filename}: {e}")
             return False
-        except Exception as e:
-            log.error(f"Unexpected error applying metadata: {e}")
+        except (OSError, ValueError, TypeError) as e:
+            log.error(f"Error applying metadata to {file.filename}: {e}")
             return False
+        else:
+            return True
 
     @staticmethod
     def apply_saved_metadata_if_any(tagger: Any, file_path_to_md: dict[Path, Metadata]) -> None:
@@ -175,6 +176,49 @@ class MetadataHandler:
                 condition_fn=lambda: len(pending) == 0,
                 action_fn=lambda: MetadataHandler.apply_saved_metadata_if_any(
                     tagger, {p: file_path_to_md[p] for p in pending}
+                ),
+                delay_ms=SessionConstants.DEFAULT_RETRY_DELAY_MS,
+            )
+
+    @staticmethod
+    def apply_tag_deltas_if_any(tagger: Any, file_path_to_tags: dict[Path, dict[str, list[Any]]]) -> None:
+        """Apply tag deltas to files when they are ready.
+
+        Parameters
+        ----------
+        tagger : Any
+            The Picard tagger instance.
+        file_path_to_tags : dict[Path, dict[str, list[Any]]]
+            Mapping of file paths to tag deltas to apply.
+        """
+        from picard.session.retry_helper import RetryHelper
+
+        pending: list[Path] = []
+        for fpath, tags in file_path_to_tags.items():
+            file = tagger.files.get(str(fpath))
+            if not file or file.state == File.PENDING:
+                pending.append(fpath)
+                continue
+
+            try:
+                # Merge deltas onto current metadata; preserve length
+                md = Metadata(file.metadata)
+                for key, values in tags.items():
+                    if key in SessionConstants.EXCLUDED_OVERRIDE_TAGS or str(key).startswith(
+                        SessionConstants.INTERNAL_TAG_PREFIX
+                    ):
+                        continue
+                    md[key] = MetadataHandler.as_list(values)
+                MetadataHandler.safe_apply_metadata(file, md)
+            except (AttributeError, KeyError, OSError, ValueError, TypeError) as e:
+                log.debug(f"Error applying tag deltas to {fpath}: {e}")
+                pending.append(fpath)
+
+        if pending:
+            RetryHelper.retry_until(
+                condition_fn=lambda: len(pending) == 0,
+                action_fn=lambda: MetadataHandler.apply_tag_deltas_if_any(
+                    tagger, {p: file_path_to_tags[p] for p in pending}
                 ),
                 delay_ms=SessionConstants.DEFAULT_RETRY_DELAY_MS,
             )

@@ -29,7 +29,7 @@ class SessionConstants:
     """Constants for session management operations."""
 
     # File handling
-    SESSION_FILE_EXTENSION = ".mbps"
+    SESSION_FILE_EXTENSION = ".mbps.gz"
     SESSION_FORMAT_VERSION = 1
 
     # Retry delays in milliseconds

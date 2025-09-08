@@ -47,11 +47,14 @@ import pytest
 class _StubFile:
     """Stub file class for testing."""
 
-    def __init__(self, filename: str, metadata: Metadata, saved: bool, parent_item: Any = None) -> None:
+    def __init__(
+        self, filename: str, metadata: Metadata, saved: bool, parent_item: Any = None, orig: Metadata | None = None
+    ) -> None:
         self.filename = filename
         self.metadata = metadata
         self._saved = saved
         self.parent_item = parent_item
+        self.orig_metadata = orig if orig is not None else Metadata()
 
     def is_saved(self) -> bool:
         return self._saved
@@ -298,9 +301,11 @@ def sample_session_data() -> dict[str, Any]:
 # =============================================================================
 
 
-def create_stub_file(filename: str, metadata: Metadata, saved: bool = False, parent_item: Any = None) -> _StubFile:
+def create_stub_file(
+    filename: str, metadata: Metadata, saved: bool = False, parent_item: Any = None, orig: Metadata | None = None
+) -> _StubFile:
     """Create a stub file for testing."""
-    return _StubFile(filename, metadata, saved, parent_item)
+    return _StubFile(filename, metadata, saved, parent_item, orig)
 
 
 def create_stub_track(track_id: str, scripted: Metadata, current: Metadata) -> _StubTrack:

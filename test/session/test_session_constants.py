@@ -27,7 +27,7 @@ import pytest
 
 def test_session_constants_values() -> None:
     """Test that SessionConstants has expected values."""
-    assert SessionConstants.SESSION_FILE_EXTENSION == ".mbps"
+    assert SessionConstants.SESSION_FILE_EXTENSION == ".mbps.gz"
     assert SessionConstants.SESSION_FORMAT_VERSION == 1
     assert SessionConstants.DEFAULT_RETRY_DELAY_MS == 200
     assert SessionConstants.FAST_RETRY_DELAY_MS == 150

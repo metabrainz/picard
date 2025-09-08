@@ -54,6 +54,8 @@ def test_export_session_includes_items_and_metadata_tags(cfg_options: None, tmp_
     m['~internal'] = 'x'
     m['length'] = '123456'
     f = _StubFile(filename=str(tmp_path / 'a.flac'), metadata=m, saved=saved, parent_item=None)
+    # Provide baseline so deltas can be computed
+    f.orig_metadata = Metadata()
     tagger = _StubTagger(files=[f])
 
     data = export_session(tagger)

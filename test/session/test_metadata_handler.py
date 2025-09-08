@@ -213,11 +213,12 @@ def test_safe_apply_metadata_key_error(mock_log: Mock) -> None:
 def test_safe_apply_metadata_unexpected_error(mock_log: Mock) -> None:
     """Test metadata application with unexpected error."""
     file_mock = Mock(spec=File)
+    file_mock.filename = "test_file.mp3"
     file_mock.metadata = Mock()
     file_mock.metadata.length = None
     file_mock.orig_metadata = Mock()
     file_mock.orig_metadata.length = 789012
-    file_mock.copy_metadata.side_effect = RuntimeError("Unexpected error")
+    file_mock.copy_metadata.side_effect = OSError("File system error")
 
     metadata = Metadata()
 
@@ -225,7 +226,7 @@ def test_safe_apply_metadata_unexpected_error(mock_log: Mock) -> None:
 
     assert result is False
     mock_log.error.assert_called_once()
-    assert "Unexpected error" in str(mock_log.error.call_args)
+    assert "File system error" in str(mock_log.error.call_args)
 
 
 @patch('picard.session.retry_helper.RetryHelper')

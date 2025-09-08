@@ -230,7 +230,7 @@ def test_session_loader_extract_metadata(session_loader: SessionLoader) -> None:
     assert len(metadata_map) == 2
     assert Path("/test/file1.mp3") in metadata_map
     assert Path("/test/file3.mp3") in metadata_map
-    assert metadata_map[Path("/test/file1.mp3")]["title"] == "Song 1"
+    assert metadata_map[Path("/test/file1.mp3")]["title"] == ["Song 1"]
 
 
 def test_session_loader_extract_metadata_empty_items(session_loader: SessionLoader) -> None:

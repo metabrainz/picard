@@ -52,7 +52,9 @@ def test_save_session_to_path(mock_export_session: Mock, tmp_path: Path) -> None
 
     save_session_to_path(tagger_mock, session_file)
 
-    assert session_file.with_suffix(".mbps").exists()
+    # Expect .mbps.gz to be appended
+    expected_file = Path(str(session_file) + ".mbps.gz")
+    assert expected_file.exists()
     mock_export_session.assert_called_once_with(tagger_mock)
 
 
@@ -62,7 +64,7 @@ def test_save_session_to_path_with_extension(mock_export_session: Mock, tmp_path
     mock_export_session.return_value = {"version": 1, "items": []}
 
     tagger_mock = Mock()
-    session_file = tmp_path / "test.mbps"
+    session_file = tmp_path / "test.mbps.gz"
 
     save_session_to_path(tagger_mock, session_file)
 
@@ -80,8 +82,8 @@ def test_save_session_to_path_with_different_extension(mock_export_session: Mock
 
     save_session_to_path(tagger_mock, session_file)
 
-    # Should add .mbps extension
-    expected_file = session_file.with_suffix(".mbps")
+    # Should add .mbps.gz extension
+    expected_file = Path(str(session_file) + ".mbps.gz")
     assert expected_file.exists()
     mock_export_session.assert_called_once_with(tagger_mock)
 
@@ -96,7 +98,7 @@ def test_save_session_to_path_string_path(mock_export_session: Mock, tmp_path: P
 
     save_session_to_path(tagger_mock, str(session_file))
 
-    assert session_file.with_suffix(".mbps").exists()
+    assert Path(str(session_file) + ".mbps.gz").exists()
     mock_export_session.assert_called_once_with(tagger_mock)
 
 
@@ -115,14 +117,18 @@ def test_save_session_to_path_creates_json_content(mock_export_session: Mock, tm
 
     save_session_to_path(tagger_mock, session_file)
 
-    saved_file = session_file.with_suffix(".mbps")
+    saved_file = Path(str(session_file) + ".mbps.gz")
     assert saved_file.exists()
 
-    # Read and verify content
-    content = saved_file.read_text(encoding="utf-8")
-    assert '"version": 1' in content
-    assert '"rename_files": true' in content
-    assert '"/test/file.mp3"' in content
+    # Read and verify content (gzip -> parse JSON)
+    import gzip
+    import json
+
+    content = gzip.decompress(saved_file.read_bytes()).decode("utf-8")
+    data = json.loads(content)
+    assert data["version"] == 1
+    assert data["options"]["rename_files"] is True
+    assert data["items"][0]["file_path"] == "/test/file.mp3"
 
 
 @patch('picard.session.session_manager.SessionLoader')
@@ -132,7 +138,7 @@ def test_load_session_from_path(mock_loader_class: Mock) -> None:
     mock_loader_class.return_value = mock_loader
 
     tagger_mock = Mock()
-    session_file = Path("/test/session.mbps")
+    session_file = Path("/test/session.mbps.gz")
 
     load_session_from_path(tagger_mock, session_file)
 
@@ -148,7 +154,7 @@ def test_load_session_from_path_string_path(mock_loader_class: Mock) -> None:
     mock_loader_class.return_value = mock_loader
 
     tagger_mock = Mock()
-    session_file = "/test/session.mbps"
+    session_file = "/test/session.mbps.gz"
 
     load_session_from_path(tagger_mock, session_file)
 
@@ -157,21 +163,24 @@ def test_load_session_from_path_string_path(mock_loader_class: Mock) -> None:
     mock_loader.finalize_loading.assert_called_once()
 
 
-def test_save_session_to_path_file_overwrite(tmp_path: Path) -> None:
+@patch('picard.session.session_manager.export_session')
+def test_save_session_to_path_file_overwrite(mock_export_session: Mock, tmp_path: Path) -> None:
     """Test that save_session_to_path overwrites existing files."""
-    existing_file = tmp_path / "test.mbps"
+    existing_file = tmp_path / "test.mbps.gz"
     existing_file.write_text("old content", encoding="utf-8")
 
-    with patch('picard.session.session_manager.export_session') as mock_export:
-        mock_export.return_value = {"version": 1, "items": []}
+    mock_export_session.return_value = {"version": 1, "items": []}
 
-        tagger_mock = Mock()
-        save_session_to_path(tagger_mock, existing_file)
+    tagger_mock = Mock()
+    save_session_to_path(tagger_mock, existing_file)
 
-        # File should be overwritten
-        content = existing_file.read_text(encoding="utf-8")
-        assert content != "old content"
-        assert '"version": 1' in content
+    # File should be overwritten
+    import gzip
+    import json
+
+    content = gzip.decompress(existing_file.read_bytes()).decode("utf-8")
+    data = json.loads(content)
+    assert data["version"] == 1
 
 
 def test_save_session_to_path_creates_directory(tmp_path: Path) -> None:
@@ -180,7 +189,7 @@ def test_save_session_to_path_creates_directory(tmp_path: Path) -> None:
         mock_export.return_value = {"version": 1, "items": []}
 
         tagger_mock = Mock()
-        session_file = tmp_path / "subdir" / "test.mbps"
+        session_file = tmp_path / "subdir" / "test.mbps.gz"
 
         save_session_to_path(tagger_mock, session_file)
 
@@ -203,8 +212,10 @@ def test_save_session_to_path_utf8_encoding(tmp_path: Path) -> None:
 
         save_session_to_path(tagger_mock, session_file)
 
-        saved_file = session_file.with_suffix(".mbps")
-        content = saved_file.read_text(encoding="utf-8")
+        saved_file = Path(str(session_file) + ".mbps.gz")
+        import gzip
+
+        content = gzip.decompress(saved_file.read_bytes()).decode("utf-8")
         assert "歌曲" in content
 
 
@@ -223,14 +234,15 @@ def test_save_session_to_path_json_formatting(tmp_path: Path) -> None:
 
         save_session_to_path(tagger_mock, session_file)
 
-        saved_file = session_file.with_suffix(".mbps")
-        content = saved_file.read_text(encoding="utf-8")
+        saved_file = Path(str(session_file) + ".mbps.gz")
+        import gzip
 
-        # Should be properly formatted JSON with indentation
-        assert content.startswith("{\n")
-        assert "  \"version\": 1" in content
-        assert "  \"options\": {" in content
-        assert "    \"rename_files\": true" in content
+        content = gzip.decompress(saved_file.read_bytes()).decode("utf-8")
+        # Content is minified JSON
+        assert content.startswith("{")
+        assert '"version":1' in content
+        assert '"options":{' in content
+        assert '"rename_files":true' in content
 
 
 def test_export_session_returns_dict() -> None:
@@ -255,7 +267,7 @@ def test_load_session_from_path_loader_initialization() -> None:
         mock_loader_class.return_value = mock_loader
 
         tagger_mock = Mock()
-        session_file = Path("/test/session.mbps")
+        session_file = Path("/test/session.mbps.gz")
 
         load_session_from_path(tagger_mock, session_file)
 
@@ -270,7 +282,7 @@ def test_load_session_from_path_loader_methods_called() -> None:
         mock_loader_class.return_value = mock_loader
 
         tagger_mock = Mock()
-        session_file = Path("/test/session.mbps")
+        session_file = Path("/test/session.mbps.gz")
 
         load_session_from_path(tagger_mock, session_file)
 
@@ -286,19 +298,21 @@ def test_save_session_to_path_extension_handling(tmp_path: Path) -> None:
 
         tagger_mock = Mock()
 
-        # Test cases: (input_path, expected_suffix)
+        # Test cases: (input_path)
         test_cases = [
-            ("test", ".mbps"),
-            ("test.mbps", ".mbps"),
-            ("test.json", ".mbps"),
-            ("test.txt", ".mbps"),
+            "test",
+            "test.mbps.gz",
+            "test.json",
+            "test.txt",
         ]
 
-        for input_path, expected_suffix in test_cases:
+        for input_path in test_cases:
             session_file = tmp_path / input_path
             save_session_to_path(tagger_mock, session_file)
 
-            expected_file = session_file.with_suffix(expected_suffix)
+            expected_file = (
+                session_file if str(session_file).endswith(".mbps.gz") else Path(str(session_file) + ".mbps.gz")
+            )
             assert expected_file.exists(), f"Failed for input: {input_path}"
 
             # Clean up for next test
@@ -308,7 +322,7 @@ def test_save_session_to_path_extension_handling(tmp_path: Path) -> None:
 def test_session_constants_used_correctly(tmp_path: Path) -> None:
     """Test that session constants are used correctly in manager functions."""
     # This test ensures that the session manager uses the correct constants
-    assert SessionConstants.SESSION_FILE_EXTENSION == ".mbps"
+    assert SessionConstants.SESSION_FILE_EXTENSION == ".mbps.gz"
     assert SessionConstants.SESSION_FORMAT_VERSION == 1
 
     # Test that the extension is used in save function

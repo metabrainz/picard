@@ -90,6 +90,7 @@ from picard.options import (
     get_option_title,
 )
 from picard.script import get_file_naming_script_presets
+from picard.session.constants import SessionConstants
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -1054,7 +1055,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         path, _filter = FileDialog.getSaveFileName(
             parent=self,
             dir=start_dir,
-            filter=_("MusicBrainz Picard Session (*.mbps);;All files (*)"),
+            filter=(
+                _("MusicBrainz Picard Session (%s);;All files (*)") % ("*" + SessionConstants.SESSION_FILE_EXTENSION)
+            ),
         )
         if path:
             try:
@@ -1075,7 +1078,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         path, _filter = FileDialog.getOpenFileName(
             parent=self,
             dir=start_dir,
-            filter=_("MusicBrainz Picard Session (*.mbps);;All files (*)"),
+            filter=(
+                _("MusicBrainz Picard Session (%s);;All files (*)") % ("*" + SessionConstants.SESSION_FILE_EXTENSION)
+            ),
         )
         if path:
             try:

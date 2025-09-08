@@ -680,7 +680,9 @@ class Tagger(QtWidgets.QApplication):
                 if not path:
                     path = config.persist['last_session_path'] if 'last_session_path' in config.persist else None
                 if not path:
-                    path = Path(USER_DIR) / 'autosave.mbps'
+                    from picard.session.constants import SessionConstants
+
+                    path = Path(USER_DIR) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
                     config.persist['session_autosave_path'] = path
 
                 with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
