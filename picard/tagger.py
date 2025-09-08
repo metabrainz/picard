@@ -499,7 +499,7 @@ class Tagger(QtWidgets.QApplication):
     # ==============================
     def export_session(self) -> dict:
         from picard import config as _cfg
-        from picard.session import export_session as _export_session
+        from picard.session.session_manager import export_session as _export_session
 
         # Expose config on self for session helpers
         self.config = _cfg  # type: ignore[attr-defined]
@@ -640,7 +640,7 @@ class Tagger(QtWidgets.QApplication):
         with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
             config = get_config()
             if config.setting['session_backup_on_crash']:
-                from picard.session import save_session_to_path
+                from picard.session.session_manager import save_session_to_path
 
                 path = config.persist['session_autosave_path'] or config.persist['last_session_path']
                 if path:
@@ -657,7 +657,7 @@ class Tagger(QtWidgets.QApplication):
             last_path = config.persist['last_session_path']
             if last_path:
                 with contextlib.suppress(OSError, PermissionError, FileNotFoundError, json.JSONDecodeError, KeyError):
-                    from picard.session import load_session_from_path
+                    from picard.session.session_manager import load_session_from_path
 
                     load_session_from_path(self, last_path)
 
@@ -670,7 +670,7 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         interval_min = int(config.setting['session_autosave_interval_min'])
         if interval_min > 0:
-            from picard.session import save_session_to_path
+            from picard.session.session_manager import save_session_to_path
 
             self._session_autosave_timer = QtCore.QTimer(self)
             self._session_autosave_timer.setInterval(max(1, interval_min) * 60 * 1000)

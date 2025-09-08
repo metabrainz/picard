@@ -24,75 +24,11 @@ from typing import Any
 
 import picard.config as picard_config
 from picard.metadata import Metadata
-from picard.session import export_session
+from picard.session.session_manager import export_session
 
+# Import stub classes from conftest.py
+from .conftest import _StubAlbum, _StubFile, _StubTagger, _StubTrack
 import pytest
-
-
-class _StubFile:
-    def __init__(self, filename: str, metadata: Metadata, saved: bool, parent_item: Any = None) -> None:
-        self.filename = filename
-        self.metadata = metadata
-        self._saved = saved
-        self.parent_item = parent_item
-
-    def is_saved(self) -> bool:
-        return self._saved
-
-
-class _StubTrack:
-    def __init__(self, track_id: str, scripted: Metadata, current: Metadata) -> None:
-        self.id = track_id
-        self.scripted_metadata = scripted
-        self.metadata = current
-
-
-class _StubAlbum:
-    def __init__(self, album_id: str, orig: Metadata, current: Metadata, tracks: list[_StubTrack]) -> None:
-        self.id = album_id
-        self.orig_metadata = orig
-        self.metadata = current
-        self.tracks = tracks
-
-
-class _StubTagger:
-    def __init__(self, files: list[_StubFile], albums: dict[str, Any] | None = None) -> None:
-        self._files = files
-        self.albums = albums or {}
-
-    def iter_all_files(self):
-        yield from self._files
-
-
-@pytest.fixture(autouse=True)
-def _fake_script_config(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
-    """Provide minimal config so functions accessing get_config() have settings."""
-
-    class _FakeSetting(dict):
-        def raw_value(self, name, qtype=None):
-            return self.get(name)
-
-        def key(self, name):
-            return name
-
-    cfg = SimpleNamespace(setting=_FakeSetting({'enabled_plugins': []}), sync=lambda: None)
-    import picard.config as picard_config_mod
-    import picard.extension_points as ext_points_mod
-    import picard.session as session_mod
-
-    monkeypatch.setattr(picard_config_mod, 'get_config', lambda: cfg, raising=True)
-    monkeypatch.setattr(ext_points_mod, 'get_config', lambda: cfg, raising=True)
-    monkeypatch.setattr(session_mod, 'get_config', lambda: cfg, raising=True)
-    return cfg
-
-
-@pytest.fixture()
-def cfg_options() -> None:
-    cfg = picard_config.get_config()
-    # Ensure required keys exist with defaults
-    cfg.setting['rename_files'] = False
-    cfg.setting['move_files'] = False
-    cfg.setting['dont_write_tags'] = False
 
 
 def test_export_session_empty(tmp_path: Path) -> None:
@@ -208,3 +144,49 @@ def test_export_session_listifies_override_values(cfg_options: None, value: Any,
     tagger = _StubTagger(files=[], albums={'album-X': alb})
     data = export_session(tagger)
     assert data['album_overrides'] == {'album-X': {'genre': expected}}
+
+
+def test_export_session_includes_unmatched_albums(cfg_options: None) -> None:
+    """Test that albums with no files matched are included in unmatched_albums."""
+    # Create an album with no files matched to it
+    album_orig = Metadata()
+    album_cur = Metadata()
+    alb = _StubAlbum('album-unmatched', orig=album_orig, current=album_cur, tracks=[])
+
+    # Tagger with no files but has the album loaded
+    tagger = _StubTagger(files=[], albums={'album-unmatched': alb})
+
+    data = export_session(tagger)
+
+    # Should include the unmatched album
+    assert 'unmatched_albums' in data
+    assert data['unmatched_albums'] == ['album-unmatched']
+
+
+def test_export_session_excludes_albums_with_files_from_unmatched(cfg_options: None, tmp_path: Path) -> None:
+    """Test that albums with files matched are not included in unmatched_albums."""
+
+    # Create a mock parent item that represents a track in an album
+    class _StubParentItem:
+        def __init__(self, album_id: str) -> None:
+            self.album = SimpleNamespace(id=album_id)
+
+    # Create an album
+    album_orig = Metadata()
+    album_cur = Metadata()
+    alb = _StubAlbum('album-with-files', orig=album_orig, current=album_cur, tracks=[])
+
+    # Create a file that's matched to the album
+    fm = Metadata()
+    fm['title'] = 'Song'
+    parent_item = _StubParentItem('album-with-files')
+    f = _StubFile(filename=str(tmp_path / 'song.mp3'), metadata=fm, saved=True, parent_item=parent_item)
+
+    # Tagger with the file and album
+    tagger = _StubTagger(files=[f], albums={'album-with-files': alb})
+
+    data = export_session(tagger)
+
+    # Should not include the album in unmatched_albums since it has files
+    assert 'unmatched_albums' in data
+    assert data['unmatched_albums'] == []

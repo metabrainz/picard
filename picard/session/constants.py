@@ -18,23 +18,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Session management package for Picard.
+"""Constants for session management.
 
-This package provides functionality to save and restore Picard sessions,
-including file locations, metadata overrides, and configuration options.
+This module contains all constants used throughout the session management system,
+including retry delays, file extensions, and excluded tags.
 """
 
-from picard.session.session_data import SessionItemLocation
-from picard.session.session_manager import (
-    export_session,
-    load_session_from_path,
-    save_session_to_path,
-)
 
+class SessionConstants:
+    """Constants for session management operations."""
 
-__all__ = [
-    'SessionItemLocation',
-    'export_session',
-    'load_session_from_path',
-    'save_session_to_path',
-]
+    # File handling
+    SESSION_FILE_EXTENSION = ".mbps"
+    SESSION_FORMAT_VERSION = 1
+
+    # Retry delays in milliseconds
+    DEFAULT_RETRY_DELAY_MS = 200
+    FAST_RETRY_DELAY_MS = 150
+
+    # Metadata handling
+    INTERNAL_TAG_PREFIX = "~"
+    EXCLUDED_OVERRIDE_TAGS = frozenset({"length", "~length"})
+
+    # Location types
+    LOCATION_UNCLUSTERED = "unclustered"
+    LOCATION_TRACK = "track"
+    LOCATION_ALBUM_UNMATCHED = "album_unmatched"
+    LOCATION_CLUSTER = "cluster"
+    LOCATION_NAT = "nat"

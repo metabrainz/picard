@@ -1045,7 +1045,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.tagger.save(self.selected_objects)
 
     def save_session(self):
-        from picard.session import save_session_to_path
+        from picard.session.session_manager import save_session_to_path
 
         from picard.ui.util import FileDialog
 
@@ -1066,7 +1066,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
 
     def load_session(self):
-        from picard.session import load_session_from_path
+        from picard.session.session_manager import load_session_from_path
 
         from picard.ui.util import FileDialog
 
