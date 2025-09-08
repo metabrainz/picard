@@ -18,23 +18,4 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Session management package for Picard.
-
-This package provides functionality to save and restore Picard sessions,
-including file locations, metadata overrides, and configuration options.
-"""
-
-from picard.session.session_data import SessionItemLocation
-from picard.session.session_manager import (
-    export_session,
-    load_session_from_path,
-    save_session_to_path,
-)
-
-
-__all__ = [
-    'SessionItemLocation',
-    'export_session',
-    'load_session_from_path',
-    'save_session_to_path',
-]
+"""Session management package for Picard."""

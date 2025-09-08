@@ -23,6 +23,7 @@ from PyQt6 import QtWidgets
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_, gettext as _
+from picard.session.constants import SessionMessages
 
 from picard.ui.options import OptionsPage
 
@@ -39,30 +40,32 @@ class SessionsOptionsPage(OptionsPage):
         ('session_load_last_on_startup', ['load_last_checkbox']),
         ('session_autosave_interval_min', ['autosave_spin']),
         ('session_backup_on_crash', ['backup_checkbox']),
+        ('session_include_mb_data', ['include_mb_data_checkbox']),
     )
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.vbox = QtWidgets.QVBoxLayout(self)
 
-        self.safe_restore_checkbox = QtWidgets.QCheckBox(
-            _('Honor local edits and placement on load (no auto-matching)')
-        )
+        self.safe_restore_checkbox = QtWidgets.QCheckBox(_(SessionMessages.SESSION_SAFE_RESTORE_TITLE))
         self.vbox.addWidget(self.safe_restore_checkbox)
 
-        self.load_last_checkbox = QtWidgets.QCheckBox(_('Load last saved session on startup'))
+        self.load_last_checkbox = QtWidgets.QCheckBox(_(SessionMessages.SESSION_LOAD_LAST_TITLE))
         self.vbox.addWidget(self.load_last_checkbox)
 
         autosave_layout = QtWidgets.QHBoxLayout()
-        self.autosave_label = QtWidgets.QLabel(_('Auto-save session every N minutes (0 disables)'))
+        self.autosave_label = QtWidgets.QLabel(_(SessionMessages.SESSION_AUTOSAVE_TITLE))
         self.autosave_spin = QtWidgets.QSpinBox()
         self.autosave_spin.setRange(0, 1440)
         autosave_layout.addWidget(self.autosave_label)
         autosave_layout.addWidget(self.autosave_spin)
         self.vbox.addLayout(autosave_layout)
 
-        self.backup_checkbox = QtWidgets.QCheckBox(_('Attempt to keep a session backup on unexpected shutdown'))
+        self.backup_checkbox = QtWidgets.QCheckBox(_(SessionMessages.SESSION_BACKUP_TITLE))
         self.vbox.addWidget(self.backup_checkbox)
+
+        self.include_mb_data_checkbox = QtWidgets.QCheckBox(_(SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE))
+        self.vbox.addWidget(self.include_mb_data_checkbox)
 
         self.vbox.addStretch(1)
 
@@ -72,6 +75,7 @@ class SessionsOptionsPage(OptionsPage):
         self.load_last_checkbox.setChecked(config.setting['session_load_last_on_startup'])
         self.autosave_spin.setValue(config.setting['session_autosave_interval_min'])
         self.backup_checkbox.setChecked(config.setting['session_backup_on_crash'])
+        self.include_mb_data_checkbox.setChecked(config.setting['session_include_mb_data'])
 
     def save(self):
         config = get_config()
@@ -79,6 +83,7 @@ class SessionsOptionsPage(OptionsPage):
         config.setting['session_load_last_on_startup'] = self.load_last_checkbox.isChecked()
         config.setting['session_autosave_interval_min'] = int(self.autosave_spin.value())
         config.setting['session_backup_on_crash'] = self.backup_checkbox.isChecked()
+        config.setting['session_include_mb_data'] = self.include_mb_data_checkbox.isChecked()
 
 
 register_options_page(SessionsOptionsPage)

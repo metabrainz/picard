@@ -135,6 +135,6 @@ class RetryHelper:
             if not album:
                 return False
             # Check if album has tracks loaded
-            return hasattr(album, 'tracks') and len(album.tracks) > 0
+            return hasattr(album, 'tracks') and hasattr(album.tracks, '__len__') and len(album.tracks) > 0
 
         RetryHelper.retry_until(is_album_ready, action_fn, delay_ms)

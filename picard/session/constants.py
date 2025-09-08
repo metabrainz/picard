@@ -46,3 +46,19 @@ class SessionConstants:
     LOCATION_ALBUM_UNMATCHED = "album_unmatched"
     LOCATION_CLUSTER = "cluster"
     LOCATION_NAT = "nat"
+
+
+class SessionMessages:
+    """Centralized session-related message strings.
+
+    Define raw, untranslated strings. Call sites should mark for translation:
+    - API/config titles: wrap with N_()
+    - UI labels: wrap with _()
+    """
+
+    # Option titles (API/config)
+    SESSION_SAFE_RESTORE_TITLE = "Honor local edits and placement on load (no auto-matching)"
+    SESSION_LOAD_LAST_TITLE = "Load last saved session on startup"
+    SESSION_AUTOSAVE_TITLE = "Auto-save session every N minutes (0 disables)"
+    SESSION_BACKUP_TITLE = "Attempt to keep a session backup on unexpected shutdown"
+    SESSION_INCLUDE_MB_DATA_TITLE = "Include MusicBrainz data in saved sessions (faster loads, risk of stale data)"

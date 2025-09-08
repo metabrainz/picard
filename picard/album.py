@@ -538,6 +538,8 @@ class Album(MetadataItem):
             track.metadata['~totalalbumtracks'] = totalalbumtracks
             if multiartists:
                 track.metadata['~multiartist'] = '1'
+        # Preserve release JSON for session export after load finished
+        self._release_node_cache = self._release_node
         del self._release_node
         del self._release_artist_nodes
         self._tracks_loaded = True

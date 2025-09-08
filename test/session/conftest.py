@@ -126,7 +126,8 @@ def cfg_options() -> None:
     # Ensure required keys exist with defaults
     cfg.setting['rename_files'] = False
     cfg.setting['move_files'] = False
-    cfg.setting['dont_write_tags'] = False
+    cfg.setting['dont_write_tags'] = True
+    cfg.setting['session_include_mb_data'] = False
 
 
 # =============================================================================
@@ -138,7 +139,7 @@ def cfg_options() -> None:
 def mock_file() -> Mock:
     """Provide a mock file object."""
     file_mock = Mock(spec=File)
-    file_mock.filename = "/test/file.mp3"
+    file_mock.filename = str(Path("/test/file.mp3"))
     return file_mock
 
 
@@ -280,11 +281,11 @@ def sample_session_data() -> dict[str, Any]:
         },
         "items": [
             {
-                "file_path": "/test/file1.mp3",
+                "file_path": str(Path("/test/file1.mp3")),
                 "location": {"type": "unclustered"},
             },
             {
-                "file_path": "/test/file2.mp3",
+                "file_path": str(Path("/test/file2.mp3")),
                 "location": {"type": "track", "album_id": "album-123", "recording_id": "recording-456"},
                 "metadata": {"tags": {"title": ["Test Song"]}},
             },
@@ -379,23 +380,23 @@ def create_session_items_with_locations() -> list[dict[str, Any]]:
     """Create a list of session items with different location types."""
     return [
         {
-            "file_path": "/test/unclustered.mp3",
+            "file_path": str(Path("/test/unclustered.mp3")),
             "location": {"type": "unclustered"},
         },
         {
-            "file_path": "/test/cluster.mp3",
+            "file_path": str(Path("/test/cluster.mp3")),
             "location": {"type": "cluster", "cluster_title": "Album", "cluster_artist": "Artist"},
         },
         {
-            "file_path": "/test/track.mp3",
+            "file_path": str(Path("/test/track.mp3")),
             "location": {"type": "track", "album_id": "album-123", "recording_id": "recording-456"},
         },
         {
-            "file_path": "/test/unmatched.mp3",
+            "file_path": str(Path("/test/unmatched.mp3")),
             "location": {"type": "album_unmatched", "album_id": "album-789"},
         },
         {
-            "file_path": "/test/nat.mp3",
+            "file_path": str(Path("/test/nat.mp3")),
             "location": {"type": "nat", "recording_id": "recording-999"},
         },
     ]

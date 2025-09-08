@@ -20,6 +20,7 @@
 
 """Tests for location detector."""
 
+from pathlib import Path
 from unittest.mock import Mock
 
 from picard.album import Album, NatAlbum
@@ -41,7 +42,7 @@ def location_detector() -> LocationDetector:
 def mock_file() -> Mock:
     """Provide a mock file object."""
     file_mock = Mock(spec=File)
-    file_mock.filename = "/test/file.mp3"
+    file_mock.filename = str(Path("/test/file.mp3"))
     return file_mock
 
 

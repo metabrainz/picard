@@ -47,31 +47,23 @@ def mock_tagger() -> Mock:
     return tagger_mock
 
 
-def test_session_exporter_export_session_empty(session_exporter: SessionExporter, mock_tagger: Mock) -> None:
+def test_session_exporter_export_session_empty(
+    session_exporter: SessionExporter, mock_tagger: Mock, cfg_options
+) -> None:
     """Test exporting an empty session."""
-    config_mock = Mock()
-    config_mock.setting = {
+    data = session_exporter.export_session(mock_tagger)
+
+    assert data["version"] == SessionConstants.SESSION_FORMAT_VERSION
+    assert data["options"] == {
         "rename_files": False,
         "move_files": False,
         "dont_write_tags": True,
     }
-
-    with patch('picard.session.session_exporter.get_config') as mock_get_config:
-        mock_get_config.return_value = config_mock
-
-        data = session_exporter.export_session(mock_tagger)
-
-        assert data["version"] == SessionConstants.SESSION_FORMAT_VERSION
-        assert data["options"] == {
-            "rename_files": False,
-            "move_files": False,
-            "dont_write_tags": True,
-        }
-        assert data["items"] == []
-        assert data["album_track_overrides"] == {}
-        assert data["album_overrides"] == {}
-        assert data["unmatched_albums"] == []
-        assert data["expanded_albums"] == []
+    assert data["items"] == []
+    assert data["album_track_overrides"] == {}
+    assert data["album_overrides"] == {}
+    assert data["unmatched_albums"] == []
+    assert data["expanded_albums"] == []
 
 
 def test_session_exporter_export_file_item_saved(session_exporter: SessionExporter, cfg_options) -> None:
@@ -260,7 +252,7 @@ def test_session_exporter_export_albums_with_files(session_exporter: SessionExpo
 
     # Create file with parent item pointing to album
     file_mock = Mock()
-    file_mock.filename = "/test/file.mp3"
+    file_mock.filename = str(Path("/test/file.mp3"))
     file_mock.is_saved.return_value = True
     parent_item_mock = Mock()
     parent_item_mock.album = album_mock

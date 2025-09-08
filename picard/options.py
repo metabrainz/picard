@@ -69,6 +69,7 @@ from picard.const.defaults import (
     DEFAULT_WIN_COMPAT_REPLACEMENTS,
 )
 from picard.i18n import N_
+from picard.session.constants import SessionMessages
 
 from picard.ui.colors import InterfaceColors
 
@@ -499,25 +500,31 @@ BoolOption(
     'setting',
     'session_safe_restore',
     True,
-    title=N_("Preserve session placement and edits when loading sessions"),
+    title=N_(SessionMessages.SESSION_SAFE_RESTORE_TITLE),
 )
 BoolOption(
     'setting',
     'session_load_last_on_startup',
     False,
-    title=N_("Load last saved session on startup"),
+    title=N_(SessionMessages.SESSION_LOAD_LAST_TITLE),
 )
 IntOption(
     'setting',
     'session_autosave_interval_min',
     0,
-    title=N_("Auto-save session every N minutes (0 disables)"),
+    title=N_(SessionMessages.SESSION_AUTOSAVE_TITLE),
 )
 BoolOption(
     'setting',
     'session_backup_on_crash',
     True,
-    title=N_("Attempt to keep a session backup on unexpected shutdown"),
+    title=N_(SessionMessages.SESSION_BACKUP_TITLE),
+)
+BoolOption(
+    'setting',
+    'session_include_mb_data',
+    False,
+    title=N_(SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE),
 )
 
 # picard/ui/searchdialog/album.py

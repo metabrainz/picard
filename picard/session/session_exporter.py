@@ -78,6 +78,8 @@ class SessionExporter:
             "album_overrides": {},
             "unmatched_albums": [],
             "expanded_albums": [],
+            # Optional: cache of MB release JSON keyed by album id
+            "mb_cache": {},
         }
 
         # Export file items
@@ -94,12 +96,39 @@ class SessionExporter:
         if unmatched_albums:
             session_data["unmatched_albums"] = unmatched_albums
 
+        # Optionally export MB JSON cache per album
+        include_mb = config.setting['session_include_mb_data']
+
+        if include_mb:
+            session_data["mb_cache"] = self._export_mb_cache(tagger)
+
         # Export UI state (expanded albums)
         expanded_albums = self._export_ui_state(tagger)
         if expanded_albums:
             session_data["expanded_albums"] = expanded_albums
 
         return session_data
+
+    def _export_mb_cache(self, tagger: Any) -> dict[str, Any]:
+        """Export MB release JSON for currently loaded albums.
+
+        Parameters
+        ----------
+        tagger : Any
+            The Picard tagger instance.
+
+        Returns
+        -------
+        dict[str, Any]
+            Mapping of album MBID to release JSON node.
+        """
+        cache: dict[str, Any] = {}
+        for album_id, album in getattr(tagger, 'albums', {}).items():
+            # Prefer cached node saved after tracks were loaded; fall back to live node if still present
+            node = getattr(album, '_release_node_cache', None) or getattr(album, '_release_node', None)
+            if node:
+                cache[album_id] = node
+        return cache
 
     def _export_ui_state(self, tagger: Any) -> list[str]:
         """Export UI expansion state for albums in album view.

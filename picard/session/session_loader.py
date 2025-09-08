@@ -77,6 +77,7 @@ class SessionLoader:
         6. Apply metadata overrides
         7. Schedule metadata application
         """
+        self._emit_progress("read", details={"path": str(path)})
         data = self._read_session_file(path)
         self._prepare_session(data)
         self._restore_options(data.get("options", {}))
@@ -87,15 +88,99 @@ class SessionLoader:
         grouped_items = self._group_items_by_location(items)
         metadata_map = self._extract_metadata(items)
 
+        # If mb_cache is provided, try to pre-load albums from cached JSON
+        mb_cache = data.get("mb_cache", {})
+        if mb_cache:
+            self._emit_progress("preload_cache", details={"albums": len(mb_cache)})
+            self._preload_albums_from_cache(mb_cache, grouped_items)
+
+        self._emit_progress(
+            "load_items",
+            details={
+                "files": len(grouped_items.unclustered)
+                + sum(len(v) for v in grouped_items.by_cluster.values())
+                + sum(len(g.unmatched) + len(g.tracks) for g in grouped_items.by_album.values())
+            },
+        )
         self._load_items(grouped_items)
         self._load_unmatched_albums(data.get("unmatched_albums", []))
+        self._emit_progress("apply_overrides")
         self._apply_overrides(data)
 
         if metadata_map:
             self._schedule_metadata_application(metadata_map)
 
         # Restore UI state (expanded albums and file view roots)
+        self._emit_progress("finalize")
         self._restore_ui_state(data)
+
+    # ----------------------
+    # Progress reporting API
+    # ----------------------
+    def _emit_progress(self, stage: str, details: dict[str, Any] | None = None) -> None:
+        try:
+            # Forward to main window / status indicator if available
+            if hasattr(self.tagger, 'window') and hasattr(self.tagger.window, 'status_indicators'):
+                for indicator in self.tagger.window.status_indicators:
+                    if hasattr(indicator, 'session_progress'):
+                        indicator.session_progress(stage, details or {})
+            # Additionally, update status bar text when possible
+            if hasattr(self.tagger, 'window') and hasattr(self.tagger.window, 'set_statusbar_message'):
+                msg = self._format_stage_message(stage, details)
+                if msg:
+                    self.tagger.window.set_statusbar_message(msg)
+        except Exception:
+            # Do not let progress reporting break loading
+            pass
+
+    def _format_stage_message(self, stage: str, details: dict[str, Any] | None) -> str | None:
+        if stage == "read":
+            return "Reading session…"
+        if stage == "preload_cache":
+            return f"Preloading albums from cache ({(details or {}).get('albums', 0)})…"
+        if stage == "load_items":
+            return f"Loading files and albums ({(details or {}).get('files', 0)} files)…"
+        if stage == "apply_overrides":
+            return "Applying overrides…"
+        if stage == "finalize":
+            # Mention pending web requests if any
+            pending = getattr(self.tagger.webservice, 'num_pending_web_requests', 0)
+            if pending:
+                return f"Waiting on network ({pending} requests)…"
+            return "Finalizing…"
+        return None
+
+    def _preload_albums_from_cache(self, mb_cache: dict[str, Any], grouped_items: GroupedItems) -> None:
+        """Preload albums from embedded MB JSON cache when available.
+
+        Parameters
+        ----------
+        mb_cache : dict[str, Any]
+            Mapping of album IDs to MB release JSON nodes.
+        grouped_items : GroupedItems
+            Items grouped by location type (used to know which albums are needed).
+        """
+        needed_album_ids = set(grouped_items.by_album.keys()) | set(mb_cache.keys())
+        for album_id in needed_album_ids:
+            node = mb_cache.get(album_id)
+            if not node:
+                continue
+            album = self.tagger.albums.get(album_id)
+            if not album:
+                # Create album instance via normal path but intercept to parse from JSON node
+                album = self.tagger.load_album(album_id)
+            # If album supports parsing from cached release node, do so
+            parse_from_json = getattr(album, '_parse_release', None)
+            if callable(parse_from_json):
+                try:
+                    parse_from_json(node)
+                    album._run_album_metadata_processors()
+                    album.update(update_tracks=True)
+                    self.loaded_albums[album_id] = album
+                    self._ensure_album_visible(album)
+                except Exception:
+                    # Fall back to normal loading path if parsing fails
+                    continue
 
     def _read_session_file(self, path: Path) -> dict[str, Any]:
         """Read and parse session file.

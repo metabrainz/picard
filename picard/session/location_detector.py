@@ -31,6 +31,7 @@ from picard.cluster import Cluster, UnclusteredFiles
 from picard.file import File
 from picard.session.constants import SessionConstants
 from picard.session.session_data import SessionItemLocation
+from picard.track import Track
 
 
 class LocationDetector:
@@ -95,12 +96,12 @@ class LocationDetector:
         """
         return isinstance(parent, Cluster)
 
-    def _detect_track_location(self, parent: object) -> SessionItemLocation:
+    def _detect_track_location(self, parent: Track) -> SessionItemLocation:
         """Detect location for files under a track.
 
         Parameters
         ----------
-        parent : object
+        parent : Track
             The track parent item.
 
         Returns

@@ -173,7 +173,7 @@ def test_safe_apply_metadata_success_with_none_length(mock_log: Mock) -> None:
 def test_safe_apply_metadata_attribute_error(mock_log: Mock) -> None:
     """Test metadata application with AttributeError."""
     file_mock = Mock(spec=File)
-    file_mock.filename = "/test/file.mp3"
+    file_mock.filename = str(Path("/test/file.mp3"))
     file_mock.metadata = Mock()
     file_mock.metadata.length = None
     file_mock.orig_metadata = Mock()
@@ -193,7 +193,7 @@ def test_safe_apply_metadata_attribute_error(mock_log: Mock) -> None:
 def test_safe_apply_metadata_key_error(mock_log: Mock) -> None:
     """Test metadata application with KeyError."""
     file_mock = Mock(spec=File)
-    file_mock.filename = "/test/file.mp3"
+    file_mock.filename = str(Path("/test/file.mp3"))
     file_mock.metadata = Mock()
     file_mock.metadata.length = None
     file_mock.orig_metadata = Mock()
@@ -213,7 +213,7 @@ def test_safe_apply_metadata_key_error(mock_log: Mock) -> None:
 def test_safe_apply_metadata_unexpected_error(mock_log: Mock) -> None:
     """Test metadata application with unexpected error."""
     file_mock = Mock(spec=File)
-    file_mock.filename = "test_file.mp3"
+    file_mock.filename = str(Path("test_file.mp3"))
     file_mock.metadata = Mock()
     file_mock.metadata.length = None
     file_mock.orig_metadata = Mock()

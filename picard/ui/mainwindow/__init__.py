@@ -1084,6 +1084,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
         if path:
             try:
+                # Initial progress feedback before heavy load
+                self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
                 load_session_from_path(self.tagger, path)
                 config.persist['current_directory'] = os.path.dirname(path)
                 config.persist['last_session_path'] = path

@@ -31,13 +31,7 @@ from .conftest import _StubAlbum, _StubFile, _StubTagger, _StubTrack
 import pytest
 
 
-def test_export_session_empty(tmp_path: Path) -> None:
-    # Ensure options keys exist
-    cfg = picard_config.get_config()
-    cfg.setting['rename_files'] = False
-    cfg.setting['move_files'] = False
-    cfg.setting['dont_write_tags'] = True
-
+def test_export_session_empty(tmp_path: Path, cfg_options) -> None:
     data = export_session(_StubTagger(files=[], albums={}))
     assert isinstance(data, dict)
     assert data['version'] == 1
