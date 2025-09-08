@@ -543,3 +543,27 @@ def _create_check_update_action(parent):
     else:
         action = None
     return action
+
+
+@add_action(MainAction.SAVE_SESSION)
+def _create_save_session_action(parent):
+    action = QtGui.QAction(icontheme.lookup('document-save'), _("Save Ses&sion…"), parent)
+    action.setStatusTip(_("Save the current session to a file"))
+    action.triggered.connect(parent.save_session)
+    return action
+
+
+@add_action(MainAction.LOAD_SESSION)
+def _create_load_session_action(parent):
+    action = QtGui.QAction(icontheme.lookup('document-open'), _("&Load Session…"), parent)
+    action.setStatusTip(_("Load a session file"))
+    action.triggered.connect(parent.load_session)
+    return action
+
+
+@add_action(MainAction.CLOSE_SESSION)
+def _create_close_session_action(parent):
+    action = QtGui.QAction(_("&Close Session"), parent)
+    action.setStatusTip(_("Close the current session"))
+    action.triggered.connect(parent.close_session)
+    return action

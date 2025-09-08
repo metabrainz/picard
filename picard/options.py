@@ -146,6 +146,8 @@ BoolOption('persist', 'window_maximized', False)
 Option('persist', 'window_state', QtCore.QByteArray())
 ListOption('persist', 'filters_FileTreeView', None)
 ListOption('persist', 'filters_AlbumTreeView', None)
+TextOption('persist', 'last_session_path', '')
+TextOption('persist', 'session_autosave_path', '')
 
 # picard/ui/metadatabox.py
 #
@@ -490,6 +492,33 @@ BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO ta
 BoolOption('persist', 'script_editor_show_documentation', False)
 Option('setting', 'file_renaming_scripts', {})
 TextOption('setting', 'selected_file_naming_script_id', '', title=N_("Selected file naming script"))
+
+# picard/ui/options/sessions.py
+# Sessions
+BoolOption(
+    'setting',
+    'session_safe_restore',
+    True,
+    title=N_("Preserve session placement and edits when loading sessions"),
+)
+BoolOption(
+    'setting',
+    'session_load_last_on_startup',
+    False,
+    title=N_("Load last saved session on startup"),
+)
+IntOption(
+    'setting',
+    'session_autosave_interval_min',
+    0,
+    title=N_("Auto-save session every N minutes (0 disables)"),
+)
+BoolOption(
+    'setting',
+    'session_backup_on_crash',
+    True,
+    title=N_("Attempt to keep a session backup on unexpected shutdown"),
+)
 
 # picard/ui/searchdialog/album.py
 #

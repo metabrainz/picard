@@ -92,6 +92,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     renaming,
     renaming_compat,
     scripting,
+    sessions,
     tags,
     tags_compatibility_aac,
     tags_compatibility_ac3,

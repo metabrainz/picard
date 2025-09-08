@@ -298,10 +298,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
         elif name == 'dont_write_tags':
             self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not new_value)
-        elif name == 'save_images_to_tags':
-            self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_TAGS].setChecked(new_value)
-        elif name == 'save_images_to_files':
-            self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_FILES].setChecked(new_value)
+        # Note: image saving toggles are handled on their respective options pages.
+        # see: https://github.com/metabrainz/picard/commit/a5d32b9e0986f057fb1d08b0b47ce3b6425ed087
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
@@ -666,6 +664,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.SAVE,
             MainAction.SUBMIT_ACOUSTID,
+            '-',
+            MainAction.LOAD_SESSION,
+            MainAction.SAVE_SESSION,
+            MainAction.CLOSE_SESSION,
             '-',
             MainAction.EXIT,
         )
@@ -1041,6 +1043,55 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             proceed_with_save = True
         if proceed_with_save:
             self.tagger.save(self.selected_objects)
+
+    def save_session(self):
+        from picard.session import save_session_to_path
+
+        from picard.ui.util import FileDialog
+
+        config = get_config()
+        start_dir = config.persist['current_directory'] or os.path.expanduser('~')
+        path, _filter = FileDialog.getSaveFileName(
+            parent=self,
+            dir=start_dir,
+            filter=_("MusicBrainz Picard Session (*.mbps);;All files (*)"),
+        )
+        if path:
+            try:
+                save_session_to_path(self.tagger, path)
+                config.persist['current_directory'] = os.path.dirname(path)
+                config.persist['last_session_path'] = path
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
+
+    def load_session(self):
+        from picard.session import load_session_from_path
+
+        from picard.ui.util import FileDialog
+
+        config = get_config()
+        start_dir = config.persist['current_directory'] or os.path.expanduser('~')
+        path, _filter = FileDialog.getOpenFileName(
+            parent=self,
+            dir=start_dir,
+            filter=_("MusicBrainz Picard Session (*.mbps);;All files (*)"),
+        )
+        if path:
+            try:
+                load_session_from_path(self.tagger, path)
+                config.persist['current_directory'] = os.path.dirname(path)
+                config.persist['last_session_path'] = path
+                self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(self, _("Failed to load session"), str(e))
+
+    def close_session(self):
+        # Ask to save if unsaved files
+        if not self.show_quit_confirmation():
+            return
+        # Clear current state
+        self.tagger.clear_session()
 
     def remove_selected_objects(self):
         """Tell the tagger to remove the selected objects."""

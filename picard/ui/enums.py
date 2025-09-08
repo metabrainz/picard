@@ -106,3 +106,7 @@ class MainAction(str, Enum):
     VIEW_HISTORY = 'view_history_action'
     VIEW_INFO = 'view_info_action'
     VIEW_LOG = 'view_log_action'
+    # Session management
+    SAVE_SESSION = 'save_session_action'
+    LOAD_SESSION = 'load_session_action'
+    CLOSE_SESSION = 'close_session_action'
