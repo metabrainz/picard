@@ -98,7 +98,7 @@ def test_location_detector_cluster_file(location_detector: LocationDetector, moc
 
     mock_cluster = Mock(spec=Cluster)
     mock_cluster.related_album = mock_album
-    mock_cluster.metadata = {"album": "Test Album", "albumartist": "Test Artist"}
+    mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
     mock_file.parent_item = mock_cluster
 
     location = location_detector.detect(mock_file)
@@ -122,7 +122,7 @@ def test_location_detector_regular_cluster(location_detector: LocationDetector, 
     """Test location detection for regular clusters."""
     mock_cluster = Mock(spec=Cluster)
     mock_cluster.related_album = None
-    mock_cluster.metadata = {"album": "Test Album", "albumartist": "Test Artist"}
+    mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
     mock_file.parent_item = mock_cluster
 
     location = location_detector.detect(mock_file)
@@ -261,7 +261,7 @@ def test_location_detector_detect_cluster_location_regular_cluster(location_dete
     """Test _detect_cluster_location with regular cluster."""
     mock_cluster = Mock(spec=Cluster)
     mock_cluster.related_album = None
-    mock_cluster.metadata = {"album": "Test Album", "albumartist": "Test Artist"}
+    mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
 
     location = location_detector._detect_cluster_location(mock_cluster)
 

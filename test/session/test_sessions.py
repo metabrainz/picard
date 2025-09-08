@@ -35,19 +35,19 @@ def test_export_session_empty(tmp_path: Path, cfg_options) -> None:
     data = export_session(_StubTagger(files=[], albums={}))
     assert isinstance(data, dict)
     assert data['version'] == 1
-    assert set(data['options'].keys()) == {'rename_files', 'move_files', 'dont_write_tags'}
+    assert set(data['options'].keys()) == {"rename_files", "move_files", "dont_write_tags"}
     assert data['options']['dont_write_tags'] is True
     assert data['items'] == []
 
 
-@pytest.mark.parametrize('saved', [True, False])
+@pytest.mark.parametrize("saved", [True, False])
 def test_export_session_includes_items_and_metadata_tags(cfg_options: None, tmp_path: Path, saved: bool) -> None:
     m = Metadata()
-    m['title'] = 'Song'
-    m['artist'] = 'Artist'
-    m['~internal'] = 'x'
-    m['length'] = '123456'
-    f = _StubFile(filename=str(tmp_path / 'a.flac'), metadata=m, saved=saved, parent_item=None)
+    m['title'] = "Song"
+    m['artist'] = "Artist"
+    m['~internal'] = "x"
+    m['length'] = "123456"
+    f = _StubFile(filename=str(tmp_path / "a.flac"), metadata=m, saved=saved, parent_item=None)
     # Provide baseline so deltas can be computed
     f.orig_metadata = Metadata()
     tagger = _StubTagger(files=[f])
@@ -56,19 +56,19 @@ def test_export_session_includes_items_and_metadata_tags(cfg_options: None, tmp_
 
     assert isinstance(data['items'], list) and len(data['items']) == 1
     item = data['items'][0]
-    assert Path(item['file_path']).name == 'a.flac'
+    assert Path(item['file_path']).name == "a.flac"
 
     loc = item['location']
-    assert loc['type'] == 'unclustered'
-    assert 'album_id' not in loc and 'recording_id' not in loc
+    assert loc['type'] == "unclustered"
+    assert "album_id" not in loc and "recording_id" not in loc
 
     if saved:
-        assert 'metadata' not in item
+        assert "metadata" not in item
     else:
         # Only user-visible tags; internal and length excluded; values are lists
         tags = item['metadata']['tags']
-        assert set(tags.keys()) == {'title', 'artist'}
-        assert isinstance(tags['title'], list) and tags['title'] == ['Song']
+        assert set(tags.keys()) == {"title", "artist"}
+        assert isinstance(tags['title'], list) and tags['title'] == ["Song"]
 
 
 def test_export_session_options_reflect_config_flags(cfg_options: None) -> None:
@@ -89,53 +89,53 @@ def test_export_session_options_reflect_config_flags(cfg_options: None) -> None:
 def test_export_session_captures_album_and_track_overrides(cfg_options: None, tmp_path: Path) -> None:
     # File present to ensure items list not empty, but focus is on overrides capture
     fm = Metadata()
-    fm['title'] = 'Song'
-    f = _StubFile(filename=str(tmp_path / 'b.mp3'), metadata=fm, saved=True, parent_item=None)
+    fm['title'] = "Song"
+    f = _StubFile(filename=str(tmp_path / "b.mp3"), metadata=fm, saved=True, parent_item=None)
 
     # Album-level override (albumartist changed)
     album_orig = Metadata()
-    album_orig['albumartist'] = 'Orig Artist'
+    album_orig['albumartist'] = "Orig Artist"
     album_cur = Metadata()
-    album_cur['albumartist'] = 'New Artist'
+    album_cur['albumartist'] = "New Artist"
 
     # Track-level override vs scripted_metadata; exclude length
     scripted = Metadata()
-    scripted['title'] = 'Old Title'
-    scripted['length'] = '1000'
+    scripted['title'] = "Old Title"
+    scripted['length'] = "1000"
     track_cur = Metadata()
-    track_cur['title'] = 'New Title'
-    track_cur['length'] = '2000'  # must be excluded
+    track_cur['title'] = "New Title"
+    track_cur['length'] = "2000"  # must be excluded
 
-    tr = _StubTrack('track-1', scripted=scripted, current=track_cur)
-    alb = _StubAlbum('album-1', orig=album_orig, current=album_cur, tracks=[tr])
+    tr = _StubTrack("track-1", scripted=scripted, current=track_cur)
+    alb = _StubAlbum("album-1", orig=album_orig, current=album_cur, tracks=[tr])
     tagger = _StubTagger(files=[f], albums={'album-1': alb})
 
     data = export_session(tagger)
 
     # Track-level overrides captured and listified
     atr = data['album_track_overrides']
-    assert 'album-1' in atr and 'track-1' in atr['album-1']
-    assert atr['album-1']['track-1'] == {'title': ['New Title']}
+    assert "album-1" in atr and "track-1" in atr['album-1']
+    assert atr['album-1']['track-1'] == {'title': ["New Title"]}
 
     # Album-level overrides captured and listified
     aor = data['album_overrides']
-    assert aor == {'album-1': {'albumartist': ['New Artist']}}
+    assert aor == {'album-1': {'albumartist': ["New Artist"]}}
 
 
 @pytest.mark.parametrize(
     ("value", "expected"),
     [
-        ('Rock', ['Rock']),
-        (['Rock', 'Pop'], ['Rock', 'Pop']),
+        ("Rock", ["Rock"]),
+        (["Rock", "Pop"], ["Rock", "Pop"]),
     ],
 )
 def test_export_session_listifies_override_values(cfg_options: None, value: Any, expected: list[str]) -> None:
     # Construct album with scalar/list diffs
     album_orig = Metadata()
-    album_orig['genre'] = ''
+    album_orig['genre'] = ""
     album_cur = Metadata()
     album_cur['genre'] = value
-    alb = _StubAlbum('album-X', orig=album_orig, current=album_cur, tracks=[])
+    alb = _StubAlbum("album-X", orig=album_orig, current=album_cur, tracks=[])
 
     tagger = _StubTagger(files=[], albums={'album-X': alb})
     data = export_session(tagger)
@@ -147,7 +147,7 @@ def test_export_session_includes_unmatched_albums(cfg_options: None) -> None:
     # Create an album with no files matched to it
     album_orig = Metadata()
     album_cur = Metadata()
-    alb = _StubAlbum('album-unmatched', orig=album_orig, current=album_cur, tracks=[])
+    alb = _StubAlbum("album-unmatched", orig=album_orig, current=album_cur, tracks=[])
 
     # Tagger with no files but has the album loaded
     tagger = _StubTagger(files=[], albums={'album-unmatched': alb})
@@ -155,8 +155,8 @@ def test_export_session_includes_unmatched_albums(cfg_options: None) -> None:
     data = export_session(tagger)
 
     # Should include the unmatched album
-    assert 'unmatched_albums' in data
-    assert data['unmatched_albums'] == ['album-unmatched']
+    assert "unmatched_albums" in data
+    assert data['unmatched_albums'] == ["album-unmatched"]
 
 
 def test_export_session_excludes_albums_with_files_from_unmatched(cfg_options: None, tmp_path: Path) -> None:
@@ -170,13 +170,13 @@ def test_export_session_excludes_albums_with_files_from_unmatched(cfg_options: N
     # Create an album
     album_orig = Metadata()
     album_cur = Metadata()
-    alb = _StubAlbum('album-with-files', orig=album_orig, current=album_cur, tracks=[])
+    alb = _StubAlbum("album-with-files", orig=album_orig, current=album_cur, tracks=[])
 
     # Create a file that's matched to the album
     fm = Metadata()
-    fm['title'] = 'Song'
-    parent_item = _StubParentItem('album-with-files')
-    f = _StubFile(filename=str(tmp_path / 'song.mp3'), metadata=fm, saved=True, parent_item=parent_item)
+    fm['title'] = "Song"
+    parent_item = _StubParentItem("album-with-files")
+    f = _StubFile(filename=str(tmp_path / "song.mp3"), metadata=fm, saved=True, parent_item=parent_item)
 
     # Tagger with the file and album
     tagger = _StubTagger(files=[f], albums={'album-with-files': alb})
@@ -184,5 +184,5 @@ def test_export_session_excludes_albums_with_files_from_unmatched(cfg_options: N
     data = export_session(tagger)
 
     # Should not include the album in unmatched_albums since it has files
-    assert 'unmatched_albums' in data
+    assert "unmatched_albums" in data
     assert data['unmatched_albums'] == []

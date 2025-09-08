@@ -79,7 +79,7 @@ class LocationDetector:
         bool
             True if parent is a track.
         """
-        return hasattr(parent, "album") and isinstance(parent.album, Album)
+        return hasattr(parent, 'album') and isinstance(parent.album, Album)
 
     def _is_cluster_parent(self, parent: object) -> bool:
         """Check if parent is a cluster.
@@ -114,7 +114,7 @@ class LocationDetector:
             return SessionItemLocation(type=SessionConstants.LOCATION_NAT, recording_id=parent.id)
 
         # Track placement
-        if hasattr(parent, "id") and parent.id:
+        if hasattr(parent, 'id') and parent.id:
             return SessionItemLocation(
                 type=SessionConstants.LOCATION_TRACK, album_id=parent.album.id, recording_id=parent.id
             )
@@ -145,8 +145,8 @@ class LocationDetector:
 
         return SessionItemLocation(
             type=SessionConstants.LOCATION_CLUSTER,
-            cluster_title=str(parent.metadata["album"]),
-            cluster_artist=str(parent.metadata["albumartist"]),
+            cluster_title=str(parent.metadata['album']),
+            cluster_artist=str(parent.metadata['albumartist']),
         )
 
     def _unclustered_location(self) -> SessionItemLocation:

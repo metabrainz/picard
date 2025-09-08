@@ -36,10 +36,10 @@ def mock_file_with_metadata() -> Mock:
     """Provide a mock file with metadata."""
     file_mock = Mock(spec=File)
     metadata = Metadata()
-    metadata["title"] = "Test Song"
-    metadata["artist"] = "Test Artist"
-    metadata["~internal"] = "internal_value"
-    metadata["length"] = "123456"
+    metadata['title'] = "Test Song"
+    metadata['artist'] = "Test Artist"
+    metadata['~internal'] = "internal_value"
+    metadata['length'] = "123456"
     file_mock.metadata = metadata
     return file_mock
 
@@ -52,8 +52,8 @@ def test_serialize_metadata_for_file(mock_file_with_metadata: Mock) -> None:
     assert "artist" in tags
     assert "~internal" not in tags
     assert "length" not in tags
-    assert tags["title"] == ["Test Song"]
-    assert tags["artist"] == ["Test Artist"]
+    assert tags['title'] == ["Test Song"]
+    assert tags['artist'] == ["Test Artist"]
 
 
 def test_serialize_metadata_empty_file() -> None:
@@ -80,18 +80,18 @@ def test_serialize_metadata_with_multiple_values() -> None:
 
     tags = MetadataHandler.serialize_metadata_for_file(file_mock)
 
-    assert tags["genre"] == ["Rock", "Pop"]
-    assert tags["artist"] == ["Single Artist"]
+    assert tags['genre'] == ["Rock", "Pop"]
+    assert tags['artist'] == ["Single Artist"]
 
 
 def test_deserialize_metadata() -> None:
     """Test metadata deserialization."""
-    tags = {"title": ["Test Song"], "artist": ["Test Artist"]}
+    tags = {'title': ["Test Song"], 'artist': ["Test Artist"]}
 
     metadata = MetadataHandler.deserialize_metadata(tags)
 
-    assert metadata["title"] == "Test Song"
-    assert metadata["artist"] == "Test Artist"
+    assert metadata['title'] == "Test Song"
+    assert metadata['artist'] == "Test Artist"
 
 
 def test_deserialize_metadata_empty() -> None:
@@ -103,12 +103,12 @@ def test_deserialize_metadata_empty() -> None:
 
 def test_deserialize_metadata_with_multiple_values() -> None:
     """Test metadata deserialization with multiple values per tag."""
-    tags = {"genre": ["Rock", "Pop"], "artist": ["Artist 1", "Artist 2"]}
+    tags = {'genre': ["Rock", "Pop"], 'artist': ["Artist 1", "Artist 2"]}
 
     metadata = MetadataHandler.deserialize_metadata(tags)
 
-    assert metadata["genre"] == "Rock; Pop"
-    assert metadata["artist"] == "Artist 1; Artist 2"
+    assert metadata['genre'] == "Rock; Pop"
+    assert metadata['artist'] == "Artist 1; Artist 2"
 
 
 @pytest.mark.parametrize(
@@ -129,7 +129,7 @@ def test_as_list(values: Any, expected: list[Any]) -> None:
     assert result == expected
 
 
-@patch('picard.log.log')
+@patch("picard.log.log")
 def test_safe_apply_metadata_success(mock_log: Mock) -> None:
     """Test successful metadata application."""
     file_mock = Mock(spec=File)
@@ -139,7 +139,7 @@ def test_safe_apply_metadata_success(mock_log: Mock) -> None:
     file_mock.orig_metadata.length = 789012
 
     metadata = Metadata()
-    metadata["title"] = "New Title"
+    metadata['title'] = "New Title"
 
     result = MetadataHandler.safe_apply_metadata(file_mock, metadata)
 
@@ -149,7 +149,7 @@ def test_safe_apply_metadata_success(mock_log: Mock) -> None:
     assert metadata.length == 123456
 
 
-@patch('picard.log.log')
+@patch("picard.log.log")
 def test_safe_apply_metadata_success_with_none_length(mock_log: Mock) -> None:
     """Test successful metadata application with None length."""
     file_mock = Mock(spec=File)
@@ -159,7 +159,7 @@ def test_safe_apply_metadata_success_with_none_length(mock_log: Mock) -> None:
     file_mock.orig_metadata.length = 789012
 
     metadata = Metadata()
-    metadata["title"] = "New Title"
+    metadata['title'] = "New Title"
 
     result = MetadataHandler.safe_apply_metadata(file_mock, metadata)
 
@@ -169,7 +169,7 @@ def test_safe_apply_metadata_success_with_none_length(mock_log: Mock) -> None:
     assert metadata.length == 789012
 
 
-@patch('picard.session.metadata_handler.log')
+@patch("picard.session.metadata_handler.log")
 def test_safe_apply_metadata_attribute_error(mock_log: Mock) -> None:
     """Test metadata application with AttributeError."""
     file_mock = Mock(spec=File)
@@ -189,7 +189,7 @@ def test_safe_apply_metadata_attribute_error(mock_log: Mock) -> None:
     assert "Test error" in str(mock_log.warning.call_args)
 
 
-@patch('picard.session.metadata_handler.log')
+@patch("picard.session.metadata_handler.log")
 def test_safe_apply_metadata_key_error(mock_log: Mock) -> None:
     """Test metadata application with KeyError."""
     file_mock = Mock(spec=File)
@@ -209,7 +209,7 @@ def test_safe_apply_metadata_key_error(mock_log: Mock) -> None:
     assert "Test error" in str(mock_log.warning.call_args)
 
 
-@patch('picard.session.metadata_handler.log')
+@patch("picard.session.metadata_handler.log")
 def test_safe_apply_metadata_unexpected_error(mock_log: Mock) -> None:
     """Test metadata application with unexpected error."""
     file_mock = Mock(spec=File)
@@ -229,7 +229,7 @@ def test_safe_apply_metadata_unexpected_error(mock_log: Mock) -> None:
     assert "File system error" in str(mock_log.error.call_args)
 
 
-@patch('picard.session.retry_helper.RetryHelper')
+@patch("picard.session.retry_helper.RetryHelper")
 def test_apply_saved_metadata_if_any_file_pending(mock_retry_helper: Mock) -> None:
     """Test applying saved metadata with file in PENDING state."""
     tagger_mock = Mock()
@@ -245,7 +245,7 @@ def test_apply_saved_metadata_if_any_file_pending(mock_retry_helper: Mock) -> No
     mock_retry_helper.retry_until.assert_called_once()
 
 
-@patch('picard.session.retry_helper.RetryHelper')
+@patch("picard.session.retry_helper.RetryHelper")
 def test_apply_saved_metadata_if_any_file_not_found(mock_retry_helper: Mock) -> None:
     """Test applying saved metadata when file is not found."""
     tagger_mock = Mock()
@@ -258,7 +258,7 @@ def test_apply_saved_metadata_if_any_file_not_found(mock_retry_helper: Mock) -> 
     mock_retry_helper.retry_until.assert_called_once()
 
 
-@patch('picard.session.retry_helper.RetryHelper')
+@patch("picard.session.retry_helper.RetryHelper")
 def test_apply_saved_metadata_if_any_file_ready_success(mock_retry_helper: Mock) -> None:
     """Test applying saved metadata when file is ready and application succeeds."""
     tagger_mock = Mock()
@@ -270,14 +270,14 @@ def test_apply_saved_metadata_if_any_file_ready_success(mock_retry_helper: Mock)
     metadata = Metadata()
     metadata_map = {Path("/test/file.mp3"): metadata}
 
-    with patch.object(MetadataHandler, 'safe_apply_metadata', return_value=True):
+    with patch.object(MetadataHandler, "safe_apply_metadata", return_value=True):
         MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
     # Should not retry if file is ready and metadata applied successfully
     mock_retry_helper.retry_until.assert_not_called()
 
 
-@patch('picard.session.retry_helper.RetryHelper')
+@patch("picard.session.retry_helper.RetryHelper")
 def test_apply_saved_metadata_if_any_file_ready_failure(mock_retry_helper: Mock) -> None:
     """Test applying saved metadata when file is ready but application fails."""
     tagger_mock = Mock()
@@ -289,14 +289,14 @@ def test_apply_saved_metadata_if_any_file_ready_failure(mock_retry_helper: Mock)
     metadata = Metadata()
     metadata_map = {Path("/test/file.mp3"): metadata}
 
-    with patch.object(MetadataHandler, 'safe_apply_metadata', return_value=False):
+    with patch.object(MetadataHandler, "safe_apply_metadata", return_value=False):
         MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
     # Should retry if metadata application failed
     mock_retry_helper.retry_until.assert_called_once()
 
 
-@patch('picard.session.retry_helper.RetryHelper')
+@patch("picard.session.retry_helper.RetryHelper")
 def test_apply_saved_metadata_if_any_mixed_states(mock_retry_helper: Mock) -> None:
     """Test applying saved metadata with files in different states."""
     tagger_mock = Mock()
@@ -330,7 +330,7 @@ def test_apply_saved_metadata_if_any_mixed_states(mock_retry_helper: Mock) -> No
         Path("/test/file3.mp3"): Metadata(),
     }
 
-    with patch.object(MetadataHandler, 'safe_apply_metadata', side_effect=[True, False]):
+    with patch.object(MetadataHandler, "safe_apply_metadata", side_effect=[True, False]):
         MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
     # Should retry for file2 (pending) and file3 (failed)

@@ -79,33 +79,33 @@ class SessionLoader:
         6. Apply metadata overrides
         7. Schedule metadata application
         """
-        self._emit_progress("read", details={"path": str(path)})
+        self._emit_progress("read", details={'path': str(path)})
         data = self._read_session_file(path)
         self._prepare_session(data)
-        self._restore_options(data.get("options", {}))
+        self._restore_options(data.get('options', {}))
         # Cache saved UI expansion state for later album updates
-        self._saved_expanded_albums = set(data.get("expanded_albums", [])) if "expanded_albums" in data else None
+        self._saved_expanded_albums = set(data.get('expanded_albums', [])) if "expanded_albums" in data else None
 
-        items = data.get("items", [])
+        items = data.get('items', [])
         grouped_items = self._group_items_by_location(items)
         metadata_map = self._extract_metadata(items)
 
         # If mb_cache is provided, try to pre-load albums from cached JSON
-        mb_cache = data.get("mb_cache", {})
+        mb_cache = data.get('mb_cache', {})
         if mb_cache:
-            self._emit_progress("preload_cache", details={"albums": len(mb_cache)})
+            self._emit_progress("preload_cache", details={'albums': len(mb_cache)})
             self._preload_albums_from_cache(mb_cache, grouped_items)
 
         self._emit_progress(
             "load_items",
             details={
-                "files": len(grouped_items.unclustered)
+                'files': len(grouped_items.unclustered)
                 + sum(len(v) for v in grouped_items.by_cluster.values())
                 + sum(len(g.unmatched) + len(g.tracks) for g in grouped_items.by_album.values())
             },
         )
         self._load_items(grouped_items)
-        self._load_unmatched_albums(data.get("unmatched_albums", []))
+        self._load_unmatched_albums(data.get('unmatched_albums', []))
         self._emit_progress("apply_overrides")
         self._apply_overrides(data)
 
@@ -147,11 +147,11 @@ class SessionLoader:
             return _("Finalizing…")
 
         dispatch: dict[str, Any] = {
-            "read": _("Reading session…"),
-            "apply_overrides": _("Applying overrides…"),
-            "preload_cache": msg_preload,
-            "load_items": msg_load_items,
-            "finalize": msg_finalize,
+            'read': _("Reading session…"),
+            'apply_overrides': _("Applying overrides…"),
+            'preload_cache': msg_preload,
+            'load_items': msg_load_items,
+            'finalize': msg_finalize,
         }
 
         entry = dispatch.get(stage)
@@ -241,9 +241,9 @@ class SessionLoader:
             The options to restore.
         """
         config = get_config()
-        config.setting["rename_files"] = bool(options.get("rename_files", config.setting["rename_files"]))
-        config.setting["move_files"] = bool(options.get("move_files", config.setting["move_files"]))
-        config.setting["dont_write_tags"] = bool(options.get("dont_write_tags", config.setting["dont_write_tags"]))
+        config.setting['rename_files'] = bool(options.get('rename_files', config.setting['rename_files']))
+        config.setting['move_files'] = bool(options.get('move_files', config.setting['move_files']))
+        config.setting['dont_write_tags'] = bool(options.get('dont_write_tags', config.setting['dont_write_tags']))
 
     def _group_items_by_location(self, items: list[dict[str, Any]]) -> GroupedItems:
         """Group items by their target location.
@@ -264,24 +264,24 @@ class SessionLoader:
         nat_items: list[tuple[Path, str]] = []
 
         for it in items:
-            fpath = Path(it["file_path"]).expanduser()
-            loc = it.get("location", {})
-            ltype = str(loc.get("type", SessionConstants.LOCATION_UNCLUSTERED))
+            fpath = Path(it['file_path']).expanduser()
+            loc = it.get('location', {})
+            ltype = str(loc.get('type', SessionConstants.LOCATION_UNCLUSTERED))
 
             if ltype == SessionConstants.LOCATION_UNCLUSTERED:
                 by_unclustered.append(fpath)
             elif ltype == SessionConstants.LOCATION_CLUSTER:
-                key = (str(loc.get("cluster_title", "")), str(loc.get("cluster_artist", "")))
+                key = (str(loc.get('cluster_title', "")), str(loc.get('cluster_artist', "")))
                 by_cluster.setdefault(key, []).append(fpath)
             elif ltype in {SessionConstants.LOCATION_ALBUM_UNMATCHED, SessionConstants.LOCATION_TRACK}:
-                album_id = str(loc.get("album_id"))
+                album_id = str(loc.get('album_id'))
                 entry = by_album.setdefault(album_id, AlbumItems(unmatched=[], tracks=[]))
                 if ltype == SessionConstants.LOCATION_ALBUM_UNMATCHED:
                     entry.unmatched.append(fpath)
                 else:
-                    entry.tracks.append((fpath, str(loc.get("recording_id"))))
+                    entry.tracks.append((fpath, str(loc.get('recording_id'))))
             elif ltype == SessionConstants.LOCATION_NAT:
-                nat_items.append((fpath, str(loc.get("recording_id"))))
+                nat_items.append((fpath, str(loc.get('recording_id'))))
             else:
                 by_unclustered.append(fpath)
 
@@ -302,10 +302,10 @@ class SessionLoader:
         """
         metadata_by_path: dict[Path, dict[str, list[Any]]] = {}
         for it in items:
-            fpath = Path(it["file_path"]).expanduser()
-            md = it.get("metadata", {})
+            fpath = Path(it['file_path']).expanduser()
+            md = it.get('metadata', {})
             if "tags" in md:
-                tags = {k: MetadataHandler.as_list(v) for k, v in md["tags"].items()}
+                tags = {k: MetadataHandler.as_list(v) for k, v in md['tags'].items()}
                 metadata_by_path[fpath] = tags
         return metadata_by_path
 
@@ -411,12 +411,12 @@ class SessionLoader:
         data : dict[str, Any]
             The session data.
         """
-        expanded_albums = set(data.get("expanded_albums", []))
+        expanded_albums = set(data.get('expanded_albums', []))
 
         def set_expansions() -> None:
             # Album view: set expansion for albums we have
             for album_id, album in self.tagger.albums.items():
-                ui_item = getattr(album, "ui_item", None)
+                ui_item = getattr(album, 'ui_item', None)
                 if ui_item is None:
                     continue
                 ui_item.setExpanded(album_id in expanded_albums)
@@ -435,8 +435,8 @@ class SessionLoader:
         data : dict[str, Any]
             The session data containing overrides.
         """
-        track_overrides_by_album = data.get("album_track_overrides", {})
-        album_meta_overrides = data.get("album_overrides", {})
+        track_overrides_by_album = data.get('album_track_overrides', {})
+        album_meta_overrides = data.get('album_overrides', {})
 
         # Ensure albums referenced by overrides are loaded and visible
         referenced_album_ids = set(track_overrides_by_album.keys()) | set(album_meta_overrides.keys())

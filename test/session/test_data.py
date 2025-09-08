@@ -120,7 +120,7 @@ def test_session_item_creation() -> None:
     file_path = Path("/test/file.mp3")
     location = SessionItemLocation(type="track", album_id="album-123", recording_id="recording-456")
     metadata = Metadata()
-    metadata["title"] = "Test Song"
+    metadata['title'] = "Test Song"
 
     item = SessionItem(file_path=file_path, location=location, metadata=metadata)
 
@@ -156,16 +156,16 @@ def test_session_data_creation() -> None:
         version=1,
         options=options,
         items=[item],
-        album_track_overrides={"album-123": {"track-456": {"title": ["New Title"]}}},
-        album_overrides={"album-123": {"albumartist": ["New Artist"]}},
+        album_track_overrides={'album-123': {'track-456': {'title': ["New Title"]}}},
+        album_overrides={'album-123': {'albumartist': ["New Artist"]}},
         unmatched_albums=["album-789"],
     )
 
     assert data.version == 1
     assert data.options == options
     assert data.items == [item]
-    assert data.album_track_overrides == {"album-123": {"track-456": {"title": ["New Title"]}}}
-    assert data.album_overrides == {"album-123": {"albumartist": ["New Artist"]}}
+    assert data.album_track_overrides == {'album-123': {'track-456': {'title': ["New Title"]}}}
+    assert data.album_overrides == {'album-123': {'albumartist': ["New Artist"]}}
     assert data.unmatched_albums == ["album-789"]
 
 
@@ -179,7 +179,7 @@ def test_grouped_items_creation() -> None:
     unclustered = [Path("/test/unclustered.mp3")]
     by_cluster = {("Album", "Artist"): [Path("/test/cluster.mp3")]}
     by_album = {
-        "album-123": AlbumItems(
+        'album-123': AlbumItems(
             unmatched=[Path("/test/unmatched.mp3")], tracks=[(Path("/test/track.mp3"), "recording-456")]
         )
     }
@@ -221,7 +221,7 @@ def test_album_items_creation() -> None:
 
 def test_track_overrides_creation() -> None:
     """Test TrackOverrides creation."""
-    overrides = {"title": ["New Title"], "artist": ["New Artist"]}
+    overrides = {'title': ["New Title"], 'artist': ["New Artist"]}
 
     track_overrides = TrackOverrides(track_id="recording-123", overrides=overrides)
 
@@ -236,7 +236,7 @@ def test_track_overrides_creation() -> None:
 
 def test_album_overrides_creation() -> None:
     """Test AlbumOverrides creation."""
-    overrides = {"albumartist": ["New Artist"], "album": ["New Album"]}
+    overrides = {'albumartist': ["New Artist"], 'album': ["New Album"]}
 
     album_overrides = AlbumOverrides(album_id="album-123", overrides=overrides)
 

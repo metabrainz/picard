@@ -27,7 +27,7 @@ from picard.session.retry_helper import RetryHelper
 import pytest
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_condition_met_immediately(mock_single_shot: Mock) -> None:
     """Test retry_until when condition is met immediately."""
     condition_called = False
@@ -49,7 +49,7 @@ def test_retry_until_condition_met_immediately(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_not_called()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_condition_not_met(mock_single_shot: Mock) -> None:
     """Test retry_until when condition is not met."""
 
@@ -64,7 +64,7 @@ def test_retry_until_condition_not_met(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_called_once()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_with_custom_delay(mock_single_shot: Mock) -> None:
     """Test retry_until with custom delay."""
 
@@ -79,7 +79,7 @@ def test_retry_until_with_custom_delay(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_called_once_with(500, mock_single_shot.call_args[0][1])
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_with_max_attempts(mock_single_shot: Mock) -> None:
     """Test retry_until with maximum attempts limit."""
     attempt_count = 0
@@ -104,7 +104,7 @@ def test_retry_until_with_max_attempts(mock_single_shot: Mock) -> None:
     assert mock_single_shot.call_count == 3
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_condition_becomes_true_after_retries(mock_single_shot: Mock) -> None:
     """Test retry_until when condition becomes true after some retries."""
     call_count = 0
@@ -130,7 +130,7 @@ def test_retry_until_condition_becomes_true_after_retries(mock_single_shot: Mock
     assert mock_single_shot.call_count > 0
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_file_ready_file_not_ready(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready with file not ready."""
     file_mock = Mock()
@@ -148,7 +148,7 @@ def test_retry_until_file_ready_file_not_ready(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_called_once()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_file_ready_file_ready(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready when file is ready."""
     file_mock = Mock()
@@ -166,7 +166,7 @@ def test_retry_until_file_ready_file_ready(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_not_called()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_file_ready_no_file(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready when file is None."""
 
@@ -181,7 +181,7 @@ def test_retry_until_file_ready_no_file(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_called_once()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_file_ready_file_without_state(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready when file has no state attribute."""
     file_mock = Mock()
@@ -200,7 +200,7 @@ def test_retry_until_file_ready_file_without_state(mock_single_shot: Mock) -> No
     mock_single_shot.assert_called_once()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_file_ready_with_custom_delay(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready with custom delay."""
     file_mock = Mock()
@@ -218,7 +218,7 @@ def test_retry_until_file_ready_with_custom_delay(mock_single_shot: Mock) -> Non
     mock_single_shot.assert_called_once_with(300, mock_single_shot.call_args[0][1])
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_album_ready_album_not_ready(mock_single_shot: Mock) -> None:
     """Test retry_until_album_ready with album not ready."""
     album_mock = Mock()
@@ -235,7 +235,7 @@ def test_retry_until_album_ready_album_not_ready(mock_single_shot: Mock) -> None
     mock_single_shot.assert_called_once()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_album_ready_album_ready(mock_single_shot: Mock) -> None:
     """Test retry_until_album_ready when album is ready."""
     album_mock = Mock()
@@ -252,7 +252,7 @@ def test_retry_until_album_ready_album_ready(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_not_called()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_album_ready_no_album(mock_single_shot: Mock) -> None:
     """Test retry_until_album_ready when album is None."""
 
@@ -267,7 +267,7 @@ def test_retry_until_album_ready_no_album(mock_single_shot: Mock) -> None:
     mock_single_shot.assert_called_once()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_album_ready_album_without_tracks_attribute(mock_single_shot: Mock) -> None:
     """Test retry_until_album_ready when album has no tracks attribute."""
     album_mock = Mock()
@@ -285,7 +285,7 @@ def test_retry_until_album_ready_album_without_tracks_attribute(mock_single_shot
     mock_single_shot.assert_called_once()
 
 
-@patch('PyQt6.QtCore.QTimer.singleShot')
+@patch("PyQt6.QtCore.QTimer.singleShot")
 def test_retry_until_album_ready_with_custom_delay(mock_single_shot: Mock) -> None:
     """Test retry_until_album_ready with custom delay."""
     album_mock = Mock()

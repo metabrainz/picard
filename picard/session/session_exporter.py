@@ -71,41 +71,41 @@ class SessionExporter:
         """
         config = get_config()
         session_data = {
-            "version": SessionConstants.SESSION_FORMAT_VERSION,
-            "options": self._export_options(config),
-            "items": [],
-            "album_track_overrides": {},
-            "album_overrides": {},
-            "unmatched_albums": [],
-            "expanded_albums": [],
+            'version': SessionConstants.SESSION_FORMAT_VERSION,
+            'options': self._export_options(config),
+            'items': [],
+            'album_track_overrides': {},
+            'album_overrides': {},
+            'unmatched_albums': [],
+            'expanded_albums': [],
             # Optional: cache of MB release JSON keyed by album id
-            "mb_cache": {},
+            'mb_cache': {},
         }
 
         # Export file items
         for file in tagger.iter_all_files():
             item = self._export_file_item(file)
-            session_data["items"].append(item)
+            session_data['items'].append(item)
 
         # Export metadata overrides and unmatched albums
         album_overrides, album_meta_overrides, unmatched_albums = self._export_metadata_overrides(tagger)
         if album_overrides:
-            session_data["album_track_overrides"] = album_overrides
+            session_data['album_track_overrides'] = album_overrides
         if album_meta_overrides:
-            session_data["album_overrides"] = album_meta_overrides
+            session_data['album_overrides'] = album_meta_overrides
         if unmatched_albums:
-            session_data["unmatched_albums"] = unmatched_albums
+            session_data['unmatched_albums'] = unmatched_albums
 
         # Optionally export MB JSON cache per album
         include_mb = config.setting['session_include_mb_data']
 
         if include_mb:
-            session_data["mb_cache"] = self._export_mb_cache(tagger)
+            session_data['mb_cache'] = self._export_mb_cache(tagger)
 
         # Export UI state (expanded albums)
         expanded_albums = self._export_ui_state(tagger)
         if expanded_albums:
-            session_data["expanded_albums"] = expanded_albums
+            session_data['expanded_albums'] = expanded_albums
 
         return session_data
 
@@ -145,7 +145,7 @@ class SessionExporter:
         """
         expanded: list[str] = []
         for album in tagger.albums.values():
-            ui_item = getattr(album, "ui_item", None)
+            ui_item = getattr(album, 'ui_item', None)
             if ui_item is not None and ui_item.isExpanded():
                 expanded.append(album.id)
         return expanded
@@ -164,9 +164,9 @@ class SessionExporter:
             Dictionary containing the relevant configuration options.
         """
         return {
-            "rename_files": bool(config.setting["rename_files"]),
-            "move_files": bool(config.setting["move_files"]),
-            "dont_write_tags": bool(config.setting["dont_write_tags"]),
+            'rename_files': bool(config.setting['rename_files']),
+            'move_files': bool(config.setting['move_files']),
+            'dont_write_tags': bool(config.setting['dont_write_tags']),
         }
 
     def _export_file_item(self, file: Any) -> dict[str, Any]:
@@ -184,20 +184,20 @@ class SessionExporter:
         """
         loc = self.location_detector.detect(file)
         entry = {
-            "file_path": str(Path(file.filename)),
-            "location": self._serialize_location(loc),
+            'file_path': str(Path(file.filename)),
+            'location': self._serialize_location(loc),
         }
 
         # Persist unsaved tag changes as deltas vs base metadata
         if not file.is_saved():
-            parent = getattr(file, "parent_item", None)
+            parent = getattr(file, 'parent_item', None)
             base_md = None
             # If the file is under a track, diff against the track's scripted metadata (user-visible basis)
-            if parent is not None and hasattr(parent, "album"):
-                base_md = getattr(parent, "scripted_metadata", getattr(parent, "metadata", None))
+            if parent is not None and hasattr(parent, 'album'):
+                base_md = getattr(parent, 'scripted_metadata', getattr(parent, 'metadata', None))
             # Otherwise, diff against the file's original on-disk metadata
             if base_md is None:
-                base_md = getattr(file, "orig_metadata", None)
+                base_md = getattr(file, 'orig_metadata', None)
 
             if base_md is not None:
                 diff = file.metadata.diff(base_md)
@@ -208,7 +208,7 @@ class SessionExporter:
                     and not str(k).startswith(SessionConstants.INTERNAL_TAG_PREFIX)
                 }
                 if delta_tags:
-                    entry["metadata"] = {"tags": delta_tags}
+                    entry['metadata'] = {'tags': delta_tags}
 
         return entry
 
@@ -228,11 +228,11 @@ class SessionExporter:
         return {
             k: v
             for k, v in {
-                "type": location.type,
-                "album_id": location.album_id,
-                "recording_id": location.recording_id,
-                "cluster_title": location.cluster_title,
-                "cluster_artist": location.cluster_artist,
+                'type': location.type,
+                'album_id': location.album_id,
+                'recording_id': location.recording_id,
+                'cluster_title': location.cluster_title,
+                'cluster_artist': location.cluster_artist,
             }.items()
             if v is not None
         }

@@ -148,10 +148,10 @@ def mock_file_with_metadata() -> Mock:
     """Provide a mock file with metadata."""
     file_mock = Mock(spec=File)
     metadata = Metadata()
-    metadata["title"] = "Test Song"
-    metadata["artist"] = "Test Artist"
-    metadata["~internal"] = "internal_value"
-    metadata["length"] = "123456"
+    metadata['title'] = "Test Song"
+    metadata['artist'] = "Test Artist"
+    metadata['~internal'] = "internal_value"
+    metadata['length'] = "123456"
     file_mock.metadata = metadata
     return file_mock
 
@@ -187,7 +187,7 @@ def mock_cluster() -> Mock:
     """Provide a mock cluster instance."""
     cluster_mock = Mock(spec=Cluster)
     cluster_mock.related_album = None
-    cluster_mock.metadata = {"album": "Test Album", "albumartist": "Test Artist"}
+    cluster_mock.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
     return cluster_mock
 
 
@@ -249,11 +249,11 @@ def track_mover() -> TrackMover:
 def sample_metadata() -> Metadata:
     """Provide sample metadata for testing."""
     metadata = Metadata()
-    metadata["title"] = "Test Song"
-    metadata["artist"] = "Test Artist"
-    metadata["album"] = "Test Album"
-    metadata["~internal"] = "internal_value"
-    metadata["length"] = "123456"
+    metadata['title'] = "Test Song"
+    metadata['artist'] = "Test Artist"
+    metadata['album'] = "Test Album"
+    metadata['~internal'] = "internal_value"
+    metadata['length'] = "123456"
     return metadata
 
 
@@ -273,27 +273,27 @@ def sample_album_items() -> AlbumItems:
 def sample_session_data() -> dict[str, Any]:
     """Provide sample session data for testing."""
     return {
-        "version": 1,
-        "options": {
-            "rename_files": True,
-            "move_files": False,
-            "dont_write_tags": True,
+        'version': 1,
+        'options': {
+            'rename_files': True,
+            'move_files': False,
+            'dont_write_tags': True,
         },
-        "items": [
+        'items': [
             {
-                "file_path": str(Path("/test/file1.mp3")),
-                "location": {"type": "unclustered"},
+                'file_path': str(Path("/test/file1.mp3")),
+                'location': {'type': "unclustered"},
             },
             {
-                "file_path": str(Path("/test/file2.mp3")),
-                "location": {"type": "track", "album_id": "album-123", "recording_id": "recording-456"},
-                "metadata": {"tags": {"title": ["Test Song"]}},
+                'file_path': str(Path("/test/file2.mp3")),
+                'location': {'type': "track", 'album_id': "album-123", 'recording_id': "recording-456"},
+                'metadata': {'tags': {'title': ["Test Song"]}},
             },
         ],
-        "album_track_overrides": {"album-123": {"track-456": {"title": ["New Title"]}}},
-        "album_overrides": {"album-123": {"albumartist": ["New Artist"]}},
-        "unmatched_albums": ["album-789"],
-        "expanded_albums": ["album-123"],
+        'album_track_overrides': {'album-123': {'track-456': {'title': ["New Title"]}}},
+        'album_overrides': {'album-123': {'albumartist': ["New Artist"]}},
+        'unmatched_albums': ["album-789"],
+        'expanded_albums': ["album-123"],
     }
 
 
@@ -360,7 +360,7 @@ def create_mock_file_with_parent(filename: str, parent_type: str = "track", albu
     elif parent_type == "cluster":
         mock_cluster = Mock(spec=Cluster)
         mock_cluster.related_album = None
-        mock_cluster.metadata = {"album": "Test Album", "albumartist": "Test Artist"}
+        mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
         file_mock.parent_item = mock_cluster
     elif parent_type == "nat":
         mock_album = Mock(spec=NatAlbum)
@@ -380,24 +380,24 @@ def create_session_items_with_locations() -> list[dict[str, Any]]:
     """Create a list of session items with different location types."""
     return [
         {
-            "file_path": str(Path("/test/unclustered.mp3")),
-            "location": {"type": "unclustered"},
+            'file_path': str(Path("/test/unclustered.mp3")),
+            'location': {'type': "unclustered"},
         },
         {
-            "file_path": str(Path("/test/cluster.mp3")),
-            "location": {"type": "cluster", "cluster_title": "Album", "cluster_artist": "Artist"},
+            'file_path': str(Path("/test/cluster.mp3")),
+            'location': {'type': "cluster", 'cluster_title': "Album", 'cluster_artist': "Artist"},
         },
         {
-            "file_path": str(Path("/test/track.mp3")),
-            "location": {"type": "track", "album_id": "album-123", "recording_id": "recording-456"},
+            'file_path': str(Path("/test/track.mp3")),
+            'location': {'type': "track", 'album_id': "album-123", 'recording_id': "recording-456"},
         },
         {
-            "file_path": str(Path("/test/unmatched.mp3")),
-            "location": {"type": "album_unmatched", "album_id": "album-789"},
+            'file_path': str(Path("/test/unmatched.mp3")),
+            'location': {'type': "album_unmatched", 'album_id': "album-789"},
         },
         {
-            "file_path": str(Path("/test/nat.mp3")),
-            "location": {"type": "nat", "recording_id": "recording-999"},
+            'file_path': str(Path("/test/nat.mp3")),
+            'location': {'type': "nat", 'recording_id': "recording-999"},
         },
     ]
 
@@ -428,10 +428,10 @@ def patch_get_config(monkeypatch: pytest.MonkeyPatch, **settings) -> Mock:
     """Patch get_config with specified settings."""
     config_mock = Mock()
     config_mock.setting = {
-        "rename_files": False,
-        "move_files": False,
-        "dont_write_tags": False,
-        "session_safe_restore": True,
+        'rename_files': False,
+        'move_files': False,
+        'dont_write_tags': False,
+        'session_safe_restore': True,
         **settings,
     }
 
@@ -447,5 +447,5 @@ def patch_get_config(monkeypatch: pytest.MonkeyPatch, **settings) -> Mock:
 def patch_qtimer_singleshot(monkeypatch: pytest.MonkeyPatch) -> Mock:
     """Patch QtCore.QTimer.singleShot for testing."""
     mock_single_shot = Mock()
-    monkeypatch.setattr('PyQt6.QtCore.QTimer.singleShot', mock_single_shot)
+    monkeypatch.setattr("PyQt6.QtCore.QTimer.singleShot", mock_single_shot)
     return mock_single_shot

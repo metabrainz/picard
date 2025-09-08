@@ -53,17 +53,17 @@ def test_session_exporter_export_session_empty(
     """Test exporting an empty session."""
     data = session_exporter.export_session(mock_tagger)
 
-    assert data["version"] == SessionConstants.SESSION_FORMAT_VERSION
-    assert data["options"] == {
-        "rename_files": False,
-        "move_files": False,
-        "dont_write_tags": True,
+    assert data['version'] == SessionConstants.SESSION_FORMAT_VERSION
+    assert data['options'] == {
+        'rename_files': False,
+        'move_files': False,
+        'dont_write_tags': True,
     }
-    assert data["items"] == []
-    assert data["album_track_overrides"] == {}
-    assert data["album_overrides"] == {}
-    assert data["unmatched_albums"] == []
-    assert data["expanded_albums"] == []
+    assert data['items'] == []
+    assert data['album_track_overrides'] == {}
+    assert data['album_overrides'] == {}
+    assert data['unmatched_albums'] == []
+    assert data['expanded_albums'] == []
 
 
 def test_session_exporter_export_file_item_saved(session_exporter: SessionExporter, cfg_options) -> None:
@@ -78,13 +78,13 @@ def test_session_exporter_export_file_item_saved(session_exporter: SessionExport
     tagger_mock.iter_all_files.return_value = [file_mock]
     tagger_mock.albums = {}
 
-    with patch.object(session_exporter.location_detector, 'detect') as mock_detect:
+    with patch.object(session_exporter.location_detector, "detect") as mock_detect:
         mock_detect.return_value = SessionItemLocation(type="unclustered")
         data = session_exporter.export_session(tagger_mock)
 
-    assert len(data["items"]) == 1
-    item = data["items"][0]
-    assert item["file_path"] == str(Path("/test/file.mp3"))
+    assert len(data['items']) == 1
+    item = data['items'][0]
+    assert item['file_path'] == str(Path("/test/file.mp3"))
     assert "metadata" not in item
 
 
@@ -96,7 +96,7 @@ def test_session_exporter_export_file_item_unsaved(session_exporter: SessionExpo
     file_mock.is_saved.return_value = False
     file_mock.parent_item = None
     file_mock.metadata = Metadata()
-    file_mock.metadata["title"] = "Test Song"
+    file_mock.metadata['title'] = "Test Song"
     # Provide an original metadata baseline so exporter can compute a delta
     file_mock.orig_metadata = Metadata()
 
@@ -104,15 +104,15 @@ def test_session_exporter_export_file_item_unsaved(session_exporter: SessionExpo
     tagger_mock.iter_all_files.return_value = [file_mock]
     tagger_mock.albums = {}
 
-    with patch.object(session_exporter.location_detector, 'detect') as mock_detect:
+    with patch.object(session_exporter.location_detector, "detect") as mock_detect:
         mock_detect.return_value = SessionItemLocation(type="unclustered")
         data = session_exporter.export_session(tagger_mock)
 
-    assert len(data["items"]) == 1
-    item = data["items"][0]
-    assert item["file_path"] == str(Path("/test/file.mp3"))
+    assert len(data['items']) == 1
+    item = data['items'][0]
+    assert item['file_path'] == str(Path("/test/file.mp3"))
     assert "metadata" in item
-    assert item["metadata"]["tags"]["title"] == ["Test Song"]
+    assert item['metadata']['tags']['title'] == ["Test Song"]
 
 
 def test_session_exporter_export_ui_state(session_exporter: SessionExporter, cfg_options) -> None:
@@ -129,13 +129,13 @@ def test_session_exporter_export_ui_state(session_exporter: SessionExporter, cfg
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = []
-    tagger_mock.albums = {"album-123": album_mock}
+    tagger_mock.albums = {'album-123': album_mock}
 
     # Mock the diff method to return None (no overrides)
-    with patch.object(album_mock.metadata, 'diff', return_value=None):
+    with patch.object(album_mock.metadata, "diff", return_value=None):
         data = session_exporter.export_session(tagger_mock)
 
-    assert data["expanded_albums"] == ["album-123"]
+    assert data['expanded_albums'] == ["album-123"]
 
 
 def test_session_exporter_export_ui_state_no_ui_item(session_exporter: SessionExporter, cfg_options) -> None:
@@ -150,13 +150,13 @@ def test_session_exporter_export_ui_state_no_ui_item(session_exporter: SessionEx
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = []
-    tagger_mock.albums = {"album-123": album_mock}
+    tagger_mock.albums = {'album-123': album_mock}
 
     # Mock the diff method to return None (no overrides)
-    with patch.object(album_mock.metadata, 'diff', return_value=None):
+    with patch.object(album_mock.metadata, "diff", return_value=None):
         data = session_exporter.export_session(tagger_mock)
 
-    assert data["expanded_albums"] == []
+    assert data['expanded_albums'] == []
 
 
 def test_session_exporter_export_metadata_overrides(session_exporter: SessionExporter, cfg_options) -> None:
@@ -167,21 +167,21 @@ def test_session_exporter_export_metadata_overrides(session_exporter: SessionExp
     album_mock.id = "album-123"
     album_mock.metadata = Metadata()
     album_mock.orig_metadata = Metadata()
-    album_mock.metadata["albumartist"] = "New Artist"
-    album_mock.orig_metadata["albumartist"] = "Old Artist"
+    album_mock.metadata['albumartist'] = "New Artist"
+    album_mock.orig_metadata['albumartist'] = "Old Artist"
 
     # Create track with overrides
     track_mock = Mock()
     track_mock.id = "track-456"
     track_mock.metadata = Metadata()
     track_mock.scripted_metadata = Metadata()
-    track_mock.metadata["title"] = "New Title"
-    track_mock.scripted_metadata["title"] = "Old Title"
+    track_mock.metadata['title'] = "New Title"
+    track_mock.scripted_metadata['title'] = "Old Title"
     album_mock.tracks = [track_mock]
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = []
-    tagger_mock.albums = {"album-123": album_mock}
+    tagger_mock.albums = {'album-123': album_mock}
 
     # Mock the diff and rawitems methods
     diff_mock = Mock()
@@ -190,15 +190,15 @@ def test_session_exporter_export_metadata_overrides(session_exporter: SessionExp
     track_diff_mock.rawitems.return_value = [("title", ["New Title"])]
 
     with (
-        patch.object(album_mock.metadata, 'diff', return_value=diff_mock),
-        patch.object(track_mock.metadata, 'diff', return_value=track_diff_mock),
+        patch.object(album_mock.metadata, "diff", return_value=diff_mock),
+        patch.object(track_mock.metadata, "diff", return_value=track_diff_mock),
     ):
         data = session_exporter.export_session(tagger_mock)
 
-    assert "album-123" in data["album_overrides"]
-    assert data["album_overrides"]["album-123"]["albumartist"] == ["New Artist"]
-    assert "album-123" in data["album_track_overrides"]
-    assert data["album_track_overrides"]["album-123"]["track-456"]["title"] == ["New Title"]
+    assert "album-123" in data['album_overrides']
+    assert data['album_overrides']['album-123']['albumartist'] == ["New Artist"]
+    assert "album-123" in data['album_track_overrides']
+    assert data['album_track_overrides']['album-123']['track-456']['title'] == ["New Title"]
 
 
 def test_session_exporter_export_unmatched_albums(session_exporter: SessionExporter, cfg_options) -> None:
@@ -213,13 +213,13 @@ def test_session_exporter_export_unmatched_albums(session_exporter: SessionExpor
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = []
-    tagger_mock.albums = {"album-123": album_mock}
+    tagger_mock.albums = {'album-123': album_mock}
 
     # Mock the diff method to return None (no overrides)
-    with patch.object(album_mock.metadata, 'diff', return_value=None):
+    with patch.object(album_mock.metadata, "diff", return_value=None):
         data = session_exporter.export_session(tagger_mock)
 
-    assert data["unmatched_albums"] == ["album-123"]
+    assert data['unmatched_albums'] == ["album-123"]
 
 
 def test_session_exporter_export_skips_nat_albums(session_exporter: SessionExporter, cfg_options) -> None:
@@ -231,13 +231,13 @@ def test_session_exporter_export_skips_nat_albums(session_exporter: SessionExpor
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = []
-    tagger_mock.albums = {"nat-album-123": nat_album_mock}
+    tagger_mock.albums = {'nat-album-123': nat_album_mock}
 
     data = session_exporter.export_session(tagger_mock)
 
-    assert data["album_overrides"] == {}
-    assert data["album_track_overrides"] == {}
-    assert data["unmatched_albums"] == []
+    assert data['album_overrides'] == {}
+    assert data['album_track_overrides'] == {}
+    assert data['unmatched_albums'] == []
 
 
 def test_session_exporter_export_albums_with_files(session_exporter: SessionExporter, cfg_options) -> None:
@@ -260,17 +260,17 @@ def test_session_exporter_export_albums_with_files(session_exporter: SessionExpo
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = [file_mock]
-    tagger_mock.albums = {"album-123": album_mock}
+    tagger_mock.albums = {'album-123': album_mock}
 
     # Mock the diff method to return None (no overrides)
     with (
-        patch.object(album_mock.metadata, 'diff', return_value=None),
-        patch.object(session_exporter.location_detector, 'detect') as mock_detect,
+        patch.object(album_mock.metadata, "diff", return_value=None),
+        patch.object(session_exporter.location_detector, "detect") as mock_detect,
     ):
         mock_detect.return_value = SessionItemLocation(type="track", album_id="album-123")
         data = session_exporter.export_session(tagger_mock)
 
-    assert data["unmatched_albums"] == []
+    assert data['unmatched_albums'] == []
 
 
 def test_session_exporter_serialize_location() -> None:
@@ -288,9 +288,9 @@ def test_session_exporter_serialize_location() -> None:
     serialized = exporter._serialize_location(location)
 
     assert serialized == {
-        "type": "track",
-        "album_id": "album-123",
-        "recording_id": "recording-456",
+        'type': "track",
+        'album_id': "album-123",
+        'recording_id': "recording-456",
     }
 
 
@@ -308,7 +308,7 @@ def test_session_exporter_serialize_location_with_none_values() -> None:
 
     serialized = exporter._serialize_location(location)
 
-    assert serialized == {"type": "unclustered"}
+    assert serialized == {'type': "unclustered"}
 
 
 def test_session_exporter_serialize_location_with_cluster_info() -> None:
@@ -326,9 +326,9 @@ def test_session_exporter_serialize_location_with_cluster_info() -> None:
     serialized = exporter._serialize_location(location)
 
     assert serialized == {
-        "type": "cluster",
-        "cluster_title": "Test Album",
-        "cluster_artist": "Test Artist",
+        'type': "cluster",
+        'cluster_title': "Test Album",
+        'cluster_artist': "Test Artist",
     }
 
 
@@ -338,17 +338,17 @@ def test_session_exporter_export_options() -> None:
 
     config_mock = Mock()
     config_mock.setting = {
-        "rename_files": True,
-        "move_files": False,
-        "dont_write_tags": True,
+        'rename_files': True,
+        'move_files': False,
+        'dont_write_tags': True,
     }
 
     options = exporter._export_options(config_mock)
 
     assert options == {
-        "rename_files": True,
-        "move_files": False,
-        "dont_write_tags": True,
+        'rename_files': True,
+        'move_files': False,
+        'dont_write_tags': True,
     }
 
 
@@ -358,17 +358,17 @@ def test_session_exporter_export_options_with_falsy_values() -> None:
 
     config_mock = Mock()
     config_mock.setting = {
-        "rename_files": 0,
-        "move_files": "",
-        "dont_write_tags": None,
+        'rename_files': 0,
+        'move_files': "",
+        'dont_write_tags': None,
     }
 
     options = exporter._export_options(config_mock)
 
     assert options == {
-        "rename_files": False,
-        "move_files": False,
-        "dont_write_tags": False,
+        'rename_files': False,
+        'move_files': False,
+        'dont_write_tags': False,
     }
 
 
@@ -382,23 +382,23 @@ def test_session_exporter_export_metadata_overrides_excludes_length(
     album_mock.id = "album-123"
     album_mock.metadata = Metadata()
     album_mock.orig_metadata = Metadata()
-    album_mock.metadata["length"] = "300000"
-    album_mock.orig_metadata["length"] = "250000"
+    album_mock.metadata['length'] = "300000"
+    album_mock.orig_metadata['length'] = "250000"
     album_mock.tracks = []
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = []
-    tagger_mock.albums = {"album-123": album_mock}
+    tagger_mock.albums = {'album-123': album_mock}
 
     # Mock the diff method to return length override
     diff_mock = Mock()
     diff_mock.rawitems.return_value = [("length", ["300000"])]
 
-    with patch.object(album_mock.metadata, 'diff', return_value=diff_mock):
+    with patch.object(album_mock.metadata, "diff", return_value=diff_mock):
         data = session_exporter.export_session(tagger_mock)
 
     # Length should not be in overrides
-    assert "album-123" not in data["album_overrides"] or "length" not in data["album_overrides"]["album-123"]
+    assert "album-123" not in data['album_overrides'] or "length" not in data['album_overrides']['album-123']
 
 
 def test_session_exporter_export_metadata_overrides_excludes_internal_tags(
@@ -411,8 +411,8 @@ def test_session_exporter_export_metadata_overrides_excludes_internal_tags(
     track_mock.id = "track-456"
     track_mock.metadata = Metadata()
     track_mock.scripted_metadata = Metadata()
-    track_mock.metadata["~internal"] = "new_value"
-    track_mock.scripted_metadata["~internal"] = "old_value"
+    track_mock.metadata['~internal'] = "new_value"
+    track_mock.scripted_metadata['~internal'] = "old_value"
 
     album_mock = Mock(spec=Album)
     album_mock.id = "album-123"
@@ -422,7 +422,7 @@ def test_session_exporter_export_metadata_overrides_excludes_internal_tags(
 
     tagger_mock = Mock()
     tagger_mock.iter_all_files.return_value = []
-    tagger_mock.albums = {"album-123": album_mock}
+    tagger_mock.albums = {'album-123': album_mock}
 
     # Mock the diff methods
     track_diff_mock = Mock()
@@ -431,13 +431,13 @@ def test_session_exporter_export_metadata_overrides_excludes_internal_tags(
     album_diff_mock.rawitems.return_value = []
 
     with (
-        patch.object(track_mock.metadata, 'diff', return_value=track_diff_mock),
-        patch.object(album_mock.metadata, 'diff', return_value=album_diff_mock),
+        patch.object(track_mock.metadata, "diff", return_value=track_diff_mock),
+        patch.object(album_mock.metadata, "diff", return_value=album_diff_mock),
     ):
         data = session_exporter.export_session(tagger_mock)
 
     # Internal tag should be in overrides (current implementation includes them)
-    assert "album-123" in data["album_track_overrides"]
-    assert "track-456" in data["album_track_overrides"]["album-123"]
-    assert "~internal" in data["album_track_overrides"]["album-123"]["track-456"]
-    assert data["album_track_overrides"]["album-123"]["track-456"]["~internal"] == ["new_value"]
+    assert "album-123" in data['album_track_overrides']
+    assert "track-456" in data['album_track_overrides']['album-123']
+    assert "~internal" in data['album_track_overrides']['album-123']['track-456']
+    assert data['album_track_overrides']['album-123']['track-456']['~internal'] == ["new_value"]
