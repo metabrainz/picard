@@ -98,7 +98,6 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
-from picard.ui.util import StandardButton
 
 
 class ErrorOptionsPage(OptionsPage):
@@ -194,13 +193,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
         self.ui.reset_button.setToolTip(_("Reset all settings for current option page"))
 
-        ok = StandardButton(StandardButton.OK)
-        ok.setText(_("Make It So!"))
+        ok = QtWidgets.QPushButton(_("Make It So!"))
         self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.ui.buttonbox.addButton(
-            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        )
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
         self.ui.buttonbox.addButton(self.ui.reset_all_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
         self.ui.buttonbox.addButton(self.ui.reset_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
 
@@ -574,9 +570,7 @@ class AttachedProfilesDialog(PicardDialog):
         self.option_group = option_group
         self.ui = Ui_AttachedProfilesDialog()
         self.ui.setupUi(self)
-        self.ui.buttonBox.addButton(
-            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        )
+        self.ui.buttonBox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
         self.ui.buttonBox.rejected.connect(self.close_window)
 
         config = get_config()
