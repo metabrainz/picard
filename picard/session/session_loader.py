@@ -26,6 +26,7 @@ breaking down the complex loading logic into focused, manageable components.
 
 from __future__ import annotations
 
+from contextlib import suppress
 import gzip
 import json
 from pathlib import Path
@@ -35,6 +36,7 @@ from PyQt6 import QtCore
 
 from picard.album import Album
 from picard.config import get_config
+from picard.i18n import gettext as _
 from picard.session.constants import SessionConstants
 from picard.session.metadata_handler import MetadataHandler
 from picard.session.session_data import AlbumItems, GroupedItems
@@ -118,7 +120,8 @@ class SessionLoader:
     # Progress reporting API
     # ----------------------
     def _emit_progress(self, stage: str, details: dict[str, Any] | None = None) -> None:
-        try:
+        # Do not let progress reporting break loading
+        with suppress(AttributeError, RuntimeError, TypeError):
             # Forward to main window / status indicator if available
             if hasattr(self.tagger, 'window') and hasattr(self.tagger.window, 'status_indicators'):
                 for indicator in self.tagger.window.status_indicators:
@@ -129,26 +132,32 @@ class SessionLoader:
                 msg = self._format_stage_message(stage, details)
                 if msg:
                     self.tagger.window.set_statusbar_message(msg)
-        except Exception:
-            # Do not let progress reporting break loading
-            pass
 
     def _format_stage_message(self, stage: str, details: dict[str, Any] | None) -> str | None:
-        if stage == "read":
-            return "Reading session…"
-        if stage == "preload_cache":
-            return f"Preloading albums from cache ({(details or {}).get('albums', 0)})…"
-        if stage == "load_items":
-            return f"Loading files and albums ({(details or {}).get('files', 0)} files)…"
-        if stage == "apply_overrides":
-            return "Applying overrides…"
-        if stage == "finalize":
-            # Mention pending web requests if any
+        def msg_preload(d: dict[str, Any] | None) -> str:
+            return _("Preloading albums from cache ({albums})…").format(albums=(d or {}).get('albums', 0))
+
+        def msg_load_items(d: dict[str, Any] | None) -> str:
+            return _("Loading files and albums ({files} files)…").format(files=(d or {}).get('files', 0))
+
+        def msg_finalize(_d: dict[str, Any] | None) -> str:
             pending = getattr(self.tagger.webservice, 'num_pending_web_requests', 0)
             if pending:
-                return f"Waiting on network ({pending} requests)…"
-            return "Finalizing…"
-        return None
+                return _("Waiting on network ({requests} requests)…").format(requests=pending)
+            return _("Finalizing…")
+
+        dispatch: dict[str, Any] = {
+            "read": _("Reading session…"),
+            "apply_overrides": _("Applying overrides…"),
+            "preload_cache": msg_preload,
+            "load_items": msg_load_items,
+            "finalize": msg_finalize,
+        }
+
+        entry = dispatch.get(stage)
+        if entry is None:
+            return None
+        return entry(details) if callable(entry) else entry
 
     def _preload_albums_from_cache(self, mb_cache: dict[str, Any], grouped_items: GroupedItems) -> None:
         """Preload albums from embedded MB JSON cache when available.
@@ -172,15 +181,13 @@ class SessionLoader:
             # If album supports parsing from cached release node, do so
             parse_from_json = getattr(album, '_parse_release', None)
             if callable(parse_from_json):
-                try:
+                # Fall back to normal loading path if parsing fails
+                with suppress(KeyError, TypeError, ValueError):
                     parse_from_json(node)
                     album._run_album_metadata_processors()
                     album.update(update_tracks=True)
                     self.loaded_albums[album_id] = album
                     self._ensure_album_visible(album)
-                except Exception:
-                    # Fall back to normal loading path if parsing fails
-                    continue
 
     def _read_session_file(self, path: Path) -> dict[str, Any]:
         """Read and parse session file.
