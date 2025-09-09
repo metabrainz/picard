@@ -464,11 +464,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if path:
             try:
                 save_session_to_path(self.tagger, path)
-                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
-                return True
             except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
                 return False
+            else:
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                return True
+
         # Fallback to prompting for a path
         return bool(self.save_session())
 
@@ -1131,11 +1133,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 save_session_to_path(self.tagger, path)
                 config.persist['current_directory'] = os.path.dirname(path)
                 config.persist['last_session_path'] = path
-                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
-                return True
             except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
                 return False
+            else:
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                return True
         return False
 
     def load_session(self):
