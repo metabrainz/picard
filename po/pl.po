@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-06-13 09:20+0000\n"
+"PO-Revision-Date: 2025-09-09 21:41+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/2/"
 "app/pl/>\n"
@@ -37,7 +37,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
 "n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.13.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4723,7 +4723,7 @@ msgstr "Opcje"
 
 #: picard/ui/ui_options_advanced.py:138
 msgid "Advanced options"
-msgstr "Zaawansowane"
+msgstr "Zaawansowane opcje"
 
 #: picard/ui/ui_options_advanced.py:139
 msgid "Ignore file paths matching the following regular expression:"
