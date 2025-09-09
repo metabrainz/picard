@@ -500,31 +500,31 @@ BoolOption(
     'setting',
     'session_safe_restore',
     True,
-    title=N_(SessionMessages.SESSION_SAFE_RESTORE_TITLE),
+    title=SessionMessages.SESSION_SAFE_RESTORE_TITLE,
 )
 BoolOption(
     'setting',
     'session_load_last_on_startup',
     False,
-    title=N_(SessionMessages.SESSION_LOAD_LAST_TITLE),
+    title=SessionMessages.SESSION_LOAD_LAST_TITLE,
 )
 IntOption(
     'setting',
     'session_autosave_interval_min',
     0,
-    title=N_(SessionMessages.SESSION_AUTOSAVE_TITLE),
+    title=SessionMessages.SESSION_AUTOSAVE_TITLE,
 )
 BoolOption(
     'setting',
     'session_backup_on_crash',
     True,
-    title=N_(SessionMessages.SESSION_BACKUP_TITLE),
+    title=SessionMessages.SESSION_BACKUP_TITLE,
 )
 BoolOption(
     'setting',
     'session_include_mb_data',
     False,
-    title=N_(SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE),
+    title=SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE,
 )
 
 # picard/ui/searchdialog/album.py

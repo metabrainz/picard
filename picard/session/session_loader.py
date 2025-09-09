@@ -36,6 +36,7 @@ from PyQt6 import QtCore
 
 from picard.album import Album
 from picard.config import get_config
+from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS
 from picard.i18n import gettext as _
 from picard.session.constants import SessionConstants
 from picard.session.metadata_handler import MetadataHandler
@@ -478,7 +479,7 @@ class SessionLoader:
                 # Apply overrides to track metadata so columns reflect user edits
                 for tag, values in tags.items():
                     # Never override computed lengths
-                    if tag in SessionConstants.EXCLUDED_OVERRIDE_TAGS:
+                    if tag in EXCLUDED_OVERRIDE_TAGS:
                         continue
                     tr.metadata[tag] = MetadataHandler.as_list(values)
                 tr.update()

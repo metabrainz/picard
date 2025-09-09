@@ -30,6 +30,7 @@ from pathlib import Path
 from typing import Any
 
 from picard import log
+from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS, INTERNAL_TAG_PREFIX
 from picard.file import File
 from picard.metadata import Metadata
 from picard.session.constants import SessionConstants
@@ -54,12 +55,12 @@ class MetadataHandler:
 
         Notes
         -----
-        Only user-visible tags are serialized, internal tags (starting with ~)
-        and length are excluded.
+        Only user-visible tags are serialized. Internal tags (starting with ~)
+        and tags in the excluded override set are not included.
         """
         tags: dict[str, list[Any]] = {}
         for key, values in file.metadata.rawitems():
-            if key.startswith(SessionConstants.INTERNAL_TAG_PREFIX) or key == "length":
+            if key.startswith(INTERNAL_TAG_PREFIX) or key in EXCLUDED_OVERRIDE_TAGS:
                 continue
             # Copy as list to be JSON serializable
             tags[key] = list(values)
@@ -204,9 +205,7 @@ class MetadataHandler:
                 # Merge deltas onto current metadata; preserve length
                 md = Metadata(file.metadata)
                 for key, values in tags.items():
-                    if key in SessionConstants.EXCLUDED_OVERRIDE_TAGS or str(key).startswith(
-                        SessionConstants.INTERNAL_TAG_PREFIX
-                    ):
+                    if key in EXCLUDED_OVERRIDE_TAGS or str(key).startswith(INTERNAL_TAG_PREFIX):
                         continue
                     md[key] = MetadataHandler.as_list(values)
                 MetadataHandler.safe_apply_metadata(file, md)

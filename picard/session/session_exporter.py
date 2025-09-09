@@ -31,6 +31,7 @@ from typing import Any
 
 from picard.album import NatAlbum
 from picard.config import get_config
+from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS, INTERNAL_TAG_PREFIX
 from picard.session.constants import SessionConstants
 from picard.session.location_detector import LocationDetector
 from picard.session.metadata_handler import MetadataHandler
@@ -204,8 +205,7 @@ class SessionExporter:
                 delta_tags = {
                     k: MetadataHandler.as_list(v)
                     for k, v in diff.rawitems()
-                    if k not in SessionConstants.EXCLUDED_OVERRIDE_TAGS
-                    and not str(k).startswith(SessionConstants.INTERNAL_TAG_PREFIX)
+                    if k not in EXCLUDED_OVERRIDE_TAGS and not str(k).startswith(INTERNAL_TAG_PREFIX)
                 }
                 if delta_tags:
                     entry['metadata'] = {'tags': delta_tags}
@@ -274,9 +274,7 @@ class SessionExporter:
             album_diff = album.metadata.diff(album.orig_metadata)
             if album_diff:
                 album_meta_overrides[album.id] = {
-                    k: MetadataHandler.as_list(v)
-                    for k, v in album_diff.rawitems()
-                    if k not in SessionConstants.EXCLUDED_OVERRIDE_TAGS
+                    k: MetadataHandler.as_list(v) for k, v in album_diff.rawitems() if k not in EXCLUDED_OVERRIDE_TAGS
                 }
 
             # Track-level overrides
@@ -286,9 +284,7 @@ class SessionExporter:
                 diff = track.metadata.diff(track.scripted_metadata)
                 if diff:
                     overrides_for_album[track.id] = {
-                        k: MetadataHandler.as_list(v)
-                        for k, v in diff.rawitems()
-                        if k not in SessionConstants.EXCLUDED_OVERRIDE_TAGS
+                        k: MetadataHandler.as_list(v) for k, v in diff.rawitems() if k not in EXCLUDED_OVERRIDE_TAGS
                     }
 
             if overrides_for_album:

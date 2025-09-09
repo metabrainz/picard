@@ -46,6 +46,7 @@
 
 
 from collections import namedtuple
+from contextlib import suppress
 from copy import deepcopy
 import datetime
 from functools import partial
@@ -404,6 +405,72 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return False
 
         return True
+
+    def _has_session_content(self):
+        """Return True if there is session content to save/close."""
+        if self.tagger.files or self.tagger.albums:
+            return True
+
+        with suppress(AttributeError, TypeError):
+            return bool(self.tagger.clusters and len(self.tagger.clusters) > 0)
+        return False
+
+    def show_close_session_confirmation(self):
+        """Ask the user whether to save the session before closing.
+
+        Returns
+        -------
+        bool
+            True if closing should proceed, False to cancel.
+        """
+        # If there is nothing to save, proceed without asking
+        if not self._has_session_content():
+            return True
+
+        QMessageBox = QtWidgets.QMessageBox
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        msg.setWindowTitle(_("Close Session"))
+        msg.setText(_("Do you want to save the current session before closing?"))
+        msg.setInformativeText(_("Closing the session will clear all files, clusters and albums from the view."))
+        cancel_btn = msg.addButton(QMessageBox.StandardButton.Cancel)
+        save_btn = msg.addButton(_("&Save Session"), QMessageBox.ButtonRole.YesRole)
+        msg.addButton(_("Do&n't Save"), QMessageBox.ButtonRole.NoRole)
+        msg.setDefaultButton(save_btn)
+        msg.exec()
+
+        clicked = msg.clickedButton()
+        if clicked == cancel_btn:
+            return False
+        if clicked == save_btn:
+            # If saving fails or is cancelled, abort closing
+            return self._save_session_to_known_path_or_prompt()
+        # Don't Save
+        return True
+
+    def _save_session_to_known_path_or_prompt(self) -> bool:
+        """Save session to last known session path if available; otherwise prompt.
+
+        Returns
+        -------
+        bool
+            True if saved successfully, False otherwise.
+        """
+        from picard.session.session_manager import save_session_to_path
+
+        config = get_config()
+        path = config.persist['last_session_path'] if 'last_session_path' in config.persist else None
+        if path:
+            try:
+                save_session_to_path(self.tagger, path)
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                return True
+            except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
+                QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
+                return False
+        # Fallback to prompting for a path
+        return bool(self.save_session())
 
     def saveWindowState(self):
         config = get_config()
@@ -1065,8 +1132,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 config.persist['current_directory'] = os.path.dirname(path)
                 config.persist['last_session_path'] = path
                 self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
-            except Exception as e:
+                return True
+            except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
+                return False
+        return False
 
     def load_session(self):
         from picard.session.session_manager import load_session_from_path
@@ -1094,8 +1164,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 QtWidgets.QMessageBox.critical(self, _("Failed to load session"), str(e))
 
     def close_session(self):
-        # Ask to save if unsaved files
-        if not self.show_quit_confirmation():
+        # Use dedicated confirmation for closing sessions (save / don't save / cancel)
+        if not self.show_close_session_confirmation():
             return
         # Clear current state
         self.tagger.clear_session()
