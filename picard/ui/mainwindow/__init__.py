@@ -74,6 +74,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import PROGRAM_UPDATE_LEVELS
+from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -92,6 +93,7 @@ from picard.options import (
 )
 from picard.script import get_file_naming_script_presets
 from picard.session.constants import SessionConstants
+from picard.session.session_manager import load_session_from_path, save_session_to_path
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -457,8 +459,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         bool
             True if saved successfully, False otherwise.
         """
-        from picard.session.session_manager import save_session_to_path
-
         config = get_config()
         path = config.persist['last_session_path'] or ''
         if path:
@@ -1179,10 +1179,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.tagger.save(self.selected_objects)
 
     def save_session(self):
-        from picard.session.session_manager import save_session_to_path
-
-        from picard.ui.util import FileDialog
-
         config = get_config()
         # If a last session path is known, save silently to it
         known_path = config.persist['last_session_path'] or ''
@@ -1198,7 +1194,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return True
 
         # Otherwise, prompt for a new path
-        start_dir = config.persist['current_directory'] or os.path.expanduser('~')
+        start_dir = config.persist['current_directory'] or sessions_folder()
         path, _filter = FileDialog.getSaveFileName(
             parent=self,
             dir=start_dir,
@@ -1221,16 +1217,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return False
 
     def load_session(self):
-        from picard.session.session_manager import load_session_from_path
-
-        from picard.ui.util import FileDialog
-
         # Ask whether to save/close current session before loading a new one
         if not self.show_close_session_confirmation():
             return
 
         config = get_config()
-        start_dir = config.persist['current_directory'] or os.path.expanduser('~')
+        from picard.const.appdirs import sessions_folder
+
+        start_dir = config.persist['current_directory'] or sessions_folder()
         path, _filter = FileDialog.getOpenFileName(
             parent=self,
             dir=start_dir,

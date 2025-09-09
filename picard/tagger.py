@@ -130,6 +130,7 @@ from picard.pluginmanager import (
 )
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
+from picard.session.session_manager import save_session_to_path
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -640,8 +641,6 @@ class Tagger(QtWidgets.QApplication):
         with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
             config = get_config()
             if config.setting['session_backup_on_crash']:
-                from picard.session.session_manager import save_session_to_path
-
                 path = config.persist['session_autosave_path'] or config.persist['last_session_path']
                 if path:
                     save_session_to_path(self, path)
@@ -670,8 +669,6 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         interval_min = int(config.setting['session_autosave_interval_min'])
         if interval_min > 0:
-            from picard.session.session_manager import save_session_to_path
-
             self._session_autosave_timer = QtCore.QTimer(self)
             self._session_autosave_timer.setInterval(max(1, interval_min) * 60 * 1000)
 
@@ -680,9 +677,10 @@ class Tagger(QtWidgets.QApplication):
                 if not path:
                     path = config.persist['last_session_path'] if 'last_session_path' in config.persist else None
                 if not path:
+                    from picard.const.appdirs import sessions_folder
                     from picard.session.constants import SessionConstants
 
-                    path = Path(USER_DIR) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
+                    path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
                     config.persist['session_autosave_path'] = path
 
                 with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):

@@ -21,6 +21,7 @@
 from PyQt6 import QtWidgets
 
 from picard.config import get_config
+from picard.const.appdirs import sessions_folder
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_, gettext as _
 from picard.session.constants import SessionMessages
@@ -41,11 +42,26 @@ class SessionsOptionsPage(OptionsPage):
         ('session_autosave_interval_min', ['autosave_spin']),
         ('session_backup_on_crash', ['backup_checkbox']),
         ('session_include_mb_data', ['include_mb_data_checkbox']),
+        ('session_folder_path', ['folder_path_edit']),
     )
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.vbox = QtWidgets.QVBoxLayout(self)
+
+        # Sessions folder path
+        folder_layout = QtWidgets.QHBoxLayout()
+        self.folder_label = QtWidgets.QLabel(_(SessionMessages.SESSION_FOLDER_PATH_TITLE))
+        self.folder_path_edit = QtWidgets.QLineEdit()
+        # Set placeholder text showing the default path
+        default_path = sessions_folder()
+        self.folder_path_edit.setPlaceholderText(default_path)
+        self.folder_browse_button = QtWidgets.QPushButton(_("Browse..."))
+        self.folder_browse_button.clicked.connect(self._browse_sessions_folder)
+        folder_layout.addWidget(self.folder_label)
+        folder_layout.addWidget(self.folder_path_edit)
+        folder_layout.addWidget(self.folder_browse_button)
+        self.vbox.addLayout(folder_layout)
 
         self.safe_restore_checkbox = QtWidgets.QCheckBox(_(SessionMessages.SESSION_SAFE_RESTORE_TITLE))
         self.vbox.addWidget(self.safe_restore_checkbox)
@@ -76,6 +92,7 @@ class SessionsOptionsPage(OptionsPage):
         self.autosave_spin.setValue(config.setting['session_autosave_interval_min'])
         self.backup_checkbox.setChecked(config.setting['session_backup_on_crash'])
         self.include_mb_data_checkbox.setChecked(config.setting['session_include_mb_data'])
+        self.folder_path_edit.setText(config.setting['session_folder_path'])
 
     def save(self):
         config = get_config()
@@ -84,6 +101,21 @@ class SessionsOptionsPage(OptionsPage):
         config.setting['session_autosave_interval_min'] = int(self.autosave_spin.value())
         config.setting['session_backup_on_crash'] = self.backup_checkbox.isChecked()
         config.setting['session_include_mb_data'] = self.include_mb_data_checkbox.isChecked()
+        config.setting['session_folder_path'] = self.folder_path_edit.text().strip()
+
+    def _browse_sessions_folder(self):
+        """Open a folder selection dialog for the sessions folder."""
+        from picard.ui.util import FileDialog
+
+        current_path = self.folder_path_edit.text().strip()
+        if not current_path:
+            from picard.const.appdirs import config_folder
+
+            current_path = config_folder()
+
+        folder = FileDialog.getExistingDirectory(parent=self, dir=current_path, caption=_("Select Sessions Folder"))
+        if folder:
+            self.folder_path_edit.setText(folder)
 
 
 register_options_page(SessionsOptionsPage)

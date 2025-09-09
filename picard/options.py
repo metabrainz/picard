@@ -527,6 +527,12 @@ BoolOption(
     False,
     title=SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE,
 )
+TextOption(
+    'setting',
+    'session_folder_path',
+    '',
+    title=SessionMessages.SESSION_FOLDER_PATH_TITLE,
+)
 
 # picard/ui/searchdialog/album.py
 #

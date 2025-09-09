@@ -23,6 +23,7 @@ from types import SimpleNamespace
 from typing import Any
 
 import picard.config as picard_config
+from picard.const.appdirs import config_folder, sessions_folder
 from picard.metadata import Metadata
 from picard.session.session_manager import export_session
 
@@ -186,3 +187,32 @@ def test_export_session_excludes_albums_with_files_from_unmatched(cfg_options: N
     # Should not include the album in unmatched_albums since it has files
     assert "unmatched_albums" in data
     assert data['unmatched_albums'] == []
+
+
+def test_sessions_folder_default_path(cfg_options: None) -> None:
+    """Test that sessions_folder returns the default path when no custom path is set."""
+    config = picard_config.get_config()
+    config.setting['session_folder_path'] = ''
+
+    expected_path = Path(config_folder()) / 'sessions'
+    assert sessions_folder() == str(expected_path)
+
+
+def test_sessions_folder_custom_path(cfg_options: None, tmp_path: Path) -> None:
+    """Test that sessions_folder returns the custom path when configured."""
+    config = picard_config.get_config()
+    custom_path = str(tmp_path / 'custom_sessions')
+    config.setting['session_folder_path'] = custom_path
+
+    assert sessions_folder() == custom_path
+
+
+@pytest.mark.parametrize("custom_path", ["", "/some/custom/path", "relative/path"])
+def test_sessions_folder_path_normalization(cfg_options: None, custom_path: str) -> None:
+    """Test that sessions_folder normalizes paths correctly."""
+    config = picard_config.get_config()
+    config.setting['session_folder_path'] = custom_path
+
+    result = sessions_folder()
+    assert isinstance(result, str)
+    assert result == Path(result).as_posix()  # Should be normalized

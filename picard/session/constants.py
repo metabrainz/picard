@@ -140,3 +140,4 @@ class SessionMessages:
     SESSION_AUTOSAVE_TITLE = N_("Auto-save session every N minutes (0 disables)")
     SESSION_BACKUP_TITLE = N_("Attempt to keep a session backup on unexpected shutdown")
     SESSION_INCLUDE_MB_DATA_TITLE = N_("Include MusicBrainz data in saved sessions (faster loads, risk of stale data)")
+    SESSION_FOLDER_PATH_TITLE = N_("Sessions folder path (leave empty for default)")
