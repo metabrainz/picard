@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-09-05 20:54+0000\n"
+"PO-Revision-Date: 2025-09-09 21:41+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/app/uk/>\n"
@@ -5323,7 +5323,7 @@ msgstr "Помилка Regex"
 
 #: picard/ui/options/dialog.py:129
 msgid "&Restore all Defaults"
-msgstr "Відновити всі значення за замовчуванням"
+msgstr "В&ідновити всі значення за замовчуванням"
 
 #: picard/ui/options/dialog.py:130
 msgid "Reset all of Picard's settings"
