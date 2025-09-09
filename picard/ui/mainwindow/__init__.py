@@ -432,7 +432,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         msg.setIcon(QMessageBox.Icon.Question)
         msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         msg.setWindowTitle(_("Close Session"))
-        msg.setText(_("Do you want to save the current session before closing?"))
+        msg.setText(_("Do you want to save the current session before continuing?"))
         msg.setInformativeText(_("Closing the session will clear all files, clusters and albums from the view."))
         cancel_btn = msg.addButton(QMessageBox.StandardButton.Cancel)
         save_btn = msg.addButton(_("&Save Session"), QMessageBox.ButtonRole.YesRole)
@@ -460,7 +460,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         from picard.session.session_manager import save_session_to_path
 
         config = get_config()
-        path = config.persist['last_session_path'] if 'last_session_path' in config.persist else None
+        path = config.persist['last_session_path'] or ''
         if path:
             try:
                 save_session_to_path(self.tagger, path)
@@ -469,6 +469,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return False
             else:
                 self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                self._add_to_recent_sessions(path)
                 return True
 
         # Fallback to prompting for a path
@@ -623,6 +624,67 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cd_lookup_menu = menu
         self._init_cd_lookup_menu()
 
+    def _create_recent_sessions_menu(self):
+        """Create and return the "Recent Sessions" submenu.
+
+        The menu content is populated from the persisted recent sessions list.
+        """
+        self.recent_sessions_menu = QtWidgets.QMenu(_("Recent Sessions"))
+        self.recent_sessions_menu.setIcon(icontheme.lookup('document-open-recent'))
+        self._populate_recent_sessions_menu()
+        return self.recent_sessions_menu
+
+    def _get_recent_sessions(self):
+        """Return the list of recent session paths from persistent config."""
+        config = get_config()
+        value = config.persist['recent_sessions']
+        if isinstance(value, list):
+            return [str(p) for p in value]
+        return []
+
+    def _set_recent_sessions(self, paths):
+        """Persist the given list of recent session paths and refresh the menu."""
+        config = get_config()
+        config.persist['recent_sessions'] = list(paths)
+        if hasattr(self, 'recent_sessions_menu') and isinstance(self.recent_sessions_menu, QtWidgets.QMenu):
+            self._populate_recent_sessions_menu()
+
+    def _add_to_recent_sessions(self, path):
+        """Insert a path at the front of the recent sessions list, de-duplicated and capped."""
+        if not path:
+            return
+        paths = self._get_recent_sessions()
+        # De-duplicate while preserving order by removing existing entry first
+        try:
+            paths.remove(path)
+        except ValueError:
+            pass
+        paths.insert(0, path)
+        # Cap to configured maximum
+        pruned = paths[: SessionConstants.RECENT_SESSIONS_MAX]
+        self._set_recent_sessions(pruned)
+
+    def _populate_recent_sessions_menu(self):
+        """Populate the recent sessions submenu based on persisted list."""
+        menu = self.recent_sessions_menu
+        if not menu:
+            return
+        menu.clear()
+        paths = self._get_recent_sessions()
+        if not paths:
+            empty = menu.addAction(_("Empty"))
+            empty.setEnabled(False)
+            menu.setEnabled(False)
+            return
+        menu.setEnabled(True)
+        for index, path in enumerate(paths, start=1):
+            label = f"{index}. {os.path.basename(path) or path}"
+            action = menu.addAction(label)
+            action.setData(path)
+            action.setToolTip(path)
+            action.setStatusTip(path)
+            action.triggered.connect(partial(self._load_session_from_recent, path))
+
     def _init_cd_lookup_menu(self):
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
@@ -736,6 +798,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.SUBMIT_ACOUSTID,
             '-',
             MainAction.LOAD_SESSION,
+            # Recent Sessions submenu
+            self._create_recent_sessions_menu(),
             MainAction.SAVE_SESSION,
             MainAction.CLOSE_SESSION,
             '-',
@@ -1120,6 +1184,20 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         from picard.ui.util import FileDialog
 
         config = get_config()
+        # If a last session path is known, save silently to it
+        known_path = config.persist['last_session_path'] or ''
+        if known_path:
+            try:
+                save_session_to_path(self.tagger, known_path)
+            except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
+                QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
+                return False
+            else:
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': known_path})
+                self._add_to_recent_sessions(known_path)
+                return True
+
+        # Otherwise, prompt for a new path
         start_dir = config.persist['current_directory'] or os.path.expanduser('~')
         path, _filter = FileDialog.getSaveFileName(
             parent=self,
@@ -1138,6 +1216,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return False
             else:
                 self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                self._add_to_recent_sessions(path)
                 return True
         return False
 
@@ -1145,6 +1224,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         from picard.session.session_manager import load_session_from_path
 
         from picard.ui.util import FileDialog
+
+        # Ask whether to save/close current session before loading a new one
+        if not self.show_close_session_confirmation():
+            return
 
         config = get_config()
         start_dir = config.persist['current_directory'] or os.path.expanduser('~')
@@ -1156,15 +1239,29 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             ),
         )
         if path:
-            try:
-                # Initial progress feedback before heavy load
-                self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
-                load_session_from_path(self.tagger, path)
-                config.persist['current_directory'] = os.path.dirname(path)
-                config.persist['last_session_path'] = path
-                self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
-            except Exception as e:
-                QtWidgets.QMessageBox.critical(self, _("Failed to load session"), str(e))
+            # Initial progress feedback before heavy load
+            self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
+            load_session_from_path(self.tagger, path)
+            config.persist['current_directory'] = os.path.dirname(path)
+            config.persist['last_session_path'] = path
+            self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
+            # Track in recent sessions
+            self._add_to_recent_sessions(path)
+
+    def _load_session_from_recent(self, path):
+        from picard.session.session_manager import load_session_from_path
+
+        # Ask whether to save/close current session before loading a new one
+        if not self.show_close_session_confirmation():
+            return
+
+        self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
+        load_session_from_path(self.tagger, path)
+        config = get_config()
+        config.persist['current_directory'] = os.path.dirname(path)
+        config.persist['last_session_path'] = path
+        self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
+        self._add_to_recent_sessions(path)
 
     def close_session(self):
         # Use dedicated confirmation for closing sessions (save / don't save / cancel)
@@ -1172,6 +1269,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return
         # Clear current state
         self.tagger.clear_session()
+        # Reset last_session_path so subsequent saves prompt for a new path
+        config = get_config()
+        config.persist['last_session_path'] = ''
 
     def remove_selected_objects(self):
         """Tell the tagger to remove the selected objects."""

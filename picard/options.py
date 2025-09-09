@@ -148,6 +148,7 @@ Option('persist', 'window_state', QtCore.QByteArray())
 ListOption('persist', 'filters_FileTreeView', None)
 ListOption('persist', 'filters_AlbumTreeView', None)
 TextOption('persist', 'last_session_path', '')
+ListOption('persist', 'recent_sessions', [])
 TextOption('persist', 'session_autosave_path', '')
 
 # picard/ui/metadatabox.py

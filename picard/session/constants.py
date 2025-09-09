@@ -101,6 +101,10 @@ class SessionConstants:
     SESSION_FILE_EXTENSION = ".mbps.gz"
     SESSION_FORMAT_VERSION = 1
 
+    # Recent sessions
+    # Number of recent session entries shown in the UI flyout menu.
+    RECENT_SESSIONS_MAX = 5
+
     # Retry delays in milliseconds
     # Used by Qt timers for retry/poll loops during session load/restore.
     # Balance responsiveness with CPU/network load: shorter feels snappier
