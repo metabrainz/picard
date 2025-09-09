@@ -55,6 +55,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.album import NatAlbum
+from picard.cluster import ClusterList, UnclusteredFiles
 from picard.file import (
     File,
     FileErrorType,
@@ -417,6 +418,14 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
 
                 if isinstance(column, CustomColumn):
+                    # Hide custom column values for container rows like
+                    # "Clusters" and "Unclustered Files".
+                    # These represent unrelated collections and should not
+                    # display per-entity values.
+                    if isinstance(self.obj, ClusterList | UnclusteredFiles):
+                        self.setText(i, "")
+                        continue
+
                     try:
                         self.setText(i, column.provider.evaluate(self.obj))
                     except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
