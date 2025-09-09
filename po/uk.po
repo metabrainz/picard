@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-09-05 19:54+0000\n"
+"PO-Revision-Date: 2025-09-09 21:41+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -556,14 +556,10 @@ msgid "Use standardized artist names"
 msgstr "Використовуйте стандартні імена виконавців"
 
 #: picard/options.py:367 picard/ui/forms/ui_options_metadata.py:145
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized instrument credits"
 msgstr "Стандартизовані відомості про інструменти виконавців"
 
 #: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:146
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized vocal credits"
 msgstr "Стандартизовані відомості про вокалістів"
 
@@ -3599,8 +3595,6 @@ msgid "Options"
 msgstr "Опції"
 
 #: picard/ui/forms/ui_options.py:106
-#, fuzzy
-#| msgid "px"
 msgid "x"
 msgstr "x"
 
@@ -3962,8 +3956,6 @@ msgid "Quick Settings Menu"
 msgstr "Меню швидких налаштувань"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-#| msgid "Label"
 msgid "TextLabel"
 msgstr "Ярлик"
 
@@ -4215,10 +4207,8 @@ msgid "Destination directory:"
 msgstr "Тека призначення:"
 
 #: picard/ui/forms/ui_options_renaming.py:159
-#, fuzzy
-#| msgid "Move additional files (case insensitive):"
 msgid "Move additional files and subfolders (case insensitive):"
-msgstr "Перемістити додаткові файли (регістр нечутливий):"
+msgstr "Перемістити додаткові файли і підкаталоги (регістр нечутливий):"
 
 #: picard/ui/forms/ui_options_renaming.py:161
 msgid "Rename files when saving"
@@ -5726,13 +5716,12 @@ msgid "%s (error)"
 msgstr "%s (помилка)"
 
 #: picard/ui/options/dialog.py:189
-#, fuzzy
 msgid "Display help regarding option profiles"
 msgstr "Показати довідку щодо параметрів профілів"
 
 #: picard/ui/options/dialog.py:192
 msgid "&Restore all Defaults"
-msgstr "Відновити всі значення за замовчуванням"
+msgstr "В&ідновити всі значення за замовчуванням"
 
 #: picard/ui/options/dialog.py:193
 msgid "Reset all of Picard's settings"
@@ -5769,10 +5758,9 @@ msgid "This option will be saved to profile: %s"
 msgstr "Цей параметр буде збережено в профілі: %s"
 
 #: picard/ui/options/dialog.py:441
-#, fuzzy, python-format
-#| msgid "Profiles"
+#, python-format
 msgid "profile \"%s\""
-msgstr "Профілі"
+msgstr "профіль \"%s\""
 
 #: picard/ui/options/dialog.py:443
 #, python-format
@@ -6025,10 +6013,8 @@ msgid ""
 msgstr "Оберіть параметри, які ви хочете бачити в Меню швидких налаштувань."
 
 #: picard/ui/options/interface_quick_menu.py:62
-#, fuzzy
-#| msgid "Option Settings"
 msgid "Available Option Settings"
-msgstr "Налаштування опцій"
+msgstr "Доступні налаштування опцій"
 
 #: picard/ui/options/interface_quick_menu.py:82
 msgid "group_title"
