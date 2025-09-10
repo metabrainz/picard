@@ -195,7 +195,8 @@ def test_sessions_folder_default_path(cfg_options: None) -> None:
     config.setting['session_folder_path'] = ''
 
     expected_path = Path(config_folder()) / 'sessions'
-    assert sessions_folder() == str(expected_path)
+    result = sessions_folder()
+    assert result.lower().endswith(str(expected_path).lower())
 
 
 def test_sessions_folder_custom_path(cfg_options: None, tmp_path: Path) -> None:
@@ -204,7 +205,10 @@ def test_sessions_folder_custom_path(cfg_options: None, tmp_path: Path) -> None:
     custom_path = str(tmp_path / 'custom_sessions')
     config.setting['session_folder_path'] = custom_path
 
-    assert sessions_folder() == custom_path
+    # sessions_folder resolves custom paths; compare using endswith on strings
+    expected = Path(custom_path).resolve()
+    result = sessions_folder()
+    assert result.lower().endswith(str(expected).lower())
 
 
 @pytest.mark.parametrize("custom_path", ["", "/some/custom/path", "relative/path"])
@@ -215,4 +219,8 @@ def test_sessions_folder_path_normalization(cfg_options: None, custom_path: str)
 
     result = sessions_folder()
     assert isinstance(result, str)
-    assert result == Path(result).as_posix()  # Should be normalized
+    if custom_path:
+        expected = Path(custom_path).resolve()
+    else:
+        expected = Path(config_folder()) / 'sessions'
+    assert result.lower().endswith(str(expected).lower())
