@@ -28,9 +28,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
-
-from picard.metadata import Metadata
 
 
 @dataclass(frozen=True)
@@ -56,72 +53,6 @@ class SessionItemLocation:
     recording_id: str | None = None
     cluster_title: str | None = None
     cluster_artist: str | None = None
-
-
-@dataclass
-class SessionOptions:
-    """Configuration options for a session.
-
-    Parameters
-    ----------
-    rename_files : bool
-        Whether to rename files during processing.
-    move_files : bool
-        Whether to move files during processing.
-    dont_write_tags : bool
-        Whether to skip writing tags to files.
-    """
-
-    rename_files: bool
-    move_files: bool
-    dont_write_tags: bool
-
-
-@dataclass
-class SessionItem:
-    """A single file item in a session.
-
-    Parameters
-    ----------
-    file_path : Path
-        The path to the file.
-    location : SessionItemLocation
-        The location information for the file.
-    metadata : Metadata | None, optional
-        Optional metadata overrides for the file.
-    """
-
-    file_path: Path
-    location: SessionItemLocation
-    metadata: Metadata | None = None
-
-
-@dataclass
-class SessionData:
-    """Container for complete session data.
-
-    Parameters
-    ----------
-    version : int
-        The session format version.
-    options : SessionOptions
-        Configuration options for the session.
-    items : list[SessionItem]
-        List of file items in the session.
-    album_track_overrides : dict[str, dict[str, dict[str, list[Any]]]]
-        Track-level metadata overrides per album.
-    album_overrides : dict[str, dict[str, list[Any]]]
-        Album-level metadata overrides.
-    unmatched_albums : list[str]
-        List of album IDs that are loaded but have no files matched.
-    """
-
-    version: int
-    options: SessionOptions
-    items: list[SessionItem]
-    album_track_overrides: dict[str, dict[str, dict[str, list[Any]]]]
-    album_overrides: dict[str, dict[str, list[Any]]]
-    unmatched_albums: list[str]
 
 
 @dataclass
@@ -160,35 +91,3 @@ class AlbumItems:
 
     unmatched: list[Path]
     tracks: list[tuple[Path, str]]
-
-
-@dataclass
-class TrackOverrides:
-    """Metadata overrides for a specific track.
-
-    Parameters
-    ----------
-    track_id : str
-        The recording ID of the track.
-    overrides : dict[str, list[Any]]
-        The metadata overrides.
-    """
-
-    track_id: str
-    overrides: dict[str, list[Any]]
-
-
-@dataclass
-class AlbumOverrides:
-    """Metadata overrides for a specific album.
-
-    Parameters
-    ----------
-    album_id : str
-        The album ID.
-    overrides : dict[str, list[Any]]
-        The metadata overrides.
-    """
-
-    album_id: str
-    overrides: dict[str, list[Any]]

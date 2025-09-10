@@ -22,16 +22,10 @@
 
 from pathlib import Path
 
-from picard.metadata import Metadata
 from picard.session.session_data import (
     AlbumItems,
-    AlbumOverrides,
     GroupedItems,
-    SessionData,
-    SessionItem,
     SessionItemLocation,
-    SessionOptions,
-    TrackOverrides,
 )
 
 import pytest
@@ -84,92 +78,6 @@ def test_session_item_location_immutable() -> None:
 
 
 # =============================================================================
-# SessionOptions Tests
-# =============================================================================
-
-
-@pytest.mark.parametrize(
-    ("rename_files", "move_files", "dont_write_tags"),
-    [
-        (True, True, True),
-        (False, False, False),
-        (True, False, True),
-        (False, True, False),
-    ],
-)
-def test_session_options_creation(rename_files: bool, move_files: bool, dont_write_tags: bool) -> None:
-    """Test SessionOptions creation with various boolean combinations."""
-    options = SessionOptions(
-        rename_files=rename_files,
-        move_files=move_files,
-        dont_write_tags=dont_write_tags,
-    )
-
-    assert options.rename_files == rename_files
-    assert options.move_files == move_files
-    assert options.dont_write_tags == dont_write_tags
-
-
-# =============================================================================
-# SessionItem Tests
-# =============================================================================
-
-
-def test_session_item_creation() -> None:
-    """Test SessionItem creation with metadata."""
-    file_path = Path("/test/file.mp3")
-    location = SessionItemLocation(type="track", album_id="album-123", recording_id="recording-456")
-    metadata = Metadata()
-    metadata['title'] = "Test Song"
-
-    item = SessionItem(file_path=file_path, location=location, metadata=metadata)
-
-    assert item.file_path == file_path
-    assert item.location == location
-    assert item.metadata == metadata
-
-
-def test_session_item_creation_without_metadata() -> None:
-    """Test SessionItem creation without metadata."""
-    file_path = Path("/test/file.mp3")
-    location = SessionItemLocation(type="unclustered")
-
-    item = SessionItem(file_path=file_path, location=location)
-
-    assert item.file_path == file_path
-    assert item.location == location
-    assert item.metadata is None
-
-
-# =============================================================================
-# SessionData Tests
-# =============================================================================
-
-
-def test_session_data_creation() -> None:
-    """Test SessionData creation with all components."""
-    options = SessionOptions(rename_files=True, move_files=False, dont_write_tags=True)
-    location = SessionItemLocation(type="track", album_id="album-123")
-    item = SessionItem(file_path=Path("/test/file.mp3"), location=location)
-
-    data = SessionData(
-        version=1,
-        options=options,
-        items=[item],
-        album_track_overrides={'album-123': {'track-456': {'title': ["New Title"]}}},
-        album_overrides={'album-123': {'albumartist': ["New Artist"]}},
-        unmatched_albums=["album-789"],
-    )
-
-    assert data.version == 1
-    assert data.options == options
-    assert data.items == [item]
-    assert data.album_track_overrides == {'album-123': {'track-456': {'title': ["New Title"]}}}
-    assert data.album_overrides == {'album-123': {'albumartist': ["New Artist"]}}
-    assert data.unmatched_albums == ["album-789"]
-
-
-# =============================================================================
 # GroupedItems Tests
 # =============================================================================
 
@@ -212,33 +120,3 @@ def test_album_items_creation() -> None:
 
     assert album_items.unmatched == unmatched
     assert album_items.tracks == tracks
-
-
-# =============================================================================
-# TrackOverrides Tests
-# =============================================================================
-
-
-def test_track_overrides_creation() -> None:
-    """Test TrackOverrides creation."""
-    overrides = {'title': ["New Title"], 'artist': ["New Artist"]}
-
-    track_overrides = TrackOverrides(track_id="recording-123", overrides=overrides)
-
-    assert track_overrides.track_id == "recording-123"
-    assert track_overrides.overrides == overrides
-
-
-# =============================================================================
-# AlbumOverrides Tests
-# =============================================================================
-
-
-def test_album_overrides_creation() -> None:
-    """Test AlbumOverrides creation."""
-    overrides = {'albumartist': ["New Artist"], 'album': ["New Album"]}
-
-    album_overrides = AlbumOverrides(album_id="album-123", overrides=overrides)
-
-    assert album_overrides.album_id == "album-123"
-    assert album_overrides.overrides == overrides
