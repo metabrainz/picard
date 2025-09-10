@@ -43,6 +43,7 @@ class SessionsOptionsPage(OptionsPage):
         ('session_autosave_interval_min', ['autosave_spin']),
         ('session_backup_on_crash', ['backup_checkbox']),
         ('session_include_mb_data', ['include_mb_data_checkbox']),
+        ('session_no_mb_requests_on_load', ['no_mb_requests_checkbox']),
         ('session_folder_path', ['folder_path_edit']),
     )
 
@@ -84,6 +85,16 @@ class SessionsOptionsPage(OptionsPage):
         self.include_mb_data_checkbox = QtWidgets.QCheckBox(_(SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE))
         self.vbox.addWidget(self.include_mb_data_checkbox)
 
+        # Child option: Only effective when Include MB data is enabled
+        self.no_mb_requests_checkbox = QtWidgets.QCheckBox(_(SessionMessages.SESSION_NO_MB_REQUESTS_ON_LOAD))
+        # Visually indent to indicate dependency on parent option
+        child_layout = QtWidgets.QHBoxLayout()
+        child_layout.setContentsMargins(24, 0, 0, 0)
+        child_layout.addWidget(self.no_mb_requests_checkbox)
+        self.vbox.addLayout(child_layout)
+        # Keep child disabled when parent is unchecked
+        self.include_mb_data_checkbox.toggled.connect(self.no_mb_requests_checkbox.setEnabled)
+
         self.vbox.addStretch(1)
 
     def load(self):
@@ -93,6 +104,9 @@ class SessionsOptionsPage(OptionsPage):
         self.autosave_spin.setValue(config.setting['session_autosave_interval_min'])
         self.backup_checkbox.setChecked(config.setting['session_backup_on_crash'])
         self.include_mb_data_checkbox.setChecked(config.setting['session_include_mb_data'])
+        self.no_mb_requests_checkbox.setChecked(config.setting['session_no_mb_requests_on_load'])
+        # Enforce dependency (child enabled only when parent is on)
+        self.no_mb_requests_checkbox.setEnabled(self.include_mb_data_checkbox.isChecked())
         self.folder_path_edit.setText(config.setting['session_folder_path'])
 
     def save(self):
@@ -101,7 +115,12 @@ class SessionsOptionsPage(OptionsPage):
         config.setting['session_load_last_on_startup'] = self.load_last_checkbox.isChecked()
         config.setting['session_autosave_interval_min'] = int(self.autosave_spin.value())
         config.setting['session_backup_on_crash'] = self.backup_checkbox.isChecked()
-        config.setting['session_include_mb_data'] = self.include_mb_data_checkbox.isChecked()
+        include_mb = self.include_mb_data_checkbox.isChecked()
+        config.setting['session_include_mb_data'] = include_mb
+        # Force child off when parent is off to avoid stale state
+        config.setting['session_no_mb_requests_on_load'] = (
+            self.no_mb_requests_checkbox.isChecked() if include_mb else False
+        )
         config.setting['session_folder_path'] = self.folder_path_edit.text().strip()
 
     def _browse_sessions_folder(self):

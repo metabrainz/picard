@@ -139,5 +139,8 @@ class SessionMessages:
     SESSION_LOAD_LAST_TITLE = N_("Load last saved session on startup")
     SESSION_AUTOSAVE_TITLE = N_("Auto-save session every N minutes (0 disables)")
     SESSION_BACKUP_TITLE = N_("Attempt to keep a session backup on unexpected shutdown")
-    SESSION_INCLUDE_MB_DATA_TITLE = N_("Include MusicBrainz data in saved sessions (faster loads, risk of stale data)")
+    SESSION_INCLUDE_MB_DATA_TITLE = N_("Include MusicBrainz data in saved sessions (warm cache)")
+    SESSION_NO_MB_REQUESTS_ON_LOAD = N_(
+        "Do not make MusicBrainz requests on restore (faster loads, risk of stale data)"
+    )
     SESSION_FOLDER_PATH_TITLE = N_("Sessions folder path (leave empty for default)")

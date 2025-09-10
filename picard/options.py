@@ -524,8 +524,14 @@ BoolOption(
 BoolOption(
     'setting',
     'session_include_mb_data',
-    False,
+    True,
     title=SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE,
+)
+BoolOption(
+    'setting',
+    'session_no_mb_requests_on_load',
+    True,
+    title=SessionMessages.SESSION_NO_MB_REQUESTS_ON_LOAD,
 )
 TextOption(
     'setting',
