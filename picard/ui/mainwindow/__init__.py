@@ -1298,7 +1298,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         config = get_config()
 
-        start_dir = sessions_folder() or config.persist['current_directory']
+        last_session_path = config.persist['last_session_path']
+        if last_session_path and isinstance(last_session_path, str):
+            start_dir = Path(last_session_path).parent
+        else:
+            start_dir = sessions_folder()
         path, _filter = FileDialog.getOpenFileName(
             parent=self,
             dir=start_dir,
