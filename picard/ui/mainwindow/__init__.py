@@ -1305,7 +1305,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             start_dir = sessions_folder()
         path, _filter = FileDialog.getOpenFileName(
             parent=self,
-            dir=start_dir,
+            dir=str(start_dir),
             filter=(
                 _("MusicBrainz Picard Session (%s);;All files (*)") % ("*" + SessionConstants.SESSION_FILE_EXTENSION)
             ),

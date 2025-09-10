@@ -643,11 +643,15 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
 
         # Best-effort crash/exit backup if enabled
+        config = get_config()
         with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
-            config = get_config()
             if config.setting['session_backup_on_crash']:
                 path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
                 save_session_to_path(self, path)
+
+        # set to blank otherwise `Save Session` will save to previous path
+        # which is probably not what the user wants
+        config.persist['last_session_path'] = ''
 
         log.debug("Picard stopping")
         self.run_cleanup()

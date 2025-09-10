@@ -47,6 +47,7 @@ from __future__ import annotations
 import gzip
 import json
 from pathlib import Path
+import tempfile
 from typing import Any
 
 from picard.session.constants import SessionConstants
@@ -97,18 +98,35 @@ def save_session_to_path(tagger: Any, path: str | Path) -> None:
     Notes
     -----
     The session is saved as minified JSON (UTF-8) and gzip-compressed. If the
-    file already exists, it will be overwritten.
+    file already exists, it will be overwritten. The write operation is atomic
+    to prevent file corruption in case of crashes.
     """
     p = Path(path)
     # Ensure multi-part extension .mbps.gz
     if not str(p).lower().endswith(SessionConstants.SESSION_FILE_EXTENSION):
         p = Path(str(p) + SessionConstants.SESSION_FILE_EXTENSION)
+
     data = export_session(tagger)
     p.parent.mkdir(parents=True, exist_ok=True)
+
     # Minify JSON and gzip-compress to reduce file size
     json_text = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     compressed = gzip.compress(json_text.encode("utf-8"))
-    p.write_bytes(compressed)
+
+    # Atomic write: write to temporary file first, then rename
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=p.parent, prefix=p.stem + "_", suffix=p.suffix, delete=False) as temp_file:
+            temp_path = Path(temp_file.name)
+            temp_path.write_bytes(compressed)
+
+        # Atomic rename to final destination
+        temp_path.replace(p)
+    except (OSError, IOError, PermissionError):
+        # Clean up temporary file if it exists and rename failed
+        if temp_path and temp_path.exists():
+            temp_path.unlink()
+        raise  # Caller will handle the exception
 
 
 def load_session_from_path(tagger: Any, path: str | Path) -> None:

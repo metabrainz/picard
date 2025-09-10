@@ -26,6 +26,8 @@ from unittest.mock import Mock, patch
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import export_session, load_session_from_path, save_session_to_path
 
+import pytest
+
 
 @patch("picard.session.session_manager.SessionExporter")
 def test_export_session_function(mock_exporter_class: Mock) -> None:
@@ -336,3 +338,71 @@ def test_session_constants_used_correctly(tmp_path: Path) -> None:
 
         # Verify the exported data has correct version
         mock_export.assert_called_once_with(tagger_mock)
+
+
+@patch("picard.session.session_manager.export_session")
+def test_save_session_to_path_atomic_write(mock_export_session: Mock, tmp_path: Path) -> None:
+    """Test that save_session_to_path uses atomic write to prevent corruption."""
+    mock_export_session.return_value = {'version': 1, 'items': []}
+
+    tagger_mock = Mock()
+    session_file = tmp_path / "test_session"
+    expected_file = session_file.with_suffix('.mbps.gz')
+
+    # Create a file that should be overwritten
+    expected_file.write_text("old content")
+
+    save_session_to_path(tagger_mock, session_file)
+
+    # Verify the file was written atomically (old content replaced)
+    assert expected_file.exists()
+    content = expected_file.read_bytes()
+    # Should be gzip-compressed JSON, not the old text content
+    assert content != b"old content"
+    assert len(content) > 0  # Should have actual compressed content
+
+    mock_export_session.assert_called_once_with(tagger_mock)
+
+
+@patch("picard.session.session_manager.export_session")
+def test_save_session_to_path_atomic_write_cleanup_on_error(mock_export_session: Mock, tmp_path: Path) -> None:
+    """Test that temporary files are cleaned up when atomic write fails."""
+    mock_export_session.return_value = {'version': 1, 'items': []}
+
+    tagger_mock = Mock()
+    session_file = tmp_path / "test_session"
+    expected_file = session_file.with_suffix('.mbps.gz')
+
+    # Mock tempfile.NamedTemporaryFile to raise an exception during creation
+    with patch("tempfile.NamedTemporaryFile", side_effect=OSError("Permission denied")):
+        with pytest.raises(OSError, match="Permission denied"):
+            save_session_to_path(tagger_mock, session_file)
+
+    # Verify no temporary files were left behind
+    temp_files = list(tmp_path.glob("*_*.mbps.gz"))
+    assert len(temp_files) == 0, f"Temporary files found: {temp_files}"
+
+    # Verify the final file doesn't exist (since write failed)
+    assert not expected_file.exists()
+
+
+@patch("picard.session.session_manager.export_session")
+def test_save_session_to_path_atomic_write_rename_failure_cleanup(mock_export_session: Mock, tmp_path: Path) -> None:
+    """Test that temporary files are cleaned up when rename fails."""
+    mock_export_session.return_value = {'version': 1, 'items': []}
+
+    tagger_mock = Mock()
+    session_file = tmp_path / "test_session"
+    expected_file = session_file.with_suffix('.mbps.gz')
+
+    # Mock Path.replace to raise an exception during rename
+    with patch("pathlib.Path.replace", side_effect=OSError("Rename failed")):
+        with pytest.raises(OSError, match="Rename failed"):
+            save_session_to_path(tagger_mock, session_file)
+
+    # Verify no temporary files were left behind
+    temp_files = list(tmp_path.glob("*_*.mbps.gz"))
+    assert len(temp_files) == 0, f"Temporary files found: {temp_files}"
+
+    # Verify the final file doesn't exist (since rename failed)
+    assert not expected_file.exists()
