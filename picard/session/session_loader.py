@@ -541,7 +541,12 @@ class SessionLoader:
         self._config_mgr.prepare_session(self.tagger)
         self._config_mgr.restore_options(data.get('options', {}))
 
-        self._suppress_mb_requests = get_config().setting['session_no_mb_requests_on_load']
+        # Only make web requests if MB data is included and the user has not disabled them
+        config = get_config()
+        self._suppress_mb_requests = (
+            config.setting['session_include_mb_data'] and config.setting['session_no_mb_requests_on_load']
+        )
+
         saved_expanded_albums = set(data.get('expanded_albums', [])) if 'expanded_albums' in data else None
         self._albums.configure(self._suppress_mb_requests, saved_expanded_albums)
 

@@ -180,6 +180,7 @@ def test_session_loader_requests_allowed(tmp_path: Path, mock_single_shot, cfg_o
 
 def test_session_loader_requests_suppressed(tmp_path: Path, mock_single_shot, cfg_options) -> None:
     cfg = picard_config.get_config()
+    cfg.setting['session_include_mb_data'] = True
     cfg.setting['session_no_mb_requests_on_load'] = True
     cfg.setting['session_safe_restore'] = False
 
@@ -232,6 +233,7 @@ def test_session_loader_cached_album_refresh_allowed(tmp_path: Path, mock_single
 
 def test_session_loader_cached_album_no_refresh_when_suppressed(tmp_path: Path, mock_single_shot, cfg_options) -> None:
     cfg = picard_config.get_config()
+    cfg.setting['session_include_mb_data'] = True
     cfg.setting['session_no_mb_requests_on_load'] = True
     cfg.setting['session_safe_restore'] = False
 
@@ -255,3 +257,84 @@ def test_session_loader_cached_album_no_refresh_when_suppressed(tmp_path: Path, 
     loader.load_from_path(path)
 
     assert not album_mock.load.called
+
+
+@pytest.mark.parametrize(
+    ("include_mb_data", "no_requests", "expected_suppressed"),
+    [
+        (False, False, False),
+        (False, True, False),
+        (True, False, False),
+        (True, True, True),
+    ],
+)
+def test_session_loader_request_suppression_matrix_unmatched(
+    tmp_path: Path, mock_single_shot, cfg_options, include_mb_data: bool, no_requests: bool, expected_suppressed: bool
+) -> None:
+    cfg = picard_config.get_config()
+    cfg.setting['session_include_mb_data'] = include_mb_data
+    cfg.setting['session_no_mb_requests_on_load'] = no_requests
+    cfg.setting['session_safe_restore'] = False
+
+    tagger = Mock()
+    tagger.albums = {}
+
+    loader = SessionLoader(tagger)
+
+    data = {
+        'version': 1,
+        'options': {},
+        'items': [],
+        'unmatched_albums': ["album-xyz"],
+        'expanded_albums': [],
+    }
+    path = _write_session(tmp_path, data)
+
+    album_mock = Mock()
+    album_mock.unmatched_files = Mock()
+    album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
+    tagger.load_album.return_value = album_mock
+
+    loader.load_from_path(path)
+
+    assert tagger.load_album.called == (not expected_suppressed)
+
+
+@pytest.mark.parametrize(
+    ("include_mb_data", "no_requests", "expected_suppressed"),
+    [
+        (False, False, False),
+        (False, True, False),
+        (True, False, False),
+        (True, True, True),
+    ],
+)
+def test_session_loader_request_suppression_matrix_cached(
+    tmp_path: Path, mock_single_shot, cfg_options, include_mb_data: bool, no_requests: bool, expected_suppressed: bool
+) -> None:
+    cfg = picard_config.get_config()
+    cfg.setting['session_include_mb_data'] = include_mb_data
+    cfg.setting['session_no_mb_requests_on_load'] = no_requests
+    cfg.setting['session_safe_restore'] = False
+
+    tagger = Mock()
+    album_mock = Mock()
+    album_mock.unmatched_files = Mock()
+    album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
+    tagger.albums = {"album-xyz": album_mock}
+
+    loader = SessionLoader(tagger)
+
+    data = {
+        'version': 1,
+        'options': {},
+        'mb_cache': {"album-xyz": {"id": "album-xyz"}},
+        'items': [],
+        'expanded_albums': ["album-xyz"],
+    }
+    path = _write_session(tmp_path, data)
+
+    loader.load_from_path(path)
+
+    # With cache, suppression controls whether album.load() is called
+    assert album_mock.load.called == (not expected_suppressed)
