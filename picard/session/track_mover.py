@@ -83,29 +83,27 @@ class TrackMover:
             The album containing the track.
         """
 
-        def attempt_move() -> None:
+        def _get_file_and_track() -> tuple[File | None, Any | None]:
             file = self.tagger.files.get(str(fpath))
             if not file or file.state == File.PENDING:
-                return
+                return None, None
 
             rec_to_track = {t.id: t for t in album.tracks}
             track = rec_to_track.get(recording_id)
-            if track is None:
-                return
+            return file, track
 
+        def _attempt_move() -> None:
+            file, track = _get_file_and_track()
+            if file is None or track is None:
+                return
             file.move(track)
 
-        def is_ready() -> bool:
-            file = self.tagger.files.get(str(fpath))
-            if not file or file.state == File.PENDING:
-                return False
-
-            rec_to_track = {t.id: t for t in album.tracks}
-            track = rec_to_track.get(recording_id)
-            return track is not None
+        def _is_ready() -> bool:
+            file, track = _get_file_and_track()
+            return file is not None and track is not None
 
         RetryHelper.retry_until(
-            condition_fn=is_ready, action_fn=attempt_move, delay_ms=SessionConstants.FAST_RETRY_DELAY_MS
+            condition_fn=_is_ready, action_fn=_attempt_move, delay_ms=SessionConstants.FAST_RETRY_DELAY_MS
         )
 
     def move_file_to_nat(self, fpath: Path, recording_id: str) -> None:
