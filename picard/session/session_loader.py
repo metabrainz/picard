@@ -136,8 +136,8 @@ class SessionFileReader:
         p = Path(path)
         raw = p.read_bytes()
         if len(raw) >= 2 and raw[0] == 0x1F and raw[1] == 0x8B:
-            text = gzip.decompress(raw).decode("utf-8")
-            return yaml.safe_load(text)
+            decompressed_raw = gzip.decompress(raw)
+            return yaml.safe_load(decompressed_raw.decode("utf-8"))
         return yaml.safe_load(raw.decode("utf-8"))
 
 

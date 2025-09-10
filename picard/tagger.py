@@ -50,7 +50,6 @@ from collections import namedtuple
 import contextlib
 from functools import partial
 from hashlib import blake2b
-import json
 import logging
 import os
 from pathlib import Path
@@ -62,6 +61,8 @@ import sys
 import time
 from urllib.parse import urlparse
 from uuid import uuid4
+
+import yaml
 
 from PyQt6 import (
     QtCore,
@@ -663,7 +664,7 @@ class Tagger(QtWidgets.QApplication):
                     load_session_from_path(self, last_path)
                 except FileNotFoundError:
                     show_session_not_found_dialog(self.window, last_path)
-                except (OSError, PermissionError, json.JSONDecodeError, KeyError) as e:
+                except (OSError, PermissionError, yaml.YAMLError, KeyError) as e:
                     # Surface startup load errors to user similar to interactive load
                     log.debug(f"Error loading session from {last_path}: {e}")
                     QtWidgets.QMessageBox.critical(

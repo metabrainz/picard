@@ -26,6 +26,7 @@ separating the export logic from other session management concerns.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +37,28 @@ from picard.session.constants import SessionConstants
 from picard.session.location_detector import LocationDetector
 from picard.session.metadata_handler import MetadataHandler
 from picard.session.session_data import SessionItemLocation
+
+
+@dataclass
+class MetadataOverridesResult:
+    """Result of metadata overrides export operation.
+
+    Contains track-level and album-level metadata overrides, as well as
+    information about unmatched albums.
+
+    Attributes
+    ----------
+    album_track_overrides : dict[str, dict[str, dict[str, list[Any]]]]
+        Track-level metadata overrides per album, keyed by album ID.
+    album_overrides : dict[str, dict[str, list[Any]]]
+        Album-level metadata overrides, keyed by album ID.
+    unmatched_albums : list[str]
+        List of album IDs that are loaded but have no files matched to them.
+    """
+
+    album_track_overrides: dict[str, dict[str, dict[str, list[Any]]]]
+    album_overrides: dict[str, dict[str, list[Any]]]
+    unmatched_albums: list[str]
 
 
 class SessionExporter:
@@ -89,13 +112,13 @@ class SessionExporter:
             session_data['items'].append(item)
 
         # Export metadata overrides and unmatched albums
-        album_overrides, album_meta_overrides, unmatched_albums = self._export_metadata_overrides(tagger)
-        if album_overrides:
-            session_data['album_track_overrides'] = album_overrides
-        if album_meta_overrides:
-            session_data['album_overrides'] = album_meta_overrides
-        if unmatched_albums:
-            session_data['unmatched_albums'] = unmatched_albums
+        metadata_result = self._export_metadata_overrides(tagger)
+        if metadata_result.album_track_overrides:
+            session_data['album_track_overrides'] = metadata_result.album_track_overrides
+        if metadata_result.album_overrides:
+            session_data['album_overrides'] = metadata_result.album_overrides
+        if metadata_result.unmatched_albums:
+            session_data['unmatched_albums'] = metadata_result.unmatched_albums
 
         # Optionally export MB data cache per album
         include_mb = config.setting['session_include_mb_data']
@@ -104,7 +127,7 @@ class SessionExporter:
             session_data['mb_cache'] = self._export_mb_cache(tagger)
 
         # Export UI state (expanded albums)
-        expanded_albums = self._export_ui_state(tagger)
+        expanded_albums = self._export_expanded_albums(tagger)
         if expanded_albums:
             session_data['expanded_albums'] = expanded_albums
 
@@ -131,7 +154,7 @@ class SessionExporter:
                 cache[album_id] = node
         return cache
 
-    def _export_ui_state(self, tagger: Any) -> list[str]:
+    def _export_expanded_albums(self, tagger: Any) -> list[str]:
         """Export UI expansion state for albums in album view.
 
         Parameters
@@ -237,9 +260,7 @@ class SessionExporter:
             if v is not None
         }
 
-    def _export_metadata_overrides(
-        self, tagger: Any
-    ) -> tuple[dict[str, dict[str, dict[str, list[Any]]]], dict[str, dict[str, list[Any]]], list[str]]:
+    def _export_metadata_overrides(self, tagger: Any) -> MetadataOverridesResult:
         """Export metadata overrides for albums and tracks.
 
         Parameters
@@ -249,8 +270,8 @@ class SessionExporter:
 
         Returns
         -------
-        tuple[dict, dict, list]
-            Tuple containing (album_track_overrides, album_overrides, unmatched_albums).
+        MetadataOverridesResult
+            Result containing album track overrides, album overrides, and unmatched albums.
         """
         album_overrides: dict[str, dict[str, dict[str, list[Any]]]] = {}
         album_meta_overrides: dict[str, dict[str, list[Any]]] = {}
@@ -294,4 +315,8 @@ class SessionExporter:
             if not has_files and not album_diff and not overrides_for_album:
                 unmatched_albums.append(album.id)
 
-        return album_overrides, album_meta_overrides, unmatched_albums
+        return MetadataOverridesResult(
+            album_track_overrides=album_overrides,
+            album_overrides=album_meta_overrides,
+            unmatched_albums=unmatched_albums,
+        )

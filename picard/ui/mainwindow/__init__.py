@@ -51,9 +51,10 @@ from copy import deepcopy
 import datetime
 from functools import partial
 import itertools
-import json
 import os.path
 from pathlib import Path
+
+import yaml
 
 from PyQt6 import (
     QtCore,
@@ -1322,7 +1323,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             except FileNotFoundError:
                 show_session_not_found_dialog(self, path)
                 return
-            except (OSError, PermissionError, json.JSONDecodeError, KeyError) as e:
+            except (OSError, PermissionError, yaml.YAMLError, KeyError) as e:
                 log.debug(f"Error loading session from {path}: {e}")
                 QtWidgets.QMessageBox.critical(
                     self,
@@ -1348,7 +1349,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             show_session_not_found_dialog(self, path)
             self._remove_from_recent_sessions(path)
             return
-        except (OSError, PermissionError, json.JSONDecodeError, KeyError) as e:
+        except (OSError, PermissionError, yaml.YAMLError, KeyError) as e:
             log.debug(f"Error loading session from {path}: {e}")
             QtWidgets.QMessageBox.critical(
                 self,
