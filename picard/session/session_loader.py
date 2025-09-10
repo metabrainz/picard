@@ -346,7 +346,10 @@ class AlbumManager:
     def load_album_files(self, by_album: dict[str, AlbumItems], track_mover: TrackMover) -> None:
         """Add files to albums and move them to specific tracks as needed."""
         for album_id, groups in by_album.items():
-            album = self.loaded_albums[album_id]
+            album = self.loaded_albums.get(album_id)
+            if album is None:
+                # Album not available (e.g., network suppressed and no cache). Skip gracefully.
+                continue
             all_paths = list(groups.unmatched) + [fp for (fp, _rid) in groups.tracks]
             if all_paths:
                 self._tagger.add_files([str(p) for p in all_paths], target=album.unmatched_files)
@@ -497,7 +500,6 @@ class SessionLoader:
         self._overrides = OverrideApplicator(self._albums)
         self.track_mover = TrackMover(tagger)
         # Module-level state bound to a single session load
-        self._saved_expanded_albums: set[str] | None = None
         self._mb_cache: dict[str, Any] = {}
         self._suppress_mb_requests: bool = False
 
@@ -540,8 +542,8 @@ class SessionLoader:
         self._config_mgr.restore_options(data.get('options', {}))
 
         self._suppress_mb_requests = get_config().setting['session_no_mb_requests_on_load']
-        self._saved_expanded_albums = set(data.get('expanded_albums', [])) if 'expanded_albums' in data else None
-        self._albums.configure(self._suppress_mb_requests, self._saved_expanded_albums)
+        saved_expanded_albums = set(data.get('expanded_albums', [])) if 'expanded_albums' in data else None
+        self._albums.configure(self._suppress_mb_requests, saved_expanded_albums)
 
         items = data.get('items', [])
         grouped_items = self._grouper.group(items)

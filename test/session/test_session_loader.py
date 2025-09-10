@@ -139,7 +139,7 @@ def test_session_loader_initialization() -> None:
 
     assert loader.tagger == tagger_mock
     assert loader.loaded_albums == {}
-    assert loader._saved_expanded_albums is None
+    # Saved expansion state is managed by AlbumManager/UIStateManager now
     assert hasattr(loader, 'track_mover')
 
 
