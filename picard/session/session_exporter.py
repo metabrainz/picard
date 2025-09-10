@@ -79,7 +79,7 @@ class SessionExporter:
             'album_overrides': {},
             'unmatched_albums': [],
             'expanded_albums': [],
-            # Optional: cache of MB release JSON keyed by album id
+            # Optional: cache of MB release data keyed by album id
             'mb_cache': {},
         }
 
@@ -97,7 +97,7 @@ class SessionExporter:
         if unmatched_albums:
             session_data['unmatched_albums'] = unmatched_albums
 
-        # Optionally export MB JSON cache per album
+        # Optionally export MB data cache per album
         include_mb = config.setting['session_include_mb_data']
 
         if include_mb:
@@ -111,7 +111,7 @@ class SessionExporter:
         return session_data
 
     def _export_mb_cache(self, tagger: Any) -> dict[str, Any]:
-        """Export MB release JSON for currently loaded albums.
+        """Export MB release data for currently loaded albums.
 
         Parameters
         ----------
@@ -121,7 +121,7 @@ class SessionExporter:
         Returns
         -------
         dict[str, Any]
-            Mapping of album MBID to release JSON node.
+            Mapping of album MBID to release data node.
         """
         cache: dict[str, Any] = {}
         for album_id, album in getattr(tagger, 'albums', {}).items():

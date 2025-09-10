@@ -20,9 +20,10 @@
 
 """Tests for session loader."""
 
-import json
 from pathlib import Path
 from unittest.mock import Mock, patch
+
+import yaml
 
 from picard.album import Album
 import picard.config as picard_config
@@ -44,19 +45,19 @@ def test_session_loader_read_session_file(session_loader: SessionLoader, tmp_pat
     """Test reading session file."""
     session_data = {'version': 1, 'items': []}
     session_file = tmp_path / "test.mbps"
-    session_file.write_text(json.dumps(session_data), encoding="utf-8")
+    session_file.write_text(yaml.dump(session_data, default_flow_style=False), encoding="utf-8")
 
     data = session_loader._read_session_file(session_file)
 
     assert data == session_data
 
 
-def test_session_loader_read_session_file_invalid_json(session_loader: SessionLoader, tmp_path: Path) -> None:
-    """Test reading invalid JSON session file."""
+def test_session_loader_read_session_file_invalid_yaml(session_loader: SessionLoader, tmp_path: Path) -> None:
+    """Test reading invalid YAML session file."""
     session_file = tmp_path / "test.mbps"
-    session_file.write_text("invalid json", encoding="utf-8")
+    session_file.write_text("invalid yaml: [", encoding="utf-8")
 
-    with pytest.raises(json.JSONDecodeError):
+    with pytest.raises(yaml.YAMLError):
         session_loader._read_session_file(session_file)
 
 

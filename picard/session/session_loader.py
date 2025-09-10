@@ -28,9 +28,10 @@ from __future__ import annotations
 
 from contextlib import suppress
 import gzip
-import json
 from pathlib import Path
 from typing import Any
+
+import yaml
 
 from PyQt6 import QtCore
 
@@ -91,7 +92,7 @@ class SessionLoader:
         grouped_items = self._group_items_by_location(items)
         metadata_map = self._extract_metadata(items)
 
-        # If mb_cache is provided, try to pre-load albums from cached JSON
+        # If mb_cache is provided, try to pre-load albums from cached MB data
         mb_cache = data.get('mb_cache', {})
         if mb_cache:
             self._emit_progress("preload_cache", details={'albums': len(mb_cache)})
@@ -161,12 +162,12 @@ class SessionLoader:
         return entry(details) if callable(entry) else entry
 
     def _preload_albums_from_cache(self, mb_cache: dict[str, Any], grouped_items: GroupedItems) -> None:
-        """Preload albums from embedded MB JSON cache when available.
+        """Preload albums from embedded MB data cache when available.
 
         Parameters
         ----------
         mb_cache : dict[str, Any]
-            Mapping of album IDs to MB release JSON nodes.
+            Mapping of album IDs to MB release data nodes.
         grouped_items : GroupedItems
             Items grouped by location type (used to know which albums are needed).
         """
@@ -177,7 +178,7 @@ class SessionLoader:
                 continue
             album = self.tagger.albums.get(album_id)
             if not album:
-                # Create album instance via normal path but intercept to parse from JSON node
+                # Create album instance via normal path but intercept to parse from MB data node
                 album = self.tagger.load_album(album_id)
             # If album supports parsing from cached release node, do so
             parse_from_json = getattr(album, '_parse_release', None)
@@ -205,8 +206,8 @@ class SessionLoader:
 
         Raises
         ------
-        json.JSONDecodeError
-            If the file contains invalid JSON.
+        yaml.YAMLError
+            If the file contains invalid YAML.
         FileNotFoundError
             If the file does not exist.
         """
@@ -215,9 +216,9 @@ class SessionLoader:
         raw = p.read_bytes()
         if len(raw) >= 2 and raw[0] == 0x1F and raw[1] == 0x8B:
             text = gzip.decompress(raw).decode("utf-8")
-            return json.loads(text)
+            return yaml.safe_load(text)
         else:
-            return json.loads(raw.decode("utf-8"))
+            return yaml.safe_load(raw.decode("utf-8"))
 
     def _prepare_session(self, data: dict[str, Any]) -> None:
         """Prepare the session for loading.

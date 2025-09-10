@@ -62,7 +62,7 @@ class MetadataHandler:
         for key, values in file.metadata.rawitems():
             if key.startswith(INTERNAL_TAG_PREFIX) or key in EXCLUDED_OVERRIDE_TAGS:
                 continue
-            # Copy as list to be JSON serializable
+            # Copy as list to be YAML serializable
             tags[key] = list(values)
         return tags
 

@@ -20,8 +20,11 @@
 
 """Tests for session manager."""
 
+import gzip
 from pathlib import Path
 from unittest.mock import Mock, patch
+
+import yaml
 
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import export_session, load_session_from_path, save_session_to_path
@@ -105,8 +108,8 @@ def test_save_session_to_path_string_path(mock_export_session: Mock, tmp_path: P
 
 
 @patch("picard.session.session_manager.export_session")
-def test_save_session_to_path_creates_json_content(mock_export_session: Mock, tmp_path: Path) -> None:
-    """Test that saved session file contains proper JSON content."""
+def test_save_session_to_path_creates_yaml_content(mock_export_session: Mock, tmp_path: Path) -> None:
+    """Test that saved session file contains proper YAML content."""
     session_data = {
         'version': 1,
         'options': {'rename_files': True},
@@ -122,12 +125,9 @@ def test_save_session_to_path_creates_json_content(mock_export_session: Mock, tm
     saved_file = Path(str(session_file) + ".mbps.gz")
     assert saved_file.exists()
 
-    # Read and verify content (gzip -> parse JSON)
-    import gzip
-    import json
-
+    # Read and verify content (gzip -> parse YAML)
     content = gzip.decompress(saved_file.read_bytes()).decode("utf-8")
-    data = json.loads(content)
+    data = yaml.safe_load(content)
     assert data['version'] == 1
     assert data['options']['rename_files'] is True
     assert data['items'][0]['file_path'] == "/test/file.mp3"
@@ -177,11 +177,8 @@ def test_save_session_to_path_file_overwrite(mock_export_session: Mock, tmp_path
     save_session_to_path(tagger_mock, existing_file)
 
     # File should be overwritten
-    import gzip
-    import json
-
     content = gzip.decompress(existing_file.read_bytes()).decode("utf-8")
-    data = json.loads(content)
+    data = yaml.safe_load(content)
     assert data['version'] == 1
 
 
@@ -215,14 +212,12 @@ def test_save_session_to_path_utf8_encoding(tmp_path: Path) -> None:
         save_session_to_path(tagger_mock, session_file)
 
         saved_file = Path(str(session_file) + ".mbps.gz")
-        import gzip
-
         content = gzip.decompress(saved_file.read_bytes()).decode("utf-8")
         assert "歌曲" in content
 
 
-def test_save_session_to_path_json_formatting(tmp_path: Path) -> None:
-    """Test that save_session_to_path uses proper JSON formatting."""
+def test_save_session_to_path_yaml_formatting(tmp_path: Path) -> None:
+    """Test that save_session_to_path uses proper YAML formatting."""
     with patch("picard.session.session_manager.export_session") as mock_export:
         session_data = {
             'version': 1,
@@ -237,14 +232,12 @@ def test_save_session_to_path_json_formatting(tmp_path: Path) -> None:
         save_session_to_path(tagger_mock, session_file)
 
         saved_file = Path(str(session_file) + ".mbps.gz")
-        import gzip
-
         content = gzip.decompress(saved_file.read_bytes()).decode("utf-8")
-        # Content is minified JSON
-        assert content.startswith("{")
-        assert '"version":1' in content
-        assert '"options":{' in content
-        assert '"rename_files":true' in content
+        # Content is YAML format
+        assert "version: 1" in content
+        assert "options:" in content
+        assert "rename_files: true" in content
+        assert "move_files: false" in content
 
 
 def test_export_session_returns_dict() -> None:
@@ -357,7 +350,7 @@ def test_save_session_to_path_atomic_write(mock_export_session: Mock, tmp_path: 
     # Verify the file was written atomically (old content replaced)
     assert expected_file.exists()
     content = expected_file.read_bytes()
-    # Should be gzip-compressed JSON, not the old text content
+    # Should be gzip-compressed YAML, not the old text content
     assert content != b"old content"
     assert len(content) > 0  # Should have actual compressed content
 

@@ -38,17 +38,18 @@ load_session_from_path
 
 Notes
 -----
-Session files use the .mbps.gz extension and contain gzip-compressed JSON data
+Session files use the .mbps.gz extension and contain gzip-compressed YAML data
 with version information, options, file locations, and metadata overrides.
 """
 
 from __future__ import annotations
 
 import gzip
-import json
 from pathlib import Path
 import tempfile
 from typing import Any
+
+import yaml
 
 from picard.session.constants import SessionConstants
 from picard.session.session_exporter import SessionExporter
@@ -97,7 +98,7 @@ def save_session_to_path(tagger: Any, path: str | Path) -> None:
 
     Notes
     -----
-    The session is saved as minified JSON (UTF-8) and gzip-compressed. If the
+    The session is saved as YAML (UTF-8) and gzip-compressed. If the
     file already exists, it will be overwritten. The write operation is atomic
     to prevent file corruption in case of crashes.
     """
@@ -109,9 +110,9 @@ def save_session_to_path(tagger: Any, path: str | Path) -> None:
     data = export_session(tagger)
     p.parent.mkdir(parents=True, exist_ok=True)
 
-    # Minify JSON and gzip-compress to reduce file size
-    json_text = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
-    compressed = gzip.compress(json_text.encode("utf-8"))
+    # Convert to YAML and gzip-compress to reduce file size
+    yaml_text = yaml.dump(data, default_flow_style=False, allow_unicode=True, sort_keys=False)
+    compressed = gzip.compress(yaml_text.encode("utf-8"))
 
     # Atomic write: write to temporary file first, then rename
     temp_path = None
