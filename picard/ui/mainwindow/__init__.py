@@ -51,6 +51,7 @@ from copy import deepcopy
 import datetime
 from functools import partial
 import itertools
+import json
 import os.path
 from pathlib import Path
 
@@ -467,12 +468,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if path:
             try:
                 save_session_to_path(self.tagger, path)
+
+                # Ensure the known path remains persisted explicitly
+                config.persist['last_session_path'] = path
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                self._add_to_recent_sessions(path)
             except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
                 return False
             else:
-                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
-                self._add_to_recent_sessions(path)
                 return True
 
         # Fallback to prompting for a path
@@ -1298,9 +1302,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         config = get_config()
 
-        last_session_path = config.persist['last_session_path']
-        if last_session_path and isinstance(last_session_path, str):
-            start_dir = Path(last_session_path).parent
+        last_session_path = config.persist['last_session_path'] or ''
+        if last_session_path:
+            start_dir = Path(str(last_session_path)).parent
         else:
             start_dir = sessions_folder()
         path, _filter = FileDialog.getOpenFileName(
@@ -1318,8 +1322,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             except FileNotFoundError:
                 show_session_not_found_dialog(self, path)
                 return
-            except (OSError, PermissionError) as e:
+            except (OSError, PermissionError, json.JSONDecodeError, KeyError) as e:
                 log.debug(f"Error loading session from {path}: {e}")
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    _("Failed to load session"),
+                    _("Could not load session from %(path)s:\n\n%(error)s") % {"path": str(path), "error": str(e)},
+                )
                 return
             else:
                 config.persist['last_session_path'] = path
@@ -1338,6 +1347,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         except FileNotFoundError:
             show_session_not_found_dialog(self, path)
             self._remove_from_recent_sessions(path)
+            return
+        except (OSError, PermissionError, json.JSONDecodeError, KeyError) as e:
+            log.debug(f"Error loading session from {path}: {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                _("Failed to load session"),
+                _("Could not load session from %(path)s:\n\n%(error)s") % {"path": str(path), "error": str(e)},
+            )
             return
         else:
             config = get_config()

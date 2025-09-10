@@ -649,10 +649,6 @@ class Tagger(QtWidgets.QApplication):
                 path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
                 save_session_to_path(self, path)
 
-        # set to blank otherwise `Save Session` will save to previous path
-        # which is probably not what the user wants
-        config.persist['last_session_path'] = ''
-
         log.debug("Picard stopping")
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
@@ -668,9 +664,14 @@ class Tagger(QtWidgets.QApplication):
                 except FileNotFoundError:
                     show_session_not_found_dialog(self.window, last_path)
                 except (OSError, PermissionError, json.JSONDecodeError, KeyError) as e:
-                    # Keep previous best-effort behavior for other errors
+                    # Surface startup load errors to user similar to interactive load
                     log.debug(f"Error loading session from {last_path}: {e}")
-                    pass
+                    QtWidgets.QMessageBox.critical(
+                        self.window,
+                        _("Failed to load session"),
+                        _("Could not load session from %(path)s:\n\n%(error)s")
+                        % {"path": str(last_path), "error": str(e)},
+                    )
 
         if self._to_load:
             self.load_to_picard(self._to_load)
@@ -685,11 +686,11 @@ class Tagger(QtWidgets.QApplication):
             self._session_autosave_timer.setInterval(max(1, interval_min) * 60 * 1000)
 
             def _autosave():
-                path = config.persist['session_autosave_path'] if 'session_autosave_path' in config.persist else None
+                path = config.persist['session_autosave_path'] or None
                 if not path:
-                    path = config.persist['last_session_path'] if 'last_session_path' in config.persist else None
+                    path = config.persist['last_session_path'] or None
                 if not path:
-                    path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
+                    path = str(Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION))
                     config.persist['session_autosave_path'] = path
 
                 with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
