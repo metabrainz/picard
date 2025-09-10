@@ -107,6 +107,8 @@ class MainAction(str, Enum):
     VIEW_INFO = 'view_info_action'
     VIEW_LOG = 'view_log_action'
     # Session management
-    SAVE_SESSION = 'save_session_action'
+    SAVE_SESSION_AS = 'save_session_action'
+    SAVE_SESSION = 'quick_save_session_action'
     LOAD_SESSION = 'load_session_action'
-    CLOSE_SESSION = 'close_session_action'
+    NEW_SESSION = 'close_session_action'
+    CLEAR_RECENT_SESSIONS = 'clear_recent_sessions_action'

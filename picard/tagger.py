@@ -101,6 +101,7 @@ from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
     USER_DIR,
 )
+from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -130,7 +131,12 @@ from picard.pluginmanager import (
 )
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
-from picard.session.session_manager import save_session_to_path
+from picard.session.constants import SessionConstants
+from picard.session.session_manager import (
+    export_session as _export_session,
+    load_session_from_path,
+    save_session_to_path,
+)
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -167,7 +173,7 @@ from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
-from picard.ui.util import FileDialog
+from picard.ui.util import FileDialog, show_session_not_found_dialog
 
 
 # A "fix" for https://bugs.python.org/issue1438480
@@ -500,7 +506,6 @@ class Tagger(QtWidgets.QApplication):
     # ==============================
     def export_session(self) -> dict:
         from picard import config as _cfg
-        from picard.session.session_manager import export_session as _export_session
 
         # Expose config on self for session helpers
         self.config = _cfg  # type: ignore[attr-defined]
@@ -641,9 +646,8 @@ class Tagger(QtWidgets.QApplication):
         with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
             config = get_config()
             if config.setting['session_backup_on_crash']:
-                path = config.persist['session_autosave_path'] or config.persist['last_session_path']
-                if path:
-                    save_session_to_path(self, path)
+                path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
+                save_session_to_path(self, path)
 
         log.debug("Picard stopping")
         self.run_cleanup()
@@ -655,10 +659,14 @@ class Tagger(QtWidgets.QApplication):
         if config.setting['session_load_last_on_startup']:
             last_path = config.persist['last_session_path']
             if last_path:
-                with contextlib.suppress(OSError, PermissionError, FileNotFoundError, json.JSONDecodeError, KeyError):
-                    from picard.session.session_manager import load_session_from_path
-
+                try:
                     load_session_from_path(self, last_path)
+                except FileNotFoundError:
+                    show_session_not_found_dialog(self.window, last_path)
+                except (OSError, PermissionError, json.JSONDecodeError, KeyError) as e:
+                    # Keep previous best-effort behavior for other errors
+                    log.debug(f"Error loading session from {last_path}: {e}")
+                    pass
 
         if self._to_load:
             self.load_to_picard(self._to_load)
@@ -677,9 +685,6 @@ class Tagger(QtWidgets.QApplication):
                 if not path:
                     path = config.persist['last_session_path'] if 'last_session_path' in config.persist else None
                 if not path:
-                    from picard.const.appdirs import sessions_folder
-                    from picard.session.constants import SessionConstants
-
                     path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
                     config.persist['session_autosave_path'] = path
 

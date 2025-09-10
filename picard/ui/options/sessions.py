@@ -27,6 +27,7 @@ from picard.i18n import N_, gettext as _
 from picard.session.constants import SessionMessages
 
 from picard.ui.options import OptionsPage
+from picard.ui.util import FileDialog
 
 
 class SessionsOptionsPage(OptionsPage):
@@ -105,13 +106,9 @@ class SessionsOptionsPage(OptionsPage):
 
     def _browse_sessions_folder(self):
         """Open a folder selection dialog for the sessions folder."""
-        from picard.ui.util import FileDialog
-
         current_path = self.folder_path_edit.text().strip()
         if not current_path:
-            from picard.const.appdirs import config_folder
-
-            current_path = config_folder()
+            current_path = sessions_folder()
 
         folder = FileDialog.getExistingDirectory(parent=self, dir=current_path, caption=_("Select Sessions Folder"))
         if folder:
