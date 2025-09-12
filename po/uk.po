@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-09-09 21:41+0000\n"
+"PO-Revision-Date: 2025-09-12 03:46+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
@@ -406,7 +406,7 @@ msgstr "Оновлення для перевірки"
 
 #: picard/options.py:273
 msgid "Use album artist genres"
-msgstr "Використовувати жанри виконавців альбомів"
+msgstr "Використовувати жанри альбому виконавця"
 
 #: picard/options.py:274 picard/ui/forms/ui_options_genres.py:128
 msgid "Use folksonomy tags as genre"
@@ -517,7 +517,7 @@ msgstr "Каталог автоматичного резервного копі�
 
 #: picard/options.py:352
 msgid "Minimal similarity for cluster lookups"
-msgstr "Мінімальна схожість для пошуку груп"
+msgstr "Мінімальна схожість для пошуків кластерів"
 
 #: picard/options.py:353
 msgid "Minimal similarity for file lookups"
@@ -625,7 +625,7 @@ msgstr "Ім'я користувача проксі-сервера"
 
 #: picard/options.py:392
 msgid "Use a web proxy server"
-msgstr "Використовуйте веб-проксі-сервер"
+msgstr "Використовувати проксі-сервер"
 
 #: picard/options.py:408 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
@@ -783,7 +783,7 @@ msgstr "Версія ID3v2 для запису"
 #: picard/options.py:484
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr "Видалити існуючі теги RIFF INFO з файлів WAVE"
+msgstr "Видалити існуючі RIFF INFO-теги з WAVE-файлів"
 
 #: picard/options.py:485
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
@@ -796,7 +796,7 @@ msgstr "Запис тегів RIFF INFO у файли WAVE"
 
 #: picard/options.py:492
 msgid "Selected file naming script"
-msgstr "Вибраний скрипт іменування файлів"
+msgstr "Обраний скрипт іменування файлів"
 
 #: picard/options.py:527
 #, python-format
@@ -806,7 +806,7 @@ msgstr "Немає назви для налаштування '%s'"
 #: picard/pluginmanager.py:280
 #, python-format
 msgid "Unable to load plugin '%s'"
-msgstr "Не вдалося завантажити плагін '%s'"
+msgstr "Не вдалося завантажити плагін «%s»"
 
 #: picard/pluginmanager.py:308
 #, python-format
@@ -874,7 +874,7 @@ msgstr "Штрих-код"
 
 #: picard/releasegroup.py:65 picard/ui/cdlookup.py:72
 msgid "Disambiguation"
-msgstr "Значення"
+msgstr "Розрізнення (Disambiguation)"
 
 #: picard/releasegroup.py:96
 msgid "[no barcode]"
@@ -918,11 +918,11 @@ msgstr "Усі підтримувані файли журналів"
 
 #: picard/tagger.py:1040
 msgid "EAC / XLD / Whipper / fre:ac log files"
-msgstr "Файли журналів EAC / XLD / Whipper / fre:ac"
+msgstr "Файли журналу EAC / XLD / Whipper / fre:ac"
 
 #: picard/tagger.py:1041
 msgid "dBpoweramp log files"
-msgstr "Файли журналів dBpoweramp"
+msgstr "Журнали dBpoweramp"
 
 #: picard/script/serializer.py:381 picard/tagger.py:1042
 #: picard/ui/coverartbox/__init__.py:382 picard/ui/mainwindow/__init__.py:936
@@ -938,7 +938,7 @@ msgstr "Не вдалося розібрати журнал копіювання
 #: picard/track.py:134
 #, python-format
 msgid "Error line %(lineno)d: %(error)s"
-msgstr "Рядок помилки %(lineno)d: %(error)s"
+msgstr "Помилка в рядку %(lineno)d: %(error)s"
 
 #: picard/track.py:428
 msgid "[loading recording information]"
@@ -987,7 +987,7 @@ msgstr ""
 
 #: picard/acoustid/manager.py:210
 msgid "AcoustID submission failed permanently, probably too many retries"
-msgstr "Надсилання AcoustID не вдалося, ймовірно, забагато спроб"
+msgstr "Надсилання AcoustID остаточно не вдалося, можливо, забагато повторів"
 
 #: picard/acoustid/manager.py:222
 msgid "Submitting AcoustIDs …"
@@ -1025,7 +1025,7 @@ msgstr "Додати файл як запис…"
 #: picard/coverart/__init__.py:96
 #, python-format
 msgid "Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"
-msgstr "Обкладинка типу '%(type)s' завантажена для %(albumid)s з %(host)s"
+msgstr "Обкладинка типу «%(type)s» завантажена для %(albumid)s з %(host)s"
 
 #: picard/coverart/__init__.py:193
 #, python-format
@@ -1071,7 +1071,7 @@ msgstr "Локальні файли"
 
 #: picard/coverart/providers/urlrels.py:39
 msgid "Allowed Cover Art URLs"
-msgstr "Дозволені URL-адреси обкладинок"
+msgstr "Дозволені URL обкладинок"
 
 #: picard/formats/apev2.py:102
 msgid "APEv2 (Monkey's Audio, WavPack)"
@@ -1096,7 +1096,7 @@ msgstr ""
 #: picard/script/__init__.py:188
 #, python-format
 msgid "Preset %(number)d: %(title)s"
-msgstr "Пресет %(number)d: %(title)s"
+msgstr "Предустановка %(number)d: %(title)s"
 
 #: picard/script/__init__.py:195
 msgid "Default file naming script"
@@ -2246,6 +2246,18 @@ msgid ""
 "a\n"
 "    proper multi-valued tag."
 msgstr ""
+"```\n"
+"`$foreach(name,code,separator=\"; \")`\n"
+"\n"
+"Ітерує кожен елемент, знайдений у мультизначному тегу `name`,\n"
+"\tвиконуючи `code`. Для кожної ітерації значення елемента спочатку\n"
+"\tзберігається в тег `_loop_value`, а лічильник — у тег `_loop_count`.\n"
+"\tЦе дозволяє отримувати доступ до значення елемента або лічильника\n"
+"\tвсередині скрипту `code`.\n"
+"\tЛітеральне значення, що представляє мультизначне, може бути\n"
+"\tпідставлене замість `name`, використовуючи `separator`\n"
+"\t(або \"; \", якщо не передано), щоб примусово перетворити значення\n"
+"\tна правильний мультизначний тег."
 
 #: picard/script/functions.py:1262
 #, fuzzy
@@ -2292,6 +2304,23 @@ msgid ""
 "\n"
 "Result: 1=FIRST:A; 2=SECOND:B\n"
 msgstr ""
+"`$map(name,code,separator=\"; \")`\n"
+"\n"
+"Ітерує кожен елемент, знайдений у мультизначному тегу `name`, і оновлює\n"
+"\tзначення елемента на значення, що повертає `code`, повертаючи оновлений\n"
+"\tмультизначний тег. Для кожної ітерації значення елемента спочатку "
+"зберігається\n"
+"\tв тег `_loop_value`, а лічильник — у тег `_loop_count`. Це дозволяє "
+"отримувати\n"
+"\tдоступ до значення елемента або лічильника всередині скрипту `code`.\n"
+"\n"
+"Порожні елементи автоматично видаляються.\n"
+"\n"
+"Приклад:\n"
+"\n"
+"    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
+"\n"
+"Результат: 1=FIRST:A; 2=SECOND:B\n"
 
 #: picard/script/functions.py:1319
 msgid ""
@@ -2332,6 +2361,28 @@ msgid ""
 "    $setmulti(supporting_artists,$slice(%artists%,1))\n"
 "    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 msgstr ""
+"`$slice(name,start,end,separator=\"; \")`\n"
+"\n"
+"Повертає мультизначну змінну, що містить елементи між індексами `start` та "
+"`end`\n"
+"\tз мультизначного тегу `name`. Літеральне значення, що представляє "
+"мультизначне,\n"
+"\tможе бути підставлене замість `name`, використовуючи `separator` (або "
+"\"; \", якщо не передано),\n"
+"\tщоб примусово перетворити значення на правильний мультизначний тег. "
+"Індекси починаються з нуля\n"
+"\tВід’ємні числа рахуються від кінця списку. Якщо `start` або `end` залишені "
+"порожніми,\n"
+"\tвони за замовчуванням приймають початок та кінець списку відповідно.\n"
+"\n"
+"Наступний приклад створить мультизначну змінну з усіма виконавцями\n"
+"\tу `%artists%`, крім першого, що можна використати для формування списку "
+"\"feat.\".\n"
+"\n"
+"Приклади:\n"
+"\n"
+"\t$setmulti(supporting_artists,$slice(%artists%,1))\n"
+"\t$setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 
 #: picard/script/functions.py:1368
 #, python-format
@@ -2352,6 +2403,21 @@ msgid ""
 "    equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.\n"
 "    `%3Y`); and hanging '%' at the end of the format string."
 msgstr ""
+"`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
+"\n"
+"Повертає поточну дату та час у заданому `format`, який базується на "
+"стандартних\n"
+"\tкодах форматування Python `strftime` [format codes] (https://strftime.org/"
+").\n"
+"\tЯкщо `format` не вказано дата/час буде повернута у вигляді\n"
+"\t`2020-02-05 14:26:32`.\n"
+"Примітка: слід уникати платформозалежних кодів форматування, щоб "
+"забезпечити\n"
+"\tпортативність скриптів на різних платформах. До таких кодів належать:\n"
+"\t- видалення ведучих нулів (наприклад, `%-d` і `%-m` на Linux або macOS,\n"
+"\tта їхні еквіваленти `%#d` і `%#m` на Windows);\n"
+"\t- специфікатори довжини елемента (наприклад, `%3Y`);\n"
+"\t- відокремлений символ '%' в кінці рядка формату."
 
 #: picard/script/functions.py:1400
 msgid ""
@@ -2551,6 +2617,25 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
+"`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
+"\n"
+"Повертає вхідну дату у заданому `format`, який базується на стандартних\n"
+"\tкодах форматування Python `strftime` [format codes](https://strftime.org/)."
+"\n"
+"\tЯкщо `format` не вказано, дата буде повернена у вигляді `2020-02-05`.\n"
+"\tЯкщо дата або формат некоректні, повертається порожній рядок.\n"
+"\tЗа замовчуванням порядок елементів у вхідній даті — \"ymd\".\n"
+"\tЦе можна змінити, вказавши \"dmy\" або \"mdy\".\n"
+"Примітка: слід уникати платформозалежних кодів форматування, щоб "
+"забезпечити  \n"
+"\tпортативність скриптів на різних платформах. До таких кодів належать:  \n"
+"\t- видалення ведучих нулів (наприклад, `%-d` і `%-m` на Linux або macOS, та "
+"їхні\n"
+"\tеквіваленти `%#d` і `%#m` на Windows);  \n"
+"\t- специфікатори довжини елемента (наприклад, `%3Y`);\n"
+"\t- відокремлений символ '%' в кінці рядка формату.\n"
+"\n"
+"__Since Picard 2.7_"
 
 #: picard/script/functions.py:1591
 msgid ""
@@ -2609,6 +2694,7 @@ msgstr ""
 "_Починаючи з Picard 2.8_"
 
 #: picard/script/functions.py:1684
+#, fuzzy
 msgid ""
 "`$min(type,x,…)`\n"
 "\n"
@@ -2631,8 +2717,28 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
+"`$min(type,x,…)`\n"
+"\n"
+"Повертає мінімальне значення, використовуючи порівняння, задане в `type`.\n"
+"\n"
+"Можливі значення `type`:\n"
+"- \"int\" (ціле число),\n"
+"- \"float\" (число з плаваючою крапкою),\n"
+"- \"text\" (чутливий до регістру текст),\n"
+"- \"nocase\" (нечутливий до регістру текст),\n"
+"- \"auto\" (автоматично визначає тип переданих аргументів).\n"
+"\n"
+"За замовчуванням використовується \"auto\", якщо `type` не вказано. \n"
+"Тип \"auto\" застосовує перший відповідний тип для обох аргументів у такому\n"
+"порядку пріоритету: \"int\", \"float\", \"text\".\n"
+"\n"
+"Може використовуватися з довільною кількістю аргументів.\n"
+"Мультизначні аргументи розгортаються автоматично.\n"
+"\n"
+"__Since  Picard 2.9_"
 
 #: picard/script/functions.py:1707
+#, fuzzy
 msgid ""
 "`$max(type,x,…)`\n"
 "\n"
@@ -2655,6 +2761,25 @@ msgid ""
 "\n"
 "_Since Picard 2.9_"
 msgstr ""
+"`$max(type,x,…)`\n"
+"\n"
+"Повертає максимальне значення, використовуючи порівняння, задане в `type`.\n"
+"\n"
+"Можливі значення `type`:\n"
+"- \"int\" (ціле число),\n"
+"- \"float\" (число з плаваючою крапкою),\n"
+"- \"text\" (чутливий до регістру текст),\n"
+"- \"nocase\" (нечутливий до регістру текст),\n"
+"- \"auto\" (автоматично визначає тип переданих аргументів).\n"
+"\n"
+"За замовчуванням використовується \"auto\", якщо `type` не вказано.\n"
+"Тип \"auto\" застосовує перший відповідний тип для обох аргументів у такому "
+"порядку пріоритету: \"int\", \"float\", \"text\".\n"
+"\n"
+"Може використовуватися з довільною кількістю аргументів.\n"
+"Мультизначні аргументи розгортаються автоматично.\n"
+"\n"
+"_Since Picard 2.9_"
 
 #: picard/script/serializer.py:215
 #, python-format
@@ -2808,13 +2933,13 @@ msgid ""
 "a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
 "from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
-"Іконки створені Sambhav Kothari <sambhavs.email@gmail.com> and <a "
-"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
-"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
-"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
-"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</"
-"a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</"
-"a>з<a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"створені Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
+"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
+"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
+"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
+"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
+"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</"
+"a>завдяки <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
 #: picard/ui/aboutdialog.py:108
 #, python-format
@@ -2939,8 +3064,10 @@ msgstr "Оновити список"
 #, python-format
 msgid "%(name)s (%(count)i release)"
 msgid_plural "%(name)s (%(count)i releases)"
-msgstr[0] "%(name)s (%(count)i реліз)"
-msgstr[1] "%(name)s (%(count)i релізів)"
+msgstr[0] "%(name)s (%(count)i випуску)"
+msgstr[1] "%(name)s (%(count)i випусків)"
+msgstr[2] "%(name)s (%(count)i випусків)"
+msgstr[3] "%(name)s (%(count)i випусків)"
 
 #: picard/ui/colors.py:47
 msgid "Errored entity"
@@ -4064,7 +4191,7 @@ msgstr "Різні виконавці:"
 
 #: picard/ui/forms/ui_options_metadata.py:153
 msgid "Standalone recordings:"
-msgstr "Самостійний запис:"
+msgstr "Самостійний запис;"
 
 #: picard/ui/forms/ui_options_metadata.py:154
 #: picard/ui/forms/ui_options_metadata.py:155
@@ -4338,7 +4465,7 @@ msgstr ""
 #: picard/ui/forms/ui_options_tags_compatibility_aac.py:53
 #: picard/ui/forms/ui_options_tags_compatibility_ac3.py:53
 msgid "Save APEv2 tags"
-msgstr "Зберегти теги APEv2"
+msgstr "Зберігати APEv2-теги"
 
 #: picard/ui/forms/ui_options_tags_compatibility_aac.py:54
 #: picard/ui/forms/ui_options_tags_compatibility_ac3.py:54
@@ -4559,7 +4686,7 @@ msgstr "Перемістити тег угору"
 #: picard/ui/forms/ui_widget_taglisteditor.py:78
 #: picard/ui/forms/ui_widget_taglisteditor.py:79
 msgid "Move tag down"
-msgstr "Перемістити тег вниз"
+msgstr "Перемістити тег униз"
 
 #: picard/ui/forms/ui_widget_taglisteditor.py:80
 #: picard/ui/forms/ui_widget_taglisteditor.py:81
@@ -5816,7 +5943,7 @@ msgstr "Відбиток"
 #: picard/ui/options/fingerprinting.py:176
 #: picard/ui/options/fingerprinting.py:180
 msgid "Please select a valid fpcalc executable."
-msgstr "Будь ласка, виберіть дійсний виконуваний файл fpcalc."
+msgstr "Виберіть дійсний виконуваний файл fpcalc."
 
 #: picard/ui/options/fingerprinting.py:180
 msgid "Invalid fpcalc executable"
@@ -6178,7 +6305,7 @@ msgstr ""
 #: picard/ui/options/maintenance.py:285 picard/ui/options/maintenance.py:303
 #: picard/ui/options/maintenance.py:313
 msgid "Load Backup Configuration File"
-msgstr "Завантаження файлу конфігурації резервної копії"
+msgstr "Завантажити резервний файл конфігурації"
 
 #: picard/ui/options/maintenance.py:287
 #, python-format
