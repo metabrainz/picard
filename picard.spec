@@ -70,6 +70,7 @@ if build_portable:
     runtime_hooks.append('scripts/pyinstaller/portable-hook.py')
 
 hiddenimports = [
+    'cffi',  # Needed for pygit2
     'dataclasses',  # Provide dataclasses support for plugins
 ]
 try:
