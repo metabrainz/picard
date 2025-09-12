@@ -69,6 +69,7 @@ from picard.const.defaults import (
     DEFAULT_WIN_COMPAT_REPLACEMENTS,
 )
 from picard.i18n import N_
+from picard.session.constants import SessionMessages
 
 from picard.ui.colors import InterfaceColors
 
@@ -146,6 +147,9 @@ BoolOption('persist', 'window_maximized', False)
 Option('persist', 'window_state', QtCore.QByteArray())
 ListOption('persist', 'filters_FileTreeView', None)
 ListOption('persist', 'filters_AlbumTreeView', None)
+TextOption('persist', 'last_session_path', '')
+ListOption('persist', 'recent_sessions', [])
+TextOption('persist', 'session_autosave_path', '')
 
 # picard/ui/metadatabox.py
 #
@@ -490,6 +494,51 @@ BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO ta
 BoolOption('persist', 'script_editor_show_documentation', False)
 Option('setting', 'file_renaming_scripts', {})
 TextOption('setting', 'selected_file_naming_script_id', '', title=N_("Selected file naming script"))
+
+# picard/ui/options/sessions.py
+# Sessions
+BoolOption(
+    'setting',
+    'session_safe_restore',
+    True,
+    title=SessionMessages.SESSION_SAFE_RESTORE_TITLE,
+)
+BoolOption(
+    'setting',
+    'session_load_last_on_startup',
+    False,
+    title=SessionMessages.SESSION_LOAD_LAST_TITLE,
+)
+IntOption(
+    'setting',
+    'session_autosave_interval_min',
+    0,
+    title=SessionMessages.SESSION_AUTOSAVE_TITLE,
+)
+BoolOption(
+    'setting',
+    'session_backup_on_crash',
+    True,
+    title=SessionMessages.SESSION_BACKUP_TITLE,
+)
+BoolOption(
+    'setting',
+    'session_include_mb_data',
+    True,
+    title=SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE,
+)
+BoolOption(
+    'setting',
+    'session_no_mb_requests_on_load',
+    True,
+    title=SessionMessages.SESSION_NO_MB_REQUESTS_ON_LOAD,
+)
+TextOption(
+    'setting',
+    'session_folder_path',
+    '',
+    title=SessionMessages.SESSION_FOLDER_PATH_TITLE,
+)
 
 # picard/ui/searchdialog/album.py
 #

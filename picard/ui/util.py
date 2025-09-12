@@ -194,6 +194,23 @@ def changes_require_restart_warning(parent, warnings=None, notes=None):
     QtWidgets.QMessageBox.warning(parent, _("Changes only applied on restart"), text)
 
 
+def show_session_not_found_dialog(parent, path: str) -> None:
+    """Show a friendly dialog for a missing session file.
+
+    Parameters
+    ----------
+    parent : QWidget
+        Parent widget for the dialog.
+    path : str
+        Full path of the missing session file to show to the user.
+    """
+    QtWidgets.QMessageBox.warning(
+        parent,
+        _("Load Session"),
+        _("The session file '%(path)s' was not found.") % {'path': path},
+    )
+
+
 def menu_builder(menu, main_actions, *args):
     """Adds each argument to menu, depending on their type"""
     for arg in args:
