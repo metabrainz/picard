@@ -55,6 +55,7 @@ from picard import log
 from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
+from picard.ui.itemviews.custom_columns.manager_dialog import CustomColumnsManagerDialog
 from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 
@@ -111,21 +112,61 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         lock_action.toggled.connect(self.lock)
         menu.addAction(lock_action)
 
+        menu.addSeparator()
+
+        def _open_manager():
+            dlg = CustomColumnsManagerDialog(parent=self)
+            dlg.exec()
+
+        manage_action = QtGui.QAction(_("Manage Custom Columns…"), menu)
+        manage_action.setEnabled(not self.is_locked and CustomColumnsManagerDialog is not None)
+        manage_action.triggered.connect(_open_manager)
+        menu.addAction(manage_action)
+
         menu.exec(event.globalPos())
         event.accept()
 
     def restore_defaults(self):
         self.parent().restore_default_columns()
 
+    def sync_visible_columns(self):
+        """Synchronize _visible_columns with actual column visibility state.
+
+        This should be called when new columns are added to ensure the context menu
+        checkboxes reflect the actual visibility state.
+        """
+        # Update always visible columns in case they changed
+        self._always_visible_columns = set(self._columns.always_visible_columns())
+
+        # For each column, check if it's actually visible in the table
+        for i in range(len(self._columns)):
+            if i in self._always_visible_columns:
+                # Always visible columns should always be in _visible_columns
+                self._visible_columns.add(i)
+            else:
+                # For other columns, check if they're actually hidden
+                is_hidden = self.parent().isColumnHidden(i)
+                if not is_hidden:
+                    self._visible_columns.add(i)
+                else:
+                    self._visible_columns.discard(i)
+
     def paintSection(self, painter, rect, index):
-        column = self._columns[index]
+        # The Manage Custom Columns dialog may mutate the `self._columns` list.
+        # Guard against transient mismatches between header section count and
+        # the underlying columns list during live add/remove operations.
+        # see: picard/ui/itemviews/custom_columns/manager_dialog.py
+        try:
+            column = self._columns[index]
+        except IndexError:
+            column = None
+
+        # Always paint the default header section once
+        super().paintSection(painter, rect, index)
+
+        # Overlay custom painting for image columns
         if isinstance(column, ImageColumn):
-            painter.save()
-            super().paintSection(painter, rect, index)
-            painter.restore()
             column.paint(painter, rect)
-        else:
-            super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
         try:

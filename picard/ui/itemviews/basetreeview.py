@@ -91,6 +91,7 @@ from picard.util import (
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
 from picard.ui.filter import Filter
+from picard.ui.itemviews.events import header_events
 from picard.ui.itemviews.match_quality_column import MatchQualityColumn, MatchQualityColumnDelegate
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
@@ -176,6 +177,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.setAccessibleDescription(_(self.DESCRIPTION))
         self.tagger = QtCore.QCoreApplication.instance()
         self.window = window
+
+        # Subscribe to header update events
+        header_events.headers_updated.connect(self._on_header_updated)
+
         # Should multiple files dropped be assigned to tracks sequentially?
         self._move_to_multi_tracks = True
 
@@ -387,9 +392,26 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config.persist[self.header_state] = state
         config.persist[self.header_locked] = header.is_locked
 
+    def _set_header_labels(self, update_column_count=False):
+        """Set header labels based on current columns.
+
+        Parameters
+        ----------
+        update_column_count : bool, optional
+            Whether to update the column count to match the number of columns,
+            by default False.
+        """
+        from picard.ui.columns import Columns as _Columns
+
+        cols = self.columns
+        if isinstance(cols, _Columns):
+            if update_column_count:
+                self.setColumnCount(len(cols))
+            labels = tuple(_(c.title) for c in cols)
+            self.setHeaderLabels(labels)
+
     def restore_default_columns(self):
-        labels = tuple(_(c.title) for c in self.columns)
-        self.setHeaderLabels(labels)
+        self._set_header_labels(update_column_count=False)
 
         header = self.header()
         header.setStretchLastSection(True)
@@ -407,7 +429,48 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         self.sortByColumn(-1, QtCore.Qt.SortOrder.AscendingOrder)
 
+    def _refresh_header_labels(self):
+        """Refresh header labels (and count) based on current columns."""
+        self._set_header_labels(update_column_count=True)
+        # Sync visible columns state in the header to ensure context menu checkboxes
+        # reflect the actual visibility state, especially for newly added columns
+        header = self.header()
+        header.sync_visible_columns()
+
+    def _refresh_all_items_data(self):
+        """Refresh data for all items in the tree view."""
+
+        def refresh_item(item):
+            """Recursively refresh item and all its children."""
+            if hasattr(item, 'update_colums_text'):
+                try:
+                    item.update_colums_text()
+                except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
+                    # Log but don't fail the entire refresh operation
+                    log.debug("Failed to refresh item %r: %r", type(item).__name__, exc)
+            for i in range(item.childCount()):
+                refresh_item(item.child(i))
+
+        # Refresh all top-level items
+        for i in range(self.topLevelItemCount()):
+            refresh_item(self.topLevelItem(i))
+
+    def _on_header_updated(self):
+        """Handle global header update events and refresh if applicable."""
+        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
+
+        recognized = set(get_recognized_view_columns().values())
+        if self.columns not in recognized:
+            return
+        self._refresh_header_labels()
+        self._refresh_all_items_data()
+
     def _init_header(self):
+        # Load any persisted user-defined custom columns before header setup
+        from picard.ui.itemviews.custom_columns.storage import load_persisted_columns_once
+
+        load_persisted_columns_once()
+
         header = ConfigurableColumnsHeader(self.columns, parent=self)
         self.setHeader(header)
 

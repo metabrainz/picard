@@ -24,7 +24,6 @@ from __future__ import annotations
 
 from picard.ui.itemviews.custom_columns.column import CustomColumn
 from picard.ui.itemviews.custom_columns.shared import (
-    RECOGNIZED_VIEWS,
     get_recognized_view_columns,
 )
 
@@ -56,16 +55,20 @@ class CustomColumnsRegistry:
         # may be modified by plugins or other parts of the application at runtime.
         # Importing at registration time ensures we always get the current state
         # of these collections, not a stale reference from module load time.
-        targets = set(str(v).upper() for v in (add_to or RECOGNIZED_VIEWS))
+        # Distinguish between None (default to all recognized) and empty set (no views)
+        # No defaulting: None or empty iterable means no view membership.
+        selected_targets = {str(v).upper() for v in (add_to or []) if str(v).strip()}
         view_columns = get_recognized_view_columns()
-        for target in targets:
-            cols = view_columns.get(target)
 
-            # If the target is an unknown view, raise an error
-            if cols is None:
-                raise ValueError(f"Unknown view identifier: {target}")
-
-            self._insert_column(cols, column)
+        # Reconcile column membership across all recognized views:
+        # - Insert into selected targets
+        # - Ensure removal from non-selected views
+        for view_id, cols in view_columns.items():
+            if view_id in selected_targets:
+                self._insert_column(cols, column)
+            else:
+                # Remove all occurrences if present
+                self._remove_all_by_key(cols, column.key)
 
     def _insert_column(self, target_columns, column: CustomColumn) -> None:
         """Insert column into target columns list and apply width to existing headers.

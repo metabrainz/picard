@@ -41,7 +41,7 @@ from picard.ui.itemviews.custom_columns import (
     registry,
 )
 from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
-from picard.ui.itemviews.custom_columns.shared import VIEW_FILE
+from picard.ui.itemviews.custom_columns.shared import VIEW_ALBUM, VIEW_FILE
 
 
 @dataclasses.dataclass
@@ -197,7 +197,7 @@ def test_registry_registers_and_unregisters_columns(unique_key: str) -> None:
         registry.register(col)
         # After registration column is retrievable
         assert registry.get(unique_key) is col
-        # And present in both views
+        # Not added to any views unless specified
         from picard.ui.itemviews.columns import (
             ALBUMVIEW_COLUMNS,
             FILEVIEW_COLUMNS,
@@ -205,11 +205,8 @@ def test_registry_registers_and_unregisters_columns(unique_key: str) -> None:
 
         file_keys = [c.key for c in FILEVIEW_COLUMNS]
         album_keys = [c.key for c in ALBUMVIEW_COLUMNS]
-        assert unique_key in file_keys
-        assert unique_key in album_keys
-        # Newly registered columns should be appended at the end
-        assert FILEVIEW_COLUMNS[-1].key == unique_key
-        assert ALBUMVIEW_COLUMNS[-1].key == unique_key
+        assert unique_key not in file_keys
+        assert unique_key not in album_keys
     finally:
         # Cleanup: ensure we remove the test column from both views and registry
         unregistered = registry.unregister(unique_key)
@@ -449,7 +446,7 @@ def test_registry_handles_duplicate_registration(unique_key: str) -> None:
     col2 = make_callable_column("Second", unique_key, lambda obj: "second")
 
     try:
-        # First registration
+        # First registration (no views by default)
         registry.register(col1)
         assert registry.get(unique_key) is col1
 
@@ -458,21 +455,17 @@ def test_registry_handles_duplicate_registration(unique_key: str) -> None:
             FILEVIEW_COLUMNS,
         )
 
-        # Keys appear exactly once in both views
-        assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 1
-        assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 1
+        # Not added to any views unless specified
+        assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 0
+        assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 0
 
-        # Second registration with same key: should replace, not duplicate
+        # Second registration with same key (still no views): should replace registry entry only
         registry.register(col2)
         assert registry.get(unique_key) is col2
 
-        # Still exactly one occurrence in both views, and it refers to col2
-        file_indices = [i for i, c in enumerate(FILEVIEW_COLUMNS) if c.key == unique_key]
-        album_indices = [i for i, c in enumerate(ALBUMVIEW_COLUMNS) if c.key == unique_key]
-        assert len(file_indices) == 1
-        assert len(album_indices) == 1
-        assert FILEVIEW_COLUMNS[file_indices[0]] is col2
-        assert ALBUMVIEW_COLUMNS[album_indices[0]] is col2
+        # Still not present in any views
+        assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 0
+        assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 0
     finally:
         registry.unregister(unique_key)
 
@@ -506,13 +499,186 @@ def test_registry_selective_view_registration(unique_key: str) -> None:
         registry.unregister(unique_key)
 
 
-def test_registry_unknown_view_raises(unique_key: str) -> None:
-    """Unknown view identifiers should raise an error during registration."""
+@pytest.mark.parametrize(
+    "initial_targets, updated_targets, expect_in_file, expect_in_album",
+    [
+        # Start in both, then remove album
+        ({VIEW_FILE, VIEW_ALBUM}, {VIEW_FILE}, True, False),
+        # Start in file only, then move to album only
+        ({VIEW_FILE}, {VIEW_ALBUM}, False, True),
+        # Start in album only, then both
+        ({VIEW_ALBUM}, {VIEW_FILE, VIEW_ALBUM}, True, True),
+        # Start in both, then none (removes from all views)
+        ({VIEW_FILE, VIEW_ALBUM}, set(), False, False),
+    ],
+)
+def test_registry_reconciles_view_membership(
+    unique_key: str,
+    initial_targets: set[str],
+    updated_targets: set[str],
+    expect_in_file: bool,
+    expect_in_album: bool,
+) -> None:
+    """Registry updates reconcile membership across views on re-registration."""
+    col = make_callable_column("Reconcile", unique_key, lambda obj: "x")
+
+    try:
+        # Initial registration
+        registry.register(col, add_to=initial_targets)
+
+        # Re-register with updated targets to trigger reconciliation
+        registry.register(col, add_to=updated_targets)
+
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
+
+        file_keys: list[str] = [c.key for c in FILEVIEW_COLUMNS]
+        album_keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
+
+        assert (unique_key in file_keys) is expect_in_file
+        assert (unique_key in album_keys) is expect_in_album
+
+        # Ensure no duplicates within a view
+        assert file_keys.count(unique_key) <= 1
+        assert album_keys.count(unique_key) <= 1
+    finally:
+        registry.unregister(unique_key)
+
+
+def test_registry_defaults_to_all_views(unique_key: str) -> None:
+    """Registering without add_to does not add the column to any views."""
+    col = make_callable_column("DefaultNone", unique_key, lambda obj: "x")
+
+    try:
+        registry.register(col)
+
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
+
+        file_keys: list[str] = [c.key for c in FILEVIEW_COLUMNS]
+        album_keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
+
+        assert unique_key not in file_keys
+        assert unique_key not in album_keys
+    finally:
+        registry.unregister(unique_key)
+
+
+def test_registry_ignores_unknown_tokens_when_mixed(unique_key: str) -> None:
+    """Unknown view tokens are ignored when mixed with valid ones during registration."""
+    col = make_callable_column("MixedUnknown", unique_key, lambda obj: "x")
+
+    try:
+        registry.register(col, add_to={"UNKNOWN_VIEW", VIEW_ALBUM})
+
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
+
+        file_keys: list[str] = [c.key for c in FILEVIEW_COLUMNS]
+        album_keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
+
+        assert unique_key not in file_keys
+        assert unique_key in album_keys
+    finally:
+        registry.unregister(unique_key)
+
+
+@pytest.mark.parametrize(
+    "targets, expect_in_file, expect_in_album",
+    [
+        ({VIEW_FILE, VIEW_ALBUM}, True, True),
+        ({VIEW_FILE}, True, False),
+        ({VIEW_ALBUM}, False, True),
+        (set(), False, False),
+    ],
+)
+def test_registry_idempotent_same_targets(
+    unique_key: str,
+    targets: set[str],
+    expect_in_file: bool,
+    expect_in_album: bool,
+) -> None:
+    """Re-registering with same targets does not duplicate or alter membership."""
+    col = make_callable_column("Idempotent", unique_key, lambda obj: "x")
+
+    try:
+        registry.register(col, add_to=targets)
+        # Re-register with the same targets
+        registry.register(col, add_to=targets)
+
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
+
+        file_keys: list[str] = [c.key for c in FILEVIEW_COLUMNS]
+        album_keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
+
+        assert (unique_key in file_keys) is expect_in_file
+        assert (unique_key in album_keys) is expect_in_album
+        # No duplicates
+        assert file_keys.count(unique_key) <= 1
+        assert album_keys.count(unique_key) <= 1
+    finally:
+        registry.unregister(unique_key)
+
+
+def test_registry_view_membership_toggle_sequence(unique_key: str) -> None:
+    """Sequence of re-registrations toggles membership across views predictably."""
+    col = make_callable_column("Seq", unique_key, lambda obj: "x")
+
+    try:
+        # Start in both
+        registry.register(col)
+        # Then only file
+        registry.register(col, add_to={VIEW_FILE})
+        # Then only album
+        registry.register(col, add_to={VIEW_ALBUM})
+        # Then both again
+        registry.register(col, add_to={VIEW_FILE, VIEW_ALBUM})
+
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
+
+        file_keys: list[str] = [c.key for c in FILEVIEW_COLUMNS]
+        album_keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
+
+        assert unique_key in file_keys
+        assert unique_key in album_keys
+        # No duplicates
+        assert file_keys.count(unique_key) == 1
+        assert album_keys.count(unique_key) == 1
+    finally:
+        registry.unregister(unique_key)
+
+
+def test_registry_unknown_view_is_ignored(unique_key: str) -> None:
+    """Unknown view identifiers are ignored without raising and no view membership is added."""
     col = make_callable_column("X", unique_key, lambda obj: "x")
 
     try:
-        with pytest.raises(ValueError):
-            registry.register(col, add_to={"UNKNOWN_VIEW"})
+        # Should not raise; unknown view tokens are ignored
+        registry.register(col, add_to={"UNKNOWN_VIEW"})
+
+        from picard.ui.itemviews.columns import (
+            ALBUMVIEW_COLUMNS,
+            FILEVIEW_COLUMNS,
+        )
+
+        file_keys: list[str] = [c.key for c in FILEVIEW_COLUMNS]
+        album_keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
+
+        # Column is not added to any recognized views
+        assert unique_key not in file_keys
+        assert unique_key not in album_keys
     finally:
         registry.unregister(unique_key)
 
@@ -522,8 +688,7 @@ def test_registry_unregister_removes_all_occurrences(unique_key: str) -> None:
     col = make_callable_column("Test", unique_key, lambda obj: "test")
 
     try:
-        # Register twice to simulate potential duplicates (older behavior)
-        registry.register(col)
+        # Register without targets (no views)
         registry.register(col)
 
         from picard.ui.itemviews.columns import (
@@ -531,8 +696,8 @@ def test_registry_unregister_removes_all_occurrences(unique_key: str) -> None:
             FILEVIEW_COLUMNS,
         )
 
-        assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 1
-        assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 1
+        assert [c.key for c in FILEVIEW_COLUMNS].count(unique_key) == 0
+        assert [c.key for c in ALBUMVIEW_COLUMNS].count(unique_key) == 0
 
         # Unregister should remove all occurrences
         registry.unregister(unique_key)
