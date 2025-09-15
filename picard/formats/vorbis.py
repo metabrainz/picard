@@ -58,7 +58,7 @@ from picard.util import (
 
 FLAC_MAX_BLOCK_SIZE = 2 ** 24 - 1  # FLAC block size is limited to a 24 bit integer
 INVALID_CHARS = re.compile('([^\x20-\x7d]|=)')
-UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
+UNSUPPORTED_TAGS = {'syncedlyrics', 'r128_album_gain', 'r128_track_gain'}
 
 
 def sanitize_key(key):

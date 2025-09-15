@@ -55,7 +55,7 @@ def _add_text_values_to_metadata(metadata, name, values):
 
 
 _VALID_KEY_CHARS = re.compile('^[\x00-\xff]+$')
-UNSUPPORTED_TAGS = {'r128_album_gain', 'r128_track_gain'}
+UNSUPPORTED_TAGS = {'syncedlyrics', 'r128_album_gain', 'r128_track_gain'}
 
 
 def _is_valid_key(key):
