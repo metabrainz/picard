@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-06-03 13:20+0000\n"
+"PO-Revision-Date: 2025-08-26 14:36+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
@@ -40,9 +40,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.11.4\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
+"n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.13\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -384,33 +384,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "Ля Дориан"
+msgstr "Ля дорийский"
 
 #: DB:work_attribute_type_allowed_value/value:1070
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Locrian"
-msgstr "Ля Дориан"
+msgstr "Ля локрийский"
 
 #: DB:work_attribute_type_allowed_value/value:1063
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Lydian"
-msgstr "Ля Миксолидийское"
+msgstr "Ля лидийский"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "Ля Миксолидийское"
+msgstr "Ля миксолидийский"
 
 #: DB:work_attribute_type_allowed_value/value:1056
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Phrygian"
-msgstr "Ля Фригийское"
+msgstr "Ля фригийский"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -1528,12 +1522,6 @@ msgstr ""
 
 #. name:Schedule
 #: DB:event_art_archive.art_type/description:5
-#, fuzzy
-#| msgctxt "event_art_type"
-#| msgid ""
-#| "An image usually showing the order and time for the performances in an "
-#| "event. Can be a standalone image, but also a poster or banner (in which "
-#| "case all applicable types should be set)."
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
@@ -1541,8 +1529,9 @@ msgid ""
 "a program (in which case all applicable types should be set)."
 msgstr ""
 "Изображение, обычно показывающее порядок и время выступлений на мероприятии. "
-"Может быть как отдельным изображением, так и плакатом или баннером (в этом "
-"случае необходимо установить все применимые типы)."
+"Может быть как отдельным изображением, так и плакатом, баннером или "
+"страницей из программы (в этом случае необходимо установить все применимые "
+"типы)."
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1641,6 +1630,9 @@ msgid ""
 "An organization that provides creative direction for visual elements of "
 "releases (such as illustrations, design and other artwork)."
 msgstr ""
+"Организация, которая обеспечивает творческое руководство визуальными "
+"элементами релизов (такими как иллюстрации, дизайн и другие художественные "
+"работы)."
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1712,52 +1704,52 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
 msgid "Araban"
-msgstr ""
+msgstr "Арабан"
 
 #: DB:work_attribute_type_allowed_value/value:312
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arabanbuselik"
-msgstr ""
+msgstr "Арабанбуселик"
 
 #: DB:work_attribute_type_allowed_value/value:313
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arabankurdi"
-msgstr ""
+msgstr "Арабанкурди"
 
 #: DB:work_attribute_type_allowed_value/value:314
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Can"
-msgstr ""
+msgstr "Арам-и Кан"
 
 #: DB:work_attribute_type_allowed_value/value:315
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Dil"
-msgstr ""
+msgstr "Арам-и Дил"
 
 #: DB:work_attribute_type_allowed_value/value:604
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aranağme"
-msgstr ""
+msgstr "Аранагм"
 
 #: DB:work_attribute_type_allowed_value/value:316
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbar"
-msgstr ""
+msgstr "Аразбар"
 
 #: DB:work_attribute_type_allowed_value/value:317
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbar Zemzeme"
-msgstr ""
+msgstr "Аразбар Земземе"
 
 #: DB:work_attribute_type_allowed_value/value:318
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbarbuselik"
-msgstr ""
+msgstr "Аразбарбуселик"
 
 #: DB:work_attribute_type_allowed_value/value:319
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbarek"
-msgstr ""
+msgstr "Аразбарек"
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
@@ -1797,17 +1789,17 @@ msgstr "Серия исполнителей"
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
 msgid "Artık Aksaksemai"
-msgstr ""
+msgstr "Артык Аксаксеймай"
 
 #: DB:work_attribute_type_allowed_value/value:856
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asā māṇḍ"
-msgstr ""
+msgstr "Аса манд"
 
 #: DB:work_attribute_type_allowed_value/value:44
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asāvēri"
-msgstr ""
+msgstr "Асавери"
 
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
@@ -1847,7 +1839,7 @@ msgstr "Церемония награждения"
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aydın"
-msgstr ""
+msgstr "Айдын"
 
 #: DB:work_attribute_type_allowed_value/value:695
 msgctxt "work_attribute_type_allowed_value"
@@ -1942,28 +1934,22 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr "Си Дориан"
+msgstr "Си дорийское"
 
 #: DB:work_attribute_type_allowed_value/value:1071
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Locrian"
-msgstr "Си Дориан"
+msgstr "Си локрийское"
 
 #: DB:work_attribute_type_allowed_value/value:1064
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Lydian"
-msgstr "Си Миксолидийское"
+msgstr "Си лидийский"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr "Си Миксолидийское"
+msgstr "Си миксолидийское"
 
 #: DB:work_attribute_type_allowed_value/value:1057
 msgctxt "work_attribute_type_allowed_value"
@@ -2438,20 +2424,14 @@ msgid "C Dorian"
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1065
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Locrian"
-msgstr "Ля Дориан"
+msgstr "До Локриан"
 
 #: DB:work_attribute_type_allowed_value/value:1058
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Lydian"
-msgstr "Ля Миксолидийское"
+msgstr "До Лидийское"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
@@ -2689,7 +2669,7 @@ msgstr ""
 #: DB:release_packaging/name:56
 msgctxt "release_packaging"
 msgid "Clamshell Case"
-msgstr ""
+msgstr "Клэмшелл"
 
 #: DB:place_type/name:42
 msgctxt "place_type"
@@ -2783,7 +2763,7 @@ msgstr ""
 #: DB:label_type/name:11
 msgctxt "label_type"
 msgid "Creative Agency"
-msgstr ""
+msgstr "Креативное агентство"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2832,20 +2812,14 @@ msgid "D Dorian"
 msgstr "Ре Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:1066
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Locrian"
-msgstr "Ре Дориан"
+msgstr "Ре Локриан"
 
 #: DB:work_attribute_type_allowed_value/value:1059
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Lydian"
-msgstr "Ре Миксолидийское"
+msgstr "Ре Лидийское"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
@@ -3381,20 +3355,14 @@ msgid "E Dorian"
 msgstr "Ми Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:1067
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Locrian"
-msgstr "Ми Дориан"
+msgstr "Ми Локриан"
 
 #: DB:work_attribute_type_allowed_value/value:1060
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Lydian"
-msgstr "Ми Миксолидийское"
+msgstr "Ми Лидийское"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
@@ -3572,20 +3540,14 @@ msgid "F Dorian"
 msgstr "Фа Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:1068
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Locrian"
-msgstr "Фа Дориан"
+msgstr "Фа Локриан"
 
 #: DB:work_attribute_type_allowed_value/value:1061
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Lydian"
-msgstr "Фа Миксолидийское"
+msgstr "Фа Лидийское"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
@@ -3802,20 +3764,14 @@ msgid "G Dorian"
 msgstr "Соль Дориан"
 
 #: DB:work_attribute_type_allowed_value/value:1069
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Locrian"
-msgstr "Соль Дориан"
+msgstr "Соль Локриан"
 
 #: DB:work_attribute_type_allowed_value/value:1062
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Lydian"
-msgstr "Соль Миксолидийское"
+msgstr "Соль Лидийское"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
@@ -4097,12 +4053,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ASCAP ID"
+msgstr "HDS-ZAMP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4524,12 +4477,9 @@ msgstr "ID для британского правозащитного общес
 
 #. name:MUSICAUTOR ID
 #: DB:work_attribute_type/description:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgctxt "work_attribute_type"
 msgid "ID for the Bulgarian rights society MUSICAUTOR"
-msgstr "ID для никарагуанского правозащитного общества NICAUTOR"
+msgstr "ID для болгарского правозащитного общества MUSICAUTOR"
 
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
@@ -4569,12 +4519,9 @@ msgstr "ID для коста-риканского правозащитного �
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Cuban rights society ACDAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "ID для кубинского правозащитного общества ACDAM"
+msgstr "ID для хорватского правозащитного общества HDS-ZAMP"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4632,12 +4579,9 @@ msgstr "ID для немецкого правозащитного обществ
 
 #. name:AUTODIA ID
 #: DB:work_attribute_type/description:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Czech rights society OSA"
 msgctxt "work_attribute_type"
 msgid "ID for the Greek rights society AUTODIA"
-msgstr "ID для чешского правозащитного общества OSA"
+msgstr "ID для греческого правозащитного общества AUTODIA"
 
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
@@ -4803,12 +4747,9 @@ msgstr "ID для сальвадорского правозащитного об
 
 #. name:SOKOJ ID
 #: DB:work_attribute_type/description:213
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Norwegian rights society TONO"
 msgctxt "work_attribute_type"
 msgid "ID for the Serbian rights society SOKOJ"
-msgstr "ID для норвежского правозащитного общества TONO"
+msgstr "ID для сербского правозащитного общества SOKOJ"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -4989,21 +4930,15 @@ msgstr "Земля коренных народов"
 
 #. name:Indigenous territory / reserve
 #: DB:area_type/description:9
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for semi-autonomous territories governed by indigenous peoples, such "
-#| "as Indian reserves/reservations in North America and indigenous "
-#| "territories in Central and South America."
 msgctxt "area_type"
 msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
 "governed by indigenous peoples, such as Indian reserves/reservations in "
 "North America and indigenous territories in Central and South America."
 msgstr ""
-"Используется для обозначения полуавтономных территорий, управляемых "
-"коренными народами, таких как индейские резервации/заповедники в Северной "
-"Америке и территории коренных народов в Центральной и Южной Америке."
+"Полуавтономные территории, управляемые коренными народами, такие как "
+"индейские резервации/заповедники в Северной Америке и территории коренных "
+"народов в Центральной и Южной Америке."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5785,12 +5720,9 @@ msgid "MCT ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "LATGA ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "LATGA ID"
+msgstr "MUSICAUTOR ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -8902,12 +8834,6 @@ msgstr ""
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use in combination with any other appropriate types for images that need "
-#| "work to be used for tagging (but can possibly already be used for "
-#| "reference)."
 msgctxt "cover_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that are "
@@ -8915,8 +8841,8 @@ msgid ""
 "reference)."
 msgstr ""
 "Используйте в сочетании с любыми другими подходящими типами для изображений, "
-"которые нуждаются в доработке для использования в тегах (но, возможно, уже "
-"могут использоваться для ссылок)."
+"которые содержат водяные знаки и не желательны для показа (но могут "
+"использоваться для ссылок)."
 
 #. name:Watermark
 #: DB:event_art_archive.art_type/description:10

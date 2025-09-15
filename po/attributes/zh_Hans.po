@@ -14,11 +14,12 @@
 # Ral Hole <ral-hole@outlook.com>, 2025.
 # delamons <lamons.n@gmail.com>, 2025.
 # Solarenta <2325840950@qq.com>, 2025.
+# Beteix <1158817754@qq.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-06-14 07:20+0000\n"
-"Last-Translator: Solarenta <2325840950@qq.com>\n"
+"PO-Revision-Date: 2025-07-26 12:36+0000\n"
+"Last-Translator: Beteix <1158817754@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -26,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.4\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1474,7 +1475,7 @@ msgctxt "label_type"
 msgid ""
 "An organization that provides creative direction for visual elements of "
 "releases (such as illustrations, design and other artwork)."
-msgstr ""
+msgstr "为发行品的视觉元素（如插图、设计和其他艺术）提供创意指导的机构。"
 
 #. name:Rights Society
 #: DB:label_type/description:8

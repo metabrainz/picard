@@ -3,11 +3,12 @@
 # pingo.mister <email address hidden>, 2013
 # yurirhsilva <yurirhsilva@gmail.com>, 2023.
 # Felipe Silva <musicbrainz@felipeqq2.rocks>, 2024.
+# Manuela Silva <transserv.ptg@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-05-24 01:42+0000\n"
-"Last-Translator: Felipe Silva <musicbrainz@felipeqq2.rocks>\n"
+"PO-Revision-Date: 2025-09-10 09:18+0000\n"
+"Last-Translator: Manuela Silva <transserv.ptg@gmail.com>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
 "musicbrainz/countries/pt/>\n"
 "Language: pt\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.5.4\n"
+"X-Generator: Weblate 5.13.1\n"
 
 #. iso.code:AF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -921,7 +922,7 @@ msgstr "Ilhas Pitcairn"
 #. iso.code:PL
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:170
 msgid "Poland"
-msgstr "Polônia"
+msgstr "Polónia"
 
 #. iso.code:PT
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:171
@@ -936,12 +937,12 @@ msgstr "Porto Rico"
 #. iso.code:QA
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:173
 msgid "Qatar"
-msgstr "Catar"
+msgstr "Qatar"
 
 #. iso.code:RO
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:175
 msgid "Romania"
-msgstr "România"
+msgstr "Roménia"
 
 #. iso.code:RU
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:176
@@ -1056,7 +1057,7 @@ msgstr "Eslováquia"
 #. iso.code:SI
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:190
 msgid "Slovenia"
-msgstr "Eslovênia"
+msgstr "Eslovénia"
 
 #. iso.code:SB
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:191

@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-06-09 23:20+0000\n"
+"PO-Revision-Date: 2025-08-18 20:36+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -25,9 +25,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
-"0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.11.4\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
+" ? 1 : 2);\n"
+"X-Generator: Weblate 5.13\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1642,6 +1642,9 @@ msgid ""
 "An organization that provides creative direction for visual elements of "
 "releases (such as illustrations, design and other artwork)."
 msgstr ""
+"Un'organizzazione che fornisce direzione creativa per gli elementi visivi "
+"delle pubblicazioni (come per esempio illustrazioni, design e altro "
+"materiale grafico)."
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2773,7 +2776,7 @@ msgstr ""
 #: DB:label_type/name:11
 msgctxt "label_type"
 msgid "Creative Agency"
-msgstr ""
+msgstr "Agenzia creativa"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -4067,12 +4070,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ID ASCAP"
+msgstr "ID HDS-ZAMP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4536,12 +4536,9 @@ msgstr "ID per la società di diritti costaricana ACAM"
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Cuban rights society ACDAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "ID per la società di diritti cubana ACDAM"
+msgstr "ID per la società di diritti croata HDS-ZAMP"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
