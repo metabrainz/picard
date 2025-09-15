@@ -169,3 +169,5 @@ DEFAULT_COVER_RESIZE_MODE = ResizeModes.MAINTAIN_ASPECT_RATIO
 DEFAULT_COVER_CONVERTING_FORMAT = 'JPEG'
 
 DEFAULT_QUICK_MENU_ITEMS = ['save_images_to_tags', 'save_images_to_files']
+
+DEFAULT_FILTER_COLUMNS = ['album', 'title', 'albumartist', 'artist']
