@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-09-12 05:48+0000\n"
+"PO-Revision-Date: 2025-09-15 12:54+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/constants/uk/>\n"
@@ -19,24 +19,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
 msgid "Stable releases only"
-msgstr ""
+msgstr "Тільки стабільні релізи"
 
 #: picard/const/__init__.py:177
 msgid "Stable and Beta releases"
-msgstr ""
+msgstr "Стабільні та бета-версії"
 
 #: picard/const/__init__.py:183
 msgid "Stable, Beta and Dev releases"
-msgstr ""
+msgstr "Стабільний, бета- та розробницький релізи"
 
 #: picard/const/__init__.py:201
 msgid "My script"
-msgstr "Власний сценарій"
+msgstr "Мій скрипт"
 
 #: picard/const/__init__.py:203
 msgid "My profile"
@@ -65,7 +65,7 @@ msgstr "Чеська"
 
 #: picard/const/languages.py:35 picard/const/locales.py:185
 msgid "Danish"
-msgstr "Датська мова"
+msgstr "Датська"
 
 #: picard/const/languages.py:36 picard/const/locales.py:190
 msgid "German"
@@ -74,7 +74,7 @@ msgstr "Німецька"
 #: picard/const/languages.py:38 picard/const/locales.py:217
 #: picard/const/scripts.py:26
 msgid "Greek"
-msgstr ""
+msgstr "Грецька"
 
 #: picard/const/languages.py:39 picard/const/locales.py:221
 msgid "English"
@@ -127,7 +127,7 @@ msgstr "Угорська"
 
 #: picard/const/languages.py:57 picard/const/locales.py:526
 msgid "Icelandic"
-msgstr ""
+msgstr "Ісландська"
 
 #: picard/const/languages.py:58 picard/const/locales.py:528
 msgid "Italian"
@@ -135,7 +135,7 @@ msgstr "Італійська"
 
 #: picard/const/languages.py:59 picard/const/locales.py:537
 msgid "Japanese"
-msgstr ""
+msgstr "Японська"
 
 #: picard/const/languages.py:61 picard/const/locales.py:585
 msgid "Korean"
@@ -147,11 +147,11 @@ msgstr "Литовська"
 
 #: picard/const/languages.py:63 picard/const/locales.py:689
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Малайська (Малайзія)"
 
 #: picard/const/languages.py:64 picard/const/locales.py:705
 msgid "Norwegian Bokmål"
-msgstr ""
+msgstr "Норвезький букмол"
 
 #: picard/const/languages.py:66 picard/const/locales.py:716
 msgid "Dutch"
@@ -159,7 +159,7 @@ msgstr "Голандська"
 
 #: picard/const/languages.py:67 picard/const/locales.py:745
 msgid "Occitan"
-msgstr ""
+msgstr "Окситанська"
 
 #: picard/const/languages.py:68 picard/const/locales.py:772
 msgid "Polish"
@@ -171,7 +171,7 @@ msgstr "Португальська"
 
 #: picard/const/languages.py:70 picard/const/locales.py:781
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Португальська (Бразилія)"
 
 #: picard/const/languages.py:71 picard/const/locales.py:810
 msgid "Romanian"
@@ -191,7 +191,7 @@ msgstr "Словенська"
 
 #: picard/const/languages.py:76 picard/const/locales.py:894
 msgid "Albanian"
-msgstr ""
+msgstr "Албанська"
 
 #: picard/const/languages.py:78 picard/const/locales.py:920
 msgid "Swedish"
@@ -207,11 +207,11 @@ msgstr "Украї́нська"
 
 #: picard/const/languages.py:82
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Китайська (Китай)"
 
 #: picard/const/languages.py:83
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Китайська (Тайвань)"
 
 #: picard/const/locales.py:27
 msgid "Afar"
@@ -243,7 +243,7 @@ msgstr ""
 
 #: picard/const/locales.py:34
 msgid "Afrikaans"
-msgstr "Африкаанс"
+msgstr ""
 
 #: picard/const/locales.py:35
 msgid "Afrikaans (Namibia)"
@@ -1359,7 +1359,7 @@ msgstr ""
 
 #: picard/const/locales.py:323
 msgid "English (United States)"
-msgstr ""
+msgstr "Англійська (США)"
 
 #: picard/const/locales.py:324
 msgid "English (St. Vincent & Grenadines)"
@@ -3895,7 +3895,7 @@ msgstr "Украї́нська (Україна)"
 
 #: picard/const/locales.py:985
 msgid "Unknown language"
-msgstr ""
+msgstr "Невідома мова"
 
 #: picard/const/locales.py:986
 msgid "Urdu"
@@ -4175,7 +4175,7 @@ msgstr ""
 
 #: picard/const/scripts.py:27
 msgid "Cyrillic"
-msgstr ""
+msgstr "Кирилиця"
 
 #: picard/const/scripts.py:32
 msgid "Hangul"
