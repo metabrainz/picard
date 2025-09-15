@@ -52,6 +52,7 @@ from picard.const.defaults import (
     DEFAULT_COVER_RESIZE_MODE,
     DEFAULT_CURRENT_BROWSER_PATH,
     DEFAULT_DRIVES,
+    DEFAULT_FILTER_COLUMNS,
     DEFAULT_FPCALC_THREADS,
     DEFAULT_LOCAL_COVER_ART_REGEX,
     DEFAULT_LONG_PATHS,
@@ -144,8 +145,8 @@ BoolOption('persist', 'view_toolbar', True)
 BoolOption('persist', 'view_filterbar', False)
 BoolOption('persist', 'window_maximized', False)
 Option('persist', 'window_state', QtCore.QByteArray())
-ListOption('persist', 'filters_FileTreeView', None)
-ListOption('persist', 'filters_AlbumTreeView', None)
+ListOption('persist', 'filters_FileTreeView', DEFAULT_FILTER_COLUMNS)
+ListOption('persist', 'filters_AlbumTreeView', DEFAULT_FILTER_COLUMNS)
 
 # picard/ui/metadatabox.py
 #
