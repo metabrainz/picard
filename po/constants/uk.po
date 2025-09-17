@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-08-30 22:36+0000\n"
+"PO-Revision-Date: 2025-09-15 12:54+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/constants/uk/>\n"
@@ -19,24 +19,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
 msgid "Stable releases only"
-msgstr ""
+msgstr "Тільки стабільні релізи"
 
 #: picard/const/__init__.py:155
 msgid "Stable and Beta releases"
-msgstr ""
+msgstr "Стабільні та бета-версії"
 
 #: picard/const/__init__.py:162
 msgid "Stable, Beta and Dev releases"
-msgstr ""
+msgstr "Стабільний, бета- та розробницький релізи"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "Зберегти співвідношення сторін"
 
 #: picard/const/cover_processing.py:48
 msgid ""
@@ -46,10 +46,16 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Масштабуйте вихідне зображення так, щоб воно відповідало цільовим "
+"розмірам.</p><p>Один із кінцевих розмірів зображення може бути меншим за "
+"цільовий розмір, якщо вихідне зображення та цільові розміри мають різні "
+"співвідношення сторін.</p><p>Наприклад, зображення розміром 2000x1000, "
+"змінене на цільові розміри 1000x1000, призведе до кінцевого розміру "
+"зображення 1000x500.</p>"
 
 #: picard/const/cover_processing.py:61
 msgid "Scale to width"
-msgstr ""
+msgstr "Масштабувати по ширині"
 
 #: picard/const/cover_processing.py:63
 msgid ""
@@ -57,10 +63,14 @@ msgid ""
 "aspect ratio.</p><p>For example, a 2000x1000 image resized to a target width "
 "of 1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Масштабуйте ширину вихідного зображення до цільової ширини, зберігаючи "
+"співвідношення сторін.</p><p>Наприклад, зображення розміром 2000x1000, "
+"змінене на цільову ширину 1000, призведе до кінцевого розміру зображення "
+"1000x500.</p>"
 
 #: picard/const/cover_processing.py:73
 msgid "Scale to height"
-msgstr ""
+msgstr "Масштабувати за висотою"
 
 #: picard/const/cover_processing.py:75
 msgid ""
@@ -68,10 +78,14 @@ msgid ""
 "aspect ratio.</p><p>For example, a 1000x2000 image resized to a target "
 "height of 1000 would result in a final image size of 500x1000.</p>"
 msgstr ""
+"<p>Масштабуйте висоту вихідного зображення до цільової висоти, зберігаючи "
+"співвідношення сторін.</p><p>Наприклад, зображення розміром 1000x2000, "
+"змінене на цільову висоту 1000, призведе до кінцевого розміру зображення "
+"500x1000.</p>"
 
 #: picard/const/cover_processing.py:85
 msgid "Crop to fit"
-msgstr ""
+msgstr "Обрізати за розміром"
 
 #: picard/const/cover_processing.py:87
 msgid ""
@@ -83,10 +97,17 @@ msgid ""
 "excess height would be center cropped resulting in the final image size of "
 "1000x1000.</p>"
 msgstr ""
+"<p>Масштабуйте вихідне зображення так, щоб воно повністю заповнило цільові "
+"розміри в обох напрямках.</p><p>Якщо вихідне зображення та цільові розміри "
+"мають різні співвідношення сторін, то в одному напрямку буде переповнення, "
+"яке буде обрізано (по центру).</p><p>Наприклад, зображення розміром "
+"500x1000, змінене на цільові розміри 1000x1000, спочатку масштабується до "
+"1000x2000, потім зайва висота обрізається по центру, що призведе до "
+"кінцевого розміру зображення 1000x1000.</p>"
 
 #: picard/const/cover_processing.py:102
 msgid "Stretch to fit"
-msgstr ""
+msgstr "Розтягнути, щоб підігнати"
 
 #: picard/const/cover_processing.py:104
 msgid ""
@@ -95,10 +116,14 @@ msgid ""
 "1000x1000 would be stretched horizontally resulting in the final image size "
 "of 1000x1000.</p>"
 msgstr ""
+"<p>Розтягніть зображення, щоб воно точно відповідало заданим розмірам, "
+"спотворюючи його за потреби.</p><p>Наприклад, зображення розміром 500x1000 з "
+"цільовим розміром 1000x1000 буде розтягнуто горизонтально, що призведе до "
+"кінцевого розміру зображення 1000x1000.</p>"
 
 #: picard/const/defaults.py:157
 msgid "My script"
-msgstr "Власний сценарій"
+msgstr "Мій скрипт"
 
 #: picard/const/defaults.py:158
 msgid "My profile"
@@ -106,12 +131,12 @@ msgstr "Мій профіль"
 
 #: picard/const/defaults.py:159
 msgid "(copy)"
-msgstr ""
+msgstr "(копія)"
 
 #: picard/const/defaults.py:160
 #, python-brace-format
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:32 picard/const/locales.py:51
 #: picard/const/scripts.py:35
@@ -128,7 +153,7 @@ msgstr "Чеська"
 
 #: picard/const/languages.py:38 picard/const/locales.py:188
 msgid "Danish"
-msgstr "Датська мова"
+msgstr "Датська"
 
 #: picard/const/languages.py:39 picard/const/locales.py:193
 msgid "German"
@@ -137,7 +162,7 @@ msgstr "Німецька"
 #: picard/const/languages.py:41 picard/const/locales.py:220
 #: picard/const/scripts.py:32
 msgid "Greek"
-msgstr ""
+msgstr "Грецька"
 
 #: picard/const/languages.py:42 picard/const/locales.py:224
 msgid "English"
@@ -190,7 +215,7 @@ msgstr "Угорська"
 
 #: picard/const/languages.py:60 picard/const/locales.py:529
 msgid "Icelandic"
-msgstr ""
+msgstr "Ісландська"
 
 #: picard/const/languages.py:61 picard/const/locales.py:531
 msgid "Italian"
@@ -198,7 +223,7 @@ msgstr "Італійська"
 
 #: picard/const/languages.py:62 picard/const/locales.py:540
 msgid "Japanese"
-msgstr ""
+msgstr "Японська"
 
 #: picard/const/languages.py:64 picard/const/locales.py:588
 msgid "Korean"
@@ -210,11 +235,11 @@ msgstr "Литовська"
 
 #: picard/const/languages.py:66 picard/const/locales.py:692
 msgid "Malay (Malaysia)"
-msgstr ""
+msgstr "Малайська (Малайзія)"
 
 #: picard/const/languages.py:67 picard/const/locales.py:708
 msgid "Norwegian Bokmål"
-msgstr ""
+msgstr "Норвезький букмол"
 
 #: picard/const/languages.py:69 picard/const/locales.py:719
 msgid "Dutch"
@@ -222,7 +247,7 @@ msgstr "Голандська"
 
 #: picard/const/languages.py:70 picard/const/locales.py:748
 msgid "Occitan"
-msgstr ""
+msgstr "Окситанська"
 
 #: picard/const/languages.py:71 picard/const/locales.py:775
 msgid "Polish"
@@ -234,7 +259,7 @@ msgstr "Португальська"
 
 #: picard/const/languages.py:73 picard/const/locales.py:784
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Португальська (Бразилія)"
 
 #: picard/const/languages.py:74 picard/const/locales.py:813
 msgid "Romanian"
@@ -254,7 +279,7 @@ msgstr "Словенська"
 
 #: picard/const/languages.py:79 picard/const/locales.py:897
 msgid "Albanian"
-msgstr ""
+msgstr "Албанська"
 
 #: picard/const/languages.py:81 picard/const/locales.py:923
 msgid "Swedish"
@@ -270,11 +295,11 @@ msgstr "Украї́нська"
 
 #: picard/const/languages.py:85
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Китайська (Китай)"
 
 #: picard/const/languages.py:86
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Китайська (Тайвань)"
 
 #: picard/const/locales.py:30
 msgid "Afar"
@@ -306,7 +331,7 @@ msgstr ""
 
 #: picard/const/locales.py:37
 msgid "Afrikaans"
-msgstr "Африкаанс"
+msgstr ""
 
 #: picard/const/locales.py:38
 msgid "Afrikaans (Namibia)"
@@ -1422,7 +1447,7 @@ msgstr ""
 
 #: picard/const/locales.py:326
 msgid "English (United States)"
-msgstr ""
+msgstr "Англійська (США)"
 
 #: picard/const/locales.py:327
 msgid "English (St. Vincent & Grenadines)"
@@ -3958,7 +3983,7 @@ msgstr "Украї́нська (Україна)"
 
 #: picard/const/locales.py:988
 msgid "Unknown language"
-msgstr ""
+msgstr "Невідома мова"
 
 #: picard/const/locales.py:989
 msgid "Urdu"
@@ -4238,7 +4263,7 @@ msgstr ""
 
 #: picard/const/scripts.py:33
 msgid "Cyrillic"
-msgstr ""
+msgstr "Кирилиця"
 
 #: picard/const/scripts.py:38
 msgid "Hangul"
@@ -4254,7 +4279,7 @@ msgstr ""
 
 #: picard/const/tags.py:34
 msgid "Absolute Track No."
-msgstr ""
+msgstr "Абсолютний номер треку"
 
 #: picard/const/tags.py:36
 msgid ""
@@ -4262,10 +4287,12 @@ msgid ""
 "this value would be 11 for the second track on disc 2 where disc 1 has 9 "
 "tracks."
 msgstr ""
+"Абсолютний номер цього треку, не враховуючи номер диска. Наприклад, це "
+"значення буде 11 для другого треку на диску 2, де диск 1 має 9 треків."
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "Відбиток AcoustID"
 
 #: picard/const/tags.py:46
 msgid ""
@@ -4273,6 +4300,8 @@ msgid ""
 "audio information found in a file, and is calculated using the Chromaprint "
 "software."
 msgstr ""
+"Акустичний відбиток треку. Відбиток базується на аудіоінформації, знайденій "
+"у файлі, та розраховується за допомогою програмного забезпечення Chromaprint."
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
@@ -4285,10 +4314,14 @@ msgid ""
 "fingerprints may be assigned the same AcoustID if the fingerprints are "
 "similar enough."
 msgstr ""
+"AcoustID, пов’язаний із треком. AcoustID – це ідентифікатор, що "
+"призначається аудіофайлу на основі його акустичного відбитка. Кільком "
+"відбиткам може бути призначено один і той самий AcoustID, якщо ці відбитки "
+"достатньо схожі."
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
-msgstr ""
+msgstr "Виконавець альбому"
 
 #: picard/const/tags.py:69
 msgid ""
@@ -4297,10 +4330,14 @@ msgid ""
 "depending on whether the \"Use standardized artist names\" metadata option "
 "is enabled."
 msgstr ""
+"Виконавці, головним чином зазначені в титрах на релізі, розділені "
+"зазначеними фразами з’єднання. Вони можуть бути або \"стандартизованими\", "
+"або \"як зазначено в титрах\", залежно від того, чи ввімкнено опцію "
+"метаданих \"Використовувати стандартизовані імена виконавців\"."
 
 #: picard/const/tags.py:77
 msgid "Album Artists"
-msgstr ""
+msgstr "Виконавці альбомів"
 
 #: picard/const/tags.py:79
 msgid ""
@@ -4308,10 +4345,14 @@ msgid ""
 "\"standardized\" or \"as credited\" depending on whether the \"Use "
 "standardized artist names\" metadata option is enabled."
 msgstr ""
+"Виконавці, головним чином зазначені в титрах на релізі. Вони можуть бути або "
+"\"стандартизованими\", або \"як зазначено в титрах\", залежно від того, чи "
+"ввімкнено опцію метаданих "
+"\"Використовувати стандартизовані імена виконавців\"."
 
 #: picard/const/tags.py:88
 msgid "Album Artists Countries"
-msgstr ""
+msgstr "Країни виконавців альбомів"
 
 #: picard/const/tags.py:90
 msgid ""
@@ -4320,44 +4361,50 @@ msgid ""
 "one artist from the same country. If a country code is not provided by the "
 "webservice the code \"XX\" will be used to indicate an unknown country."
 msgstr ""
+"Коди країн для всіх виконавців альбомів, зазначених у титрах, у тому ж "
+"порядку, що й виконавці. Дубльовані коди країн відображатимуться, якщо з "
+"однієї країни є більше одного виконавця. Якщо вебсервіс не надає код країни, "
+"для позначення невідомої країни використовуватиметься код \"XX\"."
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Порядок сортування за виконавцем альбому"
 
 #: picard/const/tags.py:102
 msgid ""
 "The release artists sort names, separated by the specified join phrases. "
 "(e.g.: \"Beatles, The\")"
 msgstr ""
+"Виконавці релізу сортують імена, розділяючи їх заданими сполучними фразами. "
+"(наприклад: \"Beatles, The\")"
 
 #: picard/const/tags.py:106
 msgid "Album Artists Sort Names"
-msgstr ""
+msgstr "Сортувати за іменами виконавців альбомів"
 
 #: picard/const/tags.py:107
 msgid "The sort names of the album's artists."
-msgstr ""
+msgstr "Сортування імен виконавців альбому."
 
 #: picard/const/tags.py:114
 msgid "Album"
-msgstr ""
+msgstr "Альбом"
 
 #: picard/const/tags.py:115
 msgid "The title of the release."
-msgstr ""
+msgstr "Назва релізу."
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Порядок сортування альбомів"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
-msgstr ""
+msgstr "Сортувальна назва назви випуску."
 
 #: picard/const/tags.py:126
 msgid "Arranger"
-msgstr ""
+msgstr "Аранжувальник"
 
 #: picard/const/tags.py:128
 msgid ""
@@ -4365,10 +4412,13 @@ msgid ""
 "instrument and orchestra arrangers, and could be associated with the "
 "release, recording or work."
 msgstr ""
+"Імена аранжувальників, пов’язаних із треком. Це можуть бути аранжувальники "
+"інструментів та оркестру, і вони можуть бути пов’язані з релізом, записом "
+"або твором."
 
 #: picard/const/tags.py:135
 msgid "Artist"
-msgstr ""
+msgstr "Виконавець"
 
 #: picard/const/tags.py:137
 msgid ""
@@ -4376,10 +4426,14 @@ msgid ""
 "be either \"standardized\" or \"as credited\" depending on whether the \"Use "
 "standardized artist names\" metadata option is enabled."
 msgstr ""
+"Імена виконавців треку, розділені заданими фразами-з’єднувачами. Вони можуть "
+"бути або \"стандартизованими\", або \"як зазначено\", залежно від того, чи "
+"увімкнено опцію метаданих "
+"\"Використовувати стандартизовані назви виконавців\"."
 
 #: picard/const/tags.py:145
 msgid "Artists"
-msgstr ""
+msgstr "Виконавці"
 
 #: picard/const/tags.py:147
 msgid ""
@@ -4387,10 +4441,13 @@ msgid ""
 "credited\" depending on whether the \"Use standardized artist names\" "
 "metadata option is enabled."
 msgstr ""
+"Імена виконавців треку. Вони можуть бути або \"стандартизованими\", або "
+"\"як зазначено в титрах\", залежно від того, чи ввімкнено опцію метаданих "
+"\"Використовувати стандартизовані імена виконавців\"."
 
 #: picard/const/tags.py:154
 msgid "Artists Countries"
-msgstr ""
+msgstr "Країни виконавців"
 
 #: picard/const/tags.py:156
 msgid ""
@@ -4399,78 +4456,86 @@ msgid ""
 "one artist from the same country. If a country code is not provided by the "
 "webservice the code \"XX\" will be used to indicate an unknown country."
 msgstr ""
+"Коди країн для всіх виконавців треків, зазначених у титрах, у тому ж "
+"порядку, що й виконавці. Дубльовані коди країн відображатимуться, якщо з "
+"однієї країни є кілька виконавців. Якщо веб-сервіс не надає код країни, для "
+"позначення невідомої країни використовуватиметься код \"XX\"."
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Порядок сортування за виконавцями"
 
 #: picard/const/tags.py:168
 msgid ""
 "The sort names of the track's artists, separated by the specified join "
 "phrases."
 msgstr ""
+"Імена виконавців треку, розділені вказаними фразами з’єднання, за якими "
+"виконується сортування."
 
 #: picard/const/tags.py:172
 msgid "Artists Sort Names"
-msgstr ""
+msgstr "Сортування імен виконавців"
 
 #: picard/const/tags.py:173
 msgid "The sort names of the track's artists."
-msgstr ""
+msgstr "Сортування імен виконавців треку."
 
 #: picard/const/tags.py:180
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:181
 msgid ""
 "The Amazon Standard Identification Number, which is the number identifying "
 "the item on Amazon."
 msgstr ""
+"Стандартний ідентифікаційний номер Amazon – це номер, що ідентифікує товар "
+"на Amazon."
 
 #: picard/const/tags.py:186
 msgid "Barcode"
-msgstr ""
+msgstr "Штрих-код"
 
 #: picard/const/tags.py:187
 msgid "The barcode assigned to the release."
-msgstr ""
+msgstr "Штрих-код, присвоєний релізу."
 
 #: picard/const/tags.py:189
 msgid "Barcode in MusicBrainz documentation"
-msgstr ""
+msgstr "Штрих-код у документації MusicBrainz"
 
 #: picard/const/tags.py:191
 msgid "Barcode mapping in Picard documentation"
-msgstr ""
+msgstr "Зіставлення штрих-кодів у документації Picard"
 
 #: picard/const/tags.py:199
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
-msgstr ""
+msgstr "Ударів за хвилину треку."
 
 #: picard/const/tags.py:205
 msgid "Bitrate"
-msgstr ""
+msgstr "Бітрейт"
 
 #: picard/const/tags.py:206
 msgid "Approximate bitrate in kbps."
-msgstr ""
+msgstr "Приблизний бітрейт у кбіт/с."
 
 #: picard/const/tags.py:215
 msgid "Bits per sample"
-msgstr ""
+msgstr "Бітів на семпл"
 
 #: picard/const/tags.py:216
 msgid "Bits of data per sample."
-msgstr ""
+msgstr "Дані бітів на семпл."
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
-msgstr ""
+msgstr "Номер у каталозі"
 
 #: picard/const/tags.py:227
 msgid ""
@@ -4478,52 +4543,57 @@ msgid ""
 "be found on the spine or near the barcode. There may be more than one, "
 "especially when multiple labels are involved."
 msgstr ""
+"Номери в каталозі, що присвоюються випуску за допомогою етикеток, які часто "
+"можна знайти на корінці або біля штрих-коду. Їх може бути більше одного, "
+"особливо якщо задіяно кілька етикеток."
 
 #: picard/const/tags.py:235
 msgid "Channels"
-msgstr ""
+msgstr "Канали"
 
 #: picard/const/tags.py:236
 msgid "Number of audio channels in the file."
-msgstr ""
+msgstr "Кількість аудіоканалів у файлі."
 
 #: picard/const/tags.py:245
 msgid "Comment"
-msgstr ""
+msgstr "Коментар"
 
 #: picard/const/tags.py:247
 msgid ""
 "The disambiguation comment entered to help distinguish one release from "
 "another (e.g.: Deluxe version with 2 bonus tracks)."
 msgstr ""
+"Коментар щодо неоднозначності, введений для того, щоб допомогти відрізнити "
+"один реліз від іншого (наприклад: Делюкс-версія з 2 бонусними треками)."
 
 #: picard/const/tags.py:255
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Компіляція (iTunes)"
 
 #: picard/const/tags.py:256
 msgid "1 for Various Artist albums, otherwise empty."
-msgstr ""
+msgstr "1 для альбомів різних виконавців, інакше порожньо."
 
 #: picard/const/tags.py:260
 msgid "Composer"
-msgstr ""
+msgstr "Композитор"
 
 #: picard/const/tags.py:261
 msgid "The names of the composers for the associated work."
-msgstr ""
+msgstr "Імена композиторів відповідного твору."
 
 #: picard/const/tags.py:267
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Порядок сортування композитора"
 
 #: picard/const/tags.py:268
 msgid "The sort names of the composers for the associated work."
-msgstr ""
+msgstr "Сортування імен композиторів для пов'язаного твору."
 
 #: picard/const/tags.py:273
 msgid "Conductor"
-msgstr ""
+msgstr "Диригент"
 
 #: picard/const/tags.py:275
 msgid ""
@@ -4531,220 +4601,232 @@ msgid ""
 "conductor and chorus master, and could be associated with the release or "
 "recording."
 msgstr ""
+"Імена диригентів, пов’язаних із треком. Це можуть бути диригент і "
+"хормейстер, і вони можуть бути пов’язані з релізом або записом."
 
 #: picard/const/tags.py:283
 msgid "Copyright"
-msgstr ""
+msgstr "Авторське право"
 
 #: picard/const/tags.py:285
 msgid ""
 "The copyright message for the copyright holder of the original sound, "
 "beginning with a year and a space character."
 msgstr ""
+"Повідомлення про авторські права для власника авторських прав на "
+"оригінальний звук, що починається з року та символу пробілу."
 
 #: picard/const/tags.py:292
 msgid "Data Track"
-msgstr ""
+msgstr "Відстеження даних"
 
 #: picard/const/tags.py:293
 msgid "Set to 1 if the track is a \"data track\", otherwise empty."
-msgstr ""
+msgstr "Встановіть значення 1, якщо трек є \"треком даних\", інакше порожнє."
 
 #: picard/const/tags.py:299
 msgid "Date"
-msgstr ""
+msgstr "Дата"
 
 #: picard/const/tags.py:300 picard/const/tags.py:889
 msgid ""
 "The date that the release (album) was issued, in the format `YYYY-MM-DD`."
-msgstr ""
+msgstr "Дата виходу релізу (альбому) у форматі `РРРР-ММ-ДД`."
 
 #: picard/const/tags.py:305
 msgid "Director"
-msgstr ""
+msgstr "Директор"
 
 #: picard/const/tags.py:307
 msgid ""
 "The director of a track as provided by the \"*Video Director*\" or \"*Audio "
 "Director*\" relationship in MusicBrainz."
 msgstr ""
+"Режисер треку, як зазначено у зв’язку \"*Відеорежисер*\" або "
+"\"*Аудіорежисер*\" у MusicBrainz."
 
 #: picard/const/tags.py:315
 msgid "Directory name"
-msgstr ""
+msgstr "Назва каталогу"
 
 #: picard/const/tags.py:316
 msgid ""
 "The name of the directory containing the file at the point of being loaded "
 "into Picard."
-msgstr ""
+msgstr "Ім'я каталогу, що містить файл, у момент його завантаження в Picard."
 
 #: picard/const/tags.py:324
 msgid "FreeDB Disc ID"
-msgstr ""
+msgstr "Ідентифікатор диска FreeDB"
 
 #: picard/const/tags.py:325
 msgid "The identification number of the disc in the FreeDB database."
-msgstr ""
+msgstr "Ідентифікаційний номер диска в базі даних FreeDB."
 
 #: picard/const/tags.py:328
 msgid "FreeDB"
-msgstr ""
+msgstr "FreeDB"
 
 #: picard/const/tags.py:330
 msgid "FreeDB DiscID Calculation"
-msgstr ""
+msgstr "Розрахунок FreeDB DiscID"
 
 #: picard/const/tags.py:334
 msgid "FreeDB DiscID including Calculation Example (French)"
-msgstr ""
+msgstr "FreeDB DiscID, включаючи приклад розрахунку (французькою мовою)"
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
-msgstr ""
+msgstr "Номер диска"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
-msgstr ""
+msgstr "Номер диска у випуску, який містить цей трек."
 
 #: picard/const/tags.py:347
 msgid "Disc Has Pregap"
-msgstr ""
+msgstr "Диск з перед паузою"
 
 #: picard/const/tags.py:348
 msgid ""
 "Set to 1 if the disc the track is on has a \"pregap track\", otherwise empty."
 msgstr ""
+"Встановіть значення 1, якщо диск, на якому знаходиться трек, має "
+"\"трек з паузою\", інакше порожній."
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Субтитри диска"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
-msgstr ""
+msgstr "Назва медіафайлу, надана певному диску у випуску."
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ-мікшер"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
-msgstr ""
+msgstr "Імена діджей-мікшерів для треку."
 
 #: picard/const/tags.py:368
 msgid "Encoded By"
-msgstr ""
+msgstr "Закодовано"
 
 #: picard/const/tags.py:369
 msgid "The person or organization that encoded the track."
-msgstr ""
+msgstr "Особа або організація, яка закодувала трек."
 
 #: picard/const/tags.py:374
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Налаштування кодера"
 
 #: picard/const/tags.py:375
 msgid "The settings used when encoding the track."
-msgstr ""
+msgstr "Налаштування, що використовуються під час кодування треку."
 
 #: picard/const/tags.py:380
 msgid "Engineer"
-msgstr ""
+msgstr "Звукорежисер"
 
 #: picard/const/tags.py:381
 msgid "The names of the engineers associated with the track."
-msgstr ""
+msgstr "Імена звукорежисерів, пов'язаних з треком."
 
 #: picard/const/tags.py:387
 msgid "File Extension"
-msgstr ""
+msgstr "Розширення файлу"
 
 #: picard/const/tags.py:388
 msgid "The file's extension."
-msgstr ""
+msgstr "Розширення файлу."
 
 #: picard/const/tags.py:396
 msgid "File Created Timestamp"
-msgstr ""
+msgstr "Мітка часу створення файлу"
 
 #: picard/const/tags.py:397
 msgid ""
 "The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by "
 "the file system."
 msgstr ""
+"Мітка часу створення файлу у форматі `РРРР-ММ-ДД ГГ:ММ:СС`, як "
+"повідомляється файловою системою."
 
 #: picard/const/tags.py:405
 msgid "File Modified Timestamp"
-msgstr ""
+msgstr "Позначка часу зміни файлу"
 
 #: picard/const/tags.py:407
 msgid ""
 "The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as "
 "reported by the file system."
 msgstr ""
+"Мітка часу модифікації файлу у форматі `РРРР-ММ-ДД ГГ:ММ:СС`, як "
+"повідомляється файловою системою."
 
 #: picard/const/tags.py:416
 msgid "File Name"
-msgstr ""
+msgstr "Ім'я файлу"
 
 #: picard/const/tags.py:417
 msgid "The name of the file without extension."
-msgstr ""
+msgstr "Ім'я файлу без розширення."
 
 #: picard/const/tags.py:426
 msgid "File Path"
-msgstr ""
+msgstr "Шлях до файлу"
 
 #: picard/const/tags.py:427
 msgid "Full path and name of the file."
-msgstr ""
+msgstr "Повний шлях та ім'я файлу."
 
 #: picard/const/tags.py:435
 msgid "File Size"
-msgstr ""
+msgstr "Розмір файлу"
 
 #: picard/const/tags.py:436
 msgid "Size of the file in bytes."
-msgstr ""
+msgstr "Розмір файлу в байтах."
 
 #: picard/const/tags.py:444
 msgid "File Format"
-msgstr ""
+msgstr "Формат файлу"
 
 #: picard/const/tags.py:445
 msgid "Media format of the file (e.g.: MPEG-1 Audio)."
-msgstr ""
+msgstr "Медіаформат файлу (наприклад: MPEG-1 Audio)."
 
 #: picard/const/tags.py:454
 msgid "Gapless Playback"
-msgstr ""
+msgstr "Безперервне відтворення"
 
 #: picard/const/tags.py:455
 msgid ""
 "Indicates whether or not there are gaps between the recordings on the "
 "release."
-msgstr ""
+msgstr "Вказує на наявність проміжків між записами в релізі."
 
 #: picard/const/tags.py:460
 msgid "Genre"
-msgstr ""
+msgstr "Жанр"
 
 #: picard/const/tags.py:461
 msgid "The specified genre information from MusicBrainz."
-msgstr ""
+msgstr "Інформація про жанр із MusicBrainz."
 
 #: picard/const/tags.py:469
 msgid "Grouping"
-msgstr ""
+msgstr "Групування"
 
 #: picard/const/tags.py:470
 msgid "Genre grouping associated with the track"
-msgstr ""
+msgstr "Жанрова група, пов'язана з треком"
 
 #: picard/const/tags.py:475
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:477
 msgid ""
@@ -4752,22 +4834,24 @@ msgid ""
 "standard code for uniquely identifying sound recordings and music video "
 "recordings."
 msgstr ""
+"Міжнародний стандартний код запису – це міжнародний стандартний код для "
+"унікальної ідентифікації звукозаписів та музичних відеозаписів."
 
 #: picard/const/tags.py:485
 msgid "Key"
-msgstr ""
+msgstr "Ключ"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
-msgstr ""
+msgstr "Ключ музики."
 
 #: picard/const/tags.py:491
 msgid "Record Label"
-msgstr ""
+msgstr "Лейбл звукозапису"
 
 #: picard/const/tags.py:492
 msgid "The names of the labels associated with the release."
-msgstr ""
+msgstr "Назви лейблів, пов'язаних з релізом."
 
 #: picard/const/tags.py:498
 msgid "Language"
@@ -4775,137 +4859,144 @@ msgstr "Мова"
 
 #: picard/const/tags.py:499
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
-msgstr ""
+msgstr "Мова тексту твору згідно з ISO 639-3, якщо існує пов'язаний твір."
 
 #: picard/const/tags.py:504
 msgid "Length"
-msgstr ""
+msgstr "Довжина"
 
 #: picard/const/tags.py:505
 msgid "The length of the track in format mins:secs."
-msgstr ""
+msgstr "Тривалість треку у форматі хв:с."
 
 #: picard/const/tags.py:511
 msgid "License"
-msgstr ""
+msgstr "Ліцензія"
 
 #: picard/const/tags.py:512
 msgid ""
 "The license associated with the track, either through the release or "
 "recording relationships."
 msgstr ""
+"Ліцензія, пов’язана з композицією, або через відносини релізу, або через "
+"відносини запису."
 
 #: picard/const/tags.py:516
 msgid "Lyricist"
-msgstr ""
+msgstr "Автор текстів"
 
 #: picard/const/tags.py:517
 msgid "The names of the lyricists for the associated work."
-msgstr ""
+msgstr "Імена авторів текстів пов'язаного твору."
 
 #: picard/const/tags.py:523
 msgid "Lyricist Sort"
-msgstr ""
+msgstr "Автор тексту Сортувати"
 
 #: picard/const/tags.py:524
 msgid "The sort names of the lyricists for the associated work."
-msgstr ""
+msgstr "Імена авторів текстів пов'язаного твору за порядком їхнього сортування."
 
 #: picard/const/tags.py:530
 msgid "Lyrics"
-msgstr ""
+msgstr "Тексти пісень"
 
 #: picard/const/tags.py:531
 msgid "The lyrics for the track."
-msgstr ""
+msgstr "Текст пісні до треку."
 
 #: picard/const/tags.py:537
 msgid "Media"
-msgstr ""
+msgstr "Медіа"
 
 #: picard/const/tags.py:538
 msgid "The media on which the release was distributed (e.g.: CD)."
-msgstr ""
+msgstr "Носій, на якому було розповсюджено реліз (наприклад: CD)."
 
 #: picard/const/tags.py:543
 msgid "Mixer"
-msgstr ""
+msgstr "Змішувач"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
-msgstr ""
+msgstr "Імена звукорежисерів \"*Mixed By*\", пов'язаних із цим треком."
 
 #: picard/const/tags.py:550
 msgid "Mood"
-msgstr ""
+msgstr "Настрій"
 
 #: picard/const/tags.py:551
 msgid "The mood associated with the track."
-msgstr ""
+msgstr "Настрій, пов'язаний з треком."
 
 #: picard/const/tags.py:556
 msgid "Movement"
-msgstr ""
+msgstr "Рух"
 
 #: picard/const/tags.py:557
 msgid "Name of the movement (e.g.: \"Andante con moto\")."
-msgstr ""
+msgstr "Назва руху (наприклад: \"Andante con moto\")."
 
 #: picard/const/tags.py:562
 msgid "Movement Number"
-msgstr ""
+msgstr "Номер руху"
 
 #: picard/const/tags.py:564
 msgid ""
 "Movement number in Arabic numerals (e.g.: \"2\"). Players explicitly "
 "supporting this tag will often display it in Roman numerals (e.g.: \"II\")."
 msgstr ""
+"Номер руху арабськими цифрами (наприклад: \"2\"). Гравці, які явно "
+"підтримують цей тег, часто відображатимуть його римськими цифрами (наприклад:"
+" \"II\")."
 
 #: picard/const/tags.py:571
 msgid "Movement Count"
-msgstr ""
+msgstr "Кількість рухів"
 
 #: picard/const/tags.py:572
 msgid "Total number of movements in the work (e.g.: \"4\")."
-msgstr ""
+msgstr "Загальна кількість рухів у творі (наприклад: \"4\")."
 
 #: picard/const/tags.py:577
 msgid "Multiple Artists"
-msgstr ""
+msgstr "Кілька виконавців"
 
 #: picard/const/tags.py:578
 msgid ""
 "Set to 1 if not all of the tracks on the album have the same primary artist, "
 "otherwise empty."
 msgstr ""
+"Встановіть значення 1, якщо не всі треки в альбомі мають одного основного "
+"виконавця, інакше встановіть значення порожнє."
 
 #: picard/const/tags.py:584
 msgid "Release Artist MBID"
-msgstr ""
+msgstr "MBID виконавця релізу"
 
 #: picard/const/tags.py:585
 msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
-msgstr ""
+msgstr "Ідентифікатори MusicBrainz (MBID) для виконавців, що випустили альбом."
 
 #: picard/const/tags.py:590
 msgid "Release MBID"
-msgstr ""
+msgstr "Випуск MBID"
 
 #: picard/const/tags.py:591
 msgid "The MusicBrainz Identifier (MBID) for the release."
-msgstr ""
+msgstr "Ідентифікатор MusicBrainz (MBID) для релізу."
 
 #: picard/const/tags.py:595
 msgid "Artist MBID"
-msgstr ""
+msgstr "MBID виконавця"
 
 #: picard/const/tags.py:596
 msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
-msgstr ""
+msgstr "Ідентифікатори MusicBrainz (MBID) для виконавців треків."
 
 #: picard/const/tags.py:601
 msgid "MusicBrainz DiscID"
-msgstr ""
+msgstr "Ідентифікатор диска MusicBrainz"
 
 #: picard/const/tags.py:603
 msgid ""
@@ -4914,40 +5005,52 @@ msgid ""
 "information read from the disc. This tag contains the Disc ID if the album "
 "information was retrieved using `Tools > Lookup CD` from the menu."
 msgstr ""
+"Ідентифікатор диска – це кодовий номер, який MusicBrainz використовує для "
+"пов’язування фізичного компакт-диска зі списком релізу. Він базується на "
+"інформації зі змісту (TOC), зчитаній з диска. Цей тег містить ідентифікатор "
+"диска, якщо інформацію про альбом було отримано за допомогою пункту меню "
+"\"Інструменти\" > \"Пошук компакт-диска\"."
 
 #: picard/const/tags.py:609
 msgid "Disc ID Calculation"
-msgstr ""
+msgstr "Розрахунок ідентифікатора диска"
 
 #: picard/const/tags.py:613
 msgid "Disc IDs"
-msgstr ""
+msgstr "Ідентифікатори дисків"
 
 #: picard/const/tags.py:615
 msgid ""
 "A list of all of the disc ids attached to the selected release. The list "
 "provided for each medium only includes the disc ids attached to that medium."
 msgstr ""
+"Список усіх ідентифікаторів дисків, доданих до вибраного релізу. Список, "
+"наданий для кожного носія, містить лише ідентифікатори дисків, додані до "
+"цього носія."
 
 #: picard/const/tags.py:619
 msgid ""
 "For example, the list provided for Disc 1 of a three CD set will not include "
 "the disc ids attached to discs 2 and 3 of the set."
 msgstr ""
+"Наприклад, список, наданий для диска 1 комплекту з трьох компакт-дисків, не "
+"включатиме ідентифікатори дисків, додані до дисків 2 та 3 комплекту."
 
 #: picard/const/tags.py:628
 msgid "Original Release MBID"
-msgstr ""
+msgstr "MBID оригінального релізу"
 
 #: picard/const/tags.py:630
 msgid ""
 "The MusicBrainz Identifier (MBID) for the original release. This is only "
 "available if the release has been merged with another release."
 msgstr ""
+"Ідентифікатор MusicBrainz (MBID) для оригінального релізу. Він доступний "
+"лише якщо реліз було об’єднано з іншим релізом."
 
 #: picard/const/tags.py:636
 msgid "Original Artist MBID"
-msgstr ""
+msgstr "MBID оригінального виконавця"
 
 #: picard/const/tags.py:638
 msgid ""
@@ -4955,89 +5058,97 @@ msgid ""
 "recording. This is only available if the recording has been merged with "
 "another recording."
 msgstr ""
+"Ідентифікатори MusicBrainz (MBID) для виконавців треків оригінального "
+"запису. Доступно лише за умови, що запис було об’єднано з іншим записом."
 
 #: picard/const/tags.py:645
 msgid "Recording MBID"
-msgstr ""
+msgstr "Запис MBID"
 
 #: picard/const/tags.py:646
 msgid "The MusicBrainz Identifier (MBID) for the recording."
-msgstr ""
+msgstr "Ідентифікатор MusicBrainz (MBID) для запису."
 
 #: picard/const/tags.py:650
 msgid "Release Group MBID"
-msgstr ""
+msgstr "Група випусків MBID"
 
 #: picard/const/tags.py:651
 msgid "The MusicBrainz Identifier (MBID) for the release group."
-msgstr ""
+msgstr "Ідентифікатор MusicBrainz (MBID) для групи випусків."
 
 #: picard/const/tags.py:655
 msgid "Track MBID"
-msgstr ""
+msgstr "Відстеження MBID"
 
 #: picard/const/tags.py:656
 msgid "The MusicBrainz Identifier (MBID) for the track."
-msgstr ""
+msgstr "Ідентифікатор MusicBrainz (MBID) для треку."
 
 #: picard/const/tags.py:660
 msgid "Track Number Shown"
-msgstr ""
+msgstr "Відображено номер треку"
 
 #: picard/const/tags.py:661
 msgid ""
 "The track number written as on the MusicBrainz release, such as vinyl "
 "numbering (A1, A2, etc.)"
 msgstr ""
+"Номер треку, написаний так, як на релізі MusicBrainz, наприклад, нумерація "
+"вінілу (A1, A2 тощо)"
 
 #: picard/const/tags.py:667
 msgid "Work MBID"
-msgstr ""
+msgstr "Робочий MBID"
 
 #: picard/const/tags.py:668
 msgid ""
 "The MusicBrainz Identifier (MBID) for the Work if a related work exists."
-msgstr ""
+msgstr "Ідентифікатор MusicBrainz (MBID) для Твору, якщо існує пов’язаний твір."
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "Відбиток пальця MusicIP"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
-msgstr ""
+msgstr "Відбиток MusicIP для треку."
 
 #: picard/const/tags.py:679
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "PUID MusicIP"
 
 #: picard/const/tags.py:680
 msgid "The MusicIP PUIDs associated with the track."
-msgstr ""
+msgstr "PUID-ідентифікатори MusicIP, пов’язані з треком."
 
 #: picard/const/tags.py:685
 msgid "Original Album"
-msgstr ""
+msgstr "Оригінальний альбом"
 
 #: picard/const/tags.py:687
 msgid ""
 "The release title of the earliest release in the release group intended for "
 "the title of the original recording."
 msgstr ""
+"Назва найдавнішого релізу в групі релізів, призначена для назви "
+"оригінального запису."
 
 #: picard/const/tags.py:694
 msgid "Original Artist"
-msgstr ""
+msgstr "Оригінальний виконавець"
 
 #: picard/const/tags.py:696
 msgid ""
 "The track artist of the earliest release in the release group intended for "
 "the performers of the original recording."
 msgstr ""
+"Виконавець треку найдавнішого релізу в групі релізів, призначений для "
+"виконавців оригінального запису."
 
 #: picard/const/tags.py:703
 msgid "Original Release Date"
-msgstr ""
+msgstr "Дата оригінального випуску"
 
 #: picard/const/tags.py:705
 msgid ""
@@ -5048,18 +5159,23 @@ msgid ""
 "**Note:** If you are storing tags in MP3 files as ID3v2.3 then the original "
 "date can only be stored as a year."
 msgstr ""
+"Початкова дата випуску у форматі `РРРР-ММ-ДД`. За замовчуванням встановлено "
+"найдавніший випуск у групі випусків. Це може надати, наприклад, дату випуску "
+"вінілової версії того, що є на компакт-диску. **Примітка:** Якщо ви "
+"зберігаєте теги у MP3-файлах як ID3v2.3, то початкову дату можна зберегти "
+"лише як рік."
 
 #: picard/const/tags.py:713
 msgid "Original Filename"
-msgstr ""
+msgstr "Оригінальна назва файлу"
 
 #: picard/const/tags.py:714
 msgid "The original name of the audio file."
-msgstr ""
+msgstr "Оригінальна назва аудіофайлу."
 
 #: picard/const/tags.py:719
 msgid "Original Year"
-msgstr ""
+msgstr "Оригінальний рік"
 
 #: picard/const/tags.py:721
 msgid ""
@@ -5067,26 +5183,33 @@ msgid ""
 "is set to the earliest release in the release group. This can provide, for "
 "example, the release year of the vinyl version of what you have on CD."
 msgstr ""
+"Рік оригінальної дати випуску у форматі `РРРР`. За замовчуванням встановлено "
+"найдавніший випуск у групі випусків. Це може надати, наприклад, рік випуску "
+"вінілової версії того, що є на вашому компакт-диску."
 
 #: picard/const/tags.py:728
 msgid "Performance Attributes"
-msgstr ""
+msgstr "Атрибути продуктивності"
 
 #: picard/const/tags.py:729
 msgid ""
 "List of performance attributes for the work (e.g.: \"*live*\", \"*cover*\", "
 "\"*medley*\")."
 msgstr ""
+"Список характеристик виконання твору (наприклад: \"*live*\", \"*cover*\", "
+"\"*medley*\")."
 
 #: picard/const/tags.py:731
 msgid ""
 "Use `$inmulti()` to check for a specific type (e.g.: "
 "`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 msgstr ""
+"Використовуйте `$inmulti()` для перевірки певного типу (наприклад: "
+"`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 
 #: picard/const/tags.py:740
 msgid "Performer"
-msgstr ""
+msgstr "Виконавець"
 
 #: picard/const/tags.py:742
 msgid ""
@@ -5099,165 +5222,178 @@ msgid ""
 "- the concert master for the associated release or recording, where \"type\" "
 "is \"*concertmaster*\""
 msgstr ""
+"Імена виконавців для зазначеного типу. Ці типи включають: - вокал або "
+"інструменти для пов'язаного релізу чи запису, де \"тип\" може бути "
+"\"*вокал*\", \"*запрошена гітара*\", \"*скрипка соло*\" тощо - оркестр для "
+"пов'язаного релізу чи запису, де \"тип\" – \"*оркестр*\" - концертмейстер "
+"для пов'язаного релізу чи запису, де \"тип\" – \"*концертмейстер*\""
 
 #: picard/const/tags.py:753
 msgid "Podcast"
-msgstr ""
+msgstr "Подкаст"
 
 #: picard/const/tags.py:754
 msgid "Indicates whether or not the recording is a podcast."
-msgstr ""
+msgstr "Вказує, чи є запис подкастом."
 
 #: picard/const/tags.py:759
 msgid "Podcast URL"
-msgstr ""
+msgstr "URL-адреса подкасту"
 
 #: picard/const/tags.py:760
 msgid "The associated URL if the recording is a podcast."
-msgstr ""
+msgstr "Пов’язана URL-адреса, якщо запис є подкастом."
 
 #: picard/const/tags.py:765
 msgid "Pregap Track"
-msgstr ""
+msgstr "Трек з перед паузою"
 
 #: picard/const/tags.py:766
 msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
 msgstr ""
+"Встановіть значення 1, якщо трек є \"треком з перед паузою\", інакше "
+"порожньо."
 
 #: picard/const/tags.py:772
 msgid "Primary Release Type"
-msgstr ""
+msgstr "Тип основного випуску"
 
 #: picard/const/tags.py:773
 msgid ""
 "The primary type of the release group (i.e.: *album*, *single*, *ep*, "
 "*broadcast*, or *other*)."
 msgstr ""
+"Основний тип групи релізів (наприклад: *альбом*, *сингл*, *міні-альбом*, "
+"*трансляція* або *інше*)."
 
 #: picard/const/tags.py:777 picard/const/tags.py:1002 picard/const/tags.py:1091
 msgid "Release group types"
-msgstr ""
+msgstr "Типи груп випусків"
 
 #: picard/const/tags.py:781
 msgid "Producer"
-msgstr ""
+msgstr "Продюсер"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
-msgstr ""
+msgstr "Імена продюсерів відповідного релізу або запису."
 
 #: picard/const/tags.py:788
 msgid "R128 Album Gain"
-msgstr ""
+msgstr "Посилення альбому R128"
 
 #: picard/const/tags.py:789
 msgid ""
 "Album gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
+"Підсилення альбому, визначене аналізом \"R 128\" Європейського мовного союзу."
 
 #: picard/const/tags.py:795
 msgid "R128 Track Gain"
-msgstr ""
+msgstr "Посилення треку R128"
 
 #: picard/const/tags.py:796
 msgid ""
 "Track gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
+"Коефіцієнт підсилення треку визначено аналізом \"R 128\" Європейського "
+"мовного союзу."
 
 #: picard/const/tags.py:802
 msgid "Rating"
-msgstr ""
+msgstr "Рейтинг"
 
 #: picard/const/tags.py:803
 msgid "The rating of the track from 0-5 by MusicBrainz users."
-msgstr ""
+msgstr "Рейтинг треку від 0 до 5 користувачами MusicBrainz."
 
 #: picard/const/tags.py:808
 msgid "Recording First Released"
-msgstr ""
+msgstr "Перший випуск запису"
 
 #: picard/const/tags.py:809
 msgid ""
 "The date of the earliest recording for a track in the format `YYYY-MM-DD`."
-msgstr ""
+msgstr "Дата найдавнішого запису треку у форматі `РРРР-ММ-ДД`."
 
 #: picard/const/tags.py:815
 msgid "Recording Series"
-msgstr ""
+msgstr "Серія записів"
 
 #: picard/const/tags.py:816
 msgid "The series titles associated with the recording."
-msgstr ""
+msgstr "Назви серіалів, пов’язаних із записом."
 
 #: picard/const/tags.py:822
 msgid "Recording Series Comment"
-msgstr ""
+msgstr "Коментар до серіалу записів"
 
 #: picard/const/tags.py:823
 msgid "The series disambiguation comments associated with the recording."
-msgstr ""
+msgstr "Коментарі до серіалу, пов'язані із записом."
 
 #: picard/const/tags.py:829
 msgid "Recording Series MBID"
-msgstr ""
+msgstr "Серія записів MBID"
 
 #: picard/const/tags.py:830
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the recording."
-msgstr ""
+msgstr "Серія ідентифікаторів MusicBrainz (MBID), пов’язаних із записом."
 
 #: picard/const/tags.py:836
 msgid "Recording Series Number"
-msgstr ""
+msgstr "Номер серії записів"
 
 #: picard/const/tags.py:837
 msgid "The series numbers associated with the recording."
-msgstr ""
+msgstr "Серійні номери, пов’язані із записом."
 
 #: picard/const/tags.py:843
 msgid "Recording Comment"
-msgstr ""
+msgstr "Коментар до запису"
 
 #: picard/const/tags.py:844
 msgid "The disambiguation comment for the recording associated with a track."
-msgstr ""
+msgstr "Коментар для усунення неоднозначностей запису, пов'язаного з треком."
 
 #: picard/const/tags.py:850
 msgid "Recording Title"
-msgstr ""
+msgstr "Назва запису"
 
 #: picard/const/tags.py:851
 msgid ""
 "Recording title - normally the same as the track title, but can be different."
 msgstr ""
+"Назва запису — зазвичай така ж, як і назва треку, але може відрізнятися."
 
 #: picard/const/tags.py:857
 msgid "Release Annotation"
-msgstr ""
+msgstr "Анотація до випуску"
 
 #: picard/const/tags.py:858
 msgid "The annotation comment for the release."
-msgstr ""
+msgstr "Анотація-коментар до релізу."
 
 #: picard/const/tags.py:864
 msgid "Release Comment"
-msgstr ""
+msgstr "Коментар до випуску"
 
 #: picard/const/tags.py:865
 msgid "The disambiguation comment for the release."
-msgstr ""
+msgstr "Коментар до релізу з усуненням неоднозначностей."
 
 #: picard/const/tags.py:871
 msgid "Release Countries"
-msgstr ""
+msgstr "Країни випуску"
 
 #: picard/const/tags.py:872
 msgid "The complete list of release countries for the release."
-msgstr ""
+msgstr "Повний список країн виходу релізу."
 
 #: picard/const/tags.py:879
 msgid "Release Country"
-msgstr ""
+msgstr "Країна випуску"
 
 #: picard/const/tags.py:881
 msgid ""
@@ -5265,10 +5401,12 @@ msgid ""
 "more than one release country was specified, this tag will contain the first "
 "one in the list."
 msgstr ""
+"Двосимвольний код країни, в якій було випущено реліз. Якщо вказано більше "
+"однієї країни релізу, цей тег міститиме першу з них у списку."
 
 #: picard/const/tags.py:888
 msgid "Release Date"
-msgstr ""
+msgstr "Дата випуску"
 
 #: picard/const/tags.py:891
 #, python-format
@@ -5277,20 +5415,26 @@ msgid ""
 "by default. In most cases it is recommended to use the `%date%` tag instead "
 "for compatibility with existing software."
 msgstr ""
+"Цей тег існує для конкретного використання в скриптах та плагінах, але не "
+"заповнюється за замовчуванням. У більшості випадків рекомендується "
+"використовувати тег `%date%` для сумісності з існуючим програмним "
+"забезпеченням."
 
 #: picard/const/tags.py:899
 msgid "Release Group"
-msgstr ""
+msgstr "Група випусків"
 
 #: picard/const/tags.py:901
 msgid ""
 "The title of the release group. This is typically the same as the album "
 "title, but can be different."
 msgstr ""
+"Назва релізної групи. Зазвичай вона збігається з назвою альбому, але може "
+"відрізнятися."
 
 #: picard/const/tags.py:908
 msgid "RG First Released"
-msgstr ""
+msgstr "Перший реліз RG"
 
 #: picard/const/tags.py:910
 msgid ""
@@ -5298,91 +5442,94 @@ msgid ""
 "DD`. This is intended to provide, for example, the release date of the vinyl "
 "version of what you have on CD."
 msgstr ""
+"Дата найдавнішого релізу в групі релізів у форматі `РРРР-ММ-ДД`. Це "
+"призначено, наприклад, для того, щоб надати дату релізу вінілової версії "
+"того, що є на вашому компакт-диску."
 
 #: picard/const/tags.py:919
 msgid "RG Series"
-msgstr ""
+msgstr "Серія RG"
 
 #: picard/const/tags.py:920
 msgid "The series titles associated with the release group."
-msgstr ""
+msgstr "Назви серій, пов'язані з групою випусків."
 
 #: picard/const/tags.py:926
 msgid "RG Series Comment"
-msgstr ""
+msgstr "Коментар серії RG"
 
 #: picard/const/tags.py:927
 msgid "The series disambiguation comments associated with the release group."
-msgstr ""
+msgstr "Коментарі щодо неоднозначностей серіалу, пов'язані з групою випуску."
 
 #: picard/const/tags.py:933
 msgid "RG Series MBID"
-msgstr ""
+msgstr "Серія RG MBID"
 
 #: picard/const/tags.py:934
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the release group."
-msgstr ""
+msgstr "Серія ідентифікаторів MusicBrainz (MBID), пов'язаних з групою випуску."
 
 #: picard/const/tags.py:940
 msgid "RG Series Number"
-msgstr ""
+msgstr "Номер серії RG"
 
 #: picard/const/tags.py:941
 msgid "The series numbers associated with the release group."
-msgstr ""
+msgstr "Номери серій, пов'язані з групою випуску."
 
 #: picard/const/tags.py:947
 msgid "RG Comment"
-msgstr ""
+msgstr "Коментар RG"
 
 #: picard/const/tags.py:948
 msgid "The disambiguation comment for the release group."
-msgstr ""
+msgstr "Коментар щодо неоднозначності для групи випусків."
 
 #: picard/const/tags.py:954
 msgid "Release Language"
-msgstr ""
+msgstr "Мова випуску"
 
 #: picard/const/tags.py:955
 msgid "The language of the release as per ISO 639-3."
-msgstr ""
+msgstr "Мова релізу згідно з ISO 639-3."
 
 #: picard/const/tags.py:961
 msgid "Release Series"
-msgstr ""
+msgstr "Серія випусків"
 
 #: picard/const/tags.py:962
 msgid "The series titles associated with the release."
-msgstr ""
+msgstr "Назви серій, пов'язані з релізом."
 
 #: picard/const/tags.py:968
 msgid "Release Series Comment"
-msgstr ""
+msgstr "Коментар до серії випусків"
 
 #: picard/const/tags.py:969
 msgid "The series disambiguation comments associated with the release."
-msgstr ""
+msgstr "Коментарі щодо неоднозначності серіалу, пов'язані з випуском."
 
 #: picard/const/tags.py:975
 msgid "Release Series MBID"
-msgstr ""
+msgstr "Серія випусків MBID"
 
 #: picard/const/tags.py:976
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
-msgstr ""
+msgstr "Серія ідентифікаторів MusicBrainz (MBID), пов'язаних з релізом."
 
 #: picard/const/tags.py:982
 msgid "Release Series Number"
-msgstr ""
+msgstr "Номер серії випуску"
 
 #: picard/const/tags.py:983
 msgid "The series numbers associated with the release."
-msgstr ""
+msgstr "Номери серій, пов'язані з випуском."
 
 #: picard/const/tags.py:989
 msgid "Release Status"
-msgstr ""
+msgstr "Статус випуску"
 
 #: picard/const/tags.py:991
 msgid ""
@@ -5390,92 +5537,104 @@ msgid ""
 "include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
 "release*\"."
 msgstr ""
+"Індикатор \"офіційного\" статусу релізу. Можливі значення включають "
+"\"*офіційний*\", \"*рекламний*\", \"*бутлег*\" та \"*псевдореліз*\"."
 
 #: picard/const/tags.py:998
 msgid "Release Type"
-msgstr ""
+msgstr "Тип випуску"
 
 #: picard/const/tags.py:999
 msgid "The types of release assigned to the release group."
-msgstr ""
+msgstr "Типи випусків, призначених групі випусків."
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
-msgstr ""
+msgstr "Реміксер"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
-msgstr ""
+msgstr "Імена звукорежисерів-реміксерів, пов'язаних з треком."
 
 #: picard/const/tags.py:1014
 msgid "ReplayGain Album Gain"
-msgstr ""
+msgstr "ReplayGain Album Gain"
 
 #: picard/const/tags.py:1015
 msgid "Album gain setting resulting from ReplayGain analysis of the album."
 msgstr ""
+"Налаштування підсилення альбому, отримане в результаті аналізу альбому за "
+"допомогою ReplayGain."
 
 #: picard/const/tags.py:1021
 msgid "ReplayGain Album Peak"
-msgstr ""
+msgstr "Пік альбому ReplayGain"
 
 #: picard/const/tags.py:1022
 msgid "Album peak setting resulting from ReplayGain analysis of the album."
-msgstr ""
+msgstr "Пікове налаштування альбому, отримане в результаті аналізу ReplayGain."
 
 #: picard/const/tags.py:1028
 msgid "ReplayGain Album Range"
-msgstr ""
+msgstr "Діапазон альбомів ReplayGain"
 
 #: picard/const/tags.py:1029
 msgid "Album range setting resulting from ReplayGain analysis of the album."
 msgstr ""
+"Налаштування діапазону альбомів, отримане в результаті аналізу альбому за "
+"допомогою ReplayGain."
 
 #: picard/const/tags.py:1035
 msgid "ReplayGain Reference Loudness"
-msgstr ""
+msgstr "ReplayGain (Посилення повторного відтворення)"
 
 #: picard/const/tags.py:1036
 msgid ""
 "Album reference loudness setting resulting from ReplayGain analysis of the "
 "album."
 msgstr ""
+"Налаштування гучності альбому, отримане в результаті аналізу альбому за "
+"допомогою ReplayGain."
 
 #: picard/const/tags.py:1042
 msgid "ReplayGain Track Gain"
-msgstr ""
+msgstr "Посилення відстеження"
 
 #: picard/const/tags.py:1043
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
 msgstr ""
+"Налаштування підсилення треку, отримане в результаті аналізу треку за "
+"допомогою ReplayGain."
 
 #: picard/const/tags.py:1049
 msgid "ReplayGain Track Peak"
-msgstr ""
+msgstr "Пік треку ReplayGain"
 
 #: picard/const/tags.py:1050
 msgid "Track peak setting resulting from ReplayGain analysis of the track."
 msgstr ""
+"Пікове налаштування треку, отримане в результаті аналізу треку за допомогою "
+"ReplayGain."
 
 #: picard/const/tags.py:1056
 msgid "ReplayGain Track Range"
-msgstr ""
+msgstr "Діапазон треків ReplayGain"
 
 #: picard/const/tags.py:1057
 msgid "Track range setting resulting from ReplayGain analysis of the track."
 msgstr ""
+"Налаштування діапазону треку, отримане в результаті аналізу треку за "
+"допомогою ReplayGain."
 
 #: picard/const/tags.py:1063
 msgid "Sample Rate"
-msgstr ""
+msgstr "Частота дискретизації"
 
 #: picard/const/tags.py:1064
 msgid "The sample rate of the audio file."
-msgstr ""
+msgstr "Частота дискретизації аудіофайлу."
 
 #: picard/const/tags.py:1073
-#, fuzzy
-#| msgid "My script"
 msgid "Script"
 msgstr "Власний сценарій"
 
@@ -5484,10 +5643,12 @@ msgid ""
 "The script used to write the release's track list. The possible values are "
 "taken from the ISO 15924 standard."
 msgstr ""
+"Скрипт, який використовується для написання списку треків релізу. Можливі "
+"значення взяті зі стандарту ISO 15924."
 
 #: picard/const/tags.py:1082
 msgid "Secondary Release Type"
-msgstr ""
+msgstr "Тип вторинного випуску"
 
 #: picard/const/tags.py:1084
 msgid ""
@@ -5495,28 +5656,31 @@ msgid ""
 "*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
 "*spokenword*) for the release group."
 msgstr ""
+"Нуль або більше другорядних типів (наприклад: *аудіокнига*, *збірка*, "
+"*dj-мікс*, *інтерв'ю*, *живий виступ*, *мікстейп/вуличний виступ*, *ремікс*, "
+"*саундтрек* або *розмовна мова*) для релізної групи."
 
 #: picard/const/tags.py:1095
 msgid "Silence"
-msgstr ""
+msgstr "Тиша"
 
 #: picard/const/tags.py:1096
 msgid "1 if the track title is \"[silence]\""
-msgstr ""
+msgstr "1, якщо назва треку — \"[тиша]\""
 
 #: picard/const/tags.py:1102
 msgid "Show Name"
-msgstr ""
+msgstr "Показати ім'я"
 
 #: picard/const/tags.py:1103
 msgid ""
 "The name of the show if the recording is associated with a television "
 "program."
-msgstr ""
+msgstr "Назва шоу, якщо запис пов’язаний із телевізійною програмою."
 
 #: picard/const/tags.py:1108
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Показати твір та частину"
 
 #: picard/const/tags.py:1110
 msgid ""
@@ -5524,112 +5688,122 @@ msgid ""
 "tag, such as iTunes and MusicBee, will display the work, movement number and "
 "movement name instead of the track title."
 msgstr ""
+"Показувати твір та частину. Якщо для цього тегу встановлено значення \"1\", "
+"програвачі, що підтримують цей тег, такі як iTunes та MusicBee, "
+"відображатимуть твір, номер частини та назву частини замість назви треку."
 
 #: picard/const/tags.py:1114
 msgid ""
 "For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
 "67: II. Andante con moto\" regardless of the value of the title tag."
 msgstr ""
+"Наприклад, трек відображатиметься як "
+"\"Симфонія № 5 до мінор, op. 67: II. Andante con moto\" незалежно від "
+"значення тегу title."
 
 #: picard/const/tags.py:1121
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Показати порядок сортування за іменем"
 
 #: picard/const/tags.py:1122
 msgid ""
 "The sort name of the show if the recording is associated with a television "
 "program."
-msgstr ""
+msgstr "Назва сортування шоу, якщо запис пов’язаний із телевізійною програмою."
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
-msgstr ""
+msgstr "Підзаголовок"
 
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
 msgstr ""
+"Це використовується для інформації, безпосередньо пов'язаної із заголовком "
+"змісту."
 
 #: picard/const/tags.py:1133
 msgid "Synced Lyrics"
-msgstr ""
+msgstr "Синхронізовані тексти пісень"
 
 #: picard/const/tags.py:1134
 msgid "Synchronized lyrics for the track."
-msgstr ""
+msgstr "Синхронізовані тексти пісень для треку."
 
 #: picard/const/tags.py:1139
 msgid "Title"
-msgstr ""
+msgstr "Назва"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
-msgstr ""
+msgstr "Назва треку."
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Порядок сортування заголовків"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
-msgstr ""
+msgstr "Назва сортування назви треку."
 
 #: picard/const/tags.py:1151
 msgid "Total Album Tracks"
-msgstr ""
+msgstr "Загальна кількість треків альбому"
 
 #: picard/const/tags.py:1152
 msgid "The total number of tracks across all discs of this release."
-msgstr ""
+msgstr "Загальна кількість треків на всіх дисках цього релізу."
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
-msgstr ""
+msgstr "Всього дисків"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
-msgstr ""
+msgstr "Загальна кількість дисків у цьому релізі."
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
-msgstr ""
+msgstr "Загальна кількість треків"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
-msgstr ""
+msgstr "Загальна кількість треків на цьому диску."
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
-msgstr ""
+msgstr "Номер треку"
 
 #: picard/const/tags.py:1169
 msgid "The number of the track on the disc."
-msgstr ""
+msgstr "Номер треку на диску."
 
 #: picard/const/tags.py:1173
 msgid "Video"
-msgstr ""
+msgstr "Відео"
 
 #: picard/const/tags.py:1174
 msgid "Set to \"1\" if the track is a video."
-msgstr ""
+msgstr "Встановіть значення \"1\", якщо трек є відео."
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
-msgstr ""
+msgstr "Вебсайт виконавця"
 
 #: picard/const/tags.py:1182
 msgid "The official website for the artist."
-msgstr ""
+msgstr "Офіційний веб-сайт виконавця."
 
 #: picard/const/tags.py:1187
 msgid "Work"
-msgstr ""
+msgstr "Твір"
 
 #: picard/const/tags.py:1188
 msgid ""
 "The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
 "minor, op. 67\")."
 msgstr ""
+"Назва твору, пов’язаного з треком (наприклад: "
+"\"Симфонія № 5 до мінор, op. 67\")."
 
 #: picard/const/tags.py:1190
 msgid ""
@@ -5637,67 +5811,74 @@ msgid ""
 "the \"Save iTunes compatible grouping and work\" option in order for the "
 "work to be displayed correctly."
 msgstr ""
+"Примітка: Якщо ви використовуєте iTunes разом із MP3-файлами, вам слід "
+"активувати опцію \"Зберегти групи та твори, сумісні з iTunes\", щоб робота "
+"відображалася правильно."
 
 #: picard/const/tags.py:1198
 msgid "Work Series"
-msgstr ""
+msgstr "Серія твору"
 
 #: picard/const/tags.py:1199
 msgid "The series titles associated with the work."
-msgstr ""
+msgstr "Назви серій, пов'язаних з твором."
 
 #: picard/const/tags.py:1205
 msgid "Work Series Comment"
-msgstr ""
+msgstr "Коментар до серії твору"
 
 #: picard/const/tags.py:1206
 msgid "The series disambiguation comments associated with the work."
-msgstr ""
+msgstr "Коментарі щодо неоднозначності серії, пов'язані з твором."
 
 #: picard/const/tags.py:1212
 msgid "Work Series MBID"
-msgstr ""
+msgstr "Серія твору MBID"
 
 #: picard/const/tags.py:1213
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
-msgstr ""
+msgstr "Серія ідентифікаторів MusicBrainz (MBID), пов'язаних з твором."
 
 #: picard/const/tags.py:1219
 msgid "Work Series Number"
-msgstr ""
+msgstr "Номер серії твору"
 
 #: picard/const/tags.py:1220
 msgid "The series numbers associated with the work."
-msgstr ""
+msgstr "Номери серій, пов'язані з твором."
 
 #: picard/const/tags.py:1226
 msgid "Work Comment"
-msgstr ""
+msgstr "Коментар до твору"
 
 #: picard/const/tags.py:1227
 msgid "The disambiguation comment associated with the work."
-msgstr ""
+msgstr "Коментар до усунення неоднозначностей, пов'язаний з твором."
 
 #: picard/const/tags.py:1232
 msgid "Writer"
-msgstr ""
+msgstr "Автор пісні"
 
 #: picard/const/tags.py:1234
 msgid ""
 "The names of the writers associated with the related work. This is not "
 "written to most file formats automatically."
 msgstr ""
+"Імена авторів, пов’язаних із твором. Це не записується автоматично у "
+"більшість форматів файлів."
 
 #: picard/const/tags.py:1237
 msgid ""
 "You can merge this with composers with a script like "
 "`$copymerge(composer,writer)`."
 msgstr ""
+"Ви можете об'єднати це з композиторами за допомогою скрипту типу "
+"`$copymerge(composer,writer)`."
 
 #: picard/const/tags.py:1243
 msgid "Writer Sort"
-msgstr ""
+msgstr "Сортування автора"
 
 #: picard/const/tags.py:1244
 msgid "The sort names of the writers for the work."
-msgstr ""
+msgstr "Сортування імен авторів твору."

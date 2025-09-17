@@ -170,6 +170,8 @@ DEFAULT_COVER_CONVERTING_FORMAT = 'JPEG'
 
 DEFAULT_QUICK_MENU_ITEMS = ['save_images_to_tags', 'save_images_to_files']
 
+DEFAULT_FILTER_COLUMNS = ['album', 'title', 'albumartist', 'artist']
+
 # Metadata handling
 # Prefix for internal/non-user-facing tags; filtered from exports and overrides.
 INTERNAL_TAG_PREFIX = "~"

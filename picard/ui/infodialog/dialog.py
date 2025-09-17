@@ -62,7 +62,6 @@ from .widgets import (
 from picard.ui import PicardDialog
 from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_infodialog import Ui_InfoDialog
-from picard.ui.util import StandardButton
 
 
 class ArtworkRow:
@@ -103,9 +102,7 @@ class InfoDialog(PicardDialog):
                     artworktable_class = ArtworkTableExisting
 
         self.ui.setupUi(self)
-        self.ui.buttonBox.addButton(
-            StandardButton(StandardButton.CLOSE), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
-        )
+        self.ui.buttonBox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
         self.ui.buttonBox.accepted.connect(self.accept)
 
         # Add the ArtworkTable to the ui

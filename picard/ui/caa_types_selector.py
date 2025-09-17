@@ -51,10 +51,7 @@ from picard.i18n import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.util import (
-    StandardButton,
-    qlistwidget_items,
-)
+from picard.ui.util import qlistwidget_items
 
 
 class ArrowButton(QtWidgets.QPushButton):
@@ -267,11 +264,9 @@ class CAATypesSelectorDialog(PicardDialog):
 
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
         self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.buttonbox.addButton(
-            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        )
-        self.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
+        self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
 
         extrabuttons = [
             (N_("I&nclude all"), self.move_all_to_include_list),

@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-08-18 19:36+0000\n"
+"PO-Revision-Date: 2025-09-09 21:41+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -496,7 +496,7 @@ msgstr "Colors del tema fosc"
 
 #: picard/options.py:323
 msgid "Options to show in the Quick Menu"
-msgstr ""
+msgstr "Opcions que es mostraran al menú ràpid"
 
 #: picard/options.py:338
 msgid "Layout of the tool bar"
@@ -578,7 +578,7 @@ msgstr "Nom quan hi ha diversos artistes"
 
 #: picard/options.py:377
 msgid "Tag formats to not sanitize dates"
-msgstr ""
+msgstr "Formats d'etiquetes per als quals no es processaran les dates"
 
 #: picard/options.py:382
 msgid "Browser integration"
@@ -1082,15 +1082,15 @@ msgstr "URL de caràtules permesos"
 
 #: picard/formats/apev2.py:102
 msgid "APEv2 (Monkey's Audio, WavPack)"
-msgstr ""
+msgstr "APEv2 (Monkey's Audio, WavPack)"
 
 #: picard/formats/id3.py:135
 msgid "ID3 (MP3, AIFF)"
-msgstr ""
+msgstr "ID3 (MP3, AIFF)"
 
 #: picard/formats/vorbis.py:130
 msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
-msgstr ""
+msgstr "Comentaris Vorbis (FLAC, Ogg Vorbis, Opus)"
 
 #: picard/script/__init__.py:183
 msgid ""
@@ -3743,18 +3743,16 @@ msgid "Options"
 msgstr "Opcions"
 
 #: picard/ui/forms/ui_options.py:106
-#, fuzzy
-#| msgid "px"
 msgid "x"
-msgstr "px"
+msgstr "x"
 
 #: picard/ui/forms/ui_options.py:107
 msgid "text"
-msgstr ""
+msgstr "text"
 
 #: picard/ui/forms/ui_options.py:108
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: picard/ui/forms/ui_options_advanced.py:144
 msgid "Advanced options"
@@ -4110,13 +4108,11 @@ msgstr "Mostra el tipus MIME"
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
 #: picard/ui/options/interface_quick_menu.py:46
 msgid "Quick Settings Menu"
-msgstr ""
+msgstr "Menú de configuració ràpida"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-#| msgid "Label"
 msgid "TextLabel"
-msgstr "Segell"
+msgstr "Etiqueta de text"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -4367,11 +4363,10 @@ msgid "Destination directory:"
 msgstr "Directori de destinació:"
 
 #: picard/ui/forms/ui_options_renaming.py:159
-#, fuzzy
-#| msgid "Move additional files (case insensitive):"
 msgid "Move additional files and subfolders (case insensitive):"
 msgstr ""
-"Mou els fitxers addicionals (sense distinció entre majúscules i minúscules):"
+"Mou els fitxers i subcarpetes addicionals (sense distinció entre majúscules "
+"i minúscules):"
 
 #: picard/ui/forms/ui_options_renaming.py:161
 msgid "Rename files when saving"
@@ -5238,10 +5233,8 @@ msgid "&Enable/disable profiles"
 msgstr "&Habilita/inhabilita perfils"
 
 #: picard/ui/mainwindow/__init__.py:701
-#, fuzzy
-#| msgid "Option Settings"
 msgid "&Quick settings"
-msgstr "Paràmetres"
+msgstr "&Configuració ràpida"
 
 #: picard/ui/mainwindow/__init__.py:705
 msgid "&Options"
@@ -5883,7 +5876,7 @@ msgstr "%s (error)"
 
 #: picard/ui/options/dialog.py:189
 msgid "Display help regarding option profiles"
-msgstr ""
+msgstr "Mostra l'ajuda relacionada amb els perfils d'opcions"
 
 #: picard/ui/options/dialog.py:192
 msgid "&Restore all Defaults"
@@ -5924,21 +5917,19 @@ msgid "This option will be saved to profile: %s"
 msgstr "Aquesta opció es desarà al perfil: %s"
 
 #: picard/ui/options/dialog.py:441
-#, fuzzy, python-format
-#| msgid "Profiles"
+#, python-format
 msgid "profile \"%s\""
-msgstr "Perfils"
+msgstr "al perfil «%s»"
 
 #: picard/ui/options/dialog.py:443
-#, fuzzy, python-format
-#| msgid "Profiles"
+#, python-format
 msgid "profiles %s"
-msgstr "Perfils"
+msgstr "als perfils %s"
 
 #: picard/ui/options/dialog.py:444
 #, python-format
 msgid "The highlighted settings will be applied to %s"
-msgstr ""
+msgstr "Els paràmetres ressaltats s'aplicaran %s"
 
 #: picard/ui/options/dialog.py:502
 msgid "Unexpected error"
@@ -6180,18 +6171,16 @@ msgid ""
 "Please select the settings that you want to appear in the Quick Settings "
 "menu."
 msgstr ""
+"Seleccioneu els paràmetres que voleu que apareguin al menú de configuració "
+"ràpida."
 
 #: picard/ui/options/interface_quick_menu.py:62
-#, fuzzy
-#| msgid "Option Settings"
 msgid "Available Option Settings"
-msgstr "Paràmetres"
+msgstr "Paràmetres disponibles"
 
 #: picard/ui/options/interface_quick_menu.py:82
-#, fuzzy
-#| msgid "Subtitle"
 msgid "group_title"
-msgstr "Subtítol"
+msgstr "títol_del_grup"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -6696,7 +6685,7 @@ msgstr "S'ha produït un error a l'script"
 
 #: picard/ui/options/tags.py:111
 msgid "Do not sanitize dates for these tag formats:"
-msgstr ""
+msgstr "No processis les dates per a aquests formats d'etiquetes:"
 
 #: picard/ui/options/tags_compatibility_aac.py:36
 msgid "AAC"

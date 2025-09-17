@@ -51,6 +51,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
@@ -127,7 +128,12 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             super().paintSection(painter, rect, index)
 
     def on_sort_indicator_changed(self, index, order):
-        if index < 0 or not self._columns[index].sortable:
+        try:
+            unsorted = not self._columns[index].sortable
+        except IndexError as e:
+            log.warning("Defaulting to unsorted due to invalid index %r: %s", index, e)
+            unsorted = True
+        if unsorted:
             self.unsorted()
 
     def lock(self, is_locked):

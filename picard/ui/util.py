@@ -35,42 +35,11 @@ from PyQt6 import (
 
 from picard import PICARD_DISPLAY_NAME
 from picard.config import get_config
-from picard.const.sys import (
-    IS_LINUX,
-    IS_MACOS,
-    IS_WIN,
-)
-from picard.i18n import (
-    N_,
-    gettext as _,
-)
+from picard.const.sys import IS_LINUX
+from picard.i18n import gettext as _
 from picard.util import find_existing_path
 
 from picard.ui.enums import MainAction
-
-
-class StandardButton(QtWidgets.QPushButton):
-    OK = 0
-    CANCEL = 1
-    HELP = 2
-    CLOSE = 4
-
-    __types = {
-        OK: (N_("&Ok"), 'SP_DialogOkButton'),
-        CANCEL: (N_("&Cancel"), 'SP_DialogCancelButton'),
-        HELP: (N_("&Help"), 'SP_DialogHelpButton'),
-        CLOSE: (N_("Clos&e"), 'SP_DialogCloseButton'),
-    }
-
-    def __init__(self, btntype):
-        label = _(self.__types[btntype][0])
-        args = [label]
-        if not IS_WIN and not IS_MACOS:
-            iconname = self.__types[btntype][1]
-            if hasattr(QtWidgets.QStyle, iconname):
-                icon = QtCore.QCoreApplication.instance().style().standardIcon(getattr(QtWidgets.QStyle, iconname))
-                args = [icon, label]
-        super().__init__(*args)
 
 
 def find_starting_directory():
