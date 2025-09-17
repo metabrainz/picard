@@ -936,7 +936,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         formats.insert(1, _("All files") + " (*)")
         files, _filter = FileDialog.getOpenFileNames(
             parent=self,
-            dir=current_directory,
+            directory=current_directory,
             filter=";;".join(formats),
         )
         if files:
@@ -953,7 +953,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not config.setting['allow_multi_dirs_selection']:
             directory = FileDialog.getExistingDirectory(
                 parent=self,
-                dir=current_directory,
+                directory=current_directory,
             )
             if directory:
                 dir_list.append(directory)
