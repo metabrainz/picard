@@ -144,7 +144,7 @@ class MaintenanceOptionsPage(OptionsPage):
     def _dialog_autobackup_dir_browse(self):
         path = FileDialog.getExistingDirectory(
             parent=self,
-            dir=self.get_current_autobackup_dir(),
+            directory=self.get_current_autobackup_dir(),
         )
         if path:
             self.set_current_autobackup_dir(path)
@@ -244,7 +244,7 @@ class MaintenanceOptionsPage(OptionsPage):
         filename, file_type = FileDialog.getSaveFileName(
             parent=self,
             caption=_("Backup Configuration File"),
-            dir=default_path,
+            directory=default_path,
             filter=self._get_dialog_filetypes(ext),
         )
         return filename
@@ -322,7 +322,7 @@ class MaintenanceOptionsPage(OptionsPage):
         filename, file_type = FileDialog.getOpenFileName(
             parent=self,
             caption=_("Select Configuration File to Load"),
-            dir=directory,
+            directory=directory,
             filter=self._get_dialog_filetypes(ext),
         )
         return filename

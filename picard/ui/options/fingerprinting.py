@@ -126,7 +126,7 @@ class FingerprintingOptionsPage(OptionsPage):
     def acoustid_fpcalc_browse(self):
         path, _filter = FileDialog.getOpenFileName(
             parent=self,
-            dir=self.ui.acoustid_fpcalc.text(),
+            directory=self.ui.acoustid_fpcalc.text(),
         )
         if path:
             path = os.path.normpath(path)

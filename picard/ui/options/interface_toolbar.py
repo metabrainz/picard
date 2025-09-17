@@ -168,7 +168,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         item = self.ui.starting_directory_path
         path = FileDialog.getExistingDirectory(
             parent=self,
-            dir=item.text(),
+            directory=item.text(),
         )
         if path:
             path = os.path.normpath(path)

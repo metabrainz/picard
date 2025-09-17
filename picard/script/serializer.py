@@ -271,7 +271,7 @@ class ScriptSerializer:
         filename, file_type = FileDialog.getOpenFileName(
             parent=parent,
             caption=dialog_title,
-            dir=default_script_directory,
+            directory=default_script_directory,
             filter=dialog_file_types,
         )
         if not filename:

@@ -290,7 +290,7 @@ class RenamingOptionsPage(OptionsPage):
     def move_files_to_browse(self):
         path = FileDialog.getExistingDirectory(
             parent=self,
-            dir=self.ui.move_files_to.text(),
+            directory=self.ui.move_files_to.text(),
         )
         if path:
             path = os.path.normpath(path)
