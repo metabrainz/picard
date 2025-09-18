@@ -66,12 +66,20 @@ class _AdapterBase(SortKeyProvider):
         return f"{self.__class__.__name__}(base={self._base!r})"
 
 
+class LocaleAwareSortAdapter(_AdapterBase):
+    """Provide case-insensitive sort using `str.casefold()` on evaluated value."""
+
+    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+        """Return case-insensitive sort key for item."""
+        return _sort_key(self._base.evaluate(obj) or "")
+
+
 class CasefoldSortAdapter(_AdapterBase):
     """Provide case-insensitive sort using `str.casefold()` on evaluated value."""
 
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return case-insensitive sort key for item."""
-        return (self._base.evaluate(obj) or "").casefold()
+        return _sort_key((self._base.evaluate(obj) or "").casefold())
 
 
 class NumericSortAdapter(_AdapterBase):
@@ -139,8 +147,8 @@ class ArticleInsensitiveAdapter(_AdapterBase):
         for art in self._articles:
             prefix = f"{art} "
             if lv.startswith(prefix):
-                return (lv[len(prefix) :], lv)
-        return (lv, lv)
+                return (_sort_key(lv[len(prefix) :]), _sort_key(prefix))
+        return (_sort_key(lv), _sort_key(""))
 
 
 class CompositeSortAdapter(_AdapterBase):

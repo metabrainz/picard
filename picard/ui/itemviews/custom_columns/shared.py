@@ -296,7 +296,7 @@ def generate_new_key() -> str:
 
 # Mapping of user-friendly names to sorting adapter class names
 SORTING_ADAPTER_NAMES: dict[str, str] = {
-    N_("Default"): "",  # No adapter (use default sorting)
+    N_("Default"): "LocaleAwareSortAdapter",
     N_("Case Insensitive"): "CasefoldSortAdapter",
     N_("Numeric"): "NumericSortAdapter",
     N_("Natural"): "NaturalSortAdapter",

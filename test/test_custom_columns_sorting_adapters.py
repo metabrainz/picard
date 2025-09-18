@@ -134,7 +134,7 @@ def test_length_sort_adapter() -> None:
 def test_article_insensitive_adapter() -> None:
     setup_gettext(None, 'en')
     values = ["The Beatles", "Beatles", "An Artist", "Artist"]
-    expected = ["An Artist", "Artist", "Beatles", "The Beatles"]
+    expected = ["An Artist", "Artist", "The Beatles", "Beatles"]
     result = _sorted_values(ArticleInsensitiveAdapter, values)
     assert result == expected
 
