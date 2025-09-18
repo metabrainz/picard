@@ -269,7 +269,6 @@ def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_n
         NullsFirstAdapter,
         NullsLastAdapter,
         NumericSortAdapter,
-        ReverseAdapter,
     )
 
     # Mapping of class names to actual classes
@@ -282,7 +281,6 @@ def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_n
         'ArticleInsensitiveAdapter': ArticleInsensitiveAdapter,
         'NullsLastAdapter': NullsLastAdapter,
         'NullsFirstAdapter': NullsFirstAdapter,
-        'ReverseAdapter': ReverseAdapter,
     }
 
     adapter_class = adapter_classes.get(sorting_adapter_name)

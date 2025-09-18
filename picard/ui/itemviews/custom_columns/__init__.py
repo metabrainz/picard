@@ -47,7 +47,6 @@ from picard.ui.itemviews.custom_columns.sorting_adapters import (
     NullsFirstAdapter,
     NullsLastAdapter,
     NumericSortAdapter,
-    ReverseAdapter,
 )
 
 
@@ -73,5 +72,4 @@ __all__ = [
     "NullsLastAdapter",
     "NullsFirstAdapter",
     "CachedSortAdapter",
-    "ReverseAdapter",
 ]

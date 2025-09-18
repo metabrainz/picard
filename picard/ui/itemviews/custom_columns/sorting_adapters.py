@@ -272,37 +272,6 @@ class CachedSortAdapter(_AdapterBase):
         return key
 
 
-class ReverseAdapter(_AdapterBase):
-    """Provide reversed sorting for string or numeric sort keys."""
-
-    @staticmethod
-    def _invert_string(s: str) -> str:
-        return "".join(chr(0x10FFFF - ord(c)) for c in s)
-
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
-        """Return reversed sort key for item.
-
-        Always return a normalized tuple key to avoid cross-type comparisons:
-        - Numbers -> (0, -float(value))
-        - Strings -> (1, inverted string)
-        - Tuples -> keep as-is (assumed already normalized)
-        - Other -> (1, lowercased string)
-        """
-        if isinstance(self._base, SortKeyProvider):
-            base_key = self._base.sort_key(obj)
-        else:
-            base_key = self._base.evaluate(obj) or ""
-
-        if isinstance(base_key, tuple):
-            return base_key
-        if isinstance(base_key, (int, float)):
-            return (0, -float(base_key))
-        if isinstance(base_key, str):
-            return (1, self._invert_string(base_key))
-        text = "" if base_key is None else str(base_key)
-        return (1, text.casefold())
-
-
 class NaturalSortAdapter(_AdapterBase):
     """Provide natural (alphanumeric) sort using locale-aware natural ordering."""
 

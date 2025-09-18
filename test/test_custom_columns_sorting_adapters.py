@@ -23,7 +23,7 @@ from __future__ import annotations
 from collections.abc import Callable
 import dataclasses
 
-from picard.const.sys import IS_MACOS
+from picard.const.sys import IS_WIN
 from picard.i18n import setup_gettext
 
 import pytest
@@ -43,7 +43,6 @@ from picard.ui.itemviews.custom_columns import (
     NullsFirstAdapter,
     NullsLastAdapter,
     NumericSortAdapter,
-    ReverseAdapter,
     make_callable_column,
 )
 
@@ -131,6 +130,7 @@ def test_length_sort_adapter() -> None:
     assert result == expected
 
 
+@pytest.mark.skipif(IS_WIN, reason="QCollator not used on Windows")
 def test_article_insensitive_adapter() -> None:
     setup_gettext(None, 'en')
     values = ["The Beatles", "Beatles", "An Artist", "Artist"]
@@ -203,23 +203,6 @@ def test_cached_sort_adapter() -> None:
     assert all(count >= 1 for count in calls.values())
 
 
-def test_reverse_adapter() -> None:
-    values = ["a", "B", "c"]
-    asc = _sorted_values(CasefoldSortAdapter, values)
-
-    def factory(base):
-        # Reverse the underlying casefold sort; ties resolved by original case
-        return ReverseAdapter(CasefoldSortAdapter(base))
-
-    desc = _sorted_values(factory, values)
-    assert asc == ["a", "B", "c"]
-    # Reverse order of case-insensitive ascending becomes descending
-    # Case-insensitive compare: 'a' == 'A', but we reverse based on key,
-    # so 'B' (from 'B') will come before 'a'
-    assert desc == ["c", "B", "a"]
-
-
-@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 @pytest.mark.parametrize(
     ("values", "expected"),
     [
