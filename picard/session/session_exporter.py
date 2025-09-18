@@ -260,6 +260,22 @@ class SessionExporter:
             if v is not None
         }
 
+    @staticmethod
+    def _extract_metadata_overrides(diff: Any) -> dict[str, list[Any]]:
+        """Extract metadata overrides from a diff object.
+
+        Parameters
+        ----------
+        diff : Any
+            The metadata diff object.
+
+        Returns
+        -------
+        dict[str, list[Any]]
+            Dictionary of metadata overrides with values converted to lists.
+        """
+        return {k: MetadataHandler.as_list(v) for k, v in diff.rawitems() if k not in EXCLUDED_OVERRIDE_TAGS}
+
     def _export_metadata_overrides(self, tagger: Any) -> MetadataOverridesResult:
         """Export metadata overrides for albums and tracks.
 
@@ -294,9 +310,7 @@ class SessionExporter:
             # Album-level diffs vs orig_metadata
             album_diff = album.metadata.diff(album.orig_metadata)
             if album_diff:
-                album_meta_overrides[album.id] = {
-                    k: MetadataHandler.as_list(v) for k, v in album_diff.rawitems() if k not in EXCLUDED_OVERRIDE_TAGS
-                }
+                album_meta_overrides[album.id] = SessionExporter._extract_metadata_overrides(album_diff)
 
             # Track-level overrides
             overrides_for_album: dict[str, dict[str, list[Any]]] = {}
@@ -304,9 +318,7 @@ class SessionExporter:
                 # The difference to scripted_metadata are user edits made in UI
                 diff = track.metadata.diff(track.scripted_metadata)
                 if diff:
-                    overrides_for_album[track.id] = {
-                        k: MetadataHandler.as_list(v) for k, v in diff.rawitems() if k not in EXCLUDED_OVERRIDE_TAGS
-                    }
+                    overrides_for_album[track.id] = SessionExporter._extract_metadata_overrides(diff)
 
             if overrides_for_album:
                 album_overrides[album.id] = overrides_for_album
