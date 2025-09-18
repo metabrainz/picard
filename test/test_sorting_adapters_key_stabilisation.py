@@ -53,7 +53,6 @@ from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import (
     CachedSortAdapter,
     CompositeSortAdapter,
-    DescendingNumericSortAdapter,
     NumericSortAdapter,
     ReverseAdapter,
 )
@@ -104,21 +103,6 @@ def test_numeric_sort_adapter_mixed_values_no_typeerror_and_ordering() -> None:
     sorted_values = [v for v, _ in sorted_pairs]
     # Numbers first, ascending; then non-numeric by natural order
     assert sorted_values[:3] == ["-3.5", "2", "10"]
-
-
-def test_desc_numeric_sort_adapter_mixed_values_no_typeerror_and_ordering() -> None:
-    values = ["10", "abc", "2", "", "7a", "-3.5"]
-
-    class Dummy(Item):
-        pass
-
-    adapters = [DescendingNumericSortAdapter(StubProvider(v)) for v in values]
-    keys = [a.sort_key(Dummy()) for a in adapters]
-    # Should not raise TypeError
-    sorted_pairs = sorted(zip(values, keys, strict=True), key=lambda p: p[1])
-    sorted_values = [v for v, _ in sorted_pairs]
-    # Numbers first, descending
-    assert sorted_values[:3] == ["10", "2", "-3.5"]
 
 
 class WeirdKeyProvider(ColumnValueProvider):

@@ -263,9 +263,6 @@ def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_n
     from picard.ui.itemviews.custom_columns.sorting_adapters import (
         ArticleInsensitiveAdapter,
         CasefoldSortAdapter,
-        DescendingCasefoldSortAdapter,
-        DescendingNaturalSortAdapter,
-        DescendingNumericSortAdapter,
         LengthSortAdapter,
         NaturalSortAdapter,
         NullsFirstAdapter,
@@ -277,11 +274,8 @@ def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_n
     # Mapping of class names to actual classes
     adapter_classes = {
         'CasefoldSortAdapter': CasefoldSortAdapter,
-        'DescendingCasefoldSortAdapter': DescendingCasefoldSortAdapter,
         'NumericSortAdapter': NumericSortAdapter,
-        'DescendingNumericSortAdapter': DescendingNumericSortAdapter,
         'NaturalSortAdapter': NaturalSortAdapter,
-        'DescendingNaturalSortAdapter': DescendingNaturalSortAdapter,
         'LengthSortAdapter': LengthSortAdapter,
         'ArticleInsensitiveAdapter': ArticleInsensitiveAdapter,
         'NullsLastAdapter': NullsLastAdapter,

@@ -298,11 +298,8 @@ def generate_new_key() -> str:
 SORTING_ADAPTER_NAMES: dict[str, str] = {
     N_("Default"): "",  # No adapter (use default sorting)
     N_("Case Insensitive"): "CasefoldSortAdapter",
-    N_("Case Insensitive - Descending"): "DescendingCasefoldSortAdapter",
     N_("Numeric"): "NumericSortAdapter",
-    N_("Numeric - Descending"): "DescendingNumericSortAdapter",
     N_("Natural"): "NaturalSortAdapter",
-    N_("Natural - Descending"): "DescendingNaturalSortAdapter",
     N_("By Value Length"): "LengthSortAdapter",
     N_("Article Insensitive"): "ArticleInsensitiveAdapter",
     N_("Empty Values Last"): "NullsLastAdapter",

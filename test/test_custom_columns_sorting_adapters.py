@@ -37,9 +37,6 @@ from picard.ui.itemviews.custom_columns import (
     CasefoldSortAdapter,
     CompositeSortAdapter,
     CustomColumn,
-    DescendingCasefoldSortAdapter,
-    DescendingNaturalSortAdapter,
-    DescendingNumericSortAdapter,
     LengthSortAdapter,
     NaturalSortAdapter,
     NullsFirstAdapter,
@@ -97,18 +94,6 @@ def test_casefold_sort_adapter(values: list[str], expected: list[str]) -> None:
 @pytest.mark.parametrize(
     ("values", "expected"),
     [
-        (["b", "A", "c"], ["c", "b", "A"]),
-        (["X", "x", "Y", "y"], ["Y", "y", "X", "x"]),
-    ],
-)
-def test_descending_casefold_sort_adapter(values: list[str], expected: list[str]) -> None:
-    result = _sorted_values(DescendingCasefoldSortAdapter, values)
-    assert result == expected
-
-
-@pytest.mark.parametrize(
-    ("values", "expected"),
-    [
         (["10", "2", "3.5", "x", "-1"], ["-1", "2", "3.5", "10", "x"]),
         (["000", "01", "1", "-0.5"], ["-0.5", "000", "01", "1"]),
     ],
@@ -133,39 +118,6 @@ def test_numeric_sort_adapter_custom_parser() -> None:
     values = ["3:30", "2:05", "1:00", "x"]
     # "x" is non-numeric and sorts after numeric values
     expected = ["1:00", "2:05", "3:30", "x"]
-    result = _sorted_values(adapter, values)
-    assert result == expected
-
-
-@pytest.mark.parametrize(
-    ("values", "expected"),
-    [
-        (["10", "2", "3.5", "x", "-1"], ["10", "3.5", "2", "-1", "x"]),
-    ],
-)
-def test_descending_numeric_sort_adapter(values: list[str], expected: list[str]) -> None:
-    result = _sorted_values(DescendingNumericSortAdapter, values)
-    assert result == expected
-
-
-@pytest.mark.parametrize(
-    ("values", "expected"),
-    [
-        (['-2', '-10', '3', '0'], ['3', '0', '-2', '-10']),
-        (['1.2', '1.10', '-0.5', 'x'], ['1.2', '1.10', '-0.5', 'x']),
-    ],
-)
-def test_descending_numeric_sort_adapter_extended(values: list[str], expected: list[str]) -> None:
-    result = _sorted_values(DescendingNumericSortAdapter, values)
-    assert result == expected
-
-
-def test_descending_numeric_sort_adapter_with_custom_parser() -> None:
-    def adapter(base):
-        return DescendingNumericSortAdapter(base, parser=_mmss_parser)
-
-    values = ['3:30', '2:05', '1:00', 'x']
-    expected = ['3:30', '2:05', '1:00', 'x']
     result = _sorted_values(adapter, values)
     assert result == expected
 
@@ -297,21 +249,6 @@ def test_natural_sort_adapter_basic_functionality() -> None:
 
 @pytest.mark.skipif(IS_LINUX, reason="Natural sorting behaviour is different on Linux")
 @pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
-def test_descending_natural_sort_adapter_basic_functionality() -> None:
-    """Test that descending natural sorting produces reasonable results."""
-    values = ["item1", "item10", "item2"]
-    result = _sorted_values(DescendingNaturalSortAdapter, values)
-
-    # Should produce some reasonable descending order
-    # The exact order depends on implementation, but should be different from ascending
-    natural_result = _sorted_values(NaturalSortAdapter, values)
-    assert result != natural_result  # Should be different from ascending
-    assert len(result) == len(values)  # Should have all items
-    assert set(result) == set(values)  # Should have same items
-
-
-@pytest.mark.skipif(IS_LINUX, reason="Natural sorting behaviour is different on Linux")
-@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 def test_natural_sort_adapter_vs_regular_sorting() -> None:
     """Test that natural sorting differs from regular text sorting for numeric content."""
     values = ["file1.txt", "file10.txt", "file2.txt", "file20.txt"]
@@ -335,24 +272,6 @@ def test_natural_sort_adapter_empty_handling() -> None:
     # Empty string should be handled consistently
     assert "" in result
     assert len(result) == 3
-
-
-@pytest.mark.skipif(IS_LINUX, reason="Natural sorting behaviour is different on Linux")
-@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
-def test_descending_natural_sort_produces_different_order() -> None:
-    """Test that descending natural sort produces different order than ascending."""
-    values = ["track1", "track10", "track2", "track20", "track3"]
-
-    # Get ascending natural sort
-    ascending = _sorted_values(NaturalSortAdapter, values)
-
-    # Get descending natural sort
-    descending = _sorted_values(DescendingNaturalSortAdapter, values)
-
-    # Should be different orders (implementation may vary)
-    assert ascending != descending
-    assert len(ascending) == len(descending)
-    assert set(ascending) == set(descending)
 
 
 def test_natural_sort_adapter_unicode_handling() -> None:
