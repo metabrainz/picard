@@ -23,7 +23,8 @@ from __future__ import annotations
 from collections.abc import Callable
 import dataclasses
 
-from picard.const.sys import IS_LINUX, IS_MACOS
+from picard.const.sys import IS_MACOS
+from picard.i18n import setup_gettext
 
 import pytest
 
@@ -87,6 +88,7 @@ def _sorted_values(adapter_factory: Callable[[object], object], values: list[str
     ],
 )
 def test_casefold_sort_adapter(values: list[str], expected: list[str]) -> None:
+    setup_gettext(None, 'en')
     result = _sorted_values(CasefoldSortAdapter, values)
     assert result == expected
 
@@ -130,6 +132,7 @@ def test_length_sort_adapter() -> None:
 
 
 def test_article_insensitive_adapter() -> None:
+    setup_gettext(None, 'en')
     values = ["The Beatles", "Beatles", "An Artist", "Artist"]
     expected = ["An Artist", "Artist", "Beatles", "The Beatles"]
     result = _sorted_values(ArticleInsensitiveAdapter, values)
@@ -216,7 +219,6 @@ def test_reverse_adapter() -> None:
     assert desc == ["c", "B", "a"]
 
 
-@pytest.mark.skipif(IS_LINUX, reason="Natural sorting behaviour is different on Linux")
 @pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 @pytest.mark.parametrize(
     ("values", "expected"),
@@ -225,7 +227,7 @@ def test_reverse_adapter() -> None:
         (["item10", "item2", "item1"], ["item1", "item2", "item10"]),
         (["track1", "track10", "track2"], ["track1", "track2", "track10"]),
         # Mixed text and pure numbers
-        (["10", "2", "item1", "item10"], ["2", "10", "item1", "item10"]),
+        (["10", "2", "item3", "09 item", "item10"], ["2", "09 item", "10", "item3", "item10"]),
         # Same text, different numbers
         (["version 1.10", "version 1.2", "version 1.1"], ["version 1.1", "version 1.2", "version 1.10"]),
         # Pure text (fallback to regular sorting)
@@ -233,24 +235,23 @@ def test_reverse_adapter() -> None:
     ],
 )
 def test_natural_sort_adapter(values: list[str], expected: list[str]) -> None:
+    setup_gettext(None, 'en')
     result = _sorted_values(NaturalSortAdapter, values)
     assert result == expected
 
 
-@pytest.mark.skipif(IS_LINUX, reason="Natural sorting behaviour is different on Linux")
-@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 def test_natural_sort_adapter_basic_functionality() -> None:
     """Test that natural sorting works for basic cases."""
+    setup_gettext(None, 'en')
     values = ["item1", "item10", "item2"]
     result = _sorted_values(NaturalSortAdapter, values)
     expected = ["item1", "item2", "item10"]
     assert result == expected
 
 
-@pytest.mark.skipif(IS_LINUX, reason="Natural sorting behaviour is different on Linux")
-@pytest.mark.skipif(IS_MACOS, reason="QCollator doesn't support sort keys for the C locale on macOS")
 def test_natural_sort_adapter_vs_regular_sorting() -> None:
     """Test that natural sorting differs from regular text sorting for numeric content."""
+    setup_gettext(None, 'en')
     values = ["file1.txt", "file10.txt", "file2.txt", "file20.txt"]
 
     # Regular casefold sorting (lexicographic)
