@@ -44,6 +44,7 @@
 
 
 from collections import defaultdict
+from contextlib import suppress
 from functools import partial
 
 from PyQt6 import (
@@ -54,6 +55,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.album import NatAlbum
+from picard.cluster import ClusterList, UnclusteredFiles
 from picard.file import (
     File,
     FileErrorType,
@@ -414,15 +416,27 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
             else:
                 if column.align == ColumnAlign.RIGHT:
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
-                # Support custom columns with provider evaluation
-                try:
-                    if isinstance(column, CustomColumn):
-                        self.setText(i, column.provider.evaluate(self.obj))
+
+                if isinstance(column, CustomColumn):
+                    # Hide custom column values for container rows like
+                    # "Clusters" and "Unclustered Files".
+                    # These represent unrelated collections and should not
+                    # display per-entity values.
+                    if isinstance(self.obj, ClusterList | UnclusteredFiles):
+                        self.setText(i, "")
                         continue
-                except Exception:  # noqa: BLE001
-                    # Fallback to default behavior
-                    pass
-                self.setText(i, self.obj.column(column.key))
+
+                    try:
+                        self.setText(i, column.provider.evaluate(self.obj))
+                    except (AttributeError, TypeError, ValueError, KeyError, NotImplementedError) as exc:
+                        log.debug("Custom column '%s' evaluate failed: %r", column.key, exc)
+                    continue
+
+                with suppress(AttributeError):
+                    # Some objects like ClusterList don't have a column method
+                    # Note: Do not log; it is very noisy.
+                    # See: https://github.com/metabrainz/picard/pull/2714#issuecomment-3260286574
+                    self.setText(i, self.obj.column(column.key))
 
 
 class ClusterItem(TreeItem):
