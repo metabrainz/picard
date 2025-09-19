@@ -259,29 +259,26 @@ def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_n
     if not sorting_adapter_name:
         return base_provider
 
-    # Import adapters here to avoid circular imports
-    from picard.ui.itemviews.custom_columns.sorting_adapters import (
-        ArticleInsensitiveAdapter,
-        CasefoldSortAdapter,
-        LengthSortAdapter,
-        LocaleAwareSortAdapter,
-        NaturalSortAdapter,
-        NullsFirstAdapter,
-        NullsLastAdapter,
-        NumericSortAdapter,
-    )
+    # Import the shared mapping to get all available class names
+    from picard.ui.itemviews.custom_columns import sorting_adapters
+    from picard.ui.itemviews.custom_columns.shared import SORTING_ADAPTER_NAMES
 
-    # Mapping of class names to actual classes
-    adapter_classes = {
-        'CasefoldSortAdapter': CasefoldSortAdapter,
-        'NumericSortAdapter': NumericSortAdapter,
-        'NaturalSortAdapter': NaturalSortAdapter,
-        'LengthSortAdapter': LengthSortAdapter,
-        'LocaleAwareSortAdapter': LocaleAwareSortAdapter,
-        'ArticleInsensitiveAdapter': ArticleInsensitiveAdapter,
-        'NullsLastAdapter': NullsLastAdapter,
-        'NullsFirstAdapter': NullsFirstAdapter,
-    }
+    # Build mapping dynamically from available class names in SORTING_ADAPTER_NAMES
+    # This ensures we only try to map classes that are actually defined in the UI
+    available_class_names = {name for name in SORTING_ADAPTER_NAMES.values() if name}
+
+    # Create a mapping of class name strings to actual classes
+    # Only include classes that are referenced in SORTING_ADAPTER_NAMES
+    adapter_classes = {}
+    for class_name in available_class_names:
+        # Dynamically import and get the class from the sorting_adapters module
+        try:
+            adapter_class = getattr(sorting_adapters, class_name, None)
+            if adapter_class is not None:
+                adapter_classes[class_name] = adapter_class
+        except (ImportError, AttributeError):
+            # Skip classes that don't exist or can't be imported
+            continue
 
     adapter_class = adapter_classes.get(sorting_adapter_name)
     if adapter_class is None:
