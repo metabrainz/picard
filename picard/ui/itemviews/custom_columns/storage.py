@@ -265,7 +265,7 @@ def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_n
 
     # Build mapping dynamically from available class names in SORTING_ADAPTER_NAMES
     # This ensures we only try to map classes that are actually defined in the UI
-    available_class_names = {name for name in SORTING_ADAPTER_NAMES.values() if name}
+    available_class_names = {name for name in SORTING_ADAPTER_NAMES.keys() if name}
 
     # Create a mapping of class name strings to actual classes
     # Only include classes that are referenced in SORTING_ADAPTER_NAMES

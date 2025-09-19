@@ -294,16 +294,46 @@ def generate_new_key() -> str:
     return str(uuid.uuid4())
 
 
+@dataclass(frozen=True)
+class SortingAdapterDisplayInfo:
+    display_name: str
+    tooltip: str
+
+
 # Mapping of user-friendly names to sorting adapter class names
-SORTING_ADAPTER_NAMES: dict[str, str] = {
-    N_("Default"): "LocaleAwareSortAdapter",
-    N_("Case Insensitive"): "CasefoldSortAdapter",
-    N_("Numeric"): "NumericSortAdapter",
-    N_("Natural"): "NaturalSortAdapter",
-    N_("By Value Length"): "LengthSortAdapter",
-    N_("Article Insensitive"): "ArticleInsensitiveAdapter",
-    N_("Empty Values Last"): "NullsLastAdapter",
-    N_("Empty Values First"): "NullsFirstAdapter",
+SORTING_ADAPTER_NAMES: dict[str, SortingAdapterDisplayInfo] = {
+    "LocaleAwareSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Default"),
+        tooltip=N_("Default alphabetical text sorting."),
+    ),
+    "CasefoldSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Case insensitive"),
+        tooltip=N_("Case insensitive alphabetical text sorting."),
+    ),
+    "NumericSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Numeric"),
+        tooltip=N_("Numeric sorting if the column content is numeric. Falls back to natural number sorting."),
+    ),
+    "NaturalSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Natural number sorting"),
+        tooltip=N_('Alphabetical text sorting, but consider numbers (e.g. "Track 2" before "Track 10").'),
+    ),
+    "LengthSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("By value length"),
+        tooltip=N_("Sort by string length."),
+    ),
+    "ArticleInsensitiveAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Article insensitive"),
+        tooltip=N_("Sort ignoring leading articles (e.g. a, an, the)."),
+    ),
+    "NullsLastAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Empty values first"),
+        tooltip=N_("Empty/whitespace values sort first."),
+    ),
+    "NullsFirstAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Empty values last"),
+        tooltip=N_("Empty/whitespace values sort last."),
+    ),
 }
 
 
@@ -312,18 +342,18 @@ def get_sorting_adapter_options() -> tuple[tuple[str, str], ...]:
 
     Returns
     -------
-    tuple[tuple[str, str], ...]
-        Sorted pairs of user-friendly display names and corresponding adapter class names.
+    tuple[tuple[str, SortingAdapterDisplayInfo], ...]
+        Sorted pairs of adapter class names and corresponding display info.
         The "Default" option always appears first.
     """
     # Get the Default item directly
-    default_name = N_("Default")
-    default_item = (default_name, SORTING_ADAPTER_NAMES[default_name])
+    default_class = "LocaleAwareSortAdapter"
+    default_item = (default_class, SORTING_ADAPTER_NAMES[default_class])
 
     # Get other items (excluding Default) and sort them
     other_items = sorted(
-        [(name, class_name) for name, class_name in SORTING_ADAPTER_NAMES.items() if name != default_name],
-        key=lambda x: x[0],
+        [(class_name, info) for class_name, info in SORTING_ADAPTER_NAMES.items() if class_name != default_class],
+        key=lambda x: _(x[1].display_name),
     )
 
     # Return tuple with Default first, then sorted others
