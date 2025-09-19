@@ -154,8 +154,9 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         # Sorting adapter dropdown
         self._sorting_adapter = QtWidgets.QComboBox(self._editor_panel)
-        for display_name, class_name in get_sorting_adapter_options():
-            self._sorting_adapter.addItem(_(display_name), class_name)
+        for i, (class_name, display_info) in enumerate(get_sorting_adapter_options()):
+            self._sorting_adapter.addItem(_(display_info.display_name), class_name)
+            self._sorting_adapter.setItemData(i, _(display_info.tooltip), QtCore.Qt.ItemDataRole.ToolTipRole)
         self._sorting_adapter.setMaximumWidth(200)
 
         self._view_selector = ViewSelector(self._editor_panel)

@@ -41,15 +41,12 @@ from picard.ui.itemviews.custom_columns.sorting_adapters import (
     CachedSortAdapter,
     CasefoldSortAdapter,
     CompositeSortAdapter,
-    DescendingCasefoldSortAdapter,
-    DescendingNaturalSortAdapter,
-    DescendingNumericSortAdapter,
     LengthSortAdapter,
+    LocaleAwareSortAdapter,
     NaturalSortAdapter,
     NullsFirstAdapter,
     NullsLastAdapter,
     NumericSortAdapter,
-    ReverseAdapter,
 )
 
 
@@ -66,16 +63,13 @@ __all__ = [
     "_create_custom_column",
     # Sorting adapters
     "CasefoldSortAdapter",
-    "DescendingCasefoldSortAdapter",
     "NumericSortAdapter",
-    "DescendingNumericSortAdapter",
     "NaturalSortAdapter",
-    "DescendingNaturalSortAdapter",
     "LengthSortAdapter",
+    "LocaleAwareSortAdapter",
     "ArticleInsensitiveAdapter",
     "CompositeSortAdapter",
     "NullsLastAdapter",
     "NullsFirstAdapter",
     "CachedSortAdapter",
-    "ReverseAdapter",
 ]
