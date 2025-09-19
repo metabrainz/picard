@@ -59,7 +59,7 @@ class ExtensionPoint:
 
     def register(self, module, item):
         if module.startswith(PLUGIN_MODULE_PREFIX):
-            name = module[PLUGIN_MODULE_PREFIX_LEN:]
+            name = module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
             log.debug("ExtensionPoint: %s register <- plugin=%r item=%r", self.label, name, item)
         else:
             name = None
