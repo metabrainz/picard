@@ -201,7 +201,7 @@ class NullsLastAdapter(_AdapterBase):
         cleaned = _clean_invisible_and_whitespace(v)
         is_empty = cleaned == ""
         key = cleaned.casefold()
-        return (is_empty, key)
+        return (is_empty, _sort_key(key))
 
 
 class NullsFirstAdapter(_AdapterBase):
@@ -213,7 +213,7 @@ class NullsFirstAdapter(_AdapterBase):
         cleaned = _clean_invisible_and_whitespace(v)
         is_empty = cleaned == ""
         key = cleaned.casefold()
-        return (not is_empty, key)
+        return (not is_empty, _sort_key(key))
 
 
 class CachedSortAdapter(_AdapterBase):

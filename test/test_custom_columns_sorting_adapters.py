@@ -161,6 +161,7 @@ def test_composite_sort_adapter() -> None:
     ],
 )
 def test_nulls_last_adapter(values: list[str], expected: list[str]) -> None:
+    setup_gettext(None, 'en')
     result = _sorted_values(NullsLastAdapter, values)
     assert result == expected
 
@@ -176,6 +177,7 @@ def test_nulls_last_adapter(values: list[str], expected: list[str]) -> None:
     ],
 )
 def test_nulls_first_adapter(values: list[str], expected: list[str]) -> None:
+    setup_gettext(None, 'en')
     result = _sorted_values(NullsFirstAdapter, values)
     assert result == expected
 
