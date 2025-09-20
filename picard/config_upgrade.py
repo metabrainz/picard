@@ -581,10 +581,19 @@ def upgrade_to_v3_0_0dev7(config):
         config.setting['ui_theme'] = UiTheme.DEFAULT
 
 
-def rename_option(config, old_opt, new_opt, option_type, default):
+def upgrade_to_v3_0_0dev8(config):
+    """Option "dont_write_tags" was renamed to "enable_tag_saving" (value is reversed)."""
+    old_opt = 'dont_write_tags'
+    new_opt = 'enable_tag_saving'
+    rename_option(config, old_opt, new_opt, BoolOption, False, reverse=True)
+
+
+def rename_option(config, old_opt, new_opt, option_type, default, reverse=False):
     _s = config.setting
     if old_opt in _s:
         _s[new_opt] = _s.value(old_opt, option_type, default)
+        if reverse:
+            _s[new_opt] = not _s[new_opt]
         _s.remove(old_opt)
 
         _p = config.profiles
@@ -594,6 +603,8 @@ def rename_option(config, old_opt, new_opt, option_type, default):
             id = profile['id']
             if id in all_settings and old_opt in all_settings[id]:
                 all_settings[id][new_opt] = all_settings[id][old_opt]
+                if reverse:
+                    all_settings[id][new_opt] = not all_settings[id][new_opt]
                 all_settings[id].pop(old_opt)
         _p['user_profile_settings'] = all_settings
 
