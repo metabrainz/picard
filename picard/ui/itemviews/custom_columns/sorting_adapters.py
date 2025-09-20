@@ -298,6 +298,18 @@ class CachedSortAdapter(_AdapterBase):
             pass
         return key
 
+    # Optional cache invalidation API for adapter
+    def invalidate(self, obj: Item | None = None) -> None:  # pragma: no cover - simple
+        if obj is None:
+            self._cache.clear()
+        else:
+            # Attempt precise removal; fall back to full clear if not weakrefable
+            try:
+                del self._cache[obj]
+            except (KeyError, TypeError):
+                # Not present or not weakrefable; best effort clear all to avoid stale keys
+                self._cache.clear()
+
 
 class ReverseAdapter(_AdapterBase):
     """Provide reversed sorting for string or numeric sort keys."""
