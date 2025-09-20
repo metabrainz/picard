@@ -384,7 +384,7 @@ class File(QtCore.QObject, MetadataItem):
             log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
-        if not config.setting['dont_write_tags']:
+        if config.setting['enable_tag_saving']:
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:

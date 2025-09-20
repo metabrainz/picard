@@ -40,7 +40,7 @@ class SaveWarningDialog():
         actions = []
         config = get_config()
 
-        if not config.setting['dont_write_tags']:
+        if config.setting['enable_tag_saving']:
             actions.append(ngettext(
                 "overwrite existing metadata (tags) within the file",
                 "overwrite existing metadata (tags) within the files",

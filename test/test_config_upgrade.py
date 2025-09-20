@@ -66,6 +66,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_8_0dev2,
     upgrade_to_v3_0_0dev3,
     upgrade_to_v3_0_0dev4,
+    upgrade_to_v3_0_0dev5,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -541,3 +542,19 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v3_0_0dev4(self.config)
         self.assertEqual(b'', self.config.persist['album_view_header_state'])
         self.assertEqual(b'', self.config.persist['file_view_header_state'])
+
+    def test_upgrade_to_v3_0_0dev5_false(self):
+        BoolOption('setting', 'enable_tag_saving', True)
+
+        self.config.setting['dont_write_tags'] = False
+        upgrade_to_v3_0_0dev5(self.config)
+        self.assertNotIn('dont_write_tags', self.config.setting)
+        self.assertTrue(self.config.setting['enable_tag_saving'])
+
+    def test_upgrade_to_v3_0_0dev5_true(self):
+        BoolOption('setting', 'enable_tag_saving', True)
+
+        self.config.setting['dont_write_tags'] = True
+        upgrade_to_v3_0_0dev5(self.config)
+        self.assertNotIn('dont_write_tags', self.config.setting)
+        self.assertFalse(self.config.setting['enable_tag_saving'])

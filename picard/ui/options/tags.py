@@ -51,7 +51,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
 
-        self.register_setting('dont_write_tags', ['write_tags'])
+        self.register_setting('enable_tag_saving', ['enable_tag_saving'])
         self.register_setting('preserve_timestamps', ['preserve_timestamps'])
         self.register_setting('clear_existing_tags', ['clear_existing_tags'])
         self.register_setting('preserve_images', ['preserve_images'])
@@ -62,7 +62,7 @@ class TagsOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.write_tags.setChecked(not config.setting['dont_write_tags'])
+        self.ui.enable_tag_saving.setChecked(config.setting['enable_tag_saving'])
         self.ui.preserve_timestamps.setChecked(config.setting['preserve_timestamps'])
         self.ui.clear_existing_tags.setChecked(config.setting['clear_existing_tags'])
         self.ui.preserve_images.setChecked(config.setting['preserve_images'])
@@ -74,7 +74,7 @@ class TagsOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting['dont_write_tags'] = not self.ui.write_tags.isChecked()
+        config.setting['enable_tag_saving'] = self.ui.enable_tag_saving.isChecked()
         config.setting['preserve_timestamps'] = self.ui.preserve_timestamps.isChecked()
         clear_existing_tags = self.ui.clear_existing_tags.isChecked()
         if clear_existing_tags != config.setting['clear_existing_tags']:
@@ -85,7 +85,7 @@ class TagsOptionsPage(OptionsPage):
         config.setting['remove_id3_from_flac'] = self.ui.remove_id3_from_flac.isChecked()
         config.setting['fix_missing_seekpoints_flac'] = self.ui.fix_missing_seekpoints_flac.isChecked()
         config.setting['preserved_tags'] = list(self.ui.preserved_tags.tags)
-        self.tagger.window.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not config.setting['dont_write_tags'])
+        self.tagger.window.actions[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
 
 
 register_options_page(TagsOptionsPage)

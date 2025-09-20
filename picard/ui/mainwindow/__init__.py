@@ -553,7 +553,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def toggle_tag_saving(self, checked):
         config = get_config()
-        config.setting['dont_write_tags'] = not checked
+        config.setting['enable_tag_saving'] = checked
 
     def _get_selected_or_unmatched_files(self):
         if self.selected_objects:
