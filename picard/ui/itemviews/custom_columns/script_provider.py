@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from collections import deque
 from collections.abc import Callable
+import contextlib
 import re
 from time import perf_counter
 from weakref import WeakKeyDictionary
@@ -154,3 +155,33 @@ class ChainedValueProvider:
             f"{cls_name}(script={self._script!r}, max_runtime_ms={self._max_runtime_ms}, "
             f"cache_size={self._id_cache_max})"
         )
+
+    # Optional cache invalidation API (duck-typed via protocol)
+    def invalidate(self, obj: Item | None = None) -> None:
+        """Invalidate cached values.
+
+        Parameters
+        ----------
+        obj
+            If provided, invalidate cache for this specific item; otherwise
+            clear the entire cache.
+        """
+        if obj is None:
+            # Clear all caches
+            self._cache.clear()
+            self._id_cache.clear()
+            self._id_order.clear()
+            return
+
+        # Try to remove from weak cache
+        with contextlib.suppress(TypeError):  # Not weakrefable; fall back to id-cache removal
+            if obj in self._cache:
+                del self._cache[obj]
+
+        # Remove from id-based cache if present
+        obj_id = id(obj)
+        if obj_id in self._id_cache:
+            self._id_cache.pop(obj_id, None)
+            with contextlib.suppress(ValueError):
+                # Remove one occurrence from order deque
+                self._id_order.remove(obj_id)
