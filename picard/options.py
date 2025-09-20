@@ -454,7 +454,7 @@ ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts"))
 # picard/ui/options/tags.py
 # Tags
 BoolOption('setting', 'clear_existing_tags', False, title=N_("Clear existing tags"))
-BoolOption('setting', 'dont_write_tags', False, title=N_("Don't write tags"))
+BoolOption('setting', 'enable_tag_saving', True, title=N_("Enable saving tags to files"))
 BoolOption('setting', 'fix_missing_seekpoints_flac', False, title=N_("Fix missing seekpoints for FLAC files"))
 ListOption('setting', 'preserved_tags', [], title=N_("Preserved tags list"))
 BoolOption('setting', 'preserve_images', False, title=N_("Keep embedded images when clearing tags"))

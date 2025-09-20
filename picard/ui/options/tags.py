@@ -54,7 +54,7 @@ class TagsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_tags.html"
 
     OPTIONS = (
-        ('dont_write_tags', ['write_tags']),
+        ('enable_tag_saving', ['write_tags']),
         ('preserve_timestamps', ['preserve_timestamps']),
         ('clear_existing_tags', ['clear_existing_tags']),
         ('preserve_images', ['preserve_images']),
@@ -78,7 +78,7 @@ class TagsOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.write_tags.setChecked(not config.setting['dont_write_tags'])
+        self.ui.write_tags.setChecked(config.setting['enable_tag_saving'])
         self.ui.preserve_timestamps.setChecked(config.setting['preserve_timestamps'])
         self.ui.clear_existing_tags.setChecked(config.setting['clear_existing_tags'])
         self.ui.preserve_images.setChecked(config.setting['preserve_images'])
@@ -94,7 +94,7 @@ class TagsOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
-        config.setting['dont_write_tags'] = not self.ui.write_tags.isChecked()
+        config.setting['enable_tag_saving'] = self.ui.write_tags.isChecked()
         config.setting['preserve_timestamps'] = self.ui.preserve_timestamps.isChecked()
         config.setting['clear_existing_tags'] = self.ui.clear_existing_tags.isChecked()
         config.setting['preserve_images'] = self.ui.preserve_images.isChecked()

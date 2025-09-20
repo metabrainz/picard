@@ -296,8 +296,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.actions[MainAction.ENABLE_RENAMING].setChecked(new_value)
         elif name == 'move_files':
             self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
-        elif name == 'dont_write_tags':
-            self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not new_value)
+        elif name == 'enable_tag_saving':
+            self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(new_value)
         elif name == 'save_images_to_tags':
             self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_TAGS].setChecked(new_value)
         elif name == 'save_images_to_files':
@@ -623,13 +623,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def toggle_tag_saving(self, checked):
         config = get_config()
-        config.setting['dont_write_tags'] = not checked
+        config.setting['enable_tag_saving'] = checked
 
     def _reset_option_menu_state(self):
         config = get_config()
         self.actions[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
         self.actions[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
-        self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not config.setting['dont_write_tags'])
+        self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
         self._make_script_selector_menu()
         self._init_cd_lookup_menu()
 
