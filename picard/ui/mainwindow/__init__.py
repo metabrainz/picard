@@ -1700,7 +1700,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         def _add_menu_item(setting_id, title, enabled):
             setting_action = QtGui.QAction(title, self.settings_quick_selector_menu)
-            setting_action.triggered.connect(partial(self._update_quick_setting, setting_id))
+            setting_action.triggered.connect(partial(self._toggle_quick_setting, setting_id))
             setting_action.setCheckable(True)
             setting_action.setChecked(enabled)
             self.settings_quick_selector_menu.addAction(setting_action)
@@ -1709,7 +1709,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for setting_id in quick_settings:
             _add_menu_item(setting_id, get_option_title(setting_id), config.setting[setting_id])
 
-    def _update_quick_setting(self, setting_id):
+    def _toggle_quick_setting(self, setting_id):
         """Toggle the enabled state of the selected setting.
 
         Args:
