@@ -22,7 +22,36 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+from enum import IntEnum
 from typing import Iterable
+import uuid
+
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
+
+from picard.ui.columns import ColumnAlign
+
+
+# Public table column indices for specs table and shared header labels
+class ColumnIndex(IntEnum):
+    TITLE = 0
+    TYPE = 1
+    EXPRESSION = 2
+    ALIGN = 3
+    WIDTH = 4
+
+
+# Public headers for specs-related UIs (manager table, dialogs, etc.)
+COLUMN_INPUT_FIELD_NAMES: dict[ColumnIndex, str] = {
+    ColumnIndex.TITLE: _("Column Title"),
+    ColumnIndex.TYPE: _("Type"),
+    ColumnIndex.EXPRESSION: _("Expression"),
+    ColumnIndex.ALIGN: _("Align"),
+    ColumnIndex.WIDTH: _("Width"),
+}
 
 
 # Public identifiers for views used in configuration and API
@@ -34,6 +63,15 @@ DEFAULT_ADD_TO: str = f"{VIEW_FILE},{VIEW_ALBUM}"
 
 RECOGNIZED_VIEWS: set[str] = {VIEW_FILE, VIEW_ALBUM}
 
+ALIGN_LEFT_NAME: str = "LEFT"
+ALIGN_RIGHT_NAME: str = "RIGHT"
+_ALIGN_TOKEN_TO_ENUM: dict[str, ColumnAlign] = {
+    ALIGN_LEFT_NAME: ColumnAlign.LEFT,
+    ALIGN_RIGHT_NAME: ColumnAlign.RIGHT,
+}
+
+DEFAULT_NEW_COLUMN_NAME: str = _("Untitled")
+
 
 def parse_add_to(add_to: str | None) -> set[str]:
     """Parse a comma-separated ``add_to`` string into normalized view tokens.
@@ -42,7 +80,7 @@ def parse_add_to(add_to: str | None) -> set[str]:
     ----------
     add_to : str | None
         Comma-separated list of view identifiers (e.g., ``"FILE_VIEW,ALBUM_VIEW"``).
-        If falsy, defaults to both views as defined by ``DEFAULT_ADD_TO``.
+        If ``None`` or an empty string, returns an empty set (no views).
 
     Returns
     -------
@@ -52,10 +90,10 @@ def parse_add_to(add_to: str | None) -> set[str]:
     Notes
     -----
     Unknown tokens are ignored. Recognition is case-insensitive and whitespace
-    around tokens is stripped before matching.
+    around tokens is stripped before matching. There is no default view set.
     """
 
-    raw: str = add_to or DEFAULT_ADD_TO
+    raw: str = add_to or ""
     tokens: Iterable[str] = (t.strip().upper() for t in raw.split(",") if t.strip())
     return {t for t in tokens if t in RECOGNIZED_VIEWS}
 
@@ -83,6 +121,65 @@ def format_add_to(views: Iterable[str]) -> str:
     return ",".join([*ordered, *extras])
 
 
+@dataclass(frozen=True, slots=True)
+class ViewPresentation:
+    """Presentation metadata for a selectable view.
+
+    Notes
+    -----
+    ``title`` and ``tooltip`` are NOT translated here. They are marked for
+    translation using ``N_()`` and must be wrapped in ``_()`` at the usage
+    site (e.g., UI code) to request the localized strings.
+
+    Attributes
+    ----------
+    id : str
+        Stable identifier of the view (e.g., ``FILE_VIEW``).
+    title : str
+        Untranslated title string; wrap with ``_()`` when used.
+    tooltip : str
+        Untranslated tooltip string; wrap with ``_()`` when used.
+    """
+
+    id: str
+    title: str
+    tooltip: str
+
+
+_VIEW_TITLES: dict[str, str] = {
+    VIEW_FILE: N_("File view"),
+    VIEW_ALBUM: N_("Album view"),
+}
+
+_VIEW_TOOLTIPS: dict[str, str] = {
+    VIEW_FILE: N_("Show this column in the Files view."),
+    VIEW_ALBUM: N_("Show this column in the Albums view."),
+}
+
+
+def get_ordered_view_presentations() -> tuple[ViewPresentation, ...]:
+    """Return ordered presentations for all recognized views.
+
+    Returns
+    -------
+    tuple[ViewPresentation, ...]
+        View presentations ordered according to ``DEFAULT_ADD_TO`` first,
+        then any remaining recognized views in alphabetical order.
+    """
+
+    default_order = [v for v in DEFAULT_ADD_TO.split(",") if v in RECOGNIZED_VIEWS]
+    remaining = sorted([v for v in RECOGNIZED_VIEWS if v not in default_order])
+    ordered_ids = [*default_order, *remaining]
+    return tuple(
+        ViewPresentation(
+            id=vid,
+            title=_VIEW_TITLES.get(vid, vid),
+            tooltip=_VIEW_TOOLTIPS.get(vid, ""),
+        )
+        for vid in ordered_ids
+    )
+
+
 def get_recognized_view_columns():
     """Return mapping of recognized view identifiers to their columns collections.
 
@@ -103,3 +200,161 @@ def get_recognized_view_columns():
         VIEW_FILE: FILEVIEW_COLUMNS,
         VIEW_ALBUM: ALBUMVIEW_COLUMNS,
     }
+
+
+def get_align_options() -> list[tuple[str, ColumnAlign]]:
+    """Return alignment options for UI selection.
+
+    Returns
+    -------
+    list[tuple[str, ColumnAlign]]
+        Pairs of translated, lowercase labels and corresponding
+        :class:`~picard.ui.columns.ColumnAlign` values.
+    """
+
+    return [(N_("left"), _ALIGN_TOKEN_TO_ENUM["LEFT"]), (N_("right"), _ALIGN_TOKEN_TO_ENUM["RIGHT"])]
+
+
+def normalize_align_name(name: str | ColumnAlign | None) -> ColumnAlign:
+    """Normalize arbitrary alignment input to a :class:`ColumnAlign` value.
+
+    Parameters
+    ----------
+    name : str | ColumnAlign | None
+        User-provided alignment token (e.g., ``"left"``/``"RIGHT"``), an
+        existing :class:`ColumnAlign` value, or ``None``.
+
+    Returns
+    -------
+    ColumnAlign
+        Normalized alignment value. Defaults to ``ColumnAlign.LEFT`` when the
+        input is falsy or unrecognized.
+    """
+
+    if isinstance(name, ColumnAlign):
+        return name
+    token = (name or "").strip().upper()
+    return _ALIGN_TOKEN_TO_ENUM.get(token, ColumnAlign.LEFT)
+
+
+def display_align_label(name: str | ColumnAlign | None) -> str:
+    """Return translated, lowercase label for an alignment value.
+
+    Parameters
+    ----------
+    name : str | ColumnAlign | None
+        Alignment token or enum; handled case-insensitively.
+
+    Returns
+    -------
+    str
+        Translated label (``"left"`` or ``"right"``).
+    """
+
+    enum_val = normalize_align_name(name)
+    return _("right") if enum_val == ColumnAlign.RIGHT else _("left")
+
+
+def next_incremented_title(base_title: str, existing_titles: set[str]) -> str:
+    """Generate the next incremented title by appending a numeric suffix.
+
+    Parameters
+    ----------
+    base_title : str
+        The base title to increment.
+    existing_titles : set[str]
+        Set of existing titles to avoid conflicts.
+
+    Returns
+    -------
+    str
+        The next available incremented title with format "base_title (N)".
+
+    Examples
+    --------
+    >>> next_incremented_title("Album", {"Album", "Album (1)"})
+    'Album (2)'
+    """
+    suffix = 1
+    candidate: str = f"{base_title} ({suffix})"
+    while candidate in existing_titles:
+        suffix += 1
+        candidate = f"{base_title} ({suffix})"
+    return candidate
+
+
+def generate_new_key() -> str:
+    """Generate a new unique key for a custom column.
+
+    Returns
+    -------
+    str
+        A freshly generated unique key.
+    """
+    return str(uuid.uuid4())
+
+
+@dataclass(frozen=True)
+class SortingAdapterDisplayInfo:
+    display_name: str
+    tooltip: str
+
+
+# Mapping of user-friendly names to sorting adapter class names
+SORTING_ADAPTER_NAMES: dict[str, SortingAdapterDisplayInfo] = {
+    "LocaleAwareSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Default"),
+        tooltip=N_("Default alphabetical text sorting."),
+    ),
+    "CasefoldSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Case insensitive"),
+        tooltip=N_("Case insensitive alphabetical text sorting."),
+    ),
+    "NumericSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Numeric"),
+        tooltip=N_("Numeric sorting if the column content is numeric. Falls back to natural number sorting."),
+    ),
+    "NaturalSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Natural number sorting"),
+        tooltip=N_('Alphabetical text sorting, but consider numbers (e.g. "Track 2" before "Track 10").'),
+    ),
+    "LengthSortAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("By value length"),
+        tooltip=N_("Sort by string length."),
+    ),
+    "ArticleInsensitiveAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Article insensitive"),
+        tooltip=N_("Sort ignoring leading articles (e.g. a, an, the)."),
+    ),
+    "NullsLastAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Empty values first"),
+        tooltip=N_("Empty/whitespace values sort first."),
+    ),
+    "NullsFirstAdapter": SortingAdapterDisplayInfo(
+        display_name=N_("Empty values last"),
+        tooltip=N_("Empty/whitespace values sort last."),
+    ),
+}
+
+
+def get_sorting_adapter_options() -> tuple[tuple[str, str], ...]:
+    """Return sorting adapter options for UI selection.
+
+    Returns
+    -------
+    tuple[tuple[str, SortingAdapterDisplayInfo], ...]
+        Sorted pairs of adapter class names and corresponding display info.
+        The "Default" option always appears first.
+    """
+    # Get the Default item directly
+    default_class = "LocaleAwareSortAdapter"
+    default_item = (default_class, SORTING_ADAPTER_NAMES[default_class])
+
+    # Get other items (excluding Default) and sort them
+    other_items = sorted(
+        [(class_name, info) for class_name, info in SORTING_ADAPTER_NAMES.items() if class_name != default_class],
+        key=lambda x: _(x[1].display_name),
+    )
+
+    # Return tuple with Default first, then sorted others
+    return tuple([default_item] + other_items)

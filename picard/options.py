@@ -52,6 +52,7 @@ from picard.const.defaults import (
     DEFAULT_COVER_RESIZE_MODE,
     DEFAULT_CURRENT_BROWSER_PATH,
     DEFAULT_DRIVES,
+    DEFAULT_FILTER_COLUMNS,
     DEFAULT_FPCALC_THREADS,
     DEFAULT_LOCAL_COVER_ART_REGEX,
     DEFAULT_LONG_PATHS,
@@ -145,8 +146,8 @@ BoolOption('persist', 'view_toolbar', True)
 BoolOption('persist', 'view_filterbar', False)
 BoolOption('persist', 'window_maximized', False)
 Option('persist', 'window_state', QtCore.QByteArray())
-ListOption('persist', 'filters_FileTreeView', None)
-ListOption('persist', 'filters_AlbumTreeView', None)
+ListOption('persist', 'filters_FileTreeView', DEFAULT_FILTER_COLUMNS)
+ListOption('persist', 'filters_AlbumTreeView', DEFAULT_FILTER_COLUMNS)
 TextOption('persist', 'last_session_path', '')
 ListOption('persist', 'recent_sessions', [])
 TextOption('persist', 'session_autosave_path', '')
@@ -457,7 +458,7 @@ ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts"))
 # picard/ui/options/tags.py
 # Tags
 BoolOption('setting', 'clear_existing_tags', False, title=N_("Clear existing tags"))
-BoolOption('setting', 'dont_write_tags', False, title=N_("Don't write tags"))
+BoolOption('setting', 'enable_tag_saving', True, title=N_("Enable saving tags to files"))
 BoolOption('setting', 'fix_missing_seekpoints_flac', False, title=N_("Fix missing seekpoints for FLAC files"))
 ListOption('setting', 'preserved_tags', [], title=N_("Preserved tags list"))
 BoolOption('setting', 'preserve_images', False, title=N_("Keep embedded images when clearing tags"))

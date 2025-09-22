@@ -472,7 +472,7 @@ def _create_enable_tag_saving_action(parent):
     config = get_config()
     action = QtGui.QAction(_("Save &Tags"), parent)
     action.setCheckable(True)
-    action.setChecked(not config.setting['dont_write_tags'])
+    action.setChecked(config.setting['enable_tag_saving'])
     action.triggered.connect(parent.toggle_tag_saving)
     return action
 

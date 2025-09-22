@@ -305,10 +305,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.actions[MainAction.ENABLE_RENAMING].setChecked(new_value)
         elif name == 'move_files':
             self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
-        elif name == 'dont_write_tags':
-            self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not new_value)
-        # Note: image saving toggles are handled on their respective options pages.
-        # see: https://github.com/metabrainz/picard/commit/a5d32b9e0986f057fb1d08b0b47ce3b6425ed087
+        elif name == 'enable_tag_saving':
+            self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(new_value)
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
@@ -781,13 +779,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def toggle_tag_saving(self, checked):
         config = get_config()
-        config.setting['dont_write_tags'] = not checked
+        config.setting['enable_tag_saving'] = checked
 
     def _reset_option_menu_state(self):
         config = get_config()
         self.actions[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
         self.actions[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
-        self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(not config.setting['dont_write_tags'])
+        self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
         self._make_script_selector_menu()
         self._init_cd_lookup_menu()
 
@@ -1101,7 +1099,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         formats.insert(1, _("All files") + " (*)")
         files, _filter = FileDialog.getOpenFileNames(
             parent=self,
-            dir=current_directory,
+            directory=current_directory,
             filter=";;".join(formats),
         )
         if files:
@@ -1118,7 +1116,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not config.setting['allow_multi_dirs_selection']:
             directory = FileDialog.getExistingDirectory(
                 parent=self,
-                dir=current_directory,
+                directory=current_directory,
             )
             if directory:
                 dir_list.append(directory)

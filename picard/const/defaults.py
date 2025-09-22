@@ -179,3 +179,4 @@ INTERNAL_TAG_PREFIX = "~"
 # 'length' is audio duration; '~length' is its display alias. Add more if we expose
 # additional non-internal computed fields that should not be user-overridable.
 EXCLUDED_OVERRIDE_TAGS = frozenset({"length", "~length"})
+DEFAULT_FILTER_COLUMNS = ['album', 'title', 'albumartist', 'artist']

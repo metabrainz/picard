@@ -43,7 +43,6 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 from picard.ui import PicardDialog
-from picard.ui.util import StandardButton
 
 
 class ImageURLDialog(PicardDialog):
@@ -55,10 +54,8 @@ class ImageURLDialog(PicardDialog):
         self.label = QtWidgets.QLabel(_("Cover art URL:"))
         self.url = QtWidgets.QLineEdit(self)
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
-        accept_role = QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole
-        self.buttonbox.addButton(StandardButton(StandardButton.OK), accept_role)
-        reject_role = QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        self.buttonbox.addButton(StandardButton(StandardButton.CANCEL), reject_role)
+        self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         self.buttonbox.accepted.connect(self.accept)
         self.buttonbox.rejected.connect(self.reject)
         self.layout.addWidget(self.label)

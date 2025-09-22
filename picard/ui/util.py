@@ -35,42 +35,11 @@ from PyQt6 import (
 
 from picard import PICARD_DISPLAY_NAME
 from picard.config import get_config
-from picard.const.sys import (
-    IS_LINUX,
-    IS_MACOS,
-    IS_WIN,
-)
-from picard.i18n import (
-    N_,
-    gettext as _,
-)
+from picard.const.sys import IS_LINUX
+from picard.i18n import gettext as _
 from picard.util import find_existing_path
 
 from picard.ui.enums import MainAction
-
-
-class StandardButton(QtWidgets.QPushButton):
-    OK = 0
-    CANCEL = 1
-    HELP = 2
-    CLOSE = 4
-
-    __types = {
-        OK: (N_("&Ok"), 'SP_DialogOkButton'),
-        CANCEL: (N_("&Cancel"), 'SP_DialogCancelButton'),
-        HELP: (N_("&Help"), 'SP_DialogHelpButton'),
-        CLOSE: (N_("Clos&e"), 'SP_DialogCloseButton'),
-    }
-
-    def __init__(self, btntype):
-        label = _(self.__types[btntype][0])
-        args = [label]
-        if not IS_WIN and not IS_MACOS:
-            iconname = self.__types[btntype][1]
-            if hasattr(QtWidgets.QStyle, iconname):
-                icon = QtCore.QCoreApplication.instance().style().standardIcon(getattr(QtWidgets.QStyle, iconname))
-                args = [icon, label]
-        super().__init__(*args)
 
 
 def find_starting_directory():
@@ -110,52 +79,52 @@ class FileDialog(QtWidgets.QFileDialog):
         super().__init__(parent=parent, caption=caption, directory=directory, filter=filter)
 
     @staticmethod
-    def getSaveFileName(parent=None, caption="", dir="", filter="", selectedFilter="", options=None):
+    def getSaveFileName(parent=None, caption="", directory="", filter="", initialFilter="", options=None):
         caption = _filedialog_caption(caption, _("Select a target file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getSaveFileName(
             parent=parent,
             caption=caption,
-            directory=dir,
+            directory=directory,
             filter=filter,
-            initialFilter=selectedFilter,
+            initialFilter=initialFilter,
             options=options,
         )
 
     @staticmethod
-    def getOpenFileName(parent=None, caption="", dir="", filter="", selectedFilter="", options=None):
+    def getOpenFileName(parent=None, caption="", directory="", filter="", initialFilter="", options=None):
         caption = _filedialog_caption(caption, _("Select a file"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileName(
             parent=parent,
             caption=caption,
-            directory=dir,
+            directory=directory,
             filter=filter,
-            initialFilter=selectedFilter,
+            initialFilter=initialFilter,
             options=options,
         )
 
     @staticmethod
-    def getOpenFileNames(parent=None, caption="", dir="", filter="", selectedFilter="", options=None):
+    def getOpenFileNames(parent=None, caption="", directory="", filter="", initialFilter="", options=None):
         caption = _filedialog_caption(caption, _("Select one or more files"))
         options = _filedialog_options(options)
         return QtWidgets.QFileDialog.getOpenFileNames(
             parent=parent,
             caption=caption,
-            directory=dir,
+            directory=directory,
             filter=filter,
-            initialFilter=selectedFilter,
+            initialFilter=initialFilter,
             options=options,
         )
 
     @staticmethod
-    def getExistingDirectory(parent=None, caption="", dir="", options=None):
+    def getExistingDirectory(parent=None, caption="", directory="", options=None):
         caption = _filedialog_caption(caption, _("Select a directory"))
         options = _filedialog_options(options, default=QtWidgets.QFileDialog.Option.ShowDirsOnly)
         return QtWidgets.QFileDialog.getExistingDirectory(
             parent=parent,
             caption=caption,
-            directory=dir,
+            directory=directory,
             options=options,
         )
 

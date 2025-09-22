@@ -39,7 +39,6 @@ from picard.tags import display_tag_name
 
 from picard.ui import PicardDialog
 from picard.ui.forms.ui_tagsfromfilenames import Ui_TagsFromFileNamesDialog
-from picard.ui.util import StandardButton
 
 
 class TagMatchExpression:
@@ -120,11 +119,9 @@ class TagsFromFileNamesDialog(PicardDialog):
             selected_index = items.index(tff_format)
         self.ui.format.addItems(items)
         self.ui.format.setCurrentIndex(selected_index)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.HELP), QtWidgets.QDialogButtonBox.ButtonRole.HelpRole)
-        self.ui.buttonbox.addButton(StandardButton(StandardButton.OK), QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
-        self.ui.buttonbox.addButton(
-            StandardButton(StandardButton.CANCEL), QtWidgets.QDialogButtonBox.ButtonRole.RejectRole
-        )
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         self.ui.buttonbox.accepted.connect(self.accept)
         self.ui.buttonbox.rejected.connect(self.reject)
         self.ui.buttonbox.helpRequested.connect(self.show_help)
