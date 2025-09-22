@@ -70,6 +70,7 @@ from picard.config_upgrade import (
     upgrade_to_v3_0_0dev4,
     upgrade_to_v3_0_0dev5,
     upgrade_to_v3_0_0dev7,
+    upgrade_to_v3_0_0dev8,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -569,3 +570,10 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['ui_theme'] = 'system'
         upgrade_to_v3_0_0dev7(self.config)
         self.assertEqual(DEFAULT_THEME_NAME, self.config.setting['ui_theme'])
+
+    def test_upgrade_to_v3_0_0dev8(self):
+        BoolOption('setting', 'enable_tag_saving', True)
+        self.config.setting['dont_write_tags'] = True
+        upgrade_to_v3_0_0dev8(self.config)
+        self.assertNotIn('dont_write_tags', self.config.setting)
+        self.assertFalse(self.config.setting['enable_tag_saving'])
