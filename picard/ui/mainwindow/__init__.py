@@ -305,6 +305,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
+        # Also update items in quick settings if needed
+        config = get_config()
+        if name in config.setting['quick_menu_items']:
+            self._make_settings_selector_menu()
+
     def handle_profiles_changed(self, name, old_value, new_value):
         if name == SettingConfigSection.PROFILES_KEY:
             self._make_profile_selector_menu()
