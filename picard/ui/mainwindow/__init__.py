@@ -632,6 +632,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
         self._make_script_selector_menu()
         self._init_cd_lookup_menu()
+        self._make_settings_selector_menu()
 
     def _get_selected_or_unmatched_files(self):
         if self.selected_objects:
@@ -1674,7 +1675,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 profile['enabled'] = not profile['enabled']
                 config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
                 self._reset_option_menu_state()
-                self._make_settings_selector_menu()
                 return
 
     def _make_settings_selector_menu(self):
