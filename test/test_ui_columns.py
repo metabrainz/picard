@@ -29,7 +29,7 @@ from picard.ui.columns import (
     DefaultColumn,
     ImageColumn,
 )
-from picard.ui.itemviews.columns import IconColumn
+from picard.ui.itemviews.custom_columns import IconColumn
 
 
 class ColumnTest(PicardTestCase):
@@ -68,9 +68,18 @@ class ColumnTest(PicardTestCase):
         self.assertTrue(column.is_default)
 
     def test_icon_column(self):
-        column = IconColumn('title', 'key')
+        class _Provider:
+            def __init__(self):
+                self._icon = None
+
+            def get_icon(self):
+                if self._icon is None:
+                    self._icon = 'icon'
+                return self._icon
+
+        provider = _Provider()
+        column = IconColumn('title', 'key', provider)
         self.assertIsInstance(column, ImageColumn)
-        column.header_icon_func = lambda: 'icon'
         self.assertEqual(column.header_icon, 'icon')
         column.set_header_icon_size(10, 20, 2)
         self.assertEqual(column.header_icon_size.width(), 10)
