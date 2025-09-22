@@ -55,7 +55,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.album import NatAlbum
-from picard.cluster import ClusterList, UnclusteredFiles
+from picard.cluster import Cluster, ClusterList
 from picard.file import (
     File,
     FileErrorType,
@@ -419,11 +419,14 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
 
                 if isinstance(column, CustomColumn):
-                    # Hide custom column values for container rows like
-                    # "Clusters" and "Unclustered Files".
-                    # These represent unrelated collections and should not
-                    # display per-entity values.
-                    if isinstance(self.obj, ClusterList | UnclusteredFiles):
+                    # Hide custom column values for container/group rows, but preserve Title.
+                    # - ClusterList: Represents the "Clusters" root. Title is set elsewhere.
+                    # - Special Cluster instances (e.g. "Unclustered Files"): Should show their Title
+                    #   but no other per-entity values in custom columns.
+                    is_group_row = isinstance(self.obj, ClusterList) or (
+                        isinstance(self.obj, Cluster) and self.obj.special
+                    )
+                    if is_group_row and (column.key != 'title' and not column.status_icon):
                         self.setText(i, "")
                         continue
 
