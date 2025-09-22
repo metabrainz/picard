@@ -36,9 +36,6 @@ Specifically, we test:
       across items.
     - CachedSortAdapter normalizes keys when a custom ``key_func`` returns
       mixed types, ensuring stable ordering and no cross-type errors.
-    - ReverseAdapter normalizes and inverts keys deterministically; it also
-      preserves tuple keys (e.g. when wrapping NumericSortAdapter) to avoid
-      introducing new mixed-type comparisons or semantic changes.
 
 These tests are focused on the normalization behavior introduced to fix the
 crash and complement (not duplicate) the broader behavioral tests in
@@ -53,9 +50,7 @@ from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import (
     CachedSortAdapter,
     CompositeSortAdapter,
-    DescendingNumericSortAdapter,
     NumericSortAdapter,
-    ReverseAdapter,
 )
 
 
@@ -106,32 +101,6 @@ def test_numeric_sort_adapter_mixed_values_no_typeerror_and_ordering() -> None:
     assert sorted_values[:3] == ["-3.5", "2", "10"]
 
 
-def test_desc_numeric_sort_adapter_mixed_values_no_typeerror_and_ordering() -> None:
-    values = ["10", "abc", "2", "", "7a", "-3.5"]
-
-    class Dummy(Item):
-        pass
-
-    adapters = [DescendingNumericSortAdapter(StubProvider(v)) for v in values]
-    keys = [a.sort_key(Dummy()) for a in adapters]
-    # Should not raise TypeError
-    sorted_pairs = sorted(zip(values, keys, strict=True), key=lambda p: p[1])
-    sorted_values = [v for v, _ in sorted_pairs]
-    # Numbers first, descending
-    assert sorted_values[:3] == ["10", "2", "-3.5"]
-
-
-class WeirdKeyProvider(ColumnValueProvider):
-    def __init__(self, value: str):
-        self._value = value
-
-    def evaluate(self, _obj) -> str:
-        return self._value
-
-    # Simulate an inconsistent sort_key source for ReverseAdapter tests by
-    # attaching a dynamic method later when needed
-
-
 def test_composite_sort_adapter_mixed_component_types_no_typeerror() -> None:
     class Dummy(Item):
         def __init__(self, s: str):
@@ -176,45 +145,3 @@ def test_cached_sort_adapter_key_func_mixed_types_normalized() -> None:
     sorted_values = [v for v, _ in sorted_pairs]
     # Numbers first (ascending), then strings
     assert sorted_values == ["2", "10", "abc"]
-
-
-def test_reverse_adapter_normalizes_mixed_types_from_custom_sort_key() -> None:
-    # Provide a SortKeyProvider-like object with mixed numeric / string outputs
-    class MixedSortKeyProvider(WeirdKeyProvider):
-        def sort_key(self, _obj):  # type: ignore[override]
-            s = self._value
-            try:
-                return float(s)
-            except Exception:
-                return s
-
-    providers = [MixedSortKeyProvider(v) for v in ["10", "abc", "2"]]
-    adaptered = [ReverseAdapter(p) for p in providers]
-
-    class Dummy(Item):
-        pass
-
-    keys = [a.sort_key(Dummy()) for a in adaptered]
-    # Should not raise TypeError when sorting
-    sorted_pairs = sorted(zip(["10", "abc", "2"], keys, strict=True), key=lambda p: p[1])
-    sorted_values = [v for v, _ in sorted_pairs]
-    # Numbers first in descending due to reverse: 10, 2, then strings
-    assert sorted_values == ["10", "2", "abc"]
-
-
-def test_reverse_adapter_over_numeric_adapter_leaves_order_intact() -> None:
-    values = ["10", "abc", "2"]
-
-    class Dummy(Item):
-        pass
-
-    base_adapters = [NumericSortAdapter(StubProvider(v)) for v in values]
-    base_keys = [a.sort_key(Dummy()) for a in base_adapters]
-    base_sorted = [v for v, _ in sorted(zip(values, base_keys, strict=True), key=lambda p: p[1])]
-
-    rev_adapters = [ReverseAdapter(a) for a in base_adapters]
-    rev_keys = [a.sort_key(Dummy()) for a in rev_adapters]
-    rev_sorted = [v for v, _ in sorted(zip(values, rev_keys, strict=True), key=lambda p: p[1])]
-
-    # ReverseAdapter keeps tuple keys from NumericSortAdapter as-is; ordering remains identical
-    assert rev_sorted == base_sorted

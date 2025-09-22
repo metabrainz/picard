@@ -66,27 +66,20 @@ class _AdapterBase(SortKeyProvider):
         return f"{self.__class__.__name__}(base={self._base!r})"
 
 
+class LocaleAwareSortAdapter(_AdapterBase):
+    """Provide case-insensitive sort using `str.casefold()` on evaluated value."""
+
+    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+        """Return case-insensitive sort key for item."""
+        return _sort_key(self._base.evaluate(obj) or "")
+
+
 class CasefoldSortAdapter(_AdapterBase):
     """Provide case-insensitive sort using `str.casefold()` on evaluated value."""
 
     def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
         """Return case-insensitive sort key for item."""
-        return (self._base.evaluate(obj) or "").casefold()
-
-
-class DescendingCasefoldSortAdapter(_AdapterBase):
-    """Provide descending case-insensitive sort by inverting code points."""
-
-    @staticmethod
-    def _invert_string(s: str) -> str:
-        # Map code points to inverted order to simulate descending in ascending sort
-        # Use BMP range for practicality; characters outside will still order consistently
-        return "".join(chr(0x10FFFF - ord(c)) for c in s)
-
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
-        """Return descending case-insensitive sort key for item."""
-        v = (self._base.evaluate(obj) or "").casefold()
-        return self._invert_string(v)
+        return _sort_key((self._base.evaluate(obj) or "").casefold())
 
 
 class NumericSortAdapter(_AdapterBase):
@@ -114,26 +107,6 @@ class NumericSortAdapter(_AdapterBase):
             return (1, _sort_key(value_str, numeric=True))
         else:
             return (0, parsed_value)
-
-
-class DescendingNumericSortAdapter(NumericSortAdapter):
-    """Provide descending numeric sort by negating parsed value."""
-
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
-        """Return descending numeric-first composite sort key for item.
-
-        - (0, -number) when numeric (numbers first, descending)
-        - (1, inverted_natural_key) when non-numeric (fallback, descending)
-        """
-        value_str: str = self._base.evaluate(obj) or ""
-        try:
-            parsed_value = self._parser(value_str)
-        except (ValueError, TypeError):
-            natural_key = _sort_key(value_str, numeric=True)
-            inverted = DescendingNaturalSortAdapter._invert_string(str(natural_key))
-            return (1, inverted)
-        else:
-            return (0, -parsed_value)
 
 
 class LengthSortAdapter(_AdapterBase):
@@ -174,8 +147,8 @@ class ArticleInsensitiveAdapter(_AdapterBase):
         for art in self._articles:
             prefix = f"{art} "
             if lv.startswith(prefix):
-                return (lv[len(prefix) :], lv)
-        return (lv, lv)
+                return (_sort_key(lv[len(prefix) :]), _sort_key(prefix))
+        return (_sort_key(lv), _sort_key(""))
 
 
 class CompositeSortAdapter(_AdapterBase):
@@ -228,7 +201,7 @@ class NullsLastAdapter(_AdapterBase):
         cleaned = _clean_invisible_and_whitespace(v)
         is_empty = cleaned == ""
         key = cleaned.casefold()
-        return (is_empty, key)
+        return (is_empty, _sort_key(key))
 
 
 class NullsFirstAdapter(_AdapterBase):
@@ -240,7 +213,7 @@ class NullsFirstAdapter(_AdapterBase):
         cleaned = _clean_invisible_and_whitespace(v)
         is_empty = cleaned == ""
         key = cleaned.casefold()
-        return (not is_empty, key)
+        return (not is_empty, _sort_key(key))
 
 
 class CachedSortAdapter(_AdapterBase):
@@ -299,37 +272,6 @@ class CachedSortAdapter(_AdapterBase):
         return key
 
 
-class ReverseAdapter(_AdapterBase):
-    """Provide reversed sorting for string or numeric sort keys."""
-
-    @staticmethod
-    def _invert_string(s: str) -> str:
-        return "".join(chr(0x10FFFF - ord(c)) for c in s)
-
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
-        """Return reversed sort key for item.
-
-        Always return a normalized tuple key to avoid cross-type comparisons:
-        - Numbers -> (0, -float(value))
-        - Strings -> (1, inverted string)
-        - Tuples -> keep as-is (assumed already normalized)
-        - Other -> (1, lowercased string)
-        """
-        if isinstance(self._base, SortKeyProvider):
-            base_key = self._base.sort_key(obj)
-        else:
-            base_key = self._base.evaluate(obj) or ""
-
-        if isinstance(base_key, tuple):
-            return base_key
-        if isinstance(base_key, (int, float)):
-            return (0, -float(base_key))
-        if isinstance(base_key, str):
-            return (1, self._invert_string(base_key))
-        text = "" if base_key is None else str(base_key)
-        return (1, text.casefold())
-
-
 class NaturalSortAdapter(_AdapterBase):
     """Provide natural (alphanumeric) sort using locale-aware natural ordering."""
 
@@ -340,25 +282,3 @@ class NaturalSortAdapter(_AdapterBase):
         For example: "Track 1", "Track 2", "Track 10" instead of "Track 1", "Track 10", "Track 2".
         """
         return _sort_key(self._base.evaluate(obj) or "", numeric=True)
-
-
-class DescendingNaturalSortAdapter(_AdapterBase):
-    """Provide descending natural (alphanumeric) sort using string inversion."""
-
-    @staticmethod
-    def _invert_string(s: str) -> str:
-        """Invert string for descending order (same as ReverseAdapter)."""
-        return "".join(chr(0x10FFFF - ord(c)) for c in s)
-
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
-        """Return descending natural sort key for item.
-
-        Gets the natural sort key, converts to string, then inverts character order.
-        """
-
-        # Get the natural sort key and convert to string
-        natural_key = _sort_key(self._base.evaluate(obj) or "", numeric=True)
-        key_str = str(natural_key)
-
-        # Apply string inversion for proper descending order
-        return self._invert_string(key_str)
