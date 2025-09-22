@@ -27,6 +27,8 @@ from typing import (
     runtime_checkable,
 )
 
+from PyQt6 import QtGui
+
 from picard.item import Item
 
 
@@ -77,4 +79,32 @@ class SortKeyProvider(Protocol):
         Any
             Sort key.
         """
+        ...
+
+
+@runtime_checkable
+class DelegateProvider(Protocol):
+    """Protocol for columns that require custom rendering via delegates."""
+
+    def get_delegate_class(self) -> type:
+        """Return the delegate class for custom rendering.
+
+        Returns
+        -------
+        type
+            The delegate class (subclass of QStyledItemDelegate).
+        """
+        ...
+
+
+@runtime_checkable
+class HeaderIconProvider(Protocol):
+    """Protocol for providing a header icon for an icon column.
+
+    Implementations should construct icons lazily (after QApplication exists)
+    and can internally cache the icon.
+    """
+
+    def get_icon(self) -> QtGui.QIcon:  # pragma: no cover - QtGui.QIcon
+        """Return a QIcon used for the column header."""
         ...

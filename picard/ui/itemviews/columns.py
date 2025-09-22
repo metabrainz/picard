@@ -43,151 +43,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6 import QtCore
-
-from picard.album import AlbumStatus
-from picard.const.sys import IS_LINUX
-from picard.i18n import N_
-from picard.util import icontheme
 
 from picard.ui.columns import (
-    Column,
-    ColumnAlign,
     Columns,
-    ColumnSortType,
-    DefaultColumn,
-    ImageColumn,
 )
-from picard.ui.itemviews.match_quality_column import MatchQualityColumn
-
-
-def _sortkey_length(obj):
-    return obj.metadata.length or 0
-
-
-def _sortkey_filesize(obj):
-    try:
-        return int(obj.metadata['~filesize'] or obj.orig_metadata['~filesize'])
-    except ValueError:
-        return 0
-
-
-def _sortkey_bitrate(obj):
-    try:
-        return float(obj.metadata['~bitrate'] or obj.orig_metadata['~bitrate'] or 0)
-    except (ValueError, TypeError):
-        return 0
-
-
-def _sortkey_match_quality(obj):
-    """Sort key for match quality column - sort by completion percentage."""
-    if hasattr(obj, 'get_num_matched_tracks') and hasattr(obj, 'tracks'):
-        # Album object
-        # Check if album is still loading - if so, return 0 to avoid premature sorting
-        if hasattr(obj, 'status') and obj.status == AlbumStatus.LOADING:
-            return 0.0
-
-        total = len(obj.tracks) if obj.tracks else 0
-        if total > 0:
-            # Column sorting is reversed on Linux
-            multiplier = -1 if IS_LINUX else 1
-            matched = obj.get_num_matched_tracks()
-            return matched / total * multiplier
-        return 0.0
-    # For track objects, return 0 since we don't show icons at track level
-    return 0.0
-
-
-class IconColumn(ImageColumn):
-    _header_icon = None
-    header_icon_func = None
-    header_icon_size = QtCore.QSize(0, 0)
-    header_icon_border = 0
-
-    @property
-    def header_icon(self):
-        # icon cannot be set before QApplication is created
-        # so create it during runtime and cache it
-        # Avoid error: QPixmap: Must construct a QGuiApplication before a QPixmap
-        if self._header_icon is None:
-            self._header_icon = self.header_icon_func()
-        return self._header_icon
-
-    def set_header_icon_size(self, width, height, border):
-        self.header_icon_size = QtCore.QSize(width, height)
-        self.header_icon_border = border
-        self.size = QtCore.QSize(width + 2 * border, height + 2 * border)
-        self.width = self.size.width()
-
-    def paint(self, painter, rect):
-        icon = self.header_icon
-        if not icon:
-            return
-        h = self.header_icon_size.height()
-        w = self.header_icon_size.width()
-        border = self.header_icon_border
-        padding_v = (rect.height() - h) // 2
-        target_rect = QtCore.QRect(rect.x() + border, rect.y() + padding_v, w, h)
-        painter.drawPixmap(target_rect, icon.pixmap(self.header_icon_size))
-
-
-_fingerprint_column = IconColumn(N_("Fingerprint status"), '~fingerprint')
-_fingerprint_column.header_icon_func = lambda: icontheme.lookup('fingerprint-gray', icontheme.ICON_SIZE_MENU)
-_fingerprint_column.set_header_icon_size(16, 16, 1)
-
-_match_quality_column = MatchQualityColumn(N_("Match"), '~match_quality', width=57)
-_match_quality_column.sortable = True
-_match_quality_column.sort_type = ColumnSortType.SORTKEY
-_match_quality_column.sortkey = _sortkey_match_quality
-_match_quality_column.is_default = True
+from picard.ui.itemviews.custom_columns.common_columns import (
+    create_common_columns,
+    create_match_quality_column,
+)
 
 
 # Common columns used by both views
-_common_columns = (
-    DefaultColumn(N_("Title"), 'title', sort_type=ColumnSortType.NAT, width=250, always_visible=True, status_icon=True),
-    DefaultColumn(
-        N_("Length"),
-        '~length',
-        align=ColumnAlign.RIGHT,
-        sort_type=ColumnSortType.SORTKEY,
-        sortkey=_sortkey_length,
-        width=50,
-    ),
-    DefaultColumn(N_("Artist"), 'artist', width=200),
-    Column(N_("Album Artist"), 'albumartist'),
-    Column(N_("Composer"), 'composer'),
-    Column(N_("Album"), 'album', sort_type=ColumnSortType.NAT),
-    Column(N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT),
-    Column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
-    Column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT),
-    Column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT),
-    Column(N_("Barcode"), 'barcode'),
-    Column(N_("Media"), 'media'),
-    Column(
-        N_("Size"),
-        '~filesize',
-        align=ColumnAlign.RIGHT,
-        sort_type=ColumnSortType.SORTKEY,
-        sortkey=_sortkey_filesize,
-    ),
-    Column(N_("File Type"), '~format', width=120),
-    Column(
-        N_("Bitrate"),
-        '~bitrate',
-        align=ColumnAlign.RIGHT,
-        sort_type=ColumnSortType.SORTKEY,
-        sortkey=_sortkey_bitrate,
-        width=80,
-    ),
-    Column(N_("Genre"), 'genre'),
-    _fingerprint_column,
-    Column(N_("Date"), 'date'),
-    Column(N_("Original Release Date"), 'originaldate'),
-    Column(N_("Release Date"), 'releasedate'),
-    Column(N_("Cover"), 'covercount'),
-    Column(N_("Cover Dimensions"), 'coverdimensions'),
-)
-
+_common_columns = create_common_columns()
 
 # File view columns (without match quality column)
 FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
@@ -195,4 +62,5 @@ FILEVIEW_COLUMNS = Columns(_common_columns, default_width=100)
 # Album view columns (with match quality column)
 # Insert `_match_quality_column` after Title, Length, Artist, Album Artist
 ALBUMVIEW_COLUMNS = Columns(_common_columns, default_width=100)
+_match_quality_column = create_match_quality_column()
 ALBUMVIEW_COLUMNS.insert(ALBUMVIEW_COLUMNS.pos('albumartist') + 1, _match_quality_column)
