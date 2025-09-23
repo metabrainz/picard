@@ -305,6 +305,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
+        # Also update items in quick settings if needed
+        config = get_config()
+        if name in config.setting['quick_menu_items']:
+            self._make_settings_selector_menu()
+
     def handle_profiles_changed(self, name, old_value, new_value):
         if name == SettingConfigSection.PROFILES_KEY:
             self._make_profile_selector_menu()
@@ -632,6 +637,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
         self._make_script_selector_menu()
         self._init_cd_lookup_menu()
+        self._make_settings_selector_menu()
 
     def _get_selected_or_unmatched_files(self):
         if self.selected_objects:
@@ -1674,7 +1680,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 profile['enabled'] = not profile['enabled']
                 config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
                 self._reset_option_menu_state()
-                self._make_settings_selector_menu()
                 return
 
     def _make_settings_selector_menu(self):
@@ -1700,7 +1705,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         def _add_menu_item(setting_id, title, enabled):
             setting_action = QtGui.QAction(title, self.settings_quick_selector_menu)
-            setting_action.triggered.connect(partial(self._update_quick_setting, setting_id))
+            setting_action.triggered.connect(partial(self._toggle_quick_setting, setting_id))
             setting_action.setCheckable(True)
             setting_action.setChecked(enabled)
             self.settings_quick_selector_menu.addAction(setting_action)
@@ -1709,7 +1714,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for setting_id in quick_settings:
             _add_menu_item(setting_id, get_option_title(setting_id), config.setting[setting_id])
 
-    def _update_quick_setting(self, setting_id):
+    def _toggle_quick_setting(self, setting_id):
         """Toggle the enabled state of the selected setting.
 
         Args:
