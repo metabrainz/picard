@@ -44,16 +44,39 @@ with version information, options, file locations, and metadata overrides.
 
 from __future__ import annotations
 
+import contextlib
 import gzip
 from pathlib import Path
 import tempfile
 from typing import Any
 
-import yaml
-
 from picard.session.constants import SessionConstants
 from picard.session.session_exporter import SessionExporter
 from picard.session.session_loader import SessionLoader
+
+
+def _atomic_write(path: Path, data: bytes) -> None:
+    """Write bytes atomically to the given path.
+
+    The function writes to a temporary file in the destination directory and
+    replaces the target file to ensure atomicity. On failure, it attempts to
+    clean up the temporary file and re-raises the exception.
+    """
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+    temp_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=p.parent, prefix=p.stem + "_", suffix=p.suffix, delete=False) as temp_file:
+            temp_path = Path(temp_file.name)
+            temp_path.write_bytes(data)
+
+        temp_path.replace(p)
+    except (OSError, IOError, PermissionError):
+        if temp_path and temp_path.exists():
+            with contextlib.suppress(OSError, PermissionError):
+                temp_path.unlink()
+        raise  # caller should handle the exception
 
 
 def export_session(tagger: Any) -> dict[str, Any]:
@@ -103,31 +126,18 @@ def save_session_to_path(tagger: Any, path: str | Path) -> None:
     to prevent file corruption in case of crashes.
     """
     p = Path(path)
-    # Ensure multi-part extension .mbps.gz
     if not str(p).lower().endswith(SessionConstants.SESSION_FILE_EXTENSION):
         p = Path(str(p) + SessionConstants.SESSION_FILE_EXTENSION)
 
-    data = export_session(tagger)
-    p.parent.mkdir(parents=True, exist_ok=True)
+    # Local import to avoid module-level dependency during static analysis
+    import yaml  # type: ignore[import-not-found]
 
-    # Convert to YAML and gzip-compress to reduce file size
+    data = export_session(tagger)
+
     yaml_text = yaml.dump(data, default_flow_style=False, allow_unicode=True, sort_keys=False)
     compressed = gzip.compress(yaml_text.encode("utf-8"))
 
-    # Atomic write: write to temporary file first, then rename
-    temp_path = None
-    try:
-        with tempfile.NamedTemporaryFile(dir=p.parent, prefix=p.stem + "_", suffix=p.suffix, delete=False) as temp_file:
-            temp_path = Path(temp_file.name)
-            temp_path.write_bytes(compressed)
-
-        # Atomic rename to final destination
-        temp_path.replace(p)
-    except (OSError, IOError, PermissionError):
-        # Clean up temporary file if it exists and rename failed
-        if temp_path and temp_path.exists():
-            temp_path.unlink()
-        raise  # Caller will handle the exception
+    _atomic_write(p, compressed)
 
 
 def load_session_from_path(tagger: Any, path: str | Path) -> None:
