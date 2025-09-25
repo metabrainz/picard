@@ -61,11 +61,12 @@ class RetryHelper:
         This replaces the scattered QtCore.QTimer.singleShot patterns throughout
         the session management code with a centralized retry mechanism.
         """
-        attempts = [0]
+        attempts = 0
 
         def attempt() -> None:
-            attempts[0] += 1
-            if max_attempts and attempts[0] > max_attempts:
+            nonlocal attempts
+            attempts += 1
+            if max_attempts and attempts > max_attempts:
                 return
 
             if condition_fn():

@@ -80,10 +80,7 @@ class MetadataHandler:
         Metadata
             The deserialized metadata object.
         """
-        md = Metadata()
-        for key, values in tags.items():
-            md[key] = values
-        return md
+        return Metadata(tags)
 
     @staticmethod
     def as_list(values: Any) -> list[Any]:
