@@ -1206,26 +1206,31 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.tagger.save(self.selected_objects)
 
     def _get_default_session_filename_from_metadata(self) -> str | None:
-        """Get default session filename based on first track's artist information.
+        """Gets a default session filename based on the first track's artist metadata.
 
         Returns
         -------
         str | None
-            Sanitized artist name to use as default filename, or None if no artist found.
+            A sanitized artist name to use as a default filename, or None if no artist is found.
         """
-        artist_tags = ['artist', 'albumartist', 'artists', 'albumartists']
+        artist_tags = (
+            'artist',
+            'albumartist',
+            'artists',
+            'albumartists',
+        )
 
-        # Scan files once; for each file pick first non-empty artist tag
         for file in self.tagger.iter_all_files():
             metadata = file.metadata
-            artist_value = next(
-                (value for tag in artist_tags if (value := metadata.get(tag)) and str(value).strip()),
-                None,
-            )
-            if artist_value:
-                artist_name = str(artist_value).split(',')[0].strip()
-                if artist_name:
-                    return sanitize_filename(artist_name, repl="_", win_compat=True)
+            for tag in artist_tags:
+                artist_value = metadata.get(tag)
+
+                if artist_value and str(artist_value).strip():
+                    artist_name = str(artist_value).split(',')[0].strip()
+
+                    if artist_name:
+                        return sanitize_filename(artist_name, repl="_", win_compat=True)
+
         return None
 
     def _get_timestamped_session_filename(self) -> str:

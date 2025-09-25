@@ -174,7 +174,7 @@ class SessionExporter:
                 expanded.append(album.id)
         return expanded
 
-    def _export_options(self, config: Any) -> dict[str, bool]:
+    def _export_options(self, config: Any) -> dict[str, Any]:
         """Export configuration options.
 
         Parameters
@@ -250,17 +250,14 @@ class SessionExporter:
         dict[str, Any]
             Dictionary containing the location data.
         """
-        return {
-            k: v
-            for k, v in {
-                'type': location.type,
-                'album_id': location.album_id,
-                'recording_id': location.recording_id,
-                'cluster_title': location.cluster_title,
-                'cluster_artist': location.cluster_artist,
-            }.items()
-            if v is not None
-        }
+        location_data = {
+            'type': location.type,
+            'album_id': location.album_id,
+            'recording_id': location.recording_id,
+            'cluster_title': location.cluster_title,
+            'cluster_artist': location.cluster_artist,
+        }.items()
+        return {k: v for k, v in location_data if v is not None}
 
     @staticmethod
     def _extract_metadata_overrides(diff: Any) -> dict[str, list[Any]]:
