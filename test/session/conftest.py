@@ -126,7 +126,7 @@ def cfg_options() -> None:
     # Ensure required keys exist with defaults
     cfg.setting['rename_files'] = False
     cfg.setting['move_files'] = False
-    cfg.setting['dont_write_tags'] = True
+    cfg.setting['enable_tag_saving'] = False
     cfg.setting['session_include_mb_data'] = False
 
 
@@ -277,7 +277,7 @@ def sample_session_data() -> dict[str, Any]:
         'options': {
             'rename_files': True,
             'move_files': False,
-            'dont_write_tags': True,
+            'enable_tag_saving': True,
         },
         'items': [
             {
@@ -430,7 +430,7 @@ def patch_get_config(monkeypatch: pytest.MonkeyPatch, **settings) -> Mock:
     config_mock.setting = {
         'rename_files': False,
         'move_files': False,
-        'dont_write_tags': False,
+        'enable_tag_saving': False,
         'session_safe_restore': True,
         **settings,
     }

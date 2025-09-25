@@ -89,7 +89,7 @@ def test_session_item_location_immutable() -> None:
 
 
 @pytest.mark.parametrize(
-    ("rename_files", "move_files", "dont_write_tags"),
+    ("rename_files", "move_files", "enable_tag_saving"),
     [
         (True, True, True),
         (False, False, False),
@@ -97,17 +97,17 @@ def test_session_item_location_immutable() -> None:
         (False, True, False),
     ],
 )
-def test_session_options_creation(rename_files: bool, move_files: bool, dont_write_tags: bool) -> None:
+def test_session_options_creation(rename_files: bool, move_files: bool, enable_tag_saving: bool) -> None:
     """Test SessionOptions creation with various boolean combinations."""
     options = SessionOptions(
         rename_files=rename_files,
         move_files=move_files,
-        dont_write_tags=dont_write_tags,
+        enable_tag_saving=enable_tag_saving,
     )
 
     assert options.rename_files == rename_files
     assert options.move_files == move_files
-    assert options.dont_write_tags == dont_write_tags
+    assert options.enable_tag_saving == enable_tag_saving
 
 
 # =============================================================================
@@ -148,7 +148,7 @@ def test_session_item_creation_without_metadata() -> None:
 
 def test_session_data_creation() -> None:
     """Test SessionData creation with all components."""
-    options = SessionOptions(rename_files=True, move_files=False, dont_write_tags=True)
+    options = SessionOptions(rename_files=True, move_files=False, enable_tag_saving=True)
     location = SessionItemLocation(type="track", album_id="album-123")
     item = SessionItem(file_path=Path("/test/file.mp3"), location=location)
 

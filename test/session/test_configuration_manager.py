@@ -57,7 +57,7 @@ def test_configuration_manager_restore_options_with_defaults(mock_get_config) ->
     config_mock.setting = {
         'rename_files': False,
         'move_files': False,
-        'dont_write_tags': False,
+        'enable_tag_saving': False,
     }
     mock_get_config.return_value = config_mock
 
@@ -66,7 +66,7 @@ def test_configuration_manager_restore_options_with_defaults(mock_get_config) ->
 
     assert config_mock.setting['rename_files'] is False
     assert config_mock.setting['move_files'] is False
-    assert config_mock.setting['dont_write_tags'] is False
+    assert config_mock.setting['enable_tag_saving'] is False
 
 
 def test_configuration_manager_restore_options(cfg_options) -> None:
@@ -74,10 +74,10 @@ def test_configuration_manager_restore_options(cfg_options) -> None:
     options = {
         'rename_files': True,
         'move_files': True,
-        'dont_write_tags': True,
+        'enable_tag_saving': True,
     }
     manager.restore_options(options)
     cfg = picard_config.get_config()
     assert cfg.setting['rename_files'] is True
     assert cfg.setting['move_files'] is True
-    assert cfg.setting['dont_write_tags'] is True
+    assert cfg.setting['enable_tag_saving'] is True

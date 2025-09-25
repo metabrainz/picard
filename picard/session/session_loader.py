@@ -166,7 +166,10 @@ class ConfigurationManager:
         config = get_config()
         config.setting['rename_files'] = bool(options.get('rename_files', config.setting['rename_files']))
         config.setting['move_files'] = bool(options.get('move_files', config.setting['move_files']))
-        config.setting['dont_write_tags'] = bool(options.get('dont_write_tags', config.setting['dont_write_tags']))
+        # Only support new key moving forward
+        config.setting['enable_tag_saving'] = bool(
+            options.get('enable_tag_saving', config.setting['enable_tag_saving'])
+        )
 
 
 class ItemGrouper:

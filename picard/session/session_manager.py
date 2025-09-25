@@ -69,7 +69,7 @@ def export_session(tagger: Any) -> dict[str, Any]:
     dict[str, Any]
         Dictionary containing session data with the following keys:
         - version: Session format version (currently 1)
-        - options: Configuration options (rename_files, move_files, dont_write_tags)
+        - options: Configuration options (rename_files, move_files, enable_tag_saving)
         - items: List of file items with paths and locations
         - album_track_overrides: Track-level metadata overrides per album
         - album_overrides: Album-level metadata overrides

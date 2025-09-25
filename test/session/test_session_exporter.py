@@ -57,7 +57,7 @@ def test_session_exporter_export_session_empty(
     assert data['options'] == {
         'rename_files': False,
         'move_files': False,
-        'dont_write_tags': True,
+        'enable_tag_saving': False,
     }
     assert data['items'] == []
     assert data['album_track_overrides'] == {}
@@ -340,7 +340,7 @@ def test_session_exporter_export_options() -> None:
     config_mock.setting = {
         'rename_files': True,
         'move_files': False,
-        'dont_write_tags': True,
+        'enable_tag_saving': True,
     }
 
     options = exporter._export_options(config_mock)
@@ -348,7 +348,7 @@ def test_session_exporter_export_options() -> None:
     assert options == {
         'rename_files': True,
         'move_files': False,
-        'dont_write_tags': True,
+        'enable_tag_saving': True,
     }
 
 
@@ -360,15 +360,15 @@ def test_session_exporter_export_options_with_falsy_values() -> None:
     config_mock.setting = {
         'rename_files': 0,
         'move_files': "",
-        'dont_write_tags': None,
+        'enable_tag_saving': None,
     }
 
     options = exporter._export_options(config_mock)
 
     assert options == {
-        'rename_files': False,
-        'move_files': False,
-        'dont_write_tags': False,
+        'rename_files': 0,
+        'move_files': "",
+        'enable_tag_saving': None,
     }
 
 

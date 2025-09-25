@@ -36,8 +36,8 @@ def test_export_session_empty(tmp_path: Path, cfg_options) -> None:
     data = export_session(_StubTagger(files=[], albums={}))
     assert isinstance(data, dict)
     assert data['version'] == 1
-    assert set(data['options'].keys()) == {"rename_files", "move_files", "dont_write_tags"}
-    assert data['options']['dont_write_tags'] is True
+    assert set(data['options'].keys()) == {"rename_files", "move_files", "enable_tag_saving"}
+    assert data['options']['enable_tag_saving'] is False
     assert data['items'] == []
 
 
@@ -76,14 +76,14 @@ def test_export_session_options_reflect_config_flags(cfg_options: None) -> None:
     cfg = picard_config.get_config()
     cfg.setting['rename_files'] = True
     cfg.setting['move_files'] = True
-    cfg.setting['dont_write_tags'] = True
+    cfg.setting['enable_tag_saving'] = True
 
     tagger = _StubTagger(files=[])
     data = export_session(tagger)
     assert data['options'] == {
         'rename_files': True,
         'move_files': True,
-        'dont_write_tags': True,
+        'enable_tag_saving': True,
     }
 
 

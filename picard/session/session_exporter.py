@@ -81,7 +81,7 @@ class SessionExporter:
         dict[str, Any]
             Dictionary containing session data with the following keys:
             - version: Session format version (currently 1)
-            - options: Configuration options (rename_files, move_files, dont_write_tags)
+            - options: Configuration options (rename_files, move_files, enable_tag_saving)
             - items: List of file items with paths and locations
             - album_track_overrides: Track-level metadata overrides per album
             - album_overrides: Album-level metadata overrides
@@ -184,13 +184,15 @@ class SessionExporter:
 
         Returns
         -------
-        dict[str, bool]
-            Dictionary containing the relevant configuration options.
+        dict[str, Any]
+            Dictionary containing the relevant configuration options. Values
+            preserve their original types (not forced to bool).
         """
         return {
-            'rename_files': bool(config.setting['rename_files']),
-            'move_files': bool(config.setting['move_files']),
-            'dont_write_tags': bool(config.setting['dont_write_tags']),
+            'rename_files': config.setting['rename_files'],
+            'move_files': config.setting['move_files'],
+            # PICARD-3123: renamed from dont_write_tags, semantics reversed in upgrade
+            'enable_tag_saving': config.setting['enable_tag_saving'],
         }
 
     def _export_file_item(self, file: Any) -> dict[str, Any]:

@@ -68,13 +68,13 @@ class SessionOptions:
         Whether to rename files during processing.
     move_files : bool
         Whether to move files during processing.
-    dont_write_tags : bool
-        Whether to skip writing tags to files.
+    enable_tag_saving : bool
+        Whether to save tags to files.
     """
 
     rename_files: bool
     move_files: bool
-    dont_write_tags: bool
+    enable_tag_saving: bool
 
 
 @dataclass
