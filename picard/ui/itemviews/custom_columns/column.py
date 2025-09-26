@@ -28,6 +28,7 @@ from picard.ui.columns import (
     ColumnSortType,
 )
 from picard.ui.itemviews.custom_columns.protocols import (
+    CacheInvalidatable,
     ColumnValueProvider,
     SortKeyProvider,
 )
@@ -81,3 +82,15 @@ class CustomColumn(Column):
             status_icon=False,
         )
         self.provider = provider
+
+    def invalidate_cache(self, obj=None):  # pragma: no cover - UI-driven
+        """Invalidate any caches on the provider if supported.
+
+        Parameters
+        ----------
+        obj
+            Optional item to invalidate for; if omitted, clears entire cache.
+        """
+        if isinstance(self.provider, CacheInvalidatable):
+            # type: ignore[attr-defined]
+            self.provider.invalidate(obj)  # noqa: PGH003

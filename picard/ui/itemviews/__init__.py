@@ -418,6 +418,8 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
 
                 if isinstance(column, CustomColumn):
+                    # Invalidate caches for this object to reflect tag changes
+                    column.invalidate_cache(self.obj)
                     # Hide custom column values for container rows like
                     # "Clusters" and "Unclustered Files".
                     # These represent unrelated collections and should not
