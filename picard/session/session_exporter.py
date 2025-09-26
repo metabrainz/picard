@@ -37,6 +37,13 @@ from picard.session.constants import SessionConstants
 from picard.session.location_detector import LocationDetector
 from picard.session.metadata_handler import MetadataHandler
 from picard.session.session_data import SessionItemLocation
+from picard.session.types import (
+    AlbumOverrides,
+    AlbumTrackOverrides,
+    MbReleaseCache,
+    TagOverrideMap,
+    UnmatchedAlbums,
+)
 
 
 @dataclass
@@ -56,9 +63,9 @@ class MetadataOverridesResult:
         List of album IDs that are loaded but have no files matched to them.
     """
 
-    album_track_overrides: dict[str, dict[str, dict[str, list[Any]]]]
-    album_overrides: dict[str, dict[str, list[Any]]]
-    unmatched_albums: list[str]
+    album_track_overrides: AlbumTrackOverrides
+    album_overrides: AlbumOverrides
+    unmatched_albums: UnmatchedAlbums
 
 
 class SessionExporter:
@@ -133,7 +140,7 @@ class SessionExporter:
 
         return session_data
 
-    def _export_mb_cache(self, tagger: Any) -> dict[str, Any]:
+    def _export_mb_cache(self, tagger: Any) -> MbReleaseCache:
         """Export MB release data for currently loaded albums.
 
         Parameters
@@ -146,7 +153,7 @@ class SessionExporter:
         dict[str, Any]
             Mapping of album MBID to release data node.
         """
-        cache: dict[str, Any] = {}
+        cache: MbReleaseCache = {}
         for album_id, album in getattr(tagger, 'albums', {}).items():
             # Prefer cached node saved after tracks were loaded; fall back to live node if still present
             node = getattr(album, '_release_node_cache', None) or getattr(album, '_release_node', None)
@@ -260,7 +267,7 @@ class SessionExporter:
         return {k: v for k, v in location_data if v is not None}
 
     @staticmethod
-    def _extract_metadata_overrides(diff: Any) -> dict[str, list[Any]]:
+    def _extract_metadata_overrides(diff: Any) -> TagOverrideMap:
         """Extract metadata overrides from a diff object.
 
         Parameters
@@ -288,9 +295,9 @@ class SessionExporter:
         MetadataOverridesResult
             Result containing album track overrides, album overrides, and unmatched albums.
         """
-        album_overrides: dict[str, dict[str, dict[str, list[Any]]]] = {}
-        album_meta_overrides: dict[str, dict[str, list[Any]]] = {}
-        unmatched_albums: list[str] = []
+        album_overrides: AlbumTrackOverrides = {}
+        album_meta_overrides: AlbumOverrides = {}
+        unmatched_albums: UnmatchedAlbums = []
 
         # Get all album IDs that have files matched to them
         albums_with_files = set()
@@ -312,7 +319,7 @@ class SessionExporter:
                 album_meta_overrides[album.id] = SessionExporter._extract_metadata_overrides(album_diff)
 
             # Track-level overrides
-            overrides_for_album: dict[str, dict[str, list[Any]]] = {}
+            overrides_for_album: dict[str, TagOverrideMap] = {}
             for track in album.tracks:
                 # The difference to scripted_metadata are user edits made in UI
                 diff = track.metadata.diff(track.scripted_metadata)
