@@ -21,11 +21,13 @@
 
 from collections import namedtuple
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard.i18n import gettext as _
+from picard.item import Item
 
-from picard.ui.columns import ImageColumn
+from picard.ui.itemviews.custom_columns import DelegateColumn
+from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, DelegateProvider
 
 
 # Structured container for delegate item data
@@ -45,57 +47,58 @@ THRESHOLD_TO_ICON_INDEX = {
 }
 
 
-class MatchQualityColumn(ImageColumn):
+class MatchQualityProvider(ColumnValueProvider, DelegateProvider):
     """Column that displays match quality using match icons at the release level."""
 
-    def __init__(self, title, key, width=120):
-        super().__init__(title, key, width=width)
-        self.size = QtCore.QSize(16, 16)  # Icon size
-        self.width = width
+    def __init__(self) -> None:
+        """Initialize the match quality provider."""
+        self._delegate_class = MatchQualityColumnDelegate
 
-    def paint(self, painter, rect):
-        """Override paint method to prevent NotImplementedError from base class."""
-        # This column is painted by the delegate, not the header
-        # So we just do nothing here to prevent the error
-        pass
+    def evaluate(self, obj: Item) -> str:
+        """Return the match percentage as a string for sorting.
 
-    def get_match_icon(self, obj):
-        """Get the appropriate match icon for the given object."""
-        # Only show icons at the release (album) level, not track level
+        Parameters
+        ----------
+        obj
+            The item to evaluate.
+
+        Returns
+        -------
+        str
+            The match percentage as a string (e.g., "0.75" for 75%).
+        """
         if not hasattr(obj, 'get_num_matched_tracks') or not hasattr(obj, 'tracks'):
-            return None
+            return "0.0"
 
         # Album object
         total = len(obj.tracks) if obj.tracks else 0
 
         if total == 0:
-            # Use pending icon for zero tracks
-            from picard.ui.itemviews import FileItem
+            return "0.0"
 
-            if hasattr(FileItem, 'match_pending_icons') and len(FileItem.match_pending_icons) > 5:
-                return FileItem.match_pending_icons[5]  # match-pending-100.png
-            return None
+        get_num_matched_tracks = getattr(obj, 'get_num_matched_tracks', None)
+        if not callable(get_num_matched_tracks):
+            return "0.0"
 
-        # Calculate match percentage
-        matched = obj.get_num_matched_tracks()
+        matched = int(get_num_matched_tracks())
         percentage = matched / total
+        return str(percentage)
 
-        # Determine which icon to use based on percentage using thresholds
-        for threshold in sorted(THRESHOLD_TO_ICON_INDEX.keys(), reverse=True):
-            if percentage >= threshold:
-                icon_index = THRESHOLD_TO_ICON_INDEX[threshold]
-                break
+    def get_match_stats(self, obj: Item) -> dict[str, int] | None:
+        """Get comprehensive match statistics for the given object.
 
-        # Get the match icons from FileItem
-        from picard.ui.itemviews import FileItem
+        Parameters
+        ----------
+        obj
+            The item to evaluate.
 
-        if hasattr(FileItem, 'match_icons') and icon_index < len(FileItem.match_icons):
-            return FileItem.match_icons[icon_index]
-
-        return None
-
-    def get_match_stats(self, obj):
-        """Get comprehensive match statistics for the given object."""
+        Returns
+        -------
+        dict[str, int] | None
+            A dictionary with keys ``matched``, ``total``, ``unmatched``,
+            ``duplicates``, ``extra``, and ``missing``. Returns ``None`` if
+            stats are not available for the given object.
+        """
         # Only show stats at the release (album) level, not track level
         if not hasattr(obj, 'get_num_matched_tracks') or not hasattr(obj, 'tracks'):
             return None
@@ -141,11 +144,21 @@ class MatchQualityColumn(ImageColumn):
             'missing': missing,
         }
 
+    def get_delegate_class(self) -> type[QtWidgets.QStyledItemDelegate]:
+        """Return the delegate class for custom rendering.
+
+        Returns
+        -------
+        type[QtWidgets.QStyledItemDelegate]
+            The delegate class (subclass of QStyledItemDelegate).
+        """
+        return self._delegate_class
+
 
 class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
     """Delegate for rendering match quality icons in tree items."""
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QtCore.QObject | None = None) -> None:
         super().__init__(parent)
 
     def _get_item_data(self, index: QtCore.QModelIndex) -> MatchItemData | None:
@@ -172,23 +185,67 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
             return None
 
         column = columns[column_index]
-        if not isinstance(column, MatchQualityColumn):
+        if not isinstance(column, DelegateColumn):
             return None
 
-        stats = column.get_match_stats(obj)
+        # Get stats from the provider (not from delegate)
+        provider = column.delegate_provider
+        if hasattr(provider, '_base'):
+            provider = provider._base  # Unwrap adapter
+
+        stats = provider.get_match_stats(obj)
         if not stats:
             return None
 
         return MatchItemData(obj=obj, column=column, stats=stats)
 
-    def _format_tooltip_text(self, stats):
-        """Format stats into detailed tooltip text.
+    def _get_match_icon(self, obj: Item, column: DelegateColumn) -> QtGui.QIcon | None:
+        """Select the appropriate match icon using delegate-side logic."""
+        # Compute stats using provider, but map to icons here (UI concern)
+        provider = column.delegate_provider
+        if hasattr(provider, '_base'):
+            provider = provider._base  # Unwrap adapter
 
-        Args:
-            stats: Dictionary containing match statistics
+        stats = provider.get_match_stats(obj)
+        if not stats:
+            return None
 
-        Returns:
-            str: Formatted tooltip text
+        total = stats.get('total', 0)
+        if total == 0:
+            from picard.ui.itemviews import FileItem
+
+            if hasattr(FileItem, 'match_pending_icons') and len(FileItem.match_pending_icons) > 5:
+                return FileItem.match_pending_icons[5]
+            return None
+
+        matched = stats.get('matched', 0)
+        percentage = matched / total if total else 0.0
+
+        # Determine which icon index to use based on percentage using thresholds
+        icon_index = 0
+        for threshold in sorted(THRESHOLD_TO_ICON_INDEX.keys(), reverse=True):
+            if percentage >= threshold:
+                icon_index = THRESHOLD_TO_ICON_INDEX[threshold]
+                break
+
+        from picard.ui.itemviews import FileItem
+
+        if hasattr(FileItem, 'match_icons') and icon_index < len(FileItem.match_icons):
+            return FileItem.match_icons[icon_index]
+        return None
+
+    def _format_tooltip_text(self, stats: dict[str, int]) -> str:
+        """Format stats into a detailed tooltip string.
+
+        Parameters
+        ----------
+        stats
+            Dictionary containing integer match statistics.
+
+        Returns
+        -------
+        str
+            The formatted tooltip text.
         """
         tooltip_parts = []
 
@@ -214,7 +271,23 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
 
         return "\n".join(tooltip_parts)
 
-    def paint(self, painter, option, index):
+    def paint(
+        self,
+        painter: QtGui.QPainter,
+        option: QtWidgets.QStyleOptionViewItem,
+        index: QtCore.QModelIndex,
+    ) -> None:
+        """Paint the match quality icon in the item cell.
+
+        Parameters
+        ----------
+        painter
+            The painter used for drawing.
+        option
+            The style options for the item.
+        index
+            The model index identifying the item.
+        """
         # Initialize the style option
         self.initStyleOption(option, index)
 
@@ -230,8 +303,8 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         if not item_data:
             return
 
-        # Get the match icon
-        icon = item_data.column.get_match_icon(item_data.obj)
+        # Get the match icon from the provider
+        icon = self._get_match_icon(item_data.obj, item_data.column)
 
         # Calculate layout
         icon_size = item_data.column.size
@@ -243,8 +316,31 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
             y = option.rect.y() + (option.rect.height() - icon_size.height()) // 2
             icon.paint(painter, QtCore.QRect(x, y, icon_size.width(), icon_size.height()))
 
-    def helpEvent(self, event, view, option, index):
-        """Show tooltip with explanation of the stats."""
+    def helpEvent(
+        self,
+        event: QtGui.QHelpEvent,
+        view: QtWidgets.QWidget,
+        option: QtWidgets.QStyleOptionViewItem,
+        index: QtCore.QModelIndex,
+    ) -> bool:
+        """Show a tooltip with an explanation of the stats.
+
+        Parameters
+        ----------
+        event
+            The help event providing cursor position.
+        view
+            The view showing the items.
+        option
+            The style options for the item.
+        index
+            The model index identifying the item.
+
+        Returns
+        -------
+        bool
+            ``True`` if the event was handled, else ``False``.
+        """
         # Get item data
         item_data = self._get_item_data(index)
         if not item_data:
@@ -257,6 +353,24 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         QtWidgets.QToolTip.showText(event.globalPos(), tooltip_text, view)
         return True
 
-    def sizeHint(self, option, index):
+    def sizeHint(
+        self,
+        option: QtWidgets.QStyleOptionViewItem,
+        index: QtCore.QModelIndex,
+    ) -> QtCore.QSize:
+        """Return the recommended size for the item cell.
+
+        Parameters
+        ----------
+        option
+            The style options for the item.
+        index
+            The model index identifying the item.
+
+        Returns
+        -------
+        QtCore.QSize
+            A size that accommodates both icon and text.
+        """
         # Return a size that accommodates both icon and text
         return QtCore.QSize(57, 16)

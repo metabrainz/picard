@@ -22,17 +22,21 @@
 
 from __future__ import annotations
 
-from picard.ui.itemviews.custom_columns.column import CustomColumn
+from picard.ui.itemviews.custom_columns.column import CustomColumn, DelegateColumn, IconColumn
 from picard.ui.itemviews.custom_columns.factory import (
     _create_custom_column,
     make_callable_column,
+    make_delegate_column,
     make_field_column,
+    make_numeric_field_column,
     make_provider_column,
     make_script_column,
     make_transformed_column,
 )
 from picard.ui.itemviews.custom_columns.protocols import (
     ColumnValueProvider,
+    DelegateProvider,
+    HeaderIconProvider,
     SortKeyProvider,
 )
 from picard.ui.itemviews.custom_columns.registry import registry
@@ -52,13 +56,19 @@ from picard.ui.itemviews.custom_columns.sorting_adapters import (
 
 __all__ = [
     "ColumnValueProvider",
+    "DelegateProvider",
     "SortKeyProvider",
+    "HeaderIconProvider",
     "CustomColumn",
+    "DelegateColumn",
+    "IconColumn",
     "make_field_column",
+    "make_numeric_field_column",
     "make_provider_column",
     "make_script_column",
     "make_callable_column",
     "make_transformed_column",
+    "make_delegate_column",
     "registry",
     "_create_custom_column",
     # Sorting adapters
