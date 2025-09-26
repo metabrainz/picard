@@ -21,7 +21,7 @@
 
 
 import os
-import os.path
+from pathlib import Path
 
 from PyQt6.QtCore import (
     QCoreApplication,
@@ -59,3 +59,23 @@ def plugin_folder():
     # FIXME: This really should be in QStandardPaths.StandardLocation.AppDataLocation instead,
     # but this is a breaking change that requires data migration
     return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(config_folder(), 'plugins')))
+
+
+def sessions_folder():
+    """Get the sessions folder path.
+
+    Returns
+    -------
+    str
+        The path to the sessions folder. If a custom path is configured,
+        returns that path. Otherwise, returns the default path
+        <config_folder>/sessions.
+    """
+    from picard.config import get_config
+
+    config = get_config()
+    custom_path = config.setting['session_folder_path']
+    if custom_path:
+        return str(Path(custom_path).resolve())
+    else:
+        return str(Path(config_folder()) / 'sessions')
