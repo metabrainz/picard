@@ -46,6 +46,10 @@ from picard.session.session_data import AlbumItems, GroupedItems
 from picard.session.track_mover import TrackMover
 
 
+# Configuration keys that can be restored from session files
+RESTORABLE_CONFIG_KEYS = ['rename_files', 'move_files', 'enable_tag_saving']
+
+
 class ProgressReporter(Protocol):
     """Protocol for emitting session loading progress updates."""
 
@@ -164,12 +168,8 @@ class ConfigurationManager:
             Options mapping from the session file.
         """
         config = get_config()
-        config.setting['rename_files'] = bool(options.get('rename_files', config.setting['rename_files']))
-        config.setting['move_files'] = bool(options.get('move_files', config.setting['move_files']))
-        # Only support new key moving forward
-        config.setting['enable_tag_saving'] = bool(
-            options.get('enable_tag_saving', config.setting['enable_tag_saving'])
-        )
+        for key in RESTORABLE_CONFIG_KEYS:
+            config.setting[key] = options.get(key, config.setting[key])
 
 
 class ItemGrouper:
