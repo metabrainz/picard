@@ -89,6 +89,7 @@ class CustomColumn(Column):
             status_icon=status_icon,
         )
         self.provider = provider
+
     def invalidate_cache(self, obj=None):  # pragma: no cover - UI-driven
         """Invalidate any caches on the provider if supported.
 
@@ -100,6 +101,7 @@ class CustomColumn(Column):
         if isinstance(self.provider, CacheInvalidatable):
             # type: ignore[attr-defined]
             self.provider.invalidate(obj)  # noqa: PGH003
+
 
 class DelegateColumn(Column):
     """A column that uses a delegate for custom rendering and optional sorting."""
