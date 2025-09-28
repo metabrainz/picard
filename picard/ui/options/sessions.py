@@ -129,7 +129,9 @@ class SessionsOptionsPage(OptionsPage):
         if not current_path:
             current_path = sessions_folder()
 
-        folder = FileDialog.getExistingDirectory(parent=self, dir=current_path, caption=_("Select Sessions Folder"))
+        folder = FileDialog.getExistingDirectory(
+            parent=self, directory=current_path, caption=_("Select Sessions Folder")
+        )
         if folder:
             self.folder_path_edit.setText(folder)
 
