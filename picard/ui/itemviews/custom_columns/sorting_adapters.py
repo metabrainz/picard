@@ -28,6 +28,7 @@ from picard.i18n import sort_key as _sort_key
 from picard.item import Item
 
 from picard.ui.itemviews.custom_columns.protocols import (
+    CacheInvalidatable,
     ColumnValueProvider,
     SortKeyProvider,
 )
@@ -61,6 +62,18 @@ class _AdapterBase(SortKeyProvider):
     def evaluate(self, obj: Item) -> str:
         """Return evaluated text value for item."""
         return self._base.evaluate(obj)
+
+    def invalidate(self, obj: Item | None = None) -> None:  # pragma: no cover - simple delegation
+        """Forward cache invalidation to the wrapped provider if supported.
+
+        Parameters
+        ----------
+        obj
+            Optional item to invalidate for; if omitted, clears entire cache.
+        """
+        # Not all providers implement `invalidate`; the check avoids `AttributeError`
+        if isinstance(self._base, CacheInvalidatable):
+            self._base.invalidate(obj)
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         return f"{self.__class__.__name__}(base={self._base!r})"
@@ -309,6 +322,8 @@ class CachedSortAdapter(_AdapterBase):
             except (KeyError, TypeError):
                 # Not present or not weakrefable; best effort clear all to avoid stale keys
                 self._cache.clear()
+        # Also forward invalidation to the wrapped provider if it supports it
+        super().invalidate(obj)
 
 
 class ReverseAdapter(_AdapterBase):
