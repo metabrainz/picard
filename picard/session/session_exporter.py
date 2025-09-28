@@ -33,7 +33,7 @@ from typing import Any
 from picard.album import NatAlbum
 from picard.config import get_config
 from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS, INTERNAL_TAG_PREFIX
-from picard.session.constants import SessionConstants
+from picard.session.constants import RESTORABLE_CONFIG_KEYS, SessionConstants
 from picard.session.location_detector import LocationDetector
 from picard.session.metadata_handler import MetadataHandler
 from picard.session.session_data import SessionItemLocation
@@ -195,12 +195,7 @@ class SessionExporter:
             Dictionary containing the relevant configuration options. Values
             preserve their original types (not forced to bool).
         """
-        return {
-            'rename_files': config.setting['rename_files'],
-            'move_files': config.setting['move_files'],
-            # PICARD-3123: renamed from dont_write_tags, semantics reversed in upgrade
-            'enable_tag_saving': config.setting['enable_tag_saving'],
-        }
+        return {key: config.setting[key] for key in RESTORABLE_CONFIG_KEYS}
 
     def _export_file_item(self, file: Any) -> dict[str, Any]:
         """Export a single file item.

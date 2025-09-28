@@ -41,14 +41,10 @@ from picard.config import get_config
 from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS
 from picard.i18n import gettext as _
 from picard.metadata import Metadata
-from picard.session.constants import SessionConstants
+from picard.session.constants import RESTORABLE_CONFIG_KEYS, SessionConstants
 from picard.session.metadata_handler import MetadataHandler
 from picard.session.session_data import AlbumItems, GroupedItems
 from picard.session.track_mover import TrackMover
-
-
-# Configuration keys that can be restored from session files
-RESTORABLE_CONFIG_KEYS = ['rename_files', 'move_files', 'enable_tag_saving']
 
 
 class ProgressReporter(Protocol):

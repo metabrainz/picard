@@ -144,3 +144,12 @@ class SessionMessages:
         "Do not make MusicBrainz requests on restore (faster loads, risk of stale data)"
     )
     SESSION_FOLDER_PATH_TITLE = N_("Sessions folder path (leave empty for default)")
+
+
+# Configuration keys that should be persisted in and restored from session files
+RESTORABLE_CONFIG_KEYS = [
+    'rename_files',
+    'move_files',
+    # PICARD-3123: renamed from dont_write_tags, semantics reversed in upgrade
+    'enable_tag_saving',
+]
