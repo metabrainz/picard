@@ -31,6 +31,20 @@ from picard.item import Item
 
 
 @runtime_checkable
+class CacheInvalidatable(Protocol):
+    def invalidate(self, obj: Item | None = None) -> None:  # pragma: no cover - optional
+        """Invalidate any cached values.
+
+        Parameters
+        ----------
+        obj
+            If provided, invalidate cache entries related to this item only.
+            If ``None``, invalidate the entire cache.
+        """
+        ...
+
+
+@runtime_checkable
 class ColumnValueProvider(Protocol):
     def evaluate(self, obj: Item) -> str:
         """Return evaluated text value for item.

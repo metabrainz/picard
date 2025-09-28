@@ -462,8 +462,15 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         recognized = set(get_recognized_view_columns().values())
         if self.columns not in recognized:
             return
+        # Invalidate provider and item sort caches to avoid incompatible keys
+        self._invalidate_view_caches()
         self._refresh_header_labels()
         self._refresh_all_items_data()
+        # Trigger resort on current column if sorting is enabled
+        if self.isSortingEnabled():
+            current = self.sortColumn()
+            if current >= 0:
+                self.sortByColumn(current, self.header().sortIndicatorOrder())
 
     def _init_header(self):
         # Load any persisted user-defined custom columns before header setup
@@ -482,6 +489,25 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
         self.restore_default_columns()
         self.restore_state()
+
+    def _invalidate_view_caches(self):
+        """Clear provider caches and per-item sort keys for this view."""
+        # Invalidate provider caches for custom columns in this view
+        from picard.ui.itemviews.custom_columns import CustomColumn  # local import to avoid cycles
+
+        for col in self.columns:
+            if isinstance(col, CustomColumn):
+                col.invalidate_cache()
+
+        # Clear cached sort keys on all items
+        def _clear_item_sort_cache(item):
+            if hasattr(item, "_sortkeys") and isinstance(item._sortkeys, dict):
+                item._sortkeys.clear()
+            for i in range(item.childCount()):
+                _clear_item_sort_cache(item.child(i))
+
+        for i in range(self.topLevelItemCount()):
+            _clear_item_sort_cache(self.topLevelItem(i))
 
     def supportedDropActions(self):
         return QtCore.Qt.DropAction.CopyAction | QtCore.Qt.DropAction.MoveAction
