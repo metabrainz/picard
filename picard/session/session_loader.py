@@ -27,6 +27,7 @@ breaking down the complex loading logic into focused, manageable components.
 from __future__ import annotations
 
 from contextlib import suppress
+from dataclasses import dataclass
 import gzip
 from pathlib import Path
 from typing import Any, Protocol
@@ -193,29 +194,29 @@ class ItemGrouper:
         by_album: dict[str, AlbumItems] = {}
         nat_items: list[tuple[Path, str]] = []
 
-        for it in items:
-            fpath = Path(it['file_path']).expanduser()
-            loc = it.get('location', {})
-            ltype = str(loc.get('type', SessionConstants.LOCATION_UNCLUSTERED))
+        acc = _GroupAccumulators(
+            unclustered=by_unclustered,
+            by_cluster=by_cluster,
+            by_album=by_album,
+            nat_items=nat_items,
+        )
 
-            if ltype == SessionConstants.LOCATION_UNCLUSTERED:
-                by_unclustered.append(fpath)
-            elif ltype == SessionConstants.LOCATION_CLUSTER:
-                key = (str(loc.get('cluster_title', "")), str(loc.get('cluster_artist', "")))
-                by_cluster.setdefault(key, []).append(fpath)
-            elif ltype in {SessionConstants.LOCATION_ALBUM_UNMATCHED, SessionConstants.LOCATION_TRACK}:
-                album_id = str(loc.get('album_id'))
-                entry = by_album.setdefault(album_id, AlbumItems(unmatched=[], tracks=[]))
-                if ltype == SessionConstants.LOCATION_ALBUM_UNMATCHED:
-                    entry.unmatched.append(fpath)
-                else:
-                    entry.tracks.append((fpath, str(loc.get('recording_id'))))
-            elif ltype == SessionConstants.LOCATION_NAT:
-                nat_items.append((fpath, str(loc.get('recording_id'))))
-            else:
-                by_unclustered.append(fpath)
+        dispatch = self._build_dispatch()
 
-        return GroupedItems(unclustered=by_unclustered, by_cluster=by_cluster, by_album=by_album, nat_items=nat_items)
+        for item in items:
+            file_path = Path(item['file_path']).expanduser()
+            location = item.get('location', {})
+            location_type = str(location.get('type', SessionConstants.LOCATION_UNCLUSTERED))
+
+            handler = dispatch.get(location_type, self._handle_default)
+            handler(file_path, location, acc)
+
+        return GroupedItems(
+            unclustered=by_unclustered,
+            by_cluster=by_cluster,
+            by_album=by_album,
+            nat_items=nat_items,
+        )
 
     def extract_metadata(self, items: list[dict[str, Any]]) -> dict[Path, dict[str, list[Any]]]:
         """Extract per-path metadata deltas from item entries.
@@ -238,6 +239,72 @@ class ItemGrouper:
                 tags = {k: MetadataHandler.as_list(v) for k, v in md['tags'].items()}
                 metadata_by_path[fpath] = tags
         return metadata_by_path
+
+    # --- Internal strategy handlers -------------------------------------------------
+
+    def _build_dispatch(self):
+        """Build the dispatch table for location handlers.
+
+        Returns
+        -------
+        dict[str, Any]
+            Mapping of location type to handler.
+        """
+        return {
+            SessionConstants.LOCATION_UNCLUSTERED: self._handle_unclustered,
+            SessionConstants.LOCATION_CLUSTER: self._handle_cluster,
+            SessionConstants.LOCATION_ALBUM_UNMATCHED: self._handle_album_unmatched,
+            SessionConstants.LOCATION_TRACK: self._handle_track,
+            SessionConstants.LOCATION_NAT: self._handle_nat,
+        }
+
+    def _handle_unclustered(self, file_path: Path, location: dict[str, Any], acc: "_GroupAccumulators") -> None:
+        acc.unclustered.append(file_path)
+
+    def _handle_cluster(self, file_path: Path, location: dict[str, Any], acc: "_GroupAccumulators") -> None:
+        title = str(location.get('cluster_title', ""))
+        artist = str(location.get('cluster_artist', ""))
+        acc.by_cluster.setdefault((title, artist), []).append(file_path)
+
+    def _handle_album_unmatched(self, file_path: Path, location: dict[str, Any], acc: "_GroupAccumulators") -> None:
+        album_id = str(location.get('album_id'))
+        entry = acc.by_album.setdefault(album_id, AlbumItems(unmatched=[], tracks=[]))
+        entry.unmatched.append(file_path)
+
+    def _handle_track(self, file_path: Path, location: dict[str, Any], acc: "_GroupAccumulators") -> None:
+        album_id = str(location.get('album_id'))
+        recording_id = str(location.get('recording_id'))
+        entry = acc.by_album.setdefault(album_id, AlbumItems(unmatched=[], tracks=[]))
+        entry.tracks.append((file_path, recording_id))
+
+    def _handle_nat(self, file_path: Path, location: dict[str, Any], acc: "_GroupAccumulators") -> None:
+        recording_id = str(location.get('recording_id'))
+        acc.nat_items.append((file_path, recording_id))
+
+    def _handle_default(self, file_path: Path, location: dict[str, Any], acc: "_GroupAccumulators") -> None:
+        acc.unclustered.append(file_path)
+
+
+@dataclass
+class _GroupAccumulators:
+    """Mutable accumulators passed between grouping handlers.
+
+    Attributes
+    ----------
+    unclustered : list[Path]
+        Paths destined for the unclustered section.
+    by_cluster : dict[tuple[str, str], list[Path]]
+        Mapping from (cluster title, cluster artist) to file paths.
+    by_album : dict[str, AlbumItems]
+        Mapping from album ID to album grouping (unmatched and track-bound items).
+    nat_items : list[tuple[Path, str]]
+        List of (file path, recording ID) destined for the NAT area.
+    """
+
+    unclustered: list[Path]
+    by_cluster: dict[tuple[str, str], list[Path]]
+    by_album: dict[str, AlbumItems]
+    nat_items: list[tuple[Path, str]]
 
 
 class UIStateManager:
@@ -534,8 +601,52 @@ class SessionLoader:
 
         Notes
         -----
-        Orchestrates reading the session, restoring configuration, loading
-        items and albums, applying overrides, and restoring UI state.
+        Executes a small pipeline: read file → restore options →
+        configure albums → group items → preload cache → load items →
+        apply overrides/metadata → restore UI.
+        """
+        ctx = self._build_context(Path(path))
+
+        # Preload albums from embedded cache if available
+        if self._mb_cache:
+            self._progress.emit("preload_cache", details={'albums': len(self._mb_cache)})
+            self._albums.preload_from_cache(self._mb_cache, ctx.grouped_items)
+
+        # Emit progress and ensure needed albums are present
+        self._progress.emit("load_items", details={'files': self._compute_total_files(ctx.grouped_items)})
+        self._albums.load_needed_albums(ctx.grouped_items, self._mb_cache)
+
+        # Place files into their destinations (unclustered, clusters, albums, NAT)
+        self._load_grouped_items(ctx.grouped_items)
+
+        # Unmatched albums without items
+        self._albums.load_unmatched_albums(ctx.data.get('unmatched_albums', []), self._mb_cache)
+
+        # Apply overrides and deferred file metadata
+        self._progress.emit("apply_overrides")
+        self._overrides.apply(ctx.data, self._mb_cache)
+        if ctx.metadata_map:
+            self._schedule_metadata_application(ctx.metadata_map)
+
+        # Finalize UI state
+        self._progress.emit("finalize")
+        expanded = set(ctx.data.get('expanded_albums', []))
+        self._ui_state.apply_expansions_later(expanded)
+
+    # --- Internal pipeline helpers --------------------------------------------------
+
+    def _build_context(self, path: Path) -> "SessionLoadContext":
+        """Build immutable inputs and compute initial grouping context.
+
+        Parameters
+        ----------
+        path : Path
+            Session file path to read.
+
+        Returns
+        -------
+        SessionLoadContext
+            Context holding parsed data, grouping, and metadata map.
         """
         self._progress.emit("read", details={'path': str(path)})
         data = self._file_reader.read(path)
@@ -555,47 +666,53 @@ class SessionLoader:
         items = data.get('items', [])
         grouped_items = self._grouper.group(items)
         metadata_map = self._grouper.extract_metadata(items)
-
         self._mb_cache = data.get('mb_cache', {})
-        if self._mb_cache:
-            self._progress.emit("preload_cache", details={'albums': len(self._mb_cache)})
-            self._albums.preload_from_cache(self._mb_cache, grouped_items)
 
-        total_files = (
+        return SessionLoadContext(
+            path=path,
+            data=data,
+            grouped_items=grouped_items,
+            metadata_map=metadata_map,
+        )
+
+    def _compute_total_files(self, grouped_items: GroupedItems) -> int:
+        """Compute total number of files to be loaded from grouped items.
+
+        Parameters
+        ----------
+        grouped_items : GroupedItems
+            Items grouped by destination.
+
+        Returns
+        -------
+        int
+            Total count of files across all groups.
+        """
+        return (
             len(grouped_items.unclustered)
             + sum(len(v) for v in grouped_items.by_cluster.values())
             + sum(len(g.unmatched) + len(g.tracks) for g in grouped_items.by_album.values())
         )
-        self._progress.emit("load_items", details={'files': total_files})
 
-        # Load albums for items and place files accordingly
-        self._albums.load_needed_albums(grouped_items, self._mb_cache)
+    def _load_grouped_items(self, grouped_items: GroupedItems) -> None:
+        """Load grouped files into the tagger model (unclustered, clusters, albums, NAT).
 
+        Parameters
+        ----------
+        grouped_items : GroupedItems
+            Items grouped by destination.
+        """
         if grouped_items.unclustered:
             self.tagger.add_files([str(p) for p in grouped_items.unclustered], target=self.tagger.unclustered_files)
+
         for (title, artist), paths in grouped_items.by_cluster.items():
             cluster = self.tagger.load_cluster(title, artist)
             self.tagger.add_files([str(p) for p in paths], target=cluster)
+
         self._albums.load_album_files(grouped_items.by_album, self.track_mover)
 
-        # NAT items
         for fpath, rid in grouped_items.nat_items:
             self.track_mover.move_file_to_nat(fpath, rid)
-
-        # Unmatched albums
-        self._albums.load_unmatched_albums(data.get('unmatched_albums', []), self._mb_cache)
-
-        # Apply overrides
-        self._progress.emit("apply_overrides")
-        self._overrides.apply(data, self._mb_cache)
-
-        if metadata_map:
-            self._schedule_metadata_application(metadata_map)
-
-        # Restore UI state
-        self._progress.emit("finalize")
-        expanded = set(data.get('expanded_albums', []))
-        self._ui_state.apply_expansions_later(expanded)
 
     # The following block of methods are retained for scheduling and lifecycle.
 
@@ -637,3 +754,25 @@ class SessionLoader:
         to handle cleanup tasks like unsetting the restoring flag.
         """
         QtCore.QTimer.singleShot(SessionConstants.DEFAULT_RETRY_DELAY_MS, self._unset_restoring_flag_when_idle)
+
+
+@dataclass(frozen=True)
+class SessionLoadContext:
+    """Immutable context for a single session load operation.
+
+    Attributes
+    ----------
+    path : Path
+        Path to the session file.
+    data : dict[str, Any]
+        Parsed session data.
+    grouped_items : GroupedItems
+        Items grouped by destination.
+    metadata_map : dict[Path, dict[str, list[Any]]]
+        Per-file tag deltas to apply after load.
+    """
+
+    path: Path
+    data: dict[str, Any]
+    grouped_items: GroupedItems
+    metadata_map: dict[Path, dict[str, list[Any]]]
