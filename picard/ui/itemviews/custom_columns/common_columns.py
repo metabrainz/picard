@@ -20,14 +20,12 @@
 
 """Factories for creating standard built-in columns (match, file, etc.)."""
 
-from __future__ import annotations
-
 from PyQt6 import QtCore
 
 from picard.i18n import N_
 from picard.util import icontheme
 
-from picard.ui.columns import ColumnAlign, ColumnSortType
+from picard.ui.columns import Column, ColumnAlign, ColumnSortType
 from picard.ui.itemviews.custom_columns import make_delegate_column, make_field_column, make_numeric_field_column
 from picard.ui.itemviews.custom_columns.factory import make_icon_header_column
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
@@ -83,7 +81,7 @@ def create_fingerprint_status_column():
     return column
 
 
-def create_common_columns():
+def create_common_columns() -> tuple[Column, ...]:
     """Create the built-in common columns using factories.
 
     Returns
@@ -99,8 +97,8 @@ def create_common_columns():
         width=250,
         always_visible=True,
         status_icon=True,
+        is_default=True,
     )
-    title_col.is_default = True
 
     # Length with numeric sort key from metadata.length
     length_col = make_numeric_field_column(
@@ -109,12 +107,11 @@ def create_common_columns():
         parse_time_format,
         width=50,
         align=ColumnAlign.RIGHT,
+        is_default=True,
     )
-    length_col.is_default = True
 
     # Artist
-    artist_col = make_field_column(N_("Artist"), 'artist', width=200)
-    artist_col.is_default = True
+    artist_col = make_field_column(N_("Artist"), 'artist', width=200, is_default=True)
 
     # Others (mostly field columns)
     album_artist = make_field_column(N_("Album Artist"), 'albumartist')

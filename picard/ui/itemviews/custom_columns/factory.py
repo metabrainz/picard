@@ -81,6 +81,7 @@ def _create_custom_column(
     always_visible: bool = False,
     sort_type: ColumnSortType | None = None,
     status_icon: bool = False,
+    is_default: bool = False,
 ) -> CustomColumn:
     """Create `CustomColumn`.
 
@@ -99,7 +100,7 @@ def _create_custom_column(
     # downgrade to TEXT to avoid invalid configuration
     if inferred_sort_type == ColumnSortType.SORTKEY and not isinstance(provider, SortKeyProvider):
         inferred_sort_type = ColumnSortType.TEXT
-    return CustomColumn(
+    column = CustomColumn(
         title,
         key,
         provider,
@@ -109,6 +110,8 @@ def _create_custom_column(
         always_visible=always_visible,
         status_icon=status_icon,
     )
+    column.is_default = is_default
+    return column
 
 
 def make_field_column(
@@ -120,18 +123,33 @@ def make_field_column(
     always_visible: bool = False,
     sort_type: ColumnSortType = ColumnSortType.TEXT,
     status_icon: bool = False,
+    is_default: bool = False,
 ) -> CustomColumn:
-    """Create column that displays a field via `obj.column(key)`.
+    """Create a column that displays a field via ``obj.column(key)``.
 
     Parameters
     ----------
-    title, key, width, align, always_visible
-        Column configuration.
+    title : str
+        Display title of the column.
+    key : str
+        Internal key used to identify the column and field source.
+    width : int | None, optional
+        Fixed width in pixels. If ``None``, uses default behavior.
+    align : ColumnAlign, default ``ColumnAlign.LEFT``
+        Text alignment for the cell contents.
+    always_visible : bool, default ``False``
+        If ``True``, hides the column visibility toggle in the UI.
+    sort_type : ColumnSortType, default ``ColumnSortType.TEXT``
+        Sorting behavior for the column.
+    status_icon : bool, default ``False``
+        If ``True``, marks this as the single status icon column.
+    is_default : bool, default ``False``
+        If ``True``, marks this column as visible by default.
 
     Returns
     -------
     CustomColumn
-        The field column.
+        The configured field column.
     """
     provider = FieldReferenceProvider(key)
     return _create_custom_column(
@@ -143,6 +161,7 @@ def make_field_column(
         always_visible=always_visible,
         sort_type=sort_type,
         status_icon=status_icon,
+        is_default=is_default,
     )
 
 
@@ -155,21 +174,34 @@ def make_numeric_field_column(
     align: ColumnAlign = ColumnAlign.LEFT,
     always_visible: bool = False,
     status_icon: bool = False,
+    is_default: bool = False,
 ) -> CustomColumn:
-    """Create column that displays a field with numeric sorting.
+    """Create a field column with numeric sorting support.
 
     Parameters
     ----------
-    title, key, width, align, always_visible, status_icon
-        Column configuration.
+    title : str
+        Display title of the column.
+    key : str
+        Internal key used to identify the column and field source.
     parser : Callable[[str], float] | None, optional
         Function to parse the field value to a numeric value for sorting.
-        If None, uses the default float() parser.
+        If ``None``, uses the default ``float()`` parser.
+    width : int | None, optional
+        Fixed width in pixels. If ``None``, uses default behavior.
+    align : ColumnAlign, default ``ColumnAlign.LEFT``
+        Text alignment for the cell contents.
+    always_visible : bool, default ``False``
+        If ``True``, hides the column visibility toggle in the UI.
+    status_icon : bool, default ``False``
+        If ``True``, marks this as the single status icon column.
+    is_default : bool, default ``False``
+        If ``True``, marks this column as visible by default.
 
     Returns
     -------
     CustomColumn
-        The numeric field column with proper sorting.
+        The configured numeric field column with proper sorting.
     """
     base_provider = FieldReferenceProvider(key)
     numeric_provider = NumericSortAdapter(base_provider, parser=parser)
@@ -182,6 +214,7 @@ def make_numeric_field_column(
         always_visible=always_visible,
         sort_type=ColumnSortType.SORTKEY,
         status_icon=status_icon,
+        is_default=is_default,
     )
 
 
