@@ -46,11 +46,15 @@
 
 
 from collections import namedtuple
+from contextlib import suppress
 from copy import deepcopy
 import datetime
 from functools import partial
 import itertools
 import os.path
+from pathlib import Path
+
+import yaml
 
 from PyQt6 import (
     QtCore,
@@ -73,6 +77,7 @@ from picard.config import (
     get_config,
 )
 from picard.const import PROGRAM_UPDATE_LEVELS
+from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -90,6 +95,8 @@ from picard.options import (
     get_option_title,
 )
 from picard.script import get_file_naming_script_presets
+from picard.session.constants import SessionConstants
+from picard.session.session_manager import load_session_from_path, save_session_to_path
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
@@ -99,6 +106,7 @@ from picard.util import (
     open_local_path,
     reconnect,
     restore_method,
+    sanitize_filename,
     thread,
     throttle,
     webbrowser2,
@@ -153,6 +161,7 @@ from picard.ui.util import (
     FileDialog,
     find_starting_directory,
     menu_builder,
+    show_session_not_found_dialog,
 )
 
 
@@ -298,10 +307,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
         elif name == 'enable_tag_saving':
             self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(new_value)
-        elif name == 'save_images_to_tags':
-            self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_TAGS].setChecked(new_value)
-        elif name == 'save_images_to_files':
-            self.actions[MainAction.ENABLE_SAVE_IMAGES_TO_FILES].setChecked(new_value)
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
@@ -410,6 +415,76 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return False
 
         return True
+
+    def _has_session_content(self):
+        """Return True if there is session content to save/close."""
+        if self.tagger.files or self.tagger.albums:
+            return True
+
+        with suppress(AttributeError, TypeError):
+            return bool(self.tagger.clusters and len(self.tagger.clusters) > 0)
+        return False
+
+    def show_close_session_confirmation(self):
+        """Ask the user whether to save the session before closing.
+
+        Returns
+        -------
+        bool
+            True if closing should proceed, False to cancel.
+        """
+        # If there is nothing to save, proceed without asking
+        if not self._has_session_content():
+            return True
+
+        QMessageBox = QtWidgets.QMessageBox
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Question)
+        msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        msg.setWindowTitle(_("Close Session"))
+        msg.setText(_("Do you want to save the current session before continuing?"))
+        msg.setInformativeText(_("Closing the session will clear all files, clusters and albums from the view."))
+        cancel_btn = msg.addButton(QMessageBox.StandardButton.Cancel)
+        save_btn = msg.addButton(_("&Save Session"), QMessageBox.ButtonRole.YesRole)
+        msg.addButton(_("Do&n't Save"), QMessageBox.ButtonRole.NoRole)
+        msg.setDefaultButton(save_btn)
+        msg.exec()
+
+        clicked = msg.clickedButton()
+        if clicked == cancel_btn:
+            return False
+        if clicked == save_btn:
+            # If saving fails or is cancelled, abort closing
+            return self._save_session_to_known_path_or_prompt()
+        # Don't Save
+        return True
+
+    def _save_session_to_known_path_or_prompt(self) -> bool:
+        """Save session to last known session path if available; otherwise prompt.
+
+        Returns
+        -------
+        bool
+            True if saved successfully, False otherwise.
+        """
+        config = get_config()
+        path = config.persist['last_session_path'] or ''
+        if path:
+            try:
+                save_session_to_path(self.tagger, path)
+
+                # Ensure the known path remains persisted explicitly
+                config.persist['last_session_path'] = path
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                self._add_to_recent_sessions(path)
+            except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
+                QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
+                return False
+            else:
+                return True
+
+        # Fallback to prompting for a path
+        return bool(self.save_session_as())
 
     def saveWindowState(self):
         config = get_config()
@@ -560,6 +635,87 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.cd_lookup_menu = menu
         self._init_cd_lookup_menu()
 
+    def _create_recent_sessions_menu(self):
+        """Create and return the "Recent Sessions" submenu.
+
+        The menu content is populated from the persisted recent sessions list.
+        """
+        self.recent_sessions_menu = QtWidgets.QMenu(_("Recent Sessions"))
+        self.recent_sessions_menu.setIcon(icontheme.lookup('document-open-recent'))
+        self._populate_recent_sessions_menu()
+        return self.recent_sessions_menu
+
+    def _get_recent_sessions(self):
+        """Return the list of recent session paths from persistent config."""
+        config = get_config()
+        value = config.persist['recent_sessions']
+        if isinstance(value, list):
+            return [str(p) for p in value]
+        return []
+
+    def _set_recent_sessions(self, paths):
+        """Persist the given list of recent session paths and refresh the menu."""
+        config = get_config()
+        config.persist['recent_sessions'] = list(paths)
+        if hasattr(self, 'recent_sessions_menu') and isinstance(self.recent_sessions_menu, QtWidgets.QMenu):
+            self._populate_recent_sessions_menu()
+
+    def _add_to_recent_sessions(self, path):
+        """Insert a path at the front of the recent sessions list, de-duplicated and capped."""
+        if not path:
+            return
+        paths = self._get_recent_sessions()
+        # De-duplicate while preserving order by removing existing entry first
+        try:
+            paths.remove(path)
+        except ValueError:
+            pass
+        paths.insert(0, path)
+        # Cap to configured maximum
+        pruned = paths[: SessionConstants.RECENT_SESSIONS_MAX]
+        self._set_recent_sessions(pruned)
+
+    def clear_recent_sessions(self):
+        """Clear all recent session entries from the persistent config."""
+        self._set_recent_sessions([])
+        self.set_statusbar_message(_("Recent sessions cleared"))
+
+    def _remove_from_recent_sessions(self, path):
+        """Remove a specific path from the recent sessions list."""
+        if not path:
+            return
+        paths = self._get_recent_sessions()
+        with suppress(ValueError):
+            paths.remove(path)
+            self._set_recent_sessions(paths)
+
+    def _populate_recent_sessions_menu(self):
+        """Populate the recent sessions submenu based on persisted list."""
+        menu = self.recent_sessions_menu
+        if not menu:
+            return
+        menu.clear()
+        paths = self._get_recent_sessions()
+        if not paths:
+            empty = menu.addAction(_("Empty"))
+            empty.setEnabled(False)
+            menu.setEnabled(False)
+            return
+        menu.setEnabled(True)
+        for index, path in enumerate(paths, start=1):
+            path_obj = Path(path)
+            label = f"{index}. {path_obj.name or path}"
+            action = menu.addAction(label)
+            action.setData(path)
+            action.setToolTip(path)
+            action.setStatusTip(path)
+            action.triggered.connect(partial(self._load_session_from_recent, path))
+
+        # Add separator and clear action at the bottom
+        menu.addSeparator()
+        clear_action = menu.addAction(_("Clear Recent Sessions"))
+        clear_action.triggered.connect(self.clear_recent_sessions)
+
     def _init_cd_lookup_menu(self):
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
@@ -672,6 +828,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.SAVE,
             MainAction.SUBMIT_ACOUSTID,
+            '-',
+            MainAction.LOAD_SESSION,
+            # Recent Sessions submenu
+            self._create_recent_sessions_menu(),
+            MainAction.SAVE_SESSION,
+            MainAction.SAVE_SESSION_AS,
+            MainAction.NEW_SESSION,
             '-',
             MainAction.EXIT,
         )
@@ -1047,6 +1210,177 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             proceed_with_save = True
         if proceed_with_save:
             self.tagger.save(self.selected_objects)
+
+    def _get_default_session_filename_from_metadata(self) -> str | None:
+        """Gets a default session filename based on the first track's artist metadata.
+
+        Returns
+        -------
+        str | None
+            A sanitized artist name to use as a default filename, or None if no artist is found.
+        """
+        artist_tags = (
+            'artist',
+            'albumartist',
+            'artists',
+            'albumartists',
+        )
+
+        for file in self.tagger.iter_all_files():
+            metadata = file.metadata
+            for tag in artist_tags:
+                artist_value = metadata.get(tag)
+
+                if artist_value and str(artist_value).strip():
+                    artist_name = str(artist_value).split(',')[0].strip()
+
+                    if artist_name:
+                        return sanitize_filename(artist_name, repl="_", win_compat=True)
+
+        return None
+
+    def _get_timestamped_session_filename(self) -> str:
+        """Generate a timestamped session filename.
+
+        Returns
+        -------
+        str
+            Session filename with format 'sessions_yyyyMMddHHmmss'.
+        """
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        return f"session_{timestamp}"
+
+    def quick_save_session(self) -> bool:
+        """Save to known path or delegate to Save As if unknown.
+
+        Returns
+        -------
+        bool
+            True on success, False otherwise.
+        """
+        return self._save_session_to_known_path_or_prompt()
+
+    def save_session_as(self) -> bool:
+        """Always prompt for a session file path and save there.
+
+        When there is no known last session path, suggest a default filename
+        based on current content.
+
+        Returns
+        -------
+        bool
+            True on success, False otherwise.
+        """
+        config = get_config()
+
+        # Use known path's parent directory if available, otherwise fall back to sessions folder
+        known_path = config.persist['last_session_path'] or ''
+        if known_path:
+            start_dir = Path(known_path).parent
+        else:
+            start_dir = sessions_folder()
+
+        # Use default filename only when path is not known
+        default_name = self._get_default_session_filename_from_metadata() or self._get_timestamped_session_filename()
+        default_filename = f"{default_name}{SessionConstants.SESSION_FILE_EXTENSION}"
+        start_dir = Path(start_dir) / default_filename
+
+        path, _filter = FileDialog.getSaveFileName(
+            parent=self,
+            directory=str(start_dir),
+            filter=(
+                _("MusicBrainz Picard Session (%s);;All files (*)") % ("*" + SessionConstants.SESSION_FILE_EXTENSION)
+            ),
+        )
+        if path:
+            try:
+                save_session_to_path(self.tagger, path)
+                config.persist['last_session_path'] = path
+            except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
+                QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
+                return False
+            else:
+                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                self._add_to_recent_sessions(path)
+                return True
+        return False
+
+    def load_session(self):
+        # Ask whether to save/close current session before loading a new one
+        if not self.show_close_session_confirmation():
+            return
+
+        config = get_config()
+
+        last_session_path = config.persist['last_session_path'] or ''
+        if last_session_path:
+            start_dir = Path(str(last_session_path)).parent
+        else:
+            start_dir = sessions_folder()
+        path, _filter = FileDialog.getOpenFileName(
+            parent=self,
+            directory=str(start_dir),
+            filter=(
+                _("MusicBrainz Picard Session (%s);;All files (*)") % ("*" + SessionConstants.SESSION_FILE_EXTENSION)
+            ),
+        )
+        if path:
+            # Initial progress feedback before heavy load
+            self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
+            try:
+                load_session_from_path(self.tagger, path)
+            except FileNotFoundError:
+                show_session_not_found_dialog(self, path)
+                return
+            except (OSError, PermissionError, yaml.YAMLError, KeyError) as e:
+                log.debug(f"Error loading session from {path}: {e}")
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    _("Failed to load session"),
+                    _("Could not load session from %(path)s:\n\n%(error)s") % {"path": str(path), "error": str(e)},
+                )
+                return
+            else:
+                config.persist['last_session_path'] = path
+                self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
+                # Track in recent sessions
+                self._add_to_recent_sessions(path)
+
+    def _load_session_from_recent(self, path):
+        # Ask whether to save/close current session before loading a new one
+        if not self.show_close_session_confirmation():
+            return
+
+        self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
+        try:
+            load_session_from_path(self.tagger, path)
+        except FileNotFoundError:
+            show_session_not_found_dialog(self, path)
+            self._remove_from_recent_sessions(path)
+            return
+        except (OSError, PermissionError, yaml.YAMLError, KeyError) as e:
+            log.debug(f"Error loading session from {path}: {e}")
+            QtWidgets.QMessageBox.critical(
+                self,
+                _("Failed to load session"),
+                _("Could not load session from %(path)s:\n\n%(error)s") % {"path": str(path), "error": str(e)},
+            )
+            return
+        else:
+            config = get_config()
+            config.persist['last_session_path'] = path
+            self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
+            self._add_to_recent_sessions(path)
+
+    def close_session(self):
+        # Use dedicated confirmation for closing sessions (save / don't save / cancel)
+        if not self.show_close_session_confirmation():
+            return
+        # Clear current state
+        self.tagger.clear_session()
+        # Reset last_session_path so subsequent saves prompt for a new path
+        config = get_config()
+        config.persist['last_session_path'] = ''
 
     def remove_selected_objects(self):
         """Tell the tagger to remove the selected objects."""

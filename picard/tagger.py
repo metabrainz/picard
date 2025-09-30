@@ -47,10 +47,12 @@
 
 import argparse
 from collections import namedtuple
+import contextlib
 from functools import partial
 from hashlib import blake2b
 import logging
 import os
+from pathlib import Path
 import platform
 import re
 import shutil
@@ -59,6 +61,8 @@ import sys
 import time
 from urllib.parse import urlparse
 from uuid import uuid4
+
+import yaml
 
 from PyQt6 import (
     QtCore,
@@ -98,6 +102,7 @@ from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
     USER_DIR,
 )
+from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -127,6 +132,12 @@ from picard.pluginmanager import (
 )
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
+from picard.session.constants import SessionConstants
+from picard.session.session_manager import (
+    export_session as _export_session,
+    load_session_from_path,
+    save_session_to_path,
+)
 from picard.track import (
     NonAlbumTrack,
     Track,
@@ -163,7 +174,7 @@ from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
-from picard.ui.util import FileDialog
+from picard.ui.util import FileDialog, show_session_not_found_dialog
 
 
 # A "fix" for https://bugs.python.org/issue1438480
@@ -371,6 +382,8 @@ class Tagger(QtWidgets.QApplication):
         self.mbid_redirects = {}
         self.unclustered_files = UnclusteredFiles()
         self.nats = None
+        # When True, we are restoring a session; skip auto-matching by MBIDs
+        self._restoring_session = False
 
     def _init_ui(self, config):
         """Initialize User Interface / Main Window"""
@@ -489,6 +502,33 @@ class Tagger(QtWidgets.QApplication):
         yield from self.iter_album_files()
         yield from self.clusters.iterfiles()
 
+    # ==============================
+    # Session export / import
+    # ==============================
+    def export_session(self) -> dict:
+        from picard import config as _cfg
+
+        # Expose config on self for session helpers
+        self.config = _cfg  # type: ignore[attr-defined]
+        return _export_session(self)
+
+    def import_session(self, data: dict) -> None:
+        # This method expects a file path usually; keep a convenience for future extensions
+        raise NotImplementedError
+
+    def clear_session(self) -> None:
+        """Remove all files, clusters and albums from current UI state."""
+        with self.window.ignore_selection_changes:
+            # Remove all albums (includes NAT)
+            for album in list(self.albums.values()):
+                self.remove_album(album)
+            # Remove all left-pane clusters
+            for cluster in list(self.clusters):
+                self.remove_cluster(cluster)
+            # Remove all unclustered files
+            if self.unclustered_files.files:
+                self.remove_files(list(self.unclustered_files.files))
+
     def _init_remote_commands(self):
         self.commands = RemoteCommands.commands()
 
@@ -602,16 +642,65 @@ class Tagger(QtWidgets.QApplication):
         if self.stopping:
             return
         self.stopping = True
+
+        # Best-effort crash/exit backup if enabled
+        config = get_config()
+        with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
+            if config.setting['session_backup_on_crash']:
+                path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
+                save_session_to_path(self, path)
+
         log.debug("Picard stopping")
         self.run_cleanup()
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):
+        config = get_config()
+        # Load last session if configured
+        if config.setting['session_load_last_on_startup']:
+            last_path = config.persist['last_session_path']
+            if last_path:
+                try:
+                    load_session_from_path(self, last_path)
+                except FileNotFoundError:
+                    show_session_not_found_dialog(self.window, last_path)
+                except (OSError, PermissionError, yaml.YAMLError, KeyError) as e:
+                    # Surface startup load errors to user similar to interactive load
+                    log.debug(f"Error loading session from {last_path}: {e}")
+                    QtWidgets.QMessageBox.critical(
+                        self.window,
+                        _("Failed to load session"),
+                        _("Could not load session from %(path)s:\n\n%(error)s")
+                        % {"path": str(last_path), "error": str(e)},
+                    )
+
         if self._to_load:
             self.load_to_picard(self._to_load)
         del self._to_load
 
     def run(self):
+        # Setup autosave if configured
+        config = get_config()
+        interval_min = int(config.setting['session_autosave_interval_min'])
+        if interval_min > 0:
+            self._session_autosave_timer = QtCore.QTimer(self)
+            self._session_autosave_timer.setInterval(max(1, interval_min) * 60 * 1000)
+
+            def _autosave():
+                path = config.persist['session_autosave_path'] or None
+                if not path:
+                    path = config.persist['last_session_path'] or None
+                if not path:
+                    path = str(Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION))
+                    config.persist['session_autosave_path'] = path
+
+                with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
+                    # Best effort autosave; do not crash programme
+                    save_session_to_path(self, path)
+
+            self._session_autosave_timer.timeout.connect(_autosave)
+            self._session_autosave_timer.start()
+
         self.update_browser_integration()
         self.window.show()
         QtCore.QTimer.singleShot(0, self._run_init)
@@ -658,7 +747,7 @@ class Tagger(QtWidgets.QApplication):
             return
 
         file_moved = False
-        if not config.setting['ignore_file_mbids']:
+        if not config.setting['ignore_file_mbids'] and not getattr(self, '_restoring_session', False):
             recordingid = file.metadata.getall('musicbrainz_recordingid')
             recordingid = recordingid[0] if recordingid else ''
             is_valid_recordingid = mbid_validate(recordingid)
@@ -689,7 +778,12 @@ class Tagger(QtWidgets.QApplication):
             unmatched_files.append(file)
 
         # fallback on analyze if nothing else worked
-        if not file_moved and config.setting['analyze_new_files'] and file.can_analyze:
+        if (
+            not file_moved
+            and not getattr(self, '_restoring_session', False)
+            and config.setting['analyze_new_files']
+            and file.can_analyze
+        ):
             log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
@@ -703,7 +797,11 @@ class Tagger(QtWidgets.QApplication):
         Returns the actual target the files has been moved to or None
         """
         if isinstance(target, Album):
-            self.move_files_to_album([file], album=target)
+            # During restore place into album's unmatched bucket without matching
+            if getattr(self, '_restoring_session', False):
+                file.move(target.unmatched_files)
+            else:
+                self.move_files_to_album([file], album=target)
         else:
             if isinstance(target, File) and target.parent_item:
                 target = target.parent_item

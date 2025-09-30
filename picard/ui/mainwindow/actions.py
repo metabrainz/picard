@@ -543,3 +543,43 @@ def _create_check_update_action(parent):
     else:
         action = None
     return action
+
+
+@add_action(MainAction.SAVE_SESSION_AS)
+def _create_save_session_action(parent):
+    action = QtGui.QAction(icontheme.lookup('document-save'), _("Save Session &As…"), parent)
+    action.setStatusTip(_("Save the current session to a new file"))
+    action.triggered.connect(parent.save_session_as)
+    return action
+
+
+@add_action(MainAction.SAVE_SESSION)
+def _create_quick_save_session_action(parent):
+    action = QtGui.QAction(icontheme.lookup('document-save'), _("&Save Session"), parent)
+    action.setStatusTip(_("Save the current session to the last used file"))
+    action.triggered.connect(parent.quick_save_session)
+    return action
+
+
+@add_action(MainAction.LOAD_SESSION)
+def _create_load_session_action(parent):
+    action = QtGui.QAction(icontheme.lookup('document-open'), _("&Load Session…"), parent)
+    action.setStatusTip(_("Load a session file"))
+    action.triggered.connect(parent.load_session)
+    return action
+
+
+@add_action(MainAction.NEW_SESSION)
+def _create_close_session_action(parent):
+    action = QtGui.QAction(_("&New Session"), parent)
+    action.setStatusTip(_("Close the current session"))
+    action.triggered.connect(parent.close_session)
+    return action
+
+
+@add_action(MainAction.CLEAR_RECENT_SESSIONS)
+def _create_clear_recent_sessions_action(parent):
+    action = QtGui.QAction(_("Clear Recent Sessions"), parent)
+    action.setStatusTip(_("Clear all recent session entries"))
+    action.triggered.connect(parent.clear_recent_sessions)
+    return action

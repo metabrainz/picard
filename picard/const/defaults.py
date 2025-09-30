@@ -170,4 +170,13 @@ DEFAULT_COVER_CONVERTING_FORMAT = 'JPEG'
 
 DEFAULT_QUICK_MENU_ITEMS = ['save_images_to_tags', 'save_images_to_files']
 
+# Metadata handling
+# Prefix for internal/non-user-facing tags; filtered from exports and overrides.
+INTERNAL_TAG_PREFIX = "~"
+
+# Tags that must never be overridden from sessions. Include values that are
+# computed or come from file info and must reflect the current file (e.g. duration).
+# 'length' is audio duration; '~length' is its display alias. Add more if we expose
+# additional non-internal computed fields that should not be user-overridable.
+EXCLUDED_OVERRIDE_TAGS = frozenset({"length", "~length"})
 DEFAULT_FILTER_COLUMNS = ['album', 'title', 'albumartist', 'artist']
