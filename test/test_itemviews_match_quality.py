@@ -29,8 +29,8 @@ from picard.track import Track
 import pytest
 
 from picard.ui.itemviews import TreeItem
+from picard.ui.itemviews.columns import create_match_quality_column
 from picard.ui.itemviews.custom_columns import DelegateColumn
-from picard.ui.itemviews.custom_columns.common_columns import create_match_quality_column
 from picard.ui.itemviews.match_quality_column import MatchQualityColumnDelegate, MatchQualityProvider
 
 
