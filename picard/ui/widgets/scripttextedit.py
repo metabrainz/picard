@@ -23,6 +23,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import contextlib
 import re
 import unicodedata
 
@@ -51,6 +52,13 @@ from picard.script import (
     ScriptFunctionDocUnknownFunctionError,
     script_function_documentation,
     script_function_names,
+)
+from picard.script.parser import (
+    ScriptError,
+    ScriptExpression,
+    ScriptFunction,
+    ScriptParser,
+    ScriptText,
 )
 from picard.tags import (
     display_tag_tooltip,
@@ -173,14 +181,129 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 class ScriptCompleter(QCompleter):
     def __init__(self, parent=None):
-        super().__init__(self.choices, parent)
+        # Initialize internal state before constructing QCompleter to avoid
+        # accessing properties that depend on initialized attributes.
         self.last_selected = ''
+        self._parser = ScriptParser()
+        self._script_hash: int | None = None
+        self._user_defined_variables: set[str] = set()
+
+        # Construct base QCompleter with parent only; we'll set the model explicitly later.
+        super().__init__(parent)
+
+        # Persistent model for dynamic completions.
+        # QCompleter caches its model; we update this single instance as the script changes
+        # to ensure new user-defined variables appear without recreating the model object.
+        self._model: QtCore.QStringListModel = QtCore.QStringListModel()
+        self.setModel(self._model)
         self.highlighted.connect(self.set_highlighted)
+
+        # Initialize the model with initial choices
+        self._model.setStringList(list(self.choices))
+
+    def update_dynamic_variables(self, script_content: str, force: bool = False):
+        """Update dynamic variables from the current script content.
+
+        Caches by script hash to avoid unnecessary re-parsing.
+        """
+        script_hash = hash(script_content)
+        if not force and script_hash == self._script_hash:
+            return
+        self._script_hash = script_hash
+        self._user_defined_variables = self._extract_set_variables(script_content)
+
+        # Refresh the completion model contents using the persistent model
+        # (avoids replacing the model object and preserves any connections/state).
+        with contextlib.suppress(Exception):
+            # If model update fails, continue without updating the model
+            # This ensures the completer remains functional even if the model has issues
+            self._model.setStringList(list(self.choices))
+
+    def _extract_set_variables(self, script_content: str):
+        """Return a set of variable names assigned via `$set(name, ...)`.
+
+        Strategy (robus and readable):
+        1) Full parse for accuracy: handles nested and cross-line constructs.
+        2) Per-line parse for resilience during live edits (one bad line won't block another).
+        3) Regex fallback: If user is currently typing an incomplete token
+           (e.g. a lone '%' after a valid `$set(...)`), parsing that line fails.
+           A lightweight pattern still lets us extract static names.
+
+        Results are deduplicated via set union.
+        """
+        from_full = self._collect_set_variables_from_full_parse(script_content)
+        from_line = self._collect_set_variables_from_line_parse(script_content)
+        from_regex = self._collect_set_variables_from_regex(script_content)
+        return from_full | from_line | from_regex
+
+    def _collect_set_variables_from_full_parse(self, script_content: str) -> set[str]:
+        """Collect variable names from a full parse of the script content."""
+        names: set[str] = set()
+        with contextlib.suppress(ScriptError):
+            expression = self._parser.parse(script_content)
+            self._collect_set_variables_from_ast(expression, names)
+        return names
+
+    def _collect_set_variables_from_line_parse(self, script_content: str) -> set[str]:
+        """Collect variable names from a per-line parse of the script content."""
+        names: set[str] = set()
+        for line in script_content.splitlines():
+            if not line:
+                continue
+            with contextlib.suppress(ScriptError):
+                expression = self._parser.parse(line)
+                self._collect_set_variables_from_ast(expression, names)
+        return names
+
+    def _collect_set_variables_from_regex(self, script_content: str) -> set[str]:
+        """Collect variable names from a regex pattern of the script content."""
+        return {
+            m.group(1) for m in re.finditer(r"\$set\(\s*([A-Za-z0-9_\u00C0-\u017F\u4E00-\u9FFF]+)\s*,", script_content)
+        }
+
+    def _collect_set_variables_from_ast(self, node: ScriptExpression | ScriptFunction | ScriptText, out: set[str]):
+        """Traverse the AST and collect variable names from `$set(name, ...)` expressions.
+
+        Accepts names composed only of ScriptText tokens to avoid positives
+        such as `$set($if(...), ...)`.
+        """
+        if isinstance(node, ScriptFunction):
+            if node.name == "set" and node.args:
+                static_name = self._extract_static_name(node.args[0])
+                if static_name:
+                    out.add(static_name)
+            for arg in node.args:
+                self._collect_set_variables_from_ast(arg, out)
+            return
+        if isinstance(node, ScriptExpression):
+            for item in node:
+                self._collect_set_variables_from_ast(item, out)
+
+    def _extract_static_name(self, node: ScriptExpression | ScriptText) -> str | None:
+        """Extract a static name from a node.
+
+        Accepts names composed only of ScriptText tokens to avoid positives
+        such as `$set($if(...), ...)`.
+        """
+        if not isinstance(node, ScriptExpression):
+            return None
+        if not all(isinstance(item, ScriptText) for item in node):
+            return None
+        value = "".join(str(token) for token in node).strip()
+        return value or None
 
     @property
     def choices(self):
         yield from sorted(f'${name}' for name in script_function_names())
-        yield from sorted(f'%{name}%' for name in script_variable_tag_names())
+
+        # Keep a list of built-inn varibles because we're introducing user-defined variables.
+        builtin_variables = set(script_variable_tag_names())
+        for name in sorted(builtin_variables):
+            yield f'%{name}%'
+
+        # User-defined variables from `$set(name, ...)`
+        for user_variable in sorted(v for v in self._user_defined_variables if v not in builtin_variables):
+            yield f'%{user_variable}%'
 
     def set_highlighted(self, text):
         self.last_selected = text
@@ -303,6 +426,10 @@ class ScriptTextEdit(QTextEdit):
         config = get_config()
         self.highlighter = TaggerScriptSyntaxHighlighter(self.document())
         self.initialize_completer()
+
+        # Initialize dynamic variables from current (possibly empty) script content.
+        self.completer.update_dynamic_variables(self.toPlainText())
+
         self.setFontFamily(FONT_FAMILY_MONOSPACE)
         self.setMouseTracking(True)
         self.setAcceptRichText(False)
@@ -322,7 +449,7 @@ class ScriptTextEdit(QTextEdit):
         self.show_tooltips_action.setCheckable(True)
         self.show_tooltips_action.setChecked(self._show_tooltips)
         self.addAction(self.show_tooltips_action)
-        self.textChanged.connect(self.update_tooltip)
+        self.textChanged.connect(self._on_text_changed)
 
     def contextMenuEvent(self, event):
         menu = self.createStandardContextMenu()
@@ -348,6 +475,12 @@ class ScriptTextEdit(QTextEdit):
                 # was moved away from the mouse position
                 QToolTip.hideText()
                 self.setToolTip(tooltip)
+
+    def _on_text_changed(self):
+        # Update completer dynamic variables cache
+        self.completer.update_dynamic_variables(self.toPlainText())
+        # Update tooltips after parsing to avoid timing issues
+        self.update_tooltip()
 
     def get_tooltip_at_mouse_position(self, position):
         cursor = self.cursorForPosition(position)
