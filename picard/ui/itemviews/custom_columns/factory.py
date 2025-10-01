@@ -24,6 +24,8 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+from PyQt6 import QtCore
+
 from picard.item import Item
 from picard.script import ScriptParser
 
@@ -31,9 +33,11 @@ from picard.ui.columns import (
     ColumnAlign,
     ColumnSortType,
 )
-from picard.ui.itemviews.custom_columns.column import CustomColumn
+from picard.ui.itemviews.custom_columns.column import CustomColumn, DelegateColumn, IconColumn
 from picard.ui.itemviews.custom_columns.protocols import (
     ColumnValueProvider,
+    DelegateProvider,
+    HeaderIconProvider,
     SortKeyProvider,
 )
 from picard.ui.itemviews.custom_columns.providers import (
@@ -42,6 +46,7 @@ from picard.ui.itemviews.custom_columns.providers import (
     TransformProvider,
 )
 from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
+from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
 
 
 def _infer_sort_type(provider: ColumnValueProvider, sort_type: ColumnSortType | None) -> ColumnSortType:
@@ -75,6 +80,8 @@ def _create_custom_column(
     align: ColumnAlign = ColumnAlign.LEFT,
     always_visible: bool = False,
     sort_type: ColumnSortType | None = None,
+    status_icon: bool = False,
+    is_default: bool = False,
 ) -> CustomColumn:
     """Create `CustomColumn`.
 
@@ -93,7 +100,7 @@ def _create_custom_column(
     # downgrade to TEXT to avoid invalid configuration
     if inferred_sort_type == ColumnSortType.SORTKEY and not isinstance(provider, SortKeyProvider):
         inferred_sort_type = ColumnSortType.TEXT
-    return CustomColumn(
+    column = CustomColumn(
         title,
         key,
         provider,
@@ -101,7 +108,10 @@ def _create_custom_column(
         align=align,
         sort_type=inferred_sort_type,
         always_visible=always_visible,
+        status_icon=status_icon,
     )
+    column.is_default = is_default
+    return column
 
 
 def make_field_column(
@@ -111,18 +121,35 @@ def make_field_column(
     width: int | None = None,
     align: ColumnAlign = ColumnAlign.LEFT,
     always_visible: bool = False,
+    sort_type: ColumnSortType = ColumnSortType.TEXT,
+    status_icon: bool = False,
+    is_default: bool = False,
 ) -> CustomColumn:
-    """Create column that displays a field via `obj.column(key)`.
+    """Create a column that displays a field via ``obj.column(key)``.
 
     Parameters
     ----------
-    title, key, width, align, always_visible
-        Column configuration.
+    title : str
+        Display title of the column.
+    key : str
+        Internal key used to identify the column and field source.
+    width : int | None, optional
+        Fixed width in pixels. If ``None``, uses default behavior.
+    align : ColumnAlign, default ``ColumnAlign.LEFT``
+        Text alignment for the cell contents.
+    always_visible : bool, default ``False``
+        If ``True``, hides the column visibility toggle in the UI.
+    sort_type : ColumnSortType, default ``ColumnSortType.TEXT``
+        Sorting behavior for the column.
+    status_icon : bool, default ``False``
+        If ``True``, marks this as the single status icon column.
+    is_default : bool, default ``False``
+        If ``True``, marks this column as visible by default.
 
     Returns
     -------
     CustomColumn
-        The field column.
+        The configured field column.
     """
     provider = FieldReferenceProvider(key)
     return _create_custom_column(
@@ -132,7 +159,62 @@ def make_field_column(
         width=width,
         align=align,
         always_visible=always_visible,
-        sort_type=ColumnSortType.TEXT,
+        sort_type=sort_type,
+        status_icon=status_icon,
+        is_default=is_default,
+    )
+
+
+def make_numeric_field_column(
+    title: str,
+    key: str,
+    parser: Callable[[str], float] | None = None,
+    *,
+    width: int | None = None,
+    align: ColumnAlign = ColumnAlign.LEFT,
+    always_visible: bool = False,
+    status_icon: bool = False,
+    is_default: bool = False,
+) -> CustomColumn:
+    """Create a field column with numeric sorting support.
+
+    Parameters
+    ----------
+    title : str
+        Display title of the column.
+    key : str
+        Internal key used to identify the column and field source.
+    parser : Callable[[str], float] | None, optional
+        Function to parse the field value to a numeric value for sorting.
+        If ``None``, uses the default ``float()`` parser.
+    width : int | None, optional
+        Fixed width in pixels. If ``None``, uses default behavior.
+    align : ColumnAlign, default ``ColumnAlign.LEFT``
+        Text alignment for the cell contents.
+    always_visible : bool, default ``False``
+        If ``True``, hides the column visibility toggle in the UI.
+    status_icon : bool, default ``False``
+        If ``True``, marks this as the single status icon column.
+    is_default : bool, default ``False``
+        If ``True``, marks this column as visible by default.
+
+    Returns
+    -------
+    CustomColumn
+        The configured numeric field column with proper sorting.
+    """
+    base_provider = FieldReferenceProvider(key)
+    numeric_provider = NumericSortAdapter(base_provider, parser=parser)
+    return _create_custom_column(
+        title,
+        key,
+        numeric_provider,
+        width=width,
+        align=align,
+        always_visible=always_visible,
+        sort_type=ColumnSortType.SORTKEY,
+        status_icon=status_icon,
+        is_default=is_default,
     )
 
 
@@ -188,6 +270,7 @@ def make_callable_column(
     align: ColumnAlign = ColumnAlign.LEFT,
     always_visible: bool = False,
     sort_type: ColumnSortType | None = None,
+    status_icon: bool = False,
 ) -> CustomColumn:
     """Create column backed by a Python callable.
 
@@ -210,6 +293,7 @@ def make_callable_column(
         align=align,
         always_visible=always_visible,
         sort_type=sort_type,
+        status_icon=status_icon,
     )
 
 
@@ -281,3 +365,66 @@ def make_provider_column(
         always_visible=always_visible,
         sort_type=sort_type,
     )
+
+
+def make_delegate_column(
+    title: str,
+    key: str,
+    provider: DelegateProvider,
+    *,
+    width: int | None = None,
+    align: ColumnAlign = ColumnAlign.LEFT,
+    always_visible: bool = False,
+    sort_type: ColumnSortType | None = None,
+    size: QtCore.QSize | None = None,
+    sort_provider: SortKeyProvider | None = None,
+) -> DelegateColumn:
+    """Create column that uses a delegate for custom rendering.
+
+    Parameters
+    ----------
+    title, key, provider, width, align, always_visible, sort_type
+        Column configuration.
+
+    Returns
+    -------
+    DelegateColumn
+        The delegate column.
+    """
+    resolved_sort_type = sort_type or ColumnSortType.TEXT
+    return DelegateColumn(
+        title,
+        key,
+        provider,
+        width=width,
+        align=align,
+        sort_type=resolved_sort_type,
+        always_visible=always_visible,
+        size=size,
+        sort_provider=sort_provider,
+    )
+
+
+def make_icon_header_column(
+    title: str,
+    key: str,
+    provider: HeaderIconProvider,
+    *,
+    icon_width: int,
+    icon_height: int,
+    border: int = 0,
+) -> IconColumn:
+    """Create an icon header column from a header icon provider.
+
+    Parameters
+    ----------
+    title, key
+        Column configuration.
+    provider
+        Object implementing `HeaderIconProvider`.
+    icon_width, icon_height, border
+        Header icon sizing and border.
+    """
+    column = IconColumn(title, key, provider, width=None)
+    column.set_header_icon_size(icon_width, icon_height, border)
+    return column

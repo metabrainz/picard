@@ -26,11 +26,13 @@ from collections.abc import Callable
 from dataclasses import dataclass
 import re
 
+from PyQt6 import QtGui
+
 from picard import log
 from picard.item import Item
 from picard.script.parser import normalize_tagname
 
-from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
+from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, HeaderIconProvider
 
 
 @dataclass(frozen=True)
@@ -105,3 +107,23 @@ class CallableProvider:
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         func_name = getattr(self._func, "__name__", repr(self._func))
         return f"{self.__class__.__name__}(func={func_name})"
+
+
+class LazyHeaderIconProvider(HeaderIconProvider):
+    """Provide a header icon lazily via a callable.
+
+    Parameters
+    ----------
+    factory
+        A zero-argument callable that returns a `QtGui.QIcon` when invoked.
+        The icon is created only once and cached.
+    """
+
+    def __init__(self, factory: Callable[[], QtGui.QIcon]):
+        self._factory = factory
+        self._icon: QtGui.QIcon | None = None
+
+    def get_icon(self) -> QtGui.QIcon:  # pragma: no cover - Qt object
+        if self._icon is None:
+            self._icon = self._factory()
+        return self._icon

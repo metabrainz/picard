@@ -27,7 +27,7 @@ from picard.ui.itemviews.columns import (
     ALBUMVIEW_COLUMNS,
     FILEVIEW_COLUMNS,
 )
-from picard.ui.itemviews.match_quality_column import MatchQualityColumn
+from picard.ui.itemviews.custom_columns import DelegateColumn
 
 
 @pytest.fixture
@@ -74,11 +74,11 @@ def test_album_view_match_after_albumartist(album_keys: list[str]) -> None:
     assert idx_match == idx_albumartist + 1
 
 
-def test_album_view_match_is_match_quality_column_type() -> None:
-    # Ensure the actual column instance at the expected index is MatchQualityColumn
+def test_album_view_match_is_delegate_column_type() -> None:
+    # Ensure the actual column instance at the expected index is DelegateColumn
     keys: list[str] = [c.key for c in ALBUMVIEW_COLUMNS]
     idx_match: int = _index_of(keys, "~match_quality")
-    assert isinstance(ALBUMVIEW_COLUMNS[idx_match], MatchQualityColumn)
+    assert isinstance(ALBUMVIEW_COLUMNS[idx_match], DelegateColumn)
 
 
 class _DummyObj:

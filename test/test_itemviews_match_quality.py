@@ -23,33 +23,223 @@ from unittest.mock import Mock, patch
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from picard.album import Album, AlbumStatus
-from picard.const.sys import IS_LINUX
+from picard.album import Album
 from picard.track import Track
 
 import pytest
 
 from picard.ui.itemviews import TreeItem
-from picard.ui.itemviews.columns import _sortkey_match_quality
-from picard.ui.itemviews.match_quality_column import (
-    MatchQualityColumn,
-    MatchQualityColumnDelegate,
-)
+from picard.ui.itemviews.columns import create_match_quality_column
+from picard.ui.itemviews.custom_columns import DelegateColumn
+from picard.ui.itemviews.match_quality_column import MatchQualityColumnDelegate, MatchQualityProvider
 
 
-def _apply_platform_multiplier(value):
-    """Apply the same platform-specific multiplier logic as in _sortkey_match_quality."""
-    multiplier = -1 if IS_LINUX else 1
-    return value * multiplier
+class TestMatchQualityProvider:
+    """Test the MatchQualityProvider class."""
+
+    @pytest.fixture
+    def provider(self) -> MatchQualityProvider:
+        """Create a MatchQualityProvider instance for testing."""
+        return MatchQualityProvider()
+
+    @pytest.fixture
+    def mock_album(self) -> Mock:
+        """Create a mock album with tracks and files."""
+        album = Mock(spec=Album)
+        album.tracks = []
+        album.get_num_matched_tracks.return_value = 0
+        album.get_num_unmatched_files.return_value = 0
+        album.unmatched_files = Mock()
+        album.unmatched_files.files = []
+        return album
+
+    def test_init(self, provider: MatchQualityProvider) -> None:
+        """Test MatchQualityProvider initialization."""
+        assert provider is not None
+        assert provider.get_delegate_class() == MatchQualityColumnDelegate
+
+    @pytest.mark.parametrize(
+        ("matched", "total", "expected_percentage"),
+        [
+            (0, 0, "0.0"),  # No tracks
+            (5, 10, "0.5"),  # 50% match
+            (6, 10, "0.6"),  # 60% match
+            (7, 10, "0.7"),  # 70% match
+            (8, 10, "0.8"),  # 80% match
+            (9, 10, "0.9"),  # 90% match
+            (10, 10, "1.0"),  # 100% match
+            (3, 10, "0.3"),  # 30% match
+        ],
+    )
+    def test_evaluate_percentage_calculation(
+        self,
+        provider: MatchQualityProvider,
+        mock_album: Mock,
+        matched: int,
+        total: int,
+        expected_percentage: str,
+    ) -> None:
+        """Test evaluate returns correct percentage as string."""
+        # Setup mock album
+        mock_album.get_num_matched_tracks.return_value = matched
+        mock_album.tracks = [Mock() for _ in range(total)]
+
+        result = provider.evaluate(mock_album)
+        assert result == expected_percentage
+
+    def test_evaluate_no_album_attributes(self, provider: MatchQualityProvider) -> None:
+        """Test evaluate returns 0.0 for objects without album attributes."""
+        obj = Mock()
+        # Remove album attributes
+        del obj.get_num_matched_tracks
+        del obj.tracks
+
+        result = provider.evaluate(obj)
+        assert result == "0.0"
+
+    @pytest.mark.parametrize(
+        ("matched", "total", "unmatched", "duplicates", "extra", "missing"),
+        [
+            (5, 10, 2, 1, 1, 2),  # Normal case
+            (0, 0, 0, 0, 0, 0),  # Empty album
+            (10, 10, 0, 0, 0, 0),  # Perfect match
+            (0, 10, 5, 0, 5, 10),  # No matches
+        ],
+    )
+    def test_get_match_stats(
+        self,
+        provider: MatchQualityProvider,
+        mock_album: Mock,
+        matched: int,
+        total: int,
+        unmatched: int,
+        duplicates: int,
+        extra: int,
+        missing: int,
+    ) -> None:
+        """Test _get_match_stats returns correct statistics."""
+        # Setup mock album
+        mock_album.get_num_matched_tracks.return_value = matched
+        mock_album.get_num_unmatched_files.return_value = unmatched
+        mock_album.tracks = [Mock() for _ in range(total)]
+        mock_album.unmatched_files.files = [Mock() for _ in range(extra)]
+
+        # Setup tracks with appropriate file counts
+        for i, track in enumerate(mock_album.tracks):
+            if i < missing:
+                track.files = []  # Missing tracks
+            elif i < missing + duplicates:
+                track.files = [Mock(), Mock()]  # Duplicate files
+            else:
+                track.files = [Mock()]  # Normal tracks
+
+        stats = provider.get_match_stats(mock_album)
+
+        assert stats is not None
+        assert stats['matched'] == matched
+        assert stats['total'] == total
+        assert stats['unmatched'] == unmatched
+        assert stats['duplicates'] == duplicates
+        assert stats['extra'] == extra
+        assert stats['missing'] == missing
+
+    def test_get_match_stats_no_album_attributes(self, provider: MatchQualityProvider) -> None:
+        """Test _get_match_stats returns None for objects without album attributes."""
+        obj = Mock()
+        # Remove album attributes
+        del obj.get_num_matched_tracks
+        del obj.tracks
+
+        stats = provider.get_match_stats(obj)
+        assert stats is None
+
+
+class TestDelegateColumn:
+    """Test the DelegateColumn class."""
+
+    @pytest.fixture
+    def provider(self) -> MatchQualityProvider:
+        """Create a MatchQualityProvider instance for testing."""
+        return MatchQualityProvider()
+
+    @pytest.fixture
+    def delegate_column(self, provider: MatchQualityProvider) -> DelegateColumn:
+        """Create a DelegateColumn instance for testing."""
+        return DelegateColumn("Match Quality", "~match_quality", provider, width=57, size=QtCore.QSize(16, 16))
+
+    def test_init(self, delegate_column: DelegateColumn) -> None:
+        """Test DelegateColumn initialization."""
+        assert delegate_column.title == "Match Quality"
+        assert delegate_column.key == "~match_quality"
+        assert delegate_column.width == 57
+        assert delegate_column.size == QtCore.QSize(16, 16)
+        assert delegate_column.delegate_class == MatchQualityColumnDelegate
+
+    def test_delegate_class_property(self, delegate_column: DelegateColumn) -> None:
+        """Test delegate_class property returns correct class."""
+        assert delegate_column.delegate_class == MatchQualityColumnDelegate
+
+    def test_size_attribute(self, delegate_column: DelegateColumn) -> None:
+        """Test size attribute is accessible for delegate compatibility."""
+        assert hasattr(delegate_column, 'size')
+        assert delegate_column.size == QtCore.QSize(16, 16)
+
+    def test_default_size(self, provider: MatchQualityProvider) -> None:
+        """Test DelegateColumn uses default size when none provided."""
+        column = DelegateColumn("Test", "test", provider)
+        assert column.size == QtCore.QSize(16, 16)
+
+
+class TestMatchQualityColumnFactory:
+    """Test the match quality column factory."""
+
+    def test_create_match_quality_column(self) -> None:
+        """Test create_match_quality_column returns properly configured column."""
+        column = create_match_quality_column()
+
+        # Check it's a DelegateColumn
+        assert isinstance(column, DelegateColumn)
+
+        # Check basic properties
+        assert column.title == "Match"
+        assert column.key == "~match_quality"
+        assert column.width == 57
+        assert column.size == QtCore.QSize(16, 16)
+
+        # Check delegate class
+        assert column.delegate_class == MatchQualityColumnDelegate
+
+        # Check it's marked as default
+        assert column.is_default is True
+
+    def test_factory_uses_numeric_sorting(self) -> None:
+        """Test that the factory creates a column with numeric sorting."""
+        column = create_match_quality_column()
+
+        assert hasattr(column, 'sortkey')
+
+        # Test that it can handle numeric evaluation
+        from unittest.mock import Mock
+
+        mock_album = Mock()
+        mock_album.get_num_matched_tracks.return_value = 5
+        mock_album.tracks = [Mock() for _ in range(10)]
+
+        # The column's sortkey should return a tuple for sorting
+        sort_key = column.sortkey(mock_album)
+        assert isinstance(sort_key, tuple)
+        assert len(sort_key) == 2
+        assert sort_key[0] == 0  # Numeric values get priority
+        assert sort_key[1] == 0.5  # The actual percentage
 
 
 class TestMatchQualityColumn:
-    """Test the MatchQualityColumn class."""
+    """Test the match quality column using the factory for regression testing."""
 
     @pytest.fixture
-    def match_quality_column(self) -> MatchQualityColumn:
-        """Create a MatchQualityColumn instance for testing."""
-        return MatchQualityColumn("Match Quality", "~match_quality", width=120)
+    def match_quality_column(self) -> DelegateColumn:
+        """Create a match quality column instance for testing using the factory."""
+        return create_match_quality_column()
 
     @pytest.fixture
     def mock_album(self) -> Mock:
@@ -69,137 +259,57 @@ class TestMatchQualityColumn:
         track.files = []
         return track
 
-    def test_init(self, match_quality_column: MatchQualityColumn) -> None:
-        """Test MatchQualityColumn initialization."""
-        assert match_quality_column.title == "Match Quality"
+    def test_init(self, match_quality_column: DelegateColumn) -> None:
+        """Test match quality column initialization."""
+        assert match_quality_column.title == "Match"
         assert match_quality_column.key == "~match_quality"
-        assert match_quality_column.width == 120
+        assert match_quality_column.width == 57
         assert match_quality_column.size == QtCore.QSize(16, 16)
+        assert isinstance(match_quality_column, DelegateColumn)
 
-    def test_paint_does_nothing(self, match_quality_column: MatchQualityColumn) -> None:
-        """Test that paint method does nothing (handled by delegate)."""
-        painter = Mock()
-        rect = QtCore.QRect(0, 0, 100, 20)
-        # Should not raise any exception
-        match_quality_column.paint(painter, rect)
+    def test_delegate_class(self, match_quality_column: DelegateColumn) -> None:
+        """Test that the column has the correct delegate class."""
+        assert match_quality_column.delegate_class == MatchQualityColumnDelegate
 
-    @pytest.mark.parametrize(
-        ("matched", "total", "expected_icon_index"),
-        [
-            (0, 0, 5),  # No tracks - use pending icon
-            (5, 10, 0),  # 50% match
-            (6, 10, 1),  # 60% match
-            (7, 10, 2),  # 70% match
-            (8, 10, 3),  # 80% match
-            (9, 10, 4),  # 90% match
-            (10, 10, 5),  # 100% match
-            (3, 10, 0),  # 30% match - use worst icon
-        ],
-    )
-    def test_get_match_icon_percentage_based(
-        self,
-        match_quality_column: MatchQualityColumn,
-        mock_album: Mock,
-        matched: int,
-        total: int,
-        expected_icon_index: int,
-    ) -> None:
-        """Test get_match_icon returns correct icon based on percentage."""
+    def test_provider_evaluation(self, match_quality_column: DelegateColumn, mock_album: Mock) -> None:
+        """Test that the provider correctly evaluates match percentage."""
         # Setup mock album
-        mock_album.get_num_matched_tracks.return_value = matched
-        mock_album.tracks = [Mock() for _ in range(total)]
-
-        # Mock FileItem.match_icons - patch the import inside the method
-        with patch("picard.ui.itemviews.FileItem") as mock_file_item:
-            mock_file_item.match_icons = [Mock() for _ in range(6)]
-            mock_file_item.match_pending_icons = [Mock() for _ in range(6)]
-
-            icon = match_quality_column.get_match_icon(mock_album)
-
-            if total == 0:
-                # Should use pending icon for zero tracks
-                assert icon == mock_file_item.match_pending_icons[5]
-            else:
-                # Should use match icon based on percentage
-                assert icon == mock_file_item.match_icons[expected_icon_index]
-
-    def test_get_match_icon_no_album_attributes(self, match_quality_column: MatchQualityColumn) -> None:
-        """Test get_match_icon returns None for objects without album attributes."""
-        obj = Mock()
-        # Remove album attributes
-        del obj.get_num_matched_tracks
-        del obj.tracks
-
-        icon = match_quality_column.get_match_icon(obj)
-        assert icon is None
-
-    def test_get_match_icon_no_fileitem_icons(self, match_quality_column: MatchQualityColumn, mock_album: Mock) -> None:
-        """Test get_match_icon handles missing FileItem icons gracefully."""
         mock_album.get_num_matched_tracks.return_value = 5
         mock_album.tracks = [Mock() for _ in range(10)]
 
-        with patch("picard.ui.itemviews.FileItem") as mock_file_item:
-            # Remove match_icons attribute
-            del mock_file_item.match_icons
+        # Test that the provider evaluates correctly
+        result = match_quality_column.delegate_provider.evaluate(mock_album)
+        assert result == "0.5"  # 5/10 = 0.5
 
-            icon = match_quality_column.get_match_icon(mock_album)
-            assert icon is None
-
-    @pytest.mark.parametrize(
-        ("matched", "total", "unmatched", "duplicates", "extra", "missing"),
-        [
-            (5, 10, 2, 1, 1, 2),  # Normal case
-            (0, 0, 0, 0, 0, 0),  # Empty album
-            (10, 10, 0, 0, 0, 0),  # Perfect match
-            (0, 10, 5, 0, 5, 10),  # No matches
-        ],
-    )
-    def test_get_match_stats(
-        self,
-        match_quality_column: MatchQualityColumn,
-        mock_album: Mock,
-        matched: int,
-        total: int,
-        unmatched: int,
-        duplicates: int,
-        extra: int,
-        missing: int,
-    ) -> None:
-        """Test get_match_stats returns correct statistics."""
+    def test_provider_stats(self, match_quality_column: DelegateColumn, mock_album: Mock) -> None:
+        """Test that the provider correctly calculates match statistics."""
         # Setup mock album
-        mock_album.get_num_matched_tracks.return_value = matched
-        mock_album.get_num_unmatched_files.return_value = unmatched
-        mock_album.tracks = [Mock() for _ in range(total)]
-        mock_album.unmatched_files.files = [Mock() for _ in range(extra)]
+        mock_album.get_num_matched_tracks.return_value = 3
+        mock_album.get_num_unmatched_files.return_value = 1
+        mock_album.tracks = [Mock() for _ in range(5)]
+        mock_album.unmatched_files.files = [Mock()]
 
         # Setup tracks with appropriate file counts
         for i, track in enumerate(mock_album.tracks):
-            if i < missing:
-                track.files = []  # Missing tracks
-            elif i < missing + duplicates:
+            if i < 1:
+                track.files = []  # Missing track
+            elif i < 2:
                 track.files = [Mock(), Mock()]  # Duplicate files
             else:
                 track.files = [Mock()]  # Normal tracks
 
-        stats = match_quality_column.get_match_stats(mock_album)
+        # Test the provider's get_match_stats method
+        provider = match_quality_column.delegate_provider
+        assert provider is not None
+        stats = provider.get_match_stats(mock_album)
 
         assert stats is not None
-        assert stats['matched'] == matched
-        assert stats['total'] == total
-        assert stats['unmatched'] == unmatched
-        assert stats['duplicates'] == duplicates
-        assert stats['extra'] == extra
-        assert stats['missing'] == missing
-
-    def test_get_match_stats_no_album_attributes(self, match_quality_column: MatchQualityColumn) -> None:
-        """Test get_match_stats returns None for objects without album attributes."""
-        obj = Mock()
-        # Remove album attributes
-        del obj.get_num_matched_tracks
-        del obj.tracks
-
-        stats = match_quality_column.get_match_stats(obj)
-        assert stats is None
+        assert stats['matched'] == 3
+        assert stats['total'] == 5
+        assert stats['unmatched'] == 1
+        assert stats['duplicates'] == 1
+        assert stats['extra'] == 1
+        assert stats['missing'] == 1
 
 
 class TestMatchQualityColumnDelegate:
@@ -324,10 +434,10 @@ class TestMatchQualityColumnDelegate:
         mock_option: Mock,
         mock_index: Mock,
     ) -> None:
-        """Test paint method when column is not MatchQualityColumn."""
+        """Test paint method when column is not DelegateColumn."""
         painter = Mock()
         mock_tree_widget.itemFromIndex.return_value = mock_item
-        mock_item.columns[2] = Mock()  # Not MatchQualityColumn
+        mock_item.columns[2] = Mock()  # Not DelegateColumn
 
         # Mock initStyleOption to avoid Qt type issues
         with patch.object(delegate, "parent", return_value=mock_tree_widget):
@@ -349,10 +459,23 @@ class TestMatchQualityColumnDelegate:
         painter = Mock()
         mock_tree_widget.itemFromIndex.return_value = mock_item
 
-        # Mock the column to return None for stats
-        mock_column = Mock(spec=MatchQualityColumn)
-        mock_column.get_match_stats.return_value = None
+        # Mock the column with delegate_provider
+        mock_provider = Mock(spec=['get_match_stats'])  # Only allow get_match_stats attribute
+        mock_provider.get_match_stats.return_value = None  # No stats available
+
+        mock_column = Mock(spec=DelegateColumn)
+        mock_column.delegate_provider = mock_provider
+        mock_column.size = QtCore.QSize(16, 16)  # Add size attribute
         mock_item.columns[2] = mock_column
+
+        # Mock the index to return column 2
+        mock_index.column.return_value = 2
+
+        # Mock the object to not have album attributes so get_match_stats returns None
+        mock_item.obj = Mock()
+        # Remove album attributes so get_match_stats returns None
+        del mock_item.obj.get_num_matched_tracks
+        del mock_item.obj.tracks
 
         # Mock initStyleOption to avoid Qt type issues
         with patch.object(delegate, "parent", return_value=mock_tree_widget):
@@ -414,14 +537,14 @@ class TestMatchQualityColumnDelegate:
     def test_helpEvent_wrong_column_type(
         self, delegate: MatchQualityColumnDelegate, mock_tree_widget: Mock, mock_item: Mock
     ) -> None:
-        """Test helpEvent method when column is not MatchQualityColumn."""
+        """Test helpEvent method when column is not DelegateColumn."""
         event = Mock()
         view = mock_tree_widget
         option = Mock()
         index = Mock()
         index.column.return_value = 2
         mock_tree_widget.itemFromIndex.return_value = mock_item
-        mock_item.columns[2] = Mock()  # Not MatchQualityColumn
+        mock_item.columns[2] = Mock()  # Not DelegateColumn
 
         result = delegate.helpEvent(event, view, option, index)
         assert result is False
@@ -438,8 +561,7 @@ class TestMatchQualityColumnDelegate:
         mock_tree_widget.itemFromIndex.return_value = mock_item
 
         # Mock the column to return None for stats
-        mock_column = Mock(spec=MatchQualityColumn)
-        mock_column.get_match_stats.return_value = None
+        mock_column = Mock(spec=DelegateColumn)
         mock_item.columns[2] = mock_column
 
         result = delegate.helpEvent(event, view, option, index)
@@ -457,12 +579,43 @@ class TestMatchQualityColumnDelegate:
         index.column.return_value = 2
         mock_tree_widget.itemFromIndex.return_value = mock_item
 
+        # Mock the album object with proper attributes
+        mock_album = Mock()
+        mock_album.get_num_matched_tracks.return_value = 5
+        mock_album.get_num_unmatched_files.return_value = 2
+        mock_album.tracks = [Mock() for _ in range(10)]  # 10 tracks
+        mock_album.unmatched_files = Mock()
+        mock_album.unmatched_files.files = [Mock()]  # 1 unmatched file
+
+        # Setup tracks with appropriate file counts for stats calculation
+        for i, track in enumerate(mock_album.tracks):
+            if i < 2:  # 2 missing tracks
+                track.files = []
+            elif i < 3:  # 1 track with duplicates
+                track.files = [Mock(), Mock()]
+            else:  # Normal tracks
+                track.files = [Mock()]
+
+        mock_item.obj = mock_album
+
         # Set up delegate's parent relationship
         with patch.object(delegate, "parent", return_value=mock_tree_widget):
-            # Mock the column
-            mock_column = Mock(spec=MatchQualityColumn)
-            stats = {'matched': 5, 'total': 10, 'missing': 2, 'duplicates': 1, 'extra': 1, 'unmatched': 2}
-            mock_column.get_match_stats.return_value = stats
+            # Mock the column with delegate_provider
+            mock_provider = Mock()
+            mock_provider.get_match_stats.return_value = {
+                'matched': 5,
+                'total': 10,
+                'missing': 2,
+                'duplicates': 1,
+                'extra': 1,
+                'unmatched': 2,
+            }
+            # Ensure the provider is not wrapped by an adapter for this test
+            if hasattr(mock_provider, '_base'):
+                del mock_provider._base
+
+            mock_column = Mock(spec=DelegateColumn)
+            mock_column.delegate_provider = mock_provider
             mock_item.columns[2] = mock_column
 
             with patch("picard.ui.itemviews.match_quality_column.QtWidgets.QToolTip") as mock_tooltip:
@@ -495,7 +648,7 @@ class TestMatchQualityColumnDelegate:
 
 
 class TestItemViewsIntegration:
-    """Test integration of MatchQualityColumn with existing itemviews system."""
+    """Test integration of new delegate column architecture with existing itemviews system."""
 
     @pytest.fixture
     def mock_album(self) -> Mock:
@@ -508,14 +661,14 @@ class TestItemViewsIntegration:
         album.unmatched_files.files = [Mock()]
         return album
 
-    def test_match_quality_column_in_itemview_columns(self) -> None:
-        """Test that MatchQualityColumn is included in ITEMVIEW_COLUMNS (album view)."""
+    def test_delegate_column_in_album_view_columns(self) -> None:
+        """Test that DelegateColumn is included in ALBUMVIEW_COLUMNS (album view)."""
         from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS
 
         # Find the match quality column in album view columns
         match_quality_column = None
         for column in ALBUMVIEW_COLUMNS:
-            if isinstance(column, MatchQualityColumn):
+            if isinstance(column, DelegateColumn) and column.key == "~match_quality":
                 match_quality_column = column
                 break
 
@@ -524,16 +677,16 @@ class TestItemViewsIntegration:
         assert match_quality_column.key == "~match_quality"
         assert match_quality_column.sortable is True
         assert match_quality_column.sort_type is not None
-        assert match_quality_column.sortkey is not None
+        assert match_quality_column.delegate_class == MatchQualityColumnDelegate
 
-    def test_match_quality_column_not_in_fileview_columns(self) -> None:
-        """Test that MatchQualityColumn is NOT included in FILEVIEW_COLUMNS."""
+    def test_delegate_column_not_in_fileview_columns(self) -> None:
+        """Test that DelegateColumn is NOT included in FILEVIEW_COLUMNS."""
         from picard.ui.itemviews.columns import FILEVIEW_COLUMNS
 
-        # Verify that no match quality column exists in file view columns
+        # Verify that no match quality delegate column exists in file view columns
         match_quality_column = None
         for column in FILEVIEW_COLUMNS:
-            if isinstance(column, MatchQualityColumn):
+            if isinstance(column, DelegateColumn) and column.key == "~match_quality":
                 match_quality_column = column
                 break
 
@@ -549,41 +702,50 @@ class TestItemViewsIntegration:
         assert idx_match == idx_albumartist + 1
 
         match_quality_column = ALBUMVIEW_COLUMNS[idx_match]
-        assert isinstance(match_quality_column, MatchQualityColumn)
+        assert isinstance(match_quality_column, DelegateColumn)
         assert match_quality_column.key == "~match_quality"
 
         album_artist_column = ALBUMVIEW_COLUMNS[idx_albumartist]
         assert album_artist_column.key == "albumartist"
 
-    def test_sortkey_progress_function(self) -> None:
-        """Test the _sortkey_progress function used by MatchQualityColumn."""
-        from picard.ui.itemviews.columns import _sortkey_match_quality
+    def test_numeric_sorting_with_provider(self) -> None:
+        """Test that the provider uses numeric sorting correctly."""
+        from picard.ui.itemviews.columns import ALBUMVIEW_COLUMNS
+
+        # Find the match quality column
+        match_quality_column = None
+        for column in ALBUMVIEW_COLUMNS:
+            if isinstance(column, DelegateColumn) and column.key == "~match_quality":
+                match_quality_column = column
+                break
+
+        assert match_quality_column is not None
 
         # Test with album object
         album = Mock()
         album.get_num_matched_tracks.return_value = 3
         album.tracks = [Mock() for _ in range(5)]
 
-        result = _sortkey_match_quality(album)
-        expected = _apply_platform_multiplier(0.6)
-        assert result == expected
+        # Test that the provider correctly evaluates match percentage
+        result = match_quality_column.delegate_provider.evaluate(album)
+        assert result == "0.6"  # 3/5 = 0.6
 
         # Test with track object (should return 0.0)
         track = Mock()
         # Mock hasattr to return False for track objects
         with patch("builtins.hasattr", return_value=False):
-            result = _sortkey_match_quality(track)
-            assert result == 0.0
+            result = match_quality_column.delegate_provider.evaluate(track)
+            assert result == "0.0"
 
         # Test with album with no tracks
         album.tracks = []
-        result = _sortkey_match_quality(album)
-        assert result == 0.0
+        result = match_quality_column.delegate_provider.evaluate(album)
+        assert result == "0.0"
 
-    def test_treeitem_handles_match_quality_column(self, mock_album: Mock) -> None:
-        """Test that TreeItem properly handles MatchQualityColumn."""
-        # Create a mock column
-        column = Mock(spec=MatchQualityColumn)
+    def test_treeitem_handles_delegate_column(self, mock_album: Mock) -> None:
+        """Test that TreeItem properly handles DelegateColumn."""
+        # Create a mock delegate column
+        column = Mock(spec=DelegateColumn)
         column.size = QtCore.QSize(16, 16)
 
         # Create a mock item
@@ -593,7 +755,7 @@ class TestItemViewsIntegration:
         # Mock the update_colums_text method
         with patch.object(TreeItem, "update_colums_text"):
             # Simulate the condition in update_colums_text
-            if isinstance(column, MatchQualityColumn):
+            if isinstance(column, DelegateColumn):
                 item.setSizeHint(1, column.size)
 
             # Verify setSizeHint was called
@@ -670,106 +832,3 @@ class TestCodeFormattingChanges:
             with patch.object(ClusterItem, "columns", mock_columns):
                 item = ClusterItem(cluster, parent=None)
                 assert item is not None
-
-
-class TestMatchQualitySorting:
-    """Test match quality sorting behavior."""
-
-    @pytest.fixture
-    def mock_album_loading(self):
-        """Create a mock album that is still loading."""
-        album = Mock()
-        album.status = AlbumStatus.LOADING
-        album.get_num_matched_tracks.return_value = 0
-        album.tracks = []
-        return album
-
-    @pytest.fixture
-    def mock_album_loaded(self):
-        """Create a mock album that has finished loading."""
-        album = Mock()
-        album.status = AlbumStatus.LOADED
-        album.get_num_matched_tracks.return_value = 3
-        album.tracks = [Mock(), Mock(), Mock(), Mock(), Mock()]  # 5 tracks total
-        return album
-
-    @pytest.fixture
-    def mock_track(self):
-        """Create a mock track object."""
-        track = Mock()
-        # Track objects don't have get_num_matched_tracks or tracks attributes
-        # We'll use patch to mock hasattr behavior
-        return track
-
-    def test_sortkey_match_quality_loading_album(self, mock_album_loading):
-        """Test that loading albums return 0.0 to avoid premature sorting."""
-        result = _sortkey_match_quality(mock_album_loading)
-        assert result == 0.0
-
-    def test_sortkey_match_quality_loaded_album(self, mock_album_loaded):
-        """Test that loaded albums return correct match percentage."""
-        result = _sortkey_match_quality(mock_album_loaded)
-        # 3 matched out of 5 total = 0.6
-        expected = _apply_platform_multiplier(0.6)
-        assert result == expected
-
-    def test_sortkey_match_quality_track_object(self, mock_track):
-        """Test that track objects return 0.0."""
-        # Mock hasattr to return False for track objects
-        with patch("builtins.hasattr", side_effect=lambda obj, attr: attr not in ("get_num_matched_tracks", "tracks")):
-            result = _sortkey_match_quality(mock_track)
-            assert result == 0.0
-
-    def test_sortkey_match_quality_no_tracks(self, mock_album_loaded):
-        """Test that albums with no tracks return 0.0."""
-        mock_album_loaded.tracks = []
-        result = _sortkey_match_quality(mock_album_loaded)
-        assert result == 0.0
-
-    def test_sortkey_match_quality_all_matched(self, mock_album_loaded):
-        """Test that albums with all tracks matched return correct value."""
-        mock_album_loaded.get_num_matched_tracks.return_value = 5
-        result = _sortkey_match_quality(mock_album_loaded)
-        expected = _apply_platform_multiplier(1.0)
-        assert result == expected
-
-    def test_sortkey_match_quality_no_matches(self, mock_album_loaded):
-        """Test that albums with no matches return 0.0."""
-        mock_album_loaded.get_num_matched_tracks.return_value = 0
-        result = _sortkey_match_quality(mock_album_loaded)
-        assert result == 0.0
-
-    def test_sortkey_match_quality_partial_matches(self, mock_album_loaded):
-        """Test that albums with partial matches return correct percentage."""
-        mock_album_loaded.get_num_matched_tracks.return_value = 2
-        result = _sortkey_match_quality(mock_album_loaded)
-        # 2 matched out of 5 total = 0.4
-        expected = _apply_platform_multiplier(0.4)
-        assert result == expected
-
-    def test_sortkey_match_quality_no_status_attribute(self):
-        """Test that objects without status attribute are handled gracefully."""
-        obj = Mock()
-        obj.get_num_matched_tracks.return_value = 2
-        obj.tracks = [Mock(), Mock(), Mock()]  # 3 tracks
-        # No status attribute
-        result = _sortkey_match_quality(obj)
-        # Should calculate normally: 2/3 = 0.666...
-        expected = _apply_platform_multiplier(0.6666666666666666)
-        assert result == pytest.approx(expected, rel=1e-10)
-
-    def test_sortkey_match_quality_error_status(self, mock_album_loaded):
-        """Test that albums with error status are handled correctly."""
-        mock_album_loaded.status = AlbumStatus.ERROR
-        result = _sortkey_match_quality(mock_album_loaded)
-        # Should still calculate the match percentage
-        expected = _apply_platform_multiplier(0.6)
-        assert result == expected
-
-    def test_sortkey_match_quality_none_status(self, mock_album_loaded):
-        """Test that albums with None status are handled correctly."""
-        mock_album_loaded.status = None
-        result = _sortkey_match_quality(mock_album_loaded)
-        # Should still calculate the match percentage
-        expected = _apply_platform_multiplier(0.6)
-        assert result == expected

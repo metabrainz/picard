@@ -22,14 +22,19 @@
 
 from __future__ import annotations
 
+from PyQt6 import QtCore, QtGui
+
 from picard.ui.columns import (
     Column,
     ColumnAlign,
     ColumnSortType,
+    ImageColumn,
 )
 from picard.ui.itemviews.custom_columns.protocols import (
     CacheInvalidatable,
     ColumnValueProvider,
+    DelegateProvider,
+    HeaderIconProvider,
     SortKeyProvider,
 )
 
@@ -46,6 +51,8 @@ class CustomColumn(Column):
         align: ColumnAlign = ColumnAlign.LEFT,
         sort_type: ColumnSortType = ColumnSortType.TEXT,
         always_visible: bool = False,
+        *,
+        status_icon: bool = False,
     ):
         """Create custom column.
 
@@ -79,7 +86,7 @@ class CustomColumn(Column):
             sort_type=sort_type,
             sortkey=sortkey_fn,
             always_visible=always_visible,
-            status_icon=False,
+            status_icon=status_icon,
         )
         self.provider = provider
 
@@ -94,3 +101,145 @@ class CustomColumn(Column):
         if isinstance(self.provider, CacheInvalidatable):
             # type: ignore[attr-defined]
             self.provider.invalidate(obj)  # noqa: PGH003
+
+
+class DelegateColumn(Column):
+    """A column that uses a delegate for custom rendering and optional sorting."""
+
+    def __init__(
+        self,
+        title: str,
+        key: str,
+        provider: DelegateProvider,
+        width: int | None = None,
+        align: ColumnAlign = ColumnAlign.LEFT,
+        sort_type: ColumnSortType = ColumnSortType.TEXT,
+        always_visible: bool = False,
+        size: QtCore.QSize | None = None,
+        *,
+        status_icon: bool = False,
+        sort_provider: SortKeyProvider | None = None,
+    ):
+        """Create delegate column.
+
+        Parameters
+        ----------
+        title
+            Display title of the column.
+        key
+            Internal key used to identify the column.
+        provider
+            Provide delegate class and data for rendering.
+        width
+            Optional fixed width in pixels.
+        align
+            Set text alignment.
+        sort_type
+            Set sorting behavior of the column.
+        always_visible
+            If True, hide the column visibility toggle.
+        size
+            Preferred delegate size.
+        """
+
+        sortkey_fn = None
+        if sort_type == ColumnSortType.SORTKEY:
+            if isinstance(sort_provider, SortKeyProvider):
+                sortkey_fn = sort_provider.sort_key  # type: ignore[assignment]
+            elif isinstance(provider, SortKeyProvider):
+                # Fallback for backward compatibility if provider implements sorting
+                sortkey_fn = provider.sort_key  # type: ignore[assignment]
+
+        super().__init__(
+            title,
+            key,
+            width=width,
+            align=align,
+            sort_type=sort_type,
+            sortkey=sortkey_fn,
+            always_visible=always_visible,
+            status_icon=status_icon,
+        )
+        self.delegate_provider = provider
+        self.size = size if size is not None else QtCore.QSize(16, 16)  # Default icon size
+
+    @property
+    def delegate_class(self):
+        """Get the delegate class for this column."""
+        return self.delegate_provider.get_delegate_class()
+
+
+class IconColumn(ImageColumn):
+    """A column that paints a header icon provided by a `HeaderIconProvider`.
+
+    The header icon is constructed lazily via the provider to avoid creating
+    Qt objects before the application is initialized.
+    """
+
+    _header_icon: QtGui.QIcon | None = None
+
+    def __init__(self, title: str, key: str, provider: HeaderIconProvider, *, width: int | None = None) -> None:
+        super().__init__(
+            title,
+            key,
+            width=width,
+            align=ColumnAlign.LEFT,
+            sort_type=ColumnSortType.TEXT,
+            sortkey=None,
+            always_visible=False,
+            status_icon=False,
+        )
+        self._provider = provider
+        self.header_icon_size = QtCore.QSize(0, 0)
+        self.header_icon_border = 0
+        self.size = QtCore.QSize(0, 0)
+
+    @property
+    def header_icon(self) -> QtGui.QIcon | None:
+        """Get the header icon for this column.
+
+        Returns
+        -------
+        QtGui.QIcon | None
+            The header icon, or None if no icon is available.
+        """
+        if self._header_icon is None:
+            self._header_icon = self._provider.get_icon()
+        return self._header_icon
+
+    def set_header_icon_size(self, width: int, height: int, border: int) -> None:
+        """Set the header icon size and border.
+
+        Parameters
+        ----------
+        width : int
+            Width of the icon in pixels.
+        height : int
+            Height of the icon in pixels.
+        border : int
+            Border size around the icon in pixels.
+        """
+        self.header_icon_size = QtCore.QSize(width, height)
+        self.header_icon_border = border
+        self.size = QtCore.QSize(width + 2 * border, height + 2 * border)
+        self.width = self.size.width()
+
+    def paint(self, painter: QtGui.QPainter, rect: QtCore.QRect) -> None:  # pragma: no cover - GUI rendering
+        """Paint the header icon in the specified rectangle.
+
+        Parameters
+        ----------
+        painter : QtGui.QPainter
+            The painter to use for drawing.
+        rect : QtCore.QRect
+            The rectangle where the icon should be painted.
+        """
+        icon = self.header_icon
+        if not icon:
+            return
+        h = self.header_icon_size.height()
+        w = self.header_icon_size.width()
+        border = self.header_icon_border
+        padding_v = (rect.height() - h) // 2
+        target_rect = QtCore.QRect(rect.x() + border, rect.y() + padding_v, w, h)
+        painter.drawPixmap(target_rect, icon.pixmap(self.header_icon_size))

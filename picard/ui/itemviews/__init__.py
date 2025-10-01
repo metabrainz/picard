@@ -55,7 +55,7 @@ from PyQt6 import (
 
 from picard import log
 from picard.album import NatAlbum
-from picard.cluster import ClusterList, UnclusteredFiles
+from picard.cluster import Cluster, ClusterList
 from picard.file import (
     File,
     FileErrorType,
@@ -73,14 +73,14 @@ from picard.ui.colors import interface_colors
 from picard.ui.columns import (
     ColumnAlign,
     ColumnSortType,
+    ImageColumn,
 )
 from picard.ui.itemviews.basetreeview import BaseTreeView
 from picard.ui.itemviews.columns import (
     ALBUMVIEW_COLUMNS,
     FILEVIEW_COLUMNS,
-    IconColumn,
 )
-from picard.ui.itemviews.match_quality_column import MatchQualityColumn
+from picard.ui.itemviews.custom_columns import DelegateColumn
 
 
 def get_match_color(similarity, basecolor):
@@ -408,11 +408,12 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                 self.setForeground(i, color)
             if bgcolor is not None:
                 self.setBackground(i, bgcolor)
-            if isinstance(column, IconColumn):
+            if isinstance(column, ImageColumn):
                 self.setSizeHint(i, column.size)
-            elif isinstance(column, MatchQualityColumn):
-                # Progress columns are handled by delegate, just set size hint
-                self.setSizeHint(i, column.size)
+            elif isinstance(column, DelegateColumn):
+                # Delegate columns are handled by delegate, just set size hint
+                if hasattr(column, 'size'):
+                    self.setSizeHint(i, column.size)
             else:
                 if column.align == ColumnAlign.RIGHT:
                     self.setTextAlignment(i, QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter)
@@ -420,11 +421,14 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                 if isinstance(column, CustomColumn):
                     # Invalidate caches for this object to reflect tag changes
                     column.invalidate_cache(self.obj)
-                    # Hide custom column values for container rows like
-                    # "Clusters" and "Unclustered Files".
-                    # These represent unrelated collections and should not
-                    # display per-entity values.
-                    if isinstance(self.obj, ClusterList | UnclusteredFiles):
+                    # Hide custom column values for container/group rows, but preserve Title and status icon.
+                    # - ClusterList: Represents the "Clusters" root. Title is set elsewhere.
+                    # - Special Cluster instances (e.g. "Unclustered Files"): Should show their Title
+                    #   but no other per-entity values in custom columns.
+                    is_group_row = isinstance(self.obj, ClusterList) or (
+                        isinstance(self.obj, Cluster) and getattr(self.obj, 'special', False)
+                    )
+                    if is_group_row and (column.key != 'title' and not column.status_icon):
                         self.setText(i, "")
                         continue
 
