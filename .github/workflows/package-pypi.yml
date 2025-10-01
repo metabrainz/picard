@@ -14,7 +14,7 @@ jobs:
       CODESIGN: 0
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: '>=3.13.5 <3.14'
         cache: 'pip'
@@ -82,7 +82,7 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       id: setup
       with:
         python-version: ${{ matrix.python-version }}
