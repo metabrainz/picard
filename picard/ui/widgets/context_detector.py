@@ -136,6 +136,10 @@ class ContextDetector:
                 after_func = left_text[last_func_pos + len(pattern) :]
                 # Check if we're in the first argument (no comma yet)
                 if ',' not in after_func and not after_func.endswith(')'):
+                    # Additional validation: ensure we don't have invalid syntax like double parentheses
+                    # If the text immediately after the function is just another (, it's invalid syntax
+                    if after_func == '(':
+                        return False
                     return True
         return False
 

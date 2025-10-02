@@ -228,9 +228,9 @@ class TestTagNameArgContextDetection:
             ("$get(album", True),
             ("$set(artist,", False),  # Second argument
             ("$get(album,", False),  # Second argument
-            # Invalid cases - these actually return True because they match the pattern
-            ("$set((", True),  # Actually returns True due to pattern matching
-            ("$get((", True),  # Actually returns True due to pattern matching
+            # Invalid cases - these should return False due to invalid syntax
+            ("$set((", False),  # Invalid syntax - double parentheses
+            ("$get((", False),  # Invalid syntax - double parentheses
             ("$unknown(", False),  # Unknown function
             ("$if(", False),  # Not a tag-name function
             ("$set", False),  # No parentheses
@@ -252,9 +252,9 @@ class TestTagNameArgContextDetection:
             ("$get(album", "get", True),
             ("$set(artist,", "set", False),  # Second argument
             ("$get(album,", "get", False),  # Second argument
-            # Invalid cases - these actually return True because they match the pattern
-            ("$set((", "set", True),  # Actually returns True due to pattern matching
-            ("$get((", "get", True),  # Actually returns True due to pattern matching
+            # Invalid cases - these should return False due to invalid syntax
+            ("$set((", "set", False),  # Invalid syntax - double parentheses
+            ("$get((", "get", False),  # Invalid syntax - double parentheses
             ("$set", "set", False),  # No parentheses
             ("$unknown(", "unknown", True),  # Actually returns True due to pattern matching
         ],
