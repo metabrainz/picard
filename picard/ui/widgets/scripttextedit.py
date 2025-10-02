@@ -68,6 +68,11 @@ from picard.ui.widgets.context_detector import TAG_NAME_FIRST_ARG_FUNCTIONS, Com
 from picard.ui.widgets.variable_extractor import VariableExtractor
 
 
+# Pre-compiled regex patterns for variable usage counting
+_VARIABLE_PATTERN = re.compile(r'%([A-Za-z0-9_:]+)%')
+_GET_VARIABLE_PATTERN = re.compile(r'\$get\(\s*([A-Za-z0-9_]+)\s*\)')
+
+
 def find_regex_index(regex, text, start=0):
     m = regex.search(text[start:])
     if m:
@@ -274,13 +279,11 @@ class ScriptCompleter(QCompleter):
     def _count_variable_usage(self, script_content: str) -> dict[str, int]:
         """Count variable usages in the script content."""
         counts: dict[str, int] = {}
-        for m in re.finditer(r'%([A-Za-z0-9_:]+)%', script_content):
-            name = m.group(1)
-            counts[name] = counts.get(name, 0) + 1
-        # Also cout references via `$get(name)`
-        for m in re.finditer(r'\$get\(\s*([A-Za-z0-9_]+)\s*\)', script_content):
-            name = m.group(1)
-            counts[name] = counts.get(name, 0) + 1
+        # Count both %variable% and $get(variable) syntax patterns
+        for pattern in (_VARIABLE_PATTERN, _GET_VARIABLE_PATTERN):
+            for m in pattern.finditer(script_content):
+                name = m.group(1)
+                counts[name] = counts.get(name, 0) + 1  # Increment usage count
         return counts
 
 
