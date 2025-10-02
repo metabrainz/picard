@@ -179,20 +179,20 @@ class TestASTParsingMethods:
     def test_collect_set_variables_from_full_parse_success(self, completer: ScriptCompleter) -> None:
         """Test successful full parse variable collection."""
         script = '$set(var1, "value1")\n$set(var2, "value2")'
-        result = completer._collect_set_variables_from_full_parse(script)
+        result = completer._variable_extractor._collect_from_full_parse(script)
         assert result == {'var1', 'var2'}
 
     def test_collect_set_variables_from_full_parse_handles_errors(self, completer: ScriptCompleter) -> None:
         """Test that full parse handles parsing errors gracefully."""
         script = '$set(incomplete'
-        result = completer._collect_set_variables_from_full_parse(script)
+        result = completer._variable_extractor._collect_from_full_parse(script)
         # Should return empty set when parsing fails
         assert result == set()
 
     def test_collect_set_variables_from_line_parse(self, completer: ScriptCompleter) -> None:
         """Test per-line parsing for resilience during live edits."""
         script = '$set(var1, "value1")\n$set(incomplete\n$set(var2, "value2")'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         # Should extract variables from valid lines
         assert 'var1' in result
         assert 'var2' in result
@@ -200,13 +200,13 @@ class TestASTParsingMethods:
     def test_collect_set_variables_from_line_parse_handles_empty_lines(self, completer: ScriptCompleter) -> None:
         """Test that empty lines are handled correctly in line parsing."""
         script = '\n\n$set(var1, "test")\n\n'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         assert result == {'var1'}
 
     def test_collect_set_variables_from_regex(self, completer: ScriptCompleter) -> None:
         """Test regex fallback for incomplete tokens."""
         script = '$set(var1, "value")\n$set(incomplete'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # Should extract from regex even with incomplete syntax
         assert 'var1' in result
 
@@ -227,9 +227,9 @@ class TestASTParsingMethods:
         mock_function.name = "set"
         mock_function.args = [MockExpression()]
 
-        with patch.object(completer, '_extract_static_name', return_value="nested_var"):
+        with patch.object(completer._variable_extractor, '_extract_static_name', return_value="nested_var"):
             result = set()
-            completer._collect_set_variables_from_ast(mock_function, result)
+            completer._variable_extractor._collect_from_ast(mock_function, result)
             assert 'nested_var' in result
 
     def test_extract_static_name_with_valid_expression(self, completer: ScriptCompleter) -> None:
@@ -242,7 +242,7 @@ class TestASTParsingMethods:
     def test_extract_static_name_with_non_expression(self, completer: ScriptCompleter) -> None:
         """Test static name extraction with non-expression input."""
         mock_text = Mock(spec=ScriptText)
-        result = completer._extract_static_name(mock_text)
+        result = completer._variable_extractor._extract_static_name(mock_text)
         assert result is None
 
     def test_extract_static_name_with_mixed_tokens(self, completer: ScriptCompleter) -> None:
@@ -278,19 +278,19 @@ class TestRegexFallback:
     )
     def test_regex_extraction_patterns(self, completer: ScriptCompleter, script: str, expected_vars: set[str]) -> None:
         """Test regex extraction with various patterns."""
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == expected_vars
 
     def test_regex_handles_whitespace_variations(self, completer: ScriptCompleter) -> None:
         """Test that regex handles various whitespace patterns."""
         script = '$set(  var1  , "value")\n$set(var2, "value")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1', 'var2'}
 
     def test_regex_handles_special_characters(self, completer: ScriptCompleter) -> None:
         """Test that regex handles special characters in variable names."""
         script = '$set(var_with_underscore, "test")\n$set(var123, "test")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var_with_underscore', 'var123'}
 
 
@@ -518,7 +518,7 @@ class TestErrorHandling:
         """Test that parser errors are handled gracefully."""
         # Mock parser to raise an error
         with patch.object(completer._parser, 'parse', side_effect=ScriptError("Parse error")):
-            result = completer._collect_set_variables_from_full_parse('$set(invalid')
+            result = completer._variable_extractor._collect_from_full_parse('$set(invalid')
             assert result == set()
 
     def test_malformed_ast_handling(self, completer: ScriptCompleter) -> None:
@@ -530,7 +530,7 @@ class TestErrorHandling:
 
         result = set()
         # Should not raise an exception
-        completer._collect_set_variables_from_ast(mock_function, result)
+        completer._variable_extractor._collect_from_ast(mock_function, result)
         assert result == set()
 
     def test_regex_error_handling(self, completer: ScriptCompleter) -> None:
@@ -540,7 +540,7 @@ class TestErrorHandling:
         script = f'$set({long_string}, "value")'
 
         # Should not raise an exception
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert isinstance(result, set)
 
     def test_model_update_error_handling(self, completer: ScriptCompleter) -> None:

@@ -102,8 +102,8 @@ class TestASTTraversal:
         """Test collecting variables from $set function calls."""
         result = set()
         # Mock the _extract_static_name method to return the expected value
-        with patch.object(completer, '_extract_static_name', return_value="variable1"):
-            completer._collect_set_variables_from_ast(mock_ast_nodes['set_function'], result)
+        with patch.object(completer._variable_extractor, '_extract_static_name', return_value="variable1"):
+            completer._variable_extractor._collect_from_ast(mock_ast_nodes['set_function'], result)
             assert 'variable1' in result
 
     def test_collect_set_variables_from_ast_with_non_set_function(
@@ -111,7 +111,7 @@ class TestASTTraversal:
     ) -> None:
         """Test that non-$set functions don't add variables."""
         result = set()
-        completer._collect_set_variables_from_ast(mock_ast_nodes['if_function'], result)
+        completer._variable_extractor._collect_from_ast(mock_ast_nodes['if_function'], result)
         assert result == set()
 
     def test_collect_set_variables_from_ast_with_expression(
@@ -119,7 +119,7 @@ class TestASTTraversal:
     ) -> None:
         """Test collecting variables from expression nodes."""
         result = set()
-        completer._collect_set_variables_from_ast(mock_ast_nodes['expression_node1'], result)
+        completer._variable_extractor._collect_from_ast(mock_ast_nodes['expression_node1'], result)
         # Expressions themselves don't contain variables, but their children might
         assert result == set()
 
@@ -139,7 +139,7 @@ class TestASTTraversal:
 
         result = set()
         # Should not raise an exception even with empty args
-        completer._collect_set_variables_from_ast(empty_function, result)
+        completer._variable_extractor._collect_from_ast(empty_function, result)
         assert result == set()
 
     def test_collect_set_variables_from_ast_handles_none_args(self, completer: ScriptCompleter) -> None:
@@ -150,7 +150,7 @@ class TestASTTraversal:
 
         result = set()
         # Should not raise an exception
-        completer._collect_set_variables_from_ast(none_function, result)
+        completer._variable_extractor._collect_from_ast(none_function, result)
         assert result == set()
 
 
@@ -182,7 +182,7 @@ class TestStaticNameExtraction:
     def test_extract_static_name_with_non_expression(self, completer: ScriptCompleter) -> None:
         """Test extracting static names from non-expression nodes."""
         text_node = Mock(spec=ScriptText)
-        result = completer._extract_static_name(text_node)
+        result = completer._variable_extractor._extract_static_name(text_node)
         assert result is None
 
     def test_extract_static_name_with_whitespace_only(self, completer: ScriptCompleter) -> None:
@@ -213,23 +213,23 @@ class TestFullParseMethods:
     def test_collect_set_variables_from_full_parse_success(self, completer: ScriptCompleter) -> None:
         """Test successful full parse variable collection."""
         script = '$set(var1, "value1")\n$set(var2, "value2")'
-        result = completer._collect_set_variables_from_full_parse(script)
+        result = completer._variable_extractor._collect_from_full_parse(script)
         assert result == {'var1', 'var2'}
 
     def test_collect_set_variables_from_full_parse_handles_errors(self, completer: ScriptCompleter) -> None:
         """Test that full parse handles parsing errors gracefully."""
         script = '$set(incomplete'
-        result = completer._collect_set_variables_from_full_parse(script)
+        result = completer._variable_extractor._collect_from_full_parse(script)
         assert result == set()
 
     def test_collect_set_variables_from_full_parse_handles_empty_script(self, completer: ScriptCompleter) -> None:
         """Test that full parse handles empty scripts."""
-        result = completer._collect_set_variables_from_full_parse('')
+        result = completer._variable_extractor._collect_from_full_parse('')
         assert result == set()
 
     def test_collect_set_variables_from_full_parse_handles_whitespace_only(self, completer: ScriptCompleter) -> None:
         """Test that full parse handles whitespace-only scripts."""
-        result = completer._collect_set_variables_from_full_parse('   \n\t  \n  ')
+        result = completer._variable_extractor._collect_from_full_parse('   \n\t  \n  ')
         assert result == set()
 
     def test_collect_set_variables_from_full_parse_handles_complex_script(self, completer: ScriptCompleter) -> None:
@@ -237,13 +237,13 @@ class TestFullParseMethods:
         script = '''$set(artist, %artist%)
 $set(album, %album%)
 $set(combined, $if(%artist%, %artist% - %album%, %album%))'''
-        result = completer._collect_set_variables_from_full_parse(script)
+        result = completer._variable_extractor._collect_from_full_parse(script)
         assert result == {'artist', 'album', 'combined'}
 
     def test_collect_set_variables_from_full_parse_handles_nested_functions(self, completer: ScriptCompleter) -> None:
         """Test that full parse handles nested functions."""
         script = '$set(outer, $if(1, $set(inner, "value"), "default"))'
-        result = completer._collect_set_variables_from_full_parse(script)
+        result = completer._variable_extractor._collect_from_full_parse(script)
         assert 'outer' in result
         assert 'inner' in result
 
@@ -254,7 +254,7 @@ class TestLineParseMethods:
     def test_collect_set_variables_from_line_parse_success(self, completer: ScriptCompleter) -> None:
         """Test successful line parse variable collection."""
         script = '$set(var1, "value1")\n$set(var2, "value2")'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         assert result == {'var1', 'var2'}
 
     def test_collect_set_variables_from_line_parse_handles_mixed_valid_invalid(
@@ -262,32 +262,32 @@ class TestLineParseMethods:
     ) -> None:
         """Test that line parse handles mixed valid and invalid lines."""
         script = '$set(var1, "value1")\n$set(incomplete\n$set(var2, "value2")'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         assert 'var1' in result
         assert 'var2' in result
 
     def test_collect_set_variables_from_line_parse_handles_empty_lines(self, completer: ScriptCompleter) -> None:
         """Test that line parse handles empty lines."""
         script = '\n\n$set(var1, "value1")\n\n$set(var2, "value2")\n\n'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         assert result == {'var1', 'var2'}
 
     def test_collect_set_variables_from_line_parse_handles_whitespace_lines(self, completer: ScriptCompleter) -> None:
         """Test that line parse handles whitespace-only lines."""
         script = '   \n\t  \n$set(var1, "value1")\n  \n$set(var2, "value2")\n\t'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         assert result == {'var1', 'var2'}
 
     def test_collect_set_variables_from_line_parse_handles_single_line(self, completer: ScriptCompleter) -> None:
         """Test that line parse handles single line scripts."""
         script = '$set(var1, "value1")'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         assert result == {'var1'}
 
     def test_collect_set_variables_from_line_parse_handles_no_newlines(self, completer: ScriptCompleter) -> None:
         """Test that line parse handles scripts without newlines."""
         script = '$set(var1, "value1") $set(var2, "value2")'
-        result = completer._collect_set_variables_from_line_parse(script)
+        result = completer._variable_extractor._collect_from_line_parse(script)
         # Should still work even without newlines
         assert isinstance(result, set)
 
@@ -298,42 +298,42 @@ class TestRegexFallback:
     def test_collect_set_variables_from_regex_basic(self, completer: ScriptCompleter) -> None:
         """Test basic regex extraction."""
         script = '$set(var1, "value1")\n$set(var2, "value2")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1', 'var2'}
 
     def test_collect_set_variables_from_regex_handles_whitespace(self, completer: ScriptCompleter) -> None:
         """Test that regex handles whitespace variations."""
         script = '$set(  var1  , "value1")\n$set(var2, "value2")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1', 'var2'}
 
     def test_collect_set_variables_from_regex_handles_special_characters(self, completer: ScriptCompleter) -> None:
         """Test that regex handles special characters in variable names."""
         script = '$set(var_with_underscore, "value1")\n$set(var123, "value2")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var_with_underscore', 'var123'}
 
     def test_collect_set_variables_from_regex_handles_incomplete_syntax(self, completer: ScriptCompleter) -> None:
         """Test that regex handles incomplete syntax."""
         script = '$set(var1, "value1")\n$set(incomplete'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert 'var1' in result
 
     def test_collect_set_variables_from_regex_handles_empty_script(self, completer: ScriptCompleter) -> None:
         """Test that regex handles empty scripts."""
-        result = completer._collect_set_variables_from_regex('')
+        result = completer._variable_extractor._collect_from_regex('')
         assert result == set()
 
     def test_collect_set_variables_from_regex_handles_no_sets(self, completer: ScriptCompleter) -> None:
         """Test that regex handles scripts without $set statements."""
         script = '%artist% - %album%'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == set()
 
     def test_collect_set_variables_from_regex_handles_multiple_same_variable(self, completer: ScriptCompleter) -> None:
         """Test that regex handles multiple $set statements with same variable."""
         script = '$set(var1, "value1")\n$set(var1, "value2")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert 'var1' in result
         assert len(result) == 1
 
@@ -345,7 +345,7 @@ class TestErrorHandling:
         """Test that AST traversal handles None nodes."""
         result = set()
         # Should not raise an exception
-        completer._collect_set_variables_from_ast(None, result)
+        completer._variable_extractor._collect_from_ast(None, result)
         assert result == set()
 
     def test_collect_set_variables_from_ast_handles_invalid_node_type(self, completer: ScriptCompleter) -> None:
@@ -353,18 +353,18 @@ class TestErrorHandling:
         invalid_node = Mock()
         result = set()
         # Should not raise an exception
-        completer._collect_set_variables_from_ast(invalid_node, result)
+        completer._variable_extractor._collect_from_ast(invalid_node, result)
         assert result == set()
 
     def test_extract_static_name_handles_none_node(self, completer: ScriptCompleter) -> None:
         """Test that static name extraction handles None nodes."""
-        result = completer._extract_static_name(None)
+        result = completer._variable_extractor._extract_static_name(None)
         assert result is None
 
     def test_extract_static_name_handles_invalid_node_type(self, completer: ScriptCompleter) -> None:
         """Test that static name extraction handles invalid node types."""
         invalid_node = Mock()
-        result = completer._extract_static_name(invalid_node)
+        result = completer._variable_extractor._extract_static_name(invalid_node)
         assert result is None
 
     def test_collect_set_variables_from_full_parse_handles_parser_exception(self, completer: ScriptCompleter) -> None:
@@ -372,7 +372,7 @@ class TestErrorHandling:
         from picard.script.parser import ScriptError
 
         with patch.object(completer._parser, 'parse', side_effect=ScriptError("Parser error")):
-            result = completer._collect_set_variables_from_full_parse('$set(var1, "value")')
+            result = completer._variable_extractor._collect_from_full_parse('$set(var1, "value")')
             assert result == set()
 
     def test_collect_set_variables_from_line_parse_handles_parser_exception(self, completer: ScriptCompleter) -> None:
@@ -380,7 +380,7 @@ class TestErrorHandling:
         from picard.script.parser import ScriptError
 
         with patch.object(completer._parser, 'parse', side_effect=ScriptError("Parser error")):
-            result = completer._collect_set_variables_from_line_parse('$set(var1, "value")')
+            result = completer._variable_extractor._collect_from_line_parse('$set(var1, "value")')
             assert result == set()
 
 

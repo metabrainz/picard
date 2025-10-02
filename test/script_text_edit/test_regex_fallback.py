@@ -63,30 +63,30 @@ class TestRegexBasicFunctionality:
         self, completer: ScriptCompleter, script: str, expected_vars: set[str]
     ) -> None:
         """Test that regex extracts basic variable names correctly."""
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == expected_vars
 
     def test_regex_handles_multiple_variables(self, completer: ScriptCompleter) -> None:
         """Test that regex handles multiple variables in one script."""
         script = '$set(var1, "value1")\n$set(var2, "value2")\n$set(var3, "value3")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1', 'var2', 'var3'}
 
     def test_regex_handles_single_line_multiple_sets(self, completer: ScriptCompleter) -> None:
         """Test that regex handles multiple $set statements on one line."""
         script = '$set(var1, "value1") $set(var2, "value2")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1', 'var2'}
 
     def test_regex_handles_empty_script(self, completer: ScriptCompleter) -> None:
         """Test that regex handles empty scripts."""
-        result = completer._collect_set_variables_from_regex('')
+        result = completer._variable_extractor._collect_from_regex('')
         assert result == set()
 
     def test_regex_handles_script_without_sets(self, completer: ScriptCompleter) -> None:
         """Test that regex handles scripts without $set statements."""
         script = '%artist% - %album%'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == set()
 
 
@@ -107,19 +107,19 @@ class TestRegexWhitespaceHandling:
         self, completer: ScriptCompleter, script: str, expected_vars: set[str]
     ) -> None:
         """Test that regex handles various whitespace patterns correctly."""
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == expected_vars
 
     def test_regex_handles_mixed_whitespace(self, completer: ScriptCompleter) -> None:
         """Test that regex handles mixed whitespace types."""
         script = '$set(  \t var1 \n , "value")\n$set(\t \n var2 \t , "value")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1', 'var2'}
 
     def test_regex_handles_no_whitespace(self, completer: ScriptCompleter) -> None:
         """Test that regex handles $set statements without whitespace."""
         script = '$set(var1,"value")\n$set(var2,"value")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1', 'var2'}
 
 
@@ -140,13 +140,13 @@ class TestRegexSpecialCharacters:
         self, completer: ScriptCompleter, script: str, expected_vars: set[str]
     ) -> None:
         """Test that regex handles valid special characters in variable names."""
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == expected_vars
 
     def test_regex_handles_unicode_characters(self, completer: ScriptCompleter) -> None:
         """Test that regex handles unicode characters in variable names."""
         script = '$set(variable_ñ, "value")\n$set(variable_中文, "value")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # Should handle unicode characters
         assert 'variable_ñ' in result or 'variable_中文' in result
 
@@ -154,7 +154,7 @@ class TestRegexSpecialCharacters:
         """Test that regex handles very long variable names."""
         long_var = 'a' * 1000
         script = f'$set({long_var}, "value")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert long_var in result
 
 
@@ -164,52 +164,52 @@ class TestRegexEdgeCases:
     def test_regex_handles_incomplete_syntax(self, completer: ScriptCompleter) -> None:
         """Test that regex handles incomplete $set syntax."""
         script = '$set(incomplete'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == set()
 
     def test_regex_handles_malformed_syntax(self, completer: ScriptCompleter) -> None:
         """Test that regex handles malformed $set syntax."""
         script = '$set(malformed,'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # Regex fallback should extract variables even from malformed syntax
         assert 'malformed' in result
 
     def test_regex_handles_missing_comma(self, completer: ScriptCompleter) -> None:
         """Test that regex handles $set statements missing comma."""
         script = '$set(var1 "value")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # Regex fallback should not extract from missing comma (no comma in pattern)
         assert result == set()
 
     def test_regex_handles_extra_commas(self, completer: ScriptCompleter) -> None:
         """Test that regex handles $set statements with extra commas."""
         script = '$set(var1, , "value")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # Regex fallback should extract variables even with extra commas
         assert 'var1' in result
 
     def test_regex_handles_nested_parentheses(self, completer: ScriptCompleter) -> None:
         """Test that regex handles nested parentheses in $set statements."""
         script = '$set(var1, $if(1, "value", "default"))'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
 
     def test_regex_handles_strings_with_commas(self, completer: ScriptCompleter) -> None:
         """Test that regex handles strings containing commas."""
         script = '$set(var1, "value, with, commas")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
 
     def test_regex_handles_strings_with_parentheses(self, completer: ScriptCompleter) -> None:
         """Test that regex handles strings containing parentheses."""
         script = '$set(var1, "value (with) parentheses")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
 
     def test_regex_handles_escaped_characters(self, completer: ScriptCompleter) -> None:
         """Test that regex handles escaped characters."""
         script = '$set(var1, "value\\"with\\"quotes")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
 
     def test_regex_handles_underscore_edge_cases(self, completer: ScriptCompleter) -> None:
@@ -218,7 +218,7 @@ class TestRegexEdgeCases:
 $set(trailing_underscore_, "value")
 $set(_both_underscores_, "value")
 $set(multiple__underscores, "value")'''
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert '_leading_underscore' in result
         assert 'trailing_underscore_' in result
         assert '_both_underscores_' in result
@@ -229,7 +229,7 @@ $set(multiple__underscores, "value")'''
         script = '''$set(%variable%, "value")
 $set(%artist%, "value")
 $set(regular_var, "value")'''
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # The regex pattern [A-Za-z0-9_]+ does not match % characters,
         # so %variable% syntax should not be extracted
         assert '%variable%' not in result
@@ -247,7 +247,7 @@ class TestRegexPerformance:
         script = '\n'.join(script_lines)
 
         # Should complete in reasonable time
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert len(result) == 1000
         assert 'var0' in result
         assert 'var999' in result
@@ -259,7 +259,7 @@ class TestRegexPerformance:
         script = long_line
 
         # Should complete in reasonable time
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert len(result) == 100
 
     def test_regex_performance_with_complex_patterns(self, completer: ScriptCompleter) -> None:
@@ -271,7 +271,7 @@ class TestRegexPerformance:
         script = '\n'.join(script_lines)
 
         # Should complete in reasonable time
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert len(result) == 200  # 100 * 2 variables per line
 
     def test_regex_memory_usage_with_repeated_calls(self, completer: ScriptCompleter) -> None:
@@ -280,7 +280,7 @@ class TestRegexPerformance:
 
         # Make many calls with same content
         for _ in range(1000):
-            result = completer._collect_set_variables_from_regex(script)
+            result = completer._variable_extractor._collect_from_regex(script)
             assert result == {'var1'}
 
 
@@ -292,7 +292,7 @@ class TestRegexIntegration:
         script = '$set(var1, "value1")\n$set(var2, "value2")'
 
         # Test regex extraction
-        regex_result = completer._collect_set_variables_from_regex(script)
+        regex_result = completer._variable_extractor._collect_from_regex(script)
         assert regex_result == {'var1', 'var2'}
 
         # Test full extraction (which uses regex as fallback)
@@ -305,11 +305,11 @@ class TestRegexIntegration:
         script = '$set(var1, "value1")\n$set(var2, "value2")'
 
         # Test regex extraction
-        regex_result = completer._collect_set_variables_from_regex(script)
+        regex_result = completer._variable_extractor._collect_from_regex(script)
         assert regex_result == {'var1', 'var2'}
 
         # Test line extraction
-        line_result = completer._collect_set_variables_from_line_parse(script)
+        line_result = completer._variable_extractor._collect_from_line_parse(script)
         assert 'var1' in line_result
         assert 'var2' in line_result
 
@@ -435,27 +435,27 @@ class TestRegexErrorHandling:
         script = f'$set({long_string}, "value")'
 
         # Should not raise an exception
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert long_string in result
 
     def test_regex_handles_unicode_strings(self, completer: ScriptCompleter) -> None:
         """Test that regex handles unicode strings."""
         script = '$set(variable_ñ, "café")\n$set(variable_中文, "中文")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # Should handle unicode characters
         assert 'variable_ñ' in result or 'variable_中文' in result
 
     def test_regex_handles_special_regex_characters(self, completer: ScriptCompleter) -> None:
         """Test that regex handles special regex characters in content."""
         script = '$set(var1, "value with [brackets] and (parentheses)")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
 
     def test_regex_handles_very_deep_nesting(self, completer: ScriptCompleter) -> None:
         """Test that regex handles very deep nesting."""
         # Create a deeply nested structure
         script = '$set(level1, $set(level2, $set(level3, $set(level4, $set(level5, "value")))))'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         # Should extract the first level variable
         assert 'level1' in result
 
@@ -463,17 +463,17 @@ class TestRegexErrorHandling:
         """Test that regex handles malformed unicode."""
         # Create a string with malformed unicode
         script = '$set(var1, "value with \udcff malformed unicode")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
 
     def test_regex_handles_null_bytes(self, completer: ScriptCompleter) -> None:
         """Test that regex handles null bytes."""
         script = '$set(var1, "value\x00with\x00null\x00bytes")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
 
     def test_regex_handles_control_characters(self, completer: ScriptCompleter) -> None:
         """Test that regex handles control characters."""
         script = '$set(var1, "value\twith\ncontrol\fcharacters\r")'
-        result = completer._collect_set_variables_from_regex(script)
+        result = completer._variable_extractor._collect_from_regex(script)
         assert result == {'var1'}
