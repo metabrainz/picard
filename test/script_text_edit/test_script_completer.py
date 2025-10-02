@@ -101,7 +101,7 @@ class TestVariableExtraction:
     """Test the _extract_set_variables method with various script patterns."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ('script', 'expected_vars'),
         [
             ('$set(myvar, "value")', {'myvar'}),
             ('$set(var1, "a")\n$set(var2, "b")', {'var1', 'var2'}),
@@ -265,7 +265,7 @@ class TestRegexFallback:
     """Test regex fallback for incomplete or malformed scripts."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ('script', 'expected_vars'),
         [
             ('$set(var1, "value")', {'var1'}),
             ('$set(  spaced_var  , "value")', {'spaced_var'}),

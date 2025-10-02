@@ -49,7 +49,7 @@ class TestRegexBasicFunctionality:
     """Test basic regex functionality for variable extraction."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(var1, "value")', {'var1'}),
             ('$set(var2, "value")', {'var2'}),
@@ -94,7 +94,7 @@ class TestRegexWhitespaceHandling:
     """Test regex handling of various whitespace patterns."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(  var1  , "value")', {'var1'}),
             ('$set(\tvar2\t, "value")', {'var2'}),
@@ -127,7 +127,7 @@ class TestRegexSpecialCharacters:
     """Test regex handling of special characters in variable names."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(var_with_underscore, "value")', {'var_with_underscore'}),
             ('$set(var123, "value")', {'var123'}),

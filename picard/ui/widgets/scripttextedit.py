@@ -24,6 +24,7 @@
 
 
 import contextlib
+from enum import Enum
 import re
 import unicodedata
 
@@ -67,6 +68,29 @@ from picard.tags import (
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
+
+
+class CompletionMode(Enum):
+    """Completion mode for the completer."""
+
+    DEFAULT = "default"
+    FUNCTION_NAME = "function_name"
+    VARIABLE = "variable"
+    TAG_NAME_ARG = "tag_name_arg"
+
+
+# Functions whose first argument is a tag / variable name.
+# Used to enable tag-name completion inside the first parameter position.
+TAG_NAME_FIRST_ARG_FUNCTIONS = {
+    "set",
+    "get",
+    "unset",
+    "getunset",
+    "delete",
+    "setmulti",
+    "copy",
+    "copymerge",
+}
 
 
 def find_regex_index(regex, text, start=0):
@@ -188,6 +212,11 @@ class ScriptCompleter(QCompleter):
         self._script_hash: int | None = None
         self._user_defined_variables: set[str] = set()
 
+        # Context-aware variable parsing
+        self._lase_script: str = ""
+        self._var_usage_counts: dict[str, int] = {}
+        self._context: dict | None = None
+
         # Construct base QCompleter with parent only; we'll set the model explicitly later.
         super().__init__(parent)
 
@@ -212,11 +241,20 @@ class ScriptCompleter(QCompleter):
         self._script_hash = script_hash
         self._user_defined_variables = self._extract_set_variables(script_content)
 
+        # Keep track of last script and variable usage counts for context-awareness
+        self._last_script = script_content
+        self._var_usage_counts = self._count_variable_usage(script_content)
+
         # Refresh the completion model contents using the persistent model
         # (avoids replacing the model object and preserves any connections/state).
-        with contextlib.suppress(Exception):
-            # If model update fails, continue without updating the model
-            # This ensures the completer remains functional even if the model has issues
+        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError, Exception):
+            self._model.setStringList(list(self.choices))
+
+    def _set_context(self, context: dict | None):
+        """Set the current completion context (e.g. inside $set(first, ...))"""
+        self._context = context
+        # Update the model immediately to reflect context-sensitive choices
+        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError, Exception):
             self._model.setStringList(list(self.choices))
 
     def _extract_set_variables(self, script_content: str):
@@ -294,22 +332,47 @@ class ScriptCompleter(QCompleter):
 
     @property
     def choices(self):
-        yield from sorted(f'${name}' for name in script_function_names())
+        context: dict[str, CompletionMode] = self._context or {}
+        mode: CompletionMode = context.get('mode', CompletionMode.DEFAULT)
+        builtin_vars = set(script_variable_tag_names())
+        user_vars = set(v for v in self._user_defined_variables if v not in builtin_vars)
 
-        # Keep a list of built-inn varibles because we're introducing user-defined variables.
-        builtin_variables = set(script_variable_tag_names())
-        for name in sorted(builtin_variables):
-            yield f'%{name}%'
+        if mode == CompletionMode.TAG_NAME_ARG and context.get('arg_index', 0) == 0:
+            # Suggest bare tag names for functions expecting a tag name as first argument.
+            # Order by usage count (descending), then alphabetically.
+            candidates = list(builtin_vars | user_vars)
+            candidates.sort(key=lambda x: (-self._var_usage_counts.get(x, 0), x))
+            for name in candidates:
+                yield name
+            return
 
-        # User-defined variables from `$set(name, ...)`
-        for user_variable in sorted(v for v in self._user_defined_variables if v not in builtin_variables):
-            yield f'%{user_variable}%'
+        # Default: functions then variables, variables ranked by usage count
+        if mode in (CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME):
+            for name in sorted(script_function_names()):
+                yield f'${name}'
+        if mode in (CompletionMode.DEFAULT, CompletionMode.VARIABLE):
+            ranked_vars = list(builtin_vars | user_vars)
+            ranked_vars.sort(key=lambda x: (-self._var_usage_counts.get(x, 0), x))
+            for name in ranked_vars:
+                yield f'%{name}%'
 
     def set_highlighted(self, text):
         self.last_selected = text
 
     def get_selected(self):
         return self.last_selected
+
+    def _count_variable_usage(self, script_content: str) -> dict[str, int]:
+        """Count variable usages in the script content."""
+        counts: dict[str, int] = {}
+        for m in re.finditer(r'%([A-Za-z0-9_:]+)%', script_content):
+            name = m.group(1)
+            counts[name] = counts.get(name, 0) + 1
+        # Also cout references via `$get(name)`
+        for m in re.finditer(r'\$get\(\s*([A-Za-z0-9_]+)\s*\)', script_content):
+            name = m.group(1)
+            counts[name] = counts.get(name, 0) + 1
+        return counts
 
 
 class DocumentedScriptToken:
@@ -419,7 +482,7 @@ def _replace_control_chars(text):
 
 
 class ScriptTextEdit(QTextEdit):
-    autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_]')
+    autocomplete_trigger_chars = re.compile('[$%A-Za-z0-9_(]')
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -560,6 +623,23 @@ class ScriptTextEdit(QTextEdit):
             else:
                 tc.setPosition(pos)  # Reset position
         self.setTextCursor(tc)
+
+        # If we just inserted a function completion, trigger tag name context
+        if completion.startswith('$') and completion.endswith('('):
+            # Check if this is a tag-name function
+            function_name = completion[1:-1]  # Remove $ and (
+            if function_name in TAG_NAME_FIRST_ARG_FUNCTIONS:
+                # Update completion context to show tag names
+                self._update_completion_context(self.textCursor())
+                # Show completion popup
+                self.completer.setCompletionPrefix('')
+                popup = self.completer.popup()
+                popup.setCurrentIndex(self.completer.currentIndex())
+                cr = self.cursorRect()
+                cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
+                self.completer.complete(cr)
+                return  # Don't hide popup, we just showed a new one
+
         self.popup_hide()
 
     def popup_hide(self):
@@ -612,6 +692,7 @@ class ScriptTextEdit(QTextEdit):
         # requested auto completion with Ctrl+Space (Control+Space on macOS)
         modifier = QtCore.Qt.KeyboardModifier.MetaModifier if IS_MACOS else QtCore.Qt.KeyboardModifier.ControlModifier
         force_completion_popup = event.key() == QtCore.Qt.Key.Key_Space and event.modifiers() & modifier
+
         if not (
             force_completion_popup
             or event.key() in {Qt.Key.Key_Backspace, Qt.Key.Key_Delete}
@@ -622,13 +703,227 @@ class ScriptTextEdit(QTextEdit):
 
         tc = self.cursor_select_word(full_word=False)
         selected_text = tc.selectedText()
-        if force_completion_popup or (selected_text and selected_text[0] in {'$', '%'}):
-            self.completer.setCompletionPrefix(selected_text)
-            popup = self.completer.popup()
-            popup.setCurrentIndex(self.completer.currentIndex())
 
-            cr = self.cursorRect()
-            cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
-            self.completer.complete(cr)
+        # Always call _update_completion_context for trigger characters, even if no selected text
+        # This allows context detection for characters like '(' that don't select text
+        should_update_context = (
+            force_completion_popup
+            or (selected_text and selected_text[0] in {'$', '%'})
+            or event.text() in {'(', '$', '%'}
+        )
+
+        # Also update context if we're already in a tag name argument context
+        # This ensures we continue showing completions when typing in the first argument
+        if not should_update_context:
+            doc_text = self.toPlainText()
+            cursor_pos = self.textCursor().position()
+            left_text = doc_text[:cursor_pos]
+            if self._detect_tag_name_arg_context(left_text) is not None:
+                should_update_context = True
+
+        if should_update_context:
+            # Update context for smarter suggestions.
+            # Get a fresh cursor to ensure we have the correct position after character insertion
+            fresh_cursor = self.textCursor()
+            self._update_completion_context(fresh_cursor)
+
+            # Check if we should show the popup based on current context
+            if self._should_show_completion_popup():
+                # For tag-name function context, use empty prefix to show all tag names
+                # Only do this if we're actually in a tag name argument context (inside function call)
+                doc_text = self.toPlainText()
+                cursor_pos = fresh_cursor.position()
+                left_text = doc_text[:cursor_pos]
+                tag_context = self._detect_tag_name_arg_context(left_text)
+                if tag_context is not None:
+                    if selected_text:
+                        self.completer.setCompletionPrefix(selected_text)
+                    else:
+                        self.completer.setCompletionPrefix('')
+                else:
+                    self.completer.setCompletionPrefix(selected_text)
+
+                popup = self.completer.popup()
+                popup.setCurrentIndex(self.completer.currentIndex())
+
+                cr = self.cursorRect()
+                cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
+                self.completer.complete(cr)
+            else:
+                self.popup_hide()
         else:
             self.popup_hide()
+
+    def _update_completion_context(self, text_cursor: QTextCursor) -> None:
+        """Infer completion context based on cursor for smarter completions.ArithmeticError
+
+        Flow:
+        1. Function name context (typing right after '$' but not '$$')
+        2. Variable context (typing right after '%' but not '%%')
+        3. Tag name argument context (inside first arg of known functions)
+        4. Default context
+        """
+        doc_text = self.toPlainText()
+        cursor_pos = text_cursor.position()
+        left_text = doc_text[:cursor_pos]
+
+        # 1. Function name context
+        if self._is_function_name_context(left_text):
+            self.completer._set_context({'mode': CompletionMode.FUNCTION_NAME})
+            return
+
+        # 2. Variable context
+        if self._is_variable_context(left_text):
+            self.completer._set_context({'mode': CompletionMode.VARIABLE})
+            return
+
+        # 3. Tag name argument context (inside function call)
+        tag_arg_context = self._detect_tag_name_arg_context(left_text)
+        if tag_arg_context is not None:
+            self.completer._set_context(tag_arg_context)
+            return
+
+        # 4. After tag-name function context (for tab completion only)
+        # This is handled separately in insert_completion method
+
+        # 5. Default context
+        self.completer._set_context({'mode': CompletionMode.DEFAULT})
+
+    def _is_function_name_context(self, left_text: str) -> bool:
+        """Return true if cursor is immediately after '$' starting a function."""
+        return left_text.endswith('$') and not left_text.endswith('$$')
+
+    def _is_variable_context(self, left_text: str) -> bool:
+        """Return true if cursor is immediately after '%' starting a variable."""
+        stripped = left_text.rstrip()
+        if not stripped.endswith('%'):
+            return False
+
+        # If it ends with %%, we need to check if it's a literal %% or a new variable
+        if stripped.endswith('%%'):
+            # If the text is exactly '%%', it's a literal double %
+            if stripped == '%%':
+                return False
+            # If we have something like %foo%%, it's a new variable starting
+            # Check if there's a complete variable before the %%
+            before_last_percent = stripped[:-1]  # Remove the last %
+            if before_last_percent.endswith('%'):
+                # We have %foo%%, so this is a new variable
+                return True
+            # If it's just %% at the end, it's a literal double %
+            return False
+
+        return True
+
+    def _is_partial_variable_context(self, left_text: str) -> bool:
+        """Return true if cursor is in a partial variable name context (like %f, %fo, etc.)."""
+        # Find the last % in the text
+        last_percent = left_text.rfind('%')
+        if last_percent == -1:
+            return False
+
+        # Extract the part after the last %
+        variable_part = left_text[last_percent + 1 :]
+
+        # Check if it's a valid partial variable name (alphanumeric/underscore characters)
+        if variable_part and all(c.isalnum() or c == '_' for c in variable_part):
+            return True
+
+        return False
+
+    def _is_after_tag_name_function(self) -> bool:
+        """Return true if cursor is immediately after a tag-name function (for tab completion)."""
+        doc_text = self.toPlainText()
+        cursor_pos = self.textCursor().position()
+        left_text = doc_text[:cursor_pos]
+
+        # Check if we're immediately after a known tag-name function
+        # This should only be true when we've just completed a function via tab completion
+        # and are about to start typing the first argument
+        for function_name in TAG_NAME_FIRST_ARG_FUNCTIONS:
+            if left_text.endswith(f'${function_name}'):
+                return True
+        return False
+
+    def _is_partial_function_context(self, left_text: str) -> bool:
+        """Return true if cursor is in a partial function name context (like $s, $se, etc.)."""
+        # Find the last $ in the text
+        last_dollar = left_text.rfind('$')
+        if last_dollar == -1:
+            return False
+
+        # Extract the part after the last $
+        function_part = left_text[last_dollar + 1 :]
+
+        # Check if it's a valid partial function name (alphanumeric/underscore characters)
+        if function_part and all(c.isalnum() or c == '_' for c in function_part):
+            return True
+
+        return False
+
+    def _should_show_completion_popup(self) -> bool:
+        """Return true if the current context warrants showing the completion popup."""
+        doc_text = self.toPlainText()
+        cursor_pos = self.textCursor().position()
+        left_text = doc_text[:cursor_pos]
+
+        # Show popup for function name context (typing after $)
+        if self._is_function_name_context(left_text):
+            return True
+
+        # Show popup for variable context (typing after %)
+        if self._is_variable_context(left_text):
+            return True
+
+        # Show popup for partial variable context (typing variable name)
+        if self._is_partial_variable_context(left_text):
+            return True
+
+        # Show popup for tag name argument context (inside function call)
+        tag_context = self._detect_tag_name_arg_context(left_text)
+        if tag_context is not None:
+            return True
+
+        # Show popup for partial function names (like $s, $se, etc.)
+        if self._is_partial_function_context(left_text):
+            return True
+
+        # Don't show popup for default context or other cases
+        return False
+
+    def _detect_tag_name_arg_context(self, left_text: str) -> dict[str, object] | None:
+        """Detect being inside first arg of a known tag-name function and return context."""
+        # Find all $ positions and their corresponding ( positions
+        dollar_positions = []
+        for i, char in enumerate(left_text):
+            if char == '$':
+                dollar_positions.append(i)
+
+        # Check each $ position from most recent to oldest
+        for dollar_pos in reversed(dollar_positions):
+            # Find the next ( after this $
+            paren_pos = left_text.find('(', dollar_pos)
+            if paren_pos == -1:
+                continue
+
+            # Extract function name between '$' and '('
+            function_name = ''.join(ch for ch in left_text[dollar_pos + 1 : paren_pos] if ch.isalnum() or ch == "_")
+
+            # Only consider this function if it's a known tag-name function
+            if function_name not in TAG_NAME_FIRST_ARG_FUNCTIONS:
+                continue
+
+            # Check for invalid syntax: if there's another '(' immediately after the function call,
+            # this is invalid (like $set(( or $get(( )
+            if paren_pos + 1 < len(left_text) and left_text[paren_pos + 1] == '(':
+                continue
+
+            # Determine argument index by counting commas between '(' and end of text
+            arg_segment = left_text[paren_pos + 1 :]
+            arg_index = arg_segment.count(',')
+
+            # If we're in the first argument (no commas), return the context
+            if arg_index == 0:
+                return {'mode': CompletionMode.TAG_NAME_ARG, 'function_name': function_name, 'arg_index': arg_index}
+
+        return None
