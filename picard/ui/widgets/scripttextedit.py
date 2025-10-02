@@ -24,7 +24,6 @@
 
 
 import contextlib
-from enum import Enum
 import re
 import unicodedata
 
@@ -56,11 +55,7 @@ from picard.script import (
     script_function_names,
 )
 from picard.script.parser import (
-    ScriptError,
-    ScriptExpression,
-    ScriptFunction,
     ScriptParser,
-    ScriptText,
 )
 from picard.tags import (
     display_tag_tooltip,
@@ -69,130 +64,8 @@ from picard.tags import (
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
-
-
-class VariableExtractor:
-    """Extracts variable names from script content using multiple strategies.
-
-    This class handles the extraction of user-defined variables from script content
-    using three different approaches: full parsing, line-by-line parsing, and regex fallback.
-    """
-
-    def __init__(self, parser):
-        """Initialize the variable extractor with a script parser.
-
-        Parameters
-        ----------
-        parser : ScriptParser
-            The script parser to use for AST-based extraction
-        """
-        self._parser = parser
-
-    def extract_variables(self, script_content: str) -> set[str]:
-        """Extract variables using multiple strategies.
-
-        Strategy (robust and readable):
-        1) Full parse for accuracy: handles nested and cross-line constructs.
-        2) Per-line parse for resilience during live edits (one bad line won't block another).
-        3) Regex fallback: If user is currently typing an incomplete token
-           (e.g. a lone '%' after a valid `$set(...)`), parsing that line fails.
-           A lightweight pattern still lets us extract static names.
-
-        Results are deduplicated via set union.
-
-        Parameters
-        ----------
-        script_content : str
-            The script content to extract variables from
-
-        Returns
-        -------
-        set[str]
-            Set of variable names found in the script content
-        """
-        from_full = self._collect_from_full_parse(script_content)
-        from_line = self._collect_from_line_parse(script_content)
-        from_regex = self._collect_from_regex(script_content)
-        return from_full | from_line | from_regex
-
-    def _collect_from_full_parse(self, script_content: str) -> set[str]:
-        """Collect variable names from a full parse of the script content."""
-        names: set[str] = set()
-        with contextlib.suppress(ScriptError):
-            expression = self._parser.parse(script_content)
-            self._collect_from_ast(expression, names)
-        return names
-
-    def _collect_from_line_parse(self, script_content: str) -> set[str]:
-        """Collect variable names from a per-line parse of the script content."""
-        names: set[str] = set()
-        for line in script_content.splitlines():
-            if not line:
-                continue
-            with contextlib.suppress(ScriptError):
-                expression = self._parser.parse(line)
-                self._collect_from_ast(expression, names)
-        return names
-
-    def _collect_from_regex(self, script_content: str) -> set[str]:
-        """Collect variable names from a regex pattern of the script content."""
-        return {
-            m.group(1) for m in re.finditer(r"\$set\(\s*([A-Za-z0-9_\u00C0-\u017F\u4E00-\u9FFF]+)\s*,", script_content)
-        }
-
-    def _collect_from_ast(self, node: ScriptExpression | ScriptFunction | ScriptText, out: set[str]):
-        """Traverse the AST and collect variable names from `$set(name, ...)` expressions.
-
-        Accepts names composed only of ScriptText tokens to avoid positives
-        such as `$set($if(...), ...)`.
-        """
-        if isinstance(node, ScriptFunction):
-            if node.name == "set" and node.args:
-                static_name = self._extract_static_name(node.args[0])
-                if static_name:
-                    out.add(static_name)
-            for arg in node.args:
-                self._collect_from_ast(arg, out)
-            return
-        if isinstance(node, ScriptExpression):
-            for item in node:
-                self._collect_from_ast(item, out)
-
-    def _extract_static_name(self, node: ScriptExpression | ScriptText) -> str | None:
-        """Extract a static name from a node.
-
-        Accepts names composed only of ScriptText tokens to avoid positives
-        such as `$set($if(...), ...)`.
-        """
-        if not isinstance(node, ScriptExpression):
-            return None
-        if not all(isinstance(item, ScriptText) for item in node):
-            return None
-        value = "".join(str(token) for token in node).strip()
-        return value or None
-
-
-class CompletionMode(Enum):
-    """Completion mode for the completer."""
-
-    DEFAULT = "default"
-    FUNCTION_NAME = "function_name"
-    VARIABLE = "variable"
-    TAG_NAME_ARG = "tag_name_arg"
-
-
-# Functions whose first argument is a tag / variable name.
-# Used to enable tag-name completion inside the first parameter position.
-TAG_NAME_FIRST_ARG_FUNCTIONS = {
-    "set",
-    "get",
-    "unset",
-    "getunset",
-    "delete",
-    "setmulti",
-    "copy",
-    "copymerge",
-}
+from picard.ui.widgets.context_detector import TAG_NAME_FIRST_ARG_FUNCTIONS, CompletionMode, ContextDetector
+from picard.ui.widgets.variable_extractor import VariableExtractor
 
 
 def find_regex_index(regex, text, start=0):
@@ -312,6 +185,7 @@ class ScriptCompleter(QCompleter):
         self.last_selected = ''
         self._parser = ScriptParser()
         self._variable_extractor = VariableExtractor(self._parser)
+        self._context_detector = ContextDetector()
         self._script_hash: int | None = None
         self._user_defined_variables: set[str] = set()
 
@@ -790,81 +664,26 @@ class ScriptTextEdit(QTextEdit):
             self.popup_hide()
 
     def _update_completion_context(self, text_cursor: QTextCursor) -> None:
-        """Infer completion context based on cursor for smarter completions.ArithmeticError
+        """Infer completion context based on cursor for smarter completions.
 
-        Flow:
-        1. Function name context (typing right after '$' but not '$$')
-        2. Variable context (typing right after '%' but not '%%')
-        3. Tag name argument context (inside first arg of known functions)
-        4. Default context
+        Uses the ContextDetector to determine the appropriate completion mode.
         """
         doc_text = self.toPlainText()
         cursor_pos = text_cursor.position()
         left_text = doc_text[:cursor_pos]
 
-        # 1. Function name context
-        if self._is_function_name_context(left_text):
-            self.completer._set_context({'mode': CompletionMode.FUNCTION_NAME})
-            return
+        # Use ContextDetector to determine the completion mode
+        mode = self.completer._context_detector.detect_context(left_text)
 
-        # 2. Variable context
-        if self._is_variable_context(left_text):
-            self.completer._set_context({'mode': CompletionMode.VARIABLE})
-            return
+        # For tag name argument context, we need additional context information
+        if mode == CompletionMode.TAG_NAME_ARG:
+            tag_arg_context = self._detect_tag_name_arg_context(left_text)
+            if tag_arg_context is not None:
+                self.completer._set_context(tag_arg_context)
+                return
 
-        # 3. Tag name argument context (inside function call)
-        tag_arg_context = self._detect_tag_name_arg_context(left_text)
-        if tag_arg_context is not None:
-            self.completer._set_context(tag_arg_context)
-            return
-
-        # 4. After tag-name function context (for tab completion only)
-        # This is handled separately in insert_completion method
-
-        # 5. Default context
-        self.completer._set_context({'mode': CompletionMode.DEFAULT})
-
-    def _is_function_name_context(self, left_text: str) -> bool:
-        """Return true if cursor is immediately after '$' starting a function."""
-        return left_text.endswith('$') and not left_text.endswith('$$')
-
-    def _is_variable_context(self, left_text: str) -> bool:
-        """Return true if cursor is immediately after '%' starting a variable."""
-        stripped = left_text.rstrip()
-        if not stripped.endswith('%'):
-            return False
-
-        # If it ends with %%, we need to check if it's a literal %% or a new variable
-        if stripped.endswith('%%'):
-            # If the text is exactly '%%', it's a literal double %
-            if stripped == '%%':
-                return False
-            # If we have something like %foo%%, it's a new variable starting
-            # Check if there's a complete variable before the %%
-            before_last_percent = stripped[:-1]  # Remove the last %
-            if before_last_percent.endswith('%'):
-                # We have %foo%%, so this is a new variable
-                return True
-            # If it's just %% at the end, it's a literal double %
-            return False
-
-        return True
-
-    def _is_partial_variable_context(self, left_text: str) -> bool:
-        """Return true if cursor is in a partial variable name context (like %f, %fo, etc.)."""
-        # Find the last % in the text
-        last_percent = left_text.rfind('%')
-        if last_percent == -1:
-            return False
-
-        # Extract the part after the last %
-        variable_part = left_text[last_percent + 1 :]
-
-        # Check if it's a valid partial variable name (alphanumeric/underscore characters)
-        if variable_part and all(c.isalnum() or c == '_' for c in variable_part):
-            return True
-
-        return False
+        # Set the context with the detected mode
+        self.completer._set_context({'mode': mode})
 
     def _is_after_tag_name_function(self) -> bool:
         """Return true if cursor is immediately after a tag-name function (for tab completion)."""
@@ -880,51 +699,17 @@ class ScriptTextEdit(QTextEdit):
                 return True
         return False
 
-    def _is_partial_function_context(self, left_text: str) -> bool:
-        """Return true if cursor is in a partial function name context (like $s, $se, etc.)."""
-        # Find the last $ in the text
-        last_dollar = left_text.rfind('$')
-        if last_dollar == -1:
-            return False
-
-        # Extract the part after the last $
-        function_part = left_text[last_dollar + 1 :]
-
-        # Check if it's a valid partial function name (alphanumeric/underscore characters)
-        if function_part and all(c.isalnum() or c == '_' for c in function_part):
-            return True
-
-        return False
-
     def _should_show_completion_popup(self) -> bool:
         """Return true if the current context warrants showing the completion popup."""
         doc_text = self.toPlainText()
         cursor_pos = self.textCursor().position()
         left_text = doc_text[:cursor_pos]
 
-        # Show popup for function name context (typing after $)
-        if self._is_function_name_context(left_text):
-            return True
+        # Use ContextDetector to determine if we should show the popup
+        mode = self.completer._context_detector.detect_context(left_text)
 
-        # Show popup for variable context (typing after %)
-        if self._is_variable_context(left_text):
-            return True
-
-        # Show popup for partial variable context (typing variable name)
-        if self._is_partial_variable_context(left_text):
-            return True
-
-        # Show popup for tag name argument context (inside function call)
-        tag_context = self._detect_tag_name_arg_context(left_text)
-        if tag_context is not None:
-            return True
-
-        # Show popup for partial function names (like $s, $se, etc.)
-        if self._is_partial_function_context(left_text):
-            return True
-
-        # Don't show popup for default context or other cases
-        return False
+        # Show popup for all non-default contexts
+        return mode != CompletionMode.DEFAULT
 
     def _detect_tag_name_arg_context(self, left_text: str) -> dict[str, object] | None:
         """Detect being inside first arg of a known tag-name function and return context."""
