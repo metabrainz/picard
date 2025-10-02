@@ -214,7 +214,7 @@ class ScriptCompleter(QCompleter):
         self._user_defined_variables: set[str] = set()
 
         # Context-aware variable parsing
-        self._lase_script: str = ""
+        self._last_script: str = ""
         self._var_usage_counts: dict[str, int] = {}
         self._context: dict | None = None
 
@@ -248,14 +248,14 @@ class ScriptCompleter(QCompleter):
 
         # Refresh the completion model contents using the persistent model
         # (avoids replacing the model object and preserves any connections/state).
-        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError, Exception):
+        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError):
             self._model.setStringList(list(self.choices))
 
     def _set_context(self, context: dict | None):
         """Set the current completion context (e.g. inside $set(first, ...))"""
         self._context = context
         # Update the model immediately to reflect context-sensitive choices
-        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError, Exception):
+        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError):
             self._model.setStringList(list(self.choices))
 
     def _extract_set_variables(self, script_content: str):

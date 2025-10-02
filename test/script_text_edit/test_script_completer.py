@@ -546,7 +546,7 @@ class TestErrorHandling:
     def test_model_update_error_handling(self, completer: ScriptCompleter) -> None:
         """Test error handling during model updates."""
         # Mock model to raise an error
-        with patch.object(completer._model, 'setStringList', side_effect=Exception("Model error")):
+        with patch.object(completer._model, 'setStringList', side_effect=RuntimeError("Model error")):
             # Should not raise an exception
             completer.update_dynamic_variables('$set(var1, "value")')
             # Should still update internal state

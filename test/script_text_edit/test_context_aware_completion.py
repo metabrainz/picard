@@ -401,7 +401,7 @@ class TestScriptCompleterContextManagement:
 
     def test_set_context_handles_model_errors(self, script_completer: ScriptCompleter) -> None:
         """Test that model errors are handled gracefully."""
-        with patch.object(script_completer._model, 'setStringList', side_effect=Exception("Model error")):
+        with patch.object(script_completer._model, 'setStringList', side_effect=RuntimeError("Model error")):
             context = {"mode": CompletionMode.TAG_NAME_ARG, "function_name": "set", "arg_index": 0}
             # Should not raise an exception
             script_completer._set_context(context)
