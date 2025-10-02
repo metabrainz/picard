@@ -31,6 +31,10 @@ from picard.script.parser import (
 )
 
 
+# Pre-compiled regex for better performance in UI context
+_SET_VARIABLE_PATTERN = re.compile(r"\$set\(\s*([A-Za-z0-9_\u00C0-\u017F\u4E00-\u9FFF]+)\s*,")
+
+
 class VariableExtractor:
     """Extracts variable names from script content using multiple strategies.
 
@@ -96,9 +100,7 @@ class VariableExtractor:
 
     def _collect_from_regex(self, script_content: str) -> set[str]:
         """Collect variable names from a regex pattern of the script content."""
-        return {
-            m.group(1) for m in re.finditer(r"\$set\(\s*([A-Za-z0-9_\u00C0-\u017F\u4E00-\u9FFF]+)\s*,", script_content)
-        }
+        return {m.group(1) for m in _SET_VARIABLE_PATTERN.finditer(script_content)}
 
     def _collect_from_ast(self, node: ScriptExpression | ScriptFunction | ScriptText, out: set[str]):
         """Traverse the AST and collect variable names from `$set(name, ...)` expressions.

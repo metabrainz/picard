@@ -31,6 +31,7 @@ from unittest.mock import patch
 import pytest
 
 from picard.ui.widgets.scripttextedit import ScriptCompleter
+from picard.ui.widgets.variable_extractor import _SET_VARIABLE_PATTERN
 
 
 @pytest.fixture
@@ -42,7 +43,7 @@ def completer() -> ScriptCompleter:
 @pytest.fixture
 def regex_pattern() -> re.Pattern[str]:
     """The regex pattern used for variable extraction."""
-    return re.compile(r"\$set\(\s*([A-Za-z0-9_\u00C0-\u017F\u4E00-\u9FFF]+)\s*,")
+    return _SET_VARIABLE_PATTERN
 
 
 class TestRegexBasicFunctionality:
