@@ -247,27 +247,27 @@ class ScriptCompleter(QCompleter):
     def choices(self):
         context: dict[str, CompletionMode] = self._context or {}
         mode: CompletionMode = context.get('mode', CompletionMode.DEFAULT)
-        builtin_vars = set(script_variable_tag_names())
-        plugin_vars = get_plugin_variable_names()
-        user_vars = set(v for v in self._user_defined_variables if v not in builtin_vars and v not in plugin_vars)
-
-        if mode == CompletionMode.TAG_NAME_ARG and context.get('arg_index', 0) == 0:
-            # Suggest bare tag names for functions expecting a tag name as first argument.
-            # Order by usage count (descending), then alphabetically.
-            candidates = list(builtin_vars | user_vars | plugin_vars)
-            candidates.sort(key=lambda x: (-self._var_usage_counts.get(x, 0), x))
-            for name in candidates:
-                yield name
-            return
 
         # Default: functions then variables, variables ranked by usage count
         if mode in (CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME):
             for name in sorted(script_function_names()):
                 yield f'${name}'
+
+        builtin_vars = set(script_variable_tag_names())
+        plugin_vars = get_plugin_variable_names()
+        user_vars = set(v for v in self._user_defined_variables if v not in builtin_vars and v not in plugin_vars)
+        all_vars = list(builtin_vars | user_vars | plugin_vars)
+        all_vars.sort(key=lambda x: (-self._var_usage_counts.get(x, 0), x))
+
+        if mode == CompletionMode.TAG_NAME_ARG and context.get('arg_index', 0) == 0:
+            # Suggest bare tag names for functions expecting a tag name as first argument.
+            # Order by usage count (descending), then alphabetically.
+            for name in all_vars:
+                yield name
+            return
+
         if mode in (CompletionMode.DEFAULT, CompletionMode.VARIABLE):
-            ranked_vars = list(builtin_vars | user_vars | plugin_vars)
-            ranked_vars.sort(key=lambda x: (-self._var_usage_counts.get(x, 0), x))
-            for name in ranked_vars:
+            for name in all_vars:
                 yield f'%{name}%'
 
     def set_highlighted(self, text):
