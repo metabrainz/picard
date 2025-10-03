@@ -345,7 +345,7 @@ class TestErrorHandling:
         """Test that AST traversal handles None nodes."""
         result = set()
         # Should not raise an exception
-        completer._variable_extractor._collect_from_ast(None, result)
+        completer._variable_extractor._collect_from_ast(None, result)  # type: ignore
         assert result == set()
 
     def test_collect_set_variables_from_ast_handles_invalid_node_type(self, completer: ScriptCompleter) -> None:
@@ -358,7 +358,7 @@ class TestErrorHandling:
 
     def test_extract_static_name_handles_none_node(self, completer: ScriptCompleter) -> None:
         """Test that static name extraction handles None nodes."""
-        result = completer._variable_extractor._extract_static_name(None)
+        result = completer._variable_extractor._extract_static_name(None)  # type: ignore
         assert result is None
 
     def test_extract_static_name_handles_invalid_node_type(self, completer: ScriptCompleter) -> None:
