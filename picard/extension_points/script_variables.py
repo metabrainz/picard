@@ -57,10 +57,7 @@ def get_plugin_variable_names():
     set[str]
         Set of variable names provided by plugins
     """
-    variables = set()
-    for name, _ in ext_point_script_variables:
-        variables.add(name)
-    return variables
+    return {name for name, __unused in ext_point_script_variables}
 
 
 def get_plugin_variable_documentation(name):
