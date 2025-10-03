@@ -337,6 +337,22 @@ class TestChoicesProperty:
         user_vars = [choice for choice in choices if choice.startswith('%') and 'var' in choice]
         assert user_vars == sorted(user_vars)
 
+    def test_choices_no_duplicate_functions(self, completer: ScriptCompleter) -> None:
+        """Test that function names are not duplicated in completion choices."""
+        choices = list(completer.choices)
+
+        # Find all function choices (those starting with $)
+        function_choices = [choice for choice in choices if choice.startswith('$')]
+
+        # Extract function names (remove $ prefix)
+        function_names = [choice[1:] for choice in function_choices]
+
+        # Check for duplicates
+        unique_function_names = set(function_names)
+        assert len(function_names) == len(unique_function_names), (
+            f"Function names are duplicated. Found {len(function_names)} total, {len(unique_function_names)} unique"
+        )
+
 
 class TestCachingBehavior:
     """Test script hash caching and force update behavior."""

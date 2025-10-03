@@ -73,7 +73,8 @@ def mock_plugin_variable_provider() -> Callable[[], set[str]]:
 def mock_choices_provider() -> Mock:
     """Create a mock CompletionChoicesProvider."""
     provider = Mock(spec=CompletionChoicesProvider)
-    provider.build_choices.return_value = iter(['%test_var%', '%plugin_var1%'])
+    # Return a fresh iterator each time to avoid consumption issues
+    provider.build_choices.return_value = ['%test_var%', '%plugin_var1%']
     return provider
 
 

@@ -269,11 +269,6 @@ class ScriptCompleter(QCompleter):
         context: CompletionContext = self._context or {'mode': CompletionMode.DEFAULT}
         mode: CompletionMode = context.get('mode', CompletionMode.DEFAULT)
 
-        # Default: functions then variables, variables ranked by usage count
-        if mode in (CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME):
-            for name in sorted(script_function_names()):
-                yield f'${name}'
-
         for item in self._choices_provider.build_choices(
             mode,
             self._user_defined_variables,
