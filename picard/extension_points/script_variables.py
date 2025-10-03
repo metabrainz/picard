@@ -20,12 +20,25 @@
 
 
 from picard.plugin import ExtensionPoint
+from picard.script.variable_pattern import pattern_variable_fullmatch
 
 
 ext_point_script_variables = ExtensionPoint(label='script_variables')
 
 
-def register_script_variable(name, documentation=None):
+_VAR_NAME_RE = pattern_variable_fullmatch()
+
+
+def _is_valid_plugin_variable_name(name: str | None) -> bool:
+    """Check if a name is a valid plugin variable name."""
+    if not isinstance(name, str):
+        return False
+    if not name:
+        return False
+    return bool(_VAR_NAME_RE.match(name))
+
+
+def register_script_variable(name: str, documentation: str | None = None) -> None:
     """Register a variable that plugins can provide for script completion.
 
     Parameters
@@ -40,6 +53,10 @@ def register_script_variable(name, documentation=None):
     >>> register_script_variable("my_plugin_var", "A custom variable from my plugin")
     """
     import inspect
+
+    if not _is_valid_plugin_variable_name(name):
+        msg = "Invalid script variable name; use letters, digits, underscores."
+        raise ValueError(msg)
 
     frame = inspect.currentframe()
     if frame is not None and frame.f_back is not None:
