@@ -80,6 +80,10 @@ from picard.ui.widgets.variable_extractor import VariableExtractor
 _VARIABLE_PATTERN = pattern_percent_variable()
 _GET_VARIABLE_PATTERN = pattern_get_variable()
 
+# Debounce timer for text changes - balances responsiveness (under 250ms threshold)
+# with performance (prevents excessive parsing on every keystroke)
+_TEXT_CHANGE_DEBOUNCE_MS = 120
+
 
 def find_regex_index(regex, text, start=0):
     m = regex.search(text[start:])
@@ -465,7 +469,7 @@ class ScriptTextEdit(QTextEdit):
 
     def _on_text_changed(self):
         # Debounce to avoid updating the completer too often
-        self._debounce_timer.start(120)
+        self._debounce_timer.start(_TEXT_CHANGE_DEBOUNCE_MS)
 
     def _process_text_changed(self):
         # Update completer dynamic variables cache
