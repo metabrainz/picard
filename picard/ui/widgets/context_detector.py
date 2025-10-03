@@ -21,6 +21,7 @@
 """Context detector for script completion."""
 
 from enum import Enum
+from typing import TypedDict
 
 
 # Functions whose first argument is a tag / variable name.
@@ -46,16 +47,30 @@ class CompletionMode(Enum):
     TAG_NAME_ARG = "tag_name_arg"
 
 
+class CompletionContext(TypedDict, total=False):
+    """Completion context for the completer.
+
+    Keys
+    ----
+    mode : CompletionMode
+        The completion mode
+    function_name : str
+        For TAG_NAME_ARG mode, the function name (e.g. "set")
+    arg_index : int
+        For TAG_NAME_ARG mode, the zero-basedargument index (e.g. 0 for the first argument)
+    """
+
+    mode: CompletionMode
+    function_name: str
+    arg_index: int
+
+
 class ContextDetector:
     """Detects completion context from cursor position.
 
     This class handles the detection of what type of completion should be shown
     based on the text to the left of the cursor position.
     """
-
-    def __init__(self):
-        """Initialize the context detector."""
-        pass
 
     def detect_context(self, left_text: str) -> CompletionMode:
         """Detect completion context from cursor position.
@@ -70,22 +85,33 @@ class ContextDetector:
         CompletionMode
             The detected completion mode
         """
+        details = self.detect_context_details(left_text)
+        return details['mode']
+
+    def detect_context_details(self, left_text: str) -> CompletionContext:
+        """Detect completion context details from cursor position.
+
+        Parameters
+        ----------
+        left_text : str
+            The text to the left of the cursor position
+        """
         if self._is_function_context(left_text):
-            return CompletionMode.FUNCTION_NAME
-        elif self._is_variable_context(left_text):
-            return CompletionMode.VARIABLE
-        elif self._is_tag_arg_context(left_text):
-            return CompletionMode.TAG_NAME_ARG
-        return CompletionMode.DEFAULT
+            return {'mode': CompletionMode.FUNCTION_NAME}
+        if self._is_variable_context(left_text):
+            return {'mode': CompletionMode.VARIABLE}
+        tag_context = self._find_tag_arg_context(left_text)
+        if tag_context is not None:
+            return tag_context
+        return {'mode': CompletionMode.DEFAULT}
 
     def _is_function_context(self, left_text: str) -> bool:
         """Check if cursor is in a function name context."""
-        return (
-            left_text.endswith('$')
-            or (left_text.endswith(' ') and left_text.rstrip().endswith('$'))
-            or (left_text.endswith('$') and not left_text.endswith('$$'))
-            or self._is_partial_function_context(left_text)
-        )
+        stripped = left_text.rstrip()
+        # Accept any trailing '$' (including '$$') as a function context
+        if stripped.endswith('$'):
+            return True
+        return self._is_partial_function_context(left_text)
 
     def _is_variable_context(self, left_text: str) -> bool:
         """Check if cursor is in a variable context."""
@@ -118,12 +144,7 @@ class ContextDetector:
 
     def _is_tag_arg_context(self, left_text: str) -> bool:
         """Check if cursor is in a tag name argument context."""
-        # Look for function calls that expect tag names as first argument
-        for func_name in TAG_NAME_FIRST_ARG_FUNCTIONS:
-            # Pattern: $func_name( or $func_name(variable_name
-            if left_text.endswith(f'${func_name}(') or self._is_partial_tag_arg(left_text, func_name):
-                return True
-        return False
+        return self._find_tag_arg_context(left_text) is not None
 
     def _is_partial_tag_arg(self, left_text: str, func_name: str) -> bool:
         """Check if cursor is in a partial tag name argument."""
@@ -134,7 +155,7 @@ class ContextDetector:
             last_func_pos = left_text.rfind(pattern)
             if last_func_pos != -1:
                 after_func = left_text[last_func_pos + len(pattern) :]
-                # Check if we're in the first argument (no comma yet)
+                # Check if we're in the first argument (no comma yet) and not closed
                 if ',' not in after_func and not after_func.endswith(')'):
                     # Additional validation: ensure we don't have invalid syntax like double parentheses
                     # If the text immediately after the function is just another (, it's invalid syntax
@@ -142,6 +163,48 @@ class ContextDetector:
                         return False
                     return True
         return False
+
+    def _find_tag_arg_context(self, left_text: str) -> CompletionContext | None:
+        """Find a tag-name argument context and return details.
+
+        Returns
+        -------
+        CompletionContext | None
+            Context with mode TAG_NAME_ARG and details when inside first agument; otherwise None.
+        """
+        dollar_positions = []
+        for i, char in enumerate(left_text):
+            if char == '$':
+                dollar_positions.append(i)
+
+        # Check each $ position from most recent to oldest
+        for dollar_pos in reversed(dollar_positions):
+            # Find the next ( after this $
+            paren_pos = left_text.find('(', dollar_pos)
+            if paren_pos == -1:
+                continue
+
+            # Extract function name between '$' and '('
+            function_name = ''.join(ch for ch in left_text[dollar_pos + 1 : paren_pos] if ch.isalnum() or ch == "_")
+
+            # Only consider this function if it's a known tag-name function
+            if function_name not in TAG_NAME_FIRST_ARG_FUNCTIONS:
+                continue
+
+            # Check for invalid syntax: if there's another '(' immediately after the function call,
+            # this is invalid (like $set(( or $get(( )
+            if paren_pos + 1 < len(left_text) and left_text[paren_pos + 1] == '(':
+                continue
+
+            # Determine argument index by counting commas between '(' and end of text
+            arg_segment = left_text[paren_pos + 1 :]
+            arg_index = arg_segment.count(',')
+
+            # If we're in the first argument (no commas), return the context
+            if arg_index == 0:
+                return {'mode': CompletionMode.TAG_NAME_ARG, 'function_name': function_name, 'arg_index': arg_index}
+
+        return None
 
     def _is_partial_function_context(self, left_text: str) -> bool:
         """Return true if cursor is in a partial function name context (like $s, $se, etc.)."""

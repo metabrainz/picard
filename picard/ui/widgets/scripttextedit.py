@@ -23,6 +23,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
 import contextlib
 import re
 import unicodedata
@@ -57,6 +58,7 @@ from picard.script import (
 from picard.script.parser import (
     ScriptParser,
 )
+from picard.script.variable_pattern import pattern_get_variable, pattern_percent_variable
 from picard.tags import (
     display_tag_tooltip,
     script_variable_tag_names,
@@ -64,13 +66,19 @@ from picard.tags import (
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
-from picard.ui.widgets.context_detector import TAG_NAME_FIRST_ARG_FUNCTIONS, CompletionMode, ContextDetector
+from picard.ui.widgets.completion_provider import CompletionChoicesProvider
+from picard.ui.widgets.context_detector import (
+    TAG_NAME_FIRST_ARG_FUNCTIONS,
+    CompletionContext,
+    CompletionMode,
+    ContextDetector,
+)
 from picard.ui.widgets.variable_extractor import VariableExtractor
 
 
 # Pre-compiled regex patterns for variable usage counting
-_VARIABLE_PATTERN = re.compile(r'%([A-Za-z0-9_:]+)%')
-_GET_VARIABLE_PATTERN = re.compile(r'\$get\(\s*([A-Za-z0-9_]+)\s*\)')
+_VARIABLE_PATTERN = pattern_percent_variable()
+_GET_VARIABLE_PATTERN = pattern_get_variable()
 
 
 def find_regex_index(regex, text, start=0):
@@ -184,20 +192,29 @@ class TaggerScriptSyntaxHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class ScriptCompleter(QCompleter):
-    def __init__(self, parent=None):
+    def __init__(
+        self,
+        parent=None,
+        *,
+        parser: ScriptParser | None = None,
+        variable_extractor: VariableExtractor | None = None,
+        context_detector: ContextDetector | None = None,
+        plugin_variable_provider: Callable[[], set[str]] | None = None,
+        choices_provider: CompletionChoicesProvider | None = None,
+    ):
         # Initialize internal state before constructing QCompleter to avoid
         # accessing properties that depend on initialized attributes.
         self.last_selected = ''
-        self._parser = ScriptParser()
-        self._variable_extractor = VariableExtractor(self._parser)
-        self._context_detector = ContextDetector()
+        self._parser = parser or ScriptParser()
+        self._variable_extractor = variable_extractor or VariableExtractor(self._parser)
+        self._context_detector = context_detector or ContextDetector()
         self._script_hash: int | None = None
         self._user_defined_variables: set[str] = set()
 
         # Context-aware variable parsing
         self._last_script: str = ""
         self._var_usage_counts: dict[str, int] = {}
-        self._context: dict | None = None
+        self._context: CompletionContext | None = None
 
         # Construct base QCompleter with parent only; we'll set the model explicitly later.
         super().__init__(parent)
@@ -208,6 +225,10 @@ class ScriptCompleter(QCompleter):
         self._model: QtCore.QStringListModel = QtCore.QStringListModel()
         self.setModel(self._model)
         self.highlighted.connect(self.set_highlighted)
+
+        # IOC for plugin variables and choices provider
+        self._plugin_variable_provider = plugin_variable_provider or get_plugin_variable_names
+        self._choices_provider = choices_provider or CompletionChoicesProvider(self._plugin_variable_provider)
 
         # Initialize the model with initial choices
         self._model.setStringList(list(self.choices))
@@ -232,7 +253,7 @@ class ScriptCompleter(QCompleter):
         with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError):
             self._model.setStringList(list(self.choices))
 
-    def _set_context(self, context: dict | None):
+    def _set_context(self, context: CompletionContext | None):
         """Set the current completion context (e.g. inside $set(first, ...))"""
         self._context = context
         # Update the model immediately to reflect context-sensitive choices
@@ -245,7 +266,7 @@ class ScriptCompleter(QCompleter):
 
     @property
     def choices(self):
-        context: dict[str, CompletionMode] = self._context or {}
+        context: CompletionContext = self._context or {'mode': CompletionMode.DEFAULT}
         mode: CompletionMode = context.get('mode', CompletionMode.DEFAULT)
 
         # Default: functions then variables, variables ranked by usage count
@@ -253,22 +274,13 @@ class ScriptCompleter(QCompleter):
             for name in sorted(script_function_names()):
                 yield f'${name}'
 
-        builtin_vars = set(script_variable_tag_names())
-        plugin_vars = get_plugin_variable_names()
-        user_vars = set(v for v in self._user_defined_variables if v not in builtin_vars and v not in plugin_vars)
-        all_vars = list(builtin_vars | user_vars | plugin_vars)
-        all_vars.sort(key=lambda x: (-self._var_usage_counts.get(x, 0), x))
-
-        if mode == CompletionMode.TAG_NAME_ARG and context.get('arg_index', 0) == 0:
-            # Suggest bare tag names for functions expecting a tag name as first argument.
-            # Order by usage count (descending), then alphabetically.
-            for name in all_vars:
-                yield name
-            return
-
-        if mode in (CompletionMode.DEFAULT, CompletionMode.VARIABLE):
-            for name in all_vars:
-                yield f'%{name}%'
+        for item in self._choices_provider.build_choices(
+            mode,
+            self._user_defined_variables,
+            script_variable_tag_names(),
+            self._var_usage_counts,
+        ):
+            yield item
 
     def set_highlighted(self, text):
         self.last_selected = text
@@ -426,6 +438,11 @@ class ScriptTextEdit(QTextEdit):
         self.addAction(self.show_tooltips_action)
         self.textChanged.connect(self._on_text_changed)
 
+        # Debounce timer for text changed events
+        self._debounce_timer = QtCore.QTimer(self)
+        self._debounce_timer.setSingleShot(True)
+        self._debounce_timer.timeout.connect(self._process_text_changed)
+
     def contextMenuEvent(self, event):
         menu = self.createStandardContextMenu()
         menu.addSeparator()
@@ -452,6 +469,10 @@ class ScriptTextEdit(QTextEdit):
                 self.setToolTip(tooltip)
 
     def _on_text_changed(self):
+        # Debounce to avoid updating the completer too often
+        self._debounce_timer.start(120)
+
+    def _process_text_changed(self):
         # Update completer dynamic variables cache
         self.completer.update_dynamic_variables(self.toPlainText())
         # Update tooltips after parsing to avoid timing issues
@@ -675,32 +696,8 @@ class ScriptTextEdit(QTextEdit):
         cursor_pos = text_cursor.position()
         left_text = doc_text[:cursor_pos]
 
-        # Use ContextDetector to determine the completion mode
-        mode = self.completer._context_detector.detect_context(left_text)
-
-        # For tag name argument context, we need additional context information
-        if mode == CompletionMode.TAG_NAME_ARG:
-            tag_arg_context = self._detect_tag_name_arg_context(left_text)
-            if tag_arg_context is not None:
-                self.completer._set_context(tag_arg_context)
-                return
-
-        # Set the context with the detected mode
-        self.completer._set_context({'mode': mode})
-
-    def _is_after_tag_name_function(self) -> bool:
-        """Return true if cursor is immediately after a tag-name function (for tab completion)."""
-        doc_text = self.toPlainText()
-        cursor_pos = self.textCursor().position()
-        left_text = doc_text[:cursor_pos]
-
-        # Check if we're immediately after a known tag-name function
-        # This should only be true when we've just completed a function via tab completion
-        # and are about to start typing the first argument
-        for function_name in TAG_NAME_FIRST_ARG_FUNCTIONS:
-            if left_text.endswith(f'${function_name}'):
-                return True
-        return False
+        details = self.completer._context_detector.detect_context_details(left_text)
+        self.completer._set_context(details)
 
     def _should_show_completion_popup(self) -> bool:
         """Return true if the current context warrants showing the completion popup."""
@@ -714,39 +711,9 @@ class ScriptTextEdit(QTextEdit):
         # Show popup for all non-default contexts
         return mode != CompletionMode.DEFAULT
 
-    def _detect_tag_name_arg_context(self, left_text: str) -> dict[str, object] | None:
+    def _detect_tag_name_arg_context(self, left_text: str) -> CompletionContext | None:
         """Detect being inside first arg of a known tag-name function and return context."""
-        # Find all $ positions and their corresponding ( positions
-        dollar_positions = []
-        for i, char in enumerate(left_text):
-            if char == '$':
-                dollar_positions.append(i)
-
-        # Check each $ position from most recent to oldest
-        for dollar_pos in reversed(dollar_positions):
-            # Find the next ( after this $
-            paren_pos = left_text.find('(', dollar_pos)
-            if paren_pos == -1:
-                continue
-
-            # Extract function name between '$' and '('
-            function_name = ''.join(ch for ch in left_text[dollar_pos + 1 : paren_pos] if ch.isalnum() or ch == "_")
-
-            # Only consider this function if it's a known tag-name function
-            if function_name not in TAG_NAME_FIRST_ARG_FUNCTIONS:
-                continue
-
-            # Check for invalid syntax: if there's another '(' immediately after the function call,
-            # this is invalid (like $set(( or $get(( )
-            if paren_pos + 1 < len(left_text) and left_text[paren_pos + 1] == '(':
-                continue
-
-            # Determine argument index by counting commas between '(' and end of text
-            arg_segment = left_text[paren_pos + 1 :]
-            arg_index = arg_segment.count(',')
-
-            # If we're in the first argument (no commas), return the context
-            if arg_index == 0:
-                return {'mode': CompletionMode.TAG_NAME_ARG, 'function_name': function_name, 'arg_index': arg_index}
-
+        details = self.completer._context_detector.detect_context_details(left_text)
+        if details.get('mode') == CompletionMode.TAG_NAME_ARG:
+            return details
         return None

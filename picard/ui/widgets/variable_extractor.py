@@ -21,7 +21,6 @@
 """Variable extractor for script completion."""
 
 import contextlib
-import re
 
 from picard.script.parser import (
     ScriptError,
@@ -29,10 +28,11 @@ from picard.script.parser import (
     ScriptFunction,
     ScriptText,
 )
+from picard.script.variable_pattern import pattern_set_variable
 
 
 # Pre-compiled regex for better performance in UI context
-_SET_VARIABLE_PATTERN = re.compile(r"\$set\(\s*([A-Za-z0-9_\u00C0-\u017F\u4E00-\u9FFF]+)\s*,")
+_SET_VARIABLE_PATTERN = pattern_set_variable()
 
 
 class VariableExtractor:
