@@ -871,9 +871,9 @@ class ScriptTextEdit(QTextEdit):
             # - dataChanged: in-place value updates without row changes
             model.modelReset.connect(self._on_completion_model_changed)
             model.layoutChanged.connect(self._on_completion_model_changed)
-            model.rowsInserted.connect(lambda *_: self._on_completion_model_changed())
-            model.rowsRemoved.connect(lambda *_: self._on_completion_model_changed())
-            model.dataChanged.connect(lambda *_: self._on_completion_model_changed())
+            model.rowsInserted.connect(self._on_completion_model_changed)
+            model.rowsRemoved.connect(self._on_completion_model_changed)
+            model.dataChanged.connect(self._on_completion_model_changed)
             self._completer_model_signals_connected = True
 
     def _should_show_completion_popup(self) -> bool:
