@@ -73,6 +73,7 @@ from picard.ui.widgets.context_detector import (
     CompletionMode,
     ContextDetector,
 )
+from picard.ui.widgets.user_script_scanner import UserScriptScanner
 from picard.ui.widgets.variable_extractor import VariableExtractor
 
 
@@ -205,6 +206,7 @@ class ScriptCompleter(QCompleter):
         context_detector: ContextDetector | None = None,
         plugin_variable_provider: Callable[[], set[str]] | None = None,
         choices_provider: CompletionChoicesProvider | None = None,
+        user_script_scanner: UserScriptScanner | None = None,
     ):
         # Initialize internal state before constructing QCompleter to avoid
         # accessing properties that depend on initialized attributes.
@@ -212,6 +214,7 @@ class ScriptCompleter(QCompleter):
         self._parser = parser or ScriptParser()
         self._variable_extractor = variable_extractor or VariableExtractor(self._parser)
         self._context_detector = context_detector or ContextDetector()
+        self._user_script_scanner = user_script_scanner or UserScriptScanner(self._variable_extractor)
         self._script_hash: int | None = None
         self._user_defined_variables: set[str] = set()
 
@@ -232,7 +235,9 @@ class ScriptCompleter(QCompleter):
 
         # IOC for plugin variables and choices provider
         self._plugin_variable_provider = plugin_variable_provider or get_plugin_variable_names
-        self._choices_provider = choices_provider or CompletionChoicesProvider(self._plugin_variable_provider)
+        self._choices_provider = choices_provider or CompletionChoicesProvider(
+            self._plugin_variable_provider, self._user_script_scanner
+        )
 
         # Initialize the model with initial choices
         self._model.setStringList(list(self.choices))
@@ -251,6 +256,10 @@ class ScriptCompleter(QCompleter):
         # Keep track of last script and variable usage counts for context-awareness
         self._last_script = script_content
         self._var_usage_counts = self._count_variable_usage(script_content)
+
+        # Check if user scripts have changed and rescan if needed
+        if self._user_script_scanner.should_rescan():
+            self._user_script_scanner.scan_all_user_scripts()
 
         # Refresh the completion model contents using the persistent model
         # (avoids replacing the model object and preserves any connections/state).
@@ -535,6 +544,9 @@ class ScriptTextEdit(QTextEdit):
         self.completer.setWidget(self)
         self.completer.activated.connect(self.insert_completion)
         self.popup_shown = False
+
+        # Initialize user script scanning on startup
+        self.completer._user_script_scanner.scan_all_user_scripts()
 
     def insert_completion(self, completion):
         if not completion:

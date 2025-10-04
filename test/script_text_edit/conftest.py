@@ -40,10 +40,21 @@ def _fake_script_config(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
         def key(self, name):
             return name
 
-    cfg = SimpleNamespace(setting=_FakeSetting({'enabled_plugins': []}), sync=lambda: None)
+    cfg = SimpleNamespace(
+        setting=_FakeSetting(
+            {
+                'enabled_plugins': [],
+                'enable_tagger_scripts': True,
+                'list_of_scripts': [],
+            }
+        ),
+        sync=lambda: None,
+    )
     import picard.config as picard_config_mod
     import picard.extension_points as ext_points_mod
+    import picard.script as picard_script_mod
 
     monkeypatch.setattr(picard_config_mod, 'get_config', lambda: cfg, raising=True)
     monkeypatch.setattr(ext_points_mod, 'get_config', lambda: cfg, raising=True)
+    monkeypatch.setattr(picard_script_mod, 'get_config', lambda: cfg, raising=True)
     return cfg

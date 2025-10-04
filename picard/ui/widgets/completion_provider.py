@@ -21,39 +21,52 @@
 """Completion choices provider for script completion."""
 
 from collections.abc import Callable, Iterable, Iterator
+import contextlib
 
 from picard.script import script_function_names
 
 from picard.ui.widgets.context_detector import CompletionMode
+from picard.ui.widgets.user_script_scanner import UserScriptScanner
 
 
 class CompletionChoicesProvider:
     """Build completion choices given variables, usage, and context.
 
     This class provides completion choices for different completion modes
-    by combining builtin variables, user-defined variables, and plugin
-    variables with usage-based sorting.
+    by combining builtin variables, user-defined variables, plugin
+    variables, and user script variables with usage-based sorting.
 
     Parameters
     ----------
     get_plugin_variable_names : Callable[[], set[str]]
         Function that returns a set of plugin variable names.
+    user_script_scanner : UserScriptScanner | None
+        Optional user script scanner for extracting variables from user scripts.
 
     Attributes
     ----------
     _get_plugin_variable_names : Callable[[], set[str]]
         Function that returns a set of plugin variable names.
+    _user_script_scanner : UserScriptScanner | None
+        User script scanner for extracting variables from user scripts.
     """
 
-    def __init__(self, get_plugin_variable_names: Callable[[], set[str]]):
+    def __init__(
+        self,
+        get_plugin_variable_names: Callable[[], set[str]],
+        user_script_scanner: UserScriptScanner | None = None,
+    ):
         """Initialize the completion choices provider.
 
         Parameters
         ----------
         get_plugin_variable_names : Callable[[], set[str]]
             Function that returns a set of plugin variable names.
+        user_script_scanner : UserScriptScanner | None
+            Optional user script scanner for extracting variables from user scripts.
         """
         self._get_plugin_variable_names = get_plugin_variable_names
+        self._user_script_scanner = user_script_scanner
 
     def build_choices(
         self,
@@ -90,7 +103,16 @@ class CompletionChoicesProvider:
         """
         plugin_variables = self._get_plugin_variable_names()
         builtin_variables = set(builtin_variables)
-        all_variables = list(builtin_variables | user_defined_variables | plugin_variables)
+
+        # Get user script variables if scanner is available
+        user_script_variables = set()
+        if self._user_script_scanner is not None:
+            with contextlib.suppress(AttributeError, TypeError):
+                cached_variables = self._user_script_scanner.get_cached_variables()
+                if cached_variables is not None:
+                    user_script_variables = cached_variables
+
+        all_variables = list(builtin_variables | user_defined_variables | plugin_variables | user_script_variables)
         all_variables.sort(key=lambda x: (-usage_counts.get(x, 0), x))
 
         if mode in (CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME):
