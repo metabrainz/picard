@@ -56,6 +56,21 @@ class UserScriptScanner:
         self._cached_variables: set[str] = set()
         self._last_scan_hash: int | None = None
 
+    def _calculate_scripts_hash(self, scripts) -> int:
+        """Calculate hash for a list of scripts.
+
+        Parameters
+        ----------
+        scripts : list
+            List of script objects with name and content attributes.
+
+        Returns
+        -------
+        int
+            Hash value for the scripts.
+        """
+        return hash(tuple((s.name, s.content) for s in scripts))
+
     def scan_all_user_scripts(self) -> set[str]:
         """Scan all enabled user tagging scripts for variable definitions.
 
@@ -68,7 +83,7 @@ class UserScriptScanner:
 
         with contextlib.suppress(AttributeError, TypeError, ValueError):
             current_scripts = list(iter_active_tagging_scripts())
-            current_hash = hash(tuple((s.name, s.content) for s in current_scripts))
+            current_hash = self._calculate_scripts_hash(current_scripts)
 
             for script in current_scripts:
                 if script.content:
@@ -101,7 +116,7 @@ class UserScriptScanner:
         """
         with contextlib.suppress(AttributeError, TypeError, ValueError):
             current_scripts = list(iter_active_tagging_scripts())
-            current_hash = hash(tuple((s.name, s.content) for s in current_scripts))
+            current_hash = self._calculate_scripts_hash(current_scripts)
 
             if current_hash != self._last_scan_hash:
                 self._last_scan_hash = current_hash
