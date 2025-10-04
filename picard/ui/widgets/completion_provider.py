@@ -90,10 +90,7 @@ class CompletionChoicesProvider:
         """
         plugin_variables = self._get_plugin_variable_names()
         builtin_variables = set(builtin_variables)
-        user_variables = set(
-            v for v in user_defined_variables if v not in builtin_variables and v not in plugin_variables
-        )
-        all_variables = list(builtin_variables | user_variables | plugin_variables)
+        all_variables = list(builtin_variables | user_defined_variables | plugin_variables)
         all_variables.sort(key=lambda x: (-usage_counts.get(x, 0), x))
 
         if mode in (CompletionMode.DEFAULT, CompletionMode.FUNCTION_NAME):
