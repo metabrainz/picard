@@ -93,6 +93,123 @@ def mock_ast_nodes() -> dict[str, Any]:
     }
 
 
+# Test data fixtures for parametrized tests
+@pytest.fixture
+def basic_script_tests() -> list[dict[str, Any]]:
+    """Basic script test cases for parametrized testing."""
+    return [
+        {
+            'script': '$set(var1, "value1")\n$set(var2, "value2")',
+            'expected_vars': {'var1', 'var2'},
+            'description': 'basic two variables',
+        },
+        {'script': '$set(test_var, "value")', 'expected_vars': {'test_var'}, 'description': 'single variable'},
+        {
+            'script': '$set(var_with_underscore, "value")',
+            'expected_vars': {'var_with_underscore'},
+            'description': 'variable with underscore',
+        },
+        {'script': '$set(var123, "value")', 'expected_vars': {'var123'}, 'description': 'variable with numbers'},
+        {'script': '', 'expected_vars': set(), 'description': 'empty script'},
+        {'script': '   ', 'expected_vars': set(), 'description': 'whitespace only'},
+    ]
+
+
+@pytest.fixture
+def nested_script_tests() -> list[dict[str, Any]]:
+    """Nested script test cases for parametrized testing."""
+    return [
+        {
+            'script': '$set(outer, $if(1, $set(inner, "value"), "default"))',
+            'expected_vars': {'outer', 'inner'},
+            'description': 'nested if with set',
+        },
+        {
+            'script': '$set(outer, $set(inner, "value"))',
+            'expected_vars': {'outer', 'inner'},
+            'description': 'nested set functions',
+        },
+        {
+            'script': '''$set(level1, $if(1, $set(level2, "value"), $set(level3, "value")))
+$set(level4, $set(level5, $set(level6, "value")))''',
+            'expected_vars': {'level1', 'level2', 'level3', 'level4', 'level5', 'level6'},
+            'description': 'multiple nested functions',
+        },
+    ]
+
+
+@pytest.fixture
+def error_handling_tests() -> list[dict[str, Any]]:
+    """Error handling test cases for parametrized testing."""
+    return [
+        {'script': '$set(incomplete', 'expected_vars': set(), 'description': 'incomplete syntax'},
+        {'script': '%artist% - %album%', 'expected_vars': set(), 'description': 'no set statements'},
+        {
+            'script': '$set($if(1, "test", "else"), "value")',
+            'expected_vars': set(),
+            'description': 'dynamic expression in set',
+        },
+    ]
+
+
+@pytest.fixture
+def special_character_tests() -> list[dict[str, Any]]:
+    """Special character test cases for parametrized testing."""
+    return [
+        {'script': '$set(variable_ñ, "value")', 'expected_vars': {'variable_ñ'}, 'description': 'unicode characters'},
+        {
+            'script': '$set(_leading_underscore, "value")',
+            'expected_vars': {'_leading_underscore'},
+            'description': 'leading underscore',
+        },
+        {
+            'script': '$set(trailing_underscore_, "value")',
+            'expected_vars': {'trailing_underscore_'},
+            'description': 'trailing underscore',
+        },
+        {
+            'script': '$set(multiple__underscores, "value")',
+            'expected_vars': {'multiple__underscores'},
+            'description': 'multiple underscores',
+        },
+    ]
+
+
+# Helper functions for common test patterns
+def assert_variables_extracted(
+    completer: ScriptCompleter, script: str, expected_vars: set[str], method_name: str
+) -> None:
+    """Helper function to test variable extraction from scripts."""
+    method = getattr(completer._variable_extractor, method_name)
+    result = method(script)
+    assert result == expected_vars, f"Expected {expected_vars}, got {result}"
+
+
+def assert_variables_in_result(
+    completer: ScriptCompleter, script: str, expected_vars: set[str], method_name: str
+) -> None:
+    """Helper function to test that variables are contained in extraction result."""
+    method = getattr(completer._variable_extractor, method_name)
+    result = method(script)
+    for var in expected_vars:
+        assert var in result, f"Expected {var} to be in {result}"
+
+
+def create_mock_function(name: str, args: list[Any]) -> Mock:
+    """Helper function to create mock ScriptFunction nodes."""
+    mock_func = Mock(spec=ScriptFunction)
+    mock_func.name = name
+    mock_func.args = args
+    return mock_func
+
+
+def create_mock_text_node(value: str) -> Mock:
+    """Helper function to create mock ScriptText nodes."""
+    text_node = Mock(spec=ScriptText)
+    text_node.__str__ = Mock(return_value=value)
+    return text_node
+
+
 class TestASTTraversal:
     """Test AST traversal and variable extraction."""
 
@@ -123,53 +240,58 @@ class TestASTTraversal:
         # Expressions themselves don't contain variables, but their children might
         assert result == set()
 
-    def test_collect_set_variables_from_ast_with_nested_functions(self, completer: ScriptCompleter) -> None:
+    @pytest.mark.parametrize(
+        "script,expected_vars",
+        [
+            ('$set(outer, $if(1, $set(inner, "value"), "default"))', {'outer', 'inner'}),
+            ('$set(outer, $set(inner, "value"))', {'outer', 'inner'}),
+        ],
+    )
+    def test_collect_set_variables_from_ast_with_nested_functions(
+        self, completer: ScriptCompleter, script: str, expected_vars: set[str]
+    ) -> None:
         """Test collecting variables from nested function calls."""
-        # Test with a real script that has nested functions
-        script = '$set(outer, $if(1, $set(inner, "value"), "default"))'
         result = completer._extract_set_variables(script)
-        assert 'outer' in result
-        assert 'inner' in result
+        for var in expected_vars:
+            assert var in result
 
-    def test_collect_set_variables_from_ast_handles_empty_args(self, completer: ScriptCompleter) -> None:
-        """Test handling of functions with empty arguments."""
-        empty_function = Mock(spec=ScriptFunction)
-        empty_function.name = "set"
-        empty_function.args = []
-
+    @pytest.mark.parametrize(
+        "function_name,args,expected_result",
+        [
+            ("set", [], set()),
+            ("set", [None, None], set()),
+            ("if", [Mock(), Mock(), Mock()], set()),
+        ],
+    )
+    def test_collect_set_variables_from_ast_handles_edge_cases(
+        self, completer: ScriptCompleter, function_name: str, args: list[Any], expected_result: set[str]
+    ) -> None:
+        """Test handling of various edge cases in AST traversal."""
+        mock_function = create_mock_function(function_name, args)
         result = set()
-        # Should not raise an exception even with empty args
-        completer._variable_extractor._collect_from_ast(empty_function, result)
-        assert result == set()
-
-    def test_collect_set_variables_from_ast_handles_none_args(self, completer: ScriptCompleter) -> None:
-        """Test handling of functions with None arguments."""
-        none_function = Mock(spec=ScriptFunction)
-        none_function.name = "set"
-        none_function.args = [None, None]
-
-        result = set()
-        # Should not raise an exception
-        completer._variable_extractor._collect_from_ast(none_function, result)
-        assert result == set()
+        completer._variable_extractor._collect_from_ast(mock_function, result)
+        assert result == expected_result
 
 
 class TestStaticNameExtraction:
     """Test static name extraction from AST nodes."""
 
-    def test_extract_static_name_with_valid_expression(self, completer: ScriptCompleter) -> None:
-        """Test extracting static names from valid expressions."""
-        # Test with a real script that should work
-        script = '$set(test_var, "value")'
+    @pytest.mark.parametrize(
+        "script,expected_vars",
+        [
+            ('$set(test_var, "value")', {'test_var'}),
+            ('', set()),
+            ('   ', set()),
+            ('$set(var_with_underscore, "value")', {'var_with_underscore'}),
+            ('$set(var123, "value")', {'var123'}),
+        ],
+    )
+    def test_extract_static_name_with_various_expressions(
+        self, completer: ScriptCompleter, script: str, expected_vars: set[str]
+    ) -> None:
+        """Test extracting static names from various expressions."""
         result = completer._extract_set_variables(script)
-        assert 'test_var' in result
-
-    def test_extract_static_name_with_empty_expression(self, completer: ScriptCompleter) -> None:
-        """Test extracting static names from empty expressions."""
-        # Test with empty script
-        script = ''
-        result = completer._extract_set_variables(script)
-        assert result == set()
+        assert result == expected_vars
 
     def test_extract_static_name_with_mixed_tokens(self, completer: ScriptCompleter) -> None:
         """Test extracting static names from expressions with mixed token types."""
@@ -181,108 +303,57 @@ class TestStaticNameExtraction:
 
     def test_extract_static_name_with_non_expression(self, completer: ScriptCompleter) -> None:
         """Test extracting static names from non-expression nodes."""
-        text_node = Mock(spec=ScriptText)
+        text_node = create_mock_text_node("test")
         result = completer._variable_extractor._extract_static_name(text_node)
         assert result is None
-
-    def test_extract_static_name_with_whitespace_only(self, completer: ScriptCompleter) -> None:
-        """Test extracting static names from expressions with whitespace-only content."""
-        # Test with a script that has only whitespace
-        script = '   '
-        result = completer._extract_set_variables(script)
-        assert result == set()
-
-    def test_extract_static_name_with_special_characters(self, completer: ScriptCompleter) -> None:
-        """Test extracting static names with special characters."""
-        # Test with a script that has special characters
-        script = '$set(var_with_underscore, "value")'
-        result = completer._extract_set_variables(script)
-        assert 'var_with_underscore' in result
-
-    def test_extract_static_name_with_numeric_characters(self, completer: ScriptCompleter) -> None:
-        """Test extracting static names with numeric characters."""
-        # Test with a script that has numeric characters
-        script = '$set(var123, "value")'
-        result = completer._extract_set_variables(script)
-        assert 'var123' in result
 
 
 class TestFullParseMethods:
     """Test full parse methods for variable extraction."""
 
-    def test_collect_set_variables_from_full_parse_success(self, completer: ScriptCompleter) -> None:
-        """Test successful full parse variable collection."""
-        script = '$set(var1, "value1")\n$set(var2, "value2")'
-        result = completer._variable_extractor._collect_from_full_parse(script)
-        assert result == {'var1', 'var2'}
-
-    def test_collect_set_variables_from_full_parse_handles_errors(self, completer: ScriptCompleter) -> None:
-        """Test that full parse handles parsing errors gracefully."""
-        script = '$set(incomplete'
-        result = completer._variable_extractor._collect_from_full_parse(script)
-        assert result == set()
-
-    def test_collect_set_variables_from_full_parse_handles_empty_script(self, completer: ScriptCompleter) -> None:
-        """Test that full parse handles empty scripts."""
-        result = completer._variable_extractor._collect_from_full_parse('')
-        assert result == set()
-
-    def test_collect_set_variables_from_full_parse_handles_whitespace_only(self, completer: ScriptCompleter) -> None:
-        """Test that full parse handles whitespace-only scripts."""
-        result = completer._variable_extractor._collect_from_full_parse('   \n\t  \n  ')
-        assert result == set()
-
-    def test_collect_set_variables_from_full_parse_handles_complex_script(self, completer: ScriptCompleter) -> None:
-        """Test that full parse handles complex scripts."""
-        script = '''$set(artist, %artist%)
+    @pytest.mark.parametrize(
+        "script,expected_vars",
+        [
+            ('$set(var1, "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
+            ('$set(incomplete', set()),
+            ('', set()),
+            ('   \n\t  \n  ', set()),
+            (
+                '''$set(artist, %artist%)
 $set(album, %album%)
-$set(combined, $if(%artist%, %artist% - %album%, %album%))'''
+$set(combined, $if(%artist%, %artist% - %album%, %album%))''',
+                {'artist', 'album', 'combined'},
+            ),
+            ('$set(outer, $if(1, $set(inner, "value"), "default"))', {'outer', 'inner'}),
+        ],
+    )
+    def test_collect_set_variables_from_full_parse(
+        self, completer: ScriptCompleter, script: str, expected_vars: set[str]
+    ) -> None:
+        """Test full parse variable collection with various scripts."""
         result = completer._variable_extractor._collect_from_full_parse(script)
-        assert result == {'artist', 'album', 'combined'}
-
-    def test_collect_set_variables_from_full_parse_handles_nested_functions(self, completer: ScriptCompleter) -> None:
-        """Test that full parse handles nested functions."""
-        script = '$set(outer, $if(1, $set(inner, "value"), "default"))'
-        result = completer._variable_extractor._collect_from_full_parse(script)
-        assert 'outer' in result
-        assert 'inner' in result
+        assert result == expected_vars
 
 
 class TestLineParseMethods:
     """Test line-by-line parse methods for variable extraction."""
 
-    def test_collect_set_variables_from_line_parse_success(self, completer: ScriptCompleter) -> None:
-        """Test successful line parse variable collection."""
-        script = '$set(var1, "value1")\n$set(var2, "value2")'
-        result = completer._variable_extractor._collect_from_line_parse(script)
-        assert result == {'var1', 'var2'}
-
-    def test_collect_set_variables_from_line_parse_handles_mixed_valid_invalid(
-        self, completer: ScriptCompleter
+    @pytest.mark.parametrize(
+        "script,expected_vars",
+        [
+            ('$set(var1, "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
+            ('$set(var1, "value1")\n$set(incomplete\n$set(var2, "value2")', {'var1', 'var2'}),
+            ('\n\n$set(var1, "value1")\n\n$set(var2, "value2")\n\n', {'var1', 'var2'}),
+            ('   \n\t  \n$set(var1, "value1")\n  \n$set(var2, "value2")\n\t', {'var1', 'var2'}),
+            ('$set(var1, "value1")', {'var1'}),
+        ],
+    )
+    def test_collect_set_variables_from_line_parse(
+        self, completer: ScriptCompleter, script: str, expected_vars: set[str]
     ) -> None:
-        """Test that line parse handles mixed valid and invalid lines."""
-        script = '$set(var1, "value1")\n$set(incomplete\n$set(var2, "value2")'
+        """Test line parse variable collection with various scripts."""
         result = completer._variable_extractor._collect_from_line_parse(script)
-        assert 'var1' in result
-        assert 'var2' in result
-
-    def test_collect_set_variables_from_line_parse_handles_empty_lines(self, completer: ScriptCompleter) -> None:
-        """Test that line parse handles empty lines."""
-        script = '\n\n$set(var1, "value1")\n\n$set(var2, "value2")\n\n'
-        result = completer._variable_extractor._collect_from_line_parse(script)
-        assert result == {'var1', 'var2'}
-
-    def test_collect_set_variables_from_line_parse_handles_whitespace_lines(self, completer: ScriptCompleter) -> None:
-        """Test that line parse handles whitespace-only lines."""
-        script = '   \n\t  \n$set(var1, "value1")\n  \n$set(var2, "value2")\n\t'
-        result = completer._variable_extractor._collect_from_line_parse(script)
-        assert result == {'var1', 'var2'}
-
-    def test_collect_set_variables_from_line_parse_handles_single_line(self, completer: ScriptCompleter) -> None:
-        """Test that line parse handles single line scripts."""
-        script = '$set(var1, "value1")'
-        result = completer._variable_extractor._collect_from_line_parse(script)
-        assert result == {'var1'}
+        assert result == expected_vars
 
     def test_collect_set_variables_from_line_parse_handles_no_newlines(self, completer: ScriptCompleter) -> None:
         """Test that line parse handles scripts without newlines."""
@@ -295,128 +366,119 @@ class TestLineParseMethods:
 class TestRegexFallback:
     """Test regex fallback for variable extraction."""
 
-    def test_collect_set_variables_from_regex_basic(self, completer: ScriptCompleter) -> None:
-        """Test basic regex extraction."""
-        script = '$set(var1, "value1")\n$set(var2, "value2")'
+    @pytest.mark.parametrize(
+        "script,expected_vars",
+        [
+            ('$set(var1, "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
+            ('$set(  var1  , "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
+            ('$set(var_with_underscore, "value1")\n$set(var123, "value2")', {'var_with_underscore', 'var123'}),
+            ('$set(var1, "value1")\n$set(incomplete', {'var1'}),
+            ('', set()),
+            ('%artist% - %album%', set()),
+            ('$set(var1, "value1")\n$set(var1, "value2")', {'var1'}),
+        ],
+    )
+    def test_collect_set_variables_from_regex(
+        self, completer: ScriptCompleter, script: str, expected_vars: set[str]
+    ) -> None:
+        """Test regex extraction with various scripts."""
         result = completer._variable_extractor._collect_from_regex(script)
-        assert result == {'var1', 'var2'}
-
-    def test_collect_set_variables_from_regex_handles_whitespace(self, completer: ScriptCompleter) -> None:
-        """Test that regex handles whitespace variations."""
-        script = '$set(  var1  , "value1")\n$set(var2, "value2")'
-        result = completer._variable_extractor._collect_from_regex(script)
-        assert result == {'var1', 'var2'}
-
-    def test_collect_set_variables_from_regex_handles_special_characters(self, completer: ScriptCompleter) -> None:
-        """Test that regex handles special characters in variable names."""
-        script = '$set(var_with_underscore, "value1")\n$set(var123, "value2")'
-        result = completer._variable_extractor._collect_from_regex(script)
-        assert result == {'var_with_underscore', 'var123'}
-
-    def test_collect_set_variables_from_regex_handles_incomplete_syntax(self, completer: ScriptCompleter) -> None:
-        """Test that regex handles incomplete syntax."""
-        script = '$set(var1, "value1")\n$set(incomplete'
-        result = completer._variable_extractor._collect_from_regex(script)
-        assert 'var1' in result
-
-    def test_collect_set_variables_from_regex_handles_empty_script(self, completer: ScriptCompleter) -> None:
-        """Test that regex handles empty scripts."""
-        result = completer._variable_extractor._collect_from_regex('')
-        assert result == set()
-
-    def test_collect_set_variables_from_regex_handles_no_sets(self, completer: ScriptCompleter) -> None:
-        """Test that regex handles scripts without $set statements."""
-        script = '%artist% - %album%'
-        result = completer._variable_extractor._collect_from_regex(script)
-        assert result == set()
-
-    def test_collect_set_variables_from_regex_handles_multiple_same_variable(self, completer: ScriptCompleter) -> None:
-        """Test that regex handles multiple $set statements with same variable."""
-        script = '$set(var1, "value1")\n$set(var1, "value2")'
-        result = completer._variable_extractor._collect_from_regex(script)
-        assert 'var1' in result
-        assert len(result) == 1
+        assert result == expected_vars
 
 
 class TestErrorHandling:
     """Test error handling in AST parsing methods."""
 
-    def test_collect_set_variables_from_ast_handles_none_node(self, completer: ScriptCompleter) -> None:
-        """Test that AST traversal handles None nodes."""
+    @pytest.mark.parametrize(
+        "node,expected_result",
+        [
+            (None, set()),
+            (Mock(), set()),
+        ],
+    )
+    def test_collect_set_variables_from_ast_handles_invalid_nodes(
+        self, completer: ScriptCompleter, node: Any, expected_result: set[str]
+    ) -> None:
+        """Test that AST traversal handles invalid nodes."""
         result = set()
-        # Should not raise an exception
-        completer._variable_extractor._collect_from_ast(None, result)  # type: ignore
-        assert result == set()
+        completer._variable_extractor._collect_from_ast(node, result)  # type: ignore
+        assert result == expected_result
 
-    def test_collect_set_variables_from_ast_handles_invalid_node_type(self, completer: ScriptCompleter) -> None:
-        """Test that AST traversal handles invalid node types."""
-        invalid_node = Mock()
-        result = set()
-        # Should not raise an exception
-        completer._variable_extractor._collect_from_ast(invalid_node, result)
-        assert result == set()
+    @pytest.mark.parametrize(
+        "node,expected_result",
+        [
+            (None, None),
+            (Mock(), None),
+        ],
+    )
+    def test_extract_static_name_handles_invalid_nodes(
+        self, completer: ScriptCompleter, node: Any, expected_result: Any
+    ) -> None:
+        """Test that static name extraction handles invalid nodes."""
+        result = completer._variable_extractor._extract_static_name(node)  # type: ignore
+        assert result == expected_result
 
-    def test_extract_static_name_handles_none_node(self, completer: ScriptCompleter) -> None:
-        """Test that static name extraction handles None nodes."""
-        result = completer._variable_extractor._extract_static_name(None)  # type: ignore
-        assert result is None
-
-    def test_extract_static_name_handles_invalid_node_type(self, completer: ScriptCompleter) -> None:
-        """Test that static name extraction handles invalid node types."""
-        invalid_node = Mock()
-        result = completer._variable_extractor._extract_static_name(invalid_node)
-        assert result is None
-
-    def test_collect_set_variables_from_full_parse_handles_parser_exception(self, completer: ScriptCompleter) -> None:
-        """Test that full parse handles parser exceptions."""
+    @pytest.mark.parametrize(
+        "method_name",
+        [
+            "_collect_from_full_parse",
+            "_collect_from_line_parse",
+        ],
+    )
+    def test_parse_methods_handle_parser_exceptions(self, completer: ScriptCompleter, method_name: str) -> None:
+        """Test that parse methods handle parser exceptions."""
         from picard.script.parser import ScriptError
 
+        method = getattr(completer._variable_extractor, method_name)
         with patch.object(completer._parser, 'parse', side_effect=ScriptError("Parser error")):
-            result = completer._variable_extractor._collect_from_full_parse('$set(var1, "value")')
-            assert result == set()
-
-    def test_collect_set_variables_from_line_parse_handles_parser_exception(self, completer: ScriptCompleter) -> None:
-        """Test that line parse handles parser exceptions."""
-        from picard.script.parser import ScriptError
-
-        with patch.object(completer._parser, 'parse', side_effect=ScriptError("Parser error")):
-            result = completer._variable_extractor._collect_from_line_parse('$set(var1, "value")')
+            result = method('$set(var1, "value")')
             assert result == set()
 
 
 class TestComplexScenarios:
     """Test complex scenarios and edge cases."""
 
-    def test_nested_set_functions(self, completer: ScriptCompleter) -> None:
-        """Test handling of nested $set functions."""
-        script = '$set(outer, $set(inner, "value"))'
-        result = completer._extract_set_variables(script)
-        assert 'outer' in result
-        assert 'inner' in result
-
-    def test_multiple_nested_functions(self, completer: ScriptCompleter) -> None:
-        """Test handling of multiple nested functions."""
-        script = '''$set(level1, $if(1, $set(level2, "value"), $set(level3, "value")))
-$set(level4, $set(level5, $set(level6, "value")))'''
-        result = completer._extract_set_variables(script)
-        expected_vars = {'level1', 'level2', 'level3', 'level4', 'level5', 'level6'}
-        assert result == expected_vars
-
-    def test_very_deep_nesting(self, completer: ScriptCompleter) -> None:
-        """Test handling of very deep nesting."""
-        # Create a deeply nested structure
-        script = '$set(level1, $set(level2, $set(level3, $set(level4, $set(level5, "value")))))'
-        result = completer._extract_set_variables(script)
-        expected_vars = {'level1', 'level2', 'level3', 'level4', 'level5'}
-        assert result == expected_vars
-
-    def test_mixed_function_types(self, completer: ScriptCompleter) -> None:
-        """Test handling of mixed function types."""
-        script = '''$set(var1, "value1")
+    @pytest.mark.parametrize(
+        "script,expected_vars",
+        [
+            ('$set(outer, $set(inner, "value"))', {'outer', 'inner'}),
+            (
+                '''$set(level1, $if(1, $set(level2, "value"), $set(level3, "value")))
+$set(level4, $set(level5, $set(level6, "value")))''',
+                {'level1', 'level2', 'level3', 'level4', 'level5', 'level6'},
+            ),
+            (
+                '$set(level1, $set(level2, $set(level3, $set(level4, $set(level5, "value")))))',
+                {'level1', 'level2', 'level3', 'level4', 'level5'},
+            ),
+            (
+                '''$set(var1, "value1")
 $if(1, $set(var2, "value2"), $set(var3, "value3"))
-$set(var4, $if(1, "true", "false"))'''
+$set(var4, $if(1, "true", "false"))''',
+                {'var1', 'var2', 'var3', 'var4'},
+            ),
+            ('$set(var_with_underscore, "value")\n$set(var123, "value")', {'var_with_underscore', 'var123'}),
+            ('$set(var1, "value1")\n$set(var1, "value2")\n$set(var1, "value3")', {'var1'}),
+            (
+                '''// This is a comment
+$set(var1, "value1")
+/* Another comment */
+$set(var2, "value2")''',
+                {'var1', 'var2'},
+            ),
+            ('$set(var1, "This contains $set in a string")\n$set(var2, "value2")', {'var1', 'var2'}),
+            (
+                '''$set(_leading_underscore, "value")
+$set(trailing_underscore_, "value")
+$set(_both_underscores_, "value")
+$set(multiple__underscores, "value")''',
+                {'_leading_underscore', 'trailing_underscore_', '_both_underscores_', 'multiple__underscores'},
+            ),
+        ],
+    )
+    def test_complex_script_scenarios(self, completer: ScriptCompleter, script: str, expected_vars: set[str]) -> None:
+        """Test complex script scenarios with various nesting and edge cases."""
         result = completer._extract_set_variables(script)
-        expected_vars = {'var1', 'var2', 'var3', 'var4'}
         assert result == expected_vars
 
     def test_unicode_variable_names(self, completer: ScriptCompleter) -> None:
@@ -432,49 +494,6 @@ $set(var4, $if(1, "true", "false"))'''
         script = f'$set({long_var}, "value")'
         result = completer._extract_set_variables(script)
         assert long_var in result
-
-    def test_special_characters_in_variable_names(self, completer: ScriptCompleter) -> None:
-        """Test handling of special characters in variable names."""
-        script = '$set(var_with_underscore, "value")\n$set(var123, "value")'
-        result = completer._extract_set_variables(script)
-        assert 'var_with_underscore' in result
-        assert 'var123' in result
-
-    def test_multiple_same_variable_different_cases(self, completer: ScriptCompleter) -> None:
-        """Test handling of multiple $set statements with same variable name."""
-        script = '$set(var1, "value1")\n$set(var1, "value2")\n$set(var1, "value3")'
-        result = completer._extract_set_variables(script)
-        assert 'var1' in result
-        assert len(result) == 1
-
-    def test_script_with_comments(self, completer: ScriptCompleter) -> None:
-        """Test handling of scripts with comments."""
-        script = '''// This is a comment
-$set(var1, "value1")
-/* Another comment */
-$set(var2, "value2")'''
-        result = completer._extract_set_variables(script)
-        assert 'var1' in result
-        assert 'var2' in result
-
-    def test_script_with_strings_containing_set(self, completer: ScriptCompleter) -> None:
-        """Test handling of strings containing 'set'."""
-        script = '$set(var1, "This contains $set in a string")\n$set(var2, "value2")'
-        result = completer._extract_set_variables(script)
-        assert 'var1' in result
-        assert 'var2' in result
-
-    def test_script_with_underscore_edge_cases(self, completer: ScriptCompleter) -> None:
-        """Test handling of variables with leading and trailing underscores."""
-        script = '''$set(_leading_underscore, "value")
-$set(trailing_underscore_, "value")
-$set(_both_underscores_, "value")
-$set(multiple__underscores, "value")'''
-        result = completer._extract_set_variables(script)
-        assert '_leading_underscore' in result
-        assert 'trailing_underscore_' in result
-        assert '_both_underscores_' in result
-        assert 'multiple__underscores' in result
 
     def test_script_with_percent_syntax(self, completer: ScriptCompleter) -> None:
         """Test behavior with %variable% syntax in $set statements."""
