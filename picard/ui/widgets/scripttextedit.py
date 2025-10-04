@@ -619,23 +619,43 @@ class ScriptTextEdit(QTextEdit):
         super().keyPressEvent(event)
         self.handle_autocomplete(event)
 
-    def handle_autocomplete(self, event):
-        # Only trigger autocomplete on actual text input or if the user explicitly
-        # requested auto completion with Ctrl+Space (Control+Space on macOS)
-        modifier = QtCore.Qt.KeyboardModifier.MetaModifier if IS_MACOS else QtCore.Qt.KeyboardModifier.ControlModifier
-        force_completion_popup = event.key() == QtCore.Qt.Key.Key_Space and event.modifiers() & modifier
+    def handle_autocomplete(self, event: QtGui.QKeyEvent) -> None:
+        """Handle autocomplete logic based on the key event."""
+        force_completion_popup = self._is_force_completion_requested(event)
 
-        if not (
-            force_completion_popup
-            or event.key() in {Qt.Key.Key_Backspace, Qt.Key.Key_Delete}
-            or self.autocomplete_trigger_chars.match(event.text())
-        ):
+        if not self._should_trigger_autocomplete(event, force_completion_popup):
             self.popup_hide()
             return
 
         tc = self.cursor_select_word(full_word=False)
         selected_text = tc.selectedText()
 
+        should_update_context = self._should_update_completion_context(event, force_completion_popup, selected_text)
+
+        if should_update_context:
+            self._process_completion_with_context(selected_text)
+        else:
+            self.popup_hide()
+
+    def _is_force_completion_requested(self, event: QtGui.QKeyEvent) -> bool:
+        """Check if the user explicitly requested auto completion with Ctrl+Space (Control+Space on macOS)."""
+        # Only trigger autocomplete on actual text input or if the user explicitly
+        # requested auto completion with Ctrl+Space (Control+Space on macOS)
+        modifier = QtCore.Qt.KeyboardModifier.MetaModifier if IS_MACOS else QtCore.Qt.KeyboardModifier.ControlModifier
+        return bool(event.key() == QtCore.Qt.Key.Key_Space and event.modifiers() & modifier)
+
+    def _should_trigger_autocomplete(self, event: QtGui.QKeyEvent, force_completion_popup: bool) -> bool:
+        """Determine if autocomplete should be triggered based on the event."""
+        return (
+            force_completion_popup
+            or event.key() in {Qt.Key.Key_Backspace, Qt.Key.Key_Delete}
+            or self.autocomplete_trigger_chars.match(event.text())
+        )
+
+    def _should_update_completion_context(
+        self, event: QtGui.QKeyEvent, force_completion_popup: bool, selected_text: str
+    ) -> bool:
+        """Determine if completion context should be updated."""
         # Always call _update_completion_context for trigger characters, even if no selected text
         # This allows context detection for characters like '(' that don't select text
         should_update_context = (
@@ -653,38 +673,44 @@ class ScriptTextEdit(QTextEdit):
             if self._detect_tag_name_arg_context(left_text) is not None:
                 should_update_context = True
 
-        if should_update_context:
-            # Update context for smarter suggestions.
-            # Get a fresh cursor to ensure we have the correct position after character insertion
-            fresh_cursor = self.textCursor()
-            self._update_completion_context(fresh_cursor)
+        return bool(should_update_context)
 
-            # Check if we should show the popup based on current context
-            if self._should_show_completion_popup():
-                # For tag-name function context, use empty prefix to show all tag names
-                # Only do this if we're actually in a tag name argument context (inside function call)
-                doc_text = self.toPlainText()
-                cursor_pos = fresh_cursor.position()
-                left_text = doc_text[:cursor_pos]
-                tag_context = self._detect_tag_name_arg_context(left_text)
-                if tag_context is not None:
-                    if selected_text:
-                        self.completer.setCompletionPrefix(selected_text)
-                    else:
-                        self.completer.setCompletionPrefix('')
-                else:
-                    self.completer.setCompletionPrefix(selected_text)
+    def _process_completion_with_context(self, selected_text: str) -> None:
+        """Process completion when context should be updated."""
+        # Update context for smarter suggestions.
+        # Get a fresh cursor to ensure we have the correct position after character insertion
+        fresh_cursor = self.textCursor()
+        self._update_completion_context(fresh_cursor)
 
-                popup = self.completer.popup()
-                popup.setCurrentIndex(self.completer.currentIndex())
-
-                cr = self.cursorRect()
-                cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
-                self.completer.complete(cr)
-            else:
-                self.popup_hide()
+        # Check if we should show the popup based on current context
+        if self._should_show_completion_popup():
+            self._show_completion_popup(fresh_cursor, selected_text)
         else:
             self.popup_hide()
+
+    def _show_completion_popup(self, cursor: QTextCursor, selected_text: str) -> None:
+        """Show the completion popup with appropriate prefix."""
+        # For tag-name function context, use empty prefix to show all tag names
+        # Only do this if we're actually in a tag name argument context (inside function call)
+        doc_text = self.toPlainText()
+        cursor_pos = cursor.position()
+        left_text = doc_text[:cursor_pos]
+        tag_context = self._detect_tag_name_arg_context(left_text)
+
+        if tag_context is not None:
+            if selected_text:
+                self.completer.setCompletionPrefix(selected_text)
+            else:
+                self.completer.setCompletionPrefix('')
+        else:
+            self.completer.setCompletionPrefix(selected_text)
+
+        popup = self.completer.popup()
+        popup.setCurrentIndex(self.completer.currentIndex())
+
+        cr = self.cursorRect()
+        cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
+        self.completer.complete(cr)
 
     def _update_completion_context(self, text_cursor: QTextCursor) -> None:
         """Infer completion context based on cursor for smarter completions.
