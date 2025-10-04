@@ -544,9 +544,13 @@ class ScriptTextEdit(QTextEdit):
         self.completer.setWidget(self)
         self.completer.activated.connect(self.insert_completion)
         self.popup_shown = False
+        self._completer_model_signals_connected = False
 
         # Initialize user script scanning on startup
         self.completer._user_script_scanner.scan_all_user_scripts()
+
+        # Connect to completer model changes to re-assert first row selection
+        self._connect_completer_model_signals()
 
     def insert_completion(self, completion):
         if not completion:
@@ -578,10 +582,10 @@ class ScriptTextEdit(QTextEdit):
                 # Show completion popup
                 self.completer.setCompletionPrefix('')
                 popup = self.completer.popup()
-                popup.setCurrentIndex(self.completer.currentIndex())
                 cr = self.cursorRect()
                 cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
                 self.completer.complete(cr)
+                self._ensure_first_completion_highlighted()
                 return  # Don't hide popup, we just showed a new one
 
         self.popup_hide()
@@ -718,11 +722,14 @@ class ScriptTextEdit(QTextEdit):
             self.completer.setCompletionPrefix(selected_text)
 
         popup = self.completer.popup()
-        popup.setCurrentIndex(self.completer.currentIndex())
-
         cr = self.cursorRect()
         cr.setWidth(popup.sizeHintForColumn(0) + popup.verticalScrollBar().sizeHint().width())
         self.completer.complete(cr)
+
+        # Re-apply selection so row 0 stays highlighted after QCompleter relayout.
+        # QCompleter emits model/view updates (modelReset/layoutChanged/rowsInserted/dataChanged) after complete(),
+        # which can clear currentIndex; the helper defers and re-asserts row 0 to keep the highlight.
+        self._ensure_first_completion_highlighted()
 
     def _update_completion_context(self, text_cursor: QTextCursor) -> None:
         """Infer completion context based on cursor for smarter completions.
@@ -735,6 +742,139 @@ class ScriptTextEdit(QTextEdit):
 
         details = self.completer._context_detector.detect_context_details(left_text)
         self.completer._set_context(details)
+
+    def _ensure_first_completion_highlighted(self) -> None:
+        """Ensure the first item in the completion popup is highlighted.
+
+        Notes
+        -----
+        QCompleter performs filtering and relayout asynchronously after
+        ``complete()`` and whenever the completion prefix changes. If the
+        popup selection is set immediately, those internal updates can reset
+        the current index and clear the highlight. To make the selection
+        durable, this method schedules selecting row 0 on the next event loop
+        tick via ``QTimer.singleShot(0, ...)``, so it runs after QCompleter
+        has finished updating its model/view state.
+
+        This method is also invoked in response to model change signals
+        (e.g., ``modelReset``, ``layoutChanged``, ``rowsInserted/Removed``,
+        ``dataChanged``) to re-assert the first-row selection whenever the
+        underlying data changes.
+
+        Returns
+        -------
+        None
+        """
+        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError):
+            model = self.completer.completionModel()
+            if not model:
+                return
+            row_count = model.rowCount()
+            if row_count <= 0:
+                return
+            index = model.index(0, 0)
+            if index.isValid():
+                # Schedule on next event loop cycle to avoid being overridden
+                QtCore.QTimer.singleShot(0, lambda: self._apply_current_index(index))
+
+    def _apply_current_index(self, index: QtCore.QModelIndex) -> None:
+        """Apply the first-row selection to the completer popup.
+
+        Parameters
+        ----------
+        index : QtCore.QModelIndex
+            The model index to apply for the popup's current selection.
+            This is expected to reference row 0, column 0 of the
+            active completion model.
+
+        Notes
+        -----
+        This method is scheduled from ``_ensure_first_completion_highlighted``
+        using ``QTimer.singleShot(0, ...)`` so it runs after QCompleter's
+        internal asynchronous filtering and relayout. Applying the selection
+        on the next event loop tick avoids having the highlight cleared by
+        QCompleter's own updates. It also syncs the completer's
+        ``last_selected`` so Enter/Tab activation inserts the highlighted
+        item.
+
+        Returns
+        -------
+        None
+        """
+        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError):
+            popup = self.completer.popup()
+            self.completer.setCurrentRow(0)
+            popup.setCurrentIndex(index)
+            value = self.completer.completionModel().data(index, Qt.ItemDataRole.DisplayRole)
+            if value:
+                self.completer.set_highlighted(value)
+
+    def _on_completion_model_changed(self, *args, **kwargs) -> None:
+        """Handle completion model/view changes and re-assert selection.
+
+        Notes
+        -----
+        QCompleter updates its internal model and popup view asynchronously
+        after ``complete()`` and when the completion prefix changes. These
+        updates emit model/view signals such as ``modelReset``,
+        ``layoutChanged``, ``rowsInserted``/``rowsRemoved``, and
+        ``dataChanged``. During such updates the popup's current index can be
+        cleared or moved, which causes the brief first-row highlight to
+        disappear.
+
+        This slot re-invokes ``_ensure_first_completion_highlighted`` in
+        response to those signals so the first item remains selected after
+        QCompleter finishes its own relayout/filtering. The underlying
+        method defers the selection to the next event loop tick to run after
+        QCompleter's internal updates.
+
+        Parameters
+        ----------
+        *args, **kwargs
+            Unused. Present to match the various Qt signal signatures.
+
+        Returns
+        -------
+        None
+        """
+        # Re-apply highlight after model changes
+        self._ensure_first_completion_highlighted()
+
+    def _connect_completer_model_signals(self) -> None:
+        """Connect completion model signals to maintain persistent selection.
+
+        Notes
+        -----
+        QCompleter triggers model/view updates during filtering and prefix
+        changes. These emit Qt model signals that can reset the popup's
+        current index, causing the first-row highlight to disappear. This
+        method connects those signals to ``_on_completion_model_changed`` so
+        the first-row selection is re-applied after each update. It is safe
+        to call multiple times; connections are made only once using the
+        ``_completer_model_signals_connected`` guard.
+
+        Returns
+        -------
+        None
+        """
+        if self._completer_model_signals_connected:
+            return
+        with contextlib.suppress(RuntimeError, TypeError, AttributeError, ValueError):
+            model = self.completer.completionModel()
+            if not model:
+                return
+            # Use a single suppression context for all connect calls.
+            # We re-apply selection after various model/view updates that reset selection:
+            # - modelReset: full model reset after filtering/prefix changes
+            # - layoutChanged: view relayout can clear current index
+            # - rowsInserted/rowsRemoved: dynamic row mutations
+            # - dataChanged: in-place value updates without row changes
+            model.modelReset.connect(self._on_completion_model_changed)
+            model.layoutChanged.connect(self._on_completion_model_changed)
+            model.rowsInserted.connect(lambda *_: self._on_completion_model_changed())
+            model.rowsRemoved.connect(lambda *_: self._on_completion_model_changed())
+            model.dataChanged.connect(lambda *_: self._on_completion_model_changed())
+            self._completer_model_signals_connected = True
 
     def _should_show_completion_popup(self) -> bool:
         """Return true if the current context warrants showing the completion popup."""
