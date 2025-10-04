@@ -241,7 +241,7 @@ class TestASTTraversal:
         assert result == set()
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(outer, $if(1, $set(inner, "value"), "default"))', {'outer', 'inner'}),
             ('$set(outer, $set(inner, "value"))', {'outer', 'inner'}),
@@ -256,7 +256,7 @@ class TestASTTraversal:
             assert var in result
 
     @pytest.mark.parametrize(
-        "function_name,args,expected_result",
+        ("function_name", "args", "expected_result"),
         [
             ("set", [], set()),
             ("set", [None, None], set()),
@@ -277,7 +277,7 @@ class TestStaticNameExtraction:
     """Test static name extraction from AST nodes."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(test_var, "value")', {'test_var'}),
             ('', set()),
@@ -312,7 +312,7 @@ class TestFullParseMethods:
     """Test full parse methods for variable extraction."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(var1, "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
             ('$set(incomplete', set()),
@@ -339,7 +339,7 @@ class TestLineParseMethods:
     """Test line-by-line parse methods for variable extraction."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(var1, "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
             ('$set(var1, "value1")\n$set(incomplete\n$set(var2, "value2")', {'var1', 'var2'}),
@@ -367,7 +367,7 @@ class TestRegexFallback:
     """Test regex fallback for variable extraction."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(var1, "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
             ('$set(  var1  , "value1")\n$set(var2, "value2")', {'var1', 'var2'}),
@@ -390,7 +390,7 @@ class TestErrorHandling:
     """Test error handling in AST parsing methods."""
 
     @pytest.mark.parametrize(
-        "node,expected_result",
+        ("node", "expected_result"),
         [
             (None, set()),
             (Mock(), set()),
@@ -405,7 +405,7 @@ class TestErrorHandling:
         assert result == expected_result
 
     @pytest.mark.parametrize(
-        "node,expected_result",
+        ("node", "expected_result"),
         [
             (None, None),
             (Mock(), None),
@@ -439,7 +439,7 @@ class TestComplexScenarios:
     """Test complex scenarios and edge cases."""
 
     @pytest.mark.parametrize(
-        "script,expected_vars",
+        ("script", "expected_vars"),
         [
             ('$set(outer, $set(inner, "value"))', {'outer', 'inner'}),
             (

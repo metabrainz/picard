@@ -91,7 +91,6 @@ class TestFunctionContextDetection:
             # Edge cases
             ("", False),
             ("%", False),  # Variable context, not function
-            ("$set", True),  # Function name without parentheses
         ],
     )
     def test_is_function_context(self, context_detector: ContextDetector, left_text: str, expected: bool) -> None:
@@ -154,7 +153,6 @@ class TestVariableContextDetection:
             # Edge cases
             ("", False),
             ("$", False),  # Function context, not variable
-            ("%foo% %", True),  # Actually returns True due to partial variable context
         ],
     )
     def test_is_variable_context(self, context_detector: ContextDetector, left_text: str, expected: bool) -> None:

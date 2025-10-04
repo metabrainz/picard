@@ -33,6 +33,7 @@ from unittest.mock import patch
 
 import pytest
 
+from picard.ui.widgets.context_detector import ContextDetector
 from picard.ui.widgets.scripttextedit import (
     TAG_NAME_FIRST_ARG_FUNCTIONS,
     CompletionMode,
@@ -44,6 +45,12 @@ from picard.ui.widgets.scripttextedit import (
 def script_completer() -> ScriptCompleter:
     """Create a ScriptCompleter instance for testing."""
     return ScriptCompleter()
+
+
+@pytest.fixture
+def context_detector() -> ContextDetector:
+    """Create a ContextDetector instance for testing."""
+    return ContextDetector()
 
 
 class TestCompletionMode:
@@ -232,9 +239,11 @@ class TestTagNameArgContextDetection:
             # Other arguments should return None
         ],
     )
-    def test_detect_tag_name_arg_context_valid_cases(self, left_text: str, expected_context: Dict[str, Any]) -> None:
+    def test_detect_tag_name_arg_context_valid_cases(
+        self, context_detector: ContextDetector, left_text: str, expected_context: Dict[str, Any]
+    ) -> None:
         """Test valid tag name argument context detection."""
-        result = self.detect_tag_name_arg_context_logic(left_text)
+        result = context_detector.detect_context_details(left_text)
         assert result == expected_context
 
     @pytest.mark.parametrize(
@@ -260,100 +269,31 @@ class TestTagNameArgContextDetection:
             "%artist%",  # Variable, not function
         ],
     )
-    def test_detect_tag_name_arg_context_invalid_cases(self, left_text: str) -> None:
+    def test_detect_tag_name_arg_context_invalid_cases(self, context_detector: ContextDetector, left_text: str) -> None:
         """Test invalid tag name argument context detection."""
-        result = self.detect_tag_name_arg_context_logic(left_text)
-        assert result is None
+        result = context_detector.detect_context_details(left_text)
+        # For invalid cases, we expect the mode to not be TAG_NAME_ARG
+        assert result['mode'] != CompletionMode.TAG_NAME_ARG
 
-    def test_detect_tag_name_arg_context_multiple_functions(self) -> None:
+    def test_detect_tag_name_arg_context_multiple_functions(self, context_detector: ContextDetector) -> None:
         """Test tag name context detection with multiple functions."""
         # Should detect the most recent function call
         left_text = "$set(artist, value) $get("
-        result = self.detect_tag_name_arg_context_logic(left_text)
+        result = context_detector.detect_context_details(left_text)
         expected = {"mode": CompletionMode.TAG_NAME_ARG, "function_name": "get", "arg_index": 0}
         assert result == expected
 
-    def test_detect_tag_name_arg_context_nested_functions(self) -> None:
+    def test_detect_tag_name_arg_context_nested_functions(self, context_detector: ContextDetector) -> None:
         """Test tag name context detection with nested functions."""
         # Should detect the outermost function
         left_text = "$set($get("
-        result = self.detect_tag_name_arg_context_logic(left_text)
+        result = context_detector.detect_context_details(left_text)
         expected = {"mode": CompletionMode.TAG_NAME_ARG, "function_name": "get", "arg_index": 0}
         assert result == expected
 
 
 class TestCompletionPopupDisplayLogic:
     """Test completion popup display logic."""
-
-    def should_show_completion_popup_logic(self, left_text: str) -> bool:
-        """Test implementation of completion popup display logic."""
-        # Show popup for function name context (typing after $)
-        if left_text.endswith('$') and not left_text.endswith('$$'):
-            return True
-
-        # Show popup for variable context (typing after %)
-        stripped = left_text.rstrip()
-        if stripped.endswith('%') and not stripped.endswith('%%'):
-            return True
-
-        # Show popup for partial variable context (typing variable name)
-        last_percent = left_text.rfind('%')
-        if last_percent != -1:
-            variable_part = left_text[last_percent + 1 :]
-            if variable_part and all(c.isalnum() or c == '_' for c in variable_part):
-                return True
-
-        # Show popup for tag name argument context (inside function call)
-        tag_context = self.detect_tag_name_arg_context_logic(left_text)
-        if tag_context is not None:
-            return True
-
-        # Show popup for partial function names (like $s, $se, etc.)
-        last_dollar = left_text.rfind('$')
-        if last_dollar != -1:
-            function_part = left_text[last_dollar + 1 :]
-            if function_part and all(c.isalnum() or c == '_' for c in function_part):
-                return True
-
-        # Don't show popup for default context or other cases
-        return False
-
-    def detect_tag_name_arg_context_logic(self, left_text: str) -> Optional[Dict[str, Any]]:
-        """Helper method for tag name context detection."""
-        # Find all $ positions and their corresponding ( positions
-        dollar_positions = []
-        for i, char in enumerate(left_text):
-            if char == '$':
-                dollar_positions.append(i)
-
-        # Check each $ position from most recent to oldest
-        for dollar_pos in reversed(dollar_positions):
-            # Find the next ( after this $
-            paren_pos = left_text.find('(', dollar_pos)
-            if paren_pos == -1:
-                continue
-
-            # Extract function name between '$' and '('
-            function_name = ''.join(ch for ch in left_text[dollar_pos + 1 : paren_pos] if ch.isalnum() or ch == "_")
-
-            # Only consider this function if it's a known tag-name function
-            if function_name not in TAG_NAME_FIRST_ARG_FUNCTIONS:
-                continue
-
-            # Check for invalid syntax: if there's another '(' immediately after the function call,
-            # this is invalid (like $set(( or $get(( )
-            if paren_pos + 1 < len(left_text) and left_text[paren_pos + 1] == '(':
-                continue
-
-            # Determine argument index by counting commas between '(' and end of text
-            arg_segment = left_text[paren_pos + 1 :]
-            arg_index = arg_segment.count(',')
-
-            # If we're in the first argument (no commas), return the context
-            if arg_index == 0:
-                return {'mode': CompletionMode.TAG_NAME_ARG, 'function_name': function_name, 'arg_index': arg_index}
-
-        return None
 
     @pytest.mark.parametrize(
         ("left_text", "expected"),
@@ -372,9 +312,13 @@ class TestCompletionPopupDisplayLogic:
             ("$set((", False),  # Invalid syntax
         ],
     )
-    def test_should_show_completion_popup(self, left_text: str, expected: bool) -> None:
+    def test_should_show_completion_popup(
+        self, context_detector: ContextDetector, left_text: str, expected: bool
+    ) -> None:
         """Test completion popup display logic."""
-        result = self.should_show_completion_popup_logic(left_text)
+        # Use the actual ContextDetector to determine if we should show popup
+        context_details = context_detector.detect_context_details(left_text)
+        result = context_details['mode'] != CompletionMode.DEFAULT
         assert result == expected
 
 
@@ -443,35 +387,6 @@ class TestCompletionPrefixHandling:
 class TestInvalidSyntaxDetection:
     """Test invalid syntax detection for completion."""
 
-    def detect_invalid_syntax_logic(self, left_text: str) -> bool:
-        """Test implementation of invalid syntax detection."""
-        # Find all $ positions and their corresponding ( positions
-        dollar_positions = []
-        for i, char in enumerate(left_text):
-            if char == '$':
-                dollar_positions.append(i)
-
-        # Check each $ position from most recent to oldest
-        for dollar_pos in reversed(dollar_positions):
-            # Find the next ( after this $
-            paren_pos = left_text.find('(', dollar_pos)
-            if paren_pos == -1:
-                continue
-
-            # Extract function name between '$' and '('
-            function_name = ''.join(ch for ch in left_text[dollar_pos + 1 : paren_pos] if ch.isalnum() or ch == "_")
-
-            # Only consider this function if it's a known tag-name function
-            if function_name not in TAG_NAME_FIRST_ARG_FUNCTIONS:
-                continue
-
-            # Check for invalid syntax: if there's another '(' immediately after the function call,
-            # this is invalid (like $set(( or $get(( )
-            if paren_pos + 1 < len(left_text) and left_text[paren_pos + 1] == '(':
-                return True
-
-        return False
-
     @pytest.mark.parametrize(
         ("left_text", "is_invalid"),
         [
@@ -484,14 +399,25 @@ class TestInvalidSyntaxDetection:
             ("$get(", False),  # Valid single parenthesis
             ("$set(artist", False),  # Valid with content
             ("$get(album", False),  # Valid with content
-            ("$set(artist,", False),  # Valid with comma
-            ("$set(artist, value", False),  # Valid with arguments
+            ("$set(artist,", True),  # Second argument - not tag name context
+            ("$set(artist, value", True),  # Second argument - not tag name context
         ],
     )
-    def test_double_parentheses_detection(self, left_text: str, is_invalid: bool) -> None:
+    def test_double_parentheses_detection(
+        self, context_detector: ContextDetector, left_text: str, is_invalid: bool
+    ) -> None:
         """Test detection of double parentheses (invalid syntax)."""
-        result = self.detect_invalid_syntax_logic(left_text)
-        assert result == is_invalid
+        # Use the actual ContextDetector to get context details
+        context_details = context_detector.detect_context_details(left_text)
+
+        # For invalid syntax (double parentheses), the ContextDetector should not detect TAG_NAME_ARG context
+        # even though the text contains $ and ( characters
+        if is_invalid:
+            # Invalid syntax should not return TAG_NAME_ARG context
+            assert context_details['mode'] != CompletionMode.TAG_NAME_ARG
+        else:
+            # Valid syntax should return TAG_NAME_ARG context for tag name functions
+            assert context_details['mode'] == CompletionMode.TAG_NAME_ARG
 
 
 class TestEdgeCasesAndErrorHandling:

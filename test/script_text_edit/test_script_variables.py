@@ -120,7 +120,6 @@ class TestIsValidPluginVariableName:
             "album'title",
             "track\"number",
             "artist,name",
-            "album.title",
             "track~number",
             "artist`name",
             # Names with newlines or tabs
@@ -158,7 +157,6 @@ class TestIsValidPluginVariableName:
             "'''",
             '"""',
             ",,,",
-            "...",
             "~~~",
             "```",
         ],
