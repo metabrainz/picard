@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-09-12 05:48+0000\n"
-"Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
+"PO-Revision-Date: 2025-10-07 14:02+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/app/uk/>\n"
 "Language: uk\n"
@@ -27,7 +27,7 @@ msgstr ""
 "? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
 "14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
 "100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -3605,7 +3605,7 @@ msgstr "Надіслати файл як новий реліз до MusicBrainz"
 
 #: picard/ui/mainwindow.py:669
 msgid "Search for similar items…"
-msgstr ""
+msgstr "Пошук схожих елементів…"
 
 #: picard/ui/mainwindow.py:670 picard/ui/options/interface_toolbar.py:124
 msgid "Similar items"
@@ -4035,11 +4035,11 @@ msgstr "Редагувати…"
 
 #: picard/ui/metadatabox.py:380
 msgid "Add to 'Preserve Tags' List"
-msgstr ""
+msgstr "Додати до списку «Зберегти теги»"
 
 #: picard/ui/metadatabox.py:385
 msgid "Remove from 'Preserve Tags' List"
-msgstr ""
+msgstr "Видалити зі списку «Зберегти теги»"
 
 #: picard/ui/metadatabox.py:433
 msgid "Use Original Value"
@@ -4146,7 +4146,7 @@ msgstr "Призупинити або відновити поточне відт
 #: picard/ui/playertoolbar.py:343
 #, python-format
 msgid "%1.1f ×"
-msgstr ""
+msgstr "%1.1f ×"
 
 #: picard/ui/playertoolbar.py:349
 msgid "Change playback speed"
@@ -4175,7 +4175,7 @@ msgstr "Виконайте цю перевірку ще раз під час н�
 
 #: picard/ui/pluginupdatedialog.py:43
 msgid "Picard Plugins Update"
-msgstr ""
+msgstr "Оновлення плагінів Picard"
 
 #: picard/ui/pluginupdatedialog.py:60
 msgid ""
@@ -4215,8 +4215,8 @@ msgstr ""
 #: picard/ui/savewarningdialog.py:38
 msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "перезаписати існуючі метадані (теги) у файлі"
+msgstr[1] "перезаписати існуючі метадані (теги) у файлах"
 msgstr[2] ""
 msgstr[3] ""
 
@@ -4250,11 +4250,11 @@ msgstr "<strong>Цю дію не можна скасувати.</strong> Про�
 
 #: picard/ui/savewarningdialog.py:61
 msgid "<li>{action}</li>"
-msgstr ""
+msgstr "<li>{action}</li>"
 
 #: picard/ui/savewarningdialog.py:62
 msgid "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
-msgstr ""
+msgstr "<p>{header}</p><ul>{list_of_actions}</ul><p>{footer}</p>"
 
 #: picard/ui/savewarningdialog.py:64
 msgid "There are no actions selected. No changes will be saved."
@@ -4355,7 +4355,7 @@ msgstr "&Скрипт"
 
 #: picard/ui/scripteditor.py:601
 msgid "View/Edit Script &Metadata"
-msgstr ""
+msgstr "Перегляд/редагування скриптів та метаданих"
 
 #: picard/ui/scripteditor.py:602
 msgid "Display the details for the script"
@@ -4387,7 +4387,7 @@ msgstr "Видалити скрипт"
 
 #: picard/ui/scripteditor.py:628
 msgid "&Reload random example files"
-msgstr ""
+msgstr "&Перезавантажити випадкові файли прикладів"
 
 #: picard/ui/scripteditor.py:637
 msgid "&Show documentation"
@@ -4829,6 +4829,8 @@ msgid ""
 "Fall back on album's artists genres if no genres are found for the release "
 "or release group"
 msgstr ""
+"Використовувати жанри виконавців альбому, якщо для релізу або групи релізів "
+"жанри не знайдено"
 
 #: picard/ui/ui_options_genres.py:123
 msgid "Minimal genre usage:"
@@ -5066,7 +5068,7 @@ msgstr "Подробиці"
 
 #: picard/ui/ui_options_profiles.py:75
 msgid "Option Profile(s)"
-msgstr ""
+msgstr "Опції профілю(ів)"
 
 #: picard/ui/ui_options_profiles.py:76
 msgid "Move profile up"
@@ -5597,6 +5599,10 @@ msgid ""
 "\n"
 "Remove locally stored credentials anyway?"
 msgstr ""
+"Під час скасування доступу до сервера MusicBrainz сталася помилка сервера: %"
+"s\n"
+"\n"
+"Все одно видалити локально збережені облікові дані?"
 
 #: picard/ui/options/genres.py:46
 msgid ""
@@ -5631,6 +5637,36 @@ msgid ""
 "</p>\n"
 "</body></html>"
 msgstr ""
+"<html><head/><body>\n"
+"<p>Рядки, що не починаються з <b>-</b> або <b>+</b>, ігноруються.</p>\n"
+"<p>Один вираз на рядок, без урахування регістру</p>\n"
+"<p>Приклади:</p>\n"
+"<p><b>\n"
+"#comment<br/>\n"
+"!comment<br/>\n"
+"comment\n"
+"</b></p>\n"
+"<p><u>Сувора фільтрація:</u></p>\n"
+"<p>\n"
+"<b>-word</b>: виключити <i>word</i><br/>\n"
+"<b>+word</b>: включити <i>word</i>\n"
+"</p>\n"
+"<p><u>Фільтрація за шаблоном:</u></p>\n"
+"<p>\n"
+"<b>-*word</b>: виключити всі жанри, що закінчуються на <i>word</i><br/>\n"
+"<b>+word*</b>: включити всі жанри, що починаються з <i>word</i><br/>\n"
+"<b>+wor?</b>: включити всі жанри, що починаються з <i>wor</i> та "
+"закінчуються довільним символом<br/>\n"
+"<b>+wor[dk]</b>: включити всі жанри, що починаються з <i>wor</i> та "
+"закінчуються на <i>d</i> або <i>k</i><br/>\n"
+"<b>-w*rd</b>: виключити всі жанри, що починаються з <i>w</i> та закінчуються "
+"на <i>rd</i>\n"
+"</p>\n"
+"<p><u>Фільтрація регулярних виразів (синтаксис Python):</u></p>\n"
+"<p><b>-/^w.rd+/</b>: виключити жанри, що починаються з <i>w</i>, за яким йде "
+"будь-який символ, потім <i>r</i> та принаймні один <i>d</i>\n"
+"</p>\n"
+"</body></html>"
 
 #: picard/ui/options/genres.py:73
 msgid ""
@@ -5794,7 +5830,7 @@ msgstr "Перетягніть, щоб замовити повторно"
 
 #: picard/ui/options/interface_top_tags.py:40
 msgid "Top Tags"
-msgstr ""
+msgstr "Найпопулярніші теги"
 
 #: picard/ui/options/maintenance.py:64
 msgid "Maintenance"
@@ -5920,7 +5956,7 @@ msgstr "Відповідність"
 
 #: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
-msgstr ""
+msgstr "{indent}{locale}"
 
 #: picard/ui/options/metadata.py:278
 msgid ""
@@ -6121,13 +6157,13 @@ msgstr "Сумісність"
 
 #: picard/ui/options/renaming_compat.py:135
 msgid "Invalid directory separator replacement"
-msgstr ""
+msgstr "Недійсна заміна роздільника каталогів"
 
 #: picard/ui/options/renaming_compat.py:136
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
-msgstr ""
+msgstr "Замінник роздільника каталогів не може сам бути роздільником каталогів."
 
 #: picard/ui/options/renaming_compat.py:144
 msgid ""
