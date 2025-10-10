@@ -28,11 +28,7 @@ from picard.script.parser import (
     ScriptFunction,
     ScriptText,
 )
-from picard.script.variable_pattern import pattern_set_variable
-
-
-# Pre-compiled regex for better performance in UI context
-_SET_VARIABLE_PATTERN = pattern_set_variable()
+from picard.script.variable_pattern import SET_VARIABLE_RE
 
 
 class VariableExtractor:
@@ -100,7 +96,7 @@ class VariableExtractor:
 
     def _collect_from_regex(self, script_content: str) -> set[str]:
         """Collect variable names from a regex pattern of the script content."""
-        return {m.group(1) for m in _SET_VARIABLE_PATTERN.finditer(script_content)}
+        return {m.group(1) for m in SET_VARIABLE_RE.finditer(script_content)}
 
     def _collect_from_ast(self, node: ScriptExpression | ScriptFunction | ScriptText, out: set[str]):
         """Traverse the AST and collect variable names from `$set(name, ...)` expressions.

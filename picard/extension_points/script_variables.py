@@ -20,13 +20,10 @@
 
 
 from picard.plugin import ExtensionPoint
-from picard.script.variable_pattern import pattern_variable_fullmatch
+from picard.script.variable_pattern import VARIABLE_NAME_FULLMATCH_RE
 
 
 ext_point_script_variables = ExtensionPoint(label='script_variables')
-
-
-_VAR_NAME_RE = pattern_variable_fullmatch()
 
 
 def _is_valid_plugin_variable_name(name: str | None) -> bool:
@@ -35,7 +32,7 @@ def _is_valid_plugin_variable_name(name: str | None) -> bool:
         return False
     if not name:
         return False
-    return bool(_VAR_NAME_RE.match(name))
+    return bool(VARIABLE_NAME_FULLMATCH_RE.match(name))
 
 
 def register_script_variable(name: str, documentation: str | None = None) -> None:

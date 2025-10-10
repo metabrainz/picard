@@ -29,21 +29,14 @@ VAR_NAME_CLASS = r"[\w:]"
 _VARIABLE_NAME_GROUP = rf"({VAR_NAME_CLASS}+)"
 
 
-def pattern_percent_variable() -> re.Pattern:
-    """Return compiled pattern matching a %variable% syntax."""
-    return re.compile(rf"%({_VARIABLE_NAME_GROUP})%")
+# Compiled patterns for variable syntaxes
+PERCENT_VARIABLE_RE = re.compile(rf"%({_VARIABLE_NAME_GROUP})%")
 
 
-def pattern_get_variable() -> re.Pattern:
-    """Return compiled pattern matching a $get(variable) syntax."""
-    return re.compile(rf"\$get\(\s*({_VARIABLE_NAME_GROUP})\s*\)")
+GET_VARIABLE_RE = re.compile(rf"\$get\(\s*({_VARIABLE_NAME_GROUP})\s*\)")
 
 
-def pattern_set_variable() -> re.Pattern:
-    """Return compiled pattern matching a $set(variable, value) syntax."""
-    return re.compile(rf"\$set\(\s*({_VARIABLE_NAME_GROUP})\s*,")
+SET_VARIABLE_RE = re.compile(rf"\$set\(\s*({_VARIABLE_NAME_GROUP})\s*,")
 
 
-def pattern_variable_fullmatch() -> re.Pattern:
-    """Return compiled pattern matching a full variable name."""
-    return re.compile(rf"^(?:{_VARIABLE_NAME_GROUP})+$")
+VARIABLE_NAME_FULLMATCH_RE = re.compile(rf"^(?:{_VARIABLE_NAME_GROUP})+$")

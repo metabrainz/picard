@@ -58,7 +58,7 @@ from picard.script import (
 from picard.script.parser import (
     ScriptParser,
 )
-from picard.script.variable_pattern import pattern_get_variable, pattern_percent_variable
+from picard.script.variable_pattern import GET_VARIABLE_RE, PERCENT_VARIABLE_RE
 from picard.tags import (
     display_tag_tooltip,
     script_variable_tag_names,
@@ -76,10 +76,6 @@ from picard.ui.widgets.context_detector import (
 from picard.ui.widgets.user_script_scanner import UserScriptScanner
 from picard.ui.widgets.variable_extractor import VariableExtractor
 
-
-# Pre-compiled regex patterns for variable usage counting
-_VARIABLE_PATTERN = pattern_percent_variable()
-_GET_VARIABLE_PATTERN = pattern_get_variable()
 
 # Debounce timer for text changes - balances responsiveness (under 250ms threshold)
 # with performance (prevents excessive parsing on every keystroke)
@@ -300,7 +296,7 @@ class ScriptCompleter(QCompleter):
         """Count variable usages in the script content."""
         counts: dict[str, int] = {}
         # Count both %variable% and $get(variable) syntax patterns
-        for pattern in (_VARIABLE_PATTERN, _GET_VARIABLE_PATTERN):
+        for pattern in (PERCENT_VARIABLE_RE, GET_VARIABLE_RE):
             for m in pattern.finditer(script_content):
                 name = m.group(1)
                 counts[name] = counts.get(name, 0) + 1  # Increment usage count
