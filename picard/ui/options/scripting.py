@@ -115,6 +115,10 @@ class ScriptingOptionsPage(OptionsPage):
     )
     default_script_extension = "ptsp"
 
+    # Debounce interval for script validation in the options page.
+    # Validation should wait for a brief pause in typing, but still feel timely.
+    _SCRIPT_VALIDATION_DEBOUNCE_MS = 350
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_ScriptingOptionsPage()
@@ -136,6 +140,20 @@ class ScriptingOptionsPage(OptionsPage):
         self.FILE_TYPE_PACKAGE = _("Picard tagging script package") + " (*.ptsp *.yaml)"
 
         self.ui.script_list.signal_reset_selected_item.connect(self.reset_selected_item)
+
+        # Hide error label by default; it will be shown only on parse errors.
+        self.ui.script_error.hide()
+
+        # Debounce for live script validation to avoid flashing errors
+        # while the user is typing prefix characters like '%' or '$'.
+        # Keep the value in sync with ScriptTextEdit's debounce.
+        self._debounce_timer = QtCore.QTimer(self)
+        self._debounce_timer.setSingleShot(True)
+        self._debounce_timer.setInterval(self._SCRIPT_VALIDATION_DEBOUNCE_MS)
+        self._debounce_timer.timeout.connect(self._process_text_changed)
+        # Rewire the editor signal to start debounce instead of direct check.
+        self.ui.tagger_script.textChanged.disconnect()
+        self.ui.tagger_script.textChanged.connect(self._on_text_changed)
 
     def show_scripting_documentation(self):
         ScriptingDocumentationDialog.show_instance(parent=self)
@@ -159,7 +177,10 @@ class ScriptingOptionsPage(OptionsPage):
             fmt (str): Format for the error type being displayed
             error (ScriptSerializerImportExportError): The error as a ScriptSerializerImportExportError instance
         """
-        params = {'filename': error.filename, 'error': _(error.error_msg)}
+        # Ensure we always pass a proper string to gettext.
+        # Without this, type checker complains: 'Expected `str`, found `Unknown | None`'.
+        safe_error_msg = error.error_msg or ""
+        params = {'filename': error.filename, 'error': _(safe_error_msg)}
         self.output_error(_("File Error"), error.format, params)
 
     def import_script(self):
@@ -209,10 +230,22 @@ class ScriptingOptionsPage(OptionsPage):
             self.ui.tagger_script.setText(list_item.script.content)
             self.ui.tagger_script.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
             self.ui.export_button.setEnabled(True)
+            # Clear and hide any previous error when switching selection.
+            self.ui.script_error.setStyleSheet("")
+            self.ui.script_error.setText("")
+            self.ui.script_error.hide()
         else:
             self.ui.tagger_script.setEnabled(False)
             self.ui.tagger_script.setText("")
             self.ui.export_button.setEnabled(False)
+
+    def _on_text_changed(self):
+        # Restart the debounce timer on every edit.
+        self._debounce_timer.start()
+
+    def _process_text_changed(self):
+        # Perform the actual live validation after debounce.
+        self.live_update_and_check()
 
     def live_update_and_check(self):
         list_items = self.ui.script_list.selectedItems()
@@ -222,12 +255,15 @@ class ScriptingOptionsPage(OptionsPage):
         list_item.script.content = self.ui.tagger_script.toPlainText()
         self.ui.script_error.setStyleSheet("")
         self.ui.script_error.setText("")
+        # Ensure the error bar is not visible unless there actually is an error.
+        self.ui.script_error.hide()
         try:
             self.check()
         except OptionsCheckError as e:
             list_item.has_error = True
             self.ui.script_error.setStyleSheet(self.STYLESHEET_ERROR)
             self.ui.script_error.setText(e.info)
+            self.ui.script_error.show()
             return
         list_item.has_error = False
 
