@@ -330,7 +330,13 @@ def _build_alias_locale_maps(aliases: list[dict[str, Any]]) -> tuple[dict[str, s
         if not locale or not name:
             continue
         full_locales.setdefault(locale, name)
-        root_locales.setdefault(locale.split('_')[0], name)
+        root = locale.split('_')[0]
+        # Prefer explicit root-locale aliases (e.g., "en") over values derived
+        # from full locales (e.g., "en_US").
+        if '_' in locale:
+            root_locales.setdefault(root, name)
+        else:
+            root_locales[root] = name
     return full_locales, root_locales
 
 
