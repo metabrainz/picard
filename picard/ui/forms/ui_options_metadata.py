@@ -7,14 +7,13 @@
 
 from PyQt6 import (
     QtCore,
-    QtGui,
     QtWidgets,
 )
 
 from picard.i18n import gettext as _
 
 
-class Ui_MetadataOptionsPage(object):
+class Ui_MetadataOptionsPage:
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
         MetadataOptionsPage.resize(423, 553)
@@ -27,24 +26,40 @@ class Ui_MetadataOptionsPage(object):
         sizePolicy.setHeightForWidth(self.metadata_groupbox.sizePolicy().hasHeightForWidth())
         self.metadata_groupbox.setSizePolicy(sizePolicy)
         self.metadata_groupbox.setMinimumSize(QtCore.QSize(397, 135))
-        self.metadata_groupbox.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.metadata_groupbox.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
+        )
         self.metadata_groupbox.setObjectName("metadata_groupbox")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.metadata_groupbox)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.translation_prompt_label = QtWidgets.QLabel(parent=self.metadata_groupbox)
         self.translation_prompt_label.setObjectName("translation_prompt_label")
         self.verticalLayout_3.addWidget(self.translation_prompt_label)
+        self.translation_options_layout = QtWidgets.QVBoxLayout()
+        self.translation_options_layout.setContentsMargins(20, -1, -1, -1)
+        self.translation_options_layout.setSpacing(10)
+        self.translation_options_layout.setObjectName("translation_options_layout")
         self.translate_artist_names = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.translate_artist_names.setObjectName("translate_artist_names")
-        self.verticalLayout_3.addWidget(self.translate_artist_names)
+        self.translation_options_layout.addWidget(self.translate_artist_names)
         self.translate_album_names = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.translate_album_names.setObjectName("translate_album_names")
-        self.verticalLayout_3.addWidget(self.translate_album_names)
+        self.translation_options_layout.addWidget(self.translate_album_names)
         self.translate_track_titles = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.translate_track_titles.setObjectName("translate_track_titles")
-        self.verticalLayout_3.addWidget(self.translate_track_titles)
+        self.translation_options_layout.addWidget(self.translate_track_titles)
+        self.verticalLayout_3.addLayout(self.translation_options_layout)
+        self.translation_language_containers = QtWidgets.QVBoxLayout()
+        self.translation_language_containers.setSpacing(3)
+        self.translation_language_containers.setObjectName("translation_language_containers")
+        self.locales_container = QtWidgets.QVBoxLayout()
+        self.locales_container.setSpacing(4)
+        self.locales_container.setObjectName("locales_container")
+        self.locales_prompt_label = QtWidgets.QLabel(parent=self.metadata_groupbox)
+        self.locales_prompt_label.setObjectName("locales_prompt_label")
+        self.locales_container.addWidget(self.locales_prompt_label)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalLayout.setContentsMargins(-1, 0, -1, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.selected_locales = QtWidgets.QLineEdit(parent=self.metadata_groupbox)
         self.selected_locales.setReadOnly(True)
@@ -53,12 +68,16 @@ class Ui_MetadataOptionsPage(object):
         self.select_locales = QtWidgets.QPushButton(parent=self.metadata_groupbox)
         self.select_locales.setObjectName("select_locales")
         self.horizontalLayout.addWidget(self.select_locales)
-        self.verticalLayout_3.addLayout(self.horizontalLayout)
+        self.locales_container.addLayout(self.horizontalLayout)
+        self.translation_language_containers.addLayout(self.locales_container)
+        self.scripts_container = QtWidgets.QVBoxLayout()
+        self.scripts_container.setSpacing(4)
+        self.scripts_container.setObjectName("scripts_container")
         self.translate_artist_names_script_exception = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.translate_artist_names_script_exception.setObjectName("translate_artist_names_script_exception")
-        self.verticalLayout_3.addWidget(self.translate_artist_names_script_exception)
+        self.scripts_container.addWidget(self.translate_artist_names_script_exception)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalLayout_4.setContentsMargins(-1, 0, -1, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.selected_scripts = QtWidgets.QLineEdit(parent=self.metadata_groupbox)
         self.selected_scripts.setReadOnly(True)
@@ -67,7 +86,9 @@ class Ui_MetadataOptionsPage(object):
         self.select_scripts = QtWidgets.QPushButton(parent=self.metadata_groupbox)
         self.select_scripts.setObjectName("select_scripts")
         self.horizontalLayout_4.addWidget(self.select_scripts)
-        self.verticalLayout_3.addLayout(self.horizontalLayout_4)
+        self.scripts_container.addLayout(self.horizontalLayout_4)
+        self.translation_language_containers.addLayout(self.scripts_container)
+        self.verticalLayout_3.addLayout(self.translation_language_containers)
         self.standardize_artists = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.standardize_artists.setObjectName("standardize_artists")
         self.verticalLayout_3.addWidget(self.standardize_artists)
@@ -120,7 +141,9 @@ class Ui_MetadataOptionsPage(object):
         self.va_name.setObjectName("va_name")
         self.gridlayout.addWidget(self.va_name, 1, 0, 1, 1)
         self.verticalLayout.addWidget(self.custom_fields_groupbox)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem)
         self.label_6.setBuddy(self.va_name_default)
         self.label_7.setBuddy(self.nat_name_default)
@@ -146,12 +169,13 @@ class Ui_MetadataOptionsPage(object):
 
     def retranslateUi(self, MetadataOptionsPage):
         self.metadata_groupbox.setTitle(_("Metadata"))
-        self.translation_prompt_label.setText(_("Translate to these locales where possible:"))
+        self.translation_prompt_label.setText(_("Translate names when available:"))
         self.translate_artist_names.setText(_("Artist names"))
-        self.translate_album_names.setText(_("Album names"))
+        self.translate_album_names.setText(_("Album titles"))
         self.translate_track_titles.setText(_("Track titles"))
+        self.locales_prompt_label.setText(_("Preferred locales:"))
         self.select_locales.setText(_("Select…"))
-        self.translate_artist_names_script_exception.setText(_("Ignore artist name translation for these language scripts:"))
+        self.translate_artist_names_script_exception.setText(_("Ignore name translation for these language scripts:"))
         self.select_scripts.setText(_("Select…"))
         self.standardize_artists.setText(_("Use standardized artist names"))
         self.standardize_instruments.setText(_("Use standardized instrument credits"))

@@ -29,6 +29,7 @@
 
 
 from types import SimpleNamespace
+from typing import Any
 
 from picard import log
 from picard.config import get_config
@@ -338,37 +339,147 @@ def _find_localized_alias_name(aliases, preferred_locales):
     return None
 
 
+def _is_script_exception_enabled(config: Any) -> bool:
+    """
+    Check whether script-exception matching is enabled.
+
+    Parameters
+    ----------
+    config : Any
+        Configuration object with a ``setting`` mapping.
+
+    Returns
+    -------
+    bool
+        ``True`` if ``translate_artist_names_script_exception`` is enabled,
+        otherwise ``False``.
+    """
+    return config.setting['translate_artist_names_script_exception']
+
+
+def _get_script_exceptions(config: Any) -> list[tuple[str, int]]:
+    """
+    Get configured script-exception thresholds.
+
+    Parameters
+    ----------
+    config : Any
+        Configuration object with a ``setting`` mapping.
+
+    Returns
+    -------
+    list[tuple[str, int]]
+        A list of pairs ``(script_id, threshold_percent)``.
+    """
+    return config.setting['script_exceptions']
+
+
+def _log_detected_scripts(text: str, detected: dict[str, float]) -> None:
+    """
+    Log the detected script distribution for the provided text.
+
+    Parameters
+    ----------
+    text : str
+        The text that was analyzed.
+    detected : dict[str, float]
+        Mapping of ``script_id`` to detected proportion (0.0-1.0).
+    """
+    log_text = 'Script alpha characters found in "%s": '
+    if detected:
+        parts = (f"{script_id} ({detected[script_id] * 100:.1f}%)" for script_id in detected)
+        log_text += "; ".join(parts)
+    else:
+        log_text += "None"
+    log.debug(log_text, text)
+
+
+def _matches_script_exception(detected: dict[str, float], exceptions: list[tuple[str, int]]) -> bool:
+    """
+    Determine if any configured script meets its match threshold.
+
+    Parameters
+    ----------
+    detected : dict[str, float]
+        Mapping of ``script_id`` to detected proportion (0.0–1.0).
+    exceptions : list[tuple[str, int]]
+        List of pairs ``(script_id, threshold_percent)``.
+
+    Returns
+    -------
+    bool
+        ``True`` if at least one exception script meets or exceeds its
+        configured threshold, otherwise ``False``.
+    """
+    for script_id, script_weighting in exceptions:
+        percentage = detected.get(script_id)
+        if percentage is None:
+            continue
+        if percentage >= (script_weighting / 100):
+            return True
+    return False
+
+
+def _log_selected_scripts_match(exceptions: list[tuple[str, int]], matched: bool) -> None:
+    """
+    Log whether any selected scripts matched the detected distribution.
+
+    Parameters
+    ----------
+    exceptions : list[tuple[str, int]]
+        List of pairs ``(script_id, threshold_percent)`` used for matching.
+    matched : bool
+        Whether a match was found.
+    """
+    details = "; ".join(f"{scr[0]} ({scr[1]}%)" for scr in exceptions)
+    prefix = "Match" if matched else "No match"
+    log.debug("%s found in selected scripts: %s", prefix, details)
+
+
+def _should_skip_translation_due_to_scripts(text: str | None, config: Any | None = None) -> bool:
+    """
+    Determine whether translation should be skipped based on script exceptions.
+
+    Parameters
+    ----------
+    text : str or None
+        The input text whose writing system scripts will be detected.
+    config : Any, optional
+        Configuration object providing settings, by default ``None``. If
+        ``None``, the global configuration from ``get_config()`` is used.
+
+    Returns
+    -------
+    bool
+        ``True`` if translation should be skipped because the text matches a
+        selected script at or above the configured threshold; otherwise
+        ``False``.
+    """
+    config = config or get_config()
+    if not text or not _is_script_exception_enabled(config):
+        return False
+
+    detected = detect_script_weighted(text)
+    _log_detected_scripts(text, detected)
+    if not detected:
+        return False
+
+    exceptions = _get_script_exceptions(config)
+    if not exceptions:
+        log.warning("No scripts selected for translation exception match check.")
+        return False
+
+    matched = _matches_script_exception(detected, exceptions)
+    _log_selected_scripts_match(exceptions, matched)
+    return matched
+
+
 def _translate_artist_node(node, config=None):
     config = config or get_config()
     translated_name, sort_name = None, None
     if config.setting['translate_artist_names']:
-        if config.setting['translate_artist_names_script_exception']:
-            log_text = 'Script alpha characters found in "{0}": '.format(
-                node['name'],
-            )
-            detected_scripts = detect_script_weighted(node['name'])
-            if detected_scripts:
-                log_text += "; ".join(
-                    "{0} ({1:.1f}%)".format(scr_id, detected_scripts[scr_id] * 100) for scr_id in detected_scripts
-                )
-            else:
-                log_text += "None"
-            log.debug(log_text)
-            if detected_scripts:
-                script_exceptions = config.setting['script_exceptions']
-                if script_exceptions:
-                    log_text = " found in selected scripts: " + "; ".join(
-                        "{0} ({1}%)".format(scr[0], scr[1]) for scr in script_exceptions
-                    )
-                    for script_id, script_weighting in script_exceptions:
-                        if script_id not in detected_scripts:
-                            continue
-                        if detected_scripts[script_id] >= script_weighting / 100:
-                            log.debug("Match" + log_text)
-                            return node['name'], node['sort-name']
-                    log.debug("No match" + log_text)
-                else:
-                    log.warning("No scripts selected for translation exception match check.")
+        if _should_skip_translation_due_to_scripts(node['name'], config=config):
+            return node['name'], node['sort-name']
 
         # Prepare dictionaries of available locale aliases
         if 'aliases' in node:
@@ -565,11 +676,12 @@ def recording_to_metadata(node, m, track=None):
         elif key == 'video' and value:
             m['~video'] = '1'
     add_genres_from_node(node, track)
-    # Translate track title from recording aliases if enabled
+    # Translate track title from recording aliases if enabled, unless script exception applies
     if config.setting['translate_track_titles']:
-        alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
-        if alias_name:
-            m['title'] = alias_name
+        if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
+            alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
+            if alias_name:
+                m['title'] = alias_name
     if m['title']:
         m['~recordingtitle'] = m['title']
     if m.length:
@@ -659,11 +771,12 @@ def release_to_metadata(node, m, album=None):
         if country in release_countries:
             m['releasecountry'] = country
             break
-    # Translate album title from release aliases if enabled
+    # Translate album title from release aliases if enabled, unless script exception applies
     if config.setting['translate_album_names']:
-        alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
-        if alias_name:
-            m['album'] = alias_name
+        if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
+            alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
+            if alias_name:
+                m['album'] = alias_name
     add_genres_from_node(node, album)
 
 

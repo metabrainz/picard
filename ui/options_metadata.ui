@@ -33,79 +33,123 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QLabel" name="translation_prompt_label">
-        <property name="text">
-         <string>Translate to these locales where possible:</string>
-        </property>
-       </widget>
+      <widget class="QLabel" name="translation_prompt_label">
+       <property name="text">
+        <string>Translate names when available:</string>
+       </property>
+      </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="translate_artist_names">
-        <property name="text">
-         <string>Artist names</string>
-        </property>
-       </widget>
+      <layout class="QVBoxLayout" name="translation_options_layout">
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <item>
+        <widget class="QCheckBox" name="translate_artist_names">
+         <property name="text">
+          <string>Artist names</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="translate_album_names">
+         <property name="text">
+          <string>Album titles</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="translate_track_titles">
+         <property name="text">
+          <string>Track titles</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="translate_album_names">
-        <property name="text">
-         <string>Album names</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="translate_track_titles">
-        <property name="text">
-         <string>Track titles</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="bottomMargin">
-         <number>0</number>
+       <layout class="QVBoxLayout" name="translation_language_containers">
+        <property name="spacing">
+         <number>3</number>
         </property>
         <item>
-         <widget class="QLineEdit" name="selected_locales">
-          <property name="readOnly">
-           <bool>true</bool>
+         <layout class="QVBoxLayout" name="locales_container">
+          <property name="spacing">
+           <number>4</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QLabel" name="locales_prompt_label">
+            <property name="text">
+             <string>Preferred locales:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="selected_locales">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="select_locales">
+              <property name="text">
+               <string>Select…</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="select_locales">
-          <property name="text">
-           <string>Select…</string>
+         <layout class="QVBoxLayout" name="scripts_container">
+          <property name="spacing">
+           <number>4</number>
           </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="translate_artist_names_script_exception">
-        <property name="text">
-         <string>Ignore artist name translation for these language scripts:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLineEdit" name="selected_scripts">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="select_scripts">
-          <property name="text">
-           <string>Select…</string>
-          </property>
-         </widget>
+          <item>
+           <widget class="QCheckBox" name="translate_artist_names_script_exception">
+            <property name="text">
+             <string>Ignore name translation for these language scripts:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="selected_scripts">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="select_scripts">
+              <property name="text">
+               <string>Select…</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
