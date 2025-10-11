@@ -33,9 +33,30 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
+       <widget class="QLabel" name="translation_prompt_label">
+        <property name="text">
+         <string>Translate to these locales where possible:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="translate_artist_names">
         <property name="text">
-         <string>Translate artist names to these locales where possible:</string>
+         <string>Artist names</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="translate_album_names">
+        <property name="text">
+         <string>Album names</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="translate_track_titles">
+        <property name="text">
+         <string>Track titles</string>
         </property>
        </widget>
       </item>

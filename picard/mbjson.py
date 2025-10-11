@@ -305,6 +305,39 @@ def _locales_from_aliases(aliases):
     return full_locales, root_locales
 
 
+def _find_localized_alias_name(aliases, preferred_locales):
+    """
+    Find a localized alias name for non-artist entities based on preferred locales.
+
+    Preference order:
+    1) Exact match of full locale (e.g. en_US)
+    2) Match of root language (e.g. en)
+    """
+    if not aliases:
+        return None
+    full_locales = {}
+    root_locales = {}
+    for alias in aliases:
+        locale = alias.get('locale')
+        name = alias.get('name')
+        if not locale or not name:
+            continue
+        full_locales.setdefault(locale, name)
+        root_locale = locale.split('_')[0]
+        root_locales.setdefault(root_locale, name)
+
+    for locale in preferred_locales:
+        if locale in full_locales:
+            return full_locales[locale]
+
+    for locale in preferred_locales:
+        lang = locale.split('_')[0]
+        if lang in root_locales:
+            return root_locales[lang]
+
+    return None
+
+
 def _translate_artist_node(node, config=None):
     config = config or get_config()
     translated_name, sort_name = None, None
@@ -488,10 +521,15 @@ def _node_skip_empty_iter(node):
 def track_to_metadata(node, track):
     m = track.metadata
     recording_to_metadata(node['recording'], m, track)
+    config = get_config()
     m.add_unique('musicbrainz_trackid', node['id'])
     # overwrite with data we have on the track
     for key, value in _node_skip_empty_iter(node):
-        if key in _TRACK_TO_METADATA:
+        if key == 'title':
+            # If translating track titles, keep the title potentially set from recording aliases
+            if not config.setting['translate_track_titles']:
+                m['title'] = value
+        elif key in _TRACK_TO_METADATA:
             m[_TRACK_TO_METADATA[key]] = value
         elif key == 'length' and value:
             m.length = value
@@ -527,6 +565,11 @@ def recording_to_metadata(node, m, track=None):
         elif key == 'video' and value:
             m['~video'] = '1'
     add_genres_from_node(node, track)
+    # Translate track title from recording aliases if enabled
+    if config.setting['translate_track_titles']:
+        alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
+        if alias_name:
+            m['title'] = alias_name
     if m['title']:
         m['~recordingtitle'] = m['title']
     if m.length:
@@ -616,6 +659,11 @@ def release_to_metadata(node, m, album=None):
         if country in release_countries:
             m['releasecountry'] = country
             break
+    # Translate album title from release aliases if enabled
+    if config.setting['translate_album_names']:
+        alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
+        if alias_name:
+            m['album'] = alias_name
     add_genres_from_node(node, album)
 
 
