@@ -1987,19 +1987,43 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.profile_quick_selector_menu.setDisabled(False)
         self.profile_quick_selector_menu.clear()
 
-        group = QtGui.QActionGroup(self.profile_quick_selector_menu)
-        group.setExclusive(False)
-
+        # Use QWidgetAction with a QCheckBox so toggling does not close the menu.
         def _add_menu_item(title, enabled, profile_id):
-            profile_action = QtGui.QAction(title, self.profile_quick_selector_menu)
-            profile_action.triggered.connect(partial(self._update_profile_selection, profile_id))
-            profile_action.setCheckable(True)
-            profile_action.setChecked(enabled)
-            self.profile_quick_selector_menu.addAction(profile_action)
-            group.addAction(profile_action)
+            action = QtWidgets.QWidgetAction(self.profile_quick_selector_menu)
+            container = QtWidgets.QWidget(self.profile_quick_selector_menu)
+            layout = QtWidgets.QHBoxLayout(container)
+            layout.setContentsMargins(8, 2, 8, 2)
+            checkbox = QtWidgets.QCheckBox(title, container)
+            checkbox.setChecked(enabled)
+            checkbox.toggled.connect(partial(self._set_profile_enabled, profile_id))
+            layout.addWidget(checkbox)
+            layout.addStretch(1)
+            action.setDefaultWidget(container)
+            self.profile_quick_selector_menu.addAction(action)
 
         for profile in option_profiles:
             _add_menu_item(profile['title'], profile['enabled'], profile['id'])
+
+    def _set_profile_enabled(self, profile_id: str, enabled: bool) -> None:
+        """Set the enabled state of a profile and refresh dependent UI.
+
+        Parameters
+        ----------
+        profile_id : str
+            ID code of the profile to modify.
+        enabled : bool
+            New enabled state for the profile.
+        """
+        config = get_config()
+        option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
+        for profile in option_profiles:
+            if profile['id'] == profile_id:
+                if profile['enabled'] != enabled:
+                    profile['enabled'] = enabled
+                    config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
+                    # Update menus/settings that may depend on profile overrides.
+                    self._reset_option_menu_state()
+                return
 
     def _update_profile_selection(self, profile_id):
         """Toggle the enabled state of the selected profile.
