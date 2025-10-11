@@ -306,37 +306,90 @@ def _locales_from_aliases(aliases):
     return full_locales, root_locales
 
 
-def _find_localized_alias_name(aliases, preferred_locales):
+def _build_alias_locale_maps(aliases: list[dict[str, Any]]) -> tuple[dict[str, str], dict[str, str]]:
     """
-    Find a localized alias name for non-artist entities based on preferred locales.
+    Build maps of full and root locales from alias entries.
 
-    Preference order:
-    1) Exact match of full locale (e.g. en_US)
-    2) Match of root language (e.g. en)
+    Parameters
+    ----------
+    aliases : list[dict[str, Any]]
+        Alias dictionaries that can include ``name`` and ``locale`` keys.
+
+    Returns
+    -------
+    tuple[dict[str, str], dict[str, str]]
+        A pair ``(full_locales, root_locales)`` where ``full_locales`` maps
+        full locale identifiers (e.g., ``"en_US"``) to names and
+        ``root_locales`` maps root language codes (e.g., ``"en"``) to names.
     """
-    if not aliases:
-        return None
-    full_locales = {}
-    root_locales = {}
+    full_locales: dict[str, str] = {}
+    root_locales: dict[str, str] = {}
     for alias in aliases:
         locale = alias.get('locale')
         name = alias.get('name')
         if not locale or not name:
             continue
         full_locales.setdefault(locale, name)
-        root_locale = locale.split('_')[0]
-        root_locales.setdefault(root_locale, name)
+        root_locales.setdefault(locale.split('_')[0], name)
+    return full_locales, root_locales
 
-    for locale in preferred_locales:
-        if locale in full_locales:
-            return full_locales[locale]
 
-    for locale in preferred_locales:
-        lang = locale.split('_')[0]
-        if lang in root_locales:
-            return root_locales[lang]
+def _first_match_in_order(order: list[str], mapping: dict[str, str]) -> str | None:
+    """
+    Return the value for the first key in ``order`` that exists in ``mapping``.
 
+    Parameters
+    ----------
+    order : list[str]
+        Keys to check in priority order.
+    mapping : dict[str, str]
+        Mapping from key to value to search.
+
+    Returns
+    -------
+    str or None
+        The value corresponding to the first matching key; otherwise ``None``.
+    """
+    for key in order:
+        value = mapping.get(key)
+        if value:
+            return value
     return None
+
+
+def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_locales: list[str]) -> str | None:
+    """
+    Select a localized alias by preferred locales for non-artist entities.
+
+    The selection prefers an exact locale match first (e.g., ``en_US``),
+    then falls back to a root language match (e.g., ``en``).
+
+    Parameters
+    ----------
+    aliases : list[dict[str, Any]] or None
+        Alias entries as provided by the web service, each containing at
+        least ``name`` and ``locale``.
+    preferred_locales : list[str]
+        Ordered list of preferred locales (e.g., ``["en_US", "en"]``).
+
+    Returns
+    -------
+    str or None
+        The localized alias name if a match is found; otherwise ``None``.
+    """
+    if not aliases:
+        return None
+
+    full_locales, root_locales = _build_alias_locale_maps(aliases)
+
+    # 1) Exact full-locale match
+    name = _first_match_in_order(preferred_locales, full_locales)
+    if name:
+        return name
+
+    # 2) Root language match
+    root_order = [locale.split('_')[0] for locale in preferred_locales]
+    return _first_match_in_order(root_order, root_locales)
 
 
 def _is_script_exception_enabled(config: Any) -> bool:
