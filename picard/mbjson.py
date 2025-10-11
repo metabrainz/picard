@@ -438,13 +438,11 @@ def _log_detected_scripts(text: str, detected: dict[str, float]) -> None:
     detected : dict[str, float]
         Mapping of ``script_id`` to detected proportion (0.0-1.0).
     """
-    log_text = 'Script alpha characters found in "%s": '
     if detected:
-        parts = (f"{script_id} ({detected[script_id] * 100:.1f}%)" for script_id in detected)
-        log_text += "; ".join(parts)
+        parts = "; ".join(f"{script_id} ({detected[script_id] * 100:.1f}%)" for script_id in detected)
     else:
-        log_text += "None"
-    log.debug(log_text, text)
+        parts = "None"
+    log.debug('Script alpha characters found in "%s": %s', text, parts)
 
 
 def _matches_script_exception(detected: dict[str, float], exceptions: list[tuple[str, int]]) -> bool:
