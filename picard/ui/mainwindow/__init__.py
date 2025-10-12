@@ -2025,21 +2025,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     self._reset_option_menu_state()
                 return
 
-    def _update_profile_selection(self, profile_id):
-        """Toggle the enabled state of the selected profile.
-
-        Args:
-            profile_id (str): ID code of the profile to modify
-        """
-        config = get_config()
-        option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
-        for profile in option_profiles:
-            if profile['id'] == profile_id:
-                profile['enabled'] = not profile['enabled']
-                config.profiles[SettingConfigSection.PROFILES_KEY] = option_profiles
-                self._reset_option_menu_state()
-                return
-
     def _make_settings_selector_menu(self):
         """Update the sub-menu of selected option settings."""
         config = get_config()
