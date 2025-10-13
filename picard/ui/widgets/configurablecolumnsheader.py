@@ -138,7 +138,11 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             if i in self._always_visible_columns:
                 continue
             action, checkbox = self._create_checkbox_action(
-                menu, _(column.title), i in self._visible_columns, not self.is_locked, partial(self.show_column, i)
+                menu,
+                _(column.title),
+                i in self._visible_columns,
+                not self.is_locked,
+                partial(self.show_column, i),
             )
             column_checkboxes.append(checkbox)
             menu.addAction(action)
