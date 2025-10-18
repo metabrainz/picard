@@ -163,6 +163,7 @@ from picard.ui.util import (
     menu_builder,
     show_session_not_found_dialog,
 )
+from picard.ui.widgets.checkboxmenuitem import CheckboxMenuItem
 
 
 SuspendWhileLoadingFuncs = namedtuple('SuspendWhileLoadingFuncs', ('on_enter', 'on_exit'))
@@ -1988,16 +1989,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.profile_quick_selector_menu.clear()
 
         # Use QWidgetAction with a QCheckBox so toggling does not close the menu.
-        def _add_menu_item(title, enabled, profile_id):
-            action = QtWidgets.QWidgetAction(self.profile_quick_selector_menu)
-            container = QtWidgets.QWidget(self.profile_quick_selector_menu)
-            layout = QtWidgets.QHBoxLayout(container)
-            layout.setContentsMargins(8, 2, 8, 2)
-            checkbox = QtWidgets.QCheckBox(title, container)
-            checkbox.setChecked(enabled)
+        def _add_menu_item(title, checked, profile_id):
+            menu = self.profile_quick_selector_menu
+            action = QtWidgets.QWidgetAction(menu)
+            container = CheckboxMenuItem(menu, action, title)
+            checkbox = container.checkbox
+            checkbox.setChecked(checked)
             checkbox.toggled.connect(partial(self._set_profile_enabled, profile_id))
-            layout.addWidget(checkbox)
-            layout.addStretch(1)
             action.setDefaultWidget(container)
             self.profile_quick_selector_menu.addAction(action)
 
