@@ -86,33 +86,123 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         else:
             self._visible_columns.discard(column)
 
-    def contextMenuEvent(self, event):
-        menu = QtWidgets.QMenu(self)
-        parent = self.parent()
+    def _create_checkbox_action(self, menu, text, checked, enabled, callback):
+        """Create a QWidgetAction with a QCheckBox that doesn't close the menu on toggle.
 
+        Parameters
+        ----------
+        menu : QtWidgets.QMenu
+            The parent menu for the action.
+        text : str
+            The label text for the checkbox.
+        checked : bool
+            Whether the checkbox should be checked.
+        enabled : bool
+            Whether the checkbox should be enabled.
+        callback : callable
+            The callback to connect to the checkbox's toggled signal.
+
+        Returns
+        -------
+        tuple[QtWidgets.QWidgetAction, QtWidgets.QCheckBox]
+            A tuple containing the configured action and its checkbox widget.
+        """
+        action = QtWidgets.QWidgetAction(menu)
+        container = QtWidgets.QWidget(menu)
+        layout = QtWidgets.QHBoxLayout(container)
+        layout.setContentsMargins(8, 2, 8, 2)
+        checkbox = QtWidgets.QCheckBox(text, container)
+        checkbox.setChecked(checked)
+        checkbox.setEnabled(enabled)
+        checkbox.toggled.connect(callback)
+        layout.addWidget(checkbox)
+        layout.addStretch(1)
+        action.setDefaultWidget(container)
+        return action, checkbox
+
+    def _add_column_actions(self, menu):
+        """Add column visibility toggle actions to the menu.
+
+        Parameters
+        ----------
+        menu : QtWidgets.QMenu
+            The menu to add actions to.
+
+        Returns
+        -------
+        list[QtWidgets.QCheckBox]
+            List of column checkboxes for dynamic state updates.
+        """
+        column_checkboxes = []
         for i, column in enumerate(self._columns):
             if i in self._always_visible_columns:
                 continue
-            action = QtGui.QAction(_(column.title), parent)
-            action.setCheckable(True)
-            action.setChecked(i in self._visible_columns)
-            action.setEnabled(not self.is_locked)
-            action.triggered.connect(partial(self.show_column, i))
+            action, checkbox = self._create_checkbox_action(
+                menu,
+                _(column.title),
+                i in self._visible_columns,
+                not self.is_locked,
+                partial(self.show_column, i),
+            )
+            column_checkboxes.append(checkbox)
             menu.addAction(action)
+        return column_checkboxes
 
-        menu.addSeparator()
-        restore_action = QtGui.QAction(_("Restore default columns"), parent)
+    def _add_restore_action(self, menu):
+        """Add restore defaults action to the menu.
+
+        Parameters
+        ----------
+        menu : QtWidgets.QMenu
+            The menu to add the action to.
+
+        Returns
+        -------
+        QtGui.QAction
+            The restore action for dynamic state updates.
+        """
+        restore_action = QtGui.QAction(_("Restore default columns"), self.parent())
         restore_action.setEnabled(not self.is_locked)
         restore_action.triggered.connect(self.restore_defaults)
         menu.addAction(restore_action)
+        return restore_action
 
-        lock_action = QtGui.QAction(_("Lock columns"), parent)
-        lock_action.setCheckable(True)
-        lock_action.setChecked(self.is_locked)
-        lock_action.toggled.connect(self.lock)
+    def _add_lock_action(self, menu):
+        """Add lock columns action to the menu.
+
+        Parameters
+        ----------
+        menu : QtWidgets.QMenu
+            The menu to add the action to.
+
+        Returns
+        -------
+        QtWidgets.QCheckBox
+            The lock checkbox for connecting dynamic callbacks.
+        """
+        lock_action, lock_checkbox = self._create_checkbox_action(
+            menu,
+            _("Lock columns"),
+            self.is_locked,
+            True,
+            lambda: None,  # Callback set later
+        )
         menu.addAction(lock_action)
+        return lock_checkbox
 
-        menu.addSeparator()
+    def _add_manage_action(self, menu):
+        """Add manage custom columns action to the menu.
+
+        Parameters
+        ----------
+        menu : QtWidgets.QMenu
+            The menu to add the action to.
+
+        Returns
+        -------
+        QtGui.QAction
+            The manage action for dynamic state updates.
+        """
 
         def _open_manager():
             dlg = CustomColumnsManagerDialog(parent=self)
@@ -122,6 +212,49 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         manage_action.setEnabled(not self.is_locked and CustomColumnsManagerDialog is not None)
         manage_action.triggered.connect(_open_manager)
         menu.addAction(manage_action)
+        return manage_action
+
+    def _create_lock_toggle_callback(self, column_checkboxes, restore_action, manage_action):
+        """Create callback for lock toggle that updates dependent UI elements.
+
+        Parameters
+        ----------
+        column_checkboxes : list[QtWidgets.QCheckBox]
+            Column checkboxes to enable/disable.
+        restore_action : QtGui.QAction
+            Restore action to enable/disable.
+        manage_action : QtGui.QAction
+            Manage action to enable/disable.
+
+        Returns
+        -------
+        callable
+            Callback function that updates all dependent elements.
+        """
+
+        def _on_lock_toggled(is_locked):
+            self.lock(is_locked)
+            for checkbox in column_checkboxes:
+                checkbox.setEnabled(not is_locked)
+            restore_action.setEnabled(not is_locked)
+            manage_action.setEnabled(not is_locked and CustomColumnsManagerDialog is not None)
+
+        return _on_lock_toggled
+
+    def contextMenuEvent(self, event):
+        menu = QtWidgets.QMenu(self)
+
+        column_checkboxes = self._add_column_actions(menu)
+        menu.addSeparator()
+        restore_action = self._add_restore_action(menu)
+        lock_checkbox = self._add_lock_action(menu)
+        menu.addSeparator()
+        manage_action = self._add_manage_action(menu)
+
+        # Wire lock toggle to update dependent UI elements
+        lock_toggle_callback = self._create_lock_toggle_callback(column_checkboxes, restore_action, manage_action)
+        lock_checkbox.toggled.disconnect()
+        lock_checkbox.toggled.connect(lock_toggle_callback)
 
         menu.exec(event.globalPos())
         event.accept()
