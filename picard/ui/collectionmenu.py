@@ -25,7 +25,6 @@
 
 from PyQt6 import (
     QtCore,
-    QtGui,
     QtWidgets,
 )
 
@@ -38,6 +37,8 @@ from picard.i18n import (
     ngettext,
     sort_key,
 )
+
+from picard.ui.widgets.checkboxmenuitem import CheckboxMenuItem
 
 
 class CollectionMenu(QtWidgets.QMenu):
@@ -54,13 +55,12 @@ class CollectionMenu(QtWidgets.QMenu):
         self.actions = []
         for collection in sorted(user_collections.values(), key=lambda c: (sort_key(c.name), c.id)):
             action = QtWidgets.QWidgetAction(self)
-            action.setDefaultWidget(CollectionMenuItem(self, collection))
+            action.setDefaultWidget(CollectionMenuItem(self, action, collection))
             self.addAction(action)
             self.actions.append(action)
         self._ignore_update = False
         self.addSeparator()
         self.refresh_action = self.addAction(_("Refresh List"))
-        self.hovered.connect(self._on_hovered)
 
     def _refresh_list(self):
         self.refresh_action.setEnabled(False)
@@ -71,73 +71,14 @@ class CollectionMenu(QtWidgets.QMenu):
         if self.actionAt(event.pos()) == self.refresh_action and self.refresh_action.isEnabled():
             self._refresh_list()
 
-    def _on_hovered(self, action):
-        if self._ignore_hover:
-            return
-        for a in self.actions:
-            a.defaultWidget().set_active(a == action)
 
-    def update_active_action_for_widget(self, widget):
-        if self._ignore_update:
-            return
-        for action in self.actions:
-            action_widget = action.defaultWidget()
-            is_active = action_widget == widget
-            if is_active:
-                self._ignore_hover = True
-                self.setActiveAction(action)
-                self._ignore_hover = False
-            action_widget.set_active(is_active)
+class CollectionMenuItem(CheckboxMenuItem):
+    def __init__(self, menu, action, collection, parent=None):
+        self._collection = collection
+        super().__init__(menu, action, "", parent=parent)
 
-
-class CollectionMenuItem(QtWidgets.QWidget):
-    def __init__(self, menu, collection, parent=None):
-        super().__init__(parent=parent)
-        self.menu = menu
-        self.active = False
-        self._setup_layout(menu, collection)
-        self._setup_colors()
-
-    def _setup_layout(self, menu, collection):
-        layout = QtWidgets.QVBoxLayout(self)
-        style = self.style()
-        layout.setContentsMargins(
-            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutLeftMargin),
-            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
-            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutRightMargin),
-            style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
-        )
-        self.checkbox = CollectionCheckBox(menu, collection, parent=self)
-        layout.addWidget(self.checkbox)
-
-    def _setup_colors(self):
-        palette = self.palette()
-        self.text_color = palette.text().color()
-        self.highlight_color = palette.highlightedText().color()
-
-    def set_active(self, active):
-        self.active = active
-        palette = self.palette()
-        textcolor = self.highlight_color if active else self.text_color
-        palette.setColor(QtGui.QPalette.ColorRole.WindowText, textcolor)
-        self.checkbox.setPalette(palette)
-
-    def enterEvent(self, e):
-        self.menu.update_active_action_for_widget(self)
-
-    def leaveEvent(self, e):
-        self.set_active(False)
-
-    def paintEvent(self, e):
-        painter = QtWidgets.QStylePainter(self)
-        option = QtWidgets.QStyleOptionMenuItem()
-        option.initFrom(self)
-        option.state = QtWidgets.QStyle.StateFlag.State_None
-        if self.isEnabled():
-            option.state |= QtWidgets.QStyle.StateFlag.State_Enabled
-        if self.active:
-            option.state |= QtWidgets.QStyle.StateFlag.State_Selected
-        painter.drawControl(QtWidgets.QStyle.ControlElement.CE_MenuItem, option)
+    def _create_checkbox_widget(self, text: str):
+        return CollectionCheckBox(self._menu, self._collection, parent=self)
 
 
 class CollectionCheckBox(QtWidgets.QCheckBox):

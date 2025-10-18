@@ -42,8 +42,11 @@ class CheckboxMenuItem(QtWidgets.QWidget):
             style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_FocusFrameVMargin),
         )
         layout.addStretch(1)
-        self.checkbox = QtWidgets.QCheckBox(text, parent=self)
+        self.checkbox = self._create_checkbox_widget(text)
         layout.addWidget(self.checkbox)
+
+    def _create_checkbox_widget(self, text: str):
+        return QtWidgets.QCheckBox(text, parent=self)
 
     def set_active(self, active):
         self._active = active
