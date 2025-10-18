@@ -56,6 +56,7 @@ from picard.i18n import gettext as _
 
 from picard.ui.columns import ImageColumn
 from picard.ui.itemviews.custom_columns.manager_dialog import CustomColumnsManagerDialog
+from picard.ui.widgets.checkboxmenuitem import CheckboxMenuItem
 from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 
@@ -108,15 +109,11 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             A tuple containing the configured action and its checkbox widget.
         """
         action = QtWidgets.QWidgetAction(menu)
-        container = QtWidgets.QWidget(menu)
-        layout = QtWidgets.QHBoxLayout(container)
-        layout.setContentsMargins(8, 2, 8, 2)
-        checkbox = QtWidgets.QCheckBox(text, container)
+        container = CheckboxMenuItem(menu, action, text)
+        checkbox = container.checkbox
         checkbox.setChecked(checked)
         checkbox.setEnabled(enabled)
         checkbox.toggled.connect(callback)
-        layout.addWidget(checkbox)
-        layout.addStretch(1)
         action.setDefaultWidget(container)
         return action, checkbox
 
