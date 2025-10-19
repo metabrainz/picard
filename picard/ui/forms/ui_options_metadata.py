@@ -13,7 +13,7 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 
-class Ui_MetadataOptionsPage:
+class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
         MetadataOptionsPage.resize(423, 553)
@@ -26,9 +26,7 @@ class Ui_MetadataOptionsPage:
         sizePolicy.setHeightForWidth(self.metadata_groupbox.sizePolicy().hasHeightForWidth())
         self.metadata_groupbox.setSizePolicy(sizePolicy)
         self.metadata_groupbox.setMinimumSize(QtCore.QSize(397, 135))
-        self.metadata_groupbox.setAlignment(
-            QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
-        )
+        self.metadata_groupbox.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.metadata_groupbox.setObjectName("metadata_groupbox")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.metadata_groupbox)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -37,7 +35,6 @@ class Ui_MetadataOptionsPage:
         self.verticalLayout_3.addWidget(self.translation_prompt_label)
         self.translation_options_layout = QtWidgets.QVBoxLayout()
         self.translation_options_layout.setContentsMargins(20, -1, -1, -1)
-        self.translation_options_layout.setSpacing(10)
         self.translation_options_layout.setObjectName("translation_options_layout")
         self.translate_artist_names = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.translate_artist_names.setObjectName("translate_artist_names")
@@ -141,9 +138,7 @@ class Ui_MetadataOptionsPage:
         self.va_name.setObjectName("va_name")
         self.gridlayout.addWidget(self.va_name, 1, 0, 1, 1)
         self.verticalLayout.addWidget(self.custom_fields_groupbox)
-        spacerItem = QtWidgets.QSpacerItem(
-            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
-        )
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.label_6.setBuddy(self.va_name_default)
         self.label_7.setBuddy(self.nat_name_default)
@@ -174,9 +169,9 @@ class Ui_MetadataOptionsPage:
         self.translate_album_names.setText(_("Album titles"))
         self.translate_track_titles.setText(_("Track titles"))
         self.locales_prompt_label.setText(_("Preferred locales:"))
-        self.select_locales.setText(_("Select…"))
+        self.select_locales.setText(_("Select�"))
         self.translate_artist_names_script_exception.setText(_("Ignore name translation for these language scripts:"))
-        self.select_scripts.setText(_("Select…"))
+        self.select_scripts.setText(_("Select�"))
         self.standardize_artists.setText(_("Use standardized artist names"))
         self.standardize_instruments.setText(_("Use standardized instrument credits"))
         self.standardize_vocals.setText(_("Use standardized vocal credits"))

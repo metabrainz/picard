@@ -33,42 +33,39 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-      <widget class="QLabel" name="translation_prompt_label">
-       <property name="text">
-        <string>Translate names when available:</string>
-       </property>
-      </widget>
+       <widget class="QLabel" name="translation_prompt_label">
+        <property name="text">
+         <string>Translate names when available:</string>
+        </property>
+       </widget>
       </item>
       <item>
-      <layout class="QVBoxLayout" name="translation_options_layout">
-       <property name="leftMargin">
-        <number>20</number>
-       </property>
-       <property name="spacing">
-        <number>10</number>
-       </property>
-       <item>
-        <widget class="QCheckBox" name="translate_artist_names">
-         <property name="text">
-          <string>Artist names</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="translate_album_names">
-         <property name="text">
-          <string>Album titles</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="translate_track_titles">
-         <property name="text">
-          <string>Track titles</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+       <layout class="QVBoxLayout" name="translation_options_layout">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="translate_artist_names">
+          <property name="text">
+           <string>Artist names</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="translate_album_names">
+          <property name="text">
+           <string>Album titles</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="translate_track_titles">
+          <property name="text">
+           <string>Track titles</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QVBoxLayout" name="translation_language_containers">
