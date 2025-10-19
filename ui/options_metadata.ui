@@ -52,7 +52,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="translate_album_names">
+         <widget class="QCheckBox" name="translate_album_titles">
           <property name="text">
            <string>Album titles</string>
           </property>

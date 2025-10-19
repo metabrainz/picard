@@ -374,7 +374,7 @@ BoolOption('setting', 'standardize_vocals', True, title=N_("Use standardized voc
 BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships"))
 # Translation toggles
 BoolOption('setting', 'translate_artist_names', False, title=N_("Translate artist names"))
-BoolOption('setting', 'translate_album_names', False, title=N_("Translate album names"))
+BoolOption('setting', 'translate_album_titles', False, title=N_("Translate album titles"))
 BoolOption('setting', 'translate_track_titles', False, title=N_("Translate track titles"))
 BoolOption('setting', 'translate_artist_names_script_exception', False, title=N_("Translate artist names exception"))
 TextOption('setting', 'va_name', "Various Artists", title=N_("Various Artists name"))

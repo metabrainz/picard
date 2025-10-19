@@ -829,7 +829,7 @@ def release_to_metadata(node, m, album=None):
             m['releasecountry'] = country
             break
     # Translate album title from release aliases if enabled, unless script exception applies
-    if config.setting['translate_album_names']:
+    if config.setting['translate_album_titles']:
         if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
             alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
             if alias_name:

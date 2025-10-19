@@ -86,7 +86,7 @@ class MetadataOptionsPage(OptionsPage):
 
     OPTIONS = (
         ('translate_artist_names', ['translate_artist_names']),
-        ('translate_album_names', ['translate_album_names']),
+        ('translate_album_titles', ['translate_album_titles']),
         ('translate_track_titles', ['translate_track_titles']),
         ('artist_locales', ['selected_locales']),
         ('translate_artist_names_script_exception', ['translate_artist_names_script_exception']),
@@ -111,14 +111,14 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_locales.clicked.connect(self.open_locale_selector)
         self.ui.select_scripts.clicked.connect(self.open_script_selector)
         self.ui.translate_artist_names.stateChanged.connect(self.set_enabled_states)
-        self.ui.translate_album_names.stateChanged.connect(self.set_enabled_states)
+        self.ui.translate_album_titles.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_track_titles.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
 
     def load(self):
         config = get_config()
         self.ui.translate_artist_names.setChecked(config.setting['translate_artist_names'])
-        self.ui.translate_album_names.setChecked(config.setting['translate_album_names'])
+        self.ui.translate_album_titles.setChecked(config.setting['translate_album_titles'])
         self.ui.translate_track_titles.setChecked(config.setting['translate_track_titles'])
         self.current_locales = config.setting['artist_locales']
         self.make_locales_text()
@@ -157,7 +157,7 @@ class MetadataOptionsPage(OptionsPage):
     def save(self):
         config = get_config()
         config.setting['translate_artist_names'] = self.ui.translate_artist_names.isChecked()
-        config.setting['translate_album_names'] = self.ui.translate_album_names.isChecked()
+        config.setting['translate_album_titles'] = self.ui.translate_album_titles.isChecked()
         config.setting['translate_track_titles'] = self.ui.translate_track_titles.isChecked()
         config.setting['artist_locales'] = self.current_locales
         config.setting['translate_artist_names_script_exception'] = (
@@ -189,7 +189,7 @@ class MetadataOptionsPage(OptionsPage):
     def set_enabled_states(self):
         translate_checked = (
             self.ui.translate_artist_names.isChecked()
-            or self.ui.translate_album_names.isChecked()
+            or self.ui.translate_album_titles.isChecked()
             or self.ui.translate_track_titles.isChecked()
         )
         # If no translation is enabled, also uncheck the script-exception toggle to avoid stale state

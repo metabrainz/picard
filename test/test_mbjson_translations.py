@@ -41,7 +41,7 @@ def config() -> Any:
     cfg = types.SimpleNamespace(
         setting={
             'translate_artist_names': True,
-            'translate_album_names': True,
+            'translate_album_titles': True,
             'translate_track_titles': True,
             'artist_locales': ['en'],
             'translate_artist_names_script_exception': False,
@@ -163,7 +163,7 @@ def test_release_to_metadata_respects_script_exceptions(
     skip: bool,
 ) -> None:
     # Arrange config and behavior
-    config.setting['translate_album_names'] = True
+    config.setting['translate_album_titles'] = True
     config.setting['artist_locales'] = ['en']
     monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: skip)
 
@@ -223,7 +223,7 @@ def test_release_to_metadata_translation_toggle(
     mock_get_config: Callable[[], Any],
     toggle: bool,
 ) -> None:
-    config.setting['translate_album_names'] = toggle
+    config.setting['translate_album_titles'] = toggle
     config.setting['artist_locales'] = ['en']
     # Ensure exceptions do not interfere
     config.setting['translate_artist_names_script_exception'] = False
