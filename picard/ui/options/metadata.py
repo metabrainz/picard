@@ -192,12 +192,15 @@ class MetadataOptionsPage(OptionsPage):
             or self.ui.translate_album_names.isChecked()
             or self.ui.translate_track_titles.isChecked()
         )
+        # If no translation is enabled, also uncheck the script-exception toggle to avoid stale state
+        if not translate_checked and self.ui.translate_artist_names_script_exception.isChecked():
+            self.ui.translate_artist_names_script_exception.setChecked(False)
         translate_exception_checked = self.ui.translate_artist_names_script_exception.isChecked()
         self.ui.select_locales.setEnabled(translate_checked)
         self.ui.selected_locales.setEnabled(translate_checked)
         self.ui.translate_artist_names_script_exception.setEnabled(translate_checked)
-        # Script exceptions apply to artist names only; keep enabled state tied to artist toggle
-        select_scripts_enabled = self.ui.translate_artist_names.isChecked() and translate_exception_checked
+        # Enable script selector if any translation is enabled and exceptions are checked
+        select_scripts_enabled = translate_checked and translate_exception_checked
         self.ui.selected_scripts.setEnabled(select_scripts_enabled)
         self.ui.select_scripts.setEnabled(select_scripts_enabled)
 
