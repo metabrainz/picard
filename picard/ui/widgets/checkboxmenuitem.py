@@ -71,6 +71,15 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         palette.setColor(QtGui.QPalette.ColorRole.WindowText, textcolor)
         self.checkbox.setPalette(palette)
 
+    def mousePressEvent(self, event: QtGui.QMouseEvent):
+        self.checkbox.setDown(True)
+        event.accept()
+
+    def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
+        self.checkbox.toggle()
+        self.checkbox.setDown(False)
+        event.accept()
+
     def enterEvent(self, e):
         self._menu.setActiveAction(self._action)
         self.set_active(True)
