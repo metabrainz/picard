@@ -53,6 +53,7 @@ from setuptools import (
     setup,
 )
 from setuptools.command.build import build
+from setuptools.command.editable_wheel import editable_wheel
 from setuptools.command.install import install
 
 
@@ -231,6 +232,12 @@ class picard_build(build):
             'version': metadata.version,
             'url': metadata.url,
         }
+
+
+class picard_editable_wheel(editable_wheel):
+    def run(self):
+        generate_file('scripts/picard.in', 'scripts/' + PACKAGE_NAME, {'autoupdate': True})
+        super().run()
 
 
 def py_from_ui(uifile):
@@ -666,6 +673,7 @@ args = {
         'build': picard_build,
         'build_locales': picard_build_locales,
         'build_ui': picard_build_ui,
+        'editable_wheel': picard_editable_wheel,
         'clean_ui': picard_clean_ui,
         'build_appdata': picard_build_appdata,
         'regen_appdata_pot_file': picard_regen_appdata_pot_file,
