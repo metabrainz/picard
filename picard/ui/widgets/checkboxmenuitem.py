@@ -28,9 +28,13 @@ class CheckboxMenuItem(QtWidgets.QWidget):
     def __init__(self, menu: QtWidgets.QMenu, action: QtGui.QAction, text: str, parent=None):
         super().__init__(parent=parent)
         self._menu = menu
+        action.setCheckable(True)
         self._action = action
         self._active = False
         self._setup_layout(text)
+        self._menu.hovered.connect(self._on_hover)
+        self._action.changed.connect(self._action_changed)
+        self.checkbox.toggled.connect(self._action.setChecked)
 
     def _setup_layout(self, text: str):
         layout = QtWidgets.QVBoxLayout(self)
@@ -45,10 +49,19 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         self.checkbox = self._create_checkbox_widget(text)
         layout.addWidget(self.checkbox)
 
+    def _action_changed(self):
+        self.checkbox.setChecked(self._action.isChecked())
+
     def _create_checkbox_widget(self, text: str):
         return QtWidgets.QCheckBox(text, parent=self)
 
-    def set_active(self, active):
+    def _on_hover(self, action: QtGui.QAction):
+        active = action == self._action
+        self.set_active(active)
+        if active:
+            self.checkbox.setFocus()
+
+    def set_active(self, active: bool):
         self._active = active
         palette = self.palette()
         if active:
