@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-08-27 10:36+0000\n"
+"PO-Revision-Date: 2025-10-22 07:08+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/app/gl/>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.13.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -490,7 +490,7 @@ msgstr "Cores a empregar para o tema escuro"
 
 #: picard/options.py:323
 msgid "Options to show in the Quick Menu"
-msgstr ""
+msgstr "Opcións para mostrar no Menú rápido"
 
 #: picard/options.py:338
 msgid "Layout of the tool bar"
@@ -1080,7 +1080,7 @@ msgstr ""
 
 #: picard/formats/id3.py:135
 msgid "ID3 (MP3, AIFF)"
-msgstr ""
+msgstr "ID3 (MP3, AIFF)"
 
 #: picard/formats/vorbis.py:130
 msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
