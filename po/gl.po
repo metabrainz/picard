@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-10-22 07:08+0000\n"
+"PO-Revision-Date: 2025-10-23 10:08+0000\n"
 "Last-Translator: ninjum <ninjum@gmx.es>\n"
 "Language-Team: Galician <https://translations.metabrainz.org/projects/picard/"
 "3/app/gl/>\n"
@@ -572,7 +572,7 @@ msgstr "Nome de Artistas Varios"
 
 #: picard/options.py:377
 msgid "Tag formats to not sanitize dates"
-msgstr ""
+msgstr "Formatos de etiquetas de MusicBrainz Picard para non limpar as datas"
 
 #: picard/options.py:382
 msgid "Browser integration"
@@ -1076,7 +1076,7 @@ msgstr "URLs de Portadas Permitidas"
 
 #: picard/formats/apev2.py:102
 msgid "APEv2 (Monkey's Audio, WavPack)"
-msgstr ""
+msgstr "APEv2 (Monkey's Audio, WavPack)"
 
 #: picard/formats/id3.py:135
 msgid "ID3 (MP3, AIFF)"
@@ -1084,7 +1084,7 @@ msgstr "ID3 (MP3, AIFF)"
 
 #: picard/formats/vorbis.py:130
 msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
-msgstr ""
+msgstr "Comentarios Vorbis (FLAC, Ogg Vorbis, Opus)"
 
 #: picard/script/__init__.py:183
 msgid ""
@@ -3754,11 +3754,11 @@ msgstr "px"
 
 #: picard/ui/forms/ui_options.py:107
 msgid "text"
-msgstr ""
+msgstr "texto"
 
 #: picard/ui/forms/ui_options.py:108
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #: picard/ui/forms/ui_options_advanced.py:144
 msgid "Advanced options"
@@ -4111,7 +4111,7 @@ msgstr "Amosar o tipo MIME"
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
 #: picard/ui/options/interface_quick_menu.py:46
 msgid "Quick Settings Menu"
-msgstr ""
+msgstr "Menú de configuración rápida"
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
 #, fuzzy
@@ -5039,7 +5039,7 @@ msgstr "&Executar scripts"
 #: picard/ui/itemviews/basetreeview.py:630
 #, python-format
 msgid "Matches on: %s"
-msgstr ""
+msgstr "Coincide con: %s"
 
 #: picard/ui/itemviews/basetreeview.py:632
 #, fuzzy
@@ -5130,22 +5130,22 @@ msgstr "Dimensións da portada"
 #: picard/ui/itemviews/match_quality_column.py:201
 #, python-format
 msgid "Match: %(matched)d/%(total)d (%(percent).1f%%)"
-msgstr ""
+msgstr "Coincidencias: %(matched)d/%(total)d (%(percent).1f%%)"
 
 #: picard/ui/itemviews/match_quality_column.py:210
 #, python-format
 msgid "Missing tracks: %(count)d"
-msgstr ""
+msgstr "Pistas que faltan: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:211
 #, python-format
 msgid "Duplicate files: %(count)d"
-msgstr ""
+msgstr "Arquivos duplicados: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:212
 #, python-format
 msgid "Extra files: %(count)d"
-msgstr ""
+msgstr "Arquivos adicionais: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:213
 #, fuzzy, python-format
