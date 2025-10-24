@@ -18,11 +18,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from copy import copy
 from enum import IntEnum
+from typing import Optional
 
-from PyQt6.QtCore import QBuffer
+from PyQt6.QtCore import (
+    QBuffer,
+    QIODevice,
+)
 from PyQt6.QtGui import QImage
 
 from picard.plugin import ExtensionPoint
@@ -66,14 +69,36 @@ class ProcessingImage:
     def get_qimage(self):
         return self._qimage
 
-    def get_result(self, image_format=None, quality=90):
+    def get_result(self, image_format: Optional[str] = None, quality: int = 90) -> bytes:
+        """
+        Encode the internal QImage to the specified format and quality and
+        return the raw bytes.
+
+        If image_format is None, the format from self.info.format is used.
+
+        Raises:
+            CoverArtEncodingError: If required attributes are missing, the
+                buffer could not be opened, or saving the image failed.
+        """
         if image_format is None:
-            image_format = self.info.format
+            image_format = getattr(self.info, "format", None)
+            if not image_format:
+                raise CoverArtEncodingError("No image format specified and info.format is missing.")
+
+        qimage = getattr(self, "_qimage", None)
+        if qimage is None:
+            raise CoverArtEncodingError("No QImage available to encode.")
+
         buffer = QBuffer()
-        if not self._qimage.save(buffer, image_format, quality=quality):
-            raise CoverArtEncodingError(f"Failed to encode into {image_format}")
-        qbytearray = buffer.data()
-        return qbytearray.data()
+        if not buffer.open(QIODevice.OpenModeFlag.WriteOnly):
+            raise CoverArtEncodingError("Failed to open QBuffer for writing.")
+
+        try:
+            if not qimage.save(buffer, image_format, quality=quality):
+                raise CoverArtEncodingError(f"Failed to encode image into format '{image_format}'")
+            return bytes(buffer.data())
+        finally:
+            buffer.close()
 
 
 class ImageProcessor:
