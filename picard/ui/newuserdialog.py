@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2022-2023 Philipp Wolfer
-# Copyright (C) 2023 Bob Swift
+# Copyright (C) 2023, 2025 Bob Swift
 # Copyright (C) 2024 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -26,8 +26,8 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
+from picard.util.readthedocs import ReadTheDocs
 
 
 class NewUserDialog:
@@ -44,7 +44,7 @@ class NewUserDialog:
             "</ul><p>"
             "Picard is open source software written by volunteers. It is provided as-is and with no warranty."
             "</p>"
-        ).format(documentation_url=PICARD_URLS['documentation_server'])
+        ).format(documentation_url=ReadTheDocs.get_url('documentation_server'))
 
         self.show_again = True
         show_again_text = _("Show this message again the next time you start Picard.")

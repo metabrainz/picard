@@ -116,6 +116,7 @@ from picard.util.cdrom import (
     discid,
     get_cdrom_drives,
 )
+from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui import PreserveGeometry
 from picard.ui.aboutdialog import AboutDialog
@@ -1157,6 +1158,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return AboutDialog.show_instance(self)
 
     def show_options(self, page=None):
+        ReadTheDocs.update_documentation_items()  # Retry updates if required
         options_dialog = OptionsDialog.show_instance(page, self)
         options_dialog.finished.connect(self._options_closed)
         if self.script_editor_dialog is not None:
@@ -1926,6 +1928,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def open_file_naming_script_editor(self):
         """Open the file naming script editor / manager in a new window."""
+        ReadTheDocs.update_documentation_items()  # Retry updates if required
         examples = ScriptEditorExamples(tagger=self.tagger)
         self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
         self.script_editor_dialog.signal_save.connect(self._script_editor_save)

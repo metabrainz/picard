@@ -27,13 +27,13 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.const import PICARD_URLS
 from picard.const.tags import (
     ALL_TAGS,
     TagVar,
 )
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
+from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
@@ -91,6 +91,8 @@ class HtmlBrowser(QtWidgets.QTextBrowser):
         self.setOpenLinks(True)
         self.setOpenExternalLinks(True)
         self.setHtml(htmldoc(html, rtl))
+        self.setOpenLinks(True)
+        self.setOpenExternalLinks(True)
         self.show()
 
 
@@ -215,7 +217,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         if include_link:
             link = (
                 '<a href="'
-                + PICARD_URLS['doc_scripting']
+                + ReadTheDocs.get_url('doc_scripting')
                 + '">'
                 + _('Open Scripting Documentation in your browser')
                 + '</a>'

@@ -11,7 +11,7 @@
 # Copyright (C) 2016 Rahul Raturi
 # Copyright (C) 2016-2018 Sambhav Kothari
 # Copyright (C) 2017 Antonio Larrosa
-# Copyright (C) 2018, 2023-2024 Bob Swift
+# Copyright (C) 2018, 2023-2025 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
 #
 # This program is free software; you can redistribute it and/or
@@ -45,6 +45,7 @@ from picard.i18n import (
     gettext_constants,
     sort_key,
 )
+from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.options import OptionsPage
@@ -181,6 +182,7 @@ class InterfaceOptionsPage(OptionsPage):
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
             warnings.append(_("You have changed the interface language."))
+            ReadTheDocs.update_documentation_items()
         changes_require_restart_warning(self, warnings=warnings, notes=notes)
 
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
