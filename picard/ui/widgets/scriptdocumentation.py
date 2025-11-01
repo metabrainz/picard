@@ -87,6 +87,8 @@ class HtmlBrowser(QtWidgets.QTextBrowser):
         self.setEnabled(True)
         self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.setObjectName('func_browser')
+        self.setOpenLinks(True)
+        self.setOpenExternalLinks(True)
         self.setHtml(htmldoc(html, rtl))
         self.show()
 
