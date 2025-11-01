@@ -138,7 +138,7 @@ class TagsDocumentationPage(DocumentationPage):
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
         html = ''
-        for tag in sorted(ALL_TAGS, key=lambda x: x.script_name().strip('_')):
+        for tag in sorted(ALL_TAGS, key=lambda x: x.script_name().lstrip('_')):
             html += process_tag(tag)
         return html
 
