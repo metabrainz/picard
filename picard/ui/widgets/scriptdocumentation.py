@@ -175,6 +175,10 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.searchText.textEdited.connect(self._search_text_edited)
         self.searchLayout.addWidget(self.searchText)
 
+        self.searchCount = QtWidgets.QLabel('')
+        self.searchCount.setVisible(False)
+        self.searchLayout.addWidget(self.searchCount)
+
         self.pb_prev = QtWidgets.QToolButton()
         self.pb_prev.setArrowType(QtCore.Qt.ArrowType.UpArrow)
         self.pb_prev.setToolTip(_('Find previous'))
@@ -238,6 +242,16 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.show()
 
+    def _show_count(self):
+        if not self.searchText.text():
+            self.searchCount.setVisible(False)
+            return
+        if self.found_items > 0:
+            self.searchCount.setText(_("({item} of {total})").format(item=self.found_item, total=self.found_items))
+        else:
+            self.searchCount.setText(_("(not found)"))
+        self.searchCount.setVisible(True)
+
     def _set_button_status(self):
         self.pb_prev.setDisabled(self.found_item < 2)
         self.pb_next.setDisabled(not self.found_item < self.found_items)
@@ -246,12 +260,14 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         tab: DocumentationPage = self.tabs.currentWidget()
         tab.browser.find(self.searchText.text())
         self.found_item += 1
+        self._show_count()
         self._set_button_status()
 
     def _find_prev(self):
         tab: DocumentationPage = self.tabs.currentWidget()
         tab.browser.find(self.searchText.text(), QtGui.QTextDocument.FindFlag.FindBackward)
         self.found_item -= 1
+        self._show_count()
         self._set_button_status()
 
     def _tab_changed(self):
@@ -280,3 +296,4 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         if self.found_items > 0:
             self.found_item = 1
             self._set_button_status()
+        self._show_count()
