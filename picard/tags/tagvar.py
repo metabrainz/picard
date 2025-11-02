@@ -122,7 +122,7 @@ class TagVar:
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
         """
-        self._name = name
+        self.name = name
         self._shortdesc = shortdesc
         self._longdesc = longdesc
         self._additionaldesc = additionaldesc
@@ -175,16 +175,16 @@ class TagVar:
     def __str__(self):
         """hidden marked with a prefix"""
         if self.is_hidden:
-            return '~' + self._name
+            return '~' + self.name
         else:
-            return self._name
+            return self.name
 
     def script_name(self):
         """In scripts, ~ prefix is replaced with _ for hidden variables"""
         if self.is_hidden:
-            return '_' + self._name
+            return '_' + self.name
         else:
-            return self._name
+            return self.name
 
 
 class TagVars(MutableSequence):
