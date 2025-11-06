@@ -69,7 +69,7 @@ class TagVarTest(PicardTestCase):
         tv = TagVar('name')
 
         # native properties
-        self.assertEqual(tv._name, 'name')
+        self.assertEqual(tv.name, 'name')
         self.assertIsNone(tv._shortdesc)
         self.assertIsNone(tv._longdesc)
         self.assertIsNone(tv._additionaldesc)
