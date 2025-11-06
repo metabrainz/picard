@@ -87,6 +87,8 @@ class HtmlBrowser(QtWidgets.QTextBrowser):
         self.setEnabled(True)
         self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.setObjectName('func_browser')
+        self.setOpenLinks(True)
+        self.setOpenExternalLinks(True)
         self.setHtml(htmldoc(html, rtl))
         self.show()
 
@@ -138,7 +140,7 @@ class TagsDocumentationPage(DocumentationPage):
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
         html = ''
-        for tag in sorted(ALL_TAGS, key=lambda x: x.script_name()):
+        for tag in sorted(ALL_TAGS, key=lambda x: x.name):
             html += process_tag(tag)
         return html
 
