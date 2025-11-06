@@ -1006,6 +1006,7 @@ class File(MetadataItem):
 file_post_load_processors = PluginFunctions(label='file_post_load_processors')
 file_post_addition_to_track_processors = PluginFunctions(label='file_post_addition_to_track_processors')
 file_post_removal_to_track_processors = PluginFunctions(label='file_post_removal_from_track_processors')
+file_pre_save_processors = PluginFunctions(label='file_pre_save_processors')
 file_post_save_processors = PluginFunctions(label='file_post_save_processors')
 
 
@@ -1019,6 +1020,10 @@ def run_file_post_addition_to_track_processors(track_object, file_object):
 
 def run_file_post_removal_from_track_processors(track_object, file_object):
     file_post_removal_to_track_processors.run(track_object, file_object)
+
+
+def run_file_pre_save_processors(file_object):
+    file_pre_save_processors.run(file_object)
 
 
 def run_file_post_save_processors(file_object):
