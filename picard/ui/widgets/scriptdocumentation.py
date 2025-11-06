@@ -23,6 +23,7 @@
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -102,8 +103,8 @@ class DocumentationPage(QtWidgets.QWidget):
         self.setLayout(layout)
 
         html = self.generate_html()
-        browser = HtmlBrowser(html, self.rtl)
-        layout.addWidget(browser)
+        self.browser = HtmlBrowser(html, self.rtl)
+        layout.addWidget(self.browser)
 
     def generate_html(self):
         raise NotImplementedError
@@ -157,9 +158,42 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         """
         super().__init__(parent=parent)
 
+        self.found_item = 0
+        self.found_items = 0
+
         self.verticalLayout = QtWidgets.QVBoxLayout(self)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName('docs_verticalLayout')
+
+        self.searchLayout = QtWidgets.QHBoxLayout()
+        searchLabel = QtWidgets.QLabel(_("Find:"))
+        self.searchLayout.addWidget(searchLabel)
+
+        self.searchText = QtWidgets.QLineEdit()
+        self.searchText.setClearButtonEnabled(True)
+        self.searchText.setMaxLength(30)
+        self.searchText.textEdited.connect(self._search_text_edited)
+        self.searchLayout.addWidget(self.searchText)
+
+        self.searchCount = QtWidgets.QLabel('')
+        self.searchCount.setVisible(False)
+        self.searchLayout.addWidget(self.searchCount)
+
+        self.pb_prev = QtWidgets.QToolButton()
+        self.pb_prev.setArrowType(QtCore.Qt.ArrowType.UpArrow)
+        self.pb_prev.setToolTip(_('Find previous'))
+        self.pb_prev.setDisabled(True)
+        self.pb_prev.clicked.connect(self._find_prev)
+        self.searchLayout.addWidget(self.pb_prev)
+
+        self.pb_next = QtWidgets.QToolButton()
+        self.pb_next.setArrowType(QtCore.Qt.ArrowType.DownArrow)
+        self.pb_next.setToolTip(_('Find next'))
+        self.pb_next.setDisabled(True)
+        self.pb_next.clicked.connect(self._find_next)
+        self.searchLayout.addWidget(self.pb_next)
+
+        self.verticalLayout.addLayout(self.searchLayout)
 
         self.tabs = QtWidgets.QTabWidget()
         self.tabs.setContentsMargins(0, 0, 0, 0)
@@ -170,6 +204,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
 
         self.tabs.addTab(func_page, _("Functions"))
         self.tabs.addTab(tags_page, _("Tags"))
+        self.tabs.currentChanged.connect(self._tab_changed)
 
         self.verticalLayout.addWidget(self.tabs)
 
@@ -206,3 +241,59 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.show()
+
+    def _show_count(self):
+        if not self.searchText.text():
+            self.searchCount.setVisible(False)
+            return
+        if self.found_items > 0:
+            self.searchCount.setText(_("({item} of {total})").format(item=self.found_item, total=self.found_items))
+        else:
+            self.searchCount.setText(_("(not found)"))
+        self.searchCount.setVisible(True)
+
+    def _set_button_status(self):
+        self.pb_prev.setDisabled(self.found_item < 2)
+        self.pb_next.setDisabled(not self.found_item < self.found_items)
+
+    def _find_next(self):
+        tab: DocumentationPage = self.tabs.currentWidget()
+        tab.browser.find(self.searchText.text())
+        self.found_item += 1
+        self._show_count()
+        self._set_button_status()
+
+    def _find_prev(self):
+        tab: DocumentationPage = self.tabs.currentWidget()
+        tab.browser.find(self.searchText.text(), QtGui.QTextDocument.FindFlag.FindBackward)
+        self.found_item -= 1
+        self._show_count()
+        self._set_button_status()
+
+    def _tab_changed(self):
+        self.searchText.clear()
+        for i in range(self.tabs.count()):
+            self._clear_find(self.tabs.widget(i).browser)
+
+    def _clear_find(self, browser: HtmlBrowser):
+        cursor = browser.textCursor()
+        cursor.setPosition(0)
+        browser.setTextCursor(cursor)
+        browser.find('')
+        self.found_item = self.found_items = 0
+        self._set_button_status()
+
+    def _search_text_edited(self):
+        tab: DocumentationPage = self.tabs.currentWidget()
+        self._clear_find(tab.browser)
+        while tab.browser.find(self.searchText.text()):
+            self.found_items += 1
+        if self.found_items > 1:
+            item_count = self.found_items
+            self._clear_find(tab.browser)
+            self.found_items = item_count
+            tab.browser.find(self.searchText.text())
+        if self.found_items > 0:
+            self.found_item = 1
+            self._set_button_status()
+        self._show_count()
