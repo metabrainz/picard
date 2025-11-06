@@ -55,8 +55,8 @@ from picard.file import (
     file_post_addition_to_track_processors,
     file_post_load_processors,
     file_post_removal_to_track_processors,
-    file_pre_save_processors,
     file_post_save_processors,
+    file_pre_save_processors,
 )
 
 
