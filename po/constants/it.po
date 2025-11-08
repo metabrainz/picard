@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2025.
+# GABG <musicbrainz@gabg.email>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-08-29 21:36+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-11-08 19:21+0000\n"
+"Last-Translator: GABG <musicbrainz@gabg.email>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "3/constants/it/>\n"
 "Language: it\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -34,7 +35,7 @@ msgstr "Versioni stabili, beta e di sviluppo"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "Mantieni rapporto d'aspetto"
 
 #: picard/const/cover_processing.py:48
 msgid ""
@@ -44,6 +45,12 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Riscala l'immagine sorgente in modo tale che rientri nelle dimensioni di "
+"destinazione.</p><p>Una delle immagini finali può essere più piccola della "
+"dimensione di destinazione se l'immagine sorgente e le dimensione di "
+"destinazione hanno rapporti d'aspetto diversi.</p><p>Per esempio, un "
+"immagine 2000x1000 ridimensionata con destinazione 1000x1000 avrà una "
+"dimensione finale di 1000x500.</p>"
 
 #: picard/const/cover_processing.py:61
 msgid "Scale to width"
