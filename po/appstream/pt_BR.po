@@ -1,31 +1,31 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
 # Jardel Alves <televinhetas@gmail.com>, 2019
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Mateus, 2020
 # Mario Busch <mario_busch@mac.com>, 2021
 # Transifex Bot <>, 2023
+# vitortle <vitortle@gmail.com>, 2025.
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Portuguese (Brazil) (https://app.transifex.com/musicbrainz/"
-"teams/13846/pt_BR/)\n"
+"PO-Revision-Date: 2025-11-08 19:21+0000\n"
+"Last-Translator: vitortle <vitortle@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) <https://translations.metabrainz.org/"
+"projects/picard/3/appstream/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : "
+"((n != 0 && n % 1000000 == 0) ? 1 : 2);\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -35,6 +35,8 @@ msgstr "MusicBrainz Picard"
 msgid ""
 "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 msgstr ""
+"Picard é um programa multiplataforma para marcar músicas, alimentado pela "
+"base de dados MusicBrainz"
 
 #: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""
@@ -123,6 +125,8 @@ msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
 msgstr ""
+"Cover Art: Picard pode buscar e baixar a cover art correta para os seus "
+"albums."
 
 #: org.musicbrainz.Picard.appdata.xml.in:58
 msgid ""
@@ -140,11 +144,11 @@ msgstr "MetaBrainz Foundation"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr ""
+msgstr "Marque suas músicas com o tagger MusicBrainz de última geração"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "Nova Janela"
 
 #~ msgid "MusicBrainz's music tagger"
 #~ msgstr "Marcador de música do MusicBrainz"
