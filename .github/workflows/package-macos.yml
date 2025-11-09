@@ -18,6 +18,7 @@ jobs:
           python-version: 3.11.5-macos11
           python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
           disable-webp: 0
+      fail-fast: false
     env:
       DISCID_VERSION: 0.6.4
       DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3

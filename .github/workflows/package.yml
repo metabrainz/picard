@@ -27,20 +27,14 @@ permissions: {}
 jobs:
   package-macos:
     uses: ./.github/workflows/package-macos.yml
-    strategy:
-      fail-fast: false
     secrets: inherit
 
   package-windows:
     uses: ./.github/workflows/package-windows.yml
-    strategy:
-      fail-fast: false
     secrets: inherit
 
   package-pypi:
     uses: ./.github/workflows/package-pypi.yml
-    strategy:
-      fail-fast: false
     secrets: inherit
     permissions:
       id-token: write
