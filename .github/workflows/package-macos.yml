@@ -11,7 +11,7 @@ jobs:
       matrix:
         setup:
         - macos-deployment-version: '11.0'
-          runner: 'macos-13'
+          runner: 'macos-14'
           target-arch: 'x86_64'
         - macos-deployment-version: '11.0'
           runner: 'macos-14'
