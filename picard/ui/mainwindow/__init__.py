@@ -76,7 +76,11 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import PROGRAM_UPDATE_LEVELS
+from picard.const import (
+    PROGRAM_UPDATE_LEVELS,
+    READTHEDOCS_UPDATES_ALLOWED_KEY,
+    READTHEDOCS_UPDATES_ASK_KEY,
+)
 from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     IS_MACOS,
@@ -120,6 +124,7 @@ from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui import PreserveGeometry
 from picard.ui.aboutdialog import AboutDialog
+from picard.ui.allowrtdupdatesdialog import AllowRtdUpdatesDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.enums import MainAction
 from picard.ui.filebrowser import FileBrowser
@@ -355,6 +360,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.tagger.autoupdate_enabled:
             self._auto_update_check()
         self.check_for_plugin_update()
+        self.show_allow_rtd_updates_dialog()
         self.metadata_box.restore_state()
 
     def showEvent(self, event):
@@ -2088,6 +2094,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.setting['check_for_plugin_updates'] = perform_check
         if show_options_page:
             self.show_plugins_options_page()
+
+    def show_allow_rtd_updates_dialog(self):
+        config = get_config()
+        if not config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY] and config.setting[READTHEDOCS_UPDATES_ASK_KEY]:
+            msg = AllowRtdUpdatesDialog(self)
+            allow, ask = msg.show()
+            config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY] = allow
+            config.setting[READTHEDOCS_UPDATES_ASK_KEY] = ask
+
+        ReadTheDocs.update_documentation_items()  # Retry updates if required
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

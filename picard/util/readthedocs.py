@@ -30,6 +30,7 @@ from picard.const import (
     READTHEDOCS_BASE_LANGUAGE,
     READTHEDOCS_BASE_VERSION,
     READTHEDOCS_PROJECT_API,
+    READTHEDOCS_UPDATES_ALLOWED_KEY,
 )
 from picard.version import Version
 
@@ -47,7 +48,16 @@ class ReadTheDocs:
     """Available versions"""
 
     matched_language = READTHEDOCS_BASE_LANGUAGE
+    """Best match to available languages"""
+
     matched_version = READTHEDOCS_BASE_VERSION
+    """Best match to available versions"""
+
+    _language_checking = False
+    _version_checking = False
+
+    # update_checks_allowed_asked = False
+    # """Allow user to be asked once per session about allowing RTD updating"""
 
     @classmethod
     def initialize(cls, webservice=None):
@@ -68,6 +78,16 @@ class ReadTheDocs:
         if cls.versions or not cls._webservice:
             return
 
+        # Update currently in progress
+        if cls._version_checking:
+            return
+
+        # User has updating disabled
+        config = get_config()
+        if not config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY]:
+            return
+
+        cls._version_checking = True
         url = READTHEDOCS_PROJECT_API + '/versions/?limit=500'  # Set high limit to avoid paging results
         log.debug("Getting documentation versions information from %s", url)
         cls._webservice.get_url(
@@ -106,6 +126,8 @@ class ReadTheDocs:
         if cls.versions:
             cls.matched_version = cls._get_version()
 
+        cls._version_checking = False
+
     @classmethod
     def _update_languages(cls):
         """Retrieves the available languages information from ReadTheDocs."""
@@ -113,6 +135,16 @@ class ReadTheDocs:
         if cls.languages or not cls._webservice:
             return
 
+        # Update currently in progress
+        if cls._language_checking:
+            return
+
+        # User has updating disabled
+        config = get_config()
+        if not config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY]:
+            return
+
+        cls._language_checking = True
         url = READTHEDOCS_PROJECT_API + '/translations/?limit=500'  # Set high limit to avoid paging results
         log.debug("Getting documentation languages information from %s", url)
         cls._webservice.get_url(
@@ -148,6 +180,8 @@ class ReadTheDocs:
 
         if cls.languages:
             cls.matched_language = cls._get_language()
+
+        cls._language_checking = False
 
     @classmethod
     def _get_language(cls, language: str = None) -> str:

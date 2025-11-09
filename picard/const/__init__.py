@@ -63,6 +63,8 @@ READTHEDOCS_PROJECT = 'picard-docs'
 READTHEDOCS_PROJECT_API = 'https://app.readthedocs.org/api/v3/projects/' + READTHEDOCS_PROJECT
 READTHEDOCS_BASE_LANGUAGE = 'en'
 READTHEDOCS_BASE_VERSION = 'latest'
+READTHEDOCS_UPDATES_ALLOWED_KEY = 'check_for_rtd_updates'
+READTHEDOCS_UPDATES_ASK_KEY = 'rtd_updates_ask'
 
 DOCS_SERVER_URL = "https://picard-docs.musicbrainz.org/"
 

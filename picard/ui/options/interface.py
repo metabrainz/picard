@@ -37,6 +37,7 @@ from PyQt6 import (
 )
 
 from picard.config import get_config
+from picard.const import READTHEDOCS_UPDATES_ASK_KEY
 from picard.const.languages import UI_LANGUAGES
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -77,6 +78,7 @@ class InterfaceOptionsPage(OptionsPage):
         ('builtin_search', ['builtin_search']),
         ('use_adv_search_syntax', ['use_adv_search_syntax']),
         ('show_new_user_dialog', ['new_user_dialog']),
+        (READTHEDOCS_UPDATES_ASK_KEY, ['rtd_checking_disabled']),
         ('quit_confirmation', ['quit_confirmation']),
         ('file_save_warning', ['file_save_warning']),
         ('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll']),
@@ -147,6 +149,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.builtin_search.setChecked(config.setting['builtin_search'])
         self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
         self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
+        self.ui.rtd_checking_disabled.setChecked(config.setting[READTHEDOCS_UPDATES_ASK_KEY])
         self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
         self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
         current_ui_language = config.setting['ui_language']
@@ -169,6 +172,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
         config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
         config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
+        config.setting[READTHEDOCS_UPDATES_ASK_KEY] = self.ui.rtd_checking_disabled.isChecked()
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
         config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()

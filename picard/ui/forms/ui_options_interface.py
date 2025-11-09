@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.6.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -69,6 +69,9 @@ class Ui_InterfaceOptionsPage(object):
         self.new_user_dialog = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
         self.new_user_dialog.setObjectName("new_user_dialog")
         self.vboxlayout1.addWidget(self.new_user_dialog)
+        self.rtd_checking_disabled = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.rtd_checking_disabled.setObjectName("rtd_checking_disabled")
+        self.vboxlayout1.addWidget(self.rtd_checking_disabled)
         self.quit_confirmation = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
         self.quit_confirmation.setObjectName("quit_confirmation")
         self.vboxlayout1.addWidget(self.quit_confirmation)
@@ -113,7 +116,8 @@ class Ui_InterfaceOptionsPage(object):
         InterfaceOptionsPage.setTabOrder(self.allow_multi_dirs_selection, self.builtin_search)
         InterfaceOptionsPage.setTabOrder(self.builtin_search, self.use_adv_search_syntax)
         InterfaceOptionsPage.setTabOrder(self.use_adv_search_syntax, self.new_user_dialog)
-        InterfaceOptionsPage.setTabOrder(self.new_user_dialog, self.quit_confirmation)
+        InterfaceOptionsPage.setTabOrder(self.new_user_dialog, self.rtd_checking_disabled)
+        InterfaceOptionsPage.setTabOrder(self.rtd_checking_disabled, self.quit_confirmation)
         InterfaceOptionsPage.setTabOrder(self.quit_confirmation, self.file_save_warning)
         InterfaceOptionsPage.setTabOrder(self.file_save_warning, self.filebrowser_horizontal_autoscroll)
         InterfaceOptionsPage.setTabOrder(self.filebrowser_horizontal_autoscroll, self.starting_directory)
@@ -131,6 +135,7 @@ class Ui_InterfaceOptionsPage(object):
         self.builtin_search.setText(_("Use builtin search rather than looking in browser"))
         self.use_adv_search_syntax.setText(_("Use advanced query syntax"))
         self.new_user_dialog.setText(_("Show the new user dialog when starting Picard"))
+        self.rtd_checking_disabled.setText(_("Show documentation update checking disabled dialog"))
         self.quit_confirmation.setText(_("Show a quit confirmation dialog for unsaved changes"))
         self.file_save_warning.setText(_("Show a confirmation dialog when saving files"))
         self.filebrowser_horizontal_autoscroll.setText(_("Adjust horizontal position in file browser automatically"))
