@@ -16,6 +16,7 @@ jobs:
         - macos-deployment-version: '11.0'
           runner: 'macos-14'
           target-arch: 'arm64'
+      fail-fast: false
     env:
       DISCID_VERSION: 0.6.5
       DISCID_SHA256SUM: 8aa187dd5afdecc06441b49e086dd9a46b3ffac818fd9c1dae0cb55780d846f2
