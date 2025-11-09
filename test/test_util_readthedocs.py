@@ -52,6 +52,7 @@ class TestReadTheDocs(PicardTestCase):
         self.save_versions = ReadTheDocs.versions
         self.default_language_set = set([READTHEDOCS_BASE_LANGUAGE])
         self.default_version_set = set([READTHEDOCS_BASE_VERSION])
+        ReadTheDocs._webservice = None  # Ensure no internet connection is used during testing
 
     def tearDown(self):
         """Restore original state of ReadTheDocs settings"""
@@ -210,7 +211,9 @@ class TestReadTheDocs(PicardTestCase):
                 with patch('picard.util.readthedocs.PICARD_VERSION', testcase.version):
                     test_text = f"Testing language='{testcase.language}' and version='{testcase.version_text}'"
 
-                    ReadTheDocs.update_documentation_items()
+                    ReadTheDocs._matched_language = ReadTheDocs._get_language()
+                    ReadTheDocs._matched_version = ReadTheDocs._get_version()
+
                     base = f"{DOCS_SERVER_URL}{testcase.language_used}/{testcase.version_used}"
 
                     self.assertEqual(ReadTheDocs._matched_language, testcase.language_used, test_text)
