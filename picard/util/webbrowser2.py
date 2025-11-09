@@ -35,12 +35,12 @@ import webbrowser
 from PyQt6 import QtWidgets
 
 from picard.i18n import gettext as _
-from picard.util.readthedocs import ReadTheDocs
+from picard.util import get_url
 
 
 def open(url):
     try:
-        webbrowser.open(ReadTheDocs.get_url(url))
+        webbrowser.open(get_url(url))
     except webbrowser.Error as e:
         QtWidgets.QMessageBox.critical(
             None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,)

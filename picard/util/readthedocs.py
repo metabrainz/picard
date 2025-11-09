@@ -27,8 +27,6 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const import (
-    PICARD_DOCS_URLS,
-    PICARD_URLS,
     READTHEDOCS_BASE_LANGUAGE,
     READTHEDOCS_BASE_VERSION,
     READTHEDOCS_PROJECT_API,
@@ -48,8 +46,8 @@ class ReadTheDocs:
     versions = set()
     """Available versions"""
 
-    _matched_language = READTHEDOCS_BASE_LANGUAGE
-    _matched_version = READTHEDOCS_BASE_VERSION
+    matched_language = READTHEDOCS_BASE_LANGUAGE
+    matched_version = READTHEDOCS_BASE_VERSION
 
     @classmethod
     def initialize(cls, webservice=None):
@@ -106,7 +104,7 @@ class ReadTheDocs:
                     log.error(error_message, "No results returned")
 
         if cls.versions:
-            cls._matched_version = cls._get_version()
+            cls.matched_version = cls._get_version()
 
     @classmethod
     def _update_languages(cls):
@@ -149,7 +147,7 @@ class ReadTheDocs:
                     log.error(error_message, "No results returned")
 
         if cls.languages:
-            cls._matched_language = cls._get_language()
+            cls.matched_language = cls._get_language()
 
     @classmethod
     def _get_language(cls, language: str = None) -> str:
@@ -209,30 +207,5 @@ class ReadTheDocs:
         and updates the best matched language and version variables."""
         cls._update_languages()
         cls._update_versions()
-        cls._matched_language = cls._get_language()
-        cls._matched_version = cls._get_version()
-
-    @classmethod
-    def get_url(cls, url_key: str) -> str:
-        """Gets the URL from the key, with {language} and {version} substitutions.
-
-        Args:
-            url_key (str): URL key.
-
-        Returns:
-            str: Updated URL, or provided URL key if not matched.
-        """
-        if url_key.startswith('/'):
-            return (
-                PICARD_DOCS_URLS['documentation'].format(language=cls._matched_language, version=cls._matched_version)
-                + url_key
-            )
-
-        if url_key in PICARD_DOCS_URLS:
-            return PICARD_DOCS_URLS[url_key].format(language=cls._matched_language, version=cls._matched_version)
-
-        if url_key in PICARD_URLS:
-            return PICARD_URLS[url_key]
-
-        # No match in defined Picard URLs
-        return url_key
+        cls.matched_language = cls._get_language()
+        cls.matched_version = cls._get_version()

@@ -27,7 +27,7 @@ from PyQt6 import (
 )
 
 from picard.i18n import gettext as _
-from picard.util.readthedocs import ReadTheDocs
+from picard.util import get_url
 
 
 class NewUserDialog:
@@ -44,7 +44,7 @@ class NewUserDialog:
             "</ul><p>"
             "Picard is open source software written by volunteers. It is provided as-is and with no warranty."
             "</p>"
-        ).format(documentation_url=ReadTheDocs.get_url('documentation_server'))
+        ).format(documentation_url=get_url('documentation_server'))
 
         self.show_again = True
         show_again_text = _("Show this message again the next time you start Picard.")

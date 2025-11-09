@@ -54,8 +54,10 @@ from picard.profile import (
     profile_groups_group_from_page,
     profile_groups_order,
 )
-from picard.util import restore_method
-from picard.util.readthedocs import ReadTheDocs
+from picard.util import (
+    get_url,
+    restore_method,
+)
 
 from picard.ui import (
     HashableTreeWidgetItem,
@@ -130,7 +132,7 @@ class ErrorOptionsPage(OptionsPage):
 
         report_bug_widget = QtWidgets.QLabel(
             _('Please see <a href="%s">Troubleshooting documentation</a> and eventually report a bug.')
-            % ReadTheDocs.get_url('troubleshooting')
+            % get_url('troubleshooting')
         )
         report_bug_widget.setOpenExternalLinks(True)
 
@@ -464,7 +466,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             current_page = self.get_page(current_page.PARENT)
             url = current_page.HELP_URL
         if not url:
-            url = 'doc_options'  # key in ReadTheDocs.DOCUMENTATION_ITEMS
+            url = 'doc_options'  # key in PICARD_DOCS_URLS
         return url
 
     def accept(self):

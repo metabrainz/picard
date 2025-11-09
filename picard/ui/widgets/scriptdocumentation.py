@@ -33,7 +33,7 @@ from picard.const.tags import (
 )
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
-from picard.util.readthedocs import ReadTheDocs
+from picard.util import get_url
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
@@ -217,7 +217,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         if include_link:
             link = (
                 '<a href="'
-                + ReadTheDocs.get_url('doc_scripting')
+                + get_url('doc_scripting')
                 + '">'
                 + _('Open Scripting Documentation in your browser')
                 + '</a>'

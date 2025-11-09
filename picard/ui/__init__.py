@@ -44,10 +44,10 @@ from picard.const.sys import (
     IS_WIN,
 )
 from picard.util import (
+    get_url,
     restore_method,
     webbrowser2,
 )
-from picard.util.readthedocs import ReadTheDocs
 
 
 if IS_MACOS:
@@ -202,7 +202,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
     def show_help(self, help_url=None):
         url = help_url or self.help_url
         if url:
-            webbrowser2.open(ReadTheDocs.get_url(url))
+            webbrowser2.open(get_url(url))
 
 
 # With py3, QObjects are no longer hashable unless they have

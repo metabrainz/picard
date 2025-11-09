@@ -24,10 +24,10 @@ from test.picardtestcase import PicardTestCase
 
 from picard.const import (
     DOCS_SERVER_URL,
-    PICARD_URLS,
     READTHEDOCS_BASE_LANGUAGE,
     READTHEDOCS_BASE_VERSION,
 )
+from picard.util import get_url
 from picard.util.readthedocs import ReadTheDocs
 from picard.version import Version
 
@@ -50,6 +50,8 @@ class TestReadTheDocs(PicardTestCase):
         self.save_webservice = ReadTheDocs._webservice
         self.save_languages = ReadTheDocs.languages
         self.save_versions = ReadTheDocs.versions
+        self.save_matched_language = ReadTheDocs.matched_language
+        self.save_matched_version = ReadTheDocs.matched_version
         self.default_language_set = set([READTHEDOCS_BASE_LANGUAGE])
         self.default_version_set = set([READTHEDOCS_BASE_VERSION])
         ReadTheDocs._webservice = None  # Ensure no internet connection is used during testing
@@ -59,6 +61,8 @@ class TestReadTheDocs(PicardTestCase):
         ReadTheDocs._webservice = self.save_webservice
         ReadTheDocs.languages = self.save_languages
         ReadTheDocs.versions = self.save_versions
+        ReadTheDocs.matched_language = self.save_matched_language
+        ReadTheDocs.matched_version = self.save_matched_version
         super().tearDown()
 
     def test_languages_1(self):
@@ -211,50 +215,38 @@ class TestReadTheDocs(PicardTestCase):
                 with patch('picard.util.readthedocs.PICARD_VERSION', testcase.version):
                     test_text = f"Testing language='{testcase.language}' and version='{testcase.version_text}'"
 
-                    ReadTheDocs._matched_language = ReadTheDocs._get_language()
-                    ReadTheDocs._matched_version = ReadTheDocs._get_version()
+                    ReadTheDocs.matched_language = ReadTheDocs._get_language()
+                    ReadTheDocs.matched_version = ReadTheDocs._get_version()
 
                     base = f"{DOCS_SERVER_URL}{testcase.language_used}/{testcase.version_used}"
 
-                    self.assertEqual(ReadTheDocs._matched_language, testcase.language_used, test_text)
-                    self.assertEqual(ReadTheDocs._matched_version, testcase.version_used, test_text)
+                    self.assertEqual(ReadTheDocs.matched_language, testcase.language_used, test_text)
+                    self.assertEqual(ReadTheDocs.matched_version, testcase.version_used, test_text)
                     self.assertEqual(
-                        ReadTheDocs.get_url('documentation_server'),
+                        get_url('documentation_server'),
                         f"{DOCS_SERVER_URL}{testcase.language_used}/{READTHEDOCS_BASE_VERSION}/",
                         test_text,
                     )
-                    self.assertEqual(ReadTheDocs.get_url('documentation'), base, test_text)
+                    self.assertEqual(get_url('documentation'), base, test_text)
                     self.assertEqual(
-                        ReadTheDocs.get_url('troubleshooting'),
+                        get_url('troubleshooting'),
                         f"{base}/troubleshooting/troubleshooting.html",
                         test_text,
                     )
-                    self.assertEqual(ReadTheDocs.get_url('doc_options'), f"{base}/config/configuration.html", test_text)
+                    self.assertEqual(get_url('doc_options'), f"{base}/config/configuration.html", test_text)
+                    self.assertEqual(get_url('doc_scripting'), f"{base}/extending/scripting.html", test_text)
                     self.assertEqual(
-                        ReadTheDocs.get_url('doc_scripting'), f"{base}/extending/scripting.html", test_text
-                    )
-                    self.assertEqual(
-                        ReadTheDocs.get_url('doc_tags_from_filenames'),
+                        get_url('doc_tags_from_filenames'),
                         f"{base}/usage/tags_from_file_names.html",
                         test_text,
                     )
                     self.assertEqual(
-                        ReadTheDocs.get_url('doc_naming_script_edit'),
+                        get_url('doc_naming_script_edit'),
                         f"{base}/config/options_filerenaming_editor.html",
                         test_text,
                     )
                     self.assertEqual(
-                        ReadTheDocs.get_url('home'),
-                        PICARD_URLS['home'],
-                        test_text,
-                    )
-                    self.assertEqual(
-                        ReadTheDocs.get_url('/test.html'),
+                        get_url('/test.html'),
                         f"{base}/test.html",
-                        test_text,
-                    )
-                    self.assertEqual(
-                        ReadTheDocs.get_url('not_a_valid_key'),
-                        'not_a_valid_key',
                         test_text,
                     )
