@@ -6,7 +6,7 @@ permissions: {}
 
 jobs:
   package-macos:
-    runs-on: macos-13
+    runs-on: macos-14
     strategy:
       matrix:
         setup:
