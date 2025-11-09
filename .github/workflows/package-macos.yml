@@ -54,18 +54,18 @@ jobs:
         python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Install dependencies
       run: |
-        pip3 install -r requirements-build.txt
-        pip3 install --no-binary "charset-normalizer,PyYAML" -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
-        pip install zstandard
+        arch -${TARGET_ARCH} pip install -r requirements-build.txt
+        arch -${TARGET_ARCH} pip install --no-binary "charset-normalizer,PyYAML" -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
+        arch -${TARGET_ARCH} pip install zstandard
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Run tests
       timeout-minutes: 30
-      run: pytest --verbose
+      run: arch -${TARGET_ARCH} pytest --verbose
     - name: Prepare code signing certificate
       run: |
         if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
-          pip3 install awscli
+          pip install awscli
           aws s3 cp "$CODESIGN_MACOS_P12_URL" ./scripts/package/appledev.p12
         else
           echo "::warning::No code signing certificate available, skipping code signing."
@@ -77,7 +77,7 @@ jobs:
         CODESIGN_MACOS_P12_URL: ${{ secrets.CODESIGN_MACOS_P12_URL }}
     - name: Build macOS app
       run: |
-        ./scripts/package/macos-package-app.sh
+        arch -${TARGET_ARCH} ./scripts/package/macos-package-app.sh
         rm -f ./scripts/package/appledev.p12
         mv dist/*.dmg artifacts/
       env:
