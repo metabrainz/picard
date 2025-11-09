@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-11-08 19:20+0000\n"
+"PO-Revision-Date: 2025-11-09 20:20+0000\n"
 "Last-Translator: GABG <musicbrainz@gabg.email>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "3/app/it/>\n"
@@ -6141,7 +6141,7 @@ msgstr "Impostazioni di opzione disponibili"
 
 #: picard/ui/options/interface_quick_menu.py:82
 msgid "group_title"
-msgstr "group_title"
+msgstr "titolo_gruppo"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
