@@ -76,11 +76,7 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import (
-    PROGRAM_UPDATE_LEVELS,
-    READTHEDOCS_UPDATES_ALLOWED_KEY,
-    READTHEDOCS_UPDATES_ASK_KEY,
-)
+from picard.const import PROGRAM_UPDATE_LEVELS
 from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     IS_MACOS,
@@ -2097,11 +2093,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_allow_rtd_updates_dialog(self):
         config = get_config()
-        if not config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY] and config.setting[READTHEDOCS_UPDATES_ASK_KEY]:
+        if not config.setting['check_rtd_updates'] and config.setting['rtd_updates_ask']:
             msg = AllowRtdUpdatesDialog(self)
             allow, ask = msg.show()
-            config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY] = allow
-            config.setting[READTHEDOCS_UPDATES_ASK_KEY] = ask
+            config.setting['check_rtd_updates'] = allow
+            config.setting['rtd_updates_ask'] = ask
 
         ReadTheDocs.update_documentation_items()  # Retry updates if required
 

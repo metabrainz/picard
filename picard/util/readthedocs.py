@@ -30,7 +30,6 @@ from picard.const import (
     READTHEDOCS_BASE_LANGUAGE,
     READTHEDOCS_BASE_VERSION,
     READTHEDOCS_PROJECT_API,
-    READTHEDOCS_UPDATES_ALLOWED_KEY,
 )
 from picard.version import Version
 
@@ -84,7 +83,7 @@ class ReadTheDocs:
 
         # User has updating disabled
         config = get_config()
-        if not config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY]:
+        if not config.setting['check_rtd_updates']:
             return
 
         cls._version_checking = True
@@ -141,7 +140,7 @@ class ReadTheDocs:
 
         # User has updating disabled
         config = get_config()
-        if not config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY]:
+        if not config.setting['check_rtd_updates']:
             return
 
         cls._language_checking = True

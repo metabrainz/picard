@@ -37,7 +37,6 @@ from picard.config import get_config
 from picard.const import (
     MUSICBRAINZ_SERVERS,
     PROGRAM_UPDATE_LEVELS,
-    READTHEDOCS_UPDATES_ALLOWED_KEY,
 )
 from picard.const.defaults import DEFAULT_PROGRAM_UPDATE_LEVEL
 from picard.extension_points.options_pages import register_options_page
@@ -66,7 +65,7 @@ class GeneralOptionsPage(OptionsPage):
         ('analyze_new_files', ['analyze_new_files']),
         ('cluster_new_files', ['cluster_new_files']),
         ('ignore_file_mbids', ['ignore_file_mbids']),
-        (READTHEDOCS_UPDATES_ALLOWED_KEY, ['check_rtd_updates']),
+        ('check_rtd_updates', ['check_rtd_updates']),
         ('check_for_plugin_updates', ['check_for_plugin_updates']),
         ('check_for_updates', ['check_for_updates']),
         ('update_check_days', ['update_check_days']),
@@ -97,7 +96,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
-        self.ui.check_rtd_updates.setChecked(config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY])
+        self.ui.check_rtd_updates.setChecked(config.setting['check_rtd_updates'])
         self.ui.check_for_plugin_updates.setChecked(config.setting['check_for_plugin_updates'])
         self.ui.check_for_updates.setChecked(config.setting['check_for_updates'])
         self.set_update_level(config.setting['update_level'])
@@ -126,7 +125,7 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
-        config.setting[READTHEDOCS_UPDATES_ALLOWED_KEY] = self.ui.check_rtd_updates.isChecked()
+        config.setting['check_rtd_updates'] = self.ui.check_rtd_updates.isChecked()
         config.setting['check_for_plugin_updates'] = self.ui.check_for_plugin_updates.isChecked()
         config.setting['check_for_updates'] = self.ui.check_for_updates.isChecked()
         config.setting['update_level'] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
