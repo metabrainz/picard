@@ -4,12 +4,9 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass
-import os
-from typing import Iterator, cast
-from unittest.mock import Mock
+from typing import Iterator
 
-from PyQt6 import QtCore, QtWidgets
-from PyQt6.QtWidgets import QApplication
+from PyQt6 import QtWidgets
 
 from picard.config import (
     Option,
@@ -20,47 +17,6 @@ from picard.i18n import setup_gettext
 import pytest
 
 from picard.ui.coverartbox import CoverArtBox
-
-
-@pytest.fixture(scope="session", autouse=True)
-def qapplication() -> QApplication:
-    os.environ.setdefault('QT_QPA_PLATFORM', "offscreen")
-    app = QApplication.instance() or QApplication([])
-
-    # Install a minimal QCoreApplication.instance compatible object for tests
-    class _FakeTagger(QtCore.QObject):
-        def primaryScreen(self):  # noqa: N802
-            class _Screen:
-                @staticmethod
-                def devicePixelRatio() -> float:  # pragma: no cover - constant
-                    return 1.0
-
-            return _Screen()
-
-    QtCore.QCoreApplication.instance = lambda: _FakeTagger()  # type: ignore[assignment]
-
-    # Initialize a fake global config for tests
-    from picard import config as config_mod
-
-    fake_config = Mock()
-    fake_config.setting = {}
-    fake_config.persist = {}
-    fake_config.profiles = {}
-    config_mod.config = fake_config
-    config_mod.setting = fake_config.setting
-    config_mod.persist = fake_config.persist
-    config_mod.profiles = fake_config.profiles
-
-    # Ensure options are registered
-    # Populate default values for all registered 'setting' options
-    from picard.config import Option as _Option
-    import picard.options  # noqa: F401
-
-    for (section, name), opt in list(_Option.registry.items()):
-        if section == "setting":
-            fake_config.setting.setdefault(name, opt.default)
-
-    return cast(QApplication, app)
 
 
 @pytest.fixture(autouse=True)
