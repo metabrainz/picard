@@ -10,10 +10,10 @@ jobs:
     strategy:
       matrix:
         setup:
-        - macos-deployment-version: '11.0'
+        - macos-deployment-target: '11.0'
           runner: 'macos-14'
           target-arch: 'x86_64'
-        - macos-deployment-version: '11.0'
+        - macos-deployment-target: '11.0'
           runner: 'macos-14'
           target-arch: 'arm64'
       fail-fast: false
@@ -22,7 +22,7 @@ jobs:
       DISCID_SHA256SUM: 8aa187dd5afdecc06441b49e086dd9a46b3ffac818fd9c1dae0cb55780d846f2
       FPCALC_VERSION: 1.6.0
       FPCALC_SHA256SUM: 31f654cce8308fcb22869d043770eb66afffed95e8a548fd877f0e670c16d7ec
-      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-target }}
       TARGET_ARCH: ${{ matrix.setup.target-arch }}
       CODESIGN: 0
     steps:
@@ -37,7 +37,7 @@ jobs:
         cache: 'pip'
         cache-dependency-path: |
           requirements-build.txt
-          requirements-macos-11.0.txt
+          requirements-macos-${{ matrix.setup.macos-deployment-target }}.txt
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
@@ -88,5 +88,5 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v5
       with:
-        name: macos-app-${{ matrix.setup.macos-deployment-version }}-${{ matrix.setup.target-arch }}
+        name: macos-app-${{ matrix.setup.macos-deployment-target }}-${{ matrix.setup.target-arch }}
         path: artifacts/
