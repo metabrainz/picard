@@ -48,7 +48,8 @@ class TestReadTheDocs(PicardTestCase):
         """Save current state of ReadTheDocs settings"""
         super().setUp()
         self.save_webservice = ReadTheDocs._webservice
-        self.save_available = ReadTheDocs.available
+        self.save_languages_api = ReadTheDocs._languages_api
+        self.save_versions_api = ReadTheDocs._versions_api
         self.save_matched_language = ReadTheDocs.matched_language
         self.save_matched_version = ReadTheDocs.matched_version
         self.default_language_set = set([READTHEDOCS_BASE_LANGUAGE])
@@ -58,14 +59,15 @@ class TestReadTheDocs(PicardTestCase):
     def tearDown(self):
         """Restore original state of ReadTheDocs settings"""
         ReadTheDocs._webservice = self.save_webservice
-        ReadTheDocs.available = self.save_available
+        ReadTheDocs._languages_api = self.save_languages_api
+        ReadTheDocs._versions_api = self.save_versions_api
         ReadTheDocs.matched_language = self.save_matched_language
         ReadTheDocs.matched_version = self.save_matched_version
         super().tearDown()
 
     def test_languages_1(self):
         """Test default language"""
-        ReadTheDocs.available['languages'] = set()
+        ReadTheDocs._languages_api.available_items = set()
 
         self.assertEqual(ReadTheDocs._get_language('en'), 'en')
         self.assertEqual(ReadTheDocs._get_language('en_CA'), 'en')
@@ -74,7 +76,7 @@ class TestReadTheDocs(PicardTestCase):
 
     def test_languages_2(self):
         """Test languages without additional locale code"""
-        ReadTheDocs.available['languages'] = {'en', 'fr'}
+        ReadTheDocs._languages_api.available_items = {'en', 'fr'}
 
         self.assertEqual(ReadTheDocs._get_language('en'), 'en')
         self.assertEqual(ReadTheDocs._get_language('en_CA'), 'en')
@@ -84,7 +86,7 @@ class TestReadTheDocs(PicardTestCase):
 
     def test_languages_3(self):
         """Test languages with additional locale code"""
-        ReadTheDocs.available['languages'] = {'en_CA', 'en_GB', 'fr_CA'}
+        ReadTheDocs._languages_api.available_items = {'en_CA', 'en_GB', 'fr_CA'}
 
         self.assertEqual(ReadTheDocs._get_language('en'), 'en_CA')
         self.assertEqual(ReadTheDocs._get_language('en_CA'), 'en_CA')
@@ -95,20 +97,20 @@ class TestReadTheDocs(PicardTestCase):
 
     def test_languages_4(self):
         """Test languages with language from QLocale"""
-        ReadTheDocs.available['languages'] = {'en_CA', 'en_GB', 'fr_CA'}
+        ReadTheDocs._languages_api.available_items = {'en_CA', 'en_GB', 'fr_CA'}
         with patch('picard.util.readthedocs.QLocale.system') as mock_system:
             mock_system.return_value.name.return_value = 'en_US'
             self.assertEqual(ReadTheDocs._get_language(), 'en_CA')
 
     def test_versions_1(self):
         """Test default version"""
-        ReadTheDocs.available['versions'] = set()
+        ReadTheDocs._versions_api.available_items = set()
         self.assertEqual(ReadTheDocs._get_version(), READTHEDOCS_BASE_VERSION)
         self.assertEqual(ReadTheDocs._get_version(Version(1, 0, 0)), READTHEDOCS_BASE_VERSION)
 
     def test_versions_2(self):
         """Test version matching"""
-        ReadTheDocs.available['versions'] = {'v2.0', 'v2.1'}
+        ReadTheDocs._versions_api.available_items = {'v2.0', 'v2.1'}
         self.assertEqual(ReadTheDocs._get_version(Version(1, 0, 0)), READTHEDOCS_BASE_VERSION)
 
         self.assertEqual(ReadTheDocs._get_version(Version(2, 0, 0)), 'v2.0')
@@ -124,28 +126,28 @@ class TestReadTheDocs(PicardTestCase):
 
     def test_parse_languages_1(self):
         """Test parsing languages response - throttled"""
-        ReadTheDocs.available['languages'] = set()
+        ReadTheDocs._languages_api.available_items = set()
         response = {'detail': ReadTheDocs.THROTTLED_MESSAGE}
         ReadTheDocs._languages_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['languages'], set())
+        self.assertEqual(ReadTheDocs._languages_api.available_items, set())
 
     def test_parse_languages_2(self):
         """Test parsing languages response - RTD error"""
-        ReadTheDocs.available['languages'] = set()
+        ReadTheDocs._languages_api.available_items = set()
         response = {'detail': 'RTD error'}
         ReadTheDocs._languages_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['languages'], self.default_language_set)
+        self.assertEqual(ReadTheDocs._languages_api.available_items, self.default_language_set)
 
     def test_parse_languages_3(self):
         """Test parsing languages response - No languages in results"""
-        ReadTheDocs.available['languages'] = set()
+        ReadTheDocs._languages_api.available_items = set()
         response = {'results': []}
         ReadTheDocs._languages_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['languages'], self.default_language_set)
+        self.assertEqual(ReadTheDocs._languages_api.available_items, self.default_language_set)
 
     def test_parse_languages_4(self):
         """Test parsing languages response - Languages in results"""
-        ReadTheDocs.available['languages'] = set()
+        ReadTheDocs._languages_api.available_items = set()
         response = {
             'results': [
                 {'language': {'code': 'en_CA'}},
@@ -156,32 +158,32 @@ class TestReadTheDocs(PicardTestCase):
         }
         test_set = set([READTHEDOCS_BASE_LANGUAGE, 'en_CA', 'en_GB', 'fr', 'fr_CA'])
         ReadTheDocs._languages_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['languages'], test_set)
+        self.assertEqual(ReadTheDocs._languages_api.available_items, test_set)
 
     def test_parse_versions_1(self):
         """Test parsing versions response - throttled"""
-        ReadTheDocs.available['versions'] = set()
+        ReadTheDocs._versions_api.available_items = set()
         response = {'detail': ReadTheDocs.THROTTLED_MESSAGE}
         ReadTheDocs._versions_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['versions'], set())
+        self.assertEqual(ReadTheDocs._versions_api.available_items, set())
 
     def test_parse_versions_2(self):
         """Test parsing versions response - RTD error"""
-        ReadTheDocs.available['versions'] = set()
+        ReadTheDocs._versions_api.available_items = set()
         response = {'detail': 'RTD error'}
         ReadTheDocs._versions_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['versions'], self.default_version_set)
+        self.assertEqual(ReadTheDocs._versions_api.available_items, self.default_version_set)
 
     def test_parse_versions_3(self):
         """Test parsing versions response - No versions in results"""
-        ReadTheDocs.available['versions'] = set()
+        ReadTheDocs._versions_api.available_items = set()
         response = {'results': []}
         ReadTheDocs._versions_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['versions'], self.default_version_set)
+        self.assertEqual(ReadTheDocs._versions_api.available_items, self.default_version_set)
 
     def test_parse_versions_4(self):
         """Test parsing versions response - Both active and inactive versions in results"""
-        ReadTheDocs.available['versions'] = set()
+        ReadTheDocs._versions_api.available_items = set()
         response = {
             'results': [
                 {'active': True, 'slug': 'v1.0'},
@@ -193,12 +195,12 @@ class TestReadTheDocs(PicardTestCase):
         }
         test_set = set([READTHEDOCS_BASE_VERSION, 'v1.0', 'v1.1', 'v2.0', 'stable'])
         ReadTheDocs._versions_json_loaded(response=response, reply=None, error=False)
-        self.assertEqual(ReadTheDocs.available['versions'], test_set)
+        self.assertEqual(ReadTheDocs._versions_api.available_items, test_set)
 
     def test_documentation_items(self):
         """Test documentation items are properly updated with version and language changes"""
-        ReadTheDocs.available['versions'] = {'v1.0', 'v2.0', 'v2.1', 'stable', 'latest'}
-        ReadTheDocs.available['languages'] = {'en', 'fr'}
+        ReadTheDocs._versions_api.available_items = {'v1.0', 'v2.0', 'v2.1', 'stable', 'latest'}
+        ReadTheDocs._languages_api.available_items = {'en', 'fr'}
 
         for testcase in [
             MyTestCase('en_CA', 'en', Version(2, 0, 0), 'v2.0'),

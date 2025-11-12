@@ -34,30 +34,37 @@ from picard.const import (
 from picard.version import Version
 
 
+class RtdApiItem:
+    """ReadTheDocs API item"""
+
+    def __init__(self, title: str, parameter: str):
+        self.available_items = set()
+        """Available items"""
+
+        self.check_in_progress = False
+        """Checking in progress flag"""
+
+        self.title = title
+        """Title of the API item"""
+
+        self.parameter = parameter
+        """Parameter to use in the API call URL"""
+
+
 class ReadTheDocs:
     """Provide available documentation information from ReadTheDocs."""
 
     THROTTLED_MESSAGE = "Request was throttled."
     _webservice = None
-    _api_calls = None
 
-    available = {
-        'languages': set(),
-        'versions': set(),
-    }
-    """Available languages and versions."""
+    _languages_api = RtdApiItem('languages', 'translations')
+    _versions_api = RtdApiItem('versions', 'versions')
 
     matched_language = READTHEDOCS_BASE_LANGUAGE
     """Best match to available languages"""
 
     matched_version = READTHEDOCS_BASE_VERSION
     """Best match to available versions"""
-
-    _checking_flags = {
-        'languages': False,
-        'versions': False,
-    }
-    """Flags indicating check is in progress"""
 
     @classmethod
     def initialize(cls, webservice=None):
@@ -69,53 +76,47 @@ class ReadTheDocs:
             to the ReadTheDocs API. Defaults to None.
         """
         cls._webservice = webservice
-        cls._api_calls = {
-            'languages': {
-                'parameter': 'translations',
-                'handler': cls._languages_json_loaded,
-            },
-            'versions': {
-                'parameter': 'versions',
-                'handler': cls._versions_json_loaded,
-            },
-        }
         cls.update_documentation_items()
 
     @classmethod
-    def _call_api(cls, query: str):
+    def _call_api(cls, api_item: RtdApiItem, handler: callable = None):
         """Call the API to query the selected information.
 
         Args:
-            query (str): Information to query.
+            item (RtdApiItem): Item to query.
+            handler (callable): Method to call to process the API response.
         """
-        # Unknown API query
-        if not cls._api_calls or query not in cls._api_calls:
-            return
-
         # Only update if webservice defined
         if not cls._webservice:
+            log.warning("No webservice defined.")
             return
 
-        # Only update once per session
-        if cls.available[query]:
+        # No handler provided
+        if not handler:
+            log.warning("No API return handler provided for %s query.", api_item.title)
+            return
+
+        # Only update once per session (set not empty)
+        if api_item.available_items:
             return
 
         # Update currently in progress
-        if cls._checking_flags[query]:
+        if api_item.check_in_progress:
             return
 
         # User has updating disabled
         config = get_config()
         if not config.setting['check_rtd_updates']:
+            log.info("Updates disabled in user settings.")
             return
 
-        cls._checking_flags[query] = True
+        api_item.check_in_progress = True
         # Set high limit to avoid paging results
-        url = READTHEDOCS_PROJECT_API + '/' + cls._api_calls[query]['parameter'] + '/?limit=500'
-        log.debug("Getting documentation %s information from %s", query, url)
+        url = READTHEDOCS_PROJECT_API + '/' + api_item.parameter + '/?limit=500'
+        log.debug("Getting documentation %s information from %s", api_item.title, url)
         cls._webservice.get_url(
             url=url,
-            handler=cls._api_calls[query]['handler'],
+            handler=handler,
             priority=True,
             important=True,
         )
@@ -123,7 +124,7 @@ class ReadTheDocs:
     @classmethod
     def _update_versions(cls):
         """Retrieves the available versions information from ReadTheDocs."""
-        cls._call_api('versions')
+        cls._call_api(cls._versions_api, handler=cls._versions_json_loaded)
 
     @classmethod
     def _versions_json_loaded(cls, response, reply, error):
@@ -133,32 +134,32 @@ class ReadTheDocs:
             log.error(error_message, reply.errorString())
         else:
             # Add item to ensure no future update attempts if no active items in results
-            cls.available['versions'].add(READTHEDOCS_BASE_VERSION)
+            cls._versions_api.available_items.add(READTHEDOCS_BASE_VERSION)
             if response:
                 if 'detail' in response:
                     log.error(error_message, response['detail'])
                     if response['detail'].startswith(cls.THROTTLED_MESSAGE):
                         # Clear set to allow retrying future update attempts
-                        cls.available['versions'] = set()
+                        cls._versions_api.available_items = set()
 
                 if 'results' in response:
                     # Add item to ensure no future update attempts if no active items in results
                     for item in response['results']:
                         if 'active' in item and item['active']:
-                            cls.available['versions'].add(item['slug'])
-                    log.info(f"Available documentation versions: {cls.available['versions']}")
+                            cls._versions_api.available_items.add(item['slug'])
+                    log.info(f"Available documentation versions: {cls._versions_api.available_items}")
                 else:
                     log.error(error_message, "No results returned")
 
-        if cls.available['versions']:
+        if cls._versions_api.available_items:
             cls.matched_version = cls._get_version()
 
-        cls._version_checking = False
+        cls._versions_api.check_in_progress = False
 
     @classmethod
     def _update_languages(cls):
         """Retrieves the available languages information from ReadTheDocs."""
-        cls._call_api('languages')
+        cls._call_api(cls._languages_api, handler=cls._languages_json_loaded)
 
     @classmethod
     def _languages_json_loaded(cls, response, reply, error):
@@ -168,26 +169,26 @@ class ReadTheDocs:
             log.error(error_message, reply.errorString())
         else:
             # Add item to ensure no future update attempts if no active items in results
-            cls.available['languages'].add(READTHEDOCS_BASE_LANGUAGE)
+            cls._languages_api.available_items.add(READTHEDOCS_BASE_LANGUAGE)
             if response:
                 if 'detail' in response:
                     log.error(error_message, response['detail'])
                     if response['detail'].startswith(cls.THROTTLED_MESSAGE):
                         # Clear set to allow retrying future update attempts
-                        cls.available['languages'] = set()
+                        cls._languages_api.available_items = set()
 
                 if 'results' in response:
                     for item in response['results']:
                         if 'language' in item and 'code' in item['language']:
-                            cls.available['languages'].add(item['language']['code'])
-                    log.info(f"Available documentation languages: {cls.available['languages']}")
+                            cls._languages_api.available_items.add(item['language']['code'])
+                    log.info(f"Available documentation languages: {cls._languages_api.available_items}")
                 else:
                     log.error(error_message, "No results returned")
 
-        if cls.available['languages']:
+        if cls._languages_api.available_items:
             cls.matched_language = cls._get_language()
 
-        cls._language_checking = False
+        cls._languages_api.check_in_progress = False
 
     @classmethod
     def _get_language(cls, language: str = None) -> str:
@@ -199,24 +200,26 @@ class ReadTheDocs:
         Returns:
             str: Closest available documentation language.
         """
-        if not cls.available['languages']:
-            # Languages not updated from the ReadTheDocs API
-            return READTHEDOCS_BASE_LANGUAGE
+        matched_language = READTHEDOCS_BASE_LANGUAGE
+        if cls._languages_api.available_items:
+            if language is None:
+                config = get_config()
+                language = config.setting['ui_language'] or QLocale.system().name() or READTHEDOCS_BASE_LANGUAGE
 
-        if language is None:
-            config = get_config()
-            language = config.setting['ui_language'] or QLocale.system().name() or READTHEDOCS_BASE_LANGUAGE
+            if language in cls._languages_api.available_items:
+                matched_language = language
 
-        if language in cls.available['languages']:
-            return language
+            else:
+                # No exact match found so try matching the base language
+                base_language = language.split('_')[0]
+                for lang in sorted(cls._languages_api.available_items):
+                    if lang.startswith(base_language):
+                        matched_language = lang
+                        break
 
-        # No exact match found so try matching the base language
-        base_language = language.split('_')[0]
-        for lang in sorted(cls.available['languages']):
-            if lang.startswith(base_language):
-                return lang
+            log.debug("Matched documentation language set to '%s'", matched_language)
 
-        return READTHEDOCS_BASE_LANGUAGE
+        return matched_language
 
     @classmethod
     def _get_version(cls, version: Version = None) -> str:
@@ -228,18 +231,18 @@ class ReadTheDocs:
         Returns:
             str: Closest available documentation version.
         """
-        if not cls.available['versions']:
-            # Versions not updated from the ReadTheDocs API
-            return READTHEDOCS_BASE_VERSION
+        matched_version = READTHEDOCS_BASE_VERSION
+        if cls._versions_api.available_items:
+            if version is None:
+                version = PICARD_VERSION
 
-        if version is None:
-            version = PICARD_VERSION
+            rtd_version = f"v{version.major}.{version.minor}"
+            if version.identifier == 'final' and rtd_version in cls._versions_api.available_items:
+                matched_version = rtd_version
 
-        rtd_version = f"v{version.major}.{version.minor}"
-        if version.identifier != 'final' or rtd_version not in cls.available['versions']:
-            return READTHEDOCS_BASE_VERSION
+            log.debug("Matched documentation version set to '%s'", matched_version)
 
-        return rtd_version
+        return matched_version
 
     @classmethod
     def update_documentation_items(cls):

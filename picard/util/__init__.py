@@ -771,7 +771,6 @@ def get_url(url_key: str) -> str:
     Returns:
         str: Updated URL, or provided URL key if not matched.
     """
-    log.debug(f"Matched language = '{ReadTheDocs.matched_language}'")
     if url_key.startswith('/'):
         return (
             PICARD_DOCS_URLS['documentation'].format(
