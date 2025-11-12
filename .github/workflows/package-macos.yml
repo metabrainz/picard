@@ -10,13 +10,13 @@ jobs:
     strategy:
       matrix:
         setup:
-        - macos-deployment-version: 10.12
-          python-version: 3.9.12-macosx10.9
-          python-sha256sum: 7888174c6fe441b00448c7ab3e9cbf0e6c3c7dea0750577baf09e1383fc44656
+        - macos-deployment-target: '10.12'
+          target-arch: 'x86_64'
+          python-version: '3.9'
           disable-webp: 1
-        - macos-deployment-version: 10.14
-          python-version: 3.11.5-macos11
-          python-sha256sum: c6cd76659bfb364c2ac63bc57f6b10c1e131a20170359c5d65e2d41fdc674a4f
+        - macos-deployment-target: '10.14'
+          target-arch: 'x86_64'
+          python-version: '3.11'
           disable-webp: 0
       fail-fast: false
     env:
@@ -24,15 +24,22 @@ jobs:
       DISCID_SHA256SUM: 829133dd38acbdaa2b989de59e256c8d139ac34cb4dd4b8fd3c9d55a97c824f3
       FPCALC_VERSION: 1.5.1
       FPCALC_SHA256SUM: d4d8faff4b5f7c558d9be053da47804f9501eaa6c2f87906a9f040f38d61c860
-      PYTHON_VERSION: ${{ matrix.setup.python-version }}
-      PYTHON_SHA256SUM: ${{ matrix.setup.python-sha256sum }}
-      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-version }}
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-target }}
+      TARGET_ARCH: ${{ matrix.setup.target-arch }}
       CODESIGN: 0
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.setup.python-version }}
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements-build.txt
+          requirements-macos-${{ matrix.setup.macos-deployment-target }}.txt
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
@@ -57,19 +64,19 @@ jobs:
         pip3 install .
       env:
         PYINSTALLER_VERSION: v5.13.2
-        CFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
-        CPPFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
-        LDFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
-        LINKFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-version }}
+        CFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-target }}
+        CPPFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-target }}
+        LDFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-target }}
+        LINKFLAGS: -mmacosx-version-min=${{ matrix.setup.macos-deployment-target }}
     - name: Install dependencies
       run: |
-        pip3 install -r requirements-build.txt
-        pip3 install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
-        pip3 install zstandard
+        arch -${TARGET_ARCH} pip install -r requirements-build.txt
+        arch -${TARGET_ARCH} pip install -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
+        arch -${TARGET_ARCH} pip install zstandard
     - name: Run tests
       timeout-minutes: 30
       run: |
-        python3 setup.py test
+        arch -${TARGET_ARCH} python3 setup.py test
     - name: Prepare code signing certificate
       run: |
         if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
@@ -85,7 +92,7 @@ jobs:
         CODESIGN_MACOS_P12_URL: ${{ secrets.CODESIGN_MACOS_P12_URL }}
     - name: Build macOS app
       run: |
-        ./scripts/package/macos-package-app.sh
+        arch -${TARGET_ARCH} ./scripts/package/macos-package-app.sh
         rm -f ./scripts/package/appledev.p12
         mv dist/*.dmg artifacts/
       env:
@@ -97,5 +104,5 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: macos-app-${{ matrix.setup.macos-deployment-version }}
+        name: macos-app-${{ matrix.setup.macos-deployment-target }}
         path: artifacts/
