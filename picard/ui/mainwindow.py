@@ -868,9 +868,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     @MainWindowActions.add()
     def _create_open_collection_in_browser_action(self):
-        config = get_config()
         action = QtWidgets.QAction(_("&Open My Collections in Browser"), self)
-        action.setEnabled(config.setting['username'] != '')
+        action.setEnabled(self.tagger.webservice.oauth_manager.is_logged_in())
         action.triggered.connect(self.open_collection_in_browser)
         self.open_collection_in_browser_action = action
 
