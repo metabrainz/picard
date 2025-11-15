@@ -490,9 +490,8 @@ def _create_tags_from_filenames_action(parent):
 
 @add_action(MainAction.OPEN_COLLECTION_IN_BROWSER)
 def _create_open_collection_in_browser_action(parent):
-    config = get_config()
     action = QtGui.QAction(_("&Open My Collections in Browser"), parent)
-    action.setEnabled(config.setting['username'] != '')
+    action.setEnabled(parent.tagger.webservice.oauth_manager.is_logged_in())
     action.triggered.connect(parent.open_collection_in_browser)
     return action
 
