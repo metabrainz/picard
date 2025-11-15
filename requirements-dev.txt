@@ -314,7 +314,13 @@ pyqt6-sip==13.10.2 \
 pytest==9.0.0 \
     --hash=sha256:8f44522eafe4137b0f35c9ce3072931a788a21ee40a2ed279e817d3cc16ed21e \
     --hash=sha256:e5ccdf10b0bac554970ee88fc1a4ad0ee5d221f8ef22321f9b7e4584e19d7f96
-    # via pytest-xdist
+    # via
+    #   pytest-randomly
+    #   pytest-xdist
+pytest-randomly==4.0.1 \
+    --hash=sha256:174e57bb12ac2c26f3578188490bd333f0e80620c3f47340158a86eca0593cd8 \
+    --hash=sha256:e0dfad2fd4f35e07beff1e47c17fbafcf98f9bf4531fd369d9260e2f858bfcb7
+    # via picard (pyproject.toml:dev)
 pytest-xdist==3.8.0 \
     --hash=sha256:202ca578cfeb7370784a8c33d6d05bc6e13b4f25b5053c30a152269fd10f0b88 \
     --hash=sha256:7e578125ec9bc6050861aa93f2d59f1d8d085595d6551c2c90b6f4fad8d3a9f1

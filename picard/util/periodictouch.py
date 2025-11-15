@@ -29,22 +29,24 @@ from picard import log
 
 TOUCH_FILES_DELAY_SECONDS = 4 * 3600
 
-_touch_timer = QTimer()
+_touch_timer = None
 _files_to_touch = set()
 
 
 def register_file(filepath):
-    if _touch_timer.isActive():
+    if _touch_timer and _touch_timer.isActive():
         _files_to_touch.add(filepath)
 
 
 def unregister_file(filepath):
-    if _touch_timer.isActive():
+    if _touch_timer and _touch_timer.isActive():
         _files_to_touch.discard(filepath)
 
 
 def enable_timer():
     log.debug("Setup timer for touching files every %i seconds", TOUCH_FILES_DELAY_SECONDS)
+    global _touch_timer
+    _touch_timer = QTimer()
     _touch_timer.timeout.connect(_touch_files)
     _touch_timer.start(TOUCH_FILES_DELAY_SECONDS * 1000)
 

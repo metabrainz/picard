@@ -129,8 +129,7 @@ def test_as_list(values: Any, expected: list[Any]) -> None:
     assert result == expected
 
 
-@patch("picard.log.log")
-def test_safe_apply_metadata_success(mock_log: Mock) -> None:
+def test_safe_apply_metadata_success() -> None:
     """Test successful metadata application."""
     file_mock = Mock(spec=File)
     file_mock.metadata = Mock()
@@ -149,8 +148,7 @@ def test_safe_apply_metadata_success(mock_log: Mock) -> None:
     assert metadata.length == 123456
 
 
-@patch("picard.log.log")
-def test_safe_apply_metadata_success_with_none_length(mock_log: Mock) -> None:
+def test_safe_apply_metadata_success_with_none_length() -> None:
     """Test successful metadata application with None length."""
     file_mock = Mock(spec=File)
     file_mock.metadata = Mock()
