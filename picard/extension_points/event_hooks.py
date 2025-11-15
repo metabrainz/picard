@@ -56,6 +56,7 @@ from picard.file import (
     file_post_load_processors,
     file_post_removal_to_track_processors,
     file_post_save_processors,
+    file_pre_save_processors,
 )
 
 
@@ -104,6 +105,22 @@ def register_file_post_removal_from_track_processor(function, priority=0):
         None
     """
     file_post_removal_to_track_processors.register(function.__module__, function, priority)
+
+
+def register_file_pre_save_processor(function, priority=0):
+    """Registers file pre-save processor.
+
+    Called before saving tags and any rename / move operations.
+    The function will be passed the file object. Modify file.metadata here
+    to influence what gets saved.
+
+    Args:
+        function: function to call before save, it will be passed the file object
+        priority: optional, 0 by default
+    Returns:
+        None
+    """
+    file_pre_save_processors.register(function.__module__, function, priority)
 
 
 def register_file_post_save_processor(function, priority=0):
