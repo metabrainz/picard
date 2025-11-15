@@ -8,6 +8,7 @@
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
 # Copyright (C) 2019, 2022-2023 Philipp Wolfer
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,15 +34,13 @@ import webbrowser
 
 from PyQt6 import QtWidgets
 
-from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
+from picard.util import get_url
 
 
 def open(url):
-    if url in PICARD_URLS:
-        url = PICARD_URLS[url]
     try:
-        webbrowser.open(url)
+        webbrowser.open(get_url(url))
     except webbrowser.Error as e:
         QtWidgets.QMessageBox.critical(
             None, _("Web Browser Error"), _("Error while launching a web browser:\n\n%s") % (e,)

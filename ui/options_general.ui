@@ -221,9 +221,9 @@ QCheckBox { color: black }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QCheckBox" name="check_for_plugin_updates">
+       <widget class="QCheckBox" name="check_rtd_updates">
         <property name="text">
-         <string>Check for plugin updates during startup</string>
+         <string>Check for documentation updates during startup</string>
         </property>
        </widget>
       </item>
@@ -248,6 +248,13 @@ QCheckBox { color: black }</string>
          <property name="bottomMargin">
           <number>0</number>
          </property>
+         <item>
+          <widget class="QCheckBox" name="check_for_plugin_updates">
+           <property name="text">
+            <string>Check for plugin updates during startup</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QCheckBox" name="check_for_updates">
            <property name="text">
@@ -378,6 +385,7 @@ QCheckBox { color: black }</string>
   <tabstop>analyze_new_files</tabstop>
   <tabstop>cluster_new_files</tabstop>
   <tabstop>ignore_file_mbids</tabstop>
+  <tabstop>check_rtd_updates</tabstop>
   <tabstop>check_for_plugin_updates</tabstop>
   <tabstop>check_for_updates</tabstop>
   <tabstop>update_check_days</tabstop>
