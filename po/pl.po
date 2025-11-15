@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-09-09 21:41+0000\n"
+"PO-Revision-Date: 2025-11-15 09:20+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
@@ -34,10 +34,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
-"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
-"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.13.1\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || "
+"(n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -512,8 +512,9 @@ msgid "Colors to use for dark theme"
 msgstr "Używane kolory dla ciemnego motywu"
 
 #: picard/options.py:323
+#, fuzzy
 msgid "Options to show in the Quick Menu"
-msgstr ""
+msgstr "Opcje do wyświetlenia w menu szybkim"
 
 #: picard/options.py:338
 msgid "Layout of the tool bar"
@@ -594,8 +595,9 @@ msgid "Various Artists name"
 msgstr "Nazwa dla \"Various Artists\""
 
 #: picard/options.py:377
+#, fuzzy
 msgid "Tag formats to not sanitize dates"
-msgstr ""
+msgstr "Formaty tagów, aby nie czyścić dat"
 
 #: picard/options.py:382
 msgid "Browser integration"
