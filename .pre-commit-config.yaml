@@ -52,3 +52,7 @@ repos:
         stages: [pre-push]
         pass_filenames: false
         always_run: true
+      - id: check-settings
+        name: check for invalid settings keys
+        entry: python check_settings.py --silent
+        language: system
