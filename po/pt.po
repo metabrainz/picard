@@ -1788,7 +1788,7 @@ msgid ""
 "\n"
 "Finds the location of one string within another.\n"
 "    Returns the index of the first occurrence of `needle` in `haystack`, or "
-" if `needle
+"\"\" if `needle` was not found.\n"
 "\n"
 "_Since Picard 2.3_\n"
 "\n"
