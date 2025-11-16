@@ -1099,6 +1099,71 @@ msgstr "Fail Setempat"
 msgid "Allowed Cover Art URLs"
 msgstr "URL Seni Kulit Yang Dibenarkan"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Isih Fail Album…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to the folder specified in the preferences"
+msgstr "Isih dan alih fail album ke folder yang ditentukan dalam pilihan"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Isih Fail Album (Folder Auto)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to new folders based on tags"
+msgstr "Isih fail album dan alih ke folder baru berdasarkan tanda"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Isih Fail Album (nama album)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Isih Fail Album (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Tiada Album Dipilih"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster before trying to sort files."
+msgstr "Sila pilih album atau kelompok sebelum cuba mengisih fail."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder…"
+msgstr "Pilih Folder Induk…"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Pilih Folder Destinasi"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for the selected options."
+msgstr "Tidak dapat membuat folder untuk pilihan yang dipilih."
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Tiada Fail Dipilih"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Sila pilih fail untuk diisih."
+
+#: picard/ui/mainwindow/__init__.py:1639
+#, python-format
+msgid "Successfully moved %d file(s) to %s."
+msgstr "%d fail telah berjaya dialih ke %s."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Tiada Fail Dialih"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Tiada fail ditemui untuk dialih."
+
 #: picard/formats/apev2.py:102
 msgid "APEv2 (Monkey's Audio, WavPack)"
 msgstr ""

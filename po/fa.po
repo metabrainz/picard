@@ -6328,6 +6328,70 @@ msgid ""
 "%s"
 msgstr ""
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&مرتب‌سازی فایل‌های آلبوم…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "مرتب‌سازی و جابجایی فایل‌های آلبوم به یک پوشه انتخابی به ترتیب آلبوم"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&مرتب‌سازی فایل‌های آلبوم (پوشه خودکار)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "مرتب‌سازی و جابجایی فایل‌های آلبوم به یک پوشه جدید با نام آلبوم"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&مرتب‌سازی فایل‌های آلبوم (نام آلبوم‌ها)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&مرتب‌سازی فایل‌های آلبوم (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "هیچ آلبومی انتخاب نشده است"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "لطفاً یک آلبوم یا خوشه با فایل‌های مورد نیاز برای مرتب‌سازی انتخاب کنید."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "انتخاب پوشه والد (پوشه‌های آلبوم درون آن ایجاد خواهند شد)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "انتخاب پوشه مقصد"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "نمی‌توان پوشه‌ای برای '%s' ایجاد کرد: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "هیچ فایلی انتخاب نشده است"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "لطفاً فایل‌های مورد نیاز برای مرتب‌سازی را انتخاب کنید."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d فایل با موفقیت به پوشه‌های آلبوم به ترتیب منتقل شدند."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "هیچ فایلی منتقل نشد"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "هیچ فایلی برای جابجایی یافت نشد."
+
 #, fuzzy
 #~ msgid "Album Artists"
 #~ msgstr "هنرمند:"

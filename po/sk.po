@@ -8096,6 +8096,70 @@ msgstr ""
 #~ msgid "Chinese"
 #~ msgstr "Čínsky"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Zoradiť súbory albumu…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Zoradiť a presunúť súbory albumu do zvoleného priečinka v poradí albumu"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Zoradiť súbory albumu (Automatický priečinok)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Zoradiť a presunúť súbory albumu do nového priečinka pomenovaného podľa albumu"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Zoradiť súbory albumu (názvy albumov)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Zoradiť súbory albumu (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Nie je vybraný žiadny album"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Prosím, vyberte album alebo zhluk so súbormi na zoradenie."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Vyberte nadriadený priečinok (priečinky albumov budú vytvorené vnútri)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Vyberte cieľový priečinok"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Nepodarilo sa vytvoriť priečinok pre '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Nie sú vybrané žiadne súbory"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Prosím, vyberte súbory na zoradenie."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d súbor(ov) úspešne premiestnený(ych) do priečinkov albumu v poradí."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Nie sú presunuté žiadne súbory"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Neboli nájdené žiadne súbory na presunutie."
+
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s "

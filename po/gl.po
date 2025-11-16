@@ -7337,6 +7337,70 @@ msgstr ""
 "\n"
 "%s"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Ordenar ficheiros do álbum…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Ordenar e mover ficheiros do álbum a un cartafol elixido en orde de álbum"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Ordenar ficheiros do álbum (Cartafol automático)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Ordenar e mover ficheiros do álbum a un novo cartafol co nome do álbum"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Ordenar ficheiros do álbum (nomes dos álbums)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Ordenar ficheiros do álbum (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Non se seleccionou ningún álbum"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Seleccione un álbum ou un grupo con ficheiros para ordenar."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Seleccione o cartafol pai (os cartafoles do álbum crearanse dentro)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Seleccione o cartafol de destino"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Non foi posíbel crear o cartafol para '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Non se seleccionou ningún ficheiro"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Seleccione ficheiros para ordenar."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d ficheiro(s) movido(s) con éxito a cartafoles de álbum en orde."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Non se moveu ningún ficheiro"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Non se atoparon ficheiros para mover."
+
 #~ msgid "System"
 #~ msgstr "Sistema"
 

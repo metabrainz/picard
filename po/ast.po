@@ -6288,6 +6288,70 @@ msgid ""
 "%s"
 msgstr ""
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Ordena ficheros del álbum…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Ordena y mueve ficheros del álbum a una carpeta escoyida n'orde d'álbum"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Ordena ficheros del álbum (Carpeta automática)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Ordena y mueve ficheros del álbum a una carpeta nueva nomada pol álbum"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Ordena ficheros del álbum (nomes d'álbumes)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Ordena ficheros del álbum (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Nun hai álbum escoyíu"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Esbilla un álbum o grupu con ficheros pa ordena."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Esbilla la carpeta padre (les carpetes del álbum crearán-se adentro)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Esbilla la carpeta de destín"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Nun se pudo criar la carpeta pa '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Nun hai ficheros escoyíos"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Esbilla ficheros pa ordena."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d ficheru(s) movíu(s) correctamente a carpetes del álbum n'orde."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Nun movi ficheros"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Nun se encontraron ficheros pa mueve."
+
 #, fuzzy
 #~ msgid "Silence"
 #~ msgstr "Inglés (Canadá)"

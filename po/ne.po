@@ -6697,6 +6697,71 @@ msgstr ""
 #~ msgid "Northern Sami (Sweden)"
 #~ msgstr "स्वीडिस"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "अल्बम फाइलहरु क्रमबद्ध गर्नुहोस्…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to the folder specified in the preferences"
+msgstr "अल्बम फाइलहरु क्रमबद्ध गरी वरिष्ठताहरूमा निर्दिष्ट गरिएको फोल्डरमा स्थानान्तरण गर्नुहोस्"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "अल्बम फाइलहरु क्रमबद्ध गर्नुहोस् (स्वचलित फोल्डर)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to new folders based on tags"
+msgstr "अल्बम फाइलहरु क्रमबद्ध गरी ट्यागहरूको आधारमा नयाँ फोल्डरमा स्थानान्तरण गर्नुहोस्"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "अल्बम फाइलहरु क्रमबद्ध गर्नुहोस् (अल्बमको नाम)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "अल्बम फाइलहरु क्रमबद्ध गर्नुहोस् (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "कुनै अल्बम छनोट गरिएको छैन"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster before trying to sort files."
+msgstr "फाइलहरु क्रमबद्ध गर्न प्रयास गर्नु अगि कृपया अल्बम वा क्लस्टर छनोट गर्नुहोस्।"
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder…"
+msgstr "मूल फोल्डर छनोट गर्नुहोस्…"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "गन्तव्य फोल्डर छनोट गर्नुहोस्"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for the selected options."
+msgstr "छनोट गरिएका विकल्पहरूको लागि फोल्डर सिर्जना गर्न सकिएन।"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "कुनै फाइल छनोट गरिएको छैन"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "कृपया क्रमबद्ध गर्नको लागि फाइलहरु छनोट गर्नुहोस्।"
+
+#: picard/ui/mainwindow/__init__.py:1639
+#, python-format
+msgid "Successfully moved %d file(s) to %s."
+msgstr "%d फाइल(हरु)लाई %s मा सफलतापूर्वक स्थानान्तरण गरिएको।"
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "कुनै फाइल स्थानान्तरण गरिएको छैन"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "स्थानान्तरण गर्नको लागि कुनै फाइल भेटिएन।"
+
 #, fuzzy
 #~ msgid "Southern Sami"
 #~ msgstr "स्वीडिस"

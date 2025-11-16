@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-11-15 09:20+0000\n"
+"PO-Revision-Date: 2025-09-09 21:41+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
@@ -34,10 +34,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || "
-"(n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Weblate 5.14.3\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && ("
+"n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"X-Generator: Weblate 5.13.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -512,9 +512,8 @@ msgid "Colors to use for dark theme"
 msgstr "Używane kolory dla ciemnego motywu"
 
 #: picard/options.py:323
-#, fuzzy
 msgid "Options to show in the Quick Menu"
-msgstr "Opcje do wyświetlenia w menu szybkim"
+msgstr ""
 
 #: picard/options.py:338
 msgid "Layout of the tool bar"
@@ -595,9 +594,8 @@ msgid "Various Artists name"
 msgstr "Nazwa dla \"Various Artists\""
 
 #: picard/options.py:377
-#, fuzzy
 msgid "Tag formats to not sanitize dates"
-msgstr "Formaty tagów, aby nie czyścić dat"
+msgstr ""
 
 #: picard/options.py:382
 msgid "Browser integration"
@@ -11475,6 +11473,70 @@ msgstr ""
 
 #~ msgid "Katakana"
 #~ msgstr "katakana"
+
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Sortuj pliki albumu…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Sortuj i przenoś pliki albumu do wybranego folderu w kolejności albumu"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Sortuj pliki albumu (Folder auto)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Sortuj i przenoś pliki albumu do nowego folderu o nazwie albumu"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Sortuj pliki albumu (nazwy albumów)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Sortuj pliki albumu (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Nie wybrano albumu"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Wybierz album lub klaster z plikami do posortowania."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Wybierz folder nadrzędny (foldery albumów zostaną utworzone wewnątrz)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Wybierz folder docelowy"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Nie można było utworzyć folderu dla '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Nie wybrano plików"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Wybierz pliki do posortowania."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d plik(i) pomyślnie przeniesiono do folderów albumów w kolejności."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Brak przeniesionych plików"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Nie znaleziono plików do przeniesienia."
 
 #, python-format
 #~ msgid "%s "

@@ -7444,3 +7444,67 @@ msgstr ""
 
 #~ msgid "PUIDs successfully submitted!"
 #~ msgstr "ಪಿಯುಐಡಿಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!"
+
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&ಆಲ್ಬಮ್ ಕಡತಗಳನ್ನು ವಿಂಗಡಿಸಿ…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "ಆಲ್ಬಮ್ ಕಡತಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿದ ಕಡತದಲ್ಲಿ ಆಲ್ಬಮ್ ಕ್ರಮದಲ್ಲಿ ವಿಂಗಡಿಸಿ ಮತ್ತು ಸ್ಥಳಾಂತರಿಸಿ"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&ಆಲ್ಬಮ್ ಕಡತಗಳನ್ನು ವಿಂಗಡಿಸಿ (ಸ್ವಯಂಚಾಲಿತ ಕಡತಕೋಶ)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "ಆಲ್ಬಮ್ ಕಡತಗಳನ್ನು ಹೊಸ ಆಲ್ಬಮ್-ಹೆಸರಿನ ಕಡತಕೋಶಕ್ಕೆ ವಿಂಗಡಿಸಿ ಮತ್ತು ಸ್ಥಳಾಂತರಿಸಿ"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&ಆಲ್ಬಮ್ ಕಡತಗಳನ್ನು ವಿಂಗಡಿಸಿ (ಆಲ್ಬಮ್‌ಗಳ ಹೆಸರುಗಳು)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&ಆಲ್ಬಮ್ ಕಡತಗಳನ್ನು ವಿಂಗಡಿಸಿ (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "ಯಾವುದೇ ಆಲ್ಬಮ್ ಆಯ್ಕೆಯಾಗಿಲ್ಲ"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "ದಯವಿಟ್ಟು ವಿಂಗಡಿಸಲು ಆಲ್ಬಮ್ ಅಥವಾ ಕ್ಲಸ್ಟರ್ ಆಯ್ಕೆ ಮಾಡಿ."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "ಪೋಷಕ ಕಡತಕೋಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ (ಆಲ್ಬಮ್ ಕಡತಕೋಶಗಳು ಒಳಗೆ ರಚಿಸಲ್ಪಡುತ್ತವೆ)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "ಗಮ್ಯಸ್ಥಾನ ಕಡತಕೋಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "'%s' ಗಾಗಿ ಕಡತಕೋಶವನ್ನು ರಚಿಸಲಾಗಲಿಲ್ಲ: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "ಯಾವುದೇ ಕಡತಗಳು ಆಯ್ಕೆಯಾಗಿಲ್ಲ"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "ದಯವಿಟ್ಟು ವಿಂಗಡಿಸಲು ಕಡತಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d ಕಡತ(ಗಳು) ಯಶಸ್ವಿಯಾಗಿ ಆಲ್ಬಮ್ ಕಡತಕೋಶಗಳಿಗೆ ಕ್ರಮದಲ್ಲಿ ಸ್ಥಳಾಂತರಿಸಲ್ಪಟ್ಟಿವೆ."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "ಯಾವುದೇ ಕಡತಗಳು ಸ್ಥಳಾಂತರಿಸಲ್ಪಟ್ಟಿಲ್ಲ"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "ಸ್ಥಳಾಂತರಿಸಲು ಯಾವುದೇ ಕಡತಗಳು ಕಂಡುಬಂದಿಲ್ಲ."

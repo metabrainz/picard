@@ -8797,6 +8797,70 @@ msgstr ""
 #~ msgid "Katakana"
 #~ msgstr "Luba-Katanga"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Triar los fichièrs de l'album…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Triar e desplaçar los fichièrs de l'album cap a un dorsièri causit dins l'òrdre de l'album"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Triar los fichièrs de l'album (Dorsièri automatic)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Triar e desplaçar los fichièrs de l'album cap a un novèl dorsièri nomenat segon l'album"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Triar los fichièrs de l'album (noms dels albums)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Triar los fichièrs de l'album (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Cap d'album pas seleccionat"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Seleccionatz un album o un grop de fichièrs de triar."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Seleccionatz lo dorsièri parent (los dorsièris d'album seràn creates a l'interior)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Seleccionatz lo dorsièri de destinacion"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Impossible de crear lo dorsièri per '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Cap de fichièr pas seleccionat"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Seleccionatz los fichièrs de triar."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d fichièr(s) desplaçat(s) amb succès cap als dorsièris d'album dins l'òrdre."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Cap de fichièr pas desplaçat"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Cap de fichièr pas trobat per desplaçar."
+
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s "

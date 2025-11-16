@@ -1093,6 +1093,71 @@ msgstr "Lokale bestanden"
 msgid "Allowed Cover Art URLs"
 msgstr "Toegestane URL’s voor hoesafbeeldingen"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Albumbestanden sorteren…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to the folder specified in the preferences"
+msgstr "Albumbestanden sorteren en naar de in voorkeuren opgegeven map verplaatsen"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Albumbestanden sorteren (Automatische map)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to new folders based on tags"
+msgstr "Albumbestanden sorteren en naar nieuwe mappen verplaatsen op basis van tags"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Albumbestanden sorteren (albumnaam)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Albumbestanden sorteren (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Geen album geselecteerd"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster before trying to sort files."
+msgstr "Selecteer alstublieft een album of cluster voordat u bestanden sorteert."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder…"
+msgstr "Bovenliggende map selecteren…"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Doelmap selecteren"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for the selected options."
+msgstr "Map voor de geselecteerde opties kon niet worden aangemaakt."
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Geen bestanden geselecteerd"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Selecteer alstublieft bestanden om te sorteren."
+
+#: picard/ui/mainwindow/__init__.py:1639
+#, python-format
+msgid "Successfully moved %d file(s) to %s."
+msgstr "%d bestand(en) met succes naar %s verplaatst."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Geen bestanden verplaatst"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Geen bestanden gevonden om te verplaatsen."
+
 #: picard/formats/apev2.py:102
 msgid "APEv2 (Monkey's Audio, WavPack)"
 msgstr ""

@@ -247,6 +247,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.ANALYZE,
                 MainAction.CLUSTER if isinstance(obj, UnclusteredFiles) else MainAction.ALBUM_SEARCH,
                 MainAction.GENERATE_FINGERPRINTS,
+                MainAction.SORT_ALBUM if not isinstance(obj, UnclusteredFiles) else None,
+                MainAction.SORT_ALBUM_AUTO if not isinstance(obj, UnclusteredFiles) else None,
             )
             plugin_actions = list(ext_point_cluster_actions)
         elif isinstance(obj, ClusterList):
@@ -276,6 +278,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 MainAction.VIEW_INFO if can_view_info else None,
                 MainAction.BROWSER_LOOKUP,
                 MainAction.GENERATE_FINGERPRINTS if obj.get_num_total_files() > 0 else None,
+                MainAction.SORT_ALBUM if obj.get_num_total_files() > 0 else None,
+                MainAction.SORT_ALBUM_AUTO if obj.get_num_total_files() > 0 else None,
                 '-',
                 MainAction.REFRESH,
             )

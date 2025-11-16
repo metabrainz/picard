@@ -8449,3 +8449,67 @@ msgstr ""
 
 #~ msgid "About"
 #~ msgstr "గురించి"
+
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&ఆల్బమ్ ఫైళ్లను క్రమం చేయి…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "ఆల్బమ్ ఫైళ్లను ఆల్బమ్ క్రమంలో ఎంచుకున్న ఫోల్డర్‌కు సరిపెట్టండి మరియు తరలించండి"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&ఆల్బమ్ ఫైళ్లను క్రమం చేయి (స్వయంచాలక ఫోల్డర్)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "ఆల్బమ్ ఫైళ్లను కొత్త ఆల్బమ్-నామ ఫోల్డర్‌కు సరిపెట్టండి మరియు తరలించండి"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&ఆల్బమ్ ఫైళ్లను క్రమం చేయి (ఆల్బమ్ నామాలు)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&ఆల్బమ్ ఫైళ్లను క్రమం చేయి (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "ఆల్బమ్ ఎంపిక చేయబడలేదు"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "దయచేసి క్రమం చేయడానికి ఫైళ్లతో ఆల్బమ్ లేదా క్లస్టర్‌ను ఎంచుకోండి."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "పేరెంట్ ఫోల్డర్‌ను ఎంచుకోండి (ఆల్బమ్ ఫోల్డర్‌లు లోపలికి రూపొందించబడతాయి)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "గమ్యం ఫోల్డర్‌ను ఎంచుకోండి"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "'%s' కోసం ఫోల్డర్‌ను సృష్టించలేము: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "ఫైలులు ఎంపిక చేయబడలేదు"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "దయచేసి క్రమం చేయడానికి ఫైళ్లను ఎంచుకోండి."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d ఫైల్(లు) క్రమంలో ఆల్బమ్ ఫోల్డర్‌లకు విజయవంతంగా తరలించబడ్డాయి."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "ఫైలులు తరలించబడలేదు"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "తరలించడానికి ఫైలులు కనుగొనబడలేదు."

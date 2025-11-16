@@ -583,3 +583,21 @@ def _create_clear_recent_sessions_action(parent):
     action.setStatusTip(_("Clear all recent session entries"))
     action.triggered.connect(parent.clear_recent_sessions)
     return action
+
+
+@add_action(MainAction.SORT_ALBUM)
+def _create_sort_album_action(parent):
+    action = QtGui.QAction(icontheme.lookup('system-sort-ascending'), _("&Sort Album Files…"), parent)
+    action.setStatusTip(_("Sort and move album files to a chosen folder in album order"))
+    action.setEnabled(False)
+    action.triggered.connect(parent.sort_album_files)
+    return action
+
+
+@add_action(MainAction.SORT_ALBUM_AUTO)
+def _create_sort_album_auto_action(parent):
+    action = QtGui.QAction(icontheme.lookup('system-sort-ascending'), _("&Sort Album Files (Auto Folder)…"), parent)
+    action.setStatusTip(_("Sort and move album files to a new album-named folder"))
+    action.setEnabled(False)
+    action.triggered.connect(parent.sort_album_files_auto)
+    return action

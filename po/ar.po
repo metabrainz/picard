@@ -7473,3 +7473,68 @@ msgstr ""
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s "
+
+# New translations for Sort Album Files feature
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&فرز ملفات الألبوم…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "فرز ونقل ملفات الألبوم إلى مجلد محدد بترتيب الألبوم"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&فرز ملفات الألبوم (مجلد تلقائي)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "فرز ونقل ملفات الألبوم إلى مجلد جديد باسم الألبوم"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&فرز ملفات الألبوم (أسماء الألبومات)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&فرز ملفات الألبوم (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "لم يتم اختيار ألبوم"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "الرجاء اختيار ألبوم أو مجموعة تحتوي على ملفات للفرز."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "اختر المجلد الأب (سيتم إنشاء مجلدات الألبومات بداخله)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "اختر مجلد الوجهة"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "تعذّر إنشاء المجلد لـ '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "لم يتم اختيار ملفات"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "الرجاء اختيار ملفات للفرز."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "تم نقل %d ملف(ملفات) إلى مجلدات الألبومات بنجاح حسب الترتيب."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "لم يتم نقل أي ملفات"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "لم يتم العثور على ملفات لنقلها."

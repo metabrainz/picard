@@ -8581,6 +8581,70 @@ msgstr ""
 #~ msgid "Chinese (Traditional) (Taiwan)"
 #~ msgstr "Kinezçe (Tajvan)"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Rendit Kartela Albumi…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Rendit dhe zhvendos kartela albumi në një dosje të zgjedhur sipas radhës së albumit"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Rendit Kartela Albumi (Dosje Automatike)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Rendit dhe zhvendos kartela albumi në një dosje të re me emrin e albumit"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Rendit Kartela Albumi (emrat e albumit)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Rendit Kartela Albumi (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Nuk Është Zgjedhur Ndonjë Album"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Ju lutemi, zgjedhni një album ose grumbull me kartela për të renditur."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Zgjedhni Dosjen Prind (dosjet e albumit do të krijohen brenda)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Zgjedhni Dosjen e Destinacionit"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "S'u mund të krihej dosja për '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Nuk Janë Zgjedhur Kartela"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Ju lutemi, zgjedhni kartela për të renditur."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d kartele janë zhvendosur me sukses në dosje albumesh sipas radhës."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Nuk Janë Zhvendosur Kartela"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "S'u gjetën kartela për t'u zhvendosur."
+
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s "

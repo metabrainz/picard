@@ -9469,6 +9469,70 @@ msgstr ""
 #~ msgid "Zulu (South Africa)"
 #~ msgstr "영어(남아프리카공화국)"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&앨범 파일 정렬…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "앨범 파일을 정렬하고 선택한 폴더로 앨범 순서대로 이동"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&앨범 파일 정렬 (자동 폴더)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "앨범 파일을 정렬하고 앨범명으로 이름 지은 새 폴더로 이동"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&앨범 파일 정렬 (앨범명)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&앨범 파일 정렬 (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "선택된 앨범 없음"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "정렬할 파일이 있는 앨범 또는 클러스터를 선택하세요."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "상위 폴더 선택 (앨범 폴더가 내부에 생성됩니다)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "대상 폴더 선택"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "'%s'에 대한 폴더를 만들 수 없습니다: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "선택된 파일 없음"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "정렬할 파일을 선택하세요."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d개 파일을 앨범 폴더로 순서대로 이동했습니다."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "이동된 파일 없음"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "이동할 파일을 찾을 수 없습니다."
+
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s "

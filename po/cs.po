@@ -6491,6 +6491,70 @@ msgstr ""
 "\n"
 "%s"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Řadit soubory alba…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Řaďte a přesuňte soubory alba do vybrané složky v pořadí alba"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Řadit soubory alba (Automatická složka)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Řaďte a přesuňte soubory alba do nové složky pojmenované podle alba"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Řadit soubory alba (názvy alb)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Řadit soubory alba (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Není vybráno žádné album"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Prosím vyberte album nebo skupinu se soubory k seřazení."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Vyberte nadřazenou složku (složky alba budou vytvořeny uvnitř)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Vyberte cílovou složku"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Nelze vytvořit složku pro '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Nejsou vybrány žádné soubory"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Prosím vyberte soubory k seřazení."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d soubor(y) úspěšně přesunut(y) do složek alba v pořadí."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Nebyly přesunuty žádné soubory"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Nebyly nalezeny žádné soubory k přesunutí."
+
 #, python-format
 #~ msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
 #~ msgstr ""

@@ -6436,6 +6436,70 @@ msgstr ""
 "\n"
 "%s"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Albumfájlok rendezése…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Albumfájlok rendezése és áthelyezése egy kiválasztott mappába album sorrendben"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Albumfájlok rendezése (Automatikus mappa)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Albumfájlok rendezése és áthelyezése egy új albumról elnevezett mappába"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Albumfájlok rendezése (albumok neve)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Albumfájlok rendezése (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Nincs kiválasztott album"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Kérlek, válassz egy albumot vagy egy fájlcsoportot rendezéshez."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Válaszd ki a szülő mappát (az albummappák belül lesznek létrehozva)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Válaszd ki a cél mappát"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Nem sikerült létrehozni a mappát '%s'-hoz: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Nincs kiválasztott fájl"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Kérlek, válassz fájlokat rendezéshez."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d fájl sikeresen áthelyezve az albummappákba sorrendben."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Nem került át fájl"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Nem található fájl áthelyezésre."
+
 #, python-format
 #~ msgid "Failed loading zipped plugin \"%(plugin)s\" from \"%(filename)s\""
 #~ msgstr ""

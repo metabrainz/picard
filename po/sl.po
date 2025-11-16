@@ -8200,6 +8200,70 @@ msgstr ""
 #~ msgid "Chinese"
 #~ msgstr "kitajščina"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Razvrsti datoteke albuma…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Razvrsti in premakni datoteke albuma v izbrano mapo po vrstnem redu albuma"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Razvrsti datoteke albuma (Samodejni repozitorij)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Razvrsti in premakni datoteke albuma v novo mapo z imenom albuma"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Razvrsti datoteke albuma (imena albumov)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Razvrsti datoteke albuma (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Ni izbranega albuma"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Prosimo, izberite album ali skupek z datotekami za razvrščanje."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Izberite nadrejeno mapo (mape albumov bodo ustvarjene znotraj)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Izberite ciljno mapo"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Mape za '%s' ni bilo mogoče ustvariti: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Ni izbranih datotek"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Prosimo, izberite datoteke za razvrščanje."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "Uspešno je premaknjenih %d datote(k) v mape albuma po vrstnem redu."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Nobena datoteka ni bila premaknjena"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Nobena datoteka ni bila najdena za premikanje."
+
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s "

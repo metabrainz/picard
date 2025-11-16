@@ -900,6 +900,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.GENERATE_FINGERPRINTS,
             MainAction.TAGS_FROM_FILENAMES,
+            MainAction.SORT_ALBUM,
+            MainAction.SORT_ALBUM_AUTO,
             MainAction.OPEN_COLLECTION_IN_BROWSER,
         )
 
@@ -1413,6 +1415,266 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for folder in folders:
             open_local_path(folder)
 
+    def sort_album_files(self):
+        """Sort and move album files to a chosen folder in album order."""
+        import shutil
+        
+        # Get files from selected objects
+        try:
+            files = list(iter_files_from_objects(self.selected_objects))
+        except StopIteration:
+            files = []
+        
+        if not files:
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("No Files Selected"),
+                _("Please select an album or cluster with files to sort.")
+            )
+            return
+        
+        # Ask user to select destination folder
+        destination = QtWidgets.QFileDialog.getExistingDirectory(
+            self,
+            _("Select Destination Folder for Album Files")
+        )
+        
+        if not destination:
+            return
+        
+        # Sort files by track position
+        # Group files by their parent track
+        files_by_track = {}
+        for file in files:
+            # Get track from parent_item (which is the Track object)
+            track = file.parent_item if hasattr(file, 'parent_item') else None
+            if track:
+                # Get track position and title
+                track_pos = int(track.position) if hasattr(track, 'position') and track.position else 999
+                track_title = track.title if hasattr(track, 'title') else 'Unknown'
+                
+                # Use track position as key to group files
+                if track_pos not in files_by_track:
+                    files_by_track[track_pos] = {'track': track, 'files': [], 'title': track_title}
+                files_by_track[track_pos]['files'].append(file)
+        
+        if not files_by_track:
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("No Track Information"),
+                _("Could not find track information for the selected files. Make sure files are assigned to tracks.")
+            )
+            return
+        
+        # Sort by track position
+        sorted_tracks = sorted(files_by_track.items(), key=lambda x: x[0])
+        
+        # Sort and move files
+        files_moved = 0
+        errors = []
+        try:
+            for new_idx, (track_pos, track_info) in enumerate(sorted_tracks, 1):
+                for file in track_info['files']:
+                    if hasattr(file, 'filename') and file.filename:
+                        source = file.filename
+                        if os.path.exists(source):
+                            try:
+                                # Create filename with track number prefix
+                                filename = os.path.basename(source)
+                                dest_file = os.path.join(destination, f"{new_idx:02d}_{filename}")
+                                
+                                # If file exists, add a counter
+                                counter = 1
+                                base_name, ext = os.path.splitext(dest_file)
+                                while os.path.exists(dest_file):
+                                    dest_file = f"{base_name}_{counter}{ext}"
+                                    counter += 1
+                                
+                                shutil.move(source, dest_file)
+                                files_moved += 1
+                                
+                                # Update file object with new location
+                                file.filename = dest_file
+                                file.base_filename = os.path.basename(dest_file)
+                                
+                                log.debug(f"Moved: {source} → {dest_file}")
+                            except Exception as file_error:
+                                error_msg = f"Could not move file {source}: {file_error}"
+                                log.warning(error_msg)
+                                errors.append(error_msg)
+            
+            if files_moved > 0:
+                msg = _("Successfully moved %d file(s) to the destination folder in album order.") % files_moved
+                if errors:
+                    msg += f"\n\nWarnings:\n" + "\n".join(errors[:3])
+                    if len(errors) > 3:
+                        msg += f"\n... and {len(errors) - 3} more errors"
+                
+                QtWidgets.QMessageBox.information(
+                    self,
+                    _("Success"),
+                    msg
+                )
+            else:
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    _("No Files Moved"),
+                    _("No files were found to move.")
+                )
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(
+                self,
+                _("Error"),
+                _("An error occurred while sorting album files: %s") % str(e)
+            )
+            log.error(f"Error in sort_album_files: {e}", exc_info=True)
+
+    def sort_album_files_auto(self):
+        """Sort and move album files to an auto-created album-named folder for each selected album/cluster."""
+        import shutil
+        
+        # Get selected albums/clusters
+        selected_albums = [obj for obj in self.selected_objects if hasattr(obj, 'metadata')]
+        
+        if not selected_albums:
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("No Album Selected"),
+                _("Please select an album or cluster with files to sort.")
+            )
+            return
+        
+        # Ask user to select parent folder where the album folders will be created
+        parent_folder = QtWidgets.QFileDialog.getExistingDirectory(
+            self,
+            _("Select Parent Folder (Album folders will be created inside)")
+        )
+        
+        if not parent_folder:
+            return
+        
+        # Sanitize folder name (remove invalid characters)
+        def sanitize_folder_name(name):
+            invalid_chars = r'<>:"/\|?*'
+            safe_name = str(name)
+            for char in invalid_chars:
+                safe_name = safe_name.replace(char, '_')
+            return safe_name.strip('. ')
+        
+        # Process each selected album/cluster
+        total_files_moved = 0
+        all_errors = []
+        
+        for album_obj in selected_albums:
+            # Get files from this specific album/cluster
+            try:
+                album_files = list(iter_files_from_objects([album_obj]))
+            except StopIteration:
+                album_files = []
+            
+            if not album_files:
+                continue
+            
+            # Get album name
+            album_folder_name = "Album"
+            if hasattr(album_obj, 'metadata') and hasattr(album_obj.metadata, '__getitem__'):
+                try:
+                    album_name = album_obj.metadata.get('album') or album_obj.metadata['album']
+                    if album_name:
+                        album_folder_name = str(album_name)
+                except (KeyError, TypeError):
+                    pass
+            
+            # Create album folder
+            safe_album_name = sanitize_folder_name(album_folder_name)
+            destination = os.path.join(parent_folder, safe_album_name)
+            try:
+                os.makedirs(destination, exist_ok=True)
+            except Exception as e:
+                error_msg = _("Could not create folder for '%s': %s") % (safe_album_name, str(e))
+                all_errors.append(error_msg)
+                log.warning(error_msg)
+                continue
+            
+            # Sort files by track position for this album
+            files_by_track = {}
+            for file in album_files:
+                # Get track from parent_item (which is the Track object)
+                track = file.parent_item if hasattr(file, 'parent_item') else None
+                if track:
+                    # Get track position and title
+                    track_pos = int(track.position) if hasattr(track, 'position') and track.position else 999
+                    track_title = track.title if hasattr(track, 'title') else 'Unknown'
+                    
+                    # Use track position as key to group files
+                    if track_pos not in files_by_track:
+                        files_by_track[track_pos] = {'track': track, 'files': [], 'title': track_title}
+                    files_by_track[track_pos]['files'].append(file)
+            
+            if not files_by_track:
+                continue
+            
+            # Sort by track position
+            sorted_tracks = sorted(files_by_track.items(), key=lambda x: x[0])
+            
+            # Move files for this album
+            files_moved_in_album = 0
+            try:
+                for new_idx, (track_pos, track_info) in enumerate(sorted_tracks, 1):
+                    for file in track_info['files']:
+                        if hasattr(file, 'filename') and file.filename:
+                            source = file.filename
+                            if os.path.exists(source):
+                                try:
+                                    # Create filename with track number prefix
+                                    filename = os.path.basename(source)
+                                    dest_file = os.path.join(destination, f"{new_idx:02d}_{filename}")
+                                    
+                                    # If file exists, add a counter
+                                    counter = 1
+                                    base_name, ext = os.path.splitext(dest_file)
+                                    while os.path.exists(dest_file):
+                                        dest_file = f"{base_name}_{counter}{ext}"
+                                        counter += 1
+                                    
+                                    shutil.move(source, dest_file)
+                                    files_moved_in_album += 1
+                                    total_files_moved += 1
+                                    
+                                    # Update file object with new location
+                                    file.filename = dest_file
+                                    file.base_filename = os.path.basename(dest_file)
+                                    
+                                    log.debug(f"Moved: {source} → {dest_file}")
+                                except Exception as file_error:
+                                    error_msg = f"Could not move file {source}: {file_error}"
+                                    log.warning(error_msg)
+                                    all_errors.append(error_msg)
+            except Exception as e:
+                error_msg = f"Error processing album '{safe_album_name}': {e}"
+                all_errors.append(error_msg)
+                log.error(error_msg)
+        
+        # Show result message
+        if total_files_moved > 0:
+            msg = _("Successfully moved %d file(s) to album folders in order.") % total_files_moved
+            if all_errors:
+                msg += f"\n\nWarnings:\n" + "\n".join(all_errors[:3])
+                if len(all_errors) > 3:
+                    msg += f"\n... and {len(all_errors) - 3} more errors"
+            
+            QtWidgets.QMessageBox.information(
+                self,
+                _("Success"),
+                msg
+            )
+        else:
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("No Files Moved"),
+                _("No files were found to move.")
+            )
+
     def _ensure_fingerprinting_configured(self, callback):
         config = get_config()
 
@@ -1581,6 +1843,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         is_file = bool(single and isinstance(single, (File, Track)))
         is_album = bool(single and isinstance(single, Album))
         is_cluster = bool(single and isinstance(single, Cluster) and not single.special)
+        
+        # For multi-select support, check if any selected object is Album or Cluster
+        has_album_or_cluster = any(isinstance(obj, (Album, Cluster)) for obj in self.selected_objects)
 
         if not self.selected_objects:
             have_objects = have_files = False
@@ -1625,6 +1890,40 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.TRACK_SEARCH, is_file)
         self.enable_action(MainAction.ALBUM_SEARCH, is_cluster)
         self.enable_action(MainAction.ALBUM_OTHER_VERSIONS, is_album)
+        self.enable_action(MainAction.SORT_ALBUM, has_album_or_cluster and have_files)
+        self.enable_action(MainAction.SORT_ALBUM_AUTO, has_album_or_cluster and have_files)
+        
+        # Update SORT_ALBUM_AUTO label with cluster/album name(s)
+        if has_album_or_cluster and have_files:
+            try:
+                # Collect album names from selected objects
+                album_names = []
+                for obj in self.selected_objects:
+                    if isinstance(obj, (Album, Cluster)) and hasattr(obj, 'metadata'):
+                        try:
+                            album_name = obj.metadata.get('album') or obj.metadata['album']
+                            if album_name:
+                                album_names.append(str(album_name))
+                        except (KeyError, TypeError):
+                            pass
+                
+                # Build label based on number of albums
+                if len(album_names) > 1:
+                    # Multiple albums: show "(albums name)..."
+                    action_label = _("&Sort Album Files (albums name)…")
+                elif len(album_names) == 1:
+                    # Single album: show album name truncated to 12 chars
+                    display_name = (album_names[0][:12] + '...') if len(album_names[0]) > 12 else album_names[0]
+                    action_label = _("&Sort Album Files (%s)…") % display_name
+                else:
+                    # Fallback
+                    action_label = _("&Sort Album Files…")
+                
+                log.debug(f"Setting action label to: {action_label}")
+                if self.actions[MainAction.SORT_ALBUM_AUTO]:
+                    self.actions[MainAction.SORT_ALBUM_AUTO].setText(action_label)
+            except Exception as e:
+                log.error(f"Error updating SORT_ALBUM_AUTO label: {e}", exc_info=True)
 
     def enable_action(self, action_id, enabled):
         if self.actions[action_id]:

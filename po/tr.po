@@ -8112,6 +8112,70 @@ msgstr ""
 #~ msgid "Cyrillic"
 #~ msgstr "Kiril"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Albüm Dosyalarını Sırala…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Albüm dosyalarını seçilen klasöre albüm sırasına göre taşı ve sırala"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Albüm Dosyalarını Sırala (Otomatik Klasör)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Albüm dosyalarını yeni albüm adlı klasöre taşı ve sırala"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Albüm Dosyalarını Sırala (albüm adları)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Albüm Dosyalarını Sırala (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Albüm Seçilmedi"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Lütfen sıralamak için bir albüm veya dosyalı küme seçin."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Ana Klasörü Seçin (Albüm klasörleri içinde oluşturulacak)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Hedef Klasörü Seçin"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "'%s' için klasör oluşturulamadı: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Dosya Seçilmedi"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Lütfen sıralamak için dosyaları seçin."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d dosya(sı) başarıyla albüm klasörlerine sırayla taşındı."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Dosya Taşıınmadı"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Taşınacak dosya bulunamadı."
+
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s "

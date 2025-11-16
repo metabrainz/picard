@@ -1579,7 +1579,7 @@ msgid ""
 "\n"
 "Example:\n"
 "\n"
-"    $lenmulti(One; Two; Three) = 3\n"
+"    $setmulti(One; Two; Three) = 3\n"
 msgstr ""
 
 #: picard/script/functions.py:805
@@ -1788,7 +1788,7 @@ msgid ""
 "\n"
 "Finds the location of one string within another.\n"
 "    Returns the index of the first occurrence of `needle` in `haystack`, or "
-"\"\" if `needle` was not found.\n"
+" if `needle
 "\n"
 "_Since Picard 2.3_\n"
 "\n"
@@ -8196,6 +8196,70 @@ msgstr ""
 #~| msgid "Chinese (Taiwan)"
 #~ msgid "Chinese (Traditional) (Taiwan)"
 #~ msgstr "Chinês (Taiwan)"
+
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Ordenar ficheiros do álbum…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Ordenar e mover ficheiros do álbum para uma pasta escolhida em ordem de álbum"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Ordenar ficheiros do álbum (Pasta automática)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Ordenar e mover ficheiros do álbum para uma nova pasta com o nome do álbum"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Ordenar ficheiros do álbum (nomes dos álbuns)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Ordenar ficheiros do álbum (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Nenhum álbum selecionado"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Por favor, selecione um álbum ou agrupamento com ficheiros para ordenar."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Selecionar pasta pai (as pastas do álbum serão criadas dentro)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Selecionar pasta de destino"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Não foi possível criar a pasta para '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Nenhum ficheiro selecionado"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Por favor, selecione ficheiros para ordenar."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d ficheiro(s) movido(s) com sucesso para pastas de álbum em ordem."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Nenhum ficheiro movido"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Nenhum ficheiro foi encontrado para mover."
 
 #, python-format
 #~ msgid "%s "

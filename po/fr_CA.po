@@ -6347,6 +6347,70 @@ msgid ""
 "%s"
 msgstr ""
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Trier les fichiers de l'album…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "Trier et déplacer les fichiers de l'album vers un dossier choisi dans l'ordre de l'album"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Trier les fichiers de l'album (Dossier automatique)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "Trier et déplacer les fichiers de l'album vers un nouveau dossier nommé par l'album"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Trier les fichiers de l'album (noms des albums)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Trier les fichiers de l'album (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Aucun album sélectionné"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "Veuillez sélectionner un album ou un groupe avec des fichiers à trier."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "Sélectionner le dossier parent (les dossiers de l'album seront créés à l'intérieur)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Sélectionner le dossier de destination"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "Impossible de créer le dossier pour '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Aucun fichier sélectionné"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Veuillez sélectionner des fichiers à trier."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d fichier(s) déplacé(s) avec succès vers les dossiers de l'album dans l'ordre."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Aucun fichier déplacé"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Aucun fichier trouvé à déplacer."
+
 #, fuzzy
 #~| msgid "Artists"
 #~ msgid "Album Artists"

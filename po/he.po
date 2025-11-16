@@ -7254,6 +7254,70 @@ msgstr ""
 "\n"
 "%s"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&סידור קבצי האלבום…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "סידור והעברת קבצי אלבום לתיקייה נבחרת לפי סדר האלבום"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&סידור קבצי האלבום (תיקייה אוטומטית)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "סידור והעברת קבצי אלבום לתיקייה חדשה בשם האלבום"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&סידור קבצי האלבום (שמות אלבומים)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&סידור קבצי האלבום (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "לא נבחר אלבום"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "נא לבחור אלבום או קבוצה עם קבצים לסידור."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "בחירת תיקיית האב (תיקיות האלבום ייווצרו בתוכה)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "בחירת תיקיית יעד"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "לא ניתן ליצור תיקייה עבור '%s': %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "לא נבחרו קבצים"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "נא לבחור קבצים לסידור."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d קובץ/קבצים הועברו בהצלחה לתיקיות אלבום לפי סדר."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "לא הועברו קבצים"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "לא נמצאו קבצים להעברה."
+
 #~ msgid "System"
 #~ msgstr "מערכת"
 

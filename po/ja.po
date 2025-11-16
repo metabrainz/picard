@@ -11224,6 +11224,70 @@ msgstr ""
 #~ msgid "Katakana"
 #~ msgstr "片仮名"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&アルバムファイルをソート…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "アルバムファイルをソートし、選択したフォルダにアルバム順に移動"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&アルバムファイルをソート（自動フォルダ）…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "アルバムファイルをソートし、アルバム名の新しいフォルダに移動"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&アルバムファイルをソート（アルバム名）…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&アルバムファイルをソート（%s）…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "アルバムが選択されていません"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "ソートするファイルを含むアルバムまたはクラスタを選択してください。"
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "親フォルダを選択（アルバムフォルダが内部に作成されます）"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "宛先フォルダを選択"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "'%s'のフォルダを作成できませんでした：%s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "ファイルが選択されていません"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "ソートするファイルを選択してください。"
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%dファイルがアルバムフォルダに正常に順序通り移動しました。"
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "ファイルが移動されていません"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "移動するファイルが見つかりません。"
+
 #, python-format
 #~ msgid "%s "
 #~ msgstr "%s"

@@ -1084,6 +1084,71 @@ msgstr "Vietiniai failai"
 msgid "Allowed Cover Art URLs"
 msgstr "Leidžiami viršelių URL adresai"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&Rūšiuoti albumo failus…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to the folder specified in the preferences"
+msgstr "Rūšiuoti ir perkelti albumo failus į pasirinktyse nurodytą aplanką"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&Rūšiuoti albumo failus (automatinis aplankas)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to new folders based on tags"
+msgstr "Rūšiuoti albumo failus ir perkelti juos į naujus aplankus pagal žymes"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&Rūšiuoti albumo failus (albumo pavadinimas)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&Rūšiuoti albumo failus (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "Pasirinktas joks albumas"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster before trying to sort files."
+msgstr "Prieš pradėdami rūšiuoti failus, pasirinkite albumą arba sankaupą."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder…"
+msgstr "Pasirinkti pagrindinį aplanką…"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "Pasirinkite paskirties aplanką"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for the selected options."
+msgstr "Nepavyko sukurti aplanko pasirinktoms parinktims."
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "Pasirinkti jokie failai"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "Pasirinkite failus, kuriuos norite rūšiuoti."
+
+#: picard/ui/mainwindow/__init__.py:1639
+#, python-format
+msgid "Successfully moved %d file(s) to %s."
+msgstr "Sėkmingai perkelti %d failai į %s."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "Jokie failai nebuvo perkelti"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "Nebuvo rasti jokie failai perkeltini."
+
 #: picard/formats/apev2.py:102
 msgid "APEv2 (Monkey's Audio, WavPack)"
 msgstr ""

@@ -1012,6 +1012,71 @@ msgstr "250 px"
 msgid "500 px"
 msgstr "500 px"
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&अल्बम फाइली क्रमांकित करा…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to the folder specified in the preferences"
+msgstr "अल्बम फाइली क्रमांकित करा आणि प्राधान्य मध्ये निर्दिष्ट केलेल्या फोल्डरमध्ये हलवा"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&अल्बम फाइली क्रमांकित करा (स्वयंचलित फोल्डर)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to new folders based on tags"
+msgstr "अल्बम फाइली क्रमांकित करा आणि टॅग आधारित नव्या फोल्डरमध्ये हलवा"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&अल्बम फाइली क्रमांकित करा (अल्बमचे नाव)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&अल्बम फाइली क्रमांकित करा (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "कोणताही अल्बम निवडलेला नाही"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster before trying to sort files."
+msgstr "फाइली क्रमांकित करण्याचा प्रयत्न करण्यापूर्वी कृपया अल्बम किंवा क्लस्टर निवडा."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder…"
+msgstr "पॅरेंट फोल्डर निवडा…"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "गंतव्य फोल्डर निवडा"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for the selected options."
+msgstr "निवडलेल्या पर्यायांसाठी फोल्डर तयार करू शकलो नाही."
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "कोणतीही फाइल निवडलेली नाही"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "कृपया क्रमांकित करण्यासाठी फाइली निवडा."
+
+#: picard/ui/mainwindow/__init__.py:1639
+#, python-format
+msgid "Successfully moved %d file(s) to %s."
+msgstr "%d फाइल(ींना) यशस्वीरित्या %s मध्ये हलवा."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "कोणतीही फाइल हलविली नाही"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "हलविण्यासाठी कोणतीही फाइल सापडली नाही."
+
 #: picard/coverart/providers/caa.py:77
 msgid "1200 px"
 msgstr ""

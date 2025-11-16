@@ -6311,6 +6311,70 @@ msgid ""
 "%s"
 msgstr ""
 
+#: picard/ui/mainwindow/actions.py:588
+msgid "&Sort Album Files…"
+msgstr "&एल्बम फाइलें क्रमबद्ध करें…"
+
+#: picard/ui/mainwindow/actions.py:589
+msgid "Sort and move album files to a chosen folder in album order"
+msgstr "एल्बम फाइलों को एल्बम क्रम में चुनी हुई फोल्डर में क्रमबद्ध और ले जाएं"
+
+#: picard/ui/mainwindow/actions.py:597
+msgid "&Sort Album Files (Auto Folder)…"
+msgstr "&एल्बम फाइलें क्रमबद्ध करें (ऑटो फोल्डर)…"
+
+#: picard/ui/mainwindow/actions.py:598
+msgid "Sort and move album files to a new album-named folder"
+msgstr "एल्बम फाइलों को एक नए एल्बम-नामित फोल्डर में क्रमबद्ध और ले जाएं"
+
+#: picard/ui/mainwindow/__init__.py:1909
+msgid "&Sort Album Files (albums name)…"
+msgstr "&एल्बम फाइलें क्रमबद्ध करें (एल्बम के नाम)…"
+
+#: picard/ui/mainwindow/__init__.py:1911
+msgid "&Sort Album Files (%s)…"
+msgstr "&एल्बम फाइलें क्रमबद्ध करें (%s)…"
+
+#: picard/ui/mainwindow/__init__.py:1538
+msgid "No Album Selected"
+msgstr "कोई एल्बम चुना नहीं गया"
+
+#: picard/ui/mainwindow/__init__.py:1539
+msgid "Please select an album or cluster with files to sort."
+msgstr "कृपया क्रमबद्ध करने के लिए एक एल्बम या क्लस्टर फाइलें चुनें."
+
+#: picard/ui/mainwindow/__init__.py:1545
+msgid "Select Parent Folder (Album folders will be created inside)"
+msgstr "पेरेंट फोल्डर चुनें (एल्बम फोल्डर इसके अंदर बनाए जाएंगे)"
+
+#: picard/ui/mainwindow/__init__.py:1439
+msgid "Select Destination Folder"
+msgstr "गंतव्य फोल्डर चुनें"
+
+#: picard/ui/mainwindow/__init__.py:1479
+msgid "Could not create folder for '%s': %s"
+msgstr "'%s' के लिए फोल्डर नहीं बनाया जा सका: %s"
+
+#: picard/ui/mainwindow/__init__.py:1516
+msgid "No Files Selected"
+msgstr "कोई फाइल चुनी नहीं गई"
+
+#: picard/ui/mainwindow/__init__.py:1517
+msgid "Please select files to sort."
+msgstr "कृपया क्रमबद्ध करने के लिए फाइलें चुनें."
+
+#: picard/ui/mainwindow/__init__.py:1639
+msgid "Successfully moved %d file(s) to album folders in order."
+msgstr "%d फाइल(ें) सफलतापूर्वक एल्बम फोल्डरों में क्रम में ले जाई गईं."
+
+#: picard/ui/mainwindow/__init__.py:1546
+msgid "No Files Moved"
+msgstr "कोई फाइल नहीं ले जाई गई"
+
+#: picard/ui/mainwindow/__init__.py:1547
+msgid "No files were found to move."
+msgstr "ले जाने के लिए कोई फाइल नहीं मिली."
+
 #, fuzzy
 #~ msgid "Album Artists"
 #~ msgstr "मानकीकृत कलाकार के नाम का प्रयोग करें"
