@@ -42,19 +42,19 @@ RE_CHECK_OPTION = re.compile(
     "(\\.(" + '|'.join(OPTION_TYPES_TO_CHECK) + ")\\[\\s*['\"]([^\\s'\"]*)[\\s'\"]*\\])", re.MULTILINE
 )
 
-# Ignore Option keys that start with one of these strings
+# Ignore Option keys that start with any of the strings in the set()
 CHECK_OPTION_PREFIXES_TO_IGNORE = {'splitters_'}
 RE_CHECK_PREFIXES = re.compile("^(" + '|'.join(CHECK_OPTION_PREFIXES_TO_IGNORE) + ").*$")
 
-# Ignore Option keys that contain of these strings
+# Ignore Option keys that contain any of the strings in the set()
 CHECK_OPTION_CONTAINS_TO_IGNORE = {}
 RE_CHECK_CONTAINS = re.compile("^.*(" + '|'.join(CHECK_OPTION_CONTAINS_TO_IGNORE) + ").*$")
 
-# Ignore Option keys that end with one of these strings
+# Ignore Option keys that end with any of the strings in the set()
 CHECK_OPTION_SUFFIXES_TO_IGNORE = {}
 RE_CHECK_SUFFIXES = re.compile("^.*(" + '|'.join(CHECK_OPTION_SUFFIXES_TO_IGNORE) + ")$")
 
-# Dictionary containing options created
+# Dictionary containing defined options
 options = {}
 
 
@@ -65,15 +65,12 @@ def main():
     """Checks for references to undefined option settings."""
     args = sys.argv
     silent = '--silent' in args
-    if not silent:
+    errors_only = '--errors-only' in args
+    if not silent and not errors_only:
         print("Getting defined options.")
     file_text = ''
     file_count = 0
-    for (
-        dirpath,
-        _dirnames,
-        filenames,
-    ) in os.walk(ROOT_DIR):
+    for dirpath, _dirnames, filenames in os.walk(ROOT_DIR):
         if IGNORE_DIR in dirpath:
             continue
 
@@ -96,7 +93,7 @@ def main():
     for option_type in options.keys():
         count += len(options[option_type])
 
-    if not silent:
+    if not silent and not errors_only:
         print(
             f"Checked {file_count:,} file{'' if file_count == 1 else 's'}. "
             f"Found {count:,} option key{'' if count == 1 else 's'} defined."
@@ -107,11 +104,7 @@ def main():
     count = 0
     error_count = 0
     file_text = ''
-    for (
-        dirpath,
-        _dirnames,
-        filenames,
-    ) in os.walk(ROOT_DIR):
+    for dirpath, _dirnames, filenames in os.walk(ROOT_DIR):
         if IGNORE_DIR in dirpath:
             continue
 
@@ -144,7 +137,7 @@ def main():
                     if not silent:
                         print(f"* Invalid option: {match_text} in {filepath}")
 
-    if not silent:
+    if not silent and not errors_only:
         print(
             f"Found {error_count:,} error{'' if error_count == 1 else 's'} in "
             f"{count} option reference{'' if count == 1 else 's'}."

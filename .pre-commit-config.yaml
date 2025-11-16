@@ -54,5 +54,8 @@ repos:
         always_run: true
       - id: check-settings
         name: check for invalid settings keys
-        entry: python check_settings.py --silent
+        entry: python scripts/tools/check_settings.py
+        args: [--errors-only]
         language: system
+        pass_filenames: false
+        always_run: true
