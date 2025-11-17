@@ -14,8 +14,9 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-11-09 20:20+0000\n"
-"Last-Translator: GABG <musicbrainz@gabg.email>\n"
+"PO-Revision-Date: 2025-11-17 16:20+0000\n"
+"Last-Translator: \"salo.rock\" "
+"<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
 "3/app/it/>\n"
 "Language: it\n"
@@ -335,11 +336,11 @@ msgstr "Salva una sola immagine di copertina frontale come file separato"
 #: picard/options.py:212
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
 msgid "Show cover art details in cover art view"
-msgstr "Mostra dettagli copertine nella loro vista"
+msgstr "Mostra dettagli sulle copertine nella visualizzazione copertine"
 
 #: picard/options.py:213
 msgid "Show cover art type in info labels"
-msgstr "Mostra tipo copertina nelle etichette di informazione"
+msgstr "Mostra tipo di copertina nelle etichette di informazione"
 
 #: picard/options.py:214
 msgid "Show cover art file size in info labels"
@@ -3216,7 +3217,7 @@ msgstr "Seleziona filtri"
 
 #: picard/ui/filter.py:100
 msgid "Select / clear all filters"
-msgstr "Seleziona / pulisci tutti i filtri"
+msgstr "Seleziona / elimina tutti i filtri"
 
 #: picard/ui/filter.py:137
 msgid "OK"
@@ -4336,7 +4337,7 @@ msgstr "Cartella di destinazione:"
 
 #: picard/ui/forms/ui_options_renaming.py:159
 msgid "Move additional files and subfolders (case insensitive):"
-msgstr "Sposta file e sottocartelle aggiuntive (ignora maiuscole/minuscole):"
+msgstr "Sposta file e sottocartelle aggiuntivi (ignora maiuscole/minuscole):"
 
 #: picard/ui/forms/ui_options_renaming.py:161
 msgid "Rename files when saving"
@@ -5016,7 +5017,7 @@ msgstr "Status impronte digitali"
 
 #: picard/ui/itemviews/columns.py:138
 msgid "Match"
-msgstr "Associazione"
+msgstr "Corrispondenza"
 
 #: picard/ui/itemviews/columns.py:147
 msgid "Title"
@@ -6362,7 +6363,7 @@ msgstr "Sei sicuro di voler rimuovere le impostazioni di opzioni selezionate?"
 
 #: picard/ui/options/matching.py:35
 msgid "Matching"
-msgstr "Associazioni"
+msgstr "Corrispondenze"
 
 #: picard/ui/options/metadata.py:225
 #, python-brace-format
