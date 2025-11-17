@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-05-05 11:20+0000\n"
+"PO-Revision-Date: 2025-11-17 16:21+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0)"
 " ? 1 : 2);\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -6004,7 +6004,7 @@ msgstr "Sei sicuro di voler rimuovere le impostazioni di opzioni selezionate?"
 
 #: picard/ui/options/matching.py:40
 msgid "Matching"
-msgstr "Associazioni"
+msgstr "Corrispondenze"
 
 #: picard/ui/options/metadata.py:216
 msgid "{indent}{locale}"
