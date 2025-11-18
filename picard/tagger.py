@@ -1516,6 +1516,8 @@ def setup_translator(tagger):
 
 
 def main(localedir=None, autoupdate=True):
+    log.enable_default_handlers()
+
     """Main entry point to the program"""
     setup_application()
 

@@ -22,11 +22,6 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass
-import os
-from typing import cast
-
-from PyQt6 import QtCore
-from PyQt6.QtWidgets import QApplication
 
 from picard.i18n import setup_gettext
 
@@ -170,28 +165,6 @@ def setup_config() -> None:
     config.setting['show_cover_art_details_filesize'] = True
     config.setting['show_cover_art_details_dimensions'] = True
     config.setting['show_cover_art_details_mimetype'] = True
-
-
-@pytest.fixture(scope="session", autouse=True)
-def qapplication() -> QApplication:
-    # Ensure one QApplication per worker (xdist creates separate processes)
-    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
-    qapp = QApplication.instance() or QApplication([])
-    # Provide a FakeTagger globally for QCoreApplication.instance(), which widgets rely on
-    from test.picardtestcase import FakeTagger as _FakeTagger
-
-    tagger = _FakeTagger()
-
-    # Provide a minimal primaryScreen for pixel ratio access
-    class _DummyScreen:
-        @staticmethod
-        def devicePixelRatio() -> float:
-            return 1.0
-
-    tagger.primaryScreen = lambda: _DummyScreen()  # type: ignore[attr-defined]
-    # Patch instance() at module import time for this worker
-    QtCore.QCoreApplication.instance = lambda: tagger  # type: ignore[assignment]
-    return cast(QApplication, qapp)
 
 
 @dataclass

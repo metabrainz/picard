@@ -215,28 +215,9 @@ def name_filter(record):
 
 
 main_logger.addFilter(name_filter)
-
 main_tail = TailLogger(_MAX_TAIL_LEN)
 
-main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s.%(funcName)s:%(lineno)d: %(message)s'
-main_time_fmt = '%H:%M:%S'
-main_inapp_fmt = main_fmt
-main_inapp_time_fmt = main_time_fmt
-
-main_handler = main_tail.log_handler
-main_formatter = logging.Formatter(main_inapp_fmt, main_inapp_time_fmt)
-main_handler.setFormatter(main_formatter)
-
-main_logger.addHandler(main_handler)
-
-main_console_handler = logging.StreamHandler()
-main_console_formatter = logging.Formatter(main_fmt, main_time_fmt)
-
-main_console_handler.setFormatter(main_console_formatter)
-
-main_logger.addHandler(main_console_handler)
-
-
+# Make logging functions available on module for convenient access
 debug = main_logger.debug
 info = main_logger.info
 warning = main_logger.warning
@@ -245,23 +226,42 @@ exception = main_logger.exception
 log = main_logger.log
 
 # HISTORY LOGGING
-
-
 history_logger = logging.getLogger('history')
 
 # do not pass logging messages to the handlers of ancestor loggers (PICARD-2651)
 history_logger.propagate = False
-
 history_logger.setLevel(_DEFAULT_LOG_LEVEL)
 
 history_tail = TailLogger(_MAX_TAIL_LEN)
 
-history_handler = history_tail.log_handler
-history_formatter = logging.Formatter('%(asctime)s - %(message)s')
-history_handler.setFormatter(history_formatter)
-
-history_logger.addHandler(history_handler)
-
 
 def history_info(message, *args):
     history_logger.info(message, *args)
+
+
+def enable_default_handlers():
+    # Logging
+    main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s.%(funcName)s:%(lineno)d: %(message)s'
+    main_time_fmt = '%H:%M:%S'
+    main_inapp_fmt = main_fmt
+    main_inapp_time_fmt = main_time_fmt
+
+    main_handler = main_tail.log_handler
+    main_formatter = logging.Formatter(main_inapp_fmt, main_inapp_time_fmt)
+    main_handler.setFormatter(main_formatter)
+
+    main_logger.addHandler(main_handler)
+
+    main_console_handler = logging.StreamHandler()
+    main_console_formatter = logging.Formatter(main_fmt, main_time_fmt)
+
+    main_console_handler.setFormatter(main_console_formatter)
+
+    main_logger.addHandler(main_console_handler)
+
+    # History
+    history_handler = history_tail.log_handler
+    history_formatter = logging.Formatter('%(asctime)s - %(message)s')
+    history_handler.setFormatter(history_formatter)
+
+    history_logger.addHandler(history_handler)

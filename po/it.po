@@ -8,12 +8,13 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023, 2024.
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2012-2015,2017-2023.
 # "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025.
+# GABG <musicbrainz@gabg.email>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-05-13 20:20+0000\n"
+"PO-Revision-Date: 2025-11-17 16:20+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/picard/"
@@ -23,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -334,16 +335,12 @@ msgstr "Salva una sola immagine di copertina frontale come file separato"
 
 #: picard/options.py:212
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-#, fuzzy
-#| msgid "New cover art saved as a separate file"
 msgid "Show cover art details in cover art view"
-msgstr "Nuove copertine salvate come file separati"
+msgstr "Mostra dettagli sulle copertine nella visualizzazione copertine"
 
 #: picard/options.py:213
-#, fuzzy
-#| msgid "New cover art embedded into tags"
 msgid "Show cover art type in info labels"
-msgstr "Nuove copertine integrate nei tag"
+msgstr "Mostra tipo di copertina nelle etichette di informazione"
 
 #: picard/options.py:214
 msgid "Show cover art file size in info labels"
@@ -553,16 +550,12 @@ msgid "Use standardized artist names"
 msgstr "Usa nomi artista standardizzati"
 
 #: picard/options.py:367 picard/ui/forms/ui_options_metadata.py:145
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized instrument credits"
-msgstr "Usa accreditamenti strumento e voce standardizzati"
+msgstr "Usa accreditamenti strumento standardizzati"
 
 #: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:146
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized vocal credits"
-msgstr "Usa accreditamenti strumento e voce standardizzati"
+msgstr "Usa accreditamenti voce standardizzati"
 
 #: picard/options.py:369
 msgid "Use track and release relationships"
@@ -3211,42 +3204,33 @@ msgid "&Set as starting directory"
 msgstr "&Imposta come cartella iniziale"
 
 #: picard/ui/filter.py:54
-#, fuzzy
-#| msgid "Clusters"
 msgid "Filters"
-msgstr "Raggruppamenti"
+msgstr "Filtri"
 
 #: picard/ui/filter.py:70
 msgid "Type to filter..."
 msgstr ""
 
 #: picard/ui/filter.py:89
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select Filters"
-msgstr "Seleziona un file"
+msgstr "Seleziona filtri"
 
 #: picard/ui/filter.py:100
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select / clear all filters"
-msgstr "Seleziona un file"
+msgstr "Seleziona / elimina tutti i filtri"
 
 #: picard/ui/filter.py:137
 msgid "OK"
 msgstr ""
 
 #: picard/ui/filter.py:145
-#, fuzzy
-#| msgid "&Cancel"
 msgid "Cancel"
-msgstr "&Annulla"
+msgstr "Annulla"
 
 #: picard/ui/filter.py:232
-#, fuzzy, python-brace-format
-#| msgid "Rename files"
+#, python-brace-format
 msgid "{num} filters"
-msgstr "Rinomina file"
+msgstr "{num} filtri"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
@@ -3736,10 +3720,8 @@ msgid "Options"
 msgstr "Opzioni"
 
 #: picard/ui/forms/ui_options.py:106
-#, fuzzy
-#| msgid "px"
 msgid "x"
-msgstr "px"
+msgstr "x"
 
 #: picard/ui/forms/ui_options.py:107
 msgid "text"
@@ -3803,8 +3785,6 @@ msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Unità CD predefinita da usare per le ricerche:"
 
 #: picard/ui/forms/ui_options_cover.py:122
-#, fuzzy
-#| msgid "Select types…"
 msgid "Select Types…"
 msgstr "Seleziona tipi…"
 
@@ -4086,16 +4066,12 @@ msgid "Show type (front, back, etc.)"
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:53
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show file size"
-msgstr "Mostra i file &nascosti"
+msgstr "Mostra dimensione file"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:54
-#, fuzzy
-#| msgid "Cover Dimensions"
 msgid "Show dimensions"
-msgstr "Dimensioni delle copertine"
+msgstr "Mostra dimensioni"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:55
 msgid "Show MIME type"
@@ -4107,10 +4083,8 @@ msgid "Quick Settings Menu"
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-#| msgid "Label"
 msgid "TextLabel"
-msgstr "Etichetta"
+msgstr "Etichetta testuale"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -4362,10 +4336,8 @@ msgid "Destination directory:"
 msgstr "Cartella di destinazione:"
 
 #: picard/ui/forms/ui_options_renaming.py:159
-#, fuzzy
-#| msgid "Move additional files (case insensitive):"
 msgid "Move additional files and subfolders (case insensitive):"
-msgstr "Sposta file aggiuntivi (ignora maiuscole/minuscole):"
+msgstr "Sposta file e sottocartelle aggiuntivi (ignora maiuscole/minuscole):"
 
 #: picard/ui/forms/ui_options_renaming.py:161
 msgid "Rename files when saving"
@@ -4734,7 +4706,7 @@ msgstr "Rimuovi tag"
 
 #: picard/ui/forms/ui_win_compat_dialog.py:199
 msgid "Character"
-msgstr "Personaggio"
+msgstr "Carattere"
 
 #: picard/ui/forms/ui_win_compat_dialog.py:200
 msgid "Replacement"
@@ -5036,20 +5008,16 @@ msgid "Matches on: %s"
 msgstr ""
 
 #: picard/ui/itemviews/basetreeview.py:632
-#, fuzzy
-#| msgid "&Load selected files"
 msgid "No tags found for selected filters."
-msgstr "&Carica i file selezionati"
+msgstr "Nessun tag trovato con i filtri selezionati."
 
 #: picard/ui/itemviews/columns.py:134
 msgid "Fingerprint status"
 msgstr "Status impronte digitali"
 
 #: picard/ui/itemviews/columns.py:138
-#, fuzzy
-#| msgid "Matching"
 msgid "Match"
-msgstr "Associazioni"
+msgstr "Corrispondenza"
 
 #: picard/ui/itemviews/columns.py:147
 msgid "Title"
@@ -5092,10 +5060,8 @@ msgid "Size"
 msgstr "Dimensione"
 
 #: picard/ui/itemviews/columns.py:173
-#, fuzzy
-#| msgid "Release Type"
 msgid "File Type"
-msgstr "Tipo di pubblicazione"
+msgstr "Tipo di file"
 
 #: picard/ui/itemviews/columns.py:175
 msgid "Bitrate"
@@ -5137,16 +5103,14 @@ msgid "Duplicate files: %(count)d"
 msgstr ""
 
 #: picard/ui/itemviews/match_quality_column.py:212
-#, fuzzy, python-format
-#| msgid "{title} ({count})"
+#, python-format
 msgid "Extra files: %(count)d"
-msgstr "{title} ({count})"
+msgstr "File extra: %(count)d"
 
 #: picard/ui/itemviews/match_quality_column.py:213
-#, fuzzy, python-format
-#| msgid "Unmatched Files"
+#, python-format
 msgid "Unmatched files: %(count)d"
-msgstr "File non riconosciuti"
+msgstr "File non riconosciuti: %(count)d"
 
 #: picard/ui/mainwindow/__init__.py:388
 msgid "Unsaved Changes"
@@ -5237,10 +5201,8 @@ msgid "&Enable/disable profiles"
 msgstr "&Abilita/disabilita profili"
 
 #: picard/ui/mainwindow/__init__.py:701
-#, fuzzy
-#| msgid "Option Settings"
 msgid "&Quick settings"
-msgstr "Impostazioni di opzione"
+msgstr "Impostazioni &rapide"
 
 #: picard/ui/mainwindow/__init__.py:705
 msgid "&Options"
@@ -5546,20 +5508,16 @@ msgid "&Actions"
 msgstr "&Azioni"
 
 #: picard/ui/mainwindow/actions.py:354
-#, fuzzy
-#| msgid "Similar items"
 msgid "Filter Items"
-msgstr "Elementi simili"
+msgstr "Filtra elementi"
 
 #: picard/ui/mainwindow/actions.py:355
 msgid "Toggle filtering of items based on specific tag values."
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:357
-#, fuzzy
-#| msgid "Ctrl+Shift+I"
 msgid "Ctrl+Shift+F"
-msgstr "Ctrl+Shift+I"
+msgstr "Ctrl+Shift+F"
 
 #: picard/ui/mainwindow/actions.py:375
 msgid "Lookup the details of the CD in your drive"
@@ -5923,16 +5881,14 @@ msgid "This option will be saved to profile: %s"
 msgstr "Quest'opzione sarà salvata nel profilo: %s"
 
 #: picard/ui/options/dialog.py:441
-#, fuzzy, python-format
-#| msgid "Profiles"
+#, python-format
 msgid "profile \"%s\""
-msgstr "Profili"
+msgstr "profilo \"%s\""
 
 #: picard/ui/options/dialog.py:443
-#, fuzzy, python-format
-#| msgid "Profiles"
+#, python-format
 msgid "profiles %s"
-msgstr "Profili"
+msgstr "profili %s"
 
 #: picard/ui/options/dialog.py:444
 #, python-format
@@ -6171,10 +6127,8 @@ msgid "You have changed the interface colors."
 msgstr "Hai cambiato i colori dell'interfaccia."
 
 #: picard/ui/options/interface_cover_art_box.py:34
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover Art Box"
-msgstr "Copertine"
+msgstr "Scatola di copertina"
 
 #: picard/ui/options/interface_quick_menu.py:60
 msgid ""
@@ -6183,16 +6137,12 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/interface_quick_menu.py:62
-#, fuzzy
-#| msgid "Option Settings"
 msgid "Available Option Settings"
-msgstr "Impostazioni di opzione"
+msgstr "Impostazioni di opzione disponibili"
 
 #: picard/ui/options/interface_quick_menu.py:82
-#, fuzzy
-#| msgid "Subtitle"
 msgid "group_title"
-msgstr "Sottotitolo"
+msgstr "titolo_gruppo"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -6413,7 +6363,7 @@ msgstr "Sei sicuro di voler rimuovere le impostazioni di opzioni selezionate?"
 
 #: picard/ui/options/matching.py:35
 msgid "Matching"
-msgstr "Associazioni"
+msgstr "Corrispondenze"
 
 #: picard/ui/options/metadata.py:225
 #, python-brace-format

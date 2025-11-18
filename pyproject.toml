@@ -48,7 +48,7 @@ dependencies = [
 [dependency-groups]
 build = [
     "Babel>=2.10.0",
-    "PyInstaller==6.14.1",
+    "PyInstaller==6.16.0",
     "pytest>=8.1",
     "setuptools>=74.1.0",
 ]
@@ -58,6 +58,7 @@ dev = [
     "pre-commit>=4.2.0",
     "pycodestyle",
     "pylint>=2.6.0",
+    "pytest-randomly>=4.0.1",
     "pytest-xdist>=3.8.0",
     "ruff>=0.12.8",
     "wlc",
