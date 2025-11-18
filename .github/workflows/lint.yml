@@ -1,14 +1,5 @@
 name: Linting & Validation Checks
-on:
-  push:
-    paths:
-    - '.github/workflows/validate-xdg-metadata.yml'
-    - 'org.musicbrainz.Picard.appdata.xml.in'
-    - 'org.musicbrainz.Picard.desktop.in'
-    - 'po/appstream/*.po'
-    - 'NEWS.md'
-    - 'setup.py'
-  pull_request:
+on: [push, pull_request]
 
 jobs:
   ruff:
@@ -31,8 +22,31 @@ jobs:
       - name: Check settings keys
         run: python scripts/tools/check_settings.py
 
+  check-xdg-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.changes.outputs.changes }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            src:
+              - '.github/workflows/lint.yml'
+              - 'org.musicbrainz.Picard.appdata.xml.in'
+              - 'org.musicbrainz.Picard.desktop.in'
+              - 'po/appstream/*.po'
+              - 'NEWS.md'
+              - 'setup.py'
+
   validate-xdg-metadata:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+    needs: check-xdg-changes
+    if: ${{ needs.check-xdg-changes.outputs.src == 'true' || github.event_name == 'pull_request' }}
     steps:
     - uses: actions/checkout@v5
     - name: Set up Python
