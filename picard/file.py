@@ -352,6 +352,7 @@ class File(MetadataItem):
 
     def save(self):
         self.set_pending()
+        run_file_pre_save_processors(self)
         metadata = Metadata()
         metadata.copy(self.metadata)
         thread.run_task(
