@@ -1,5 +1,15 @@
-name: Linting
-on: [ push, pull_request ]
+name: Linting & Validation Checks
+on:
+  push:
+    paths:
+    - '.github/workflows/validate-xdg-metadata.yml'
+    - 'org.musicbrainz.Picard.appdata.xml.in'
+    - 'org.musicbrainz.Picard.desktop.in'
+    - 'po/appstream/*.po'
+    - 'NEWS.md'
+    - 'setup.py'
+  pull_request:
+
 jobs:
   ruff:
     runs-on: ubuntu-latest
@@ -13,3 +23,32 @@ jobs:
         uses: astral-sh/ruff-action@v3
         with:
           args: "format --check"
+
+  check-keys:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check settings keys
+        run: python scripts/tools/check_settings.py
+
+  validate-xdg-metadata:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v5
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.13'
+    - name: Install utils
+      run: |
+        sudo apt-get update
+        sudo apt-get install appstream desktop-file-utils gettext
+        pip install setuptools
+    - name: Validate AppStream metadata
+      run: |
+        python setup.py build_appdata
+        appstreamcli validate --pedantic --explain org.musicbrainz.Picard.appdata.xml
+    - name: Validate desktop file
+      run: |
+        python setup.py build_desktop_file
+        desktop-file-validate org.musicbrainz.Picard.desktop

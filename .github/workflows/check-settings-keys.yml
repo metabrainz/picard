@@ -1,9 +1,0 @@
-name: Check settings keys
-on: [ push, pull_request ]
-jobs:
-  check-keys:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - name: Check settings keys
-        run: python scripts/tools/check_settings.py
