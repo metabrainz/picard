@@ -28,7 +28,7 @@ jobs:
       src: ${{ steps.changes.outputs.changes }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Check for changes
         id: changes
@@ -48,21 +48,21 @@ jobs:
     needs: check-xdg-changes
     if: ${{ needs.check-xdg-changes.outputs.src == 'true' || github.event_name == 'pull_request' }}
     steps:
-    - uses: actions/checkout@v5
-    - name: Set up Python
-      uses: actions/setup-python@v6
-      with:
-        python-version: '3.13'
-    - name: Install utils
-      run: |
-        sudo apt-get update
-        sudo apt-get install appstream desktop-file-utils gettext
-        pip install setuptools
-    - name: Validate AppStream metadata
-      run: |
-        python setup.py build_appdata
-        appstreamcli validate --pedantic --explain org.musicbrainz.Picard.appdata.xml
-    - name: Validate desktop file
-      run: |
-        python setup.py build_desktop_file
-        desktop-file-validate org.musicbrainz.Picard.desktop
+      - uses: actions/checkout@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Install utils
+        run: |
+          sudo apt-get update
+          sudo apt-get install appstream desktop-file-utils gettext
+          pip install setuptools
+      - name: Validate AppStream metadata
+        run: |
+          python setup.py build_appdata
+          appstreamcli validate --pedantic --explain org.musicbrainz.Picard.appdata.xml
+      - name: Validate desktop file
+        run: |
+          python setup.py build_desktop_file
+          desktop-file-validate org.musicbrainz.Picard.desktop
