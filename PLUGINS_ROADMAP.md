@@ -1068,6 +1068,14 @@ Website admin interface:
   "id": "plugin-name",
   "name": "Display Name",
   "description": "Short description of the plugin",
+  "name_i18n": {
+    "de": "Anzeigename",
+    "fr": "Nom d'affichage"
+  },
+  "description_i18n": {
+    "de": "Kurze Beschreibung des Plugins",
+    "fr": "Brève description du plugin"
+  },
   "git_url": "https://github.com/user/repo",
   "categories": ["metadata", "coverart"],
   "trust_level": "picard_team",
