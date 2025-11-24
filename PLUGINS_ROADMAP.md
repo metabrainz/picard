@@ -846,10 +846,21 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
       "git_url": "https://github.com/user/broken-plugin",
       "reason": "Causes data corruption",
       "blacklisted_at": "2025-11-15T14:30:00Z"
+    },
+    {
+      "git_url": "https://github.com/badorg/*",
+      "reason": "Entire organization blacklisted for malicious activity",
+      "blacklisted_at": "2025-11-22T10:00:00Z",
+      "pattern": "repository"
     }
   ]
 }
 ```
+
+**Note:** The blacklist supports both specific repository URLs and repository patterns:
+- **Specific URL:** `https://github.com/user/plugin` - blocks only that repository
+- **Repository pattern:** `https://github.com/badorg/*` - blocks all repositories from that organization/user
+- Pattern matching uses simple wildcard matching on the URL path
 
 ---
 
@@ -1182,10 +1193,34 @@ class PluginRegistry:
         """Fetch plugin list from website, use cache if fresh"""
 
     def is_blacklisted(self, git_url):
-        """Check if git URL is blacklisted"""
+        """Check if git URL is blacklisted (supports patterns)"""
+        registry = self.fetch_registry()
+        for entry in registry.get('blacklist', []):
+            blacklist_url = entry['git_url']
+            # Check for exact match
+            if blacklist_url == git_url:
+                return True
+            # Check for pattern match (e.g., https://github.com/badorg/*)
+            if blacklist_url.endswith('/*'):
+                pattern_base = blacklist_url[:-2]  # Remove /*
+                if git_url.startswith(pattern_base + '/'):
+                    return True
+        return False
 
     def get_blacklist_reason(self, git_url):
-        """Get reason for blacklisting"""
+        """Get reason for blacklisting (checks patterns too)"""
+        registry = self.fetch_registry()
+        for entry in registry.get('blacklist', []):
+            blacklist_url = entry['git_url']
+            # Check for exact match
+            if blacklist_url == git_url:
+                return entry
+            # Check for pattern match
+            if blacklist_url.endswith('/*'):
+                pattern_base = blacklist_url[:-2]
+                if git_url.startswith(pattern_base + '/'):
+                    return entry
+        return None
 
     def get_trust_level(self, git_url):
         """Get trust level for plugin by git URL"""
@@ -1506,6 +1541,18 @@ The blacklist can include URLs that were never in the registry:
       "reason": "Suspicious activity detected, under investigation",
       "blacklisted_at": "2025-11-22T14:30:00Z",
       "severity": "high"
+    },
+    {
+      "git_url": "https://github.com/malicious-org/*",
+      "reason": "Entire organization engaged in distributing malware",
+      "blacklisted_at": "2025-11-23T10:00:00Z",
+      "severity": "critical",
+      "pattern": "repository"
+    }
+  ],
+      "reason": "Suspicious activity detected, under investigation",
+      "blacklisted_at": "2025-11-22T14:30:00Z",
+      "severity": "high"
     }
   ],
   "ref_blacklist": [
@@ -1531,6 +1578,30 @@ The blacklist can include URLs that were never in the registry:
 This allows blacklisting:
 - Plugins that were in registry but removed
 - Unregistered plugins that are known to be malicious
+- Suspicious repositories before they're widely installed
+- **Specific versions/refs of otherwise good plugins**
+- **Entire organizations/users distributing malicious plugins** (using `/*` pattern)
+
+**Repository-level blacklisting use cases:**
+- **Compromised account:** If a GitHub account is compromised and starts distributing malware, blacklist `https://github.com/username/*` to block all repositories
+- **Malicious organization:** Block entire organizations known for distributing malicious code
+- **Spam/abuse:** Quickly block accounts creating multiple spam plugins
+- **Faster response:** No need to enumerate every repository - one pattern blocks all current and future repos from that source
+
+**Example CLI output for repository-level blacklist:**
+```bash
+$ picard plugins --install https://github.com/malicious-org/some-plugin
+
+⚠️  ERROR: Cannot install plugin - repository is blacklisted!
+
+  URL: https://github.com/malicious-org/some-plugin
+  Matched pattern: https://github.com/malicious-org/*
+  Reason: Entire organization engaged in distributing malware
+  Blacklisted: 2025-11-23
+
+  This repository is part of a blacklisted organization.
+  DO NOT INSTALL any plugins from this source.
+```
 - Suspicious repositories before they're widely installed
 - **Specific versions/refs of otherwise good plugins**
 
