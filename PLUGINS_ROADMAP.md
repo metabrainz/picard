@@ -1056,12 +1056,11 @@ Website admin interface:
 {
   "id": "plugin-name",
   "name": "Display Name",
-  "description": "Description",
+  "description": "Short description of the plugin",
   "git_url": "https://github.com/user/repo",
   "categories": ["metadata", "coverart"],
-  "trust_level": "picard_team|trusted_author|community",
+  "trust_level": "picard_team",
   "authors": ["Author Name", "Co-Author Name"],
-  "author_github": "github-username",
   "min_api_version": "3.0",
   "max_api_version": "3.1",
   "added_at": "2025-11-24T15:00:00Z",
@@ -1069,10 +1068,45 @@ Website admin interface:
 }
 ```
 
-**Note:**
-- `categories` and `authors` are arrays to support multiple values
-- Single values also supported for backward compatibility
+**Field descriptions:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | Yes | Unique plugin identifier (lowercase, alphanumeric + hyphens) |
+| `name` | string | Yes | Display name of the plugin |
+| `description` | string | Yes | Short description (one line) |
+| `git_url` | string | Yes | Git repository URL (https) |
+| `categories` | array | Yes | Plugin categories: `metadata`, `coverart`, `ui`, `scripting`, `formats`, `other` |
+| `trust_level` | string | Yes | Trust level: `picard_team`, `trusted_author`, or `community` |
+| `authors` | array | Yes | Plugin author names |
+| `min_api_version` | string | Yes | Minimum supported API version |
+| `max_api_version` | string | No | Maximum supported API version (if any) |
+| `added_at` | string | Yes | ISO 8601 timestamp when added to registry |
+| `updated_at` | string | Yes | ISO 8601 timestamp of last update |
+
+**Notes:**
+- `categories` and `authors` are **always arrays** in registry JSON
+- Even single values are arrays: `"authors": ["Alice"]`
+- MANIFEST.toml supports both singular/plural (converted to arrays)
 - Trust level is set per-plugin by registry admin, not derived from authors
+- Each plugin can have different trust level, even from same author
+- `id` should match the plugin directory name
+
+**Example with multiple categories and authors:**
+```json
+{
+  "id": "multi-feature-plugin",
+  "name": "Multi Feature Plugin",
+  "description": "Provides metadata enhancement and cover art fetching",
+  "git_url": "https://github.com/user/multi-feature-plugin",
+  "categories": ["metadata", "coverart"],
+  "trust_level": "community",
+  "authors": ["Alice Smith", "Bob Jones"],
+  "min_api_version": "3.0",
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
+}
+```
 
 ---
 
@@ -3065,7 +3099,7 @@ def disable() -> None:
 | Q7 | Extra data files API? | **NO special API** | Use standard Python pathlib |
 | Q8 | Additional extension points? | **Add as needed** | Current set covers 90% of cases |
 | Q9 | ZIP plugin support? | **NO** | Git-only for v3, simpler |
-| Q10 | Manifest field format? | **Support both** | `author`/`authors`, `category`/`categories` (arrays) |
+| Q10 | Manifest field format? | **Singular/plural in MANIFEST, arrays in Registry** | Flexible for devs, consistent for API |
 | Q11 | Multi-lingual name? | **NO** | Name is identifier, description is i18n |
 | Q12 | Legacy coexistence? | **Parallel systems** | Both work during transition |
 
