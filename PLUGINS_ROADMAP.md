@@ -1442,6 +1442,23 @@ The blacklist can include URLs that were never in the registry:
       "blacklisted_at": "2025-11-22T14:30:00Z",
       "severity": "high"
     }
+  ],
+  "ref_blacklist": [
+    {
+      "git_url": "https://github.com/metabrainz/picard-plugin-lastfm",
+      "refs": ["v2.0.0", "v2.0.1"],
+      "reason": "Critical bug causes data corruption",
+      "blacklisted_at": "2025-11-23T10:00:00Z",
+      "severity": "high",
+      "fixed_in": "v2.0.2"
+    },
+    {
+      "git_url": "https://github.com/user/picard-plugin-discogs",
+      "refs": ["bad-experiment"],
+      "reason": "Experimental branch with known issues",
+      "blacklisted_at": "2025-11-20T15:00:00Z",
+      "severity": "medium"
+    }
   ]
 }
 ```
@@ -1450,6 +1467,154 @@ This allows blacklisting:
 - Plugins that were in registry but removed
 - Unregistered plugins that are known to be malicious
 - Suspicious repositories before they're widely installed
+- **Specific versions/refs of otherwise good plugins**
+
+---
+
+**Ref-level blacklisting:**
+
+Sometimes a specific version of a plugin has a critical bug, but the plugin itself is fine. The registry supports blacklisting specific refs:
+
+```python
+def is_ref_blacklisted(self, git_url, ref):
+    """Check if specific ref of a plugin is blacklisted"""
+    registry = self.fetch_registry()
+    for entry in registry.get('ref_blacklist', []):
+        if entry['git_url'] == git_url:
+            if ref in entry['refs']:
+                return True, entry
+    return False, None
+
+def get_safe_ref_suggestion(self, git_url, blacklisted_ref):
+    """Get suggestion for safe ref to use instead"""
+    registry = self.fetch_registry()
+    for entry in registry.get('ref_blacklist', []):
+        if entry['git_url'] == git_url and blacklisted_ref in entry['refs']:
+            return entry.get('fixed_in')
+    return None
+```
+
+**Behavior on install/update:**
+
+```bash
+# Try to install blacklisted ref
+$ picard plugins --install https://github.com/user/plugin --ref v2.0.0
+
+⚠️  WARNING: This version of the plugin is blacklisted!
+
+Plugin: plugin
+Version: v2.0.0
+Reason: Critical bug causes data corruption
+Blacklisted: 2025-11-23
+
+This specific version has known issues.
+Recommended version: v2.0.2
+
+Install recommended version instead? [Y/n] y
+Installing plugin from https://github.com/user/plugin (ref: v2.0.2)...
+✓ Installed successfully
+
+# Force install blacklisted ref
+$ picard plugins --install https://github.com/user/plugin --ref v2.0.0 --force-blacklisted
+
+⚠️  DANGER: You are installing a blacklisted version!
+Reason: Critical bug causes data corruption
+Continue? [yes/NO]
+```
+
+**Startup check for blacklisted refs:**
+
+```python
+def init_plugins(self):
+    """Initialize plugins on startup"""
+    registry = PluginRegistry()
+
+    for plugin in self._plugins:
+        # Check if entire plugin is blacklisted
+        if registry.is_blacklisted(plugin.git_url):
+            # ... existing code ...
+            continue
+
+        # Check if current ref is blacklisted
+        current_ref = plugin.get_current_ref()
+        is_blacklisted, reason = registry.is_ref_blacklisted(plugin.git_url, current_ref)
+
+        if is_blacklisted:
+            if self._is_blacklist_overridden(plugin.name):
+                log.warning(
+                    'Plugin "%s" ref "%s" is blacklisted but user has chosen to keep it. '
+                    'Reason: %s',
+                    plugin.name, current_ref, reason['reason']
+                )
+            else:
+                log.error(
+                    'Plugin "%s" ref "%s" is blacklisted and will be disabled. '
+                    'Reason: %s. Fixed in: %s',
+                    plugin.name, current_ref, reason['reason'],
+                    reason.get('fixed_in', 'unknown')
+                )
+
+                # Suggest update
+                fixed_in = reason.get('fixed_in')
+                if fixed_in:
+                    log.info(
+                        'To fix, run: picard plugins --update %s --ref %s',
+                        plugin.name, fixed_in
+                    )
+
+                # Disable plugin
+                self.disable_plugin(plugin)
+                self._mark_auto_disabled(plugin.name, reason)
+                continue
+
+        # Load plugin normally
+        # ...
+```
+
+**List output shows blacklisted refs:**
+
+```bash
+$ picard plugins --list
+
+Installed Plugins:
+
+Auto-disabled (blacklisted version):
+  ⛔ lastfm v2.0.0 - BLACKLISTED VERSION
+     Reason: Critical bug causes data corruption
+     Blacklisted: 2025-11-23
+     Fixed in: v2.0.2
+
+     To fix: picard plugins --update lastfm --ref v2.0.2
+```
+
+**Alternative design: Include/Exclude lists**
+
+Instead of explicit blacklist, could use include/exclude patterns:
+
+```json
+{
+  "git_url": "https://github.com/user/plugin",
+  "ref_policy": {
+    "include_refs": ["main", "v2.*"],  // Only allow main and v2.x tags
+    "exclude_refs": ["v2.0.0", "v2.0.1", "experimental"],  // Except these
+    "reason": "v2.0.0 and v2.0.1 have critical bugs",
+    "recommended_ref": "v2.0.2"
+  }
+}
+```
+
+**Recommendation:** Use explicit `ref_blacklist` (simpler)
+
+**Pros:**
+- ✅ Simple and explicit
+- ✅ Easy to understand
+- ✅ Clear reason per blacklisted ref
+- ✅ Can suggest fixed version
+
+**Cons of include/exclude:**
+- ❌ More complex to implement
+- ❌ Pattern matching can be ambiguous
+- ❌ Harder to explain to users
 
 ---
 
