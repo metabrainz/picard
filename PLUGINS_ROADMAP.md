@@ -866,7 +866,7 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
 
 #### Trust Levels
 
-The registry categorizes plugins into four trust levels:
+The registry categorizes plugins into three trust levels. A fourth level (`unregistered`) is used client-side for plugins not in the registry:
 
 **1. `official` - Official Plugins**
 - **Definition:** Plugins maintained by the MusicBrainz Picard team
@@ -913,8 +913,9 @@ The registry categorizes plugins into four trust levels:
 - Experimental plugins
 - Personal/niche plugins
 
-**4. `unregistered` - Unregistered Plugins**
+**4. `unregistered` - Unregistered Plugins (Client-side only)**
 - **Definition:** Plugins not in the official registry
+- **Note:** This trust level does NOT appear in the registry JSON - it's assigned by Picard when a plugin's git URL is not found in the registry
 - **Criteria:**
   - URL not found in registry
   - Could be in development
@@ -1096,7 +1097,7 @@ Website admin interface:
 | `description_i18n` | object | No | Translated descriptions (locale → string) |
 | `git_url` | string | Yes | Git repository URL (https) |
 | `categories` | array | Yes | Plugin categories: `metadata`, `coverart`, `ui`, `scripting`, `formats`, `other` |
-| `trust_level` | string | Yes | Trust level: `official`, `trusted`, `community`, or `unregistered` |
+| `trust_level` | string | Yes | Trust level: `official`, `trusted`, or `community` |
 | `authors` | array | Yes | Plugin author names |
 | `min_api_version` | string | Yes | Minimum supported API version |
 | `max_api_version` | string | No | Maximum supported API version (if any) |
@@ -1293,11 +1294,15 @@ class PluginRegistry:
     CACHE_FILE = "plugin_registry.json"
     CACHE_TTL = 86400  # 24 hours
 
+    # Registry trust levels (in registry JSON)
+    REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
+
+    # Client-side trust level values (includes unregistered for local plugins)
     TRUST_LEVELS = {
-        'official': 3,      # Highest trust
-        'trusted': 2,       # High trust
-        'community': 1,     # Low trust
-        'unregistered': 0   # Lowest trust
+        'official': 3,      # Highest trust - in registry
+        'trusted': 2,       # High trust - in registry
+        'community': 1,     # Low trust - in registry
+        'unregistered': 0   # Lowest trust - NOT in registry (client-side only)
     }
 
     def fetch_registry(self):
@@ -2730,10 +2735,10 @@ DISCOVERED → LOADED → ENABLED
 - `other` - Miscellaneous
 
 **Trust Levels (security/quality):**
-- `official` - Team maintained, reviewed
-- `trusted` - Well-known authors, not reviewed
-- `community` - Other authors, not reviewed
-- `unregistered` - Not in registry
+- `official` - Team maintained, reviewed (in registry)
+- `trusted` - Well-known authors, not reviewed (in registry)
+- `community` - Other authors, not reviewed (in registry)
+- `unregistered` - Not in registry (client-side only)
 
 **Usage:**
 - Category: For filtering/browsing ("show me all metadata plugins")
@@ -2741,7 +2746,8 @@ DISCOVERED → LOADED → ENABLED
 
 **Implementation:**
 - Category stored in MANIFEST.toml (plugin developer sets)
-- Trust level stored in registry (website admin sets)
+- Trust level stored in registry for registered plugins (website admin sets)
+- Unregistered trust level assigned client-side when plugin not found in registry
 - Both used for filtering in CLI and GUI
 
 **Decision:** CLOSED - Dual classification system
@@ -3483,9 +3489,10 @@ def disable() -> None:
 **Approach:** Trust-based system with social/organizational controls
 
 **Security measures:**
-- ✅ Trust levels (official / trusted / community)
+- ✅ Trust levels for registered plugins (official / trusted / community)
+- ✅ Unregistered level for plugins not in registry
 - ✅ Blacklist for known malicious plugins
-- ✅ Clear warnings for community plugins
+- ✅ Clear warnings for community and unregistered plugins
 - ✅ Code review for Picard Team plugins
 - ✅ Reputation system for trusted authors
 - ✅ User education about risks
@@ -4454,7 +4461,7 @@ Trust Levels:
   🛡️  official      - Reviewed by Picard team (highest trust)
   ✓  trusted   - Known authors, not reviewed (high trust)
   ⚠️  community        - Other authors, not reviewed (use caution)
-  🔓 unregistered     - Not in registry (developer testing or unknown source)
+  🔓 unregistered     - Not in registry (local/unknown source - lowest trust)
 
 For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 ```
