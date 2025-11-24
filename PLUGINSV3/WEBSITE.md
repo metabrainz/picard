@@ -1,345 +1,529 @@
 # Website Plugin Registry Implementation
 
-This document describes the server-side implementation for generating and serving the plugin registry.
+This document describes the server-side implementation for the plugin registry using a git-based approach.
 
 ---
 
 ## Overview
 
-The Picard website generates the plugin registry JSON by:
-1. Scanning configured plugin repositories
-2. Extracting metadata from MANIFEST.toml files
-3. Extracting translations from MANIFEST.toml
-4. Applying trust level assignments
-5. Including blacklist entries
-6. Serving as JSON endpoint
+The plugin registry uses a **git repository as the database**. No traditional database is needed - the registry is a JSON file in a git repository, managed by a CLI tool.
+
+**Key principle:** Git is the source of truth.
 
 ---
 
-## Registry Generation
+## Architecture
 
-### Workflow
+### Components
+
+1. **picard-plugins-registry** (Git repository)
+   - Contains `plugins.json` (the registry)
+   - CLI tool to manipulate registry
+   - Validation scripts
+   - CI/CD for validation
+
+2. **picard.musicbrainz.org** (Website)
+   - Serves `plugins.json` at `/api/v3/plugins.json`
+   - Displays plugin browser (HTML pages)
+   - Fetches from GitHub (cached)
+
+3. **Picard Client**
+   - Downloads `plugins.json` from website
+   - Caches locally
+   - Uses for plugin discovery and blacklist checking
+
+### Data Flow
 
 ```
-1. Scheduled task (daily/hourly)
+1. Admin runs: registry plugin add <url> --trust community
    ↓
-2. For each plugin repository:
-   - Clone/pull repository
-   - Read MANIFEST.toml
-   - Extract metadata
-   - Extract translations
+2. CLI updates plugins.json in local git repo
    ↓
-3. Apply trust levels (from admin database)
+3. Admin commits and pushes to GitHub
    ↓
-4. Add blacklist entries (from admin database)
+4. GitHub hosts the JSON file
    ↓
-5. Generate plugins.json
+5. Website fetches from GitHub (cached)
    ↓
-6. Serve at /api/v3/plugins.json
+6. Website serves at /api/v3/plugins.json
+   ↓
+7. Picard downloads and caches
 ```
 
-### Pseudocode
+---
+
+## Repository Structure
+
+### picard-plugins-registry
+
+```
+picard-plugins-registry/
+├── plugins.json              # The registry (generated/managed)
+├── registry                  # CLI tool (executable)
+├── registry_lib/
+│   ├── __init__.py
+│   ├── cli.py               # CLI argument parsing
+│   ├── registry.py          # Registry manipulation
+│   ├── plugin.py            # Plugin operations
+│   ├── blacklist.py         # Blacklist operations
+│   ├── manifest.py          # MANIFEST.toml fetching/parsing
+│   ├── constants.py         # Trust levels, categories (copied from Picard)
+│   ├── validate.py          # Validation logic
+│   └── utils.py             # Utilities
+├── README.md
+├── requirements.txt
+└── .github/
+    └── workflows/
+        └── validate.yml     # CI validation
+```
+
+**Note:** `manifest.py` and `constants.py` contain minimal code copied from Picard to keep the tool standalone.
+
+---
+
+## Registry CLI Tool
+
+### Commands
+
+```bash
+# Plugin management
+registry plugin add <git-url> --trust <level> [--category <cat>]
+registry plugin remove <plugin-id>
+registry plugin update <plugin-id>
+registry plugin set-trust <plugin-id> <level>
+registry plugin list [--trust <level>] [--category <cat>]
+registry plugin show <plugin-id>
+
+# Blacklist management
+registry blacklist add <git-url> --reason <reason> [--pattern]
+registry blacklist remove <git-url>
+registry blacklist list
+registry blacklist show <git-url>
+
+# Utilities
+registry validate
+registry stats
+```
+
+### Usage Examples
+
+**Add a plugin:**
+```bash
+cd picard-plugins-registry
+
+# Add new community plugin
+./registry plugin add https://github.com/user/awesome-plugin \
+    --trust community \
+    --category metadata
+
+# Output:
+# Fetching MANIFEST.toml from https://github.com/user/awesome-plugin...
+# Plugin: Awesome Plugin
+# Version: 1.0.0
+# Authors: John Doe
+# API: 3.0
+#
+# Added plugin 'awesome-plugin' to registry
+# Trust level: community
+# Categories: metadata
+
+# Validate
+./registry validate
+
+# Commit
+git add plugins.json
+git commit -m "Add plugin: Awesome Plugin"
+git push
+```
+
+**Promote plugin to trusted:**
+```bash
+./registry plugin set-trust awesome-plugin trusted
+git add plugins.json
+git commit -m "Promote awesome-plugin to trusted"
+git push
+```
+
+**Blacklist a plugin:**
+```bash
+./registry blacklist add https://github.com/badactor/malware \
+    --reason "Contains malicious code"
+
+git add plugins.json
+git commit -m "Blacklist malicious plugin"
+git push
+```
+
+**Blacklist entire organization:**
+```bash
+./registry blacklist add https://github.com/badorg/* \
+    --reason "Compromised account" \
+    --pattern
+
+git add plugins.json
+git commit -m "Blacklist organization: badorg"
+git push
+```
+
+---
+
+## Registry Manipulation
+
+### Registry Class
 
 ```python
-def generate_registry():
-    plugins = []
+# registry_lib/registry.py
+import json
+from datetime import datetime
+from pathlib import Path
+from .manifest import fetch_manifest, validate_manifest
+from .utils import derive_plugin_id
 
-    for plugin_repo_url in get_registered_plugins():
-        # Clone or update repository
-        repo_path = clone_or_update(plugin_repo_url)
+class Registry:
+    def __init__(self, path='plugins.json'):
+        self.path = Path(path)
+        self.data = self._load()
 
-        # Read MANIFEST.toml
-        manifest = read_toml(repo_path / 'MANIFEST.toml')
+    def _load(self):
+        if not self.path.exists():
+            return {
+                'api_version': '3.0',
+                'last_updated': datetime.now().isoformat(),
+                'plugins': [],
+                'blacklist': []
+            }
+        with open(self.path) as f:
+            return json.load(f)
+
+    def save(self):
+        self.data['last_updated'] = datetime.now().isoformat()
+        with open(self.path, 'w') as f:
+            json.dump(self.data, f, indent=2, ensure_ascii=False)
+            f.write('\n')  # Trailing newline
+
+    def add_plugin(self, git_url, trust_level, categories=None):
+        # Fetch and validate MANIFEST
+        manifest = fetch_manifest(git_url)
+        validate_manifest(manifest)
+
+        # Derive plugin ID
+        plugin_id = derive_plugin_id(git_url)
+
+        # Check if exists
+        if self.find_plugin(plugin_id):
+            raise ValueError(f"Plugin {plugin_id} already exists")
 
         # Build plugin entry
         plugin = {
-            'id': derive_id(plugin_repo_url),
+            'id': plugin_id,
             'name': manifest['name'],
             'description': manifest['description'],
-            'git_url': plugin_repo_url,
-            'categories': normalize_to_array(manifest.get('categories') or manifest.get('category')),
-            'authors': normalize_to_array(manifest.get('authors') or manifest.get('author')),
+            'git_url': git_url,
+            'categories': categories or manifest.get('categories', []),
+            'trust_level': trust_level,
+            'authors': manifest['authors'],
             'min_api_version': manifest['api'][0],
-            'trust_level': get_trust_level(plugin_repo_url),  # Set by admin
-            'added_at': get_added_timestamp(plugin_repo_url),
+            'added_at': datetime.now().isoformat(),
             'updated_at': datetime.now().isoformat()
         }
 
-        # Include translations if present
+        # Add translations if present
         if 'name_i18n' in manifest:
             plugin['name_i18n'] = manifest['name_i18n']
         if 'description_i18n' in manifest:
             plugin['description_i18n'] = manifest['description_i18n']
 
-        # Optional: max_api_version
+        # Add max_api_version if multiple versions
         if len(manifest['api']) > 1:
             plugin['max_api_version'] = manifest['api'][-1]
 
-        plugins.append(plugin)
+        self.data['plugins'].append(plugin)
+        return plugin
 
-    # Get blacklist from database
-    blacklist = get_blacklist_entries()
+    def remove_plugin(self, plugin_id):
+        self.data['plugins'] = [p for p in self.data['plugins'] if p['id'] != plugin_id]
 
-    # Generate final JSON
-    registry = {
-        'api_version': '3.0',
-        'last_updated': datetime.now().isoformat(),
-        'plugins': plugins,
-        'blacklist': blacklist
-    }
+    def update_plugin(self, plugin_id):
+        plugin = self.find_plugin(plugin_id)
+        if not plugin:
+            raise ValueError(f"Plugin {plugin_id} not found")
 
-    # Write to file
-    write_json('plugins.json', registry)
+        # Fetch latest MANIFEST
+        manifest = fetch_manifest(plugin['git_url'])
+        validate_manifest(manifest)
 
-    return registry
+        # Update fields
+        plugin['name'] = manifest['name']
+        plugin['description'] = manifest['description']
+        plugin['authors'] = manifest['authors']
+        plugin['min_api_version'] = manifest['api'][0]
+        plugin['updated_at'] = datetime.now().isoformat()
+
+        # Update translations
+        if 'name_i18n' in manifest:
+            plugin['name_i18n'] = manifest['name_i18n']
+        elif 'name_i18n' in plugin:
+            del plugin['name_i18n']
+
+        if 'description_i18n' in manifest:
+            plugin['description_i18n'] = manifest['description_i18n']
+        elif 'description_i18n' in plugin:
+            del plugin['description_i18n']
+
+    def set_trust_level(self, plugin_id, trust_level):
+        plugin = self.find_plugin(plugin_id)
+        if not plugin:
+            raise ValueError(f"Plugin {plugin_id} not found")
+        plugin['trust_level'] = trust_level
+        plugin['updated_at'] = datetime.now().isoformat()
+
+    def find_plugin(self, plugin_id):
+        for plugin in self.data['plugins']:
+            if plugin['id'] == plugin_id:
+                return plugin
+        return None
+
+    def add_blacklist(self, git_url, reason, pattern=False):
+        entry = {
+            'git_url': git_url,
+            'reason': reason,
+            'blacklisted_at': datetime.now().isoformat()
+        }
+        if pattern:
+            entry['pattern'] = 'repository'
+        self.data['blacklist'].append(entry)
+
+    def remove_blacklist(self, git_url):
+        self.data['blacklist'] = [e for e in self.data['blacklist'] if e['git_url'] != git_url]
+```
+
+### Manifest Fetching
+
+```python
+# registry_lib/manifest.py
+import tomli  # or tomllib in Python 3.11+
+import requests
+
+def fetch_manifest(git_url):
+    """Fetch MANIFEST.toml from git repository"""
+    # Convert GitHub URL to raw content URL
+    if 'github.com' in git_url:
+        raw_url = git_url.replace('github.com', 'raw.githubusercontent.com')
+        raw_url = raw_url.rstrip('/') + '/main/MANIFEST.toml'
+    else:
+        raise ValueError(f"Unsupported git host: {git_url}")
+
+    response = requests.get(raw_url, timeout=10)
+    response.raise_for_status()
+
+    return tomli.loads(response.text)
+
+def validate_manifest(manifest):
+    """Validate MANIFEST.toml structure"""
+    from .constants import REQUIRED_MANIFEST_FIELDS, TRUST_LEVELS, CATEGORIES
+
+    # Check required fields
+    for field in REQUIRED_MANIFEST_FIELDS:
+        if field not in manifest:
+            raise ValueError(f"Missing required field: {field}")
+
+    # Validate types
+    if not isinstance(manifest['name'], str):
+        raise ValueError("name must be a string")
+    if not isinstance(manifest['authors'], list):
+        raise ValueError("authors must be an array")
+    if not isinstance(manifest['api'], list):
+        raise ValueError("api must be an array")
+
+    # Validate categories if present
+    if 'categories' in manifest:
+        for cat in manifest['categories']:
+            if cat not in CATEGORIES:
+                raise ValueError(f"Invalid category: {cat}")
+
+    return True
+```
+
+### Constants (Copied from Picard)
+
+```python
+# registry_lib/constants.py
+# NOTE: This file is kept in sync with picard/plugin3/constants.py
+
+TRUST_LEVELS = ['official', 'trusted', 'community']
+
+CATEGORIES = [
+    'metadata',
+    'coverart',
+    'ui',
+    'scripting',
+    'formats',
+    'other'
+]
+
+REQUIRED_MANIFEST_FIELDS = [
+    'name',
+    'version',
+    'description',
+    'api',
+    'authors',
+    'license',
+    'license_url'
+]
 ```
 
 ---
 
-## Admin Interface
+## Website Integration
 
-### Plugin Management
+### Serving the Registry
 
-**Add Plugin:**
-1. Admin enters git repository URL
-2. System validates repository (checks for MANIFEST.toml)
-3. System extracts metadata
-4. Admin assigns trust level (default: `community`)
-5. Plugin added to registry
+**Simple approach - proxy to GitHub:**
 
-**Update Plugin:**
-- Automatic: Daily sync pulls latest MANIFEST.toml
-- Manual: Admin can force refresh
+```python
+# In Flask/Django app
+import requests
+from datetime import datetime, timedelta
+from pathlib import Path
 
-**Remove Plugin:**
-1. Admin marks plugin as removed
-2. Plugin removed from next registry generation
-3. Optionally add to blacklist
+REGISTRY_URL = "https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/main/plugins.json"
+CACHE_FILE = "/tmp/plugins_registry.json"
+CACHE_TTL = 3600  # 1 hour
 
-### Trust Level Management
+def get_registry():
+    """Get registry JSON with caching"""
+    cache_path = Path(CACHE_FILE)
 
-**Interface:**
-```
-Plugin: Last.fm Scrobbler
-Repository: https://github.com/metabrainz/picard-plugin-lastfm
-Current Trust Level: [official ▼]
-  - official (Picard Team)
-  - trusted (Trusted Author)
-  - community (Community)
+    # Check cache
+    if cache_path.exists():
+        age = datetime.now().timestamp() - cache_path.stat().st_mtime
+        if age < CACHE_TTL:
+            with open(cache_path) as f:
+                return f.read()
 
-[Save] [Cancel]
-```
+    # Fetch from GitHub
+    response = requests.get(REGISTRY_URL, timeout=10)
+    response.raise_for_status()
 
-**Workflow:**
-1. Admin selects plugin
-2. Changes trust level dropdown
-3. Adds reason for change (optional)
-4. Saves
-5. Next registry generation includes new trust level
+    # Cache it
+    with open(cache_path, 'w') as f:
+        f.write(response.text)
 
-### Blacklist Management
+    return response.text
 
-**Add to Blacklist:**
-```
-Git URL: https://github.com/badactor/malicious-plugin
-Reason: Contains malicious code
-Pattern Type:
-  ( ) Specific repository
-  (•) Organization pattern (blocks all repos from this org)
-
-[Add to Blacklist]
+@app.route('/api/v3/plugins.json')
+def plugins_json():
+    """Serve plugin registry"""
+    data = get_registry()
+    return Response(data, mimetype='application/json')
 ```
 
-**Blacklist Entry Types:**
-1. **Specific repository:** Exact URL match
-2. **Organization pattern:** Wildcard pattern (e.g., `https://github.com/badorg/*`)
+**With webhook (optional):**
 
-**Remove from Blacklist:**
-1. Admin selects blacklist entry
-2. Confirms removal
-3. Plugin can be installed again
-
----
-
-## Translation Extraction
-
-### From MANIFEST.toml
-
-The website extracts translations directly from MANIFEST.toml:
-
-**Input (MANIFEST.toml):**
-```toml
-name = "Last.fm Scrobbler"
-description = "Scrobble your music to Last.fm"
-
-[name_i18n]
-de = "Last.fm-Scrobbler"
-fr = "Scrobbleur Last.fm"
-
-[description_i18n]
-de = "Scrobble deine Musik zu Last.fm"
-fr = "Scrobblez votre musique sur Last.fm"
-```
-
-**Output (registry JSON):**
-```json
-{
-  "name": "Last.fm Scrobbler",
-  "description": "Scrobble your music to Last.fm",
-  "name_i18n": {
-    "de": "Last.fm-Scrobbler",
-    "fr": "Scrobbleur Last.fm"
-  },
-  "description_i18n": {
-    "de": "Scrobble deine Musik zu Last.fm",
-    "fr": "Scrobblez votre musique sur Last.fm"
-  }
-}
-```
-
-### Benefits
-
-- Single source of truth (MANIFEST.toml)
-- No separate translation files needed for registry
-- Plugin developers manage translations
-- Website automatically includes them
-
----
-
-## API Endpoints
-
-### GET /api/v3/plugins.json
-
-**Description:** Returns complete plugin registry
-
-**Response:** JSON object with plugins and blacklist
-
-**Caching:**
-- Cache-Control: public, max-age=3600 (1 hour)
-- ETag support for conditional requests
-- Last-Modified header
-
-**Example:**
-```bash
-curl https://picard.musicbrainz.org/api/v3/plugins.json
-```
-
-### Future Endpoints (Optional)
-
-- `GET /api/v3/plugins/<id>` - Single plugin details
-- `GET /api/v3/plugins/search?q=<term>` - Search plugins
-- `GET /api/v3/plugins/category/<category>` - Filter by category
-
----
-
-## Submission Workflow
-
-### Plugin Submission
-
-**Option 1: GitHub PR**
-1. Developer creates PR to add plugin to registry
-2. PR includes git repository URL
-3. Picard team reviews
-4. Assigns trust level
-5. Merges PR
-6. Plugin appears in next registry generation
-
-**Option 2: Web Form**
-1. Developer fills out submission form
-2. Provides git repository URL
-3. System validates MANIFEST.toml
-4. Creates pending submission
-5. Picard team reviews
-6. Approves with trust level assignment
-7. Plugin added to registry
-
-### Validation
-
-Before accepting submission:
-- ✅ Repository is accessible
-- ✅ MANIFEST.toml exists and is valid
-- ✅ Required fields present
-- ✅ API version is supported
-- ✅ License is valid SPDX identifier
-- ✅ Not already in registry
-- ✅ Not blacklisted
-
----
-
-## Database Schema
-
-### plugins table
-
-```sql
-CREATE TABLE plugins (
-    id SERIAL PRIMARY KEY,
-    plugin_id VARCHAR(100) UNIQUE NOT NULL,
-    git_url VARCHAR(500) UNIQUE NOT NULL,
-    trust_level VARCHAR(20) NOT NULL,
-    added_at TIMESTAMP NOT NULL,
-    added_by INTEGER REFERENCES users(id),
-    enabled BOOLEAN DEFAULT TRUE
-);
-```
-
-### blacklist table
-
-```sql
-CREATE TABLE blacklist (
-    id SERIAL PRIMARY KEY,
-    git_url VARCHAR(500) NOT NULL,
-    reason TEXT NOT NULL,
-    blacklisted_at TIMESTAMP NOT NULL,
-    blacklisted_by INTEGER REFERENCES users(id),
-    pattern_type VARCHAR(20) DEFAULT 'specific'
-);
-```
-
-### trust_level_history table
-
-```sql
-CREATE TABLE trust_level_history (
-    id SERIAL PRIMARY KEY,
-    plugin_id INTEGER REFERENCES plugins(id),
-    old_trust_level VARCHAR(20),
-    new_trust_level VARCHAR(20) NOT NULL,
-    reason TEXT,
-    changed_at TIMESTAMP NOT NULL,
-    changed_by INTEGER REFERENCES users(id)
-);
+```python
+@app.route('/api/v3/registry-webhook', methods=['POST'])
+def registry_webhook():
+    """GitHub webhook to invalidate cache"""
+    # Verify GitHub signature
+    if verify_github_signature(request):
+        # Invalidate cache
+        Path(CACHE_FILE).unlink(missing_ok=True)
+        return jsonify({'status': 'cache invalidated'})
+    return jsonify({'error': 'invalid signature'}), 403
 ```
 
 ---
 
-## Security Considerations
+## Plugin Submission Process
 
-1. **Repository validation:** Verify git URLs before cloning
-2. **Sandboxed cloning:** Clone repositories in isolated environment
-3. **TOML parsing:** Use safe TOML parser (no code execution)
-4. **Rate limiting:** Limit registry generation frequency
-5. **Access control:** Only admins can modify trust levels and blacklist
-6. **Audit log:** Track all changes to registry
+### Via Pull Request (Recommended)
+
+```
+1. Developer forks picard-plugins-registry
+2. Developer runs:
+   ./registry plugin add https://github.com/me/my-plugin --trust community
+3. Developer creates PR with the change
+4. CI validates:
+   - JSON is valid
+   - Plugin URL is accessible
+   - MANIFEST.toml is valid
+   - No duplicates
+   - Trust level is valid
+5. Picard team reviews PR
+6. Picard team merges
+7. Plugin appears in registry within 1 hour (cache refresh)
+```
+
+### Via Web Form (Future)
+
+```
+1. Developer submits form on picard.musicbrainz.org
+2. Website validates input
+3. Website creates PR automatically via GitHub API
+4. Same validation and review process
+5. Picard team merges
+```
 
 ---
 
-## Monitoring
+## CI/CD Validation
 
-### Metrics to Track
+### GitHub Actions Workflow
 
-- Registry generation time
-- Number of plugins per trust level
-- Blacklist size
-- Failed repository clones
-- Invalid MANIFEST.toml files
-- API endpoint response times
-- Cache hit rates
+```yaml
+# .github/workflows/validate.yml
+name: Validate Registry
 
-### Alerts
+on:
+  pull_request:
+  push:
+    branches: [main]
 
-- Registry generation failures
-- Sudden increase in blacklist entries
-- Repository clone failures
-- Invalid MANIFEST.toml in registered plugins
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Validate registry
+        run: |
+          ./registry validate
+
+      - name: Check for duplicates
+        run: |
+          python -c "
+          import json
+          with open('plugins.json') as f:
+              data = json.load(f)
+          ids = [p['id'] for p in data['plugins']]
+          urls = [p['git_url'] for p in data['plugins']]
+          assert len(ids) == len(set(ids)), 'Duplicate plugin IDs'
+          assert len(urls) == len(set(urls)), 'Duplicate git URLs'
+          print('✓ No duplicates')
+          "
+
+      - name: Validate plugin URLs
+        run: |
+          python -c "
+          import json, requests
+          with open('plugins.json') as f:
+              data = json.load(f)
+          for plugin in data['plugins']:
+              url = plugin['git_url']
+              # Check if repo exists (HEAD request)
+              r = requests.head(url, timeout=5)
+              assert r.status_code == 200, f'Invalid URL: {url}'
+          print('✓ All URLs valid')
+          "
+```
 
 ---
 
@@ -347,113 +531,147 @@ CREATE TABLE trust_level_history (
 
 ### Overview
 
-A web-based plugin browser for discovering and learning about registered plugins.
+A web-based plugin browser for discovering registered plugins.
 
 **Community Feedback:**
-> **rdswift:** "My short answer to this is 'Yes', even though it may require significant curation effort depending on the extent of the plugins included. I believe that there is significant value in users being able to access a list of available plugins from a common site, especially if they can filter by category and/or plugin author, and search within the plugin descriptions.
->
-> If the plugin browser is only displaying information for plugins in the registry, then the system can be automated to use the information provided via the registry item manifests (or a database built from the manifest information), and serve the pages based upon the results of API queries. In this case, the plugin browser could (and should) be served from the picard.musicbrainz.org domain.
->
-> If the plugin browser is intended to also include plugins not included in the registry, then the complexity (and curation effort) increases significantly.
->
-> A rudimentary list of plugins not included in the official plugin list is currently available on a Picard Resources page in the MusicBrainz Wiki. My recommendation is to continue using the Wiki for this purpose, curated by the users, which would allow rudimentary discovery of the 'unofficial' unregistered plugins. The full 'plugin browser' experience would be reserved for registered plugins."
+> **rdswift:** "If the plugin browser is only displaying information for plugins in the registry, then the system can be automated to use the information provided via the registry item manifests, and serve the pages based upon the results of API queries. In this case, the plugin browser could (and should) be served from the picard.musicbrainz.org domain. A rudimentary list of plugins not included in the official plugin list is currently available on a Picard Resources page in the MusicBrainz Wiki. My recommendation is to continue using the Wiki for this purpose, curated by the users, which would allow rudimentary discovery of the 'unofficial' unregistered plugins."
 
-### Recommended Approach
+### Implementation
 
 **For Registered Plugins:**
-- Web-based browser at picard.musicbrainz.org/plugins
-- Automated from registry JSON data
+- Web browser at picard.musicbrainz.org/plugins
+- Reads from plugins.json (same source as API)
 - Filter by: category, trust level, author
-- Search by: name, description, keywords
+- Search by: name, description
 - Display: name, description, authors, trust level, categories
-- Link to: repository, documentation (if provided)
-- One-click install command shown
+- Link to: repository, documentation
+- Show install command
 
 **For Unregistered Plugins:**
 - Continue using MusicBrainz Wiki
 - User-curated list
-- Minimal information (name, URL, description)
 - Clear indication these are not in official registry
 
-### Plugin Browser Features
+**Example page:**
+```html
+<h1>Picard Plugins</h1>
 
-**Browse Page:**
-```
-Picard Plugins
+<input type="search" placeholder="Search plugins...">
+<select name="category">
+  <option>All Categories</option>
+  <option>Metadata</option>
+  <option>Cover Art</option>
+</select>
+<select name="trust">
+  <option>All Trust Levels</option>
+  <option>Official</option>
+  <option>Trusted</option>
+  <option>Community</option>
+</select>
 
-[Search: ____________] [Filter ▼]
+<div class="plugin-list">
+  <div class="plugin official">
+    <h3>🛡️ Last.fm Scrobbler</h3>
+    <p>Scrobble your music to Last.fm</p>
+    <p>Authors: MusicBrainz Picard Team</p>
+    <p>Categories: metadata</p>
+    <code>picard plugins --install lastfm</code>
+  </div>
 
-Official Plugins (5)
-  🛡️ Last.fm Scrobbler
-     Scrobble your music to Last.fm
-     Authors: MusicBrainz Picard Team
-     Categories: metadata
-     [Install: picard plugins --install lastfm]
-
-Trusted Plugins (12)
-  ✓ Discogs
-     Get metadata from Discogs
-     Authors: Bob Swift
-     Categories: metadata
-     [Install: picard plugins --install discogs]
-
-Community Plugins (45)
-  ⚠️ Custom Tagger
-     Apply custom tagging rules
-     Authors: John Doe
-     Categories: metadata
-     [Install: picard plugins --install https://github.com/user/plugin]
-```
-
-**Plugin Detail Page:**
-```
-Last.fm Scrobbler 🛡️
-
-Scrobble your music to Last.fm and update your listening history.
-
-Trust Level: Official (Picard Team)
-Authors: MusicBrainz Picard Team, Philipp Wolfer
-Categories: metadata
-License: GPL-2.0-or-later
-Repository: https://github.com/metabrainz/picard-plugin-lastfm
-Documentation: https://picard-docs.musicbrainz.org/plugins/lastfm
-
-Installation:
-  picard plugins --install lastfm
-
-Requirements:
-  - Picard 3.0+
-  - API version: 3.0
-
-[View on GitHub] [Report Issue]
+  <div class="plugin trusted">
+    <h3>✓ Discogs</h3>
+    <p>Get metadata from Discogs</p>
+    <p>Authors: Bob Swift</p>
+    <p>Categories: metadata</p>
+    <code>picard plugins --install discogs</code>
+  </div>
+</div>
 ```
 
-### Implementation
+---
 
-**Technology:**
-- Static site generation from registry JSON
-- Or dynamic pages from database
-- Served from picard.musicbrainz.org
-- Responsive design for mobile
+## Benefits of Git-Based Approach
 
-**Data Source:**
-- Registry JSON (plugins.json)
-- No additional curation needed
-- Automatic updates when registry updates
+1. **No Database**
+   - No database to maintain, backup, or migrate
+   - No connection pooling, no ORM
+   - Git is the database
 
-**Submission Process:**
-1. Developer submits plugin via GitHub PR or web form
-2. Picard team reviews
-3. Assigns trust level
-4. Plugin appears in registry and browser
+2. **Version Control**
+   - Full history of all changes
+   - Easy rollback (git revert)
+   - Audit trail built-in
+   - Diff shows exactly what changed
 
-### Benefits
+3. **Simple Deployment**
+   - Website just serves static JSON
+   - Can use CDN for plugins.json
+   - Website can be stateless
+   - No database connection needed
 
-- Easy plugin discovery
-- No manual curation for registered plugins
-- Clear trust level indicators
-- Simple installation instructions
-- Links to documentation and source
+4. **Collaboration**
+   - PRs for plugin submissions
+   - Review process via GitHub
+   - Community can submit PRs
+   - Automated validation via CI
+
+5. **Transparency**
+   - Public repository
+   - Anyone can see registry contents
+   - Anyone can propose changes
+   - Clear approval process
+
+6. **Reliability**
+   - Git is the source of truth
+   - GitHub provides hosting and CDN
+   - Simple backup (git clone)
+   - Easy disaster recovery
+
+7. **Scalability**
+   - Static JSON can be CDN-cached
+   - No database queries
+   - Handles high traffic easily
+   - Expected scale: <1000 plugins
+
+---
+
+## Code Sharing with Picard
+
+### Shared Code
+
+The registry tool contains minimal code copied from Picard:
+
+**registry_lib/constants.py** (~20 lines)
+- Trust levels
+- Categories
+- Required MANIFEST fields
+
+**registry_lib/manifest.py** (~50 lines)
+- MANIFEST.toml fetching
+- Basic validation
+
+**Total duplication: ~70 lines**
+
+### Keeping in Sync
+
+1. **Documentation**: Both files marked with comment:
+   ```python
+   # NOTE: This file is kept in sync with picard/plugin3/constants.py
+   ```
+
+2. **Infrequent changes**: MANIFEST format is stable
+
+3. **Manual sync**: When changing MANIFEST format in Picard, update registry tool
+
+4. **Test reminder**: Could add test in Picard that documents the sync requirement
+
+### Why Not Share via Package?
+
+- Registry tool should be **standalone**
+- Avoids dependency management
+- Simpler deployment
+- Duplication is minimal (~70 lines)
+- Changes are infrequent
 
 ---
 
@@ -462,3 +680,4 @@ Requirements:
 - **[REGISTRY.md](REGISTRY.md)** - Registry JSON schema and client integration
 - **[MANIFEST.md](MANIFEST.md)** - MANIFEST.toml specification
 - **[SECURITY.md](SECURITY.md)** - Security model
+- **[DECISIONS.md](DECISIONS.md)** - Design decisions
