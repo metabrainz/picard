@@ -1104,7 +1104,7 @@ picard plugins --install https://github.com/badactor/plugin --force-blacklisted
 ### 3.4 Blacklist Enforcement
 
 **Priority:** P0 - Critical for safety
-**Effort:** 1 day
+**Effort:** 1-2 days
 
 **Behavior:**
 
@@ -1114,31 +1114,199 @@ picard plugins --install https://github.com/badactor/plugin --force-blacklisted
    - If `--force-blacklisted`: show big warning, require confirmation, install anyway
 
 2. **On startup:**
-   - Check all installed plugins against blacklist
-   - If blacklisted plugin found: disable it, show warning in log
-   - Add notification in UI (future)
+   - Check all installed plugins against blacklist (including unregistered)
+   - If blacklisted plugin found:
+     - Disable it automatically
+     - Show warning in log
+     - Add notification in UI (future)
+     - Store in config that plugin was auto-disabled
+   - User can re-enable if they choose (with `--force-blacklisted`)
 
 3. **On update:**
    - Re-check blacklist
    - Refuse to update to blacklisted version
 
-**Files to modify:**
-- `picard/plugin3/manager.py` - add blacklist checks
-- `picard/plugin3/cli.py` - add warnings and confirmations
+4. **Periodic check:**
+   - Check blacklist every 24 hours (when registry refreshes)
+   - Disable newly-blacklisted plugins
+   - Notify user
 
-**Example output:**
+---
+
+**Implementation Details:**
+
+**Startup check:**
+```python
+# In picard/plugin3/manager.py
+
+def init_plugins(self):
+    """Initialize plugins on startup"""
+    registry = PluginRegistry()
+
+    for plugin in self._plugins:
+        # Check if plugin is blacklisted
+        if registry.is_blacklisted(plugin.git_url):
+            reason = registry.get_blacklist_reason(plugin.git_url)
+
+            # Check if user has explicitly overridden blacklist
+            if self._is_blacklist_overridden(plugin.name):
+                log.warning(
+                    'Plugin "%s" is blacklisted but user has chosen to keep it enabled. '
+                    'Reason: %s',
+                    plugin.name, reason
+                )
+                # Continue loading
+            else:
+                # Auto-disable blacklisted plugin
+                log.error(
+                    'Plugin "%s" has been blacklisted and will be disabled. '
+                    'Reason: %s',
+                    plugin.name, reason['reason']
+                )
+
+                # Disable plugin
+                self.disable_plugin(plugin)
+
+                # Mark as auto-disabled in config
+                self._mark_auto_disabled(plugin.name, reason)
+
+                # Skip loading
+                continue
+
+        # Load plugin normally
+        try:
+            plugin.load_module()
+            plugin.enable(self._tagger)
+        except Exception as ex:
+            log.error('Failed initializing plugin %s', plugin.name, exc_info=ex)
 ```
-$ picard plugins --install https://github.com/badactor/malicious-plugin
 
-ERROR: This plugin is blacklisted and cannot be installed.
+**User re-enable with override:**
+```python
+def enable_plugin(self, plugin: Plugin, override_blacklist=False):
+    """Enable plugin, optionally overriding blacklist"""
+    registry = PluginRegistry()
+
+    if registry.is_blacklisted(plugin.git_url):
+        if not override_blacklist:
+            reason = registry.get_blacklist_reason(plugin.git_url)
+            raise PluginBlacklistError(
+                f"Plugin '{plugin.name}' is blacklisted: {reason['reason']}. "
+                f"Use --force-blacklisted to override."
+            )
+        else:
+            # User explicitly wants to enable blacklisted plugin
+            log.warning('User is enabling blacklisted plugin "%s"', plugin.name)
+
+            # Add to override list
+            config = get_config()
+            if 'blacklist_overrides' not in config.setting['plugins3']:
+                config.setting['plugins3']['blacklist_overrides'] = []
+
+            if plugin.name not in config.setting['plugins3']['blacklist_overrides']:
+                config.setting['plugins3']['blacklist_overrides'].append(plugin.name)
+
+    # Enable plugin normally
+    plugin.load_module()
+    plugin.enable(self._tagger)
+```
+
+**CLI commands:**
+```bash
+# Try to enable blacklisted plugin (fails)
+$ picard plugins --enable malicious-plugin
+ERROR: Plugin 'malicious-plugin' is blacklisted: Contains malicious code
+Use --force-blacklisted to override (NOT RECOMMENDED)
+
+# Force enable with override
+$ picard plugins --enable malicious-plugin --force-blacklisted
+
+⚠️  DANGER: You are enabling a BLACKLISTED plugin!
+
+Plugin: malicious-plugin
 Reason: Contains malicious code
-Blacklisted on: 2025-11-20
+Blacklisted: 2025-11-20
 
-If you trust this plugin and want to install it anyway, use:
-  picard plugins --install <url> --force-blacklisted
+This plugin has been identified as dangerous by the Picard team.
+Enabling it may compromise your system or data.
 
-WARNING: Installing blacklisted plugins can compromise your system!
+Are you ABSOLUTELY SURE you want to enable this plugin? [yes/NO] yes
+
+⚠️  Plugin enabled. You are responsible for any consequences.
+
+# Check which plugins are auto-disabled
+$ picard plugins --list
+
+Auto-disabled (blacklisted):
+  ⛔ malicious-plugin - BLACKLISTED
+     Reason: Contains malicious code
+     Blacklisted: 2025-11-20
+     Auto-disabled: 2025-11-24
 ```
+
+---
+
+**Blacklist checking for unregistered plugins:**
+
+The blacklist can include URLs that were never in the registry:
+
+```json
+{
+  "blacklist": [
+    {
+      "git_url": "https://github.com/badactor/malicious-plugin",
+      "reason": "Contains malicious code that steals credentials",
+      "blacklisted_at": "2025-11-20T10:00:00Z",
+      "severity": "critical"
+    },
+    {
+      "git_url": "https://github.com/unknown/suspicious-repo",
+      "reason": "Suspicious activity detected, under investigation",
+      "blacklisted_at": "2025-11-22T14:30:00Z",
+      "severity": "high"
+    }
+  ]
+}
+```
+
+This allows blacklisting:
+- Plugins that were in registry but removed
+- Unregistered plugins that are known to be malicious
+- Suspicious repositories before they're widely installed
+
+---
+
+**Config structure:**
+```python
+config.setting['plugins3'] = {
+    'enabled_plugins': ['lastfm', 'discogs'],
+    'auto_disabled': {
+        'malicious-plugin': {
+            'reason': 'Contains malicious code',
+            'blacklisted_at': '2025-11-20T10:00:00Z',
+            'disabled_at': '2025-11-24T09:15:00Z'
+        }
+    },
+    'blacklist_overrides': ['malicious-plugin'],  # User explicitly enabled
+    'last_blacklist_check': '2025-11-24T09:15:00Z'
+}
+```
+
+---
+
+**Files to modify:**
+- `picard/plugin3/manager.py` - Add blacklist checking to init_plugins()
+- `picard/plugin3/cli.py` - Add --force-blacklisted flag to enable command
+- `picard/plugin3/registry.py` - Add blacklist checking methods
+- `picard/const/defaults.py` - Add auto_disabled and blacklist_overrides to config
+
+**Acceptance criteria:**
+- [ ] Blacklisted plugins are auto-disabled on startup
+- [ ] User can override blacklist with explicit flag
+- [ ] Override is remembered in config
+- [ ] Clear warnings shown for blacklisted plugins
+- [ ] Works for both registered and unregistered plugins
+- [ ] Periodic check disables newly-blacklisted plugins
 
 ---
 
