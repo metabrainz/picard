@@ -1,0 +1,437 @@
+# Plugin Registry System
+
+This document describes the plugin registry JSON schema, trust levels, blacklist system, and client integration.
+
+---
+
+## Overview
+
+The plugin registry is a centralized JSON file served by the Picard website that contains:
+- List of official, trusted, and community plugins
+- Plugin metadata (name, description, authors, etc.)
+- Trust level assignments
+- Blacklist of malicious/broken plugins
+- Translations for plugin names and descriptions
+
+**Registry URL:** `https://picard.musicbrainz.org/api/v3/plugins.json`
+
+---
+
+## Registry JSON Schema
+
+### Top-Level Structure
+
+```json
+{
+  "api_version": "3.0",
+  "last_updated": "2025-11-24T15:30:00Z",
+  "plugins": [ /* array of plugin objects */ ],
+  "blacklist": [ /* array of blacklist entries */ ]
+}
+```
+
+### Plugin Entry
+
+```json
+{
+  "id": "lastfm",
+  "name": "Last.fm Scrobbler",
+  "description": "Scrobble your music to Last.fm",
+  "name_i18n": {
+    "de": "Last.fm-Scrobbler",
+    "fr": "Scrobbleur Last.fm",
+    "ja": "Last.fmスクロブラー"
+  },
+  "description_i18n": {
+    "de": "Scrobble deine Musik zu Last.fm",
+    "fr": "Scrobblez votre musique sur Last.fm",
+    "ja": "Last.fmに音楽をスクロブルする"
+  },
+  "git_url": "https://github.com/metabrainz/picard-plugin-lastfm",
+  "categories": ["metadata"],
+  "trust_level": "official",
+  "authors": ["Philipp Wolfer"],
+  "min_api_version": "3.0",
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
+}
+```
+
+### Field Reference
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | Yes | Unique plugin identifier (lowercase, alphanumeric + hyphens) |
+| `name` | string | Yes | Display name of the plugin (English) |
+| `description` | string | Yes | Short description (one line, English) |
+| `name_i18n` | object | No | Translated names (locale → string) |
+| `description_i18n` | object | No | Translated descriptions (locale → string) |
+| `git_url` | string | Yes | Git repository URL (https) |
+| `categories` | array | Yes | Plugin categories |
+| `trust_level` | string | Yes | Trust level: `official`, `trusted`, or `community` |
+| `authors` | array | Yes | Plugin author names |
+| `min_api_version` | string | Yes | Minimum supported API version |
+| `max_api_version` | string | No | Maximum supported API version (if any) |
+| `added_at` | string | Yes | ISO 8601 timestamp when added to registry |
+| `updated_at` | string | Yes | ISO 8601 timestamp of last update |
+
+### Categories
+
+Valid category values:
+- `metadata` - Metadata providers and processors
+- `coverart` - Cover art providers
+- `ui` - User interface enhancements
+- `scripting` - Script functions and variables
+- `formats` - File format support
+- `other` - Miscellaneous
+
+---
+
+## Trust Levels
+
+The registry categorizes plugins into **three trust levels**. A fourth level (`unregistered`) is used client-side for plugins not in the registry.
+
+### 1. Official (`official`)
+
+**Definition:** Plugins maintained by the MusicBrainz Picard team
+
+**Characteristics:**
+- Repository under `metabrainz` or `musicbrainz` GitHub organizations
+- Full code review by Picard team before acceptance
+- Updates reviewed before being listed
+- Highest trust level
+- No warnings on install
+
+**Badge:** 🛡️ "Official"
+
+**Examples:**
+- Last.fm plugin
+- AcoustID plugin
+- Cover Art Archive plugin
+
+### 2. Trusted (`trusted`)
+
+**Definition:** Plugins by well-known authors with established reputation
+
+**Characteristics:**
+- Long-term contributors to Picard or MusicBrainz
+- History of quality plugins
+- Manually approved by Picard team
+- NOT reviewed by Picard team
+- Updates automatically listed (no review)
+- Minimal warning on first install
+
+**Badge:** ✓ "Trusted"
+
+**Examples:**
+- Plugins by Bob Swift (rdswift)
+- Plugins by Philipp Wolfer (phw)
+- Plugins by other long-term contributors
+
+### 3. Community (`community`)
+
+**Definition:** Plugins by other authors
+
+**Characteristics:**
+- Valid MANIFEST.toml
+- Not blacklisted
+- Submitted to registry
+- NOT reviewed
+- Updates automatically listed
+- Clear warning on install
+
+**Badge:** ⚠️ "Community"
+
+**Examples:**
+- New plugins by unknown authors
+- Experimental plugins
+- Personal/niche plugins
+
+### 4. Unregistered (`unregistered`) - Client-side Only
+
+**Definition:** Plugins not in the official registry
+
+**Important:** This trust level does NOT appear in the registry JSON. It's assigned by Picard client-side when a plugin's git URL is not found in the registry.
+
+**Characteristics:**
+- URL not found in registry
+- Could be in development
+- Could be from unknown source
+- Could be private/personal plugin
+- NOT reviewed
+- Not tracked by registry
+- Strongest warning on install
+
+**Badge:** 🔓 "Unregistered"
+
+**Use cases:**
+- Developer testing during development
+- Private company plugins
+- Personal forks
+- Experimental proof-of-concept plugins
+
+---
+
+## Blacklist System
+
+### Blacklist Entry
+
+```json
+{
+  "git_url": "https://github.com/badactor/malicious-plugin",
+  "reason": "Contains malicious code",
+  "blacklisted_at": "2025-11-20T10:00:00Z"
+}
+```
+
+### Repository-Level Blacklisting
+
+The blacklist supports wildcard patterns to block entire organizations:
+
+```json
+{
+  "git_url": "https://github.com/badorg/*",
+  "reason": "Entire organization blacklisted for malicious activity",
+  "blacklisted_at": "2025-11-22T10:00:00Z",
+  "pattern": "repository"
+}
+```
+
+**Pattern matching:**
+- **Specific URL:** `https://github.com/user/plugin` - blocks only that repository
+- **Repository pattern:** `https://github.com/badorg/*` - blocks all repositories from that organization/user
+- Uses simple wildcard matching on the URL path
+
+---
+
+## Client Integration
+
+### PluginRegistry Class
+
+```python
+class PluginRegistry:
+    REGISTRY_URL = "https://picard.musicbrainz.org/api/v3/plugins.json"
+    CACHE_FILE = "plugin_registry.json"
+    CACHE_TTL = 86400  # 24 hours
+
+    # Registry trust levels (in registry JSON)
+    REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
+
+    # Client-side trust level values (includes unregistered for local plugins)
+    TRUST_LEVELS = {
+        'official': 3,      # Highest trust - in registry
+        'trusted': 2,       # High trust - in registry
+        'community': 1,     # Low trust - in registry
+        'unregistered': 0   # Lowest trust - NOT in registry (client-side only)
+    }
+
+    def fetch_registry(self):
+        """Fetch plugin list from website, use cache if fresh"""
+
+    def is_blacklisted(self, git_url):
+        """Check if git URL is blacklisted (supports patterns)"""
+        registry = self.fetch_registry()
+        for entry in registry.get('blacklist', []):
+            blacklist_url = entry['git_url']
+            # Check for exact match
+            if blacklist_url == git_url:
+                return True
+            # Check for pattern match (e.g., https://github.com/badorg/*)
+            if blacklist_url.endswith('/*'):
+                pattern_base = blacklist_url[:-2]  # Remove /*
+                if git_url.startswith(pattern_base + '/'):
+                    return True
+        return False
+
+    def get_blacklist_reason(self, git_url):
+        """Get reason for blacklisting (checks patterns too)"""
+        registry = self.fetch_registry()
+        for entry in registry.get('blacklist', []):
+            blacklist_url = entry['git_url']
+            # Check for exact match
+            if blacklist_url == git_url:
+                return entry
+            # Check for pattern match
+            if blacklist_url.endswith('/*'):
+                pattern_base = blacklist_url[:-2]
+                if git_url.startswith(pattern_base + '/'):
+                    return entry
+        return None
+
+    def get_trust_level(self, git_url):
+        """Get trust level for plugin by git URL"""
+        plugin = self.find_plugin_by_url(git_url)
+        if not plugin:
+            return 'unregistered'
+        return plugin.get('trust_level', 'community')
+
+    def find_plugin(self, name_or_id):
+        """Find official plugin by name or ID"""
+
+    def list_official_plugins(self, category=None, trust_level=None):
+        """List all official plugins, optionally filtered by category and trust level"""
+
+    def should_warn_on_install(self, git_url):
+        """Determine if warning should be shown based on trust level"""
+        plugin = self.find_plugin_by_url(git_url)
+        if not plugin:
+            return True, "Plugin not in official registry (unregistered)"
+
+        trust = plugin.get('trust_level')
+        if trust == 'official':
+            return False, None
+        elif trust == 'trusted':
+            return True, "not reviewed by Picard team"
+        else:  # community
+            return True, "not reviewed or endorsed by Picard team"
+```
+
+---
+
+## Installation Warnings
+
+### Official Plugin - No Warning
+
+```bash
+$ picard plugins --install lastfm
+Installing Last.fm (Official)...
+✓ Installed successfully
+```
+
+### Trusted Plugin - Minimal Warning
+
+```bash
+$ picard plugins --install discogs
+Installing Discogs by Bob Swift (Trusted)...
+Note: This plugin is not reviewed by the Picard team.
+Continue? [Y/n] y
+✓ Installed successfully
+```
+
+### Community Plugin - Clear Warning
+
+```bash
+$ picard plugins --install custom-tagger
+Installing Custom Tagger by John Doe (Community)...
+
+⚠️  WARNING: This plugin is not reviewed or endorsed by the Picard team.
+   It may contain bugs or security issues.
+   Only install if you trust the author.
+
+Continue? [y/N] y
+✓ Installed successfully
+```
+
+### Unregistered Plugin - Strongest Warning
+
+```bash
+$ picard plugins --install https://github.com/unknown/random-plugin
+Installing plugin from https://github.com/unknown/random-plugin...
+
+🔓 SECURITY WARNING: This plugin is NOT in the official registry.
+
+   This plugin could be:
+   - A plugin in development (safe if you're the developer)
+   - A private/personal plugin (safe if you trust the source)
+   - A malicious plugin (DANGEROUS!)
+
+   This plugin will have FULL ACCESS to:
+   - Your music files and metadata
+   - Your Picard configuration (including passwords)
+   - Your entire file system
+   - Network access (can send data anywhere)
+
+   Plugin: random-plugin
+   Author: Unknown
+   Source: https://github.com/unknown/random-plugin
+   Trust Level: UNREGISTERED
+
+   ⚠️  ONLY INSTALL IF YOU COMPLETELY TRUST THIS SOURCE!
+
+Continue? [y/N]
+```
+
+---
+
+## Caching Strategy
+
+- Registry cached locally for 24 hours
+- Cache file: `~/.local/share/MusicBrainz/Picard/plugin_registry.json`
+- Automatic refresh on cache expiry
+- Manual refresh: `picard plugins --refresh-registry`
+- Fallback to cache if network unavailable
+
+---
+
+## Translation Handling
+
+The registry includes translations extracted from plugin MANIFEST.toml files:
+
+**In MANIFEST.toml:**
+```toml
+name = "Last.fm Scrobbler"
+description = "Scrobble your music to Last.fm"
+
+[name_i18n]
+de = "Last.fm-Scrobbler"
+fr = "Scrobbleur Last.fm"
+
+[description_i18n]
+de = "Scrobble deine Musik zu Last.fm"
+fr = "Scrobblez votre musique sur Last.fm"
+```
+
+**In registry JSON:**
+```json
+{
+  "name": "Last.fm Scrobbler",
+  "description": "Scrobble your music to Last.fm",
+  "name_i18n": {
+    "de": "Last.fm-Scrobbler",
+    "fr": "Scrobbleur Last.fm"
+  },
+  "description_i18n": {
+    "de": "Scrobble deine Musik zu Last.fm",
+    "fr": "Scrobblez votre musique sur Last.fm"
+  }
+}
+```
+
+See [TRANSLATIONS.md](TRANSLATIONS.md) for details on the translation system.
+
+---
+
+## Trust Level Management
+
+### Upgrading Trust Level
+
+Website admin interface:
+1. Navigate to plugin in registry
+2. Review plugin code and history
+3. Change trust level: `community` → `trusted` → `official`
+4. Add reason for upgrade
+5. Save changes
+
+### Promoting to Official
+
+1. Plugin moved to `metabrainz` organization
+2. Code reviewed by team
+3. Manually set `trust_level: official` in registry
+4. Plugin gets official badge
+
+### Downgrading Trust Level
+
+1. If plugin has security issue or quality problems
+2. Admin changes trust level in registry
+3. Users see appropriate warning on next update
+
+**Note:** Trust level is per-plugin, not per-author. Same author can have plugins at different trust levels.
+
+---
+
+## See Also
+
+- **[WEBSITE.md](WEBSITE.md)** - Website implementation for registry generation
+- **[SECURITY.md](SECURITY.md)** - Security model rationale
+- **[MANIFEST.md](MANIFEST.md)** - MANIFEST.toml specification
+- **[CLI.md](CLI.md)** - CLI commands for browsing registry
