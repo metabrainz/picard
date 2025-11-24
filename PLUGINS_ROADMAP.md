@@ -3853,6 +3853,222 @@ These don't block MVP but should be considered later:
 
 ---
 
+#### 13. Plugin Repository Migration
+
+**Question:** How to handle a plugin moving to a different git repository?
+
+**Use cases:**
+- Plugin moves from personal repo to organization (e.g., `github.com/user/plugin` → `github.com/metabrainz/plugin`)
+- Plugin moves between hosting services (GitHub → GitLab)
+- Plugin renamed or reorganized
+- Author transfers ownership
+
+**Current problem:**
+- Plugin installed from old URL
+- Registry updated with new URL
+- User's installed plugin doesn't update (different git URL)
+
+---
+
+**Proposed Solution: Repository Redirects in Registry**
+
+Add `repository_redirects` section to registry:
+
+```json
+{
+  "repository_redirects": [
+    {
+      "old_url": "https://github.com/user/picard-plugin-lastfm",
+      "new_url": "https://github.com/metabrainz/picard-plugin-lastfm",
+      "redirect_date": "2025-11-20T10:00:00Z",
+      "reason": "Plugin moved to official MusicBrainz organization"
+    },
+    {
+      "old_url": "https://github.com/olduser/plugin",
+      "new_url": "https://gitlab.com/newuser/plugin",
+      "redirect_date": "2025-11-15T14:00:00Z",
+      "reason": "Author moved to GitLab"
+    }
+  ]
+}
+```
+
+**Implementation:**
+
+```python
+class PluginRegistry:
+    def get_canonical_url(self, git_url):
+        """Get canonical URL, following redirects"""
+        registry = self.fetch_registry()
+
+        # Follow redirect chain (max 5 hops to prevent loops)
+        for _ in range(5):
+            for redirect in registry.get('repository_redirects', []):
+                if redirect['old_url'] == git_url:
+                    log.info('Plugin repository redirect: %s → %s',
+                            git_url, redirect['new_url'])
+                    git_url = redirect['new_url']
+                    break
+            else:
+                # No redirect found, this is canonical
+                break
+
+        return git_url
+
+    def get_redirect_info(self, old_url):
+        """Get redirect information for old URL"""
+        registry = self.fetch_registry()
+        for redirect in registry.get('repository_redirects', []):
+            if redirect['old_url'] == old_url:
+                return redirect
+        return None
+
+class PluginManager:
+    def init_plugins(self):
+        """Initialize plugins on startup"""
+        registry = PluginRegistry()
+
+        for plugin in self._plugins:
+            # Check if plugin URL has been redirected
+            canonical_url = registry.get_canonical_url(plugin.git_url)
+
+            if canonical_url != plugin.git_url:
+                redirect_info = registry.get_redirect_info(plugin.git_url)
+                log.warning(
+                    'Plugin "%s" repository has moved:\n'
+                    '  Old: %s\n'
+                    '  New: %s\n'
+                    '  Reason: %s',
+                    plugin.name, plugin.git_url, canonical_url,
+                    redirect_info['reason']
+                )
+
+                # Update plugin's git URL in config
+                self._update_plugin_url(plugin.name, canonical_url)
+                plugin.git_url = canonical_url
+
+            # Continue loading normally
+            # ...
+```
+
+**User experience:**
+
+```bash
+# On startup
+[INFO] Plugin 'lastfm' repository has moved:
+       Old: https://github.com/user/picard-plugin-lastfm
+       New: https://github.com/metabrainz/picard-plugin-lastfm
+       Reason: Plugin moved to official MusicBrainz organization
+
+       Plugin will now update from new location.
+
+# On update
+$ picard plugins --update lastfm
+Updating lastfm...
+Note: Repository has moved to https://github.com/metabrainz/picard-plugin-lastfm
+Fetching from new location...
+✓ Updated successfully
+```
+
+**List output:**
+
+```bash
+$ picard plugins --list
+
+Installed Plugins:
+
+  🛡️ lastfm (enabled)
+    Version: 2.1.0
+    Git URL: https://github.com/metabrainz/picard-plugin-lastfm
+    Note: Repository moved from github.com/user/picard-plugin-lastfm
+```
+
+---
+
+**Alternative: Manual migration command**
+
+```bash
+# User manually updates URL
+$ picard plugins --migrate lastfm https://github.com/metabrainz/picard-plugin-lastfm
+
+Migrating plugin 'lastfm' to new repository...
+Old: https://github.com/user/picard-plugin-lastfm
+New: https://github.com/metabrainz/picard-plugin-lastfm
+
+This will:
+- Update git remote URL
+- Fetch from new location
+- Preserve current ref and settings
+
+Continue? [Y/n] y
+✓ Migration complete
+```
+
+---
+
+**Recommendation: Automatic redirects (Option 1)**
+
+**Pros:**
+- ✅ Transparent to users
+- ✅ No manual intervention needed
+- ✅ Works on next update
+- ✅ Centrally managed in registry
+
+**Cons:**
+- ⚠️ Requires registry update
+- ⚠️ Could be abused if registry compromised
+
+**Safeguards:**
+- Only follow redirects for plugins in registry
+- Limit redirect chain length (prevent loops)
+- Log all redirects clearly
+- Show notification to user
+- Require manual confirmation for unregistered plugins
+
+---
+
+**Config storage:**
+
+```python
+config.setting['plugins3']['installed_plugins']['lastfm'] = {
+    'git_url': 'https://github.com/metabrainz/picard-plugin-lastfm',
+    'original_url': 'https://github.com/user/picard-plugin-lastfm',  # Track original
+    'redirected': True,
+    'redirect_date': '2025-11-24T10:00:00Z'
+}
+```
+
+---
+
+**Edge cases:**
+
+1. **Old repo still exists:**
+   - Follow redirect anyway (registry is source of truth)
+   - Old repo might be outdated
+
+2. **New repo doesn't exist:**
+   - Show error
+   - Keep old URL
+   - Notify user to check registry
+
+3. **Circular redirects:**
+   - Detect with hop limit
+   - Show error
+   - Use last known good URL
+
+4. **Unregistered plugin moves:**
+   - No automatic redirect (not in registry)
+   - User must manually update URL
+   - Or reinstall from new URL
+
+---
+
+**Impact:** Phase 3 (registry features)
+**Recommendation:** Automatic redirects with safeguards
+**Decision needed by:** Phase 3.1 (registry design)
+
+---
+
 ## CLI Commands Reference
 
 ### Complete Command Line Interface
