@@ -1284,9 +1284,9 @@ unset PICARD_PLUGIN_REGISTRY
       "id": "test-plugin",
       "name": "Test Plugin",
       "git_url": "https://github.com/test/picard-plugin-test",
-      "category": "metadata",
+      "categories": ["metadata"],
       "trust_level": "community",
-      "author": "Test Author"
+      "authors": ["Test Author"]
     }
   ],
   "blacklist": [
@@ -2640,13 +2640,23 @@ categories = manifest.get('categories') or [manifest.get('category')]
 ### Q11: Multi-lingual `name` field?
 
 **Current state:** Spec shows table, test uses string
-**Recommendation:** **Use simple string for name**
+**Decision:** **Use simple string for name**
+
 **Rationale:**
 - Plugin names are typically English identifiers
 - Description already supports i18n
 - Simpler for developers
 
-**Decision needed by:** Phase 1.3 (update spec)
+**Format:**
+```toml
+name = "Plugin Name"  # Simple string
+
+[description]
+en = "English description"
+de = "German description"
+```
+
+**Decision:** CLOSED - Simple string for name
 
 ---
 
@@ -3101,7 +3111,7 @@ def disable() -> None:
 | Q9 | ZIP plugin support? | **NO** | Git-only for v3, simpler |
 | Q10 | Manifest field format? | **Singular/plural in MANIFEST, arrays in Registry** | Flexible for devs, consistent for API |
 | Q11 | Multi-lingual name? | **NO** | Name is identifier, description is i18n |
-| Q12 | Legacy coexistence? | **Parallel systems** | Both work during transition |
+| Q12 | Legacy coexistence? | **Clean break with migration** | Picard 3.0 only supports v3, provide migration tools |
 
 ### ⚠️ Open Questions Requiring Decisions
 
