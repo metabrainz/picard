@@ -729,7 +729,7 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
 
 #### Trust Levels
 
-The registry categorizes plugins into three trust levels:
+The registry categorizes plugins into four trust levels:
 
 **1. `picard_team` - Picard Team Plugins**
 - **Definition:** Plugins maintained by the MusicBrainz Picard team
@@ -776,6 +776,30 @@ The registry categorizes plugins into three trust levels:
 - Experimental plugins
 - Personal/niche plugins
 
+**4. `unregistered` - Unregistered Plugins**
+- **Definition:** Plugins not in the official registry
+- **Criteria:**
+  - URL not found in registry
+  - Could be in development
+  - Could be from unknown source
+  - Could be private/personal plugin
+- **Code review:** NOT reviewed
+- **Updates:** Not tracked by registry
+- **Badge:** 🔓 "Unregistered" badge in UI
+- **User trust:** Lowest - strongest warning on install
+
+**Examples:**
+- Plugin in development (developer testing)
+- Private company plugins
+- Personal forks
+- Plugins from unknown sources
+
+**Use cases for unregistered plugins:**
+- **Developers:** Test plugin during development before submitting to registry
+- **Private use:** Company-internal plugins not meant for public
+- **Forks:** Personal modifications of existing plugins
+- **Experimental:** Proof-of-concept plugins not ready for registry
+
 ---
 
 #### Trust Level Behavior
@@ -805,6 +829,32 @@ Installing Custom Tagger by John Doe (Community)...
 
 Continue? [y/N] y
 ✓ Installed successfully
+
+# Unregistered plugin - strongest warning
+$ picard plugins --install https://github.com/unknown/random-plugin
+Installing plugin from https://github.com/unknown/random-plugin...
+
+🔓 SECURITY WARNING: This plugin is NOT in the official registry.
+
+   This plugin could be:
+   - A plugin in development (safe if you're the developer)
+   - A private/personal plugin (safe if you trust the source)
+   - A malicious plugin (DANGEROUS!)
+
+   This plugin will have FULL ACCESS to:
+   - Your music files and metadata
+   - Your Picard configuration (including passwords)
+   - Your entire file system
+   - Network access (can send data anywhere)
+
+   Plugin: random-plugin
+   Author: Unknown
+   Source: https://github.com/unknown/random-plugin
+   Trust Level: UNREGISTERED
+
+   ⚠️  ONLY INSTALL IF YOU COMPLETELY TRUST THIS SOURCE!
+
+Continue? [y/N]
 ```
 
 **List output with trust indicators:**
@@ -826,6 +876,10 @@ Trusted Authors:
 Community:
   ⚠️ custom-tagger (John Doe) - Custom tagging rules
   ⚠️ lyrics-plugin (Jane Smith) - Lyrics fetcher
+
+Unregistered:
+  🔓 my-dev-plugin (You) - Plugin in development
+  🔓 company-internal (ACME Corp) - Internal use only
 ```
 
 **Filtering by trust level:**
@@ -3396,6 +3450,7 @@ Trust Levels:
   🛡️  picard_team      - Reviewed by Picard team (highest trust)
   ✓  trusted_author   - Known authors, not reviewed (high trust)
   ⚠️  community        - Other authors, not reviewed (use caution)
+  🔓 unregistered     - Not in registry (developer testing or unknown source)
 
 For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 ```
