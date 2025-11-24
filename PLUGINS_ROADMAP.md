@@ -810,7 +810,7 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
       "description": "Last.fm integration for scrobbling and metadata",
       "git_url": "https://github.com/metabrainz/picard-plugin-lastfm",
       "categories": ["metadata"],
-      "trust_level": "picard_team",
+      "trust_level": "official",
       "authors": ["MusicBrainz Picard Team"],
       "min_api_version": "3.0",
       "max_api_version": "3.1"
@@ -821,7 +821,7 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
       "description": "Discogs metadata provider",
       "git_url": "https://github.com/rdswift/picard-plugin-discogs",
       "categories": ["metadata"],
-      "trust_level": "trusted_author",
+      "trust_level": "trusted",
       "authors": ["Bob Swift"],
       "min_api_version": "3.0"
     },
@@ -868,12 +868,12 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
 
 The registry categorizes plugins into four trust levels:
 
-**1. `picard_team` - Picard Team Plugins**
+**1. `official` - Official Plugins**
 - **Definition:** Plugins maintained by the MusicBrainz Picard team
 - **Repository:** Under `metabrainz` or `musicbrainz` GitHub organizations
 - **Code review:** Full code review by Picard team before acceptance
 - **Updates:** Reviewed before being listed
-- **Badge:** 🛡️ "Picard Team" badge in UI
+- **Badge:** 🛡️ "Official" badge in UI
 - **User trust:** Highest - users can install without warnings
 
 **Examples:**
@@ -881,15 +881,15 @@ The registry categorizes plugins into four trust levels:
 - AcoustID plugin
 - Cover Art Archive plugin
 
-**2. `trusted_author` - Trusted Authors**
-- **Definition:** Plugins by known, trusted community members
+**2. `trusted` - Trusted Plugins**
+- **Definition:** Plugins by well-known authors with established reputation
 - **Criteria:**
   - Long-term contributors to Picard or MusicBrainz
   - History of quality plugins
   - Manually approved by Picard team
 - **Code review:** NOT reviewed by Picard team
 - **Updates:** Automatically listed (no review)
-- **Badge:** ✓ "Trusted Author" badge in UI
+- **Badge:** ✓ "Trusted" badge in UI
 - **User trust:** High - minimal warning on first install
 
 **Examples:**
@@ -944,14 +944,14 @@ The registry categorizes plugins into four trust levels:
 **Installation warnings:**
 
 ```bash
-# Picard Team plugin - no warning
+# Official plugin - no warning
 $ picard plugins --install lastfm
-Installing Last.fm (Picard Team)...
+Installing Last.fm (Official)...
 ✓ Installed successfully
 
-# Trusted Author plugin - minimal warning
+# Trusted plugin - minimal warning
 $ picard plugins --install discogs
-Installing Discogs by Bob Swift (Trusted Author)...
+Installing Discogs by Bob Swift (Trusted)...
 Note: This plugin is not reviewed by the Picard team.
 Continue? [Y/n] y
 ✓ Installed successfully
@@ -1000,13 +1000,11 @@ Continue? [y/N]
 $ picard plugins --browse
 
 Official Plugins:
-
-Picard Team:
   🛡️ lastfm - Last.fm integration
   🛡️ acoustid - AcoustID fingerprinting
   🛡️ caa - Cover Art Archive
 
-Trusted Authors:
+Trusted Plugins:
   ✓ discogs (Bob Swift) - Discogs metadata
   ✓ fanart (Philipp Wolfer) - Fanart.tv cover art
 
@@ -1022,11 +1020,11 @@ Unregistered:
 **Filtering by trust level:**
 
 ```bash
-# Show only Picard Team plugins
-picard plugins --browse --trust picard_team
+# Show only official plugins
+picard plugins --browse --trust official
 
-# Show Picard Team + Trusted Authors
-picard plugins --browse --trust picard_team,trusted_author
+# Show official + trusted
+picard plugins --browse --trust official,trusted
 
 # Show all (default)
 picard plugins --browse
@@ -1041,15 +1039,15 @@ picard plugins --browse
 Website admin interface:
 1. Navigate to plugin in registry
 2. Review plugin code and history
-3. Change trust level: `community` → `trusted_author` → `picard_team`
+3. Change trust level: `community` → `trusted` → `official`
 4. Add reason for upgrade
 5. Save changes
 
-**Promoting to Picard Team:**
+**Promoting to Official:**
 1. Plugin moved to `metabrainz` organization
 2. Code reviewed by team
-3. Manually set `trust_level: picard_team` in registry
-4. Plugin gets team badge
+3. Manually set `trust_level: official` in registry
+4. Plugin gets official badge
 
 **Downgrading trust level:**
 1. If plugin has security issue or quality problems
@@ -1078,7 +1076,7 @@ Website admin interface:
   },
   "git_url": "https://github.com/user/repo",
   "categories": ["metadata", "coverart"],
-  "trust_level": "picard_team",
+  "trust_level": "official",
   "authors": ["Author Name", "Co-Author Name"],
   "min_api_version": "3.0",
   "max_api_version": "3.1",
@@ -1098,7 +1096,7 @@ Website admin interface:
 | `description_i18n` | object | No | Translated descriptions (locale → string) |
 | `git_url` | string | Yes | Git repository URL (https) |
 | `categories` | array | Yes | Plugin categories: `metadata`, `coverart`, `ui`, `scripting`, `formats`, `other` |
-| `trust_level` | string | Yes | Trust level: `picard_team`, `trusted_author`, or `community` |
+| `trust_level` | string | Yes | Trust level: `official`, `trusted`, `community`, or `unregistered` |
 | `authors` | array | Yes | Plugin author names |
 | `min_api_version` | string | Yes | Minimum supported API version |
 | `max_api_version` | string | No | Maximum supported API version (if any) |
@@ -1136,7 +1134,7 @@ Website admin interface:
   },
   "git_url": "https://github.com/metabrainz/picard-plugin-lastfm",
   "categories": ["metadata"],
-  "trust_level": "picard_team",
+  "trust_level": "official",
   "authors": ["Philipp Wolfer"],
   "min_api_version": "3.0",
   "added_at": "2025-11-24T15:00:00Z",
@@ -1238,21 +1236,21 @@ def display_plugin_page(plugin_id, user_locale):
 When plugin is submitted to registry:
 
 1. **Check if repository is under `metabrainz` or `musicbrainz` org:**
-   - YES → Requires manual approval by team → `picard_team`
+   - YES → Requires manual approval by team → `official`
    - NO → Continue to step 2
 
 2. **Default to `community` for new submissions**
    - All new plugins start as `community`
-   - Can be upgraded to `trusted_author` after review
-   - Can be upgraded to `picard_team` if moved to official org
+   - Can be upgraded to `trusted` after review
+   - Can be upgraded to `official` if moved to official org
 
 3. **Check if plugin is blacklisted:**
    - YES → Reject submission
    - NO → Accept with appropriate trust level
 
 **Trust level upgrades:**
-- `community` → `trusted_author`: Manual review by Picard team
-- `trusted_author` → `picard_team`: Move to official org + code review
+- `community` → `trusted`: Manual review by Picard team
+- `trusted` → `official`: Move to official org + code review
 - Trust level is a property of the plugin, not the author
 
 ---
@@ -1296,9 +1294,10 @@ class PluginRegistry:
     CACHE_TTL = 86400  # 24 hours
 
     TRUST_LEVELS = {
-        'picard_team': 3,      # Highest trust
-        'trusted_author': 2,   # Medium trust
-        'community': 1         # Lowest trust
+        'official': 3,      # Highest trust
+        'trusted': 2,       # High trust
+        'community': 1,     # Low trust
+        'unregistered': 0   # Lowest trust
     }
 
     def fetch_registry(self):
@@ -1336,9 +1335,10 @@ class PluginRegistry:
 
     def get_trust_level(self, git_url):
         """Get trust level for plugin by git URL"""
-
-    def is_trusted_author(self, github_username):
-        """Check if GitHub username is in trusted authors list"""
+        plugin = self.find_plugin_by_url(git_url)
+        if not plugin:
+            return 'unregistered'
+        return plugin.get('trust_level', 'community')
 
     def find_plugin(self, name_or_id):
         """Find official plugin by name or ID"""
@@ -1350,12 +1350,12 @@ class PluginRegistry:
         """Determine if warning should be shown based on trust level"""
         plugin = self.find_plugin_by_url(git_url)
         if not plugin:
-            return True, "Plugin not in official registry"
+            return True, "Plugin not in official registry (unregistered)"
 
         trust = plugin.get('trust_level')
-        if trust == 'picard_team':
+        if trust == 'official':
             return False, None
-        elif trust == 'trusted_author':
+        elif trust == 'trusted':
             return True, "not reviewed by Picard team"
         else:  # community
             return True, "not reviewed or endorsed by Picard team"
@@ -2730,9 +2730,10 @@ DISCOVERED → LOADED → ENABLED
 - `other` - Miscellaneous
 
 **Trust Levels (security/quality):**
-- `picard_team` - Reviewed by Picard team
-- `trusted_author` - Known authors, not reviewed
+- `official` - Team maintained, reviewed
+- `trusted` - Well-known authors, not reviewed
 - `community` - Other authors, not reviewed
+- `unregistered` - Not in registry
 
 **Usage:**
 - Category: For filtering/browsing ("show me all metadata plugins")
@@ -3482,7 +3483,7 @@ def disable() -> None:
 **Approach:** Trust-based system with social/organizational controls
 
 **Security measures:**
-- ✅ Trust levels (picard_team / trusted_author / community)
+- ✅ Trust levels (official / trusted / community)
 - ✅ Blacklist for known malicious plugins
 - ✅ Clear warnings for community plugins
 - ✅ Code review for Picard Team plugins
@@ -3882,7 +3883,7 @@ def sign_plugin(plugin_path, private_key):
 
 # Verify on load
 def load_plugin(plugin_path):
-    if plugin.trust_level == 'picard_team':
+    if plugin.trust_level == 'official':
         if not verify_signature(plugin_path):
             raise SecurityError("Invalid signature")
 ```
@@ -4410,7 +4411,7 @@ Advanced Options:
   -y, --yes             skip all confirmation prompts (for automation)
   --force-blacklisted   install plugin even if blacklisted (DANGEROUS!)
   --trust-community     skip warnings for community plugins
-  --trust LEVEL         filter plugins by trust level (picard_team, trusted_author, community)
+  --trust LEVEL         filter plugins by trust level (official, trusted, community)
   --category CATEGORY   filter plugins by category (metadata, coverart, ui, scripting, formats, other)
   --purge               delete plugin configuration when uninstalling
 
@@ -4450,8 +4451,8 @@ Examples:
   picard plugins --uninstall lastfm --purge
 
 Trust Levels:
-  🛡️  picard_team      - Reviewed by Picard team (highest trust)
-  ✓  trusted_author   - Known authors, not reviewed (high trust)
+  🛡️  official      - Reviewed by Picard team (highest trust)
+  ✓  trusted   - Known authors, not reviewed (high trust)
   ⚠️  community        - Other authors, not reviewed (use caution)
   🔓 unregistered     - Not in registry (developer testing or unknown source)
 
@@ -4834,10 +4835,10 @@ picard plugins --browse
 picard plugins --browse --category metadata
 
 # Browse by trust level
-picard plugins --browse --trust picard_team
+picard plugins --browse --trust official
 
 # Browse Picard Team + Trusted Authors
-picard plugins --browse --trust picard_team,trusted_author
+picard plugins --browse --trust official,trusted
 ```
 
 **Output:**
