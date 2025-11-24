@@ -3297,6 +3297,111 @@ These don't block MVP but should be considered later:
 
 ---
 
+### Help Output
+
+**Command:** `picard plugins --help`
+
+**Output:**
+```
+usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-u PLUGIN [PLUGIN ...]]
+                      [-e PLUGIN [PLUGIN ...]] [-d PLUGIN [PLUGIN ...]]
+                      [--update PLUGIN [PLUGIN ...]] [--update-all]
+                      [--info NAME|URL] [--ref REF] [--switch-ref PLUGIN REF]
+                      [--browse] [--search TERM] [--check-blacklist URL]
+                      [--refresh-registry] [--check-updates] [--reinstall PLUGIN]
+                      [--status] [-y] [--force-blacklisted] [--trust-community]
+                      [--trust LEVEL] [--category CATEGORY] [--purge]
+
+Manage Picard plugins (install, update, enable, disable)
+
+options:
+  -h, --help            show this help message and exit
+
+Plugin Management:
+  -l, --list            list all installed plugins with details
+  -i URL [URL ...], --install URL [URL ...]
+                        install plugin(s) from git URL(s) or by name
+  -u PLUGIN [PLUGIN ...], --uninstall PLUGIN [PLUGIN ...]
+                        uninstall plugin(s)
+  -e PLUGIN [PLUGIN ...], --enable PLUGIN [PLUGIN ...]
+                        enable plugin(s)
+  -d PLUGIN [PLUGIN ...], --disable PLUGIN [PLUGIN ...]
+                        disable plugin(s)
+  --update PLUGIN [PLUGIN ...]
+                        update specific plugin(s) to latest version
+  --update-all          update all installed plugins
+  --info NAME|URL       show detailed information about a plugin
+  --status              show detailed status of all plugins (for debugging)
+
+Git Version Control:
+  --ref REF             git ref (branch, tag, or commit) to install/update to
+  --switch-ref PLUGIN REF
+                        switch plugin to different git ref without reinstalling
+
+Plugin Discovery:
+  --browse              browse official plugin registry
+  --search TERM         search official plugins by name or description
+  --check-blacklist URL
+                        check if a plugin URL is blacklisted
+
+Registry:
+  --refresh-registry    force refresh of plugin registry cache
+  --check-updates       check for available plugin updates
+
+Advanced Options:
+  --reinstall PLUGIN    force reinstall of plugin
+  -y, --yes             skip all confirmation prompts (for automation)
+  --force-blacklisted   install plugin even if blacklisted (DANGEROUS!)
+  --trust-community     skip warnings for community plugins
+  --trust LEVEL         filter plugins by trust level (picard_team, trusted_author, community)
+  --category CATEGORY   filter plugins by category (metadata, coverart, ui, scripting, formats, other)
+  --purge               delete plugin configuration when uninstalling
+
+Examples:
+  # List installed plugins
+  picard plugins --list
+
+  # Install plugin from URL
+  picard plugins --install https://github.com/metabrainz/picard-plugin-lastfm
+
+  # Install official plugin by name
+  picard plugins --install lastfm
+
+  # Install specific version
+  picard plugins --install https://github.com/user/plugin --ref v1.0.0
+
+  # Update all plugins
+  picard plugins --update-all
+
+  # Browse official plugins
+  picard plugins --browse --category metadata
+
+  # Search for plugins
+  picard plugins --search "cover art"
+
+  # Get plugin info
+  picard plugins --info lastfm
+
+  # Enable/disable plugins
+  picard plugins --enable lastfm
+  picard plugins --disable lastfm
+
+  # Uninstall plugin
+  picard plugins --uninstall lastfm
+
+  # Uninstall and delete config
+  picard plugins --uninstall lastfm --purge
+
+Trust Levels:
+  🛡️  picard_team      - Reviewed by Picard team (highest trust)
+  ✓  trusted_author   - Known authors, not reviewed (high trust)
+  ⚠️  community        - Other authors, not reviewed (use caution)
+
+For more information, visit: https://picard.musicbrainz.org/docs/plugins/
+```
+
+---
+
 ### Commands Summary Table
 
 | Command | Status | Priority | Phase | Description | Use Case |
