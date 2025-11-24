@@ -6,6 +6,58 @@
 
 ---
 
+## Table of Contents
+
+### 1. [Current State](#current-state)
+- [Branch Status](#branch-status)
+- [What Works Now](#what-works-now)
+- [What Doesn't Work](#what-doesnt-work)
+
+### 2. [Phase 1: Functional CLI-Only System](#phase-1-functional-cli-only-system)
+- [1.1 Configuration Persistence (CRITICAL)](#11-configuration-persistence-critical)
+- [1.2 Version Compatibility Checking](#12-version-compatibility-checking)
+- [1.3 Enhanced CLI Output & Error Handling](#13-enhanced-cli-output--error-handling)
+- [1.4 Plugin Updates](#14-plugin-updates)
+- [1.5 Plugin State Management](#15-plugin-state-management)
+- [1.6 Git Ref/Branch Support](#16-git-refbranch-support)
+- [1.7 Better Install Logic](#17-better-install-logic)
+- [1.8 Basic Blacklist Support (Safety Critical)](#18-basic-blacklist-support-safety-critical)
+
+### 3. [Phase 2: Polish & Robustness](#phase-2-polish--robustness)
+- [2.1 Comprehensive Testing](#21-comprehensive-testing)
+- [2.2 Documentation](#22-documentation)
+- [2.3 Migration from Legacy Plugins](#23-migration-from-legacy-plugins)
+
+### 4. [Phase 3: Official Plugin Repository](#phase-3-official-plugin-repository-future)
+- [3.1 Website Plugin Registry API](#31-website-plugin-registry-api)
+- [3.2 Picard Client Integration](#32-picard-client-integration)
+- [3.3 Enhanced CLI Commands](#33-enhanced-cli-commands)
+- [3.4 Blacklist Enforcement](#34-blacklist-enforcement)
+
+### 5. [Phase 4: GUI](#phase-4-gui-future)
+- [4.1 Options Page](#41-options-page)
+
+### 6. [Open Questions & How to Resolve](#open-questions--how-to-resolve)
+- [Resolved Questions](#-resolved-questions)
+- [Open Questions Requiring Decisions](#️-open-questions-requiring-decisions)
+- [Questions for Future Consideration](#-questions-for-future-consideration)
+- [Decision Priority](#decision-priority)
+
+### 7. [Success Metrics](#success-metrics)
+
+### 8. [Timeline Estimate](#timeline-estimate)
+
+### 9. [Next Actions](#next-actions)
+
+### 10. [CLI Commands Reference](#cli-commands-reference)
+- [Help Output](#help-output)
+- [Commands Summary Table](#commands-summary-table)
+- [Detailed Command Specifications](#detailed-command-specifications)
+
+### 11. [Notes](#notes)
+
+---
+
 ## Current State
 
 ### Branch Status
