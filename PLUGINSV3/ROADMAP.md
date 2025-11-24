@@ -175,6 +175,7 @@ Installed plugins:
 **Tasks:**
 - [ ] Add `--update <name>` command to update single plugin
 - [ ] Add `--update-all` command to update all plugins
+- [ ] Add `--check-updates` command to check without installing
 - [ ] Store git remote URL in config for each plugin
 - [ ] Implement `PluginSourceGit.update()` method (fetch + reset)
 - [ ] Show what changed (old version → new version)
@@ -184,6 +185,15 @@ Installed plugins:
 - `picard/plugin3/cli.py` - add update commands
 - `picard/plugin3/manager.py` - add update methods
 - `picard/plugin3/plugin.py` - enhance PluginSourceGit
+
+**Community Feedback:**
+> **rdswift:** "I agree with the recommendation to initially do manually checking only (for Phase 1) and ultimately implement automatic checking during startup (Phase 4). I suggest that there be a menu item, either from the main menu or on the 'Plugins' option page, to always allow initiation of a manual update check. I also recommend that the option setting to disable the automatic checking during startup, which exists in the current release of Picard, be retained. Another option might be to automatically perform the update check (if enabled) in the background, and display a notice (possibly right-justified on the same line as the main menu bar) indicating that an update is available. This is the approach that some other applications take (e.g. Calibre). I also suggest that a user setting regarding optional notification of pre-release versions could be included."
+
+**Future enhancements (Phase 2+):**
+- Menu item for manual update check
+- Automatic background check on startup (with disable option)
+- Notification area indicator (like Calibre)
+- Setting for pre-release version notifications
 
 **Acceptance criteria:**
 - Can update installed plugins from git
@@ -262,13 +272,49 @@ picard plugins --update myplugin
 
 **Tasks:**
 - [ ] Derive plugin name from MANIFEST.toml, not URL basename
+- [ ] Use plugin ID from MANIFEST for directory name (after clone)
+- [ ] Fallback to URL basename if MANIFEST read fails
 - [ ] Check if plugin already installed before cloning
 - [ ] Add `--reinstall` flag to force reinstall
 - [ ] Validate MANIFEST.toml before completing install
 - [ ] Clean up on install failure
+- [ ] Add `--purge` flag for uninstall to delete configuration
+- [ ] Prompt user during uninstall about configuration cleanup
+- [ ] Add `--clean-config <name>` command for later cleanup
 
 **Files to modify:**
-- `picard/plugin3/manager.py` - enhance `install_plugin()`
+- `picard/plugin3/manager.py` - enhance `install_plugin()` and `uninstall_plugin()`
+- `picard/plugin3/cli.py` - add `--purge` and `--clean-config` options
+
+**Community Feedback:**
+> **rdswift (on directory naming):** "I agree with the recommendation to use the plugin ID from MANIFEST after clone, with the fallback to use URL basename."
+>
+> **rdswift (on config cleanup):** "I suggest a combination of options C and D. The process would allow the user to delete the configuration immediately by prompting upon uninstall, and allow for later deletion if the user changes their mind about their decision to keep the configuration during the uninstall."
+
+**Plugin directory naming logic:**
+1. Clone to temporary directory using URL basename
+2. Read MANIFEST.toml to get plugin ID
+3. Rename directory to plugin ID
+4. If MANIFEST read fails, keep URL basename
+
+**Configuration cleanup behavior:**
+```bash
+# Uninstall with prompt
+$ picard plugins --uninstall myplugin
+Uninstalling myplugin...
+Delete plugin configuration? [y/N] n
+✓ Plugin uninstalled (configuration kept)
+
+# Uninstall with purge flag
+$ picard plugins --uninstall myplugin --purge
+Uninstalling myplugin and deleting configuration...
+✓ Plugin and configuration removed
+
+# Clean config later
+$ picard plugins --clean-config myplugin
+Delete configuration for myplugin? [y/N] y
+✓ Configuration deleted
+```
 
 ---
 

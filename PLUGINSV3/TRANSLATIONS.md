@@ -349,6 +349,16 @@ For collaborative translation, plugins could integrate with Weblate:
 3. Translations automatically committed to repository
 4. Plugin developer merges translation updates
 
+**Community Feedback:**
+> **rdswift:** "Perhaps the final plugin developer documentation could contain links to information pertaining to setup and use of a weblate server to help facilitate the process for plugins not managed by Picard, and ultimately provide more user-friendly plugins."
+
+**Recommendation:** Include in plugin developer documentation:
+- Link to Weblate setup guide
+- Instructions for connecting plugin repository
+- Configuration examples
+- Best practices for managing translation PRs
+- Information about MusicBrainz Weblate instance (if available for community plugins)
+
 ---
 
 ## See Also

@@ -343,6 +343,120 @@ CREATE TABLE trust_level_history (
 
 ---
 
+## Plugin Marketplace / Browser (Future)
+
+### Overview
+
+A web-based plugin browser for discovering and learning about registered plugins.
+
+**Community Feedback:**
+> **rdswift:** "My short answer to this is 'Yes', even though it may require significant curation effort depending on the extent of the plugins included. I believe that there is significant value in users being able to access a list of available plugins from a common site, especially if they can filter by category and/or plugin author, and search within the plugin descriptions.
+>
+> If the plugin browser is only displaying information for plugins in the registry, then the system can be automated to use the information provided via the registry item manifests (or a database built from the manifest information), and serve the pages based upon the results of API queries. In this case, the plugin browser could (and should) be served from the picard.musicbrainz.org domain.
+>
+> If the plugin browser is intended to also include plugins not included in the registry, then the complexity (and curation effort) increases significantly.
+>
+> A rudimentary list of plugins not included in the official plugin list is currently available on a Picard Resources page in the MusicBrainz Wiki. My recommendation is to continue using the Wiki for this purpose, curated by the users, which would allow rudimentary discovery of the 'unofficial' unregistered plugins. The full 'plugin browser' experience would be reserved for registered plugins."
+
+### Recommended Approach
+
+**For Registered Plugins:**
+- Web-based browser at picard.musicbrainz.org/plugins
+- Automated from registry JSON data
+- Filter by: category, trust level, author
+- Search by: name, description, keywords
+- Display: name, description, authors, trust level, categories
+- Link to: repository, documentation (if provided)
+- One-click install command shown
+
+**For Unregistered Plugins:**
+- Continue using MusicBrainz Wiki
+- User-curated list
+- Minimal information (name, URL, description)
+- Clear indication these are not in official registry
+
+### Plugin Browser Features
+
+**Browse Page:**
+```
+Picard Plugins
+
+[Search: ____________] [Filter ▼]
+
+Official Plugins (5)
+  🛡️ Last.fm Scrobbler
+     Scrobble your music to Last.fm
+     Authors: MusicBrainz Picard Team
+     Categories: metadata
+     [Install: picard plugins --install lastfm]
+
+Trusted Plugins (12)
+  ✓ Discogs
+     Get metadata from Discogs
+     Authors: Bob Swift
+     Categories: metadata
+     [Install: picard plugins --install discogs]
+
+Community Plugins (45)
+  ⚠️ Custom Tagger
+     Apply custom tagging rules
+     Authors: John Doe
+     Categories: metadata
+     [Install: picard plugins --install https://github.com/user/plugin]
+```
+
+**Plugin Detail Page:**
+```
+Last.fm Scrobbler 🛡️
+
+Scrobble your music to Last.fm and update your listening history.
+
+Trust Level: Official (Picard Team)
+Authors: MusicBrainz Picard Team, Philipp Wolfer
+Categories: metadata
+License: GPL-2.0-or-later
+Repository: https://github.com/metabrainz/picard-plugin-lastfm
+Documentation: https://picard-docs.musicbrainz.org/plugins/lastfm
+
+Installation:
+  picard plugins --install lastfm
+
+Requirements:
+  - Picard 3.0+
+  - API version: 3.0
+
+[View on GitHub] [Report Issue]
+```
+
+### Implementation
+
+**Technology:**
+- Static site generation from registry JSON
+- Or dynamic pages from database
+- Served from picard.musicbrainz.org
+- Responsive design for mobile
+
+**Data Source:**
+- Registry JSON (plugins.json)
+- No additional curation needed
+- Automatic updates when registry updates
+
+**Submission Process:**
+1. Developer submits plugin via GitHub PR or web form
+2. Picard team reviews
+3. Assigns trust level
+4. Plugin appears in registry and browser
+
+### Benefits
+
+- Easy plugin discovery
+- No manual curation for registered plugins
+- Clear trust level indicators
+- Simple installation instructions
+- Links to documentation and source
+
+---
+
 ## See Also
 
 - **[REGISTRY.md](REGISTRY.md)** - Registry JSON schema and client integration
