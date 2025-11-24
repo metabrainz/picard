@@ -2151,15 +2151,15 @@ Plugin updates include new translations
 
 #### Advantages of Weblate + JSON
 
-✅ **Web-based translation UI** - Translators don't need to edit files manually
-✅ **Translation memory** - Reuses translations across plugins
-✅ **Automatic commits** - Translations pushed back to git automatically
-✅ **Quality checks** - Detects missing placeholders, formatting issues
-✅ **Collaboration** - Multiple translators can work simultaneously
-✅ **Progress tracking** - See completion percentage per language
-✅ **Notifications** - Alerts when new strings need translation
-✅ **Git integration** - Works with GitHub, GitLab, etc.
-✅ **No compilation** - JSON files work directly, no .mo generation needed
+- ✅ **Web-based translation UI** - Translators don't need to edit files manually
+- ✅ **Translation memory** - Reuses translations across plugins
+- ✅ **Automatic commits** - Translations pushed back to git automatically
+- ✅ **Quality checks** - Detects missing placeholders, formatting issues
+- ✅ **Collaboration** - Multiple translators can work simultaneously
+- ✅ **Progress tracking** - See completion percentage per language
+- ✅ **Notifications** - Alerts when new strings need translation
+- ✅ **Git integration** - Works with GitHub, GitLab, etc.
+- ✅ **No compilation** - JSON files work directly, no .mo generation needed
 
 #### MusicBrainz Weblate Instance
 
