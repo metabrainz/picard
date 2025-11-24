@@ -326,6 +326,19 @@ class PluginSourceGit(PluginSource):
         self.url = url
         self.ref = ref or 'main'  # Default to main
         self.ref_type = None  # Detected during sync
+        self.is_local = self._is_local_repo(url)
+
+    def _is_local_repo(self, url):
+        """Check if URL is a local git repository"""
+        from pathlib import Path
+
+        # Not a URL scheme, could be local path
+        if not url.startswith(('http://', 'https://', 'git://', 'ssh://', 'git@')):
+            path = Path(url).expanduser().resolve()
+            # Check if it's a git repository
+            if path.exists() and (path / '.git').exists():
+                return True
+        return False
 
     def sync(self, target_directory: Path):
         """Clone or update repository and checkout ref"""
@@ -335,11 +348,24 @@ class PluginSourceGit(PluginSource):
             for remote in repo.remotes:
                 remote.fetch(callbacks=GitRemoteCallbacks())
         else:
-            repo = pygit2.clone_repository(
-                self.url,
-                target_directory.absolute(),
-                callbacks=GitRemoteCallbacks()
-            )
+            # Clone from local or remote
+            if self.is_local:
+                # Resolve to absolute path for local repos
+                from pathlib import Path
+                local_path = Path(self.url).expanduser().resolve()
+                print(f'Cloning from local repository {local_path}')
+                repo = pygit2.clone_repository(
+                    str(local_path),
+                    target_directory.absolute(),
+                    callbacks=GitRemoteCallbacks()
+                )
+            else:
+                print(f'Cloning from {self.url}')
+                repo = pygit2.clone_repository(
+                    self.url,
+                    target_directory.absolute(),
+                    callbacks=GitRemoteCallbacks()
+                )
 
         # Resolve ref to commit
         commit = self._resolve_ref(repo, self.ref)
@@ -352,7 +378,8 @@ class PluginSourceGit(PluginSource):
             'ref': self.ref,
             'ref_type': self.ref_type,
             'commit_time': commit.commit_time,
-            'commit_message': commit.message.strip()
+            'commit_message': commit.message.strip(),
+            'is_local': self.is_local
         }
 
     def _resolve_ref(self, repo, ref: str):
@@ -383,6 +410,65 @@ class PluginSourceGit(PluginSource):
         except KeyError:
             raise PluginSourceSyncError(f"Could not resolve ref: {ref}")
 ```
+
+**Usage with local git repositories:**
+
+```bash
+# Install from local git repository (absolute path)
+picard plugins --install /home/user/dev/my-plugin
+
+# Install from local git repository (relative path)
+picard plugins --install ./my-plugin
+picard plugins --install ../picard-plugin-lastfm
+
+# Install from local git repository with specific ref
+picard plugins --install ~/dev/my-plugin --ref dev
+
+# Install from remote URL (works as before)
+picard plugins --install https://github.com/user/plugin
+```
+
+**Development workflow:**
+
+```bash
+# Developer working on a plugin
+cd ~/dev/picard-plugin-lastfm
+
+# Make changes
+vim __init__.py
+
+# Commit changes
+git add .
+git commit -m "Add new feature"
+
+# Test in Picard immediately (no need to push to GitHub)
+picard plugins --install ~/dev/picard-plugin-lastfm --reinstall
+
+# Or update if already installed
+picard plugins --update lastfm
+
+# Switch between branches for testing
+picard plugins --switch-ref lastfm feature/new-api
+```
+
+**Benefits:**
+- ✅ Test plugins without pushing to remote
+- ✅ Faster development iteration
+- ✅ Works offline
+- ✅ Test local changes immediately
+- ✅ No need for local web server or file:// URLs
+- ✅ Supports both absolute and relative paths
+- ✅ Expands ~ for home directory
+
+**Local repository detection:**
+- Checks if path doesn't start with URL scheme
+- Checks if path exists and contains `.git` directory
+- Resolves relative paths and ~ expansion
+- Falls back to remote clone if not a local repo
+
+**Note:** Local repositories are cloned (not symlinked) to the plugins directory, so changes in the source repo require reinstall or update to take effect.
+
+---
 
 **3. CLI commands:**
 
@@ -1064,7 +1150,98 @@ class PluginRegistry:
 
 ---
 
-### 3.3 Enhanced CLI Commands
+**Local File Support for Testing:**
+
+The PluginRegistry can load from a local JSON file instead of URL for testing:
+
+```python
+# Support both URL and local file
+def __init__(self, registry_source=None):
+    """Initialize registry
+
+    Args:
+        registry_source: URL or local file path to registry JSON.
+                       If None, uses default REGISTRY_URL.
+                       Can be overridden with PICARD_PLUGIN_REGISTRY env var.
+    """
+    import os
+
+    # Priority: parameter > env var > default URL
+    self.registry_source = (
+        registry_source or
+        os.environ.get('PICARD_PLUGIN_REGISTRY') or
+        self.REGISTRY_URL
+    )
+
+def _is_local_file(self, source):
+    """Check if source is a local file path"""
+    from pathlib import Path
+
+    if source.startswith('http://') or source.startswith('https://'):
+        return False
+
+    path = Path(source)
+    return path.exists() and path.is_file()
+
+def fetch_registry(self, force_refresh=False):
+    """Fetch from URL or load from local file"""
+    if self._is_local_file(self.registry_source):
+        log.debug('Loading plugin registry from local file: %s', self.registry_source)
+        return self._load_from_file(self.registry_source)
+    else:
+        log.debug('Fetching plugin registry from URL: %s', self.registry_source)
+        return self._fetch_from_url(self.registry_source)
+```
+
+**Usage:**
+
+```bash
+# Use local file for testing
+export PICARD_PLUGIN_REGISTRY=./test/data/test-registry.json
+picard plugins --list
+
+# Use staging server
+export PICARD_PLUGIN_REGISTRY=https://staging.picard.musicbrainz.org/api/v3/plugins.json
+
+# Use production (default)
+unset PICARD_PLUGIN_REGISTRY
+```
+
+**Test registry file (`test/data/test-registry.json`):**
+
+```json
+{
+  "api_version": "3.0",
+  "last_updated": "2025-11-24T17:00:00Z",
+  "plugins": [
+    {
+      "id": "test-plugin",
+      "name": "Test Plugin",
+      "git_url": "https://github.com/test/picard-plugin-test",
+      "category": "metadata",
+      "trust_level": "community",
+      "author": "Test Author"
+    }
+  ],
+  "blacklist": [
+    {
+      "git_url": "https://github.com/test/blacklisted-plugin",
+      "reason": "Test blacklist entry",
+      "blacklisted_at": "2025-11-24T10:00:00Z"
+    }
+  ],
+  "trusted_authors": []
+}
+```
+
+**Benefits:**
+- ✅ No web server needed during development
+- ✅ Test blacklist behavior easily
+- ✅ Fast iteration (no network delays)
+- ✅ Works offline
+- ✅ Version control test registries
+
+---
 
 **Priority:** P2 - Medium
 **Effort:** 2 days
