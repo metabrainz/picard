@@ -3288,3 +3288,683 @@ These don't block MVP but should be considered later:
 - #12 (Rollback) - Already covered by git refs
 
 ---
+
+## CLI Commands Reference
+
+### Complete Command Line Interface
+
+**Base command:** `picard plugins [OPTIONS]`
+
+---
+
+### Commands Summary Table
+
+| Command | Status | Priority | Phase | Description | Use Case |
+|---------|--------|----------|-------|-------------|----------|
+| `--list` / `-l` | ✅ Done | P0 | 1.3 | List all installed plugins | Check what's installed |
+| `--install <url>` / `-i` | ✅ Done | P0 | 1.1 | Install plugin from git URL | Install new plugin |
+| `--install <name>` | ⏳ TODO | P1 | 3.3 | Install official plugin by name | Easy install for users |
+| `--uninstall <name>` / `-u` | ✅ Done | P0 | 1.1 | Uninstall plugin | Remove unwanted plugin |
+| `--enable <name>` / `-e` | ✅ Done | P0 | 1.1 | Enable plugin | Activate plugin |
+| `--disable <name>` / `-d` | ✅ Done | P0 | 1.1 | Disable plugin | Deactivate plugin |
+| `--update <name>` | ⏳ TODO | P1 | 1.4 | Update specific plugin | Get latest version |
+| `--update-all` | ⏳ TODO | P1 | 1.4 | Update all plugins | Bulk update |
+| `--info <name\|url>` | ⏳ TODO | P1 | 1.3 | Show plugin details | Get plugin information |
+| `--ref <ref>` | ⏳ TODO | P2 | 1.6 | Specify git ref (branch/tag/commit) | Install specific version |
+| `--switch-ref <name> <ref>` | ⏳ TODO | P2 | 1.6 | Switch plugin to different ref | Change version |
+| `--browse` | ⏳ TODO | P2 | 3.3 | Browse official plugins | Discover plugins |
+| `--search <term>` | ⏳ TODO | P2 | 3.3 | Search official plugins | Find plugins |
+| `--check-blacklist <url>` | ⏳ TODO | P1 | 1.8 | Check if URL is blacklisted | Verify safety |
+| `--refresh-registry` | ⏳ TODO | P2 | 3.2 | Force refresh plugin registry cache | Update plugin list |
+| `--check-updates` | ⏳ TODO | P2 | 1.4 | Check for available updates | See what's new |
+| `--reinstall <name>` | ⏳ TODO | P2 | 1.7 | Reinstall plugin | Fix broken install |
+| `--status` | ⏳ TODO | P2 | 1.5 | Show detailed plugin status | Debug plugin state |
+| `--force-blacklisted` | ⏳ TODO | P1 | 1.8 | Override blacklist warning | Install despite warning |
+| `--trust-community` | ⏳ TODO | P2 | 3.2 | Skip community plugin warnings | Batch operations |
+| `--trust <level>` | ⏳ TODO | P2 | 3.3 | Filter by trust level | Browse by trust |
+| `--category <cat>` | ⏳ TODO | P2 | 3.3 | Filter by category | Browse by type |
+| `--yes` / `-y` | ⏳ TODO | P2 | 1.3 | Skip confirmation prompts | Automation |
+| `--purge` | ⏳ TODO | P2 | 1.7 | Delete plugin config on uninstall | Clean removal |
+
+**Legend:**
+- ✅ Done: Implemented in phw/plugins-v3-cli
+- ⏳ TODO: Needs implementation
+- P0: Critical (blocker)
+- P1: High priority
+- P2: Medium priority
+
+---
+
+### Detailed Command Specifications
+
+#### 1. List Plugins
+
+**Command:** `picard plugins --list` or `picard plugins -l`
+
+**Status:** ✅ Done (basic), ⏳ Needs enhancement
+
+**Description:** List all installed plugins with status and details
+
+**Current output (basic):**
+```
+example /path/to/plugin
+```
+
+**Enhanced output (Phase 1.3):**
+```
+Installed plugins:
+
+  lastfm (enabled) 🛡️
+    Version: 2.1.0
+    Git ref: main @ a1b2c3d
+    API: 3.0
+    Trust: Picard Team
+    Path: ~/.local/share/MusicBrainz/Picard/plugins3/lastfm
+    Description: Scrobble your music to Last.fm
+
+  discogs (disabled) ✓
+    Version: 1.5.0
+    Git ref: dev @ f4e5d6c
+    API: 3.0, 3.1
+    Trust: Trusted Author (Bob Swift)
+    Path: ~/.local/share/MusicBrainz/Picard/plugins3/discogs
+    Description: Discogs metadata provider
+
+Total: 2 plugins (1 enabled, 1 disabled)
+```
+
+**Use cases:**
+- Check what plugins are installed
+- See which plugins are enabled
+- Verify plugin versions
+- Debug plugin issues
+
+---
+
+#### 2. Install Plugin
+
+**Command:** `picard plugins --install <url>` or `picard plugins -i <url>`
+
+**Status:** ✅ Done (basic)
+
+**Description:** Install plugin from git repository URL
+
+**Examples:**
+```bash
+# Install from GitHub
+picard plugins --install https://github.com/metabrainz/picard-plugin-lastfm
+
+# Install from GitLab
+picard plugins --install https://gitlab.com/user/picard-plugin-custom
+
+# Install from specific ref
+picard plugins --install https://github.com/user/plugin --ref v1.0.0
+
+# Install from specific branch
+picard plugins --install https://github.com/user/plugin --ref dev
+```
+
+**Behavior:**
+1. Check if URL is blacklisted
+2. Clone git repository
+3. Read and validate MANIFEST.toml
+4. Check API version compatibility
+5. Show trust level warning if needed
+6. Install to plugins3 directory
+7. Enable plugin (if user confirms)
+
+**Use cases:**
+- Install new plugin from URL
+- Install plugin for testing
+- Install third-party plugin
+
+---
+
+#### 3. Install Official Plugin (by name)
+
+**Command:** `picard plugins --install <name>`
+
+**Status:** ⏳ TODO (Phase 3.3)
+
+**Description:** Install official plugin by name (no URL needed)
+
+**Examples:**
+```bash
+# Install by name
+picard plugins --install lastfm
+
+# Install multiple
+picard plugins --install lastfm discogs acoustid
+```
+
+**Behavior:**
+1. Look up plugin name in registry
+2. Get git URL from registry
+3. Install as normal
+4. No trust warning for official plugins
+
+**Use cases:**
+- Easy installation for users
+- No need to know git URLs
+- Install recommended plugins
+
+---
+
+#### 4. Uninstall Plugin
+
+**Command:** `picard plugins --uninstall <name>` or `picard plugins -u <name>`
+
+**Status:** ✅ Done
+
+**Description:** Uninstall plugin and optionally remove config
+
+**Examples:**
+```bash
+# Uninstall plugin (keep config)
+picard plugins --uninstall lastfm
+
+# Uninstall and delete config
+picard plugins --uninstall lastfm --purge
+
+# Uninstall multiple
+picard plugins --uninstall lastfm discogs
+```
+
+**Behavior:**
+1. Disable plugin if enabled
+2. Remove plugin directory
+3. Remove from config
+4. Optionally delete plugin config (with --purge)
+
+**Use cases:**
+- Remove unwanted plugin
+- Clean up after testing
+- Free disk space
+
+---
+
+#### 5. Enable/Disable Plugin
+
+**Commands:**
+- `picard plugins --enable <name>` or `picard plugins -e <name>`
+- `picard plugins --disable <name>` or `picard plugins -d <name>`
+
+**Status:** ✅ Done
+
+**Description:** Enable or disable installed plugin
+
+**Examples:**
+```bash
+# Enable plugin
+picard plugins --enable lastfm
+
+# Disable plugin
+picard plugins --disable lastfm
+
+# Enable multiple
+picard plugins --enable lastfm discogs acoustid
+```
+
+**Behavior:**
+- Enable: Load module, call enable(), register hooks, save to config
+- Disable: Call disable(), unregister hooks, save to config
+
+**Use cases:**
+- Temporarily disable plugin
+- Enable plugin after install
+- Toggle plugin for testing
+
+---
+
+#### 6. Update Plugin
+
+**Commands:**
+- `picard plugins --update <name>` - Update specific plugin
+- `picard plugins --update-all` - Update all plugins
+
+**Status:** ⏳ TODO (Phase 1.4)
+
+**Description:** Update plugin to latest version from git
+
+**Examples:**
+```bash
+# Update one plugin
+picard plugins --update lastfm
+
+# Update to specific ref
+picard plugins --update lastfm --ref v2.0.0
+
+# Update all plugins
+picard plugins --update-all
+
+# Check for updates without installing
+picard plugins --check-updates
+```
+
+**Behavior:**
+1. Fetch from git remote
+2. Check for new commits/tags
+3. Show what will change (version, commit)
+4. Update (git pull / reset)
+5. Reload plugin if enabled
+
+**Use cases:**
+- Get bug fixes
+- Get new features
+- Keep plugins current
+
+---
+
+#### 7. Plugin Info
+
+**Command:** `picard plugins --info <name|url>`
+
+**Status:** ⏳ TODO (Phase 1.3)
+
+**Description:** Show detailed information about plugin
+
+**Examples:**
+```bash
+# Info for installed plugin
+picard plugins --info lastfm
+
+# Info for plugin by URL (not installed)
+picard plugins --info https://github.com/user/plugin
+```
+
+**Output:**
+```
+Plugin: Last.fm Scrobbler
+Status: enabled
+Version: 2.1.0
+Author: MusicBrainz Picard Team
+Trust Level: Picard Team 🛡️
+
+Git Information:
+  URL: https://github.com/metabrainz/picard-plugin-lastfm
+  Ref: main
+  Commit: a1b2c3d4e5f6 (2025-11-20)
+  Message: Fix authentication bug
+
+API Versions: 3.0
+Category: metadata
+License: GPL-2.0
+License URL: https://www.gnu.org/licenses/gpl-2.0.html
+
+Path: ~/.local/share/MusicBrainz/Picard/plugins3/lastfm
+
+Description:
+  Scrobble your music to Last.fm and update your listening history.
+  Supports real-time scrobbling and batch submission.
+
+Capabilities:
+  ✓ Network access
+  ✓ Read configuration
+  ✓ Write configuration
+
+Installed: 2025-11-15 10:30:00
+Last Updated: 2025-11-20 14:15:00
+```
+
+**Use cases:**
+- Check plugin details before install
+- Verify plugin version
+- See what plugin does
+- Debug plugin issues
+
+---
+
+#### 8. Git Ref Management
+
+**Commands:**
+- `picard plugins --install <url> --ref <ref>` - Install specific ref
+- `picard plugins --switch-ref <name> <ref>` - Switch to different ref
+- `picard plugins --update <name> --ref <ref>` - Update to specific ref
+
+**Status:** ⏳ TODO (Phase 1.6)
+
+**Description:** Manage git branches, tags, and commits
+
+**Examples:**
+```bash
+# Install from tag
+picard plugins --install https://github.com/user/plugin --ref v1.0.0
+
+# Install from branch
+picard plugins --install https://github.com/user/plugin --ref dev
+
+# Install from commit
+picard plugins --install https://github.com/user/plugin --ref a1b2c3d4
+
+# Switch to different branch
+picard plugins --switch-ref myplugin dev
+
+# Switch to tag
+picard plugins --switch-ref myplugin v1.1.0
+
+# Switch back to main
+picard plugins --switch-ref myplugin main
+```
+
+**Use cases:**
+- Test development versions
+- Pin to specific version
+- Beta testing
+- Bisect bugs
+
+---
+
+#### 9. Browse Official Plugins
+
+**Command:** `picard plugins --browse`
+
+**Status:** ⏳ TODO (Phase 3.3)
+
+**Description:** Browse official plugin registry
+
+**Examples:**
+```bash
+# Browse all plugins
+picard plugins --browse
+
+# Browse by category
+picard plugins --browse --category metadata
+
+# Browse by trust level
+picard plugins --browse --trust picard_team
+
+# Browse Picard Team + Trusted Authors
+picard plugins --browse --trust picard_team,trusted_author
+```
+
+**Output:**
+```
+Official Plugins:
+
+Picard Team:
+  🛡️ lastfm - Last.fm integration
+     Version: 2.1.0 | Category: metadata
+     Scrobble your music to Last.fm
+
+  🛡️ acoustid - AcoustID fingerprinting
+     Version: 1.5.0 | Category: metadata
+     Identify files using audio fingerprints
+
+Trusted Authors:
+  ✓ discogs (Bob Swift) - Discogs metadata
+     Version: 1.8.0 | Category: metadata
+     Get metadata from Discogs database
+
+Community:
+  ⚠️ custom-tagger (John Doe) - Custom tagging rules
+     Version: 0.5.0 | Category: metadata
+     Apply custom tagging rules
+
+Total: 4 plugins
+```
+
+**Use cases:**
+- Discover new plugins
+- See what's available
+- Find plugins by category
+
+---
+
+#### 10. Search Plugins
+
+**Command:** `picard plugins --search <term>`
+
+**Status:** ⏳ TODO (Phase 3.3)
+
+**Description:** Search official plugin registry
+
+**Examples:**
+```bash
+# Search by name
+picard plugins --search lastfm
+
+# Search by keyword
+picard plugins --search "cover art"
+
+# Search in description
+picard plugins --search scrobble
+```
+
+**Output:**
+```
+Search results for "cover art":
+
+  🛡️ caa - Cover Art Archive
+     Picard Team | Category: coverart
+     Download cover art from Cover Art Archive
+
+  ✓ fanart (Philipp Wolfer) - Fanart.tv cover art
+     Trusted Author | Category: coverart
+     Download cover art from Fanart.tv
+
+Found 2 plugins
+```
+
+**Use cases:**
+- Find specific plugin
+- Search by functionality
+- Discover related plugins
+
+---
+
+#### 11. Blacklist Check
+
+**Command:** `picard plugins --check-blacklist <url>`
+
+**Status:** ⏳ TODO (Phase 1.8)
+
+**Description:** Check if plugin URL is blacklisted
+
+**Examples:**
+```bash
+picard plugins --check-blacklist https://github.com/user/plugin
+```
+
+**Output (safe):**
+```
+✓ Plugin is not blacklisted
+  URL: https://github.com/user/plugin
+  Safe to install
+```
+
+**Output (blacklisted):**
+```
+⚠️  WARNING: This plugin is blacklisted!
+
+  URL: https://github.com/badactor/malicious-plugin
+  Reason: Contains malicious code
+  Blacklisted: 2025-11-20
+
+  DO NOT INSTALL this plugin.
+```
+
+**Use cases:**
+- Verify plugin safety
+- Check before installing
+- Audit installed plugins
+
+---
+
+#### 12. Registry Management
+
+**Commands:**
+- `picard plugins --refresh-registry` - Force refresh cache
+- `picard plugins --check-updates` - Check for updates
+
+**Status:** ⏳ TODO (Phase 3.2)
+
+**Description:** Manage plugin registry cache
+
+**Examples:**
+```bash
+# Refresh registry cache
+picard plugins --refresh-registry
+
+# Check for plugin updates
+picard plugins --check-updates
+```
+
+**Use cases:**
+- Get latest plugin list
+- Check for updates
+- Troubleshoot registry issues
+
+---
+
+#### 13. Automation Flags
+
+**Flags:**
+- `--yes` / `-y` - Skip confirmation prompts
+- `--force-blacklisted` - Override blacklist warning
+- `--trust-community` - Skip community plugin warnings
+- `--purge` - Delete config on uninstall
+- `--reinstall` - Force reinstall
+
+**Status:** ⏳ TODO (Phase 1.3, 1.7, 1.8)
+
+**Description:** Flags for automation and advanced usage
+
+**Examples:**
+```bash
+# Auto-confirm all prompts
+picard plugins --install lastfm --yes
+
+# Install blacklisted plugin (dangerous!)
+picard plugins --install <url> --force-blacklisted
+
+# Batch install community plugins
+picard plugins --install plugin1 plugin2 --trust-community --yes
+
+# Clean uninstall
+picard plugins --uninstall plugin --purge
+
+# Force reinstall
+picard plugins --install <url> --reinstall
+```
+
+**Use cases:**
+- Scripting/automation
+- CI/CD pipelines
+- Batch operations
+- Advanced users
+
+---
+
+#### 14. Status and Debug
+
+**Command:** `picard plugins --status`
+
+**Status:** ⏳ TODO (Phase 1.5)
+
+**Description:** Show detailed plugin state for debugging
+
+**Output:**
+```
+Plugin Status Report:
+
+lastfm:
+  State: ENABLED
+  Module: Loaded
+  Hooks: 5 registered
+  Config: 3 settings
+  Last enabled: 2025-11-20 10:30:00
+
+discogs:
+  State: DISABLED
+  Module: Loaded (not active)
+  Hooks: 0 registered
+  Config: 2 settings
+  Last disabled: 2025-11-18 15:45:00
+
+broken-plugin:
+  State: ERROR
+  Error: Failed to load module
+  Details: ImportError: No module named 'missing_dependency'
+```
+
+**Use cases:**
+- Debug plugin issues
+- Check plugin state
+- Troubleshoot problems
+
+---
+
+### Command Combinations
+
+**Common workflows:**
+
+```bash
+# Discover and install
+picard plugins --search "last.fm"
+picard plugins --info lastfm
+picard plugins --install lastfm
+
+# Update workflow
+picard plugins --check-updates
+picard plugins --update-all
+
+# Testing workflow
+picard plugins --install <url> --ref dev
+picard plugins --disable plugin
+picard plugins --enable plugin
+picard plugins --switch-ref plugin main
+
+# Cleanup workflow
+picard plugins --list
+picard plugins --disable old-plugin
+picard plugins --uninstall old-plugin --purge
+```
+
+---
+
+### Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | General error |
+| 2 | Plugin not found |
+| 3 | Network error |
+| 4 | Git error |
+| 5 | Blacklisted plugin |
+| 6 | Incompatible API version |
+| 7 | Invalid manifest |
+| 8 | User cancelled |
+
+---
+
+### Implementation Priority
+
+**Phase 1 (MVP):**
+- ✅ --list (basic)
+- ✅ --install <url>
+- ✅ --uninstall
+- ✅ --enable
+- ✅ --disable
+- ⏳ --update
+- ⏳ --info
+- ⏳ --check-blacklist
+- ⏳ --yes
+
+**Phase 2 (Enhanced):**
+- ⏳ --ref
+- ⏳ --switch-ref
+- ⏳ --status
+- ⏳ --reinstall
+- ⏳ --purge
+- ⏳ --check-updates
+
+**Phase 3 (Registry):**
+- ⏳ --install <name>
+- ⏳ --browse
+- ⏳ --search
+- ⏳ --refresh-registry
+- ⏳ --trust
+- ⏳ --category
+
+---
