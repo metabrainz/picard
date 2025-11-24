@@ -1084,8 +1084,10 @@ Website admin interface:
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `id` | string | Yes | Unique plugin identifier (lowercase, alphanumeric + hyphens) |
-| `name` | string | Yes | Display name of the plugin |
-| `description` | string | Yes | Short description (one line) |
+| `name` | string | Yes | Display name of the plugin (English) |
+| `description` | string | Yes | Short description (one line, English) |
+| `name_i18n` | object | No | Translated names (locale → string) |
+| `description_i18n` | object | No | Translated descriptions (locale → string) |
 | `git_url` | string | Yes | Git repository URL (https) |
 | `categories` | array | Yes | Plugin categories: `metadata`, `coverart`, `ui`, `scripting`, `formats`, `other` |
 | `trust_level` | string | Yes | Trust level: `picard_team`, `trusted_author`, or `community` |
@@ -1102,6 +1104,33 @@ Website admin interface:
 - Trust level is set per-plugin by registry admin, not derived from authors
 - Each plugin can have different trust level, even from same author
 - `id` should match the plugin directory name
+- **Translations (`name_i18n`, `description_i18n`) are extracted from MANIFEST.toml by the website**
+
+**Example with translations:**
+```json
+{
+  "id": "lastfm",
+  "name": "Last.fm Scrobbler",
+  "description": "Scrobble your music to Last.fm",
+  "name_i18n": {
+    "de": "Last.fm-Scrobbler",
+    "fr": "Scrobbleur Last.fm",
+    "ja": "Last.fm スクロブラー"
+  },
+  "description_i18n": {
+    "de": "Scrobble deine Musik zu Last.fm",
+    "fr": "Scrobblez votre musique sur Last.fm",
+    "ja": "Last.fmに音楽をスクロブルする"
+  },
+  "git_url": "https://github.com/metabrainz/picard-plugin-lastfm",
+  "categories": ["metadata"],
+  "trust_level": "picard_team",
+  "authors": ["Philipp Wolfer"],
+  "min_api_version": "3.0",
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
+}
+```
 
 **Example with multiple categories and authors:**
 ```json
@@ -1118,6 +1147,77 @@ Website admin interface:
   "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
+
+---
+
+#### Website Processing of MANIFEST.toml
+
+When the website builds the registry JSON, it:
+
+1. **Clones each plugin repository** (or fetches latest)
+2. **Reads MANIFEST.toml** from the repository
+3. **Extracts translation fields** (`name_i18n`, `description_i18n`)
+4. **Includes them in the registry JSON**
+
+**Website backend pseudocode:**
+```python
+def build_registry_entry(plugin_repo_url):
+    # Clone or fetch repository
+    repo = clone_repository(plugin_repo_url)
+
+    # Read MANIFEST.toml
+    manifest = read_toml(repo / 'MANIFEST.toml')
+
+    # Build registry entry
+    entry = {
+        'id': derive_id_from_url(plugin_repo_url),
+        'name': manifest['name'],
+        'description': manifest['description'],
+        'git_url': plugin_repo_url,
+        'categories': normalize_to_array(manifest.get('categories') or manifest.get('category')),
+        'authors': normalize_to_array(manifest.get('authors') or manifest.get('author')),
+        'min_api_version': manifest['api'][0],
+        'trust_level': get_trust_level(plugin_repo_url),  # Set by admin
+        'added_at': get_added_timestamp(plugin_repo_url),
+        'updated_at': datetime.now().isoformat()
+    }
+
+    # Include translations if present
+    if 'name_i18n' in manifest:
+        entry['name_i18n'] = manifest['name_i18n']
+
+    if 'description_i18n' in manifest:
+        entry['description_i18n'] = manifest['description_i18n']
+
+    return entry
+```
+
+**Website display (human-readable page):**
+```python
+def display_plugin_page(plugin_id, user_locale):
+    plugin = get_plugin_from_registry(plugin_id)
+
+    # Get localized name and description
+    name = plugin.get('name_i18n', {}).get(user_locale, plugin['name'])
+    description = plugin.get('description_i18n', {}).get(user_locale, plugin['description'])
+
+    # Render page with localized content
+    return render_template('plugin.html',
+        name=name,
+        description=description,
+        authors=plugin['authors'],
+        trust_level=plugin['trust_level'],
+        # ... other fields
+    )
+```
+
+**Benefits:**
+- ✅ Single source of truth (MANIFEST.toml in plugin repo)
+- ✅ Plugin developers control translations
+- ✅ Website automatically picks up translation updates
+- ✅ No manual translation management on website
+- ✅ Picard client gets translations via registry JSON
+- ✅ Website displays localized content to users
 
 ---
 
