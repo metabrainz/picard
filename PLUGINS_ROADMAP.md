@@ -1113,6 +1113,10 @@ Website admin interface:
 - Each plugin can have different trust level, even from same author
 - `id` should match the plugin directory name
 - **Translations (`name_i18n`, `description_i18n`) are extracted from MANIFEST.toml by the website**
+- **`min_api_version`**: Required - tells users minimum Picard version needed
+- **`max_api_version`**: Optional - only set when plugin is known to be incompatible with newer versions
+- **Both API version fields derived from MANIFEST.toml `api` array** by the website when building registry
+- **Used for quick compatibility checks** before downloading plugin
 
 **Example with translations:**
 ```json
