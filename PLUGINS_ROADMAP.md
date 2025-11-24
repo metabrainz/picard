@@ -809,9 +809,9 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
       "name": "Last.fm",
       "description": "Last.fm integration for scrobbling and metadata",
       "git_url": "https://github.com/metabrainz/picard-plugin-lastfm",
-      "category": "metadata",
+      "categories": ["metadata"],
       "trust_level": "picard_team",
-      "author": "MusicBrainz Picard Team",
+      "authors": ["MusicBrainz Picard Team"],
       "min_api_version": "3.0",
       "max_api_version": "3.1"
     },
@@ -820,9 +820,9 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
       "name": "Discogs",
       "description": "Discogs metadata provider",
       "git_url": "https://github.com/rdswift/picard-plugin-discogs",
-      "category": "metadata",
+      "categories": ["metadata"],
       "trust_level": "trusted_author",
-      "author": "Bob Swift",
+      "authors": ["Bob Swift"],
       "min_api_version": "3.0"
     },
     {
@@ -830,9 +830,9 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
       "name": "Custom Tagger",
       "description": "Custom tagging rules",
       "git_url": "https://github.com/someuser/picard-plugin-custom",
-      "category": "metadata",
+      "categories": ["metadata"],
       "trust_level": "community",
-      "author": "John Doe",
+      "authors": ["John Doe"],
       "min_api_version": "3.0"
     }
   ],
@@ -846,18 +846,6 @@ The Picard website will serve a JSON endpoint with official plugin metadata:
       "git_url": "https://github.com/user/broken-plugin",
       "reason": "Causes data corruption",
       "blacklisted_at": "2025-11-15T14:30:00Z"
-    }
-  ],
-  "trusted_authors": [
-    {
-      "name": "Bob Swift",
-      "github_username": "rdswift",
-      "added_at": "2025-01-15T10:00:00Z"
-    },
-    {
-      "name": "Philipp Wolfer",
-      "github_username": "phw",
-      "added_at": "2025-01-15T10:00:00Z"
     }
   ]
 }
@@ -1037,19 +1025,14 @@ picard plugins --browse
 
 #### Managing Trust Levels
 
-**Adding trusted authors (admin only):**
+**Upgrading trust level:**
 
 Website admin interface:
-1. Navigate to "Trusted Authors" section
-2. Add GitHub username
-3. Specify name and date
-4. All plugins from that GitHub account automatically get `trusted_author` level
-
-**Promoting community plugin to trusted author:**
-1. Author proves track record with quality plugins
-2. Picard team votes to add to trusted authors list
-3. Admin adds GitHub username to trusted authors
-4. All author's plugins automatically upgraded to `trusted_author`
+1. Navigate to plugin in registry
+2. Review plugin code and history
+3. Change trust level: `community` → `trusted_author` → `picard_team`
+4. Add reason for upgrade
+5. Save changes
 
 **Promoting to Picard Team:**
 1. Plugin moved to `metabrainz` organization
@@ -1057,11 +1040,12 @@ Website admin interface:
 3. Manually set `trust_level: picard_team` in registry
 4. Plugin gets team badge
 
-**Demoting trusted author:**
-1. If author's plugin has security issue or quality problems
-2. Admin removes from trusted authors list
-3. All author's plugins downgraded to `community`
-4. Users see warning on next update
+**Downgrading trust level:**
+1. If plugin has security issue or quality problems
+2. Admin changes trust level in registry
+3. Users see appropriate warning on next update
+
+**Note:** Trust level is per-plugin, not per-author. Same author can have plugins at different trust levels.
 
 ---
 
@@ -1074,9 +1058,9 @@ Website admin interface:
   "name": "Display Name",
   "description": "Description",
   "git_url": "https://github.com/user/repo",
-  "category": "metadata|coverart|ui|scripting|formats|other",
+  "categories": ["metadata", "coverart"],
   "trust_level": "picard_team|trusted_author|community",
-  "author": "Author Name",
+  "authors": ["Author Name", "Co-Author Name"],
   "author_github": "github-username",
   "min_api_version": "3.0",
   "max_api_version": "3.1",
@@ -1085,19 +1069,10 @@ Website admin interface:
 }
 ```
 
-**Trusted authors list:**
-```json
-{
-  "trusted_authors": [
-    {
-      "name": "Bob Swift",
-      "github_username": "rdswift",
-      "added_at": "2025-01-15T10:00:00Z",
-      "added_by": "admin-username"
-    }
-  ]
-}
-```
+**Note:**
+- `categories` and `authors` are arrays to support multiple values
+- Single values also supported for backward compatibility
+- Trust level is set per-plugin by registry admin, not derived from authors
 
 ---
 
@@ -1109,26 +1084,31 @@ When plugin is submitted to registry:
    - YES → Requires manual approval by team → `picard_team`
    - NO → Continue to step 2
 
-2. **Check if author's GitHub username is in trusted authors list:**
-   - YES → Automatically set `trusted_author`
-   - NO → Set `community`
+2. **Default to `community` for new submissions**
+   - All new plugins start as `community`
+   - Can be upgraded to `trusted_author` after review
+   - Can be upgraded to `picard_team` if moved to official org
 
 3. **Check if plugin is blacklisted:**
    - YES → Reject submission
    - NO → Accept with appropriate trust level
+
+**Trust level upgrades:**
+- `community` → `trusted_author`: Manual review by Picard team
+- `trusted_author` → `picard_team`: Move to official org + code review
+- Trust level is a property of the plugin, not the author
 
 ---
 
 **Tasks:**
 - [ ] Design JSON schema with trust levels
 - [ ] Implement endpoint on website
-- [ ] Add admin interface for managing plugins and trusted authors
+- [ ] Add admin interface for managing plugins
 - [ ] Add submission workflow (GitHub PR or web form)
 - [ ] Implement automatic trust level detection
 - [ ] Add review process for Picard Team plugins
 - [ ] Implement blacklist management
 - [ ] Add versioning/caching headers
-- [ ] Add trusted authors management interface
 
 ---
 
@@ -1281,8 +1261,7 @@ unset PICARD_PLUGIN_REGISTRY
       "reason": "Test blacklist entry",
       "blacklisted_at": "2025-11-24T10:00:00Z"
     }
-  ],
-  "trusted_authors": []
+  ]
 }
 ```
 
@@ -2595,13 +2574,32 @@ DISCOVERED → LOADED → ENABLED
 ### Q10: Manifest field inconsistencies?
 
 **Current state:** Spec shows `authors` (array) but code uses `author` (string)
-**Recommendation:** **Use singular `author` (string)**
-**Rationale:**
-- Simpler for most plugins (single author)
-- Can use comma-separated string for multiple: `"Alice, Bob"`
-- Consistent with pyproject.toml which uses string
+**Decision:** **Support both singular and plural forms**
 
-**Decision needed by:** Phase 1.3 (update spec)
+**Rationale:**
+- Most plugins have single author/category → use singular
+- Some plugins have multiple → use plural arrays
+- Support both for flexibility
+
+**Format:**
+```toml
+# Single values (most common)
+author = "Alice Smith"
+category = "metadata"
+
+# Multiple values
+authors = ["Alice Smith", "Bob Jones"]
+categories = ["metadata", "coverart"]
+```
+
+**Implementation:**
+```python
+# In manifest parser
+authors = manifest.get('authors') or [manifest.get('author')]
+categories = manifest.get('categories') or [manifest.get('category')]
+```
+
+**Decision:** CLOSED - Support both forms
 
 ---
 
@@ -3067,7 +3065,7 @@ def disable() -> None:
 | Q7 | Extra data files API? | **NO special API** | Use standard Python pathlib |
 | Q8 | Additional extension points? | **Add as needed** | Current set covers 90% of cases |
 | Q9 | ZIP plugin support? | **NO** | Git-only for v3, simpler |
-| Q10 | Manifest field format? | **Simple strings** | `author` (string), `name` (string) |
+| Q10 | Manifest field format? | **Support both** | `author`/`authors`, `category`/`categories` (arrays) |
 | Q11 | Multi-lingual name? | **NO** | Name is identifier, description is i18n |
 | Q12 | Legacy coexistence? | **Parallel systems** | Both work during transition |
 
