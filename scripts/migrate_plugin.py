@@ -298,9 +298,15 @@ def migrate_plugin(input_file, output_dir=None):
         ui_files = list(input_path.parent.glob('ui_*.py'))
         # Also check for other common patterns
         ui_files.extend(input_path.parent.glob('option_*.py'))
-        ui_files.extend(input_path.parent.glob('options.py'))
+        ui_files.extend(input_path.parent.glob('options_*.py'))
+        ui_files.extend(input_path.parent.glob('actions_*.py'))
+        # Check for options.py if not __init__.py
+        if (input_path.parent / 'options.py').exists():
+            ui_files.append(input_path.parent / 'options.py')
         # Remove the main file if it matches
         ui_files = [f for f in ui_files if f != input_path]
+        # Remove duplicates
+        ui_files = list(set(ui_files))
 
     # Generate MANIFEST.toml
     module_name = input_path.stem
