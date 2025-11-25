@@ -365,7 +365,9 @@ class PluginManager:
         from picard.config import get_config
 
         config = get_config()
-        enabled = config.setting.get('plugins3', {}).get('enabled_plugins', [])
+        # config.setting['plugins3'] returns a dict with plugin settings
+        plugins3_config = config.setting['plugins3']
+        enabled = plugins3_config.get('enabled_plugins', [])
         self._enabled_plugins = set(enabled)
         log.debug('Loaded enabled plugins from config: %r', self._enabled_plugins)
 
