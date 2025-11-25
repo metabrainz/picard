@@ -385,10 +385,12 @@ picard plugins --install https://github.com/yourname/plugin.git
 
 ### 3. Check Logs
 
-Enable debug logging in Picard to see plugin loading messages:
+Enable debug logging by using the `--debug` command line option:
+```bash
+picard --debug
 ```
-Options → Advanced → Enable debug mode
-```
+
+See the [documentation](https://picard-docs.musicbrainz.org/en/troubleshooting/troubleshooting.html#getting-a-debug-log) for more details.
 
 ### 4. Test All Features
 
