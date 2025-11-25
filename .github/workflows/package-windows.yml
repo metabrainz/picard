@@ -58,6 +58,7 @@ jobs:
         $vcpkgRoot = "C:\vcpkg\installed\x64-windows"
         echo "INCLUDE=$vcpkgRoot\include;$env:INCLUDE" >> $env:GITHUB_ENV
         echo "LIB=$vcpkgRoot\lib;$env:LIB" >> $env:GITHUB_ENV
+        echo "LIBPATH=$vcpkgRoot\lib;$env:LIBPATH" >> $env:GITHUB_ENV
       shell: pwsh
     - name: Install dependencies
       run: |
