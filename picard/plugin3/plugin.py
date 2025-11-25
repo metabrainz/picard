@@ -80,7 +80,10 @@ class PluginSourceGit(PluginSource):
             print(list(repo.remotes))
 
         if self.ref:
-            commit = repo.revparse_single(self.ref)
+            try:
+                commit = repo.revparse_single(self.ref)
+            except KeyError:
+                commit = repo.revparse_single(f'origin/{self.ref}')
         else:
             commit = repo.revparse_single('HEAD')
 

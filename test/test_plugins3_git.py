@@ -68,6 +68,7 @@ def disable():
         tree = index.write_tree()
         author = pygit2.Signature("Test", "test@example.com")
         repo.create_commit('refs/heads/main', author, author, 'Initial commit', tree, [])
+        repo.set_head('refs/heads/main')
 
     def tearDown(self):
         """Clean up temporary directory."""
