@@ -162,6 +162,7 @@ def convert_plugin_code(content, metadata):
                     'register_file_action',
                     'register_album_action',
                     'register_track_action',
+                    'register_options_page',
                 ]
             ):
                 continue
@@ -192,6 +193,7 @@ def convert_plugin_code(content, metadata):
                 'register_file_action',
                 'register_album_action',
                 'register_track_action',
+                'register_options_page',
             ]:
                 if reg_type in line:
                     # Match everything between outer parentheses (greedy to get nested parens)
@@ -216,6 +218,7 @@ def convert_plugin_code(content, metadata):
                 'register_file_action',
                 'register_album_action',
                 'register_track_action',
+                'register_options_page',
             ]
         ):
             if line and not line[0].isspace():
