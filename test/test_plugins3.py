@@ -731,3 +731,196 @@ class TestPluginCLI(PicardTestCase):
 
         self.assertEqual(result, 2)
         self.assertIn('not found', error_text)
+
+    def test_install_validates_manifest(self):
+        """Test that install validates MANIFEST.toml exists."""
+        from pathlib import Path
+        import tempfile
+        from unittest.mock import patch
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manager._primary_plugin_dir = Path(tmpdir)
+
+            # Mock PluginSourceGit to create temp dir without MANIFEST
+            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+                mock_source = Mock()
+                mock_source.ref = 'main'
+
+                def fake_sync(path):
+                    path.mkdir(parents=True, exist_ok=True)
+                    return 'abc123'
+
+                mock_source.sync = fake_sync
+                mock_source_class.return_value = mock_source
+
+                with self.assertRaises(ValueError) as context:
+                    manager.install_plugin('https://example.com/no-manifest.git')
+
+                self.assertIn('No MANIFEST.toml', str(context.exception))
+
+    def test_install_prevents_duplicate(self):
+        """Test that install prevents duplicate installations."""
+        from pathlib import Path
+        import tempfile
+        from unittest.mock import (
+            mock_open,
+            patch,
+        )
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manager._primary_plugin_dir = Path(tmpdir)
+
+            # Create a fake existing plugin directory
+            plugin_dir = manager._primary_plugin_dir / 'test-plugin'
+            plugin_dir.mkdir(parents=True, exist_ok=True)
+
+            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+                mock_source = Mock()
+                mock_source.ref = 'main'
+
+                def fake_sync(path):
+                    path.mkdir(parents=True, exist_ok=True)
+                    (path / 'MANIFEST.toml').touch()
+                    return 'abc123'
+
+                mock_source.sync = fake_sync
+                mock_source_class.return_value = mock_source
+
+                with patch('builtins.open', mock_open(read_data=b'[plugin]\nmodule_name = "test-plugin"')):
+                    with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
+                        mock_manifest = Mock()
+                        mock_manifest.module_name = 'test-plugin'
+                        mock_manifest_class.return_value = mock_manifest
+
+                        with self.assertRaises(ValueError) as context:
+                            manager.install_plugin('https://example.com/plugin.git')
+
+                        self.assertIn('already installed', str(context.exception))
+
+    def test_install_with_reinstall_flag(self):
+        """Test that --reinstall allows overwriting existing plugin."""
+        from pathlib import Path
+        import tempfile
+        from unittest.mock import (
+            mock_open,
+            patch,
+        )
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manager._primary_plugin_dir = Path(tmpdir)
+
+            # Create a fake existing plugin directory
+            plugin_dir = manager._primary_plugin_dir / 'test-plugin'
+            plugin_dir.mkdir(parents=True, exist_ok=True)
+
+            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+                mock_source = Mock()
+                mock_source.ref = 'main'
+
+                def fake_sync(path):
+                    path.mkdir(parents=True, exist_ok=True)
+                    (path / 'MANIFEST.toml').touch()
+                    return 'abc123'
+
+                mock_source.sync = fake_sync
+                mock_source_class.return_value = mock_source
+
+                with patch('builtins.open', mock_open(read_data=b'[plugin]\nmodule_name = "test-plugin"')):
+                    with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
+                        mock_manifest = Mock()
+                        mock_manifest.module_name = 'test-plugin'
+                        mock_manifest_class.return_value = mock_manifest
+
+                        with patch('shutil.move'):
+                            # Should not raise with reinstall=True
+                            plugin_id = manager.install_plugin('https://example.com/plugin.git', reinstall=True)
+                            self.assertEqual(plugin_id, 'test-plugin')
+
+    def test_uninstall_with_purge(self):
+        """Test uninstall with purge removes configuration."""
+        from pathlib import Path
+
+        from picard.config import get_config
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Create a temporary plugin directory
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_path = Path(tmpdir) / 'test-plugin'
+            plugin_path.mkdir()
+
+            mock_plugin = Mock(spec=Plugin)
+            mock_plugin.name = 'test-plugin'
+            mock_plugin.local_path = plugin_path
+            mock_plugin.disable = Mock()
+
+            # Set manager's plugin dir to temp dir
+            manager._primary_plugin_dir = Path(tmpdir)
+
+            # Set up plugin config
+            config = get_config()
+            config.setting['test-plugin'] = {'some_setting': 'value'}
+
+            # Uninstall with purge
+            manager.uninstall_plugin(mock_plugin, purge=True)
+
+            # Config should be removed
+            self.assertNotIn('test-plugin', config.setting)
+
+    def test_clean_config_command(self):
+        """Test --clean-config command."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager._clean_plugin_config = Mock()
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = 'test-plugin'
+        args.yes = True
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+        output_text = stdout.getvalue()
+
+        self.assertEqual(result, 0)
+        mock_manager._clean_plugin_config.assert_called_once_with('test-plugin')
+        self.assertIn('deleted', output_text.lower())

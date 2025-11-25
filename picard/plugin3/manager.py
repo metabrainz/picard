@@ -72,14 +72,66 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
-    def install_plugin(self, url, ref=None):
-        source = PluginSourceGit(url, ref)
-        dirname = os.path.basename(url)
-        target_path = self._primary_plugin_dir.joinpath(dirname)
-        commit_id = source.sync(target_path)
+    def install_plugin(self, url, ref=None, reinstall=False):
+        """Install a plugin from a git URL.
 
-        # Store plugin metadata
-        self._save_plugin_metadata(dirname, url, source.ref, commit_id)
+        Args:
+            url: Git repository URL
+            ref: Git ref (branch/tag/commit) to checkout
+            reinstall: If True, reinstall even if already exists
+        """
+        from pathlib import Path
+        import tempfile
+
+        # Use URL basename as temporary directory name
+        temp_name = os.path.basename(url).rstrip('.git')
+        temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{temp_name}'
+
+        try:
+            # Clone to temporary location
+            source = PluginSourceGit(url, ref)
+            commit_id = source.sync(temp_path)
+
+            # Read MANIFEST to get plugin ID
+            manifest_path = temp_path / 'MANIFEST.toml'
+            if not manifest_path.exists():
+                raise ValueError(f'No MANIFEST.toml found in {url}')
+
+            with open(manifest_path, 'rb') as f:
+                from picard.plugin3.manifest import PluginManifest
+
+                manifest = PluginManifest(temp_name, f)
+
+            plugin_id = manifest.module_name
+            final_path = self._primary_plugin_dir / plugin_id
+
+            # Check if already installed
+            if final_path.exists() and not reinstall:
+                raise ValueError(f'Plugin {plugin_id} is already installed. Use --reinstall to force.')
+
+            # Remove existing if reinstalling
+            if final_path.exists():
+                import shutil
+
+                shutil.rmtree(final_path)
+
+            # Move from temp to final location
+            import shutil
+
+            shutil.move(str(temp_path), str(final_path))
+
+            # Store plugin metadata
+            self._save_plugin_metadata(plugin_id, url, source.ref, commit_id)
+
+            return plugin_id
+
+        except Exception:
+            # Clean up temp directory on failure
+            if temp_path.exists():
+                import shutil
+
+                shutil.rmtree(temp_path)
+            raise
 
     def switch_ref(self, plugin: Plugin, ref: str):
         """Switch plugin to a different git ref (branch/tag/commit)."""
@@ -162,7 +214,13 @@ class PluginManager:
 
         return updates
 
-    def uninstall_plugin(self, plugin: Plugin):
+    def uninstall_plugin(self, plugin: Plugin, purge=False):
+        """Uninstall a plugin.
+
+        Args:
+            plugin: Plugin to uninstall
+            purge: If True, also remove plugin configuration
+        """
         self.disable_plugin(plugin)
         plugin_path = plugin.local_path
         if plugin_path.is_relative_to(self._primary_plugin_dir):
@@ -172,6 +230,27 @@ class PluginManager:
             elif os.path.isdir(plugin_path):
                 log.debug("Removing directory %r", plugin_path)
                 shutil.rmtree(plugin_path)
+
+        # Remove metadata
+        from picard.config import get_config
+
+        config = get_config()
+        if 'plugins3' in config.setting and 'metadata' in config.setting['plugins3']:
+            config.setting['plugins3']['metadata'].pop(plugin.name, None)
+
+        # Remove plugin config if purge requested
+        if purge:
+            self._clean_plugin_config(plugin.name)
+
+    def _clean_plugin_config(self, plugin_name: str):
+        """Remove plugin-specific configuration."""
+        from picard.config import get_config
+
+        config = get_config()
+        # Remove plugin section if it exists
+        if plugin_name in config.setting:
+            del config.setting[plugin_name]
+            log.debug('Removed configuration for plugin %s', plugin_name)
 
     def init_plugins(self):
         """Initialize and enable plugins that are enabled in configuration."""

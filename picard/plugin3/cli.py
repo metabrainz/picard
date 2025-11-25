@@ -65,6 +65,8 @@ class PluginCLI:
                 return self._check_updates()
             elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
                 return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
+            elif hasattr(self._args, 'clean_config') and self._args.clean_config:
+                return self._clean_config(self._args.clean_config)
             else:
                 self._out.error('No action specified')
                 return ExitCode.ERROR
@@ -156,14 +158,15 @@ class PluginCLI:
     def _install_plugins(self, plugin_urls):
         """Install plugins from URLs."""
         ref = getattr(self._args, 'ref', None)
+        reinstall = getattr(self._args, 'reinstall', False)
         for url in plugin_urls:
             try:
                 if ref:
                     self._out.print(f'Installing plugin from {url} (ref: {ref})...')
                 else:
                     self._out.print(f'Installing plugin from {url}...')
-                self._manager.install_plugin(url, ref)
-                self._out.success('Plugin installed successfully')
+                plugin_id = self._manager.install_plugin(url, ref, reinstall)
+                self._out.success(f'Plugin {plugin_id} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
                 self._out.error(f'Failed to install plugin: {e}')
@@ -172,6 +175,9 @@ class PluginCLI:
 
     def _uninstall_plugins(self, plugin_names):
         """Uninstall plugins with confirmation."""
+        purge = getattr(self._args, 'purge', False)
+        yes = getattr(self._args, 'yes', False)
+
         for plugin_name in plugin_names:
             plugin = self._find_plugin(plugin_name)
             if not plugin:
@@ -179,16 +185,28 @@ class PluginCLI:
                 return ExitCode.NOT_FOUND
 
             # Confirmation prompt unless --yes flag
-            if not getattr(self._args, 'yes', False):
+            if not yes:
                 response = input(f'Uninstall plugin "{plugin.name}"? [y/N] ')
                 if response.lower() != 'y':
                     self._out.print('Cancelled')
                     continue
 
+                # Ask about config cleanup if not using --purge
+                if not purge:
+                    response = input('Delete plugin configuration? [y/N] ')
+                    purge_this = response.lower() == 'y'
+                else:
+                    purge_this = True
+            else:
+                purge_this = purge
+
             try:
                 self._out.print(f'Uninstalling {plugin.name}...')
-                self._manager.uninstall_plugin(plugin)
-                self._out.success('Plugin uninstalled successfully')
+                self._manager.uninstall_plugin(plugin, purge_this)
+                if purge_this:
+                    self._out.success('Plugin and configuration removed')
+                else:
+                    self._out.success('Plugin uninstalled (configuration kept)')
             except Exception as e:
                 self._out.error(f'Failed to uninstall plugin: {e}')
                 return ExitCode.ERROR
@@ -319,6 +337,24 @@ class PluginCLI:
             self._out.info('Restart Picard to load the updated plugin')
         except Exception as e:
             self._out.error(f'Failed to switch ref: {e}')
+            return ExitCode.ERROR
+        return ExitCode.SUCCESS
+
+    def _clean_config(self, plugin_name):
+        """Clean configuration for a plugin."""
+        yes = getattr(self._args, 'yes', False)
+
+        if not yes:
+            response = input(f'Delete configuration for "{plugin_name}"? [y/N] ')
+            if response.lower() != 'y':
+                self._out.print('Cancelled')
+                return ExitCode.SUCCESS
+
+        try:
+            self._manager._clean_plugin_config(plugin_name)
+            self._out.success(f'Configuration for {plugin_name} deleted')
+        except Exception as e:
+            self._out.error(f'Failed to clean config: {e}')
             return ExitCode.ERROR
         return ExitCode.SUCCESS
 

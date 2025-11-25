@@ -1437,6 +1437,10 @@ If a new instance will not be spawned files/directories will be passed to the ex
     plugin_parser.add_argument(
         '--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref"
     )
+    plugin_parser.add_argument('--reinstall', action='store_true', help="force reinstall of existing plugin")
+    plugin_parser.add_argument('--purge', action='store_true', help="delete plugin configuration on uninstall")
+    plugin_parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
+    plugin_parser.add_argument('--clean-config', metavar='PLUGIN', help="delete configuration for a plugin")
 
     args = parser.parse_args()
     args.remote_commands_help = False
