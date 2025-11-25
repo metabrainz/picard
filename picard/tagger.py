@@ -1525,6 +1525,22 @@ def setup_pipe_handler(cmdline_args):
     return PipeStatus(handler=pipe_handler, is_remote=is_remote)
 
 
+def minimal_init(config_file=None):
+    """Minimal initialization for CLI commands without GUI.
+
+    Returns a QCoreApplication instance with config initialized.
+    """
+    QtCore.QCoreApplication.setApplicationName(PICARD_APP_NAME)
+    QtCore.QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
+
+    app = QtCore.QCoreApplication(sys.argv)
+
+    init_options()
+    setup_config(app=app, filename=config_file)
+
+    return app
+
+
 def setup_application():
     """Setup QApplication"""
     # Some libs (ie. Phonon) require those to be set
