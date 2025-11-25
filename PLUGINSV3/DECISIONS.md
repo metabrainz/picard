@@ -534,6 +534,38 @@ picard plugins --switch-ref myplugin v1.0.0
 
 ---
 
+### Q24: CLI commands with GUI running?
+
+**Question:** How should CLI commands work when Picard GUI is running?
+
+**Decision:** Two-mode approach
+
+**Modes:**
+
+1. **Standalone (Phase 1):** Commands modify config/files, require restart
+2. **Remote (Phase 2):** Commands sent to running Picard via `-e` option
+
+**Approach:**
+```bash
+# Phase 1: Standalone mode
+picard plugins --enable listenbrainz
+# Modifies config, restart required
+
+# Phase 2: Remote mode
+picard -e "PLUGIN_ENABLE listenbrainz"
+# Hot reload in running Picard
+```
+
+**Rationale:**
+- Picard already has remote command infrastructure (`picard/remotecommands/`)
+- Phase 1 keeps implementation simple
+- Phase 2 adds hot-reload capability
+- Clear separation of concerns
+
+**Status:** CLOSED
+
+---
+
 ## Questions for Future Consideration
 
 ### Plugin Marketplace

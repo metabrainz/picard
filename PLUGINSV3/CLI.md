@@ -36,6 +36,32 @@ picard plugins --search "cover art"
 
 ---
 
+## CLI Modes
+
+Plugin commands work in two modes:
+
+**Standalone (Picard not running):**
+- Commands modify config files and plugin directories
+- Changes take effect when Picard starts
+- Phase 1 implementation
+
+```bash
+picard plugins --enable listenbrainz
+# Output: Plugin enabled. Restart Picard to load it.
+```
+
+**Remote (Picard running):**
+- Commands sent to running Picard via `-e` option
+- Changes take effect immediately (hot reload)
+- Phase 2 implementation
+
+```bash
+picard -e "PLUGIN_ENABLE listenbrainz"
+# Output: Plugin enabled and loaded.
+```
+
+---
+
 ## Complete Command Line Interface
 
 **Base command:** `picard plugins [OPTIONS]`

@@ -143,10 +143,13 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 - [ ] Add `--yes` flag to skip confirmations
 - [ ] Show progress for git clone operations
 - [ ] Return proper exit codes (0=success, 1=error)
+- [ ] Add clear messages that changes require Picard restart
 
 **Files to modify:**
 - `picard/plugin3/cli.py` - enhance all methods
 - `picard/plugin3/plugin.py` - better error messages
+
+**Note:** Phase 1 commands modify config/files only. Changes take effect on Picard restart. Remote commands for hot-reload will be added in Phase 2.
 
 **Example output:**
 ```
@@ -378,7 +381,40 @@ See [CLI.md](CLI.md) for command reference and [MANIFEST.md](MANIFEST.md) for pl
 
 ---
 
-### 2.3 Migration from Legacy Plugins
+### 2.3 Remote Commands for Hot Reload
+
+**Priority:** P2 - Medium
+**Effort:** 1-2 days
+
+**Tasks:**
+- [ ] Add plugin remote commands to `picard/remotecommands/handlers.py`
+- [ ] Implement `PLUGIN_ENABLE <name>` - enable and load immediately
+- [ ] Implement `PLUGIN_DISABLE <name>` - disable and unload immediately
+- [ ] Implement `PLUGIN_LIST` - list with runtime state
+- [ ] Implement `PLUGIN_STATUS <name>` - show detailed runtime status
+- [ ] Implement `PLUGIN_RELOAD <name>` - reload after update
+- [ ] Update documentation with remote command usage
+
+**Files to modify:**
+- `picard/remotecommands/handlers.py` - add plugin commands
+
+**Usage:**
+```bash
+# Enable plugin in running Picard
+picard -e "PLUGIN_ENABLE listenbrainz"
+
+# Show runtime status
+picard -e "PLUGIN_STATUS listenbrainz"
+```
+
+**Acceptance criteria:**
+- Can enable/disable plugins without restart
+- Can view runtime plugin state
+- Commands work with running Picard instance
+
+---
+
+### 2.4 Migration from Legacy Plugins
 
 **Priority:** P1 - High
 **Effort:** 3-4 days
