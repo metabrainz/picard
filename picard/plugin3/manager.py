@@ -161,9 +161,12 @@ class PluginManager:
         except Exception:
             # Clean up temp directory on failure
             if temp_path.exists():
+                import gc
                 import shutil
 
-                shutil.rmtree(temp_path)
+                # Force garbage collection to release file handles on Windows
+                gc.collect()
+                shutil.rmtree(temp_path, ignore_errors=True)
             raise
 
     def switch_ref(self, plugin: Plugin, ref: str):
