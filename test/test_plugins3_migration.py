@@ -6,6 +6,12 @@ import tempfile
 import unittest
 
 
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
+
+
 class TestPluginMigration(unittest.TestCase):
     """Test V2 to V3 plugin migration tool."""
 
@@ -50,7 +56,6 @@ register_track_metadata_processor(process_metadata)
         self.assertTrue((output_dir / '__init__.py').exists())
 
         # Validate MANIFEST using tomllib
-        import tomllib
 
         with open(output_dir / 'MANIFEST.toml', 'rb') as f:
             data = tomllib.load(f)
@@ -91,8 +96,6 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
         output_dir = self.temp_path / 'long_desc_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
 
-        import tomllib
-
         with open(output_dir / 'MANIFEST.toml', 'rb') as f:
             data = tomllib.load(f)
             # Description should be truncated
@@ -122,8 +125,6 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
 
         output_dir = self.temp_path / 'quote_test_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
-
-        import tomllib
 
         with open(output_dir / 'MANIFEST.toml', 'rb') as f:
             data = tomllib.load(f)
