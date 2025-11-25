@@ -288,3 +288,128 @@ class TestPluginCLI(PicardTestCase):
         output_no_color = PluginOutput(stdout=stdout_no_color, stderr=StringIO(), color=False)
         output_no_color.success('test')
         self.assertNotIn('\033[', stdout_no_color.getvalue())  # No color codes
+
+    def test_plugin_metadata_storage(self):
+        """Test that plugin metadata is stored and retrieved correctly."""
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Save metadata
+        manager._save_plugin_metadata('test-plugin', 'https://example.com/plugin.git', 'main', 'abc123')
+
+        # Retrieve metadata
+        metadata = manager._get_plugin_metadata('test-plugin')
+        self.assertEqual(metadata['url'], 'https://example.com/plugin.git')
+        self.assertEqual(metadata['ref'], 'main')
+        self.assertEqual(metadata['commit'], 'abc123')
+
+        # Non-existent plugin returns empty dict
+        empty_metadata = manager._get_plugin_metadata('nonexistent')
+        self.assertEqual(empty_metadata, {})
+
+    def test_update_plugin_no_metadata(self):
+        """Test that updating plugin without metadata raises error."""
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+
+        with self.assertRaises(ValueError) as context:
+            manager.update_plugin(mock_plugin)
+
+        self.assertIn('no stored URL', str(context.exception))
+
+    def test_check_updates_empty(self):
+        """Test check_updates with no plugins."""
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+        manager._plugins = []
+
+        updates = manager.check_updates()
+        self.assertEqual(updates, [])
+
+    def test_update_cli_commands(self):
+        """Test that update CLI commands are properly routed."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.check_updates = Mock(return_value=[])
+        mock_manager.update_all_plugins = Mock(return_value=[])
+        mock_tagger.pluginmanager3 = mock_manager
+
+        output = PluginOutput(stdout=StringIO(), stderr=StringIO(), color=False)
+
+        # Test --check-updates
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = True
+
+        cli = PluginCLI(mock_tagger, args, output)
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        mock_manager.check_updates.assert_called_once()
+
+        # Test --update-all
+        args.check_updates = False
+        args.update_all = True
+        cli = PluginCLI(mock_tagger, args, output)
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        mock_manager.update_all_plugins.assert_called_once()
+
+    def test_update_plugin_not_found(self):
+        """Test update command for non-existent plugin."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager.plugins = []
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = ['nonexistent']
+        args.update_all = False
+        args.check_updates = False
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+        error_text = stderr.getvalue()
+
+        self.assertEqual(result, 2)
+        self.assertIn('not found', error_text)
