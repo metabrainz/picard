@@ -101,6 +101,7 @@ from picard.config_upgrade import upgrade_config
 from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
     USER_DIR,
+    USER_PLUGIN_DIR,
 )
 from picard.const.appdirs import (
     plugin_folder,
@@ -1612,23 +1613,27 @@ def main(localedir=None, autoupdate=True):
 
     setup_dbus()
 
-    # Suppress Qt messages for plugin commands
+    # Handle plugin commands with minimal initialization (no GUI)
     if cmdline_args.subcommand == 'plugins':
-        os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.*.info=false;qt.*.warning=false'
+        if not HAS_PLUGIN3:
+            log.error('Plugin3 system not available. Install pygit2 to use plugin management.')
+            sys.exit(1)
 
+        app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
+        from picard.plugin3.manager import PluginManager
+
+        manager = PluginManager()
+        manager.add_directory(USER_PLUGIN_DIR, primary=True)
+        exit_code = PluginCLI(manager, cmdline_args).run()
+        sys.exit(exit_code)
+
+    # GUI mode - full Tagger initialization
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
     setup_translator(tagger)
 
     tagger.startTimer(1000)
-    if cmdline_args.subcommand == 'plugins':
-        if not HAS_PLUGIN3:
-            log.error('Plugin3 system not available. Install pygit2 to use plugin management.')
-            sys.exit(1)
-        exit_code = PluginCLI(tagger, cmdline_args).run()
-        tagger.exit()
-    else:
-        exit_code = tagger.run()
+    exit_code = tagger.run()
 
     if tagger.pipe_handler.unexpected_removal:
         os._exit(exit_code)

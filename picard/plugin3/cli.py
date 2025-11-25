@@ -35,8 +35,8 @@ class ExitCode(IntEnum):
 class PluginCLI:
     """Command line interface for managing plugins."""
 
-    def __init__(self, tagger, args, output=None):
-        self._manager = tagger.pluginmanager3
+    def __init__(self, manager, args, output=None):
+        self._manager = manager
         self._args = args
         self._out = output or PluginOutput()
 

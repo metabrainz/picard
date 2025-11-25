@@ -53,7 +53,7 @@ class TestPluginCLI(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         output_text = stdout.getvalue()
@@ -88,7 +88,7 @@ class TestPluginCLI(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         output_text = stdout.getvalue()
@@ -116,7 +116,7 @@ class TestPluginCLI(PicardTestCase):
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         error_text = stderr.getvalue()
@@ -163,7 +163,7 @@ class TestPluginCLI(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         output_text = stdout.getvalue()
@@ -201,7 +201,7 @@ class TestPluginCLI(PicardTestCase):
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         error_text = stderr.getvalue()
@@ -258,7 +258,7 @@ class TestPluginCLI(PicardTestCase):
         args.update_all = False
         args.check_updates = True
 
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
         result = cli.run()
 
         self.assertEqual(result, 0)
@@ -267,7 +267,7 @@ class TestPluginCLI(PicardTestCase):
         # Test --update-all
         args.check_updates = False
         args.update_all = True
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
         result = cli.run()
 
         self.assertEqual(result, 0)
@@ -298,7 +298,7 @@ class TestPluginCLI(PicardTestCase):
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         error_text = stderr.getvalue()
@@ -349,7 +349,7 @@ class TestPluginCLI(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         output_text = stdout.getvalue()
@@ -390,7 +390,7 @@ class TestPluginCLI(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -429,7 +429,7 @@ class TestPluginCLI(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -467,7 +467,7 @@ class TestPluginCLI(PicardTestCase):
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -517,7 +517,7 @@ class TestPluginCLI(PicardTestCase):
         args.category = None
         args.trust = None
 
-        cli = PluginCLI(mock_tagger, args)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args)
         exit_code = cli.run()
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
@@ -559,7 +559,7 @@ class TestPluginCLI(PicardTestCase):
         args.category = 'metadata'
         args.trust = 'official'
 
-        cli = PluginCLI(mock_tagger, args)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args)
         exit_code = cli.run()
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
@@ -601,7 +601,7 @@ class TestPluginCLI(PicardTestCase):
         args.browse = False
         args.search = 'listen'
 
-        cli = PluginCLI(mock_tagger, args)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args)
         exit_code = cli.run()
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
@@ -638,7 +638,7 @@ class TestPluginCLI(PicardTestCase):
         args.reinstall = False
         args.force_blacklisted = False
 
-        cli = PluginCLI(mock_tagger, args)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args)
         exit_code = cli.run()
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)

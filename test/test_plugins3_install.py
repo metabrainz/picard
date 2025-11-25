@@ -190,7 +190,7 @@ class TestPluginInstall(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         output_text = stdout.getvalue()
@@ -233,7 +233,7 @@ class TestPluginInstall(PicardTestCase):
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
         error_text = stderr.getvalue()
@@ -429,7 +429,7 @@ class TestPluginInstall(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -468,7 +468,7 @@ class TestPluginInstall(PicardTestCase):
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -509,7 +509,7 @@ class TestPluginInstall(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -548,7 +548,7 @@ class TestPluginInstall(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -588,7 +588,7 @@ class TestPluginInstall(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
@@ -634,7 +634,7 @@ class TestPluginInstall(PicardTestCase):
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger, args, output)
+        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
 
         result = cli.run()
 
