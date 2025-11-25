@@ -129,8 +129,18 @@ from picard.i18n import (
 )
 from picard.item import MetadataItem
 from picard.options import init_options
-from picard.plugin3.cli import PluginCLI
-from picard.plugin3.manager import PluginManager
+
+
+try:
+    from picard.plugin3.cli import PluginCLI
+    from picard.plugin3.manager import PluginManager
+
+    HAS_PLUGIN3 = True
+except ImportError:
+    HAS_PLUGIN3 = False
+    PluginCLI = None
+    PluginManager = None
+
 from picard.pluginmanager import PluginManager as LegacyPluginManager
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
@@ -366,9 +376,13 @@ class Tagger(QtWidgets.QApplication):
         # FIXME: Legacy, remove as soong no longer used by other code
         self.pluginmanager = LegacyPluginManager()
 
-        self.pluginmanager3 = PluginManager(self)
-        if not self._no_plugins:
-            self.pluginmanager3.add_directory(plugin_folder(), primary=True)
+        if HAS_PLUGIN3:
+            self.pluginmanager3 = PluginManager(self)
+            if not self._no_plugins:
+                self.pluginmanager3.add_directory(plugin_folder(), primary=True)
+        else:
+            self.pluginmanager3 = None
+            log.warning('Plugin3 system not available (pygit2 not installed)')
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
@@ -1586,6 +1600,9 @@ def main(localedir=None, autoupdate=True):
 
     tagger.startTimer(1000)
     if cmdline_args.subcommand == 'plugins':
+        if not HAS_PLUGIN3:
+            log.error('Plugin3 system not available. Install pygit2 to use plugin management.')
+            sys.exit(1)
         exit_code = PluginCLI(tagger, cmdline_args).run()
         tagger.exit()
     else:
