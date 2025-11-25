@@ -606,16 +606,24 @@ See [CLI.md](CLI.md) for command specifications.
 
 ---
 
-### 3.4 Blacklist Enforcement
+### 3.4 Blacklist Enforcement ✅ COMPLETE
 
 **Priority:** P1 - High (Security)
-**Effort:** 1 day
+**Effort:** 1 day (Actual: 1 day)
+**Status:** ✅ Complete
 
 **Tasks:**
-- [ ] Check blacklist on startup
-- [ ] Disable blacklisted plugins automatically
-- [ ] Show warning to user
-- [ ] Support repository-level wildcard patterns
+- [x] Check blacklist on startup
+- [x] Disable blacklisted plugins automatically
+- [x] Show warning to user
+- [x] Support repository-level wildcard patterns
+
+**Implementation notes:**
+- _check_blacklisted_plugins() runs on startup via init_plugins()
+- Automatically disables blacklisted plugins and saves config
+- Shows QMessageBox warning with plugin names and reasons
+- Supports URL exact match, URL pattern (regex), and plugin ID blacklisting
+- 90 tests passing (89 + 1 new blacklist warning test)
 
 ---
 
