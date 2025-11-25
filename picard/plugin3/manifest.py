@@ -112,6 +112,11 @@ class PluginManifest:
         """
         errors = []
 
+        # Length constraints
+        MAX_NAME_LENGTH = 100
+        MAX_DESCRIPTION_LENGTH = 200
+        MAX_LONG_DESCRIPTION_LENGTH = 2000
+
         # Required fields
         required = ['name', 'version', 'description', 'api', 'authors', 'license', 'license_url']
         for field in required:
@@ -130,16 +135,26 @@ class PluginManifest:
 
         # String length validation
         name = self._data.get('name', '')
-        if name and isinstance(name, str) and (len(name) < 1 or len(name) > 100):
-            errors.append(f"Field 'name' must be 1-100 characters (got {len(name)})")
+        if name and isinstance(name, str) and (len(name) < 1 or len(name) > MAX_NAME_LENGTH):
+            errors.append(f"Field 'name' must be 1-{MAX_NAME_LENGTH} characters (got {len(name)})")
 
         description = self._data.get('description', '')
-        if description and isinstance(description, str) and (len(description) < 1 or len(description) > 200):
-            errors.append(f"Field 'description' must be 1-200 characters (got {len(description)})")
+        if (
+            description
+            and isinstance(description, str)
+            and (len(description) < 1 or len(description) > MAX_DESCRIPTION_LENGTH)
+        ):
+            errors.append(f"Field 'description' must be 1-{MAX_DESCRIPTION_LENGTH} characters (got {len(description)})")
 
         long_description = self._data.get('long_description', '')
-        if long_description and isinstance(long_description, str) and len(long_description) > 2000:
-            errors.append(f"Field 'long_description' must be max 2000 characters (got {len(long_description)})")
+        if (
+            long_description
+            and isinstance(long_description, str)
+            and len(long_description) > MAX_LONG_DESCRIPTION_LENGTH
+        ):
+            errors.append(
+                f"Field 'long_description' must be max {MAX_LONG_DESCRIPTION_LENGTH} characters (got {len(long_description)})"
+            )
 
         # Version validation
         if self._data.get('version'):
@@ -160,5 +175,12 @@ class PluginManifest:
         authors = self._data.get('authors', [])
         if authors and len(authors) == 0:
             errors.append("Field 'authors' must contain at least one author")
+
+        # Warn about empty i18n sections
+        for section in ['name_i18n', 'description_i18n', 'long_description_i18n']:
+            if section in self._data:
+                value = self._data[section]
+                if not value or (isinstance(value, dict) and len(value) == 0):
+                    errors.append(f"Section '{section}' is present but empty")
 
         return errors

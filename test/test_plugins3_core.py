@@ -177,6 +177,43 @@ license_url = "https://example.com"
         finally:
             temp_path.unlink()
 
+    def test_manifest_validate_empty_i18n_sections(self):
+        """Test validation warns about empty i18n sections."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manifest import PluginManifest
+
+        manifest_content = """
+name = "Test"
+authors = ["Author"]
+version = "1.0.0"
+description = "Test"
+api = ["3.0"]
+license = "MIT"
+license_url = "https://example.com"
+
+[name_i18n]
+
+[description_i18n]
+"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(manifest_content)
+            temp_path = Path(f.name)
+
+        try:
+            with open(temp_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+
+            errors = manifest.validate()
+            self.assertGreater(len(errors), 0)
+            error_text = ' '.join(errors)
+            self.assertIn('name_i18n', error_text)
+            self.assertIn('description_i18n', error_text)
+            self.assertIn('empty', error_text.lower())
+        finally:
+            temp_path.unlink()
+
     def test_manifest_properties(self):
         """Test manifest property accessors."""
         manifest = load_plugin_manifest('example')
