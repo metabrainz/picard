@@ -11,6 +11,7 @@ This directory contains comprehensive documentation for Picard's Plugin v3 syste
 - **[ROADMAP.md](ROADMAP.md)** - Development roadmap with phases, tasks, and timeline
 - **[MANIFEST.md](MANIFEST.md)** - MANIFEST.toml specification and plugin development guide
 - **[CLI.md](CLI.md)** - Complete CLI commands reference
+- **[GUI.md](GUI.md)** - GUI design and user interface
 
 ### System Design
 
