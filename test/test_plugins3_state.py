@@ -184,3 +184,60 @@ class TestPluginState(PicardTestCase):
 
         # Should not raise, just change state
         self.assertEqual(plugin.state, PluginState.DISABLED)
+
+    def test_plugin_load_module_already_loaded(self):
+        """Test Plugin.load_module() when already loaded."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+        plugin.state = PluginState.LOADED
+        mock_module = Mock()
+        plugin._module = mock_module
+
+        # Should return existing module
+        result = plugin.load_module()
+
+        self.assertEqual(result, mock_module)
+        self.assertEqual(plugin.state, PluginState.LOADED)
+
+    def test_plugin_load_module_when_enabled(self):
+        """Test Plugin.load_module() raises when already enabled."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+        plugin.state = PluginState.ENABLED
+
+        with self.assertRaises(ValueError) as context:
+            plugin.load_module()
+
+        self.assertIn('already enabled', str(context.exception))
+
+    def test_plugin_enable_already_enabled(self):
+        """Test Plugin.enable() raises when already enabled."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        mock_tagger = Mock()
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+        plugin.state = PluginState.ENABLED
+        plugin._module = Mock()
+        plugin.manifest = Mock()
+
+        with self.assertRaises(ValueError) as context:
+            plugin.enable(mock_tagger)
+
+        self.assertIn('already enabled', str(context.exception))

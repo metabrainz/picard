@@ -386,3 +386,250 @@ class TestPluginInstall(PicardTestCase):
 
             # Config should be removed
             self.assertNotIn('test-plugin', config.setting)
+
+    def test_install_command_execution(self):
+        """Test install command execution path."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager.plugins = []
+        mock_manager.install_plugin = Mock(return_value='test-plugin')
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = ['https://example.com/plugin.git']
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+        args.ref = None
+        args.reinstall = False
+        args.force_blacklisted = False
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        mock_manager.install_plugin.assert_called_once()
+
+    def test_install_command_with_error(self):
+        """Test install command handles errors."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager.plugins = []
+        mock_manager.install_plugin = Mock(side_effect=Exception('Install failed'))
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = ['https://example.com/plugin.git']
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+        args.ref = None
+        args.reinstall = False
+        args.force_blacklisted = False
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 1)
+        self.assertIn('failed', stderr.getvalue().lower())
+
+    def test_uninstall_command_with_yes_flag(self):
+        """Test uninstall command with --yes flag."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.uninstall_plugin = Mock()
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = ['test-plugin']
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+        args.yes = True
+        args.purge = False
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        mock_manager.uninstall_plugin.assert_called_once()
+
+    def test_update_command_execution(self):
+        """Test update command execution path."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.1.0', 'abc1234', 'def5678'))
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = ['test-plugin']
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        mock_manager.update_plugin.assert_called_once_with(mock_plugin)
+
+    def test_update_command_already_up_to_date(self):
+        """Test update command when already up to date."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        # Same commit = already up to date
+        mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.0.0', 'abc1234', 'abc1234'))
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = ['test-plugin']
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        self.assertIn('up to date', stdout.getvalue().lower())
+
+    def test_update_all_with_results(self):
+        """Test update-all command with mixed results."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        # Return mixed results: updated, unchanged, failed
+        mock_manager.update_all_plugins = Mock(
+            return_value=[
+                ('plugin1', True, '1.0', '1.1', 'abc', 'def', None),
+                ('plugin2', True, '2.0', '2.0', 'ghi', 'ghi', None),
+                ('plugin3', False, None, None, None, None, 'Error'),
+            ]
+        )
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = True
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 1)  # Failed because one plugin failed
+        output_text = stdout.getvalue()
+        self.assertIn('1 updated', output_text)
+        self.assertIn('1 unchanged', output_text)
+        self.assertIn('1 failed', output_text)
