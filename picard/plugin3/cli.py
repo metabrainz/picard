@@ -98,6 +98,17 @@ class PluginCLI:
             if hasattr(plugin, 'manifest') and plugin.manifest:
                 self._out.info(f'Version: {plugin.manifest.version}')
                 self._out.info(f'API: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
+
+                # Show git metadata if available
+                metadata = self._manager._get_plugin_metadata(plugin.name)
+                if metadata:
+                    ref = metadata.get('ref', '')
+                    commit = metadata.get('commit', '')
+                    if ref:
+                        self._out.info(f'Ref: {ref}')
+                    if commit:
+                        self._out.info(f'Commit: {commit[:7]}')
+
                 self._out.info(f'Path: {plugin.local_path}')
                 desc = plugin.manifest.description()
                 if desc:
@@ -122,6 +133,17 @@ class PluginCLI:
         self._out.print(f'Plugin: {plugin.manifest.name()}')
         self._out.print(f'Status: {status}')
         self._out.print(f'Version: {plugin.manifest.version}')
+
+        # Show git metadata if available
+        metadata = self._manager._get_plugin_metadata(plugin.name)
+        if metadata:
+            ref = metadata.get('ref', '')
+            commit = metadata.get('commit', '')
+            if ref:
+                self._out.print(f'Git Ref: {ref}')
+            if commit:
+                self._out.print(f'Git Commit: {commit[:7]}')
+
         self._out.print(f'Authors: {", ".join(plugin.manifest.authors)}')
         self._out.print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
         self._out.print(f'License: {plugin.manifest.license}')

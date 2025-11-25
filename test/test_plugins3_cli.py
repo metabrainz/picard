@@ -80,6 +80,7 @@ class TestPluginCLI(PicardTestCase):
 
         mock_manager.plugins = [mock_plugin]
         mock_manager._enabled_plugins = {'test-plugin'}
+        mock_manager._get_plugin_metadata = Mock(return_value={})
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
