@@ -18,6 +18,20 @@ class TestPluginMigration(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
         self.temp_path = Path(self.temp_dir)
+        self.scripts_path = Path(__file__).parent.parent / 'scripts'
+        self.original_path_len = len(sys.path)
+
+    def tearDown(self):
+        import shutil
+
+        if hasattr(self, 'temp_dir'):
+            shutil.rmtree(self.temp_dir, ignore_errors=True)
+        # Clean up sys.path
+        while len(sys.path) > self.original_path_len:
+            sys.path.pop(0)
+        # Clean up imported module
+        if 'migrate_plugin' in sys.modules:
+            del sys.modules['migrate_plugin']
 
     def test_migrate_simple_plugin(self):
         """Test migrating a simple V2 plugin."""
@@ -42,11 +56,8 @@ register_track_metadata_processor(process_metadata)
         input_file.write_text(v2_plugin)
 
         # Import migration tool
-        scripts_path = Path(__file__).parent.parent / 'scripts'
-        sys.path.insert(0, str(scripts_path))
+        sys.path.insert(0, str(self.scripts_path))
         import migrate_plugin
-
-        sys.path.pop(0)
 
         output_dir = self.temp_path / 'test_plugin_v3'
         result = migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
@@ -87,11 +98,8 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
         input_file = self.temp_path / 'long_desc.py'
         input_file.write_text(v2_plugin)
 
-        scripts_path = Path(__file__).parent.parent / 'scripts'
-        sys.path.insert(0, str(scripts_path))
+        sys.path.insert(0, str(self.scripts_path))
         import migrate_plugin
-
-        sys.path.pop(0)
 
         output_dir = self.temp_path / 'long_desc_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
@@ -117,11 +125,8 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
         input_file = self.temp_path / 'quote_test.py'
         input_file.write_text(v2_plugin)
 
-        scripts_path = Path(__file__).parent.parent / 'scripts'
-        sys.path.insert(0, str(scripts_path))
+        sys.path.insert(0, str(self.scripts_path))
         import migrate_plugin
-
-        sys.path.pop(0)
 
         output_dir = self.temp_path / 'quote_test_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
@@ -153,11 +158,8 @@ def my_function():
         input_file = self.temp_path / 'name_test.py'
         input_file.write_text(v2_plugin)
 
-        scripts_path = Path(__file__).parent.parent / 'scripts'
-        sys.path.insert(0, str(scripts_path))
+        sys.path.insert(0, str(self.scripts_path))
         import migrate_plugin
-
-        sys.path.pop(0)
 
         output_dir = self.temp_path / 'name_test_v3'
         migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
