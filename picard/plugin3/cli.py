@@ -83,6 +83,26 @@ class PluginCLI:
             self._out.error(f'Error: {e}')
             return ExitCode.ERROR
 
+    def _format_git_info(self, metadata):
+        """Format git ref and commit info compactly.
+
+        Returns string like "(ref @commit)" or "(@commit)" if no ref.
+        Returns empty string if no metadata.
+        """
+        if not metadata:
+            return ''
+
+        ref = metadata.get('ref', '')
+        commit = metadata.get('commit', '')
+
+        if not commit:
+            return ''
+
+        commit_short = commit[:7]
+        if ref:
+            return f' ({ref} @{commit_short})'
+        return f' (@{commit_short})'
+
     def _list_plugins(self):
         """List all installed plugins with details."""
         if not self._manager.plugins:
@@ -96,19 +116,10 @@ class PluginCLI:
             self._out.print(f'  {plugin.name} ({status})')
 
             if hasattr(plugin, 'manifest') and plugin.manifest:
-                self._out.info(f'Version: {plugin.manifest.version}')
-                self._out.info(f'API: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
-
-                # Show git metadata if available
                 metadata = self._manager._get_plugin_metadata(plugin.name)
-                if metadata:
-                    ref = metadata.get('ref', '')
-                    commit = metadata.get('commit', '')
-                    if ref:
-                        self._out.info(f'Ref: {ref}')
-                    if commit:
-                        self._out.info(f'Commit: {commit[:7]}')
-
+                git_info = self._format_git_info(metadata)
+                self._out.info(f'Version: {plugin.manifest.version}{git_info}')
+                self._out.info(f'API: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
                 self._out.info(f'Path: {plugin.local_path}')
                 desc = plugin.manifest.description()
                 if desc:
@@ -130,19 +141,16 @@ class PluginCLI:
             return ExitCode.NOT_FOUND
 
         status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
+        metadata = self._manager._get_plugin_metadata(plugin.name)
+        git_info = self._format_git_info(metadata)
+
         self._out.print(f'Plugin: {plugin.manifest.name()}')
         self._out.print(f'Status: {status}')
-        self._out.print(f'Version: {plugin.manifest.version}')
+        self._out.print(f'Version: {plugin.manifest.version}{git_info}')
 
-        # Show git metadata if available
-        metadata = self._manager._get_plugin_metadata(plugin.name)
-        if metadata:
-            ref = metadata.get('ref', '')
-            commit = metadata.get('commit', '')
-            if ref:
-                self._out.print(f'Git Ref: {ref}')
-            if commit:
-                self._out.print(f'Git Commit: {commit[:7]}')
+        # Show source URL if available
+        if metadata and metadata.get('url'):
+            self._out.print(f'Source: {metadata["url"]}')
 
         self._out.print(f'Authors: {", ".join(plugin.manifest.authors)}')
         self._out.print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
