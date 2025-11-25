@@ -135,3 +135,47 @@ class TestPluginManager(PicardTestCase):
         enabled_plugin.enable.assert_called_once_with(mock_tagger)
         disabled_plugin.load_module.assert_not_called()
         disabled_plugin.enable.assert_not_called()
+
+    def test_api_version_compatibility_compatible(self):
+        """Test that plugins with compatible API versions are loaded."""
+        from pathlib import Path
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Load compatible plugin (API 3.0, 3.1)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'example')
+
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin.name, 'example')
+        self.assertEqual(plugin.manifest.name, 'Example plugin')
+
+    def test_api_version_compatibility_incompatible_old(self):
+        """Test that plugins with old incompatible API versions are rejected."""
+        from pathlib import Path
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Load incompatible plugin (API 2.0, 2.1)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'incompatible')
+
+        self.assertIsNone(plugin)
+
+    def test_api_version_compatibility_incompatible_new(self):
+        """Test that plugins requiring newer API versions are rejected."""
+        from pathlib import Path
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Load plugin requiring future API (3.5, 3.6)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
+
+        self.assertIsNone(plugin)

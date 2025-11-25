@@ -131,19 +131,33 @@ class PluginManager:
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):
+        """Load a plugin and check API version compatibility.
+
+        Returns:
+            Plugin object if compatible, None otherwise
+        """
         plugin = Plugin(plugin_dir, plugin_name)
         try:
             plugin.read_manifest()
-            # TODO: Check version compatibility
             compatible_versions = _compatible_api_versions(plugin.manifest.api_versions)
             if compatible_versions:
+                log.debug(
+                    'Plugin "%s" is compatible (requires API %s, Picard supports %s)',
+                    plugin.name,
+                    plugin.manifest.api_versions,
+                    api_versions_tuple,
+                )
                 return plugin
             else:
                 log.warning(
-                    'Plugin "%s" from "%s" is not compatible with this version of Picard.',
+                    'Plugin "%s" from "%s" is not compatible with this version of Picard. '
+                    'Plugin requires API versions %s, but Picard supports %s.',
                     plugin.name,
                     plugin.local_path,
+                    plugin.manifest.api_versions,
+                    api_versions_tuple,
                 )
+                return None
         except Exception as ex:
             log.warning('Could not read plugin manifest from %r', plugin_dir.joinpath(plugin_name), exc_info=ex)
             return None
