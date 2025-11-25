@@ -22,21 +22,24 @@ def extract_plugin_metadata(content):
     if not desc_match:
         desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*"""(.*?)"""', content, re.MULTILINE | re.DOTALL)
     if not desc_match:
-        # Try single quotes (can contain double quotes)
-        desc_match = re.search(r"PLUGIN_DESCRIPTION\s*=\s*'([^']*)'", content, re.MULTILINE)
+        # Try single quotes (can contain escaped double quotes)
+        desc_match = re.search(r"PLUGIN_DESCRIPTION\s*=\s*'((?:[^'\\]|\\.)*)'", content, re.MULTILINE)
     if not desc_match:
-        # Try double quotes (can contain single quotes)
-        desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*"([^"]*)"', content, re.MULTILINE)
+        # Try double quotes (can contain escaped single quotes and line continuations)
+        desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*"((?:[^"\\]|\\.)*)"', content, re.MULTILINE | re.DOTALL)
 
     if desc_match:
-        desc = desc_match.group(1).strip()
-        # Clean up multiline descriptions
-        desc = ' '.join(line.strip() for line in desc.split('\n') if line.strip())
+        desc = desc_match.group(1)
+        # Remove line continuations (backslash followed by newline)
+        desc = re.sub(r'\\\s*\n\s*', ' ', desc)
+        desc = desc.strip()
+        # Clean up multiple spaces
+        desc = re.sub(r'\s+', ' ', desc)
         metadata['description'] = desc
 
     patterns = {
         'name': r'PLUGIN_NAME\s*=\s*["\'](.+?)["\']',
-        'author': r'PLUGIN_AUTHOR\s*=\s*["\'](.+?)["\']',
+        'author': r"PLUGIN_AUTHOR\s*=\s*'((?:[^'\\]|\\.)*)'|" + r'PLUGIN_AUTHOR\s*=\s*"((?:[^"\\]|\\.)*)"',
         'version': r'PLUGIN_VERSION\s*=\s*["\'](.+?)["\']',
         'api_versions': r'PLUGIN_API_VERSIONS\s*=\s*\[(.+?)\]',
         'license': r'PLUGIN_LICENSE\s*=\s*["\'](.+?)["\']',
@@ -48,7 +51,14 @@ def extract_plugin_metadata(content):
             continue  # Already handled above
         match = re.search(pattern, content, re.MULTILINE)
         if match:
-            value = match.group(1)
+            # For author, check which group matched
+            if key == 'author':
+                value = match.group(1) if match.group(1) else match.group(2)
+                # Unescape quotes
+                value = value.replace('\\"', '"').replace("\\'", "'")
+            else:
+                value = match.group(1)
+
             if key == 'api_versions':
                 # Parse list of versions
                 versions = re.findall(r'["\']([^"\']+)["\']', value)
@@ -148,6 +158,10 @@ def convert_plugin_code(content, metadata):
                     'register_file_post_removal_from_track_processor',
                     'register_album_post_removal_processor',
                     'register_track_post_removal_processor',
+                    'register_cluster_action',
+                    'register_file_action',
+                    'register_album_action',
+                    'register_track_action',
                 ]
             ):
                 continue
@@ -174,12 +188,17 @@ def convert_plugin_code(content, metadata):
                 'register_file_post_removal_from_track_processor',
                 'register_album_post_removal_processor',
                 'register_track_post_removal_processor',
+                'register_cluster_action',
+                'register_file_action',
+                'register_album_action',
+                'register_track_action',
             ]:
                 if reg_type in line:
-                    match = re.search(rf'{reg_type}\((\w+)\)', line)
+                    # Match everything between outer parentheses (greedy to get nested parens)
+                    match = re.search(rf'{reg_type}\((.+)\)', line)
                     if match:
                         register_calls.append((reg_type, match.group(1)))
-                    continue
+                    break
 
         # Skip module-level register calls
         if any(
@@ -193,6 +212,10 @@ def convert_plugin_code(content, metadata):
                 'register_file_post_removal_from_track_processor',
                 'register_album_post_removal_processor',
                 'register_track_post_removal_processor',
+                'register_cluster_action',
+                'register_file_action',
+                'register_album_action',
+                'register_track_action',
             ]
         ):
             if line and not line[0].isspace():
