@@ -503,11 +503,37 @@ class PluginCLI:
                 self._out.nl()
                 self._out.print('Plugin Information:')
                 self._out.info(f'  Name: {manifest.name()}')
+
+                # Show available name translations
+                name_i18n = manifest._data.get('name_i18n', {})
+                if name_i18n:
+                    self._out.info(f'  Name_i18n: {", ".join(sorted(name_i18n.keys()))}')
+
                 self._out.info(f'  Version: {manifest.version}')
                 self._out.info(f'  Authors: {", ".join(manifest.authors)}')
                 self._out.info(f'  Description: {manifest.description()}')
+
+                # Show available description translations
+                desc_i18n = manifest._data.get('description_i18n', {})
+                if desc_i18n:
+                    self._out.info(f'  Description_i18n: {", ".join(sorted(desc_i18n.keys()))}')
+
+                # Show long description if available
+                long_desc = manifest.long_description()
+                if long_desc:
+                    self._out.info(f'  Long description: {long_desc}')
+
+                    # Show available long description translations
+                    long_desc_i18n = manifest._data.get('long_description_i18n', {})
+                    if long_desc_i18n:
+                        self._out.info(f'  Long_description_i18n: {", ".join(sorted(long_desc_i18n.keys()))}')
+
                 self._out.info(f'  API versions: {", ".join(str(v) for v in manifest.api_versions)}')
                 self._out.info(f'  License: {manifest.license}')
+
+                # Show license URL if available
+                if manifest.license_url:
+                    self._out.info(f'  License URL: {manifest.license_url}')
 
                 return ExitCode.SUCCESS
 
@@ -554,11 +580,37 @@ class PluginCLI:
             self._out.nl()
             self._out.print('Plugin Information:')
             self._out.info(f'  Name: {manifest.name()}')
+
+            # Show available name translations
+            name_i18n = manifest._data.get('name_i18n', {})
+            if name_i18n:
+                self._out.info(f'  Name_i18n: {", ".join(sorted(name_i18n.keys()))}')
+
             self._out.info(f'  Version: {manifest.version}')
             self._out.info(f'  Authors: {", ".join(manifest.authors)}')
             self._out.info(f'  Description: {manifest.description()}')
+
+            # Show available description translations
+            desc_i18n = manifest._data.get('description_i18n', {})
+            if desc_i18n:
+                self._out.info(f'  Description_i18n: {", ".join(sorted(desc_i18n.keys()))}')
+
+            # Show long description if available
+            long_desc = manifest.long_description()
+            if long_desc:
+                self._out.info(f'  Long description: {long_desc}')
+
+                # Show available long description translations
+                long_desc_i18n = manifest._data.get('long_description_i18n', {})
+                if long_desc_i18n:
+                    self._out.info(f'  Long_description_i18n: {", ".join(sorted(long_desc_i18n.keys()))}')
+
             self._out.info(f'  API versions: {", ".join(str(v) for v in manifest.api_versions)}')
             self._out.info(f'  License: {manifest.license}')
+
+            # Show license URL if available
+            if manifest.license_url:
+                self._out.info(f'  License URL: {manifest.license_url}')
 
             return ExitCode.SUCCESS
 
