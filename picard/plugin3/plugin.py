@@ -28,7 +28,14 @@ from picard.extension_points import unregister_module_extensions
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
 
-import pygit2
+
+try:
+    import pygit2
+
+    HAS_PYGIT2 = True
+except ImportError:
+    HAS_PYGIT2 = False
+    pygit2 = None
 
 
 class PluginState(Enum):
@@ -41,9 +48,15 @@ class PluginState(Enum):
     ERROR = 'error'  # Failed to load or enable
 
 
-class GitRemoteCallbacks(pygit2.RemoteCallbacks):
-    def transfer_progress(self, stats):
-        print(f'{stats.indexed_objects}/{stats.total_objects}')
+if HAS_PYGIT2:
+
+    class GitRemoteCallbacks(pygit2.RemoteCallbacks):
+        def transfer_progress(self, stats):
+            print(f'{stats.indexed_objects}/{stats.total_objects}')
+else:
+
+    class GitRemoteCallbacks:
+        pass
 
 
 class PluginSourceSyncError(Exception):
@@ -62,6 +75,8 @@ class PluginSourceGit(PluginSource):
 
     def __init__(self, url: str, ref: str = None):
         super().__init__()
+        if not HAS_PYGIT2:
+            raise PluginSourceSyncError("pygit2 is not available. Install it to use git-based plugin sources.")
         # Note: url can be a local directory
         self.url = url
         self.ref = ref or 'main'
