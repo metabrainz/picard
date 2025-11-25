@@ -170,6 +170,9 @@ DEFAULT_COVER_CONVERTING_FORMAT = 'JPEG'
 
 DEFAULT_QUICK_MENU_ITEMS = ['save_images_to_tags', 'save_images_to_files']
 
+# Plugin registry
+DEFAULT_PLUGIN_REGISTRY_URL = 'https://picard.musicbrainz.org/api/v3/plugins/registry.json'
+
 # Metadata handling
 # Prefix for internal/non-user-facing tags; filtered from exports and overrides.
 INTERNAL_TAG_PREFIX = "~"

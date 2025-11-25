@@ -24,9 +24,7 @@ import re
 from urllib.request import urlopen
 
 from picard import log
-
-
-DEFAULT_REGISTRY_URL = 'https://picard.musicbrainz.org/api/v3/plugins/registry.json'
+from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
 
 
 class PluginRegistry:
@@ -39,7 +37,7 @@ class PluginRegistry:
         else:
             import os
 
-            self.registry_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL', DEFAULT_REGISTRY_URL)
+            self.registry_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL', DEFAULT_PLUGIN_REGISTRY_URL)
         self.cache_path = cache_path
         self._registry_data = None
 
