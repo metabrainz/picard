@@ -22,13 +22,21 @@ def extract_plugin_metadata(content):
     if not desc_match:
         desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*"""(.*?)"""', content, re.MULTILINE | re.DOTALL)
     if not desc_match:
+        # Try parenthesized multi-line string concatenation
+        desc_match = re.search(r"PLUGIN_DESCRIPTION\s*=\s*\((.*?)\)", content, re.MULTILINE | re.DOTALL)
+        if desc_match:
+            # Extract all quoted strings and concatenate
+            strings = re.findall(r'["\']([^"\']*)["\']', desc_match.group(1))
+            desc = ''.join(strings)
+            metadata['description'] = desc
+    if not desc_match:
         # Try single quotes (can contain escaped double quotes)
         desc_match = re.search(r"PLUGIN_DESCRIPTION\s*=\s*'((?:[^'\\]|\\.)*)'", content, re.MULTILINE)
     if not desc_match:
         # Try double quotes (can contain escaped single quotes and line continuations)
         desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*"((?:[^"\\]|\\.)*)"', content, re.MULTILINE | re.DOTALL)
 
-    if desc_match:
+    if desc_match and 'description' not in metadata:
         desc = desc_match.group(1)
         # Remove line continuations (backslash followed by newline)
         desc = re.sub(r'\\\s*\n\s*', ' ', desc)
@@ -170,6 +178,12 @@ def convert_plugin_code(content, metadata):
             ):
                 continue
 
+            # Fix imports from picard.plugins.* to relative imports
+            if 'from picard.plugins.' in line:
+                # Extract the plugin name and convert to relative import
+                # from picard.plugins.bpm.ui_options_bpm import X -> from .ui_options_bpm import X
+                line = re.sub(r'from picard\.plugins\.[^.]+\.', 'from .', line)
+
             new_lines.append(line)
             continue
 
@@ -278,6 +292,16 @@ def migrate_plugin(input_file, output_dir=None):
 
     out_path.mkdir(parents=True, exist_ok=True)
 
+    # Check for UI files in same directory
+    ui_files = []
+    if input_path.parent.exists():
+        ui_files = list(input_path.parent.glob('ui_*.py'))
+        # Also check for other common patterns
+        ui_files.extend(input_path.parent.glob('option_*.py'))
+        ui_files.extend(input_path.parent.glob('options.py'))
+        # Remove the main file if it matches
+        ui_files = [f for f in ui_files if f != input_path]
+
     # Generate MANIFEST.toml
     module_name = input_path.stem
     manifest_content = generate_manifest_toml(metadata, module_name)
@@ -290,6 +314,12 @@ def migrate_plugin(input_file, output_dir=None):
     code_path = out_path / '__init__.py'
     code_path.write_text(new_code, encoding='utf-8')
     print(f"  Created: {code_path}")
+
+    # Copy UI files if found
+    for ui_file in ui_files:
+        dest = out_path / ui_file.name
+        dest.write_text(ui_file.read_text(encoding='utf-8'), encoding='utf-8')
+        print(f"  Copied: {ui_file.name}")
 
     print(f"\nMigration complete! Plugin saved to: {out_path}")
     print("\nNext steps:")
