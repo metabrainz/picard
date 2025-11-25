@@ -197,6 +197,7 @@ class PluginCLI:
         ref = getattr(self._args, 'ref', None)
         reinstall = getattr(self._args, 'reinstall', False)
         force_blacklisted = getattr(self._args, 'force_blacklisted', False)
+        yes = getattr(self._args, 'yes', False)
 
         if force_blacklisted:
             self._out.warning('WARNING: Bypassing blacklist check - this may be dangerous!')
@@ -216,6 +217,18 @@ class PluginCLI:
                         return ExitCode.NOT_FOUND
                 else:
                     url = url_or_id
+                    # Check trust level for unregistered plugins
+                    trust_level = self._manager._registry.get_trust_level(url)
+                    if trust_level == 'unregistered':
+                        self._out.warning('⚠ WARNING: This plugin is not in the official registry')
+                        self._out.warning('  Installing unregistered plugins may pose security risks')
+                        self._out.warning('  Only install plugins from sources you trust')
+
+                        if not yes:
+                            response = input('Do you want to continue? [y/N]: ').strip().lower()
+                            if response not in ('y', 'yes'):
+                                self._out.print('Installation cancelled')
+                                return ExitCode.CANCELLED
 
                 if ref:
                     self._out.print(f'Installing plugin from {url} (ref: {ref})...')
