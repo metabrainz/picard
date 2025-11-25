@@ -103,7 +103,7 @@ class PluginCLI:
     def _format_git_info(self, metadata):
         """Format git ref and commit info compactly.
 
-        Returns string like "(ref @commit)" or "(@commit)" if no ref.
+        Returns string like "(ref @commit)" or "(@commit)" if ref is a commit hash.
         Returns empty string if no metadata.
         """
         if not metadata:
@@ -116,7 +116,8 @@ class PluginCLI:
             return ''
 
         commit_short = short_commit_id(commit)
-        if ref:
+        # Skip ref if it's a commit hash (same as or starts with the commit short ID)
+        if ref and not ref.startswith(commit_short):
             return f' ({ref} @{commit_short})'
         return f' (@{commit_short})'
 
