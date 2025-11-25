@@ -130,6 +130,32 @@ license_url = "{license_url}"
     return toml
 
 
+def convert_qt5_to_qt6(content):
+    """Convert PyQt5 imports and common patterns to PyQt6."""
+    # Replace PyQt5 with PyQt6
+    content = content.replace('from PyQt5', 'from PyQt6')
+    content = content.replace('import PyQt5', 'import PyQt6')
+
+    # Common enum changes that are straightforward
+    # Note: This is not exhaustive - complex UI files may need manual review
+    replacements = [
+        # QHeaderView resize modes
+        ('QHeaderView.Stretch', 'QHeaderView.ResizeMode.Stretch'),
+        ('QHeaderView.ResizeToContents', 'QHeaderView.ResizeMode.ResizeToContents'),
+        ('QHeaderView.Interactive', 'QHeaderView.ResizeMode.Interactive'),
+        # QSizePolicy
+        ('QSizePolicy.Expanding', 'QSizePolicy.Policy.Expanding'),
+        ('QSizePolicy.Fixed', 'QSizePolicy.Policy.Fixed'),
+        ('QSizePolicy.Minimum', 'QSizePolicy.Policy.Minimum'),
+        ('QSizePolicy.Preferred', 'QSizePolicy.Policy.Preferred'),
+    ]
+
+    for old, new in replacements:
+        content = content.replace(old, new)
+
+    return content
+
+
 def convert_plugin_code(content, metadata):
     """Convert v2 plugin code to v3 format."""
     lines = content.split('\n')
@@ -317,15 +343,33 @@ def migrate_plugin(input_file, output_dir=None):
 
     # Convert plugin code
     new_code = convert_plugin_code(content, metadata)
+    # Also convert Qt5 to Qt6 in main code
+    new_code = convert_qt5_to_qt6(new_code)
     code_path = out_path / '__init__.py'
     code_path.write_text(new_code, encoding='utf-8')
     print(f"  Created: {code_path}")
 
     # Copy UI files if found
+    qt5_files = []
     for ui_file in ui_files:
+        content = ui_file.read_text(encoding='utf-8')
+
+        # Check if it's a Qt5 file
+        if 'PyQt5' in content:
+            qt5_files.append(ui_file.name)
+            # Convert Qt5 to Qt6
+            content = convert_qt5_to_qt6(content)
+
         dest = out_path / ui_file.name
-        dest.write_text(ui_file.read_text(encoding='utf-8'), encoding='utf-8')
+        dest.write_text(content, encoding='utf-8')
         print(f"  Copied: {ui_file.name}")
+
+    if qt5_files:
+        print(f"\n⚠️  WARNING: Converted {len(qt5_files)} UI file(s) from PyQt5 to PyQt6:")
+        for f in qt5_files:
+            print(f"    - {f}")
+        print("  Please review these files as some Qt6 changes may require manual adjustment.")
+        print("  See: https://doc.qt.io/qt-6/portingguide.html")
 
     print(f"\nMigration complete! Plugin saved to: {out_path}")
     print("\nNext steps:")
