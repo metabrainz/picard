@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2022 Philipp Wolfer
+# Copyright (C) 2024 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,16 +17,3 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-
-from test.picardtestcase import PicardTestCase
-
-from picard.ui.options.plugins import PluginsOptionsPage
-
-
-class PluginsOptionsPageTest(PicardTestCase):
-    def test_link_authors(self):
-        self.assertEqual(
-            '<a href="mailto:coyote@acme.com">Wile E. Coyote</a>, Road &lt;Runner&gt;',
-            PluginsOptionsPage.link_authors('Wile E. Coyote <coyote@acme.com>, Road <Runner>'),
-        )

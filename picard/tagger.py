@@ -102,7 +102,10 @@ from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
     USER_DIR,
 )
-from picard.const.appdirs import sessions_folder
+from picard.const.appdirs import (
+    plugin_folder,
+    sessions_folder,
+)
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -126,10 +129,9 @@ from picard.i18n import (
 )
 from picard.item import MetadataItem
 from picard.options import init_options
-from picard.pluginmanager import (
-    PluginManager,
-    plugin_dirs,
-)
+from picard.plugin3.cli import PluginCLI
+from picard.plugin3.manager import PluginManager
+from picard.pluginmanager import PluginManager as LegacyPluginManager
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
@@ -361,10 +363,12 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_plugins(self):
         """Initialize and load plugins"""
-        self.pluginmanager = PluginManager()
+        # FIXME: Legacy, remove as soong no longer used by other code
+        self.pluginmanager = LegacyPluginManager()
+
+        self.pluginmanager3 = PluginManager(self)
         if not self._no_plugins:
-            for plugin_dir in plugin_dirs():
-                self.pluginmanager.load_plugins_from_directory(plugin_dir)
+            self.pluginmanager3.add_directory(plugin_folder(), primary=True)
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
@@ -703,6 +707,7 @@ class Tagger(QtWidgets.QApplication):
 
         self.update_browser_integration()
         self.window.show()
+        self.pluginmanager3.init_plugins()
         QtCore.QTimer.singleShot(0, self._run_init)
         res = self.exec()
         self.exit()
@@ -1416,6 +1421,14 @@ If a new instance will not be spawned files/directories will be passed to the ex
     parser.add_argument('-V', '--long-version', action='store_true', help="display long version information and exit")
     parser.add_argument('FILE_OR_URL', nargs='*', help="the file(s), URL(s) and MBID(s) to load")
 
+    subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
+    plugin_parser = subparsers.add_parser('plugins', help="manage plugins, see plugins --help")
+    plugin_parser.add_argument('-l', '--list', action='store_true', help="list installed plugins")
+    plugin_parser.add_argument('-i', '--install', nargs='+', metavar='URL', help="install plugin(s) from URL(s)")
+    plugin_parser.add_argument('-u', '--uninstall', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
+    plugin_parser.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
+    plugin_parser.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
+
     args = parser.parse_args()
     args.remote_commands_help = False
 
@@ -1549,7 +1562,11 @@ def main(localedir=None, autoupdate=True):
     setup_translator(tagger)
 
     tagger.startTimer(1000)
-    exit_code = tagger.run()
+    if cmdline_args.subcommand == 'plugins':
+        exit_code = PluginCLI(tagger, cmdline_args).run()
+        tagger.exit()
+    else:
+        exit_code = tagger.run()
 
     if tagger.pipe_handler.unexpected_removal:
         os._exit(exit_code)
