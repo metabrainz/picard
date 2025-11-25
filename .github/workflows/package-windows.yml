@@ -71,7 +71,9 @@ jobs:
         python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
-      run: pytest --verbose
+      run: |
+        pip install pytest
+        pytest --verbose
     - name: Prepare clean build environment
       run: |
         Remove-Item -Path build,dist/picard,locale -Recurse -ErrorAction Ignore
