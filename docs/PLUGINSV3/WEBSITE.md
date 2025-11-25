@@ -344,6 +344,18 @@ def validate_manifest(manifest):
     return True
 ```
 
+**Note:** Picard includes a `PluginManifest.validate()` method that performs comprehensive validation including:
+- Required fields check
+- Field type validation
+- String length constraints (name: 1-100, description: 1-200, long_description: max 2000)
+- Version format validation
+- Empty i18n section detection
+
+The registry tool should use similar validation logic. You can test plugins using:
+```bash
+picard plugins --validate https://github.com/user/plugin
+```
+
 ### Constants (Copied from Picard)
 
 ```python

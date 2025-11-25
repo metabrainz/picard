@@ -98,9 +98,10 @@ Plugin Management:
   --update-all          update all installed plugins
   --info NAME|URL       show detailed information about a plugin
   --status              show detailed status of all plugins (for debugging)
+  --validate URL        validate plugin MANIFEST from git URL
 
 Git Version Control:
-  --ref REF             git ref (branch, tag, or commit) to install/update to
+  --ref REF             git ref (branch, tag, or commit) to use with --install, --validate
   --switch-ref PLUGIN REF
                         switch plugin to different git ref without reinstalling
 
@@ -144,24 +145,26 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--uninstall <name>` / `-u` | ✅ Done | 1.1 | Uninstall plugin |
 | `--enable <name>` / `-e` | ✅ Done | 1.1 | Enable plugin |
 | `--disable <name>` / `-d` | ✅ Done | 1.1 | Disable plugin |
-| `--update <name>` | ⏳ TODO | 1.4 | Update specific plugin |
-| `--update-all` | ⏳ TODO | 1.4 | Update all plugins |
-| `--info <name\|url>` | ⏳ TODO | 1.3 | Show plugin details |
-| `--ref <ref>` | ⏳ TODO | 1.6 | Specify git ref (branch/tag/commit) |
-| `--switch-ref <name> <ref>` | ⏳ TODO | 1.6 | Switch plugin to different ref |
+| `--update <name>` | ✅ Done | 1.4 | Update specific plugin |
+| `--update-all` | ✅ Done | 1.4 | Update all plugins |
+| `--info <name\|url>` | ✅ Done | 1.3 | Show plugin details |
+| `--status <name>` | ✅ Done | 1.5 | Show detailed plugin status |
+| `--ref <ref>` | ✅ Done | 1.6 | Specify git ref (branch/tag/commit) |
+| `--switch-ref <name> <ref>` | ✅ Done | 1.6 | Switch plugin to different ref |
+| `--check-updates` | ✅ Done | 1.4 | Check for available updates |
+| `--reinstall` | ✅ Done | 1.7 | Force reinstall with --install |
+| `--purge` | ✅ Done | 1.7 | Delete plugin config on uninstall |
+| `--clean-config <name>` | ✅ Done | 1.7 | Delete plugin configuration |
+| `--yes` / `-y` | ✅ Done | 1.3 | Skip confirmation prompts |
+| `--force-blacklisted` | ✅ Done | 1.8 | Override blacklist warning |
+| `--validate <url>` | ✅ Done | 2.1 | Validate plugin MANIFEST |
 | `--browse` | ⏳ TODO | 3.3 | Browse official plugins |
 | `--search <term>` | ⏳ TODO | 3.3 | Search official plugins |
 | `--check-blacklist <url>` | ⏳ TODO | 1.8 | Check if URL is blacklisted |
 | `--refresh-registry` | ⏳ TODO | 3.2 | Force refresh plugin registry cache |
-| `--check-updates` | ⏳ TODO | 1.4 | Check for available updates |
-| `--reinstall <name>` | ⏳ TODO | 1.7 | Reinstall plugin |
-| `--status` | ⏳ TODO | 1.5 | Show detailed plugin status |
-| `--yes` / `-y` | ⏳ TODO | 1.3 | Skip confirmation prompts |
-| `--force-blacklisted` | ⏳ TODO | 1.8 | Override blacklist warning |
 | `--trust-community` | ⏳ TODO | 3.2 | Skip community plugin warnings |
 | `--trust <level>` | ⏳ TODO | 3.3 | Filter by trust level |
 | `--category <cat>` | ⏳ TODO | 3.3 | Filter by category |
-| `--purge` | ⏳ TODO | 1.7 | Delete plugin config on uninstall |
 
 ---
 
@@ -470,6 +473,59 @@ discogs:
 picard plugins --search "listenbrainz.org"
 picard plugins --info listenbrainz
 picard plugins --install listenbrainz
+```
+
+### Validate Plugin
+
+**Command:** `picard plugins --validate <url> [--ref <ref>]`
+
+**Description:** Validate a plugin's MANIFEST.toml without installing it
+
+**Use cases:**
+- Plugin developers testing their MANIFEST
+- Registry maintainers validating submissions
+- Users checking plugin before installation
+
+**Example:**
+```bash
+# Validate main branch
+picard plugins --validate https://github.com/user/my-plugin
+
+# Validate specific branch
+picard plugins --validate https://github.com/user/my-plugin --ref dev
+
+# Validate specific tag
+picard plugins --validate https://github.com/user/my-plugin --ref v1.0.0
+```
+
+**Success output:**
+```
+Validating plugin from: https://github.com/user/my-plugin
+Cloning repository...
+✓ MANIFEST.toml found
+
+✓ Validation passed
+
+Plugin Information:
+  Name: My Plugin
+  Version: 1.0.0
+  Authors: John Doe
+  Description: A great plugin for Picard
+  API versions: 3.0
+  License: GPL-2.0-or-later
+```
+
+**Error output:**
+```
+Validating plugin from: https://github.com/user/bad-plugin
+Cloning repository...
+✓ MANIFEST.toml found
+
+✗ Validation failed with 3 error(s):
+
+  • Missing required field: version
+  • Field 'description' must be 1-200 characters (got 250)
+  • Section 'name_i18n' is present but empty
 ```
 
 ### Update Workflow
