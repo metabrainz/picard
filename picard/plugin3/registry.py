@@ -104,3 +104,75 @@ class PluginRegistry:
                 return True, reason
 
         return False, None
+
+    def get_trust_level(self, url):
+        """Get trust level for plugin by git URL.
+
+        Args:
+            url: Plugin repository URL
+
+        Returns:
+            str: Trust level ('official', 'trusted', 'community', or 'unregistered')
+        """
+        if not self._registry_data:
+            self.fetch_registry()
+
+        plugins = self._registry_data.get('plugins', [])
+        for plugin in plugins:
+            if plugin.get('git_url') == url:
+                return plugin.get('trust_level', 'community')
+
+        return 'unregistered'
+
+    def find_plugin(self, plugin_id=None, url=None):
+        """Find plugin in registry by ID or URL.
+
+        Args:
+            plugin_id: Plugin ID to search for
+            url: Git URL to search for
+
+        Returns:
+            dict: Plugin data or None if not found
+        """
+        if not self._registry_data:
+            self.fetch_registry()
+
+        plugins = self._registry_data.get('plugins', [])
+        for plugin in plugins:
+            if plugin_id and plugin.get('id') == plugin_id:
+                return plugin
+            if url and plugin.get('git_url') == url:
+                return plugin
+
+        return None
+
+    def list_plugins(self, category=None, trust_level=None):
+        """List plugins from registry, optionally filtered.
+
+        Args:
+            category: Filter by category (e.g., 'metadata', 'coverart')
+            trust_level: Filter by trust level (e.g., 'official', 'trusted')
+
+        Returns:
+            list: List of plugin dicts
+        """
+        if not self._registry_data:
+            self.fetch_registry()
+
+        plugins = self._registry_data.get('plugins', [])
+        result = []
+
+        for plugin in plugins:
+            # Filter by trust level
+            if trust_level and plugin.get('trust_level') != trust_level:
+                continue
+
+            # Filter by category
+            if category:
+                plugin_categories = plugin.get('categories', [])
+                if category not in plugin_categories:
+                    continue
+
+            result.append(plugin)
+
+        return result

@@ -259,3 +259,93 @@ class TestPluginRegistry(PicardTestCase):
 
             self.assertIsNotNone(registry._registry_data)
             self.assertEqual(registry._registry_data['blacklist'], [])
+
+    def test_registry_get_trust_level(self):
+        """Test getting trust level for plugin by URL."""
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+        registry._registry_data = {
+            'plugins': [
+                {'id': 'official-plugin', 'git_url': 'https://github.com/official/plugin', 'trust_level': 'official'},
+                {'id': 'trusted-plugin', 'git_url': 'https://github.com/trusted/plugin', 'trust_level': 'trusted'},
+                {
+                    'id': 'community-plugin',
+                    'git_url': 'https://github.com/community/plugin',
+                    'trust_level': 'community',
+                },
+            ]
+        }
+
+        # Test official
+        self.assertEqual(registry.get_trust_level('https://github.com/official/plugin'), 'official')
+
+        # Test trusted
+        self.assertEqual(registry.get_trust_level('https://github.com/trusted/plugin'), 'trusted')
+
+        # Test community
+        self.assertEqual(registry.get_trust_level('https://github.com/community/plugin'), 'community')
+
+        # Test unregistered (not in registry)
+        self.assertEqual(registry.get_trust_level('https://github.com/unknown/plugin'), 'unregistered')
+
+    def test_registry_find_plugin(self):
+        """Test finding plugin by ID or URL."""
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+        registry._registry_data = {
+            'plugins': [
+                {'id': 'test-plugin', 'git_url': 'https://github.com/test/plugin', 'name': 'Test Plugin'},
+                {'id': 'other-plugin', 'git_url': 'https://github.com/other/plugin', 'name': 'Other Plugin'},
+            ]
+        }
+
+        # Find by ID
+        plugin = registry.find_plugin(plugin_id='test-plugin')
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin['name'], 'Test Plugin')
+
+        # Find by URL
+        plugin = registry.find_plugin(url='https://github.com/other/plugin')
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin['name'], 'Other Plugin')
+
+        # Not found
+        plugin = registry.find_plugin(plugin_id='nonexistent')
+        self.assertIsNone(plugin)
+
+    def test_registry_list_plugins(self):
+        """Test listing plugins with filters."""
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+        registry._registry_data = {
+            'plugins': [
+                {'id': 'plugin1', 'trust_level': 'official', 'categories': ['metadata']},
+                {'id': 'plugin2', 'trust_level': 'trusted', 'categories': ['coverart']},
+                {'id': 'plugin3', 'trust_level': 'community', 'categories': ['metadata', 'ui']},
+                {'id': 'plugin4', 'trust_level': 'official', 'categories': ['ui']},
+            ]
+        }
+
+        # List all
+        plugins = registry.list_plugins()
+        self.assertEqual(len(plugins), 4)
+
+        # Filter by trust level
+        official = registry.list_plugins(trust_level='official')
+        self.assertEqual(len(official), 2)
+        self.assertEqual(official[0]['id'], 'plugin1')
+        self.assertEqual(official[1]['id'], 'plugin4')
+
+        # Filter by category
+        metadata = registry.list_plugins(category='metadata')
+        self.assertEqual(len(metadata), 2)
+        self.assertEqual(metadata[0]['id'], 'plugin1')
+        self.assertEqual(metadata[1]['id'], 'plugin3')
+
+        # Filter by both
+        official_metadata = registry.list_plugins(category='metadata', trust_level='official')
+        self.assertEqual(len(official_metadata), 1)
+        self.assertEqual(official_metadata[0]['id'], 'plugin1')
