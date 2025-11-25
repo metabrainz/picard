@@ -91,6 +91,7 @@ class PluginCLI:
 
         self._out.print('Installed plugins:\n')
         for plugin in self._manager.plugins:
+            # Check config for enabled state (not just loaded state)
             status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
             self._out.print(f'  {plugin.name} ({status})')
 
@@ -118,10 +119,10 @@ class PluginCLI:
             return ExitCode.NOT_FOUND
 
         status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
-        self._out.print(f'Plugin: {plugin.manifest.name}')
+        self._out.print(f'Plugin: {plugin.manifest.name()}')
         self._out.print(f'Status: {status}')
         self._out.print(f'Version: {plugin.manifest.version}')
-        self._out.print(f'Author: {plugin.manifest.author}')
+        self._out.print(f'Authors: {", ".join(plugin.manifest.authors)}')
         self._out.print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
         self._out.print(f'License: {plugin.manifest.license}')
         self._out.print(f'License URL: {plugin.manifest.license_url}')
