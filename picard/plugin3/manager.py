@@ -40,10 +40,10 @@ class PluginManager:
     _plugin_dirs: List[Path] = []
     _plugins: List[Plugin] = []
 
-    def __init__(self, tagger):
+    def __init__(self, tagger=None):
         from picard.tagger import Tagger
 
-        self._tagger: Tagger = tagger
+        self._tagger: Tagger | None = tagger
         self._enabled_plugins = set()
         self._load_config()
 
@@ -400,6 +400,10 @@ class PluginManager:
 
     def _show_blacklist_warning(self, blacklisted_plugins):
         """Show warning dialog to user about blacklisted plugins."""
+        # Skip GUI warning if no tagger (CLI mode)
+        if not self._tagger:
+            return
+
         from PyQt6.QtWidgets import QMessageBox
 
         plugin_list = '\n'.join([f'• {name}: {reason}' for name, reason in blacklisted_plugins])
@@ -417,6 +421,8 @@ class PluginManager:
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
+        if not self._tagger:
+            raise RuntimeError('Cannot enable plugin without tagger instance')
 
         log.debug('Enabling plugin %s (current state: %s)', plugin.name, plugin.state.value)
         plugin.load_module()
