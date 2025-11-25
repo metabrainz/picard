@@ -58,9 +58,9 @@ def plugin_main(api: PluginApi):
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
-| `name` | string | Plugin display name | `"Last.fm Scrobbler"` |
+| `name` | string | Plugin display name | `"ListenBrainz Submitter"` |
 | `version` | string | Plugin version (semver) | `"1.0.0"` |
-| `description` | string | Short description (one line, 1-200 chars) | `"Scrobble your music to Last.fm"` |
+| `description` | string | Short description (one line, 1-200 chars) | `"Submit your music to ListenBrainz"` |
 | `api` | array | Supported API versions | `["3.0", "3.1"]` |
 | `authors` | array | Plugin author names | `["John Doe", "Jane Smith"]` |
 | `license` | string | SPDX license identifier | `"GPL-2.0-or-later"` |
@@ -88,75 +88,75 @@ def plugin_main(api: PluginApi):
 ## Complete MANIFEST.toml Example
 
 ```toml
-name = "Last.fm Scrobbler"
+name = "ListenBrainz Submitter"
 version = "2.1.0"
-description = "Scrobble your music to Last.fm"
+description = "Submit your music to ListenBrainz"
 long_description = """
-This plugin integrates with Last.fm to scrobble your music listening history.
+This plugin integrates with ListenBrainz to submit your music listening history.
 
 Features:
-- Real-time scrobbling as you listen
+- Real-time submitting listens as you play
 - Batch submission of past plays
 - Love/unlove tracks directly from Picard
-- Configurable scrobbling rules
-- Support for multiple Last.fm accounts
+- Configurable submitting listens rules
+- Support for multiple ListenBrainz accounts
 
 Requirements:
-- Free Last.fm account (sign up at https://last.fm)
+- Free ListenBrainz account (sign up at https://listenbrainz.org)
 - Network access for API communication
 
-The plugin respects your privacy and only sends data you explicitly choose to scrobble.
+The plugin respects your privacy and only sends data you explicitly choose to submit listens.
 """
 api = ["3.0", "3.1"]
 authors = ["MusicBrainz Picard Team", "Philipp Wolfer"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
-homepage = "https://github.com/metabrainz/picard-plugin-lastfm"
+homepage = "https://github.com/metabrainz/picard-plugin-listenbrainz"
 categories = ["metadata"]
 min_python_version = "3.9"
 
 [name_i18n]
-de = "Last.fm-Scrobbler"
-fr = "Scrobbleur Last.fm"
-ja = "Last.fmスクロブラー"
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+ja = "ListenBrainzサブミッター"
 
 [description_i18n]
-de = "Scrobble deine Musik zu Last.fm"
-fr = "Scrobblez votre musique sur Last.fm"
-ja = "Last.fmに音楽をスクロブルする"
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
+ja = "ListenBrainzに音楽をスクロブルする"
 
 [long_description_i18n]
 de = """
-Dieses Plugin integriert sich mit Last.fm, um deine Musikhörhistorie zu scrobbeln.
+Dieses Plugin integriert sich mit ListenBrainz, um deine Musikhörhistorie zu Hördaten übermitteln.
 
 Funktionen:
-- Echtzeit-Scrobbling während du hörst
+- Echtzeit-Übermittlung während du hörst
 - Batch-Übermittlung vergangener Wiedergaben
 - Tracks direkt aus Picard lieben/nicht mehr lieben
-- Konfigurierbare Scrobbling-Regeln
-- Unterstützung für mehrere Last.fm-Konten
+- Konfigurierbare Übermittlungsregeln
+- Unterstützung für mehrere ListenBrainz-Konten
 
 Anforderungen:
-- Kostenloses Last.fm-Konto (Anmeldung unter https://last.fm)
+- Kostenloses ListenBrainz-Konto (Anmeldung unter https://listenbrainz.org)
 - Netzwerkzugriff für API-Kommunikation
 
-Das Plugin respektiert deine Privatsphäre und sendet nur Daten, die du explizit scrobbeln möchtest.
+Das Plugin respektiert deine Privatsphäre und sendet nur Daten, die du explizit Hördaten übermitteln möchtest.
 """
 fr = """
-Ce plugin s'intègre avec Last.fm pour scrobbler votre historique d'écoute musicale.
+Ce plugin s'intègre avec ListenBrainz pour submit listensr votre historique d'écoute musicale.
 
 Fonctionnalités:
-- Scrobbling en temps réel pendant l'écoute
+- Soumission en temps réel pendant l'écoute
 - Soumission par lots des lectures passées
 - Aimer/ne plus aimer les pistes directement depuis Picard
-- Règles de scrobbling configurables
-- Support de plusieurs comptes Last.fm
+- Règles de submitting listens configurables
+- Support de plusieurs comptes ListenBrainz
 
 Exigences:
-- Compte Last.fm gratuit (inscription sur https://last.fm)
+- Compte ListenBrainz gratuit (inscription sur https://listenbrainz.org)
 - Accès réseau pour la communication API
 
-Le plugin respecte votre vie privée et n'envoie que les données que vous choisissez explicitement de scrobbler.
+Le plugin respecte votre vie privée et n'envoie que les données que vous choisissez explicitement de submit listensr.
 """
 ```
 
@@ -182,34 +182,34 @@ Le plugin respecte votre vie privée et n'envoie que les données que vous chois
 
 **Plugin List (uses `description`):**
 ```
-🛡️ Last.fm Scrobbler
-   Scrobble your music to Last.fm
+🛡️ ListenBrainz Submitter
+   Submit your music to ListenBrainz
    Authors: Picard Team | Category: metadata
 ```
 
 **Search Results (uses `description`):**
 ```
-$ picard plugins --search scrobble
+$ picard plugins --search submit listens
 
 Found 1 plugin:
-  🛡️ lastfm - Last.fm Scrobbler
-     Scrobble your music to Last.fm
+  🛡️ listenbrainz - ListenBrainz Submitter
+     Submit your music to ListenBrainz
 ```
 
 **Plugin Detail Page (uses `long_description` if available):**
 ```
-Last.fm Scrobbler 🛡️
+ListenBrainz Submitter 🛡️
 
-This plugin integrates with Last.fm to scrobble your music listening history.
+This plugin integrates with ListenBrainz to submit your music listening history.
 
 Features:
-- Real-time scrobbling as you listen
+- Real-time submitting listens as you play
 - Batch submission of past plays
 - Love/unlove tracks directly from Picard
-- Configurable scrobbling rules
+- Configurable submitting listens rules
 
 Requirements:
-- Free Last.fm account
+- Free ListenBrainz account
 - Network access
 
 [Install] [View on GitHub]
@@ -217,23 +217,23 @@ Requirements:
 
 **CLI Info Command (uses `long_description` if available):**
 ```
-$ picard plugins --info lastfm
+$ picard plugins --info listenbrainz
 
-Plugin: Last.fm Scrobbler
+Plugin: ListenBrainz Submitter
 Status: enabled
 Version: 2.1.0
 
 Description:
-  This plugin integrates with Last.fm to scrobble your music
+  This plugin integrates with ListenBrainz to submit your music
   listening history.
 
   Features:
-  - Real-time scrobbling as you listen
+  - Real-time submitting listens as you play
   - Batch submission of past plays
   - Love/unlove tracks directly from Picard
 
   Requirements:
-  - Free Last.fm account
+  - Free ListenBrainz account
   - Network access
 
 [... rest of info ...]
@@ -279,13 +279,13 @@ to define your custom rules and scripts.
 
 **With translations:**
 ```toml
-description = "Scrobble your music to Last.fm"
+description = "Submit your music to ListenBrainz"
 long_description = """
 Full English description here...
 """
 
 [description_i18n]
-de = "Scrobble deine Musik zu Last.fm"
+de = "Submit listens deine Musik zu ListenBrainz"
 
 [long_description_i18n]
 de = """

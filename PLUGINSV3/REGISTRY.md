@@ -34,20 +34,20 @@ The plugin registry is a centralized JSON file served by the Picard website that
 
 ```json
 {
-  "id": "lastfm",
-  "name": "Last.fm Scrobbler",
-  "description": "Scrobble your music to Last.fm",
+  "id": "listenbrainz",
+  "name": "ListenBrainz Submitter",
+  "description": "Submit your music to ListenBrainz",
   "name_i18n": {
-    "de": "Last.fm-Scrobbler",
-    "fr": "Scrobbleur Last.fm",
-    "ja": "Last.fmスクロブラー"
+    "de": "ListenBrainz-Submitter",
+    "fr": "Soumetteur ListenBrainz",
+    "ja": "ListenBrainzサブミッター"
   },
   "description_i18n": {
-    "de": "Scrobble deine Musik zu Last.fm",
-    "fr": "Scrobblez votre musique sur Last.fm",
-    "ja": "Last.fmに音楽をスクロブルする"
+    "de": "Submit listens deine Musik zu ListenBrainz",
+    "fr": "Submit listensz votre musique sur ListenBrainz",
+    "ja": "ListenBrainzに音楽をスクロブルする"
   },
-  "git_url": "https://github.com/metabrainz/picard-plugin-lastfm",
+  "git_url": "https://github.com/metabrainz/picard-plugin-listenbrainz",
   "categories": ["metadata"],
   "trust_level": "official",
   "authors": ["Philipp Wolfer"],
@@ -105,7 +105,7 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 **Badge:** 🛡️ "Official"
 
 **Examples:**
-- Last.fm plugin
+- ListenBrainz plugin
 - AcoustID plugin
 - Cover Art Archive plugin
 
@@ -293,8 +293,8 @@ class PluginRegistry:
 ### Official Plugin - No Warning
 
 ```bash
-$ picard plugins --install lastfm
-Installing Last.fm (Official)...
+$ picard plugins --install listenbrainz
+Installing ListenBrainz (Official)...
 ✓ Installed successfully
 ```
 
@@ -369,30 +369,30 @@ The registry includes translations extracted from plugin MANIFEST.toml files:
 
 **In MANIFEST.toml:**
 ```toml
-name = "Last.fm Scrobbler"
-description = "Scrobble your music to Last.fm"
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
 
 [name_i18n]
-de = "Last.fm-Scrobbler"
-fr = "Scrobbleur Last.fm"
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
 
 [description_i18n]
-de = "Scrobble deine Musik zu Last.fm"
-fr = "Scrobblez votre musique sur Last.fm"
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
 ```
 
 **In registry JSON:**
 ```json
 {
-  "name": "Last.fm Scrobbler",
-  "description": "Scrobble your music to Last.fm",
+  "name": "ListenBrainz Submitter",
+  "description": "Submit your music to ListenBrainz",
   "name_i18n": {
-    "de": "Last.fm-Scrobbler",
-    "fr": "Scrobbleur Last.fm"
+    "de": "ListenBrainz-Submitter",
+    "fr": "Soumetteur ListenBrainz"
   },
   "description_i18n": {
-    "de": "Scrobble deine Musik zu Last.fm",
-    "fr": "Scrobblez votre musique sur Last.fm"
+    "de": "Submit listens deine Musik zu ListenBrainz",
+    "fr": "Submit listensz votre musique sur ListenBrainz"
   }
 }
 ```

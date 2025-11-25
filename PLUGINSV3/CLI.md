@@ -12,22 +12,22 @@ picard plugins --list
 
 # Install plugin
 picard plugins --install https://github.com/user/plugin
-picard plugins --install lastfm  # By name (Phase 3)
+picard plugins --install listenbrainz  # By name (Phase 3)
 
 # Update plugins
-picard plugins --update lastfm
+picard plugins --update listenbrainz
 picard plugins --update-all
 
 # Enable/disable
-picard plugins --enable lastfm
-picard plugins --disable lastfm
+picard plugins --enable listenbrainz
+picard plugins --disable listenbrainz
 
 # Uninstall
-picard plugins --uninstall lastfm
-picard plugins --uninstall lastfm --purge  # Delete config too
+picard plugins --uninstall listenbrainz
+picard plugins --uninstall listenbrainz --purge  # Delete config too
 
 # Get info
-picard plugins --info lastfm
+picard plugins --info listenbrainz
 
 # Browse/search (Phase 3)
 picard plugins --browse
@@ -151,13 +151,13 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 ```
 Installed plugins:
 
-  lastfm (enabled) 🛡️
+  listenbrainz (enabled) 🛡️
     Version: 2.1.0
     Git ref: main @ a1b2c3d
     API: 3.0
     Trust: official
-    Path: ~/.local/share/MusicBrainz/Picard/plugins3/lastfm
-    Description: Scrobble your music to Last.fm
+    Path: ~/.local/share/MusicBrainz/Picard/plugins3/listenbrainz
+    Description: Submit your music to ListenBrainz
 
   discogs (disabled) ✓
     Version: 1.5.0
@@ -181,7 +181,7 @@ Total: 2 plugins (1 enabled, 1 disabled)
 **Examples:**
 ```bash
 # Install from GitHub
-picard plugins --install https://github.com/metabrainz/picard-plugin-lastfm
+picard plugins --install https://github.com/metabrainz/picard-plugin-listenbrainz
 
 # Install from specific ref
 picard plugins --install https://github.com/user/plugin --ref v1.0.0
@@ -213,10 +213,10 @@ picard plugins --install url1 url2 url3
 **Examples:**
 ```bash
 # Install by name
-picard plugins --install lastfm
+picard plugins --install listenbrainz
 
 # Install multiple
-picard plugins --install lastfm discogs acoustid
+picard plugins --install listenbrainz discogs acoustid
 ```
 
 ---
@@ -230,13 +230,13 @@ picard plugins --install lastfm discogs acoustid
 **Examples:**
 ```bash
 # Uninstall plugin (keep config)
-picard plugins --uninstall lastfm
+picard plugins --uninstall listenbrainz
 
 # Uninstall and delete config
-picard plugins --uninstall lastfm --purge
+picard plugins --uninstall listenbrainz --purge
 
 # Uninstall multiple
-picard plugins --uninstall lastfm discogs
+picard plugins --uninstall listenbrainz discogs
 ```
 
 ---
@@ -252,13 +252,13 @@ picard plugins --uninstall lastfm discogs
 **Examples:**
 ```bash
 # Enable plugin
-picard plugins --enable lastfm
+picard plugins --enable listenbrainz
 
 # Disable plugin
-picard plugins --disable lastfm
+picard plugins --disable listenbrainz
 
 # Enable multiple
-picard plugins --enable lastfm discogs acoustid
+picard plugins --enable listenbrainz discogs acoustid
 ```
 
 ---
@@ -274,10 +274,10 @@ picard plugins --enable lastfm discogs acoustid
 **Examples:**
 ```bash
 # Update one plugin
-picard plugins --update lastfm
+picard plugins --update listenbrainz
 
 # Update to specific ref
-picard plugins --update lastfm --ref v2.0.0
+picard plugins --update listenbrainz --ref v2.0.0
 
 # Update all plugins
 picard plugins --update-all
@@ -297,7 +297,7 @@ picard plugins --check-updates
 **Examples:**
 ```bash
 # Info for installed plugin
-picard plugins --info lastfm
+picard plugins --info listenbrainz
 
 # Info for plugin by URL (not installed)
 picard plugins --info https://github.com/user/plugin
@@ -305,14 +305,14 @@ picard plugins --info https://github.com/user/plugin
 
 **Example output:**
 ```
-Plugin: Last.fm Scrobbler
+Plugin: ListenBrainz Submitter
 Status: enabled
 Version: 2.1.0
 Author: MusicBrainz Picard Team
 Trust Level: official 🛡️
 
 Git Information:
-  URL: https://github.com/metabrainz/picard-plugin-lastfm
+  URL: https://github.com/metabrainz/picard-plugin-listenbrainz
   Ref: main
   Commit: a1b2c3d4e5f6 (2025-11-20)
   Message: Fix authentication bug
@@ -321,10 +321,10 @@ API Versions: 3.0
 Category: metadata
 License: GPL-2.0
 
-Path: ~/.local/share/MusicBrainz/Picard/plugins3/lastfm
+Path: ~/.local/share/MusicBrainz/Picard/plugins3/listenbrainz
 
 Description:
-  Scrobble your music to Last.fm and update your listening history.
+  Submit your music to ListenBrainz and update your listening history.
 
 Installed: 2025-11-15 10:30:00
 Last Updated: 2025-11-20 14:15:00
@@ -390,7 +390,7 @@ picard plugins --browse --trust official,trusted
 **Examples:**
 ```bash
 # Search by name
-picard plugins --search lastfm
+picard plugins --search listenbrainz
 
 # Search by keyword
 picard plugins --search "cover art"
@@ -421,7 +421,7 @@ picard plugins --check-blacklist https://github.com/user/plugin
 ```
 Plugin Status Report:
 
-lastfm:
+listenbrainz:
   State: ENABLED
   Module: Loaded
   Hooks: 5 registered
@@ -441,9 +441,9 @@ discogs:
 
 ### Discover and Install
 ```bash
-picard plugins --search "last.fm"
-picard plugins --info lastfm
-picard plugins --install lastfm
+picard plugins --search "listenbrainz.org"
+picard plugins --info listenbrainz
+picard plugins --install listenbrainz
 ```
 
 ### Update Workflow

@@ -158,11 +158,11 @@ Installed plugins:
     Path: ~/.local/share/MusicBrainz/Picard/plugins3/example
     Description: This is an example plugin
 
-  lastfm (disabled)
+  listenbrainz (disabled)
     Version: 2.1.0
     API: 3.0
-    Path: ~/.local/share/MusicBrainz/Picard/plugins3/lastfm
-    Description: Last.fm integration
+    Path: ~/.local/share/MusicBrainz/Picard/plugins3/listenbrainz
+    Description: ListenBrainz integration
 ```
 
 ---

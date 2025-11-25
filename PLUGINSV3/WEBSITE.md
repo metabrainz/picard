@@ -571,11 +571,11 @@ A web-based plugin browser for discovering registered plugins.
 
 <div class="plugin-list">
   <div class="plugin official">
-    <h3>🛡️ Last.fm Scrobbler</h3>
-    <p>Scrobble your music to Last.fm</p>
+    <h3>🛡️ ListenBrainz Submitter</h3>
+    <p>Submit your music to ListenBrainz</p>
     <p>Authors: MusicBrainz Picard Team</p>
     <p>Categories: metadata</p>
-    <code>picard plugins --install lastfm</code>
+    <code>picard plugins --install listenbrainz</code>
   </div>
 
   <div class="plugin trusted">

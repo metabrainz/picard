@@ -259,16 +259,16 @@ See [MANIFEST.md](MANIFEST.md) for field reference.
 
 **Format:**
 ```toml
-name = "Last.fm Scrobbler"
-description = "Scrobble your music to Last.fm"
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
 
 [name_i18n]
-de = "Last.fm-Scrobbler"
-fr = "Scrobbleur Last.fm"
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
 
 [description_i18n]
-de = "Scrobble deine Musik zu Last.fm"
-fr = "Scrobblez votre musique sur Last.fm"
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
 ```
 
 **Rationale:**

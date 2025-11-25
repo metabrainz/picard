@@ -34,20 +34,20 @@ Simple flat JSON structure with dot notation for namespacing:
 
 ```json
 {
-  "ui.menu.scrobble": "Scrobble Now",
-  "ui.menu.configure": "Configure Last.fm",
-  "ui.button.login": "Login to Last.fm",
+  "ui.menu.submit listens": "Submit listens Now",
+  "ui.menu.configure": "Configure ListenBrainz",
+  "ui.button.login": "Login to ListenBrainz",
   "ui.button.logout": "Logout",
 
-  "options.title": "Last.fm Options",
+  "options.title": "ListenBrainz Options",
   "options.username": "Username",
   "options.password": "Password",
 
   "error.network": "Network error: {error}",
   "error.auth_failed": "Authentication failed",
 
-  "status.scrobbling": "Scrobbling: {artist} - {title}",
-  "status.scrobbled": "Scrobbled {count} tracks",
+  "status.submitting_listens": "Submitting: {artist} - {title}",
+  "status.submit listensd": "Submit listensd {count} tracks",
 
   "message.login_success": "Successfully logged in as {username}"
 }
@@ -63,11 +63,11 @@ def plugin_main(api: PluginApi):
 
     # Simple translation
     button_text = _('ui.button.login')
-    # Returns: "Login to Last.fm"
+    # Returns: "Login to ListenBrainz"
 
     # With parameters
-    message = _('status.scrobbled', count=5)
-    # Returns: "Scrobbled 5 tracks"
+    message = _('status.submit listensd', count=5)
+    # Returns: "Submit listensd 5 tracks"
 
     # Error messages
     error_msg = _('error.network', error='Connection timeout')
@@ -113,18 +113,18 @@ Use `{variable}` syntax for dynamic content:
 Plugin name and description can be translated directly in MANIFEST.toml:
 
 ```toml
-name = "Last.fm Scrobbler"
-description = "Scrobble your music to Last.fm"
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
 
 [name_i18n]
-de = "Last.fm-Scrobbler"
-fr = "Scrobbleur Last.fm"
-ja = "Last.fmスクロブラー"
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+ja = "ListenBrainzサブミッター"
 
 [description_i18n]
-de = "Scrobble deine Musik zu Last.fm"
-fr = "Scrobblez votre musique sur Last.fm"
-ja = "Last.fmに音楽をスクロブルする"
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
+ja = "ListenBrainzに音楽をスクロブルする"
 ```
 
 ### In Registry JSON
@@ -133,18 +133,18 @@ The website extracts these translations and includes them in the registry:
 
 ```json
 {
-  "id": "lastfm",
-  "name": "Last.fm Scrobbler",
-  "description": "Scrobble your music to Last.fm",
+  "id": "listenbrainz",
+  "name": "ListenBrainz Submitter",
+  "description": "Submit your music to ListenBrainz",
   "name_i18n": {
-    "de": "Last.fm-Scrobbler",
-    "fr": "Scrobbleur Last.fm",
-    "ja": "Last.fmスクロブラー"
+    "de": "ListenBrainz-Submitter",
+    "fr": "Soumetteur ListenBrainz",
+    "ja": "ListenBrainzサブミッター"
   },
   "description_i18n": {
-    "de": "Scrobble deine Musik zu Last.fm",
-    "fr": "Scrobblez votre musique sur Last.fm",
-    "ja": "Last.fmに音楽をスクロブルする"
+    "de": "Submit listens deine Musik zu ListenBrainz",
+    "fr": "Submit listensz votre musique sur ListenBrainz",
+    "ja": "ListenBrainzに音楽をスクロブルする"
   }
 }
 ```
@@ -291,35 +291,35 @@ Use standard locale codes:
 
 ### MANIFEST.toml
 ```toml
-name = "Last.fm Scrobbler"
-description = "Scrobble your music to Last.fm"
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
 
 [name_i18n]
-de = "Last.fm-Scrobbler"
-fr = "Scrobbleur Last.fm"
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
 
 [description_i18n]
-de = "Scrobble deine Musik zu Last.fm"
-fr = "Scrobblez votre musique sur Last.fm"
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
 ```
 
 ### locale/en.json
 ```json
 {
-  "ui.button.login": "Login to Last.fm",
+  "ui.button.login": "Login to ListenBrainz",
   "ui.button.logout": "Logout",
   "error.auth_failed": "Authentication failed",
-  "status.scrobbled": "Scrobbled {count} tracks"
+  "status.submit listensd": "Submit listensd {count} tracks"
 }
 ```
 
 ### locale/de.json
 ```json
 {
-  "ui.button.login": "Bei Last.fm anmelden",
+  "ui.button.login": "Bei ListenBrainz anmelden",
   "ui.button.logout": "Abmelden",
   "error.auth_failed": "Authentifizierung fehlgeschlagen",
-  "status.scrobbled": "{count} Titel gescrobbelt"
+  "status.submit listensd": "{count} Titel geübermittelt Hördaten"
 }
 ```
 
@@ -335,7 +335,7 @@ def plugin_main(api: PluginApi):
     logout_text = _('ui.button.logout')
 
     # With parameters
-    status = _('status.scrobbled', count=5)
+    status = _('status.submit listensd', count=5)
 ```
 
 ---
