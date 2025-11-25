@@ -363,6 +363,107 @@ Continue? [y/N]
 
 ---
 
+## Update Detection
+
+The registry uses git refs to track and detect plugin updates. Unlike semantic versioning, updates are detected by comparing git commit hashes.
+
+### How It Works
+
+**1. Registry stores the canonical ref**
+
+Each plugin entry in `plugins.json` has a `git_url` and an implicit default ref (typically `main` or `master` branch, or a specific tag).
+
+**2. Local installation stores commit hash**
+
+When a plugin is installed or updated, Picard records:
+- The git URL
+- The actual commit SHA that was fetched (e.g., `abc123def456...`)
+- The ref that was used (e.g., `main`, `v1.8.0`)
+
+**3. Update check process**
+
+To check for updates:
+1. Fetch the latest commit SHA for the ref from the remote repository
+2. Compare it to the locally stored commit SHA
+3. If different → update available
+
+### Examples
+
+**Branch tracking:**
+```
+Registry entry:
+  git_url: https://github.com/user/plugin
+  (implicit ref: main)
+
+Local installation:
+  commit: abc123def456
+  ref: main
+
+Update check:
+  $ git ls-remote https://github.com/user/plugin main
+  → returns: def456789abc (different!)
+  → Update available: abc123 -> def456 (5 commits ahead)
+```
+
+**Tag tracking:**
+```
+Registry entry:
+  git_url: https://github.com/user/plugin
+  (implicit ref: latest tag)
+
+Local installation:
+  commit: abc123def456
+  ref: v1.8.0
+
+Update check:
+  $ git ls-remote --tags https://github.com/user/plugin
+  → shows v1.9.0 exists (newer than v1.8.0)
+  → Update available: v1.8.0 -> v1.9.0
+```
+
+### Update Display
+
+The client displays updates differently based on ref type:
+
+- **Branch refs:** Show commit hashes and commit count
+  - Example: `abc123 -> def456 (5 commits)`
+
+- **Tag refs:** Show tag names
+  - Example: `v1.8.0 -> v1.9.0`
+
+- **Mixed:** Show branch and commit
+  - Example: `main @ 7d8e9f -> main @ 1a2b3c`
+
+### Implementation Notes
+
+**Checking for updates:**
+```python
+def check_for_updates(self, plugin):
+    """Check if plugin has updates available"""
+    local_commit = plugin.installed_commit
+    local_ref = plugin.installed_ref
+    git_url = plugin.git_url
+
+    # Fetch latest commit for the ref
+    remote_commit = git_ls_remote(git_url, local_ref)
+
+    if remote_commit != local_commit:
+        return {
+            'available': True,
+            'local': local_commit[:7],
+            'remote': remote_commit[:7],
+            'ref': local_ref
+        }
+    return {'available': False}
+```
+
+**Batch update checks:**
+- Use `git ls-remote` to fetch all refs in one call
+- Cache results to avoid repeated network requests
+- Run checks in background to avoid blocking UI
+
+---
+
 ## Translation Handling
 
 The registry includes translations extracted from plugin MANIFEST.toml files:
