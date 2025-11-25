@@ -67,6 +67,8 @@ class PluginCLI:
                 return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             elif hasattr(self._args, 'clean_config') and self._args.clean_config:
                 return self._clean_config(self._args.clean_config)
+            elif hasattr(self._args, 'validate') and self._args.validate:
+                return self._validate_plugin(self._args.validate, self._args.ref)
             else:
                 self._out.error('No action specified')
                 return ExitCode.ERROR
@@ -369,3 +371,64 @@ class PluginCLI:
             if plugin.name == plugin_name:
                 return plugin
         return None
+
+    def _validate_plugin(self, url, ref=None):
+        """Validate a plugin from git URL."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manifest import PluginManifest
+        from picard.plugin3.plugin import PluginSourceGit
+
+        self._out.print(f'Validating plugin from: {url}')
+        if ref:
+            self._out.print(f'Using ref: {ref}')
+
+        temp_path = Path(tempfile.mkdtemp(prefix='picard-validate-'))
+
+        try:
+            # Clone repository
+            self._out.print('Cloning repository...')
+            source = PluginSourceGit(url, ref)
+            source.sync(temp_path)
+
+            # Check for MANIFEST.toml
+            manifest_path = temp_path / 'MANIFEST.toml'
+            if not manifest_path.exists():
+                self._out.error('✗ No MANIFEST.toml found')
+                return ExitCode.ERROR
+
+            self._out.success('✓ MANIFEST.toml found')
+
+            # Read and validate manifest
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('temp', f)
+
+            errors = manifest.validate()
+
+            if errors:
+                self._out.error(f'\n✗ Validation failed with {len(errors)} error(s):\n')
+                for error in errors:
+                    self._out.error(f'  • {error}')
+                return ExitCode.ERROR
+
+            # Show plugin info
+            self._out.success('\n✓ Validation passed\n')
+            self._out.print('Plugin Information:')
+            self._out.info(f'  Name: {manifest.name()}')
+            self._out.info(f'  Version: {manifest.version}')
+            self._out.info(f'  Authors: {", ".join(manifest.authors)}')
+            self._out.info(f'  Description: {manifest.description()}')
+            self._out.info(f'  API versions: {", ".join(str(v) for v in manifest.api_versions)}')
+            self._out.info(f'  License: {manifest.license}')
+
+            return ExitCode.SUCCESS
+
+        except Exception as e:
+            self._out.error(f'✗ Validation error: {e}')
+            return ExitCode.ERROR
+        finally:
+            # Cleanup
+            import shutil
+
+            shutil.rmtree(temp_path, ignore_errors=True)

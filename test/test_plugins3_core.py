@@ -107,6 +107,76 @@ class TestPluginManifest(PicardTestCase):
         long_desc_it = manifest.long_description('it')
         self.assertEqual(long_desc_it, long_desc)
 
+    def test_manifest_validate_valid(self):
+        """Test validation of valid manifest."""
+        manifest = load_plugin_manifest('example')
+        errors = manifest.validate()
+        self.assertEqual(errors, [])
+
+    def test_manifest_validate_missing_fields(self):
+        """Test validation catches missing required fields."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manifest import PluginManifest
+
+        # Create minimal invalid manifest
+        manifest_content = """
+name = "Test"
+"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(manifest_content)
+            temp_path = Path(f.name)
+
+        try:
+            with open(temp_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+
+            errors = manifest.validate()
+            self.assertGreater(len(errors), 0)
+            # Should have errors for missing fields
+            error_text = ' '.join(errors)
+            self.assertIn('version', error_text)
+            self.assertIn('description', error_text)
+            self.assertIn('api', error_text)
+            self.assertIn('authors', error_text)
+            self.assertIn('license', error_text)
+        finally:
+            temp_path.unlink()
+
+    def test_manifest_validate_invalid_types(self):
+        """Test validation catches invalid field types."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manifest import PluginManifest
+
+        manifest_content = """
+name = 123
+authors = "not an array"
+api = "not an array"
+version = "1.0.0"
+description = "Test"
+license = "MIT"
+license_url = "https://example.com"
+"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(manifest_content)
+            temp_path = Path(f.name)
+
+        try:
+            with open(temp_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+
+            errors = manifest.validate()
+            self.assertGreater(len(errors), 0)
+            error_text = ' '.join(errors)
+            self.assertIn('name', error_text)
+            self.assertIn('authors', error_text)
+            self.assertIn('api', error_text)
+        finally:
+            temp_path.unlink()
+
     def test_manifest_properties(self):
         """Test manifest property accessors."""
         manifest = load_plugin_manifest('example')

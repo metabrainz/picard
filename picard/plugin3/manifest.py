@@ -103,3 +103,62 @@ class PluginManifest:
     @property
     def license_url(self) -> str:
         return self._data.get('license_url')
+
+    def validate(self) -> list:
+        """Validate manifest and return list of errors.
+
+        Returns:
+            List of error messages. Empty list if valid.
+        """
+        errors = []
+
+        # Required fields
+        required = ['name', 'version', 'description', 'api', 'authors', 'license', 'license_url']
+        for field in required:
+            if not self._data.get(field):
+                errors.append(f"Missing required field: {field}")
+
+        # Field type validation
+        if self._data.get('name') and not isinstance(self._data['name'], str):
+            errors.append("Field 'name' must be a string")
+
+        if self._data.get('authors') and not isinstance(self._data['authors'], list):
+            errors.append("Field 'authors' must be an array")
+
+        if self._data.get('api') and not isinstance(self._data['api'], list):
+            errors.append("Field 'api' must be an array")
+
+        # String length validation
+        name = self._data.get('name', '')
+        if name and isinstance(name, str) and (len(name) < 1 or len(name) > 100):
+            errors.append(f"Field 'name' must be 1-100 characters (got {len(name)})")
+
+        description = self._data.get('description', '')
+        if description and isinstance(description, str) and (len(description) < 1 or len(description) > 200):
+            errors.append(f"Field 'description' must be 1-200 characters (got {len(description)})")
+
+        long_description = self._data.get('long_description', '')
+        if long_description and isinstance(long_description, str) and len(long_description) > 2000:
+            errors.append(f"Field 'long_description' must be max 2000 characters (got {len(long_description)})")
+
+        # Version validation
+        if self._data.get('version'):
+            try:
+                Version.from_string(self._data['version'])
+            except (VersionError, Exception) as e:
+                errors.append(f"Invalid version format: {e}")
+
+        # API version validation
+        if self._data.get('api'):
+            for api_ver in self._data['api']:
+                try:
+                    Version.from_string(api_ver)
+                except (VersionError, Exception) as e:
+                    errors.append(f"Invalid API version '{api_ver}': {e}")
+
+        # Authors validation
+        authors = self._data.get('authors', [])
+        if authors and len(authors) == 0:
+            errors.append("Field 'authors' must contain at least one author")
+
+        return errors
