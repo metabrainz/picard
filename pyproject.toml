@@ -44,7 +44,8 @@ dependencies = [
     "PyYAML>=5.1, <7",
     "charset-normalizer~=3.3",
     "tomlkit~=0.12; python_version < '3.11'",
-    "pygit2~=1.18",
+    "pygit2~=1.18; python_version < '3.14'",
+    "pygit2~=1.19; python_version >= '3.14'",
 ]
 
 [dependency-groups]
