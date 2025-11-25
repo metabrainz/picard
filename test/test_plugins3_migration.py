@@ -21,6 +21,10 @@ class TestPluginMigration(unittest.TestCase):
         self.scripts_path = Path(__file__).parent.parent / 'scripts'
         self.original_path_len = len(sys.path)
 
+        # Skip if migrate_plugin.py doesn't exist (e.g., when running from installed package)
+        if not (self.scripts_path / 'migrate_plugin.py').exists():
+            self.skipTest('migrate_plugin.py not found (running from installed package)')
+
     def tearDown(self):
         import shutil
 
