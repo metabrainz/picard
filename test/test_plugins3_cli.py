@@ -145,6 +145,7 @@ class TestPluginCLI(PicardTestCase):
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.version = '1.0.0'
         mock_plugin.manifest.api_versions = ['3.0']
+        mock_plugin.manifest._data = {'version': '1.0.0', 'api': ['3.0']}
 
         mock_manager.plugins = [mock_plugin]
         mock_manager._enabled_plugins = {'test-plugin'}

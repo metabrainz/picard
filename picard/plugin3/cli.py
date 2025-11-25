@@ -131,8 +131,10 @@ class PluginCLI:
             if hasattr(plugin, 'manifest') and plugin.manifest:
                 metadata = self._manager._get_plugin_metadata(plugin.name)
                 git_info = self._format_git_info(metadata)
-                self._out.info(f'Version: {plugin.manifest.version}{git_info}')
-                self._out.info(f'API: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
+                version = plugin.manifest._data.get('version', '')
+                self._out.info(f'Version: {version}{git_info}')
+                api_versions = plugin.manifest._data.get('api', [])
+                self._out.info(f'API: {", ".join(api_versions)}')
                 self._out.info(f'Path: {plugin.local_path}')
                 desc = plugin.manifest.description()
                 if desc:
@@ -165,14 +167,16 @@ class PluginCLI:
             self._out.print(f'Description: {desc}')
 
         self._out.print(f'Status: {status}')
-        self._out.print(f'Version: {plugin.manifest.version}{git_info}')
+        version = plugin.manifest._data.get('version', '')
+        self._out.print(f'Version: {version}{git_info}')
 
         # Show source URL if available
         if metadata and metadata.get('url'):
             self._out.print(f'Source: {metadata["url"]}')
 
         self._out.print(f'Authors: {", ".join(plugin.manifest.authors)}')
-        self._out.print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
+        api_versions = plugin.manifest._data.get('api', [])
+        self._out.print(f'API Versions: {", ".join(api_versions)}')
         self._out.print(f'License: {plugin.manifest.license}')
         self._out.print(f'License URL: {plugin.manifest.license_url}')
         self._out.print(f'Path: {plugin.local_path}')
@@ -196,8 +200,10 @@ class PluginCLI:
         self._out.print(f'State: {plugin.state.value}')
 
         if plugin.manifest:
-            self._out.print(f'Version: {plugin.manifest.version}')
-            self._out.print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
+            version = plugin.manifest._data.get('version', '')
+            self._out.print(f'Version: {version}')
+            api_versions = plugin.manifest._data.get('api', [])
+            self._out.print(f'API Versions: {", ".join(api_versions)}')
 
         enabled_status = 'yes' if plugin.name in self._manager._enabled_plugins else 'no'
         self._out.print(f'Enabled in config: {enabled_status}')
@@ -511,7 +517,7 @@ class PluginCLI:
                 if name_i18n:
                     self._out.info(f'  Name_i18n: {", ".join(sorted(name_i18n.keys()))}')
 
-                self._out.info(f'  Version: {manifest.version}')
+                self._out.info(f'  Version: {manifest._data.get("version", "")}')
                 self._out.info(f'  Authors: {", ".join(manifest.authors)}')
                 self._out.info(f'  Description: {manifest.description()}')
 
@@ -530,7 +536,8 @@ class PluginCLI:
                     if long_desc_i18n:
                         self._out.info(f'  Long_description_i18n: {", ".join(sorted(long_desc_i18n.keys()))}')
 
-                self._out.info(f'  API versions: {", ".join(str(v) for v in manifest.api_versions)}')
+                api_versions = manifest._data.get('api', [])
+                self._out.info(f'  API versions: {", ".join(api_versions)}')
                 self._out.info(f'  License: {manifest.license}')
 
                 # Show license URL if available
@@ -601,7 +608,7 @@ class PluginCLI:
             if name_i18n:
                 self._out.info(f'  Name_i18n: {", ".join(sorted(name_i18n.keys()))}')
 
-            self._out.info(f'  Version: {manifest.version}')
+            self._out.info(f'  Version: {manifest._data.get("version", "")}')
             self._out.info(f'  Authors: {", ".join(manifest.authors)}')
             self._out.info(f'  Description: {manifest.description()}')
 
@@ -620,7 +627,8 @@ class PluginCLI:
                 if long_desc_i18n:
                     self._out.info(f'  Long_description_i18n: {", ".join(sorted(long_desc_i18n.keys()))}')
 
-            self._out.info(f'  API versions: {", ".join(str(v) for v in manifest.api_versions)}')
+            api_versions = manifest._data.get('api', [])
+            self._out.info(f'  API versions: {", ".join(api_versions)}')
             self._out.info(f'  License: {manifest.license}')
 
             # Show license URL if available
