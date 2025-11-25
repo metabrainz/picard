@@ -36,10 +36,11 @@ class ExitCode(IntEnum):
 class PluginCLI:
     """Command line interface for managing plugins."""
 
-    def __init__(self, manager, args, output=None):
+    def __init__(self, manager, args, output=None, parser=None):
         self._manager = manager
         self._args = args
         self._out = output or PluginOutput()
+        self._parser = parser
 
     def run(self):
         """Run the CLI command and return exit code."""
@@ -85,8 +86,12 @@ class PluginCLI:
             elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
                 return self._show_manifest(self._args.manifest)
             else:
-                self._out.error('No action specified')
-                return ExitCode.ERROR
+                if self._parser:
+                    self._parser.print_help()
+                    return ExitCode.SUCCESS
+                else:
+                    self._out.error('No action specified')
+                    return ExitCode.ERROR
         except KeyboardInterrupt:
             self._out.nl()
             self._out.error('Operation cancelled by user')

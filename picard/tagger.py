@@ -1494,7 +1494,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
             for arg in remote_command_args:
                 args.processable.append(f"{e[0]} {arg}")
 
-    return args
+    return args, plugin_parser
 
 
 PipeStatus = namedtuple('PipeStatus', ('handler', 'is_remote'))
@@ -1595,7 +1595,7 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    cmdline_args = process_cmdline_args()
+    cmdline_args, plugin_parser = process_cmdline_args()
 
     if cmdline_args.long_version:
         _ = QtCore.QCoreApplication(sys.argv)
@@ -1627,7 +1627,7 @@ def main(localedir=None, autoupdate=True):
 
         manager = PluginManager()
         manager.add_directory(USER_PLUGIN_DIR, primary=True)
-        exit_code = PluginCLI(manager, cmdline_args).run()
+        exit_code = PluginCLI(manager, cmdline_args, parser=plugin_parser).run()
         sys.exit(exit_code)
 
     # GUI mode - full Tagger initialization
