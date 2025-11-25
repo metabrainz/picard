@@ -51,6 +51,52 @@ class TestPluginRegistry(PicardTestCase):
         is_blacklisted, reason = registry.is_blacklisted('https://example.com/safe.git')
         self.assertFalse(is_blacklisted)
 
+    def test_registry_url_from_parameter(self):
+        """Test that registry URL can be set via parameter."""
+        from picard.plugin3.registry import PluginRegistry
+
+        custom_url = 'https://custom.example.com/registry.json'
+        registry = PluginRegistry(registry_url=custom_url)
+        self.assertEqual(registry.registry_url, custom_url)
+
+    def test_registry_url_from_env(self):
+        """Test that registry URL can be set via environment variable."""
+        import os
+        from unittest.mock import patch
+
+        from picard.plugin3.registry import PluginRegistry
+
+        custom_url = 'https://env.example.com/registry.json'
+        with patch.dict(os.environ, {'PICARD_PLUGIN_REGISTRY_URL': custom_url}):
+            registry = PluginRegistry()
+            self.assertEqual(registry.registry_url, custom_url)
+
+    def test_registry_url_priority(self):
+        """Test that parameter takes priority over environment variable."""
+        import os
+        from unittest.mock import patch
+
+        from picard.plugin3.registry import PluginRegistry
+
+        param_url = 'https://param.example.com/registry.json'
+        env_url = 'https://env.example.com/registry.json'
+
+        with patch.dict(os.environ, {'PICARD_PLUGIN_REGISTRY_URL': env_url}):
+            registry = PluginRegistry(registry_url=param_url)
+            self.assertEqual(registry.registry_url, param_url)
+
+    def test_registry_url_default(self):
+        """Test that default URL is used when no parameter or env var is set."""
+        import os
+        from unittest.mock import patch
+
+        from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
+        from picard.plugin3.registry import PluginRegistry
+
+        with patch.dict(os.environ, {}, clear=True):
+            registry = PluginRegistry()
+            self.assertEqual(registry.registry_url, DEFAULT_PLUGIN_REGISTRY_URL)
+
     def test_registry_blacklist_pattern(self):
         """Test that blacklisted URL patterns are detected."""
         from picard.plugin3.registry import PluginRegistry
