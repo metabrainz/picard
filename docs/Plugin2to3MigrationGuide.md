@@ -190,6 +190,13 @@ For plugins that can't be fully automated (complex multi-file plugins):
 
 ### Step 1: Create MANIFEST.toml
 
+You can get a template with:
+```bash
+picard plugins --manifest
+```
+
+Or create it manually:
+
 ```toml
 name = "Your Plugin Name"
 authors = ["Your Name <email@example.com>"]
