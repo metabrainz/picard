@@ -1,0 +1,9 @@
+name        = "Incompatible Plugin"
+author      = "Test Author"
+version     = "1.0.0"
+api         = ["2.0", "2.1"]
+license     = "GPL-2.0-or-later"
+license-url = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+[description]
+en = "Plugin with incompatible API version"

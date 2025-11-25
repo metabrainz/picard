@@ -1,0 +1,64 @@
+{
+  "api_version": "3.0",
+  "last_updated": "2025-11-25T12:00:00Z",
+  "plugins": [
+    {
+      "id": "listenbrainz",
+      "name": "ListenBrainz Submitter",
+      "description": "Submit your music to ListenBrainz",
+      "name_i18n": {
+        "de": "ListenBrainz-Submitter",
+        "fr": "Soumetteur ListenBrainz"
+      },
+      "description_i18n": {
+        "de": "Sende deine Musik zu ListenBrainz",
+        "fr": "Soumettez votre musique sur ListenBrainz"
+      },
+      "git_url": "https://github.com/metabrainz/picard-plugin-listenbrainz",
+      "categories": ["metadata"],
+      "trust_level": "official",
+      "authors": ["Philipp Wolfer"],
+      "min_api_version": "3.0",
+      "added_at": "2025-11-01T10:00:00Z",
+      "updated_at": "2025-11-20T15:00:00Z"
+    },
+    {
+      "id": "discogs",
+      "name": "Discogs",
+      "description": "Get metadata from Discogs",
+      "git_url": "https://github.com/user/picard-plugin-discogs",
+      "categories": ["metadata"],
+      "trust_level": "trusted",
+      "authors": ["Bob Swift"],
+      "min_api_version": "3.0",
+      "max_api_version": "3.1",
+      "added_at": "2025-11-05T10:00:00Z",
+      "updated_at": "2025-11-15T12:00:00Z"
+    },
+    {
+      "id": "custom-tagger",
+      "name": "Custom Tagger",
+      "description": "Apply custom tagging rules",
+      "git_url": "https://github.com/community/custom-tagger",
+      "categories": ["metadata", "scripting"],
+      "trust_level": "community",
+      "authors": ["John Doe"],
+      "min_api_version": "3.0",
+      "added_at": "2025-11-10T10:00:00Z",
+      "updated_at": "2025-11-10T10:00:00Z"
+    }
+  ],
+  "blacklist": [
+    {
+      "git_url": "https://github.com/badactor/malicious-plugin",
+      "reason": "Contains malicious code",
+      "blacklisted_at": "2025-11-20T10:00:00Z"
+    },
+    {
+      "git_url": "https://github.com/badorg/*",
+      "reason": "Entire organization blacklisted for malicious activity",
+      "blacklisted_at": "2025-11-22T10:00:00Z",
+      "pattern": "repository"
+    }
+  ]
+}

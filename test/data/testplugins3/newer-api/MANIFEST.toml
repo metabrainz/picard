@@ -1,0 +1,9 @@
+name        = "Future Plugin"
+author      = "Test Author"
+version     = "2.0.0"
+api         = ["3.5", "3.6"]
+license     = "GPL-2.0-or-later"
+license-url = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+[description]
+en = "Plugin requiring newer API version"
