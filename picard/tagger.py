@@ -662,11 +662,13 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
 
         # Best-effort crash/exit backup if enabled
-        config = get_config()
-        with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
-            if config.setting['session_backup_on_crash']:
-                path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
-                save_session_to_path(self, path)
+        # Only attempt if tagger is fully initialized
+        if hasattr(self, 'unclustered_files'):
+            config = get_config()
+            with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
+                if config.setting['session_backup_on_crash']:
+                    path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
+                    save_session_to_path(self, path)
 
         log.debug("Picard stopping")
         self.run_cleanup()
