@@ -81,26 +81,39 @@ class PluginManager:
             self._primary_plugin_dir = dir_path
 
     def install_plugin(self, url, ref=None, reinstall=False, force_blacklisted=False):
-        """Install a plugin from a git URL.
+        """Install a plugin from a git URL or local directory.
 
         Args:
-            url: Git repository URL
-            ref: Git ref (branch/tag/commit) to checkout
+            url: Git repository URL or local directory path
+            ref: Git ref (branch/tag/commit) to checkout (ignored for local paths)
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
         """
         from pathlib import Path
+        import shutil
         import tempfile
 
+        # Check if url is a local directory
+        local_path = Path(url)
+        if local_path.is_dir():
+            return self._install_from_local_directory(local_path, reinstall, force_blacklisted)
+
+        # Handle git URL
         # Check blacklist before installing
         if not force_blacklisted:
             is_blacklisted, reason = self._registry.is_blacklisted(url)
             if is_blacklisted:
                 raise ValueError(f'Plugin is blacklisted: {reason}')
 
-        # Use URL basename as temporary directory name
-        temp_name = os.path.basename(url).rstrip('.git')
-        temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{temp_name}'
+        # Derive module name from URL (before temp directory which may truncate)
+        url_basename = os.path.basename(url).rstrip('.git')
+        module_name = url_basename.replace('-', '_')
+
+        # Use shorter temp name to avoid truncation
+        import hashlib
+
+        url_hash = hashlib.md5(url.encode()).hexdigest()[:8]
+        temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
 
         try:
             # Clone to temporary location
@@ -115,9 +128,7 @@ class PluginManager:
             with open(manifest_path, 'rb') as f:
                 from picard.plugin3.manifest import PluginManifest
 
-                # Normalize temp_name to valid Python module name
-                normalized_name = temp_name.replace('-', '_')
-                manifest = PluginManifest(normalized_name, f)
+                manifest = PluginManifest(module_name, f)
 
             # Validate manifest
             errors = manifest.validate()
@@ -168,6 +179,61 @@ class PluginManager:
                 gc.collect()
                 shutil.rmtree(temp_path, ignore_errors=True)
             raise
+
+    def _install_from_local_directory(self, local_path: Path, reinstall=False, force_blacklisted=False):
+        """Install a plugin from a local directory.
+
+        Args:
+            local_path: Path to local plugin directory
+            reinstall: If True, reinstall even if already exists
+            force_blacklisted: If True, bypass blacklist check (dangerous!)
+
+        Returns:
+            str: Plugin ID
+        """
+        import shutil
+
+        # Read MANIFEST to get plugin ID
+        manifest_path = local_path / 'MANIFEST.toml'
+        if not manifest_path.exists():
+            raise ValueError(f'No MANIFEST.toml found in {local_path}')
+
+        # Derive module name from directory name
+        module_name = local_path.name.replace('-', '_')
+
+        with open(manifest_path, 'rb') as f:
+            from picard.plugin3.manifest import PluginManifest
+
+            manifest = PluginManifest(module_name, f)
+
+        # Validate manifest
+        errors = manifest.validate()
+        if errors:
+            if isinstance(errors, list):
+                error_list = '\n  '.join(errors)
+            else:
+                error_list = str(errors)
+            raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
+
+        plugin_id = manifest.module_name
+        final_path = self._primary_plugin_dir / plugin_id
+
+        # Check if already installed
+        if final_path.exists() and not reinstall:
+            raise ValueError(f'Plugin {plugin_id} is already installed. Use --reinstall to force.')
+
+        # Remove existing if reinstalling
+        if final_path.exists():
+            shutil.rmtree(final_path)
+
+        # Copy to plugin directory
+        shutil.copytree(local_path, final_path)
+
+        # Store metadata (use empty values for git-specific fields)
+        self._save_plugin_metadata(plugin_id, str(local_path), '', '')
+
+        log.info('Plugin %s installed from local directory %s', plugin_id, local_path)
+        return plugin_id
 
     def switch_ref(self, plugin: Plugin, ref: str):
         """Switch plugin to a different git ref (branch/tag/commit)."""
