@@ -24,9 +24,19 @@ from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
-import pygit2
+import pytest
 
 
+try:
+    import pygit2
+
+    HAS_PYGIT2 = True
+except ImportError:
+    HAS_PYGIT2 = False
+    pygit2 = None
+
+
+@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
 class TestPluginGitOperations(PicardTestCase):
     """Test git operations for plugin installation and updates."""
 
