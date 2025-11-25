@@ -55,8 +55,10 @@ jobs:
     - name: Install libgit2
       run: |
         choco install libgit2 -y
+        Get-ChildItem "C:\Program Files\libgit2" -Recurse | Select-Object FullName
         echo "INCLUDE=C:\Program Files\libgit2\include;$env:INCLUDE" >> $env:GITHUB_ENV
         echo "LIB=C:\Program Files\libgit2\lib;$env:LIB" >> $env:GITHUB_ENV
+      shell: pwsh
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
