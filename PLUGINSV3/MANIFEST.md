@@ -26,6 +26,8 @@ license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 ```
 
+**Note:** For more complex plugins, consider adding `long_description` to provide detailed information about features, requirements, and usage. See [Description Fields](#description-fields-short-vs-long) below.
+
 ### Minimal Plugin Code
 
 ```python
@@ -58,7 +60,7 @@ def plugin_main(api: PluginApi):
 |-------|------|-------------|---------|
 | `name` | string | Plugin display name | `"Last.fm Scrobbler"` |
 | `version` | string | Plugin version (semver) | `"1.0.0"` |
-| `description` | string | Short description (one line) | `"Scrobble your music to Last.fm"` |
+| `description` | string | Short description (one line, 1-200 chars) | `"Scrobble your music to Last.fm"` |
 | `api` | array | Supported API versions | `["3.0", "3.1"]` |
 | `authors` | array | Plugin author names | `["John Doe", "Jane Smith"]` |
 | `license` | string | SPDX license identifier | `"GPL-2.0-or-later"` |
@@ -68,6 +70,7 @@ def plugin_main(api: PluginApi):
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
+| `long_description` | string | Detailed description (multi-line, 1-2000 chars) | See below |
 | `categories` | array | Plugin categories | `["metadata", "coverart"]` |
 | `homepage` | string | Plugin homepage URL | `"https://..."` |
 | `min_python_version` | string | Minimum Python version | `"3.9"` |
@@ -77,7 +80,8 @@ def plugin_main(api: PluginApi):
 | Field | Type | Description |
 |-------|------|-------------|
 | `name_i18n` | table | Translated names (locale → string) |
-| `description_i18n` | table | Translated descriptions (locale → string) |
+| `description_i18n` | table | Translated short descriptions (locale → string) |
+| `long_description_i18n` | table | Translated long descriptions (locale → string) |
 
 ---
 
@@ -87,6 +91,22 @@ def plugin_main(api: PluginApi):
 name = "Last.fm Scrobbler"
 version = "2.1.0"
 description = "Scrobble your music to Last.fm"
+long_description = """
+This plugin integrates with Last.fm to scrobble your music listening history.
+
+Features:
+- Real-time scrobbling as you listen
+- Batch submission of past plays
+- Love/unlove tracks directly from Picard
+- Configurable scrobbling rules
+- Support for multiple Last.fm accounts
+
+Requirements:
+- Free Last.fm account (sign up at https://last.fm)
+- Network access for API communication
+
+The plugin respects your privacy and only sends data you explicitly choose to scrobble.
+"""
 api = ["3.0", "3.1"]
 authors = ["MusicBrainz Picard Team", "Philipp Wolfer"]
 license = "GPL-2.0-or-later"
@@ -104,7 +124,184 @@ ja = "Last.fmスクロブラー"
 de = "Scrobble deine Musik zu Last.fm"
 fr = "Scrobblez votre musique sur Last.fm"
 ja = "Last.fmに音楽をスクロブルする"
+
+[long_description_i18n]
+de = """
+Dieses Plugin integriert sich mit Last.fm, um deine Musikhörhistorie zu scrobbeln.
+
+Funktionen:
+- Echtzeit-Scrobbling während du hörst
+- Batch-Übermittlung vergangener Wiedergaben
+- Tracks direkt aus Picard lieben/nicht mehr lieben
+- Konfigurierbare Scrobbling-Regeln
+- Unterstützung für mehrere Last.fm-Konten
+
+Anforderungen:
+- Kostenloses Last.fm-Konto (Anmeldung unter https://last.fm)
+- Netzwerkzugriff für API-Kommunikation
+
+Das Plugin respektiert deine Privatsphäre und sendet nur Daten, die du explizit scrobbeln möchtest.
+"""
+fr = """
+Ce plugin s'intègre avec Last.fm pour scrobbler votre historique d'écoute musicale.
+
+Fonctionnalités:
+- Scrobbling en temps réel pendant l'écoute
+- Soumission par lots des lectures passées
+- Aimer/ne plus aimer les pistes directement depuis Picard
+- Règles de scrobbling configurables
+- Support de plusieurs comptes Last.fm
+
+Exigences:
+- Compte Last.fm gratuit (inscription sur https://last.fm)
+- Accès réseau pour la communication API
+
+Le plugin respecte votre vie privée et n'envoie que les données que vous choisissez explicitement de scrobbler.
+"""
 ```
+
+---
+
+## Description Fields: Short vs Long
+
+### When to Use Each
+
+**`description` (required):**
+- Short one-liner (1-200 characters)
+- Used in plugin lists, search results, and compact displays
+- Should be a complete sentence or phrase
+- Focus on what the plugin does, not how
+
+**`long_description` (optional):**
+- Detailed explanation (1-2000 characters)
+- Used in plugin detail pages and `--info` command
+- Can include multiple paragraphs, lists, and details
+- Explain features, requirements, usage notes, limitations
+
+### Display Contexts
+
+**Plugin List (uses `description`):**
+```
+🛡️ Last.fm Scrobbler
+   Scrobble your music to Last.fm
+   Authors: Picard Team | Category: metadata
+```
+
+**Search Results (uses `description`):**
+```
+$ picard plugins --search scrobble
+
+Found 1 plugin:
+  🛡️ lastfm - Last.fm Scrobbler
+     Scrobble your music to Last.fm
+```
+
+**Plugin Detail Page (uses `long_description` if available):**
+```
+Last.fm Scrobbler 🛡️
+
+This plugin integrates with Last.fm to scrobble your music listening history.
+
+Features:
+- Real-time scrobbling as you listen
+- Batch submission of past plays
+- Love/unlove tracks directly from Picard
+- Configurable scrobbling rules
+
+Requirements:
+- Free Last.fm account
+- Network access
+
+[Install] [View on GitHub]
+```
+
+**CLI Info Command (uses `long_description` if available):**
+```
+$ picard plugins --info lastfm
+
+Plugin: Last.fm Scrobbler
+Status: enabled
+Version: 2.1.0
+
+Description:
+  This plugin integrates with Last.fm to scrobble your music
+  listening history.
+
+  Features:
+  - Real-time scrobbling as you listen
+  - Batch submission of past plays
+  - Love/unlove tracks directly from Picard
+
+  Requirements:
+  - Free Last.fm account
+  - Network access
+
+[... rest of info ...]
+```
+
+### Examples
+
+**Simple plugin (description only):**
+```toml
+name = "BPM Analyzer"
+description = "Analyze and tag BPM (beats per minute)"
+```
+
+**Complex plugin (with long_description):**
+```toml
+name = "Advanced Tagger"
+description = "Advanced tagging with custom rules and scripts"
+long_description = """
+This plugin provides advanced tagging capabilities beyond Picard's built-in features.
+
+Features:
+- Custom tagging rules with pattern matching
+- Conditional logic for complex scenarios
+- Script templates for common tasks
+- Batch operations on multiple files
+- Preview changes before applying
+
+Use Cases:
+- Standardize artist names across your collection
+- Apply genre tags based on custom rules
+- Clean up inconsistent metadata
+- Add custom tags for personal organization
+
+Requirements:
+- Basic understanding of Picard's scripting language
+- Recommended for advanced users
+
+Configuration:
+Access the plugin settings under Options > Plugins > Advanced Tagger
+to define your custom rules and scripts.
+"""
+```
+
+**With translations:**
+```toml
+description = "Scrobble your music to Last.fm"
+long_description = """
+Full English description here...
+"""
+
+[description_i18n]
+de = "Scrobble deine Musik zu Last.fm"
+
+[long_description_i18n]
+de = """
+Vollständige deutsche Beschreibung hier...
+"""
+```
+
+### Best Practices
+
+1. **Keep `description` concise**: One clear sentence is better than cramming multiple ideas
+2. **Use `long_description` for details**: Features, requirements, configuration steps
+3. **Structure `long_description`**: Use blank lines to separate sections
+4. **Translate both**: Provide translations for both fields if possible
+5. **Avoid redundancy**: Don't repeat the short description in the long one
+6. **Be specific**: Mention actual features, not vague promises
+7. **Include requirements**: List any accounts, network access, or dependencies needed
 
 ---
 
@@ -123,9 +320,19 @@ ja = "Last.fmに音楽をスクロブルする"
 
 ### `description`
 - Required
-- String, 1-500 characters
+- String, 1-200 characters
 - Should be one line (no newlines)
-- Describes what the plugin does
+- Brief summary of what the plugin does
+- Used in plugin lists and search results
+
+### `long_description`
+- Optional
+- String, 1-2000 characters
+- Can be multi-line (use triple quotes in TOML)
+- Detailed description of plugin functionality
+- Can include features, requirements, usage notes
+- Used in plugin detail pages and `--info` command
+- If not provided, `description` is used everywhere
 
 ### `api`
 - Required
