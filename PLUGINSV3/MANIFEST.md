@@ -34,8 +34,8 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 # __init__.py
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
-    """Entry point for the plugin"""
+def enable(api: PluginApi):
+    """Called when plugin is enabled"""
 
     # Register hooks
     @api.on_album_metadata_loaded
@@ -48,6 +48,11 @@ def plugin_main(api: PluginApi):
     def my_action(album):
         # Do something when user clicks action
         pass
+
+def disable():
+    """Called when plugin is disabled (optional)"""
+    # Clean up resources if needed
+    pass
 ```
 
 ---
@@ -380,29 +385,52 @@ Vollständige deutsche Beschreibung hier...
 
 ### Plugin Entry Point
 
-Every plugin must have an `__init__.py` file with a `plugin_main()` function:
+Every plugin must have an `__init__.py` file with an `enable()` function:
 
 ```python
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     """
-    Entry point for the plugin.
-    Called when plugin is loaded.
+    Called when plugin is enabled.
+    This is where you register hooks, actions, and initialize the plugin.
 
     Args:
         api: PluginApi instance providing access to Picard
     """
     # Your plugin initialization code here
     pass
+
+def disable():
+    """
+    Called when plugin is disabled (optional).
+    Use this to clean up resources, stop threads, close connections, etc.
+    """
+    # Your cleanup code here (if needed)
+    pass
 ```
+
+**Plugin Lifecycle:**
+
+1. **Plugin discovered** - Picard finds plugin directory and reads MANIFEST.toml
+2. **Module loaded** - Python imports the `__init__.py` module
+3. **`enable(api)` called** when:
+   - Plugin is installed and enabled
+   - User enables the plugin
+   - Picard starts with plugin in enabled list
+4. **`disable()` called** when:
+   - User disables the plugin
+   - Plugin is uninstalled
+   - Picard shuts down (optional)
+
+**Note:** The `disable()` function is optional. Only implement it if your plugin needs to clean up resources (close files, stop threads, disconnect from services, etc.). Most simple plugins don't need it.
 
 ### Using PluginApi
 
 The `PluginApi` object provides access to all Picard functionality:
 
 ```python
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     # Access Picard application
     tagger = api.tagger
 
@@ -448,7 +476,7 @@ See the PluginApi documentation for complete list of extension points:
 Plugins can store configuration:
 
 ```python
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     config = api.config
 
     # Read setting
@@ -497,7 +525,7 @@ my-plugin/
 Access data files:
 
 ```python
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     # Get plugin directory
     plugin_dir = api.plugin_dir
 
@@ -517,7 +545,7 @@ def plugin_main(api: PluginApi):
 # __init__.py
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     @api.on_album_metadata_loaded
     def add_custom_tag(album, metadata):
         # Add custom tag to all tracks
@@ -530,7 +558,7 @@ def plugin_main(api: PluginApi):
 # __init__.py
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     @api.register_cover_art_provider
     class MyCoverArtProvider:
         def get_cover_art(self, album):
@@ -545,7 +573,7 @@ def plugin_main(api: PluginApi):
 # __init__.py
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     @api.register_album_action("Export to CSV")
     def export_to_csv(album):
         # Export album data to CSV
@@ -589,7 +617,7 @@ picard plugins --switch-ref my-plugin dev
 ### Debugging
 
 ```python
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     # Use logging
     api.log.info("Plugin loaded")
     api.log.debug("Debug message")

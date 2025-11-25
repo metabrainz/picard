@@ -79,19 +79,25 @@ See [TRANSLATIONS.md](TRANSLATIONS.md) for details.
 
 ### Q4: Plugin life cycle details?
 
-**Decision:** Simple enable/disable model
+**Decision:** Simple enable/disable model with `enable()` and optional `disable()` functions
 
 **Life cycle:**
 1. **Discovered** - Plugin found in plugins3 directory
 2. **Loaded** - MANIFEST.toml parsed, module loaded
-3. **Enabled** - `plugin_main()` called, hooks registered
-4. **Disabled** - Hooks unregistered (module stays loaded)
+3. **Enabled** - `enable(api)` called, hooks registered
+4. **Disabled** - `disable()` called (if present), hooks unregistered (module stays loaded)
+
+**Functions:**
+- `enable(api: PluginApi)` - Required, called when plugin is enabled
+- `disable()` - Optional, called when plugin is disabled (for cleanup)
 
 **Rationale:**
 - Simple and predictable
 - No complex state machine
 - Matches Picard 2 behavior (filtering, not unloading)
 - Safer than unload/reload
+- `enable()`/`disable()` names match user actions
+- Optional `disable()` for flexibility
 
 **Community Feedback:**
 > **rdswift:** "I support the minimal state machine as presented."
@@ -166,7 +172,7 @@ See [REGISTRY.md](REGISTRY.md) for trust level details.
 
 **Approach:**
 ```python
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     plugin_dir = api.plugin_dir
     data_file = plugin_dir / 'data' / 'config.json'
     with open(data_file) as f:

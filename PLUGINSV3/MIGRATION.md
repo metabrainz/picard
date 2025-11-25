@@ -24,7 +24,7 @@ Plugin v3 introduces significant changes:
 - [ ] Create `locale/` directory for translations (if needed)
 
 ### Code Changes
-- [ ] Change `register()` to `plugin_main(api: PluginApi)`
+- [ ] Change `register()` to `enable(api: PluginApi)`
 - [ ] Update all API calls to use `api.` prefix
 - [ ] Replace `from picard import config` with `api.config`
 - [ ] Replace `from picard import log` with `api.log`
@@ -115,7 +115,7 @@ def register():
 ```python
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     """Entry point for the plugin"""
 
     @api.on_track_metadata_loaded
@@ -188,7 +188,7 @@ locale/
 
 **Usage:**
 ```python
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     _ = api.gettext
 
     button_text = _('ui.button.process')
@@ -210,7 +210,7 @@ config.setting['example_plugin_setting'] = 'new value'
 
 **New (v3):**
 ```python
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     # Read setting
     value = api.config.setting['example_plugin']['setting']
 
@@ -328,7 +328,7 @@ class ExampleOptionsPage(OptionsPage):
             self.api.config.setting['example_plugin'] = {}
         self.api.config.setting['example_plugin']['enabled'] = self.checkbox.isChecked()
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     """Entry point for the plugin"""
     api.log.info("Example Plugin loaded")
 
@@ -365,7 +365,7 @@ def plugin_main(api: PluginApi):
 
 ### Changed Behavior
 - Plugins must be in git repositories
-- Entry point is `plugin_main()` instead of `register()`
+- Entry point is `enable()` instead of `register()`
 - All Picard access through PluginApi
 - Configuration namespaced under plugin name
 - Translations use JSON instead of .mo files
@@ -390,7 +390,7 @@ git diff
 
 The tool will:
 - Create MANIFEST.toml from Python metadata
-- Update entry point to `plugin_main()`
+- Update entry point to `enable()`
 - Convert common API calls
 - Update Qt imports
 - Create git repository structure

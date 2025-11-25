@@ -58,7 +58,7 @@ Simple flat JSON structure with dot notation for namespacing:
 ```python
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     _ = api.gettext  # Shorthand alias
 
     # Simple translation
@@ -327,7 +327,7 @@ fr = "Submit listensz votre musique sur ListenBrainz"
 ```python
 from picard.plugin3 import PluginApi
 
-def plugin_main(api: PluginApi):
+def enable(api: PluginApi):
     _ = api.gettext
 
     # Use translations
