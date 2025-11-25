@@ -18,15 +18,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import sys
+from picard.plugin3.output import PluginOutput
 
 
 class PluginCLI:
     """Command line interface for managing plugins."""
 
-    def __init__(self, tagger, args):
+    def __init__(self, tagger, args, output=None):
         self._manager = tagger.pluginmanager3
         self._args = args
+        self._out = output or PluginOutput()
 
     def run(self):
         """Run the CLI command and return exit code."""
@@ -44,60 +45,62 @@ class PluginCLI:
             elif self._args.uninstall:
                 return self._uninstall_plugins(self._args.uninstall)
             else:
-                print('No action specified', file=sys.stderr)
+                self._out.error('No action specified')
                 return 1
         except KeyboardInterrupt:
-            print('\nOperation cancelled by user', file=sys.stderr)
+            self._out.error('\nOperation cancelled by user')
             return 130
         except Exception as e:
-            print(f'Error: {e}', file=sys.stderr)
+            self._out.error(f'Error: {e}')
             return 1
 
     def _list_plugins(self):
         """List all installed plugins with details."""
         if not self._manager.plugins:
-            print('No plugins installed')
+            self._out.print('No plugins installed')
             return 0
 
-        print('Installed plugins:\n')
+        self._out.print('Installed plugins:\n')
         for plugin in self._manager.plugins:
             status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
-            print(f'  {plugin.name} ({status})')
+            self._out.print(f'  {plugin.name} ({status})')
 
             if hasattr(plugin, 'manifest') and plugin.manifest:
-                print(f'    Version: {plugin.manifest.version}')
-                print(f'    API: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
-                print(f'    Path: {plugin.local_path}')
+                self._out.info(f'Version: {plugin.manifest.version}')
+                self._out.info(f'API: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
+                self._out.info(f'Path: {plugin.local_path}')
                 desc = plugin.manifest.description()
                 if desc:
-                    print(f'    Description: {desc}')
-            print()
+                    self._out.info(f'Description: {desc}')
+            self._out.print()
 
         total = len(self._manager.plugins)
         enabled = len(self._manager._enabled_plugins)
-        print(f'Total: {total} plugin{"s" if total != 1 else ""} ({enabled} enabled, {total - enabled} disabled)')
+        self._out.print(
+            f'Total: {total} plugin{"s" if total != 1 else ""} ({enabled} enabled, {total - enabled} disabled)'
+        )
         return 0
 
     def _show_info(self, plugin_name):
         """Show detailed information about a plugin."""
         plugin = self._find_plugin(plugin_name)
         if not plugin:
-            print(f'Plugin "{plugin_name}" not found', file=sys.stderr)
+            self._out.error(f'Plugin "{plugin_name}" not found')
             return 2
 
         status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
-        print(f'Plugin: {plugin.manifest.name}')
-        print(f'Status: {status}')
-        print(f'Version: {plugin.manifest.version}')
-        print(f'Author: {plugin.manifest.author}')
-        print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
-        print(f'License: {plugin.manifest.license}')
-        print(f'License URL: {plugin.manifest.license_url}')
-        print(f'Path: {plugin.local_path}')
+        self._out.print(f'Plugin: {plugin.manifest.name}')
+        self._out.print(f'Status: {status}')
+        self._out.print(f'Version: {plugin.manifest.version}')
+        self._out.print(f'Author: {plugin.manifest.author}')
+        self._out.print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
+        self._out.print(f'License: {plugin.manifest.license}')
+        self._out.print(f'License URL: {plugin.manifest.license_url}')
+        self._out.print(f'Path: {plugin.local_path}')
 
         desc = plugin.manifest.description()
         if desc:
-            print(f'\nDescription:\n  {desc}')
+            self._out.print(f'\nDescription:\n  {desc}')
 
         return 0
 
@@ -105,12 +108,12 @@ class PluginCLI:
         """Install plugins from URLs."""
         for url in plugin_urls:
             try:
-                print(f'Installing plugin from {url}...')
+                self._out.print(f'Installing plugin from {url}...')
                 self._manager.install_plugin(url)
-                print('✓ Plugin installed successfully')
-                print('  Restart Picard to load the plugin')
+                self._out.success('Plugin installed successfully')
+                self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                print(f'✗ Failed to install plugin: {e}', file=sys.stderr)
+                self._out.error(f'Failed to install plugin: {e}')
                 return 1
         return 0
 
@@ -119,22 +122,22 @@ class PluginCLI:
         for plugin_name in plugin_names:
             plugin = self._find_plugin(plugin_name)
             if not plugin:
-                print(f'Plugin "{plugin_name}" not found', file=sys.stderr)
+                self._out.error(f'Plugin "{plugin_name}" not found')
                 return 2
 
             # Confirmation prompt unless --yes flag
             if not getattr(self._args, 'yes', False):
                 response = input(f'Uninstall plugin "{plugin.name}"? [y/N] ')
                 if response.lower() != 'y':
-                    print('Cancelled')
+                    self._out.print('Cancelled')
                     continue
 
             try:
-                print(f'Uninstalling {plugin.name}...')
+                self._out.print(f'Uninstalling {plugin.name}...')
                 self._manager.uninstall_plugin(plugin)
-                print('✓ Plugin uninstalled successfully')
+                self._out.success('Plugin uninstalled successfully')
             except Exception as e:
-                print(f'✗ Failed to uninstall plugin: {e}', file=sys.stderr)
+                self._out.error(f'Failed to uninstall plugin: {e}')
                 return 1
         return 0
 
@@ -143,16 +146,16 @@ class PluginCLI:
         for plugin_name in plugin_names:
             plugin = self._find_plugin(plugin_name)
             if not plugin:
-                print(f'Plugin "{plugin_name}" not found', file=sys.stderr)
+                self._out.error(f'Plugin "{plugin_name}" not found')
                 return 2
 
             try:
-                print(f'Enabling {plugin.name}...')
+                self._out.print(f'Enabling {plugin.name}...')
                 self._manager.enable_plugin(plugin)
-                print('✓ Plugin enabled')
-                print('  Restart Picard to load the plugin')
+                self._out.success('Plugin enabled')
+                self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                print(f'✗ Failed to enable plugin: {e}', file=sys.stderr)
+                self._out.error(f'Failed to enable plugin: {e}')
                 return 1
         return 0
 
@@ -161,16 +164,16 @@ class PluginCLI:
         for plugin_name in plugin_names:
             plugin = self._find_plugin(plugin_name)
             if not plugin:
-                print(f'Plugin "{plugin_name}" not found', file=sys.stderr)
+                self._out.error(f'Plugin "{plugin_name}" not found')
                 return 2
 
             try:
-                print(f'Disabling {plugin.name}...')
+                self._out.print(f'Disabling {plugin.name}...')
                 self._manager.disable_plugin(plugin)
-                print('✓ Plugin disabled')
-                print('  Restart Picard for changes to take effect')
+                self._out.success('Plugin disabled')
+                self._out.info('Restart Picard for changes to take effect')
             except Exception as e:
-                print(f'✗ Failed to disable plugin: {e}', file=sys.stderr)
+                self._out.error(f'Failed to disable plugin: {e}')
                 return 1
         return 0
 

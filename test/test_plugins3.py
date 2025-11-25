@@ -185,9 +185,9 @@ class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
         from io import StringIO
-        from unittest.mock import patch
 
         from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
         mock_manager = Mock()
@@ -198,21 +198,22 @@ class TestPluginCLI(PicardTestCase):
         args.list = True
         args.info = None
 
-        cli = PluginCLI(mock_tagger, args)
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
 
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            result = cli.run()
-            output = fake_out.getvalue()
+        result = cli.run()
+        output_text = stdout.getvalue()
 
         self.assertEqual(result, 0)
-        self.assertIn('No plugins installed', output)
+        self.assertIn('No plugins installed', output_text)
 
     def test_list_plugins_with_plugins(self):
         """Test listing plugins with details."""
         from io import StringIO
-        from unittest.mock import patch
 
         from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
         from picard.plugin3.plugin import Plugin
 
         mock_tagger = Mock()
@@ -232,23 +233,24 @@ class TestPluginCLI(PicardTestCase):
         args.list = True
         args.info = None
 
-        cli = PluginCLI(mock_tagger, args)
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
 
-        with patch('sys.stdout', new=StringIO()) as fake_out:
-            result = cli.run()
-            output = fake_out.getvalue()
+        result = cli.run()
+        output_text = stdout.getvalue()
 
         self.assertEqual(result, 0)
-        self.assertIn('test-plugin', output)
-        self.assertIn('enabled', output)
-        self.assertIn('1.0.0', output)
+        self.assertIn('test-plugin', output_text)
+        self.assertIn('enabled', output_text)
+        self.assertIn('1.0.0', output_text)
 
     def test_info_plugin_not_found(self):
         """Test info command for non-existent plugin."""
         from io import StringIO
-        from unittest.mock import patch
 
         from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
         mock_manager = Mock()
@@ -259,11 +261,30 @@ class TestPluginCLI(PicardTestCase):
         args.list = False
         args.info = 'nonexistent'
 
-        cli = PluginCLI(mock_tagger, args)
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(mock_tagger, args, output)
 
-        with patch('sys.stderr', new=StringIO()) as fake_err:
-            result = cli.run()
-            output = fake_err.getvalue()
+        result = cli.run()
+        error_text = stderr.getvalue()
 
         self.assertEqual(result, 2)
-        self.assertIn('not found', output)
+        self.assertIn('not found', error_text)
+
+    def test_output_color_mode(self):
+        """Test that color mode works correctly."""
+        from io import StringIO
+
+        from picard.plugin3.output import PluginOutput
+
+        # Test with color enabled
+        stdout_color = StringIO()
+        output_color = PluginOutput(stdout=stdout_color, stderr=StringIO(), color=True)
+        output_color.success('test')
+        self.assertIn('\033[32m', stdout_color.getvalue())  # Green color code
+
+        # Test with color disabled
+        stdout_no_color = StringIO()
+        output_no_color = PluginOutput(stdout=stdout_no_color, stderr=StringIO(), color=False)
+        output_no_color.success('test')
+        self.assertNotIn('\033[', stdout_no_color.getvalue())  # No color codes
