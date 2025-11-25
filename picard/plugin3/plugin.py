@@ -152,7 +152,15 @@ class PluginSourceGit(PluginSource):
                                 self.resolved_ref = branch_name
                                 break
                         else:
-                            raise PluginSourceSyncError('No branches found in repository') from None
+                            # Try remote refs as absolute last resort
+                            for ref in refs:
+                                if ref.startswith('refs/remotes/origin/') and not ref.endswith('/HEAD'):
+                                    branch_name = ref[20:]  # Remove 'refs/remotes/origin/' prefix
+                                    commit = repo.revparse_single(ref)
+                                    self.resolved_ref = f'origin/{branch_name}'
+                                    break
+                            else:
+                                raise PluginSourceSyncError('No branches found in repository') from None
 
         # hard reset to passed ref or HEAD
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
