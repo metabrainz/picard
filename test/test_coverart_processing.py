@@ -43,6 +43,7 @@ from picard.coverart.processing.processors import (
     ResizeImage,
 )
 from picard.extension_points.cover_art_processors import (
+    CoverArtEncodingError,
     CoverArtProcessingError,
     ProcessingImage,
     ProcessingTarget,
@@ -85,7 +86,8 @@ class ImageFiltersTest(PicardTestCase):
         image3, info3 = create_fake_image(600, 600, 'tiff')
         self.assertFalse(size_filter(image1, info1, None, None))
         self.assertTrue(size_filter(image2, info2, None, None))
-        self.assertTrue(size_filter(image3, info3, None, None))
+        if info3 is not None:  # TIFF may not be supported in older PyQt6 versions
+            self.assertTrue(size_filter(image3, info3, None, None))
 
     def test_filter_by_size_metadata(self):
         image_metadata1 = {'width': 400, 'height': 600}
@@ -291,7 +293,11 @@ class ImageProcessorsTest(PicardTestCase):
         image = ProcessingImage(*create_fake_image(100, 100, format))
         processor = ConvertImage()
         processor.run(image, ProcessingTarget.TAGS)
-        new_image = image.get_result()
+        try:
+            new_image = image.get_result()
+        except CoverArtEncodingError:
+            # Format not supported in this PyQt6 version, skip
+            self.skipTest(f'Format {expected_format} not supported in this PyQt6 version')
         new_info = imageinfo.identify(new_image)
         self.assertIn(new_info.format, ConvertImage._format_aliases[expected_format])
 
