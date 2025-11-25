@@ -129,16 +129,14 @@ class PluginCLI:
             self._out.print(f'  {plugin.name} ({status})')
 
             if hasattr(plugin, 'manifest') and plugin.manifest:
+                desc = plugin.manifest.description()
+                if desc:
+                    self._out.info(f'  {desc}')
                 metadata = self._manager._get_plugin_metadata(plugin.name)
                 git_info = self._format_git_info(metadata)
                 version = plugin.manifest._data.get('version', '')
-                self._out.info(f'Version: {version}{git_info}')
-                api_versions = plugin.manifest._data.get('api', [])
-                self._out.info(f'API: {", ".join(api_versions)}')
-                self._out.info(f'Path: {plugin.local_path}')
-                desc = plugin.manifest.description()
-                if desc:
-                    self._out.info(f'Description: {desc}')
+                self._out.info(f'  Version: {version}{git_info}')
+                self._out.info(f'  Path: {plugin.local_path}')
             self._out.print()
 
         total = len(self._manager.plugins)
