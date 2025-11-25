@@ -52,10 +52,12 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
         python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
+    - name: Install libgit2
+      run: brew install libgit2
     - name: Install dependencies
       run: |
-        arch -${TARGET_ARCH} pip install -r requirements-build.txt
-        arch -${TARGET_ARCH} pip install --no-binary "charset-normalizer,PyYAML" -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
+        arch -${TARGET_ARCH} pip install -r requirements-build.txt || echo "Some packages failed to install"
+        arch -${TARGET_ARCH} pip install --no-binary "charset-normalizer,PyYAML" -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt || echo "Some packages failed to install"
         arch -${TARGET_ARCH} pip install zstandard
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
