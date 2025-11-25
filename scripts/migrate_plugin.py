@@ -163,6 +163,9 @@ def convert_plugin_code(content, metadata):
                     'register_album_action',
                     'register_track_action',
                     'register_options_page',
+                    'register_script_function',
+                    'register_cover_art_provider',
+                    'register_format',
                 ]
             ):
                 continue
@@ -194,6 +197,9 @@ def convert_plugin_code(content, metadata):
                 'register_album_action',
                 'register_track_action',
                 'register_options_page',
+                'register_script_function',
+                'register_cover_art_provider',
+                'register_format',
             ]:
                 if reg_type in line:
                     # Match everything between outer parentheses (greedy to get nested parens)
@@ -219,6 +225,9 @@ def convert_plugin_code(content, metadata):
                 'register_album_action',
                 'register_track_action',
                 'register_options_page',
+                'register_script_function',
+                'register_cover_art_provider',
+                'register_format',
             ]
         ):
             if line and not line[0].isspace():
