@@ -82,6 +82,8 @@ class PluginCLI:
                 return self._clean_config(self._args.clean_config)
             elif hasattr(self._args, 'validate') and self._args.validate:
                 return self._validate_plugin(self._args.validate, ref)
+            elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
+                return self._show_manifest(self._args.manifest)
             else:
                 self._out.error('No action specified')
                 return ExitCode.ERROR
@@ -731,6 +733,106 @@ class PluginCLI:
         except Exception as e:
             self._out.error(f'Failed to search plugins: {e}')
             return ExitCode.ERROR
+
+    def _show_manifest(self, target):
+        """Show MANIFEST.toml template or from plugin."""
+        # No argument - show template
+        if not target:
+            template = '''# MANIFEST.toml Template
+# See https://picard-docs.musicbrainz.org/en/extending/plugins.html
+
+# Required fields
+name = "My Plugin Name"
+version = "1.0.0"
+description = "Short one-line description (1-200 characters)"
+api = ["3.0"]
+authors = ["Your Name"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+# Optional fields
+# long_description = """
+# Detailed multi-line description (1-2000 characters).
+# Explain features, requirements, usage notes, etc.
+# """
+# categories = ["metadata", "coverart", "ui", "scripting", "formats", "other"]
+# homepage = "https://github.com/username/plugin-name"
+# min_python_version = "3.9"
+
+# Translation tables (optional)
+# [name_i18n]
+# de = "Mein Plugin Name"
+# fr = "Mon nom de plugin"
+
+# [description_i18n]
+# de = "Kurze einzeilige Beschreibung"
+# fr = "Courte description sur une ligne"
+
+# [long_description_i18n]
+# de = """
+# Detaillierte mehrzeilige Beschreibung...
+# """
+# fr = """
+# Description détaillée sur plusieurs lignes...
+# """
+'''
+            self._out.print(template)
+            return ExitCode.SUCCESS
+
+        # Check if it's an installed plugin
+        plugin = self._find_plugin(target)
+        if plugin:
+            manifest_path = plugin.local_path / 'MANIFEST.toml'
+            if manifest_path.exists():
+                with open(manifest_path, 'r') as f:
+                    self._out.print(f.read())
+                return ExitCode.SUCCESS
+            else:
+                self._out.error(f'MANIFEST.toml not found for plugin {target}')
+                return ExitCode.ERROR
+
+        # Check if it's a local directory
+        from pathlib import Path
+
+        local_path = Path(target)
+        if local_path.is_dir():
+            manifest_path = local_path / 'MANIFEST.toml'
+            if manifest_path.exists():
+                with open(manifest_path, 'r') as f:
+                    self._out.print(f.read())
+                return ExitCode.SUCCESS
+            else:
+                self._out.error(f'MANIFEST.toml not found in {target}')
+                return ExitCode.ERROR
+
+        # Treat as git URL
+        import tempfile
+
+        temp_path = Path(tempfile.mkdtemp(prefix='picard-manifest-'))
+
+        try:
+            from picard.plugin3.plugin import PluginSourceGit
+
+            self._out.print(f'Fetching from {target}...')
+            source = PluginSourceGit(target, None)
+            source.sync(temp_path)
+
+            manifest_path = temp_path / 'MANIFEST.toml'
+            if manifest_path.exists():
+                with open(manifest_path, 'r') as f:
+                    self._out.print(f.read())
+                return ExitCode.SUCCESS
+            else:
+                self._out.error('MANIFEST.toml not found in repository')
+                return ExitCode.ERROR
+
+        except Exception as e:
+            self._out.error(f'Failed to fetch manifest: {e}')
+            return ExitCode.ERROR
+        finally:
+            import shutil
+
+            shutil.rmtree(temp_path, ignore_errors=True)
 
     def _get_trust_badge(self, trust_level):
         """Get badge emoji for trust level."""

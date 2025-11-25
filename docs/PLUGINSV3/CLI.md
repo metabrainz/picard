@@ -29,6 +29,11 @@ picard plugins --uninstall listenbrainz --purge  # Delete config too
 # Get info
 picard plugins --info listenbrainz
 
+# Show MANIFEST
+picard plugins --manifest                    # Template
+picard plugins --manifest listenbrainz       # From installed plugin
+picard plugins --manifest ~/dev/my-plugin    # From local directory
+
 # Browse/search (Phase 3)
 picard plugins --browse
 picard plugins --search "cover art"
@@ -158,6 +163,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--yes` / `-y` | ✅ Done | 1.3 | Skip confirmation prompts |
 | `--force-blacklisted` | ✅ Done | 1.8 | Override blacklist warning |
 | `--validate <url>` | ✅ Done | 2.1 | Validate plugin MANIFEST |
+| `--manifest [target]` | ✅ Done | 2.1 | Show MANIFEST.toml (template or from plugin) |
 | `--browse` | ⏳ TODO | 3.3 | Browse official plugins |
 | `--search <term>` | ⏳ TODO | 3.3 | Search official plugins |
 | `--check-blacklist <url>` | ⏳ TODO | 1.8 | Check if URL is blacklisted |
@@ -527,6 +533,79 @@ Cloning repository...
   • Field 'description' must be 1-200 characters (got 250)
   • Section 'name_i18n' is present but empty
 ```
+
+### Show MANIFEST
+
+**Command:** `picard plugins --manifest [plugin|path|url]`
+
+**Description:** Display MANIFEST.toml template or from a plugin
+
+**Use cases:**
+- Get a template for creating new plugins (no argument)
+- View MANIFEST from installed plugin
+- View MANIFEST from local plugin directory
+- View MANIFEST from remote git repository
+
+**Examples:**
+```bash
+# Show template (for creating new plugins)
+picard plugins --manifest
+
+# Show MANIFEST from installed plugin
+picard plugins --manifest listenbrainz
+
+# Show MANIFEST from local directory
+picard plugins --manifest ~/dev/my-plugin
+
+# Show MANIFEST from git repository
+picard plugins --manifest https://github.com/user/plugin
+```
+
+**Template output (no argument):**
+```toml
+# MANIFEST.toml Template
+# See https://picard-docs.musicbrainz.org/en/extending/plugins.html
+
+# Required fields
+name = "My Plugin Name"
+version = "1.0.0"
+description = "Short one-line description (1-200 characters)"
+api = ["3.0"]
+authors = ["Your Name"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+# Optional fields
+# long_description = """
+# Detailed multi-line description (1-2000 characters).
+# Explain features, requirements, usage notes, etc.
+# """
+# categories = ["metadata", "coverart", "ui", "scripting", "formats", "other"]
+# homepage = "https://github.com/username/plugin-name"
+# min_python_version = "3.9"
+
+# Translation tables (optional)
+# [name_i18n]
+# de = "Mein Plugin Name"
+# fr = "Mon nom de plugin"
+```
+
+**Plugin output (with argument):**
+```toml
+name = "ListenBrainz Submitter"
+version = "2.1.0"
+description = "Submit your music to ListenBrainz"
+long_description = """
+This plugin integrates with ListenBrainz...
+"""
+api = ["3.0", "3.1"]
+authors = ["MusicBrainz Picard Team"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+homepage = "https://github.com/metabrainz/picard-plugin-listenbrainz"
+categories = ["metadata"]
+```
+
 
 ### Update Workflow
 ```bash

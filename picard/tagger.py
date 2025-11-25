@@ -1462,6 +1462,9 @@ If a new instance will not be spawned files/directories will be passed to the ex
     plugin_parser.add_argument('--clean-config', metavar='PLUGIN', help="delete configuration for a plugin")
     plugin_parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
     plugin_parser.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")
+    plugin_parser.add_argument(
+        '--manifest', nargs='?', const='', metavar='PLUGIN', help="show MANIFEST.toml (template if no argument)"
+    )
     plugin_parser.add_argument('--browse', action='store_true', help="browse plugins from registry")
     plugin_parser.add_argument('--search', metavar='QUERY', help="search plugins in registry")
     plugin_parser.add_argument(
