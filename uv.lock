@@ -640,7 +640,7 @@ requires-dist = [
     { name = "discid", specifier = "~=1.0" },
     { name = "markdown", specifier = "~=3.2" },
     { name = "mutagen", specifier = "~=1.45" },
-    { name = "pygit2", specifier = "~=1.17" },
+    { name = "pygit2", specifier = "~=1.18" },
     { name = "pyjwt", specifier = "~=2.0" },
     { name = "pyobjc-core", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<12" },
     { name = "pyobjc-framework-cocoa", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<12" },
