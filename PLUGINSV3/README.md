@@ -145,7 +145,6 @@ To contribute to Plugin v3:
 - **Documentation:** https://picard-docs.musicbrainz.org/
 - **GitHub:** https://github.com/metabrainz/picard
 - **Forum:** https://community.metabrainz.org/c/picard
-- **IRC:** #musicbrainz-picard on Libera.Chat
 
 ---
 

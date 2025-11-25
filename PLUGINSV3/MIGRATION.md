@@ -430,7 +430,6 @@ picard plugins --uninstall example
 
 - **Documentation:** https://picard-docs.musicbrainz.org/
 - **Forum:** https://community.metabrainz.org/c/picard
-- **IRC:** #musicbrainz-picard on Libera.Chat
 - **GitHub:** https://github.com/metabrainz/picard
 
 ---
