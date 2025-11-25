@@ -450,9 +450,11 @@ class PluginManager:
         from picard.config import get_config
 
         config = get_config()
-        if 'plugins3' not in config.setting:
-            config.setting['plugins3'] = {}
-        config.setting['plugins3']['enabled_plugins'] = list(self._enabled_plugins)
+        plugins3_config = config.setting['plugins3']
+        if not isinstance(plugins3_config, dict):
+            plugins3_config = {}
+        plugins3_config['enabled_plugins'] = list(self._enabled_plugins)
+        config.setting['plugins3'] = plugins3_config
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
 
     def _get_plugin_metadata(self, plugin_name: str):
