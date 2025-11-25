@@ -167,6 +167,10 @@ class PluginManager:
             # Store plugin metadata
             self._save_plugin_metadata(plugin_id, url, source.ref, commit_id)
 
+            # Add newly installed plugin to the plugins list
+            plugin = Plugin(self._primary_plugin_dir, plugin_id)
+            self._plugins.append(plugin)
+
             return plugin_id
 
         except Exception:
@@ -231,6 +235,10 @@ class PluginManager:
 
         # Store metadata (use empty values for git-specific fields)
         self._save_plugin_metadata(plugin_id, str(local_path), '', '')
+
+        # Add newly installed plugin to the plugins list
+        plugin = Plugin(self._primary_plugin_dir, plugin_id)
+        self._plugins.append(plugin)
 
         log.info('Plugin %s installed from local directory %s', plugin_id, local_path)
         return plugin_id
