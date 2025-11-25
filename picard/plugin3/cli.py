@@ -154,6 +154,12 @@ class PluginCLI:
         git_info = self._format_git_info(metadata)
 
         self._out.print(f'Plugin: {plugin.manifest.name()}')
+
+        # Show short description on one line (required field)
+        desc = plugin.manifest.description()
+        if desc:
+            self._out.print(f'Description: {desc}')
+
         self._out.print(f'Status: {status}')
         self._out.print(f'Version: {plugin.manifest.version}{git_info}')
 
@@ -167,9 +173,10 @@ class PluginCLI:
         self._out.print(f'License URL: {plugin.manifest.license_url}')
         self._out.print(f'Path: {plugin.local_path}')
 
-        desc = plugin.manifest.description()
-        if desc:
-            self._out.print(f'\nDescription:\n  {desc}')
+        # Show long description at the end if available
+        long_desc = plugin.manifest.long_description()
+        if long_desc:
+            self._out.print(f'\n{long_desc}')
 
         return ExitCode.SUCCESS
 
