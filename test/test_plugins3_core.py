@@ -44,7 +44,7 @@ class TestPluginManifest(PicardTestCase):
     def test_load_from_toml(self):
         manifest = load_plugin_manifest('example')
         self.assertEqual(manifest.module_name, 'example')
-        self.assertEqual(manifest.name, 'Example plugin')
+        self.assertEqual(manifest.name(), 'Example plugin')
         self.assertEqual(manifest.authors, ('Philipp Wolfer',))
         self.assertEqual(manifest.description(), "This is an example plugin")
         self.assertEqual(manifest.description('en'), "This is an example plugin")
@@ -59,11 +59,53 @@ class TestPluginManifest(PicardTestCase):
         """Test manifest description with missing translation."""
         manifest = load_plugin_manifest('example')
 
-        # Request non-existent language, should fallback to default (English)
-        desc = manifest.description('de')
-        # Should return English as fallback
-        self.assertIsNotNone(desc)
-        self.assertIsInstance(desc, str)
+        # Request German translation (exists)
+        desc_de = manifest.description('de')
+        self.assertEqual(desc_de, "Dies ist ein Beispiel-Plugin")
+
+        # Request non-existent language, should fallback to English
+        desc_it = manifest.description('it')
+        self.assertEqual(desc_it, "This is an example plugin")
+
+    def test_manifest_name_translation(self):
+        """Test manifest name translation."""
+        manifest = load_plugin_manifest('example')
+
+        # English (default)
+        self.assertEqual(manifest.name('en'), 'Example plugin')
+
+        # German translation
+        self.assertEqual(manifest.name('de'), 'Beispiel-Plugin')
+
+        # French translation
+        self.assertEqual(manifest.name('fr'), 'Plugin d\'exemple')
+
+        # Non-existent translation falls back to base
+        self.assertEqual(manifest.name('it'), 'Example plugin')
+
+    def test_manifest_locale_with_region(self):
+        """Test locale with region code (e.g., de_DE) falls back to language (de)."""
+        manifest = load_plugin_manifest('example')
+
+        # de_DE should fall back to de
+        self.assertEqual(manifest.name('de_DE'), 'Beispiel-Plugin')
+        self.assertEqual(manifest.description('de_AT'), "Dies ist ein Beispiel-Plugin")
+
+    def test_manifest_long_description(self):
+        """Test long_description field and translation."""
+        manifest = load_plugin_manifest('example')
+
+        # English long description
+        long_desc = manifest.long_description('en')
+        self.assertIn('detailed', long_desc.lower())
+
+        # German long description
+        long_desc_de = manifest.long_description('de')
+        self.assertIn('ausführlich', long_desc_de.lower())
+
+        # Non-existent translation falls back to English
+        long_desc_it = manifest.long_description('it')
+        self.assertEqual(long_desc_it, long_desc)
 
     def test_manifest_properties(self):
         """Test manifest property accessors."""
@@ -71,7 +113,7 @@ class TestPluginManifest(PicardTestCase):
 
         # Test all properties are accessible
         self.assertIsNotNone(manifest.module_name)
-        self.assertIsNotNone(manifest.name)
+        self.assertIsNotNone(manifest.name())
         self.assertIsNotNone(manifest.authors)
         self.assertIsNotNone(manifest.version)
         self.assertIsNotNone(manifest.api_versions)
@@ -188,7 +230,7 @@ class TestPluginManager(PicardTestCase):
 
         self.assertIsNotNone(plugin)
         self.assertEqual(plugin.name, 'example')
-        self.assertEqual(plugin.manifest.name, 'Example plugin')
+        self.assertEqual(plugin.manifest.name(), 'Example plugin')
 
     def test_api_version_compatibility_incompatible_old(self):
         """Test that plugins with old incompatible API versions are rejected."""

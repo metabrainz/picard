@@ -328,7 +328,7 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
             plugin.read_manifest()
 
             self.assertIsNotNone(plugin.manifest)
-            self.assertEqual(plugin.manifest.name, "Test Plugin")
+            self.assertEqual(plugin.manifest.name(), "Test Plugin")
             self.assertEqual(plugin.manifest.authors, ("Test Author",))
             self.assertEqual(str(plugin.manifest.version), "1.0.0.final0")
             self.assertEqual(plugin.manifest.description('en'), "A test plugin")

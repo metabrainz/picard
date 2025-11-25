@@ -41,23 +41,43 @@ class PluginManifest:
         self.module_name = module_name
         self._data = load_toml(manifest_fp)
 
-    @property
-    def name(self) -> str:
-        return self._data.get('name')
+    def name(self, locale: str = 'en') -> str:
+        """Get plugin name, optionally translated."""
+        i18n = self._data.get('name_i18n') or {}
+        if locale in i18n:
+            return i18n[locale]
+        # Try language without region (e.g., 'de' from 'de_DE')
+        lang = locale.split('_')[0]
+        if lang in i18n:
+            return i18n[lang]
+        return self._data.get('name', '')
 
     @property
     def authors(self) -> Tuple[str]:
         authors = self._data.get('authors', [])
         return tuple(authors) if authors else tuple()
 
-    def description(self, preferred_language: str = 'en') -> str:
-        # Try i18n first, fall back to base description
+    def description(self, locale: str = 'en') -> str:
+        """Get short description, optionally translated."""
         i18n = self._data.get('description_i18n') or {}
-        if preferred_language in i18n:
-            return i18n[preferred_language]
-        if 'en' in i18n:
-            return i18n['en']
+        if locale in i18n:
+            return i18n[locale]
+        # Try language without region
+        lang = locale.split('_')[0]
+        if lang in i18n:
+            return i18n[lang]
         return self._data.get('description', '')
+
+    def long_description(self, locale: str = 'en') -> str:
+        """Get long description, optionally translated."""
+        i18n = self._data.get('long_description_i18n') or {}
+        if locale in i18n:
+            return i18n[locale]
+        # Try language without region
+        lang = locale.split('_')[0]
+        if lang in i18n:
+            return i18n[lang]
+        return self._data.get('long_description', '')
 
     @property
     def version(self) -> Version:

@@ -122,7 +122,7 @@ class TestPluginState(PicardTestCase):
         plugin.read_manifest()
 
         self.assertIsNotNone(plugin.manifest)
-        self.assertEqual(plugin.manifest.name, 'Example plugin')
+        self.assertEqual(plugin.manifest.name(), 'Example plugin')
 
     def test_plugin_initial_state(self):
         """Test that new Plugin starts in DISCOVERED state."""
