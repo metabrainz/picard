@@ -21,6 +21,7 @@
 from enum import IntEnum
 
 from picard.plugin3.output import PluginOutput
+from picard.plugin3.plugin import short_commit_id
 
 
 class ExitCode(IntEnum):
@@ -106,7 +107,7 @@ class PluginCLI:
         if not commit:
             return ''
 
-        commit_short = commit[:7]
+        commit_short = short_commit_id(commit)
         if ref:
             return f' ({ref} @{commit_short})'
         return f' (@{commit_short})'
@@ -195,7 +196,7 @@ class PluginCLI:
             self._out.print(f'Git ref: {metadata.get("ref", "N/A")}')
             commit = metadata.get('commit', 'N/A')
             if commit != 'N/A':
-                commit = commit[:7]
+                commit = short_commit_id(commit)
             self._out.print(f'Commit: {commit}')
 
         return ExitCode.SUCCESS
@@ -342,7 +343,7 @@ class PluginCLI:
                     self._out.info(f'Already up to date (version {new_ver})')
                 else:
                     self._out.success(f'Updated: {old_ver} → {new_ver}')
-                    self._out.info(f'Commit: {old_commit[:7]} → {new_commit[:7]}')
+                    self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
                 self._out.error(f'Failed to update plugin: {e}')
@@ -368,7 +369,9 @@ class PluginCLI:
                     self._out.info(f'{name}: Already up to date ({new_ver})')
                     unchanged += 1
                 else:
-                    self._out.success(f'{name}: {old_ver} → {new_ver} ({old_commit[:7]} → {new_commit[:7]})')
+                    self._out.success(
+                        f'{name}: {old_ver} → {new_ver} ({short_commit_id(old_commit)} → {short_commit_id(new_commit)})'
+                    )
                     updated += 1
             else:
                 self._out.error(f'{name}: {error}')
@@ -411,7 +414,7 @@ class PluginCLI:
             old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
 
             self._out.success(f'Switched: {old_ref} → {new_ref}')
-            self._out.info(f'Commit: {old_commit[:7]} → {new_commit[:7]}')
+            self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
             self._out.info('Restart Picard to load the updated plugin')
         except Exception as e:
             self._out.error(f'Failed to switch ref: {e}')

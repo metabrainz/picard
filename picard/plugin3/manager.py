@@ -30,6 +30,7 @@ from picard import (
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
+    short_commit_id,
 )
 
 
@@ -355,7 +356,7 @@ class PluginManager:
                 repo.free()
 
                 if current_commit != latest_commit:
-                    updates.append((plugin.name, current_commit[:7], latest_commit[:7]))
+                    updates.append((plugin.name, short_commit_id(current_commit), short_commit_id(latest_commit)))
             except Exception:
                 pass
 
@@ -528,7 +529,7 @@ class PluginManager:
             plugin_name,
             url,
             ref,
-            commit_id[:7] if commit_id else None,
+            short_commit_id(commit_id) if commit_id else None,
         )
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):

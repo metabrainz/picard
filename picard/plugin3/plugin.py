@@ -38,6 +38,17 @@ except ImportError:
     pygit2 = None
 
 
+def short_commit_id(commit_id):
+    """Return shortened commit ID for display.
+
+    Uses first 7 characters by default. Can be adjusted for future
+    git versions that use longer hashes (e.g., SHA-256).
+    """
+    if not commit_id:
+        return ''
+    return commit_id[:7]
+
+
 class PluginState(Enum):
     """Plugin lifecycle states."""
 
@@ -110,7 +121,7 @@ class PluginSourceGit(PluginSource):
             commit = repo.revparse_single('HEAD')
             # Get the branch name that HEAD points to
             if repo.head_is_detached:
-                self.resolved_ref = str(commit.id)[:7]
+                self.resolved_ref = short_commit_id(str(commit.id))
             else:
                 # Get branch name from HEAD
                 head_ref = repo.head.name
