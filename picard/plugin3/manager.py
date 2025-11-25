@@ -203,8 +203,8 @@ class PluginManager:
         # Check if local directory is a git repository
         is_git_repo = (local_path / '.git').exists()
 
-        if is_git_repo and ref:
-            # Use git operations to clone with specific ref
+        if is_git_repo:
+            # Use git operations to get ref and commit info
             url_hash = hashlib.md5(str(local_path).encode()).hexdigest()[:8]
             temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
 
@@ -212,7 +212,7 @@ class PluginManager:
                 source = PluginSourceGit(str(local_path), ref)
                 commit_id = source.sync(temp_path)
                 install_path = temp_path
-                ref_to_save = ref
+                ref_to_save = source.ref  # Will be 'main' if ref was None
                 commit_to_save = commit_id
             except Exception:
                 # Clean up temp directory on failure
@@ -223,7 +223,7 @@ class PluginManager:
                     shutil.rmtree(temp_path, ignore_errors=True)
                 raise
         else:
-            # Direct copy for non-git or no ref specified
+            # Direct copy for non-git directories
             install_path = local_path
             ref_to_save = ''
             commit_to_save = ''
@@ -262,11 +262,11 @@ class PluginManager:
             shutil.rmtree(final_path)
 
         # Copy to plugin directory
-        if is_git_repo and ref:
-            # Move from temp location
+        if is_git_repo:
+            # Move from temp location (git repo was cloned to temp)
             shutil.move(str(install_path), str(final_path))
         else:
-            # Copy from local directory
+            # Copy from local directory (non-git)
             shutil.copytree(install_path, final_path)
 
         # Store metadata
