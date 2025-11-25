@@ -143,7 +143,16 @@ class PluginSourceGit(PluginSource):
                         commit = repo.revparse_single(branch_name)
                         self.resolved_ref = branch_name
                     else:
-                        raise PluginSourceSyncError('No branches found in repository') from None
+                        # Last resort: find any reference
+                        refs = repo.listall_references()
+                        for ref in refs:
+                            if ref.startswith('refs/heads/'):
+                                branch_name = ref[11:]  # Remove 'refs/heads/' prefix
+                                commit = repo.revparse_single(ref)
+                                self.resolved_ref = branch_name
+                                break
+                        else:
+                            raise PluginSourceSyncError('No branches found in repository') from None
 
         # hard reset to passed ref or HEAD
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
