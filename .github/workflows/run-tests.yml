@@ -32,6 +32,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install libegl1
+    - name: Install libgit2 (macOS)
+      if: runner.os == 'macOS'
+      run: brew install libgit2
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -89,7 +92,7 @@ jobs:
       if: runner.os == 'linux'
       run: |
         sudo apt-get update
-        sudo apt-get install libdiscid-dev libegl1
+        sudo apt-get install libdiscid-dev libegl1 libgit2-dev
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -119,7 +122,10 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install gettext libegl1
+        sudo apt-get install gettext libegl1 libgit2-dev
+    - name: Install libgit2 (macOS)
+      if: runner.os == 'macOS'
+      run: brew install libgit2
     - name: Install gettext (Windows)
       if: runner.os == 'Windows'
       run: |
