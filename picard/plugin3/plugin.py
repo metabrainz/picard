@@ -103,6 +103,7 @@ class PluginSourceGit(PluginSource):
                 else:
                     # Try with 'origin/' prefix
                     commit = repo.revparse_single(f'origin/{self.ref}')
+                    # Save the actual ref that worked
                     self.resolved_ref = f'origin/{self.ref}'
         else:
             # Use repository's default branch (HEAD)

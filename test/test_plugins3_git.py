@@ -277,7 +277,7 @@ def disable():
             self.assertEqual(plugin_id, "test_plugin")
             self.assertTrue((manager._primary_plugin_dir / "test_plugin" / "dev.txt").exists())
 
-            # Verify ref was stored
+            # Verify ref was stored (should be the actual ref that resolved)
             metadata = manager._get_plugin_metadata("test_plugin")
             self.assertEqual(metadata['ref'], 'origin/dev')
 
