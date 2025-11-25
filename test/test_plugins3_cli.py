@@ -340,8 +340,11 @@ class TestPluginCLI(PicardTestCase):
         args.update = None
         args.update_all = False
         args.check_updates = False
+        args.browse = False
+        args.search = None
         args.switch_ref = None
         args.clean_config = 'test-plugin'
+        args.validate = None
         args.yes = True
 
         stdout = StringIO()
@@ -470,3 +473,174 @@ class TestPluginCLI(PicardTestCase):
 
         self.assertEqual(result, 130)  # CANCELLED
         self.assertIn('cancelled', stderr.getvalue().lower())
+
+    def test_browse_plugins_command(self):
+        """Test --browse command."""
+        from unittest.mock import Mock
+
+        from picard.plugin3.cli import (
+            ExitCode,
+            PluginCLI,
+        )
+
+        mock_tagger = Mock()
+        mock_tagger.pluginmanager3._registry.list_plugins.return_value = [
+            {
+                'id': 'plugin1',
+                'name': 'Plugin 1',
+                'description': 'Test plugin 1',
+                'trust_level': 'official',
+                'categories': ['metadata'],
+            },
+            {
+                'id': 'plugin2',
+                'name': 'Plugin 2',
+                'description': 'Test plugin 2',
+                'trust_level': 'trusted',
+                'categories': ['coverart'],
+            },
+        ]
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.browse = True
+        args.search = None
+        args.category = None
+        args.trust = None
+
+        cli = PluginCLI(mock_tagger, args)
+        exit_code = cli.run()
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        mock_tagger.pluginmanager3._registry.list_plugins.assert_called_once_with(category=None, trust_level=None)
+
+    def test_browse_plugins_with_filters(self):
+        """Test --browse with category and trust filters."""
+        from unittest.mock import Mock
+
+        from picard.plugin3.cli import (
+            ExitCode,
+            PluginCLI,
+        )
+
+        mock_tagger = Mock()
+        mock_tagger.pluginmanager3._registry.list_plugins.return_value = [
+            {
+                'id': 'plugin1',
+                'name': 'Plugin 1',
+                'description': 'Test',
+                'trust_level': 'official',
+                'categories': ['metadata'],
+            },
+        ]
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.browse = True
+        args.search = None
+        args.category = 'metadata'
+        args.trust = 'official'
+
+        cli = PluginCLI(mock_tagger, args)
+        exit_code = cli.run()
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        mock_tagger.pluginmanager3._registry.list_plugins.assert_called_once_with(
+            category='metadata', trust_level='official'
+        )
+
+    def test_search_plugins_command(self):
+        """Test --search command."""
+        from unittest.mock import Mock
+
+        from picard.plugin3.cli import (
+            ExitCode,
+            PluginCLI,
+        )
+
+        mock_tagger = Mock()
+        mock_tagger.pluginmanager3._registry.list_plugins.return_value = [
+            {
+                'id': 'listenbrainz',
+                'name': 'ListenBrainz',
+                'description': 'Submit to ListenBrainz',
+                'trust_level': 'official',
+            },
+            {'id': 'discogs', 'name': 'Discogs', 'description': 'Discogs metadata', 'trust_level': 'trusted'},
+        ]
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.browse = False
+        args.search = 'listen'
+
+        cli = PluginCLI(mock_tagger, args)
+        exit_code = cli.run()
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+
+    def test_install_by_plugin_id(self):
+        """Test installing plugin by ID from registry."""
+        from unittest.mock import Mock
+
+        from picard.plugin3.cli import (
+            ExitCode,
+            PluginCLI,
+        )
+
+        mock_tagger = Mock()
+        mock_tagger.pluginmanager3._registry.find_plugin.return_value = {
+            'id': 'test-plugin',
+            'name': 'Test Plugin',
+            'git_url': 'https://github.com/test/plugin',
+        }
+        mock_tagger.pluginmanager3.install_plugin.return_value = 'test-plugin'
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = ['test-plugin']
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.ref = None
+        args.reinstall = False
+        args.force_blacklisted = False
+
+        cli = PluginCLI(mock_tagger, args)
+        exit_code = cli.run()
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        mock_tagger.pluginmanager3._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
+        mock_tagger.pluginmanager3.install_plugin.assert_called_once()

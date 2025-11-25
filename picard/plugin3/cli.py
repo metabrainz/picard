@@ -63,6 +63,10 @@ class PluginCLI:
                 return self._update_all_plugins()
             elif self._args.check_updates:
                 return self._check_updates()
+            elif hasattr(self._args, 'browse') and self._args.browse:
+                return self._browse_plugins()
+            elif hasattr(self._args, 'search') and self._args.search:
+                return self._search_plugins(self._args.search)
             elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
                 return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             elif hasattr(self._args, 'clean_config') and self._args.clean_config:
@@ -158,7 +162,7 @@ class PluginCLI:
         return ExitCode.SUCCESS
 
     def _install_plugins(self, plugin_urls):
-        """Install plugins from URLs."""
+        """Install plugins from URLs or plugin IDs."""
         ref = getattr(self._args, 'ref', None)
         reinstall = getattr(self._args, 'reinstall', False)
         force_blacklisted = getattr(self._args, 'force_blacklisted', False)
@@ -166,12 +170,27 @@ class PluginCLI:
         if force_blacklisted:
             self._out.warning('WARNING: Bypassing blacklist check - this may be dangerous!')
 
-        for url in plugin_urls:
+        for url_or_id in plugin_urls:
             try:
+                # Check if it's a plugin ID (no slashes, no protocol)
+                if '/' not in url_or_id and '://' not in url_or_id:
+                    # Try to find in registry
+                    plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
+                    if plugin:
+                        url = plugin['git_url']
+                        self._out.print(f'Found {plugin["name"]} in registry')
+                        self._out.print(f'Installing from {url}...')
+                    else:
+                        self._out.error(f'Plugin "{url_or_id}" not found in registry')
+                        return ExitCode.NOT_FOUND
+                else:
+                    url = url_or_id
+
                 if ref:
                     self._out.print(f'Installing plugin from {url} (ref: {ref})...')
                 else:
                     self._out.print(f'Installing plugin from {url}...')
+
                 plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
                 self._out.success(f'Plugin {plugin_id} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
@@ -432,3 +451,92 @@ class PluginCLI:
             import shutil
 
             shutil.rmtree(temp_path, ignore_errors=True)
+
+    def _browse_plugins(self):
+        """Browse plugins from registry."""
+        category = getattr(self._args, 'category', None)
+        trust_level = getattr(self._args, 'trust', None)
+
+        try:
+            plugins = self._manager._registry.list_plugins(category=category, trust_level=trust_level)
+
+            if not plugins:
+                self._out.print('No plugins found in registry')
+                return ExitCode.SUCCESS
+
+            # Show header
+            filters = []
+            if category:
+                filters.append(f'category: {category}')
+            if trust_level:
+                filters.append(f'trust: {trust_level}')
+
+            if filters:
+                self._out.print(f'Registry plugins ({", ".join(filters)}):\n')
+            else:
+                self._out.print('Registry plugins:\n')
+
+            # Show plugins
+            for plugin in plugins:
+                trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
+                self._out.print(f'{trust_badge} {plugin["id"]} - {plugin["name"]}')
+                self._out.info(f'  {plugin.get("description", "")}')
+                categories = plugin.get('categories', [])
+                if categories:
+                    self._out.info(f'  Categories: {", ".join(categories)}')
+                self._out.print('')
+
+            self._out.print(f'Total: {len(plugins)} plugin(s)')
+            self._out.print('\nInstall with: picard plugins --install <plugin-id>')
+
+            return ExitCode.SUCCESS
+
+        except Exception as e:
+            self._out.error(f'Failed to browse plugins: {e}')
+            return ExitCode.ERROR
+
+    def _search_plugins(self, query):
+        """Search plugins in registry."""
+        try:
+            plugins = self._manager._registry.list_plugins()
+
+            # Filter by query (case-insensitive search in name and description)
+            query_lower = query.lower()
+            results = []
+            for plugin in plugins:
+                name = plugin.get('name', '').lower()
+                description = plugin.get('description', '').lower()
+                plugin_id = plugin.get('id', '').lower()
+
+                if query_lower in name or query_lower in description or query_lower in plugin_id:
+                    results.append(plugin)
+
+            if not results:
+                self._out.print(f'No plugins found matching "{query}"')
+                return ExitCode.SUCCESS
+
+            self._out.print(f'Found {len(results)} plugin(s) matching "{query}":\n')
+
+            for plugin in results:
+                trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
+                self._out.print(f'{trust_badge} {plugin["id"]} - {plugin["name"]}')
+                self._out.info(f'  {plugin.get("description", "")}')
+                self._out.print('')
+
+            self._out.print('Install with: picard plugins --install <plugin-id>')
+
+            return ExitCode.SUCCESS
+
+        except Exception as e:
+            self._out.error(f'Failed to search plugins: {e}')
+            return ExitCode.ERROR
+
+    def _get_trust_badge(self, trust_level):
+        """Get badge emoji for trust level."""
+        badges = {
+            'official': '🛡️',
+            'trusted': '✓',
+            'community': '⚠️',
+            'unregistered': '🔓',
+        }
+        return badges.get(trust_level, '?')

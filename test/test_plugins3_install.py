@@ -182,6 +182,10 @@ class TestPluginInstall(PicardTestCase):
         args.update = None
         args.update_all = False
         args.check_updates = False
+        args.browse = False
+        args.search = None
+        args.clean_config = None
+        args.validate = None
         args.switch_ref = ['test-plugin', 'v1.0.0']
 
         stdout = StringIO()
@@ -221,6 +225,10 @@ class TestPluginInstall(PicardTestCase):
         args.update = None
         args.update_all = False
         args.check_updates = False
+        args.browse = False
+        args.search = None
+        args.clean_config = None
+        args.validate = None
         args.switch_ref = ['nonexistent', 'v1.0.0']
 
         stderr = StringIO()
