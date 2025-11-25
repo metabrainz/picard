@@ -535,6 +535,19 @@ class PluginCLI:
                 if manifest.license_url:
                     self._out.info(f'  License URL: {manifest.license_url}')
 
+                # Show optional fields
+                categories = manifest._data.get('categories', [])
+                if categories:
+                    self._out.info(f'  Categories: {", ".join(categories)}')
+
+                homepage = manifest._data.get('homepage')
+                if homepage:
+                    self._out.info(f'  Homepage: {homepage}')
+
+                min_python = manifest._data.get('min_python_version')
+                if min_python:
+                    self._out.info(f'  Min Python version: {min_python}')
+
                 return ExitCode.SUCCESS
 
             except Exception as e:
@@ -611,6 +624,19 @@ class PluginCLI:
             # Show license URL if available
             if manifest.license_url:
                 self._out.info(f'  License URL: {manifest.license_url}')
+
+            # Show optional fields
+            categories = manifest._data.get('categories', [])
+            if categories:
+                self._out.info(f'  Categories: {", ".join(categories)}')
+
+            homepage = manifest._data.get('homepage')
+            if homepage:
+                self._out.info(f'  Homepage: {homepage}')
+
+            min_python = manifest._data.get('min_python_version')
+            if min_python:
+                self._out.info(f'  Min Python version: {min_python}')
 
             return ExitCode.SUCCESS
 
