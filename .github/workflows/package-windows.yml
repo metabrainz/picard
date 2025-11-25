@@ -55,6 +55,8 @@ jobs:
     - name: Install libgit2
       run: |
         choco install libgit2 -y
+        Write-Host "Checking libgit2 installation..."
+        Get-ChildItem "C:\ProgramData\chocolatey\lib\libgit2" -Recurse | Where-Object { $_.Name -like "*.h" -or $_.Name -like "*.lib" } | Select-Object FullName
         $libgit2Path = "C:\ProgramData\chocolatey\lib\libgit2"
         echo "INCLUDE=$libgit2Path\include;$env:INCLUDE" >> $env:GITHUB_ENV
         echo "LIB=$libgit2Path\lib;$env:LIB" >> $env:GITHUB_ENV
