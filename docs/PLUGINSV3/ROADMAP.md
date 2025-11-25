@@ -582,17 +582,25 @@ See [REGISTRY.md](REGISTRY.md) for client integration details.
 
 ---
 
-### 3.3 Enhanced CLI Commands
+### 3.3 Enhanced CLI Commands ✅ COMPLETE
 
 **Priority:** P2 - Medium
-**Effort:** 2 days
+**Effort:** 2 days (Actual: 1 day)
+**Status:** ✅ Complete
 
 **Tasks:**
-- [ ] Add `--browse` command to list official plugins
-- [ ] Add `--search <query>` command
-- [ ] Add `--install <plugin-id>` (install by name from registry)
-- [ ] Add `--filter` options (category, trust level)
-- [ ] Show plugin ratings/downloads if available
+- [x] Add `--browse` command to list official plugins
+- [x] Add `--search <query>` command
+- [x] Add `--install <plugin-id>` (install by name from registry)
+- [x] Add `--filter` options (category, trust level)
+- [ ] Show plugin ratings/downloads if available (not available yet)
+
+**Implementation notes:**
+- --browse lists plugins with optional --category and --trust filters
+- --search performs case-insensitive search in name/description/ID
+- --install now accepts plugin IDs and looks them up in registry
+- Trust level badges: 🛡️ official, ✓ trusted, ⚠️ community, 🔓 unregistered
+- 89 tests passing (85 + 4 new CLI tests)
 
 See [CLI.md](CLI.md) for command specifications.
 
