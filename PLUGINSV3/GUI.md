@@ -29,13 +29,13 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 │ Installed Plugins             │ Plugin Details                      │
 │                               │                                     │
 │ [x] ListenBrainz (Official)   │ ListenBrainz Submitter              │
-│     v2.1.0 (Update available) │                                     │
+│     abc123 (Update available) │                                     │
 │                               │ Submit your music to ListenBrainz   │
 │ [ ] Discogs (Trusted)         │                                     │
-│     v1.8.0                    │ Version: 2.1.0 (2.2.0 available)    │
+│     v1.8.0                    │ Ref: abc123 (def456 available)      │
 │                               │ Authors: MusicBrainz Picard Team    │
 │ [x] Custom Tagger (Community) │ Trust: Official                     │
-│     v0.5.0                    │ Category: metadata                  │
+│     main @ 7d8e9f             │ Category: metadata                  │
 │                               │ License: GPL-2.0-or-later           │
 │ [+ Install Plugin]            │                                     │
 │                               │ This plugin integrates with         │
@@ -90,7 +90,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 │ ┌───────────────────────────────────────────────────────────────┐   │
 │ │ ListenBrainz Submitter                      [Installed]       │   │
 │ │ Submit your music to ListenBrainz                             │   │
-│ │ v2.1.0 - metadata                                             │   │
+│ │ abc123 - metadata                                             │   │
 │ ├───────────────────────────────────────────────────────────────┤   │
 │ │ AcoustID                                    [Install]         │   │
 │ │ Identify files using audio fingerprints                       │   │
@@ -135,7 +135,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 
 **Displays:**
 - Plugin name with trust level label (Official/Trusted/Community/Unregistered)
-- Version number
+- Git ref (commit hash, tag, or branch@commit)
 - Enabled/disabled checkbox
 - Update indicator if available
 - Sorted by: enabled first, then alphabetically
@@ -159,7 +159,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 - Plugin name with trust level badge
 - Short description
 - Long description (if available)
-- Version (current and available)
+- Git ref (current and available)
 - Authors
 - Trust level
 - Category
@@ -167,7 +167,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 - Repository link
 
 **Actions:**
-- [Update] - Update to latest version
+- [Update] - Update to latest ref
 - [Configure] - Open plugin settings (if available)
 - [Uninstall] - Remove plugin
 - [View Repository] - Open in browser
@@ -242,7 +242,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 |--------|----------|-------|
 | Browse registry | `registry.list_plugins()` | Fetch from cache |
 | Search plugins | `registry.search(query)` | Local search |
-| Check updates | `registry.check_updates()` | Compare versions |
+| Check updates | `registry.check_updates()` | Compare git refs |
 | Refresh registry | `registry.refresh()` | Download latest |
 
 ### Information Display
@@ -252,7 +252,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 | Plugin list | `manager.plugins` | Installed plugins |
 | Plugin details | `plugin.manifest` | From MANIFEST.toml |
 | Trust level | `registry.get_trust_level()` | From registry |
-| Update available | `registry.get_latest_version()` | Compare with installed |
+| Update available | `registry.get_latest_ref()` | Compare with installed |
 | Blacklist status | `registry.is_blacklisted()` | Check before install |
 
 ---
@@ -268,7 +268,6 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 │                                                                     │
 │ Updates:                                                            │
 │ [x] Check for plugin updates on startup                             │
-│ [ ] Include pre-release versions                                    │
 │ [ ] Automatically download updates                                  │
 │                                                                     │
 │ Security:                                                           │
@@ -405,13 +404,13 @@ This plugin is blacklisted for security reasons:
 Do not install this plugin.
 ```
 
-**Incompatible Version:**
+**Incompatible API Version:**
 ```
 Incompatible Plugin
 This plugin requires API version 3.2
 Your Picard version supports API 3.0-3.1
 
-Update Picard or find a compatible plugin version.
+Update Picard or find a compatible plugin ref.
 ```
 
 **Install Failed:**
