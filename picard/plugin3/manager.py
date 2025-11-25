@@ -96,7 +96,7 @@ class PluginManager:
         # Check if url is a local directory
         local_path = Path(url)
         if local_path.is_dir():
-            return self._install_from_local_directory(local_path, reinstall, force_blacklisted)
+            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
 
         # Handle git URL
         # Check blacklist before installing
@@ -184,21 +184,52 @@ class PluginManager:
                 shutil.rmtree(temp_path, ignore_errors=True)
             raise
 
-    def _install_from_local_directory(self, local_path: Path, reinstall=False, force_blacklisted=False):
+    def _install_from_local_directory(self, local_path: Path, reinstall=False, force_blacklisted=False, ref=None):
         """Install a plugin from a local directory.
 
         Args:
             local_path: Path to local plugin directory
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
+            ref: Git ref to checkout if local_path is a git repository
 
         Returns:
             str: Plugin ID
         """
+        import hashlib
         import shutil
+        import tempfile
+
+        # Check if local directory is a git repository
+        is_git_repo = (local_path / '.git').exists()
+
+        if is_git_repo and ref:
+            # Use git operations to clone with specific ref
+            url_hash = hashlib.md5(str(local_path).encode()).hexdigest()[:8]
+            temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
+
+            try:
+                source = PluginSourceGit(str(local_path), ref)
+                commit_id = source.sync(temp_path)
+                install_path = temp_path
+                ref_to_save = ref
+                commit_to_save = commit_id
+            except Exception:
+                # Clean up temp directory on failure
+                if temp_path.exists():
+                    import gc
+
+                    gc.collect()
+                    shutil.rmtree(temp_path, ignore_errors=True)
+                raise
+        else:
+            # Direct copy for non-git or no ref specified
+            install_path = local_path
+            ref_to_save = ''
+            commit_to_save = ''
 
         # Read MANIFEST to get plugin ID
-        manifest_path = local_path / 'MANIFEST.toml'
+        manifest_path = install_path / 'MANIFEST.toml'
         if not manifest_path.exists():
             raise ValueError(f'No MANIFEST.toml found in {local_path}')
 
@@ -231,10 +262,15 @@ class PluginManager:
             shutil.rmtree(final_path)
 
         # Copy to plugin directory
-        shutil.copytree(local_path, final_path)
+        if is_git_repo and ref:
+            # Move from temp location
+            shutil.move(str(install_path), str(final_path))
+        else:
+            # Copy from local directory
+            shutil.copytree(install_path, final_path)
 
-        # Store metadata (use empty values for git-specific fields)
-        self._save_plugin_metadata(plugin_id, str(local_path), '', '')
+        # Store metadata
+        self._save_plugin_metadata(plugin_id, str(local_path), ref_to_save, commit_to_save)
 
         # Add newly installed plugin to the plugins list
         plugin = Plugin(self._primary_plugin_dir, plugin_id)
@@ -468,7 +504,12 @@ class PluginManager:
         from picard.config import get_config
 
         config = get_config()
-        metadata = config.setting.get('plugins3', {}).get('metadata', {})
+        if 'plugins3' not in config.setting:
+            return {}
+        plugins3 = config.setting['plugins3']
+        if 'metadata' not in plugins3:
+            return {}
+        metadata = plugins3['metadata']
         return metadata.get(plugin_name, {})
 
     def _save_plugin_metadata(self, plugin_name: str, url: str, ref: str, commit_id: str):
@@ -476,12 +517,12 @@ class PluginManager:
         from picard.config import get_config
 
         config = get_config()
-        if 'plugins3' not in config.setting:
-            config.setting['plugins3'] = {}
-        if 'metadata' not in config.setting['plugins3']:
-            config.setting['plugins3']['metadata'] = {}
+        plugins3 = config.setting['plugins3'] if 'plugins3' in config.setting else {}
+        if 'metadata' not in plugins3:
+            plugins3['metadata'] = {}
 
-        config.setting['plugins3']['metadata'][plugin_name] = {'url': url, 'ref': ref, 'commit': commit_id}
+        plugins3['metadata'][plugin_name] = {'url': url, 'ref': ref, 'commit': commit_id}
+        config.setting['plugins3'] = plugins3  # Reassign to persist
         log.debug(
             'Saved metadata for plugin %s: url=%s, ref=%s, commit=%s',
             plugin_name,

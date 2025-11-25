@@ -83,27 +83,26 @@ class PluginSourceGit(PluginSource):
 
     def sync(self, target_directory: Path):
         if target_directory.is_dir():
-            print(f'{target_directory} exists, fetch changes')
             repo = pygit2.Repository(target_directory.absolute())
             for remote in repo.remotes:
                 remote.fetch(callbacks=GitRemoteCallbacks())
         else:
-            print(f'Cloning {self.url} to {target_directory}')
             repo = pygit2.clone_repository(self.url, target_directory.absolute(), callbacks=GitRemoteCallbacks())
-            print(list(repo.references))
-            print(list(repo.branches))
-            print(list(repo.remotes))
 
         if self.ref:
             try:
                 commit = repo.revparse_single(self.ref)
             except KeyError:
-                commit = repo.revparse_single(f'origin/{self.ref}')
+                # If ref starts with 'origin/', try without it
+                if self.ref.startswith('origin/'):
+                    ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
+                    commit = repo.revparse_single(ref_without_origin)
+                else:
+                    # Try with 'origin/' prefix
+                    commit = repo.revparse_single(f'origin/{self.ref}')
         else:
             commit = repo.revparse_single('HEAD')
 
-        print(commit)
-        print(commit.message)
         # hard reset to passed ref or HEAD
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
         commit_id = str(commit.id)
