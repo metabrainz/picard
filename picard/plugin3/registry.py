@@ -33,7 +33,13 @@ class PluginRegistry:
     """Manages plugin registry with blacklist checking."""
 
     def __init__(self, registry_url=None, cache_path=None):
-        self.registry_url = registry_url or DEFAULT_REGISTRY_URL
+        # Priority: passed parameter > environment variable > default
+        if registry_url:
+            self.registry_url = registry_url
+        else:
+            import os
+
+            self.registry_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL', DEFAULT_REGISTRY_URL)
         self.cache_path = cache_path
         self._registry_data = None
 
@@ -50,19 +56,28 @@ class PluginRegistry:
 
         try:
             log.debug('Fetching registry from %s', self.registry_url)
-            with urlopen(self.registry_url, timeout=10) as response:
-                data = response.read()
-                self._registry_data = json.loads(data)
 
-            # Save to cache
-            if self.cache_path:
-                try:
-                    Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
-                    with open(self.cache_path, 'w') as f:
-                        json.dump(self._registry_data, f)
-                    log.debug('Saved registry to cache: %s', self.cache_path)
-                except Exception as e:
-                    log.warning('Failed to save registry cache: %s', e)
+            # Check if registry_url is a local file path
+            registry_path = Path(self.registry_url)
+            if registry_path.exists() and registry_path.is_file():
+                log.debug('Loading registry from local file: %s', self.registry_url)
+                with open(registry_path, 'r') as f:
+                    self._registry_data = json.load(f)
+            else:
+                # Fetch from URL
+                with urlopen(self.registry_url, timeout=10) as response:
+                    data = response.read()
+                    self._registry_data = json.loads(data)
+
+                # Save to cache
+                if self.cache_path:
+                    try:
+                        Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
+                        with open(self.cache_path, 'w') as f:
+                            json.dump(self._registry_data, f)
+                        log.debug('Saved registry to cache: %s', self.cache_path)
+                    except Exception as e:
+                        log.warning('Failed to save registry cache: %s', e)
 
         except Exception as e:
             log.error('Failed to fetch registry: %s', e)
