@@ -18,7 +18,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from enum import IntEnum
+
 from picard.plugin3.output import PluginOutput
+
+
+class ExitCode(IntEnum):
+    """Exit codes for plugin CLI commands."""
+
+    SUCCESS = 0
+    ERROR = 1
+    NOT_FOUND = 2
+    CANCELLED = 130
 
 
 class PluginCLI:
@@ -46,19 +57,19 @@ class PluginCLI:
                 return self._uninstall_plugins(self._args.uninstall)
             else:
                 self._out.error('No action specified')
-                return 1
+                return ExitCode.ERROR
         except KeyboardInterrupt:
             self._out.error('\nOperation cancelled by user')
-            return 130
+            return ExitCode.CANCELLED
         except Exception as e:
             self._out.error(f'Error: {e}')
-            return 1
+            return ExitCode.ERROR
 
     def _list_plugins(self):
         """List all installed plugins with details."""
         if not self._manager.plugins:
             self._out.print('No plugins installed')
-            return 0
+            return ExitCode.SUCCESS
 
         self._out.print('Installed plugins:\n')
         for plugin in self._manager.plugins:
@@ -79,14 +90,14 @@ class PluginCLI:
         self._out.print(
             f'Total: {total} plugin{"s" if total != 1 else ""} ({enabled} enabled, {total - enabled} disabled)'
         )
-        return 0
+        return ExitCode.SUCCESS
 
     def _show_info(self, plugin_name):
         """Show detailed information about a plugin."""
         plugin = self._find_plugin(plugin_name)
         if not plugin:
             self._out.error(f'Plugin "{plugin_name}" not found')
-            return 2
+            return ExitCode.NOT_FOUND
 
         status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
         self._out.print(f'Plugin: {plugin.manifest.name}')
@@ -102,7 +113,7 @@ class PluginCLI:
         if desc:
             self._out.print(f'\nDescription:\n  {desc}')
 
-        return 0
+        return ExitCode.SUCCESS
 
     def _install_plugins(self, plugin_urls):
         """Install plugins from URLs."""
@@ -114,8 +125,8 @@ class PluginCLI:
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
                 self._out.error(f'Failed to install plugin: {e}')
-                return 1
-        return 0
+                return ExitCode.ERROR
+        return ExitCode.SUCCESS
 
     def _uninstall_plugins(self, plugin_names):
         """Uninstall plugins with confirmation."""
@@ -123,7 +134,7 @@ class PluginCLI:
             plugin = self._find_plugin(plugin_name)
             if not plugin:
                 self._out.error(f'Plugin "{plugin_name}" not found')
-                return 2
+                return ExitCode.NOT_FOUND
 
             # Confirmation prompt unless --yes flag
             if not getattr(self._args, 'yes', False):
@@ -138,8 +149,8 @@ class PluginCLI:
                 self._out.success('Plugin uninstalled successfully')
             except Exception as e:
                 self._out.error(f'Failed to uninstall plugin: {e}')
-                return 1
-        return 0
+                return ExitCode.ERROR
+        return ExitCode.SUCCESS
 
     def _enable_plugins(self, plugin_names):
         """Enable plugins."""
@@ -147,7 +158,7 @@ class PluginCLI:
             plugin = self._find_plugin(plugin_name)
             if not plugin:
                 self._out.error(f'Plugin "{plugin_name}" not found')
-                return 2
+                return ExitCode.NOT_FOUND
 
             try:
                 self._out.print(f'Enabling {plugin.name}...')
@@ -156,8 +167,8 @@ class PluginCLI:
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
                 self._out.error(f'Failed to enable plugin: {e}')
-                return 1
-        return 0
+                return ExitCode.ERROR
+        return ExitCode.SUCCESS
 
     def _disable_plugins(self, plugin_names):
         """Disable plugins."""
@@ -165,7 +176,7 @@ class PluginCLI:
             plugin = self._find_plugin(plugin_name)
             if not plugin:
                 self._out.error(f'Plugin "{plugin_name}" not found')
-                return 2
+                return ExitCode.NOT_FOUND
 
             try:
                 self._out.print(f'Disabling {plugin.name}...')
@@ -174,8 +185,8 @@ class PluginCLI:
                 self._out.info('Restart Picard for changes to take effect')
             except Exception as e:
                 self._out.error(f'Failed to disable plugin: {e}')
-                return 1
-        return 0
+                return ExitCode.ERROR
+        return ExitCode.SUCCESS
 
     def _find_plugin(self, plugin_name):
         """Find a plugin by name."""
