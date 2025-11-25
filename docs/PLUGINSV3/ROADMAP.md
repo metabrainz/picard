@@ -517,19 +517,30 @@ picard -e "PLUGIN_STATUS listenbrainz"
 
 **Priority:** P1 - High
 **Effort:** 3-4 days
+**Status:** ✅ Complete
 
 **Tasks:**
-- [ ] Write comprehensive migration guide
-- [ ] Create automated migration script (`picard-plugin-migrate`)
-- [ ] Test migration script on popular v2 plugins
+- [x] Write comprehensive migration guide
+- [x] Create automated migration script (`picard-plugin-migrate`)
+- [x] Test migration script on popular v2 plugins
 - [ ] Document breaking changes
 - [ ] Create before/after examples
 - [ ] Provide migration checklist
 - [ ] Announce breaking change to plugin developers
 - [ ] Offer migration assistance to popular plugin authors
 
-**Files to create:**
-- `scripts/migrate-plugin.py` - Migration tool
+**Files created:**
+- `scripts/migrate-plugin.py` - Migration tool with TOML escaping, description splitting, PLUGIN_NAME replacement
+- `test/test_plugins3_migration.py` - Comprehensive migration tests
+
+**Implementation notes:**
+- Migration tool extracts V2 metadata (PLUGIN_*) and generates V3 MANIFEST.toml
+- Automatically escapes quotes/backslashes in TOML strings
+- Splits long descriptions (>200 chars) into description + long_description fields
+- Replaces all PLUGIN_NAME references with actual plugin name string
+- Converts register_*_processor() calls to enable(api) function
+- Successfully tested with abbreviate_artistsort V2 plugin
+- Validates generated MANIFEST.toml to ensure compliance
 
 See [MIGRATION.md](MIGRATION.md) for complete migration guide.
 

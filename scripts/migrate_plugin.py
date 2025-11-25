@@ -22,7 +22,11 @@ def extract_plugin_metadata(content):
     if not desc_match:
         desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*"""(.*?)"""', content, re.MULTILINE | re.DOTALL)
     if not desc_match:
-        desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*["\'](.+?)["\']', content, re.MULTILINE)
+        # Try single quotes (can contain double quotes)
+        desc_match = re.search(r"PLUGIN_DESCRIPTION\s*=\s*'([^']*)'", content, re.MULTILINE)
+    if not desc_match:
+        # Try double quotes (can contain single quotes)
+        desc_match = re.search(r'PLUGIN_DESCRIPTION\s*=\s*"([^"]*)"', content, re.MULTILINE)
 
     if desc_match:
         desc = desc_match.group(1).strip()

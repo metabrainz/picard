@@ -36,11 +36,14 @@ register_track_metadata_processor(process_metadata)
         input_file.write_text(v2_plugin)
 
         # Import migration tool
-        sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
-        from migrate_plugin import migrate_plugin
+        scripts_path = Path(__file__).parent.parent / 'scripts'
+        sys.path.insert(0, str(scripts_path))
+        import migrate_plugin
+
+        sys.path.pop(0)
 
         output_dir = self.temp_path / 'test_plugin_v3'
-        result = migrate_plugin(str(input_file), str(output_dir))
+        result = migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
 
         self.assertEqual(result, 0)
         self.assertTrue((output_dir / 'MANIFEST.toml').exists())
@@ -59,7 +62,8 @@ register_track_metadata_processor(process_metadata)
         code = (output_dir / '__init__.py').read_text()
         self.assertNotIn('PLUGIN_NAME', code)
         self.assertNotIn('PLUGIN_AUTHOR', code)
-        self.assertNotIn('register_track_metadata_processor(process_metadata)', code)
+        # Module-level register call should be removed
+        self.assertNotIn('\nregister_track_metadata_processor(process_metadata)', code)
         self.assertIn('def enable(api):', code)
         self.assertIn('api.register_track_metadata_processor(process_metadata)', code)
 
@@ -78,11 +82,14 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
         input_file = self.temp_path / 'long_desc.py'
         input_file.write_text(v2_plugin)
 
-        sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
-        from migrate_plugin import migrate_plugin
+        scripts_path = Path(__file__).parent.parent / 'scripts'
+        sys.path.insert(0, str(scripts_path))
+        import migrate_plugin
+
+        sys.path.pop(0)
 
         output_dir = self.temp_path / 'long_desc_v3'
-        migrate_plugin(str(input_file), str(output_dir))
+        migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
 
         import tomllib
 
@@ -107,11 +114,14 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
         input_file = self.temp_path / 'quote_test.py'
         input_file.write_text(v2_plugin)
 
-        sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
-        from migrate_plugin import migrate_plugin
+        scripts_path = Path(__file__).parent.parent / 'scripts'
+        sys.path.insert(0, str(scripts_path))
+        import migrate_plugin
+
+        sys.path.pop(0)
 
         output_dir = self.temp_path / 'quote_test_v3'
-        migrate_plugin(str(input_file), str(output_dir))
+        migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
 
         import tomllib
 
@@ -142,11 +152,14 @@ def my_function():
         input_file = self.temp_path / 'name_test.py'
         input_file.write_text(v2_plugin)
 
-        sys.path.insert(0, str(Path(__file__).parent.parent / 'scripts'))
-        from migrate_plugin import migrate_plugin
+        scripts_path = Path(__file__).parent.parent / 'scripts'
+        sys.path.insert(0, str(scripts_path))
+        import migrate_plugin
+
+        sys.path.pop(0)
 
         output_dir = self.temp_path / 'name_test_v3'
-        migrate_plugin(str(input_file), str(output_dir))
+        migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
 
         code = (output_dir / '__init__.py').read_text()
         self.assertNotIn('PLUGIN_NAME', code)
