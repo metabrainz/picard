@@ -115,7 +115,9 @@ class PluginManager:
             with open(manifest_path, 'rb') as f:
                 from picard.plugin3.manifest import PluginManifest
 
-                manifest = PluginManifest(temp_name, f)
+                # Normalize temp_name to valid Python module name
+                normalized_name = temp_name.replace('-', '_')
+                manifest = PluginManifest(normalized_name, f)
 
             plugin_id = manifest.module_name
 
@@ -187,7 +189,7 @@ class PluginManager:
         old_commit, new_commit = source.update(plugin.local_path)
 
         # Reload manifest to get new version
-        plugin.load_manifest()
+        plugin.read_manifest()
         new_version = plugin.manifest.version if plugin.manifest else 'unknown'
 
         # Update metadata

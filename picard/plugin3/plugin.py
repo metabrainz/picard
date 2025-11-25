@@ -99,7 +99,18 @@ class PluginSourceGit(PluginSource):
             remote.fetch(callbacks=GitRemoteCallbacks())
 
         if self.ref:
-            commit = repo.revparse_single(self.ref)
+            # For branch names without origin/ prefix, try origin/ first
+            ref_to_use = self.ref
+            if not self.ref.startswith('origin/') and not self.ref.startswith('refs/'):
+                # Try origin/ prefix first for branches
+                try:
+                    commit = repo.revparse_single(f'origin/{self.ref}')
+                    ref_to_use = f'origin/{self.ref}'
+                except KeyError:
+                    # Fall back to original ref (might be tag or commit hash)
+                    commit = repo.revparse_single(self.ref)
+            else:
+                commit = repo.revparse_single(ref_to_use)
         else:
             commit = repo.revparse_single('HEAD')
 
