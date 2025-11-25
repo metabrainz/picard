@@ -10,7 +10,7 @@ Plugin v3 introduces significant changes:
 - Git-based distribution (no more ZIP files)
 - TOML manifest instead of Python metadata
 - New PluginApi for accessing Picard functionality
-- JSON-based translations instead of gettext
+- JSON-based translations (Plugin v2 had no translation support)
 - PyQt6 instead of PyQt5
 
 ---
@@ -29,7 +29,7 @@ Plugin v3 introduces significant changes:
 - [ ] Replace `from picard import config` with `api.config`
 - [ ] Replace `from picard import log` with `api.log`
 - [ ] Update Qt5 imports to Qt6 (PyQt5 → PyQt6)
-- [ ] Convert gettext to JSON translations
+- [ ] Add JSON translations (Plugin v2 had no translation support)
 
 ### Testing
 - [ ] Test with Picard 3.0
@@ -158,16 +158,10 @@ from PyQt6.QtWidgets import QDialog, QPushButton
 - `QHeaderView.ResizeToContents` → `QHeaderView.ResizeMode.ResizeToContents`
 - `exec_()` → `exec()`
 
-### Step 6: Convert Translations
+### Step 6: Add Translations (New in v3)
 
-**Old (v2) - gettext:**
-```
-locale/
-  de/
-    LC_MESSAGES/
-      picard-plugin-example.mo
-      picard-plugin-example.po
-```
+**Old (v2) - No translation support:**
+Plugin v2 did not have a translation system for plugins.
 
 **New (v3) - JSON:**
 ```
@@ -360,8 +354,10 @@ def enable(api: PluginApi):
 - ZIP-based distribution
 - Python metadata in `__init__.py`
 - Direct `tagger` access
-- gettext translations
 - PyQt5 support
+
+### New Features
+- JSON-based translations (Plugin v2 had no translation support)
 
 ### Changed Behavior
 - Plugins must be in git repositories
