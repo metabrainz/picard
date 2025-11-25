@@ -300,6 +300,8 @@ class PluginManager:
 
     def _check_blacklisted_plugins(self):
         """Check installed plugins against blacklist and disable if needed."""
+        blacklisted_plugins = []
+
         for plugin in self._plugins:
             metadata = self._get_plugin_metadata(plugin.name)
             url = metadata.get('url') if metadata else None
@@ -307,10 +309,33 @@ class PluginManager:
             is_blacklisted, reason = self._registry.is_blacklisted(url, plugin.name)
             if is_blacklisted:
                 log.warning('Plugin %s is blacklisted: %s', plugin.name, reason)
+                blacklisted_plugins.append((plugin.name, reason))
+
                 if plugin.name in self._enabled_plugins:
                     log.warning('Disabling blacklisted plugin %s', plugin.name)
                     self._enabled_plugins.discard(plugin.name)
                     self._save_config()
+
+        # Show warning to user if any plugins were blacklisted
+        if blacklisted_plugins:
+            self._show_blacklist_warning(blacklisted_plugins)
+
+    def _show_blacklist_warning(self, blacklisted_plugins):
+        """Show warning dialog to user about blacklisted plugins."""
+        from PyQt6.QtWidgets import QMessageBox
+
+        plugin_list = '\n'.join([f'• {name}: {reason}' for name, reason in blacklisted_plugins])
+        message = (
+            f'The following plugins have been blacklisted and disabled:\n\n'
+            f'{plugin_list}\n\n'
+            f'These plugins may contain security vulnerabilities or malicious code. '
+            f'They have been automatically disabled for your protection.'
+        )
+
+        QMessageBox.warning(
+            self._tagger.window if hasattr(self._tagger, 'window') else None, 'Blacklisted Plugins Detected', message
+        )
+        log.info('Showed blacklist warning for %d plugin(s)', len(blacklisted_plugins))
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""

@@ -156,6 +156,7 @@ class TestPluginRegistry(PicardTestCase):
     def test_check_blacklisted_plugins_on_startup(self):
         """Test that blacklisted plugins are disabled on startup."""
         from pathlib import Path
+        from unittest.mock import patch
 
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
@@ -179,11 +180,54 @@ class TestPluginRegistry(PicardTestCase):
             'blacklist': [{'url': 'https://example.com/plugin.git', 'reason': 'Security issue'}]
         }
 
-        # Check blacklisted plugins
-        manager._check_blacklisted_plugins()
+        # Check blacklisted plugins (mock QMessageBox to avoid GUI)
+        with patch('PyQt6.QtWidgets.QMessageBox'):
+            manager._check_blacklisted_plugins()
 
         # Plugin should be disabled
         self.assertNotIn('test-plugin', manager._enabled_plugins)
+
+    def test_blacklist_warning_shown(self):
+        """Test that user warning is shown for blacklisted plugins."""
+        from pathlib import Path
+        from unittest.mock import patch
+
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Create mock plugin
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'malicious-plugin'
+        mock_plugin.local_path = Path('/tmp/malicious-plugin')
+
+        manager._plugins = [mock_plugin]
+        manager._enabled_plugins = {'malicious-plugin'}
+
+        # Store metadata
+        manager._save_plugin_metadata('malicious-plugin', 'https://badsite.com/plugin.git', 'main', 'abc123')
+
+        # Mock registry to blacklist the plugin
+        manager._registry._registry_data = {
+            'blacklist': [{'url': 'https://badsite.com/plugin.git', 'reason': 'Contains malware'}]
+        }
+
+        # Mock QMessageBox to capture warning
+        with patch('PyQt6.QtWidgets.QMessageBox') as mock_msgbox:
+            manager._check_blacklisted_plugins()
+
+            # Warning should be shown
+            mock_msgbox.warning.assert_called_once()
+            call_args = mock_msgbox.warning.call_args
+            message = call_args[0][2]  # Third argument is the message
+            self.assertIn('malicious-plugin', message)
+            self.assertIn('Contains malware', message)
+            self.assertIn('blacklisted', message.lower())
+
+        # Plugin should be disabled
+        self.assertNotIn('malicious-plugin', manager._enabled_plugins)
 
     def test_registry_fetch_from_url(self):
         """Test fetching registry from URL."""
