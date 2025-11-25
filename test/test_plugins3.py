@@ -179,3 +179,91 @@ class TestPluginManager(PicardTestCase):
         plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
 
         self.assertIsNone(plugin)
+
+
+class TestPluginCLI(PicardTestCase):
+    def test_list_plugins_empty(self):
+        """Test listing plugins when none are installed."""
+        from io import StringIO
+        from unittest.mock import patch
+
+        from picard.plugin3.cli import PluginCLI
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager.plugins = []
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = True
+        args.info = None
+
+        cli = PluginCLI(mock_tagger, args)
+
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            result = cli.run()
+            output = fake_out.getvalue()
+
+        self.assertEqual(result, 0)
+        self.assertIn('No plugins installed', output)
+
+    def test_list_plugins_with_plugins(self):
+        """Test listing plugins with details."""
+        from io import StringIO
+        from unittest.mock import patch
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        # Create mock plugin
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+        mock_plugin.local_path = '/path/to/plugin'
+        mock_plugin.manifest = load_plugin_manifest('example')
+
+        mock_manager.plugins = [mock_plugin]
+        mock_manager._enabled_plugins = {'test-plugin'}
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = True
+        args.info = None
+
+        cli = PluginCLI(mock_tagger, args)
+
+        with patch('sys.stdout', new=StringIO()) as fake_out:
+            result = cli.run()
+            output = fake_out.getvalue()
+
+        self.assertEqual(result, 0)
+        self.assertIn('test-plugin', output)
+        self.assertIn('enabled', output)
+        self.assertIn('1.0.0', output)
+
+    def test_info_plugin_not_found(self):
+        """Test info command for non-existent plugin."""
+        from io import StringIO
+        from unittest.mock import patch
+
+        from picard.plugin3.cli import PluginCLI
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager.plugins = []
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = 'nonexistent'
+
+        cli = PluginCLI(mock_tagger, args)
+
+        with patch('sys.stderr', new=StringIO()) as fake_err:
+            result = cli.run()
+            output = fake_err.getvalue()
+
+        self.assertEqual(result, 2)
+        self.assertIn('not found', output)
