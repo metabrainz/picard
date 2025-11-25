@@ -165,16 +165,22 @@ class PluginManager:
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
+
+        log.debug('Enabling plugin %s (current state: %s)', plugin.name, plugin.state.value)
         plugin.load_module()
         plugin.enable(self._tagger)
         self._enabled_plugins.add(plugin.name)
         self._save_config()
+        log.info('Plugin %s enabled (state: %s)', plugin.name, plugin.state.value)
 
     def disable_plugin(self, plugin: Plugin):
         """Disable a plugin and save to config."""
+
+        log.debug('Disabling plugin %s (current state: %s)', plugin.name, plugin.state.value)
         plugin.disable()
         self._enabled_plugins.discard(plugin.name)
         self._save_config()
+        log.info('Plugin %s disabled (state: %s)', plugin.name, plugin.state.value)
 
     def _load_config(self):
         """Load enabled plugins list from config."""

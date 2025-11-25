@@ -47,6 +47,8 @@ class PluginCLI:
                 return self._list_plugins()
             elif self._args.info:
                 return self._show_info(self._args.info)
+            elif self._args.status:
+                return self._show_status(self._args.status)
             elif self._args.enable:
                 return self._enable_plugins(self._args.enable)
             elif self._args.disable:
@@ -118,6 +120,34 @@ class PluginCLI:
         desc = plugin.manifest.description()
         if desc:
             self._out.print(f'\nDescription:\n  {desc}')
+
+        return ExitCode.SUCCESS
+
+    def _show_status(self, plugin_name):
+        """Show detailed status information about a plugin."""
+        plugin = self._find_plugin(plugin_name)
+        if not plugin:
+            self._out.error(f'Plugin "{plugin_name}" not found')
+            return ExitCode.NOT_FOUND
+
+        self._out.print(f'Plugin: {plugin.name}')
+        self._out.print(f'State: {plugin.state.value}')
+
+        if plugin.manifest:
+            self._out.print(f'Version: {plugin.manifest.version}')
+            self._out.print(f'API Versions: {", ".join(str(v) for v in plugin.manifest.api_versions)}')
+
+        enabled_status = 'yes' if plugin.name in self._manager._enabled_plugins else 'no'
+        self._out.print(f'Enabled in config: {enabled_status}')
+
+        metadata = self._manager._get_plugin_metadata(plugin.name)
+        if metadata:
+            self._out.print(f'Source URL: {metadata.get("url", "N/A")}')
+            self._out.print(f'Git ref: {metadata.get("ref", "N/A")}')
+            commit = metadata.get('commit', 'N/A')
+            if commit != 'N/A':
+                commit = commit[:7]
+            self._out.print(f'Commit: {commit}')
 
         return ExitCode.SUCCESS
 

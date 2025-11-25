@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from enum import Enum
 import importlib.util
 from pathlib import Path
 import sys
@@ -28,6 +29,16 @@ from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
 
 import pygit2
+
+
+class PluginState(Enum):
+    """Plugin lifecycle states."""
+
+    DISCOVERED = 'discovered'  # Found on disk, not yet loaded
+    LOADED = 'loaded'  # Module loaded, not enabled
+    ENABLED = 'enabled'  # Enabled and active
+    DISABLED = 'disabled'  # Explicitly disabled
+    ERROR = 'error'  # Failed to load or enable
 
 
 class GitRemoteCallbacks(pygit2.RemoteCallbacks):
@@ -113,12 +124,14 @@ class Plugin:
     name: str = None
     module_name: str = None
     manifest: PluginManifest = None
+    state: PluginState = None
     _module = None
 
     def __init__(self, plugins_dir: Path, plugin_name: str):
         self.name = plugin_name
         self.module_name = f'picard.plugins.{self.name}'
         self.local_path = plugins_dir.joinpath(self.name)
+        self.state = PluginState.DISCOVERED
 
     def sync(self, plugin_source: PluginSource = None):
         """Sync plugin source"""
@@ -136,21 +149,35 @@ class Plugin:
 
     def load_module(self):
         """Load corresponding module from source path"""
+        if self.state == PluginState.LOADED:
+            return self._module
+        if self.state == PluginState.ENABLED:
+            raise ValueError(f'Plugin {self.name} is already enabled')
+
         module_file = self.local_path.joinpath('__init__.py')
         spec = importlib.util.spec_from_file_location(self.module_name, module_file)
         module = importlib.util.module_from_spec(spec)
         sys.modules[self.module_name] = module
         spec.loader.exec_module(module)
         self._module = module
+        self.state = PluginState.LOADED
         return module
 
     def enable(self, tagger) -> None:
         """Enable the plugin"""
+        if self.state == PluginState.ENABLED:
+            raise ValueError(f'Plugin {self.name} is already enabled')
+
         api = PluginApi(self.manifest, tagger)
         self._module.enable(api)
+        self.state = PluginState.ENABLED
 
     def disable(self) -> None:
         """Disable the plugin"""
+        if self.state == PluginState.DISABLED:
+            raise ValueError(f'Plugin {self.name} is already disabled')
+
         if hasattr(self._module, 'disable'):
             self._module.disable()
         unregister_module_extensions(self.name)
+        self.state = PluginState.DISABLED

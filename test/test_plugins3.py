@@ -358,6 +358,7 @@ class TestPluginCLI(PicardTestCase):
         args = Mock()
         args.list = False
         args.info = None
+        args.status = None
         args.enable = None
         args.disable = None
         args.install = None
@@ -401,6 +402,164 @@ class TestPluginCLI(PicardTestCase):
         args.install = None
         args.uninstall = None
         args.update = ['nonexistent']
+        args.update_all = False
+        args.check_updates = False
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+        error_text = stderr.getvalue()
+
+        self.assertEqual(result, 2)
+        self.assertIn('not found', error_text)
+
+    def test_plugin_state_transitions(self):
+        """Test that plugin state transitions work correctly."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        mock_tagger = Mock()
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+
+        # Initial state should be DISCOVERED
+        self.assertEqual(plugin.state, PluginState.DISCOVERED)
+
+        # Mock the module loading
+        plugin._module = Mock()
+        plugin._module.enable = Mock()
+        plugin._module.disable = Mock()
+
+        # Load module should transition to LOADED
+        plugin.state = PluginState.DISCOVERED
+        plugin.load_module = Mock(side_effect=lambda: setattr(plugin, 'state', PluginState.LOADED))
+        plugin.load_module()
+        self.assertEqual(plugin.state, PluginState.LOADED)
+
+        # Enable should transition to ENABLED
+        plugin.manifest = Mock()
+        plugin.enable(mock_tagger)
+        self.assertEqual(plugin.state, PluginState.ENABLED)
+
+        # Disable should transition to DISABLED
+        plugin.disable()
+        self.assertEqual(plugin.state, PluginState.DISABLED)
+
+    def test_plugin_double_enable_error(self):
+        """Test that enabling an already enabled plugin raises error."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        mock_tagger = Mock()
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+        plugin.state = PluginState.ENABLED
+        plugin._module = Mock()
+        plugin.manifest = Mock()
+
+        with self.assertRaises(ValueError) as context:
+            plugin.enable(mock_tagger)
+
+        self.assertIn('already enabled', str(context.exception))
+
+    def test_plugin_double_disable_error(self):
+        """Test that disabling an already disabled plugin raises error."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+        plugin.state = PluginState.DISABLED
+        plugin._module = Mock()
+
+        with self.assertRaises(ValueError) as context:
+            plugin.disable()
+
+        self.assertIn('already disabled', str(context.exception))
+
+    def test_status_command(self):
+        """Test status command shows plugin state."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+        from picard.plugin3.plugin import PluginState
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_plugin.state = PluginState.ENABLED
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.version = '1.0.0'
+        mock_plugin.manifest.api_versions = ['3.0']
+
+        mock_manager.plugins = [mock_plugin]
+        mock_manager._enabled_plugins = {'test-plugin'}
+        mock_manager._get_plugin_metadata = Mock(
+            return_value={'url': 'https://example.com/plugin.git', 'ref': 'main', 'commit': 'abc1234567890'}
+        )
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = 'test-plugin'
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+        output_text = stdout.getvalue()
+
+        self.assertEqual(result, 0)
+        self.assertIn('test-plugin', output_text)
+        self.assertIn('enabled', output_text)
+        self.assertIn('1.0.0', output_text)
+        self.assertIn('https://example.com/plugin.git', output_text)
+        self.assertIn('abc1234', output_text)
+
+    def test_status_plugin_not_found(self):
+        """Test status command for non-existent plugin."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager.plugins = []
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = 'nonexistent'
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
         args.update_all = False
         args.check_updates = False
 
