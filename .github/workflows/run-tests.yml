@@ -39,8 +39,9 @@ jobs:
       if: runner.os == 'Windows'
       run: |
         choco install libgit2 -y
-        echo "INCLUDE=C:\Program Files\libgit2\include;$env:INCLUDE" >> $env:GITHUB_ENV
-        echo "LIB=C:\Program Files\libgit2\lib;$env:LIB" >> $env:GITHUB_ENV
+        $libgit2Path = "C:\ProgramData\chocolatey\lib\libgit2"
+        echo "INCLUDE=$libgit2Path\include;$env:INCLUDE" >> $env:GITHUB_ENV
+        echo "LIB=$libgit2Path\lib;$env:LIB" >> $env:GITHUB_ENV
       shell: pwsh
     - name: Install dependencies
       run: |
