@@ -143,6 +143,7 @@ class TestPluginRegistry(PicardTestCase):
                     with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
                         mock_manifest = Mock()
                         mock_manifest.module_name = 'test-plugin'
+                        mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
                         with patch('shutil.move'):

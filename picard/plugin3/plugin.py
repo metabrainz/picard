@@ -158,6 +158,12 @@ class Plugin:
         with open(manifest_path, 'rb') as manifest_file:
             self.manifest = PluginManifest(self.name, manifest_file)
 
+        # Validate manifest
+        errors = self.manifest.validate()
+        if errors:
+            error_list = '\n  '.join(errors)
+            raise ValueError(f'Invalid MANIFEST.toml for {self.name}:\n  {error_list}')
+
     def load_module(self):
         """Load corresponding module from source path"""
         if self.state == PluginState.LOADED:

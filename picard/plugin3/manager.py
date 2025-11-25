@@ -119,6 +119,15 @@ class PluginManager:
                 normalized_name = temp_name.replace('-', '_')
                 manifest = PluginManifest(normalized_name, f)
 
+            # Validate manifest
+            errors = manifest.validate()
+            if errors:
+                if isinstance(errors, list):
+                    error_list = '\n  '.join(errors)
+                else:
+                    error_list = str(errors)
+                raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
+
             plugin_id = manifest.module_name
 
             # Check blacklist again with plugin ID
