@@ -165,7 +165,7 @@ class PluginManager:
             shutil.move(str(temp_path), str(final_path))
 
             # Store plugin metadata
-            self._save_plugin_metadata(plugin_id, url, source.ref, commit_id)
+            self._save_plugin_metadata(plugin_id, url, source.resolved_ref, commit_id)
 
             # Add newly installed plugin to the plugins list
             plugin = Plugin(self._primary_plugin_dir, plugin_id)
@@ -212,7 +212,7 @@ class PluginManager:
                 source = PluginSourceGit(str(local_path), ref)
                 commit_id = source.sync(temp_path)
                 install_path = temp_path
-                ref_to_save = source.ref  # Will be 'main' if ref was None
+                ref_to_save = source.resolved_ref
                 commit_to_save = commit_id
             except Exception:
                 # Clean up temp directory on failure

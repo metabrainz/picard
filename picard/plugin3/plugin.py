@@ -79,7 +79,8 @@ class PluginSourceGit(PluginSource):
             raise PluginSourceSyncError("pygit2 is not available. Install it to use git-based plugin sources.")
         # Note: url can be a local directory
         self.url = url
-        self.ref = ref or 'main'
+        self.ref = ref
+        self.resolved_ref = None  # Will be set after sync
 
     def sync(self, target_directory: Path):
         if target_directory.is_dir():
@@ -92,16 +93,30 @@ class PluginSourceGit(PluginSource):
         if self.ref:
             try:
                 commit = repo.revparse_single(self.ref)
+                self.resolved_ref = self.ref
             except KeyError:
                 # If ref starts with 'origin/', try without it
                 if self.ref.startswith('origin/'):
                     ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
                     commit = repo.revparse_single(ref_without_origin)
+                    self.resolved_ref = ref_without_origin
                 else:
                     # Try with 'origin/' prefix
                     commit = repo.revparse_single(f'origin/{self.ref}')
+                    self.resolved_ref = f'origin/{self.ref}'
         else:
+            # Use repository's default branch (HEAD)
             commit = repo.revparse_single('HEAD')
+            # Get the branch name that HEAD points to
+            if repo.head_is_detached:
+                self.resolved_ref = str(commit.id)[:7]
+            else:
+                # Get branch name from HEAD
+                head_ref = repo.head.name
+                if head_ref.startswith('refs/heads/'):
+                    self.resolved_ref = head_ref[11:]  # Remove 'refs/heads/' prefix
+                else:
+                    self.resolved_ref = head_ref
 
         # hard reset to passed ref or HEAD
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
