@@ -1441,6 +1441,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
     plugin_parser.add_argument('--purge', action='store_true', help="delete plugin configuration on uninstall")
     plugin_parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
     plugin_parser.add_argument('--clean-config', metavar='PLUGIN', help="delete configuration for a plugin")
+    plugin_parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
 
     args = parser.parse_args()
     args.remote_commands_help = False

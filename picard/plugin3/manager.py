@@ -47,6 +47,14 @@ class PluginManager:
         self._enabled_plugins = set()
         self._load_config()
 
+        # Initialize registry for blacklist checking
+        from picard.plugin3.registry import PluginRegistry
+
+        cache_path = None
+        if self._primary_plugin_dir:
+            cache_path = self._primary_plugin_dir.parent / 'registry_cache.json'
+        self._registry = PluginRegistry(cache_path=cache_path)
+
     @property
     def plugins(self):
         return self._plugins
@@ -72,16 +80,23 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
-    def install_plugin(self, url, ref=None, reinstall=False):
+    def install_plugin(self, url, ref=None, reinstall=False, force_blacklisted=False):
         """Install a plugin from a git URL.
 
         Args:
             url: Git repository URL
             ref: Git ref (branch/tag/commit) to checkout
             reinstall: If True, reinstall even if already exists
+            force_blacklisted: If True, bypass blacklist check (dangerous!)
         """
         from pathlib import Path
         import tempfile
+
+        # Check blacklist before installing
+        if not force_blacklisted:
+            is_blacklisted, reason = self._registry.is_blacklisted(url)
+            if is_blacklisted:
+                raise ValueError(f'Plugin is blacklisted: {reason}')
 
         # Use URL basename as temporary directory name
         temp_name = os.path.basename(url).rstrip('.git')
@@ -103,6 +118,13 @@ class PluginManager:
                 manifest = PluginManifest(temp_name, f)
 
             plugin_id = manifest.module_name
+
+            # Check blacklist again with plugin ID
+            if not force_blacklisted:
+                is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_id)
+                if is_blacklisted:
+                    raise ValueError(f'Plugin is blacklisted: {reason}')
+
             final_path = self._primary_plugin_dir / plugin_id
 
             # Check if already installed
@@ -254,6 +276,9 @@ class PluginManager:
 
     def init_plugins(self):
         """Initialize and enable plugins that are enabled in configuration."""
+        # Check for blacklisted plugins on startup
+        self._check_blacklisted_plugins()
+
         for plugin in self._plugins:
             if plugin.name in self._enabled_plugins:
                 try:
@@ -261,6 +286,20 @@ class PluginManager:
                     plugin.enable(self._tagger)
                 except Exception as ex:
                     log.error('Failed initializing plugin %s from %s', plugin.name, plugin.local_path, exc_info=ex)
+
+    def _check_blacklisted_plugins(self):
+        """Check installed plugins against blacklist and disable if needed."""
+        for plugin in self._plugins:
+            metadata = self._get_plugin_metadata(plugin.name)
+            url = metadata.get('url') if metadata else None
+
+            is_blacklisted, reason = self._registry.is_blacklisted(url, plugin.name)
+            if is_blacklisted:
+                log.warning('Plugin %s is blacklisted: %s', plugin.name, reason)
+                if plugin.name in self._enabled_plugins:
+                    log.warning('Disabling blacklisted plugin %s', plugin.name)
+                    self._enabled_plugins.discard(plugin.name)
+                    self._save_config()
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""

@@ -159,13 +159,18 @@ class PluginCLI:
         """Install plugins from URLs."""
         ref = getattr(self._args, 'ref', None)
         reinstall = getattr(self._args, 'reinstall', False)
+        force_blacklisted = getattr(self._args, 'force_blacklisted', False)
+
+        if force_blacklisted:
+            self._out.warning('WARNING: Bypassing blacklist check - this may be dangerous!')
+
         for url in plugin_urls:
             try:
                 if ref:
                     self._out.print(f'Installing plugin from {url} (ref: {ref})...')
                 else:
                     self._out.print(f'Installing plugin from {url}...')
-                plugin_id = self._manager.install_plugin(url, ref, reinstall)
+                plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
                 self._out.success(f'Plugin {plugin_id} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
