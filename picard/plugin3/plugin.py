@@ -91,7 +91,9 @@ class PluginSourceGit(PluginSource):
         print(commit.message)
         # hard reset to passed ref or HEAD
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
-        return str(commit.id)
+        commit_id = str(commit.id)
+        repo.free()
+        return commit_id
 
     def update(self, target_directory: Path):
         """Update plugin to latest version on current ref."""
@@ -119,6 +121,7 @@ class PluginSourceGit(PluginSource):
 
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
         new_commit = str(commit.id)
+        repo.free()
 
         return old_commit, new_commit
 

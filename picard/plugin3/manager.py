@@ -239,6 +239,7 @@ class PluginManager:
 
                 ref = metadata.get('ref', 'main')
                 latest_commit = str(repo.revparse_single(ref).id)
+                repo.free()
 
                 if current_commit != latest_commit:
                     updates.append((plugin.name, current_commit[:7], latest_commit[:7]))

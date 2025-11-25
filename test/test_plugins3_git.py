@@ -72,7 +72,11 @@ def disable():
 
     def tearDown(self):
         """Clean up temporary directory."""
+        import gc
         import shutil
+
+        # Force garbage collection to release file handles on Windows
+        gc.collect()
 
         if hasattr(self, 'tmpdir'):
             shutil.rmtree(self.tmpdir, ignore_errors=True)
