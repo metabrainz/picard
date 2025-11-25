@@ -205,6 +205,16 @@ class PluginManager:
         is_git_repo = (local_path / '.git').exists()
 
         if is_git_repo:
+            # Check if source repository has uncommitted changes
+            try:
+                import pygit2
+
+                source_repo = pygit2.Repository(str(local_path))
+                if source_repo.status():
+                    log.warning('Installing from local repository with uncommitted changes: %s', local_path)
+            except Exception:
+                pass  # Ignore errors checking status
+
             # Use git operations to get ref and commit info
             url_hash = hashlib.md5(str(local_path).encode()).hexdigest()[:8]
             temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'

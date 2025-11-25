@@ -280,6 +280,20 @@ class PluginCLI:
                 else:
                     self._out.print(f'Installing plugin from {url}...')
 
+                # Check if installing from dirty local git repository
+                from pathlib import Path
+
+                local_path = Path(url)
+                if local_path.is_dir() and (local_path / '.git').exists():
+                    try:
+                        import pygit2
+
+                        repo = pygit2.Repository(str(local_path))
+                        if repo.status():
+                            self._out.warning('Local repository has uncommitted changes')
+                    except Exception:
+                        pass  # Ignore errors checking status
+
                 plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
                 self._out.success(f'Plugin {plugin_id} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
