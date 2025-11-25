@@ -35,6 +35,13 @@ jobs:
     - name: Install libgit2 (macOS)
       if: runner.os == 'macOS'
       run: brew install libgit2
+    - name: Install libgit2 (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        choco install libgit2 -y
+        echo "INCLUDE=C:\Program Files\libgit2\include;$env:INCLUDE" >> $env:GITHUB_ENV
+        echo "LIB=C:\Program Files\libgit2\lib;$env:LIB" >> $env:GITHUB_ENV
+      shell: pwsh
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip

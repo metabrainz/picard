@@ -102,7 +102,11 @@ jobs:
       run: brew install libgit2
     - name: Install libgit2 (Windows)
       if: runner.os == 'Windows'
-      run: choco install libgit2 -y
+      run: |
+        choco install libgit2 -y
+        echo "INCLUDE=C:\Program Files\libgit2\include;$env:INCLUDE" >> $env:GITHUB_ENV
+        echo "LIB=C:\Program Files\libgit2\lib;$env:LIB" >> $env:GITHUB_ENV
+      shell: pwsh
     - name: Install dependencies (Linux)
       if: runner.os == 'linux'
       run: |
