@@ -179,3 +179,59 @@ class TestPluginManager(PicardTestCase):
         plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
 
         self.assertIsNone(plugin)
+
+
+class TestPluginErrors(PicardTestCase):
+    """Test error handling in plugin system."""
+
+    def test_load_plugin_with_invalid_manifest(self):
+        """Test loading plugin with invalid MANIFEST.toml."""
+        from pathlib import Path
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Try to load plugin with missing manifest
+        plugin = manager._load_plugin(Path('/nonexistent'), 'fake-plugin')
+        self.assertIsNone(plugin)
+
+    def test_init_plugins_handles_errors(self):
+        """Test that init_plugins handles plugin errors gracefully."""
+
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Create a plugin that will fail to load
+        bad_plugin = Mock(spec=Plugin)
+        bad_plugin.name = 'bad-plugin'
+        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
+
+        manager._plugins = [bad_plugin]
+        manager._enabled_plugins = {'bad-plugin'}
+
+        # Should not raise, just log error
+        manager.init_plugins()
+
+        # Plugin should have been attempted to load
+        bad_plugin.load_module.assert_called_once()
+
+    def test_enable_plugin_with_load_error(self):
+        """Test enabling plugin that fails to load."""
+
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        bad_plugin = Mock(spec=Plugin)
+        bad_plugin.name = 'bad-plugin'
+        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
+
+        with self.assertRaises(Exception):  # noqa: B017
+            manager.enable_plugin(bad_plugin)

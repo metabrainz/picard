@@ -183,3 +183,78 @@ class TestPluginRegistry(PicardTestCase):
 
         # Plugin should be disabled
         self.assertNotIn('test-plugin', manager._enabled_plugins)
+
+    def test_registry_fetch_from_url(self):
+        """Test fetching registry from URL."""
+        from unittest.mock import (
+            patch,
+        )
+
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+
+        mock_response_data = b'{"blacklist": []}'
+
+        with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
+            mock_response = Mock()
+            mock_response.read = Mock(return_value=mock_response_data)
+            mock_response.__enter__ = Mock(return_value=mock_response)
+            mock_response.__exit__ = Mock(return_value=False)
+            mock_urlopen.return_value = mock_response
+
+            registry.fetch_registry(use_cache=False)
+
+            self.assertIsNotNone(registry._registry_data)
+            self.assertEqual(registry._registry_data['blacklist'], [])
+
+    def test_registry_cache_save_and_load(self):
+        """Test registry caching."""
+        from pathlib import Path
+        import tempfile
+        from unittest.mock import patch
+
+        from picard.plugin3.registry import PluginRegistry
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            cache_path = Path(tmpdir) / 'registry_cache.json'
+
+            # Create registry with cache path
+            registry = PluginRegistry(cache_path=cache_path)
+
+            mock_response_data = b'{"blacklist": [{"url": "test"}]}'
+
+            with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
+                mock_response = Mock()
+                mock_response.read = Mock(return_value=mock_response_data)
+                mock_response.__enter__ = Mock(return_value=mock_response)
+                mock_response.__exit__ = Mock(return_value=False)
+                mock_urlopen.return_value = mock_response
+
+                # Fetch and save to cache
+                registry.fetch_registry(use_cache=False)
+
+                # Verify cache file was created
+                self.assertTrue(cache_path.exists())
+
+            # Create new registry instance and load from cache
+            registry2 = PluginRegistry(cache_path=cache_path)
+            registry2.fetch_registry(use_cache=True)
+
+            # Should have loaded from cache
+            self.assertEqual(registry2._registry_data['blacklist'], [{'url': 'test'}])
+
+    def test_registry_fetch_error_fallback(self):
+        """Test registry fetch error handling."""
+        from unittest.mock import patch
+
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+
+        with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
+            # Should not raise, just use empty blacklist
+            registry.fetch_registry(use_cache=False)
+
+            self.assertIsNotNone(registry._registry_data)
+            self.assertEqual(registry._registry_data['blacklist'], [])

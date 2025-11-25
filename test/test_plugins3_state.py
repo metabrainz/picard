@@ -107,3 +107,34 @@ class TestPluginState(PicardTestCase):
             plugin.disable()
 
         self.assertIn('already disabled', str(context.exception))
+
+    def test_plugin_load_manifest(self):
+        """Test Plugin.read_manifest() method."""
+        from pathlib import Path
+
+        from test.picardtestcase import get_test_data_path
+
+        from picard.plugin3.plugin import Plugin
+
+        plugins_dir = Path(get_test_data_path('testplugins3'))
+        plugin = Plugin(plugins_dir, 'example')
+
+        plugin.read_manifest()
+
+        self.assertIsNotNone(plugin.manifest)
+        self.assertEqual(plugin.manifest.name, 'Example plugin')
+
+    def test_plugin_initial_state(self):
+        """Test that new Plugin starts in DISCOVERED state."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+
+        self.assertEqual(plugin.state, PluginState.DISCOVERED)
+        self.assertEqual(plugin.name, 'test-plugin')
+        self.assertEqual(plugin.module_name, 'picard.plugins.test-plugin')
