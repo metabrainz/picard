@@ -48,6 +48,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = True
         args.info = None
 
@@ -84,6 +85,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = True
         args.info = None
 
@@ -112,6 +114,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = 'nonexistent'
 
@@ -151,6 +154,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = 'test-plugin'
@@ -189,6 +193,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = 'nonexistent'
@@ -248,6 +253,7 @@ class TestPluginCLI(PicardTestCase):
 
         # Test --check-updates
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -287,6 +293,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.enable = None
@@ -331,6 +338,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -376,6 +384,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -415,6 +424,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -453,6 +463,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -503,6 +514,7 @@ class TestPluginCLI(PicardTestCase):
         ]
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -545,6 +557,7 @@ class TestPluginCLI(PicardTestCase):
         ]
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -589,6 +602,7 @@ class TestPluginCLI(PicardTestCase):
         ]
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None
@@ -625,6 +639,7 @@ class TestPluginCLI(PicardTestCase):
         mock_tagger.pluginmanager3.install_plugin.return_value = 'test-plugin'
 
         args = Mock()
+        args.ref = None
         args.list = False
         args.info = None
         args.status = None

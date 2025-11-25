@@ -43,6 +43,14 @@ class PluginCLI:
     def run(self):
         """Run the CLI command and return exit code."""
         try:
+            # Validate that --ref is only used with --install or --validate
+            ref = getattr(self._args, 'ref', None)
+            if ref:
+                valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
+                if not valid_with_ref:
+                    self._out.error('--ref can only be used with --install or --validate')
+                    return ExitCode.ERROR
+
             if self._args.list:
                 return self._list_plugins()
             elif self._args.info:
@@ -72,7 +80,7 @@ class PluginCLI:
             elif hasattr(self._args, 'clean_config') and self._args.clean_config:
                 return self._clean_config(self._args.clean_config)
             elif hasattr(self._args, 'validate') and self._args.validate:
-                return self._validate_plugin(self._args.validate, self._args.ref)
+                return self._validate_plugin(self._args.validate, ref)
             else:
                 self._out.error('No action specified')
                 return ExitCode.ERROR
