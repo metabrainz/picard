@@ -42,14 +42,12 @@ class TestPluginGitOperations(PicardTestCase):
 
         # Create MANIFEST.toml
         manifest_content = """name = "Test Plugin"
-author = "Test Author"
+authors = ["Test Author"]
 version = "1.0.0"
+description = "A test plugin"
 api = ["3.0"]
 license = "GPL-2.0-or-later"
-license-url = "https://www.gnu.org/licenses/gpl-2.0.html"
-
-[description]
-en = "A test plugin"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 """
         (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
 
@@ -288,14 +286,12 @@ def disable():
 
             # Make update in source with new version
             manifest_content = """name = "Test Plugin"
-author = "Test Author"
+authors = ["Test Author"]
 version = "1.1.0"
+description = "A test plugin - updated"
 api = ["3.0"]
 license = "GPL-2.0-or-later"
-license-url = "https://www.gnu.org/licenses/gpl-2.0.html"
-
-[description]
-en = "A test plugin - updated"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 """
             (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
             (self.plugin_dir / "update.txt").write_text("updated")
@@ -333,7 +329,7 @@ en = "A test plugin - updated"
 
             self.assertIsNotNone(plugin.manifest)
             self.assertEqual(plugin.manifest.name, "Test Plugin")
-            self.assertEqual(plugin.manifest.author, "Test Author")
+            self.assertEqual(plugin.manifest.authors, ("Test Author",))
             self.assertEqual(str(plugin.manifest.version), "1.0.0.final0")
             self.assertEqual(plugin.manifest.description('en'), "A test plugin")
 

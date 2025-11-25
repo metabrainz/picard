@@ -45,7 +45,7 @@ class TestPluginManifest(PicardTestCase):
         manifest = load_plugin_manifest('example')
         self.assertEqual(manifest.module_name, 'example')
         self.assertEqual(manifest.name, 'Example plugin')
-        self.assertEqual(manifest.author, 'Philipp Wolfer')
+        self.assertEqual(manifest.authors, ('Philipp Wolfer',))
         self.assertEqual(manifest.description(), "This is an example plugin")
         self.assertEqual(manifest.description('en'), "This is an example plugin")
         self.assertEqual(manifest.description('fr'), "Ceci est un exemple de plugin")
@@ -54,7 +54,6 @@ class TestPluginManifest(PicardTestCase):
         self.assertEqual(manifest.api_versions, (Version(3, 0, 0), Version(3, 1, 0)))
         self.assertEqual(manifest.license, 'CC0-1.0')
         self.assertEqual(manifest.license_url, 'https://creativecommons.org/publicdomain/zero/1.0/')
-        self.assertEqual(manifest.user_guide_url, 'https://example.com/')
 
     def test_manifest_missing_translation(self):
         """Test manifest description with missing translation."""
@@ -73,7 +72,7 @@ class TestPluginManifest(PicardTestCase):
         # Test all properties are accessible
         self.assertIsNotNone(manifest.module_name)
         self.assertIsNotNone(manifest.name)
-        self.assertIsNotNone(manifest.author)
+        self.assertIsNotNone(manifest.authors)
         self.assertIsNotNone(manifest.version)
         self.assertIsNotNone(manifest.api_versions)
         self.assertIsNotNone(manifest.license)

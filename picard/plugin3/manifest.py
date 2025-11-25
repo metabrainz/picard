@@ -46,12 +46,18 @@ class PluginManifest:
         return self._data.get('name')
 
     @property
-    def author(self) -> str:
-        return self._data.get('author')
+    def authors(self) -> Tuple[str]:
+        authors = self._data.get('authors', [])
+        return tuple(authors) if authors else tuple()
 
     def description(self, preferred_language: str = 'en') -> str:
-        descriptions = self._data.get('description') or {}
-        return descriptions.get(preferred_language, descriptions.get('en', ''))
+        # Try i18n first, fall back to base description
+        i18n = self._data.get('description_i18n') or {}
+        if preferred_language in i18n:
+            return i18n[preferred_language]
+        if 'en' in i18n:
+            return i18n['en']
+        return self._data.get('description', '')
 
     @property
     def version(self) -> Version:
@@ -76,8 +82,4 @@ class PluginManifest:
 
     @property
     def license_url(self) -> str:
-        return self._data.get('license-url')
-
-    @property
-    def user_guide_url(self) -> str:
-        return self._data.get('user-guide-url')
+        return self._data.get('license_url')
