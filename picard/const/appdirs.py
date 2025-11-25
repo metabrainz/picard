@@ -58,3 +58,25 @@ def cache_folder():
 def plugin_folder():
     appdata_folder = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
     return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(appdata_folder, 'plugins3')))
+
+
+def sessions_folder():
+    """Get the sessions folder path.
+
+    Returns
+    -------
+    str
+        The path to the sessions folder. If a custom path is configured,
+        returns that path. Otherwise, returns the default path
+        <config_folder>/sessions.
+    """
+    from pathlib import Path
+
+    from picard.config import get_config
+
+    config = get_config()
+    custom_path = config.setting['session_folder_path']
+    if custom_path:
+        return str(Path(custom_path).resolve())
+    else:
+        return str(Path(config_folder()) / 'sessions')
