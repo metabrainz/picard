@@ -1596,6 +1596,10 @@ def main(localedir=None, autoupdate=True):
 
     setup_dbus()
 
+    # Suppress Qt messages for plugin commands
+    if cmdline_args.subcommand == 'plugins':
+        os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.*.info=false;qt.*.warning=false'
+
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
     setup_translator(tagger)
