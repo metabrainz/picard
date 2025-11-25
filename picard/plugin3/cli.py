@@ -183,6 +183,20 @@ class PluginCLI:
         self._out.print(f'API Versions: {", ".join(api_versions)}')
         self._out.print(f'License: {plugin.manifest.license}')
         self._out.print(f'License URL: {plugin.manifest.license_url}')
+
+        # Optional fields
+        categories = plugin.manifest._data.get('categories', [])
+        if categories:
+            self._out.print(f'Categories: {", ".join(categories)}')
+
+        homepage = plugin.manifest._data.get('homepage')
+        if homepage:
+            self._out.print(f'Homepage: {homepage}')
+
+        min_python = plugin.manifest._data.get('min_python_version')
+        if min_python:
+            self._out.print(f'Min Python: {min_python}')
+
         self._out.print(f'Path: {plugin.local_path}')
 
         # Show long description at the end if available
