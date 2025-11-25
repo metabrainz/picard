@@ -138,3 +138,49 @@ class TestPluginState(PicardTestCase):
         self.assertEqual(plugin.state, PluginState.DISCOVERED)
         self.assertEqual(plugin.name, 'test-plugin')
         self.assertEqual(plugin.module_name, 'picard.plugins.test-plugin')
+
+    def test_plugin_disable_with_disable_method(self):
+        """Test Plugin.disable() when plugin has disable method."""
+        from pathlib import Path
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+        plugin.state = PluginState.ENABLED
+
+        # Mock module with disable method
+        mock_module = Mock()
+        mock_module.disable = Mock()
+        plugin._module = mock_module
+
+        plugin.disable()
+
+        # Should call plugin's disable method
+        mock_module.disable.assert_called_once()
+        self.assertEqual(plugin.state, PluginState.DISABLED)
+
+    def test_plugin_disable_without_disable_method(self):
+        """Test Plugin.disable() when plugin has no disable method."""
+        from pathlib import Path
+        from unittest.mock import patch
+
+        from picard.plugin3.plugin import (
+            Plugin,
+            PluginState,
+        )
+
+        plugin = Plugin(Path('/tmp'), 'test-plugin')
+        plugin.state = PluginState.ENABLED
+
+        # Mock module without disable method
+        mock_module = Mock(spec=[])  # Empty spec = no methods
+        plugin._module = mock_module
+
+        with patch('picard.plugin3.plugin.unregister_module_extensions'):
+            plugin.disable()
+
+        # Should not raise, just change state
+        self.assertEqual(plugin.state, PluginState.DISABLED)

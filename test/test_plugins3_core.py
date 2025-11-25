@@ -56,6 +56,29 @@ class TestPluginManifest(PicardTestCase):
         self.assertEqual(manifest.license_url, 'https://creativecommons.org/publicdomain/zero/1.0/')
         self.assertEqual(manifest.user_guide_url, 'https://example.com/')
 
+    def test_manifest_missing_translation(self):
+        """Test manifest description with missing translation."""
+        manifest = load_plugin_manifest('example')
+
+        # Request non-existent language, should fallback to default (English)
+        desc = manifest.description('de')
+        # Should return English as fallback
+        self.assertIsNotNone(desc)
+        self.assertIsInstance(desc, str)
+
+    def test_manifest_properties(self):
+        """Test manifest property accessors."""
+        manifest = load_plugin_manifest('example')
+
+        # Test all properties are accessible
+        self.assertIsNotNone(manifest.module_name)
+        self.assertIsNotNone(manifest.name)
+        self.assertIsNotNone(manifest.author)
+        self.assertIsNotNone(manifest.version)
+        self.assertIsNotNone(manifest.api_versions)
+        self.assertIsNotNone(manifest.license)
+        self.assertIsNotNone(manifest.license_url)
+
 
 class TestPluginApi(PicardTestCase):
     def test_init(self):
@@ -69,6 +92,22 @@ class TestPluginApi(PicardTestCase):
         self.assertEqual(api.logger.name, 'plugin.example')
         self.assertEqual(api.global_config, get_config())
         self.assertIsInstance(api.plugin_config, ConfigSection)
+
+    def test_api_properties(self):
+        """Test PluginApi property accessors."""
+        manifest = load_plugin_manifest('example')
+
+        mock_tagger = Mock()
+        mock_ws = mock_tagger.webservice = Mock()
+
+        api = PluginApi(manifest, mock_tagger)
+
+        # Test property accessors
+        self.assertEqual(api.web_service, mock_ws)
+        self.assertIsNotNone(api.mb_api)
+        self.assertIsNotNone(api.logger)
+        self.assertIsNotNone(api.global_config)
+        self.assertIsNotNone(api.plugin_config)
 
 
 class TestPluginManager(PicardTestCase):
@@ -235,3 +274,45 @@ class TestPluginErrors(PicardTestCase):
 
         with self.assertRaises(Exception):  # noqa: B017
             manager.enable_plugin(bad_plugin)
+
+    def test_manager_add_directory(self):
+        """Test adding plugin directory."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Add directory
+            manager.add_directory(str(plugin_dir), primary=True)
+
+            # Should be registered
+            self.assertIn(plugin_dir, manager._plugin_dirs)
+            self.assertEqual(manager._primary_plugin_dir, plugin_dir)
+
+    def test_manager_add_directory_twice(self):
+        """Test adding same directory twice is ignored."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Add directory twice
+            manager.add_directory(str(plugin_dir))
+            initial_count = len(manager._plugin_dirs)
+
+            manager.add_directory(str(plugin_dir))
+
+            # Should not be added twice
+            self.assertEqual(len(manager._plugin_dirs), initial_count)

@@ -354,3 +354,119 @@ class TestPluginCLI(PicardTestCase):
         self.assertEqual(result, 0)
         mock_manager._clean_plugin_config.assert_called_once_with('test-plugin')
         self.assertIn('deleted', output_text.lower())
+
+    def test_enable_plugins_command(self):
+        """Test enable command."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.enable_plugin = Mock()
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = ['test-plugin']
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        mock_manager.enable_plugin.assert_called_once_with(mock_plugin)
+
+    def test_disable_plugins_command(self):
+        """Test disable command."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.disable_plugin = Mock()
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = ['test-plugin']
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = None
+        args.clean_config = None
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 0)
+        mock_manager.disable_plugin.assert_called_once_with(mock_plugin)
+
+    def test_cli_keyboard_interrupt(self):
+        """Test CLI handles KeyboardInterrupt."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.check_updates = Mock(side_effect=KeyboardInterrupt())
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = True
+        args.switch_ref = None
+        args.clean_config = None
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 130)  # CANCELLED
+        self.assertIn('cancelled', stderr.getvalue().lower())
