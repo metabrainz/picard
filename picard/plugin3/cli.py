@@ -63,6 +63,8 @@ class PluginCLI:
                 return self._update_all_plugins()
             elif self._args.check_updates:
                 return self._check_updates()
+            elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
+                return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             else:
                 self._out.error('No action specified')
                 return ExitCode.ERROR
@@ -153,10 +155,14 @@ class PluginCLI:
 
     def _install_plugins(self, plugin_urls):
         """Install plugins from URLs."""
+        ref = getattr(self._args, 'ref', None)
         for url in plugin_urls:
             try:
-                self._out.print(f'Installing plugin from {url}...')
-                self._manager.install_plugin(url)
+                if ref:
+                    self._out.print(f'Installing plugin from {url} (ref: {ref})...')
+                else:
+                    self._out.print(f'Installing plugin from {url}...')
+                self._manager.install_plugin(url, ref)
                 self._out.success('Plugin installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
@@ -295,6 +301,25 @@ class PluginCLI:
                 self._out.info(f'{name}: {current} → {latest}')
             self._out.print('\nRun with --update-all to update all plugins')
 
+        return ExitCode.SUCCESS
+
+    def _switch_ref(self, plugin_name, ref):
+        """Switch plugin to a different git ref."""
+        plugin = self._find_plugin(plugin_name)
+        if not plugin:
+            self._out.error(f'Plugin "{plugin_name}" not found')
+            return ExitCode.NOT_FOUND
+
+        try:
+            self._out.print(f'Switching {plugin.name} to ref: {ref}...')
+            old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
+
+            self._out.success(f'Switched: {old_ref} → {new_ref}')
+            self._out.info(f'Commit: {old_commit[:7]} → {new_commit[:7]}')
+            self._out.info('Restart Picard to load the updated plugin')
+        except Exception as e:
+            self._out.error(f'Failed to switch ref: {e}')
+            return ExitCode.ERROR
         return ExitCode.SUCCESS
 
     def _find_plugin(self, plugin_name):

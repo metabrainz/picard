@@ -572,3 +572,162 @@ class TestPluginCLI(PicardTestCase):
 
         self.assertEqual(result, 2)
         self.assertIn('not found', error_text)
+
+    def test_install_with_ref(self):
+        """Test installing plugin with specific git ref."""
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Mock the install to capture ref parameter
+        captured_ref = None
+
+        def mock_install(url, ref=None):
+            nonlocal captured_ref
+            captured_ref = ref
+
+        manager.install_plugin = mock_install
+
+        # Test with ref
+        manager.install_plugin('https://example.com/plugin.git', ref='v1.0.0')
+        self.assertEqual(captured_ref, 'v1.0.0')
+
+        # Test without ref (should default to None)
+        manager.install_plugin('https://example.com/plugin.git')
+        self.assertIsNone(captured_ref)
+
+    def test_switch_ref(self):
+        """Test switching plugin to different git ref."""
+        from pathlib import Path
+
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Setup plugin with metadata
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+        mock_plugin.local_path = Path('/tmp/test-plugin')
+        mock_plugin.read_manifest = Mock()
+
+        manager._save_plugin_metadata('test-plugin', 'https://example.com/plugin.git', 'main', 'abc123')
+
+        # Mock PluginSourceGit.sync to return new commit
+        from unittest.mock import patch
+
+        with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            mock_source = Mock()
+            mock_source.sync = Mock(return_value='def456')
+            mock_source_class.return_value = mock_source
+
+            old_ref, new_ref, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
+
+            self.assertEqual(old_ref, 'main')
+            self.assertEqual(new_ref, 'v1.0.0')
+            self.assertEqual(old_commit, 'abc123')
+            self.assertEqual(new_commit, 'def456')
+
+            # Verify metadata was updated
+            metadata = manager._get_plugin_metadata('test-plugin')
+            self.assertEqual(metadata['ref'], 'v1.0.0')
+            self.assertEqual(metadata['commit'], 'def456')
+
+    def test_switch_ref_no_metadata(self):
+        """Test switching ref for plugin without metadata raises error."""
+        from pathlib import Path
+
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+        mock_plugin.local_path = Path('/tmp/test-plugin')
+
+        with self.assertRaises(ValueError) as context:
+            manager.switch_ref(mock_plugin, 'v1.0.0')
+
+        self.assertIn('no stored URL', str(context.exception))
+
+    def test_switch_ref_cli(self):
+        """Test switch-ref CLI command."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        mock_manager.plugins = [mock_plugin]
+        mock_manager.switch_ref = Mock(return_value=('main', 'v1.0.0', 'abc1234', 'def5678'))
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = ['test-plugin', 'v1.0.0']
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+        output_text = stdout.getvalue()
+
+        self.assertEqual(result, 0)
+        mock_manager.switch_ref.assert_called_once_with(mock_plugin, 'v1.0.0')
+        self.assertIn('main', output_text)
+        self.assertIn('v1.0.0', output_text)
+        self.assertIn('abc1234', output_text)
+        self.assertIn('def5678', output_text)
+
+    def test_switch_ref_plugin_not_found(self):
+        """Test switch-ref for non-existent plugin."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = Mock()
+        mock_manager = Mock()
+        mock_manager.plugins = []
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = Mock()
+        args.list = False
+        args.info = None
+        args.status = None
+        args.enable = None
+        args.disable = None
+        args.install = None
+        args.uninstall = None
+        args.update = None
+        args.update_all = False
+        args.check_updates = False
+        args.switch_ref = ['nonexistent', 'v1.0.0']
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(mock_tagger, args, output)
+
+        result = cli.run()
+        error_text = stderr.getvalue()
+
+        self.assertEqual(result, 2)
+        self.assertIn('not found', error_text)

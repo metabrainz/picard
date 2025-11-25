@@ -72,14 +72,34 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
-    def install_plugin(self, url):
-        source = PluginSourceGit(url)
+    def install_plugin(self, url, ref=None):
+        source = PluginSourceGit(url, ref)
         dirname = os.path.basename(url)
         target_path = self._primary_plugin_dir.joinpath(dirname)
         commit_id = source.sync(target_path)
 
         # Store plugin metadata
         self._save_plugin_metadata(dirname, url, source.ref, commit_id)
+
+    def switch_ref(self, plugin: Plugin, ref: str):
+        """Switch plugin to a different git ref (branch/tag/commit)."""
+        metadata = self._get_plugin_metadata(plugin.name)
+        if not metadata or 'url' not in metadata:
+            raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot switch ref')
+
+        old_ref = metadata.get('ref', 'main')
+        old_commit = metadata.get('commit', 'unknown')
+
+        source = PluginSourceGit(metadata['url'], ref)
+        new_commit = source.sync(plugin.local_path)
+
+        # Reload manifest to get potentially new version
+        plugin.read_manifest()
+
+        # Update metadata with new ref
+        self._save_plugin_metadata(plugin.name, metadata['url'], ref, new_commit)
+
+        return old_ref, ref, old_commit, new_commit
 
     def update_plugin(self, plugin: Plugin):
         """Update a single plugin to latest version."""
