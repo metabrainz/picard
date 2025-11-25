@@ -143,12 +143,16 @@ def apply_dark_palette_colors(palette):
             palette.setColor(key, value)
 
 
-def set_color_scheme(color_scheme: QtCore.Qt.ColorScheme):
+def set_color_scheme(color_scheme):
     """Set the color scheme using style hints if available.
 
     Args:
-        color_scheme: The Qt color scheme to set
+        color_scheme: The Qt color scheme to set (Qt.ColorScheme enum, Qt 6.5+)
     """
+    # ColorScheme was added in Qt 6.5
+    if not hasattr(QtCore.Qt, 'ColorScheme'):
+        return
+
     style_hints = get_style_hints()
     if style_hints is not None:
         style_hints.setColorScheme(color_scheme)
@@ -164,7 +168,7 @@ def apply_dark_theme_to_palette(palette: QtGui.QPalette):
         palette: The palette to apply dark colors to
     """
     style_hints = get_style_hints()
-    if style_hints is not None:
+    if style_hints is not None and hasattr(QtCore.Qt, 'ColorScheme'):
         style_hints.setColorScheme(QtCore.Qt.ColorScheme.Dark)
         # Test whether the change was successful
         if style_hints.colorScheme() == QtCore.Qt.ColorScheme.Dark:
@@ -205,9 +209,8 @@ class BaseTheme:
             'QGroupBox::title { /* PICARD-1206, Qt bug workaround */ }',
         )
 
-        # Set color scheme based on theme configuration
-        style_hints = get_style_hints()
-        if style_hints is not None:
+        # Set color scheme based on theme configuration (Qt 6.5+)
+        if hasattr(QtCore.Qt, 'ColorScheme'):
             if self._loaded_config_theme == UiTheme.DARK:
                 set_color_scheme(QtCore.Qt.ColorScheme.Dark)
             elif self._loaded_config_theme == UiTheme.LIGHT:
