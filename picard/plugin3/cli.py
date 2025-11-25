@@ -55,6 +55,12 @@ class PluginCLI:
                 return self._install_plugins(self._args.install)
             elif self._args.uninstall:
                 return self._uninstall_plugins(self._args.uninstall)
+            elif self._args.update:
+                return self._update_plugins(self._args.update)
+            elif self._args.update_all:
+                return self._update_all_plugins()
+            elif self._args.check_updates:
+                return self._check_updates()
             else:
                 self._out.error('No action specified')
                 return ExitCode.ERROR
@@ -186,6 +192,79 @@ class PluginCLI:
             except Exception as e:
                 self._out.error(f'Failed to disable plugin: {e}')
                 return ExitCode.ERROR
+        return ExitCode.SUCCESS
+
+    def _update_plugins(self, plugin_names):
+        """Update specific plugins."""
+        for plugin_name in plugin_names:
+            plugin = self._find_plugin(plugin_name)
+            if not plugin:
+                self._out.error(f'Plugin "{plugin_name}" not found')
+                return ExitCode.NOT_FOUND
+
+            try:
+                self._out.print(f'Updating {plugin.name}...')
+                old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(plugin)
+
+                if old_commit == new_commit:
+                    self._out.info(f'Already up to date (version {new_ver})')
+                else:
+                    self._out.success(f'Updated: {old_ver} → {new_ver}')
+                    self._out.info(f'Commit: {old_commit[:7]} → {new_commit[:7]}')
+                    self._out.info('Restart Picard to load the updated plugin')
+            except Exception as e:
+                self._out.error(f'Failed to update plugin: {e}')
+                return ExitCode.ERROR
+        return ExitCode.SUCCESS
+
+    def _update_all_plugins(self):
+        """Update all installed plugins."""
+        if not self._manager.plugins:
+            self._out.print('No plugins installed')
+            return ExitCode.SUCCESS
+
+        self._out.print('Updating all plugins...\n')
+        results = self._manager.update_all_plugins()
+
+        updated = 0
+        unchanged = 0
+        failed = 0
+
+        for name, success, old_ver, new_ver, old_commit, new_commit, error in results:
+            if success:
+                if old_commit == new_commit:
+                    self._out.info(f'{name}: Already up to date ({new_ver})')
+                    unchanged += 1
+                else:
+                    self._out.success(f'{name}: {old_ver} → {new_ver} ({old_commit[:7]} → {new_commit[:7]})')
+                    updated += 1
+            else:
+                self._out.error(f'{name}: {error}')
+                failed += 1
+
+        self._out.print(f'\nSummary: {updated} updated, {unchanged} unchanged, {failed} failed')
+        if updated > 0:
+            self._out.info('Restart Picard to load updated plugins')
+
+        return ExitCode.SUCCESS if failed == 0 else ExitCode.ERROR
+
+    def _check_updates(self):
+        """Check for available updates without installing."""
+        if not self._manager.plugins:
+            self._out.print('No plugins installed')
+            return ExitCode.SUCCESS
+
+        self._out.print('Checking for updates...\n')
+        updates = self._manager.check_updates()
+
+        if not updates:
+            self._out.success('All plugins are up to date')
+        else:
+            self._out.print('Updates available:\n')
+            for name, current, latest in updates:
+                self._out.info(f'{name}: {current} → {latest}')
+            self._out.print('\nRun with --update-all to update all plugins')
+
         return ExitCode.SUCCESS
 
     def _find_plugin(self, plugin_name):

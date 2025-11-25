@@ -75,7 +75,72 @@ class PluginManager:
     def install_plugin(self, url):
         source = PluginSourceGit(url)
         dirname = os.path.basename(url)
-        source.sync(self._primary_plugin_dir.joinpath(dirname))
+        target_path = self._primary_plugin_dir.joinpath(dirname)
+        commit_id = source.sync(target_path)
+
+        # Store plugin metadata
+        self._save_plugin_metadata(dirname, url, source.ref, commit_id)
+
+    def update_plugin(self, plugin: Plugin):
+        """Update a single plugin to latest version."""
+        metadata = self._get_plugin_metadata(plugin.name)
+        if not metadata or 'url' not in metadata:
+            raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot update')
+
+        old_version = plugin.manifest.version if plugin.manifest else 'unknown'
+
+        source = PluginSourceGit(metadata['url'], metadata.get('ref'))
+        old_commit, new_commit = source.update(plugin.local_path)
+
+        # Reload manifest to get new version
+        plugin.load_manifest()
+        new_version = plugin.manifest.version if plugin.manifest else 'unknown'
+
+        # Update metadata
+        self._save_plugin_metadata(plugin.name, metadata['url'], metadata.get('ref'), new_commit)
+
+        return old_version, new_version, old_commit, new_commit
+
+    def update_all_plugins(self):
+        """Update all installed plugins."""
+        results = []
+        for plugin in self._plugins:
+            try:
+                old_ver, new_ver, old_commit, new_commit = self.update_plugin(plugin)
+                results.append((plugin.name, True, old_ver, new_ver, old_commit, new_commit, None))
+            except Exception as e:
+                results.append((plugin.name, False, None, None, None, None, str(e)))
+        return results
+
+    def check_updates(self):
+        """Check which plugins have updates available without installing."""
+        updates = []
+        for plugin in self._plugins:
+            metadata = self._get_plugin_metadata(plugin.name)
+            if not metadata or 'url' not in metadata:
+                continue
+
+            try:
+                import pygit2
+
+                repo = pygit2.Repository(plugin.local_path.absolute())
+                current_commit = str(repo.head.target)
+
+                # Fetch without updating
+                for remote in repo.remotes:
+                    from picard.plugin3.plugin import GitRemoteCallbacks
+
+                    remote.fetch(callbacks=GitRemoteCallbacks())
+
+                ref = metadata.get('ref', 'main')
+                latest_commit = str(repo.revparse_single(ref).id)
+
+                if current_commit != latest_commit:
+                    updates.append((plugin.name, current_commit[:7], latest_commit[:7]))
+            except Exception:
+                pass
+
+        return updates
 
     def uninstall_plugin(self, plugin: Plugin):
         self.disable_plugin(plugin)
@@ -129,6 +194,33 @@ class PluginManager:
             config.setting['plugins3'] = {}
         config.setting['plugins3']['enabled_plugins'] = list(self._enabled_plugins)
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
+
+    def _get_plugin_metadata(self, plugin_name: str):
+        """Get stored metadata for a plugin."""
+        from picard.config import get_config
+
+        config = get_config()
+        metadata = config.setting.get('plugins3', {}).get('metadata', {})
+        return metadata.get(plugin_name, {})
+
+    def _save_plugin_metadata(self, plugin_name: str, url: str, ref: str, commit_id: str):
+        """Save plugin metadata to config."""
+        from picard.config import get_config
+
+        config = get_config()
+        if 'plugins3' not in config.setting:
+            config.setting['plugins3'] = {}
+        if 'metadata' not in config.setting['plugins3']:
+            config.setting['plugins3']['metadata'] = {}
+
+        config.setting['plugins3']['metadata'][plugin_name] = {'url': url, 'ref': ref, 'commit': commit_id}
+        log.debug(
+            'Saved metadata for plugin %s: url=%s, ref=%s, commit=%s',
+            plugin_name,
+            url,
+            ref,
+            commit_id[:7] if commit_id else None,
+        )
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):
         """Load a plugin and check API version compatibility.

@@ -77,6 +77,25 @@ class PluginSourceGit(PluginSource):
         print(commit.message)
         # hard reset to passed ref or HEAD
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
+        return str(commit.id)
+
+    def update(self, target_directory: Path):
+        """Update plugin to latest version on current ref."""
+        repo = pygit2.Repository(target_directory.absolute())
+        old_commit = str(repo.head.target)
+
+        for remote in repo.remotes:
+            remote.fetch(callbacks=GitRemoteCallbacks())
+
+        if self.ref:
+            commit = repo.revparse_single(self.ref)
+        else:
+            commit = repo.revparse_single('HEAD')
+
+        repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
+        new_commit = str(commit.id)
+
+        return old_commit, new_commit
 
 
 class PluginSourceLocal(PluginSource):

@@ -1428,6 +1428,10 @@ If a new instance will not be spawned files/directories will be passed to the ex
     plugin_parser.add_argument('-u', '--uninstall', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
     plugin_parser.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
     plugin_parser.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
+    plugin_parser.add_argument('--update', nargs='+', metavar='PLUGIN', help="update plugin(s) to latest version")
+    plugin_parser.add_argument('--update-all', action='store_true', help="update all installed plugins")
+    plugin_parser.add_argument('--check-updates', action='store_true', help="check for available updates")
+    plugin_parser.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
 
     args = parser.parse_args()
     args.remote_commands_help = False
