@@ -44,6 +44,11 @@ class PluginOutput:
         """Print normal output."""
         print(msg, file=self.stdout)
 
+    def nl(self, count=1):
+        """Print blank line(s)."""
+        for _ in range(count):
+            print('', file=self.stdout)
+
     def success(self, msg):
         """Print success message with checkmark."""
         if self.color:

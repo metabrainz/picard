@@ -86,7 +86,8 @@ class PluginCLI:
                 self._out.error('No action specified')
                 return ExitCode.ERROR
         except KeyboardInterrupt:
-            self._out.error('\nOperation cancelled by user')
+            self._out.nl()
+            self._out.error('Operation cancelled by user')
             return ExitCode.CANCELLED
         except Exception as e:
             self._out.error(f'Error: {e}')
@@ -118,7 +119,8 @@ class PluginCLI:
             self._out.print('No plugins installed')
             return ExitCode.SUCCESS
 
-        self._out.print('Installed plugins:\n')
+        self._out.print('Installed plugins:')
+        self._out.nl()
         for plugin in self._manager.plugins:
             # Check config for enabled state (not just loaded state)
             status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
@@ -176,7 +178,8 @@ class PluginCLI:
         # Show long description at the end if available
         long_desc = plugin.manifest.long_description()
         if long_desc:
-            self._out.print(f'\n{long_desc}')
+            self._out.nl()
+            self._out.print(long_desc)
 
         return ExitCode.SUCCESS
 
@@ -236,7 +239,7 @@ class PluginCLI:
                     # Check trust level for unregistered plugins
                     trust_level = self._manager._registry.get_trust_level(url)
                     if trust_level == 'unregistered':
-                        self._out.warning('⚠ WARNING: This plugin is not in the official registry')
+                        self._out.warning('WARNING: This plugin is not in the official registry')
                         self._out.warning('  Installing unregistered plugins may pose security risks')
                         self._out.warning('  Only install plugins from sources you trust')
 
@@ -363,7 +366,8 @@ class PluginCLI:
             self._out.print('No plugins installed')
             return ExitCode.SUCCESS
 
-        self._out.print('Updating all plugins...\n')
+        self._out.print('Updating all plugins...')
+        self._out.nl()
         results = self._manager.update_all_plugins()
 
         updated = 0
@@ -384,7 +388,8 @@ class PluginCLI:
                 self._out.error(f'{name}: {error}')
                 failed += 1
 
-        self._out.print(f'\nSummary: {updated} updated, {unchanged} unchanged, {failed} failed')
+        self._out.nl()
+        self._out.print(f'Summary: {updated} updated, {unchanged} unchanged, {failed} failed')
         if updated > 0:
             self._out.info('Restart Picard to load updated plugins')
 
@@ -396,16 +401,19 @@ class PluginCLI:
             self._out.print('No plugins installed')
             return ExitCode.SUCCESS
 
-        self._out.print('Checking for updates...\n')
+        self._out.print('Checking for updates...')
+        self._out.nl()
         updates = self._manager.check_updates()
 
         if not updates:
             self._out.success('All plugins are up to date')
         else:
-            self._out.print('Updates available:\n')
+            self._out.print('Updates available:')
+            self._out.nl()
             for name, current, latest in updates:
                 self._out.info(f'{name}: {current} → {latest}')
-            self._out.print('\nRun with --update-all to update all plugins')
+            self._out.nl()
+            self._out.print('Run with --update-all to update all plugins')
 
         return ExitCode.SUCCESS
 
@@ -470,10 +478,10 @@ class PluginCLI:
             # Validate local directory directly
             manifest_path = local_path / 'MANIFEST.toml'
             if not manifest_path.exists():
-                self._out.error('✗ No MANIFEST.toml found')
+                self._out.error('No MANIFEST.toml found')
                 return ExitCode.ERROR
 
-            self._out.success('✓ MANIFEST.toml found')
+            self._out.success('MANIFEST.toml found')
 
             try:
                 # Read and validate manifest
@@ -483,13 +491,16 @@ class PluginCLI:
                 errors = manifest.validate()
 
                 if errors:
-                    self._out.error(f'\n✗ Validation failed with {len(errors)} error(s):\n')
+                    self._out.nl()
+                    self._out.error(f'Validation failed with {len(errors)} error(s):')
+                    self._out.nl()
                     for error in errors:
                         self._out.error(f'  • {error}')
                     return ExitCode.ERROR
 
                 # Show plugin info
-                self._out.success('\n✓ Validation passed\n')
+                self._out.success('Validation passed')
+                self._out.nl()
                 self._out.print('Plugin Information:')
                 self._out.info(f'  Name: {manifest.name()}')
                 self._out.info(f'  Version: {manifest.version}')
@@ -501,7 +512,7 @@ class PluginCLI:
                 return ExitCode.SUCCESS
 
             except Exception as e:
-                self._out.error(f'✗ Validation error: {e}')
+                self._out.error(f'Validation error: {e}')
                 return ExitCode.ERROR
 
         # Handle git URL
@@ -519,10 +530,10 @@ class PluginCLI:
             # Check for MANIFEST.toml
             manifest_path = temp_path / 'MANIFEST.toml'
             if not manifest_path.exists():
-                self._out.error('✗ No MANIFEST.toml found')
+                self._out.error('No MANIFEST.toml found')
                 return ExitCode.ERROR
 
-            self._out.success('✓ MANIFEST.toml found')
+            self._out.success('MANIFEST.toml found')
 
             # Read and validate manifest
             with open(manifest_path, 'rb') as f:
@@ -531,13 +542,16 @@ class PluginCLI:
             errors = manifest.validate()
 
             if errors:
-                self._out.error(f'\n✗ Validation failed with {len(errors)} error(s):\n')
+                self._out.nl()
+                self._out.error(f'Validation failed with {len(errors)} error(s):')
+                self._out.nl()
                 for error in errors:
                     self._out.error(f'  • {error}')
                 return ExitCode.ERROR
 
             # Show plugin info
-            self._out.success('\n✓ Validation passed\n')
+            self._out.success('Validation passed')
+            self._out.nl()
             self._out.print('Plugin Information:')
             self._out.info(f'  Name: {manifest.name()}')
             self._out.info(f'  Version: {manifest.version}')
@@ -549,7 +563,7 @@ class PluginCLI:
             return ExitCode.SUCCESS
 
         except Exception as e:
-            self._out.error(f'✗ Validation error: {e}')
+            self._out.error(f'Validation error: {e}')
             return ExitCode.ERROR
         finally:
             # Cleanup
@@ -577,9 +591,11 @@ class PluginCLI:
                 filters.append(f'trust: {trust_level}')
 
             if filters:
-                self._out.print(f'Registry plugins ({", ".join(filters)}):\n')
+                self._out.print(f'Registry plugins ({", ".join(filters)}):')
+                self._out.nl()
             else:
-                self._out.print('Registry plugins:\n')
+                self._out.print('Registry plugins:')
+                self._out.nl()
 
             # Show plugins
             for plugin in plugins:
@@ -592,7 +608,8 @@ class PluginCLI:
                 self._out.print('')
 
             self._out.print(f'Total: {len(plugins)} plugin(s)')
-            self._out.print('\nInstall with: picard plugins --install <plugin-id>')
+            self._out.nl()
+            self._out.print('Install with: picard plugins --install <plugin-id>')
 
             return ExitCode.SUCCESS
 
@@ -620,7 +637,8 @@ class PluginCLI:
                 self._out.print(f'No plugins found matching "{query}"')
                 return ExitCode.SUCCESS
 
-            self._out.print(f'Found {len(results)} plugin(s) matching "{query}":\n')
+            self._out.print(f'Found {len(results)} plugin(s) matching "{query}":')
+            self._out.nl()
 
             for plugin in results:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
