@@ -118,17 +118,32 @@ class PluginSourceGit(PluginSource):
                     self.resolved_ref = f'origin/{self.ref}'
         else:
             # Use repository's default branch (HEAD)
-            commit = repo.revparse_single('HEAD')
-            # Get the branch name that HEAD points to
-            if repo.head_is_detached:
-                self.resolved_ref = short_commit_id(str(commit.id))
-            else:
-                # Get branch name from HEAD
-                head_ref = repo.head.name
-                if head_ref.startswith('refs/heads/'):
-                    self.resolved_ref = head_ref[11:]  # Remove 'refs/heads/' prefix
+            try:
+                commit = repo.revparse_single('HEAD')
+                # Get the branch name that HEAD points to
+                if repo.head_is_detached:
+                    self.resolved_ref = short_commit_id(str(commit.id))
                 else:
-                    self.resolved_ref = head_ref
+                    # Get branch name from HEAD
+                    head_ref = repo.head.name
+                    if head_ref.startswith('refs/heads/'):
+                        self.resolved_ref = head_ref[11:]  # Remove 'refs/heads/' prefix
+                    else:
+                        self.resolved_ref = head_ref
+            except KeyError:
+                # HEAD not set, try 'main' or first available branch
+                try:
+                    commit = repo.revparse_single('main')
+                    self.resolved_ref = 'main'
+                except KeyError:
+                    # Find first available branch
+                    branches = list(repo.branches.local)
+                    if branches:
+                        branch_name = branches[0]
+                        commit = repo.revparse_single(branch_name)
+                        self.resolved_ref = branch_name
+                    else:
+                        raise PluginSourceSyncError('No branches found in repository') from None
 
         # hard reset to passed ref or HEAD
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
