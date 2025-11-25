@@ -565,6 +565,10 @@ TextOption('persist', 'tags_from_filenames_format', '')
 BoolOption('persist', 'script_editor_tooltips', True)
 BoolOption('persist', 'script_editor_wordwrap', False)
 
+# picard/plugin3/manager.py
+#
+Option('setting', 'plugins3', {})
+
 
 def init_options():
     pass

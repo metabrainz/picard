@@ -44,6 +44,8 @@ class PluginManager:
         from picard.tagger import Tagger
 
         self._tagger: Tagger = tagger
+        self._enabled_plugins = set()
+        self._load_config()
 
     @property
     def plugins(self):
@@ -87,22 +89,46 @@ class PluginManager:
                 shutil.rmtree(plugin_path)
 
     def init_plugins(self):
-        # TODO: Only load and enable plugins enabled in configuration
+        """Initialize and enable plugins that are enabled in configuration."""
         for plugin in self._plugins:
-            try:
-                plugin.load_module()
-                plugin.enable(self._tagger)
-            except Exception as ex:
-                log.error('Failed initializing plugin %s from %s', plugin.name, plugin.local_path, exc_info=ex)
+            if plugin.name in self._enabled_plugins:
+                try:
+                    plugin.load_module()
+                    plugin.enable(self._tagger)
+                except Exception as ex:
+                    log.error('Failed initializing plugin %s from %s', plugin.name, plugin.local_path, exc_info=ex)
 
     def enable_plugin(self, plugin: Plugin):
-        # TODO: Add to config
+        """Enable a plugin and save to config."""
         plugin.load_module()
         plugin.enable(self._tagger)
+        self._enabled_plugins.add(plugin.name)
+        self._save_config()
 
     def disable_plugin(self, plugin: Plugin):
-        # TODO: Remove from config
+        """Disable a plugin and save to config."""
         plugin.disable()
+        self._enabled_plugins.discard(plugin.name)
+        self._save_config()
+
+    def _load_config(self):
+        """Load enabled plugins list from config."""
+        from picard.config import get_config
+
+        config = get_config()
+        enabled = config.setting.get('plugins3', {}).get('enabled_plugins', [])
+        self._enabled_plugins = set(enabled)
+        log.debug('Loaded enabled plugins from config: %r', self._enabled_plugins)
+
+    def _save_config(self):
+        """Save enabled plugins list to config."""
+        from picard.config import get_config
+
+        config = get_config()
+        if 'plugins3' not in config.setting:
+            config.setting['plugins3'] = {}
+        config.setting['plugins3']['enabled_plugins'] = list(self._enabled_plugins)
+        log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):
         plugin = Plugin(plugin_dir, plugin_name)

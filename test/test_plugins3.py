@@ -69,3 +69,69 @@ class TestPluginApi(PicardTestCase):
         self.assertEqual(api.logger.name, 'plugin.example')
         self.assertEqual(api.global_config, get_config())
         self.assertIsInstance(api.plugin_config, ConfigSection)
+
+
+class TestPluginManager(PicardTestCase):
+    def test_config_persistence(self):
+        """Test that enabled plugins are saved to and loaded from config."""
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Initially no plugins enabled
+        self.assertEqual(manager._enabled_plugins, set())
+
+        # Create a mock plugin
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+
+        # Enable plugin - should save to config
+        manager.enable_plugin(mock_plugin)
+        self.assertIn('test-plugin', manager._enabled_plugins)
+
+        # Verify it was saved to config
+        config = get_config()
+        self.assertIn('plugins3', config.setting)
+        self.assertIn('test-plugin', config.setting['plugins3']['enabled_plugins'])
+
+        # Create new manager instance - should load from config
+        manager2 = PluginManager(mock_tagger)
+        self.assertIn('test-plugin', manager2._enabled_plugins)
+
+        # Disable plugin - should remove from config
+        manager2.disable_plugin(mock_plugin)
+        self.assertNotIn('test-plugin', manager2._enabled_plugins)
+        self.assertNotIn('test-plugin', config.setting['plugins3']['enabled_plugins'])
+
+    def test_init_plugins_only_loads_enabled(self):
+        """Test that init_plugins only loads plugins that are enabled in config."""
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+
+        # Create mock plugins
+        enabled_plugin = Mock(spec=Plugin)
+        enabled_plugin.name = 'enabled-plugin'
+        enabled_plugin.load_module = Mock()
+        enabled_plugin.enable = Mock()
+
+        disabled_plugin = Mock(spec=Plugin)
+        disabled_plugin.name = 'disabled-plugin'
+        disabled_plugin.load_module = Mock()
+        disabled_plugin.enable = Mock()
+
+        manager._plugins = [enabled_plugin, disabled_plugin]
+        manager._enabled_plugins = {'enabled-plugin'}
+
+        # Initialize plugins
+        manager.init_plugins()
+
+        # Only enabled plugin should be loaded
+        enabled_plugin.load_module.assert_called_once()
+        enabled_plugin.enable.assert_called_once_with(mock_tagger)
+        disabled_plugin.load_module.assert_not_called()
+        disabled_plugin.enable.assert_not_called()
