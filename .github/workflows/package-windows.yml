@@ -54,12 +54,10 @@ jobs:
         GETTEXT_SHA256SUM: 220068ac0b9e7aedda03534a3088e584640ac1e639800b3a0baa9410aa6d012a
     - name: Install libgit2
       run: |
-        choco install libgit2 -y
-        Write-Host "Checking libgit2 installation..."
-        Get-ChildItem "C:\ProgramData\chocolatey\lib\libgit2" -Recurse | Where-Object { $_.Name -like "*.h" -or $_.Name -like "*.lib" } | Select-Object FullName
-        $libgit2Path = "C:\ProgramData\chocolatey\lib\libgit2"
-        echo "INCLUDE=$libgit2Path\include;$env:INCLUDE" >> $env:GITHUB_ENV
-        echo "LIB=$libgit2Path\lib;$env:LIB" >> $env:GITHUB_ENV
+        vcpkg install libgit2:x64-windows
+        $vcpkgRoot = "C:\vcpkg\installed\x64-windows"
+        echo "INCLUDE=$vcpkgRoot\include;$env:INCLUDE" >> $env:GITHUB_ENV
+        echo "LIB=$vcpkgRoot\lib;$env:LIB" >> $env:GITHUB_ENV
       shell: pwsh
     - name: Install dependencies
       run: |

@@ -103,10 +103,10 @@ jobs:
     - name: Install libgit2 (Windows)
       if: runner.os == 'Windows'
       run: |
-        choco install libgit2 -y
-        $libgit2Path = "C:\ProgramData\chocolatey\lib\libgit2"
-        echo "INCLUDE=$libgit2Path\include;$env:INCLUDE" >> $env:GITHUB_ENV
-        echo "LIB=$libgit2Path\lib;$env:LIB" >> $env:GITHUB_ENV
+        vcpkg install libgit2:x64-windows
+        $vcpkgRoot = "C:\vcpkg\installed\x64-windows"
+        echo "INCLUDE=$vcpkgRoot\include;$env:INCLUDE" >> $env:GITHUB_ENV
+        echo "LIB=$vcpkgRoot\lib;$env:LIB" >> $env:GITHUB_ENV
       shell: pwsh
     - name: Install dependencies (Linux)
       if: runner.os == 'linux'
