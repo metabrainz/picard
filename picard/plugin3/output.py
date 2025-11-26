@@ -178,3 +178,11 @@ class PluginOutput:
     def d_date(self, date):
         """Display date/time."""
         return self._colorize(date, self.DIM)
+
+    def d_prompt(self, question, default='N'):
+        """Format a yes/no prompt with colorized question and options."""
+        if default.upper() == 'Y':
+            options = f"[{self._colorize('Y', self.BOLD)}/n]"
+        else:
+            options = f"[y/{self._colorize('N', self.BOLD)}]"
+        return f"{self._colorize(question, self.YELLOW)} {options}: "

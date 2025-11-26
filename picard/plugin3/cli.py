@@ -298,7 +298,7 @@ class PluginCLI:
                         self._out.warning('  Only install plugins from sources you trust')
 
                         if not yes:
-                            response = input('Do you want to continue? [y/N]: ').strip().lower()
+                            response = input(self._out.d_prompt('Do you want to continue?')).strip().lower()
                             if response not in ('y', 'yes'):
                                 self._out.print('Installation cancelled')
                                 return ExitCode.CANCELLED
@@ -342,14 +342,14 @@ class PluginCLI:
 
             # Confirmation prompt unless --yes flag
             if not yes:
-                response = input(f'Uninstall plugin "{plugin.name}"? [y/N] ')
+                response = input(self._out.d_prompt(f'Uninstall plugin "{plugin.name}"?'))
                 if response.lower() != 'y':
                     self._out.print('Cancelled')
                     continue
 
                 # Ask about config cleanup if not using --purge
                 if not purge:
-                    response = input('Delete plugin configuration? [y/N] ')
+                    response = input(self._out.d_prompt('Delete plugin configuration?'))
                     purge_this = response.lower() == 'y'
                 else:
                     purge_this = True
@@ -538,7 +538,7 @@ class PluginCLI:
         yes = getattr(self._args, 'yes', False)
 
         if not yes:
-            response = input(f'Delete configuration for "{plugin_name}"? [y/N] ')
+            response = input(self._out.d_prompt(f'Delete configuration for "{plugin_name}"?'))
             if response.lower() != 'y':
                 self._out.print('Cancelled')
                 return ExitCode.SUCCESS
