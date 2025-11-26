@@ -55,7 +55,12 @@ from picard.i18n import N_
 if IS_FROZEN:
     picard_module_path = Path(FROZEN_TEMP_PATH).joinpath('picard').resolve()
 else:
-    picard_module_path = Path(PathFinder().find_spec('picard').origin).resolve()
+    spec = PathFinder().find_spec('picard')
+    if spec and spec.origin:
+        picard_module_path = Path(spec.origin).resolve()
+    else:
+        # Fallback: use __file__ to find picard module path
+        picard_module_path = Path(__file__).parent.resolve()
 
 if not picard_module_path.is_dir():
     picard_module_path = picard_module_path.parent
