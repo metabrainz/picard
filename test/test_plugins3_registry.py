@@ -188,6 +188,75 @@ class TestPluginRegistry(PicardTestCase):
         self.assertEqual(plugin['uuid'], new_uuid)
         self.assertEqual(plugin['git_url'], 'https://github.com/org/plugin')
 
+    def test_update_plugin_follows_redirect(self):
+        """Test that update_plugin follows redirects and updates metadata."""
+        from pathlib import Path
+        import tempfile
+        from unittest.mock import Mock, patch
+
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.registry import PluginRegistry
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            manager = PluginManager()
+            manager._primary_plugin_dir = plugin_dir
+            manager._registry = PluginRegistry()
+
+            # Setup: plugin installed from old URL
+            old_url = 'https://github.com/olduser/plugin'
+            new_url = 'https://github.com/neworg/plugin'
+            old_uuid = 'old-uuid-1234'
+            new_uuid = 'new-uuid-5678'
+
+            # Registry has redirect
+            manager._registry._registry_data = {
+                'plugins': [
+                    {
+                        'id': 'test-plugin',
+                        'uuid': new_uuid,
+                        'git_url': new_url,
+                        'redirect_from': [old_url],
+                        'redirect_from_uuid': [old_uuid],
+                    }
+                ]
+            }
+
+            # Create mock plugin
+            mock_plugin = Mock()
+            mock_plugin.name = 'test_plugin'
+            mock_plugin.local_path = plugin_dir / 'test_plugin'
+            mock_plugin.manifest = Mock()
+            mock_plugin.manifest.version = '1.0.0'
+            mock_plugin.manifest.uuid = old_uuid
+            mock_plugin.read_manifest = Mock()
+
+            # Mock metadata with old URL and UUID
+            with patch.object(manager, '_get_plugin_metadata') as mock_get_meta:
+                mock_get_meta.return_value = {'url': old_url, 'uuid': old_uuid, 'ref': 'main', 'commit': 'abc123'}
+
+                with patch.object(manager, '_save_plugin_metadata') as mock_save_meta:
+                    with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+                        mock_source = Mock()
+                        mock_source.update.return_value = ('abc123', 'def456')
+                        mock_source_class.return_value = mock_source
+
+                        # Update plugin
+                        manager.update_plugin(mock_plugin)
+
+                        # Verify metadata was saved with NEW URL and UUID
+                        # and original URL/UUID are preserved
+                        mock_save_meta.assert_called_once()
+                        call_args = mock_save_meta.call_args[0]
+                        call_kwargs = mock_save_meta.call_args[1]
+                        self.assertEqual(call_args[1], new_url, 'URL should be updated to new URL')
+                        self.assertEqual(call_args[4], new_uuid, 'UUID should be updated to new UUID')
+                        self.assertEqual(call_kwargs.get('original_url'), old_url, 'Original URL should be preserved')
+                        self.assertEqual(
+                            call_kwargs.get('original_uuid'), old_uuid, 'Original UUID should be preserved'
+                        )
+
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
         from pathlib import Path

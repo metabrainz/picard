@@ -58,6 +58,7 @@ description = "A test plugin"
 api = ["3.0"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 """
         (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
 
@@ -239,8 +240,8 @@ def disable():
 
             plugin_id = manager.install_plugin(str(self.plugin_dir))
 
-            # Plugin ID comes from directory name after install
-            self.assertIn(plugin_id, ["test_plugin", "test-plugin"])
+            # Plugin ID comes from directory name after install (includes UUID prefix)
+            self.assertTrue(plugin_id.startswith("test_plugin_"))
             plugin_path = manager._primary_plugin_dir / plugin_id
             self.assertTrue(plugin_path.exists())
             self.assertTrue((plugin_path / "MANIFEST.toml").exists())
@@ -274,11 +275,11 @@ def disable():
 
             plugin_id = manager.install_plugin(str(self.plugin_dir), ref='origin/dev')
 
-            self.assertEqual(plugin_id, "test_plugin")
-            self.assertTrue((manager._primary_plugin_dir / "test_plugin" / "dev.txt").exists())
+            self.assertTrue(plugin_id.startswith("test_plugin_"))
+            self.assertTrue((manager._primary_plugin_dir / plugin_id / "dev.txt").exists())
 
             # Verify ref was stored (should be the actual ref that resolved)
-            metadata = manager._get_plugin_metadata("test_plugin")
+            metadata = manager._get_plugin_metadata(plugin_id)
             self.assertEqual(metadata['ref'], 'origin/dev')
 
     def test_manager_update_plugin_from_git(self):
@@ -307,6 +308,7 @@ description = "A test plugin - updated"
 api = ["3.0"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 """
             (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
             (self.plugin_dir / "update.txt").write_text("updated")

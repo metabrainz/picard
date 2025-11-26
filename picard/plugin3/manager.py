@@ -197,7 +197,7 @@ class PluginManager:
             shutil.move(str(temp_path), str(final_path))
 
             # Store plugin metadata
-            self._save_plugin_metadata(plugin_id, url, source.resolved_ref, commit_id)
+            self._save_plugin_metadata(plugin_id, url, source.resolved_ref, commit_id, manifest.uuid)
 
             # Add newly installed plugin to the plugins list
             plugin = Plugin(self._primary_plugin_dir, plugin_id)
@@ -310,7 +310,7 @@ class PluginManager:
             shutil.copytree(install_path, final_path)
 
         # Store metadata
-        self._save_plugin_metadata(plugin_id, str(local_path), ref_to_save, commit_to_save)
+        self._save_plugin_metadata(plugin_id, str(local_path), ref_to_save, commit_to_save, manifest.uuid)
 
         # Add newly installed plugin to the plugins list
         plugin = Plugin(self._primary_plugin_dir, plugin_id)
@@ -346,16 +346,47 @@ class PluginManager:
             raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot update')
 
         old_version = plugin.manifest.version if plugin.manifest else 'unknown'
+        old_url = metadata['url']
+        old_uuid = metadata.get('uuid')
 
-        source = PluginSourceGit(metadata['url'], metadata.get('ref'))
+        # Check registry for redirects
+        current_url = old_url
+        current_uuid = old_uuid
+        redirected = False
+        registry_plugin = self._registry.find_plugin(url=old_url, uuid=old_uuid)
+        if registry_plugin:
+            # Check if URL or UUID changed (redirect)
+            new_url = registry_plugin.get('git_url')
+            new_uuid = registry_plugin.get('uuid')
+            if new_url and new_url != old_url:
+                log.info('Plugin %s URL changed: %s -> %s', plugin.name, old_url, new_url)
+                current_url = new_url
+                redirected = True
+            if new_uuid and new_uuid != old_uuid:
+                log.info('Plugin %s UUID changed: %s -> %s', plugin.name, old_uuid, new_uuid)
+                current_uuid = new_uuid
+                redirected = True
+
+        source = PluginSourceGit(current_url, metadata.get('ref'))
         old_commit, new_commit = source.update(plugin.local_path)
 
         # Reload manifest to get new version
         plugin.read_manifest()
         new_version = plugin.manifest.version if plugin.manifest else 'unknown'
 
-        # Update metadata
-        self._save_plugin_metadata(plugin.name, metadata['url'], metadata.get('ref'), new_commit)
+        # Update metadata with current URL and UUID
+        # If redirected, preserve original URL/UUID
+        original_url = metadata.get('original_url', old_url) if redirected else None
+        original_uuid = metadata.get('original_uuid', old_uuid) if redirected else None
+        self._save_plugin_metadata(
+            plugin.name,
+            current_url,
+            metadata.get('ref'),
+            new_commit,
+            current_uuid,
+            original_url=original_url,
+            original_uuid=original_uuid,
+        )
 
         return old_version, new_version, old_commit, new_commit
 
@@ -555,8 +586,27 @@ class PluginManager:
         metadata = plugins3['metadata']
         return metadata.get(plugin_name, {})
 
-    def _save_plugin_metadata(self, plugin_name: str, url: str, ref: str, commit_id: str):
-        """Save plugin metadata to config."""
+    def _save_plugin_metadata(
+        self,
+        plugin_name: str,
+        url: str,
+        ref: str,
+        commit_id: str,
+        uuid: str = None,
+        original_url: str = None,
+        original_uuid: str = None,
+    ):
+        """Save plugin metadata to config.
+
+        Args:
+            plugin_name: Plugin directory name
+            url: Git repository URL
+            ref: Git ref (branch/tag/commit)
+            commit_id: Git commit SHA
+            uuid: Plugin UUID from MANIFEST
+            original_url: Original URL before redirect (if redirected)
+            original_uuid: Original UUID before redirect (if redirected)
+        """
         from picard.config import get_config
 
         config = get_config()
@@ -564,7 +614,15 @@ class PluginManager:
         if 'metadata' not in plugins3:
             plugins3['metadata'] = {}
 
-        plugins3['metadata'][plugin_name] = {'url': url, 'ref': ref, 'commit': commit_id}
+        metadata = {'url': url, 'ref': ref, 'commit': commit_id}
+        if uuid:
+            metadata['uuid'] = uuid
+        if original_url:
+            metadata['original_url'] = original_url
+        if original_uuid:
+            metadata['original_uuid'] = original_uuid
+
+        plugins3['metadata'][plugin_name] = metadata
         config.setting['plugins3'] = plugins3  # Reassign to persist
         log.debug(
             'Saved metadata for plugin %s: url=%s, ref=%s, commit=%s',

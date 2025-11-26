@@ -357,6 +357,39 @@ The registry supports two types of redirects:
 - User notified if installed plugin moved (info message, non-blocking)
 - Local metadata updated to track new UUID/URL after redirect
 
+### Local Metadata Storage
+
+When a plugin is installed or updated, Picard stores metadata locally in the configuration:
+
+**Standard metadata:**
+- `url`: Current git repository URL
+- `ref`: Git ref (branch/tag/commit) being tracked
+- `commit`: Current commit SHA
+- `uuid`: Plugin UUID from MANIFEST
+
+**Redirect tracking (added when redirect is followed):**
+- `original_url`: The URL the plugin was originally installed from (before redirect)
+- `original_uuid`: The UUID the plugin had when originally installed (before UUID redirect)
+
+This allows users to:
+- See the plugin's migration history
+- Understand where the plugin came from originally
+- Potentially rollback to original source if needed
+
+**Example metadata after redirect:**
+```json
+{
+  "test_plugin_a1b2c3d4": {
+    "url": "https://github.com/neworg/plugin",
+    "ref": "main",
+    "commit": "def456...",
+    "uuid": "new-uuid-5678",
+    "original_url": "https://github.com/olduser/plugin",
+    "original_uuid": "old-uuid-1234"
+  }
+}
+```
+
 ---
 
 ## Client Integration

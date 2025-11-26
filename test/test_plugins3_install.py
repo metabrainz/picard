@@ -291,8 +291,8 @@ class TestPluginInstall(PicardTestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
 
-            # Create a fake existing plugin directory
-            plugin_dir = manager._primary_plugin_dir / 'test-plugin'
+            # Create a fake existing plugin directory with UUID-based name
+            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test-uui'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
             with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
@@ -311,6 +311,8 @@ class TestPluginInstall(PicardTestCase):
                     with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
                         mock_manifest = Mock()
                         mock_manifest.module_name = 'test-plugin'
+                        mock_manifest.name.return_value = 'test-plugin'
+                        mock_manifest.uuid = 'test-uuid-1234'
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
@@ -336,8 +338,8 @@ class TestPluginInstall(PicardTestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
 
-            # Create a fake existing plugin directory
-            plugin_dir = manager._primary_plugin_dir / 'test-plugin'
+            # Create a fake existing plugin directory with UUID-based name
+            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test-uui'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
             with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
@@ -356,13 +358,15 @@ class TestPluginInstall(PicardTestCase):
                     with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
                         mock_manifest = Mock()
                         mock_manifest.module_name = 'test-plugin'
+                        mock_manifest.name.return_value = 'test-plugin'
+                        mock_manifest.uuid = 'test-uuid-1234'
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
                         with patch('shutil.move'):
                             # Should not raise with reinstall=True
                             plugin_id = manager.install_plugin('https://example.com/plugin.git', reinstall=True)
-                            self.assertEqual(plugin_id, 'test-plugin')
+                            self.assertTrue(plugin_id.startswith('test_plugin_'))
 
     def test_uninstall_with_purge(self):
         """Test uninstall with purge removes configuration."""
