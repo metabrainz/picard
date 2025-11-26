@@ -48,7 +48,8 @@ class TestRegistryHelpers(PicardTestCase):
     def test_normalize_git_url_local_path(self):
         """Test normalize_git_url with local paths."""
         result = normalize_git_url('/tmp/repo')
-        self.assertEqual(result, '/tmp/repo')
+        # Compare absolute paths to handle Windows vs Unix differences
+        self.assertEqual(result, os.path.abspath('/tmp/repo'))
 
     def test_is_local_path_empty(self):
         """Test is_local_path with empty string."""

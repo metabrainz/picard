@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import json
+import os
 from pathlib import Path
 import tempfile
 from unittest.mock import (
@@ -43,7 +44,8 @@ class TestRegistryAdvanced(PicardTestCase):
         """Test get_local_path converts local paths."""
         result = get_local_path('/tmp/repo')
         self.assertIsInstance(result, Path)
-        self.assertEqual(str(result), '/tmp/repo')
+        # Compare absolute paths to handle Windows vs Unix differences
+        self.assertEqual(str(result), os.path.abspath('/tmp/repo'))
 
     def test_get_local_path_file_protocol(self):
         """Test get_local_path handles file:// protocol."""
