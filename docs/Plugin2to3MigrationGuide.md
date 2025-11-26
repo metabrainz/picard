@@ -82,6 +82,7 @@ PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
 
 **V3 (TOML):**
 ```toml
+uuid = "550e8400-e29b-41d4-a716-446655440000"  # NEW: Required unique identifier
 name = "My Plugin"
 authors = ["Your Name"]
 version = "1.0.0"
@@ -92,6 +93,7 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 ```
 
 **Key differences:**
+- **NEW:** `uuid` field is required (generate with `uuidgen` or `python -c "import uuid; print(uuid.uuid4())"`)
 - `author` → `authors` (now an array)
 - `description` max 200 characters (use `long_description` for more)
 - `api` instead of `PLUGIN_API_VERSIONS`
@@ -198,6 +200,7 @@ picard plugins --manifest
 Or create it manually:
 
 ```toml
+uuid = "550e8400-e29b-41d4-a716-446655440000"  # Generate with: uuidgen
 name = "Your Plugin Name"
 authors = ["Your Name <email@example.com>"]
 version = "1.0.0"
@@ -540,6 +543,7 @@ register_track_metadata_processor(remove_featartists)
 
 **featartist/MANIFEST.toml:**
 ```toml
+uuid = "550e8400-e29b-41d4-a716-446655440000"
 name = "Feat. Artists Removed"
 authors = ["Lukas Lalinsky"]
 version = "0.2"
