@@ -125,9 +125,14 @@ class PluginManager:
         config = get_config()
         value = config.setting
         for key in keys:
-            if not isinstance(value, dict) or key not in value:
+            try:
+                # Try dict-like access (works for both dict and SettingConfigSection)
+                if key in value:
+                    value = value[key]
+                else:
+                    return default
+            except (TypeError, KeyError):
                 return default
-            value = value[key]
         return value
 
     def _set_config_value(self, *keys, value):
@@ -292,6 +297,11 @@ class PluginManager:
                 source_repo = pygit2.Repository(str(local_path))
                 if source_repo.status():
                     log.warning('Installing from local repository with uncommitted changes: %s', local_path)
+
+                # If no ref specified, use the current branch
+                if not ref and not source_repo.head_is_detached:
+                    ref = source_repo.head.shorthand
+                    log.debug('Using current branch from local repo: %s', ref)
             except Exception:
                 pass  # Ignore errors checking status
 
@@ -665,7 +675,7 @@ class PluginManager:
         # Get or create metadata dict
 
         config = get_config()
-        plugins3 = config.setting.get('plugins3', {})
+        plugins3 = config.setting['plugins3'] if 'plugins3' in config.setting else {}
         if 'metadata' not in plugins3:
             plugins3['metadata'] = {}
 
