@@ -106,16 +106,16 @@ def get_local_path(url):
 
 
 def get_local_repository_path(url):
-    """Get local repository path if URL is local directory, None otherwise.
+    """Get local repository path if URL is local git directory, None otherwise.
 
     Args:
         url: Git URL or local path
 
     Returns:
-        Path: Normalized local directory path if exists, None otherwise
+        Path: Normalized local git directory path if exists, None otherwise
     """
     local_path = get_local_path(url)
-    if local_path and local_path.is_dir():
+    if local_path and local_path.is_dir() and (local_path / '.git').exists():
         return local_path
     return None
 

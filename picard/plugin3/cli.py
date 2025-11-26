@@ -284,7 +284,7 @@ class PluginCLI:
                 from picard.plugin3.registry import get_local_repository_path
 
                 local_path = get_local_repository_path(url)
-                if local_path and (local_path / '.git').exists():
+                if local_path:
                     try:
                         import pygit2
 
