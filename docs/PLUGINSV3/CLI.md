@@ -341,6 +341,7 @@ picard plugins --info https://github.com/user/plugin
 **Example output:**
 ```
 Plugin: ListenBrainz Submitter
+UUID: a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 Status: enabled
 Version: 2.1.0
 Author: MusicBrainz Picard Team
@@ -356,7 +357,7 @@ API Versions: 3.0
 Category: metadata
 License: GPL-2.0
 
-Path: ~/.local/share/MusicBrainz/Picard/plugins3/listenbrainz
+Path: ~/.local/share/MusicBrainz/Picard/plugins3/listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 
 Description:
   Submit your music to ListenBrainz and update your listening history.
