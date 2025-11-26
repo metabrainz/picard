@@ -132,11 +132,18 @@ class PluginCLI:
         for plugin in self._manager.plugins:
             # Get plugin UUID for checking enabled state
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            status = 'enabled' if plugin_uuid and plugin_uuid in self._manager._enabled_plugins else 'disabled'
+            is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
 
             # Show manifest name (human-readable) instead of directory name
             display_name = plugin.manifest.name() if plugin.manifest else plugin.name
-            self._out.print(f'  {display_name} ({status})')
+
+            # Display with semantic methods
+            if is_enabled:
+                status = self._out.d_status_enabled()
+            else:
+                status = self._out.d_status_disabled()
+
+            self._out.print(f'  {self._out.d_plugin_name(display_name)} ({status})')
 
             if hasattr(plugin, 'manifest') and plugin.manifest:
                 desc = plugin.manifest.description()
@@ -145,14 +152,18 @@ class PluginCLI:
                 metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
                 git_info = self._format_git_info(metadata)
                 version = plugin.manifest._data.get('version', '')
-                self._out.info(f'  Version: {version}{git_info}')
-                self._out.info(f'  Path: {plugin.local_path}')
+                if git_info:
+                    self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+                else:
+                    self._out.info(f'  Version: {self._out.d_version(version)}')
+                self._out.info(f'  Path: {self._out.d_path(plugin.local_path)}')
             self._out.print()
 
         total = len(self._manager.plugins)
         enabled = len(self._manager._enabled_plugins)
         self._out.print(
-            f'Total: {total} plugin{"s" if total != 1 else ""} ({enabled} enabled, {total - enabled} disabled)'
+            f'Total: {self._out.d_number(total)} plugin{"s" if total != 1 else ""} '
+            f'({self._out.d_status_enabled(str(enabled))}, {self._out.d_status_disabled(str(total - enabled))})'
         )
         return ExitCode.SUCCESS
 
@@ -163,31 +174,42 @@ class PluginCLI:
             return error
 
         plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-        status = 'enabled' if plugin_uuid and plugin_uuid in self._manager._enabled_plugins else 'disabled'
+        is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
         metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
         git_info = self._format_git_info(metadata)
 
-        self._out.print(f'Plugin: {plugin.manifest.name()}')
+        self._out.print(f'Plugin: {self._out.d_plugin_name(plugin.manifest.name())}')
 
         # Show short description on one line (required field)
         desc = plugin.manifest.description()
         if desc:
             self._out.print(f'Description: {desc}')
 
-        self._out.print(f'UUID: {plugin_uuid}')
+        self._out.print(f'UUID: {self._out.d_uuid(plugin_uuid)}')
+
+        # Status
+        if is_enabled:
+            status = self._out.d_status_enabled()
+        else:
+            status = self._out.d_status_disabled()
         self._out.print(f'Status: {status}')
+
+        # Version
         version = plugin.manifest._data.get('version', '')
-        self._out.print(f'Version: {version}{git_info}')
+        if git_info:
+            self._out.print(f'Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+        else:
+            self._out.print(f'Version: {self._out.d_version(version)}')
 
         # Show source URL if available
         if metadata and metadata.get('url'):
-            self._out.print(f'Source: {metadata["url"]}')
+            self._out.print(f'Source: {self._out.d_url(metadata["url"])}')
 
         self._out.print(f'Authors: {", ".join(plugin.manifest.authors)}')
         api_versions = plugin.manifest._data.get('api', [])
         self._out.print(f'API Versions: {", ".join(api_versions)}')
         self._out.print(f'License: {plugin.manifest.license}')
-        self._out.print(f'License URL: {plugin.manifest.license_url}')
+        self._out.print(f'License URL: {self._out.d_url(plugin.manifest.license_url)}')
 
         # Optional fields
         categories = plugin.manifest._data.get('categories', [])
@@ -196,7 +218,7 @@ class PluginCLI:
 
         homepage = plugin.manifest._data.get('homepage')
         if homepage:
-            self._out.print(f'Homepage: {homepage}')
+            self._out.print(f'Homepage: {self._out.d_url(homepage)}')
 
         min_python = plugin.manifest._data.get('min_python_version')
         if min_python:
@@ -438,7 +460,24 @@ class PluginCLI:
                 failed += 1
 
         self._out.nl()
-        self._out.print(f'Summary: {updated} updated, {unchanged} unchanged, {failed} failed')
+        # Build summary with semantic display methods
+        summary_parts = []
+        if updated > 0:
+            summary_parts.append(f'{self._out.d_number(updated)} {self._out.d_status_enabled("updated")}')
+        else:
+            summary_parts.append(f'{updated} updated')
+
+        if unchanged > 0:
+            summary_parts.append(f'{self._out.d_number(unchanged)} {self._out.d_status_disabled("unchanged")}')
+        else:
+            summary_parts.append(f'{unchanged} unchanged')
+
+        if failed > 0:
+            summary_parts.append(f'{self._out.d_number(failed)} {self._out.red("failed")}')
+        else:
+            summary_parts.append(f'{failed} failed')
+
+        self._out.print(f'Summary: {", ".join(summary_parts)}')
         if updated > 0:
             self._out.info('Restart Picard to load updated plugins')
 
@@ -464,7 +503,11 @@ class PluginCLI:
 
                 # commit_date is Unix timestamp, fromtimestamp uses local timezone
                 date_str = datetime.fromtimestamp(commit_date).strftime('%Y-%m-%d %H:%M')
-                self._out.info(f'{name}: {current} → {latest} ({date_str})')
+                self._out.info(
+                    f'{self._out.d_plugin_name(name)}: '
+                    f'{self._out.d_commit_old(current)} {self._out.d_arrow()} {self._out.d_commit_new(latest)} '
+                    f'{self._out.d_date(f"({date_str})")}'
+                )
             self._out.nl()
             self._out.print('Run with --update-all to update all plugins')
 
