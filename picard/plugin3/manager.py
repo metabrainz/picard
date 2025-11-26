@@ -519,14 +519,29 @@ class PluginManager:
                 repo = pygit2.Repository(plugin.local_path.absolute())
                 current_commit = str(repo.head.target)
 
-                # Fetch without updating
+                # Fetch without updating (suppress progress output)
                 for remote in repo.remotes:
-                    from picard.plugin3.plugin import GitRemoteCallbacks
-
-                    remote.fetch(callbacks=GitRemoteCallbacks())
+                    remote.fetch()
 
                 ref = metadata.get('ref', 'main')
-                latest_commit = str(repo.revparse_single(ref).id)
+
+                # Resolve ref with same logic as update() - try origin/ prefix for branches
+                try:
+                    if not ref.startswith('origin/') and not ref.startswith('refs/'):
+                        # Try origin/ prefix first for branches
+                        try:
+                            commit = repo.revparse_single(f'origin/{ref}')
+                        except KeyError:
+                            # Fall back to original ref (might be tag or commit hash)
+                            commit = repo.revparse_single(ref)
+                    else:
+                        commit = repo.revparse_single(ref)
+
+                    latest_commit = str(commit.id)
+                except KeyError:
+                    # Ref not found, skip this plugin
+                    continue
+
                 repo.free()
 
                 if current_commit != latest_commit:
