@@ -247,7 +247,7 @@ class TestPluginRegistry(PicardTestCase):
                     with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
                         mock_manifest = Mock()
                         mock_manifest.name.return_value = 'Test Plugin'
-                        mock_manifest.uuid = 'test_uuid_1234'
+                        mock_manifest.uuid = 'test-uuid-1234'
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
@@ -256,7 +256,7 @@ class TestPluginRegistry(PicardTestCase):
                             plugin_id = manager.install_plugin(
                                 'https://github.com/badactor/malicious-plugin', force_blacklisted=True
                             )
-                            self.assertEqual(plugin_id, 'test_plugin_test_uuid_1234')
+                            self.assertEqual(plugin_id, 'test_plugin_test-uuid-1234')
 
     def test_check_blacklisted_plugins_on_startup(self):
         """Test that blacklisted plugins are disabled on startup."""

@@ -61,15 +61,15 @@ def get_plugin_directory_name(manifest) -> str:
 
     Returns:
         Directory name: <sanitized_name>_<uuid>
-        Example: my_plugin_f8bf81d7_c5e2_472b_ba96_62140cefc9e1
+        Example: my_plugin_f8bf81d7-c5e2-472b-ba96-62140cefc9e1
     """
     # Sanitize name: lowercase, alphanumeric + underscore
     name = manifest.name()
     sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
     sanitized = sanitized[:50] if sanitized else 'plugin'
 
-    uuid_safe = manifest.uuid.replace('-', '_') if manifest.uuid else 'no_uuid'
-    return f'{sanitized}_{uuid_safe}'
+    uuid_str = manifest.uuid if manifest.uuid else 'no_uuid'
+    return f'{sanitized}_{uuid_str}'
 
 
 class PluginManager:
