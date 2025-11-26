@@ -1,8 +1,8 @@
 # Picard Plugin v3 Development Roadmap
 
 **Document Version:** 1.1
-**Last Updated:** 2025-11-25
-**Status:** Phase 1 Complete
+**Last Updated:** 2025-11-26
+**Status:** Phase 1 Complete, Phase 2 In Progress
 
 ---
 
@@ -53,9 +53,10 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 - ✅ Plugin discovery from `plugins3/` directory
 - ✅ MANIFEST.toml parsing with metadata and translations
 - ✅ PluginApi with all major extension points
-- ✅ Plugin loading and module execution
+- ✅ Plugin loading and module execution with logging
 - ✅ Git-based plugin sources (pygit2) with ref/branch/tag support
-- ✅ Comprehensive unit tests (37 tests, all passing)
+- ✅ Comprehensive unit tests (101 tests, all passing)
+- ✅ Test helpers for reduced code duplication
 
 **Configuration & State Management:**
 - ✅ Config persistence - plugins remember enabled/disabled state across restarts
@@ -65,7 +66,7 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 
 **CLI Commands:**
 - ✅ `picard plugins --list` - List all plugins with details
-- ✅ `picard plugins --info <name>` - Show detailed plugin information
+- ✅ `picard plugins --info <name>` - Show detailed plugin information including UUID
 - ✅ `picard plugins --status <name>` - Show plugin state and metadata
 - ✅ `picard plugins --install <url>` - Install from git URL
 - ✅ `picard plugins --install <url> --ref <branch|tag|commit>` - Install specific ref
@@ -89,11 +90,12 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 - ✅ Plugin updates without uninstall/reinstall
 - ✅ Version change tracking (old → new)
 - ✅ Git commit tracking
-- ✅ MANIFEST-based directory naming (uses plugin ID)
+- ✅ Plugin directory naming with full UUID (guarantees uniqueness)
 - ✅ Two-stage install with validation and cleanup on failure
 - ✅ Duplicate installation prevention
 - ✅ Security blacklist checking (URL, pattern, plugin ID)
 - ✅ Automatic blacklist enforcement on startup
+- ✅ Plugin initialization logging for debugging
 
 **Security:**
 - ✅ PluginRegistry with blacklist support
