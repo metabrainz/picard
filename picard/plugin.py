@@ -15,7 +15,7 @@
 # Copyright (C) 2014 Shadab Zafar
 # Copyright (C) 2014-2015, 2018-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2018 Sambhav Kothari
-# Copyright (C) 2017 Frederik “Freso” S. Olesen
+# Copyright (C) 2017 Frederik "Freso" S. Olesen
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2023 tuspar
 #
@@ -34,150 +34,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import defaultdict
-import os.path
 
-from picard import log
-from picard.const import USER_PLUGIN_DIR
-from picard.extension_points import (
-    PLUGIN_MODULE_PREFIX,
-    PLUGIN_MODULE_PREFIX_LEN,
-    ExtensionPoint,
-)
-from picard.version import (
-    Version,
-    VersionError,
-)
-
-
-try:
-    from markdown import markdown
-except ImportError:
-
-    def markdown(text):
-        # Simple fallback, just make sure line breaks are applied
-        if not text:
-            return ''
-        return text.strip().replace('\n', '<br>\n')
-
-
-class PluginShared:
-    def __init__(self):
-        super().__init__()
-
-
-class PluginWrapper(PluginShared):
-    def __init__(self, module, plugindir, file=None, manifest_data=None):
-        super().__init__()
-        self.module = module
-        self.compatible = False
-        self.dir = os.path.normpath(plugindir)
-        self._file = file
-        self.data = manifest_data or self.module.__dict__
-
-    @property
-    def name(self):
-        try:
-            return self.data['PLUGIN_NAME']
-        except KeyError:
-            return self.module_name
-
-    @property
-    def module_name(self):
-        name = self.module.__name__
-        if name.startswith(PLUGIN_MODULE_PREFIX):
-            name = name[PLUGIN_MODULE_PREFIX_LEN:]
-        return name
-
-    @property
-    def author(self):
-        try:
-            return self.data['PLUGIN_AUTHOR']
-        except KeyError:
-            return ""
-
-    @property
-    def description(self):
-        try:
-            return markdown(self.data['PLUGIN_DESCRIPTION'])
-        except KeyError:
-            return ""
-
-    @property
-    def version(self):
-        try:
-            return Version.from_string(self.data['PLUGIN_VERSION'])
-        except (KeyError, VersionError):
-            return Version(0, 0, 0)
-
-    @property
-    def api_versions(self):
-        try:
-            return self.data['PLUGIN_API_VERSIONS']
-        except KeyError:
-            return []
-
-    @property
-    def file(self):
-        if not self._file:
-            return self.module.__file__
-        else:
-            return self._file
-
-    @property
-    def license(self):
-        try:
-            return self.data['PLUGIN_LICENSE']
-        except KeyError:
-            return ""
-
-    @property
-    def license_url(self):
-        try:
-            return self.data['PLUGIN_LICENSE_URL']
-        except KeyError:
-            return ""
-
-    @property
-    def user_guide_url(self):
-        try:
-            return self.data['PLUGIN_USER_GUIDE_URL']
-        except KeyError:
-            return ""
-
-    @property
-    def files_list(self):
-        return self.file[len(self.dir) + 1 :]
-
-    @property
-    def is_user_installed(self):
-        return self.dir == USER_PLUGIN_DIR
-
-
-class PluginData(PluginShared):
-    """Used to store plugin data from JSON API"""
-
-    def __init__(self, d, module_name):
-        self.__dict__ = d
-        super().__init__()
-        self.module_name = module_name
-
-    def __getattribute__(self, name):
-        try:
-            return super().__getattribute__(name)
-        except AttributeError:
-            log.debug("Attribute %r not found for plugin %r", name, self.module_name)
-            return None
-
-    @property
-    def version(self):
-        try:
-            return Version.from_string(self.__dict__['version'])
-        except (KeyError, VersionError):
-            return Version(0, 0, 0)
-
-    @property
-    def files_list(self):
-        return ", ".join(self.files.keys())
+from picard.extension_points import ExtensionPoint
 
 
 class PluginFunctions:

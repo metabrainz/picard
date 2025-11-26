@@ -146,7 +146,9 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
-from picard.ui.pluginupdatedialog import PluginUpdatesDialog
+
+# FIXME: Plugins v3 - re-enable when plugin update dialog is implemented
+# from picard.ui.pluginupdatedialog import PluginUpdatesDialog
 from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import ScriptEditorDialog
 from picard.ui.scripteditor.examples import ScriptEditorExamples
@@ -213,7 +215,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self.script_editor_dialog = None
 
-        self.tagger.pluginmanager.updates_available.connect(self.show_plugin_update_dialog)
+        # FIXME: Plugins v3 - implement plugin update UI
+        # self.tagger.pluginmanager.updates_available.connect(self.show_plugin_update_dialog)
 
         self._check_and_repair_naming_scripts()
         self._check_and_repair_profiles()
@@ -2070,21 +2073,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             msg = NewUserDialog(self)
             config.setting['show_new_user_dialog'] = msg.show()
 
+    # FIXME: Plugins v3 - implement plugin update UI
     def check_for_plugin_update(self):
-        config = get_config()
-        if config.setting['check_for_plugin_updates']:
-            self.tagger.pluginmanager.check_update()
+        pass
+        # config = get_config()
+        # if config.setting['check_for_plugin_updates']:
+        #     self.tagger.pluginmanager.check_update()
 
+    # FIXME: Plugins v3 - implement plugin update dialog
     def show_plugin_update_dialog(self, plugin_names):
-        if not plugin_names:
-            return
-
-        msg = PluginUpdatesDialog(self, plugin_names)
-        show_options_page, perform_check = msg.show()
-        config = get_config()
-        config.setting['check_for_plugin_updates'] = perform_check
-        if show_options_page:
-            self.show_plugins_options_page()
+        pass
+        # if not plugin_names:
+        #     return
+        # msg = PluginUpdatesDialog(self, plugin_names)
+        # show_options_page, perform_check = msg.show()
+        # config = get_config()
+        # config.setting['check_for_plugin_updates'] = perform_check
+        # if show_options_page:
+        #     self.show_plugins_options_page()
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

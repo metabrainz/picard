@@ -142,7 +142,6 @@ except ImportError:
     PluginCLI = None
     PluginManager = None
 
-from picard.pluginmanager import PluginManager as LegacyPluginManager
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
@@ -374,9 +373,6 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_plugins(self):
         """Initialize and load plugins"""
-        # FIXME: Legacy, remove as soong no longer used by other code
-        self.pluginmanager = LegacyPluginManager()
-
         if HAS_PLUGIN3:
             self.pluginmanager3 = PluginManager(self)
             if not self._no_plugins:
