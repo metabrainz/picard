@@ -59,6 +59,10 @@ picard plugins --manifest ~/dev/my-plugin    # From local directory
 # Browse/search (Phase 3)
 picard plugins --browse
 picard plugins --search "cover art"
+
+# Disable colored output
+picard plugins --list --no-color
+picard plugins --validate ~/dev/my-plugin --no-color
 ```
 
 ---
@@ -103,7 +107,7 @@ usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-u PLUGIN [PLUGIN ...]]
                       [--browse] [--search TERM] [--check-blacklist URL]
                       [--refresh-registry] [--check-updates] [--reinstall PLUGIN]
                       [--status] [-y] [--force-blacklisted] [--trust-community]
-                      [--trust LEVEL] [--category CATEGORY] [--purge]
+                      [--trust LEVEL] [--category CATEGORY] [--purge] [--no-color]
 
 Manage Picard plugins (install, update, enable, disable)
 
@@ -150,6 +154,7 @@ Advanced Options:
   --trust LEVEL         filter plugins by trust level (official, trusted, community)
   --category CATEGORY   filter plugins by category (metadata, coverart, ui, scripting, formats, other)
   --purge               delete plugin configuration when uninstalling
+  --no-color            disable colored output
 
 Trust Levels:
   🛡️  official      - Reviewed by Picard team (highest trust)
