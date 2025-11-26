@@ -40,6 +40,7 @@ from picard.plugin3.plugin import (
 class PluginMetadata:
     """Plugin metadata stored in config."""
 
+    name: str
     url: str
     ref: str
     commit: str
@@ -49,7 +50,7 @@ class PluginMetadata:
 
     def to_dict(self):
         """Convert to dict for config storage."""
-        data = {'url': self.url, 'ref': self.ref, 'commit': self.commit}
+        data = {'name': self.name, 'url': self.url, 'ref': self.ref, 'commit': self.commit}
         if self.uuid:
             data['uuid'] = self.uuid
         if self.original_url:
@@ -222,8 +223,7 @@ class PluginManager:
 
             # Store plugin metadata
             self._save_plugin_metadata(
-                plugin_id,
-                PluginMetadata(url=url, ref=source.resolved_ref, commit=commit_id, uuid=manifest.uuid),
+                PluginMetadata(name=plugin_id, url=url, ref=source.resolved_ref, commit=commit_id, uuid=manifest.uuid)
             )
 
             # Add newly installed plugin to the plugins list
@@ -338,8 +338,13 @@ class PluginManager:
 
         # Store metadata
         self._save_plugin_metadata(
-            plugin_id,
-            PluginMetadata(url=str(local_path), ref=ref_to_save, commit=commit_to_save, uuid=manifest.uuid),
+            PluginMetadata(
+                name=plugin_id,
+                url=str(local_path),
+                ref=ref_to_save,
+                commit=commit_to_save,
+                uuid=manifest.uuid,
+            )
         )
 
         # Add newly installed plugin to the plugins list
@@ -351,7 +356,10 @@ class PluginManager:
 
     def switch_ref(self, plugin: Plugin, ref: str):
         """Switch plugin to a different git ref (branch/tag/commit)."""
-        metadata = self._get_plugin_metadata(plugin.name)
+        if not plugin.manifest or not plugin.manifest.uuid:
+            raise ValueError(f'Plugin {plugin.name} has no UUID, cannot switch ref')
+
+        metadata = self._get_plugin_metadata(plugin.manifest.uuid)
         if not metadata or 'url' not in metadata:
             raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot switch ref')
 
@@ -366,22 +374,25 @@ class PluginManager:
 
         # Update metadata with new ref
         self._save_plugin_metadata(
-            plugin.name,
             PluginMetadata(
+                name=plugin.name,
                 url=metadata['url'],
                 ref=ref,
                 commit=new_commit,
                 uuid=metadata.get('uuid'),
                 original_url=metadata.get('original_url'),
                 original_uuid=metadata.get('original_uuid'),
-            ),
+            )
         )
 
         return old_ref, ref, old_commit, new_commit
 
     def update_plugin(self, plugin: Plugin):
         """Update a single plugin to latest version."""
-        metadata = self._get_plugin_metadata(plugin.name)
+        if not plugin.manifest or not plugin.manifest.uuid:
+            raise ValueError(f'Plugin {plugin.name} has no UUID, cannot update')
+
+        metadata = self._get_plugin_metadata(plugin.manifest.uuid)
         if not metadata or 'url' not in metadata:
             raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot update')
 
@@ -419,15 +430,15 @@ class PluginManager:
         original_url = metadata.get('original_url', old_url) if redirected else None
         original_uuid = metadata.get('original_uuid', old_uuid) if redirected else None
         self._save_plugin_metadata(
-            plugin.name,
             PluginMetadata(
+                name=plugin.name,
                 url=current_url,
                 ref=metadata.get('ref'),
                 commit=new_commit,
                 uuid=current_uuid,
                 original_url=original_url,
                 original_uuid=original_uuid,
-            ),
+            )
         )
 
         return old_version, new_version, old_commit, new_commit
@@ -447,7 +458,10 @@ class PluginManager:
         """Check which plugins have updates available without installing."""
         updates = []
         for plugin in self._plugins:
-            metadata = self._get_plugin_metadata(plugin.name)
+            if not plugin.manifest or not plugin.manifest.uuid:
+                continue
+
+            metadata = self._get_plugin_metadata(plugin.manifest.uuid)
             if not metadata or 'url' not in metadata:
                 continue
 
@@ -496,7 +510,9 @@ class PluginManager:
 
         config = get_config()
         if 'plugins3' in config.setting and 'metadata' in config.setting['plugins3']:
-            config.setting['plugins3']['metadata'].pop(plugin.name, None)
+            # Remove by UUID if available
+            if plugin.manifest and plugin.manifest.uuid:
+                config.setting['plugins3']['metadata'].pop(plugin.manifest.uuid, None)
 
         # Remove plugin config if purge requested
         if purge:
@@ -530,11 +546,13 @@ class PluginManager:
         blacklisted_plugins = []
 
         for plugin in self._plugins:
-            metadata = self._get_plugin_metadata(plugin.name)
-            url = metadata.get('url') if metadata else None
-
             # Get UUID from plugin manifest
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            if not plugin_uuid:
+                continue
+
+            metadata = self._get_plugin_metadata(plugin_uuid)
+            url = metadata.get('url') if metadata else None
 
             is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
             if is_blacklisted:
@@ -615,8 +633,8 @@ class PluginManager:
         config.setting['plugins3'] = plugins3_config
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
 
-    def _get_plugin_metadata(self, plugin_name: str):
-        """Get stored metadata for a plugin."""
+    def _get_plugin_metadata(self, uuid: str):
+        """Get stored metadata for a plugin by UUID."""
         from picard.config import get_config
 
         config = get_config()
@@ -626,22 +644,27 @@ class PluginManager:
         if 'metadata' not in plugins3:
             return {}
         metadata = plugins3['metadata']
-        return metadata.get(plugin_name, {})
+        return metadata.get(uuid, {})
 
-    def _save_plugin_metadata(self, plugin_name: str, metadata: PluginMetadata):
-        """Save plugin metadata to config."""
+    def _save_plugin_metadata(self, metadata: PluginMetadata):
+        """Save plugin metadata to config, keyed by UUID."""
         from picard.config import get_config
+
+        if not metadata.uuid:
+            log.warning('Cannot save metadata without UUID for plugin %s', metadata.name)
+            return
 
         config = get_config()
         plugins3 = config.setting['plugins3'] if 'plugins3' in config.setting else {}
         if 'metadata' not in plugins3:
             plugins3['metadata'] = {}
 
-        plugins3['metadata'][plugin_name] = metadata.to_dict()
+        plugins3['metadata'][metadata.uuid] = metadata.to_dict()
         config.setting['plugins3'] = plugins3  # Reassign to persist
         log.debug(
-            'Saved metadata for plugin %s: url=%s, ref=%s, commit=%s',
-            plugin_name,
+            'Saved metadata for plugin %s (UUID %s): url=%s, ref=%s, commit=%s',
+            metadata.name,
+            metadata.uuid,
             metadata.url,
             metadata.ref,
             short_commit_id(metadata.commit) if metadata.commit else None,

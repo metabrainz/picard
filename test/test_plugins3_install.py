@@ -45,14 +45,22 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
 
+        test_uuid = 'test-uuid-1234'
+
         # Save metadata
         manager._save_plugin_metadata(
-            'test-plugin',
-            PluginMetadata(url='https://example.com/plugin.git', ref='main', commit='abc123'),
+            PluginMetadata(
+                name='test-plugin',
+                url='https://example.com/plugin.git',
+                ref='main',
+                commit='abc123',
+                uuid=test_uuid,
+            )
         )
 
-        # Retrieve metadata
-        metadata = manager._get_plugin_metadata('test-plugin')
+        # Retrieve metadata by UUID
+        metadata = manager._get_plugin_metadata(test_uuid)
+        self.assertEqual(metadata['name'], 'test-plugin')
         self.assertEqual(metadata['url'], 'https://example.com/plugin.git')
         self.assertEqual(metadata['ref'], 'main')
         self.assertEqual(metadata['commit'], 'abc123')
@@ -111,15 +119,24 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
 
+        test_uuid = 'test-uuid-5678'
+
         # Setup plugin with metadata
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.name = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
         mock_plugin.read_manifest = Mock()
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = test_uuid
 
         manager._save_plugin_metadata(
-            'test-plugin',
-            PluginMetadata(url='https://example.com/plugin.git', ref='main', commit='abc123'),
+            PluginMetadata(
+                name='test-plugin',
+                url='https://example.com/plugin.git',
+                ref='main',
+                commit='abc123',
+                uuid=test_uuid,
+            )
         )
 
         # Mock PluginSourceGit.sync to return new commit
@@ -138,7 +155,7 @@ class TestPluginInstall(PicardTestCase):
             self.assertEqual(new_commit, 'def456')
 
             # Verify metadata was updated
-            metadata = manager._get_plugin_metadata('test-plugin')
+            metadata = manager._get_plugin_metadata(test_uuid)
             self.assertEqual(metadata['ref'], 'v1.0.0')
             self.assertEqual(metadata['commit'], 'def456')
 

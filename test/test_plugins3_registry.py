@@ -249,7 +249,7 @@ class TestPluginRegistry(PicardTestCase):
                         # and original URL/UUID are preserved
                         mock_save_meta.assert_called_once()
                         call_args = mock_save_meta.call_args[0]
-                        metadata = call_args[1]  # PluginMetadata object
+                        metadata = call_args[0]  # PluginMetadata object (now first arg)
                         self.assertEqual(metadata.url, new_url, 'URL should be updated to new URL')
                         self.assertEqual(metadata.uuid, new_uuid, 'UUID should be updated to new UUID')
                         self.assertEqual(metadata.original_url, old_url, 'Original URL should be preserved')
@@ -339,18 +339,27 @@ class TestPluginRegistry(PicardTestCase):
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
 
+        test_uuid = 'test-uuid-blacklist'
+
         # Create mock plugin
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.name = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = test_uuid
 
         manager._plugins = [mock_plugin]
         manager._enabled_plugins = {'test-plugin'}
 
         # Store metadata
         manager._save_plugin_metadata(
-            'test-plugin',
-            PluginMetadata(url='https://example.com/plugin.git', ref='main', commit='abc123'),
+            PluginMetadata(
+                name='test-plugin',
+                url='https://example.com/plugin.git',
+                ref='main',
+                commit='abc123',
+                uuid=test_uuid,
+            )
         )
 
         # Mock registry to blacklist the plugin
@@ -376,18 +385,27 @@ class TestPluginRegistry(PicardTestCase):
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
 
+        test_uuid = 'malicious-uuid-1234'
+
         # Create mock plugin
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.name = 'malicious-plugin'
         mock_plugin.local_path = Path('/tmp/malicious-plugin')
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = test_uuid
 
         manager._plugins = [mock_plugin]
         manager._enabled_plugins = {'malicious-plugin'}
 
         # Store metadata
         manager._save_plugin_metadata(
-            'malicious-plugin',
-            PluginMetadata(url='https://badsite.com/plugin.git', ref='main', commit='abc123'),
+            PluginMetadata(
+                name='malicious-plugin',
+                url='https://badsite.com/plugin.git',
+                ref='main',
+                commit='abc123',
+                uuid=test_uuid,
+            )
         )
 
         # Mock registry to blacklist the plugin

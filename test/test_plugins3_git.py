@@ -246,8 +246,12 @@ def disable():
             self.assertTrue(plugin_path.exists())
             self.assertTrue((plugin_path / "MANIFEST.toml").exists())
 
-            # Verify metadata was stored
-            metadata = manager._get_plugin_metadata(plugin_id)
+            # Verify metadata was stored (need to get UUID from manifest)
+            from picard.plugin3.plugin import Plugin
+
+            plugin = Plugin(manager._primary_plugin_dir, plugin_id)
+            plugin.read_manifest()
+            metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
             self.assertEqual(metadata['url'], str(self.plugin_dir))
             self.assertEqual(metadata['ref'], 'main')
             self.assertIsNotNone(metadata['commit'])
@@ -279,7 +283,11 @@ def disable():
             self.assertTrue((manager._primary_plugin_dir / plugin_id / "dev.txt").exists())
 
             # Verify ref was stored (should be the actual ref that resolved)
-            metadata = manager._get_plugin_metadata(plugin_id)
+            from picard.plugin3.plugin import Plugin
+
+            plugin = Plugin(manager._primary_plugin_dir, plugin_id)
+            plugin.read_manifest()
+            metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
             self.assertEqual(metadata['ref'], 'origin/dev')
 
     def test_manager_update_plugin_from_git(self):
