@@ -392,7 +392,11 @@ class PluginCLI:
                 if old_commit == new_commit:
                     self._out.info(f'Already up to date (version {new_ver})')
                 else:
-                    self._out.success(f'Updated: {old_ver} → {new_ver}')
+                    # Show version change only if version actually changed
+                    if old_ver != new_ver:
+                        self._out.success(f'Updated: {old_ver} → {new_ver}')
+                    else:
+                        self._out.success(f'Updated: {new_ver}')
                     self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
@@ -420,8 +424,13 @@ class PluginCLI:
                     self._out.info(f'{name}: Already up to date ({new_ver})')
                     unchanged += 1
                 else:
+                    # Show version change only if version actually changed
+                    if old_ver != new_ver:
+                        version_info = f'{old_ver} → {new_ver}'
+                    else:
+                        version_info = new_ver
                     self._out.success(
-                        f'{name}: {old_ver} → {new_ver} ({short_commit_id(old_commit)} → {short_commit_id(new_commit)})'
+                        f'{name}: {version_info} ({short_commit_id(old_commit)} → {short_commit_id(new_commit)})'
                     )
                     updated += 1
             else:
