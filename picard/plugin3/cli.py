@@ -281,10 +281,10 @@ class PluginCLI:
                     self._out.print(f'Installing plugin from {url}...')
 
                 # Check if installing from dirty local git repository
-                from picard.plugin3.registry import get_local_path
+                from picard.plugin3.registry import get_local_repository_path
 
-                local_path = get_local_path(url)
-                if local_path and local_path.is_dir() and (local_path / '.git').exists():
+                local_path = get_local_repository_path(url)
+                if local_path and (local_path / '.git').exists():
                     try:
                         import pygit2
 
@@ -513,10 +513,10 @@ class PluginCLI:
         self._out.print(f'Validating plugin from: {url}')
 
         # Check if url is a local directory
-        from picard.plugin3.registry import get_local_path
+        from picard.plugin3.registry import get_local_repository_path
 
-        local_path = get_local_path(url)
-        if local_path and local_path.is_dir():
+        local_path = get_local_repository_path(url)
+        if local_path:
             # Validate local directory directly
             manifest_path = local_path / 'MANIFEST.toml'
             if not manifest_path.exists():
@@ -834,10 +834,10 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
                 return ExitCode.ERROR
 
         # Check if it's a local directory
-        from picard.plugin3.registry import get_local_path
+        from picard.plugin3.registry import get_local_repository_path
 
-        local_path = get_local_path(target)
-        if local_path and local_path.is_dir():
+        local_path = get_local_repository_path(target)
+        if local_path:
             manifest_path = local_path / 'MANIFEST.toml'
             if manifest_path.exists():
                 with open(manifest_path, 'r') as f:

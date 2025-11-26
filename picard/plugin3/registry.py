@@ -105,6 +105,21 @@ def get_local_path(url):
     return Path(os.path.abspath(expanded))
 
 
+def get_local_repository_path(url):
+    """Get local repository path if URL is local directory, None otherwise.
+
+    Args:
+        url: Git URL or local path
+
+    Returns:
+        Path: Normalized local directory path if exists, None otherwise
+    """
+    local_path = get_local_path(url)
+    if local_path and local_path.is_dir():
+        return local_path
+    return None
+
+
 class PluginRegistry:
     """Manages plugin registry with blacklist checking."""
 
