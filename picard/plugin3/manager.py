@@ -196,7 +196,7 @@ class PluginManager:
                 raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
 
             # Generate plugin directory name from sanitized name + UUID
-            plugin_id = get_plugin_directory_name(manifest)
+            plugin_name = get_plugin_directory_name(manifest)
 
             # Check blacklist again with UUID
             if not force_blacklisted:
@@ -204,11 +204,11 @@ class PluginManager:
                 if is_blacklisted:
                     raise ValueError(f'Plugin is blacklisted: {reason}')
 
-            final_path = self._primary_plugin_dir / plugin_id
+            final_path = self._primary_plugin_dir / plugin_name
 
             # Check if already installed
             if final_path.exists() and not reinstall:
-                raise ValueError(f'Plugin {plugin_id} is already installed. Use --reinstall to force.')
+                raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
 
             # Remove existing if reinstalling
             if final_path.exists():
@@ -223,14 +223,14 @@ class PluginManager:
 
             # Store plugin metadata
             self._save_plugin_metadata(
-                PluginMetadata(name=plugin_id, url=url, ref=source.resolved_ref, commit=commit_id, uuid=manifest.uuid)
+                PluginMetadata(name=plugin_name, url=url, ref=source.resolved_ref, commit=commit_id, uuid=manifest.uuid)
             )
 
             # Add newly installed plugin to the plugins list
-            plugin = Plugin(self._primary_plugin_dir, plugin_id)
+            plugin = Plugin(self._primary_plugin_dir, plugin_name)
             self._plugins.append(plugin)
 
-            return plugin_id
+            return plugin_name
 
         except Exception:
             # Clean up temp directory on failure
@@ -317,12 +317,12 @@ class PluginManager:
             raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
 
         # Generate plugin directory name from sanitized name + UUID
-        plugin_id = get_plugin_directory_name(manifest)
-        final_path = self._primary_plugin_dir / plugin_id
+        plugin_name = get_plugin_directory_name(manifest)
+        final_path = self._primary_plugin_dir / plugin_name
 
         # Check if already installed
         if final_path.exists() and not reinstall:
-            raise ValueError(f'Plugin {plugin_id} is already installed. Use --reinstall to force.')
+            raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
 
         # Remove existing if reinstalling
         if final_path.exists():
@@ -339,7 +339,7 @@ class PluginManager:
         # Store metadata
         self._save_plugin_metadata(
             PluginMetadata(
-                name=plugin_id,
+                name=plugin_name,
                 url=str(local_path),
                 ref=ref_to_save,
                 commit=commit_to_save,
@@ -348,11 +348,11 @@ class PluginManager:
         )
 
         # Add newly installed plugin to the plugins list
-        plugin = Plugin(self._primary_plugin_dir, plugin_id)
+        plugin = Plugin(self._primary_plugin_dir, plugin_name)
         self._plugins.append(plugin)
 
-        log.info('Plugin %s installed from local directory %s', plugin_id, local_path)
-        return plugin_id
+        log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
+        return plugin_name
 
     def switch_ref(self, plugin: Plugin, ref: str):
         """Switch plugin to a different git ref (branch/tag/commit)."""
