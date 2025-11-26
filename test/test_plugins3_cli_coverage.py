@@ -197,3 +197,159 @@ class TestPluginCLIHelpers(PicardTestCase):
         # When ref starts with commit short ID, skip ref
         result = cli._format_git_info({'ref': 'abc123d', 'commit': 'abc123def456'})
         self.assertEqual(result, ' (@abc123d)')
+
+
+class TestPluginCLIFindPlugin(PicardTestCase):
+    def test_find_plugin_or_error_multiple_matches(self):
+        """Test _find_plugin_or_error with multiple matches."""
+        manager = Mock()
+
+        # Create mock plugins with same name
+        plugin1 = Mock()
+        plugin1.name = 'plugin_abc123'
+        plugin1.manifest = Mock()
+        plugin1.manifest.name.return_value = 'Test Plugin'
+        plugin1.manifest.uuid = 'uuid-1'
+
+        plugin2 = Mock()
+        plugin2.name = 'plugin_def456'
+        plugin2.manifest = Mock()
+        plugin2.manifest.name.return_value = 'Test Plugin'
+        plugin2.manifest.uuid = 'uuid-2'
+
+        manager.plugins = [plugin1, plugin2]
+
+        args = Mock()
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(manager, args, output=output)
+
+        # Mock _find_plugin to return 'multiple'
+        cli._find_plugin = Mock(return_value='multiple')
+
+        result, error = cli._find_plugin_or_error('test plugin')
+
+        self.assertIsNone(result)
+        self.assertEqual(error, ExitCode.ERROR)
+        self.assertIn('Multiple plugins found', stderr.getvalue())
+        self.assertIn('uuid-1', stderr.getvalue())
+        self.assertIn('uuid-2', stderr.getvalue())
+
+    def test_find_plugin_or_error_not_found(self):
+        """Test _find_plugin_or_error when plugin not found."""
+        manager = Mock()
+        args = Mock()
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(manager, args, output=output)
+
+        cli._find_plugin = Mock(return_value=None)
+
+        result, error = cli._find_plugin_or_error('nonexistent')
+
+        self.assertIsNone(result)
+        self.assertEqual(error, ExitCode.NOT_FOUND)
+        self.assertIn('not found', stderr.getvalue())
+
+    def test_find_plugin_or_error_success(self):
+        """Test _find_plugin_or_error with successful find."""
+        manager = Mock()
+        args = Mock()
+        cli = PluginCLI(manager, args)
+
+        mock_plugin = Mock()
+        cli._find_plugin = Mock(return_value=mock_plugin)
+
+        result, error = cli._find_plugin_or_error('test')
+
+        self.assertEqual(result, mock_plugin)
+        self.assertIsNone(error)
+
+
+class TestPluginCLICommands(PicardTestCase):
+    def test_enable_plugin_error(self):
+        """Test _enable_plugins with error."""
+        manager = Mock()
+        manager.enable_plugin.side_effect = ValueError('Enable failed')
+
+        args = Mock()
+        args.enable = ['test-plugin']
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(manager, args, output=output)
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
+
+        result = cli._enable_plugins(['test-plugin'])
+
+        self.assertEqual(result, ExitCode.ERROR)
+        self.assertIn('Failed to enable', stderr.getvalue())
+
+    def test_disable_plugin_error(self):
+        """Test _disable_plugins with error."""
+        manager = Mock()
+        manager.disable_plugin.side_effect = ValueError('Disable failed')
+
+        args = Mock()
+        args.disable = ['test-plugin']
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(manager, args, output=output)
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
+
+        result = cli._disable_plugins(['test-plugin'])
+
+        self.assertEqual(result, ExitCode.ERROR)
+        self.assertIn('Failed to disable', stderr.getvalue())
+
+    def test_uninstall_plugin_error(self):
+        """Test _uninstall_plugins with error."""
+        manager = Mock()
+        manager.uninstall_plugin.side_effect = ValueError('Uninstall failed')
+
+        args = Mock()
+        args.uninstall = ['test-plugin']
+        args.yes = True
+        args.purge = False
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(manager, args, output=output)
+
+        mock_plugin = Mock()
+        mock_plugin.name = 'test-plugin'
+        cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
+
+        result = cli._uninstall_plugins(['test-plugin'])
+
+        self.assertEqual(result, ExitCode.ERROR)
+        self.assertIn('Failed to uninstall', stderr.getvalue())
+
+    def test_install_plugin_error(self):
+        """Test _install_plugins with error."""
+        manager = Mock()
+        manager.install_plugin.side_effect = ValueError('Install failed')
+        manager._registry = Mock()
+
+        args = Mock()
+        args.install = ['https://example.com/plugin.git']
+        args.yes = True
+        args.reinstall = False
+        args.force_blacklisted = False
+        args.ref = None
+
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+        cli = PluginCLI(manager, args, output=output)
+
+        result = cli._install_plugins(['https://example.com/plugin.git'])
+
+        self.assertEqual(result, ExitCode.ERROR)
+        self.assertIn('Failed to install', stderr.getvalue())
