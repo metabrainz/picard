@@ -249,13 +249,11 @@ class TestPluginRegistry(PicardTestCase):
                         # and original URL/UUID are preserved
                         mock_save_meta.assert_called_once()
                         call_args = mock_save_meta.call_args[0]
-                        call_kwargs = mock_save_meta.call_args[1]
-                        self.assertEqual(call_args[1], new_url, 'URL should be updated to new URL')
-                        self.assertEqual(call_args[4], new_uuid, 'UUID should be updated to new UUID')
-                        self.assertEqual(call_kwargs.get('original_url'), old_url, 'Original URL should be preserved')
-                        self.assertEqual(
-                            call_kwargs.get('original_uuid'), old_uuid, 'Original UUID should be preserved'
-                        )
+                        metadata = call_args[1]  # PluginMetadata object
+                        self.assertEqual(metadata.url, new_url, 'URL should be updated to new URL')
+                        self.assertEqual(metadata.uuid, new_uuid, 'UUID should be updated to new UUID')
+                        self.assertEqual(metadata.original_url, old_url, 'Original URL should be preserved')
+                        self.assertEqual(metadata.original_uuid, old_uuid, 'Original UUID should be preserved')
 
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
@@ -335,7 +333,7 @@ class TestPluginRegistry(PicardTestCase):
         from pathlib import Path
         from unittest.mock import patch
 
-        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.manager import PluginManager, PluginMetadata
         from picard.plugin3.plugin import Plugin
 
         mock_tagger = Mock()
@@ -350,7 +348,10 @@ class TestPluginRegistry(PicardTestCase):
         manager._enabled_plugins = {'test-plugin'}
 
         # Store metadata
-        manager._save_plugin_metadata('test-plugin', 'https://example.com/plugin.git', 'main', 'abc123')
+        manager._save_plugin_metadata(
+            'test-plugin',
+            PluginMetadata(url='https://example.com/plugin.git', ref='main', commit='abc123'),
+        )
 
         # Mock registry to blacklist the plugin
         manager._registry._registry_data = {
@@ -369,7 +370,7 @@ class TestPluginRegistry(PicardTestCase):
         from pathlib import Path
         from unittest.mock import patch
 
-        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.manager import PluginManager, PluginMetadata
         from picard.plugin3.plugin import Plugin
 
         mock_tagger = Mock()
@@ -384,7 +385,10 @@ class TestPluginRegistry(PicardTestCase):
         manager._enabled_plugins = {'malicious-plugin'}
 
         # Store metadata
-        manager._save_plugin_metadata('malicious-plugin', 'https://badsite.com/plugin.git', 'main', 'abc123')
+        manager._save_plugin_metadata(
+            'malicious-plugin',
+            PluginMetadata(url='https://badsite.com/plugin.git', ref='main', commit='abc123'),
+        )
 
         # Mock registry to blacklist the plugin
         manager._registry._registry_data = {

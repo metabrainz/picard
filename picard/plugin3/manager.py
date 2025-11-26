@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from dataclasses import dataclass
 import os
 from pathlib import Path
 import re
@@ -33,6 +34,29 @@ from picard.plugin3.plugin import (
     PluginSourceGit,
     short_commit_id,
 )
+
+
+@dataclass
+class PluginMetadata:
+    """Plugin metadata stored in config."""
+
+    url: str
+    ref: str
+    commit: str
+    uuid: str = None
+    original_url: str = None
+    original_uuid: str = None
+
+    def to_dict(self):
+        """Convert to dict for config storage."""
+        data = {'url': self.url, 'ref': self.ref, 'commit': self.commit}
+        if self.uuid:
+            data['uuid'] = self.uuid
+        if self.original_url:
+            data['original_url'] = self.original_url
+        if self.original_uuid:
+            data['original_uuid'] = self.original_uuid
+        return data
 
 
 def sanitize_plugin_name(name: str) -> str:
@@ -197,7 +221,10 @@ class PluginManager:
             shutil.move(str(temp_path), str(final_path))
 
             # Store plugin metadata
-            self._save_plugin_metadata(plugin_id, url, source.resolved_ref, commit_id, manifest.uuid)
+            self._save_plugin_metadata(
+                plugin_id,
+                PluginMetadata(url=url, ref=source.resolved_ref, commit=commit_id, uuid=manifest.uuid),
+            )
 
             # Add newly installed plugin to the plugins list
             plugin = Plugin(self._primary_plugin_dir, plugin_id)
@@ -310,7 +337,10 @@ class PluginManager:
             shutil.copytree(install_path, final_path)
 
         # Store metadata
-        self._save_plugin_metadata(plugin_id, str(local_path), ref_to_save, commit_to_save, manifest.uuid)
+        self._save_plugin_metadata(
+            plugin_id,
+            PluginMetadata(url=str(local_path), ref=ref_to_save, commit=commit_to_save, uuid=manifest.uuid),
+        )
 
         # Add newly installed plugin to the plugins list
         plugin = Plugin(self._primary_plugin_dir, plugin_id)
@@ -335,7 +365,17 @@ class PluginManager:
         plugin.read_manifest()
 
         # Update metadata with new ref
-        self._save_plugin_metadata(plugin.name, metadata['url'], ref, new_commit)
+        self._save_plugin_metadata(
+            plugin.name,
+            PluginMetadata(
+                url=metadata['url'],
+                ref=ref,
+                commit=new_commit,
+                uuid=metadata.get('uuid'),
+                original_url=metadata.get('original_url'),
+                original_uuid=metadata.get('original_uuid'),
+            ),
+        )
 
         return old_ref, ref, old_commit, new_commit
 
@@ -380,12 +420,14 @@ class PluginManager:
         original_uuid = metadata.get('original_uuid', old_uuid) if redirected else None
         self._save_plugin_metadata(
             plugin.name,
-            current_url,
-            metadata.get('ref'),
-            new_commit,
-            current_uuid,
-            original_url=original_url,
-            original_uuid=original_uuid,
+            PluginMetadata(
+                url=current_url,
+                ref=metadata.get('ref'),
+                commit=new_commit,
+                uuid=current_uuid,
+                original_url=original_url,
+                original_uuid=original_uuid,
+            ),
         )
 
         return old_version, new_version, old_commit, new_commit
@@ -586,27 +628,8 @@ class PluginManager:
         metadata = plugins3['metadata']
         return metadata.get(plugin_name, {})
 
-    def _save_plugin_metadata(
-        self,
-        plugin_name: str,
-        url: str,
-        ref: str,
-        commit_id: str,
-        uuid: str = None,
-        original_url: str = None,
-        original_uuid: str = None,
-    ):
-        """Save plugin metadata to config.
-
-        Args:
-            plugin_name: Plugin directory name
-            url: Git repository URL
-            ref: Git ref (branch/tag/commit)
-            commit_id: Git commit SHA
-            uuid: Plugin UUID from MANIFEST
-            original_url: Original URL before redirect (if redirected)
-            original_uuid: Original UUID before redirect (if redirected)
-        """
+    def _save_plugin_metadata(self, plugin_name: str, metadata: PluginMetadata):
+        """Save plugin metadata to config."""
         from picard.config import get_config
 
         config = get_config()
@@ -614,22 +637,14 @@ class PluginManager:
         if 'metadata' not in plugins3:
             plugins3['metadata'] = {}
 
-        metadata = {'url': url, 'ref': ref, 'commit': commit_id}
-        if uuid:
-            metadata['uuid'] = uuid
-        if original_url:
-            metadata['original_url'] = original_url
-        if original_uuid:
-            metadata['original_uuid'] = original_uuid
-
-        plugins3['metadata'][plugin_name] = metadata
+        plugins3['metadata'][plugin_name] = metadata.to_dict()
         config.setting['plugins3'] = plugins3  # Reassign to persist
         log.debug(
             'Saved metadata for plugin %s: url=%s, ref=%s, commit=%s',
             plugin_name,
-            url,
-            ref,
-            short_commit_id(commit_id) if commit_id else None,
+            metadata.url,
+            metadata.ref,
+            short_commit_id(metadata.commit) if metadata.commit else None,
         )
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):

@@ -40,13 +40,16 @@ def load_plugin_manifest(plugin_name: str) -> PluginManifest:
 class TestPluginInstall(PicardTestCase):
     def test_plugin_metadata_storage(self):
         """Test that plugin metadata is stored and retrieved correctly."""
-        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.manager import PluginManager, PluginMetadata
 
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
 
         # Save metadata
-        manager._save_plugin_metadata('test-plugin', 'https://example.com/plugin.git', 'main', 'abc123')
+        manager._save_plugin_metadata(
+            'test-plugin',
+            PluginMetadata(url='https://example.com/plugin.git', ref='main', commit='abc123'),
+        )
 
         # Retrieve metadata
         metadata = manager._get_plugin_metadata('test-plugin')
@@ -102,7 +105,7 @@ class TestPluginInstall(PicardTestCase):
         """Test switching plugin to different git ref."""
         from pathlib import Path
 
-        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.manager import PluginManager, PluginMetadata
         from picard.plugin3.plugin import Plugin
 
         mock_tagger = Mock()
@@ -114,7 +117,10 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.local_path = Path('/tmp/test-plugin')
         mock_plugin.read_manifest = Mock()
 
-        manager._save_plugin_metadata('test-plugin', 'https://example.com/plugin.git', 'main', 'abc123')
+        manager._save_plugin_metadata(
+            'test-plugin',
+            PluginMetadata(url='https://example.com/plugin.git', ref='main', commit='abc123'),
+        )
 
         # Mock PluginSourceGit.sync to return new commit
         from unittest.mock import patch
