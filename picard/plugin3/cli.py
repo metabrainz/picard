@@ -273,7 +273,7 @@ class PluginCLI:
         yes = getattr(self._args, 'yes', False)
 
         if force_blacklisted:
-            self._out.warning('WARNING: Bypassing blacklist check - this may be dangerous!')
+            self._out.warning(self._out.d_warning('WARNING: Bypassing blacklist check - this may be dangerous!'))
 
         for url_or_id in plugin_urls:
             try:
