@@ -60,10 +60,30 @@ def is_local_path(url):
 
     Returns:
         bool: True if local path, False if remote URL
+
+    Git supports several URL formats:
+    - scheme://... (http, https, git, ssh, ftp, ftps, file, etc.)
+    - user@host:path (scp-like syntax)
+    - /absolute/path or ~/path or relative/path (local paths)
     """
     if not url:
         return False
-    return '://' not in url or url.startswith('file://')
+
+    # If it has ://, it's a URL with a scheme (unless file://)
+    if '://' in url:
+        return url.startswith('file://')
+
+    # Check for scp-like syntax: user@host:path
+    # This has a colon but not :// and has @ before the colon
+    if ':' in url and '@' in url:
+        at_pos = url.find('@')
+        colon_pos = url.find(':')
+        # If @ comes before : and there's no /, it's scp-like syntax
+        if at_pos < colon_pos and '/' not in url[:colon_pos]:
+            return False
+
+    # Everything else is a local path
+    return True
 
 
 def get_local_path(url):
