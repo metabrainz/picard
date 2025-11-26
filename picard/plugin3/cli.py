@@ -377,7 +377,7 @@ class PluginCLI:
             try:
                 self._out.print(f'Enabling {plugin.name}...')
                 self._manager.enable_plugin(plugin)
-                self._out.success('Plugin enabled')
+                self._out.success(f'Plugin {self._out.d_status_enabled("enabled")}')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
                 self._out.error(f'Failed to enable plugin: {e}')
@@ -394,7 +394,7 @@ class PluginCLI:
             try:
                 self._out.print(f'Disabling {plugin.name}...')
                 self._manager.disable_plugin(plugin)
-                self._out.success('Plugin disabled')
+                self._out.success(f'Plugin {self._out.d_status_disabled("disabled")}')
                 self._out.info('Restart Picard for changes to take effect')
             except Exception as e:
                 self._out.error(f'Failed to disable plugin: {e}')
