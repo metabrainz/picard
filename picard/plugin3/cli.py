@@ -499,10 +499,25 @@ class PluginCLI:
             return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _find_plugin(self, plugin_name):
-        """Find a plugin by name."""
+    def _find_plugin(self, identifier):
+        """Find a plugin by directory name, manifest name, or UUID.
+
+        Args:
+            identifier: Plugin directory name, manifest name, or UUID
+
+        Returns:
+            Plugin object or None if not found
+        """
+        identifier_lower = identifier.lower()
         for plugin in self._manager.plugins:
-            if plugin.name == plugin_name:
+            # Match by directory name (exact)
+            if plugin.name == identifier:
+                return plugin
+            # Match by manifest name (case-insensitive)
+            if plugin.manifest and plugin.manifest.name().lower() == identifier_lower:
+                return plugin
+            # Match by UUID (exact)
+            if plugin.manifest and plugin.manifest.uuid == identifier:
                 return plugin
         return None
 
