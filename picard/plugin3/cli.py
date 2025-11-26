@@ -780,10 +780,14 @@ class PluginCLI:
         """Show MANIFEST.toml template or from plugin."""
         # No argument - show template
         if not target:
-            template = '''# MANIFEST.toml Template
+            import uuid
+
+            generated_uuid = str(uuid.uuid4())
+            template = f'''# MANIFEST.toml Template
 # See https://picard-docs.musicbrainz.org/en/extending/plugins.html
 
 # Required fields
+uuid = "{generated_uuid}"  # Generated UUID - keep this value
 name = "My Plugin Name"
 version = "1.0.0"
 description = "Short one-line description (1-200 characters)"

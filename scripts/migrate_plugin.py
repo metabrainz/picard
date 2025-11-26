@@ -79,6 +79,11 @@ def extract_plugin_metadata(content):
 
 def generate_manifest_toml(metadata, module_name):
     """Generate MANIFEST.toml content."""
+    import uuid
+
+    # Generate UUID for the plugin
+    plugin_uuid = str(uuid.uuid4())
+
     # Map v2 API versions to v3
     api_versions = []
     for v in metadata.get('api_versions', []):
@@ -115,7 +120,8 @@ def generate_manifest_toml(metadata, module_name):
         description = escape_toml_string(description)
         long_description = escape_toml_string(full_description)
 
-    toml = f'''name = "{name}"
+    toml = f'''uuid = "{plugin_uuid}"
+name = "{name}"
 authors = ["{author}"]
 version = "{metadata.get('version', '1.0.0')}"
 description = "{description}"
