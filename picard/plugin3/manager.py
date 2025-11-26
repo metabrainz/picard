@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 import os
 from pathlib import Path
 import re
@@ -49,15 +49,8 @@ class PluginMetadata:
     original_uuid: str = None
 
     def to_dict(self):
-        """Convert to dict for config storage."""
-        data = {'name': self.name, 'url': self.url, 'ref': self.ref, 'commit': self.commit}
-        if self.uuid:
-            data['uuid'] = self.uuid
-        if self.original_url:
-            data['original_url'] = self.original_url
-        if self.original_uuid:
-            data['original_uuid'] = self.original_uuid
-        return data
+        """Convert to dict for config storage, excluding None values."""
+        return {k: v for k, v in asdict(self).items() if v is not None}
 
 
 def sanitize_plugin_name(name: str) -> str:
