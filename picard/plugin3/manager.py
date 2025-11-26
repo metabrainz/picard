@@ -104,6 +104,12 @@ class PluginManager:
             error_list = '\n  '.join(errors) if isinstance(errors, list) else str(errors)
             raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
 
+    def _get_plugin_uuid(self, plugin: Plugin):
+        """Get plugin UUID, raising ValueError if not available."""
+        if not plugin.manifest or not plugin.manifest.uuid:
+            raise ValueError(f'Plugin {plugin.name} has no UUID')
+        return plugin.manifest.uuid
+
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         dir_path = Path(os.path.normpath(dir_path))
         if dir_path in self._plugin_dirs:
@@ -323,10 +329,8 @@ class PluginManager:
 
     def switch_ref(self, plugin: Plugin, ref: str):
         """Switch plugin to a different git ref (branch/tag/commit)."""
-        if not plugin.manifest or not plugin.manifest.uuid:
-            raise ValueError(f'Plugin {plugin.name} has no UUID, cannot switch ref')
-
-        metadata = self._get_plugin_metadata(plugin.manifest.uuid)
+        uuid = self._get_plugin_uuid(plugin)
+        metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
             raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot switch ref')
 
@@ -388,10 +392,8 @@ class PluginManager:
 
     def update_plugin(self, plugin: Plugin):
         """Update a single plugin to latest version."""
-        if not plugin.manifest or not plugin.manifest.uuid:
-            raise ValueError(f'Plugin {plugin.name} has no UUID, cannot update')
-
-        metadata = self._get_plugin_metadata(plugin.manifest.uuid)
+        uuid = self._get_plugin_uuid(plugin)
+        metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
             raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot update')
 
