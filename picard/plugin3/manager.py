@@ -97,6 +97,13 @@ class PluginManager:
     def plugins(self):
         return self._plugins
 
+    def _validate_manifest(self, manifest):
+        """Validate manifest and raise ValueError if invalid."""
+        errors = manifest.validate()
+        if errors:
+            error_list = '\n  '.join(errors) if isinstance(errors, list) else str(errors)
+            raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
+
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         dir_path = Path(os.path.normpath(dir_path))
         if dir_path in self._plugin_dirs:
@@ -167,13 +174,7 @@ class PluginManager:
                 manifest = PluginManifest('temp', f)
 
             # Validate manifest
-            errors = manifest.validate()
-            if errors:
-                if isinstance(errors, list):
-                    error_list = '\n  '.join(errors)
-                else:
-                    error_list = str(errors)
-                raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
+            self._validate_manifest(manifest)
 
             # Generate plugin directory name from sanitized name + UUID
             plugin_name = get_plugin_directory_name(manifest)
@@ -282,13 +283,7 @@ class PluginManager:
             manifest = PluginManifest('temp', f)
 
         # Validate manifest
-        errors = manifest.validate()
-        if errors:
-            if isinstance(errors, list):
-                error_list = '\n  '.join(errors)
-            else:
-                error_list = str(errors)
-            raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
+        self._validate_manifest(manifest)
 
         # Generate plugin directory name from sanitized name + UUID
         plugin_name = get_plugin_directory_name(manifest)
