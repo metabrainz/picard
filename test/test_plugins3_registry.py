@@ -128,6 +128,68 @@ class TestPluginRegistry(PicardTestCase):
         is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', 'different-uuid')
         self.assertFalse(is_blacklisted)
 
+    def test_registry_url_redirect(self):
+        """Test that URL redirects work."""
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+        test_uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+        registry._registry_data = {
+            'plugins': [
+                {
+                    'id': 'test-plugin',
+                    'uuid': test_uuid,
+                    'git_url': 'https://github.com/neworg/plugin',
+                    'redirect_from': ['https://github.com/olduser/plugin', 'https://github.com/olduser/old-name'],
+                }
+            ]
+        }
+
+        # Find by current URL
+        plugin = registry.find_plugin(url='https://github.com/neworg/plugin')
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin['uuid'], test_uuid)
+
+        # Find by old URL (redirect)
+        plugin = registry.find_plugin(url='https://github.com/olduser/plugin')
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin['uuid'], test_uuid)
+        self.assertEqual(plugin['git_url'], 'https://github.com/neworg/plugin')
+
+        # Find by another old URL
+        plugin = registry.find_plugin(url='https://github.com/olduser/old-name')
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin['uuid'], test_uuid)
+
+    def test_registry_uuid_redirect(self):
+        """Test that UUID redirects work."""
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+        old_uuid = 'old-uuid-1234'
+        new_uuid = 'new-uuid-5678'
+        registry._registry_data = {
+            'plugins': [
+                {
+                    'id': 'test-plugin',
+                    'uuid': new_uuid,
+                    'git_url': 'https://github.com/org/plugin',
+                    'redirect_from_uuid': [old_uuid],
+                }
+            ]
+        }
+
+        # Find by current UUID
+        plugin = registry.find_plugin(uuid=new_uuid)
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin['uuid'], new_uuid)
+
+        # Find by old UUID (redirect)
+        plugin = registry.find_plugin(uuid=old_uuid)
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin['uuid'], new_uuid)
+        self.assertEqual(plugin['git_url'], 'https://github.com/org/plugin')
+
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
         from pathlib import Path
