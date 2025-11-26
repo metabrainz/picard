@@ -174,6 +174,7 @@ class PluginCLI:
         if desc:
             self._out.print(f'Description: {desc}')
 
+        self._out.print(f'UUID: {plugin_uuid}')
         self._out.print(f'Status: {status}')
         version = plugin.manifest._data.get('version', '')
         self._out.print(f'Version: {version}{git_info}')
