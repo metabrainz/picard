@@ -372,6 +372,28 @@ class PluginManager:
 
         return old_ref, ref, old_commit, new_commit
 
+    def _check_redirects(self, old_url, old_uuid):
+        """Check if plugin has been redirected to new URL/UUID.
+
+        Returns:
+            tuple: (current_url, current_uuid, redirected)
+        """
+        registry_plugin = self._registry.find_plugin(url=old_url, uuid=old_uuid)
+        if not registry_plugin:
+            return old_url, old_uuid, False
+
+        new_url = registry_plugin.get('git_url', old_url)
+        new_uuid = registry_plugin.get('uuid', old_uuid)
+        redirected = new_url != old_url or new_uuid != old_uuid
+
+        if redirected:
+            if new_url != old_url:
+                log.info('Plugin URL changed: %s -> %s', old_url, new_url)
+            if new_uuid != old_uuid:
+                log.info('Plugin UUID changed: %s -> %s', old_uuid, new_uuid)
+
+        return new_url, new_uuid, redirected
+
     def update_plugin(self, plugin: Plugin):
         """Update a single plugin to latest version."""
         if not plugin.manifest or not plugin.manifest.uuid:
@@ -386,22 +408,7 @@ class PluginManager:
         old_uuid = metadata.get('uuid')
 
         # Check registry for redirects
-        current_url = old_url
-        current_uuid = old_uuid
-        redirected = False
-        registry_plugin = self._registry.find_plugin(url=old_url, uuid=old_uuid)
-        if registry_plugin:
-            # Check if URL or UUID changed (redirect)
-            new_url = registry_plugin.get('git_url')
-            new_uuid = registry_plugin.get('uuid')
-            if new_url and new_url != old_url:
-                log.info('Plugin %s URL changed: %s -> %s', plugin.name, old_url, new_url)
-                current_url = new_url
-                redirected = True
-            if new_uuid and new_uuid != old_uuid:
-                log.info('Plugin %s UUID changed: %s -> %s', plugin.name, old_uuid, new_uuid)
-                current_uuid = new_uuid
-                redirected = True
+        current_url, current_uuid, redirected = self._check_redirects(old_url, old_uuid)
 
         source = PluginSourceGit(current_url, metadata.get('ref'))
         old_commit, new_commit = source.update(plugin.local_path)
