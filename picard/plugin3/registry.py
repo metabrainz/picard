@@ -250,12 +250,13 @@ class PluginRegistry:
 
         return 'unregistered'
 
-    def find_plugin(self, plugin_id=None, url=None):
-        """Find plugin in registry by ID or URL.
+    def find_plugin(self, plugin_id=None, url=None, uuid=None):
+        """Find plugin in registry by ID, URL, or UUID (with redirect support).
 
         Args:
             plugin_id: Plugin ID to search for
             url: Git URL to search for
+            uuid: Plugin UUID to search for
 
         Returns:
             dict: Plugin data or None if not found
@@ -267,13 +268,34 @@ class PluginRegistry:
         normalized_url = normalize_git_url(url) if url else None
 
         plugins = self._registry_data.get('plugins', [])
+
+        # First pass: search by current values (fast path)
         for plugin in plugins:
             if plugin_id and plugin.get('id') == plugin_id:
+                return plugin
+            if uuid and plugin.get('uuid') == uuid:
                 return plugin
             if normalized_url:
                 plugin_url = normalize_git_url(plugin.get('git_url', ''))
                 if plugin_url == normalized_url:
                     return plugin
+
+        # Second pass: search redirects (only if not found above)
+        if normalized_url or uuid:
+            for plugin in plugins:
+                # Check URL redirects
+                if normalized_url and 'redirect_from' in plugin:
+                    for old_url in plugin['redirect_from']:
+                        old_url_normalized = normalize_git_url(old_url)
+                        if old_url_normalized == normalized_url:
+                            log.info('Found plugin via URL redirect: %s -> %s', url, plugin.get('git_url'))
+                            return plugin
+
+                # Check UUID redirects
+                if uuid and 'redirect_from_uuid' in plugin:
+                    if uuid in plugin['redirect_from_uuid']:
+                        log.info('Found plugin via UUID redirect: %s -> %s', uuid, plugin.get('uuid'))
+                        return plugin
 
         return None
 

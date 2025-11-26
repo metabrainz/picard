@@ -114,17 +114,18 @@ class TestPluginRegistry(PicardTestCase):
         self.assertFalse(is_blacklisted)
 
     def test_registry_blacklist_plugin_id(self):
-        """Test that blacklisted plugin IDs are detected."""
+        """Test that blacklisted plugin UUIDs are detected."""
         from picard.plugin3.registry import PluginRegistry
 
         registry = PluginRegistry()
-        registry._registry_data = {'blacklist': [{'plugin_id': 'malicious_plugin', 'reason': 'Security vulnerability'}]}
+        test_uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+        registry._registry_data = {'blacklist': [{'uuid': test_uuid, 'reason': 'Security vulnerability'}]}
 
-        is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', 'malicious_plugin')
+        is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', test_uuid)
         self.assertTrue(is_blacklisted)
         self.assertIn('Security vulnerability', reason)
 
-        is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', 'safe_plugin')
+        is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', 'different-uuid')
         self.assertFalse(is_blacklisted)
 
     def test_install_blocks_blacklisted_url(self):
