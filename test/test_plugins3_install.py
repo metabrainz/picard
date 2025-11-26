@@ -20,21 +20,13 @@
 
 from unittest.mock import Mock
 
-from test.picardtestcase import (
-    PicardTestCase,
-    get_test_data_path,
+from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import (
+    create_mock_plugin,
+    run_cli,
 )
 
-from picard.config import (
-    get_config,
-)
-from picard.plugin3.manifest import PluginManifest
-
-
-def load_plugin_manifest(plugin_name: str) -> PluginManifest:
-    manifest_path = get_test_data_path('testplugins3', plugin_name, 'MANIFEST.toml')
-    with open(manifest_path, 'rb') as manifest_file:
-        return PluginManifest(plugin_name, manifest_file)
+from picard.config import get_config
 
 
 class TestPluginInstall(PicardTestCase):
@@ -180,91 +172,26 @@ class TestPluginInstall(PicardTestCase):
 
     def test_switch_ref_cli(self):
         """Test switch-ref CLI command."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-
-        mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
-        mock_manager.plugins = [mock_plugin]
+        mock_plugin = create_mock_plugin()
+        mock_manager = Mock(plugins=[mock_plugin])
         mock_manager.switch_ref = Mock(return_value=('main', 'v1.0.0', 'abc1234', 'def5678'))
-        mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = False
-        args.search = None
-        args.clean_config = None
-        args.validate = None
-        args.switch_ref = ['test-plugin', 'v1.0.0']
+        exit_code, stdout, _ = run_cli(mock_manager, switch_ref=['test-plugin', 'v1.0.0'])
 
-        stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        output_text = stdout.getvalue()
-
-        self.assertEqual(result, 0)
+        self.assertEqual(exit_code, 0)
         mock_manager.switch_ref.assert_called_once_with(mock_plugin, 'v1.0.0')
-        self.assertIn('main', output_text)
-        self.assertIn('v1.0.0', output_text)
-        self.assertIn('abc1234', output_text)
-        self.assertIn('def5678', output_text)
+        self.assertIn('main', stdout)
+        self.assertIn('v1.0.0', stdout)
+        self.assertIn('abc1234', stdout)
+        self.assertIn('def5678', stdout)
 
     def test_switch_ref_plugin_not_found(self):
         """Test switch-ref for non-existent plugin."""
-        from io import StringIO
+        mock_manager = Mock(plugins=[])
+        exit_code, _, stderr = run_cli(mock_manager, switch_ref=['nonexistent', 'v1.0.0'])
 
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-        mock_manager.plugins = []
-        mock_tagger.pluginmanager3 = mock_manager
-
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = False
-        args.search = None
-        args.clean_config = None
-        args.validate = None
-        args.switch_ref = ['nonexistent', 'v1.0.0']
-
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        error_text = stderr.getvalue()
-
-        self.assertEqual(result, 2)
-        self.assertIn('not found', error_text)
+        self.assertEqual(exit_code, 2)
+        self.assertIn('not found', stderr)
 
     def test_install_validates_manifest(self):
         """Test that install validates MANIFEST.toml exists."""

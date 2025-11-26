@@ -3,7 +3,23 @@
   "last_updated": "2025-11-25T12:00:00Z",
   "plugins": [
     {
+      "id": "example-plugin",
+      "uuid": "ae5ef1ed-0195-4014-a113-6090de7cf8b7",
+      "name": "Example plugin",
+      "description": "This is an example plugin",
+      "git_url": "https://github.com/test/example",
+      "categories": ["metadata"],
+      "trust_level": "official",
+      "authors": ["Philipp Wolfer"],
+      "min_api_version": "3.0",
+      "redirect_from": ["https://github.com/olduser/example", "https://github.com/olduser/old-name"],
+      "redirect_from_uuid": ["old-uuid-1234"],
+      "added_at": "2025-11-01T10:00:00Z",
+      "updated_at": "2025-11-20T15:00:00Z"
+    },
+    {
       "id": "listenbrainz",
+      "uuid": "listenbrainz-uuid-5678",
       "name": "ListenBrainz Submitter",
       "description": "Submit your music to ListenBrainz",
       "name_i18n": {
@@ -24,6 +40,7 @@
     },
     {
       "id": "discogs",
+      "uuid": "discogs-uuid-9012",
       "name": "Discogs",
       "description": "Get metadata from Discogs",
       "git_url": "https://github.com/user/picard-plugin-discogs",
@@ -37,6 +54,7 @@
     },
     {
       "id": "custom-tagger",
+      "uuid": "custom-tagger-uuid-3456",
       "name": "Custom Tagger",
       "description": "Apply custom tagging rules",
       "git_url": "https://github.com/community/custom-tagger",
@@ -46,19 +64,60 @@
       "min_api_version": "3.0",
       "added_at": "2025-11-10T10:00:00Z",
       "updated_at": "2025-11-10T10:00:00Z"
+    },
+    {
+      "id": "coverart-plugin",
+      "uuid": "coverart-uuid-7890",
+      "name": "Cover Art Plugin",
+      "description": "Enhanced cover art support",
+      "git_url": "https://github.com/test/coverart",
+      "categories": ["coverart"],
+      "trust_level": "trusted",
+      "authors": ["Jane Doe"],
+      "min_api_version": "3.0",
+      "added_at": "2025-11-12T10:00:00Z",
+      "updated_at": "2025-11-12T10:00:00Z"
+    },
+    {
+      "id": "ui-plugin",
+      "uuid": "ui-plugin-uuid-2468",
+      "name": "UI Plugin",
+      "description": "UI enhancements",
+      "git_url": "https://github.com/test/ui-plugin",
+      "categories": ["ui"],
+      "trust_level": "official",
+      "authors": ["Test Author"],
+      "min_api_version": "3.0",
+      "added_at": "2025-11-15T10:00:00Z",
+      "updated_at": "2025-11-15T10:00:00Z"
     }
   ],
   "blacklist": [
     {
-      "git_url": "https://github.com/badactor/malicious-plugin",
+      "url": "https://github.com/badactor/malicious-plugin",
       "reason": "Contains malicious code",
       "blacklisted_at": "2025-11-20T10:00:00Z"
     },
     {
-      "git_url": "https://github.com/badorg/*",
-      "reason": "Entire organization blacklisted for malicious activity",
-      "blacklisted_at": "2025-11-22T10:00:00Z",
-      "pattern": "repository"
+      "url": "https://example.com/malicious.git",
+      "reason": "Malware detected",
+      "blacklisted_at": "2025-11-21T10:00:00Z"
+    },
+    {
+      "url_regex": "https://badsite\\.com/.*",
+      "reason": "Malicious site",
+      "blacklisted_at": "2025-11-22T10:00:00Z"
+    },
+    {
+      "uuid": "blacklisted-uuid-1234",
+      "reason": "Security vulnerability",
+      "blacklisted_at": "2025-11-23T10:00:00Z"
+    },
+    {
+      "url": "https://badsite.com/plugin.git",
+      "uuid": "malicious-uuid-5678",
+      "reason": "Contains malware",
+      "blacklisted_at": "2025-11-24T10:00:00Z"
     }
   ]
 }

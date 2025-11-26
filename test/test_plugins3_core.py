@@ -24,20 +24,14 @@ from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
 )
+from test.test_plugins3_helpers import load_plugin_manifest
 
 from picard.config import (
     ConfigSection,
     get_config,
 )
 from picard.plugin3.api import PluginApi
-from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
-
-
-def load_plugin_manifest(plugin_name: str) -> PluginManifest:
-    manifest_path = get_test_data_path('testplugins3', plugin_name, 'MANIFEST.toml')
-    with open(manifest_path, 'rb') as manifest_file:
-        return PluginManifest(plugin_name, manifest_file)
 
 
 class TestPluginManifest(PicardTestCase):

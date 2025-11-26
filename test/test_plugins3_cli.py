@@ -20,205 +20,78 @@
 
 from unittest.mock import Mock, PropertyMock
 
-from test.picardtestcase import (
-    PicardTestCase,
-    get_test_data_path,
+from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import (
+    create_mock_plugin,
+    load_plugin_manifest,
+    run_cli,
 )
-
-from picard.plugin3.manifest import PluginManifest
-
-
-def load_plugin_manifest(plugin_name: str) -> PluginManifest:
-    manifest_path = get_test_data_path('testplugins3', plugin_name, 'MANIFEST.toml')
-    with open(manifest_path, 'rb') as manifest_file:
-        return PluginManifest(plugin_name, manifest_file)
 
 
 class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
-        from io import StringIO
+        mock_manager = Mock(plugins=[])
+        exit_code, stdout, _ = run_cli(mock_manager, list=True)
 
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-        mock_manager.plugins = []
-        mock_tagger.pluginmanager3 = mock_manager
-
-        args = Mock()
-        args.ref = None
-        args.list = True
-        args.info = None
-
-        stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        output_text = stdout.getvalue()
-
-        self.assertEqual(result, 0)
-        self.assertIn('No plugins installed', output_text)
+        self.assertEqual(exit_code, 0)
+        self.assertIn('No plugins installed', stdout)
 
     def test_list_plugins_with_plugins(self):
         """Test listing plugins with details."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-        from picard.plugin3.plugin import Plugin
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-
-        # Create mock plugin
         test_uuid = 'test-uuid-1234'
-        mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
-        mock_plugin.local_path = '/path/to/plugin'
         manifest = load_plugin_manifest('example')
-        # Mock the uuid property
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
-        mock_plugin.manifest = manifest
 
-        mock_manager.plugins = [mock_plugin]
-        mock_manager._enabled_plugins = {test_uuid}  # Use UUID instead of name
+        mock_plugin = create_mock_plugin(name='test-plugin', uuid=test_uuid, manifest=manifest)
+        mock_manager = Mock(plugins=[mock_plugin], _enabled_plugins={test_uuid})
         mock_manager._get_plugin_metadata = Mock(return_value={})
-        mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
-        args.ref = None
-        args.list = True
-        args.info = None
+        exit_code, stdout, _ = run_cli(mock_manager, list=True)
 
-        stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        output_text = stdout.getvalue()
-
-        self.assertEqual(result, 0)
-        self.assertIn('Example plugin', output_text)  # Check manifest name, not directory name
-        self.assertIn('enabled', output_text)
-        self.assertIn('1.0.0', output_text)
+        self.assertEqual(exit_code, 0)
+        self.assertIn('Example plugin', stdout)
+        self.assertIn('enabled', stdout)
+        self.assertIn('1.0.0', stdout)
 
     def test_info_plugin_not_found(self):
         """Test info command for non-existent plugin."""
-        from io import StringIO
+        mock_manager = Mock(plugins=[])
+        exit_code, _, stderr = run_cli(mock_manager, info='nonexistent')
 
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-        mock_manager.plugins = []
-        mock_tagger.pluginmanager3 = mock_manager
-
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = 'nonexistent'
-
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        error_text = stderr.getvalue()
-
-        self.assertEqual(result, 2)
-        self.assertIn('not found', error_text)
+        self.assertEqual(exit_code, 2)
+        self.assertIn('not found', stderr)
 
     def test_status_command(self):
         """Test status command shows plugin state."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
         from picard.plugin3.plugin import PluginState
 
-        mock_tagger = Mock()
-        mock_manager = Mock()
-
-        mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
-        mock_plugin.state = PluginState.ENABLED
-        mock_plugin.manifest = Mock()
+        mock_plugin = create_mock_plugin(state=PluginState.ENABLED)
         mock_plugin.manifest.version = '1.0.0'
         mock_plugin.manifest.api_versions = ['3.0']
         mock_plugin.manifest._data = {'version': '1.0.0', 'api': ['3.0']}
 
-        mock_manager.plugins = [mock_plugin]
-        mock_manager._enabled_plugins = {'test-plugin'}
+        mock_manager = Mock(plugins=[mock_plugin], _enabled_plugins={'test-plugin'})
         mock_manager._get_plugin_metadata = Mock(
             return_value={'url': 'https://example.com/plugin.git', 'ref': 'main', 'commit': 'abc1234567890'}
         )
-        mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = 'test-plugin'
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
+        exit_code, stdout, _ = run_cli(mock_manager, status='test-plugin')
 
-        stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        output_text = stdout.getvalue()
-
-        self.assertEqual(result, 0)
-        self.assertIn('test-plugin', output_text)
-        self.assertIn('enabled', output_text)
-        self.assertIn('1.0.0', output_text)
-        self.assertIn('https://example.com/plugin.git', output_text)
-        self.assertIn('abc1234', output_text)
+        self.assertEqual(exit_code, 0)
+        self.assertIn('test-plugin', stdout)
+        self.assertIn('enabled', stdout)
+        self.assertIn('1.0.0', stdout)
+        self.assertIn('https://example.com/plugin.git', stdout)
+        self.assertIn('abc1234', stdout)
 
     def test_status_plugin_not_found(self):
         """Test status command for non-existent plugin."""
-        from io import StringIO
+        mock_manager = Mock(plugins=[])
+        exit_code, _, stderr = run_cli(mock_manager, status='nonexistent')
 
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-        mock_manager.plugins = []
-        mock_tagger.pluginmanager3 = mock_manager
-
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = 'nonexistent'
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        error_text = stderr.getvalue()
-
-        self.assertEqual(result, 2)
-        self.assertIn('not found', error_text)
+        self.assertEqual(exit_code, 2)
+        self.assertIn('not found', stderr)
 
     def test_output_color_mode(self):
         """Test that color mode works correctly."""
@@ -230,101 +103,44 @@ class TestPluginCLI(PicardTestCase):
         stdout_color = StringIO()
         output_color = PluginOutput(stdout=stdout_color, stderr=StringIO(), color=True)
         output_color.success('test')
-        self.assertIn('\033[32m', stdout_color.getvalue())  # Green color code
+        self.assertIn('\033[32m', stdout_color.getvalue())
 
         # Test with color disabled
         stdout_no_color = StringIO()
         output_no_color = PluginOutput(stdout=stdout_no_color, stderr=StringIO(), color=False)
         output_no_color.success('test')
-        self.assertNotIn('\033[', stdout_no_color.getvalue())  # No color codes
+        self.assertNotIn('\033[', stdout_no_color.getvalue())
 
     def test_update_cli_commands(self):
         """Test that update CLI commands are properly routed."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-        mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
-        mock_manager.plugins = [mock_plugin]
+        mock_plugin = create_mock_plugin()
+        mock_manager = Mock(plugins=[mock_plugin])
         mock_manager.check_updates = Mock(return_value=[])
         mock_manager.update_all_plugins = Mock(return_value=[])
-        mock_tagger.pluginmanager3 = mock_manager
-
-        output = PluginOutput(stdout=StringIO(), stderr=StringIO(), color=False)
 
         # Test --check-updates
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = True
-
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-        result = cli.run()
-
-        self.assertEqual(result, 0)
+        exit_code, _, _ = run_cli(mock_manager, check_updates=True)
+        self.assertEqual(exit_code, 0)
         mock_manager.check_updates.assert_called_once()
 
         # Test --update-all
-        args.check_updates = False
-        args.update_all = True
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-        result = cli.run()
-
-        self.assertEqual(result, 0)
+        exit_code, _, _ = run_cli(mock_manager, update_all=True)
+        self.assertEqual(exit_code, 0)
         mock_manager.update_all_plugins.assert_called_once()
 
     def test_update_plugin_not_found(self):
         """Test update command for non-existent plugin."""
-        from io import StringIO
+        mock_manager = Mock(plugins=[])
+        exit_code, _, stderr = run_cli(mock_manager, update=['nonexistent'])
 
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-        mock_manager.plugins = []
-        mock_tagger.pluginmanager3 = mock_manager
-
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = ['nonexistent']
-        args.update_all = False
-        args.check_updates = False
-
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        error_text = stderr.getvalue()
-
-        self.assertEqual(result, 2)
-        self.assertIn('not found', error_text)
+        self.assertEqual(exit_code, 2)
+        self.assertIn('not found', stderr)
 
     def test_check_updates_empty(self):
         """Test check_updates with no plugins."""
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
-        manager = PluginManager(mock_tagger)
+        manager = PluginManager(Mock())
         manager._plugins = []
 
         updates = manager.check_updates()
@@ -332,176 +148,52 @@ class TestPluginCLI(PicardTestCase):
 
     def test_clean_config_command(self):
         """Test --clean-config command."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
         mock_manager = Mock()
         mock_manager._clean_plugin_config = Mock()
-        mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = False
-        args.search = None
-        args.switch_ref = None
-        args.clean_config = 'test-plugin'
-        args.validate = None
-        args.yes = True
+        exit_code, stdout, _ = run_cli(mock_manager, clean_config='test-plugin', yes=True)
 
-        stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-        output_text = stdout.getvalue()
-
-        self.assertEqual(result, 0)
+        self.assertEqual(exit_code, 0)
         mock_manager._clean_plugin_config.assert_called_once_with('test-plugin')
-        self.assertIn('deleted', output_text.lower())
+        self.assertIn('deleted', stdout.lower())
 
     def test_enable_plugins_command(self):
         """Test enable command."""
-        from io import StringIO
+        mock_plugin = create_mock_plugin()
+        mock_manager = Mock(plugins=[mock_plugin], enable_plugin=Mock())
 
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
+        exit_code, _, _ = run_cli(mock_manager, enable=['test-plugin'])
 
-        mock_tagger = Mock()
-        mock_manager = Mock()
-
-        mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
-        mock_manager.plugins = [mock_plugin]
-        mock_manager.enable_plugin = Mock()
-        mock_tagger.pluginmanager3 = mock_manager
-
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = ['test-plugin']
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-
-        stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-
-        self.assertEqual(result, 0)
+        self.assertEqual(exit_code, 0)
         mock_manager.enable_plugin.assert_called_once_with(mock_plugin)
 
     def test_disable_plugins_command(self):
         """Test disable command."""
-        from io import StringIO
+        mock_plugin = create_mock_plugin()
+        mock_manager = Mock(plugins=[mock_plugin], disable_plugin=Mock())
 
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
+        exit_code, _, _ = run_cli(mock_manager, disable=['test-plugin'])
 
-        mock_tagger = Mock()
-        mock_manager = Mock()
-
-        mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
-        mock_manager.plugins = [mock_plugin]
-        mock_manager.disable_plugin = Mock()
-        mock_tagger.pluginmanager3 = mock_manager
-
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = ['test-plugin']
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-
-        stdout = StringIO()
-        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-
-        self.assertEqual(result, 0)
+        self.assertEqual(exit_code, 0)
         mock_manager.disable_plugin.assert_called_once_with(mock_plugin)
 
     def test_cli_keyboard_interrupt(self):
         """Test CLI handles KeyboardInterrupt."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
-        mock_tagger = Mock()
-        mock_manager = Mock()
-        mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
-        mock_manager.plugins = [mock_plugin]
+        mock_plugin = create_mock_plugin()
+        mock_manager = Mock(plugins=[mock_plugin])
         mock_manager.check_updates = Mock(side_effect=KeyboardInterrupt())
-        mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = True
-        args.switch_ref = None
-        args.clean_config = None
+        exit_code, _, stderr = run_cli(mock_manager, check_updates=True)
 
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(mock_tagger.pluginmanager3, args, output)
-
-        result = cli.run()
-
-        self.assertEqual(result, 130)  # CANCELLED
-        self.assertIn('cancelled', stderr.getvalue().lower())
+        self.assertEqual(exit_code, 130)
+        self.assertIn('cancelled', stderr.lower())
 
     def test_browse_plugins_command(self):
         """Test --browse command."""
-        from unittest.mock import Mock
+        from picard.plugin3.cli import ExitCode
 
-        from picard.plugin3.cli import (
-            ExitCode,
-            PluginCLI,
-        )
-
-        mock_tagger = Mock()
-        mock_tagger.pluginmanager3._registry.list_plugins.return_value = [
+        mock_manager = Mock()
+        mock_manager._registry.list_plugins.return_value = [
             {
                 'id': 'plugin1',
                 'name': 'Plugin 1',
@@ -518,40 +210,17 @@ class TestPluginCLI(PicardTestCase):
             },
         ]
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = True
-        args.search = None
-        args.category = None
-        args.trust = None
-
-        cli = PluginCLI(mock_tagger.pluginmanager3, args)
-        exit_code = cli.run()
+        exit_code, _, _ = run_cli(mock_manager, browse=True)
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_tagger.pluginmanager3._registry.list_plugins.assert_called_once_with(category=None, trust_level=None)
+        mock_manager._registry.list_plugins.assert_called_once_with(category=None, trust_level=None)
 
     def test_browse_plugins_with_filters(self):
         """Test --browse with category and trust filters."""
-        from unittest.mock import Mock
+        from picard.plugin3.cli import ExitCode
 
-        from picard.plugin3.cli import (
-            ExitCode,
-            PluginCLI,
-        )
-
-        mock_tagger = Mock()
-        mock_tagger.pluginmanager3._registry.list_plugins.return_value = [
+        mock_manager = Mock()
+        mock_manager._registry.list_plugins.return_value = [
             {
                 'id': 'plugin1',
                 'name': 'Plugin 1',
@@ -561,42 +230,17 @@ class TestPluginCLI(PicardTestCase):
             },
         ]
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = True
-        args.search = None
-        args.category = 'metadata'
-        args.trust = 'official'
-
-        cli = PluginCLI(mock_tagger.pluginmanager3, args)
-        exit_code = cli.run()
+        exit_code, _, _ = run_cli(mock_manager, browse=True, category='metadata', trust='official')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_tagger.pluginmanager3._registry.list_plugins.assert_called_once_with(
-            category='metadata', trust_level='official'
-        )
+        mock_manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level='official')
 
     def test_search_plugins_command(self):
         """Test --search command."""
-        from unittest.mock import Mock
+        from picard.plugin3.cli import ExitCode
 
-        from picard.plugin3.cli import (
-            ExitCode,
-            PluginCLI,
-        )
-
-        mock_tagger = Mock()
-        mock_tagger.pluginmanager3._registry.list_plugins.return_value = [
+        mock_manager = Mock()
+        mock_manager._registry.list_plugins.return_value = [
             {
                 'id': 'listenbrainz',
                 'name': 'ListenBrainz',
@@ -606,62 +250,24 @@ class TestPluginCLI(PicardTestCase):
             {'id': 'discogs', 'name': 'Discogs', 'description': 'Discogs metadata', 'trust_level': 'trusted'},
         ]
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = False
-        args.search = 'listen'
-
-        cli = PluginCLI(mock_tagger.pluginmanager3, args)
-        exit_code = cli.run()
+        exit_code, _, _ = run_cli(mock_manager, search='listen')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
 
     def test_install_by_plugin_id(self):
         """Test installing plugin by ID from registry."""
-        from unittest.mock import Mock
+        from picard.plugin3.cli import ExitCode
 
-        from picard.plugin3.cli import (
-            ExitCode,
-            PluginCLI,
-        )
-
-        mock_tagger = Mock()
-        mock_tagger.pluginmanager3._registry.find_plugin.return_value = {
+        mock_manager = Mock()
+        mock_manager._registry.find_plugin.return_value = {
             'id': 'test-plugin',
             'name': 'Test Plugin',
             'git_url': 'https://github.com/test/plugin',
         }
-        mock_tagger.pluginmanager3.install_plugin.return_value = 'test-plugin'
+        mock_manager.install_plugin.return_value = 'test-plugin'
 
-        args = Mock()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = ['test-plugin']
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.ref = None
-        args.reinstall = False
-        args.force_blacklisted = False
-
-        cli = PluginCLI(mock_tagger.pluginmanager3, args)
-        exit_code = cli.run()
+        exit_code, _, _ = run_cli(mock_manager, install=['test-plugin'])
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_tagger.pluginmanager3._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
-        mock_tagger.pluginmanager3.install_plugin.assert_called_once()
+        mock_manager._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
+        mock_manager.install_plugin.assert_called_once()

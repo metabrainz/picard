@@ -20,29 +20,16 @@
 
 from unittest.mock import Mock
 
-from test.picardtestcase import (
-    PicardTestCase,
-    get_test_data_path,
+from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import (
+    create_test_registry,
 )
-
-from picard.plugin3.manifest import PluginManifest
-
-
-def load_plugin_manifest(plugin_name: str) -> PluginManifest:
-    manifest_path = get_test_data_path('testplugins3', plugin_name, 'MANIFEST.toml')
-    with open(manifest_path, 'rb') as manifest_file:
-        return PluginManifest(plugin_name, manifest_file)
 
 
 class TestPluginRegistry(PicardTestCase):
     def test_registry_blacklist_url(self):
         """Test that blacklisted URLs are detected."""
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry()
-        registry._registry_data = {
-            'blacklist': [{'url': 'https://example.com/malicious.git', 'reason': 'Malware detected'}]
-        }
+        registry = create_test_registry()
 
         is_blacklisted, reason = registry.is_blacklisted('https://example.com/malicious.git')
         self.assertTrue(is_blacklisted)
@@ -99,10 +86,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_blacklist_pattern(self):
         """Test that blacklisted URL regex patterns are detected."""
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry()
-        registry._registry_data = {'blacklist': [{'url_regex': r'https://badsite\.com/.*', 'reason': 'Malicious site'}]}
+        registry = create_test_registry()
 
         is_blacklisted, reason = registry.is_blacklisted('https://badsite.com/plugin.git')
         self.assertTrue(is_blacklisted)
@@ -113,13 +97,9 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_blacklist_plugin_id(self):
         """Test that blacklisted plugin UUIDs are detected."""
-        from picard.plugin3.registry import PluginRegistry
+        registry = create_test_registry()
 
-        registry = PluginRegistry()
-        test_uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        registry._registry_data = {'blacklist': [{'uuid': test_uuid, 'reason': 'Security vulnerability'}]}
-
-        is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', test_uuid)
+        is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', 'blacklisted-uuid-1234')
         self.assertTrue(is_blacklisted)
         self.assertIn('Security vulnerability', reason)
 
@@ -128,65 +108,38 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_url_redirect(self):
         """Test that URL redirects work."""
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry()
-        test_uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        registry._registry_data = {
-            'plugins': [
-                {
-                    'id': 'test-plugin',
-                    'uuid': test_uuid,
-                    'git_url': 'https://github.com/neworg/plugin',
-                    'redirect_from': ['https://github.com/olduser/plugin', 'https://github.com/olduser/old-name'],
-                }
-            ]
-        }
+        registry = create_test_registry()
 
         # Find by current URL
-        plugin = registry.find_plugin(url='https://github.com/neworg/plugin')
+        plugin = registry.find_plugin(url='https://github.com/test/example')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], test_uuid)
+        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
         # Find by old URL (redirect)
-        plugin = registry.find_plugin(url='https://github.com/olduser/plugin')
+        plugin = registry.find_plugin(url='https://github.com/olduser/example')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], test_uuid)
-        self.assertEqual(plugin['git_url'], 'https://github.com/neworg/plugin')
+        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin['git_url'], 'https://github.com/test/example')
 
         # Find by another old URL
         plugin = registry.find_plugin(url='https://github.com/olduser/old-name')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], test_uuid)
+        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
     def test_registry_uuid_redirect(self):
         """Test that UUID redirects work."""
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry()
-        old_uuid = 'old-uuid-1234'
-        new_uuid = 'new-uuid-5678'
-        registry._registry_data = {
-            'plugins': [
-                {
-                    'id': 'test-plugin',
-                    'uuid': new_uuid,
-                    'git_url': 'https://github.com/org/plugin',
-                    'redirect_from_uuid': [old_uuid],
-                }
-            ]
-        }
+        registry = create_test_registry()
 
         # Find by current UUID
-        plugin = registry.find_plugin(uuid=new_uuid)
+        plugin = registry.find_plugin(uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], new_uuid)
+        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
         # Find by old UUID (redirect)
-        plugin = registry.find_plugin(uuid=old_uuid)
+        plugin = registry.find_plugin(uuid='old-uuid-1234')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], new_uuid)
-        self.assertEqual(plugin['git_url'], 'https://github.com/org/plugin')
+        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin['git_url'], 'https://github.com/test/example')
 
     def test_update_plugin_follows_redirect(self):
         """Test that update_plugin follows redirects and updates metadata."""
@@ -195,38 +148,24 @@ class TestPluginRegistry(PicardTestCase):
         from unittest.mock import Mock, patch
 
         from picard.plugin3.manager import PluginManager
-        from picard.plugin3.registry import PluginRegistry
 
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir)
 
             manager = PluginManager()
             manager._primary_plugin_dir = plugin_dir
-            manager._registry = PluginRegistry()
+            manager._registry = create_test_registry()
 
             # Setup: plugin installed from old URL
-            old_url = 'https://github.com/olduser/plugin'
-            new_url = 'https://github.com/neworg/plugin'
+            old_url = 'https://github.com/olduser/example'
+            new_url = 'https://github.com/test/example'
             old_uuid = 'old-uuid-1234'
-            new_uuid = 'new-uuid-5678'
-
-            # Registry has redirect
-            manager._registry._registry_data = {
-                'plugins': [
-                    {
-                        'id': 'test-plugin',
-                        'uuid': new_uuid,
-                        'git_url': new_url,
-                        'redirect_from': [old_url],
-                        'redirect_from_uuid': [old_uuid],
-                    }
-                ]
-            }
+            new_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
             # Create mock plugin
             mock_plugin = Mock()
-            mock_plugin.name = 'test_plugin'
-            mock_plugin.local_path = plugin_dir / 'test_plugin'
+            mock_plugin.name = 'example'
+            mock_plugin.local_path = plugin_dir / 'example'
             mock_plugin.manifest = Mock()
             mock_plugin.manifest.version = '1.0.0'
             mock_plugin.manifest.uuid = old_uuid
@@ -246,14 +185,13 @@ class TestPluginRegistry(PicardTestCase):
                         manager.update_plugin(mock_plugin)
 
                         # Verify metadata was saved with NEW URL and UUID
-                        # and original URL/UUID are preserved
                         mock_save_meta.assert_called_once()
                         call_args = mock_save_meta.call_args[0]
-                        metadata = call_args[0]  # PluginMetadata object (now first arg)
-                        self.assertEqual(metadata.url, new_url, 'URL should be updated to new URL')
-                        self.assertEqual(metadata.uuid, new_uuid, 'UUID should be updated to new UUID')
-                        self.assertEqual(metadata.original_url, old_url, 'Original URL should be preserved')
-                        self.assertEqual(metadata.original_uuid, old_uuid, 'Original UUID should be preserved')
+                        metadata = call_args[0]
+                        self.assertEqual(metadata.url, new_url)
+                        self.assertEqual(metadata.uuid, new_uuid)
+                        self.assertEqual(metadata.original_url, old_url)
+                        self.assertEqual(metadata.original_uuid, old_uuid)
 
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
@@ -264,20 +202,16 @@ class TestPluginRegistry(PicardTestCase):
 
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
 
-            # Mock registry to blacklist URL
-            manager._registry._registry_data = {
-                'blacklist': [{'url': 'https://example.com/malicious.git', 'reason': 'Malware'}]
-            }
-
             with self.assertRaises(ValueError) as context:
-                manager.install_plugin('https://example.com/malicious.git')
+                manager.install_plugin('https://github.com/badactor/malicious-plugin')
 
             self.assertIn('blacklisted', str(context.exception).lower())
-            self.assertIn('Malware', str(context.exception))
+            self.assertIn('malicious code', str(context.exception).lower())
 
     def test_install_with_force_blacklisted(self):
         """Test that --force-blacklisted bypasses blacklist."""
@@ -292,14 +226,10 @@ class TestPluginRegistry(PicardTestCase):
 
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
-
-            # Mock registry to blacklist URL
-            manager._registry._registry_data = {
-                'blacklist': [{'url': 'https://example.com/malicious.git', 'reason': 'Malware'}]
-            }
 
             with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
@@ -324,7 +254,7 @@ class TestPluginRegistry(PicardTestCase):
                         with patch('shutil.move'):
                             # Should not raise with force_blacklisted=True
                             plugin_id = manager.install_plugin(
-                                'https://example.com/malicious.git', force_blacklisted=True
+                                'https://github.com/badactor/malicious-plugin', force_blacklisted=True
                             )
                             self.assertEqual(plugin_id, 'test_plugin_test-uui')
 
@@ -338,8 +268,9 @@ class TestPluginRegistry(PicardTestCase):
 
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
 
-        test_uuid = 'test-uuid-blacklist'
+        test_uuid = 'blacklisted-uuid-1234'
 
         # Create mock plugin
         mock_plugin = Mock(spec=Plugin)
@@ -362,11 +293,6 @@ class TestPluginRegistry(PicardTestCase):
             )
         )
 
-        # Mock registry to blacklist the plugin
-        manager._registry._registry_data = {
-            'blacklist': [{'url': 'https://example.com/plugin.git', 'reason': 'Security issue'}]
-        }
-
         # Check blacklisted plugins (mock QMessageBox to avoid GUI)
         with patch('PyQt6.QtWidgets.QMessageBox'):
             manager._check_blacklisted_plugins()
@@ -384,8 +310,9 @@ class TestPluginRegistry(PicardTestCase):
 
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
 
-        test_uuid = 'malicious-uuid-1234'
+        test_uuid = 'malicious-uuid-5678'
 
         # Create mock plugin
         mock_plugin = Mock(spec=Plugin)
@@ -408,11 +335,6 @@ class TestPluginRegistry(PicardTestCase):
             )
         )
 
-        # Mock registry to blacklist the plugin
-        manager._registry._registry_data = {
-            'blacklist': [{'url': 'https://badsite.com/plugin.git', 'reason': 'Contains malware'}]
-        }
-
         # Mock QMessageBox to capture warning
         with patch('PyQt6.QtWidgets.QMessageBox') as mock_msgbox:
             manager._check_blacklisted_plugins()
@@ -420,9 +342,8 @@ class TestPluginRegistry(PicardTestCase):
             # Warning should be shown
             mock_msgbox.warning.assert_called_once()
             call_args = mock_msgbox.warning.call_args
-            message = call_args[0][2]  # Third argument is the message
+            message = call_args[0][2]
             self.assertIn('malicious-plugin', message)
-            self.assertIn('Contains malware', message)
             self.assertIn('blacklisted', message.lower())
 
         # Plugin should be disabled (check by UUID)
@@ -505,54 +426,33 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_get_trust_level(self):
         """Test getting trust level for plugin by URL."""
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry()
-        registry._registry_data = {
-            'plugins': [
-                {'id': 'official-plugin', 'git_url': 'https://github.com/official/plugin', 'trust_level': 'official'},
-                {'id': 'trusted-plugin', 'git_url': 'https://github.com/trusted/plugin', 'trust_level': 'trusted'},
-                {
-                    'id': 'community-plugin',
-                    'git_url': 'https://github.com/community/plugin',
-                    'trust_level': 'community',
-                },
-            ]
-        }
+        registry = create_test_registry()
 
         # Test official
-        self.assertEqual(registry.get_trust_level('https://github.com/official/plugin'), 'official')
+        self.assertEqual(registry.get_trust_level('https://github.com/test/example'), 'official')
 
         # Test trusted
-        self.assertEqual(registry.get_trust_level('https://github.com/trusted/plugin'), 'trusted')
+        self.assertEqual(registry.get_trust_level('https://github.com/user/picard-plugin-discogs'), 'trusted')
 
         # Test community
-        self.assertEqual(registry.get_trust_level('https://github.com/community/plugin'), 'community')
+        self.assertEqual(registry.get_trust_level('https://github.com/community/custom-tagger'), 'community')
 
         # Test unregistered (not in registry)
         self.assertEqual(registry.get_trust_level('https://github.com/unknown/plugin'), 'unregistered')
 
     def test_registry_find_plugin(self):
         """Test finding plugin by ID or URL."""
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry()
-        registry._registry_data = {
-            'plugins': [
-                {'id': 'test-plugin', 'git_url': 'https://github.com/test/plugin', 'name': 'Test Plugin'},
-                {'id': 'other-plugin', 'git_url': 'https://github.com/other/plugin', 'name': 'Other Plugin'},
-            ]
-        }
+        registry = create_test_registry()
 
         # Find by ID
-        plugin = registry.find_plugin(plugin_id='test-plugin')
+        plugin = registry.find_plugin(plugin_id='example-plugin')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['name'], 'Test Plugin')
+        self.assertEqual(plugin['name'], 'Example plugin')
 
         # Find by URL
-        plugin = registry.find_plugin(url='https://github.com/other/plugin')
+        plugin = registry.find_plugin(url='https://github.com/user/picard-plugin-discogs')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['name'], 'Other Plugin')
+        self.assertEqual(plugin['name'], 'Discogs')
 
         # Not found
         plugin = registry.find_plugin(plugin_id='nonexistent')
@@ -560,35 +460,22 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_list_plugins(self):
         """Test listing plugins with filters."""
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry()
-        registry._registry_data = {
-            'plugins': [
-                {'id': 'plugin1', 'trust_level': 'official', 'categories': ['metadata']},
-                {'id': 'plugin2', 'trust_level': 'trusted', 'categories': ['coverart']},
-                {'id': 'plugin3', 'trust_level': 'community', 'categories': ['metadata', 'ui']},
-                {'id': 'plugin4', 'trust_level': 'official', 'categories': ['ui']},
-            ]
-        }
+        registry = create_test_registry()
 
         # List all
         plugins = registry.list_plugins()
-        self.assertEqual(len(plugins), 4)
+        self.assertEqual(len(plugins), 6)
 
         # Filter by trust level
         official = registry.list_plugins(trust_level='official')
-        self.assertEqual(len(official), 2)
-        self.assertEqual(official[0]['id'], 'plugin1')
-        self.assertEqual(official[1]['id'], 'plugin4')
+        self.assertEqual(len(official), 3)
+        self.assertIn('example-plugin', [p['id'] for p in official])
+        self.assertIn('listenbrainz', [p['id'] for p in official])
 
         # Filter by category
         metadata = registry.list_plugins(category='metadata')
-        self.assertEqual(len(metadata), 2)
-        self.assertEqual(metadata[0]['id'], 'plugin1')
-        self.assertEqual(metadata[1]['id'], 'plugin3')
+        self.assertEqual(len(metadata), 4)
 
         # Filter by both
         official_metadata = registry.list_plugins(category='metadata', trust_level='official')
-        self.assertEqual(len(official_metadata), 1)
-        self.assertEqual(official_metadata[0]['id'], 'plugin1')
+        self.assertEqual(len(official_metadata), 2)

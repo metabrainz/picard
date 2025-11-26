@@ -25,14 +25,6 @@ from test.picardtestcase import (
     get_test_data_path,
 )
 
-from picard.plugin3.manifest import PluginManifest
-
-
-def load_plugin_manifest(plugin_name: str) -> PluginManifest:
-    manifest_path = get_test_data_path('testplugins3', plugin_name, 'MANIFEST.toml')
-    with open(manifest_path, 'rb') as manifest_file:
-        return PluginManifest(plugin_name, manifest_file)
-
 
 class TestPluginState(PicardTestCase):
     def test_plugin_state_transitions(self):
@@ -111,8 +103,6 @@ class TestPluginState(PicardTestCase):
     def test_plugin_load_manifest(self):
         """Test Plugin.read_manifest() method."""
         from pathlib import Path
-
-        from test.picardtestcase import get_test_data_path
 
         from picard.plugin3.plugin import Plugin
 
