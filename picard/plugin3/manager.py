@@ -141,7 +141,6 @@ class PluginManager:
             force_blacklisted: If True, bypass blacklist check (dangerous!)
         """
         from pathlib import Path
-        import shutil
         import tempfile
 
         from picard.plugin3.registry import get_local_repository_path
@@ -217,7 +216,6 @@ class PluginManager:
             # Clean up temp directory on failure
             if temp_path.exists():
                 import gc
-                import shutil
 
                 # Force garbage collection to release file handles on Windows
                 gc.collect()
@@ -237,7 +235,6 @@ class PluginManager:
             str: Plugin ID
         """
         import hashlib
-        import shutil
         import tempfile
 
         # Check if local directory is a git repository
