@@ -560,7 +560,8 @@ class PluginManager:
         self._check_blacklisted_plugins()
 
         for plugin in self._plugins:
-            if plugin.name in self._enabled_plugins:
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            if plugin_uuid and plugin_uuid in self._enabled_plugins:
                 try:
                     plugin.load_module()
                     plugin.enable(self._tagger)
@@ -585,9 +586,9 @@ class PluginManager:
                 log.warning('Plugin %s is blacklisted: %s', plugin.name, reason)
                 blacklisted_plugins.append((plugin.name, reason))
 
-                if plugin.name in self._enabled_plugins:
+                if plugin_uuid in self._enabled_plugins:
                     log.warning('Disabling blacklisted plugin %s', plugin.name)
-                    self._enabled_plugins.discard(plugin.name)
+                    self._enabled_plugins.discard(plugin_uuid)
                     self._save_config()
 
         # Show warning to user if any plugins were blacklisted
@@ -617,22 +618,23 @@ class PluginManager:
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
-        log.debug('Enabling plugin %s (current state: %s)', plugin.name, plugin.state.value)
+        uuid = self._get_plugin_uuid(plugin)
+        log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.name, uuid, plugin.state.value)
 
         if self._tagger:
             plugin.load_module()
             plugin.enable(self._tagger)
 
-        self._enabled_plugins.add(plugin.name)
+        self._enabled_plugins.add(uuid)
         self._save_config()
         log.info('Plugin %s enabled (state: %s)', plugin.name, plugin.state.value)
 
     def disable_plugin(self, plugin: Plugin):
         """Disable a plugin and save to config."""
-
-        log.debug('Disabling plugin %s (current state: %s)', plugin.name, plugin.state.value)
+        uuid = self._get_plugin_uuid(plugin)
+        log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.name, uuid, plugin.state.value)
         plugin.disable()
-        self._enabled_plugins.discard(plugin.name)
+        self._enabled_plugins.discard(uuid)
         self._save_config()
         log.info('Plugin %s disabled (state: %s)', plugin.name, plugin.state.value)
 

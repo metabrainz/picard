@@ -371,8 +371,8 @@ class TestPluginRegistry(PicardTestCase):
         with patch('PyQt6.QtWidgets.QMessageBox'):
             manager._check_blacklisted_plugins()
 
-        # Plugin should be disabled
-        self.assertNotIn('test-plugin', manager._enabled_plugins)
+        # Plugin should be disabled (check by UUID)
+        self.assertNotIn(test_uuid, manager._enabled_plugins)
 
     def test_blacklist_warning_shown(self):
         """Test that user warning is shown for blacklisted plugins."""
@@ -425,8 +425,8 @@ class TestPluginRegistry(PicardTestCase):
             self.assertIn('Contains malware', message)
             self.assertIn('blacklisted', message.lower())
 
-        # Plugin should be disabled
-        self.assertNotIn('malicious-plugin', manager._enabled_plugins)
+        # Plugin should be disabled (check by UUID)
+        self.assertNotIn(test_uuid, manager._enabled_plugins)
 
     def test_registry_fetch_from_url(self):
         """Test fetching registry from URL."""

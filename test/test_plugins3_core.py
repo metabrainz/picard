@@ -270,27 +270,30 @@ class TestPluginManager(PicardTestCase):
         # Initially no plugins enabled
         self.assertEqual(manager._enabled_plugins, set())
 
-        # Create a mock plugin
+        # Create a mock plugin with UUID
+        test_uuid = 'test-uuid-1234'
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.name = 'test-plugin'
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = test_uuid
 
         # Enable plugin - should save to config
         manager.enable_plugin(mock_plugin)
-        self.assertIn('test-plugin', manager._enabled_plugins)
+        self.assertIn(test_uuid, manager._enabled_plugins)
 
         # Verify it was saved to config
         config = get_config()
         self.assertIn('plugins3', config.setting)
-        self.assertIn('test-plugin', config.setting['plugins3']['enabled_plugins'])
+        self.assertIn(test_uuid, config.setting['plugins3']['enabled_plugins'])
 
         # Create new manager instance - should load from config
         manager2 = PluginManager(mock_tagger)
-        self.assertIn('test-plugin', manager2._enabled_plugins)
+        self.assertIn(test_uuid, manager2._enabled_plugins)
 
         # Disable plugin - should remove from config
         manager2.disable_plugin(mock_plugin)
-        self.assertNotIn('test-plugin', manager2._enabled_plugins)
-        self.assertNotIn('test-plugin', config.setting['plugins3']['enabled_plugins'])
+        self.assertNotIn(test_uuid, manager2._enabled_plugins)
+        self.assertNotIn(test_uuid, config.setting['plugins3']['enabled_plugins'])
 
     def test_init_plugins_only_loads_enabled(self):
         """Test that init_plugins only loads plugins that are enabled in config."""
@@ -300,19 +303,25 @@ class TestPluginManager(PicardTestCase):
         mock_tagger = Mock()
         manager = PluginManager(mock_tagger)
 
-        # Create mock plugins
+        # Create mock plugins with UUIDs
+        enabled_uuid = 'enabled-uuid-1234'
         enabled_plugin = Mock(spec=Plugin)
         enabled_plugin.name = 'enabled-plugin'
+        enabled_plugin.manifest = Mock()
+        enabled_plugin.manifest.uuid = enabled_uuid
         enabled_plugin.load_module = Mock()
         enabled_plugin.enable = Mock()
 
+        disabled_uuid = 'disabled-uuid-5678'
         disabled_plugin = Mock(spec=Plugin)
         disabled_plugin.name = 'disabled-plugin'
+        disabled_plugin.manifest = Mock()
+        disabled_plugin.manifest.uuid = disabled_uuid
         disabled_plugin.load_module = Mock()
         disabled_plugin.enable = Mock()
 
         manager._plugins = [enabled_plugin, disabled_plugin]
-        manager._enabled_plugins = {'enabled-plugin'}
+        manager._enabled_plugins = {enabled_uuid}
 
         # Initialize plugins
         manager.init_plugins()
@@ -394,12 +403,15 @@ class TestPluginErrors(PicardTestCase):
         manager = PluginManager(mock_tagger)
 
         # Create a plugin that will fail to load
+        bad_uuid = 'bad-uuid-1234'
         bad_plugin = Mock(spec=Plugin)
         bad_plugin.name = 'bad-plugin'
+        bad_plugin.manifest = Mock()
+        bad_plugin.manifest.uuid = bad_uuid
         bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
 
         manager._plugins = [bad_plugin]
-        manager._enabled_plugins = {'bad-plugin'}
+        manager._enabled_plugins = {bad_uuid}
 
         # Should not raise, just log error
         manager.init_plugins()
