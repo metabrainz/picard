@@ -199,19 +199,13 @@ class PluginManager:
 
             final_path = self._primary_plugin_dir / plugin_name
 
-            # Check if already installed
-            if final_path.exists() and not reinstall:
-                raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
-
-            # Remove existing if reinstalling
+            # Check if already installed and handle reinstall
             if final_path.exists():
-                import shutil
-
+                if not reinstall:
+                    raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
                 shutil.rmtree(final_path)
 
             # Move from temp to final location
-            import shutil
-
             shutil.move(str(temp_path), str(final_path))
 
             # Store plugin metadata
@@ -313,12 +307,10 @@ class PluginManager:
         plugin_name = get_plugin_directory_name(manifest)
         final_path = self._primary_plugin_dir / plugin_name
 
-        # Check if already installed
-        if final_path.exists() and not reinstall:
-            raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
-
-        # Remove existing if reinstalling
+        # Check if already installed and handle reinstall
         if final_path.exists():
+            if not reinstall:
+                raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
             shutil.rmtree(final_path)
 
         # Copy to plugin directory
