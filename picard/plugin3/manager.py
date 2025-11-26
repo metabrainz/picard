@@ -130,6 +130,30 @@ class PluginManager:
             value = value[key]
         return value
 
+    def _set_config_value(self, *keys, value):
+        """Set nested config value by keys, creating intermediate dicts as needed.
+
+        Args:
+            *keys: Nested keys to traverse (last key is where value is set)
+            value: Value to set
+        """
+        from picard.config import get_config
+
+        config = get_config()
+        current = config.setting
+
+        # Navigate/create path to parent
+        for key in keys[:-1]:
+            if key not in current or not isinstance(current[key], dict):
+                current[key] = {}
+            current = current[key]
+
+        # Set the final value
+        current[keys[-1]] = value
+
+        # Reassign top-level to persist (required by config system)
+        config.setting[keys[0]] = config.setting[keys[0]]
+
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         dir_path = Path(os.path.normpath(dir_path))
         if dir_path in self._plugin_dirs:
@@ -620,14 +644,7 @@ class PluginManager:
 
     def _save_config(self):
         """Save enabled plugins list to config."""
-        from picard.config import get_config
-
-        config = get_config()
-        plugins3_config = config.setting['plugins3']
-        if not isinstance(plugins3_config, dict):
-            plugins3_config = {}
-        plugins3_config['enabled_plugins'] = list(self._enabled_plugins)
-        config.setting['plugins3'] = plugins3_config
+        self._set_config_value('plugins3', 'enabled_plugins', value=list(self._enabled_plugins))
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
 
     def _get_plugin_metadata(self, uuid: str):
@@ -643,13 +660,16 @@ class PluginManager:
             log.warning('Cannot save metadata without UUID for plugin %s', metadata.name)
             return
 
+        # Get or create metadata dict
+
         config = get_config()
-        plugins3 = config.setting['plugins3'] if 'plugins3' in config.setting else {}
+        plugins3 = config.setting.get('plugins3', {})
         if 'metadata' not in plugins3:
             plugins3['metadata'] = {}
 
         plugins3['metadata'][metadata.uuid] = metadata.to_dict()
-        config.setting['plugins3'] = plugins3  # Reassign to persist
+        config.setting['plugins3'] = plugins3
+
         log.debug(
             'Saved metadata for plugin %s (UUID %s): url=%s, ref=%s, commit=%s',
             metadata.name,
