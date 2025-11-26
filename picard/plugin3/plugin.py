@@ -257,6 +257,13 @@ class Plugin:
         spec.loader.exec_module(module)
         self._module = module
         self.state = PluginState.LOADED
+
+        # Register UUID mapping for extension points
+        if self.manifest and self.manifest.uuid:
+            from picard.extension_points import register_plugin_uuid
+
+            register_plugin_uuid(self.manifest.uuid, self.name)
+
         return module
 
     def enable(self, tagger) -> None:
@@ -276,4 +283,11 @@ class Plugin:
         if hasattr(self._module, 'disable'):
             self._module.disable()
         unregister_module_extensions(self.name)
+
+        # Unregister UUID mapping
+        if self.manifest and self.manifest.uuid:
+            from picard.extension_points import unregister_plugin_uuid
+
+            unregister_plugin_uuid(self.manifest.uuid)
+
         self.state = PluginState.DISABLED

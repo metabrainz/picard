@@ -1,0 +1,116 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2024 Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+from unittest.mock import Mock
+
+from test.picardtestcase import PicardTestCase
+
+from picard.extension_points import (
+    ExtensionPoint,
+    register_plugin_uuid,
+    unregister_plugin_uuid,
+)
+from picard.plugin3.manager import PluginManager
+from picard.plugin3.plugin import Plugin
+
+
+class TestExtensionPoints(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.ep = ExtensionPoint(label='test')
+        self.mock_tagger = Mock()
+        self.manager = PluginManager(self.mock_tagger)
+
+    def tearDown(self):
+        # Clean up registered UUIDs
+        from picard.extension_points import _plugin_uuid_to_module
+
+        _plugin_uuid_to_module.clear()
+        super().tearDown()
+
+    def test_plugin_not_enabled(self):
+        """Plugin extensions should not be yielded if plugin not enabled"""
+        uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+        register_plugin_uuid(uuid, 'testplugin')
+        self.ep.register('picard.plugins.testplugin', 'plugin_item')
+
+        # Plugin not in enabled list
+        items = list(self.ep)
+        self.assertEqual(items, [])
+
+    def test_plugin_enabled(self):
+        """Plugin extensions should be yielded if plugin is enabled"""
+        uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+        register_plugin_uuid(uuid, 'testplugin')
+        self.ep.register('picard.plugins.testplugin', 'plugin_item')
+
+        # Enable plugin via manager (which handles config properly)
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'testplugin'
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = uuid
+        self.manager.enable_plugin(mock_plugin)
+
+        items = list(self.ep)
+        self.assertEqual(items, ['plugin_item'])
+
+    def test_multiple_plugins(self):
+        """Multiple plugins with different enabled states"""
+        uuid1 = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+        uuid2 = 'b2c3d4e5-f6a7-4b5c-9d0e-1f2a3b4c5d6e'
+
+        register_plugin_uuid(uuid1, 'plugin1')
+        register_plugin_uuid(uuid2, 'plugin2')
+
+        self.ep.register('picard.plugins.plugin1', 'item1')
+        self.ep.register('picard.plugins.plugin2', 'item2')
+
+        # Only enable plugin1
+        mock_plugin1 = Mock(spec=Plugin)
+        mock_plugin1.name = 'plugin1'
+        mock_plugin1.manifest = Mock()
+        mock_plugin1.manifest.uuid = uuid1
+        self.manager.enable_plugin(mock_plugin1)
+
+        items = list(self.ep)
+        self.assertEqual(items, ['item1'])
+
+    def test_unregister_uuid(self):
+        """Unregistering UUID should prevent plugin from being yielded"""
+        uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+        register_plugin_uuid(uuid, 'testplugin')
+        self.ep.register('picard.plugins.testplugin', 'plugin_item')
+
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'testplugin'
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = uuid
+        self.manager.enable_plugin(mock_plugin)
+
+        # Should be yielded
+        items = list(self.ep)
+        self.assertEqual(items, ['plugin_item'])
+
+        # Unregister UUID
+        unregister_plugin_uuid(uuid)
+
+        # Should not be yielded anymore
+        items = list(self.ep)
+        self.assertEqual(items, [])
