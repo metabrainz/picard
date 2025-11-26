@@ -171,7 +171,7 @@ class PluginRegistry:
                         log.warning('Failed to save registry cache: %s', e)
 
         except Exception as e:
-            log.error('Failed to fetch registry: %s', e)
+            log.debug('Failed to fetch registry: %s', e)
             self._registry_data = {'blacklist': []}
 
     def is_blacklisted(self, url, plugin_uuid=None):
