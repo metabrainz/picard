@@ -58,3 +58,26 @@ class TestPluginOutput(PicardTestCase):
 
         output_no_color = PluginOutput(stdout=mock_stdout_no_tty, stderr=StringIO())
         self.assertFalse(output_no_color.color)
+
+    def test_error_without_color(self):
+        """Test error output without color."""
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+
+        output.error('test error')
+
+        result = stderr.getvalue()
+        self.assertIn('✗', result)
+        self.assertIn('test error', result)
+        self.assertNotIn('\033[', result)  # No color codes
+
+    def test_error_with_color(self):
+        """Test error output with color."""
+        stderr = StringIO()
+        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=True)
+
+        output.error('test error')
+
+        result = stderr.getvalue()
+        self.assertIn('\033[31m', result)  # Red color code
+        self.assertIn('test error', result)

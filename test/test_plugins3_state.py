@@ -25,6 +25,16 @@ from test.picardtestcase import (
     get_test_data_path,
 )
 
+from picard.plugin3.plugin import short_commit_id
+
+
+class TestPluginHelpers(PicardTestCase):
+    def test_short_commit_id(self):
+        """Test short_commit_id function."""
+        self.assertEqual(short_commit_id('abc123def456789'), 'abc123d')
+        self.assertEqual(short_commit_id(''), '')
+        self.assertEqual(short_commit_id(None), '')
+
 
 class TestPluginState(PicardTestCase):
     def test_plugin_state_transitions(self):

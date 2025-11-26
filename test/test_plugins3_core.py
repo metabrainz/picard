@@ -221,6 +221,96 @@ license_url = "https://example.com"
         self.assertIsNotNone(manifest.license)
         self.assertIsNotNone(manifest.license_url)
 
+    def test_manifest_invalid_version(self):
+        """Test manifest with invalid version string."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manifest import PluginManifest
+        from picard.version import Version
+
+        manifest_content = """
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+name = "Test"
+version = "invalid"
+description = "Test"
+api = ["3.0"]
+authors = ["Test"]
+license = "MIT"
+license_url = "https://example.com"
+"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(manifest_content)
+            temp_path = Path(f.name)
+
+        try:
+            with open(temp_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+
+            # Should return Version(0, 0, 0) for invalid version
+            self.assertEqual(manifest.version, Version(0, 0, 0))
+        finally:
+            temp_path.unlink()
+
+    def test_manifest_invalid_api_versions(self):
+        """Test manifest with invalid API version strings."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manifest import PluginManifest
+
+        manifest_content = """
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+name = "Test"
+version = "1.0.0"
+description = "Test"
+api = ["invalid", "bad"]
+authors = ["Test"]
+license = "MIT"
+license_url = "https://example.com"
+"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(manifest_content)
+            temp_path = Path(f.name)
+
+        try:
+            with open(temp_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+
+            # Should return empty tuple for invalid versions
+            self.assertEqual(manifest.api_versions, tuple())
+        finally:
+            temp_path.unlink()
+
+    def test_manifest_missing_api_versions(self):
+        """Test manifest with missing API versions."""
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manifest import PluginManifest
+
+        manifest_content = """
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+name = "Test"
+version = "1.0.0"
+description = "Test"
+authors = ["Test"]
+license = "MIT"
+license_url = "https://example.com"
+"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(manifest_content)
+            temp_path = Path(f.name)
+
+        try:
+            with open(temp_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+
+            # Should return empty tuple when api field is missing
+            self.assertEqual(manifest.api_versions, tuple())
+        finally:
+            temp_path.unlink()
+
 
 class TestPluginApi(PicardTestCase):
     def test_init(self):
