@@ -174,12 +174,12 @@ class PluginRegistry:
             log.error('Failed to fetch registry: %s', e)
             self._registry_data = {'blacklist': []}
 
-    def is_blacklisted(self, url, plugin_id=None):
-        """Check if a plugin URL or ID is blacklisted.
+    def is_blacklisted(self, url, plugin_uuid=None):
+        """Check if a plugin URL or UUID is blacklisted.
 
         Args:
             url: Plugin repository URL
-            plugin_id: Plugin ID from MANIFEST
+            plugin_uuid: Plugin UUID from MANIFEST
 
         Returns:
             tuple: (is_blacklisted, reason)
@@ -188,31 +188,42 @@ class PluginRegistry:
             self.fetch_registry()
 
         # Normalize URL for comparison
-        normalized_url = normalize_git_url(url)
+        normalized_url = normalize_git_url(url) if url else None
 
         blacklist = self._registry_data.get('blacklist', [])
 
         for entry in blacklist:
-            # Check exact URL match
-            if 'url' in entry:
-                blacklist_url = normalize_git_url(entry['url'])
-                if normalized_url == blacklist_url:
-                    reason = entry.get('reason', 'Plugin is blacklisted')
+            # Check UUID + URL combination (most specific - blocks specific fork)
+            if 'uuid' in entry and 'url' in entry:
+                if plugin_uuid and plugin_uuid == entry['uuid']:
+                    blacklist_url = normalize_git_url(entry['url'])
+                    if normalized_url == blacklist_url:
+                        reason = entry.get('reason', 'Plugin is blacklisted')
+                        return True, reason
+
+            # Check UUID only (blocks all sources)
+            elif 'uuid' in entry:
+                if plugin_uuid and plugin_uuid == entry['uuid']:
+                    reason = entry.get('reason', 'Plugin UUID is blacklisted')
                     return True, reason
 
-            # Check URL pattern match
-            if 'url_pattern' in entry:
-                try:
-                    if re.match(entry['url_pattern'], normalized_url):
-                        reason = entry.get('reason', 'Plugin matches blacklisted pattern')
+            # Check exact URL match
+            elif 'url' in entry:
+                if normalized_url:
+                    blacklist_url = normalize_git_url(entry['url'])
+                    if normalized_url == blacklist_url:
+                        reason = entry.get('reason', 'Plugin is blacklisted')
                         return True, reason
-                except re.error:
-                    log.warning('Invalid regex pattern in blacklist: %s', entry['url_pattern'])
 
-            # Check plugin ID match
-            if plugin_id and 'plugin_id' in entry and plugin_id == entry['plugin_id']:
-                reason = entry.get('reason', 'Plugin ID is blacklisted')
-                return True, reason
+            # Check URL pattern match
+            elif 'url_pattern' in entry:
+                if normalized_url:
+                    try:
+                        if re.match(entry['url_pattern'], normalized_url):
+                            reason = entry.get('reason', 'Plugin matches blacklisted pattern')
+                            return True, reason
+                    except re.error:
+                        log.warning('Invalid regex pattern in blacklist: %s', entry['url_pattern'])
 
         return False, None
 

@@ -20,6 +20,7 @@
 
 import os
 from pathlib import Path
+import re
 import shutil
 from typing import List
 
@@ -32,6 +33,37 @@ from picard.plugin3.plugin import (
     PluginSourceGit,
     short_commit_id,
 )
+
+
+def sanitize_plugin_name(name: str) -> str:
+    """Sanitize plugin name for use in directory name.
+
+    Args:
+        name: Plugin name from MANIFEST
+
+    Returns:
+        Sanitized name (lowercase, alphanumeric + underscore)
+    """
+    # Convert to lowercase and replace non-alphanumeric with underscore
+    sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower())
+    # Remove leading/trailing underscores
+    sanitized = sanitized.strip('_')
+    # Limit length
+    return sanitized[:50] if sanitized else 'plugin'
+
+
+def get_plugin_directory_name(manifest) -> str:
+    """Get plugin directory name from manifest (sanitized name + UUID prefix).
+
+    Args:
+        manifest: PluginManifest instance
+
+    Returns:
+        Directory name: <sanitized_name>_<uuid_prefix>
+    """
+    sanitized_name = sanitize_plugin_name(manifest.name())
+    uuid_prefix = manifest.uuid[:8] if manifest.uuid else 'no_uuid'
+    return f'{sanitized_name}_{uuid_prefix}'
 
 
 class PluginManager:
@@ -108,10 +140,6 @@ class PluginManager:
             return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
 
         # Handle git URL
-        # Derive module name from URL (before temp directory which may truncate)
-        url_basename = os.path.basename(url).rstrip('.git')
-        module_name = url_basename.replace('-', '_')
-
         # Use shorter temp name to avoid truncation
         import hashlib
 
@@ -131,7 +159,7 @@ class PluginManager:
             with open(manifest_path, 'rb') as f:
                 from picard.plugin3.manifest import PluginManifest
 
-                manifest = PluginManifest(module_name, f)
+                manifest = PluginManifest('temp', f)
 
             # Validate manifest
             errors = manifest.validate()
@@ -142,11 +170,12 @@ class PluginManager:
                     error_list = str(errors)
                 raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
 
-            plugin_id = manifest.module_name
+            # Generate plugin directory name from sanitized name + UUID
+            plugin_id = get_plugin_directory_name(manifest)
 
-            # Check blacklist again with plugin ID
+            # Check blacklist again with UUID
             if not force_blacklisted:
-                is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_id)
+                is_blacklisted, reason = self._registry.is_blacklisted(url, manifest.uuid)
                 if is_blacklisted:
                     raise ValueError(f'Plugin is blacklisted: {reason}')
 
@@ -246,13 +275,10 @@ class PluginManager:
         if not manifest_path.exists():
             raise ValueError(f'No MANIFEST.toml found in {local_path}')
 
-        # Derive module name from directory name
-        module_name = local_path.name.replace('-', '_')
-
         with open(manifest_path, 'rb') as f:
             from picard.plugin3.manifest import PluginManifest
 
-            manifest = PluginManifest(module_name, f)
+            manifest = PluginManifest('temp', f)
 
         # Validate manifest
         errors = manifest.validate()
@@ -263,7 +289,8 @@ class PluginManager:
                 error_list = str(errors)
             raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
 
-        plugin_id = manifest.module_name
+        # Generate plugin directory name from sanitized name + UUID
+        plugin_id = get_plugin_directory_name(manifest)
         final_path = self._primary_plugin_dir / plugin_id
 
         # Check if already installed
@@ -433,7 +460,10 @@ class PluginManager:
             metadata = self._get_plugin_metadata(plugin.name)
             url = metadata.get('url') if metadata else None
 
-            is_blacklisted, reason = self._registry.is_blacklisted(url, plugin.name)
+            # Get UUID from plugin manifest
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+
+            is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
             if is_blacklisted:
                 log.warning('Plugin %s is blacklisted: %s', plugin.name, reason)
                 blacklisted_plugins.append((plugin.name, reason))

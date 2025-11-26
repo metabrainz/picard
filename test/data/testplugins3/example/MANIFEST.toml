@@ -1,3 +1,4 @@
+uuid = "ae5ef1ed-0195-4014-a113-6090de7cf8b7"
 name = "Example plugin"
 authors = ["Philipp Wolfer"]
 version = "1.0.0"

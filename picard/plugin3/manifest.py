@@ -23,6 +23,7 @@ try:
 except ImportError:
     from tomlkit import load as load_toml
 
+import re
 from typing import (
     BinaryIO,
     Tuple,
@@ -32,6 +33,10 @@ from picard.version import (
     Version,
     VersionError,
 )
+
+
+# UUID v4 regex pattern (RFC 4122)
+UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', re.IGNORECASE)
 
 
 class PluginManifest:
@@ -56,6 +61,11 @@ class PluginManifest:
     def authors(self) -> Tuple[str]:
         authors = self._data.get('authors', [])
         return tuple(authors) if authors else tuple()
+
+    @property
+    def uuid(self) -> str:
+        """Get plugin UUID."""
+        return self._data.get('uuid', '')
 
     def description(self, locale: str = 'en') -> str:
         """Get short description, optionally translated."""
@@ -118,10 +128,15 @@ class PluginManifest:
         MAX_LONG_DESCRIPTION_LENGTH = 2000
 
         # Required fields
-        required = ['name', 'version', 'description', 'api', 'authors', 'license', 'license_url']
+        required = ['uuid', 'name', 'version', 'description', 'api', 'authors', 'license', 'license_url']
         for field in required:
             if not self._data.get(field):
                 errors.append(f"Missing required field: {field}")
+
+        # UUID validation
+        uuid = self._data.get('uuid', '')
+        if uuid and not UUID_PATTERN.match(uuid):
+            errors.append(f"Field 'uuid' must be a valid UUID v4 (got '{uuid}')")
 
         # Field type validation
         if self._data.get('name') and not isinstance(self._data['name'], str):
