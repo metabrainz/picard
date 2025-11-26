@@ -161,9 +161,11 @@ class PluginCLI:
 
         total = len(self._manager.plugins)
         enabled = len(self._manager._enabled_plugins)
+        disabled = total - enabled
         self._out.print(
             f'Total: {self._out.d_number(total)} plugin{"s" if total != 1 else ""} '
-            f'({self._out.d_status_enabled(str(enabled))}, {self._out.d_status_disabled(str(total - enabled))})'
+            f'({self._out.d_status_enabled(str(enabled))} enabled, '
+            f'{self._out.d_status_disabled(str(disabled))} disabled)'
         )
         return ExitCode.SUCCESS
 
