@@ -98,13 +98,11 @@ class TestPluginRegistry(PicardTestCase):
             self.assertEqual(registry.registry_url, DEFAULT_PLUGIN_REGISTRY_URL)
 
     def test_registry_blacklist_pattern(self):
-        """Test that blacklisted URL patterns are detected."""
+        """Test that blacklisted URL regex patterns are detected."""
         from picard.plugin3.registry import PluginRegistry
 
         registry = PluginRegistry()
-        registry._registry_data = {
-            'blacklist': [{'url_pattern': r'https://badsite\.com/.*', 'reason': 'Malicious site'}]
-        }
+        registry._registry_data = {'blacklist': [{'url_regex': r'https://badsite\.com/.*', 'reason': 'Malicious site'}]}
 
         is_blacklisted, reason = registry.is_blacklisted('https://badsite.com/plugin.git')
         self.assertTrue(is_blacklisted)

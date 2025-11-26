@@ -218,10 +218,10 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 }
 ```
 
-**By URL pattern (regex):**
+**By URL regex:**
 ```json
 {
-  "url_pattern": "^https://github\\.com/badorg/.*",
+  "url_regex": "^https://github\\.com/badorg/.*",
   "reason": "Entire organization blacklisted for malicious activity",
   "blacklisted_at": "2025-11-22T10:00:00Z"
 }
@@ -233,7 +233,7 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 |--------|---------|-------|--------------|
 | **UUID** | Block specific plugin | All sources, past and future | None - UUID is permanent |
 | **git_url** | Block specific repository | Single URL only | High - can move repos |
-| **url_pattern** | Block organization/pattern | Multiple URLs matching pattern | Medium - can change hosting |
+| **url_regex** | Block organization/pattern | Multiple URLs matching regex | Medium - can change hosting |
 
 **Recommendation**: Use **UUID** for blacklisting malicious plugins, as it blocks the plugin regardless of where it's hosted or if it moves repositories.
 
@@ -243,7 +243,7 @@ The blacklist supports regex patterns to block entire organizations:
 
 ```json
 {
-  "url_pattern": "^https://github\\.com/badorg/.*",
+  "url_regex": "^https://github\\.com/badorg/.*",
   "reason": "Entire organization blacklisted for malicious activity",
   "blacklisted_at": "2025-11-22T10:00:00Z"
 }
