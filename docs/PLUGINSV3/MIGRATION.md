@@ -85,6 +85,7 @@ PLUGIN_DESCRIPTION = "Example plugin for demonstration"
 
 **New (v3) - MANIFEST.toml:**
 ```toml
+uuid = "550e8400-e29b-41d4-a716-446655440000"  # Generate with: uuidgen
 name = "Example Plugin"
 version = "1.0.0"
 description = "Example plugin for demonstration"
@@ -286,6 +287,7 @@ picard-plugin-example/
 
 **MANIFEST.toml:**
 ```toml
+uuid = "550e8400-e29b-41d4-a716-446655440000"
 name = "Example Plugin"
 version = "1.0.0"
 description = "Example plugin for demonstration"

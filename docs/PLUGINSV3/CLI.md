@@ -606,6 +606,7 @@ picard plugins --manifest https://github.com/user/plugin
 # See https://picard-docs.musicbrainz.org/en/extending/plugins.html
 
 # Required fields
+uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"  # Generate with `uuidgen` or online tool
 name = "My Plugin Name"
 version = "1.0.0"
 description = "Short one-line description (1-200 characters)"
@@ -631,6 +632,7 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 
 **Plugin output (with argument):**
 ```toml
+uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
 name = "ListenBrainz Submitter"
 version = "2.1.0"
 description = "Submit your music to ListenBrainz"
