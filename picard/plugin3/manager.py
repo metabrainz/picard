@@ -393,7 +393,18 @@ class PluginManager:
         new_commit = source.sync(plugin.local_path)
 
         # Reload manifest to get potentially new version
-        plugin.read_manifest()
+        try:
+            plugin.read_manifest()
+        except ValueError as e:
+            # Validation failed - rollback to old commit (not just ref name)
+            log.warning('Manifest validation failed, rolling back to %s (%s)', old_ref, old_commit)
+            if old_commit and old_commit != 'unknown':
+                rollback_source = PluginSourceGit(metadata['url'], old_commit)
+            else:
+                rollback_source = PluginSourceGit(metadata['url'], old_ref)
+            rollback_source.sync(plugin.local_path)
+            plugin.read_manifest()  # Restore old manifest
+            raise ValueError(f'Cannot switch to ref {ref}: {e}') from e
 
         # Update metadata with new ref
         self._save_plugin_metadata(
