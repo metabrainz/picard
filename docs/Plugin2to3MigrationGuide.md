@@ -383,17 +383,28 @@ This checks:
 - String lengths are within limits
 - No empty translation sections
 
-### 2. Install and Test
+### 2. Initialize Git Repository
+
+**Important:** Your plugin directory must be a git repository for installation to work.
 
 ```bash
-# Install from local directory
+cd /path/to/your/plugin
+git init
+git add .
+git commit -m "Initial commit"
+```
+
+### 3. Install and Test
+
+```bash
+# Install from local directory (must be a git repository)
 picard plugins --install /path/to/your/plugin
 
 # Or install from git URL
 picard plugins --install https://github.com/yourname/plugin.git
 ```
 
-### 3. Check Logs
+### 4. Check Logs
 
 Enable debug logging by using the `--debug` command line option:
 ```bash
@@ -402,7 +413,7 @@ picard --debug
 
 See the [documentation](https://picard-docs.musicbrainz.org/en/troubleshooting/troubleshooting.html#getting-a-debug-log) for more details.
 
-### 4. Test All Features
+### 5. Test All Features
 
 - Test all register functions work
 - Test UI components (if any)
