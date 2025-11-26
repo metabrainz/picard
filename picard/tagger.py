@@ -1471,6 +1471,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
         '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
     )
     plugin_parser.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
+    plugin_parser.add_argument('--no-color', action='store_true', help="disable colored output")
 
     args = parser.parse_args()
     args.remote_commands_help = False
@@ -1624,10 +1625,16 @@ def main(localedir=None, autoupdate=True):
 
         app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
         from picard.plugin3.manager import PluginManager
+        from picard.plugin3.output import PluginOutput
 
         manager = PluginManager()
         manager.add_directory(USER_PLUGIN_DIR, primary=True)
-        exit_code = PluginCLI(manager, cmdline_args, parser=plugin_parser).run()
+
+        # Create output with color setting from args
+        color = not getattr(cmdline_args, 'no_color', False)
+        output = PluginOutput(color=color)
+
+        exit_code = PluginCLI(manager, cmdline_args, output=output, parser=plugin_parser).run()
         sys.exit(exit_code)
 
     # GUI mode - full Tagger initialization
