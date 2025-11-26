@@ -224,7 +224,7 @@ class PluginCLI:
         if min_python:
             self._out.print(f'Min Python: {min_python}')
 
-        self._out.print(f'Path: {plugin.local_path}')
+        self._out.print(f'Path: {self._out.d_path(plugin.local_path)}')
 
         # Show long description at the end if available
         long_desc = plugin.manifest.long_description()
@@ -240,12 +240,12 @@ class PluginCLI:
         if error:
             return error
 
-        self._out.print(f'Plugin: {plugin.name}')
+        self._out.print(f'Plugin: {self._out.d_plugin_name(plugin.name)}')
         self._out.print(f'State: {plugin.state.value}')
 
         if plugin.manifest:
             version = plugin.manifest._data.get('version', '')
-            self._out.print(f'Version: {version}')
+            self._out.print(f'Version: {self._out.d_version(version)}')
             api_versions = plugin.manifest._data.get('api', [])
             self._out.print(f'API Versions: {", ".join(api_versions)}')
 
@@ -254,12 +254,12 @@ class PluginCLI:
 
         metadata = self._manager._get_plugin_metadata(plugin.name)
         if metadata:
-            self._out.print(f'Source URL: {metadata.get("url", "N/A")}')
+            self._out.print(f'Source URL: {self._out.d_url(metadata.get("url", "N/A"))}')
             self._out.print(f'Git ref: {metadata.get("ref", "N/A")}')
             commit = metadata.get('commit', 'N/A')
             if commit != 'N/A':
                 commit = short_commit_id(commit)
-            self._out.print(f'Commit: {commit}')
+            self._out.print(f'Commit: {self._out.d_commit_old(commit)}')
 
         return ExitCode.SUCCESS
 
@@ -742,14 +742,14 @@ class PluginCLI:
             self._out.success('Validation passed')
             self._out.nl()
             self._out.print('Plugin Information:')
-            self._out.info(f'  Name: {manifest.name()}')
+            self._out.info(f'  Name: {self._out.d_plugin_name(manifest.name())}')
 
             # Show available name translations
             name_i18n = manifest._data.get('name_i18n', {})
             if name_i18n:
                 self._out.info(f'  Name_i18n: {", ".join(sorted(name_i18n.keys()))}')
 
-            self._out.info(f'  Version: {manifest._data.get("version", "")}')
+            self._out.info(f'  Version: {self._out.d_version(manifest._data.get("version", ""))}')
             self._out.info(f'  Authors: {", ".join(manifest.authors)}')
             self._out.info(f'  Description: {manifest.description()}')
 
@@ -774,7 +774,7 @@ class PluginCLI:
 
             # Show license URL if available
             if manifest.license_url:
-                self._out.info(f'  License URL: {manifest.license_url}')
+                self._out.info(f'  License URL: {self._out.d_url(manifest.license_url)}')
 
             # Show optional fields
             categories = manifest._data.get('categories', [])
@@ -783,7 +783,7 @@ class PluginCLI:
 
             homepage = manifest._data.get('homepage')
             if homepage:
-                self._out.info(f'  Homepage: {homepage}')
+                self._out.info(f'  Homepage: {self._out.d_url(homepage)}')
 
             min_python = manifest._data.get('min_python_version')
             if min_python:
@@ -829,14 +829,14 @@ class PluginCLI:
             # Show plugins
             for plugin in plugins:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {plugin["id"]} - {plugin["name"]}')
+                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_plugin_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
                 categories = plugin.get('categories', [])
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
                 self._out.print('')
 
-            self._out.print(f'Total: {len(plugins)} plugin(s)')
+            self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
             self._out.nl()
             self._out.print('Install with: picard plugins --install <plugin-id>')
 
@@ -866,12 +866,12 @@ class PluginCLI:
                 self._out.print(f'No plugins found matching "{query}"')
                 return ExitCode.SUCCESS
 
-            self._out.print(f'Found {len(results)} plugin(s) matching "{query}":')
+            self._out.print(f'Found {self._out.d_number(len(results))} plugin(s) matching "{query}":')
             self._out.nl()
 
             for plugin in results:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {plugin["id"]} - {plugin["name"]}')
+                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_plugin_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
                 self._out.print('')
 
