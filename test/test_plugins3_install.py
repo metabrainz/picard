@@ -242,7 +242,7 @@ class TestPluginInstall(PicardTestCase):
             manager._primary_plugin_dir = Path(tmpdir)
 
             # Create a fake existing plugin directory with UUID-based name
-            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test-uui'
+            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test_uuid_1234'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
             with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
@@ -262,7 +262,7 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest = Mock()
                         mock_manifest.module_name = 'test-plugin'
                         mock_manifest.name.return_value = 'test-plugin'
-                        mock_manifest.uuid = 'test-uuid-1234'
+                        mock_manifest.uuid = 'test_uuid_1234'
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
@@ -289,7 +289,7 @@ class TestPluginInstall(PicardTestCase):
             manager._primary_plugin_dir = Path(tmpdir)
 
             # Create a fake existing plugin directory with UUID-based name
-            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test-uui'
+            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test_uuid_1234'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
             with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
@@ -309,7 +309,7 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest = Mock()
                         mock_manifest.module_name = 'test-plugin'
                         mock_manifest.name.return_value = 'test-plugin'
-                        mock_manifest.uuid = 'test-uuid-1234'
+                        mock_manifest.uuid = 'test_uuid_1234'
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 

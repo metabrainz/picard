@@ -54,21 +54,22 @@ class PluginMetadata:
 
 
 def get_plugin_directory_name(manifest) -> str:
-    """Get plugin directory name from manifest (sanitized name + UUID prefix).
+    """Get plugin directory name from manifest (sanitized name + full UUID).
 
     Args:
         manifest: PluginManifest instance
 
     Returns:
-        Directory name: <sanitized_name>_<uuid_prefix>
+        Directory name: <sanitized_name>_<uuid>
+        Example: my_plugin_f8bf81d7_c5e2_472b_ba96_62140cefc9e1
     """
     # Sanitize name: lowercase, alphanumeric + underscore
     name = manifest.name()
     sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
     sanitized = sanitized[:50] if sanitized else 'plugin'
 
-    uuid_prefix = manifest.uuid[:8] if manifest.uuid else 'no_uuid'
-    return f'{sanitized}_{uuid_prefix}'
+    uuid_safe = manifest.uuid.replace('-', '_') if manifest.uuid else 'no_uuid'
+    return f'{sanitized}_{uuid_safe}'
 
 
 class PluginManager:
