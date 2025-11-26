@@ -66,6 +66,25 @@ def is_local_path(url):
     return '://' not in url or url.startswith('file://')
 
 
+def get_local_path(url):
+    """Get normalized local path if URL is local, None otherwise.
+
+    Args:
+        url: Git URL or local path
+
+    Returns:
+        Path: Normalized local path if URL is local, None if remote
+    """
+    if not is_local_path(url):
+        return None
+    # Strip file:// prefix if present
+    if url.startswith('file://'):
+        url = url[7:]
+    # Expand ~ and make absolute
+    expanded = os.path.expanduser(url)
+    return Path(os.path.abspath(expanded))
+
+
 class PluginRegistry:
     """Manages plugin registry with blacklist checking."""
 
