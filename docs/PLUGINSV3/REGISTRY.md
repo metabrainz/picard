@@ -307,6 +307,56 @@ Redirects handle plugin repository changes transparently:
 - Blacklist by UUID blocks plugin at all URLs (old and new)
 - Prevents malicious plugins from evading blacklist by moving repos
 
+### Implementation Notes
+
+**Redirect Types:**
+
+The registry supports two types of redirects:
+
+1. **URL redirects** - Plugin moved to different repository:
+```json
+{
+  "uuid": "a1b2c3d4-...",
+  "git_url": "https://github.com/neworg/plugin",
+  "redirect_from": [
+    "https://github.com/olduser/plugin"
+  ]
+}
+```
+
+2. **UUID redirects** - Plugin was forked/replaced (rare):
+```json
+{
+  "uuid": "new-uuid-...",
+  "git_url": "https://github.com/org/plugin",
+  "redirect_from_uuid": [
+    "old-uuid-..."
+  ]
+}
+```
+
+**Lookup Algorithm:**
+
+1. Search plugins by current UUID (exact match)
+2. If not found, search plugins by current git_url (exact match)
+3. If not found, search all plugins' `redirect_from` arrays for URL
+4. If not found, search all plugins' `redirect_from_uuid` arrays for UUID
+5. If found via redirect, update local metadata with current UUID/URL
+
+**Registry Guarantees:**
+
+- No circular redirects (registry validation prevents)
+- No duplicate URLs in `redirect_from` across plugins
+- Redirect chains limited to reasonable length (<50 hops)
+- Registry always contains current metadata (current UUID, current URL)
+
+**Client Behavior:**
+
+- Registry refreshed: manually by user, periodically, or at Picard restart
+- Redirects resolved transparently during update checks
+- User notified if installed plugin moved (info message, non-blocking)
+- Local metadata updated to track new UUID/URL after redirect
+
 ---
 
 ## Client Integration
