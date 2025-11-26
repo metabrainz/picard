@@ -468,12 +468,12 @@ class PluginManager:
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
-        if not self._tagger:
-            raise RuntimeError('Cannot enable plugin without tagger instance')
-
         log.debug('Enabling plugin %s (current state: %s)', plugin.name, plugin.state.value)
-        plugin.load_module()
-        plugin.enable(self._tagger)
+
+        if self._tagger:
+            plugin.load_module()
+            plugin.enable(self._tagger)
+
         self._enabled_plugins.add(plugin.name)
         self._save_config()
         log.info('Plugin %s enabled (state: %s)', plugin.name, plugin.state.value)
