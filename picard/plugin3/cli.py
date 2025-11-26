@@ -493,10 +493,10 @@ class PluginCLI:
         return ExitCode.SUCCESS
 
     def _find_plugin(self, identifier):
-        """Find a plugin by directory name, manifest name, or UUID.
+        """Find a plugin by directory name, manifest name, UUID, or UUID prefix.
 
         Args:
-            identifier: Plugin directory name, manifest name, or UUID
+            identifier: Plugin directory name, manifest name, UUID, or UUID prefix
 
         Returns:
             Plugin object, None if not found, or 'multiple' if ambiguous
@@ -511,11 +511,14 @@ class PluginCLI:
             # Match by UUID (exact) - always unique
             if plugin.manifest and plugin.manifest.uuid == identifier:
                 return plugin
+            # Match by UUID prefix (e.g., 'f8bf81d7' for 'f8bf81d7-c5e2-...')
+            if plugin.manifest and plugin.manifest.uuid.startswith(identifier):
+                matches.append(plugin)
             # Match by manifest name (case-insensitive) - may not be unique
-            if plugin.manifest and plugin.manifest.name().lower() == identifier_lower:
+            elif plugin.manifest and plugin.manifest.name().lower() == identifier_lower:
                 matches.append(plugin)
 
-        # If we found matches by manifest name, check if ambiguous
+        # If we found matches, check if ambiguous
         if len(matches) == 1:
             return matches[0]
         elif len(matches) > 1:
