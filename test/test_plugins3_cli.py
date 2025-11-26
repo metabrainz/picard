@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import Mock
+from unittest.mock import Mock, PropertyMock
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -74,13 +74,17 @@ class TestPluginCLI(PicardTestCase):
         mock_manager = Mock()
 
         # Create mock plugin
+        test_uuid = 'test-uuid-1234'
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.name = 'test-plugin'
         mock_plugin.local_path = '/path/to/plugin'
-        mock_plugin.manifest = load_plugin_manifest('example')
+        manifest = load_plugin_manifest('example')
+        # Mock the uuid property
+        type(manifest).uuid = PropertyMock(return_value=test_uuid)
+        mock_plugin.manifest = manifest
 
         mock_manager.plugins = [mock_plugin]
-        mock_manager._enabled_plugins = {'test-plugin'}
+        mock_manager._enabled_plugins = {test_uuid}  # Use UUID instead of name
         mock_manager._get_plugin_metadata = Mock(return_value={})
         mock_tagger.pluginmanager3 = mock_manager
 
@@ -97,7 +101,7 @@ class TestPluginCLI(PicardTestCase):
         output_text = stdout.getvalue()
 
         self.assertEqual(result, 0)
-        self.assertIn('test-plugin', output_text)
+        self.assertIn('Example plugin', output_text)  # Check manifest name, not directory name
         self.assertIn('enabled', output_text)
         self.assertIn('1.0.0', output_text)
 

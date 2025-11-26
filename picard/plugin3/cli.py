@@ -130,15 +130,19 @@ class PluginCLI:
         self._out.print('Installed plugins:')
         self._out.nl()
         for plugin in self._manager.plugins:
-            # Check config for enabled state (not just loaded state)
-            status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
-            self._out.print(f'  {plugin.name} ({status})')
+            # Get plugin UUID for checking enabled state
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            status = 'enabled' if plugin_uuid and plugin_uuid in self._manager._enabled_plugins else 'disabled'
+
+            # Show manifest name (human-readable) instead of directory name
+            display_name = plugin.manifest.name() if plugin.manifest else plugin.name
+            self._out.print(f'  {display_name} ({status})')
 
             if hasattr(plugin, 'manifest') and plugin.manifest:
                 desc = plugin.manifest.description()
                 if desc:
                     self._out.info(f'  {desc}')
-                metadata = self._manager._get_plugin_metadata(plugin.name)
+                metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
                 git_info = self._format_git_info(metadata)
                 version = plugin.manifest._data.get('version', '')
                 self._out.info(f'  Version: {version}{git_info}')
@@ -159,8 +163,9 @@ class PluginCLI:
             self._out.error(f'Plugin "{plugin_name}" not found')
             return ExitCode.NOT_FOUND
 
-        status = 'enabled' if plugin.name in self._manager._enabled_plugins else 'disabled'
-        metadata = self._manager._get_plugin_metadata(plugin.name)
+        plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+        status = 'enabled' if plugin_uuid and plugin_uuid in self._manager._enabled_plugins else 'disabled'
+        metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
         git_info = self._format_git_info(metadata)
 
         self._out.print(f'Plugin: {plugin.manifest.name()}')
