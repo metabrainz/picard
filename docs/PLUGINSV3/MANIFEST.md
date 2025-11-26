@@ -17,6 +17,7 @@ my-plugin/
 ### Minimal MANIFEST.toml
 
 ```toml
+uuid = "550e8400-e29b-41d4-a716-446655440000"  # Generate with: uuidgen or python -c "import uuid; print(uuid.uuid4())"
 name = "My Plugin"
 version = "1.0.0"
 description = "Short description of what the plugin does"
@@ -63,6 +64,7 @@ def disable():
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
+| `uuid` | string | Unique plugin identifier (UUID v4) | `"550e8400-e29b-41d4-a716-446655440000"` |
 | `name` | string | Plugin display name | `"ListenBrainz Submitter"` |
 | `version` | string | Plugin version (semver) | `"1.0.0"` |
 | `description` | string | Short description (one line, 1-200 chars) | `"Submit your music to ListenBrainz"` |
@@ -70,6 +72,13 @@ def disable():
 | `authors` | array | Plugin author names | `["John Doe", "Jane Smith"]` |
 | `license` | string | SPDX license identifier | `"GPL-2.0-or-later"` |
 | `license_url` | string | URL to license text | `"https://..."` |
+
+**UUID Field:**
+- Must be a valid UUID v4 (RFC 4122)
+- Generated once when creating the plugin (use `uuidgen` or `uuid.uuid4()`)
+- Never changes, even if plugin is renamed or moved to different repository
+- Used for plugin identity, blacklisting, and tracking across repository changes
+- Ensures global uniqueness and prevents name collision attacks
 
 ### Optional Fields
 
@@ -93,6 +102,7 @@ def disable():
 ## Complete MANIFEST.toml Example
 
 ```toml
+uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
 name = "ListenBrainz Submitter"
 version = "2.1.0"
 description = "Submit your music to ListenBrainz"

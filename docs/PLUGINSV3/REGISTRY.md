@@ -51,6 +51,7 @@ picard plugins --install my-plugin
 ```json
 {
   "id": "listenbrainz",
+  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
   "name": "ListenBrainz Submitter",
   "description": "Submit your music to ListenBrainz",
   "name_i18n": {
@@ -73,11 +74,18 @@ picard plugins --install my-plugin
 }
 ```
 
+**Plugin Identity:**
+- Plugins are uniquely identified by **UUID** (from MANIFEST.toml)
+- The `id` field is a human-readable short identifier for CLI/URL usage
+- The `git_url` specifies where to fetch the plugin (can change via redirects)
+- Together, UUID + git_url provide stable identity and source tracking
+
 ### Field Reference
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `id` | string | Yes | Unique plugin identifier (lowercase, alphanumeric + hyphens) |
+| `id` | string | Yes | Short identifier for CLI/URL usage (lowercase, alphanumeric + hyphens) |
+| `uuid` | string | Yes | Unique plugin identifier (UUID v4 from MANIFEST.toml) |
 | `name` | string | Yes | Display name of the plugin (English) |
 | `description` | string | Yes | Short description (one line, English) |
 | `name_i18n` | object | No | Translated names (locale → string) |
@@ -190,8 +198,18 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 
 ## Blacklist System
 
-### Blacklist Entry
+### Blacklist Entry Types
 
+**By UUID (recommended):**
+```json
+{
+  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+  "reason": "Contains malicious code",
+  "blacklisted_at": "2025-11-20T10:00:00Z"
+}
+```
+
+**By git URL:**
 ```json
 {
   "git_url": "https://github.com/badactor/malicious-plugin",
@@ -200,23 +218,94 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 }
 ```
 
+**By URL pattern (regex):**
+```json
+{
+  "url_pattern": "^https://github\\.com/badorg/.*",
+  "reason": "Entire organization blacklisted for malicious activity",
+  "blacklisted_at": "2025-11-22T10:00:00Z"
+}
+```
+
+### Blacklist Methods Comparison
+
+| Method | Purpose | Scope | Evasion Risk |
+|--------|---------|-------|--------------|
+| **UUID** | Block specific plugin | All sources, past and future | None - UUID is permanent |
+| **git_url** | Block specific repository | Single URL only | High - can move repos |
+| **url_pattern** | Block organization/pattern | Multiple URLs matching pattern | Medium - can change hosting |
+
+**Recommendation**: Use **UUID** for blacklisting malicious plugins, as it blocks the plugin regardless of where it's hosted or if it moves repositories.
+
 ### Repository-Level Blacklisting
 
-The blacklist supports wildcard patterns to block entire organizations:
+The blacklist supports regex patterns to block entire organizations:
 
 ```json
 {
-  "git_url": "https://github.com/badorg/*",
+  "url_pattern": "^https://github\\.com/badorg/.*",
   "reason": "Entire organization blacklisted for malicious activity",
-  "blacklisted_at": "2025-11-22T10:00:00Z",
-  "pattern": "repository"
+  "blacklisted_at": "2025-11-22T10:00:00Z"
 }
 ```
 
 **Pattern matching:**
 - **Specific URL:** `https://github.com/user/plugin` - blocks only that repository
-- **Repository pattern:** `https://github.com/badorg/*` - blocks all repositories from that organization/user
-- Uses simple wildcard matching on the URL path
+- **Regex pattern:** `^https://github\.com/badorg/.*` - blocks all repositories from that organization
+- Uses Python regex matching on normalized URLs
+
+---
+
+## Registry Redirects
+
+### Purpose
+
+Redirects handle plugin repository changes transparently:
+- **Plugin moves repositories**: Author migrates from personal to organization account
+- **Repository renamed**: GitHub/GitLab URL changes
+- **Plugin reorganization**: Plugin moves into or out of monorepo
+- **Ownership transfer**: Plugin transferred to new maintainer
+
+### Redirect Entry
+
+```json
+{
+  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+  "id": "my-plugin",
+  "git_url": "https://github.com/neworg/plugin-repo",
+  "redirect_from": [
+    "https://github.com/olduser/old-repo",
+    "https://github.com/olduser/plugin-collection#my-plugin"
+  ],
+  "trust_level": "community",
+  "authors": ["Author Name"],
+  "min_api_version": "3.0",
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-26T10:00:00Z"
+}
+```
+
+### How Redirects Work
+
+1. **User has old URL**: Plugin installed from `https://github.com/olduser/old-repo`
+2. **Registry lookup**: Client checks registry for plugin by old URL
+3. **Redirect found**: Registry returns new URL `https://github.com/neworg/plugin-repo`
+4. **Transparent update**: Client fetches updates from new URL automatically
+5. **Metadata updated**: Local metadata updated to track new URL
+
+### Benefits
+
+- **Seamless migration**: Users get updates without manual intervention
+- **Centralized control**: Registry manages all URL changes
+- **Audit trail**: Track plugin history and moves
+- **No broken updates**: Old URLs continue to work
+
+### UUID Role in Redirects
+
+- **UUID remains constant** across repository moves
+- Redirects map old URLs → new URL for same UUID
+- Blacklist by UUID blocks plugin at all URLs (old and new)
+- Prevents malicious plugins from evading blacklist by moving repos
 
 ---
 
