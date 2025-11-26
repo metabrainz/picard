@@ -353,3 +353,275 @@ class TestPluginCLICommands(PicardTestCase):
 
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('Failed to install', stderr.getvalue())
+
+
+class TestPluginCLIValidate(PicardTestCase):
+    def test_validate_local_no_manifest(self):
+        """Test validate with local directory without MANIFEST.toml."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create .git directory to make it a git repo
+            git_dir = Path(tmpdir) / '.git'
+            git_dir.mkdir()
+
+            stderr = StringIO()
+            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            cli = PluginCLI(manager, args, output=output)
+
+            result = cli._validate_plugin(tmpdir)
+
+            self.assertEqual(result, ExitCode.ERROR)
+            self.assertIn('No MANIFEST.toml found', stderr.getvalue())
+
+    def test_validate_local_invalid_manifest(self):
+        """Test validate with invalid MANIFEST.toml."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create .git directory
+            git_dir = Path(tmpdir) / '.git'
+            git_dir.mkdir()
+
+            # Create invalid manifest
+            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')  # Missing required fields
+
+            stderr = StringIO()
+            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            cli = PluginCLI(manager, args, output=output)
+
+            result = cli._validate_plugin(tmpdir)
+
+            self.assertEqual(result, ExitCode.ERROR)
+            self.assertIn('Validation failed', stderr.getvalue())
+
+    def test_validate_local_valid_manifest(self):
+        """Test validate with valid MANIFEST.toml."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create .git directory
+            git_dir = Path(tmpdir) / '.git'
+            git_dir.mkdir()
+
+            # Create valid manifest
+            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
+            manifest_content = '''
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+name = "Test Plugin"
+version = "1.0.0"
+description = "Test description"
+api = ["3.0"]
+authors = ["Test Author"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+'''
+            manifest_path.write_text(manifest_content)
+
+            stdout = StringIO()
+            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            cli = PluginCLI(manager, args, output=output)
+
+            result = cli._validate_plugin(tmpdir)
+
+            self.assertEqual(result, ExitCode.SUCCESS)
+            output_text = stdout.getvalue()
+            self.assertIn('Validation passed', output_text)
+            self.assertIn('Test Plugin', output_text)
+            self.assertIn('1.0.0', output_text)
+
+    def test_validate_local_with_optional_fields(self):
+        """Test validate with optional fields in manifest."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create .git directory
+            git_dir = Path(tmpdir) / '.git'
+            git_dir.mkdir()
+
+            # Create manifest with optional fields
+            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
+            manifest_content = '''
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+name = "Test Plugin"
+version = "1.0.0"
+description = "Test description"
+api = ["3.0"]
+authors = ["Test Author"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = "Detailed description"
+categories = ["metadata", "ui"]
+homepage = "https://example.com"
+min_python_version = "3.9"
+
+[name_i18n]
+de = "Test Plugin DE"
+
+[description_i18n]
+de = "Test Beschreibung"
+
+[long_description_i18n]
+de = "Detaillierte Beschreibung"
+'''
+            manifest_path.write_text(manifest_content)
+
+            stdout = StringIO()
+            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            cli = PluginCLI(manager, args, output=output)
+
+            result = cli._validate_plugin(tmpdir)
+
+            self.assertEqual(result, ExitCode.SUCCESS)
+            output_text = stdout.getvalue()
+            self.assertIn('Name_i18n: de', output_text)
+            self.assertIn('Description_i18n: de', output_text)
+            self.assertIn('Long_description_i18n: de', output_text)
+            self.assertIn('Categories: metadata, ui', output_text)
+            self.assertIn('Homepage: https://example.com', output_text)
+            self.assertIn('Min Python version: 3.9', output_text)
+
+
+class TestPluginCLIManifest(PicardTestCase):
+    def test_show_manifest_template(self):
+        """Test _show_manifest with no argument shows template."""
+        manager = Mock()
+        args = Mock()
+
+        stdout = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+        cli = PluginCLI(manager, args, output=output)
+
+        result = cli._show_manifest(None)
+
+        self.assertEqual(result, ExitCode.SUCCESS)
+        output_text = stdout.getvalue()
+        self.assertIn('MANIFEST.toml Template', output_text)
+        self.assertIn('uuid =', output_text)
+        self.assertIn('name =', output_text)
+        self.assertIn('version =', output_text)
+
+    def test_show_manifest_from_plugin(self):
+        """Test _show_manifest from installed plugin."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir) / 'test-plugin'
+            plugin_dir.mkdir()
+
+            # Create manifest
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_content = 'name = "Test"\nversion = "1.0"'
+            manifest_path.write_text(manifest_content)
+
+            # Mock plugin
+            mock_plugin = Mock()
+            mock_plugin.local_path = plugin_dir
+
+            stdout = StringIO()
+            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            cli = PluginCLI(manager, args, output=output)
+            cli._find_plugin = Mock(return_value=mock_plugin)
+
+            result = cli._show_manifest('test-plugin')
+
+            self.assertEqual(result, ExitCode.SUCCESS)
+            self.assertIn('name = "Test"', stdout.getvalue())
+
+    def test_show_manifest_plugin_no_manifest(self):
+        """Test _show_manifest from plugin without MANIFEST.toml."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir) / 'test-plugin'
+            plugin_dir.mkdir()
+
+            # Mock plugin without manifest
+            mock_plugin = Mock()
+            mock_plugin.local_path = plugin_dir
+
+            stderr = StringIO()
+            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            cli = PluginCLI(manager, args, output=output)
+            cli._find_plugin = Mock(return_value=mock_plugin)
+
+            result = cli._show_manifest('test-plugin')
+
+            self.assertEqual(result, ExitCode.ERROR)
+            self.assertIn('MANIFEST.toml not found', stderr.getvalue())
+
+    def test_show_manifest_from_local_dir(self):
+        """Test _show_manifest from local directory."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create .git directory
+            git_dir = Path(tmpdir) / '.git'
+            git_dir.mkdir()
+
+            # Create manifest
+            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
+            manifest_content = 'name = "Local Test"'
+            manifest_path.write_text(manifest_content)
+
+            stdout = StringIO()
+            output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
+            cli = PluginCLI(manager, args, output=output)
+            cli._find_plugin = Mock(return_value=None)
+
+            result = cli._show_manifest(tmpdir)
+
+            self.assertEqual(result, ExitCode.SUCCESS)
+            self.assertIn('name = "Local Test"', stdout.getvalue())
+
+    def test_show_manifest_local_dir_no_manifest(self):
+        """Test _show_manifest from local directory without manifest."""
+        from pathlib import Path
+        import tempfile
+
+        manager = Mock()
+        args = Mock()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create .git directory
+            git_dir = Path(tmpdir) / '.git'
+            git_dir.mkdir()
+
+            stderr = StringIO()
+            output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+            cli = PluginCLI(manager, args, output=output)
+            cli._find_plugin = Mock(return_value=None)
+
+            result = cli._show_manifest(tmpdir)
+
+            self.assertEqual(result, ExitCode.ERROR)
+            self.assertIn('MANIFEST.toml not found', stderr.getvalue())
