@@ -569,14 +569,19 @@ class PluginManager:
         # Check for blacklisted plugins on startup
         self._check_blacklisted_plugins()
 
+        enabled_count = 0
         for plugin in self._plugins:
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
             if plugin_uuid and plugin_uuid in self._enabled_plugins:
                 try:
+                    log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.name)
                     plugin.load_module()
                     plugin.enable(self._tagger)
+                    enabled_count += 1
                 except Exception as ex:
                     log.error('Failed initializing plugin %s from %s', plugin.name, plugin.local_path, exc_info=ex)
+
+        log.info('Loaded %d plugin%s', enabled_count, 's' if enabled_count != 1 else '')
 
     def _check_blacklisted_plugins(self):
         """Check installed plugins against blacklist and disable if needed."""
