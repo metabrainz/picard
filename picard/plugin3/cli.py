@@ -462,7 +462,8 @@ class PluginCLI:
             for name, current, latest, commit_date in updates:
                 from datetime import datetime
 
-                date_str = datetime.fromtimestamp(commit_date).strftime('%Y-%m-%d')
+                # commit_date is Unix timestamp, fromtimestamp uses local timezone
+                date_str = datetime.fromtimestamp(commit_date).strftime('%Y-%m-%d %H:%M')
                 self._out.info(f'{name}: {current} → {latest} ({date_str})')
             self._out.nl()
             self._out.print('Run with --update-all to update all plugins')
