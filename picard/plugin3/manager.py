@@ -94,10 +94,16 @@ class PluginManager:
         import shutil
         import tempfile
 
+        from picard.plugin3.registry import is_local_path
+
         # Check if url is a local directory
-        local_path = Path(url)
-        if local_path.is_dir():
-            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
+        if is_local_path(url):
+            local_path = Path(url)
+            if url.startswith('file://'):
+                local_path = Path(url[7:])
+            local_path = Path(os.path.expanduser(str(local_path)))
+            if local_path.is_dir():
+                return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
 
         # Handle git URL
         # Check blacklist before installing

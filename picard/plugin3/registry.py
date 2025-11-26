@@ -52,6 +52,20 @@ def normalize_git_url(url):
     return url
 
 
+def is_local_path(url):
+    """Check if URL is a local path (not a remote git URL).
+
+    Args:
+        url: Git URL or local path
+
+    Returns:
+        bool: True if local path, False if remote URL
+    """
+    if not url:
+        return False
+    return '://' not in url or url.startswith('file://')
+
+
 class PluginRegistry:
     """Manages plugin registry with blacklist checking."""
 

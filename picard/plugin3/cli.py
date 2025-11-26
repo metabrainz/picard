@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from enum import IntEnum
+import os
 
 from picard.plugin3.output import PluginOutput
 from picard.plugin3.plugin import short_commit_id
@@ -283,16 +284,22 @@ class PluginCLI:
                 # Check if installing from dirty local git repository
                 from pathlib import Path
 
-                local_path = Path(url)
-                if local_path.is_dir() and (local_path / '.git').exists():
-                    try:
-                        import pygit2
+                from picard.plugin3.registry import is_local_path
 
-                        repo = pygit2.Repository(str(local_path))
-                        if repo.status():
-                            self._out.warning('Local repository has uncommitted changes')
-                    except Exception:
-                        pass  # Ignore errors checking status
+                if is_local_path(url):
+                    local_path = Path(url)
+                    if url.startswith('file://'):
+                        local_path = Path(url[7:])
+                    local_path = Path(os.path.expanduser(str(local_path)))
+                    if local_path.is_dir() and (local_path / '.git').exists():
+                        try:
+                            import pygit2
+
+                            repo = pygit2.Repository(str(local_path))
+                            if repo.status():
+                                self._out.warning('Local repository has uncommitted changes')
+                        except Exception:
+                            pass  # Ignore errors checking status
 
                 plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
                 self._out.success(f'Plugin {plugin_id} installed successfully')
@@ -513,13 +520,19 @@ class PluginCLI:
         self._out.print(f'Validating plugin from: {url}')
 
         # Check if url is a local directory
-        local_path = Path(url)
-        if local_path.is_dir():
-            # Validate local directory directly
-            manifest_path = local_path / 'MANIFEST.toml'
-            if not manifest_path.exists():
-                self._out.error('No MANIFEST.toml found')
-                return ExitCode.ERROR
+        from picard.plugin3.registry import is_local_path
+
+        if is_local_path(url):
+            local_path = Path(url)
+            if url.startswith('file://'):
+                local_path = Path(url[7:])
+            local_path = Path(os.path.expanduser(str(local_path)))
+            if local_path.is_dir():
+                # Validate local directory directly
+                manifest_path = local_path / 'MANIFEST.toml'
+                if not manifest_path.exists():
+                    self._out.error('No MANIFEST.toml found')
+                    return ExitCode.ERROR
 
             self._out.success('MANIFEST.toml found')
 
@@ -834,16 +847,22 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
         # Check if it's a local directory
         from pathlib import Path
 
-        local_path = Path(target)
-        if local_path.is_dir():
-            manifest_path = local_path / 'MANIFEST.toml'
-            if manifest_path.exists():
-                with open(manifest_path, 'r') as f:
-                    self._out.print(f.read())
-                return ExitCode.SUCCESS
-            else:
-                self._out.error(f'MANIFEST.toml not found in {target}')
-                return ExitCode.ERROR
+        from picard.plugin3.registry import is_local_path
+
+        if is_local_path(target):
+            local_path = Path(target)
+            if target.startswith('file://'):
+                local_path = Path(target[7:])
+            local_path = Path(os.path.expanduser(str(local_path)))
+            if local_path.is_dir():
+                manifest_path = local_path / 'MANIFEST.toml'
+                if manifest_path.exists():
+                    with open(manifest_path, 'r') as f:
+                        self._out.print(f.read())
+                    return ExitCode.SUCCESS
+                else:
+                    self._out.error(f'MANIFEST.toml not found in {target}')
+                    return ExitCode.ERROR
 
         # Treat as git URL
         import tempfile
