@@ -1626,6 +1626,10 @@ def main(localedir=None, autoupdate=True):
         manager = PluginManager()
         manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
+        # Suppress INFO logs for cleaner CLI output unless in debug mode
+        if not cmdline_args.debug:
+            log.set_verbosity(logging.WARNING)
+
         # Create output with color setting from args
         color = not getattr(cmdline_args, 'no_color', False)
         output = PluginOutput(color=color)
