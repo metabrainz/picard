@@ -293,9 +293,11 @@ class PluginCLI:
                     # Check trust level for unregistered plugins
                     trust_level = self._manager._registry.get_trust_level(url)
                     if trust_level == 'unregistered':
-                        self._out.warning('WARNING: This plugin is not in the official registry')
-                        self._out.warning('  Installing unregistered plugins may pose security risks')
-                        self._out.warning('  Only install plugins from sources you trust')
+                        self._out.warning(self._out.d_warning('WARNING: This plugin is not in the official registry'))
+                        self._out.warning(
+                            self._out.d_warning('  Installing unregistered plugins may pose security risks')
+                        )
+                        self._out.warning(self._out.d_warning('  Only install plugins from sources you trust'))
 
                         if not yes:
                             if not self._out.yesno('Do you want to continue?'):

@@ -179,6 +179,10 @@ class PluginOutput:
         """Display date/time."""
         return self._colorize(date, self.DIM)
 
+    def d_warning(self, text):
+        """Display warning text in red."""
+        return self._colorize(text, self.RED)
+
     def d_prompt(self, question, default='N'):
         """Format a yes/no prompt with colorized question and options."""
         if default.upper() == 'Y':
