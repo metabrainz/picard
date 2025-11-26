@@ -15,6 +15,22 @@ The plugin registry is a centralized JSON file served by the Picard website that
 
 **Registry URL:** `https://picard.musicbrainz.org/api/v3/plugins.json`
 
+**Configuration:**
+- Default URL is defined in `DEFAULT_PLUGIN_REGISTRY_URL` constant in `picard/const/defaults.py`
+- Can be overridden via environment variable: `PICARD_PLUGIN_REGISTRY_URL`
+- Useful for testing, development, or using alternative registries
+
+**Example:**
+```bash
+# Use custom registry URL
+export PICARD_PLUGIN_REGISTRY_URL="https://test.example.com/plugins.json"
+picard plugins --browse
+
+# Use local registry file for testing
+export PICARD_PLUGIN_REGISTRY_URL="file:///path/to/local/registry.json"
+picard plugins --install my-plugin
+```
+
 ---
 
 ## Registry JSON Schema
