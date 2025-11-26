@@ -394,6 +394,16 @@ class PluginManager:
 
         return new_url, new_uuid, redirected
 
+    def _get_original_metadata(self, metadata, redirected, old_url, old_uuid):
+        """Get original URL/UUID if redirected, preserving existing values.
+
+        Returns:
+            tuple: (original_url, original_uuid)
+        """
+        if not redirected:
+            return None, None
+        return metadata.get('original_url', old_url), metadata.get('original_uuid', old_uuid)
+
     def update_plugin(self, plugin: Plugin):
         """Update a single plugin to latest version."""
         if not plugin.manifest or not plugin.manifest.uuid:
@@ -419,8 +429,7 @@ class PluginManager:
 
         # Update metadata with current URL and UUID
         # If redirected, preserve original URL/UUID
-        original_url = metadata.get('original_url', old_url) if redirected else None
-        original_uuid = metadata.get('original_uuid', old_uuid) if redirected else None
+        original_url, original_uuid = self._get_original_metadata(metadata, redirected, old_url, old_uuid)
         self._save_plugin_metadata(
             PluginMetadata(
                 name=plugin.name,
