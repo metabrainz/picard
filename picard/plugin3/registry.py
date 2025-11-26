@@ -19,12 +19,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import json
+import os
 from pathlib import Path
 import re
 from urllib.request import urlopen
 
 from picard import log
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
+
+
+def normalize_git_url(url):
+    """Normalize git URL for comparison (expand local paths to absolute).
+
+    Args:
+        url: Git URL or local path
+
+    Returns:
+        str: Normalized URL
+    """
+    if not url:
+        return url
+    # Expand ~ and make absolute for local paths
+    if not url.startswith(('http://', 'https://', 'git://', 'file://')):
+        expanded = os.path.expanduser(url)
+        return os.path.abspath(expanded)
+    return url
 
 
 class PluginRegistry:
@@ -94,18 +113,23 @@ class PluginRegistry:
         if not self._registry_data:
             self.fetch_registry()
 
+        # Normalize URL for comparison
+        normalized_url = normalize_git_url(url)
+
         blacklist = self._registry_data.get('blacklist', [])
 
         for entry in blacklist:
             # Check exact URL match
-            if 'url' in entry and url == entry['url']:
-                reason = entry.get('reason', 'Plugin is blacklisted')
-                return True, reason
+            if 'url' in entry:
+                blacklist_url = normalize_git_url(entry['url'])
+                if normalized_url == blacklist_url:
+                    reason = entry.get('reason', 'Plugin is blacklisted')
+                    return True, reason
 
             # Check URL pattern match
             if 'url_pattern' in entry:
                 try:
-                    if re.match(entry['url_pattern'], url):
+                    if re.match(entry['url_pattern'], normalized_url):
                         reason = entry.get('reason', 'Plugin matches blacklisted pattern')
                         return True, reason
                 except re.error:
@@ -130,9 +154,13 @@ class PluginRegistry:
         if not self._registry_data:
             self.fetch_registry()
 
+        # Normalize URL for comparison
+        normalized_url = normalize_git_url(url)
+
         plugins = self._registry_data.get('plugins', [])
         for plugin in plugins:
-            if plugin.get('git_url') == url:
+            plugin_url = normalize_git_url(plugin.get('git_url', ''))
+            if plugin_url == normalized_url:
                 return plugin.get('trust_level', 'community')
 
         return 'unregistered'
@@ -150,12 +178,17 @@ class PluginRegistry:
         if not self._registry_data:
             self.fetch_registry()
 
+        # Normalize URL for comparison if provided
+        normalized_url = normalize_git_url(url) if url else None
+
         plugins = self._registry_data.get('plugins', [])
         for plugin in plugins:
             if plugin_id and plugin.get('id') == plugin_id:
                 return plugin
-            if url and plugin.get('git_url') == url:
-                return plugin
+            if normalized_url:
+                plugin_url = normalize_git_url(plugin.get('git_url', ''))
+                if plugin_url == normalized_url:
+                    return plugin
 
         return None
 
