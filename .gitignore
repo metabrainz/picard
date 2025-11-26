@@ -71,3 +71,4 @@ build.cfg
 
 # Ruff stuff
 .ruff_cache/
+test-registry.json
