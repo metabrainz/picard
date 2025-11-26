@@ -186,3 +186,8 @@ class PluginOutput:
         else:
             options = f"[y/{self._colorize('N', self.BOLD)}]"
         return f"{self._colorize(question, self.YELLOW)} {options}: "
+
+    def yesno(self, question, default='N'):
+        """Ask a yes/no question and return True if yes, False otherwise."""
+        response = input(self.d_prompt(question, default)).strip().lower()
+        return response in ('y', 'yes')
