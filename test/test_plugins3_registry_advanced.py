@@ -92,7 +92,8 @@ class TestRegistryAdvanced(PicardTestCase):
             registry_file = f.name
 
         try:
-            cache_path = tempfile.mktemp(suffix='.json')
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+                cache_path = f.name
 
             registry = PluginRegistry(registry_url=registry_file, cache_path=cache_path)
 
