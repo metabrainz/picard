@@ -53,23 +53,6 @@ class PluginMetadata:
         return {k: v for k, v in asdict(self).items() if v is not None}
 
 
-def sanitize_plugin_name(name: str) -> str:
-    """Sanitize plugin name for use in directory name.
-
-    Args:
-        name: Plugin name from MANIFEST
-
-    Returns:
-        Sanitized name (lowercase, alphanumeric + underscore)
-    """
-    # Convert to lowercase and replace non-alphanumeric with underscore
-    sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower())
-    # Remove leading/trailing underscores
-    sanitized = sanitized.strip('_')
-    # Limit length
-    return sanitized[:50] if sanitized else 'plugin'
-
-
 def get_plugin_directory_name(manifest) -> str:
     """Get plugin directory name from manifest (sanitized name + UUID prefix).
 
@@ -79,9 +62,13 @@ def get_plugin_directory_name(manifest) -> str:
     Returns:
         Directory name: <sanitized_name>_<uuid_prefix>
     """
-    sanitized_name = sanitize_plugin_name(manifest.name())
+    # Sanitize name: lowercase, alphanumeric + underscore
+    name = manifest.name()
+    sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
+    sanitized = sanitized[:50] if sanitized else 'plugin'
+
     uuid_prefix = manifest.uuid[:8] if manifest.uuid else 'no_uuid'
-    return f'{sanitized_name}_{uuid_prefix}'
+    return f'{sanitized}_{uuid_prefix}'
 
 
 class PluginManager:
