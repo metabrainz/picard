@@ -110,6 +110,26 @@ class PluginManager:
             raise ValueError(f'Plugin {plugin.name} has no UUID')
         return plugin.manifest.uuid
 
+    def _get_config_value(self, *keys, default=None):
+        """Get nested config value by keys.
+
+        Args:
+            *keys: Nested keys to traverse
+            default: Default value if key path doesn't exist
+
+        Returns:
+            Config value or default
+        """
+        from picard.config import get_config
+
+        config = get_config()
+        value = config.setting
+        for key in keys:
+            if not isinstance(value, dict) or key not in value:
+                return default
+            value = value[key]
+        return value
+
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         dir_path = Path(os.path.normpath(dir_path))
         if dir_path in self._plugin_dirs:
@@ -594,12 +614,7 @@ class PluginManager:
 
     def _load_config(self):
         """Load enabled plugins list from config."""
-        from picard.config import get_config
-
-        config = get_config()
-        # config.setting['plugins3'] returns a dict with plugin settings
-        plugins3_config = config.setting['plugins3']
-        enabled = plugins3_config.get('enabled_plugins', [])
+        enabled = self._get_config_value('plugins3', 'enabled_plugins', default=[])
         self._enabled_plugins = set(enabled)
         log.debug('Loaded enabled plugins from config: %r', self._enabled_plugins)
 
@@ -617,16 +632,8 @@ class PluginManager:
 
     def _get_plugin_metadata(self, uuid: str):
         """Get stored metadata for a plugin by UUID."""
-        from picard.config import get_config
-
-        config = get_config()
-        if 'plugins3' not in config.setting:
-            return {}
-        plugins3 = config.setting['plugins3']
-        if 'metadata' not in plugins3:
-            return {}
-        metadata = plugins3['metadata']
-        return metadata.get(uuid, {})
+        metadata_dict = self._get_config_value('plugins3', 'metadata', default={})
+        return metadata_dict.get(uuid, {})
 
     def _save_plugin_metadata(self, metadata: PluginMetadata):
         """Save plugin metadata to config, keyed by UUID."""
