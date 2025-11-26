@@ -39,8 +39,14 @@ def normalize_git_url(url):
     """
     if not url:
         return url
-    # Expand ~ and make absolute for local paths
-    if not url.startswith(('http://', 'https://', 'git://', 'file://')):
+    # Check if it's a local path (not a remote protocol)
+    # Git supports many protocols: http://, https://, git://, ssh://, ftp://, ftps://, etc.
+    # If it doesn't contain :// or starts with file://, treat as local path
+    if '://' not in url or url.startswith('file://'):
+        # Strip file:// prefix if present
+        if url.startswith('file://'):
+            url = url[7:]
+        # Expand ~ and make absolute
         expanded = os.path.expanduser(url)
         return os.path.abspath(expanded)
     return url
