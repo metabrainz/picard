@@ -158,10 +158,9 @@ class PluginCLI:
 
     def _show_info(self, plugin_name):
         """Show detailed information about a plugin."""
-        plugin = self._find_plugin(plugin_name)
-        if not plugin:
-            self._out.error(f'Plugin "{plugin_name}" not found')
-            return ExitCode.NOT_FOUND
+        plugin, error = self._find_plugin_or_error(plugin_name)
+        if error:
+            return error
 
         plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
         status = 'enabled' if plugin_uuid and plugin_uuid in self._manager._enabled_plugins else 'disabled'
@@ -214,10 +213,9 @@ class PluginCLI:
 
     def _show_status(self, plugin_name):
         """Show detailed status information about a plugin."""
-        plugin = self._find_plugin(plugin_name)
-        if not plugin:
-            self._out.error(f'Plugin "{plugin_name}" not found')
-            return ExitCode.NOT_FOUND
+        plugin, error = self._find_plugin_or_error(plugin_name)
+        if error:
+            return error
 
         self._out.print(f'Plugin: {plugin.name}')
         self._out.print(f'State: {plugin.state.value}')
@@ -313,10 +311,9 @@ class PluginCLI:
         yes = getattr(self._args, 'yes', False)
 
         for plugin_name in plugin_names:
-            plugin = self._find_plugin(plugin_name)
-            if not plugin:
-                self._out.error(f'Plugin "{plugin_name}" not found')
-                return ExitCode.NOT_FOUND
+            plugin, error = self._find_plugin_or_error(plugin_name)
+            if error:
+                return error
 
             # Confirmation prompt unless --yes flag
             if not yes:
@@ -349,10 +346,9 @@ class PluginCLI:
     def _enable_plugins(self, plugin_names):
         """Enable plugins."""
         for plugin_name in plugin_names:
-            plugin = self._find_plugin(plugin_name)
-            if not plugin:
-                self._out.error(f'Plugin "{plugin_name}" not found')
-                return ExitCode.NOT_FOUND
+            plugin, error = self._find_plugin_or_error(plugin_name)
+            if error:
+                return error
 
             try:
                 self._out.print(f'Enabling {plugin.name}...')
@@ -367,10 +363,9 @@ class PluginCLI:
     def _disable_plugins(self, plugin_names):
         """Disable plugins."""
         for plugin_name in plugin_names:
-            plugin = self._find_plugin(plugin_name)
-            if not plugin:
-                self._out.error(f'Plugin "{plugin_name}" not found')
-                return ExitCode.NOT_FOUND
+            plugin, error = self._find_plugin_or_error(plugin_name)
+            if error:
+                return error
 
             try:
                 self._out.print(f'Disabling {plugin.name}...')
@@ -385,10 +380,9 @@ class PluginCLI:
     def _update_plugins(self, plugin_names):
         """Update specific plugins."""
         for plugin_name in plugin_names:
-            plugin = self._find_plugin(plugin_name)
-            if not plugin:
-                self._out.error(f'Plugin "{plugin_name}" not found')
-                return ExitCode.NOT_FOUND
+            plugin, error = self._find_plugin_or_error(plugin_name)
+            if error:
+                return error
 
             try:
                 self._out.print(f'Updating {plugin.name}...')
@@ -464,10 +458,9 @@ class PluginCLI:
 
     def _switch_ref(self, plugin_name, ref):
         """Switch plugin to a different git ref."""
-        plugin = self._find_plugin(plugin_name)
-        if not plugin:
-            self._out.error(f'Plugin "{plugin_name}" not found')
-            return ExitCode.NOT_FOUND
+        plugin, error = self._find_plugin_or_error(plugin_name)
+        if error:
+            return error
 
         try:
             self._out.print(f'Switching {plugin.name} to ref: {ref}...')
@@ -506,20 +499,54 @@ class PluginCLI:
             identifier: Plugin directory name, manifest name, or UUID
 
         Returns:
-            Plugin object or None if not found
+            Plugin object, None if not found, or 'multiple' if ambiguous
         """
         identifier_lower = identifier.lower()
+        matches = []
+
         for plugin in self._manager.plugins:
-            # Match by directory name (exact)
+            # Match by directory name (exact) - always unique
             if plugin.name == identifier:
                 return plugin
-            # Match by manifest name (case-insensitive)
-            if plugin.manifest and plugin.manifest.name().lower() == identifier_lower:
-                return plugin
-            # Match by UUID (exact)
+            # Match by UUID (exact) - always unique
             if plugin.manifest and plugin.manifest.uuid == identifier:
                 return plugin
+            # Match by manifest name (case-insensitive) - may not be unique
+            if plugin.manifest and plugin.manifest.name().lower() == identifier_lower:
+                matches.append(plugin)
+
+        # If we found matches by manifest name, check if ambiguous
+        if len(matches) == 1:
+            return matches[0]
+        elif len(matches) > 1:
+            return 'multiple'  # Signal ambiguous match
+
         return None
+
+    def _find_plugin_or_error(self, identifier):
+        """Find plugin and handle errors (not found or ambiguous).
+
+        Returns:
+            (plugin, error_code) - plugin is None if error, error_code is None if success
+        """
+        result = self._find_plugin(identifier)
+
+        if result == 'multiple':
+            # Find all matches to show to user
+            identifier_lower = identifier.lower()
+            matches = [p for p in self._manager.plugins if p.manifest and p.manifest.name().lower() == identifier_lower]
+
+            self._out.error(f'Multiple plugins found with name "{identifier}":')
+            for plugin in matches:
+                self._out.error(f'  - {plugin.name} (UUID: {plugin.manifest.uuid})')
+            self._out.error('Please use the directory name or UUID to be more specific')
+            return None, ExitCode.ERROR
+
+        if not result:
+            self._out.error(f'Plugin "{identifier}" not found')
+            return None, ExitCode.NOT_FOUND
+
+        return result, None
 
     def _validate_plugin(self, url, ref=None):
         """Validate a plugin from git URL or local directory."""
