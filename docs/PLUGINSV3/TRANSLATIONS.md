@@ -102,7 +102,7 @@ Use `{variable}` syntax for dynamic content:
 1. Try current locale (e.g., `de_DE`)
 2. Try language without region (e.g., `de`)
 3. Fall back to English (`en`)
-4. Return key itself if not found
+4. Return `?key?` if not found (with warning logged)
 
 ---
 
@@ -162,8 +162,12 @@ The website extracts these translations and includes them in the registry:
 ## PluginApi.gettext() Implementation
 
 ```python
+from PyQt6.QtCore import QLocale
+
 class PluginApi:
     def __init__(self, manifest: PluginManifest, tagger) -> None:
+        self._manifest = manifest
+        self._tagger = tagger
         self._translations = {}
         self._current_locale = None
         self._load_translations()
@@ -176,16 +180,18 @@ class PluginApi:
         if not locale_dir.exists():
             return
 
+        # Get current locale from Qt (e.g., "de_DE", "en_US")
+        # This respects user's UI language setting in Picard
+        self._current_locale = QLocale().name()
+
         # Always load English as fallback
         en_file = locale_dir / 'en.json'
         if en_file.exists():
             with open(en_file, 'r', encoding='utf-8') as f:
                 self._translations['en'] = json.load(f)
 
-        # Load current locale
-        self._current_locale = get_locale()
+        # Load current locale (e.g., "de_DE")
         locale_file = locale_dir / f'{self._current_locale}.json'
-
         if locale_file.exists():
             with open(locale_file, 'r', encoding='utf-8') as f:
                 self._translations[self._current_locale] = json.load(f)
@@ -205,7 +211,7 @@ class PluginApi:
             **kwargs: Format parameters for string interpolation
 
         Returns:
-            Translated and formatted string
+            Translated and formatted string, or ?key? if not found
         """
         # Try current locale
         if self._current_locale in self._translations:
@@ -219,9 +225,9 @@ class PluginApi:
             if text:
                 return text.format(**kwargs) if kwargs else text
 
-        # Last resort: return the key itself
-        log.warning(f"Translation key not found: {key}")
-        return key
+        # Missing key - return ?key? and log warning
+        log.warning(f"Translation key not found: {key} (plugin: {self._manifest.id})")
+        return f"?{key}?"
 
     def reload_translations(self):
         """Reload translations when locale changes"""

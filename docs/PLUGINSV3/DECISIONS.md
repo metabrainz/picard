@@ -294,19 +294,19 @@ See [TRANSLATIONS.md](TRANSLATIONS.md) for details.
 
 ### Q12: Legacy plugin coexistence?
 
-**Decision:** Support both v2 and v3 plugins simultaneously
+**Decision:** NO - v3 replaces v2 completely
 
 **Approach:**
-- v2 plugins in `plugins/` directory
-- v3 plugins in `plugins3/` directory
-- Both systems run in parallel
-- Gradual migration path
+- Only v3 plugins supported
+- v2 plugin system removed
+- Breaking change requiring migration
+- No parallel operation
 
 **Rationale:**
-- Smooth transition for users
-- Plugin developers have time to migrate
-- No breaking changes for existing users
-- Can deprecate v2 later
+- Cleaner codebase without dual systems
+- Forces migration to better architecture
+- Avoids maintenance burden of two systems
+- Clear break for major version
 
 **Status:** CLOSED
 
