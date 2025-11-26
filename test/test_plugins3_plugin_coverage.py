@@ -78,9 +78,10 @@ class TestGitRemoteCallbacks(PicardTestCase):
         mock_stats.indexed_objects = 50
         mock_stats.total_objects = 100
 
+        # Progress output is suppressed for cleaner CLI
         with patch('builtins.print') as mock_print:
             callbacks.transfer_progress(mock_stats)
-            mock_print.assert_called_once_with('50/100')
+            mock_print.assert_not_called()
 
 
 class TestPluginSourceGitUpdate(PicardTestCase):

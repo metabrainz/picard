@@ -63,7 +63,7 @@ if HAS_PYGIT2:
 
     class GitRemoteCallbacks(pygit2.RemoteCallbacks):
         def transfer_progress(self, stats):
-            print(f'{stats.indexed_objects}/{stats.total_objects}')
+            pass  # Suppress progress output
 else:
 
     class GitRemoteCallbacks:
