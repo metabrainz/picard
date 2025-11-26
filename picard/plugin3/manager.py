@@ -96,18 +96,18 @@ class PluginManager:
 
         from picard.plugin3.registry import get_local_repository_path
 
-        # Check if url is a local directory
-        local_path = get_local_repository_path(url)
-        if local_path:
-            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
-
-        # Handle git URL
         # Check blacklist before installing
         if not force_blacklisted:
             is_blacklisted, reason = self._registry.is_blacklisted(url)
             if is_blacklisted:
                 raise ValueError(f'Plugin is blacklisted: {reason}')
 
+        # Check if url is a local directory
+        local_path = get_local_repository_path(url)
+        if local_path:
+            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
+
+        # Handle git URL
         # Derive module name from URL (before temp directory which may truncate)
         url_basename = os.path.basename(url).rstrip('.git')
         module_name = url_basename.replace('-', '_')
