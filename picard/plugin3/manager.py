@@ -538,6 +538,8 @@ class PluginManager:
                         commit = repo.revparse_single(ref)
 
                     latest_commit = str(commit.id)
+                    # Get commit date
+                    latest_commit_date = commit.commit_time
                 except KeyError:
                     # Ref not found, skip this plugin
                     continue
@@ -545,7 +547,14 @@ class PluginManager:
                 repo.free()
 
                 if current_commit != latest_commit:
-                    updates.append((plugin.name, short_commit_id(current_commit), short_commit_id(latest_commit)))
+                    updates.append(
+                        (
+                            plugin.name,
+                            short_commit_id(current_commit),
+                            short_commit_id(latest_commit),
+                            latest_commit_date,
+                        )
+                    )
             except Exception:
                 pass
 
