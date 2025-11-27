@@ -8,21 +8,23 @@ This document provides a complete reference for the `picard plugins` command-lin
 
 Most commands accept a plugin identifier, which can be:
 
+- **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique, used internally)
 - **Display name**: `ListenBrainz Submitter` (case-insensitive, may not be unique)
-- **Directory name**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique)
-- **Full UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique)
+- **UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique)
 - **UUID prefix**: `a1b2c3d4` (unique if no collisions)
+
+**Note:** The Plugin ID is the directory name where the plugin is installed. It consists of a sanitized version of the display name plus the UUID (e.g., `listenbrainz_891a96e7-...`).
 
 **Examples:**
 ```bash
 # All of these work (if unique):
-picard plugins --info "ListenBrainz Submitter"
-picard plugins --info listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
-picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
-picard plugins --info a1b2c3d4
+picard plugins --info "ListenBrainz Submitter"          # Display name
+picard plugins --info listenbrainz_a1b2c3d4-e5f6-...    # Plugin ID
+picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...       # UUID
+picard plugins --info a1b2c3d4                          # UUID prefix
 ```
 
-**Note:** If multiple plugins match (e.g., same display name), you'll get an error and must use the full UUID or directory name.
+**Note:** If multiple plugins match (e.g., same display name), you'll get an error and must use the Plugin ID or UUID.
 
 ---
 
@@ -365,14 +367,14 @@ picard plugins --switch-ref myplugin main
 
 ### Plugin Info
 
-**Command:** `picard plugins --info <name|url|uuid>`
+**Command:** `picard plugins --info <identifier>`
 
 **Description:** Show detailed information about plugin
 
 **Plugin Lookup:** Plugins can be identified by:
-- **Directory name**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
+- **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
 - **Display name**: `ListenBrainz Submitter` (case-insensitive)
-- **Full UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
+- **UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
 - **UUID prefix**: `a1b2c3d4` (must be unique)
 - **Git URL**: `https://github.com/user/plugin` (for registry lookup)
 
@@ -381,13 +383,13 @@ picard plugins --switch-ref myplugin main
 # By display name
 picard plugins --info listenbrainz
 
-# By full UUID
+# By UUID
 picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 
 # By UUID prefix (first 8 chars)
 picard plugins --info a1b2c3d4
 
-# By directory name
+# By Plugin ID
 picard plugins --info listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 
 # By URL (not installed)
