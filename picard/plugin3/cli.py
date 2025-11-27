@@ -440,7 +440,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Enabling {plugin.plugin_id}...')
+                self._out.print(f'Enabling {self._out.d_plugin_name(plugin.plugin_id)}...')
                 self._manager.enable_plugin(plugin)
                 self._out.success(f'Plugin {self._out.d_status_enabled("enabled")}')
                 self._out.info('Restart Picard to load the plugin')
@@ -457,7 +457,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Disabling {plugin.plugin_id}...')
+                self._out.print(f'Disabling {self._out.d_plugin_name(plugin.plugin_id)}...')
                 self._manager.disable_plugin(plugin)
                 self._out.success(f'Plugin {self._out.d_status_disabled("disabled")}')
                 self._out.info('Restart Picard for changes to take effect')
@@ -474,7 +474,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Updating {plugin.plugin_id}...')
+                self._out.print(f'Updating {self._out.d_plugin_name(plugin.plugin_id)}...')
                 old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(plugin)
 
                 if old_commit == new_commit:
@@ -611,7 +611,7 @@ class PluginCLI:
             return error
 
         try:
-            self._out.print(f'Switching {plugin.plugin_id} to ref: {ref}...')
+            self._out.print(f'Switching {self._out.d_plugin_name(plugin.plugin_id)} to ref: {ref}...')
             old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
 
             self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
@@ -706,8 +706,10 @@ class PluginCLI:
 
             self._out.error(f'Multiple plugins found with name "{identifier}":')
             for plugin in matches:
-                self._out.error(f'  - {plugin.plugin_id} (UUID: {plugin.manifest.uuid})')
-            self._out.error('Please use the directory name or UUID to be more specific')
+                self._out.error(
+                    f'  - {self._out.d_plugin_name(plugin.plugin_id)} (UUID: {self._out.d_uuid(plugin.manifest.uuid)})'
+                )
+            self._out.error('Please use the Plugin ID or UUID to be more specific')
             return None, ExitCode.ERROR
 
         if not result:
