@@ -273,11 +273,13 @@ class PluginManager:
         temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
 
         try:
-            # Remove temp dir if it exists from previous failed install
+            # Reuse temp dir if it's already a git repo, otherwise remove it
             if temp_path.exists():
-                shutil.rmtree(temp_path)
+                if not (temp_path / '.git').exists():
+                    # Not a git repo, remove it
+                    shutil.rmtree(temp_path)
 
-            # Clone to temporary location with single-branch optimization
+            # Clone or update temporary location with single-branch optimization
             source = PluginSourceGit(url, ref)
             commit_id = source.sync(temp_path, single_branch=True)
 
