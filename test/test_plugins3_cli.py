@@ -93,6 +93,54 @@ class TestPluginCLI(PicardTestCase):
         self.assertEqual(exit_code, 2)
         self.assertIn('not found', stderr)
 
+    def test_validate_git_url(self):
+        """Test validate command with git URL."""
+        from pathlib import Path
+        import tempfile
+
+        try:
+            import pygit2
+
+            HAS_PYGIT2 = True
+        except ImportError:
+            HAS_PYGIT2 = False
+
+        if not HAS_PYGIT2:
+            self.skipTest("pygit2 not available")
+
+        # Create a temporary git repository
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir) / "test-plugin"
+            plugin_dir.mkdir()
+
+            repo = pygit2.init_repository(str(plugin_dir))
+
+            manifest_content = """name = "Test Plugin"
+authors = ["Test"]
+version = "1.0.0"
+description = "Test"
+api = ["3.0"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
+"""
+            (plugin_dir / "MANIFEST.toml").write_text(manifest_content)
+
+            index = repo.index
+            index.add_all()
+            index.write()
+            tree = index.write_tree()
+            author = pygit2.Signature("Test", "test@example.com")
+            repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
+            repo.set_head('refs/heads/main')
+
+            mock_manager = Mock()
+            exit_code, stdout, stderr = run_cli(mock_manager, validate=str(plugin_dir))
+
+            self.assertEqual(exit_code, 0)
+            self.assertIn('Validation passed', stdout)
+            self.assertIn('Test Plugin', stdout)
+
     def test_output_color_mode(self):
         """Test that color mode works correctly."""
         from io import StringIO

@@ -714,6 +714,10 @@ class PluginCLI:
             # Clone repository
             self._out.print('Cloning repository...')
             source = PluginSourceGit(url, ref)
+            # Remove the temp directory so git clone can create it
+            import shutil
+
+            shutil.rmtree(temp_path)
             source.sync(temp_path)
 
             # Check for MANIFEST.toml
