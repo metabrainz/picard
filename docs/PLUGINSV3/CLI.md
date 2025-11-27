@@ -241,9 +241,9 @@ Total: 2 plugins (1 enabled, 1 disabled)
 
 ### Install Plugin
 
-**Command:** `picard plugins --install <url>` or `picard plugins -i <url>`
+**Command:** `picard plugins --install <url|path|id>` or `picard plugins -i <url|path|id>`
 
-**Description:** Install plugin from git repository URL
+**Description:** Install plugin from git repository URL, local path, or registry ID
 
 **Examples:**
 ```bash
@@ -253,11 +253,30 @@ picard plugins --install https://github.com/metabrainz/picard-plugin-listenbrain
 # Install from specific ref
 picard plugins --install https://github.com/user/plugin --ref v1.0.0
 
-# Install from local repository
+# Install from local repository (absolute path)
 picard plugins --install ~/dev/my-plugin
+
+# Install from local repository (relative path - note the ./)
+picard plugins --install ./my-plugin
+
+# Install from registry by ID
+picard plugins --install view-script-variables
 
 # Install multiple
 picard plugins --install url1 url2 url3
+```
+
+**How the argument is interpreted:**
+- **Contains `/` or `://`** → Treated as URL or file path
+- **No `/` or `://`** → Treated as registry ID (looks up in plugin registry)
+
+**Important:** If you have a local directory without a path separator, you must prefix it with `./` to avoid registry lookup:
+```bash
+# Wrong - will look in registry:
+picard plugins --install my-plugin
+
+# Correct - will use local directory:
+picard plugins --install ./my-plugin
 ```
 
 **Behavior:**
@@ -271,20 +290,22 @@ picard plugins --install url1 url2 url3
 
 ---
 
-### Install Official Plugin
+### Install from Registry
 
-**Command:** `picard plugins --install <name>`
+**Command:** `picard plugins --install <registry-id>`
 
-**Description:** Install official plugin by name from registry
+**Description:** Install plugin by registry ID (no slashes or protocol)
 
 **Examples:**
 ```bash
-# Install by name
-picard plugins --install listenbrainz
+# Install by registry ID
+picard plugins --install view-script-variables
 
-# Install multiple
+# Install multiple from registry
 picard plugins --install listenbrainz discogs acoustid
 ```
+
+**Note:** The registry ID is shown in `--browse` and `--search` output. It's different from the internal plugin_id that gets created after installation.
 
 ---
 

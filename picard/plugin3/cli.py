@@ -952,7 +952,7 @@ class PluginCLI:
 
             self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
             self._out.nl()
-            self._out.print(f'Install with: {self._out.d_command("picard plugins --install <plugin-id>")}')
+            self._out.print(f'Install with: {self._out.d_command("picard plugins --install <registry-id>")}')
 
             return ExitCode.SUCCESS
 
@@ -999,7 +999,7 @@ class PluginCLI:
                 self._out.info(f'  {plugin.get("description", "")}')
                 self._out.print('')
 
-            self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <plugin-id>")))
+            self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <registry-id>")))
 
             return ExitCode.SUCCESS
 
