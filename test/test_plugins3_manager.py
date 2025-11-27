@@ -284,6 +284,42 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         self.assertEqual(context.exception.plugin_name, 'test-plugin')
         self.assertIn('modified.txt', context.exception.changes)
 
+    def test_install_plugin_reinstall_dirty_check(self):
+        """Test that install_plugin checks for dirty working dir on reinstall."""
+        from pathlib import Path
+        import tempfile
+
+        try:
+            import pygit2
+        except ImportError:
+            self.skipTest("pygit2 not available")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            manager = PluginManager(None)
+            manager._primary_plugin_dir = plugin_dir
+
+            # Create existing plugin with uncommitted changes
+            existing = plugin_dir / 'test_plugin_uuid'
+            existing.mkdir()
+            repo = pygit2.init_repository(str(existing))
+            (existing / 'test.txt').write_text('test')
+            index = repo.index
+            index.add_all()
+            index.write()
+            tree = index.write_tree()
+            author = pygit2.Signature("Test", "test@example.com")
+            commit_id = repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
+            repo.set_head('refs/heads/main')
+            repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
+
+            # Modify file (uncommitted change)
+            (existing / 'test.txt').write_text('modified')
+
+            # Check that dirty check works
+            changes = manager._check_dirty_working_dir(existing)
+            self.assertIn('test.txt', changes)
+
     def test_get_config_value_default(self):
         """Test _get_config_value returns default when key missing."""
         with patch('picard.config.get_config') as mock_get_config:

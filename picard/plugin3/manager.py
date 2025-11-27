@@ -239,7 +239,7 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
-    def install_plugin(self, url, ref=None, reinstall=False, force_blacklisted=False):
+    def install_plugin(self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False):
         """Install a plugin from a git URL or local directory.
 
         Args:
@@ -247,6 +247,10 @@ class PluginManager:
             ref: Git ref (branch/tag/commit) to checkout (ignored for local paths)
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
+            discard_changes: If True, discard uncommitted changes on reinstall
+
+        Raises:
+            PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
 
         from picard.plugin3.registry import get_local_repository_path
@@ -260,7 +264,7 @@ class PluginManager:
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
         if local_path:
-            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
+            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref, discard_changes)
 
         # Handle git URL - use temp dir in plugin directory for atomic rename
         import hashlib
@@ -305,6 +309,13 @@ class PluginManager:
             if final_path.exists():
                 if not reinstall:
                     raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
+
+                # Check for uncommitted changes before removing
+                if not discard_changes:
+                    changes = self._check_dirty_working_dir(final_path)
+                    if changes:
+                        raise PluginDirtyError(plugin_name, changes)
+
                 shutil.rmtree(final_path)
 
             # Atomic rename from temp to final location
@@ -331,7 +342,9 @@ class PluginManager:
                 shutil.rmtree(temp_path, ignore_errors=True)
             raise
 
-    def _install_from_local_directory(self, local_path: Path, reinstall=False, force_blacklisted=False, ref=None):
+    def _install_from_local_directory(
+        self, local_path: Path, reinstall=False, force_blacklisted=False, ref=None, discard_changes=False
+    ):
         """Install a plugin from a local directory.
 
         Args:
@@ -339,6 +352,7 @@ class PluginManager:
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
             ref: Git ref to checkout if local_path is a git repository
+            discard_changes: If True, discard uncommitted changes on reinstall
 
         Returns:
             str: Plugin ID
@@ -410,6 +424,13 @@ class PluginManager:
         if final_path.exists():
             if not reinstall:
                 raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
+
+            # Check for uncommitted changes before removing
+            if not discard_changes:
+                changes = self._check_dirty_working_dir(final_path)
+                if changes:
+                    raise PluginDirtyError(plugin_name, changes)
+
             shutil.rmtree(final_path)
 
         # Copy to plugin directory

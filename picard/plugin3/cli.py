@@ -327,8 +327,31 @@ class PluginCLI:
                 self._out.success(f'Plugin {plugin_id} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                self._out.error(f'Failed to install plugin: {e}')
-                return ExitCode.ERROR
+                from picard.plugin3.manager import PluginDirtyError
+
+                if isinstance(e, PluginDirtyError):
+                    self._out.warning(f'Plugin {e.plugin_name} has been modified:')
+                    for file in e.changes[:5]:
+                        self._out.warning(f'  - {file}')
+                    if len(e.changes) > 5:
+                        self._out.warning(f'  ... and {len(e.changes) - 5} more')
+
+                    if yes:
+                        self._out.error('Cannot reinstall modified plugin in non-interactive mode')
+                        return ExitCode.ERROR
+                    else:
+                        if self._out.yesno('Discard changes and reinstall?'):
+                            plugin_id = self._manager.install_plugin(
+                                url, ref, reinstall, force_blacklisted, discard_changes=True
+                            )
+                            self._out.success(f'Plugin {plugin_id} installed successfully')
+                            self._out.info('Restart Picard to load the plugin')
+                        else:
+                            self._out.print('Installation cancelled')
+                            continue
+                else:
+                    self._out.error(f'Failed to install plugin: {e}')
+                    return ExitCode.ERROR
         return ExitCode.SUCCESS
 
     def _uninstall_plugins(self, plugin_names):
