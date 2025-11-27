@@ -216,6 +216,54 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             self.assertIn('test.txt', changes)
 
+    def test_update_plugin_dirty_raises_error(self):
+        """Test that update_plugin raises PluginDirtyError for dirty repo."""
+        from picard.plugin3.manager import PluginDirtyError
+        from picard.plugin3.plugin import Plugin
+
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+        mock_plugin.local_path = Mock()
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = 'test-uuid'
+
+        manager = PluginManager(None)
+        manager._check_dirty_working_dir = Mock(return_value=['modified.txt'])
+
+        with self.assertRaises(PluginDirtyError) as context:
+            manager.update_plugin(mock_plugin)
+
+        self.assertEqual(context.exception.plugin_name, 'test-plugin')
+        self.assertIn('modified.txt', context.exception.changes)
+
+    def test_update_plugin_dirty_with_discard(self):
+        """Test that update_plugin works with discard_changes=True."""
+        from picard.plugin3.plugin import Plugin
+
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+        mock_plugin.local_path = Mock()
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = 'test-uuid'
+        mock_plugin.manifest.version = '1.0.0'
+
+        manager = PluginManager(None)
+        manager._check_dirty_working_dir = Mock(return_value=['modified.txt'])
+        manager._get_plugin_metadata = Mock(return_value={'url': 'https://example.com', 'ref': 'main'})
+        manager._check_redirects = Mock(return_value=('https://example.com', 'test-uuid', False))
+
+        # Mock the git update
+        with patch('picard.plugin3.manager.PluginSourceGit') as mock_source:
+            mock_source_instance = Mock()
+            mock_source_instance.update = Mock(return_value=('old123', 'new456'))
+            mock_source.return_value = mock_source_instance
+
+            # Should not raise with discard_changes=True
+            old_ver, new_ver, old_commit, new_commit = manager.update_plugin(mock_plugin, discard_changes=True)
+
+            self.assertEqual(old_commit, 'old123')
+            self.assertEqual(new_commit, 'new456')
+
     def test_get_config_value_default(self):
         """Test _get_config_value returns default when key missing."""
         with patch('picard.config.get_config') as mock_get_config:

@@ -512,8 +512,22 @@ class PluginManager:
             return None, None
         return metadata.get('original_url', old_url), metadata.get('original_uuid', old_uuid)
 
-    def update_plugin(self, plugin: Plugin):
-        """Update a single plugin to latest version."""
+    def update_plugin(self, plugin: Plugin, discard_changes=False):
+        """Update a single plugin to latest version.
+
+        Args:
+            plugin: Plugin to update
+            discard_changes: If True, discard uncommitted changes
+
+        Raises:
+            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
+        """
+        # Check for uncommitted changes
+        if not discard_changes:
+            changes = self._check_dirty_working_dir(plugin.local_path)
+            if changes:
+                raise PluginDirtyError(plugin.name, changes)
+
         uuid = self._get_plugin_uuid(plugin)
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:

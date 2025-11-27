@@ -423,8 +423,36 @@ class PluginCLI:
                     self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
-                self._out.error(f'Failed to update plugin: {e}')
-                return ExitCode.ERROR
+                from picard.plugin3.manager import PluginDirtyError
+
+                if isinstance(e, PluginDirtyError):
+                    self._out.warning(f'Plugin {e.plugin_name} has been modified:')
+                    for file in e.changes[:5]:
+                        self._out.warning(f'  - {file}')
+                    if len(e.changes) > 5:
+                        self._out.warning(f'  ... and {len(e.changes) - 5} more')
+
+                    if self._args.yes:
+                        self._out.error('Cannot update modified plugin in non-interactive mode')
+                        return ExitCode.ERROR
+                    else:
+                        if self._out.yesno('Discard changes and update?'):
+                            old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(
+                                plugin, discard_changes=True
+                            )
+                            if old_commit != new_commit:
+                                if old_ver != new_ver:
+                                    self._out.success(f'Updated: {old_ver} → {new_ver}')
+                                else:
+                                    self._out.success(f'Updated: {new_ver}')
+                                self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+                                self._out.info('Restart Picard to load the updated plugin')
+                        else:
+                            self._out.print('Update cancelled')
+                            continue
+                else:
+                    self._out.error(f'Failed to update plugin: {e}')
+                    return ExitCode.ERROR
         return ExitCode.SUCCESS
 
     def _update_all_plugins(self):
