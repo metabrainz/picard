@@ -943,11 +943,12 @@ class PluginCLI:
             # Show plugins
             for plugin in plugins:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_name(plugin["name"])}')
+                self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
                 categories = plugin.get('categories', [])
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
+                self._out.info(f'  Registry ID: {self._out.d_id(plugin["id"])}')
                 self._out.print('')
 
             self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
@@ -995,8 +996,12 @@ class PluginCLI:
 
             for plugin in results:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_name(plugin["name"])}')
+                self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
+                categories = plugin.get('categories', [])
+                if categories:
+                    self._out.info(f'  Categories: {", ".join(categories)}')
+                self._out.info(f'  Registry ID: {self._out.d_id(plugin["id"])}')
                 self._out.print('')
 
             self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <registry-id>")))
