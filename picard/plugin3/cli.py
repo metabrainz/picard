@@ -313,7 +313,6 @@ class PluginCLI:
                     if plugin:
                         url = plugin['git_url']
                         self._out.print(f'Found {plugin["name"]} in registry')
-                        self._out.print(f'Installing from {url}...')
                     else:
                         self._out.error(f'Plugin "{url_or_id}" not found in registry')
                         return ExitCode.NOT_FOUND
@@ -324,12 +323,9 @@ class PluginCLI:
                     if not reinstall:
                         existing_plugin = self._manager._find_plugin_by_url(url)
                         if existing_plugin:
-                            plugin_name = (
-                                existing_plugin.manifest.name()
-                                if existing_plugin.manifest
-                                else existing_plugin.plugin_id
+                            self._out.info(
+                                f'Plugin {self._out.d_id(existing_plugin.plugin_id)} is already installed from this URL'
                             )
-                            self._out.info(f'Plugin "{plugin_name}" is already installed from this URL')
                             self._out.info(
                                 f'Use {self._out.d_command("--reinstall")} to reinstall: '
                                 f'{self._out.d_command(f"picard plugins --install {url} --reinstall")}'
