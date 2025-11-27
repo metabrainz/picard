@@ -11,20 +11,23 @@ Most commands accept a plugin identifier, which can be:
 - **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique, used internally)
 - **Display name**: `ListenBrainz Submitter` (case-insensitive, may not be unique)
 - **UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique)
-- **UUID prefix**: `a1b2c3d4` (unique if no collisions)
+- **Prefix**: Any prefix of Plugin ID or UUID (unique if no collisions)
 
 **Note:** The Plugin ID is the directory name where the plugin is installed. It consists of a sanitized version of the display name plus the UUID (e.g., `listenbrainz_891a96e7-...`).
+
+**Prefix matching:** You can use any prefix of the Plugin ID or UUID. The command will match if the prefix uniquely identifies a single plugin.
 
 **Examples:**
 ```bash
 # All of these work (if unique):
 picard plugins --info "ListenBrainz Submitter"          # Display name
-picard plugins --info listenbrainz_a1b2c3d4-e5f6-...    # Plugin ID
-picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...       # UUID
+picard plugins --info listenbrainz_a1b2c3d4-e5f6-...    # Full Plugin ID
+picard plugins --info listenbrainz_a1b2                 # Plugin ID prefix
+picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...       # Full UUID
 picard plugins --info a1b2c3d4                          # UUID prefix
 ```
 
-**Note:** If multiple plugins match (e.g., same display name), you'll get an error and must use the Plugin ID or UUID.
+**Note:** If multiple plugins match (e.g., same display name or ambiguous prefix), you'll get an error listing the matches. Use a more specific identifier (longer prefix, full Plugin ID, or UUID).
 
 ---
 
@@ -375,7 +378,7 @@ picard plugins --switch-ref myplugin main
 - **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
 - **Display name**: `ListenBrainz Submitter` (case-insensitive)
 - **UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
-- **UUID prefix**: `a1b2c3d4` (must be unique)
+- **Prefix**: Any prefix of Plugin ID or UUID (must be unique)
 - **Git URL**: `https://github.com/user/plugin` (for registry lookup)
 
 **Examples:**
@@ -386,11 +389,14 @@ picard plugins --info listenbrainz
 # By UUID
 picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 
-# By UUID prefix (first 8 chars)
+# By UUID prefix
 picard plugins --info a1b2c3d4
 
 # By Plugin ID
 picard plugins --info listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
+
+# By Plugin ID prefix
+picard plugins --info listenbrainz_a1b2
 
 # By URL (not installed)
 picard plugins --info https://github.com/user/plugin
