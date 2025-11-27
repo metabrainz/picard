@@ -718,7 +718,7 @@ class PluginCLI:
             import shutil
 
             shutil.rmtree(temp_path)
-            source.sync(temp_path)
+            source.sync(temp_path, shallow=True)
 
             # Check for MANIFEST.toml
             manifest_path = temp_path / 'MANIFEST.toml'
@@ -973,7 +973,11 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 
             self._out.print(f'Fetching from {target}...')
             source = PluginSourceGit(target, None)
-            source.sync(temp_path)
+            # Remove temp dir so git can create it
+            import shutil
+
+            shutil.rmtree(temp_path)
+            source.sync(temp_path, shallow=True)
 
             manifest_path = temp_path / 'MANIFEST.toml'
             if manifest_path.exists():

@@ -93,13 +93,16 @@ class PluginSourceGit(PluginSource):
         self.ref = ref
         self.resolved_ref = None  # Will be set after sync
 
-    def sync(self, target_directory: Path):
+    def sync(self, target_directory: Path, shallow: bool = False):
         if target_directory.is_dir():
             repo = pygit2.Repository(target_directory.absolute())
             for remote in repo.remotes:
                 remote.fetch(callbacks=GitRemoteCallbacks())
         else:
-            repo = pygit2.clone_repository(self.url, target_directory.absolute(), callbacks=GitRemoteCallbacks())
+            depth = 1 if shallow else 0
+            repo = pygit2.clone_repository(
+                self.url, target_directory.absolute(), callbacks=GitRemoteCallbacks(), depth=depth
+            )
 
         if self.ref:
             try:
