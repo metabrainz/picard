@@ -173,7 +173,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 |---------|--------|-------|-------------|
 | `--list` / `-l` | ✅ Done | 1.3 | List all installed plugins |
 | `--install <url>` / `-i` | ✅ Done | 1.1 | Install plugin from git URL |
-| `--install <name>` | ⏳ TODO | 3.3 | Install official plugin by name |
+| `--install <name>` | ✅ Done | 3.3 | Install official plugin by name |
 | `--uninstall <name>` / `-u` | ✅ Done | 1.1 | Uninstall plugin |
 | `--enable <name>` / `-e` | ✅ Done | 1.1 | Enable plugin |
 | `--disable <name>` / `-d` | ✅ Done | 1.1 | Disable plugin |
@@ -191,13 +191,13 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--force-blacklisted` | ✅ Done | 1.8 | Override blacklist warning |
 | `--validate <url>` | ✅ Done | 2.1 | Validate plugin MANIFEST |
 | `--manifest [target]` | ✅ Done | 2.1 | Show MANIFEST.toml (template or from plugin) |
-| `--browse` | ⏳ TODO | 3.3 | Browse official plugins |
-| `--search <term>` | ⏳ TODO | 3.3 | Search official plugins |
+| `--browse` | ✅ Done | 3.3 | Browse official plugins |
+| `--search <term>` | ✅ Done | 3.3 | Search official plugins |
 | `--check-blacklist <url>` | ✅ Done | 1.8 | Check if URL is blacklisted |
 | `--refresh-registry` | ⏳ TODO | 3.2 | Force refresh plugin registry cache |
 | `--trust-community` | ⏳ TODO | 3.2 | Skip community plugin warnings |
-| `--trust <level>` | ⏳ TODO | 3.3 | Filter by trust level |
-| `--category <cat>` | ⏳ TODO | 3.3 | Filter by category |
+| `--trust <level>` | ✅ Done | 3.3 | Filter by trust level (with --browse/--search) |
+| `--category <cat>` | ✅ Done | 3.3 | Filter by category (with --browse/--search) |
 
 ---
 
@@ -266,7 +266,7 @@ picard plugins --install url1 url2 url3
 
 ---
 
-### Install Official Plugin (Phase 3)
+### Install Official Plugin
 
 **Command:** `picard plugins --install <name>`
 
@@ -482,7 +482,7 @@ picard plugins --install https://github.com/user/plugin --reinstall --yes
 
 ---
 
-### Browse Official Plugins (Phase 3)
+### Browse Official Plugins
 
 **Command:** `picard plugins --browse`
 
@@ -505,7 +505,7 @@ picard plugins --browse --trust official,trusted
 
 ---
 
-### Search Plugins (Phase 3)
+### Search Plugins
 
 **Command:** `picard plugins --search <term>`
 
@@ -518,6 +518,10 @@ picard plugins --search listenbrainz
 
 # Search by keyword
 picard plugins --search "cover art"
+
+# Search with filters
+picard plugins --search metadata --category metadata
+picard plugins --search script --trust official
 ```
 
 ---
