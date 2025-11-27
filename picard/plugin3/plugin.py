@@ -74,6 +74,22 @@ class PluginSourceSyncError(Exception):
     pass
 
 
+class PluginAlreadyEnabledError(Exception):
+    """Raised when trying to enable an already enabled plugin."""
+
+    def __init__(self, plugin_id):
+        self.plugin_id = plugin_id
+        super().__init__(f"Plugin {plugin_id} is already enabled")
+
+
+class PluginAlreadyDisabledError(Exception):
+    """Raised when trying to disable an already disabled plugin."""
+
+    def __init__(self, plugin_id):
+        self.plugin_id = plugin_id
+        super().__init__(f"Plugin {plugin_id} is already disabled")
+
+
 class PluginSource:
     """Abstract class for plugin sources"""
 
@@ -291,15 +307,16 @@ class Plugin:
         # Validate manifest
         errors = self.manifest.validate()
         if errors:
-            error_list = '\n  '.join(errors)
-            raise ValueError(f'Invalid MANIFEST.toml for {self.plugin_id}:\n  {error_list}')
+            from picard.plugin3.manager import PluginManifestInvalidError
+
+            raise PluginManifestInvalidError(errors)
 
     def load_module(self):
         """Load corresponding module from source path"""
         if self.state == PluginState.LOADED:
             return self._module
         if self.state == PluginState.ENABLED:
-            raise ValueError(f'Plugin {self.plugin_id} is already enabled')
+            raise PluginAlreadyEnabledError(self.plugin_id)
 
         module_file = self.local_path.joinpath('__init__.py')
         spec = importlib.util.spec_from_file_location(self.module_name, module_file)
@@ -320,7 +337,7 @@ class Plugin:
     def enable(self, tagger) -> None:
         """Enable the plugin"""
         if self.state == PluginState.ENABLED:
-            raise ValueError(f'Plugin {self.plugin_id} is already enabled')
+            raise PluginAlreadyEnabledError(self.plugin_id)
 
         api = PluginApi(self.manifest, tagger)
         self._module.enable(api)
@@ -329,7 +346,7 @@ class Plugin:
     def disable(self) -> None:
         """Disable the plugin"""
         if self.state == PluginState.DISABLED:
-            raise ValueError(f'Plugin {self.plugin_id} is already disabled')
+            raise PluginAlreadyDisabledError(self.plugin_id)
 
         if hasattr(self._module, 'disable'):
             self._module.disable()

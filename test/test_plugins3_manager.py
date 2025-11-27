@@ -53,12 +53,14 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_get_plugin_uuid_missing(self):
         """Test _get_plugin_uuid when UUID is missing."""
+        from picard.plugin3.manager import PluginNoUUIDError
+
         manager = PluginManager(None)
         mock_plugin = Mock()
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = None
 
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaises(PluginNoUUIDError) as context:
             manager._get_plugin_uuid(mock_plugin)
 
         self.assertIn('has no UUID', str(context.exception))

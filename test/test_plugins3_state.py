@@ -78,6 +78,7 @@ class TestPluginState(PicardTestCase):
 
         from picard.plugin3.plugin import (
             Plugin,
+            PluginAlreadyEnabledError,
             PluginState,
         )
 
@@ -87,7 +88,7 @@ class TestPluginState(PicardTestCase):
         plugin._module = Mock()
         plugin.manifest = Mock()
 
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaises(PluginAlreadyEnabledError) as context:
             plugin.enable(mock_tagger)
 
         self.assertIn('already enabled', str(context.exception))
@@ -98,6 +99,7 @@ class TestPluginState(PicardTestCase):
 
         from picard.plugin3.plugin import (
             Plugin,
+            PluginAlreadyDisabledError,
             PluginState,
         )
 
@@ -105,7 +107,7 @@ class TestPluginState(PicardTestCase):
         plugin.state = PluginState.DISABLED
         plugin._module = Mock()
 
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaises(PluginAlreadyDisabledError) as context:
             plugin.disable()
 
         self.assertIn('already disabled', str(context.exception))
@@ -211,13 +213,14 @@ class TestPluginState(PicardTestCase):
 
         from picard.plugin3.plugin import (
             Plugin,
+            PluginAlreadyEnabledError,
             PluginState,
         )
 
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
 
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaises(PluginAlreadyEnabledError) as context:
             plugin.load_module()
 
         self.assertIn('already enabled', str(context.exception))
@@ -228,6 +231,7 @@ class TestPluginState(PicardTestCase):
 
         from picard.plugin3.plugin import (
             Plugin,
+            PluginAlreadyEnabledError,
             PluginState,
         )
 
@@ -237,7 +241,7 @@ class TestPluginState(PicardTestCase):
         plugin._module = Mock()
         plugin.manifest = Mock()
 
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaises(PluginAlreadyEnabledError) as context:
             plugin.enable(mock_tagger)
 
         self.assertIn('already enabled', str(context.exception))

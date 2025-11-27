@@ -123,6 +123,14 @@ class PluginRefSwitchError(PluginManagerError):
         super().__init__(f"Cannot switch to ref {ref}: {original_error}")
 
 
+class PluginNoUUIDError(PluginManagerError):
+    """Raised when plugin has no UUID in manifest."""
+
+    def __init__(self, plugin_id):
+        self.plugin_id = plugin_id
+        super().__init__(f"Plugin {plugin_id} has no UUID")
+
+
 def get_plugin_directory_name(manifest) -> str:
     """Get plugin directory name from manifest (sanitized name + full UUID).
 
@@ -224,9 +232,9 @@ class PluginManager:
             raise PluginManifestInvalidError(errors)
 
     def _get_plugin_uuid(self, plugin: Plugin):
-        """Get plugin UUID, raising ValueError if not available."""
+        """Get plugin UUID, raising PluginNoUUIDError if not available."""
         if not plugin.manifest or not plugin.manifest.uuid:
-            raise ValueError(f'Plugin {plugin.plugin_id} has no UUID')
+            raise PluginNoUUIDError(plugin.plugin_id)
         return plugin.manifest.uuid
 
     def _get_config_value(self, *keys, default=None):
