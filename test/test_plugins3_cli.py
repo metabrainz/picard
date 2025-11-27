@@ -62,6 +62,23 @@ class TestPluginCLI(PicardTestCase):
         self.assertEqual(exit_code, 2)
         self.assertIn('not found', stderr)
 
+    def test_find_plugin_by_prefix(self):
+        """Test finding plugin by Plugin ID prefix."""
+        from picard.plugin3.cli import PluginCLI
+
+        # Create plugin with full Plugin ID
+        mock_plugin = create_mock_plugin(name='example_plugin_test-uuid-1234', display_name='Example Plugin')
+        mock_manager = Mock(plugins=[mock_plugin])
+
+        output = Mock()
+        args = Mock()
+        cli = PluginCLI(mock_manager, args, output)
+
+        # Should match by Plugin ID prefix
+        result = cli._find_plugin('example_plugin')
+
+        self.assertEqual(result, mock_plugin)
+
     def test_status_command(self):
         """Test status command shows plugin state."""
         from picard.plugin3.plugin import PluginState
