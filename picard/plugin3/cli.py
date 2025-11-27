@@ -317,6 +317,14 @@ class PluginCLI:
                         return ExitCode.NOT_FOUND
                 else:
                     url = url_or_id
+
+                    # Check blacklist first (before prompting user)
+                    if not force_blacklisted:
+                        is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
+                        if is_blacklisted:
+                            self._out.error(f'Plugin is blacklisted: {reason}')
+                            return ExitCode.ERROR
+
                     # Check trust level for unregistered plugins
                     trust_level = self._manager._registry.get_trust_level(url)
                     if trust_level == 'unregistered':
