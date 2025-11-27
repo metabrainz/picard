@@ -127,8 +127,12 @@ class PluginOutput:
         return self._colorize(text, self.CYAN)
 
     # Semantic display methods - describe WHAT the data is
-    def d_plugin_name(self, name):
-        """Display plugin name."""
+    def d_id(self, identifier):
+        """Display identifier (plugin_id, etc.)."""
+        return self._colorize(identifier, self.BOLD)
+
+    def d_name(self, name):
+        """Display human-readable name."""
         return self._colorize(name, self.BOLD)
 
     def d_version(self, version):

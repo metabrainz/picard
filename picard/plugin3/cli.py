@@ -172,7 +172,7 @@ class PluginCLI:
             else:
                 status = self._out.d_status_disabled()
 
-            self._out.print(f'  {self._out.d_plugin_name(display_name)} ({status})')
+            self._out.print(f'  {self._out.d_name(display_name)} ({status})')
 
             if hasattr(plugin, 'manifest') and plugin.manifest:
                 desc = plugin.manifest.description()
@@ -209,7 +209,7 @@ class PluginCLI:
         metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
         git_info = self._format_git_info(metadata)
 
-        self._out.print(f'Plugin: {self._out.d_plugin_name(plugin.manifest.name())}')
+        self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}')
 
         # Show short description on one line (required field)
         desc = plugin.manifest.description()
@@ -271,7 +271,7 @@ class PluginCLI:
         if error:
             return error
 
-        self._out.print(f'Plugin: {self._out.d_plugin_name(plugin.plugin_id)}')
+        self._out.print(f'Plugin: {self._out.d_id(plugin.plugin_id)}')
         self._out.print(f'State: {plugin.state.value}')
 
         if plugin.manifest:
@@ -377,7 +377,7 @@ class PluginCLI:
                         pass  # Ignore errors checking status
 
                 plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
-                self._out.success(f'Plugin {self._out.d_plugin_name(plugin_id)} installed successfully')
+                self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
                 from picard.plugin3.manager import PluginDirtyError
@@ -389,7 +389,7 @@ class PluginCLI:
                     if not success:
                         return ExitCode.ERROR if yes else ExitCode.SUCCESS
                     plugin_id = result
-                    self._out.success(f'Plugin {self._out.d_plugin_name(plugin_id)} installed successfully')
+                    self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                     self._out.info('Restart Picard to load the plugin')
                 else:
                     self._out.error(f'Failed to install plugin: {e}')
@@ -408,7 +408,7 @@ class PluginCLI:
 
             # Confirmation prompt unless --yes flag
             if not yes:
-                if not self._out.yesno(f'Uninstall plugin {self._out.d_plugin_name(plugin.plugin_id)}?'):
+                if not self._out.yesno(f'Uninstall plugin {self._out.d_id(plugin.plugin_id)}?'):
                     self._out.print('Cancelled')
                     continue
 
@@ -421,7 +421,7 @@ class PluginCLI:
                 purge_this = purge
 
             try:
-                self._out.print(f'Uninstalling {self._out.d_plugin_name(plugin.plugin_id)}...')
+                self._out.print(f'Uninstalling {self._out.d_id(plugin.plugin_id)}...')
                 self._manager.uninstall_plugin(plugin, purge_this)
                 if purge_this:
                     self._out.success('Plugin and configuration removed')
@@ -440,7 +440,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Enabling {self._out.d_plugin_name(plugin.plugin_id)}...')
+                self._out.print(f'Enabling {self._out.d_id(plugin.plugin_id)}...')
                 self._manager.enable_plugin(plugin)
                 self._out.success(f'Plugin {self._out.d_status_enabled("enabled")}')
                 self._out.info('Restart Picard to load the plugin')
@@ -457,7 +457,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Disabling {self._out.d_plugin_name(plugin.plugin_id)}...')
+                self._out.print(f'Disabling {self._out.d_id(plugin.plugin_id)}...')
                 self._manager.disable_plugin(plugin)
                 self._out.success(f'Plugin {self._out.d_status_disabled("disabled")}')
                 self._out.info('Restart Picard for changes to take effect')
@@ -474,7 +474,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Updating {self._out.d_plugin_name(plugin.plugin_id)}...')
+                self._out.print(f'Updating {self._out.d_id(plugin.plugin_id)}...')
                 old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(plugin)
 
                 if old_commit == new_commit:
@@ -595,7 +595,7 @@ class PluginCLI:
                 # commit_date is Unix timestamp, fromtimestamp uses local timezone
                 date_str = datetime.fromtimestamp(commit_date).strftime('%Y-%m-%d %H:%M')
                 self._out.info(
-                    f'{self._out.d_plugin_name(name)}: '
+                    f'{self._out.d_name(name)}: '
                     f'{self._out.d_commit_old(current)} {self._out.d_arrow()} {self._out.d_commit_new(latest)} '
                     f'{self._out.d_date(f"({date_str})")}'
                 )
@@ -611,7 +611,7 @@ class PluginCLI:
             return error
 
         try:
-            self._out.print(f'Switching {self._out.d_plugin_name(plugin.plugin_id)} to ref: {ref}...')
+            self._out.print(f'Switching {self._out.d_id(plugin.plugin_id)} to ref: {ref}...')
             old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
 
             self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
@@ -707,7 +707,7 @@ class PluginCLI:
             self._out.error(f'Multiple plugins found with name "{identifier}":')
             for plugin in matches:
                 self._out.error(
-                    f'  - {self._out.d_plugin_name(plugin.plugin_id)} (UUID: {self._out.d_uuid(plugin.manifest.uuid)})'
+                    f'  - {self._out.d_id(plugin.plugin_id)} (UUID: {self._out.d_uuid(plugin.manifest.uuid)})'
                 )
             self._out.error('Please use the Plugin ID or UUID to be more specific')
             return None, ExitCode.ERROR
@@ -856,7 +856,7 @@ class PluginCLI:
             self._out.success('Validation passed')
             self._out.nl()
             self._out.print('Plugin Information:')
-            self._out.info(f'  Name: {self._out.d_plugin_name(manifest.name())}')
+            self._out.info(f'  Name: {self._out.d_name(manifest.name())}')
 
             # Show available name translations
             name_i18n = manifest._data.get('name_i18n', {})
@@ -943,7 +943,7 @@ class PluginCLI:
             # Show plugins
             for plugin in plugins:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_plugin_name(plugin["name"])}')
+                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
                 categories = plugin.get('categories', [])
                 if categories:
@@ -995,7 +995,7 @@ class PluginCLI:
 
             for plugin in results:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_plugin_name(plugin["name"])}')
+                self._out.print(f'{trust_badge} {plugin["id"]} - {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
                 self._out.print('')
 
