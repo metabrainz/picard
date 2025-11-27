@@ -183,6 +183,10 @@ class PluginOutput:
         """Display warning text in red."""
         return self._colorize(text, self.RED)
 
+    def d_command(self, text):
+        """Display command or option (e.g., --reinstall, picard plugins ...)."""
+        return self._colorize(text, self.CYAN + self.BOLD)
+
     def d_prompt(self, question, default='N'):
         """Format a yes/no prompt with colorized question and options."""
         if default.upper() == 'Y':

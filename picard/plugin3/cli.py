@@ -326,7 +326,10 @@ class PluginCLI:
                                 existing_plugin.manifest.name() if existing_plugin.manifest else existing_plugin.name
                             )
                             self._out.info(f'Plugin "{plugin_name}" is already installed from this URL')
-                            self._out.info(f'Use --reinstall to reinstall: picard plugins --install {url} --reinstall')
+                            self._out.info(
+                                f'Use {self._out.d_command("--reinstall")} to reinstall: '
+                                f'{self._out.d_command(f"picard plugins --install {url} --reinstall")}'
+                            )
                             continue
 
                     # Check blacklist (before prompting user)
