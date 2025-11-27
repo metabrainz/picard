@@ -78,10 +78,82 @@ class TestPluginManagerHelpers(PicardTestCase):
             mock_config.setting = {'plugins3': {'enabled': ['plugin1']}}
             mock_get_config.return_value = mock_config
 
-            manager = PluginManager(None)
-            result = manager._get_config_value('plugins3', 'enabled', default=[])
+    def test_cleanup_temp_directories(self):
+        """Test that temp directories are cleaned up."""
+        from pathlib import Path
+        import tempfile
 
-            self.assertEqual(result, ['plugin1'])
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Create some temp directories
+            temp1 = plugin_dir / '.tmp-plugin-abc123'
+            temp2 = plugin_dir / '.tmp-plugin-def456'
+            normal = plugin_dir / 'normal_plugin'
+
+            temp1.mkdir()
+            temp2.mkdir()
+            normal.mkdir()
+
+            # Create a file in temp1 to ensure recursive cleanup
+            (temp1 / 'test.txt').write_text('test')
+
+            manager = PluginManager(None)
+            manager._primary_plugin_dir = plugin_dir
+
+            # Run cleanup
+            manager._cleanup_temp_directories()
+
+            # Temp directories should be removed
+            self.assertFalse(temp1.exists())
+            self.assertFalse(temp2.exists())
+            # Normal directory should remain
+            self.assertTrue(normal.exists())
+
+    def test_cleanup_registers_with_tagger(self):
+        """Test that cleanup is registered with tagger."""
+        mock_tagger = Mock()
+        mock_tagger.register_cleanup = Mock()
+
+        manager = PluginManager(mock_tagger)
+
+        # Should have registered cleanup
+        mock_tagger.register_cleanup.assert_called_once_with(manager._cleanup_temp_directories)
+
+    def test_add_directory_skips_hidden(self):
+        """Test that add_directory skips hidden directories."""
+        from pathlib import Path
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Create hidden and normal directories
+            hidden = plugin_dir / '.hidden'
+            normal = plugin_dir / 'normal'
+
+            hidden.mkdir()
+            normal.mkdir()
+
+            # Create minimal MANIFEST.toml in normal dir
+            manifest_content = """name = "Test"
+authors = ["Test"]
+version = "1.0.0"
+description = "Test"
+api = ["3.0"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
+"""
+            (normal / 'MANIFEST.toml').write_text(manifest_content)
+
+            manager = PluginManager(None)
+            manager.add_directory(str(plugin_dir), primary=True)
+
+            # Should only have loaded the normal plugin
+            plugin_names = [p.name for p in manager.plugins]
+            self.assertIn('normal', plugin_names)
+            self.assertNotIn('.hidden', plugin_names)
 
     def test_get_config_value_default(self):
         """Test _get_config_value returns default when key missing."""

@@ -94,9 +94,24 @@ class PluginManager:
             cache_path = self._primary_plugin_dir.parent / 'registry_cache.json'
         self._registry = PluginRegistry(cache_path=cache_path)
 
+        # Register cleanup and clean up any leftover temp directories
+        if tagger:
+            tagger.register_cleanup(self._cleanup_temp_directories)
+        self._cleanup_temp_directories()
+
     @property
     def plugins(self):
         return self._plugins
+
+    def _cleanup_temp_directories(self):
+        """Remove leftover temporary plugin directories from failed installs."""
+        if not self._primary_plugin_dir or not self._primary_plugin_dir.exists():
+            return
+
+        for entry in self._primary_plugin_dir.iterdir():
+            if entry.is_dir() and entry.name.startswith('.tmp-'):
+                shutil.rmtree(entry, ignore_errors=True)
+                log.debug('Cleaned up temporary plugin directory: %s', entry)
 
     def _validate_manifest(self, manifest):
         """Validate manifest and raise ValueError if invalid."""
@@ -171,7 +186,7 @@ class PluginManager:
             os.makedirs(dir_path)
 
         for entry in dir_path.iterdir():
-            if entry.is_dir():
+            if entry.is_dir() and not entry.name.startswith('.'):
                 plugin = self._load_plugin(dir_path, entry.name)
                 if plugin:
                     log.debug('Found plugin %s in %s', plugin.name, plugin.local_path)
@@ -190,8 +205,6 @@ class PluginManager:
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
         """
-        from pathlib import Path
-        import tempfile
 
         from picard.plugin3.registry import get_local_repository_path
 
@@ -206,14 +219,17 @@ class PluginManager:
         if local_path:
             return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref)
 
-        # Handle git URL
-        # Use shorter temp name to avoid truncation
+        # Handle git URL - use temp dir in plugin directory for atomic rename
         import hashlib
 
         url_hash = hashlib.md5(url.encode()).hexdigest()[:8]
-        temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
+        temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
 
         try:
+            # Remove temp dir if it exists from previous failed install
+            if temp_path.exists():
+                shutil.rmtree(temp_path)
+
             # Clone to temporary location
             source = PluginSourceGit(url, ref)
             commit_id = source.sync(temp_path)
@@ -248,8 +264,8 @@ class PluginManager:
                     raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
                 shutil.rmtree(final_path)
 
-            # Move from temp to final location
-            shutil.move(str(temp_path), str(final_path))
+            # Atomic rename from temp to final location
+            temp_path.rename(final_path)
 
             # Store plugin metadata
             self._save_plugin_metadata(
