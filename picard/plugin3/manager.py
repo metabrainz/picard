@@ -77,6 +77,52 @@ class PluginAlreadyInstalledError(PluginManagerError):
         super().__init__(f"Plugin {plugin_name} is already installed")
 
 
+class PluginBlacklistedError(PluginManagerError):
+    """Raised when trying to install a blacklisted plugin."""
+
+    def __init__(self, url, reason, uuid=None):
+        self.url = url
+        self.reason = reason
+        self.uuid = uuid
+        super().__init__(f"Plugin is blacklisted: {reason}")
+
+
+class PluginManifestNotFoundError(PluginManagerError):
+    """Raised when MANIFEST.toml is not found in plugin source."""
+
+    def __init__(self, source):
+        self.source = source
+        super().__init__(f"No MANIFEST.toml found in {source}")
+
+
+class PluginManifestInvalidError(PluginManagerError):
+    """Raised when MANIFEST.toml validation fails."""
+
+    def __init__(self, errors):
+        self.errors = errors
+        error_list = '\n  '.join(errors) if isinstance(errors, list) else str(errors)
+        super().__init__(f"Invalid MANIFEST.toml:\n  {error_list}")
+
+
+class PluginNoSourceError(PluginManagerError):
+    """Raised when plugin has no stored source URL for update/switch-ref."""
+
+    def __init__(self, plugin_id, operation):
+        self.plugin_id = plugin_id
+        self.operation = operation
+        super().__init__(f"Plugin {plugin_id} has no stored URL, cannot {operation}")
+
+
+class PluginRefSwitchError(PluginManagerError):
+    """Raised when switching to a git ref fails."""
+
+    def __init__(self, plugin_id, ref, original_error):
+        self.plugin_id = plugin_id
+        self.ref = ref
+        self.original_error = original_error
+        super().__init__(f"Cannot switch to ref {ref}: {original_error}")
+
+
 def get_plugin_directory_name(manifest) -> str:
     """Get plugin directory name from manifest (sanitized name + full UUID).
 
@@ -172,11 +218,10 @@ class PluginManager:
         return []
 
     def _validate_manifest(self, manifest):
-        """Validate manifest and raise ValueError if invalid."""
+        """Validate manifest and raise PluginManifestInvalidError if invalid."""
         errors = manifest.validate()
         if errors:
-            error_list = '\n  '.join(errors) if isinstance(errors, list) else str(errors)
-            raise ValueError(f'Invalid MANIFEST.toml:\n  {error_list}')
+            raise PluginManifestInvalidError(errors)
 
     def _get_plugin_uuid(self, plugin: Plugin):
         """Get plugin UUID, raising ValueError if not available."""
@@ -274,7 +319,7 @@ class PluginManager:
         if not force_blacklisted:
             is_blacklisted, reason = self._registry.is_blacklisted(url)
             if is_blacklisted:
-                raise ValueError(f'Plugin is blacklisted: {reason}')
+                raise PluginBlacklistedError(url, reason)
 
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
@@ -301,7 +346,7 @@ class PluginManager:
             # Read MANIFEST to get plugin ID
             manifest_path = temp_path / 'MANIFEST.toml'
             if not manifest_path.exists():
-                raise ValueError(f'No MANIFEST.toml found in {url}')
+                raise PluginManifestNotFoundError(url)
 
             with open(manifest_path, 'rb') as f:
                 from picard.plugin3.manifest import PluginManifest
@@ -318,7 +363,7 @@ class PluginManager:
             if not force_blacklisted:
                 is_blacklisted, reason = self._registry.is_blacklisted(url, manifest.uuid)
                 if is_blacklisted:
-                    raise ValueError(f'Plugin is blacklisted: {reason}')
+                    raise PluginBlacklistedError(url, reason, manifest.uuid)
 
             final_path = self._primary_plugin_dir / plugin_name
 
@@ -423,7 +468,7 @@ class PluginManager:
         # Read MANIFEST to get plugin ID
         manifest_path = install_path / 'MANIFEST.toml'
         if not manifest_path.exists():
-            raise ValueError(f'No MANIFEST.toml found in {local_path}')
+            raise PluginManifestNotFoundError(local_path)
 
         with open(manifest_path, 'rb') as f:
             from picard.plugin3.manifest import PluginManifest
@@ -496,7 +541,7 @@ class PluginManager:
         uuid = self._get_plugin_uuid(plugin)
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
-            raise ValueError(f'Plugin {plugin.plugin_id} has no stored URL, cannot switch ref')
+            raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
 
         old_ref = metadata.get('ref', 'main')
         old_commit = metadata.get('commit', 'unknown')
@@ -516,7 +561,7 @@ class PluginManager:
                 rollback_source = PluginSourceGit(metadata['url'], old_ref)
             rollback_source.sync(plugin.local_path)
             plugin.read_manifest()  # Restore old manifest
-            raise ValueError(f'Cannot switch to ref {ref}: {e}') from e
+            raise PluginRefSwitchError(plugin.plugin_id, ref, e) from e
 
         # Update metadata with new ref
         self._save_plugin_metadata(
@@ -584,7 +629,7 @@ class PluginManager:
         uuid = self._get_plugin_uuid(plugin)
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
-            raise ValueError(f'Plugin {plugin.plugin_id} has no stored URL, cannot update')
+            raise PluginNoSourceError(plugin.plugin_id, 'update')
 
         old_version = plugin.manifest.version if plugin.manifest else 'unknown'
         old_url = metadata['url']

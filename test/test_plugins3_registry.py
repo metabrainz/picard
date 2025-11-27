@@ -207,7 +207,9 @@ class TestPluginRegistry(PicardTestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
 
-            with self.assertRaises(ValueError) as context:
+            from picard.plugin3.manager import PluginBlacklistedError
+
+            with self.assertRaises(PluginBlacklistedError) as context:
                 manager.install_plugin('https://github.com/badactor/malicious-plugin')
 
             self.assertIn('blacklisted', str(context.exception).lower())

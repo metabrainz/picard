@@ -63,7 +63,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_plugin_no_metadata(self):
         """Test that updating plugin without metadata raises error."""
-        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.manager import PluginManager, PluginNoSourceError
         from picard.plugin3.plugin import Plugin
 
         mock_tagger = Mock()
@@ -72,7 +72,8 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
 
-        with self.assertRaises(ValueError) as context:
+        # Should raise PluginNoSourceError when no metadata
+        with self.assertRaises(PluginNoSourceError) as context:
             manager.update_plugin(mock_plugin)
 
         self.assertIn('no stored URL', str(context.exception))
@@ -155,7 +156,7 @@ class TestPluginInstall(PicardTestCase):
         """Test switching ref for plugin without metadata raises error."""
         from pathlib import Path
 
-        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.manager import PluginManager, PluginNoSourceError
         from picard.plugin3.plugin import Plugin
 
         mock_tagger = Mock()
@@ -165,7 +166,7 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
 
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaises(PluginNoSourceError) as context:
             manager.switch_ref(mock_plugin, 'v1.0.0')
 
         self.assertIn('no stored URL', str(context.exception))
@@ -219,7 +220,9 @@ class TestPluginInstall(PicardTestCase):
                 mock_source.sync = fake_sync
                 mock_source_class.return_value = mock_source
 
-                with self.assertRaises(ValueError) as context:
+                from picard.plugin3.manager import PluginManifestNotFoundError
+
+                with self.assertRaises(PluginManifestNotFoundError) as context:
                     manager.install_plugin('https://example.com/no-manifest.git')
 
                 self.assertIn('No MANIFEST.toml', str(context.exception))

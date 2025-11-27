@@ -383,7 +383,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()
 
-            with self.assertRaises(ValueError) as context:
+            from picard.plugin3.manager import PluginManifestNotFoundError
+
+            with self.assertRaises(PluginManifestNotFoundError) as context:
                 manager.install_plugin(str(bad_plugin_dir))
 
             self.assertIn('No MANIFEST.toml', str(context.exception))

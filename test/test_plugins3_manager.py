@@ -44,7 +44,9 @@ class TestPluginManagerHelpers(PicardTestCase):
         mock_manifest = Mock()
         mock_manifest.validate.return_value = ['Error 1', 'Error 2']
 
-        with self.assertRaises(ValueError) as context:
+        from picard.plugin3.manager import PluginManifestInvalidError
+
+        with self.assertRaises(PluginManifestInvalidError) as context:
             manager._validate_manifest(mock_manifest)
 
         self.assertIn('Invalid MANIFEST.toml', str(context.exception))
