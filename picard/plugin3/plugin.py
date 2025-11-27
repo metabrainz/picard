@@ -118,17 +118,28 @@ class PluginSourceGit(PluginSource):
                     remote.fetch(callbacks=GitRemoteCallbacks())
         else:
             depth = 1 if shallow else 0
-            # Only use checkout_branch for simple branch names (not origin/branch, tags, or commits)
-            checkout_branch = None
-            if single_branch and self.ref and not self.ref.startswith('origin/') and not self.ref.startswith('refs/'):
-                checkout_branch = self.ref
-            repo = pygit2.clone_repository(
-                self.url,
-                target_directory.absolute(),
-                callbacks=GitRemoteCallbacks(),
-                depth=depth,
-                checkout_branch=checkout_branch,
-            )
+            checkout_branch = self.ref if (self.ref and single_branch and not self.ref.startswith('refs/')) else None
+
+            try:
+                repo = pygit2.clone_repository(
+                    self.url,
+                    target_directory.absolute(),
+                    callbacks=GitRemoteCallbacks(),
+                    depth=depth,
+                    checkout_branch=checkout_branch,
+                )
+            except (KeyError, pygit2.GitError):
+                # checkout_branch failed (likely a tag or commit, not a branch)
+                # Fall back to full clone without single-branch optimization
+                if checkout_branch:
+                    repo = pygit2.clone_repository(
+                        self.url,
+                        target_directory.absolute(),
+                        callbacks=GitRemoteCallbacks(),
+                        depth=depth,
+                    )
+                else:
+                    raise
 
         if self.ref:
             try:

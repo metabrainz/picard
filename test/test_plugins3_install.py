@@ -212,7 +212,7 @@ class TestPluginInstall(PicardTestCase):
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
-                def fake_sync(path):
+                def fake_sync(path, **kwargs):
                     path.mkdir(parents=True, exist_ok=True)
                     return 'abc123'
 
@@ -249,7 +249,7 @@ class TestPluginInstall(PicardTestCase):
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
-                def fake_sync(path):
+                def fake_sync(path, **kwargs):
                     path.mkdir(parents=True, exist_ok=True)
                     (path / 'MANIFEST.toml').touch()
                     return 'abc123'
@@ -296,7 +296,7 @@ class TestPluginInstall(PicardTestCase):
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
-                def fake_sync(path):
+                def fake_sync(path, **kwargs):
                     path.mkdir(parents=True, exist_ok=True)
                     (path / 'MANIFEST.toml').touch()
                     return 'abc123'
@@ -364,6 +364,11 @@ class TestPluginInstall(PicardTestCase):
         mock_manager = Mock()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(return_value='test-plugin')
+        mock_manager._find_plugin_by_url = Mock(return_value=None)
+        mock_manager._registry = Mock()
+        mock_manager._registry.find_plugin = Mock(return_value=None)
+        mock_manager._registry.is_blacklisted = Mock(return_value=(False, None))
+        mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()
@@ -383,6 +388,7 @@ class TestPluginInstall(PicardTestCase):
         args.ref = None
         args.reinstall = False
         args.force_blacklisted = False
+        args.yes = True
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -404,6 +410,11 @@ class TestPluginInstall(PicardTestCase):
         mock_manager = Mock()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(side_effect=Exception('Install failed'))
+        mock_manager._find_plugin_by_url = Mock(return_value=None)
+        mock_manager._registry = Mock()
+        mock_manager._registry.find_plugin = Mock(return_value=None)
+        mock_manager._registry.is_blacklisted = Mock(return_value=(False, None))
+        mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger.pluginmanager3 = mock_manager
 
         args = Mock()

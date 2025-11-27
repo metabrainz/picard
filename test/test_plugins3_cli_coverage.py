@@ -66,6 +66,7 @@ class TestPluginCLIErrors(PicardTestCase):
         args.check_updates = False
         args.browse = False
         args.search = None
+        args.check_blacklist = None
         args.switch_ref = None
         args.clean_config = None
         args.validate = None
@@ -97,6 +98,7 @@ class TestPluginCLIErrors(PicardTestCase):
         args.check_updates = False
         args.browse = False
         args.search = None
+        args.check_blacklist = None
         args.switch_ref = None
         args.clean_config = None
         args.validate = None
@@ -337,6 +339,7 @@ class TestPluginCLICommands(PicardTestCase):
         manager = Mock()
         manager.install_plugin.side_effect = ValueError('Install failed')
         manager._registry = Mock()
+        manager._find_plugin_by_url = Mock(return_value=None)
 
         args = Mock()
         args.install = ['https://example.com/plugin.git']

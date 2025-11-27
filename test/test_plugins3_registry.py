@@ -235,7 +235,7 @@ class TestPluginRegistry(PicardTestCase):
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
-                def fake_sync(path):
+                def fake_sync(path, **kwargs):
                     path.mkdir(parents=True, exist_ok=True)
                     (path / 'MANIFEST.toml').touch()
                     return 'abc123'
