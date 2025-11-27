@@ -166,7 +166,7 @@ class PluginManager:
     def _get_plugin_uuid(self, plugin: Plugin):
         """Get plugin UUID, raising ValueError if not available."""
         if not plugin.manifest or not plugin.manifest.uuid:
-            raise ValueError(f'Plugin {plugin.name} has no UUID')
+            raise ValueError(f'Plugin {plugin.plugin_id} has no UUID')
         return plugin.manifest.uuid
 
     def _get_config_value(self, *keys, default=None):
@@ -232,7 +232,7 @@ class PluginManager:
             if entry.is_dir() and not entry.name.startswith('.'):
                 plugin = self._load_plugin(dir_path, entry.name)
                 if plugin:
-                    log.debug('Found plugin %s in %s', plugin.name, plugin.local_path)
+                    log.debug('Found plugin %s in %s', plugin.plugin_id, plugin.local_path)
                     self._plugins.append(plugin)
 
         self._plugin_dirs.append(dir_path)
@@ -484,12 +484,12 @@ class PluginManager:
         if not discard_changes:
             changes = self._check_dirty_working_dir(plugin.local_path)
             if changes:
-                raise PluginDirtyError(plugin.name, changes)
+                raise PluginDirtyError(plugin.plugin_id, changes)
 
         uuid = self._get_plugin_uuid(plugin)
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
-            raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot switch ref')
+            raise ValueError(f'Plugin {plugin.plugin_id} has no stored URL, cannot switch ref')
 
         old_ref = metadata.get('ref', 'main')
         old_commit = metadata.get('commit', 'unknown')
@@ -514,7 +514,7 @@ class PluginManager:
         # Update metadata with new ref
         self._save_plugin_metadata(
             PluginMetadata(
-                name=plugin.name,
+                name=plugin.plugin_id,
                 url=metadata['url'],
                 ref=ref,
                 commit=new_commit,
@@ -572,12 +572,12 @@ class PluginManager:
         if not discard_changes:
             changes = self._check_dirty_working_dir(plugin.local_path)
             if changes:
-                raise PluginDirtyError(plugin.name, changes)
+                raise PluginDirtyError(plugin.plugin_id, changes)
 
         uuid = self._get_plugin_uuid(plugin)
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
-            raise ValueError(f'Plugin {plugin.name} has no stored URL, cannot update')
+            raise ValueError(f'Plugin {plugin.plugin_id} has no stored URL, cannot update')
 
         old_version = plugin.manifest.version if plugin.manifest else 'unknown'
         old_url = metadata['url']
@@ -598,7 +598,7 @@ class PluginManager:
         original_url, original_uuid = self._get_original_metadata(metadata, redirected, old_url, old_uuid)
         self._save_plugin_metadata(
             PluginMetadata(
-                name=plugin.name,
+                name=plugin.plugin_id,
                 url=current_url,
                 ref=metadata.get('ref'),
                 commit=new_commit,
@@ -616,9 +616,9 @@ class PluginManager:
         for plugin in self._plugins:
             try:
                 old_ver, new_ver, old_commit, new_commit = self.update_plugin(plugin)
-                results.append((plugin.name, True, old_ver, new_ver, old_commit, new_commit, None))
+                results.append((plugin.plugin_id, True, old_ver, new_ver, old_commit, new_commit, None))
             except Exception as e:
-                results.append((plugin.name, False, None, None, None, None, str(e)))
+                results.append((plugin.plugin_id, False, None, None, None, None, str(e)))
         return results
 
     def check_updates(self):
@@ -668,7 +668,7 @@ class PluginManager:
                 if current_commit != latest_commit:
                     updates.append(
                         (
-                            plugin.name,
+                            plugin.plugin_id,
                             short_commit_id(current_commit),
                             short_commit_id(latest_commit),
                             latest_commit_date,
@@ -707,7 +707,7 @@ class PluginManager:
 
         # Remove plugin config if purge requested
         if purge:
-            self._clean_plugin_config(plugin.name)
+            self._clean_plugin_config(plugin.plugin_id)
 
     def _clean_plugin_config(self, plugin_name: str):
         """Remove plugin-specific configuration."""
@@ -729,12 +729,12 @@ class PluginManager:
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
             if plugin_uuid and plugin_uuid in self._enabled_plugins:
                 try:
-                    log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.name)
+                    log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.plugin_id)
                     plugin.load_module()
                     plugin.enable(self._tagger)
                     enabled_count += 1
                 except Exception as ex:
-                    log.error('Failed initializing plugin %s from %s', plugin.name, plugin.local_path, exc_info=ex)
+                    log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
 
         log.info('Loaded %d plugin%s', enabled_count, 's' if enabled_count != 1 else '')
 
@@ -753,11 +753,11 @@ class PluginManager:
 
             is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
             if is_blacklisted:
-                log.warning('Plugin %s is blacklisted: %s', plugin.name, reason)
-                blacklisted_plugins.append((plugin.name, reason))
+                log.warning('Plugin %s is blacklisted: %s', plugin.plugin_id, reason)
+                blacklisted_plugins.append((plugin.plugin_id, reason))
 
                 if plugin_uuid in self._enabled_plugins:
-                    log.warning('Disabling blacklisted plugin %s', plugin.name)
+                    log.warning('Disabling blacklisted plugin %s', plugin.plugin_id)
                     self._enabled_plugins.discard(plugin_uuid)
                     self._save_config()
 
@@ -789,7 +789,7 @@ class PluginManager:
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
         uuid = self._get_plugin_uuid(plugin)
-        log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.name, uuid, plugin.state.value)
+        log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
 
         if self._tagger:
             plugin.load_module()
@@ -797,16 +797,16 @@ class PluginManager:
 
         self._enabled_plugins.add(uuid)
         self._save_config()
-        log.info('Plugin %s enabled (state: %s)', plugin.name, plugin.state.value)
+        log.info('Plugin %s enabled (state: %s)', plugin.plugin_id, plugin.state.value)
 
     def disable_plugin(self, plugin: Plugin):
         """Disable a plugin and save to config."""
         uuid = self._get_plugin_uuid(plugin)
-        log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.name, uuid, plugin.state.value)
+        log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
         plugin.disable()
         self._enabled_plugins.discard(uuid)
         self._save_config()
-        log.info('Plugin %s disabled (state: %s)', plugin.name, plugin.state.value)
+        log.info('Plugin %s disabled (state: %s)', plugin.plugin_id, plugin.state.value)
 
     def _load_config(self):
         """Load enabled plugins list from config."""
@@ -879,7 +879,7 @@ class PluginManager:
             if compatible_versions:
                 log.debug(
                     'Plugin "%s" is compatible (requires API %s, Picard supports %s)',
-                    plugin.name,
+                    plugin.plugin_id,
                     plugin.manifest.api_versions,
                     api_versions_tuple,
                 )
@@ -888,7 +888,7 @@ class PluginManager:
                 log.warning(
                     'Plugin "%s" from "%s" is not compatible with this version of Picard. '
                     'Plugin requires API versions %s, but Picard supports %s.',
-                    plugin.name,
+                    plugin.plugin_id,
                     plugin.local_path,
                     plugin.manifest.api_versions,
                     api_versions_tuple,

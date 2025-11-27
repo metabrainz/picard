@@ -53,7 +53,7 @@ class TestPluginManagerHelpers(PicardTestCase):
         """Test _get_plugin_uuid when UUID is missing."""
         manager = PluginManager(None)
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = None
 
         with self.assertRaises(ValueError) as context:
@@ -151,7 +151,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             manager.add_directory(str(plugin_dir), primary=True)
 
             # Should only have loaded the normal plugin
-            plugin_names = [p.name for p in manager.plugins]
+            plugin_names = [p.plugin_id for p in manager.plugins]
             self.assertIn('normal', plugin_names)
             self.assertNotIn('.hidden', plugin_names)
 
@@ -222,7 +222,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         from picard.plugin3.plugin import Plugin
 
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Mock()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'
@@ -241,7 +241,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         from picard.plugin3.plugin import Plugin
 
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Mock()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'
@@ -270,7 +270,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         from picard.plugin3.plugin import Plugin
 
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Mock()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'

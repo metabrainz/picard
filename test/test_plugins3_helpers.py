@@ -112,7 +112,7 @@ def create_mock_plugin(name='test-plugin', uuid='test-uuid-1234', **kwargs):
     from picard.plugin3.plugin import Plugin
 
     mock_plugin = Mock(spec=Plugin)
-    mock_plugin.name = name
+    mock_plugin.plugin_id = name
     mock_plugin.local_path = kwargs.get('local_path', Path(f'/tmp/{name}'))
     mock_plugin.manifest = Mock()
     mock_plugin.manifest.uuid = uuid

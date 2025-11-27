@@ -136,7 +136,7 @@ class TestPluginState(PicardTestCase):
         plugin = Plugin(Path('/tmp'), 'test-plugin')
 
         self.assertEqual(plugin.state, PluginState.DISCOVERED)
-        self.assertEqual(plugin.name, 'test-plugin')
+        self.assertEqual(plugin.plugin_id, 'test-plugin')
         self.assertEqual(plugin.module_name, 'picard.plugins.test-plugin')
 
     def test_plugin_disable_with_disable_method(self):

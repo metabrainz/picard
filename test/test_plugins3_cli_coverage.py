@@ -208,13 +208,13 @@ class TestPluginCLIFindPlugin(PicardTestCase):
 
         # Create mock plugins with same name
         plugin1 = Mock()
-        plugin1.name = 'plugin_abc123'
+        plugin1.plugin_id = 'plugin_abc123'
         plugin1.manifest = Mock()
         plugin1.manifest.name.return_value = 'Test Plugin'
         plugin1.manifest.uuid = 'uuid-1'
 
         plugin2 = Mock()
-        plugin2.name = 'plugin_def456'
+        plugin2.plugin_id = 'plugin_def456'
         plugin2.manifest = Mock()
         plugin2.manifest.name.return_value = 'Test Plugin'
         plugin2.manifest.uuid = 'uuid-2'
@@ -282,7 +282,7 @@ class TestPluginCLICommands(PicardTestCase):
         cli = PluginCLI(manager, args, output=output)
 
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
         result = cli._enable_plugins(['test-plugin'])
@@ -303,7 +303,7 @@ class TestPluginCLICommands(PicardTestCase):
         cli = PluginCLI(manager, args, output=output)
 
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
         result = cli._disable_plugins(['test-plugin'])
@@ -326,7 +326,7 @@ class TestPluginCLICommands(PicardTestCase):
         cli = PluginCLI(manager, args, output=output)
 
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
         result = cli._uninstall_plugins(['test-plugin'])

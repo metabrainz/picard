@@ -164,7 +164,7 @@ class PluginCLI:
             is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
 
             # Show manifest name (human-readable) instead of directory name
-            display_name = plugin.manifest.name() if plugin.manifest else plugin.name
+            display_name = plugin.manifest.name() if plugin.manifest else plugin.plugin_id
 
             # Display with semantic methods
             if is_enabled:
@@ -271,7 +271,7 @@ class PluginCLI:
         if error:
             return error
 
-        self._out.print(f'Plugin: {self._out.d_plugin_name(plugin.name)}')
+        self._out.print(f'Plugin: {self._out.d_plugin_name(plugin.plugin_id)}')
         self._out.print(f'State: {plugin.state.value}')
 
         if plugin.manifest:
@@ -280,10 +280,10 @@ class PluginCLI:
             api_versions = plugin.manifest._data.get('api', [])
             self._out.print(f'API Versions: {", ".join(api_versions)}')
 
-        enabled_status = 'yes' if plugin.name in self._manager._enabled_plugins else 'no'
+        enabled_status = 'yes' if plugin.plugin_id in self._manager._enabled_plugins else 'no'
         self._out.print(f'Enabled in config: {enabled_status}')
 
-        metadata = self._manager._get_plugin_metadata(plugin.name)
+        metadata = self._manager._get_plugin_metadata(plugin.plugin_id)
         if metadata:
             self._out.print(f'Source URL: {self._out.d_url(metadata.get("url", "N/A"))}')
             self._out.print(f'Git ref: {metadata.get("ref", "N/A")}')
@@ -325,7 +325,9 @@ class PluginCLI:
                         existing_plugin = self._manager._find_plugin_by_url(url)
                         if existing_plugin:
                             plugin_name = (
-                                existing_plugin.manifest.name() if existing_plugin.manifest else existing_plugin.name
+                                existing_plugin.manifest.name()
+                                if existing_plugin.manifest
+                                else existing_plugin.plugin_id
                             )
                             self._out.info(f'Plugin "{plugin_name}" is already installed from this URL')
                             self._out.info(
@@ -406,7 +408,7 @@ class PluginCLI:
 
             # Confirmation prompt unless --yes flag
             if not yes:
-                if not self._out.yesno(f'Uninstall plugin "{plugin.name}"?'):
+                if not self._out.yesno(f'Uninstall plugin "{plugin.plugin_id}"?'):
                     self._out.print('Cancelled')
                     continue
 
@@ -419,7 +421,7 @@ class PluginCLI:
                 purge_this = purge
 
             try:
-                self._out.print(f'Uninstalling {plugin.name}...')
+                self._out.print(f'Uninstalling {plugin.plugin_id}...')
                 self._manager.uninstall_plugin(plugin, purge_this)
                 if purge_this:
                     self._out.success('Plugin and configuration removed')
@@ -438,7 +440,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Enabling {plugin.name}...')
+                self._out.print(f'Enabling {plugin.plugin_id}...')
                 self._manager.enable_plugin(plugin)
                 self._out.success(f'Plugin {self._out.d_status_enabled("enabled")}')
                 self._out.info('Restart Picard to load the plugin')
@@ -455,7 +457,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Disabling {plugin.name}...')
+                self._out.print(f'Disabling {plugin.plugin_id}...')
                 self._manager.disable_plugin(plugin)
                 self._out.success(f'Plugin {self._out.d_status_disabled("disabled")}')
                 self._out.info('Restart Picard for changes to take effect')
@@ -472,7 +474,7 @@ class PluginCLI:
                 return error
 
             try:
-                self._out.print(f'Updating {plugin.name}...')
+                self._out.print(f'Updating {plugin.plugin_id}...')
                 old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(plugin)
 
                 if old_commit == new_commit:
@@ -609,7 +611,7 @@ class PluginCLI:
             return error
 
         try:
-            self._out.print(f'Switching {plugin.name} to ref: {ref}...')
+            self._out.print(f'Switching {plugin.plugin_id} to ref: {ref}...')
             old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
 
             self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
@@ -666,7 +668,7 @@ class PluginCLI:
 
         for plugin in self._manager.plugins:
             # Match by directory name (exact) - always unique
-            if plugin.name == identifier:
+            if plugin.plugin_id == identifier:
                 return plugin
             # Match by UUID (exact) - always unique
             if plugin.manifest and plugin.manifest.uuid == identifier:
@@ -701,7 +703,7 @@ class PluginCLI:
 
             self._out.error(f'Multiple plugins found with name "{identifier}":')
             for plugin in matches:
-                self._out.error(f'  - {plugin.name} (UUID: {plugin.manifest.uuid})')
+                self._out.error(f'  - {plugin.plugin_id} (UUID: {plugin.manifest.uuid})')
             self._out.error('Please use the directory name or UUID to be more specific')
             return None, ExitCode.ERROR
 

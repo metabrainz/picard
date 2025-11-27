@@ -164,7 +164,7 @@ class TestPluginRegistry(PicardTestCase):
 
             # Create mock plugin
             mock_plugin = Mock()
-            mock_plugin.name = 'example'
+            mock_plugin.plugin_id = 'example'
             mock_plugin.local_path = plugin_dir / 'example'
             mock_plugin.manifest = Mock()
             mock_plugin.manifest.version = '1.0.0'
@@ -274,7 +274,7 @@ class TestPluginRegistry(PicardTestCase):
 
         # Create mock plugin
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = test_uuid
@@ -316,7 +316,7 @@ class TestPluginRegistry(PicardTestCase):
 
         # Create mock plugin
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'malicious-plugin'
+        mock_plugin.plugin_id = 'malicious-plugin'
         mock_plugin.local_path = Path('/tmp/malicious-plugin')
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = test_uuid

@@ -432,7 +432,7 @@ class TestPluginManager(PicardTestCase):
         # Create a mock plugin with UUID
         test_uuid = 'test-uuid-1234'
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = test_uuid
 
@@ -465,7 +465,7 @@ class TestPluginManager(PicardTestCase):
         # Create mock plugins with UUIDs
         enabled_uuid = 'enabled-uuid-1234'
         enabled_plugin = Mock(spec=Plugin)
-        enabled_plugin.name = 'enabled-plugin'
+        enabled_plugin.plugin_id = 'enabled-plugin'
         enabled_plugin.manifest = Mock()
         enabled_plugin.manifest.uuid = enabled_uuid
         enabled_plugin.load_module = Mock()
@@ -473,7 +473,7 @@ class TestPluginManager(PicardTestCase):
 
         disabled_uuid = 'disabled-uuid-5678'
         disabled_plugin = Mock(spec=Plugin)
-        disabled_plugin.name = 'disabled-plugin'
+        disabled_plugin.plugin_id = 'disabled-plugin'
         disabled_plugin.manifest = Mock()
         disabled_plugin.manifest.uuid = disabled_uuid
         disabled_plugin.load_module = Mock()
@@ -504,7 +504,7 @@ class TestPluginManager(PicardTestCase):
         plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'example')
 
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin.name, 'example')
+        self.assertEqual(plugin.plugin_id, 'example')
         self.assertEqual(plugin.manifest.name(), 'Example plugin')
 
     def test_api_version_compatibility_incompatible_old(self):
@@ -564,7 +564,7 @@ class TestPluginErrors(PicardTestCase):
         # Create a plugin that will fail to load
         bad_uuid = 'bad-uuid-1234'
         bad_plugin = Mock(spec=Plugin)
-        bad_plugin.name = 'bad-plugin'
+        bad_plugin.plugin_id = 'bad-plugin'
         bad_plugin.manifest = Mock()
         bad_plugin.manifest.uuid = bad_uuid
         bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
@@ -588,7 +588,7 @@ class TestPluginErrors(PicardTestCase):
         manager = PluginManager(mock_tagger)
 
         bad_plugin = Mock(spec=Plugin)
-        bad_plugin.name = 'bad-plugin'
+        bad_plugin.plugin_id = 'bad-plugin'
         bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
 
         with self.assertRaises(Exception):  # noqa: B017

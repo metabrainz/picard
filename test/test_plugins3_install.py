@@ -70,7 +70,7 @@ class TestPluginInstall(PicardTestCase):
         manager = PluginManager(mock_tagger)
 
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
 
         with self.assertRaises(ValueError) as context:
             manager.update_plugin(mock_plugin)
@@ -115,7 +115,7 @@ class TestPluginInstall(PicardTestCase):
 
         # Setup plugin with metadata
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
         mock_plugin.read_manifest = Mock()
         mock_plugin.manifest = Mock()
@@ -162,7 +162,7 @@ class TestPluginInstall(PicardTestCase):
         manager = PluginManager(mock_tagger)
 
         mock_plugin = Mock(spec=Plugin)
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
 
         with self.assertRaises(ValueError) as context:
@@ -336,7 +336,7 @@ class TestPluginInstall(PicardTestCase):
             plugin_path.mkdir()
 
             mock_plugin = Mock(spec=Plugin)
-            mock_plugin.name = 'test-plugin'
+            mock_plugin.plugin_id = 'test-plugin'
             mock_plugin.local_path = plugin_path
             mock_plugin.disable = Mock()
 
@@ -455,7 +455,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager = Mock()
 
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.uninstall_plugin = Mock()
         mock_tagger.pluginmanager3 = mock_manager
@@ -497,7 +497,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager = Mock()
 
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.1.0', 'abc1234', 'def5678'))
         mock_tagger.pluginmanager3 = mock_manager
@@ -537,7 +537,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager = Mock()
 
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Same commit = already up to date
         mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.0.0', 'abc1234', 'abc1234'))
@@ -578,7 +578,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager = Mock()
 
         mock_plugin = Mock()
-        mock_plugin.name = 'test-plugin'
+        mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Return mixed results: updated, unchanged, failed
         mock_manager.update_all_plugins = Mock(

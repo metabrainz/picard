@@ -269,9 +269,9 @@ class Plugin:
     _module = None
 
     def __init__(self, plugins_dir: Path, plugin_name: str):
-        self.name = plugin_name
-        self.module_name = f'picard.plugins.{self.name}'
-        self.local_path = plugins_dir.joinpath(self.name)
+        self.plugin_id = plugin_name
+        self.module_name = f'picard.plugins.{self.plugin_id}'
+        self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
 
     def sync(self, plugin_source: PluginSource = None):
@@ -286,20 +286,20 @@ class Plugin:
         """Reads metadata for the plugin from the plugin's MANIFEST.toml"""
         manifest_path = self.local_path.joinpath('MANIFEST.toml')
         with open(manifest_path, 'rb') as manifest_file:
-            self.manifest = PluginManifest(self.name, manifest_file)
+            self.manifest = PluginManifest(self.plugin_id, manifest_file)
 
         # Validate manifest
         errors = self.manifest.validate()
         if errors:
             error_list = '\n  '.join(errors)
-            raise ValueError(f'Invalid MANIFEST.toml for {self.name}:\n  {error_list}')
+            raise ValueError(f'Invalid MANIFEST.toml for {self.plugin_id}:\n  {error_list}')
 
     def load_module(self):
         """Load corresponding module from source path"""
         if self.state == PluginState.LOADED:
             return self._module
         if self.state == PluginState.ENABLED:
-            raise ValueError(f'Plugin {self.name} is already enabled')
+            raise ValueError(f'Plugin {self.plugin_id} is already enabled')
 
         module_file = self.local_path.joinpath('__init__.py')
         spec = importlib.util.spec_from_file_location(self.module_name, module_file)
@@ -313,14 +313,14 @@ class Plugin:
         if self.manifest and self.manifest.uuid:
             from picard.extension_points import register_plugin_uuid
 
-            register_plugin_uuid(self.manifest.uuid, self.name)
+            register_plugin_uuid(self.manifest.uuid, self.plugin_id)
 
         return module
 
     def enable(self, tagger) -> None:
         """Enable the plugin"""
         if self.state == PluginState.ENABLED:
-            raise ValueError(f'Plugin {self.name} is already enabled')
+            raise ValueError(f'Plugin {self.plugin_id} is already enabled')
 
         api = PluginApi(self.manifest, tagger)
         self._module.enable(api)
@@ -329,11 +329,11 @@ class Plugin:
     def disable(self) -> None:
         """Disable the plugin"""
         if self.state == PluginState.DISABLED:
-            raise ValueError(f'Plugin {self.name} is already disabled')
+            raise ValueError(f'Plugin {self.plugin_id} is already disabled')
 
         if hasattr(self._module, 'disable'):
             self._module.disable()
-        unregister_module_extensions(self.name)
+        unregister_module_extensions(self.plugin_id)
 
         # Unregister UUID mapping
         if self.manifest and self.manifest.uuid:
