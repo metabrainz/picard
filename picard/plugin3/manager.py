@@ -438,8 +438,23 @@ class PluginManager:
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
 
-    def switch_ref(self, plugin: Plugin, ref: str):
-        """Switch plugin to a different git ref (branch/tag/commit)."""
+    def switch_ref(self, plugin: Plugin, ref: str, discard_changes=False):
+        """Switch plugin to a different git ref (branch/tag/commit).
+
+        Args:
+            plugin: Plugin to switch
+            ref: Git ref to switch to
+            discard_changes: If True, discard uncommitted changes
+
+        Raises:
+            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
+        """
+        # Check for uncommitted changes
+        if not discard_changes:
+            changes = self._check_dirty_working_dir(plugin.local_path)
+            if changes:
+                raise PluginDirtyError(plugin.name, changes)
+
         uuid = self._get_plugin_uuid(plugin)
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:

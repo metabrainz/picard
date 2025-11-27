@@ -264,6 +264,26 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             self.assertEqual(old_commit, 'old123')
             self.assertEqual(new_commit, 'new456')
 
+    def test_switch_ref_dirty_raises_error(self):
+        """Test that switch_ref raises PluginDirtyError for dirty repo."""
+        from picard.plugin3.manager import PluginDirtyError
+        from picard.plugin3.plugin import Plugin
+
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.name = 'test-plugin'
+        mock_plugin.local_path = Mock()
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = 'test-uuid'
+
+        manager = PluginManager(None)
+        manager._check_dirty_working_dir = Mock(return_value=['modified.txt'])
+
+        with self.assertRaises(PluginDirtyError) as context:
+            manager.switch_ref(mock_plugin, 'develop')
+
+        self.assertEqual(context.exception.plugin_name, 'test-plugin')
+        self.assertIn('modified.txt', context.exception.changes)
+
     def test_get_config_value_default(self):
         """Test _get_config_value returns default when key missing."""
         with patch('picard.config.get_config') as mock_get_config:

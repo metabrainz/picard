@@ -556,8 +556,32 @@ class PluginCLI:
             self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
             self._out.info('Restart Picard to load the updated plugin')
         except Exception as e:
-            self._out.error(f'Failed to switch ref: {e}')
-            return ExitCode.ERROR
+            from picard.plugin3.manager import PluginDirtyError
+
+            if isinstance(e, PluginDirtyError):
+                self._out.warning(f'Plugin {e.plugin_name} has been modified:')
+                for file in e.changes[:5]:
+                    self._out.warning(f'  - {file}')
+                if len(e.changes) > 5:
+                    self._out.warning(f'  ... and {len(e.changes) - 5} more')
+
+                if self._args.yes:
+                    self._out.error('Cannot switch ref for modified plugin in non-interactive mode')
+                    return ExitCode.ERROR
+                else:
+                    if self._out.yesno('Discard changes and switch ref?'):
+                        old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(
+                            plugin, ref, discard_changes=True
+                        )
+                        self._out.success(f'Switched: {old_ref} → {new_ref}')
+                        self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+                        self._out.info('Restart Picard to load the updated plugin')
+                    else:
+                        self._out.print('Switch cancelled')
+                        return ExitCode.SUCCESS
+            else:
+                self._out.error(f'Failed to switch ref: {e}')
+                return ExitCode.ERROR
         return ExitCode.SUCCESS
 
     def _clean_config(self, plugin_name):
