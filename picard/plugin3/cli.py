@@ -596,7 +596,7 @@ class PluginCLI:
                     f'{self._out.d_date(f"({date_str})")}'
                 )
             self._out.nl()
-            self._out.print('Run with --update-all to update all plugins')
+            self._out.print(f'Run with {self._out.d_command("--update-all")} to update all plugins')
 
         return ExitCode.SUCCESS
 
@@ -943,7 +943,7 @@ class PluginCLI:
 
             self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
             self._out.nl()
-            self._out.print('Install with: picard plugins --install <plugin-id>')
+            self._out.print(f'Install with: {self._out.d_command("picard plugins --install <plugin-id>")}')
 
             return ExitCode.SUCCESS
 
@@ -980,7 +980,7 @@ class PluginCLI:
                 self._out.info(f'  {plugin.get("description", "")}')
                 self._out.print('')
 
-            self._out.print('Install with: picard plugins --install <plugin-id>')
+            self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <plugin-id>")))
 
             return ExitCode.SUCCESS
 
