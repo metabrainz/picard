@@ -105,7 +105,7 @@ usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-u PLUGIN [PLUGIN ...]]
                       [--update PLUGIN [PLUGIN ...]] [--update-all]
                       [--info NAME|URL] [--ref REF] [--switch-ref PLUGIN REF]
                       [--browse] [--search TERM] [--check-blacklist URL]
-                      [--refresh-registry] [--check-updates] [--reinstall PLUGIN]
+                      [--refresh-registry] [--check-updates] [--reinstall]
                       [--status] [-y] [--force-blacklisted] [--trust-community]
                       [--trust LEVEL] [--category CATEGORY] [--purge] [--no-color]
 
@@ -147,7 +147,7 @@ Registry:
   --check-updates       check for available plugin updates
 
 Advanced Options:
-  --reinstall PLUGIN    force reinstall of plugin
+  --reinstall           force reinstall when used with --install
   -y, --yes             skip all confirmation prompts (for automation)
   --force-blacklisted   install plugin even if blacklisted (DANGEROUS!)
   --trust-community     skip warnings for community plugins
@@ -183,8 +183,8 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--status <name>` | ✅ Done | 1.5 | Show detailed plugin status |
 | `--ref <ref>` | ✅ Done | 1.6 | Specify git ref (branch/tag/commit) |
 | `--switch-ref <name> <ref>` | ✅ Done | 1.6 | Switch plugin to different ref |
-| `--check-updates` | ✅ Done | 1.4 | Check for available updates |
-| `--reinstall` | ✅ Done | 1.7 | Force reinstall with --install |
+| `--check-updates` | ✅ Done | 1.4 | Check for updates within installed ref |
+| `--reinstall` | ✅ Done | 1.7 | Force reinstall (use with --install) |
 | `--purge` | ✅ Done | 1.7 | Delete plugin config on uninstall |
 | `--clean-config <name>` | ✅ Done | 1.7 | Delete plugin configuration |
 | `--yes` / `-y` | ✅ Done | 1.3 | Skip confirmation prompts |
@@ -193,7 +193,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--manifest [target]` | ✅ Done | 2.1 | Show MANIFEST.toml (template or from plugin) |
 | `--browse` | ⏳ TODO | 3.3 | Browse official plugins |
 | `--search <term>` | ⏳ TODO | 3.3 | Search official plugins |
-| `--check-blacklist <url>` | ⏳ TODO | 1.8 | Check if URL is blacklisted |
+| `--check-blacklist <url>` | ✅ Done | 1.8 | Check if URL is blacklisted |
 | `--refresh-registry` | ⏳ TODO | 3.2 | Force refresh plugin registry cache |
 | `--trust-community` | ⏳ TODO | 3.2 | Skip community plugin warnings |
 | `--trust <level>` | ⏳ TODO | 3.3 | Filter by trust level |
@@ -330,6 +330,7 @@ picard plugins --enable listenbrainz discogs acoustid
 **Commands:**
 - `picard plugins --update <name>` - Update specific plugin
 - `picard plugins --update-all` - Update all plugins
+- `picard plugins --check-updates` - Check for available updates
 
 **Description:** Update plugin to latest version from git
 
@@ -346,6 +347,18 @@ picard plugins --update-all
 
 # Check for updates without installing
 picard plugins --check-updates
+```
+
+**Note on `--check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `--switch-ref` instead.
+
+**Example:**
+```bash
+# Plugin installed from 'dev' branch at v0.7.3
+picard plugins --check-updates
+# Output: All plugins are up to date (checks 'dev' branch only)
+
+# To switch to 'main' branch (which might have v1.0.0)
+picard plugins --switch-ref myplugin main
 ```
 
 ---
@@ -437,6 +450,38 @@ picard plugins --switch-ref myplugin v1.1.0
 
 ---
 
+### Reinstall Plugin
+
+**Command:** `picard plugins --install <url> --reinstall`
+
+**Description:** Force reinstall of an already installed plugin. Useful for:
+- Recovering from corrupted plugin files
+- Resetting plugin to clean state
+- Testing plugin installation process
+
+**Examples:**
+```bash
+# Reinstall plugin from same URL
+picard plugins --install https://github.com/user/plugin --reinstall
+
+# Reinstall with different ref
+picard plugins --install https://github.com/user/plugin --ref v2.0.0 --reinstall
+
+# Reinstall without prompts (automation)
+picard plugins --install https://github.com/user/plugin --reinstall --yes
+```
+
+**Behavior:**
+1. Checks if plugin is already installed from the same URL
+2. If plugin has uncommitted changes, prompts to discard them (or errors with `--yes`)
+3. Uninstalls existing plugin
+4. Installs fresh copy from git repository
+5. Preserves plugin configuration (unless `--purge` is used)
+
+**Note:** If the plugin has uncommitted local changes, you'll be prompted to discard them. In non-interactive mode (`--yes`), the operation will fail to prevent data loss.
+
+---
+
 ### Browse Official Plugins (Phase 3)
 
 **Command:** `picard plugins --browse`
@@ -477,16 +522,29 @@ picard plugins --search "cover art"
 
 ---
 
-### Blacklist Check
+### Check Blacklist
 
 **Command:** `picard plugins --check-blacklist <url>`
 
-**Description:** Check if plugin URL is blacklisted
+**Description:** Check if a plugin URL is blacklisted before installing
 
-**Example:**
+**Examples:**
 ```bash
+# Check if URL is blacklisted
 picard plugins --check-blacklist https://github.com/user/plugin
+
+# Example output (not blacklisted):
+# ✓ URL is not blacklisted
+
+# Example output (blacklisted):
+# ✗ URL is blacklisted: Security vulnerability CVE-2024-1234
 ```
+
+**Exit codes:**
+- `0` - URL is not blacklisted (safe to install)
+- `1` - URL is blacklisted (do not install)
+
+**Note:** Blacklisted plugins are blocked during installation unless `--force-blacklisted` is used (not recommended).
 
 ---
 
