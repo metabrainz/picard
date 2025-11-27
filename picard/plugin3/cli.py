@@ -408,7 +408,7 @@ class PluginCLI:
 
             # Confirmation prompt unless --yes flag
             if not yes:
-                if not self._out.yesno(f'Uninstall plugin "{plugin.plugin_id}"?'):
+                if not self._out.yesno(f'Uninstall plugin {self._out.d_plugin_name(plugin.plugin_id)}?'):
                     self._out.print('Cancelled')
                     continue
 
@@ -421,7 +421,7 @@ class PluginCLI:
                 purge_this = purge
 
             try:
-                self._out.print(f'Uninstalling {plugin.plugin_id}...')
+                self._out.print(f'Uninstalling {self._out.d_plugin_name(plugin.plugin_id)}...')
                 self._manager.uninstall_plugin(plugin, purge_this)
                 if purge_this:
                     self._out.success('Plugin and configuration removed')
