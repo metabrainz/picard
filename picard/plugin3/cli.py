@@ -42,6 +42,33 @@ class PluginCLI:
         self._out = output or PluginOutput()
         self._parser = parser
 
+    def _handle_dirty_error(self, error, action_callback):
+        """Handle PluginDirtyError with user prompt or error.
+
+        Args:
+            error: PluginDirtyError exception
+            action_callback: Function to call if user confirms (should accept discard_changes=True)
+
+        Returns:
+            tuple: (success: bool, result: any) - result is callback return value if success
+        """
+        self._out.warning(f'Plugin {error.plugin_name} has been modified:')
+        for file in error.changes[:5]:
+            self._out.warning(f'  - {file}')
+        if len(error.changes) > 5:
+            self._out.warning(f'  ... and {len(error.changes) - 5} more')
+
+        if self._args.yes:
+            self._out.error('Cannot modify plugin with uncommitted changes in non-interactive mode')
+            return False, None
+        else:
+            if self._out.yesno('Discard changes and continue?'):
+                result = action_callback(discard_changes=True)
+                return True, result
+            else:
+                self._out.print('Operation cancelled')
+                return False, None
+
     def run(self):
         """Run the CLI command and return exit code."""
         try:
@@ -330,25 +357,14 @@ class PluginCLI:
                 from picard.plugin3.manager import PluginDirtyError
 
                 if isinstance(e, PluginDirtyError):
-                    self._out.warning(f'Plugin {e.plugin_name} has been modified:')
-                    for file in e.changes[:5]:
-                        self._out.warning(f'  - {file}')
-                    if len(e.changes) > 5:
-                        self._out.warning(f'  ... and {len(e.changes) - 5} more')
-
-                    if yes:
-                        self._out.error('Cannot reinstall modified plugin in non-interactive mode')
-                        return ExitCode.ERROR
-                    else:
-                        if self._out.yesno('Discard changes and reinstall?'):
-                            plugin_id = self._manager.install_plugin(
-                                url, ref, reinstall, force_blacklisted, discard_changes=True
-                            )
-                            self._out.success(f'Plugin {plugin_id} installed successfully')
-                            self._out.info('Restart Picard to load the plugin')
-                        else:
-                            self._out.print('Installation cancelled')
-                            continue
+                    success, result = self._handle_dirty_error(
+                        e, lambda **kw: self._manager.install_plugin(url, ref, reinstall, force_blacklisted, **kw)
+                    )
+                    if not success:
+                        return ExitCode.ERROR if yes else ExitCode.SUCCESS
+                    plugin_id = result
+                    self._out.success(f'Plugin {plugin_id} installed successfully')
+                    self._out.info('Restart Picard to load the plugin')
                 else:
                     self._out.error(f'Failed to install plugin: {e}')
                     return ExitCode.ERROR
@@ -449,30 +465,19 @@ class PluginCLI:
                 from picard.plugin3.manager import PluginDirtyError
 
                 if isinstance(e, PluginDirtyError):
-                    self._out.warning(f'Plugin {e.plugin_name} has been modified:')
-                    for file in e.changes[:5]:
-                        self._out.warning(f'  - {file}')
-                    if len(e.changes) > 5:
-                        self._out.warning(f'  ... and {len(e.changes) - 5} more')
-
-                    if self._args.yes:
-                        self._out.error('Cannot update modified plugin in non-interactive mode')
-                        return ExitCode.ERROR
-                    else:
-                        if self._out.yesno('Discard changes and update?'):
-                            old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(
-                                plugin, discard_changes=True
-                            )
-                            if old_commit != new_commit:
-                                if old_ver != new_ver:
-                                    self._out.success(f'Updated: {old_ver} → {new_ver}')
-                                else:
-                                    self._out.success(f'Updated: {new_ver}')
-                                self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
-                                self._out.info('Restart Picard to load the updated plugin')
+                    success, result = self._handle_dirty_error(
+                        e, lambda **kw: self._manager.update_plugin(plugin, **kw)
+                    )
+                    if not success:
+                        return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
+                    old_ver, new_ver, old_commit, new_commit = result
+                    if old_commit != new_commit:
+                        if old_ver != new_ver:
+                            self._out.success(f'Updated: {old_ver} → {new_ver}')
                         else:
-                            self._out.print('Update cancelled')
-                            continue
+                            self._out.success(f'Updated: {new_ver}')
+                        self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+                        self._out.info('Restart Picard to load the updated plugin')
                 else:
                     self._out.error(f'Failed to update plugin: {e}')
                     return ExitCode.ERROR
@@ -582,26 +587,13 @@ class PluginCLI:
             from picard.plugin3.manager import PluginDirtyError
 
             if isinstance(e, PluginDirtyError):
-                self._out.warning(f'Plugin {e.plugin_name} has been modified:')
-                for file in e.changes[:5]:
-                    self._out.warning(f'  - {file}')
-                if len(e.changes) > 5:
-                    self._out.warning(f'  ... and {len(e.changes) - 5} more')
-
-                if self._args.yes:
-                    self._out.error('Cannot switch ref for modified plugin in non-interactive mode')
-                    return ExitCode.ERROR
-                else:
-                    if self._out.yesno('Discard changes and switch ref?'):
-                        old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(
-                            plugin, ref, discard_changes=True
-                        )
-                        self._out.success(f'Switched: {old_ref} → {new_ref}')
-                        self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
-                        self._out.info('Restart Picard to load the updated plugin')
-                    else:
-                        self._out.print('Switch cancelled')
-                        return ExitCode.SUCCESS
+                success, result = self._handle_dirty_error(e, lambda **kw: self._manager.switch_ref(plugin, ref, **kw))
+                if not success:
+                    return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
+                old_ref, new_ref, old_commit, new_commit = result
+                self._out.success(f'Switched: {old_ref} → {new_ref}')
+                self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+                self._out.info('Restart Picard to load the updated plugin')
             else:
                 self._out.error(f'Failed to switch ref: {e}')
                 return ExitCode.ERROR
