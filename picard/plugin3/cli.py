@@ -351,7 +351,7 @@ class PluginCLI:
                         pass  # Ignore errors checking status
 
                 plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
-                self._out.success(f'Plugin {plugin_id} installed successfully')
+                self._out.success(f'Plugin {self._out.d_plugin_name(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
                 from picard.plugin3.manager import PluginDirtyError
@@ -363,7 +363,7 @@ class PluginCLI:
                     if not success:
                         return ExitCode.ERROR if yes else ExitCode.SUCCESS
                     plugin_id = result
-                    self._out.success(f'Plugin {plugin_id} installed successfully')
+                    self._out.success(f'Plugin {self._out.d_plugin_name(plugin_id)} installed successfully')
                     self._out.info('Restart Picard to load the plugin')
                 else:
                     self._out.error(f'Failed to install plugin: {e}')
@@ -452,14 +452,18 @@ class PluginCLI:
                 old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(plugin)
 
                 if old_commit == new_commit:
-                    self._out.info(f'Already up to date (version {new_ver})')
+                    self._out.info(f'Already up to date (version {self._out.d_version(new_ver)})')
                 else:
                     # Show version change only if version actually changed
                     if old_ver != new_ver:
-                        self._out.success(f'Updated: {old_ver} → {new_ver}')
+                        self._out.success(
+                            f'Updated: {self._out.d_version(old_ver)} {self._out.d_arrow()} {self._out.d_version(new_ver)}'
+                        )
                     else:
-                        self._out.success(f'Updated: {new_ver}')
-                    self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+                        self._out.success(f'Updated: {self._out.d_version(new_ver)}')
+                    self._out.info(
+                        f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
+                    )
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
                 from picard.plugin3.manager import PluginDirtyError
@@ -473,10 +477,14 @@ class PluginCLI:
                     old_ver, new_ver, old_commit, new_commit = result
                     if old_commit != new_commit:
                         if old_ver != new_ver:
-                            self._out.success(f'Updated: {old_ver} → {new_ver}')
+                            self._out.success(
+                                f'Updated: {self._out.d_version(old_ver)} {self._out.d_arrow()} {self._out.d_version(new_ver)}'
+                            )
                         else:
-                            self._out.success(f'Updated: {new_ver}')
-                        self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+                            self._out.success(f'Updated: {self._out.d_version(new_ver)}')
+                        self._out.info(
+                            f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
+                        )
                         self._out.info('Restart Picard to load the updated plugin')
                 else:
                     self._out.error(f'Failed to update plugin: {e}')
@@ -580,8 +588,10 @@ class PluginCLI:
             self._out.print(f'Switching {plugin.name} to ref: {ref}...')
             old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
 
-            self._out.success(f'Switched: {old_ref} → {new_ref}')
-            self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+            self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
+            self._out.info(
+                f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
+            )
             self._out.info('Restart Picard to load the updated plugin')
         except Exception as e:
             from picard.plugin3.manager import PluginDirtyError
@@ -591,8 +601,10 @@ class PluginCLI:
                 if not success:
                     return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
                 old_ref, new_ref, old_commit, new_commit = result
-                self._out.success(f'Switched: {old_ref} → {new_ref}')
-                self._out.info(f'Commit: {short_commit_id(old_commit)} → {short_commit_id(new_commit)}')
+                self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
+                self._out.info(
+                    f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
+                )
                 self._out.info('Restart Picard to load the updated plugin')
             else:
                 self._out.error(f'Failed to switch ref: {e}')
