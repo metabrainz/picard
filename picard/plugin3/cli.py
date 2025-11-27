@@ -376,9 +376,16 @@ class PluginCLI:
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                from picard.plugin3.manager import PluginDirtyError
+                from picard.plugin3.manager import PluginAlreadyInstalledError, PluginDirtyError
 
-                if isinstance(e, PluginDirtyError):
+                if isinstance(e, PluginAlreadyInstalledError):
+                    self._out.info(f'Plugin {self._out.d_id(e.plugin_name)} is already installed from this URL')
+                    self._out.info(
+                        f'Use {self._out.d_command("--reinstall")} to reinstall: '
+                        f'{self._out.d_command(f"picard plugins --install {e.url} --reinstall")}'
+                    )
+                    continue
+                elif isinstance(e, PluginDirtyError):
                     success, result = self._handle_dirty_error(
                         e, lambda **kw: self._manager.install_plugin(url, ref, reinstall, force_blacklisted, **kw)
                     )

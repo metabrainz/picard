@@ -62,6 +62,15 @@ class PluginDirtyError(Exception):
         super().__init__(f"Plugin {plugin_name} has uncommitted changes")
 
 
+class PluginAlreadyInstalledError(Exception):
+    """Raised when trying to install a plugin that's already installed."""
+
+    def __init__(self, plugin_name, url):
+        self.plugin_name = plugin_name
+        self.url = url
+        super().__init__(f"Plugin {plugin_name} is already installed")
+
+
 def get_plugin_directory_name(manifest) -> str:
     """Get plugin directory name from manifest (sanitized name + full UUID).
 
@@ -310,11 +319,7 @@ class PluginManager:
             # Check if already installed and handle reinstall
             if final_path.exists():
                 if not reinstall:
-                    plugin_display_name = manifest.name()
-                    raise ValueError(
-                        f'Plugin "{plugin_display_name}" is already installed. '
-                        f'Use --reinstall to reinstall: picard plugins --install {url} --reinstall'
-                    )
+                    raise PluginAlreadyInstalledError(plugin_name, url)
 
                 # Check for uncommitted changes before removing
                 if not discard_changes:
@@ -429,11 +434,7 @@ class PluginManager:
         # Check if already installed and handle reinstall
         if final_path.exists():
             if not reinstall:
-                plugin_display_name = manifest.name()
-                raise ValueError(
-                    f'Plugin "{plugin_display_name}" is already installed. '
-                    f'Use --reinstall to reinstall: picard plugins --install {local_path} --reinstall'
-                )
+                raise PluginAlreadyInstalledError(plugin_name, local_path)
 
             # Check for uncommitted changes before removing
             if not discard_changes:

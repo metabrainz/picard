@@ -266,7 +266,9 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
-                        with self.assertRaises(ValueError) as context:
+                        from picard.plugin3.manager import PluginAlreadyInstalledError
+
+                        with self.assertRaises(PluginAlreadyInstalledError) as context:
                             manager.install_plugin('https://example.com/plugin.git')
 
                         self.assertIn('already installed', str(context.exception))
