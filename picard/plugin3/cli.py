@@ -318,7 +318,18 @@ class PluginCLI:
                 else:
                     url = url_or_id
 
-                    # Check blacklist first (before prompting user)
+                    # Check if already installed first (unless reinstalling)
+                    if not reinstall:
+                        existing_plugin = self._manager._find_plugin_by_url(url)
+                        if existing_plugin:
+                            plugin_name = (
+                                existing_plugin.manifest.name() if existing_plugin.manifest else existing_plugin.name
+                            )
+                            self._out.info(f'Plugin "{plugin_name}" is already installed from this URL')
+                            self._out.info(f'Use --reinstall to reinstall: picard plugins --install {url} --reinstall')
+                            continue
+
+                    # Check blacklist (before prompting user)
                     if not force_blacklisted:
                         is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
                         if is_blacklisted:
@@ -338,17 +349,6 @@ class PluginCLI:
                             if not self._out.yesno('Do you want to continue?'):
                                 self._out.print('Installation cancelled')
                                 return ExitCode.CANCELLED
-
-                # Check if already installed (unless reinstalling)
-                if not reinstall:
-                    existing_plugin = self._manager._find_plugin_by_url(url)
-                    if existing_plugin:
-                        plugin_name = (
-                            existing_plugin.manifest.name() if existing_plugin.manifest else existing_plugin.name
-                        )
-                        self._out.info(f'Plugin "{plugin_name}" is already installed from this URL')
-                        self._out.info(f'Use --reinstall to reinstall: picard plugins --install {url} --reinstall')
-                        continue
 
                 if ref:
                     self._out.print(f'Installing plugin from {url} (ref: {ref})...')
