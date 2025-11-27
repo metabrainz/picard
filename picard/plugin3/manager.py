@@ -485,7 +485,7 @@ class PluginManager:
         old_commit = metadata.get('commit', 'unknown')
 
         source = PluginSourceGit(metadata['url'], ref)
-        new_commit = source.sync(plugin.local_path)
+        new_commit = source.sync(plugin.local_path, fetch_ref=True)
 
         # Reload manifest to get potentially new version
         try:
@@ -577,7 +577,7 @@ class PluginManager:
         current_url, current_uuid, redirected = self._check_redirects(old_url, old_uuid)
 
         source = PluginSourceGit(current_url, metadata.get('ref'))
-        old_commit, new_commit = source.update(plugin.local_path)
+        old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Reload manifest to get new version
         plugin.read_manifest()

@@ -93,11 +93,29 @@ class PluginSourceGit(PluginSource):
         self.ref = ref
         self.resolved_ref = None  # Will be set after sync
 
-    def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False):
+    def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False, fetch_ref: bool = False):
+        """Sync plugin from git repository.
+
+        Args:
+            target_directory: Path to clone/sync to
+            shallow: If True, use depth=1 for clone
+            single_branch: If True, only clone/fetch the specific branch
+            fetch_ref: If True and repo exists, fetch the ref before checking out (for switch-ref)
+        """
         if target_directory.is_dir():
             repo = pygit2.Repository(target_directory.absolute())
-            for remote in repo.remotes:
-                remote.fetch(callbacks=GitRemoteCallbacks())
+            # If fetch_ref is True, fetch the specific ref we're switching to
+            if fetch_ref and self.ref:
+                for remote in repo.remotes:
+                    refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
+                    try:
+                        remote.fetch([refspec], callbacks=GitRemoteCallbacks())
+                    except Exception:
+                        # If specific refspec fails, try fetching all (might be a tag or commit)
+                        remote.fetch(callbacks=GitRemoteCallbacks())
+            else:
+                for remote in repo.remotes:
+                    remote.fetch(callbacks=GitRemoteCallbacks())
         else:
             depth = 1 if shallow else 0
             # Only use checkout_branch for simple branch names (not origin/branch, tags, or commits)
@@ -179,13 +197,24 @@ class PluginSourceGit(PluginSource):
         repo.free()
         return commit_id
 
-    def update(self, target_directory: Path):
-        """Update plugin to latest version on current ref."""
+    def update(self, target_directory: Path, single_branch: bool = False):
+        """Update plugin to latest version on current ref.
+
+        Args:
+            target_directory: Path to plugin directory
+            single_branch: If True, only fetch the current ref
+        """
         repo = pygit2.Repository(target_directory.absolute())
         old_commit = str(repo.head.target)
 
         for remote in repo.remotes:
-            remote.fetch(callbacks=GitRemoteCallbacks())
+            if single_branch and self.ref:
+                # Fetch only the specific ref
+                refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
+                remote.fetch([refspec], callbacks=GitRemoteCallbacks())
+            else:
+                # Fetch all refs
+                remote.fetch(callbacks=GitRemoteCallbacks())
 
         if self.ref:
             # For branch names without origin/ prefix, try origin/ first
