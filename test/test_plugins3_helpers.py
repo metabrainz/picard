@@ -79,6 +79,7 @@ def create_cli_args(**kwargs):
         'check_updates': False,
         'browse': False,
         'search': None,
+        'check_blacklist': None,
         'switch_ref': None,
         'clean_config': None,
         'validate': None,

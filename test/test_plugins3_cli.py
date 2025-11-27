@@ -320,3 +320,61 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         mock_manager._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
         mock_manager.install_plugin.assert_called_once()
+
+    def test_check_blacklist_not_blacklisted(self):
+        """Test --check-blacklist with non-blacklisted URL."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = Mock()
+        mock_manager._registry.is_blacklisted.return_value = (False, None)
+
+        exit_code, stdout, _ = run_cli(mock_manager, check_blacklist='https://github.com/test/plugin')
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        self.assertIn('not blacklisted', stdout)
+        mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin')
+
+    def test_check_blacklist_is_blacklisted(self):
+        """Test --check-blacklist with blacklisted URL."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = Mock()
+        mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
+
+        exit_code, stdout, stderr = run_cli(mock_manager, check_blacklist='https://github.com/bad/plugin')
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('blacklisted', stderr)
+        self.assertIn('Security vulnerability', stderr)
+
+    def test_search_with_category_filter(self):
+        """Test --search with --category filter."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = Mock()
+        mock_manager._registry.list_plugins.return_value = [
+            {
+                'id': 'metadata-plugin',
+                'name': 'Metadata Plugin',
+                'description': 'Test metadata',
+                'trust_level': 'official',
+                'categories': ['metadata'],
+            },
+        ]
+
+        exit_code, _, _ = run_cli(mock_manager, search='test', category='metadata')
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        mock_manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level=None)
+
+    def test_search_with_trust_filter(self):
+        """Test --search with --trust filter."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = Mock()
+        mock_manager._registry.list_plugins.return_value = []
+
+        exit_code, _, _ = run_cli(mock_manager, search='test', trust='official')
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        mock_manager._registry.list_plugins.assert_called_once_with(category=None, trust_level='official')

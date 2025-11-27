@@ -104,6 +104,8 @@ class PluginCLI:
                 return self._browse_plugins()
             elif hasattr(self._args, 'search') and self._args.search:
                 return self._search_plugins(self._args.search)
+            elif hasattr(self._args, 'check_blacklist') and self._args.check_blacklist:
+                return self._check_blacklist(self._args.check_blacklist)
             elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
                 return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             elif hasattr(self._args, 'clean_config') and self._args.clean_config:
@@ -953,8 +955,11 @@ class PluginCLI:
 
     def _search_plugins(self, query):
         """Search plugins in registry."""
+        category = getattr(self._args, 'category', None)
+        trust_level = getattr(self._args, 'trust', None)
+
         try:
-            plugins = self._manager._registry.list_plugins()
+            plugins = self._manager._registry.list_plugins(category=category, trust_level=trust_level)
 
             # Filter by query (case-insensitive search in name and description)
             query_lower = query.lower()
@@ -971,7 +976,14 @@ class PluginCLI:
                 self._out.print(f'No plugins found matching "{query}"')
                 return ExitCode.SUCCESS
 
-            self._out.print(f'Found {self._out.d_number(len(results))} plugin(s) matching "{query}":')
+            # Show header with filters
+            filters = [f'query: "{query}"']
+            if category:
+                filters.append(f'category: {category}')
+            if trust_level:
+                filters.append(f'trust: {trust_level}')
+
+            self._out.print(f'Found {self._out.d_number(len(results))} plugin(s) ({", ".join(filters)}):')
             self._out.nl()
 
             for plugin in results:
@@ -986,6 +998,22 @@ class PluginCLI:
 
         except Exception as e:
             self._out.error(f'Failed to search plugins: {e}')
+            return ExitCode.ERROR
+
+    def _check_blacklist(self, url):
+        """Check if a URL is blacklisted."""
+        try:
+            is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
+
+            if is_blacklisted:
+                self._out.error(f'URL is blacklisted: {reason}')
+                return ExitCode.ERROR
+            else:
+                self._out.success('URL is not blacklisted')
+                return ExitCode.SUCCESS
+
+        except Exception as e:
+            self._out.error(f'Failed to check blacklist: {e}')
             return ExitCode.ERROR
 
     def _show_manifest(self, target):
