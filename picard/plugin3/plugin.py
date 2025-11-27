@@ -93,15 +93,23 @@ class PluginSourceGit(PluginSource):
         self.ref = ref
         self.resolved_ref = None  # Will be set after sync
 
-    def sync(self, target_directory: Path, shallow: bool = False):
+    def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False):
         if target_directory.is_dir():
             repo = pygit2.Repository(target_directory.absolute())
             for remote in repo.remotes:
                 remote.fetch(callbacks=GitRemoteCallbacks())
         else:
             depth = 1 if shallow else 0
+            # Only use checkout_branch for simple branch names (not origin/branch, tags, or commits)
+            checkout_branch = None
+            if single_branch and self.ref and not self.ref.startswith('origin/') and not self.ref.startswith('refs/'):
+                checkout_branch = self.ref
             repo = pygit2.clone_repository(
-                self.url, target_directory.absolute(), callbacks=GitRemoteCallbacks(), depth=depth
+                self.url,
+                target_directory.absolute(),
+                callbacks=GitRemoteCallbacks(),
+                depth=depth,
+                checkout_branch=checkout_branch,
             )
 
         if self.ref:

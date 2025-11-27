@@ -277,9 +277,9 @@ class PluginManager:
             if temp_path.exists():
                 shutil.rmtree(temp_path)
 
-            # Clone to temporary location
+            # Clone to temporary location with single-branch optimization
             source = PluginSourceGit(url, ref)
-            commit_id = source.sync(temp_path)
+            commit_id = source.sync(temp_path, single_branch=True)
 
             # Read MANIFEST to get plugin ID
             manifest_path = temp_path / 'MANIFEST.toml'
@@ -385,7 +385,7 @@ class PluginManager:
 
             try:
                 source = PluginSourceGit(str(local_path), ref)
-                commit_id = source.sync(temp_path)
+                commit_id = source.sync(temp_path, single_branch=True)
                 install_path = temp_path
                 ref_to_save = source.resolved_ref
                 commit_to_save = commit_id
