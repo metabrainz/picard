@@ -310,7 +310,11 @@ class PluginManager:
             # Check if already installed and handle reinstall
             if final_path.exists():
                 if not reinstall:
-                    raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
+                    plugin_display_name = manifest.name()
+                    raise ValueError(
+                        f'Plugin "{plugin_display_name}" is already installed. '
+                        f'Use --reinstall to reinstall: picard plugins --install {url} --reinstall'
+                    )
 
                 # Check for uncommitted changes before removing
                 if not discard_changes:
@@ -425,7 +429,11 @@ class PluginManager:
         # Check if already installed and handle reinstall
         if final_path.exists():
             if not reinstall:
-                raise ValueError(f'Plugin {plugin_name} is already installed. Use --reinstall to force.')
+                plugin_display_name = manifest.name()
+                raise ValueError(
+                    f'Plugin "{plugin_display_name}" is already installed. '
+                    f'Use --reinstall to reinstall: picard plugins --install {local_path} --reinstall'
+                )
 
             # Check for uncommitted changes before removing
             if not discard_changes:
