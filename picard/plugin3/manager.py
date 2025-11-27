@@ -53,6 +53,15 @@ class PluginMetadata:
         return {k: v for k, v in asdict(self).items() if v is not None}
 
 
+class PluginDirtyError(Exception):
+    """Raised when installed plugin directory has uncommitted changes."""
+
+    def __init__(self, plugin_name, changes):
+        self.plugin_name = plugin_name
+        self.changes = changes
+        super().__init__(f"Plugin {plugin_name} has uncommitted changes")
+
+
 def get_plugin_directory_name(manifest) -> str:
     """Get plugin directory name from manifest (sanitized name + full UUID).
 
@@ -112,6 +121,40 @@ class PluginManager:
             if entry.is_dir() and entry.name.startswith('.tmp-'):
                 shutil.rmtree(entry, ignore_errors=True)
                 log.debug('Cleaned up temporary plugin directory: %s', entry)
+
+    def _check_dirty_working_dir(self, path: Path):
+        """Check if directory has uncommitted changes.
+
+        Returns:
+            list: Modified files, or empty list if clean
+        """
+        try:
+            import pygit2
+
+            repo = pygit2.Repository(str(path))
+            status = repo.status()
+            if status:
+                return [file for file, flags in status.items()]
+        except Exception:
+            pass  # Not a git repo or error checking
+        return []
+
+    def _check_dirty_working_dir(self, path: Path):
+        """Check if directory has uncommitted changes.
+
+        Returns:
+            list: Modified files, or empty list if clean
+        """
+        try:
+            import pygit2
+
+            repo = pygit2.Repository(str(path))
+            status = repo.status()
+            if status:
+                return [file for file, flags in status.items()]
+        except Exception:
+            pass  # Not a git repo or error checking
+        return []
 
     def _validate_manifest(self, manifest):
         """Validate manifest and raise ValueError if invalid."""

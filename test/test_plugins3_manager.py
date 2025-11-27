@@ -155,6 +155,67 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             self.assertIn('normal', plugin_names)
             self.assertNotIn('.hidden', plugin_names)
 
+    def test_check_dirty_working_dir_clean(self):
+        """Test _check_dirty_working_dir with clean repo."""
+        from pathlib import Path
+        import tempfile
+
+        try:
+            import pygit2
+        except ImportError:
+            self.skipTest("pygit2 not available")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            repo_dir = Path(tmpdir)
+            repo = pygit2.init_repository(str(repo_dir))
+
+            # Create and commit a file
+            (repo_dir / 'test.txt').write_text('test')
+            index = repo.index
+            index.add_all()
+            index.write()
+            tree = index.write_tree()
+            author = pygit2.Signature("Test", "test@example.com")
+            commit_id = repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
+            repo.set_head('refs/heads/main')
+            repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
+
+            manager = PluginManager(None)
+            changes = manager._check_dirty_working_dir(repo_dir)
+
+            self.assertEqual(changes, [])
+
+    def test_check_dirty_working_dir_dirty(self):
+        """Test _check_dirty_working_dir with uncommitted changes."""
+        from pathlib import Path
+        import tempfile
+
+        try:
+            import pygit2
+        except ImportError:
+            self.skipTest("pygit2 not available")
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            repo_dir = Path(tmpdir)
+            repo = pygit2.init_repository(str(repo_dir))
+
+            # Create and commit a file
+            (repo_dir / 'test.txt').write_text('test')
+            index = repo.index
+            index.add_all()
+            index.write()
+            tree = index.write_tree()
+            author = pygit2.Signature("Test", "test@example.com")
+            repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
+
+            # Modify the file (uncommitted change)
+            (repo_dir / 'test.txt').write_text('modified')
+
+            manager = PluginManager(None)
+            changes = manager._check_dirty_working_dir(repo_dir)
+
+            self.assertIn('test.txt', changes)
+
     def test_get_config_value_default(self):
         """Test _get_config_value returns default when key missing."""
         with patch('picard.config.get_config') as mock_get_config:
