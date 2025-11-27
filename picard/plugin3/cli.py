@@ -376,7 +376,10 @@ class PluginCLI:
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                from picard.plugin3.manager import PluginAlreadyInstalledError, PluginDirtyError
+                from picard.plugin3.manager import (
+                    PluginAlreadyInstalledError,
+                    PluginDirtyError,
+                )
 
                 if isinstance(e, PluginAlreadyInstalledError):
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_name)} is already installed from this URL')

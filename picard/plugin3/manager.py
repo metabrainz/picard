@@ -53,7 +53,13 @@ class PluginMetadata:
         return {k: v for k, v in asdict(self).items() if v is not None}
 
 
-class PluginDirtyError(Exception):
+class PluginManagerError(Exception):
+    """Base exception for plugin manager errors."""
+
+    pass
+
+
+class PluginDirtyError(PluginManagerError):
     """Raised when installed plugin directory has uncommitted changes."""
 
     def __init__(self, plugin_name, changes):
@@ -62,7 +68,7 @@ class PluginDirtyError(Exception):
         super().__init__(f"Plugin {plugin_name} has uncommitted changes")
 
 
-class PluginAlreadyInstalledError(Exception):
+class PluginAlreadyInstalledError(PluginManagerError):
     """Raised when trying to install a plugin that's already installed."""
 
     def __init__(self, plugin_name, url):
