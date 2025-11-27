@@ -824,6 +824,21 @@ class PluginManager:
         metadata_dict = self._get_config_value('plugins3', 'metadata', default={})
         return metadata_dict.get(uuid, {})
 
+    def _find_plugin_by_url(self, url: str):
+        """Find an installed plugin by its source URL.
+
+        Returns:
+            Plugin or None
+        """
+        metadata_dict = self._get_config_value('plugins3', 'metadata', default={})
+        for uuid, meta in metadata_dict.items():
+            if meta.get('url') == url:
+                # Find the plugin with this UUID
+                for plugin in self._plugins:
+                    if plugin.manifest and plugin.manifest.uuid == uuid:
+                        return plugin
+        return None
+
     def _save_plugin_metadata(self, metadata: PluginMetadata):
         """Save plugin metadata to config, keyed by UUID."""
         from picard.config import get_config

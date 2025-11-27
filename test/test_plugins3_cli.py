@@ -312,6 +312,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             'name': 'Test Plugin',
             'git_url': 'https://github.com/test/plugin',
         }
+        mock_manager._find_plugin_by_url.return_value = None  # Not already installed
         mock_manager.install_plugin.return_value = 'test-plugin'
 
         exit_code, _, _ = run_cli(mock_manager, install=['test-plugin'])
