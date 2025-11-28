@@ -388,7 +388,7 @@ class PluginCLI:
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_name)} is already installed from this URL')
                     self._out.info(
                         f'Use {self._out.d_command("--reinstall")} to reinstall: '
-                        f'{self._out.d_command(f"picard plugins --install {e.url} --reinstall")}'
+                        f'{self._out.d_command(f"picard plugins --install {url_or_id} --reinstall")}'
                     )
                     continue
                 elif isinstance(e, PluginDirtyError):
