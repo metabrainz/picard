@@ -401,6 +401,22 @@ picard plugins --check-updates
 
 **Note on `--check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `--switch-ref` instead.
 
+**Note on immutable refs (tags and commits):** If a plugin was installed with a specific tag or commit hash, `--update` will report "Already up to date" because tags and commits are immutable and cannot be updated. To change to a different version, use `--switch-ref`:
+
+```bash
+# Plugin installed with tag v1.0.0
+picard plugins --update myplugin
+# Output: Already up to date (version 1.0.0)
+#         Plugin is pinned to tag v1.0.0
+#         To update to a different version, use: picard plugins --switch-ref myplugin <branch-or-tag>
+
+# Switch to a newer tag
+picard plugins --switch-ref myplugin v2.0.0
+
+# Or switch to a branch to get automatic updates
+picard plugins --switch-ref myplugin main
+```
+
 **Example:**
 ```bash
 # Plugin installed from 'dev' branch at v0.7.3
@@ -489,6 +505,15 @@ Last Updated: 2025-11-20 14:15:00
 - `picard plugins --update <name> --ref <ref>` - Update to specific ref
 
 **Description:** Manage git branches, tags, and commits
+
+**Understanding refs:**
+- **Branches** (e.g., `main`, `dev`): Mutable - can be updated with `--update` to get latest commits
+- **Tags** (e.g., `v1.0.0`, `2.1.3`): Immutable - cannot be updated, use `--switch-ref` to change versions
+- **Commits** (e.g., `abc1234`): Immutable - cannot be updated, use `--switch-ref` to change versions
+
+**When to use `--update` vs `--switch-ref`:**
+- Use `--update` when installed from a branch to get the latest commits on that branch
+- Use `--switch-ref` when installed from a tag/commit, or to change to a different branch/tag
 
 **Examples:**
 ```bash

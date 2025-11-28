@@ -637,6 +637,28 @@ class PluginManager:
             return None, None
         return metadata.get('original_url', old_url), metadata.get('original_uuid', old_uuid)
 
+    def _is_immutable_ref(self, ref):
+        """Check if ref appears to be a tag or commit hash (immutable).
+
+        Returns:
+            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
+        """
+        if not ref:
+            return False, None
+
+        # Check if it looks like a commit hash (7-40 hex chars)
+        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
+            return True, 'commit'
+
+        # Check if it starts with 'v' followed by a number (common tag pattern)
+        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
+        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
+            return True, 'tag'
+        if '.' in ref and any(c.isdigit() for c in ref):
+            return True, 'tag'
+
+        return False, None
+
     def update_plugin(self, plugin: Plugin, discard_changes=False):
         """Update a single plugin to latest version.
 
