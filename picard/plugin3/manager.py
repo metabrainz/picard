@@ -47,7 +47,6 @@ class PluginMetadata:
     uuid: str = None
     original_url: str = None
     original_uuid: str = None
-    registry_id: str = None
 
     def to_dict(self):
         """Convert to dict for config storage, excluding None values."""
@@ -246,6 +245,24 @@ class PluginManager:
             raise PluginNoUUIDError(plugin.plugin_id)
         return plugin.manifest.uuid
 
+    def get_plugin_registry_id(self, plugin: Plugin):
+        """Get registry ID for a plugin by looking it up in the current registry.
+
+        Args:
+            plugin: Plugin to get registry ID for
+
+        Returns:
+            str: Registry ID or None if not found in registry
+        """
+        try:
+            uuid = self._get_plugin_uuid(plugin)
+            metadata = self._get_plugin_metadata(uuid)
+            if metadata:
+                return self._registry.get_registry_id(url=metadata.get('url'), uuid=metadata.get('uuid'))
+        except (PluginNoUUIDError, Exception):
+            pass
+        return None
+
     def _get_config_value(self, *keys, default=None):
         """Get nested config value by keys.
 
@@ -316,9 +333,7 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
-    def install_plugin(
-        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, registry_id=None
-    ):
+    def install_plugin(self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False):
         """Install a plugin from a git URL or local directory.
 
         Args:
@@ -343,9 +358,7 @@ class PluginManager:
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
         if local_path:
-            return self._install_from_local_directory(
-                local_path, reinstall, force_blacklisted, ref, discard_changes, registry_id
-            )
+            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref, discard_changes)
 
         # Handle git URL - use temp dir in plugin directory for atomic rename
         from picard.plugin3.plugin import hash_string
@@ -402,7 +415,6 @@ class PluginManager:
                     ref=source.resolved_ref,
                     commit=commit_id,
                     uuid=manifest.uuid,
-                    registry_id=registry_id,
                 )
             )
 
@@ -429,7 +441,6 @@ class PluginManager:
         force_blacklisted=False,
         ref=None,
         discard_changes=False,
-        registry_id=None,
     ):
         """Install a plugin from a local directory.
 
@@ -526,7 +537,6 @@ class PluginManager:
                 ref=ref_to_save,
                 commit=commit_to_save,
                 uuid=manifest.uuid,
-                registry_id=registry_id,
             )
         )
 
@@ -589,7 +599,6 @@ class PluginManager:
                 uuid=metadata.get('uuid'),
                 original_url=metadata.get('original_url'),
                 original_uuid=metadata.get('original_uuid'),
-                registry_id=metadata.get('registry_id'),
             )
         )
 
@@ -696,7 +705,6 @@ class PluginManager:
                 uuid=current_uuid,
                 original_url=original_url,
                 original_uuid=original_uuid,
-                registry_id=metadata.get('registry_id'),
             )
         )
 

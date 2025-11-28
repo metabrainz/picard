@@ -431,6 +431,19 @@ class PluginRegistry:
 
         return None
 
+    def get_registry_id(self, url=None, uuid=None):
+        """Get registry ID for a plugin by URL or UUID.
+
+        Args:
+            url: Git URL to search for
+            uuid: Plugin UUID to search for
+
+        Returns:
+            str: Registry ID or None if not found
+        """
+        plugin = self.find_plugin(url=url, uuid=uuid)
+        return plugin.get('id') if plugin else None
+
     def list_plugins(self, category=None, trust_level=None):
         """List plugins from registry, optionally filtered.
 

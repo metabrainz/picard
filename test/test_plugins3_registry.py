@@ -543,3 +543,51 @@ class TestPluginRegistry(PicardTestCase):
         # Filter by both
         official_metadata = registry.list_plugins(category='metadata', trust_level='official')
         self.assertEqual(len(official_metadata), 2)
+
+    def test_get_registry_id_by_url(self):
+        """Test getting registry ID by URL."""
+        registry = create_test_registry()
+
+        # Find by URL
+        registry_id = registry.get_registry_id(url='https://github.com/test/example')
+        self.assertEqual(registry_id, 'example-plugin')
+
+        # Find by different URL
+        registry_id = registry.get_registry_id(url='https://github.com/metabrainz/picard-plugin-listenbrainz')
+        self.assertEqual(registry_id, 'listenbrainz')
+
+        # Not found
+        registry_id = registry.get_registry_id(url='https://github.com/nonexistent/plugin')
+        self.assertIsNone(registry_id)
+
+    def test_get_registry_id_by_uuid(self):
+        """Test getting registry ID by UUID."""
+        registry = create_test_registry()
+
+        # Find by UUID
+        registry_id = registry.get_registry_id(uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(registry_id, 'example-plugin')
+
+        # Find by different UUID
+        registry_id = registry.get_registry_id(uuid='listenbrainz-uuid-5678')
+        self.assertEqual(registry_id, 'listenbrainz')
+
+        # Not found
+        registry_id = registry.get_registry_id(uuid='nonexistent-uuid')
+        self.assertIsNone(registry_id)
+
+    def test_get_registry_id_by_url_and_uuid(self):
+        """Test getting registry ID by both URL and UUID."""
+        registry = create_test_registry()
+
+        # Find by both (should match)
+        registry_id = registry.get_registry_id(
+            url='https://github.com/test/example', uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        )
+        self.assertEqual(registry_id, 'example-plugin')
+
+        # UUID takes precedence if URL doesn't match
+        registry_id = registry.get_registry_id(
+            url='https://github.com/wrong/url', uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        )
+        self.assertEqual(registry_id, 'example-plugin')

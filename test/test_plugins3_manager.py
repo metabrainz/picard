@@ -335,3 +335,64 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             result = manager._get_config_value('missing', 'key', default='default_value')
 
             self.assertEqual(result, 'default_value')
+
+    def test_get_plugin_registry_id_found(self):
+        """Test get_plugin_registry_id returns registry ID when plugin is in registry."""
+        from test.test_plugins3_helpers import create_test_registry
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
+
+        # Mock plugin with manifest and UUID
+        mock_plugin = Mock()
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+
+        # Mock metadata
+        with patch.object(manager, '_get_plugin_metadata') as mock_get_metadata:
+            mock_get_metadata.return_value = {
+                'url': 'https://github.com/test/example',
+                'uuid': 'ae5ef1ed-0195-4014-a113-6090de7cf8b7',
+            }
+
+            registry_id = manager.get_plugin_registry_id(mock_plugin)
+            self.assertEqual(registry_id, 'example-plugin')
+
+    def test_get_plugin_registry_id_not_found(self):
+        """Test get_plugin_registry_id returns None when plugin not in registry."""
+        from test.test_plugins3_helpers import create_test_registry
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
+
+        # Mock plugin with manifest and UUID
+        mock_plugin = Mock()
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = 'nonexistent-uuid'
+
+        # Mock metadata
+        with patch.object(manager, '_get_plugin_metadata') as mock_get_metadata:
+            mock_get_metadata.return_value = {
+                'url': 'https://github.com/nonexistent/plugin',
+                'uuid': 'nonexistent-uuid',
+            }
+
+            registry_id = manager.get_plugin_registry_id(mock_plugin)
+            self.assertIsNone(registry_id)
+
+    def test_get_plugin_registry_id_no_uuid(self):
+        """Test get_plugin_registry_id returns None when plugin has no UUID."""
+        from test.test_plugins3_helpers import create_test_registry
+
+        mock_tagger = Mock()
+        manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
+
+        # Mock plugin without UUID
+        mock_plugin = Mock()
+        mock_plugin.manifest = None
+
+        registry_id = manager.get_plugin_registry_id(mock_plugin)
+        self.assertIsNone(registry_id)

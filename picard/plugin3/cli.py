@@ -220,9 +220,10 @@ class PluginCLI:
 
         self._out.print(f'UUID: {self._out.d_uuid(plugin_uuid)}')
 
-        # Show registry ID if available
-        if metadata and metadata.get('registry_id'):
-            self._out.print(f'Registry ID: {self._out.d_id(metadata["registry_id"])}')
+        # Show registry ID if available (lookup dynamically from current registry)
+        registry_id = self._manager.get_plugin_registry_id(plugin)
+        if registry_id:
+            self._out.print(f'Registry ID: {self._out.d_id(registry_id)}')
 
         # Status
         if is_enabled:
@@ -312,14 +313,12 @@ class PluginCLI:
 
         for url_or_id in plugin_urls:
             try:
-                registry_id = None
                 # Check if it's a plugin ID (no slashes, no protocol)
                 if '/' not in url_or_id and '://' not in url_or_id:
                     # Try to find in registry
                     plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
                     if plugin:
                         url = plugin['git_url']
-                        registry_id = plugin['id']
                         self._out.print(f'Found {plugin["name"]} in registry')
                     else:
                         self._out.error(f'Plugin "{url_or_id}" not found in registry')
@@ -406,9 +405,7 @@ class PluginCLI:
                     except Exception:
                         pass  # Ignore errors checking status
 
-                plugin_id = self._manager.install_plugin(
-                    url, ref, reinstall, force_blacklisted, registry_id=registry_id
-                )
+                plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
@@ -810,13 +807,11 @@ class PluginCLI:
             if plugin.manifest:
                 identifiers.append(plugin.manifest.name().lower())
 
-            # Registry ID (case-insensitive)
+            # Registry ID (case-insensitive) - lookup dynamically from current registry
             try:
-                uuid = self._manager._get_plugin_uuid(plugin) if plugin.manifest else None
-                if uuid:
-                    metadata = self._manager._get_plugin_metadata(uuid)
-                    if metadata and metadata.get('registry_id'):
-                        identifiers.append(metadata['registry_id'].lower())
+                registry_id = self._manager.get_plugin_registry_id(plugin)
+                if registry_id:
+                    identifiers.append(registry_id.lower())
             except Exception:
                 pass
 
