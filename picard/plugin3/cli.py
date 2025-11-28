@@ -378,7 +378,10 @@ class PluginCLI:
             except Exception as e:
                 from picard.plugin3.manager import (
                     PluginAlreadyInstalledError,
+                    PluginBlacklistedError,
                     PluginDirtyError,
+                    PluginManifestInvalidError,
+                    PluginManifestNotFoundError,
                 )
 
                 if isinstance(e, PluginAlreadyInstalledError):
@@ -397,6 +400,20 @@ class PluginCLI:
                     plugin_id = result
                     self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                     self._out.info('Restart Picard to load the plugin')
+                elif isinstance(e, PluginBlacklistedError):
+                    self._out.error(f'Plugin is blacklisted: {e.reason}')
+                    self._out.info(
+                        f'Use {self._out.d_command("--force-blacklisted")} to install anyway (not recommended)'
+                    )
+                    return ExitCode.ERROR
+                elif isinstance(e, PluginManifestNotFoundError):
+                    self._out.error(f'No MANIFEST.toml found in {e.source}')
+                    return ExitCode.ERROR
+                elif isinstance(e, PluginManifestInvalidError):
+                    self._out.error('Invalid MANIFEST.toml:')
+                    for error in e.errors:
+                        self._out.error(f'  {error}')
+                    return ExitCode.ERROR
                 else:
                     self._out.error(f'Failed to install plugin: {e}')
                     return ExitCode.ERROR
@@ -516,7 +533,11 @@ class PluginCLI:
                     )
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
-                from picard.plugin3.manager import PluginDirtyError
+                from picard.plugin3.manager import (
+                    PluginDirtyError,
+                    PluginManifestInvalidError,
+                    PluginNoSourceError,
+                )
 
                 if isinstance(e, PluginDirtyError):
                     success, result = self._handle_dirty_error(
@@ -536,6 +557,15 @@ class PluginCLI:
                             f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
                         )
                         self._out.info('Restart Picard to load the updated plugin')
+                elif isinstance(e, PluginNoSourceError):
+                    self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no stored URL, cannot update')
+                    self._out.info('This plugin may have been installed from a local directory')
+                    return ExitCode.ERROR
+                elif isinstance(e, PluginManifestInvalidError):
+                    self._out.error('Invalid MANIFEST.toml after update:')
+                    for error in e.errors:
+                        self._out.error(f'  {error}')
+                    return ExitCode.ERROR
                 else:
                     self._out.error(f'Failed to update plugin: {e}')
                     return ExitCode.ERROR
@@ -644,7 +674,12 @@ class PluginCLI:
             )
             self._out.info('Restart Picard to load the updated plugin')
         except Exception as e:
-            from picard.plugin3.manager import PluginDirtyError
+            from picard.plugin3.manager import (
+                PluginDirtyError,
+                PluginManifestInvalidError,
+                PluginNoSourceError,
+                PluginRefSwitchError,
+            )
 
             if isinstance(e, PluginDirtyError):
                 success, result = self._handle_dirty_error(e, lambda **kw: self._manager.switch_ref(plugin, ref, **kw))
@@ -656,6 +691,18 @@ class PluginCLI:
                     f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
                 )
                 self._out.info('Restart Picard to load the updated plugin')
+            elif isinstance(e, PluginNoSourceError):
+                self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no stored URL, cannot switch ref')
+                self._out.info('This plugin may have been installed from a local directory')
+                return ExitCode.ERROR
+            elif isinstance(e, PluginRefSwitchError):
+                self._out.error(f'Cannot switch to ref {ref}: {e.original_error}')
+                return ExitCode.ERROR
+            elif isinstance(e, PluginManifestInvalidError):
+                self._out.error('Invalid MANIFEST.toml after switching ref:')
+                for error in e.errors:
+                    self._out.error(f'  {error}')
+                return ExitCode.ERROR
             else:
                 self._out.error(f'Failed to switch ref: {e}')
                 return ExitCode.ERROR
