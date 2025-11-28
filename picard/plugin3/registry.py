@@ -183,6 +183,23 @@ class PluginRegistry:
 
         self._registry_data = None
 
+    def _ensure_registry_loaded(self, operation_name='operation'):
+        """Ensure registry data is loaded, with error handling.
+
+        Args:
+            operation_name: Name of the operation for logging
+
+        Returns:
+            bool: True if registry is loaded, False if loading failed
+        """
+        if not self._registry_data:
+            try:
+                self.fetch_registry()
+            except (RegistryFetchError, RegistryParseError) as e:
+                log.warning('Failed to fetch registry for %s: %s', operation_name, e)
+                return False
+        return True
+
     def fetch_registry(self, use_cache=True):
         """Fetch registry from URL or cache.
 
@@ -259,13 +276,9 @@ class PluginRegistry:
         Returns:
             tuple: (is_blacklisted, reason)
         """
-        if not self._registry_data:
-            try:
-                self.fetch_registry()
-            except (RegistryFetchError, RegistryParseError) as e:
-                log.warning('Failed to fetch registry for blacklist check: %s', e)
-                # Fail safe: if we can't fetch registry, don't block installation
-                return False, None
+        if not self._ensure_registry_loaded('blacklist check'):
+            # Fail safe: if we can't fetch registry, don't block installation
+            return False, None
 
         # Normalize URL for comparison
         normalized_url = normalize_git_url(url) if url else None
@@ -313,11 +326,8 @@ class PluginRegistry:
         Returns:
             set: Set of blacklist types present (e.g. {'url', 'uuid', 'url_regex'})
         """
-        if not self._registry_data:
-            try:
-                self.fetch_registry()
-            except (RegistryFetchError, RegistryParseError):
-                return set()
+        if not self._ensure_registry_loaded('get blacklist types'):
+            return set()
 
         blacklist = self._registry_data.get('blacklist', [])
         types = set()
@@ -358,13 +368,9 @@ class PluginRegistry:
         Returns:
             str: Trust level ('official', 'trusted', 'community', or 'unregistered')
         """
-        if not self._registry_data:
-            try:
-                self.fetch_registry()
-            except (RegistryFetchError, RegistryParseError) as e:
-                log.warning('Failed to fetch registry for trust level check: %s', e)
-                # Fail safe: if we can't fetch registry, treat as unregistered
-                return 'unregistered'
+        if not self._ensure_registry_loaded('trust level check'):
+            # Fail safe: if we can't fetch registry, treat as unregistered
+            return 'unregistered'
 
         # Normalize URL for comparison
         normalized_url = normalize_git_url(url)
@@ -388,13 +394,9 @@ class PluginRegistry:
         Returns:
             dict: Plugin data or None if not found
         """
-        if not self._registry_data:
-            try:
-                self.fetch_registry()
-            except (RegistryFetchError, RegistryParseError) as e:
-                log.warning('Failed to fetch registry for plugin search: %s', e)
-                # Fail safe: if we can't fetch registry, return None
-                return None
+        if not self._ensure_registry_loaded('plugin search'):
+            # Fail safe: if we can't fetch registry, return None
+            return None
 
         # Normalize URL for comparison if provided
         normalized_url = normalize_git_url(url) if url else None
@@ -454,13 +456,9 @@ class PluginRegistry:
         Returns:
             list: List of plugin dicts
         """
-        if not self._registry_data:
-            try:
-                self.fetch_registry()
-            except (RegistryFetchError, RegistryParseError) as e:
-                log.warning('Failed to fetch registry for plugin listing: %s', e)
-                # Fail safe: if we can't fetch registry, return empty list
-                return []
+        if not self._ensure_registry_loaded('plugin listing'):
+            # Fail safe: if we can't fetch registry, return empty list
+            return []
 
         plugins = self._registry_data.get('plugins', [])
         result = []

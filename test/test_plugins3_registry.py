@@ -591,3 +591,30 @@ class TestPluginRegistry(PicardTestCase):
             url='https://github.com/wrong/url', uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7'
         )
         self.assertEqual(registry_id, 'example-plugin')
+
+    def test_ensure_registry_loaded_success(self):
+        """Test _ensure_registry_loaded returns True when registry loads successfully."""
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+        registry._registry_data = {'plugins': []}
+
+        # Already loaded
+        result = registry._ensure_registry_loaded('test')
+        self.assertTrue(result)
+
+    def test_ensure_registry_loaded_failure(self):
+        """Test _ensure_registry_loaded returns False when registry fails to load."""
+        from unittest.mock import patch
+
+        from picard.plugin3.registry import (
+            PluginRegistry,
+            RegistryFetchError,
+        )
+
+        registry = PluginRegistry()
+
+        # Mock fetch_registry to raise error
+        with patch.object(registry, 'fetch_registry', side_effect=RegistryFetchError('test', Exception('error'))):
+            result = registry._ensure_registry_loaded('test operation')
+            self.assertFalse(result)
