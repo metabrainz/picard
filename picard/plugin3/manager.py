@@ -320,7 +320,7 @@ class PluginManager:
             return True, reason
 
         # Only check UUID if registry has UUID-based blacklist entries
-        if not self._registry.has_uuid_blacklist():
+        if 'uuid' not in self._registry.get_blacklist_types():
             return False, None
 
         # For UUID check, we need to clone and read manifest

@@ -307,20 +307,28 @@ class PluginRegistry:
 
         return False, None
 
-    def has_uuid_blacklist(self):
-        """Check if registry has any UUID-based blacklist entries.
+    def get_blacklist_types(self):
+        """Get set of blacklist entry types in the registry.
 
         Returns:
-            bool: True if there are blacklist entries with 'uuid' field
+            set: Set of blacklist types present (e.g. {'url', 'uuid', 'url_regex'})
         """
         if not self._registry_data:
             try:
                 self.fetch_registry()
             except (RegistryFetchError, RegistryParseError):
-                return False
+                return set()
 
         blacklist = self._registry_data.get('blacklist', [])
-        return any('uuid' in entry for entry in blacklist)
+        types = set()
+        for entry in blacklist:
+            if 'uuid' in entry:
+                types.add('uuid')
+            if 'url' in entry:
+                types.add('url')
+            if 'url_regex' in entry:
+                types.add('url_regex')
+        return types
 
     def get_registry_info(self):
         """Get registry metadata.
