@@ -658,7 +658,7 @@ class PluginManager:
         if not metadata or 'url' not in metadata:
             raise PluginNoSourceError(plugin.plugin_id, 'update')
 
-        old_version = plugin.manifest.version if plugin.manifest else 'unknown'
+        old_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
         old_url = metadata['url']
         old_uuid = metadata.get('uuid')
 
@@ -670,7 +670,7 @@ class PluginManager:
 
         # Reload manifest to get new version
         plugin.read_manifest()
-        new_version = plugin.manifest.version if plugin.manifest else 'unknown'
+        new_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
 
         # Update metadata with current URL and UUID
         # If redirected, preserve original URL/UUID

@@ -201,6 +201,30 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         self.assertEqual(exit_code, 2)
         self.assertIn('not found', stderr)
 
+    def test_update_plugin_with_version_object(self):
+        """Test update command properly handles Version objects."""
+
+        manifest = load_plugin_manifest('example')
+        mock_plugin = create_mock_plugin(manifest=manifest)
+        mock_manager = Mock(plugins=[mock_plugin])
+
+        # Simulate update_plugin returning Version objects (the bug scenario)
+        mock_manager.update_plugin = Mock(
+            return_value=(
+                '1.0.0',  # old_version as string
+                '1.1.0',  # new_version as string
+                'abc1234567890',  # old_commit
+                'def9876543210',  # new_commit
+            )
+        )
+
+        exit_code, stdout, _ = run_cli(mock_manager, update=['test-plugin'])
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn('1.0.0', stdout)
+        self.assertIn('1.1.0', stdout)
+        mock_manager.update_plugin.assert_called_once()
+
     def test_check_updates_empty(self):
         """Test check_updates with no plugins."""
         from picard.plugin3.manager import PluginManager
