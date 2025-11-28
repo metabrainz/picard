@@ -1054,7 +1054,10 @@ class PluginCLI:
             plugins = self._manager._registry.list_plugins(category=category, trust_level=trust_level)
 
             if not plugins:
-                self._out.print('No plugins found in registry')
+                if category or trust_level:
+                    self._out.print('No matching plugins found in registry')
+                else:
+                    self._out.print('No plugins found in registry')
                 return ExitCode.SUCCESS
 
             # Show header
