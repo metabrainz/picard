@@ -328,7 +328,7 @@ class PluginCLI:
                             )
                             self._out.info(
                                 f'Use {self._out.d_command("--reinstall")} to reinstall: '
-                                f'{self._out.d_command(f"picard plugins --install {url} --reinstall")}'
+                                f'{self._out.d_command(f"picard plugins --install {url_or_id} --reinstall")}'
                             )
                             continue
 
