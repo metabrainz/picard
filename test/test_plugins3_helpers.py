@@ -245,3 +245,31 @@ def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content
             pass
 
     return plugin_dir
+
+
+def create_git_commit(repo_path, message='Initial commit', author_name='Test', author_email='test@example.com'):
+    """Create a git commit with all current files.
+
+    Args:
+        repo_path: Path to git repository
+        message: Commit message
+        author_name: Author name
+        author_email: Author email
+
+    Returns:
+        str: Commit ID (SHA)
+    """
+    try:
+        import pygit2
+
+        repo = pygit2.Repository(str(repo_path))
+        index = repo.index
+        index.add_all()
+        index.write()
+        tree = index.write_tree()
+        author = pygit2.Signature(author_name, author_email)
+        commit_id = repo.create_commit('refs/heads/main', author, author, message, tree, [])
+        repo.set_head('refs/heads/main')
+        return str(commit_id)
+    except ImportError:
+        return None
