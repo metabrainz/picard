@@ -123,7 +123,13 @@ def get_local_repository_path(url):
 class PluginRegistry:
     """Manages plugin registry with blacklist checking."""
 
-    def __init__(self, registry_url=None, cache_path=None):
+    def __init__(self, registry_url=None, cache_dir=None):
+        """Initialize plugin registry.
+
+        Args:
+            registry_url: Registry URL (defaults to DEFAULT_PLUGIN_REGISTRY_URL or PICARD_PLUGIN_REGISTRY_URL env var)
+            cache_dir: Directory for cache files (cache filename will be URL-specific)
+        """
         # Priority: passed parameter > environment variable > default
         if registry_url:
             self.registry_url = registry_url
@@ -131,7 +137,16 @@ class PluginRegistry:
             import os
 
             self.registry_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL', DEFAULT_PLUGIN_REGISTRY_URL)
-        self.cache_path = cache_path
+
+        # Create URL-specific cache path using SHA1 hash
+        if cache_dir:
+            import hashlib
+
+            url_hash = hashlib.sha1(self.registry_url.encode()).hexdigest()[:16]
+            self.cache_path = Path(cache_dir) / f'plugin_registry_{url_hash}.json'
+        else:
+            self.cache_path = None
+
         self._registry_data = None
 
     def fetch_registry(self, use_cache=True):
@@ -226,6 +241,25 @@ class PluginRegistry:
                         log.warning('Invalid regex pattern in blacklist: %s', entry['url_regex'])
 
         return False, None
+
+    def get_registry_info(self):
+        """Get registry metadata.
+
+        Returns:
+            dict: Registry info with last_updated, plugin_count, api_version, registry_url
+
+        Raises:
+            RuntimeError: If registry data not loaded
+        """
+        if not self._registry_data:
+            raise RuntimeError("Registry not loaded")
+
+        return {
+            'last_updated': self._registry_data.get('last_updated'),
+            'plugin_count': len(self._registry_data.get('plugins', [])),
+            'api_version': self._registry_data.get('api_version'),
+            'registry_url': self.registry_url,
+        }
 
     def get_trust_level(self, url):
         """Get trust level for plugin by git URL.

@@ -166,12 +166,11 @@ class PluginManager:
         self._load_config()
 
         # Initialize registry for blacklist checking
+        from picard.const.appdirs import cache_folder
         from picard.plugin3.registry import PluginRegistry
 
-        cache_path = None
-        if self._primary_plugin_dir:
-            cache_path = self._primary_plugin_dir.parent / 'registry_cache.json'
-        self._registry = PluginRegistry(cache_path=cache_path)
+        cache_dir = cache_folder()
+        self._registry = PluginRegistry(cache_dir=cache_dir)
 
         # Register cleanup and clean up any leftover temp directories
         if tagger:

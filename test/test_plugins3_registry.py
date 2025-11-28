@@ -377,17 +377,14 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_cache_save_and_load(self):
         """Test registry caching."""
-        from pathlib import Path
         import tempfile
         from unittest.mock import patch
 
         from picard.plugin3.registry import PluginRegistry
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            cache_path = Path(tmpdir) / 'registry_cache.json'
-
-            # Create registry with cache path
-            registry = PluginRegistry(cache_path=cache_path)
+            # Create registry with cache_dir (not cache_path)
+            registry = PluginRegistry(cache_dir=tmpdir)
 
             mock_response_data = b'{"blacklist": [{"url": "test"}]}'
 
@@ -401,11 +398,11 @@ class TestPluginRegistry(PicardTestCase):
                 # Fetch and save to cache
                 registry.fetch_registry(use_cache=False)
 
-                # Verify cache file was created
-                self.assertTrue(cache_path.exists())
+                # Verify cache file was created (with URL-specific hash)
+                self.assertTrue(registry.cache_path.exists())
 
             # Create new registry instance and load from cache
-            registry2 = PluginRegistry(cache_path=cache_path)
+            registry2 = PluginRegistry(cache_dir=tmpdir)
             registry2.fetch_registry(use_cache=True)
 
             # Should have loaded from cache
@@ -425,6 +422,28 @@ class TestPluginRegistry(PicardTestCase):
 
             self.assertIsNotNone(registry._registry_data)
             self.assertEqual(registry._registry_data['blacklist'], [])
+
+    def test_registry_get_registry_info(self):
+        """Test getting registry metadata."""
+        registry = create_test_registry()
+
+        info = registry.get_registry_info()
+
+        self.assertEqual(info['last_updated'], '2025-11-25T12:00:00Z')
+        self.assertEqual(info['plugin_count'], 6)
+        self.assertEqual(info['api_version'], '3.0')
+        self.assertIn('registry_url', info)
+
+    def test_registry_get_registry_info_not_loaded(self):
+        """Test get_registry_info raises error when registry not loaded."""
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry()
+
+        with self.assertRaises(RuntimeError) as cm:
+            registry.get_registry_info()
+
+        self.assertIn('Registry not loaded', str(cm.exception))
 
     def test_registry_get_trust_level(self):
         """Test getting trust level for plugin by URL."""
