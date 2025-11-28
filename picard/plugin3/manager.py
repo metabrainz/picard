@@ -307,6 +307,60 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
+    def check_plugin_blacklist(self, url, ref=None):
+        """Check if plugin is blacklisted (including UUID check).
+
+        This does a lightweight clone to read the manifest and check UUID blacklist.
+        Returns (is_blacklisted, reason) tuple.
+        """
+        # First check URL-based blacklist
+        is_blacklisted, reason = self._registry.is_blacklisted(url)
+        if is_blacklisted:
+            return True, reason
+
+        # For UUID check, we need to clone and read manifest
+        from picard.plugin3.registry import get_local_repository_path
+
+        local_path = get_local_repository_path(url)
+        if local_path:
+            # Local directory - read manifest directly
+            manifest_path = local_path / 'MANIFEST.toml'
+            if manifest_path.exists():
+                try:
+                    with open(manifest_path, 'rb') as f:
+                        from picard.plugin3.manifest import PluginManifest
+
+                        manifest = PluginManifest('temp', f)
+                    return self._registry.is_blacklisted(url, manifest.uuid)
+                except Exception:
+                    pass  # If we can't read manifest, let install_plugin handle it
+        else:
+            # Remote URL - need to clone to temp location
+            import hashlib
+            import tempfile
+
+            url_hash = hashlib.md5(url.encode()).hexdigest()[:8]
+            temp_path = Path(tempfile.mkdtemp(prefix=f'picard-check-{url_hash}-'))
+
+            try:
+                source = PluginSourceGit(url, ref)
+                source.sync(temp_path, shallow=True, single_branch=True)
+
+                manifest_path = temp_path / 'MANIFEST.toml'
+                if manifest_path.exists():
+                    with open(manifest_path, 'rb') as f:
+                        from picard.plugin3.manifest import PluginManifest
+
+                        manifest = PluginManifest('temp', f)
+                    return self._registry.is_blacklisted(url, manifest.uuid)
+            except Exception:
+                pass  # If clone/read fails, let install_plugin handle it
+            finally:
+                if temp_path.exists():
+                    shutil.rmtree(temp_path, ignore_errors=True)
+
+        return False, None
+
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, registry_id=None
     ):

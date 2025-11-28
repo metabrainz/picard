@@ -351,9 +351,9 @@ class PluginCLI:
                             )
                             continue
 
-                    # Check blacklist (before prompting user)
+                    # Check blacklist (including UUID, before prompting user)
                     if not force_blacklisted:
-                        is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
+                        is_blacklisted, reason = self._manager.check_plugin_blacklist(url, ref)
                         if is_blacklisted:
                             self._out.error(f'Plugin is blacklisted: {reason}')
                             return ExitCode.ERROR
