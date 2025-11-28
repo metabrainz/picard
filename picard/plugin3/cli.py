@@ -218,6 +218,10 @@ class PluginCLI:
 
         self._out.print(f'UUID: {self._out.d_uuid(plugin_uuid)}')
 
+        # Show registry ID if available
+        if metadata and metadata.get('registry_id'):
+            self._out.print(f'Registry ID: {self._out.d_id(metadata["registry_id"])}')
+
         # Status
         if is_enabled:
             status = self._out.d_status_enabled()
