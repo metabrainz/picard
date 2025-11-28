@@ -356,9 +356,23 @@ class PluginCLI:
                             self._out.error(f'Plugin is blacklisted: {reason}')
                             return ExitCode.ERROR
 
-                    # Check trust level for unregistered plugins
+                    # Check trust level and show appropriate warnings
                     trust_level = self._manager._registry.get_trust_level(url)
-                    if trust_level == 'unregistered':
+                    trust_community = getattr(self._args, 'trust_community', False)
+
+                    if trust_level == 'community' and not trust_community:
+                        self._out.warning(self._out.d_warning('WARNING: This is a community plugin'))
+                        self._out.warning(
+                            self._out.d_warning('  Community plugins are not reviewed by the Picard team')
+                        )
+                        self._out.warning(self._out.d_warning('  Only install plugins from sources you trust'))
+
+                        if not yes:
+                            if not self._out.yesno('Do you want to continue?'):
+                                self._out.print('Installation cancelled')
+                                return ExitCode.CANCELLED
+
+                    elif trust_level == 'unregistered':
                         self._out.warning(self._out.d_warning('WARNING: This plugin is not in the official registry'))
                         self._out.warning(
                             self._out.d_warning('  Installing unregistered plugins may pose security risks')

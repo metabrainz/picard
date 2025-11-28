@@ -214,7 +214,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--search <term>` | ✅ Done | 3.3 | Search official plugins |
 | `--check-blacklist <url>` | ✅ Done | 1.8 | Check if URL is blacklisted |
 | `--refresh-registry` | ⏳ TODO | 3.2 | Force refresh plugin registry cache |
-| `--trust-community` | ⏳ TODO | 3.2 | Skip community plugin warnings |
+| `--trust-community` | ✅ Done | 3.2 | Skip community plugin warnings |
 | `--trust <level>` | ✅ Done | 3.3 | Filter by trust level (with --browse/--search) |
 | `--category <cat>` | ✅ Done | 3.3 | Filter by category (with --browse/--search) |
 
@@ -536,6 +536,43 @@ picard plugins --install https://github.com/user/plugin --reinstall --yes
 5. Preserves plugin configuration (unless `--purge` is used)
 
 **Note:** If the plugin has uncommitted local changes, you'll be prompted to discard them. In non-interactive mode (`--yes`), the operation will fail to prevent data loss.
+
+---
+
+### Trust Community Plugins
+
+**Command:** `picard plugins --install <url> --trust-community`
+
+**Description:** Skip warnings when installing community plugins. This flag only affects **community** trust level plugins - unregistered plugins will still show warnings.
+
+**Trust Levels:**
+- **Official** (🛡️) - No warnings (Picard team maintained)
+- **Trusted** (✓) - No warnings (Known authors)
+- **Community** (⚠️) - Warnings shown (unless `--trust-community` used)
+- **Unregistered** (🔓) - Warnings always shown (not in registry)
+
+**Examples:**
+```bash
+# Install community plugin with warnings (default)
+picard plugins --install https://github.com/user/community-plugin
+# Output: WARNING: This is a community plugin
+#         Community plugins are not reviewed by the Picard team
+#         Only install plugins from sources you trust
+#         Do you want to continue? [y/N]
+
+# Install community plugin without warnings
+picard plugins --install https://github.com/user/community-plugin --trust-community
+
+# Unregistered plugins still show warnings
+picard plugins --install https://github.com/unknown/plugin --trust-community
+# Output: WARNING: This plugin is not in the official registry
+#         Installing unregistered plugins may pose security risks
+#         ...
+```
+
+**Use case:** Useful for automation or when you've already reviewed the plugin and trust the author.
+
+**Security note:** Only use this flag if you understand the risks. Community plugins are not reviewed by the Picard team. See [SECURITY.md](SECURITY.md) for details on the trust model.
 
 ---
 
