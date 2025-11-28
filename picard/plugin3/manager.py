@@ -214,6 +214,32 @@ class PluginManager:
         if errors:
             raise PluginManifestInvalidError(errors)
 
+    def _read_and_validate_manifest(self, path, source_description):
+        """Read MANIFEST.toml from path and validate it.
+
+        Args:
+            path: Directory path containing MANIFEST.toml
+            source_description: Description of source for error messages (e.g., URL or path)
+
+        Returns:
+            PluginManifest: Validated manifest
+
+        Raises:
+            PluginManifestNotFoundError: If MANIFEST.toml doesn't exist
+            PluginManifestInvalidError: If manifest validation fails
+        """
+        from picard.plugin3.manifest import PluginManifest
+
+        manifest_path = path / 'MANIFEST.toml'
+        if not manifest_path.exists():
+            raise PluginManifestNotFoundError(source_description)
+
+        with open(manifest_path, 'rb') as f:
+            manifest = PluginManifest('temp', f)
+
+        self._validate_manifest(manifest)
+        return manifest
+
     def _get_plugin_uuid(self, plugin: Plugin):
         """Get plugin UUID, raising PluginNoUUIDError if not available."""
         if not plugin.manifest or not plugin.manifest.uuid:
@@ -339,17 +365,7 @@ class PluginManager:
             commit_id = source.sync(temp_path, single_branch=True)
 
             # Read MANIFEST to get plugin ID
-            manifest_path = temp_path / 'MANIFEST.toml'
-            if not manifest_path.exists():
-                raise PluginManifestNotFoundError(url)
-
-            with open(manifest_path, 'rb') as f:
-                from picard.plugin3.manifest import PluginManifest
-
-                manifest = PluginManifest('temp', f)
-
-            # Validate manifest
-            self._validate_manifest(manifest)
+            manifest = self._read_and_validate_manifest(temp_path, url)
 
             # Generate plugin directory name from sanitized name + UUID
             plugin_name = get_plugin_directory_name(manifest)
@@ -475,17 +491,7 @@ class PluginManager:
             commit_to_save = ''
 
         # Read MANIFEST to get plugin ID
-        manifest_path = install_path / 'MANIFEST.toml'
-        if not manifest_path.exists():
-            raise PluginManifestNotFoundError(local_path)
-
-        with open(manifest_path, 'rb') as f:
-            from picard.plugin3.manifest import PluginManifest
-
-            manifest = PluginManifest('temp', f)
-
-        # Validate manifest
-        self._validate_manifest(manifest)
+        manifest = self._read_and_validate_manifest(install_path, local_path)
 
         # Generate plugin directory name from sanitized name + UUID
         plugin_name = get_plugin_directory_name(manifest)
