@@ -451,7 +451,16 @@ class PluginCLI:
                 self._out.success(f'Plugin {self._out.d_status_enabled("enabled")}')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                self._out.error(f'Failed to enable plugin: {e}')
+                from picard.plugin3.manager import PluginNoUUIDError
+                from picard.plugin3.plugin import PluginAlreadyEnabledError
+
+                if isinstance(e, PluginAlreadyEnabledError):
+                    self._out.info(f'Plugin {self._out.d_id(e.plugin_id)} is already enabled')
+                    return ExitCode.SUCCESS
+                elif isinstance(e, PluginNoUUIDError):
+                    self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no UUID in manifest')
+                else:
+                    self._out.error(f'Failed to enable plugin: {e}')
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
@@ -468,7 +477,16 @@ class PluginCLI:
                 self._out.success(f'Plugin {self._out.d_status_disabled("disabled")}')
                 self._out.info('Restart Picard for changes to take effect')
             except Exception as e:
-                self._out.error(f'Failed to disable plugin: {e}')
+                from picard.plugin3.manager import PluginNoUUIDError
+                from picard.plugin3.plugin import PluginAlreadyDisabledError
+
+                if isinstance(e, PluginAlreadyDisabledError):
+                    self._out.info(f'Plugin {self._out.d_id(e.plugin_id)} is already disabled')
+                    return ExitCode.SUCCESS
+                elif isinstance(e, PluginNoUUIDError):
+                    self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no UUID in manifest')
+                else:
+                    self._out.error(f'Failed to disable plugin: {e}')
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
