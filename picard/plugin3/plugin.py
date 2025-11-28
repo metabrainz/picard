@@ -157,6 +157,14 @@ class PluginSourceGit(PluginSource):
                 else:
                     raise
 
+            # If shallow clone and ref specified, fetch tags to ensure tags are available
+            if shallow and self.ref and not checkout_branch:
+                for remote in repo.remotes:
+                    try:
+                        remote.fetch(['+refs/tags/*:refs/tags/*'], callbacks=GitRemoteCallbacks())
+                    except Exception:
+                        pass  # Tags might not exist or fetch might fail
+
         if self.ref:
             try:
                 commit = repo.revparse_single(self.ref)
