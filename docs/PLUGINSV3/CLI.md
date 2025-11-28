@@ -12,26 +12,36 @@ Most commands accept a plugin identifier, which can be:
 - **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique, used internally)
 - **Display name**: `ListenBrainz Submitter` (case-insensitive, may not be unique)
 - **UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique)
-- **Prefix**: Any prefix of Plugin ID or UUID (unique if no collisions)
+- **Prefix**: Any prefix of any identifier type (unique if no collisions)
 
 **Note:** The Plugin ID is the directory name where the plugin is installed. It consists of a sanitized version of the display name plus the UUID (e.g., `listenbrainz_891a96e7-...`).
 
 **Registry ID (recommended):** If you installed a plugin from the registry (e.g., `picard plugins --install view-script-variables`), you can use the short registry ID for all operations. This is stored when you install from the registry and is much easier to remember than the full Plugin ID.
 
-**Prefix matching:** You can use any prefix of the Plugin ID or UUID. The command will match if the prefix uniquely identifies a single plugin.
+**Prefix matching:** You can use any prefix of **any identifier type** (Registry ID, Plugin ID, UUID, or Display name). All matching is **case-insensitive**. The command will match if the prefix uniquely identifies a single plugin. Exact matches are prioritized over prefix matches.
 
 **Examples:**
 ```bash
-# All of these work (if unique):
-picard plugins --info view-script-variables            # Registry ID (if installed from registry)
-picard plugins --info "ListenBrainz Submitter"          # Display name
-picard plugins --info listenbrainz_a1b2c3d4-e5f6-...    # Full Plugin ID
-picard plugins --info listenbrainz_a1b2                 # Plugin ID prefix
-picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...       # Full UUID
-picard plugins --info a1b2c3d4                          # UUID prefix
+# Registry ID (exact or prefix)
+picard plugins --info view-script-variables            # Exact registry ID
+picard plugins --info view-script                      # Registry ID prefix
+picard plugins --info VIEW-SCRIPT                      # Case-insensitive
+
+# Display name (exact or prefix)
+picard plugins --info "ListenBrainz Submitter"         # Exact display name
+picard plugins --info "ListenBrainz"                   # Display name prefix
+picard plugins --info listenbrainz                     # Case-insensitive
+
+# Plugin ID (exact or prefix)
+picard plugins --info listenbrainz_a1b2c3d4-e5f6-...   # Full Plugin ID
+picard plugins --info listenbrainz_a1b2                # Plugin ID prefix
+
+# UUID (exact or prefix)
+picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...      # Full UUID
+picard plugins --info a1b2c3d4                         # UUID prefix
 ```
 
-**Note:** If multiple plugins match (e.g., same display name or ambiguous prefix), you'll get an error listing the matches. Use a more specific identifier (longer prefix, full Plugin ID, UUID, or registry ID).
+**Note:** If multiple plugins match (e.g., ambiguous prefix like `view` matching both `view-script-variables` and `view-history`), you'll get an error listing the matches. Use a more specific identifier (longer prefix, full identifier, or UUID).
 
 ---
 
