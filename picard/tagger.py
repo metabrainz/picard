@@ -1465,6 +1465,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
     plugin_parser.add_argument('--browse', action='store_true', help="browse plugins from registry")
     plugin_parser.add_argument('--search', metavar='QUERY', help="search plugins in registry")
     plugin_parser.add_argument('--check-blacklist', metavar='URL', help="check if URL is blacklisted")
+    plugin_parser.add_argument('--refresh-registry', action='store_true', help="force refresh of plugin registry cache")
     plugin_parser.add_argument(
         '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
     )

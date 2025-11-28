@@ -106,6 +106,8 @@ class PluginCLI:
                 return self._search_plugins(self._args.search)
             elif hasattr(self._args, 'check_blacklist') and self._args.check_blacklist:
                 return self._check_blacklist(self._args.check_blacklist)
+            elif hasattr(self._args, 'refresh_registry') and self._args.refresh_registry:
+                return self._refresh_registry()
             elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
                 return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             elif hasattr(self._args, 'clean_config') and self._args.clean_config:
@@ -1154,6 +1156,25 @@ class PluginCLI:
 
         except Exception as e:
             self._out.error(f'Failed to check blacklist: {e}')
+            return ExitCode.ERROR
+
+    def _refresh_registry(self):
+        """Force refresh of plugin registry cache."""
+        try:
+            self._out.print('Refreshing plugin registry...')
+
+            self._manager._registry.fetch_registry(use_cache=False)
+
+            info = self._manager._registry.get_registry_info()
+            self._out.success('Registry refreshed successfully')
+            self._out.print(f'Registry URL: {info["registry_url"]}')
+            self._out.print(f'Last updated: {info["last_updated"]}')
+            self._out.print(f'Plugins available: {info["plugin_count"]}')
+
+            return ExitCode.SUCCESS
+
+        except Exception as e:
+            self._out.error(f'Failed to refresh registry: {e}')
             return ExitCode.ERROR
 
     def _show_manifest(self, target):

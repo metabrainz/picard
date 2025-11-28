@@ -395,3 +395,38 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         mock_manager._registry.list_plugins.assert_called_once_with(category=None, trust_level='official')
+
+    def test_refresh_registry_command(self):
+        """Test --refresh-registry command."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = Mock()
+        mock_manager._registry.fetch_registry = Mock()
+        mock_manager._registry.get_registry_info.return_value = {
+            'last_updated': '2025-11-25T12:00:00Z',
+            'plugin_count': 42,
+            'api_version': '3.0',
+            'registry_url': 'https://test.example.com/registry.json',
+        }
+
+        exit_code, stdout, _ = run_cli(mock_manager, refresh_registry=True)
+
+        self.assertEqual(exit_code, ExitCode.SUCCESS)
+        mock_manager._registry.fetch_registry.assert_called_once_with(use_cache=False)
+        mock_manager._registry.get_registry_info.assert_called_once()
+        self.assertIn('Registry refreshed successfully', stdout)
+        self.assertIn('Last updated: 2025-11-25T12:00:00Z', stdout)
+        self.assertIn('Plugins available: 42', stdout)
+
+    def test_refresh_registry_error(self):
+        """Test --refresh-registry command with error."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = Mock()
+        mock_manager._registry.fetch_registry.side_effect = Exception('Network error')
+
+        exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('Failed to refresh registry', stderr)
+        self.assertIn('Network error', stderr)
