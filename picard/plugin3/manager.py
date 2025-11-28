@@ -324,7 +324,7 @@ class PluginManager:
         # Handle git URL - use temp dir in plugin directory for atomic rename
         import hashlib
 
-        url_hash = hashlib.md5(url.encode()).hexdigest()[:8]
+        url_hash = hashlib.sha1(url.encode()).hexdigest()[:8]
         temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
 
         try:
@@ -450,7 +450,7 @@ class PluginManager:
                 pass  # Ignore errors checking status
 
             # Use git operations to get ref and commit info
-            url_hash = hashlib.md5(str(local_path).encode()).hexdigest()[:8]
+            url_hash = hashlib.sha1(str(local_path).encode()).hexdigest()[:8]
             temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
 
             try:
