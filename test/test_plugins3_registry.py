@@ -412,16 +412,59 @@ class TestPluginRegistry(PicardTestCase):
         """Test registry fetch error handling."""
         from unittest.mock import patch
 
+        from picard.plugin3.registry import (
+            PluginRegistry,
+            RegistryFetchError,
+        )
+
+        registry = PluginRegistry()
+
+        with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
+            # Should raise RegistryFetchError
+            with self.assertRaises(RegistryFetchError) as cm:
+                registry.fetch_registry(use_cache=False)
+
+            self.assertIn('Network error', str(cm.exception))
+            self.assertIn('https://picard.musicbrainz.org', str(cm.exception))
+
+    def test_registry_parse_error(self):
+        """Test registry parse error handling."""
+        from unittest.mock import patch
+
+        from picard.plugin3.registry import (
+            PluginRegistry,
+            RegistryParseError,
+        )
+
+        registry = PluginRegistry()
+
+        with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
+            mock_response = Mock()
+            mock_response.read = Mock(return_value=b'invalid json{')
+            mock_response.__enter__ = Mock(return_value=mock_response)
+            mock_response.__exit__ = Mock(return_value=False)
+            mock_urlopen.return_value = mock_response
+
+            # Should raise RegistryParseError
+            with self.assertRaises(RegistryParseError) as cm:
+                registry.fetch_registry(use_cache=False)
+
+            self.assertIn('Failed to parse registry', str(cm.exception))
+
+    def test_registry_graceful_fallback_on_blacklist_check(self):
+        """Test that blacklist check doesn't fail if registry fetch fails."""
+        from unittest.mock import patch
+
         from picard.plugin3.registry import PluginRegistry
 
         registry = PluginRegistry()
 
         with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
-            # Should not raise, just use empty blacklist
-            registry.fetch_registry(use_cache=False)
+            # Should not raise, just return False (not blacklisted)
+            is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
 
-            self.assertIsNotNone(registry._registry_data)
-            self.assertEqual(registry._registry_data['blacklist'], [])
+            self.assertFalse(is_blacklisted)
+            self.assertIsNone(reason)
 
     def test_registry_get_registry_info(self):
         """Test getting registry metadata."""

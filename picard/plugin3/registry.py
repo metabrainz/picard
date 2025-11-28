@@ -28,6 +28,40 @@ from picard import log
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
 
 
+class RegistryError(Exception):
+    """Base exception for registry errors."""
+
+    pass
+
+
+class RegistryFetchError(RegistryError):
+    """Raised when registry cannot be fetched from URL."""
+
+    def __init__(self, url, original_error):
+        self.url = url
+        self.original_error = original_error
+        super().__init__(f"Failed to fetch registry from {url}: {original_error}")
+
+
+class RegistryParseError(RegistryError):
+    """Raised when registry JSON cannot be parsed."""
+
+    def __init__(self, url, original_error):
+        self.url = url
+        self.original_error = original_error
+        super().__init__(f"Failed to parse registry from {url}: {original_error}")
+
+
+class RegistryCacheError(RegistryError):
+    """Raised when registry cache cannot be read or written."""
+
+    def __init__(self, cache_path, operation, original_error):
+        self.cache_path = cache_path
+        self.operation = operation
+        self.original_error = original_error
+        super().__init__(f"Failed to {operation} registry cache {cache_path}: {original_error}")
+
+
 def normalize_git_url(url):
     """Normalize git URL for comparison (expand local paths to absolute).
 
@@ -150,16 +184,31 @@ class PluginRegistry:
         self._registry_data = None
 
     def fetch_registry(self, use_cache=True):
-        """Fetch registry from URL or cache."""
+        """Fetch registry from URL or cache.
+
+        Args:
+            use_cache: If True, try to load from cache first
+
+        Raises:
+            RegistryFetchError: If registry cannot be fetched from URL
+            RegistryParseError: If registry JSON cannot be parsed
+            RegistryCacheError: If cache cannot be read (only if use_cache=True and no fallback)
+        """
+        # Try cache first if requested
         if use_cache and self.cache_path and Path(self.cache_path).exists():
             try:
                 with open(self.cache_path, 'r') as f:
                     self._registry_data = json.load(f)
                     log.debug('Loaded registry from cache: %s', self.cache_path)
                     return
+            except json.JSONDecodeError as e:
+                # Cache corrupted, will fetch from URL
+                log.warning('Registry cache corrupted, fetching from URL: %s', e)
             except Exception as e:
-                log.warning('Failed to load registry cache: %s', e)
+                # Cache read error, will fetch from URL
+                log.warning('Failed to load registry cache, fetching from URL: %s', e)
 
+        # Fetch from URL
         try:
             log.debug('Fetching registry from %s', self.registry_url)
 
@@ -167,27 +216,38 @@ class PluginRegistry:
             registry_path = Path(self.registry_url)
             if registry_path.exists() and registry_path.is_file():
                 log.debug('Loading registry from local file: %s', self.registry_url)
-                with open(registry_path, 'r') as f:
-                    self._registry_data = json.load(f)
+                try:
+                    with open(registry_path, 'r') as f:
+                        self._registry_data = json.load(f)
+                except json.JSONDecodeError as e:
+                    raise RegistryParseError(self.registry_url, e) from e
+                except Exception as e:
+                    raise RegistryFetchError(self.registry_url, e) from e
             else:
-                # Fetch from URL
-                with urlopen(self.registry_url, timeout=10) as response:
-                    data = response.read()
-                    self._registry_data = json.loads(data)
+                # Fetch from remote URL
+                try:
+                    with urlopen(self.registry_url, timeout=10) as response:
+                        data = response.read()
+                        self._registry_data = json.loads(data)
+                except json.JSONDecodeError as e:
+                    raise RegistryParseError(self.registry_url, e) from e
+                except Exception as e:
+                    raise RegistryFetchError(self.registry_url, e) from e
 
-                # Save to cache
-                if self.cache_path:
-                    try:
-                        Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
-                        with open(self.cache_path, 'w') as f:
-                            json.dump(self._registry_data, f)
-                        log.debug('Saved registry to cache: %s', self.cache_path)
-                    except Exception as e:
-                        log.warning('Failed to save registry cache: %s', e)
+            # Save to cache
+            if self.cache_path:
+                try:
+                    Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
+                    with open(self.cache_path, 'w') as f:
+                        json.dump(self._registry_data, f)
+                    log.debug('Saved registry to cache: %s', self.cache_path)
+                except Exception as e:
+                    # Cache write failure is not critical, just log warning
+                    log.warning('Failed to save registry cache: %s', e)
 
-        except Exception as e:
-            log.debug('Failed to fetch registry: %s', e)
-            self._registry_data = {'blacklist': []}
+        except (RegistryFetchError, RegistryParseError):
+            # Re-raise our custom exceptions
+            raise
 
     def is_blacklisted(self, url, plugin_uuid=None):
         """Check if a plugin URL or UUID is blacklisted.
@@ -200,7 +260,12 @@ class PluginRegistry:
             tuple: (is_blacklisted, reason)
         """
         if not self._registry_data:
-            self.fetch_registry()
+            try:
+                self.fetch_registry()
+            except (RegistryFetchError, RegistryParseError) as e:
+                log.warning('Failed to fetch registry for blacklist check: %s', e)
+                # Fail safe: if we can't fetch registry, don't block installation
+                return False, None
 
         # Normalize URL for comparison
         normalized_url = normalize_git_url(url) if url else None
@@ -271,7 +336,12 @@ class PluginRegistry:
             str: Trust level ('official', 'trusted', 'community', or 'unregistered')
         """
         if not self._registry_data:
-            self.fetch_registry()
+            try:
+                self.fetch_registry()
+            except (RegistryFetchError, RegistryParseError) as e:
+                log.warning('Failed to fetch registry for trust level check: %s', e)
+                # Fail safe: if we can't fetch registry, treat as unregistered
+                return 'unregistered'
 
         # Normalize URL for comparison
         normalized_url = normalize_git_url(url)
@@ -296,7 +366,12 @@ class PluginRegistry:
             dict: Plugin data or None if not found
         """
         if not self._registry_data:
-            self.fetch_registry()
+            try:
+                self.fetch_registry()
+            except (RegistryFetchError, RegistryParseError) as e:
+                log.warning('Failed to fetch registry for plugin search: %s', e)
+                # Fail safe: if we can't fetch registry, return None
+                return None
 
         # Normalize URL for comparison if provided
         normalized_url = normalize_git_url(url) if url else None
@@ -344,7 +419,12 @@ class PluginRegistry:
             list: List of plugin dicts
         """
         if not self._registry_data:
-            self.fetch_registry()
+            try:
+                self.fetch_registry()
+            except (RegistryFetchError, RegistryParseError) as e:
+                log.warning('Failed to fetch registry for plugin listing: %s', e)
+                # Fail safe: if we can't fetch registry, return empty list
+                return []
 
         plugins = self._registry_data.get('plugins', [])
         result = []

@@ -430,3 +430,37 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to refresh registry', stderr)
         self.assertIn('Network error', stderr)
+
+    def test_refresh_registry_fetch_error(self):
+        """Test --refresh-registry with RegistryFetchError."""
+        from picard.plugin3.cli import ExitCode
+        from picard.plugin3.registry import RegistryFetchError
+
+        mock_manager = Mock()
+        mock_manager._registry.fetch_registry.side_effect = RegistryFetchError(
+            'https://test.example.com/registry.json', Exception('Connection timeout')
+        )
+
+        exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('Failed to fetch registry', stderr)
+        self.assertIn('https://test.example.com/registry.json', stderr)
+        self.assertIn('Connection timeout', stderr)
+
+    def test_refresh_registry_parse_error(self):
+        """Test --refresh-registry with RegistryParseError."""
+        from picard.plugin3.cli import ExitCode
+        from picard.plugin3.registry import RegistryParseError
+
+        mock_manager = Mock()
+        mock_manager._registry.fetch_registry.side_effect = RegistryParseError(
+            'https://test.example.com/registry.json', Exception('Invalid JSON')
+        )
+
+        exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('Failed to parse registry', stderr)
+        self.assertIn('https://test.example.com/registry.json', stderr)
+        self.assertIn('Invalid JSON', stderr)

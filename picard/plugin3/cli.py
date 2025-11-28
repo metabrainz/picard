@@ -1160,6 +1160,11 @@ class PluginCLI:
 
     def _refresh_registry(self):
         """Force refresh of plugin registry cache."""
+        from picard.plugin3.registry import (
+            RegistryFetchError,
+            RegistryParseError,
+        )
+
         try:
             self._out.print('Refreshing plugin registry...')
 
@@ -1173,6 +1178,14 @@ class PluginCLI:
 
             return ExitCode.SUCCESS
 
+        except RegistryFetchError as e:
+            self._out.error(f'Failed to fetch registry from {e.url}')
+            self._out.error(f'Error: {e.original_error}')
+            return ExitCode.ERROR
+        except RegistryParseError as e:
+            self._out.error(f'Failed to parse registry from {e.url}')
+            self._out.error(f'Error: {e.original_error}')
+            return ExitCode.ERROR
         except Exception as e:
             self._out.error(f'Failed to refresh registry: {e}')
             return ExitCode.ERROR
