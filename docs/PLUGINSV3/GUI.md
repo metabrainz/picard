@@ -284,6 +284,129 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 
 ---
 
+## Backend Architecture for GUI Developers
+
+### Clean Separation: Logic vs Presentation
+
+The plugin system backend is designed with **zero mixing of business logic and presentation**, making GUI integration straightforward.
+
+#### Backend Layer (Pure Logic)
+
+**Registry Methods** (`picard/plugin3/registry.py`):
+- `is_blacklisted(url, uuid)` → returns `(bool, reason)` - no output/UI code
+- `get_trust_level(url)` → returns `str` ('official'/'trusted'/'community'/'unregistered') - no output/UI code
+- `find_plugin(plugin_id=None, url=None, uuid=None)` → returns plugin dict or None
+- `list_plugins(category=None, trust_level=None)` → returns list of plugin dicts
+
+**Manager Methods** (`picard/plugin3/manager.py`):
+- `install_plugin(url, ref=None, reinstall=False, force_blacklisted=False)` → raises exceptions, returns plugin_id
+- `uninstall_plugin(plugin_id)` → raises exceptions
+- `update_plugin(plugin_id, ref=None)` → raises exceptions, returns plugin_id
+- `enable_plugin(plugin)` → no exceptions
+- `disable_plugin(plugin)` → no exceptions
+
+**Exception-Based Flow:**
+```python
+# All errors are communicated via exceptions, not output
+class PluginBlacklistedError(PluginManagerError)
+class PluginAlreadyInstalledError(PluginManagerError)
+class PluginDirtyError(PluginManagerError)
+class PluginManifestNotFoundError(PluginManagerError)
+class PluginManifestInvalidError(PluginManagerError)
+class PluginNoSourceError(PluginManagerError)
+class PluginRefSwitchError(PluginManagerError)
+class PluginNoUUIDError(PluginManagerError)
+```
+
+#### GUI Integration Pattern
+
+**Blacklist Checks:**
+```python
+# Backend returns data, GUI decides how to present
+is_blacklisted, reason = registry.is_blacklisted(url, uuid)
+if is_blacklisted:
+    # GUI shows error dialog with reason
+    QMessageBox.critical(parent, "Plugin Blocked",
+                        f"This plugin is blacklisted:\n{reason}")
+```
+
+**Trust Level Checks:**
+```python
+# Backend returns trust level, GUI shows appropriate warning
+trust_level = registry.get_trust_level(url)
+
+if trust_level == 'community':
+    # GUI shows warning dialog
+    result = QMessageBox.warning(parent, "Community Plugin",
+        "This is a community plugin.\n"
+        "Community plugins are not reviewed by the Picard team.\n"
+        "Only install plugins from sources you trust.",
+        QMessageBox.Ok | QMessageBox.Cancel)
+    if result == QMessageBox.Cancel:
+        return
+
+elif trust_level == 'unregistered':
+    # GUI shows stronger warning
+    result = QMessageBox.warning(parent, "Unregistered Plugin",
+        "This plugin is not in the official registry.\n"
+        "Installing unregistered plugins may pose security risks.\n"
+        "Only install plugins from sources you trust.",
+        QMessageBox.Ok | QMessageBox.Cancel)
+    if result == QMessageBox.Cancel:
+        return
+```
+
+**Installation with Exception Handling:**
+```python
+try:
+    plugin_id = manager.install_plugin(url, ref=ref)
+    QMessageBox.information(parent, "Success",
+                           f"Plugin {plugin_id} installed successfully")
+except PluginBlacklistedError as e:
+    QMessageBox.critical(parent, "Blocked",
+                        f"Plugin is blacklisted: {e.reason}")
+except PluginAlreadyInstalledError as e:
+    QMessageBox.information(parent, "Already Installed",
+                           f"Plugin {e.plugin_name} is already installed")
+except PluginManifestInvalidError as e:
+    QMessageBox.critical(parent, "Invalid Plugin",
+                        f"Invalid MANIFEST.toml:\n" + "\n".join(e.errors))
+except Exception as e:
+    QMessageBox.critical(parent, "Error", str(e))
+```
+
+#### What's Ready for GUI
+
+✅ **Blacklist checks:**
+- Backend: `is_blacklisted()` returns `(bool, reason)`
+- Raises: `PluginBlacklistedError` during install
+- GUI: Catch exception and show error dialog
+
+✅ **Trust level checks:**
+- Backend: `get_trust_level()` returns trust level string
+- No exceptions raised (warnings, not blockers)
+- GUI: Call before install and show warning dialog based on level
+
+✅ **All plugin operations:**
+- Install, uninstall, update, enable, disable
+- All use exception-based error handling
+- No output/UI code in backend
+
+#### Existing GUI Code
+
+**Blacklist Warning (Startup Check):**
+- Location: `picard/plugin3/manager.py:_show_blacklist_warning()`
+- Purpose: Shows QMessageBox when blacklisted plugins are detected on startup
+- Can be used as reference for GUI dialogs
+
+**CLI Reference Implementation:**
+- Location: `picard/plugin3/cli.py`
+- Shows complete exception handling patterns
+- All output goes through `self._out` abstraction layer
+- GUI should follow same pattern with dialogs instead of terminal output
+
+---
+
 ## Implementation Notes
 
 ### Phase 4.1: Basic GUI
