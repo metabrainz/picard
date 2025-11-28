@@ -47,6 +47,7 @@ class PluginMetadata:
     uuid: str = None
     original_url: str = None
     original_uuid: str = None
+    registry_id: str = None
 
     def to_dict(self):
         """Convert to dict for config storage, excluding None values."""
@@ -307,7 +308,9 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
-    def install_plugin(self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False):
+    def install_plugin(
+        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, registry_id=None
+    ):
         """Install a plugin from a git URL or local directory.
 
         Args:
@@ -332,7 +335,9 @@ class PluginManager:
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
         if local_path:
-            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref, discard_changes)
+            return self._install_from_local_directory(
+                local_path, reinstall, force_blacklisted, ref, discard_changes, registry_id
+            )
 
         # Handle git URL - use temp dir in plugin directory for atomic rename
         import hashlib
@@ -393,7 +398,14 @@ class PluginManager:
 
             # Store plugin metadata
             self._save_plugin_metadata(
-                PluginMetadata(name=plugin_name, url=url, ref=source.resolved_ref, commit=commit_id, uuid=manifest.uuid)
+                PluginMetadata(
+                    name=plugin_name,
+                    url=url,
+                    ref=source.resolved_ref,
+                    commit=commit_id,
+                    uuid=manifest.uuid,
+                    registry_id=registry_id,
+                )
             )
 
             # Add newly installed plugin to the plugins list
@@ -413,7 +425,13 @@ class PluginManager:
             raise
 
     def _install_from_local_directory(
-        self, local_path: Path, reinstall=False, force_blacklisted=False, ref=None, discard_changes=False
+        self,
+        local_path: Path,
+        reinstall=False,
+        force_blacklisted=False,
+        ref=None,
+        discard_changes=False,
+        registry_id=None,
     ):
         """Install a plugin from a local directory.
 
@@ -519,6 +537,7 @@ class PluginManager:
                 ref=ref_to_save,
                 commit=commit_to_save,
                 uuid=manifest.uuid,
+                registry_id=registry_id,
             )
         )
 
@@ -581,6 +600,7 @@ class PluginManager:
                 uuid=metadata.get('uuid'),
                 original_url=metadata.get('original_url'),
                 original_uuid=metadata.get('original_uuid'),
+                registry_id=metadata.get('registry_id'),
             )
         )
 
@@ -665,6 +685,7 @@ class PluginManager:
                 uuid=current_uuid,
                 original_url=original_url,
                 original_uuid=original_uuid,
+                registry_id=metadata.get('registry_id'),
             )
         )
 

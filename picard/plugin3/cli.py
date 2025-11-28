@@ -306,12 +306,14 @@ class PluginCLI:
 
         for url_or_id in plugin_urls:
             try:
+                registry_id = None
                 # Check if it's a plugin ID (no slashes, no protocol)
                 if '/' not in url_or_id and '://' not in url_or_id:
                     # Try to find in registry
                     plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
                     if plugin:
                         url = plugin['git_url']
+                        registry_id = plugin['id']
                         self._out.print(f'Found {plugin["name"]} in registry')
                     else:
                         self._out.error(f'Plugin "{url_or_id}" not found in registry')
@@ -383,7 +385,9 @@ class PluginCLI:
                     except Exception:
                         pass  # Ignore errors checking status
 
-                plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
+                plugin_id = self._manager.install_plugin(
+                    url, ref, reinstall, force_blacklisted, registry_id=registry_id
+                )
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
@@ -737,10 +741,10 @@ class PluginCLI:
         return ExitCode.SUCCESS
 
     def _find_plugin(self, identifier):
-        """Find a plugin by Plugin ID, display name, UUID, or any prefix.
+        """Find a plugin by Plugin ID, display name, UUID, registry ID, or any prefix.
 
         Args:
-            identifier: Plugin ID, display name, UUID, or prefix of Plugin ID/UUID
+            identifier: Plugin ID, display name, UUID, registry ID, or prefix of Plugin ID/UUID
 
         Returns:
             Plugin object, None if not found, or 'multiple' if ambiguous
@@ -755,6 +759,17 @@ class PluginCLI:
             # Match by UUID (exact) - always unique
             if plugin.manifest and plugin.manifest.uuid == identifier:
                 return plugin
+
+            # Match by registry ID (exact) - check metadata
+            try:
+                uuid = self._manager._get_plugin_uuid(plugin) if plugin.manifest else None
+                if uuid:
+                    metadata = self._manager._get_plugin_metadata(uuid)
+                    if metadata and metadata.get('registry_id') == identifier:
+                        return plugin
+            except Exception:
+                pass  # Plugin has no UUID, skip registry_id check
+
             # Match by Plugin ID prefix (e.g., 'listenbrainz_a1b2c3d4')
             if plugin.plugin_id.startswith(identifier):
                 matches.append(plugin)
