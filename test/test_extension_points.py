@@ -63,9 +63,12 @@ class TestExtensionPoints(PicardTestCase):
 
         # Enable plugin via manager (which handles config properly)
         mock_plugin = Mock(spec=Plugin)
+        mock_plugin.plugin_id = 'testplugin'
         mock_plugin.name = 'testplugin'
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = uuid
+        mock_plugin.state = Mock()
+        mock_plugin.state.value = 'enabled'
         self.manager.enable_plugin(mock_plugin)
 
         items = list(self.ep)
@@ -84,9 +87,12 @@ class TestExtensionPoints(PicardTestCase):
 
         # Only enable plugin1
         mock_plugin1 = Mock(spec=Plugin)
+        mock_plugin1.plugin_id = 'plugin1'
         mock_plugin1.name = 'plugin1'
         mock_plugin1.manifest = Mock()
         mock_plugin1.manifest.uuid = uuid1
+        mock_plugin1.state = Mock()
+        mock_plugin1.state.value = 'enabled'
         self.manager.enable_plugin(mock_plugin1)
 
         items = list(self.ep)
@@ -99,9 +105,12 @@ class TestExtensionPoints(PicardTestCase):
         self.ep.register('picard.plugins.testplugin', 'plugin_item')
 
         mock_plugin = Mock(spec=Plugin)
+        mock_plugin.plugin_id = 'testplugin'
         mock_plugin.name = 'testplugin'
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = uuid
+        mock_plugin.state = Mock()
+        mock_plugin.state.value = 'enabled'
         self.manager.enable_plugin(mock_plugin)
 
         # Should be yielded
@@ -141,9 +150,12 @@ class TestExtensionPoints(PicardTestCase):
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
         register_plugin_uuid(uuid, 'testplugin')
         mock_plugin = Mock(spec=Plugin)
+        mock_plugin.plugin_id = 'testplugin'
         mock_plugin.name = 'testplugin'
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = uuid
+        mock_plugin.state = Mock()
+        mock_plugin.state.value = 'enabled'
         self.manager.enable_plugin(mock_plugin)
 
         # Should yield both items
@@ -188,9 +200,12 @@ class TestExtensionPoints(PicardTestCase):
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
         register_plugin_uuid(uuid, 'testplugin')
         mock_plugin = Mock(spec=Plugin)
+        mock_plugin.plugin_id = 'testplugin'
         mock_plugin.name = 'testplugin'
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = uuid
+        mock_plugin.state = Mock()
+        mock_plugin.state.value = 'enabled'
         self.manager.enable_plugin(mock_plugin)
 
         # Both should yield items
