@@ -213,7 +213,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--browse` | ✅ Done | 3.3 | Browse official plugins |
 | `--search <term>` | ✅ Done | 3.3 | Search official plugins |
 | `--check-blacklist <url>` | ✅ Done | 1.8 | Check if URL is blacklisted |
-| `--refresh-registry` | ⏳ TODO | 3.2 | Force refresh plugin registry cache |
+| `--refresh-registry` | ✅ Done | 3.2 | Force refresh plugin registry cache |
 | `--trust-community` | ✅ Done | 3.2 | Skip community plugin warnings |
 | `--trust <level>` | ✅ Done | 3.3 | Filter by trust level (with --browse/--search) |
 | `--category <cat>` | ✅ Done | 3.3 | Filter by category (with --browse/--search) |
