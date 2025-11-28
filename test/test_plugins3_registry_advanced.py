@@ -23,6 +23,7 @@ import os
 from pathlib import Path
 import tempfile
 from unittest.mock import (
+    Mock,
     patch,
 )
 
@@ -55,18 +56,30 @@ class TestRegistryAdvanced(PicardTestCase):
 
     def test_registry_load_cache_error(self):
         """Test registry handles cache load errors gracefully."""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            f.write('invalid json{')
-            cache_path = f.name
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create corrupted cache file
+            cache_dir = Path(tmpdir)
+            # We need to know the hash to create the right filename
+            # Use default registry URL to get predictable hash
+            import hashlib
 
-        try:
-            with patch('picard.plugin3.registry.urlopen'):
-                registry = PluginRegistry(cache_path=cache_path)
+            from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
+
+            url_hash = hashlib.sha1(DEFAULT_PLUGIN_REGISTRY_URL.encode()).hexdigest()[:16]
+            cache_file = cache_dir / f'plugin_registry_{url_hash}.json'
+            cache_file.write_text('invalid json{')
+
+            # Mock urlopen to return valid data
+            mock_response = Mock()
+            mock_response.read = Mock(return_value=b'{"plugins": [], "blacklist": []}')
+            mock_response.__enter__ = Mock(return_value=mock_response)
+            mock_response.__exit__ = Mock(return_value=False)
+
+            with patch('picard.plugin3.registry.urlopen', return_value=mock_response):
+                registry = PluginRegistry(cache_dir=tmpdir)
                 registry.fetch_registry()
                 # Should have fetched and created data
                 self.assertIsNotNone(registry._registry_data)
-        finally:
-            Path(cache_path).unlink(missing_ok=True)
 
     def test_registry_fetch_local_file(self):
         """Test registry can load from local file path."""
@@ -94,29 +107,24 @@ class TestRegistryAdvanced(PicardTestCase):
             registry_file = f.name
 
         try:
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-                cache_path = f.name
+            with tempfile.TemporaryDirectory() as tmpdir:
+                registry = PluginRegistry(registry_url=registry_file, cache_dir=tmpdir)
 
-            registry = PluginRegistry(registry_url=registry_file, cache_path=cache_path)
+                # Patch json.dump to fail on cache save
+                original_dump = json.dump
 
-            # Patch json.dump after registry is loaded but before cache save
-            original_dump = json.dump
-            call_count = [0]
+                def failing_dump(obj, fp, *args, **kwargs):
+                    # Check if we're writing to cache (not reading from registry file)
+                    if hasattr(fp, 'name') and 'plugin_registry_' in fp.name:
+                        raise IOError('Write failed')
+                    return original_dump(obj, fp, *args, **kwargs)
 
-            def selective_dump(obj, fp, *args, **kwargs):
-                call_count[0] += 1
-                # First call is loading registry, second is saving cache
-                if call_count[0] == 2:
-                    raise IOError('Write failed')
-                return original_dump(obj, fp, *args, **kwargs)
-
-            with patch('picard.plugin3.registry.json.dump', side_effect=selective_dump):
-                registry.fetch_registry()
-                # Should not raise, just log warning
-                self.assertIsNotNone(registry._registry_data)
+                with patch('picard.plugin3.registry.json.dump', side_effect=failing_dump):
+                    registry.fetch_registry()
+                    # Should not raise, just log warning
+                    self.assertIsNotNone(registry._registry_data)
         finally:
             Path(registry_file).unlink(missing_ok=True)
-            Path(cache_path).unlink(missing_ok=True)
 
     def test_blacklist_uuid_and_url(self):
         """Test blacklist with both UUID and URL."""
@@ -161,13 +169,15 @@ class TestRegistryAdvanced(PicardTestCase):
         self.assertFalse(is_blacklisted)
 
     def test_registry_fetch_error_fallback(self):
-        """Test registry creates empty data on fetch error."""
+        """Test registry raises exception on fetch error."""
+        from picard.plugin3.registry import RegistryFetchError
+
         with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
             registry = PluginRegistry(registry_url='https://invalid.example.com/registry.json')
-            registry.fetch_registry()
 
-            # Should have empty blacklist
-            self.assertEqual(registry._registry_data, {'blacklist': []})
+            # Should raise RegistryFetchError
+            with self.assertRaises(RegistryFetchError):
+                registry.fetch_registry()
 
     def test_list_plugins_empty_registry(self):
         """Test list_plugins with empty registry."""

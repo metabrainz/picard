@@ -67,6 +67,7 @@ class TestPluginCLIErrors(PicardTestCase):
         args.browse = False
         args.search = None
         args.check_blacklist = None
+        args.refresh_registry = False
         args.switch_ref = None
         args.clean_config = None
         args.validate = None
@@ -99,6 +100,7 @@ class TestPluginCLIErrors(PicardTestCase):
         args.browse = False
         args.search = None
         args.check_blacklist = None
+        args.refresh_registry = False
         args.switch_ref = None
         args.clean_config = None
         args.validate = None

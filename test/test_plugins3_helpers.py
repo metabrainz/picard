@@ -80,6 +80,7 @@ def create_cli_args(**kwargs):
         'browse': False,
         'search': None,
         'check_blacklist': None,
+        'refresh_registry': False,
         'switch_ref': None,
         'clean_config': None,
         'validate': None,
