@@ -1045,6 +1045,21 @@ class PluginCLI:
 
             shutil.rmtree(temp_path, ignore_errors=True)
 
+    def _build_filter_description(self, category=None, trust_level=None, query=None):
+        """Build filter description for display.
+
+        Returns:
+            list: List of filter strings (e.g. ['query: "test"', 'category: ui'])
+        """
+        filters = []
+        if query:
+            filters.append(f'query: "{query}"')
+        if category:
+            filters.append(f'category: {category}')
+        if trust_level:
+            filters.append(f'trust: {trust_level}')
+        return filters
+
     def _browse_plugins(self):
         """Browse plugins from registry."""
         category = getattr(self._args, 'category', None)
@@ -1053,20 +1068,16 @@ class PluginCLI:
         try:
             plugins = self._manager._registry.list_plugins(category=category, trust_level=trust_level)
 
+            filters = self._build_filter_description(category=category, trust_level=trust_level)
+
             if not plugins:
-                if category or trust_level:
-                    self._out.print('No matching plugins found in registry')
+                if filters:
+                    self._out.print(f'No plugins found ({", ".join(filters)})')
                 else:
                     self._out.print('No plugins found in registry')
                 return ExitCode.SUCCESS
 
             # Show header
-            filters = []
-            if category:
-                filters.append(f'category: {category}')
-            if trust_level:
-                filters.append(f'trust: {trust_level}')
-
             if filters:
                 self._out.print(f'Registry plugins ({", ".join(filters)}):')
                 self._out.nl()
@@ -1115,11 +1126,7 @@ class PluginCLI:
                     results.append(plugin)
 
             # Build filter description
-            filters = [f'query: "{query}"']
-            if category:
-                filters.append(f'category: {category}')
-            if trust_level:
-                filters.append(f'trust: {trust_level}')
+            filters = self._build_filter_description(category=category, trust_level=trust_level, query=query)
 
             if not results:
                 self._out.print(f'No plugins found ({", ".join(filters)})')
