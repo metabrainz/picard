@@ -366,15 +366,9 @@ class TestPluginCLIValidate(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        from picard.plugin3.manager import (
-            PluginManager,
-        )
+        from test.test_plugins3_helpers import create_mock_manager_with_manifest_validation
 
-        manager = Mock(spec=PluginManager)
-        # Use the real method for manifest loading
-        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
-        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
-
+        manager = create_mock_manager_with_manifest_validation()
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -396,13 +390,9 @@ class TestPluginCLIValidate(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        from picard.plugin3.manager import PluginManager
+        from test.test_plugins3_helpers import create_mock_manager_with_manifest_validation
 
-        manager = Mock(spec=PluginManager)
-        # Use the real method for manifest loading
-        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
-        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
-
+        manager = create_mock_manager_with_manifest_validation()
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -425,42 +415,24 @@ class TestPluginCLIValidate(PicardTestCase):
 
     def test_validate_local_valid_manifest(self):
         """Test validate with valid MANIFEST.toml."""
-        from pathlib import Path
         import tempfile
 
-        from picard.plugin3.manager import PluginManager
+        from test.test_plugins3_helpers import (
+            create_mock_manager_with_manifest_validation,
+            create_test_plugin_dir,
+        )
 
-        manager = Mock(spec=PluginManager)
-        # Use the real method for manifest loading
-        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
-        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
-
+        manager = create_mock_manager_with_manifest_validation()
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            # Create .git directory
-            git_dir = Path(tmpdir) / '.git'
-            git_dir.mkdir()
-
-            # Create valid manifest
-            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
-            manifest_content = '''
-uuid = "550e8400-e29b-41d4-a716-446655440000"
-name = "Test Plugin"
-version = "1.0.0"
-description = "Test description"
-api = ["3.0"]
-authors = ["Test Author"]
-license = "GPL-2.0-or-later"
-license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
-'''
-            manifest_path.write_text(manifest_content)
+            plugin_dir = create_test_plugin_dir(tmpdir, 'test-plugin', add_git=True)
 
             stdout = StringIO()
             output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
 
-            result = cli._validate_plugin(tmpdir)
+            result = cli._validate_plugin(str(plugin_dir))
 
             self.assertEqual(result, ExitCode.SUCCESS)
             output_text = stdout.getvalue()
@@ -470,55 +442,36 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 
     def test_validate_local_with_optional_fields(self):
         """Test validate with optional fields in manifest."""
-        from pathlib import Path
         import tempfile
 
-        from picard.plugin3.manager import PluginManager
+        from test.test_plugins3_helpers import (
+            create_mock_manager_with_manifest_validation,
+            create_test_manifest_content,
+            create_test_plugin_dir,
+        )
 
-        manager = Mock(spec=PluginManager)
-        # Use the real method for manifest loading
-        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
-        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
-
+        manager = create_mock_manager_with_manifest_validation()
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            # Create .git directory
-            git_dir = Path(tmpdir) / '.git'
-            git_dir.mkdir()
-
             # Create manifest with optional fields
-            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
-            manifest_content = '''
-uuid = "550e8400-e29b-41d4-a716-446655440000"
-name = "Test Plugin"
-version = "1.0.0"
-description = "Test description"
-api = ["3.0"]
-authors = ["Test Author"]
-license = "GPL-2.0-or-later"
-license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
-long_description = "Detailed description"
-categories = ["metadata", "ui"]
-homepage = "https://example.com"
-min_python_version = "3.9"
+            manifest_content = create_test_manifest_content(
+                long_description='Detailed description',
+                categories=['metadata', 'ui'],
+                homepage='https://example.com',
+                min_python_version='3.9',
+                name_i18n={'de': 'Test Plugin DE'},
+                description_i18n={'de': 'Test Beschreibung'},
+                long_description_i18n={'de': 'Detaillierte Beschreibung'},
+            )
 
-[name_i18n]
-de = "Test Plugin DE"
-
-[description_i18n]
-de = "Test Beschreibung"
-
-[long_description_i18n]
-de = "Detaillierte Beschreibung"
-'''
-            manifest_path.write_text(manifest_content)
+            plugin_dir = create_test_plugin_dir(tmpdir, 'test-plugin', manifest_content, add_git=True)
 
             stdout = StringIO()
             output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
 
-            result = cli._validate_plugin(tmpdir)
+            result = cli._validate_plugin(str(plugin_dir))
 
             self.assertEqual(result, ExitCode.SUCCESS)
             output_text = stdout.getvalue()

@@ -125,3 +125,123 @@ def create_mock_plugin(name='test-plugin', uuid='test-uuid-1234', **kwargs):
             setattr(mock_plugin, key, value)
 
     return mock_plugin
+
+
+def create_mock_manager_with_manifest_validation():
+    """Create a mock PluginManager with real manifest validation methods.
+
+    This is useful for tests that need to validate manifests but don't need
+    a full PluginManager instance.
+    """
+    from picard.plugin3.manager import PluginManager
+
+    manager = Mock(spec=PluginManager)
+    manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
+    manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
+    return manager
+
+
+def create_test_manifest_content(
+    name='Test Plugin',
+    version='1.0.0',
+    description='Test description',
+    authors=None,
+    uuid='550e8400-e29b-41d4-a716-446655440000',
+    api_versions=None,
+    license='GPL-2.0-or-later',
+    license_url='https://www.gnu.org/licenses/gpl-2.0.html',
+    **extra_fields,
+):
+    """Create a valid MANIFEST.toml content string.
+
+    Args:
+        name: Plugin name
+        version: Plugin version
+        description: Plugin description
+        authors: List of authors (default: ['Test Author'])
+        uuid: Plugin UUID
+        api_versions: List of API versions (default: ['3.0'])
+        license: License identifier
+        license_url: License URL
+        **extra_fields: Additional fields to include (e.g., homepage, categories)
+
+    Returns:
+        str: MANIFEST.toml content
+    """
+    if authors is None:
+        authors = ['Test Author']
+    if api_versions is None:
+        api_versions = ['3.0']
+
+    authors_str = ', '.join(f'"{a}"' for a in authors)
+    api_str = ', '.join(f'"{v}"' for v in api_versions)
+
+    content = f'''uuid = "{uuid}"
+name = "{name}"
+version = "{version}"
+description = "{description}"
+api = [{api_str}]
+authors = [{authors_str}]
+license = "{license}"
+license_url = "{license_url}"
+'''
+
+    # Add extra fields
+    for key, value in extra_fields.items():
+        if isinstance(value, list):
+            value_str = ', '.join(f'"{v}"' for v in value)
+            content += f'{key} = [{value_str}]\n'
+        elif isinstance(value, dict):
+            content += f'\n[{key}]\n'
+            for k, v in value.items():
+                content += f'{k} = "{v}"\n'
+        else:
+            content += f'{key} = "{value}"\n'
+
+    return content
+
+
+def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content=None, add_git=False):
+    """Create a test plugin directory with MANIFEST.toml.
+
+    Args:
+        base_dir: Base directory (Path or str)
+        plugin_name: Plugin directory name
+        manifest_content: MANIFEST.toml content (default: valid manifest)
+        add_git: If True, initialize as git repository
+
+    Returns:
+        Path: Path to the created plugin directory
+    """
+    from pathlib import Path
+
+    plugin_dir = Path(base_dir) / plugin_name
+    plugin_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create MANIFEST.toml
+    if manifest_content is None:
+        manifest_content = create_test_manifest_content(name=plugin_name.replace('-', ' ').title())
+
+    (plugin_dir / 'MANIFEST.toml').write_text(manifest_content)
+
+    # Create __init__.py
+    (plugin_dir / '__init__.py').write_text('# Test plugin\n')
+
+    # Initialize git if requested
+    if add_git:
+        try:
+            import pygit2
+
+            repo = pygit2.init_repository(str(plugin_dir))
+            index = repo.index
+            index.add_all()
+            index.write()
+            tree = index.write_tree()
+            author = pygit2.Signature('Test', 'test@example.com')
+            repo.create_commit('refs/heads/main', author, author, 'Initial commit', tree, [])
+            repo.set_head('refs/heads/main')
+        except ImportError:
+            # pygit2 not available, skip git init
+            pass
+
+    return plugin_dir

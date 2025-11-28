@@ -112,11 +112,10 @@ class TestPluginCLI(PicardTestCase):
 
     def test_validate_git_url(self):
         """Test validate command with git URL."""
-        from pathlib import Path
         import tempfile
 
         try:
-            import pygit2
+            import pygit2  # noqa: F401
 
             HAS_PYGIT2 = True
         except ImportError:
@@ -127,40 +126,22 @@ class TestPluginCLI(PicardTestCase):
 
         # Create a temporary git repository
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir) / "test-plugin"
-            plugin_dir.mkdir()
-
-            repo = pygit2.init_repository(str(plugin_dir))
-
-            manifest_content = """name = "Test Plugin"
-authors = ["Test"]
-version = "1.0.0"
-description = "Test"
-api = ["3.0"]
-license = "GPL-2.0-or-later"
-license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
-uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
-"""
-            (plugin_dir / "MANIFEST.toml").write_text(manifest_content)
-
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature("Test", "test@example.com")
-            repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
-            repo.set_head('refs/heads/main')
-
-            # Create mock manager with _read_and_validate_manifest method
-            from picard.plugin3.manager import PluginManager
-
-            mock_manager = Mock(spec=PluginManager)
-            # Use the real method for manifest loading
-            mock_manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(
-                mock_manager, PluginManager
+            from test.test_plugins3_helpers import (
+                create_mock_manager_with_manifest_validation,
+                create_test_manifest_content,
+                create_test_plugin_dir,
             )
-            mock_manager._validate_manifest = PluginManager._validate_manifest.__get__(mock_manager, PluginManager)
 
+            manifest_content = create_test_manifest_content(
+                name='Test Plugin',
+                authors=['Test'],
+                description='Test',
+                uuid='3fa397ec-0f2a-47dd-9223-e47ce9f2d692',
+            )
+
+            plugin_dir = create_test_plugin_dir(tmpdir, 'test-plugin', manifest_content, add_git=True)
+
+            mock_manager = create_mock_manager_with_manifest_validation()
             exit_code, stdout, stderr = run_cli(mock_manager, validate=str(plugin_dir))
 
             self.assertEqual(exit_code, 0)
