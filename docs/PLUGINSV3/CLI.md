@@ -8,6 +8,7 @@ This document provides a complete reference for the `picard plugins` command-lin
 
 Most commands accept a plugin identifier, which can be:
 
+- **Registry ID**: `view-script-variables` (only for plugins installed from registry, always unique)
 - **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique, used internally)
 - **Display name**: `ListenBrainz Submitter` (case-insensitive, may not be unique)
 - **UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique)
@@ -15,11 +16,14 @@ Most commands accept a plugin identifier, which can be:
 
 **Note:** The Plugin ID is the directory name where the plugin is installed. It consists of a sanitized version of the display name plus the UUID (e.g., `listenbrainz_891a96e7-...`).
 
+**Registry ID (recommended):** If you installed a plugin from the registry (e.g., `picard plugins --install view-script-variables`), you can use the short registry ID for all operations. This is stored when you install from the registry and is much easier to remember than the full Plugin ID.
+
 **Prefix matching:** You can use any prefix of the Plugin ID or UUID. The command will match if the prefix uniquely identifies a single plugin.
 
 **Examples:**
 ```bash
 # All of these work (if unique):
+picard plugins --info view-script-variables            # Registry ID (if installed from registry)
 picard plugins --info "ListenBrainz Submitter"          # Display name
 picard plugins --info listenbrainz_a1b2c3d4-e5f6-...    # Full Plugin ID
 picard plugins --info listenbrainz_a1b2                 # Plugin ID prefix
@@ -27,7 +31,7 @@ picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...       # Full UUID
 picard plugins --info a1b2c3d4                          # UUID prefix
 ```
 
-**Note:** If multiple plugins match (e.g., same display name or ambiguous prefix), you'll get an error listing the matches. Use a more specific identifier (longer prefix, full Plugin ID, or UUID).
+**Note:** If multiple plugins match (e.g., same display name or ambiguous prefix), you'll get an error listing the matches. Use a more specific identifier (longer prefix, full Plugin ID, UUID, or registry ID).
 
 ---
 
@@ -339,15 +343,20 @@ picard plugins --uninstall listenbrainz discogs
 
 **Examples:**
 ```bash
-# Enable plugin
-picard plugins --enable listenbrainz
+# Enable plugin (using registry ID if installed from registry)
+picard plugins --enable view-script-variables
+
+# Enable plugin (using plugin ID)
+picard plugins --enable listenbrainz_a1b2c3d4-e5f6-...
 
 # Disable plugin
-picard plugins --disable listenbrainz
+picard plugins --disable view-script-variables
 
 # Enable multiple
 picard plugins --enable listenbrainz discogs acoustid
 ```
+
+**Note:** If you installed a plugin from the registry, you can use the short registry ID (e.g., `view-script-variables`) instead of the long plugin_id with UUID suffix.
 
 ---
 
@@ -362,11 +371,14 @@ picard plugins --enable listenbrainz discogs acoustid
 
 **Examples:**
 ```bash
-# Update one plugin
-picard plugins --update listenbrainz
+# Update one plugin (using registry ID if installed from registry)
+picard plugins --update view-script-variables
+
+# Update one plugin (using plugin ID)
+picard plugins --update listenbrainz_a1b2c3d4-e5f6-...
 
 # Update to specific ref
-picard plugins --update listenbrainz --ref v2.0.0
+picard plugins --update view-script-variables --ref v2.0.0
 
 # Update all plugins
 picard plugins --update-all
@@ -374,6 +386,8 @@ picard plugins --update-all
 # Check for updates without installing
 picard plugins --check-updates
 ```
+
+**Note on registry ID:** If you installed a plugin from the registry (e.g., `picard plugins --install view-script-variables`), you can use the short registry ID for updates instead of the long plugin_id with UUID suffix.
 
 **Note on `--check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `--switch-ref` instead.
 
@@ -396,6 +410,7 @@ picard plugins --switch-ref myplugin main
 **Description:** Show detailed information about plugin
 
 **Plugin Lookup:** Plugins can be identified by:
+- **Registry ID**: `view-script-variables` (only for plugins installed from registry)
 - **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
 - **Display name**: `ListenBrainz Submitter` (case-insensitive)
 - **UUID**: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
@@ -404,6 +419,9 @@ picard plugins --switch-ref myplugin main
 
 **Examples:**
 ```bash
+# By registry ID (if installed from registry)
+picard plugins --info view-script-variables
+
 # By display name
 picard plugins --info listenbrainz
 
