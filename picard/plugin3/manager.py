@@ -208,23 +208,6 @@ class PluginManager:
             pass  # Not a git repo or error checking
         return []
 
-    def _check_dirty_working_dir(self, path: Path):
-        """Check if directory has uncommitted changes.
-
-        Returns:
-            list: Modified files, or empty list if clean
-        """
-        try:
-            import pygit2
-
-            repo = pygit2.Repository(str(path))
-            status = repo.status()
-            if status:
-                return [file for file, flags in status.items()]
-        except Exception:
-            pass  # Not a git repo or error checking
-        return []
-
     def _validate_manifest(self, manifest):
         """Validate manifest and raise PluginManifestInvalidError if invalid."""
         errors = manifest.validate()
