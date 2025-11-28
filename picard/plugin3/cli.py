@@ -1114,17 +1114,18 @@ class PluginCLI:
                 if query_lower in name or query_lower in description or query_lower in plugin_id:
                     results.append(plugin)
 
-            if not results:
-                self._out.print(f'No plugins found matching "{query}"')
-                return ExitCode.SUCCESS
-
-            # Show header with filters
+            # Build filter description
             filters = [f'query: "{query}"']
             if category:
                 filters.append(f'category: {category}')
             if trust_level:
                 filters.append(f'trust: {trust_level}')
 
+            if not results:
+                self._out.print(f'No plugins found ({", ".join(filters)})')
+                return ExitCode.SUCCESS
+
+            # Show header with filters
             self._out.print(f'Found {self._out.d_number(len(results))} plugin(s) ({", ".join(filters)}):')
             self._out.nl()
 
