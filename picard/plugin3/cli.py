@@ -351,9 +351,10 @@ class PluginCLI:
                             )
                             continue
 
-                    # Check blacklist (including UUID, before prompting user)
+                    # Check blacklist by URL (before prompting user)
+                    # UUID-based blacklist will be checked during install after cloning
                     if not force_blacklisted:
-                        is_blacklisted, reason = self._manager.check_plugin_blacklist(url, ref)
+                        is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
                         if is_blacklisted:
                             self._out.error(f'Plugin is blacklisted: {reason}')
                             return ExitCode.ERROR
