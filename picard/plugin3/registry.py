@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import lru_cache
 import json
 import os
 from pathlib import Path
@@ -62,6 +63,7 @@ class RegistryCacheError(RegistryError):
         super().__init__(f"Failed to {operation} registry cache {cache_path}: {original_error}")
 
 
+@lru_cache(maxsize=256)
 def normalize_git_url(url):
     """Normalize git URL for comparison (expand local paths to absolute).
 

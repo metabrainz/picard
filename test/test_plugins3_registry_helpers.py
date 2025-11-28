@@ -76,3 +76,29 @@ class TestRegistryHelpers(PicardTestCase):
         self.assertTrue(is_local_path('/tmp/repo'))
         self.assertTrue(is_local_path('~/repo'))
         self.assertTrue(is_local_path('relative/path'))
+
+    def test_normalize_git_url_caching(self):
+        """Test that normalize_git_url caches results."""
+        from picard.plugin3.registry import normalize_git_url
+
+        url = 'https://github.com/test/plugin.git'
+
+        # Clear cache
+        normalize_git_url.cache_clear()
+
+        # First call
+        result1 = normalize_git_url(url)
+        cache_info1 = normalize_git_url.cache_info()
+
+        # Second call with same URL
+        result2 = normalize_git_url(url)
+        cache_info2 = normalize_git_url.cache_info()
+
+        # Results should be identical
+        self.assertEqual(result1, result2)
+
+        # Cache should have been hit
+        self.assertEqual(cache_info1.hits, 0)
+        self.assertEqual(cache_info1.misses, 1)
+        self.assertEqual(cache_info2.hits, 1)
+        self.assertEqual(cache_info2.misses, 1)
