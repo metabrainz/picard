@@ -748,47 +748,60 @@ class PluginCLI:
         """Find a plugin by Plugin ID, display name, UUID, registry ID, or any prefix.
 
         Args:
-            identifier: Plugin ID, display name, UUID, registry ID, or prefix of Plugin ID/UUID
+            identifier: Plugin ID, display name, UUID, registry ID, or prefix of any
 
         Returns:
             Plugin object, None if not found, or 'multiple' if ambiguous
         """
         identifier_lower = identifier.lower()
-        matches = []
+        exact_matches = []
+        prefix_matches = []
 
         for plugin in self._manager.plugins:
-            # Match by Plugin ID (exact) - always unique
-            if plugin.plugin_id == identifier:
-                return plugin
-            # Match by UUID (exact) - always unique
-            if plugin.manifest and plugin.manifest.uuid == identifier:
-                return plugin
+            # Collect all possible identifiers for this plugin
+            identifiers = []
 
-            # Match by registry ID (exact) - check metadata
+            # Plugin ID (case-insensitive)
+            identifiers.append(plugin.plugin_id.lower())
+
+            # UUID (case-insensitive)
+            if plugin.manifest and plugin.manifest.uuid:
+                identifiers.append(plugin.manifest.uuid.lower())
+
+            # Display name (case-insensitive)
+            if plugin.manifest:
+                identifiers.append(plugin.manifest.name().lower())
+
+            # Registry ID (case-insensitive)
             try:
                 uuid = self._manager._get_plugin_uuid(plugin) if plugin.manifest else None
                 if uuid:
                     metadata = self._manager._get_plugin_metadata(uuid)
-                    if metadata and metadata.get('registry_id') == identifier:
-                        return plugin
+                    if metadata and metadata.get('registry_id'):
+                        identifiers.append(metadata['registry_id'].lower())
             except Exception:
-                pass  # Plugin has no UUID, skip registry_id check
+                pass
 
-            # Match by Plugin ID prefix (e.g., 'listenbrainz_a1b2c3d4')
-            if plugin.plugin_id.startswith(identifier):
-                matches.append(plugin)
-            # Match by UUID prefix (e.g., 'f8bf81d7' for 'f8bf81d7-c5e2-...')
-            elif plugin.manifest and plugin.manifest.uuid.startswith(identifier):
-                matches.append(plugin)
-            # Match by display name (case-insensitive) - may not be unique
-            elif plugin.manifest and plugin.manifest.name().lower() == identifier_lower:
-                matches.append(plugin)
+            # Check for exact or prefix match
+            for id_value in identifiers:
+                if id_value == identifier_lower:
+                    exact_matches.append(plugin)
+                    break  # One exact match is enough
+                elif id_value.startswith(identifier_lower):
+                    prefix_matches.append(plugin)
+                    break  # One prefix match is enough
 
-        # If we found matches, check if ambiguous
-        if len(matches) == 1:
-            return matches[0]
-        elif len(matches) > 1:
-            return 'multiple'  # Signal ambiguous match
+        # Exact matches take priority
+        if len(exact_matches) == 1:
+            return exact_matches[0]
+        elif len(exact_matches) > 1:
+            return 'multiple'
+
+        # Fall back to prefix matches
+        if len(prefix_matches) == 1:
+            return prefix_matches[0]
+        elif len(prefix_matches) > 1:
+            return 'multiple'
 
         return None
 
