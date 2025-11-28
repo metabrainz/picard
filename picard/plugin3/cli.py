@@ -315,6 +315,17 @@ class PluginCLI:
                         self._out.print(f'Found {plugin["name"]} in registry')
                     else:
                         self._out.error(f'Plugin "{url_or_id}" not found in registry')
+
+                        # Suggest similar plugin IDs
+                        all_plugins = self._manager._registry.list_plugins()
+                        matches = [p for p in all_plugins if url_or_id.lower() in p['id'].lower()]
+
+                        # Only show suggestions if we have a reasonable number
+                        if 1 <= len(matches) <= 10:
+                            self._out.print('\nDid you mean one of these?')
+                            for match in matches:
+                                self._out.print(f'  {self._out.d_id(match["id"])} - {match["name"]}')
+
                         return ExitCode.NOT_FOUND
                 else:
                     url = url_or_id
