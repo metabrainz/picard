@@ -310,13 +310,18 @@ class PluginManager:
     def check_plugin_blacklist(self, url, ref=None):
         """Check if plugin is blacklisted (including UUID check).
 
-        This does a lightweight clone to read the manifest and check UUID blacklist.
+        This does a lightweight clone to read the manifest and check UUID blacklist
+        only if the registry has UUID-based blacklist entries.
         Returns (is_blacklisted, reason) tuple.
         """
-        # First check URL-based blacklist
+        # First check URL-based blacklist (cheap)
         is_blacklisted, reason = self._registry.is_blacklisted(url)
         if is_blacklisted:
             return True, reason
+
+        # Only check UUID if registry has UUID-based blacklist entries
+        if not self._registry.has_uuid_blacklist():
+            return False, None
 
         # For UUID check, we need to clone and read manifest
         from picard.plugin3.registry import get_local_repository_path
