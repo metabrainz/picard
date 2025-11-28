@@ -151,7 +151,16 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
             repo.set_head('refs/heads/main')
 
-            mock_manager = Mock()
+            # Create mock manager with _read_and_validate_manifest method
+            from picard.plugin3.manager import PluginManager
+
+            mock_manager = Mock(spec=PluginManager)
+            # Use the real method for manifest loading
+            mock_manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(
+                mock_manager, PluginManager
+            )
+            mock_manager._validate_manifest = PluginManager._validate_manifest.__get__(mock_manager, PluginManager)
+
             exit_code, stdout, stderr = run_cli(mock_manager, validate=str(plugin_dir))
 
             self.assertEqual(exit_code, 0)

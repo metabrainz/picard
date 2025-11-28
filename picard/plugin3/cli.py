@@ -871,7 +871,6 @@ class PluginCLI:
         import shutil
         import tempfile
 
-        from picard.plugin3.manifest import PluginManifest
         from picard.plugin3.plugin import PluginSourceGit
 
         self._out.print(f'Validating plugin from: {url}')
@@ -882,27 +881,18 @@ class PluginCLI:
         local_path = get_local_repository_path(url)
         if local_path:
             # Validate local directory directly
-            manifest_path = local_path / 'MANIFEST.toml'
-            if not manifest_path.exists():
-                self._out.error('No MANIFEST.toml found')
-                return ExitCode.ERROR
-
             self._out.success('MANIFEST.toml found')
 
             try:
-                # Read and validate manifest
-                with open(manifest_path, 'rb') as f:
-                    manifest = PluginManifest('temp', f)
+                # Read and validate manifest using manager method
+                from picard.plugin3.manager import (
+                    PluginManifestInvalidError,
+                    PluginManifestNotFoundError,
+                )
 
-                errors = manifest.validate()
+                manifest = self._manager._read_and_validate_manifest(local_path, str(local_path))
 
-                if errors:
-                    self._out.nl()
-                    self._out.error(f'Validation failed with {len(errors)} error(s):')
-                    self._out.nl()
-                    for error in errors:
-                        self._out.error(f'  • {error}')
-                    return ExitCode.ERROR
+                # If we get here, validation passed
 
                 # Show plugin info
                 self._out.success('Validation passed')
@@ -957,6 +947,15 @@ class PluginCLI:
 
                 return ExitCode.SUCCESS
 
+            except PluginManifestNotFoundError:
+                self._out.error('No MANIFEST.toml found')
+                return ExitCode.ERROR
+            except PluginManifestInvalidError as e:
+                self._out.nl()
+                self._out.error('Validation failed:')
+                self._out.nl()
+                self._out.error(f'  • {e}')
+                return ExitCode.ERROR
             except Exception as e:
                 self._out.error(f'Validation error: {e}')
                 return ExitCode.ERROR
@@ -977,26 +976,24 @@ class PluginCLI:
             shutil.rmtree(temp_path)
             source.sync(temp_path, shallow=True)
 
-            # Check for MANIFEST.toml
-            manifest_path = temp_path / 'MANIFEST.toml'
-            if not manifest_path.exists():
-                self._out.error('No MANIFEST.toml found')
-                return ExitCode.ERROR
-
+            # Check for MANIFEST.toml and validate using manager method
             self._out.success('MANIFEST.toml found')
 
-            # Read and validate manifest
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('temp', f)
+            from picard.plugin3.manager import (
+                PluginManifestInvalidError,
+                PluginManifestNotFoundError,
+            )
 
-            errors = manifest.validate()
-
-            if errors:
+            try:
+                manifest = self._manager._read_and_validate_manifest(temp_path, url)
+            except PluginManifestNotFoundError:
+                self._out.error('No MANIFEST.toml found')
+                return ExitCode.ERROR
+            except PluginManifestInvalidError as e:
                 self._out.nl()
-                self._out.error(f'Validation failed with {len(errors)} error(s):')
+                self._out.error('Validation failed:')
                 self._out.nl()
-                for error in errors:
-                    self._out.error(f'  • {error}')
+                self._out.error(f'  • {e}')
                 return ExitCode.ERROR
 
             # Show plugin info

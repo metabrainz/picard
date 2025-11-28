@@ -366,7 +366,15 @@ class TestPluginCLIValidate(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        from picard.plugin3.manager import (
+            PluginManager,
+        )
+
+        manager = Mock(spec=PluginManager)
+        # Use the real method for manifest loading
+        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
+        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
+
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -388,7 +396,13 @@ class TestPluginCLIValidate(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        from picard.plugin3.manager import PluginManager
+
+        manager = Mock(spec=PluginManager)
+        # Use the real method for manifest loading
+        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
+        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
+
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -414,7 +428,13 @@ class TestPluginCLIValidate(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        from picard.plugin3.manager import PluginManager
+
+        manager = Mock(spec=PluginManager)
+        # Use the real method for manifest loading
+        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
+        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
+
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -453,7 +473,13 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        from picard.plugin3.manager import PluginManager
+
+        manager = Mock(spec=PluginManager)
+        # Use the real method for manifest loading
+        manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
+        manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
+
         args = Mock()
 
         with tempfile.TemporaryDirectory() as tmpdir:
