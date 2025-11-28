@@ -322,9 +322,9 @@ class PluginManager:
             )
 
         # Handle git URL - use temp dir in plugin directory for atomic rename
-        import hashlib
+        from picard.plugin3.plugin import hash_string
 
-        url_hash = hashlib.sha1(url.encode()).hexdigest()[:8]
+        url_hash = hash_string(url)
         temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
 
         try:
@@ -427,7 +427,6 @@ class PluginManager:
         Returns:
             str: Plugin ID
         """
-        import hashlib
         import tempfile
 
         # Check if local directory is a git repository
@@ -450,7 +449,9 @@ class PluginManager:
                 pass  # Ignore errors checking status
 
             # Use git operations to get ref and commit info
-            url_hash = hashlib.sha1(str(local_path).encode()).hexdigest()[:8]
+            from picard.plugin3.plugin import hash_string
+
+            url_hash = hash_string(str(local_path))
             temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
 
             try:

@@ -174,9 +174,9 @@ class PluginRegistry:
 
         # Create URL-specific cache path using SHA1 hash
         if cache_dir:
-            import hashlib
+            from picard.plugin3.plugin import hash_string
 
-            url_hash = hashlib.sha1(self.registry_url.encode()).hexdigest()[:16]
+            url_hash = hash_string(self.registry_url)
             self.cache_path = Path(cache_dir) / f'plugin_registry_{url_hash}.json'
         else:
             self.cache_path = None

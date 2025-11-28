@@ -49,6 +49,20 @@ def short_commit_id(commit_id):
     return commit_id[:7]
 
 
+def hash_string(text):
+    """Generate SHA1 hash of a string for use in filenames.
+
+    Args:
+        text: String to hash
+
+    Returns:
+        str: Full SHA1 hash (40 characters)
+    """
+    import hashlib
+
+    return hashlib.sha1(text.encode()).hexdigest()
+
+
 class PluginState(Enum):
     """Plugin lifecycle states."""
 

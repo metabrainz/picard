@@ -61,11 +61,11 @@ class TestRegistryAdvanced(PicardTestCase):
             cache_dir = Path(tmpdir)
             # We need to know the hash to create the right filename
             # Use default registry URL to get predictable hash
-            import hashlib
 
             from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
+            from picard.plugin3.plugin import hash_string
 
-            url_hash = hashlib.sha1(DEFAULT_PLUGIN_REGISTRY_URL.encode()).hexdigest()[:16]
+            url_hash = hash_string(DEFAULT_PLUGIN_REGISTRY_URL)
             cache_file = cache_dir / f'plugin_registry_{url_hash}.json'
             cache_file.write_text('invalid json{')
 
