@@ -152,6 +152,43 @@ class PluginCLI:
             return f' ({ref} @{commit_short})'
         return f' (@{commit_short})'
 
+    def _select_ref_for_plugin(self, plugin):
+        """Select appropriate ref for plugin based on Picard API version.
+
+        Args:
+            plugin: Plugin data from registry
+
+        Returns:
+            str: Selected ref name, or None if no refs specified
+        """
+        from picard import api_versions_tuple
+
+        refs = plugin.get('refs')
+        if not refs:
+            return None
+
+        # Get current Picard API version as string (e.g., "3.0")
+        current_api = '.'.join(map(str, api_versions_tuple[:2]))
+
+        # Find first compatible ref
+        for ref in refs:
+            min_api = ref.get('min_api_version')
+            max_api = ref.get('max_api_version')
+
+            # Skip if below minimum
+            if min_api and current_api < min_api:
+                continue
+
+            # Skip if above maximum
+            if max_api and current_api > max_api:
+                continue
+
+            # Compatible ref found
+            return ref['name']
+
+        # No compatible ref found, use first (default)
+        return refs[0]['name']
+
     def _list_plugins(self):
         """List all installed plugins with details."""
         if not self._manager.plugins:
