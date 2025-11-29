@@ -23,20 +23,22 @@ try:
 except ImportError:
     from tomlkit import load as load_toml
 
-import re
 from typing import (
     BinaryIO,
     Tuple,
 )
 
+from picard.plugin3.constants import (
+    MAX_DESCRIPTION_LENGTH,
+    MAX_LONG_DESCRIPTION_LENGTH,
+    MAX_NAME_LENGTH,
+    REQUIRED_MANIFEST_FIELDS,
+    UUID_PATTERN,
+)
 from picard.version import (
     Version,
     VersionError,
 )
-
-
-# UUID v4 regex pattern (RFC 4122)
-UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', re.IGNORECASE)
 
 
 class PluginManifest:
@@ -122,14 +124,8 @@ class PluginManifest:
         """
         errors = []
 
-        # Length constraints
-        MAX_NAME_LENGTH = 100
-        MAX_DESCRIPTION_LENGTH = 200
-        MAX_LONG_DESCRIPTION_LENGTH = 2000
-
         # Required fields
-        required = ['uuid', 'name', 'version', 'description', 'api', 'authors', 'license', 'license_url']
-        for field in required:
+        for field in REQUIRED_MANIFEST_FIELDS:
             if not self._data.get(field):
                 errors.append(f"Missing required field: {field}")
 
