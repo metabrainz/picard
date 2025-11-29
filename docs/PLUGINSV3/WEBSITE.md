@@ -432,69 +432,33 @@ def fetch_manifest(git_url, ref):
 
 def validate_manifest(manifest):
     """Validate MANIFEST.toml structure"""
-    from .constants import REQUIRED_MANIFEST_FIELDS, TRUST_LEVELS, CATEGORIES
+    from .validator import validate_manifest_dict
 
-    # Check required fields
-    for field in REQUIRED_MANIFEST_FIELDS:
-        if field not in manifest:
-            raise ValueError(f"Missing required field: {field}")
-
-    # Validate types
-    if not isinstance(manifest['name'], str):
-        raise ValueError("name must be a string")
-    if not isinstance(manifest['authors'], list):
-        raise ValueError("authors must be an array")
-    if not isinstance(manifest['api'], list):
-        raise ValueError("api must be an array")
-
-    # Validate categories if present
-    if 'categories' in manifest:
-        for cat in manifest['categories']:
-            if cat not in CATEGORIES:
-                raise ValueError(f"Invalid category: {cat}")
+    errors = validate_manifest_dict(manifest)
+    if errors:
+        raise ValueError(f"Manifest validation failed: {', '.join(errors)}")
 
     return True
 ```
 
-**Note:** Picard includes a `PluginManifest.validate()` method that performs comprehensive validation including:
-- Required fields check
-- Field type validation
-- String length constraints (name: 1-100, description: 1-200, long_description: max 2000)
-- Version format validation
-- Empty i18n section detection
+**Note:** Picard's validation code is in `picard/plugin3/validator.py` and can be copied directly to registry tools. The `PluginManifest.validate()` method uses this validator plus additional Picard-specific version parsing.
 
-The registry tool should use similar validation logic. You can test plugins using:
+You can test plugins using:
 ```bash
 picard plugins --validate https://github.com/user/plugin
 ```
 
-### Constants (Copied from Picard)
+### Validation Code (Copied from Picard)
 
-```python
-# registry_lib/constants.py
-# NOTE: This file is kept in sync with picard/plugin3/constants.py
+Copy these files from Picard to the registry tool:
 
-TRUST_LEVELS = ['official', 'trusted', 'community']
+**`picard/plugin3/constants.py`** → **`registry_lib/constants.py`**
+- Trust levels, categories, required fields
+- String length constraints, UUID pattern
 
-CATEGORIES = [
-    'metadata',
-    'coverart',
-    'ui',
-    'scripting',
-    'formats',
-    'other'
-]
-
-REQUIRED_MANIFEST_FIELDS = [
-    'name',
-    'version',
-    'description',
-    'api',
-    'authors',
-    'license',
-    'license_url'
-]
-```
+**`picard/plugin3/validator.py`** → **`registry_lib/validator.py`**
+- Standalone validation function
+- Only depends on constants.py
 
 ---
 
@@ -774,39 +738,35 @@ A web-based plugin browser for discovering registered plugins.
 
 ### Shared Code
 
-The registry tool contains minimal code copied from Picard:
+The registry tool copies validation code from Picard:
 
-**registry_lib/constants.py** (~20 lines)
-- Trust levels
-- Categories
-- Required MANIFEST fields
+**registry_lib/constants.py** (~60 lines)
+- Copy from `picard/plugin3/constants.py`
+- Trust levels, categories, required fields
+- String length constraints, UUID pattern
 
-**registry_lib/manifest.py** (~50 lines)
-- MANIFEST.toml fetching
-- Basic validation
+**registry_lib/validator.py** (~120 lines)
+- Copy from `picard/plugin3/validator.py`
+### Shared Code
 
-**Total duplication: ~70 lines**
+Copy these files from Picard:
+
+**`picard/plugin3/constants.py`** → **`registry_lib/constants.py`**
+**`picard/plugin3/validator.py`** → **`registry_lib/validator.py`**
+
+Total: ~180 lines
 
 ### Keeping in Sync
 
-1. **Documentation**: Both files marked with comment:
-   ```python
-   # NOTE: This file is kept in sync with picard/plugin3/constants.py
-   ```
-
-2. **Infrequent changes**: MANIFEST format is stable
-
-3. **Manual sync**: When changing MANIFEST format in Picard, update registry tool
-
-4. **Test reminder**: Could add test in Picard that documents the sync requirement
+- MANIFEST format is stable (changes are rare)
+- When format changes, copy updated files from Picard
+- Files are designed to be copied without modification
 
 ### Why Not Share via Package?
 
-- Registry tool should be **standalone**
-- Avoids dependency management
+- Registry tool should be standalone
 - Simpler deployment
-- Duplication is minimal (~70 lines)
-- Changes are infrequent
+- Minimal duplication (~180 lines)
 
 ---
 
