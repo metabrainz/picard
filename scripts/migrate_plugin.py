@@ -868,8 +868,18 @@ def migrate_plugin(input_file, output_dir=None):
     # Process .ui source files - regenerate with pyuic6
     regenerated_files = []
     for ui_file in ui_source_files:
-        ui_name = ui_file.stem  # e.g., "ui_options_lastfm"
-        py_name = f"{ui_name}.py"
+        ui_name = ui_file.stem  # e.g., "options" from "options.ui"
+
+        # Check if code imports with ui_ prefix
+        expected_import = f"from ui_{ui_name} import"
+        has_ui_prefix = expected_import in content
+
+        # Generate with ui_ prefix if that's what the code expects
+        if has_ui_prefix:
+            py_name = f"ui_{ui_name}.py"
+        else:
+            py_name = f"{ui_name}.py"
+
         output_py = out_path / py_name
 
         # Try to regenerate with pyuic6
@@ -883,6 +893,8 @@ def migrate_plugin(input_file, output_dir=None):
             dest = out_path / ui_file.name
             dest.write_bytes(ui_file.read_bytes())
             print(f"  Copied: {ui_file.name} (regenerate manually with pyuic6)")
+            if has_ui_prefix:
+                all_warnings.append(f"⚠️  {ui_file.name} expects ui_ prefix - regenerate as ui_{ui_name}.py")
 
     # Copy UI files if found
     qt5_files = []
