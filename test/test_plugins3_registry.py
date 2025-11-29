@@ -473,7 +473,7 @@ class TestPluginRegistry(PicardTestCase):
         info = registry.get_registry_info()
 
         self.assertEqual(info['last_updated'], '2025-11-25T12:00:00Z')
-        self.assertEqual(info['plugin_count'], 6)
+        self.assertEqual(info['plugin_count'], 7)
         self.assertEqual(info['api_version'], '3.0')
         self.assertIn('registry_url', info)
 
@@ -528,7 +528,7 @@ class TestPluginRegistry(PicardTestCase):
 
         # List all
         plugins = registry.list_plugins()
-        self.assertEqual(len(plugins), 6)
+        self.assertEqual(len(plugins), 7)
 
         # Filter by trust level
         official = registry.list_plugins(trust_level='official')
@@ -538,7 +538,7 @@ class TestPluginRegistry(PicardTestCase):
 
         # Filter by category
         metadata = registry.list_plugins(category='metadata')
-        self.assertEqual(len(metadata), 4)
+        self.assertEqual(len(metadata), 5)
 
         # Filter by both
         official_metadata = registry.list_plugins(category='metadata', trust_level='official')

@@ -120,6 +120,36 @@
       "authors": ["Test Author"],
       "added_at": "2025-11-15T10:00:00Z",
       "updated_at": "2025-11-15T10:00:00Z"
+    },
+    {
+      "id": "multi-ref-plugin",
+      "uuid": "multi-ref-uuid-1234",
+      "name": "Multi-Ref Plugin",
+      "description": "Plugin with multiple refs for testing",
+      "git_url": "https://github.com/test/multi-ref",
+      "refs": [
+        {
+          "name": "main",
+          "description": "For Picard 4.x",
+          "min_api_version": "4.0"
+        },
+        {
+          "name": "beta",
+          "description": "Beta testing",
+          "min_api_version": "3.0"
+        },
+        {
+          "name": "picard-v3",
+          "description": "For Picard 3.x",
+          "min_api_version": "3.0",
+          "max_api_version": "3.99"
+        }
+      ],
+      "categories": ["metadata"],
+      "trust_level": "community",
+      "authors": ["Test Author"],
+      "added_at": "2025-11-25T10:00:00Z",
+      "updated_at": "2025-11-25T10:00:00Z"
     }
   ],
   "blacklist": [
