@@ -14,7 +14,7 @@ import re
 import sys
 
 
-def extract_plugin_metadata(content):
+def extract_plugin_metadata(content, input_path=None):
     """Extract PLUGIN_* metadata from v2 plugin using AST parsing."""
     metadata = {}
 
@@ -32,6 +32,39 @@ def extract_plugin_metadata(content):
                     value = _extract_value(node.value)
                     if value is not None:
                         metadata[key] = value
+
+    # If no metadata found and we have a path, check for wildcard imports
+    if not metadata and input_path:
+        metadata = _follow_wildcard_imports(tree, input_path)
+
+    return metadata
+
+
+def _follow_wildcard_imports(tree, input_path):
+    """Follow 'from ... import *' to find PLUGIN_* metadata."""
+    metadata = {}
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom):
+            # Check for wildcard import
+            if node.names and any(alias.name == '*' for alias in node.names):
+                # Try to resolve the import
+                if node.module:
+                    # Convert module path to file path
+                    # e.g., "picard.plugins.add_to_collection.manifest" -> "manifest.py"
+                    parts = node.module.split('.')
+                    # Get the last part as the module name
+                    module_file = parts[-1] + '.py'
+                    module_path = input_path.parent / module_file
+
+                    if module_path.exists():
+                        try:
+                            imported_content = module_path.read_text(encoding='utf-8')
+                            metadata = extract_plugin_metadata(imported_content, None)
+                            if metadata:
+                                break
+                        except Exception:
+                            pass
 
     return metadata
 
@@ -679,7 +712,7 @@ def inject_api_in_classes(content):
     for mod in sorted(modifications, key=lambda x: x[1] if isinstance(x[1], int) else 0, reverse=True):
         if mod[0] == 'convert_api':
             # Convert api.* to self.api.* in class methods
-            class_name, start_line, end_line = mod[1], mod[2], mod[3]
+            _, start_line, end_line = mod[1], mod[2], mod[3]
             for i in range(start_line, min(end_line, len(lines))):
                 if 'api.' in lines[i] and 'self.api' not in lines[i] and 'def ' not in lines[i]:
                     lines[i] = lines[i].replace('api.', 'self.api.')
@@ -737,7 +770,7 @@ def migrate_plugin(input_file, output_dir=None):
     content = input_path.read_text(encoding='utf-8')
 
     # Extract metadata
-    metadata = extract_plugin_metadata(content)
+    metadata = extract_plugin_metadata(content, input_path)
 
     if not metadata:
         print("Error: Could not extract plugin metadata")
