@@ -1007,6 +1007,38 @@ def regenerate_ui_file(ui_file, output_py):
 
     try:
         subprocess.run(['pyuic6', str(ui_file), '-o', str(output_py)], capture_output=True, check=True, text=True)
+
+        # Post-process to add noqa comments for unused imports
+        # pyuic6 generates imports that may not all be used
+        content = output_py.read_text(encoding='utf-8')
+        lines = content.split('\n')
+
+        # Add header comment
+        header = [
+            '# Form implementation generated from reading ui file',
+            '# Run pyuic6 to regenerate if .ui file changes',
+            '# Note: PyQt6 imports may have unused modules, use # noqa: F401 to silence linters',
+            '',
+        ]
+
+        # Find where to insert header (after any existing comments)
+        insert_pos = 0
+        for i, line in enumerate(lines):
+            if line.startswith('#'):
+                insert_pos = i + 1
+            elif line.strip():
+                break
+
+        for i, line in enumerate(lines):
+            # Add noqa to PyQt imports to suppress unused import warnings
+            if line.startswith('from PyQt6 import') and '# noqa' not in line:
+                lines[i] = line + '  # noqa: F401'
+
+        # Insert header
+        for header_line in reversed(header):
+            lines.insert(insert_pos, header_line)
+
+        output_py.write_text('\n'.join(lines), encoding='utf-8')
         return True
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
