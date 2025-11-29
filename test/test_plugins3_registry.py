@@ -618,3 +618,55 @@ class TestPluginRegistry(PicardTestCase):
         with patch.object(registry, 'fetch_registry', side_effect=RegistryFetchError('test', Exception('error'))):
             result = registry._ensure_registry_loaded('test operation')
             self.assertFalse(result)
+
+    def test_registry_fetch_retry_on_network_error(self):
+        """Test that registry fetch retries on network errors."""
+        from unittest.mock import MagicMock, patch
+        from urllib.error import URLError
+
+        from picard.plugin3.registry import PluginRegistry
+
+        registry = PluginRegistry(registry_url='https://test.example.com/registry.json')
+
+        # Mock urlopen to fail twice then succeed
+        mock_response = MagicMock()
+        mock_response.read.return_value = b'{"plugins": []}'
+        mock_response.__enter__.return_value = mock_response
+        mock_response.__exit__.return_value = False
+
+        call_count = 0
+
+        def urlopen_side_effect(*args, **kwargs):
+            nonlocal call_count
+            call_count += 1
+            if call_count < 3:
+                raise URLError('Network error')
+            return mock_response
+
+        with patch('picard.plugin3.registry.urlopen', side_effect=urlopen_side_effect):
+            with patch('picard.plugin3.registry.time.sleep'):  # Skip actual sleep
+                registry.fetch_registry()
+
+        self.assertEqual(call_count, 3)
+        self.assertEqual(registry._registry_data, {'plugins': []})
+
+    def test_registry_fetch_no_retry_on_client_error(self):
+        """Test that registry fetch does not retry on 4xx errors."""
+        from unittest.mock import patch
+        from urllib.error import HTTPError
+
+        from picard.plugin3.registry import (
+            PluginRegistry,
+            RegistryFetchError,
+        )
+
+        registry = PluginRegistry(registry_url='https://test.example.com/registry.json')
+
+        # Mock urlopen to return 404
+        http_error = HTTPError('https://test.example.com/registry.json', 404, 'Not Found', {}, None)
+
+        with patch('picard.plugin3.registry.urlopen', side_effect=http_error):
+            with self.assertRaises(RegistryFetchError):
+                registry.fetch_registry()
+
+        # Should only try once (no retries for 4xx)

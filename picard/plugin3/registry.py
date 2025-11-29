@@ -23,6 +23,8 @@ import json
 import os
 from pathlib import Path
 import re
+import time
+import urllib.error
 from urllib.request import urlopen
 
 from picard import log
@@ -243,15 +245,38 @@ class PluginRegistry:
                 except Exception as e:
                     raise RegistryFetchError(self.registry_url, e) from e
             else:
-                # Fetch from remote URL
-                try:
-                    with urlopen(self.registry_url, timeout=10) as response:
-                        data = response.read()
-                        self._registry_data = json.loads(data)
-                except json.JSONDecodeError as e:
-                    raise RegistryParseError(self.registry_url, e) from e
-                except Exception as e:
-                    raise RegistryFetchError(self.registry_url, e) from e
+                # Fetch from remote URL with retry logic
+                max_retries = 3
+                for attempt in range(max_retries):
+                    try:
+                        timeout = 10 * (2**attempt)  # 10s, 20s, 40s
+                        with urlopen(self.registry_url, timeout=timeout) as response:
+                            data = response.read()
+                            self._registry_data = json.loads(data)
+                            break
+                    except json.JSONDecodeError as e:
+                        raise RegistryParseError(self.registry_url, e) from e
+                    except urllib.error.HTTPError as e:
+                        # Don't retry 4xx client errors
+                        if 400 <= e.code < 500:
+                            raise RegistryFetchError(self.registry_url, e) from e
+                        # Retry 5xx server errors
+                        if attempt < max_retries - 1:
+                            wait = 2**attempt
+                            log.warning('Registry fetch failed (attempt %d/%d): %s', attempt + 1, max_retries, e)
+                            log.info('Retrying in %d seconds...', wait)
+                            time.sleep(wait)
+                        else:
+                            raise RegistryFetchError(self.registry_url, e) from e
+                    except Exception as e:
+                        # Retry network errors
+                        if attempt < max_retries - 1:
+                            wait = 2**attempt
+                            log.warning('Registry fetch failed (attempt %d/%d): %s', attempt + 1, max_retries, e)
+                            log.info('Retrying in %d seconds...', wait)
+                            time.sleep(wait)
+                        else:
+                            raise RegistryFetchError(self.registry_url, e) from e
 
             # Save to cache
             if self.cache_path:
