@@ -870,9 +870,12 @@ def migrate_plugin(input_file, output_dir=None):
     for ui_file in ui_source_files:
         ui_name = ui_file.stem  # e.g., "options" from "options.ui"
 
-        # Check if code imports with ui_ prefix
-        expected_import = f"from ui_{ui_name} import"
-        has_ui_prefix = expected_import in content
+        # Check if code imports with ui_ prefix (handle both relative and absolute imports)
+        has_ui_prefix = (
+            f"from ui_{ui_name} import" in content
+            or f"from .ui_{ui_name} import" in content
+            or f".ui_{ui_name} import" in content  # Catches picard.plugins.X.ui_Y
+        )
 
         # Generate with ui_ prefix if that's what the code expects
         if has_ui_prefix:
