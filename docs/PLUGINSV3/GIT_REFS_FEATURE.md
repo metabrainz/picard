@@ -46,7 +46,13 @@ The plugin registry now supports multiple git refs (branches/tags) per plugin, e
 ```json
 {
   "id": "simple-plugin",
-  "git_url": "https://github.com/user/plugin"
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "git_url": "https://github.com/user/plugin",
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
   // refs omitted = defaults to [{"name": "main"}]
 }
 ```
@@ -87,6 +93,8 @@ The plugin registry now supports multiple git refs (branches/tags) per plugin, e
 ```json
 {
   "id": "my-plugin",
+  "uuid": "750e8400-e29b-41d4-a716-446655440001",
+  "git_url": "https://github.com/user/plugin",
   "refs": [
     {
       "name": "main",
@@ -99,7 +107,12 @@ The plugin registry now supports multiple git refs (branches/tags) per plugin, e
       "min_api_version": "3.0",
       "max_api_version": "3.99"
     }
-  ]
+  ],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
 
@@ -117,6 +130,8 @@ The plugin registry now supports multiple git refs (branches/tags) per plugin, e
 ```json
 {
   "id": "my-plugin",
+  "uuid": "850e8400-e29b-41d4-a716-446655440002",
+  "git_url": "https://github.com/user/plugin",
   "refs": [
     {
       "name": "stable",
@@ -126,7 +141,12 @@ The plugin registry now supports multiple git refs (branches/tags) per plugin, e
       "name": "beta",
       "description": "Testing new features (may be unstable)"
     }
-  ]
+  ],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
 
@@ -151,7 +171,14 @@ picard plugins --switch-ref my-plugin stable
 ```json
 {
   "id": "old-plugin",
-  "refs": [{"name": "master"}]
+  "uuid": "950e8400-e29b-41d4-a716-446655440003",
+  "git_url": "https://github.com/user/plugin",
+  "refs": [{"name": "master"}],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
 
@@ -160,10 +187,17 @@ or
 ```json
 {
   "id": "gitflow-plugin",
+  "uuid": "a50e8400-e29b-41d4-a716-446655440004",
+  "git_url": "https://github.com/user/plugin",
   "refs": [
     {"name": "master"},
     {"name": "develop", "description": "Development branch"}
-  ]
+  ],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
 

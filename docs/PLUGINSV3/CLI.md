@@ -6,6 +6,42 @@ This document provides a complete reference for the `picard plugins` command-lin
 
 ## Plugin Identification
 
+Plugins can be identified in multiple ways. Understanding these identifiers is important for using the CLI effectively.
+
+### Identifier Types
+
+**Registry ID** (recommended for registry plugins)
+- Short, human-readable identifier from the official registry
+- Example: `view-script-variables`, `listenbrainz`
+- Only available for plugins installed from the registry
+- Easiest to remember and type
+- Stored when you install from registry
+
+**Plugin ID** (internal identifier)
+- Directory name where plugin is installed
+- Format: `<sanitized-name>_<uuid>`
+- Example: `listenbrainz_891a96e7-0e29-41d4-a716-446655440000`
+- Always unique, used internally by Picard
+- Automatically generated during installation
+
+**UUID** (universal identifier)
+- Unique identifier from MANIFEST.toml
+- Example: `a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d`
+- Never changes, even if plugin moves repositories
+- Used for blacklisting and tracking
+
+**Display Name** (human-readable name)
+- Plugin's display name from MANIFEST.toml
+- Example: `ListenBrainz Submitter`
+- May not be unique (though rare)
+- Case-insensitive matching
+
+### How Commands Accept Identifiers
+
+Most commands accept a plugin identifier, which can be:
+
+### How Commands Accept Identifiers
+
 Most commands accept a plugin identifier, which can be:
 
 - **Registry ID**: `view-script-variables` (only for plugins installed from registry, always unique)

@@ -110,12 +110,14 @@ picard plugins --install my-plugin
 | `name_i18n` | object | No | Translated names (locale → string) |
 | `description_i18n` | object | No | Translated descriptions (locale → string) |
 | `git_url` | string | Yes | Git repository URL (https) |
-| `refs` | array | No | Git refs (branches/tags) available for this plugin (defaults to `[{"name": "main"}]`) |
+| `refs` | array | No | Git refs (branches/tags) available for this plugin (defaults to `[{"name": "main"}]`). Each ref can have `min_api_version` and `max_api_version` fields. |
 | `categories` | array | Yes | Plugin categories |
 | `trust_level` | string | Yes | Trust level: `official`, `trusted`, or `community` |
 | `authors` | array | Yes | Plugin author names |
 | `added_at` | string | Yes | ISO 8601 timestamp when added to registry |
 | `updated_at` | string | Yes | ISO 8601 timestamp of last update |
+
+**Note:** API version constraints (`min_api_version`, `max_api_version`) are specified per-ref within the `refs` array, not at the top level. This allows different branches to support different Picard versions.
 
 ### Categories
 
@@ -181,9 +183,14 @@ This means most plugins don't need to specify `refs` explicitly.
 ```json
 {
   "id": "simple-plugin",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
   "git_url": "https://github.com/user/plugin",
-  "min_api_version": "3.0"
-  // refs defaults to [{"name": "main"}]
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
+  // refs omitted, defaults to [{"name": "main"}]
 }
 ```
 
@@ -191,8 +198,14 @@ This means most plugins don't need to specify `refs` explicitly.
 ```json
 {
   "id": "old-plugin",
+  "uuid": "650e8400-e29b-41d4-a716-446655440001",
   "git_url": "https://github.com/user/plugin",
-  "refs": [{"name": "master"}]
+  "refs": [{"name": "master"}],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
 
@@ -200,6 +213,7 @@ This means most plugins don't need to specify `refs` explicitly.
 ```json
 {
   "id": "my-plugin",
+  "uuid": "750e8400-e29b-41d4-a716-446655440002",
   "git_url": "https://github.com/user/plugin",
   "refs": [
     {
@@ -210,7 +224,12 @@ This means most plugins don't need to specify `refs` explicitly.
       "name": "beta",
       "description": "Testing new features (may be unstable)"
     }
-  ]
+  ],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
 
@@ -218,6 +237,7 @@ This means most plugins don't need to specify `refs` explicitly.
 ```json
 {
   "id": "my-plugin",
+  "uuid": "850e8400-e29b-41d4-a716-446655440003",
   "git_url": "https://github.com/user/plugin",
   "refs": [
     {
@@ -231,7 +251,12 @@ This means most plugins don't need to specify `refs` explicitly.
       "min_api_version": "3.0",
       "max_api_version": "3.99"
     }
-  ]
+  ],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
 }
 ```
 
@@ -530,13 +555,14 @@ Redirects handle plugin repository changes transparently:
   "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
   "id": "my-plugin",
   "git_url": "https://github.com/neworg/plugin-repo",
+  "refs": [{"name": "main", "min_api_version": "3.0"}],
   "redirect_from": [
     "https://github.com/olduser/old-repo",
     "https://github.com/olduser/plugin-collection#my-plugin"
   ],
   "trust_level": "community",
   "authors": ["Author Name"],
-  "min_api_version": "3.0",
+  "categories": ["metadata"],
   "added_at": "2025-11-24T15:00:00Z",
   "updated_at": "2025-11-26T10:00:00Z"
 }
@@ -838,7 +864,7 @@ To check for updates:
 ```
 Registry entry:
   git_url: https://github.com/user/plugin
-  (implicit ref: main)
+  refs: [{"name": "main"}]  // or omitted (defaults to main)
 
 Local installation:
   commit: abc123def456
@@ -854,7 +880,7 @@ Update check:
 ```
 Registry entry:
   git_url: https://github.com/user/plugin
-  (implicit ref: latest tag)
+  refs: [{"name": "v1.8.0"}]
 
 Local installation:
   commit: abc123def456

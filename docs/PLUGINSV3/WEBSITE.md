@@ -338,15 +338,29 @@ class Registry:
         if not plugin:
             raise ValueError(f"Plugin {plugin_id} not found")
 
-        # Fetch latest MANIFEST
-        manifest = fetch_manifest(plugin['git_url'])
-        validate_manifest(manifest)
+        # Get refs (use default if not present)
+        refs = plugin.get('refs', [{'name': 'main'}])
+
+        # Fetch and validate MANIFEST from each ref
+        for ref in refs:
+            manifest = fetch_manifest(plugin['git_url'], ref['name'])
+            validate_manifest(manifest)
+
+            # Update API versions from MANIFEST
+            ref['min_api_version'] = manifest['api'][0]
+            if len(manifest['api']) > 1:
+                ref['max_api_version'] = manifest['api'][-1]
+            elif 'max_api_version' in ref:
+                del ref['max_api_version']
+
+        # Use first ref's MANIFEST for plugin metadata
+        manifest = fetch_manifest(plugin['git_url'], refs[0]['name'])
 
         # Update fields
         plugin['name'] = manifest['name']
         plugin['description'] = manifest['description']
         plugin['authors'] = manifest['authors']
-        plugin['min_api_version'] = manifest['api'][0]
+        plugin['refs'] = refs
         plugin['updated_at'] = datetime.now().isoformat()
 
         # Update translations
@@ -394,8 +408,16 @@ class Registry:
 import tomli  # or tomllib in Python 3.11+
 import requests
 
-def fetch_manifest(git_url, ref='main'):
-    """Fetch MANIFEST.toml from git repository at specific ref"""
+def fetch_manifest(git_url, ref):
+    """Fetch MANIFEST.toml from git repository at specific ref
+
+    Args:
+        git_url: Git repository URL (e.g., https://github.com/user/plugin)
+        ref: Git ref name (branch, tag, or commit hash)
+
+    Returns:
+        dict: Parsed MANIFEST.toml content
+    """
     # Convert GitHub URL to raw content URL
     if 'github.com' in git_url:
         raw_url = git_url.replace('github.com', 'raw.githubusercontent.com')
