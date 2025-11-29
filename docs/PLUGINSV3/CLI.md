@@ -198,7 +198,7 @@ Plugin Discovery:
                         check if a plugin URL is blacklisted
 
 Registry:
-  --refresh-registry    force refresh of plugin registry cache
+  --refresh-registry    force refresh of plugin registry cache (can be combined with other commands)
   --check-updates       check for available plugin updates
 
 Advanced Options:
@@ -756,6 +756,36 @@ picard plugins --check-blacklist https://github.com/user/plugin
 - `1` - URL is blacklisted (do not install)
 
 **Note:** Blacklisted plugins are blocked during installation unless `--force-blacklisted` is used (not recommended).
+
+---
+
+### Refresh Registry
+
+**Command:** `picard plugins --refresh-registry`
+
+**Description:** Force refresh of plugin registry cache
+
+**Examples:**
+```bash
+# Refresh registry cache
+picard plugins --refresh-registry
+
+# Combine with other commands (recommended when switching registries)
+picard plugins --refresh-registry --browse
+picard plugins --refresh-registry --install view-script-variables
+
+# After changing PICARD_PLUGIN_REGISTRY_URL
+export PICARD_PLUGIN_REGISTRY_URL="https://example.com/custom-registry.json"
+picard plugins --refresh-registry --browse
+```
+
+**Use cases:**
+- Switching to a different registry URL
+- Testing with custom registries
+- Forcing immediate update of registry data
+- Clearing stale cache
+
+**Note:** The registry is cached for 24 hours by default. Use `--refresh-registry` to bypass the cache and fetch the latest version immediately. It can be combined with any other command that uses the registry (--browse, --search, --install, etc.).
 
 ---
 
