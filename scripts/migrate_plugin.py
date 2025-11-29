@@ -73,8 +73,6 @@ def _extract_value(node):
     """Extract Python value from AST node."""
     if isinstance(node, ast.Constant):
         return node.value
-    elif isinstance(node, ast.Str):  # Python < 3.8
-        return node.s
     elif isinstance(node, ast.List):
         return [_extract_value(elt) for elt in node.elts]
     elif isinstance(node, ast.Tuple):
