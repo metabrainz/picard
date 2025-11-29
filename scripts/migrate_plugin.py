@@ -329,12 +329,25 @@ def convert_plugin_api_v2_to_v3(content):
     """Convert Plugin API v2 patterns to v3."""
     warnings = []
 
-    # Fix BaseAction import - moved in v3
-    if 'from picard.ui.itemviews import BaseAction' in content:
-        content = content.replace(
-            'from picard.ui.itemviews import BaseAction', 'from picard.plugin3.api import BaseAction'
-        )
-        warnings.append("✓ Updated BaseAction import to picard.plugin3.api")
+    # Remove imports that will be accessed via api
+    # BaseAction, OptionsPage, File, Track, Album, Cluster, CoverArtImage
+    # These are now available as api.BaseAction, api.OptionsPage, etc.
+    imports_to_remove = [
+        'from picard.ui.itemviews import BaseAction',
+        'from picard.ui.options import OptionsPage',
+        'from picard.file import File',
+        'from picard.track import Track',
+        'from picard.album import Album',
+        'from picard.cluster import Cluster',
+        'from picard.coverart.image import CoverArtImage',
+    ]
+
+    for old_import in imports_to_remove:
+        if old_import in content:
+            # Remove the import line
+            content = re.sub(rf'^{re.escape(old_import)}.*$', '', content, flags=re.MULTILINE)
+            class_name = old_import.split()[-1]
+            warnings.append(f"✓ Removed {class_name} import - use _api.{class_name} instead")
 
     # PluginPriority
     if 'PluginPriority' in content:
@@ -499,8 +512,9 @@ def convert_plugin_code(content, metadata):
 
     # Add info about _api pattern
     if register_calls:
-        all_warnings.append("ℹ️  Module-level _api variable added for accessing API in classes/functions")
-        all_warnings.append("   Use _api.logger.info(...) instead of api.logger.info(...) outside enable()")
+        all_warnings.append("ℹ️  Module-level _api variable added for accessing API")
+        all_warnings.append("   Use _api.logger.info(...) for logging")
+        all_warnings.append("   Use _api.BaseAction, _api.OptionsPage, etc. for base classes")
         all_warnings.append("   Or pass api explicitly to classes: MyClass(api)")
 
     # Inject api in classes
@@ -573,6 +587,13 @@ def convert_plugin_code(content, metadata):
         if 'PLUGIN_NAME' in line and '=' not in line.split('PLUGIN_NAME')[0]:
             plugin_name = metadata.get('name', 'Plugin')
             line = line.replace('PLUGIN_NAME', f'"{plugin_name}"')
+
+        # Convert class references to use _api
+        # e.g., class MyAction(BaseAction) -> class MyAction(_api.BaseAction)
+        for class_name in ['BaseAction', 'OptionsPage', 'File', 'Track', 'Album', 'Cluster', 'CoverArtImage']:
+            if f'({class_name})' in line or f'({class_name},' in line:
+                line = line.replace(f'({class_name})', f'(_api.{class_name})')
+                line = line.replace(f'({class_name},', f'(_api.{class_name},')
 
         new_lines.append(line)
 

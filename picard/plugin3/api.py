@@ -27,11 +27,14 @@ from typing import (
     Type,
 )
 
+from picard.album import Album
+from picard.cluster import Cluster
 from picard.config import (
     Config,
     ConfigSection,
     get_config,
 )
+from picard.coverart.image import CoverArtImage
 from picard.coverart.providers import CoverArtProvider
 from picard.extension_points.cover_art_providers import (
     register_cover_art_provider,
@@ -60,6 +63,7 @@ from picard.extension_points.options_pages import register_options_page
 from picard.extension_points.script_functions import register_script_function
 from picard.file import File
 from picard.plugin3.manifest import PluginManifest
+from picard.track import Track
 from picard.webservice import WebService
 from picard.webservice.api_helpers import MBAPIHelper
 
@@ -67,6 +71,15 @@ from picard.ui.options import OptionsPage
 
 
 class PluginApi:
+    # Class references for plugins to use
+    Album = Album
+    Track = Track
+    File = File
+    Cluster = Cluster
+    CoverArtImage = CoverArtImage
+    BaseAction = BaseAction
+    OptionsPage = OptionsPage
+
     def __init__(self, manifest: PluginManifest, tagger) -> None:
         from picard.tagger import Tagger
 
