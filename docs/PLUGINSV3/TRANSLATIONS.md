@@ -372,3 +372,264 @@ For collaborative translation, plugins could integrate with Weblate:
 - **[MANIFEST.md](MANIFEST.md)** - MANIFEST.toml specification
 - **[REGISTRY.md](REGISTRY.md)** - Registry metadata translations
 - **[WEBSITE.md](WEBSITE.md)** - Website translation extraction
+
+
+---
+
+## PROPOSED: Alternative Translation Approach (Under Discussion)
+
+**Note:** This section describes a proposed alternative to the key-based approach documented above. It is not yet implemented and is under active discussion.
+
+### Motivation
+
+The current key-based approach (`api.gettext('ui.button.login')`) has readability issues - developers must look up JSON files to understand what text is displayed. This is especially problematic for UI code where readability is important.
+
+Traditional gettext uses the actual English text as the key (`_("Login to ListenBrainz")`), which is much more readable but has stability issues when text changes.
+
+### Proposed Solution: Hybrid Text + Key Approach
+
+Combine the readability of text-in-code with the stability of keys:
+
+```python
+api.tr("Login to ListenBrainz", key="ui.button.login")
+api.tr("Processing {filename}...", key="status.processing", filename=file)
+```
+
+### Key Changes
+
+**1. Use `api.tr()` instead of `api.gettext()`**
+- Avoids confusion with Picard's gettext `_()`
+- Allows plugins to use both Picard and plugin translations simultaneously
+- Familiar to Qt developers (`QObject.tr()`)
+
+```python
+from picard.i18n import gettext as _  # Picard's translations
+
+def enable(api: PluginApi):
+    # Both available without conflict
+    picard_text = _("Save")  # Picard's UI string
+    plugin_text = api.tr("Login to ListenBrainz", key="ui.button.login")  # Plugin's string
+```
+
+**2. Declare source locale in MANIFEST.toml**
+
+```toml
+source_locale = "en_US"  # Default if not specified
+# Can be: "en_GB", "de_DE", "pt_BR", "fr_CA", etc.
+```
+
+This allows:
+- Plugin developers to write code in their native language
+- Regional variants (en_US vs en_GB, pt_BR vs pt_PT, etc.)
+- Inclusive development for non-English speakers
+
+**3. Source locale text lives in code**
+
+```python
+# German developer
+api.tr("Bei ListenBrainz anmelden", key="ui.button.login")
+```
+
+```toml
+source_locale = "de_DE"
+```
+
+No `de_DE.json` needed - German text is in the code. Other locales in JSON:
+
+```json
+// en_US.json
+{
+  "ui.button.login": "Login to ListenBrainz"
+}
+
+// fr_FR.json
+{
+  "ui.button.login": "Connexion à ListenBrainz"
+}
+```
+
+### Lookup Logic
+
+1. If current locale matches source_locale → return text from code
+2. Otherwise → look up key in current locale JSON (with fallback to language without region)
+3. Fall back to source locale text from code if translation not found
+
+### Benefits
+
+- **Readable code**: Actual text visible, not cryptic keys
+- **Inclusive**: Developers can write in their native language
+- **Organized**: Keys provide namespacing and stability
+- **No redundant source JSON at runtime**: Source language in code
+- **Stable**: Changing text doesn't break translations (key remains same)
+- **Clear fallback**: Source text always available
+
+### Example: Complete Setup
+
+**MANIFEST.toml**
+```toml
+name = "ListenBrainz Submitter"
+source_locale = "en_US"
+
+[name_i18n]
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+
+[description_i18n]
+de = "Sende deine Musik zu ListenBrainz"
+fr = "Soumettez votre musique sur ListenBrainz"
+```
+
+**__init__.py**
+```python
+from picard.plugin3 import PluginApi
+from picard.i18n import gettext as _  # Picard's translations
+
+def enable(api: PluginApi):
+    # Use Picard's translations for standard UI
+    menu_text = _("Plugins")  # Picard translates this
+
+    # Use plugin translations for plugin-specific text
+    login_text = api.tr("Login to ListenBrainz", key="ui.button.login")
+    logout_text = api.tr("Logout", key="ui.button.logout")
+
+    # With parameters
+    status = api.tr("Submitted {count} tracks", key="status.submitted", count=5)
+    error = api.tr("Network error: {error}", key="error.network", error="Timeout")
+```
+
+**locale/de_DE.json**
+```json
+{
+  "ui.button.login": "Bei ListenBrainz anmelden",
+  "ui.button.logout": "Abmelden",
+  "status.submitted": "{count} Titel übermittelt",
+  "error.network": "Netzwerkfehler: {error}"
+}
+```
+
+**locale/fr_FR.json**
+```json
+{
+  "ui.button.login": "Connexion à ListenBrainz",
+  "ui.button.logout": "Déconnexion",
+  "status.submitted": "{count} pistes soumises",
+  "error.network": "Erreur réseau: {error}"
+}
+```
+
+### Qt Integration
+
+Plugin translations work alongside Qt's translation system:
+
+```python
+from PyQt6.QtWidgets import QDialog, QPushButton, QLabel
+
+class MyPluginDialog(QDialog):
+    def __init__(self, api):
+        super().__init__()
+        self.api = api
+
+        # Qt's built-in translations (inherited from QObject)
+        ok_button = QPushButton(self.tr("&OK"))
+        cancel_button = QPushButton(self.tr("&Cancel"))
+
+        # Plugin-specific translations
+        title = self.api.tr("ListenBrainz Options", key="options.title")
+        label = QLabel(self.api.tr("Username:", key="options.username"))
+```
+
+- `self.tr()` → Qt's translation system (for standard UI elements)
+- `self.api.tr()` → Plugin's translation system (for plugin-specific text)
+- Both use the same locale from `QLocale().name()`
+
+### Open Question: Translator Workflow
+
+**Challenge:** Translators (especially via Weblate) need a source file to translate from.
+
+**Possible approaches:**
+
+**A. Require source locale JSON (accept duplication)**
+- Developer maintains both code text and source locale JSON
+- Simple, no tools required
+- Picard validates they match at runtime and warns on mismatch
+- Standard translator workflow works out of the box
+
+**B. Optional extraction tool**
+- Tool scans code for `api.tr()` calls, generates source locale JSON
+- Optional for developers who want it
+- Adds complexity, requires tooling
+
+**C. Generated reference file**
+- `_source.json` auto-generated for translators (not used at runtime)
+- Requires CI/tooling setup
+- Separates translator needs from runtime needs
+
+**Decision pending:** Need to balance developer convenience, translator experience, and implementation complexity.
+
+### Implementation Notes
+
+```python
+class PluginApi:
+    def __init__(self, manifest: PluginManifest, tagger) -> None:
+        self._manifest = manifest
+        self._tagger = tagger
+        self._translations = {}
+        self._source_locale = manifest.source_locale or "en_US"
+        self._current_locale = QLocale().name()
+        self._load_translations()
+
+    def tr(self, text: str, key: str = None, **kwargs) -> str:
+        """Get translated string.
+
+        Args:
+            text: Source locale text (always provided)
+            key: Translation key (optional but recommended)
+            **kwargs: Format parameters for string interpolation
+
+        Returns:
+            Translated and formatted string
+        """
+        # If no key provided, just return the text (no translation)
+        if key is None:
+            return text.format(**kwargs) if kwargs else text
+
+        # If current locale is source locale, use text from code
+        if self._current_locale == self._source_locale:
+            return text.format(**kwargs) if kwargs else text
+
+        # Try current locale (e.g., "de_DE")
+        if self._current_locale in self._translations:
+            translated = self._translations[self._current_locale].get(key)
+            if translated:
+                return translated.format(**kwargs) if kwargs else translated
+
+        # Try language without region (e.g., "de" from "de_DE")
+        lang = self._current_locale.split('_')[0]
+        if lang in self._translations:
+            translated = self._translations[lang].get(key)
+            if translated:
+                return translated.format(**kwargs) if kwargs else translated
+
+        # Fall back to source locale text from code
+        return text.format(**kwargs) if kwargs else text
+```
+
+### Comparison with Current Approach
+
+**Current (key-based):**
+```python
+api.gettext('ui.button.login')  # What does this say?
+```
+
+**Proposed (text + key):**
+```python
+api.tr("Login to ListenBrainz", key="ui.button.login")  # Clear what it says
+```
+
+**Tradeoffs:**
+- Current: Less verbose, but harder to read
+- Proposed: More verbose, but self-documenting and more flexible
+
+---
+
+**Status:** This proposal is under discussion. Feedback welcome on the MusicBrainz community forums or issue tracker.
