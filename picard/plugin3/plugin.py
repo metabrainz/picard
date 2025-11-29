@@ -39,6 +39,10 @@ except ImportError:
     HAS_PYGIT2 = False
     pygit2 = None
 
+# Retry configuration for git operations
+GIT_OPERATION_MAX_RETRIES = 3
+GIT_OPERATION_RETRY_DELAY_BASE = 2  # exponential backoff for retry delay
+
 
 def short_commit_id(commit_id):
     """Return shortened commit ID for display.
@@ -125,7 +129,7 @@ class PluginSourceGit(PluginSource):
         self.ref = ref
         self.resolved_ref = None  # Will be set after sync
 
-    def _retry_git_operation(self, operation, max_retries=3):
+    def _retry_git_operation(self, operation, max_retries=GIT_OPERATION_MAX_RETRIES):
         """Execute git operation with retry logic for network errors."""
         for attempt in range(max_retries):
             try:
@@ -144,7 +148,7 @@ class PluginSourceGit(PluginSource):
                     ]
                 )
                 if is_network_error and attempt < max_retries - 1:
-                    wait = 2**attempt
+                    wait = GIT_OPERATION_RETRY_DELAY_BASE**attempt
                     log.warning('Git operation failed (attempt %d/%d): %s', attempt + 1, max_retries, e)
                     log.info('Retrying in %d seconds...', wait)
                     time.sleep(wait)

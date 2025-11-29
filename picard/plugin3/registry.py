@@ -31,6 +31,13 @@ from picard import log
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
 
 
+# Retry configuration for registry fetch operations
+REGISTRY_FETCH_MAX_RETRIES = 3
+REGISTRY_FETCH_INITIAL_TIMEOUT = 10  # seconds
+REGISTRY_FETCH_TIMEOUT_MULTIPLIER = 2  # exponential backoff for timeout
+REGISTRY_FETCH_RETRY_DELAY_BASE = 2  # exponential backoff for retry delay
+
+
 class RegistryError(Exception):
     """Base exception for registry errors."""
 
@@ -246,10 +253,9 @@ class PluginRegistry:
                     raise RegistryFetchError(self.registry_url, e) from e
             else:
                 # Fetch from remote URL with retry logic
-                max_retries = 3
-                for attempt in range(max_retries):
+                for attempt in range(REGISTRY_FETCH_MAX_RETRIES):
                     try:
-                        timeout = 10 * (2**attempt)  # 10s, 20s, 40s
+                        timeout = REGISTRY_FETCH_INITIAL_TIMEOUT * (REGISTRY_FETCH_TIMEOUT_MULTIPLIER**attempt)
                         with urlopen(self.registry_url, timeout=timeout) as response:
                             data = response.read()
                             self._registry_data = json.loads(data)
@@ -261,18 +267,22 @@ class PluginRegistry:
                         if 400 <= e.code < 500:
                             raise RegistryFetchError(self.registry_url, e) from e
                         # Retry 5xx server errors
-                        if attempt < max_retries - 1:
-                            wait = 2**attempt
-                            log.warning('Registry fetch failed (attempt %d/%d): %s', attempt + 1, max_retries, e)
+                        if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
+                            wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
+                            log.warning(
+                                'Registry fetch failed (attempt %d/%d): %s', attempt + 1, REGISTRY_FETCH_MAX_RETRIES, e
+                            )
                             log.info('Retrying in %d seconds...', wait)
                             time.sleep(wait)
                         else:
                             raise RegistryFetchError(self.registry_url, e) from e
                     except Exception as e:
                         # Retry network errors
-                        if attempt < max_retries - 1:
-                            wait = 2**attempt
-                            log.warning('Registry fetch failed (attempt %d/%d): %s', attempt + 1, max_retries, e)
+                        if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
+                            wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
+                            log.warning(
+                                'Registry fetch failed (attempt %d/%d): %s', attempt + 1, REGISTRY_FETCH_MAX_RETRIES, e
+                            )
                             log.info('Retrying in %d seconds...', wait)
                             time.sleep(wait)
                         else:
