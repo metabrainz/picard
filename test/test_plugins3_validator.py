@@ -47,9 +47,6 @@ class TestManifestValidator(PicardTestCase):
         self.assertIn("Missing required field: version", errors)
         self.assertIn("Missing required field: description", errors)
         self.assertIn("Missing required field: api", errors)
-        self.assertIn("Missing required field: authors", errors)
-        self.assertIn("Missing required field: license", errors)
-        self.assertIn("Missing required field: license_url", errors)
 
     def test_validate_invalid_uuid(self):
         """Test validation catches invalid UUID."""
@@ -172,7 +169,7 @@ class TestManifestValidator(PicardTestCase):
             'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
         }
         errors = validate_manifest_dict(manifest)
-        self.assertIn("Field 'authors' must contain at least one author", errors)
+        self.assertIn("Field 'authors' must contain at least one author if present", errors)
 
     def test_validate_invalid_category(self):
         """Test validation catches invalid categories."""

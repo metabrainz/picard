@@ -45,9 +45,9 @@ class TestPluginConstants(PicardTestCase):
 
     def test_required_manifest_fields(self):
         """Test that required manifest fields are defined."""
-        expected = ['uuid', 'name', 'version', 'description', 'api', 'authors', 'license', 'license_url']
+        expected = ['uuid', 'name', 'version', 'description', 'api']
         self.assertEqual(REQUIRED_MANIFEST_FIELDS, expected)
-        self.assertEqual(len(REQUIRED_MANIFEST_FIELDS), 8)
+        self.assertEqual(len(REQUIRED_MANIFEST_FIELDS), 5)
 
     def test_string_length_constraints(self):
         """Test that string length constraints are positive integers."""
