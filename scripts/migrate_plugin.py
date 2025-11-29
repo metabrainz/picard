@@ -451,16 +451,32 @@ def convert_plugin_code(content, metadata):
 
         # Check for class methods that might be processors
         elif isinstance(node, ast.ClassDef):
+            class_methods = {}
+            has_registration = False
+
             for item in node.body:
                 if isinstance(item, ast.FunctionDef):
                     # Check if method has processor-like signature
                     args = [arg.arg for arg in item.args.args]
+
                     # Track metadata processor: (self, track, metadata) or (self, album, metadata)
                     if len(args) == 3 and args[0] == 'self' and 'metadata' in args:
-                        method_processors.append((node.name, item.name, 'metadata_processor'))
+                        class_methods[item.name] = 'metadata_processor'
                     # File processor: (self, file)
                     elif len(args) == 2 and args[0] == 'self' and 'file' in args:
-                        method_processors.append((node.name, item.name, 'file_processor'))
+                        class_methods[item.name] = 'file_processor'
+
+                    # Check if this method registers processors
+                    method_source = ast.unparse(item) if hasattr(ast, 'unparse') else ''
+                    if any(
+                        f'register_{proc}' in method_source for proc in ['track_metadata', 'album_metadata', 'file']
+                    ):
+                        has_registration = True
+
+            # Only warn if there are processor methods but no registration found
+            if class_methods and not has_registration:
+                for method_name, proc_type in class_methods.items():
+                    method_processors.append((node.name, method_name, proc_type))
 
         # Find PLUGIN_* assignments to remove
         elif isinstance(node, ast.Assign):
@@ -503,12 +519,20 @@ def convert_plugin_code(content, metadata):
 
     # Warn about method-based processors
     if method_processors:
-        all_warnings.append("⚠️  Found processor methods in classes - these need manual registration:")
+        all_warnings.append("⚠️  Found processor methods in classes that may need manual registration:")
         for class_name, method_name, proc_type in method_processors:
             all_warnings.append(f"   - {class_name}.{method_name} ({proc_type})")
-        all_warnings.append("   Add to enable() function:")
-        all_warnings.append("   Example: instance = MyClass()")
-        all_warnings.append("            api.register_track_metadata_processor(instance.method_name)")
+        all_warnings.append("")
+        all_warnings.append("   If these methods should be registered as processors, add to enable():")
+        all_warnings.append("   Example:")
+        all_warnings.append("     def enable(api):")
+        all_warnings.append("         instance = MyClass()")
+        if any(pt == 'metadata_processor' for _, _, pt in method_processors):
+            all_warnings.append("         api.register_track_metadata_processor(instance.method_name)")
+        if any(pt == 'file_processor' for _, _, pt in method_processors):
+            all_warnings.append("         api.register_file_post_load_processor(instance.method_name)")
+        all_warnings.append("")
+        all_warnings.append("   Or if they're not processors, you can ignore this warning.")
 
     # Add info about _api pattern
     if register_calls:
