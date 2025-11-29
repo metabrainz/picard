@@ -410,6 +410,7 @@ def convert_plugin_code(content, metadata):
     nodes_to_remove = set()
     imports_to_remove = set()
     decorators_to_remove = {}  # func_name -> decorator_name
+    method_processors = []  # Track processors that are class methods
 
     for node in tree.body:
         # Find decorated functions
@@ -434,6 +435,19 @@ def convert_plugin_code(content, metadata):
                     if isinstance(arg, ast.Name):
                         register_calls.append((func_name, arg.id))
                         nodes_to_remove.add(node)
+
+        # Check for class methods that might be processors
+        elif isinstance(node, ast.ClassDef):
+            for item in node.body:
+                if isinstance(item, ast.FunctionDef):
+                    # Check if method has processor-like signature
+                    args = [arg.arg for arg in item.args.args]
+                    # Track metadata processor: (self, track, metadata) or (self, album, metadata)
+                    if len(args) == 3 and args[0] == 'self' and 'metadata' in args:
+                        method_processors.append((node.name, item.name, 'metadata_processor'))
+                    # File processor: (self, file)
+                    elif len(args) == 2 and args[0] == 'self' and 'file' in args:
+                        method_processors.append((node.name, item.name, 'file_processor'))
 
         # Find PLUGIN_* assignments to remove
         elif isinstance(node, ast.Assign):
@@ -473,6 +487,15 @@ def convert_plugin_code(content, metadata):
 
     if has_tagger_import:
         all_warnings.append("⚠️  Tagger import found - using api._tagger (review if needed)")
+
+    # Warn about method-based processors
+    if method_processors:
+        all_warnings.append("⚠️  Found processor methods in classes - these need manual registration:")
+        for class_name, method_name, proc_type in method_processors:
+            all_warnings.append(f"   - {class_name}.{method_name} ({proc_type})")
+        all_warnings.append("   Add to enable() function:")
+        all_warnings.append("   Example: instance = MyClass()")
+        all_warnings.append("            api.register_track_metadata_processor(instance.method_name)")
 
     # Inject api in classes
     content, injection_warnings = inject_api_in_classes(content)
