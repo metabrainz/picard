@@ -28,13 +28,7 @@ from typing import (
     Tuple,
 )
 
-from picard.plugin3.constants import (
-    MAX_DESCRIPTION_LENGTH,
-    MAX_LONG_DESCRIPTION_LENGTH,
-    MAX_NAME_LENGTH,
-    REQUIRED_MANIFEST_FIELDS,
-    UUID_PATTERN,
-)
+from picard.plugin3.validator import validate_manifest_dict
 from picard.version import (
     Version,
     VersionError,
@@ -122,76 +116,21 @@ class PluginManifest:
         Returns:
             List of error messages. Empty list if valid.
         """
-        errors = []
+        # Use standalone validator for basic checks
+        errors = validate_manifest_dict(self._data)
 
-        # Required fields
-        for field in REQUIRED_MANIFEST_FIELDS:
-            if not self._data.get(field):
-                errors.append(f"Missing required field: {field}")
-
-        # UUID validation
-        uuid = self._data.get('uuid', '')
-        if uuid and not UUID_PATTERN.match(uuid):
-            errors.append(f"Field 'uuid' must be a valid UUID v4 (got '{uuid}')")
-
-        # Field type validation
-        if self._data.get('name') and not isinstance(self._data['name'], str):
-            errors.append("Field 'name' must be a string")
-
-        if self._data.get('authors') and not isinstance(self._data['authors'], list):
-            errors.append("Field 'authors' must be an array")
-
-        if self._data.get('api') and not isinstance(self._data['api'], list):
-            errors.append("Field 'api' must be an array")
-
-        # String length validation
-        name = self._data.get('name', '')
-        if name and isinstance(name, str) and (len(name) < 1 or len(name) > MAX_NAME_LENGTH):
-            errors.append(f"Field 'name' must be 1-{MAX_NAME_LENGTH} characters (got {len(name)})")
-
-        description = self._data.get('description', '')
-        if (
-            description
-            and isinstance(description, str)
-            and (len(description) < 1 or len(description) > MAX_DESCRIPTION_LENGTH)
-        ):
-            errors.append(f"Field 'description' must be 1-{MAX_DESCRIPTION_LENGTH} characters (got {len(description)})")
-
-        long_description = self._data.get('long_description', '')
-        if (
-            long_description
-            and isinstance(long_description, str)
-            and len(long_description) > MAX_LONG_DESCRIPTION_LENGTH
-        ):
-            errors.append(
-                f"Field 'long_description' must be max {MAX_LONG_DESCRIPTION_LENGTH} characters (got {len(long_description)})"
-            )
-
-        # Version validation
+        # Add Picard-specific validation (Version parsing)
         if self._data.get('version'):
             try:
                 Version.from_string(self._data['version'])
             except (VersionError, Exception) as e:
                 errors.append(f"Invalid version format: {e}")
 
-        # API version validation
         if self._data.get('api'):
             for api_ver in self._data['api']:
                 try:
                     Version.from_string(api_ver)
                 except (VersionError, Exception) as e:
                     errors.append(f"Invalid API version '{api_ver}': {e}")
-
-        # Authors validation
-        authors = self._data.get('authors', [])
-        if authors and len(authors) == 0:
-            errors.append("Field 'authors' must contain at least one author")
-
-        # Warn about empty i18n sections
-        for section in ['name_i18n', 'description_i18n', 'long_description_i18n']:
-            if section in self._data:
-                value = self._data[section]
-                if not value or (isinstance(value, dict) and len(value) == 0):
-                    errors.append(f"Section '{section}' is present but empty")
 
         return errors
