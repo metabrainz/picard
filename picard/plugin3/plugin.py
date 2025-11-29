@@ -23,7 +23,9 @@ from enum import Enum
 import importlib.util
 from pathlib import Path
 import sys
+import time
 
+from picard import log
 from picard.extension_points import unregister_module_extensions
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
@@ -123,6 +125,32 @@ class PluginSourceGit(PluginSource):
         self.ref = ref
         self.resolved_ref = None  # Will be set after sync
 
+    def _retry_git_operation(self, operation, max_retries=3):
+        """Execute git operation with retry logic for network errors."""
+        for attempt in range(max_retries):
+            try:
+                return operation()
+            except pygit2.GitError as e:
+                error_msg = str(e).lower()
+                is_network_error = any(
+                    keyword in error_msg
+                    for keyword in [
+                        'timeout',
+                        'connection',
+                        'network',
+                        'resolve',
+                        'failed to connect',
+                        'could not resolve',
+                    ]
+                )
+                if is_network_error and attempt < max_retries - 1:
+                    wait = 2**attempt
+                    log.warning('Git operation failed (attempt %d/%d): %s', attempt + 1, max_retries, e)
+                    log.info('Retrying in %d seconds...', wait)
+                    time.sleep(wait)
+                else:
+                    raise
+
     def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False, fetch_ref: bool = False):
         """Sync plugin from git repository.
 
@@ -139,35 +167,42 @@ class PluginSourceGit(PluginSource):
                 for remote in repo.remotes:
                     refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
                     try:
-                        remote.fetch([refspec], callbacks=GitRemoteCallbacks())
+                        self._retry_git_operation(lambda: remote.fetch([refspec], callbacks=GitRemoteCallbacks()))
                     except Exception:
                         # If specific refspec fails, try fetching all (might be a tag or commit)
-                        remote.fetch(callbacks=GitRemoteCallbacks())
+                        self._retry_git_operation(lambda: remote.fetch(callbacks=GitRemoteCallbacks()))
             else:
                 for remote in repo.remotes:
-                    remote.fetch(callbacks=GitRemoteCallbacks())
+                    self._retry_git_operation(lambda: remote.fetch(callbacks=GitRemoteCallbacks()))
         else:
             depth = 1 if shallow else 0
             checkout_branch = self.ref if (self.ref and single_branch and not self.ref.startswith('refs/')) else None
 
-            try:
-                repo = pygit2.clone_repository(
+            def clone_operation():
+                return pygit2.clone_repository(
                     self.url,
                     target_directory.absolute(),
                     callbacks=GitRemoteCallbacks(),
                     depth=depth,
                     checkout_branch=checkout_branch,
                 )
+
+            try:
+                repo = self._retry_git_operation(clone_operation)
             except (KeyError, pygit2.GitError):
                 # checkout_branch failed (likely a tag or commit, not a branch)
                 # Fall back to full clone without single-branch optimization
                 if checkout_branch:
-                    repo = pygit2.clone_repository(
-                        self.url,
-                        target_directory.absolute(),
-                        callbacks=GitRemoteCallbacks(),
-                        depth=depth,
-                    )
+
+                    def fallback_clone():
+                        return pygit2.clone_repository(
+                            self.url,
+                            target_directory.absolute(),
+                            callbacks=GitRemoteCallbacks(),
+                            depth=depth,
+                        )
+
+                    repo = self._retry_git_operation(fallback_clone)
                 else:
                     raise
 
