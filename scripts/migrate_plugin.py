@@ -456,6 +456,10 @@ def convert_plugin_code(content, metadata):
 
             for item in node.body:
                 if isinstance(item, ast.FunctionDef):
+                    # Skip private/helper methods (start with _)
+                    if item.name.startswith('_'):
+                        continue
+
                     # Check if method has processor-like signature
                     args = [arg.arg for arg in item.args.args]
 
