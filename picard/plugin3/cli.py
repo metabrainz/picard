@@ -387,6 +387,17 @@ class PluginCLI:
                 else:
                     url = url_or_id
 
+                    # Warn if this URL is in the registry
+                    registry_plugin = self._manager._registry.find_plugin(url=url)
+                    if registry_plugin:
+                        plugin_id = registry_plugin['id']
+                        self._out.warning(f'This URL is available in the registry as {self._out.d_id(plugin_id)}')
+                        install_cmd = f'picard plugins --install {plugin_id}'
+                        self._out.warning(
+                            f'Consider using {self._out.d_command(install_cmd)} '
+                            f'for automatic ref selection and trust verification'
+                        )
+
                     # Check if already installed first (unless reinstalling)
                     if not reinstall:
                         existing_plugin = self._manager._find_plugin_by_url(url)
