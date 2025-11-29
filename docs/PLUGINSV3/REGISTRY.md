@@ -65,10 +65,22 @@ picard plugins --install my-plugin
     "ja": "ListenBrainzに音楽をスクロブルする"
   },
   "git_url": "https://github.com/metabrainz/picard-plugin-listenbrainz",
+  "refs": [
+    {
+      "name": "main",
+      "description": "Stable release for Picard 4.x",
+      "min_api_version": "4.0"
+    },
+    {
+      "name": "picard-v3",
+      "description": "Maintenance branch for Picard 3.x",
+      "min_api_version": "3.0",
+      "max_api_version": "3.99"
+    }
+  ],
   "categories": ["metadata"],
   "trust_level": "official",
   "authors": ["Philipp Wolfer"],
-  "min_api_version": "3.0",
   "added_at": "2025-11-24T15:00:00Z",
   "updated_at": "2025-11-24T15:00:00Z"
 }
@@ -79,6 +91,13 @@ picard plugins --install my-plugin
 - The `id` field is a human-readable short identifier for CLI/URL usage
 - The `git_url` specifies where to fetch the plugin (can change via redirects)
 - Together, UUID + git_url provide stable identity and source tracking
+
+**Git Refs:**
+- The `refs` field specifies which git branches/tags are available for the plugin
+- If omitted, defaults to `[{"name": "main"}]`
+- First ref in array is the default for new installations
+- Picard auto-selects compatible ref based on API version
+- Users can explicitly choose a different ref with `--ref` flag
 
 ### Field Reference
 
@@ -91,11 +110,10 @@ picard plugins --install my-plugin
 | `name_i18n` | object | No | Translated names (locale → string) |
 | `description_i18n` | object | No | Translated descriptions (locale → string) |
 | `git_url` | string | Yes | Git repository URL (https) |
+| `refs` | array | No | Git refs (branches/tags) available for this plugin (defaults to `[{"name": "main"}]`) |
 | `categories` | array | Yes | Plugin categories |
 | `trust_level` | string | Yes | Trust level: `official`, `trusted`, or `community` |
 | `authors` | array | Yes | Plugin author names |
-| `min_api_version` | string | Yes | Minimum supported API version |
-| `max_api_version` | string | No | Maximum supported API version (if any) |
 | `added_at` | string | Yes | ISO 8601 timestamp when added to registry |
 | `updated_at` | string | Yes | ISO 8601 timestamp of last update |
 
@@ -108,6 +126,245 @@ Valid category values:
 - `scripting` - Script functions and variables
 - `formats` - File format support
 - `other` - Miscellaneous
+
+---
+
+## Git Refs
+
+The `refs` field allows plugins to specify multiple git branches or tags that users can install from. This enables:
+- **Beta testing channels** - Users can opt into beta/development versions
+- **Smooth major version transitions** - Maintain separate branches for different Picard versions
+- **Flexible branch naming** - No assumptions about `main` vs `master` vs custom names
+
+### Refs Field Structure
+
+```json
+{
+  "refs": [
+    {
+      "name": "main",
+      "description": "Stable release for Picard 4.x",
+      "min_api_version": "4.0"
+    },
+    {
+      "name": "beta",
+      "description": "Testing new features",
+      "min_api_version": "4.0"
+    }
+  ]
+}
+```
+
+**Ref Object Fields:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Git ref name (branch or tag) |
+| `description` | string | No | Human-readable description of this ref |
+| `min_api_version` | string | No | Minimum Picard API version for this ref |
+| `max_api_version` | string | No | Maximum Picard API version for this ref |
+
+### Default Behavior
+
+If `refs` is omitted, it defaults to:
+```json
+{
+  "refs": [{"name": "main"}]
+}
+```
+
+This means most plugins don't need to specify `refs` explicitly.
+
+### Examples
+
+**Simple plugin (uses defaults):**
+```json
+{
+  "id": "simple-plugin",
+  "git_url": "https://github.com/user/plugin",
+  "min_api_version": "3.0"
+  // refs defaults to [{"name": "main"}]
+}
+```
+
+**Plugin using master branch:**
+```json
+{
+  "id": "old-plugin",
+  "git_url": "https://github.com/user/plugin",
+  "refs": [{"name": "master"}]
+}
+```
+
+**Plugin with beta channel:**
+```json
+{
+  "id": "my-plugin",
+  "git_url": "https://github.com/user/plugin",
+  "refs": [
+    {
+      "name": "stable",
+      "description": "Stable releases only"
+    },
+    {
+      "name": "beta",
+      "description": "Testing new features (may be unstable)"
+    }
+  ]
+}
+```
+
+**Plugin supporting multiple Picard versions:**
+```json
+{
+  "id": "my-plugin",
+  "git_url": "https://github.com/user/plugin",
+  "refs": [
+    {
+      "name": "main",
+      "description": "For Picard 4.x and later",
+      "min_api_version": "4.0"
+    },
+    {
+      "name": "picard-v3",
+      "description": "Maintenance branch for Picard 3.x",
+      "min_api_version": "3.0",
+      "max_api_version": "3.99"
+    }
+  ]
+}
+```
+
+### Client Behavior
+
+**Auto-selection:**
+When installing a plugin, Picard automatically selects the most appropriate ref based on the current Picard API version:
+
+```bash
+# Picard 3.x user
+$ picard plugins --install my-plugin
+# Auto-selects 'picard-v3' branch
+
+# Picard 4.x user
+$ picard plugins --install my-plugin
+# Auto-selects 'main' branch
+```
+
+**Explicit selection:**
+Users can override auto-selection:
+
+```bash
+# Install from specific ref
+$ picard plugins --install my-plugin --ref beta
+
+# List available refs
+$ picard plugins --info my-plugin
+# Shows: Available refs: main (default), beta, picard-v3
+
+# Switch to different ref
+$ picard plugins --switch-ref my-plugin beta
+```
+
+**Update behavior:**
+- Updates only check the currently installed ref
+- To switch refs, use `--switch-ref` command
+- Each ref is tracked independently
+
+### Use Cases
+
+**1. Smooth Major Version Transitions**
+
+When Picard releases a new major version with breaking API changes, plugin authors can maintain separate branches:
+
+```json
+{
+  "refs": [
+    {
+      "name": "main",
+      "description": "For Picard 4.x",
+      "min_api_version": "4.0"
+    },
+    {
+      "name": "picard-v3-stable",
+      "description": "For Picard 3.x (bug fixes only)",
+      "min_api_version": "3.0",
+      "max_api_version": "3.99"
+    }
+  ]
+}
+```
+
+Users on Picard 3.x continue receiving bug fixes on the `picard-v3-stable` branch, while users on Picard 4.x get new features on `main`.
+
+**2. Beta Testing**
+
+Plugin authors can offer beta versions for testing:
+
+```json
+{
+  "refs": [
+    {
+      "name": "stable",
+      "description": "Stable releases"
+    },
+    {
+      "name": "beta",
+      "description": "Beta releases (may contain bugs)"
+    }
+  ]
+}
+```
+
+Power users can opt into beta testing with `--ref beta`.
+
+**3. Custom Branch Names**
+
+Plugins can use any branch naming convention:
+
+```json
+{
+  "refs": [
+    {"name": "master"},      // Old GitHub default
+    {"name": "develop"},     // Gitflow workflow
+    {"name": "trunk"}        // Some projects use this
+  ]
+}
+```
+
+No assumptions are made about branch names - the plugin author explicitly declares what's available.
+
+### Validation
+
+The registry validates that all refs exist in the repository:
+- Registry generation tool fetches MANIFEST.toml from each ref
+- Each ref can have its own MANIFEST.toml with different metadata
+- If any ref is missing or has invalid MANIFEST.toml, the plugin is rejected
+- This ensures users can always install from listed refs
+
+**Important:** Each ref's MANIFEST.toml is independent:
+- The `main` branch might have `api = ["4.0"]`
+- The `picard-v3` branch might have `api = ["3.0", "3.1"]`
+- The registry stores API version constraints per ref, not globally
+
+**Example workflow:**
+```bash
+# Registry tool fetches MANIFEST.toml from each ref
+./registry plugin add https://github.com/user/plugin --refs 'main,picard-v3'
+
+# Fetches and validates:
+# - https://github.com/user/plugin/main/MANIFEST.toml
+# - https://github.com/user/plugin/picard-v3/MANIFEST.toml
+
+# If main/MANIFEST.toml has: api = ["4.0"]
+# And picard-v3/MANIFEST.toml has: api = ["3.0", "3.1"]
+# Then registry stores:
+{
+  "refs": [
+    {"name": "main", "min_api_version": "4.0"},
+    {"name": "picard-v3", "min_api_version": "3.0", "max_api_version": "3.1"}
+  ]
+}
+```
 
 ---
 
@@ -557,21 +814,21 @@ The registry uses git refs to track and detect plugin updates. Unlike semantic v
 
 ### How It Works
 
-**1. Registry stores the canonical ref**
+**1. Registry stores available refs**
 
-Each plugin entry in `plugins.json` has a `git_url` and an implicit default ref (typically `main` or `master` branch, or a specific tag).
+Each plugin entry in `plugins.json` has a `refs` array listing available branches/tags. If omitted, defaults to `[{"name": "main"}]`.
 
 **2. Local installation stores commit hash**
 
 When a plugin is installed or updated, Picard records:
 - The git URL
+- The ref being tracked (e.g., `main`, `beta`, `v1.8.0`)
 - The actual commit SHA that was fetched (e.g., `abc123def456...`)
-- The ref that was used (e.g., `main`, `v1.8.0`)
 
 **3. Update check process**
 
 To check for updates:
-1. Fetch the latest commit SHA for the ref from the remote repository
+1. Fetch the latest commit SHA for the installed ref from the remote repository
 2. Compare it to the locally stored commit SHA
 3. If different → update available
 

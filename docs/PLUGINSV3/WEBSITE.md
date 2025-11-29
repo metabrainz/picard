@@ -87,7 +87,7 @@ picard-plugins-registry/
 
 ```bash
 # Plugin management
-registry plugin add <git-url> --trust <level> [--category <cat>]
+registry plugin add <git-url> --trust <level> [--category <cat>] [--refs <refs>]
 registry plugin remove <plugin-id>
 registry plugin update <plugin-id>
 registry plugin set-trust <plugin-id> <level>
@@ -111,13 +111,13 @@ registry stats
 ```bash
 cd picard-plugins-registry
 
-# Add new community plugin
+# Add new community plugin (uses default ref: main)
 ./registry plugin add https://github.com/user/awesome-plugin \
     --trust community \
     --category metadata
 
 # Output:
-# Fetching MANIFEST.toml from https://github.com/user/awesome-plugin...
+# Fetching MANIFEST.toml from https://github.com/user/awesome-plugin (ref: main)...
 # Plugin: Awesome Plugin
 # Version: 1.0.0
 # Authors: John Doe
@@ -126,6 +126,45 @@ cd picard-plugins-registry
 # Added plugin 'awesome-plugin' to registry
 # Trust level: community
 # Categories: metadata
+# Refs: main (default)
+
+# Add plugin with custom branch
+./registry plugin add https://github.com/user/old-plugin \
+    --trust community \
+    --refs master
+
+# Add plugin with multiple refs
+./registry plugin add https://github.com/user/multi-version-plugin \
+    --trust community \
+    --refs 'main,picard-v3'
+
+# Output shows:
+# Fetching MANIFEST.toml from main branch...
+#   API versions: 4.0
+# Fetching MANIFEST.toml from picard-v3 branch...
+#   API versions: 3.0, 3.1
+# Refs: main (default, API 4.0+), picard-v3 (API 3.0-3.1)
+
+# The registry will contain:
+{
+  "refs": [
+    {
+      "name": "main",
+      "min_api_version": "4.0"
+    },
+    {
+      "name": "picard-v3",
+      "min_api_version": "3.0",
+      "max_api_version": "3.1"
+    }
+  ]
+}
+
+# You can also explicitly specify API versions (overrides MANIFEST):
+./registry plugin add https://github.com/user/plugin \
+    --trust community \
+    --refs 'main:4.0,picard-v3:3.0-3.99'
+# This is useful if you want to be more restrictive than what MANIFEST says
 
 # Validate
 ./registry validate
@@ -201,10 +240,34 @@ class Registry:
             json.dump(self.data, f, indent=2, ensure_ascii=False)
             f.write('\n')  # Trailing newline
 
-    def add_plugin(self, git_url, trust_level, categories=None):
-        # Fetch and validate MANIFEST
-        manifest = fetch_manifest(git_url)
-        validate_manifest(manifest)
+    def add_plugin(self, git_url, trust_level, categories=None, refs=None):
+        # Parse refs if provided
+        if refs:
+            refs_list = self._parse_refs(refs)
+        else:
+            # Auto-detect default branch
+            default_branch = self._detect_default_branch(git_url)
+            refs_list = [{'name': default_branch}]
+
+        # Fetch and validate MANIFEST from each ref
+        # Each ref can have different API versions in its MANIFEST
+        for ref in refs_list:
+            try:
+                manifest = fetch_manifest(git_url, ref['name'])
+                validate_manifest(manifest)
+
+                # Extract API versions from this ref's MANIFEST
+                # Only if not explicitly provided in --refs argument
+                if 'min_api_version' not in ref:
+                    ref['min_api_version'] = manifest['api'][0]
+                if 'max_api_version' not in ref and len(manifest['api']) > 1:
+                    ref['max_api_version'] = manifest['api'][-1]
+
+            except Exception as e:
+                raise ValueError(f"Ref '{ref['name']}' validation failed: {e}")
+
+        # Use first ref's MANIFEST for plugin metadata
+        manifest = fetch_manifest(git_url, refs_list[0]['name'])
 
         # Derive plugin ID
         plugin_id = derive_plugin_id(git_url)
@@ -216,13 +279,14 @@ class Registry:
         # Build plugin entry
         plugin = {
             'id': plugin_id,
+            'uuid': manifest['uuid'],
             'name': manifest['name'],
             'description': manifest['description'],
             'git_url': git_url,
+            'refs': refs_list,
             'categories': categories or manifest.get('categories', []),
             'trust_level': trust_level,
             'authors': manifest['authors'],
-            'min_api_version': manifest['api'][0],
             'added_at': datetime.now().isoformat(),
             'updated_at': datetime.now().isoformat()
         }
@@ -233,12 +297,38 @@ class Registry:
         if 'description_i18n' in manifest:
             plugin['description_i18n'] = manifest['description_i18n']
 
-        # Add max_api_version if multiple versions
-        if len(manifest['api']) > 1:
-            plugin['max_api_version'] = manifest['api'][-1]
-
         self.data['plugins'].append(plugin)
         return plugin
+
+    def _parse_refs(self, refs_str):
+        """Parse refs string: 'main' or 'main,beta' or 'main:4.0,picard-v3:3.0-3.99'"""
+        refs = []
+        for ref_spec in refs_str.split(','):
+            if ':' in ref_spec:
+                # Format: name:min_api or name:min_api-max_api
+                name, api_spec = ref_spec.split(':', 1)
+                ref = {'name': name.strip()}
+                if '-' in api_spec:
+                    min_api, max_api = api_spec.split('-', 1)
+                    ref['min_api_version'] = min_api.strip()
+                    ref['max_api_version'] = max_api.strip()
+                else:
+                    ref['min_api_version'] = api_spec.strip()
+            else:
+                # Simple format: just name
+                ref = {'name': ref_spec.strip()}
+            refs.append(ref)
+        return refs
+
+    def _detect_default_branch(self, git_url):
+        """Detect repository's default branch by trying common names"""
+        for branch in ['main', 'master', 'develop']:
+            try:
+                fetch_manifest(git_url, branch)
+                return branch
+            except:
+                continue
+        raise ValueError("Could not detect default branch (tried: main, master, develop)")
 
     def remove_plugin(self, plugin_id):
         self.data['plugins'] = [p for p in self.data['plugins'] if p['id'] != plugin_id]
@@ -304,12 +394,12 @@ class Registry:
 import tomli  # or tomllib in Python 3.11+
 import requests
 
-def fetch_manifest(git_url):
-    """Fetch MANIFEST.toml from git repository"""
+def fetch_manifest(git_url, ref='main'):
+    """Fetch MANIFEST.toml from git repository at specific ref"""
     # Convert GitHub URL to raw content URL
     if 'github.com' in git_url:
         raw_url = git_url.replace('github.com', 'raw.githubusercontent.com')
-        raw_url = raw_url.rstrip('/') + '/main/MANIFEST.toml'
+        raw_url = f"{raw_url.rstrip('/')}/{ref}/MANIFEST.toml"
     else:
         raise ValueError(f"Unsupported git host: {git_url}")
 
@@ -516,13 +606,15 @@ jobs:
           with open('plugins.json') as f:
               data = json.load(f)
           ids = [p['id'] for p in data['plugins']]
+          uuids = [p['uuid'] for p in data['plugins']]
           urls = [p['git_url'] for p in data['plugins']]
           assert len(ids) == len(set(ids)), 'Duplicate plugin IDs'
+          assert len(uuids) == len(set(uuids)), 'Duplicate UUIDs'
           assert len(urls) == len(set(urls)), 'Duplicate git URLs'
           print('✓ No duplicates')
           "
 
-      - name: Validate plugin URLs
+      - name: Validate plugin URLs and refs
         run: |
           python -c "
           import json, requests
@@ -533,7 +625,16 @@ jobs:
               # Check if repo exists (HEAD request)
               r = requests.head(url, timeout=5)
               assert r.status_code == 200, f'Invalid URL: {url}'
-          print('✓ All URLs valid')
+
+              # Check all refs exist
+              refs = plugin.get('refs', [{'name': 'main'}])
+              for ref in refs:
+                  ref_name = ref['name']
+                  raw_url = url.replace('github.com', 'raw.githubusercontent.com')
+                  manifest_url = f'{raw_url}/{ref_name}/MANIFEST.toml'
+                  r = requests.head(manifest_url, timeout=5)
+                  assert r.status_code == 200, f'Ref {ref_name} not found for {plugin[\"id\"]}'
+          print('✓ All URLs and refs valid')
           "
 ```
 

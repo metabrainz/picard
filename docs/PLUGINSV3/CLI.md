@@ -503,6 +503,7 @@ Last Updated: 2025-11-20 14:15:00
 - `picard plugins --install <url> --ref <ref>` - Install specific ref
 - `picard plugins --switch-ref <name> <ref>` - Switch to different ref
 - `picard plugins --update <name> --ref <ref>` - Update to specific ref
+- `picard plugins --info <name>` - Show available refs for registered plugins
 
 **Description:** Manage git branches, tags, and commits
 
@@ -511,12 +512,37 @@ Last Updated: 2025-11-20 14:15:00
 - **Tags** (e.g., `v1.0.0`, `2.1.3`): Immutable - cannot be updated, use `--switch-ref` to change versions
 - **Commits** (e.g., `abc1234`): Immutable - cannot be updated, use `--switch-ref` to change versions
 
+**Registry refs:**
+Plugins in the official registry can specify multiple refs (branches/tags) that are available for installation:
+- **Default ref**: First ref in the list, automatically selected based on your Picard version
+- **Beta/testing refs**: Optional refs for testing new features
+- **Version-specific refs**: Separate branches for different Picard major versions
+
+**Auto-selection:**
+When installing a registered plugin without specifying `--ref`, Picard automatically selects the most appropriate ref based on your Picard API version. For example:
+- Picard 3.x users get the `picard-v3` branch
+- Picard 4.x users get the `main` branch
+
 **When to use `--update` vs `--switch-ref`:**
 - Use `--update` when installed from a branch to get the latest commits on that branch
 - Use `--switch-ref` when installed from a tag/commit, or to change to a different branch/tag
 
 **Examples:**
 ```bash
+# Install from registry (auto-selects appropriate ref)
+picard plugins --install my-plugin
+
+# Install specific ref from registry
+picard plugins --install my-plugin --ref beta
+
+# Show available refs for registered plugin
+picard plugins --info my-plugin
+# Output:
+#   Available refs:
+#     - main (default) - Stable release for Picard 4.x
+#     - beta - Testing new features
+#     - picard-v3 - Maintenance branch for Picard 3.x
+
 # Install from tag
 picard plugins --install https://github.com/user/plugin --ref v1.0.0
 
@@ -526,9 +552,35 @@ picard plugins --install https://github.com/user/plugin --ref dev
 # Switch to different branch
 picard plugins --switch-ref myplugin dev
 
+# Switch to beta ref (for registered plugin)
+picard plugins --switch-ref myplugin beta
+
 # Switch to tag
 picard plugins --switch-ref myplugin v1.1.0
 ```
+
+**Use cases:**
+
+1. **Testing beta features:**
+   ```bash
+   # Switch to beta channel
+   picard plugins --switch-ref my-plugin beta
+
+   # Switch back to stable
+   picard plugins --switch-ref my-plugin main
+   ```
+
+2. **Staying on older Picard version:**
+   ```bash
+   # If you're on Picard 3.x and plugin moved to 4.x API
+   picard plugins --switch-ref my-plugin picard-v3
+   ```
+
+3. **Pinning to specific version:**
+   ```bash
+   # Pin to specific tag
+   picard plugins --switch-ref my-plugin v2.1.0
+   ```
 
 ---
 
