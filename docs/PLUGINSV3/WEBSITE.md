@@ -790,6 +790,7 @@ The registry tool contains minimal code copied from Picard:
 
 ## See Also
 
+- **[GIT_REFS_FEATURE.md](GIT_REFS_FEATURE.md)** - Git refs feature summary and examples
 - **[REGISTRY.md](REGISTRY.md)** - Registry JSON schema and client integration
 - **[MANIFEST.md](MANIFEST.md)** - MANIFEST.toml specification
 - **[SECURITY.md](SECURITY.md)** - Security model

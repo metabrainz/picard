@@ -977,6 +977,7 @@ Website admin interface:
 
 ## See Also
 
+- **[GIT_REFS_FEATURE.md](GIT_REFS_FEATURE.md)** - Git refs feature summary and examples
 - **[WEBSITE.md](WEBSITE.md)** - Website implementation for registry generation
 - **[SECURITY.md](SECURITY.md)** - Security model rationale
 - **[MANIFEST.md](MANIFEST.md)** - MANIFEST.toml specification
