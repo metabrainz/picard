@@ -497,6 +497,12 @@ def convert_plugin_code(content, metadata):
         all_warnings.append("   Example: instance = MyClass()")
         all_warnings.append("            api.register_track_metadata_processor(instance.method_name)")
 
+    # Add info about _api pattern
+    if register_calls:
+        all_warnings.append("ℹ️  Module-level _api variable added for accessing API in classes/functions")
+        all_warnings.append("   Use _api.logger.info(...) instead of api.logger.info(...) outside enable()")
+        all_warnings.append("   Or pass api explicitly to classes: MyClass(api)")
+
     # Inject api in classes
     content, injection_warnings = inject_api_in_classes(content)
     all_warnings.extend(injection_warnings)
@@ -578,8 +584,14 @@ def convert_plugin_code(content, metadata):
     if register_calls:
         new_lines.append('')
         new_lines.append('')
+        new_lines.append('# Module-level api reference for use in classes/functions')
+        new_lines.append('_api = None')
+        new_lines.append('')
+        new_lines.append('')
         new_lines.append('def enable(api):')
         new_lines.append('    """Called when plugin is enabled."""')
+        new_lines.append('    global _api')
+        new_lines.append('    _api = api')
         for reg_type, func_name in register_calls:
             new_lines.append(f'    api.{reg_type}({func_name})')
 
