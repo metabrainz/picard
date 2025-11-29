@@ -340,7 +340,7 @@ class PluginCLI:
 
     def _install_plugins(self, plugin_urls):
         """Install plugins from URLs or plugin IDs."""
-        ref = getattr(self._args, 'ref', None)
+        explicit_ref = getattr(self._args, 'ref', None)
         reinstall = getattr(self._args, 'reinstall', False)
         force_blacklisted = getattr(self._args, 'force_blacklisted', False)
         yes = getattr(self._args, 'yes', False)
@@ -349,6 +349,9 @@ class PluginCLI:
             self._out.warning(self._out.d_warning('WARNING: Bypassing blacklist check - this may be dangerous!'))
 
         for url_or_id in plugin_urls:
+            # Use explicit ref if provided, otherwise may auto-select per plugin
+            ref = explicit_ref
+
             try:
                 # Check if it's a plugin ID (no slashes, no protocol)
                 if '/' not in url_or_id and '://' not in url_or_id:
@@ -356,7 +359,17 @@ class PluginCLI:
                     plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
                     if plugin:
                         url = plugin['git_url']
-                        self._out.print(f'Found {plugin["name"]} in registry')
+
+                        # Auto-select ref if not explicitly specified
+                        if not explicit_ref:
+                            selected_ref = self._select_ref_for_plugin(plugin)
+                            if selected_ref:
+                                ref = selected_ref
+                                self._out.print(f'Found {plugin["name"]} in registry (using ref: {ref})')
+                            else:
+                                self._out.print(f'Found {plugin["name"]} in registry')
+                        else:
+                            self._out.print(f'Found {plugin["name"]} in registry')
                     else:
                         self._out.error(f'Plugin "{url_or_id}" not found in registry')
 
