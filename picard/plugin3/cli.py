@@ -280,11 +280,21 @@ class PluginCLI:
         if metadata and metadata.get('url'):
             self._out.print(f'Source: {self._out.d_url(metadata["url"])}')
 
-        self._out.print(f'Authors: {", ".join(plugin.manifest.authors)}')
+        # Optional fields - only show if present
+        if plugin.manifest.authors:
+            self._out.print(f'Authors: {", ".join(plugin.manifest.authors)}')
+
+        if plugin.manifest.maintainers:
+            self._out.print(f'Maintainers: {", ".join(plugin.manifest.maintainers)}')
+
         api_versions = plugin.manifest._data.get('api', [])
         self._out.print(f'API Versions: {", ".join(api_versions)}')
-        self._out.print(f'License: {plugin.manifest.license}')
-        self._out.print(f'License URL: {self._out.d_url(plugin.manifest.license_url)}')
+
+        if plugin.manifest.license:
+            self._out.print(f'License: {plugin.manifest.license}')
+
+        if plugin.manifest.license_url:
+            self._out.print(f'License URL: {self._out.d_url(plugin.manifest.license_url)}')
 
         # Optional fields
         categories = plugin.manifest._data.get('categories', [])
@@ -967,7 +977,14 @@ class PluginCLI:
                     self._out.info(f'  Name_i18n: {", ".join(sorted(name_i18n.keys()))}')
 
                 self._out.info(f'  Version: {manifest._data.get("version", "")}')
-                self._out.info(f'  Authors: {", ".join(manifest.authors)}')
+
+                # Optional fields - only show if present
+                if manifest.authors:
+                    self._out.info(f'  Authors: {", ".join(manifest.authors)}')
+
+                if manifest.maintainers:
+                    self._out.info(f'  Maintainers: {", ".join(manifest.maintainers)}')
+
                 self._out.info(f'  Description: {manifest.description()}')
 
                 # Show available description translations
@@ -987,9 +1004,11 @@ class PluginCLI:
 
                 api_versions = manifest._data.get('api', [])
                 self._out.info(f'  API versions: {", ".join(api_versions)}')
-                self._out.info(f'  License: {manifest.license}')
 
-                # Show license URL if available
+                # Show license fields if present
+                if manifest.license:
+                    self._out.info(f'  License: {manifest.license}')
+
                 if manifest.license_url:
                     self._out.info(f'  License URL: {manifest.license_url}')
 
@@ -1069,7 +1088,14 @@ class PluginCLI:
                 self._out.info(f'  Name_i18n: {", ".join(sorted(name_i18n.keys()))}')
 
             self._out.info(f'  Version: {self._out.d_version(manifest._data.get("version", ""))}')
-            self._out.info(f'  Authors: {", ".join(manifest.authors)}')
+
+            # Optional fields - only show if present
+            if manifest.authors:
+                self._out.info(f'  Authors: {", ".join(manifest.authors)}')
+
+            if manifest.maintainers:
+                self._out.info(f'  Maintainers: {", ".join(manifest.maintainers)}')
+
             self._out.info(f'  Description: {manifest.description()}')
 
             # Show available description translations
@@ -1089,9 +1115,11 @@ class PluginCLI:
 
             api_versions = manifest._data.get('api', [])
             self._out.info(f'  API versions: {", ".join(api_versions)}')
-            self._out.info(f'  License: {manifest.license}')
 
-            # Show license URL if available
+            # Show license fields if present
+            if manifest.license:
+                self._out.info(f'  License: {manifest.license}')
+
             if manifest.license_url:
                 self._out.info(f'  License URL: {self._out.d_url(manifest.license_url)}')
 

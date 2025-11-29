@@ -146,10 +146,11 @@ def create_test_manifest_content(
     version='1.0.0',
     description='Test description',
     authors=None,
+    maintainers=None,
     uuid='550e8400-e29b-41d4-a716-446655440000',
     api_versions=None,
-    license='GPL-2.0-or-later',
-    license_url='https://www.gnu.org/licenses/gpl-2.0.html',
+    license=None,
+    license_url=None,
     **extra_fields,
 ):
     """Create a valid MANIFEST.toml content string.
@@ -158,22 +159,20 @@ def create_test_manifest_content(
         name: Plugin name
         version: Plugin version
         description: Plugin description
-        authors: List of authors (default: ['Test Author'])
+        authors: List of authors (optional)
+        maintainers: List of maintainers (optional)
         uuid: Plugin UUID
         api_versions: List of API versions (default: ['3.0'])
-        license: License identifier
-        license_url: License URL
+        license: License identifier (optional)
+        license_url: License URL (optional)
         **extra_fields: Additional fields to include (e.g., homepage, categories)
 
     Returns:
         str: MANIFEST.toml content
     """
-    if authors is None:
-        authors = ['Test Author']
     if api_versions is None:
         api_versions = ['3.0']
 
-    authors_str = ', '.join(f'"{a}"' for a in authors)
     api_str = ', '.join(f'"{v}"' for v in api_versions)
 
     content = f'''uuid = "{uuid}"
@@ -181,10 +180,22 @@ name = "{name}"
 version = "{version}"
 description = "{description}"
 api = [{api_str}]
-authors = [{authors_str}]
-license = "{license}"
-license_url = "{license_url}"
 '''
+
+    # Add optional fields
+    if authors:
+        authors_str = ', '.join(f'"{a}"' for a in authors)
+        content += f'authors = [{authors_str}]\n'
+
+    if maintainers:
+        maintainers_str = ', '.join(f'"{m}"' for m in maintainers)
+        content += f'maintainers = [{maintainers_str}]\n'
+
+    if license:
+        content += f'license = "{license}"\n'
+
+    if license_url:
+        content += f'license_url = "{license_url}"\n'
 
     # Add extra fields
     for key, value in extra_fields.items():

@@ -94,10 +94,21 @@ def validate_manifest_dict(manifest_data):
             if not isinstance(api_ver, str) or not api_ver.strip():
                 errors.append(f"Invalid API version: {api_ver}")
 
-    # Authors validation
-    authors = manifest_data.get('authors', [])
-    if isinstance(authors, list) and len(authors) == 0:
-        errors.append("Field 'authors' must contain at least one author")
+    # Authors validation (optional field)
+    if 'authors' in manifest_data:
+        authors = manifest_data.get('authors', [])
+        if not isinstance(authors, list):
+            errors.append("Field 'authors' must be an array")
+        elif len(authors) == 0:
+            errors.append("Field 'authors' must contain at least one author if present")
+
+    # Maintainers validation (optional field)
+    if 'maintainers' in manifest_data:
+        maintainers = manifest_data.get('maintainers', [])
+        if not isinstance(maintainers, list):
+            errors.append("Field 'maintainers' must be an array")
+        elif len(maintainers) == 0:
+            errors.append("Field 'maintainers' must contain at least one maintainer if present")
 
     # Categories validation
     if 'categories' in manifest_data:

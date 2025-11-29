@@ -30,7 +30,7 @@ REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 CATEGORIES = ['metadata', 'coverart', 'ui', 'scripting', 'formats', 'other']
 
 # Required MANIFEST.toml fields
-REQUIRED_MANIFEST_FIELDS = ['uuid', 'name', 'version', 'description', 'api', 'authors', 'license', 'license_url']
+REQUIRED_MANIFEST_FIELDS = ['uuid', 'name', 'version', 'description', 'api']
 
 # String length constraints for MANIFEST.toml fields
 MAX_NAME_LENGTH = 100

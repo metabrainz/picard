@@ -915,11 +915,12 @@ name = "My Plugin Name"
 version = "1.0.0"
 description = "Short one-line description (1-200 characters)"
 api = ["3.0"]
-authors = ["Your Name"]
-license = "GPL-2.0-or-later"
-license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 
-# Optional fields
+# Optional fields (recommended)
+# authors = ["Your Name"]
+# maintainers = ["Your Name"]
+# license = "GPL-2.0-or-later"
+# license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 # long_description = """
 # Detailed multi-line description (1-2000 characters).
 # Explain features, requirements, usage notes, etc.

@@ -128,13 +128,12 @@ name = "Test"
 
             errors = manifest.validate()
             self.assertGreater(len(errors), 0)
-            # Should have errors for missing fields
+            # Should have errors for missing required fields
             error_text = ' '.join(errors)
+            self.assertIn('uuid', error_text)
             self.assertIn('version', error_text)
             self.assertIn('description', error_text)
             self.assertIn('api', error_text)
-            self.assertIn('authors', error_text)
-            self.assertIn('license', error_text)
         finally:
             temp_path.unlink()
 

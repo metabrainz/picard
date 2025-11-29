@@ -81,6 +81,7 @@ picard plugins --install my-plugin
   "categories": ["metadata"],
   "trust_level": "official",
   "authors": ["Philipp Wolfer"],
+  "maintainers": ["Philipp Wolfer"],
   "added_at": "2025-11-24T15:00:00Z",
   "updated_at": "2025-11-24T15:00:00Z"
 }
@@ -113,7 +114,8 @@ picard plugins --install my-plugin
 | `refs` | array | No | Git refs (branches/tags) available for this plugin (defaults to `[{"name": "main"}]`). Each ref can have `min_api_version` and `max_api_version` fields. |
 | `categories` | array | Yes | Plugin categories |
 | `trust_level` | string | Yes | Trust level: `official`, `trusted`, or `community` |
-| `authors` | array | Yes | Plugin author names |
+| `authors` | array | No | Plugin author/contributor names (from MANIFEST.toml) |
+| `maintainers` | array | No | Plugin maintainer names (from MANIFEST.toml) |
 | `added_at` | string | Yes | ISO 8601 timestamp when added to registry |
 | `updated_at` | string | Yes | ISO 8601 timestamp of last update |
 

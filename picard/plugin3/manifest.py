@@ -59,6 +59,11 @@ class PluginManifest:
         return tuple(authors) if authors else tuple()
 
     @property
+    def maintainers(self) -> Tuple[str]:
+        maintainers = self._data.get('maintainers', [])
+        return tuple(maintainers) if maintainers else tuple()
+
+    @property
     def uuid(self) -> str:
         """Get plugin UUID."""
         return self._data.get('uuid', '')
@@ -104,11 +109,11 @@ class PluginManifest:
 
     @property
     def license(self) -> str:
-        return self._data.get('license')
+        return self._data.get('license', '')
 
     @property
     def license_url(self) -> str:
-        return self._data.get('license_url')
+        return self._data.get('license_url', '')
 
     def validate(self) -> list:
         """Validate manifest and return list of errors.

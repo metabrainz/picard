@@ -22,9 +22,6 @@ name = "My Plugin"
 version = "1.0.0"
 description = "Short description of what the plugin does"
 api = ["3.0"]
-authors = ["Your Name"]
-license = "GPL-2.0-or-later"
-license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 ```
 
 **Note:** For more complex plugins, consider adding `long_description` to provide detailed information about features, requirements, and usage. See [Description Fields](#description-fields-short-vs-long) below.
@@ -69,9 +66,6 @@ def disable():
 | `version` | string | Plugin version (semver) | `"1.0.0"` |
 | `description` | string | Short description (one line, 1-200 chars) | `"Submit your music to ListenBrainz"` |
 | `api` | array | Supported API versions | `["3.0", "3.1"]` |
-| `authors` | array | Plugin author names | `["John Doe", "Jane Smith"]` |
-| `license` | string | SPDX license identifier | `"GPL-2.0-or-later"` |
-| `license_url` | string | URL to license text | `"https://..."` |
 
 **UUID Field:**
 - Must be a valid UUID v4 (RFC 4122)
@@ -84,6 +78,10 @@ def disable():
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
+| `authors` | array | Plugin author/contributor names | `["John Doe", "Jane Smith"]` |
+| `maintainers` | array | Plugin maintainer names | `["John Doe"]` |
+| `license` | string | SPDX license identifier | `"GPL-2.0-or-later"` |
+| `license_url` | string | URL to license text | `"https://..."` |
 | `long_description` | string | Detailed description (multi-line, 1-2000 chars) | See below |
 | `categories` | array | Plugin categories | `["metadata", "coverart"]` |
 | `homepage` | string | Plugin homepage URL | `"https://..."` |
@@ -124,6 +122,7 @@ The plugin respects your privacy and only sends data you explicitly choose to su
 """
 api = ["3.0", "3.1"]
 authors = ["MusicBrainz Picard Team", "Philipp Wolfer"]
+maintainers = ["Philipp Wolfer"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 homepage = "https://github.com/metabrainz/picard-plugin-listenbrainz"
@@ -357,19 +356,27 @@ Vollständige deutsche Beschreibung hier...
 - Use multiple versions for compatibility: `["3.0", "3.1"]`
 
 ### `authors`
-- Required
+- Optional
 - Array of strings
-- At least one author
+- At least one author if present
 - Can be names or "Organization Name"
+- Informative only - for attribution
+
+### `maintainers`
+- Optional
+- Array of strings
+- At least one maintainer if present
+- Can be names or "Organization Name"
+- Informative only - indicates who actively maintains the plugin
 
 ### `license`
-- Required
+- Optional (recommended)
 - SPDX license identifier
 - Common values: `"GPL-2.0-or-later"`, `"MIT"`, `"Apache-2.0"`
 - See https://spdx.org/licenses/
 
 ### `license_url`
-- Required
+- Optional
 - URL to full license text
 - Should be stable URL (not subject to change)
 
