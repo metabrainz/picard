@@ -25,6 +25,7 @@ from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
     MockPluginManager,
     create_cli_args,
+    create_mock_plugin,
 )
 
 from picard.plugin3.cli import (
@@ -265,7 +266,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
         args = create_cli_args()
         cli = PluginCLI(manager, args)
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         cli._find_plugin = Mock(return_value=mock_plugin)
 
         result, error = cli._find_plugin_or_error('test')
@@ -287,7 +288,7 @@ class TestPluginCLICommands(PicardTestCase):
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
@@ -308,7 +309,7 @@ class TestPluginCLICommands(PicardTestCase):
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
@@ -331,7 +332,7 @@ class TestPluginCLICommands(PicardTestCase):
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
@@ -524,7 +525,7 @@ class TestPluginCLIManifest(PicardTestCase):
             manifest_path.write_text(manifest_content)
 
             # Mock plugin
-            mock_plugin = Mock()
+            mock_plugin = create_mock_plugin()
             mock_plugin.local_path = plugin_dir
 
             stdout = StringIO()
@@ -550,7 +551,7 @@ class TestPluginCLIManifest(PicardTestCase):
             plugin_dir.mkdir()
 
             # Mock plugin without manifest
-            mock_plugin = Mock()
+            mock_plugin = create_mock_plugin()
             mock_plugin.local_path = plugin_dir
 
             stderr = StringIO()

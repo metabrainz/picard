@@ -23,6 +23,7 @@ from unittest.mock import Mock
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
     MockTagger,
+    create_mock_plugin,
     create_test_registry,
 )
 
@@ -164,7 +165,7 @@ class TestPluginRegistry(PicardTestCase):
             new_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
             # Create mock plugin
-            mock_plugin = Mock()
+            mock_plugin = create_mock_plugin()
             mock_plugin.plugin_id = 'example'
             mock_plugin.local_path = plugin_dir / 'example'
             mock_plugin.manifest = Mock()
