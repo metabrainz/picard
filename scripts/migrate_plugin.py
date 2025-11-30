@@ -370,9 +370,20 @@ def convert_plugin_api_v2_to_v3(content):
             warnings.append(f"✓ Removed {class_name} import - use api.{class_name} instead")
 
     # Keep base classes for inheritance but update them to plugin3 API
-    if 'from picard.ui.itemviews import BaseAction' in content:
-        content = content.replace(
-            'from picard.ui.itemviews import BaseAction', 'from picard.plugin3.api import BaseAction'
+    # Handle both single-line and multi-line BaseAction imports
+    if 'from picard.ui.itemviews import' in content and 'BaseAction' in content:
+        # Remove the entire import block (including register_file_action, etc.)
+        content = re.sub(
+            r'from picard\.ui\.itemviews import\s*\([^)]*\)',
+            'from picard.plugin3.api import BaseAction',
+            content,
+            flags=re.MULTILINE | re.DOTALL,
+        )
+        # Also handle single-line imports
+        content = re.sub(
+            r'from picard\.ui\.itemviews import\s+[^\n]+',
+            'from picard.plugin3.api import BaseAction',
+            content,
         )
         warnings.append("✓ Updated BaseAction import to plugin3 API")
 
