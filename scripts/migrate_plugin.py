@@ -764,11 +764,13 @@ def convert_plugin_code(content, metadata):
                     line = line.replace(f'({class_name},', f'(api.{class_name},')
 
             # Class instantiation (e.g., Metadata())
+            # Use word boundary to avoid matching substrings like Ui_SomeOptionsPage()
             if f'{class_name}(' in line:
                 if f'api.{class_name}(' not in line and 'picard.' not in line:
                     # Only replace if it's not part of a class definition
                     if not line.strip().startswith('class '):
-                        line = line.replace(f'{class_name}(', f'api.{class_name}(')
+                        # Use regex with word boundary to match only standalone class names
+                        line = re.sub(rf'\b{re.escape(class_name)}\(', f'api.{class_name}(', line)
 
         new_lines.append(line)
 
