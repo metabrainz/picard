@@ -1249,8 +1249,11 @@ class PluginCLI:
                 self._out.print('Registry plugins:')
                 self._out.nl()
 
+            # Sort plugins by name
+            sorted_plugins = sorted(plugins, key=lambda p: p.get('name', '').lower())
+
             # Show plugins
-            for plugin in plugins:
+            for plugin in sorted_plugins:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
                 self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
@@ -1296,11 +1299,14 @@ class PluginCLI:
                 self._out.print(f'No plugins found ({", ".join(filters)})')
                 return ExitCode.SUCCESS
 
+            # Sort results by name
+            sorted_results = sorted(results, key=lambda p: p.get('name', '').lower())
+
             # Show header with filters
-            self._out.print(f'Found {self._out.d_number(len(results))} plugin(s) ({", ".join(filters)}):')
+            self._out.print(f'Found {self._out.d_number(len(sorted_results))} plugin(s) ({", ".join(filters)}):')
             self._out.nl()
 
-            for plugin in results:
+            for plugin in sorted_results:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
                 self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
