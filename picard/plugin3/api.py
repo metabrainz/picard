@@ -75,6 +75,16 @@ from picard.webservice.api_helpers import MBAPIHelper
 from picard.ui.options import OptionsPage
 
 
+# Classes that plugins can import directly for inheritance
+__all__ = [
+    'PluginApi',
+    'BaseAction',
+    'OptionsPage',
+    'File',
+    'CoverArtProvider',
+]
+
+
 class PluginApi:
     # Class references for plugins to use
     Album = Album

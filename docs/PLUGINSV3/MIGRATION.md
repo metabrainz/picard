@@ -228,7 +228,9 @@ def enable(api):
 **For Classes:** API is passed to `__init__` and stored as `self.api`
 
 ```python
-class ExampleOptionsPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class ExampleOptionsPage(OptionsPage):
     NAME = "example"
     TITLE = "Example"
     PARENT = "plugins"
@@ -400,10 +402,11 @@ categories = ["metadata"]
 
 **__init__.py:**
 ```python
+from picard.plugin3.api import OptionsPage
 from PyQt6.QtWidgets import QCheckBox
 
 
-class ExampleOptionsPage(api.OptionsPage):
+class ExampleOptionsPage(OptionsPage):
     NAME = "example"
     TITLE = "Example Plugin"
     PARENT = "plugins"
@@ -468,7 +471,9 @@ def process(api, track, metadata):
         text = api.plugin_config.get('my_key', 'default')
 
 # In OptionsPage
-class MyPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyPage(OptionsPage):
     def load(self):
         enabled = self.api.global_config.setting.get('my_enabled', True)
 
@@ -478,6 +483,8 @@ class MyPage(api.OptionsPage):
 
 **OptionsPage `options` attribute removed:**
 ```python
+from picard.plugin3.api import OptionsPage
+
 # V2 - options attribute for metadata
 class MyPage(OptionsPage):
     options = [
@@ -485,7 +492,7 @@ class MyPage(OptionsPage):
     ]
 
 # V3 - no options attribute needed
-class MyPage(api.OptionsPage):
+class MyPage(OptionsPage):
     # Just read/write config in load()/save()
     pass
 ```

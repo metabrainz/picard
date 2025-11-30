@@ -160,7 +160,9 @@ def enable(api):
 
 **After - In Classes**:
 ```python
-class MyOptionsPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyOptionsPage(OptionsPage):
     def __init__(self, api=None, parent=None):
         super().__init__(parent)
         self.api = api
@@ -214,7 +216,9 @@ class MyOptionsPage(OptionsPage):
 
 **V3 - No options attribute needed**:
 ```python
-class MyOptionsPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyOptionsPage(OptionsPage):
     # No 'options' attribute needed in V3
 
     def load(self):
@@ -304,6 +308,8 @@ class MyOptionsPage(OptionsPage):
 
 **After**:
 ```python
+from picard.plugin3.api import OptionsPage
+
 class MyOptionsPage(OptionsPage):
     def __init__(self, api, parent=None):
         self.api = api
@@ -353,12 +359,14 @@ from picard.tagger import tagger
 
 **V3**: API parameter
 ```python
+from picard.plugin3.api import OptionsPage
+
 # Processors get api as first parameter
 def my_processor(api, track, metadata):
     api.logger.info("Processing")
 
 # Classes get api in __init__
-class MyPage(api.OptionsPage):
+class MyPage(OptionsPage):
     def __init__(self, api=None, parent=None):
         super().__init__(parent)
         self.api = api
@@ -441,7 +449,9 @@ def enable(api):
 **For Classes:** API is passed to `__init__`
 
 ```python
-class MyOptionsPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyOptionsPage(OptionsPage):
     """OptionsPage receives api in __init__."""
 
     NAME = "my_plugin"
@@ -465,13 +475,15 @@ def enable(api):
 ### Common API Access Patterns
 
 ```python
+from picard.plugin3.api import OptionsPage
+
 # In processors - use api parameter
 def my_processor(api, track, metadata):
     api.logger.info("Processing")
     api.global_config.setting['option']
 
 # In classes - use self.api
-class MyPage(api.OptionsPage):
+class MyPage(OptionsPage):
     def load(self):
         self.api.logger.info("Loading")
         self.api.global_config.setting['option']
@@ -519,7 +531,9 @@ class MyOptionsPage(OptionsPage):
 
 **V3** (after migration):
 ```python
-class MyOptionsPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyOptionsPage(OptionsPage):
     def __init__(self, api=None, parent=None):
         super().__init__(parent)
         self.api = api
