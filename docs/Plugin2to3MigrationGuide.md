@@ -123,7 +123,7 @@ def enable(api):
     api.register_script_function(my_function)
 ```
 
-#### 4. Config/Log Access (Module-level `_api`)
+#### 4. Config/Log Access (API Parameter)
 **Before**:
 ```python
 from picard import log, config
@@ -133,22 +133,30 @@ if config.setting['enabled']:
     # do something
 ```
 
-**After**:
+**After - In Processors**:
 ```python
-# Module-level api reference
-_api = None
-
-def my_function():
-    _api.logger.info("Processing")
-    if _api.global_config.setting['enabled']:
-        # do something
+def my_processor(api, track, metadata):
+    api.logger.info("Processing")
+    if api.global_config.setting['enabled']:
+        metadata['custom'] = 'value'
 
 def enable(api):
-    global _api
-    _api = api
+    api.register_track_metadata_processor(my_processor)
 ```
 
-**Why `_api`?** The `PluginApi` object is only passed to `enable()`, but classes like `OptionsPage` and `BaseAction` are instantiated by Picard with no arguments. A module-level `_api` variable makes the API accessible everywhere in your plugin.
+**After - In Classes**:
+```python
+class MyOptionsPage(api.OptionsPage):
+    def __init__(self, api=None, parent=None):
+        super().__init__(parent)
+        self.api = api
+
+    def load(self):
+        self.api.logger.info("Loading")
+        value = self.api.global_config.setting['my_option']
+```
+
+**Why?** Processors receive `api` as first parameter (injected via `functools.partial`). Classes receive `api` in `__init__` and store as `self.api`.
 
 #### 5. Function Signatures
 **Before**:
@@ -252,21 +260,20 @@ from picard import log, config
 from picard.tagger import tagger
 ```
 
-**V3**: Module-level `_api` variable
+**V3**: API parameter
 ```python
-# Module level
-_api = None
+# Processors get api as first parameter
+def my_processor(api, track, metadata):
+    api.logger.info("Processing")
 
-def enable(api):
-    global _api
-    _api = api
-
-# Use anywhere in your plugin
-_api.logger.info()
-_api.global_config.setting
+# Classes get api in __init__
+class MyPage(api.OptionsPage):
+    def __init__(self, api=None, parent=None):
+        super().__init__(parent)
+        self.api = api
 ```
 
-**Why this pattern?** `OptionsPage` and `BaseAction` are instantiated by Picard with no arguments, so we can't pass `api` to their `__init__()`. The module-level `_api` variable solves this cleanly.
+**How it works:** Picard uses `functools.partial` to inject the API as the first parameter to processors. Classes receive API during instantiation.
 
 ### 4. Qt Version
 
@@ -319,101 +326,64 @@ picard plugins --list
 
 ---
 
-## API Access Pattern: Module-level `_api`
+## API Access Pattern: Explicit Parameter Passing
 
-### The Challenge
+### How It Works
 
-The `PluginApi` object is only passed to `enable(api)`, but your plugin needs it everywhere:
-- In `OptionsPage` subclasses (instantiated by Picard with no args)
-- In `BaseAction` subclasses (instantiated by Picard with no args)
-- In processor functions
-- In helper classes
+Picard V3 uses explicit API parameter passing via `functools.partial`:
 
-### The Solution
-
-Use a module-level `_api` variable:
+**For Processors:** API is injected as first parameter
 
 ```python
-from picard.plugin3.api import PluginApi
-
-# Module-level API reference
-_api: PluginApi = None
-
-
-def my_processor(track, metadata):
-    """Processor can access _api directly."""
-    _api.logger.info("Processing track")
-    if _api.global_config.setting['my_option']:
+def my_track_processor(api, track, metadata):
+    """API is automatically injected as first parameter."""
+    api.logger.info("Processing track")
+    if api.global_config.setting['my_option']:
         metadata['custom'] = 'value'
 
 
-class MyOptionsPage(_api.OptionsPage):
-    """OptionsPage using _api."""
+def enable(api):
+    # Picard wraps this as partial(my_track_processor, api)
+    api.register_track_metadata_processor(my_track_processor)
+```
+
+**For Classes:** API is passed to `__init__`
+
+```python
+class MyOptionsPage(api.OptionsPage):
+    """OptionsPage receives api in __init__."""
 
     NAME = "my_plugin"
     TITLE = "My Plugin"
     PARENT = "plugins"
 
-    def __init__(self, parent=None):
-        # Picard instantiates with no arguments
+    def __init__(self, api=None, parent=None):
         super().__init__(parent)
+        self.api = api
 
     def load(self):
-        _api.logger.debug("Loading options")
-        self.checkbox.setChecked(
-            _api.global_config.setting['my_option']
-        )
+        self.api.logger.debug("Loading options")
+        value = self.api.global_config.setting['my_option']
 
 
-class MyAction(_api.BaseAction):
-    """Action using _api."""
-
-    NAME = "My Action"
-
-    def callback(self, objs):
-        _api.logger.info(f"Action on {len(objs)} objects")
-
-
-def enable(api: PluginApi):
-    """Set _api and register everything."""
-    global _api
-    _api = api
-
-    api.register_track_metadata_processor(my_processor)
+def enable(api):
+    # Picard stores api and passes it during instantiation
     api.register_options_page(MyOptionsPage)
-    api.register_file_action(MyAction)
 ```
-
-### Why This Works
-
-1. **Compatible**: Works with how Picard instantiates `OptionsPage()` and `BaseAction()` (no args)
-2. **Simple**: One variable, set once, use everywhere
-3. **Clean**: No complex dependency injection needed
-4. **Proven**: Used in production V3 plugins
 
 ### Common API Access Patterns
 
 ```python
-# Logging
-_api.logger.debug("Debug message")
-_api.logger.info("Info message")
-_api.logger.warning("Warning")
-_api.logger.error("Error")
+# In processors - use api parameter
+def my_processor(api, track, metadata):
+    api.logger.info("Processing")
+    api.global_config.setting['option']
 
-# Configuration
-value = _api.global_config.setting['option_name']
-_api.global_config.setting['option_name'] = new_value
-
-# Plugin-specific config
-_api.plugin_config.setting['my_option'] = value
-
-# Base classes
-class MyPage(_api.OptionsPage): pass
-class MyAction(_api.BaseAction): pass
-
-# Other API access
-_api.Album, _api.Track, _api.File, _api.Cluster
-_api.web_service, _api.mb_api
+# In classes - use self.api
+class MyPage(api.OptionsPage):
+    def load(self):
+        self.api.logger.info("Loading")
+        self.api.global_config.setting['option']
 ```
 
 ---
@@ -437,7 +407,7 @@ register_track_metadata_processor(clean_title)
 
 **V3** (after migration):
 ```python
-def clean_title(track, metadata):
+def clean_title(api, track, metadata):
     metadata['title'] = metadata['title'].strip()
 
 def enable(api):
@@ -458,20 +428,15 @@ class MyOptionsPage(OptionsPage):
 
 **V3** (after migration):
 ```python
-# Module level
-_api = None
-
-class MyOptionsPage(_api.OptionsPage):
-    def __init__(self, parent=None):
+class MyOptionsPage(api.OptionsPage):
+    def __init__(self, api=None, parent=None):
         super().__init__(parent)
-        # OptionsPage is instantiated by Picard with no args
+        self.api = api
 
     def load(self):
-        self.checkbox.setChecked(_api.global_config.setting['my_option'])
+        self.checkbox.setChecked(self.api.global_config.setting['my_option'])
 
 def enable(api):
-    global _api
-    _api = api
     api.register_options_page(MyOptionsPage)
 ```
 
@@ -551,11 +516,11 @@ tail -f ~/.config/MusicBrainz/Picard/picard.log
 
 ### Runtime Issues
 
-**Problem**: "NameError: name '_api' is not defined"
-**Solution**: Ensure you have `_api = None` at module level and `_api = api` in `enable()`
+**Problem**: "TypeError: processor() missing 1 required positional argument: 'metadata'"
+**Solution**: Add `api` as first parameter to your processor function
 
 **Problem**: "AttributeError: 'NoneType' object has no attribute 'logger'"
-**Solution**: `_api` is still None. Make sure `enable()` is called before using `_api`
+**Solution**: Ensure `self.api` is set in `__init__`: `self.api = api`
 
 **Problem**: Qt enum errors
 **Solution**: Check for unconverted Qt5 enums. The migration tool handles 80+ patterns, but some custom code may need manual fixes.
