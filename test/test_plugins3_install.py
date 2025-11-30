@@ -24,6 +24,7 @@ from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
     MockPluginManager,
     MockTagger,
+    create_cli_args,
     create_mock_plugin,
     run_cli,
 )
@@ -378,7 +379,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
+        args = create_cli_args()
         args.ref = None
         args.list = False
         args.info = None
@@ -424,7 +425,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
+        args = create_cli_args()
         args.ref = None
         args.list = False
         args.info = None
@@ -467,7 +468,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager.uninstall_plugin = Mock()
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
+        args = create_cli_args()
         args.ref = None
         args.list = False
         args.info = None
@@ -509,7 +510,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.1.0', 'abc1234', 'def5678'))
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
+        args = create_cli_args()
         args.ref = None
         args.list = False
         args.info = None
@@ -550,7 +551,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.0.0', 'abc1234', 'abc1234'))
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
+        args = create_cli_args()
         args.ref = None
         args.list = False
         args.info = None
@@ -597,7 +598,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = Mock()
+        args = create_cli_args()
         args.ref = None
         args.list = False
         args.info = None
