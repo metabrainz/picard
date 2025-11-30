@@ -101,15 +101,46 @@ Plugin-private configuration section.
 
 ```python
 def enable(api):
-    # Plugin-specific config (isolated from other plugins)
-    api.plugin_config['my_option'] = 'value'
-    value = api.plugin_config.get('my_option', 'default')
+    # Write values (any JSON-serializable type)
+    api.plugin_config['text_option'] = 'value'
+    api.plugin_config['bool_option'] = True
+    api.plugin_config['int_option'] = 42
+    api.plugin_config['list_option'] = ['a', 'b', 'c']
+
+    # Read with defaults
+    text = api.plugin_config.get('text_option', 'default')
+    enabled = api.plugin_config.get('bool_option', False)
+    count = api.plugin_config.get('int_option', 0)
+    items = api.plugin_config.get('list_option', [])
+
+    # Check if key exists
+    if 'my_option' in api.plugin_config:
+        value = api.plugin_config['my_option']
+
+    # Remove a key
+    api.plugin_config.remove('old_option')
+```
+
+**In OptionsPage:**
+```python
+class MyOptionsPage(api.OptionsPage):
+    def load(self):
+        # Load from plugin config
+        enabled = api.plugin_config.get('enabled', True)
+        self.checkbox.setChecked(enabled)
+
+    def save(self):
+        # Save to plugin config
+        api.plugin_config['enabled'] = self.checkbox.isChecked()
 ```
 
 **Benefits**:
 - Isolated from other plugins
-- Automatically namespaced
+- Automatically namespaced under `plugin.{module_name}`
 - Persisted in Picard config
+- Supports any JSON-serializable type
+
+**Note**: Values are stored in Qt settings format. Complex types (lists, dicts) are automatically serialized.
 
 ---
 
