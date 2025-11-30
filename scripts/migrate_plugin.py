@@ -369,60 +369,63 @@ def convert_plugin_api_v2_to_v3(content):
             class_name = old_import.split()[-1]
             warnings.append(f"✓ Removed {class_name} import - use api.{class_name} instead")
 
+    # Helper function to replace multi-line and single-line imports
+    def replace_import(old_module, class_name):
+        nonlocal content
+        if f'from {old_module} import' in content and class_name in content:
+            # Remove the entire import block (multi-line with parentheses or single-line)
+            content = re.sub(
+                rf'from {re.escape(old_module)} import\s*\([^)]*\)',
+                f'from picard.plugin3.api import {class_name}',
+                content,
+                flags=re.MULTILINE | re.DOTALL,
+            )
+            # Also handle single-line imports
+            content = re.sub(
+                rf'from {re.escape(old_module)} import\s+[^\n]+',
+                f'from picard.plugin3.api import {class_name}',
+                content,
+            )
+            warnings.append(f"✓ Updated {class_name} import to plugin3 API")
+
     # Keep base classes for inheritance but update them to plugin3 API
-    # Handle both single-line and multi-line BaseAction imports
-    if 'from picard.ui.itemviews import' in content and 'BaseAction' in content:
-        # Remove the entire import block (including register_file_action, etc.)
-        content = re.sub(
-            r'from picard\.ui\.itemviews import\s*\([^)]*\)',
-            'from picard.plugin3.api import BaseAction',
-            content,
-            flags=re.MULTILINE | re.DOTALL,
-        )
-        # Also handle single-line imports
-        content = re.sub(
-            r'from picard\.ui\.itemviews import\s+[^\n]+',
-            'from picard.plugin3.api import BaseAction',
-            content,
-        )
-        warnings.append("✓ Updated BaseAction import to plugin3 API")
+    replace_import('picard.ui.itemviews', 'BaseAction')
+    replace_import('picard.ui.options', 'OptionsPage')
+    replace_import('picard.file', 'File')
+    replace_import('picard.coverart.providers', 'CoverArtProvider')
 
-    # Handle both single-line and multi-line OptionsPage imports
-    if 'from picard.ui.options import' in content and 'OptionsPage' in content:
-        # Remove the entire import block (including register_options_page)
-        # Match: from picard.ui.options import (...) or from picard.ui.options import X, Y
-        content = re.sub(
-            r'from picard\.ui\.options import\s*\([^)]*\)',
-            'from picard.plugin3.api import OptionsPage',
-            content,
-            flags=re.MULTILINE | re.DOTALL,
-        )
-        # Also handle single-line imports
-        content = re.sub(
-            r'from picard\.ui\.options import\s+[^\n]+', 'from picard.plugin3.api import OptionsPage', content
-        )
-        warnings.append("✓ Updated OptionsPage import to plugin3 API")
+    # Consolidate multiple plugin3 API imports into one block with proper formatting
+    api_imports = []
+    for class_name in ['BaseAction', 'OptionsPage', 'File', 'CoverArtProvider']:
+        if f'from picard.plugin3.api import {class_name}' in content:
+            api_imports.append(class_name)
+            # Remove individual import lines
+            content = re.sub(
+                rf'^from picard\.plugin3\.api import {class_name}\s*$',
+                '',
+                content,
+                flags=re.MULTILINE,
+            )
 
-    if 'from picard.file import File' in content:
-        content = content.replace('from picard.file import File', 'from picard.plugin3.api import File')
-        warnings.append("✓ Updated File import to plugin3 API")
+    # Add consolidated import block if there are any imports
+    if api_imports:
+        import_block = 'from picard.plugin3.api import (\n'
+        for class_name in api_imports:
+            import_block += f'    {class_name},\n'
+        import_block += ')\n'
 
-    # Handle both single-line and multi-line CoverArtProvider imports
-    if 'from picard.coverart.providers import' in content and 'CoverArtProvider' in content:
-        # Remove the entire import block (including register_cover_art_provider, ProviderOptions, etc.)
-        content = re.sub(
-            r'from picard\.coverart\.providers import\s*\([^)]*\)',
-            'from picard.plugin3.api import CoverArtProvider',
-            content,
-            flags=re.MULTILINE | re.DOTALL,
-        )
-        # Also handle single-line imports
-        content = re.sub(
-            r'from picard\.coverart\.providers import\s+[^\n]+',
-            'from picard.plugin3.api import CoverArtProvider',
-            content,
-        )
-        warnings.append("✓ Updated CoverArtProvider import to plugin3 API")
+        # Find the first non-__future__ import statement and insert before it
+        # __future__ imports must be at the top
+        match = re.search(r'^(?!from __future__)(?:from |import )', content, flags=re.MULTILINE)
+        if match:
+            pos = match.start()
+            content = content[:pos] + import_block + '\n' + content[pos:]
+        else:
+            # No imports found, add after docstring/comments/__future__
+            match = re.search(r'(""".*?"""|\'\'\'.*?\'\'\'|from __future__.*?\n)\s*\n', content, flags=re.DOTALL)
+            if match:
+                pos = match.end()
+                content = content[:pos] + '\n' + import_block + '\n' + content[pos:]
 
     # PluginPriority
     if 'PluginPriority' in content:
