@@ -82,6 +82,10 @@ class PluginState(Enum):
 if HAS_PYGIT2:
 
     class GitRemoteCallbacks(pygit2.RemoteCallbacks):
+        def __init__(self):
+            super().__init__()
+            self._attempted = False
+
         def transfer_progress(self, stats):
             pass  # Suppress progress output
 
@@ -91,12 +95,23 @@ if HAS_PYGIT2:
             Supports SSH keys and username/password authentication.
             Falls back to system git credential helpers.
             """
+            # Prevent infinite retry loops
+            if self._attempted:
+                return None
+            self._attempted = True
+
             if allowed_types & pygit2.GIT_CREDENTIAL_SSH_KEY:
-                # Try SSH key authentication
-                return pygit2.Keypair('git', None, None, '')
+                # Try SSH key authentication with default key
+                try:
+                    return pygit2.Keypair('git', None, None, '')
+                except Exception:
+                    return None
             elif allowed_types & pygit2.GIT_CREDENTIAL_USERPASS_PLAINTEXT:
-                # Try git credential helper
-                return pygit2.UserPass('', '')
+                # Try default credential helper
+                try:
+                    return pygit2.Username('git')
+                except Exception:
+                    return None
             return None
 else:
 
