@@ -43,10 +43,12 @@ The following classes are available through the `api` object:
 
 **Example**:
 ```python
-class MyProvider(api.CoverArtProvider):
+from picard.plugin3.api import BaseAction, OptionsPage, File, CoverArtProvider
+
+class MyProvider(CoverArtProvider):
     NAME = "My Provider"
 
-class MyFormat(api.File):
+class MyFormat(File):
     EXTENSIONS = [".custom"]
 
     def _load(self, filename):
@@ -54,6 +56,8 @@ class MyFormat(api.File):
         # Load tags into metadata
         return metadata
 ```
+
+**Note**: Base classes for inheritance (`BaseAction`, `OptionsPage`, `File`, `CoverArtProvider`) should be imported directly from `picard.plugin3.api`. Other classes like `Metadata`, `Track`, `Album`, etc. are accessed via the `api` parameter.
 
 ---
 
@@ -458,7 +462,9 @@ def enable(api):
 Register a custom cover art provider.
 
 ```python
-class MyProvider(api.CoverArtProvider):
+from picard.plugin3.api import CoverArtProvider
+
+class MyProvider(CoverArtProvider):
     NAME = "My Provider"
 
     def queue_images(self):

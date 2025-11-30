@@ -351,17 +351,15 @@ def convert_plugin_api_v2_to_v3(content):
     warnings = []
 
     # Remove imports that will be accessed via api
-    # File, Track, Album, Cluster, Metadata, CoverArtImage, CoverArtProvider
-    # These are now available as api.File, api.Track, etc.
-    # NOTE: Keep BaseAction and OptionsPage imports - they're needed for class inheritance at module level
+    # Track, Album, Cluster, Metadata, CoverArtImage
+    # These are now available as api.Track, api.Album, etc.
+    # NOTE: Keep BaseAction, OptionsPage, File, CoverArtProvider - they're base classes for inheritance
     imports_to_remove = [
-        'from picard.file import File',
         'from picard.track import Track',
         'from picard.album import Album',
         'from picard.cluster import Cluster',
         'from picard.metadata import Metadata',
         'from picard.coverart.image import CoverArtImage',
-        'from picard.coverart.providers import CoverArtProvider',
     ]
 
     for old_import in imports_to_remove:
@@ -371,7 +369,7 @@ def convert_plugin_api_v2_to_v3(content):
             class_name = old_import.split()[-1]
             warnings.append(f"✓ Removed {class_name} import - use api.{class_name} instead")
 
-    # Keep BaseAction and OptionsPage imports but update them to plugin3 API
+    # Keep base classes for inheritance but update them to plugin3 API
     if 'from picard.ui.itemviews import BaseAction' in content:
         content = content.replace(
             'from picard.ui.itemviews import BaseAction', 'from picard.plugin3.api import BaseAction'
@@ -383,6 +381,17 @@ def convert_plugin_api_v2_to_v3(content):
             'from picard.ui.options import OptionsPage', 'from picard.plugin3.api import OptionsPage'
         )
         warnings.append("✓ Updated OptionsPage import to plugin3 API")
+
+    if 'from picard.file import File' in content:
+        content = content.replace('from picard.file import File', 'from picard.plugin3.api import File')
+        warnings.append("✓ Updated File import to plugin3 API")
+
+    if 'from picard.coverart.providers import CoverArtProvider' in content:
+        content = content.replace(
+            'from picard.coverart.providers import CoverArtProvider',
+            'from picard.plugin3.api import CoverArtProvider',
+        )
+        warnings.append("✓ Updated CoverArtProvider import to plugin3 API")
 
     # PluginPriority
     if 'PluginPriority' in content:
@@ -757,15 +766,13 @@ def convert_plugin_code(content, metadata):
         # Convert class references to use api from PluginApi
         # e.g., class MyAction(BaseAction) -> class MyAction(api.BaseAction)
         # Also convert instantiation: Metadata() -> api.Metadata()
-        # NOTE: BaseAction and OptionsPage are imported directly, not via api
+        # NOTE: BaseAction, OptionsPage, File, CoverArtProvider are imported directly, not via api
         for class_name in [
-            'File',
             'Track',
             'Album',
             'Cluster',
             'Metadata',
             'CoverArtImage',
-            'CoverArtProvider',
         ]:
             # Class inheritance
             if f'({class_name})' in line or f'({class_name},' in line:
