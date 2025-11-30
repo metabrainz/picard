@@ -10,10 +10,20 @@ The `PluginApi` object is passed to your plugin's `enable()` function and provid
 
 ```python
 def enable(api):
-    """Entry point for the plugin."""
+    """Entry point for the plugin (required)."""
     api.logger.info("Plugin loaded")
     api.register_track_metadata_processor(my_processor)
+
+def disable():
+    """Optional cleanup when plugin is disabled."""
+    # Custom cleanup code here
+    pass
 ```
+
+**Required**: `enable(api)` - Called when plugin is enabled
+**Optional**: `disable()` - Called when plugin is disabled (before automatic cleanup)
+
+**Note**: All registrations (`api.register_*`) are automatically removed when the plugin is disabled. The `disable()` function is only needed for custom cleanup (closing connections, stopping threads, etc.).
 
 ---
 
