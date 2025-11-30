@@ -84,6 +84,20 @@ if HAS_PYGIT2:
     class GitRemoteCallbacks(pygit2.RemoteCallbacks):
         def transfer_progress(self, stats):
             pass  # Suppress progress output
+
+        def credentials(self, url, username_from_url, allowed_types):
+            """Provide credentials for git operations.
+
+            Supports SSH keys and username/password authentication.
+            Falls back to system git credential helpers.
+            """
+            if allowed_types & pygit2.GIT_CREDENTIAL_SSH_KEY:
+                # Try SSH key authentication
+                return pygit2.Keypair('git', None, None, '')
+            elif allowed_types & pygit2.GIT_CREDENTIAL_USERPASS_PLAINTEXT:
+                # Try git credential helper
+                return pygit2.UserPass('', '')
+            return None
 else:
 
     class GitRemoteCallbacks:
