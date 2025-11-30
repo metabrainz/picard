@@ -293,36 +293,9 @@ from PyQt6.QtWidgets import QDialog, QPushButton
 - `QHeaderView.ResizeToContents` → `QHeaderView.ResizeMode.ResizeToContents`
 - `exec_()` → `exec()`
 
-### Step 6: Add Translations (New in v3)
+### Step 6: Add Translations (Work in Progress)
 
-**Old (v2) - No translation support:**
-Plugin v2 did not have a translation system for plugins.
-
-**New (v3) - JSON:**
-```
-locale/
-  en.json
-  de.json
-  fr.json
-```
-
-**locale/en.json:**
-```json
-{
-  "ui.button.process": "Process Files",
-  "error.network": "Network error: {error}",
-  "status.complete": "Processing complete"
-}
-```
-
-**Usage:**
-```python
-def enable(api: PluginApi):
-    _ = api.gettext
-
-    button_text = _('ui.button.process')
-    error_msg = _('error.network', error='Connection timeout')
-```
+Translation system for plugins is still under development.
 
 ### Step 7: Update Configuration
 
