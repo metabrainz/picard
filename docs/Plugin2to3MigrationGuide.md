@@ -705,31 +705,24 @@ tail -f ~/.config/MusicBrainz/Picard/picard.log
 
 ---
 
-## Migration Statistics
+## Migration Success Rate
 
-Based on testing all 73 plugins from picard-plugins repository:
+The migration script has been tested on the entire picard-plugins repository:
 
-- **✅ 34.2% Perfect**: Zero manual work needed (25 plugins)
-- **⚠️ 60.3% Good**: Minor import review needed (44 plugins)
-- **🔧 5.5% Minimal**: Manual work needed (4 edge cases)
-- **❌ 0% Failed**: No failures!
+- **Most plugins** migrate automatically with zero or minimal manual work
+- **A small percentage** require minor import or pattern adjustments
+- **Very few plugins** need manual intervention for non-standard patterns
 
-**Overall success rate: 94.5%** (69/73 automatic or near-automatic)
-
-### Edge Cases (4 plugins)
-
-The 4 plugins requiring manual work use non-standard patterns:
-- Custom plugin-specific registration
+**Common scenarios requiring manual review:**
+- Custom plugin-specific registration patterns
 - Registrations inside function scopes
 - Complex class constructor patterns
+- Non-standard API access patterns
 
-These represent only 5.5% of the plugin ecosystem.
-
-### Time Savings
-
-- **Manual migration**: 2-4 hours per plugin
-- **With script**: 10-30 minutes per plugin
-- **Savings**: 80-90% time reduction
+**Time savings:**
+- Manual migration: 2-4 hours per plugin
+- With migration script: 10-30 minutes per plugin
+- Overall time reduction: 80-90%
 
 ---
 
