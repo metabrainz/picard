@@ -478,7 +478,6 @@ def convert_plugin_code(content, metadata):
         'register_file_post_addition_to_track_processor',
         'register_file_post_removal_from_track_processor',
         'register_album_post_removal_processor',
-        'register_track_post_removal_processor',
         'register_cluster_action',
         'register_clusterlist_action',
         'register_file_action',
@@ -486,8 +485,13 @@ def convert_plugin_code(content, metadata):
         'register_track_action',
         'register_options_page',
         'register_script_function',
+        'register_script_variable',
         'register_cover_art_provider',
+        'register_cover_art_filter',
+        'register_cover_art_metadata_filter',
+        'register_cover_art_processor',
         'register_format',
+        'register_ui_init',
     }
 
     nodes_to_remove = set()
