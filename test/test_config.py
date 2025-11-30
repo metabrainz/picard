@@ -153,6 +153,24 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
         self.assertEqual(expected, self.config.setting.as_dict())
 
+    def test_get_with_default(self):
+        """Test ConfigSection.get() method with default values."""
+        TextOption("setting", "text_option", "abc")
+        IntOption("setting", "int_option", 42)
+
+        # Test get with registered option (returns option default)
+        self.assertEqual(self.config.setting.get("text_option", "fallback"), "abc")
+        self.assertEqual(self.config.setting.get("int_option", 999), 42)
+
+        # Test get with non-existent option (returns provided default)
+        self.assertEqual(self.config.setting.get("nonexistent", "default"), "default")
+        self.assertEqual(self.config.setting.get("nonexistent", 123), 123)
+        self.assertIsNone(self.config.setting.get("nonexistent"))
+
+        # Test get after setting value
+        self.config.setting["text_option"] = "xyz"
+        self.assertEqual(self.config.setting.get("text_option", "fallback"), "xyz")
+
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
     # TextOption
