@@ -251,9 +251,12 @@ class PluginSourceGit(PluginSource):
             try:
                 repo = self._retry_git_operation(clone_operation)
             except (KeyError, pygit2.GitError) as e:
-                # Check if it's a 404/not found error
+                # Check if it's a repository-level 404/not found error (not branch-level)
                 error_msg = str(e).lower()
-                if 'not found' in error_msg or '404' in error_msg or 'does not exist' in error_msg:
+                # Only catch repository not found, not branch/ref not found
+                if (
+                    '404' in error_msg or 'repository not found' in error_msg or 'does not exist' in error_msg
+                ) and checkout_branch is None:
                     raise PluginSourceSyncError(f"Repository not found: {self.url}") from e
                 elif 'authentication' in error_msg or 'credentials' in error_msg or 'forbidden' in error_msg:
                     raise PluginSourceSyncError(
