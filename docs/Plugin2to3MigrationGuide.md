@@ -642,6 +642,35 @@ tail -f ~/.config/MusicBrainz/Picard/picard.log
 
 ---
 
+## Publishing Your Plugin
+
+### Repository Naming Convention
+
+**Recommended**: Use `picard-plugin-<name>` for consistency with the Picard ecosystem.
+
+**Examples**:
+- `picard-plugin-lastfm` (not `lastfm-plugin` or `picard_lastfm`)
+- `picard-plugin-bpm` (not `bpm-for-picard`)
+- `picard-plugin-acousticbrainz` (not `acousticbrainz`)
+
+**For multi-word names**, use hyphens:
+- `picard-plugin-additional-artists-details` (not `picard-plugin-additional_artists_details`)
+- `picard-plugin-format-performer-tags` (not `picard-plugin-format_performer_tags`)
+- `picard-plugin-submit-folksonomy-tags`
+
+**Why?**
+- Easy to identify as Picard plugins
+- Consistent with community conventions
+- Better discoverability on GitHub/GitLab
+- Clear namespace separation
+- Hyphens are standard for repository names (not underscores)
+
+**Note**: Repository names use hyphens (`picard-plugin-additional-artists-details`) while module names in MANIFEST.toml use underscores (`additional_artists_details`). Keep them consistent by converting hyphens to underscores:
+- Repository: `picard-plugin-format-performer-tags`
+- Module: `format_performer_tags`
+
+---
+
 ## Troubleshooting
 
 ### Migration Script Issues
