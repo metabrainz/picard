@@ -331,10 +331,6 @@ def enable(api: PluginApi):
 example-plugin/
   __init__.py
   ui_options.py
-  locale/
-    de/LC_MESSAGES/
-      example.mo
-      example.po
 ```
 
 **__init__.py:**
@@ -387,9 +383,6 @@ picard-plugin-example/
   MANIFEST.toml
   __init__.py
   ui_options.py
-  locale/
-    en.json
-    de.json
 ```
 
 **MANIFEST.toml:**
@@ -440,14 +433,6 @@ def enable(api):
     api.logger.info("Example Plugin loaded")
     api.register_track_metadata_processor(process_track)
     api.register_options_page(ExampleOptionsPage)
-```
-
-**locale/en.json:**
-```json
-{
-  "options.enable": "Enable processing",
-  "status.processing": "Processing track: {track}"
-}
 ```
 
 ---
