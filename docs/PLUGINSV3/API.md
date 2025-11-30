@@ -63,6 +63,25 @@ class MyFormat(File):
 
 ## Properties
 
+### `tagger`
+
+Access to the main Tagger instance.
+
+```python
+def enable(api):
+    # Get files from objects
+    files = api.tagger.get_files_from_objects(objs)
+
+    # Access window
+    window = api.tagger.window
+```
+
+**Common uses**:
+- `api.tagger.get_files_from_objects(objs)` - Convert UI objects to files
+- `api.tagger.window` - Access main window for dialogs
+
+---
+
 ### `logger: Logger`
 
 Plugin-specific logger instance.
