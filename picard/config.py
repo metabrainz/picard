@@ -91,6 +91,19 @@ class ConfigSection(QtCore.QObject):
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
 
+    def get(self, name, default=None):
+        """Get config value with default fallback.
+
+        Args:
+            name: Config key name
+            default: Default value if key doesn't exist or is None
+
+        Returns:
+            Config value or default
+        """
+        value = self[name]
+        return value if value is not None else default
+
     def as_dict(self):
         return {key: self[key] for section, key in list(Option.registry) if section == self.__name}
 

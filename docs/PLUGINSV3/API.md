@@ -102,8 +102,8 @@ Plugin-private configuration section.
 ```python
 def enable(api):
     # Plugin-specific config (isolated from other plugins)
-    api.plugin_config.setting['my_option'] = 'value'
-    value = api.plugin_config.setting.get('my_option', 'default')
+    api.plugin_config['my_option'] = 'value'
+    value = api.plugin_config.get('my_option', 'default')
 ```
 
 **Benefits**:

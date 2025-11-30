@@ -464,8 +464,8 @@ if my_bool.value:
 ```python
 # In processors
 def process(api, track, metadata):
-    if api.plugin_config.setting.get('my_enabled', True):
-        text = api.plugin_config.setting.get('my_key', 'default')
+    if api.plugin_config.get('my_enabled', True):
+        text = api.plugin_config.get('my_key', 'default')
 
 # In OptionsPage
 class MyPage(api.OptionsPage):

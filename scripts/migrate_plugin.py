@@ -932,18 +932,18 @@ def convert_config_options(content):
 
         # Convert .value access for each option variable
         for var_name, (key, default, _opt_type) in option_map.items():
-            # Write access: my_var.value = x -> api.plugin_config.setting['key'] = x
+            # Write access: my_var.value = x -> api.plugin_config['key'] = x
             # Check this first to avoid false positives
             write_pattern = rf'\b{re.escape(var_name)}\.value\s*='
             if re.search(write_pattern, line):
-                line = re.sub(write_pattern, f"api.plugin_config.setting['{key}'] =", line)
+                line = re.sub(write_pattern, f"api.plugin_config['{key}'] =", line)
                 continue  # Skip read conversion for this line
 
-            # Read access: my_var.value -> api.plugin_config.setting.get('key', default)
+            # Read access: my_var.value -> api.plugin_config.get('key', default)
             if f'{var_name}.value' in line:
                 line = re.sub(
                     rf'\b{re.escape(var_name)}\.value\b',
-                    f"api.plugin_config.setting.get('{key}', {default})",
+                    f"api.plugin_config.get('{key}', {default})",
                     line,
                 )
 

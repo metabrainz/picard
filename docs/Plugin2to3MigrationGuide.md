@@ -191,9 +191,9 @@ def process(album, metadata, track, release):
 **V3 - Direct config access**:
 ```python
 def process(api, track, metadata):
-    if api.plugin_config.setting.get('my_plugin_enabled', True):
-        text = api.plugin_config.setting.get('my_plugin_text', 'default')
-        count = api.plugin_config.setting.get('my_plugin_count', 10)
+    if api.plugin_config.get('my_plugin_enabled', True):
+        text = api.plugin_config.get('my_plugin_text', 'default')
+        count = api.plugin_config.get('my_plugin_count', 10)
 ```
 
 **V2 Pattern 2 - OptionsPage class attribute**:
