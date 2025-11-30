@@ -58,9 +58,16 @@ class PluginCLI:
         if len(error.changes) > 5:
             self._out.warning(f'  ... and {len(error.changes) - 5} more')
 
+        # With --reinstall --yes, automatically discard changes
+        reinstall = getattr(self._args, 'reinstall', False)
         if self._args.yes:
-            self._out.error('Cannot modify plugin with uncommitted changes in non-interactive mode')
-            return False, None
+            if reinstall:
+                self._out.warning('Discarding changes (--reinstall --yes)')
+                result = action_callback(discard_changes=True)
+                return True, result
+            else:
+                self._out.error('Cannot modify plugin with uncommitted changes in non-interactive mode')
+                return False, None
         else:
             if self._out.yesno('Discard changes and continue?'):
                 result = action_callback(discard_changes=True)
