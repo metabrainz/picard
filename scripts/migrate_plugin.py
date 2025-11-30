@@ -1208,9 +1208,8 @@ def convert_api_in_classes(content):
                 start_line = item.lineno - 1
                 end_line = item.end_lineno
                 for i in range(start_line, min(end_line, len(lines))):
-                    # Replace api. with self.api. but not self.api.api
-                    if 'api.' in lines[i] and 'self.api' not in lines[i]:
-                        lines[i] = re.sub(r'\bapi\.', 'self.api.', lines[i])
+                    # Replace api. with self.api. using negative lookbehind to avoid self.api.api
+                    lines[i] = re.sub(r'(?<!self\.)(?<!\.)api\.', 'self.api.', lines[i])
 
     return '\n'.join(lines)
 
