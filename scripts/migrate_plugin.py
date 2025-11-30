@@ -617,6 +617,12 @@ def convert_plugin_code(content, metadata):
                         elif alias.name == 'config':
                             has_config_import = True
                             imports_to_remove.add(node)
+                elif node.module == 'picard.config':
+                    # Check if importing config option types
+                    option_types = {'TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option'}
+                    imported_options = {alias.name for alias in node.names if alias.name in option_types}
+                    if imported_options:
+                        imports_to_remove.add(node)
                 elif node.module == 'picard.tagger':
                     has_tagger_import = True
                     imports_to_remove.add(node)
@@ -630,6 +636,10 @@ def convert_plugin_code(content, metadata):
     if has_log_import:
         content = convert_log_access(content)
         all_warnings.append("✓ Converted log.* calls to api.logger.*")
+
+    # Convert config option definitions (TextOption, BoolOption, etc.)
+    content, option_warnings = convert_config_options(content)
+    all_warnings.extend(option_warnings)
 
     if has_config_import:
         content = convert_config_access(content)
@@ -848,6 +858,97 @@ def convert_log_access(content):
     content = re.sub(r'\blog\.error\b', 'api.logger.error', content)
     content = re.sub(r'\blog\.exception\b', 'api.logger.exception', content)
     return content
+
+
+def convert_config_options(content):
+    """Convert V2 config option definitions to V3 api.plugin_config access.
+
+    Converts:
+        my_text = TextOption("setting", "my_key", "default")
+        value = my_text.value
+        my_text.value = "new"
+
+    To:
+        # (definition removed)
+        value = api.plugin_config.setting.get('my_key', 'default')
+        api.plugin_config.setting['my_key'] = "new"
+    """
+    try:
+        tree = ast.parse(content)
+    except (SyntaxError, ValueError):
+        return content, []
+
+    option_types = ['TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option']
+    option_map = {}  # var_name -> (key, default_value, option_type)
+    lines_to_remove = set()
+
+    # Find option definitions
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            if isinstance(node.value, ast.Call):
+                if isinstance(node.value.func, ast.Name):
+                    if node.value.func.id in option_types:
+                        # Extract variable name
+                        if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name):
+                            var_name = node.targets[0].id
+
+                            # Extract arguments: Option(section, key, default)
+                            if len(node.value.args) >= 3:
+                                # section = node.value.args[0]  # Usually "setting"
+                                key_node = node.value.args[1]
+                                default_node = node.value.args[2]
+
+                                # Get key as string
+                                if isinstance(key_node, ast.Constant):
+                                    key = key_node.value
+                                else:
+                                    continue  # Skip complex key expressions
+
+                                # Get default value as code
+                                default_value = ast.unparse(default_node)
+                                option_type = node.value.func.id
+
+                                option_map[var_name] = (key, default_value, option_type)
+                                lines_to_remove.add(node.lineno)
+
+    if not option_map:
+        return content, []
+
+    # Convert content line by line
+    lines = content.split('\n')
+    new_lines = []
+    warnings = []
+
+    for i, line in enumerate(lines, start=1):
+        # Skip option definition lines
+        if i in lines_to_remove:
+            continue
+
+        # Convert .value access for each option variable
+        for var_name, (key, default, _opt_type) in option_map.items():
+            # Write access: my_var.value = x -> api.plugin_config.setting['key'] = x
+            # Check this first to avoid false positives
+            write_pattern = rf'\b{re.escape(var_name)}\.value\s*='
+            if re.search(write_pattern, line):
+                line = re.sub(write_pattern, f"api.plugin_config.setting['{key}'] =", line)
+                continue  # Skip read conversion for this line
+
+            # Read access: my_var.value -> api.plugin_config.setting.get('key', default)
+            if f'{var_name}.value' in line:
+                line = re.sub(
+                    rf'\b{re.escape(var_name)}\.value\b',
+                    f"api.plugin_config.setting.get('{key}', {default})",
+                    line,
+                )
+
+        new_lines.append(line)
+
+    if option_map:
+        warnings.append(f"✓ Converted {len(option_map)} config option(s) to api.plugin_config.setting")
+        for var_name, (key, _default, opt_type) in option_map.items():
+            warnings.append(f"  - {var_name} ({opt_type}) -> '{key}'")
+
+    return '\n'.join(new_lines), warnings
 
 
 def convert_config_access(content):
