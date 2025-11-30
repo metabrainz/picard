@@ -508,7 +508,9 @@ picard plugins --uninstall example
 3. Submit to plugin registry (Phase 3)
 4. Update plugin documentation
 
-**Note**: The plugin system supports both branches and tags. Most plugins use branches for continuous updates. Tags can be used to pin specific versions.
+**Note**: The plugin system supports both branches and tags:
+- **Branches** (recommended): `picard plugins --update` pulls latest commits
+- **Tags**: Currently, plugins pinned to tags don't auto-update. Use `picard plugins --switch-ref <plugin> <new-tag>` to update to a specific tag. Automatic tag updates (finding latest tag) is planned for future implementation.
 
 ---
 
