@@ -487,9 +487,9 @@ class Plugin:
 
         # Register UUID mapping for extension points
         if self.manifest and self.manifest.uuid:
-            from picard.extension_points import register_plugin_uuid
+            from picard.extension_points import set_plugin_uuid
 
-            register_plugin_uuid(self.manifest.uuid, self.plugin_id)
+            set_plugin_uuid(self.manifest.uuid, self.plugin_id)
 
         return module
 
@@ -513,8 +513,8 @@ class Plugin:
 
         # Unregister UUID mapping
         if self.manifest and self.manifest.uuid:
-            from picard.extension_points import unregister_plugin_uuid
+            from picard.extension_points import unset_plugin_uuid
 
-            unregister_plugin_uuid(self.manifest.uuid)
+            unset_plugin_uuid(self.manifest.uuid)
 
         self.state = PluginState.DISABLED

@@ -24,8 +24,8 @@ from test.picardtestcase import PicardTestCase
 
 from picard.extension_points import (
     ExtensionPoint,
-    register_plugin_uuid,
-    unregister_plugin_uuid,
+    set_plugin_uuid,
+    unset_plugin_uuid,
 )
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.plugin import Plugin
@@ -48,7 +48,7 @@ class TestExtensionPoints(PicardTestCase):
     def test_plugin_not_enabled(self):
         """Plugin extensions should not be yielded if plugin not enabled"""
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        register_plugin_uuid(uuid, 'testplugin')
+        set_plugin_uuid(uuid, 'testplugin')
         self.ep.register('picard.plugins.testplugin', 'plugin_item')
 
         # Plugin not in enabled list
@@ -58,7 +58,7 @@ class TestExtensionPoints(PicardTestCase):
     def test_plugin_enabled(self):
         """Plugin extensions should be yielded if plugin is enabled"""
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        register_plugin_uuid(uuid, 'testplugin')
+        set_plugin_uuid(uuid, 'testplugin')
         self.ep.register('picard.plugins.testplugin', 'plugin_item')
 
         # Enable plugin via manager (which handles config properly)
@@ -79,8 +79,8 @@ class TestExtensionPoints(PicardTestCase):
         uuid1 = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
         uuid2 = 'b2c3d4e5-f6a7-4b5c-9d0e-1f2a3b4c5d6e'
 
-        register_plugin_uuid(uuid1, 'plugin1')
-        register_plugin_uuid(uuid2, 'plugin2')
+        set_plugin_uuid(uuid1, 'plugin1')
+        set_plugin_uuid(uuid2, 'plugin2')
 
         self.ep.register('picard.plugins.plugin1', 'item1')
         self.ep.register('picard.plugins.plugin2', 'item2')
@@ -101,7 +101,7 @@ class TestExtensionPoints(PicardTestCase):
     def test_unregister_uuid(self):
         """Unregistering UUID should prevent plugin from being yielded"""
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        register_plugin_uuid(uuid, 'testplugin')
+        set_plugin_uuid(uuid, 'testplugin')
         self.ep.register('picard.plugins.testplugin', 'plugin_item')
 
         mock_plugin = Mock(spec=Plugin)
@@ -118,7 +118,7 @@ class TestExtensionPoints(PicardTestCase):
         self.assertEqual(items, ['plugin_item'])
 
         # Unregister UUID
-        unregister_plugin_uuid(uuid)
+        unset_plugin_uuid(uuid)
 
         # Should not be yielded anymore
         items = list(self.ep)
@@ -127,7 +127,7 @@ class TestExtensionPoints(PicardTestCase):
     def test_unregister_nonexistent_uuid(self):
         """Unregistering non-existent UUID should not raise error"""
         # Should not raise
-        unregister_plugin_uuid('nonexistent-uuid')
+        unset_plugin_uuid('nonexistent-uuid')
 
     def test_extension_point_without_label(self):
         """ExtensionPoint without label should generate UUID label"""
@@ -148,7 +148,7 @@ class TestExtensionPoints(PicardTestCase):
 
         # Register UUID and enable
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        register_plugin_uuid(uuid, 'testplugin')
+        set_plugin_uuid(uuid, 'testplugin')
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'testplugin'
         mock_plugin.name = 'testplugin'
@@ -179,7 +179,7 @@ class TestExtensionPoints(PicardTestCase):
         from unittest.mock import patch
 
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        register_plugin_uuid(uuid, 'testplugin')
+        set_plugin_uuid(uuid, 'testplugin')
         self.ep.register('picard.plugins.testplugin', 'plugin_item')
 
         # Mock get_config to return None
@@ -198,7 +198,7 @@ class TestExtensionPoints(PicardTestCase):
         ep2.register('picard.plugins.testplugin', 'item2')
 
         uuid = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
-        register_plugin_uuid(uuid, 'testplugin')
+        set_plugin_uuid(uuid, 'testplugin')
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'testplugin'
         mock_plugin.name = 'testplugin'

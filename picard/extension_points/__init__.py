@@ -114,8 +114,8 @@ def unregister_module_extensions(module):
         ep.unregister_module(module)
 
 
-def register_plugin_uuid(uuid, module_name):
-    """Register UUID for a v3 plugin module.
+def set_plugin_uuid(uuid, module_name):
+    """Set UUID for a v3 plugin module.
 
     Args:
         uuid: Plugin UUID from MANIFEST.toml
@@ -124,6 +124,6 @@ def register_plugin_uuid(uuid, module_name):
     _plugin_uuid_to_module[uuid] = module_name
 
 
-def unregister_plugin_uuid(uuid):
-    """Unregister UUID for a v3 plugin module."""
+def unset_plugin_uuid(uuid):
+    """Unset UUID for a v3 plugin module."""
     _plugin_uuid_to_module.pop(uuid, None)
