@@ -266,13 +266,13 @@ If not using the migration tool, follow these steps:
 
 | v2 | v3 |
 |----|-----|
-| `from picard import log` | `api.log` |
-| `from picard import config` | `api.config` |
+| `from picard import log` | `api.logger` |
+| `from picard import config` | `api.global_config` |
 | `from picard.tagger import tagger` | `api.tagger` |
-| `register_track_metadata_processor()` | `@api.on_track_metadata_loaded` |
-| `register_album_metadata_processor()` | `@api.on_album_metadata_loaded` |
-| `register_file_action()` | `@api.register_file_action()` |
-| `register_album_action()` | `@api.register_album_action()` |
+| `register_track_metadata_processor()` | `api.register_track_metadata_processor()` |
+| `register_album_metadata_processor()` | `api.register_album_metadata_processor()` |
+| `register_file_action()` | `api.register_file_action()` |
+| `register_album_action()` | `api.register_album_action()` |
 
 ### Step 5: Update Qt Imports
 
