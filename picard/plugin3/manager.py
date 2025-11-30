@@ -744,6 +744,27 @@ class PluginManager:
 
                 ref = metadata.get('ref', 'main')
 
+                # Check if currently on a tag
+                current_is_tag = False
+                current_tag = None
+                if ref:
+                    try:
+                        repo.revparse_single(f'refs/tags/{ref}')
+                        current_is_tag = True
+                        current_tag = ref
+                    except KeyError:
+                        pass
+
+                # If on a tag, check for newer version tag
+                if current_is_tag and current_tag:
+                    from picard.plugin3.plugin import PluginSourceGit
+
+                    source = PluginSourceGit(metadata['url'], ref)
+                    latest_tag = source._find_latest_tag(repo, current_tag)
+                    if latest_tag and latest_tag != current_tag:
+                        # Found newer tag
+                        ref = latest_tag
+
                 # Resolve ref with same logic as update() - try origin/ prefix for branches
                 try:
                     if not ref.startswith('origin/') and not ref.startswith('refs/'):
@@ -752,7 +773,10 @@ class PluginManager:
                             commit = repo.revparse_single(f'origin/{ref}')
                         except KeyError:
                             # Fall back to original ref (might be tag or commit hash)
-                            commit = repo.revparse_single(ref)
+                            try:
+                                commit = repo.revparse_single(f'refs/tags/{ref}')
+                            except KeyError:
+                                commit = repo.revparse_single(ref)
                     else:
                         commit = repo.revparse_single(ref)
 
