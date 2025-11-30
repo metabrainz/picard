@@ -37,7 +37,7 @@ from picard.plugin3.output import PluginOutput
 class TestPluginCLIErrors(PicardTestCase):
     def test_ref_without_install_or_validate(self):
         """Test --ref without --install or --validate returns error."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         args.ref = 'main'
         args.install = None
@@ -55,7 +55,7 @@ class TestPluginCLIErrors(PicardTestCase):
 
     def test_no_action_without_parser(self):
         """Test no action specified without parser returns error."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         args.ref = None
         args.list = False
@@ -88,7 +88,7 @@ class TestPluginCLIErrors(PicardTestCase):
 
     def test_no_action_with_parser(self):
         """Test no action specified with parser prints help."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         args.ref = None
         args.list = False
@@ -121,7 +121,7 @@ class TestPluginCLIErrors(PicardTestCase):
 
     def test_keyboard_interrupt(self):
         """Test KeyboardInterrupt returns CANCELLED."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         args.ref = None
         args.list = True
@@ -139,7 +139,7 @@ class TestPluginCLIErrors(PicardTestCase):
 
     def test_generic_exception(self):
         """Test generic exception returns ERROR."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         args.ref = None
         args.list = True
@@ -159,7 +159,7 @@ class TestPluginCLIErrors(PicardTestCase):
 class TestPluginCLIHelpers(PicardTestCase):
     def test_format_git_info_no_metadata(self):
         """Test _format_git_info with no metadata."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         cli = PluginCLI(manager, args)
 
@@ -171,7 +171,7 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_no_commit(self):
         """Test _format_git_info with no commit."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         cli = PluginCLI(manager, args)
 
@@ -180,7 +180,7 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_with_ref_and_commit(self):
         """Test _format_git_info with ref and commit."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         cli = PluginCLI(manager, args)
 
@@ -189,7 +189,7 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_commit_only(self):
         """Test _format_git_info with commit only."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         cli = PluginCLI(manager, args)
 
@@ -198,7 +198,7 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_ref_is_commit(self):
         """Test _format_git_info when ref is the commit hash."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
         cli = PluginCLI(manager, args)
 
@@ -210,7 +210,7 @@ class TestPluginCLIHelpers(PicardTestCase):
 class TestPluginCLIFindPlugin(PicardTestCase):
     def test_find_plugin_or_error_multiple_matches(self):
         """Test _find_plugin_or_error with multiple matches."""
-        manager = Mock()
+        manager = MockPluginManager()
 
         # Create mock plugins with same name
         plugin1 = Mock()
@@ -277,7 +277,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
 class TestPluginCLICommands(PicardTestCase):
     def test_enable_plugin_error(self):
         """Test _enable_plugins with error."""
-        manager = Mock()
+        manager = MockPluginManager()
         manager.enable_plugin.side_effect = ValueError('Enable failed')
 
         args = create_cli_args()
@@ -298,7 +298,7 @@ class TestPluginCLICommands(PicardTestCase):
 
     def test_disable_plugin_error(self):
         """Test _disable_plugins with error."""
-        manager = Mock()
+        manager = MockPluginManager()
         manager.disable_plugin.side_effect = ValueError('Disable failed')
 
         args = create_cli_args()
@@ -319,7 +319,7 @@ class TestPluginCLICommands(PicardTestCase):
 
     def test_uninstall_plugin_error(self):
         """Test _uninstall_plugins with error."""
-        manager = Mock()
+        manager = MockPluginManager()
         manager.uninstall_plugin.side_effect = ValueError('Uninstall failed')
 
         args = create_cli_args()
@@ -342,7 +342,7 @@ class TestPluginCLICommands(PicardTestCase):
 
     def test_install_plugin_error(self):
         """Test _install_plugins with error."""
-        manager = Mock()
+        manager = MockPluginManager()
         manager.install_plugin.side_effect = ValueError('Install failed')
         manager._registry = Mock()
         manager._find_plugin_by_url = Mock(return_value=None)
@@ -490,7 +490,7 @@ class TestPluginCLIValidate(PicardTestCase):
 class TestPluginCLIManifest(PicardTestCase):
     def test_show_manifest_template(self):
         """Test _show_manifest with no argument shows template."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
 
         stdout = StringIO()
@@ -511,7 +511,7 @@ class TestPluginCLIManifest(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -542,7 +542,7 @@ class TestPluginCLIManifest(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -568,7 +568,7 @@ class TestPluginCLIManifest(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -596,7 +596,7 @@ class TestPluginCLIManifest(PicardTestCase):
         from pathlib import Path
         import tempfile
 
-        manager = Mock()
+        manager = MockPluginManager()
         args = create_cli_args()
 
         with tempfile.TemporaryDirectory() as tmpdir:

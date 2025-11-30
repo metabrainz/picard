@@ -367,7 +367,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(return_value='test-plugin')
         mock_manager._find_plugin_by_url = Mock(return_value=None)
@@ -413,7 +413,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(side_effect=Exception('Install failed'))
         mock_manager._find_plugin_by_url = Mock(return_value=None)
@@ -458,7 +458,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
 
         mock_plugin = Mock()
         mock_plugin.plugin_id = 'test-plugin'
@@ -500,7 +500,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
 
         mock_plugin = Mock()
         mock_plugin.plugin_id = 'test-plugin'
@@ -540,7 +540,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
 
         mock_plugin = Mock()
         mock_plugin.plugin_id = 'test-plugin'
@@ -581,7 +581,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = Mock()
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
 
         mock_plugin = Mock()
         mock_plugin.plugin_id = 'test-plugin'

@@ -229,7 +229,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_clean_config_command(self):
         """Test --clean-config command."""
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._clean_plugin_config = Mock()
 
         exit_code, stdout, _ = run_cli(mock_manager, clean_config='test-plugin', yes=True)
@@ -273,7 +273,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --browse command."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             {
                 'id': 'plugin1',
@@ -300,7 +300,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --browse with category and trust filters."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             {
                 'id': 'plugin1',
@@ -320,7 +320,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --search command."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             {
                 'id': 'listenbrainz',
@@ -339,7 +339,7 @@ class TestPluginCLI(PicardTestCase):
         """Test installing plugin by ID from registry."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.find_plugin.return_value = {
             'id': 'test-plugin',
             'name': 'Test Plugin',
@@ -358,7 +358,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --check-blacklist with non-blacklisted URL."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.is_blacklisted.return_value = (False, None)
 
         exit_code, stdout, _ = run_cli(mock_manager, check_blacklist='https://github.com/test/plugin')
@@ -371,7 +371,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --check-blacklist with blacklisted URL."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
 
         exit_code, stdout, stderr = run_cli(mock_manager, check_blacklist='https://github.com/bad/plugin')
@@ -384,7 +384,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --search with --category filter."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             {
                 'id': 'metadata-plugin',
@@ -404,7 +404,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --search with --trust filter."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = []
 
         exit_code, _, _ = run_cli(mock_manager, search='test', trust='official')
@@ -416,7 +416,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --refresh-registry command."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.fetch_registry = Mock()
         mock_manager._registry.get_registry_info.return_value = {
             'last_updated': '2025-11-25T12:00:00Z',
@@ -438,7 +438,7 @@ class TestPluginCLI(PicardTestCase):
         """Test --refresh-registry command with error."""
         from picard.plugin3.cli import ExitCode
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.fetch_registry.side_effect = Exception('Network error')
 
         exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
@@ -452,7 +452,7 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.cli import ExitCode
         from picard.plugin3.registry import RegistryFetchError
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.fetch_registry.side_effect = RegistryFetchError(
             'https://test.example.com/registry.json', Exception('Connection timeout')
         )
@@ -469,7 +469,7 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.cli import ExitCode
         from picard.plugin3.registry import RegistryParseError
 
-        mock_manager = Mock()
+        mock_manager = MockPluginManager()
         mock_manager._registry.fetch_registry.side_effect = RegistryParseError(
             'https://test.example.com/registry.json', Exception('Invalid JSON')
         )
