@@ -132,25 +132,40 @@ def run_cli(manager, **args_kwargs):
     return exit_code, output.stdout.getvalue(), output.stderr.getvalue()
 
 
+class MockPlugin(Mock):
+    """Mock Plugin with sensible defaults."""
+
+    def __init__(self, name='test-plugin', uuid='test-uuid-1234', **kwargs):
+        from pathlib import Path
+
+        from picard.plugin3.plugin import Plugin
+
+        # Extract our custom params before passing to Mock
+        local_path = kwargs.pop('local_path', Path(f'/tmp/{name}'))
+        version = kwargs.pop('version', '1.0.0')
+        display_name = kwargs.pop('display_name', name)
+        manifest = kwargs.pop('manifest', None)
+
+        super().__init__(spec=Plugin, **kwargs)
+        self.plugin_id = name
+        self.local_path = local_path
+
+        # Use provided manifest or create default
+        if manifest:
+            self.manifest = manifest
+        else:
+            self.manifest = Mock()
+            self.manifest.uuid = uuid
+            self.manifest.version = version
+            self.manifest.name = Mock(return_value=display_name)
+
+
 def create_mock_plugin(name='test-plugin', uuid='test-uuid-1234', **kwargs):
-    """Create a mock plugin with common attributes."""
-    from pathlib import Path
+    """Create a mock plugin with common attributes.
 
-    from picard.plugin3.plugin import Plugin
-
-    mock_plugin = Mock(spec=Plugin)
-    mock_plugin.plugin_id = name
-    mock_plugin.local_path = kwargs.get('local_path', Path(f'/tmp/{name}'))
-    mock_plugin.manifest = Mock()
-    mock_plugin.manifest.uuid = uuid
-    mock_plugin.manifest.version = kwargs.get('version', '1.0.0')
-    mock_plugin.manifest.name = Mock(return_value=kwargs.get('display_name', name))
-
-    for key, value in kwargs.items():
-        if key not in ('local_path', 'version', 'display_name'):
-            setattr(mock_plugin, key, value)
-
-    return mock_plugin
+    Deprecated: Use MockPlugin() instead.
+    """
+    return MockPlugin(name=name, uuid=uuid, **kwargs)
 
 
 def create_mock_manager_with_manifest_validation():
