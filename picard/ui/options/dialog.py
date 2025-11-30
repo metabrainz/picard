@@ -216,7 +216,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.pages = []
         for Page in ext_point_options_pages:
             try:
-                page = Page()
+                api = getattr(Page, '_plugin_api', None)
+                page = Page(api=api)
                 page.set_dialog(self)
                 page.initialized = True
             except Exception as e:

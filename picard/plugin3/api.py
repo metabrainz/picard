@@ -162,23 +162,23 @@ class PluginApi:
 
     # Context menu actions
     def register_album_action(self, action: BaseAction) -> None:
-        return register_album_action(action)
+        return register_album_action(action, self)
 
     def register_cluster_action(self, action: BaseAction) -> None:
-        return register_cluster_action(action)
+        return register_cluster_action(action, self)
 
     def register_clusterlist_action(self, action: BaseAction) -> None:
-        return register_clusterlist_action(action)
+        return register_clusterlist_action(action, self)
 
     def register_track_action(self, action: BaseAction) -> None:
-        return register_track_action(action)
+        return register_track_action(action, self)
 
     def register_file_action(self, action: BaseAction) -> None:
-        return register_file_action(action)
+        return register_file_action(action, self)
 
     # UI
     def register_options_page(self, page_class: Type[OptionsPage]) -> None:
-        return register_options_page(page_class)
+        return register_options_page(page_class, self)
 
     # TODO: Replace by init function in plugin
     # def register_ui_init(self, function: Callable) -> None:

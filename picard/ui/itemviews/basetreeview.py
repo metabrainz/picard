@@ -339,7 +339,10 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             )
 
             plugin_menus = {}
-            for action in plugin_actions:
+            for ActionClass in plugin_actions:
+                # Instantiate action with API if available
+                api = getattr(ActionClass, '_plugin_api', None)
+                action = ActionClass(api=api)
                 action_menu = plugin_menu
                 for index in range(1, len(action.MENU) + 1):
                     key = tuple(action.MENU[:index])

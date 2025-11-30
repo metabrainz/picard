@@ -88,19 +88,19 @@ class TestPluginApiMethods(PicardTestCase):
 
         with patch('picard.plugin3.api.register_cluster_action') as mock:
             api.register_cluster_action(mock_action)
-            mock.assert_called_once_with(mock_action)
+            mock.assert_called_once_with(mock_action, api)
 
         with patch('picard.plugin3.api.register_clusterlist_action') as mock:
             api.register_clusterlist_action(mock_action)
-            mock.assert_called_once_with(mock_action)
+            mock.assert_called_once_with(mock_action, api)
 
         with patch('picard.plugin3.api.register_track_action') as mock:
             api.register_track_action(mock_action)
-            mock.assert_called_once_with(mock_action)
+            mock.assert_called_once_with(mock_action, api)
 
         with patch('picard.plugin3.api.register_file_action') as mock:
             api.register_file_action(mock_action)
-            mock.assert_called_once_with(mock_action)
+            mock.assert_called_once_with(mock_action, api)
 
     def test_register_options_page(self):
         """Test options page registration."""
@@ -111,4 +111,4 @@ class TestPluginApiMethods(PicardTestCase):
 
         with patch('picard.plugin3.api.register_options_page') as mock:
             api.register_options_page(mock_page)
-            mock.assert_called_once_with(mock_page)
+            mock.assert_called_once_with(mock_page, api)
