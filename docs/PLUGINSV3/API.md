@@ -274,6 +274,24 @@ def enable(api):
 
 ---
 
+#### `register_script_variable(name, documentation=None)`
+
+Register a variable name for script autocomplete.
+
+```python
+def enable(api):
+    api.register_script_variable(
+        "my_plugin_var",
+        documentation="A custom variable from my plugin"
+    )
+```
+
+**Parameters**:
+- `name`: Variable name (without % symbols)
+- `documentation`: Optional help text for the variable
+
+---
+
 ### UI Actions
 
 #### `register_album_action(action)`
@@ -344,6 +362,24 @@ def enable(api):
 
 ---
 
+#### `register_ui_init(function)`
+
+Register a function to be called when the main window UI is initialized.
+
+```python
+def setup_ui(api):
+    """Called when main window is ready."""
+    api.logger.info("UI initialized")
+    # Access api.window for main window
+
+def enable(api):
+    api.register_ui_init(setup_ui)
+```
+
+**Signature**: `function(api)`
+
+---
+
 ### Cover Art Providers
 
 #### `register_cover_art_provider(provider)`
@@ -362,6 +398,66 @@ class MyProvider(CoverArtProvider):
 
 def enable(api):
     api.register_cover_art_provider(MyProvider)
+```
+
+---
+
+#### `register_cover_art_filter(filter)`
+
+Register a filter to process cover art images.
+
+```python
+def my_cover_filter(api, metadata, image):
+    """Filter cover art images."""
+    # Return True to keep, False to discard
+    return image.width >= 500
+
+def enable(api):
+    api.register_cover_art_filter(my_cover_filter)
+```
+
+**Signature**: `function(api, metadata, image) -> bool`
+
+---
+
+#### `register_cover_art_metadata_filter(filter)`
+
+Register a filter to process cover art metadata.
+
+```python
+def my_metadata_filter(api, metadata, image_metadata):
+    """Filter cover art by metadata."""
+    return image_metadata.get('type') == 'front'
+
+def enable(api):
+    api.register_cover_art_metadata_filter(my_metadata_filter)
+```
+
+**Signature**: `function(api, metadata, image_metadata) -> bool`
+
+---
+
+#### `register_cover_art_processor(processor_class)`
+
+Register a processor to modify cover art images.
+
+```python
+class MyProcessor:
+    def save_to_tags(self):
+        return True
+
+    def save_to_file(self):
+        return True
+
+    def same_processing(self):
+        return True
+
+    def run(self, image):
+        # Modify image
+        return image
+
+def enable(api):
+    api.register_cover_art_processor(MyProcessor)
 ```
 
 ---
