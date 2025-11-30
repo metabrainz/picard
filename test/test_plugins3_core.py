@@ -342,6 +342,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_metadata_processors(self):
         """Test metadata processor registration methods."""
+        from functools import partial
         from unittest.mock import patch
 
         manifest = load_plugin_manifest('example')
@@ -352,14 +353,23 @@ class TestPluginApi(PicardTestCase):
 
         with patch('picard.plugin3.api.register_album_metadata_processor') as mock_album:
             api.register_album_metadata_processor(dummy_processor, priority=5)
-            mock_album.assert_called_once_with(dummy_processor, 5)
+            args, kwargs = mock_album.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 5)
 
         with patch('picard.plugin3.api.register_track_metadata_processor') as mock_track:
             api.register_track_metadata_processor(dummy_processor, priority=10)
-            mock_track.assert_called_once_with(dummy_processor, 10)
+            args, kwargs = mock_track.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 10)
 
     def test_register_event_hooks(self):
         """Test event hook registration methods."""
+        from functools import partial
         from unittest.mock import patch
 
         manifest = load_plugin_manifest('example')
@@ -370,15 +380,27 @@ class TestPluginApi(PicardTestCase):
 
         with patch('picard.plugin3.api.register_album_post_removal_processor') as mock:
             api.register_album_post_removal_processor(dummy_hook)
-            mock.assert_called_once_with(dummy_hook, 0)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
 
         with patch('picard.plugin3.api.register_file_post_load_processor') as mock:
             api.register_file_post_load_processor(dummy_hook)
-            mock.assert_called_once_with(dummy_hook, 0)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
 
         with patch('picard.plugin3.api.register_file_post_save_processor') as mock:
             api.register_file_post_save_processor(dummy_hook)
-            mock.assert_called_once_with(dummy_hook, 0)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
 
     def test_register_script_function(self):
         """Test script function registration."""
@@ -405,15 +427,15 @@ class TestPluginApi(PicardTestCase):
 
         with patch('picard.plugin3.api.register_album_action') as mock:
             api.register_album_action(mock_action)
-            mock.assert_called_once_with(mock_action)
+            mock.assert_called_once_with(mock_action, api)
 
         with patch('picard.plugin3.api.register_track_action') as mock:
             api.register_track_action(mock_action)
-            mock.assert_called_once_with(mock_action)
+            mock.assert_called_once_with(mock_action, api)
 
         with patch('picard.plugin3.api.register_file_action') as mock:
             api.register_file_action(mock_action)
-            mock.assert_called_once_with(mock_action)
+            mock.assert_called_once_with(mock_action, api)
 
 
 class TestPluginManager(PicardTestCase):
