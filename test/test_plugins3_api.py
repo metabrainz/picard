@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
 from unittest.mock import (
     Mock,
     patch,
@@ -40,11 +41,21 @@ class TestPluginApiMethods(PicardTestCase):
 
         with patch('picard.plugin3.api.register_file_post_addition_to_track_processor') as mock:
             api.register_file_post_addition_to_track_processor(dummy_processor, priority=5)
-            mock.assert_called_once_with(dummy_processor, 5)
+            # Should be called with partial(dummy_processor, api)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 5)
 
         with patch('picard.plugin3.api.register_file_post_removal_from_track_processor') as mock:
             api.register_file_post_removal_from_track_processor(dummy_processor, priority=3)
-            mock.assert_called_once_with(dummy_processor, 3)
+            # Should be called with partial(dummy_processor, api)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 3)
 
     def test_register_cover_art_provider(self):
         """Test cover art provider registration."""

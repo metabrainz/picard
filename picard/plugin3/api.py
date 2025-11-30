@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
 from logging import (
     Logger,
     getLogger,
@@ -112,26 +113,33 @@ class PluginApi:
 
     # Metadata processors
     def register_album_metadata_processor(self, function: Callable, priority: int = 0) -> None:
-        return register_album_metadata_processor(function, priority)
+        wrapped = partial(function, self)
+        return register_album_metadata_processor(wrapped, priority)
 
     def register_track_metadata_processor(self, function: Callable, priority: int = 0) -> None:
-        return register_track_metadata_processor(function, priority)
+        wrapped = partial(function, self)
+        return register_track_metadata_processor(wrapped, priority)
 
     # Event hooks
     def register_album_post_removal_processor(self, function: Callable, priority: int = 0) -> None:
-        return register_album_post_removal_processor(function, priority)
+        wrapped = partial(function, self)
+        return register_album_post_removal_processor(wrapped, priority)
 
     def register_file_post_load_processor(self, function: Callable, priority: int = 0) -> None:
-        return register_file_post_load_processor(function, priority)
+        wrapped = partial(function, self)
+        return register_file_post_load_processor(wrapped, priority)
 
     def register_file_post_addition_to_track_processor(self, function: Callable, priority: int = 0) -> None:
-        return register_file_post_addition_to_track_processor(function, priority)
+        wrapped = partial(function, self)
+        return register_file_post_addition_to_track_processor(wrapped, priority)
 
     def register_file_post_removal_from_track_processor(self, function: Callable, priority: int = 0) -> None:
-        return register_file_post_removal_from_track_processor(function, priority)
+        wrapped = partial(function, self)
+        return register_file_post_removal_from_track_processor(wrapped, priority)
 
     def register_file_post_save_processor(self, function: Callable, priority: int = 0) -> None:
-        return register_file_post_save_processor(function, priority)
+        wrapped = partial(function, self)
+        return register_file_post_save_processor(wrapped, priority)
 
     # Cover art
     def register_cover_art_provider(self, provider: CoverArtProvider) -> None:
