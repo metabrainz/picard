@@ -112,3 +112,21 @@ class TestPluginApiMethods(PicardTestCase):
         with patch('picard.plugin3.api.register_options_page') as mock:
             api.register_options_page(mock_page)
             mock.assert_called_once_with(mock_page, api)
+
+    def test_processor_metadata_preserved(self):
+        """Test that processor function metadata is preserved after wrapping."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock())
+
+        def my_processor(api, track, metadata):
+            """Process track metadata."""
+            pass
+
+        with patch('picard.plugin3.api.register_track_metadata_processor') as mock:
+            api.register_track_metadata_processor(my_processor)
+            # Get the wrapped function that was passed
+            wrapped = mock.call_args[0][0]
+            # Verify metadata is preserved
+            self.assertEqual(wrapped.__name__, 'my_processor')
+            self.assertEqual(wrapped.__doc__, 'Process track metadata.')
+            self.assertEqual(wrapped.func, my_processor)
