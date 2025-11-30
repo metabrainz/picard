@@ -351,11 +351,10 @@ def convert_plugin_api_v2_to_v3(content):
     warnings = []
 
     # Remove imports that will be accessed via api
-    # BaseAction, OptionsPage, File, Track, Album, Cluster, Metadata, CoverArtImage, CoverArtProvider
-    # These are now available as api.BaseAction, api.OptionsPage, etc.
+    # File, Track, Album, Cluster, Metadata, CoverArtImage, CoverArtProvider
+    # These are now available as api.File, api.Track, etc.
+    # NOTE: Keep BaseAction and OptionsPage imports - they're needed for class inheritance at module level
     imports_to_remove = [
-        'from picard.ui.itemviews import BaseAction',
-        'from picard.ui.options import OptionsPage',
         'from picard.file import File',
         'from picard.track import Track',
         'from picard.album import Album',
@@ -370,7 +369,20 @@ def convert_plugin_api_v2_to_v3(content):
             # Remove the import line
             content = re.sub(rf'^{re.escape(old_import)}.*$', '', content, flags=re.MULTILINE)
             class_name = old_import.split()[-1]
-            warnings.append(f"✓ Removed {class_name} import - use _api.{class_name} instead")
+            warnings.append(f"✓ Removed {class_name} import - use api.{class_name} instead")
+
+    # Keep BaseAction and OptionsPage imports but update them to plugin3 API
+    if 'from picard.ui.itemviews import BaseAction' in content:
+        content = content.replace(
+            'from picard.ui.itemviews import BaseAction', 'from picard.plugin3.api import BaseAction'
+        )
+        warnings.append("✓ Updated BaseAction import to plugin3 API")
+
+    if 'from picard.ui.options import OptionsPage' in content:
+        content = content.replace(
+            'from picard.ui.options import OptionsPage', 'from picard.plugin3.api import OptionsPage'
+        )
+        warnings.append("✓ Updated OptionsPage import to plugin3 API")
 
     # PluginPriority
     if 'PluginPriority' in content:
@@ -745,9 +757,8 @@ def convert_plugin_code(content, metadata):
         # Convert class references to use api from PluginApi
         # e.g., class MyAction(BaseAction) -> class MyAction(api.BaseAction)
         # Also convert instantiation: Metadata() -> api.Metadata()
+        # NOTE: BaseAction and OptionsPage are imported directly, not via api
         for class_name in [
-            'BaseAction',
-            'OptionsPage',
             'File',
             'Track',
             'Album',
