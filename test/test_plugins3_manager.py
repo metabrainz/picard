@@ -24,6 +24,7 @@ from unittest.mock import (
 )
 
 from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import MockTagger
 
 from picard.plugin3.manager import PluginManager
 
@@ -116,7 +117,7 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_cleanup_registers_with_tagger(self):
         """Test that cleanup is registered with tagger."""
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_tagger.register_cleanup = Mock()
 
         manager = PluginManager(mock_tagger)
@@ -340,7 +341,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         """Test get_plugin_registry_id returns registry ID when plugin is in registry."""
         from test.test_plugins3_helpers import create_test_registry
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -363,7 +364,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         """Test get_plugin_registry_id returns None when plugin not in registry."""
         from test.test_plugins3_helpers import create_test_registry
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -386,7 +387,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         """Test get_plugin_registry_id returns None when plugin has no UUID."""
         from test.test_plugins3_helpers import create_test_registry
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 

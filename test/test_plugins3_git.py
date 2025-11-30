@@ -20,9 +20,9 @@
 
 from pathlib import Path
 import tempfile
-from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import MockTagger
 
 import pytest
 
@@ -233,7 +233,7 @@ def disable():
         from picard.plugin3.manager import PluginManager
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_tagger = Mock()
+            mock_tagger = MockTagger()
             manager = PluginManager(mock_tagger)
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()
@@ -272,7 +272,7 @@ def disable():
         repo.create_commit('refs/heads/dev', author, author, 'Dev', tree, [main_commit])
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_tagger = Mock()
+            mock_tagger = MockTagger()
             manager = PluginManager(mock_tagger)
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()
@@ -296,7 +296,7 @@ def disable():
         from picard.plugin3.plugin import Plugin
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_tagger = Mock()
+            mock_tagger = MockTagger()
             manager = PluginManager(mock_tagger)
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()
@@ -378,7 +378,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
 
             # Try to install
-            mock_tagger = Mock()
+            mock_tagger = MockTagger()
             manager = PluginManager(mock_tagger)
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()

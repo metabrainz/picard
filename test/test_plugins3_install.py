@@ -23,6 +23,7 @@ from unittest.mock import Mock
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
     MockPluginManager,
+    MockTagger,
     create_mock_plugin,
     run_cli,
 )
@@ -35,7 +36,7 @@ class TestPluginInstall(PicardTestCase):
         """Test that plugin metadata is stored and retrieved correctly."""
         from picard.plugin3.manager import PluginManager, PluginMetadata
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         test_uuid = 'test-uuid-1234'
@@ -67,7 +68,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.manager import PluginManager, PluginNoSourceError
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         mock_plugin = Mock(spec=Plugin)
@@ -83,7 +84,7 @@ class TestPluginInstall(PicardTestCase):
         """Test installing plugin with specific git ref."""
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Mock the install to capture ref parameter
@@ -110,7 +111,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.manager import PluginManager, PluginMetadata
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         test_uuid = 'test-uuid-5678'
@@ -160,7 +161,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.manager import PluginManager, PluginNoSourceError
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         mock_plugin = Mock(spec=Plugin)
@@ -203,7 +204,7 @@ class TestPluginInstall(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -239,7 +240,7 @@ class TestPluginInstall(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -288,7 +289,7 @@ class TestPluginInstall(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -331,7 +332,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Create a temporary plugin directory
@@ -366,7 +367,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.cli import PluginCLI
         from picard.plugin3.output import PluginOutput
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(return_value='test-plugin')
@@ -412,7 +413,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.cli import PluginCLI
         from picard.plugin3.output import PluginOutput
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
         mock_manager.plugins = []
         mock_manager.install_plugin = Mock(side_effect=Exception('Install failed'))
@@ -457,7 +458,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.cli import PluginCLI
         from picard.plugin3.output import PluginOutput
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = Mock()
@@ -499,7 +500,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.cli import PluginCLI
         from picard.plugin3.output import PluginOutput
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = Mock()
@@ -539,7 +540,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.cli import PluginCLI
         from picard.plugin3.output import PluginOutput
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = Mock()
@@ -580,7 +581,7 @@ class TestPluginInstall(PicardTestCase):
         from picard.plugin3.cli import PluginCLI
         from picard.plugin3.output import PluginOutput
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
         mock_plugin = Mock()

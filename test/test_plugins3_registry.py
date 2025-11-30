@@ -22,6 +22,7 @@ from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
+    MockTagger,
     create_test_registry,
 )
 
@@ -200,7 +201,7 @@ class TestPluginRegistry(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -226,7 +227,7 @@ class TestPluginRegistry(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -268,7 +269,7 @@ class TestPluginRegistry(PicardTestCase):
         from picard.plugin3.manager import PluginManager, PluginMetadata
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
@@ -310,7 +311,7 @@ class TestPluginRegistry(PicardTestCase):
         from picard.plugin3.manager import PluginManager, PluginMetadata
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 

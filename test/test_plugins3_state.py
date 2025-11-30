@@ -24,6 +24,7 @@ from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
 )
+from test.test_plugins3_helpers import MockTagger
 
 from picard.plugin3.plugin import short_commit_id
 
@@ -46,7 +47,7 @@ class TestPluginState(PicardTestCase):
             PluginState,
         )
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
 
         # Initial state should be DISCOVERED
@@ -82,7 +83,7 @@ class TestPluginState(PicardTestCase):
             PluginState,
         )
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
         plugin._module = Mock()
@@ -235,7 +236,7 @@ class TestPluginState(PicardTestCase):
             PluginState,
         )
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
         plugin._module = Mock()

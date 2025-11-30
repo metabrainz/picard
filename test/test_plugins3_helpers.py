@@ -42,6 +42,18 @@ class MockPluginManager(Mock):
         super().__init__(**defaults)
 
 
+class MockTagger(Mock):
+    """Mock Tagger with sensible defaults."""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Add common attributes that tests expect
+        if 'webservice' not in kwargs:
+            self.webservice = Mock()
+        if 'register_cleanup' not in kwargs:
+            self.register_cleanup = Mock()
+
+
 def load_plugin_manifest(plugin_name: str) -> PluginManifest:
     """Load a plugin manifest from test data."""
     manifest_path = get_test_data_path('testplugins3', plugin_name, 'MANIFEST.toml')

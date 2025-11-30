@@ -24,7 +24,10 @@ from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
 )
-from test.test_plugins3_helpers import load_plugin_manifest
+from test.test_plugins3_helpers import (
+    MockTagger,
+    load_plugin_manifest,
+)
 
 from picard.config import (
     ConfigSection,
@@ -315,7 +318,7 @@ class TestPluginApi(PicardTestCase):
     def test_init(self):
         manifest = load_plugin_manifest('example')
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_ws = mock_tagger.webservice = Mock()
 
         api = PluginApi(manifest, mock_tagger)
@@ -328,7 +331,7 @@ class TestPluginApi(PicardTestCase):
         """Test PluginApi property accessors."""
         manifest = load_plugin_manifest('example')
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         mock_ws = mock_tagger.webservice = Mock()
 
         api = PluginApi(manifest, mock_tagger)
@@ -444,7 +447,7 @@ class TestPluginManager(PicardTestCase):
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Initially no plugins enabled
@@ -480,7 +483,7 @@ class TestPluginManager(PicardTestCase):
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Create mock plugins with UUIDs
@@ -518,7 +521,7 @@ class TestPluginManager(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Load compatible plugin (API 3.0, 3.1)
@@ -534,7 +537,7 @@ class TestPluginManager(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Load incompatible plugin (API 2.0, 2.1)
@@ -548,7 +551,7 @@ class TestPluginManager(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Load plugin requiring future API (3.5, 3.6)
@@ -566,7 +569,7 @@ class TestPluginErrors(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Try to load plugin with missing manifest
@@ -579,7 +582,7 @@ class TestPluginErrors(PicardTestCase):
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         # Create a plugin that will fail to load
@@ -605,7 +608,7 @@ class TestPluginErrors(PicardTestCase):
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         bad_plugin = Mock(spec=Plugin)
@@ -622,7 +625,7 @@ class TestPluginErrors(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -642,7 +645,7 @@ class TestPluginErrors(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
-        mock_tagger = Mock()
+        mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
         with tempfile.TemporaryDirectory() as tmpdir:
