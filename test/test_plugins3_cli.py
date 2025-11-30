@@ -56,6 +56,31 @@ class TestPluginCLI(PicardTestCase):
         self.assertIn('enabled', stdout)
         self.assertIn('1.0.0', stdout)
 
+    def test_list_plugins_sorted_by_name(self):
+        """Test that plugins are listed in alphabetical order."""
+        plugin1 = MockPlugin(name='zebra-plugin', uuid='uuid-1')
+        plugin1.manifest.name = Mock(return_value='Zebra Plugin')
+
+        plugin2 = MockPlugin(name='alpha-plugin', uuid='uuid-2')
+        plugin2.manifest.name = Mock(return_value='Alpha Plugin')
+
+        plugin3 = MockPlugin(name='middle-plugin', uuid='uuid-3')
+        plugin3.manifest.name = Mock(return_value='Middle Plugin')
+
+        mock_manager = MockPluginManager(plugins=[plugin1, plugin2, plugin3])
+        mock_manager._get_plugin_metadata = Mock(return_value={})
+
+        exit_code, stdout, _ = run_cli(mock_manager, list=True)
+
+        self.assertEqual(exit_code, 0)
+        # Check that plugins appear in alphabetical order
+        alpha_pos = stdout.find('Alpha Plugin')
+        middle_pos = stdout.find('Middle Plugin')
+        zebra_pos = stdout.find('Zebra Plugin')
+
+        self.assertLess(alpha_pos, middle_pos)
+        self.assertLess(middle_pos, zebra_pos)
+
     def test_info_plugin_not_found(self):
         """Test info command for non-existent plugin."""
         mock_manager = MockPluginManager(plugins=[])

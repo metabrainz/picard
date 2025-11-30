@@ -206,7 +206,12 @@ class PluginCLI:
         else:
             self._out.print('Installed plugins:')
             self._out.nl()
-            for plugin in self._manager.plugins:
+            # Sort plugins by display name
+            sorted_plugins = sorted(
+                self._manager.plugins,
+                key=lambda p: (p.manifest.name() if p.manifest else p.plugin_id).lower(),
+            )
+            for plugin in sorted_plugins:
                 # Get plugin UUID for checking enabled state
                 plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
                 is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
