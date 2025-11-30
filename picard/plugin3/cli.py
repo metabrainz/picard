@@ -228,7 +228,9 @@ class PluginCLI:
             self._out.print()
 
         total = len(self._manager.plugins)
-        enabled = len(self._manager._enabled_plugins)
+        enabled = sum(
+            1 for p in self._manager.plugins if p.manifest and p.manifest.uuid in self._manager._enabled_plugins
+        )
         disabled = total - enabled
         self._out.print(
             f'Total: {self._out.d_number(total)} plugin{"s" if total != 1 else ""} '
