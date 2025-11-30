@@ -407,10 +407,20 @@ def convert_plugin_api_v2_to_v3(content):
         content = content.replace('from picard.file import File', 'from picard.plugin3.api import File')
         warnings.append("✓ Updated File import to plugin3 API")
 
-    if 'from picard.coverart.providers import CoverArtProvider' in content:
-        content = content.replace(
-            'from picard.coverart.providers import CoverArtProvider',
+    # Handle both single-line and multi-line CoverArtProvider imports
+    if 'from picard.coverart.providers import' in content and 'CoverArtProvider' in content:
+        # Remove the entire import block (including register_cover_art_provider, ProviderOptions, etc.)
+        content = re.sub(
+            r'from picard\.coverart\.providers import\s*\([^)]*\)',
             'from picard.plugin3.api import CoverArtProvider',
+            content,
+            flags=re.MULTILINE | re.DOTALL,
+        )
+        # Also handle single-line imports
+        content = re.sub(
+            r'from picard\.coverart\.providers import\s+[^\n]+',
+            'from picard.plugin3.api import CoverArtProvider',
+            content,
         )
         warnings.append("✓ Updated CoverArtProvider import to plugin3 API")
 
