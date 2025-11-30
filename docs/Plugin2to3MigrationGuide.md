@@ -123,7 +123,7 @@ def enable(api):
     api.register_script_function(my_function)
 ```
 
-#### 4. Config/Log Access
+#### 4. Config/Log Access (Module-level `_api`)
 **Before**:
 ```python
 from picard import log, config
@@ -135,11 +135,20 @@ if config.setting['enabled']:
 
 **After**:
 ```python
+# Module-level api reference
+_api = None
+
 def my_function():
-    api.logger.info("Processing")
-    if api.global_config.setting['enabled']:
+    _api.logger.info("Processing")
+    if _api.global_config.setting['enabled']:
         # do something
+
+def enable(api):
+    global _api
+    _api = api
 ```
+
+**Why `_api`?** The `PluginApi` object is only passed to `enable()`, but classes like `OptionsPage` and `BaseAction` are instantiated by Picard with no arguments. A module-level `_api` variable makes the API accessible everywhere in your plugin.
 
 #### 5. Function Signatures
 **Before**:
@@ -243,13 +252,21 @@ from picard import log, config
 from picard.tagger import tagger
 ```
 
-**V3**: Through PluginApi
+**V3**: Module-level `_api` variable
 ```python
+# Module level
+_api = None
+
 def enable(api):
-    api.logger.info()
-    api.global_config.setting
-    api._tagger  # (discouraged)
+    global _api
+    _api = api
+
+# Use anywhere in your plugin
+_api.logger.info()
+_api.global_config.setting
 ```
+
+**Why this pattern?** `OptionsPage` and `BaseAction` are instantiated by Picard with no arguments, so we can't pass `api` to their `__init__()`. The module-level `_api` variable solves this cleanly.
 
 ### 4. Qt Version
 
@@ -302,6 +319,105 @@ picard plugins --list
 
 ---
 
+## API Access Pattern: Module-level `_api`
+
+### The Challenge
+
+The `PluginApi` object is only passed to `enable(api)`, but your plugin needs it everywhere:
+- In `OptionsPage` subclasses (instantiated by Picard with no args)
+- In `BaseAction` subclasses (instantiated by Picard with no args)
+- In processor functions
+- In helper classes
+
+### The Solution
+
+Use a module-level `_api` variable:
+
+```python
+from picard.plugin3.api import PluginApi
+
+# Module-level API reference
+_api: PluginApi = None
+
+
+def my_processor(track, metadata):
+    """Processor can access _api directly."""
+    _api.logger.info("Processing track")
+    if _api.global_config.setting['my_option']:
+        metadata['custom'] = 'value'
+
+
+class MyOptionsPage(_api.OptionsPage):
+    """OptionsPage using _api."""
+
+    NAME = "my_plugin"
+    TITLE = "My Plugin"
+    PARENT = "plugins"
+
+    def __init__(self, parent=None):
+        # Picard instantiates with no arguments
+        super().__init__(parent)
+
+    def load(self):
+        _api.logger.debug("Loading options")
+        self.checkbox.setChecked(
+            _api.global_config.setting['my_option']
+        )
+
+
+class MyAction(_api.BaseAction):
+    """Action using _api."""
+
+    NAME = "My Action"
+
+    def callback(self, objs):
+        _api.logger.info(f"Action on {len(objs)} objects")
+
+
+def enable(api: PluginApi):
+    """Set _api and register everything."""
+    global _api
+    _api = api
+
+    api.register_track_metadata_processor(my_processor)
+    api.register_options_page(MyOptionsPage)
+    api.register_file_action(MyAction)
+```
+
+### Why This Works
+
+1. **Compatible**: Works with how Picard instantiates `OptionsPage()` and `BaseAction()` (no args)
+2. **Simple**: One variable, set once, use everywhere
+3. **Clean**: No complex dependency injection needed
+4. **Proven**: Used in production V3 plugins
+
+### Common API Access Patterns
+
+```python
+# Logging
+_api.logger.debug("Debug message")
+_api.logger.info("Info message")
+_api.logger.warning("Warning")
+_api.logger.error("Error")
+
+# Configuration
+value = _api.global_config.setting['option_name']
+_api.global_config.setting['option_name'] = new_value
+
+# Plugin-specific config
+_api.plugin_config.setting['my_option'] = value
+
+# Base classes
+class MyPage(_api.OptionsPage): pass
+class MyAction(_api.BaseAction): pass
+
+# Other API access
+_api.Album, _api.Track, _api.File, _api.Cluster
+_api.web_service, _api.mb_api
+```
+
+---
+
 ## Common Patterns
 
 ### Pattern 1: Simple Metadata Processor
@@ -342,13 +458,21 @@ class MyOptionsPage(OptionsPage):
 
 **V3** (after migration):
 ```python
-class MyOptionsPage(OptionsPage):
-    def __init__(self, api, parent=None):
-        self.api = api
+# Module level
+_api = None
+
+class MyOptionsPage(_api.OptionsPage):
+    def __init__(self, parent=None):
         super().__init__(parent)
+        # OptionsPage is instantiated by Picard with no args
 
     def load(self):
-        self.checkbox.setChecked(self.api.global_config.setting['my_option'])
+        self.checkbox.setChecked(_api.global_config.setting['my_option'])
+
+def enable(api):
+    global _api
+    _api = api
+    api.register_options_page(MyOptionsPage)
 ```
 
 ### Pattern 3: Script Function
@@ -427,8 +551,11 @@ tail -f ~/.config/MusicBrainz/Picard/picard.log
 
 ### Runtime Issues
 
-**Problem**: "api is not defined"
-**Solution**: Ensure classes that use api have it injected in `__init__`
+**Problem**: "NameError: name '_api' is not defined"
+**Solution**: Ensure you have `_api = None` at module level and `_api = api` in `enable()`
+
+**Problem**: "AttributeError: 'NoneType' object has no attribute 'logger'"
+**Solution**: `_api` is still None. Make sure `enable()` is called before using `_api`
 
 **Problem**: Qt enum errors
 **Solution**: Check for unconverted Qt5 enums. The migration tool handles 80+ patterns, but some custom code may need manual fixes.

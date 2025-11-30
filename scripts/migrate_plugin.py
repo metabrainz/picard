@@ -512,14 +512,14 @@ def convert_plugin_code(content, metadata):
     # Convert config/log/tagger access
     if has_log_import:
         content = convert_log_access(content)
-        all_warnings.append("✓ Converted log.* calls to api.logger.*")
+        all_warnings.append("✓ Converted log.* calls to _api.logger.*")
 
     if has_config_import:
         content = convert_config_access(content)
-        all_warnings.append("✓ Converted config.setting to api.global_config.setting")
+        all_warnings.append("✓ Converted config.setting to _api.global_config.setting")
 
     if has_tagger_import:
-        all_warnings.append("⚠️  Tagger import found - using api._tagger (review if needed)")
+        all_warnings.append("⚠️  Tagger import found - use _api._tagger (review if needed)")
 
     # Warn about method-based processors
     if method_processors:
@@ -543,19 +543,7 @@ def convert_plugin_code(content, metadata):
         all_warnings.append("ℹ️  Module-level _api variable added for accessing API")
         all_warnings.append("   Use _api.logger.info(...) for logging")
         all_warnings.append("   Use _api.BaseAction, _api.OptionsPage, etc. for base classes")
-        all_warnings.append("   Or pass api explicitly to classes: MyClass(api)")
-
-    # Inject api in classes
-    content, injection_warnings = inject_api_in_classes(content)
-    all_warnings.extend(injection_warnings)
-
-    # Check for remaining api usage in classes
-    try:
-        check_tree = ast.parse(content)
-        class_warnings = check_api_usage_in_classes(check_tree)
-        all_warnings.extend(class_warnings)
-    except (SyntaxError, ValueError):
-        pass
+        all_warnings.append("   Use _api.global_config.setting for config access")
 
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
@@ -686,158 +674,20 @@ def fix_function_signatures(content, tree):
 
 
 def convert_log_access(content):
-    """Convert log.* to api.logger.*"""
+    """Convert log.* to _api.logger.*"""
     # Replace log method calls
-    content = re.sub(r'\blog\.debug\b', 'api.logger.debug', content)
-    content = re.sub(r'\blog\.info\b', 'api.logger.info', content)
-    content = re.sub(r'\blog\.warning\b', 'api.logger.warning', content)
-    content = re.sub(r'\blog\.error\b', 'api.logger.error', content)
-    content = re.sub(r'\blog\.exception\b', 'api.logger.exception', content)
+    content = re.sub(r'\blog\.debug\b', '_api.logger.debug', content)
+    content = re.sub(r'\blog\.info\b', '_api.logger.info', content)
+    content = re.sub(r'\blog\.warning\b', '_api.logger.warning', content)
+    content = re.sub(r'\blog\.error\b', '_api.logger.error', content)
+    content = re.sub(r'\blog\.exception\b', '_api.logger.exception', content)
     return content
 
 
 def convert_config_access(content):
-    """Convert config.setting to api.global_config.setting"""
-    content = re.sub(r'\bconfig\.setting\b', 'api.global_config.setting', content)
+    """Convert config.setting to _api.global_config.setting"""
+    content = re.sub(r'\bconfig\.setting\b', '_api.global_config.setting', content)
     return content
-
-
-def inject_api_in_classes(content):
-    """Inject api parameter in OptionsPage and Action __init__ methods."""
-    try:
-        tree = ast.parse(content)
-    except (SyntaxError, ValueError):
-        return content, []
-
-    warnings = []
-    lines = content.split('\n')
-    modifications = []
-
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.ClassDef):
-            continue
-
-        # Check if it's OptionsPage or Action
-        is_options = any('OptionsPage' in (base.id if isinstance(base, ast.Name) else '') for base in node.bases)
-        is_action = any('Action' in (base.id if isinstance(base, ast.Name) else '') for base in node.bases)
-
-        if not (is_options or is_action):
-            continue
-
-        # Check if class uses api
-        class_source = '\n'.join(lines[node.lineno - 1 : node.end_lineno])
-        if 'api.' not in class_source:
-            continue
-
-        # Find __init__ method
-        init_method = None
-        for item in node.body:
-            if isinstance(item, ast.FunctionDef) and item.name == '__init__':
-                init_method = item
-                break
-
-        if init_method:
-            # Has __init__ - add api parameter
-            args = [arg.arg for arg in init_method.args.args]
-            if 'api' in args:
-                continue
-
-            init_line_idx = init_method.lineno - 1
-            init_line = lines[init_line_idx]
-
-            if 'def __init__(self' in init_line:
-                new_line = init_line.replace('def __init__(self', 'def __init__(self, api')
-                modifications.append(('replace', init_line_idx, init_line, new_line))
-
-                first_body_line_idx = init_method.lineno
-                indent = len(lines[first_body_line_idx]) - len(lines[first_body_line_idx].lstrip())
-                api_assignment = ' ' * indent + 'self.api = api'
-                modifications.append(('insert', first_body_line_idx, None, api_assignment))
-
-                warnings.append(f"✓ Injected api in {node.name}.__init__")
-        else:
-            # No __init__ - create one and convert api.* to self.api.*
-            insert_line = node.lineno
-
-            # Find where to insert (after class variables, before first method)
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef):
-                    insert_line = item.lineno - 1
-                    break
-                elif isinstance(item, ast.Assign):
-                    insert_line = item.end_lineno
-
-            # Get indentation
-            if node.body:
-                first_item_line = lines[node.body[0].lineno - 1]
-                indent = len(first_item_line) - len(first_item_line.lstrip())
-            else:
-                indent = 4
-
-            # Create __init__ method
-            init_lines = [
-                ' ' * indent + 'def __init__(self, api):',
-                ' ' * (indent + 4) + 'self.api = api',
-                ' ' * (indent + 4) + 'super().__init__()',
-                '',
-            ]
-
-            for line in reversed(init_lines):
-                modifications.append(('insert', insert_line, None, line))
-
-            warnings.append(f"✓ Created __init__ for {node.name}")
-
-            # Mark class for api.* → self.api.* conversion
-            modifications.append(('convert_api', node.name, node.lineno - 1, node.end_lineno))
-
-    # Apply modifications
-    for mod in sorted(modifications, key=lambda x: x[1] if isinstance(x[1], int) else 0, reverse=True):
-        if mod[0] == 'convert_api':
-            # Convert api.* to self.api.* in class methods
-            _, start_line, end_line = mod[1], mod[2], mod[3]
-            for i in range(start_line, min(end_line, len(lines))):
-                if 'api.' in lines[i] and 'self.api' not in lines[i] and 'def ' not in lines[i]:
-                    lines[i] = lines[i].replace('api.', 'self.api.')
-        elif mod[0] == 'insert':
-            lines.insert(mod[1], mod[3])
-        elif mod[0] == 'replace':
-            lines[mod[1]] = mod[3]
-
-    return '\n'.join(lines), warnings
-
-
-def check_api_usage_in_classes(tree):
-    """Check if api is used in classes that still need manual injection."""
-    warnings = []
-
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef):
-            # Check if class uses api
-            class_source = ast.unparse(node) if hasattr(ast, 'unparse') else ''
-            if 'api.' not in class_source:
-                continue
-
-            # Check if it's an Action or OptionsPage
-            is_action = any('Action' in base.id if isinstance(base, ast.Name) else False for base in node.bases)
-            is_options = any('OptionsPage' in base.id if isinstance(base, ast.Name) else False for base in node.bases)
-
-            if not (is_action or is_options):
-                continue
-
-            # Check if __init__ has api parameter
-            has_api_param = False
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef) and item.name == '__init__':
-                    args = [arg.arg for arg in item.args.args]
-                    if 'api' in args:
-                        has_api_param = True
-                    break
-
-            # Only warn if api injection failed (complex case)
-            if not has_api_param:
-                warnings.append(f"⚠️  Class '{node.name}' uses 'api' but injection failed - needs manual review")
-
-    return warnings
 
 
 def migrate_plugin(input_file, output_dir=None):
