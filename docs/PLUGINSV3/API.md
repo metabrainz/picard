@@ -27,6 +27,30 @@ def disable():
 
 ---
 
+## Class References
+
+The following classes are available through the `api` object:
+
+- `api.Album` - Album object
+- `api.Track` - Track object
+- `api.File` - File base class (for custom formats)
+- `api.Cluster` - Cluster object
+- `api.CoverArtImage` - Cover art image object
+- `api.CoverArtProvider` - Base class for cover art providers
+- `api.BaseAction` - Base class for UI actions
+- `api.OptionsPage` - Base class for options pages
+
+**Example**:
+```python
+class MyProvider(api.CoverArtProvider):
+    NAME = "My Provider"
+
+class MyFormat(api.File):
+    EXTENSIONS = [".custom"]
+```
+
+---
+
 ## Properties
 
 ### `logger: Logger`
@@ -397,9 +421,7 @@ def enable(api):
 Register a custom cover art provider.
 
 ```python
-from picard.coverart.providers import CoverArtProvider
-
-class MyProvider(CoverArtProvider):
+class MyProvider(api.CoverArtProvider):
     NAME = "My Provider"
 
     def queue_images(self):
@@ -479,9 +501,7 @@ def enable(api):
 Register support for a custom file format.
 
 ```python
-from picard.file import File
-
-class MyFormat(File):
+class MyFormat(api.File):
     EXTENSIONS = [".myformat"]
     NAME = "My Format"
 

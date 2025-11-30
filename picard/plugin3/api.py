@@ -81,6 +81,7 @@ class PluginApi:
     File = File
     Cluster = Cluster
     CoverArtImage = CoverArtImage
+    CoverArtProvider = CoverArtProvider
     BaseAction = BaseAction
     OptionsPage = OptionsPage
 
