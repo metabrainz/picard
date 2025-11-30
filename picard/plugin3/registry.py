@@ -193,6 +193,7 @@ class PluginRegistry:
             self.cache_path = None
 
         self._registry_data = None
+        self._fetch_failed = False  # Track permanent fetch failures
 
     def _ensure_registry_loaded(self, operation_name='operation'):
         """Ensure registry data is loaded, with error handling.
@@ -203,11 +204,16 @@ class PluginRegistry:
         Returns:
             bool: True if registry is loaded, False if loading failed
         """
+        # Don't retry if we already know fetch failed permanently
+        if self._fetch_failed:
+            return False
+
         if not self._registry_data:
             try:
                 self.fetch_registry()
             except (RegistryFetchError, RegistryParseError) as e:
                 log.warning('Failed to fetch registry for %s: %s', operation_name, e)
+                self._fetch_failed = True  # Mark as permanently failed
                 return False
         return True
 
