@@ -143,6 +143,34 @@ class PluginSourceGit(PluginSource):
         self.ref = ref
         self.resolved_ref = None  # Will be set after sync
 
+    def _list_available_refs(self, repo, limit=20):
+        """List available refs in repository.
+
+        Args:
+            repo: pygit2.Repository instance
+            limit: Maximum number of refs to return
+
+        Returns:
+            str: Comma-separated list of ref names
+        """
+        refs = []
+        for ref in repo.references:
+            if ref.startswith('refs/heads/'):
+                refs.append(ref[11:])  # Remove 'refs/heads/' prefix
+            elif ref.startswith('refs/remotes/origin/'):
+                refs.append(f"origin/{ref[20:]}")  # Remove 'refs/remotes/origin/' prefix
+            elif ref.startswith('refs/tags/'):
+                refs.append(ref[10:])  # Remove 'refs/tags/' prefix
+
+        if not refs:
+            return "none"
+
+        refs = refs[:limit]
+        if len(repo.references) > limit:
+            refs.append(f"... ({len(repo.references) - limit} more)")
+
+        return ", ".join(refs)
+
     def _retry_git_operation(self, operation, max_retries=GIT_OPERATION_MAX_RETRIES):
         """Execute git operation with retry logic for network errors."""
         for attempt in range(max_retries):
@@ -244,7 +272,11 @@ class PluginSourceGit(PluginSource):
                         commit = repo.revparse_single(ref_without_origin)
                         self.resolved_ref = ref_without_origin
                     except KeyError:
-                        raise KeyError(f"Could not find ref '{self.ref}' or '{ref_without_origin}'") from None
+                        available_refs = self._list_available_refs(repo)
+                        raise KeyError(
+                            f"Could not find ref '{self.ref}' or '{ref_without_origin}'. "
+                            f"Available refs: {available_refs}"
+                        ) from None
                 else:
                     # Try with 'origin/' prefix for remote branches
                     try:
@@ -256,9 +288,11 @@ class PluginSourceGit(PluginSource):
                             commit = repo.revparse_single(f'refs/heads/{self.ref}')
                             self.resolved_ref = self.ref
                         except KeyError:
+                            available_refs = self._list_available_refs(repo)
                             raise KeyError(
                                 f"Could not find ref '{self.ref}'. "
-                                f"Tried: '{self.ref}', 'origin/{self.ref}', 'refs/heads/{self.ref}'"
+                                f"Tried: '{self.ref}', 'origin/{self.ref}', 'refs/heads/{self.ref}'. "
+                                f"Available refs: {available_refs}"
                             ) from None
         else:
             # Use repository's default branch (HEAD)
