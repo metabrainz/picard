@@ -629,9 +629,13 @@ picard plugins --install $(pwd) --yes
 
 ### 3. Check Logs
 
+Picard outputs logs to stderr by default. Run Picard from terminal to see logs:
+
 ```bash
-tail -f ~/.config/MusicBrainz/Picard/picard.log
+picard 2>&1 | grep -i "plugin\|error"
 ```
+
+Or check the in-app log viewer: Help → View Error/Debug Log
 
 ### 4. Test Features
 
