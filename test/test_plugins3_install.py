@@ -462,7 +462,7 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.uninstall_plugin = Mock()
@@ -504,7 +504,7 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.1.0', 'abc1234', 'def5678'))
@@ -544,7 +544,7 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Same commit = already up to date
@@ -585,7 +585,7 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = Mock()
+        mock_plugin = create_mock_plugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Return mixed results: updated, unchanged, failed
