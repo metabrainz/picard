@@ -25,7 +25,7 @@ Picard 3.0 introduces a new plugin system (V3) with significant improvements:
 - **PyQt6**: Updated from PyQt5 to PyQt6
 - **Better isolation**: Each plugin in its own directory
 
-**Migration tool success rate**: **94.5%** on all 73 real plugins (69/73 automatic or near-automatic)!
+**The migration tool handles most plugins automatically with minimal manual work required.**
 
 ---
 
