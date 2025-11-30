@@ -504,13 +504,19 @@ picard plugins --uninstall example
 1. Push to GitHub/GitLab
 2. Create releases:
    - For development: Use branches (e.g., `main`, `develop`)
-   - For stable versions: Optionally tag releases (e.g., `v1.0.0`)
+   - For stable versions: Tag releases (e.g., `v1.0.0`, `1.0.0`, `release-1.0.0`)
 3. Submit to plugin registry (Phase 3)
 4. Update plugin documentation
 
 **Note**: The plugin system supports both branches and tags:
-- **Branches** (recommended): `picard plugins --update` pulls latest commits
-- **Tags**: Currently, plugins pinned to tags don't auto-update. Use `picard plugins --switch-ref <plugin> <new-tag>` to update to a specific tag. Automatic tag updates (finding latest tag) is planned for future implementation.
+- **Branches**: `picard plugins --update` pulls latest commits
+- **Tags**: `picard plugins --update` automatically finds and switches to the latest tag (based on version number)
+
+**Supported tag formats**:
+- `v1.0.0`, `v1.0`, `v1` (with v prefix)
+- `1.0.0`, `1.0`, `1` (without prefix)
+- `release-1.0.0`, `release/1.0.0` (with release prefix)
+- `2024.11.30` (date-based)
 
 ---
 
