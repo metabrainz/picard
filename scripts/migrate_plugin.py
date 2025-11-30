@@ -384,6 +384,51 @@ def analyze_function_signatures(tree):
     return warnings
 
 
+def detect_instance_method_registrations(tree):
+    """Detect instance method registrations like register_*(instance.method)."""
+    instance_registrations = []
+    register_funcs = {
+        'register_track_metadata_processor',
+        'register_album_metadata_processor',
+        'register_file_post_load_processor',
+        'register_file_post_save_processor',
+        'register_file_post_addition_to_track_processor',
+        'register_file_post_removal_from_track_processor',
+        'register_album_post_removal_processor',
+    }
+
+    for node in tree.body:
+        # Find module-level register calls
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+            if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
+                func_name = node.value.func.id
+                if node.value.args:
+                    arg = node.value.args[0]
+                    # Check if argument is instance.method
+                    if isinstance(arg, ast.Attribute):
+                        instance_name = arg.value.id if isinstance(arg.value, ast.Name) else None
+                        method_name = arg.attr
+                        if instance_name:
+                            # Extract priority if present
+                            priority = None
+                            for keyword in node.value.keywords:
+                                if keyword.arg == 'priority':
+                                    if isinstance(keyword.value, ast.Constant):
+                                        priority = keyword.value.value
+
+                            instance_registrations.append(
+                                {
+                                    'register_func': func_name,
+                                    'instance': instance_name,
+                                    'method': method_name,
+                                    'priority': priority,
+                                    'node': node,
+                                }
+                            )
+
+    return instance_registrations
+
+
 def convert_plugin_code(content, metadata):
     """Convert v2 plugin code to v3 format using AST."""
     all_warnings = []
@@ -398,6 +443,9 @@ def convert_plugin_code(content, metadata):
     has_log_import = False
     has_config_import = False
     has_tagger_import = False
+
+    # Detect instance method registrations first
+    instance_registrations = detect_instance_method_registrations(tree)
 
     # Find register calls and imports to remove
     register_calls = []
@@ -446,7 +494,11 @@ def convert_plugin_code(content, metadata):
                 if node.value.args:
                     arg = node.value.args[0]
                     if isinstance(arg, ast.Name):
+                        # Direct function registration
                         register_calls.append((func_name, arg.id))
+                        nodes_to_remove.add(node)
+                    elif isinstance(arg, ast.Attribute):
+                        # Instance method registration - will be handled separately
                         nodes_to_remove.add(node)
 
         # Check for class methods that might be processors
@@ -624,13 +676,27 @@ def convert_plugin_code(content, metadata):
         new_lines.pop()
 
     # Add enable function with all register calls
-    if register_calls:
+    if register_calls or instance_registrations:
         new_lines.append('')
         new_lines.append('')
         new_lines.append('def enable(api):')
         new_lines.append('    """Called when plugin is enabled."""')
+
+        # Add direct function registrations
         for reg_type, func_name in register_calls:
             new_lines.append(f'    api.{reg_type}({func_name})')
+
+        # Add instance method registrations
+        for reg in instance_registrations:
+            reg_func = reg['register_func']
+            instance = reg['instance']
+            method = reg['method']
+            priority = reg['priority']
+
+            if priority is not None:
+                new_lines.append(f'    api.{reg_func}({instance}.{method}, priority={priority})')
+            else:
+                new_lines.append(f'    api.{reg_func}({instance}.{method})')
 
     return '\n'.join(new_lines), all_warnings
 
