@@ -107,6 +107,11 @@ class PluginApi:
         self._api_config = ConfigSection(get_config(), full_name)
 
     @property
+    def tagger(self):
+        """Access to the main Tagger instance."""
+        return self._tagger
+
+    @property
     def web_service(self) -> WebService:
         return self._tagger.webservice
 
