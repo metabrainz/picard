@@ -502,7 +502,7 @@ picard plugins --uninstall example
 ## Publishing Your Plugin
 
 1. Push to GitHub/GitLab
-2. Tag release: `git tag v1.0.0 && git push --tags`
+2. Create release branch: `git checkout -b release/1.0.0 && git push -u origin release/1.0.0`
 3. Submit to plugin registry (Phase 3)
 4. Update plugin documentation
 
