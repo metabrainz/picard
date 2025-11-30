@@ -512,14 +512,17 @@ def convert_plugin_code(content, metadata):
     # Convert config/log/tagger access
     if has_log_import:
         content = convert_log_access(content)
-        all_warnings.append("✓ Converted log.* calls to _api.logger.*")
+        all_warnings.append("✓ Converted log.* calls to api.logger.*")
 
     if has_config_import:
         content = convert_config_access(content)
-        all_warnings.append("✓ Converted config.setting to _api.global_config.setting")
+        all_warnings.append("✓ Converted config.setting to api.global_config.setting")
 
     if has_tagger_import:
-        all_warnings.append("⚠️  Tagger import found - use _api._tagger (review if needed)")
+        all_warnings.append("⚠️  Tagger import found - use api._tagger (review if needed)")
+
+    # Convert api.* to self.api.* in class methods
+    content = convert_api_in_classes(content)
 
     # Warn about method-based processors
     if method_processors:
@@ -538,12 +541,12 @@ def convert_plugin_code(content, metadata):
         all_warnings.append("")
         all_warnings.append("   Or if they're not processors, you can ignore this warning.")
 
-    # Add info about _api pattern
+    # Add info about API access pattern
     if register_calls:
-        all_warnings.append("ℹ️  Module-level _api variable added for accessing API")
-        all_warnings.append("   Use _api.logger.info(...) for logging")
-        all_warnings.append("   Use _api.BaseAction, _api.OptionsPage, etc. for base classes")
-        all_warnings.append("   Use _api.global_config.setting for config access")
+        all_warnings.append("ℹ️  API access pattern:")
+        all_warnings.append("   - Processors: Use 'api' parameter (first argument)")
+        all_warnings.append("   - Classes: Use 'self.api' (passed to __init__)")
+        all_warnings.append("   - Add api parameter to OptionsPage/BaseAction __init__")
 
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
@@ -604,12 +607,15 @@ def convert_plugin_code(content, metadata):
             plugin_name = metadata.get('name', 'Plugin')
             line = line.replace('PLUGIN_NAME', f'"{plugin_name}"')
 
-        # Convert class references to use _api
-        # e.g., class MyAction(BaseAction) -> class MyAction(_api.BaseAction)
+        # Convert class references to use api from PluginApi
+        # e.g., class MyAction(BaseAction) -> class MyAction(api.BaseAction)
+        # But we need to import from picard.plugin3.api
         for class_name in ['BaseAction', 'OptionsPage', 'File', 'Track', 'Album', 'Cluster', 'CoverArtImage']:
             if f'({class_name})' in line or f'({class_name},' in line:
-                line = line.replace(f'({class_name})', f'(_api.{class_name})')
-                line = line.replace(f'({class_name},', f'(_api.{class_name},')
+                # Don't convert if already has module prefix
+                if f'api.{class_name}' not in line and 'picard.' not in line:
+                    line = line.replace(f'({class_name})', f'(api.{class_name})')
+                    line = line.replace(f'({class_name},', f'(api.{class_name},')
 
         new_lines.append(line)
 
@@ -621,14 +627,8 @@ def convert_plugin_code(content, metadata):
     if register_calls:
         new_lines.append('')
         new_lines.append('')
-        new_lines.append('# Module-level api reference for use in classes/functions')
-        new_lines.append('_api = None')
-        new_lines.append('')
-        new_lines.append('')
         new_lines.append('def enable(api):')
         new_lines.append('    """Called when plugin is enabled."""')
-        new_lines.append('    global _api')
-        new_lines.append('    _api = api')
         for reg_type, func_name in register_calls:
             new_lines.append(f'    api.{reg_type}({func_name})')
 
@@ -643,28 +643,28 @@ def fix_function_signatures(content, tree):
         if isinstance(node, ast.FunctionDef):
             args = [arg.arg for arg in node.args.args]
 
-            # Track metadata processor with tagger: (tagger, metadata, track, release) -> (track, metadata)
+            # Track metadata processor with tagger: (tagger, metadata, track, release) -> (api, track, metadata)
             if len(args) == 4 and 'tagger' in args and 'track' in args and 'metadata' in args:
                 old_sig = f"def {node.name}(tagger, metadata, track, release)"
-                new_sig = f"def {node.name}(track, metadata)"
+                new_sig = f"def {node.name}(api, track, metadata)"
                 replacements.append((old_sig, new_sig))
 
-            # Track metadata processor: (album, metadata, track, release) -> (track, metadata)
+            # Track metadata processor: (album, metadata, track, release) -> (api, track, metadata)
             elif len(args) == 4 and 'album' in args and 'track' in args and 'metadata' in args:
                 old_sig = f"def {node.name}(album, metadata, track, release)"
-                new_sig = f"def {node.name}(track, metadata)"
+                new_sig = f"def {node.name}(api, track, metadata)"
                 replacements.append((old_sig, new_sig))
 
-            # Album metadata processor: (album, metadata, release) -> (album, metadata)
+            # Album metadata processor: (album, metadata, release) -> (api, album, metadata)
             elif len(args) == 3 and 'album' in args and 'metadata' in args and 'release' in args:
                 old_sig = f"def {node.name}(album, metadata, release)"
-                new_sig = f"def {node.name}(album, metadata)"
+                new_sig = f"def {node.name}(api, album, metadata)"
                 replacements.append((old_sig, new_sig))
 
-            # File processor: (track, file) -> (file)
+            # File processor: (track, file) -> (api, file)
             elif len(args) == 2 and 'track' in args and 'file' in args:
                 old_sig = f"def {node.name}(track, file)"
-                new_sig = f"def {node.name}(file)"
+                new_sig = f"def {node.name}(api, file)"
                 replacements.append((old_sig, new_sig))
 
     for old, new in replacements:
@@ -674,20 +674,59 @@ def fix_function_signatures(content, tree):
 
 
 def convert_log_access(content):
-    """Convert log.* to _api.logger.*"""
-    # Replace log method calls
-    content = re.sub(r'\blog\.debug\b', '_api.logger.debug', content)
-    content = re.sub(r'\blog\.info\b', '_api.logger.info', content)
-    content = re.sub(r'\blog\.warning\b', '_api.logger.warning', content)
-    content = re.sub(r'\blog\.error\b', '_api.logger.error', content)
-    content = re.sub(r'\blog\.exception\b', '_api.logger.exception', content)
+    """Convert log.* to api.logger.* (for processors) or self.api.logger.* (for classes)"""
+    # In processors (functions), use api.logger
+    # In classes, use self.api.logger
+    # For now, convert to api.logger - class conversion happens separately
+    content = re.sub(r'\blog\.debug\b', 'api.logger.debug', content)
+    content = re.sub(r'\blog\.info\b', 'api.logger.info', content)
+    content = re.sub(r'\blog\.warning\b', 'api.logger.warning', content)
+    content = re.sub(r'\blog\.error\b', 'api.logger.error', content)
+    content = re.sub(r'\blog\.exception\b', 'api.logger.exception', content)
     return content
 
 
 def convert_config_access(content):
-    """Convert config.setting to _api.global_config.setting"""
-    content = re.sub(r'\bconfig\.setting\b', '_api.global_config.setting', content)
+    """Convert config.setting to api.global_config.setting (for processors) or self.api.global_config.setting (for classes)"""
+    # In processors (functions), use api.global_config
+    # In classes, use self.api.global_config
+    # For now, convert to api.global_config - class conversion happens separately
+    content = re.sub(r'\bconfig\.setting\b', 'api.global_config.setting', content)
     return content
+
+
+def convert_api_in_classes(content):
+    """Convert api.* to self.api.* in class methods."""
+    try:
+        tree = ast.parse(content)
+    except (SyntaxError, ValueError):
+        return content
+
+    lines = content.split('\n')
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.ClassDef):
+            continue
+
+        # Check if it's OptionsPage or Action
+        is_options = any('OptionsPage' in (base.id if isinstance(base, ast.Name) else '') for base in node.bases)
+        is_action = any('Action' in (base.id if isinstance(base, ast.Name) else '') for base in node.bases)
+
+        if not (is_options or is_action):
+            continue
+
+        # Convert api.* to self.api.* in class methods
+        for item in node.body:
+            if isinstance(item, ast.FunctionDef) and item.name != '__init__':
+                # Get the method lines
+                start_line = item.lineno - 1
+                end_line = item.end_lineno
+                for i in range(start_line, min(end_line, len(lines))):
+                    # Replace api. with self.api. but not self.api.api
+                    if 'api.' in lines[i] and 'self.api' not in lines[i]:
+                        lines[i] = re.sub(r'\bapi\.', 'self.api.', lines[i])
+
+    return '\n'.join(lines)
 
 
 def migrate_plugin(input_file, output_dir=None):
