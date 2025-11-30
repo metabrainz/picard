@@ -292,17 +292,37 @@ class PluginSourceGit(PluginSource):
             target_directory: Path to plugin directory
             single_branch: If True, only fetch the current ref
         """
+
         repo = pygit2.Repository(target_directory.absolute())
         old_commit = str(repo.head.target)
 
+        # Check if currently on a tag
+        current_is_tag = False
+        current_tag = None
+        if self.ref:
+            try:
+                # Check if ref is a tag
+                repo.revparse_single(f'refs/tags/{self.ref}')
+                current_is_tag = True
+                current_tag = self.ref
+            except KeyError:
+                pass
+
         for remote in repo.remotes:
-            if single_branch and self.ref:
-                # Fetch only the specific ref
+            if single_branch and self.ref and not current_is_tag:
+                # Fetch only the specific ref (branch)
                 refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
                 remote.fetch([refspec], callbacks=GitRemoteCallbacks())
             else:
-                # Fetch all refs
+                # Fetch all refs (including tags if on a tag)
                 remote.fetch(callbacks=GitRemoteCallbacks())
+
+        # If on a tag, try to find latest tag
+        if current_is_tag and current_tag:
+            latest_tag = self._find_latest_tag(repo, current_tag)
+            if latest_tag and latest_tag != current_tag:
+                # Update to latest tag
+                self.ref = latest_tag
 
         if self.ref:
             # For branch names without origin/ prefix, try origin/ first
@@ -314,7 +334,10 @@ class PluginSourceGit(PluginSource):
                     ref_to_use = f'origin/{self.ref}'
                 except KeyError:
                     # Fall back to original ref (might be tag or commit hash)
-                    commit = repo.revparse_single(self.ref)
+                    try:
+                        commit = repo.revparse_single(f'refs/tags/{self.ref}')
+                    except KeyError:
+                        commit = repo.revparse_single(self.ref)
             else:
                 commit = repo.revparse_single(ref_to_use)
         else:
@@ -325,6 +348,81 @@ class PluginSourceGit(PluginSource):
         repo.free()
 
         return old_commit, new_commit
+
+    def _find_latest_tag(self, repo, current_tag: str):
+        """Find the latest tag based on version sorting.
+
+        Handles various tag naming conventions:
+        - v1.0.0, v1.0, v1
+        - 1.0.0, 1.0, 1
+        - release-1.0.0, release/1.0.0
+        - 2024.11.30 (date-based)
+        """
+        import re
+
+        from packaging import version as pkg_version
+
+        # Get all tags
+        tags = []
+        for ref_name in repo.references:
+            if ref_name.startswith('refs/tags/'):
+                tag_name = ref_name[len('refs/tags/') :]
+                tags.append(tag_name)
+
+        if not tags:
+            return None
+
+        # Extract version from tag name
+        def extract_version(tag):
+            # Try common patterns
+            patterns = [
+                r'^v?(\d+\.\d+\.\d+)',  # v1.0.0 or 1.0.0
+                r'^v?(\d+\.\d+)',  # v1.0 or 1.0
+                r'^v?(\d+)',  # v1 or 1
+                r'release[-/]v?(\d+\.\d+\.\d+)',  # release-1.0.0 or release/1.0.0
+                r'(\d{4}\.\d{1,2}\.\d{1,2})',  # 2024.11.30 (date-based)
+            ]
+
+            for pattern in patterns:
+                match = re.search(pattern, tag)
+                if match:
+                    return match.group(1)
+            return None
+
+        # Parse current tag version
+        current_version_str = extract_version(current_tag)
+        if not current_version_str:
+            # Can't parse current tag, don't update
+            return None
+
+        try:
+            current_version = pkg_version.parse(current_version_str)
+        except Exception:
+            return None
+
+        # Find all tags with parseable versions
+        versioned_tags = []
+        for tag in tags:
+            version_str = extract_version(tag)
+            if version_str:
+                try:
+                    ver = pkg_version.parse(version_str)
+                    versioned_tags.append((tag, ver))
+                except Exception:
+                    continue
+
+        if not versioned_tags:
+            return None
+
+        # Sort by version and get latest
+        versioned_tags.sort(key=lambda x: x[1], reverse=True)
+        latest_tag, latest_version = versioned_tags[0]
+
+        # Only return if it's newer than current
+        if latest_version > current_version:
+            return latest_tag
+
+        return None
 
 
 class PluginSourceLocal(PluginSource):
