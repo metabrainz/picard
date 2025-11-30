@@ -237,7 +237,10 @@ class PluginSourceGit(PluginSource):
                     self._retry_git_operation(lambda: remote.fetch(callbacks=GitRemoteCallbacks()))
         else:
             depth = 1 if shallow else 0
-            checkout_branch = self.ref if (self.ref and single_branch and not self.ref.startswith('refs/')) else None
+            # Strip origin/ prefix if present for checkout_branch
+            checkout_branch = None
+            if self.ref and single_branch and not self.ref.startswith('refs/'):
+                checkout_branch = self.ref[7:] if self.ref.startswith('origin/') else self.ref
 
             def clone_operation():
                 return pygit2.clone_repository(
