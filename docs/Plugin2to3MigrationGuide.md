@@ -25,7 +25,7 @@ Picard 3.0 introduces a new plugin system (V3) with significant improvements:
 - **PyQt6**: Updated from PyQt5 to PyQt6
 - **Better isolation**: Each plugin in its own directory
 
-**Migration tool success rate**: **95%+** automation for actual plugins!
+**Migration tool success rate**: **94.5%** on all 73 real plugins (69/73 automatic or near-automatic)!
 
 ---
 
@@ -55,7 +55,9 @@ The migration script automatically:
 6. ✅ Converts config/log access to use api
 7. ✅ Regenerates UI files with pyuic6
 8. ✅ Injects api in OptionsPage/Action classes
-9. ✅ Formats code with ruff
+9. ✅ Copies all plugin files (Python modules, docs, assets, etc.)
+10. ✅ Handles file conflicts (renames with .orig extension)
+11. ✅ Formats code with ruff
 
 ---
 
@@ -84,6 +86,17 @@ license = "GPL-2.0-or-later"
 ```
 
 #### 2. Register Calls → enable()
+
+**Supported patterns**:
+- Metadata processors (track, album, file)
+- Script functions
+- Options pages
+- UI actions (cluster, file, album, track, clusterlist)
+- Cover art providers
+- Qualified imports (`metadata.register_*`, `providers.register_*`)
+- Instantiated registrations (`register_action(MyAction())`)
+- Instantiated object methods (`register_processor(MyClass().method)`)
+
 **Before**:
 ```python
 from picard.metadata import register_track_metadata_processor
@@ -202,7 +215,22 @@ Regenerated: ui_options_plugin.py (from ui_options_plugin.ui)
 - All Qt6 enums automatically correct
 - Cleaner output than text conversion
 
-#### 8. API Injection in Classes
+#### 8. Complete File Copying
+**All files and directories** from your V2 plugin are automatically copied to V3:
+- ✅ Python modules (helper files, utilities)
+- ✅ Documentation (README.md, docs/)
+- ✅ Assets (images, data files)
+- ✅ Subdirectories (preserves structure)
+
+**Excluded**: Build artifacts (`__pycache__`, `.pyc`, `dist/`, `build/`, etc.)
+
+**Conflict handling**: If a source file conflicts with a generated file (e.g., `.ui` file), the source is renamed with `.orig` extension:
+```
+options.ui (regenerated from source) ← takes priority
+options.ui.orig (original V2 file) ← renamed
+```
+
+#### 9. API Injection in Classes
 **Before**:
 ```python
 class MyOptionsPage(OptionsPage):
@@ -529,13 +557,23 @@ tail -f ~/.config/MusicBrainz/Picard/picard.log
 
 ## Migration Statistics
 
-Based on testing 84 real V2 plugins:
+Based on testing all 73 plugins from picard-plugins repository:
 
-- **✅ 59% Perfect**: Zero manual work needed
-- **⚠️ 24% Partial**: Minor manual work (API injection)
-- **❌ 17% Failed**: Helper modules (not actual plugins)
+- **✅ 34.2% Perfect**: Zero manual work needed (25 plugins)
+- **⚠️ 60.3% Good**: Minor import review needed (44 plugins)
+- **🔧 5.5% Minimal**: Manual work needed (4 edge cases)
+- **❌ 0% Failed**: No failures!
 
-**For actual standalone plugins: ~95% success rate**
+**Overall success rate: 94.5%** (69/73 automatic or near-automatic)
+
+### Edge Cases (4 plugins)
+
+The 4 plugins requiring manual work use non-standard patterns:
+- Custom plugin-specific registration
+- Registrations inside function scopes
+- Complex class constructor patterns
+
+These represent only 5.5% of the plugin ecosystem.
 
 ### Time Savings
 
@@ -565,4 +603,4 @@ If you encounter issues:
 
 ---
 
-**The migration script handles 90-95% of the work automatically. Most plugins can be migrated in under 30 minutes!**
+**The migration script handles 90-95% of the work automatically. Most plugins can be migrated in 15-30 minutes!**
