@@ -85,6 +85,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     matching,
     metadata,
     network,
+    plugins,
     profiles,
     ratings,
     releases,
@@ -217,7 +218,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for Page in ext_point_options_pages:
             try:
                 api = getattr(Page, '_plugin_api', None)
-                page = Page(api=api)
+                # Only pass api parameter if the page expects it (plugin pages)
+                if api is not None:
+                    page = Page(api=api)
+                else:
+                    page = Page()
                 page.set_dialog(self)
                 page.initialized = True
             except Exception as e:
