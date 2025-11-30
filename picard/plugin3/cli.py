@@ -192,51 +192,68 @@ class PluginCLI:
     def _list_plugins(self):
         """List all installed plugins with details."""
         if not self._manager.plugins:
-            self._out.print('No plugins installed')
-            return ExitCode.SUCCESS
+            if not self._manager._failed_plugins:
+                self._out.print('No plugins installed')
+                return ExitCode.SUCCESS
+            # Only failed plugins, skip to showing them
+        else:
+            self._out.print('Installed plugins:')
+            self._out.nl()
+            for plugin in self._manager.plugins:
+                # Get plugin UUID for checking enabled state
+                plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+                is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
 
-        self._out.print('Installed plugins:')
-        self._out.nl()
-        for plugin in self._manager.plugins:
-            # Get plugin UUID for checking enabled state
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
+                # Show manifest name (human-readable) instead of directory name
+                display_name = plugin.manifest.name() if plugin.manifest else plugin.plugin_id
 
-            # Show manifest name (human-readable) instead of directory name
-            display_name = plugin.manifest.name() if plugin.manifest else plugin.plugin_id
-
-            # Display with semantic methods
-            if is_enabled:
-                status = self._out.d_status_enabled()
-            else:
-                status = self._out.d_status_disabled()
-
-            self._out.print(f'  {self._out.d_name(display_name)} ({status})')
-
-            if hasattr(plugin, 'manifest') and plugin.manifest:
-                desc = plugin.manifest.description()
-                if desc:
-                    self._out.info(f'  {desc}')
-                metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
-                git_info = self._format_git_info(metadata)
-                version = plugin.manifest._data.get('version', '')
-                if git_info:
-                    self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+                # Display with semantic methods
+                if is_enabled:
+                    status = self._out.d_status_enabled()
                 else:
-                    self._out.info(f'  Version: {self._out.d_version(version)}')
-                self._out.info(f'  Path: {self._out.d_path(plugin.local_path)}')
-            self._out.print()
+                    status = self._out.d_status_disabled()
 
-        total = len(self._manager.plugins)
-        enabled = sum(
-            1 for p in self._manager.plugins if p.manifest and p.manifest.uuid in self._manager._enabled_plugins
-        )
-        disabled = total - enabled
-        self._out.print(
-            f'Total: {self._out.d_number(total)} plugin{"s" if total != 1 else ""} '
-            f'({self._out.d_status_enabled(str(enabled))} enabled, '
-            f'{self._out.d_status_disabled(str(disabled))} disabled)'
-        )
+                self._out.print(f'  {self._out.d_name(display_name)} ({status})')
+
+                if hasattr(plugin, 'manifest') and plugin.manifest:
+                    desc = plugin.manifest.description()
+                    if desc:
+                        self._out.info(f'  {desc}')
+                    metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
+                    git_info = self._format_git_info(metadata)
+                    version = plugin.manifest._data.get('version', '')
+                    if git_info:
+                        self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+                    else:
+                        self._out.info(f'  Version: {self._out.d_version(version)}')
+                    self._out.info(f'  Path: {self._out.d_path(plugin.local_path)}')
+                self._out.print()
+
+            total = len(self._manager.plugins)
+            enabled = sum(
+                1 for p in self._manager.plugins if p.manifest and p.manifest.uuid in self._manager._enabled_plugins
+            )
+            disabled = total - enabled
+            self._out.print(
+                f'Total: {self._out.d_number(total)} plugin{"s" if total != 1 else ""} '
+                f'({self._out.d_status_enabled(str(enabled))} enabled, '
+                f'{self._out.d_status_disabled(str(disabled))} disabled)'
+            )
+
+        # Show failed plugins if any
+        if self._manager._failed_plugins:
+            self._out.nl()
+            self._out.error(f'Failed to load {len(self._manager._failed_plugins)} plugin(s):')
+            self._out.nl()
+            for plugin_dir, plugin_name, error_msg in self._manager._failed_plugins:
+                from pathlib import Path
+
+                full_path = Path(plugin_dir) / plugin_name
+                self._out.print(f'  • {plugin_name}')
+                self._out.print(f'    Error: {error_msg}')
+                self._out.print(f'    Path: {full_path}')
+                self._out.nl()
+
         return ExitCode.SUCCESS
 
     def _show_info(self, plugin_name):
@@ -535,27 +552,47 @@ class PluginCLI:
             if error:
                 return error
 
+            # Check if this is a failed plugin (no manifest)
+            is_failed = plugin.manifest is None
+
             # Confirmation prompt unless --yes flag
             if not yes:
                 if not self._out.yesno(f'Uninstall plugin {self._out.d_id(plugin.plugin_id)}?'):
                     self._out.print('Cancelled')
                     continue
 
-                # Ask about config cleanup if not using --purge
-                if not purge:
+                # Ask about config cleanup if not using --purge (skip for failed plugins)
+                if not purge and not is_failed:
                     purge_this = self._out.yesno('Delete plugin configuration?')
                 else:
-                    purge_this = True
+                    purge_this = purge
             else:
                 purge_this = purge
 
             try:
                 self._out.print(f'Uninstalling {self._out.d_id(plugin.plugin_id)}...')
-                self._manager.uninstall_plugin(plugin, purge_this)
-                if purge_this:
-                    self._out.success('Plugin and configuration removed')
+
+                if is_failed:
+                    # For failed plugins, just remove the directory
+                    from pathlib import Path
+                    import shutil
+
+                    plugin_path = Path(plugin.local_path)
+                    plugins_dir = Path(self._manager._primary_plugin_dir)
+
+                    # Safety check: ensure we're removing a subdirectory of plugins directory
+                    if not plugin_path.is_relative_to(plugins_dir) or plugin_path == plugins_dir:
+                        self._out.error(f'Invalid plugin path: {plugin_path}')
+                        return ExitCode.ERROR
+
+                    shutil.rmtree(plugin_path)
+                    self._out.success('Failed plugin directory removed')
                 else:
-                    self._out.success('Plugin uninstalled (configuration kept)')
+                    self._manager.uninstall_plugin(plugin, purge_this)
+                    if purge_this:
+                        self._out.success('Plugin and configuration removed')
+                    else:
+                        self._out.success('Plugin uninstalled (configuration kept)')
             except Exception as e:
                 self._out.error(f'Failed to uninstall plugin: {e}')
                 return ExitCode.ERROR
@@ -933,6 +970,17 @@ class PluginCLI:
             return None, ExitCode.ERROR
 
         if not result:
+            # Check if it's a failed plugin directory name
+            for plugin_dir, plugin_name, _ in self._manager._failed_plugins:
+                if plugin_name == identifier or str(plugin_dir).endswith(identifier):
+                    # Return a minimal plugin-like object with just the path
+                    from pathlib import Path
+                    from types import SimpleNamespace
+
+                    actual_path = Path(plugin_dir) / plugin_name
+                    failed_plugin = SimpleNamespace(local_path=actual_path, plugin_id=plugin_name, manifest=None)
+                    return failed_plugin, None
+
             self._out.error(f'Plugin "{identifier}" not found')
             return None, ExitCode.NOT_FOUND
 

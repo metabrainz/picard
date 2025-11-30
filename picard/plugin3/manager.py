@@ -162,6 +162,7 @@ class PluginManager:
 
         self._tagger: Tagger | None = tagger
         self._enabled_plugins = set()
+        self._failed_plugins = []  # List of (path, name, error_message) tuples
         self._load_config()
 
         # Initialize registry for blacklist checking
@@ -812,13 +813,17 @@ class PluginManager:
         """
         self.disable_plugin(plugin)
         plugin_path = plugin.local_path
-        if plugin_path.is_relative_to(self._primary_plugin_dir):
-            if os.path.islink(plugin_path):
-                log.debug("Removing symlink %r", plugin_path)
-                os.remove(plugin_path)
-            elif os.path.isdir(plugin_path):
-                log.debug("Removing directory %r", plugin_path)
-                shutil.rmtree(plugin_path)
+
+        # Safety check: ensure plugin_path is a child of primary plugin dir, not the dir itself
+        if not plugin_path.is_relative_to(self._primary_plugin_dir) or plugin_path == self._primary_plugin_dir:
+            raise ValueError(f'Plugin path must be a subdirectory of {self._primary_plugin_dir}: {plugin_path}')
+
+        if os.path.islink(plugin_path):
+            log.debug("Removing symlink %r", plugin_path)
+            os.remove(plugin_path)
+        elif os.path.isdir(plugin_path):
+            log.debug("Removing directory %r", plugin_path)
+            shutil.rmtree(plugin_path)
 
         # Remove metadata
         from picard.config import get_config
@@ -1019,7 +1024,9 @@ class PluginManager:
                 )
                 return None
         except Exception as ex:
+            error_msg = str(ex)
             log.warning('Could not read plugin manifest from %r', plugin_dir.joinpath(plugin_name), exc_info=ex)
+            self._failed_plugins.append((plugin_dir, plugin_name, error_msg))
             return None
 
 
