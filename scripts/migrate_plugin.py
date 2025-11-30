@@ -376,9 +376,19 @@ def convert_plugin_api_v2_to_v3(content):
         )
         warnings.append("✓ Updated BaseAction import to plugin3 API")
 
-    if 'from picard.ui.options import OptionsPage' in content:
-        content = content.replace(
-            'from picard.ui.options import OptionsPage', 'from picard.plugin3.api import OptionsPage'
+    # Handle both single-line and multi-line OptionsPage imports
+    if 'from picard.ui.options import' in content and 'OptionsPage' in content:
+        # Remove the entire import block (including register_options_page)
+        # Match: from picard.ui.options import (...) or from picard.ui.options import X, Y
+        content = re.sub(
+            r'from picard\.ui\.options import\s*\([^)]*\)',
+            'from picard.plugin3.api import OptionsPage',
+            content,
+            flags=re.MULTILINE | re.DOTALL,
+        )
+        # Also handle single-line imports
+        content = re.sub(
+            r'from picard\.ui\.options import\s+[^\n]+', 'from picard.plugin3.api import OptionsPage', content
         )
         warnings.append("✓ Updated OptionsPage import to plugin3 API")
 
