@@ -735,9 +735,9 @@ These represent only 5.5% of the plugin ecosystem.
 
 ## Additional Resources
 
-- **V3 Plugin Documentation**: docs/PLUGINSV3/MIGRATION.md
-- **Plugin API Reference**: docs/PLUGINSV3/MANIFEST.md
-- **Example Migrated Plugin**: https://github.com/rdswift/picard-v3-plugins
+- **V3 Plugin Documentation**: [MIGRATION.md](PLUGINSV3/MIGRATION.md)
+- **Plugin Manifest Reference**: [MANIFEST.md](PLUGINSV3/MANIFEST.md)
+- **Plugin API Reference**: [API.md](PLUGINSV3/API.md)
 - **Forum**: https://community.metabrainz.org/c/picard
 
 ---
@@ -747,7 +747,7 @@ These represent only 5.5% of the plugin ecosystem.
 If you encounter issues:
 
 1. Check the warnings from the migration script
-2. Review docs/PLUGINSV3/MIGRATION.md
+2. Review [MIGRATION.md](PLUGINSV3/MIGRATION.md)
 3. Ask on the MusicBrainz forum
 4. Report bugs: https://tickets.metabrainz.org/browse/PICARD
 
