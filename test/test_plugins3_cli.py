@@ -22,9 +22,9 @@ from unittest.mock import Mock, PropertyMock
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
+    MockCliArgs,
+    MockPlugin,
     MockPluginManager,
-    create_cli_args,
-    create_mock_plugin,
     load_plugin_manifest,
     run_cli,
 )
@@ -45,7 +45,7 @@ class TestPluginCLI(PicardTestCase):
         manifest = load_plugin_manifest('example')
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 
-        mock_plugin = create_mock_plugin(name='test-plugin', uuid=test_uuid, manifest=manifest)
+        mock_plugin = MockPlugin(name='test-plugin', uuid=test_uuid, manifest=manifest)
         mock_manager = MockPluginManager(plugins=[mock_plugin], _enabled_plugins={test_uuid})
         mock_manager._get_plugin_metadata = Mock(return_value={})
 
@@ -69,11 +69,11 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.cli import PluginCLI
 
         # Create plugin with full Plugin ID
-        mock_plugin = create_mock_plugin(name='example_plugin_test-uuid-1234', display_name='Example Plugin')
+        mock_plugin = MockPlugin(name='example_plugin_test-uuid-1234', display_name='Example Plugin')
         mock_manager = MockPluginManager(plugins=[mock_plugin])
 
         output = Mock()
-        args = create_cli_args()
+        args = MockCliArgs()
         cli = PluginCLI(mock_manager, args, output)
 
         # Should match by Plugin ID prefix
@@ -85,7 +85,7 @@ class TestPluginCLI(PicardTestCase):
         """Test status command shows plugin state."""
         from picard.plugin3.plugin import PluginState
 
-        mock_plugin = create_mock_plugin(state=PluginState.ENABLED)
+        mock_plugin = MockPlugin(state=PluginState.ENABLED)
         mock_plugin.manifest.version = '1.0.0'
         mock_plugin.manifest.api_versions = ['3.0']
         mock_plugin.manifest._data = {'version': '1.0.0', 'api': ['3.0']}
@@ -170,7 +170,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_update_cli_commands(self):
         """Test that update CLI commands are properly routed."""
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.check_updates = Mock(return_value=[])
         mock_manager.update_all_plugins = Mock(return_value=[])
@@ -197,7 +197,7 @@ class TestPluginCLI(PicardTestCase):
         """Test update command properly handles Version objects."""
 
         manifest = load_plugin_manifest('example')
-        mock_plugin = create_mock_plugin(manifest=manifest)
+        mock_plugin = MockPlugin(manifest=manifest)
         mock_manager = MockPluginManager(plugins=[mock_plugin])
 
         # Simulate update_plugin returning Version objects (the bug scenario)
@@ -240,7 +240,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_enable_plugins_command(self):
         """Test enable command."""
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin], enable_plugin=Mock())
 
         exit_code, _, _ = run_cli(mock_manager, enable=['test-plugin'])
@@ -250,7 +250,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_disable_plugins_command(self):
         """Test disable command."""
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin], disable_plugin=Mock())
 
         exit_code, _, _ = run_cli(mock_manager, disable=['test-plugin'])
@@ -260,7 +260,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_cli_keyboard_interrupt(self):
         """Test CLI handles KeyboardInterrupt."""
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.check_updates = Mock(side_effect=KeyboardInterrupt())
 

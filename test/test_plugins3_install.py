@@ -22,10 +22,10 @@ from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
+    MockCliArgs,
+    MockPlugin,
     MockPluginManager,
     MockTagger,
-    create_cli_args,
-    create_mock_plugin,
     run_cli,
 )
 
@@ -176,7 +176,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_switch_ref_cli(self):
         """Test switch-ref CLI command."""
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.switch_ref = Mock(return_value=('main', 'v1.0.0', 'abc1234', 'def5678'))
 
@@ -379,7 +379,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = create_cli_args()
+        args = MockCliArgs()
         args.ref = None
         args.list = False
         args.info = None
@@ -425,7 +425,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = create_cli_args()
+        args = MockCliArgs()
         args.ref = None
         args.list = False
         args.info = None
@@ -462,13 +462,13 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.uninstall_plugin = Mock()
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = create_cli_args()
+        args = MockCliArgs()
         args.ref = None
         args.list = False
         args.info = None
@@ -504,13 +504,13 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.1.0', 'abc1234', 'def5678'))
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = create_cli_args()
+        args = MockCliArgs()
         args.ref = None
         args.list = False
         args.info = None
@@ -544,14 +544,14 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Same commit = already up to date
         mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.0.0', 'abc1234', 'abc1234'))
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = create_cli_args()
+        args = MockCliArgs()
         args.ref = None
         args.list = False
         args.info = None
@@ -585,7 +585,7 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Return mixed results: updated, unchanged, failed
@@ -598,7 +598,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger.pluginmanager3 = mock_manager
 
-        args = create_cli_args()
+        args = MockCliArgs()
         args.ref = None
         args.list = False
         args.info = None

@@ -123,20 +123,12 @@ class MockCliArgs(Mock):
         super().__init__(**defaults)
 
 
-def create_cli_args(**kwargs):
-    """Create mock CLI args with defaults.
-
-    Deprecated: Use MockCliArgs() instead.
-    """
-    return MockCliArgs(**kwargs)
-
-
 def run_cli(manager, **args_kwargs):
     """Run CLI with given args and return (exit_code, stdout, stderr)."""
     from picard.plugin3.cli import PluginCLI
 
     output = create_cli_output()
-    args = create_cli_args(**args_kwargs)
+    args = MockCliArgs(**args_kwargs)
     cli = PluginCLI(manager, args, output)
     exit_code = cli.run()
     return exit_code, output.stdout.getvalue(), output.stderr.getvalue()
@@ -168,14 +160,6 @@ class MockPlugin(Mock):
             self.manifest.uuid = uuid
             self.manifest.version = version
             self.manifest.name = Mock(return_value=display_name)
-
-
-def create_mock_plugin(name='test-plugin', uuid='test-uuid-1234', **kwargs):
-    """Create a mock plugin with common attributes.
-
-    Deprecated: Use MockPlugin() instead.
-    """
-    return MockPlugin(name=name, uuid=uuid, **kwargs)
 
 
 def create_mock_manager_with_manifest_validation():

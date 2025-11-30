@@ -25,8 +25,8 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
+    MockPlugin,
     MockTagger,
-    create_mock_plugin,
 )
 
 from picard.plugin3.manager import PluginManager
@@ -60,7 +60,7 @@ class TestPluginManagerHelpers(PicardTestCase):
         from picard.plugin3.manager import PluginNoUUIDError
 
         manager = PluginManager(None)
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = None
 
@@ -72,7 +72,7 @@ class TestPluginManagerHelpers(PicardTestCase):
     def test_get_plugin_uuid_success(self):
         """Test _get_plugin_uuid with valid UUID."""
         manager = PluginManager(None)
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.manifest.uuid = 'test-uuid-123'
 
         result = manager._get_plugin_uuid(mock_plugin)
@@ -349,7 +349,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._registry = create_test_registry()
 
         # Mock plugin with manifest and UUID
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
@@ -372,7 +372,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._registry = create_test_registry()
 
         # Mock plugin with manifest and UUID
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'nonexistent-uuid'
 
@@ -395,7 +395,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._registry = create_test_registry()
 
         # Mock plugin without UUID
-        mock_plugin = create_mock_plugin()
+        mock_plugin = MockPlugin()
         mock_plugin.manifest = None
 
         registry_id = manager.get_plugin_registry_id(mock_plugin)
