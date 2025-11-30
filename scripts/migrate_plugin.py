@@ -351,7 +351,7 @@ def convert_plugin_api_v2_to_v3(content):
     warnings = []
 
     # Remove imports that will be accessed via api
-    # BaseAction, OptionsPage, File, Track, Album, Cluster, CoverArtImage, CoverArtProvider
+    # BaseAction, OptionsPage, File, Track, Album, Cluster, Metadata, CoverArtImage, CoverArtProvider
     # These are now available as api.BaseAction, api.OptionsPage, etc.
     imports_to_remove = [
         'from picard.ui.itemviews import BaseAction',
@@ -360,6 +360,7 @@ def convert_plugin_api_v2_to_v3(content):
         'from picard.track import Track',
         'from picard.album import Album',
         'from picard.cluster import Cluster',
+        'from picard.metadata import Metadata',
         'from picard.coverart.image import CoverArtImage',
         'from picard.coverart.providers import CoverArtProvider',
     ]
@@ -729,7 +730,7 @@ def convert_plugin_code(content, metadata):
 
         # Convert class references to use api from PluginApi
         # e.g., class MyAction(BaseAction) -> class MyAction(api.BaseAction)
-        # But we need to import from picard.plugin3.api
+        # Also convert instantiation: Metadata() -> api.Metadata()
         for class_name in [
             'BaseAction',
             'OptionsPage',
@@ -737,14 +738,23 @@ def convert_plugin_code(content, metadata):
             'Track',
             'Album',
             'Cluster',
+            'Metadata',
             'CoverArtImage',
             'CoverArtProvider',
         ]:
+            # Class inheritance
             if f'({class_name})' in line or f'({class_name},' in line:
                 # Don't convert if already has module prefix
                 if f'api.{class_name}' not in line and 'picard.' not in line:
                     line = line.replace(f'({class_name})', f'(api.{class_name})')
                     line = line.replace(f'({class_name},', f'(api.{class_name},')
+
+            # Class instantiation (e.g., Metadata())
+            if f'{class_name}(' in line:
+                if f'api.{class_name}(' not in line and 'picard.' not in line:
+                    # Only replace if it's not part of a class definition
+                    if not line.strip().startswith('class '):
+                        line = line.replace(f'{class_name}(', f'api.{class_name}(')
 
         new_lines.append(line)
 

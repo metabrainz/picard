@@ -35,6 +35,7 @@ The following classes are available through the `api` object:
 - `api.Track` - Track object
 - `api.File` - File base class (for custom formats)
 - `api.Cluster` - Cluster object
+- `api.Metadata` - Metadata container for tags
 - `api.CoverArtImage` - Cover art image object
 - `api.CoverArtProvider` - Base class for cover art providers
 - `api.BaseAction` - Base class for UI actions
@@ -47,6 +48,11 @@ class MyProvider(api.CoverArtProvider):
 
 class MyFormat(api.File):
     EXTENSIONS = [".custom"]
+
+    def _load(self, filename):
+        metadata = api.Metadata()
+        # Load tags into metadata
+        return metadata
 ```
 
 ---

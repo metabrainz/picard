@@ -66,6 +66,7 @@ from picard.extension_points.metadata import (
 from picard.extension_points.options_pages import register_options_page
 from picard.extension_points.script_functions import register_script_function
 from picard.file import File
+from picard.metadata import Metadata
 from picard.plugin3.manifest import PluginManifest
 from picard.track import Track
 from picard.webservice import WebService
@@ -80,6 +81,7 @@ class PluginApi:
     Track = Track
     File = File
     Cluster = Cluster
+    Metadata = Metadata
     CoverArtImage = CoverArtImage
     CoverArtProvider = CoverArtProvider
     BaseAction = BaseAction
