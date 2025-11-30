@@ -14,6 +14,27 @@ import re
 import sys
 
 
+def format_import_statement(module, names):
+    """Format import statement with trailing comma for ruff formatting.
+
+    Args:
+        module: Module name (e.g., 'picard.plugin3.api')
+        names: List of names to import or single name string
+
+    Returns:
+        Formatted import statement
+    """
+    if isinstance(names, str):
+        names = [names]
+
+    if len(names) == 1:
+        return f"from {module} import {names[0]}"
+
+    # Multiple imports - use parentheses with trailing comma for ruff formatting
+    names_str = ",\n    ".join(names) + ","
+    return f"from {module} import (\n    {names_str}\n)"
+
+
 def extract_plugin_metadata(content, input_path=None):
     """Extract PLUGIN_* metadata from v2 plugin using AST parsing."""
     metadata = {}
@@ -459,6 +480,7 @@ def convert_plugin_code(content, metadata):
         'register_album_post_removal_processor',
         'register_track_post_removal_processor',
         'register_cluster_action',
+        'register_clusterlist_action',
         'register_file_action',
         'register_album_action',
         'register_track_action',
@@ -489,6 +511,7 @@ def convert_plugin_code(content, metadata):
 
         # Find module-level register calls
         elif isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+            # Handle direct calls: register_*()
             if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
                 func_name = node.value.func.id
                 if node.value.args:
@@ -497,9 +520,45 @@ def convert_plugin_code(content, metadata):
                         # Direct function registration
                         register_calls.append((func_name, arg.id))
                         nodes_to_remove.add(node)
+                    elif isinstance(arg, ast.Call):
+                        # Instantiated registration: register_cluster_action(MyAction())
+                        if isinstance(arg.func, ast.Name):
+                            register_calls.append((func_name, arg.func.id))
+                            nodes_to_remove.add(node)
                     elif isinstance(arg, ast.Attribute):
-                        # Instance method registration - will be handled separately
-                        nodes_to_remove.add(node)
+                        # Check if it's an instantiated object method: Class().method
+                        if isinstance(arg.value, ast.Call) and isinstance(arg.value.func, ast.Name):
+                            # register_processor(MyClass().my_method)
+                            # Convert to: instance = MyClass(); api.register_processor(instance.my_method)
+                            class_name = arg.value.func.id
+                            method_name = arg.attr
+                            instance_registrations.append(
+                                {
+                                    'register_func': func_name,
+                                    'class_name': class_name,
+                                    'method': method_name,
+                                    'priority': None,
+                                }
+                            )
+                            nodes_to_remove.add(node)
+                        else:
+                            # Instance method registration - will be handled separately
+                            nodes_to_remove.add(node)
+            # Handle qualified calls: providers.register_*(), metadata.register_*()
+            elif isinstance(node.value.func, ast.Attribute):
+                if node.value.func.attr in register_funcs:
+                    func_name = node.value.func.attr
+                    if node.value.args:
+                        arg = node.value.args[0]
+                        if isinstance(arg, ast.Name):
+                            # Qualified registration: providers.register_cover_art_provider(Provider)
+                            register_calls.append((func_name, arg.id))
+                            nodes_to_remove.add(node)
+                        elif isinstance(arg, ast.Call):
+                            # Instantiated registration: register_cluster_action(MyAction())
+                            if isinstance(arg.func, ast.Name):
+                                register_calls.append((func_name, arg.func.id))
+                                nodes_to_remove.add(node)
 
         # Check for class methods that might be processors
         elif isinstance(node, ast.ClassDef):
@@ -617,7 +676,11 @@ def convert_plugin_code(content, metadata):
 
         for node in tree.body:
             if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+                # Handle direct calls: register_*()
                 if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
+                    nodes_to_remove.add(node)
+                # Handle qualified calls: providers.register_*(), metadata.register_*()
+                elif isinstance(node.value.func, ast.Attribute) and node.value.func.attr in register_funcs:
                     nodes_to_remove.add(node)
             elif isinstance(node, ast.Assign):
                 for target in node.targets:
@@ -689,14 +752,25 @@ def convert_plugin_code(content, metadata):
         # Add instance method registrations
         for reg in instance_registrations:
             reg_func = reg['register_func']
-            instance = reg['instance']
             method = reg['method']
             priority = reg['priority']
 
-            if priority is not None:
-                new_lines.append(f'    api.{reg_func}({instance}.{method}, priority={priority})')
+            # Check if it's a class instantiation pattern
+            if 'class_name' in reg:
+                class_name = reg['class_name']
+                # Create instance and register: instance = Class(); api.register(instance.method)
+                new_lines.append(f'    _instance = {class_name}()')
+                if priority is not None:
+                    new_lines.append(f'    api.{reg_func}(_instance.{method}, priority={priority})')
+                else:
+                    new_lines.append(f'    api.{reg_func}(_instance.{method})')
             else:
-                new_lines.append(f'    api.{reg_func}({instance}.{method})')
+                # Existing instance pattern
+                instance = reg['instance']
+                if priority is not None:
+                    new_lines.append(f'    api.{reg_func}({instance}.{method}, priority={priority})')
+                else:
+                    new_lines.append(f'    api.{reg_func}({instance}.{method})')
 
     return '\n'.join(new_lines), all_warnings
 
@@ -964,6 +1038,84 @@ def migrate_plugin(input_file, output_dir=None):
         for f in qt5_files:
             print(f"    - {f}")
 
+    # Copy all remaining files and directories from source
+    if input_path.parent.exists():
+        # Files generated by migration script (don't copy from source)
+        generated_files = {
+            'MANIFEST.toml',
+            '__init__.py',
+            code_path.name,
+        }
+        generated_files.update(f.name for f in ui_source_files)
+
+        # Python build/cache patterns to exclude (from Python.gitignore)
+        exclude_patterns = {
+            '__pycache__',
+            '.pytest_cache',
+            '.tox',
+            '.nox',
+            '.coverage',
+            '.cache',
+            'htmlcov',
+            'build',
+            'dist',
+            'eggs',
+            '.eggs',
+            '*.egg-info',
+            'sdist',
+            'var',
+            'wheels',
+            '.Python',
+            'pip-log.txt',
+            'pip-delete-this-directory.txt',
+        }
+
+        copied_files = []
+        copied_dirs = []
+        conflicts = []
+
+        for item in input_path.parent.iterdir():
+            # Skip the main input file, hidden files, and Python build artifacts
+            if (
+                item == input_path
+                or item.name.startswith('.')
+                or item.name in exclude_patterns
+                or item.suffix in ('.pyc', '.pyo', '.pyd', '.so')
+            ):
+                continue
+
+            dest = out_path / item.name
+
+            if item.is_file():
+                # Check for conflict with generated files
+                if item.name in generated_files:
+                    # Rename conflicting file with .orig extension
+                    new_name = f"{item.name}.orig"
+                    dest = out_path / new_name
+                    conflicts.append((item.name, new_name))
+
+                dest.write_bytes(item.read_bytes())
+                copied_files.append(dest.name)
+
+                # Format Python files with ruff
+                if dest.suffix == '.py':
+                    format_with_ruff(dest, all_warnings)
+
+            elif item.is_dir():
+                import shutil
+
+                shutil.copytree(item, dest, dirs_exist_ok=True)
+                copied_dirs.append(item.name)
+
+        if copied_files:
+            print(f"\n✓ Copied {len(copied_files)} file(s)")
+        if copied_dirs:
+            print(f"✓ Copied {len(copied_dirs)} directory(ies)")
+        if conflicts:
+            all_warnings.append(f"⚠️  Renamed {len(conflicts)} conflicting file(s):")
+            for old, new in conflicts:
+                all_warnings.append(f"   {old} → {new}")
+
     # Print warnings
     if all_warnings:
         print(f"\n{'=' * 70}")
@@ -984,15 +1136,30 @@ def migrate_plugin(input_file, output_dir=None):
     return 0
 
 
-def format_with_ruff(file_path):
-    """Format Python file with ruff."""
+def format_with_ruff(file_path, warnings_list=None):
+    """Format Python file with ruff.
+
+    Args:
+        file_path: Path to Python file to format
+        warnings_list: Optional list to append warnings to
+
+    Returns:
+        True if formatting succeeded, False otherwise
+    """
     import subprocess
 
     try:
-        subprocess.run(['ruff', 'format', str(file_path)], capture_output=True, check=True)
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        # Ruff not available or failed, skip formatting
-        pass
+        subprocess.run(['ruff', 'format', str(file_path)], capture_output=True, check=True, text=True)
+        return True
+    except subprocess.CalledProcessError as e:
+        # Ruff failed - log warning but don't fail migration
+        msg = f"⚠️  Failed to format {file_path.name}: {e.stderr.strip()}"
+        if warnings_list is not None:
+            warnings_list.append(msg)
+        return False
+    except FileNotFoundError:
+        # Ruff not available - skip silently
+        return False
 
 
 def regenerate_ui_file(ui_file, output_py):
