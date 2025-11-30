@@ -22,6 +22,7 @@ from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
+    MockPluginManager,
     create_mock_plugin,
     run_cli,
 )
@@ -174,7 +175,7 @@ class TestPluginInstall(PicardTestCase):
     def test_switch_ref_cli(self):
         """Test switch-ref CLI command."""
         mock_plugin = create_mock_plugin()
-        mock_manager = Mock(plugins=[mock_plugin])
+        mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.switch_ref = Mock(return_value=('main', 'v1.0.0', 'abc1234', 'def5678'))
 
         exit_code, stdout, _ = run_cli(mock_manager, switch_ref=['test-plugin', 'v1.0.0'])
@@ -188,7 +189,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_switch_ref_plugin_not_found(self):
         """Test switch-ref for non-existent plugin."""
-        mock_manager = Mock(plugins=[])
+        mock_manager = MockPluginManager(plugins=[])
         exit_code, _, stderr = run_cli(mock_manager, switch_ref=['nonexistent', 'v1.0.0'])
 
         self.assertEqual(exit_code, 2)

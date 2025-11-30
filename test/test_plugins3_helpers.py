@@ -28,6 +28,20 @@ from test.picardtestcase import get_test_data_path
 from picard.plugin3.manifest import PluginManifest
 
 
+class MockPluginManager(Mock):
+    """Mock PluginManager with sensible defaults."""
+
+    def __init__(self, **kwargs):
+        # Set defaults
+        defaults = {
+            'plugins': [],
+            '_failed_plugins': [],
+            '_enabled_plugins': set(),
+        }
+        defaults.update(kwargs)
+        super().__init__(**defaults)
+
+
 def load_plugin_manifest(plugin_name: str) -> PluginManifest:
     """Load a plugin manifest from test data."""
     manifest_path = get_test_data_path('testplugins3', plugin_name, 'MANIFEST.toml')

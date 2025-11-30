@@ -22,6 +22,7 @@ from io import StringIO
 from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import MockPluginManager
 
 from picard.plugin3.cli import (
     ExitCode,
@@ -241,7 +242,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
 
     def test_find_plugin_or_error_not_found(self):
         """Test _find_plugin_or_error when plugin not found."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = Mock()
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
@@ -257,7 +258,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
 
     def test_find_plugin_or_error_success(self):
         """Test _find_plugin_or_error with successful find."""
-        manager = Mock()
+        manager = MockPluginManager()
         args = Mock()
         cli = PluginCLI(manager, args)
 

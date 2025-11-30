@@ -22,6 +22,7 @@ from unittest.mock import Mock, PropertyMock
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
+    MockPluginManager,
     create_mock_plugin,
     load_plugin_manifest,
     run_cli,
@@ -31,7 +32,7 @@ from test.test_plugins3_helpers import (
 class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
-        mock_manager = Mock(plugins=[])
+        mock_manager = MockPluginManager(plugins=[])
         exit_code, stdout, _ = run_cli(mock_manager, list=True)
 
         self.assertEqual(exit_code, 0)
@@ -44,7 +45,7 @@ class TestPluginCLI(PicardTestCase):
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 
         mock_plugin = create_mock_plugin(name='test-plugin', uuid=test_uuid, manifest=manifest)
-        mock_manager = Mock(plugins=[mock_plugin], _enabled_plugins={test_uuid})
+        mock_manager = MockPluginManager(plugins=[mock_plugin], _enabled_plugins={test_uuid})
         mock_manager._get_plugin_metadata = Mock(return_value={})
 
         exit_code, stdout, _ = run_cli(mock_manager, list=True)
@@ -56,7 +57,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_info_plugin_not_found(self):
         """Test info command for non-existent plugin."""
-        mock_manager = Mock(plugins=[])
+        mock_manager = MockPluginManager(plugins=[])
         exit_code, _, stderr = run_cli(mock_manager, info='nonexistent')
 
         self.assertEqual(exit_code, 2)
@@ -68,7 +69,7 @@ class TestPluginCLI(PicardTestCase):
 
         # Create plugin with full Plugin ID
         mock_plugin = create_mock_plugin(name='example_plugin_test-uuid-1234', display_name='Example Plugin')
-        mock_manager = Mock(plugins=[mock_plugin])
+        mock_manager = MockPluginManager(plugins=[mock_plugin])
 
         output = Mock()
         args = Mock()
@@ -88,7 +89,7 @@ class TestPluginCLI(PicardTestCase):
         mock_plugin.manifest.api_versions = ['3.0']
         mock_plugin.manifest._data = {'version': '1.0.0', 'api': ['3.0']}
 
-        mock_manager = Mock(plugins=[mock_plugin], _enabled_plugins={'test-plugin'})
+        mock_manager = MockPluginManager(plugins=[mock_plugin], _enabled_plugins={'test-plugin'})
         mock_manager._get_plugin_metadata = Mock(
             return_value={'url': 'https://example.com/plugin.git', 'ref': 'main', 'commit': 'abc1234567890'}
         )
@@ -104,7 +105,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_status_plugin_not_found(self):
         """Test status command for non-existent plugin."""
-        mock_manager = Mock(plugins=[])
+        mock_manager = MockPluginManager(plugins=[])
         exit_code, _, stderr = run_cli(mock_manager, status='nonexistent')
 
         self.assertEqual(exit_code, 2)
@@ -169,7 +170,7 @@ class TestPluginCLI(PicardTestCase):
     def test_update_cli_commands(self):
         """Test that update CLI commands are properly routed."""
         mock_plugin = create_mock_plugin()
-        mock_manager = Mock(plugins=[mock_plugin])
+        mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.check_updates = Mock(return_value=[])
         mock_manager.update_all_plugins = Mock(return_value=[])
 
@@ -185,7 +186,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_update_plugin_not_found(self):
         """Test update command for non-existent plugin."""
-        mock_manager = Mock(plugins=[])
+        mock_manager = MockPluginManager(plugins=[])
         exit_code, _, stderr = run_cli(mock_manager, update=['nonexistent'])
 
         self.assertEqual(exit_code, 2)
@@ -196,7 +197,7 @@ class TestPluginCLI(PicardTestCase):
 
         manifest = load_plugin_manifest('example')
         mock_plugin = create_mock_plugin(manifest=manifest)
-        mock_manager = Mock(plugins=[mock_plugin])
+        mock_manager = MockPluginManager(plugins=[mock_plugin])
 
         # Simulate update_plugin returning Version objects (the bug scenario)
         mock_manager.update_plugin = Mock(
@@ -239,7 +240,7 @@ class TestPluginCLI(PicardTestCase):
     def test_enable_plugins_command(self):
         """Test enable command."""
         mock_plugin = create_mock_plugin()
-        mock_manager = Mock(plugins=[mock_plugin], enable_plugin=Mock())
+        mock_manager = MockPluginManager(plugins=[mock_plugin], enable_plugin=Mock())
 
         exit_code, _, _ = run_cli(mock_manager, enable=['test-plugin'])
 
@@ -249,7 +250,7 @@ class TestPluginCLI(PicardTestCase):
     def test_disable_plugins_command(self):
         """Test disable command."""
         mock_plugin = create_mock_plugin()
-        mock_manager = Mock(plugins=[mock_plugin], disable_plugin=Mock())
+        mock_manager = MockPluginManager(plugins=[mock_plugin], disable_plugin=Mock())
 
         exit_code, _, _ = run_cli(mock_manager, disable=['test-plugin'])
 
@@ -259,7 +260,7 @@ class TestPluginCLI(PicardTestCase):
     def test_cli_keyboard_interrupt(self):
         """Test CLI handles KeyboardInterrupt."""
         mock_plugin = create_mock_plugin()
-        mock_manager = Mock(plugins=[mock_plugin])
+        mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.check_updates = Mock(side_effect=KeyboardInterrupt())
 
         exit_code, _, stderr = run_cli(mock_manager, check_updates=True)
