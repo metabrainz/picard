@@ -250,10 +250,20 @@ class PluginSourceGit(PluginSource):
 
             try:
                 repo = self._retry_git_operation(clone_operation)
-            except (KeyError, pygit2.GitError):
+            except (KeyError, pygit2.GitError) as e:
+                # Check if it's a 404/not found error
+                error_msg = str(e).lower()
+                if 'not found' in error_msg or '404' in error_msg or 'does not exist' in error_msg:
+                    raise PluginSourceSyncError(f"Repository not found: {self.url}") from e
+                elif 'authentication' in error_msg or 'credentials' in error_msg or 'forbidden' in error_msg:
+                    raise PluginSourceSyncError(
+                        f"Authentication failed for {self.url}. "
+                        "For private repositories, use SSH URLs (git@github.com:user/repo.git) "
+                        "or configure git credential helpers."
+                    ) from e
                 # checkout_branch failed (likely a tag or commit, not a branch)
                 # Fall back to full clone without single-branch optimization
-                if checkout_branch:
+                elif checkout_branch:
 
                     def fallback_clone():
                         return pygit2.clone_repository(
