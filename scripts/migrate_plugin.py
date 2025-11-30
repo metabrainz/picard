@@ -351,7 +351,7 @@ def convert_plugin_api_v2_to_v3(content):
     warnings = []
 
     # Remove imports that will be accessed via api
-    # BaseAction, OptionsPage, File, Track, Album, Cluster, CoverArtImage
+    # BaseAction, OptionsPage, File, Track, Album, Cluster, CoverArtImage, CoverArtProvider
     # These are now available as api.BaseAction, api.OptionsPage, etc.
     imports_to_remove = [
         'from picard.ui.itemviews import BaseAction',
@@ -361,6 +361,7 @@ def convert_plugin_api_v2_to_v3(content):
         'from picard.album import Album',
         'from picard.cluster import Cluster',
         'from picard.coverart.image import CoverArtImage',
+        'from picard.coverart.providers import CoverArtProvider',
     ]
 
     for old_import in imports_to_remove:
@@ -729,7 +730,16 @@ def convert_plugin_code(content, metadata):
         # Convert class references to use api from PluginApi
         # e.g., class MyAction(BaseAction) -> class MyAction(api.BaseAction)
         # But we need to import from picard.plugin3.api
-        for class_name in ['BaseAction', 'OptionsPage', 'File', 'Track', 'Album', 'Cluster', 'CoverArtImage']:
+        for class_name in [
+            'BaseAction',
+            'OptionsPage',
+            'File',
+            'Track',
+            'Album',
+            'Cluster',
+            'CoverArtImage',
+            'CoverArtProvider',
+        ]:
             if f'({class_name})' in line or f'({class_name},' in line:
                 # Don't convert if already has module prefix
                 if f'api.{class_name}' not in line and 'picard.' not in line:
