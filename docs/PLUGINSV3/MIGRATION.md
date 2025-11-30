@@ -444,6 +444,51 @@ def enable(api):
 - Python metadata in `__init__.py`
 - Direct `tagger` access
 - PyQt5 support
+- Config option objects (`TextOption`, `BoolOption`, `IntOption`, etc.)
+
+### Config Options (V2 → V3)
+
+**V2 used option objects:**
+```python
+from picard.config import TextOption, BoolOption
+
+my_text = TextOption("setting", "my_key", "default")
+my_bool = BoolOption("setting", "my_enabled", True)
+
+# Access via .value
+if my_bool.value:
+    text = my_text.value
+```
+
+**V3 uses direct config access:**
+```python
+# In processors
+def process(api, track, metadata):
+    if api.plugin_config.setting.get('my_enabled', True):
+        text = api.plugin_config.setting.get('my_key', 'default')
+
+# In OptionsPage
+class MyPage(api.OptionsPage):
+    def load(self):
+        enabled = self.api.global_config.setting.get('my_enabled', True)
+
+    def save(self):
+        self.api.global_config.setting['my_enabled'] = self.checkbox.isChecked()
+```
+
+**OptionsPage `options` attribute removed:**
+```python
+# V2 - options attribute for metadata
+class MyPage(OptionsPage):
+    options = [
+        config.BoolOption("setting", "my_option", True),
+    ]
+
+# V3 - no options attribute needed
+class MyPage(api.OptionsPage):
+    # Just read/write config in load()/save()
+    pass
+```
 
 ### New Features
 - JSON-based translations (Plugin v2 had no translation support)

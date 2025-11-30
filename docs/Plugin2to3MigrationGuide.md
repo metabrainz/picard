@@ -53,11 +53,12 @@ The migration script automatically:
 4. ✅ Converts PyQt5 → PyQt6 (80+ patterns)
 5. ✅ Fixes function signatures
 6. ✅ Converts config/log access to use api
-7. ✅ Regenerates UI files with pyuic6
-8. ✅ Injects api in OptionsPage/Action classes
-9. ✅ Copies all plugin files (Python modules, docs, assets, etc.)
-10. ✅ Handles file conflicts (renames with .orig extension)
-11. ✅ Formats code with ruff
+7. ✅ Converts config options (TextOption, BoolOption, etc.)
+8. ✅ Regenerates UI files with pyuic6
+9. ✅ Injects api in OptionsPage/Action classes
+10. ✅ Copies all plugin files (Python modules, docs, assets, etc.)
+11. ✅ Handles file conflicts (renames with .orig extension)
+12. ✅ Formats code with ruff
 
 ---
 
@@ -171,7 +172,69 @@ class MyOptionsPage(api.OptionsPage):
 
 **Why?** Processors receive `api` as first parameter (injected via `functools.partial`). Classes receive `api` in `__init__` and store as `self.api`.
 
-#### 5. Function Signatures
+#### 5. Config Options (TextOption, BoolOption, etc.)
+
+**V2 Pattern 1 - Module-level definitions**:
+```python
+from picard.config import TextOption, BoolOption, IntOption
+
+my_text = TextOption("setting", "my_plugin_text", "default")
+my_bool = BoolOption("setting", "my_plugin_enabled", True)
+my_int = IntOption("setting", "my_plugin_count", 10)
+
+def process(album, metadata, track, release):
+    if my_bool.value:
+        text = my_text.value
+        count = my_int.value
+```
+
+**V3 - Direct config access**:
+```python
+def process(api, track, metadata):
+    if api.plugin_config.setting.get('my_plugin_enabled', True):
+        text = api.plugin_config.setting.get('my_plugin_text', 'default')
+        count = api.plugin_config.setting.get('my_plugin_count', 10)
+```
+
+**V2 Pattern 2 - OptionsPage class attribute**:
+```python
+from picard import config
+from picard.ui.options import OptionsPage
+
+class MyOptionsPage(OptionsPage):
+    options = [
+        config.BoolOption("setting", "my_option", True),
+        config.TextOption("setting", "my_text", "default"),
+    ]
+
+    def load(self):
+        setting = config.setting
+        self.checkbox.setChecked(setting["my_option"])
+```
+
+**V3 - No options attribute needed**:
+```python
+class MyOptionsPage(api.OptionsPage):
+    # No 'options' attribute needed in V3
+
+    def load(self):
+        setting = self.api.global_config.setting
+        self.checkbox.setChecked(setting.get("my_option", True))
+
+    def save(self):
+        setting = self.api.global_config.setting
+        setting["my_option"] = self.checkbox.isChecked()
+```
+
+**Why?** V2 used option objects for type validation and metadata. V3 simplifies this - just read/write config directly. The `options` class attribute was V2 metadata that's not needed in V3.
+
+**Migration script handles**:
+- ✅ Removes module-level option definitions
+- ✅ Converts `.value` access to `api.plugin_config.setting.get()`
+- ✅ Removes `options = [...]` class attribute from OptionsPage
+- ✅ Converts `config.setting` to `api.global_config.setting`
+
+#### 6. Function Signatures
 **Before**:
 ```python
 def process_track(tagger, metadata, track, release):
@@ -185,7 +248,7 @@ def process_track(track, metadata):
     pass
 ```
 
-#### 6. PyQt5 → PyQt6
+#### 7. PyQt5 → PyQt6
 **Before**:
 ```python
 from PyQt5.QtWidgets import QDialog
@@ -204,7 +267,7 @@ dialog.setWindowModality(Qt.WindowModality.WindowModal)
 dialog.exec()
 ```
 
-#### 7. UI File Regeneration
+#### 8. UI File Regeneration
 **Before**: Copies `ui_*.py` and converts PyQt5 → PyQt6
 
 **After**: Regenerates from `.ui` source using pyuic6
@@ -215,7 +278,7 @@ Regenerated: ui_options_plugin.py (from ui_options_plugin.ui)
 - All Qt6 enums automatically correct
 - Cleaner output than text conversion
 
-#### 8. Complete File Copying
+#### 9. Complete File Copying
 **All files and directories** from your V2 plugin are automatically copied to V3:
 - ✅ Python modules (helper files, utilities)
 - ✅ Documentation (README.md, docs/)
@@ -230,7 +293,7 @@ options.ui (regenerated from source) ← takes priority
 options.ui.orig (original V2 file) ← renamed
 ```
 
-#### 9. API Injection in Classes
+#### 10. API Injection in Classes
 **Before**:
 ```python
 class MyOptionsPage(OptionsPage):
