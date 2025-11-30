@@ -1,0 +1,531 @@
+# Plugin API Reference
+
+This document provides a complete reference for the `PluginApi` class, which is the main interface for plugins to interact with Picard.
+
+---
+
+## Overview
+
+The `PluginApi` object is passed to your plugin's `enable()` function and provides access to all Picard functionality:
+
+```python
+def enable(api):
+    """Entry point for the plugin."""
+    api.logger.info("Plugin loaded")
+    api.register_track_metadata_processor(my_processor)
+```
+
+---
+
+## Properties
+
+### `logger: Logger`
+
+Plugin-specific logger instance.
+
+```python
+def enable(api):
+    api.logger.debug("Debug message")
+    api.logger.info("Info message")
+    api.logger.warning("Warning message")
+    api.logger.error("Error message")
+```
+
+**Namespace**: Logs are prefixed with `plugin.{module_name}`
+
+---
+
+### `global_config: Config`
+
+Access to Picard's global configuration.
+
+```python
+def my_processor(api, track, metadata):
+    # Read settings
+    enabled = api.global_config.setting.get('my_plugin_enabled', False)
+
+    # Write settings
+    api.global_config.setting['my_plugin_enabled'] = True
+```
+
+**Common settings**:
+- `api.global_config.setting['server_host']` - MusicBrainz server
+- `api.global_config.setting['server_port']` - Server port
+- `api.global_config.setting['username']` - MusicBrainz username
+
+---
+
+### `plugin_config: ConfigSection`
+
+Plugin-private configuration section.
+
+```python
+def enable(api):
+    # Plugin-specific config (isolated from other plugins)
+    api.plugin_config.setting['my_option'] = 'value'
+    value = api.plugin_config.setting.get('my_option', 'default')
+```
+
+**Benefits**:
+- Isolated from other plugins
+- Automatically namespaced
+- Persisted in Picard config
+
+---
+
+### `web_service: WebService`
+
+Access to Picard's web service for HTTP requests.
+
+```python
+def my_processor(api, track, metadata):
+    def response_handler(response, reply, error):
+        if error:
+            api.logger.error(f"Request failed: {error}")
+        else:
+            data = response.json()
+            # Process data
+
+    api.web_service.get(
+        'example.com',
+        '/api/endpoint',
+        response_handler,
+        priority=True,
+        important=False
+    )
+```
+
+---
+
+### `mb_api: MBAPIHelper`
+
+Helper for MusicBrainz API requests.
+
+```python
+def my_processor(api, track, metadata):
+    # Simplified MusicBrainz API access
+    api.mb_api.get_release_by_id(
+        release_id,
+        handler,
+        inc=['artists', 'recordings']
+    )
+```
+
+---
+
+## Class References
+
+These classes are available as attributes on the API for type hints and inheritance:
+
+```python
+api.Album          # picard.album.Album
+api.Track          # picard.track.Track
+api.File           # picard.file.File
+api.Cluster        # picard.cluster.Cluster
+api.CoverArtImage  # picard.coverart.image.CoverArtImage
+api.BaseAction     # picard.extension_points.item_actions.BaseAction
+api.OptionsPage    # picard.ui.options.OptionsPage
+```
+
+**Usage**:
+```python
+class MyAction(api.BaseAction):
+    NAME = "My Action"
+
+    def callback(self, objs):
+        for obj in objs:
+            if isinstance(obj, api.Track):
+                # Handle track
+                pass
+```
+
+---
+
+## Registration Methods
+
+### Metadata Processors
+
+#### `register_track_metadata_processor(function, priority=0)`
+
+Register a function to process track metadata.
+
+**Signature**: `function(api, track, metadata)`
+
+```python
+def process_track(api, track, metadata):
+    """Process track metadata."""
+    api.logger.info(f"Processing: {metadata['title']}")
+    metadata['custom_tag'] = 'value'
+
+def enable(api):
+    api.register_track_metadata_processor(process_track)
+    # With priority
+    api.register_track_metadata_processor(process_track, priority=100)
+```
+
+**Parameters**:
+- `function`: Processor function (receives `api`, `track`, `metadata`)
+- `priority`: Execution priority (higher = earlier, default: 0)
+
+---
+
+#### `register_album_metadata_processor(function, priority=0)`
+
+Register a function to process album metadata.
+
+**Signature**: `function(api, album, metadata)`
+
+```python
+def process_album(api, album, metadata):
+    """Process album metadata."""
+    metadata['custom_album_tag'] = 'value'
+
+def enable(api):
+    api.register_album_metadata_processor(process_album)
+```
+
+---
+
+### Event Hooks
+
+#### `register_file_post_load_processor(function, priority=0)`
+
+Called after a file is loaded.
+
+**Signature**: `function(api, file)`
+
+```python
+def on_file_loaded(api, file):
+    api.logger.info(f"File loaded: {file.filename}")
+
+def enable(api):
+    api.register_file_post_load_processor(on_file_loaded)
+```
+
+---
+
+#### `register_file_post_save_processor(function, priority=0)`
+
+Called after a file is saved.
+
+**Signature**: `function(api, file)`
+
+```python
+def on_file_saved(api, file):
+    api.logger.info(f"File saved: {file.filename}")
+
+def enable(api):
+    api.register_file_post_save_processor(on_file_saved)
+```
+
+---
+
+#### `register_file_post_addition_to_track_processor(function, priority=0)`
+
+Called when a file is added to a track.
+
+**Signature**: `function(api, track, file)`
+
+---
+
+#### `register_file_post_removal_from_track_processor(function, priority=0)`
+
+Called when a file is removed from a track.
+
+**Signature**: `function(api, track, file)`
+
+---
+
+#### `register_album_post_removal_processor(function, priority=0)`
+
+Called when an album is removed.
+
+**Signature**: `function(api, album)`
+
+---
+
+### Script Functions
+
+#### `register_script_function(function, name=None, eval_args=True, check_argcount=True, documentation=None)`
+
+Register a custom tagger script function.
+
+```python
+def my_script_func(parser, arg1, arg2):
+    """Custom script function."""
+    return f"{arg1}-{arg2}"
+
+def enable(api):
+    api.register_script_function(
+        my_script_func,
+        name="my_func",  # Optional: defaults to function name
+        documentation="Combines two arguments with a dash"
+    )
+```
+
+**Usage in scripts**: `$my_func(value1,value2)`
+
+**Parameters**:
+- `function`: Function to register (first arg is always `parser`)
+- `name`: Function name in scripts (default: function's `__name__`)
+- `eval_args`: Whether to evaluate arguments (default: True)
+- `check_argcount`: Whether to check argument count (default: True)
+- `documentation`: Help text for the function
+
+---
+
+### UI Actions
+
+#### `register_album_action(action)`
+#### `register_track_action(action)`
+#### `register_file_action(action)`
+#### `register_cluster_action(action)`
+#### `register_clusterlist_action(action)`
+
+Register context menu actions for different object types.
+
+```python
+class MyAction(api.BaseAction):
+    NAME = "My Custom Action"
+
+    def callback(self, objs):
+        for obj in objs:
+            self.api.logger.info(f"Action on: {obj}")
+
+def enable(api):
+    api.register_file_action(MyAction)
+    api.register_track_action(MyAction)
+    api.register_album_action(MyAction)
+    api.register_cluster_action(MyAction)
+    api.register_clusterlist_action(MyAction)
+```
+
+**Note**: Pass the class, not an instance. Picard instantiates it with `api` parameter.
+
+---
+
+### Options Pages
+
+#### `register_options_page(page_class)`
+
+Register a settings page in Picard's options dialog.
+
+```python
+class MyOptionsPage(api.OptionsPage):
+    NAME = "my_plugin"
+    TITLE = "My Plugin"
+    PARENT = "plugins"
+
+    def __init__(self, api=None, parent=None):
+        super().__init__(parent)
+        self.api = api
+        # Build UI
+
+    def load(self):
+        # Load settings from api.global_config
+        pass
+
+    def save(self):
+        # Save settings to api.global_config
+        pass
+
+def enable(api):
+    api.register_options_page(MyOptionsPage)
+```
+
+**Required attributes**:
+- `NAME`: Unique identifier
+- `TITLE`: Display name
+- `PARENT`: Parent page (usually "plugins")
+
+**Required methods**:
+- `load()`: Load settings into UI
+- `save()`: Save settings from UI
+
+---
+
+### Cover Art Providers
+
+#### `register_cover_art_provider(provider)`
+
+Register a custom cover art provider.
+
+```python
+from picard.coverart.providers import CoverArtProvider
+
+class MyProvider(CoverArtProvider):
+    NAME = "My Provider"
+
+    def queue_images(self):
+        # Queue cover art images
+        pass
+
+def enable(api):
+    api.register_cover_art_provider(MyProvider)
+```
+
+---
+
+### File Formats
+
+#### `register_format(format)`
+
+Register support for a custom file format.
+
+```python
+from picard.file import File
+
+class MyFormat(File):
+    EXTENSIONS = [".myformat"]
+    NAME = "My Format"
+
+    def _load(self, filename):
+        # Load file
+        pass
+
+    def _save(self, filename):
+        # Save file
+        pass
+
+def enable(api):
+    api.register_format(MyFormat)
+```
+
+---
+
+## API Parameter Injection
+
+### How It Works
+
+Picard uses `functools.partial` to automatically inject the `api` parameter:
+
+**For Processors**:
+```python
+def my_processor(api, track, metadata):
+    # api is automatically injected as first parameter
+    api.logger.info("Processing")
+
+def enable(api):
+    # Picard wraps this as: partial(my_processor, api)
+    api.register_track_metadata_processor(my_processor)
+```
+
+**For Classes**:
+```python
+class MyPage(api.OptionsPage):
+    def __init__(self, api=None, parent=None):
+        super().__init__(parent)
+        self.api = api  # Store for later use
+
+    def load(self):
+        self.api.logger.info("Loading")
+
+def enable(api):
+    # Picard stores api and passes it during instantiation
+    api.register_options_page(MyPage)
+```
+
+---
+
+## Priority System
+
+Many registration methods accept a `priority` parameter:
+
+- **Higher priority** = executed earlier
+- **Default**: 0
+- **Range**: Typically -100 to 100
+
+```python
+def enable(api):
+    # Run first
+    api.register_track_metadata_processor(important_processor, priority=100)
+
+    # Run normally
+    api.register_track_metadata_processor(normal_processor)
+
+    # Run last
+    api.register_track_metadata_processor(cleanup_processor, priority=-100)
+```
+
+**Use cases**:
+- High priority: Data fetching, critical preprocessing
+- Normal priority: Most processors
+- Low priority: Cleanup, formatting, final touches
+
+---
+
+## Complete Example
+
+```python
+from PyQt6.QtWidgets import QCheckBox
+
+
+class MyOptionsPage(api.OptionsPage):
+    NAME = "example"
+    TITLE = "Example Plugin"
+    PARENT = "plugins"
+
+    def __init__(self, api=None, parent=None):
+        super().__init__(parent)
+        self.api = api
+        self.checkbox = QCheckBox("Enable processing")
+        self.layout().addWidget(self.checkbox)
+
+    def load(self):
+        enabled = self.api.global_config.setting.get('example_enabled', False)
+        self.checkbox.setChecked(enabled)
+
+    def save(self):
+        self.api.global_config.setting['example_enabled'] = self.checkbox.isChecked()
+
+
+def process_track(api, track, metadata):
+    """Process track metadata."""
+    if api.global_config.setting.get('example_enabled', False):
+        api.logger.info(f"Processing: {metadata.get('title', 'Unknown')}")
+        metadata['example_tag'] = 'processed'
+
+
+def on_file_saved(api, file):
+    """Called after file is saved."""
+    api.logger.info(f"Saved: {file.filename}")
+
+
+class MyAction(api.BaseAction):
+    NAME = "Example Action"
+
+    def callback(self, objs):
+        self.api.logger.info(f"Action on {len(objs)} objects")
+
+
+def enable(api):
+    """Plugin entry point."""
+    api.logger.info("Example plugin loaded")
+
+    # Register processors
+    api.register_track_metadata_processor(process_track)
+    api.register_file_post_save_processor(on_file_saved)
+
+    # Register UI
+    api.register_options_page(MyOptionsPage)
+    api.register_file_action(MyAction)
+```
+
+---
+
+## Best Practices
+
+1. **Always use the api parameter**: Don't import Picard internals directly
+2. **Use plugin_config for plugin settings**: Keeps your config isolated
+3. **Log appropriately**: Use `debug` for verbose, `info` for important events
+4. **Handle errors gracefully**: Wrap risky operations in try/except
+5. **Set priorities wisely**: Only use non-zero priorities when order matters
+6. **Store api in classes**: Always store `self.api = api` in `__init__`
+
+---
+
+## See Also
+
+- [Migration Guide](MIGRATION.md) - Migrating from V2 to V3
+- [MANIFEST.toml](MANIFEST.md) - Plugin manifest format
+- [Translations](TRANSLATIONS.md) - Internationalization
