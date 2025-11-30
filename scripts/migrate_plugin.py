@@ -641,6 +641,10 @@ def convert_plugin_code(content, metadata):
     content, option_warnings = convert_config_options(content)
     all_warnings.extend(option_warnings)
 
+    # Remove 'options = [...]' class attribute from OptionsPage classes
+    content, options_attr_warnings = remove_options_class_attribute(content)
+    all_warnings.extend(options_attr_warnings)
+
     if has_config_import:
         content = convert_config_access(content)
         all_warnings.append("✓ Converted config.setting to api.global_config.setting")
@@ -947,6 +951,59 @@ def convert_config_options(content):
         warnings.append(f"✓ Converted {len(option_map)} config option(s) to api.plugin_config.setting")
         for var_name, (key, _default, opt_type) in option_map.items():
             warnings.append(f"  - {var_name} ({opt_type}) -> '{key}'")
+
+    return '\n'.join(new_lines), warnings
+
+
+def remove_options_class_attribute(content):
+    """Remove V2 'options = [...]' class attribute from OptionsPage classes.
+
+    In V2, OptionsPage classes had an 'options' attribute listing config options.
+    In V3, this is not needed - options are just read/written in load()/save().
+    """
+    try:
+        tree = ast.parse(content)
+    except (SyntaxError, ValueError):
+        return content, []
+
+    lines = content.split('\n')
+    lines_to_remove = set()
+    warnings = []
+
+    # Find OptionsPage classes with 'options' attribute
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef):
+            # Check if it's an OptionsPage subclass
+            is_options_page = False
+            for base in node.bases:
+                if isinstance(base, ast.Name) and base.id == 'OptionsPage':
+                    is_options_page = True
+                elif isinstance(base, ast.Attribute) and base.attr == 'OptionsPage':
+                    is_options_page = True
+
+            if is_options_page:
+                # Find 'options = [...]' assignment
+                for item in node.body:
+                    if isinstance(item, ast.Assign):
+                        if len(item.targets) == 1 and isinstance(item.targets[0], ast.Name):
+                            if item.targets[0].id == 'options':
+                                # Mark lines for removal
+                                start_line = item.lineno
+                                end_line = item.end_lineno
+                                for line_num in range(start_line, end_line + 1):
+                                    lines_to_remove.add(line_num)
+                                warnings.append(
+                                    f"✓ Removed 'options' class attribute from {node.name} (not needed in V3)"
+                                )
+
+    if not lines_to_remove:
+        return content, []
+
+    # Remove marked lines
+    new_lines = []
+    for i, line in enumerate(lines, start=1):
+        if i not in lines_to_remove:
+            new_lines.append(line)
 
     return '\n'.join(new_lines), warnings
 
