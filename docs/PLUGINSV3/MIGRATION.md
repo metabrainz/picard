@@ -206,50 +206,53 @@ git commit -m "Migrated to V3"
 
 ## API Access Pattern
 
-### Module-level `_api` Variable
+### Explicit Parameter Passing
 
-The `PluginApi` object is only passed to `enable()`, but your plugin needs it everywhere. Use a module-level `_api` variable:
+The `PluginApi` is passed explicitly to functions and classes:
 
-**Example:**
+**For Processors:** API is injected as first parameter via `functools.partial`
+
 ```python
-from picard.plugin3.api import PluginApi
-
-# Module-level API reference
-_api: PluginApi = None
-
-
-def process_track(track, metadata):
-    _api.logger.info("Processing track")
-    if _api.global_config.setting['example_enabled']:
+def process_track(api, track, metadata):
+    """API is automatically injected as first parameter."""
+    api.logger.info("Processing track")
+    if api.global_config.setting['example_enabled']:
         metadata['example'] = 'value'
 
 
-class ExampleOptionsPage(_api.OptionsPage):
+def enable(api):
+    # Picard wraps this as partial(process_track, api)
+    api.register_track_metadata_processor(process_track)
+```
+
+**For Classes:** API is passed to `__init__` and stored as `self.api`
+
+```python
+class ExampleOptionsPage(api.OptionsPage):
     NAME = "example"
     TITLE = "Example"
     PARENT = "plugins"
 
-    def __init__(self, parent=None):
-        # Picard instantiates with no arguments
+    def __init__(self, api=None, parent=None):
         super().__init__(parent)
+        self.api = api
 
     def load(self):
-        _api.logger.debug("Loading options")
+        self.api.logger.debug("Loading options")
+        enabled = self.api.global_config.setting.get('example_enabled', False)
 
 
-def enable(api: PluginApi):
-    """Entry point - set _api and register."""
-    global _api
-    _api = api
+def enable(api):
+    """Entry point - register with API."""
     api.register_track_metadata_processor(process_track)
     api.register_options_page(ExampleOptionsPage)
 ```
 
 **Why this works:**
-- `OptionsPage` and `BaseAction` are instantiated by Picard with no arguments
-- Can't pass `api` to their `__init__()`
-- Module-level `_api` makes API accessible everywhere
-- Simple, clean, and proven in production plugins
+- Processors receive `api` as first parameter (injected via `functools.partial`)
+- Classes receive `api` in `__init__` (passed during instantiation)
+- No global variables needed
+- Clean, explicit, and testable
 
 ---
 
@@ -431,42 +434,36 @@ categories = ["metadata"]
 
 **__init__.py:**
 ```python
-from picard.plugin3.api import PluginApi
 from PyQt6.QtWidgets import QCheckBox
 
-# Module-level API reference
-_api: PluginApi = None
 
-
-class ExampleOptionsPage(_api.OptionsPage):
+class ExampleOptionsPage(api.OptionsPage):
     NAME = "example"
     TITLE = "Example Plugin"
     PARENT = "plugins"
 
-    def __init__(self, parent=None):
+    def __init__(self, api=None, parent=None):
         super().__init__(parent)
+        self.api = api
         self.checkbox = QCheckBox("Enable processing")
         self.layout().addWidget(self.checkbox)
 
     def load(self):
-        enabled = _api.global_config.setting.get('example_enabled', False)
+        enabled = self.api.global_config.setting.get('example_enabled', False)
         self.checkbox.setChecked(enabled)
 
     def save(self):
-        _api.global_config.setting['example_enabled'] = self.checkbox.isChecked()
+        self.api.global_config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(track, metadata):
-    _api.logger.info(f"Processing track: {track}")
-    if _api.global_config.setting.get('example_enabled', False):
+def process_track(api, track, metadata):
+    api.logger.info(f"Processing track: {track}")
+    if api.global_config.setting.get('example_enabled', False):
         metadata['example'] = 'processed'
 
 
-def enable(api: PluginApi):
+def enable(api):
     """Entry point for the plugin."""
-    global _api
-    _api = api
-
     api.logger.info("Example Plugin loaded")
     api.register_track_metadata_processor(process_track)
     api.register_options_page(ExampleOptionsPage)
