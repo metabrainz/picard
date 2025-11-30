@@ -89,36 +89,46 @@ def create_cli_output():
     return PluginOutput(stdout=StringIO(), stderr=StringIO(), color=False)
 
 
+class MockCliArgs(Mock):
+    """Mock CLI args with sensible defaults."""
+
+    def __init__(self, **kwargs):
+        defaults = {
+            'ref': None,
+            'list': False,
+            'info': None,
+            'status': None,
+            'enable': None,
+            'disable': None,
+            'install': None,
+            'uninstall': None,
+            'update': None,
+            'update_all': False,
+            'check_updates': False,
+            'browse': False,
+            'search': None,
+            'check_blacklist': None,
+            'refresh_registry': False,
+            'switch_ref': None,
+            'clean_config': None,
+            'validate': None,
+            'yes': False,
+            'purge': False,
+            'reinstall': False,
+            'force_blacklisted': False,
+            'category': None,
+            'trust': None,
+        }
+        defaults.update(kwargs)
+        super().__init__(**defaults)
+
+
 def create_cli_args(**kwargs):
-    """Create mock CLI args with defaults."""
-    defaults = {
-        'ref': None,
-        'list': False,
-        'info': None,
-        'status': None,
-        'enable': None,
-        'disable': None,
-        'install': None,
-        'uninstall': None,
-        'update': None,
-        'update_all': False,
-        'check_updates': False,
-        'browse': False,
-        'search': None,
-        'check_blacklist': None,
-        'refresh_registry': False,
-        'switch_ref': None,
-        'clean_config': None,
-        'validate': None,
-        'yes': False,
-        'purge': False,
-        'reinstall': False,
-        'force_blacklisted': False,
-        'category': None,
-        'trust': None,
-    }
-    defaults.update(kwargs)
-    return Mock(**defaults)
+    """Create mock CLI args with defaults.
+
+    Deprecated: Use MockCliArgs() instead.
+    """
+    return MockCliArgs(**kwargs)
 
 
 def run_cli(manager, **args_kwargs):
