@@ -407,8 +407,9 @@ def convert_plugin_api_v2_to_v3(content):
                 flags=re.MULTILINE,
             )
 
-    # Add consolidated import block if there are any imports
+    # Add consolidated import block if there are any imports (sorted alphabetically)
     if api_imports:
+        api_imports.sort()
         import_block = 'from picard.plugin3.api import (\n'
         for class_name in api_imports:
             import_block += f'    {class_name},\n'
