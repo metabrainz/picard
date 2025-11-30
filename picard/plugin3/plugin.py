@@ -225,14 +225,27 @@ class PluginSourceGit(PluginSource):
             except KeyError:
                 # If ref starts with 'origin/', try without it
                 if self.ref.startswith('origin/'):
-                    ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
-                    commit = repo.revparse_single(ref_without_origin)
-                    self.resolved_ref = ref_without_origin
+                    try:
+                        ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
+                        commit = repo.revparse_single(ref_without_origin)
+                        self.resolved_ref = ref_without_origin
+                    except KeyError:
+                        raise KeyError(f"Could not find ref '{self.ref}' or '{ref_without_origin}'") from None
                 else:
-                    # Try with 'origin/' prefix
-                    commit = repo.revparse_single(f'origin/{self.ref}')
-                    # Save the actual ref that worked
-                    self.resolved_ref = f'origin/{self.ref}'
+                    # Try with 'origin/' prefix for remote branches
+                    try:
+                        commit = repo.revparse_single(f'origin/{self.ref}')
+                        self.resolved_ref = f'origin/{self.ref}'
+                    except KeyError:
+                        # Try as local branch refs/heads/
+                        try:
+                            commit = repo.revparse_single(f'refs/heads/{self.ref}')
+                            self.resolved_ref = self.ref
+                        except KeyError:
+                            raise KeyError(
+                                f"Could not find ref '{self.ref}'. "
+                                f"Tried: '{self.ref}', 'origin/{self.ref}', 'refs/heads/{self.ref}'"
+                            ) from None
         else:
             # Use repository's default branch (HEAD)
             try:
