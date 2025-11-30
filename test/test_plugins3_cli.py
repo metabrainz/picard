@@ -23,6 +23,7 @@ from unittest.mock import Mock, PropertyMock
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
     MockPluginManager,
+    create_cli_args,
     create_mock_plugin,
     load_plugin_manifest,
     run_cli,
@@ -72,7 +73,7 @@ class TestPluginCLI(PicardTestCase):
         mock_manager = MockPluginManager(plugins=[mock_plugin])
 
         output = Mock()
-        args = Mock()
+        args = create_cli_args()
         cli = PluginCLI(mock_manager, args, output)
 
         # Should match by Plugin ID prefix
