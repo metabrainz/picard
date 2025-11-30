@@ -437,12 +437,16 @@ picard plugins --check-updates
 
 **Note on `--check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `--switch-ref` instead.
 
-**Note on tags:** If a plugin is installed with a specific tag, `--update` will automatically find and switch to the latest tag (based on version number). Supports various tag formats: `v1.0.0`, `1.0.0`, `release-1.0.0`, etc.
+**Note on tags:** If a plugin is installed with a version tag (e.g., `v1.0.0`, `1.2.3`), `--update` will automatically find and switch to the latest version tag. Non-version tags (e.g., `stable`, `latest`) are treated as immutable.
 
 ```bash
-# Plugin installed with tag v1.0.0
+# Plugin installed with version tag v1.0.0
 picard plugins --update myplugin
 # Output: Updated from v1.0.0 to v1.2.0
+
+# Plugin installed with non-version tag "stable"
+picard plugins --update myplugin
+# Output: Already up to date
 
 # To switch to a specific tag manually
 picard plugins --switch-ref myplugin v2.0.0
@@ -545,7 +549,8 @@ Last Updated: 2025-11-20 14:15:00
 
 **Understanding refs:**
 - **Branches** (e.g., `main`, `dev`): Mutable - `--update` pulls latest commits
-- **Tags** (e.g., `v1.0.0`, `2.1.3`): `--update` automatically finds and switches to latest tag
+- **Version tags** (e.g., `v1.0.0`, `2.1.3`): `--update` automatically finds and switches to latest version tag
+- **Non-version tags** (e.g., `stable`, `latest`): Immutable - use `--switch-ref` to change
 - **Commits** (e.g., `abc1234`): Immutable - cannot be updated, use `--switch-ref` to change
 
 **Registry refs:**
