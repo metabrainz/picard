@@ -317,6 +317,50 @@ class MyOptionsPage(OptionsPage):
         # uses self.api.global_config.setting
 ```
 
+#### 11. UI Actions (Instantiated Pattern)
+**Before** - V2 pattern with instantiated actions:
+```python
+from picard.ui.itemviews import BaseAction, register_file_action
+
+class MyAction(BaseAction):
+    NAME = 'My Action'
+
+    def callback(self, objs):
+        # Do something
+        pass
+
+# Instantiate and register
+action = MyAction()
+register_file_action(action)
+```
+
+**After** - V3 registers the class, not instance:
+```python
+from picard.plugin3.api import BaseAction
+
+class MyAction(BaseAction):
+    NAME = 'My Action'
+
+    def __init__(self, api=None):
+        super().__init__()
+        self.api = api
+
+    def callback(self, objs):
+        # Use self.api to access Picard
+        files = self.api.tagger.get_files_from_objects(objs)
+
+def enable(api):
+    api.register_file_action(MyAction)  # Register class, not instance
+```
+
+**Why?** In V3, Picard instantiates actions and passes the `api` parameter. This allows proper API access and lifecycle management.
+
+**Migration script handles**:
+- ✅ Detects `action = MyAction()` pattern
+- ✅ Removes instantiation line
+- ✅ Registers class instead of instance
+- ✅ Adds `api` parameter to `__init__`
+
 ### What Needs Manual Review (5-10%)
 
 The tool provides clear warnings for:

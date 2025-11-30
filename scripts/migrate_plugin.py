@@ -523,6 +523,10 @@ def convert_plugin_code(content, metadata):
     has_config_import = False
     has_tagger_import = False
 
+    # Track variable assignments for instantiated actions/pages
+    # Maps variable name to class name: {'vv': 'ViewVariables'}
+    instantiated_vars = {}
+
     # Detect instance method registrations first
     instance_registrations = detect_instance_method_registrations(tree)
 
@@ -557,6 +561,24 @@ def convert_plugin_code(content, metadata):
     decorators_to_remove = {}  # func_name -> decorator_name
     method_processors = []  # Track processors that are class methods
 
+    # First pass: collect potential instantiated action/page variables
+    # e.g., vv = ViewVariables()
+    potential_instantiated_vars = {}
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            # Check for pattern: var = ClassName()
+            if (
+                len(node.targets) == 1
+                and isinstance(node.targets[0], ast.Name)
+                and isinstance(node.value, ast.Call)
+                and isinstance(node.value.func, ast.Name)
+            ):
+                var_name = node.targets[0].id
+                class_name = node.value.func.id
+                # Store mapping for later resolution
+                potential_instantiated_vars[var_name] = (class_name, node)
+
+    # Second pass: find which variables are actually used in register calls
     for node in tree.body:
         # Find decorated functions
         if isinstance(node, ast.FunctionDef) and node.decorator_list:
@@ -579,8 +601,16 @@ def convert_plugin_code(content, metadata):
                 if node.value.args:
                     arg = node.value.args[0]
                     if isinstance(arg, ast.Name):
-                        # Direct function registration
-                        register_calls.append((func_name, arg.id))
+                        # Check if this is an instantiated variable
+                        if arg.id in potential_instantiated_vars:
+                            # Resolve to class name and mark for removal
+                            class_name, assign_node = potential_instantiated_vars[arg.id]
+                            instantiated_vars[arg.id] = class_name
+                            register_calls.append((func_name, class_name))
+                            nodes_to_remove.add(assign_node)  # Remove the instantiation
+                        else:
+                            # Direct function registration
+                            register_calls.append((func_name, arg.id))
                         nodes_to_remove.add(node)
                     elif isinstance(arg, ast.Call):
                         # Instantiated registration: register_cluster_action(MyAction())
@@ -750,6 +780,38 @@ def convert_plugin_code(content, metadata):
         nodes_to_remove = set()
         imports_to_remove = set()
 
+        # Rebuild instantiated_vars mapping for second pass
+        # Only include variables that were actually used in register calls
+        instantiated_vars_second_pass = {}
+        potential_vars_second = {}
+
+        # First collect all potential instantiated variables
+        for node in tree.body:
+            if isinstance(node, ast.Assign):
+                if (
+                    len(node.targets) == 1
+                    and isinstance(node.targets[0], ast.Name)
+                    and isinstance(node.value, ast.Call)
+                    and isinstance(node.value.func, ast.Name)
+                ):
+                    var_name = node.targets[0].id
+                    class_name = node.value.func.id
+                    potential_vars_second[var_name] = class_name
+
+        # Then check which ones are used in register calls
+        for node in tree.body:
+            if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
+                if isinstance(node.value.func, ast.Name) and node.value.func.id in register_funcs:
+                    if node.value.args and isinstance(node.value.args[0], ast.Name):
+                        var_name = node.value.args[0].id
+                        if var_name in potential_vars_second:
+                            instantiated_vars_second_pass[var_name] = potential_vars_second[var_name]
+                elif isinstance(node.value.func, ast.Attribute) and node.value.func.attr in register_funcs:
+                    if node.value.args and isinstance(node.value.args[0], ast.Name):
+                        var_name = node.value.args[0].id
+                        if var_name in potential_vars_second:
+                            instantiated_vars_second_pass[var_name] = potential_vars_second[var_name]
+
         for node in tree.body:
             if isinstance(node, ast.Expr) and isinstance(node.value, ast.Call):
                 # Handle direct calls: register_*()
@@ -759,6 +821,14 @@ def convert_plugin_code(content, metadata):
                 elif isinstance(node.value.func, ast.Attribute) and node.value.func.attr in register_funcs:
                     nodes_to_remove.add(node)
             elif isinstance(node, ast.Assign):
+                # Remove instantiated action/page variables
+                if (
+                    len(node.targets) == 1
+                    and isinstance(node.targets[0], ast.Name)
+                    and node.targets[0].id in instantiated_vars_second_pass
+                ):
+                    nodes_to_remove.add(node)
+                # Remove PLUGIN_* assignments
                 for target in node.targets:
                     if isinstance(target, ast.Name) and target.id.startswith('PLUGIN_'):
                         nodes_to_remove.add(node)
