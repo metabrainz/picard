@@ -459,14 +459,11 @@ def enable(api):
 
 ## Migration Tool
 
-A migration tool will be provided to automate common changes:
+A migration tool is available in the Picard repository:
 
 ```bash
-# Install migration tool
-pip install picard-plugin-migrate
-
 # Migrate plugin
-picard-plugin-migrate /path/to/old-plugin /path/to/new-plugin
+python scripts/migrate_plugin.py /path/to/old-plugin.py /path/to/new-plugin
 
 # Review changes
 cd /path/to/new-plugin
