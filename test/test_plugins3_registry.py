@@ -79,12 +79,12 @@ class TestPluginRegistry(PicardTestCase):
         import os
         from unittest.mock import patch
 
-        from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
+        from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
         from picard.plugin3.registry import PluginRegistry
 
         with patch.dict(os.environ, {}, clear=True):
             registry = PluginRegistry()
-            self.assertEqual(registry.registry_url, DEFAULT_PLUGIN_REGISTRY_URL)
+            self.assertEqual(registry.registry_url, DEFAULT_PLUGIN_REGISTRY_URLS[0])
 
     def test_registry_blacklist_pattern(self):
         """Test that blacklisted URL regex patterns are detected."""

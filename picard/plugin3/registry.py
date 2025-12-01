@@ -28,7 +28,7 @@ import urllib.error
 from urllib.request import urlopen
 
 from picard import log
-from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URL
+from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
 
 
 # Retry configuration for registry fetch operations
@@ -172,16 +172,25 @@ class PluginRegistry:
         """Initialize plugin registry.
 
         Args:
-            registry_url: Registry URL (defaults to DEFAULT_PLUGIN_REGISTRY_URL or PICARD_PLUGIN_REGISTRY_URL env var)
+            registry_url: Registry URL or list of URLs to try (defaults to DEFAULT_PLUGIN_REGISTRY_URLS or PICARD_PLUGIN_REGISTRY_URL env var)
             cache_dir: Directory for cache files (cache filename will be URL-specific)
         """
-        # Priority: passed parameter > environment variable > default
+        # Priority: passed parameter > environment variable > default list
         if registry_url:
-            self.registry_url = registry_url
+            # If single URL passed, convert to list
+            self.registry_urls = [registry_url] if isinstance(registry_url, str) else registry_url
         else:
             import os
 
-            self.registry_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL', DEFAULT_PLUGIN_REGISTRY_URL)
+            env_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL')
+            if env_url:
+                # Environment variable takes precedence, try it first then fallback to defaults
+                self.registry_urls = [env_url] + DEFAULT_PLUGIN_REGISTRY_URLS
+            else:
+                self.registry_urls = DEFAULT_PLUGIN_REGISTRY_URLS
+
+        # Use first URL for cache path (primary URL)
+        self.registry_url = self.registry_urls[0]
 
         # Create URL-specific cache path using SHA1 hash
         if cache_dir:
@@ -220,11 +229,13 @@ class PluginRegistry:
     def fetch_registry(self, use_cache=True):
         """Fetch registry from URL or cache.
 
+        Tries multiple registry URLs in order until one succeeds.
+
         Args:
             use_cache: If True, try to load from cache first
 
         Raises:
-            RegistryFetchError: If registry cannot be fetched from URL
+            RegistryFetchError: If registry cannot be fetched from any URL
             RegistryParseError: If registry JSON cannot be parsed
             RegistryCacheError: If cache cannot be read (only if use_cache=True and no fallback)
         """
@@ -242,72 +253,98 @@ class PluginRegistry:
                 # Cache read error, will fetch from URL
                 log.warning('Failed to load registry cache, fetching from URL: %s', e)
 
-        # Fetch from URL
-        try:
-            log.debug('Fetching registry from %s', self.registry_url)
+        # Try each registry URL in order
+        last_error = None
+        for url_index, url in enumerate(self.registry_urls):
+            try:
+                log.debug('Fetching registry from %s (URL %d/%d)', url, url_index + 1, len(self.registry_urls))
 
-            # Check if registry_url is a local file path
-            registry_path = Path(self.registry_url)
-            if registry_path.exists() and registry_path.is_file():
-                log.debug('Loading registry from local file: %s', self.registry_url)
-                try:
-                    with open(registry_path, 'r') as f:
-                        self._registry_data = json.load(f)
-                except json.JSONDecodeError as e:
-                    raise RegistryParseError(self.registry_url, e) from e
-                except Exception as e:
-                    raise RegistryFetchError(self.registry_url, e) from e
-            else:
-                # Fetch from remote URL with retry logic
-                for attempt in range(REGISTRY_FETCH_MAX_RETRIES):
+                # Check if url is a local file path
+                registry_path = Path(url)
+                if registry_path.exists() and registry_path.is_file():
+                    log.debug('Loading registry from local file: %s', url)
                     try:
-                        timeout = REGISTRY_FETCH_INITIAL_TIMEOUT * (REGISTRY_FETCH_TIMEOUT_MULTIPLIER**attempt)
-                        with urlopen(self.registry_url, timeout=timeout) as response:
-                            data = response.read()
-                            self._registry_data = json.loads(data)
-                            break
+                        with open(registry_path, 'r') as f:
+                            self._registry_data = json.load(f)
+                            self.registry_url = url  # Update to successful URL
+                            break  # Success!
                     except json.JSONDecodeError as e:
-                        raise RegistryParseError(self.registry_url, e) from e
-                    except urllib.error.HTTPError as e:
-                        # Don't retry 4xx client errors
-                        if 400 <= e.code < 500:
-                            raise RegistryFetchError(self.registry_url, e) from e
-                        # Retry 5xx server errors
-                        if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
-                            wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
-                            log.warning(
-                                'Registry fetch failed (attempt %d/%d): %s', attempt + 1, REGISTRY_FETCH_MAX_RETRIES, e
-                            )
-                            log.info('Retrying in %d seconds...', wait)
-                            time.sleep(wait)
-                        else:
-                            raise RegistryFetchError(self.registry_url, e) from e
+                        raise RegistryParseError(url, e) from e
                     except Exception as e:
-                        # Retry network errors
-                        if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
-                            wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
-                            log.warning(
-                                'Registry fetch failed (attempt %d/%d): %s', attempt + 1, REGISTRY_FETCH_MAX_RETRIES, e
-                            )
-                            log.info('Retrying in %d seconds...', wait)
-                            time.sleep(wait)
-                        else:
-                            raise RegistryFetchError(self.registry_url, e) from e
+                        raise RegistryFetchError(url, e) from e
+                else:
+                    # Fetch from remote URL with retry logic
+                    for attempt in range(REGISTRY_FETCH_MAX_RETRIES):
+                        try:
+                            timeout = REGISTRY_FETCH_INITIAL_TIMEOUT * (REGISTRY_FETCH_TIMEOUT_MULTIPLIER**attempt)
+                            with urlopen(url, timeout=timeout) as response:
+                                data = response.read()
+                                self._registry_data = json.loads(data)
+                                self.registry_url = url  # Update to successful URL
+                                break  # Success!
+                        except json.JSONDecodeError as e:
+                            raise RegistryParseError(url, e) from e
+                        except urllib.error.HTTPError as e:
+                            # Don't retry 4xx client errors (except 404 which might mean intentional removal)
+                            if 400 <= e.code < 500 and e.code != 404:
+                                raise RegistryFetchError(url, e) from e
+                            # For 404 or 5xx, retry or try next URL
+                            if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
+                                wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
+                                log.warning(
+                                    'Registry fetch failed (attempt %d/%d): %s',
+                                    attempt + 1,
+                                    REGISTRY_FETCH_MAX_RETRIES,
+                                    e,
+                                )
+                                log.info('Retrying in %d seconds...', wait)
+                                time.sleep(wait)
+                            else:
+                                raise RegistryFetchError(url, e) from e
+                        except Exception as e:
+                            # Retry network errors
+                            if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
+                                wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
+                                log.warning(
+                                    'Registry fetch failed (attempt %d/%d): %s',
+                                    attempt + 1,
+                                    REGISTRY_FETCH_MAX_RETRIES,
+                                    e,
+                                )
+                                log.info('Retrying in %d seconds...', wait)
+                                time.sleep(wait)
+                            else:
+                                raise RegistryFetchError(url, e) from e
 
-            # Save to cache
-            if self.cache_path:
-                try:
-                    Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
-                    with open(self.cache_path, 'w') as f:
-                        json.dump(self._registry_data, f)
-                    log.debug('Saved registry to cache: %s', self.cache_path)
-                except Exception as e:
-                    # Cache write failure is not critical, just log warning
-                    log.warning('Failed to save registry cache: %s', e)
+                    # If we got here without breaking, the retries succeeded
+                    if self._registry_data:
+                        break  # Success!
 
-        except (RegistryFetchError, RegistryParseError):
-            # Re-raise our custom exceptions
-            raise
+            except (RegistryFetchError, RegistryParseError) as e:
+                last_error = e
+                log.warning('Failed to fetch registry from %s: %s', url, e)
+                # Try next URL
+                continue
+
+        # If we exhausted all URLs without success, raise the last error
+        if not self._registry_data:
+            if last_error:
+                raise last_error
+            else:
+                raise RegistryFetchError(
+                    self.registry_urls[0], Exception('All registry URLs failed without specific error')
+                )
+
+        # Save to cache
+        if self.cache_path:
+            try:
+                Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
+                with open(self.cache_path, 'w') as f:
+                    json.dump(self._registry_data, f)
+                log.debug('Saved registry to cache: %s', self.cache_path)
+            except Exception as e:
+                # Cache write failure is not critical, just log warning
+                log.warning('Failed to save registry cache: %s', e)
 
     def is_blacklisted(self, url, plugin_uuid=None):
         """Check if a plugin URL or UUID is blacklisted.
