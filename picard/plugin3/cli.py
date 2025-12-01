@@ -672,14 +672,13 @@ class PluginCLI:
 
     def _update_plugins(self, plugin_names):
         """Update specific plugins."""
+        self._out.print('Updating plugin...')
         for plugin_name in plugin_names:
             plugin, error = self._find_plugin_or_error(plugin_name)
             if error:
                 return error
 
             try:
-                self._out.print(f'Updating {self._out.d_id(plugin.plugin_id)}...')
-
                 # Check if plugin is pinned to immutable ref
                 try:
                     uuid = self._manager._get_plugin_uuid(plugin)
@@ -700,23 +699,28 @@ class PluginCLI:
                 result = self._manager.update_plugin(plugin)
 
                 if result.old_commit == result.new_commit:
-                    self._out.info(f'Already up to date (version {self._out.d_version(result.new_version)})')
+                    self._out.info(f'{self._out.d_name(plugin.plugin_id)}: Already up to date ({result.new_version})')
                 else:
-                    # Show tag update if ref changed
+                    # Show tag with commit ID if available, otherwise just commits
                     if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-                        self._out.success(
-                            f'Updated: {self._out.d_version(result.old_ref)} {self._out.d_arrow()} {self._out.d_version(result.new_ref)}'
+                        version_info = (
+                            f'{self._out.d_version(result.old_ref)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
+                            f'{self._out.d_arrow()} '
+                            f'{self._out.d_version(result.new_ref)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
                         )
-                    # Otherwise show version change if version actually changed
                     elif result.old_version != result.new_version:
-                        self._out.success(
-                            f'Updated: {self._out.d_version(result.old_version)} {self._out.d_arrow()} {self._out.d_version(result.new_version)}'
+                        version_info = (
+                            f'{self._out.d_version(result.old_version)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
+                            f'{self._out.d_arrow()} '
+                            f'{self._out.d_version(result.new_version)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
                         )
                     else:
-                        self._out.success(f'Updated: {self._out.d_version(result.new_version)}')
-                    self._out.info(
-                        f'Commit: {self._out.d_commit_old(short_commit_id(result.old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(result.new_commit))}'
-                    )
+                        version_info = (
+                            f'{self._out.d_commit_old(short_commit_id(result.old_commit))} '
+                            f'{self._out.d_arrow()} '
+                            f'{self._out.d_commit_new(short_commit_id(result.new_commit))}'
+                        )
+                    self._out.success(f'{self._out.d_name(plugin.plugin_id)}: {version_info}')
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
                 from picard.plugin3.manager import (
@@ -732,20 +736,26 @@ class PluginCLI:
                     if not success:
                         return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
                     if result.old_commit != result.new_commit:
-                        # Show tag update if ref changed
+                        # Show tag with commit ID if available, otherwise just commits
                         if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-                            self._out.success(
-                                f'Updated: {self._out.d_version(result.old_ref)} {self._out.d_arrow()} {self._out.d_version(result.new_ref)}'
+                            version_info = (
+                                f'{self._out.d_version(result.old_ref)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
+                                f'{self._out.d_arrow()} '
+                                f'{self._out.d_version(result.new_ref)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
                             )
                         elif result.old_version != result.new_version:
-                            self._out.success(
-                                f'Updated: {self._out.d_version(result.old_version)} {self._out.d_arrow()} {self._out.d_version(result.new_version)}'
+                            version_info = (
+                                f'{self._out.d_version(result.old_version)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
+                                f'{self._out.d_arrow()} '
+                                f'{self._out.d_version(result.new_version)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
                             )
                         else:
-                            self._out.success(f'Updated: {self._out.d_version(result.new_version)}')
-                        self._out.info(
-                            f'Commit: {self._out.d_commit_old(short_commit_id(result.old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(result.new_commit))}'
-                        )
+                            version_info = (
+                                f'{self._out.d_commit_old(short_commit_id(result.old_commit))} '
+                                f'{self._out.d_arrow()} '
+                                f'{self._out.d_commit_new(short_commit_id(result.new_commit))}'
+                            )
+                        self._out.success(f'{self._out.d_name(plugin.plugin_id)}: {version_info}')
                         self._out.info('Restart Picard to load the updated plugin')
                 elif isinstance(e, PluginNoSourceError):
                     self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no stored URL, cannot update')
