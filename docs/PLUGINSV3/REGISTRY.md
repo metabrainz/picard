@@ -13,16 +13,24 @@ The plugin registry is a centralized JSON file served by the Picard website that
 - Blacklist of malicious/broken plugins
 - Translations for plugin names and descriptions
 
-**Registry URL:** `https://picard.musicbrainz.org/api/v3/plugins.json`
+**Registry URLs (tried in order):**
+1. `https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/refs/heads/main/plugins.json` (Primary - GitHub)
+2. `https://picard.musicbrainz.org/registry/plugins.json` (Fallback - MusicBrainz proxy)
 
 **Configuration:**
-- Default URL is defined in `DEFAULT_PLUGIN_REGISTRY_URL` constant in `picard/const/defaults.py`
-- Can be overridden via environment variable: `PICARD_PLUGIN_REGISTRY_URL`
+- Default URLs are defined in `DEFAULT_PLUGIN_REGISTRY_URLS` list in `picard/const/defaults.py`
+- Picard tries each URL in order until one succeeds
+- Can be overridden via environment variable: `PICARD_PLUGIN_REGISTRY_URL` (prepends to list)
 - Useful for testing, development, or using alternative registries
+
+**Fallback Behavior:**
+- If primary URL fails (404, timeout, network error), automatically tries next URL
+- Allows intentional removal from GitHub to force fallback to proxy
+- Provides resilience against GitHub outages or regional blocks
 
 **Example:**
 ```bash
-# Use custom registry URL
+# Use custom registry URL (tried first, then defaults)
 export PICARD_PLUGIN_REGISTRY_URL="https://test.example.com/plugins.json"
 picard plugins --browse
 
