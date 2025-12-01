@@ -24,7 +24,7 @@ This module can be copied to registry maintenance tools without
 requiring the full Picard codebase.
 """
 
-from picard.plugin3.constants import (
+from .constants import (
     CATEGORIES,
     MAX_DESCRIPTION_LENGTH,
     MAX_LONG_DESCRIPTION_LENGTH,
