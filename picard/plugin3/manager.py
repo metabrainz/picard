@@ -704,12 +704,13 @@ class PluginManager:
 
         # Update metadata with current URL and UUID
         # If redirected, preserve original URL/UUID
+        # Use source.ref which may have been updated to a newer tag
         original_url, original_uuid = self._get_original_metadata(metadata, redirected, old_url, old_uuid)
         self._save_plugin_metadata(
             PluginMetadata(
                 name=plugin.plugin_id,
                 url=current_url,
-                ref=metadata.get('ref'),
+                ref=source.ref,  # Use updated ref from source
                 commit=new_commit,
                 uuid=current_uuid,
                 original_url=original_url,
