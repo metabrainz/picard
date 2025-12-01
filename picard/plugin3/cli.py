@@ -46,6 +46,30 @@ class PluginCLI:
         self._out = output or PluginOutput()
         self._parser = parser
 
+    def _is_debug_mode(self):
+        """Check if debug mode is enabled."""
+        return getattr(self._args, 'debug', False)
+
+    def _handle_exception(self, e, message=None):
+        """Handle exception with optional traceback in debug mode.
+
+        Args:
+            e: Exception to handle
+            message: Optional custom error message prefix
+        """
+        if message:
+            self._out.error(f'{message}: {e}')
+        else:
+            self._out.error(f'Error: {e}')
+
+        if self._is_debug_mode():
+            import traceback
+
+            self._out.nl()
+            self._out.error('Traceback:')
+            for line in traceback.format_exc().splitlines():
+                self._out.error(f'  {line}')
+
     def _format_version_info(self, result):
         """Format version info with tags and commits for display.
 
@@ -181,7 +205,7 @@ class PluginCLI:
             self._out.error('Operation cancelled by user')
             return ExitCode.CANCELLED
         except Exception as e:
-            self._out.error(f'Error: {e}')
+            self._handle_exception(e)
             return ExitCode.ERROR
 
     def _format_git_info(self, metadata):
@@ -927,7 +951,7 @@ class PluginCLI:
                     self._out.error(f'  {error}')
                 return ExitCode.ERROR
             else:
-                self._out.error(f'Failed to switch ref: {e}')
+                self._handle_exception(e, 'Failed to switch ref')
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
