@@ -1255,6 +1255,13 @@ class PluginManager:
                 for remote in repo.remotes:
                     remote.fetch()
 
+                # Update version tag cache from fetched repo if plugin has versioning_scheme
+                registry_plugin = self._registry.find_plugin(url=metadata['url'])
+                if registry_plugin and registry_plugin.get('versioning_scheme'):
+                    self._update_cache_from_local_repo(
+                        plugin.local_path, metadata['url'], registry_plugin['versioning_scheme']
+                    )
+
                 old_ref = metadata.get('ref', 'main')
                 ref = old_ref
 
