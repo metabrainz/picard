@@ -775,23 +775,25 @@ class PluginCLI:
         unchanged = 0
         failed = 0
 
-        for name, success, old_ver, new_ver, old_commit, new_commit, error in results:
-            if success:
-                if old_commit == new_commit:
-                    self._out.info(f'{name}: Already up to date ({new_ver})')
+        for r in results:
+            if r.success:
+                if r.result.old_commit == r.result.new_commit:
+                    self._out.info(f'{r.plugin_id}: Already up to date ({r.result.new_version})')
                     unchanged += 1
                 else:
-                    # Show version change only if version actually changed
-                    if old_ver != new_ver:
-                        version_info = f'{old_ver} → {new_ver}'
+                    # Show tag transition if available, otherwise version change
+                    if r.result.old_ref and r.result.new_ref and r.result.old_ref != r.result.new_ref:
+                        version_info = f'{r.result.old_ref} → {r.result.new_ref}'
+                    elif r.result.old_version != r.result.new_version:
+                        version_info = f'{r.result.old_version} → {r.result.new_version}'
                     else:
-                        version_info = new_ver
+                        version_info = r.result.new_version
                     self._out.success(
-                        f'{name}: {version_info} ({short_commit_id(old_commit)} → {short_commit_id(new_commit)})'
+                        f'{r.plugin_id}: {version_info} ({short_commit_id(r.result.old_commit)} → {short_commit_id(r.result.new_commit)})'
                     )
                     updated += 1
             else:
-                self._out.error(f'{name}: {error}')
+                self._out.error(f'{r.plugin_id}: {r.error}')
                 failed += 1
 
         self._out.nl()

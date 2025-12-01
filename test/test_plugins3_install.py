@@ -583,6 +583,7 @@ class TestPluginInstall(PicardTestCase):
         from io import StringIO
 
         from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.manager import UpdateAllResult, UpdateResult
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = MockTagger()
@@ -594,9 +595,9 @@ class TestPluginInstall(PicardTestCase):
         # Return mixed results: updated, unchanged, failed
         mock_manager.update_all_plugins = Mock(
             return_value=[
-                ('plugin1', True, '1.0', '1.1', 'abc', 'def', None),
-                ('plugin2', True, '2.0', '2.0', 'ghi', 'ghi', None),
-                ('plugin3', False, None, None, None, None, 'Error'),
+                UpdateAllResult('plugin1', True, UpdateResult('1.0', '1.1', 'abc', 'def', None, None), None),
+                UpdateAllResult('plugin2', True, UpdateResult('2.0', '2.0', 'ghi', 'ghi', None, None), None),
+                UpdateAllResult('plugin3', False, None, 'Error'),
             ]
         )
         mock_tagger.pluginmanager3 = mock_manager

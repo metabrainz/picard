@@ -75,6 +75,15 @@ class UpdateCheck(NamedTuple):
     new_ref: str
 
 
+class UpdateAllResult(NamedTuple):
+    """Result of updating a plugin in update_all operation."""
+
+    plugin_id: str
+    success: bool
+    result: UpdateResult
+    error: str
+
+
 class PluginManagerError(Exception):
     """Base exception for plugin manager errors."""
 
@@ -750,19 +759,9 @@ class PluginManager:
         for plugin in self._plugins:
             try:
                 result = self.update_plugin(plugin)
-                results.append(
-                    (
-                        plugin.plugin_id,
-                        True,
-                        result.old_version,
-                        result.new_version,
-                        result.old_commit,
-                        result.new_commit,
-                        None,
-                    )
-                )
+                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=result, error=None))
             except Exception as e:
-                results.append((plugin.plugin_id, False, None, None, None, None, str(e)))
+                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
         return results
 
     def check_updates(self):
