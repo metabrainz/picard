@@ -668,6 +668,7 @@ class PluginManager:
 
         Raises:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
+            ValueError: If plugin is pinned to a specific commit
         """
         # Check for uncommitted changes
         if not discard_changes:
@@ -679,6 +680,13 @@ class PluginManager:
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
             raise PluginNoSourceError(plugin.plugin_id, 'update')
+
+        # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
+        ref = metadata.get('ref')
+        if ref:
+            is_immutable, ref_type = self._is_immutable_ref(ref)
+            if is_immutable and ref_type == 'commit':
+                raise ValueError(f'Plugin is pinned to commit "{ref}" and cannot be updated')
 
         old_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
         old_url = metadata['url']
@@ -771,15 +779,21 @@ class PluginManager:
                     if not ref.startswith('origin/') and not ref.startswith('refs/'):
                         # Try origin/ prefix first for branches
                         try:
-                            commit = repo.revparse_single(f'origin/{ref}')
+                            obj = repo.revparse_single(f'origin/{ref}')
                         except KeyError:
                             # Fall back to original ref (might be tag or commit hash)
                             try:
-                                commit = repo.revparse_single(f'refs/tags/{ref}')
+                                obj = repo.revparse_single(f'refs/tags/{ref}')
                             except KeyError:
-                                commit = repo.revparse_single(ref)
+                                obj = repo.revparse_single(ref)
                     else:
-                        commit = repo.revparse_single(ref)
+                        obj = repo.revparse_single(ref)
+
+                    # Peel annotated tags to get the actual commit
+                    if obj.type == pygit2.GIT_OBJECT_TAG:
+                        commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+                    else:
+                        commit = obj
 
                     latest_commit = str(commit.id)
                     # Get commit date

@@ -283,8 +283,8 @@ class PluginSourceGit(PluginSource):
                 else:
                     raise
 
-            # If shallow clone and ref specified, fetch tags to ensure tags are available
-            if shallow and self.ref and not checkout_branch:
+            # If shallow clone and ref specified, fetch tags to ensure tags are available for updates
+            if shallow and self.ref:
                 for remote in repo.remotes:
                     try:
                         remote.fetch(['+refs/tags/*:refs/tags/*'], callbacks=GitRemoteCallbacks())
@@ -454,9 +454,15 @@ class PluginSourceGit(PluginSource):
 
         from packaging import version as pkg_version
 
-        # Get all tags
+        # Get all tags (use listall_references to include fetched tags)
         tags = []
-        for ref_name in repo.references:
+        try:
+            all_refs = repo.listall_references()
+        except AttributeError:
+            # Fallback for older pygit2
+            all_refs = list(repo.references)
+
+        for ref_name in all_refs:
             if ref_name.startswith('refs/tags/'):
                 tag_name = ref_name[len('refs/tags/') :]
                 tags.append(tag_name)

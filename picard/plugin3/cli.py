@@ -689,21 +689,18 @@ class PluginCLI:
                 except Exception:
                     is_immutable, ref_type, ref = False, None, None
 
+                # Prevent updating if pinned to a specific commit (tags can update to newer tags)
+                if is_immutable and ref and ref_type == 'commit':
+                    self._out.warning(f'Plugin is pinned to commit {self._out.d_commit_old(ref)}')
+                    self._out.info(
+                        f'To update to a different version, use: {self._out.d_command(f"picard plugins --switch-ref {plugin.plugin_id} <branch-or-tag>")}'
+                    )
+                    continue
+
                 old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(plugin)
 
                 if old_commit == new_commit:
                     self._out.info(f'Already up to date (version {self._out.d_version(new_ver)})')
-
-                    # Show helpful message if pinned to immutable ref
-                    if is_immutable and ref:
-                        self._out.nl()
-                        if ref_type == 'tag':
-                            self._out.warning(f'Plugin is pinned to tag {self._out.d_version(ref)}')
-                        else:
-                            self._out.warning(f'Plugin is pinned to commit {self._out.d_commit_old(ref)}')
-                        self._out.info(
-                            f'To update to a different version, use: {self._out.d_command(f"picard plugins --switch-ref {plugin.plugin_id} <branch-or-tag>")}'
-                        )
                 else:
                     # Show version change only if version actually changed
                     if old_ver != new_ver:
