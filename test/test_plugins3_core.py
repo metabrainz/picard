@@ -134,7 +134,6 @@ name = "Test"
             # Should have errors for missing required fields
             error_text = ' '.join(errors)
             self.assertIn('uuid', error_text)
-            self.assertIn('version', error_text)
             self.assertIn('description', error_text)
             self.assertIn('api', error_text)
         finally:

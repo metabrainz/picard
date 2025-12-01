@@ -19,7 +19,6 @@ my-plugin/
 ```toml
 uuid = "550e8400-e29b-41d4-a716-446655440000"  # Generate with: uuidgen or python -c "import uuid; print(uuid.uuid4())"
 name = "My Plugin"
-version = "1.0.0"
 description = "Short description of what the plugin does"
 api = ["3.0"]
 ```
@@ -63,7 +62,6 @@ def disable():
 |-------|------|-------------|---------|
 | `uuid` | string | Unique plugin identifier (UUID v4) | `"550e8400-e29b-41d4-a716-446655440000"` |
 | `name` | string | Plugin display name | `"ListenBrainz Submitter"` |
-| `version` | string | Plugin version (semver) | `"1.0.0"` |
 | `description` | string | Short description (one line, 1-200 chars) | `"Submit your music to ListenBrainz"` |
 | `api` | array | Supported API versions | `["3.0", "3.1"]` |
 
@@ -102,7 +100,6 @@ def disable():
 ```toml
 uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
 name = "ListenBrainz Submitter"
-version = "2.1.0"
 description = "Submit your music to ListenBrainz"
 long_description = """
 This plugin integrates with ListenBrainz to submit your music listening history.
@@ -235,7 +232,7 @@ $ picard plugins --info listenbrainz
 
 Plugin: ListenBrainz Submitter
 Status: enabled
-Version: 2.1.0
+Version: v2.1.0 (ref: v2.1.0, commit: a1b2c3d)
 
 Description:
   This plugin integrates with ListenBrainz to submit your music
@@ -326,11 +323,6 @@ Vollständige deutsche Beschreibung hier...
 - String, 1-100 characters
 - Should be human-readable display name
 - Can contain spaces and special characters
-
-### `version`
-- Required
-- Must follow semantic versioning (semver): `MAJOR.MINOR.PATCH`
-- Examples: `"1.0.0"`, `"2.1.5"`, `"0.9.0-beta"`
 
 ### `description`
 - Required
@@ -611,7 +603,7 @@ def enable(api: PluginApi):
 4. **Test thoroughly** - Test with various file types and edge cases
 5. **Document** - Add docstrings and comments
 6. **Follow conventions** - Use Picard's coding style
-7. **Version properly** - Use semantic versioning
+7. **Version properly** - Use git tags for releases (e.g., v1.0.0, v2.1.0)
 8. **Declare dependencies** - Document required Python packages
 
 ---

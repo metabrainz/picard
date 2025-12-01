@@ -44,7 +44,6 @@ class TestManifestValidator(PicardTestCase):
         manifest = {'name': 'Test Plugin'}
         errors = validate_manifest_dict(manifest)
         self.assertIn("Missing required field: uuid", errors)
-        self.assertIn("Missing required field: version", errors)
         self.assertIn("Missing required field: description", errors)
         self.assertIn("Missing required field: api", errors)
 
@@ -125,28 +124,11 @@ class TestManifestValidator(PicardTestCase):
         self.assertIn("Missing required field: name", errors)
         self.assertIn("Missing required field: description", errors)
 
-    def test_validate_invalid_version(self):
-        """Test validation catches invalid version format."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '',  # Empty - treated as missing
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
-        errors = validate_manifest_dict(manifest)
-        # Empty string is caught by "missing required field" check
-        self.assertIn("Missing required field: version", errors)
-
     def test_validate_invalid_api_version(self):
         """Test validation catches invalid API version."""
         manifest = {
             'uuid': '550e8400-e29b-41d4-a716-446655440000',
             'name': 'Test Plugin',
-            'version': '1.0.0',
             'description': 'A test plugin',
             'api': [''],  # Empty string
             'authors': ['Test Author'],
