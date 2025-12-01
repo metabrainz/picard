@@ -39,3 +39,7 @@ MAX_LONG_DESCRIPTION_LENGTH = 2000
 
 # UUID v4 regex pattern (RFC 4122)
 UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', re.IGNORECASE)
+
+# Version tag cache settings
+VERSION_TAG_CACHE_FILE = 'plugin_version_cache.json'
+VERSION_TAG_CACHE_TTL = 3600  # 1 hour in seconds

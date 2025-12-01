@@ -1486,6 +1486,9 @@ class PluginCLI:
 
             self._manager._registry.fetch_registry(use_cache=False)
 
+            # Clean up stale version cache entries
+            self._manager._cleanup_version_cache()
+
             info = self._manager._registry.get_registry_info()
             self._out.success('Registry refreshed successfully')
             self._out.print(f'Registry URL: {info["registry_url"]}')

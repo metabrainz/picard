@@ -450,6 +450,13 @@ class PluginManager:
             # Atomic rename from temp to final location
             temp_path.rename(final_path)
 
+            # Update version tag cache from cloned repo if plugin has versioning_scheme
+            registry_plugin = self._registry.find_plugin(url=url)
+            if registry_plugin:
+                versioning_scheme = registry_plugin.get('versioning_scheme')
+                if versioning_scheme:
+                    self._update_cache_from_local_repo(final_path, url, versioning_scheme)
+
             # Store plugin metadata
             self._save_plugin_metadata(
                 PluginMetadata(
@@ -770,6 +777,268 @@ class PluginManager:
 
         return False, None
 
+    def _parse_versioning_scheme(self, versioning_scheme):
+        """Parse versioning scheme into regex pattern.
+
+        Args:
+            versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+        Returns:
+            str: Regex pattern or None if unknown scheme
+        """
+        if versioning_scheme == 'semver':
+            return r'^\D*\d+\.\d+\.\d+$'
+        elif versioning_scheme == 'calver':
+            return r'^\d{4}\.\d{2}\.\d{2}$'
+        elif versioning_scheme.startswith('regex:'):
+            return versioning_scheme[6:]
+        else:
+            log.warning('Unknown versioning scheme: %s', versioning_scheme)
+            return None
+
+    def _filter_tags(self, ref_names, pattern):
+        """Filter tag names by pattern.
+
+        Args:
+            ref_names: Iterator of ref names (e.g., 'refs/tags/v1.0.0')
+            pattern: Regex pattern to match
+
+        Returns:
+            list: Filtered tag names (without refs/tags/ prefix)
+        """
+        import re
+
+        tags = []
+        for ref_name in ref_names:
+            # Handle both string refs and RemoteHead objects
+            name = ref_name.name if hasattr(ref_name, 'name') else ref_name
+
+            if name.startswith('refs/tags/'):
+                tag = name[10:]
+                if tag.endswith('^{}'):
+                    continue
+                if re.match(pattern, tag):
+                    tags.append(tag)
+        return tags
+
+    def _sort_tags(self, tags, versioning_scheme):
+        """Sort tags based on versioning scheme.
+
+        Args:
+            tags: List of tag names
+            versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+        Returns:
+            list: Sorted tags (newest first)
+        """
+        from packaging import version
+
+        if versioning_scheme in ('semver', 'calver'):
+            try:
+
+                def strip_prefix(tag):
+                    import re
+
+                    match = re.search(r'\d', tag)
+                    return tag[match.start() :] if match else tag
+
+                tags.sort(key=lambda t: version.parse(strip_prefix(t)), reverse=True)
+            except Exception:
+                tags.sort(reverse=True)
+        else:
+            # For custom regex, use lexicographic sorting
+            tags.sort(reverse=True)
+
+        return tags
+
+    def _get_version_cache_path(self):
+        """Get path to version tag cache file."""
+        from picard.plugin3.constants import VERSION_TAG_CACHE_FILE
+
+        # Use same cache directory as registry
+        if hasattr(self._registry, 'cache_path') and self._registry.cache_path:
+            cache_dir = self._registry.cache_path.parent
+        else:
+            # Fallback for tests or when registry has no cache
+            from picard.const.appdirs import cache_folder
+
+            cache_dir = cache_folder()
+
+        return cache_dir / VERSION_TAG_CACHE_FILE
+
+    def _load_version_cache(self):
+        """Load version tag cache from disk.
+
+        Returns:
+            dict: Cache data or empty dict if not exists/invalid
+        """
+        import json
+
+        cache_path = self._get_version_cache_path()
+        if not cache_path.exists():
+            return {}
+
+        try:
+            with open(cache_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            log.warning('Failed to load version cache: %s', e)
+            return {}
+
+    def _save_version_cache(self, cache):
+        """Save version tag cache to disk atomically.
+
+        Args:
+            cache: Cache dict to save
+        """
+        import json
+        import tempfile
+
+        cache_path = self._get_version_cache_path()
+
+        try:
+            # Atomic write: write to temp file, then rename
+            with tempfile.NamedTemporaryFile(
+                mode='w', encoding='utf-8', dir=cache_path.parent, delete=False, suffix='.tmp'
+            ) as f:
+                json.dump(cache, f, indent=2)
+                temp_path = f.name
+
+            # Atomic rename
+            import os
+
+            os.replace(temp_path, cache_path)
+        except Exception as e:
+            log.warning('Failed to save version cache: %s', e)
+
+    def _get_cached_tags(self, url, versioning_scheme, allow_expired=False):
+        """Get cached tags if valid (not expired).
+
+        Args:
+            url: Git repository URL
+            versioning_scheme: Versioning scheme
+            allow_expired: If True, return expired cache as fallback
+
+        Returns:
+            list: Cached tags or None if cache miss/expired
+        """
+        import time
+
+        from picard.plugin3.constants import VERSION_TAG_CACHE_TTL
+
+        cache = self._load_version_cache()
+
+        if url not in cache:
+            return None
+
+        if versioning_scheme not in cache[url]:
+            return None
+
+        entry = cache[url][versioning_scheme]
+        timestamp = entry.get('timestamp', 0)
+        tags = entry.get('tags', [])
+
+        # Check if expired
+        is_expired = time.time() - timestamp > VERSION_TAG_CACHE_TTL
+
+        if is_expired and not allow_expired:
+            return None
+
+        if is_expired:
+            log.debug('Using expired cache for %s (%s): %d tags', url, versioning_scheme, len(tags))
+        else:
+            log.debug('Using cached tags for %s (%s): %d tags', url, versioning_scheme, len(tags))
+
+        return tags
+
+    def _cache_tags(self, url, versioning_scheme, tags):
+        """Cache tags for url+scheme.
+
+        Args:
+            url: Git repository URL
+            versioning_scheme: Versioning scheme
+            tags: List of tags to cache
+        """
+        import time
+
+        cache = self._load_version_cache()
+
+        if url not in cache:
+            cache[url] = {}
+
+        cache[url][versioning_scheme] = {'tags': tags, 'timestamp': int(time.time())}
+
+        self._save_version_cache(cache)
+        log.debug('Cached %d tags for %s (%s)', len(tags), url, versioning_scheme)
+
+    def _cleanup_version_cache(self):
+        """Remove cache entries for URLs no longer in registry.
+
+        This should be called after registry refresh to clean up entries
+        for plugins that were removed or had their URLs changed.
+        """
+        cache = self._load_version_cache()
+        if not cache:
+            return
+
+        # Get all URLs currently in registry
+        try:
+            registry_urls = set()
+            plugins = self._registry.list_plugins()
+            for plugin in plugins:
+                url = plugin.get('url')
+                if url:
+                    registry_urls.add(url)
+        except Exception as e:
+            log.warning('Failed to get registry URLs for cache cleanup: %s', e)
+            return
+
+        # Find URLs in cache but not in registry
+        cached_urls = set(cache.keys())
+        stale_urls = cached_urls - registry_urls
+
+        if stale_urls:
+            log.info('Cleaning up %d stale cache entries', len(stale_urls))
+            for url in stale_urls:
+                del cache[url]
+            self._save_version_cache(cache)
+
+    def _update_cache_from_local_repo(self, repo_path, url, versioning_scheme):
+        """Update version tag cache from local repository.
+
+        Args:
+            repo_path: Path to local git repository
+            url: Git repository URL (for cache key)
+            versioning_scheme: Versioning scheme to filter tags
+
+        Returns:
+            list: Filtered tags or empty list
+        """
+        import pygit2
+
+        # Parse versioning scheme
+        pattern = self._parse_versioning_scheme(versioning_scheme)
+        if not pattern:
+            return []
+
+        try:
+            repo = pygit2.Repository(str(repo_path))
+
+            # Filter and sort tags
+            tags = self._filter_tags(repo.references, pattern)
+            tags = self._sort_tags(tags, versioning_scheme)
+
+            # Update cache
+            if tags:
+                self._cache_tags(url, versioning_scheme, tags)
+                log.debug('Updated cache from local repo: %d tags for %s', len(tags), url)
+
+            return tags
+
+        except Exception as e:
+            log.debug('Failed to update cache from local repo: %s', e)
+            return []
+
     def _fetch_version_tags(self, url, versioning_scheme):
         """Fetch and filter version tags from repository.
 
@@ -780,21 +1049,18 @@ class PluginManager:
         Returns:
             list: Sorted list of version tags (newest first), or empty list on error
         """
-        import re
         import tempfile
 
-        from packaging import version
         import pygit2
 
+        # Check cache first
+        cached_tags = self._get_cached_tags(url, versioning_scheme)
+        if cached_tags is not None:
+            return cached_tags
+
         # Parse versioning scheme
-        if versioning_scheme == 'semver':
-            pattern = r'^\D*\d+\.\d+\.\d+$'
-        elif versioning_scheme == 'calver':
-            pattern = r'^\d{4}\.\d{2}\.\d{2}$'
-        elif versioning_scheme.startswith('regex:'):
-            pattern = versioning_scheme[6:]
-        else:
-            log.warning('Unknown versioning scheme: %s', versioning_scheme)
+        pattern = self._parse_versioning_scheme(versioning_scheme)
+        if not pattern:
             return []
 
         try:
@@ -803,37 +1069,23 @@ class PluginManager:
                 remote = repo.remotes.create('origin', url)
                 remote_refs = remote.list_heads()
 
-                tags = []
-                for ref in remote_refs:
-                    ref_name = ref.name
-                    if ref_name.startswith('refs/tags/'):
-                        tag = ref_name[10:]
-                        if tag.endswith('^{}'):
-                            continue
-                        if re.match(pattern, tag):
-                            tags.append(tag)
+                # Filter and sort tags
+                tags = self._filter_tags(remote_refs, pattern)
+                tags = self._sort_tags(tags, versioning_scheme)
 
-                # Sort based on versioning scheme
-                if versioning_scheme in ('semver', 'calver'):
-                    try:
-                        # Strip any non-digit prefix for version comparison
-                        def strip_prefix(tag):
-                            import re
-
-                            match = re.search(r'\d', tag)
-                            return tag[match.start() :] if match else tag
-
-                        tags.sort(key=lambda t: version.parse(strip_prefix(t)), reverse=True)
-                    except Exception:
-                        tags.sort(reverse=True)
-                else:
-                    # For custom regex, use lexicographic sorting
-                    tags.sort(reverse=True)
+                # Cache the result
+                if tags:
+                    self._cache_tags(url, versioning_scheme, tags)
 
                 return tags
 
         except Exception as e:
             log.warning('Error fetching tags from %s: %s', url, e)
+            # Try to use expired cache as fallback
+            stale_cache = self._get_cached_tags(url, versioning_scheme, allow_expired=True)
+            if stale_cache:
+                log.info('Using stale cache for %s due to fetch error', url)
+                return stale_cache
             return []
 
     def _find_newer_version_tag(self, url, current_tag, versioning_scheme):
@@ -964,6 +1216,10 @@ class PluginManager:
                 original_uuid=original_uuid,
             )
         )
+
+        # Update version tag cache from updated repo
+        if registry_plugin and registry_plugin.get('versioning_scheme'):
+            self._update_cache_from_local_repo(plugin.local_path, current_url, registry_plugin['versioning_scheme'])
 
         return UpdateResult(old_version, new_version, old_commit, new_commit, old_ref, new_ref, commit_date)
 
