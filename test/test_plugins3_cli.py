@@ -444,7 +444,9 @@ class TestPluginCLI(PicardTestCase):
 
     def test_refresh_registry_command(self):
         """Test --refresh-registry command."""
-        from picard.plugin3.cli import ExitCode
+        from datetime import datetime
+
+        from picard.plugin3.cli import DATETIME_FORMAT, ExitCode
 
         mock_manager = MockPluginManager()
         mock_manager._registry.fetch_registry = Mock()
@@ -461,7 +463,8 @@ class TestPluginCLI(PicardTestCase):
         mock_manager._registry.fetch_registry.assert_called_once_with(use_cache=False)
         mock_manager._registry.get_registry_info.assert_called_once()
         self.assertIn('Registry refreshed successfully', stdout)
-        self.assertIn('Last updated: 2025-11-25T12:00:00Z', stdout)
+        expected_date = datetime.fromisoformat('2025-11-25T12:00:00Z'.replace('Z', '+00:00')).astimezone()
+        self.assertIn(f'Last updated: {expected_date.strftime(DATETIME_FORMAT)}', stdout)
         self.assertIn('Plugins available: 42', stdout)
 
     def test_refresh_registry_error(self):

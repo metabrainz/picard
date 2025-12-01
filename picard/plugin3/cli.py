@@ -33,6 +33,9 @@ class ExitCode(IntEnum):
     CANCELLED = 130
 
 
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
+
 class PluginCLI:
     """Command line interface for managing plugins."""
 
@@ -79,7 +82,7 @@ class PluginCLI:
         if hasattr(result, 'commit_date'):
             from datetime import datetime
 
-            date_str = datetime.fromtimestamp(result.commit_date).strftime('%Y-%m-%d %H:%M')
+            date_str = datetime.fromtimestamp(result.commit_date).strftime(DATETIME_FORMAT)
             version_info = f'{version_info} {self._out.d_date(f"({date_str})")}'
 
         return version_info
@@ -1376,7 +1379,7 @@ class PluginCLI:
             from datetime import datetime
 
             last_updated = datetime.fromisoformat(info["last_updated"].replace('Z', '+00:00')).astimezone()
-            self._out.print(f'Last updated: {last_updated.strftime("%Y-%m-%d %H:%M")}')
+            self._out.print(f'Last updated: {last_updated.strftime(DATETIME_FORMAT)}')
 
             self._out.print(f'Plugins available: {info["plugin_count"]}')
 
