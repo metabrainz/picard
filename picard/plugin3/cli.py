@@ -217,6 +217,48 @@ class PluginCLI:
             self._handle_exception(e)
             return ExitCode.ERROR
 
+    def _get_registry_plugin_version(self, plugin_data):
+        """Get latest version tag for a registry plugin.
+
+        Args:
+            plugin_data: Plugin dict from registry
+
+        Returns:
+            Version string (latest tag or empty string)
+        """
+        versioning_scheme = plugin_data.get('versioning_scheme')
+        if not versioning_scheme:
+            return ''
+
+        url = plugin_data.get('url')
+        if not url:
+            return ''
+
+        try:
+            tags = self._manager._fetch_version_tags(url, versioning_scheme)
+            return tags[0] if tags else ''
+        except Exception:
+            return ''
+
+    def _get_version_display(self, plugin_uuid, manifest_version=''):
+        """Get version string for display, preferring git tag over manifest version.
+
+        Args:
+            plugin_uuid: Plugin UUID to look up metadata
+            manifest_version: Fallback version from manifest
+
+        Returns:
+            Version string (tag or manifest version)
+        """
+        metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
+        ref = metadata.get('ref', '')
+
+        # If ref looks like a version tag, use it
+        if ref and not ref.startswith(short_commit_id(metadata.get('commit', ''))):
+            return ref
+
+        return manifest_version
+
     def _format_git_info(self, metadata):
         """Format git ref and commit info compactly.
 
@@ -326,7 +368,7 @@ class PluginCLI:
                         self._out.info(f'  {desc}')
                     metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
                     git_info = self._format_git_info(metadata)
-                    version = plugin.manifest._data.get('version', '')
+                    version = self._get_version_display(plugin_uuid, plugin.manifest._data.get('version', ''))
                     if git_info:
                         self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
                     else:
@@ -394,7 +436,7 @@ class PluginCLI:
         self._out.print(f'Status: {status}')
 
         # Version
-        version = plugin.manifest._data.get('version', '')
+        version = self._get_version_display(plugin.manifest.uuid, plugin.manifest._data.get('version', ''))
         if git_info:
             self._out.print(f'Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
         else:
@@ -1337,6 +1379,12 @@ class PluginCLI:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
                 self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
+
+                # Show version if available
+                version = self._get_registry_plugin_version(plugin)
+                if version:
+                    self._out.info(f'  Latest version: {self._out.d_version(version)}')
+
                 categories = plugin.get('categories', [])
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
@@ -1390,6 +1438,12 @@ class PluginCLI:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
                 self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
                 self._out.info(f'  {plugin.get("description", "")}')
+
+                # Show version if available
+                version = self._get_registry_plugin_version(plugin)
+                if version:
+                    self._out.info(f'  Latest version: {self._out.d_version(version)}')
+
                 categories = plugin.get('categories', [])
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
