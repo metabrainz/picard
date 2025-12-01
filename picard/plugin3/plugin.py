@@ -169,7 +169,8 @@ class PluginSourceGit(PluginSource):
             str: Comma-separated list of ref names
         """
         refs = []
-        for ref in repo.references:
+        all_refs = list(repo.references)  # Convert References to list
+        for ref in all_refs:
             if ref.startswith('refs/heads/'):
                 refs.append(ref[11:])  # Remove 'refs/heads/' prefix
             elif ref.startswith('refs/remotes/origin/'):
@@ -181,8 +182,8 @@ class PluginSourceGit(PluginSource):
             return "none"
 
         refs = refs[:limit]
-        if len(repo.references) > limit:
-            refs.append(f"... ({len(repo.references) - limit} more)")
+        if len(all_refs) > limit:
+            refs.append(f"... ({len(all_refs) - limit} more)")
 
         return ", ".join(refs)
 

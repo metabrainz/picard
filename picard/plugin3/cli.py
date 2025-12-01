@@ -906,9 +906,11 @@ class PluginCLI:
             elif isinstance(e, PluginRefNotFoundError):
                 self._out.error(f"Ref '{ref}' not found")
                 self._out.print('')
-                if e.available_refs:
+                # Ensure available_refs is a list before checking
+                available_refs = e.available_refs if isinstance(e.available_refs, list) else []
+                if available_refs:
                     self._out.print('Available refs:')
-                    for r in e.available_refs:
+                    for r in available_refs:
                         desc = f" - {r['description']}" if r.get('description') else ''
                         self._out.print(f"  {r['name']}{desc}")
                 return ExitCode.ERROR

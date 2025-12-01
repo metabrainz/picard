@@ -606,6 +606,11 @@ class PluginManager:
             None - returns validation result instead
         """
         registry_plugin = self._registry.find_plugin(url=url, uuid=uuid)
+        # Ensure registry_plugin is a dict, not a pygit2 object
+        if registry_plugin and not isinstance(registry_plugin, dict):
+            log.warning('registry_plugin is not a dict, got %s', type(registry_plugin))
+            return True, []
+
         versioning_scheme = registry_plugin.get('versioning_scheme') if registry_plugin else None
 
         # If plugin has versioning_scheme, validate against version tags
@@ -621,6 +626,10 @@ class PluginManager:
         # If plugin has explicit refs in registry, validate against those
         if registry_plugin and registry_plugin.get('refs'):
             refs = registry_plugin['refs']
+            # Ensure refs is a list (not a pygit2 References object)
+            if not isinstance(refs, list):
+                return True, []
+
             available = []
             for r in refs:
                 ref_dict = {'name': r['name']}
@@ -657,10 +666,20 @@ class PluginManager:
         if not metadata or 'url' not in metadata:
             raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
 
-        # Validate ref
-        is_valid, available_refs = self._validate_ref(metadata['url'], ref, uuid)
-        if not is_valid and available_refs:
-            raise PluginRefNotFoundError(plugin.plugin_id, ref, available_refs)
+        # Validate ref (if possible)
+        try:
+            is_valid, available_refs = self._validate_ref(metadata['url'], ref, uuid)
+            # Ensure available_refs is always a list
+            if not isinstance(available_refs, list):
+                log.warning('available_refs is not a list, got %s', type(available_refs))
+                available_refs = []
+            if not is_valid and available_refs:
+                raise PluginRefNotFoundError(plugin.plugin_id, ref, available_refs)
+        except PluginRefNotFoundError:
+            raise  # Re-raise our own exception
+        except Exception as e:
+            log.warning('Could not validate ref: %s', e)
+            # Continue anyway - let git handle the validation
 
         old_ref = metadata.get('ref', 'main')
         old_commit = metadata.get('commit', 'unknown')
