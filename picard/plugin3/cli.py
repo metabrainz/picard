@@ -149,6 +149,14 @@ class PluginCLI:
     def run(self):
         """Run the CLI command and return exit code."""
         try:
+            # Handle --refresh-registry first if specified
+            if hasattr(self._args, 'refresh_registry') and self._args.refresh_registry:
+                result = self._refresh_registry()
+                # If refresh failed, return error
+                if result != ExitCode.SUCCESS:
+                    return result
+                # Continue to execute other command if specified
+
             # Validate that --ref is only used with --install or --validate
             ref = getattr(self._args, 'ref', None)
             if ref:
@@ -184,7 +192,8 @@ class PluginCLI:
             elif hasattr(self._args, 'check_blacklist') and self._args.check_blacklist:
                 return self._check_blacklist(self._args.check_blacklist)
             elif hasattr(self._args, 'refresh_registry') and self._args.refresh_registry:
-                return self._refresh_registry()
+                # Already handled at the start, just return success
+                return ExitCode.SUCCESS
             elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
                 return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             elif hasattr(self._args, 'clean_config') and self._args.clean_config:

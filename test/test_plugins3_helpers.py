@@ -112,6 +112,7 @@ class MockCliArgs(Mock):
             'switch_ref': None,
             'clean_config': None,
             'validate': None,
+            'manifest': None,
             'yes': False,
             'purge': False,
             'reinstall': False,
