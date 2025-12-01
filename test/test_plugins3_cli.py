@@ -127,7 +127,7 @@ class TestPluginCLI(PicardTestCase):
         self.assertEqual(exit_code, 0)
         self.assertIn('test-plugin', stdout)
         self.assertIn('enabled', stdout)
-        self.assertIn('1.0.0', stdout)
+        self.assertIn('main', stdout)  # Shows git ref as version
         self.assertIn('https://example.com/plugin.git', stdout)
         self.assertIn('abc1234', stdout)
 

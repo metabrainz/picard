@@ -495,7 +495,7 @@ class PluginCLI:
         self._out.print(f'State: {plugin.state.value}')
 
         if plugin.manifest:
-            version = plugin.manifest._data.get('version', '')
+            version = self._get_version_display(plugin.manifest.uuid, plugin.manifest._data.get('version', ''))
             self._out.print(f'Version: {self._out.d_version(version)}')
             api_versions = plugin.manifest._data.get('api', [])
             self._out.print(f'API Versions: {", ".join(api_versions)}')
