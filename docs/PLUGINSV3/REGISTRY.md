@@ -979,25 +979,39 @@ See [TRANSLATIONS.md](TRANSLATIONS.md) for details on the translation system.
 
 ### Upgrading Trust Level
 
-Website admin interface:
-1. Navigate to plugin in registry
-2. Review plugin code and history
-3. Change trust level: `community` → `trusted` → `official`
-4. Add reason for upgrade
-5. Save changes
+Using the registry CLI tool:
+
+```bash
+# Change trust level
+registry plugin edit <plugin-id> --trust trusted
+
+# Commit the change
+git add plugins.json
+git commit -m "Promote <plugin-id> to trusted"
+git push
+```
+
+Process:
+1. Review plugin code and history
+2. Run `registry plugin edit <plugin-id> --trust <new-level>`
+3. Commit and push to registry repository
+4. Plugin trust level updates in registry
+5. Users see new trust level on next registry refresh
 
 ### Promoting to Official
 
 1. Plugin moved to `metabrainz` organization
 2. Code reviewed by team
-3. Manually set `trust_level: official` in registry
-4. Plugin gets official badge
+3. Run: `registry plugin edit <plugin-id> --trust official`
+4. Commit and push
+5. Plugin gets official badge
 
 ### Downgrading Trust Level
 
 1. If plugin has security issue or quality problems
-2. Admin changes trust level in registry
-3. Users see appropriate warning on next update
+2. Run: `registry plugin edit <plugin-id> --trust community`
+3. Commit and push
+4. Users see appropriate warning on next update
 
 **Note:** Trust level is per-plugin, not per-author. Same author can have plugins at different trust levels.
 
@@ -1005,7 +1019,6 @@ Website admin interface:
 
 ## See Also
 
-- **[GIT_REFS_FEATURE.md](GIT_REFS_FEATURE.md)** - Git refs feature summary and examples
 - **[WEBSITE.md](WEBSITE.md)** - Website implementation for registry generation
 - **[SECURITY.md](SECURITY.md)** - Security model rationale
 - **[MANIFEST.md](MANIFEST.md)** - MANIFEST.toml specification
