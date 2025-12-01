@@ -26,7 +26,7 @@ jobs:
       TARGET_ARCH: ${{ matrix.setup.target-arch }}
       CODESIGN: 0
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0  # Fetch entire history, needed for setting the build number
     - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
