@@ -778,7 +778,7 @@ class PluginCLI:
         for r in results:
             if r.success:
                 if r.result.old_commit == r.result.new_commit:
-                    self._out.info(f'{r.plugin_id}: Already up to date ({r.result.new_version})')
+                    self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date ({r.result.new_version})')
                     unchanged += 1
                 else:
                     # Show tag with commit ID if available, otherwise just commits
@@ -800,10 +800,10 @@ class PluginCLI:
                             f'{self._out.d_arrow()} '
                             f'{self._out.d_commit_new(short_commit_id(r.result.new_commit))}'
                         )
-                    self._out.success(f'{r.plugin_id}: {version_info}')
+                    self._out.success(f'{self._out.d_name(r.plugin_id)}: {version_info}')
                     updated += 1
             else:
-                self._out.error(f'{r.plugin_id}: {r.error}')
+                self._out.error(f'{self._out.d_name(r.plugin_id)}: {r.error}')
                 failed += 1
 
         self._out.nl()
