@@ -351,6 +351,12 @@ The CI runs on every PR and push, ensuring:
 
 ## Website Integration
 
+**TODO:** Implement `https://picard.musicbrainz.org/registry/plugins.json` endpoint as fallback for the GitHub URL. This provides:
+- Resilience if GitHub is unavailable or blocked
+- Ability to intentionally remove GitHub file to force all clients to use proxy
+- Control over caching headers and rate limiting
+- Analytics on registry usage
+
 ### Serving the Registry
 
 **Simple approach - proxy to GitHub:**
