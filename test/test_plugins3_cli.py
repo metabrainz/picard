@@ -236,6 +236,7 @@ class TestPluginCLI(PicardTestCase):
                 new_commit='def9876543210',
                 old_ref=None,
                 new_ref=None,
+                commit_date=1234567890,
             )
         )
 

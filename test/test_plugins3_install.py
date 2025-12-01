@@ -509,7 +509,7 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.update_plugin = Mock(
-            return_value=UpdateResult('1.0.0', '1.1.0', 'abc1234', 'def5678', 'v1.0.0', 'v1.1.0')
+            return_value=UpdateResult('1.0.0', '1.1.0', 'abc1234', 'def5678', 'v1.0.0', 'v1.1.0', 1234567890)
         )
         mock_tagger.pluginmanager3 = mock_manager
 
@@ -551,7 +551,9 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Same commit = already up to date
-        mock_manager.update_plugin = Mock(return_value=UpdateResult('1.0.0', '1.0.0', 'abc1234', 'abc1234', None, None))
+        mock_manager.update_plugin = Mock(
+            return_value=UpdateResult('1.0.0', '1.0.0', 'abc1234', 'abc1234', None, None, 1234567890)
+        )
         mock_tagger.pluginmanager3 = mock_manager
 
         args = MockCliArgs()
@@ -595,8 +597,12 @@ class TestPluginInstall(PicardTestCase):
         # Return mixed results: updated, unchanged, failed
         mock_manager.update_all_plugins = Mock(
             return_value=[
-                UpdateAllResult('plugin1', True, UpdateResult('1.0', '1.1', 'abc', 'def', None, None), None),
-                UpdateAllResult('plugin2', True, UpdateResult('2.0', '2.0', 'ghi', 'ghi', None, None), None),
+                UpdateAllResult(
+                    'plugin1', True, UpdateResult('1.0', '1.1', 'abc', 'def', None, None, 1234567890), None
+                ),
+                UpdateAllResult(
+                    'plugin2', True, UpdateResult('2.0', '2.0', 'ghi', 'ghi', None, None, 1234567890), None
+                ),
                 UpdateAllResult('plugin3', False, None, 'Error'),
             ]
         )

@@ -42,6 +42,48 @@ class PluginCLI:
         self._out = output or PluginOutput()
         self._parser = parser
 
+    def _format_version_info(self, result):
+        """Format version info with tags and commits for display.
+
+        Args:
+            result: UpdateResult or UpdateCheck with old_commit, new_commit, old_ref, new_ref
+                   (and optionally old_version, new_version, commit_date)
+        """
+        # Show tag with commit ID if available
+        if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
+            version_info = (
+                f'{self._out.d_version(result.old_ref)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
+                f'{self._out.d_arrow()} '
+                f'{self._out.d_version(result.new_ref)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
+            )
+        # Show version with commit ID if version changed
+        elif (
+            hasattr(result, 'old_version')
+            and hasattr(result, 'new_version')
+            and result.old_version != result.new_version
+        ):
+            version_info = (
+                f'{self._out.d_version(result.old_version)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
+                f'{self._out.d_arrow()} '
+                f'{self._out.d_version(result.new_version)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
+            )
+        # Just show commits
+        else:
+            version_info = (
+                f'{self._out.d_commit_old(short_commit_id(result.old_commit))} '
+                f'{self._out.d_arrow()} '
+                f'{self._out.d_commit_new(short_commit_id(result.new_commit))}'
+            )
+
+        # Append date if available
+        if hasattr(result, 'commit_date'):
+            from datetime import datetime
+
+            date_str = datetime.fromtimestamp(result.commit_date).strftime('%Y-%m-%d %H:%M')
+            version_info = f'{version_info} {self._out.d_date(f"({date_str})")}'
+
+        return version_info
+
     def _handle_dirty_error(self, error, action_callback):
         """Handle PluginDirtyError with user prompt or error.
 
@@ -701,25 +743,7 @@ class PluginCLI:
                 if result.old_commit == result.new_commit:
                     self._out.info(f'{self._out.d_name(plugin.plugin_id)}: Already up to date ({result.new_version})')
                 else:
-                    # Show tag with commit ID if available, otherwise just commits
-                    if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-                        version_info = (
-                            f'{self._out.d_version(result.old_ref)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
-                            f'{self._out.d_arrow()} '
-                            f'{self._out.d_version(result.new_ref)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
-                        )
-                    elif result.old_version != result.new_version:
-                        version_info = (
-                            f'{self._out.d_version(result.old_version)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
-                            f'{self._out.d_arrow()} '
-                            f'{self._out.d_version(result.new_version)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
-                        )
-                    else:
-                        version_info = (
-                            f'{self._out.d_commit_old(short_commit_id(result.old_commit))} '
-                            f'{self._out.d_arrow()} '
-                            f'{self._out.d_commit_new(short_commit_id(result.new_commit))}'
-                        )
+                    version_info = self._format_version_info(result)
                     self._out.success(f'{self._out.d_name(plugin.plugin_id)}: {version_info}')
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
@@ -736,25 +760,7 @@ class PluginCLI:
                     if not success:
                         return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
                     if result.old_commit != result.new_commit:
-                        # Show tag with commit ID if available, otherwise just commits
-                        if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-                            version_info = (
-                                f'{self._out.d_version(result.old_ref)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
-                                f'{self._out.d_arrow()} '
-                                f'{self._out.d_version(result.new_ref)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
-                            )
-                        elif result.old_version != result.new_version:
-                            version_info = (
-                                f'{self._out.d_version(result.old_version)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
-                                f'{self._out.d_arrow()} '
-                                f'{self._out.d_version(result.new_version)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
-                            )
-                        else:
-                            version_info = (
-                                f'{self._out.d_commit_old(short_commit_id(result.old_commit))} '
-                                f'{self._out.d_arrow()} '
-                                f'{self._out.d_commit_new(short_commit_id(result.new_commit))}'
-                            )
+                        version_info = self._format_version_info(result)
                         self._out.success(f'{self._out.d_name(plugin.plugin_id)}: {version_info}')
                         self._out.info('Restart Picard to load the updated plugin')
                 elif isinstance(e, PluginNoSourceError):
@@ -791,25 +797,7 @@ class PluginCLI:
                     self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date ({r.result.new_version})')
                     unchanged += 1
                 else:
-                    # Show tag with commit ID if available, otherwise just commits
-                    if r.result.old_ref and r.result.new_ref and r.result.old_ref != r.result.new_ref:
-                        version_info = (
-                            f'{self._out.d_version(r.result.old_ref)} ({self._out.d_commit_old(short_commit_id(r.result.old_commit))}) '
-                            f'{self._out.d_arrow()} '
-                            f'{self._out.d_version(r.result.new_ref)} ({self._out.d_commit_new(short_commit_id(r.result.new_commit))})'
-                        )
-                    elif r.result.old_version != r.result.new_version:
-                        version_info = (
-                            f'{self._out.d_version(r.result.old_version)} ({self._out.d_commit_old(short_commit_id(r.result.old_commit))}) '
-                            f'{self._out.d_arrow()} '
-                            f'{self._out.d_version(r.result.new_version)} ({self._out.d_commit_new(short_commit_id(r.result.new_commit))})'
-                        )
-                    else:
-                        version_info = (
-                            f'{self._out.d_commit_old(short_commit_id(r.result.old_commit))} '
-                            f'{self._out.d_arrow()} '
-                            f'{self._out.d_commit_new(short_commit_id(r.result.new_commit))}'
-                        )
+                    version_info = self._format_version_info(r.result)
                     self._out.success(f'{self._out.d_name(r.plugin_id)}: {version_info}')
                     updated += 1
             else:
@@ -856,24 +844,8 @@ class PluginCLI:
             self._out.print('Updates available:')
             self._out.nl()
             for update in updates:
-                from datetime import datetime
-
-                # commit_date is Unix timestamp, fromtimestamp uses local timezone
-                date_str = datetime.fromtimestamp(update.commit_date).strftime('%Y-%m-%d %H:%M')
-
-                # Show tag with commit ID if available, otherwise just commits
-                if update.old_ref and update.new_ref:
-                    version_info = (
-                        f'{self._out.d_version(update.old_ref)} ({self._out.d_commit_old(update.old_commit)}) '
-                        f'{self._out.d_arrow()} '
-                        f'{self._out.d_version(update.new_ref)} ({self._out.d_commit_new(update.new_commit)})'
-                    )
-                else:
-                    version_info = f'{self._out.d_commit_old(update.old_commit)} {self._out.d_arrow()} {self._out.d_commit_new(update.new_commit)}'
-
-                self._out.info(
-                    f'{self._out.d_name(update.plugin_id)}: {version_info} {self._out.d_date(f"({date_str})")}'
-                )
+                version_info = self._format_version_info(update)
+                self._out.info(f'{self._out.d_name(update.plugin_id)}: {version_info}')
             self._out.nl()
             self._out.print(f'Run with {self._out.d_command("--update-all")} to update all plugins')
 

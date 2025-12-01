@@ -266,13 +266,20 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             mock_source_instance.update = Mock(return_value=('old123', 'new456'))
             mock_source.return_value = mock_source_instance
 
-            # Should not raise with discard_changes=True
-            old_ver, new_ver, old_commit, new_commit, old_ref, new_ref = manager.update_plugin(
-                mock_plugin, discard_changes=True
-            )
+            # Mock pygit2 Repository
+            with patch('pygit2.Repository') as mock_repo_class:
+                mock_repo = Mock()
+                mock_commit = Mock()
+                mock_commit.commit_time = 1234567890
+                mock_repo.get = Mock(return_value=mock_commit)
+                mock_repo_class.return_value = mock_repo
 
-            self.assertEqual(old_commit, 'old123')
-            self.assertEqual(new_commit, 'new456')
+                # Should not raise with discard_changes=True
+                result = manager.update_plugin(mock_plugin, discard_changes=True)
+
+                self.assertEqual(result.old_commit, 'old123')
+                self.assertEqual(result.new_commit, 'new456')
+                self.assertEqual(result.commit_date, 1234567890)
 
     def test_switch_ref_dirty_raises_error(self):
         """Test that switch_ref raises PluginDirtyError for dirty repo."""

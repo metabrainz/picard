@@ -62,6 +62,7 @@ class UpdateResult(NamedTuple):
     new_commit: str
     old_ref: str
     new_ref: str
+    commit_date: int
 
 
 class UpdateCheck(NamedTuple):
@@ -730,6 +731,19 @@ class PluginManager:
         source = PluginSourceGit(current_url, old_ref)
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
+        # Get commit date
+        import pygit2
+
+        repo = pygit2.Repository(plugin.local_path.absolute())
+        obj = repo.get(new_commit)
+        # Peel tag to commit if needed
+        if obj.type == pygit2.GIT_OBJECT_TAG:
+            commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+        else:
+            commit = obj
+        commit_date = commit.commit_time
+        repo.free()
+
         # Reload manifest to get new version
         plugin.read_manifest()
         new_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
@@ -751,7 +765,7 @@ class PluginManager:
             )
         )
 
-        return UpdateResult(old_version, new_version, old_commit, new_commit, old_ref, new_ref)
+        return UpdateResult(old_version, new_version, old_commit, new_commit, old_ref, new_ref, commit_date)
 
     def update_all_plugins(self):
         """Update all installed plugins."""
