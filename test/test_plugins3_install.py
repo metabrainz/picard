@@ -624,3 +624,31 @@ class TestPluginInstall(PicardTestCase):
         self.assertIn('1 updated', output_text)
         self.assertIn('1 unchanged', output_text)
         self.assertIn('1 failed', output_text)
+
+    def test_install_multiple_plugins_with_ref_requires_confirmation(self):
+        """Test that installing multiple plugins with --ref requires confirmation."""
+        from io import StringIO
+
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.output import PluginOutput
+
+        mock_tagger = MockTagger()
+        mock_manager = MockPluginManager()
+        mock_tagger.pluginmanager3 = mock_manager
+
+        args = MockCliArgs(install=['plugin1', 'plugin2'], ref='v1.0.0', yes=False)
+
+        stdout = StringIO()
+        stderr = StringIO()
+        output = PluginOutput(stdout=stdout, stderr=stderr, color=False)
+        # Mock yesno to return False (cancel)
+        output.yesno = Mock(return_value=False)
+        cli = PluginCLI(mock_manager, args, output)
+
+        result = cli.run()
+
+        self.assertEqual(result, 0)  # Success (cancelled)
+        stderr_text = stderr.getvalue()
+        self.assertIn('Using ref "v1.0.0" for all 2 plugins', stderr_text)
+        stdout_text = stdout.getvalue()
+        self.assertIn('Installation cancelled', stdout_text)

@@ -389,6 +389,14 @@ class PluginCLI:
         if force_blacklisted:
             self._out.warning(self._out.d_warning('WARNING: Bypassing blacklist check - this may be dangerous!'))
 
+        # Warn if using --ref with multiple plugins
+        if explicit_ref and len(plugin_urls) > 1:
+            self._out.warning(f'Using ref "{explicit_ref}" for all {len(plugin_urls)} plugins')
+            if not yes:
+                if not self._out.yesno('Continue?'):
+                    self._out.print('Installation cancelled')
+                    return ExitCode.SUCCESS
+
         for url_or_id in plugin_urls:
             # Use explicit ref if provided, otherwise may auto-select per plugin
             ref = explicit_ref
