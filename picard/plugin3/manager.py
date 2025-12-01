@@ -64,6 +64,17 @@ class UpdateResult(NamedTuple):
     new_ref: str
 
 
+class UpdateCheck(NamedTuple):
+    """Result of checking for plugin updates."""
+
+    plugin_id: str
+    old_commit: str
+    new_commit: str
+    commit_date: int
+    old_ref: str
+    new_ref: str
+
+
 class PluginManagerError(Exception):
     """Base exception for plugin manager errors."""
 
@@ -833,13 +844,13 @@ class PluginManager:
 
                 if current_commit != latest_commit:
                     updates.append(
-                        (
-                            plugin.plugin_id,
-                            short_commit_id(current_commit),
-                            short_commit_id(latest_commit),
-                            latest_commit_date,
-                            old_ref,
-                            new_ref,
+                        UpdateCheck(
+                            plugin_id=plugin.plugin_id,
+                            old_commit=short_commit_id(current_commit),
+                            new_commit=short_commit_id(latest_commit),
+                            commit_date=latest_commit_date,
+                            old_ref=old_ref,
+                            new_ref=new_ref,
                         )
                     )
             except Exception:

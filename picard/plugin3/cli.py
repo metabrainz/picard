@@ -833,23 +833,25 @@ class PluginCLI:
         else:
             self._out.print('Updates available:')
             self._out.nl()
-            for name, current, latest, commit_date, old_ref, new_ref in updates:
+            for update in updates:
                 from datetime import datetime
 
                 # commit_date is Unix timestamp, fromtimestamp uses local timezone
-                date_str = datetime.fromtimestamp(commit_date).strftime('%Y-%m-%d %H:%M')
+                date_str = datetime.fromtimestamp(update.commit_date).strftime('%Y-%m-%d %H:%M')
 
-                # Show tag transition if available, otherwise show commits
-                if old_ref and new_ref:
+                # Show tag with commit ID if available, otherwise just commits
+                if update.old_ref and update.new_ref:
                     version_info = (
-                        f'{self._out.d_version(old_ref)} {self._out.d_arrow()} {self._out.d_version(new_ref)}'
+                        f'{self._out.d_version(update.old_ref)} ({self._out.d_commit_old(update.old_commit)}) '
+                        f'{self._out.d_arrow()} '
+                        f'{self._out.d_version(update.new_ref)} ({self._out.d_commit_new(update.new_commit)})'
                     )
                 else:
-                    version_info = (
-                        f'{self._out.d_commit_old(current)} {self._out.d_arrow()} {self._out.d_commit_new(latest)}'
-                    )
+                    version_info = f'{self._out.d_commit_old(update.old_commit)} {self._out.d_arrow()} {self._out.d_commit_new(update.new_commit)}'
 
-                self._out.info(f'{self._out.d_name(name)}: {version_info} {self._out.d_date(f"({date_str})")}')
+                self._out.info(
+                    f'{self._out.d_name(update.plugin_id)}: {version_info} {self._out.d_date(f"({date_str})")}'
+                )
             self._out.nl()
             self._out.print(f'Run with {self._out.d_command("--update-all")} to update all plugins')
 
