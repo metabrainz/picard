@@ -20,6 +20,7 @@
 
 from enum import IntEnum
 
+from picard import log
 from picard.plugin3.output import PluginOutput
 from picard.plugin3.plugin import short_commit_id
 
@@ -205,7 +206,7 @@ class PluginCLI:
         return f' (@{commit_short})'
 
     def _select_ref_for_plugin(self, plugin):
-        """Select appropriate ref for plugin based on Picard API version.
+        """Select appropriate ref for plugin based on versioning scheme or Picard API version.
 
         Args:
             plugin: Plugin data from registry
@@ -213,6 +214,20 @@ class PluginCLI:
         Returns:
             str: Selected ref name, or None if no refs specified
         """
+        # Check for versioning_scheme first
+        versioning_scheme = plugin.get('versioning_scheme')
+        if versioning_scheme:
+            url = plugin.get('git_url')
+            if url:
+                tags = self._manager._fetch_version_tags(url, versioning_scheme)
+                if tags:
+                    # Return latest tag
+                    return tags[0]
+                else:
+                    log.warning('No version tags found for %s with scheme %s', url, versioning_scheme)
+                    # Fall through to ref selection
+
+        # Original ref selection logic
         from picard import api_versions_tuple
 
         refs = plugin.get('refs')
@@ -874,6 +889,7 @@ class PluginCLI:
                 PluginDirtyError,
                 PluginManifestInvalidError,
                 PluginNoSourceError,
+                PluginRefNotFoundError,
                 PluginRefSwitchError,
             )
 
@@ -887,6 +903,15 @@ class PluginCLI:
                     f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
                 )
                 self._out.info('Restart Picard to load the updated plugin')
+            elif isinstance(e, PluginRefNotFoundError):
+                self._out.error(f"Ref '{ref}' not found")
+                self._out.print('')
+                if e.available_refs:
+                    self._out.print('Available refs:')
+                    for r in e.available_refs:
+                        desc = f" - {r['description']}" if r.get('description') else ''
+                        self._out.print(f"  {r['name']}{desc}")
+                return ExitCode.ERROR
             elif isinstance(e, PluginNoSourceError):
                 self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no stored URL, cannot switch ref')
                 self._out.info('This plugin may have been installed from a local directory')

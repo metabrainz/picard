@@ -73,6 +73,7 @@ picard plugins --install my-plugin
     "ja": "ListenBrainzに音楽をスクロブルする"
   },
   "git_url": "https://github.com/metabrainz/picard-plugin-listenbrainz",
+  "versioning_scheme": "semver",
   "refs": [
     {
       "name": "main",
@@ -119,6 +120,7 @@ picard plugins --install my-plugin
 | `name_i18n` | object | No | Translated names (locale → string) |
 | `description_i18n` | object | No | Translated descriptions (locale → string) |
 | `git_url` | string | Yes | Git repository URL (https) |
+| `versioning_scheme` | string | No | Version tagging scheme: `semver`, `calver`, or `regex:<pattern>`. Enables automatic version discovery. If omitted, uses explicit refs only. |
 | `refs` | array | No | Git refs (branches/tags) available for this plugin (defaults to `[{"name": "main"}]`). Each ref can have `min_api_version` and `max_api_version` fields. |
 | `categories` | array | Yes | Plugin categories |
 | `trust_level` | string | Yes | Trust level: `official`, `trusted`, or `community` |
@@ -400,6 +402,196 @@ The registry validates that all refs exist in the repository:
   ]
 }
 ```
+
+---
+
+## Versioning Scheme
+
+The `versioning_scheme` field enables automatic version discovery for plugins that use semantic versioning or other tagging conventions. This allows plugins to release new versions without requiring registry updates.
+
+### Purpose
+
+Without `versioning_scheme`:
+- Plugin releases require registry updates
+- Users must manually specify version tags with `--ref`
+- No automatic discovery of newer versions
+
+With `versioning_scheme`:
+- Plugin can release v1.0.1, v1.0.2, etc. without registry updates
+- Users automatically get latest stable version on install
+- Updates automatically discover newer versions
+
+### Field Values
+
+**Predefined schemes:**
+- `"semver"` - Semantic versioning (matches `1.0.0`, `v2.1.3`, `version1.5.0`, `release-2.0.0`, etc. - any non-digit prefix allowed)
+- `"calver"` - Calendar versioning (matches `2025.01.15`, `2025.12.01`, etc.)
+
+**Custom regex:**
+- `"regex:<pattern>"` - Custom pattern (e.g., `"regex:^version\\d+\\.\\d+\\.\\d+$"`)
+
+**Omitted/null:**
+- Uses explicit `refs` only (current behavior)
+
+### Examples
+
+**Semantic versioning:**
+```json
+{
+  "id": "my-plugin",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "git_url": "https://github.com/user/plugin",
+  "versioning_scheme": "semver",
+  "refs": [{"name": "main"}],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
+}
+```
+
+**Custom version prefix:**
+```json
+{
+  "id": "my-plugin",
+  "uuid": "650e8400-e29b-41d4-a716-446655440001",
+  "git_url": "https://github.com/user/plugin",
+  "versioning_scheme": "regex:^version\\d+\\.\\d+\\.\\d+$",
+  "refs": [{"name": "main"}],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
+}
+```
+
+**With release candidates:**
+```json
+{
+  "id": "my-plugin",
+  "uuid": "750e8400-e29b-41d4-a716-446655440002",
+  "git_url": "https://github.com/user/plugin",
+  "versioning_scheme": "regex:^v\\d+\\.\\d+\\.\\d+(-rc\\d+)?$",
+  "refs": [{"name": "main"}],
+  "categories": ["metadata"],
+  "trust_level": "community",
+  "authors": ["Plugin Author"],
+  "added_at": "2025-11-24T15:00:00Z",
+  "updated_at": "2025-11-24T15:00:00Z"
+}
+```
+
+### Client Behavior
+
+**Install without --ref:**
+
+Without `versioning_scheme`:
+```bash
+$ picard plugins --install my-plugin
+# Installs: main branch @ latest commit
+```
+
+With `versioning_scheme`:
+```bash
+$ picard plugins --install my-plugin
+# Fetches all tags, filters by pattern, installs latest (e.g., v2.1.4)
+```
+
+**Install with --ref:**
+```bash
+$ picard plugins --install my-plugin --ref v1.0.0
+# Installs specific version (works with or without versioning_scheme)
+```
+
+**Update behavior:**
+
+Without `versioning_scheme`:
+```bash
+$ picard plugins --update my-plugin
+# Updates to latest commit on installed branch
+```
+
+With `versioning_scheme`:
+```bash
+$ picard plugins --update my-plugin
+# Discovers newer tags (e.g., v2.1.4 → v3.0.0)
+```
+
+**Switch-ref validation:**
+
+With `versioning_scheme`:
+```bash
+$ picard plugins --switch-ref my-plugin v1.0.0
+# Validates v1.0.0 exists and matches pattern
+# If invalid, shows available versions
+```
+
+With explicit `refs`:
+```bash
+$ picard plugins --switch-ref my-plugin beta
+# Validates "beta" is in refs list
+# If invalid, shows available refs
+```
+
+### Use Cases
+
+**1. Stable Release Workflow**
+
+Plugin author releases stable versions as tags:
+```bash
+# Plugin repository
+git tag v1.0.0
+git push --tags
+
+# Users automatically get v1.0.0
+picard plugins --install my-plugin
+
+# Later: release v1.0.1
+git tag v1.0.1
+git push --tags
+
+# Users get update notification
+picard plugins --update my-plugin
+# Updates: v1.0.0 → v1.0.1
+```
+
+**2. Combined with Branch Refs**
+
+Use `versioning_scheme` for stable releases and `refs` for development:
+```json
+{
+  "versioning_scheme": "semver",
+  "refs": [
+    {"name": "main", "description": "Development branch"},
+    {"name": "beta", "description": "Beta testing"}
+  ]
+}
+```
+
+Users can choose:
+```bash
+# Stable release (latest tag)
+picard plugins --install my-plugin
+
+# Development branch
+picard plugins --install my-plugin --ref main
+
+# Beta branch
+picard plugins --install my-plugin --ref beta
+```
+
+**3. No Registry Updates for Releases**
+
+Plugin author can release v1.0.0, v1.0.1, v1.0.2, v2.0.0 without updating the registry. Users automatically discover and install the latest version.
+
+### Validation
+
+The registry validates `versioning_scheme`:
+- Checks that at least one tag exists matching the pattern
+- Warns if no tags found (plugin may not be ready for versioning_scheme)
+- Validates regex syntax for custom patterns
 
 ---
 

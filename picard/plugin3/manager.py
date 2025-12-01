@@ -155,6 +155,16 @@ class PluginRefSwitchError(PluginManagerError):
         super().__init__(f"Cannot switch to ref {ref}: {original_error}")
 
 
+class PluginRefNotFoundError(PluginManagerError):
+    """Raised when requested ref is not found or not available."""
+
+    def __init__(self, plugin_id, ref, available_refs):
+        self.plugin_id = plugin_id
+        self.ref = ref
+        self.available_refs = available_refs
+        super().__init__(f"Ref '{ref}' not found for plugin {plugin_id}")
+
+
 class PluginNoUUIDError(PluginManagerError):
     """Raised when plugin has no UUID in manifest."""
 
@@ -580,6 +590,50 @@ class PluginManager:
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
 
+    def _validate_ref(self, url, ref, uuid=None):
+        """Validate that a ref exists and is available.
+
+        Args:
+            url: Git repository URL
+            ref: Ref to validate
+            uuid: Plugin UUID for registry lookup
+
+        Returns:
+            tuple: (is_valid, available_refs) where available_refs is a list of dicts
+                   with 'name' and optional 'description' keys
+
+        Raises:
+            None - returns validation result instead
+        """
+        registry_plugin = self._registry.find_plugin(url=url, uuid=uuid)
+        versioning_scheme = registry_plugin.get('versioning_scheme') if registry_plugin else None
+
+        # If plugin has versioning_scheme, validate against version tags
+        if versioning_scheme:
+            tag_names = self._fetch_version_tags(url, versioning_scheme)
+            if tag_names:
+                tags = [{'name': tag} for tag in tag_names]
+                if tags:
+                    tags[0]['description'] = 'latest'
+                is_valid = any(t['name'] == ref for t in tags)
+                return is_valid, tags
+
+        # If plugin has explicit refs in registry, validate against those
+        if registry_plugin and registry_plugin.get('refs'):
+            refs = registry_plugin['refs']
+            available = []
+            for r in refs:
+                ref_dict = {'name': r['name']}
+                if r.get('description'):
+                    ref_dict['description'] = r['description']
+                available.append(ref_dict)
+
+            is_valid = any(r['name'] == ref for r in refs)
+            return is_valid, available
+
+        # No validation possible - assume valid
+        return True, []
+
     def switch_ref(self, plugin: Plugin, ref: str, discard_changes=False):
         """Switch plugin to a different git ref (branch/tag/commit).
 
@@ -590,6 +644,7 @@ class PluginManager:
 
         Raises:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
+            PluginRefNotFoundError: If ref is invalid and validation is available
         """
         # Check for uncommitted changes
         if not discard_changes:
@@ -601,6 +656,11 @@ class PluginManager:
         metadata = self._get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
             raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
+
+        # Validate ref
+        is_valid, available_refs = self._validate_ref(metadata['url'], ref, uuid)
+        if not is_valid and available_refs:
+            raise PluginRefNotFoundError(plugin.plugin_id, ref, available_refs)
 
         old_ref = metadata.get('ref', 'main')
         old_commit = metadata.get('commit', 'unknown')
@@ -691,6 +751,115 @@ class PluginManager:
 
         return False, None
 
+    def _fetch_version_tags(self, url, versioning_scheme):
+        """Fetch and filter version tags from repository.
+
+        Args:
+            url: Git repository URL
+            versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+        Returns:
+            list: Sorted list of version tags (newest first), or empty list on error
+        """
+        import re
+        import tempfile
+
+        from packaging import version
+        import pygit2
+
+        # Parse versioning scheme
+        if versioning_scheme == 'semver':
+            pattern = r'^\D*\d+\.\d+\.\d+$'
+        elif versioning_scheme == 'calver':
+            pattern = r'^\d{4}\.\d{2}\.\d{2}$'
+        elif versioning_scheme.startswith('regex:'):
+            pattern = versioning_scheme[6:]
+        else:
+            log.warning('Unknown versioning scheme: %s', versioning_scheme)
+            return []
+
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                repo = pygit2.init_repository(tmpdir, bare=True)
+                remote = repo.remotes.create('origin', url)
+                remote_refs = remote.ls_remotes()
+
+                tags = []
+                for ref in remote_refs:
+                    ref_name = ref['name']
+                    if ref_name.startswith('refs/tags/'):
+                        tag = ref_name[10:]
+                        if tag.endswith('^{}'):
+                            continue
+                        if re.match(pattern, tag):
+                            tags.append(tag)
+
+                # Sort based on versioning scheme
+                if versioning_scheme in ('semver', 'calver'):
+                    try:
+                        # Strip any non-digit prefix for version comparison
+                        def strip_prefix(tag):
+                            import re
+
+                            match = re.search(r'\d', tag)
+                            return tag[match.start() :] if match else tag
+
+                        tags.sort(key=lambda t: version.parse(strip_prefix(t)), reverse=True)
+                    except Exception:
+                        tags.sort(reverse=True)
+                else:
+                    # For custom regex, use lexicographic sorting
+                    tags.sort(reverse=True)
+
+                return tags
+
+        except Exception as e:
+            log.warning('Error fetching tags from %s: %s', url, e)
+            return []
+
+    def _find_newer_version_tag(self, url, current_tag, versioning_scheme):
+        """Find newer version tag for plugin with versioning_scheme.
+
+        Args:
+            url: Git repository URL
+            current_tag: Current version tag
+            versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+        Returns:
+            str: Newer version tag, or None if no newer version found
+        """
+        from packaging import version
+
+        tags = self._fetch_version_tags(url, versioning_scheme)
+        if not tags:
+            return None
+
+        # Use version parsing for semver/calver, lexicographic for custom regex
+        if versioning_scheme in ('semver', 'calver'):
+            try:
+                import re
+
+                # Strip any non-digit prefix for version comparison
+                def strip_prefix(tag):
+                    match = re.search(r'\d', tag)
+                    return tag[match.start() :] if match else tag
+
+                current_version = version.parse(strip_prefix(current_tag))
+                for tag in tags:
+                    tag_version = version.parse(strip_prefix(tag))
+                    if tag_version > current_version:
+                        return tag
+                return None
+            except Exception:
+                pass
+
+        # Fallback to lexicographic comparison for custom regex
+        for tag in tags:
+            if tag > current_tag:
+                return tag
+
+        return None
+
     def update_plugin(self, plugin: Plugin, discard_changes=False):
         """Update a single plugin to latest version.
 
@@ -728,7 +897,19 @@ class PluginManager:
         # Check registry for redirects
         current_url, current_uuid, redirected = self._check_redirects(old_url, old_uuid)
 
-        source = PluginSourceGit(current_url, old_ref)
+        # Check if plugin has versioning_scheme and current ref is a version tag
+        new_ref = old_ref
+        registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
+        if registry_plugin and registry_plugin.get('versioning_scheme'):
+            is_immutable, ref_type = self._is_immutable_ref(old_ref)
+            if is_immutable and ref_type == 'tag':
+                # Try to find newer version tags
+                newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin['versioning_scheme'])
+                if newer_tag:
+                    new_ref = newer_tag
+                    log.info('Found newer version: %s -> %s', old_ref, new_ref)
+
+        source = PluginSourceGit(current_url, new_ref)
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date

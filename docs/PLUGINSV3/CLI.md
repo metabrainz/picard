@@ -338,6 +338,26 @@ picard plugins --install ./my-plugin
 6. Install to plugins3 directory
 7. Enable plugin (if user confirms)
 
+**Versioning behavior:**
+- If plugin has `versioning_scheme` in registry and no `--ref` specified:
+  - Fetches all tags from repository
+  - Filters by versioning pattern (e.g., semver: v1.0.0, v2.1.3)
+  - Installs latest matching tag
+- Otherwise: installs first ref (usually `main` branch)
+
+**Examples with versioning:**
+```bash
+# Plugin with versioning_scheme: semver
+picard plugins --install my-plugin
+# Installs latest tag (e.g., v2.1.4)
+
+# Override to install specific version
+picard plugins --install my-plugin --ref v1.0.0
+
+# Override to install branch instead
+picard plugins --install my-plugin --ref main
+```
+
 ---
 
 ### Install from Registry
@@ -436,6 +456,25 @@ picard plugins --check-updates
 **Note on registry ID:** If you installed a plugin from the registry (e.g., `picard plugins --install view-script-variables`), you can use the short registry ID for updates instead of the long plugin_id with UUID suffix.
 
 **Note on `--check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `--switch-ref` instead.
+
+**Versioning behavior:**
+- If plugin has `versioning_scheme` in registry:
+  - Fetches all tags from repository
+  - Filters by versioning pattern
+  - Finds tags newer than currently installed version
+  - Updates to latest matching tag
+- Otherwise: updates to latest commit on installed branch
+
+**Examples with versioning:**
+```bash
+# Plugin with versioning_scheme: semver, currently on v2.1.4
+picard plugins --update my-plugin
+# Discovers and updates to v3.0.0
+
+# Plugin on branch (no versioning_scheme)
+picard plugins --update my-plugin
+# Updates to latest commit on current branch
+```
 
 **Note on tags:** If a plugin is installed with a version tag (e.g., `v1.0.0`, `1.2.3`), `--update` will automatically find and switch to the latest version tag. Non-version tags (e.g., `stable`, `latest`) are treated as immutable.
 
@@ -599,6 +638,33 @@ picard plugins --switch-ref myplugin beta
 # Switch to tag
 picard plugins --switch-ref myplugin v1.1.0
 ```
+
+**Ref validation:**
+
+When using `--switch-ref`, Picard validates the ref exists:
+
+- **With `versioning_scheme`**: Validates tag matches pattern and exists
+  ```bash
+  picard plugins --switch-ref my-plugin v1.0.0
+  # If invalid:
+  # ✗ Error: Tag 'v1.0.0' not found
+  #
+  # Available versions:
+  #   v2.1.4 (latest)
+  #   v2.1.3
+  #   v2.0.0
+  ```
+
+- **With explicit `refs`**: Validates ref is in registry list
+  ```bash
+  picard plugins --switch-ref my-plugin beta
+  # If invalid:
+  # ✗ Error: Ref 'beta' not available for this plugin
+  #
+  # Available refs:
+  #   main (default) - Stable release for Picard 4.x
+  #   picard-v3 - Maintenance branch for Picard 3.x
+  ```
 
 **Use cases:**
 
