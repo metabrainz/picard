@@ -481,7 +481,6 @@ class TestPluginRegistry(PicardTestCase):
 
         info = registry.get_registry_info()
 
-        self.assertEqual(info['last_updated'], '2025-11-25T12:00:00Z')
         self.assertEqual(info['plugin_count'], 7)
         self.assertEqual(info['api_version'], '3.0')
         self.assertIn('registry_url', info)

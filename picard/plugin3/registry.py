@@ -424,7 +424,7 @@ class PluginRegistry:
         """Get registry metadata.
 
         Returns:
-            dict: Registry info with last_updated, plugin_count, api_version, registry_url
+            dict: Registry info with plugin_count, api_version, registry_url
 
         Raises:
             RuntimeError: If registry data not loaded
@@ -433,7 +433,6 @@ class PluginRegistry:
             raise RuntimeError("Registry not loaded")
 
         return {
-            'last_updated': self._registry_data.get('last_updated'),
             'plugin_count': len(self._registry_data.get('plugins', [])),
             'api_version': self._registry_data.get('api_version'),
             'registry_url': self.registry_url,

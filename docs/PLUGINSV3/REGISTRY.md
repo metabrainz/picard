@@ -48,7 +48,6 @@ picard plugins --install my-plugin
 ```json
 {
   "api_version": "3.0",
-  "last_updated": "2025-11-24T15:30:00Z",
   "plugins": [ /* array of plugin objects */ ],
   "blacklist": [ /* array of blacklist entries */ ]
 }

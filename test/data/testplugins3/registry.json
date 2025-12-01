@@ -1,6 +1,5 @@
 {
   "api_version": "3.0",
-  "last_updated": "2025-11-25T12:00:00Z",
   "plugins": [
     {
       "id": "example-plugin",
@@ -14,11 +13,20 @@
           "min_api_version": "3.0"
         }
       ],
-      "categories": ["metadata"],
+      "categories": [
+        "metadata"
+      ],
       "trust_level": "official",
-      "authors": ["Philipp Wolfer"],
-      "redirect_from": ["https://github.com/olduser/example", "https://github.com/olduser/old-name"],
-      "redirect_from_uuid": ["old-uuid-1234"],
+      "authors": [
+        "Philipp Wolfer"
+      ],
+      "redirect_from": [
+        "https://github.com/olduser/example",
+        "https://github.com/olduser/old-name"
+      ],
+      "redirect_from_uuid": [
+        "old-uuid-1234"
+      ],
       "added_at": "2025-11-01T10:00:00Z",
       "updated_at": "2025-11-20T15:00:00Z"
     },
@@ -42,9 +50,13 @@
           "min_api_version": "3.0"
         }
       ],
-      "categories": ["metadata"],
+      "categories": [
+        "metadata"
+      ],
       "trust_level": "official",
-      "authors": ["Philipp Wolfer"],
+      "authors": [
+        "Philipp Wolfer"
+      ],
       "added_at": "2025-11-01T10:00:00Z",
       "updated_at": "2025-11-20T15:00:00Z"
     },
@@ -61,9 +73,13 @@
           "max_api_version": "3.1"
         }
       ],
-      "categories": ["metadata"],
+      "categories": [
+        "metadata"
+      ],
       "trust_level": "trusted",
-      "authors": ["Bob Swift"],
+      "authors": [
+        "Bob Swift"
+      ],
       "added_at": "2025-11-05T10:00:00Z",
       "updated_at": "2025-11-15T12:00:00Z"
     },
@@ -79,9 +95,14 @@
           "min_api_version": "3.0"
         }
       ],
-      "categories": ["metadata", "scripting"],
+      "categories": [
+        "metadata",
+        "scripting"
+      ],
       "trust_level": "community",
-      "authors": ["John Doe"],
+      "authors": [
+        "John Doe"
+      ],
       "added_at": "2025-11-10T10:00:00Z",
       "updated_at": "2025-11-10T10:00:00Z"
     },
@@ -97,9 +118,13 @@
           "min_api_version": "3.0"
         }
       ],
-      "categories": ["coverart"],
+      "categories": [
+        "coverart"
+      ],
       "trust_level": "trusted",
-      "authors": ["Jane Doe"],
+      "authors": [
+        "Jane Doe"
+      ],
       "added_at": "2025-11-12T10:00:00Z",
       "updated_at": "2025-11-12T10:00:00Z"
     },
@@ -115,9 +140,13 @@
           "min_api_version": "3.0"
         }
       ],
-      "categories": ["ui"],
+      "categories": [
+        "ui"
+      ],
       "trust_level": "official",
-      "authors": ["Test Author"],
+      "authors": [
+        "Test Author"
+      ],
       "added_at": "2025-11-15T10:00:00Z",
       "updated_at": "2025-11-15T10:00:00Z"
     },
@@ -145,9 +174,13 @@
           "max_api_version": "3.99"
         }
       ],
-      "categories": ["metadata"],
+      "categories": [
+        "metadata"
+      ],
       "trust_level": "community",
-      "authors": ["Test Author"],
+      "authors": [
+        "Test Author"
+      ],
       "added_at": "2025-11-25T10:00:00Z",
       "updated_at": "2025-11-25T10:00:00Z"
     }

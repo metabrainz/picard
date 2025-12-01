@@ -1426,12 +1426,6 @@ class PluginCLI:
             info = self._manager._registry.get_registry_info()
             self._out.success('Registry refreshed successfully')
             self._out.print(f'Registry URL: {info["registry_url"]}')
-
-            from datetime import datetime
-
-            last_updated = datetime.fromisoformat(info["last_updated"].replace('Z', '+00:00')).astimezone()
-            self._out.print(f'Last updated: {last_updated.strftime(DATETIME_FORMAT)}')
-
             self._out.print(f'Plugins available: {info["plugin_count"]}')
 
             return ExitCode.SUCCESS
