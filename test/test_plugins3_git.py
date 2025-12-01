@@ -329,11 +329,11 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             repo.create_commit('refs/heads/main', author, author, 'Update to 1.1.0', tree, [repo.head.target])
 
             # Update
-            old_ver, new_ver, old_commit, new_commit = manager.update_plugin(plugin)
+            result = manager.update_plugin(plugin)
 
-            self.assertEqual(str(old_ver), '1.0.0.final0')
-            self.assertEqual(str(new_ver), '1.1.0.final0')
-            self.assertNotEqual(old_commit, new_commit)
+            self.assertEqual(str(result.old_version), '1.0.0.final0')
+            self.assertEqual(str(result.new_version), '1.1.0.final0')
+            self.assertNotEqual(result.old_commit, result.new_commit)
             self.assertTrue((plugin.local_path / "update.txt").exists())
 
     def test_manifest_read_from_git_repo(self):

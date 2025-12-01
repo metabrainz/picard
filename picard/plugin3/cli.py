@@ -697,20 +697,25 @@ class PluginCLI:
                     )
                     continue
 
-                old_ver, new_ver, old_commit, new_commit = self._manager.update_plugin(plugin)
+                result = self._manager.update_plugin(plugin)
 
-                if old_commit == new_commit:
-                    self._out.info(f'Already up to date (version {self._out.d_version(new_ver)})')
+                if result.old_commit == result.new_commit:
+                    self._out.info(f'Already up to date (version {self._out.d_version(result.new_version)})')
                 else:
-                    # Show version change only if version actually changed
-                    if old_ver != new_ver:
+                    # Show tag update if ref changed
+                    if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
                         self._out.success(
-                            f'Updated: {self._out.d_version(old_ver)} {self._out.d_arrow()} {self._out.d_version(new_ver)}'
+                            f'Updated: {self._out.d_version(result.old_ref)} {self._out.d_arrow()} {self._out.d_version(result.new_ref)}'
+                        )
+                    # Otherwise show version change if version actually changed
+                    elif result.old_version != result.new_version:
+                        self._out.success(
+                            f'Updated: {self._out.d_version(result.old_version)} {self._out.d_arrow()} {self._out.d_version(result.new_version)}'
                         )
                     else:
-                        self._out.success(f'Updated: {self._out.d_version(new_ver)}')
+                        self._out.success(f'Updated: {self._out.d_version(result.new_version)}')
                     self._out.info(
-                        f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
+                        f'Commit: {self._out.d_commit_old(short_commit_id(result.old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(result.new_commit))}'
                     )
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
@@ -726,16 +731,20 @@ class PluginCLI:
                     )
                     if not success:
                         return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
-                    old_ver, new_ver, old_commit, new_commit = result
-                    if old_commit != new_commit:
-                        if old_ver != new_ver:
+                    if result.old_commit != result.new_commit:
+                        # Show tag update if ref changed
+                        if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
                             self._out.success(
-                                f'Updated: {self._out.d_version(old_ver)} {self._out.d_arrow()} {self._out.d_version(new_ver)}'
+                                f'Updated: {self._out.d_version(result.old_ref)} {self._out.d_arrow()} {self._out.d_version(result.new_ref)}'
+                            )
+                        elif result.old_version != result.new_version:
+                            self._out.success(
+                                f'Updated: {self._out.d_version(result.old_version)} {self._out.d_arrow()} {self._out.d_version(result.new_version)}'
                             )
                         else:
-                            self._out.success(f'Updated: {self._out.d_version(new_ver)}')
+                            self._out.success(f'Updated: {self._out.d_version(result.new_version)}')
                         self._out.info(
-                            f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
+                            f'Commit: {self._out.d_commit_old(short_commit_id(result.old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(result.new_commit))}'
                         )
                         self._out.info('Restart Picard to load the updated plugin')
                 elif isinstance(e, PluginNoSourceError):

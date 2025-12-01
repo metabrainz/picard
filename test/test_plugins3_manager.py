@@ -267,7 +267,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             mock_source.return_value = mock_source_instance
 
             # Should not raise with discard_changes=True
-            old_ver, new_ver, old_commit, new_commit = manager.update_plugin(mock_plugin, discard_changes=True)
+            old_ver, new_ver, old_commit, new_commit, old_ref, new_ref = manager.update_plugin(
+                mock_plugin, discard_changes=True
+            )
 
             self.assertEqual(old_commit, 'old123')
             self.assertEqual(new_commit, 'new456')

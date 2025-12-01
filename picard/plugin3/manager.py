@@ -23,7 +23,7 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import List
+from typing import List, NamedTuple
 
 from picard import (
     api_versions_tuple,
@@ -51,6 +51,17 @@ class PluginMetadata:
     def to_dict(self):
         """Convert to dict for config storage, excluding None values."""
         return {k: v for k, v in asdict(self).items() if v is not None}
+
+
+class UpdateResult(NamedTuple):
+    """Result of a plugin update operation."""
+
+    old_version: str
+    new_version: str
+    old_commit: str
+    new_commit: str
+    old_ref: str
+    new_ref: str
 
 
 class PluginManagerError(Exception):
@@ -691,16 +702,18 @@ class PluginManager:
         old_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
         old_url = metadata['url']
         old_uuid = metadata.get('uuid')
+        old_ref = metadata.get('ref')
 
         # Check registry for redirects
         current_url, current_uuid, redirected = self._check_redirects(old_url, old_uuid)
 
-        source = PluginSourceGit(current_url, metadata.get('ref'))
+        source = PluginSourceGit(current_url, old_ref)
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Reload manifest to get new version
         plugin.read_manifest()
         new_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
+        new_ref = source.ref  # May have been updated to a newer tag
 
         # Update metadata with current URL and UUID
         # If redirected, preserve original URL/UUID
@@ -710,7 +723,7 @@ class PluginManager:
             PluginMetadata(
                 name=plugin.plugin_id,
                 url=current_url,
-                ref=source.ref,  # Use updated ref from source
+                ref=new_ref,
                 commit=new_commit,
                 uuid=current_uuid,
                 original_url=original_url,
@@ -718,15 +731,25 @@ class PluginManager:
             )
         )
 
-        return old_version, new_version, old_commit, new_commit
+        return UpdateResult(old_version, new_version, old_commit, new_commit, old_ref, new_ref)
 
     def update_all_plugins(self):
         """Update all installed plugins."""
         results = []
         for plugin in self._plugins:
             try:
-                old_ver, new_ver, old_commit, new_commit = self.update_plugin(plugin)
-                results.append((plugin.plugin_id, True, old_ver, new_ver, old_commit, new_commit, None))
+                result = self.update_plugin(plugin)
+                results.append(
+                    (
+                        plugin.plugin_id,
+                        True,
+                        result.old_version,
+                        result.new_version,
+                        result.old_commit,
+                        result.new_commit,
+                        None,
+                    )
+                )
             except Exception as e:
                 results.append((plugin.plugin_id, False, None, None, None, None, str(e)))
         return results

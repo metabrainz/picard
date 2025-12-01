@@ -30,6 +30,7 @@ from test.test_plugins3_helpers import (
 )
 
 from picard.config import get_config
+from picard.plugin3.manager import UpdateResult
 
 
 class TestPluginInstall(PicardTestCase):
@@ -507,7 +508,9 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
-        mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.1.0', 'abc1234', 'def5678'))
+        mock_manager.update_plugin = Mock(
+            return_value=UpdateResult('1.0.0', '1.1.0', 'abc1234', 'def5678', 'v1.0.0', 'v1.1.0')
+        )
         mock_tagger.pluginmanager3 = mock_manager
 
         args = MockCliArgs()
@@ -548,7 +551,7 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Same commit = already up to date
-        mock_manager.update_plugin = Mock(return_value=('1.0.0', '1.0.0', 'abc1234', 'abc1234'))
+        mock_manager.update_plugin = Mock(return_value=UpdateResult('1.0.0', '1.0.0', 'abc1234', 'abc1234', None, None))
         mock_tagger.pluginmanager3 = mock_manager
 
         args = MockCliArgs()

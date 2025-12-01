@@ -29,6 +29,8 @@ from test.test_plugins3_helpers import (
     run_cli,
 )
 
+from picard.plugin3.manager import UpdateResult
+
 
 class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
@@ -227,11 +229,13 @@ class TestPluginCLI(PicardTestCase):
 
         # Simulate update_plugin returning Version objects (the bug scenario)
         mock_manager.update_plugin = Mock(
-            return_value=(
-                '1.0.0',  # old_version as string
-                '1.1.0',  # new_version as string
-                'abc1234567890',  # old_commit
-                'def9876543210',  # new_commit
+            return_value=UpdateResult(
+                old_version='1.0.0',
+                new_version='1.1.0',
+                old_commit='abc1234567890',
+                new_commit='def9876543210',
+                old_ref=None,
+                new_ref=None,
             )
         )
 
