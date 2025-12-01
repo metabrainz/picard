@@ -801,11 +801,11 @@ class PluginManager:
             with tempfile.TemporaryDirectory() as tmpdir:
                 repo = pygit2.init_repository(tmpdir, bare=True)
                 remote = repo.remotes.create('origin', url)
-                remote_refs = remote.ls_remotes()
+                remote_refs = remote.list_heads()
 
                 tags = []
                 for ref in remote_refs:
-                    ref_name = ref['name']
+                    ref_name = ref.name
                     if ref_name.startswith('refs/tags/'):
                         tag = ref_name[10:]
                         if tag.endswith('^{}'):
