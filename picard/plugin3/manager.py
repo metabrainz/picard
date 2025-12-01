@@ -775,7 +775,8 @@ class PluginManager:
                 for remote in repo.remotes:
                     remote.fetch()
 
-                ref = metadata.get('ref', 'main')
+                old_ref = metadata.get('ref', 'main')
+                ref = old_ref
 
                 # Check if currently on a tag
                 current_is_tag = False
@@ -789,6 +790,7 @@ class PluginManager:
                         pass
 
                 # If on a tag, check for newer version tag
+                new_ref = None
                 if current_is_tag and current_tag:
                     from picard.plugin3.plugin import PluginSourceGit
 
@@ -797,6 +799,7 @@ class PluginManager:
                     if latest_tag and latest_tag != current_tag:
                         # Found newer tag
                         ref = latest_tag
+                        new_ref = latest_tag
 
                 # Resolve ref with same logic as update() - try origin/ prefix for branches
                 try:
@@ -835,6 +838,8 @@ class PluginManager:
                             short_commit_id(current_commit),
                             short_commit_id(latest_commit),
                             latest_commit_date,
+                            old_ref,
+                            new_ref,
                         )
                     )
             except Exception:
