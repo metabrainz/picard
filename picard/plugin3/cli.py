@@ -781,16 +781,26 @@ class PluginCLI:
                     self._out.info(f'{r.plugin_id}: Already up to date ({r.result.new_version})')
                     unchanged += 1
                 else:
-                    # Show tag transition if available, otherwise version change
+                    # Show tag with commit ID if available, otherwise just commits
                     if r.result.old_ref and r.result.new_ref and r.result.old_ref != r.result.new_ref:
-                        version_info = f'{r.result.old_ref} → {r.result.new_ref}'
+                        version_info = (
+                            f'{self._out.d_version(r.result.old_ref)} ({self._out.d_commit_old(short_commit_id(r.result.old_commit))}) '
+                            f'{self._out.d_arrow()} '
+                            f'{self._out.d_version(r.result.new_ref)} ({self._out.d_commit_new(short_commit_id(r.result.new_commit))})'
+                        )
                     elif r.result.old_version != r.result.new_version:
-                        version_info = f'{r.result.old_version} → {r.result.new_version}'
+                        version_info = (
+                            f'{self._out.d_version(r.result.old_version)} ({self._out.d_commit_old(short_commit_id(r.result.old_commit))}) '
+                            f'{self._out.d_arrow()} '
+                            f'{self._out.d_version(r.result.new_version)} ({self._out.d_commit_new(short_commit_id(r.result.new_commit))})'
+                        )
                     else:
-                        version_info = r.result.new_version
-                    self._out.success(
-                        f'{r.plugin_id}: {version_info} ({short_commit_id(r.result.old_commit)} → {short_commit_id(r.result.new_commit)})'
-                    )
+                        version_info = (
+                            f'{self._out.d_commit_old(short_commit_id(r.result.old_commit))} '
+                            f'{self._out.d_arrow()} '
+                            f'{self._out.d_commit_new(short_commit_id(r.result.new_commit))}'
+                        )
+                    self._out.success(f'{r.plugin_id}: {version_info}')
                     updated += 1
             else:
                 self._out.error(f'{r.plugin_id}: {r.error}')
