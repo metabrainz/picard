@@ -23,7 +23,7 @@
 import re
 
 
-# Trust levels that appear in registry JSON
+# Trust levels that appear in registry JSON, ordered from highest to lowest trust level
 REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 
 # Plugin categories
