@@ -338,6 +338,25 @@ picard plugins --install ./my-plugin
 6. Install to plugins3 directory
 7. Enable plugin (if user confirms)
 
+---
+
+### Install from Registry
+
+**Command:** `picard plugins --install <registry-id>`
+
+**Description:** Install plugin by registry ID (no slashes or protocol)
+
+**Examples:**
+```bash
+# Install by registry ID
+picard plugins --install view-script-variables
+
+# Install multiple from registry
+picard plugins --install listenbrainz discogs acoustid
+```
+
+**Note:** The registry ID is shown in `--browse` and `--search` output. It's different from the internal plugin_id that gets created after installation.
+
 **Versioning behavior:**
 - If plugin has `versioning_scheme` in registry and no `--ref` specified:
   - Fetches all tags from repository
@@ -357,25 +376,6 @@ picard plugins --install my-plugin --ref v1.0.0
 # Override to install branch instead
 picard plugins --install my-plugin --ref main
 ```
-
----
-
-### Install from Registry
-
-**Command:** `picard plugins --install <registry-id>`
-
-**Description:** Install plugin by registry ID (no slashes or protocol)
-
-**Examples:**
-```bash
-# Install by registry ID
-picard plugins --install view-script-variables
-
-# Install multiple from registry
-picard plugins --install listenbrainz discogs acoustid
-```
-
-**Note:** The registry ID is shown in `--browse` and `--search` output. It's different from the internal plugin_id that gets created after installation.
 
 ---
 
