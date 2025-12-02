@@ -41,6 +41,9 @@ class MockPluginManager(Mock):
         defaults.update(kwargs)
         super().__init__(**defaults)
 
+        # Add get_plugin_registry_id method that returns None by default
+        self.get_plugin_registry_id = Mock(return_value=None)
+
 
 class MockTagger(Mock):
     """Mock Tagger with sensible defaults."""
@@ -97,7 +100,6 @@ class MockCliArgs(Mock):
             'ref': None,
             'list': False,
             'info': None,
-            'status': None,
             'enable': None,
             'disable': None,
             'install': None,
@@ -141,17 +143,19 @@ class MockPlugin(Mock):
     def __init__(self, name='test-plugin', uuid='test-uuid-1234', **kwargs):
         from pathlib import Path
 
-        from picard.plugin3.plugin import Plugin
+        from picard.plugin3.plugin import Plugin, PluginState
 
         # Extract our custom params before passing to Mock
         local_path = kwargs.pop('local_path', Path(f'/tmp/{name}'))
         version = kwargs.pop('version', '1.0.0')
         display_name = kwargs.pop('display_name', name)
         manifest = kwargs.pop('manifest', None)
+        state = kwargs.pop('state', PluginState.LOADED)
 
         super().__init__(spec=Plugin, **kwargs)
         self.plugin_id = name
         self.local_path = local_path
+        self.state = state
 
         # Use provided manifest or create default
         if manifest:

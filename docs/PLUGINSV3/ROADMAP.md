@@ -66,8 +66,7 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 
 **CLI Commands:**
 - ✅ `picard plugins --list` - List all plugins with details
-- ✅ `picard plugins --info <name>` - Show detailed plugin information including UUID
-- ✅ `picard plugins --status <name>` - Show plugin state and metadata
+- ✅ `picard plugins --info <name>` - Show detailed plugin information and status
 - ✅ `picard plugins --install <url>` - Install from git URL
 - ✅ `picard plugins --install <url> --ref <branch|tag|commit>` - Install specific ref
 - ✅ `picard plugins --uninstall <name>` - Uninstall with config cleanup prompt
@@ -251,7 +250,6 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 - [ ] Add plugin state enum: `DISCOVERED`, `LOADED`, `ENABLED`, `DISABLED`, `ERROR`
 - [ ] Track state in `Plugin` class
 - [ ] Prevent double-enable, double-disable
-- [ ] Add `--status` command to show detailed state
 - [ ] Log state transitions
 
 **Files to modify:**
@@ -290,14 +288,14 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 - ✅ Add plugin state enum: `DISCOVERED`, `LOADED`, `ENABLED`, `DISABLED`, `ERROR`
 - ✅ Track state in `Plugin` class
 - ✅ Prevent double-enable, double-disable with ValueError
-- ✅ Add `--status` command to show detailed state
+- ✅ State information integrated into `--info` and `--list` commands
 - ✅ Log state transitions
 
 **Files modified:**
 - `picard/plugin3/plugin.py` - added PluginState enum and state tracking
 - `picard/plugin3/manager.py` - added state transition logging
-- `picard/plugin3/cli.py` - added --status command
-- `picard/tagger.py` - added --status argument
+- `picard/plugin3/cli.py` - enhanced --info and --list to show state
+- `picard/tagger.py` - updated argument parser
 
 ---
 

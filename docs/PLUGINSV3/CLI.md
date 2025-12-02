@@ -161,7 +161,7 @@ usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-u PLUGIN [PLUGIN ...]]
                       [--info NAME|URL] [--ref REF] [--switch-ref PLUGIN REF]
                       [--browse] [--search TERM] [--check-blacklist URL]
                       [--refresh-registry] [--check-updates] [--reinstall]
-                      [--status] [-y] [--force-blacklisted] [--trust-community]
+                      [-y] [--force-blacklisted] [--trust-community]
                       [--trust LEVEL] [--category CATEGORY] [--purge] [--no-color]
 
 Manage Picard plugins (install, update, enable, disable)
@@ -182,8 +182,7 @@ Plugin Management:
   --update PLUGIN [PLUGIN ...]
                         update specific plugin(s) to latest version
   --update-all          update all installed plugins
-  --info NAME|URL       show detailed information about a plugin
-  --status              show detailed status of all plugins (for debugging)
+  --info NAME|URL       show detailed information and status about a plugin
   --validate URL        validate plugin MANIFEST from git URL
 
 Git Version Control:
@@ -234,8 +233,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--disable <name>` / `-d` | ✅ Done | 1.1 | Disable plugin |
 | `--update <name>` | ✅ Done | 1.4 | Update specific plugin |
 | `--update-all` | ✅ Done | 1.4 | Update all plugins |
-| `--info <name\|url>` | ✅ Done | 1.3 | Show plugin details |
-| `--status <name>` | ✅ Done | 1.5 | Show detailed plugin status |
+| `--info <name\|url>` | ✅ Done | 1.3 | Show plugin details and status |
 | `--ref <ref>` | ✅ Done | 1.6 | Specify git ref (branch/tag/commit) |
 | `--switch-ref <name> <ref>` | ✅ Done | 1.6 | Switch plugin to different ref |
 | `--check-updates` | ✅ Done | 1.4 | Check for updates within installed ref |
@@ -269,18 +267,22 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 Installed plugins:
 
   listenbrainz (enabled) 🛡️
-    Version: 2.1.0
-    Git ref: main @ a1b2c3d
-    API: 3.0
-    Trust: official
+    Submit your music to ListenBrainz
+    UUID: 891a96e7-0e29-41d4-a716-446655440000
+    Registry ID: listenbrainz
+    State: LOADED
+    Version: 2.1.0 (main @a1b2c3d)
+    Source: https://github.com/metabrainz/picard-plugins
     Path: ~/.local/share/MusicBrainz/Picard/plugins3/listenbrainz
-    Description: Submit your music to ListenBrainz
 
   discogs (disabled) ✓
-    Version: 1.5.0
-    Git ref: dev @ f4e5d6c
-    API: 3.0, 3.1
-    Trust: trusted
+    Retrieve metadata from Discogs
+    UUID: f4e5d6c7-8a9b-4c5d-6e7f-8a9b0c1d2e3f
+    Registry ID: discogs
+    State: LOADED
+    Version: 1.5.0 (dev @f4e5d6c)
+    Source: https://github.com/metabrainz/picard-plugins
+    Path: ~/.local/share/MusicBrainz/Picard/plugins3/discogs
     Path: ~/.local/share/MusicBrainz/Picard/plugins3/discogs
     Description: Discogs metadata provider
 
@@ -512,7 +514,7 @@ picard plugins --switch-ref myplugin main
 
 **Command:** `picard plugins --info <identifier>`
 
-**Description:** Show detailed information about plugin
+**Description:** Show detailed information and status about plugin
 
 **Plugin Lookup:** Plugins can be identified by:
 - **Registry ID**: `view-script-variables` (only for plugins installed from registry)
@@ -551,6 +553,7 @@ picard plugins --info https://github.com/user/plugin
 Plugin: ListenBrainz Submitter
 UUID: a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 Status: enabled
+State: LOADED
 Version: 2.1.0
 Author: MusicBrainz Picard Team
 Trust Level: official 🛡️
@@ -857,32 +860,6 @@ picard plugins --refresh-registry --browse
 - Clearing stale cache
 
 **Note:** The registry is cached for 24 hours by default. Use `--refresh-registry` to bypass the cache and fetch the latest version immediately. It can be combined with any other command that uses the registry (--browse, --search, --install, etc.).
-
----
-
-### Status and Debug
-
-**Command:** `picard plugins --status`
-
-**Description:** Show detailed plugin state for debugging
-
-**Example output:**
-```
-Plugin Status Report:
-
-listenbrainz:
-  State: ENABLED
-  Module: Loaded
-  Hooks: 5 registered
-  Config: 3 settings
-  Last enabled: 2025-11-20 10:30:00
-
-discogs:
-  State: DISABLED
-  Module: Loaded (not active)
-  Hooks: 0 registered
-  Last disabled: 2025-11-18 15:45:00
-```
 
 ---
 

@@ -169,8 +169,6 @@ class PluginCLI:
                 return self._list_plugins()
             elif self._args.info:
                 return self._show_info(self._args.info)
-            elif self._args.status:
-                return self._show_status(self._args.status)
             elif self._args.enable:
                 return self._enable_plugins(self._args.enable)
             elif self._args.disable:
@@ -366,6 +364,19 @@ class PluginCLI:
                     desc = plugin.manifest.description()
                     if desc:
                         self._out.info(f'  {desc}')
+
+                    # UUID
+                    self._out.info(f'  UUID: {self._out.d_uuid(plugin_uuid)}')
+
+                    # Registry ID if available
+                    registry_id = self._manager.get_plugin_registry_id(plugin)
+                    if registry_id:
+                        self._out.info(f'  Registry ID: {self._out.d_id(registry_id)}')
+
+                    # State
+                    self._out.info(f'  State: {plugin.state.value}')
+
+                    # Version with git info
                     metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
                     git_info = self._format_git_info(metadata)
                     version = self._get_version_display(plugin_uuid, plugin.manifest._data.get('version', ''))
@@ -373,6 +384,11 @@ class PluginCLI:
                         self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
                     else:
                         self._out.info(f'  Version: {self._out.d_version(version)}')
+
+                    # Source URL if available
+                    if metadata and metadata.get('url'):
+                        self._out.info(f'  Source: {self._out.d_url(metadata["url"])}')
+
                     self._out.info(f'  Path: {self._out.d_path(plugin.local_path)}')
                 self._out.print()
 
@@ -434,6 +450,7 @@ class PluginCLI:
         else:
             status = self._out.d_status_disabled()
         self._out.print(f'Status: {status}')
+        self._out.print(f'State: {plugin.state.value}')
 
         # Version
         version = self._get_version_display(plugin.manifest.uuid, plugin.manifest._data.get('version', ''))
@@ -482,35 +499,6 @@ class PluginCLI:
         if long_desc:
             self._out.nl()
             self._out.print(long_desc)
-
-        return ExitCode.SUCCESS
-
-    def _show_status(self, plugin_name):
-        """Show detailed status information about a plugin."""
-        plugin, error = self._find_plugin_or_error(plugin_name)
-        if error:
-            return error
-
-        self._out.print(f'Plugin: {self._out.d_id(plugin.plugin_id)}')
-        self._out.print(f'State: {plugin.state.value}')
-
-        if plugin.manifest:
-            version = self._get_version_display(plugin.manifest.uuid, plugin.manifest._data.get('version', ''))
-            self._out.print(f'Version: {self._out.d_version(version)}')
-            api_versions = plugin.manifest._data.get('api', [])
-            self._out.print(f'API Versions: {", ".join(api_versions)}')
-
-        enabled_status = 'yes' if plugin.plugin_id in self._manager._enabled_plugins else 'no'
-        self._out.print(f'Enabled in config: {enabled_status}')
-
-        metadata = self._manager._get_plugin_metadata(plugin.plugin_id)
-        if metadata:
-            self._out.print(f'Source URL: {self._out.d_url(metadata.get("url", "N/A"))}')
-            self._out.print(f'Git ref: {metadata.get("ref", "N/A")}')
-            commit = metadata.get('commit', 'N/A')
-            if commit != 'N/A':
-                commit = short_commit_id(commit)
-            self._out.print(f'Commit: {self._out.d_commit_old(commit)}')
 
         return ExitCode.SUCCESS
 

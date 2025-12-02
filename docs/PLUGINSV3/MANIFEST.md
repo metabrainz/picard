@@ -632,8 +632,8 @@ def enable(api: PluginApi):
     api.log.debug("Debug message")
     api.log.error("Error message")
 
-    # Check plugin status
-    # picard plugins --status
+    # Check plugin info
+    # picard plugins --info <plugin-name>
 ```
 
 ---

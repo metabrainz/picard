@@ -108,37 +108,6 @@ class TestPluginCLI(PicardTestCase):
 
         self.assertEqual(result, mock_plugin)
 
-    def test_status_command(self):
-        """Test status command shows plugin state."""
-        from picard.plugin3.plugin import PluginState
-
-        mock_plugin = MockPlugin(state=PluginState.ENABLED)
-        mock_plugin.manifest.version = '1.0.0'
-        mock_plugin.manifest.api_versions = ['3.0']
-        mock_plugin.manifest._data = {'version': '1.0.0', 'api': ['3.0']}
-
-        mock_manager = MockPluginManager(plugins=[mock_plugin], _enabled_plugins={'test-plugin'})
-        mock_manager._get_plugin_metadata = Mock(
-            return_value={'url': 'https://example.com/plugin.git', 'ref': 'main', 'commit': 'abc1234567890'}
-        )
-
-        exit_code, stdout, _ = run_cli(mock_manager, status='test-plugin')
-
-        self.assertEqual(exit_code, 0)
-        self.assertIn('test-plugin', stdout)
-        self.assertIn('enabled', stdout)
-        self.assertIn('main', stdout)  # Shows git ref as version
-        self.assertIn('https://example.com/plugin.git', stdout)
-        self.assertIn('abc1234', stdout)
-
-    def test_status_plugin_not_found(self):
-        """Test status command for non-existent plugin."""
-        mock_manager = MockPluginManager(plugins=[])
-        exit_code, _, stderr = run_cli(mock_manager, status='nonexistent')
-
-        self.assertEqual(exit_code, 2)
-        self.assertIn('not found', stderr)
-
     def test_validate_git_url(self):
         """Test validate command with git URL."""
         import tempfile

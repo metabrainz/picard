@@ -1445,7 +1445,6 @@ If a new instance will not be spawned files/directories will be passed to the ex
     plugin_parser.add_argument('--update-all', action='store_true', help="update all installed plugins")
     plugin_parser.add_argument('--check-updates', action='store_true', help="check for available updates")
     plugin_parser.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
-    plugin_parser.add_argument('--status', metavar='PLUGIN', help="show detailed plugin status")
     plugin_parser.add_argument(
         '--ref', metavar='REF', help="git ref (branch/tag/commit) to use with --install or --validate"
     )
