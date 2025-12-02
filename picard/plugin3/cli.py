@@ -867,7 +867,7 @@ class PluginCLI:
                     else:
                         self._out.success('Plugin uninstalled (configuration kept)')
             except Exception as e:
-                self._out.error(f'Failed to uninstall plugin: {e}')
+                self._handle_exception(e, 'Failed to uninstall plugin')
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
@@ -1138,7 +1138,7 @@ class PluginCLI:
             self._manager._clean_plugin_config(plugin_name)
             self._out.success(f'Configuration for {plugin_name} deleted')
         except Exception as e:
-            self._out.error(f'Failed to clean config: {e}')
+            self._handle_exception(e, 'Failed to clean config')
             return ExitCode.ERROR
         return ExitCode.SUCCESS
 
@@ -1340,7 +1340,7 @@ class PluginCLI:
                 self._out.error(f'  • {e}')
                 return ExitCode.ERROR
             except Exception as e:
-                self._out.error(f'Validation error: {e}')
+                self._handle_exception(e, 'Validation error')
                 return ExitCode.ERROR
 
         # Handle git URL
@@ -1442,7 +1442,7 @@ class PluginCLI:
             return ExitCode.SUCCESS
 
         except Exception as e:
-            self._out.error(f'Validation error: {e}')
+            self._handle_exception(e, 'Validation error')
             return ExitCode.ERROR
         finally:
             # Cleanup
@@ -1517,7 +1517,7 @@ class PluginCLI:
             return ExitCode.SUCCESS
 
         except Exception as e:
-            self._out.error(f'Failed to browse plugins: {e}')
+            self._handle_exception(e, 'Failed to browse plugins')
             return ExitCode.ERROR
 
     def _search_plugins(self, query):
@@ -1574,7 +1574,7 @@ class PluginCLI:
             return ExitCode.SUCCESS
 
         except Exception as e:
-            self._out.error(f'Failed to search plugins: {e}')
+            self._handle_exception(e, 'Failed to search plugins')
             return ExitCode.ERROR
 
     def _check_blacklist(self, url):
@@ -1590,7 +1590,7 @@ class PluginCLI:
                 return ExitCode.SUCCESS
 
         except Exception as e:
-            self._out.error(f'Failed to check blacklist: {e}')
+            self._handle_exception(e, 'Failed to check blacklist')
             return ExitCode.ERROR
 
     def _refresh_registry(self):
@@ -1624,7 +1624,7 @@ class PluginCLI:
             self._out.error(f'Error: {e.original_error}')
             return ExitCode.ERROR
         except Exception as e:
-            self._out.error(f'Failed to refresh registry: {e}')
+            self._handle_exception(e, 'Failed to refresh registry')
             return ExitCode.ERROR
 
     def _read_manifest(self, path):
@@ -1731,7 +1731,7 @@ api = ["3.0"]
             return ExitCode.ERROR
 
         except Exception as e:
-            self._out.error(f'Failed to fetch manifest: {e}')
+            self._handle_exception(e, 'Failed to fetch manifest')
             return ExitCode.ERROR
         finally:
             import shutil
