@@ -289,6 +289,121 @@ class PluginManager:
             raise PluginNoUUIDError(plugin.plugin_id)
         return plugin.manifest.uuid
 
+    def get_plugin_refs_info(self, identifier):
+        """Get plugin refs information from identifier (smart detection).
+
+        Args:
+            identifier: Plugin name, registry ID, or git URL
+
+        Returns:
+            dict with keys:
+                - url: Git URL
+                - current_ref: Current ref (if installed)
+                - current_commit: Current commit (if installed)
+                - registry_id: Registry ID (if in registry)
+                - plugin: Plugin object (if installed)
+                - registry_plugin: Registry plugin data (if in registry)
+            or None if not found
+        """
+        # Try to find installed plugin first
+        plugin = None
+        for p in self.plugins:
+            if (
+                p.plugin_id == identifier
+                or (p.manifest and p.manifest.name() == identifier)
+                or (p.manifest and str(p.manifest.uuid) == identifier)
+            ):
+                plugin = p
+                break
+
+        if plugin:
+            # Plugin is installed
+            if not plugin.manifest:
+                return None
+
+            metadata = self._get_plugin_metadata(plugin.manifest.uuid)
+            if not metadata or not metadata.get('url'):
+                return None
+
+            url = metadata['url']
+            current_ref = metadata.get('ref')
+            current_commit = metadata.get('commit')
+            registry_id = self.get_plugin_registry_id(plugin)
+        else:
+            # Not installed - try registry ID or URL
+            if '://' in identifier or '/' in identifier:
+                # Looks like a URL
+                url = identifier
+                registry_id = self._registry.get_registry_id(url=url)
+                current_ref = None
+                current_commit = None
+            else:
+                # Try as registry ID
+                registry_plugin = self._registry.find_plugin(plugin_id=identifier)
+                if not registry_plugin:
+                    return None
+
+                url = registry_plugin['git_url']
+                registry_id = identifier
+                current_ref = None
+                current_commit = None
+
+        # Get registry data if available
+        registry_plugin = self._registry.find_plugin(plugin_id=registry_id) if registry_id else None
+
+        return {
+            'url': url,
+            'current_ref': current_ref,
+            'current_commit': current_commit,
+            'registry_id': registry_id,
+            'plugin': plugin,
+            'registry_plugin': registry_plugin,
+        }
+
+    def fetch_all_git_refs(self, url):
+        """Fetch all branches and tags from a git repository.
+
+        Args:
+            url: Git repository URL
+
+        Returns:
+            dict with keys:
+                - branches: List of branch names
+                - tags: List of tag names
+            or None on error
+        """
+        import tempfile
+
+        from picard.plugin3.plugin import GitRemoteCallbacks
+
+        import pygit2
+
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                repo = pygit2.init_repository(tmpdir, bare=True)
+                remote = repo.remotes.create('origin', url)
+                callbacks = GitRemoteCallbacks()
+                remote_refs = remote.list_heads(callbacks=callbacks)
+
+                # Separate branches and tags
+                branches = []
+                tags = []
+
+                for ref in remote_refs:
+                    ref_name = ref.name if hasattr(ref, 'name') else str(ref)
+                    if ref_name.startswith('refs/heads/'):
+                        branch_name = ref_name[len('refs/heads/') :]
+                        branches.append(branch_name)
+                    elif ref_name.startswith('refs/tags/'):
+                        tag_name = ref_name[len('refs/tags/') :]
+                        tags.append(tag_name)
+
+                return {'branches': sorted(branches), 'tags': sorted(tags, reverse=True)}
+
+        except Exception as e:
+            log.warning('Failed to fetch refs from %s: %s', url, e)
+            return None
+
     def get_plugin_registry_id(self, plugin: Plugin):
         """Get registry ID for a plugin by looking it up in the current registry.
 
