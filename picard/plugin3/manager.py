@@ -1453,7 +1453,9 @@ class PluginManager:
 
         if self._tagger:
             plugin.load_module()
-            plugin.enable(self._tagger)
+            # Only enable if not already enabled
+            if plugin.state != PluginState.ENABLED:
+                plugin.enable(self._tagger)
 
         self._enabled_plugins.add(uuid)
         self._save_config()
