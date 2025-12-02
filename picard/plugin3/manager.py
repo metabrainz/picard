@@ -391,11 +391,12 @@ class PluginManager:
             'registry_plugin': registry_plugin,
         }
 
-    def fetch_all_git_refs(self, url):
+    def fetch_all_git_refs(self, url, use_cache=True):
         """Fetch all branches and tags from a git repository.
 
         Args:
             url: Git repository URL
+            use_cache: Whether to use cached data if available
 
         Returns:
             dict with keys:
@@ -403,8 +404,20 @@ class PluginManager:
                 - tags: List of tag names
             or None on error
         """
+        # Check cache first
+        if use_cache:
+            cached_refs = self._get_cached_all_refs(url)
+            if cached_refs is not None:
+                return cached_refs
+
         remote_refs = self._fetch_remote_refs(url, use_callbacks=True)
         if not remote_refs:
+            # Try to use expired cache as fallback
+            if use_cache:
+                stale_cache = self._get_cached_all_refs(url, allow_expired=True)
+                if stale_cache:
+                    log.info('Using stale refs cache for %s due to fetch error', url)
+                    return stale_cache
             return None
 
         # Separate branches and tags
@@ -420,7 +433,13 @@ class PluginManager:
                 tag_name = ref_name[len('refs/tags/') :]
                 tags.append(tag_name)
 
-        return {'branches': sorted(branches), 'tags': sorted(tags, reverse=True)}
+        result = {'branches': sorted(branches), 'tags': sorted(tags, reverse=True)}
+
+        # Cache the result
+        if use_cache:
+            self._cache_all_refs(url, result)
+
+        return result
 
     def get_plugin_registry_id(self, plugin: Plugin):
         """Get registry ID for a plugin by looking it up in the current registry.
@@ -1104,6 +1123,64 @@ class PluginManager:
 
         self._save_version_cache(cache)
         log.debug('Cached %d tags for %s (%s)', len(tags), url, versioning_scheme)
+
+    def _get_cached_all_refs(self, url, allow_expired=False):
+        """Get cached all refs (branches and tags) if valid.
+
+        Args:
+            url: Git repository URL
+            allow_expired: If True, return expired cache
+
+        Returns:
+            dict with branches and tags, or None if not cached/expired
+        """
+        import time
+
+        cache = self._load_version_cache()
+
+        if url not in cache or 'all_refs' not in cache[url]:
+            return None
+
+        entry = cache[url]['all_refs']
+        timestamp = entry.get('timestamp', 0)
+        age = int(time.time()) - timestamp
+
+        # Cache expires after 24 hours
+        if age > 86400 and not allow_expired:
+            log.debug('Refs cache expired for %s (age: %d seconds)', url, age)
+            return None
+
+        refs = entry.get('refs')
+        if refs:
+            log.debug(
+                'Using cached refs for %s: %d branches, %d tags',
+                url,
+                len(refs.get('branches', [])),
+                len(refs.get('tags', [])),
+            )
+
+        return refs
+
+    def _cache_all_refs(self, url, refs):
+        """Cache all refs (branches and tags) for url.
+
+        Args:
+            url: Git repository URL
+            refs: Dict with 'branches' and 'tags' lists
+        """
+        import time
+
+        cache = self._load_version_cache()
+
+        if url not in cache:
+            cache[url] = {}
+
+        cache[url]['all_refs'] = {'refs': refs, 'timestamp': int(time.time())}
+
+        self._save_version_cache(cache)
+        log.debug(
+            'Cached refs for %s: %d branches, %d tags', url, len(refs.get('branches', [])), len(refs.get('tags', []))
+        )
 
     def _cleanup_version_cache(self):
         """Remove cache entries for URLs no longer in registry.
