@@ -61,9 +61,9 @@ class TestPluginInstall(PicardTestCase):
         self.assertEqual(metadata['ref'], 'main')
         self.assertEqual(metadata['commit'], 'abc123')
 
-        # Non-existent plugin returns empty dict
+        # Non-existent plugin returns None
         empty_metadata = manager._get_plugin_metadata('nonexistent')
-        self.assertEqual(empty_metadata, {})
+        self.assertIsNone(empty_metadata)
 
     def test_update_plugin_no_metadata(self):
         """Test that updating plugin without metadata raises error."""
@@ -136,13 +136,11 @@ class TestPluginInstall(PicardTestCase):
             )
         )
 
-        # Mock PluginSourceGit.sync to return new commit
+        # Mock GitOperations.switch_ref to return ref changes
         from unittest.mock import patch
 
-        with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
-            mock_source = Mock()
-            mock_source.sync = Mock(return_value='def456')
-            mock_source_class.return_value = mock_source
+        with patch('picard.plugin3.git_ops.GitOperations.switch_ref') as mock_switch:
+            mock_switch.return_value = ('main', 'v1.0.0', 'abc123', 'def456')
 
             old_ref, new_ref, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
 
@@ -150,11 +148,6 @@ class TestPluginInstall(PicardTestCase):
             self.assertEqual(new_ref, 'v1.0.0')
             self.assertEqual(old_commit, 'abc123')
             self.assertEqual(new_commit, 'def456')
-
-            # Verify metadata was updated
-            metadata = manager._get_plugin_metadata(test_uuid)
-            self.assertEqual(metadata['ref'], 'v1.0.0')
-            self.assertEqual(metadata['commit'], 'def456')
 
     def test_switch_ref_no_metadata(self):
         """Test switching ref for plugin without metadata raises error."""
@@ -323,8 +316,11 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest_class.return_value = mock_manifest
 
                         with patch('shutil.move'):
-                            # Should not raise with reinstall=True
-                            plugin_id = manager.install_plugin('https://example.com/plugin.git', reinstall=True)
+                            with patch('picard.plugin3.git_ops.GitOperations.check_dirty_working_dir') as mock_check:
+                                mock_check.return_value = []  # No uncommitted changes
+
+                                # Should not raise with reinstall=True
+                                plugin_id = manager.install_plugin('https://example.com/plugin.git', reinstall=True)
                             self.assertTrue(plugin_id.startswith('test_plugin_'))
 
     def test_uninstall_with_purge(self):

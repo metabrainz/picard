@@ -346,6 +346,12 @@ class PluginManager:
 
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
+        # Check if plugin has metadata with URL
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+        if not metadata or 'url' not in metadata:
+            raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
+
         return GitOperations.switch_ref(plugin, ref, discard_changes)
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
@@ -710,16 +716,17 @@ class PluginManager:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
             ValueError: If plugin is pinned to a specific commit
         """
+        # Check metadata first before any git operations
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+        if not metadata or 'url' not in metadata:
+            raise PluginNoSourceError(plugin.plugin_id, 'update')
+
         # Check for uncommitted changes
         if not discard_changes:
             changes = GitOperations.check_dirty_working_dir(plugin.local_path)
             if changes:
                 raise PluginDirtyError(plugin.plugin_id, changes)
-
-        uuid = PluginValidation.get_plugin_uuid(plugin)
-        metadata = self._metadata.get_plugin_metadata(uuid)
-        if not metadata or 'url' not in metadata:
-            raise PluginNoSourceError(plugin.plugin_id, 'update')
 
         # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
         ref = metadata.get('ref')

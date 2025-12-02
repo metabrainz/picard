@@ -85,6 +85,7 @@ class ConfigOperations:
         config = get_config()
         setting = config.setting
 
-        if 'plugins3' in setting and plugin_name in setting['plugins3']:
-            del setting['plugins3'][plugin_name]
+        # Check top-level config (where plugin settings are stored)
+        if plugin_name in setting:
+            del setting[plugin_name]
             log.info('Deleted configuration for plugin %s', plugin_name)
