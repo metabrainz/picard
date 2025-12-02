@@ -32,6 +32,8 @@ from picard.plugin3.constants import (
     REFS_CACHE_TTL,
 )
 
+from packaging import version
+
 
 class RefsCache:
     """Manages caching of git refs and version tags."""
@@ -292,8 +294,6 @@ class RefsCache:
         Returns:
             list: Sorted tags (newest first)
         """
-        from packaging import version
-
         if versioning_scheme == 'semver':
             # Use packaging.version for proper semver sorting
             try:

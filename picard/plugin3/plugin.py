@@ -22,6 +22,7 @@
 from enum import Enum
 import importlib.util
 from pathlib import Path
+import re
 import sys
 import time
 
@@ -33,6 +34,8 @@ from picard.extension_points import (
 )
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
+
+from packaging import version as pkg_version
 
 
 try:
@@ -462,10 +465,6 @@ class PluginSourceGit(PluginSource):
         - release-1.0.0, release/1.0.0
         - 2024.11.30 (date-based)
         """
-        import re
-
-        from packaging import version as pkg_version
-
         # Get all tags (use listall_references to include fetched tags)
         tags = []
         try:

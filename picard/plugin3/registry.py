@@ -181,8 +181,6 @@ class PluginRegistry:
             # If single URL passed, convert to list
             self.registry_urls = [registry_url] if isinstance(registry_url, str) else registry_url
         else:
-            import os
-
             env_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL')
             if env_url:
                 # Environment variable takes precedence, try it first then fallback to defaults

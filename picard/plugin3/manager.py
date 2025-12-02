@@ -47,6 +47,8 @@ from picard.plugin3.registry import (
 )
 from picard.plugin3.validation import PluginValidation
 
+from packaging import version
+
 
 @dataclass
 class PluginMetadata:
@@ -658,8 +660,6 @@ class PluginManager:
         Returns:
             str: Newer version tag, or None if no newer version found
         """
-        from packaging import version
-
         tags = self._fetch_version_tags_impl(url, versioning_scheme)
         if not tags:
             return None
@@ -667,8 +667,6 @@ class PluginManager:
         # Use version parsing for semver/calver, lexicographic for custom regex
         if versioning_scheme in ('semver', 'calver'):
             try:
-                import re
-
                 # Strip any non-digit prefix for version comparison
                 def strip_prefix(tag):
                     match = re.search(r'\d', tag)
