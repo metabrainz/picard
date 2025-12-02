@@ -250,7 +250,9 @@ class PluginCLI:
         Returns:
             Version string (tag or manifest version)
         """
-        metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
+        metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
+        if not metadata:
+            metadata = {}
         ref = metadata.get('ref', '')
 
         # If ref looks like a version tag, use it

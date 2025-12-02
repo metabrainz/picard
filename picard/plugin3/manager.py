@@ -308,6 +308,42 @@ class PluginManager:
         """
         return self._metadata.get_plugin_refs_info(identifier, self.plugins)
 
+    def get_plugin_registry_id(self, plugin):
+        """Get registry ID for a plugin."""
+        return self._metadata.get_plugin_registry_id(plugin)
+
+    def _get_plugin_metadata(self, uuid):
+        """Get metadata for a plugin by UUID."""
+        return self._metadata.get_plugin_metadata(uuid)
+
+    def _find_plugin_by_url(self, url):
+        """Find plugin metadata by URL."""
+        return self._metadata.find_plugin_by_url(url)
+
+    def _get_plugin_uuid(self, plugin):
+        """Get plugin UUID."""
+        return PluginValidation.get_plugin_uuid(plugin)
+
+    def _read_and_validate_manifest(self, path, source_description):
+        """Read and validate manifest."""
+        return PluginValidation.read_and_validate_manifest(path, source_description)
+
+    def _clean_plugin_config(self, plugin_name):
+        """Delete plugin configuration."""
+        return ConfigOperations.clean_plugin_config(plugin_name)
+
+    def _cleanup_version_cache(self):
+        """Remove cache entries for URLs no longer in registry."""
+        return self._refs_cache.cleanup_cache()
+
+    def _fetch_version_tags(self, url, versioning_scheme):
+        """Fetch and filter version tags from repository."""
+        return self._fetch_version_tags_impl(url, versioning_scheme)
+
+    def switch_ref(self, plugin, ref, discard_changes=False):
+        """Switch plugin to a different git ref."""
+        return GitOperations.switch_ref(plugin, ref, discard_changes)
+
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.
 
@@ -556,7 +592,7 @@ class PluginManager:
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
 
-    def _fetch_version_tags(self, url, versioning_scheme):
+    def _fetch_version_tags_impl(self, url, versioning_scheme):
         """Fetch and filter version tags from repository.
 
         Args:
@@ -604,7 +640,7 @@ class PluginManager:
         """
         from packaging import version
 
-        tags = self._fetch_version_tags(url, versioning_scheme)
+        tags = self._fetch_version_tags_impl(url, versioning_scheme)
         if not tags:
             return None
 
