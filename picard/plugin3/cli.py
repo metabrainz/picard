@@ -35,6 +35,7 @@ class ExitCode(IntEnum):
 
 
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+MAX_VERSIONS = 20
 
 
 class PluginCLI:
@@ -575,13 +576,13 @@ class PluginCLI:
                     version_tags = self._manager._fetch_version_tags(url, versioning_scheme)
                     if version_tags:
                         self._out.print(f'Released Versions ({versioning_scheme}):')
-                        for tag in version_tags[:20]:  # Limit to 20 most recent
+                        for tag in version_tags[:MAX_VERSIONS]:  # Limit to most recent
                             is_current = current_ref == tag
                             marker = ' (current)' if is_current else ''
                             self._out.print(f'  {self._out.d_version(tag)}{marker}')
 
-                        if len(version_tags) > 20:
-                            self._out.print(f'  ... and {len(version_tags) - 20} more')
+                        if len(version_tags) > MAX_VERSIONS:
+                            self._out.print(f'  ... and {len(version_tags) - MAX_VERSIONS} more')
 
                         self._out.nl()
                 except Exception as e:
