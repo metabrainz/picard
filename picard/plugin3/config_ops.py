@@ -40,7 +40,8 @@ class ConfigOperations:
         config = get_config()
         value = config.setting
         for key in keys:
-            if isinstance(value, dict) and key in value:
+            # Handle both dict and SettingConfigSection
+            if hasattr(value, '__getitem__') and key in value:
                 value = value[key]
             else:
                 return default

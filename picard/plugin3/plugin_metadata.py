@@ -33,10 +33,14 @@ class PluginMetadataManager:
 
     def get_plugin_metadata(self, uuid: str):
         """Get metadata for a plugin by UUID."""
-        metadata_list = ConfigOperations.get_config_value('plugins3', 'metadata', default=[])
-        for metadata in metadata_list:
-            if metadata.get('uuid') == str(uuid):
-                return metadata
+        metadata = ConfigOperations.get_config_value('plugins3', 'metadata', default={})
+        # Handle both dict (new format) and list (old format) for backwards compatibility
+        if isinstance(metadata, dict):
+            return metadata.get(str(uuid))
+        # Legacy list format
+        for item in metadata:
+            if item.get('uuid') == str(uuid):
+                return item
         return None
 
     def save_plugin_metadata(self, metadata):
@@ -45,26 +49,16 @@ class PluginMetadataManager:
         Args:
             metadata: PluginMetadata object with uuid, url, ref, commit, etc.
         """
-        metadata_list = ConfigOperations.get_config_value('plugins3', 'metadata', default=[])
+        metadata_dict_all = ConfigOperations.get_config_value('plugins3', 'metadata', default={})
 
-        # Find existing entry by UUID
-        existing_index = None
-        for i, existing in enumerate(metadata_list):
-            if existing.get('uuid') == metadata.uuid:
-                existing_index = i
-                break
+        # Handle legacy list format - convert to dict
+        if isinstance(metadata_dict_all, list):
+            metadata_dict_all = {item['uuid']: item for item in metadata_dict_all if 'uuid' in item}
 
-        # Convert to dict
-        metadata_dict = metadata.to_dict()
+        # Convert metadata to dict and store by UUID
+        metadata_dict_all[metadata.uuid] = metadata.to_dict()
 
-        if existing_index is not None:
-            # Update existing
-            metadata_list[existing_index] = metadata_dict
-        else:
-            # Add new
-            metadata_list.append(metadata_dict)
-
-        ConfigOperations.set_config_value('plugins3', 'metadata', value=metadata_list)
+        ConfigOperations.set_config_value('plugins3', 'metadata', value=metadata_dict_all)
 
     def find_plugin_by_url(self, url: str):
         """Find plugin metadata by URL.
@@ -75,10 +69,17 @@ class PluginMetadataManager:
         Returns:
             dict: Plugin metadata or None if not found
         """
-        metadata_list = ConfigOperations.get_config_value('plugins3', 'metadata', default=[])
-        for metadata in metadata_list:
-            if metadata.get('url') == url:
-                return metadata
+        metadata = ConfigOperations.get_config_value('plugins3', 'metadata', default={})
+        # Handle both dict (new format) and list (old format)
+        if isinstance(metadata, dict):
+            for item in metadata.values():
+                if item.get('url') == url:
+                    return item
+        else:
+            # Legacy list format
+            for item in metadata:
+                if item.get('url') == url:
+                    return item
         return None
 
     def check_redirects(self, old_url, old_uuid):
