@@ -339,10 +339,12 @@ class PluginManager:
         # Try to find installed plugin first
         plugin = None
         for p in self.plugins:
+            registry_id = self.get_plugin_registry_id(p)
             if (
                 p.plugin_id == identifier
                 or (p.manifest and p.manifest.name() == identifier)
                 or (p.manifest and str(p.manifest.uuid) == identifier)
+                or registry_id == identifier
             ):
                 plugin = p
                 break
@@ -360,6 +362,33 @@ class PluginManager:
             current_ref = metadata.get('ref')
             current_commit = metadata.get('commit')
             registry_id = self.get_plugin_registry_id(plugin)
+
+            # Detect current ref from local git repo (overrides metadata)
+            if plugin.local_path:
+                try:
+                    import pygit2
+
+                    repo = pygit2.Repository(str(plugin.local_path))
+                    current_commit = str(repo.head.target)
+
+                    # Check if current commit matches a tag (prefer tag over branch)
+                    current_ref = None
+                    for ref_name in repo.references:
+                        if ref_name.startswith('refs/tags/'):
+                            tag_name = ref_name[10:]
+                            if tag_name.endswith('^{}'):
+                                continue
+                            ref = repo.references[ref_name]
+                            target = ref.peel()
+                            if str(target.id) == current_commit:
+                                current_ref = tag_name
+                                break
+
+                    # If no tag found, use branch name
+                    if not current_ref and not repo.head_is_detached:
+                        current_ref = repo.head.shorthand
+                except Exception:
+                    pass  # Ignore errors, use metadata values
         else:
             # Not installed - try registry ID or URL
             if '://' in identifier or '/' in identifier:
