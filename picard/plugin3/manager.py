@@ -443,6 +443,80 @@ class PluginManager:
         """Fetch and filter version tags from repository."""
         return self._fetch_version_tags_impl(url, versioning_scheme)
 
+    def select_ref_for_plugin(self, plugin):
+        """Select appropriate ref for plugin based on versioning scheme or Picard API version.
+
+        Args:
+            plugin: Plugin data from registry
+
+        Returns:
+            str: Selected ref name, or None if no refs specified
+        """
+        # Check for versioning_scheme first
+        versioning_scheme = plugin.get('versioning_scheme')
+        if versioning_scheme:
+            url = plugin.get('git_url')
+            if url:
+                tags = self._fetch_version_tags(url, versioning_scheme)
+                if tags:
+                    # Return latest tag
+                    return tags[0]
+                else:
+                    log.warning('No version tags found for %s with scheme %s', url, versioning_scheme)
+                    # Fall through to ref selection
+
+        # Original ref selection logic
+        from picard import api_versions_tuple
+
+        refs = plugin.get('refs')
+        if not refs:
+            return None
+
+        # Get current Picard API version as string (e.g., "3.0")
+        current_api = '.'.join(map(str, api_versions_tuple[:2]))
+
+        # Find first compatible ref
+        for ref in refs:
+            min_api = ref.get('min_api_version')
+            max_api = ref.get('max_api_version')
+
+            # Skip if below minimum
+            if min_api and current_api < min_api:
+                continue
+
+            # Skip if above maximum
+            if max_api and current_api > max_api:
+                continue
+
+            # Compatible ref found
+            return ref['name']
+
+        # No compatible ref found, use first (default)
+        return refs[0]['name']
+
+    def get_registry_plugin_latest_version(self, plugin_data):
+        """Get latest version tag for a registry plugin.
+
+        Args:
+            plugin_data: Plugin dict from registry
+
+        Returns:
+            Version string (latest tag or empty string)
+        """
+        versioning_scheme = plugin_data.get('versioning_scheme')
+        if not versioning_scheme:
+            return ''
+
+        url = plugin_data.get('url')
+        if not url:
+            return ''
+
+        try:
+            tags = self._fetch_version_tags(url, versioning_scheme)
+            return tags[0] if tags else ''
+        except Exception:
+            return ''
+
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
         self._ensure_plugin_url(plugin, 'switch ref')

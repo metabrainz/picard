@@ -27,10 +27,7 @@ from test.test_plugins3_helpers import MockPluginManager
 class TestVersioningScheme(PicardTestCase):
     def test_select_ref_with_versioning_scheme(self):
         """Test ref selection with versioning_scheme."""
-        from picard.plugin3.cli import PluginCLI
-
         manager = MockPluginManager()
-        cli = PluginCLI(manager, None, None)
 
         # Mock manager's _fetch_version_tags to return tags
         manager._fetch_version_tags = Mock(return_value=['v2.1.0', 'v2.0.0', 'v1.0.0'])
@@ -40,15 +37,12 @@ class TestVersioningScheme(PicardTestCase):
             'versioning_scheme': 'semver',
         }
 
-        ref = cli._select_ref_for_plugin(plugin)
+        ref = manager.select_ref_for_plugin(plugin)
         self.assertEqual(ref, 'v2.1.0')
 
     def test_select_ref_with_versioning_scheme_no_tags(self):
         """Test ref selection falls back when no tags found."""
-        from picard.plugin3.cli import PluginCLI
-
         manager = MockPluginManager()
-        cli = PluginCLI(manager, None, None)
 
         # Mock manager's _fetch_version_tags to return empty list
         manager._fetch_version_tags = Mock(return_value=[])
@@ -59,16 +53,13 @@ class TestVersioningScheme(PicardTestCase):
             'refs': [{'name': 'main'}],
         }
 
-        ref = cli._select_ref_for_plugin(plugin)
+        ref = manager.select_ref_for_plugin(plugin)
         self.assertEqual(ref, 'main')
 
     @patch('picard.api_versions_tuple', (3, 0))
     def test_select_ref_fallback_to_refs(self):
         """Test ref selection falls back to refs when no versioning_scheme."""
-        from picard.plugin3.cli import PluginCLI
-
         manager = MockPluginManager()
-        cli = PluginCLI(manager, None, None)
 
         plugin = {
             'refs': [
@@ -76,7 +67,7 @@ class TestVersioningScheme(PicardTestCase):
             ]
         }
 
-        ref = cli._select_ref_for_plugin(plugin)
+        ref = manager.select_ref_for_plugin(plugin)
         self.assertEqual(ref, 'main')
 
     def test_find_newer_version_tag(self):
