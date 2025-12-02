@@ -297,6 +297,17 @@ class PluginManager:
 
         return result
 
+    def get_plugin_refs_info(self, identifier):
+        """Get plugin refs information from identifier.
+
+        Args:
+            identifier: Plugin name, registry ID, UUID, or git URL
+
+        Returns:
+            dict with plugin refs info or None if not found
+        """
+        return self._metadata.get_plugin_refs_info(identifier, self.plugins)
+
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.
 
