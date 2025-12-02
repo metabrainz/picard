@@ -318,6 +318,65 @@ class PluginManager:
         """Get registry ID for a plugin."""
         return self._metadata.get_plugin_registry_id(plugin)
 
+    def find_plugin(self, identifier):
+        """Find a plugin by Plugin ID, display name, UUID, registry ID, or any prefix.
+
+        Args:
+            identifier: Plugin ID, display name, UUID, registry ID, or prefix of any
+
+        Returns:
+            Plugin object, None if not found, or 'multiple' if ambiguous
+        """
+        identifier_lower = identifier.lower()
+        exact_matches = []
+        prefix_matches = []
+
+        for plugin in self.plugins:
+            # Collect all possible identifiers for this plugin
+            identifiers = []
+
+            # Plugin ID (case-insensitive)
+            identifiers.append(plugin.plugin_id.lower())
+
+            # UUID (case-insensitive)
+            if plugin.manifest and plugin.manifest.uuid:
+                identifiers.append(str(plugin.manifest.uuid).lower())
+
+            # Display name (case-insensitive)
+            if plugin.manifest:
+                identifiers.append(plugin.manifest.name().lower())
+
+            # Registry ID (case-insensitive) - lookup dynamically from current registry
+            try:
+                registry_id = self.get_plugin_registry_id(plugin)
+                if registry_id:
+                    identifiers.append(registry_id.lower())
+            except Exception:
+                pass
+
+            # Check for exact or prefix match
+            for id_value in identifiers:
+                if id_value == identifier_lower:
+                    exact_matches.append(plugin)
+                    break  # One exact match is enough
+                elif id_value.startswith(identifier_lower):
+                    prefix_matches.append(plugin)
+                    break  # One prefix match is enough
+
+        # Exact matches take priority
+        if len(exact_matches) == 1:
+            return exact_matches[0]
+        elif len(exact_matches) > 1:
+            return 'multiple'
+
+        # Fall back to prefix matches
+        if len(prefix_matches) == 1:
+            return prefix_matches[0]
+        elif len(prefix_matches) > 1:
+            return 'multiple'
+
+        return None
+
     def _get_plugin_metadata(self, uuid):
         """Get metadata for a plugin by UUID."""
         return self._metadata.get_plugin_metadata(uuid)

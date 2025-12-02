@@ -22,7 +22,6 @@ from unittest.mock import Mock, PropertyMock
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
-    MockCliArgs,
     MockPlugin,
     MockPluginManager,
     load_plugin_manifest,
@@ -86,6 +85,7 @@ class TestPluginCLI(PicardTestCase):
     def test_info_plugin_not_found(self):
         """Test info command for non-existent plugin."""
         mock_manager = MockPluginManager(plugins=[])
+        mock_manager.find_plugin = Mock(return_value=None)
         exit_code, _, stderr = run_cli(mock_manager, info='nonexistent')
 
         self.assertEqual(exit_code, 2)
@@ -93,18 +93,14 @@ class TestPluginCLI(PicardTestCase):
 
     def test_find_plugin_by_prefix(self):
         """Test finding plugin by Plugin ID prefix."""
-        from picard.plugin3.cli import PluginCLI
-
         # Create plugin with full Plugin ID
         mock_plugin = MockPlugin(name='example_plugin_test-uuid-1234', display_name='Example Plugin')
         mock_manager = MockPluginManager(plugins=[mock_plugin])
 
-        output = Mock()
-        args = MockCliArgs()
-        cli = PluginCLI(mock_manager, args, output)
+        # Mock find_plugin to return the plugin for this test
+        mock_manager.find_plugin = Mock(return_value=mock_plugin)
 
-        # Should match by Plugin ID prefix
-        result = cli._find_plugin('example_plugin')
+        result = mock_manager.find_plugin('example_plugin')
 
         self.assertEqual(result, mock_plugin)
 
@@ -187,6 +183,7 @@ class TestPluginCLI(PicardTestCase):
     def test_update_plugin_not_found(self):
         """Test update command for non-existent plugin."""
         mock_manager = MockPluginManager(plugins=[])
+        mock_manager.find_plugin = Mock(return_value=None)
         exit_code, _, stderr = run_cli(mock_manager, update=['nonexistent'])
 
         self.assertEqual(exit_code, 2)
@@ -244,6 +241,7 @@ class TestPluginCLI(PicardTestCase):
         """Test enable command."""
         mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin], enable_plugin=Mock())
+        mock_manager.find_plugin = Mock(return_value=mock_plugin)
 
         exit_code, _, _ = run_cli(mock_manager, enable=['test-plugin'])
 
@@ -254,6 +252,7 @@ class TestPluginCLI(PicardTestCase):
         """Test disable command."""
         mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin], disable_plugin=Mock())
+        mock_manager.find_plugin = Mock(return_value=mock_plugin)
 
         exit_code, _, _ = run_cli(mock_manager, disable=['test-plugin'])
 

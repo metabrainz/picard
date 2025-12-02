@@ -233,8 +233,8 @@ class TestPluginCLIFindPlugin(PicardTestCase):
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
 
-        # Mock _find_plugin to return 'multiple'
-        cli._find_plugin = Mock(return_value='multiple')
+        # Mock manager.find_plugin to return 'multiple'
+        manager.find_plugin = Mock(return_value='multiple')
 
         result, error = cli._find_plugin_or_error('test plugin')
 
@@ -252,7 +252,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
 
-        cli._find_plugin = Mock(return_value=None)
+        manager.find_plugin = Mock(return_value=None)
 
         result, error = cli._find_plugin_or_error('nonexistent')
 
@@ -267,7 +267,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
         cli = PluginCLI(manager, args)
 
         mock_plugin = MockPlugin()
-        cli._find_plugin = Mock(return_value=mock_plugin)
+        manager.find_plugin = Mock(return_value=mock_plugin)
 
         result, error = cli._find_plugin_or_error('test')
 
@@ -531,7 +531,7 @@ class TestPluginCLIManifest(PicardTestCase):
             stdout = StringIO()
             output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
-            cli._find_plugin = Mock(return_value=mock_plugin)
+            manager.find_plugin = Mock(return_value=mock_plugin)
 
             result = cli._show_manifest('test-plugin')
 
@@ -557,7 +557,7 @@ class TestPluginCLIManifest(PicardTestCase):
             stderr = StringIO()
             output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
-            cli._find_plugin = Mock(return_value=mock_plugin)
+            manager.find_plugin = Mock(return_value=mock_plugin)
 
             result = cli._show_manifest('test-plugin')
 
@@ -585,7 +585,7 @@ class TestPluginCLIManifest(PicardTestCase):
             stdout = StringIO()
             output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
-            cli._find_plugin = Mock(return_value=None)
+            manager.find_plugin = Mock(return_value=None)
 
             result = cli._show_manifest(tmpdir)
 
@@ -608,7 +608,7 @@ class TestPluginCLIManifest(PicardTestCase):
             stderr = StringIO()
             output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
-            cli._find_plugin = Mock(return_value=None)
+            manager.find_plugin = Mock(return_value=None)
 
             result = cli._show_manifest(tmpdir)
 

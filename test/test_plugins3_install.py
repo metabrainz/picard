@@ -172,6 +172,7 @@ class TestPluginInstall(PicardTestCase):
         """Test switch-ref CLI command."""
         mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin])
+        mock_manager.find_plugin = Mock(return_value=mock_plugin)
         mock_manager.switch_ref = Mock(return_value=('main', 'v1.0.0', 'abc1234', 'def5678'))
 
         exit_code, stdout, _ = run_cli(mock_manager, switch_ref=['test-plugin', 'v1.0.0'])
@@ -186,6 +187,7 @@ class TestPluginInstall(PicardTestCase):
     def test_switch_ref_plugin_not_found(self):
         """Test switch-ref for non-existent plugin."""
         mock_manager = MockPluginManager(plugins=[])
+        mock_manager.find_plugin = Mock(return_value=None)
         exit_code, _, stderr = run_cli(mock_manager, switch_ref=['nonexistent', 'v1.0.0'])
 
         self.assertEqual(exit_code, 2)
@@ -504,6 +506,7 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
+        mock_manager.find_plugin = Mock(return_value=mock_plugin)
         mock_manager.update_plugin = Mock(
             return_value=UpdateResult('1.0.0', '1.1.0', 'abc1234', 'def5678', 'v1.0.0', 'v1.1.0', 1234567890)
         )
