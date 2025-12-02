@@ -931,22 +931,30 @@ class PluginManager:
         return False, None
 
     def _parse_versioning_scheme(self, versioning_scheme):
-        """Parse versioning scheme into regex pattern.
+        """Parse versioning scheme into compiled regex pattern.
 
         Args:
             versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
 
         Returns:
-            str: Regex pattern or None if unknown scheme
+            re.Pattern: Compiled regex pattern or None if unknown/invalid scheme
         """
+        import re
+
         if versioning_scheme == 'semver':
-            return r'^\D*\d+\.\d+\.\d+$'
+            pattern = r'^\D*\d+\.\d+\.\d+$'
         elif versioning_scheme == 'calver':
-            return r'^\d{4}\.\d{2}\.\d{2}$'
+            pattern = r'^\d{4}\.\d{2}\.\d{2}$'
         elif versioning_scheme.startswith('regex:'):
-            return versioning_scheme[6:]
+            pattern = versioning_scheme[6:]
         else:
             log.warning('Unknown versioning scheme: %s', versioning_scheme)
+            return None
+
+        try:
+            return re.compile(pattern)
+        except re.error as e:
+            log.error('Invalid regex pattern in versioning scheme %s: %s', versioning_scheme, e)
             return None
 
     def _filter_tags(self, ref_names, pattern):
@@ -954,13 +962,11 @@ class PluginManager:
 
         Args:
             ref_names: Iterator of ref names (e.g., 'refs/tags/v1.0.0')
-            pattern: Regex pattern to match
+            pattern: Compiled regex pattern to match
 
         Returns:
             list: Filtered tag names (without refs/tags/ prefix)
         """
-        import re
-
         tags = []
         for ref_name in ref_names:
             # Handle both string refs and RemoteHead objects
@@ -970,7 +976,7 @@ class PluginManager:
                 tag = name[10:]
                 if tag.endswith('^{}'):
                     continue
-                if re.match(pattern, tag):
+                if pattern.match(tag):
                     tags.append(tag)
         return tags
 
@@ -1283,9 +1289,7 @@ class PluginManager:
             return []
 
         # Filter and sort tags from cached refs
-        import re
-
-        tags = [tag for tag in all_refs.get('tags', []) if re.match(pattern, tag)]
+        tags = [tag for tag in all_refs.get('tags', []) if pattern.match(tag)]
         tags = self._sort_tags(tags, versioning_scheme)
 
         # Cache the result
