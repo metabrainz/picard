@@ -1627,6 +1627,14 @@ class PluginCLI:
             self._out.error(f'Failed to refresh registry: {e}')
             return ExitCode.ERROR
 
+    def _read_manifest(self, path):
+        """Read and return manifest content from path."""
+        try:
+            with open(path / 'MANIFEST.toml', 'rb') as f:
+                return f.read().decode('utf-8')
+        except FileNotFoundError:
+            return None
+
     def _show_manifest(self, target):
         """Show MANIFEST.toml template or from plugin."""
         # No argument - show template
@@ -1679,28 +1687,24 @@ api = ["3.0"]
         # Check if it's an installed plugin
         plugin = self._find_plugin(target)
         if plugin:
-            manifest_path = plugin.local_path / 'MANIFEST.toml'
-            if manifest_path.exists():
-                with open(manifest_path, 'r') as f:
-                    self._out.print(f.read())
+            content = self._read_manifest(plugin.local_path)
+            if content is not None:
+                self._out.print(content)
                 return ExitCode.SUCCESS
-            else:
-                self._out.error(f'MANIFEST.toml not found for plugin {target}')
-                return ExitCode.ERROR
+            self._out.error(f'MANIFEST.toml not found for plugin {target}')
+            return ExitCode.ERROR
 
         # Check if it's a local directory
         from picard.plugin3.registry import get_local_repository_path
 
         local_path = get_local_repository_path(target)
         if local_path:
-            manifest_path = local_path / 'MANIFEST.toml'
-            if manifest_path.exists():
-                with open(manifest_path, 'r') as f:
-                    self._out.print(f.read())
+            content = self._read_manifest(local_path)
+            if content is not None:
+                self._out.print(content)
                 return ExitCode.SUCCESS
-            else:
-                self._out.error(f'MANIFEST.toml not found in {target}')
-                return ExitCode.ERROR
+            self._out.error(f'MANIFEST.toml not found in {target}')
+            return ExitCode.ERROR
 
         # Treat as git URL
         from pathlib import Path
@@ -1719,14 +1723,12 @@ api = ["3.0"]
             shutil.rmtree(temp_path)
             source.sync(temp_path, shallow=True)
 
-            manifest_path = temp_path / 'MANIFEST.toml'
-            if manifest_path.exists():
-                with open(manifest_path, 'r') as f:
-                    self._out.print(f.read())
+            content = self._read_manifest(temp_path)
+            if content is not None:
+                self._out.print(content)
                 return ExitCode.SUCCESS
-            else:
-                self._out.error('MANIFEST.toml not found in repository')
-                return ExitCode.ERROR
+            self._out.error('MANIFEST.toml not found in repository')
+            return ExitCode.ERROR
 
         except Exception as e:
             self._out.error(f'Failed to fetch manifest: {e}')
