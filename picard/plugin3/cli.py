@@ -934,7 +934,8 @@ class PluginCLI:
                     ref = metadata.get('ref') if metadata else None
                     is_immutable, ref_type = self._manager._is_immutable_ref(ref)
                 except Exception:
-                    is_immutable, ref_type, ref = False, None, None
+                    is_immutable, ref_type = False, None
+                    ref = None
 
                 # Prevent updating if pinned to a specific commit (tags can update to newer tags)
                 if is_immutable and ref and ref_type == 'commit':

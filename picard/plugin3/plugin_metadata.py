@@ -90,7 +90,7 @@ class PluginMetadataManager:
             old_uuid: Original UUID
 
         Returns:
-            tuple: (new_url, new_uuid) or (None, None) if not redirected
+            tuple: (new_url, new_uuid, redirected) where redirected is True if changed
         """
         # Check if UUID exists in registry with different URL
         registry_plugin = self._registry.find_plugin(uuid=old_uuid)
@@ -98,7 +98,7 @@ class PluginMetadataManager:
             new_url = registry_plugin.get('git_url')
             if new_url and new_url != old_url:
                 log.info('Plugin %s redirected from %s to %s', old_uuid, old_url, new_url)
-                return new_url, old_uuid
+                return new_url, old_uuid, True
 
         # Check if URL exists in registry with different UUID
         registry_plugin = self._registry.find_plugin(url=old_url)
@@ -106,9 +106,9 @@ class PluginMetadataManager:
             new_uuid = registry_plugin.get('uuid')
             if new_uuid and new_uuid != old_uuid:
                 log.info('Plugin at %s changed UUID from %s to %s', old_url, old_uuid, new_uuid)
-                return old_url, new_uuid
+                return old_url, new_uuid, True
 
-        return None, None
+        return old_url, old_uuid, False
 
     def get_original_metadata(self, metadata, redirected, old_url, old_uuid):
         """Get original metadata before redirect.
@@ -120,22 +120,22 @@ class PluginMetadataManager:
             old_uuid: Original UUID
 
         Returns:
-            dict: Original metadata or current metadata if not redirected
+            tuple: (original_url, original_uuid) from metadata or old values if not found
         """
         if not redirected:
-            return metadata
+            return old_url, old_uuid
 
         # Try to find metadata by old UUID
         old_metadata = self.get_plugin_metadata(old_uuid)
         if old_metadata:
-            return old_metadata
+            return old_metadata.get('url', old_url), old_metadata.get('uuid', old_uuid)
 
         # Try to find metadata by old URL
         old_metadata = self.find_plugin_by_url(old_url)
         if old_metadata:
-            return old_metadata
+            return old_metadata.get('url', old_url), old_metadata.get('uuid', old_uuid)
 
-        return metadata
+        return old_url, old_uuid
 
     def get_plugin_registry_id(self, plugin):
         """Get registry ID for a plugin by looking it up in the current registry.
