@@ -162,6 +162,9 @@ class GitOperations:
             ref: Git ref to switch to
             discard_changes: If True, discard uncommitted changes
 
+        Returns:
+            tuple: (old_ref, new_ref, old_commit, new_commit)
+
         Raises:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
         """
@@ -176,6 +179,10 @@ class GitOperations:
         import pygit2
 
         repo = pygit2.Repository(str(plugin.local_path))
+
+        # Get old ref and commit
+        old_commit = str(repo.head.target)
+        old_ref = repo.head.shorthand if not repo.head_is_detached else old_commit[:7]
 
         # Fetch latest from remote
         remote = repo.remotes['origin']
@@ -197,7 +204,7 @@ class GitOperations:
                 branch = repo.branches.local.create(ref, commit, force=True)
                 branch.upstream = repo.branches.remote[f'origin/{ref}']
                 log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
-                return
+                return old_ref, ref, old_commit, str(commit.id)
 
             # Try as tag
             tag_ref = f'refs/tags/{ref}'
@@ -206,7 +213,7 @@ class GitOperations:
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-                return
+                return old_ref, ref, old_commit, str(commit.id)
 
             # Try as commit hash
             try:
@@ -214,7 +221,7 @@ class GitOperations:
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
-                return
+                return old_ref, ref[:7], old_commit, str(commit.id)
             except KeyError:
                 pass
 
