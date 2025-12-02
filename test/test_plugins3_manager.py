@@ -29,7 +29,6 @@ from test.test_plugins3_helpers import (
     MockTagger,
 )
 
-from picard.plugin3.config_ops import ConfigOperations
 from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.validation import PluginValidation
@@ -342,17 +341,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             changes = GitOperations.check_dirty_working_dir(existing)
             self.assertIn('test.txt', changes)
 
-    def test_get_config_value_default(self):
-        """Test _get_config_value returns default when key missing."""
-        with patch('picard.config.get_config') as mock_get_config:
-            mock_config = Mock()
-            mock_config.setting = {}
-            mock_get_config.return_value = mock_config
-
-            result = ConfigOperations.get_config_value('missing', 'key', default='default_value')
-
-            self.assertEqual(result, 'default_value')
-
     def test_get_plugin_registry_id_found(self):
         """Test get_plugin_registry_id returns registry ID when plugin is in registry."""
         from test.test_plugins3_helpers import create_test_registry
@@ -363,7 +351,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
-        manager._metadata = PluginMetadataManager(manager, manager._registry)
+        manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin with manifest and UUID
         mock_plugin = MockPlugin()
@@ -383,7 +371,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
-        manager._metadata = PluginMetadataManager(manager, manager._registry)
+        manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin with manifest and UUID
         mock_plugin = MockPlugin()
@@ -403,7 +391,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
-        manager._metadata = PluginMetadataManager(manager, manager._registry)
+        manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin without UUID
         mock_plugin = MockPlugin()

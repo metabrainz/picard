@@ -89,10 +89,10 @@ class ExtensionPoint:
                 yield from self.__dict[name]
             return
 
-        # v3 plugins use UUIDs in plugins3/enabled_plugins
+        # v3 plugins use UUIDs in plugins3_enabled_plugins
         enabled_plugins = []
-        if 'plugins3' in config.setting and 'enabled_plugins' in config.setting['plugins3']:
-            enabled_plugins = config.setting['plugins3']['enabled_plugins']
+        if 'plugins3_enabled_plugins' in config.setting:
+            enabled_plugins = config.setting['plugins3_enabled_plugins']
 
         for name in self.__dict:
             if name is None:

@@ -29,7 +29,7 @@ from picard import (
     api_versions_tuple,
     log,
 )
-from picard.plugin3.config_ops import ConfigOperations
+from picard.config import get_config
 from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.plugin import (
     Plugin,
@@ -226,7 +226,7 @@ class PluginManager:
         # Initialize metadata manager
         from picard.plugin3.plugin_metadata import PluginMetadataManager
 
-        self._metadata = PluginMetadataManager(self, self._registry)
+        self._metadata = PluginMetadataManager(self._registry)
 
         # Register cleanup and clean up any leftover temp directories
         if tagger:
@@ -334,7 +334,10 @@ class PluginManager:
 
     def _clean_plugin_config(self, plugin_name):
         """Delete plugin configuration."""
-        return ConfigOperations.clean_plugin_config(plugin_name)
+        config = get_config()
+        if plugin_name in config.setting:
+            del config.setting[plugin_name]
+            log.info('Deleted configuration for plugin %s', plugin_name)
 
     def _cleanup_version_cache(self):
         """Remove cache entries for URLs no longer in registry."""
@@ -933,17 +936,16 @@ class PluginManager:
             shutil.rmtree(plugin_path)
 
         # Remove metadata
-        from picard.config import get_config
-
         config = get_config()
-        if 'plugins3' in config.setting and 'metadata' in config.setting['plugins3']:
-            # Remove by UUID if available
-            if plugin.manifest and plugin.manifest.uuid:
-                config.setting['plugins3']['metadata'].pop(plugin.manifest.uuid, None)
+        # Remove metadata by UUID if available
+        if plugin.manifest and plugin.manifest.uuid:
+            config.setting['plugins3_metadata'].pop(plugin.manifest.uuid, None)
 
         # Remove plugin config if purge requested
         if purge:
-            ConfigOperations.clean_plugin_config(plugin.plugin_id)
+            if plugin.plugin_id in config.setting:
+                del config.setting[plugin.plugin_id]
+                log.info('Deleted configuration for plugin %s', plugin.plugin_id)
 
     def _check_blacklisted_plugins(self):
         """Check installed plugins against blacklist and disable if needed."""
@@ -1042,13 +1044,17 @@ class PluginManager:
 
     def _load_config(self):
         """Load enabled plugins list from config."""
-        enabled = ConfigOperations.get_config_value('plugins3', 'enabled_plugins', default=[])
+        config = get_config()
+        enabled = config.setting['plugins3_enabled_plugins']
         self._enabled_plugins = set(enabled)
         log.debug('Loaded enabled plugins from config: %r', self._enabled_plugins)
 
     def _save_config(self):
         """Save enabled plugins list to config."""
-        ConfigOperations.set_config_value('plugins3', 'enabled_plugins', value=list(self._enabled_plugins))
+        config = get_config()
+        config.setting['plugins3_enabled_plugins'] = list(self._enabled_plugins)
+        if hasattr(config, 'sync'):
+            config.sync()
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):

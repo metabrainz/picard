@@ -465,8 +465,8 @@ class TestPluginManager(PicardTestCase):
 
         # Verify it was saved to config
         config = get_config()
-        self.assertIn('plugins3', config.setting)
-        self.assertIn(test_uuid, config.setting['plugins3']['enabled_plugins'])
+        self.assertIn('plugins3_enabled_plugins', config.setting)
+        self.assertIn(test_uuid, config.setting['plugins3_enabled_plugins'])
 
         # Create new manager instance - should load from config
         manager2 = PluginManager(mock_tagger)
@@ -475,7 +475,7 @@ class TestPluginManager(PicardTestCase):
         # Disable plugin - should remove from config
         manager2.disable_plugin(mock_plugin)
         self.assertNotIn(test_uuid, manager2._enabled_plugins)
-        self.assertNotIn(test_uuid, config.setting['plugins3']['enabled_plugins'])
+        self.assertNotIn(test_uuid, config.setting['plugins3_enabled_plugins'])
 
     def test_init_plugins_only_loads_enabled(self):
         """Test that init_plugins only loads plugins that are enabled in config."""
