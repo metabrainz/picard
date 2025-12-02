@@ -438,12 +438,13 @@ class TestPluginRegistry(PicardTestCase):
         registry = PluginRegistry()
 
         with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
-            # Should raise RegistryFetchError
-            with self.assertRaises(RegistryFetchError) as cm:
-                registry.fetch_registry(use_cache=False)
+            with patch('time.sleep'):  # Skip retry delays
+                # Should raise RegistryFetchError
+                with self.assertRaises(RegistryFetchError) as cm:
+                    registry.fetch_registry(use_cache=False)
 
-            self.assertIn('Network error', str(cm.exception))
-            self.assertIn('https://picard.musicbrainz.org', str(cm.exception))
+                self.assertIn('Network error', str(cm.exception))
+                self.assertIn('https://picard.musicbrainz.org', str(cm.exception))
 
     def test_registry_parse_error(self):
         """Test registry parse error handling."""
@@ -478,11 +479,12 @@ class TestPluginRegistry(PicardTestCase):
         registry = PluginRegistry()
 
         with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
-            # Should not raise, just return False (not blacklisted)
-            is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
+            with patch('time.sleep'):  # Skip retry delays
+                # Should not raise, just return False (not blacklisted)
+                is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
 
-            self.assertFalse(is_blacklisted)
-            self.assertIsNone(reason)
+                self.assertFalse(is_blacklisted)
+                self.assertIsNone(reason)
 
     def test_registry_get_registry_info(self):
         """Test getting registry metadata."""
@@ -683,7 +685,8 @@ class TestPluginRegistry(PicardTestCase):
         http_error = HTTPError('https://test.example.com/registry.json', 404, 'Not Found', {}, None)
 
         with patch('picard.plugin3.registry.urlopen', side_effect=http_error):
-            with self.assertRaises(RegistryFetchError):
-                registry.fetch_registry()
+            with patch('time.sleep'):  # Skip retry delays
+                with self.assertRaises(RegistryFetchError):
+                    registry.fetch_registry()
 
         # Should only try once (no retries for 4xx)
