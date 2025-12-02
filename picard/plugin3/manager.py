@@ -349,18 +349,44 @@ class PluginManager:
         """Remove cache entries for URLs no longer in registry."""
         return self._refs_cache.cleanup_cache()
 
+    def _ensure_plugin_url(self, plugin, operation):
+        """Ensure plugin has URL metadata, creating it from registry if needed.
+
+        Args:
+            plugin: Plugin to check
+            operation: Operation name for error message
+
+        Raises:
+            PluginNoSourceError: If URL cannot be found in metadata or registry
+        """
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+
+        if metadata and metadata.get('url'):
+            return  # URL exists in metadata
+
+        # No metadata or no URL - check if plugin is in registry and create metadata
+        registry_plugin = self._registry.find_plugin(uuid=uuid)
+        if not registry_plugin:
+            raise PluginNoSourceError(plugin.plugin_id, operation)
+
+        # Create metadata from registry
+        metadata_obj = PluginMetadata(
+            name=plugin.manifest.name(),
+            url=registry_plugin['git_url'],
+            ref='',
+            commit='',
+            uuid=uuid,
+        )
+        self._metadata.save_plugin_metadata(metadata_obj)
+
     def _fetch_version_tags(self, url, versioning_scheme):
         """Fetch and filter version tags from repository."""
         return self._fetch_version_tags_impl(url, versioning_scheme)
 
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
-        # Check if plugin has metadata with URL
-        uuid = PluginValidation.get_plugin_uuid(plugin)
-        metadata = self._metadata.get_plugin_metadata(uuid)
-        if not metadata or 'url' not in metadata:
-            raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
-
+        self._ensure_plugin_url(plugin, 'switch ref')
         return GitOperations.switch_ref(plugin, ref, discard_changes)
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
@@ -724,11 +750,10 @@ class PluginManager:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
             ValueError: If plugin is pinned to a specific commit
         """
-        # Check metadata first before any git operations
+        self._ensure_plugin_url(plugin, 'update')
+
         uuid = PluginValidation.get_plugin_uuid(plugin)
         metadata = self._metadata.get_plugin_metadata(uuid)
-        if not metadata or 'url' not in metadata:
-            raise PluginNoSourceError(plugin.plugin_id, 'update')
 
         # Check for uncommitted changes
         if not discard_changes:

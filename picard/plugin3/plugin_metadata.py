@@ -33,14 +33,7 @@ class PluginMetadataManager:
     def get_plugin_metadata(self, uuid: str):
         """Get metadata for a plugin by UUID."""
         metadata = get_config().setting['plugins3_metadata']
-        # Handle both dict (new format) and list (old format) for backwards compatibility
-        if isinstance(metadata, dict):
-            return metadata.get(str(uuid))
-        # Legacy list format
-        for item in metadata:
-            if item.get('uuid') == str(uuid):
-                return item
-        return None
+        return metadata.get(str(uuid))
 
     def save_plugin_metadata(self, metadata):
         """Save or update plugin metadata.
@@ -49,14 +42,6 @@ class PluginMetadataManager:
             metadata: PluginMetadata object with uuid, url, ref, commit, etc.
         """
         config = get_config()
-        metadata_dict_all = config.setting['plugins3_metadata']
-
-        # Handle legacy list format - convert to dict
-        if isinstance(metadata_dict_all, list):
-            metadata_dict_all = {item['uuid']: item for item in metadata_dict_all if 'uuid' in item}
-            config.setting['plugins3_metadata'] = metadata_dict_all
-
-        # Convert metadata to dict and store by UUID
         config.setting['plugins3_metadata'][metadata.uuid] = metadata.to_dict()
 
     def find_plugin_by_url(self, url: str):

@@ -399,3 +399,40 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
         self.assertIsNone(registry_id)
+
+    def test_get_plugin_metadata_dict_format(self):
+        """Test get_plugin_metadata returns metadata by UUID."""
+        from picard.config import get_config
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+        metadata_manager = PluginMetadataManager(manager._registry)
+
+        test_uuid = 'test-uuid-123'
+        test_metadata = {
+            'uuid': test_uuid,
+            'url': 'https://example.com/plugin.git',
+            'ref': 'main',
+            'commit': 'abc123',
+        }
+        config = get_config()
+        config.setting['plugins3_metadata'] = {test_uuid: test_metadata}
+
+        result = metadata_manager.get_plugin_metadata(test_uuid)
+        self.assertEqual(result, test_metadata)
+
+    def test_get_plugin_metadata_not_found(self):
+        """Test get_plugin_metadata returns None when UUID not found."""
+        from picard.config import get_config
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+        metadata_manager = PluginMetadataManager(manager._registry)
+
+        config = get_config()
+        config.setting['plugins3_metadata'] = {}
+
+        result = metadata_manager.get_plugin_metadata('nonexistent-uuid')
+        self.assertIsNone(result)
