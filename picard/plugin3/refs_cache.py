@@ -221,7 +221,7 @@ class RefsCache:
 
         # Get all URLs from registry
         registry_urls = set()
-        for plugin in self._registry.plugins:
+        for plugin in self._registry._registry_data.get('plugins', []):
             url = plugin.get('git_url')
             if url:
                 registry_urls.add(url)
