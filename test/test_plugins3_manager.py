@@ -257,8 +257,8 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         manager = PluginManager(None)
         manager._check_dirty_working_dir = Mock(return_value=['modified.txt'])
-        manager._get_plugin_metadata = Mock(return_value={'url': 'https://example.com', 'ref': 'main'})
-        manager._check_redirects = Mock(return_value=('https://example.com', 'test-uuid', False))
+        manager._metadata.get_plugin_metadata = Mock(return_value={'url': 'https://example.com', 'ref': 'main'})
+        manager._metadata.check_redirects = Mock(return_value=('https://example.com', 'test-uuid', False))
 
         # Mock the git update
         with patch('picard.plugin3.manager.PluginSourceGit') as mock_source:
@@ -353,59 +353,57 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         """Test get_plugin_registry_id returns registry ID when plugin is in registry."""
         from test.test_plugins3_helpers import create_test_registry
 
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
+        # Reinitialize metadata manager with new registry
+        manager._metadata = PluginMetadataManager(manager, manager._registry)
 
         # Mock plugin with manifest and UUID
         mock_plugin = MockPlugin()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
-        # Mock metadata
-        with patch.object(manager, '_get_plugin_metadata') as mock_get_metadata:
-            mock_get_metadata.return_value = {
-                'url': 'https://github.com/test/example',
-                'uuid': 'ae5ef1ed-0195-4014-a113-6090de7cf8b7',
-            }
-
-            registry_id = manager.get_plugin_registry_id(mock_plugin)
-            self.assertEqual(registry_id, 'example-plugin')
+        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        self.assertEqual(registry_id, 'example-plugin')
 
     def test_get_plugin_registry_id_not_found(self):
         """Test get_plugin_registry_id returns None when plugin not in registry."""
         from test.test_plugins3_helpers import create_test_registry
 
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
+        # Reinitialize metadata manager with new registry
+        manager._metadata = PluginMetadataManager(manager, manager._registry)
 
         # Mock plugin with manifest and UUID
         mock_plugin = MockPlugin()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'nonexistent-uuid'
 
-        # Mock metadata
-        with patch.object(manager, '_get_plugin_metadata') as mock_get_metadata:
-            mock_get_metadata.return_value = {
-                'url': 'https://github.com/nonexistent/plugin',
-                'uuid': 'nonexistent-uuid',
-            }
-
-            registry_id = manager.get_plugin_registry_id(mock_plugin)
-            self.assertIsNone(registry_id)
+        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        self.assertIsNone(registry_id)
 
     def test_get_plugin_registry_id_no_uuid(self):
         """Test get_plugin_registry_id returns None when plugin has no UUID."""
         from test.test_plugins3_helpers import create_test_registry
 
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
+        # Reinitialize metadata manager with new registry
+        manager._metadata = PluginMetadataManager(manager, manager._registry)
 
         # Mock plugin without UUID
         mock_plugin = MockPlugin()
         mock_plugin.manifest = None
 
-        registry_id = manager.get_plugin_registry_id(mock_plugin)
+        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
         self.assertIsNone(registry_id)

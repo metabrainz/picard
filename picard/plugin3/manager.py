@@ -220,6 +220,11 @@ class PluginManager:
 
         self._refs_cache = RefsCache(self._registry)
 
+        # Initialize metadata manager
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        self._metadata = PluginMetadataManager(self, self._registry)
+
         # Register cleanup and clean up any leftover temp directories
         if tagger:
             tagger.register_cleanup(self._cleanup_temp_directories)
@@ -325,110 +330,6 @@ class PluginManager:
             log.warning('Failed to fetch remote refs from %s: %s', url, e)
             return None
 
-    def get_plugin_refs_info(self, identifier):
-        """Get plugin refs information from identifier (smart detection).
-
-        Args:
-            identifier: Plugin name, registry ID, or git URL
-
-        Returns:
-            dict with keys:
-                - url: Git URL
-                - current_ref: Current ref (if installed)
-                - current_commit: Current commit (if installed)
-                - registry_id: Registry ID (if in registry)
-                - plugin: Plugin object (if installed)
-                - registry_plugin: Registry plugin data (if in registry)
-            or None if not found
-        """
-        # Try to find installed plugin first
-        plugin = None
-        for p in self.plugins:
-            registry_id = self.get_plugin_registry_id(p)
-            if (
-                p.plugin_id == identifier
-                or (p.manifest and p.manifest.name() == identifier)
-                or (p.manifest and str(p.manifest.uuid) == identifier)
-                or registry_id == identifier
-            ):
-                plugin = p
-                break
-
-        if plugin:
-            # Plugin is installed
-            if not plugin.manifest:
-                return None
-
-            metadata = self._get_plugin_metadata(plugin.manifest.uuid)
-            if not metadata or not metadata.get('url'):
-                return None
-
-            url = metadata['url']
-            current_ref = metadata.get('ref')
-            current_commit = metadata.get('commit')
-            registry_id = self.get_plugin_registry_id(plugin)
-
-            # Detect current ref from local git repo (overrides metadata)
-            if plugin.local_path:
-                try:
-                    import pygit2
-
-                    repo = pygit2.Repository(str(plugin.local_path))
-                    current_commit = str(repo.head.target)
-
-                    # Check if current commit matches a tag (prefer tag over branch)
-                    current_ref = None
-                    for ref_name in repo.references:
-                        if ref_name.startswith('refs/tags/'):
-                            tag_name = ref_name[10:]
-                            if tag_name.endswith('^{}'):
-                                continue
-                            ref = repo.references[ref_name]
-                            target = ref.peel()
-                            if str(target.id) == current_commit:
-                                current_ref = tag_name
-                                break
-
-                    # If no tag found, use branch name
-                    if not current_ref and not repo.head_is_detached:
-                        current_ref = repo.head.shorthand
-                except Exception:
-                    pass  # Ignore errors, use metadata values
-        else:
-            # Not installed - try registry ID, UUID, or URL
-            if '://' in identifier or '/' in identifier:
-                # Looks like a URL
-                url = identifier
-                registry_id = self._registry.get_registry_id(url=url)
-                current_ref = None
-                current_commit = None
-            else:
-                # Try as registry ID or UUID
-                registry_plugin = self._registry.find_plugin(plugin_id=identifier)
-                if not registry_plugin:
-                    # Try as UUID
-                    registry_plugin = self._registry.find_plugin(uuid=identifier)
-
-                if not registry_plugin:
-                    return None
-
-                url = registry_plugin['git_url']
-                registry_id = registry_plugin.get('id', identifier)
-                current_ref = None
-                current_commit = None
-
-        # Get registry data if available
-        registry_plugin = self._registry.find_plugin(plugin_id=registry_id) if registry_id else None
-
-        return {
-            'url': url,
-            'current_ref': current_ref,
-            'current_commit': current_commit,
-            'registry_id': registry_id,
-            'plugin': plugin,
-            'registry_plugin': registry_plugin,
-        }
-
     def fetch_all_git_refs(self, url, use_cache=True):
         """Fetch all branches and tags from a git repository.
 
@@ -478,24 +379,6 @@ class PluginManager:
             self._refs_cache.cache_all_refs(url, result)
 
         return result
-
-    def get_plugin_registry_id(self, plugin: Plugin):
-        """Get registry ID for a plugin by looking it up in the current registry.
-
-        Args:
-            plugin: Plugin to get registry ID for
-
-        Returns:
-            str: Registry ID or None if not found in registry
-        """
-        try:
-            uuid = self._get_plugin_uuid(plugin)
-            metadata = self._get_plugin_metadata(uuid)
-            if metadata:
-                return self._registry.get_registry_id(url=metadata.get('url'), uuid=metadata.get('uuid'))
-        except (PluginNoUUIDError, Exception):
-            pass
-        return None
 
     def _get_config_value(self, *keys, default=None):
         """Get nested config value by keys.
@@ -649,7 +532,7 @@ class PluginManager:
                     self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
 
             # Store plugin metadata
-            self._save_plugin_metadata(
+            self._metadata.save_plugin_metadata(
                 PluginMetadata(
                     name=plugin_name,
                     url=url,
@@ -771,7 +654,7 @@ class PluginManager:
             shutil.copytree(install_path, final_path)
 
         # Store metadata
-        self._save_plugin_metadata(
+        self._metadata.save_plugin_metadata(
             PluginMetadata(
                 name=plugin_name,
                 url=str(local_path),
@@ -841,6 +724,31 @@ class PluginManager:
         # No validation possible - assume valid
         return True, []
 
+    def _is_immutable_ref(self, ref):
+        """Check if a ref is immutable (commit hash or non-version tag).
+
+        Args:
+            ref: Git ref (branch, tag, or commit)
+
+        Returns:
+            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
+        """
+        if not ref:
+            return False, None
+
+        # Check if it looks like a commit hash (7-40 hex chars)
+        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
+            return True, 'commit'
+
+        # Check if it starts with 'v' followed by a number (common tag pattern)
+        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
+        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
+            return True, 'tag'
+        if '.' in ref and any(c.isdigit() for c in ref):
+            return True, 'tag'
+
+        return False, None
+
     def switch_ref(self, plugin: Plugin, ref: str, discard_changes=False):
         """Switch plugin to a different git ref (branch/tag/commit).
 
@@ -860,7 +768,7 @@ class PluginManager:
                 raise PluginDirtyError(plugin.plugin_id, changes)
 
         uuid = self._get_plugin_uuid(plugin)
-        metadata = self._get_plugin_metadata(uuid)
+        metadata = self._metadata.get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
             raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
 
@@ -900,7 +808,7 @@ class PluginManager:
             raise PluginRefSwitchError(plugin.plugin_id, ref, e) from e
 
         # Update metadata with new ref
-        self._save_plugin_metadata(
+        self._metadata.save_plugin_metadata(
             PluginMetadata(
                 name=plugin.plugin_id,
                 url=metadata['url'],
@@ -913,51 +821,6 @@ class PluginManager:
         )
 
         return old_ref, ref, old_commit, new_commit
-
-    def _check_redirects(self, old_url, old_uuid):
-        """Check if plugin has been redirected to new URL/UUID.
-
-        Returns:
-            tuple: (current_url, current_uuid, redirected)
-        """
-        registry_plugin = self._registry.find_plugin(url=old_url, uuid=old_uuid)
-        if not registry_plugin:
-            return old_url, old_uuid, False
-
-        new_url = registry_plugin.get('git_url', old_url)
-        new_uuid = registry_plugin.get('uuid', old_uuid)
-        redirected = new_url != old_url or new_uuid != old_uuid
-
-        if redirected:
-            if new_url != old_url:
-                log.info('Plugin URL changed: %s -> %s', old_url, new_url)
-            if new_uuid != old_uuid:
-                log.info('Plugin UUID changed: %s -> %s', old_uuid, new_uuid)
-
-        return new_url, new_uuid, redirected
-
-    def _get_original_metadata(self, metadata, redirected, old_url, old_uuid):
-        """Get original URL/UUID if redirected, preserving existing values.
-
-        Returns:
-            tuple: (original_url, original_uuid)
-        """
-        if not redirected:
-            return None, None
-        return metadata.get('original_url', old_url), metadata.get('original_uuid', old_uuid)
-
-    def _is_immutable_ref(self, ref):
-        """Check if ref appears to be a tag or commit hash (immutable).
-
-        Returns:
-            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
-        """
-        if not ref:
-            return False, None
-
-        # Check if it looks like a commit hash (7-40 hex chars)
-        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
-            return True, 'commit'
 
         # Check if it starts with 'v' followed by a number (common tag pattern)
         # or contains dots (version-like: 1.0.0, v2.1.3, etc)
@@ -1069,7 +932,7 @@ class PluginManager:
                 raise PluginDirtyError(plugin.plugin_id, changes)
 
         uuid = self._get_plugin_uuid(plugin)
-        metadata = self._get_plugin_metadata(uuid)
+        metadata = self._metadata.get_plugin_metadata(uuid)
         if not metadata or 'url' not in metadata:
             raise PluginNoSourceError(plugin.plugin_id, 'update')
 
@@ -1086,7 +949,7 @@ class PluginManager:
         old_ref = metadata.get('ref')
 
         # Check registry for redirects
-        current_url, current_uuid, redirected = self._check_redirects(old_url, old_uuid)
+        current_url, current_uuid, redirected = self._metadata.check_redirects(old_url, old_uuid)
 
         # Check if plugin has versioning_scheme and current ref is a version tag
         new_ref = old_ref
@@ -1124,8 +987,8 @@ class PluginManager:
         # Update metadata with current URL and UUID
         # If redirected, preserve original URL/UUID
         # Use source.ref which may have been updated to a newer tag
-        original_url, original_uuid = self._get_original_metadata(metadata, redirected, old_url, old_uuid)
-        self._save_plugin_metadata(
+        original_url, original_uuid = self._metadata.get_original_metadata(metadata, redirected, old_url, old_uuid)
+        self._metadata.save_plugin_metadata(
             PluginMetadata(
                 name=plugin.plugin_id,
                 url=current_url,
@@ -1163,7 +1026,7 @@ class PluginManager:
             if not plugin.manifest or not plugin.manifest.uuid:
                 continue
 
-            metadata = self._get_plugin_metadata(plugin.manifest.uuid)
+            metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
             if not metadata or 'url' not in metadata:
                 continue
 
@@ -1329,7 +1192,7 @@ class PluginManager:
             if not plugin_uuid:
                 continue
 
-            metadata = self._get_plugin_metadata(plugin_uuid)
+            metadata = self._metadata.get_plugin_metadata(plugin_uuid)
             url = metadata.get('url') if metadata else None
 
             is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
@@ -1405,53 +1268,6 @@ class PluginManager:
         """Save enabled plugins list to config."""
         self._set_config_value('plugins3', 'enabled_plugins', value=list(self._enabled_plugins))
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
-
-    def _get_plugin_metadata(self, uuid: str):
-        """Get stored metadata for a plugin by UUID."""
-        metadata_dict = self._get_config_value('plugins3', 'metadata', default={})
-        return metadata_dict.get(uuid, {})
-
-    def _find_plugin_by_url(self, url: str):
-        """Find an installed plugin by its source URL.
-
-        Returns:
-            Plugin or None
-        """
-        metadata_dict = self._get_config_value('plugins3', 'metadata', default={})
-        for uuid, meta in metadata_dict.items():
-            if meta.get('url') == url:
-                # Find the plugin with this UUID
-                for plugin in self._plugins:
-                    if plugin.manifest and plugin.manifest.uuid == uuid:
-                        return plugin
-        return None
-
-    def _save_plugin_metadata(self, metadata: PluginMetadata):
-        """Save plugin metadata to config, keyed by UUID."""
-        from picard.config import get_config
-
-        if not metadata.uuid:
-            log.warning('Cannot save metadata without UUID for plugin %s', metadata.name)
-            return
-
-        # Get or create metadata dict
-
-        config = get_config()
-        plugins3 = config.setting['plugins3'] if 'plugins3' in config.setting else {}
-        if 'metadata' not in plugins3:
-            plugins3['metadata'] = {}
-
-        plugins3['metadata'][metadata.uuid] = metadata.to_dict()
-        config.setting['plugins3'] = plugins3
-
-        log.debug(
-            'Saved metadata for plugin %s (UUID %s): url=%s, ref=%s, commit=%s',
-            metadata.name,
-            metadata.uuid,
-            metadata.url,
-            metadata.ref,
-            short_commit_id(metadata.commit) if metadata.commit else None,
-        )
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):
         """Load a plugin and check API version compatibility.
