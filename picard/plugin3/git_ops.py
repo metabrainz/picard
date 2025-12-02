@@ -154,6 +154,32 @@ class GitOperations:
         return True
 
     @staticmethod
+    def is_immutable_ref(ref):
+        """Check if a ref is immutable (commit hash or version tag).
+
+        Args:
+            ref: Git ref (branch, tag, or commit)
+
+        Returns:
+            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
+        """
+        if not ref:
+            return False, None
+
+        # Check if it looks like a commit hash (7-40 hex chars)
+        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
+            return True, 'commit'
+
+        # Check if it starts with 'v' followed by a number (common tag pattern)
+        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
+        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
+            return True, 'tag'
+        if '.' in ref and any(c.isdigit() for c in ref):
+            return True, 'tag'
+
+        return False, None
+
+    @staticmethod
     def switch_ref(plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref (branch/tag/commit).
 

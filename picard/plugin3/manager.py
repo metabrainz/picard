@@ -872,31 +872,6 @@ class PluginManager:
 
         return None
 
-    def _is_immutable_ref(self, ref):
-        """Check if a ref is immutable (commit hash or non-version tag).
-
-        Args:
-            ref: Git ref (branch, tag, or commit)
-
-        Returns:
-            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
-        """
-        if not ref:
-            return False, None
-
-        # Check if it looks like a commit hash (7-40 hex chars)
-        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
-            return True, 'commit'
-
-        # Check if it starts with 'v' followed by a number (common tag pattern)
-        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
-        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
-            return True, 'tag'
-        if '.' in ref and any(c.isdigit() for c in ref):
-            return True, 'tag'
-
-        return False, None
-
     def update_plugin(self, plugin: Plugin, discard_changes=False):
         """Update a single plugin to latest version.
 
@@ -922,7 +897,7 @@ class PluginManager:
         # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
         ref = metadata.get('ref')
         if ref:
-            is_immutable, ref_type = self._is_immutable_ref(ref)
+            is_immutable, ref_type = GitOperations.is_immutable_ref(ref)
             if is_immutable and ref_type == 'commit':
                 raise ValueError(f'Plugin is pinned to commit "{ref}" and cannot be updated')
 
@@ -938,7 +913,7 @@ class PluginManager:
         new_ref = old_ref
         registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
         if registry_plugin and registry_plugin.get('versioning_scheme'):
-            is_immutable, ref_type = self._is_immutable_ref(old_ref)
+            is_immutable, ref_type = GitOperations.is_immutable_ref(old_ref)
             if is_immutable and ref_type == 'tag':
                 # Try to find newer version tags
                 newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin['versioning_scheme'])
