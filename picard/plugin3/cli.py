@@ -19,6 +19,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from enum import IntEnum
+from pathlib import Path
+import tempfile
 
 from picard import log
 from picard.plugin3.output import PluginOutput
@@ -414,8 +416,6 @@ class PluginCLI:
             self._out.error(f'Failed to load {len(self._manager._failed_plugins)} plugin(s):')
             self._out.nl()
             for plugin_dir, plugin_name, error_msg in self._manager._failed_plugins:
-                from pathlib import Path
-
                 full_path = Path(plugin_dir) / plugin_name
                 self._out.print(f'  • {plugin_name}')
                 self._out.print(f'    Error: {error_msg}')
@@ -848,7 +848,6 @@ class PluginCLI:
 
                 if is_failed:
                     # For failed plugins, just remove the directory
-                    from pathlib import Path
                     import shutil
 
                     plugin_path = Path(plugin.local_path)
@@ -1228,7 +1227,6 @@ class PluginCLI:
             for plugin_dir, plugin_name, _ in self._manager._failed_plugins:
                 if plugin_name == identifier or str(plugin_dir).endswith(identifier):
                     # Return a minimal plugin-like object with just the path
-                    from pathlib import Path
                     from types import SimpleNamespace
 
                     actual_path = Path(plugin_dir) / plugin_name
@@ -1242,9 +1240,7 @@ class PluginCLI:
 
     def _validate_plugin(self, url, ref=None):
         """Validate a plugin from git URL or local directory."""
-        from pathlib import Path
         import shutil
-        import tempfile
 
         from picard.plugin3.plugin import PluginSourceGit
 
@@ -1708,9 +1704,6 @@ api = ["3.0"]
             return ExitCode.ERROR
 
         # Treat as git URL
-        from pathlib import Path
-        import tempfile
-
         temp_path = Path(tempfile.mkdtemp(prefix='picard-manifest-'))
 
         try:
