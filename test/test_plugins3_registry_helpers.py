@@ -22,7 +22,7 @@ import os
 
 from test.picardtestcase import PicardTestCase
 
-from picard.plugin3.registry import (
+from picard.plugin3.git_utils import (
     is_local_path,
     normalize_git_url,
 )
@@ -79,7 +79,7 @@ class TestRegistryHelpers(PicardTestCase):
 
     def test_normalize_git_url_caching(self):
         """Test that normalize_git_url caches results."""
-        from picard.plugin3.registry import normalize_git_url
+        from picard.plugin3.git_utils import normalize_git_url
 
         url = 'https://github.com/test/plugin.git'
 

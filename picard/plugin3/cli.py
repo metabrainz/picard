@@ -689,7 +689,7 @@ class PluginCLI:
                     self._out.print(f'Installing plugin from {url}...')
 
                 # Check if installing from dirty local git repository
-                from picard.plugin3.registry import get_local_repository_path
+                from picard.plugin3.git_utils import get_local_repository_path
 
                 local_path = get_local_repository_path(url)
                 if local_path:
@@ -1126,7 +1126,7 @@ class PluginCLI:
         self._out.print(f'Validating plugin from: {url}')
 
         # Check if url is a local directory
-        from picard.plugin3.registry import get_local_repository_path
+        from picard.plugin3.git_utils import get_local_repository_path
 
         local_path = get_local_repository_path(url)
         if local_path:
@@ -1571,7 +1571,7 @@ api = ["3.0"]
             return ExitCode.ERROR
 
         # Check if it's a local directory
-        from picard.plugin3.registry import get_local_repository_path
+        from picard.plugin3.git_utils import get_local_repository_path
 
         local_path = get_local_repository_path(target)
         if local_path:

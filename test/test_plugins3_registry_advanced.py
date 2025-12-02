@@ -29,10 +29,8 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 
-from picard.plugin3.registry import (
-    PluginRegistry,
-    get_local_path,
-)
+from picard.plugin3.git_utils import get_local_path
+from picard.plugin3.registry import PluginRegistry
 
 
 class TestRegistryAdvanced(PicardTestCase):
