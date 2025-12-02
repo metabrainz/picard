@@ -23,8 +23,14 @@
 import json
 from pathlib import Path
 import re
+import time
 
 from picard import log
+from picard.const.appdirs import cache_folder
+from picard.plugin3.constants import (
+    REFS_CACHE_FILE,
+    REFS_CACHE_TTL,
+)
 
 
 class RefsCache:
@@ -36,8 +42,6 @@ class RefsCache:
 
     def get_cache_path(self):
         """Get path to refs cache file."""
-        from picard.const.appdirs import cache_folder
-        from picard.plugin3.constants import REFS_CACHE_FILE
 
         # Use same cache directory as registry
         if hasattr(self._registry, 'cache_path') and self._registry.cache_path:
@@ -100,9 +104,6 @@ class RefsCache:
         Returns:
             list: Cached tags or None if cache miss/expired
         """
-        import time
-
-        from picard.plugin3.constants import REFS_CACHE_TTL
 
         cache = self.load_cache()
 
@@ -137,7 +138,6 @@ class RefsCache:
             versioning_scheme: Versioning scheme
             tags: List of tags to cache
         """
-        import time
 
         cache = self.load_cache()
 
@@ -159,9 +159,6 @@ class RefsCache:
         Returns:
             dict with branches and tags, or None if not cached/expired
         """
-        import time
-
-        from picard.plugin3.constants import REFS_CACHE_TTL
 
         cache = self.load_cache()
 
@@ -195,7 +192,6 @@ class RefsCache:
             url: Git repository URL
             refs: Dict with 'branches' and 'tags' lists
         """
-        import time
 
         cache = self.load_cache()
 

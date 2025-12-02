@@ -30,12 +30,20 @@ from picard import (
     log,
 )
 from picard.config import get_config
+from picard.const.appdirs import cache_folder
 from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
     PluginState,
+    hash_string,
     short_commit_id,
+)
+from picard.plugin3.plugin_metadata import PluginMetadataManager
+from picard.plugin3.refs_cache import RefsCache
+from picard.plugin3.registry import (
+    PluginRegistry,
+    get_local_repository_path,
 )
 from picard.plugin3.validation import PluginValidation
 
@@ -212,19 +220,15 @@ class PluginManager:
         self._load_config()
 
         # Initialize registry for blacklist checking
-        from picard.const.appdirs import cache_folder
-        from picard.plugin3.registry import PluginRegistry
 
         cache_dir = cache_folder()
         self._registry = PluginRegistry(cache_dir=cache_dir)
 
         # Initialize refs cache
-        from picard.plugin3.refs_cache import RefsCache
 
         self._refs_cache = RefsCache(self._registry)
 
         # Initialize metadata manager
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
 
         self._metadata = PluginMetadataManager(self._registry)
 
@@ -401,8 +405,6 @@ class PluginManager:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
 
-        from picard.plugin3.registry import get_local_repository_path
-
         # Check blacklist before installing
         if not force_blacklisted:
             is_blacklisted, reason = self._registry.is_blacklisted(url)
@@ -415,7 +417,6 @@ class PluginManager:
             return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref, discard_changes)
 
         # Handle git URL - use temp dir in plugin directory for atomic rename
-        from picard.plugin3.plugin import hash_string
 
         url_hash = hash_string(url)
         temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
@@ -541,7 +542,6 @@ class PluginManager:
                 pass  # Ignore errors checking status
 
             # Use git operations to get ref and commit info
-            from picard.plugin3.plugin import hash_string
 
             url_hash = hash_string(str(local_path))
             temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
@@ -866,8 +866,6 @@ class PluginManager:
                 # If on a tag, check for newer version tag
                 new_ref = None
                 if current_is_tag and current_tag:
-                    from picard.plugin3.plugin import PluginSourceGit
-
                     source = PluginSourceGit(metadata['url'], ref)
                     latest_tag = source._find_latest_tag(repo, current_tag)
                     if latest_tag and latest_tag != current_tag:
