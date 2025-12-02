@@ -321,9 +321,8 @@ class TestPluginRegistry(PicardTestCase):
         self.assertNotIn(test_uuid, manager._enabled_plugins)
 
     def test_blacklist_warning_shown(self):
-        """Test that user warning is shown for blacklisted plugins."""
+        """Test that blacklisted plugins are returned for warning display."""
         from pathlib import Path
-        from unittest.mock import patch
 
         from picard.plugin3.manager import PluginManager, PluginMetadata
         from picard.plugin3.plugin import Plugin
@@ -355,16 +354,13 @@ class TestPluginRegistry(PicardTestCase):
             )
         )
 
-        # Mock QMessageBox to capture warning
-        with patch('PyQt6.QtWidgets.QMessageBox') as mock_msgbox:
-            manager._check_blacklisted_plugins()
+        # Check blacklisted plugins - should return list of blacklisted plugins
+        blacklisted = manager._check_blacklisted_plugins()
 
-            # Warning should be shown
-            mock_msgbox.warning.assert_called_once()
-            call_args = mock_msgbox.warning.call_args
-            message = call_args[0][2]
-            self.assertIn('malicious-plugin', message)
-            self.assertIn('blacklisted', message.lower())
+        # Should return the blacklisted plugin
+        self.assertEqual(len(blacklisted), 1)
+        self.assertEqual(blacklisted[0][0], 'malicious-plugin')
+        self.assertIn('Malicious site', blacklisted[0][1])
 
         # Plugin should be disabled (check by UUID)
         self.assertNotIn(test_uuid, manager._enabled_plugins)

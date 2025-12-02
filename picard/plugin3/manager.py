@@ -1134,7 +1134,11 @@ class PluginManager:
                 log.info('Deleted configuration for plugin %s', plugin.plugin_id)
 
     def _check_blacklisted_plugins(self):
-        """Check installed plugins against blacklist and disable if needed."""
+        """Check installed plugins against blacklist and disable if needed.
+
+        Returns:
+            list: List of tuples (plugin_id, reason) for blacklisted plugins
+        """
         blacklisted_plugins = []
 
         for plugin in self._plugins:
@@ -1156,30 +1160,7 @@ class PluginManager:
                     self._enabled_plugins.discard(plugin_uuid)
                     self._save_config()
 
-        # Show warning to user if any plugins were blacklisted
-        if blacklisted_plugins:
-            self._show_blacklist_warning(blacklisted_plugins)
-
-    def _show_blacklist_warning(self, blacklisted_plugins):
-        """Show warning dialog to user about blacklisted plugins."""
-        # Skip GUI warning if no tagger (CLI mode)
-        if not self._tagger:
-            return
-
-        from PyQt6.QtWidgets import QMessageBox
-
-        plugin_list = '\n'.join([f'• {name}: {reason}' for name, reason in blacklisted_plugins])
-        message = (
-            f'The following plugins have been blacklisted and disabled:\n\n'
-            f'{plugin_list}\n\n'
-            f'These plugins may contain security vulnerabilities or malicious code. '
-            f'They have been automatically disabled for your protection.'
-        )
-
-        QMessageBox.warning(
-            self._tagger.window if hasattr(self._tagger, 'window') else None, 'Blacklisted Plugins Detected', message
-        )
-        log.info('Showed blacklist warning for %d plugin(s)', len(blacklisted_plugins))
+        return blacklisted_plugins
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
@@ -1197,9 +1178,13 @@ class PluginManager:
         log.info('Plugin %s enabled (state: %s)', plugin.plugin_id, plugin.state.value)
 
     def init_plugins(self):
-        """Initialize and enable plugins that are enabled in configuration."""
+        """Initialize and enable plugins that are enabled in configuration.
+
+        Returns:
+            list: List of tuples (plugin_id, reason) for blacklisted plugins found
+        """
         # Check for blacklisted plugins on startup
-        self._check_blacklisted_plugins()
+        blacklisted_plugins = self._check_blacklisted_plugins()
 
         enabled_count = 0
         for plugin in self._plugins:
@@ -1214,6 +1199,7 @@ class PluginManager:
                     log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
 
         log.info('Loaded %d plugin%s', enabled_count, 's' if enabled_count != 1 else '')
+        return blacklisted_plugins
 
     def disable_plugin(self, plugin: Plugin):
         """Disable a plugin and save to config."""
