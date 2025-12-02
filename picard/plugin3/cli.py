@@ -26,6 +26,46 @@ from picard.plugin3.output import PluginOutput
 from picard.plugin3.plugin import short_commit_id
 
 
+def get_display_locale(args):
+    """Get locale for displaying plugin information.
+
+    Args:
+        args: CLI arguments object
+
+    Returns:
+        str: Locale string from --locale option, or 'en' as default
+    """
+    return getattr(args, 'locale', 'en')
+
+
+def get_localized_registry_field(plugin_dict, field, locale='en'):
+    """Get localized field from registry plugin data.
+
+    Args:
+        plugin_dict: Plugin dictionary from registry
+        field: Field name ('name', 'description', 'long_description')
+        locale: Locale string (e.g., 'en_US', 'de_DE')
+
+    Returns:
+        str: Localized field value, or base field value if translation not found
+    """
+    # Check for i18n version
+    i18n_field = f'{field}_i18n'
+    i18n = plugin_dict.get(i18n_field, {})
+
+    # Try exact locale match (e.g., 'en_US')
+    if locale in i18n:
+        return i18n[locale]
+
+    # Try language without region (e.g., 'en' from 'en_US')
+    lang = locale.split('_')[0]
+    if lang in i18n:
+        return i18n[lang]
+
+    # Fallback to base field
+    return plugin_dict.get(field, '')
+
+
 class ExitCode(IntEnum):
     """Exit codes for plugin CLI commands."""
 
@@ -284,18 +324,22 @@ class PluginCLI:
         else:
             self._out.print('Installed plugins:')
             self._out.nl()
+
+            # Get system locale for displaying localized plugin info
+            locale_str = get_display_locale(self._args)
+
             # Sort plugins by display name
             sorted_plugins = sorted(
                 self._manager.plugins,
-                key=lambda p: (p.manifest.name() if p.manifest else p.plugin_id).lower(),
+                key=lambda p: (p.manifest.name(locale_str) if p.manifest else p.plugin_id).lower(),
             )
             for plugin in sorted_plugins:
                 # Get plugin UUID for checking enabled state
                 plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
                 is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
 
-                # Show manifest name (human-readable) instead of directory name
-                display_name = plugin.manifest.name() if plugin.manifest else plugin.plugin_id
+                # Show manifest name (human-readable) with localization
+                display_name = plugin.manifest.name(locale_str) if plugin.manifest else plugin.plugin_id
 
                 # Display with semantic methods
                 if is_enabled:
@@ -306,7 +350,7 @@ class PluginCLI:
                 self._out.print(f'  {self._out.d_name(display_name)} ({status})')
 
                 if hasattr(plugin, 'manifest') and plugin.manifest:
-                    desc = plugin.manifest.description()
+                    desc = plugin.manifest.description(locale_str)
                     if desc:
                         self._out.info(f'  {desc}')
 
@@ -1366,14 +1410,20 @@ class PluginCLI:
                 self._out.print('Registry plugins:')
                 self._out.nl()
 
+            # Get system locale for displaying localized plugin info
+            locale_str = get_display_locale(self._args)
+
             # Sort plugins by name
             sorted_plugins = sorted(plugins, key=lambda p: p.get('name', '').lower())
 
             # Show plugins
             for plugin in sorted_plugins:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
-                self._out.info(f'  {plugin.get("description", "")}')
+                name = get_localized_registry_field(plugin, 'name', locale_str)
+                description = get_localized_registry_field(plugin, 'description', locale_str)
+
+                self._out.print(f'{trust_badge} {self._out.d_name(name)}')
+                self._out.info(f'  {description}')
 
                 # Show version if available
                 version = self._get_registry_plugin_version(plugin)
@@ -1429,10 +1479,16 @@ class PluginCLI:
             self._out.print(f'Found {self._out.d_number(len(sorted_results))} plugin(s) ({", ".join(filters)}):')
             self._out.nl()
 
+            # Get system locale for displaying localized plugin info
+            locale_str = get_display_locale(self._args)
+
             for plugin in sorted_results:
                 trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
-                self._out.print(f'{trust_badge} {self._out.d_name(plugin["name"])}')
-                self._out.info(f'  {plugin.get("description", "")}')
+                name = get_localized_registry_field(plugin, 'name', locale_str)
+                description = get_localized_registry_field(plugin, 'description', locale_str)
+
+                self._out.print(f'{trust_badge} {self._out.d_name(name)}')
+                self._out.info(f'  {description}')
 
                 # Show version if available
                 version = self._get_registry_plugin_version(plugin)

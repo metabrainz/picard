@@ -1486,6 +1486,9 @@ If a new instance will not be spawned files/directories will be passed to the ex
         '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
     )
     plugin_parser.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
+    plugin_parser.add_argument(
+        '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
+    )
     plugin_parser.add_argument('--no-color', action='store_true', help="disable colored output")
 
     args = parser.parse_args()

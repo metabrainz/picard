@@ -162,6 +162,7 @@ class MockCliArgs(Mock):
             'force_blacklisted': False,
             'category': None,
             'trust': None,
+            'locale': 'en',
         }
         defaults.update(kwargs)
         super().__init__(**defaults)
