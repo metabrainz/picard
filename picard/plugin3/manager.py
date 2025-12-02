@@ -29,6 +29,7 @@ from picard import (
     api_versions_tuple,
     log,
 )
+from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -244,23 +245,6 @@ class PluginManager:
                 shutil.rmtree(entry, ignore_errors=True)
                 log.debug('Cleaned up temporary plugin directory: %s', entry)
 
-    def _check_dirty_working_dir(self, path: Path):
-        """Check if directory has uncommitted changes.
-
-        Returns:
-            list: Modified files, or empty list if clean
-        """
-        try:
-            import pygit2
-
-            repo = pygit2.Repository(str(path))
-            status = repo.status()
-            if status:
-                return [file for file, flags in status.items()]
-        except Exception:
-            pass  # Not a git repo or error checking
-        return []
-
     def _validate_manifest(self, manifest):
         """Validate manifest and raise PluginManifestInvalidError if invalid."""
         errors = manifest.validate()
@@ -299,37 +283,6 @@ class PluginManager:
             raise PluginNoUUIDError(plugin.plugin_id)
         return plugin.manifest.uuid
 
-    def _fetch_remote_refs(self, url, use_callbacks=True):
-        """Fetch remote refs from a git repository.
-
-        Args:
-            url: Git repository URL
-            use_callbacks: Whether to use GitRemoteCallbacks for authentication
-
-        Returns:
-            list: Remote refs from pygit2, or None on error
-        """
-        import tempfile
-
-        import pygit2
-
-        try:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                repo = pygit2.init_repository(tmpdir, bare=True)
-                remote = repo.remotes.create('origin', url)
-
-                if use_callbacks:
-                    from picard.plugin3.plugin import GitRemoteCallbacks
-
-                    callbacks = GitRemoteCallbacks()
-                    return remote.list_heads(callbacks=callbacks)
-                else:
-                    return remote.list_heads()
-
-        except Exception as e:
-            log.warning('Failed to fetch remote refs from %s: %s', url, e)
-            return None
-
     def fetch_all_git_refs(self, url, use_cache=True):
         """Fetch all branches and tags from a git repository.
 
@@ -349,7 +302,7 @@ class PluginManager:
             if cached_refs is not None:
                 return cached_refs
 
-        remote_refs = self._fetch_remote_refs(url, use_callbacks=True)
+        remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True)
         if not remote_refs:
             # Try to use expired cache as fallback
             if use_cache:
@@ -515,7 +468,7 @@ class PluginManager:
 
                 # Check for uncommitted changes before removing
                 if not discard_changes:
-                    changes = self._check_dirty_working_dir(final_path)
+                    changes = GitOperations.check_dirty_working_dir(final_path)
                     if changes:
                         raise PluginDirtyError(plugin_name, changes)
 
@@ -639,7 +592,7 @@ class PluginManager:
 
             # Check for uncommitted changes before removing
             if not discard_changes:
-                changes = self._check_dirty_working_dir(final_path)
+                changes = GitOperations.check_dirty_working_dir(final_path)
                 if changes:
                     raise PluginDirtyError(plugin_name, changes)
 
@@ -671,166 +624,6 @@ class PluginManager:
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
 
-    def _validate_ref(self, url, ref, uuid=None):
-        """Validate that a ref exists and is available.
-
-        Args:
-            url: Git repository URL
-            ref: Ref to validate
-            uuid: Plugin UUID for registry lookup
-
-        Returns:
-            tuple: (is_valid, available_refs) where available_refs is a list of dicts
-                   with 'name' and optional 'description' keys
-
-        Raises:
-            None - returns validation result instead
-        """
-        registry_plugin = self._registry.find_plugin(url=url, uuid=uuid)
-        # Ensure registry_plugin is a dict, not a pygit2 object
-        if registry_plugin and not isinstance(registry_plugin, dict):
-            log.warning('registry_plugin is not a dict, got %s', type(registry_plugin))
-            return True, []
-
-        versioning_scheme = registry_plugin.get('versioning_scheme') if registry_plugin else None
-
-        # If plugin has versioning_scheme, validate against version tags
-        if versioning_scheme:
-            tag_names = self._fetch_version_tags(url, versioning_scheme)
-            if tag_names:
-                tags = [{'name': tag} for tag in tag_names]
-                if tags:
-                    tags[0]['description'] = 'latest'
-                is_valid = any(t['name'] == ref for t in tags)
-                return is_valid, tags
-
-        # If plugin has explicit refs in registry, validate against those
-        if registry_plugin and registry_plugin.get('refs'):
-            refs = registry_plugin['refs']
-            # Ensure refs is a list (not a pygit2 References object)
-            if not isinstance(refs, list):
-                return True, []
-
-            available = []
-            for r in refs:
-                ref_dict = {'name': r['name']}
-                if r.get('description'):
-                    ref_dict['description'] = r['description']
-                available.append(ref_dict)
-
-            is_valid = any(r['name'] == ref for r in refs)
-            return is_valid, available
-
-        # No validation possible - assume valid
-        return True, []
-
-    def _is_immutable_ref(self, ref):
-        """Check if a ref is immutable (commit hash or non-version tag).
-
-        Args:
-            ref: Git ref (branch, tag, or commit)
-
-        Returns:
-            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
-        """
-        if not ref:
-            return False, None
-
-        # Check if it looks like a commit hash (7-40 hex chars)
-        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
-            return True, 'commit'
-
-        # Check if it starts with 'v' followed by a number (common tag pattern)
-        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
-        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
-            return True, 'tag'
-        if '.' in ref and any(c.isdigit() for c in ref):
-            return True, 'tag'
-
-        return False, None
-
-    def switch_ref(self, plugin: Plugin, ref: str, discard_changes=False):
-        """Switch plugin to a different git ref (branch/tag/commit).
-
-        Args:
-            plugin: Plugin to switch
-            ref: Git ref to switch to
-            discard_changes: If True, discard uncommitted changes
-
-        Raises:
-            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
-            PluginRefNotFoundError: If ref is invalid and validation is available
-        """
-        # Check for uncommitted changes
-        if not discard_changes:
-            changes = self._check_dirty_working_dir(plugin.local_path)
-            if changes:
-                raise PluginDirtyError(plugin.plugin_id, changes)
-
-        uuid = self._get_plugin_uuid(plugin)
-        metadata = self._metadata.get_plugin_metadata(uuid)
-        if not metadata or 'url' not in metadata:
-            raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
-
-        # Validate ref (if possible)
-        try:
-            is_valid, available_refs = self._validate_ref(metadata['url'], ref, uuid)
-            # Ensure available_refs is always a list
-            if not isinstance(available_refs, list):
-                log.warning('available_refs is not a list, got %s', type(available_refs))
-                available_refs = []
-            if not is_valid and available_refs:
-                raise PluginRefNotFoundError(plugin.plugin_id, ref, available_refs)
-        except PluginRefNotFoundError:
-            raise  # Re-raise our own exception
-        except Exception as e:
-            log.warning('Could not validate ref: %s', e)
-            # Continue anyway - let git handle the validation
-
-        old_ref = metadata.get('ref', 'main')
-        old_commit = metadata.get('commit', 'unknown')
-
-        source = PluginSourceGit(metadata['url'], ref)
-        new_commit = source.sync(plugin.local_path, fetch_ref=True)
-
-        # Reload manifest to get potentially new version
-        try:
-            plugin.read_manifest()
-        except ValueError as e:
-            # Validation failed - rollback to old commit (not just ref name)
-            log.warning('Manifest validation failed, rolling back to %s (%s)', old_ref, old_commit)
-            if old_commit and old_commit != 'unknown':
-                rollback_source = PluginSourceGit(metadata['url'], old_commit)
-            else:
-                rollback_source = PluginSourceGit(metadata['url'], old_ref)
-            rollback_source.sync(plugin.local_path)
-            plugin.read_manifest()  # Restore old manifest
-            raise PluginRefSwitchError(plugin.plugin_id, ref, e) from e
-
-        # Update metadata with new ref
-        self._metadata.save_plugin_metadata(
-            PluginMetadata(
-                name=plugin.plugin_id,
-                url=metadata['url'],
-                ref=ref,
-                commit=new_commit,
-                uuid=metadata.get('uuid'),
-                original_url=metadata.get('original_url'),
-                original_uuid=metadata.get('original_uuid'),
-            )
-        )
-
-        return old_ref, ref, old_commit, new_commit
-
-        # Check if it starts with 'v' followed by a number (common tag pattern)
-        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
-        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
-            return True, 'tag'
-        if '.' in ref and any(c.isdigit() for c in ref):
-            return True, 'tag'
-
-        return False, None
-
     def _fetch_version_tags(self, url, versioning_scheme):
         """Fetch and filter version tags from repository.
 
@@ -841,11 +634,6 @@ class PluginManager:
         Returns:
             list: Sorted list of version tags (newest first), or empty list on error
         """
-        # Check cache first
-        cached_tags = self._refs_cache.get_cached_tags(url, versioning_scheme)
-        if cached_tags is not None:
-            return cached_tags
-
         # Parse versioning scheme
         pattern = self._refs_cache.parse_versioning_scheme(versioning_scheme)
         if not pattern:
@@ -914,6 +702,31 @@ class PluginManager:
 
         return None
 
+    def _is_immutable_ref(self, ref):
+        """Check if a ref is immutable (commit hash or non-version tag).
+
+        Args:
+            ref: Git ref (branch, tag, or commit)
+
+        Returns:
+            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
+        """
+        if not ref:
+            return False, None
+
+        # Check if it looks like a commit hash (7-40 hex chars)
+        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
+            return True, 'commit'
+
+        # Check if it starts with 'v' followed by a number (common tag pattern)
+        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
+        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
+            return True, 'tag'
+        if '.' in ref and any(c.isdigit() for c in ref):
+            return True, 'tag'
+
+        return False, None
+
     def update_plugin(self, plugin: Plugin, discard_changes=False):
         """Update a single plugin to latest version.
 
@@ -927,7 +740,7 @@ class PluginManager:
         """
         # Check for uncommitted changes
         if not discard_changes:
-            changes = self._check_dirty_working_dir(plugin.local_path)
+            changes = GitOperations.check_dirty_working_dir(plugin.local_path)
             if changes:
                 raise PluginDirtyError(plugin.plugin_id, changes)
 

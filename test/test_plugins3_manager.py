@@ -29,6 +29,7 @@ from test.test_plugins3_helpers import (
     MockTagger,
 )
 
+from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.manager import PluginManager
 
 
@@ -188,8 +189,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             repo.set_head('refs/heads/main')
             repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
 
-            manager = PluginManager(None)
-            changes = manager._check_dirty_working_dir(repo_dir)
+            changes = GitOperations.check_dirty_working_dir(repo_dir)
 
             self.assertEqual(changes, [])
 
@@ -219,8 +219,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             # Modify the file (uncommitted change)
             (repo_dir / 'test.txt').write_text('modified')
 
-            manager = PluginManager(None)
-            changes = manager._check_dirty_working_dir(repo_dir)
+            changes = GitOperations.check_dirty_working_dir(repo_dir)
 
             self.assertIn('test.txt', changes)
 
@@ -236,10 +235,10 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest.uuid = 'test-uuid'
 
         manager = PluginManager(None)
-        manager._check_dirty_working_dir = Mock(return_value=['modified.txt'])
 
-        with self.assertRaises(PluginDirtyError) as context:
-            manager.update_plugin(mock_plugin)
+        with patch('picard.plugin3.manager.GitOperations.check_dirty_working_dir', return_value=['modified.txt']):
+            with self.assertRaises(PluginDirtyError) as context:
+                manager.update_plugin(mock_plugin)
 
         self.assertEqual(context.exception.plugin_name, 'test-plugin')
         self.assertIn('modified.txt', context.exception.changes)
@@ -256,7 +255,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest.version = '1.0.0'
 
         manager = PluginManager(None)
-        manager._check_dirty_working_dir = Mock(return_value=['modified.txt'])
         manager._metadata.get_plugin_metadata = Mock(return_value={'url': 'https://example.com', 'ref': 'main'})
         manager._metadata.check_redirects = Mock(return_value=('https://example.com', 'test-uuid', False))
 
@@ -292,11 +290,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'
 
-        manager = PluginManager(None)
-        manager._check_dirty_working_dir = Mock(return_value=['modified.txt'])
-
-        with self.assertRaises(PluginDirtyError) as context:
-            manager.switch_ref(mock_plugin, 'develop')
+        with patch('picard.plugin3.git_ops.GitOperations.check_dirty_working_dir', return_value=['modified.txt']):
+            with self.assertRaises(PluginDirtyError) as context:
+                GitOperations.switch_ref(mock_plugin, 'develop')
 
         self.assertEqual(context.exception.plugin_name, 'test-plugin')
         self.assertIn('modified.txt', context.exception.changes)
@@ -334,7 +330,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             (existing / 'test.txt').write_text('modified')
 
             # Check that dirty check works
-            changes = manager._check_dirty_working_dir(existing)
+            changes = GitOperations.check_dirty_working_dir(existing)
             self.assertIn('test.txt', changes)
 
     def test_get_config_value_default(self):
