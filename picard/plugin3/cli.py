@@ -610,17 +610,18 @@ class PluginCLI:
                 self._out.print(f'  {branch}{marker}')
             self._out.nl()
 
-        # Show all tags
+        # Show all tags (filter out ^{} dereferenced annotated tags)
         if tags:
-            self._out.print(f'Tags ({len(tags)} total):')
+            filtered_tags = [tag for tag in tags if not tag.endswith('^{}')]
+            self._out.print(f'Tags ({len(filtered_tags)} total):')
             # Show first 20
-            for tag in tags[:20]:
+            for tag in filtered_tags[:20]:
                 is_current = current_ref == tag
                 marker = ' (current)' if is_current else ''
                 self._out.print(f'  {tag}{marker}')
 
-            if len(tags) > 20:
-                self._out.print(f'  ... and {len(tags) - 20} more')
+            if len(filtered_tags) > 20:
+                self._out.print(f'  ... and {len(filtered_tags) - 20} more')
 
         return ExitCode.SUCCESS
 
