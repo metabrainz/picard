@@ -289,6 +289,37 @@ class PluginManager:
             raise PluginNoUUIDError(plugin.plugin_id)
         return plugin.manifest.uuid
 
+    def _fetch_remote_refs(self, url, use_callbacks=True):
+        """Fetch remote refs from a git repository.
+
+        Args:
+            url: Git repository URL
+            use_callbacks: Whether to use GitRemoteCallbacks for authentication
+
+        Returns:
+            list: Remote refs from pygit2, or None on error
+        """
+        import tempfile
+
+        import pygit2
+
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                repo = pygit2.init_repository(tmpdir, bare=True)
+                remote = repo.remotes.create('origin', url)
+
+                if use_callbacks:
+                    from picard.plugin3.plugin import GitRemoteCallbacks
+
+                    callbacks = GitRemoteCallbacks()
+                    return remote.list_heads(callbacks=callbacks)
+                else:
+                    return remote.list_heads()
+
+        except Exception as e:
+            log.warning('Failed to fetch remote refs from %s: %s', url, e)
+            return None
+
     def get_plugin_refs_info(self, identifier):
         """Get plugin refs information from identifier (smart detection).
 
@@ -372,37 +403,24 @@ class PluginManager:
                 - tags: List of tag names
             or None on error
         """
-        import tempfile
-
-        from picard.plugin3.plugin import GitRemoteCallbacks
-
-        import pygit2
-
-        try:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                repo = pygit2.init_repository(tmpdir, bare=True)
-                remote = repo.remotes.create('origin', url)
-                callbacks = GitRemoteCallbacks()
-                remote_refs = remote.list_heads(callbacks=callbacks)
-
-                # Separate branches and tags
-                branches = []
-                tags = []
-
-                for ref in remote_refs:
-                    ref_name = ref.name if hasattr(ref, 'name') else str(ref)
-                    if ref_name.startswith('refs/heads/'):
-                        branch_name = ref_name[len('refs/heads/') :]
-                        branches.append(branch_name)
-                    elif ref_name.startswith('refs/tags/'):
-                        tag_name = ref_name[len('refs/tags/') :]
-                        tags.append(tag_name)
-
-                return {'branches': sorted(branches), 'tags': sorted(tags, reverse=True)}
-
-        except Exception as e:
-            log.warning('Failed to fetch refs from %s: %s', url, e)
+        remote_refs = self._fetch_remote_refs(url, use_callbacks=True)
+        if not remote_refs:
             return None
+
+        # Separate branches and tags
+        branches = []
+        tags = []
+
+        for ref in remote_refs:
+            ref_name = ref.name if hasattr(ref, 'name') else str(ref)
+            if ref_name.startswith('refs/heads/'):
+                branch_name = ref_name[len('refs/heads/') :]
+                branches.append(branch_name)
+            elif ref_name.startswith('refs/tags/'):
+                tag_name = ref_name[len('refs/tags/') :]
+                tags.append(tag_name)
+
+        return {'branches': sorted(branches), 'tags': sorted(tags, reverse=True)}
 
     def get_plugin_registry_id(self, plugin: Plugin):
         """Get registry ID for a plugin by looking it up in the current registry.
@@ -1165,10 +1183,6 @@ class PluginManager:
         Returns:
             list: Sorted list of version tags (newest first), or empty list on error
         """
-        import tempfile
-
-        import pygit2
-
         # Check cache first
         cached_tags = self._get_cached_tags(url, versioning_scheme)
         if cached_tags is not None:
@@ -1179,30 +1193,25 @@ class PluginManager:
         if not pattern:
             return []
 
-        try:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                repo = pygit2.init_repository(tmpdir, bare=True)
-                remote = repo.remotes.create('origin', url)
-                remote_refs = remote.list_heads()
-
-                # Filter and sort tags
-                tags = self._filter_tags(remote_refs, pattern)
-                tags = self._sort_tags(tags, versioning_scheme)
-
-                # Cache the result
-                if tags:
-                    self._cache_tags(url, versioning_scheme, tags)
-
-                return tags
-
-        except Exception as e:
-            log.warning('Error fetching tags from %s: %s', url, e)
+        # Fetch remote refs
+        remote_refs = self._fetch_remote_refs(url, use_callbacks=False)
+        if not remote_refs:
             # Try to use expired cache as fallback
             stale_cache = self._get_cached_tags(url, versioning_scheme, allow_expired=True)
             if stale_cache:
                 log.info('Using stale cache for %s due to fetch error', url)
                 return stale_cache
             return []
+
+        # Filter and sort tags
+        tags = self._filter_tags(remote_refs, pattern)
+        tags = self._sort_tags(tags, versioning_scheme)
+
+        # Cache the result
+        if tags:
+            self._cache_tags(url, versioning_scheme, tags)
+
+        return tags
 
     def _find_newer_version_tag(self, url, current_tag, versioning_scheme):
         """Find newer version tag for plugin with versioning_scheme.
