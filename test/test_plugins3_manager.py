@@ -223,7 +223,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_update_plugin_dirty_raises_error(self):
         """Test that update_plugin raises PluginDirtyError for dirty repo."""
-        from picard.plugin3.manager import PluginDirtyError
+        from picard.plugin3.manager import PluginDirtyError, PluginMetadata
         from picard.plugin3.plugin import Plugin
 
         mock_plugin = Mock(spec=Plugin)
@@ -233,6 +233,17 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest.uuid = 'test-uuid'
 
         manager = PluginManager(None)
+
+        # Set up metadata so the plugin has a URL
+        manager._save_plugin_metadata(
+            PluginMetadata(
+                name='test-plugin',
+                url='https://example.com/plugin.git',
+                ref='main',
+                commit='abc123',
+                uuid='test-uuid',
+            )
+        )
 
         with patch('picard.plugin3.manager.GitOperations.check_dirty_working_dir', return_value=['modified.txt']):
             with self.assertRaises(PluginDirtyError) as context:
