@@ -1077,7 +1077,7 @@ class PluginManager:
         """
         import time
 
-        from picard.plugin3.constants import VERSION_TAG_CACHE_TTL
+        from picard.plugin3.constants import REFS_CACHE_TTL
 
         cache = self._load_version_cache()
 
@@ -1092,7 +1092,7 @@ class PluginManager:
         tags = entry.get('tags', [])
 
         # Check if expired
-        is_expired = time.time() - timestamp > VERSION_TAG_CACHE_TTL
+        is_expired = time.time() - timestamp > REFS_CACHE_TTL
 
         if is_expired and not allow_expired:
             return None
@@ -1136,6 +1136,8 @@ class PluginManager:
         """
         import time
 
+        from picard.plugin3.constants import REFS_CACHE_TTL
+
         cache = self._load_version_cache()
 
         if url not in cache or 'all_refs' not in cache[url]:
@@ -1145,8 +1147,8 @@ class PluginManager:
         timestamp = entry.get('timestamp', 0)
         age = int(time.time()) - timestamp
 
-        # Cache expires after 24 hours
-        if age > 86400 and not allow_expired:
+        # Check if cache is expired
+        if age > REFS_CACHE_TTL and not allow_expired:
             log.debug('Refs cache expired for %s (age: %d seconds)', url, age)
             return None
 
