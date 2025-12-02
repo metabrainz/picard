@@ -84,6 +84,12 @@ class PluginValidation:
         """
         from picard.plugin3.manager import PluginNoUUIDError
 
+        # Lazy-load manifest if not already loaded
+        if not plugin.manifest:
+            manifest_path = plugin.local_path / 'MANIFEST.toml'
+            if manifest_path.exists():
+                plugin.read_manifest()
+
         if not plugin.manifest or not plugin.manifest.uuid:
             raise PluginNoUUIDError(plugin.plugin_id)
         return plugin.manifest.uuid

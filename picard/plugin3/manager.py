@@ -384,7 +384,9 @@ class PluginManager:
         if primary:
             self._primary_plugin_dir = dir_path
 
-    def install_plugin(self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False):
+    def install_plugin(
+        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
+    ):
         """Install a plugin from a git URL or local directory.
 
         Args:
@@ -393,6 +395,7 @@ class PluginManager:
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
             discard_changes: If True, discard uncommitted changes on reinstall
+            enable_after_install: If True, enable the plugin after successful installation
 
         Raises:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
@@ -479,6 +482,10 @@ class PluginManager:
             # Add newly installed plugin to the plugins list
             plugin = Plugin(self._primary_plugin_dir, plugin_name)
             self._plugins.append(plugin)
+
+            # Enable plugin if requested
+            if enable_after_install:
+                self.enable_plugin(plugin)
 
             return plugin_name
 

@@ -763,7 +763,9 @@ class PluginCLI:
                     except Exception:
                         pass  # Ignore errors checking status
 
-                plugin_id = self._manager.install_plugin(url, ref, reinstall, force_blacklisted)
+                plugin_id = self._manager.install_plugin(
+                    url, ref, reinstall, force_blacklisted, enable_after_install=True
+                )
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
@@ -784,7 +786,10 @@ class PluginCLI:
                     continue
                 elif isinstance(e, PluginDirtyError):
                     success, result = self._handle_dirty_error(
-                        e, lambda **kw: self._manager.install_plugin(url, ref, reinstall, force_blacklisted, **kw)
+                        e,
+                        lambda **kw: self._manager.install_plugin(
+                            url, ref, reinstall, force_blacklisted, enable_after_install=True, **kw
+                        ),
                     )
                     if not success:
                         return ExitCode.ERROR if yes else ExitCode.SUCCESS
