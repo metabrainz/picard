@@ -700,13 +700,14 @@ When using `--switch-ref`, Picard validates the ref exists:
 
 ### List Available Refs
 
-**Command:** `picard plugins --list-refs <name|url>`
+**Command:** `picard plugins --list-refs <identifier>`
 
 **Description:** List all available git refs (branches and tags) for a plugin
 
 **Works with:**
 - Installed plugin name
 - Registry plugin ID
+- UUID (for both installed and registry plugins)
 - Git URL (for non-installed plugins)
 
 **Example output for registry plugin:**
@@ -715,25 +716,16 @@ $ picard plugins --list-refs additional-artists-variables
 
 Plugin: Additional Artists Variables
 Source: https://github.com/rdswift/picard-plugin-additional-artists-variables
-Current: v1.0.0 (@6bdf6bc)
-
-Registry Refs:
-  main - Stable release for Picard 4.x (API 4.0+)
-  picard-v3 - Maintenance branch for Picard 3.x (API 3.0-3.99)
+Current: v1.0.0 (@27f19f8)
 
 Released Versions (semver):
   v1.0.0 (current)
-  v0.9.5
-  v0.9.0
 
 Branches:
   main
 
-Tags (10 total):
+Tags (1 total):
   v1.0.0 (current)
-  v0.9.5
-  v0.9.0
-  ... and 7 more
 ```
 
 **Example output for non-registry plugin:**
@@ -762,22 +754,28 @@ Tags (5 total):
    picard plugins --install view-script-variables --ref v2.0.0
    ```
 
-2. **Before switching - see what refs exist:**
+2. **Using UUID (works for both installed and registry plugins):**
+   ```bash
+   picard plugins --list-refs 2eae631a-1696-4bdc-841f-f75aaa3ae294
+   ```
+
+3. **Before switching - see what refs exist:**
    ```bash
    picard plugins --list-refs my-plugin
    picard plugins --switch-ref my-plugin beta
    ```
 
-3. **Check for new releases:**
+4. **Check for new releases:**
    ```bash
    picard plugins --list-refs my-plugin
    # See if newer version tags are available
    ```
 
 **Notes:**
-- Registry refs show API version constraints to help choose compatible ref
+- Registry refs show API version constraints to help choose compatible ref (if available)
 - Released versions are filtered by `versioning_scheme` (semver/calver/regex)
 - All branches and tags are shown from git remote
+- Annotated tag references (^{}) are filtered out for cleaner display
 - Current ref is marked with `(current)` for installed plugins
 - Updates version tag cache for faster subsequent operations
 
