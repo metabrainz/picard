@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-04-19 14:20+0000\n"
+"PO-Revision-Date: 2025-12-02 12:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -428,7 +428,7 @@ msgstr "APEv2-tags uit MP3-bestanden verwijderen"
 
 #: picard/profile.py:113 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
-msgstr "Ontbrekende zoekpunten aan FLAC-bestanden toevoegen"
+msgstr "Ontbrekende zoekpunten in FLAC-bestanden oplossen"
 
 #: picard/profile.py:114
 msgid "Preserved tags list"
@@ -5358,7 +5358,7 @@ msgstr "Selecteer het bestandsnamenscript dat je in de bewerker wil openen"
 
 #: picard/ui/ui_scripteditor.py:210 picard/ui/ui_scripteditor_details.py:99
 msgid "Title:"
-msgstr "Titel:"
+msgstr "Naam:"
 
 #: picard/ui/ui_scripteditor_details.py:91
 msgid "File Naming Script Metadata"
