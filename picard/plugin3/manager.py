@@ -1006,7 +1006,7 @@ class PluginManager:
 
     def _get_version_cache_path(self):
         """Get path to version tag cache file."""
-        from picard.plugin3.constants import VERSION_TAG_CACHE_FILE
+        from picard.plugin3.constants import REFS_CACHE_FILE
 
         # Use same cache directory as registry
         if hasattr(self._registry, 'cache_path') and self._registry.cache_path:
@@ -1017,7 +1017,7 @@ class PluginManager:
 
             cache_dir = cache_folder()
 
-        return cache_dir / VERSION_TAG_CACHE_FILE
+        return cache_dir / REFS_CACHE_FILE
 
     def _load_version_cache(self):
         """Load version tag cache from disk.
