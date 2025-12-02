@@ -390,7 +390,7 @@ class PluginManager:
                 except Exception:
                     pass  # Ignore errors, use metadata values
         else:
-            # Not installed - try registry ID or URL
+            # Not installed - try registry ID, UUID, or URL
             if '://' in identifier or '/' in identifier:
                 # Looks like a URL
                 url = identifier
@@ -398,13 +398,17 @@ class PluginManager:
                 current_ref = None
                 current_commit = None
             else:
-                # Try as registry ID
+                # Try as registry ID or UUID
                 registry_plugin = self._registry.find_plugin(plugin_id=identifier)
+                if not registry_plugin:
+                    # Try as UUID
+                    registry_plugin = self._registry.find_plugin(uuid=identifier)
+
                 if not registry_plugin:
                     return None
 
                 url = registry_plugin['git_url']
-                registry_id = identifier
+                registry_id = registry_plugin.get('id', identifier)
                 current_ref = None
                 current_commit = None
 

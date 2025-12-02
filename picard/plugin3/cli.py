@@ -1156,7 +1156,7 @@ class PluginCLI:
 
             # UUID (case-insensitive)
             if plugin.manifest and plugin.manifest.uuid:
-                identifiers.append(plugin.manifest.uuid.lower())
+                identifiers.append(str(plugin.manifest.uuid).lower())
 
             # Display name (case-insensitive)
             if plugin.manifest:
