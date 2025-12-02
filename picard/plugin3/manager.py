@@ -316,6 +316,10 @@ class PluginManager:
         """Get metadata for a plugin by UUID."""
         return self._metadata.get_plugin_metadata(uuid)
 
+    def _save_plugin_metadata(self, metadata):
+        """Save plugin metadata."""
+        return self._metadata.save_plugin_metadata(metadata)
+
     def _find_plugin_by_url(self, url):
         """Find plugin metadata by URL."""
         return self._metadata.find_plugin_by_url(url)

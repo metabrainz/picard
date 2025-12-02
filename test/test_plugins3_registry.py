@@ -174,33 +174,42 @@ class TestPluginRegistry(PicardTestCase):
             mock_plugin.read_manifest = Mock()
 
             # Mock metadata with old URL and UUID
-            with patch.object(manager, '_get_plugin_metadata') as mock_get_meta:
+            with patch.object(manager._metadata, 'get_plugin_metadata') as mock_get_meta:
                 mock_get_meta.return_value = {'url': old_url, 'uuid': old_uuid, 'ref': 'main', 'commit': 'abc123'}
 
-                with patch.object(manager, '_save_plugin_metadata') as mock_save_meta:
-                    with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
-                        mock_source = Mock()
-                        mock_source.update.return_value = ('abc123', 'def456')
-                        mock_source_class.return_value = mock_source
+                with patch.object(manager._metadata, 'check_redirects') as mock_check_redirects:
+                    # Simulate redirect: old URL/UUID -> new URL/UUID
+                    mock_check_redirects.return_value = (new_url, new_uuid, True)
 
-                        with patch('pygit2.Repository') as mock_repo_class:
-                            mock_repo = Mock()
-                            mock_commit = Mock()
-                            mock_commit.commit_time = 1234567890
-                            mock_repo.get = Mock(return_value=mock_commit)
-                            mock_repo_class.return_value = mock_repo
+                    with patch.object(manager._metadata, 'save_plugin_metadata') as mock_save_meta:
+                        with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+                            mock_source = Mock()
+                            mock_source.update.return_value = ('abc123', 'def456')
+                            mock_source_class.return_value = mock_source
 
-                            # Update plugin
-                            manager.update_plugin(mock_plugin)
+                            with patch(
+                                'picard.plugin3.git_ops.GitOperations.check_dirty_working_dir'
+                            ) as mock_check_dirty:
+                                mock_check_dirty.return_value = []  # No uncommitted changes
 
-                            # Verify metadata was saved with NEW URL and UUID
-                            mock_save_meta.assert_called_once()
-                            call_args = mock_save_meta.call_args[0]
-                            metadata = call_args[0]
-                            self.assertEqual(metadata.url, new_url)
-                            self.assertEqual(metadata.uuid, new_uuid)
-                            self.assertEqual(metadata.original_url, old_url)
-                        self.assertEqual(metadata.original_uuid, old_uuid)
+                                with patch('pygit2.Repository') as mock_repo_class:
+                                    mock_repo = Mock()
+                                    mock_commit = Mock()
+                                    mock_commit.commit_time = 1234567890
+                                    mock_repo.get = Mock(return_value=mock_commit)
+                                    mock_repo_class.return_value = mock_repo
+
+                                    # Update plugin
+                                    manager.update_plugin(mock_plugin)
+
+                                # Verify metadata was saved with NEW URL and UUID
+                                mock_save_meta.assert_called_once()
+                                call_args = mock_save_meta.call_args[0]
+                                metadata = call_args[0]
+                                self.assertEqual(metadata.url, new_url)
+                                self.assertEqual(metadata.uuid, new_uuid)
+                                self.assertEqual(metadata.original_url, old_url)
+                                self.assertEqual(metadata.original_uuid, old_uuid)
 
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
