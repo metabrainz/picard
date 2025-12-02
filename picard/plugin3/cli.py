@@ -169,6 +169,8 @@ class PluginCLI:
                 return self._list_plugins()
             elif self._args.info:
                 return self._show_info(self._args.info)
+            elif self._args.list_refs:
+                return self._list_refs(self._args.list_refs)
             elif self._args.enable:
                 return self._enable_plugins(self._args.enable)
             elif self._args.disable:
@@ -499,6 +501,176 @@ class PluginCLI:
         if long_desc:
             self._out.nl()
             self._out.print(long_desc)
+
+        return ExitCode.SUCCESS
+
+    def _list_refs(self, identifier):
+        """List available git refs (branches/tags) for a plugin.
+
+        Args:
+            identifier: Plugin name, registry ID, or git URL
+        """
+        # Smart detection: try to find installed plugin first
+        plugin = self._find_plugin(identifier)
+
+        if plugin:
+            # Plugin is installed
+            if not plugin.manifest:
+                self._out.error(f'Plugin {plugin.plugin_id} has no manifest')
+                return ExitCode.ERROR
+
+            metadata = self._manager._get_plugin_metadata(plugin.manifest.uuid)
+            if not metadata or not metadata.get('url'):
+                self._out.error(f'Plugin {plugin.plugin_id} has no git URL (local plugin?)')
+                return ExitCode.ERROR
+
+            url = metadata['url']
+            current_ref = metadata.get('ref')
+            current_commit = metadata.get('commit')
+            registry_id = self._manager.get_plugin_registry_id(plugin)
+        else:
+            # Not installed - try registry ID or URL
+            if '://' in identifier or '/' in identifier:
+                # Looks like a URL
+                url = identifier
+                registry_id = self._manager._registry.get_registry_id(url=url)
+                current_ref = None
+                current_commit = None
+            else:
+                # Try as registry ID
+                registry_plugin = self._manager._registry.find_plugin(plugin_id=identifier)
+                if not registry_plugin:
+                    self._out.error(f'Plugin "{identifier}" not found (not installed and not in registry)')
+                    return ExitCode.NOT_FOUND
+
+                url = registry_plugin['git_url']
+                registry_id = identifier
+                current_ref = None
+                current_commit = None
+
+        # Display header
+        if plugin:
+            self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}')
+        else:
+            self._out.print(f'Plugin: {self._out.d_id(registry_id or url)}')
+
+        self._out.print(f'Source: {self._out.d_url(url)}')
+
+        if current_ref:
+            commit_short = short_commit_id(current_commit) if current_commit else ''
+            self._out.print(f'Current: {self._out.d_version(current_ref)} (@{self._out.d_commit_old(commit_short)})')
+
+        self._out.nl()
+
+        # Get registry data if available
+        registry_plugin = self._manager._registry.find_plugin(plugin_id=registry_id) if registry_id else None
+
+        if registry_plugin:
+            # Show registry refs
+            refs = registry_plugin.get('refs', [])
+            if refs:
+                self._out.print('Registry Refs:')
+                for ref in refs:
+                    name = ref['name']
+                    desc = ref.get('description', '')
+                    min_api = ref.get('min_api_version')
+                    max_api = ref.get('max_api_version')
+
+                    is_current = current_ref == name
+                    marker = ' (current)' if is_current else ''
+
+                    api_info = ''
+                    if min_api and max_api:
+                        api_info = f' (API {min_api}-{max_api})'
+                    elif min_api:
+                        api_info = f' (API {min_api}+)'
+                    elif max_api:
+                        api_info = f' (API ≤{max_api})'
+
+                    if desc:
+                        self._out.print(f'  {self._out.d_version(name)}{marker} - {desc}{api_info}')
+                    else:
+                        self._out.print(f'  {self._out.d_version(name)}{marker}{api_info}')
+
+                self._out.nl()
+
+            # Show version tags if versioning_scheme exists
+            versioning_scheme = registry_plugin.get('versioning_scheme')
+            if versioning_scheme:
+                try:
+                    version_tags = self._manager._fetch_version_tags(url, versioning_scheme)
+                    if version_tags:
+                        self._out.print(f'Released Versions ({versioning_scheme}):')
+                        for tag in version_tags[:20]:  # Limit to 20 most recent
+                            is_current = current_ref == tag
+                            marker = ' (current)' if is_current else ''
+                            self._out.print(f'  {self._out.d_version(tag)}{marker}')
+
+                        if len(version_tags) > 20:
+                            self._out.print(f'  ... and {len(version_tags) - 20} more')
+
+                        self._out.nl()
+                except Exception as e:
+                    self._out.warning(f'Failed to fetch version tags: {e}')
+
+        # Fetch all branches and tags from git
+        try:
+            import tempfile
+
+            from picard.plugin3.plugin import GitRemoteCallbacks
+
+            import pygit2
+
+            with tempfile.TemporaryDirectory() as tmpdir:
+                repo = pygit2.init_repository(tmpdir, bare=True)
+                remote = repo.remotes.create('origin', url)
+                callbacks = GitRemoteCallbacks()
+                remote_refs = remote.list_heads(callbacks=callbacks)
+
+                # Separate branches and tags
+                branches = []
+                tags = []
+
+                for ref in remote_refs:
+                    ref_name = ref.name if hasattr(ref, 'name') else str(ref)
+                    if ref_name.startswith('refs/heads/'):
+                        branch_name = ref_name[len('refs/heads/') :]
+                        branches.append(branch_name)
+                    elif ref_name.startswith('refs/tags/'):
+                        tag_name = ref_name[len('refs/tags/') :]
+                        tags.append(tag_name)
+
+                # Show branches
+                if branches:
+                    self._out.print('Branches:')
+                    for branch in sorted(branches):
+                        is_current = current_ref == branch
+                        marker = ' (current)' if is_current else ''
+                        self._out.print(f'  {branch}{marker}')
+                    self._out.nl()
+
+                # Show all tags
+                if tags:
+                    self._out.print(f'Tags ({len(tags)} total):')
+                    # Show first 20
+                    for tag in sorted(tags, reverse=True)[:20]:
+                        is_current = current_ref == tag
+                        marker = ' (current)' if is_current else ''
+                        self._out.print(f'  {tag}{marker}')
+
+                    if len(tags) > 20:
+                        self._out.print(f'  ... and {len(tags) - 20} more')
+
+        except Exception as e:
+            self._out.error(f'Failed to fetch refs from git: {e}')
+            if self._is_debug_mode():
+                import traceback
+
+                self._out.nl()
+                self._out.error('Traceback:')
+                for line in traceback.format_exc().splitlines():
+                    self._out.error(f'  {line}')
+            return ExitCode.ERROR
 
         return ExitCode.SUCCESS
 

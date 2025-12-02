@@ -100,6 +100,7 @@ class MockCliArgs(Mock):
             'ref': None,
             'list': False,
             'info': None,
+            'list_refs': None,
             'enable': None,
             'disable': None,
             'install': None,
