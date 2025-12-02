@@ -64,6 +64,26 @@ class MockPluginManager(Mock):
 
         self.get_registry_plugin_latest_version = get_registry_plugin_latest_version_impl
 
+        # Add get_preferred_version method that delegates to the real implementation
+        def get_preferred_version_impl(plugin_uuid, manifest_version=''):
+            from picard.plugin3.manager import PluginManager
+
+            temp_manager = object.__new__(PluginManager)
+            temp_manager._get_plugin_metadata = self._get_plugin_metadata
+            return PluginManager.get_preferred_version(temp_manager, plugin_uuid, manifest_version)
+
+        self.get_preferred_version = get_preferred_version_impl
+
+        # Add get_preferred_version method that delegates to the real implementation
+        def get_preferred_version_impl(plugin_uuid, manifest_version=''):
+            from picard.plugin3.manager import PluginManager
+
+            temp_manager = object.__new__(PluginManager)
+            temp_manager._get_plugin_metadata = self._get_plugin_metadata
+            return PluginManager.get_preferred_version(temp_manager, plugin_uuid, manifest_version)
+
+        self.get_preferred_version = get_preferred_version_impl
+
 
 class MockTagger(Mock):
     """Mock Tagger with sensible defaults."""

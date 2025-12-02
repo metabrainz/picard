@@ -381,6 +381,31 @@ class PluginManager:
         """Get metadata for a plugin by UUID."""
         return self._metadata.get_plugin_metadata(uuid)
 
+    def get_preferred_version(self, plugin_uuid, manifest_version=''):
+        """Get preferred version for display, preferring git tag over manifest version.
+
+        Args:
+            plugin_uuid: Plugin UUID to look up metadata
+            manifest_version: Fallback version from manifest
+
+        Returns:
+            Version string (git tag if available and looks like version, otherwise manifest version)
+        """
+        from picard.plugin3.plugin import short_commit_id
+
+        metadata = self._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
+        if not metadata:
+            return manifest_version
+
+        ref = metadata.get('ref', '')
+        commit = metadata.get('commit', '')
+
+        # If ref looks like a version tag (not a commit hash), use it
+        if ref and commit and not ref.startswith(short_commit_id(commit)):
+            return ref
+
+        return manifest_version
+
     def _save_plugin_metadata(self, metadata):
         """Save plugin metadata."""
         return self._metadata.save_plugin_metadata(metadata)

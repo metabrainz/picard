@@ -240,16 +240,7 @@ class PluginCLI:
         Returns:
             Version string (tag or manifest version)
         """
-        metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
-        if not metadata:
-            metadata = {}
-        ref = metadata.get('ref', '')
-
-        # If ref looks like a version tag, use it
-        if ref and not ref.startswith(short_commit_id(metadata.get('commit', ''))):
-            return ref
-
-        return manifest_version
+        return self._manager.get_preferred_version(plugin_uuid, manifest_version)
 
     def _format_git_info(self, metadata):
         """Format git ref and commit info compactly.
