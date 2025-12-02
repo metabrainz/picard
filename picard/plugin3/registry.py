@@ -29,6 +29,7 @@ from urllib.request import urlopen
 
 from picard import log
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
+from picard.plugin3.plugin import hash_string
 
 
 # Retry configuration for registry fetch operations
@@ -194,8 +195,6 @@ class PluginRegistry:
 
         # Create URL-specific cache path using SHA1 hash
         if cache_dir:
-            from picard.plugin3.plugin import hash_string
-
             url_hash = hash_string(self.registry_url)
             self.cache_path = Path(cache_dir) / f'plugin_registry_{url_hash}.json'
         else:

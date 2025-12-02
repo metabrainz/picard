@@ -26,7 +26,11 @@ import sys
 import time
 
 from picard import log
-from picard.extension_points import unregister_module_extensions
+from picard.extension_points import (
+    set_plugin_uuid,
+    unregister_module_extensions,
+    unset_plugin_uuid,
+)
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
 
@@ -38,6 +42,14 @@ try:
 except ImportError:
     HAS_PYGIT2 = False
     pygit2 = None
+
+try:
+    import hashlib
+
+    HAS_HASHLIB = True
+except ImportError:
+    HAS_HASHLIB = False
+    hashlib = None
 
 # Retry configuration for git operations
 GIT_OPERATION_MAX_RETRIES = 3
@@ -64,7 +76,6 @@ def hash_string(text):
     Returns:
         str: Full SHA1 hash (40 characters)
     """
-    import hashlib
 
     return hashlib.sha1(text.encode()).hexdigest()
 
@@ -586,8 +597,6 @@ class Plugin:
 
         # Register UUID mapping for extension points
         if self.manifest and self.manifest.uuid:
-            from picard.extension_points import set_plugin_uuid
-
             set_plugin_uuid(self.manifest.uuid, self.plugin_id)
 
         return module
@@ -612,8 +621,6 @@ class Plugin:
 
         # Unregister UUID mapping
         if self.manifest and self.manifest.uuid:
-            from picard.extension_points import unset_plugin_uuid
-
             unset_plugin_uuid(self.manifest.uuid)
 
         self.state = PluginState.DISABLED
