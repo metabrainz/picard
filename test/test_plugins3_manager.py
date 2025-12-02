@@ -29,6 +29,7 @@ from test.test_plugins3_helpers import (
     MockTagger,
 )
 
+from picard.plugin3.config_ops import ConfigOperations
 from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.validation import PluginValidation
@@ -337,8 +338,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             mock_config.setting = {}
             mock_get_config.return_value = mock_config
 
-            manager = PluginManager(None)
-            result = manager._get_config_value('missing', 'key', default='default_value')
+            result = ConfigOperations.get_config_value('missing', 'key', default='default_value')
 
             self.assertEqual(result, 'default_value')
 

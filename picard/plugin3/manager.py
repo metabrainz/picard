@@ -29,6 +29,7 @@ from picard import (
     api_versions_tuple,
     log,
 )
+from picard.plugin3.config_ops import ConfigOperations
 from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.plugin import (
     Plugin,
@@ -296,56 +297,13 @@ class PluginManager:
 
         return result
 
-    def _get_config_value(self, *keys, default=None):
-        """Get nested config value by keys.
-
-        Args:
-            *keys: Nested keys to traverse
-            default: Default value if key path doesn't exist
-
-        Returns:
-            Config value or default
-        """
-        from picard.config import get_config
-
-        config = get_config()
-        value = config.setting
-        for key in keys:
-            try:
-                # Try dict-like access (works for both dict and SettingConfigSection)
-                if key in value:
-                    value = value[key]
-                else:
-                    return default
-            except (TypeError, KeyError):
-                return default
-        return value
-
-    def _set_config_value(self, *keys, value):
-        """Set nested config value by keys, creating intermediate dicts as needed.
-
-        Args:
-            *keys: Nested keys to traverse (last key is where value is set)
-            value: Value to set
-        """
-        from picard.config import get_config
-
-        config = get_config()
-        current = config.setting
-
-        # Navigate/create path to parent
-        for key in keys[:-1]:
-            if key not in current or not isinstance(current[key], dict):
-                current[key] = {}
-            current = current[key]
-
-        # Set the final value
-        current[keys[-1]] = value
-
-        # Reassign top-level to persist (required by config system)
-        config.setting[keys[0]] = config.setting[keys[0]]
-
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
+        """Add a directory to scan for plugins.
+
+        Args:
+            dir_path: Path to plugin directory
+            primary: Whether this is the primary plugin directory
+        """
         dir_path = Path(os.path.normpath(dir_path))
         if dir_path in self._plugin_dirs:
             log.warning('Plugin directory %s already registered', dir_path)
@@ -927,19 +885,8 @@ class PluginManager:
 
         # Remove plugin config if purge requested
         if purge:
-            self._clean_plugin_config(plugin.plugin_id)
+            ConfigOperations.clean_plugin_config(plugin.plugin_id)
 
-    def _clean_plugin_config(self, plugin_name: str):
-        """Remove plugin-specific configuration."""
-        from picard.config import get_config
-
-        config = get_config()
-        # Remove plugin section if it exists
-        if plugin_name in config.setting:
-            del config.setting[plugin_name]
-            log.debug('Removed configuration for plugin %s', plugin_name)
-
-    def init_plugins(self):
         """Initialize and enable plugins that are enabled in configuration."""
         # Check for blacklisted plugins on startup
         self._check_blacklisted_plugins()
@@ -1036,13 +983,13 @@ class PluginManager:
 
     def _load_config(self):
         """Load enabled plugins list from config."""
-        enabled = self._get_config_value('plugins3', 'enabled_plugins', default=[])
+        enabled = ConfigOperations.get_config_value('plugins3', 'enabled_plugins', default=[])
         self._enabled_plugins = set(enabled)
         log.debug('Loaded enabled plugins from config: %r', self._enabled_plugins)
 
     def _save_config(self):
         """Save enabled plugins list to config."""
-        self._set_config_value('plugins3', 'enabled_plugins', value=list(self._enabled_plugins))
+        ConfigOperations.set_config_value('plugins3', 'enabled_plugins', value=list(self._enabled_plugins))
         log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):

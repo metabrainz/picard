@@ -21,6 +21,7 @@
 """Plugin metadata storage and retrieval."""
 
 from picard import log
+from picard.plugin3.config_ops import ConfigOperations
 
 
 class PluginMetadataManager:
@@ -32,7 +33,7 @@ class PluginMetadataManager:
 
     def get_plugin_metadata(self, uuid: str):
         """Get metadata for a plugin by UUID."""
-        metadata_list = self._config._get_config_value('plugins3', 'metadata', default=[])
+        metadata_list = ConfigOperations.get_config_value('plugins3', 'metadata', default=[])
         for metadata in metadata_list:
             if metadata.get('uuid') == str(uuid):
                 return metadata
@@ -44,7 +45,7 @@ class PluginMetadataManager:
         Args:
             metadata: PluginMetadata object with uuid, url, ref, commit, etc.
         """
-        metadata_list = self._config._get_config_value('plugins3', 'metadata', default=[])
+        metadata_list = ConfigOperations.get_config_value('plugins3', 'metadata', default=[])
 
         # Find existing entry by UUID
         existing_index = None
@@ -63,7 +64,7 @@ class PluginMetadataManager:
             # Add new
             metadata_list.append(metadata_dict)
 
-        self._config._set_config_value('plugins3', 'metadata', value=metadata_list)
+        ConfigOperations.set_config_value('plugins3', 'metadata', value=metadata_list)
 
     def find_plugin_by_url(self, url: str):
         """Find plugin metadata by URL.
@@ -74,7 +75,7 @@ class PluginMetadataManager:
         Returns:
             dict: Plugin metadata or None if not found
         """
-        metadata_list = self._config._get_config_value('plugins3', 'metadata', default=[])
+        metadata_list = ConfigOperations.get_config_value('plugins3', 'metadata', default=[])
         for metadata in metadata_list:
             if metadata.get('url') == url:
                 return metadata
