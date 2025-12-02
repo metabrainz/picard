@@ -191,12 +191,17 @@ class PluginMetadataManager:
                 return None
 
             metadata = self.get_plugin_metadata(plugin.manifest.uuid)
-            if not metadata or not metadata.get('url'):
-                return None
+            url = metadata.get('url') if metadata else None
 
-            url = metadata['url']
-            current_ref = metadata.get('ref')
-            current_commit = metadata.get('commit')
+            # If no URL in metadata, try to get from registry
+            if not url:
+                registry_plugin = self._registry.find_plugin(uuid=str(plugin.manifest.uuid))
+                if not registry_plugin:
+                    return None
+                url = registry_plugin['git_url']
+
+            current_ref = metadata.get('ref') if metadata else None
+            current_commit = metadata.get('commit') if metadata else None
             registry_id = self.get_plugin_registry_id(plugin)
 
             # Detect current ref from local git repo (overrides metadata)
