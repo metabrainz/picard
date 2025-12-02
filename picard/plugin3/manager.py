@@ -1272,9 +1272,9 @@ class PluginManager:
         if not pattern:
             return []
 
-        # Fetch remote refs
-        remote_refs = self._fetch_remote_refs(url, use_callbacks=False)
-        if not remote_refs:
+        # Try to reuse all_refs cache to avoid redundant fetch
+        all_refs = self.fetch_all_git_refs(url, use_cache=True)
+        if not all_refs:
             # Try to use expired cache as fallback
             stale_cache = self._get_cached_tags(url, versioning_scheme, allow_expired=True)
             if stale_cache:
@@ -1282,8 +1282,10 @@ class PluginManager:
                 return stale_cache
             return []
 
-        # Filter and sort tags
-        tags = self._filter_tags(remote_refs, pattern)
+        # Filter and sort tags from cached refs
+        import re
+
+        tags = [tag for tag in all_refs.get('tags', []) if re.match(pattern, tag)]
         tags = self._sort_tags(tags, versioning_scheme)
 
         # Cache the result
