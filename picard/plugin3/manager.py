@@ -32,6 +32,7 @@ from picard import (
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
+    PluginState,
     short_commit_id,
 )
 
@@ -1462,7 +1463,11 @@ class PluginManager:
         """Disable a plugin and save to config."""
         uuid = self._get_plugin_uuid(plugin)
         log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
-        plugin.disable()
+
+        # Only disable if not already disabled
+        if plugin.state != PluginState.DISABLED:
+            plugin.disable()
+
         self._enabled_plugins.discard(uuid)
         self._save_config()
         log.info('Plugin %s disabled (state: %s)', plugin.plugin_id, plugin.state.value)
