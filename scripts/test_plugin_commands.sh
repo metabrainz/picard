@@ -26,98 +26,113 @@ echo "3. Browse with category filter (metadata)"
 $PICARD plugins --browse --category metadata
 echo
 
-# Test 4: Show manifest template
-echo "4. Show manifest template"
+# Test 4: Refresh registry cache
+echo "4. Refresh registry cache"
+$PICARD plugins --refresh-registry
+echo
+
+# Test 5: Show manifest template
+echo "5. Show manifest template"
 $PICARD plugins --manifest
 echo
 
-# Test 5: Install a plugin
-echo "5. Install $TEST_PLUGIN_ID"
+# Test 6: Install a plugin
+echo "6. Install $TEST_PLUGIN_ID"
 $PICARD plugins --install $TEST_PLUGIN_ID --yes
 echo
 
-# Test 6: List installed plugins
-echo "6. List installed plugins"
+# Test 7: List installed plugins
+echo "7. List installed plugins"
 $PICARD plugins --list
 echo
 
-# Test 7: Show plugin info by ID
-echo "7. Show plugin info for $TEST_PLUGIN_ID"
+# Test 8: Show plugin info by ID
+echo "8. Show plugin info for $TEST_PLUGIN_ID"
 $PICARD plugins --info $TEST_PLUGIN_ID
 echo
 
-# Test 8: Show plugin info by UUID
-echo "8. Show plugin info by UUID"
+# Test 9: Show plugin info by UUID
+echo "9. Show plugin info by UUID"
 $PICARD plugins --info $TEST_PLUGIN_UUID
 echo
 
-# Test 9: Show plugin manifest
-echo "9. Show plugin manifest"
+# Test 10: Show plugin manifest
+echo "10. Show plugin manifest"
 $PICARD plugins --manifest $TEST_PLUGIN_ID
 echo
 
-# Test 10: List refs for plugin
-echo "10. List refs for $TEST_PLUGIN_ID"
+# Test 11: List refs for plugin
+echo "11. List refs for $TEST_PLUGIN_ID"
 $PICARD plugins --list-refs $TEST_PLUGIN_ID
 echo
 
-# Test 11: Enable plugin
-echo "11. Enable plugin"
+# Test 12: Enable plugin
+echo "12. Enable plugin"
 $PICARD plugins --enable $TEST_PLUGIN_ID
 echo
 
-# Test 12: Disable plugin
-echo "12. Disable plugin"
+# Test 13: Disable plugin
+echo "13. Disable plugin"
 $PICARD plugins --disable $TEST_PLUGIN_ID
 echo
 
-# Test 13: Check for updates
-echo "13. Check for updates"
+# Test 14: Check for updates
+echo "14. Check for updates"
 $PICARD plugins --check-updates
 echo
 
-# Test 14: Update plugin
-echo "14. Update plugin"
+# Test 15: Update plugin
+echo "15. Update plugin"
 $PICARD plugins --update $TEST_PLUGIN_ID --yes
 echo
 
-# Test 15: Update all plugins
-echo "15. Update all plugins"
-$PICARD plugins --update-all --yes
+# Test 16: Switch to specific ref
+echo "16. Switch to specific ref (v1.0.0)"
+$PICARD plugins --switch-ref $TEST_PLUGIN_ID v1.0.0 --yes
 echo
 
-# Test 16: Uninstall plugin
-echo "16. Uninstall $TEST_PLUGIN_ID"
-$PICARD plugins --uninstall $TEST_PLUGIN_ID --yes
-echo
-
-# Test 17: Verify uninstall
-echo "17. Verify uninstall"
-$PICARD plugins --list
-echo
-
-# Test 18: Install with specific ref
-echo "18. Install with specific ref (v1.0.0)"
-$PICARD plugins --install $TEST_PLUGIN_ID --ref v1.0.0 --yes
-echo
-
-# Test 19: Verify installation
-echo "19. Verify installation"
+# Test 17: Verify switch
+echo "17. Verify ref switch"
 $PICARD plugins --info $TEST_PLUGIN_ID
 echo
 
-# Test 20: Reinstall plugin
-echo "20. Reinstall plugin"
+# Test 18: Update all plugins
+echo "18. Update all plugins"
+$PICARD plugins --update-all --yes
+echo
+
+# Test 19: Uninstall plugin
+echo "19. Uninstall $TEST_PLUGIN_ID"
+$PICARD plugins --uninstall $TEST_PLUGIN_ID --yes
+echo
+
+# Test 20: Verify uninstall
+echo "20. Verify uninstall"
+$PICARD plugins --list
+echo
+
+# Test 21: Install with specific ref
+echo "21. Install with specific ref (v1.0.0)"
+$PICARD plugins --install $TEST_PLUGIN_ID --ref v1.0.0 --yes
+echo
+
+# Test 22: Verify installation
+echo "22. Verify installation"
+$PICARD plugins --info $TEST_PLUGIN_ID
+echo
+
+# Test 23: Reinstall plugin
+echo "23. Reinstall plugin"
 $PICARD plugins --install $TEST_PLUGIN_ID --reinstall --yes
 echo
 
-# Test 21: Uninstall with purge
-echo "21. Uninstall with purge (delete config)"
+# Test 24: Uninstall with purge
+echo "24. Uninstall with purge (delete config)"
 $PICARD plugins --uninstall $TEST_PLUGIN_ID --purge --yes
 echo
 
-# Test 22: Verify final cleanup
-echo "22. Verify final cleanup"
+# Test 25: Verify final cleanup
+echo "25. Verify final cleanup"
 $PICARD plugins --list
 echo
 
