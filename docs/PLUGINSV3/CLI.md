@@ -158,11 +158,12 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-u PLUGIN [PLUGIN ...]]
                       [-e PLUGIN [PLUGIN ...]] [-d PLUGIN [PLUGIN ...]]
                       [--update PLUGIN [PLUGIN ...]] [--update-all]
-                      [--info NAME|URL] [--ref REF] [--switch-ref PLUGIN REF]
-                      [--browse] [--search TERM] [--check-blacklist URL]
-                      [--refresh-registry] [--check-updates] [--reinstall]
-                      [-y] [--force-blacklisted] [--trust-community]
-                      [--trust LEVEL] [--category CATEGORY] [--purge] [--no-color]
+                      [--info NAME|URL] [--list-refs PLUGIN] [--ref REF]
+                      [--switch-ref PLUGIN REF] [--browse] [--search TERM]
+                      [--check-blacklist URL] [--refresh-registry]
+                      [--check-updates] [--reinstall] [-y] [--force-blacklisted]
+                      [--trust-community] [--trust LEVEL] [--category CATEGORY]
+                      [--purge] [--no-color]
 
 Manage Picard plugins (install, update, enable, disable)
 
@@ -186,6 +187,7 @@ Plugin Management:
   --validate URL        validate plugin MANIFEST from git URL
 
 Git Version Control:
+  --list-refs PLUGIN    list available git refs (branches/tags) for plugin
   --ref REF             git ref (branch, tag, or commit) to use with --install, --validate
   --switch-ref PLUGIN REF
                         switch plugin to different git ref without reinstalling
@@ -234,6 +236,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--update <name>` | ✅ Done | 1.4 | Update specific plugin |
 | `--update-all` | ✅ Done | 1.4 | Update all plugins |
 | `--info <name\|url>` | ✅ Done | 1.3 | Show plugin details and status |
+| `--list-refs <name\|url>` | ✅ Done | 1.6 | List available git refs for plugin |
 | `--ref <ref>` | ✅ Done | 1.6 | Specify git ref (branch/tag/commit) |
 | `--switch-ref <name> <ref>` | ✅ Done | 1.6 | Switch plugin to different ref |
 | `--check-updates` | ✅ Done | 1.4 | Check for updates within installed ref |
@@ -582,6 +585,7 @@ Last Updated: 2025-11-20 14:15:00
 ### Git Ref Management
 
 **Commands:**
+- `picard plugins --list-refs <name|url>` - List available refs for plugin
 - `picard plugins --install <url> --ref <ref>` - Install specific ref
 - `picard plugins --switch-ref <name> <ref>` - Switch to different ref
 - `picard plugins --update <name> --ref <ref>` - Update to specific ref
@@ -691,6 +695,91 @@ When using `--switch-ref`, Picard validates the ref exists:
    # Pin to specific tag
    picard plugins --switch-ref my-plugin v2.1.0
    ```
+
+---
+
+### List Available Refs
+
+**Command:** `picard plugins --list-refs <name|url>`
+
+**Description:** List all available git refs (branches and tags) for a plugin
+
+**Works with:**
+- Installed plugin name
+- Registry plugin ID
+- Git URL (for non-installed plugins)
+
+**Example output for registry plugin:**
+```bash
+$ picard plugins --list-refs additional-artists-variables
+
+Plugin: Additional Artists Variables
+Source: https://github.com/rdswift/picard-plugin-additional-artists-variables
+Current: v1.0.0 (@6bdf6bc)
+
+Registry Refs:
+  main - Stable release for Picard 4.x (API 4.0+)
+  picard-v3 - Maintenance branch for Picard 3.x (API 3.0-3.99)
+
+Released Versions (semver):
+  v1.0.0 (current)
+  v0.9.5
+  v0.9.0
+
+Branches:
+  main
+
+Tags (10 total):
+  v1.0.0 (current)
+  v0.9.5
+  v0.9.0
+  ... and 7 more
+```
+
+**Example output for non-registry plugin:**
+```bash
+$ picard plugins --list-refs https://github.com/user/my-plugin
+
+Plugin: https://github.com/user/my-plugin
+Source: https://github.com/user/my-plugin
+
+Branches:
+  main
+  dev
+  experimental
+
+Tags (5 total):
+  v2.0.0
+  v1.5.0
+  v1.0.0
+```
+
+**Use cases:**
+
+1. **Before installing - see what versions are available:**
+   ```bash
+   picard plugins --list-refs view-script-variables
+   picard plugins --install view-script-variables --ref v2.0.0
+   ```
+
+2. **Before switching - see what refs exist:**
+   ```bash
+   picard plugins --list-refs my-plugin
+   picard plugins --switch-ref my-plugin beta
+   ```
+
+3. **Check for new releases:**
+   ```bash
+   picard plugins --list-refs my-plugin
+   # See if newer version tags are available
+   ```
+
+**Notes:**
+- Registry refs show API version constraints to help choose compatible ref
+- Released versions are filtered by `versioning_scheme` (semver/calver/regex)
+- All branches and tags are shown from git remote
+- Current ref is marked with `(current)` for installed plugins
+- Updates version tag cache for faster subsequent operations
 
 ---
 
