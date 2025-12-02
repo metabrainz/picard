@@ -31,28 +31,27 @@ from test.test_plugins3_helpers import (
 
 from picard.plugin3.git_ops import GitOperations
 from picard.plugin3.manager import PluginManager
+from picard.plugin3.validation import PluginValidation
 
 
 class TestPluginManagerHelpers(PicardTestCase):
     def test_validate_manifest_valid(self):
         """Test _validate_manifest with valid manifest."""
-        manager = PluginManager(None)
         mock_manifest = Mock()
         mock_manifest.validate.return_value = []
 
         # Should not raise
-        manager._validate_manifest(mock_manifest)
+        PluginValidation.validate_manifest(mock_manifest)
 
     def test_validate_manifest_invalid(self):
         """Test _validate_manifest with invalid manifest."""
-        manager = PluginManager(None)
         mock_manifest = Mock()
         mock_manifest.validate.return_value = ['Error 1', 'Error 2']
 
         from picard.plugin3.manager import PluginManifestInvalidError
 
         with self.assertRaises(PluginManifestInvalidError) as context:
-            manager._validate_manifest(mock_manifest)
+            PluginValidation.validate_manifest(mock_manifest)
 
         self.assertIn('Invalid MANIFEST.toml', str(context.exception))
 
@@ -60,23 +59,21 @@ class TestPluginManagerHelpers(PicardTestCase):
         """Test _get_plugin_uuid when UUID is missing."""
         from picard.plugin3.manager import PluginNoUUIDError
 
-        manager = PluginManager(None)
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = None
 
         with self.assertRaises(PluginNoUUIDError) as context:
-            manager._get_plugin_uuid(mock_plugin)
+            PluginValidation.get_plugin_uuid(mock_plugin)
 
         self.assertIn('has no UUID', str(context.exception))
 
     def test_get_plugin_uuid_success(self):
         """Test _get_plugin_uuid with valid UUID."""
-        manager = PluginManager(None)
         mock_plugin = MockPlugin()
         mock_plugin.manifest.uuid = 'test-uuid-123'
 
-        result = manager._get_plugin_uuid(mock_plugin)
+        result = PluginValidation.get_plugin_uuid(mock_plugin)
 
         self.assertEqual(result, 'test-uuid-123')
 

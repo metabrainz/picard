@@ -175,10 +175,11 @@ def create_mock_manager_with_manifest_validation():
     a full PluginManager instance.
     """
     from picard.plugin3.manager import PluginManager
+    from picard.plugin3.validation import PluginValidation
 
     manager = Mock(spec=PluginManager)
-    manager._read_and_validate_manifest = PluginManager._read_and_validate_manifest.__get__(manager, PluginManager)
-    manager._validate_manifest = PluginManager._validate_manifest.__get__(manager, PluginManager)
+    manager._read_and_validate_manifest = PluginValidation.read_and_validate_manifest
+    manager._validate_manifest = PluginValidation.validate_manifest
     return manager
 
 

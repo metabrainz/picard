@@ -142,6 +142,9 @@ class TestPluginCLI(PicardTestCase):
             mock_manager = create_mock_manager_with_manifest_validation()
             exit_code, stdout, stderr = run_cli(mock_manager, validate=str(plugin_dir))
 
+            if exit_code != 0:
+                print(f"STDOUT: {stdout}")
+                print(f"STDERR: {stderr}")
             self.assertEqual(exit_code, 0)
             self.assertIn('Validation passed', stdout)
             self.assertIn('Test Plugin', stdout)
