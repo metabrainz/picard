@@ -1419,7 +1419,7 @@ class PluginCLI:
         trust_level = getattr(self._args, 'trust', None)
 
         try:
-            plugins = self._manager._registry.list_plugins(category=category, trust_level=trust_level)
+            plugins = self._manager.search_registry_plugins(category=category, trust_level=trust_level)
 
             filters = self._build_filter_description(category=category, trust_level=trust_level)
 
@@ -1480,18 +1480,7 @@ class PluginCLI:
         trust_level = getattr(self._args, 'trust', None)
 
         try:
-            plugins = self._manager._registry.list_plugins(category=category, trust_level=trust_level)
-
-            # Filter by query (case-insensitive search in name and description)
-            query_lower = query.lower()
-            results = []
-            for plugin in plugins:
-                name = plugin.get('name', '').lower()
-                description = plugin.get('description', '').lower()
-                plugin_id = plugin.get('id', '').lower()
-
-                if query_lower in name or query_lower in description or query_lower in plugin_id:
-                    results.append(plugin)
+            results = self._manager.search_registry_plugins(query=query, category=category, trust_level=trust_level)
 
             # Build filter description
             filters = self._build_filter_description(category=category, trust_level=trust_level, query=query)

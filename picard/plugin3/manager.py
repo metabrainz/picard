@@ -521,6 +521,31 @@ class PluginManager:
         # No compatible ref found, use first (default)
         return refs[0]['name']
 
+    def search_registry_plugins(self, query=None, category=None, trust_level=None):
+        """Search registry plugins with optional filters.
+
+        Args:
+            query: Search query (searches name, description, id)
+            category: Filter by category
+            trust_level: Filter by trust level
+
+        Returns:
+            list: Filtered plugin dictionaries from registry
+        """
+        plugins = self._registry.list_plugins(category=category, trust_level=trust_level)
+
+        if not query:
+            return plugins
+
+        query_lower = query.lower()
+        return [
+            p
+            for p in plugins
+            if query_lower in p.get('name', '').lower()
+            or query_lower in p.get('description', '').lower()
+            or query_lower in p.get('id', '').lower()
+        ]
+
     def get_registry_plugin_latest_version(self, plugin_data):
         """Get latest version tag for a registry plugin.
 
