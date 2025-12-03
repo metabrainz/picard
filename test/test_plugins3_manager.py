@@ -253,6 +253,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_update_plugin_dirty_with_discard(self):
         """Test that update_plugin works with discard_changes=True."""
+        from picard.plugin3.manager import PluginMetadata
         from picard.plugin3.plugin import Plugin
 
         mock_plugin = Mock(spec=Plugin)
@@ -263,29 +264,33 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest.version = '1.0.0'
 
         manager = PluginManager(None)
-        manager._metadata.get_plugin_metadata = Mock(return_value={'url': 'https://example.com', 'ref': 'main'})
+        manager._metadata.get_plugin_metadata = Mock(
+            return_value=PluginMetadata(url='https://example.com', ref='main', commit='abc123', uuid='test-uuid')
+        )
         manager._metadata.check_redirects = Mock(return_value=('https://example.com', 'test-uuid', False))
 
-        # Mock the git update
-        with patch('picard.plugin3.manager.PluginSourceGit') as mock_source:
-            mock_source_instance = Mock()
-            mock_source_instance.update = Mock(return_value=('old123', 'new456'))
-            mock_source.return_value = mock_source_instance
+        # Mock check_ref_type to return branch (not commit)
+        with patch('picard.plugin3.manager.GitOperations.check_ref_type', return_value=('branch', 'main')):
+            # Mock the git update
+            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source:
+                mock_source_instance = Mock()
+                mock_source_instance.update = Mock(return_value=('old123', 'new456'))
+                mock_source.return_value = mock_source_instance
 
-            # Mock pygit2 Repository
-            with patch('pygit2.Repository') as mock_repo_class:
-                mock_repo = Mock()
-                mock_commit = Mock()
-                mock_commit.commit_time = 1234567890
-                mock_repo.get = Mock(return_value=mock_commit)
-                mock_repo_class.return_value = mock_repo
+                # Mock pygit2 Repository
+                with patch('pygit2.Repository') as mock_repo_class:
+                    mock_repo = Mock()
+                    mock_commit = Mock()
+                    mock_commit.commit_time = 1234567890
+                    mock_repo.get = Mock(return_value=mock_commit)
+                    mock_repo_class.return_value = mock_repo
 
-                # Should not raise with discard_changes=True
-                result = manager.update_plugin(mock_plugin, discard_changes=True)
+                    # Should not raise with discard_changes=True
+                    result = manager.update_plugin(mock_plugin, discard_changes=True)
 
-                self.assertEqual(result.old_commit, 'old123')
-                self.assertEqual(result.new_commit, 'new456')
-                self.assertEqual(result.commit_date, 1234567890)
+                    self.assertEqual(result.old_commit, 'old123')
+                    self.assertEqual(result.new_commit, 'new456')
+                    self.assertEqual(result.commit_date, 1234567890)
 
     def test_switch_ref_dirty_raises_error(self):
         """Test that switch_ref raises PluginDirtyError for dirty repo."""
@@ -401,8 +406,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         self.assertIsNone(registry_id)
 
     def test_get_plugin_metadata_dict_format(self):
-        """Test get_plugin_metadata returns metadata by UUID."""
+        """Test get_plugin_metadata returns PluginMetadata object by UUID."""
         from picard.config import get_config
+        from picard.plugin3.manager import PluginMetadata
         from picard.plugin3.plugin_metadata import PluginMetadataManager
 
         mock_tagger = MockTagger()
@@ -420,7 +426,11 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         config.setting['plugins3_metadata'] = {test_uuid: test_metadata}
 
         result = metadata_manager.get_plugin_metadata(test_uuid)
-        self.assertEqual(result, test_metadata)
+        self.assertIsInstance(result, PluginMetadata)
+        self.assertEqual(result.uuid, test_uuid)
+        self.assertEqual(result.url, 'https://example.com/plugin.git')
+        self.assertEqual(result.ref, 'main')
+        self.assertEqual(result.commit, 'abc123')
 
     def test_get_plugin_metadata_not_found(self):
         """Test get_plugin_metadata returns None when UUID not found."""

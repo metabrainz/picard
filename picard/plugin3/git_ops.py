@@ -154,30 +154,57 @@ class GitOperations:
         return True
 
     @staticmethod
-    def is_immutable_ref(ref):
-        """Check if a ref is immutable (commit hash or version tag).
+    def check_ref_type(repo_path, ref=None):
+        """Check the type of a git ref by querying the repository.
 
         Args:
-            ref: Git ref (branch, tag, or commit)
+            repo_path: Path to git repository
+            ref: Optional ref name to check (if None, checks current HEAD)
 
         Returns:
-            tuple: (is_immutable, ref_type) where ref_type is 'tag', 'commit', or None
+            tuple: (ref_type, ref_name) where ref_type is 'commit', 'tag', 'branch', or None
         """
-        if not ref:
-            return False, None
+        import pygit2
 
-        # Check if it looks like a commit hash (7-40 hex chars)
-        if len(ref) >= 7 and len(ref) <= 40 and all(c in '0123456789abcdef' for c in ref.lower()):
-            return True, 'commit'
+        try:
+            repo = pygit2.Repository(str(repo_path))
 
-        # Check if it starts with 'v' followed by a number (common tag pattern)
-        # or contains dots (version-like: 1.0.0, v2.1.3, etc)
-        if ref.startswith('v') and len(ref) > 1 and ref[1].isdigit():
-            return True, 'tag'
-        if '.' in ref and any(c.isdigit() for c in ref):
-            return True, 'tag'
+            if ref:
+                # Check if ref exists in standard locations first
+                # This handles both lightweight and annotated tags
+                if f'refs/tags/{ref}' in repo.references:
+                    return 'tag', ref
+                if f'refs/heads/{ref}' in repo.references:
+                    return 'branch', ref
+                if f'refs/remotes/origin/{ref}' in repo.references:
+                    return 'branch', ref
 
-        return False, None
+                # Not found in standard refs, try to resolve it
+                try:
+                    obj = repo.revparse_single(ref)
+                    # It resolves. Check object type.
+                    # Note: lightweight tags resolve to commits, but we already checked refs/tags above
+                    if obj.type == pygit2.GIT_OBJECT_COMMIT:
+                        return 'commit', ref
+                    elif obj.type == pygit2.GIT_OBJECT_TAG:
+                        # Annotated tag object
+                        return 'tag', ref
+                    else:
+                        return None, ref
+                except KeyError:
+                    return None, ref
+            else:
+                # Check current HEAD state
+                if repo.head_is_detached:
+                    commit = str(repo.head.target)[:7]
+                    return 'commit', commit
+                else:
+                    # HEAD points to a branch
+                    branch_name = repo.head.shorthand
+                    return 'branch', branch_name
+
+        except Exception:
+            return None, ref
 
     @staticmethod
     def switch_ref(plugin, ref, discard_changes=False):

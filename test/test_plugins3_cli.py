@@ -479,3 +479,27 @@ class TestPluginCLI(PicardTestCase):
         self.assertIn('Failed to parse registry', stderr)
         self.assertIn('https://test.example.com/registry.json', stderr)
         self.assertIn('Invalid JSON', stderr)
+
+    def test_update_commit_pinned_plugin(self):
+        """Test update command shows warning for commit-pinned plugins."""
+        from unittest.mock import PropertyMock
+
+        from picard.plugin3.manager import PluginCommitPinnedError
+
+        test_uuid = 'test-uuid-1234'
+        manifest = load_plugin_manifest('example')
+        type(manifest).uuid = PropertyMock(return_value=test_uuid)
+
+        mock_plugin = MockPlugin(name='test-plugin', uuid=test_uuid, manifest=manifest)
+        mock_manager = MockPluginManager(plugins=[mock_plugin])
+
+        # Mock update_plugin to raise PluginCommitPinnedError
+        mock_manager.update_plugin.side_effect = PluginCommitPinnedError('test-plugin', 'abc1234')
+
+        exit_code, stdout, stderr = run_cli(mock_manager, update=['test-plugin'])
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn('pinned to commit', stderr)
+        self.assertIn('switch-ref', stdout)
+        # Should have called update_plugin (which raised the exception)
+        mock_manager.update_plugin.assert_called_once()

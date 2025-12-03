@@ -172,39 +172,51 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_no_commit(self):
         """Test _format_git_info with no commit."""
+        from picard.plugin3.manager import PluginMetadata
+
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
 
-        result = cli._format_git_info({'ref': 'main'})
+        metadata = PluginMetadata(url='http://test.com', ref='main', commit='')
+        result = cli._format_git_info(metadata)
         self.assertEqual(result, '')
 
     def test_format_git_info_with_ref_and_commit(self):
         """Test _format_git_info with ref and commit."""
+        from picard.plugin3.manager import PluginMetadata
+
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
 
-        result = cli._format_git_info({'ref': 'main', 'commit': 'abc123def456'})
+        metadata = PluginMetadata(url='http://test.com', ref='main', commit='abc123def456')
+        result = cli._format_git_info(metadata)
         self.assertEqual(result, ' (main @abc123d)')
 
     def test_format_git_info_commit_only(self):
         """Test _format_git_info with commit only."""
+        from picard.plugin3.manager import PluginMetadata
+
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
 
-        result = cli._format_git_info({'commit': 'abc123def456'})
+        metadata = PluginMetadata(url='http://test.com', ref='', commit='abc123def456')
+        result = cli._format_git_info(metadata)
         self.assertEqual(result, ' (@abc123d)')
 
     def test_format_git_info_ref_is_commit(self):
         """Test _format_git_info when ref is the commit hash."""
+        from picard.plugin3.manager import PluginMetadata
+
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
 
         # When ref starts with commit short ID, skip ref
-        result = cli._format_git_info({'ref': 'abc123d', 'commit': 'abc123def456'})
+        metadata = PluginMetadata(url='http://test.com', ref='abc123d', commit='abc123def456')
+        result = cli._format_git_info(metadata)
         self.assertEqual(result, ' (@abc123d)')
 
 

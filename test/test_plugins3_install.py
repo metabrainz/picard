@@ -56,10 +56,10 @@ class TestPluginInstall(PicardTestCase):
 
         # Retrieve metadata by UUID
         metadata = manager._get_plugin_metadata(test_uuid)
-        self.assertEqual(metadata['name'], 'test-plugin')
-        self.assertEqual(metadata['url'], 'https://example.com/plugin.git')
-        self.assertEqual(metadata['ref'], 'main')
-        self.assertEqual(metadata['commit'], 'abc123')
+        self.assertEqual(metadata.name, 'test-plugin')
+        self.assertEqual(metadata.url, 'https://example.com/plugin.git')
+        self.assertEqual(metadata.ref, 'main')
+        self.assertEqual(metadata.commit, 'abc123')
 
         # Non-existent plugin returns None
         empty_metadata = manager._get_plugin_metadata('nonexistent')

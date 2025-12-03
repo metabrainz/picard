@@ -175,7 +175,9 @@ class TestPluginRegistry(PicardTestCase):
 
             # Mock metadata with old URL and UUID
             with patch.object(manager._metadata, 'get_plugin_metadata') as mock_get_meta:
-                mock_get_meta.return_value = {'url': old_url, 'uuid': old_uuid, 'ref': 'main', 'commit': 'abc123'}
+                from picard.plugin3.manager import PluginMetadata
+
+                mock_get_meta.return_value = PluginMetadata(url=old_url, uuid=old_uuid, ref='main', commit='abc123')
 
                 with patch.object(manager._metadata, 'check_redirects') as mock_check_redirects:
                     # Simulate redirect: old URL/UUID -> new URL/UUID
