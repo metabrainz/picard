@@ -1583,7 +1583,10 @@ class PluginCLI:
         if not target:
             import uuid
 
+            from picard.plugin3.constants import CATEGORIES
+
             generated_uuid = str(uuid.uuid4())
+            categories_str = ', '.join(f'"{c}"' for c in CATEGORIES)
             template = f'''# MANIFEST.toml Template
 # See https://picard-docs.musicbrainz.org/en/extending/plugins.html
 
@@ -1602,7 +1605,7 @@ api = ["3.0"]
 # Detailed multi-line description (1-2000 characters).
 # Explain features, requirements, usage notes, etc.
 # """
-# categories = ["metadata", "coverart", "ui", "scripting", "formats", "other"]
+# categories = [{categories_str}]
 # homepage = "https://github.com/username/plugin-name"
 # min_python_version = "3.9"
 
