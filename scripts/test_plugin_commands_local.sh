@@ -218,8 +218,13 @@ else
 fi
 echo
 
-# Test 25: Final uninstall
-echo "25. Final uninstall"
+# Test 25: List refs
+echo "23. List refs"
+$PICARD plugins --list-refs $TEST_PLUGIN_UUID
+echo
+
+# Test 26: Final uninstall
+echo "26. Final uninstall"
 $PICARD plugins --uninstall $TEST_PLUGIN_UUID --purge --yes
 echo
 
