@@ -44,8 +44,7 @@ from picard.plugin3.plugin_metadata import PluginMetadataManager
 from picard.plugin3.refs_cache import RefsCache
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
-
-from packaging import version
+from picard.version import Version
 
 
 @dataclass
@@ -854,9 +853,9 @@ class PluginManager:
                     match = re.search(r'\d', tag)
                     return tag[match.start() :] if match else tag
 
-                current_version = version.parse(strip_prefix(current_tag))
+                current_version = Version.from_string(strip_prefix(current_tag))
                 for tag in tags:
-                    tag_version = version.parse(strip_prefix(tag))
+                    tag_version = Version.from_string(strip_prefix(tag))
                     if tag_version > current_version:
                         return tag
                 return None

@@ -31,8 +31,7 @@ from picard.plugin3.constants import (
     REFS_CACHE_FILE,
     REFS_CACHE_TTL,
 )
-
-from packaging import version
+from picard.version import Version
 
 
 class RefsCache:
@@ -294,19 +293,39 @@ class RefsCache:
         Returns:
             list: Sorted tags (newest first)
         """
+
+        # Strip any non-digit prefix for version comparison
+        def strip_prefix(tag):
+            match = re.search(r'\d', tag)
+            return tag[match.start() :] if match else tag
+
         if versioning_scheme == 'semver':
-            # Use packaging.version for proper semver sorting
+            # Use picard.version for proper semver sorting
             try:
-                return sorted(tags, key=lambda t: version.parse(t.lstrip('v')), reverse=True)
+                return sorted(tags, key=lambda t: Version.from_string(strip_prefix(t)), reverse=True)
             except Exception as e:
                 log.warning('Failed to parse semver tags: %s', e)
-                return sorted(tags, reverse=True)
+                return sorted(tags, key=strip_prefix, reverse=True)
         elif versioning_scheme == 'calver':
-            # CalVer: YYYY.MM.DD format, sort as strings (newest first)
-            return sorted(tags, reverse=True)
+            # CalVer: YYYY.MM.DD format, sort by stripped version (newest first)
+            return sorted(tags, key=strip_prefix, reverse=True)
         else:
-            # Custom regex: sort as strings (newest first)
-            return sorted(tags, reverse=True)
+            # Custom regex: try version parsing, fall back to natural sort
+            def sort_key(tag):
+                stripped = strip_prefix(tag)
+                try:
+                    return (0, Version.from_string(stripped))
+                except Exception:
+                    # Natural sort: split into text and number parts
+                    parts = []
+                    for part in re.split(r'(\d+)', stripped):
+                        if part.isdigit():
+                            parts.append((0, int(part)))
+                        else:
+                            parts.append((1, part))
+                    return (1, parts)
+
+            return sorted(tags, key=sort_key, reverse=True)
 
     def update_cache_from_local_repo(self, repo_path, url, versioning_scheme):
         """Update version tag cache from local repository.

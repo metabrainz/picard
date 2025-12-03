@@ -34,8 +34,7 @@ from picard.extension_points import (
 )
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
-
-from packaging import version as pkg_version
+from picard.version import Version
 
 
 try:
@@ -505,7 +504,7 @@ class PluginSourceGit(PluginSource):
             return None
 
         try:
-            current_version = pkg_version.parse(current_version_str)
+            current_version = Version.from_string(current_version_str)
         except Exception:
             return None
 
@@ -515,7 +514,7 @@ class PluginSourceGit(PluginSource):
             version_str = extract_version(tag)
             if version_str:
                 try:
-                    ver = pkg_version.parse(version_str)
+                    ver = Version.from_string(version_str)
                     versioned_tags.append((tag, ver))
                 except Exception:
                     continue
