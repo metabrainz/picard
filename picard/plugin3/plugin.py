@@ -226,6 +226,12 @@ class PluginSourceGit(PluginSource):
                 else:
                     raise
 
+    def _resolve_to_commit(self, obj):
+        """Resolve a git object to a commit, peeling tags if needed."""
+        if hasattr(obj, 'type') and obj.type == pygit2.GIT_OBJECT_TAG:
+            return obj.peel(pygit2.GIT_OBJECT_COMMIT)
+        return obj
+
     def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False, fetch_ref: bool = False):
         """Sync plugin from git repository.
 
@@ -386,6 +392,7 @@ class PluginSourceGit(PluginSource):
                                 raise PluginSourceSyncError('No branches found in repository') from None
 
         # hard reset to passed ref or HEAD
+        commit = self._resolve_to_commit(commit)
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
         commit_id = str(commit.id)
         repo.free()
@@ -449,6 +456,7 @@ class PluginSourceGit(PluginSource):
         else:
             commit = repo.revparse_single('HEAD')
 
+        commit = self._resolve_to_commit(commit)
         repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
         new_commit = str(commit.id)
         repo.free()
