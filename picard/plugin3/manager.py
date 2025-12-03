@@ -271,8 +271,9 @@ class PluginManager:
             return None
 
         # Separate branches and tags with their commit IDs
+        # For annotated tags, git provides both the tag object and dereferenced commit (^{})
         branches = []
-        tags = []
+        tags = {}  # Use dict to merge tag object with dereferenced commit
 
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
@@ -283,11 +284,20 @@ class PluginManager:
                 branches.append({'name': branch_name, 'commit': commit_id})
             elif ref_name.startswith('refs/tags/'):
                 tag_name = ref_name[len('refs/tags/') :]
-                tags.append({'name': tag_name, 'commit': commit_id})
+                # Check if this is a dereferenced tag (^{})
+                if tag_name.endswith('^{}'):
+                    # This is the actual commit for an annotated tag
+                    base_tag = tag_name[:-3]  # Remove ^{}
+                    if base_tag in tags:
+                        tags[base_tag]['commit'] = commit_id  # Update with actual commit
+                else:
+                    # Regular tag or annotated tag object
+                    if tag_name not in tags:
+                        tags[tag_name] = {'name': tag_name, 'commit': commit_id}
 
         result = {
             'branches': sorted(branches, key=lambda x: x['name']),
-            'tags': sorted(tags, key=lambda x: x['name'], reverse=True),
+            'tags': sorted(tags.values(), key=lambda x: x['name'], reverse=True),
         }
 
         # Cache the result
