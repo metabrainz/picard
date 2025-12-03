@@ -34,6 +34,9 @@ from picard.plugin3.constants import (
 from picard.version import Version
 
 
+REFS_CACHE_VERSION = 2  # Increment when cache format changes
+
+
 class RefsCache:
     """Manages caching of git refs and version tags."""
 
@@ -57,7 +60,7 @@ class RefsCache:
         """Load refs cache from disk.
 
         Returns:
-            dict: Cache data or empty dict if not found
+            dict: Cache data or empty dict if not found/invalid
         """
         if self._cache is not None:
             return self._cache
@@ -69,7 +72,13 @@ class RefsCache:
 
         try:
             with open(cache_path, encoding='utf-8') as f:
-                self._cache = json.load(f)
+                data = json.load(f)
+                # Check cache version
+                if data.get('version') != REFS_CACHE_VERSION:
+                    log.info('Refs cache version mismatch, invalidating cache')
+                    self._cache = {}
+                    return self._cache
+                self._cache = data.get('data', {})
                 log.debug('Loaded refs cache from %s', cache_path)
                 return self._cache
         except Exception as e:
@@ -87,8 +96,10 @@ class RefsCache:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
 
         try:
+            # Wrap cache data with version
+            data = {'version': REFS_CACHE_VERSION, 'data': cache}
             with open(cache_path, 'w', encoding='utf-8') as f:
-                json.dump(cache, f, indent=2)
+                json.dump(data, f, indent=2)
             self._cache = cache
             log.debug('Saved refs cache to %s', cache_path)
         except Exception as e:

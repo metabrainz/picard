@@ -38,6 +38,8 @@ from picard.plugin3.plugin import hash_string
 REGISTRY_FETCH_MAX_RETRIES = 3
 REGISTRY_FETCH_INITIAL_TIMEOUT = 10  # seconds
 REGISTRY_FETCH_TIMEOUT_MULTIPLIER = 2  # exponential backoff for timeout
+
+REGISTRY_CACHE_VERSION = 1  # Increment when cache format changes
 REGISTRY_FETCH_RETRY_DELAY_BASE = 2  # exponential backoff for retry delay
 
 
@@ -149,9 +151,14 @@ class PluginRegistry:
         if use_cache and self.cache_path and Path(self.cache_path).exists():
             try:
                 with open(self.cache_path, 'r') as f:
-                    self._registry_data = json.load(f)
-                    log.debug('Loaded registry from cache: %s', self.cache_path)
-                    return
+                    data = json.load(f)
+                    # Check cache version
+                    if data.get('version') != REGISTRY_CACHE_VERSION:
+                        log.info('Registry cache version mismatch, fetching from URL')
+                    else:
+                        self._registry_data = data.get('data', {})
+                        log.debug('Loaded registry from cache: %s', self.cache_path)
+                        return
             except json.JSONDecodeError as e:
                 # Cache corrupted, will fetch from URL
                 log.warning('Registry cache corrupted, fetching from URL: %s', e)
@@ -245,8 +252,10 @@ class PluginRegistry:
         if self.cache_path:
             try:
                 Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
+                # Wrap registry data with version
+                data = {'version': REGISTRY_CACHE_VERSION, 'data': self._registry_data}
                 with open(self.cache_path, 'w') as f:
-                    json.dump(self._registry_data, f)
+                    json.dump(data, f)
                 log.debug('Saved registry to cache: %s', self.cache_path)
             except Exception as e:
                 # Cache write failure is not critical, just log warning
