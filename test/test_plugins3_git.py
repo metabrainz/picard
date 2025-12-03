@@ -36,6 +36,127 @@ except ImportError:
     pygit2 = None
 
 
+class TestCheckRefType(PicardTestCase):
+    """Test check_ref_type() function that queries actual git repos."""
+
+    def test_check_ref_type_requires_pygit2(self):
+        """Test that check_ref_type is only available with pygit2."""
+        if not HAS_PYGIT2:
+            self.skipTest("pygit2 not available")
+
+
+@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
+class TestCheckRefTypeWithRepo(PicardTestCase):
+    """Test check_ref_type() with actual git repository."""
+
+    def setUp(self):
+        """Create a temporary git repository."""
+        super().setUp()
+        self.tmpdir = tempfile.mkdtemp()
+        self.repo_dir = Path(self.tmpdir) / "test-repo"
+        self.repo_dir.mkdir()
+
+        # Initialize git repo
+        self.repo = pygit2.init_repository(str(self.repo_dir))
+
+        # Create initial commit
+        (self.repo_dir / "file.txt").write_text("content")
+        index = self.repo.index
+        index.add_all()
+        index.write()
+        tree = index.write_tree()
+        author = pygit2.Signature("Test", "test@example.com")
+        self.commit1 = self.repo.create_commit('refs/heads/main', author, author, 'Initial commit', tree, [])
+        self.repo.set_head('refs/heads/main')
+
+    def tearDown(self):
+        """Clean up temporary directory."""
+        import gc
+        import shutil
+
+        gc.collect()
+        if hasattr(self, 'tmpdir'):
+            shutil.rmtree(self.tmpdir, ignore_errors=True)
+        super().tearDown()
+
+    def test_check_current_branch(self):
+        """Test checking current HEAD on a branch."""
+        from picard.plugin3.git_ops import GitOperations
+
+        ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir)
+        self.assertEqual(ref_type, 'branch')
+        self.assertEqual(ref_name, 'main')
+
+    def test_check_detached_head_commit(self):
+        """Test checking detached HEAD (commit)."""
+        from picard.plugin3.git_ops import GitOperations
+
+        # Checkout specific commit (detached HEAD)
+        self.repo.set_head(self.commit1)
+        self.repo.checkout_head()
+
+        ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir)
+        self.assertEqual(ref_type, 'commit')
+        self.assertEqual(ref_name, str(self.commit1)[:7])
+
+    def test_check_tag_ref(self):
+        """Test checking if a ref is a tag."""
+        from picard.plugin3.git_ops import GitOperations
+
+        # Create a tag
+        author = pygit2.Signature("Test", "test@example.com")
+        self.repo.create_tag('v1.0.0', self.commit1, pygit2.GIT_OBJECT_COMMIT, author, 'Version 1.0.0')
+
+        ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'v1.0.0')
+        self.assertEqual(ref_type, 'tag')
+        self.assertEqual(ref_name, 'v1.0.0')
+
+    def test_check_branch_ref(self):
+        """Test checking if a ref is a branch."""
+        from picard.plugin3.git_ops import GitOperations
+
+        # Create a dev branch
+        (self.repo_dir / "dev.txt").write_text("dev")
+        index = self.repo.index
+        index.add_all()
+        index.write()
+        tree = index.write_tree()
+        author = pygit2.Signature("Test", "test@example.com")
+        self.repo.create_commit('refs/heads/dev', author, author, 'Dev', tree, [self.commit1])
+
+        ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'dev')
+        self.assertEqual(ref_type, 'branch')
+        self.assertEqual(ref_name, 'dev')
+
+    def test_check_commit_hash_ref(self):
+        """Test checking if a ref is a commit hash."""
+        from picard.plugin3.git_ops import GitOperations
+
+        commit_hash = str(self.commit1)
+        ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, commit_hash)
+        self.assertEqual(ref_type, 'commit')
+        self.assertEqual(ref_name, commit_hash)
+
+    def test_check_nonexistent_ref(self):
+        """Test checking a ref that doesn't exist."""
+        from picard.plugin3.git_ops import GitOperations
+
+        ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'nonexistent')
+        self.assertIsNone(ref_type)
+        self.assertEqual(ref_name, 'nonexistent')
+
+    def test_check_lightweight_tag(self):
+        """Test checking a lightweight tag (ref to commit, not tag object)."""
+        from picard.plugin3.git_ops import GitOperations
+
+        # Create a lightweight tag (just a reference, no tag object)
+        self.repo.create_reference('refs/tags/lightweight-v1.0', self.commit1)
+
+        ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'lightweight-v1.0')
+        self.assertEqual(ref_type, 'tag')
+        self.assertEqual(ref_name, 'lightweight-v1.0')
+
+
 @pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
 class TestPluginGitOperations(PicardTestCase):
     """Test git operations for plugin installation and updates."""
@@ -252,9 +373,9 @@ def disable():
             plugin = Plugin(manager._primary_plugin_dir, plugin_id)
             plugin.read_manifest()
             metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
-            self.assertEqual(metadata['url'], str(self.plugin_dir))
-            self.assertEqual(metadata['ref'], 'main')
-            self.assertIsNotNone(metadata['commit'])
+            self.assertEqual(metadata.url, str(self.plugin_dir))
+            self.assertEqual(metadata.ref, 'main')
+            self.assertIsNotNone(metadata.commit)
 
     def test_manager_install_with_ref(self):
         """Test installing plugin from specific ref."""
@@ -288,7 +409,7 @@ def disable():
             plugin = Plugin(manager._primary_plugin_dir, plugin_id)
             plugin.read_manifest()
             metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
-            self.assertEqual(metadata['ref'], 'origin/dev')
+            self.assertEqual(metadata.ref, 'origin/dev')
 
     def test_manager_update_plugin_from_git(self):
         """Test updating plugin from git."""

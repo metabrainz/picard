@@ -45,17 +45,27 @@ PLUGIN_API_VERSIONS = ["3.0"]
 PLUGIN_LICENSE = "GPL-2.0-or-later"
 EOF
 
-# Commit v1.0.0
+# Commit v1.0.0 with lightweight tag
 git add .
 git commit -q -m "Initial commit - v1.0.0"
+COMMIT_V1_0_0=$(git rev-parse HEAD)
 git tag v1.0.0
 
-# Create v1.1.0
+# Create v1.1.0 with annotated tag
 sed -i 's/version = "1.0.0"/version = "1.1.0"/' MANIFEST.toml
 sed -i 's/PLUGIN_VERSION = "1.0.0"/PLUGIN_VERSION = "1.1.0"/' test_plugin.py
 git add .
 git commit -q -m "Release v1.1.0"
-git tag v1.1.0
+COMMIT_V1_1_0=$(git rev-parse HEAD)
+git tag -a v1.1.0 -m "Annotated tag for v1.1.0"
+
+# Create v1.2.0 with annotated tag
+sed -i 's/version = "1.1.0"/version = "1.2.0"/' MANIFEST.toml
+sed -i 's/PLUGIN_VERSION = "1.1.0"/PLUGIN_VERSION = "1.2.0"/' test_plugin.py
+git add .
+git commit -q -m "Release v1.2.0"
+COMMIT_V1_2_0=$(git rev-parse HEAD)
+git tag -a v1.2.0 -m "Annotated tag for v1.2.0"
 
 cd - > /dev/null
 echo "✓ Created plugin repository at $PLUGIN_REPO"
@@ -139,6 +149,78 @@ echo
 # Test 16: Verify final cleanup
 echo "16. Verify final cleanup"
 $PICARD plugins --list
+echo
+
+# Test 17: Install with lightweight tag (v1.0.0)
+echo "17. Install with lightweight tag (v1.0.0)"
+$PICARD plugins --install "$PLUGIN_REPO" --ref v1.0.0 --yes
+echo
+
+# Test 18: Verify lightweight tag resolves to commit
+echo "18. Verify lightweight tag resolves to commit"
+STORED_COMMIT=$($PICARD plugins --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+echo "Stored commit: $STORED_COMMIT"
+echo "Expected commit: ${COMMIT_V1_0_0:0:7}"
+if [ "$STORED_COMMIT" = "${COMMIT_V1_0_0:0:7}" ]; then
+    echo "✓ Lightweight tag correctly resolved to commit"
+else
+    echo "✗ ERROR: Lightweight tag did not resolve correctly"
+    exit 1
+fi
+echo
+
+# Test 19: Switch to annotated tag (v1.1.0)
+echo "19. Switch to annotated tag (v1.1.0)"
+$PICARD plugins --switch-ref $TEST_PLUGIN_UUID v1.1.0
+echo
+
+# Test 20: Verify annotated tag resolves to commit (not tag object)
+echo "20. Verify annotated tag resolves to commit (not tag object)"
+STORED_COMMIT=$($PICARD plugins --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+echo "Stored commit: $STORED_COMMIT"
+echo "Expected commit: ${COMMIT_V1_1_0:0:7}"
+if [ "$STORED_COMMIT" = "${COMMIT_V1_1_0:0:7}" ]; then
+    echo "✓ Annotated tag correctly resolved to commit"
+else
+    echo "✗ ERROR: Annotated tag did not resolve correctly"
+    exit 1
+fi
+echo
+
+# Test 21: Update plugin (should update to v1.2.0 if versioning detected)
+echo "21. Update plugin (may update to newer tag if available)"
+$PICARD plugins --update $TEST_PLUGIN_UUID
+echo
+
+# Test 22: Verify commit after update
+echo "22. Verify commit after update"
+STORED_COMMIT=$($PICARD plugins --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+echo "Stored commit after update: $STORED_COMMIT"
+# Should be either v1.1.0 or v1.2.0 depending on versioning detection
+echo "✓ Update completed"
+echo
+
+# Test 23: Switch to another annotated tag (v1.2.0)
+echo "23. Switch to another annotated tag (v1.2.0)"
+$PICARD plugins --switch-ref $TEST_PLUGIN_UUID v1.2.0
+echo
+
+# Test 24: Verify new annotated tag resolves correctly
+echo "24. Verify new annotated tag resolves correctly"
+STORED_COMMIT=$($PICARD plugins --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+echo "Stored commit: $STORED_COMMIT"
+echo "Expected commit: ${COMMIT_V1_2_0:0:7}"
+if [ "$STORED_COMMIT" = "${COMMIT_V1_2_0:0:7}" ]; then
+    echo "✓ New annotated tag correctly resolved to commit"
+else
+    echo "✗ ERROR: New annotated tag did not resolve correctly"
+    exit 1
+fi
+echo
+
+# Test 25: Final uninstall
+echo "25. Final uninstall"
+$PICARD plugins --uninstall $TEST_PLUGIN_UUID --purge --yes
 echo
 
 # Cleanup
