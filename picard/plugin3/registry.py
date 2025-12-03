@@ -169,10 +169,14 @@ class PluginRegistry:
             try:
                 log.debug('Fetching registry from %s (URL %d/%d)', url, url_index + 1, len(self.registry_urls))
 
-                # Check if url is a local file path
-                registry_path = Path(url)
+                # Check if url is a local file path or file:// URL
+                file_path = url
+                if url.startswith('file://'):
+                    file_path = url[7:]  # Remove file:// prefix
+
+                registry_path = Path(file_path)
                 if registry_path.exists() and registry_path.is_file():
-                    log.debug('Loading registry from local file: %s', url)
+                    log.debug('Loading registry from local file: %s', file_path)
                     try:
                         with open(registry_path, 'r') as f:
                             self._registry_data = json.load(f)
