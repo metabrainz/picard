@@ -152,19 +152,16 @@ class PluginRegistry:
             try:
                 with open(self.cache_path, 'r') as f:
                     data = json.load(f)
-                    # Check cache version
+                    # Check cache version (missing version = old cache before versioning)
                     if data.get('version') != REGISTRY_CACHE_VERSION:
-                        log.info('Registry cache version mismatch, fetching from URL')
+                        log.debug('Registry cache version mismatch or missing, fetching from URL')
                     else:
                         self._registry_data = data.get('data', {})
                         log.debug('Loaded registry from cache: %s', self.cache_path)
                         return
-            except json.JSONDecodeError as e:
-                # Cache corrupted, will fetch from URL
-                log.warning('Registry cache corrupted, fetching from URL: %s', e)
             except Exception as e:
-                # Cache read error, will fetch from URL
-                log.warning('Failed to load registry cache, fetching from URL: %s', e)
+                # Corrupted or old format cache - fetch from URL
+                log.debug('Failed to load registry cache (corrupted or old format): %s', e)
 
         # Try each registry URL in order
         last_error = None

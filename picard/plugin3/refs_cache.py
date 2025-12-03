@@ -73,16 +73,17 @@ class RefsCache:
         try:
             with open(cache_path, encoding='utf-8') as f:
                 data = json.load(f)
-                # Check cache version
+                # Check cache version (missing version = old cache before versioning)
                 if data.get('version') != REFS_CACHE_VERSION:
-                    log.info('Refs cache version mismatch, invalidating cache')
+                    log.debug('Refs cache version mismatch or missing, invalidating cache')
                     self._cache = {}
                     return self._cache
                 self._cache = data.get('data', {})
                 log.debug('Loaded refs cache from %s', cache_path)
                 return self._cache
         except Exception as e:
-            log.warning('Failed to load refs cache: %s', e)
+            # Corrupted or old format cache - treat as invalid
+            log.debug('Failed to load refs cache (corrupted or old format): %s', e)
             self._cache = {}
             return self._cache
 
