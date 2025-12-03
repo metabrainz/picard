@@ -127,11 +127,11 @@ class TestPluginCLIErrors(PicardTestCase):
         args.ref = None
         args.list = True
 
-        # Make _list_plugins raise KeyboardInterrupt
+        # Make _cmd_list raise KeyboardInterrupt
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
-        cli._list_plugins = Mock(side_effect=KeyboardInterrupt())
+        cli._cmd_list = Mock(side_effect=KeyboardInterrupt())
 
         result = cli.run()
 
@@ -145,11 +145,11 @@ class TestPluginCLIErrors(PicardTestCase):
         args.ref = None
         args.list = True
 
-        # Make _list_plugins raise exception
+        # Make _cmd_list raise exception
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
-        cli._list_plugins = Mock(side_effect=ValueError('Test error'))
+        cli._cmd_list = Mock(side_effect=ValueError('Test error'))
 
         result = cli.run()
 
@@ -292,7 +292,7 @@ class TestPluginCLICommands(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
-        result = cli._enable_plugins(['test-plugin'])
+        result = cli._cmd_enable(['test-plugin'])
 
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('Failed to enable', stderr.getvalue())
@@ -313,7 +313,7 @@ class TestPluginCLICommands(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
-        result = cli._disable_plugins(['test-plugin'])
+        result = cli._cmd_disable(['test-plugin'])
 
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('Failed to disable', stderr.getvalue())
@@ -336,7 +336,7 @@ class TestPluginCLICommands(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
-        result = cli._uninstall_plugins(['test-plugin'])
+        result = cli._cmd_uninstall(['test-plugin'])
 
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('Failed to uninstall', stderr.getvalue())
@@ -359,7 +359,7 @@ class TestPluginCLICommands(PicardTestCase):
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
         cli = PluginCLI(manager, args, output=output)
 
-        result = cli._install_plugins(['https://example.com/plugin.git'])
+        result = cli._cmd_install(['https://example.com/plugin.git'])
 
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('Failed to install', stderr.getvalue())
@@ -385,7 +385,7 @@ class TestPluginCLIValidate(PicardTestCase):
             output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
 
-            result = cli._validate_plugin(tmpdir)
+            result = cli._cmd_validate(tmpdir)
 
             self.assertEqual(result, ExitCode.ERROR)
             self.assertIn('No MANIFEST.toml found', stderr.getvalue())
@@ -413,7 +413,7 @@ class TestPluginCLIValidate(PicardTestCase):
             output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
             cli = PluginCLI(manager, args, output=output)
 
-            result = cli._validate_plugin(tmpdir)
+            result = cli._cmd_validate(tmpdir)
 
             self.assertEqual(result, ExitCode.ERROR)
             self.assertIn('Validation failed', stderr.getvalue())
@@ -437,7 +437,7 @@ class TestPluginCLIValidate(PicardTestCase):
             output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
 
-            result = cli._validate_plugin(str(plugin_dir))
+            result = cli._cmd_validate(str(plugin_dir))
 
             self.assertEqual(result, ExitCode.SUCCESS)
             output_text = stdout.getvalue()
@@ -476,7 +476,7 @@ class TestPluginCLIValidate(PicardTestCase):
             output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
             cli = PluginCLI(manager, args, output=output)
 
-            result = cli._validate_plugin(str(plugin_dir))
+            result = cli._cmd_validate(str(plugin_dir))
 
             self.assertEqual(result, ExitCode.SUCCESS)
             output_text = stdout.getvalue()
@@ -498,7 +498,7 @@ class TestPluginCLIManifest(PicardTestCase):
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
         cli = PluginCLI(manager, args, output=output)
 
-        result = cli._show_manifest(None)
+        result = cli._cmd_manifest(None)
 
         self.assertEqual(result, ExitCode.SUCCESS)
         output_text = stdout.getvalue()
@@ -533,7 +533,7 @@ class TestPluginCLIManifest(PicardTestCase):
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=mock_plugin)
 
-            result = cli._show_manifest('test-plugin')
+            result = cli._cmd_manifest('test-plugin')
 
             self.assertEqual(result, ExitCode.SUCCESS)
             self.assertIn('name = "Test"', stdout.getvalue())
@@ -559,7 +559,7 @@ class TestPluginCLIManifest(PicardTestCase):
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=mock_plugin)
 
-            result = cli._show_manifest('test-plugin')
+            result = cli._cmd_manifest('test-plugin')
 
             self.assertEqual(result, ExitCode.ERROR)
             self.assertIn('MANIFEST.toml not found', stderr.getvalue())
@@ -587,7 +587,7 @@ class TestPluginCLIManifest(PicardTestCase):
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=None)
 
-            result = cli._show_manifest(tmpdir)
+            result = cli._cmd_manifest(tmpdir)
 
             self.assertEqual(result, ExitCode.SUCCESS)
             self.assertIn('name = "Local Test"', stdout.getvalue())
@@ -610,7 +610,7 @@ class TestPluginCLIManifest(PicardTestCase):
             cli = PluginCLI(manager, args, output=output)
             manager.find_plugin = Mock(return_value=None)
 
-            result = cli._show_manifest(tmpdir)
+            result = cli._cmd_manifest(tmpdir)
 
             self.assertEqual(result, ExitCode.ERROR)
             self.assertIn('MANIFEST.toml not found', stderr.getvalue())

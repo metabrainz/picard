@@ -193,7 +193,7 @@ class PluginCLI:
         try:
             # Handle --refresh-registry first if specified
             if hasattr(self._args, 'refresh_registry') and self._args.refresh_registry:
-                result = self._refresh_registry()
+                result = self._cmd_refresh_registry()
                 # If refresh failed, return error
                 if result != ExitCode.SUCCESS:
                     return result
@@ -208,42 +208,42 @@ class PluginCLI:
                     return ExitCode.ERROR
 
             if self._args.list:
-                return self._list_plugins()
+                return self._cmd_list()
             elif self._args.info:
-                return self._show_info(self._args.info)
+                return self._cmd_info(self._args.info)
             elif self._args.list_refs:
-                return self._list_refs(self._args.list_refs)
+                return self._cmd_list_refs(self._args.list_refs)
             elif self._args.enable:
-                return self._enable_plugins(self._args.enable)
+                return self._cmd_enable(self._args.enable)
             elif self._args.disable:
-                return self._disable_plugins(self._args.disable)
+                return self._cmd_disable(self._args.disable)
             elif self._args.install:
-                return self._install_plugins(self._args.install)
+                return self._cmd_install(self._args.install)
             elif self._args.uninstall:
-                return self._uninstall_plugins(self._args.uninstall)
+                return self._cmd_uninstall(self._args.uninstall)
             elif self._args.update:
-                return self._update_plugins(self._args.update)
+                return self._cmd_update(self._args.update)
             elif self._args.update_all:
-                return self._update_all_plugins()
+                return self._cmd_update_all()
             elif self._args.check_updates:
-                return self._check_updates()
+                return self._cmd_check_updates()
             elif hasattr(self._args, 'browse') and self._args.browse:
-                return self._browse_plugins()
+                return self._cmd_browse()
             elif hasattr(self._args, 'search') and self._args.search:
-                return self._search_plugins(self._args.search)
+                return self._cmd_search(self._args.search)
             elif hasattr(self._args, 'check_blacklist') and self._args.check_blacklist:
-                return self._check_blacklist(self._args.check_blacklist)
+                return self._cmd_check_blacklist(self._args.check_blacklist)
             elif hasattr(self._args, 'refresh_registry') and self._args.refresh_registry:
                 # Already handled at the start, just return success
                 return ExitCode.SUCCESS
             elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
-                return self._switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
+                return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             elif hasattr(self._args, 'clean_config') and self._args.clean_config:
-                return self._clean_config(self._args.clean_config)
+                return self._cmd_clean_config(self._args.clean_config)
             elif hasattr(self._args, 'validate') and self._args.validate:
-                return self._validate_plugin(self._args.validate, ref)
+                return self._cmd_validate(self._args.validate, ref)
             elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
-                return self._show_manifest(self._args.manifest)
+                return self._cmd_manifest(self._args.manifest)
             else:
                 if self._parser:
                     self._parser.print_help()
@@ -314,7 +314,7 @@ class PluginCLI:
         """
         return self._manager.select_ref_for_plugin(plugin)
 
-    def _list_plugins(self):
+    def _cmd_list(self):
         """List all installed plugins with details."""
         if not self._manager.plugins:
             if not self._manager._failed_plugins:
@@ -406,7 +406,7 @@ class PluginCLI:
 
         return ExitCode.SUCCESS
 
-    def _show_info(self, plugin_name):
+    def _cmd_info(self, plugin_name):
         """Show detailed information about a plugin."""
         plugin, error = self._find_plugin_or_error(plugin_name)
         if error:
@@ -489,7 +489,7 @@ class PluginCLI:
 
         return ExitCode.SUCCESS
 
-    def _list_refs(self, identifier):
+    def _cmd_list_refs(self, identifier):
         """List available git refs (branches/tags) for a plugin.
 
         Args:
@@ -610,7 +610,7 @@ class PluginCLI:
 
         return ExitCode.SUCCESS
 
-    def _install_plugins(self, plugin_urls):
+    def _cmd_install(self, plugin_urls):
         """Install plugins from URLs or plugin IDs."""
         explicit_ref = getattr(self._args, 'ref', None)
         reinstall = getattr(self._args, 'reinstall', False)
@@ -798,7 +798,7 @@ class PluginCLI:
                     return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _uninstall_plugins(self, plugin_names):
+    def _cmd_uninstall(self, plugin_names):
         """Uninstall plugins with confirmation."""
         purge = getattr(self._args, 'purge', False)
         yes = getattr(self._args, 'yes', False)
@@ -853,7 +853,7 @@ class PluginCLI:
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _enable_plugins(self, plugin_names):
+    def _cmd_enable(self, plugin_names):
         """Enable plugins."""
         for plugin_name in plugin_names:
             plugin, error = self._find_plugin_or_error(plugin_name)
@@ -879,7 +879,7 @@ class PluginCLI:
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _disable_plugins(self, plugin_names):
+    def _cmd_disable(self, plugin_names):
         """Disable plugins."""
         for plugin_name in plugin_names:
             plugin, error = self._find_plugin_or_error(plugin_name)
@@ -905,7 +905,7 @@ class PluginCLI:
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _update_plugins(self, plugin_names):
+    def _cmd_update(self, plugin_names):
         """Update specific plugins."""
         self._out.print('Updating plugin...')
         for plugin_name in plugin_names:
@@ -971,7 +971,7 @@ class PluginCLI:
                     return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _update_all_plugins(self):
+    def _cmd_update_all(self):
         """Update all installed plugins."""
         if not self._manager.plugins:
             self._out.print('No plugins installed')
@@ -1022,7 +1022,7 @@ class PluginCLI:
 
         return ExitCode.SUCCESS if failed == 0 else ExitCode.ERROR
 
-    def _check_updates(self):
+    def _cmd_check_updates(self):
         """Check for available updates without installing."""
         if not self._manager.plugins:
             self._out.print('No plugins installed')
@@ -1045,7 +1045,7 @@ class PluginCLI:
 
         return ExitCode.SUCCESS
 
-    def _switch_ref(self, plugin_name, ref):
+    def _cmd_switch_ref(self, plugin_name, ref):
         """Switch plugin to a different git ref."""
         plugin, error = self._find_plugin_or_error(plugin_name)
         if error:
@@ -1107,7 +1107,7 @@ class PluginCLI:
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _clean_config(self, plugin_name):
+    def _cmd_clean_config(self, plugin_name):
         """Clean configuration for a plugin."""
         yes = getattr(self._args, 'yes', False)
 
@@ -1161,7 +1161,7 @@ class PluginCLI:
 
         return result, None
 
-    def _validate_plugin(self, url, ref=None):
+    def _cmd_validate(self, url, ref=None):
         """Validate a plugin from git URL or local directory."""
         import shutil
 
@@ -1385,7 +1385,7 @@ class PluginCLI:
             filters.append(f'trust: {trust_level}')
         return filters
 
-    def _browse_plugins(self):
+    def _cmd_browse(self):
         """Browse plugins from registry."""
         category = getattr(self._args, 'category', None)
         trust_level = getattr(self._args, 'trust', None)
@@ -1446,7 +1446,7 @@ class PluginCLI:
             self._handle_exception(e, 'Failed to browse plugins')
             return ExitCode.ERROR
 
-    def _search_plugins(self, query):
+    def _cmd_search(self, query):
         """Search plugins in registry."""
         category = getattr(self._args, 'category', None)
         trust_level = getattr(self._args, 'trust', None)
@@ -1509,7 +1509,7 @@ class PluginCLI:
             self._handle_exception(e, 'Failed to search plugins')
             return ExitCode.ERROR
 
-    def _check_blacklist(self, url):
+    def _cmd_check_blacklist(self, url):
         """Check if a URL is blacklisted."""
         try:
             is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
@@ -1525,7 +1525,7 @@ class PluginCLI:
             self._handle_exception(e, 'Failed to check blacklist')
             return ExitCode.ERROR
 
-    def _refresh_registry(self):
+    def _cmd_refresh_registry(self):
         """Force refresh of plugin registry cache."""
         from picard.plugin3.registry import (
             RegistryFetchError,
@@ -1567,7 +1567,7 @@ class PluginCLI:
         except FileNotFoundError:
             return None
 
-    def _show_manifest(self, target):
+    def _cmd_manifest(self, target):
         """Show MANIFEST.toml template or from plugin."""
         # No argument - show template
         if not target:
