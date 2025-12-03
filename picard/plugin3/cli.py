@@ -1108,14 +1108,9 @@ class PluginCLI:
                 self._out.info('Restart Picard to load the updated plugin')
             elif isinstance(e, PluginRefNotFoundError):
                 self._out.error(f"Ref '{ref}' not found")
-                self._out.print('')
-                # Ensure available_refs is a list before checking
-                available_refs = e.available_refs if isinstance(e.available_refs, list) else []
-                if available_refs:
-                    self._out.print('Available refs:')
-                    for r in available_refs:
-                        desc = f" - {r['description']}" if r.get('description') else ''
-                        self._out.print(f"  {r['name']}{desc}")
+                self._out.info(
+                    f'Use {self._out.d_command(f"picard plugins --list-refs {plugin.plugin_id}")} to see available refs'
+                )
                 return ExitCode.ERROR
             elif isinstance(e, PluginNoSourceError):
                 self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no stored URL, cannot switch ref')
@@ -1128,6 +1123,12 @@ class PluginCLI:
                 self._out.error('Invalid MANIFEST.toml after switching ref:')
                 for error in e.errors:
                     self._out.error(f'  {error}')
+                return ExitCode.ERROR
+            elif isinstance(e, ValueError) and 'not found' in str(e):
+                self._out.error(f"Ref '{ref}' not found")
+                self._out.info(
+                    f'Use {self._out.d_command(f"picard plugins --list-refs {plugin.plugin_id}")} to see available refs'
+                )
                 return ExitCode.ERROR
             else:
                 self._handle_exception(e, 'Failed to switch ref')
