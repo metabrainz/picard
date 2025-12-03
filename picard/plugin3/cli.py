@@ -137,13 +137,23 @@ class PluginCLI:
                 f'{self._out.d_arrow()} '
                 f'{self._out.d_version(result.new_version)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
             )
-        # Just show commits
+        # Show commits (but check if they're actually the same)
         else:
-            version_info = (
-                f'{self._out.d_commit_old(short_commit_id(result.old_commit))} '
-                f'{self._out.d_arrow()} '
-                f'{self._out.d_commit_new(short_commit_id(result.new_commit))}'
-            )
+            old_short = short_commit_id(result.old_commit)
+            new_short = short_commit_id(result.new_commit)
+
+            # If commits are the same, just show the ref change or "already up to date"
+            if old_short == new_short:
+                if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
+                    version_info = (
+                        f'{result.old_ref} {self._out.d_arrow()} {result.new_ref} ({self._out.d_commit_new(new_short)})'
+                    )
+                else:
+                    version_info = f'{self._out.d_commit_new(new_short)}'
+            else:
+                version_info = (
+                    f'{self._out.d_commit_old(old_short)} {self._out.d_arrow()} {self._out.d_commit_new(new_short)}'
+                )
 
         # Append date if available
         if hasattr(result, 'commit_date'):
@@ -291,8 +301,8 @@ class PluginCLI:
         if not metadata:
             return ''
 
-        ref = metadata.get('ref', '')
-        commit = metadata.get('commit', '')
+        ref = metadata.ref or ''
+        commit = metadata.commit or ''
 
         if not commit:
             return ''
@@ -375,8 +385,8 @@ class PluginCLI:
                         self._out.info(f'  Version: {self._out.d_version(version)}')
 
                     # Source URL if available
-                    if metadata and metadata.get('url'):
-                        self._out.info(f'  Source: {self._out.d_url(metadata["url"])}')
+                    if metadata and metadata.url:
+                        self._out.info(f'  Source: {self._out.d_url(metadata.url)}')
 
                     self._out.info(f'  Path: {self._out.d_path(plugin.local_path)}')
                 self._out.print()
@@ -447,8 +457,8 @@ class PluginCLI:
             self._out.print(f'Version: {self._out.d_version(version)}')
 
         # Show source URL if available
-        if metadata and metadata.get('url'):
-            self._out.print(f'Source: {self._out.d_url(metadata["url"])}')
+        if metadata and metadata.url:
+            self._out.print(f'Source: {self._out.d_url(metadata.url)}')
 
         # Optional fields - only show if present
         if plugin.manifest.authors:
@@ -680,7 +690,18 @@ class PluginCLI:
 
                     # Check if already installed first (unless reinstalling)
                     if not reinstall:
-                        existing_plugin = self._manager._find_plugin_by_url(url)
+                        # Check if any loaded plugin has this URL
+                        existing_plugin = None
+                        for plugin in self._manager.plugins:
+                            try:
+                                uuid = self._manager._get_plugin_uuid(plugin)
+                                metadata = self._manager._metadata.get_plugin_metadata(uuid)
+                                if metadata and metadata.url == url:
+                                    existing_plugin = plugin
+                                    break
+                            except Exception:
+                                continue
+
                         if existing_plugin:
                             self._out.info(
                                 f'Plugin {self._out.d_id(existing_plugin.plugin_id)} is already installed from this URL'
@@ -914,24 +935,6 @@ class PluginCLI:
                 return error
 
             try:
-                # Check if plugin is pinned to immutable ref
-                try:
-                    uuid = self._manager._get_plugin_uuid(plugin)
-                    metadata = self._manager._get_plugin_metadata(uuid)
-                    ref = metadata.get('ref') if metadata else None
-                    is_immutable, ref_type = self._manager._is_immutable_ref(ref)
-                except Exception:
-                    is_immutable, ref_type = False, None
-                    ref = None
-
-                # Prevent updating if pinned to a specific commit (tags can update to newer tags)
-                if is_immutable and ref and ref_type == 'commit':
-                    self._out.warning(f'Plugin is pinned to commit {self._out.d_commit_old(ref)}')
-                    self._out.info(
-                        f'To update to a different version, use: {self._out.d_command(f"picard plugins --switch-ref {plugin.plugin_id} <branch-or-tag>")}'
-                    )
-                    continue
-
                 result = self._manager.update_plugin(plugin)
 
                 if result.old_commit == result.new_commit:
@@ -947,12 +950,19 @@ class PluginCLI:
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
                 from picard.plugin3.manager import (
+                    PluginCommitPinnedError,
                     PluginDirtyError,
                     PluginManifestInvalidError,
                     PluginNoSourceError,
                 )
 
-                if isinstance(e, PluginDirtyError):
+                if isinstance(e, PluginCommitPinnedError):
+                    self._out.warning(f'Plugin is pinned to commit {self._out.d_commit_old(e.commit)}')
+                    self._out.info(
+                        f'To update to a different version, use: {self._out.d_command(f"picard plugins --switch-ref {plugin.plugin_id} <branch-or-tag>")}'
+                    )
+                    continue
+                elif isinstance(e, PluginDirtyError):
                     success, result = self._handle_dirty_error(
                         e, lambda **kw: self._manager.update_plugin(plugin, **kw)
                     )
@@ -992,7 +1002,11 @@ class PluginCLI:
 
         for r in results:
             if r.success:
-                if r.result.old_commit == r.result.new_commit:
+                if r.result is None:
+                    # Commit-pinned plugin (skipped)
+                    self._out.info(f'{self._out.d_name(r.plugin_id)}: {r.error}')
+                    unchanged += 1
+                elif r.result.old_commit == r.result.new_commit:
                     if r.result.new_version:
                         self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date ({r.result.new_version})')
                     else:
