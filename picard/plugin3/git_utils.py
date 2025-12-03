@@ -117,3 +117,25 @@ def get_local_repository_path(url):
     if local_path and local_path.is_dir() and (local_path / '.git').exists():
         return local_path
     return None
+
+
+def check_local_repo_dirty(url):
+    """Check if URL points to local git repo with uncommitted changes.
+
+    Args:
+        url: Git URL or local path
+
+    Returns:
+        bool: True if local repo has uncommitted changes, False otherwise
+    """
+    local_path = get_local_repository_path(url)
+    if not local_path:
+        return False
+
+    try:
+        import pygit2
+
+        repo = pygit2.Repository(str(local_path))
+        return bool(repo.status())
+    except Exception:
+        return False

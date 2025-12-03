@@ -757,18 +757,10 @@ class PluginCLI:
                     self._out.print(f'Installing plugin from {url}...')
 
                 # Check if installing from dirty local git repository
-                from picard.plugin3.git_utils import get_local_repository_path
+                from picard.plugin3.git_utils import check_local_repo_dirty
 
-                local_path = get_local_repository_path(url)
-                if local_path:
-                    try:
-                        import pygit2
-
-                        repo = pygit2.Repository(str(local_path))
-                        if repo.status():
-                            self._out.warning('Local repository has uncommitted changes')
-                    except Exception:
-                        pass  # Ignore errors checking status
+                if check_local_repo_dirty(url):
+                    self._out.warning('Local repository has uncommitted changes')
 
                 plugin_id = self._manager.install_plugin(
                     url, ref, reinstall, force_blacklisted, enable_after_install=True
