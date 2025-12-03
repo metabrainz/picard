@@ -218,8 +218,12 @@ else
 fi
 echo
 
+# Note: Cache invalidation test skipped for local plugins
+# Local plugins fetch directly from the repo without version tag caching
+# This test would only be meaningful for registry plugins
+
 # Test 25: List refs
-echo "23. List refs"
+echo "25. List refs"
 $PICARD plugins --list-refs $TEST_PLUGIN_UUID
 echo
 

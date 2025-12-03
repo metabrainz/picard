@@ -56,6 +56,17 @@ class RefsCache:
 
         return cache_dir / REFS_CACHE_FILE
 
+    def clear_cache(self):
+        """Clear both in-memory and on-disk cache."""
+        cache_path = self.get_cache_path()
+        if cache_path.exists():
+            try:
+                cache_path.unlink()
+                log.debug('Cleared refs cache file: %s', cache_path)
+            except Exception as e:
+                log.warning('Failed to delete refs cache file: %s', e)
+        self._cache = None
+
     def load_cache(self):
         """Load refs cache from disk.
 

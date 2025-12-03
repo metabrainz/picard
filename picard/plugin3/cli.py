@@ -1566,7 +1566,7 @@ class PluginCLI:
             self._manager._registry.fetch_registry(use_cache=False)
 
             # Clear refs cache to ensure fresh data
-            self._manager._refs_cache._cache = None
+            self._manager._refs_cache.clear_cache()
 
             # Clean up stale version cache entries
             self._manager._cleanup_version_cache()
