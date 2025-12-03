@@ -652,7 +652,9 @@ class PluginManager:
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
         if local_path:
-            return self._install_from_local_directory(local_path, reinstall, force_blacklisted, ref, discard_changes)
+            return self._install_from_local_directory(
+                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
+            )
 
         # Handle git URL - use temp dir in plugin directory for atomic rename
 
@@ -745,6 +747,7 @@ class PluginManager:
         force_blacklisted=False,
         ref=None,
         discard_changes=False,
+        enable_after_install=False,
     ):
         """Install a plugin from a local directory.
 
@@ -754,6 +757,7 @@ class PluginManager:
             force_blacklisted: If True, bypass blacklist check (dangerous!)
             ref: Git ref to checkout if local_path is a git repository
             discard_changes: If True, discard uncommitted changes on reinstall
+            enable_after_install: If True, enable the plugin after successful installation
 
         Returns:
             str: Plugin ID
@@ -846,6 +850,10 @@ class PluginManager:
         # Add newly installed plugin to the plugins list
         plugin = Plugin(self._primary_plugin_dir, plugin_name)
         self._plugins.append(plugin)
+
+        # Enable plugin if requested
+        if enable_after_install:
+            self.enable_plugin(plugin)
 
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
