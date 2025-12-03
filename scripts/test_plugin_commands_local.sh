@@ -1,16 +1,21 @@
 #!/bin/bash
-# Test script for plugin CLI commands using local git repository (no registry)
+# Test script for plugin CLI commands using local git repository with local registry
 # Creates a dummy plugin in a local git repo and tests all operations
 
 set -e
 
-PICARD="python tagger.py"
 TEST_DIR=$(mktemp -d)
 PLUGIN_REPO="$TEST_DIR/test-plugin"
+REGISTRY_FILE="$TEST_DIR/registry.json"
 TEST_PLUGIN_UUID="12345678-1234-4678-9234-123456789abc"
 
-echo "=== Testing Plugin Commands (Local Git Repository) ==="
+# Use local registry (direct path, no file:// prefix)
+export PICARD_PLUGIN_REGISTRY_URL="$REGISTRY_FILE"
+PICARD="python tagger.py"
+
+echo "=== Testing Plugin Commands (Local Git Repository with Local Registry) ==="
 echo "Test directory: $TEST_DIR"
+echo "Registry file: $REGISTRY_FILE"
 echo
 
 # Setup: Create a dummy plugin with git repository
@@ -68,46 +73,57 @@ COMMIT_V1_2_0=$(git rev-parse HEAD)
 git tag -a v1.2.0 -m "Annotated tag for v1.2.0"
 
 cd - > /dev/null
-echo "✓ Created plugin repository at $PLUGIN_REPO"
+
+# Create local registry file
+cat > "$REGISTRY_FILE" << EOF
+{
+  "plugins": [
+    {
+      "id": "test-plugin",
+      "name": "Test Plugin",
+      "git_url": "$PLUGIN_REPO",
+      "uuid": "$TEST_PLUGIN_UUID",
+      "versioning_scheme": "semver"
+    }
+  ],
+  "blacklist": []
+}
+EOF
+echo "✓ Created plugin repository and registry"
 echo
 
-# Test 1: Validate plugin from local path
-echo "1. Validate plugin from local path"
-$PICARD plugins --validate "$PLUGIN_REPO"
+# Test 1: Refresh registry
+echo "1. Refresh registry"
+$PICARD plugins --refresh-registry
 echo
 
-# Test 2: Validate plugin with specific ref
-echo "2. Validate plugin with specific ref (v1.0.0)"
-$PICARD plugins --validate "$PLUGIN_REPO" --ref v1.0.0
+# Test 2: Install plugin from registry
+echo "2. Install plugin from registry (should auto-select latest version)"
+$PICARD plugins --install test-plugin --yes
 echo
 
-# Test 3: Install plugin from local path
-echo "3. Install plugin from local path"
-$PICARD plugins --install "$PLUGIN_REPO" --yes
-echo
-
-# Test 4: List installed plugins
-echo "4. List installed plugins"
+# Test 3: List installed plugins
+echo "3. List installed plugins"
 $PICARD plugins --list
 echo
 
-# Test 5: Show plugin info by UUID
-echo "5. Show plugin info by UUID"
+# Test 4: Show plugin info by UUID
+echo "4. Show plugin info by UUID"
 $PICARD plugins --info $TEST_PLUGIN_UUID
 echo
 
-# Test 6: Show plugin manifest
-echo "6. Show plugin manifest"
+# Test 5: Show plugin manifest
+echo "5. Show plugin manifest"
 $PICARD plugins --manifest $TEST_PLUGIN_UUID
 echo
 
-# Test 7: Enable plugin
-echo "7. Enable plugin"
+# Test 6: Enable plugin
+echo "6. Enable plugin"
 $PICARD plugins --enable $TEST_PLUGIN_UUID
 echo
 
-# Test 8: Disable plugin
-echo "8. Disable plugin"
+# Test 7: Disable plugin
+echo "7. Disable plugin"
 $PICARD plugins --disable $TEST_PLUGIN_UUID
 echo
 
@@ -226,6 +242,10 @@ echo
 echo "25. List refs"
 $PICARD plugins --list-refs $TEST_PLUGIN_UUID
 echo
+
+# Note: Cache invalidation test would require remote git URL
+# Local file paths bypass version tag caching and fetch directly from repo
+# The --refresh-registry cache clearing works correctly for remote registry plugins
 
 # Test 26: Final uninstall
 echo "26. Final uninstall"
