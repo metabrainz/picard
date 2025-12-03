@@ -794,7 +794,7 @@ class PluginCLI:
                         self._out.error(f'  {error}')
                     return ExitCode.ERROR
                 else:
-                    self._out.error(f'Failed to install plugin: {e}')
+                    self._handle_exception(e, 'Failed to install plugin')
                     return ExitCode.ERROR
         return ExitCode.SUCCESS
 
@@ -875,7 +875,7 @@ class PluginCLI:
                 elif isinstance(e, PluginNoUUIDError):
                     self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no UUID in manifest')
                 else:
-                    self._out.error(f'Failed to enable plugin: {e}')
+                    self._handle_exception(e, 'Failed to enable plugin')
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
@@ -901,7 +901,7 @@ class PluginCLI:
                 elif isinstance(e, PluginNoUUIDError):
                     self._out.error(f'Plugin {self._out.d_id(e.plugin_id)} has no UUID in manifest')
                 else:
-                    self._out.error(f'Failed to disable plugin: {e}')
+                    self._handle_exception(e, 'Failed to disable plugin')
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
@@ -972,7 +972,7 @@ class PluginCLI:
                         self._out.error(f'  {error}')
                     return ExitCode.ERROR
                 else:
-                    self._out.error(f'Failed to update plugin: {e}')
+                    self._handle_exception(e, 'Failed to update plugin')
                     return ExitCode.ERROR
         return ExitCode.SUCCESS
 
