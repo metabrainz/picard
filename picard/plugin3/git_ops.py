@@ -251,11 +251,13 @@ class GitOperations:
             if branch_ref in repo.references:
                 commit = repo.references[branch_ref].peel()
                 repo.checkout_tree(commit)
-                # Update HEAD to point to the branch
-                repo.set_head(f'refs/heads/{ref}')
+                # Detach HEAD first to avoid "cannot force update current branch" error
+                repo.set_head(commit.id)
                 # Set branch to track remote
                 branch = repo.branches.local.create(ref, commit, force=True)
                 branch.upstream = repo.branches.remote[f'origin/{ref}']
+                # Now point HEAD to the branch
+                repo.set_head(f'refs/heads/{ref}')
                 log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
                 return old_ref, ref, old_commit, str(commit.id)
 
