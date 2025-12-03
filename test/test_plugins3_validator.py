@@ -154,7 +154,7 @@ class TestManifestValidator(PicardTestCase):
         self.assertIn("Field 'authors' must contain at least one author if present", errors)
 
     def test_validate_invalid_category(self):
-        """Test validation catches invalid categories."""
+        """Test that unknown categories are accepted (forward compatibility)."""
         manifest = {
             'uuid': '550e8400-e29b-41d4-a716-446655440000',
             'name': 'Test Plugin',
@@ -167,7 +167,8 @@ class TestManifestValidator(PicardTestCase):
             'categories': ['invalid_category'],
         }
         errors = validate_manifest_dict(manifest)
-        self.assertIn("Invalid category: invalid_category", errors)
+        # Categories are not validated to allow forward/backward compatibility
+        self.assertEqual(errors, [])
 
     def test_validate_valid_categories(self):
         """Test validation accepts valid categories."""

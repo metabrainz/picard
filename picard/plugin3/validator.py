@@ -25,7 +25,6 @@ requiring the full Picard codebase.
 """
 
 from .constants import (
-    CATEGORIES,
     MAX_DESCRIPTION_LENGTH,
     MAX_LONG_DESCRIPTION_LENGTH,
     MAX_NAME_LENGTH,
@@ -110,11 +109,8 @@ def validate_manifest_dict(manifest_data):
         elif len(maintainers) == 0:
             errors.append("Field 'maintainers' must contain at least one maintainer if present")
 
-    # Categories validation
-    if 'categories' in manifest_data:
-        for cat in manifest_data['categories']:
-            if cat not in CATEGORIES:
-                errors.append(f"Invalid category: {cat}")
+    # Categories - no validation, list is informational only
+    # This allows forward/backward compatibility when categories change
 
     # Empty i18n sections
     for section in ['name_i18n', 'description_i18n', 'long_description_i18n']:
