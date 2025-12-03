@@ -1581,51 +1581,9 @@ class PluginCLI:
         """Show MANIFEST.toml template or from plugin."""
         # No argument - show template
         if not target:
-            import uuid
+            from picard.plugin3.manifest import generate_manifest_template
 
-            from picard.plugin3.constants import CATEGORIES
-
-            generated_uuid = str(uuid.uuid4())
-            categories_str = ', '.join(f'"{c}"' for c in CATEGORIES)
-            template = f'''# MANIFEST.toml Template
-# See https://picard-docs.musicbrainz.org/en/extending/plugins.html
-
-# Required fields
-uuid = "{generated_uuid}"  # Generated UUID - keep this value
-name = "My Plugin Name"
-description = "Short one-line description (1-200 characters)"
-api = ["3.0"]
-
-# Optional fields
-# authors = ["Your Name"]
-# maintainers = ["Your Name"]
-# license = "GPL-2.0-or-later"
-# license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
-# long_description = """
-# Detailed multi-line description (1-2000 characters).
-# Explain features, requirements, usage notes, etc.
-# """
-# categories = [{categories_str}]
-# homepage = "https://github.com/username/plugin-name"
-# min_python_version = "3.9"
-
-# Translation tables (optional)
-# [name_i18n]
-# de = "Mein Plugin Name"
-# fr = "Mon nom de plugin"
-
-# [description_i18n]
-# de = "Kurze einzeilige Beschreibung"
-# fr = "Courte description sur une ligne"
-
-# [long_description_i18n]
-# de = """
-# Detaillierte mehrzeilige Beschreibung...
-# """
-# fr = """
-# Description détaillée sur plusieurs lignes...
-# """
-'''
+            template = generate_manifest_template()
             self._out.print(template)
             return ExitCode.SUCCESS
 
