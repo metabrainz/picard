@@ -270,20 +270,25 @@ class PluginManager:
                     return stale_cache
             return None
 
-        # Separate branches and tags
+        # Separate branches and tags with their commit IDs
         branches = []
         tags = []
 
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
+            commit_id = str(ref.oid) if hasattr(ref, 'oid') else None
+
             if ref_name.startswith('refs/heads/'):
                 branch_name = ref_name[len('refs/heads/') :]
-                branches.append(branch_name)
+                branches.append({'name': branch_name, 'commit': commit_id})
             elif ref_name.startswith('refs/tags/'):
                 tag_name = ref_name[len('refs/tags/') :]
-                tags.append(tag_name)
+                tags.append({'name': tag_name, 'commit': commit_id})
 
-        result = {'branches': sorted(branches), 'tags': sorted(tags, reverse=True)}
+        result = {
+            'branches': sorted(branches, key=lambda x: x['name']),
+            'tags': sorted(tags, key=lambda x: x['name'], reverse=True),
+        }
 
         # Cache the result
         if use_cache:
@@ -823,7 +828,7 @@ class PluginManager:
             return []
 
         # Filter and sort tags from cached refs
-        tags = [tag for tag in all_refs.get('tags', []) if pattern.match(tag)]
+        tags = [tag['name'] for tag in all_refs.get('tags', []) if pattern.match(tag['name'])]
         tags = self._refs_cache.sort_tags(tags, versioning_scheme)
 
         # Cache the result

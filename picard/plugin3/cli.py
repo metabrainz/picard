@@ -528,7 +528,7 @@ class PluginCLI:
 
         if current_ref:
             commit_short = short_commit_id(current_commit) if current_commit else ''
-            self._out.print(f'Current: {self._out.d_version(current_ref)} (@{self._out.d_commit_old(commit_short)})')
+            self._out.print(f'Current: {self._out.d_version(current_ref)} (@{self._out.d_commit_new(commit_short)})')
 
         self._out.nl()
 
@@ -600,23 +600,28 @@ class PluginCLI:
         if branches:
             self._out.print('Branches:')
             for branch in branches:
-                is_current = current_ref == branch
-                marker = ' (current)' if is_current else ''
-                self._out.print(f'  {branch}{marker}')
+                name = branch['name']
+                commit = short_commit_id(branch['commit']) if branch.get('commit') else ''
+                is_current = current_ref == name
+                # Use green for current commit, old color otherwise
+                commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old
+                commit_display = f' @{commit_color(commit)}' if commit else ''
+                self._out.print(f'  {name}{commit_display}')
             self._out.nl()
 
-        # Show all tags (filter out ^{} dereferenced annotated tags)
+        # Show tags (filter out ^{} dereferenced annotated tags)
         if tags:
-            filtered_tags = [tag for tag in tags if not tag.endswith('^{}')]
-            self._out.print(f'Tags ({len(filtered_tags)} total):')
-            # Show first 20
-            for tag in filtered_tags[:20]:
-                is_current = current_ref == tag
-                marker = ' (current)' if is_current else ''
-                self._out.print(f'  {tag}{marker}')
-
-            if len(filtered_tags) > 20:
-                self._out.print(f'  ... and {len(filtered_tags) - 20} more')
+            filtered_tags = [tag for tag in tags if not tag['name'].endswith('^{}')]
+            if filtered_tags:
+                self._out.print('Tags:')
+                for tag in filtered_tags:
+                    name = tag['name']
+                    commit = short_commit_id(tag['commit']) if tag.get('commit') else ''
+                    is_current = current_ref == name
+                    # Use green for current commit, old color otherwise
+                    commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old
+                    commit_display = f' @{commit_color(commit)}' if commit else ''
+                    self._out.print(f'  {name}{commit_display}')
 
         return ExitCode.SUCCESS
 

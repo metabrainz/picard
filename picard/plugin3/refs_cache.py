@@ -177,11 +177,23 @@ class RefsCache:
 
         refs = entry.get('refs')
         if refs:
+            # Validate cache format - reject old format (list of strings)
+            branches = refs.get('branches', [])
+            tags = refs.get('tags', [])
+
+            # Check if new format (list of dicts with 'name' and 'commit')
+            if branches and isinstance(branches[0], str):
+                log.debug('Refs cache has old format for %s, invalidating', url)
+                return None
+            if tags and isinstance(tags[0], str):
+                log.debug('Refs cache has old format for %s, invalidating', url)
+                return None
+
             log.debug(
                 'Using cached refs for %s: %d branches, %d tags',
                 url,
-                len(refs.get('branches', [])),
-                len(refs.get('tags', [])),
+                len(branches),
+                len(tags),
             )
 
         return refs
