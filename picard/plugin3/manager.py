@@ -18,7 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from dataclasses import asdict, dataclass
 import os
 from pathlib import Path
 import re
@@ -40,28 +39,11 @@ from picard.plugin3.plugin import (
     hash_string,
     short_commit_id,
 )
-from picard.plugin3.plugin_metadata import PluginMetadataManager
+from picard.plugin3.plugin_metadata import PluginMetadata, PluginMetadataManager
 from picard.plugin3.refs_cache import RefsCache
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
 from picard.version import Version
-
-
-@dataclass
-class PluginMetadata:
-    """Plugin metadata stored in config."""
-
-    name: str
-    url: str
-    ref: str
-    commit: str
-    uuid: str = None
-    original_url: str = None
-    original_uuid: str = None
-
-    def to_dict(self):
-        """Convert to dict for config storage, excluding None values."""
-        return {k: v for k, v in asdict(self).items() if v is not None}
 
 
 class UpdateResult(NamedTuple):
@@ -182,6 +164,15 @@ class PluginNoUUIDError(PluginManagerError):
     def __init__(self, plugin_id):
         self.plugin_id = plugin_id
         super().__init__(f"Plugin {plugin_id} has no UUID")
+
+
+class PluginCommitPinnedError(PluginManagerError):
+    """Raised when trying to update a commit-pinned plugin."""
+
+    def __init__(self, plugin_id, commit):
+        self.plugin_id = plugin_id
+        self.commit = commit
+        super().__init__(f'Plugin is pinned to commit "{commit}" and cannot be updated')
 
 
 def get_plugin_directory_name(manifest) -> str:
@@ -394,8 +385,8 @@ class PluginManager:
         if not metadata:
             return manifest_version
 
-        ref = metadata.get('ref', '')
-        commit = metadata.get('commit', '')
+        ref = metadata.ref or ''
+        commit = metadata.commit or ''
 
         # If ref looks like a version tag (not a commit hash), use it
         if ref and commit and not ref.startswith(short_commit_id(commit)):
@@ -443,7 +434,7 @@ class PluginManager:
         uuid = PluginValidation.get_plugin_uuid(plugin)
         metadata = self._metadata.get_plugin_metadata(uuid)
 
-        if metadata and metadata.get('url'):
+        if metadata and metadata.url:
             return  # URL exists in metadata
 
         # No metadata or no URL - check if plugin is in registry and create metadata
@@ -542,7 +533,18 @@ class PluginManager:
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
         self._ensure_plugin_url(plugin, 'switch ref')
-        return GitOperations.switch_ref(plugin, ref, discard_changes)
+        old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
+
+        # Update metadata with new ref
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+        if metadata:
+            # Update existing metadata
+            metadata.ref = new_ref
+            metadata.commit = new_commit
+            self._metadata.save_plugin_metadata(metadata)
+
+        return old_ref, new_ref, old_commit, new_commit
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.
@@ -891,17 +893,22 @@ class PluginManager:
             if changes:
                 raise PluginDirtyError(plugin.plugin_id, changes)
 
-        # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
-        ref = metadata.get('ref')
-        if ref:
-            is_immutable, ref_type = GitOperations.is_immutable_ref(ref)
-            if is_immutable and ref_type == 'commit':
-                raise ValueError(f'Plugin is pinned to commit "{ref}" and cannot be updated')
-
         old_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
-        old_url = metadata['url']
-        old_uuid = metadata.get('uuid')
-        old_ref = metadata.get('ref')
+        old_url = metadata.url
+        old_uuid = metadata.uuid
+        old_ref = metadata.ref
+
+        # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
+        # Check the stored ref, not current HEAD (tags create detached HEAD but are still updatable)
+        if old_ref:
+            ref_type, _ = GitOperations.check_ref_type(plugin.local_path, old_ref)
+            if ref_type == 'commit':
+                raise PluginCommitPinnedError(plugin.plugin_id, old_ref)
+        else:
+            # No stored ref, check current HEAD state
+            ref_type, ref_name = GitOperations.check_ref_type(plugin.local_path)
+            if ref_type == 'commit':
+                raise PluginCommitPinnedError(plugin.plugin_id, ref_name)
 
         # Check registry for redirects
         current_url, current_uuid, redirected = self._metadata.check_redirects(old_url, old_uuid)
@@ -909,19 +916,17 @@ class PluginManager:
         # Check if plugin has versioning_scheme and current ref is a version tag
         new_ref = old_ref
         registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
-        if registry_plugin and registry_plugin.get('versioning_scheme'):
-            is_immutable, ref_type = GitOperations.is_immutable_ref(old_ref)
-            if is_immutable and ref_type == 'tag':
-                # Try to find newer version tags
-                newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin['versioning_scheme'])
-                if newer_tag:
-                    new_ref = newer_tag
-                    log.info('Found newer version: %s -> %s', old_ref, new_ref)
+        if registry_plugin and registry_plugin.get('versioning_scheme') and ref_type == 'tag':
+            # Try to find newer version tags
+            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin['versioning_scheme'])
+            if newer_tag:
+                new_ref = newer_tag
+                log.info('Found newer version: %s -> %s', old_ref, new_ref)
 
         source = PluginSourceGit(current_url, new_ref)
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
-        # Get commit date
+        # Get commit date and resolve annotated tags to actual commit
         import pygit2
 
         repo = pygit2.Repository(plugin.local_path.absolute())
@@ -929,6 +934,7 @@ class PluginManager:
         # Peel tag to commit if needed
         if obj.type == pygit2.GIT_OBJECT_TAG:
             commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+            new_commit = str(commit.id)  # Use actual commit ID, not tag object ID
         else:
             commit = obj
         commit_date = commit.commit_time
@@ -970,6 +976,9 @@ class PluginManager:
             try:
                 result = self.update_plugin(plugin)
                 results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=result, error=None))
+            except PluginCommitPinnedError as e:
+                # Commit-pinned plugins are skipped, not failed
+                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=None, error=str(e)))
             except Exception as e:
                 results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
         return results
@@ -982,7 +991,7 @@ class PluginManager:
                 continue
 
             metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
-            if not metadata or 'url' not in metadata:
+            if not metadata or not metadata.url:
                 continue
 
             try:
@@ -996,13 +1005,13 @@ class PluginManager:
                     remote.fetch()
 
                 # Update version tag cache from fetched repo if plugin has versioning_scheme
-                registry_plugin = self._registry.find_plugin(url=metadata['url'])
+                registry_plugin = self._registry.find_plugin(url=metadata.url)
                 if registry_plugin and registry_plugin.get('versioning_scheme'):
                     self._refs_cache.update_cache_from_local_repo(
-                        plugin.local_path, metadata['url'], registry_plugin['versioning_scheme']
+                        plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
                     )
 
-                old_ref = metadata.get('ref', 'main')
+                old_ref = metadata.ref or 'main'
                 ref = old_ref
 
                 # Check if currently on a tag
@@ -1019,7 +1028,7 @@ class PluginManager:
                 # If on a tag, check for newer version tag
                 new_ref = None
                 if current_is_tag and current_tag:
-                    source = PluginSourceGit(metadata['url'], ref)
+                    source = PluginSourceGit(metadata.url, ref)
                     latest_tag = source._find_latest_tag(repo, current_tag)
                     if latest_tag and latest_tag != current_tag:
                         # Found newer tag
@@ -1120,7 +1129,7 @@ class PluginManager:
                 continue
 
             metadata = self._metadata.get_plugin_metadata(plugin_uuid)
-            url = metadata.get('url') if metadata else None
+            url = metadata.url if metadata else None
 
             is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
             if is_blacklisted:

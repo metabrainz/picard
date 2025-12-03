@@ -20,8 +20,32 @@
 
 """Plugin metadata storage and retrieval."""
 
+from dataclasses import asdict, dataclass
+
 from picard import log
 from picard.config import get_config
+
+
+@dataclass
+class PluginMetadata:
+    """Plugin metadata stored in config."""
+
+    url: str
+    ref: str
+    commit: str
+    name: str = ''
+    uuid: str = None
+    original_url: str = None
+    original_uuid: str = None
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        """Create PluginMetadata from dict, filtering unknown fields."""
+        return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
+
+    def to_dict(self):
+        """Convert to dict for config storage, excluding None values."""
+        return {k: v for k, v in asdict(self).items() if v is not None}
 
 
 class PluginMetadataManager:
@@ -31,9 +55,15 @@ class PluginMetadataManager:
         self._registry = registry
 
     def get_plugin_metadata(self, uuid: str):
-        """Get metadata for a plugin by UUID."""
-        metadata = get_config().setting['plugins3_metadata']
-        return metadata.get(str(uuid))
+        """Get metadata for a plugin by UUID.
+
+        Returns:
+            PluginMetadata object or None if not found
+        """
+        metadata_dict = get_config().setting['plugins3_metadata'].get(str(uuid))
+        if not metadata_dict:
+            return None
+        return PluginMetadata.from_dict(metadata_dict)
 
     def save_plugin_metadata(self, metadata):
         """Save or update plugin metadata.
@@ -42,7 +72,13 @@ class PluginMetadataManager:
             metadata: PluginMetadata object with uuid, url, ref, commit, etc.
         """
         config = get_config()
-        config.setting['plugins3_metadata'][metadata.uuid] = metadata.to_dict()
+        # Get the current dict, modify it, and set it back to trigger save
+        metadata_dict = config.setting['plugins3_metadata'] or {}
+        metadata_dict[metadata.uuid] = metadata.to_dict()
+        config.setting['plugins3_metadata'] = metadata_dict
+        # Force write to disk immediately (if sync is available)
+        if hasattr(config, 'sync'):
+            config.sync()
 
     def find_plugin_by_url(self, url: str):
         """Find plugin metadata by URL.
@@ -51,14 +87,14 @@ class PluginMetadataManager:
             url: Git repository URL
 
         Returns:
-            dict: Plugin metadata or None if not found
+            PluginMetadata: Plugin metadata or None if not found
         """
         metadata = get_config().setting['plugins3_metadata']
         # Handle both dict (new format) and list (old format)
         if isinstance(metadata, dict):
             for item in metadata.values():
                 if item.get('url') == url:
-                    return item
+                    return PluginMetadata.from_dict(item)
         else:
             # Legacy list format
             for item in metadata:
@@ -112,12 +148,12 @@ class PluginMetadataManager:
         # Try to find metadata by old UUID
         old_metadata = self.get_plugin_metadata(old_uuid)
         if old_metadata:
-            return old_metadata.get('url', old_url), old_metadata.get('uuid', old_uuid)
+            return old_metadata.url or old_url, old_metadata.uuid or old_uuid
 
         # Try to find metadata by old URL
         old_metadata = self.find_plugin_by_url(old_url)
         if old_metadata:
-            return old_metadata.get('url', old_url), old_metadata.get('uuid', old_uuid)
+            return old_metadata.url or old_url, old_metadata.uuid or old_uuid
 
         return old_url, old_uuid
 
@@ -176,7 +212,7 @@ class PluginMetadataManager:
                 return None
 
             metadata = self.get_plugin_metadata(plugin.manifest.uuid)
-            url = metadata.get('url') if metadata else None
+            url = metadata.url if metadata else None
 
             # If no URL in metadata, try to get from registry
             if not url:
@@ -185,8 +221,8 @@ class PluginMetadataManager:
                     return None
                 url = registry_plugin['git_url']
 
-            current_ref = metadata.get('ref') if metadata else None
-            current_commit = metadata.get('commit') if metadata else None
+            current_ref = metadata.ref if metadata else None
+            current_commit = metadata.commit if metadata else None
             registry_id = self.get_plugin_registry_id(plugin)
 
             # Detect current ref from local git repo (overrides metadata)
