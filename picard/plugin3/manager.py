@@ -546,6 +546,20 @@ class PluginManager:
             or query_lower in p.get('id', '').lower()
         ]
 
+    def find_similar_plugin_ids(self, query, max_results=10):
+        """Find similar plugin IDs for suggestions.
+
+        Args:
+            query: Partial plugin ID to search for
+            max_results: Maximum number of suggestions to return
+
+        Returns:
+            list: Plugin dictionaries with similar IDs (empty if too many matches)
+        """
+        all_plugins = self._registry.list_plugins()
+        matches = [p for p in all_plugins if query.lower() in p['id'].lower()]
+        return matches if 1 <= len(matches) <= max_results else []
+
     def get_registry_plugin_latest_version(self, plugin_data):
         """Get latest version tag for a registry plugin.
 
