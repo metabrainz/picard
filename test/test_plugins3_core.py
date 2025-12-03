@@ -228,7 +228,6 @@ license_url = "https://example.com"
         import tempfile
 
         from picard.plugin3.manifest import PluginManifest
-        from picard.version import Version
 
         manifest_content = """
 uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -248,8 +247,8 @@ license_url = "https://example.com"
             with open(temp_path, 'rb') as f:
                 manifest = PluginManifest('test', f)
 
-            # Should return Version(0, 0, 0) for invalid version
-            self.assertEqual(manifest.version, Version(0, 0, 0))
+            # Should return None for invalid version
+            self.assertIsNone(manifest.version)
         finally:
             temp_path.unlink()
 

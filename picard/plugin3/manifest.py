@@ -25,6 +25,7 @@ except ImportError:
 
 from typing import (
     BinaryIO,
+    Optional,
     Tuple,
 )
 
@@ -91,11 +92,14 @@ class PluginManifest:
         return self._data.get('long_description', '')
 
     @property
-    def version(self) -> Version:
+    def version(self) -> Optional[Version]:
+        version_str = self._data.get('version')
+        if not version_str:
+            return None
         try:
-            return Version.from_string(self._data.get('version'))
+            return Version.from_string(version_str)
         except VersionError:
-            return Version(0, 0, 0)
+            return None
 
     @property
     def api_versions(self) -> Tuple[Version]:

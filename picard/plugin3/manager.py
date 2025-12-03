@@ -899,7 +899,7 @@ class PluginManager:
             if is_immutable and ref_type == 'commit':
                 raise ValueError(f'Plugin is pinned to commit "{ref}" and cannot be updated')
 
-        old_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
+        old_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
         old_url = metadata['url']
         old_uuid = metadata.get('uuid')
         old_ref = metadata.get('ref')
@@ -937,7 +937,7 @@ class PluginManager:
 
         # Reload manifest to get new version
         plugin.read_manifest()
-        new_version = str(plugin.manifest.version) if plugin.manifest else 'unknown'
+        new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
         new_ref = source.ref  # May have been updated to a newer tag
 
         # Update metadata with current URL and UUID

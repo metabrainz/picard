@@ -935,7 +935,12 @@ class PluginCLI:
                 result = self._manager.update_plugin(plugin)
 
                 if result.old_commit == result.new_commit:
-                    self._out.info(f'{self._out.d_name(plugin.plugin_id)}: Already up to date ({result.new_version})')
+                    if result.new_version:
+                        self._out.info(
+                            f'{self._out.d_name(plugin.plugin_id)}: Already up to date ({result.new_version})'
+                        )
+                    else:
+                        self._out.info(f'{self._out.d_name(plugin.plugin_id)}: Already up to date')
                 else:
                     version_info = self._format_version_info(result)
                     self._out.success(f'{self._out.d_name(plugin.plugin_id)}: {version_info}')
@@ -988,7 +993,10 @@ class PluginCLI:
         for r in results:
             if r.success:
                 if r.result.old_commit == r.result.new_commit:
-                    self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date ({r.result.new_version})')
+                    if r.result.new_version:
+                        self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date ({r.result.new_version})')
+                    else:
+                        self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date')
                     unchanged += 1
                 else:
                     version_info = self._format_version_info(r.result)
