@@ -120,15 +120,14 @@ class GitOperations:
                         version_tags = refs_cache.filter_tags(remote_refs, pattern)
 
                     if ref not in version_tags:
-                        available_refs = refs_cache.sort_tags(version_tags, registry_plugin['versioning_scheme'])[:10]
-                        raise PluginRefNotFoundError(uuid, ref, available_refs)
+                        raise PluginRefNotFoundError(uuid, ref)
                     return True
 
             # For registry plugins with explicit refs list
             if registry_plugin and registry_plugin.get('refs'):
                 ref_names = [r['name'] for r in registry_plugin['refs']]
                 if ref not in ref_names:
-                    raise PluginRefNotFoundError(uuid, ref, ref_names)
+                    raise PluginRefNotFoundError(uuid, ref)
                 return True
 
         # For non-registry plugins or no versioning, just check if ref exists remotely
@@ -149,7 +148,7 @@ class GitOperations:
             ref_names.append(name)  # Also add full name
 
         if ref not in ref_names:
-            raise PluginRefNotFoundError(uuid or url, ref, ref_names[:10])
+            raise PluginRefNotFoundError(uuid or url, ref)
 
         return True
 

@@ -151,10 +151,9 @@ class PluginRefSwitchError(PluginManagerError):
 class PluginRefNotFoundError(PluginManagerError):
     """Raised when requested ref is not found or not available."""
 
-    def __init__(self, plugin_id, ref, available_refs):
+    def __init__(self, plugin_id, ref):
         self.plugin_id = plugin_id
         self.ref = ref
-        self.available_refs = available_refs
         super().__init__(f"Ref '{ref}' not found for plugin {plugin_id}")
 
 
