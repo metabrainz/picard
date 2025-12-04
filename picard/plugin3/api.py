@@ -141,6 +141,25 @@ class PluginApi:
         """Configuration private to the plugin"""
         return self._api_config
 
+    # Translation
+    def tr(self, key: str, text: str | None = None, **kwargs) -> str:
+        """Translate a string for the plugin.
+
+        Args:
+            key: Translation key
+            text: Default text (fallback if no translation found)
+            **kwargs: Placeholder values for string formatting
+
+        Returns:
+            Translated string with placeholders substituted
+        """
+        # TODO: Load actual translations from locale files
+        # For now, use text as fallback or key if text not provided
+        result = text if text is not None else key
+        if kwargs:
+            result = result.format(**kwargs)
+        return result
+
     # Metadata processors
     def register_album_metadata_processor(self, function: Callable, priority: int = 0) -> None:
         wrapped = partial(function, self)
