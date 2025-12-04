@@ -174,8 +174,8 @@ DEFAULT_QUICK_MENU_ITEMS = ['save_images_to_tags', 'save_images_to_files']
 # List of registry URLs to try in order (first available wins)
 # Can be overridden via PICARD_PLUGIN_REGISTRY_URL environment variable
 DEFAULT_PLUGIN_REGISTRY_URLS = [
-    'https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/refs/heads/main/plugins.json',
-    'https://picard.musicbrainz.org/registry/plugins.json',
+    'https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/refs/heads/main/plugins.toml',
+    'https://picard.musicbrainz.org/registry/plugins.toml',
 ]
 
 # Metadata handling

@@ -422,7 +422,7 @@ class TestPluginCLI(PicardTestCase):
         mock_manager._registry.get_registry_info.return_value = {
             'plugin_count': 42,
             'api_version': '3.0',
-            'registry_url': 'https://test.example.com/registry.json',
+            'registry_url': 'https://test.example.com/registry.toml',
         }
 
         exit_code, stdout, _ = run_cli(mock_manager, refresh_registry=True)
@@ -453,14 +453,14 @@ class TestPluginCLI(PicardTestCase):
 
         mock_manager = MockPluginManager()
         mock_manager._registry.fetch_registry.side_effect = RegistryFetchError(
-            'https://test.example.com/registry.json', Exception('Connection timeout')
+            'https://test.example.com/registry.toml', Exception('Connection timeout')
         )
 
         exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to fetch registry', stderr)
-        self.assertIn('https://test.example.com/registry.json', stderr)
+        self.assertIn('https://test.example.com/registry.toml', stderr)
         self.assertIn('Connection timeout', stderr)
 
     def test_refresh_registry_parse_error(self):
@@ -470,14 +470,14 @@ class TestPluginCLI(PicardTestCase):
 
         mock_manager = MockPluginManager()
         mock_manager._registry.fetch_registry.side_effect = RegistryParseError(
-            'https://test.example.com/registry.json', Exception('Invalid JSON')
+            'https://test.example.com/registry.toml', Exception('Invalid JSON')
         )
 
         exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to parse registry', stderr)
-        self.assertIn('https://test.example.com/registry.json', stderr)
+        self.assertIn('https://test.example.com/registry.toml', stderr)
         self.assertIn('Invalid JSON', stderr)
 
     def test_update_commit_pinned_plugin(self):

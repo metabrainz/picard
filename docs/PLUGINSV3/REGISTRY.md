@@ -1,12 +1,14 @@
 # Plugin Registry System
 
-This document describes the plugin registry JSON schema, trust levels, blacklist system, and client integration.
+This document describes the plugin registry TOML schema, trust levels, blacklist system, and client integration.
+
+> **Note:** The registry format changed from JSON to TOML in Picard 4.0 to reduce git merge conflicts. Each `[[plugins]]` block is now independent, making concurrent plugin additions conflict-free.
 
 ---
 
 ## Overview
 
-The plugin registry is a centralized JSON file served by the Picard website that contains:
+The plugin registry is a centralized TOML file served by the Picard website that contains:
 - List of official, trusted, and community plugins
 - Plugin metadata (name, description, authors, etc.)
 - Trust level assignments
@@ -14,8 +16,8 @@ The plugin registry is a centralized JSON file served by the Picard website that
 - Translations for plugin names and descriptions
 
 **Registry URLs (tried in order):**
-1. `https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/refs/heads/main/plugins.json` (Primary - GitHub)
-2. `https://picard.musicbrainz.org/registry/plugins.json` (Fallback - MusicBrainz proxy)
+1. `https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/refs/heads/main/plugins.toml` (Primary - GitHub)
+2. `https://picard.musicbrainz.org/registry/plugins.toml` (Fallback - MusicBrainz proxy)
 
 **Configuration:**
 - Default URLs are defined in `DEFAULT_PLUGIN_REGISTRY_URLS` list in `picard/const/defaults.py`
@@ -31,68 +33,67 @@ The plugin registry is a centralized JSON file served by the Picard website that
 **Example:**
 ```bash
 # Use custom registry URL (tried first, then defaults)
-export PICARD_PLUGIN_REGISTRY_URL="https://test.example.com/plugins.json"
+export PICARD_PLUGIN_REGISTRY_URL="https://test.example.com/plugins.toml"
 picard plugins --browse
 
 # Use local registry file for testing
-export PICARD_PLUGIN_REGISTRY_URL="file:///path/to/local/registry.json"
+export PICARD_PLUGIN_REGISTRY_URL="file:///path/to/local/registry.toml"
 picard plugins --install my-plugin
 ```
 
 ---
 
-## Registry JSON Schema
+## Registry TOML Schema
 
 ### Top-Level Structure
 
-```json
-{
-  "api_version": "3.0",
-  "plugins": [ /* array of plugin objects */ ],
-  "blacklist": [ /* array of blacklist entries */ ]
-}
+```toml
+api_version = "3.0"
+
+[[plugins]]
+# ... plugin entry
+
+[[blacklist]]
+# ... blacklist entry
 ```
 
 ### Plugin Entry
 
-```json
-{
-  "id": "listenbrainz",
-  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-  "name": "ListenBrainz Submitter",
-  "description": "Submit your music to ListenBrainz",
-  "name_i18n": {
-    "de": "ListenBrainz-Submitter",
-    "fr": "Soumetteur ListenBrainz",
-    "ja": "ListenBrainzサブミッター"
-  },
-  "description_i18n": {
-    "de": "Submit listens deine Musik zu ListenBrainz",
-    "fr": "Submit listensz votre musique sur ListenBrainz",
-    "ja": "ListenBrainzに音楽をスクロブルする"
-  },
-  "git_url": "https://github.com/metabrainz/picard-plugin-listenbrainz",
-  "versioning_scheme": "semver",
-  "refs": [
-    {
-      "name": "main",
-      "description": "Stable release for Picard 4.x",
-      "min_api_version": "4.0"
-    },
-    {
-      "name": "picard-v3",
-      "description": "Maintenance branch for Picard 3.x",
-      "min_api_version": "3.0",
-      "max_api_version": "3.99"
-    }
-  ],
-  "categories": ["metadata"],
-  "trust_level": "official",
-  "authors": ["Philipp Wolfer"],
-  "maintainers": ["Philipp Wolfer"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+```toml
+[[plugins]]
+id = "listenbrainz"
+uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
+git_url = "https://github.com/metabrainz/picard-plugin-listenbrainz"
+versioning_scheme = "semver"
+categories = ["metadata"]
+trust_level = "official"
+authors = ["Philipp Wolfer"]
+maintainers = ["Philipp Wolfer"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
+
+[plugins.name_i18n]
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+ja = "ListenBrainzサブミッター"
+
+[plugins.description_i18n]
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
+ja = "ListenBrainzに音楽をスクロブルする"
+
+[[plugins.refs]]
+name = "main"
+description = "Stable release for Picard 4.x"
+min_api_version = "4.0"
+
+[[plugins.refs]]
+name = "picard-v3"
+description = "Maintenance branch for Picard 3.x"
+min_api_version = "3.0"
+max_api_version = "3.99"
 ```
 
 **Plugin Identity:**
@@ -151,7 +152,7 @@ The `refs` field allows plugins to specify multiple git branches or tags that us
 
 ### Refs Field Structure
 
-```json
+```toml
 {
   "refs": [
     {
@@ -180,10 +181,9 @@ The `refs` field allows plugins to specify multiple git branches or tags that us
 ### Default Behavior
 
 If `refs` is omitted, it defaults to:
-```json
-{
-  "refs": [{"name": "main"}]
-}
+```toml
+[[plugins.refs]]
+name = "main"
 ```
 
 This means most plugins don't need to specify `refs` explicitly.
@@ -191,7 +191,7 @@ This means most plugins don't need to specify `refs` explicitly.
 ### Examples
 
 **Simple plugin (uses defaults):**
-```json
+```toml
 {
   "id": "simple-plugin",
   "uuid": "550e8400-e29b-41d4-a716-446655440000",
@@ -206,7 +206,7 @@ This means most plugins don't need to specify `refs` explicitly.
 ```
 
 **Plugin using master branch:**
-```json
+```toml
 {
   "id": "old-plugin",
   "uuid": "650e8400-e29b-41d4-a716-446655440001",
@@ -221,7 +221,7 @@ This means most plugins don't need to specify `refs` explicitly.
 ```
 
 **Plugin with beta channel:**
-```json
+```toml
 {
   "id": "my-plugin",
   "uuid": "750e8400-e29b-41d4-a716-446655440002",
@@ -245,7 +245,7 @@ This means most plugins don't need to specify `refs` explicitly.
 ```
 
 **Plugin supporting multiple Picard versions:**
-```json
+```toml
 {
   "id": "my-plugin",
   "uuid": "850e8400-e29b-41d4-a716-446655440003",
@@ -312,7 +312,7 @@ $ picard plugins --switch-ref my-plugin beta
 
 When Picard releases a new major version with breaking API changes, plugin authors can maintain separate branches:
 
-```json
+```toml
 {
   "refs": [
     {
@@ -336,7 +336,7 @@ Users on Picard 3.x continue receiving bug fixes on the `picard-v3-stable` branc
 
 Plugin authors can offer beta versions for testing:
 
-```json
+```toml
 {
   "refs": [
     {
@@ -357,7 +357,7 @@ Power users can opt into beta testing with `--ref beta`.
 
 Plugins can use any branch naming convention:
 
-```json
+```toml
 {
   "refs": [
     {"name": "master"},      // Old GitHub default
@@ -435,7 +435,7 @@ With `versioning_scheme`:
 ### Examples
 
 **Semantic versioning:**
-```json
+```toml
 {
   "id": "my-plugin",
   "uuid": "550e8400-e29b-41d4-a716-446655440000",
@@ -451,7 +451,7 @@ With `versioning_scheme`:
 ```
 
 **Custom version prefix:**
-```json
+```toml
 {
   "id": "my-plugin",
   "uuid": "650e8400-e29b-41d4-a716-446655440001",
@@ -467,7 +467,7 @@ With `versioning_scheme`:
 ```
 
 **With release candidates:**
-```json
+```toml
 {
   "id": "my-plugin",
   "uuid": "750e8400-e29b-41d4-a716-446655440002",
@@ -559,7 +559,7 @@ picard plugins --update my-plugin
 **2. Combined with Branch Refs**
 
 Use `versioning_scheme` for stable releases and `refs` for development:
-```json
+```toml
 {
   "versioning_scheme": "semver",
   "refs": [
@@ -658,7 +658,7 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 
 **Definition:** Plugins not in the official registry
 
-**Important:** This trust level does NOT appear in the registry JSON. It's assigned by Picard client-side when a plugin's git URL is not found in the registry.
+**Important:** This trust level does NOT appear in the registry TOML. It's assigned by Picard client-side when a plugin's git URL is not found in the registry.
 
 **Characteristics:**
 - URL not found in registry
@@ -684,7 +684,7 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 ### Blacklist Entry Types
 
 **By UUID (recommended):**
-```json
+```toml
 {
   "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
   "reason": "Contains malicious code",
@@ -693,7 +693,7 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 ```
 
 **By URL:**
-```json
+```toml
 {
   "url": "https://github.com/badactor/malicious-plugin",
   "reason": "Contains malicious code",
@@ -702,7 +702,7 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 ```
 
 **By URL regex:**
-```json
+```toml
 {
   "url_regex": "^https://github\\.com/badorg/.*",
   "reason": "Entire organization blacklisted for malicious activity",
@@ -724,7 +724,7 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 
 The blacklist supports regex patterns to block entire organizations:
 
-```json
+```toml
 {
   "url_regex": "^https://github\\.com/badorg/.*",
   "reason": "Entire organization blacklisted for malicious activity",
@@ -751,7 +751,7 @@ Redirects handle plugin repository changes transparently:
 
 ### Redirect Entry
 
-```json
+```toml
 {
   "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
   "id": "my-plugin",
@@ -798,7 +798,7 @@ Redirects handle plugin repository changes transparently:
 The registry supports two types of redirects:
 
 1. **URL redirects** - Plugin moved to different repository:
-```json
+```toml
 {
   "uuid": "a1b2c3d4-...",
   "git_url": "https://github.com/neworg/plugin",
@@ -809,7 +809,7 @@ The registry supports two types of redirects:
 ```
 
 2. **UUID redirects** - Plugin was forked/replaced (rare):
-```json
+```toml
 {
   "uuid": "new-uuid-...",
   "git_url": "https://github.com/org/plugin",
@@ -861,7 +861,7 @@ This allows users to:
 - Potentially rollback to original source if needed
 
 **Example metadata after redirect:**
-```json
+```toml
 {
   "test_plugin_a1b2c3d4": {
     "url": "https://github.com/neworg/plugin",
@@ -882,11 +882,11 @@ This allows users to:
 
 ```python
 class PluginRegistry:
-    REGISTRY_URL = "https://picard.musicbrainz.org/api/v3/plugins.json"
-    CACHE_FILE = "plugin_registry.json"
+    REGISTRY_URL = "https://picard.musicbrainz.org/api/v3/plugins.toml"
+    CACHE_FILE = "plugin_registry.json"  # Cache uses JSON internally
     CACHE_TTL = 86400  # 24 hours
 
-    # Registry trust levels (in registry JSON)
+    # Registry trust levels (in registry TOML)
     REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 
     # Client-side trust level values (includes unregistered for local plugins)
@@ -1043,7 +1043,7 @@ The registry uses git refs to track and detect plugin updates. Unlike semantic v
 
 **1. Registry stores available refs**
 
-Each plugin entry in `plugins.json` has a `refs` array listing available branches/tags. If omitted, defaults to `[{"name": "main"}]`.
+Each plugin entry in `plugins.toml` has a `refs` array listing available branches/tags. If omitted, defaults to `[{"name": "main"}]`.
 
 **2. Local installation stores commit hash**
 
@@ -1154,8 +1154,8 @@ de = "Submit listens deine Musik zu ListenBrainz"
 fr = "Submit listensz votre musique sur ListenBrainz"
 ```
 
-**In registry JSON:**
-```json
+**In registry TOML:**
+```toml
 {
   "name": "ListenBrainz Submitter",
   "description": "Submit your music to ListenBrainz",
@@ -1185,7 +1185,7 @@ Using the registry CLI tool:
 registry plugin edit <plugin-id> --trust trusted
 
 # Commit the change
-git add plugins.json
+git add plugins.toml
 git commit -m "Promote <plugin-id> to trusted"
 git push
 ```

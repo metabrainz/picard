@@ -44,7 +44,7 @@ class TestPluginRegistry(PicardTestCase):
         """Test that registry URL can be set via parameter."""
         from picard.plugin3.registry import PluginRegistry
 
-        custom_url = 'https://custom.example.com/registry.json'
+        custom_url = 'https://custom.example.com/registry.toml'
         registry = PluginRegistry(registry_url=custom_url)
         self.assertEqual(registry.registry_url, custom_url)
 
@@ -55,7 +55,7 @@ class TestPluginRegistry(PicardTestCase):
 
         from picard.plugin3.registry import PluginRegistry
 
-        custom_url = 'https://env.example.com/registry.json'
+        custom_url = 'https://env.example.com/registry.toml'
         with patch.dict(os.environ, {'PICARD_PLUGIN_REGISTRY_URL': custom_url}):
             registry = PluginRegistry()
             self.assertEqual(registry.registry_url, custom_url)
@@ -67,8 +67,8 @@ class TestPluginRegistry(PicardTestCase):
 
         from picard.plugin3.registry import PluginRegistry
 
-        param_url = 'https://param.example.com/registry.json'
-        env_url = 'https://env.example.com/registry.json'
+        param_url = 'https://param.example.com/registry.toml'
+        env_url = 'https://env.example.com/registry.toml'
 
         with patch.dict(os.environ, {'PICARD_PLUGIN_REGISTRY_URL': env_url}):
             registry = PluginRegistry(registry_url=param_url)
@@ -375,9 +375,9 @@ class TestPluginRegistry(PicardTestCase):
 
         from picard.plugin3.registry import PluginRegistry
 
-        registry = PluginRegistry()
+        registry = PluginRegistry(registry_url='https://test.example.com/registry.toml')
 
-        mock_response_data = b'{"blacklist": []}'
+        mock_response_data = b'blacklist = []'
 
         with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
             mock_response = Mock()
@@ -399,10 +399,10 @@ class TestPluginRegistry(PicardTestCase):
         from picard.plugin3.registry import PluginRegistry
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            # Create registry with cache_dir (not cache_path)
-            registry = PluginRegistry(cache_dir=tmpdir)
+            # Create registry with cache_dir and TOML URL
+            registry = PluginRegistry(registry_url='https://test.example.com/registry.toml', cache_dir=tmpdir)
 
-            mock_response_data = b'{"blacklist": [{"url": "test"}]}'
+            mock_response_data = b'[[blacklist]]\nurl = "test"'
 
             with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
                 mock_response = Mock()
@@ -418,7 +418,7 @@ class TestPluginRegistry(PicardTestCase):
                 self.assertTrue(registry.cache_path.exists())
 
             # Create new registry instance and load from cache
-            registry2 = PluginRegistry(cache_dir=tmpdir)
+            registry2 = PluginRegistry(registry_url='https://test.example.com/registry.toml', cache_dir=tmpdir)
             registry2.fetch_registry(use_cache=True)
 
             # Should have loaded from cache
@@ -457,7 +457,7 @@ class TestPluginRegistry(PicardTestCase):
 
         with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
             mock_response = Mock()
-            mock_response.read = Mock(return_value=b'invalid json{')
+            mock_response.read = Mock(return_value=b'invalid toml [')
             mock_response.__enter__ = Mock(return_value=mock_response)
             mock_response.__exit__ = Mock(return_value=False)
             mock_urlopen.return_value = mock_response
@@ -643,11 +643,11 @@ class TestPluginRegistry(PicardTestCase):
 
         from picard.plugin3.registry import PluginRegistry
 
-        registry = PluginRegistry(registry_url='https://test.example.com/registry.json')
+        registry = PluginRegistry(registry_url='https://test.example.com/registry.toml')
 
         # Mock urlopen to fail twice then succeed
         mock_response = MagicMock()
-        mock_response.read.return_value = b'{"plugins": []}'
+        mock_response.read.return_value = b'plugins = []'
         mock_response.__enter__.return_value = mock_response
         mock_response.__exit__.return_value = False
 
@@ -677,10 +677,10 @@ class TestPluginRegistry(PicardTestCase):
             RegistryFetchError,
         )
 
-        registry = PluginRegistry(registry_url='https://test.example.com/registry.json')
+        registry = PluginRegistry(registry_url='https://test.example.com/registry.toml')
 
         # Mock urlopen to return 404
-        http_error = HTTPError('https://test.example.com/registry.json', 404, 'Not Found', {}, None)
+        http_error = HTTPError('https://test.example.com/registry.toml', 404, 'Not Found', {}, None)
 
         with patch('picard.plugin3.registry.urlopen', side_effect=http_error):
             with patch('time.sleep'):  # Skip retry delays

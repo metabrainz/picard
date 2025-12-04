@@ -1,0 +1,189 @@
+api_version = "3.0"
+
+[[plugins]]
+id = "example-plugin"
+uuid = "ae5ef1ed-0195-4014-a113-6090de7cf8b7"
+name = "Example plugin"
+description = "This is an example plugin"
+git_url = "https://github.com/test/example"
+refs = [
+    { name = "main", min_api_version = "3.0" },
+]
+categories = [
+    "metadata",
+]
+trust_level = "official"
+authors = [
+    "Philipp Wolfer",
+]
+redirect_from = [
+    "https://github.com/olduser/example",
+    "https://github.com/olduser/old-name",
+]
+redirect_from_uuid = [
+    "old-uuid-1234",
+]
+added_at = "2025-11-01T10:00:00Z"
+updated_at = "2025-11-20T15:00:00Z"
+
+[[plugins]]
+id = "listenbrainz"
+uuid = "listenbrainz-uuid-5678"
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
+git_url = "https://github.com/metabrainz/picard-plugin-listenbrainz"
+refs = [
+    { name = "main", min_api_version = "3.0" },
+]
+categories = [
+    "metadata",
+]
+trust_level = "official"
+authors = [
+    "Philipp Wolfer",
+]
+added_at = "2025-11-01T10:00:00Z"
+updated_at = "2025-11-20T15:00:00Z"
+
+[plugins.name_i18n]
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+
+[plugins.description_i18n]
+de = "Sende deine Musik zu ListenBrainz"
+fr = "Soumettez votre musique sur ListenBrainz"
+
+[[plugins]]
+id = "discogs"
+uuid = "discogs-uuid-9012"
+name = "Discogs"
+description = "Get metadata from Discogs"
+git_url = "https://github.com/user/picard-plugin-discogs"
+refs = [
+    { name = "main", min_api_version = "3.0", max_api_version = "3.1" },
+]
+categories = [
+    "metadata",
+]
+trust_level = "trusted"
+authors = [
+    "Bob Swift",
+]
+added_at = "2025-11-05T10:00:00Z"
+updated_at = "2025-11-15T12:00:00Z"
+
+[[plugins]]
+id = "custom-tagger"
+uuid = "custom-tagger-uuid-3456"
+name = "Custom Tagger"
+description = "Apply custom tagging rules"
+git_url = "https://github.com/community/custom-tagger"
+refs = [
+    { name = "main", min_api_version = "3.0" },
+]
+categories = [
+    "metadata",
+    "scripting",
+]
+trust_level = "community"
+authors = [
+    "John Doe",
+]
+added_at = "2025-11-10T10:00:00Z"
+updated_at = "2025-11-10T10:00:00Z"
+
+[[plugins]]
+id = "coverart-plugin"
+uuid = "coverart-uuid-7890"
+name = "Cover Art Plugin"
+description = "Enhanced cover art support"
+git_url = "https://github.com/test/coverart"
+refs = [
+    { name = "main", min_api_version = "3.0" },
+]
+categories = [
+    "coverart",
+]
+trust_level = "trusted"
+authors = [
+    "Jane Doe",
+]
+added_at = "2025-11-12T10:00:00Z"
+updated_at = "2025-11-12T10:00:00Z"
+
+[[plugins]]
+id = "ui-plugin"
+uuid = "ui-plugin-uuid-2468"
+name = "UI Plugin"
+description = "UI enhancements"
+git_url = "https://github.com/test/ui-plugin"
+refs = [
+    { name = "main", min_api_version = "3.0" },
+]
+categories = [
+    "ui",
+]
+trust_level = "official"
+authors = [
+    "Test Author",
+]
+added_at = "2025-11-15T10:00:00Z"
+updated_at = "2025-11-15T10:00:00Z"
+
+[[plugins]]
+id = "multi-ref-plugin"
+uuid = "multi-ref-uuid-1234"
+name = "Multi-Ref Plugin"
+description = "Plugin with multiple refs for testing"
+git_url = "https://github.com/test/multi-ref"
+categories = [
+    "metadata",
+]
+trust_level = "community"
+authors = [
+    "Test Author",
+]
+added_at = "2025-11-25T10:00:00Z"
+updated_at = "2025-11-25T10:00:00Z"
+
+[[plugins.refs]]
+name = "main"
+description = "For Picard 4.x"
+min_api_version = "4.0"
+
+[[plugins.refs]]
+name = "beta"
+description = "Beta testing"
+min_api_version = "3.0"
+
+[[plugins.refs]]
+name = "picard-v3"
+description = "For Picard 3.x"
+min_api_version = "3.0"
+max_api_version = "3.99"
+
+[[blacklist]]
+url = "https://github.com/badactor/malicious-plugin"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
+
+[[blacklist]]
+url = "https://example.com/malicious.git"
+reason = "Malware detected"
+blacklisted_at = "2025-11-21T10:00:00Z"
+
+[[blacklist]]
+url_regex = "https://badsite\\.com/.*"
+reason = "Malicious site"
+blacklisted_at = "2025-11-22T10:00:00Z"
+
+[[blacklist]]
+uuid = "blacklisted-uuid-1234"
+reason = "Security vulnerability"
+blacklisted_at = "2025-11-23T10:00:00Z"
+
+[[blacklist]]
+url = "https://badsite.com/plugin.git"
+uuid = "malicious-uuid-5678"
+reason = "Contains malware"
+blacklisted_at = "2025-11-24T10:00:00Z"

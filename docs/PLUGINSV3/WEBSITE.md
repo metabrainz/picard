@@ -17,18 +17,18 @@ The plugin registry uses a **git repository as the database**. No traditional da
 ### Components
 
 1. **picard-plugins-registry** (Git repository)
-   - Contains `plugins.json` (the registry)
+   - Contains `plugins.toml` (the registry)
    - CLI tool to manipulate registry
    - Validation scripts
    - CI/CD for validation
 
 2. **picard.musicbrainz.org** (Website)
-   - Serves `plugins.json` at `/api/v3/plugins.json`
+   - Serves `plugins.toml` at `/api/v3/plugins.toml`
    - Displays plugin browser (HTML pages)
    - Fetches from GitHub (cached)
 
 3. **Picard Client**
-   - Downloads `plugins.json` from website
+   - Downloads `plugins.toml` from website
    - Caches locally
    - Uses for plugin discovery and blacklist checking
 
@@ -37,7 +37,7 @@ The plugin registry uses a **git repository as the database**. No traditional da
 ```
 1. Admin runs: registry plugin add <url> --trust community
    ↓
-2. CLI updates plugins.json in local git repo
+2. CLI updates plugins.toml in local git repo
    ↓
 3. Admin commits and pushes to GitHub
    ↓
@@ -45,7 +45,7 @@ The plugin registry uses a **git repository as the database**. No traditional da
    ↓
 5. Website fetches from GitHub (cached)
    ↓
-6. Website serves at /api/v3/plugins.json
+6. Website serves at /api/v3/plugins.toml
    ↓
 7. Picard downloads and caches
 ```
@@ -58,7 +58,7 @@ The plugin registry uses a **git repository as the database**. No traditional da
 
 ```
 picard-plugins-registry/
-├── plugins.json              # The registry (generated/managed)
+├── plugins.toml              # The registry (generated/managed)
 ├── registry_lib/
 │   ├── __init__.py
 │   ├── cli.py               # CLI argument parsing
@@ -163,7 +163,7 @@ registry plugin add https://github.com/user/multi-version-plugin \
 registry validate
 
 # Commit
-git add plugins.json
+git add plugins.toml
 git commit -m "Add plugin: Awesome Plugin"
 git push
 ```
@@ -190,7 +190,7 @@ registry plugin edit awesome-plugin --categories metadata,ui
 # Change git URL (when plugin permanently moves)
 registry plugin edit awesome-plugin --git-url https://github.com/neworg/awesome-plugin
 
-git add plugins.json
+git add plugins.toml
 git commit -m "Promote awesome-plugin to trusted"
 git push
 ```
@@ -212,7 +212,7 @@ registry ref list awesome-plugin
 # Remove ref
 registry ref remove awesome-plugin develop
 
-git add plugins.json
+git add plugins.toml
 git commit -m "Add develop ref to awesome-plugin"
 git push
 ```
@@ -228,7 +228,7 @@ registry plugin redirect awesome-plugin --list
 # Remove redirect
 registry plugin redirect awesome-plugin https://github.com/olduser/old-repo --remove
 
-git add plugins.json
+git add plugins.toml
 git commit -m "Add redirect for moved plugin"
 git push
 ```
@@ -247,7 +247,7 @@ registry blacklist add --url https://github.com/badactor/malware \
 registry blacklist add --url-regex "^https://github\\.com/badorg/.*" \
     --reason "Compromised account"
 
-git add plugins.json
+git add plugins.toml
 git commit -m "Blacklist malicious plugin"
 git push
 ```
@@ -351,7 +351,7 @@ The CI runs on every PR and push, ensuring:
 
 ## Website Integration
 
-**TODO:** Implement `https://picard.musicbrainz.org/registry/plugins.json` endpoint as fallback for the GitHub URL. This provides:
+**TODO:** Implement `https://picard.musicbrainz.org/registry/plugins.toml` endpoint as fallback for the GitHub URL. This provides:
 - Resilience if GitHub is unavailable or blocked
 - Ability to intentionally remove GitHub file to force all clients to use proxy
 - Control over caching headers and rate limiting
@@ -367,7 +367,7 @@ import requests
 from datetime import datetime, timedelta
 from pathlib import Path
 
-REGISTRY_URL = "https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/main/plugins.json"
+REGISTRY_URL = "https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/main/plugins.toml"
 CACHE_FILE = "/tmp/plugins_registry.json"
 CACHE_TTL = 3600  # 1 hour
 
@@ -392,7 +392,7 @@ def get_registry():
 
     return response.text
 
-@app.route('/api/v3/plugins.json')
+@app.route('/api/v3/plugins.toml')
 def plugins_json():
     """Serve plugin registry"""
     data = get_registry()
@@ -448,7 +448,7 @@ def plugins_json():
 
 3. **Simple Deployment**
    - Website just serves static JSON
-   - Can use CDN for plugins.json
+   - Can use CDN for plugins.toml
    - No database connection needed
 
 4. **Collaboration**

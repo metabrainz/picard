@@ -32,6 +32,8 @@ from test.picardtestcase import PicardTestCase
 from picard.plugin3.git_utils import get_local_path
 from picard.plugin3.registry import PluginRegistry
 
+import tomli_w
+
 
 class TestRegistryAdvanced(PicardTestCase):
     def test_get_local_path_remote_url(self):
@@ -58,23 +60,23 @@ class TestRegistryAdvanced(PicardTestCase):
             # Create corrupted cache file
             cache_dir = Path(tmpdir)
             # We need to know the hash to create the right filename
-            # Use default registry URL to get predictable hash
+            # Use custom TOML URL to get predictable hash
 
-            from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
             from picard.plugin3.plugin import hash_string
 
-            url_hash = hash_string(DEFAULT_PLUGIN_REGISTRY_URLS[0])
+            test_url = 'https://test.example.com/registry.toml'
+            url_hash = hash_string(test_url)
             cache_file = cache_dir / f'plugin_registry_{url_hash}.json'
             cache_file.write_text('invalid json{')
 
-            # Mock urlopen to return valid data
+            # Mock urlopen to return valid TOML data
             mock_response = Mock()
-            mock_response.read = Mock(return_value=b'{"plugins": [], "blacklist": []}')
+            mock_response.read = Mock(return_value=b'plugins = []\nblacklist = []')
             mock_response.__enter__ = Mock(return_value=mock_response)
             mock_response.__exit__ = Mock(return_value=False)
 
             with patch('picard.plugin3.registry.urlopen', return_value=mock_response):
-                registry = PluginRegistry(cache_dir=tmpdir)
+                registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
                 registry.fetch_registry()
                 # Should have fetched and created data
                 self.assertIsNotNone(registry._registry_data)
@@ -83,8 +85,8 @@ class TestRegistryAdvanced(PicardTestCase):
         """Test registry can load from local file path."""
         registry_data = {'plugins': [{'id': 'test', 'git_url': 'https://example.com/test.git'}], 'blacklist': []}
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
+            tomli_w.dump(registry_data, f)
             registry_file = f.name
 
         try:
@@ -100,8 +102,8 @@ class TestRegistryAdvanced(PicardTestCase):
         """Test registry handles cache save errors gracefully."""
         registry_data = {'plugins': [], 'blacklist': []}
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
+            tomli_w.dump(registry_data, f)
             registry_file = f.name
 
         try:
@@ -171,7 +173,7 @@ class TestRegistryAdvanced(PicardTestCase):
         from picard.plugin3.registry import RegistryFetchError
 
         with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
-            registry = PluginRegistry(registry_url='https://invalid.example.com/registry.json')
+            registry = PluginRegistry(registry_url='https://invalid.example.com/registry.toml')
 
             # Should raise RegistryFetchError
             with self.assertRaises(RegistryFetchError):
@@ -192,8 +194,8 @@ class TestRegistryAdvanced(PicardTestCase):
             'blacklist': [],
         }
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
+            tomli_w.dump(registry_data, f)
             registry_file = f.name
 
         try:
@@ -208,8 +210,8 @@ class TestRegistryAdvanced(PicardTestCase):
         """Test find_plugin fetches registry if not loaded."""
         registry_data = {'plugins': [{'id': 'test-plugin', 'git_url': 'https://example.com/test.git'}], 'blacklist': []}
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
+            tomli_w.dump(registry_data, f)
             registry_file = f.name
 
         try:
@@ -225,8 +227,8 @@ class TestRegistryAdvanced(PicardTestCase):
         """Test list_plugins fetches registry if not loaded."""
         registry_data = {'plugins': [{'id': 'test', 'trust_level': 'official'}], 'blacklist': []}
 
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-            json.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
+            tomli_w.dump(registry_data, f)
             registry_file = f.name
 
         try:

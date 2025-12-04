@@ -6,7 +6,7 @@ set -e
 
 TEST_DIR=$(mktemp -d)
 PLUGIN_REPO="$TEST_DIR/test-plugin"
-REGISTRY_FILE="$TEST_DIR/registry.json"
+REGISTRY_FILE="$TEST_DIR/registry.toml"
 TEST_PLUGIN_UUID="12345678-1234-4678-9234-123456789abc"
 
 # Use local registry (direct path, no file:// prefix)
@@ -76,18 +76,12 @@ cd - > /dev/null
 
 # Create local registry file
 cat > "$REGISTRY_FILE" << EOF
-{
-  "plugins": [
-    {
-      "id": "test-plugin",
-      "name": "Test Plugin",
-      "git_url": "$PLUGIN_REPO",
-      "uuid": "$TEST_PLUGIN_UUID",
-      "versioning_scheme": "semver"
-    }
-  ],
-  "blacklist": []
-}
+[[plugins]]
+id = "test-plugin"
+name = "Test Plugin"
+git_url = "$PLUGIN_REPO"
+uuid = "$TEST_PLUGIN_UUID"
+versioning_scheme = "semver"
 EOF
 echo "✓ Created plugin repository and registry"
 echo

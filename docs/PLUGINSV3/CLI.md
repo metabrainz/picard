@@ -936,7 +936,7 @@ picard plugins --refresh-registry --browse
 picard plugins --refresh-registry --install view-script-variables
 
 # After changing PICARD_PLUGIN_REGISTRY_URL
-export PICARD_PLUGIN_REGISTRY_URL="https://example.com/custom-registry.json"
+export PICARD_PLUGIN_REGISTRY_URL="https://example.com/custom-registry.toml"
 picard plugins --refresh-registry --browse
 ```
 

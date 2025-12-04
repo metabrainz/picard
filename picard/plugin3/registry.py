@@ -33,6 +33,8 @@ from picard.plugin3.git_utils import (
 )
 from picard.plugin3.plugin import hash_string
 
+import tomllib
+
 
 # Retry configuration for registry fetch operations
 REGISTRY_FETCH_MAX_RETRIES = 3
@@ -178,11 +180,11 @@ class PluginRegistry:
                 if registry_path.exists() and registry_path.is_file():
                     log.debug('Loading registry from local file: %s', file_path)
                     try:
-                        with open(registry_path, 'r') as f:
-                            self._registry_data = json.load(f)
-                            self.registry_url = url  # Update to successful URL
-                            break  # Success!
-                    except json.JSONDecodeError as e:
+                        with open(registry_path, 'rb') as f:
+                            self._registry_data = tomllib.load(f)
+                        self.registry_url = url  # Update to successful URL
+                        break  # Success!
+                    except tomllib.TOMLDecodeError as e:
                         raise RegistryParseError(url, e) from e
                     except Exception as e:
                         raise RegistryFetchError(url, e) from e
@@ -193,10 +195,10 @@ class PluginRegistry:
                             timeout = REGISTRY_FETCH_INITIAL_TIMEOUT * (REGISTRY_FETCH_TIMEOUT_MULTIPLIER**attempt)
                             with urlopen(url, timeout=timeout) as response:
                                 data = response.read()
-                                self._registry_data = json.loads(data)
+                                self._registry_data = tomllib.loads(data.decode('utf-8'))
                                 self.registry_url = url  # Update to successful URL
                                 break  # Success!
-                        except json.JSONDecodeError as e:
+                        except tomllib.TOMLDecodeError as e:
                             raise RegistryParseError(url, e) from e
                         except urllib.error.HTTPError as e:
                             # Don't retry 4xx client errors (except 404 which might mean intentional removal)

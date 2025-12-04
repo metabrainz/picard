@@ -19,7 +19,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from io import StringIO
-import json
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -115,15 +114,17 @@ def load_plugin_manifest(plugin_name: str) -> PluginManifest:
 
 
 def load_test_registry():
-    """Load test registry data from test/data/testplugins3/registry.json."""
-    registry_path = Path(get_test_data_path('testplugins3', 'registry.json'))
-    with open(registry_path, 'r') as f:
-        return json.load(f)
+    """Load test registry data from test/data/testplugins3/registry.toml."""
+    import tomllib
+
+    registry_path = Path(get_test_data_path('testplugins3', 'registry.toml'))
+    with open(registry_path, 'rb') as f:
+        return tomllib.load(f)
 
 
 def get_test_registry_path():
     """Get path to test registry file."""
-    return Path(get_test_data_path('testplugins3', 'registry.json'))
+    return Path(get_test_data_path('testplugins3', 'registry.toml'))
 
 
 def create_test_registry():
