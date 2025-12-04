@@ -246,6 +246,55 @@ class MyAction(BaseAction):
 
 ---
 
+## Translation Methods
+
+### `get_locale() -> str`
+
+Get the current locale used by Picard.
+
+```python
+def enable(api):
+    locale = api.get_locale()  # e.g., 'en_US', 'de_DE', 'pt_BR'
+    api.logger.info(f"Current locale: {locale}")
+```
+
+---
+
+### `tr(key, text=None, **kwargs) -> str`
+
+Translate a string for the plugin.
+
+```python
+def enable(api):
+    # With fallback text
+    greeting = api.tr('greeting', 'Hello')
+
+    # With placeholders
+    message = api.tr('welcome', 'Welcome {name}', name='User')
+
+    # Key only (returns key if no translation)
+    label = api.tr('submit_button')
+```
+
+**See**: [TRANSLATIONS.md](TRANSLATIONS.md) for complete translation system documentation.
+
+---
+
+### `trn(key, singular=None, plural=None, n=0, **kwargs) -> str`
+
+Translate a string with plural forms.
+
+```python
+def enable(api):
+    # Plural translation
+    count_msg = api.trn('files', '{n} file', '{n} files', n=5)
+    # Result: "5 files" (English) or "5 Dateien" (German)
+```
+
+**See**: [TRANSLATIONS.md](TRANSLATIONS.md) for plural forms and CLDR rules.
+
+---
+
 ## Registration Methods
 
 ### Metadata Processors
