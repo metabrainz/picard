@@ -63,7 +63,12 @@ class BaseAction(QtGui.QAction):
 
     def __callback(self):
         objs = self.tagger.window.selected_objects
-        self.callback(objs)
+        try:
+            self.callback(objs)
+        except Exception:
+            from picard import log
+
+            log.error("Error in action %s:", self.NAME, exc_info=True)
 
     def callback(self, objs):
         raise NotImplementedError
