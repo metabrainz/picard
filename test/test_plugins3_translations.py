@@ -39,12 +39,16 @@ class TestPluginManifestSourceLocale(PicardTestCase):
     def test_source_locale_from_manifest(self):
         """Test source_locale reads from MANIFEST.toml."""
         with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
+            temp_path = Path(f.name)
             f.write(b'name = "Test"\nsource_locale = "de_DE"\n')
             f.flush()
-            with open(f.name, 'rb') as manifest_fp:
+
+        try:
+            with open(temp_path, 'rb') as manifest_fp:
                 manifest = PluginManifest('test', manifest_fp)
                 self.assertEqual(manifest.source_locale, 'de_DE')
-            Path(f.name).unlink()
+        finally:
+            temp_path.unlink(missing_ok=True)
 
 
 class TestPluginApiLocale(PicardTestCase):
