@@ -15,6 +15,8 @@ Plugin v3 supports two types of translations:
 
 ## Plugin UI Translations
 
+**Note:** This section describes the current simple key-based approach. See the "PROPOSED: Alternative Translation Approach" section below for a more advanced approach with inline text.
+
 ### File Structure
 
 ```
@@ -34,7 +36,7 @@ Simple flat JSON structure with dot notation for namespacing:
 
 ```json
 {
-  "ui.menu.submit listens": "Submit listens Now",
+  "ui.menu.submit_listens": "Submit Listens Now",
   "ui.menu.configure": "Configure ListenBrainz",
   "ui.button.login": "Login to ListenBrainz",
   "ui.button.logout": "Logout",
@@ -47,7 +49,7 @@ Simple flat JSON structure with dot notation for namespacing:
   "error.auth_failed": "Authentication failed",
 
   "status.submitting_listens": "Submitting: {artist} - {title}",
-  "status.submit listensd": "Submit listensd {count} tracks",
+  "status.submitted": "Submitted {count} tracks",
 
   "message.login_success": "Successfully logged in as {username}"
 }
@@ -66,8 +68,8 @@ def enable(api: PluginApi):
     # Returns: "Login to ListenBrainz"
 
     # With parameters
-    message = _('status.submit listensd', count=5)
-    # Returns: "Submit listensd 5 tracks"
+    message = _('status.submitted', count=5)
+    # Returns: "Submitted 5 tracks"
 
     # Error messages
     error_msg = _('error.network', error='Connection timeout')
@@ -122,8 +124,8 @@ fr = "Soumetteur ListenBrainz"
 ja = "ListenBrainzサブミッター"
 
 [description_i18n]
-de = "Submit listens deine Musik zu ListenBrainz"
-fr = "Submit listensz votre musique sur ListenBrainz"
+de = "Sende deine Musik zu ListenBrainz"
+fr = "Soumettez votre musique sur ListenBrainz"
 ja = "ListenBrainzに音楽をスクロブルする"
 ```
 
@@ -143,8 +145,8 @@ fr = "Soumetteur ListenBrainz"
 ja = "ListenBrainzサブミッター"
 
 [plugins.description_i18n]
-de = "Submit listens deine Musik zu ListenBrainz"
-fr = "Submit listensz votre musique sur ListenBrainz"
+de = "Sende deine Musik zu ListenBrainz"
+fr = "Soumettez votre musique sur ListenBrainz"
 ja = "ListenBrainzに音楽をスクロブルする"
 ```
 
@@ -314,7 +316,7 @@ fr = "Submit listensz votre musique sur ListenBrainz"
   "ui.button.login": "Login to ListenBrainz",
   "ui.button.logout": "Logout",
   "error.auth_failed": "Authentication failed",
-  "status.submit listensd": "Submit listensd {count} tracks"
+  "status.submitted": "Submitted {count} tracks"
 }
 ```
 
@@ -324,7 +326,7 @@ fr = "Submit listensz votre musique sur ListenBrainz"
   "ui.button.login": "Bei ListenBrainz anmelden",
   "ui.button.logout": "Abmelden",
   "error.auth_failed": "Authentifizierung fehlgeschlagen",
-  "status.submit listensd": "{count} Titel geübermittelt Hördaten"
+  "status.submitted": "{count} Titel übermittelt"
 }
 ```
 
@@ -340,7 +342,7 @@ def enable(api: PluginApi):
     logout_text = _('ui.button.logout')
 
     # With parameters
-    status = _('status.submit listensd', count=5)
+    status = _('status.submitted', count=5)
 ```
 
 ---
