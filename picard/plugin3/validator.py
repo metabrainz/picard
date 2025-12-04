@@ -139,8 +139,14 @@ def validate_manifest_dict(manifest_data):
         elif len(maintainers) == 0:
             errors.append("Field 'maintainers' must contain at least one maintainer if present")
 
-    # Categories - no validation, list is informational only
-    # This allows forward/backward compatibility when categories change
+    # Categories validation (optional field)
+    # No validation of category values - allows forward/backward compatibility
+    if 'categories' in manifest_data:
+        categories = manifest_data.get('categories', [])
+        if not isinstance(categories, list):
+            errors.append("Field 'categories' must be an array")
+        elif len(categories) == 0:
+            errors.append("Field 'categories' must contain at least one category if present")
 
     # Empty i18n sections
     for section in ['name_i18n', 'description_i18n', 'long_description_i18n']:

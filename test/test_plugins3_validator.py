@@ -186,6 +186,38 @@ class TestManifestValidator(PicardTestCase):
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
+    def test_validate_empty_categories(self):
+        """Test validation catches empty categories array."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+            'authors': ['Test Author'],
+            'license': 'GPL-2.0-or-later',
+            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
+            'categories': [],  # Empty
+        }
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'categories' must contain at least one category if present", errors)
+
+    def test_validate_categories_wrong_type(self):
+        """Test validation catches wrong type for categories."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+            'authors': ['Test Author'],
+            'license': 'GPL-2.0-or-later',
+            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
+            'categories': 'metadata',  # Should be array
+        }
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'categories' must be an array", errors)
+
     def test_validate_empty_i18n_sections(self):
         """Test validation catches empty i18n sections."""
         manifest = {
