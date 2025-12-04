@@ -732,7 +732,7 @@ def enable(api):
 3. **Log appropriately**: Use `debug` for verbose, `info` for important events
 4. **Handle errors gracefully**: Wrap risky operations in try/except
 5. **Set priorities wisely**: Only use non-zero priorities when order matters
-6. **Pass api to parent classes**: Always call `super().__init__(api=api, parent=parent)` in BaseAction and OptionsPage subclasses
+6. **Pass api to parent classes**: Always call `super().__init__(api=api)` in BaseAction subclasses and `super().__init__(api=api, parent=parent)` in OptionsPage subclasses
 
 ---
 
