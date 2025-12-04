@@ -1,0 +1,14 @@
+uuid = "12345678-1234-1234-1234-123456789abc"
+name = "Translated Plugin"
+description = "A test plugin with translations"
+api = ["3.0"]
+authors = ["Test Author"]
+source_locale = "en"
+
+[name_i18n]
+de = "Übersetztes Plugin"
+fr = "Plugin traduit"
+
+[description_i18n]
+de = "Ein Test-Plugin mit Übersetzungen"
+fr = "Un plugin de test avec des traductions"

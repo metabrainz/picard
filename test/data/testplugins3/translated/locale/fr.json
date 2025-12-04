@@ -1,0 +1,9 @@
+{
+  "greeting": "Bonjour",
+  "farewell": "Au revoir",
+  "files": {
+    "one": "{n} fichier",
+    "other": "{n} fichiers"
+  },
+  "qt.SettingsDialog.Apply": "Appliquer"
+}
