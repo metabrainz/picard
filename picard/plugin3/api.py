@@ -118,7 +118,7 @@ class PluginApi:
         self._tagger: Tagger = tagger
         self._manifest = manifest
         full_name = f'plugin.{self._manifest.module_name}'
-        self._logger = getLogger(full_name)
+        self._logger = getLogger(f'main.{full_name}')
         self._api_config = ConfigSection(get_config(), full_name)
         self._translations = {}
         self._source_locale = manifest.source_locale

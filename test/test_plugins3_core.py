@@ -321,7 +321,7 @@ class TestPluginApi(PicardTestCase):
 
         api = PluginApi(manifest, mock_tagger)
         self.assertEqual(api.web_service, mock_ws)
-        self.assertEqual(api.logger.name, 'plugin.example')
+        self.assertEqual(api.logger.name, 'main.plugin.example')
         self.assertEqual(api.global_config, get_config())
         self.assertIsInstance(api.plugin_config, ConfigSection)
 
@@ -340,6 +340,33 @@ class TestPluginApi(PicardTestCase):
         self.assertIsNotNone(api.logger)
         self.assertIsNotNone(api.global_config)
         self.assertIsNotNone(api.plugin_config)
+
+    def test_logger_propagates_to_main(self):
+        """Test that plugin logger messages propagate to main logger."""
+        import logging
+        from unittest.mock import MagicMock
+
+        from picard import log
+
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, MockTagger())
+
+        # Create a mock handler to capture log messages
+        mock_handler = MagicMock(spec=logging.Handler)
+        mock_handler.level = logging.DEBUG
+        log.main_logger.addHandler(mock_handler)
+
+        try:
+            # Log messages at different levels
+            api.logger.info("Test info message")
+            api.logger.debug("Test debug message")
+
+            # Verify messages were handled
+            self.assertGreater(
+                mock_handler.handle.call_count, 0, "Plugin logger messages should propagate to main logger"
+            )
+        finally:
+            log.main_logger.removeHandler(mock_handler)
 
     def test_register_metadata_processors(self):
         """Test metadata processor registration methods."""
