@@ -78,6 +78,7 @@ from picard.extension_points.script_variables import register_script_variable
 from picard.extension_points.ui_init import register_ui_init
 from picard.file import File
 from picard.metadata import Metadata
+from picard.plugin3.i18n import get_plural_form
 from picard.plugin3.manifest import PluginManifest
 from picard.track import Track
 from picard.webservice import WebService
@@ -192,6 +193,64 @@ class PluginApi:
         # Fall back to text parameter or key
         if result is None:
             result = text if text is not None else key
+
+        # Apply placeholder substitution
+        if kwargs:
+            result = result.format(**kwargs)
+
+        return result
+
+    def trn(self, key: str, singular: str | None = None, plural: str | None = None, n: int = 0, **kwargs) -> str:
+        """Translate a string with plural forms.
+
+        Args:
+            key: Translation key
+            singular: Default singular text (for n=1 in English)
+            plural: Default plural text (for n!=1 in English)
+            n: Number to determine plural form
+            **kwargs: Placeholder values for string formatting (should include n)
+
+        Returns:
+            Translated string with placeholders substituted
+        """
+        # Ensure n is in kwargs for formatting
+        if 'n' not in kwargs:
+            kwargs['n'] = n
+
+        result = None
+
+        # Try to get translation from loaded files
+        if hasattr(self, '_current_locale'):
+            locale = self._current_locale
+            plural_form = get_plural_form(locale, n)
+
+            # Try exact locale match
+            if locale in self._translations and key in self._translations[locale]:
+                trans = self._translations[locale][key]
+                if isinstance(trans, dict) and plural_form in trans:
+                    result = trans[plural_form]
+                elif isinstance(trans, dict) and 'other' in trans:
+                    result = trans['other']
+            else:
+                # Try language without region
+                lang = locale.split('_')[0]
+                if lang in self._translations and key in self._translations[lang]:
+                    trans = self._translations[lang][key]
+                    if isinstance(trans, dict) and plural_form in trans:
+                        result = trans[plural_form]
+                    elif isinstance(trans, dict) and 'other' in trans:
+                        result = trans['other']
+
+        # Fall back to singular/plural parameters
+        if result is None:
+            if n == 1 and singular is not None:
+                result = singular
+            elif plural is not None:
+                result = plural
+            elif singular is not None:
+                result = singular
+            else:
+                result = key
 
         # Apply placeholder substitution
         if kwargs:

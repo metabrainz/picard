@@ -155,3 +155,70 @@ class TestPluginTranslationLookup(PicardTestCase):
         api = self._create_api_with_translations('de')
         result = api.tr('unknown_key')
         self.assertEqual(result, 'unknown_key')
+
+
+class TestPluginPluralTranslations(PicardTestCase):
+    def _create_api_with_plurals(self, locale='en'):
+        """Helper to create API with plural translations."""
+        tmpdir = tempfile.mkdtemp()
+        plugin_dir = Path(tmpdir)
+        locale_dir = plugin_dir / 'locale'
+        locale_dir.mkdir()
+
+        (locale_dir / 'en.json').write_text(json.dumps({'files': {'one': '{n} file', 'other': '{n} files'}}))
+        (locale_dir / 'pl.json').write_text(
+            json.dumps({'files': {'one': '{n} plik', 'few': '{n} pliki', 'many': '{n} plików'}})
+        )
+
+        manifest_path = plugin_dir / 'MANIFEST.toml'
+        manifest_path.write_text('name = "Test"\n')
+
+        with open(manifest_path, 'rb') as f:
+            manifest = PluginManifest('test', f)
+            api = PluginApi(manifest, Mock())
+            api._plugin_dir = plugin_dir
+            api._current_locale = locale
+            api._load_translations()
+            return api
+
+    def test_trn_english_singular(self):
+        """Test trn() with English singular form."""
+        api = self._create_api_with_plurals('en')
+        result = api.trn('files', '{n} file', '{n} files', n=1)
+        self.assertEqual(result, '1 file')
+
+    def test_trn_english_plural(self):
+        """Test trn() with English plural form."""
+        api = self._create_api_with_plurals('en')
+        result = api.trn('files', '{n} file', '{n} files', n=5)
+        self.assertEqual(result, '5 files')
+
+    def test_trn_polish_one(self):
+        """Test trn() with Polish 'one' form."""
+        api = self._create_api_with_plurals('pl')
+        result = api.trn('files', '{n} file', '{n} files', n=1)
+        self.assertEqual(result, '1 plik')
+
+    def test_trn_polish_few(self):
+        """Test trn() with Polish 'few' form."""
+        api = self._create_api_with_plurals('pl')
+        result = api.trn('files', '{n} file', '{n} files', n=3)
+        self.assertEqual(result, '3 pliki')
+
+    def test_trn_polish_many(self):
+        """Test trn() with Polish 'many' form."""
+        api = self._create_api_with_plurals('pl')
+        result = api.trn('files', '{n} file', '{n} files', n=5)
+        self.assertEqual(result, '5 plików')
+
+    def test_trn_fallback_to_singular(self):
+        """Test trn() falls back to singular parameter."""
+        api = self._create_api_with_plurals('en')
+        result = api.trn('unknown', '{n} item', '{n} items', n=1)
+        self.assertEqual(result, '1 item')
+
+    def test_trn_fallback_to_plural(self):
+        """Test trn() falls back to plural parameter."""
+        api = self._create_api_with_plurals('en')
+        result = api.trn('unknown', '{n} item', '{n} items', n=5)
+        self.assertEqual(result, '5 items')
