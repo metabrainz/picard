@@ -151,8 +151,7 @@ from picard.plugin3.api import OptionsPage
 
 class MyOptionsPage(OptionsPage):
     def __init__(self, api=None, parent=None):
-        super().__init__(parent)
-        self.api = api
+        super().__init__(api=api, parent=parent)
 
     def load(self):
         # Load from plugin config
@@ -237,7 +236,6 @@ class MyAction(BaseAction):
 
     def __init__(self, api=None):
         super().__init__(api=api)
-        self.api = api
 
     def callback(self, objs):
         for obj in objs:
@@ -417,7 +415,6 @@ class MyAction(BaseAction):
 
     def __init__(self, api=None):
         super().__init__(api=api)
-        self.api = api
 
     def callback(self, objs):
         for obj in objs:
@@ -431,7 +428,7 @@ def enable(api):
     api.register_clusterlist_action(MyAction)
 ```
 
-**Note**: Pass the class, not an instance. Picard instantiates it with `api` parameter. Always call `super().__init__(api=api)` to properly initialize the parent class.
+**Note**: Pass the class, not an instance. Picard instantiates it with `api` parameter. Always call `super().__init__(api=api)` to properly initialize the parent class, which automatically sets `self.api` for you.
 
 ---
 
@@ -450,8 +447,7 @@ class MyOptionsPage(OptionsPage):
     PARENT = "plugins"
 
     def __init__(self, api=None, parent=None):
-        super().__init__(parent)
-        self.api = api
+        super().__init__(api=api, parent=parent)
         # Build UI
 
     def load(self):
@@ -627,8 +623,8 @@ from picard.plugin3.api import OptionsPage
 
 class MyPage(OptionsPage):
     def __init__(self, api=None, parent=None):
-        super().__init__(parent)
-        self.api = api  # Store for later use
+        super().__init__(api=api, parent=parent)
+        # self.api is automatically set by parent class
 
     def load(self):
         self.api.logger.info("Loading")
@@ -680,8 +676,7 @@ class MyOptionsPage(OptionsPage):
     PARENT = "plugins"
 
     def __init__(self, api=None, parent=None):
-        super().__init__(parent)
-        self.api = api
+        super().__init__(api=api, parent=parent)
         self.checkbox = QCheckBox("Enable processing")
         self.layout().addWidget(self.checkbox)
 
@@ -710,7 +705,6 @@ class MyAction(BaseAction):
 
     def __init__(self, api=None):
         super().__init__(api=api)
-        self.api = api
 
     def callback(self, objs):
         self.api.logger.info(f"Action on {len(objs)} objects")
@@ -738,7 +732,7 @@ def enable(api):
 3. **Log appropriately**: Use `debug` for verbose, `info` for important events
 4. **Handle errors gracefully**: Wrap risky operations in try/except
 5. **Set priorities wisely**: Only use non-zero priorities when order matters
-6. **Store api in classes**: Always store `self.api = api` in `__init__`
+6. **Pass api to parent classes**: Always call `super().__init__(api=api, parent=parent)` in BaseAction and OptionsPage subclasses
 
 ---
 
