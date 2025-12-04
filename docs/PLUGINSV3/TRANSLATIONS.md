@@ -127,26 +127,25 @@ fr = "Submit listensz votre musique sur ListenBrainz"
 ja = "ListenBrainzに音楽をスクロブルする"
 ```
 
-### In Registry JSON
+### In Registry TOML
 
 The website extracts these translations and includes them in the registry:
 
-```json
-{
-  "id": "listenbrainz",
-  "name": "ListenBrainz Submitter",
-  "description": "Submit your music to ListenBrainz",
-  "name_i18n": {
-    "de": "ListenBrainz-Submitter",
-    "fr": "Soumetteur ListenBrainz",
-    "ja": "ListenBrainzサブミッター"
-  },
-  "description_i18n": {
-    "de": "Submit listens deine Musik zu ListenBrainz",
-    "fr": "Submit listensz votre musique sur ListenBrainz",
-    "ja": "ListenBrainzに音楽をスクロブルする"
-  }
-}
+```toml
+[[plugins]]
+id = "listenbrainz"
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
+
+[plugins.name_i18n]
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+ja = "ListenBrainzサブミッター"
+
+[plugins.description_i18n]
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
+ja = "ListenBrainzに音楽をスクロブルする"
 ```
 
 ### Benefits
@@ -258,7 +257,7 @@ class PluginApi:
 
 1. Scan plugin repositories
 2. Extract `name_i18n` and `description_i18n` from MANIFEST.toml
-3. Include in registry JSON
+3. Include in registry TOML
 4. Serve to clients
 
 ---
