@@ -423,6 +423,47 @@ class TestPluginApi(PicardTestCase):
         finally:
             config_file.unlink(missing_ok=True)
 
+    def test_plugin_config_get_without_options(self):
+        """Test that plugin_config.get() works without registered Options."""
+        from pathlib import Path
+        import tempfile
+
+        from PyQt6.QtCore import QSettings
+
+        manifest = load_plugin_manifest('example')
+
+        # Create a temporary config file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            # Create a real QSettings instance
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+
+            # Create mock tagger
+            mock_tagger = MockTagger()
+
+            # Create API
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Set values without registering Options
+            api.plugin_config['text_value'] = 'hello'
+            api.plugin_config['int_value'] = 42
+            api.plugin_config['bool_value'] = True
+
+            # get() should work and return raw values
+            self.assertEqual(api.plugin_config.get('text_value'), 'hello')
+            self.assertEqual(api.plugin_config.get('int_value'), 42)
+            self.assertEqual(api.plugin_config.get('bool_value'), True)
+
+            # get() with default should return default for missing keys
+            self.assertEqual(api.plugin_config.get('missing_key', 'default'), 'default')
+            self.assertEqual(api.plugin_config.get('missing_int', 99), 99)
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
     def test_plugin_config_with_options(self):
         """Test that plugin config works with registered Options."""
         from pathlib import Path

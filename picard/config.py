@@ -101,8 +101,13 @@ class ConfigSection(QtCore.QObject):
         Returns:
             Config value or default
         """
+        # Try to get value using registered Option first
         value = self[name]
-        return value if value is not None else default
+        if value is not None:
+            return value
+        # Fall back to raw value if no Option is registered
+        raw = self.raw_value(name)
+        return raw if raw is not None else default
 
     def as_dict(self):
         return {key: self[key] for section, key in list(Option.registry) if section == self.__name}
