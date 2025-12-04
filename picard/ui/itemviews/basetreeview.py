@@ -230,7 +230,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     MainAction.OPEN_FOLDER,
                     MainAction.TRACK_SEARCH,
                 )
-                plugin_actions.extend(ext_point_file_actions)
+                # Extend with file actions, avoiding duplicates
+                file_actions = list(ext_point_file_actions)
+                plugin_actions.extend(a for a in file_actions if a not in plugin_actions)
             add_actions(
                 MainAction.BROWSER_LOOKUP,
                 MainAction.GENERATE_FINGERPRINTS if obj.num_linked_files > 0 else None,
