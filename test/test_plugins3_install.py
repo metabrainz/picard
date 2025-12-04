@@ -29,7 +29,6 @@ from test.test_plugins3_helpers import (
     run_cli,
 )
 
-from picard.config import get_config
 from picard.plugin3.manager import UpdateResult
 
 
@@ -328,6 +327,7 @@ class TestPluginInstall(PicardTestCase):
     def test_uninstall_with_purge(self):
         """Test uninstall with purge removes configuration."""
         from pathlib import Path
+        from unittest.mock import patch
 
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
@@ -346,19 +346,38 @@ class TestPluginInstall(PicardTestCase):
             mock_plugin.plugin_id = 'test-plugin'
             mock_plugin.local_path = plugin_path
             mock_plugin.disable = Mock()
+            mock_plugin.manifest = Mock()
+            mock_plugin.manifest.uuid = 'test-uuid'
 
             # Set manager's plugin dir to temp dir
             manager._primary_plugin_dir = Path(tmpdir)
 
-            # Set up plugin config
-            config = get_config()
-            config.setting['test-plugin'] = {'some_setting': 'value'}
+            # Mock config to track what gets removed
+            mock_config = Mock()
+            mock_config.setting = {'plugins3_metadata': {}, 'plugins3_enabled_plugins': []}
+            mock_removed_keys = []
 
-            # Uninstall with purge
-            manager.uninstall_plugin(mock_plugin, purge=True)
+            def mock_remove(key):
+                mock_removed_keys.append(key)
 
-            # Config should be removed
-            self.assertNotIn('test-plugin', config.setting)
+            mock_config.remove = mock_remove
+            mock_config.childKeys = Mock(return_value=['some_setting', 'another_setting'])
+            mock_config.beginGroup = Mock()
+            mock_config.endGroup = Mock()
+
+            with patch('picard.plugin3.manager.get_config', return_value=mock_config):
+                # Uninstall with purge
+                manager.uninstall_plugin(mock_plugin, purge=True)
+
+            # Verify config groups were accessed correctly
+            self.assertEqual(mock_config.beginGroup.call_count, 2)
+            mock_config.beginGroup.assert_any_call('setting')
+            mock_config.beginGroup.assert_any_call('plugin.test-plugin')
+
+            # Verify all settings were removed
+            self.assertEqual(len(mock_removed_keys), 2)
+            self.assertIn('some_setting', mock_removed_keys)
+            self.assertIn('another_setting', mock_removed_keys)
 
     def test_install_command_execution(self):
         """Test install command execution path."""

@@ -1171,9 +1171,15 @@ class PluginManager:
 
         # Remove plugin config if purge requested
         if purge:
-            if plugin.plugin_id in config.setting:
-                del config.setting[plugin.plugin_id]
-                log.info('Deleted configuration for plugin %s', plugin.plugin_id)
+            config_key = f'plugin.{plugin.plugin_id}'
+            # Remove all settings under plugin.{plugin_id}/
+            config.beginGroup('setting')
+            config.beginGroup(config_key)
+            for key in config.childKeys():
+                config.remove(key)
+            config.endGroup()
+            config.endGroup()
+            log.info('Deleted configuration for plugin %s', plugin.plugin_id)
 
     def _check_blacklisted_plugins(self):
         """Check installed plugins against blacklist and disable if needed.
