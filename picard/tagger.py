@@ -1471,7 +1471,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
     plugin_parser.add_argument('--reinstall', action='store_true', help="force reinstall of existing plugin")
     plugin_parser.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
     plugin_parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
-    plugin_parser.add_argument('--clean-config', metavar='PLUGIN', help="delete configuration for a plugin")
+    plugin_parser.add_argument('--clean-config', metavar='PLUGIN', help="delete saved options for a plugin")
     plugin_parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
     plugin_parser.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
     plugin_parser.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")

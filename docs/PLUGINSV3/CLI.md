@@ -101,7 +101,7 @@ picard plugins --disable listenbrainz
 
 # Uninstall
 picard plugins --uninstall listenbrainz
-picard plugins --uninstall listenbrainz --purge  # Delete config too
+picard plugins --uninstall listenbrainz --purge  # Delete saved options too
 
 # Get info
 picard plugins --info listenbrainz
@@ -209,7 +209,7 @@ Advanced Options:
   --trust-community     skip warnings for community plugins
   --trust LEVEL         filter plugins by trust level (official, trusted, community)
   --category CATEGORY   filter plugins by category (metadata, coverart, ui, scripting, formats, other)
-  --purge               delete plugin configuration when uninstalling
+  --purge               delete plugin saved options when uninstalling
   --no-color            disable colored output
 
 Trust Levels:
@@ -241,8 +241,8 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--switch-ref <name> <ref>` | Switch plugin to different ref |
 | `--check-updates` | Check for updates within installed ref |
 | `--reinstall` | Force reinstall (use with --install) |
-| `--purge` | Delete plugin config on uninstall |
-| `--clean-config <name>` | Delete plugin configuration |
+| `--purge` | Delete plugin saved options on uninstall |
+| `--clean-config <name>` | Delete plugin saved options |
 | `--yes` / `-y` | Skip confirmation prompts |
 | `--force-blacklisted` | Override blacklist warning |
 | `--validate <url>` | Validate plugin MANIFEST |
@@ -388,14 +388,14 @@ picard plugins --install my-plugin --ref main
 
 **Command:** `picard plugins --uninstall <name>` or `picard plugins -u <name>`
 
-**Description:** Uninstall plugin and optionally remove config
+**Description:** Uninstall plugin and optionally remove saved options
 
 **Examples:**
 ```bash
-# Uninstall plugin (keep config)
+# Uninstall plugin (keep saved options)
 picard plugins --uninstall listenbrainz
 
-# Uninstall and delete config
+# Uninstall and delete saved options
 picard plugins --uninstall listenbrainz --purge
 
 # Uninstall multiple
@@ -814,7 +814,7 @@ picard plugins --install https://github.com/user/plugin --reinstall --yes
 3. If plugin has uncommitted changes, prompts to discard them (or auto-discards with `--reinstall --yes`)
 4. Uninstalls existing plugin
 5. Installs fresh copy from git repository
-6. Preserves plugin configuration (unless `--purge` is used)
+6. Preserves plugin saved options (unless `--purge` is used)
 
 **Note:** When using `--reinstall --yes`, uncommitted local changes will be automatically discarded. Without `--yes`, you'll be prompted to confirm.
 

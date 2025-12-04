@@ -1141,19 +1141,19 @@ class PluginCLI:
         return ExitCode.SUCCESS
 
     def _cmd_clean_config(self, plugin_name):
-        """Clean configuration for a plugin."""
+        """Clean saved options for a plugin."""
         yes = getattr(self._args, 'yes', False)
 
         if not yes:
-            if not self._out.yesno(f'Delete configuration for "{plugin_name}"?'):
+            if not self._out.yesno(f'Delete saved options for "{plugin_name}"?'):
                 self._out.print('Cancelled')
                 return ExitCode.SUCCESS
 
         try:
             self._manager._clean_plugin_config(plugin_name)
-            self._out.success(f'Configuration for {plugin_name} deleted')
+            self._out.success(f'Saved options for {plugin_name} deleted')
         except Exception as e:
-            self._handle_exception(e, 'Failed to clean config')
+            self._handle_exception(e, 'Failed to clean saved options')
             return ExitCode.ERROR
         return ExitCode.SUCCESS
 
