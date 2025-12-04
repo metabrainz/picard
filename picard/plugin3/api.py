@@ -171,6 +171,11 @@ class PluginApi:
         return self._logger
 
     @property
+    def plugin_id(self) -> str:
+        """Plugin identifier (module name)."""
+        return self._manifest.module_name
+
+    @property
     def global_config(self) -> Config:
         return get_config()
 

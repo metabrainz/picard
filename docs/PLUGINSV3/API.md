@@ -83,6 +83,19 @@ def enable(api):
 
 ---
 
+### `plugin_id: str`
+
+Plugin identifier (module name).
+
+```python
+def enable(api):
+    api.logger.info(f"Plugin {api.plugin_id} loaded")
+```
+
+**Value**: The plugin's module name (e.g., `'listenbrainz'`, `'my-plugin'`)
+
+---
+
 ### `logger: Logger`
 
 Plugin-specific logger instance.

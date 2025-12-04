@@ -68,10 +68,8 @@ class BaseAction(QtGui.QAction):
         except Exception:
             from picard import log
 
-            plugin_id = getattr(self.api, '_manifest', None)
-            if plugin_id:
-                plugin_id = plugin_id.module_name
-            log.error("Error in action %s (plugin: %s):", self.NAME, plugin_id or 'unknown', exc_info=True)
+            plugin_id = getattr(self.api, 'plugin_id', 'unknown')
+            log.error("Error in action %s (plugin: %s):", self.NAME, plugin_id, exc_info=True)
 
     def callback(self, objs):
         raise NotImplementedError

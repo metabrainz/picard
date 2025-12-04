@@ -338,6 +338,7 @@ class TestPluginApi(PicardTestCase):
         self.assertEqual(api.web_service, mock_ws)
         self.assertIsNotNone(api.mb_api)
         self.assertIsNotNone(api.logger)
+        self.assertEqual(api.plugin_id, 'example')
         self.assertIsNotNone(api.global_config)
         self.assertIsNotNone(api.plugin_config)
 
