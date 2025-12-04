@@ -175,11 +175,28 @@ class PluginApi:
         Returns:
             Translated string with placeholders substituted
         """
-        # TODO: Load actual translations from locale files
-        # For now, use text as fallback or key if text not provided
-        result = text if text is not None else key
+        result = None
+
+        # Try to get translation from loaded files
+        if hasattr(self, '_current_locale'):
+            locale = self._current_locale
+            # Try exact locale match (e.g., de_DE)
+            if locale in self._translations and key in self._translations[locale]:
+                result = self._translations[locale][key]
+            else:
+                # Try language without region (e.g., de from de_DE)
+                lang = locale.split('_')[0]
+                if lang in self._translations and key in self._translations[lang]:
+                    result = self._translations[lang][key]
+
+        # Fall back to text parameter or key
+        if result is None:
+            result = text if text is not None else key
+
+        # Apply placeholder substitution
         if kwargs:
             result = result.format(**kwargs)
+
         return result
 
     # Metadata processors

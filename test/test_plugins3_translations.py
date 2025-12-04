@@ -107,3 +107,51 @@ class TestPluginTranslationLoading(PicardTestCase):
                 self.assertIn('de', api._translations)
                 self.assertEqual(api._translations['en']['greeting'], 'Hello')
                 self.assertEqual(api._translations['de']['greeting'], 'Hallo')
+
+
+class TestPluginTranslationLookup(PicardTestCase):
+    def _create_api_with_translations(self, locale='en'):
+        """Helper to create API with test translations."""
+        tmpdir = tempfile.mkdtemp()
+        plugin_dir = Path(tmpdir)
+        locale_dir = plugin_dir / 'locale'
+        locale_dir.mkdir()
+
+        (locale_dir / 'en.json').write_text(json.dumps({'greeting': 'Hello', 'farewell': 'Goodbye'}))
+        (locale_dir / 'de.json').write_text(json.dumps({'greeting': 'Hallo', 'farewell': 'Auf Wiedersehen'}))
+        (locale_dir / 'de_DE.json').write_text(json.dumps({'greeting': 'Guten Tag'}))
+
+        manifest_path = plugin_dir / 'MANIFEST.toml'
+        manifest_path.write_text('name = "Test"\n')
+
+        with open(manifest_path, 'rb') as f:
+            manifest = PluginManifest('test', f)
+            api = PluginApi(manifest, Mock())
+            api._plugin_dir = plugin_dir
+            api._current_locale = locale
+            api._load_translations()
+            return api
+
+    def test_tr_uses_current_locale(self):
+        """Test tr() uses translations from current locale."""
+        api = self._create_api_with_translations('de')
+        result = api.tr('greeting', 'Hello')
+        self.assertEqual(result, 'Hallo')
+
+    def test_tr_falls_back_to_language(self):
+        """Test tr() falls back to language without region."""
+        api = self._create_api_with_translations('de_AT')
+        result = api.tr('farewell', 'Goodbye')
+        self.assertEqual(result, 'Auf Wiedersehen')
+
+    def test_tr_falls_back_to_text(self):
+        """Test tr() falls back to text parameter when key not found."""
+        api = self._create_api_with_translations('de')
+        result = api.tr('unknown_key', 'Fallback text')
+        self.assertEqual(result, 'Fallback text')
+
+    def test_tr_returns_key_when_no_text(self):
+        """Test tr() returns key when translation and text missing."""
+        api = self._create_api_with_translations('de')
+        result = api.tr('unknown_key')
+        self.assertEqual(result, 'unknown_key')
