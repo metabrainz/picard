@@ -464,6 +464,67 @@ class TestPluginApi(PicardTestCase):
         finally:
             config_file.unlink(missing_ok=True)
 
+    def test_plugin_config_operations(self):
+        """Test all plugin_config operations."""
+        from pathlib import Path
+        import tempfile
+
+        from PyQt6.QtCore import QSettings
+
+        manifest = load_plugin_manifest('example')
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+            mock_tagger = MockTagger()
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Test setting various types
+            api.plugin_config['string'] = 'value'
+            api.plugin_config['int'] = 42
+            api.plugin_config['float'] = 3.14
+            api.plugin_config['bool'] = True
+            api.plugin_config['list'] = [1, 2, 3]
+            api.plugin_config['dict'] = {'key': 'value'}
+
+            # Test __contains__
+            self.assertIn('string', api.plugin_config)
+            self.assertIn('int', api.plugin_config)
+            self.assertNotIn('missing', api.plugin_config)
+
+            # Test .get() with various types
+            self.assertEqual(api.plugin_config.get('string'), 'value')
+            self.assertEqual(api.plugin_config.get('int'), 42)
+            self.assertEqual(api.plugin_config.get('float'), 3.14)
+            self.assertEqual(api.plugin_config.get('bool'), True)
+            self.assertEqual(api.plugin_config.get('list'), [1, 2, 3])
+            self.assertEqual(api.plugin_config.get('dict'), {'key': 'value'})
+
+            # Test .get() with defaults
+            self.assertEqual(api.plugin_config.get('missing', 'default'), 'default')
+            self.assertEqual(api.plugin_config.get('missing', 0), 0)
+            self.assertEqual(api.plugin_config.get('missing', []), [])
+
+            # Test .remove()
+            api.plugin_config.remove('string')
+            self.assertNotIn('string', api.plugin_config)
+            self.assertEqual(api.plugin_config.get('string', 'gone'), 'gone')
+
+            # Verify persistence of complex types
+            settings.sync()
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+
+            self.assertEqual(api2.plugin_config.get('list'), [1, 2, 3])
+            self.assertEqual(api2.plugin_config.get('dict'), {'key': 'value'})
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
     def test_plugin_config_with_options(self):
         """Test that plugin config works with registered Options."""
         from pathlib import Path
