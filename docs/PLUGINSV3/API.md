@@ -150,8 +150,8 @@ def enable(api):
 from picard.plugin3.api import OptionsPage
 
 class MyOptionsPage(OptionsPage):
-    def __init__(self, api=None, parent=None):
-        super().__init__(api=api, parent=parent)
+    def __init__(self, api=None):
+        super().__init__(api=api)
 
     def load(self):
         # Load from plugin config
@@ -446,8 +446,8 @@ class MyOptionsPage(OptionsPage):
     TITLE = "My Plugin"
     PARENT = "plugins"
 
-    def __init__(self, api=None, parent=None):
-        super().__init__(api=api, parent=parent)
+    def __init__(self, api=None):
+        super().__init__(api=api)
         # Build UI
 
     def load(self):
@@ -622,15 +622,15 @@ def enable(api):
 from picard.plugin3.api import OptionsPage
 
 class MyPage(OptionsPage):
-    def __init__(self, api=None, parent=None):
-        super().__init__(api=api, parent=parent)
+    def __init__(self, api=None):
+        super().__init__(api=api)
         # self.api is automatically set by parent class
 
     def load(self):
         self.api.logger.info("Loading")
 
 def enable(api):
-    # Picard stores api and passes it during instantiation
+    # Picard instantiates as: MyPage(api=api)
     api.register_options_page(MyPage)
 ```
 
@@ -675,8 +675,8 @@ class MyOptionsPage(OptionsPage):
     TITLE = "Example Plugin"
     PARENT = "plugins"
 
-    def __init__(self, api=None, parent=None):
-        super().__init__(api=api, parent=parent)
+    def __init__(self, api=None):
+        super().__init__(api=api)
         self.checkbox = QCheckBox("Enable processing")
         self.layout().addWidget(self.checkbox)
 
@@ -732,7 +732,7 @@ def enable(api):
 3. **Log appropriately**: Use `debug` for verbose, `info` for important events
 4. **Handle errors gracefully**: Wrap risky operations in try/except
 5. **Set priorities wisely**: Only use non-zero priorities when order matters
-6. **Pass api to parent classes**: Always call `super().__init__(api=api)` in BaseAction subclasses and `super().__init__(api=api, parent=parent)` in OptionsPage subclasses
+6. **Pass api to parent classes**: Always call `super().__init__(api=api)` in BaseAction and OptionsPage subclasses (parent is set automatically by Picard)
 
 ---
 
