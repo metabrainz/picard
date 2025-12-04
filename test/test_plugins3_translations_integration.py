@@ -46,7 +46,7 @@ class TestPluginTranslationsIntegration(PicardTestCase):
             manifest = PluginManifest('translated', f)
             api = PluginApi(manifest, Mock())
             api._plugin_dir = plugin_dir
-            api._current_locale = 'en'
+            api.get_locale = Mock(return_value='en')
             api._load_translations()
 
             result = api.tr('greeting', 'Hello')
@@ -64,7 +64,7 @@ class TestPluginTranslationsIntegration(PicardTestCase):
             manifest = PluginManifest('translated', f)
             api = PluginApi(manifest, Mock())
             api._plugin_dir = plugin_dir
-            api._current_locale = 'de'
+            api.get_locale = Mock(return_value='de')
             api._load_translations()
 
             result = api.tr('greeting', 'Hello')
@@ -82,7 +82,7 @@ class TestPluginTranslationsIntegration(PicardTestCase):
             manifest = PluginManifest('translated', f)
             api = PluginApi(manifest, Mock())
             api._plugin_dir = plugin_dir
-            api._current_locale = 'fr'
+            api.get_locale = Mock(return_value='fr')
             api._load_translations()
 
             result = api.tr('greeting', 'Hello')
@@ -100,7 +100,7 @@ class TestPluginTranslationsIntegration(PicardTestCase):
             manifest = PluginManifest('translated', f)
             api = PluginApi(manifest, Mock())
             api._plugin_dir = plugin_dir
-            api._current_locale = 'en'
+            api.get_locale = Mock(return_value='en')
             api._load_translations()
 
             result = api.trn('files', '{n} file', '{n} files', n=1)
@@ -118,7 +118,7 @@ class TestPluginTranslationsIntegration(PicardTestCase):
             manifest = PluginManifest('translated', f)
             api = PluginApi(manifest, Mock())
             api._plugin_dir = plugin_dir
-            api._current_locale = 'de'
+            api.get_locale = Mock(return_value='de')
             api._load_translations()
 
             result = api.trn('files', '{n} file', '{n} files', n=1)
@@ -136,7 +136,7 @@ class TestPluginTranslationsIntegration(PicardTestCase):
             manifest = PluginManifest('translated', f)
             api = PluginApi(manifest, Mock())
             api._plugin_dir = plugin_dir
-            api._current_locale = 'de'
+            api.get_locale = Mock(return_value='de')
             api._load_translations()
 
             # Check Qt translation key exists

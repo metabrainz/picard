@@ -133,8 +133,7 @@ class PluginApi:
             return
 
         self._qt_translator = PluginTranslator(self._translations, self._source_locale)
-        if hasattr(self, '_current_locale'):
-            self._qt_translator._current_locale = self._current_locale
+        self._qt_translator._current_locale = self.get_locale()
         QCoreApplication.installTranslator(self._qt_translator)
 
     def _load_translations(self) -> None:
@@ -180,6 +179,16 @@ class PluginApi:
         """Configuration private to the plugin"""
         return self._api_config
 
+    def get_locale(self) -> str:
+        """Get the current locale used by Picard.
+
+        Returns:
+            str: Current locale code (e.g., 'en', 'de_DE', 'pt_BR')
+        """
+        from PyQt6.QtCore import QLocale
+
+        return QLocale().name()
+
     # Translation
     def tr(self, key: str, text: str | None = None, **kwargs) -> str:
         """Translate a string for the plugin.
@@ -195,8 +204,8 @@ class PluginApi:
         result = None
 
         # Try to get translation from loaded files
-        if hasattr(self, '_current_locale'):
-            locale = self._current_locale
+        if self._translations:
+            locale = self.get_locale()
             # Try exact locale match (e.g., de_DE)
             if locale in self._translations and key in self._translations[locale]:
                 result = self._translations[locale][key]
@@ -236,8 +245,8 @@ class PluginApi:
         result = None
 
         # Try to get translation from loaded files
-        if hasattr(self, '_current_locale'):
-            locale = self._current_locale
+        if self._translations:
+            locale = self.get_locale()
             plural_form = get_plural_form(locale, n)
 
             # Try exact locale match

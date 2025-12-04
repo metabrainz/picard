@@ -47,6 +47,18 @@ class TestPluginManifestSourceLocale(PicardTestCase):
             Path(f.name).unlink()
 
 
+class TestPluginApiLocale(PicardTestCase):
+    def test_get_locale_returns_current_locale(self):
+        """Test get_locale() returns current QLocale."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock())
+
+        locale = api.get_locale()
+        # Should return a locale string like 'en_US', 'de_DE', etc.
+        self.assertIsInstance(locale, str)
+        self.assertGreater(len(locale), 0)
+
+
 class TestPluginTranslations(PicardTestCase):
     def test_tr_with_text(self):
         """Test basic translation with text parameter."""
@@ -128,7 +140,7 @@ class TestPluginTranslationLookup(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'de'
+                api.get_locale = Mock(return_value='de')
                 api._load_translations()
 
                 result = api.tr('greeting', 'Hello')
@@ -150,7 +162,7 @@ class TestPluginTranslationLookup(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'de_AT'
+                api.get_locale = Mock(return_value='de_AT')
                 api._load_translations()
 
                 result = api.tr('farewell', 'Goodbye')
@@ -172,7 +184,7 @@ class TestPluginTranslationLookup(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'de'
+                api.get_locale = Mock(return_value='de')
                 api._load_translations()
 
                 result = api.tr('unknown_key', 'Fallback text')
@@ -194,7 +206,7 @@ class TestPluginTranslationLookup(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'de'
+                api.get_locale = Mock(return_value='de')
                 api._load_translations()
 
                 result = api.tr('unknown_key')
@@ -218,7 +230,7 @@ class TestPluginPluralTranslations(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'en'
+                api.get_locale = Mock(return_value='en')
                 api._load_translations()
 
                 result = api.trn('files', '{n} file', '{n} files', n=1)
@@ -240,7 +252,7 @@ class TestPluginPluralTranslations(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'en'
+                api.get_locale = Mock(return_value='en')
                 api._load_translations()
 
                 result = api.trn('files', '{n} file', '{n} files', n=5)
@@ -264,7 +276,7 @@ class TestPluginPluralTranslations(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'pl'
+                api.get_locale = Mock(return_value='pl')
                 api._load_translations()
 
                 result = api.trn('files', '{n} file', '{n} files', n=1)
@@ -288,7 +300,7 @@ class TestPluginPluralTranslations(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'pl'
+                api.get_locale = Mock(return_value='pl')
                 api._load_translations()
 
                 result = api.trn('files', '{n} file', '{n} files', n=3)
@@ -312,7 +324,7 @@ class TestPluginPluralTranslations(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'pl'
+                api.get_locale = Mock(return_value='pl')
                 api._load_translations()
 
                 result = api.trn('files', '{n} file', '{n} files', n=5)
@@ -334,7 +346,7 @@ class TestPluginPluralTranslations(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'en'
+                api.get_locale = Mock(return_value='en')
                 api._load_translations()
 
                 result = api.trn('unknown', '{n} item', '{n} items', n=1)
@@ -356,7 +368,7 @@ class TestPluginPluralTranslations(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'en'
+                api.get_locale = Mock(return_value='en')
                 api._load_translations()
 
                 result = api.trn('unknown', '{n} item', '{n} items', n=5)
