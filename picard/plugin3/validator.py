@@ -53,6 +53,39 @@ def _is_valid_locale(locale):
     return bool(re.match(pattern, locale))
 
 
+def _validate_string_field(manifest_data, field_name, errors):
+    """Validate that a field is a non-empty string if present.
+
+    Args:
+        manifest_data: Manifest dictionary
+        field_name: Name of field to validate
+        errors: List to append errors to
+    """
+    if field_name in manifest_data:
+        value = manifest_data[field_name]
+        if not isinstance(value, str):
+            errors.append(f"Field '{field_name}' must be a string")
+        elif not value.strip():
+            errors.append(f"Field '{field_name}' must not be empty")
+
+
+def _validate_array_field(manifest_data, field_name, errors, item_type='item'):
+    """Validate that a field is a non-empty array if present.
+
+    Args:
+        manifest_data: Manifest dictionary
+        field_name: Name of field to validate
+        errors: List to append errors to
+        item_type: Type name for error message (e.g., 'author', 'category')
+    """
+    if field_name in manifest_data:
+        value = manifest_data.get(field_name, [])
+        if not isinstance(value, list):
+            errors.append(f"Field '{field_name}' must be an array")
+        elif len(value) == 0:
+            errors.append(f"Field '{field_name}' must contain at least one {item_type} if present")
+
+
 def validate_manifest_dict(manifest_data):
     """Validate manifest dictionary (no Version dependency).
 
@@ -123,62 +156,16 @@ def validate_manifest_dict(manifest_data):
         elif not _is_valid_locale(source_locale):
             errors.append(f"Field 'source_locale' must be a valid locale code (got '{source_locale}')")
 
-    # Authors validation (optional field)
-    if 'authors' in manifest_data:
-        authors = manifest_data.get('authors', [])
-        if not isinstance(authors, list):
-            errors.append("Field 'authors' must be an array")
-        elif len(authors) == 0:
-            errors.append("Field 'authors' must contain at least one author if present")
+    # Optional string fields
+    _validate_string_field(manifest_data, 'license', errors)
+    _validate_string_field(manifest_data, 'license_url', errors)
+    _validate_string_field(manifest_data, 'homepage', errors)
+    _validate_string_field(manifest_data, 'min_python_version', errors)
 
-    # Maintainers validation (optional field)
-    if 'maintainers' in manifest_data:
-        maintainers = manifest_data.get('maintainers', [])
-        if not isinstance(maintainers, list):
-            errors.append("Field 'maintainers' must be an array")
-        elif len(maintainers) == 0:
-            errors.append("Field 'maintainers' must contain at least one maintainer if present")
-
-    # Categories validation (optional field)
-    # No validation of category values - allows forward/backward compatibility
-    if 'categories' in manifest_data:
-        categories = manifest_data.get('categories', [])
-        if not isinstance(categories, list):
-            errors.append("Field 'categories' must be an array")
-        elif len(categories) == 0:
-            errors.append("Field 'categories' must contain at least one category if present")
-
-    # License validation (optional field)
-    if 'license' in manifest_data:
-        license_val = manifest_data['license']
-        if not isinstance(license_val, str):
-            errors.append("Field 'license' must be a string")
-        elif not license_val.strip():
-            errors.append("Field 'license' must not be empty")
-
-    # License URL validation (optional field)
-    if 'license_url' in manifest_data:
-        license_url = manifest_data['license_url']
-        if not isinstance(license_url, str):
-            errors.append("Field 'license_url' must be a string")
-        elif not license_url.strip():
-            errors.append("Field 'license_url' must not be empty")
-
-    # Homepage validation (optional field)
-    if 'homepage' in manifest_data:
-        homepage = manifest_data['homepage']
-        if not isinstance(homepage, str):
-            errors.append("Field 'homepage' must be a string")
-        elif not homepage.strip():
-            errors.append("Field 'homepage' must not be empty")
-
-    # Min Python version validation (optional field)
-    if 'min_python_version' in manifest_data:
-        min_py_ver = manifest_data['min_python_version']
-        if not isinstance(min_py_ver, str):
-            errors.append("Field 'min_python_version' must be a string")
-        elif not min_py_ver.strip():
-            errors.append("Field 'min_python_version' must not be empty")
+    # Optional array fields
+    _validate_array_field(manifest_data, 'authors', errors, 'author')
+    _validate_array_field(manifest_data, 'maintainers', errors, 'maintainer')
+    _validate_array_field(manifest_data, 'categories', errors, 'category')
 
     # Empty i18n sections
     for section in ['name_i18n', 'description_i18n', 'long_description_i18n']:
