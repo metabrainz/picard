@@ -1179,7 +1179,7 @@ class PluginManager:
                 config.remove(key)
             config.endGroup()
             config.endGroup()
-            log.info('Deleted configuration for plugin %s', plugin.plugin_id)
+            log.info('Deleted saved options for plugin %s', plugin.plugin_id)
 
     def _check_blacklisted_plugins(self):
         """Check installed plugins against blacklist and disable if needed.

@@ -1469,7 +1469,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
         '--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref"
     )
     plugin_parser.add_argument('--reinstall', action='store_true', help="force reinstall of existing plugin")
-    plugin_parser.add_argument('--purge', action='store_true', help="delete plugin configuration on uninstall")
+    plugin_parser.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
     plugin_parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
     plugin_parser.add_argument('--clean-config', metavar='PLUGIN', help="delete configuration for a plugin")
     plugin_parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
