@@ -2,8 +2,6 @@
 
 This document describes the plugin registry TOML schema, trust levels, blacklist system, and client integration.
 
-> **Note:** The registry format changed from JSON to TOML in Picard 4.0 to reduce git merge conflicts. Each `[[plugins]]` block is now independent, making concurrent plugin additions conflict-free.
-
 ---
 
 ## Overview
@@ -157,13 +155,13 @@ The `refs` field allows plugins to specify multiple git branches or tags that us
   "refs": [
     {
       "name": "main",
-      "description": "Stable release for Picard 4.x",
-      "min_api_version": "4.0"
+      "description": "Stable release for Picard 3.x",
+      "min_api_version": "3.0"
     },
     {
       "name": "beta",
       "description": "Testing new features",
-      "min_api_version": "4.0"
+      "min_api_version": "3.0"
     }
   ]
 }
