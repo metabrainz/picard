@@ -22,10 +22,12 @@ from functools import (
     partial,
     update_wrapper,
 )
+import json
 from logging import (
     Logger,
     getLogger,
 )
+from pathlib import Path
 from typing import (
     Callable,
     Type,
@@ -114,6 +116,26 @@ class PluginApi:
         full_name = f'plugin.{self._manifest.module_name}'
         self._logger = getLogger(full_name)
         self._api_config = ConfigSection(get_config(), full_name)
+        self._translations = {}
+        self._source_locale = manifest.source_locale
+        self._plugin_dir = None
+
+    def _load_translations(self) -> None:
+        """Load translation files from locale/ directory."""
+        if not self._plugin_dir:
+            return
+
+        locale_dir = Path(self._plugin_dir) / 'locale'
+        if not locale_dir.exists():
+            return
+
+        for json_file in locale_dir.glob('*.json'):
+            locale = json_file.stem
+            try:
+                with open(json_file, encoding='utf-8') as f:
+                    self._translations[locale] = json.load(f)
+            except Exception as e:
+                self._logger.warning(f"Failed to load translation file {json_file}: {e}")
 
     @property
     def tagger(self):

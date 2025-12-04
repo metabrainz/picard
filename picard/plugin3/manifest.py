@@ -119,6 +119,11 @@ class PluginManifest:
     def license_url(self) -> str:
         return self._data.get('license_url', '')
 
+    @property
+    def source_locale(self) -> str:
+        """Get source locale for translations, defaults to 'en'."""
+        return self._data.get('source_locale', 'en')
+
     def validate(self) -> list:
         """Validate manifest and return list of errors.
 
