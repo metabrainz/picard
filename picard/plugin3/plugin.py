@@ -28,7 +28,6 @@ import time
 
 from picard import log
 from picard.extension_points import (
-    set_plugin_uuid,
     unregister_module_extensions,
     unset_plugin_uuid,
 )
@@ -600,10 +599,6 @@ class Plugin:
         spec.loader.exec_module(module)
         self._module = module
         self.state = PluginState.LOADED
-
-        # Register UUID mapping for extension points
-        if self.manifest and self.manifest.uuid:
-            set_plugin_uuid(self.manifest.uuid, self.plugin_id)
 
         return module
 

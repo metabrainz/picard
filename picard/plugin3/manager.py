@@ -1280,6 +1280,13 @@ class PluginManager:
         plugin = Plugin(plugin_dir, plugin_name)
         try:
             plugin.read_manifest()
+
+            # Register UUID mapping early so extension points can find enabled plugins
+            if plugin.manifest and plugin.manifest.uuid:
+                from picard.extension_points import set_plugin_uuid
+
+                set_plugin_uuid(plugin.manifest.uuid, plugin.plugin_id)
+
             compatible_versions = _compatible_api_versions(plugin.manifest.api_versions)
             if compatible_versions:
                 log.debug(
