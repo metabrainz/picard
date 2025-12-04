@@ -84,6 +84,7 @@ def disable():
 | `categories` | array | Plugin categories | `["metadata", "coverart"]` |
 | `homepage` | string | Plugin homepage URL | `"https://..."` |
 | `min_python_version` | string | Minimum Python version | `"3.9"` |
+| `source_locale` | string | Source language for translations | `"en"` (default) |
 
 ### Translation Fields (Optional)
 
@@ -125,6 +126,7 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 homepage = "https://github.com/metabrainz/picard-plugin-listenbrainz"
 categories = ["metadata"]
 min_python_version = "3.9"
+source_locale = "en"
 
 [name_i18n]
 de = "ListenBrainz-Submitter"
@@ -387,6 +389,14 @@ Vollständige deutsche Beschreibung hier...
 - Optional
 - Minimum Python version required
 - Format: `"3.9"`, `"3.10"`, etc.
+
+### `source_locale`
+- Optional
+- Source language for plugin translations
+- Default: `"en"`
+- Used by translation system to determine fallback language
+- Format: locale code like `"en"`, `"de"`, `"fr"`, `"pt_BR"`, etc.
+- See [TRANSLATIONS.md](TRANSLATIONS.md) for details on plugin translation system
 
 ---
 

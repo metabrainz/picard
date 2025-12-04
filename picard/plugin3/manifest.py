@@ -184,6 +184,7 @@ api = ["3.0"]
 # categories = [{categories_str}]
 # homepage = "https://github.com/username/plugin-name"
 # min_python_version = "3.9"
+# source_locale = "en"  # Source language for translations (default: "en")
 
 # Translation tables (optional)
 # [name_i18n]
