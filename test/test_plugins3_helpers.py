@@ -115,7 +115,10 @@ def load_plugin_manifest(plugin_name: str) -> PluginManifest:
 
 def load_test_registry():
     """Load test registry data from test/data/testplugins3/registry.toml."""
-    import tomllib
+    try:
+        import tomllib
+    except ModuleNotFoundError:
+        import tomli as tomllib
 
     registry_path = Path(get_test_data_path('testplugins3', 'registry.toml'))
     with open(registry_path, 'rb') as f:
