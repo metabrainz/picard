@@ -33,7 +33,11 @@ from picard.plugin3.git_utils import (
 )
 from picard.plugin3.plugin import hash_string
 
-import tomllib
+
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
 
 
 # Retry configuration for registry fetch operations
