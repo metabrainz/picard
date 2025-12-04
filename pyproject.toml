@@ -64,7 +64,6 @@ dev = [
     "pytest-randomly>=4.0.1",
     "pytest-xdist>=3.8.0",
     "ruff>=0.12.8",
-    "tomli-w",
     "wlc",
 ]
 plugins = [

@@ -32,8 +32,6 @@ from test.picardtestcase import PicardTestCase
 from picard.plugin3.git_utils import get_local_path
 from picard.plugin3.registry import PluginRegistry
 
-import tomli_w
-
 
 class TestRegistryAdvanced(PicardTestCase):
     def test_get_local_path_remote_url(self):
@@ -83,10 +81,10 @@ class TestRegistryAdvanced(PicardTestCase):
 
     def test_registry_fetch_local_file(self):
         """Test registry can load from local file path."""
-        registry_data = {'plugins': [{'id': 'test', 'git_url': 'https://example.com/test.git'}], 'blacklist': []}
+        toml_content = '[[plugins]]\nid = "test"\ngit_url = "https://example.com/test.git"\n\n[[blacklist]]\n'
 
-        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
-            tomli_w.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(toml_content)
             registry_file = f.name
 
         try:
@@ -100,10 +98,10 @@ class TestRegistryAdvanced(PicardTestCase):
 
     def test_registry_save_cache_error(self):
         """Test registry handles cache save errors gracefully."""
-        registry_data = {'plugins': [], 'blacklist': []}
+        toml_content = '[[plugins]]\n\n[[blacklist]]\n'
 
-        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
-            tomli_w.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(toml_content)
             registry_file = f.name
 
         try:
@@ -189,13 +187,12 @@ class TestRegistryAdvanced(PicardTestCase):
 
     def test_get_trust_level_lazy_load(self):
         """Test get_trust_level fetches registry if not loaded."""
-        registry_data = {
-            'plugins': [{'git_url': 'https://example.com/test.git', 'trust_level': 'trusted'}],
-            'blacklist': [],
-        }
+        toml_content = (
+            '[[plugins]]\ngit_url = "https://example.com/test.git"\ntrust_level = "trusted"\n\n[[blacklist]]\n'
+        )
 
-        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
-            tomli_w.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(toml_content)
             registry_file = f.name
 
         try:
@@ -208,10 +205,10 @@ class TestRegistryAdvanced(PicardTestCase):
 
     def test_find_plugin_lazy_load(self):
         """Test find_plugin fetches registry if not loaded."""
-        registry_data = {'plugins': [{'id': 'test-plugin', 'git_url': 'https://example.com/test.git'}], 'blacklist': []}
+        toml_content = '[[plugins]]\nid = "test-plugin"\ngit_url = "https://example.com/test.git"\n\n[[blacklist]]\n'
 
-        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
-            tomli_w.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(toml_content)
             registry_file = f.name
 
         try:
@@ -225,10 +222,10 @@ class TestRegistryAdvanced(PicardTestCase):
 
     def test_list_plugins_lazy_load(self):
         """Test list_plugins fetches registry if not loaded."""
-        registry_data = {'plugins': [{'id': 'test', 'trust_level': 'official'}], 'blacklist': []}
+        toml_content = '[[plugins]]\nid = "test"\ntrust_level = "official"\n\n[[blacklist]]\n'
 
-        with tempfile.NamedTemporaryFile(mode='wb', suffix='.toml', delete=False) as f:
-            tomli_w.dump(registry_data, f)
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+            f.write(toml_content)
             registry_file = f.name
 
         try:
