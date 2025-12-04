@@ -432,9 +432,18 @@ Traditional gettext uses the actual English text as the key (`_("Login to Listen
 Combine the readability of text-in-code with the stability of keys:
 
 ```python
-api.tr("Login to ListenBrainz", key="ui.button.login")
-api.tr("Processing {filename}...", key="status.processing", filename=file)
+api.tr("ui.button.login", "Login to ListenBrainz")
+api.tr("status.processing", "Processing {filename}...", filename=file)
 ```
+
+**Signature:**
+```python
+api.tr(key: str, text: str = None, **kwargs) -> str
+```
+
+- `key`: Translation key (required)
+- `text`: Optional English text (used as fallback and for extraction tool)
+- `**kwargs`: Format parameters for string interpolation
 
 ### Key Changes
 
@@ -449,7 +458,7 @@ from picard.i18n import gettext as _  # Picard's translations
 def enable(api: PluginApi):
     # Both available without conflict
     picard_text = _("Save")  # Picard's UI string
-    plugin_text = api.tr("Login to ListenBrainz", key="ui.button.login")  # Plugin's string
+    plugin_text = api.tr("ui.button.login", "Login to ListenBrainz")  # Plugin's string
 ```
 
 **2. Declare source locale in MANIFEST.toml**
@@ -468,7 +477,7 @@ This allows:
 
 ```python
 # German developer
-api.tr("Bei ListenBrainz anmelden", key="ui.button.login")
+api.tr("ui.button.login", "Bei ListenBrainz anmelden")
 ```
 
 ```toml
@@ -530,12 +539,12 @@ def enable(api: PluginApi):
     menu_text = _("Plugins")  # Picard translates this
 
     # Use plugin translations for plugin-specific text
-    login_text = api.tr("Login to ListenBrainz", key="ui.button.login")
-    logout_text = api.tr("Logout", key="ui.button.logout")
+    login_text = api.tr("ui.button.login", "Login to ListenBrainz")
+    logout_text = api.tr("ui.button.logout", "Logout")
 
     # With parameters
-    status = api.tr("Submitted {count} tracks", key="status.submitted", count=5)
-    error = api.tr("Network error: {error}", key="error.network", error="Timeout")
+    status = api.tr("status.submitted", "Submitted {count} tracks", count=5)
+    error = api.tr("error.network", "Network error: {error}", error="Timeout")
 ```
 
 **locale/de_DE.json**
@@ -575,37 +584,52 @@ class MyPluginDialog(QDialog):
         cancel_button = QPushButton(self.tr("&Cancel"))
 
         # Plugin-specific translations
-        title = self.api.tr("ListenBrainz Options", key="options.title")
-        label = QLabel(self.api.tr("Username:", key="options.username"))
+        title = self.api.tr("options.title", "ListenBrainz Options")
+        label = QLabel(self.api.tr("options.username", "Username:"))
 ```
 
 - `self.tr()` → Qt's translation system (for standard UI elements)
 - `self.api.tr()` → Plugin's translation system (for plugin-specific text)
 - Both use the same locale from `QLocale().name()`
 
+### Extraction Tool
+
+An extraction tool can scan code for `api.tr()` calls and generate the source locale file:
+
+```bash
+# Scan plugin code
+$ picard-plugin-extract-translations myplugin/
+
+# Generates locale/en.json (or source_locale from MANIFEST.toml)
+{
+  "ui.button.login": "Login to ListenBrainz",
+  "ui.button.logout": "Logout",
+  "status.submitted": "Submitted {count} tracks",
+  "error.network": "Network error: {error}"
+}
+```
+
+**Benefits:**
+- Developers write readable code with inline text
+- Tool extracts translations automatically
+- No manual maintenance of source locale file
+- Keys provide stability when text changes
+
 ### Open Question: Translator Workflow
 
 **Challenge:** Translators (especially via Weblate) need a source file to translate from.
 
-**Possible approaches:**
+**Recommended approach: Extraction tool**
+- Tool scans code for `api.tr()` calls, generates source locale file
+- Run as part of development workflow or CI
+- Translators work with generated file
+- No manual duplication needed
 
-**A. Require source locale JSON (accept duplication)**
-- Developer maintains both code text and source locale JSON
-- Simple, no tools required
-- Picard validates they match at runtime and warns on mismatch
-- Standard translator workflow works out of the box
-
-**B. Optional extraction tool**
-- Tool scans code for `api.tr()` calls, generates source locale JSON
-- Optional for developers who want it
-- Adds complexity, requires tooling
-
-**C. Generated reference file**
-- `_source.json` auto-generated for translators (not used at runtime)
-- Requires CI/tooling setup
-- Separates translator needs from runtime needs
-
-**Decision pending:** Need to balance developer convenience, translator experience, and implementation complexity.
+**Workflow:**
+1. Developer writes: `api.tr("ui.button.login", "Login to ListenBrainz")`
+2. Extraction tool generates `locale/en.json` with all keys and text
+3. Translators create `locale/de.json`, `locale/fr.json`, etc.
+4. At runtime, if text parameter is provided and no translation found, use text as fallback
 
 ### Implementation Notes
 
@@ -619,23 +643,19 @@ class PluginApi:
         self._current_locale = QLocale().name()
         self._load_translations()
 
-    def tr(self, text: str, key: str = None, **kwargs) -> str:
+    def tr(self, key: str, text: str = None, **kwargs) -> str:
         """Get translated string.
 
         Args:
-            text: Source locale text (always provided)
-            key: Translation key (optional but recommended)
+            key: Translation key (required)
+            text: Optional source locale text (used as fallback)
             **kwargs: Format parameters for string interpolation
 
         Returns:
             Translated and formatted string
         """
-        # If no key provided, just return the text (no translation)
-        if key is None:
-            return text.format(**kwargs) if kwargs else text
-
-        # If current locale is source locale, use text from code
-        if self._current_locale == self._source_locale:
+        # If current locale is source locale and text provided, use text from code
+        if text and self._current_locale == self._source_locale:
             return text.format(**kwargs) if kwargs else text
 
         # Try current locale (e.g., "de_DE")
@@ -651,8 +671,13 @@ class PluginApi:
             if translated:
                 return translated.format(**kwargs) if kwargs else translated
 
-        # Fall back to source locale text from code
-        return text.format(**kwargs) if kwargs else text
+        # Fall back to text parameter if provided
+        if text:
+            return text.format(**kwargs) if kwargs else text
+
+        # Missing translation - return ?key? and log warning
+        log.warning(f"Translation key not found: {key} (plugin: {self._manifest.id})")
+        return f"?{key}?"
 ```
 
 ### Comparison with Current Approach
@@ -664,12 +689,13 @@ api.gettext('ui.button.login')  # What does this say?
 
 **Proposed (text + key):**
 ```python
-api.tr("Login to ListenBrainz", key="ui.button.login")  # Clear what it says
+api.tr("ui.button.login", "Login to ListenBrainz")  # Clear what it says
 ```
 
 **Tradeoffs:**
 - Current: Less verbose, but harder to read
-- Proposed: More verbose, but self-documenting and more flexible
+- Proposed: Slightly more verbose, but self-documenting
+- Extraction tool can generate source locale file automatically
 
 ---
 
