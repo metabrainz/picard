@@ -8,7 +8,7 @@
 # Transifex Bot <>, 2023
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # jaimeMF <musicbrainz@jregistros.fastmail.net>, 2023.
-# Echelon666 <echelon01@wp.pl>, 2024.
+# Echelon666, 2024.
 #
 # Translators:
 #
@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
 "PO-Revision-Date: 2024-09-04 07:23+0000\n"
-"Last-Translator: Echelon666 <echelon01@wp.pl>\n"
+"Last-Translator: Echelon666\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "2/appstream/es/>\n"
 "Language: es\n"

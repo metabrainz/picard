@@ -16,8 +16,8 @@
 # Piotr Myśliński <piotr.myslinski@gmail.com>, 2013
 # rawrower <rawrower@gmail.com>, 2019
 # Skelly 37, 2022
-# Echelon666 <echelon01@wp.pl>, 2024.
-# Peter69 <echelon01@wp.pl>, 2025.
+# Echelon666, 2024.
+# Peter69, 2025.
 # Michal77 <michal_wilk@poczta.fm>, 2025.
 # PS <weblate@wp.pl>, 2025.
 # Echelon <weblate@wp.pl>, 2025.
