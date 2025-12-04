@@ -20,25 +20,11 @@
 
 """Plugin system constants shared between Picard and registry tools."""
 
-import re
-
-
 # Trust levels that appear in registry JSON, ordered from highest to lowest trust level
 REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 
 # Plugin categories
 CATEGORIES = ['metadata', 'coverart', 'ui', 'scripting', 'formats', 'other']
-
-# Required MANIFEST.toml fields
-REQUIRED_MANIFEST_FIELDS = ['uuid', 'name', 'description', 'api']
-
-# String length constraints for MANIFEST.toml fields
-MAX_NAME_LENGTH = 100
-MAX_DESCRIPTION_LENGTH = 200
-MAX_LONG_DESCRIPTION_LENGTH = 2000
-
-# UUID v4 regex pattern (RFC 4122)
-UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', re.IGNORECASE)
 
 # Git refs cache settings
 REFS_CACHE_FILE = 'plugin_refs_cache.json'

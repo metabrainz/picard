@@ -22,10 +22,12 @@ from test.picardtestcase import PicardTestCase
 
 from picard.plugin3.constants import (
     CATEGORIES,
+    REGISTRY_TRUST_LEVELS,
+)
+from picard.plugin3.validator import (
     MAX_DESCRIPTION_LENGTH,
     MAX_LONG_DESCRIPTION_LENGTH,
     MAX_NAME_LENGTH,
-    REGISTRY_TRUST_LEVELS,
     REQUIRED_MANIFEST_FIELDS,
     UUID_PATTERN,
 )
