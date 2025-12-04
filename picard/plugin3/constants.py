@@ -25,7 +25,3 @@ REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 
 # Plugin categories
 CATEGORIES = ['metadata', 'coverart', 'ui', 'scripting', 'formats', 'other']
-
-# Git refs cache settings
-REFS_CACHE_FILE = 'plugin_refs_cache.json'
-REFS_CACHE_TTL = 3600  # 1 hour in seconds

@@ -27,13 +27,11 @@ import time
 
 from picard import log
 from picard.const.appdirs import cache_folder
-from picard.plugin3.constants import (
-    REFS_CACHE_FILE,
-    REFS_CACHE_TTL,
-)
 from picard.version import Version
 
 
+REFS_CACHE_FILE = 'plugin_refs_cache.json'
+REFS_CACHE_TTL = 3600  # 1 hour in seconds
 REFS_CACHE_VERSION = 2  # Increment when cache format changes
 
 
