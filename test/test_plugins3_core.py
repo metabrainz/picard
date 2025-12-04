@@ -368,6 +368,61 @@ class TestPluginApi(PicardTestCase):
         finally:
             log.main_logger.removeHandler(mock_handler)
 
+    def test_plugin_config_persistence(self):
+        """Test that plugin config values are saved and can be retrieved."""
+        from pathlib import Path
+        import tempfile
+
+        from PyQt6.QtCore import QSettings
+
+        manifest = load_plugin_manifest('example')
+
+        # Create a temporary config file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            # Create a real QSettings instance
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+
+            # Create mock tagger with real config
+            mock_tagger = MockTagger()
+
+            # Create API with the test config
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Set some config values
+            api.plugin_config['test_string'] = 'hello'
+            api.plugin_config['test_int'] = 42
+            api.plugin_config['test_bool'] = True
+
+            # Force sync to disk
+            settings.sync()
+
+            # Verify values were written to QSettings
+            self.assertEqual(settings.value('plugin.example/test_string'), 'hello')
+            self.assertEqual(settings.value('plugin.example/test_int'), 42)
+            self.assertEqual(settings.value('plugin.example/test_bool'), True)
+
+            # Create a new settings instance to verify persistence
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+
+            # Verify values persisted across settings instances
+            self.assertEqual(settings2.value('plugin.example/test_string'), 'hello')
+            self.assertEqual(settings2.value('plugin.example/test_int'), 42)
+            self.assertEqual(settings2.value('plugin.example/test_bool'), True)
+
+            # Verify raw_value can read them back
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+            self.assertEqual(api2.plugin_config.raw_value('test_string'), 'hello')
+            self.assertEqual(api2.plugin_config.raw_value('test_int'), 42)
+            self.assertEqual(api2.plugin_config.raw_value('test_bool'), True)
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
     def test_register_metadata_processors(self):
         """Test metadata processor registration methods."""
         from functools import partial
