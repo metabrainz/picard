@@ -605,14 +605,20 @@ $ picard-plugin-extract-translations myplugin/
   "ui.button.login": "Login to ListenBrainz",
   "ui.button.logout": "Logout",
   "status.submitted": "Submitted {count} tracks",
-  "error.network": "Network error: {error}"
+  "error.network": "Network error: {error}",
+  "some.missing.text": "?some.missing.text?"
 }
 ```
+
+**Extraction behavior:**
+- If `api.tr("key", "Text")` → extracts `"key": "Text"`
+- If `api.tr("key")` → generates `"key": "?key?"` (placeholder indicating missing text)
+- Developers can then fill in the `?key?` placeholders manually
 
 **Benefits:**
 - Developers write readable code with inline text
 - Tool extracts translations automatically
-- No manual maintenance of source locale file
+- Missing text is clearly marked with `?key?` placeholders
 - Keys provide stability when text changes
 
 ### Open Question: Translator Workflow
