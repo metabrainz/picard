@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Lukáš Lalinský <lalinsky@gmail.com>, 2020
 # Transifex Bot <>, 2023
-# Echelon666 <echelon01@wp.pl>, 2024.
+# Echelon666, 2024.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2024.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 # PS <weblate@wp.pl>, 2025.
