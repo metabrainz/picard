@@ -53,13 +53,15 @@ def _is_valid_locale(locale):
     return bool(re.match(pattern, locale))
 
 
-def _validate_string_field(manifest_data, field_name, errors):
+def _validate_string_field(manifest_data, field_name, errors, min_len=None, max_len=None):
     """Validate that a field is a non-empty string if present.
 
     Args:
         manifest_data: Manifest dictionary
         field_name: Name of field to validate
         errors: List to append errors to
+        min_len: Minimum length (optional)
+        max_len: Maximum length (optional)
     """
     if field_name in manifest_data:
         value = manifest_data[field_name]
@@ -67,9 +69,15 @@ def _validate_string_field(manifest_data, field_name, errors):
             errors.append(f"Field '{field_name}' must be a string")
         elif not value.strip():
             errors.append(f"Field '{field_name}' must not be empty")
+        elif min_len is not None or max_len is not None:
+            length = len(value)
+            if min_len and max_len and (length < min_len or length > max_len):
+                errors.append(f"Field '{field_name}' must be {min_len}-{max_len} characters (got {length})")
+            elif max_len and length > max_len:
+                errors.append(f"Field '{field_name}' must be max {max_len} characters (got {length})")
 
 
-def _validate_array_field(manifest_data, field_name, errors, item_type='item'):
+def _validate_array_field(manifest_data, field_name, errors, item_type='item', check_items=None):
     """Validate that a field is a non-empty array if present.
 
     Args:
@@ -77,6 +85,7 @@ def _validate_array_field(manifest_data, field_name, errors, item_type='item'):
         field_name: Name of field to validate
         errors: List to append errors to
         item_type: Type name for error message (e.g., 'author', 'category')
+        check_items: Optional function to validate each item
     """
     if field_name in manifest_data:
         value = manifest_data.get(field_name, [])
@@ -84,6 +93,9 @@ def _validate_array_field(manifest_data, field_name, errors, item_type='item'):
             errors.append(f"Field '{field_name}' must be an array")
         elif len(value) == 0:
             errors.append(f"Field '{field_name}' must contain at least one {item_type} if present")
+        elif check_items:
+            for item in value:
+                check_items(item, errors)
 
 
 def validate_manifest_dict(manifest_data):
@@ -107,44 +119,18 @@ def validate_manifest_dict(manifest_data):
     if uuid and not UUID_PATTERN.match(uuid):
         errors.append(f"Field 'uuid' must be a valid UUID v4 (got '{uuid}')")
 
-    # Field type validation
-    if manifest_data.get('name') and not isinstance(manifest_data['name'], str):
-        errors.append("Field 'name' must be a string")
+    # String fields with length constraints
+    _validate_string_field(manifest_data, 'name', errors, min_len=1, max_len=MAX_NAME_LENGTH)
+    _validate_string_field(manifest_data, 'description', errors, min_len=1, max_len=MAX_DESCRIPTION_LENGTH)
+    _validate_string_field(manifest_data, 'long_description', errors, max_len=MAX_LONG_DESCRIPTION_LENGTH)
+    _validate_string_field(manifest_data, 'version', errors)
 
-    if manifest_data.get('authors') and not isinstance(manifest_data['authors'], list):
-        errors.append("Field 'authors' must be an array")
+    # API version validation
+    def check_api_version(item, errs):
+        if not isinstance(item, str) or not item.strip():
+            errs.append(f"Invalid API version: {item}")
 
-    if manifest_data.get('api') and not isinstance(manifest_data['api'], list):
-        errors.append("Field 'api' must be an array")
-
-    # String length validation
-    name = manifest_data.get('name', '')
-    if name and isinstance(name, str) and (len(name) < 1 or len(name) > MAX_NAME_LENGTH):
-        errors.append(f"Field 'name' must be 1-{MAX_NAME_LENGTH} characters (got {len(name)})")
-
-    description = manifest_data.get('description', '')
-    if description and isinstance(description, str):
-        if len(description) < 1 or len(description) > MAX_DESCRIPTION_LENGTH:
-            errors.append(f"Field 'description' must be 1-{MAX_DESCRIPTION_LENGTH} characters (got {len(description)})")
-
-    long_description = manifest_data.get('long_description', '')
-    if long_description and isinstance(long_description, str):
-        if len(long_description) > MAX_LONG_DESCRIPTION_LENGTH:
-            errors.append(
-                f"Field 'long_description' must be max {MAX_LONG_DESCRIPTION_LENGTH} characters (got {len(long_description)})"
-            )
-
-    # Version validation (basic string format check)
-    if manifest_data.get('version'):
-        version = manifest_data['version']
-        if not isinstance(version, str) or not version.strip():
-            errors.append("Field 'version' must be a non-empty string")
-
-    # API version validation (basic check)
-    if manifest_data.get('api'):
-        for api_ver in manifest_data['api']:
-            if not isinstance(api_ver, str) or not api_ver.strip():
-                errors.append(f"Invalid API version: {api_ver}")
+    _validate_array_field(manifest_data, 'api', errors, 'API version', check_items=check_api_version)
 
     # Source locale validation
     if 'source_locale' in manifest_data:
