@@ -34,55 +34,88 @@ from picard.plugin3.manifest import PluginManifest
 
 
 class TestPluginTranslator(PicardTestCase):
-    def _create_translator(self, locale='en'):
-        """Helper to create translator with test translations."""
-        tmpdir = tempfile.mkdtemp()
-        plugin_dir = Path(tmpdir)
-        locale_dir = plugin_dir / 'locale'
-        locale_dir.mkdir()
-
-        (locale_dir / 'en.json').write_text(
-            json.dumps({'qt.MyDialog.Submit': 'Submit', 'qt.MyDialog.Cancel': 'Cancel'})
-        )
-        (locale_dir / 'de.json').write_text(
-            json.dumps({'qt.MyDialog.Submit': 'Absenden', 'qt.MyDialog.Cancel': 'Abbrechen'})
-        )
-
-        manifest_path = plugin_dir / 'MANIFEST.toml'
-        manifest_path.write_text('name = "Test"\n')
-
-        with open(manifest_path, 'rb') as f:
-            manifest = PluginManifest('test', f)
-            translations = {}
-            for json_file in locale_dir.glob('*.json'):
-                with open(json_file, encoding='utf-8') as jf:
-                    translations[json_file.stem] = json.load(jf)
-
-            translator = PluginTranslator(translations, manifest.source_locale)
-            translator._current_locale = locale
-            return translator
-
     def test_translate_generates_correct_key(self):
         """Test that translate() generates qt.context.text key."""
-        translator = self._create_translator('de')
-        result = translator.translate('MyDialog', 'Submit')
-        self.assertEqual(result, 'Absenden')
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            locale_dir = plugin_dir / 'locale'
+            locale_dir.mkdir()
+
+            (locale_dir / 'de.json').write_text(
+                json.dumps({'qt.MyDialog.Submit': 'Absenden', 'qt.MyDialog.Cancel': 'Abbrechen'})
+            )
+
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
+
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                translations = {}
+                for json_file in locale_dir.glob('*.json'):
+                    with open(json_file, encoding='utf-8') as jf:
+                        translations[json_file.stem] = json.load(jf)
+
+                translator = PluginTranslator(translations, manifest.source_locale)
+                translator._current_locale = 'de'
+
+                result = translator.translate('MyDialog', 'Submit')
+                self.assertEqual(result, 'Absenden')
 
     def test_translate_fallback_to_source_text(self):
         """Test translate() falls back to source text when key not found."""
-        translator = self._create_translator('de')
-        result = translator.translate('MyDialog', 'Unknown')
-        self.assertEqual(result, 'Unknown')
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            locale_dir = plugin_dir / 'locale'
+            locale_dir.mkdir()
+
+            (locale_dir / 'de.json').write_text(json.dumps({'qt.MyDialog.Submit': 'Absenden'}))
+
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
+
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                translations = {}
+                for json_file in locale_dir.glob('*.json'):
+                    with open(json_file, encoding='utf-8') as jf:
+                        translations[json_file.stem] = json.load(jf)
+
+                translator = PluginTranslator(translations, manifest.source_locale)
+                translator._current_locale = 'de'
+
+                result = translator.translate('MyDialog', 'Unknown')
+                self.assertEqual(result, 'Unknown')
 
     def test_translate_with_disambiguation(self):
         """Test translate() handles disambiguation parameter."""
-        translator = self._create_translator('en')
-        result = translator.translate('MyDialog', 'Submit', 'button')
-        self.assertEqual(result, 'Submit')
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            locale_dir = plugin_dir / 'locale'
+            locale_dir.mkdir()
+
+            (locale_dir / 'en.json').write_text(json.dumps({'qt.MyDialog.Submit': 'Submit'}))
+
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
+
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                translations = {}
+                for json_file in locale_dir.glob('*.json'):
+                    with open(json_file, encoding='utf-8') as jf:
+                        translations[json_file.stem] = json.load(jf)
+
+                translator = PluginTranslator(translations, manifest.source_locale)
+                translator._current_locale = 'en'
+
+                result = translator.translate('MyDialog', 'Submit', 'button')
+                self.assertEqual(result, 'Submit')
 
     def test_translate_empty_context(self):
         """Test translate() with empty context."""
-        translator = self._create_translator('en')
+        translations = {}
+        translator = PluginTranslator(translations, 'en')
+        translator._current_locale = 'en'
         result = translator.translate('', 'Text')
         self.assertEqual(result, 'Text')
 
