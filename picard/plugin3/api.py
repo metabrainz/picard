@@ -78,7 +78,10 @@ from picard.extension_points.script_variables import register_script_variable
 from picard.extension_points.ui_init import register_ui_init
 from picard.file import File
 from picard.metadata import Metadata
-from picard.plugin3.i18n import get_plural_form
+from picard.plugin3.i18n import (
+    PluginTranslator,
+    get_plural_form,
+)
 from picard.plugin3.manifest import PluginManifest
 from picard.track import Track
 from picard.webservice import WebService
@@ -120,6 +123,19 @@ class PluginApi:
         self._translations = {}
         self._source_locale = manifest.source_locale
         self._plugin_dir = None
+        self._qt_translator = None
+
+    def _install_qt_translator(self) -> None:
+        """Install Qt translator for .ui file translations."""
+        from PyQt6.QtCore import QCoreApplication
+
+        if not self._translations:
+            return
+
+        self._qt_translator = PluginTranslator(self._translations, self._source_locale)
+        if hasattr(self, '_current_locale'):
+            self._qt_translator._current_locale = self._current_locale
+        QCoreApplication.installTranslator(self._qt_translator)
 
     def _load_translations(self) -> None:
         """Load translation files from locale/ directory."""

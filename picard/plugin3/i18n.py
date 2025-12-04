@@ -18,6 +18,49 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from PyQt6.QtCore import QTranslator
+
+
+class PluginTranslator(QTranslator):
+    """QTranslator for plugin UI files (.ui) translations."""
+
+    def __init__(self, translations: dict, source_locale: str = 'en') -> None:
+        super().__init__()
+        self._translations = translations
+        self._source_locale = source_locale
+        self._current_locale = 'en'
+
+    def translate(self, context: str, source_text: str, disambiguation: str | None = None, n: int = -1) -> str:
+        """Translate text from Qt UI files.
+
+        Args:
+            context: Qt context (usually class name)
+            source_text: Text to translate
+            disambiguation: Optional disambiguation string
+            n: Optional plural number
+
+        Returns:
+            Translated text or source_text if not found
+        """
+        if not context or not source_text:
+            return source_text
+
+        # Generate key: qt.context.source_text
+        key = f'qt.{context}.{source_text}'
+
+        # Try to get translation
+        locale = self._current_locale
+        if locale in self._translations and key in self._translations[locale]:
+            return self._translations[locale][key]
+
+        # Try language without region
+        lang = locale.split('_')[0]
+        if lang in self._translations and key in self._translations[lang]:
+            return self._translations[lang][key]
+
+        # Fall back to source text
+        return source_text
+
 
 def get_plural_form(locale: str, n: int) -> str:
     """Get CLDR plural form for a number in a given locale.
