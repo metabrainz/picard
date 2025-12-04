@@ -72,6 +72,8 @@ def enable(api: PluginApi):
     error = api.tr("error.network", "Network error: {error}", error="Timeout")
 ```
 
+**Important:** While you can use Picard's `gettext()` for standard UI elements (like "Plugins", "Options", etc.), **avoid relying on Picard's translations for plugin-specific text**. Picard's translation strings may change or be removed between versions, which would break your plugin. Always use `api.tr()` for your plugin's own text.
+
 **Signature:**
 ```python
 api.tr(key: str, text: str = None, **kwargs) -> str
