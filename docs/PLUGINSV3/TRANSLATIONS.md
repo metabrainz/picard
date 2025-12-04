@@ -365,6 +365,45 @@ For collaborative translation, plugins could integrate with Weblate:
 - Best practices for managing translation PRs
 - Information about MusicBrainz Weblate instance (if available for community plugins)
 
+### TOML Format Support
+
+**Weblate supports TOML files** via translate-toolkit (added in version 3.16.0). If we migrate from JSON to TOML for translation files:
+
+**Supported TOML variants:**
+- **Plain TOML**: Simple key-value pairs and nested tables
+- **Go i18n TOML**: Supports pluralized strings using CLDR plural categories
+
+**Example Plain TOML translation file:**
+```toml
+# locale/de.toml
+[ui]
+button_login = "Bei ListenBrainz anmelden"
+button_logout = "Abmelden"
+
+[error]
+auth_failed = "Authentifizierung fehlgeschlagen"
+network = "Netzwerkfehler: {error}"
+
+[status]
+submitted = "{count} Titel übermittelt"
+```
+
+**Benefits of TOML over JSON:**
+- Comments supported (translator notes)
+- More human-readable structure
+- Nested sections for organization
+- Native support in Weblate via translate-toolkit
+- Consistent with MANIFEST.toml format
+
+**Considerations:**
+- Requires updating PluginApi.gettext() to parse TOML instead of JSON
+- Need to decide on flat keys (`"ui.button.login"`) vs nested tables (`[ui]` + `button_login`)
+- Weblate can handle both approaches
+
+**References:**
+- [Weblate TOML format documentation](https://docs.weblate.org/en/latest/formats/toml.html)
+- [translate-toolkit TOML support](https://docs.translatehouse.org/projects/translate-toolkit/en/latest/formats/toml.html)
+
 ---
 
 ## See Also
