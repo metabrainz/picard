@@ -423,6 +423,71 @@ class TestPluginApi(PicardTestCase):
         finally:
             config_file.unlink(missing_ok=True)
 
+    def test_plugin_config_with_options(self):
+        """Test that plugin config works with registered Options."""
+        from pathlib import Path
+        import tempfile
+
+        from PyQt6.QtCore import QSettings
+
+        from picard.config import (
+            BoolOption,
+            IntOption,
+            TextOption,
+        )
+
+        manifest = load_plugin_manifest('example')
+
+        # Create a temporary config file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            # Create a real QSettings instance
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+
+            # Create mock tagger
+            mock_tagger = MockTagger()
+
+            # Create API
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Register options for the plugin
+            TextOption('plugin.example', 'text_setting', 'default_text')
+            IntOption('plugin.example', 'int_setting', 42)
+            BoolOption('plugin.example', 'bool_setting', False)
+
+            # Set values
+            api.plugin_config['text_setting'] = 'hello'
+            api.plugin_config['int_setting'] = 100
+            api.plugin_config['bool_setting'] = True
+
+            # Read back using [] operator (works with registered Options)
+            self.assertEqual(api.plugin_config['text_setting'], 'hello')
+            self.assertEqual(api.plugin_config['int_setting'], 100)
+            self.assertEqual(api.plugin_config['bool_setting'], True)
+
+            # Verify persistence
+            settings.sync()
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+
+            # Values should persist and be properly typed
+            self.assertEqual(api2.plugin_config['text_setting'], 'hello')
+            self.assertEqual(api2.plugin_config['int_setting'], 100)
+            self.assertEqual(api2.plugin_config['bool_setting'], True)
+
+        finally:
+            # Clean up registered options
+            from picard.config import Option
+
+            Option.registry.pop(('plugin.example', 'text_setting'), None)
+            Option.registry.pop(('plugin.example', 'int_setting'), None)
+            Option.registry.pop(('plugin.example', 'bool_setting'), None)
+            config_file.unlink(missing_ok=True)
+
     def test_register_metadata_processors(self):
         """Test metadata processor registration methods."""
         from functools import partial
