@@ -44,6 +44,7 @@ The following classes are available through the `api` object:
 **Example**:
 ```python
 from picard.plugin3.api import BaseAction, OptionsPage, File, CoverArtProvider
+from picard.metadata import Metadata
 
 class MyProvider(CoverArtProvider):
     NAME = "My Provider"
@@ -52,7 +53,7 @@ class MyFormat(File):
     EXTENSIONS = [".custom"]
 
     def _load(self, filename):
-        metadata = api.Metadata()
+        metadata = Metadata()
         # Load tags into metadata
         return metadata
 ```
@@ -147,14 +148,18 @@ def enable(api):
 **In OptionsPage:**
 ```python
 class MyOptionsPage(api.OptionsPage):
+    def __init__(self, api=None, parent=None):
+        super().__init__(parent)
+        self.api = api
+
     def load(self):
         # Load from plugin config
-        enabled = api.plugin_config.get('enabled', True)
+        enabled = self.api.plugin_config.get('enabled', True)
         self.checkbox.setChecked(enabled)
 
     def save(self):
         # Save to plugin config
-        api.plugin_config['enabled'] = self.checkbox.isChecked()
+        self.api.plugin_config['enabled'] = self.checkbox.isChecked()
 ```
 
 **Benefits**:
@@ -228,10 +233,11 @@ class MyAction(api.BaseAction):
 
     def __init__(self, api=None):
         super().__init__(api=api)
+        self.api = api
 
     def callback(self, objs):
         for obj in objs:
-            if isinstance(obj, api.Track):
+            if isinstance(obj, self.api.Track):
                 # Handle track
                 pass
 ```
@@ -405,6 +411,7 @@ class MyAction(api.BaseAction):
 
     def __init__(self, api=None):
         super().__init__(api=api)
+        self.api = api
 
     def callback(self, objs):
         for obj in objs:
@@ -440,11 +447,11 @@ class MyOptionsPage(api.OptionsPage):
         # Build UI
 
     def load(self):
-        # Load settings from api.global_config
+        # Load settings from self.api.plugin_config or self.api.global_config
         pass
 
     def save(self):
-        # Save settings to api.global_config
+        # Save settings to self.api.plugin_config or self.api.global_config
         pass
 
 def enable(api):
@@ -690,6 +697,7 @@ class MyAction(api.BaseAction):
 
     def __init__(self, api=None):
         super().__init__(api=api)
+        self.api = api
 
     def callback(self, objs):
         self.api.logger.info(f"Action on {len(objs)} objects")
