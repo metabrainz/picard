@@ -621,6 +621,91 @@ $ picard-plugin-extract-translations myplugin/
 - Missing text is clearly marked with `?key?` placeholders
 - Keys provide stability when text changes
 
+### Plural Forms
+
+For strings that need pluralization, use `api.trn()` (translate with number):
+
+```python
+# Signature
+api.trn(key: str, singular: str = None, plural: str = None, n: int = 0, **kwargs) -> str
+
+# Usage
+count = 5
+api.trn("status.files", "{n} file", "{n} files", n=count)
+# Returns: "5 files"
+
+count = 1
+api.trn("status.files", "{n} file", "{n} files", n=count)
+# Returns: "1 file"
+```
+
+**Translation file format (JSON):**
+```json
+{
+  "status.files": {
+    "one": "{n} file",
+    "other": "{n} files"
+  }
+}
+```
+
+**Translation file format (TOML):**
+```toml
+[status.files]
+one = "{n} file"
+other = "{n} files"
+```
+
+**For languages with complex plural rules (e.g., Polish, Russian):**
+```json
+{
+  "status.files": {
+    "one": "{n} plik",
+    "few": "{n} pliki",
+    "many": "{n} plików",
+    "other": "{n} plików"
+  }
+}
+```
+
+**Plural categories (CLDR):**
+- `zero` - Used in Arabic for zero
+- `one` - Singular (1 in English)
+- `two` - Used in Arabic for two
+- `few` - Used in Slavic languages (2-4 in Polish)
+- `many` - Used in Slavic languages (5+ in Polish)
+- `other` - Default/fallback
+
+**Implementation:**
+- Uses CLDR plural rules based on locale
+- Falls back to `other` if specific form not available
+- English only needs `one` and `other`
+
+**Extraction tool behavior:**
+```python
+# Code
+api.trn("status.files", "{n} file", "{n} files", n=count)
+
+# Generates in locale/en.json
+{
+  "status.files": {
+    "one": "{n} file",
+    "other": "{n} files"
+  }
+}
+
+# Without text parameters
+api.trn("status.files", n=count)
+
+# Generates placeholder
+{
+  "status.files": {
+    "one": "?status.files?",
+    "other": "?status.files?"
+  }
+}
+```
+
 ### Open Question: Translator Workflow
 
 **Challenge:** Translators (especially via Weblate) need a source file to translate from.
