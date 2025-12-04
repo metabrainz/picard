@@ -220,3 +220,58 @@ class TestManifestValidator(PicardTestCase):
         }
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
+
+    def test_validate_valid_source_locale(self):
+        """Test validation accepts valid source_locale values."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+            'authors': ['Test Author'],
+            'license': 'GPL-2.0-or-later',
+            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
+        }
+
+        # Test valid locale codes
+        for locale in ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN']:
+            manifest['source_locale'] = locale
+            errors = validate_manifest_dict(manifest)
+            self.assertEqual(errors, [], f"Locale '{locale}' should be valid")
+
+    def test_validate_invalid_source_locale(self):
+        """Test validation catches invalid source_locale values."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+            'authors': ['Test Author'],
+            'license': 'GPL-2.0-or-later',
+            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
+        }
+
+        # Invalid formats
+        invalid_locales = ['', 'e', 'english', 'en-US', 'en_us', 'EN', 'en_USA', '123']
+        for locale in invalid_locales:
+            manifest['source_locale'] = locale
+            errors = validate_manifest_dict(manifest)
+            self.assertTrue(any('source_locale' in e for e in errors), f"Locale '{locale}' should be invalid: {errors}")
+
+    def test_validate_source_locale_wrong_type(self):
+        """Test validation catches wrong type for source_locale."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+            'authors': ['Test Author'],
+            'license': 'GPL-2.0-or-later',
+            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
+            'source_locale': 123,  # Should be string
+        }
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'source_locale' must be a string", errors)

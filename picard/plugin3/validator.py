@@ -24,6 +24,8 @@ This module can be copied to registry maintenance tools without
 requiring the full Picard codebase.
 """
 
+import re
+
 from .constants import (
     MAX_DESCRIPTION_LENGTH,
     MAX_LONG_DESCRIPTION_LENGTH,
@@ -31,6 +33,24 @@ from .constants import (
     REQUIRED_MANIFEST_FIELDS,
     UUID_PATTERN,
 )
+
+
+def _is_valid_locale(locale):
+    """Check if locale string is valid.
+
+    Valid formats:
+    - Language code: 'en', 'de', 'fr'
+    - Language with region: 'en_US', 'pt_BR', 'zh_CN'
+
+    Args:
+        locale: Locale string to validate
+
+    Returns:
+        bool: True if valid locale format
+    """
+    # Pattern: 2-3 letter language code, optionally followed by underscore and 2 letter region
+    pattern = r'^[a-z]{2,3}(_[A-Z]{2})?$'
+    return bool(re.match(pattern, locale))
 
 
 def validate_manifest_dict(manifest_data):
@@ -92,6 +112,16 @@ def validate_manifest_dict(manifest_data):
         for api_ver in manifest_data['api']:
             if not isinstance(api_ver, str) or not api_ver.strip():
                 errors.append(f"Invalid API version: {api_ver}")
+
+    # Source locale validation
+    if 'source_locale' in manifest_data:
+        source_locale = manifest_data['source_locale']
+        if not isinstance(source_locale, str):
+            errors.append("Field 'source_locale' must be a string")
+        elif not source_locale.strip():
+            errors.append("Field 'source_locale' must not be empty")
+        elif not _is_valid_locale(source_locale):
+            errors.append(f"Field 'source_locale' must be a valid locale code (got '{source_locale}')")
 
     # Authors validation (optional field)
     if 'authors' in manifest_data:
