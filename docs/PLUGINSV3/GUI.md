@@ -305,6 +305,72 @@ The plugin system backend is designed with **zero mixing of business logic and p
 - `enable_plugin(plugin)` → no exceptions
 - `disable_plugin(plugin)` → no exceptions
 
+#### Async Operations Layer (`picard/plugin3/asyncops/`)
+
+**AsyncPluginManager** (`picard/plugin3/asyncops/manager.py`):
+
+Wraps long-running PluginManager operations for non-blocking GUI execution:
+
+```python
+from picard.plugin3.asyncops.manager import AsyncPluginManager
+
+async_manager = AsyncPluginManager(manager)
+
+# Install with progress updates
+async_manager.install_plugin(
+    url='https://github.com/user/plugin',
+    ref='main',
+    progress_callback=lambda update: print(f"{update.percent}%: {update.message}"),
+    callback=lambda result: print(f"Installed: {result.value}")
+)
+
+# Update plugin
+async_manager.update_plugin(
+    plugin=plugin,
+    progress_callback=progress_handler,
+    callback=completion_handler
+)
+
+# Update all plugins
+async_manager.update_all_plugins(
+    progress_callback=progress_handler,
+    callback=completion_handler
+)
+
+# Uninstall plugin
+async_manager.uninstall_plugin(
+    plugin=plugin,
+    purge=True,
+    callback=completion_handler
+)
+
+# Fast synchronous operations (no async needed)
+async_manager.enable_plugin(plugin)
+async_manager.disable_plugin(plugin)
+async_manager.find_plugin(identifier)
+```
+
+**ProgressUpdate** (`picard/plugin3/asyncops/callbacks.py`):
+```python
+@dataclass
+class ProgressUpdate:
+    operation: str          # 'install', 'update', 'update_all', 'uninstall'
+    message: str           # Human-readable status message
+    percent: int = 0       # Progress percentage (0-100)
+    plugin_id: str = None  # Plugin being operated on
+    current: int = None    # Current item (for batch operations)
+    total: int = None      # Total items (for batch operations)
+```
+
+**OperationResult** (`picard/plugin3/asyncops/callbacks.py`):
+```python
+@dataclass
+class OperationResult:
+    success: bool
+    value: Any = None      # Return value on success
+    error: Exception = None  # Exception on failure
+```
+
 **Exception-Based Flow:**
 ```python
 # All errors are communicated via exceptions, not output
@@ -319,6 +385,38 @@ class PluginNoUUIDError(PluginManagerError)
 ```
 
 #### GUI Integration Pattern
+
+**Async Installation with Progress:**
+```python
+from picard.plugin3.asyncops.manager import AsyncPluginManager
+
+async_manager = AsyncPluginManager(manager)
+
+def on_progress(update):
+    # Update progress bar
+    progress_bar.setValue(update.percent)
+    status_label.setText(update.message)
+
+def on_complete(result):
+    if result.success:
+        QMessageBox.information(parent, "Success",
+                               f"Plugin {result.value} installed successfully")
+    else:
+        if isinstance(result.error, PluginBlacklistedError):
+            QMessageBox.critical(parent, "Blocked",
+                                f"Plugin is blacklisted: {result.error.reason}")
+        elif isinstance(result.error, PluginAlreadyInstalledError):
+            QMessageBox.information(parent, "Already Installed",
+                                   f"Plugin {result.error.plugin_name} is already installed")
+        elif isinstance(result.error, PluginManifestInvalidError):
+            QMessageBox.critical(parent, "Invalid Plugin",
+                                f"Invalid MANIFEST.toml:\n" + "\n".join(result.error.errors))
+        else:
+            QMessageBox.critical(parent, "Error", str(result.error))
+
+# Start async installation
+async_manager.install_plugin(url, ref=ref, progress_callback=on_progress, callback=on_complete)
+```
 
 **Blacklist Checks:**
 ```python
@@ -356,26 +454,13 @@ elif trust_level == 'unregistered':
         return
 ```
 
-**Installation with Exception Handling:**
-```python
-try:
-    plugin_id = manager.install_plugin(url, ref=ref)
-    QMessageBox.information(parent, "Success",
-                           f"Plugin {plugin_id} installed successfully")
-except PluginBlacklistedError as e:
-    QMessageBox.critical(parent, "Blocked",
-                        f"Plugin is blacklisted: {e.reason}")
-except PluginAlreadyInstalledError as e:
-    QMessageBox.information(parent, "Already Installed",
-                           f"Plugin {e.plugin_name} is already installed")
-except PluginManifestInvalidError as e:
-    QMessageBox.critical(parent, "Invalid Plugin",
-                        f"Invalid MANIFEST.toml:\n" + "\n".join(e.errors))
-except Exception as e:
-    QMessageBox.critical(parent, "Error", str(e))
-```
-
 #### What's Ready for GUI
+
+✅ **Async operations:**
+- Backend: `AsyncPluginManager` wraps long-running operations
+- Progress callbacks: Real-time updates via `ProgressUpdate`
+- Completion callbacks: Results via `OperationResult`
+- GUI: Non-blocking operations with progress bars
 
 ✅ **Blacklist checks:**
 - Backend: `is_blacklisted()` returns `(bool, reason)`
