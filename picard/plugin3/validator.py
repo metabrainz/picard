@@ -106,13 +106,13 @@ def _validate_locale_field(manifest_data, field_name, errors):
         field_name: Name of field to validate
         errors: List to append errors to
     """
-    if field_name in manifest_data:
+    # First validate it's a non-empty string
+    _validate_string_field(manifest_data, field_name, errors)
+
+    # Then validate locale format if no errors so far
+    if field_name in manifest_data and not any(field_name in e for e in errors):
         value = manifest_data[field_name]
-        if not isinstance(value, str):
-            errors.append(f"Field '{field_name}' must be a string")
-        elif not value.strip():
-            errors.append(f"Field '{field_name}' must not be empty")
-        elif not _is_valid_locale(value):
+        if not _is_valid_locale(value):
             errors.append(f"Field '{field_name}' must be a valid locale code (got '{value}')")
 
 
