@@ -226,6 +226,9 @@ api.OptionsPage    # picard.ui.options.OptionsPage
 class MyAction(api.BaseAction):
     NAME = "My Action"
 
+    def __init__(self, api=None):
+        super().__init__(api=api)
+
     def callback(self, objs):
         for obj in objs:
             if isinstance(obj, api.Track):
@@ -400,6 +403,9 @@ Register context menu actions for different object types.
 class MyAction(api.BaseAction):
     NAME = "My Custom Action"
 
+    def __init__(self, api=None):
+        super().__init__(api=api)
+
     def callback(self, objs):
         for obj in objs:
             self.api.logger.info(f"Action on: {obj}")
@@ -412,7 +418,7 @@ def enable(api):
     api.register_clusterlist_action(MyAction)
 ```
 
-**Note**: Pass the class, not an instance. Picard instantiates it with `api` parameter.
+**Note**: Pass the class, not an instance. Picard instantiates it with `api` parameter. Always call `super().__init__(api=api)` to properly initialize the parent class.
 
 ---
 
@@ -681,6 +687,9 @@ def on_file_saved(api, file):
 
 class MyAction(api.BaseAction):
     NAME = "Example Action"
+
+    def __init__(self, api=None):
+        super().__init__(api=api)
 
     def callback(self, objs):
         self.api.logger.info(f"Action on {len(objs)} objects")
