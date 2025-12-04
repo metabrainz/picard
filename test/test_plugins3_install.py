@@ -379,6 +379,37 @@ class TestPluginInstall(PicardTestCase):
             self.assertIn('some_setting', mock_removed_keys)
             self.assertIn('another_setting', mock_removed_keys)
 
+    def test_plugin_has_saved_options(self):
+        """Test checking if plugin has saved options."""
+        from unittest.mock import Mock, patch
+
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        mock_plugin = Mock(spec=Plugin)
+        mock_plugin.plugin_id = 'test-plugin'
+
+        # Mock config with no options
+        mock_config_empty = Mock()
+        mock_config_empty.childKeys = Mock(return_value=[])
+        mock_config_empty.beginGroup = Mock()
+        mock_config_empty.endGroup = Mock()
+
+        with patch('picard.plugin3.manager.get_config', return_value=mock_config_empty):
+            self.assertFalse(manager.plugin_has_saved_options(mock_plugin))
+
+        # Mock config with options
+        mock_config_with_options = Mock()
+        mock_config_with_options.childKeys = Mock(return_value=['setting1', 'setting2'])
+        mock_config_with_options.beginGroup = Mock()
+        mock_config_with_options.endGroup = Mock()
+
+        with patch('picard.plugin3.manager.get_config', return_value=mock_config_with_options):
+            self.assertTrue(manager.plugin_has_saved_options(mock_plugin))
+
     def test_install_command_execution(self):
         """Test install command execution path."""
         from io import StringIO

@@ -1181,6 +1181,24 @@ class PluginManager:
             config.endGroup()
             log.info('Deleted saved options for plugin %s', plugin.plugin_id)
 
+    def plugin_has_saved_options(self, plugin: Plugin) -> bool:
+        """Check if a plugin has any saved options.
+
+        Args:
+            plugin: Plugin to check
+
+        Returns:
+            True if plugin has saved options, False otherwise
+        """
+        config = get_config()
+        config_key = f'plugin.{plugin.plugin_id}'
+        config.beginGroup('setting')
+        config.beginGroup(config_key)
+        has_options = len(config.childKeys()) > 0
+        config.endGroup()
+        config.endGroup()
+        return has_options
+
     def _check_blacklisted_plugins(self):
         """Check installed plugins against blacklist and disable if needed.
 

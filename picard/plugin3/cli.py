@@ -850,7 +850,11 @@ class PluginCLI:
 
                 # Ask about config cleanup if not using --purge (skip for failed plugins)
                 if not purge and not is_failed:
-                    purge_this = self._out.yesno('Delete plugin saved options?')
+                    # Only ask if plugin has saved options
+                    if self._manager.plugin_has_saved_options(plugin):
+                        purge_this = self._out.yesno('Delete plugin saved options?')
+                    else:
+                        purge_this = False
                 else:
                     purge_this = purge
             else:
