@@ -26,13 +26,17 @@ requiring the full Picard codebase.
 
 import re
 
-from .constants import (
-    MAX_DESCRIPTION_LENGTH,
-    MAX_LONG_DESCRIPTION_LENGTH,
-    MAX_NAME_LENGTH,
-    REQUIRED_MANIFEST_FIELDS,
-    UUID_PATTERN,
-)
+
+# Required MANIFEST.toml fields
+REQUIRED_MANIFEST_FIELDS = ['uuid', 'name', 'description', 'api']
+
+# String length constraints for MANIFEST.toml fields
+MAX_NAME_LENGTH = 100
+MAX_DESCRIPTION_LENGTH = 200
+MAX_LONG_DESCRIPTION_LENGTH = 2000
+
+# UUID v4 regex pattern (RFC 4122)
+UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', re.IGNORECASE)
 
 
 def _is_valid_locale(locale):
