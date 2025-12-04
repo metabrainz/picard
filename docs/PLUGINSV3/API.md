@@ -634,6 +634,8 @@ def enable(api):
     api.register_options_page(MyPage)
 ```
 
+**Note on `api=None` default**: The signature uses `api=None` for compatibility with built-in Picard classes that don't receive an api parameter. For plugin classes, Picard always provides a valid `api` instance, so `self.api` will never be `None` in your plugin code. You can safely use `self.api` without None checks.
+
 ---
 
 ## Priority System
