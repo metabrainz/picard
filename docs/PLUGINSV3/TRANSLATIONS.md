@@ -367,11 +367,11 @@ For collaborative translation, plugins could integrate with Weblate:
 
 ### TOML Format Support
 
-**Weblate supports TOML files** via translate-toolkit (added in version 3.16.0). If we migrate from JSON to TOML for translation files:
+**Weblate supports TOML files** via translate-toolkit (added in version 3.16.0). If we migrate from JSON to TOML for translation files, Weblate can handle them natively.
 
 **Supported TOML variants:**
 - **Plain TOML**: Simple key-value pairs and nested tables
-- **Go i18n TOML**: Supports pluralized strings using CLDR plural categories
+- **Go i18n TOML**: Supports pluralized strings using CLDR plural categories (zero, one, two, few, many, other)
 
 **Example Plain TOML translation file:**
 ```toml
@@ -399,10 +399,13 @@ submitted = "{count} Titel übermittelt"
 - Requires updating PluginApi.gettext() to parse TOML instead of JSON
 - Need to decide on flat keys (`"ui.button.login"`) vs nested tables (`[ui]` + `button_login`)
 - Weblate can handle both approaches
+- TOML support was added to translate-toolkit in 3.16.0 and integrated into Weblate 4.1+
+
+**Note:** While translate-toolkit supports TOML, it's not explicitly listed in Weblate's format documentation table yet. However, since Weblate uses translate-toolkit for format support, TOML files should work. Testing recommended before full adoption.
 
 **References:**
-- [Weblate TOML format documentation](https://docs.weblate.org/en/latest/formats/toml.html)
 - [translate-toolkit TOML support](https://docs.translatehouse.org/projects/translate-toolkit/en/latest/formats/toml.html)
+- [Weblate issue #2558 - Go i18n formats including TOML](https://github.com/WeblateOrg/weblate/issues/2558) (closed, implemented in 4.1)
 
 ---
 
