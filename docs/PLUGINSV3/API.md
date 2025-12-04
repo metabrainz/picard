@@ -147,7 +147,9 @@ def enable(api):
 
 **In OptionsPage:**
 ```python
-class MyOptionsPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyOptionsPage(OptionsPage):
     def __init__(self, api=None, parent=None):
         super().__init__(parent)
         self.api = api
@@ -228,7 +230,9 @@ api.OptionsPage    # picard.ui.options.OptionsPage
 
 **Usage**:
 ```python
-class MyAction(api.BaseAction):
+from picard.plugin3.api import BaseAction
+
+class MyAction(BaseAction):
     NAME = "My Action"
 
     def __init__(self, api=None):
@@ -406,7 +410,9 @@ def enable(api):
 Register context menu actions for different object types.
 
 ```python
-class MyAction(api.BaseAction):
+from picard.plugin3.api import BaseAction
+
+class MyAction(BaseAction):
     NAME = "My Custom Action"
 
     def __init__(self, api=None):
@@ -436,7 +442,9 @@ def enable(api):
 Register a settings page in Picard's options dialog.
 
 ```python
-class MyOptionsPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyOptionsPage(OptionsPage):
     NAME = "my_plugin"
     TITLE = "My Plugin"
     PARENT = "plugins"
@@ -576,7 +584,9 @@ def enable(api):
 Register support for a custom file format.
 
 ```python
-class MyFormat(api.File):
+from picard.plugin3.api import File
+
+class MyFormat(File):
     EXTENSIONS = [".myformat"]
     NAME = "My Format"
 
@@ -613,7 +623,9 @@ def enable(api):
 
 **For Classes**:
 ```python
-class MyPage(api.OptionsPage):
+from picard.plugin3.api import OptionsPage
+
+class MyPage(OptionsPage):
     def __init__(self, api=None, parent=None):
         super().__init__(parent)
         self.api = api  # Store for later use
@@ -659,9 +671,10 @@ def enable(api):
 
 ```python
 from PyQt6.QtWidgets import QCheckBox
+from picard.plugin3.api import OptionsPage, BaseAction
 
 
-class MyOptionsPage(api.OptionsPage):
+class MyOptionsPage(OptionsPage):
     NAME = "example"
     TITLE = "Example Plugin"
     PARENT = "plugins"
@@ -692,7 +705,7 @@ def on_file_saved(api, file):
     api.logger.info(f"Saved: {file.filename}")
 
 
-class MyAction(api.BaseAction):
+class MyAction(BaseAction):
     NAME = "Example Action"
 
     def __init__(self, api=None):
