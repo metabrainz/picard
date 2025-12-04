@@ -783,7 +783,7 @@ Tags (5 total):
 
 ### Reinstall Plugin
 
-**Command:** `picard plugins --install <url> --reinstall`
+**Command:** `picard plugins --install <url|registry-id|uuid> --reinstall`
 
 **Description:** Force reinstall of an already installed plugin. Useful for:
 - Recovering from corrupted plugin files
@@ -795,6 +795,12 @@ Tags (5 total):
 # Reinstall plugin from same URL
 picard plugins --install https://github.com/user/plugin --reinstall
 
+# Reinstall by registry ID
+picard plugins --install view-script-variables --reinstall
+
+# Reinstall by UUID
+picard plugins --install aa0f0588-84e0-4f5b-aa32-17657b4434a1 --reinstall
+
 # Reinstall with different ref
 picard plugins --install https://github.com/user/plugin --ref v2.0.0 --reinstall
 
@@ -803,13 +809,14 @@ picard plugins --install https://github.com/user/plugin --reinstall --yes
 ```
 
 **Behavior:**
-1. Checks if plugin is already installed from the same URL
-2. If plugin has uncommitted changes, prompts to discard them (or errors with `--yes`)
-3. Uninstalls existing plugin
-4. Installs fresh copy from git repository
-5. Preserves plugin configuration (unless `--purge` is used)
+1. If using UUID or registry ID, looks up the installed plugin's source
+2. Checks if plugin is already installed from the same URL
+3. If plugin has uncommitted changes, prompts to discard them (or auto-discards with `--reinstall --yes`)
+4. Uninstalls existing plugin
+5. Installs fresh copy from git repository
+6. Preserves plugin configuration (unless `--purge` is used)
 
-**Note:** If the plugin has uncommitted local changes, you'll be prompted to discard them. In non-interactive mode (`--yes`), the operation will fail to prevent data loss.
+**Note:** When using `--reinstall --yes`, uncommitted local changes will be automatically discarded. Without `--yes`, you'll be prompted to confirm.
 
 ---
 
