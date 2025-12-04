@@ -90,41 +90,40 @@ class TestPluginTranslator(PicardTestCase):
 class TestPluginApiQtTranslator(PicardTestCase):
     def test_qt_translator_installed_after_load(self):
         """Test that Qt translator is installed when translations are loaded."""
-        tmpdir = tempfile.mkdtemp()
-        plugin_dir = Path(tmpdir)
-        locale_dir = plugin_dir / 'locale'
-        locale_dir.mkdir()
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            locale_dir = plugin_dir / 'locale'
+            locale_dir.mkdir()
 
-        (locale_dir / 'en.json').write_text(json.dumps({'qt.Dialog.OK': 'OK'}))
+            (locale_dir / 'en.json').write_text(json.dumps({'qt.Dialog.OK': 'OK'}))
 
-        manifest_path = plugin_dir / 'MANIFEST.toml'
-        manifest_path.write_text('name = "Test"\n')
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
 
-        with open(manifest_path, 'rb') as f:
-            manifest = PluginManifest('test', f)
-            api = PluginApi(manifest, Mock())
-            api._plugin_dir = plugin_dir
-            api._current_locale = 'en'
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                api = PluginApi(manifest, Mock())
+                api._plugin_dir = plugin_dir
+                api._current_locale = 'en'
 
-            with patch('PyQt6.QtCore.QCoreApplication.installTranslator') as mock_install:
-                api._load_translations()
-                api._install_qt_translator()
+                with patch('PyQt6.QtCore.QCoreApplication.installTranslator') as mock_install:
+                    api._load_translations()
+                    api._install_qt_translator()
 
-                mock_install.assert_called_once()
-                self.assertIsInstance(api._qt_translator, PluginTranslator)
+                    mock_install.assert_called_once()
+                    self.assertIsInstance(api._qt_translator, PluginTranslator)
 
     def test_qt_translator_not_installed_without_translations(self):
         """Test that Qt translator is not installed when no translations exist."""
-        manifest_path = Path(tempfile.mktemp(suffix='.toml'))
-        manifest_path.write_text('name = "Test"\n')
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
 
-        with open(manifest_path, 'rb') as f:
-            manifest = PluginManifest('test', f)
-            api = PluginApi(manifest, Mock())
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                api = PluginApi(manifest, Mock())
 
-            with patch('PyQt6.QtCore.QCoreApplication.installTranslator') as mock_install:
-                api._install_qt_translator()
-                mock_install.assert_not_called()
-                self.assertIsNone(api._qt_translator)
-
-        manifest_path.unlink()
+                with patch('PyQt6.QtCore.QCoreApplication.installTranslator') as mock_install:
+                    api._install_qt_translator()
+                    mock_install.assert_not_called()
+                    self.assertIsNone(api._qt_translator)
