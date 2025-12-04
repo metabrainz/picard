@@ -40,6 +40,13 @@ from picard.config import (
 )
 from picard.coverart.image import CoverArtImage
 from picard.coverart.providers import CoverArtProvider
+from picard.extension_points.cover_art_filters import (
+    register_cover_art_filter,
+    register_cover_art_metadata_filter,
+)
+from picard.extension_points.cover_art_processors import (
+    register_cover_art_processor,
+)
 from picard.extension_points.cover_art_providers import (
     register_cover_art_provider,
 )
@@ -65,6 +72,8 @@ from picard.extension_points.metadata import (
 )
 from picard.extension_points.options_pages import register_options_page
 from picard.extension_points.script_functions import register_script_function
+from picard.extension_points.script_variables import register_script_variable
+from picard.extension_points.ui_init import register_ui_init
 from picard.file import File
 from picard.metadata import Metadata
 from picard.plugin3.manifest import PluginManifest
@@ -173,6 +182,19 @@ class PluginApi:
     def register_cover_art_provider(self, provider: CoverArtProvider) -> None:
         return register_cover_art_provider(provider)
 
+    def register_cover_art_filter(self, filter: Callable) -> None:
+        wrapped = partial(filter, self)
+        update_wrapper(wrapped, filter)
+        return register_cover_art_filter(wrapped)
+
+    def register_cover_art_metadata_filter(self, filter: Callable) -> None:
+        wrapped = partial(filter, self)
+        update_wrapper(wrapped, filter)
+        return register_cover_art_metadata_filter(wrapped)
+
+    def register_cover_art_processor(self, processor_class: Type) -> None:
+        return register_cover_art_processor(processor_class)
+
     # File formats
     def register_format(self, format: File) -> None:
         return register_format(format)
@@ -187,6 +209,9 @@ class PluginApi:
         documentation: str | None = None,
     ) -> None:
         return register_script_function(function, name, eval_args, check_argcount, documentation)
+
+    def register_script_variable(self, name: str, documentation: str | None = None) -> None:
+        return register_script_variable(name, documentation)
 
     # Context menu actions
     def register_album_action(self, action: BaseAction) -> None:
@@ -208,9 +233,10 @@ class PluginApi:
     def register_options_page(self, page_class: Type[OptionsPage]) -> None:
         return register_options_page(page_class, self)
 
-    # TODO: Replace by init function in plugin
-    # def register_ui_init(self, function: Callable) -> None:
-    #     pass
+    def register_ui_init(self, function: Callable) -> None:
+        wrapped = partial(function, self)
+        update_wrapper(wrapped, function)
+        return register_ui_init(wrapped)
 
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins
