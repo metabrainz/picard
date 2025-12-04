@@ -650,6 +650,21 @@ class PluginCLI:
             try:
                 # Check if it's a plugin ID (no slashes, no protocol)
                 if '/' not in url_or_id and '://' not in url_or_id:
+                    # If reinstalling, check if it's a UUID of an installed plugin
+                    if reinstall:
+                        installed_plugin = self._manager.find_plugin(url_or_id)
+                        if installed_plugin and installed_plugin != 'multiple':
+                            # Get the plugin's registry ID or URL
+                            registry_id = self._manager.get_plugin_registry_id(installed_plugin)
+                            if registry_id:
+                                url_or_id = registry_id
+                            else:
+                                # Get URL from metadata
+                                uuid = self._manager._get_plugin_uuid(installed_plugin)
+                                metadata = self._manager._metadata.get_plugin_metadata(uuid)
+                                if metadata and metadata.url:
+                                    url_or_id = metadata.url
+
                     # Try to find in registry
                     plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
                     if plugin:
