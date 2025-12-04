@@ -148,6 +148,38 @@ def validate_manifest_dict(manifest_data):
         elif len(categories) == 0:
             errors.append("Field 'categories' must contain at least one category if present")
 
+    # License validation (optional field)
+    if 'license' in manifest_data:
+        license_val = manifest_data['license']
+        if not isinstance(license_val, str):
+            errors.append("Field 'license' must be a string")
+        elif not license_val.strip():
+            errors.append("Field 'license' must not be empty")
+
+    # License URL validation (optional field)
+    if 'license_url' in manifest_data:
+        license_url = manifest_data['license_url']
+        if not isinstance(license_url, str):
+            errors.append("Field 'license_url' must be a string")
+        elif not license_url.strip():
+            errors.append("Field 'license_url' must not be empty")
+
+    # Homepage validation (optional field)
+    if 'homepage' in manifest_data:
+        homepage = manifest_data['homepage']
+        if not isinstance(homepage, str):
+            errors.append("Field 'homepage' must be a string")
+        elif not homepage.strip():
+            errors.append("Field 'homepage' must not be empty")
+
+    # Min Python version validation (optional field)
+    if 'min_python_version' in manifest_data:
+        min_py_ver = manifest_data['min_python_version']
+        if not isinstance(min_py_ver, str):
+            errors.append("Field 'min_python_version' must be a string")
+        elif not min_py_ver.strip():
+            errors.append("Field 'min_python_version' must not be empty")
+
     # Empty i18n sections
     for section in ['name_i18n', 'description_i18n', 'long_description_i18n']:
         if section in manifest_data:

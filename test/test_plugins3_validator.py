@@ -307,3 +307,80 @@ class TestManifestValidator(PicardTestCase):
         }
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'source_locale' must be a string", errors)
+
+    def test_validate_license_field(self):
+        """Test validation of license field."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+        }
+
+        # Valid license
+        manifest['license'] = 'GPL-2.0-or-later'
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Empty license
+        manifest['license'] = ''
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'license' must not be empty", errors)
+
+        # Wrong type
+        manifest['license'] = 123
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'license' must be a string", errors)
+
+    def test_validate_url_fields(self):
+        """Test validation of URL fields (license_url, homepage)."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+        }
+
+        # Valid URLs
+        manifest['license_url'] = 'https://www.gnu.org/licenses/gpl-2.0.html'
+        manifest['homepage'] = 'https://github.com/user/plugin'
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Empty license_url
+        manifest['license_url'] = ''
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'license_url' must not be empty", errors)
+
+        # Wrong type for homepage
+        manifest['license_url'] = 'https://example.com'
+        manifest['homepage'] = 123
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'homepage' must be a string", errors)
+
+    def test_validate_min_python_version(self):
+        """Test validation of min_python_version field."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+        }
+
+        # Valid version
+        manifest['min_python_version'] = '3.9'
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Empty version
+        manifest['min_python_version'] = ''
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'min_python_version' must not be empty", errors)
+
+        # Wrong type
+        manifest['min_python_version'] = 3.9
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'min_python_version' must be a string", errors)
