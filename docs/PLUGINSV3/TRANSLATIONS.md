@@ -92,6 +92,13 @@ Use consistent prefixes for organization:
 - `message.*` - User notifications
 - `help.*` - Help text
 
+**Reserved prefixes:**
+
+- `qt.*` - Reserved for Qt Designer `.ui` files (automatically generated)
+  - Format: `qt.{ClassName}.{SourceText}`
+  - Example: `qt.VariablesDialog.Variable`
+  - Do not use this prefix in your code
+
 ### Placeholders
 
 Use `{variable}` syntax for dynamic content:
