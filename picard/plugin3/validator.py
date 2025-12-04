@@ -98,6 +98,24 @@ def _validate_array_field(manifest_data, field_name, errors, item_type='item', c
                 check_items(item, errors)
 
 
+def _validate_locale_field(manifest_data, field_name, errors):
+    """Validate that a field is a valid locale code if present.
+
+    Args:
+        manifest_data: Manifest dictionary
+        field_name: Name of field to validate
+        errors: List to append errors to
+    """
+    if field_name in manifest_data:
+        value = manifest_data[field_name]
+        if not isinstance(value, str):
+            errors.append(f"Field '{field_name}' must be a string")
+        elif not value.strip():
+            errors.append(f"Field '{field_name}' must not be empty")
+        elif not _is_valid_locale(value):
+            errors.append(f"Field '{field_name}' must be a valid locale code (got '{value}')")
+
+
 def validate_manifest_dict(manifest_data):
     """Validate manifest dictionary (no Version dependency).
 
@@ -132,15 +150,8 @@ def validate_manifest_dict(manifest_data):
 
     _validate_array_field(manifest_data, 'api', errors, 'API version', check_items=check_api_version)
 
-    # Source locale validation
-    if 'source_locale' in manifest_data:
-        source_locale = manifest_data['source_locale']
-        if not isinstance(source_locale, str):
-            errors.append("Field 'source_locale' must be a string")
-        elif not source_locale.strip():
-            errors.append("Field 'source_locale' must not be empty")
-        elif not _is_valid_locale(source_locale):
-            errors.append(f"Field 'source_locale' must be a valid locale code (got '{source_locale}')")
+    # Locale validation
+    _validate_locale_field(manifest_data, 'source_locale', errors)
 
     # Optional string fields
     _validate_string_field(manifest_data, 'license', errors)
