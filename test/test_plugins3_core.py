@@ -345,29 +345,51 @@ class TestPluginApi(PicardTestCase):
     def test_logger_propagates_to_main(self):
         """Test that plugin logger messages propagate to main logger."""
         import logging
-        from unittest.mock import MagicMock
 
         from picard import log
+
+        # Save and restore logging.disable state (other tests may have disabled logging)
+        original_disable_level = logging.root.manager.disable
+        logging.disable(logging.NOTSET)
 
         manifest = load_plugin_manifest('example')
         api = PluginApi(manifest, MockTagger())
 
-        # Create a mock handler to capture log messages
-        mock_handler = MagicMock(spec=logging.Handler)
-        mock_handler.level = logging.DEBUG
-        log.main_logger.addHandler(mock_handler)
+        # Verify logger name is correct
+        self.assertEqual(api.logger.name, 'main.plugin.example')
+
+        # Create a real handler that captures messages
+        captured_messages = []
+
+        class CaptureHandler(logging.Handler):
+            def emit(self, record):
+                captured_messages.append(record)
+
+        handler = CaptureHandler()
+        handler.setLevel(logging.DEBUG)
+
+        # Add handler to main logger
+        log.main_logger.addHandler(handler)
 
         try:
+            # Set logger levels to ensure messages are processed
+            original_main_level = log.main_logger.level
+            log.main_logger.setLevel(logging.DEBUG)
+            api.logger.setLevel(logging.DEBUG)
+
             # Log messages at different levels
             api.logger.info("Test info message")
             api.logger.debug("Test debug message")
 
-            # Verify messages were handled
-            self.assertGreater(
-                mock_handler.handle.call_count, 0, "Plugin logger messages should propagate to main logger"
-            )
+            # Verify messages were captured
+            self.assertGreater(len(captured_messages), 0, "Plugin logger messages should propagate to main logger")
+            # Verify the messages are from our plugin logger
+            for record in captured_messages:
+                self.assertTrue(record.name.startswith('main.plugin.'))
         finally:
-            log.main_logger.removeHandler(mock_handler)
+            log.main_logger.removeHandler(handler)
+            log.main_logger.setLevel(original_main_level)
+            logging.disable(original_disable_level)
 
     def test_plugin_config_persistence(self):
         """Test that plugin config values are saved and can be retrieved."""
