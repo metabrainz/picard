@@ -225,35 +225,35 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 
 ## Commands Summary
 
-| Command | Status | Phase | Description |
-|---------|--------|-------|-------------|
-| `--list` / `-l` | ✅ Done | 1.3 | List all installed plugins |
-| `--install <url>` / `-i` | ✅ Done | 1.1 | Install plugin from git URL |
-| `--install <name>` | ✅ Done | 3.3 | Install official plugin by name |
-| `--uninstall <name>` / `-u` | ✅ Done | 1.1 | Uninstall plugin |
-| `--enable <name>` / `-e` | ✅ Done | 1.1 | Enable plugin |
-| `--disable <name>` / `-d` | ✅ Done | 1.1 | Disable plugin |
-| `--update <name>` | ✅ Done | 1.4 | Update specific plugin |
-| `--update-all` | ✅ Done | 1.4 | Update all plugins |
-| `--info <name\|url>` | ✅ Done | 1.3 | Show plugin details and status |
-| `--list-refs <name\|url>` | ✅ Done | 1.6 | List available git refs for plugin |
-| `--ref <ref>` | ✅ Done | 1.6 | Specify git ref (branch/tag/commit) |
-| `--switch-ref <name> <ref>` | ✅ Done | 1.6 | Switch plugin to different ref |
-| `--check-updates` | ✅ Done | 1.4 | Check for updates within installed ref |
-| `--reinstall` | ✅ Done | 1.7 | Force reinstall (use with --install) |
-| `--purge` | ✅ Done | 1.7 | Delete plugin config on uninstall |
-| `--clean-config <name>` | ✅ Done | 1.7 | Delete plugin configuration |
-| `--yes` / `-y` | ✅ Done | 1.3 | Skip confirmation prompts |
-| `--force-blacklisted` | ✅ Done | 1.8 | Override blacklist warning |
-| `--validate <url>` | ✅ Done | 2.1 | Validate plugin MANIFEST |
-| `--manifest [target]` | ✅ Done | 2.1 | Show MANIFEST.toml (template or from plugin) |
-| `--browse` | ✅ Done | 3.3 | Browse official plugins |
-| `--search <term>` | ✅ Done | 3.3 | Search official plugins |
-| `--check-blacklist <url>` | ✅ Done | 1.8 | Check if URL is blacklisted |
-| `--refresh-registry` | ✅ Done | 3.2 | Force refresh plugin registry cache |
-| `--trust-community` | ✅ Done | 3.2 | Skip community plugin warnings |
-| `--trust <level>` | ✅ Done | 3.3 | Filter by trust level (with --browse/--search) |
-| `--category <cat>` | ✅ Done | 3.3 | Filter by category (with --browse/--search) |
+| Command | Description |
+|---------|-------------|
+| `--list` / `-l` | List all installed plugins |
+| `--install <url>` / `-i` | Install plugin from git URL |
+| `--install <name>` | Install official plugin by name |
+| `--uninstall <name>` / `-u` | Uninstall plugin |
+| `--enable <name>` / `-e` | Enable plugin |
+| `--disable <name>` / `-d` | Disable plugin |
+| `--update <name>` | Update specific plugin |
+| `--update-all` | Update all plugins |
+| `--info <name\|url>` | Show plugin details and status |
+| `--list-refs <name\|url>` | List available git refs for plugin |
+| `--ref <ref>` | Specify git ref (branch/tag/commit) |
+| `--switch-ref <name> <ref>` | Switch plugin to different ref |
+| `--check-updates` | Check for updates within installed ref |
+| `--reinstall` | Force reinstall (use with --install) |
+| `--purge` | Delete plugin config on uninstall |
+| `--clean-config <name>` | Delete plugin configuration |
+| `--yes` / `-y` | Skip confirmation prompts |
+| `--force-blacklisted` | Override blacklist warning |
+| `--validate <url>` | Validate plugin MANIFEST |
+| `--manifest [target]` | Show MANIFEST.toml (template or from plugin) |
+| `--browse` | Browse official plugins |
+| `--search <term>` | Search official plugins |
+| `--check-blacklist <url>` | Check if URL is blacklisted |
+| `--refresh-registry` | Force refresh plugin registry cache |
+| `--trust-community` | Skip community plugin warnings |
+| `--trust <level>` | Filter by trust level (with --browse/--search) |
+| `--category <cat>` | Filter by category (with --browse/--search) |
 
 ---
 
