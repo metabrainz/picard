@@ -137,7 +137,7 @@ class TestPluginApiQtTranslator(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._current_locale = 'en'
+                api.get_locale = Mock(return_value='en')
 
                 with patch('PyQt6.QtCore.QCoreApplication.installTranslator') as mock_install:
                     api._load_translations()

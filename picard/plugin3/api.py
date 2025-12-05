@@ -135,6 +135,65 @@ class PluginApi:
         self._qt_translator._current_locale = self.get_locale()
         QCoreApplication.installTranslator(self._qt_translator)
 
+    def _is_valid_locale(self, locale: str) -> bool:
+        """Check if locale string is valid (basic sanity check).
+
+        Valid locales are 2-5 characters, alphanumeric with optional underscore.
+        Examples: en, de, pt_BR, zh_CN
+        Case-insensitive to work on case-insensitive filesystems.
+        """
+        import re
+
+        return bool(re.match(r'^[a-z]{2,3}(_[a-z]{2})?$', locale, re.IGNORECASE))
+
+    def _find_translation_file(self, locale: str) -> tuple[Path | None, str | None]:
+        """Find translation file for locale, preferring TOML over JSON.
+
+        Returns:
+            (file_path, format) or (None, None) if not found
+        """
+        if not self._plugin_dir:
+            return None, None
+
+        locale_dir = Path(self._plugin_dir) / 'locale'
+        if not locale_dir.exists():
+            return None, None
+
+        # Check TOML first, then JSON
+        toml_file = locale_dir / f'{locale}.toml'
+        if toml_file.exists():
+            return toml_file, 'toml'
+
+        json_file = locale_dir / f'{locale}.json'
+        if json_file.exists():
+            return json_file, 'json'
+
+        return None, None
+
+    def _load_translation_file(self, file_path: Path, format: str, locale: str) -> dict | None:
+        """Load a single translation file."""
+        try:
+            if format == 'toml':
+                try:
+                    import tomllib
+                except ImportError:
+                    import tomli as tomllib
+                with open(file_path, 'rb') as f:
+                    data = tomllib.load(f)
+                    self._check_toml_structure(data, locale)
+                    self._logger.debug(f"Loaded {format.upper()} translation file: {file_path}")
+                    return data
+            elif format == 'json':
+                import json
+
+                with open(file_path, encoding='utf-8') as f:
+                    data = json.load(f)
+                    self._logger.debug(f"Loaded {format.upper()} translation file: {file_path}")
+                    return data
+        except Exception as e:
+            self._logger.warning(f"Failed to load translation file {file_path}: {e}")
+            return None
+
     def _check_toml_structure(self, data: dict, locale: str) -> None:
         """Check for nested structure in TOML and warn about unquoted keys."""
 
@@ -164,7 +223,10 @@ class PluginApi:
         return bool(d.keys() & plural_keys)
 
     def _load_translations(self) -> None:
-        """Load translation files from locale/ directory."""
+        """Load translation files from locale/ directory.
+
+        Only loads translations for the current locale to avoid unnecessary I/O.
+        """
         if not self._plugin_dir:
             return
 
@@ -172,38 +234,25 @@ class PluginApi:
         if not locale_dir.exists():
             return
 
-        # Get all unique locale names from both .toml and .json files
-        locales = set()
-        for file in locale_dir.glob('*.toml'):
-            locales.add(file.stem)
-        for file in locale_dir.glob('*.json'):
-            locales.add(file.stem)
+        # Get current locale
+        current_locale = self.get_locale()
 
-        # Load each locale, preferring .toml over .json
-        for locale in locales:
-            toml_file = locale_dir / f'{locale}.toml'
-            json_file = locale_dir / f'{locale}.json'
+        # Try to load current locale
+        file_path, format = self._find_translation_file(current_locale)
+        if file_path:
+            data = self._load_translation_file(file_path, format, current_locale)
+            if data:
+                self._translations[current_locale] = data
+                return
 
-            try:
-                if toml_file.exists():
-                    # Load TOML file
-                    try:
-                        import tomllib
-                    except ImportError:
-                        import tomli as tomllib
-                    with open(toml_file, 'rb') as f:
-                        data = tomllib.load(f)
-                        # Check for nested structure and warn
-                        self._check_toml_structure(data, locale)
-                        self._translations[locale] = data
-                elif json_file.exists():
-                    # Load JSON file
-                    import json
-
-                    with open(json_file, encoding='utf-8') as f:
-                        self._translations[locale] = json.load(f)
-            except Exception as e:
-                self._logger.warning(f"Failed to load translation file for locale '{locale}': {e}")
+        # Fallback: try language without region (e.g., 'de' from 'de_DE')
+        if '_' in current_locale:
+            lang = current_locale.split('_')[0]
+            file_path, format = self._find_translation_file(lang)
+            if file_path:
+                data = self._load_translation_file(file_path, format, lang)
+                if data:
+                    self._translations[lang] = data
 
     @property
     def tagger(self):

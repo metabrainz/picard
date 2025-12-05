@@ -117,12 +117,11 @@ class TestPluginTranslationLoading(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
+                api.get_locale = Mock(return_value='en')
                 api._load_translations()
 
                 self.assertIn('en', api._translations)
-                self.assertIn('de', api._translations)
                 self.assertEqual(api._translations['en']['greeting'], 'Hello')
-                self.assertEqual(api._translations['de']['greeting'], 'Hallo')
 
     def test_load_translations_from_toml(self):
         """Test loading translations from TOML files."""
@@ -143,12 +142,11 @@ class TestPluginTranslationLoading(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
+                api.get_locale = Mock(return_value='en')
                 api._load_translations()
 
                 self.assertIn('en', api._translations)
-                self.assertIn('de', api._translations)
                 self.assertEqual(api._translations['en']['greeting'], 'Hello')
-                self.assertEqual(api._translations['de']['greeting'], 'Hallo')
 
     def test_load_translations_toml_with_dotted_keys(self):
         """Test loading TOML with dotted keys (quoted)."""
@@ -169,6 +167,7 @@ class TestPluginTranslationLoading(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
+                api.get_locale = Mock(return_value='en')
                 api._load_translations()
 
                 self.assertEqual(api._translations['en']['message.greeting'], 'Hello')
@@ -191,6 +190,7 @@ class TestPluginTranslationLoading(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
+                api.get_locale = Mock(return_value='en')
 
                 # Capture log warnings
                 with self.assertLogs(api._logger, level='WARNING') as cm:
@@ -219,11 +219,18 @@ class TestPluginTranslationLoading(PicardTestCase):
                 manifest = PluginManifest('test', f)
                 api = PluginApi(manifest, Mock())
                 api._plugin_dir = plugin_dir
-                api._load_translations()
 
+                # Test loading English
+                api.get_locale = Mock(return_value='en')
+                api._load_translations()
                 self.assertIn('en', api._translations)
-                self.assertIn('fr', api._translations)
                 self.assertEqual(api._translations['en']['greeting'], 'Hello')
+
+                # Reset and test loading French
+                api._translations = {}
+                api.get_locale = Mock(return_value='fr')
+                api._load_translations()
+                self.assertIn('fr', api._translations)
                 self.assertEqual(api._translations['fr']['greeting'], 'Bonjour')
 
     def test_translations_loaded_on_plugin_enable(self):
