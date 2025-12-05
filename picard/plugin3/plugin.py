@@ -585,6 +585,23 @@ class Plugin:
 
             raise PluginManifestInvalidError(errors)
 
+    def get_current_commit_id(self):
+        """Get the current commit ID of the plugin if it's a git repository."""
+        if not HAS_PYGIT2:
+            return None
+
+        git_dir = self.local_path / '.git'
+        if not git_dir.exists():
+            return None
+
+        try:
+            repo = pygit2.Repository(str(self.local_path))
+            commit_id = str(repo.head.target)
+            repo.free()
+            return short_commit_id(commit_id)
+        except Exception:
+            return None
+
     def load_module(self):
         """Load corresponding module from source path"""
         if self.state == PluginState.LOADED:
@@ -616,6 +633,14 @@ class Plugin:
         module_name = getattr(self._module, '__name__', None)
         if module_name:
             PluginApi._instances[module_name] = api
+
+        # Log plugin info
+        version = self.manifest.version if self.manifest else 'unknown'
+        commit_id = self.get_current_commit_id()
+        if commit_id:
+            api.logger.info(f"Enabling plugin {self.plugin_id} v{version} (commit {commit_id})")
+        else:
+            api.logger.info(f"Enabling plugin {self.plugin_id} v{version}")
 
         self._module.enable(api)
         self.state = PluginState.ENABLED
