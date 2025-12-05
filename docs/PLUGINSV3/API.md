@@ -372,7 +372,7 @@ FILE_COUNT = t_('files.count', '{n} file', '{n} files')
 
 # Use in class definitions
 class MyAction(BaseAction):
-    NAME = t_('action.name', 'My Custom Action')
+    NAME = "My Custom Action"
 
 def enable(api):
     # Translate at runtime
