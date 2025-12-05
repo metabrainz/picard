@@ -608,8 +608,15 @@ class Plugin:
             raise PluginAlreadyEnabledError(self.plugin_id)
 
         api = PluginApi(self.manifest, tagger)
+        api._plugin_module = self._module
         api._plugin_dir = self.local_path
         api._load_translations()
+
+        # Register API instance for get_api()
+        module_name = getattr(self._module, '__name__', None)
+        if module_name:
+            PluginApi._instances[module_name] = api
+
         self._module.enable(api)
         self.state = PluginState.ENABLED
 
@@ -625,5 +632,15 @@ class Plugin:
         # Unregister UUID mapping
         if self.manifest and self.manifest.uuid:
             unset_plugin_uuid(self.manifest.uuid)
+
+        # Cleanup API instance registry - find and remove by module reference
+        for name, api in list(PluginApi._instances.items()):
+            if api._plugin_module is self._module:
+                del PluginApi._instances[name]
+                # Remove from cache (entries for this module and submodules)
+                for key in list(PluginApi._module_cache):
+                    if key == name or key.startswith(name + '.'):
+                        del PluginApi._module_cache[key]
+                break
 
         self.state = PluginState.DISABLED

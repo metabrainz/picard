@@ -27,6 +27,46 @@ def disable():
 
 ---
 
+## Getting API Instance
+
+### `PluginApi.get_api()` (class method)
+
+Get the `PluginApi` instance from anywhere in your plugin code without explicitly passing it around.
+
+```python
+from picard.plugin3.api import PluginApi
+
+class MyWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        # Get API instance without passing it through constructors
+        api = PluginApi.get_api()
+        api.logger.info("Widget initialized")
+
+        # Use API methods
+        self.config = api.config
+        self.logger = api.logger
+```
+
+**Returns**: `PluginApi` - The API instance for the calling plugin module
+
+**Raises**: `RuntimeError` - If called from outside a plugin context
+
+**How it works**:
+- Inspects the call stack to determine which plugin module is calling
+- Returns the cached API instance for that module
+- Works from main plugin module and any submodules
+- First call per module does stack inspection, subsequent calls use cache
+
+**Use cases**:
+- Classes that don't receive `api` parameter (widgets, dialogs, utility classes)
+- Avoiding passing `api` through multiple constructor levels
+- Accessing API from helper modules
+
+**Note**: This is a convenience method. For the main `enable()` function and classes that naturally receive the API (like `BaseAction`), use the passed `api` parameter directly.
+
+---
+
 ## Class References
 
 The following classes are available through the `api` object:

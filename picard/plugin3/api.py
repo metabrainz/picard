@@ -27,6 +27,7 @@ from logging import (
     getLogger,
 )
 from pathlib import Path
+import sys
 from typing import (
     Callable,
     Type,
@@ -111,11 +112,16 @@ class PluginApi:
     BaseAction = BaseAction
     OptionsPage = OptionsPage
 
+    # Class-level registries for get_api()
+    _instances = {}  # Maps module name -> PluginApi instance
+    _module_cache = {}  # Maps module name -> PluginApi instance (for faster lookup)
+
     def __init__(self, manifest: PluginManifest, tagger) -> None:
         from picard.tagger import Tagger
 
         self._tagger: Tagger = tagger
         self._manifest = manifest
+        self._plugin_module = None  # Will be set when plugin is enabled
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
         self._api_config = ConfigSection(get_config(), full_name)
@@ -307,6 +313,52 @@ class PluginApi:
 
         # Fall back to system locale
         return QLocale().name()
+
+    @classmethod
+    def get_api(cls):
+        """Get the PluginApi instance for the calling plugin module.
+
+        This is a convenience method for accessing the API instance from
+        anywhere in plugin code without explicitly passing it around.
+
+        Returns:
+            PluginApi: The API instance for the calling plugin
+
+        Raises:
+            RuntimeError: If called from outside a plugin context
+
+        Example:
+            class MyWidget(QWidget):
+                def __init__(self):
+                    super().__init__()
+                    api = PluginApi.get_api()
+                    api.logger.info("Widget initialized")
+        """
+        frame = sys._getframe(1)
+        module_name = frame.f_globals.get('__name__')
+
+        # Check cache first
+        if module_name in cls._module_cache:
+            return cls._module_cache[module_name]
+
+        # Cache miss - do the lookup
+        # Try exact match first
+        if module_name in cls._instances:
+            api = cls._instances[module_name]
+        else:
+            # Try to find parent module (for submodules)
+            api = None
+            for registered_module in cls._instances:
+                if module_name.startswith(registered_module + '.'):
+                    api = cls._instances[registered_module]
+                    break
+
+            if api is None:
+                raise RuntimeError(f"No PluginApi instance found for module {module_name}")
+
+        # Cache the result
+        cls._module_cache[module_name] = api
+        return api
 
     # Translation
     def tr(self, key: str, text: str | None = None, **kwargs) -> str:
