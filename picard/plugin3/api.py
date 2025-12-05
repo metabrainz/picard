@@ -192,6 +192,13 @@ class PluginApi:
         """
         from PyQt6.QtCore import QLocale
 
+        # Use Picard's UI language setting if available
+        config = get_config()
+        ui_language = config.setting['ui_language']
+        if ui_language:
+            return ui_language
+
+        # Fall back to system locale
         return QLocale().name()
 
     # Translation
