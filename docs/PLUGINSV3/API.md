@@ -44,7 +44,7 @@ class MyWidget(QWidget):
         api.logger.info("Widget initialized")
 
         # Use API methods
-        self.config = api.config
+        self.plugin_config = api.plugin_config
         self.logger = api.logger
 ```
 
