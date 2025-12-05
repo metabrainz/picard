@@ -329,18 +329,34 @@ class TestPluginInstall(PicardTestCase):
         from pathlib import Path
         from unittest.mock import patch
 
+        from PyQt6.QtCore import QSettings
+
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
-        # Create a temporary plugin directory
+        # Create a temporary plugin directory and config file
         import tempfile
 
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_path = Path(tmpdir) / 'test-plugin'
             plugin_path.mkdir()
+
+            # Create a real temporary config
+            config_file = Path(tmpdir) / 'test_config.ini'
+            test_config = QSettings(str(config_file), QSettings.Format.IniFormat)
+            test_config.beginGroup('plugin.test-plugin')
+            test_config.setValue('some_setting', 'value1')
+            test_config.setValue('another_setting', 'value2')
+            test_config.endGroup()
+            test_config.sync()
+
+            # Verify settings exist
+            test_config.beginGroup('plugin.test-plugin')
+            self.assertEqual(len(test_config.childKeys()), 2)
+            test_config.endGroup()
 
             mock_plugin = Mock(spec=Plugin)
             mock_plugin.plugin_id = 'test-plugin'
@@ -352,32 +368,17 @@ class TestPluginInstall(PicardTestCase):
             # Set manager's plugin dir to temp dir
             manager._primary_plugin_dir = Path(tmpdir)
 
-            # Mock config to track what gets removed
-            mock_config = Mock()
-            mock_config.setting = {'plugins3_metadata': {}, 'plugins3_enabled_plugins': []}
-            mock_removed_keys = []
+            # Mock only the metadata part of config
+            test_config.setting = {'plugins3_metadata': {}, 'plugins3_enabled_plugins': []}
 
-            def mock_remove(key):
-                mock_removed_keys.append(key)
-
-            mock_config.remove = mock_remove
-            mock_config.childKeys = Mock(return_value=['some_setting', 'another_setting'])
-            mock_config.beginGroup = Mock()
-            mock_config.endGroup = Mock()
-
-            with patch('picard.plugin3.manager.get_config', return_value=mock_config):
+            with patch('picard.plugin3.manager.get_config', return_value=test_config):
                 # Uninstall with purge
                 manager.uninstall_plugin(mock_plugin, purge=True)
 
-            # Verify config groups were accessed correctly
-            self.assertEqual(mock_config.beginGroup.call_count, 2)
-            mock_config.beginGroup.assert_any_call('setting')
-            mock_config.beginGroup.assert_any_call('plugin.test-plugin')
-
             # Verify all settings were removed
-            self.assertEqual(len(mock_removed_keys), 2)
-            self.assertIn('some_setting', mock_removed_keys)
-            self.assertIn('another_setting', mock_removed_keys)
+            test_config.beginGroup('plugin.test-plugin')
+            self.assertEqual(len(test_config.childKeys()), 0)
+            test_config.endGroup()
 
     def test_plugin_has_saved_options(self):
         """Test checking if plugin has saved options."""

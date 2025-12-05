@@ -427,9 +427,13 @@ class PluginManager:
     def _clean_plugin_config(self, plugin_name):
         """Delete plugin configuration."""
         config = get_config()
-        if plugin_name in config.setting:
-            del config.setting[plugin_name]
-            log.info('Deleted configuration for plugin %s', plugin_name)
+        config_key = f'plugin.{plugin_name}'
+        config.beginGroup(config_key)
+        for key in config.childKeys():
+            config.remove(key)
+        config.endGroup()
+        config.sync()
+        log.info('Deleted configuration for plugin %s', plugin_name)
 
     def _cleanup_version_cache(self):
         """Remove cache entries for URLs no longer in registry."""
@@ -1171,15 +1175,7 @@ class PluginManager:
 
         # Remove plugin config if purge requested
         if purge:
-            config_key = f'plugin.{plugin.plugin_id}'
-            # Remove all settings under plugin.{plugin_id}/
-            config.beginGroup('setting')
-            config.beginGroup(config_key)
-            for key in config.childKeys():
-                config.remove(key)
-            config.endGroup()
-            config.endGroup()
-            log.info('Deleted saved options for plugin %s', plugin.plugin_id)
+            self._clean_plugin_config(plugin.plugin_id)
 
     def plugin_has_saved_options(self, plugin: Plugin) -> bool:
         """Check if a plugin has any saved options.
@@ -1192,10 +1188,8 @@ class PluginManager:
         """
         config = get_config()
         config_key = f'plugin.{plugin.plugin_id}'
-        config.beginGroup('setting')
         config.beginGroup(config_key)
         has_options = len(config.childKeys()) > 0
-        config.endGroup()
         config.endGroup()
         return has_options
 

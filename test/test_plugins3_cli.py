@@ -228,14 +228,40 @@ class TestPluginCLI(PicardTestCase):
 
     def test_clean_config_command(self):
         """Test --clean-config command."""
-        mock_manager = MockPluginManager()
-        mock_manager._clean_plugin_config = Mock()
+        from pathlib import Path
+        import tempfile
+        from unittest.mock import patch
 
-        exit_code, stdout, _ = run_cli(mock_manager, clean_config='test-plugin', yes=True)
+        from PyQt6.QtCore import QSettings
 
-        self.assertEqual(exit_code, 0)
-        mock_manager._clean_plugin_config.assert_called_once_with('test-plugin')
-        self.assertIn('deleted', stdout.lower())
+        from picard.plugin3.manager import PluginManager
+
+        # Create a real temporary config
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_file = Path(tmpdir) / 'test_config.ini'
+            test_config = QSettings(str(config_file), QSettings.Format.IniFormat)
+            test_config.beginGroup('plugin.test-plugin')
+            test_config.setValue('setting1', 'value1')
+            test_config.setValue('setting2', 'value2')
+            test_config.endGroup()
+            test_config.sync()
+
+            # Verify settings exist
+            test_config.beginGroup('plugin.test-plugin')
+            self.assertEqual(len(test_config.childKeys()), 2)
+            test_config.endGroup()
+
+            mock_manager = PluginManager(Mock())
+            with patch('picard.plugin3.manager.get_config', return_value=test_config):
+                exit_code, stdout, _ = run_cli(mock_manager, clean_config='test-plugin', yes=True)
+
+            self.assertEqual(exit_code, 0)
+            self.assertIn('deleted', stdout.lower())
+
+            # Verify settings were removed
+            test_config.beginGroup('plugin.test-plugin')
+            self.assertEqual(len(test_config.childKeys()), 0)
+            test_config.endGroup()
 
     def test_enable_plugins_command(self):
         """Test enable command."""
