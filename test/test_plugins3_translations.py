@@ -124,6 +124,83 @@ class TestPluginTranslationLoading(PicardTestCase):
                 self.assertEqual(api._translations['en']['greeting'], 'Hello')
                 self.assertEqual(api._translations['de']['greeting'], 'Hallo')
 
+    def test_load_translations_from_toml(self):
+        """Test loading translations from TOML files."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            locale_dir = plugin_dir / 'locale'
+            locale_dir.mkdir()
+
+            # Create TOML translation files
+            (locale_dir / 'en.toml').write_text('greeting = "Hello"\nfarewell = "Goodbye"\n')
+            (locale_dir / 'de.toml').write_text('greeting = "Hallo"\nfarewell = "Auf Wiedersehen"\n')
+
+            # Create manifest
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
+
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                api = PluginApi(manifest, Mock())
+                api._plugin_dir = plugin_dir
+                api._load_translations()
+
+                self.assertIn('en', api._translations)
+                self.assertIn('de', api._translations)
+                self.assertEqual(api._translations['en']['greeting'], 'Hello')
+                self.assertEqual(api._translations['de']['greeting'], 'Hallo')
+
+    def test_load_translations_mixed_formats(self):
+        """Test loading translations with mixed JSON and TOML files."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            locale_dir = plugin_dir / 'locale'
+            locale_dir.mkdir()
+
+            # Create mixed format files
+            (locale_dir / 'en.json').write_text(json.dumps({'greeting': 'Hello'}))
+            (locale_dir / 'fr.toml').write_text('greeting = "Bonjour"\n')
+
+            # Create manifest
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
+
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                api = PluginApi(manifest, Mock())
+                api._plugin_dir = plugin_dir
+                api._load_translations()
+
+                self.assertIn('en', api._translations)
+                self.assertIn('fr', api._translations)
+                self.assertEqual(api._translations['en']['greeting'], 'Hello')
+                self.assertEqual(api._translations['fr']['greeting'], 'Bonjour')
+
+    def test_load_translations_toml_preferred_over_json(self):
+        """Test that TOML is preferred when both formats exist for same locale."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+            locale_dir = plugin_dir / 'locale'
+            locale_dir.mkdir()
+
+            # Create both TOML and JSON for same locale
+            (locale_dir / 'en.toml').write_text('greeting = "Hello from TOML"\n')
+            (locale_dir / 'en.json').write_text(json.dumps({'greeting': 'Hello from JSON'}))
+
+            # Create manifest
+            manifest_path = plugin_dir / 'MANIFEST.toml'
+            manifest_path.write_text('name = "Test"\n')
+
+            with open(manifest_path, 'rb') as f:
+                manifest = PluginManifest('test', f)
+                api = PluginApi(manifest, Mock())
+                api._plugin_dir = plugin_dir
+                api._load_translations()
+
+                self.assertIn('en', api._translations)
+                # TOML should be preferred
+                self.assertEqual(api._translations['en']['greeting'], 'Hello from TOML')
+
     def test_translations_loaded_on_plugin_enable(self):
         """Test that translations are loaded when plugin is enabled."""
         from unittest.mock import Mock

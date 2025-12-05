@@ -22,7 +22,6 @@ from functools import (
     partial,
     update_wrapper,
 )
-import json
 from logging import (
     Logger,
     getLogger,
@@ -145,13 +144,35 @@ class PluginApi:
         if not locale_dir.exists():
             return
 
-        for json_file in locale_dir.glob('*.json'):
-            locale = json_file.stem
+        # Get all unique locale names from both .toml and .json files
+        locales = set()
+        for file in locale_dir.glob('*.toml'):
+            locales.add(file.stem)
+        for file in locale_dir.glob('*.json'):
+            locales.add(file.stem)
+
+        # Load each locale, preferring .toml over .json
+        for locale in locales:
+            toml_file = locale_dir / f'{locale}.toml'
+            json_file = locale_dir / f'{locale}.json'
+
             try:
-                with open(json_file, encoding='utf-8') as f:
-                    self._translations[locale] = json.load(f)
+                if toml_file.exists():
+                    # Load TOML file
+                    try:
+                        import tomllib
+                    except ImportError:
+                        import tomli as tomllib
+                    with open(toml_file, 'rb') as f:
+                        self._translations[locale] = tomllib.load(f)
+                elif json_file.exists():
+                    # Load JSON file
+                    import json
+
+                    with open(json_file, encoding='utf-8') as f:
+                        self._translations[locale] = json.load(f)
             except Exception as e:
-                self._logger.warning(f"Failed to load translation file {json_file}: {e}")
+                self._logger.warning(f"Failed to load translation file for locale '{locale}': {e}")
 
     @property
     def tagger(self):

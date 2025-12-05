@@ -198,7 +198,12 @@ api.trn("status.files", "{n} file", "{n} files", n=count)
 - Use `{n}` in your format strings (not `{count}` or other names)
 - The `n` value is automatically available in the format string as `{n}`
 
-**Translation file format (JSON):**
+**Translation file formats:**
+
+Both JSON and TOML formats are supported. For each locale, Picard will look for `.toml` first, then `.json`.
+You can mix formats (e.g., `en.json` and `fr.toml`).
+
+**JSON format:**
 ```json
 {
   "status.files": {
@@ -208,7 +213,7 @@ api.trn("status.files", "{n} file", "{n} files", n=count)
 }
 ```
 
-**Translation file format (TOML):**
+**TOML format:**
 ```toml
 [status.files]
 one = "{n} file"
