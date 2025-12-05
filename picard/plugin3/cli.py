@@ -1172,8 +1172,17 @@ class PluginCLI:
 
         yes = getattr(self._args, 'yes', False)
 
-        # Try to find the plugin first
-        plugin, _ = self._find_plugin_or_error(plugin_identifier)
+        # Try to find the plugin first (don't show error yet)
+        plugin = self._manager.find_plugin(plugin_identifier)
+        if plugin == 'multiple':
+            # Find all matches to show to user
+            identifier_lower = plugin_identifier.lower()
+            matches = [p for p in self._manager.plugins if p.manifest and p.manifest.name().lower() == identifier_lower]
+            self._out.error(f'Multiple plugins found with name "{plugin_identifier}":')
+            for p in matches:
+                self._out.error(f'  - {self._out.d_id(p.plugin_id)} (UUID: {self._out.d_uuid(p.manifest.uuid)})')
+            self._out.error('Please use the Plugin ID or UUID to be more specific')
+            return ExitCode.ERROR
 
         if plugin and plugin.manifest and plugin.manifest.uuid:
             # Plugin is installed, use its UUID
