@@ -236,18 +236,20 @@ class TestPluginCLI(PicardTestCase):
 
         from picard.plugin3.manager import PluginManager
 
+        test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+
         # Create a real temporary config
         with tempfile.TemporaryDirectory() as tmpdir:
             config_file = Path(tmpdir) / 'test_config.ini'
             test_config = QSettings(str(config_file), QSettings.Format.IniFormat)
-            test_config.beginGroup('plugin.test-plugin')
+            test_config.beginGroup(f'plugin.{test_uuid}')
             test_config.setValue('setting1', 'value1')
             test_config.setValue('setting2', 'value2')
             test_config.endGroup()
             test_config.sync()
 
             # Verify settings exist
-            test_config.beginGroup('plugin.test-plugin')
+            test_config.beginGroup(f'plugin.{test_uuid}')
             self.assertEqual(len(test_config.childKeys()), 2)
             test_config.endGroup()
 
@@ -256,13 +258,13 @@ class TestPluginCLI(PicardTestCase):
                 patch('picard.plugin3.manager.get_config', return_value=test_config),
                 patch('picard.plugin3.cli.get_config', return_value=test_config),
             ):
-                exit_code, stdout, _ = run_cli(mock_manager, clean_config='test-plugin', yes=True)
+                exit_code, stdout, _ = run_cli(mock_manager, clean_config=test_uuid, yes=True)
 
             self.assertEqual(exit_code, 0)
             self.assertIn('deleted', stdout.lower())
 
             # Verify settings were removed
-            test_config.beginGroup('plugin.test-plugin')
+            test_config.beginGroup(f'plugin.{test_uuid}')
             self.assertEqual(len(test_config.childKeys()), 0)
             test_config.endGroup()
 

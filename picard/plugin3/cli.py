@@ -1150,53 +1150,65 @@ class PluginCLI:
                 return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _cmd_clean_config(self, plugin_name):
+    def _cmd_clean_config(self, plugin_identifier):
         """Clean saved options for a plugin or list orphaned configs."""
-        # If no plugin name provided, list orphaned configs
-        if not plugin_name:
+        # If no plugin identifier provided, list orphaned configs
+        if not plugin_identifier:
             orphaned = self._manager.get_orphaned_plugin_configs()
             if not orphaned:
                 self._out.print('No orphaned plugin configurations found')
                 return ExitCode.SUCCESS
 
             self._out.print('Orphaned plugin configurations (no plugin installed):')
-            for plugin_id in orphaned:
-                self._out.print(f'  • {self._out.d_id(plugin_id)}')
+            for plugin_uuid in orphaned:
+                self._out.print(f'  • {self._out.d_uuid(plugin_uuid)}')
             self._out.nl()
-            self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <plugin-id>")}')
+            self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <uuid>")}')
             return ExitCode.SUCCESS
 
         yes = getattr(self._args, 'yes', False)
 
+        # Try to find the plugin first
+        plugin, _ = self._find_plugin_or_error(plugin_identifier)
+
+        if plugin and plugin.manifest and plugin.manifest.uuid:
+            # Plugin is installed, use its UUID
+            plugin_uuid = plugin.manifest.uuid
+            display_name = plugin.plugin_id
+        else:
+            # Not installed, assume identifier is a UUID
+            plugin_uuid = plugin_identifier
+            display_name = plugin_uuid
+
         # Check if plugin config exists
         config = self._manager._config if hasattr(self._manager, '_config') else get_config()
-        config_key = f'plugin.{plugin_name}'
+        config_key = f'plugin.{plugin_uuid}'
         config.beginGroup(config_key)
         has_config = len(config.childKeys()) > 0
         config.endGroup()
 
         if not has_config:
-            self._out.error(f'No saved options found for "{plugin_name}"')
+            self._out.error(f'No saved options found for "{display_name}"')
 
             # Show orphaned configs
             orphaned = self._manager.get_orphaned_plugin_configs()
             if orphaned:
                 self._out.nl()
                 self._out.print('Orphaned plugin configurations (no plugin installed):')
-                for plugin_id in orphaned:
-                    self._out.print(f'  • {self._out.d_id(plugin_id)}')
+                for uuid in orphaned:
+                    self._out.print(f'  • {self._out.d_uuid(uuid)}')
                 self._out.nl()
-                self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <plugin-id>")}')
+                self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <uuid>")}')
             return ExitCode.NOT_FOUND
 
         if not yes:
-            if not self._out.yesno(f'Delete saved options for "{plugin_name}"?'):
+            if not self._out.yesno(f'Delete saved options for "{display_name}"?'):
                 self._out.print('Cancelled')
                 return ExitCode.SUCCESS
 
         try:
-            self._manager._clean_plugin_config(plugin_name)
-            self._out.success(f'Saved options for {plugin_name} deleted')
+            self._manager._clean_plugin_config(plugin_uuid)
+            self._out.success(f'Saved options for {display_name} deleted')
         except Exception as e:
             self._handle_exception(e, 'Failed to clean saved options')
             return ExitCode.ERROR

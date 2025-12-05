@@ -242,7 +242,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--check-updates` | Check for updates within installed ref |
 | `--reinstall` | Force reinstall (use with --install) |
 | `--purge` | Delete plugin saved options on uninstall |
-| `--clean-config [name]` | Delete plugin saved options or list orphaned configs |
+| `--clean-config [name\|uuid]` | Delete plugin saved options or list orphaned configs |
 | `--yes` / `-y` | Skip confirmation prompts |
 | `--force-blacklisted` | Override blacklist warning |
 | `--validate <url>` | Validate plugin MANIFEST |
@@ -1132,8 +1132,11 @@ picard plugins --uninstall old-plugin --purge
 # List all orphaned plugin configurations
 picard plugins --clean-config
 
-# Clean specific plugin configuration (with confirmation)
+# Clean specific plugin configuration by name (with confirmation)
 picard plugins --clean-config listenbrainz
+
+# Clean by UUID (for orphaned configs)
+picard plugins --clean-config ae5ef1ed-0195-4014-a113-6090de7cf8b7
 
 # Clean without confirmation (automation)
 picard plugins --clean-config listenbrainz --yes
@@ -1142,11 +1145,11 @@ picard plugins --clean-config listenbrainz --yes
 **List orphaned configs output:**
 ```
 Orphaned plugin configurations (no plugin installed):
-  • old-plugin-id
-  • removed-plugin
-  • test-plugin
+  • ae5ef1ed-0195-4014-a113-6090de7cf8b7
+  • f8a9c2b1-3d4e-5f6a-7b8c-9d0e1f2a3b4c
+  • 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
 
-Clean with: picard plugins --clean-config <plugin-id>
+Clean with: picard plugins --clean-config <uuid>
 ```
 
 **When cleaning non-existent plugin:**
@@ -1156,10 +1159,10 @@ $ picard plugins --clean-config nonexistent
 ✗ No saved options found for "nonexistent"
 
 Orphaned plugin configurations (no plugin installed):
-  • old-plugin-id
-  • removed-plugin
+  • ae5ef1ed-0195-4014-a113-6090de7cf8b7
+  • f8a9c2b1-3d4e-5f6a-7b8c-9d0e1f2a3b4c
 
-Clean with: picard plugins --clean-config <plugin-id>
+Clean with: picard plugins --clean-config <uuid>
 ```
 
 **Notes:**
@@ -1167,6 +1170,8 @@ Clean with: picard plugins --clean-config <plugin-id>
 - Requires confirmation unless `--yes` is used
 - Shows list of orphaned configs when plugin not found
 - Orphaned configs are settings from plugins that are no longer installed
+- For installed plugins, use plugin name or UUID
+- For orphaned configs, use the UUID shown in the list
 
 ---
 

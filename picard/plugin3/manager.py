@@ -424,34 +424,34 @@ class PluginManager:
         """Read and validate manifest."""
         return PluginValidation.read_and_validate_manifest(path, source_description)
 
-    def _clean_plugin_config(self, plugin_name):
+    def _clean_plugin_config(self, plugin_uuid):
         """Delete plugin configuration."""
         config = get_config()
-        config_key = f'plugin.{plugin_name}'
+        config_key = f'plugin.{plugin_uuid}'
         config.beginGroup(config_key)
         for key in config.childKeys():
             config.remove(key)
         config.endGroup()
         config.sync()
-        log.info('Deleted configuration for plugin %s', plugin_name)
+        log.info('Deleted configuration for plugin %s', plugin_uuid)
 
     def get_orphaned_plugin_configs(self):
         """Get list of plugin configs that don't have corresponding installed plugins.
 
         Returns:
-            list: List of plugin IDs that have config but no installed plugin
+            list: List of plugin UUIDs that have config but no installed plugin
         """
         config = get_config()
-        installed_ids = {p.plugin_id for p in self.plugins if p.manifest}
+        installed_uuids = {p.manifest.uuid for p in self.plugins if p.manifest and p.manifest.uuid}
 
         orphaned = []
         for group in config.childGroups():
             if group.startswith('plugin.'):
-                plugin_id = group[7:]  # Remove 'plugin.' prefix
-                if plugin_id not in installed_ids:
+                plugin_uuid = group[7:]  # Remove 'plugin.' prefix
+                if plugin_uuid not in installed_uuids:
                     config.beginGroup(group)
                     if config.childKeys():  # Only include if it has settings
-                        orphaned.append(plugin_id)
+                        orphaned.append(plugin_uuid)
                     config.endGroup()
 
         return sorted(orphaned)
@@ -1195,8 +1195,8 @@ class PluginManager:
             config.setting['plugins3_metadata'].pop(plugin.manifest.uuid, None)
 
         # Remove plugin config if purge requested
-        if purge:
-            self._clean_plugin_config(plugin.plugin_id)
+        if purge and plugin.manifest and plugin.manifest.uuid:
+            self._clean_plugin_config(plugin.manifest.uuid)
 
     def plugin_has_saved_options(self, plugin: Plugin) -> bool:
         """Check if a plugin has any saved options.
@@ -1207,8 +1207,10 @@ class PluginManager:
         Returns:
             True if plugin has saved options, False otherwise
         """
+        if not plugin.manifest or not plugin.manifest.uuid:
+            return False
         config = get_config()
-        config_key = f'plugin.{plugin.plugin_id}'
+        config_key = f'plugin.{plugin.manifest.uuid}'
         config.beginGroup(config_key)
         has_options = len(config.childKeys()) > 0
         config.endGroup()

@@ -340,6 +340,8 @@ class TestPluginInstall(PicardTestCase):
         # Create a temporary plugin directory and config file
         import tempfile
 
+        test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_path = Path(tmpdir) / 'test-plugin'
             plugin_path.mkdir()
@@ -347,14 +349,14 @@ class TestPluginInstall(PicardTestCase):
             # Create a real temporary config
             config_file = Path(tmpdir) / 'test_config.ini'
             test_config = QSettings(str(config_file), QSettings.Format.IniFormat)
-            test_config.beginGroup('plugin.test-plugin')
+            test_config.beginGroup(f'plugin.{test_uuid}')
             test_config.setValue('some_setting', 'value1')
             test_config.setValue('another_setting', 'value2')
             test_config.endGroup()
             test_config.sync()
 
             # Verify settings exist
-            test_config.beginGroup('plugin.test-plugin')
+            test_config.beginGroup(f'plugin.{test_uuid}')
             self.assertEqual(len(test_config.childKeys()), 2)
             test_config.endGroup()
 
@@ -363,7 +365,7 @@ class TestPluginInstall(PicardTestCase):
             mock_plugin.local_path = plugin_path
             mock_plugin.disable = Mock()
             mock_plugin.manifest = Mock()
-            mock_plugin.manifest.uuid = 'test-uuid'
+            mock_plugin.manifest.uuid = test_uuid
 
             # Set manager's plugin dir to temp dir
             manager._primary_plugin_dir = Path(tmpdir)
@@ -376,7 +378,7 @@ class TestPluginInstall(PicardTestCase):
                 manager.uninstall_plugin(mock_plugin, purge=True)
 
             # Verify all settings were removed
-            test_config.beginGroup('plugin.test-plugin')
+            test_config.beginGroup(f'plugin.{test_uuid}')
             self.assertEqual(len(test_config.childKeys()), 0)
             test_config.endGroup()
 
@@ -390,8 +392,12 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
+        test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
+        mock_plugin.manifest = Mock()
+        mock_plugin.manifest.uuid = test_uuid
 
         # Mock config with no options
         mock_config_empty = Mock()
@@ -410,6 +416,11 @@ class TestPluginInstall(PicardTestCase):
 
         with patch('picard.plugin3.manager.get_config', return_value=mock_config_with_options):
             self.assertTrue(manager.plugin_has_saved_options(mock_plugin))
+
+        # Test plugin without manifest/UUID
+        mock_plugin_no_uuid = Mock(spec=Plugin)
+        mock_plugin_no_uuid.manifest = None
+        self.assertFalse(manager.plugin_has_saved_options(mock_plugin_no_uuid))
 
     def test_install_command_execution(self):
         """Test install command execution path."""
