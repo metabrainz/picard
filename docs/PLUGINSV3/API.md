@@ -374,6 +374,10 @@ FILE_COUNT = t_('files.count', '{n} file', '{n} files')
 class MyAction(BaseAction):
     NAME = "My Custom Action"
 
+    def __init__(self, api: PluginApi = None):
+        super().__init__(api=api)
+        self.setText(self.api.tr("action.name", "My Custom Action"))
+
 def enable(api):
     # Translate at runtime
     error_msg = api.tr(ERROR_MESSAGES[404], 'Not found')
