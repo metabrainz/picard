@@ -203,6 +203,21 @@ api.trn("status.files", "{n} file", "{n} files", n=count)
 Both JSON and TOML formats are supported. For each locale, Picard will look for `.toml` first, then `.json`.
 You can mix formats (e.g., `en.json` and `fr.toml`).
 
+**Why use quoted keys in TOML?**
+
+Translation keys use dot notation for organization (e.g., `"message.greeting"`, `"error.network.timeout"`).
+In TOML, unquoted keys like `[message.greeting]` create nested tables: `{message: {greeting: ...}}`.
+This breaks compatibility with JSON format and translation tools like Weblate.
+
+Using flat keys with dots (like go-i18n does) ensures compatibility with translation management tools
+and avoids issues where tools might incorrectly interpret nested structures.
+
+**Always quote keys with dots in TOML:**
+- ✅ Correct: `["message.greeting"]` → flat key `"message.greeting"`
+- ❌ Wrong: `[message.greeting]` → nested `{message: {greeting: ...}}`
+
+Picard will warn you if it detects nested structures in your TOML files.
+
 **JSON format:**
 ```json
 {
@@ -213,9 +228,9 @@ You can mix formats (e.g., `en.json` and `fr.toml`).
 }
 ```
 
-**TOML format:**
+**TOML format (use quoted keys):**
 ```toml
-[status.files]
+["status.files"]
 one = "{n} file"
 other = "{n} files"
 ```

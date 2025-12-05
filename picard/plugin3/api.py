@@ -135,6 +135,34 @@ class PluginApi:
         self._qt_translator._current_locale = self.get_locale()
         QCoreApplication.installTranslator(self._qt_translator)
 
+    def _check_toml_structure(self, data: dict, locale: str) -> None:
+        """Check for nested structure in TOML and warn about unquoted keys."""
+
+        def find_nested_keys(d: dict, path: str = '') -> list:
+            nested = []
+            for k, v in d.items():
+                current_path = f'{path}.{k}' if path else k
+                if isinstance(v, dict) and not self._is_plural_dict(v):
+                    # Found nested dict - this means unquoted keys were used
+                    nested.append(current_path)
+                    # Recursively check deeper nesting
+                    nested.extend(find_nested_keys(v, current_path))
+            return nested
+
+        nested_keys = find_nested_keys(data)
+        if nested_keys:
+            self._logger.warning(
+                f"Translation file for locale '{locale}' uses nested structure. "
+                f"Keys with dots should be quoted in TOML. Found nested keys: {', '.join(nested_keys[:3])}"
+                f"{' and more...' if len(nested_keys) > 3 else ''}. "
+                f"Example: use [\"message.test\"] instead of [message.test]"
+            )
+
+    def _is_plural_dict(self, d: dict) -> bool:
+        """Check if dict is a plural forms dict (has keys like 'one', 'other', etc.)."""
+        plural_keys = {'zero', 'one', 'two', 'few', 'many', 'other'}
+        return bool(d.keys() & plural_keys)
+
     def _load_translations(self) -> None:
         """Load translation files from locale/ directory."""
         if not self._plugin_dir:
@@ -164,7 +192,10 @@ class PluginApi:
                     except ImportError:
                         import tomli as tomllib
                     with open(toml_file, 'rb') as f:
-                        self._translations[locale] = tomllib.load(f)
+                        data = tomllib.load(f)
+                        # Check for nested structure and warn
+                        self._check_toml_structure(data, locale)
+                        self._translations[locale] = data
                 elif json_file.exists():
                     # Load JSON file
                     import json
