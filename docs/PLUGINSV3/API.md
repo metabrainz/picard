@@ -304,6 +304,10 @@ def enable(api):
     # Result: "5 files" (English) or "5 Dateien" (German)
 ```
 
+**Parameters:**
+- `n`: Required parameter to determine the correct plural form
+- Use `{n}` in format strings (automatically available for substitution)
+
 **See**: [TRANSLATIONS.md](TRANSLATIONS.md) for plural forms and CLDR rules.
 
 ---

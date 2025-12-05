@@ -245,7 +245,7 @@ class PluginApi:
             singular: Default singular text (for n=1 in English)
             plural: Default plural text (for n!=1 in English)
             n: Number to determine plural form
-            **kwargs: Placeholder values for string formatting (should include n)
+            **kwargs: Placeholder values for string formatting
 
         Returns:
             Translated string with placeholders substituted

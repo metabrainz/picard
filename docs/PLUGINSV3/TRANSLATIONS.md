@@ -193,6 +193,11 @@ api.trn("status.files", "{n} file", "{n} files", n=count)
 # Returns: "1 file"
 ```
 
+**Important:**
+- The `n` parameter is required for `trn()` to determine the correct plural form
+- Use `{n}` in your format strings (not `{count}` or other names)
+- The `n` value is automatically available in the format string as `{n}`
+
 **Translation file format (JSON):**
 ```json
 {
