@@ -78,10 +78,20 @@ def set_locale_from_env():
     ('en_US', 'UTF-8')
     """
     try:
-        current_locale = locale.setlocale(locale.LC_ALL, '')
-    except locale.Error:
-        # default to 'C' locale if it couldn't be set from env
-        current_locale = locale.setlocale(locale.LC_ALL, 'C')
+        locale.setlocale(locale.LC_ALL, '')
+    except locale.Error as e:
+        _logger("Failed to set locale: %s", e)
+        try:
+            # default to 'C' locale if it couldn't be set from env
+            locale.setlocale(locale.LC_ALL, 'C')
+        except locale.Error as e:
+            _logger("Failed to set locale to C: %s", e)
+    lang, encoding = locale.getlocale()
+    if lang is None:
+        lang = 'C'
+    if encoding is None:
+        encoding = 'UTF-8'
+    current_locale = f"{lang}.{encoding}"
     _logger("Setting locale from env: %r", current_locale)
     return current_locale
 
