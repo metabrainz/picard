@@ -57,7 +57,7 @@ def get_current_locale():
     if lang is None:
         lang = 'C'
     if encoding is None:
-        encoding = 'UTF-8'
+        return f"{lang}"
     return f"{lang}.{encoding}"
 
 
