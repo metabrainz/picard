@@ -48,10 +48,26 @@ def extract_from_code(plugin_dir):
             lines = content.split('\n')
             tree = ast.parse(content, filename=str(py_file))
 
+            # Track variables assigned from t_() calls
+            t_variables = set()
             for node in ast.walk(tree):
-                if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
-                    if node.func.attr in ('tr', 'trn'):
-                        extract_translation_call(node, translations, py_file, lines)
+                if isinstance(node, ast.Assign):
+                    # Check if right side is t_() call
+                    if isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Name):
+                        if node.value.func.id == 't_':
+                            # Track all target variable names
+                            for target in node.targets:
+                                if isinstance(target, ast.Name):
+                                    t_variables.add(target.id)
+
+            # Extract translations
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Call):
+                    # Check if it's api.tr(), api.trn(), or t_()
+                    if isinstance(node.func, ast.Attribute) and node.func.attr in ('tr', 'trn'):
+                        extract_translation_call(node, translations, py_file, lines, t_variables)
+                    elif isinstance(node.func, ast.Name) and node.func.id == 't_':
+                        extract_translation_call(node, translations, py_file, lines, t_variables)
         except Exception as e:
             print(f"Warning: Failed to parse {py_file}: {e}", file=sys.stderr)
 
@@ -99,8 +115,8 @@ def is_ignored(file_path, plugin_dir, patterns):
     return False
 
 
-def extract_translation_call(node, translations, py_file, lines):
-    """Extract key and text from tr() or trn() call."""
+def extract_translation_call(node, translations, py_file, lines, t_variables):
+    """Extract key and text from tr(), trn(), or t_() call."""
     if not node.args:
         return
 
@@ -108,20 +124,48 @@ def extract_translation_call(node, translations, py_file, lines):
         line = lines[node.lineno - 1].strip() if node.lineno <= len(lines) else ''
         print(f"Warning: {msg} at {py_file}:{node.lineno}: {line}", file=sys.stderr)
 
+    # Determine function name
+    if isinstance(node.func, ast.Attribute):
+        func_name = node.func.attr
+    elif isinstance(node.func, ast.Name):
+        func_name = node.func.id
+    else:
+        return
+
     # First arg is the key
     key = get_string_value(node.args[0])
     if not key:
-        warn(f"Cannot extract key from {node.func.attr}() call")
+        # Check if it's a variable from t_() - if so, skip warning
+        if func_name in ('tr', 'trn'):
+            first_arg = node.args[0]
+            # Handle direct variable: api.tr(ERROR_MSG)
+            if isinstance(first_arg, ast.Name) and first_arg.id in t_variables:
+                return  # Variable from t_(), already extracted
+            # Handle unpacked variable: api.trn(*FILE_COUNT, n=5)
+            if isinstance(first_arg, ast.Starred) and isinstance(first_arg.value, ast.Name):
+                if first_arg.value.id in t_variables:
+                    return  # Unpacked variable from t_(), already extracted
+        warn(f"Cannot extract key from {func_name}() call")
         return
 
-    if node.func.attr == 'tr':
-        # api.tr(key, text, **kwargs)
+    # Handle tr() and t_() with single text
+    if func_name in ('tr', 't_'):
         text = get_string_value(node.args[1]) if len(node.args) > 1 else None
-        if text is None and len(node.args) > 1:
-            warn("Cannot extract text from tr() call")
-        translations[key] = text or f"?{key}?"
+        plural = get_string_value(node.args[2]) if len(node.args) > 2 else None
 
-    elif node.func.attr == 'trn':
+        # Check if it's actually a plural form (has 3 args)
+        if plural is not None:
+            # t_() with plural form
+            if text is None or plural is None:
+                warn(f"Cannot extract singular/plural from {func_name}() call")
+            translations[key] = {'one': text or f"?{key}?", 'other': plural or f"?{key}?"}
+        else:
+            # Simple translation
+            if text is None and len(node.args) > 1:
+                warn(f"Cannot extract text from {func_name}() call")
+            translations[key] = text or f"?{key}?"
+
+    elif func_name == 'trn':
         # api.trn(key, singular, plural, n=..., **kwargs)
         singular = get_string_value(node.args[1]) if len(node.args) > 1 else None
         plural = get_string_value(node.args[2]) if len(node.args) > 2 else None

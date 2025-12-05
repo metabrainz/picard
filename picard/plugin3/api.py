@@ -90,6 +90,35 @@ from picard.webservice.api_helpers import MBAPIHelper
 from picard.ui.options import OptionsPage
 
 
+def t_(key, text=None, plural=None):
+    """Mark a string for translation extraction (no-op at runtime).
+
+    This is a marker function for the translation extractor. At runtime,
+    it returns the arguments in a format suitable for tr() or trn().
+
+    Args:
+        key: Translation key
+        text: Default text (singular form)
+        plural: Plural form (optional)
+
+    Returns:
+        - If no plural: returns key
+        - If plural: returns (key, text, plural) tuple
+
+    Example:
+        # Simple translation
+        ERROR_MSG = t_('error.not_found', 'Not found')
+        # Use: api.tr(ERROR_MSG, 'Not found')
+
+        # Plural translation
+        FILE_COUNT = t_('files.count', '{n} file', '{n} files')
+        # Use: api.trn(*FILE_COUNT, n=count)
+    """
+    if plural is not None:
+        return (key, text, plural)
+    return key
+
+
 # Classes that plugins can import directly for inheritance
 __all__ = [
     'PluginApi',
@@ -97,6 +126,7 @@ __all__ = [
     'OptionsPage',
     'File',
     'CoverArtProvider',
+    't_',
 ]
 
 

@@ -352,6 +352,56 @@ def enable(api):
 
 ---
 
+### `t_(key, text=None, plural=None)` (module-level function)
+
+Mark a string for translation extraction without translating it immediately.
+
+This is a marker function that allows you to define translatable strings at module level or in data structures before the API is available. At runtime, it simply returns the key (or tuple for plurals) unchanged.
+
+```python
+from picard.plugin3.api import t_
+
+# Define translatable strings at module level
+ERROR_MESSAGES = {
+    404: t_('error.not_found', 'Not found'),
+    500: t_('error.server', 'Server error'),
+}
+
+# Define plural forms
+FILE_COUNT = t_('files.count', '{n} file', '{n} files')
+
+# Use in class definitions
+class MyAction(BaseAction):
+    NAME = t_('action.name', 'My Custom Action')
+
+def enable(api):
+    # Translate at runtime
+    error_msg = api.tr(ERROR_MESSAGES[404], 'Not found')
+
+    # Use plural forms (unpacks to key, singular, plural)
+    count_msg = api.trn(*FILE_COUNT, n=5)
+```
+
+**Parameters:**
+- `key`: Translation key
+- `text`: Default text (singular form) - used by extraction tool
+- `plural`: Plural form (optional) - used by extraction tool
+
+**Returns:**
+- If no plural: returns `key`
+- If plural: returns `(key, text, plural)` tuple
+
+**Benefits:**
+- Define translations once, use multiple times
+- No repetition of translation strings
+- Works at module/class level before `enable()` is called
+- Zero runtime overhead (just returns key/tuple)
+- Extractor finds and extracts all marked strings
+
+**See**: [TRANSLATIONS.md](TRANSLATIONS.md) for complete translation system documentation.
+
+---
+
 ## Registration Methods
 
 ### Metadata Processors

@@ -83,6 +83,64 @@ api.tr(key: str, text: str = None, **kwargs) -> str
 - `text`: Optional source locale text (used as fallback and for extraction tool)
 - `**kwargs`: Format parameters for string interpolation
 
+### Translation Marker: `t_()`
+
+For cases where you need to define translatable strings at module level or in data structures (before the API is available), use the `t_()` marker function:
+
+```python
+from picard.plugin3.api import t_
+
+# Define translatable strings at module level
+ERROR_MESSAGES = {
+    404: t_('error.not_found', 'Not found'),
+    500: t_('error.server', 'Server error'),
+    403: t_('error.forbidden', 'Access denied'),
+}
+
+# Define plural forms
+FILE_COUNT = t_('files.count', '{n} file', '{n} files')
+
+# Use in class definitions
+class MyAction(BaseAction):
+    NAME = t_('action.name', 'My Custom Action')
+
+def enable(api):
+    # Translate at runtime
+    error_msg = api.tr(ERROR_MESSAGES[404], 'Not found')
+
+    # Use plural forms
+    count_msg = api.trn(*FILE_COUNT, n=5)
+```
+
+**How `t_()` works:**
+- At runtime: Returns the key (or tuple for plurals) unchanged - zero overhead
+- For extractor: Marks strings for extraction into translation files
+- Signature: `t_(key, text=None, plural=None)`
+- Returns:
+  - If no plural: returns `key`
+  - If plural: returns `(key, text, plural)` tuple for unpacking with `trn()`
+
+**Benefits:**
+- Define translations once, use multiple times
+- No repetition of translation strings
+- Works at module/class level before `enable()` is called
+- Extractor finds and extracts all marked strings
+
+**Example with repetition avoided:**
+```python
+from picard.plugin3.api import t_
+
+# Define once
+PLURALS = t_('items.count', 'There is {n} item.', 'There are {n} items.')
+
+# Use multiple times without repetition
+def callback(self, objs):
+    msg1 = self.api.trn(*PLURALS, n=-1)
+    msg2 = self.api.trn(*PLURALS, n=0)
+    msg3 = self.api.trn(*PLURALS, n=1)
+    msg4 = self.api.trn(*PLURALS, n=5)
+```
+
 ### Key Naming Conventions
 
 Use consistent prefixes for organization:
