@@ -587,7 +587,7 @@ Register a function to be called when the main window UI is initialized.
 def setup_ui(api):
     """Called when main window is ready."""
     api.logger.info("UI initialized")
-    # Access api.window for main window
+    # Access api.tagger.window for main window
 
 def enable(api):
     api.register_ui_init(setup_ui)
