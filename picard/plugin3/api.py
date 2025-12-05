@@ -243,6 +243,9 @@ class PluginApi:
             data = self._load_translation_file(file_path, format, current_locale)
             if data:
                 self._translations[current_locale] = data
+                # Log if this is the source locale
+                if current_locale == self._source_locale or current_locale.split('_')[0] == self._source_locale:
+                    self._logger.debug(f"Loaded source locale ({self._source_locale}) translation file")
                 return
 
         # Fallback: try language without region (e.g., 'de' from 'de_DE')
@@ -253,6 +256,9 @@ class PluginApi:
                 data = self._load_translation_file(file_path, format, lang)
                 if data:
                     self._translations[lang] = data
+                    # Log if this is the source locale
+                    if lang == self._source_locale:
+                        self._logger.debug(f"Loaded source locale ({self._source_locale}) translation file")
 
     @property
     def tagger(self):
