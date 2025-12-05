@@ -656,7 +656,7 @@ class PluginCLI:
             try:
                 # Check if it's a plugin ID (no slashes, no protocol)
                 if '/' not in url_or_id and '://' not in url_or_id:
-                    # If reinstalling, check if it's a UUID of an installed plugin
+                    # If reinstalling, check if it's an installed plugin identifier
                     if reinstall:
                         installed_plugin = self._manager.find_plugin(url_or_id)
                         if installed_plugin and installed_plugin != 'multiple':
@@ -669,35 +669,39 @@ class PluginCLI:
                                 uuid = self._manager._get_plugin_uuid(installed_plugin)
                                 metadata = self._manager._metadata.get_plugin_metadata(uuid)
                                 if metadata and metadata.url:
-                                    url_or_id = metadata.url
+                                    # Use URL directly, skip registry lookup
+                                    url = metadata.url
+                                    self._out.print(f'Reinstalling {installed_plugin.plugin_id} from {url}')
+                                    url_or_id = None  # Skip registry lookup
 
-                    # Try to find in registry
-                    plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
-                    if plugin:
-                        url = plugin['git_url']
+                    # Try to find in registry (if we didn't already get URL from installed plugin)
+                    if url_or_id:
+                        plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
+                        if plugin:
+                            url = plugin['git_url']
 
-                        # Auto-select ref if not explicitly specified
-                        if not explicit_ref:
-                            selected_ref = self._select_ref_for_plugin(plugin)
-                            if selected_ref:
-                                ref = selected_ref
-                                self._out.print(f'Found {plugin["name"]} in registry (using ref: {ref})')
+                            # Auto-select ref if not explicitly specified
+                            if not explicit_ref:
+                                selected_ref = self._select_ref_for_plugin(plugin)
+                                if selected_ref:
+                                    ref = selected_ref
+                                    self._out.print(f'Found {plugin["name"]} in registry (using ref: {ref})')
+                                else:
+                                    self._out.print(f'Found {plugin["name"]} in registry')
                             else:
                                 self._out.print(f'Found {plugin["name"]} in registry')
                         else:
-                            self._out.print(f'Found {plugin["name"]} in registry')
-                    else:
-                        self._out.error(f'Plugin "{url_or_id}" not found in registry')
+                            self._out.error(f'Plugin "{url_or_id}" not found in registry')
 
-                        # Suggest similar plugin IDs
-                        matches = self._manager.find_similar_plugin_ids(url_or_id)
+                            # Suggest similar plugin IDs
+                            matches = self._manager.find_similar_plugin_ids(url_or_id)
 
-                        if matches:
-                            self._out.print('\nDid you mean one of these?')
-                            for match in matches:
-                                self._out.print(f'  {self._out.d_id(match["id"])} - {match["name"]}')
+                            if matches:
+                                self._out.print('\nDid you mean one of these?')
+                                for match in matches:
+                                    self._out.print(f'  {self._out.d_id(match["id"])} - {match["name"]}')
 
-                        return ExitCode.NOT_FOUND
+                            return ExitCode.NOT_FOUND
                 else:
                     url = url_or_id
 
