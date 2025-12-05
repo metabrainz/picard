@@ -242,7 +242,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--check-updates` | Check for updates within installed ref |
 | `--reinstall` | Force reinstall (use with --install) |
 | `--purge` | Delete plugin saved options on uninstall |
-| `--clean-config <name>` | Delete plugin saved options |
+| `--clean-config [name]` | Delete plugin saved options or list orphaned configs |
 | `--yes` / `-y` | Skip confirmation prompts |
 | `--force-blacklisted` | Override blacklist warning |
 | `--validate <url>` | Validate plugin MANIFEST |
@@ -1115,6 +1115,58 @@ picard plugins --list
 picard plugins --disable old-plugin
 picard plugins --uninstall old-plugin --purge
 ```
+
+### Clean Plugin Configuration
+
+**Command:** `picard plugins --clean-config [plugin]`
+
+**Description:** Delete saved options for a plugin, or list orphaned configurations
+
+**Use cases:**
+- Clean up settings from uninstalled plugins
+- Reset plugin to default settings
+- Find and remove orphaned configurations
+
+**Examples:**
+```bash
+# List all orphaned plugin configurations
+picard plugins --clean-config
+
+# Clean specific plugin configuration (with confirmation)
+picard plugins --clean-config listenbrainz
+
+# Clean without confirmation (automation)
+picard plugins --clean-config listenbrainz --yes
+```
+
+**List orphaned configs output:**
+```
+Orphaned plugin configurations (no plugin installed):
+  • old-plugin-id
+  • removed-plugin
+  • test-plugin
+
+Clean with: picard plugins --clean-config <plugin-id>
+```
+
+**When cleaning non-existent plugin:**
+```bash
+$ picard plugins --clean-config nonexistent
+
+✗ No saved options found for "nonexistent"
+
+Orphaned plugin configurations (no plugin installed):
+  • old-plugin-id
+  • removed-plugin
+
+Clean with: picard plugins --clean-config <plugin-id>
+```
+
+**Notes:**
+- Works even if the plugin is uninstalled
+- Requires confirmation unless `--yes` is used
+- Shows list of orphaned configs when plugin not found
+- Orphaned configs are settings from plugins that are no longer installed
 
 ---
 

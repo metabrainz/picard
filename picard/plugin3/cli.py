@@ -26,6 +26,12 @@ from picard.plugin3.output import PluginOutput
 from picard.plugin3.plugin import short_commit_id
 
 
+def get_config():
+    from picard.config import get_config as _get_config
+
+    return _get_config()
+
+
 def get_display_locale(args):
     """Get locale for displaying plugin information.
 
@@ -248,7 +254,7 @@ class PluginCLI:
                 return ExitCode.SUCCESS
             elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
                 return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
-            elif hasattr(self._args, 'clean_config') and self._args.clean_config:
+            elif hasattr(self._args, 'clean_config') and self._args.clean_config is not None:
                 return self._cmd_clean_config(self._args.clean_config)
             elif hasattr(self._args, 'validate') and self._args.validate:
                 return self._cmd_validate(self._args.validate, ref)
@@ -1145,8 +1151,43 @@ class PluginCLI:
         return ExitCode.SUCCESS
 
     def _cmd_clean_config(self, plugin_name):
-        """Clean saved options for a plugin."""
+        """Clean saved options for a plugin or list orphaned configs."""
+        # If no plugin name provided, list orphaned configs
+        if not plugin_name:
+            orphaned = self._manager.get_orphaned_plugin_configs()
+            if not orphaned:
+                self._out.print('No orphaned plugin configurations found')
+                return ExitCode.SUCCESS
+
+            self._out.print('Orphaned plugin configurations (no plugin installed):')
+            for plugin_id in orphaned:
+                self._out.print(f'  • {self._out.d_id(plugin_id)}')
+            self._out.nl()
+            self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <plugin-id>")}')
+            return ExitCode.SUCCESS
+
         yes = getattr(self._args, 'yes', False)
+
+        # Check if plugin config exists
+        config = self._manager._config if hasattr(self._manager, '_config') else get_config()
+        config_key = f'plugin.{plugin_name}'
+        config.beginGroup(config_key)
+        has_config = len(config.childKeys()) > 0
+        config.endGroup()
+
+        if not has_config:
+            self._out.error(f'No saved options found for "{plugin_name}"')
+
+            # Show orphaned configs
+            orphaned = self._manager.get_orphaned_plugin_configs()
+            if orphaned:
+                self._out.nl()
+                self._out.print('Orphaned plugin configurations (no plugin installed):')
+                for plugin_id in orphaned:
+                    self._out.print(f'  • {self._out.d_id(plugin_id)}')
+                self._out.nl()
+                self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <plugin-id>")}')
+            return ExitCode.NOT_FOUND
 
         if not yes:
             if not self._out.yesno(f'Delete saved options for "{plugin_name}"?'):

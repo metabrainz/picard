@@ -252,7 +252,10 @@ class TestPluginCLI(PicardTestCase):
             test_config.endGroup()
 
             mock_manager = PluginManager(Mock())
-            with patch('picard.plugin3.manager.get_config', return_value=test_config):
+            with (
+                patch('picard.plugin3.manager.get_config', return_value=test_config),
+                patch('picard.plugin3.cli.get_config', return_value=test_config),
+            ):
                 exit_code, stdout, _ = run_cli(mock_manager, clean_config='test-plugin', yes=True)
 
             self.assertEqual(exit_code, 0)

@@ -435,6 +435,27 @@ class PluginManager:
         config.sync()
         log.info('Deleted configuration for plugin %s', plugin_name)
 
+    def get_orphaned_plugin_configs(self):
+        """Get list of plugin configs that don't have corresponding installed plugins.
+
+        Returns:
+            list: List of plugin IDs that have config but no installed plugin
+        """
+        config = get_config()
+        installed_ids = {p.plugin_id for p in self.plugins if p.manifest}
+
+        orphaned = []
+        for group in config.childGroups():
+            if group.startswith('plugin.'):
+                plugin_id = group[7:]  # Remove 'plugin.' prefix
+                if plugin_id not in installed_ids:
+                    config.beginGroup(group)
+                    if config.childKeys():  # Only include if it has settings
+                        orphaned.append(plugin_id)
+                    config.endGroup()
+
+        return sorted(orphaned)
+
     def _cleanup_version_cache(self):
         """Remove cache entries for URLs no longer in registry."""
         return self._refs_cache.cleanup_cache()
