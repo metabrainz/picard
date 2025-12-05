@@ -608,6 +608,8 @@ class Plugin:
             raise PluginAlreadyEnabledError(self.plugin_id)
 
         api = PluginApi(self.manifest, tagger)
+        api._plugin_dir = self.local_path
+        api._load_translations()
         self._module.enable(api)
         self.state = PluginState.ENABLED
 
