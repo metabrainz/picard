@@ -170,6 +170,7 @@ from picard.util import (
     webbrowser2,
 )
 from picard.util.checkupdate import UpdateCheckManager
+from picard.util.readthedocs import ReadTheDocs
 from picard.webservice import WebService
 from picard.webservice.api_helpers import (
     AcoustIdAPIHelper,
@@ -238,6 +239,7 @@ class Tagger(QtWidgets.QApplication):
         upgrade_config(config)
 
         self._init_webservice()
+        self._init_readthedocs()
         self._init_fingerprinting()
         self._init_plugins()
         self._init_browser_integration()
@@ -386,6 +388,10 @@ class Tagger(QtWidgets.QApplication):
         self.browser_integration = BrowserIntegration()
         self.register_cleanup(self.browser_integration.stop)
         self.browser_integration.listen_port_changed.connect(self.on_listen_port_changed)
+
+    def _init_readthedocs(self):
+        """Initialize the ReadTheDocs information"""
+        ReadTheDocs.initialize(self.webservice)
 
     def _init_tagger_entities(self):
         """Initialize tagger objects/entities"""

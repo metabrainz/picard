@@ -494,7 +494,7 @@ class UtilTagsTest(PicardTestCase):
         result = (
             '<p><em>%barcode%</em></p><p>The barcode assigned to the release.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/Barcode'>Barcode in MusicBrainz documentation</a>; "
-            "<a href='https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html#id6'>Barcode mapping in Picard documentation</a>.</p>"
+            "<a href='https://picard-docs.musicbrainz.org/en/latest/appendices/tag_mapping.html#id6'>Barcode mapping in Picard documentation</a>.</p>"
         )
         self.assertEqual(display_tag_full_description('barcode'), result)
 
