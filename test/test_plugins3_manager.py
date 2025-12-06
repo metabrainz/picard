@@ -303,9 +303,10 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'
 
-        with patch('picard.plugin3.git_ops.GitOperations.check_dirty_working_dir', return_value=['modified.txt']):
-            with self.assertRaises(PluginDirtyError) as context:
-                GitOperations.switch_ref(mock_plugin, 'develop')
+        with patch('picard.plugin3.git_ops.clean_python_cache'):
+            with patch('picard.plugin3.git_ops.GitOperations.check_dirty_working_dir', return_value=['modified.txt']):
+                with self.assertRaises(PluginDirtyError) as context:
+                    GitOperations.switch_ref(mock_plugin, 'develop')
 
         self.assertEqual(context.exception.plugin_name, 'test-plugin')
         self.assertIn('modified.txt', context.exception.changes)

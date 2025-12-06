@@ -20,10 +20,28 @@
 
 """Git operations for plugin management."""
 
+import os
 from pathlib import Path
+import shutil
 import tempfile
 
 from picard import log
+
+
+def clean_python_cache(directory):
+    """Remove Python cache files and directories.
+
+    Args:
+        directory: Path to directory to clean
+    """
+    directory = Path(directory)
+    for root, dirs, files in os.walk(directory):
+        if '__pycache__' in dirs:
+            shutil.rmtree(Path(root) / '__pycache__', ignore_errors=True)
+            dirs.remove('__pycache__')  # Don't walk into removed directory
+        for file in files:
+            if file.endswith(('.pyc', '.pyo')):
+                (Path(root) / file).unlink(missing_ok=True)
 
 
 class GitOperations:
@@ -51,6 +69,13 @@ class GitOperations:
         modified_files = []
         for filepath, flags in status.items():
             if flags != pygit2.GIT_STATUS_CURRENT and flags != pygit2.GIT_STATUS_IGNORED:
+                # Ignore Python cache files
+                if (
+                    filepath.endswith(('.pyc', '.pyo'))
+                    or '/__pycache__/' in filepath
+                    or filepath.startswith('__pycache__/')
+                ):
+                    continue
                 modified_files.append(filepath)
 
         return modified_files
@@ -221,6 +246,9 @@ class GitOperations:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
         """
         from picard.plugin3.manager import PluginDirtyError
+
+        # Clean Python cache files before checking for changes
+        clean_python_cache(plugin.local_path)
 
         # Check for uncommitted changes
         if not discard_changes:

@@ -510,3 +510,206 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
                 manager.install_plugin(str(bad_plugin_dir))
 
             self.assertIn('No MANIFEST.toml', str(context.exception))
+
+
+@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
+class TestCleanPythonCache(PicardTestCase):
+    """Test clean_python_cache function."""
+
+    def setUp(self):
+        """Create a temporary directory with Python cache files."""
+        super().setUp()
+        self.tmpdir = tempfile.mkdtemp()
+        self.test_dir = Path(self.tmpdir) / "test"
+        self.test_dir.mkdir()
+
+    def tearDown(self):
+        """Clean up temporary directory."""
+        import shutil
+
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+        super().tearDown()
+
+    def test_clean_pycache_directory(self):
+        """Test removing __pycache__ directory."""
+        from picard.plugin3.git_ops import clean_python_cache
+
+        pycache = self.test_dir / "__pycache__"
+        pycache.mkdir()
+        (pycache / "test.cpython-312.pyc").write_text("cache")
+
+        clean_python_cache(self.test_dir)
+
+        self.assertFalse(pycache.exists())
+
+    def test_clean_pyc_files(self):
+        """Test removing .pyc files."""
+        from picard.plugin3.git_ops import clean_python_cache
+
+        pyc_file = self.test_dir / "test.pyc"
+        pyc_file.write_text("cache")
+
+        clean_python_cache(self.test_dir)
+
+        self.assertFalse(pyc_file.exists())
+
+    def test_clean_pyo_files(self):
+        """Test removing .pyo files."""
+        from picard.plugin3.git_ops import clean_python_cache
+
+        pyo_file = self.test_dir / "test.pyo"
+        pyo_file.write_text("cache")
+
+        clean_python_cache(self.test_dir)
+
+        self.assertFalse(pyo_file.exists())
+
+    def test_clean_nested_cache(self):
+        """Test removing cache files in nested directories."""
+        from picard.plugin3.git_ops import clean_python_cache
+
+        subdir = self.test_dir / "subdir"
+        subdir.mkdir()
+        pycache = subdir / "__pycache__"
+        pycache.mkdir()
+        (pycache / "nested.cpython-312.pyc").write_text("cache")
+        (subdir / "nested.pyc").write_text("cache")
+
+        clean_python_cache(self.test_dir)
+
+        self.assertFalse(pycache.exists())
+        self.assertFalse((subdir / "nested.pyc").exists())
+        self.assertTrue(subdir.exists())
+
+    def test_clean_preserves_other_files(self):
+        """Test that non-cache files are preserved."""
+        from picard.plugin3.git_ops import clean_python_cache
+
+        py_file = self.test_dir / "test.py"
+        py_file.write_text("code")
+        txt_file = self.test_dir / "readme.txt"
+        txt_file.write_text("docs")
+
+        clean_python_cache(self.test_dir)
+
+        self.assertTrue(py_file.exists())
+        self.assertTrue(txt_file.exists())
+
+
+@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
+class TestCheckDirtyWorkingDir(PicardTestCase):
+    """Test check_dirty_working_dir function."""
+
+    def setUp(self):
+        """Create a temporary git repository."""
+        super().setUp()
+        self.tmpdir = tempfile.mkdtemp()
+        self.repo_dir = Path(self.tmpdir) / "test-repo"
+        self.repo_dir.mkdir()
+
+        self.repo = pygit2.init_repository(str(self.repo_dir))
+        (self.repo_dir / "file.txt").write_text("content")
+        index = self.repo.index
+        index.add_all()
+        index.write()
+        tree = index.write_tree()
+        author = pygit2.Signature("Test", "test@example.com")
+        self.repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
+        self.repo.set_head('refs/heads/main')
+
+    def tearDown(self):
+        """Clean up temporary directory."""
+        import gc
+        import shutil
+
+        gc.collect()
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+        super().tearDown()
+
+    def test_clean_working_dir(self):
+        """Test that clean working directory returns empty list."""
+        from picard.plugin3.git_ops import GitOperations
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, [])
+
+    def test_modified_file_detected(self):
+        """Test that modified files are detected."""
+        from picard.plugin3.git_ops import GitOperations
+
+        (self.repo_dir / "file.txt").write_text("modified")
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, ["file.txt"])
+
+    def test_untracked_file_detected(self):
+        """Test that untracked files are detected."""
+        from picard.plugin3.git_ops import GitOperations
+
+        (self.repo_dir / "new.txt").write_text("new")
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, ["new.txt"])
+
+    def test_pyc_files_ignored(self):
+        """Test that .pyc files are ignored."""
+        from picard.plugin3.git_ops import GitOperations
+
+        (self.repo_dir / "test.pyc").write_text("cache")
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, [])
+
+    def test_pyo_files_ignored(self):
+        """Test that .pyo files are ignored."""
+        from picard.plugin3.git_ops import GitOperations
+
+        (self.repo_dir / "test.pyo").write_text("cache")
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, [])
+
+    def test_pycache_directory_ignored(self):
+        """Test that __pycache__ directory is ignored."""
+        from picard.plugin3.git_ops import GitOperations
+
+        pycache = self.repo_dir / "__pycache__"
+        pycache.mkdir()
+        (pycache / "test.cpython-312.pyc").write_text("cache")
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, [])
+
+    def test_nested_pycache_ignored(self):
+        """Test that nested __pycache__ is ignored."""
+        from picard.plugin3.git_ops import GitOperations
+
+        subdir = self.repo_dir / "subdir"
+        subdir.mkdir()
+        pycache = subdir / "__pycache__"
+        pycache.mkdir()
+        (pycache / "nested.cpython-312.pyc").write_text("cache")
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, [])
+
+    def test_real_changes_with_cache_files(self):
+        """Test that real changes are detected even with cache files present."""
+        from picard.plugin3.git_ops import GitOperations
+
+        (self.repo_dir / "real.txt").write_text("real change")
+        (self.repo_dir / "test.pyc").write_text("cache")
+        pycache = self.repo_dir / "__pycache__"
+        pycache.mkdir()
+        (pycache / "test.cpython-312.pyc").write_text("cache")
+
+        changes = GitOperations.check_dirty_working_dir(self.repo_dir)
+
+        self.assertEqual(changes, ["real.txt"])
