@@ -173,6 +173,10 @@ class TestPicardConfigSection(TestPicardConfigCommon):
             self.assertEqual(opt.default, default)
             self.assertEqual(self.config.setting[name], default)
 
+    def test_register_option_default_none(self):
+        with self.assertRaises(TypeError, msg='Option default value must not be None'):
+            self.config.setting.register_option("invalid_option", None)
+
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
     # TextOption

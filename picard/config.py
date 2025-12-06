@@ -213,7 +213,14 @@ class ConfigSection(QtCore.QObject):
         """Register an option.
 
         The option type is determined by the type of the default value.
+        The default must not be None.
+
+        Raises:
+            TypeError: If default is None.
         """
+        if default is None:
+            raise TypeError('Option default value must not be None')
+
         value_type = type(default)
         if value_type is str:
             option_type = TextOption
