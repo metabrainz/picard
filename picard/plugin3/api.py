@@ -345,7 +345,7 @@ class PluginApi:
         return QLocale().name()
 
     @classmethod
-    def get_api(cls):
+    def get_api(cls) -> 'PluginApi':
         """Get the PluginApi instance for the calling plugin module.
 
         This is a convenience method for accessing the API instance from
