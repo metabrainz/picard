@@ -107,7 +107,12 @@ class ConfigSection(QtCore.QObject):
             return value
         # Fall back to raw value if no Option is registered
         raw = self.raw_value(name)
-        return raw if raw is not None else default
+        if raw is None:
+            return default
+        # Convert boolean strings to actual booleans
+        if isinstance(raw, str) and raw.lower() in ('true', 'false'):
+            return raw.lower() == 'true'
+        return raw
 
     def as_dict(self):
         return {key: self[key] for section, key in list(Option.registry) if section == self.__name}

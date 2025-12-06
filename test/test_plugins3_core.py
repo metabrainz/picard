@@ -549,6 +549,92 @@ class TestPluginApi(PicardTestCase):
         finally:
             config_file.unlink(missing_ok=True)
 
+    def test_plugin_config_type_roundtrip(self):
+        """Test that common types survive save/load roundtrip in same process."""
+        from pathlib import Path
+        import tempfile
+
+        from PyQt6.QtCore import QSettings
+
+        manifest = load_plugin_manifest('example')
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+            mock_tagger = MockTagger()
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            api.plugin_config['bool_true'] = True
+            api.plugin_config['bool_false'] = False
+            api.plugin_config['int'] = 42
+            api.plugin_config['float'] = 3.14
+            api.plugin_config['string'] = 'hello'
+            api.plugin_config['list'] = [1, 2, 3]
+            api.plugin_config['dict'] = {'key': 'value'}
+            settings.sync()
+
+            # Load in new QSettings instance (same process)
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+
+            # Types are preserved due to QSettings in-memory cache
+            self.assertIs(api2.plugin_config.get('bool_true'), True)
+            self.assertIs(api2.plugin_config.get('bool_false'), False)
+            self.assertEqual(api2.plugin_config.get('int'), 42)
+            self.assertIsInstance(api2.plugin_config.get('int'), int)
+            self.assertEqual(api2.plugin_config.get('float'), 3.14)
+            self.assertIsInstance(api2.plugin_config.get('float'), float)
+            self.assertEqual(api2.plugin_config.get('string'), 'hello')
+            self.assertIsInstance(api2.plugin_config.get('string'), str)
+            self.assertEqual(api2.plugin_config.get('list'), [1, 2, 3])
+            self.assertIsInstance(api2.plugin_config.get('list'), list)
+            self.assertEqual(api2.plugin_config.get('dict'), {'key': 'value'})
+            self.assertIsInstance(api2.plugin_config.get('dict'), dict)
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
+    def test_plugin_config_boolean_after_restart(self):
+        """Test boolean conversion when INI file is read fresh (simulates restart).
+
+        This test simulates what happens when Picard restarts and reads the INI
+        file without QSettings' in-memory type cache. By manually writing the INI
+        file, we bypass QSettings' cache and force it to return raw string values,
+        which is exactly what happens in a new process.
+        """
+        from pathlib import Path
+        import tempfile
+
+        from PyQt6.QtCore import QSettings
+
+        manifest = load_plugin_manifest('example')
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            # Manually write INI file (simulates reading after restart)
+            config_file.write_text(f'[plugin.{manifest.uuid}]\ntest_true=true\ntest_false=false\n')
+
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+            mock_tagger = MockTagger()
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Without the fix, these would return strings 'true'/'false'
+            # With the fix, they are converted to actual booleans
+            self.assertIs(api.plugin_config.get('test_true'), True)
+            self.assertIs(api.plugin_config.get('test_false'), False)
+            self.assertIsInstance(api.plugin_config.get('test_true'), bool)
+            self.assertIsInstance(api.plugin_config.get('test_false'), bool)
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
     def test_plugin_config_with_options(self):
         """Test that plugin config works with registered Options."""
         from pathlib import Path
