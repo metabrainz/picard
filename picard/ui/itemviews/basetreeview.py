@@ -48,6 +48,7 @@ from heapq import (
     heappop,
     heappush,
 )
+from typing import TYPE_CHECKING, cast
 
 from PyQt6 import (
     QtCore,
@@ -84,9 +85,13 @@ from picard.track import (
 from picard.util import (
     icontheme,
     iter_files_from_objects,
-    normpath,
+    qurl_to_local_path,
     restore_method,
 )
+
+
+if TYPE_CHECKING:  # Avoid runtime circular import
+    from picard.tagger import Tagger
 
 from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.enums import MainAction
@@ -582,16 +587,18 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
-        tagger = QtCore.QCoreApplication.instance()
+        # We need to cast to Tagger here to avoid type checking errors below.
+        tagger = cast("Tagger", QtCore.QCoreApplication.instance())
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
-            if url.scheme() == 'file' or not url.scheme():
-                filename = normpath(url.toLocalFile().rstrip('\0'))
+            filename = qurl_to_local_path(url)
+            if filename:
                 file = tagger.files.get(filename)
                 if file:
                     files.append(file)
                 else:
-                    new_paths.append(filename)
+                    if filename:
+                        new_paths.append(filename)
             elif url.scheme() in {'http', 'https'}:
                 file_lookup = tagger.get_file_lookup()
                 file_lookup.mbid_lookup(url.path(), browser_fallback=False)
