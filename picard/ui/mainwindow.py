@@ -25,7 +25,7 @@
 # Copyright (C) 2018 Kartik Ohri
 # Copyright (C) 2018 Vishal Choudhary
 # Copyright (C) 2018 virusMac
-# Copyright (C) 2018, 2021-2023 Bob Swift
+# Copyright (C) 2018, 2021-2023, 2025 Bob Swift
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
@@ -762,12 +762,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         menu.setIcon(icontheme.lookup('media-optical'))
         menu.triggered.connect(self.tagger.lookup_cd)
         self.cd_lookup_menu = menu
-        if discid is None:
-            log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
-            self.cd_lookup_action.setEnabled(False)
-            self.cd_lookup_menu.setEnabled(False)
-        else:
-            thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
+        self._init_cd_lookup_menu()
 
     @MainWindowActions.add()
     def _create_analyze_action(self):
@@ -929,6 +924,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             self.update_cd_lookup_drives(result)
 
+    def _init_cd_lookup_menu(self):
+        if discid is None:
+            log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
+            self.enable_action(self.cd_lookup_action, False)
+            self.cd_lookup_menu.setEnabled(False)
+        else:
+            thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
+
     def update_cd_lookup_drives(self, drives):
         self.cd_lookup_menu.clear()
         self.cd_lookup_action.setEnabled(discid is not None)
@@ -983,6 +986,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def toggle_tag_saving(self, checked):
         config = get_config()
         config.setting['dont_write_tags'] = not checked
+
+    def _reset_option_menu_state(self):
+        config = get_config()
+        self.enable_renaming_action.setChecked(config.setting['rename_files'])
+        self.enable_moving_action.setChecked(config.setting['move_files'])
+        self.enable_tag_saving_action.setChecked(not config.setting['dont_write_tags'])
+        self.make_script_selector_menu()
+        self._init_cd_lookup_menu()
 
     def get_selected_or_unmatched_files(self):
         if self.selected_objects:
@@ -1327,7 +1338,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             self.show_script_editor_action.setEnabled(True)
         self.make_profile_selector_menu()
-        self.make_script_selector_menu()
+        self._reset_option_menu_state()
 
     def show_help(self):
         webbrowser2.open('documentation')
@@ -1987,7 +1998,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for profile in option_profiles:
             if profile['id'] == profile_id:
                 profile['enabled'] = not profile['enabled']
-                self.make_script_selector_menu()
+                self._reset_option_menu_state()
                 return
 
     def show_new_user_dialog(self):
