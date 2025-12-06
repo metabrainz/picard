@@ -56,12 +56,14 @@ class TestPicardConfigCommon(PicardTestCase):
         self.addCleanup(self.cleanup_config_obj)
 
         self.config.application["version"] = "testing"
+        self.original_logging_disable = logging.root.manager.disable
         logging.disable(logging.ERROR)
         self.old_registry = dict(Option.registry)
         Option.registry = {}
 
     def tearDown(self):
         Option.registry = self.old_registry
+        logging.disable(self.original_logging_disable)
 
     def cleanup_config_obj(self):
         # Ensure QSettings do not recreate the file on exit
@@ -152,6 +154,24 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         }
 
         self.assertEqual(expected, self.config.setting.as_dict())
+
+    def test_get_with_default(self):
+        """Test ConfigSection.get() method with default values."""
+        TextOption("setting", "text_option", "abc")
+        IntOption("setting", "int_option", 42)
+
+        # Test get with registered option (returns option default)
+        self.assertEqual(self.config.setting.get("text_option", "fallback"), "abc")
+        self.assertEqual(self.config.setting.get("int_option", 999), 42)
+
+        # Test get with non-existent option (returns provided default)
+        self.assertEqual(self.config.setting.get("nonexistent", "default"), "default")
+        self.assertEqual(self.config.setting.get("nonexistent", 123), 123)
+        self.assertIsNone(self.config.setting.get("nonexistent"))
+
+        # Test get after setting value
+        self.config.setting["text_option"] = "xyz"
+        self.assertEqual(self.config.setting.get("text_option", "fallback"), "xyz")
 
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):

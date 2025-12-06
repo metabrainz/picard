@@ -1,0 +1,286 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2025 Philipp Wolfer, Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+"""Git operations for plugin management."""
+
+from pathlib import Path
+import tempfile
+
+from picard import log
+
+
+class GitOperations:
+    """Handles git operations for plugins."""
+
+    @staticmethod
+    def check_dirty_working_dir(path: Path):
+        """Check if git working directory has uncommitted changes.
+
+        Args:
+            path: Path to git repository
+
+        Returns:
+            list: List of modified files, or empty list if clean
+
+        Raises:
+            Exception: If path is not a git repository
+        """
+        import pygit2
+
+        repo = pygit2.Repository(str(path))
+        status = repo.status()
+
+        # Check for any changes (modified, added, deleted, renamed, etc.)
+        modified_files = []
+        for filepath, flags in status.items():
+            if flags != pygit2.GIT_STATUS_CURRENT and flags != pygit2.GIT_STATUS_IGNORED:
+                modified_files.append(filepath)
+
+        return modified_files
+
+    @staticmethod
+    def fetch_remote_refs(url, use_callbacks=True):
+        """Fetch remote refs from a git repository.
+
+        Args:
+            url: Git repository URL
+            use_callbacks: Whether to use GitRemoteCallbacks for authentication
+
+        Returns:
+            list: Remote refs from pygit2, or None on error
+        """
+        import pygit2
+
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                repo = pygit2.init_repository(tmpdir, bare=True)
+                remote = repo.remotes.create('origin', url)
+
+                if use_callbacks:
+                    from picard.plugin3.plugin import GitRemoteCallbacks
+
+                    callbacks = GitRemoteCallbacks()
+                    return remote.list_heads(callbacks=callbacks)
+                else:
+                    return remote.list_heads()
+
+        except Exception as e:
+            log.warning('Failed to fetch remote refs from %s: %s', url, e)
+            return None
+
+    @staticmethod
+    def validate_ref(url, ref, uuid=None, registry=None):
+        """Validate that a ref exists in the repository.
+
+        Args:
+            url: Git repository URL
+            ref: Git ref to validate
+            uuid: Plugin UUID (for registry lookup)
+            registry: PluginRegistry instance
+
+        Returns:
+            bool: True if ref is valid
+
+        Raises:
+            PluginRefNotFoundError: If ref doesn't exist
+        """
+        from picard.plugin3.manager import PluginRefNotFoundError
+
+        # For registry plugins with versioning_scheme, validate against version tags
+        if registry and uuid:
+            registry_plugin = registry.find_plugin(uuid=uuid)
+            if registry_plugin and registry_plugin.get('versioning_scheme'):
+                # Import here to avoid circular dependency
+                from picard.plugin3.refs_cache import RefsCache
+
+                refs_cache = RefsCache(registry)
+                pattern = refs_cache.parse_versioning_scheme(registry_plugin['versioning_scheme'])
+                if pattern and pattern.match(ref):
+                    # It's a version tag - fetch and check
+                    version_tags = []
+                    remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=False)
+                    if remote_refs:
+                        version_tags = refs_cache.filter_tags(remote_refs, pattern)
+
+                    if ref not in version_tags:
+                        raise PluginRefNotFoundError(uuid, ref)
+                    return True
+
+            # For registry plugins with explicit refs list
+            if registry_plugin and registry_plugin.get('refs'):
+                ref_names = [r['name'] for r in registry_plugin['refs']]
+                if ref not in ref_names:
+                    raise PluginRefNotFoundError(uuid, ref)
+                return True
+
+        # For non-registry plugins or no versioning, just check if ref exists remotely
+        remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True)
+        if not remote_refs:
+            # Can't validate - assume it's valid and let git fail later if not
+            return True
+
+        # Check if ref exists in remote
+        ref_names = []
+        for remote_ref in remote_refs:
+            name = remote_ref.name if hasattr(remote_ref, 'name') else str(remote_ref)
+            # Strip refs/heads/ and refs/tags/ prefixes
+            if name.startswith('refs/heads/'):
+                ref_names.append(name[11:])
+            elif name.startswith('refs/tags/'):
+                ref_names.append(name[10:])
+            ref_names.append(name)  # Also add full name
+
+        if ref not in ref_names:
+            raise PluginRefNotFoundError(uuid or url, ref)
+
+        return True
+
+    @staticmethod
+    def check_ref_type(repo_path, ref=None):
+        """Check the type of a git ref by querying the repository.
+
+        Args:
+            repo_path: Path to git repository
+            ref: Optional ref name to check (if None, checks current HEAD)
+
+        Returns:
+            tuple: (ref_type, ref_name) where ref_type is 'commit', 'tag', 'branch', or None
+        """
+        import pygit2
+
+        try:
+            repo = pygit2.Repository(str(repo_path))
+
+            if ref:
+                # Check if ref exists in standard locations first
+                # This handles both lightweight and annotated tags
+                if f'refs/tags/{ref}' in repo.references:
+                    return 'tag', ref
+                if f'refs/heads/{ref}' in repo.references:
+                    return 'branch', ref
+                if f'refs/remotes/origin/{ref}' in repo.references:
+                    return 'branch', ref
+
+                # Not found in standard refs, try to resolve it
+                try:
+                    obj = repo.revparse_single(ref)
+                    # It resolves. Check object type.
+                    # Note: lightweight tags resolve to commits, but we already checked refs/tags above
+                    if obj.type == pygit2.GIT_OBJECT_COMMIT:
+                        return 'commit', ref
+                    elif obj.type == pygit2.GIT_OBJECT_TAG:
+                        # Annotated tag object
+                        return 'tag', ref
+                    else:
+                        return None, ref
+                except KeyError:
+                    return None, ref
+            else:
+                # Check current HEAD state
+                if repo.head_is_detached:
+                    commit = str(repo.head.target)[:7]
+                    return 'commit', commit
+                else:
+                    # HEAD points to a branch
+                    branch_name = repo.head.shorthand
+                    return 'branch', branch_name
+
+        except Exception:
+            return None, ref
+
+    @staticmethod
+    def switch_ref(plugin, ref, discard_changes=False):
+        """Switch plugin to a different git ref (branch/tag/commit).
+
+        Args:
+            plugin: Plugin to switch
+            ref: Git ref to switch to
+            discard_changes: If True, discard uncommitted changes
+
+        Returns:
+            tuple: (old_ref, new_ref, old_commit, new_commit)
+
+        Raises:
+            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
+        """
+        from picard.plugin3.manager import PluginDirtyError
+
+        # Check for uncommitted changes
+        if not discard_changes:
+            changes = GitOperations.check_dirty_working_dir(plugin.local_path)
+            if changes:
+                raise PluginDirtyError(plugin.plugin_id, changes)
+
+        import pygit2
+
+        repo = pygit2.Repository(str(plugin.local_path))
+
+        # Get old ref and commit
+        old_commit = str(repo.head.target)
+        old_ref = repo.head.shorthand if not repo.head_is_detached else old_commit[:7]
+
+        # Fetch latest from remote
+        remote = repo.remotes['origin']
+        from picard.plugin3.plugin import GitRemoteCallbacks
+
+        callbacks = GitRemoteCallbacks()
+        remote.fetch(callbacks=callbacks)
+
+        # Find the ref
+        try:
+            # Try as branch first
+            branch_ref = f'refs/remotes/origin/{ref}'
+            if branch_ref in repo.references:
+                commit = repo.references[branch_ref].peel()
+                repo.checkout_tree(commit)
+                # Detach HEAD first to avoid "cannot force update current branch" error
+                repo.set_head(commit.id)
+                # Set branch to track remote
+                branch = repo.branches.local.create(ref, commit, force=True)
+                branch.upstream = repo.branches.remote[f'origin/{ref}']
+                # Now point HEAD to the branch
+                repo.set_head(f'refs/heads/{ref}')
+                log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
+                return old_ref, ref, old_commit, str(commit.id)
+
+            # Try as tag
+            tag_ref = f'refs/tags/{ref}'
+            if tag_ref in repo.references:
+                commit = repo.references[tag_ref].peel()
+                repo.checkout_tree(commit)
+                repo.set_head(commit.id)
+                log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+                return old_ref, ref, old_commit, str(commit.id)
+
+            # Try as commit hash
+            try:
+                commit = repo.revparse_single(ref)
+                repo.checkout_tree(commit)
+                repo.set_head(commit.id)
+                log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
+                return old_ref, ref[:7], old_commit, str(commit.id)
+            except KeyError:
+                pass
+
+            raise ValueError(f'Ref {ref} not found')
+
+        except Exception as e:
+            log.error('Failed to switch plugin %s to ref %s: %s', plugin.plugin_id, ref, e)
+            raise

@@ -43,6 +43,7 @@ PLUGIN_MODULE_PREFIX = "picard.plugins."
 PLUGIN_MODULE_PREFIX_LEN = len(PLUGIN_MODULE_PREFIX)
 
 _extension_points = []
+_plugin_uuid_to_module = {}  # Maps UUID -> module name for v3 plugins
 
 
 class ExtensionPoint:
@@ -58,7 +59,7 @@ class ExtensionPoint:
 
     def register(self, module, item):
         if module.startswith(PLUGIN_MODULE_PREFIX):
-            name = module[PLUGIN_MODULE_PREFIX_LEN:]
+            name = module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
             log.debug("ExtensionPoint: %s register <- plugin=%r item=%r", self.label, name, item)
         else:
             name = None
@@ -82,10 +83,27 @@ class ExtensionPoint:
 
     def __iter__(self):
         config = get_config()
-        enabled_plugins = config.setting['enabled_plugins'] if config else []
-        for name in self.__dict:
-            if name is None or name in enabled_plugins:
+        if not config:
+            # No config available, yield all
+            for name in self.__dict:
                 yield from self.__dict[name]
+            return
+
+        # v3 plugins use UUIDs in plugins3_enabled_plugins
+        enabled_plugins = []
+        if 'plugins3_enabled_plugins' in config.setting:
+            enabled_plugins = config.setting['plugins3_enabled_plugins']
+
+        for name in self.__dict:
+            if name is None:
+                # Internal extensions (not from plugins)
+                yield from self.__dict[name]
+            else:
+                # Check if any enabled UUID maps to this module name
+                for uuid in enabled_plugins:
+                    if _plugin_uuid_to_module.get(uuid) == name:
+                        yield from self.__dict[name]
+                        break
 
     def __repr__(self):
         return f"ExtensionPoint(label='{self.label}')"
@@ -94,3 +112,18 @@ class ExtensionPoint:
 def unregister_module_extensions(module):
     for ep in _extension_points:
         ep.unregister_module(module)
+
+
+def set_plugin_uuid(uuid, module_name):
+    """Set UUID for a v3 plugin module.
+
+    Args:
+        uuid: Plugin UUID from MANIFEST.toml
+        module_name: Plugin module name (e.g., 'listenbrainz')
+    """
+    _plugin_uuid_to_module[uuid] = module_name
+
+
+def unset_plugin_uuid(uuid):
+    """Unset UUID for a v3 plugin module."""
+    _plugin_uuid_to_module.pop(uuid, None)

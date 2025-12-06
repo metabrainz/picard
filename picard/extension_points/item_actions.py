@@ -55,14 +55,21 @@ class BaseAction(QtGui.QAction):
     NAME = "Unknown"
     MENU = []
 
-    def __init__(self, parent=None):
+    def __init__(self, api=None, parent=None):
         super().__init__(self.NAME, parent=parent)
+        self.api = api
         self.tagger = QtCore.QCoreApplication.instance()
         self.triggered.connect(self.__callback)
 
     def __callback(self):
         objs = self.tagger.window.selected_objects
-        self.callback(objs)
+        try:
+            self.callback(objs)
+        except Exception:
+            from picard import log
+
+            plugin_id = getattr(self.api, 'plugin_id', 'unknown')
+            log.error("Error in action %s (plugin: %s):", self.NAME, plugin_id, exc_info=True)
 
     def callback(self, objs):
         raise NotImplementedError
@@ -75,21 +82,31 @@ ext_point_file_actions = ExtensionPoint(label='file_actions')
 ext_point_track_actions = ExtensionPoint(label='track_actions')
 
 
-def register_album_action(action):
+def register_album_action(action, api=None):
+    if api is not None:
+        action._plugin_api = api
     ext_point_album_actions.register(action.__module__, action)
 
 
-def register_cluster_action(action):
+def register_cluster_action(action, api=None):
+    if api is not None:
+        action._plugin_api = api
     ext_point_cluster_actions.register(action.__module__, action)
 
 
-def register_clusterlist_action(action):
+def register_clusterlist_action(action, api=None):
+    if api is not None:
+        action._plugin_api = api
     ext_point_clusterlist_actions.register(action.__module__, action)
 
 
-def register_file_action(action):
+def register_file_action(action, api=None):
+    if api is not None:
+        action._plugin_api = api
     ext_point_file_actions.register(action.__module__, action)
 
 
-def register_track_action(action):
+def register_track_action(action, api=None):
+    if api is not None:
+        action._plugin_api = api
     ext_point_track_actions.register(action.__module__, action)

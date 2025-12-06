@@ -1,0 +1,8 @@
+uuid = "78015894-b50c-471f-8671-46fc38fc3d5e"
+name = "Future Plugin"
+authors = ["Test Author"]
+version = "2.0.0"
+description = "Plugin requiring newer API version"
+api = ["3.5", "3.6"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"

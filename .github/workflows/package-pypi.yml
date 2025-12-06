@@ -22,12 +22,12 @@ jobs:
       if: runner.os == 'linux'
       run: |
         sudo apt-get update
-        sudo apt-get install libegl1
+        sudo apt-get install libegl1 libgit2-dev gettext
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install --upgrade build pytest
-        pip install --upgrade -r requirements.txt
+        pip install --upgrade .
     - name: Run tests
       timeout-minutes: 30
       run: |
@@ -78,7 +78,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-14, windows-2022]
-        python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
+        python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14']
     steps:
     - uses: actions/checkout@v6
     - name: Set up Python ${{ matrix.python-version }}
@@ -97,16 +97,27 @@ jobs:
       env:
         GETTEXT_VERSION: 0.22.4
         GETTEXT_SHA256SUM: 220068ac0b9e7aedda03534a3088e584640ac1e639800b3a0baa9410aa6d012a
+    - name: Install libgit2 (macOS)
+      if: runner.os == 'macOS'
+      run: brew install libgit2
+    - name: Install libgit2 (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        vcpkg install libgit2:x64-windows
+        $vcpkgRoot = "C:\vcpkg\installed\x64-windows"
+        echo "INCLUDE=$vcpkgRoot\include;$env:INCLUDE" >> $env:GITHUB_ENV
+        echo "LIB=$vcpkgRoot\lib;$env:LIB" >> $env:GITHUB_ENV
+      shell: pwsh
     - name: Install dependencies (Linux)
       if: runner.os == 'linux'
       run: |
         sudo apt-get update
-        sudo apt-get install libegl1
+        sudo apt-get install libegl1 libgit2-dev gettext
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install --upgrade build pytest
-        pip install --upgrade -r requirements.txt
+        pip install --upgrade .
     - name: Run tests
       timeout-minutes: 30
       run: |

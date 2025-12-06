@@ -1,0 +1,8 @@
+uuid = "2709eaf0-e02f-4a1d-b9d0-01da9dcd4941"
+name = "Incompatible Plugin"
+authors = ["Test Author"]
+version = "1.0.0"
+description = "Plugin with incompatible API version"
+api = ["2.0", "2.1"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"

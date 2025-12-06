@@ -230,7 +230,9 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                     MainAction.OPEN_FOLDER,
                     MainAction.TRACK_SEARCH,
                 )
-                plugin_actions.extend(ext_point_file_actions)
+                # Extend with file actions, avoiding duplicates
+                file_actions = list(ext_point_file_actions)
+                plugin_actions.extend(a for a in file_actions if a not in plugin_actions)
             add_actions(
                 MainAction.BROWSER_LOOKUP,
                 MainAction.GENERATE_FINGERPRINTS if obj.num_linked_files > 0 else None,
@@ -339,14 +341,19 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             )
 
             plugin_menus = {}
-            for action in plugin_actions:
+            for ActionClass in plugin_actions:
+                # Determine target menu based on MENU attribute
                 action_menu = plugin_menu
-                for index in range(1, len(action.MENU) + 1):
-                    key = tuple(action.MENU[:index])
+                for index in range(1, len(ActionClass.MENU) + 1):
+                    key = tuple(ActionClass.MENU[:index])
                     if key in plugin_menus:
                         action_menu = plugin_menus[key]
                     else:
                         action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
+                # Instantiate action with API
+                api = getattr(ActionClass, '_plugin_api', None)
+                action = ActionClass(api=api)
+                action.setParent(action_menu)  # Set parent to keep action alive
                 action_menu.addAction(action)
 
         scripts = config.setting['list_of_scripts']

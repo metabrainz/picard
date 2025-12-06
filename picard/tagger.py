@@ -101,8 +101,12 @@ from picard.config_upgrade import upgrade_config
 from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
     USER_DIR,
+    USER_PLUGIN_DIR,
 )
-from picard.const.appdirs import sessions_folder
+from picard.const.appdirs import (
+    plugin_folder,
+    sessions_folder,
+)
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -126,10 +130,18 @@ from picard.i18n import (
 )
 from picard.item import MetadataItem
 from picard.options import init_options
-from picard.pluginmanager import (
-    PluginManager,
-    plugin_dirs,
-)
+
+
+try:
+    from picard.plugin3.cli import PluginCLI
+    from picard.plugin3.manager import PluginManager
+
+    HAS_PLUGIN3 = True
+except ImportError:
+    HAS_PLUGIN3 = False
+    PluginCLI = None
+    PluginManager = None
+
 from picard.releasegroup import ReleaseGroup
 from picard.remotecommands import RemoteCommands
 from picard.session.constants import SessionConstants
@@ -361,10 +373,13 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_plugins(self):
         """Initialize and load plugins"""
-        self.pluginmanager = PluginManager()
-        if not self._no_plugins:
-            for plugin_dir in plugin_dirs():
-                self.pluginmanager.load_plugins_from_directory(plugin_dir)
+        if HAS_PLUGIN3:
+            self.pluginmanager3 = PluginManager(self)
+            if not self._no_plugins:
+                self.pluginmanager3.add_directory(plugin_folder(), primary=True)
+        else:
+            self.pluginmanager3 = None
+            log.warning('Plugin3 system not available (pygit2 not installed)')
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
@@ -644,11 +659,13 @@ class Tagger(QtWidgets.QApplication):
         self.stopping = True
 
         # Best-effort crash/exit backup if enabled
-        config = get_config()
-        with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
-            if config.setting['session_backup_on_crash']:
-                path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
-                save_session_to_path(self, path)
+        # Only attempt if tagger is fully initialized
+        if hasattr(self, 'unclustered_files'):
+            config = get_config()
+            with contextlib.suppress(OSError, PermissionError, FileNotFoundError, ValueError, OverflowError):
+                if config.setting['session_backup_on_crash']:
+                    path = Path(sessions_folder()) / ("autosave" + SessionConstants.SESSION_FILE_EXTENSION)
+                    save_session_to_path(self, path)
 
         log.debug("Picard stopping")
         self.run_cleanup()
@@ -703,6 +720,21 @@ class Tagger(QtWidgets.QApplication):
 
         self.update_browser_integration()
         self.window.show()
+        blacklisted_plugins = self.pluginmanager3.init_plugins()
+
+        # Show warning if any plugins were blacklisted
+        if blacklisted_plugins:
+            from PyQt6.QtWidgets import QMessageBox
+
+            plugin_list = '\n'.join([f'• {name}: {reason}' for name, reason in blacklisted_plugins])
+            message = (
+                f'The following plugins have been blacklisted and disabled:\n\n'
+                f'{plugin_list}\n\n'
+                f'These plugins may contain security vulnerabilities or malicious code. '
+                f'They have been automatically disabled for your protection.'
+            )
+            QMessageBox.warning(self.window, 'Blacklisted Plugins Detected', message)
+
         QtCore.QTimer.singleShot(0, self._run_init)
         res = self.exec()
         self.exit()
@@ -1416,6 +1448,55 @@ If a new instance will not be spawned files/directories will be passed to the ex
     parser.add_argument('-V', '--long-version', action='store_true', help="display long version information and exit")
     parser.add_argument('FILE_OR_URL', nargs='*', help="the file(s), URL(s) and MBID(s) to load")
 
+    subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
+    plugin_parser = subparsers.add_parser('plugins', help="manage plugins, see plugins --help")
+    plugin_parser.add_argument('-l', '--list', action='store_true', help="list installed plugins")
+    plugin_parser.add_argument('-i', '--install', nargs='+', metavar='URL', help="install plugin(s) from URL(s)")
+    plugin_parser.add_argument('-u', '--uninstall', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
+    plugin_parser.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
+    plugin_parser.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
+    plugin_parser.add_argument('--update', nargs='+', metavar='PLUGIN', help="update plugin(s) to latest version")
+    plugin_parser.add_argument('--update-all', action='store_true', help="update all installed plugins")
+    plugin_parser.add_argument('--check-updates', action='store_true', help="check for available updates")
+    plugin_parser.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
+    plugin_parser.add_argument(
+        '--list-refs', metavar='PLUGIN', help="list available git refs (branches/tags) for plugin"
+    )
+    plugin_parser.add_argument(
+        '--ref', metavar='REF', help="git ref (branch/tag/commit) to use with --install or --validate"
+    )
+    plugin_parser.add_argument(
+        '--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref"
+    )
+    plugin_parser.add_argument('--reinstall', action='store_true', help="force reinstall of existing plugin")
+    plugin_parser.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
+    plugin_parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
+    plugin_parser.add_argument(
+        '--clean-config',
+        nargs='?',
+        const='',
+        metavar='PLUGIN',
+        help="delete saved options for a plugin (list orphaned configs if no plugin specified)",
+    )
+    plugin_parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
+    plugin_parser.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
+    plugin_parser.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")
+    plugin_parser.add_argument(
+        '--manifest', nargs='?', const='', metavar='PLUGIN', help="show MANIFEST.toml (template if no argument)"
+    )
+    plugin_parser.add_argument('--browse', action='store_true', help="browse plugins from registry")
+    plugin_parser.add_argument('--search', metavar='QUERY', help="search plugins in registry")
+    plugin_parser.add_argument('--check-blacklist', metavar='URL', help="check if URL is blacklisted")
+    plugin_parser.add_argument('--refresh-registry', action='store_true', help="force refresh of plugin registry cache")
+    plugin_parser.add_argument(
+        '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
+    )
+    plugin_parser.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
+    plugin_parser.add_argument(
+        '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
+    )
+    plugin_parser.add_argument('--no-color', action='store_true', help="disable colored output")
+
     args = parser.parse_args()
     args.remote_commands_help = False
 
@@ -1438,7 +1519,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
             for arg in remote_command_args:
                 args.processable.append(f"{e[0]} {arg}")
 
-    return args
+    return args, plugin_parser
 
 
 PipeStatus = namedtuple('PipeStatus', ('handler', 'is_remote'))
@@ -1471,6 +1552,22 @@ def setup_pipe_handler(cmdline_args):
         is_remote = False
 
     return PipeStatus(handler=pipe_handler, is_remote=is_remote)
+
+
+def minimal_init(config_file=None):
+    """Minimal initialization for CLI commands without GUI.
+
+    Returns a QCoreApplication instance with config initialized.
+    """
+    QtCore.QCoreApplication.setApplicationName(PICARD_APP_NAME)
+    QtCore.QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
+
+    app = QtCore.QCoreApplication(sys.argv)
+
+    init_options()
+    setup_config(app=app, filename=config_file)
+
+    return app
 
 
 def setup_application():
@@ -1523,7 +1620,7 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    cmdline_args = process_cmdline_args()
+    cmdline_args, plugin_parser = process_cmdline_args()
 
     if cmdline_args.long_version:
         _ = QtCore.QCoreApplication(sys.argv)
@@ -1544,6 +1641,31 @@ def main(localedir=None, autoupdate=True):
 
     setup_dbus()
 
+    # Handle plugin commands with minimal initialization (no GUI)
+    if cmdline_args.subcommand == 'plugins':
+        if not HAS_PLUGIN3:
+            log.error('Plugin3 system not available. Install pygit2 to use plugin management.')
+            sys.exit(1)
+
+        app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.output import PluginOutput
+
+        manager = PluginManager()
+        manager.add_directory(USER_PLUGIN_DIR, primary=True)
+
+        # Suppress INFO logs for cleaner CLI output unless in debug mode
+        if not cmdline_args.debug:
+            log.set_verbosity(logging.WARNING)
+
+        # Create output with color setting from args
+        color = not getattr(cmdline_args, 'no_color', False)
+        output = PluginOutput(color=color)
+
+        exit_code = PluginCLI(manager, cmdline_args, output=output, parser=plugin_parser).run()
+        sys.exit(exit_code)
+
+    # GUI mode - full Tagger initialization
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
 
     setup_translator(tagger)

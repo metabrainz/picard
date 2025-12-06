@@ -52,6 +52,15 @@ _translation = {
 }
 
 
+def get_current_locale():
+    lang, encoding = locale.getlocale()
+    if lang is None:
+        lang = 'C'
+    if encoding is None:
+        return f"{lang}"
+    return f"{lang}.{encoding}"
+
+
 def set_locale_from_env():
     """
     Depending on environment, locale.setlocale(locale.LC_ALL, '') can fail.
@@ -78,10 +87,15 @@ def set_locale_from_env():
     ('en_US', 'UTF-8')
     """
     try:
-        current_locale = locale.setlocale(locale.LC_ALL, '')
-    except locale.Error:
-        # default to 'C' locale if it couldn't be set from env
-        current_locale = locale.setlocale(locale.LC_ALL, 'C')
+        locale.setlocale(locale.LC_ALL, '')
+    except locale.Error as e:
+        _logger("Failed to set locale: %s", e)
+        try:
+            # default to 'C' locale if it couldn't be set from env
+            locale.setlocale(locale.LC_ALL, 'C')
+        except locale.Error as e:
+            _logger("Failed to set locale to C: %s", e)
+    current_locale = get_current_locale()
     _logger("Setting locale from env: %r", current_locale)
     return current_locale
 
@@ -168,7 +182,8 @@ def setup_gettext(localedir, ui_language=None, logger=None):
     current_locale = None
     for loc in try_locales:
         try:
-            current_locale = locale.setlocale(locale.LC_ALL, loc)
+            locale.setlocale(locale.LC_ALL, loc)
+            current_locale = get_current_locale()
             _logger("Set locale to: %r", current_locale)
             break
         except locale.Error:

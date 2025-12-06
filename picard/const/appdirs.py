@@ -21,7 +21,7 @@
 
 
 import os
-from pathlib import Path
+import os.path
 
 from PyQt6.QtCore import (
     QCoreApplication,
@@ -56,9 +56,8 @@ def cache_folder():
 
 
 def plugin_folder():
-    # FIXME: This really should be in QStandardPaths.StandardLocation.AppDataLocation instead,
-    # but this is a breaking change that requires data migration
-    return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(config_folder(), 'plugins')))
+    appdata_folder = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppDataLocation)
+    return os.path.normpath(os.environ.get('PICARD_PLUGIN_DIR', os.path.join(appdata_folder, 'plugins3')))
 
 
 def sessions_folder():
@@ -71,6 +70,8 @@ def sessions_folder():
         returns that path. Otherwise, returns the default path
         <config_folder>/sessions.
     """
+    from pathlib import Path
+
     from picard.config import get_config
 
     config = get_config()

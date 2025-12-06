@@ -1,0 +1,1358 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2024-2025 Philipp Wolfer
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+import os
+from pathlib import Path
+import re
+import shutil
+from typing import List, NamedTuple
+
+from picard import (
+    api_versions_tuple,
+    log,
+)
+from picard.config import get_config
+from picard.const.appdirs import cache_folder
+from picard.plugin3.git_ops import GitOperations
+from picard.plugin3.git_utils import get_local_repository_path
+from picard.plugin3.plugin import (
+    Plugin,
+    PluginSourceGit,
+    PluginState,
+    hash_string,
+    short_commit_id,
+)
+from picard.plugin3.plugin_metadata import PluginMetadata, PluginMetadataManager
+from picard.plugin3.refs_cache import RefsCache
+from picard.plugin3.registry import PluginRegistry
+from picard.plugin3.validation import PluginValidation
+from picard.version import Version
+
+
+class UpdateResult(NamedTuple):
+    """Result of a plugin update operation."""
+
+    old_version: str
+    new_version: str
+    old_commit: str
+    new_commit: str
+    old_ref: str
+    new_ref: str
+    commit_date: int
+
+
+class UpdateCheck(NamedTuple):
+    """Result of checking for plugin updates."""
+
+    plugin_id: str
+    old_commit: str
+    new_commit: str
+    commit_date: int
+    old_ref: str
+    new_ref: str
+
+
+class UpdateAllResult(NamedTuple):
+    """Result of updating a plugin in update_all operation."""
+
+    plugin_id: str
+    success: bool
+    result: UpdateResult
+    error: str
+
+
+class PluginManagerError(Exception):
+    """Base exception for plugin manager errors."""
+
+    pass
+
+
+class PluginDirtyError(PluginManagerError):
+    """Raised when installed plugin directory has uncommitted changes."""
+
+    def __init__(self, plugin_name, changes):
+        self.plugin_name = plugin_name
+        self.changes = changes
+        super().__init__(f"Plugin {plugin_name} has uncommitted changes")
+
+
+class PluginAlreadyInstalledError(PluginManagerError):
+    """Raised when trying to install a plugin that's already installed."""
+
+    def __init__(self, plugin_name, url):
+        self.plugin_name = plugin_name
+        self.url = url
+        super().__init__(f"Plugin {plugin_name} is already installed")
+
+
+class PluginBlacklistedError(PluginManagerError):
+    """Raised when trying to install a blacklisted plugin."""
+
+    def __init__(self, url, reason, uuid=None):
+        self.url = url
+        self.reason = reason
+        self.uuid = uuid
+        super().__init__(f"Plugin is blacklisted: {reason}")
+
+
+class PluginManifestNotFoundError(PluginManagerError):
+    """Raised when MANIFEST.toml is not found in plugin source."""
+
+    def __init__(self, source):
+        self.source = source
+        super().__init__(f"No MANIFEST.toml found in {source}")
+
+
+class PluginManifestInvalidError(PluginManagerError):
+    """Raised when MANIFEST.toml validation fails."""
+
+    def __init__(self, errors):
+        self.errors = errors
+        error_list = '\n  '.join(errors) if isinstance(errors, list) else str(errors)
+        super().__init__(f"Invalid MANIFEST.toml:\n  {error_list}")
+
+
+class PluginNoSourceError(PluginManagerError):
+    """Raised when plugin has no stored source URL for update/switch-ref."""
+
+    def __init__(self, plugin_id, operation):
+        self.plugin_id = plugin_id
+        self.operation = operation
+        super().__init__(f"Plugin {plugin_id} has no stored URL, cannot {operation}")
+
+
+class PluginRefSwitchError(PluginManagerError):
+    """Raised when switching to a git ref fails."""
+
+    def __init__(self, plugin_id, ref, original_error):
+        self.plugin_id = plugin_id
+        self.ref = ref
+        self.original_error = original_error
+        super().__init__(f"Cannot switch to ref {ref}: {original_error}")
+
+
+class PluginRefNotFoundError(PluginManagerError):
+    """Raised when requested ref is not found or not available."""
+
+    def __init__(self, plugin_id, ref):
+        self.plugin_id = plugin_id
+        self.ref = ref
+        super().__init__(f"Ref '{ref}' not found for plugin {plugin_id}")
+
+
+class PluginNoUUIDError(PluginManagerError):
+    """Raised when plugin has no UUID in manifest."""
+
+    def __init__(self, plugin_id):
+        self.plugin_id = plugin_id
+        super().__init__(f"Plugin {plugin_id} has no UUID")
+
+
+class PluginCommitPinnedError(PluginManagerError):
+    """Raised when trying to update a commit-pinned plugin."""
+
+    def __init__(self, plugin_id, commit):
+        self.plugin_id = plugin_id
+        self.commit = commit
+        super().__init__(f'Plugin is pinned to commit "{commit}" and cannot be updated')
+
+
+def get_plugin_directory_name(manifest) -> str:
+    """Get plugin directory name from manifest (sanitized name + full UUID).
+
+    Args:
+        manifest: PluginManifest instance
+
+    Returns:
+        Directory name: <sanitized_name>_<uuid>
+        Example: my_plugin_f8bf81d7-c5e2-472b-ba96-62140cefc9e1
+    """
+    # Sanitize name: lowercase, alphanumeric + underscore
+    name = manifest.name()
+    sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
+    sanitized = sanitized[:50] if sanitized else 'plugin'
+
+    uuid_str = manifest.uuid if manifest.uuid else 'no_uuid'
+    return f'{sanitized}_{uuid_str}'
+
+
+class PluginManager:
+    """Installs, loads and updates plugins from multiple plugin directories."""
+
+    _primary_plugin_dir: Path = None
+    _plugin_dirs: List[Path] = []
+    _plugins: List[Plugin] = []
+
+    def __init__(self, tagger=None):
+        from picard.tagger import Tagger
+
+        self._tagger: Tagger | None = tagger
+        self._enabled_plugins = set()
+        self._failed_plugins = []  # List of (path, name, error_message) tuples
+        self._load_config()
+
+        # Initialize registry for blacklist checking
+
+        cache_dir = cache_folder()
+        self._registry = PluginRegistry(cache_dir=cache_dir)
+
+        # Initialize refs cache
+
+        self._refs_cache = RefsCache(self._registry)
+
+        # Initialize metadata manager
+
+        self._metadata = PluginMetadataManager(self._registry)
+
+        # Register cleanup and clean up any leftover temp directories
+        if tagger:
+            tagger.register_cleanup(self._cleanup_temp_directories)
+        self._cleanup_temp_directories()
+
+    @property
+    def plugins(self):
+        return self._plugins
+
+    def _cleanup_temp_directories(self):
+        """Remove leftover temporary plugin directories from failed installs."""
+        if not self._primary_plugin_dir or not self._primary_plugin_dir.exists():
+            return
+
+        for entry in self._primary_plugin_dir.iterdir():
+            if entry.is_dir() and entry.name.startswith('.tmp-'):
+                shutil.rmtree(entry, ignore_errors=True)
+                log.debug('Cleaned up temporary plugin directory: %s', entry)
+
+    def fetch_all_git_refs(self, url, use_cache=True):
+        """Fetch all branches and tags from a git repository.
+
+        Args:
+            url: Git repository URL
+            use_cache: Whether to use cached data if available
+
+        Returns:
+            dict with keys:
+                - branches: List of branch names
+                - tags: List of tag names
+            or None on error
+        """
+        # Check cache first
+        if use_cache:
+            cached_refs = self._refs_cache.get_cached_all_refs(url)
+            if cached_refs is not None:
+                return cached_refs
+
+        remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True)
+        if not remote_refs:
+            # Try to use expired cache as fallback
+            if use_cache:
+                stale_cache = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
+                if stale_cache:
+                    log.info('Using stale refs cache for %s due to fetch error', url)
+                    return stale_cache
+            return None
+
+        # Separate branches and tags with their commit IDs
+        # For annotated tags, git provides both the tag object and dereferenced commit (^{})
+        branches = []
+        tags = {}  # Use dict to merge tag object with dereferenced commit
+
+        for ref in remote_refs:
+            ref_name = ref.name if hasattr(ref, 'name') else str(ref)
+            commit_id = str(ref.oid) if hasattr(ref, 'oid') else None
+
+            if ref_name.startswith('refs/heads/'):
+                branch_name = ref_name[len('refs/heads/') :]
+                branches.append({'name': branch_name, 'commit': commit_id})
+            elif ref_name.startswith('refs/tags/'):
+                tag_name = ref_name[len('refs/tags/') :]
+                # Check if this is a dereferenced tag (^{})
+                if tag_name.endswith('^{}'):
+                    # This is the actual commit for an annotated tag
+                    base_tag = tag_name[:-3]  # Remove ^{}
+                    if base_tag in tags:
+                        tags[base_tag]['commit'] = commit_id  # Update with actual commit
+                else:
+                    # Regular tag or annotated tag object
+                    if tag_name not in tags:
+                        tags[tag_name] = {'name': tag_name, 'commit': commit_id}
+
+        result = {
+            'branches': sorted(branches, key=lambda x: x['name']),
+            'tags': sorted(tags.values(), key=lambda x: x['name'], reverse=True),
+        }
+
+        # Cache the result
+        if use_cache:
+            self._refs_cache.cache_all_refs(url, result)
+
+        return result
+
+    def get_plugin_refs_info(self, identifier):
+        """Get plugin refs information from identifier.
+
+        Args:
+            identifier: Plugin name, registry ID, UUID, or git URL
+
+        Returns:
+            dict with plugin refs info or None if not found
+        """
+        return self._metadata.get_plugin_refs_info(identifier, self.plugins)
+
+    def get_plugin_registry_id(self, plugin):
+        """Get registry ID for a plugin."""
+        return self._metadata.get_plugin_registry_id(plugin)
+
+    def find_plugin(self, identifier):
+        """Find a plugin by Plugin ID, display name, UUID, registry ID, or any prefix.
+
+        Args:
+            identifier: Plugin ID, display name, UUID, registry ID, or prefix of any
+
+        Returns:
+            Plugin object, None if not found, or 'multiple' if ambiguous
+        """
+        identifier_lower = identifier.lower()
+        exact_matches = []
+        prefix_matches = []
+
+        for plugin in self.plugins:
+            # Collect all possible identifiers for this plugin
+            identifiers = []
+
+            # Plugin ID (case-insensitive)
+            identifiers.append(plugin.plugin_id.lower())
+
+            # UUID (case-insensitive)
+            if plugin.manifest and plugin.manifest.uuid:
+                identifiers.append(str(plugin.manifest.uuid).lower())
+
+            # Display name (case-insensitive)
+            if plugin.manifest:
+                identifiers.append(plugin.manifest.name().lower())
+
+            # Registry ID (case-insensitive) - lookup dynamically from current registry
+            try:
+                registry_id = self.get_plugin_registry_id(plugin)
+                if registry_id:
+                    identifiers.append(registry_id.lower())
+            except Exception:
+                pass
+
+            # Check for exact or prefix match
+            for id_value in identifiers:
+                if id_value == identifier_lower:
+                    exact_matches.append(plugin)
+                    break  # One exact match is enough
+                elif id_value.startswith(identifier_lower):
+                    prefix_matches.append(plugin)
+                    break  # One prefix match is enough
+
+        # Exact matches take priority
+        if len(exact_matches) == 1:
+            return exact_matches[0]
+        elif len(exact_matches) > 1:
+            return 'multiple'
+
+        # Fall back to prefix matches
+        if len(prefix_matches) == 1:
+            return prefix_matches[0]
+        elif len(prefix_matches) > 1:
+            return 'multiple'
+
+        return None
+
+    def _get_plugin_metadata(self, uuid):
+        """Get metadata for a plugin by UUID."""
+        return self._metadata.get_plugin_metadata(uuid)
+
+    def get_preferred_version(self, plugin_uuid, manifest_version=''):
+        """Get preferred version for display, preferring git tag over manifest version.
+
+        Args:
+            plugin_uuid: Plugin UUID to look up metadata
+            manifest_version: Fallback version from manifest
+
+        Returns:
+            Version string (git tag if available and looks like version, otherwise manifest version)
+        """
+        from picard.plugin3.plugin import short_commit_id
+
+        metadata = self._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
+        if not metadata:
+            return manifest_version
+
+        ref = metadata.ref or ''
+        commit = metadata.commit or ''
+
+        # If ref looks like a version tag (not a commit hash), use it
+        if ref and commit and not ref.startswith(short_commit_id(commit)):
+            return ref
+
+        return manifest_version
+
+    def _save_plugin_metadata(self, metadata):
+        """Save plugin metadata."""
+        return self._metadata.save_plugin_metadata(metadata)
+
+    def _find_plugin_by_url(self, url):
+        """Find plugin metadata by URL."""
+        return self._metadata.find_plugin_by_url(url)
+
+    def _get_plugin_uuid(self, plugin):
+        """Get plugin UUID."""
+        return PluginValidation.get_plugin_uuid(plugin)
+
+    def _read_and_validate_manifest(self, path, source_description):
+        """Read and validate manifest."""
+        return PluginValidation.read_and_validate_manifest(path, source_description)
+
+    def _clean_plugin_config(self, plugin_uuid):
+        """Delete plugin configuration."""
+        config = get_config()
+        config_key = f'plugin.{plugin_uuid}'
+        config.beginGroup(config_key)
+        for key in config.childKeys():
+            config.remove(key)
+        config.endGroup()
+        config.sync()
+        log.info('Deleted configuration for plugin %s', plugin_uuid)
+
+    def get_orphaned_plugin_configs(self):
+        """Get list of plugin configs that don't have corresponding installed plugins.
+
+        Returns:
+            list: List of plugin UUIDs that have config but no installed plugin
+        """
+        config = get_config()
+        installed_uuids = {p.manifest.uuid for p in self.plugins if p.manifest and p.manifest.uuid}
+
+        orphaned = []
+        for group in config.childGroups():
+            if group.startswith('plugin.'):
+                plugin_uuid = group[7:]  # Remove 'plugin.' prefix
+                if plugin_uuid not in installed_uuids:
+                    config.beginGroup(group)
+                    if config.childKeys():  # Only include if it has settings
+                        orphaned.append(plugin_uuid)
+                    config.endGroup()
+
+        return sorted(orphaned)
+
+    def _cleanup_version_cache(self):
+        """Remove cache entries for URLs no longer in registry."""
+        return self._refs_cache.cleanup_cache()
+
+    def _ensure_plugin_url(self, plugin, operation):
+        """Ensure plugin has URL metadata, creating it from registry if needed.
+
+        Args:
+            plugin: Plugin to check
+            operation: Operation name for error message
+
+        Raises:
+            PluginNoSourceError: If URL cannot be found in metadata or registry
+        """
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+
+        if metadata and metadata.url:
+            return  # URL exists in metadata
+
+        # No metadata or no URL - check if plugin is in registry and create metadata
+        registry_plugin = self._registry.find_plugin(uuid=uuid)
+        if not registry_plugin:
+            raise PluginNoSourceError(plugin.plugin_id, operation)
+
+        # Create metadata from registry
+        metadata_obj = PluginMetadata(
+            name=plugin.manifest.name(),
+            url=registry_plugin['git_url'],
+            ref='',
+            commit='',
+            uuid=uuid,
+        )
+        self._metadata.save_plugin_metadata(metadata_obj)
+
+    def _fetch_version_tags(self, url, versioning_scheme):
+        """Fetch and filter version tags from repository."""
+        return self._fetch_version_tags_impl(url, versioning_scheme)
+
+    def select_ref_for_plugin(self, plugin):
+        """Select appropriate ref for plugin based on versioning scheme or Picard API version.
+
+        Args:
+            plugin: Plugin data from registry
+
+        Returns:
+            str: Selected ref name, or None if no refs specified
+        """
+        # Check for versioning_scheme first
+        versioning_scheme = plugin.get('versioning_scheme')
+        if versioning_scheme:
+            url = plugin.get('git_url')
+            if url:
+                tags = self._fetch_version_tags(url, versioning_scheme)
+                if tags:
+                    # Return latest tag
+                    return tags[0]
+                else:
+                    log.warning('No version tags found for %s with scheme %s', url, versioning_scheme)
+                    # Fall through to ref selection
+
+        # Original ref selection logic
+        from picard import api_versions_tuple
+
+        refs = plugin.get('refs')
+        if not refs:
+            return None
+
+        # Get current Picard API version as string (e.g., "3.0")
+        current_api = '.'.join(map(str, api_versions_tuple[:2]))
+
+        # Find first compatible ref
+        for ref in refs:
+            min_api = ref.get('min_api_version')
+            max_api = ref.get('max_api_version')
+
+            # Skip if below minimum
+            if min_api and current_api < min_api:
+                continue
+
+            # Skip if above maximum
+            if max_api and current_api > max_api:
+                continue
+
+            # Compatible ref found
+            return ref['name']
+
+        # No compatible ref found, use first (default)
+        return refs[0]['name']
+
+    def search_registry_plugins(self, query=None, category=None, trust_level=None):
+        """Search registry plugins with optional filters.
+
+        Args:
+            query: Search query (searches name, description, id)
+            category: Filter by category
+            trust_level: Filter by trust level
+
+        Returns:
+            list: Filtered plugin dictionaries from registry
+        """
+        plugins = self._registry.list_plugins(category=category, trust_level=trust_level)
+
+        if not query:
+            return plugins
+
+        query_lower = query.lower()
+        return [
+            p
+            for p in plugins
+            if query_lower in p.get('name', '').lower()
+            or query_lower in p.get('description', '').lower()
+            or query_lower in p.get('id', '').lower()
+        ]
+
+    def find_similar_plugin_ids(self, query, max_results=10):
+        """Find similar plugin IDs for suggestions.
+
+        Args:
+            query: Partial plugin ID to search for
+            max_results: Maximum number of suggestions to return
+
+        Returns:
+            list: Plugin dictionaries with similar IDs (empty if too many matches)
+        """
+        all_plugins = self._registry.list_plugins()
+        matches = [p for p in all_plugins if query.lower() in p['id'].lower()]
+        return matches if 1 <= len(matches) <= max_results else []
+
+    def get_registry_plugin_latest_version(self, plugin_data):
+        """Get latest version tag for a registry plugin.
+
+        Args:
+            plugin_data: Plugin dict from registry
+
+        Returns:
+            Version string (latest tag or empty string)
+        """
+        versioning_scheme = plugin_data.get('versioning_scheme')
+        if not versioning_scheme:
+            return ''
+
+        url = plugin_data.get('url')
+        if not url:
+            return ''
+
+        try:
+            tags = self._fetch_version_tags(url, versioning_scheme)
+            return tags[0] if tags else ''
+        except Exception:
+            return ''
+
+    def switch_ref(self, plugin, ref, discard_changes=False):
+        """Switch plugin to a different git ref."""
+        self._ensure_plugin_url(plugin, 'switch ref')
+        old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
+
+        # Update metadata with new ref
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+        if metadata:
+            # Update existing metadata
+            metadata.ref = new_ref
+            metadata.commit = new_commit
+            self._metadata.save_plugin_metadata(metadata)
+
+        return old_ref, new_ref, old_commit, new_commit
+
+    def add_directory(self, dir_path: str, primary: bool = False) -> None:
+        """Add a directory to scan for plugins.
+
+        Args:
+            dir_path: Path to plugin directory
+            primary: Whether this is the primary plugin directory
+        """
+        dir_path = Path(os.path.normpath(dir_path))
+        if dir_path in self._plugin_dirs:
+            log.warning('Plugin directory %s already registered', dir_path)
+            return
+
+        log.debug('Registering plugin directory %s', dir_path)
+        if not dir_path.exists():
+            os.makedirs(dir_path)
+
+        for entry in dir_path.iterdir():
+            if entry.is_dir() and not entry.name.startswith('.'):
+                plugin = self._load_plugin(dir_path, entry.name)
+                if plugin:
+                    log.debug('Found plugin %s in %s', plugin.plugin_id, plugin.local_path)
+                    self._plugins.append(plugin)
+
+        self._plugin_dirs.append(dir_path)
+        if primary:
+            self._primary_plugin_dir = dir_path
+
+    def install_plugin(
+        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
+    ):
+        """Install a plugin from a git URL or local directory.
+
+        Args:
+            url: Git repository URL or local directory path
+            ref: Git ref (branch/tag/commit) to checkout (ignored for local paths)
+            reinstall: If True, reinstall even if already exists
+            force_blacklisted: If True, bypass blacklist check (dangerous!)
+            discard_changes: If True, discard uncommitted changes on reinstall
+            enable_after_install: If True, enable the plugin after successful installation
+
+        Raises:
+            PluginDirtyError: If reinstalling and plugin has uncommitted changes
+        """
+
+        # Check blacklist before installing
+        if not force_blacklisted:
+            is_blacklisted, reason = self._registry.is_blacklisted(url)
+            if is_blacklisted:
+                raise PluginBlacklistedError(url, reason)
+
+        # Check if url is a local directory
+        local_path = get_local_repository_path(url)
+        if local_path:
+            return self._install_from_local_directory(
+                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
+            )
+
+        # Handle git URL - use temp dir in plugin directory for atomic rename
+
+        url_hash = hash_string(url)
+        temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
+
+        try:
+            # Reuse temp dir if it's already a git repo, otherwise remove it
+            if temp_path.exists():
+                if not (temp_path / '.git').exists():
+                    # Not a git repo, remove it
+                    shutil.rmtree(temp_path)
+
+            # Clone or update temporary location with single-branch optimization
+            source = PluginSourceGit(url, ref)
+            commit_id = source.sync(temp_path, single_branch=True)
+
+            # Read MANIFEST to get plugin ID
+            manifest = PluginValidation.read_and_validate_manifest(temp_path, url)
+
+            # Generate plugin directory name from sanitized name + UUID
+            plugin_name = get_plugin_directory_name(manifest)
+
+            # Check blacklist again with UUID
+            if not force_blacklisted:
+                is_blacklisted, reason = self._registry.is_blacklisted(url, manifest.uuid)
+                if is_blacklisted:
+                    raise PluginBlacklistedError(url, reason, manifest.uuid)
+
+            final_path = self._primary_plugin_dir / plugin_name
+
+            # Check if already installed and handle reinstall
+            if final_path.exists():
+                if not reinstall:
+                    raise PluginAlreadyInstalledError(plugin_name, url)
+
+                # Check for uncommitted changes before removing
+                if not discard_changes:
+                    changes = GitOperations.check_dirty_working_dir(final_path)
+                    if changes:
+                        raise PluginDirtyError(plugin_name, changes)
+
+                shutil.rmtree(final_path)
+
+            # Atomic rename from temp to final location
+            temp_path.rename(final_path)
+
+            # Update version tag cache from cloned repo if plugin has versioning_scheme
+            registry_plugin = self._registry.find_plugin(url=url)
+            if registry_plugin:
+                versioning_scheme = registry_plugin.get('versioning_scheme')
+                if versioning_scheme:
+                    self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
+
+            # Store plugin metadata
+            self._metadata.save_plugin_metadata(
+                PluginMetadata(
+                    name=plugin_name,
+                    url=url,
+                    ref=source.resolved_ref,
+                    commit=commit_id,
+                    uuid=manifest.uuid,
+                )
+            )
+
+            # Add newly installed plugin to the plugins list
+            plugin = Plugin(self._primary_plugin_dir, plugin_name)
+            self._plugins.append(plugin)
+
+            # Enable plugin if requested
+            if enable_after_install:
+                self.enable_plugin(plugin)
+
+            return plugin_name
+
+        except Exception:
+            # Clean up temp directory on failure
+            if temp_path.exists():
+                import gc
+
+                # Force garbage collection to release file handles on Windows
+                gc.collect()
+                shutil.rmtree(temp_path, ignore_errors=True)
+            raise
+
+    def _install_from_local_directory(
+        self,
+        local_path: Path,
+        reinstall=False,
+        force_blacklisted=False,
+        ref=None,
+        discard_changes=False,
+        enable_after_install=False,
+    ):
+        """Install a plugin from a local directory.
+
+        Args:
+            local_path: Path to local plugin directory
+            reinstall: If True, reinstall even if already exists
+            force_blacklisted: If True, bypass blacklist check (dangerous!)
+            ref: Git ref to checkout if local_path is a git repository
+            discard_changes: If True, discard uncommitted changes on reinstall
+            enable_after_install: If True, enable the plugin after successful installation
+
+        Returns:
+            str: Plugin ID
+        """
+        import tempfile
+
+        # Check if local directory is a git repository
+        is_git_repo = (local_path / '.git').exists()
+
+        if is_git_repo:
+            # Check if source repository has uncommitted changes
+            try:
+                import pygit2
+
+                source_repo = pygit2.Repository(str(local_path))
+                if source_repo.status():
+                    log.warning('Installing from local repository with uncommitted changes: %s', local_path)
+
+                # If no ref specified, use the current branch
+                if not ref and not source_repo.head_is_detached:
+                    ref = source_repo.head.shorthand
+                    log.debug('Using current branch from local repo: %s', ref)
+            except Exception:
+                pass  # Ignore errors checking status
+
+            # Use git operations to get ref and commit info
+
+            url_hash = hash_string(str(local_path))
+            temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
+
+            try:
+                source = PluginSourceGit(str(local_path), ref)
+                commit_id = source.sync(temp_path, single_branch=True)
+                install_path = temp_path
+                ref_to_save = source.resolved_ref
+                commit_to_save = commit_id
+            except Exception:
+                # Clean up temp directory on failure
+                if temp_path.exists():
+                    import gc
+
+                    gc.collect()
+                    shutil.rmtree(temp_path, ignore_errors=True)
+                raise
+        else:
+            # Direct copy for non-git directories
+            install_path = local_path
+            ref_to_save = ''
+            commit_to_save = ''
+
+        # Read MANIFEST to get plugin ID
+        manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+
+        # Generate plugin directory name from sanitized name + UUID
+        plugin_name = get_plugin_directory_name(manifest)
+        final_path = self._primary_plugin_dir / plugin_name
+
+        # Check if already installed and handle reinstall
+        if final_path.exists():
+            if not reinstall:
+                raise PluginAlreadyInstalledError(plugin_name, local_path)
+
+            # Check for uncommitted changes before removing
+            if not discard_changes:
+                changes = GitOperations.check_dirty_working_dir(final_path)
+                if changes:
+                    raise PluginDirtyError(plugin_name, changes)
+
+            shutil.rmtree(final_path)
+
+        # Copy to plugin directory
+        if is_git_repo:
+            # Move from temp location (git repo was cloned to temp)
+            shutil.move(str(install_path), str(final_path))
+        else:
+            # Copy from local directory (non-git)
+            shutil.copytree(install_path, final_path)
+
+        # Store metadata
+        self._metadata.save_plugin_metadata(
+            PluginMetadata(
+                name=plugin_name,
+                url=str(local_path),
+                ref=ref_to_save,
+                commit=commit_to_save,
+                uuid=manifest.uuid,
+            )
+        )
+
+        # Add newly installed plugin to the plugins list
+        plugin = Plugin(self._primary_plugin_dir, plugin_name)
+        self._plugins.append(plugin)
+
+        # Enable plugin if requested
+        if enable_after_install:
+            self.enable_plugin(plugin)
+
+        log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
+        return plugin_name
+
+    def _fetch_version_tags_impl(self, url, versioning_scheme):
+        """Fetch and filter version tags from repository.
+
+        Args:
+            url: Git repository URL
+            versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+        Returns:
+            list: Sorted list of version tags (newest first), or empty list on error
+        """
+        # Parse versioning scheme
+        pattern = self._refs_cache.parse_versioning_scheme(versioning_scheme)
+        if not pattern:
+            return []
+
+        # Try to reuse all_refs cache to avoid redundant fetch
+        all_refs = self.fetch_all_git_refs(url, use_cache=True)
+        if not all_refs:
+            # Try to use expired cache as fallback
+            stale_cache = self._refs_cache.get_cached_tags(url, versioning_scheme, allow_expired=True)
+            if stale_cache:
+                log.info('Using stale cache for %s due to fetch error', url)
+                return stale_cache
+            return []
+
+        # Filter and sort tags from cached refs
+        tags = [tag['name'] for tag in all_refs.get('tags', []) if pattern.match(tag['name'])]
+        tags = self._refs_cache.sort_tags(tags, versioning_scheme)
+
+        # Cache the result
+        if tags:
+            self._refs_cache.cache_tags(url, versioning_scheme, tags)
+
+        return tags
+
+    def _find_newer_version_tag(self, url, current_tag, versioning_scheme):
+        """Find newer version tag for plugin with versioning_scheme.
+
+        Args:
+            url: Git repository URL
+            current_tag: Current version tag
+            versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+        Returns:
+            str: Newer version tag, or None if no newer version found
+        """
+        tags = self._fetch_version_tags_impl(url, versioning_scheme)
+        if not tags:
+            return None
+
+        # Use version parsing for semver/calver, lexicographic for custom regex
+        if versioning_scheme in ('semver', 'calver'):
+            try:
+                # Strip any non-digit prefix for version comparison
+                def strip_prefix(tag):
+                    match = re.search(r'\d', tag)
+                    return tag[match.start() :] if match else tag
+
+                current_version = Version.from_string(strip_prefix(current_tag))
+                for tag in tags:
+                    tag_version = Version.from_string(strip_prefix(tag))
+                    if tag_version > current_version:
+                        return tag
+                return None
+            except Exception:
+                pass
+
+        # Fallback to lexicographic comparison for custom regex
+        for tag in tags:
+            if tag > current_tag:
+                return tag
+
+        return None
+
+    def update_plugin(self, plugin: Plugin, discard_changes=False):
+        """Update a single plugin to latest version.
+
+        Args:
+            plugin: Plugin to update
+            discard_changes: If True, discard uncommitted changes
+
+        Raises:
+            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
+            ValueError: If plugin is pinned to a specific commit
+        """
+        self._ensure_plugin_url(plugin, 'update')
+
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+
+        # Check for uncommitted changes
+        if not discard_changes:
+            changes = GitOperations.check_dirty_working_dir(plugin.local_path)
+            if changes:
+                raise PluginDirtyError(plugin.plugin_id, changes)
+
+        old_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
+        old_url = metadata.url
+        old_uuid = metadata.uuid
+        old_ref = metadata.ref
+
+        # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
+        # Check the stored ref, not current HEAD (tags create detached HEAD but are still updatable)
+        if old_ref:
+            ref_type, _ = GitOperations.check_ref_type(plugin.local_path, old_ref)
+            if ref_type == 'commit':
+                raise PluginCommitPinnedError(plugin.plugin_id, old_ref)
+        else:
+            # No stored ref, check current HEAD state
+            ref_type, ref_name = GitOperations.check_ref_type(plugin.local_path)
+            if ref_type == 'commit':
+                raise PluginCommitPinnedError(plugin.plugin_id, ref_name)
+
+        # Check registry for redirects
+        current_url, current_uuid, redirected = self._metadata.check_redirects(old_url, old_uuid)
+
+        # Check if plugin has versioning_scheme and current ref is a version tag
+        new_ref = old_ref
+        registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
+        if registry_plugin and registry_plugin.get('versioning_scheme') and ref_type == 'tag':
+            # Try to find newer version tags
+            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin['versioning_scheme'])
+            if newer_tag:
+                new_ref = newer_tag
+                log.info('Found newer version: %s -> %s', old_ref, new_ref)
+
+        source = PluginSourceGit(current_url, new_ref)
+        old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
+
+        # Get commit date and resolve annotated tags to actual commit
+        import pygit2
+
+        repo = pygit2.Repository(plugin.local_path.absolute())
+        obj = repo.get(new_commit)
+        # Peel tag to commit if needed
+        if obj.type == pygit2.GIT_OBJECT_TAG:
+            commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+            new_commit = str(commit.id)  # Use actual commit ID, not tag object ID
+        else:
+            commit = obj
+        commit_date = commit.commit_time
+        repo.free()
+
+        # Reload manifest to get new version
+        plugin.read_manifest()
+        new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
+        new_ref = source.ref  # May have been updated to a newer tag
+
+        # Update metadata with current URL and UUID
+        # If redirected, preserve original URL/UUID
+        # Use source.ref which may have been updated to a newer tag
+        original_url, original_uuid = self._metadata.get_original_metadata(metadata, redirected, old_url, old_uuid)
+        self._metadata.save_plugin_metadata(
+            PluginMetadata(
+                name=plugin.plugin_id,
+                url=current_url,
+                ref=new_ref,
+                commit=new_commit,
+                uuid=current_uuid,
+                original_url=original_url,
+                original_uuid=original_uuid,
+            )
+        )
+
+        # Update version tag cache from updated repo
+        if registry_plugin and registry_plugin.get('versioning_scheme'):
+            self._refs_cache.update_cache_from_local_repo(
+                plugin.local_path, current_url, registry_plugin['versioning_scheme']
+            )
+
+        return UpdateResult(old_version, new_version, old_commit, new_commit, old_ref, new_ref, commit_date)
+
+    def update_all_plugins(self):
+        """Update all installed plugins."""
+        results = []
+        for plugin in self._plugins:
+            try:
+                result = self.update_plugin(plugin)
+                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=result, error=None))
+            except PluginCommitPinnedError as e:
+                # Commit-pinned plugins are skipped, not failed
+                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=None, error=str(e)))
+            except Exception as e:
+                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
+        return results
+
+    def check_updates(self):
+        """Check which plugins have updates available without installing."""
+        updates = []
+        for plugin in self._plugins:
+            if not plugin.manifest or not plugin.manifest.uuid:
+                continue
+
+            metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+            if not metadata or not metadata.url:
+                continue
+
+            try:
+                import pygit2
+
+                repo = pygit2.Repository(plugin.local_path.absolute())
+                current_commit = str(repo.head.target)
+
+                # Fetch without updating (suppress progress output)
+                for remote in repo.remotes:
+                    remote.fetch()
+
+                # Update version tag cache from fetched repo if plugin has versioning_scheme
+                registry_plugin = self._registry.find_plugin(url=metadata.url)
+                if registry_plugin and registry_plugin.get('versioning_scheme'):
+                    self._refs_cache.update_cache_from_local_repo(
+                        plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
+                    )
+
+                old_ref = metadata.ref or 'main'
+                ref = old_ref
+
+                # Check if currently on a tag
+                current_is_tag = False
+                current_tag = None
+                if ref:
+                    try:
+                        repo.revparse_single(f'refs/tags/{ref}')
+                        current_is_tag = True
+                        current_tag = ref
+                    except KeyError:
+                        pass
+
+                # If on a tag, check for newer version tag
+                new_ref = None
+                if current_is_tag and current_tag:
+                    source = PluginSourceGit(metadata.url, ref)
+                    latest_tag = source._find_latest_tag(repo, current_tag)
+                    if latest_tag and latest_tag != current_tag:
+                        # Found newer tag
+                        ref = latest_tag
+                        new_ref = latest_tag
+
+                # Resolve ref with same logic as update() - try origin/ prefix for branches
+                try:
+                    if not ref.startswith('origin/') and not ref.startswith('refs/'):
+                        # Try origin/ prefix first for branches
+                        try:
+                            obj = repo.revparse_single(f'origin/{ref}')
+                        except KeyError:
+                            # Fall back to original ref (might be tag or commit hash)
+                            try:
+                                obj = repo.revparse_single(f'refs/tags/{ref}')
+                            except KeyError:
+                                obj = repo.revparse_single(ref)
+                    else:
+                        obj = repo.revparse_single(ref)
+
+                    # Peel annotated tags to get the actual commit
+                    if obj.type == pygit2.GIT_OBJECT_TAG:
+                        commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+                    else:
+                        commit = obj
+
+                    latest_commit = str(commit.id)
+                    # Get commit date
+                    latest_commit_date = commit.commit_time
+                except KeyError:
+                    # Ref not found, skip this plugin
+                    continue
+
+                repo.free()
+
+                if current_commit != latest_commit:
+                    updates.append(
+                        UpdateCheck(
+                            plugin_id=plugin.plugin_id,
+                            old_commit=short_commit_id(current_commit),
+                            new_commit=short_commit_id(latest_commit),
+                            commit_date=latest_commit_date,
+                            old_ref=old_ref,
+                            new_ref=new_ref,
+                        )
+                    )
+            except Exception:
+                pass
+
+        return updates
+
+    def uninstall_plugin(self, plugin: Plugin, purge=False):
+        """Uninstall a plugin.
+
+        Args:
+            plugin: Plugin to uninstall
+            purge: If True, also remove plugin configuration
+        """
+        self.disable_plugin(plugin)
+        plugin_path = plugin.local_path
+
+        # Safety check: ensure plugin_path is a child of primary plugin dir, not the dir itself
+        if not plugin_path.is_relative_to(self._primary_plugin_dir) or plugin_path == self._primary_plugin_dir:
+            raise ValueError(f'Plugin path must be a subdirectory of {self._primary_plugin_dir}: {plugin_path}')
+
+        if os.path.islink(plugin_path):
+            log.debug("Removing symlink %r", plugin_path)
+            os.remove(plugin_path)
+        elif os.path.isdir(plugin_path):
+            log.debug("Removing directory %r", plugin_path)
+            shutil.rmtree(plugin_path)
+
+        # Remove metadata
+        config = get_config()
+        # Remove metadata by UUID if available
+        if plugin.manifest and plugin.manifest.uuid:
+            config.setting['plugins3_metadata'].pop(plugin.manifest.uuid, None)
+
+        # Remove plugin config if purge requested
+        if purge and plugin.manifest and plugin.manifest.uuid:
+            self._clean_plugin_config(plugin.manifest.uuid)
+
+    def plugin_has_saved_options(self, plugin: Plugin) -> bool:
+        """Check if a plugin has any saved options.
+
+        Args:
+            plugin: Plugin to check
+
+        Returns:
+            True if plugin has saved options, False otherwise
+        """
+        if not plugin.manifest or not plugin.manifest.uuid:
+            return False
+        config = get_config()
+        config_key = f'plugin.{plugin.manifest.uuid}'
+        config.beginGroup(config_key)
+        has_options = len(config.childKeys()) > 0
+        config.endGroup()
+        return has_options
+
+    def _check_blacklisted_plugins(self):
+        """Check installed plugins against blacklist and disable if needed.
+
+        Returns:
+            list: List of tuples (plugin_id, reason) for blacklisted plugins
+        """
+        blacklisted_plugins = []
+
+        for plugin in self._plugins:
+            # Get UUID from plugin manifest
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            if not plugin_uuid:
+                continue
+
+            metadata = self._metadata.get_plugin_metadata(plugin_uuid)
+            url = metadata.url if metadata else None
+
+            is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
+            if is_blacklisted:
+                log.warning('Plugin %s is blacklisted: %s', plugin.plugin_id, reason)
+                blacklisted_plugins.append((plugin.plugin_id, reason))
+
+                if plugin_uuid in self._enabled_plugins:
+                    log.warning('Disabling blacklisted plugin %s', plugin.plugin_id)
+                    self._enabled_plugins.discard(plugin_uuid)
+                    self._save_config()
+
+        return blacklisted_plugins
+
+    def enable_plugin(self, plugin: Plugin):
+        """Enable a plugin and save to config."""
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
+
+        if self._tagger:
+            plugin.load_module()
+            # Only enable if not already enabled
+            if plugin.state != PluginState.ENABLED:
+                plugin.enable(self._tagger)
+
+        self._enabled_plugins.add(uuid)
+        self._save_config()
+        log.info('Plugin %s enabled (state: %s)', plugin.plugin_id, plugin.state.value)
+
+    def init_plugins(self):
+        """Initialize and enable plugins that are enabled in configuration.
+
+        Returns:
+            list: List of tuples (plugin_id, reason) for blacklisted plugins found
+        """
+        # Check for blacklisted plugins on startup
+        blacklisted_plugins = self._check_blacklisted_plugins()
+
+        enabled_count = 0
+        for plugin in self._plugins:
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            if plugin_uuid and plugin_uuid in self._enabled_plugins:
+                try:
+                    log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.plugin_id)
+                    plugin.load_module()
+                    plugin.enable(self._tagger)
+                    enabled_count += 1
+                except Exception as ex:
+                    log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
+
+        log.info('Loaded %d plugin%s', enabled_count, 's' if enabled_count != 1 else '')
+        return blacklisted_plugins
+
+    def disable_plugin(self, plugin: Plugin):
+        """Disable a plugin and save to config."""
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
+
+        # Only disable if not already disabled
+        if plugin.state != PluginState.DISABLED:
+            plugin.disable()
+
+        self._enabled_plugins.discard(uuid)
+        self._save_config()
+        log.info('Plugin %s disabled (state: %s)', plugin.plugin_id, plugin.state.value)
+
+    def _load_config(self):
+        """Load enabled plugins list from config."""
+        config = get_config()
+        enabled = config.setting['plugins3_enabled_plugins']
+        self._enabled_plugins = set(enabled)
+        log.debug('Loaded enabled plugins from config: %r', self._enabled_plugins)
+
+    def _save_config(self):
+        """Save enabled plugins list to config."""
+        config = get_config()
+        config.setting['plugins3_enabled_plugins'] = list(self._enabled_plugins)
+        if hasattr(config, 'sync'):
+            config.sync()
+        log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
+
+    def _load_plugin(self, plugin_dir: Path, plugin_name: str):
+        """Load a plugin and check API version compatibility.
+
+        Returns:
+            Plugin object if compatible, None otherwise
+        """
+        plugin = Plugin(plugin_dir, plugin_name)
+        try:
+            plugin.read_manifest()
+
+            # Register UUID mapping early so extension points can find enabled plugins
+            if plugin.manifest and plugin.manifest.uuid:
+                from picard.extension_points import set_plugin_uuid
+
+                set_plugin_uuid(plugin.manifest.uuid, plugin.plugin_id)
+
+            compatible_versions = _compatible_api_versions(plugin.manifest.api_versions)
+            if compatible_versions:
+                log.debug(
+                    'Plugin "%s" is compatible (requires API %s, Picard supports %s)',
+                    plugin.plugin_id,
+                    plugin.manifest.api_versions,
+                    api_versions_tuple,
+                )
+                return plugin
+            else:
+                log.warning(
+                    'Plugin "%s" from "%s" is not compatible with this version of Picard. '
+                    'Plugin requires API versions %s, but Picard supports %s.',
+                    plugin.plugin_id,
+                    plugin.local_path,
+                    plugin.manifest.api_versions,
+                    api_versions_tuple,
+                )
+                return None
+        except Exception as ex:
+            error_msg = str(ex)
+            log.warning('Could not read plugin manifest from %r', plugin_dir.joinpath(plugin_name), exc_info=ex)
+            self._failed_plugins.append((plugin_dir, plugin_name, error_msg))
+            return None
+
+
+def _compatible_api_versions(api_versions):
+    return set(api_versions) & set(api_versions_tuple)
