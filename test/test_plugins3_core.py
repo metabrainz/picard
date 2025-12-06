@@ -31,6 +31,7 @@ from test.test_plugins3_helpers import (
 
 from picard.config import (
     ConfigSection,
+    Option,
     get_config,
 )
 from picard.plugin3.api import PluginApi
@@ -313,6 +314,12 @@ license_url = "https://example.com"
 
 
 class TestPluginApi(PicardTestCase):
+    def tearDown(self):
+        # Clear plugin options created during tests from registry
+        for key, _v in list(Option.registry.items()):
+            if key[0].startswith('plugin.'):
+                del Option.registry[key]
+
     def test_init(self):
         manifest = load_plugin_manifest('example')
 
@@ -447,47 +454,6 @@ class TestPluginApi(PicardTestCase):
         finally:
             config_file.unlink(missing_ok=True)
 
-    def test_plugin_config_get_without_options(self):
-        """Test that plugin_config.get() works without registered Options."""
-        from pathlib import Path
-        import tempfile
-
-        from PyQt6.QtCore import QSettings
-
-        manifest = load_plugin_manifest('example')
-
-        # Create a temporary config file
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
-            config_file = Path(f.name)
-
-        try:
-            # Create a real QSettings instance
-            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
-
-            # Create mock tagger
-            mock_tagger = MockTagger()
-
-            # Create API
-            api = PluginApi(manifest, mock_tagger)
-            api._api_config._ConfigSection__qt_config = settings
-
-            # Set values without registering Options
-            api.plugin_config['text_value'] = 'hello'
-            api.plugin_config['int_value'] = 42
-            api.plugin_config['bool_value'] = True
-
-            # get() should work and return raw values
-            self.assertEqual(api.plugin_config.get('text_value'), 'hello')
-            self.assertEqual(api.plugin_config.get('int_value'), 42)
-            self.assertEqual(api.plugin_config.get('bool_value'), True)
-
-            # get() with default should return default for missing keys
-            self.assertEqual(api.plugin_config.get('missing_key', 'default'), 'default')
-            self.assertEqual(api.plugin_config.get('missing_int', 99), 99)
-
-        finally:
-            config_file.unlink(missing_ok=True)
-
     def test_plugin_config_operations(self):
         """Test all plugin_config operations."""
         from pathlib import Path
@@ -506,6 +472,22 @@ class TestPluginApi(PicardTestCase):
             api = PluginApi(manifest, mock_tagger)
             api._api_config._ConfigSection__qt_config = settings
 
+            # Test registering options
+            api.plugin_config.register_option('string', 'default')
+            api.plugin_config.register_option('int', 1)
+            api.plugin_config.register_option('float', 1.0)
+            api.plugin_config.register_option('bool', False)
+            api.plugin_config.register_option('list', [])
+            api.plugin_config.register_option('dict', {})
+
+            # Test reading default values
+            self.assertEqual(api.plugin_config['string'], 'default')
+            self.assertEqual(api.plugin_config['int'], 1)
+            self.assertEqual(api.plugin_config['float'], 1.0)
+            self.assertEqual(api.plugin_config['bool'], False)
+            self.assertEqual(api.plugin_config['list'], [])
+            self.assertEqual(api.plugin_config['dict'], {})
+
             # Test setting various types
             api.plugin_config['string'] = 'value'
             api.plugin_config['int'] = 42
@@ -519,23 +501,18 @@ class TestPluginApi(PicardTestCase):
             self.assertIn('int', api.plugin_config)
             self.assertNotIn('missing', api.plugin_config)
 
-            # Test .get() with various types
-            self.assertEqual(api.plugin_config.get('string'), 'value')
-            self.assertEqual(api.plugin_config.get('int'), 42)
-            self.assertEqual(api.plugin_config.get('float'), 3.14)
-            self.assertEqual(api.plugin_config.get('bool'), True)
-            self.assertEqual(api.plugin_config.get('list'), [1, 2, 3])
-            self.assertEqual(api.plugin_config.get('dict'), {'key': 'value'})
-
-            # Test .get() with defaults
-            self.assertEqual(api.plugin_config.get('missing', 'default'), 'default')
-            self.assertEqual(api.plugin_config.get('missing', 0), 0)
-            self.assertEqual(api.plugin_config.get('missing', []), [])
+            # Test reading set values with various types
+            self.assertEqual(api.plugin_config['string'], 'value')
+            self.assertEqual(api.plugin_config['int'], 42)
+            self.assertEqual(api.plugin_config['float'], 3.14)
+            self.assertEqual(api.plugin_config['bool'], True)
+            self.assertEqual(api.plugin_config['list'], [1, 2, 3])
+            self.assertEqual(api.plugin_config['dict'], {'key': 'value'})
 
             # Test .remove()
             api.plugin_config.remove('string')
             self.assertNotIn('string', api.plugin_config)
-            self.assertEqual(api.plugin_config.get('string', 'gone'), 'gone')
+            self.assertEqual(api.plugin_config['string'], 'default')
 
             # Verify persistence of complex types
             settings.sync()
@@ -543,8 +520,8 @@ class TestPluginApi(PicardTestCase):
             api2 = PluginApi(manifest, mock_tagger)
             api2._api_config._ConfigSection__qt_config = settings2
 
-            self.assertEqual(api2.plugin_config.get('list'), [1, 2, 3])
-            self.assertEqual(api2.plugin_config.get('dict'), {'key': 'value'})
+            self.assertEqual(api2.plugin_config['list'], [1, 2, 3])
+            self.assertEqual(api2.plugin_config['dict'], {'key': 'value'})
 
         finally:
             config_file.unlink(missing_ok=True)
@@ -567,6 +544,16 @@ class TestPluginApi(PicardTestCase):
             api = PluginApi(manifest, mock_tagger)
             api._api_config._ConfigSection__qt_config = settings
 
+            # Register options
+            api.plugin_config.register_option('bool_true', False)
+            api.plugin_config.register_option('bool_false', False)
+            api.plugin_config.register_option('int', 0)
+            api.plugin_config.register_option('float', 0.0)
+            api.plugin_config.register_option('string', "")
+            api.plugin_config.register_option('list', [])
+            api.plugin_config.register_option('dict', {})
+
+            # Actually write specific values
             api.plugin_config['bool_true'] = True
             api.plugin_config['bool_false'] = False
             api.plugin_config['int'] = 42
@@ -582,55 +569,18 @@ class TestPluginApi(PicardTestCase):
             api2._api_config._ConfigSection__qt_config = settings2
 
             # Types are preserved due to QSettings in-memory cache
-            self.assertIs(api2.plugin_config.get('bool_true'), True)
-            self.assertIs(api2.plugin_config.get('bool_false'), False)
-            self.assertEqual(api2.plugin_config.get('int'), 42)
-            self.assertIsInstance(api2.plugin_config.get('int'), int)
-            self.assertEqual(api2.plugin_config.get('float'), 3.14)
-            self.assertIsInstance(api2.plugin_config.get('float'), float)
-            self.assertEqual(api2.plugin_config.get('string'), 'hello')
-            self.assertIsInstance(api2.plugin_config.get('string'), str)
-            self.assertEqual(api2.plugin_config.get('list'), [1, 2, 3])
-            self.assertIsInstance(api2.plugin_config.get('list'), list)
-            self.assertEqual(api2.plugin_config.get('dict'), {'key': 'value'})
-            self.assertIsInstance(api2.plugin_config.get('dict'), dict)
-
-        finally:
-            config_file.unlink(missing_ok=True)
-
-    def test_plugin_config_boolean_after_restart(self):
-        """Test boolean conversion when INI file is read fresh (simulates restart).
-
-        This test simulates what happens when Picard restarts and reads the INI
-        file without QSettings' in-memory type cache. By manually writing the INI
-        file, we bypass QSettings' cache and force it to return raw string values,
-        which is exactly what happens in a new process.
-        """
-        from pathlib import Path
-        import tempfile
-
-        from PyQt6.QtCore import QSettings
-
-        manifest = load_plugin_manifest('example')
-
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
-            config_file = Path(f.name)
-
-        try:
-            # Manually write INI file (simulates reading after restart)
-            config_file.write_text(f'[plugin.{manifest.uuid}]\ntest_true=true\ntest_false=false\n')
-
-            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
-            mock_tagger = MockTagger()
-            api = PluginApi(manifest, mock_tagger)
-            api._api_config._ConfigSection__qt_config = settings
-
-            # Without the fix, these would return strings 'true'/'false'
-            # With the fix, they are converted to actual booleans
-            self.assertIs(api.plugin_config.get('test_true'), True)
-            self.assertIs(api.plugin_config.get('test_false'), False)
-            self.assertIsInstance(api.plugin_config.get('test_true'), bool)
-            self.assertIsInstance(api.plugin_config.get('test_false'), bool)
+            self.assertIs(api2.plugin_config['bool_true'], True)
+            self.assertIs(api2.plugin_config['bool_false'], False)
+            self.assertEqual(api2.plugin_config['int'], 42)
+            self.assertIsInstance(api2.plugin_config['int'], int)
+            self.assertEqual(api2.plugin_config['float'], 3.14)
+            self.assertIsInstance(api2.plugin_config['float'], float)
+            self.assertEqual(api2.plugin_config['string'], 'hello')
+            self.assertIsInstance(api2.plugin_config['string'], str)
+            self.assertEqual(api2.plugin_config['list'], [1, 2, 3])
+            self.assertIsInstance(api2.plugin_config['list'], list)
+            self.assertEqual(api2.plugin_config['dict'], {'key': 'value'})
+            self.assertIsInstance(api2.plugin_config['dict'], dict)
 
         finally:
             config_file.unlink(missing_ok=True)

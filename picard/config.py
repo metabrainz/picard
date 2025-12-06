@@ -35,6 +35,7 @@ from collections import (
 )
 import os
 import shutil
+from typing import Any
 
 from PyQt6 import QtCore
 
@@ -46,6 +47,81 @@ from picard import (
 )
 from picard.profile import profile_groups_all_settings
 from picard.version import Version
+
+
+class Option(QtCore.QObject):
+    """Generic option."""
+
+    registry = {}
+    qtype = None
+
+    def __init__(self, section, name, default, title=None):
+        key = (section, name)
+        if key in self.registry:
+            raise OptionError("Already declared", section, name)
+        super().__init__()
+        self.section = section
+        self.name = name
+        self.default = default
+        self.title = title
+        self.registry[key] = self
+
+    @classmethod
+    def get(cls, section, name):
+        return cls.registry.get((section, name))
+
+    @classmethod
+    def get_default(cls, section, name):
+        opt = cls.get(section, name)
+        if opt is None:
+            raise OptionError("No such option", section, name)
+        return opt.default
+
+    @classmethod
+    def get_title(cls, section, name):
+        opt = cls.get(section, name)
+        if opt is None:
+            raise OptionError("No such option", section, name)
+        return opt.title
+
+    @classmethod
+    def add_if_missing(cls, section, name, default, *args, **kwargs):
+        if not cls.exists(section, name):
+            cls(section, name, default, *args, **kwargs)
+
+    @classmethod
+    def exists(cls, section, name):
+        return (section, name) in cls.registry
+
+    def convert(self, value):
+        return type(self.default)(value)
+
+
+class TextOption(Option):
+    convert = str
+    qtype = 'QString'
+
+
+class BoolOption(Option):
+    convert = bool
+    qtype = bool
+
+
+class IntOption(Option):
+    convert = int
+
+
+class FloatOption(Option):
+    convert = float
+
+
+class ListOption(Option):
+    def convert(self, value):
+        if value is None:
+            return []
+        elif isinstance(value, str):
+            raise ValueError('Expected list or list like object, got "%r"' % value)
+        return list(value)
 
 
 class Memovar:
@@ -91,29 +167,6 @@ class ConfigSection(QtCore.QObject):
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
 
-    def get(self, name, default=None):
-        """Get config value with default fallback.
-
-        Args:
-            name: Config key name
-            default: Default value if key doesn't exist or is None
-
-        Returns:
-            Config value or default
-        """
-        # Try to get value using registered Option first
-        value = self[name]
-        if value is not None:
-            return value
-        # Fall back to raw value if no Option is registered
-        raw = self.raw_value(name)
-        if raw is None:
-            return default
-        # Convert boolean strings to actual booleans
-        if isinstance(raw, str) and raw.lower() in ('true', 'false'):
-            return raw.lower() == 'true'
-        return raw
-
     def as_dict(self):
         return {key: self[key] for section, key in list(Option.registry) if section == self.__name}
 
@@ -155,6 +208,34 @@ class ConfigSection(QtCore.QObject):
             else:
                 return memovar.value
         return default
+
+    def register_option(self, name: str, default: Any) -> Option:
+        """Register an option.
+
+        The option type is determined by the type of the default value.
+        The default must not be None.
+
+        Raises:
+            TypeError: If default is None.
+        """
+        if default is None:
+            raise TypeError('Option default value must not be None')
+
+        value_type = type(default)
+        if value_type is str:
+            option_type = TextOption
+        elif value_type is bool:
+            option_type = BoolOption
+        elif value_type is int:
+            option_type = IntOption
+        elif value_type is float:
+            option_type = FloatOption
+        elif value_type is list or value_type is tuple:
+            option_type = ListOption
+        else:
+            option_type = Option
+
+        return option_type(self.__name, name, default)
 
 
 class SettingConfigSection(ConfigSection):
@@ -407,81 +488,6 @@ class Config(QtCore.QSettings):
 class OptionError(Exception):
     def __init__(self, message, section, name):
         super().__init__("Option %s/%s: %s" % (section, name, message))
-
-
-class Option(QtCore.QObject):
-    """Generic option."""
-
-    registry = {}
-    qtype = None
-
-    def __init__(self, section, name, default, title=None):
-        key = (section, name)
-        if key in self.registry:
-            raise OptionError("Already declared", section, name)
-        super().__init__()
-        self.section = section
-        self.name = name
-        self.default = default
-        self.title = title
-        self.registry[key] = self
-
-    @classmethod
-    def get(cls, section, name):
-        return cls.registry.get((section, name))
-
-    @classmethod
-    def get_default(cls, section, name):
-        opt = cls.get(section, name)
-        if opt is None:
-            raise OptionError("No such option", section, name)
-        return opt.default
-
-    @classmethod
-    def get_title(cls, section, name):
-        opt = cls.get(section, name)
-        if opt is None:
-            raise OptionError("No such option", section, name)
-        return opt.title
-
-    @classmethod
-    def add_if_missing(cls, section, name, default, *args, **kwargs):
-        if not cls.exists(section, name):
-            cls(section, name, default, *args, **kwargs)
-
-    @classmethod
-    def exists(cls, section, name):
-        return (section, name) in cls.registry
-
-    def convert(self, value):
-        return type(self.default)(value)
-
-
-class TextOption(Option):
-    convert = str
-    qtype = 'QString'
-
-
-class BoolOption(Option):
-    convert = bool
-    qtype = bool
-
-
-class IntOption(Option):
-    convert = int
-
-
-class FloatOption(Option):
-    convert = float
-
-
-class ListOption(Option):
-    def convert(self, value):
-        if value is None:
-            return []
-        elif isinstance(value, str):
-            raise ValueError('Expected list or list like object, got "%r"' % value)
-        return list(value)
 
 
 config = None

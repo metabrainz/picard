@@ -24,6 +24,7 @@
 import logging
 import os
 import shutil
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -155,23 +156,26 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
         self.assertEqual(expected, self.config.setting.as_dict())
 
-    def test_get_with_default(self):
-        """Test ConfigSection.get() method with default values."""
-        TextOption("setting", "text_option", "abc")
-        IntOption("setting", "int_option", 42)
+    def test_register_option(self):
+        test_cases = [
+            ("text_option", "the default", TextOption),
+            ("bool_option", True, BoolOption),
+            ("int_option", 42, IntOption),
+            ("float_option", 4.2, FloatOption),
+            ("list_option", [1, 2], ListOption),
+            ("list_option_from_tuple", (1, 2), ListOption),
+            ("other_option", Mock(), Option),
+        ]
+        for name, default, expected_type in test_cases:
+            opt = self.config.setting.register_option(name, default)
+            self.assertEqual(Option.registry[('setting', name)], opt)
+            self.assertIsInstance(opt, expected_type)
+            self.assertEqual(opt.default, default)
+            self.assertEqual(self.config.setting[name], default)
 
-        # Test get with registered option (returns option default)
-        self.assertEqual(self.config.setting.get("text_option", "fallback"), "abc")
-        self.assertEqual(self.config.setting.get("int_option", 999), 42)
-
-        # Test get with non-existent option (returns provided default)
-        self.assertEqual(self.config.setting.get("nonexistent", "default"), "default")
-        self.assertEqual(self.config.setting.get("nonexistent", 123), 123)
-        self.assertIsNone(self.config.setting.get("nonexistent"))
-
-        # Test get after setting value
-        self.config.setting["text_option"] = "xyz"
-        self.assertEqual(self.config.setting.get("text_option", "fallback"), "xyz")
+    def test_register_option_default_none(self):
+        with self.assertRaises(TypeError, msg='Option default value must not be None'):
+            self.config.setting.register_option("invalid_option", None)
 
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
