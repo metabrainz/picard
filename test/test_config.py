@@ -24,6 +24,7 @@
 import logging
 import os
 import shutil
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -172,6 +173,23 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         # Test get after setting value
         self.config.setting["text_option"] = "xyz"
         self.assertEqual(self.config.setting.get("text_option", "fallback"), "xyz")
+
+    def test_register_option(self):
+        test_cases = [
+            ("text_option", "the default", TextOption),
+            ("bool_option", True, BoolOption),
+            ("int_option", 42, IntOption),
+            ("float_option", 4.2, FloatOption),
+            ("list_option", [1, 2], ListOption),
+            ("list_option_from_tuple", (1, 2), ListOption),
+            ("other_option", Mock(), Option),
+        ]
+        for name, default, expected_type in test_cases:
+            opt = self.config.setting.register_option(name, default)
+            self.assertEqual(Option.registry[('setting', name)], opt)
+            self.assertIsInstance(opt, expected_type)
+            self.assertEqual(opt.default, default)
+            self.assertEqual(self.config.setting[name], default)
 
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
