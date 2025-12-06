@@ -178,13 +178,25 @@ Plugin-private configuration section.
 
 ```python
 def enable(api):
+    # Register options with default value
+    api.plugin_config.register_option('text_option', 'value')
+    api.plugin_config.register_option('bool_option', True)
+    api.plugin_config.register_option('int_option', 42)
+    api.plugin_config.register_option('list_option', ['a', 'b', 'c'])
+
     # Write values (any JSON-serializable type)
     api.plugin_config['text_option'] = 'value'
     api.plugin_config['bool_option'] = True
     api.plugin_config['int_option'] = 42
     api.plugin_config['list_option'] = ['a', 'b', 'c']
 
-    # Read with defaults
+    # Read values, will return the registered default if not set
+    text = api.plugin_config['text_option']
+    enabled = api.plugin_config['bool_option']
+    count = api.plugin_config['int_option']
+    items = api.plugin_config['list_option']
+
+    # Read with explicit defaults
     text = api.plugin_config.get('text_option', 'default')
     enabled = api.plugin_config.get('bool_option', False)
     count = api.plugin_config.get('int_option', 0)
