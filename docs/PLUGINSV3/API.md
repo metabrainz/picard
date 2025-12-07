@@ -796,10 +796,11 @@ def fetch_album_data(api, album, metadata, release):
     request_id = f'bio_{album.id}'
     api.add_album_request(album, request_id, f'Fetching artist bio for {artist_id}')
 
-    api.web_service.get_url(
+    reply = api.web_service.get_url(
         url=f'https://api.example.com/artist/{artist_id}',
         handler=lambda data, http, error: handle_response(api, album, metadata, request_id, data, error)
     )
+    api.set_album_request_reply(album, request_id, reply)
 
 def handle_response(api, album, metadata, request_id, data, error):
     try:
@@ -811,6 +812,49 @@ def handle_response(api, album, metadata, request_id, data, error):
 def enable(api):
     api.register_album_metadata_processor(fetch_album_data)
 ```
+
+---
+
+### `set_album_request_reply(album, request_id, reply)`
+
+Associate a network reply with a plugin request for automatic cancellation.
+
+When an album is removed by the user, all pending requests are automatically aborted. By registering your network reply, your plugin's requests will be cancelled cleanly without wasting bandwidth.
+
+**Parameters**:
+- `album`: The Album object
+- `request_id`: Same ID used in add_album_request (without plugin prefix)
+- `reply`: The QNetworkReply object returned by the webservice call
+
+**Example - Proper request cancellation**:
+```python
+def fetch_album_data(api, album, metadata, release):
+    artist_id = metadata.get('musicbrainz_artistid')
+    if not artist_id:
+        return
+
+    request_id = f'bio_{album.id}'
+    api.add_album_request(album, request_id, f'Fetching artist bio for {artist_id}')
+
+    reply = api.web_service.get_url(
+        url=f'https://api.example.com/artist/{artist_id}',
+        handler=lambda data, http, error: handle_response(api, album, metadata, request_id, data, error)
+    )
+    # Register reply for automatic cancellation if album is removed
+    api.set_album_request_reply(album, request_id, reply)
+
+def handle_response(api, album, metadata, request_id, data, error):
+    try:
+        if not error and data:
+            metadata['~artist_bio'] = data.get('biography', '')
+    finally:
+        api.complete_album_request(album, request_id)
+
+def enable(api):
+    api.register_album_metadata_processor(fetch_album_data)
+```
+
+**Note**: This is optional but recommended. If you don't register the reply, the request will still be tracked but won't be automatically aborted when the album is removed.
 
 ---
 
@@ -832,10 +876,11 @@ def fetch_custom_cover(api, album, metadata, release):
     request_id = f'cover_{album_id}'
     api.add_album_request(album, request_id, 'Fetching custom cover art', timeout=10.0)
 
-    api.web_service.download_url(
+    reply = api.web_service.download_url(
         url=f'https://covers.example.com/{album_id}.jpg',
         handler=lambda data, http, error: handle_cover(api, album, request_id, data, error)
     )
+    api.set_album_request_reply(album, request_id, reply)
 
 def handle_cover(api, album, request_id, data, error):
     try:
