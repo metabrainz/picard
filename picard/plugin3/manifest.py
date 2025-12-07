@@ -21,7 +21,7 @@
 try:
     import tomllib
 except ImportError:
-    import tomli as tomllib
+    import tomli as tomllib  # type: ignore[import-not-found,no-redef]
 
 from typing import (
     BinaryIO,
@@ -102,14 +102,14 @@ class PluginManifest:
             return None
 
     @property
-    def api_versions(self) -> Tuple[Version]:
+    def api_versions(self) -> tuple[Version, ...]:
         versions = self._data.get('api')
         if not versions:
-            return tuple()
+            return ()
         try:
             return tuple(Version.from_string(v) for v in versions)
         except VersionError:
-            return tuple()
+            return ()
 
     @property
     def license(self) -> str:

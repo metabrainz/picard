@@ -30,7 +30,9 @@ class PluginTranslator(QTranslator):
         self._source_locale = source_locale
         self._current_locale = 'en'
 
-    def translate(self, context: str, source_text: str, disambiguation: str | None = None, n: int = -1) -> str:
+    def translate(
+        self, context: str | None, source_text: str | None, disambiguation: str | None = None, n: int = -1
+    ) -> str:
         """Translate text from Qt UI files.
 
         Args:
