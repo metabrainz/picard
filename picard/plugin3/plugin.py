@@ -43,7 +43,7 @@ try:
     HAS_PYGIT2 = True
 except ImportError:
     HAS_PYGIT2 = False
-    pygit2 = None
+    pygit2 = None  # type: ignore[assignment]
 
 try:
     import hashlib
@@ -51,7 +51,7 @@ try:
     HAS_HASHLIB = True
 except ImportError:
     HAS_HASHLIB = False
-    hashlib = None
+    hashlib = None  # type: ignore[assignment]
 
 # Retry configuration for git operations
 GIT_OPERATION_MAX_RETRIES = 3
@@ -128,7 +128,7 @@ if HAS_PYGIT2:
             return None
 else:
 
-    class GitRemoteCallbacks:
+    class GitRemoteCallbacks:  # type: ignore[no-redef]
         pass
 
 
@@ -162,7 +162,7 @@ class PluginSource:
 class PluginSourceGit(PluginSource):
     """Plugin is stored in a git repository, local or remote"""
 
-    def __init__(self, url: str, ref: str = None):
+    def __init__(self, url: str, ref: str | None = None):
         super().__init__()
         if not HAS_PYGIT2:
             raise PluginSourceSyncError("pygit2 is not available. Install it to use git-based plugin sources.")
@@ -568,6 +568,7 @@ class Plugin:
     def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
         if plugin_source:
+            assert self.local_path is not None, "Plugin local_path must be set"
             try:
                 plugin_source.sync(self.local_path)
             except Exception as e:
@@ -625,6 +626,7 @@ class Plugin:
         if self.state == PluginState.ENABLED:
             raise PluginAlreadyEnabledError(self.plugin_id)
 
+        assert self.manifest is not None, "Plugin manifest must be loaded before enabling"
         api = PluginApi(self.manifest, tagger)
         api._plugin_module = self._module
         api._plugin_dir = self.local_path
