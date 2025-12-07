@@ -53,8 +53,8 @@ from PyQt6 import QtNetwork
 
 from picard import log
 from picard.album_requests import (
-    RequestInfo,
-    RequestType,
+    TaskInfo,
+    TaskType,
 )
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
@@ -182,10 +182,10 @@ class Album(MetadataItem):
         super().__init__(album_id)
         self.tracks = []
         self.loaded = False
-        self.load_task = None
+        self.load_request = None
         self.release_group = None
         self._files_count = 0
-        self._pending_requests = {}
+        self._pending_tasks = {}
         self._tracks_loaded = False
         self._discids = set()
         self._recordings_map = {}
@@ -201,93 +201,90 @@ class Album(MetadataItem):
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
 
-    def add_request(self, request_id, request_type, description, timeout=None, plugin_id=None):
-        """Add a pending request that must complete before album finalization."""
+    def add_task(self, task_id, task_type, description, timeout=None, plugin_id=None):
+        """Add a pending task that must complete before album finalization."""
         import time
 
         if timeout is not None:
             network_timeout = get_config().setting['network_transfer_timeout_seconds']
             if timeout > network_timeout:
                 log.warning(
-                    "Request %s has timeout %.1fs which exceeds network timeout %.1fs. "
+                    "Task %s has timeout %.1fs which exceeds network timeout %.1fs. "
                     "Capping to network timeout to ensure proper cleanup.",
-                    request_id,
+                    task_id,
                     timeout,
                     network_timeout,
                 )
                 timeout = network_timeout
 
-        request_info = RequestInfo(
-            request_id=request_id,
-            type=request_type,
+        task_info = TaskInfo(
+            task_id=task_id,
+            type=task_type,
             description=description,
             started_at=time.time(),
             timeout=timeout,
             plugin_id=plugin_id,
         )
-        self._pending_requests[request_id] = request_info
-        log.debug("Added %s request %s: %s", request_type.name, request_id, description)
+        self._pending_tasks[task_id] = task_info
+        log.debug("Added %s task %s: %s", task_type.name, task_id, description)
 
-    def set_request_reply(self, request_id, reply):
-        """Associate a network reply with a request for cancellation support."""
-        if request_id in self._pending_requests:
-            self._pending_requests[request_id].reply = reply
+    def set_task_request(self, task_id, request):
+        """Associate a network request with a request for cancellation support."""
+        if task_id in self._pending_tasks:
+            self._pending_tasks[task_id].request = request
 
-    def complete_request(self, request_id):
-        """Mark a request as complete."""
-        if request_id in self._pending_requests:
-            request_info = self._pending_requests.pop(request_id)
-            log.debug(
-                "Completed %s request %s after %.2fs", request_info.type.name, request_id, request_info.elapsed_time()
-            )
+    def complete_task(self, task_id):
+        """Mark a task as complete."""
+        if task_id in self._pending_tasks:
+            task_info = self._pending_tasks.pop(task_id)
+            log.debug("Completed %s task %s after %.2fs", task_info.type.name, task_id, task_info.elapsed_time())
         else:
-            log.warning("Attempted to complete unknown request: %s", request_id)
+            log.warning("Attempted to complete unknown task: %s", task_id)
 
-    def cancel_requests(self):
-        """Cancel all pending requests and abort their network operations."""
-        for request_id, request_info in list(self._pending_requests.items()):
-            log.debug("Canceling %s request %s: %s", request_info.type.name, request_id, request_info.description)
-            if request_info.reply:
+    def cancel_tasks(self):
+        """Cancel all pending tasks and abort their network operations."""
+        for task_id, task_info in list(self._pending_tasks.items()):
+            log.debug("Canceling %s request %s: %s", task_info.type.name, task_id, task_info.description)
+            if task_info.request:
                 try:
-                    self.tagger.webservice.abort_task(request_info.reply)
+                    self.tagger.webservice.abort_task(task_info.request)
                 except (RuntimeError, ValueError, AttributeError):
                     # Task may already be completed or invalid
                     pass
-        self._pending_requests.clear()
+        self._pending_tasks.clear()
 
-    def check_timed_out_requests(self):
-        """Check for and abort requests that have exceeded their timeout."""
-        for request_id, request_info in list(self._pending_requests.items()):
-            if request_info.is_timed_out():
+    def check_timed_out_tasks(self):
+        """Check for and abort tasks that have exceeded their timeout."""
+        for task_id, task_info in list(self._pending_tasks.items()):
+            if task_info.is_timed_out():
                 log.warning(
-                    "Request %s timed out after %.2fs (timeout: %.2fs): %s",
-                    request_id,
-                    request_info.elapsed_time(),
-                    request_info.timeout,
-                    request_info.description,
+                    "Task %s timed out after %.2fs (timeout: %.2fs): %s",
+                    task_id,
+                    task_info.elapsed_time(),
+                    task_info.timeout,
+                    task_info.description,
                 )
-                if request_info.reply:
+                if task_info.request:
                     try:
-                        request_info.reply.abort()
+                        task_info.request.abort()
                     except RuntimeError:
                         pass
-                self._pending_requests.pop(request_id, None)
+                self._pending_tasks.pop(task_id, None)
 
-    def has_critical_requests(self):
-        """Check if there are any critical requests pending."""
-        return any(r.type == RequestType.CRITICAL for r in self._pending_requests.values())
+    def has_critical_tasks(self):
+        """Check if there are any critical tasks pending."""
+        return any(r.type == TaskType.CRITICAL for r in self._pending_tasks.values())
 
-    def get_pending_requests(self):
-        """Get all pending requests for debugging."""
-        return dict(self._pending_requests)
+    def get_pending_tasks(self):
+        """Get all pending tasks for debugging."""
+        return dict(self._pending_tasks)
 
     def _warn_deprecated_requests(self, operation):
         """Emit deprecation warning for album._requests usage (once per location)."""
         from picard.plugin3.api import PluginApi
 
         PluginApi.deprecation_warning(
-            "Using deprecated album._requests (%s). "
-            "Use api.add_album_request() and api.complete_album_request() instead.",
+            "Using deprecated album._requests (%s). Use api.add_album_task() and api.complete_album_task() instead.",
             operation,
             frame_depth=4,
         )
@@ -297,7 +294,7 @@ class Album(MetadataItem):
         """Compatibility property for old plugins using album._requests.
         Returns count of critical requests only."""
         self._warn_deprecated_requests('read')
-        return sum(1 for r in self._pending_requests.values() if r.type == RequestType.CRITICAL)
+        return sum(1 for r in self._pending_tasks.values() if r.type == TaskType.CRITICAL)
 
     @_requests.setter
     def _requests(self, value):
@@ -449,9 +446,9 @@ class Album(MetadataItem):
         return False
 
     def _release_request_finished(self, document, http, error):
-        if self.load_task is None:
+        if self.load_request is None:
             return
-        self.load_task = None
+        self.load_request = None
         parse_result = None
         try:
             if error:
@@ -489,7 +486,7 @@ class Album(MetadataItem):
                     error = True
                     self.error_append(traceback.format_exc())
         finally:
-            self.complete_request('release_metadata')
+            self.complete_task('release_metadata')
             if parse_result == ParseResult.PARSED or error:
                 self._finalize_loading(error)
 
@@ -504,19 +501,19 @@ class Album(MetadataItem):
         )
         log.debug("Loading recording relationships for %r (offset=%i, limit=%i)", self, offset, limit)
         request_id = f'recording_rels_{offset}'
-        self.add_request(
+        self.add_task(
             request_id,
-            RequestType.CRITICAL,
+            TaskType.CRITICAL,
             f'Recording relationships (offset={offset}, limit={limit})',
         )
-        self.load_task = self.tagger.mb_api.browse_recordings(
+        self.load_request = self.tagger.mb_api.browse_recordings(
             self._recordings_request_finished,
             inc=inc,
             release=self.id,
             limit=limit,
             offset=offset,
         )
-        self.set_request_reply(request_id, self.load_task)
+        self.set_task_request(request_id, self.load_request)
 
     def _recordings_request_finished(self, document, http, error):
         offset = document.get('recording-offset', 0) if not error else 0
@@ -524,7 +521,7 @@ class Album(MetadataItem):
 
         if error:
             self.error_append(http.errorString())
-            self.complete_request(request_id)
+            self.complete_task(request_id)
             self._finalize_loading(error)
         else:
             for recording in document.get('recordings', []):
@@ -534,13 +531,13 @@ class Album(MetadataItem):
             count = document.get('recording-count', 0)
             next_offset = offset + RECORDING_QUERY_LIMIT
             if next_offset < count:
-                self.complete_request(request_id)
+                self.complete_task(request_id)
                 self._request_recording_relationships(offset=next_offset)
             else:
                 # Merge separately loaded recording relationships into release node
                 self._merge_release_recording_relationships()
                 self._run_album_metadata_processors()
-                self.complete_request(request_id)
+                self.complete_task(request_id)
                 self._finalize_loading(error)
 
     def _merge_recording_relationships(self, track_node):
@@ -743,13 +740,13 @@ class Album(MetadataItem):
             return
 
         # Check for and abort timed out requests
-        self.check_timed_out_requests()
+        self.check_timed_out_tasks()
 
         if error:
             self.metadata.clear()
             self.status = AlbumStatus.ERROR
             self.update()
-            if not self.has_critical_requests():
+            if not self.has_critical_tasks():
                 del self._new_metadata
                 del self._new_tracks
                 self.loaded = True
@@ -758,17 +755,17 @@ class Album(MetadataItem):
                         func()
             return
 
-        if self.has_critical_requests():
+        if self.has_critical_tasks():
             return
 
         if not self._tracks_loaded:
             self._load_tracks()
 
-        if not self.has_critical_requests():
+        if not self.has_critical_tasks():
             self._finalize_loading_album()
 
     def load(self, priority=False, refresh=False):
-        if self.has_critical_requests():
+        if self.has_critical_tasks():
             log.info("Not reloading, some requests are still active.")
             return
         self.tagger.window.set_statusbar_message(
@@ -785,8 +782,8 @@ class Album(MetadataItem):
         self.update(update_selection=False)
         self._new_metadata = Metadata()
         self._new_tracks = []
-        self._pending_requests.clear()
-        self.add_request('release_metadata', RequestType.CRITICAL, f'Release metadata for {self.id}')
+        self._pending_tasks.clear()
+        self.add_task('release_metadata', TaskType.CRITICAL, f'Release metadata for {self.id}')
         self.clear_errors()
         config = get_config()
         require_authentication = False
@@ -826,7 +823,7 @@ class Album(MetadataItem):
             require_authentication = True
             inc |= {'user-ratings'}
 
-        self.load_task = self.tagger.mb_api.get_release_by_id(
+        self.load_request = self.tagger.mb_api.get_release_by_id(
             self.id,
             self._release_request_finished,
             inc=inc,
@@ -834,7 +831,7 @@ class Album(MetadataItem):
             priority=priority,
             refresh=refresh,
         )
-        self.set_request_reply('release_metadata', self.load_task)
+        self.set_task_request('release_metadata', self.load_request)
 
     def run_when_loaded(self, func, run_on_error=False):
         if self.loaded:
@@ -843,9 +840,9 @@ class Album(MetadataItem):
             self._after_load_callbacks.append((func, run_on_error))
 
     def stop_loading(self):
-        if self.load_task:
-            self.tagger.webservice.remove_task(self.load_task)
-            self.load_task = None
+        if self.load_request:
+            self.tagger.webservice.remove_task(self.load_request)
+            self.load_request = None
 
     def update(self, update_tracks=True, update_selection=True):
         if self.ui_item:

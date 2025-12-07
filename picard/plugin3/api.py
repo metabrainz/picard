@@ -34,7 +34,7 @@ from typing import (
 )
 
 from picard.album import Album
-from picard.album_requests import RequestType
+from picard.album_requests import TaskType
 from picard.cluster import Cluster
 from picard.config import (
     Config,
@@ -85,7 +85,10 @@ from picard.plugin3.i18n import (
 )
 from picard.plugin3.manifest import PluginManifest
 from picard.track import Track
-from picard.webservice import WebService
+from picard.webservice import (
+    PendingRequest,
+    WebService,
+)
 from picard.webservice.api_helpers import MBAPIHelper
 
 from picard.ui.options import OptionsPage
@@ -635,68 +638,68 @@ class PluginApi:
         update_wrapper(wrapped, function)
         return register_ui_init(wrapped)
 
-    # Album request management for plugins
-    def add_album_request(self, album: Album, request_id: str, description: str, timeout: float | None = None) -> None:
-        """Add a plugin request to an album.
+    # Album task management for plugins
+    def add_album_task(self, album: Album, task_id: str, description: str, timeout: float | None = None) -> None:
+        """Add a plugin task to an album.
 
-        Plugin requests are always non-blocking (RequestType.PLUGIN) and will not
+        Plugin tasks are always non-blocking (TaskType.PLUGIN) and will not
         prevent the album from being marked as loaded. This allows plugins to fetch
         additional data asynchronously without blocking the user interface.
 
         Args:
-            album: The Album object to add the request to
-            request_id: Unique identifier for this request (will be prefixed with plugin_id)
-            description: Human-readable description of what the request does
+            album: The Album object to add the task to
+            task_id: Unique identifier for this task (will be prefixed with plugin_id)
+            description: Human-readable description of what the task does
             timeout: Optional timeout in seconds
 
         Example:
             def fetch_extra_data(api, album, metadata, release):
-                request_id = f'extra_data_{album.id}'
-                api.add_album_request(album, request_id, 'Fetching artist biography')
-                reply = api.web_service.get_url(
+                task_id = f'extra_data_{album.id}'
+                api.add_album_task(album, task_id, 'Fetching artist biography')
+                request = api.web_service.get_url(
                     url=f'https://example.com/artist/{artist_id}',
-                    handler=lambda data, http, error: api.complete_album_request(album, request_id)
+                    handler=lambda data, http, error: api.complete_album_task(album, task_id)
                 )
-                api.set_album_request_reply(album, request_id, reply)
+                api.set_album_task_request(album, task_id, request)
         """
-        full_request_id = f'{self.plugin_id}_{request_id}'
-        album.add_request(
-            full_request_id,
-            RequestType.PLUGIN,
+        full_task_id = f'{self.plugin_id}_{task_id}'
+        album.add_task(
+            full_task_id,
+            TaskType.PLUGIN,
             f'[{self.plugin_id}] {description}',
             timeout=timeout,
             plugin_id=self.plugin_id,
         )
 
-    def set_album_request_reply(self, album: Album, request_id: str, reply) -> None:
-        """Associate a network reply with a plugin request for automatic cancellation.
+    def set_album_task_request(self, album: Album, task_id: str, request: PendingRequest) -> None:
+        """Associate a network request with a plugin task for automatic cancellation.
 
-        This allows the request to be automatically aborted if the album is removed.
-
-        Args:
-            album: The Album object the request was added to
-            request_id: The same request_id used in add_album_request (without plugin prefix)
-            reply: The QNetworkReply object returned by the webservice call
-
-        Example:
-            reply = api.web_service.get_url(...)
-            api.set_album_request_reply(album, 'extra_data', reply)
-        """
-        full_request_id = f'{self.plugin_id}_{request_id}'
-        album.set_request_reply(full_request_id, reply)
-
-    def complete_album_request(self, album: Album, request_id: str) -> None:
-        """Mark a plugin request as complete.
+        This allows the task to be automatically aborted if the album is removed.
 
         Args:
-            album: The Album object the request was added to
-            request_id: The same request_id used in add_album_request (without plugin prefix)
+            album: The Album object the task was added to
+            task_id: The same task_id used in add_album_task (without plugin prefix)
+            request: The PendingRequest object returned by the webservice call
 
         Example:
-            api.complete_album_request(album, 'extra_data')
+            request = api.web_service.get_url(...)
+            api.set_album_task_request(album, 'extra_data', request)
         """
-        full_request_id = f'{self.plugin_id}_{request_id}'
-        album.complete_request(full_request_id)
+        full_task_id = f'{self.plugin_id}_{task_id}'
+        album.set_task_request(full_task_id, request)
+
+    def complete_album_task(self, album: Album, task_id: str) -> None:
+        """Mark a plugin task as complete.
+
+        Args:
+            album: The Album object the task was added to
+            task_id: The same task_id used in add_album_task (without plugin prefix)
+
+        Example:
+            api.complete_album_task(album, 'extra_data')
+        """
+        full_task_id = f'{self.plugin_id}_{task_id}'
+        album.complete_task(full_task_id)
 
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins

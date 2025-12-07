@@ -772,17 +772,17 @@ def enable(api):
 
 ---
 
-## Album Request Management
+## Album Background Task Management
 
 Plugins can track asynchronous operations (like web requests) without blocking album loading.
 
-### `add_album_request(album, request_id, description, timeout=None)`
+### `add_album_task(album, task_id, description, timeout=None)`
 
-Add a plugin request to an album. Plugin requests are always non-blocking and won't prevent the album from being marked as loaded.
+Add a plugin task to an album. Plugin tasks are always non-blocking and won't prevent the album from being marked as loaded.
 
 **Parameters**:
 - `album`: The Album object
-- `request_id`: Unique identifier (automatically prefixed with plugin_id)
+- `task_id`: Unique identifier (automatically prefixed with plugin_id)
 - `description`: Human-readable description
 - `timeout`: Optional timeout in seconds
 
@@ -793,21 +793,21 @@ def fetch_album_data(api, album, metadata, release):
     if not artist_id:
         return
 
-    request_id = f'bio_{album.id}'
-    api.add_album_request(album, request_id, f'Fetching artist bio for {artist_id}')
+    task_id = f'bio_{album.id}'
+    api.add_album_task(album, task_id, f'Fetching artist bio for {artist_id}')
 
-    reply = api.web_service.get_url(
+    request = api.web_service.get_url(
         url=f'https://api.example.com/artist/{artist_id}',
-        handler=lambda data, http, error: handle_response(api, album, metadata, request_id, data, error)
+        handler=lambda data, http, error: handle_response(api, album, metadata, task_id, data, error)
     )
-    api.set_album_request_reply(album, request_id, reply)
+    api.set_album_task_request(album, task_id, request)
 
-def handle_response(api, album, metadata, request_id, data, error):
+def handle_response(api, album, metadata, task_id, data, error):
     try:
         if not error and data:
             metadata['~artist_bio'] = data.get('biography', '')
     finally:
-        api.complete_album_request(album, request_id)
+        api.complete_album_task(album, task_id)
 
 def enable(api):
     api.register_album_metadata_processor(fetch_album_data)
@@ -815,16 +815,16 @@ def enable(api):
 
 ---
 
-### `set_album_request_reply(album, request_id, reply)`
+### `set_album_task_request(album, task_id, request)`
 
-Associate a network reply with a plugin request for automatic cancellation.
+Associate a network request with a plugin task for automatic cancellation.
 
-When an album is removed by the user, all pending requests are automatically aborted. By registering your network reply, your plugin's requests will be cancelled cleanly without wasting bandwidth.
+When an album is removed by the user, all pending tasks are automatically aborted. By registering your network request, your plugin's requests will be cancelled cleanly without wasting bandwidth.
 
 **Parameters**:
 - `album`: The Album object
-- `request_id`: Same ID used in add_album_request (without plugin prefix)
-- `reply`: The QNetworkReply object returned by the webservice call
+- `task_id`: Same ID used in add_album_task (without plugin prefix)
+- `request`: The PendingRequest object returned by the webservice call
 
 **Example - Proper request cancellation**:
 ```python
@@ -833,38 +833,38 @@ def fetch_album_data(api, album, metadata, release):
     if not artist_id:
         return
 
-    request_id = f'bio_{album.id}'
-    api.add_album_request(album, request_id, f'Fetching artist bio for {artist_id}')
+    task_id = f'bio_{album.id}'
+    api.add_album_task(album, task_id, f'Fetching artist bio for {artist_id}')
 
-    reply = api.web_service.get_url(
+    request = api.web_service.get_url(
         url=f'https://api.example.com/artist/{artist_id}',
-        handler=lambda data, http, error: handle_response(api, album, metadata, request_id, data, error)
+        handler=lambda data, http, error: handle_response(api, album, metadata, task_id, data, error)
     )
-    # Register reply for automatic cancellation if album is removed
-    api.set_album_request_reply(album, request_id, reply)
+    # Register request for automatic cancellation if album is removed
+    api.set_album_task_request(album, task_id, request)
 
-def handle_response(api, album, metadata, request_id, data, error):
+def handle_response(api, album, metadata, task_id, data, error):
     try:
         if not error and data:
             metadata['~artist_bio'] = data.get('biography', '')
     finally:
-        api.complete_album_request(album, request_id)
+        api.complete_album_task(album, task_id)
 
 def enable(api):
     api.register_album_metadata_processor(fetch_album_data)
 ```
 
-**Note**: This is optional but recommended. If you don't register the reply, the request will still be tracked but won't be automatically aborted when the album is removed.
+**Note**: This is optional but recommended. If you don't register the request, the request will still be tracked but won't be automatically aborted when the album is removed.
 
 ---
 
-### `complete_album_request(album, request_id)`
+### `complete_album_task(album, task_id)`
 
-Mark a plugin request as complete.
+Mark a plugin task as complete.
 
 **Parameters**:
 - `album`: The Album object
-- `request_id`: Same ID used in add_album_request (without plugin prefix)
+- `task_id`: Same ID used in add_album_task (without plugin prefix)
 
 **Example - Fetching cover art from external source**:
 ```python
@@ -873,28 +873,28 @@ def fetch_custom_cover(api, album, metadata, release):
     if not album_id:
         return
 
-    request_id = f'cover_{album_id}'
-    api.add_album_request(album, request_id, 'Fetching custom cover art', timeout=10.0)
+    task_id = f'cover_{album_id}'
+    api.add_album_task(album, task_id, 'Fetching custom cover art', timeout=10.0)
 
-    reply = api.web_service.download_url(
+    request = api.web_service.download_url(
         url=f'https://covers.example.com/{album_id}.jpg',
-        handler=lambda data, http, error: handle_cover(api, album, request_id, data, error)
+        handler=lambda data, http, error: handle_cover(api, album, task_id, data, error)
     )
-    api.set_album_request_reply(album, request_id, reply)
+    api.set_album_task_request(album, task_id, request)
 
-def handle_cover(api, album, request_id, data, error):
+def handle_cover(api, album, task_id, data, error):
     try:
         if not error and data:
             # Process cover art data
             api.logger.info(f"Downloaded cover art: {len(data)} bytes")
     finally:
-        api.complete_album_request(album, request_id)
+        api.complete_album_task(album, task_id)
 
 def enable(api):
     api.register_album_metadata_processor(fetch_custom_cover)
 ```
 
-**Important**: Always call `complete_album_request()` in a `finally` block to ensure the request is marked complete even if an error occurs.
+**Important**: Always call `complete_album_task()` in a `finally` block to ensure the task is marked complete even if an error occurs.
 
 ---
 

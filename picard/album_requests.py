@@ -24,8 +24,10 @@ from enum import IntEnum
 import time
 from typing import Optional
 
+from picard.webservice import PendingRequest
 
-class RequestType(IntEnum):
+
+class TaskType(IntEnum):
     """Type of album request, determines if it blocks album loading."""
 
     CRITICAL = 0  # Must complete before album.loaded = True
@@ -34,16 +36,16 @@ class RequestType(IntEnum):
 
 
 @dataclass
-class RequestInfo:
+class TaskInfo:
     """Information about a pending album request."""
 
-    request_id: str
-    type: RequestType
+    task_id: str
+    type: TaskType
     description: str
     started_at: float
     timeout: Optional[float] = None
     plugin_id: Optional[str] = None
-    reply: Optional[object] = None  # QNetworkReply object if available
+    request: Optional[PendingRequest] = None  # PendingRequest object if available
 
     def __post_init__(self):
         if self.started_at is None:
