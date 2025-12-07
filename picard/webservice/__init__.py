@@ -706,9 +706,10 @@ class WebService(QtCore.QObject):
                 pass
 
         # Try to remove from queue (may already be executing)
-        self.remove_task(task)
+        self._remove_task(task)
 
-    def remove_task(self, task):
+    def _remove_task(self, task):
+        """Internal method to remove a task from the queue."""
         self._queue.remove_task(task)
         if not self._timer_count_pending_requests.isActive():
             self._timer_count_pending_requests.start(0)
