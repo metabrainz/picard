@@ -34,6 +34,7 @@ from typing import (
 )
 
 from picard.album import Album
+from picard.album_requests import RequestType
 from picard.cluster import Cluster
 from picard.config import (
     Config,
@@ -580,6 +581,51 @@ class PluginApi:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_ui_init(wrapped)
+
+    # Album request management for plugins
+    def add_album_request(self, album: Album, request_id: str, description: str, timeout: float | None = None) -> None:
+        """Add a plugin request to an album.
+
+        Plugin requests are always non-blocking (RequestType.PLUGIN) and will not
+        prevent the album from being marked as loaded. This allows plugins to fetch
+        additional data asynchronously without blocking the user interface.
+
+        Args:
+            album: The Album object to add the request to
+            request_id: Unique identifier for this request (will be prefixed with plugin_id)
+            description: Human-readable description of what the request does
+            timeout: Optional timeout in seconds
+
+        Example:
+            def fetch_extra_data(api, album, metadata, release):
+                request_id = f'extra_data_{album.id}'
+                api.add_album_request(album, request_id, 'Fetching artist biography')
+                api.web_service.get_url(
+                    url=f'https://example.com/artist/{artist_id}',
+                    handler=lambda data, http, error: api.complete_album_request(album, request_id)
+                )
+        """
+        full_request_id = f'{self.plugin_id}_{request_id}'
+        album.add_request(
+            full_request_id,
+            RequestType.PLUGIN,
+            f'[{self.plugin_id}] {description}',
+            timeout=timeout,
+            plugin_id=self.plugin_id,
+        )
+
+    def complete_album_request(self, album: Album, request_id: str) -> None:
+        """Mark a plugin request as complete.
+
+        Args:
+            album: The Album object the request was added to
+            request_id: The same request_id used in add_album_request (without plugin prefix)
+
+        Example:
+            api.complete_album_request(album, 'extra_data')
+        """
+        full_request_id = f'{self.plugin_id}_{request_id}'
+        album.complete_request(full_request_id)
 
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins
