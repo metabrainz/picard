@@ -339,7 +339,7 @@ class RequestPriorityQueue:
 
 
 class WebService(QtCore.QObject):
-    PARSERS = dict()
+    PARSERS: dict[str, Parser] = dict()
 
     def __init__(self, parent=None):
         super().__init__(parent)

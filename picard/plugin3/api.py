@@ -160,7 +160,7 @@ class PluginApi:
     # Class-level registries for get_api()
     _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
     _module_cache: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance (for faster lookup)
-    _deprecation_warnings_emitted = set()  # Track emitted deprecation warnings
+    _deprecation_warnings_emitted: set[tuple[str, str, int]] = set()  # Track emitted deprecation warnings
 
     def __init__(self, manifest: PluginManifest, tagger: Tagger) -> None:
         self._tagger: Tagger = tagger
