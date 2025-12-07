@@ -204,15 +204,20 @@ class CoverArt:
         )
         log.debug("Downloading %r", coverartimage)
         task_id = f'coverart_{id(coverartimage)}'
+
+        def create_request():
+            return self.album.tagger.webservice.download_url(
+                url=coverartimage.url,
+                handler=partial(self._coverart_downloaded, coverartimage),
+                priority=True,
+            )
+
         self.album.add_task(
-            task_id, TaskType.OPTIONAL, f'Cover art download: {coverartimage.types_as_string(translate=False)}'
+            task_id,
+            TaskType.OPTIONAL,
+            f'Cover art download: {coverartimage.types_as_string(translate=False)}',
+            request_factory=create_request,
         )
-        request = self.album.tagger.webservice.download_url(
-            url=coverartimage.url,
-            handler=partial(self._coverart_downloaded, coverartimage),
-            priority=True,
-        )
-        self.album.set_task_request(task_id, request)
 
     def queue_put(self, coverartimage):
         """Add an image to queue"""

@@ -260,15 +260,22 @@ class CoverArtProviderCaa(CoverArtProvider):
 
     def queue_images(self):
         task_id = f'caa_json_{self.metadata["musicbrainz_albumid"]}'
-        self.album.add_task(task_id, TaskType.OPTIONAL, f'CAA JSON metadata for {self.metadata["musicbrainz_albumid"]}')
-        request = self.album.tagger.webservice.get_url(
-            url=CAA_URL + self._caa_path,
-            handler=self._caa_json_downloaded,
-            priority=True,
-            important=False,
-            cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork,
+
+        def create_request():
+            return self.album.tagger.webservice.get_url(
+                url=CAA_URL + self._caa_path,
+                handler=self._caa_json_downloaded,
+                priority=True,
+                important=False,
+                cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork,
+            )
+
+        self.album.add_task(
+            task_id,
+            TaskType.OPTIONAL,
+            f'CAA JSON metadata for {self.metadata["musicbrainz_albumid"]}',
+            request_factory=create_request,
         )
-        self.album.set_task_request(task_id, request)
         # we will call next_in_queue() after json parsing
         return CoverArtProvider.WAIT
 

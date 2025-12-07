@@ -201,7 +201,7 @@ class Album(MetadataItem):
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
 
-    def add_task(self, task_id, task_type, description, timeout=None, plugin_id=None):
+    def add_task(self, task_id, task_type, description, timeout=None, plugin_id=None, request_factory=None):
         """Add a pending task that must complete before album finalization."""
         import time
 
@@ -228,9 +228,9 @@ class Album(MetadataItem):
         self._pending_tasks[task_id] = task_info
         log.debug("Added %s task %s: %s", task_type.name, task_id, description)
 
-    def set_task_request(self, task_id, request):
-        """Associate a network request with a request for cancellation support."""
-        if task_id in self._pending_tasks:
+        # If request_factory provided, create and register request atomically
+        if request_factory:
+            request = request_factory()
             self._pending_tasks[task_id].request = request
 
     def complete_task(self, task_id):
@@ -501,19 +501,23 @@ class Album(MetadataItem):
         )
         log.debug("Loading recording relationships for %r (offset=%i, limit=%i)", self, offset, limit)
         request_id = f'recording_rels_{offset}'
+
+        def create_request():
+            self.load_request = self.tagger.mb_api.browse_recordings(
+                self._recordings_request_finished,
+                inc=inc,
+                release=self.id,
+                limit=limit,
+                offset=offset,
+            )
+            return self.load_request
+
         self.add_task(
             request_id,
             TaskType.CRITICAL,
             f'Recording relationships (offset={offset}, limit={limit})',
+            request_factory=create_request,
         )
-        self.load_request = self.tagger.mb_api.browse_recordings(
-            self._recordings_request_finished,
-            inc=inc,
-            release=self.id,
-            limit=limit,
-            offset=offset,
-        )
-        self.set_task_request(request_id, self.load_request)
 
     def _recordings_request_finished(self, document, http, error):
         offset = document.get('recording-offset', 0) if not error else 0
@@ -823,15 +827,23 @@ class Album(MetadataItem):
             require_authentication = True
             inc |= {'user-ratings'}
 
-        self.load_request = self.tagger.mb_api.get_release_by_id(
-            self.id,
-            self._release_request_finished,
-            inc=inc,
-            mblogin=require_authentication,
-            priority=priority,
-            refresh=refresh,
+        def create_request():
+            self.load_request = self.tagger.mb_api.get_release_by_id(
+                self.id,
+                self._release_request_finished,
+                inc=inc,
+                mblogin=require_authentication,
+                priority=priority,
+                refresh=refresh,
+            )
+            return self.load_request
+
+        self.add_task(
+            'release_metadata',
+            TaskType.CRITICAL,
+            'Release metadata',
+            request_factory=create_request,
         )
-        self.set_task_request('release_metadata', self.load_request)
 
     def run_when_loaded(self, func, run_on_error=False):
         if self.loaded:

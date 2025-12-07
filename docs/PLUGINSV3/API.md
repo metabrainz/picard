@@ -818,7 +818,7 @@ def enable(api):
 
 Plugins can track asynchronous operations (like web requests) without blocking album loading.
 
-### `add_album_task(album, task_id, description, timeout=None)`
+### `add_album_task(album, task_id, description, timeout=None, request_factory=None)`
 
 Add a plugin task to an album. Plugin tasks are always non-blocking and won't prevent the album from being marked as loaded.
 
@@ -827,22 +827,30 @@ Add a plugin task to an album. Plugin tasks are always non-blocking and won't pr
 - `task_id`: Unique identifier (automatically prefixed with plugin_id)
 - `description`: Human-readable description
 - `timeout`: Optional timeout in seconds
+- `request_factory`: Callable that creates and returns a PendingRequest. Use this to register network requests for automatic cancellation when the album is removed.
 
 **Example - Fetching additional album data**:
 ```python
+from functools import partial
+
 def fetch_album_data(api, album, metadata, release):
     artist_id = metadata.get('musicbrainz_artistid')
     if not artist_id:
         return
 
     task_id = f'bio_{album.id}'
-    api.add_album_task(album, task_id, f'Fetching artist bio for {artist_id}')
 
-    request = api.web_service.get_url(
-        url=f'https://api.example.com/artist/{artist_id}',
-        handler=lambda data, http, error: handle_response(api, album, metadata, task_id, data, error)
+    def create_request():
+        return api.web_service.get_url(
+            url=f'https://api.example.com/artist/{artist_id}',
+            handler=partial(handle_response, api, album, metadata, task_id)
+        )
+
+    api.add_album_task(
+        album, task_id,
+        f'Fetching artist bio for {artist_id}',
+        request_factory=create_request
     )
-    api.set_album_task_request(album, task_id, request)
 
 def handle_response(api, album, metadata, task_id, data, error):
     try:
@@ -855,48 +863,7 @@ def enable(api):
     api.register_album_metadata_processor(fetch_album_data)
 ```
 
----
-
-### `set_album_task_request(album, task_id, request)`
-
-Associate a network request with a plugin task for automatic cancellation.
-
-When an album is removed by the user, all pending tasks are automatically aborted. By registering your network request, your plugin's requests will be cancelled cleanly without wasting bandwidth.
-
-**Parameters**:
-- `album`: The Album object
-- `task_id`: Same ID used in add_album_task (without plugin prefix)
-- `request`: The PendingRequest object returned by the webservice call
-
-**Example - Proper request cancellation**:
-```python
-def fetch_album_data(api, album, metadata, release):
-    artist_id = metadata.get('musicbrainz_artistid')
-    if not artist_id:
-        return
-
-    task_id = f'bio_{album.id}'
-    api.add_album_task(album, task_id, f'Fetching artist bio for {artist_id}')
-
-    request = api.web_service.get_url(
-        url=f'https://api.example.com/artist/{artist_id}',
-        handler=lambda data, http, error: handle_response(api, album, metadata, task_id, data, error)
-    )
-    # Register request for automatic cancellation if album is removed
-    api.set_album_task_request(album, task_id, request)
-
-def handle_response(api, album, metadata, task_id, data, error):
-    try:
-        if not error and data:
-            metadata['~artist_bio'] = data.get('biography', '')
-    finally:
-        api.complete_album_task(album, task_id)
-
-def enable(api):
-    api.register_album_metadata_processor(fetch_album_data)
-```
-
-**Note**: This is optional but recommended. If you don't register the request, the request will still be tracked but won't be automatically aborted when the album is removed.
+**Note**: If your task doesn't involve a network request, you can omit `request_factory`. However, if you're making a web request, you should always provide `request_factory` to ensure the request is properly cancelled if the album is removed.
 
 ---
 
