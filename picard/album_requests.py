@@ -43,6 +43,7 @@ class RequestInfo:
     started_at: float
     timeout: Optional[float] = None
     plugin_id: Optional[str] = None
+    reply: Optional[object] = None  # QNetworkReply object if available
 
     def __post_init__(self):
         if self.started_at is None:

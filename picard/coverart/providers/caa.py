@@ -263,13 +263,14 @@ class CoverArtProviderCaa(CoverArtProvider):
         self.album.add_request(
             request_id, RequestType.OPTIONAL, f'CAA JSON metadata for {self.metadata["musicbrainz_albumid"]}'
         )
-        self.album.tagger.webservice.get_url(
+        reply = self.album.tagger.webservice.get_url(
             url=CAA_URL + self._caa_path,
             handler=self._caa_json_downloaded,
             priority=True,
             important=False,
             cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork,
         )
+        self.album.set_request_reply(request_id, reply)
         # we will call next_in_queue() after json parsing
         return CoverArtProvider.WAIT
 

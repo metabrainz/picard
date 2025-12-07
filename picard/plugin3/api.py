@@ -653,10 +653,11 @@ class PluginApi:
             def fetch_extra_data(api, album, metadata, release):
                 request_id = f'extra_data_{album.id}'
                 api.add_album_request(album, request_id, 'Fetching artist biography')
-                api.web_service.get_url(
+                reply = api.web_service.get_url(
                     url=f'https://example.com/artist/{artist_id}',
                     handler=lambda data, http, error: api.complete_album_request(album, request_id)
                 )
+                api.set_album_request_reply(album, request_id, reply)
         """
         full_request_id = f'{self.plugin_id}_{request_id}'
         album.add_request(
@@ -666,6 +667,23 @@ class PluginApi:
             timeout=timeout,
             plugin_id=self.plugin_id,
         )
+
+    def set_album_request_reply(self, album: Album, request_id: str, reply) -> None:
+        """Associate a network reply with a plugin request for automatic cancellation.
+
+        This allows the request to be automatically aborted if the album is removed.
+
+        Args:
+            album: The Album object the request was added to
+            request_id: The same request_id used in add_album_request (without plugin prefix)
+            reply: The QNetworkReply object returned by the webservice call
+
+        Example:
+            reply = api.web_service.get_url(...)
+            api.set_album_request_reply(album, 'extra_data', reply)
+        """
+        full_request_id = f'{self.plugin_id}_{request_id}'
+        album.set_request_reply(full_request_id, reply)
 
     def complete_album_request(self, album: Album, request_id: str) -> None:
         """Mark a plugin request as complete.

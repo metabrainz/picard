@@ -216,6 +216,11 @@ class Album(MetadataItem):
         self._pending_requests[request_id] = request_info
         log.debug("Added %s request %s: %s", request_type.name, request_id, description)
 
+    def set_request_reply(self, request_id, reply):
+        """Associate a network reply with a request for cancellation support."""
+        if request_id in self._pending_requests:
+            self._pending_requests[request_id].reply = reply
+
     def complete_request(self, request_id):
         """Mark a request as complete."""
         if request_id in self._pending_requests:
@@ -225,6 +230,18 @@ class Album(MetadataItem):
             )
         else:
             log.warning("Attempted to complete unknown request: %s", request_id)
+
+    def cancel_requests(self):
+        """Cancel all pending requests and abort their network operations."""
+        for request_id, request_info in list(self._pending_requests.items()):
+            log.debug("Canceling %s request %s: %s", request_info.type.name, request_id, request_info.description)
+            if request_info.reply:
+                try:
+                    request_info.reply.abort()
+                except RuntimeError:
+                    # Reply may already be deleted
+                    pass
+        self._pending_requests.clear()
 
     def has_critical_requests(self):
         """Check if there are any critical requests pending."""
@@ -456,8 +473,9 @@ class Album(MetadataItem):
             'work-level-rels',
         )
         log.debug("Loading recording relationships for %r (offset=%i, limit=%i)", self, offset, limit)
+        request_id = f'recording_rels_{offset}'
         self.add_request(
-            f'recording_rels_{offset}',
+            request_id,
             RequestType.CRITICAL,
             f'Recording relationships (offset={offset}, limit={limit})',
         )
@@ -468,6 +486,7 @@ class Album(MetadataItem):
             limit=limit,
             offset=offset,
         )
+        self.set_request_reply(request_id, self.load_task)
 
     def _recordings_request_finished(self, document, http, error):
         offset = document.get('recording-offset', 0) if not error else 0
@@ -782,6 +801,7 @@ class Album(MetadataItem):
             priority=priority,
             refresh=refresh,
         )
+        self.set_request_reply('release_metadata', self.load_task)
 
     def run_when_loaded(self, func, run_on_error=False):
         if self.loaded:

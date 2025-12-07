@@ -207,11 +207,12 @@ class CoverArt:
         self.album.add_request(
             request_id, RequestType.OPTIONAL, f'Cover art download: {coverartimage.types_as_string(translate=False)}'
         )
-        self.album.tagger.webservice.download_url(
+        reply = self.album.tagger.webservice.download_url(
             url=coverartimage.url,
             handler=partial(self._coverart_downloaded, coverartimage),
             priority=True,
         )
+        self.album.set_request_reply(request_id, reply)
 
     def queue_put(self, coverartimage):
         """Add an image to queue"""
