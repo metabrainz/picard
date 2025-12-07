@@ -196,7 +196,7 @@ def get_plugin_directory_name(manifest) -> str:
 class PluginManager:
     """Installs, loads and updates plugins from multiple plugin directories."""
 
-    _primary_plugin_dir: Path = None
+    _primary_plugin_dir: Path | None = None
     _plugin_dirs: List[Path] = []
     _plugins: List[Plugin] = []
 
@@ -631,25 +631,25 @@ class PluginManager:
             dir_path: Path to plugin directory
             primary: Whether this is the primary plugin directory
         """
-        dir_path = Path(os.path.normpath(dir_path))
-        if dir_path in self._plugin_dirs:
-            log.warning('Plugin directory %s already registered', dir_path)
+        plugin_dir = Path(os.path.normpath(dir_path))
+        if plugin_dir in self._plugin_dirs:
+            log.warning('Plugin directory %s already registered', plugin_dir)
             return
 
-        log.debug('Registering plugin directory %s', dir_path)
-        if not dir_path.exists():
-            os.makedirs(dir_path)
+        log.debug('Registering plugin directory %s', plugin_dir)
+        if not plugin_dir.exists():
+            os.makedirs(plugin_dir)
 
-        for entry in dir_path.iterdir():
+        for entry in plugin_dir.iterdir():
             if entry.is_dir() and not entry.name.startswith('.'):
-                plugin = self._load_plugin(dir_path, entry.name)
+                plugin = self._load_plugin(plugin_dir, entry.name)
                 if plugin:
                     log.debug('Found plugin %s in %s', plugin.plugin_id, plugin.local_path)
                     self._plugins.append(plugin)
 
-        self._plugin_dirs.append(dir_path)
+        self._plugin_dirs.append(plugin_dir)
         if primary:
-            self._primary_plugin_dir = dir_path
+            self._primary_plugin_dir = plugin_dir
 
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False

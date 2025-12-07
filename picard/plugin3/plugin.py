@@ -25,6 +25,7 @@ from pathlib import Path
 import re
 import sys
 import time
+import types
 
 from picard import log
 from picard.extension_points import (
@@ -549,14 +550,14 @@ class PluginSourceLocal(PluginSource):
 
 
 class Plugin:
-    local_path: Path = None
-    remote_url: str = None
-    ref = None
-    name: str = None
-    module_name: str = None
-    manifest: PluginManifest = None
-    state: PluginState = None
-    _module = None
+    local_path: Path | None = None
+    remote_url: str | None = None
+    ref: str | None = None
+    name: str | None = None
+    module_name: str | None = None
+    manifest: PluginManifest | None = None
+    state: PluginState | None = None
+    _module: types.ModuleType | None = None
 
     def __init__(self, plugins_dir: Path, plugin_name: str):
         self.plugin_id = plugin_name
@@ -564,7 +565,7 @@ class Plugin:
         self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
 
-    def sync(self, plugin_source: PluginSource = None):
+    def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
         if plugin_source:
             try:
