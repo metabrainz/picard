@@ -33,6 +33,8 @@ from typing import (
     Type,
 )
 
+from PyQt6.QtCore import QCoreApplication
+
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.config import (
@@ -144,8 +146,8 @@ class PluginApi:
     OptionsPage = OptionsPage
 
     # Class-level registries for get_api()
-    _instances = {}  # Maps module name -> PluginApi instance
-    _module_cache = {}  # Maps module name -> PluginApi instance (for faster lookup)
+    _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
+    _module_cache: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance (for faster lookup)
 
     def __init__(self, manifest: PluginManifest, tagger) -> None:
         from picard.tagger import Tagger
@@ -163,14 +165,20 @@ class PluginApi:
 
     def _install_qt_translator(self) -> None:
         """Install Qt translator for .ui file translations."""
-        from PyQt6.QtCore import QCoreApplication
-
         if not self._translations:
             return
 
         self._qt_translator = PluginTranslator(self._translations, self._source_locale)
         self._qt_translator._current_locale = self.get_locale()
         QCoreApplication.installTranslator(self._qt_translator)
+
+    def _remove_qt_translator(self) -> None:
+        """Remove Qt translator for .ui file translations."""
+        if not self._qt_translator:
+            return
+
+        QCoreApplication.removeTranslator(self._qt_translator)
+        self._qt_translator = None
 
     def _is_valid_locale(self, locale: str) -> bool:
         """Check if locale string is valid (basic sanity check).
