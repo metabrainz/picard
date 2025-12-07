@@ -249,15 +249,9 @@ class Album(MetadataItem):
             log.debug("Canceling %s request %s: %s", request_info.type.name, request_id, request_info.description)
             if request_info.reply:
                 try:
-                    # Handle both RequestTask (queued) and QNetworkReply (active)
-                    if hasattr(request_info.reply, 'abort'):
-                        # QNetworkReply - abort the active request
-                        request_info.reply.abort()
-                    elif hasattr(request_info.reply, 'func'):
-                        # RequestTask - remove from queue
-                        self.tagger.webservice._queue.remove_task(request_info.reply)
-                except (RuntimeError, ValueError):
-                    # Reply may already be deleted or task already removed
+                    self.tagger.webservice.abort_task(request_info.reply)
+                except (RuntimeError, ValueError, AttributeError):
+                    # Task may already be completed or invalid
                     pass
         self._pending_requests.clear()
 
