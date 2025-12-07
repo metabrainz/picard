@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-12-02 02:11+0000\n"
+"PO-Revision-Date: 2025-12-07 12:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -453,7 +453,7 @@ msgstr "De ingebouwde zoekfunctie in plaats van de browser gebruiken"
 
 #: picard/options.py:292 picard/ui/forms/ui_options_interface.py:136
 msgid "Adjust horizontal position in file browser automatically"
-msgstr "De horizontale positie in de bestandsbrowser automatisch aanpassen"
+msgstr "De horizontale positie in de verkenner automatisch aanpassen"
 
 #: picard/options.py:294 picard/ui/forms/ui_options_interface.py:135
 msgid "Show a confirmation dialog when saving files"
@@ -5522,7 +5522,7 @@ msgstr "Ctrl+Shift+O"
 
 #: picard/ui/mainwindow/actions.py:307
 msgid "File &Browser"
-msgstr "&Bestandsbrowser"
+msgstr "&Verkenner"
 
 #: picard/ui/mainwindow/actions.py:311
 msgid "Ctrl+B"

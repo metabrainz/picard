@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# marudosurdo <marudosurdo@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-08-01 08:36+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2025-12-07 12:11+0000\n"
+"Last-Translator: marudosurdo <marudosurdo@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ja/>\n"
 "Language: ja\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -34,7 +35,7 @@ msgstr "安定版、ベータ版、開発版"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "アスペクト比を維持する"
 
 #: picard/const/cover_processing.py:48
 msgid ""
@@ -44,10 +45,15 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>ターゲットの寸法内に収まるようにソース画像を拡大縮小します。</p><p>ソース"
+"画像とターゲットの寸法のアスペクト比が異なる場合、最終的な画像の寸法の 1 つが"
+"ターゲットの寸法より小さくなることがあります。</p><p>たとえば、2000x1000 の画"
+"像を 1000x1000 のターゲット寸法にサイズ変更すると、最終的な画像のサイズは "
+"1000x500 になります。</p>"
 
 #: picard/const/cover_processing.py:61
 msgid "Scale to width"
-msgstr ""
+msgstr "幅に合わせて拡大縮小する"
 
 #: picard/const/cover_processing.py:63
 msgid ""
@@ -55,6 +61,9 @@ msgid ""
 "aspect ratio.</p><p>For example, a 2000x1000 image resized to a target width "
 "of 1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>アスペクト比を維持しながら、ソース画像の幅をターゲット幅に合わせて拡大縮小"
+"します。</p><p>たとえば、2000x1000 の画像をターゲット幅 1000 にサイズ変更する"
+"と、最終的な画像サイズは 1000x500 になります。</p>"
 
 #: picard/const/cover_processing.py:73
 msgid "Scale to height"

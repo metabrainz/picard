@@ -39,6 +39,8 @@ from unittest.mock import Mock, call, patch
 
 from PyQt6 import QtWidgets
 
+from picard.extension_points.script_functions import ext_point_script_functions
+
 import pytest
 
 from picard.ui.itemviews.custom_columns.column_controller import ColumnController
@@ -65,8 +67,14 @@ from picard.ui.itemviews.custom_columns.view_selector import ViewSelector
 @pytest.fixture(autouse=True, scope="module")
 def setup_extension_points():
     """Prevent extension point iteration issues during parallel test execution."""
-    with patch('picard.script.script_functions.ext_point_script_functions', []):
-        yield
+    original_script_functions = list(ext_point_script_functions)
+    ext_point_script_functions.clear()
+    yield
+    for name, func_info in original_script_functions:
+        ext_point_script_functions.register(
+            func_info.function.__module__,
+            (name, func_info),
+        )
 
 
 @pytest.fixture

@@ -33,6 +33,8 @@ from typing import (
     Type,
 )
 
+from PyQt6.QtCore import QCoreApplication
+
 from picard.album import Album
 from picard.album_requests import TaskType
 from picard.cluster import Cluster
@@ -48,6 +50,7 @@ from picard.extension_points.cover_art_filters import (
     register_cover_art_metadata_filter,
 )
 from picard.extension_points.cover_art_processors import (
+    ImageProcessor,
     register_cover_art_processor,
 )
 from picard.extension_points.cover_art_providers import (
@@ -147,9 +150,23 @@ class PluginApi:
     OptionsPage = OptionsPage
 
     # Class-level registries for get_api()
-    _instances = {}  # Maps module name -> PluginApi instance
-    _module_cache = {}  # Maps module name -> PluginApi instance (for faster lookup)
+    _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
+    _module_cache: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance (for faster lookup)
     _deprecation_warnings_emitted = set()  # Track emitted deprecation warnings
+
+    def __init__(self, manifest: PluginManifest, tagger) -> None:
+        from picard.tagger import Tagger
+
+        self._tagger: Tagger = tagger
+        self._manifest = manifest
+        self._plugin_module = None  # Will be set when plugin is enabled
+        full_name = f'plugin.{self._manifest.uuid}'
+        self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
+        self._api_config = ConfigSection(get_config(), full_name)
+        self._translations = {}
+        self._source_locale = manifest.source_locale
+        self._plugin_dir = None
+        self._qt_translator = None
 
     @staticmethod
     def get_caller_info(frame_depth=2):
@@ -203,30 +220,22 @@ class PluginApi:
                 *args,
             )
 
-    def __init__(self, manifest: PluginManifest, tagger) -> None:
-        from picard.tagger import Tagger
-
-        self._tagger: Tagger = tagger
-        self._manifest = manifest
-        self._plugin_module = None  # Will be set when plugin is enabled
-        full_name = f'plugin.{self._manifest.uuid}'
-        self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
-        self._api_config = ConfigSection(get_config(), full_name)
-        self._translations = {}
-        self._source_locale = manifest.source_locale
-        self._plugin_dir = None
-        self._qt_translator = None
-
     def _install_qt_translator(self) -> None:
         """Install Qt translator for .ui file translations."""
-        from PyQt6.QtCore import QCoreApplication
-
         if not self._translations:
             return
 
         self._qt_translator = PluginTranslator(self._translations, self._source_locale)
         self._qt_translator._current_locale = self.get_locale()
         QCoreApplication.installTranslator(self._qt_translator)
+
+    def _remove_qt_translator(self) -> None:
+        """Remove Qt translator for .ui file translations."""
+        if not self._qt_translator:
+            return
+
+        QCoreApplication.removeTranslator(self._qt_translator)
+        self._qt_translator = None
 
     def _is_valid_locale(self, locale: str) -> bool:
         """Check if locale string is valid (basic sanity check).
@@ -579,7 +588,7 @@ class PluginApi:
         return register_file_post_save_processor(wrapped, priority)
 
     # Cover art
-    def register_cover_art_provider(self, provider: CoverArtProvider) -> None:
+    def register_cover_art_provider(self, provider: Type[CoverArtProvider]) -> None:
         return register_cover_art_provider(provider)
 
     def register_cover_art_filter(self, filter: Callable) -> None:
@@ -592,11 +601,11 @@ class PluginApi:
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)
 
-    def register_cover_art_processor(self, processor_class: Type) -> None:
+    def register_cover_art_processor(self, processor_class: Type[ImageProcessor]) -> None:
         return register_cover_art_processor(processor_class)
 
     # File formats
-    def register_format(self, format: File) -> None:
+    def register_format(self, format: Type[File]) -> None:
         return register_format(format)
 
     # Scripting
