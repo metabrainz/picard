@@ -119,3 +119,43 @@ def _install_defaulting_config(monkeypatch):
 
     # Yield control to test session
     yield
+
+
+@pytest.fixture(autouse=True, scope='session')
+def _prevent_extension_point_deletion():
+    """Prevent Qt from deleting ExtensionPoint objects during tests.
+
+    In CI environments, Qt may delete ExtensionPoint QObjects that have no parent,
+    causing "wrapped C/C++ object has been deleted" errors. This fixture ensures
+    all ExtensionPoint objects are kept alive for the entire test session.
+    """
+    from PyQt6.QtCore import QObject
+
+    import picard.extension_points as ext_points_mod
+
+    # Create a parent object that lives for the entire session
+    parent = QObject()
+
+    # Set parent for all existing ExtensionPoints
+    for ep in ext_points_mod._extension_points:
+        try:
+            ep.setParent(parent)
+        except RuntimeError:
+            pass
+
+    # Monkey-patch ExtensionPoint.__init__ to set parent on new instances
+    original_init = ext_points_mod.ExtensionPoint.__init__
+
+    def patched_init(self, label=None):
+        original_init(self, label)
+        try:
+            self.setParent(parent)
+        except RuntimeError:
+            pass
+
+    ext_points_mod.ExtensionPoint.__init__ = patched_init
+
+    yield
+
+    # Restore original __init__
+    ext_points_mod.ExtensionPoint.__init__ = original_init
