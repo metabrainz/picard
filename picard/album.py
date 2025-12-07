@@ -234,51 +234,29 @@ class Album(MetadataItem):
         """Get all pending requests for debugging."""
         return dict(self._pending_requests)
 
-    def _get_caller_info(self):
-        """Get caller information for deprecation warnings."""
-        import sys
+    def _warn_deprecated_requests(self, operation):
+        """Emit deprecation warning for album._requests usage (once per location)."""
+        from picard.plugin3.api import PluginApi
 
-        frame = sys._getframe(2)
-        filename = frame.f_code.co_filename
-        lineno = frame.f_lineno
-
-        plugin_name = "unknown"
-        if 'plugins3' in filename:
-            parts = filename.split('/')
-            try:
-                idx = parts.index('plugins3')
-                plugin_name = parts[idx + 1]
-            except (ValueError, IndexError):
-                pass
-
-        return plugin_name, filename, lineno
+        PluginApi.deprecation_warning(
+            "Using deprecated album._requests (%s). "
+            "Use api.add_album_request() and api.complete_album_request() instead.",
+            operation,
+            frame_depth=4,
+        )
 
     @property
     def _requests(self):
         """Compatibility property for old plugins using album._requests.
         Returns count of critical requests only."""
-        plugin_name, filename, lineno = self._get_caller_info()
-        log.warning(
-            "Plugin '%s' is reading deprecated album._requests at %s:%d. "
-            "Use api.add_album_request() and api.complete_album_request() instead.",
-            plugin_name,
-            filename,
-            lineno,
-        )
+        self._warn_deprecated_requests('read')
         return sum(1 for r in self._pending_requests.values() if r.type == RequestType.CRITICAL)
 
     @_requests.setter
     def _requests(self, value):
         """Compatibility setter for old plugins.
         Logs a warning but doesn't break functionality."""
-        plugin_name, filename, lineno = self._get_caller_info()
-        log.warning(
-            "Plugin '%s' is using deprecated album._requests at %s:%d. "
-            "Use api.add_album_request() and api.complete_album_request() instead.",
-            plugin_name,
-            filename,
-            lineno,
-        )
+        self._warn_deprecated_requests('write')
 
     def iterfiles(self, save=False):
         for track in self.tracks:

@@ -146,6 +146,59 @@ class PluginApi:
     # Class-level registries for get_api()
     _instances = {}  # Maps module name -> PluginApi instance
     _module_cache = {}  # Maps module name -> PluginApi instance (for faster lookup)
+    _deprecation_warnings_emitted = set()  # Track emitted deprecation warnings
+
+    @staticmethod
+    def get_caller_info(frame_depth=2):
+        """Get caller information for deprecation warnings.
+
+        Args:
+            frame_depth: Number of frames to go back (default 2)
+
+        Returns:
+            Tuple of (plugin_name, filename, lineno)
+        """
+        import sys
+
+        frame = sys._getframe(frame_depth)
+        filename = frame.f_code.co_filename
+        lineno = frame.f_lineno
+
+        plugin_name = "unknown"
+        if 'plugins3' in filename:
+            parts = filename.split('/')
+            try:
+                idx = parts.index('plugins3')
+                plugin_name = parts[idx + 1]
+                # Truncate to show only relative path within plugin directory
+                filename = '/'.join(parts[idx + 2 :])
+            except (ValueError, IndexError):
+                pass
+
+        return plugin_name, filename, lineno
+
+    @classmethod
+    def deprecation_warning(cls, message, *args, frame_depth=3):
+        """Emit a deprecation warning once per unique caller location.
+
+        Args:
+            message: Warning message format string
+            *args: Arguments for message formatting
+            frame_depth: Number of frames to go back (default 3)
+        """
+        from picard import log
+
+        plugin_name, filename, lineno = cls.get_caller_info(frame_depth=frame_depth)
+        warning_key = (plugin_name, filename, lineno)
+        if warning_key not in cls._deprecation_warnings_emitted:
+            cls._deprecation_warnings_emitted.add(warning_key)
+            log.warning(
+                "Plugin '%s' at %s:%d: " + message,
+                plugin_name,
+                filename,
+                lineno,
+                *args,
+            )
 
     def __init__(self, manifest: PluginManifest, tagger) -> None:
         from picard.tagger import Tagger
