@@ -628,6 +628,7 @@ class Plugin:
         api._plugin_module = self._module
         api._plugin_dir = self.local_path
         api._load_translations()
+        api._install_qt_translator()
 
         # Register API instance for get_api()
         module_name = getattr(self._module, '__name__', None)
@@ -662,6 +663,7 @@ class Plugin:
         # Cleanup API instance registry - find and remove by module reference
         for name, api in list(PluginApi._instances.items()):
             if api._plugin_module is self._module:
+                api._remove_qt_translator()
                 del PluginApi._instances[name]
                 # Remove from cache (entries for this module and submodules)
                 for key in list(PluginApi._module_cache):
