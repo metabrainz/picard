@@ -158,9 +158,9 @@ class CoverArt:
                         self.next_in_queue()
                 return
             except StopIteration:
-                # nothing more to do
-                processing_result = self.image_processing.wait_for_processing()
-                self.album._finalize_loading(error=processing_result)
+                # Cover art processing complete - no need to finalize,
+                # album already finalized when critical requests completed
+                self.image_processing.wait_for_processing()
                 return
 
         # We still have some items to try!
