@@ -205,6 +205,18 @@ class Album(MetadataItem):
         """Add a pending request that must complete before album finalization."""
         import time
 
+        if timeout is not None:
+            network_timeout = get_config().setting['network_transfer_timeout_seconds']
+            if timeout > network_timeout:
+                log.warning(
+                    "Request %s has timeout %.1fs which exceeds network timeout %.1fs. "
+                    "Capping to network timeout to ensure proper cleanup.",
+                    request_id,
+                    timeout,
+                    network_timeout,
+                )
+                timeout = network_timeout
+
         request_info = RequestInfo(
             request_id=request_id,
             type=request_type,
