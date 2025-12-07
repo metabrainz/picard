@@ -22,7 +22,11 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import List, NamedTuple
+from typing import TYPE_CHECKING, List, NamedTuple
+
+
+if TYPE_CHECKING:
+    from picard.tagger import Tagger
 
 from picard import (
     api_versions_tuple,
@@ -200,12 +204,12 @@ class PluginManager:
     _plugin_dirs: List[Path] = []
     _plugins: List[Plugin] = []
 
-    def __init__(self, tagger=None):
+    def __init__(self, tagger: 'Tagger | None' = None) -> None:
         from picard.tagger import Tagger
 
         self._tagger: Tagger | None = tagger
-        self._enabled_plugins = set()
-        self._failed_plugins = []  # List of (path, name, error_message) tuples
+        self._enabled_plugins: set[str] = set()
+        self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
         self._load_config()
 
         # Initialize registry for blacklist checking
@@ -838,6 +842,7 @@ class PluginManager:
 
         # Generate plugin directory name from sanitized name + UUID
         plugin_name = get_plugin_directory_name(manifest)
+        assert self._primary_plugin_dir is not None
         final_path = self._primary_plugin_dir / plugin_name
 
         # Check if already installed and handle reinstall
@@ -866,8 +871,8 @@ class PluginManager:
             PluginMetadata(
                 name=plugin_name,
                 url=str(local_path),
-                ref=ref_to_save,
-                commit=commit_to_save,
+                ref=ref_to_save or '',
+                commit=commit_to_save or '',
                 uuid=manifest.uuid,
             )
         )
@@ -975,6 +980,7 @@ class PluginManager:
 
         # Check for uncommitted changes
         if not discard_changes:
+            assert plugin.local_path is not None
             changes = GitOperations.check_dirty_working_dir(plugin.local_path)
             if changes:
                 raise PluginDirtyError(plugin.plugin_id, changes)
@@ -1010,6 +1016,7 @@ class PluginManager:
                 log.info('Found newer version: %s -> %s', old_ref, new_ref)
 
         source = PluginSourceGit(current_url, new_ref)
+        assert plugin.local_path is not None
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date and resolve annotated tags to actual commit
@@ -1017,9 +1024,10 @@ class PluginManager:
 
         repo = pygit2.Repository(plugin.local_path.absolute())
         obj = repo.get(new_commit)
+        assert obj is not None
         # Peel tag to commit if needed
         if obj.type == pygit2.GIT_OBJECT_TAG:
-            commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+            commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)  # type: ignore[call-overload]
             new_commit = str(commit.id)  # Use actual commit ID, not tag object ID
         else:
             commit = obj
@@ -1039,7 +1047,7 @@ class PluginManager:
             PluginMetadata(
                 name=plugin.plugin_id,
                 url=current_url,
-                ref=new_ref,
+                ref=new_ref or '',
                 commit=new_commit,
                 uuid=current_uuid,
                 original_url=original_url,
@@ -1053,7 +1061,15 @@ class PluginManager:
                 plugin.local_path, current_url, registry_plugin['versioning_scheme']
             )
 
-        return UpdateResult(old_version, new_version, old_commit, new_commit, old_ref, new_ref, commit_date)
+        return UpdateResult(
+            old_version or '',
+            new_version or '',
+            old_commit,
+            new_commit,
+            old_ref or '',
+            new_ref or '',
+            commit_date,
+        )
 
     def update_all_plugins(self):
         """Update all installed plugins."""
@@ -1178,6 +1194,8 @@ class PluginManager:
         plugin_path = plugin.local_path
 
         # Safety check: ensure plugin_path is a child of primary plugin dir, not the dir itself
+        assert self._primary_plugin_dir is not None
+        assert plugin_path is not None
         if not plugin_path.is_relative_to(self._primary_plugin_dir) or plugin_path == self._primary_plugin_dir:
             raise ValueError(f'Plugin path must be a subdirectory of {self._primary_plugin_dir}: {plugin_path}')
 
@@ -1248,6 +1266,7 @@ class PluginManager:
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
         uuid = PluginValidation.get_plugin_uuid(plugin)
+        assert plugin.state is not None
         log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
 
         if self._tagger:
@@ -1287,6 +1306,7 @@ class PluginManager:
     def disable_plugin(self, plugin: Plugin):
         """Disable a plugin and save to config."""
         uuid = PluginValidation.get_plugin_uuid(plugin)
+        assert plugin.state is not None
         log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
 
         # Only disable if not already disabled
@@ -1328,6 +1348,7 @@ class PluginManager:
 
                 set_plugin_uuid(plugin.manifest.uuid, plugin.plugin_id)
 
+            assert plugin.manifest is not None
             compatible_versions = _compatible_api_versions(plugin.manifest.api_versions)
             if compatible_versions:
                 log.debug(

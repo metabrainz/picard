@@ -36,10 +36,15 @@ try:
 except ImportError:
     import tomli as tomllib  # type: ignore[no-redef,import-not-found]
 from typing import (
+    TYPE_CHECKING,
     Callable,
     Type,
     TypeAlias,
 )
+
+
+if TYPE_CHECKING:
+    from picard.tagger import Tagger
 
 from PyQt6.QtCore import QCoreApplication
 
@@ -95,7 +100,6 @@ from picard.plugin3.i18n import (
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
-from picard.tagger import Tagger
 from picard.track import Track
 from picard.webservice import (
     PendingRequest,
@@ -163,8 +167,8 @@ class PluginApi:
     _module_cache: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance (for faster lookup)
     _deprecation_warnings_emitted: set[tuple[str, str, int]] = set()  # Track emitted deprecation warnings
 
-    def __init__(self, manifest: PluginManifest, tagger: Tagger) -> None:
-        self._tagger: Tagger = tagger
+    def __init__(self, manifest: PluginManifest, tagger: 'Tagger') -> None:
+        self._tagger: 'Tagger' = tagger
         self._manifest = manifest
         self._plugin_module: types.ModuleType | None = None  # Will be set when plugin is enabled
         full_name = f'plugin.{self._manifest.uuid}'
