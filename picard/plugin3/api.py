@@ -28,6 +28,7 @@ from logging import (
 )
 from pathlib import Path
 import sys
+import types
 
 
 try:
@@ -165,13 +166,13 @@ class PluginApi:
     def __init__(self, manifest: PluginManifest, tagger: Tagger) -> None:
         self._tagger: Tagger = tagger
         self._manifest = manifest
-        self._plugin_module = None  # Will be set when plugin is enabled
+        self._plugin_module: types.ModuleType | None = None  # Will be set when plugin is enabled
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
         self._api_config = ConfigSection(get_config(), full_name)
         self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
-        self._plugin_dir = None
+        self._plugin_dir: str | None = None
         self._qt_translator: PluginTranslator | None = None
 
     @staticmethod
