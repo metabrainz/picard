@@ -635,12 +635,13 @@ class Plugin:
             PluginApi._instances[module_name] = api
 
         # Log plugin info
-        version = self.manifest.version if self.manifest else 'unknown'
+        version = self.manifest.version if self.manifest else None
         commit_id = self.get_current_commit_id()
+        version_str = f" v{version}" if version else ""
         if commit_id:
-            api.logger.info(f"Enabling plugin {self.plugin_id} v{version} (commit {commit_id})")
+            api.logger.info(f"Enabling plugin {self.plugin_id}{version_str} (commit {commit_id})")
         else:
-            api.logger.info(f"Enabling plugin {self.plugin_id} v{version}")
+            api.logger.info(f"Enabling plugin {self.plugin_id}{version_str}")
 
         self._module.enable(api)
         self.state = PluginState.ENABLED
