@@ -47,6 +47,7 @@ from picard.extension_points.cover_art_filters import (
     register_cover_art_metadata_filter,
 )
 from picard.extension_points.cover_art_processors import (
+    ImageProcessor,
     register_cover_art_processor,
 )
 from picard.extension_points.cover_art_providers import (
@@ -522,7 +523,7 @@ class PluginApi:
         return register_file_post_save_processor(wrapped, priority)
 
     # Cover art
-    def register_cover_art_provider(self, provider: CoverArtProvider) -> None:
+    def register_cover_art_provider(self, provider: Type[CoverArtProvider]) -> None:
         return register_cover_art_provider(provider)
 
     def register_cover_art_filter(self, filter: Callable) -> None:
@@ -535,11 +536,11 @@ class PluginApi:
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)
 
-    def register_cover_art_processor(self, processor_class: Type) -> None:
+    def register_cover_art_processor(self, processor_class: Type[ImageProcessor]) -> None:
         return register_cover_art_processor(processor_class)
 
     # File formats
-    def register_format(self, format: File) -> None:
+    def register_format(self, format: Type[File]) -> None:
         return register_format(format)
 
     # Scripting
