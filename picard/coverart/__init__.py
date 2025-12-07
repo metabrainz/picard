@@ -32,6 +32,7 @@ import traceback
 from PyQt6 import QtCore
 
 from picard import log
+from picard.album_requests import RequestType
 from picard.config import get_config
 from picard.coverart.image import CoverArtImageIOError
 from picard.coverart.processing import (
@@ -85,7 +86,8 @@ class CoverArt:
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
-        self.album._requests -= 1
+        request_id = f'coverart_{id(coverartimage)}'
+        self.album.complete_request(request_id)
 
         if error:
             self.album.error_append("Coverart error: %s" % http.errorString())
@@ -199,12 +201,15 @@ class CoverArt:
             echo=None,
         )
         log.debug("Downloading %r", coverartimage)
+        request_id = f'coverart_{id(coverartimage)}'
+        self.album.add_request(
+            request_id, RequestType.OPTIONAL, f'Cover art download: {coverartimage.types_as_string()}'
+        )
         self.album.tagger.webservice.download_url(
             url=coverartimage.url,
             handler=partial(self._coverart_downloaded, coverartimage),
             priority=True,
         )
-        self.album._requests += 1
 
     def queue_put(self, coverartimage):
         """Add an image to queue"""

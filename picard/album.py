@@ -52,6 +52,10 @@ import traceback
 from PyQt6 import QtNetwork
 
 from picard import log
+from picard.album_requests import (
+    RequestInfo,
+    RequestType,
+)
 from picard.cluster import Cluster
 from picard.collection import add_release_to_user_collections
 from picard.config import get_config
@@ -181,7 +185,7 @@ class Album(MetadataItem):
         self.load_task = None
         self.release_group = None
         self._files_count = 0
-        self._requests = 0
+        self._pending_requests = {}
         self._tracks_loaded = False
         self._discids = set()
         self._recordings_map = {}
@@ -196,6 +200,39 @@ class Album(MetadataItem):
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
+
+    def add_request(self, request_id, request_type, description, timeout=None, plugin_id=None):
+        """Add a pending request that must complete before album finalization."""
+        import time
+
+        request_info = RequestInfo(
+            request_id=request_id,
+            type=request_type,
+            description=description,
+            started_at=time.time(),
+            timeout=timeout,
+            plugin_id=plugin_id,
+        )
+        self._pending_requests[request_id] = request_info
+        log.debug("Added %s request %s: %s", request_type.name, request_id, description)
+
+    def complete_request(self, request_id):
+        """Mark a request as complete."""
+        if request_id in self._pending_requests:
+            request_info = self._pending_requests.pop(request_id)
+            log.debug(
+                "Completed %s request %s after %.2fs", request_info.type.name, request_id, request_info.elapsed_time()
+            )
+        else:
+            log.warning("Attempted to complete unknown request: %s", request_id)
+
+    def has_critical_requests(self):
+        """Check if there are any critical requests pending."""
+        return any(r.type == RequestType.CRITICAL for r in self._pending_requests.values())
+
+    def get_pending_requests(self):
+        """Get all pending requests for debugging."""
+        return dict(self._pending_requests)
 
     def iterfiles(self, save=False):
         for track in self.tracks:
@@ -381,7 +418,7 @@ class Album(MetadataItem):
                     error = True
                     self.error_append(traceback.format_exc())
         finally:
-            self._requests -= 1
+            self.complete_request('release_metadata')
             if parse_result == ParseResult.PARSED or error:
                 self._finalize_loading(error)
 
@@ -395,7 +432,11 @@ class Album(MetadataItem):
             'work-level-rels',
         )
         log.debug("Loading recording relationships for %r (offset=%i, limit=%i)", self, offset, limit)
-        self._requests += 1
+        self.add_request(
+            f'recording_rels_{offset}',
+            RequestType.CRITICAL,
+            f'Recording relationships (offset={offset}, limit={limit})',
+        )
         self.load_task = self.tagger.mb_api.browse_recordings(
             self._recordings_request_finished,
             inc=inc,
@@ -405,9 +446,12 @@ class Album(MetadataItem):
         )
 
     def _recordings_request_finished(self, document, http, error):
+        offset = document.get('recording-offset', 0) if not error else 0
+        request_id = f'recording_rels_{offset}'
+
         if error:
             self.error_append(http.errorString())
-            self._requests -= 1
+            self.complete_request(request_id)
             self._finalize_loading(error)
         else:
             for recording in document.get('recordings', []):
@@ -415,16 +459,15 @@ class Album(MetadataItem):
                 if recording_id:
                     self._recordings_map[recording_id] = recording
             count = document.get('recording-count', 0)
-            offset = document.get('recording-offset', 0)
             next_offset = offset + RECORDING_QUERY_LIMIT
             if next_offset < count:
-                self._requests -= 1
+                self.complete_request(request_id)
                 self._request_recording_relationships(offset=next_offset)
             else:
                 # Merge separately loaded recording relationships into release node
                 self._merge_release_recording_relationships()
                 self._run_album_metadata_processors()
-                self._requests -= 1
+                self.complete_request(request_id)
                 self._finalize_loading(error)
 
     def _merge_recording_relationships(self, track_node):
@@ -630,7 +673,7 @@ class Album(MetadataItem):
             self.metadata.clear()
             self.status = AlbumStatus.ERROR
             self.update()
-            if not self._requests:
+            if not self.has_critical_requests():
                 del self._new_metadata
                 del self._new_tracks
                 self.loaded = True
@@ -639,17 +682,17 @@ class Album(MetadataItem):
                         func()
             return
 
-        if self._requests > 0:
+        if self.has_critical_requests():
             return
 
         if not self._tracks_loaded:
             self._load_tracks()
 
-        if not self._requests:
+        if not self.has_critical_requests():
             self._finalize_loading_album()
 
     def load(self, priority=False, refresh=False):
-        if self._requests:
+        if self.has_critical_requests():
             log.info("Not reloading, some requests are still active.")
             return
         self.tagger.window.set_statusbar_message(
@@ -666,7 +709,8 @@ class Album(MetadataItem):
         self.update(update_selection=False)
         self._new_metadata = Metadata()
         self._new_tracks = []
-        self._requests = 1
+        self._pending_requests.clear()
+        self.add_request('release_metadata', RequestType.CRITICAL, f'Release metadata for {self.id}')
         self.clear_errors()
         config = get_config()
         require_authentication = False
