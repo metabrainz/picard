@@ -527,6 +527,12 @@ class WebService(QtCore.QObject):
         slow_down = False
 
         error = reply.error()
+
+        # Silently ignore canceled operations (user-initiated abort)
+        if error == QNetworkReply.NetworkError.OperationCanceledError:
+            log.debug("Request canceled for %s", self.display_url(reply.request().url()))
+            return
+
         handler = request.handler
         response_code = self.http_response_code(reply)
         display_reply_url = self.display_url(reply.request().url())
