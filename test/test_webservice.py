@@ -82,29 +82,29 @@ class WebServiceTest(PicardTestCase):
         )
         self.ws = WebService()
 
-    @patch.object(WebService, 'add_task')
-    def test_webservice_url_method_calls(self, mock_add_task):
+    @patch.object(WebService, 'add_request')
+    def test_webservice_url_method_calls(self, mock_add_request):
         url = "http://abc.xyz"
         handler = dummy_handler
         data = None
 
-        def get_wsreq(mock_add_task):
-            return mock_add_task.call_args[0][1]
+        def get_wsreq(mock_add_request):
+            return mock_add_request.call_args[0][0]
 
         self.ws.get_url(url=url, handler=handler)
-        self.assertEqual(1, mock_add_task.call_count)
-        self.assertEqual('abc.xyz', get_wsreq(mock_add_task).host)
-        self.assertEqual(80, get_wsreq(mock_add_task).port)
-        self.assertIn("GET", get_wsreq(mock_add_task).method)
+        self.assertEqual(1, mock_add_request.call_count)
+        self.assertEqual('abc.xyz', get_wsreq(mock_add_request).host)
+        self.assertEqual(80, get_wsreq(mock_add_request).port)
+        self.assertIn("GET", get_wsreq(mock_add_request).method)
         self.ws.post_url(url=url, data=data, handler=handler)
-        self.assertIn("POST", get_wsreq(mock_add_task).method)
+        self.assertIn("POST", get_wsreq(mock_add_request).method)
         self.ws.put_url(url=url, data=data, handler=handler)
-        self.assertIn("PUT", get_wsreq(mock_add_task).method)
+        self.assertIn("PUT", get_wsreq(mock_add_request).method)
         self.ws.delete_url(url=url, handler=handler)
-        self.assertIn("DELETE", get_wsreq(mock_add_task).method)
+        self.assertIn("DELETE", get_wsreq(mock_add_request).method)
         self.ws.download_url(url=url, handler=handler)
-        self.assertIn("GET", get_wsreq(mock_add_task).method)
-        self.assertEqual(5, mock_add_task.call_count)
+        self.assertIn("GET", get_wsreq(mock_add_request).method)
+        self.assertEqual(5, mock_add_request.call_count)
 
 
 class WebServiceTaskTest(PicardTestCase):
@@ -132,7 +132,9 @@ class WebServiceTaskTest(PicardTestCase):
         )
         func = 1
         task = self.ws.add_task(func, request)
-        self.assertEqual((request.get_host_key(), func, 0), task)
+        self.assertEqual(request.get_host_key(), task.hostkey)
+        self.assertEqual(func, task.func)
+        self.assertEqual(0, task.priority)
         self.ws._queue.add_task.assert_called_with(task, False)
         request.important = True
         task = self.ws.add_task(func, request)
@@ -159,16 +161,16 @@ class WebServiceTaskTest(PicardTestCase):
 
     def test_remove_task(self):
         task = RequestTask(('example.com', 80), dummy_handler, priority=0)
-        self.ws.remove_task(task)
+        self.ws._remove_task(task)
         self.ws._queue.remove_task.assert_called_with(task)
 
     def test_remove_task_calls_timers(self):
         mock_timer = self.ws._timer_count_pending_requests
         task = RequestTask(('example.com', 80), dummy_handler, priority=0)
-        self.ws.remove_task(task)
+        self.ws._remove_task(task)
         mock_timer.start.assert_not_called()
         mock_timer.isActive.return_value = False
-        self.ws.remove_task(task)
+        self.ws._remove_task(task)
         mock_timer.start.assert_called_with(0)
 
     def test_run_next_task(self):
@@ -200,7 +202,7 @@ class RequestTaskTest(PicardTestCase):
         self.assertEqual(request.get_host_key(), task.hostkey)
         self.assertEqual(func, task.func)
         self.assertEqual(1, task.priority)
-        self.assertEqual((request.get_host_key(), func, 1), task)
+        self.assertFalse(task.aborted)
 
 
 class RequestPriorityQueueTest(PicardTestCase):
