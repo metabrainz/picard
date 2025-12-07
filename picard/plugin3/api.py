@@ -28,9 +28,16 @@ from logging import (
 )
 from pathlib import Path
 import sys
+
+
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib  # type: ignore[no-redef,import-not-found]
 from typing import (
     Callable,
     Type,
+    TypeAlias,
 )
 
 from PyQt6.QtCore import QCoreApplication
@@ -87,6 +94,7 @@ from picard.plugin3.i18n import (
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
+from picard.tagger import Tagger
 from picard.track import Track
 from picard.webservice import (
     PendingRequest,
@@ -139,34 +147,32 @@ __all__ = [
 
 class PluginApi:
     # Class references for plugins to use
-    Album = Album
-    Track = Track
-    File = File
-    Cluster = Cluster
-    Metadata = Metadata
-    CoverArtImage = CoverArtImage
-    CoverArtProvider = CoverArtProvider
-    BaseAction = BaseAction
-    OptionsPage = OptionsPage
+    Album: TypeAlias = Album
+    Track: TypeAlias = Track
+    File: TypeAlias = File
+    Cluster: TypeAlias = Cluster
+    Metadata: TypeAlias = Metadata
+    CoverArtImage: TypeAlias = CoverArtImage
+    CoverArtProvider: TypeAlias = CoverArtProvider
+    BaseAction: TypeAlias = BaseAction
+    OptionsPage: TypeAlias = OptionsPage
 
     # Class-level registries for get_api()
     _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
     _module_cache: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance (for faster lookup)
     _deprecation_warnings_emitted = set()  # Track emitted deprecation warnings
 
-    def __init__(self, manifest: PluginManifest, tagger) -> None:
-        from picard.tagger import Tagger
-
+    def __init__(self, manifest: PluginManifest, tagger: Tagger) -> None:
         self._tagger: Tagger = tagger
         self._manifest = manifest
         self._plugin_module = None  # Will be set when plugin is enabled
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
         self._api_config = ConfigSection(get_config(), full_name)
-        self._translations = {}
+        self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
         self._plugin_dir = None
-        self._qt_translator = None
+        self._qt_translator: PluginTranslator | None = None
 
     @staticmethod
     def get_caller_info(frame_depth=2):
@@ -276,10 +282,6 @@ class PluginApi:
         """Load a single translation file."""
         try:
             if format == 'toml':
-                try:
-                    import tomllib
-                except ImportError:
-                    import tomli as tomllib
                 with open(file_path, 'rb') as f:
                     data = tomllib.load(f)
                     self._check_toml_structure(data, locale)
@@ -294,7 +296,7 @@ class PluginApi:
                     return data
         except Exception as e:
             self._logger.warning(f"Failed to load translation file {file_path}: {e}")
-            return None
+        return None
 
     def _check_toml_structure(self, data: dict, locale: str) -> None:
         """Check for nested structure in TOML and warn about unquoted keys."""
@@ -441,6 +443,8 @@ class PluginApi:
         """
         frame = sys._getframe(1)
         module_name = frame.f_globals.get('__name__')
+        if module_name is None:
+            raise RuntimeError(f"No module_name found in {frame}")
 
         # Check cache first
         if module_name in cls._module_cache:
@@ -462,6 +466,7 @@ class PluginApi:
                 raise RuntimeError(f"No PluginApi instance found for module {module_name}")
 
         # Cache the result
+        assert api is not None
         cls._module_cache[module_name] = api
         return api
 
