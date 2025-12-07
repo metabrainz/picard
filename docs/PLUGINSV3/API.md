@@ -772,6 +772,87 @@ def enable(api):
 
 ---
 
+## Album Request Management
+
+Plugins can track asynchronous operations (like web requests) without blocking album loading.
+
+### `add_album_request(album, request_id, description, timeout=None)`
+
+Add a plugin request to an album. Plugin requests are always non-blocking and won't prevent the album from being marked as loaded.
+
+**Parameters**:
+- `album`: The Album object
+- `request_id`: Unique identifier (automatically prefixed with plugin_id)
+- `description`: Human-readable description
+- `timeout`: Optional timeout in seconds
+
+**Example - Fetching additional album data**:
+```python
+def fetch_album_data(api, album, metadata, release):
+    artist_id = metadata.get('musicbrainz_artistid')
+    if not artist_id:
+        return
+
+    request_id = f'bio_{album.id}'
+    api.add_album_request(album, request_id, f'Fetching artist bio for {artist_id}')
+
+    api.web_service.get_url(
+        url=f'https://api.example.com/artist/{artist_id}',
+        handler=lambda data, http, error: handle_response(api, album, metadata, request_id, data, error)
+    )
+
+def handle_response(api, album, metadata, request_id, data, error):
+    try:
+        if not error and data:
+            metadata['~artist_bio'] = data.get('biography', '')
+    finally:
+        api.complete_album_request(album, request_id)
+
+def enable(api):
+    api.register_album_metadata_processor(fetch_album_data)
+```
+
+---
+
+### `complete_album_request(album, request_id)`
+
+Mark a plugin request as complete.
+
+**Parameters**:
+- `album`: The Album object
+- `request_id`: Same ID used in add_album_request (without plugin prefix)
+
+**Example - Fetching cover art from external source**:
+```python
+def fetch_custom_cover(api, album, metadata, release):
+    album_id = metadata.get('musicbrainz_albumid')
+    if not album_id:
+        return
+
+    request_id = f'cover_{album_id}'
+    api.add_album_request(album, request_id, 'Fetching custom cover art', timeout=10.0)
+
+    api.web_service.download_url(
+        url=f'https://covers.example.com/{album_id}.jpg',
+        handler=lambda data, http, error: handle_cover(api, album, request_id, data, error)
+    )
+
+def handle_cover(api, album, request_id, data, error):
+    try:
+        if not error and data:
+            # Process cover art data
+            api.logger.info(f"Downloaded cover art: {len(data)} bytes")
+    finally:
+        api.complete_album_request(album, request_id)
+
+def enable(api):
+    api.register_album_metadata_processor(fetch_custom_cover)
+```
+
+**Important**: Always call `complete_album_request()` in a `finally` block to ensure the request is marked complete even if an error occurs.
+
+---
+
 ## API Parameter Injection
 
 ### How It Works
