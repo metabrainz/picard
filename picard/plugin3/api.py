@@ -172,7 +172,7 @@ class PluginApi:
         self._api_config = ConfigSection(get_config(), full_name)
         self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
-        self._plugin_dir: str | None = None
+        self._plugin_dir: Path | None = None
         self._qt_translator: PluginTranslator | None = None
 
     @staticmethod
@@ -264,7 +264,7 @@ class PluginApi:
         if not self._plugin_dir:
             return None, None
 
-        locale_dir = Path(self._plugin_dir) / 'locale'
+        locale_dir = self._plugin_dir / 'locale'
         if not locale_dir.exists():
             return None, None
 
@@ -335,7 +335,7 @@ class PluginApi:
         if not self._plugin_dir:
             return
 
-        locale_dir = Path(self._plugin_dir) / 'locale'
+        locale_dir = self._plugin_dir / 'locale'
         if not locale_dir.exists():
             return
 
@@ -405,7 +405,7 @@ class PluginApi:
         Returns:
             Path: Plugin directory path, or None if not available
         """
-        return Path(self._plugin_dir) if self._plugin_dir else None
+        return self._plugin_dir
 
     def get_locale(self) -> str:
         """Get the current locale used by Picard.

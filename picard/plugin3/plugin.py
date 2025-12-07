@@ -629,7 +629,7 @@ class Plugin:
         assert self.manifest is not None, "Plugin manifest must be loaded before enabling"
         api = PluginApi(self.manifest, tagger)
         api._plugin_module = self._module
-        api._plugin_dir = str(self.local_path) if self.local_path else None
+        api._plugin_dir = self.local_path
         api._load_translations()
         api._install_qt_translator()
 
