@@ -234,6 +234,21 @@ class Album(MetadataItem):
         """Get all pending requests for debugging."""
         return dict(self._pending_requests)
 
+    @property
+    def _requests(self):
+        """Compatibility property for old plugins using album._requests.
+        Returns count of critical requests only."""
+        return sum(1 for r in self._pending_requests.values() if r.type == RequestType.CRITICAL)
+
+    @_requests.setter
+    def _requests(self, value):
+        """Compatibility setter for old plugins.
+        Logs a warning but doesn't break functionality."""
+        log.warning(
+            "Plugin is using deprecated album._requests. "
+            "Use api.add_album_request() and api.complete_album_request() instead."
+        )
+
     def iterfiles(self, save=False):
         for track in self.tracks:
             yield from track.iterfiles()
