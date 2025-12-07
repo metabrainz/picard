@@ -33,7 +33,10 @@
 
 import re
 
-from picard.const.tags import ALL_TAGS
+from picard.const.tags import (
+    ALL_PLUGIN_TAGS,
+    ALL_TAGS,
+)
 
 
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
@@ -88,23 +91,28 @@ def parse_subtag(name):
 
 def tag_names():
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag)
+    yield from ALL_PLUGIN_TAGS.names(selector=lambda tv: tv.is_tag)
 
 
 def visible_tag_names():
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag and not tv.is_hidden)
+    yield from ALL_PLUGIN_TAGS.names(selector=lambda tv: tv.is_tag and not tv.is_hidden)
 
 
 def hidden_tag_names():
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_tag and tv.is_hidden)
+    yield from ALL_PLUGIN_TAGS.names(selector=lambda tv: tv.is_tag and tv.is_hidden)
 
 
 def filterable_tag_names():
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_filterable)
+    yield from ALL_PLUGIN_TAGS.names(selector=lambda tv: tv.is_filterable)
 
 
 def preserved_tag_names():
     """Tags that should be preserved by default"""
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_preserved)
+    yield from ALL_PLUGIN_TAGS.names(selector=lambda tv: tv.is_preserved)
 
 
 def calculated_tag_names():
@@ -114,25 +122,34 @@ def calculated_tag_names():
     when moving the file between tags.
     """
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_calculated)
+    yield from ALL_PLUGIN_TAGS.names(selector=lambda tv: tv.is_calculated)
 
 
 def file_info_tag_names():
     """Tags that contains infos related to files"""
     yield from ALL_TAGS.names(selector=lambda tv: tv.is_file_info)
+    yield from ALL_PLUGIN_TAGS.names(selector=lambda tv: tv.is_file_info)
 
 
 def script_variable_tag_names():
     """Tag names available to scripts (used by script editor completer)"""
     yield from (tagvar.script_name() for tagvar in ALL_TAGS if tagvar.is_script_variable)
+    yield from (tagvar.script_name() for tagvar in ALL_PLUGIN_TAGS if tagvar.is_script_variable)
 
 
 def display_tag_name(name):
-    return ALL_TAGS.display_name(name)
+    if ALL_TAGS.item_from_name(name)[3]:
+        return ALL_TAGS.display_name(name)
+    return ALL_PLUGIN_TAGS.display_name(name)
 
 
 def display_tag_tooltip(name):
-    return ALL_TAGS.display_tooltip(name)
+    if ALL_TAGS.item_from_name(name)[3]:
+        return ALL_TAGS.display_tooltip(name)
+    return ALL_PLUGIN_TAGS.display_tooltip(name)
 
 
 def display_tag_full_description(name):
-    return ALL_TAGS.display_full_description(name)
+    if ALL_TAGS.item_from_name(name)[3]:
+        return ALL_TAGS.display_full_description(name)
+    return ALL_PLUGIN_TAGS.display_full_description(name)

@@ -1246,3 +1246,6 @@ ALL_TAGS = TagVars(
         is_multi_value=True,
     ),
 )
+
+
+ALL_PLUGIN_TAGS = TagVars()

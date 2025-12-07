@@ -55,6 +55,7 @@ class Section(IntEnum):
     options = 2
     links = 3
     see_also = 4
+    plugin = 5
 
 
 SectionInfo = namedtuple('Section', ('title', 'tagvar_func'))
@@ -63,6 +64,7 @@ SECTIONS = {
     Section.options: SectionInfo(N_('Option Settings'), 'related_options_titles'),
     Section.links: SectionInfo(N_('Links'), 'links'),
     Section.see_also: SectionInfo(N_('See Also'), 'see_alsos'),
+    Section.plugin: SectionInfo(N_('Plugin'), 'from_plugin'),
 }
 
 TEXT_NO_DESCRIPTION = N_('No description available.')
@@ -98,6 +100,7 @@ class TagVar:
         see_also=None,
         related_options=None,
         doc_links=None,
+        plugin_name=None,
     ):
         """
         shortdesc: Short description (typically one or two words) in title case that is suitable
@@ -121,6 +124,7 @@ class TagVar:
         see_also: an iterable containing ids of related tags
         related_options: an iterable containing the related option settings (see picard/options.py)
         doc_links: an iterable containing links to external documentation (DocumentLink tuples)
+        plugin_name: the name of the plugin providing this tag (str, default: None)
         """
         self.name = name
         self._shortdesc = shortdesc
@@ -139,6 +143,7 @@ class TagVar:
         self.see_also = see_also
         self.related_options = related_options
         self.doc_links = doc_links
+        self._plugin_name = plugin_name
 
     @property
     def shortdesc(self):
@@ -171,6 +176,14 @@ class TagVar:
     @property
     def not_populated_by_picard(self):
         return not self.is_populated_by_picard
+
+    @property
+    def plugin_name(self):
+        return self._plugin_name or ""
+
+    @plugin_name.setter
+    def plugin_name(self, name: str):
+        self._plugin_name = name.strip()
 
     def __str__(self):
         """hidden marked with a prefix"""
@@ -225,6 +238,12 @@ class TagVars(MutableSequence):
         name = self._get_name(tagvar)
         self._items.insert(index, tagvar)
         self._name2item[name] = self._items[index]
+
+    def delete_by_name(self, name):
+        if name not in self._name2item:
+            return
+        self._items.remove(self._name2item[name])
+        self._name2item.pop(name)
 
     def __repr__(self):
         return f"TagVars({self._items!r})"
@@ -299,6 +318,11 @@ class TagVars(MutableSequence):
             if self.script_name_from_name(tag):
                 yield f'<a href="#{tag}">%{tag}%</a>'
 
+    def from_plugin(self, item: TagVar):
+        if not item.plugin_name:
+            return
+        yield html.escape(item.plugin_name)
+
     def _base_description(self, item: TagVar):
         return _markdown(_(item.longdesc) if item.longdesc else _(TEXT_NO_DESCRIPTION))
 
@@ -335,6 +359,7 @@ class TagVars(MutableSequence):
         include_sections = (
             Section.notes,
             Section.options,
+            Section.plugin,
             Section.links,
             Section.see_also,
         )

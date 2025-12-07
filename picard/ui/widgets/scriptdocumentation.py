@@ -29,8 +29,10 @@ from PyQt6 import (
 
 from picard.const import PICARD_URLS
 from picard.const.tags import (
+    ALL_PLUGIN_TAGS,
     ALL_TAGS,
     TagVar,
+    TagVars,
 )
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
@@ -134,15 +136,21 @@ class FunctionsDocumentationPage(DocumentationPage):
 
 class TagsDocumentationPage(DocumentationPage):
     def generate_html(self):
-        def process_tag(tag: TagVar):
+        tag_sources = [ALL_TAGS, ALL_PLUGIN_TAGS]
+
+        def process_tag(tag: TagVar, tag_source: TagVars):
             tag_name = tag.script_name()
-            tag_desc = ALL_TAGS.full_description_content(tag)
+            tag_desc = tag_source.full_description_content(tag)
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
+        all_tags = []
+        for tag_source in range(len(tag_sources)):
+            for tag in tag_sources[tag_source]:
+                all_tags.append((tag, tag_source))
         html = ''
-        for tag in sorted(ALL_TAGS, key=lambda x: x.name):
-            html += process_tag(tag)
+        for tag, tag_source in sorted(all_tags, key=lambda x: x[0].name):
+            html += process_tag(tag, tag_sources[tag_source])
         return html
 
 

@@ -87,6 +87,8 @@ from picard.plugin3.i18n import (
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
+from picard.plugin3.tags import PluginTags
+from picard.tags.tagvar import TagVar
 from picard.track import Track
 from picard.webservice import (
     PendingRequest,
@@ -558,6 +560,29 @@ class PluginApi:
             result = result.format(**kwargs)
 
         return result
+
+    def add_tag(self, tag: TagVar) -> None:
+        """Add a tag to the system to enable lookup and autocompletion during scripting.
+
+        Args:
+            tag (TagVar): The tag to add.
+        """
+        self.logger.debug("Adding scripting tag '%s'", tag.script_name())
+        id = self._manifest.uuid
+
+        # Set tag values appropriate for a plugin
+        tag.plugin_name = self._manifest.name(self.get_locale())
+        tag.is_preserved = False
+        tag.is_from_mb = False
+        tag.is_populated_by_picard = False
+        tag.is_filterable = False
+        PluginTags.add_tag(id, tag)
+
+    def remove_tags(self) -> None:
+        """Remove all plugin tags from the scripting lookup and autocompletion."""
+        self.logger.debug("Removing all scripting tags.")
+        id = self._manifest.uuid
+        PluginTags.remove_plugin_tags(id)
 
     # Metadata processors
     def register_album_metadata_processor(self, function: Callable, priority: int = 0) -> None:
