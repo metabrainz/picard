@@ -91,6 +91,11 @@ class ExtensionPoint(QObject):
             # >>> #^^ no exception, after first read
             pass
 
+    def clear(self):
+        """Remove all registered modules"""
+        self.__dict.clear()
+        self.changed.emit()
+
     def __iter__(self):
         config = get_config()
         if not config:
