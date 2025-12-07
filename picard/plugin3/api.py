@@ -336,6 +336,15 @@ class PluginApi:
         """Configuration private to the plugin"""
         return self._api_config
 
+    @property
+    def plugin_dir(self) -> Path | None:
+        """Path to the plugin directory.
+
+        Returns:
+            Path: Plugin directory path, or None if not available
+        """
+        return Path(self._plugin_dir) if self._plugin_dir else None
+
     def get_locale(self) -> str:
         """Get the current locale used by Picard.
 

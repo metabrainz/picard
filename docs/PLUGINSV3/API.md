@@ -238,6 +238,48 @@ class MyOptionsPage(OptionsPage):
 
 ---
 
+### `plugin_dir: Path`
+
+Path to the plugin directory (read-only).
+
+```python
+from pathlib import Path
+import json
+
+def enable(api):
+    # Access plugin directory
+    plugin_dir = api.plugin_dir
+
+    # Load data files
+    data_file = plugin_dir / 'data' / 'config.json'
+    with open(data_file) as f:
+        config = json.load(f)
+
+    # Load text files
+    readme = plugin_dir / 'README.md'
+    if readme.exists():
+        with open(readme) as f:
+            content = f.read()
+
+    # List files in directory
+    for file in (plugin_dir / 'templates').glob('*.txt'):
+        api.logger.info(f"Found template: {file.name}")
+```
+
+**Use cases**:
+- Load configuration files
+- Read data files (JSON, CSV, etc.)
+- Access templates or resources
+- Load UI files (.ui)
+
+**Returns**: `Path` object or `None` if plugin directory is not available
+
+**Important**: This is for **reading** files only. Do not write to the plugin directory:
+- Use `api.plugin_config` for storing plugin settings
+- Use standard user directories for cache/data files
+
+---
+
 ### `web_service: WebService`
 
 Access to Picard's web service for HTTP requests.
