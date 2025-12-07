@@ -32,6 +32,7 @@ import traceback
 from PyQt6 import QtCore
 
 from picard import log
+from picard.album_requests import TaskType
 from picard.config import get_config
 from picard.coverart.image import CoverArtImageIOError
 from picard.coverart.processing import (
@@ -73,7 +74,9 @@ class CoverArt:
         if coverartimage.can_be_saved_to_metadata:
             log.debug("Storing to metadata: %r", coverartimage)
             self.metadata.images.append(coverartimage)
-            for track in self.album._new_tracks:
+            # Album might already be finalized if cover art arrives late
+            tracks = getattr(self.album, '_new_tracks', None) or self.album.tracks
+            for track in tracks:
                 track.metadata.images.append(coverartimage)
             # If the image already was a front image,
             # there might still be some other non-CAA front
@@ -85,7 +88,8 @@ class CoverArt:
 
     def _coverart_downloaded(self, coverartimage, data, http, error):
         """Handle finished download, save it to metadata"""
-        self.album._requests -= 1
+        task_id = f'coverart_{id(coverartimage)}'
+        self.album.complete_task(task_id)
 
         if error:
             self.album.error_append("Coverart error: %s" % http.errorString())
@@ -154,9 +158,9 @@ class CoverArt:
                         self.next_in_queue()
                 return
             except StopIteration:
-                # nothing more to do
-                processing_result = self.image_processing.wait_for_processing()
-                self.album._finalize_loading(error=processing_result)
+                # Cover art processing complete - no need to finalize,
+                # album already finalized when critical requests completed
+                self.image_processing.wait_for_processing()
                 return
 
         # We still have some items to try!
@@ -199,12 +203,16 @@ class CoverArt:
             echo=None,
         )
         log.debug("Downloading %r", coverartimage)
-        self.album.tagger.webservice.download_url(
+        task_id = f'coverart_{id(coverartimage)}'
+        self.album.add_task(
+            task_id, TaskType.OPTIONAL, f'Cover art download: {coverartimage.types_as_string(translate=False)}'
+        )
+        request = self.album.tagger.webservice.download_url(
             url=coverartimage.url,
             handler=partial(self._coverart_downloaded, coverartimage),
             priority=True,
         )
-        self.album._requests += 1
+        self.album.set_task_request(task_id, request)
 
     def queue_put(self, coverartimage):
         """Add an image to queue"""

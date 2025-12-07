@@ -37,6 +37,7 @@ import yaml
 from PyQt6 import QtCore
 
 from picard.album import Album
+from picard.album_requests import TaskType
 from picard.config import get_config
 from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS
 from picard.i18n import gettext as _
@@ -477,12 +478,13 @@ class AlbumManager:
         album.genres.clear()
         album._new_metadata = Metadata()
         album._new_tracks = []
-        album._requests = max(1, getattr(album, '_requests', 0))
+        album._pending_tasks.clear()
+        album.add_task('session_restore', TaskType.CRITICAL, f'Session restore for {album_id}')
 
         with suppress(KeyError, TypeError, ValueError):
             album._parse_release(node)
             album._run_album_metadata_processors()
-            album._requests -= 1
+            album.complete_task('session_restore')
             album._finalize_loading(error=False)
 
         return album

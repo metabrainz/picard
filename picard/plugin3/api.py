@@ -36,6 +36,7 @@ from typing import (
 from PyQt6.QtCore import QCoreApplication
 
 from picard.album import Album
+from picard.album_requests import TaskType
 from picard.cluster import Cluster
 from picard.config import (
     Config,
@@ -87,7 +88,10 @@ from picard.plugin3.i18n import (
 )
 from picard.plugin3.manifest import PluginManifest
 from picard.track import Track
-from picard.webservice import WebService
+from picard.webservice import (
+    PendingRequest,
+    WebService,
+)
 from picard.webservice.api_helpers import MBAPIHelper
 
 from picard.ui.options import OptionsPage
@@ -148,6 +152,7 @@ class PluginApi:
     # Class-level registries for get_api()
     _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
     _module_cache: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance (for faster lookup)
+    _deprecation_warnings_emitted = set()  # Track emitted deprecation warnings
 
     def __init__(self, manifest: PluginManifest, tagger) -> None:
         from picard.tagger import Tagger
@@ -162,6 +167,58 @@ class PluginApi:
         self._source_locale = manifest.source_locale
         self._plugin_dir = None
         self._qt_translator = None
+
+    @staticmethod
+    def get_caller_info(frame_depth=2):
+        """Get caller information for deprecation warnings.
+
+        Args:
+            frame_depth: Number of frames to go back (default 2)
+
+        Returns:
+            Tuple of (plugin_name, filename, lineno)
+        """
+        import sys
+
+        frame = sys._getframe(frame_depth)
+        filename = frame.f_code.co_filename
+        lineno = frame.f_lineno
+
+        plugin_name = "unknown"
+        if 'plugins3' in filename:
+            parts = filename.split('/')
+            try:
+                idx = parts.index('plugins3')
+                plugin_name = parts[idx + 1]
+                # Truncate to show only relative path within plugin directory
+                filename = '/'.join(parts[idx + 2 :])
+            except (ValueError, IndexError):
+                pass
+
+        return plugin_name, filename, lineno
+
+    @classmethod
+    def deprecation_warning(cls, message, *args, frame_depth=3):
+        """Emit a deprecation warning once per unique caller location.
+
+        Args:
+            message: Warning message format string
+            *args: Arguments for message formatting
+            frame_depth: Number of frames to go back (default 3)
+        """
+        from picard import log
+
+        plugin_name, filename, lineno = cls.get_caller_info(frame_depth=frame_depth)
+        warning_key = (plugin_name, filename, lineno)
+        if warning_key not in cls._deprecation_warnings_emitted:
+            cls._deprecation_warnings_emitted.add(warning_key)
+            log.warning(
+                "Plugin '%s' at %s:%d: " + message,
+                plugin_name,
+                filename,
+                lineno,
+                *args,
+            )
 
     def _install_qt_translator(self) -> None:
         """Install Qt translator for .ui file translations."""
@@ -589,6 +646,69 @@ class PluginApi:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_ui_init(wrapped)
+
+    # Album task management for plugins
+    def add_album_task(self, album: Album, task_id: str, description: str, timeout: float | None = None) -> None:
+        """Add a plugin task to an album.
+
+        Plugin tasks are always non-blocking (TaskType.PLUGIN) and will not
+        prevent the album from being marked as loaded. This allows plugins to fetch
+        additional data asynchronously without blocking the user interface.
+
+        Args:
+            album: The Album object to add the task to
+            task_id: Unique identifier for this task (will be prefixed with plugin_id)
+            description: Human-readable description of what the task does
+            timeout: Optional timeout in seconds
+
+        Example:
+            def fetch_extra_data(api, album, metadata, release):
+                task_id = f'extra_data_{album.id}'
+                api.add_album_task(album, task_id, 'Fetching artist biography')
+                request = api.web_service.get_url(
+                    url=f'https://example.com/artist/{artist_id}',
+                    handler=lambda data, http, error: api.complete_album_task(album, task_id)
+                )
+                api.set_album_task_request(album, task_id, request)
+        """
+        full_task_id = f'{self.plugin_id}_{task_id}'
+        album.add_task(
+            full_task_id,
+            TaskType.PLUGIN,
+            f'[{self.plugin_id}] {description}',
+            timeout=timeout,
+            plugin_id=self.plugin_id,
+        )
+
+    def set_album_task_request(self, album: Album, task_id: str, request: PendingRequest) -> None:
+        """Associate a network request with a plugin task for automatic cancellation.
+
+        This allows the task to be automatically aborted if the album is removed.
+
+        Args:
+            album: The Album object the task was added to
+            task_id: The same task_id used in add_album_task (without plugin prefix)
+            request: The PendingRequest object returned by the webservice call
+
+        Example:
+            request = api.web_service.get_url(...)
+            api.set_album_task_request(album, 'extra_data', request)
+        """
+        full_task_id = f'{self.plugin_id}_{task_id}'
+        album.set_task_request(full_task_id, request)
+
+    def complete_album_task(self, album: Album, task_id: str) -> None:
+        """Mark a plugin task as complete.
+
+        Args:
+            album: The Album object the task was added to
+            task_id: The same task_id used in add_album_task (without plugin prefix)
+
+        Example:
+            api.complete_album_task(album, 'extra_data')
+        """
+        full_task_id = f'{self.plugin_id}_{task_id}'
+        album.complete_task(full_task_id)
 
     # Other ideas
     # Implement status indicators as an extension point. This allows plugins

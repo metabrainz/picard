@@ -1071,6 +1071,7 @@ class Tagger(QtWidgets.QApplication):
         if album.id not in self.albums:
             return
         album.stop_loading()
+        album.cancel_requests()
         self.remove_files(list(album.iterfiles()))
         del self.albums[album.id]
         if album.release_group:

@@ -41,6 +41,7 @@ from PyQt6.QtNetwork import (
 )
 
 from picard import log
+from picard.album_requests import TaskType
 from picard.config import get_config
 from picard.const import CAA_URL
 from picard.const.defaults import (
@@ -258,20 +259,23 @@ class CoverArtProviderCaa(CoverArtProvider):
         return "/release/%s/" % self.metadata['musicbrainz_albumid']
 
     def queue_images(self):
-        self.album.tagger.webservice.get_url(
+        task_id = f'caa_json_{self.metadata["musicbrainz_albumid"]}'
+        self.album.add_task(task_id, TaskType.OPTIONAL, f'CAA JSON metadata for {self.metadata["musicbrainz_albumid"]}')
+        request = self.album.tagger.webservice.get_url(
             url=CAA_URL + self._caa_path,
             handler=self._caa_json_downloaded,
             priority=True,
             important=False,
             cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferNetwork,
         )
-        self.album._requests += 1
+        self.album.set_task_request(task_id, request)
         # we will call next_in_queue() after json parsing
         return CoverArtProvider.WAIT
 
     def _caa_json_downloaded(self, data, http, error):
         """Parse CAA JSON file and queue CAA cover art images for download"""
-        self.album._requests -= 1
+        task_id = f'caa_json_{self.metadata["musicbrainz_albumid"]}'
+        self.album.complete_task(task_id)
         if error:
             if not (error == QNetworkReply.NetworkError.ContentNotFoundError and self.ignore_json_not_found_error):
                 self.error("CAA JSON error: %s" % (http.errorString()))

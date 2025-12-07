@@ -277,11 +277,19 @@ class WSRequest(QNetworkRequest):
         return self._retries
 
 
-class RequestTask(namedtuple('RequestTask', 'hostkey func priority')):
+class PendingRequest:
+    """Represents a queued webservice request."""
+
+    def __init__(self, hostkey, func, priority):
+        self.hostkey = hostkey
+        self.func = func
+        self.priority = priority
+        self.aborted = False
+
     @staticmethod
     def from_request(request, func):
         # priority is a boolean
-        return RequestTask(request.get_host_key(), func, int(request.priority))
+        return PendingRequest(request.get_host_key(), func, int(request.priority))
 
 
 class RequestPriorityQueue:
@@ -294,19 +302,17 @@ class RequestPriorityQueue:
         return self._count
 
     def add_task(self, task, important=False):
-        (hostkey, func, prio) = task
-        queue = self._queues[prio][hostkey]
+        queue = self._queues[task.priority][task.hostkey]
         if important:
-            queue.appendleft(func)
+            queue.appendleft(task.func)
         else:
-            queue.append(func)
+            queue.append(task.func)
         self._count += 1
-        return RequestTask(hostkey, func, prio)
+        return task
 
     def remove_task(self, task):
-        hostkey, func, prio = task
         try:
-            self._queues[prio][hostkey].remove(func)
+            self._queues[task.priority][task.hostkey].remove(task.func)
             self._count -= 1
         except Exception as e:
             log.debug(e)
@@ -387,6 +393,7 @@ class WebService(QtCore.QObject):
 
     def _init_queues(self):
         self._active_requests = {}
+        self._task_to_reply = {}  # Maps WebserviceRequest -> QNetworkReply
         self._queue = RequestPriorityQueue(ratecontrol)
         self.num_pending_web_requests = 0
 
@@ -445,7 +452,7 @@ class WebService(QtCore.QObject):
         timeout_ms = timeout * 1000
         self.manager.setTransferTimeout(timeout_ms)
 
-    def _send_request(self, request, access_token=None):
+    def _send_request(self, request, task=None, access_token=None):
         hostkey = request.get_host_key()
         ratecontrol.increment_requests(hostkey)
 
@@ -454,12 +461,19 @@ class WebService(QtCore.QObject):
         data = request.data
         reply = send(request, data.encode('utf-8')) if data is not None else send(request)
         self._active_requests[reply] = request
+        if task:
+            self._task_to_reply[task] = reply
 
-    def _start_request(self, request):
+    def _start_request(self, request, task=None):
+        # Check if task was aborted before starting
+        if task and task.aborted:
+            log.debug("Skipping aborted task for %s", request.url.toString())
+            return
+
         if request.mblogin and request.path != "/oauth2/token":
-            self.oauth_manager.get_access_token(partial(self._send_request, request))
+            self.oauth_manager.get_access_token(partial(self._send_request, request, task))
         else:
-            self._send_request(request)
+            self._send_request(request, task)
 
     @staticmethod
     def urls_equivalent(leftUrl, rightUrl):
@@ -513,6 +527,12 @@ class WebService(QtCore.QObject):
         slow_down = False
 
         error = reply.error()
+
+        # Silently ignore canceled operations (user-initiated abort)
+        if error == QNetworkReply.NetworkError.OperationCanceledError:
+            log.debug("Request canceled for %s", self.display_url(reply.request().url()))
+            return
+
         handler = request.handler
         response_code = self.http_response_code(reply)
         display_reply_url = self.display_url(reply.request().url())
@@ -642,7 +662,7 @@ class WebService(QtCore.QObject):
             self._timer_run_next_task.start(delay)
 
     def add_task(self, func, request):
-        task = RequestTask.from_request(request, func)
+        task = PendingRequest.from_request(request, func)
         self._queue.add_task(task, request.important)
 
         if not self._timer_run_next_task.isActive():
@@ -654,9 +674,42 @@ class WebService(QtCore.QObject):
         return task
 
     def add_request(self, request):
-        return self.add_task(partial(self._start_request, request), request)
+        task = PendingRequest.from_request(request, None)
+        task.func = partial(self._start_request, request, task)
+        self._queue.add_task(task, request.important)
 
-    def remove_task(self, task):
+        if not self._timer_run_next_task.isActive():
+            self._timer_run_next_task.start(0)
+
+        if not self._timer_count_pending_requests.isActive():
+            self._timer_count_pending_requests.start(0)
+
+        return task
+
+    def abort_task(self, task):
+        """Abort a request task, whether queued or active.
+
+        Args:
+            task: WebserviceRequest to abort
+        """
+        # Mark task as aborted so it won't execute if still queued
+        task.aborted = True
+
+        # If task has an active reply, abort it
+        reply = self._task_to_reply.get(task)
+        if reply:
+            try:
+                reply.abort()
+                del self._task_to_reply[task]
+            except RuntimeError:
+                # Reply may already be deleted
+                pass
+
+        # Try to remove from queue (may already be executing)
+        self._remove_task(task)
+
+    def _remove_task(self, task):
+        """Internal method to remove a task from the queue."""
         self._queue.remove_task(task)
         if not self._timer_count_pending_requests.isActive():
             self._timer_count_pending_requests.start(0)

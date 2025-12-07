@@ -39,8 +39,8 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.webservice import (
     TEMP_ERRORS_RETRIES,
+    PendingRequest,
     RequestPriorityQueue,
-    RequestTask,
     UnknownResponseParserError,
     WebService,
     WSRequest,
@@ -82,29 +82,29 @@ class WebServiceTest(PicardTestCase):
         )
         self.ws = WebService()
 
-    @patch.object(WebService, 'add_task')
-    def test_webservice_url_method_calls(self, mock_add_task):
+    @patch.object(WebService, 'add_request')
+    def test_webservice_url_method_calls(self, mock_add_request):
         url = "http://abc.xyz"
         handler = dummy_handler
         data = None
 
-        def get_wsreq(mock_add_task):
-            return mock_add_task.call_args[0][1]
+        def get_wsreq(mock_add_request):
+            return mock_add_request.call_args[0][0]
 
         self.ws.get_url(url=url, handler=handler)
-        self.assertEqual(1, mock_add_task.call_count)
-        self.assertEqual('abc.xyz', get_wsreq(mock_add_task).host)
-        self.assertEqual(80, get_wsreq(mock_add_task).port)
-        self.assertIn("GET", get_wsreq(mock_add_task).method)
+        self.assertEqual(1, mock_add_request.call_count)
+        self.assertEqual('abc.xyz', get_wsreq(mock_add_request).host)
+        self.assertEqual(80, get_wsreq(mock_add_request).port)
+        self.assertIn("GET", get_wsreq(mock_add_request).method)
         self.ws.post_url(url=url, data=data, handler=handler)
-        self.assertIn("POST", get_wsreq(mock_add_task).method)
+        self.assertIn("POST", get_wsreq(mock_add_request).method)
         self.ws.put_url(url=url, data=data, handler=handler)
-        self.assertIn("PUT", get_wsreq(mock_add_task).method)
+        self.assertIn("PUT", get_wsreq(mock_add_request).method)
         self.ws.delete_url(url=url, handler=handler)
-        self.assertIn("DELETE", get_wsreq(mock_add_task).method)
+        self.assertIn("DELETE", get_wsreq(mock_add_request).method)
         self.ws.download_url(url=url, handler=handler)
-        self.assertIn("GET", get_wsreq(mock_add_task).method)
-        self.assertEqual(5, mock_add_task.call_count)
+        self.assertIn("GET", get_wsreq(mock_add_request).method)
+        self.assertEqual(5, mock_add_request.call_count)
 
 
 class WebServiceTaskTest(PicardTestCase):
@@ -132,7 +132,9 @@ class WebServiceTaskTest(PicardTestCase):
         )
         func = 1
         task = self.ws.add_task(func, request)
-        self.assertEqual((request.get_host_key(), func, 0), task)
+        self.assertEqual(request.get_host_key(), task.hostkey)
+        self.assertEqual(func, task.func)
+        self.assertEqual(0, task.priority)
         self.ws._queue.add_task.assert_called_with(task, False)
         request.important = True
         task = self.ws.add_task(func, request)
@@ -158,18 +160,49 @@ class WebServiceTaskTest(PicardTestCase):
         mock_timer2.start.assert_called_with(0)
 
     def test_remove_task(self):
-        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
-        self.ws.remove_task(task)
+        task = PendingRequest(('example.com', 80), dummy_handler, priority=0)
+        self.ws._remove_task(task)
         self.ws._queue.remove_task.assert_called_with(task)
 
     def test_remove_task_calls_timers(self):
         mock_timer = self.ws._timer_count_pending_requests
-        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
-        self.ws.remove_task(task)
+        task = PendingRequest(('example.com', 80), dummy_handler, priority=0)
+        self.ws._remove_task(task)
         mock_timer.start.assert_not_called()
         mock_timer.isActive.return_value = False
-        self.ws.remove_task(task)
+        self.ws._remove_task(task)
         mock_timer.start.assert_called_with(0)
+
+    def test_abort_task_marks_aborted(self):
+        task = PendingRequest(('example.com', 80), dummy_handler, priority=0)
+        self.assertFalse(task.aborted)
+        self.ws.abort_task(task)
+        self.assertTrue(task.aborted)
+
+    def test_abort_task_aborts_active_reply(self):
+        task = PendingRequest(('example.com', 80), dummy_handler, priority=0)
+        mock_reply = MagicMock()
+        self.ws._task_to_reply[task] = mock_reply
+
+        self.ws.abort_task(task)
+
+        mock_reply.abort.assert_called_once()
+        self.assertNotIn(task, self.ws._task_to_reply)
+
+    def test_abort_task_handles_deleted_reply(self):
+        task = PendingRequest(('example.com', 80), dummy_handler, priority=0)
+        mock_reply = MagicMock()
+        mock_reply.abort.side_effect = RuntimeError("Reply deleted")
+        self.ws._task_to_reply[task] = mock_reply
+
+        # Should not raise exception
+        self.ws.abort_task(task)
+        self.assertTrue(task.aborted)
+
+    def test_abort_task_removes_from_queue(self):
+        task = PendingRequest(('example.com', 80), dummy_handler, priority=0)
+        self.ws.abort_task(task)
+        self.ws._queue.remove_task.assert_called_with(task)
 
     def test_run_next_task(self):
         mock_timer = self.ws._timer_run_next_task
@@ -187,7 +220,7 @@ class WebServiceTaskTest(PicardTestCase):
         mock_timer.start.assert_called_with(42)
 
 
-class RequestTaskTest(PicardTestCase):
+class WebserviceRequestTest(PicardTestCase):
     def test_from_request(self):
         request = WSRequest(
             method='GET',
@@ -196,11 +229,11 @@ class RequestTaskTest(PicardTestCase):
             priority=True,
         )
         func = 1
-        task = RequestTask.from_request(request, func)
+        task = PendingRequest.from_request(request, func)
         self.assertEqual(request.get_host_key(), task.hostkey)
         self.assertEqual(func, task.func)
         self.assertEqual(1, task.priority)
-        self.assertEqual((request.get_host_key(), func, 1), task)
+        self.assertFalse(task.aborted)
 
 
 class RequestPriorityQueueTest(PicardTestCase):
@@ -208,13 +241,13 @@ class RequestPriorityQueueTest(PicardTestCase):
         queue = RequestPriorityQueue(ratecontrol)
         key = ("abc.xyz", 80)
 
-        task1 = RequestTask(key, dummy_handler, priority=0)
+        task1 = PendingRequest(key, dummy_handler, priority=0)
         queue.add_task(task1)
-        task2 = RequestTask(key, dummy_handler, priority=1)
+        task2 = PendingRequest(key, dummy_handler, priority=1)
         queue.add_task(task2)
-        task3 = RequestTask(key, dummy_handler, priority=0)
+        task3 = PendingRequest(key, dummy_handler, priority=0)
         queue.add_task(task3, important=True)
-        task4 = RequestTask(key, dummy_handler, priority=1)
+        task4 = PendingRequest(key, dummy_handler, priority=1)
         queue.add_task(task4, important=True)
 
         # Test if 2 requests were added in each queue
@@ -232,7 +265,7 @@ class RequestPriorityQueueTest(PicardTestCase):
         key = ("abc.xyz", 80)
 
         # Add a task and check for its existence
-        task = RequestTask(key, dummy_handler, priority=0)
+        task = PendingRequest(key, dummy_handler, priority=0)
         task = queue.add_task(task)
         self.assertIn(key, queue._queues[0])
         self.assertEqual(len(queue._queues[0][key]), 1)
@@ -256,14 +289,14 @@ class RequestPriorityQueueTest(PicardTestCase):
         # Patching the get delay function to delay the 2nd task on queue to the next call
         delay_func.side_effect = [(False, 0), (True, 0), (False, 0), (False, 0), (False, 0), (False, 0)]
         func1 = MagicMock()
-        task1 = RequestTask(key, func1, priority=0)
+        task1 = PendingRequest(key, func1, priority=0)
         queue.add_task(task1)
         func2 = MagicMock()
-        task2 = RequestTask(key, func2, priority=1)
+        task2 = PendingRequest(key, func2, priority=1)
         queue.add_task(task2)
-        task3 = RequestTask(key, func1, priority=0)
+        task3 = PendingRequest(key, func1, priority=0)
         queue.add_task(task3)
-        task4 = RequestTask(key, func1, priority=0)
+        task4 = PendingRequest(key, func1, priority=0)
         queue.add_task(task4)
 
         # Ensure no tasks are run before run_next_task is called
@@ -298,16 +331,16 @@ class RequestPriorityQueueTest(PicardTestCase):
         key = ("abc.xyz", 80)
 
         self.assertEqual(0, queue.count())
-        task1 = RequestTask(key, dummy_handler, priority=0)
+        task1 = PendingRequest(key, dummy_handler, priority=0)
         queue.add_task(task1)
         self.assertEqual(1, queue.count())
-        task2 = RequestTask(key, dummy_handler, priority=1)
+        task2 = PendingRequest(key, dummy_handler, priority=1)
         queue.add_task(task2)
         self.assertEqual(2, queue.count())
-        task3 = RequestTask(key, dummy_handler, priority=0)
+        task3 = PendingRequest(key, dummy_handler, priority=0)
         queue.add_task(task3, important=True)
         self.assertEqual(3, queue.count())
-        task4 = RequestTask(key, dummy_handler, priority=1)
+        task4 = PendingRequest(key, dummy_handler, priority=1)
         queue.add_task(task4, important=True)
         self.assertEqual(4, queue.count())
         queue.remove_task(task1)
