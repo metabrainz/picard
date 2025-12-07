@@ -610,7 +610,7 @@ dependencies = [
     { name = "python-dateutil" },
     { name = "pywin32", marker = "sys_platform == 'win32'" },
     { name = "pyyaml" },
-    { name = "tomlkit", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 
 [package.dev-dependencies]
@@ -654,7 +654,7 @@ requires-dist = [
     { name = "python-dateutil", specifier = "~=2.7" },
     { name = "pywin32", marker = "sys_platform == 'win32'" },
     { name = "pyyaml", specifier = ">=5.1,<7" },
-    { name = "tomlkit", marker = "python_full_version < '3.11'", specifier = "~=0.12" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.3.0" },
 ]
 
 [package.metadata.requires-dev]
