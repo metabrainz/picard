@@ -345,6 +345,7 @@ class PluginApi:
         # Try to load current locale
         file_path, format = self._find_translation_file(current_locale)
         if file_path:
+            assert format is not None
             data = self._load_translation_file(file_path, format, current_locale)
             if data:
                 self._translations[current_locale] = data
@@ -358,6 +359,7 @@ class PluginApi:
             lang = current_locale.split('_')[0]
             file_path, format = self._find_translation_file(lang)
             if file_path:
+                assert format is not None
                 data = self._load_translation_file(file_path, format, lang)
                 if data:
                     self._translations[lang] = data
