@@ -169,7 +169,7 @@ class PluginSourceGit(PluginSource):
         # Note: url can be a local directory
         self.url = url
         self.ref = ref
-        self.resolved_ref = None  # Will be set after sync
+        self.resolved_ref: str | None = None  # Will be set after sync
 
     def _list_available_refs(self, repo, limit=20):
         """List available refs in repository.
@@ -647,6 +647,7 @@ class Plugin:
         else:
             api.logger.info(f"Enabling plugin {self.plugin_id}{version_str}")
 
+        assert self._module is not None, "Plugin module must be loaded before enabling"
         self._module.enable(api)
         self.state = PluginState.ENABLED
 
@@ -655,7 +656,7 @@ class Plugin:
         if self.state == PluginState.DISABLED:
             raise PluginAlreadyDisabledError(self.plugin_id)
 
-        if hasattr(self._module, 'disable'):
+        if self._module is not None and hasattr(self._module, 'disable'):
             self._module.disable()
         unregister_module_extensions(self.plugin_id)
 
