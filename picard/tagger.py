@@ -1602,7 +1602,7 @@ def setup_dbus():
 
 def setup_translator(tagger):
     """Setup Qt default translations"""
-    translator = QtCore.QTranslator()
+    translator = QtCore.QTranslator(tagger)
     locale = QtCore.QLocale()
     translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
     log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
