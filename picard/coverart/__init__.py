@@ -205,7 +205,7 @@ class CoverArt:
         log.debug("Downloading %r", coverartimage)
         request_id = f'coverart_{id(coverartimage)}'
         self.album.add_request(
-            request_id, RequestType.OPTIONAL, f'Cover art download: {coverartimage.types_as_string()}'
+            request_id, RequestType.OPTIONAL, f'Cover art download: {coverartimage.types_as_string(translate=False)}'
         )
         self.album.tagger.webservice.download_url(
             url=coverartimage.url,
