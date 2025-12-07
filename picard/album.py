@@ -234,24 +234,14 @@ class Album(MetadataItem):
         """Get all pending requests for debugging."""
         return dict(self._pending_requests)
 
-    @property
-    def _requests(self):
-        """Compatibility property for old plugins using album._requests.
-        Returns count of critical requests only."""
-        return sum(1 for r in self._pending_requests.values() if r.type == RequestType.CRITICAL)
-
-    @_requests.setter
-    def _requests(self, value):
-        """Compatibility setter for old plugins.
-        Logs a warning but doesn't break functionality."""
+    def _get_caller_info(self):
+        """Get caller information for deprecation warnings."""
         import sys
 
-        # Get caller's frame
-        frame = sys._getframe(1)
+        frame = sys._getframe(2)
         filename = frame.f_code.co_filename
         lineno = frame.f_lineno
 
-        # Extract plugin name from path
         plugin_name = "unknown"
         if 'plugins3' in filename:
             parts = filename.split('/')
@@ -261,6 +251,27 @@ class Album(MetadataItem):
             except (ValueError, IndexError):
                 pass
 
+        return plugin_name, filename, lineno
+
+    @property
+    def _requests(self):
+        """Compatibility property for old plugins using album._requests.
+        Returns count of critical requests only."""
+        plugin_name, filename, lineno = self._get_caller_info()
+        log.warning(
+            "Plugin '%s' is reading deprecated album._requests at %s:%d. "
+            "Use api.add_album_request() and api.complete_album_request() instead.",
+            plugin_name,
+            filename,
+            lineno,
+        )
+        return sum(1 for r in self._pending_requests.values() if r.type == RequestType.CRITICAL)
+
+    @_requests.setter
+    def _requests(self, value):
+        """Compatibility setter for old plugins.
+        Logs a warning but doesn't break functionality."""
+        plugin_name, filename, lineno = self._get_caller_info()
         log.warning(
             "Plugin '%s' is using deprecated album._requests at %s:%d. "
             "Use api.add_album_request() and api.complete_album_request() instead.",
