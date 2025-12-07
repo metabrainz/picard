@@ -74,7 +74,9 @@ class CoverArt:
         if coverartimage.can_be_saved_to_metadata:
             log.debug("Storing to metadata: %r", coverartimage)
             self.metadata.images.append(coverartimage)
-            for track in self.album._new_tracks:
+            # Album might already be finalized if cover art arrives late
+            tracks = getattr(self.album, '_new_tracks', None) or self.album.tracks
+            for track in tracks:
                 track.metadata.images.append(coverartimage)
             # If the image already was a front image,
             # there might still be some other non-CAA front
