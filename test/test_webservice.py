@@ -173,6 +173,37 @@ class WebServiceTaskTest(PicardTestCase):
         self.ws._remove_task(task)
         mock_timer.start.assert_called_with(0)
 
+    def test_abort_task_marks_aborted(self):
+        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
+        self.assertFalse(task.aborted)
+        self.ws.abort_task(task)
+        self.assertTrue(task.aborted)
+
+    def test_abort_task_aborts_active_reply(self):
+        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
+        mock_reply = MagicMock()
+        self.ws._task_to_reply[task] = mock_reply
+
+        self.ws.abort_task(task)
+
+        mock_reply.abort.assert_called_once()
+        self.assertNotIn(task, self.ws._task_to_reply)
+
+    def test_abort_task_handles_deleted_reply(self):
+        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
+        mock_reply = MagicMock()
+        mock_reply.abort.side_effect = RuntimeError("Reply deleted")
+        self.ws._task_to_reply[task] = mock_reply
+
+        # Should not raise exception
+        self.ws.abort_task(task)
+        self.assertTrue(task.aborted)
+
+    def test_abort_task_removes_from_queue(self):
+        task = RequestTask(('example.com', 80), dummy_handler, priority=0)
+        self.ws.abort_task(task)
+        self.ws._queue.remove_task.assert_called_with(task)
+
     def test_run_next_task(self):
         mock_timer = self.ws._timer_run_next_task
         self.ws._queue.run_ready_tasks.return_value = sys.maxsize
