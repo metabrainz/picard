@@ -244,9 +244,29 @@ class Album(MetadataItem):
     def _requests(self, value):
         """Compatibility setter for old plugins.
         Logs a warning but doesn't break functionality."""
+        import sys
+
+        # Get caller's frame
+        frame = sys._getframe(1)
+        filename = frame.f_code.co_filename
+        lineno = frame.f_lineno
+
+        # Extract plugin name from path
+        plugin_name = "unknown"
+        if 'plugins3' in filename:
+            parts = filename.split('/')
+            try:
+                idx = parts.index('plugins3')
+                plugin_name = parts[idx + 1]
+            except (ValueError, IndexError):
+                pass
+
         log.warning(
-            "Plugin is using deprecated album._requests. "
-            "Use api.add_album_request() and api.complete_album_request() instead."
+            "Plugin '%s' is using deprecated album._requests at %s:%d. "
+            "Use api.add_album_request() and api.complete_album_request() instead.",
+            plugin_name,
+            filename,
+            lineno,
         )
 
     def iterfiles(self, save=False):
