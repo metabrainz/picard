@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2006-2008 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
-# Copyright (C) 2008-2009, 2019-2022, 2024 Philipp Wolfer
+# Copyright (C) 2008-2009, 2019-2022, 2024-2025 Philipp Wolfer
 # Copyright (C) 2011 Andrew Barnert
 # Copyright (C) 2012-2013 Michael Wiencek
 # Copyright (C) 2013 Wieland Hoffmann
@@ -39,6 +39,7 @@ from PyQt6 import (
 
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
+from picard.extension_points.formats import ext_point_formats
 from picard.formats import supported_formats
 from picard.i18n import gettext as _
 from picard.util import find_existing_path
@@ -71,6 +72,7 @@ class FileBrowser(QtWidgets.QTreeView):
         self.addAction(self.set_as_starting_directory_action)
         self.doubleClicked.connect(self.load_file_for_item)
         self.focused = False
+        ext_point_formats.changed.connect(self._update_name_filters)
 
     def showEvent(self, event):
         if not self.model():
@@ -91,11 +93,8 @@ class FileBrowser(QtWidgets.QTreeView):
         self.setModel(model)
         model.layoutChanged.connect(self._layout_changed)
         model.setRootPath("")
-        self._set_model_filter()
-        filters = []
-        for exts, _name in supported_formats():
-            filters.extend("*" + e for e in exts)
-        model.setNameFilters(filters)
+        self._update_model_filter()
+        self._update_name_filters()
         # Hide unsupported files completely
         model.setNameFilterDisables(False)
         model.sort(0, QtCore.Qt.SortOrder.AscendingOrder)
@@ -109,7 +108,7 @@ class FileBrowser(QtWidgets.QTreeView):
         header.setStretchLastSection(False)
         header.setVisible(False)
 
-    def _set_model_filter(self):
+    def _update_model_filter(self):
         config = get_config()
         model_filter = (
             QtCore.QDir.Filter.AllDirs
@@ -120,6 +119,12 @@ class FileBrowser(QtWidgets.QTreeView):
         if config.persist['show_hidden_files']:
             model_filter |= QtCore.QDir.Filter.Hidden
         self.model().setFilter(model_filter)
+
+    def _update_name_filters(self):
+        filters = []
+        for exts, _name in supported_formats():
+            filters.extend("*" + e for e in exts)
+        self.model().setNameFilters(filters)
 
     def _layout_changed(self):
         def scroll():
@@ -164,7 +169,7 @@ class FileBrowser(QtWidgets.QTreeView):
     def show_hidden(self, state):
         config = get_config()
         config.persist['show_hidden_files'] = state
-        self._set_model_filter()
+        self._update_model_filter()
 
     def save_state(self):
         indexes = self.selectedIndexes()
