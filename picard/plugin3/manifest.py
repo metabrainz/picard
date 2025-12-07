@@ -19,9 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 try:
-    from tomllib import load as load_toml
+    import tomllib
 except ImportError:
-    from tomlkit import load as load_toml
+    import tomli as tomllib
 
 from typing import (
     BinaryIO,
@@ -41,7 +41,7 @@ class PluginManifest:
 
     def __init__(self, module_name: str, manifest_fp: BinaryIO) -> None:
         self.module_name = module_name
-        self._data = load_toml(manifest_fp)
+        self._data = tomllib.load(manifest_fp)
 
     def name(self, locale: str = 'en') -> str:
         """Get plugin name, optionally translated."""
