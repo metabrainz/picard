@@ -243,6 +243,24 @@ class Album(MetadataItem):
                     pass
         self._pending_requests.clear()
 
+    def check_timed_out_requests(self):
+        """Check for and abort requests that have exceeded their timeout."""
+        for request_id, request_info in list(self._pending_requests.items()):
+            if request_info.is_timed_out():
+                log.warning(
+                    "Request %s timed out after %.2fs (timeout: %.2fs): %s",
+                    request_id,
+                    request_info.elapsed_time(),
+                    request_info.timeout,
+                    request_info.description,
+                )
+                if request_info.reply:
+                    try:
+                        request_info.reply.abort()
+                    except RuntimeError:
+                        pass
+                self._pending_requests.pop(request_id, None)
+
     def has_critical_requests(self):
         """Check if there are any critical requests pending."""
         return any(r.type == RequestType.CRITICAL for r in self._pending_requests.values())
@@ -711,6 +729,9 @@ class Album(MetadataItem):
                 args.extend((f.filename, f.lineno, f.function))
             log.warning(msg, *args)
             return
+
+        # Check for and abort timed out requests
+        self.check_timed_out_requests()
 
         if error:
             self.metadata.clear()
