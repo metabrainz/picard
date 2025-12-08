@@ -27,6 +27,12 @@ requiring the full Picard codebase.
 import re
 
 
+try:
+    from markdown import markdown as render_markdown
+except ImportError:
+    render_markdown = None
+
+
 # Required MANIFEST.toml fields
 REQUIRED_MANIFEST_FIELDS = ['uuid', 'name', 'description', 'api']
 
@@ -85,6 +91,13 @@ def _validate_markdown(text, field_name, errors):
             if indent >= 36:
                 errors.append(f"Field '{field_name}' has excessive list nesting (max 9 levels)")
                 break
+
+    # If markdown module is available, try to parse it
+    if render_markdown:
+        try:
+            render_markdown(text, output_format='html')
+        except Exception as e:
+            errors.append(f"Field '{field_name}' raised markdown exception: {e}")
 
 
 def _validate_string_field(manifest_data, field_name, errors, min_len=None, max_len=None):
