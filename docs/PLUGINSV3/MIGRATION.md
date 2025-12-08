@@ -258,6 +258,79 @@ def enable(api):
 
 ---
 
+## Common Migration Patterns
+
+### Album Background Tasks (Web Requests)
+
+If your v2 plugin used `album._requests` to track web requests, you need to migrate to the v3 task API.
+
+**v2 Pattern:**
+```python
+from picard.metadata import register_album_metadata_processor
+
+def fetch_data(album, metadata, release):
+    album._requests += 1
+    album.tagger.webservice.get(
+        'example.com',
+        '/api/data',
+        handler=lambda response, reply, error: handle_response(album, response, error)
+    )
+
+def handle_response(album, response, error):
+    try:
+        if not error:
+            # Process response
+            pass
+    finally:
+        album._requests -= 1
+        album._finalize_loading(None)
+
+register_album_metadata_processor(fetch_data)
+```
+
+**v3 Pattern:**
+```python
+from functools import partial
+
+def fetch_data(api, album, metadata, release):
+    task_id = f'data_{album.id}'
+
+    def create_request():
+        return api.web_service.get_url(
+            url='https://example.com/api/data',
+            handler=partial(handle_response, api, album, task_id)
+        )
+
+    api.add_album_task(
+        album, task_id,
+        'Fetching data',
+        request_factory=create_request
+    )
+
+def handle_response(api, album, task_id, data, error):
+    try:
+        if not error:
+            # Process data
+            pass
+    finally:
+        api.complete_album_task(album, task_id)
+
+def enable(api):
+    api.register_album_metadata_processor(fetch_data)
+```
+
+**Key changes:**
+- `album._requests` → `api.add_album_task()` with `request_factory`
+- `album.tagger.webservice` → `api.web_service`
+- Use `request_factory` parameter to prevent race conditions
+- Always call `api.complete_album_task()` in a `finally` block
+
+**Why `request_factory`?** The factory pattern ensures requests are created and registered atomically, preventing race conditions where an album could be removed between creating a request and registering it.
+
+See [API.md - Album Background Task Management](API.md#album-background-task-management) for more details.
+
+---
+
 ## Step-by-Step Migration (Manual)
 
 If not using the migration tool, follow these steps:
