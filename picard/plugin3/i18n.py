@@ -42,7 +42,7 @@ class PluginTranslator(QTranslator):
             n: Optional plural number
 
         Returns:
-            Translated text or source_text if not found
+            Translated text, None if not found for Qt contexts, or source_text for plugin contexts
         """
         if not context or not source_text:
             return source_text or ''
@@ -60,8 +60,22 @@ class PluginTranslator(QTranslator):
         if lang in self._translations and key in self._translations[lang]:
             return self._translations[lang][key]
 
-        # Fall back to source text
-        return source_text
+        # For Qt standard contexts, return None to allow Qt's translators to handle them
+        # For plugin contexts, return source text as fallback
+        qt_standard_contexts = {
+            'QDialogButtonBox',
+            'QPlatformTheme',
+            'QMessageBox',
+            'QFileDialog',
+            'QColorDialog',
+            'QFontDialog',
+            'QInputDialog',
+            'QProgressDialog',
+            'QWizard',
+            'QPrintDialog',
+            'QPageSetupDialog',
+        }
+        return None if context in qt_standard_contexts else source_text
 
 
 def get_plural_form(locale: str, n: int) -> str:
