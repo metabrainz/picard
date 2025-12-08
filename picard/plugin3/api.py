@@ -142,10 +142,6 @@ def t_(key, text=None, plural=None):
 # Classes that plugins can import directly for inheritance
 __all__ = [
     'PluginApi',
-    'BaseAction',
-    'OptionsPage',
-    'File',
-    'CoverArtProvider',
     't_',
 ]
 
