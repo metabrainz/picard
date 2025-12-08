@@ -384,3 +384,113 @@ class TestManifestValidator(PicardTestCase):
         manifest['min_python_version'] = 3.9
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'min_python_version' must be a string", errors)
+
+    def test_validate_markdown_in_long_description(self):
+        """Test validation of markdown in long_description."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+        }
+
+        # Valid markdown
+        manifest['long_description'] = '''
+This is **bold** and *italic*.
+
+- List item 1
+- List item 2
+
+`code example`
+'''
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # HTML tags (not allowed)
+        manifest['long_description'] = 'This has <b>HTML</b> tags'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('HTML tags' in e for e in errors))
+
+        # Script tag (dangerous)
+        manifest['long_description'] = 'This has <script>alert("xss")</script>'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('dangerous' in e for e in errors))
+
+        # Excessive nesting (36+ spaces = 9+ nesting levels)
+        manifest['long_description'] = ' ' * 40 + '- deeply nested item'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('excessive' in e for e in errors))
+
+    def test_validate_markdown_in_long_description_i18n(self):
+        """Test validation of markdown in long_description_i18n."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+            'long_description': 'Valid **markdown**',
+        }
+
+        # Valid markdown in i18n
+        manifest['long_description_i18n'] = {'de': 'Gültig **markdown**', 'fr': 'Valide **markdown**'}
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # HTML in i18n (should fail)
+        manifest['long_description_i18n']['de'] = 'HTML <b>tags</b>'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('long_description_i18n.de' in e and 'HTML' in e for e in errors))
+
+    def test_validate_markdown_parsing(self):
+        """Test that markdown module is used to validate syntax."""
+        import unittest
+
+        from picard.plugin3 import validator
+
+        # Skip test if markdown module is not available
+        if validator.render_markdown is None:
+            raise unittest.SkipTest("Markdown module not available")
+
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+        }
+
+        # Valid markdown with code blocks
+        manifest['long_description'] = '''
+Example code:
+
+```python
+def hello():
+    print("world")
+```
+
+And a list:
+- Item 1
+- Item 2
+'''
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Test that complex markdown is actually parsed
+        manifest['long_description'] = '''
+# Heading
+
+**Bold** and *italic* text.
+
+- List item 1
+- List item 2
+
+```python
+code block
+```
+
+[Link](https://example.com)
+'''
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [], "Valid complex markdown should not produce errors")

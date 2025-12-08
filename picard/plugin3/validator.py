@@ -27,6 +27,12 @@ requiring the full Picard codebase.
 import re
 
 
+try:
+    from markdown import markdown as render_markdown
+except ImportError:
+    render_markdown = None
+
+
 # Required MANIFEST.toml fields
 REQUIRED_MANIFEST_FIELDS = ['uuid', 'name', 'description', 'api']
 
@@ -55,6 +61,43 @@ def _is_valid_locale(locale):
     # Pattern: 2-3 letter language code, optionally followed by underscore and 2 letter region
     pattern = r'^[a-z]{2,3}(_[A-Z]{2})?$'
     return bool(re.match(pattern, locale))
+
+
+def _validate_markdown(text, field_name, errors):
+    """Validate markdown text for security and formatting issues.
+
+    Args:
+        text: Markdown text to validate
+        field_name: Name of field being validated (for error messages)
+        errors: List to append errors to
+    """
+    # Check for HTML tags (not allowed)
+    html_pattern = r'<[^>]+>'
+    if re.search(html_pattern, text):
+        errors.append(f"Field '{field_name}' contains HTML tags (not allowed, use Markdown only)")
+
+    # Check for potentially dangerous patterns
+    # Script tags (even in code blocks should be flagged)
+    if '<script' in text.lower():
+        errors.append(f"Field '{field_name}' contains potentially dangerous content (<script>)")
+
+    # Check for excessive nesting (could indicate malformed markdown)
+    # Look for lines with deep indentation before list markers
+    for line in text.split('\n'):
+        stripped = line.lstrip()
+        if stripped and stripped[0] in '-*+':
+            indent = len(line) - len(stripped)
+            # Each nesting level is typically 2-4 spaces, so 36+ spaces = 9+ levels
+            if indent >= 36:
+                errors.append(f"Field '{field_name}' has excessive list nesting (max 9 levels)")
+                break
+
+    # If markdown module is available, try to parse it
+    if render_markdown:
+        try:
+            render_markdown(text, output_format='html')
+        except Exception as e:
+            errors.append(f"Field '{field_name}' raised markdown exception: {e}")
 
 
 def _validate_string_field(manifest_data, field_name, errors, min_len=None, max_len=None):
@@ -145,6 +188,11 @@ def validate_manifest_dict(manifest_data):
     _validate_string_field(manifest_data, 'name', errors, min_len=1, max_len=MAX_NAME_LENGTH)
     _validate_string_field(manifest_data, 'description', errors, min_len=1, max_len=MAX_DESCRIPTION_LENGTH)
     _validate_string_field(manifest_data, 'long_description', errors, max_len=MAX_LONG_DESCRIPTION_LENGTH)
+
+    # Validate markdown in long_description
+    if 'long_description' in manifest_data and isinstance(manifest_data['long_description'], str):
+        _validate_markdown(manifest_data['long_description'], 'long_description', errors)
+
     _validate_string_field(manifest_data, 'version', errors)
 
     # API version validation
@@ -174,5 +222,13 @@ def validate_manifest_dict(manifest_data):
             value = manifest_data[section]
             if not value or (isinstance(value, dict) and len(value) == 0):
                 errors.append(f"Section '{section}' is present but empty")
+
+    # Validate markdown in long_description_i18n
+    if 'long_description_i18n' in manifest_data:
+        i18n_data = manifest_data['long_description_i18n']
+        if isinstance(i18n_data, dict):
+            for locale, text in i18n_data.items():
+                if isinstance(text, str):
+                    _validate_markdown(text, f'long_description_i18n.{locale}', errors)
 
     return errors

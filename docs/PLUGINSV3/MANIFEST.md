@@ -80,7 +80,7 @@ def disable():
 | `maintainers` | array | Plugin maintainer names | `["John Doe"]` |
 | `license` | string | SPDX license identifier | `"GPL-2.0-or-later"` |
 | `license_url` | string | URL to license text | `"https://..."` |
-| `long_description` | string | Detailed description (multi-line, 1-2000 chars) | See below |
+| `long_description` | string | Detailed description (multi-line, 1-2000 chars, Python-Markdown supported) | See below |
 | `categories` | array | Plugin categories | `["metadata", "coverart"]` |
 | `homepage` | string | Plugin homepage URL | `"https://..."` |
 | `min_python_version` | string | Minimum Python version | `"3.9"` |
@@ -311,10 +311,18 @@ Vollständige deutsche Beschreibung hier...
 1. **Keep `description` concise**: One clear sentence is better than cramming multiple ideas
 2. **Use `long_description` for details**: Features, requirements, configuration steps
 3. **Structure `long_description`**: Use blank lines to separate sections
-4. **Translate both**: Provide translations for both fields if possible
-5. **Avoid redundancy**: Don't repeat the short description in the long one
-6. **Be specific**: Mention actual features, not vague promises
-7. **Include requirements**: List any accounts, network access, or dependencies needed
+4. **Use Markdown formatting**: `long_description` supports Markdown (bold, lists, code blocks, etc.)
+5. **Translate both**: Provide translations for both fields if possible
+6. **Avoid redundancy**: Don't repeat the short description in the long one
+7. **Be specific**: Mention actual features, not vague promises
+8. **Include requirements**: List any accounts, network access, or dependencies needed
+
+**Markdown Support:**
+- `long_description` supports Markdown via Python-Markdown (no HTML)
+- Use `**bold**`, `*italic*`, `- lists`, `` `code` ``, etc.
+- Follows original Markdown syntax (not CommonMark)
+- Markdown is rendered in plugin detail pages and documentation
+- Keep formatting simple and readable as plain text
 
 ---
 
@@ -337,6 +345,7 @@ Vollständige deutsche Beschreibung hier...
 - Optional
 - String, 1-2000 characters
 - Can be multi-line (use triple quotes in TOML)
+- Supports **Markdown formatting** (Python-Markdown syntax, no HTML)
 - Detailed description of plugin functionality
 - Can include features, requirements, usage notes
 - Used in plugin detail pages and `--info` command
