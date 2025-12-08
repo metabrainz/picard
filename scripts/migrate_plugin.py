@@ -738,6 +738,14 @@ def convert_plugin_code(content, metadata):
     if has_tagger_import:
         all_warnings.append("⚠️  Tagger import found - use api._tagger (review if needed)")
 
+    # Check for deprecated album._requests pattern
+    if 'album._requests' in content or 'album.tagger.webservice' in content:
+        all_warnings.append("⚠️  MANUAL MIGRATION REQUIRED: album._requests pattern detected")
+        all_warnings.append("   v2: album._requests += 1; album.tagger.webservice.get(...)")
+        all_warnings.append("   v3: api.add_album_task(album, task_id, description, request_factory=...)")
+        all_warnings.append("   See: docs/Plugin2to3MigrationGuide.md - Pattern 1: Album Background Tasks")
+        all_warnings.append("")
+
     # Convert api.* to self.api.* in class methods
     content = convert_api_in_classes(content)
 
