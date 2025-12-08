@@ -118,13 +118,17 @@ class FileBrowser(QtWidgets.QTreeView):
         )
         if config.persist['show_hidden_files']:
             model_filter |= QtCore.QDir.Filter.Hidden
-        self.model().setFilter(model_filter)
+        model = self.model()
+        if model:
+            model.setFilter(model_filter)
 
     def _update_name_filters(self):
         filters = []
         for exts, _name in supported_formats():
             filters.extend("*" + e for e in exts)
-        self.model().setNameFilters(filters)
+        model = self.model()
+        if model:
+            model.setNameFilters(filters)
 
     def _layout_changed(self):
         def scroll():
