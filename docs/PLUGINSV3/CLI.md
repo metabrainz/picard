@@ -100,8 +100,8 @@ picard plugins --enable listenbrainz
 picard plugins --disable listenbrainz
 
 # Uninstall
-picard plugins --uninstall listenbrainz
-picard plugins --uninstall listenbrainz --purge  # Delete saved options too
+picard plugins --remove listenbrainz
+picard plugins --remove listenbrainz --purge  # Delete saved options too
 
 # Get info
 picard plugins --info listenbrainz
@@ -155,7 +155,7 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 ### Help Output
 
 ```
-usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-u PLUGIN [PLUGIN ...]]
+usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-r PLUGIN [PLUGIN ...]]
                       [-e PLUGIN [PLUGIN ...]] [-d PLUGIN [PLUGIN ...]]
                       [--update PLUGIN [PLUGIN ...]] [--update-all]
                       [--info NAME|URL] [--list-refs PLUGIN] [--ref REF]
@@ -174,7 +174,7 @@ Plugin Management:
   -l, --list            list all installed plugins with details
   -i URL [URL ...], --install URL [URL ...]
                         install plugin(s) from git URL(s) or by name
-  -u PLUGIN [PLUGIN ...], --uninstall PLUGIN [PLUGIN ...]
+  -r PLUGIN [PLUGIN ...], --remove PLUGIN [PLUGIN ...]
                         uninstall plugin(s)
   -e PLUGIN [PLUGIN ...], --enable PLUGIN [PLUGIN ...]
                         enable plugin(s)
@@ -230,7 +230,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--list` / `-l` | List all installed plugins |
 | `--install <url>` / `-i` | Install plugin from git URL |
 | `--install <name>` | Install official plugin by name |
-| `--uninstall <name>` / `-u` | Uninstall plugin |
+| `--remove <name>` / `-r` | Uninstall plugin |
 | `--enable <name>` / `-e` | Enable plugin |
 | `--disable <name>` / `-d` | Disable plugin |
 | `--update <name>` | Update specific plugin |
@@ -386,20 +386,20 @@ picard plugins --install my-plugin --ref main
 
 ### Uninstall Plugin
 
-**Command:** `picard plugins --uninstall <name>` or `picard plugins -u <name>`
+**Command:** `picard plugins --remove <name>` or `picard plugins -u <name>`
 
 **Description:** Uninstall plugin and optionally remove saved options
 
 **Examples:**
 ```bash
 # Uninstall plugin (keep saved options)
-picard plugins --uninstall listenbrainz
+picard plugins --remove listenbrainz
 
 # Uninstall and delete saved options
-picard plugins --uninstall listenbrainz --purge
+picard plugins --remove listenbrainz --purge
 
 # Uninstall multiple
-picard plugins --uninstall listenbrainz discogs
+picard plugins --remove listenbrainz discogs
 ```
 
 ---
@@ -1113,7 +1113,7 @@ picard plugins --switch-ref plugin main
 ```bash
 picard plugins --list
 picard plugins --disable old-plugin
-picard plugins --uninstall old-plugin --purge
+picard plugins --remove old-plugin --purge
 ```
 
 ### Clean Plugin Configuration

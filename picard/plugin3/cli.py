@@ -235,8 +235,9 @@ class PluginCLI:
                 return self._cmd_disable(self._args.disable)
             elif self._args.install:
                 return self._cmd_install(self._args.install)
-            elif self._args.uninstall:
-                return self._cmd_uninstall(self._args.uninstall)
+            elif self._args.remove:
+                print(self._args.remove)
+                return self._cmd_remove(self._args.remove)
             elif self._args.update:
                 return self._cmd_update(self._args.update)
             elif self._args.update_all:
@@ -839,7 +840,7 @@ class PluginCLI:
                     return ExitCode.ERROR
         return ExitCode.SUCCESS
 
-    def _cmd_uninstall(self, plugin_names):
+    def _cmd_remove(self, plugin_names):
         """Uninstall plugins with confirmation."""
         purge = getattr(self._args, 'purge', False)
         yes = getattr(self._args, 'yes', False)

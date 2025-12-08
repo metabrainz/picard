@@ -158,7 +158,7 @@ class MockCliArgs(Mock):
             'enable': None,
             'disable': None,
             'install': None,
-            'uninstall': None,
+            'remove': None,
             'update': None,
             'update_all': False,
             'check_updates': False,
