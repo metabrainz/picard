@@ -157,7 +157,7 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 ```
 usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-r PLUGIN [PLUGIN ...]]
                       [-e PLUGIN [PLUGIN ...]] [-d PLUGIN [PLUGIN ...]]
-                      [--update PLUGIN [PLUGIN ...]] [--update-all]
+                      [-u PLUGIN [PLUGIN ...]] [--update-all]
                       [--info NAME|URL] [--list-refs PLUGIN] [--ref REF]
                       [--switch-ref PLUGIN REF] [--browse] [--search TERM]
                       [--check-blacklist URL] [--refresh-registry]
@@ -180,7 +180,7 @@ Plugin Management:
                         enable plugin(s)
   -d PLUGIN [PLUGIN ...], --disable PLUGIN [PLUGIN ...]
                         disable plugin(s)
-  --update PLUGIN [PLUGIN ...]
+  -u PLUGIN [PLUGIN ...], --update PLUGIN [PLUGIN ...]
                         update specific plugin(s) to latest version
   --update-all          update all installed plugins
   --info NAME|URL       show detailed information and status about a plugin
@@ -233,7 +233,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--remove <name>` / `-r` | Uninstall plugin |
 | `--enable <name>` / `-e` | Enable plugin |
 | `--disable <name>` / `-d` | Disable plugin |
-| `--update <name>` | Update specific plugin |
+| `--update <name>` / `-u` | Update specific plugin |
 | `--update-all` | Update all plugins |
 | `--info <name\|url>` | Show plugin details and status |
 | `--list-refs <name\|url>` | List available git refs for plugin |
