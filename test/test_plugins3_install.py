@@ -513,8 +513,8 @@ class TestPluginInstall(PicardTestCase):
         self.assertEqual(result, 1)
         self.assertIn('failed', stderr.getvalue().lower())
 
-    def test_uninstall_command_with_yes_flag(self):
-        """Test uninstall command with --yes flag."""
+    def test_remove_command_with_yes_flag(self):
+        """Test remove command with --yes flag."""
         from io import StringIO
 
         from picard.plugin3.cli import PluginCLI
@@ -537,7 +537,7 @@ class TestPluginInstall(PicardTestCase):
         args.enable = None
         args.disable = None
         args.install = None
-        args.uninstall = ['test-plugin']
+        args.remove = ['test-plugin']
         args.update = None
         args.update_all = False
         args.check_updates = False

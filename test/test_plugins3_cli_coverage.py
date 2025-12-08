@@ -330,13 +330,13 @@ class TestPluginCLICommands(PicardTestCase):
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('Failed to disable', stderr.getvalue())
 
-    def test_uninstall_plugin_error(self):
+    def test_remove_plugin_error(self):
         """Test _uninstall_plugins with error."""
         manager = MockPluginManager()
         manager.uninstall_plugin.side_effect = ValueError('Uninstall failed')
 
         args = MockCliArgs()
-        args.uninstall = ['test-plugin']
+        args.remove = ['test-plugin']
         args.yes = True
         args.purge = False
 
@@ -348,7 +348,7 @@ class TestPluginCLICommands(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         cli._find_plugin_or_error = Mock(return_value=(mock_plugin, None))
 
-        result = cli._cmd_uninstall(['test-plugin'])
+        result = cli._cmd_remove(['test-plugin'])
 
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('Failed to uninstall', stderr.getvalue())
