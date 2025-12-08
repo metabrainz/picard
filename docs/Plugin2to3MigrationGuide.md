@@ -537,7 +537,74 @@ class MyPage(OptionsPage):
 
 ## Common Patterns
 
-### Pattern 1: Simple Metadata Processor
+### Pattern 1: Album Background Tasks (Web Requests)
+
+**V2**:
+```python
+from picard.metadata import register_album_metadata_processor
+
+def fetch_data(album, metadata, release):
+    album._requests += 1
+    album.tagger.webservice.get(
+        'example.com',
+        '/api/data',
+        handler=lambda response, reply, error: handle_response(album, response, error)
+    )
+
+def handle_response(album, response, error):
+    try:
+        if not error:
+            # Process response
+            pass
+    finally:
+        album._requests -= 1
+        album._finalize_loading(None)
+
+register_album_metadata_processor(fetch_data)
+```
+
+**V3**:
+```python
+from functools import partial
+
+def fetch_data(api, album, metadata, release):
+    task_id = f'data_{album.id}'
+
+    def create_request():
+        return api.web_service.get_url(
+            url='https://example.com/api/data',
+            handler=partial(handle_response, api, album, task_id)
+        )
+
+    api.add_album_task(
+        album, task_id,
+        'Fetching data',
+        request_factory=create_request
+    )
+
+def handle_response(api, album, task_id, data, error):
+    try:
+        if not error:
+            # Process data
+            pass
+    finally:
+        api.complete_album_task(album, task_id)
+
+def enable(api):
+    api.register_album_metadata_processor(fetch_data)
+```
+
+**Key changes**:
+- `album._requests` → `api.add_album_task()` with `request_factory`
+- `album.tagger.webservice` → `api.web_service`
+- Use `request_factory` parameter to prevent race conditions
+- Always call `api.complete_album_task()` in a `finally` block
+
+**Why `request_factory`?** The factory pattern ensures requests are created and registered atomically, preventing race conditions where an album could be removed between creating a request and registering it.
+
+---
+
+### Pattern 2: Simple Metadata Processor
 
 **V2**:
 ```python
@@ -561,7 +628,7 @@ def enable(api):
     api.register_track_metadata_processor(clean_title)
 ```
 
-### Pattern 2: Plugin with Options
+### Pattern 3: Plugin with Options
 
 **V2**:
 ```python
@@ -589,7 +656,7 @@ def enable(api):
     api.register_options_page(MyOptionsPage)
 ```
 
-### Pattern 3: Script Function
+### Pattern 4: Script Function
 
 **V2**:
 ```python
