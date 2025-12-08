@@ -669,7 +669,14 @@ class PluginApi:
         return register_ui_init(wrapped)
 
     # Album task management for plugins
-    def add_album_task(self, album: Album, task_id: str, description: str, timeout: float | None = None) -> None:
+    def add_album_task(
+        self,
+        album: Album,
+        task_id: str,
+        description: str,
+        timeout: float | None = None,
+        request_factory: Callable[[], PendingRequest] | None = None,
+    ) -> None:
         """Add a plugin task to an album.
 
         Plugin tasks are always non-blocking (TaskType.PLUGIN) and will not
@@ -681,16 +688,19 @@ class PluginApi:
             task_id: Unique identifier for this task (will be prefixed with plugin_id)
             description: Human-readable description of what the task does
             timeout: Optional timeout in seconds
+            request_factory: Optional callable that creates and returns a PendingRequest.
+                           If provided, the request is created and registered atomically.
 
         Example:
             def fetch_extra_data(api, album, metadata, release):
                 task_id = f'extra_data_{album.id}'
-                api.add_album_task(album, task_id, 'Fetching artist biography')
-                request = api.web_service.get_url(
-                    url=f'https://example.com/artist/{artist_id}',
-                    handler=lambda data, http, error: api.complete_album_task(album, task_id)
+                api.add_album_task(
+                    album, task_id, 'Fetching artist biography',
+                    request_factory=lambda: api.web_service.get_url(
+                        url=f'https://example.com/artist/{artist_id}',
+                        handler=lambda data, http, error: api.complete_album_task(album, task_id)
+                    )
                 )
-                api.set_album_task_request(album, task_id, request)
         """
         full_task_id = f'{self.plugin_id}_{task_id}'
         album.add_task(
@@ -699,24 +709,8 @@ class PluginApi:
             f'[{self.plugin_id}] {description}',
             timeout=timeout,
             plugin_id=self.plugin_id,
+            request_factory=request_factory,
         )
-
-    def set_album_task_request(self, album: Album, task_id: str, request: PendingRequest) -> None:
-        """Associate a network request with a plugin task for automatic cancellation.
-
-        This allows the task to be automatically aborted if the album is removed.
-
-        Args:
-            album: The Album object the task was added to
-            task_id: The same task_id used in add_album_task (without plugin prefix)
-            request: The PendingRequest object returned by the webservice call
-
-        Example:
-            request = api.web_service.get_url(...)
-            api.set_album_task_request(album, 'extra_data', request)
-        """
-        full_task_id = f'{self.plugin_id}_{task_id}'
-        album.set_task_request(full_task_id, request)
 
     def complete_album_task(self, album: Album, task_id: str) -> None:
         """Mark a plugin task as complete.
