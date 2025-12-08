@@ -234,6 +234,7 @@ class Tagger(QtWidgets.QApplication):
         check_io_encoding()
 
         self._init_gettext(config, localedir)
+        setup_translator(self)
 
         upgrade_config(config)
 
@@ -399,6 +400,19 @@ class Tagger(QtWidgets.QApplication):
         self.nats = None
         # When True, we are restoring a session; skip auto-matching by MBIDs
         self._restoring_session = False
+
+    def reinstall_qt_translator(self):
+        """Reinstall Qt translator to fix translation issues
+
+        For unknown reasons, the Qt translator stops working after certain
+        operations. Reinstalling it fixes the issue.
+        """
+        if hasattr(self, '_qt_translators'):
+            log.debug("Reinstalling Qt translators...")
+            for translator in self._qt_translators:
+                QtCore.QCoreApplication.removeTranslator(translator)
+                QtCore.QCoreApplication.installTranslator(translator)
+            log.debug("Qt translators reinstalled")
 
     def _init_ui(self, config):
         """Initialize User Interface / Main Window"""
@@ -1603,14 +1617,19 @@ def setup_dbus():
 
 def setup_translator(tagger):
     """Setup Qt default translations"""
-    translator = QtCore.QTranslator(tagger)
     locale = QtCore.QLocale()
     translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
     log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-    if translator.load(locale, 'qtbase_', directory=translation_path):
-        tagger.installTranslator(translator)
-    else:
-        log.debug("Qt locale %s not available", locale.name())
+    # Keep references to prevent garbage collection
+    tagger._qt_translators = []
+    for prefix in ('qtbase_', 'qt_'):
+        translator = QtCore.QTranslator(tagger)
+        if translator.load(locale, prefix, directory=translation_path):
+            tagger.installTranslator(translator)
+            tagger._qt_translators.append(translator)
+            log.debug("Loaded and installed %s translator", prefix)
+        else:
+            log.debug("Qt locale %s not available for %s", locale.name(), prefix)
 
 
 def main(localedir=None, autoupdate=True):
@@ -1668,8 +1687,6 @@ def main(localedir=None, autoupdate=True):
 
     # GUI mode - full Tagger initialization
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
-
-    setup_translator(tagger)
 
     tagger.startTimer(1000)
     exit_code = tagger.run()
