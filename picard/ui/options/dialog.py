@@ -194,6 +194,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
         self.ui.reset_button.setToolTip(_("Reset all settings for current option page"))
 
+        # Reinstall Qt translators to ensure standard buttons are translated
+        tagger = QtCore.QCoreApplication.instance()
+        tagger.reinstall_qt_translator()
+
         ok = QtWidgets.QPushButton(_("Make It So!"))
         self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
