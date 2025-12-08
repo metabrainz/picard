@@ -445,6 +445,14 @@ This is **bold** and *italic*.
 
     def test_validate_markdown_parsing(self):
         """Test that markdown module is used to validate syntax."""
+        import unittest
+
+        from picard.plugin3 import validator
+
+        # Skip test if markdown module is not available
+        if validator.render_markdown is None:
+            raise unittest.SkipTest("Markdown module not available")
+
         manifest = {
             'uuid': '550e8400-e29b-41d4-a716-446655440000',
             'name': 'Test Plugin',
@@ -468,11 +476,6 @@ And a list:
 '''
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
-
-        # Markdown module should be available (imported at module level)
-        from picard.plugin3 import validator
-
-        self.assertIsNotNone(validator.render_markdown, "Markdown module should be available")
 
         # Test that complex markdown is actually parsed
         manifest['long_description'] = '''
