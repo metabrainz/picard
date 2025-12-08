@@ -442,3 +442,52 @@ This is **bold** and *italic*.
         manifest['long_description_i18n']['de'] = 'HTML <b>tags</b>'
         errors = validate_manifest_dict(manifest)
         self.assertTrue(any('long_description_i18n.de' in e and 'HTML' in e for e in errors))
+
+    def test_validate_markdown_parsing(self):
+        """Test that markdown module is used to validate syntax."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+        }
+
+        # Valid markdown with code blocks
+        manifest['long_description'] = '''
+Example code:
+
+```python
+def hello():
+    print("world")
+```
+
+And a list:
+- Item 1
+- Item 2
+'''
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Markdown module should be available (imported at module level)
+        from picard.plugin3 import validator
+
+        self.assertIsNotNone(validator.render_markdown, "Markdown module should be available")
+
+        # Test that complex markdown is actually parsed
+        manifest['long_description'] = '''
+# Heading
+
+**Bold** and *italic* text.
+
+- List item 1
+- List item 2
+
+```python
+code block
+```
+
+[Link](https://example.com)
+'''
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [], "Valid complex markdown should not produce errors")
