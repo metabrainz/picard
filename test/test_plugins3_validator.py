@@ -384,3 +384,61 @@ class TestManifestValidator(PicardTestCase):
         manifest['min_python_version'] = 3.9
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'min_python_version' must be a string", errors)
+
+    def test_validate_markdown_in_long_description(self):
+        """Test validation of markdown in long_description."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+        }
+
+        # Valid markdown
+        manifest['long_description'] = '''
+This is **bold** and *italic*.
+
+- List item 1
+- List item 2
+
+`code example`
+'''
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # HTML tags (not allowed)
+        manifest['long_description'] = 'This has <b>HTML</b> tags'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('HTML tags' in e for e in errors))
+
+        # Script tag (dangerous)
+        manifest['long_description'] = 'This has <script>alert("xss")</script>'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('dangerous' in e for e in errors))
+
+        # Excessive nesting (36+ spaces = 9+ nesting levels)
+        manifest['long_description'] = ' ' * 40 + '- deeply nested item'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('excessive' in e for e in errors))
+
+    def test_validate_markdown_in_long_description_i18n(self):
+        """Test validation of markdown in long_description_i18n."""
+        manifest = {
+            'uuid': '550e8400-e29b-41d4-a716-446655440000',
+            'name': 'Test Plugin',
+            'version': '1.0.0',
+            'description': 'A test plugin',
+            'api': ['3.0'],
+            'long_description': 'Valid **markdown**',
+        }
+
+        # Valid markdown in i18n
+        manifest['long_description_i18n'] = {'de': 'Gültig **markdown**', 'fr': 'Valide **markdown**'}
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # HTML in i18n (should fail)
+        manifest['long_description_i18n']['de'] = 'HTML <b>tags</b>'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any('long_description_i18n.de' in e and 'HTML' in e for e in errors))
