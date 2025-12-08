@@ -342,30 +342,31 @@ class PluginApi:
         # Get current locale
         current_locale = self.get_locale()
 
-        # Try to load current locale
-        file_path, format = self._find_translation_file(current_locale)
+        # Try to load current locale and source locale as fallback
+        for locale in {current_locale, self._source_locale}:
+            loaded = self._load_translation_file_for_locale(locale)
+            if not loaded:
+                # Fallback: try language without region (e.g., 'de' from 'de_DE')
+                if '_' in locale:
+                    lang = locale.split('_')[0]
+                    loaded = self._load_translation_file_for_locale(lang)
+
+            if not loaded:
+                if locale == current_locale:
+                    self._logger.debug(f"No translation file for ({current_locale}).")
+                elif locale == self._source_locale:
+                    self._logger.warning(f"Missing translation file for source locale ({self._source_locale}).")
+
+    def _load_translation_file_for_locale(self, locale: str) -> bool:
+        """Try to load translation file for given locale."""
+        file_path, format = self._find_translation_file(locale)
         if file_path:
             assert format is not None
-            data = self._load_translation_file(file_path, format, current_locale)
+            data = self._load_translation_file(file_path, format, locale)
             if data:
-                self._translations[current_locale] = data
-                # Log if this is the source locale
-                if current_locale == self._source_locale or current_locale.split('_')[0] == self._source_locale:
-                    self._logger.debug(f"Loaded source locale ({self._source_locale}) translation file")
-                return
-
-        # Fallback: try language without region (e.g., 'de' from 'de_DE')
-        if '_' in current_locale:
-            lang = current_locale.split('_')[0]
-            file_path, format = self._find_translation_file(lang)
-            if file_path:
-                assert format is not None
-                data = self._load_translation_file(file_path, format, lang)
-                if data:
-                    self._translations[lang] = data
-                    # Log if this is the source locale
-                    if lang == self._source_locale:
-                        self._logger.debug(f"Loaded source locale ({self._source_locale}) translation file")
+                self._translations[locale] = data
+                return True
+        return False
 
     @property
     def tagger(self):

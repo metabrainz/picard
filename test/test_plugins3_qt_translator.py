@@ -68,7 +68,8 @@ class TestPluginTranslator(PicardTestCase):
             locale_dir = plugin_dir / 'locale'
             locale_dir.mkdir()
 
-            (locale_dir / 'de.json').write_text(json.dumps({'qt.MyDialog.Submit': 'Absenden'}))
+            (locale_dir / 'en.json').write_text(json.dumps({'qt.MyDialog.submit': 'Submit'}))
+            (locale_dir / 'de.json').write_text(json.dumps({}))
 
             manifest_path = plugin_dir / 'MANIFEST.toml'
             manifest_path.write_text('name = "Test"\n')
@@ -83,8 +84,8 @@ class TestPluginTranslator(PicardTestCase):
                 translator = PluginTranslator(translations, manifest.source_locale)
                 translator._current_locale = 'de'
 
-                result = translator.translate('MyDialog', 'Unknown')
-                self.assertEqual(result, 'Unknown')
+                result = translator.translate('MyDialog', 'submit')
+                self.assertEqual(result, 'Submit')
 
     def test_translate_with_disambiguation(self):
         """Test translate() handles disambiguation parameter."""
