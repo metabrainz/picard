@@ -34,9 +34,9 @@ class PluginMetadata:
     ref: str
     commit: str
     name: str = ''
-    uuid: str = None
-    original_url: str = None
-    original_uuid: str = None
+    uuid: str | None = None
+    original_url: str | None = None
+    original_uuid: str | None = None
 
     @classmethod
     def from_dict(cls, data: dict):

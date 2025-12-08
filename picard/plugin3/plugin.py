@@ -25,6 +25,7 @@ from pathlib import Path
 import re
 import sys
 import time
+import types
 
 from picard import log
 from picard.extension_points import (
@@ -42,7 +43,7 @@ try:
     HAS_PYGIT2 = True
 except ImportError:
     HAS_PYGIT2 = False
-    pygit2 = None
+    pygit2 = None  # type: ignore[assignment]
 
 try:
     import hashlib
@@ -50,7 +51,7 @@ try:
     HAS_HASHLIB = True
 except ImportError:
     HAS_HASHLIB = False
-    hashlib = None
+    hashlib = None  # type: ignore[assignment]
 
 # Retry configuration for git operations
 GIT_OPERATION_MAX_RETRIES = 3
@@ -127,7 +128,7 @@ if HAS_PYGIT2:
             return None
 else:
 
-    class GitRemoteCallbacks:
+    class GitRemoteCallbacks:  # type: ignore[no-redef]
         pass
 
 
@@ -161,14 +162,14 @@ class PluginSource:
 class PluginSourceGit(PluginSource):
     """Plugin is stored in a git repository, local or remote"""
 
-    def __init__(self, url: str, ref: str = None):
+    def __init__(self, url: str, ref: str | None = None):
         super().__init__()
         if not HAS_PYGIT2:
             raise PluginSourceSyncError("pygit2 is not available. Install it to use git-based plugin sources.")
         # Note: url can be a local directory
         self.url = url
         self.ref = ref
-        self.resolved_ref = None  # Will be set after sync
+        self.resolved_ref: str | None = None  # Will be set after sync
 
     def _list_available_refs(self, repo, limit=20):
         """List available refs in repository.
@@ -549,14 +550,14 @@ class PluginSourceLocal(PluginSource):
 
 
 class Plugin:
-    local_path: Path = None
-    remote_url: str = None
-    ref = None
-    name: str = None
-    module_name: str = None
-    manifest: PluginManifest = None
-    state: PluginState = None
-    _module = None
+    local_path: Path | None = None
+    remote_url: str | None = None
+    ref: str | None = None
+    name: str | None = None
+    module_name: str | None = None
+    manifest: PluginManifest | None = None
+    state: PluginState | None = None
+    _module: types.ModuleType | None = None
 
     def __init__(self, plugins_dir: Path, plugin_name: str):
         self.plugin_id = plugin_name
@@ -564,9 +565,10 @@ class Plugin:
         self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
 
-    def sync(self, plugin_source: PluginSource = None):
+    def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
         if plugin_source:
+            assert self.local_path is not None, "Plugin local_path must be set"
             try:
                 plugin_source.sync(self.local_path)
             except Exception as e:
@@ -624,6 +626,7 @@ class Plugin:
         if self.state == PluginState.ENABLED:
             raise PluginAlreadyEnabledError(self.plugin_id)
 
+        assert self.manifest is not None, "Plugin manifest must be loaded before enabling"
         api = PluginApi(self.manifest, tagger)
         api._plugin_module = self._module
         api._plugin_dir = self.local_path
@@ -644,6 +647,7 @@ class Plugin:
         else:
             api.logger.info(f"Enabling plugin {self.plugin_id}{version_str}")
 
+        assert self._module is not None, "Plugin module must be loaded before enabling"
         self._module.enable(api)
         self.state = PluginState.ENABLED
 
@@ -652,7 +656,7 @@ class Plugin:
         if self.state == PluginState.DISABLED:
             raise PluginAlreadyDisabledError(self.plugin_id)
 
-        if hasattr(self._module, 'disable'):
+        if self._module is not None and hasattr(self._module, 'disable'):
             self._module.disable()
         unregister_module_extensions(self.plugin_id)
 
