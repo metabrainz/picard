@@ -2047,7 +2047,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             return
 
         self.plugin_tools_menu.menuAction().setVisible(True)
-        self.plugin_tools_menu.clear()
 
         for ActionClass in actions:
             # Instantiate action with API
