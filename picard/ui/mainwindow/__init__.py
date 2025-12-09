@@ -82,6 +82,10 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.extension_points.plugin_tools_menu import (
+    ext_point_plugin_tools_items,
+    signaler,
+)
 from picard.extension_points.ui_init import ext_point_ui_init
 from picard.file import File
 from picard.formats import supported_formats
@@ -303,6 +307,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         get_config().setting.setting_changed.connect(self.handle_settings_changed)
         get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
+
+        signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
@@ -905,6 +911,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.TAGS_FROM_FILENAMES,
             MainAction.OPEN_COLLECTION_IN_BROWSER,
         )
+
+        self.plugin_tools_menu = self.menuBar().addMenu(_("&Plugin Tools"))
+        self.plugin_tools_menu.menuAction().setVisible(False)
+        self._make_plugin_tools_menu()
 
         self.menuBar().addSeparator()
 
@@ -2025,6 +2035,28 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     # Update menus/settings that may depend on profile overrides.
                     self._reset_option_menu_state()
                 return
+
+    def _make_plugin_tools_menu(self):
+        """Update the Plugin Tools menu"""
+        actions = list(ext_point_plugin_tools_items)
+
+        self.plugin_tools_menu.clear()
+
+        if not actions:
+            self.plugin_tools_menu.menuAction().setVisible(False)
+            return
+
+        self.plugin_tools_menu.menuAction().setVisible(True)
+
+        for ActionClass in actions:
+            # Instantiate action with API
+            try:
+                api = getattr(ActionClass, '_plugin_api', None)
+                action = ActionClass(api=api)
+                action.setParent(self.plugin_tools_menu)  # Set parent to keep action alive
+                self.plugin_tools_menu.addAction(action)
+            except Exception as ex:
+                log.error("Error adding plugin action", exc_info=ex)
 
     def _make_settings_selector_menu(self):
         """Update the sub-menu of selected option settings."""

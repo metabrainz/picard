@@ -613,13 +613,19 @@ def enable(api):
 
 ### UI Actions
 
+Context menu actions:
+
 #### `register_album_action(action)`
 #### `register_track_action(action)`
 #### `register_file_action(action)`
 #### `register_cluster_action(action)`
 #### `register_clusterlist_action(action)`
 
-Register context menu actions for different object types.
+Plugin Tools menu actions:
+
+#### `register_tools_menu_action(action)`
+
+Register menu actions for different object types.
 
 ```python
 from picard.plugin3.api import BaseAction
@@ -635,11 +641,15 @@ class MyAction(BaseAction):
             self.api.logger.info(f"Action on: {obj}")
 
 def enable(api):
+    # Context menus
     api.register_file_action(MyAction)
     api.register_track_action(MyAction)
     api.register_album_action(MyAction)
     api.register_cluster_action(MyAction)
     api.register_clusterlist_action(MyAction)
+
+    # Plugin Tools menu
+    register_tools_menu_action(action)
 ```
 
 **Note**: Pass the class, not an instance. Picard instantiates it with `api` parameter. Always call `super().__init__(api=api)` to properly initialize the parent class, which automatically sets `self.api` for you.
