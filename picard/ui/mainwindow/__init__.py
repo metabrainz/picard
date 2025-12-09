@@ -86,7 +86,6 @@ from picard.extension_points.plugin_tools_menu import (
     ext_point_plugin_tools_items,
     signaler,
 )
-from picard.extension_points.ui_init import ext_point_ui_init
 from picard.file import File
 from picard.formats import supported_formats
 from picard.i18n import (
@@ -301,9 +300,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         # accessibility
         self.set_tab_order()
-
-        for function in ext_point_ui_init:
-            function(self)
 
         get_config().setting.setting_changed.connect(self.handle_settings_changed)
         get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
