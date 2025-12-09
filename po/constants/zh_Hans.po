@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-02-20 10:44+0000\n"
-"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
+"PO-Revision-Date: 2025-12-09 13:11+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/2/constants/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -3422,7 +3422,7 @@ msgstr ""
 
 #: picard/const/locales.py:861
 msgid "Tachelhit"
-msgstr ""
+msgstr "Tachelhit"
 
 #: picard/const/locales.py:862
 msgid "Tachelhit (Latin)"

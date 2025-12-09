@@ -9,9 +9,8 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2024-07-29 11:14+0000\n"
-"Last-Translator: \"ApeKattQuest, MonkeyPython\" <monkeypython+inst@yepmail."
-"net>\n"
+"PO-Revision-Date: 2025-12-09 13:11+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/2/constants/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -19,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -279,7 +278,7 @@ msgstr "Amharisk (Etiopia)"
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
-msgstr ""
+msgstr "Aragonesisk Latin"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
@@ -435,7 +434,7 @@ msgstr ""
 
 #: picard/const/locales.py:83
 msgid "Asturian"
-msgstr ""
+msgstr "Asturisk Latin"
 
 #: picard/const/locales.py:84
 msgid "Asturian (Spain)"
