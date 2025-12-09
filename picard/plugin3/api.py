@@ -166,6 +166,7 @@ class PluginApi:
         self._tagger: 'Tagger' = tagger
         self._manifest = manifest
         self._plugin_module: types.ModuleType | None = None  # Will be set when plugin is enabled
+        self._plugin_id = manifest.module_name
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
         self._api_config = ConfigSection(get_config(), full_name)
@@ -235,7 +236,7 @@ class PluginApi:
         )
         has_qt_keys = any(k.startswith('qt.') for trans_dict in self._translations.values() for k in trans_dict)
         if has_qt_keys:
-            self._qt_translator = PluginTranslator(self._translations, self._source_locale)
+            self._qt_translator = PluginTranslator(self._translations, self._source_locale, self._plugin_id)
             self._qt_translator._current_locale = self.get_locale()
             self._tagger._qt_translators.add_translator(self._qt_translator)
 
