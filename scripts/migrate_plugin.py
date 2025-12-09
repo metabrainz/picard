@@ -746,6 +746,14 @@ def convert_plugin_code(content, metadata):
         all_warnings.append("   See: docs/Plugin2to3MigrationGuide.md - Pattern 1: Album Background Tasks")
         all_warnings.append("")
 
+    # Check for deprecated register_ui_init
+    if 'register_ui_init' in content:
+        all_warnings.append("⚠️  MANUAL MIGRATION REQUIRED: register_ui_init pattern detected")
+        all_warnings.append("   v2: register_ui_init(...)")
+        all_warnings.append("   v3: register_ui_init was removed")
+        all_warnings.append("   See: docs/Plugin2to3MigrationGuide.md - register_ui_init was removed")
+        all_warnings.append("")
+
     # Convert api.* to self.api.* in class methods
     content = convert_api_in_classes(content)
 
