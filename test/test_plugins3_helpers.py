@@ -25,6 +25,7 @@ from unittest.mock import Mock
 from test.picardtestcase import get_test_data_path
 
 from picard.plugin3.manifest import PluginManifest
+from picard.plugin3.plugin import Plugin
 
 
 class MockPluginManager(Mock):
@@ -47,7 +48,7 @@ class MockPluginManager(Mock):
         def select_ref_for_plugin_impl(plugin):
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = object.__new__(PluginManager)
+            temp_manager = PluginManager.__new__(PluginManager)
             temp_manager._fetch_version_tags = self._fetch_version_tags
             return PluginManager.select_ref_for_plugin(temp_manager, plugin)
 
@@ -57,7 +58,7 @@ class MockPluginManager(Mock):
         def get_registry_plugin_latest_version_impl(plugin_data):
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = object.__new__(PluginManager)
+            temp_manager = PluginManager.__new__(PluginManager)
             temp_manager._fetch_version_tags = self._fetch_version_tags
             return PluginManager.get_registry_plugin_latest_version(temp_manager, plugin_data)
 
@@ -67,7 +68,7 @@ class MockPluginManager(Mock):
         def get_preferred_version_impl(plugin_uuid, manifest_version=''):
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = object.__new__(PluginManager)
+            temp_manager = PluginManager.__new__(PluginManager)
             temp_manager._get_plugin_metadata = self._get_plugin_metadata
             return PluginManager.get_preferred_version(temp_manager, plugin_uuid, manifest_version)
 
@@ -77,7 +78,7 @@ class MockPluginManager(Mock):
         def search_registry_plugins_impl(query=None, category=None, trust_level=None):
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = object.__new__(PluginManager)
+            temp_manager = PluginManager.__new__(PluginManager)
             temp_manager._registry = self._registry
             return PluginManager.search_registry_plugins(temp_manager, query, category, trust_level)
 
@@ -193,13 +194,13 @@ def run_cli(manager, **args_kwargs):
     return exit_code, output.stdout.getvalue(), output.stderr.getvalue()
 
 
-class MockPlugin(Mock):
+class MockPlugin(Plugin):
     """Mock Plugin with sensible defaults."""
 
     def __init__(self, name='test-plugin', uuid='test-uuid-1234', **kwargs):
         from pathlib import Path
 
-        from picard.plugin3.plugin import Plugin, PluginState
+        from picard.plugin3.plugin import PluginState
 
         # Extract our custom params before passing to Mock
         local_path = kwargs.pop('local_path', Path(f'/tmp/{name}'))
@@ -208,8 +209,7 @@ class MockPlugin(Mock):
         manifest = kwargs.pop('manifest', None)
         state = kwargs.pop('state', PluginState.LOADED)
 
-        super().__init__(spec=Plugin, **kwargs)
-        self.plugin_id = name
+        super().__init__(local_path, name)
         self.local_path = local_path
         self.state = state
 
@@ -221,6 +221,11 @@ class MockPlugin(Mock):
             self.manifest.uuid = uuid
             self.manifest.version = version
             self.manifest.name = Mock(return_value=display_name)
+
+        # Mock all methods
+        self.load_module = Mock()
+        self.enable = Mock()
+        self.disable = Mock()
 
 
 def create_mock_manager_with_manifest_validation():

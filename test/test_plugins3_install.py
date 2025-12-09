@@ -332,7 +332,6 @@ class TestPluginInstall(PicardTestCase):
         from PyQt6.QtCore import QSettings
 
         from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
@@ -360,12 +359,7 @@ class TestPluginInstall(PicardTestCase):
             self.assertEqual(len(test_config.childKeys()), 2)
             test_config.endGroup()
 
-            mock_plugin = Mock(spec=Plugin)
-            mock_plugin.plugin_id = 'test-plugin'
-            mock_plugin.local_path = plugin_path
-            mock_plugin.disable = Mock()
-            mock_plugin.manifest = Mock()
-            mock_plugin.manifest.uuid = test_uuid
+            mock_plugin = MockPlugin(name='test-plugin', uuid=test_uuid, local_path=plugin_path)
 
             # Set manager's plugin dir to temp dir
             manager._primary_plugin_dir = Path(tmpdir)
