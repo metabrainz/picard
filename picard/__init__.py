@@ -74,15 +74,17 @@ def crash_handler(exc: Exception = None):
     a minimal crash dialog to the user.
     This function is supposed to be called from inside an except blog.
     """
+    import os
+    import traceback
+
+    # Disable exception handler to prevent recursive crashes
+    sys.excepthook = sys.__excepthook__
+
     # Allow disabling the graphical crash handler for debugging and CI purposes.
     if set(sys.argv) & {'--no-crash-dialog', '-v', '--version', '-V', '--long-version', '-h', '--help'}:
         return
 
-    # First try to get traceback information and write it to a log file
-    # with minimum chance to fail.
-    from tempfile import NamedTemporaryFile
-    import traceback
-
+    # Get traceback
     if exc:
         if sys.version_info < (3, 10):
             trace_list = traceback.format_exception(None, exc, exc.__traceback__)
@@ -91,20 +93,28 @@ def crash_handler(exc: Exception = None):
         trace = "".join(trace_list)
     else:
         trace = traceback.format_exc()
-    logfile = None
-    try:
-        with NamedTemporaryFile(suffix='.log', prefix='picard-crash-', delete=False) as f:
-            f.write(trace.encode(errors="replace"))
-            logfile = f.name
-    except:  # noqa: E722,F722 # pylint: disable=bare-except
-        print("Failed writing log file {0}".format(logfile), file=sys.stderr)
-        logfile = None
 
-    # Display the crash information to the user as a dialog. This requires
-    # importing Qt6 and has some potential to fail if things are broken.
+    # Always print to stderr first
+    print("Picard terminated unexpectedly", file=sys.stderr)
+    print(trace, file=sys.stderr)
+
+    try:
+        _show_crash_dialog(trace)
+    except:  # noqa: E722,F722 # pylint: disable=bare-except
+        # If dialog fails, just exit
+        os._exit(1)
+
+
+def _show_crash_dialog(trace):
+    """Show crash dialog with traceback. This function may fail if Qt is broken."""
+    import os
+    import signal
+    from tempfile import NamedTemporaryFile
+
     from PyQt6.QtCore import (
         QCoreApplication,
         Qt,
+        QTimer,
         QUrl,
     )
     from PyQt6.QtWidgets import (
@@ -112,9 +122,19 @@ def crash_handler(exc: Exception = None):
         QMessageBox,
     )
 
+    # Write traceback to log file
+    logfile = None
+    try:
+        with NamedTemporaryFile(suffix='.log', prefix='picard-crash-', delete=False) as f:
+            f.write(trace.encode(errors="replace"))
+            logfile = f.name
+    except:  # noqa: E722,F722 # pylint: disable=bare-except
+        pass
+
     app = QCoreApplication.instance()
     if not app:
         app = QApplication(sys.argv)
+
     msgbox = QMessageBox()
     msgbox.setIcon(QMessageBox.Icon.Critical)
     msgbox.setWindowTitle("Picard terminated unexpectedly")
@@ -131,8 +151,38 @@ def crash_handler(exc: Exception = None):
     msgbox.setDetailedText(trace)
     msgbox.setStandardButtons(QMessageBox.StandardButton.Close)
     msgbox.setDefaultButton(QMessageBox.StandardButton.Close)
+
+    # Install signal handler to set interrupt flag on Ctrl+C
+    interrupt_flag = False
+
+    def sigint_handler(signum, frame):
+        nonlocal interrupt_flag
+        interrupt_flag = True
+
+    signal.signal(signal.SIGINT, sigint_handler)
+
+    # Check interrupt flag periodically
+    timer = QTimer()
+
+    def check_interrupt():
+        if interrupt_flag:
+            msgbox.close()
+
+    timer.timeout.connect(check_interrupt)
+    timer.start(100)
+
     msgbox.exec()
-    app.quit()
+    timer.stop()
+
+    if interrupt_flag:
+        os._exit(130)
+
+    try:
+        app.quit()
+        app.processEvents()
+    except:  # noqa: E722,F722 # pylint: disable=bare-except
+        pass
+    os._exit(1)
 
 
 def register_excepthook():

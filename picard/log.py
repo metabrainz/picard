@@ -129,7 +129,10 @@ class TailLogHandler(logging.Handler):
                 )
             )
             self.pos += 1
-        self.tail_logger.updated.emit()
+        try:
+            self.tail_logger.updated.emit()
+        except RuntimeError:
+            pass
 
 
 def _calculate_bounds(previous_position, first_position, last_position, queue_length):
