@@ -212,7 +212,7 @@ class Tagger(QtWidgets.QApplication):
     cluster_removed = QtCore.pyqtSignal(Cluster)
     album_added = QtCore.pyqtSignal(Album)
     album_removed = QtCore.pyqtSignal(Album)
-    translations_updated = QtCore.pyqtSignal()
+    _qt_translators_updated = QtCore.pyqtSignal()
 
     __instance = None
 
@@ -743,7 +743,7 @@ class Tagger(QtWidgets.QApplication):
             QMessageBox.warning(self.window, 'Blacklisted Plugins Detected', message)
 
         QtCore.QTimer.singleShot(0, self._run_init)
-        self.translations_updated.emit()
+        self._qt_translators_updated.emit()
         res = self.exec()
         self.exit()
         return res
@@ -1624,7 +1624,7 @@ class Translator:
 class Translators:
     def __init__(self, tagger):
         self.tagger = tagger
-        self.tagger.translations_updated.connect(self.reinstall)
+        self.tagger._qt_translators_updated.connect(self.reinstall)
         self._translators = []
         self.add_default_translators()
 
