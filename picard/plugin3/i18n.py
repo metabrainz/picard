@@ -24,15 +24,19 @@ from PyQt6.QtCore import QTranslator
 class PluginTranslator(QTranslator):
     """QTranslator for plugin UI files (.ui) translations."""
 
-    def __init__(self, translations: dict, source_locale: str = 'en') -> None:
-        super().__init__()
+    def __init__(self, translations: dict, source_locale: str = 'en', parent=None) -> None:
+        super().__init__(parent=parent)
         self._translations = translations
         self._source_locale = source_locale
         self._current_locale = 'en'
 
+    def isEmpty(self) -> bool:
+        """Return False to indicate this translator has translations."""
+        return not self._translations
+
     def translate(
         self, context: str | None, source_text: str | None, disambiguation: str | None = None, n: int = -1
-    ) -> str:
+    ) -> str | None:
         """Translate text from Qt UI files.
 
         Args:
@@ -51,17 +55,17 @@ class PluginTranslator(QTranslator):
         key = f'qt.{context}.{source_text}'
 
         # Try to get translation
-        locale = self._current_locale
-        if locale in self._translations and key in self._translations[locale]:
-            return self._translations[locale][key]
+        for locale in {self._current_locale, self._source_locale}:
+            if locale in self._translations and key in self._translations[locale]:
+                return self._translations[locale][key]
 
-        # Try language without region
-        lang = locale.split('_')[0]
-        if lang in self._translations and key in self._translations[lang]:
-            return self._translations[lang][key]
+            # Try language without region
+            lang = locale.split('_')[0]
+            if lang in self._translations and key in self._translations[lang]:
+                return self._translations[lang][key]
 
-        # Fall back to source text
-        return source_text
+        # Not found, pass on to next translator
+        return None
 
 
 def get_plural_form(locale: str, n: int) -> str:
