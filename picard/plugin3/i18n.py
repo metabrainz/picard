@@ -24,8 +24,8 @@ from PyQt6.QtCore import QTranslator
 class PluginTranslator(QTranslator):
     """QTranslator for plugin UI files (.ui) translations."""
 
-    def __init__(self, translations: dict, source_locale: str = 'en') -> None:
-        super().__init__()
+    def __init__(self, translations: dict, source_locale: str = 'en', parent=None) -> None:
+        super().__init__(parent=parent)
         self._translations = translations
         self._source_locale = source_locale
         self._current_locale = 'en'
