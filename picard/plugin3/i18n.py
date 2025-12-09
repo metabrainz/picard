@@ -24,11 +24,12 @@ from PyQt6.QtCore import QTranslator
 class PluginTranslator(QTranslator):
     """QTranslator for plugin UI files (.ui) translations."""
 
-    def __init__(self, translations: dict, source_locale: str = 'en', parent=None) -> None:
+    def __init__(self, translations: dict, source_locale: str = 'en', plugin_id: str = '', parent=None) -> None:
         super().__init__(parent=parent)
         self._translations = translations
         self._source_locale = source_locale
         self._current_locale = 'en'
+        self.plugin_id = plugin_id
 
     def isEmpty(self) -> bool:
         """Return False to indicate this translator has translations."""

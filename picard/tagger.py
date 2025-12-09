@@ -1619,6 +1619,16 @@ class Translator:
     sort_index: int = TRANSLATOR_PRIORITY_QT_BASE
     installed: bool = field(default=False, compare=False)
     instance: QtCore.QTranslator = field(default=None, compare=False)
+    comment: str = field(default='', compare=False)
+
+    def __str__(self):
+        if self.sort_index == TRANSLATOR_PRIORITY_QT_BASE:
+            prefix = "Picard"
+        elif self.sort_index == TRANSLATOR_PRIORITY_PLUGIN:
+            prefix = "plugin"
+        else:
+            prefix = "unknown"
+        return f"{prefix} {self.comment}"
 
 
 class Translators:
@@ -1635,14 +1645,16 @@ class Translators:
         translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
         log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
         if translator.load(locale, 'qtbase_', directory=translation_path):
-            t = Translator(sort_index=TRANSLATOR_PRIORITY_QT_BASE, instance=translator)
+            t = Translator(sort_index=TRANSLATOR_PRIORITY_QT_BASE, instance=translator, comment='Qt Base')
             self._translators.append(t)
             self._changed = True
         else:
             log.debug("Qt locale %s not available", locale.name())
 
     def add_translator(self, translator):
-        t = Translator(sort_index=TRANSLATOR_PRIORITY_PLUGIN, instance=translator)
+        plugin_id = getattr(translator, 'plugin_id', '')
+        comment = plugin_id if plugin_id else repr(translator)
+        t = Translator(sort_index=TRANSLATOR_PRIORITY_PLUGIN, instance=translator, comment=comment)
         self._translators.append(t)
         self._changed = True
 
@@ -1650,7 +1662,7 @@ class Translators:
         for t in self._translators[:]:
             if t.instance == translator:
                 if t.installed:
-                    log.debug("Remove translator: %r", t)
+                    log.debug("Remove translator: %s", t)
                     self.tagger.removeTranslator(t.instance)
                 self._translators.remove(t)
                 self._changed = True
@@ -1676,7 +1688,7 @@ class Translators:
         # Now install new ones (higher sort_index installed last, used first)
         for t in sorted(self._translators, reverse=True):
             t.installed = self.tagger.installTranslator(t.instance)
-            log.debug("Translator: %r", t)
+            log.debug("Translator: %s (installed=%r)", t, t.installed)
 
 
 def main(localedir=None, autoupdate=True):
