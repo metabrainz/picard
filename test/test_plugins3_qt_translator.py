@@ -21,16 +21,16 @@
 import json
 from pathlib import Path
 import tempfile
-from unittest.mock import (
-    Mock,
-    patch,
-)
+from unittest.mock import Mock
+
+from PyQt6 import QtCore
 
 from test.picardtestcase import PicardTestCase
 
 from picard.plugin3.api import PluginApi
 from picard.plugin3.i18n import PluginTranslator
 from picard.plugin3.manifest import PluginManifest
+from picard.tagger import Translators
 
 
 class TestPluginTranslator(PicardTestCase):
@@ -122,42 +122,86 @@ class TestPluginTranslator(PicardTestCase):
 
 
 class TestPluginApiQtTranslator(PicardTestCase):
-    def test_qt_translator_installed_after_load(self):
-        """Test that Qt translator is installed when translations are loaded."""
-        with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
+    def _create_mock_tagger(self):
+        """Create a mock tagger with proper Qt signal."""
+
+        class MockTagger(QtCore.QObject):
+            _qt_translators_updated = QtCore.pyqtSignal()
+
+            def __init__(self):
+                super().__init__()
+                self.installTranslator = Mock(return_value=True)
+                self.removeTranslator = Mock()
+
+        return MockTagger()
+
+    def _setup_plugin_api(self, tmpdir, translations=None):
+        """Setup PluginApi with optional translations."""
+        plugin_dir = Path(tmpdir)
+
+        if translations:
             locale_dir = plugin_dir / 'locale'
             locale_dir.mkdir()
+            (locale_dir / 'en.json').write_text(json.dumps(translations))
 
-            (locale_dir / 'en.json').write_text(json.dumps({'qt.Dialog.OK': 'OK'}))
+        manifest_path = plugin_dir / 'MANIFEST.toml'
+        manifest_path.write_text('name = "Test"\n')
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+        with open(manifest_path, 'rb') as f:
+            manifest = PluginManifest('test', f)
+            tagger = self._create_mock_tagger()
+            tagger._qt_translators = Translators(tagger)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
+            api = PluginApi(manifest, tagger)
+            if translations:
                 api._plugin_dir = plugin_dir
                 api.get_locale = Mock(return_value='en')
 
-                with patch('PyQt6.QtCore.QCoreApplication.installTranslator') as mock_install:
-                    api._load_translations()
-                    api._install_qt_translator()
+            return api, tagger
 
-                    mock_install.assert_called_once()
-                    self.assertIsInstance(api._qt_translator, PluginTranslator)
+    def test_qt_translator_installed_after_load(self):
+        """Test that Qt translator is installed when translations are loaded."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            api, tagger = self._setup_plugin_api(tmpdir, {'qt.Dialog.OK': 'OK'})
+            initial_count = len(tagger._qt_translators._translators)
+
+            api._load_translations()
+            api._install_qt_translator()
+
+            self.assertIsInstance(api._qt_translator, PluginTranslator)
+            self.assertEqual(len(tagger._qt_translators._translators), initial_count + 1)
 
     def test_qt_translator_not_installed_without_translations(self):
         """Test that Qt translator is not installed when no translations exist."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            manifest_path = Path(tmpdir) / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api, tagger = self._setup_plugin_api(tmpdir)
+            initial_count = len(tagger._qt_translators._translators)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
+            api._install_qt_translator()
 
-                with patch('PyQt6.QtCore.QCoreApplication.installTranslator') as mock_install:
-                    api._install_qt_translator()
-                    mock_install.assert_not_called()
-                    self.assertIsNone(api._qt_translator)
+            self.assertIsNone(api._qt_translator)
+            self.assertEqual(len(tagger._qt_translators._translators), initial_count)
+
+    def test_qt_translator_not_installed_without_qt_keys(self):
+        """Test that Qt translator is not installed when translations have no qt. keys."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            api, tagger = self._setup_plugin_api(tmpdir, {'regular.key': 'Value'})
+            initial_count = len(tagger._qt_translators._translators)
+
+            api._load_translations()
+            api._install_qt_translator()
+
+            self.assertIsNone(api._qt_translator)
+            self.assertEqual(len(tagger._qt_translators._translators), initial_count)
+
+    def test_qt_translator_installed_on_reinstall(self):
+        """Test that installTranslator is called when reinstall() is triggered."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            api, tagger = self._setup_plugin_api(tmpdir, {'qt.Dialog.OK': 'OK'})
+
+            api._load_translations()
+            api._install_qt_translator()
+            tagger._qt_translators.reinstall()
+
+            tagger.installTranslator.assert_called()
+            self.assertIsInstance(api._qt_translator, PluginTranslator)
