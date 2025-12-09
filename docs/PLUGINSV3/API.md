@@ -523,6 +523,22 @@ def enable(api):
 
 ---
 
+#### `register_file_pre_save_processor(function, priority=0)`
+
+Called just before a file is saved.
+
+**Signature**: `function(api, file)`
+
+```python
+def on_file_saved(api, file):
+    api.logger.info(f"File saved: {file.filename}")
+
+def enable(api):
+    api.register_file_pre_save_processor(on_file_saved)
+```
+
+---
+
 #### `register_file_post_save_processor(function, priority=0)`
 
 Called after a file is saved.
