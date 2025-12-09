@@ -74,6 +74,7 @@ from picard.extension_points.event_hooks import (
     register_file_post_load_processor,
     register_file_post_removal_from_track_processor,
     register_file_post_save_processor,
+    register_file_pre_save_processor,
 )
 from picard.extension_points.formats import register_format
 from picard.extension_points.item_actions import (
@@ -609,6 +610,11 @@ class PluginApi:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_save_processor(wrapped, priority)
+
+    def register_file_pre_save_processor(self, function: Callable, priority: int = 0) -> None:
+        wrapped = partial(function, self)
+        update_wrapper(wrapped, function)
+        return register_file_pre_save_processor(wrapped, priority)
 
     # Cover art
     def register_cover_art_provider(self, provider: Type[CoverArtProvider]) -> None:

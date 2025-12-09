@@ -714,6 +714,14 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 0)
 
+        with patch('picard.plugin3.api.register_file_pre_save_processor') as mock:
+            api.register_file_pre_save_processor(dummy_hook)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
+
     def test_register_script_function(self):
         """Test script function registration."""
         from unittest.mock import patch
