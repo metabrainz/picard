@@ -25,6 +25,7 @@ from test.picardtestcase import (
     get_test_data_path,
 )
 from test.test_plugins3_helpers import (
+    MockPlugin,
     MockTagger,
     load_plugin_manifest,
 )
@@ -753,7 +754,6 @@ class TestPluginManager(PicardTestCase):
     def test_config_persistence(self):
         """Test that enabled plugins are saved to and loaded from config."""
         from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
@@ -763,10 +763,7 @@ class TestPluginManager(PicardTestCase):
 
         # Create a mock plugin with UUID
         test_uuid = 'test-uuid-1234'
-        mock_plugin = Mock(spec=Plugin)
-        mock_plugin.plugin_id = 'test-plugin'
-        mock_plugin.manifest = Mock()
-        mock_plugin.manifest.uuid = test_uuid
+        mock_plugin = MockPlugin(uuid=test_uuid)
 
         # Enable plugin - should save to config
         manager.enable_plugin(mock_plugin)

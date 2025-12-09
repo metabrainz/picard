@@ -24,6 +24,11 @@ import re
 import shutil
 from typing import TYPE_CHECKING, List, NamedTuple
 
+from PyQt6.QtCore import (
+    QObject,
+    pyqtSignal,
+)
+
 
 if TYPE_CHECKING:
     from picard.tagger import Tagger
@@ -197,8 +202,13 @@ def get_plugin_directory_name(manifest) -> str:
     return f'{sanitized}_{uuid_str}'
 
 
-class PluginManager:
+class PluginManager(QObject):
     """Installs, loads and updates plugins from multiple plugin directories."""
+
+    plugin_installed = pyqtSignal(Plugin)
+    plugin_uninstalled = pyqtSignal(Plugin)
+    plugin_enabled = pyqtSignal(Plugin)
+    plugin_disabled = pyqtSignal(Plugin)
 
     _primary_plugin_dir: Path | None = None
     _plugin_dirs: List[Path] = []
@@ -207,6 +217,9 @@ class PluginManager:
     def __init__(self, tagger: 'Tagger | None' = None) -> None:
         from picard.tagger import Tagger
 
+        # Tests pass in a mock object and not an actual Tagger instance,
+        # hence check type before passing it to QObject.
+        super().__init__(parent=tagger if isinstance(tagger, QObject) else None)
         self._tagger: Tagger | None = tagger
         self._enabled_plugins: set[str] = set()
         self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
@@ -752,6 +765,7 @@ class PluginManager:
             # Add newly installed plugin to the plugins list
             plugin = Plugin(self._primary_plugin_dir, plugin_name)
             self._plugins.append(plugin)
+            self.plugin_installed.emit(plugin)
 
             # Enable plugin if requested
             if enable_after_install:
@@ -1215,6 +1229,7 @@ class PluginManager:
         # Remove plugin config if purge requested
         if purge and plugin.manifest and plugin.manifest.uuid:
             self._clean_plugin_config(plugin.manifest.uuid)
+        self.plugin_uninstalled.emit(plugin)
 
     def plugin_has_saved_options(self, plugin: Plugin) -> bool:
         """Check if a plugin has any saved options.
@@ -1269,15 +1284,21 @@ class PluginManager:
         assert plugin.state is not None
         log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
 
+        got_enabled = False
         if self._tagger:
             plugin.load_module()
             # Only enable if not already enabled
             if plugin.state != PluginState.ENABLED:
                 plugin.enable(self._tagger)
+                got_enabled = True
 
         self._enabled_plugins.add(uuid)
         self._save_config()
         log.info('Plugin %s enabled (state: %s)', plugin.plugin_id, plugin.state.value)
+
+        # Only trigger signal, if plugin wasn't already enabled
+        if got_enabled:
+            self.plugin_enabled.emit(plugin)
 
     def init_plugins(self):
         """Initialize and enable plugins that are enabled in configuration.
@@ -1310,12 +1331,18 @@ class PluginManager:
         log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
 
         # Only disable if not already disabled
+        got_disabled = False
         if plugin.state != PluginState.DISABLED:
             plugin.disable()
+            got_disabled = True
 
         self._enabled_plugins.discard(uuid)
         self._save_config()
         log.info('Plugin %s disabled (state: %s)', plugin.plugin_id, plugin.state.value)
+
+        # Only trigger signal, if plugin wasn't already disabled
+        if got_disabled:
+            self.plugin_disabled.emit(plugin)
 
     def _load_config(self):
         """Load enabled plugins list from config."""
