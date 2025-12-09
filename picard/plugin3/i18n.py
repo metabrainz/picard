@@ -30,6 +30,10 @@ class PluginTranslator(QTranslator):
         self._source_locale = source_locale
         self._current_locale = 'en'
 
+    def isEmpty(self) -> bool:
+        """Return False to indicate this translator has translations."""
+        return not self._translations
+
     def translate(
         self, context: str | None, source_text: str | None, disambiguation: str | None = None, n: int = -1
     ) -> str | None:
