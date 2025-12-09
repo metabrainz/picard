@@ -1626,6 +1626,7 @@ class Translators:
         self.tagger = tagger
         self.tagger._qt_translators_updated.connect(self.reinstall)
         self._translators = []
+        self._changed = False
         self.add_default_translators()
 
     def add_default_translators(self):
@@ -1636,12 +1637,14 @@ class Translators:
         if translator.load(locale, 'qtbase_', directory=translation_path):
             t = Translator(sort_index=TRANSLATOR_PRIORITY_QT_BASE, instance=translator)
             self._translators.append(t)
+            self._changed = True
         else:
             log.debug("Qt locale %s not available", locale.name())
 
     def add_translator(self, translator):
         t = Translator(sort_index=TRANSLATOR_PRIORITY_PLUGIN, instance=translator)
         self._translators.append(t)
+        self._changed = True
 
     def remove_translator(self, translator):
         for t in self._translators[:]:
@@ -1650,9 +1653,13 @@ class Translators:
                     log.debug("Remove translator: %r", t)
                     self.tagger.removeTranslator(t.instance)
                 self._translators.remove(t)
+                self._changed = True
                 break
 
     def reinstall(self):
+        if not self._changed:
+            return
+        self._changed = False
         log.debug("Reinstall translators")
 
         # Translations are searched for in the reverse order in which they were installed,
