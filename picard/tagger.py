@@ -1654,6 +1654,10 @@ class Translators:
     def add_translator(self, translator):
         plugin_id = getattr(translator, 'plugin_id', '')
         comment = plugin_id if plugin_id else repr(translator)
+        if translator.isEmpty():
+            # this shouldn't happen with plugins, but safer
+            log.debug("Not adding empty translator for %s", comment)
+            return
         t = Translator(sort_index=TRANSLATOR_PRIORITY_PLUGIN, instance=translator, comment=comment)
         self._translators.append(t)
         self._changed = True
@@ -1672,7 +1676,6 @@ class Translators:
         if not self._changed:
             return
         self._changed = False
-        log.debug("Reinstall translators")
 
         # Translations are searched for in the reverse order in which they were installed,
         # so the most recently installed translation file is searched for translations first
@@ -1686,9 +1689,28 @@ class Translators:
                 t.installed = False
 
         # Now install new ones (higher sort_index installed last, used first)
-        for t in sorted(self._translators, reverse=True):
+        installed_count = 0
+        for t in sorted(self._translators):
             t.installed = self.tagger.installTranslator(t.instance)
-            log.debug("Translator: %s (installed=%r)", t, t.installed)
+            if t.installed:
+                installed_count += 1
+
+        log.debug("%d/%d Qt Translators installed", installed_count, len(self._translators))
+        installed_index = 0
+        last = installed_count - 1
+        prefix = "Qt Translator"
+        # Iterate in reverse order, since "the most recently installed translation file is searched for translations first"
+        for t in sorted(self._translators, reverse=True):
+            if not t.installed:
+                log.debug("%s: %s failed to install", prefix, t)
+                continue
+            if installed_count > 1 and installed_index == 0:
+                log.debug("%s: %s installed (searched first)", prefix, t)
+            elif installed_count > 1 and installed_index == last:
+                log.debug("%s: %s installed (searched last)", prefix, t)
+            else:
+                log.debug("%s: %s installed", prefix, t)
+            installed_index += 1
 
 
 def main(localedir=None, autoupdate=True):
